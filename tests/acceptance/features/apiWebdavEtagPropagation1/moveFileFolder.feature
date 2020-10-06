@@ -302,3 +302,33 @@ Feature: propagation of etags when moving files or folders
       | dav_version |
       | old         |
       | new         |
+
+  Scenario: renaming a file in a publicly shared folder changes its etag for the sharer
+    Given the administrator has enabled DAV tech_preview
+    And user "Alice" has created folder "/upload"
+    And user "Alice" has uploaded file with content "uploaded content" to "/upload/file.txt"
+    And user "Alice" has created a public link share with settings
+      | path        | upload |
+      | permissions | change |
+    And user "Alice" has stored etag of element "/"
+    And user "Alice" has stored etag of element "/upload"
+    When the public renames file "file.txt" to "renamed.txt" from the last public share using the new public WebDAV API
+    Then these etags should have changed:
+      | user  | path    |
+      | Alice | /       |
+      | Alice | /upload |
+
+  Scenario: renaming a folder in a publicly shared folder changes its etag for the sharer
+    Given the administrator has enabled DAV tech_preview
+    And user "Alice" has created folder "/upload"
+    And user "Alice" has created folder "/upload/sub"
+    And user "Alice" has created a public link share with settings
+      | path        | upload |
+      | permissions | change |
+    And user "Alice" has stored etag of element "/"
+    And user "Alice" has stored etag of element "/upload"
+    When the public renames folder "sub" to "renamed" from the last public share using the new public WebDAV API
+    Then these etags should have changed:
+      | user  | path    |
+      | Alice | /       |
+      | Alice | /upload |

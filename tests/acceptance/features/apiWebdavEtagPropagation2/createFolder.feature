@@ -86,3 +86,17 @@ Feature: propagation of etags when creating folders
       | dav_version |
       | old         |
       | new         |
+
+  Scenario: creating a folder in a publicly shared folder changes its etag for the sharer
+    Given the administrator has enabled DAV tech_preview
+    And user "Alice" has created folder "/folder"
+    And user "Alice" has created a public link share with settings
+      | path        | folder |
+      | permissions | create |
+    And user "Alice" has stored etag of element "/"
+    And user "Alice" has stored etag of element "/folder"
+    When the public creates folder "created-by-public" using the new public WebDAV API
+    Then these etags should have changed:
+      | user  | path    |
+      | Alice | /       |
+      | Alice | /folder |
