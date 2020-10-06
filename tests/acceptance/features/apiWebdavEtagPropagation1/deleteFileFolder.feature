@@ -181,3 +181,31 @@ Feature: propagation of etags when deleting a file or folder
       | dav_version |
       | old         |
       | new         |
+
+  Scenario: deleting a file in a publicly shared folder changes its etag for the sharer
+    Given the administrator has enabled DAV tech_preview
+    And user "Alice" has uploaded file with content "uploaded content" to "/upload/file.txt"
+    And user "Alice" has created a public link share with settings
+      | path        | upload |
+      | permissions | change |
+    And user "Alice" has stored etag of element "/"
+    And user "Alice" has stored etag of element "/upload"
+    When the public deletes file "file.txt" from the last public share using the new public WebDAV API
+    Then these etags should have changed:
+      | user  | path    |
+      | Alice | /       |
+      | Alice | /upload |
+
+  Scenario: deleting a folder in a publicly shared folder changes its etag for the sharer
+    Given the administrator has enabled DAV tech_preview
+    And user "Alice" has created folder "/upload/sub"
+    And user "Alice" has created a public link share with settings
+      | path        | upload |
+      | permissions | change |
+    And user "Alice" has stored etag of element "/"
+    And user "Alice" has stored etag of element "/upload"
+    When the public deletes folder "sub" from the last public share using the new public WebDAV API
+    Then these etags should have changed:
+      | user  | path    |
+      | Alice | /       |
+      | Alice | /upload |

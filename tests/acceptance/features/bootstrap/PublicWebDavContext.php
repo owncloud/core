@@ -108,7 +108,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When /^the public deletes file "([^"]*)" from the last public share using the (old|new) public WebDAV API$/
+	 * @When /^the public deletes (?:file|folder|entry) "([^"]*)" from the last public share using the (old|new) public WebDAV API$/
 	 *
 	 * @param string $fileName
 	 * @param string $publicWebDAVAPIVersion
@@ -147,7 +147,7 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
-	 * @When /^the public renames file "([^"]*)" to "([^"]*)" from the last public share using the (old|new) public WebDAV API$/
+	 * @When /^the public renames (?:file|folder|entry) "([^"]*)" to "([^"]*)" from the last public share using the (old|new) public WebDAV API$/
 	 *
 	 * @param string $fileName
 	 * @param string $toFileName
@@ -979,6 +979,34 @@ class PublicWebDavContext implements Context {
 			false,
 			["X-OC-Mtime" => $mtime],
 			$davVersion
+		);
+	}
+
+	/**
+	 * @When the public creates folder :destination using the new public WebDAV API
+	 *
+	 * @param String $destination
+	 *
+	 * @return void
+	 */
+	public function publicCreatesFolder($destination) {
+		$token = $this->featureContext->getLastShareToken();
+		$davPath = WebDavHelper::getDavPath(
+			$token, 0, "public-files-new"
+		);
+		$url = $this->featureContext->getBaseUrl() . "/$davPath";
+		$userName = $this->getUsernameForPublicWebdavApi(
+			$token, '', "new"
+		);
+		$filename = \implode(
+			'/', \array_map('rawurlencode', \explode('/', $destination))
+		);
+		$url .= \ltrim($filename, '/');
+
+		$this->featureContext->setResponse(
+			HttpRequestHelper::sendRequest(
+				$url, 'MKCOL', $userName, ''
+			)
 		);
 	}
 
