@@ -12,6 +12,7 @@ Summary
 * Bugfix - Google Drive file modifications should not create duplicate files: [#25826](https://github.com/owncloud/core/issues/25826)
 * Bugfix - Fix exit codes of security:certificates commands: [#35364](https://github.com/owncloud/core/issues/35364)
 * Bugfix - Translate public link sharing email subject: [#37321](https://github.com/owncloud/core/issues/37321)
+* Bugfix - Fix problem with the market app installing an app using OpenIDConnect: [#37715](https://github.com/owncloud/core/pull/37715)
 * Bugfix - Fix expiring a wrong share entry problem: [#37729](https://github.com/owncloud/core/pull/37729)
 * Bugfix - Fix decoding of calendars uri: [#37750](https://github.com/owncloud/core/pull/37750)
 * Bugfix - Add openid client secret to the sensitive values list: [#37782](https://github.com/owncloud/core/pull/37782)
@@ -108,6 +109,21 @@ Details
 
    https://github.com/owncloud/core/issues/37321
    https://github.com/owncloud/core/pull/37322
+
+* Bugfix - Fix problem with the market app installing an app using OpenIDConnect: [#37715](https://github.com/owncloud/core/pull/37715)
+
+   The OpenIDConnect app uses an in-memory cache to store an OpenID session in order to avoid
+   hitting the OpenID provider too much. After an app was installed, the prefix used to store
+   information in the cache was changing. This was causing problems because the OpenIDConnect
+   app thought the OpenID session was no longer valid and, as a consequence, it was logging out the
+   user. In practice, installing an new app with the market app having logged in via OpenIDConnect
+   would cause the user to logout.
+
+   Now, the cache prefix only changes after an ownCloud upgrade. Installing an app won't cause the
+   cache prefix to change, so this will fix the problem. The OpenIDConnect app will still find the
+   stored session information after the new apps are installed.
+
+   https://github.com/owncloud/core/pull/37715
 
 * Bugfix - Fix expiring a wrong share entry problem: [#37729](https://github.com/owncloud/core/pull/37729)
 
