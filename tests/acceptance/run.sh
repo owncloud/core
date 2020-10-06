@@ -1290,7 +1290,7 @@ then
       fi
     done
   else
-    ACTUAL_UNEXPECTED_PASS="${UNEXPECTED_PASSED_SCENARIOS[@]}"
+    ACTUAL_UNEXPECTED_PASS=("${UNEXPECTED_PASSED_SCENARIOS[@]}")
   fi
 
   tput setaf 3; echo "runsh: Total unexpected passed scenarios throughout the test run:"
