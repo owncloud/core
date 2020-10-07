@@ -1,0 +1,6 @@
+Bugfix: Fix for Google Docs not syncing with error "server reported no size"
+
+Users with Google Drive connected external storage were previously subjected to a "server reported no size" error in desktop sync client for every Google Doc that attempted to sync. Additionally, the Google Doc would not be downloaded.
+
+https://github.com/owncloud/core/issues/37997
+https://github.com/owncloud/core/pull/37993
