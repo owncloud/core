@@ -31,7 +31,9 @@ Feature: cannot share resources outside the group when share with membership gro
     And group "grp0" has been created
     And user "Alice" has been added to group "grp0"
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
-    And user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" folder "/Shares/PARENT" should exist
@@ -49,7 +51,9 @@ Feature: cannot share resources outside the group when share with membership gro
     And user "Alice" has been added to group "grp0"
     And user "Brian" has been added to group "grp0"
     When user "Alice" shares folder "/PARENT" with group "grp0" using the sharing API
-    And user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" folder "/Shares/PARENT" should exist
@@ -85,7 +89,9 @@ Feature: cannot share resources outside the group when share with membership gro
     And user "Alice" has been added to group "grp0"
     And user "Brian" has been added to group "grp0"
     When user "Alice" shares folder "/textfile0.txt" with group "grp0" using the sharing API
-    And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" file "/Shares/textfile0.txt" should exist
@@ -102,7 +108,9 @@ Feature: cannot share resources outside the group when share with membership gro
     And group "grp0" has been created
     And user "Alice" has been added to group "grp0"
     When user "Alice" shares folder "/textfile0.txt" with user "Brian" using the sharing API
-    And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" file "/Shares/textfile0.txt" should exist

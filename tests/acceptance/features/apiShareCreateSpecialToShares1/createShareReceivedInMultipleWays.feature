@@ -17,7 +17,9 @@ Feature: share resources where the sharee receives the share in multiple ways
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     When user "Brian" accepts share "/welcome.txt" offered by user "Alice" using the sharing API
-    Then the fields of the last response to user "Alice" sharing with user "Brian" should include
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | share_with             | %username%              |
       | share_with_displayname | %displayname%           |
       | file_target            | /Shares/welcome (2).txt |
@@ -45,8 +47,12 @@ Feature: share resources where the sharee receives the share in multiple ways
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
     And user "Brian" accepts share "/PARENT/CHILD" offered by user "Alice" using the sharing API
-    Then user "Brian" should see the following elements
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And user "Brian" should see the following elements
       | /FOLDER/                  |
       | /Shares/PARENT/           |
       | /Shares/PARENT/parent.txt |
@@ -71,7 +77,9 @@ Feature: share resources where the sharee receives the share in multiple ways
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     When user "Brian" accepts share "/test/sub" offered by user "Alice" using the sharing API
-    Then as "Brian" folder "/Shares/sub" should exist
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And as "Brian" folder "/Shares/sub" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -90,7 +98,9 @@ Feature: share resources where the sharee receives the share in multiple ways
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     When user "Brian" accepts share "/test/sub" offered by user "Alice" using the sharing API
-    Then as "Brian" folder "/Shares/sub" should exist
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And as "Brian" folder "/Shares/sub" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |

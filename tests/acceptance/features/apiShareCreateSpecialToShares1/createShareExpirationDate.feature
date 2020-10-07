@@ -15,7 +15,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     When user "Brian" accepts share "/FOLDER" offered by user "Alice" using the sharing API
-    Then the fields of the last response to user "Alice" should include
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And the fields of the last response to user "Alice" should include
       | expiration |  |
     And the response when user "Brian" gets the info of the last share should include
       | expiration |  |
@@ -38,7 +40,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     When user "Brian" accepts share "/FOLDER" offered by user "Alice" using the sharing API
-    Then the fields of the last response to user "Alice" sharing with user "Brian" should include
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | share_type  | user           |
       | file_target | /Shares/FOLDER |
       | uid_owner   | %username%     |
@@ -64,7 +68,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     When user "Brian" accepts share "/FOLDER" offered by user "Alice" using the sharing API
-    Then the fields of the last response to user "Alice" sharing with user "Brian" should include
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | share_type  | user           |
       | file_target | /Shares/FOLDER |
       | uid_owner   | %username%     |
@@ -142,7 +148,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     When user "Brian" accepts share "/FOLDER" offered by user "Alice" using the sharing API
-    Then the fields of the last response to user "Alice" should include
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And the fields of the last response to user "Alice" should include
       | expiration |  |
     And the response when user "Brian" gets the info of the last share should include
       | expiration |  |
@@ -167,7 +175,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     When user "Brian" accepts share "/FOLDER" offered by user "Alice" using the sharing API
-    Then the fields of the last response to user "Alice" sharing with group "grp1" should include
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And the fields of the last response to user "Alice" sharing with group "grp1" should include
       | share_type  | group          |
       | file_target | /Shares/FOLDER |
       | uid_owner   | %username%     |
@@ -195,7 +205,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     When user "Brian" accepts share "/FOLDER" offered by user "Alice" using the sharing API
-    Then the fields of the last response to user "Alice" sharing with group "grp1" should include
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And the fields of the last response to user "Alice" sharing with group "grp1" should include
       | share_type  | group          |
       | file_target | /Shares/FOLDER |
       | uid_owner   | %username%     |
@@ -597,7 +609,9 @@ Feature: a default expiration date can be specified for shares with users or gro
       | shareWith          | Brian         |
       | permissions        | read,share    |
       | expireDateAsString | <date>        |
-    And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "200"
+    When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "200"
     Then the fields of the last response to user "Alice" should include

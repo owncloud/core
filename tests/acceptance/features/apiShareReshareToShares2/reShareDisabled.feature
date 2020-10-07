@@ -27,7 +27,9 @@ Feature: resharing can be disabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_resharing" of app "core" has been set to "no"
     When user "Alice" shares file "/textfile0.txt" with user "Brian" with permissions "share,update,read" using the sharing API
-    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "Brian" file "/Shares/textfile0.txt" should exist

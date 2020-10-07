@@ -217,18 +217,20 @@ Feature: sharing
     And user "Alice" has created folder "/PARENT"
     And user "Alice" has uploaded file with content "file in parent folder" to "/PARENT/parent.txt"
     When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
-    And user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
-    And user "Carol" accepts share "/PARENT" offered by user "Alice" using the sharing API
-    Then user "Brian" should see the following elements
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Carol" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And user "Brian" should see the following elements
       | /Shares/PARENT/           |
       | /Shares/PARENT/parent.txt |
-    And the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
     And user "Carol" should see the following elements
       | /Shares/PARENT/           |
       | /Shares/PARENT/parent.txt |
-    And the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -248,7 +250,9 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     When user "Alice" accepts share "/randomfile.txt" offered by user "Brian" using the sharing API
-    Then as "Alice" file "/Shares/randomfile.txt" should exist
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And as "Alice" file "/Shares/randomfile.txt" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -293,7 +297,9 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     When user "Brian" accepts share "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" offered by user "Alice" using the sharing API
-    Then as "Brian" file "/Shares/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" should exist
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And as "Brian" file "/Shares/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -310,7 +316,9 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     When user "Brian" accepts share "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" offered by user "Alice" using the sharing API
-    Then as "Brian" file "/Shares/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" should exist
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And as "Brian" file "/Shares/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog.txt" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -326,7 +334,9 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     When user "Brian" accepts share "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" offered by user "Alice" using the sharing API
-    Then the downloaded content when downloading file "/Shares/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/textfile0.txt" for user "Brian" with range "bytes=1-6" should be "wnClou"
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the downloaded content when downloading file "/Shares/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/textfile0.txt" for user "Brian" with range "bytes=1-6" should be "wnClou"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -344,7 +354,9 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     When user "Brian" accepts share "/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog" offered by user "Alice" using the sharing API
-    Then the downloaded content when downloading file "/Shares/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/textfile0.txt" for user "Brian" with range "bytes=1-6" should be "wnClou"
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the downloaded content when downloading file "/Shares/aquickbrownfoxjumpsoveraverylazydogaquickbrownfoxjumpsoveralazydog/textfile0.txt" for user "Brian" with range "bytes=1-6" should be "wnClou"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -388,7 +400,9 @@ Feature: sharing
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     When user "Brian" accepts share "/randomfile.txt" offered by user "Alice" using the sharing API
-    Then user "Brian" should see the following elements
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "Brian" should see the following elements
       | /Shares/randomfile.txt |
     And the content of file "/Shares/randomfile.txt" for user "Brian" should be "Random data"
 
@@ -405,18 +419,20 @@ Feature: sharing
     And user "Alice" has created folder "/PARENT"
     And user "Alice" has uploaded file with content "file in parent folder" to "/PARENT/parent.txt"
     When user "Alice" shares folder "/PARENT" with group "😀 😁" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
     And user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
     And user "Carol" accepts share "/PARENT" offered by user "Alice" using the sharing API
-    Then user "Brian" should see the following elements
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And user "Brian" should see the following elements
       | /Shares/PARENT/           |
       | /Shares/PARENT/parent.txt |
-    And the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
     And user "Carol" should see the following elements
       | /Shares/PARENT/           |
       | /Shares/PARENT/parent.txt |
-    And the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
