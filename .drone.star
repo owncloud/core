@@ -1060,6 +1060,9 @@ def javascript(ctx):
 			}
 		)
 
+	for branch in config['branches']:
+		result['trigger']['ref'].append('refs/heads/%s' % branch)
+
 	return [result]
 
 def phptests(ctx, testType):
@@ -1279,6 +1282,9 @@ def phptests(ctx, testType):
 									}
 								}
 							})
+
+					for branch in config['branches']:
+						result['trigger']['ref'].append('refs/heads/%s' % branch)
 
 					pipelines.append(result)
 
@@ -1592,6 +1598,9 @@ def sonarAnalysis(ctx, phpVersion = '7.4'):
 			]
 		}
 	}
+
+	for branch in config['branches']:
+		result['trigger']['ref'].append('refs/heads/%s' % branch)
 
 	return result
 
