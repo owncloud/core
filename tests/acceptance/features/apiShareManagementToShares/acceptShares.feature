@@ -72,8 +72,10 @@ Feature: accept/decline shares coming from internal users
     Given user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
     When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
-    And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
+    And the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | id                     | A_STRING                   |
@@ -113,8 +115,10 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
     When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
-    And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
+    And the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | id                     | A_STRING                                      |
@@ -195,8 +199,10 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" declines share "/Shares/PARENT" offered by user "Alice" using the sharing API
-    And user "Brian" declines share "/Shares/textfile0.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "Brian" declines share "/Shares/textfile0.txt" offered by user "Alice" using the sharing API
+    And the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Brian" should not see the following elements
       | /Shares/PARENT/           |
@@ -218,8 +224,10 @@ Feature: accept/decline shares coming from internal users
     Given user "Alice" has shared folder "/PARENT" with group "grp1"
     And user "Alice" has shared file "/textfile0.txt" with group "grp1"
     When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
-    And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
+    And the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Carol" should not see the following elements
       | /Shares/PARENT/           |
@@ -246,8 +254,10 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" has shared folder "/shared" with user "Carol"
     And user "Brian" has shared folder "/shared" with user "Carol"
     When user "Carol" accepts share "/shared" offered by user "Brian" using the sharing API
-    And user "Carol" accepts share "/shared" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "Carol" accepts share "/shared" offered by user "Alice" using the sharing API
+    And the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Carol" should see the following elements
       | /Shares/shared/Brian/       |

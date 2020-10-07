@@ -16,7 +16,9 @@ Feature: a subfolder of a received share can be reshared
     And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,read"
     And user "Brian" has accepted share "/TMP" offered by user "Alice"
     When user "Brian" shares folder "/Shares/TMP/SUB" with user "Carol" with permissions "share,read" using the sharing API
-    And user "Carol" has accepted share "/TMP/SUB" offered by user "Brian"
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Carol" has accepted share "/TMP/SUB" offered by user "Brian"
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "Carol" folder "/Shares/SUB" should exist

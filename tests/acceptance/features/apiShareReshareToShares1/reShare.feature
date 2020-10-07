@@ -43,7 +43,9 @@ Feature: sharing
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "share,read"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" shares file "/Shares/textfile0.txt" with user "Carol" with permissions "share,read" using the sharing API
-    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "Carol" file "/Shares/textfile0.txt" should exist
@@ -57,7 +59,9 @@ Feature: sharing
     And user "Alice" has shared folder "/FOLDER" with user "Brian" with permissions "share,read"
     And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     When user "Brian" shares folder "/Shares/FOLDER" with user "Carol" with permissions "share,read" using the sharing API
-    And user "Carol" accepts share "/FOLDER" offered by user "Brian" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Carol" accepts share "/FOLDER" offered by user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "Carol" folder "/Shares/FOLDER" should exist
@@ -71,7 +75,9 @@ Feature: sharing
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "share,update,read"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" shares file "/Shares/textfile0.txt" with user "Carol" with permissions "share,read" using the sharing API
-    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "Carol" file "/Shares/textfile0.txt" should exist
@@ -85,7 +91,9 @@ Feature: sharing
     And user "Alice" has shared folder "/FOLDER" with user "Brian" with permissions "share,update,read"
     And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     When user "Brian" shares folder "/Shares/FOLDER" with user "Carol" with permissions "share,read" using the sharing API
-    And user "Carol" accepts share "/FOLDER" offered by user "Brian" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Carol" accepts share "/FOLDER" offered by user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "Carol" folder "/Shares/FOLDER" should exist
@@ -126,7 +134,9 @@ Feature: sharing
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions <received_permissions>
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" shares file "/Shares/textfile0.txt" with user "Carol" with permissions <reshare_permissions> using the sharing API
-    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Brian" sharing with user "Carol" should include

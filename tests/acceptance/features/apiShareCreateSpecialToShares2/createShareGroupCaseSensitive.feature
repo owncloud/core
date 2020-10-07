@@ -21,17 +21,23 @@ Feature: share with groups, group names are case-sensitive
     And user "Carol" has been added to group "<group_id2>"
     And user "David" has been added to group "<group_id3>"
     When user "Alice" shares file "textfile1.txt" with group "<group_id1>" using the sharing API
-    And user "Brian" accepts share "/textfile1.txt" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Brian" accepts share "/textfile1.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the content of file "/Shares/textfile1.txt" for user "Brian" should be "ownCloud test text file 1" plus end-of-line
     When user "Alice" shares folder "textfile2.txt" with group "<group_id2>" using the sharing API
-    And user "Carol" accepts share "/textfile2.txt" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Carol" accepts share "/textfile2.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the content of file "/Shares/textfile2.txt" for user "Carol" should be "ownCloud test text file 2" plus end-of-line
     When user "Alice" shares folder "textfile3.txt" with group "<group_id3>" using the sharing API
-    And user "David" accepts share "/textfile3.txt" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "David" accepts share "/textfile3.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the content of file "/Shares/textfile3.txt" for user "David" should be "ownCloud test text file 3" plus end-of-line
@@ -53,7 +59,9 @@ Feature: share with groups, group names are case-sensitive
     And group "<group_id1>" has been created
     And user "Brian" has been added to group "<group_id1>"
     When user "Alice" shares file "textfile1.txt" with group "<group_id1>" using the sharing API
-    And user "Brian" accepts share "/textfile1.txt" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Brian" accepts share "/textfile1.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" should include

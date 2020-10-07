@@ -19,7 +19,9 @@ Feature: resharing a resource with an expiration date
       | permissions | change                |
       | shareWith   | Carol                 |
       | expireDate  | +3 days               |
-    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    When user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -45,7 +47,9 @@ Feature: resharing a resource with an expiration date
       | permissions | change                |
       | shareWith   | grp1                  |
       | expireDate  | +3 days               |
-    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    When user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -71,7 +75,9 @@ Feature: resharing a resource with an expiration date
       | shareType   | user                  |
       | permissions | change                |
       | shareWith   | Carol                 |
-    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    When user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -101,7 +107,9 @@ Feature: resharing a resource with an expiration date
       | shareType   | group                 |
       | permissions | change                |
       | shareWith   | grp1                  |
-    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    When user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -128,7 +136,9 @@ Feature: resharing a resource with an expiration date
       | shareType   | user                  |
       | permissions | change                |
       | shareWith   | Carol                 |
-    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    When user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -157,7 +167,9 @@ Feature: resharing a resource with an expiration date
       | shareType   | group                 |
       | permissions | change                |
       | shareWith   | grp1                  |
-    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    When user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -186,7 +198,9 @@ Feature: resharing a resource with an expiration date
       | permissions | change                |
       | shareWith   | Carol                 |
       | expireDate  | +20 days              |
-    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    When user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -217,7 +231,9 @@ Feature: resharing a resource with an expiration date
       | permissions | change                |
       | shareWith   | grp1                  |
       | expireDate  | +20 days              |
-    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    When user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -272,7 +288,9 @@ Feature: resharing a resource with an expiration date
       | shareType   | user                  |
       | permissions | change                |
       | shareWith   | Carol                 |
-    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    When user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -303,7 +321,9 @@ Feature: resharing a resource with an expiration date
       | permissions | change                |
       | shareWith   | Carol                 |
       | expireDate  | +20 days              |
-    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    When user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -331,7 +351,9 @@ Feature: resharing a resource with an expiration date
       | shareType   | user                  |
       | permissions | change                |
       | shareWith   | Carol                 |
-    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    When user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Brian" should include
@@ -364,7 +386,9 @@ Feature: resharing a resource with an expiration date
       | shareType   | user                  |
       | permissions | change                |
       | shareWith   | Carol                 |
-    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    When user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Alice" should include
@@ -400,7 +424,9 @@ Feature: resharing a resource with an expiration date
       | permissions | change                |
       | shareWith   | Carol                 |
       | expireDate  | +40 days              |
-    And user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    When user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "<ocs_status_code>"
     And the information of the last share of user "Alice" should include
