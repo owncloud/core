@@ -18,6 +18,7 @@ OC.L10N.register(
     "You don’t have permission to upload or create files here" : "您沒有權限在這裡上傳或建立檔案",
     "Target folder \"{dir}\" does not exist any more" : "目標資料夾 \"{dir}\" 已經不存在",
     "Target folder does not exist any more" : "目標資料夾已經不存在",
+    "Not enough free space" : "可用空間不足",
     "Uploading..." : "上傳中…",
     "..." : "...",
     "{loadedSize} of {totalSize} ({bitrate})" : "{loadedSize} / {totalSize} ({bitrate})",
