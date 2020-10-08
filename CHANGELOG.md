@@ -23,6 +23,7 @@ Summary
 * Bugfix - Add metrics shared secret to the sensitive values list: [#37848](https://github.com/owncloud/core/pull/37848)
 * Bugfix - Fix list of apps returned by OCS Provisioning API apps endpoint: [#37884](https://github.com/owncloud/core/issues/37884)
 * Bugfix - Add very minimal empty ODF files: [#37896](https://github.com/owncloud/core/pull/37896)
+* Bugfix - Checksums will be kept when a file is uploaded or a version is created: [#37934](https://github.com/owncloud/core/pull/37934)
 * Bugfix - Fix invisible notification container blocking mouse events: [#37941](https://github.com/owncloud/core/pull/37941)
 * Bugfix - Fix display of public link shares in case avatars are disabled: [#37945](https://github.com/owncloud/core/pull/37945)
 * Bugfix - Clean the user's preferences only if they exist during user sync: [#37947](https://github.com/owncloud/core/pull/37947)
@@ -202,6 +203,16 @@ Details
    German, spreadsheet tab name was "Tabelle", etc. It was incorrect for non-German users.
 
    https://github.com/owncloud/core/pull/37896
+
+* Bugfix - Checksums will be kept when a file is uploaded or a version is created: [#37934](https://github.com/owncloud/core/pull/37934)
+
+   Previously, reuploading the same file caused the checksum of the file to be reset. In addition,
+   the checksum weren't being carried away when a new version of the file was created. This means
+   that the versions didn't have a checksum.
+
+   Both problems are now solved.
+
+   https://github.com/owncloud/core/pull/37934
 
 * Bugfix - Fix invisible notification container blocking mouse events: [#37941](https://github.com/owncloud/core/pull/37941)
 
