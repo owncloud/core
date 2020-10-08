@@ -98,7 +98,7 @@ class Comment implements IComment {
 	/**
 	 * returns the parent ID of the comment
 	 *
-	 * @return string
+	 * @return string the parent id or "0" if there is no parent
 	 * @since 9.0.0
 	 */
 	public function getParentId() {

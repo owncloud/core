@@ -380,7 +380,7 @@ class Manager implements ICommentsManager {
 	public function getNumberOfUnreadCommentsForNodes($objectType, $objectIds, IUser $user) {
 		$qbMain = $this->dbConn->getQueryBuilder();
 		$qbSup = $this->dbConn->getQueryBuilder();
-		
+
 		$unreadCountsForNodes = [];
 		$objectIdChunks = \array_chunk($objectIds, 100);
 		foreach ($objectIdChunks as $objectIdChunk) {
@@ -545,7 +545,8 @@ class Manager implements ICommentsManager {
 				$result = $this->update($comment);
 			}
 
-			if ($result && !!$comment->getParentId()) {
+			// getParentId() returns a "falsey" string such as "0" if there is no parent
+			if ($result && (bool) $comment->getParentId()) {
 				$this->updateChildrenInformation(
 					$comment->getParentId(),
 					$comment->getCreationDateTime()
