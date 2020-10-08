@@ -65,7 +65,7 @@ class OcisHelper {
 			$deleteCmd = \sprintf($deleteCmd, $user);
 			\exec($deleteCmd);
 		} else {
-			self::recurseRmdir(self::getOcisRevaDataRoot() . "/data/" . $user);
+			self::recurseRmdir(self::getOcisRevaDataRoot() . $user);
 		}
 	}
 
@@ -194,7 +194,7 @@ class OcisHelper {
 	private static function getOcisRevaDataRoot() {
 		$root = \getenv("OCIS_REVA_DATA_ROOT");
 		if (($root === false || $root === "") && self::isTestingOnOcis()) {
-			$root = "/var/tmp/reva/";
+			$root = "/var/tmp/ocis/owncloud/";
 		}
 		if (!\file_exists($root)) {
 			echo "WARNING: reva data root folder ($root) does not exist\n";
