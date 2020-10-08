@@ -124,7 +124,7 @@ class DateTimeFormatter implements \OCP\IDateTimeFormatter {
 	 * @return string Formatted relative date string
 	 */
 	public function formatDateRelativeDay($timestamp, $format = 'long', \DateTimeZone $timeZone = null, \OCP\IL10N $l = null) {
-		if (\substr($format, -1) !== '*' && \substr($format, -1) !== '*') {
+		if (\substr($format, -1) !== '*') {
 			$format .= '^';
 		}
 
