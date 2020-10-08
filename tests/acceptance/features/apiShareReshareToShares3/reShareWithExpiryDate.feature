@@ -367,7 +367,7 @@ Feature: resharing a resource with an expiration date
       | 1               | no                  | no                  | 100             |
       | 2               | no                  | no                  | 200             |
 
-  @skipOnOcV10.3 @issue-37013
+  @skipOnOcV10 @skipOnOcV10.3 @issue-37013
   Scenario Outline: reshare extends the received expiry date up to the default by default
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
@@ -394,17 +394,17 @@ Feature: resharing a resource with an expiration date
     And the information of the last share of user "Alice" should include
       | expiration | +20 days |
     And the response when user "Carol" gets the info of the last share should include
-      | expiration | <actual-expire-date> |
+      | expiration | +20 |
     Examples:
-      | ocs_api_version | default-expire-date | enforce-expire-date | actual-expire-date | ocs_status_code |
-      | 1               | yes                 | yes                 | +30 days           | 100             |
-      | 2               | yes                 | yes                 | +30 days           | 200             |
-      | 1               | yes                 | no                  |                    | 100             |
-      | 2               | yes                 | no                  |                    | 200             |
-      | 1               | no                  | no                  |                    | 100             |
-      | 2               | no                  | no                  |                    | 200             |
+      | ocs_api_version | default-expire-date | enforce-expire-date | ocs_status_code |
+      | 1               | yes                 | yes                 | 100             |
+      | 2               | yes                 | yes                 | 200             |
+      | 1               | yes                 | no                  | 100             |
+      | 2               | yes                 | no                  | 200             |
+      | 1               | no                  | no                  | 100             |
+      | 2               | no                  | no                  | 200             |
 
-  @skipOnOcV10.3 @issue-37013
+  @skipOnOcV10 @skipOnOcV10.3 @issue-37013
   Scenario Outline: reshare can extend the received expiry date further into the future
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
@@ -424,23 +424,19 @@ Feature: resharing a resource with an expiration date
       | permissions | change                |
       | shareWith   | Carol                 |
       | expireDate  | +40 days              |
-    Then the HTTP status code should be "200"
-    And the OCS status code should be "<ocs_status_code>"
-    When user "Carol" accepts share "/textfile0.txt" offered by user "Brian" using the sharing API
-    Then the HTTP status code should be "200"
-    And the OCS status code should be "<ocs_status_code>"
+    #The action of changing the expiration date while resharing should be forbidden
+    Then the HTTP status code should be "403"
+    And the OCS status code should be "403"
     And the information of the last share of user "Alice" should include
       | expiration | +20 days |
-    And the response when user "Carol" gets the info of the last share should include
-      | expiration | +40 days |
     Examples:
-      | ocs_api_version | default-expire-date | ocs_status_code |
-      | 1               | yes                 | 100             |
-      | 2               | yes                 | 200             |
-      | 1               | no                  | 100             |
-      | 2               | no                  | 200             |
+      | ocs_api_version | default-expire-date |
+      | 1               | yes                 |
+      | 2               | yes                 |
+      | 1               | no                  |
+      | 2               | no                  |
 
-  @skipOnOcV10.3 @issue-37013
+  @skipOnOcV10 @skipOnOcV10.3 @issue-37013
   Scenario Outline: reshare cannot extend the received expiry date past the default when the default is enforced
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default-expire-date>"
@@ -460,11 +456,11 @@ Feature: resharing a resource with an expiration date
       | permissions | change                |
       | shareWith   | Carol                 |
       | expireDate  | +40 days              |
-    Then the HTTP status code should be "<http_status_code>"
-    And the OCS status code should be "404"
+    Then the HTTP status code should be "403"
+    And the OCS status code should be "403"
     And the information of the last share of user "Alice" should include
       | expiration | +20 days |
     Examples:
-      | ocs_api_version | default-expire-date | http_status_code |
-      | 1               | yes                 | 200              |
-      | 2               | yes                 | 404              |
+      | ocs_api_version | default-expire-date |
+      | 1               | yes                 |
+      | 2               | yes                 |
