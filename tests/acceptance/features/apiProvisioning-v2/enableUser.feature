@@ -84,6 +84,7 @@ Feature: enable user
     And the HTTP status code should be "401"
     And user "subadmin" should be disabled
 
+  @notToImplementOnOCIS
   Scenario: Making a web request with an enabled user
     Given user "Alice" has been created with default attributes and skeleton files
     When user "Alice" sends HTTP method "GET" to URL "/index.php/apps/files"

@@ -922,12 +922,12 @@ trait Provisioning {
 					$attributesToCreateUser['username'] = $userAttributes['userid'];
 					if ($userAttributes['email'] === null) {
 						Assert::assertArrayHasKey(
-							'username',
+							'userid',
 							$userAttributes,
-							__METHOD__ . " userAttributes array does not have key 'username'"
+							__METHOD__ . " userAttributes array does not have key 'userid'"
 						);
 
-						$attributesToCreateUser['email'] = $userAttributes['username'] . '@owncloud.org';
+						$attributesToCreateUser['email'] = $userAttributes['userid'] . '@owncloud.org';
 					} else {
 						$attributesToCreateUser['email'] = $userAttributes['email'];
 					}
