@@ -86,7 +86,7 @@ class Output implements IOutput {
 	 * @param bool $httpOnly
 	 */
 	public function setCookie($name, $value, $expire, $path, $domain, $secure, $httpOnly) {
-		$path = $this->webRoot ? : '/';
-		\setcookie($name, $value, $expire, $path, $domain, $secure, $httpOnly);
+		$localPath = $this->webRoot ? : '/';
+		\setcookie($name, $value, $expire, $localPath, $domain, $secure, $httpOnly);
 	}
 }
