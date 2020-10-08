@@ -210,7 +210,8 @@ class Scanner extends BasicEmitter implements IScanner {
 					}
 					if (!empty($newData)) {
 						// Only reset checksum on file change
-						if ($fileId > 0 && !isset($newData['checksum'])) {
+						if ($fileId > 0 && !isset($newData['checksum']) && !isset($data['checksum'])) {
+							// file in filecache, checksum hasn't changed and new checksum isn't present
 							foreach (['size', 'storage_mtime', 'mtime', 'etag'] as $dataKey) {
 								if (isset($newData[$dataKey])) {
 									$newData['checksum'] = '';
