@@ -1,0 +1,11 @@
+Enhancement: Allow getting the share list filtered by share type via API
+
+Previously, the share API returned all the shares. There were some filters,
+but you weren't able to filter by share type. You couldn't get only your
+link shares.
+
+Now the API allows filtering by share type, along with the filters previously
+available. The web UI is using this filtering now.
+
+https://github.com/owncloud/core/pull/38000
+

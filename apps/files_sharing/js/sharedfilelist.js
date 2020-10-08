@@ -229,6 +229,13 @@
 			if (this._sharedWithUser) {
 				requestData.shared_with_me = true;
 				requestData.state = 'all';
+				requestData.share_types = [
+					OC.Share.SHARE_TYPE_USER,
+					OC.Share.SHARE_TYPE_GROUP,
+					OC.Share.SHARE_TYPE_REMOTE
+				].join(',');
+			} else if (this._linksOnly) {
+				requestData.share_types = [OC.Share.SHARE_TYPE_LINK].join(',');
 			}
 			requestData.include_tags = true;
 			var shares = $.ajax({
