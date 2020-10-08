@@ -218,11 +218,13 @@ class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 	 * conforming to the list of requested properties.
 	 * The Server class will filter out the extra.
 	 *
-	 * @param array $properties
+	 * @param array|null $properties requested properties or null for all
 	 * @return array
 	 */
 	public function getProperties($properties) {
-		$properties = \array_keys($this->properties);
+		if (($properties === null) || ($properties === [])) {
+			$properties = \array_keys($this->properties);
+		}
 
 		$result = [];
 		foreach ($properties as $property) {
