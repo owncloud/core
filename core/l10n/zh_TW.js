@@ -215,6 +215,7 @@ OC.L10N.register(
     "Share details could not be loaded for this item." : "無法載入分享細節",
     "No users or groups found for {search}" : "沒有群組或使用者符合 {search}",
     "No users found for {search}" : "沒有使用者符合 {search}",
+    "_Please enter at least {chars} character for suggestions_::_Please enter at least {chars} characters for suggestions_" : ["請至少輸入{chars}個字符以獲取建議"],
     "An error occurred. Please try again" : "發生錯誤，請重試",
     "User" : "使用者名稱",
     "Group" : "群組",
