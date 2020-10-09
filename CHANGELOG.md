@@ -18,6 +18,7 @@ Summary
 * Bugfix - Add openid client secret to the sensitive values list: [#37782](https://github.com/owncloud/core/pull/37782)
 * Bugfix - Reshares using files:transfer-ownership cannot be transferred: [#4121](https://github.com/owncloud/enterprise/issues/4121)
 * Bugfix - "Passwords do not match" message was not being translated: [#37826](https://github.com/owncloud/core/pull/37826)
+* Bugfix - Fix federated share accepting problem which occurs with some apps enabled: [#37719](https://github.com/owncloud/core/issues/37719)
 * Bugfix - Allow federated share name up to 255 character: [#36730](https://github.com/owncloud/core/issues/36730)
 * Bugfix - Fix application id used for sharing settings translation: [#37846](https://github.com/owncloud/core/pull/37846)
 * Bugfix - Add metrics shared secret to the sensitive values list: [#37848](https://github.com/owncloud/core/pull/37848)
@@ -163,6 +164,15 @@ Details
    This message is now able to be translated.
 
    https://github.com/owncloud/core/pull/37826
+
+* Bugfix - Fix federated share accepting problem which occurs with some apps enabled: [#37719](https://github.com/owncloud/core/issues/37719)
+
+   Filesystem may not set already for shared user in some cases when accepting a federated share.
+   This situation broke accept federated share api. This problem has been resolved.
+
+   https://github.com/owncloud/core/issues/37719
+   https://github.com/owncloud/music/issues/778
+   https://github.com/owncloud/core/pull/37834
 
 * Bugfix - Allow federated share name up to 255 character: [#36730](https://github.com/owncloud/core/issues/36730)
 
