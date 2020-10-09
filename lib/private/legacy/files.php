@@ -191,11 +191,16 @@ class OC_Files {
 			\OC_Template::printErrorPage('Access denied', $ex->getMessage(), 403);
 		} catch (\Exception $ex) {
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
-			OC::$server->getLogger()->logException($ex);
-			$l = \OC::$server->getL10N('lib');
-			/* @phan-suppress-next-line PhanUndeclaredMethod */
-			$hint = \method_exists($ex, 'getHint') ? $ex->getHint() : '';
-			\OC_Template::printErrorPage($l->t('File cannot be downloaded'), $hint);
+			if (\connection_status() !== 0) {
+				// assume the client closed the connection
+				OC::$server->getLogger()->debug($ex->getMessage());
+			} else {
+				OC::$server->getLogger()->logException($ex);
+				$l = \OC::$server->getL10N('lib');
+				/* @phan-suppress-next-line PhanUndeclaredMethod */
+				$hint = \method_exists($ex, 'getHint') ? $ex->getHint() : '';
+				\OC_Template::printErrorPage($l->t('File cannot be downloaded'), $hint);
+			}
 		}
 	}
 
