@@ -16,6 +16,7 @@ Summary
 * Bugfix - Fix expiring a wrong share entry problem: [#37729](https://github.com/owncloud/core/pull/37729)
 * Bugfix - Fix decoding of calendars uri: [#37750](https://github.com/owncloud/core/pull/37750)
 * Bugfix - Add openid client secret to the sensitive values list: [#37782](https://github.com/owncloud/core/pull/37782)
+* Bugfix - Show all shares in the "shared with you" section: [#37786](https://github.com/owncloud/core/pull/37786)
 * Bugfix - Reshares using files:transfer-ownership cannot be transferred: [#4121](https://github.com/owncloud/enterprise/issues/4121)
 * Bugfix - "Passwords do not match" message was not being translated: [#37826](https://github.com/owncloud/core/pull/37826)
 * Bugfix - Fix federated share accepting problem which occurs with some apps enabled: [#37719](https://github.com/owncloud/core/issues/37719)
@@ -46,6 +47,7 @@ Summary
 * Change - Update opis/closure (3.5.5 => 3.5.6): [#37804](https://github.com/owncloud/core/pull/37804)
 * Change - Add system config to load a different license implementation: [#37827](https://github.com/owncloud/core/pull/37827)
 * Change - Update laminas/laminas-zendframework-bridge (1.0.4 => 1.1.0): [#37843](https://github.com/owncloud/core/pull/37843)
+* Change - Use a debug log level if a share download is aborted: [#37856](https://github.com/owncloud/core/pull/37856)
 * Change - Update Symfony components to 4.4.12: [#37862](https://github.com/owncloud/core/pull/37862)
 * Change - Update doctrine/dbal (2.10.2 => 2.10.3): [#37870](https://github.com/owncloud/core/pull/37870)
 * Change - Update Symfony components to 4.4.13: [#37876](https://github.com/owncloud/core/pull/37876)
@@ -149,6 +151,17 @@ Details
    Openid client secret was printed as is in the config report. Now it is masked.
 
    https://github.com/owncloud/core/pull/37782
+
+* Bugfix - Show all shares in the "shared with you" section: [#37786](https://github.com/owncloud/core/pull/37786)
+
+   Previously, when a user received some shares from multiple remote servers and one of them was
+   removed, the "shared with you" section didn't show any share even though the user still had
+   other shares that were accessible in other remote servers.
+
+   This is now fixed by ignoring those non-accessible remote shares. The rest of the shares will be
+   shown.
+
+   https://github.com/owncloud/core/pull/37786
 
 * Bugfix - Reshares using files:transfer-ownership cannot be transferred: [#4121](https://github.com/owncloud/enterprise/issues/4121)
 
@@ -364,6 +377,14 @@ Details
 * Change - Update laminas/laminas-zendframework-bridge (1.0.4 => 1.1.0): [#37843](https://github.com/owncloud/core/pull/37843)
 
    https://github.com/owncloud/core/pull/37843
+
+* Change - Use a debug log level if a share download is aborted: [#37856](https://github.com/owncloud/core/pull/37856)
+
+   If a client was downloading a file through a public link share and he decided to disconnect and
+   abort the download, ownCloud was logging that exception. Now ownCloud will log a message with a
+   debug level instead of logging the exception in order to reduce the noise.
+
+   https://github.com/owncloud/core/pull/37856
 
 * Change - Update Symfony components to 4.4.12: [#37862](https://github.com/owncloud/core/pull/37862)
 
