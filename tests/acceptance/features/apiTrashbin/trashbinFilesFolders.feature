@@ -125,7 +125,6 @@ Feature: files and folders exist in the trashbin after being deleted
       | /folderB/textfile0.txt |
       | /folderC/textfile0.txt |
       | /folderD/textfile0.txt |
-    # When issue-23151 is fixed, uncomment these lines. They should pass reliably.
     Then as "Alice" the folder with original path "/folderA/textfile0.txt" should exist in the trashbin
     And as "Alice" the folder with original path "/folderB/textfile0.txt" should exist in the trashbin
     And as "Alice" the folder with original path "/folderC/textfile0.txt" should exist in the trashbin
@@ -136,7 +135,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | old      |
       | new      |
 
-  @notToImplementOnOCIS @issue-23151
+  @skipOnOcV10 @notToImplementOnOCIS @issue-23151
   # This scenario deletes many files as close together in time as the test can run.
   # On a very slow system, the file deletes might all happen in different seconds.
   # But on "reasonable" systems, some of the files will be deleted in the same second,
@@ -157,11 +156,10 @@ Feature: files and folders exist in the trashbin after being deleted
       | /folderB/textfile0.txt |
       | /folderC/textfile0.txt |
       | /folderD/textfile0.txt |
-    # When issue-23151 is fixed, remove this scenario and use the above one.
-#    Then as "Alice" the folder with original path "/folderA/textfile0.txt" should exist in the trashbin
-#    And as "Alice" the folder with original path "/folderB/textfile0.txt" should exist in the trashbin
-#    And as "Alice" the folder with original path "/folderC/textfile0.txt" should exist in the trashbin
-#    And as "Alice" the folder with original path "/folderD/textfile0.txt" should exist in the trashbin
+    Then as "Alice" the folder with original path "/folderA/textfile0.txt" should exist in the trashbin
+    And as "Alice" the folder with original path "/folderB/textfile0.txt" should exist in the trashbin
+    And as "Alice" the folder with original path "/folderC/textfile0.txt" should exist in the trashbin
+    And as "Alice" the folder with original path "/folderD/textfile0.txt" should exist in the trashbin
     And as "Alice" the folder with original path "/textfile0.txt" should exist in the trashbin
     Examples:
       | dav-path |
