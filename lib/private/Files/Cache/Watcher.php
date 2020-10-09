@@ -100,7 +100,7 @@ class Watcher implements IWatcher {
 	 */
 	public function update($path, $cachedData) {
 		if ($this->storage->is_dir($path)) {
-			$this->scanner->scan($path, Scanner::SCAN_SHALLOW, Scanner::REUSE_ETAG | Scanner::REUSE_ONLY_FOR_FILES);
+			$this->scanner->scan($path, Scanner::SCAN_SHALLOW, Scanner::REUSE_ETAG | Scanner::REUSE_SIZE | Scanner::REUSE_ONLY_FOR_FILES);
 		} else {
 			$this->scanner->scanFile($path);
 		}

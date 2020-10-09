@@ -191,9 +191,7 @@ class Scanner extends BasicEmitter implements IScanner {
 						if (isset($data['storage_mtime'], $cacheData['storage_mtime']) && $data['storage_mtime'] === $cacheData['storage_mtime']) {
 							$data['mtime'] = $cacheData['mtime'];
 							if (($reuseExisting & self::REUSE_SIZE) && ($data['size'] === -1)) {
-								if (($data['mimetype'] !== 'httpd/unix-directory') || !($reuseExisting & self::REUSE_ONLY_FOR_FILES)) {
-									$data['size'] = $cacheData['size'];
-								}
+								$data['size'] = $cacheData['size'];
 							}
 							if ($reuseExisting & self::REUSE_ETAG) {
 								if (($data['mimetype'] !== 'httpd/unix-directory') || !($reuseExisting & self::REUSE_ONLY_FOR_FILES)) {

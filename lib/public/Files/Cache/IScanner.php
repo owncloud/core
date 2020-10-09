@@ -34,7 +34,7 @@ interface IScanner {
 	const REUSE_NONE = 0;
 	const REUSE_ETAG = 1;
 	const REUSE_SIZE = 2;
-	const REUSE_ONLY_FOR_FILES = 4;  // apply the reuse (either tag or size) only to files, not folders
+	const REUSE_ONLY_FOR_FILES = 4;  // apply the etag reuse only to files, not folders
 
 	/**
 	 * scan a single file and store it in the cache
