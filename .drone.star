@@ -258,7 +258,7 @@ config = {
 			'useHttps': False,
 			'filterTags': '@smokeTest&&~@notifications-app-required',
 			'runAllSuites': True,
-			'numberOfParts': 5,
+			'numberOfParts': 8,
 		},
 	}
 }
