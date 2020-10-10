@@ -15,6 +15,7 @@ OC.L10N.register(
     "Share with me through my #ownCloud Federated Cloud ID" : "可透過我的 #ownCloud 聯盟雲端 ID，與我分享",
     "Federated Cloud Sharing" : "聯盟式雲端分享",
     "Open documentation" : "開啟說明文件",
+    "Periodically synchronize outdated federated shares for active users" : "定期同步活動用戶的過期的聯合共享",
     "Allow users on this server to send shares to other servers" : "允許這台伺服器上的使用者發送分享給其他伺服器",
     "Allow users on this server to receive shares from other servers" : "允許這台伺服器上的使用者發送接收來自其他伺服器的分享",
     "Automatically accept remote shares from trusted servers" : "自動地接受遠端來自的股份可信的伺服器",
