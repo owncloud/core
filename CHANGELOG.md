@@ -29,6 +29,7 @@ Summary
 * Bugfix - Fix invisible notification container blocking mouse events: [#37941](https://github.com/owncloud/core/pull/37941)
 * Bugfix - Fix display of public link shares in case avatars are disabled: [#37945](https://github.com/owncloud/core/pull/37945)
 * Bugfix - Clean the user's preferences only if they exist during user sync: [#37947](https://github.com/owncloud/core/pull/37947)
+* Bugfix - Fix icon alignment when avatars are disabled: [#37964](https://github.com/owncloud/core/pull/37964)
 * Bugfix - Fix file target in the accept share API call: [#37973](https://github.com/owncloud/core/pull/37973)
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 * Change - Update sabre dependencies: [#37684](https://github.com/owncloud/core/pull/37684)
@@ -262,6 +263,15 @@ Details
    deletion won't be attempted.
 
    https://github.com/owncloud/core/pull/37947
+
+* Bugfix - Fix icon alignment when avatars are disabled: [#37964](https://github.com/owncloud/core/pull/37964)
+
+   Action icons for the sharee list view, when you want to know who are you sharing to, where being
+   pushed to the left when the avatars were disabled, breaking part of the layout.
+
+   Those icons are now aligned.
+
+   https://github.com/owncloud/core/pull/37964
 
 * Bugfix - Fix file target in the accept share API call: [#37973](https://github.com/owncloud/core/pull/37973)
 
