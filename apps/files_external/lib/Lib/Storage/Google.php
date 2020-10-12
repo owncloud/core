@@ -369,13 +369,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 			if ($this->filetype($path) === 'dir') {
 				$stat['size'] = 0;
 			} else {
-				// Check if this is a Google Doc
-				if ($this->isGoogleDocFile($file)) {
-					// Return unknown file size
-					$stat['size'] = \OCP\Files\FileInfo::SPACE_UNKNOWN;
-				} else {
-					$stat['size'] = $file->getSize();
-				}
+				$stat['size'] = $file->getSize();
 			}
 			$stat['atime'] = \strtotime($file->getViewedByMeTime());
 			$stat['mtime'] = \strtotime($file->getModifiedTime());
