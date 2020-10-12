@@ -31,6 +31,7 @@ Summary
 * Bugfix - Clean the user's preferences only if they exist during user sync: [#37947](https://github.com/owncloud/core/pull/37947)
 * Bugfix - Fix icon alignment when avatars are disabled: [#37964](https://github.com/owncloud/core/pull/37964)
 * Bugfix - Fix file target in the accept share API call: [#37973](https://github.com/owncloud/core/pull/37973)
+* Bugfix - Fix for Google Docs not syncing with error "server reported no size": [#37997](https://github.com/owncloud/core/issues/37997)
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 * Change - Update sabre dependencies: [#37684](https://github.com/owncloud/core/pull/37684)
 * Change - Update google/apiclient from 2.5.0 to 2.6.0 and related dependencies: [#37687](https://github.com/owncloud/core/pull/37687)
@@ -282,6 +283,15 @@ Details
    Now the API responds correctly, and the file target doesn't have the share_folder duplicated
 
    https://github.com/owncloud/core/pull/37973
+
+* Bugfix - Fix for Google Docs not syncing with error "server reported no size": [#37997](https://github.com/owncloud/core/issues/37997)
+
+   Users with Google Drive connected external storage were previously subjected to a "server
+   reported no size" error in desktop sync client for every Google Doc that attempted to sync.
+   Additionally, the Google Doc would not be downloaded.
+
+   https://github.com/owncloud/core/issues/37997
+   https://github.com/owncloud/core/pull/37993
 
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 
