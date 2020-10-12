@@ -211,7 +211,8 @@ describe('OC.Share.ShareDialogView', function() {
 			});
 
 			it('no avatar classes', function() {
-				expect($('.avatar').length).toEqual(0);
+				expect(dialog.$('.avatar:hidden').length).toEqual(3);
+				expect(dialog.$('.avatar:visible').length).toEqual(0);
 				expect(avatarStub.callCount).toEqual(0);
 				expect(placeholderStub.callCount).toEqual(0);
 			});

@@ -22,9 +22,8 @@
 		'		{{#if expirationDate}}' +
 		'		<a class="time"><span class="icon icon-time"></span><span class="hidden-visually">{{unshareLabel}}</span></a>' +
 		'		{{/if}}' +
-		'		{{#if avatarEnabled}}' +
+				// avatar disabled case will be handled via js when it's rendered
 		'		<div class="avatar {{#if modSeed}}imageplaceholderseed{{/if}}" data-username="{{shareWith}}" {{#if modSeed}}data-seed="{{shareWith}} {{shareType}}"{{/if}}></div>' +
-		'		{{/if}}' +
 		'		<span class="has-tooltip username" title="{{shareWith}}">{{shareWithDisplayName}}</span>' +
 		'		{{#if shareWithAdditionalInfo}}' +
 		'		<span class="has-tooltip user-additional-info">({{shareWithAdditionalInfo}})</span>' +
@@ -305,6 +304,8 @@
 						$this.avatar($this.data('username'), 32);
 					}
 				});
+			} else {
+				this.$el.find('.avatar').css({visibility: 'hidden', width: 0});
 			}
 
 			this.$el.find('.has-tooltip').tooltip({

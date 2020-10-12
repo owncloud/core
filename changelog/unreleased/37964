@@ -1,0 +1,9 @@
+Bugfix: Fix icon alignment when avatars are disabled
+
+Action icons for the sharee list view, when you want to know
+who are you sharing to, where being pushed to the left when the
+avatars were disabled, breaking part of the layout.
+
+Those icons are now aligned.
+
+https://github.com/owncloud/core/pull/37964

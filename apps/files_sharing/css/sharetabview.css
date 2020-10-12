@@ -50,6 +50,7 @@
 	white-space: normal;
 	background: #f8f8f8;
 	border-bottom: 1px solid #aaa;
+	min-height: 32px;
 }
 
 #shareWithList .unshare img {
