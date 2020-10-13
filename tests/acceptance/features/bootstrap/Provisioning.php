@@ -842,10 +842,26 @@ trait Provisioning {
 	public function manuallyAddSkeletonFiles($usersAttributes) {
 		$skeletonDir = \getenv("SKELETON_DIR");
 		$revaRoot = \getenv("OCIS_REVA_DATA_ROOT");
+		$skeletonStrategy = \getenv("OCIS_SKELETON_STRATEGY");
+		if (!$skeletonStrategy) {
+			$skeletonStrategy = 'upload'; //slower, but safer, so make it the default
+		}
+		if ($skeletonStrategy !== 'upload' && $skeletonStrategy !== 'copy') {
+			throw new Exception(
+				'Wrong OCIS_SKELETON_STRATEGY environment variable. ' .
+				'OCIS_SKELETON_STRATEGY has to be set to "upload" or "copy"'
+			);
+		}
 		if (!$skeletonDir) {
 			throw new Exception('Missing SKELETON_DIR environment variable, cannot copy skeleton files for OCIS');
 		}
-		if (!$revaRoot && OcisHelper::getDeleteUserDataCommand() !== false) {
+		if ($skeletonStrategy === 'copy' && !$revaRoot) {
+			throw new Exception(
+				'OCIS_SKELETON_STRATEGY is set to "copy" ' .
+				'but no "OCIS_REVA_DATA_ROOT" given'
+			);
+		}
+		if ($skeletonStrategy === 'upload') {
 			foreach ($usersAttributes as $userAttributes) {
 				OcisHelper::recurseUpload(
 					$this->getBaseUrl(),
@@ -854,9 +870,8 @@ trait Provisioning {
 					$userAttributes['password']
 				);
 			}
-		} elseif (!$revaRoot) {
-			throw new Exception('Missing OCIS_REVA_DATA_ROOT environment variable, cannot copy skeleton files for OCIS');
-		} else {
+		}
+		if ($skeletonStrategy === 'copy') {
 			foreach ($usersAttributes as $userAttributes) {
 				$user = $userAttributes['userid'];
 				$dataDir = $revaRoot . "data/$user/files";
