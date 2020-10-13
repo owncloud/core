@@ -1,7 +1,7 @@
 @api @files_sharing-app-required @notToImplementOnOCIS
 Feature: sharing
 
-  @issue-37217 @toImplementOnOCIS @issue-ocis-reva-194 @issue-ocis-reva-41
+  @issue-37217 @issue-ocis-reva-194 @issue-ocis-reva-41
   Scenario Outline: user cannot concurrently update the role and date in an existing share after the system maximum expiry date has been reduced
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled

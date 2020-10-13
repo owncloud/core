@@ -54,7 +54,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | new      | shared     |
       | new      | exclusive  |
 
-  @issue-34338 @files_sharing-app-required
+  @skipOnOcV10 @issue-34338 @files_sharing-app-required
   Scenario Outline: share receiver cannot rename a file in a folder locked by the owner even when sending the locktoken
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and skeleton files
@@ -62,13 +62,9 @@ Feature: actions on a locked item are possible if the token is sent with the req
     And user "Alice" has locked folder "PARENT" setting following properties
       | lockscope | <lock-scope> |
     When user "Brian" moves file "PARENT (2)/parent.txt" to "PARENT (2)/renamed-file.txt" sending the locktoken of file "PARENT" of user "Alice" using the WebDAV API
-    #When the issue is fixed, remove the following steps and replace with the commented-out steps
-    Then the HTTP status code should be "403"
-    And as "Alice" file "/PARENT/parent.txt" should not exist
-    But as "Alice" file "/PARENT/renamed-file.txt" should exist
-    #Then the HTTP status code should be "423"
-    #And as "Alice" file "/PARENT/parent.txt" should exist
-    #But as "Alice" file "/PARENT/renamed-file.txt" should not exist
+    Then the HTTP status code should be "423"
+    And as "Alice" file "/PARENT/parent.txt" should exist
+    But as "Alice" file "/PARENT/renamed-file.txt" should not exist
     Examples:
       | dav-path | lock-scope |
       | old      | shared     |
@@ -92,7 +88,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | shared     |
       | exclusive  |
 
-  @issue-34360 @files_sharing-app-required
+  @skipOnOcV10 @issue-34360 @files_sharing-app-required
   Scenario Outline: two users having both a shared lock can use the resource
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and skeleton files
@@ -102,20 +98,13 @@ Feature: actions on a locked item are possible if the token is sent with the req
     And user "Brian" has locked file "textfile0 (2).txt" setting following properties
       | lockscope | shared |
     When user "Alice" uploads file with content "from user 0" to "textfile0.txt" sending the locktoken of file "textfile0.txt" using the WebDAV API
-    Then the HTTP status code should be "423"
-    And the content of file "textfile0.txt" for user "Alice" should be "ownCloud test text file 0" plus end-of-line
-    And the content of file "textfile0 (2).txt" for user "Brian" should be "ownCloud test text file 0" plus end-of-line
+    Then the HTTP status code should be "200"
+    And the content of file "textfile0.txt" for user "Alice" should be "from user 0"
+    And the content of file "textfile0 (2).txt" for user "Brian" should be "from user 0"
     When user "Brian" uploads file with content "from user 1" to "textfile0 (2).txt" sending the locktoken of file "textfile0 (2).txt" using the WebDAV API
-    Then the HTTP status code should be "423"
-    And the content of file "textfile0.txt" for user "Alice" should be "ownCloud test text file 0" plus end-of-line
-    And the content of file "textfile0 (2).txt" for user "Brian" should be "ownCloud test text file 0" plus end-of-line
-    #Then the HTTP status code should be "200"
-    #And the content of file "textfile0.txt" for user "Alice" should be "from user 0"
-    #And the content of file "textfile0 (2).txt" for user "Brian" should be "from user 0"
-    #When user "Brian" uploads file with content "from user 1" to "textfile0 (2).txt" sending the locktoken of file "textfile0 (2).txt" using the WebDAV API
-    #Then the HTTP status code should be "200"
-    #And the content of file "textfile0.txt" for user "Alice" should be "from user 1"
-    #And the content of file "textfile0 (2).txt" for user "Brian" should be "from user 1"
+    Then the HTTP status code should be "200"
+    And the content of file "textfile0.txt" for user "Alice" should be "from user 1"
+    And the content of file "textfile0 (2).txt" for user "Brian" should be "from user 1"
     Examples:
       | dav-path |
       | old      |
