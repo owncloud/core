@@ -28,7 +28,6 @@ use TestHelpers\SetupHelper;
 use TestHelpers\UserHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\OcisHelper;
-use TestHelpers\FileHandlingHelper;
 use Zend\Ldap\Exception\LdapException;
 use Zend\Ldap\Ldap;
 

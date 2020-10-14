@@ -26,7 +26,6 @@ use GuzzleHttp\Client;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use SimpleXMLElement;
 use DateTime;
 
 /**
