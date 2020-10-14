@@ -118,6 +118,13 @@ trait Provisioning {
 	}
 
 	/**
+	 * @return boolean
+	 */
+	public function someUsersHaveBeenCreated() {
+		return (\count($this->createdUsers) > 0);
+	}
+
+	/**
 	 * @return array
 	 */
 	public function getCreatedGroups() {
@@ -4294,7 +4301,9 @@ trait Provisioning {
 		$this->cleanupDatabaseGroups();
 
 		if (OcisHelper::isTestingOnOcis()) {
-			OcisHelper::deleteRevaUserData("");
+			if ($this->someUsersHaveBeenCreated()) {
+				OcisHelper::deleteRevaUserData("");
+			}
 		} else {
 			$this->resetAdminUserAttributes();
 		}
