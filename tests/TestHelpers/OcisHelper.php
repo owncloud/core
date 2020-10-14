@@ -22,8 +22,6 @@
 
 namespace TestHelpers;
 
-use PHPUnit\Framework\Assert;
-
 /**
  * Class OcisHelper
  *

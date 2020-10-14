@@ -28,7 +28,6 @@ use TestHelpers\SetupHelper;
 use TestHelpers\UserHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\OcisHelper;
-use TestHelpers\FileHandlingHelper;
 use Zend\Ldap\Exception\LdapException;
 use Zend\Ldap\Ldap;
 
@@ -116,6 +115,13 @@ trait Provisioning {
 	 */
 	public function getCreatedUsers() {
 		return $this->createdUsers;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function someUsersHaveBeenCreated() {
+		return (\count($this->createdUsers) > 0);
 	}
 
 	/**
@@ -4295,7 +4301,9 @@ trait Provisioning {
 		$this->cleanupDatabaseGroups();
 
 		if (OcisHelper::isTestingOnOcis()) {
-			OcisHelper::deleteRevaUserData("");
+			if ($this->someUsersHaveBeenCreated()) {
+				OcisHelper::deleteRevaUserData("");
+			}
 		} else {
 			$this->resetAdminUserAttributes();
 		}
