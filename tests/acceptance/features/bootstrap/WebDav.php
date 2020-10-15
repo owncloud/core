@@ -722,7 +722,10 @@ trait WebDav {
 		$user, $fileSource, $fileDestination
 	) {
 		$this->userCopiesFileUsingTheAPI($user, $fileSource, $fileDestination);
-		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+		$this->theHTTPStatusCodeShouldBe(
+			["201", "204"],
+			"HTTP status code was not 201 or 204 while trying to copy file '$fileSource' to '$fileDestination' for user '$user'"
+		);
 	}
 
 	/**
@@ -747,7 +750,10 @@ trait WebDav {
 	 */
 	public function theUserHasCopiedFileUsingTheAPI($fileSource, $fileDestination) {
 		$this->theUserCopiesFileUsingTheAPI($fileSource, $fileDestination);
-		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+		$this->theHTTPStatusCodeShouldBe(
+			["201", "204"],
+			"HTTP status code was not 201 or 204 while trying to copy file '$fileSource' to '$fileDestination'"
+		);
 	}
 
 	/**
@@ -1581,7 +1587,10 @@ trait WebDav {
 	 */
 	public function userHasUploadedAFileTo($user, $source, $destination) {
 		$this->userUploadsAFileTo($user, $source, $destination);
-		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+		$this->theHTTPStatusCodeShouldBe(
+			["201", "204"],
+			"HTTP status code was not 201 or 204 while trying to upload file '$source' to '$destination' for user '$user'"
+		);
 	}
 
 	/**
@@ -1606,7 +1615,10 @@ trait WebDav {
 	 */
 	public function theUserHasUploadedFileTo($source, $destination) {
 		$this->theUserUploadsAFileTo($source, $destination);
-		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+		$this->theHTTPStatusCodeShouldBe(
+			["201", "204"],
+			"HTTP status code was not 201 or 204 while trying to upload file '$source' to '$destination'"
+		);
 	}
 
 	/**
@@ -1637,7 +1649,10 @@ trait WebDav {
 	 */
 	public function userOnHasUploadedAFileTo($user, $server, $source, $destination) {
 		$this->userOnUploadsAFileTo($user, $server, $source, $destination);
-		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+		$this->theHTTPStatusCodeShouldBe(
+			["201", "204"],
+			"HTTP status code was not 201 or 204 while trying to upload file '$source' to '$destination' for user '$user' on server '$server'"
+		);
 	}
 
 	/**
@@ -2097,7 +2112,7 @@ trait WebDav {
 			);
 			$this->theHTTPStatusCodeShouldBe(
 				$row['http-code'],
-				"HTTP status code is not the expected value while trying to upload " . $row['filename']
+				"HTTP status code was not the expected value " . $row['http-code'] . " while trying to upload " . $row['filename']
 			);
 			if ($row['exists'] === "yes") {
 				$this->asFileOrFolderShouldExist($user, "file", $row['filename']);
@@ -2169,7 +2184,10 @@ trait WebDav {
 		$content, $destination
 	) {
 		$fileId = $this->uploadFileWithContent($this->getAdminUsername(), $content, $destination);
-		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+		$this->theHTTPStatusCodeShouldBe(
+			["201", "204"],
+			"HTTP status code was not 201 or 204 while trying to upload file '$destination'"
+		);
 		return $fileId;
 	}
 
@@ -2266,7 +2284,10 @@ trait WebDav {
 	) {
 		$user = $this->getActualUsername($user);
 		$fileId = $this->uploadFileWithContent($user, $content, $destination);
-		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+		$this->theHTTPStatusCodeShouldBe(
+			["201", "204"],
+			"HTTP status code was not 201 or 204 while trying to upload file '$destination' for user '$user'"
+		);
 		return $fileId;
 	}
 
@@ -2296,7 +2317,10 @@ trait WebDav {
 			["X-OC-Mtime" => $mtime],
 			$content
 		);
-		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+		$this->theHTTPStatusCodeShouldBe(
+			["201", "204"],
+			"HTTP status code was not 201 or 204 while trying to upload file '$destination' with mtime $mtime for user '$user'"
+		);
 	}
 
 	/**
@@ -2339,7 +2363,10 @@ trait WebDav {
 		$this->userUploadsAFileWithChecksumAndContentTo(
 			$user, $checksum, $content, $destination
 		);
-		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+		$this->theHTTPStatusCodeShouldBe(
+			["201", "204"],
+			"HTTP status code was not 201 or 204 while trying to upload file with checksum '$checksum' to '$destination' for user '$user'"
+		);
 	}
 
 	/**
@@ -2383,7 +2410,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function fileHasBeenDeleted($file, $user) {
-		$this->userHasDeletedFile($user, $file);
+		$this->userHasDeletedFile($user, "deleted", "file", $file);
 	}
 
 	/**
@@ -2402,20 +2429,31 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has (?:deleted|unshared) (?:file|folder) "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has (deleted|unshared) (file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
-	 * @param string $file
+	 * @param string $deletedOrUnshared
+	 * @param string $fileOrFolder
+	 * @param string $entry
 	 *
 	 * @return void
 	 */
-	public function userHasDeletedFile($user, $file) {
+	public function userHasDeletedFile($user, $deletedOrUnshared, $fileOrFolder, $entry) {
 		$user = $this->getActualUsername($user);
-		$this->userDeletesFile($user, $file);
-		// If the file was there and got deleted then we get a 204
-		// If the file was already not there then then get a 404
+		$this->userDeletesFile($user, $entry);
+		// If the file or folder was there and got deleted then we get a 204
+		// If the file or folder was already not there then then get a 404
 		// Either way, the outcome of the "given" step is OK
-		$this->theHTTPStatusCodeShouldBeOr("204", "404");
+		if ($deletedOrUnshared === "deleted") {
+			$deleteText = "delete";
+		} else {
+			$deleteText = "unshare";
+		}
+
+		$this->theHTTPStatusCodeShouldBe(
+			["204", "404"],
+			"HTTP status code was not 204 or 404 while trying to $deleteText $fileOrFolder '$entry' for user '$user'"
+		);
 	}
 
 	/**
@@ -2430,14 +2468,16 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given /^the user has (?:deleted|unshared) (?:file|folder) "([^"]*)"$/
+	 * @Given /^the user has (deleted|unshared) (file|folder) "([^"]*)"$/
 	 *
+	 * @param string $deletedOrUnshared
+	 * @param string $fileOrFolder
 	 * @param string $file
 	 *
 	 * @return void
 	 */
-	public function theUserHasDeletedFile($file) {
-		$this->userHasDeletedFile($this->getCurrentUser(), $file);
+	public function theUserHasDeletedFile($deletedOrUnshared, $fileOrFolder, $file) {
+		$this->userHasDeletedFile($this->getCurrentUser(), $deletedOrUnshared, $fileOrFolder, $file);
 	}
 
 	/**
@@ -2485,20 +2525,31 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" on "(LOCAL|REMOTE)" has (?:deleted|unshared) (?:file|folder) "([^"]*)"$/
+	 * @Given /^user "([^"]*)" on "(LOCAL|REMOTE)" has (deleted|unshared) (file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $server
-	 * @param string $file
+	 * @param string $deletedOrUnshared
+	 * @param string $fileOrFolder
+	 * @param string $entry
 	 *
 	 * @return void
 	 */
-	public function userOnHasDeletedFile($user, $server, $file) {
-		$this->userOnDeletesFile($user, $server, $file);
+	public function userOnHasDeletedFile($user, $server, $deletedOrUnshared, $fileOrFolder, $entry) {
+		$this->userOnDeletesFile($user, $server, $entry);
 		// If the file was there and got deleted then we get a 204
 		// If the file was already not there then then get a 404
 		// Either way, the outcome of the "given" step is OK
-		$this->theHTTPStatusCodeShouldBeOr("204", "404");
+		if ($deletedOrUnshared === "deleted") {
+			$deleteText = "delete";
+		} else {
+			$deleteText = "unshare";
+		}
+
+		$this->theHTTPStatusCodeShouldBe(
+			["204", "404"],
+			"HTTP status code was not 204 or 404 while trying to $deleteText $fileOrFolder '$entry' for user '$user' on server '$server'"
+		);
 	}
 
 	/**
@@ -2531,7 +2582,10 @@ trait WebDav {
 	public function userHasCreatedFolder($user, $destination) {
 		$user = $this->getActualUsername($user);
 		$this->userCreatesFolder($user, $destination);
-		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+		$this->theHTTPStatusCodeShouldBe(
+			["201", "204"],
+			"HTTP status code was not 201 or 204 while trying to create folder '$destination' for user '$user'"
+		);
 	}
 
 	/**
@@ -2554,7 +2608,10 @@ trait WebDav {
 	 */
 	public function theUserHasCreatedFolder($destination) {
 		$this->theUserCreatesFolder($destination);
-		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+		$this->theHTTPStatusCodeShouldBe(
+			["201", "204"],
+			"HTTP status code was not 201 or 204 while trying to create folder '$destination'"
+		);
 	}
 
 	/**
@@ -2707,7 +2764,10 @@ trait WebDav {
 	) {
 		$user = $this->getActualUsername($user);
 		$this->userUploadsChunkedFile($user, $num, $total, $data, $destination);
-		$this->theHTTPStatusCodeShouldBeOr("201", "204");
+		$this->theHTTPStatusCodeShouldBe(
+			["201", "204"],
+			"HTTP status code was not 201 or 204 while trying to upload chunk $num of $total to file '$destination' for user '$user'"
+		);
 	}
 
 	/**
@@ -3246,7 +3306,7 @@ trait WebDav {
 			foreach ($elementList as $element) {
 				$element = \substr($element, \strlen($davPrefix));
 				if ($checkEachDelete) {
-					$this->userHasDeletedFile($user, $element);
+					$this->userHasDeletedFile($user, "deleted", "file", $element);
 				} else {
 					$this->userDeletesFile($user, $element);
 				}
