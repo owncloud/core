@@ -429,7 +429,7 @@ trait Provisioning {
 		$baseUrl = $this->getBaseUrl();
 		$path = $this->popSkeletonDirectoryConfig($baseUrl);
 		try {
-			$this->theseUsersHaveBeenCreated("default attributes and", "", $table);
+			$this->createTheseUsers(true, true, false, $table);
 		} finally {
 			// restore skeletondirectory even if user creation failed
 			$this->runOcc(
@@ -1033,32 +1033,51 @@ trait Provisioning {
 	}
 
 	/**
+	 * expects a table of users with the heading
+	 * "|username|password|displayname|email|"
+	 * password, displayname & email are optional
+	 *
+	 * @param boolean $setDefaultAttributes
+	 * @param boolean $initialize
+	 * @param boolean $skeleton
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function createTheseUsers($setDefaultAttributes, $initialize, $skeleton, TableNode $table) {
+		$this->verifyTableNodeColumns($table, ['username'], ['displayname', 'email', 'password']);
+		$table = $table->getColumnsHash();
+		$usersAttributes = $this->buildUsersAttributesArray($setDefaultAttributes, $table);
+		$this->usersHaveBeenCreated(
+			$initialize,
+			$usersAttributes,
+			null,
+			$skeleton
+		);
+		foreach ($usersAttributes as $expectedUser) {
+			$this->userShouldExist($expectedUser["userid"]);
+		}
+	}
+
+	/**
 	 * @Given /^these users have been created with ?(default attributes and|) skeleton files ?(but not initialized|):$/
 	 *
 	 * expects a table of users with the heading
 	 * "|username|password|displayname|email|"
 	 * password, displayname & email are optional
 	 *
-	 * @param string $setDefaultAttributes
+	 * @param string $defaultAttributesText
 	 * @param string $doNotInitialize
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theseUsersHaveBeenCreated($setDefaultAttributes, $doNotInitialize, TableNode $table) {
-		$this->verifyTableNodeColumns($table, ['username'], ['displayname', 'email', 'password']);
-		$table = $table->getColumnsHash();
-		$setDefaultAttributes = $setDefaultAttributes !== "";
+	public function theseUsersHaveBeenCreated($defaultAttributesText, $doNotInitialize, TableNode $table) {
+		$setDefaultAttributes = $defaultAttributesText !== "";
 		$initialize = $doNotInitialize === "";
-		$usersAttributes = $this->buildUsersAttributesArray($setDefaultAttributes, $table);
-		$this->usersHaveBeenCreated(
-			$initialize,
-			$usersAttributes
-		);
-		foreach ($usersAttributes as $expectedUser) {
-			$this->userShouldExist($expectedUser["userid"]);
-		}
+		$this->createTheseUsers($setDefaultAttributes, $initialize, true, $table);
 	}
 
 	/**
