@@ -19,7 +19,7 @@ Feature: delete folder
       | old         |
       | new         |
 
-  @skipOnOcis-EOS-Storage @issue-ocis-reva-269
+  @issue-ocis-reva-269
   Scenario Outline: delete a folder when 2 folder exist with different case
     Given using <dav_version> DAV path
     And user "Alice" creates folder "/parent" using the WebDAV API
@@ -32,7 +32,7 @@ Feature: delete folder
       | old         |
       | new         |
 
-  @skipOnOcis-EOS-Storage @issue-ocis-reva-269
+  @issue-ocis-reva-269
   Scenario Outline: delete a sub-folder
     Given using <dav_version> DAV path
     And user "Alice" creates folder "/PARENT/CHILD" using the WebDAV API

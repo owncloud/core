@@ -13,7 +13,7 @@ Feature: favorite
     And user "Alice" has created folder "/PARENT"
     And user "Alice" has uploaded file with content "some data" to "/PARENT/parent.txt"
 
-  @skipOnOcis-EOS-Storage @issue-ocis-reva-276
+  @issue-ocis-reva-276
   Scenario Outline: Favorite a folder
     Given using <dav_version> DAV path
     When user "Alice" favorites element "/FOLDER" using the WebDAV API
@@ -28,7 +28,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @skipOnOcis-EOS-Storage @issue-ocis-reva-276
+  @issue-ocis-reva-276
   Scenario Outline: Favorite and unfavorite a folder
     Given using <dav_version> DAV path
     When user "Alice" favorites element "/FOLDER" using the WebDAV API
@@ -44,7 +44,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @smokeTest @skipOnOcis-EOS-Storage @issue-ocis-reva-276
+  @smokeTest @issue-ocis-reva-276
   Scenario Outline: Favorite a file
     Given using <dav_version> DAV path
     When user "Alice" favorites element "/textfile0.txt" using the WebDAV API
@@ -59,7 +59,7 @@ Feature: favorite
       | old         |
       | new         |
 
-  @smokeTest @skipOnOcis-EOS-Storage @issue-ocis-reva-276
+  @smokeTest @issue-ocis-reva-276
   Scenario Outline: Favorite and unfavorite a file
     Given using <dav_version> DAV path
     When user "Alice" favorites element "/textfile0.txt" using the WebDAV API

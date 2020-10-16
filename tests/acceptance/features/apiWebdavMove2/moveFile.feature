@@ -281,7 +281,7 @@ Feature: move (rename) file
       | *a@b#c$e%f&g* |
       | 1 2 3##.##    |
 
-  @skipOnOcis-EOS-Storage @issue-ocis-reva-265
+  @issue-ocis-reva-265
   #after fixing the issues merge this Scenario into the one above
   Scenario Outline: renaming to a file with special characters
     When user "Alice" moves file "/textfile0.txt" to "/<renamed_file>" using the WebDAV API

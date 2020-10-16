@@ -8,7 +8,7 @@ Feature: create folder
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and without skeleton files
 
-  @skipOnOcis-EOS-Storage @issue-ocis-reva-269
+  @issue-ocis-reva-269
   Scenario Outline: create a folder
     Given using <dav_version> DAV path
     When user "Alice" creates folder "<folder_name>" using the WebDAV API

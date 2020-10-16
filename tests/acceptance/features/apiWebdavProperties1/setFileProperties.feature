@@ -8,7 +8,7 @@ Feature: set file properties
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and without skeleton files
 
-  @smokeTest  @skipOnOcis-EOS-Storage @issue-ocis-reva-276
+  @smokeTest @issue-ocis-reva-276
   Scenario Outline: Setting custom DAV property and reading it
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/testcustomprop.txt"
@@ -32,7 +32,7 @@ Feature: set file properties
       | old         |
       | new         |
 
-  @skipOnOcis-EOS-Storage @issue-ocis-reva-276
+  @issue-ocis-reva-276
   Scenario Outline: Setting custom DAV property and reading it after the file is renamed
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/testcustompropwithmove.txt"
@@ -63,7 +63,7 @@ Feature: set file properties
       | old         |
       | new         |
 
-  @skipOnOcis-EOS-Storage @issue-ocis-reva-276
+  @issue-ocis-reva-276
   Scenario Outline: Setting custom DAV property using one endpoint and reading it with other endpoint
     Given using <action_dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/testnewold.txt"
@@ -76,7 +76,7 @@ Feature: set file properties
       | old                | new               |
       | new                | old               |
 
-  @skipOnOcis-EOS-Storage @issue-ocis-reva-276
+  @issue-ocis-reva-276
   Scenario: Setting custom DAV property using an old endpoint and reading it using a new endpoint
     Given using old DAV path
     Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/testoldnew.txt"
