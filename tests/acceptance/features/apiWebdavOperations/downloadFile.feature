@@ -90,7 +90,7 @@ Feature: download file
     Then the HTTP status code should be "207"
     And the size of the file should be "19"
 
-  @skipOnOcis-EOS-Storage @issue-ocis-reva-98
+  @issue-ocis-reva-98
   Scenario Outline: Get the content-length response header of a pdf file
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/simple.pdf" to "/simple.pdf"
@@ -103,7 +103,7 @@ Feature: download file
       | old         |
       | new         |
 
-  @skipOnOcis-EOS-Storage @issue-ocis-reva-98
+  @issue-ocis-reva-98
   Scenario Outline: Get the content-length response header of an image file
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/testavatar.png" to "/testavatar.png"

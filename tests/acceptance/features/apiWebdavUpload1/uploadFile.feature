@@ -37,7 +37,7 @@ Feature: upload file
       | new         | "C++ file.cpp"      |
       | new         | "file #2.txt"       |
 
-  @skipOnOcis-EOS-Storage @issue-ocis-reva-265
+  @issue-ocis-reva-265
   #after fixing all issues delete this Scenario and merge with the one above
   Scenario Outline: upload a file and check download content
     Given using <dav_version> DAV path
@@ -83,7 +83,7 @@ Feature: upload file
       | new         | /नेपाली                          | नेपाली                        |
       | new         | /folder #2.txt                   | file #2.txt                   |
 
-  @skipOnOcis-EOS-Storage @issue-ocis-reva-265
+  @issue-ocis-reva-265
     #after fixing all issues delete this Scenario and merge with the one above
   Scenario Outline: upload a file into a folder and check download content
     Given using <dav_version> DAV path

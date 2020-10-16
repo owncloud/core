@@ -66,7 +66,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis-EOS-Storage @issue-ocis-reva-301 @issue-ocis-reva-302
+  @issue-ocis-reva-301 @issue-ocis-reva-302
   Scenario Outline: Creating a share of a file with a user and asking for various permission combinations
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -130,7 +130,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 400              |
 
-  @skipOnOcis-EOS-Storage @issue-ocis-reva-301
+  @issue-ocis-reva-301
   Scenario Outline: Creating a share of a folder with a user, the default permissions are all permissions(31)
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
