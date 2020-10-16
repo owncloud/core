@@ -24,6 +24,7 @@
 
 namespace OC\Security;
 
+use OC\OCS\Exception;
 use phpseclib\Crypt\AES;
 use phpseclib\Crypt\Hash;
 use OCP\Security\ICrypto;
@@ -88,13 +89,20 @@ class Crypto implements ICrypto {
 		if ($password === '') {
 			$password = $this->config->getSystemValue('secret');
 		}
+
+		// Split single key in to multiple keys, use one for mac and one for key
+		// to harden against related-key attacks
+		// https://github.com/owncloud/encryption/issues/215
+		$derived = \hash_hkdf('sha512', $password, 0, '', \random_bytes(16));
+		list($password, $hmacKey) = \str_split($derived, 256);
+
 		$this->cipher->setPassword($password);
 
-		$iv = $this->random->generate($this->ivLength);
+		$iv = \random_bytes($this->ivLength);
 		$this->cipher->setIV($iv);
 
 		$ciphertext = \bin2hex($this->cipher->encrypt($plaintext));
-		$hmac = \bin2hex($this->calculateHMAC($ciphertext.$iv, $password));
+		$hmac = \bin2hex($this->calculateHMAC($ciphertext.$iv, $hmacKey));
 
 		return $ciphertext.'|'.$iv.'|'.$hmac;
 	}
@@ -119,7 +127,7 @@ class Crypto implements ICrypto {
 
 		$ciphertext = \hex2bin($parts[0]);
 		$iv = $parts[1];
-		$hmac = \hex2bin($parts[2]);
+		$hmac = \hex2bin($rts[2]);
 
 		$this->cipher->setIV($iv);
 
