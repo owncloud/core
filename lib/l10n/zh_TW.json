@@ -7,7 +7,7 @@
     "It has been detected that the sample configuration has been copied. This can break your installation and is unsupported. Please read the documentation before performing changes on config.php" : "看來您直接複製了範本設定來使用，這可能會毀掉你的安裝，請閱讀說明文件後對 config.php 進行適當的修改",
     "PHP %s or higher is required." : "需要 PHP %s 或更高版本",
     "PHP with a version lower than %s is required." : "需要 PHP 版本低於 %s ",
-    "%sbit or higher PHP required." : "%s 需要一點或必要的的PHP。",
+    "%sbit or higher PHP required." : "%s 需要一點或必要的PHP。",
     "Following databases are supported: %s" : "這些資料庫支援: %s",
     "The command line tool %s could not be found" : "無法找到命令提示位元工具 %s",
     "The library %s is not available." : "套件庫 %s 無法使用",
