@@ -50,6 +50,13 @@ trait Provisioning {
 	private $ou = "TestGroups";
 
 	/**
+	 * gidnumber 3000 is gid of default group "users"
+	 *
+	 * @var int
+	 */
+	private $baseEosGidNumber = 3000;
+
+	/**
 	 * list of users that were created on the remote server during test runs
 	 * key is the lowercase username, value is an array of user attributes
 	 *
@@ -85,6 +92,14 @@ trait Provisioning {
 		"quota definition", "quota free", "quota user", "quota total", "quota relative"
 	];
 
+	/**
+	 * @param int $offset
+	 *
+	 * @return int
+	 */
+	private function getNewEosUidNumber($offset = 0) {
+		return 40040 + \count($this->getCreatedUsers()) + $offset;
+	}
 	/**
 	 * Check if this is the admin group. That group is always a local group in
 	 * ownCloud10, even if other groups come from LDAP.
@@ -880,7 +895,7 @@ trait Provisioning {
 		if ($skeletonStrategy === 'copy') {
 			foreach ($usersAttributes as $userAttributes) {
 				$user = $userAttributes['userid'];
-				$dataDir = $revaRoot . "data/$user/files";
+				$dataDir = $revaRoot . "$user/files";
 				if (!\file_exists($dataDir)) {
 					\mkdir($dataDir, 0777, true);
 				}
@@ -918,7 +933,7 @@ trait Provisioning {
 			$useLdap = false;
 		}
 
-		foreach ($usersAttributes as $userAttributes) {
+		foreach ($usersAttributes as $i => $userAttributes) {
 			if ($useLdap) {
 				$this->createLdapUser($userAttributes);
 			} else {
@@ -932,11 +947,12 @@ trait Provisioning {
 							$userAttributes,
 							__METHOD__ . " userAttributes array does not have key 'userid'"
 						);
-
 						$attributesToCreateUser['email'] = $userAttributes['userid'] . '@owncloud.org';
 					} else {
 						$attributesToCreateUser['email'] = $userAttributes['email'];
 					}
+					$attributesToCreateUser['gidnumber'] = $this->baseEosGidNumber;
+					$attributesToCreateUser['uidnumber'] = $this->getNewEosUidNumber($i);
 				}
 				// Create a OCS request for creating the user. The request is not sent to the server yet.
 				$request = OcsApiHelper::createOcsRequest(
@@ -972,6 +988,13 @@ trait Provisioning {
 		$users = [];
 		$editData = [];
 		foreach ($usersAttributes as $userAttributes) {
+			if (OcisHelper::isTestingOnOcis()) {
+				OcisHelper::createEOSStorageHome(
+					$this->getBaseUrl(),
+					$userAttributes['userid'],
+					$userAttributes['password']
+				);
+			}
 			\array_push($users, $userAttributes['userid']);
 			$this->addUserToCreatedUsersList($userAttributes['userid'], $userAttributes['password'], $userAttributes['displayName'], $userAttributes['email']);
 			if (isset($userAttributes['displayName'])) {
@@ -1249,6 +1272,8 @@ trait Provisioning {
 			}
 			$userAttributes["username"] = $username;
 			$userAttributes["email"] = $email;
+			$userAttributes['uidnumber'] = $this->getNewEosUidNumber();
+			$userAttributes['gidnumber'] = $this->baseEosGidNumber;
 		}
 
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
@@ -1283,7 +1308,16 @@ trait Provisioning {
 		$password = $this->getActualPassword($password);
 		if (OcisHelper::isTestingOnOcis()) {
 			$email = $user . '@owncloud.org';
-			$bodyTable = new TableNode([['userid', $user], ['password', $password], ['username', $user], ['email', $email]]);
+			$bodyTable = new TableNode(
+				[
+					['userid', $user],
+					['password', $password],
+					['username', $user],
+					['email', $email],
+					['uidnumber', $this->getNewEosUidNumber()],
+					['gidnumber', $this->baseEosGidNumber],
+				]
+			);
 		} else {
 			$email = null;
 			$bodyTable = new TableNode([['userid', $user], ['password', $password]]);
@@ -1302,6 +1336,7 @@ trait Provisioning {
 			$this->theHTTPStatusCodeWasSuccess()
 		);
 		if (OcisHelper::isTestingOnOcis()) {
+			OcisHelper::createEOSStorageHome($this->getBaseUrl(), $user, $password);
 			$this->manuallyAddSkeletonFilesForUser($user, $password);
 		}
 	}
@@ -1323,7 +1358,17 @@ trait Provisioning {
 		$password = $this->getActualPassword($password);
 		if (OcisHelper::isTestingOnOcis()) {
 			$email = $user . '@owncloud.org';
-			$bodyTable = new TableNode([['userid', $user], ['password', $password], ['username', $user], ['email', $email], ['groups[]', $group]]);
+			$bodyTable = new TableNode(
+				[
+					['userid', $user],
+					['password', $password],
+					['username', $user],
+					['email', $email],
+					['groups[]', $group],
+					['uidnumber', $this->getNewEosUidNumber()],
+					['gidnumber', $this->baseEosGidNumber],
+				]
+			);
 		} else {
 			$email = null;
 			$bodyTable = new TableNode(
@@ -4313,19 +4358,20 @@ trait Provisioning {
 	 */
 	public function afterScenario() {
 		$this->restoreParametersAfterScenario();
+
+		if (OcisHelper::isTestingOnOcis() && $this->someUsersHaveBeenCreated()) {
+			foreach ($this->getCreatedUsers() as $user) {
+				$this->deleteAllSharesForUser($user["actualUsername"]);
+				OcisHelper::deleteRevaUserData($user["actualUsername"]);
+			}
+		} elseif (!OcisHelper::isTestingOnOcis()) {
+			$this->resetAdminUserAttributes();
+		}
 		if ($this->isTestingWithLdap()) {
 			$this->deleteLdapUsersAndGroups();
 		}
 		$this->cleanupDatabaseUsers();
 		$this->cleanupDatabaseGroups();
-
-		if (OcisHelper::isTestingOnOcis()) {
-			if ($this->someUsersHaveBeenCreated()) {
-				OcisHelper::deleteRevaUserData("");
-			}
-		} else {
-			$this->resetAdminUserAttributes();
-		}
 	}
 
 	/**

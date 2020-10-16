@@ -30,7 +30,6 @@ namespace TestHelpers;
  * @package TestHelpers
  */
 class OcisHelper {
-
 	/**
 	 * @return bool
 	 */
@@ -46,10 +45,32 @@ class OcisHelper {
 	}
 
 	/**
-	 * @return bool
+	 * @return bool|string false if no command given or the command as string
 	 */
 	public static function getDeleteUserDataCommand() {
-		return (\getenv("DELETE_USER_DATA_CMD"));
+		$cmd = \getenv("DELETE_USER_DATA_CMD");
+		if (\trim($cmd) === "") {
+			return false;
+		}
+		return $cmd;
+	}
+
+	/**
+	 * @return string
+	 * @throws \Exception
+	 */
+	public static function getStorageDriver() {
+		$storageDriver = (\getenv("STORAGE_DRIVER"));
+		if ($storageDriver === false) {
+			return "OWNCLOUD";
+		}
+		if ($storageDriver !== "OCIS" && $storageDriver !== "EOS" && $storageDriver !== "OWNCLOUD") {
+			throw new \Exception(
+				"Invalid storage driver. " .
+				"STORAGE_DRIVER must be OCIS|EOS|OWNCLOUD"
+			);
+		}
+		return $storageDriver;
 	}
 
 	/**
@@ -59,12 +80,18 @@ class OcisHelper {
 	 */
 	public static function deleteRevaUserData($user = "") {
 		$deleteCmd = self::getDeleteUserDataCommand();
-		if ($deleteCmd !== false) {
-			$deleteCmd = \sprintf($deleteCmd, $user);
-			\exec($deleteCmd);
-		} else {
+		if ($deleteCmd === false) {
 			self::recurseRmdir(self::getOcisRevaDataRoot() . $user);
+			return;
 		}
+		if (self::getStorageDriver() === "EOS") {
+			$deleteCmd = \str_replace(
+				"%s", $user[0] . '/' . $user, $deleteCmd
+			);
+		} else {
+			$deleteCmd = \sprintf($deleteCmd, $user);
+		}
+		\exec($deleteCmd);
 	}
 
 	/**
@@ -218,5 +245,23 @@ class OcisHelper {
 			return \rmdir($dir);
 		}
 		return true;
+	}
+
+	/**
+	 * On Eos storage backend when the user data is cleared after test run
+	 * Running another test immediately fails. So Send this request to create user home directory
+	 *
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public static function createEOSStorageHome($baseUrl, $user, $password) {
+		HttpRequestHelper::get(
+			$baseUrl . "/ocs/v2.php/apps/notifications/api/v1/notifications",
+			$user,
+			$password
+		);
 	}
 }
