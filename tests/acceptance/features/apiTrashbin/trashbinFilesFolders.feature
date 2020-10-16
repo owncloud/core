@@ -74,36 +74,6 @@ Feature: files and folders exist in the trashbin after being deleted
       | old      |
       | new      |
 
-  @smokeTest @files_sharing-app-required
-  Scenario Outline: deleting a received folder doesn't move it to trashbin
-    Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and without skeleton files
-    And user "Alice" has created folder "/shared"
-    And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
-    And user "Alice" has shared folder "/shared" with user "Brian"
-    And user "Brian" has moved folder "/shared" to "/renamed_shared"
-    When user "Brian" deletes folder "/renamed_shared" using the WebDAV API
-    Then as "Brian" the folder with original path "/renamed_shared" should not exist in the trashbin
-    Examples:
-      | dav-path |
-      | old      |
-      | new      |
-
-  @files_sharing-app-required
-  Scenario Outline: deleting a file in a received folder moves it to trashbin
-    Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and without skeleton files
-    And user "Alice" has created folder "/shared"
-    And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
-    And user "Alice" has shared folder "/shared" with user "Brian"
-    And user "Brian" has moved file "/shared" to "/renamed_shared"
-    When user "Brian" deletes file "/renamed_shared/shared_file.txt" using the WebDAV API
-    Then as "Brian" the file with original path "/renamed_shared/shared_file.txt" should exist in the trashbin
-    Examples:
-      | dav-path |
-      | old      |
-      | new      |
-
   @skipOnOcV10 @issue-23151
   # This scenario deletes many files as close together in time as the test can run.
   # On a very slow system, the file deletes might all happen in different seconds.
