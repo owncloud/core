@@ -29,6 +29,7 @@ Summary
 * Bugfix - Fix invisible notification container blocking mouse events: [#37941](https://github.com/owncloud/core/pull/37941)
 * Bugfix - Fix display of public link shares in case avatars are disabled: [#37945](https://github.com/owncloud/core/pull/37945)
 * Bugfix - Clean the user's preferences only if they exist during user sync: [#37947](https://github.com/owncloud/core/pull/37947)
+* Bugfix - Properly exit and log during error in user sync command: [#37951](https://github.com/owncloud/core/pull/37951)
 * Bugfix - Fix icon alignment when avatars are disabled: [#37964](https://github.com/owncloud/core/pull/37964)
 * Bugfix - Fix file target in the accept share API call: [#37973](https://github.com/owncloud/core/pull/37973)
 * Bugfix - Fix for Google Docs not syncing with error "server reported no size": [#37997](https://github.com/owncloud/core/issues/37997)
@@ -50,6 +51,7 @@ Summary
 * Change - Add system config to load a different license implementation: [#37827](https://github.com/owncloud/core/pull/37827)
 * Change - Update laminas/laminas-zendframework-bridge (1.0.4 => 1.1.0): [#37843](https://github.com/owncloud/core/pull/37843)
 * Change - Use a debug log level if a share download is aborted: [#37856](https://github.com/owncloud/core/pull/37856)
+* Change - Add command to troubleshoot transfer ownership runs for issues: [#37950](https://github.com/owncloud/core/pull/37950)
 * Change - Update Symfony components to 4.4.12: [#37862](https://github.com/owncloud/core/pull/37862)
 * Change - Update doctrine/dbal (2.10.2 => 2.10.3): [#37870](https://github.com/owncloud/core/pull/37870)
 * Change - Update Symfony components to 4.4.13: [#37876](https://github.com/owncloud/core/pull/37876)
@@ -266,6 +268,14 @@ Details
 
    https://github.com/owncloud/core/pull/37947
 
+* Bugfix - Properly exit and log during error in user sync command: [#37951](https://github.com/owncloud/core/pull/37951)
+
+   If there is an error when doing occ user:sync then the command will exit with return 1 and
+   properly log the error.
+
+   https://github.com/owncloud/enterprise/issues/4218
+   https://github.com/owncloud/core/pull/37951
+
 * Bugfix - Fix icon alignment when avatars are disabled: [#37964](https://github.com/owncloud/core/pull/37964)
 
    Action icons for the sharee list view, when you want to know who are you sharing to, where being
@@ -406,6 +416,12 @@ Details
    debug level instead of logging the exception in order to reduce the noise.
 
    https://github.com/owncloud/core/pull/37856
+
+* Change - Add command to troubleshoot transfer ownership runs for issues: [#37950](https://github.com/owncloud/core/pull/37950)
+
+   https://github.com/owncloud/enterprise/issues/4121
+   https://github.com/owncloud/core/pull/37950
+   https://github.com/owncloud/core/pull/37860
 
 * Change - Update Symfony components to 4.4.12: [#37862](https://github.com/owncloud/core/pull/37862)
 
