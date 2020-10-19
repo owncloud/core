@@ -22,8 +22,10 @@
 namespace OCA\Files\Command;
 
 use Doctrine\DBAL\Platforms\MySqlPlatform;
+use OC\Share20\Exception\ProviderException;
 use OC\Share20\ProviderFactory;
 use OCP\IDBConnection;
+use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -70,26 +72,34 @@ class TroubleshootTransferOwnership extends Command {
 				'f',
 				InputOption::VALUE_NONE,
 				'perform auto-fix for found problems'
+			)
+			->addOption(
+				'uid',
+				'u',
+				InputArgument::OPTIONAL,
+				'scope for particular user',
+				null
 			);
 	}
 
 	public function execute(InputInterface $input, OutputInterface $output) {
 		$type = $input->getArgument('type');
 		$fix = $input->getOption('fix');
+		$scopeUid = $input->getOption('uid');
 
 		$allowedOps = \explode("|", $this->allowedOps);
 		if (!\in_array($type, $allowedOps)) {
 			$output->writeln([
-				"<error>type is not recognised, allowed: {$this->allowedOps}</>",
+				"<error>type is not recognised, allowed: {$this->allowedOps}</error>",
 			]);
 			return 1;
 		}
 
 		if ($type == 'all' || $type == 'invalid-initiator') {
-			$this->findInvalidReshareInitiator($input, $output, $fix);
+			$this->findInvalidReshareInitiator($input, $output, $fix, $scopeUid);
 		}
 		if ($type == 'all' || $type == 'invalid-owner') {
-			$this->findInvalidShareOwner($input, $output, $fix);
+			$this->findInvalidShareOwner($input, $output, $fix, $scopeUid);
 		}
 
 		return 0;
@@ -103,20 +113,21 @@ class TroubleshootTransferOwnership extends Command {
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
 	 * @param boolean $fix
+	 * @param $scopeUid
 	 */
-	protected function findInvalidShareOwner(InputInterface $input, OutputInterface $output, $fix) {
+	private function findInvalidShareOwner(InputInterface $input, OutputInterface $output, $fix, $scopeUid) {
 		$output->writeln([
-			"<info>==========================</>",
-			"<info>Searching for shares that have invalid uid_owner, meaning share uid_owner that does not match associated file storage id.</>",
-			"<info>==========================</>",
+			"<info>==========================</info>",
+			"<info>Searching for shares that have invalid uid_owner, meaning share uid_owner that does not match associated file storage id.</info>",
+			"<info>==========================</info>",
 			"",
 		]);
 
 		$invalidSharesCount = 0;
 
 		$shareStorages = \array_merge(
-			$this->getAllInvalidShareStorages('home::'),
-			$this->getAllInvalidShareStorages('object::user:')
+			$this->getAllInvalidShareStorages('home::', $scopeUid),
+			$this->getAllInvalidShareStorages('object::user:', $scopeUid)
 		);
 
 		$tableRows = [];
@@ -139,9 +150,10 @@ class TroubleshootTransferOwnership extends Command {
 			$output->writeln("");
 		}
 
-		$output->writeln("<info>Found $invalidSharesCount invalid share owners</>");
+		$output->writeln("<info>Found $invalidSharesCount invalid share owners</info>");
 
-		if ($fix) {
+		if ($fix && \count($sharesToFix) > 0) {
+			$output->writeln("<info>Proceeding with repair..</info>");
 			foreach ($sharesToFix as $shareToFix) {
 				// we need to adjust uid_owner to match user storage id
 				$userIdFromStorage = null;
@@ -156,13 +168,20 @@ class TroubleshootTransferOwnership extends Command {
 				}
 
 				if ($shareToFix['share_with'] !== null && $userIdFromStorage == $shareToFix['share_with']) {
-					$this->deleteCorruptedShare($shareToFix);
+					try {
+						// delete corrupted share
+						// cast share_type to int just to be sure as we extracted it directly with PDO
+						$this->deleteCorruptedShare($shareToFix['share_id'], (int) $shareToFix["share_type"]);
+						$output->writeln("<info>Deleted corrupted share with id={$shareToFix['share_id']}</info>");
+					} catch (ProviderException|ShareNotFound $e) {
+						$output->writeln("<error>Skipping share with id={$shareToFix['share_id']}. Internal error while attempting to delete share: {$e->getMessage()}</error>");
+					}
 				} else {
-					$this->adjustShareOwner($shareToFix['share_id'], $userIdFromStorage);
+					// cast share type to int just to be sure, as we extracted it directly with PDO
+					$this->adjustShareOwner($shareToFix['share_id'], (int) $shareToFix["share_type"], $userIdFromStorage);
+					$output->writeln("<info>Adjusted share with id={$shareToFix['share_id']} and its children from uid_owner={$shareToFix['uid_owner']} to uid_owner={$userIdFromStorage}</info>");
 				}
 			}
-
-			$output->writeln("<info>Repaired $invalidSharesCount invalid share owners</>");
 		}
 
 		$output->writeln("");
@@ -177,23 +196,27 @@ class TroubleshootTransferOwnership extends Command {
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
 	 * @param boolean $fix
+	 * @param string|null $scopeUid if uid provided, it will check only that user
 	 */
-	protected function findInvalidReshareInitiator(InputInterface $input, OutputInterface $output, $fix) {
+	private function findInvalidReshareInitiator(InputInterface $input, OutputInterface $output, $fix, $scopeUid) {
 		$output->writeln([
-			"<info>==========================</>",
-			"<info>Searching for reshares that have invalid uid_initiator(resharer), meaning resharer which does not have the received share mounted anymore (that he reshared with other user).</>",
-			"<info>==========================</>",
+			"<info>==========================</info>",
+			"<info>Searching for reshares that have invalid uid_initiator(resharer), meaning resharer which does not have the received share mounted anymore (that he reshared with other user).</info>",
+			"<info>==========================</info>",
 			"",
 		]);
 
 		$runExceptions = 0;
 		$invalidReshareInitiatorCount = 0;
-		$resharers = $this->getAllResharers();
+
+		if ($scopeUid === null) {
+			$resharers = $this->getAllResharers();
+		} else {
+			$resharers = [$scopeUid];
+		}
 
 		$resharesToFix = [];
-		foreach ($resharers as $resharer) {
-			$resharerUid = $resharer['uid_initiator'];
-
+		foreach ($resharers as $resharerUid) {
 			$table = new Table($output);
 			$table->setHeaders([
 				[new TableCell("Invalid uid_initiator found for $resharerUid", ['colspan' => 7])],
@@ -201,6 +224,7 @@ class TroubleshootTransferOwnership extends Command {
 			]);
 			$tableRows = [];
 			try {
+				$this->setupFS($resharerUid);
 				$userFolder = $this->getUserFolder($resharerUid);
 
 				// extract all reshares for this user and check if they have mount node
@@ -222,32 +246,36 @@ class TroubleshootTransferOwnership extends Command {
 				$runExceptions = $runExceptions + 1;
 				$table->setRows($tableRows);
 				$table->render();
-				$output->writeln("<info>Encountered error for user {$resharer['uid_initiator']}, command might need to be retried: </info>");
+				$output->writeln("<info>Encountered error for user {$resharerUid}: </info>");
 				$output->writeln("<error>{$e->getMessage()}: </error>");
 				$output->writeln("<error>{$e->getTraceAsString()}: </error>");
-				$output->writeln("<info>Waiting 1 seconds after error before continuing with next user..</info>");
-				$output->writeln("");
-				\sleep(1);
+			} finally {
+				$this->tearDownFS();
 			}
 		}
 
-		$output->writeln([
-			"<info>Encountered $runExceptions exceptions while running command</>",
-			"<info>Found $invalidReshareInitiatorCount invalid initiator reshares</>"
-		]);
+		$output->writeln("<info>Found $invalidReshareInitiatorCount invalid initiator reshares</info>");
 
-		if ($fix) {
+		if ($fix && \count($resharesToFix) > 0) {
+			$output->writeln("<info>Proceeding with repair..</info>");
 			foreach ($resharesToFix as $reshareToFix) {
 				// as we do not know what uid_initiator might be, we need to use uid_owner (original share initiator)
 				$this->adjustShareInitiator($reshareToFix['id'], $reshareToFix['uid_owner']);
+				$output->writeln("<info>Adjusted share with id={$reshareToFix['id']} from uid_initiator={$reshareToFix['uid_initiator']} to uid_initiator={$reshareToFix['uid_owner']}</info>");
 			}
-
-			$output->writeln("<info>Repaired $invalidReshareInitiatorCount invalid initiator reshares</>");
 		}
 
 		$output->writeln("");
+		if ($runExceptions > 0) {
+			$output->writeln("<info>Encountered $runExceptions exceptions while running command, command might need to be retried</info>");
+		}
 	}
 
+	/**
+	 * Note: protected is used to allow testing without using dedicated class
+	 *
+	 * @return string[]
+	 */
 	protected function getAllResharers() {
 		$query = $this->connection->getQueryBuilder();
 
@@ -264,9 +292,19 @@ class TroubleshootTransferOwnership extends Command {
 		$resharers = $cursor->fetchAll();
 		$cursor->closeCursor();
 
-		return $resharers;
+		$entities = \array_map(function ($row) {
+			return $row['uid_initiator'];
+		}, $resharers);
+
+		return $entities;
 	}
 
+	/**
+	 * Note: protected is used to allow testing without using dedicated class
+	 *
+	 * @param $userId
+	 * @return mixed[]
+	 */
 	protected function getResharesForUser($userId) {
 		$query = $this->connection->getQueryBuilder();
 
@@ -276,6 +314,13 @@ class TroubleshootTransferOwnership extends Command {
 				$query->expr()->eq('item_type', $query->createNamedParameter('file')),
 				$query->expr()->eq('item_type', $query->createNamedParameter('folder'))
 			));
+
+		$query->andWhere($query->expr()->orX(
+			$query->expr()->eq('share_type', $query->createNamedParameter(\OCP\Share::SHARE_TYPE_USER)),
+			$query->expr()->eq('share_type', $query->createNamedParameter(\OCP\Share::SHARE_TYPE_GROUP)),
+			$query->expr()->eq('share_type', $query->createNamedParameter(\OCP\Share::SHARE_TYPE_LINK)),
+			$query->expr()->eq('share_type', $query->createNamedParameter(\OCP\Share::SHARE_TYPE_REMOTE))
+		));
 
 		$query->andWhere($query->expr()->neq('uid_initiator', 'uid_owner'));
 		$query->andWhere($query->expr()->eq('uid_initiator', $query->createNamedParameter($userId)));
@@ -287,7 +332,14 @@ class TroubleshootTransferOwnership extends Command {
 		return $reshares;
 	}
 
-	protected function getAllInvalidShareStorages($storageType) {
+	/**
+	 * Note: protected is used to allow testing without using dedicated class
+	 *
+	 * @param $storageType
+	 * @param $scopeUid
+	 * @return mixed[]
+	 */
+	protected function getAllInvalidShareStorages($storageType, $scopeUid) {
 		$query = $this->connection->getQueryBuilder();
 
 		if ($this->connection->getDatabasePlatform() instanceof MySqlPlatform) {
@@ -312,6 +364,12 @@ class TroubleshootTransferOwnership extends Command {
 				$query->expr()->like('st.id', $query->createNamedParameter("$storageType%"))
 			))
 			->andWhere($query->expr()->orX(
+				$query->expr()->eq('s.share_type', $query->createNamedParameter(\OCP\Share::SHARE_TYPE_USER)),
+				$query->expr()->eq('s.share_type', $query->createNamedParameter(\OCP\Share::SHARE_TYPE_GROUP)),
+				$query->expr()->eq('s.share_type', $query->createNamedParameter(\OCP\Share::SHARE_TYPE_LINK)),
+				$query->expr()->eq('s.share_type', $query->createNamedParameter(\OCP\Share::SHARE_TYPE_REMOTE))
+			))
+			->andWhere($query->expr()->orX(
 				$query->expr()->eq('s.item_type', $query->createNamedParameter('file')),
 				$query->expr()->eq('s.item_type', $query->createNamedParameter('folder'))
 			))
@@ -320,6 +378,10 @@ class TroubleshootTransferOwnership extends Command {
 				'st.id'
 			));
 
+		if ($scopeUid !== null) {
+			$query->andWhere($query->expr()->eq('s.uid_owner', $query->createNamedParameter($scopeUid)));
+		}
+
 		$cursor = $query->execute();
 		$shareStorages = $cursor->fetchAll();
 		$cursor->closeCursor();
@@ -327,16 +389,28 @@ class TroubleshootTransferOwnership extends Command {
 		return $shareStorages;
 	}
 
+	/**
+	 * Note: protected is used to allow testing without using dedicated class
+	 *
+	 * @param $shareId
+	 * @param $newUidInitiator
+	 * @return int
+	 */
 	protected function adjustShareInitiator($shareId, $newUidInitiator) {
 		$query = $this->connection->getQueryBuilder();
 
+		// update this share initiator for this particular share
 		$query->update('share')
 			->set('uid_initiator', $query->createParameter('uid_initiator'))
-			->where($query->expr()->eq('id', $query->createParameter('shareid')))
-			->andWhere($query->expr()->orX(
-				$query->expr()->eq('item_type', $query->createNamedParameter('file')),
-				$query->expr()->eq('item_type', $query->createNamedParameter('folder'))
-			));
+			->where(
+				$query->expr()->andX(
+					$query->expr()->eq('id', $query->createParameter('shareid')),
+					$query->expr()->orX(
+						$query->expr()->eq('item_type', $query->createNamedParameter('file')),
+						$query->expr()->eq('item_type', $query->createNamedParameter('folder'))
+					)
+				)
+			);
 
 		$query->setParameter('shareid', $shareId);
 		$query->setParameter('uid_initiator', $newUidInitiator);
@@ -344,16 +418,44 @@ class TroubleshootTransferOwnership extends Command {
 		return $query->execute();
 	}
 
-	protected function adjustShareOwner($shareId, $newUidOwner) {
+	/**
+	 * Note: protected is used to allow testing without using dedicated class
+	 *
+	 * @param $shareId
+	 * @param $shareType
+	 * @param $newUidOwner
+	 * @return int
+	 */
+	protected function adjustShareOwner($shareId, $shareType, $newUidOwner) {
 		$query = $this->connection->getQueryBuilder();
 
 		$query->update('share')
 			->set('uid_owner', $query->createParameter('uid_owner'))
-			->where($query->expr()->eq('id', $query->createParameter('shareid')))
-			->andWhere($query->expr()->orX(
-				$query->expr()->eq('item_type', $query->createNamedParameter('file')),
-				$query->expr()->eq('item_type', $query->createNamedParameter('folder'))
-			));
+			->where(
+				$query->expr()->andX(
+					$query->expr()->eq('id', $query->createParameter('shareid')),
+					$query->expr()->orX(
+						$query->expr()->eq('item_type', $query->createNamedParameter('file')),
+						$query->expr()->eq('item_type', $query->createNamedParameter('folder'))
+					)
+				)
+			);
+
+		if ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
+			// if this is group share, make sure all child entries also have correct owner
+			// (children shares should have the same owner as parent entry,
+			// it is also ok if share-with=share-owner for these shares as
+			// these would be equal to group share then)
+			$query->orWhere(
+				$query->expr()->andX(
+					$query->expr()->eq('parent', $query->createParameter('shareid')),
+					$query->expr()->orX(
+						$query->expr()->eq('item_type', $query->createNamedParameter('file')),
+						$query->expr()->eq('item_type', $query->createNamedParameter('folder'))
+					)
+				)
+			);
+		}
 
 		$query->setParameter('shareid', $shareId);
 		$query->setParameter('uid_owner', $newUidOwner);
@@ -361,13 +463,43 @@ class TroubleshootTransferOwnership extends Command {
 		return $query->execute();
 	}
 
-	protected function deleteCorruptedShare($shareData) {
-		$shareProvider = $this->shareProviderFactory->getProviderForType((int) $shareData["share_type"]);
-		$share = $shareProvider->getShareById($shareData["id"]);
+	/**
+	 * Note: protected is used to allow testing without using dedicated class
+	 *
+	 * @param $shareId
+	 * @param $shareType
+	 * @throws ProviderException
+	 * @throws ShareNotFound
+	 */
+	protected function deleteCorruptedShare($shareId, $shareType) {
+		$shareProvider = $this->shareProviderFactory->getProviderForType($shareType);
+		$share = $shareProvider->getShareById($shareId);
 		$shareProvider->delete($share);
 	}
 
+	/**
+	 * Note: wrapped with protected to allow testing of the static helper methods
+	 *
+	 * @param $uid
+	 * @return \OCP\Files\Folder|null
+	 */
 	protected function getUserFolder($uid) {
 		return \OC::$server->getUserFolder($uid);
+	}
+
+	/**
+	 * Note: wrapped with protected to allow testing of the static helper methods
+	 */
+	protected function tearDownFS() {
+		\OC_Util::tearDownFS();
+	}
+
+	/**
+	 * Note: wrapped with protected to allow testing of the static helper methods
+	 *
+	 * @param $user
+	 */
+	protected function setupFS($user) {
+		\OC_Util::setupFS($user);
 	}
 }

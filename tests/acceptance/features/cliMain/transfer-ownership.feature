@@ -325,10 +325,8 @@ Feature: transfer-ownership
     Then the command should have been successful
     And the command output should contain the text "Searching for reshares that have invalid uid_initiator"
     And the command output should contain the text "Found 0 invalid initiator reshares"
-    And the command output should contain the text "Repaired 0 invalid initiator reshares"
     And the command output should contain the text "Searching for shares that have invalid uid_owner"
     And the command output should contain the text "Found 0 invalid share owners"
-    And the command output should contain the text "Repaired 0 invalid share owners"
 
   @skipOnEncryptionType:user-keys @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario: troubleshoot transfer ownerships for invalid-initiator with reshare
@@ -344,7 +342,6 @@ Feature: transfer-ownership
     Then the command should have been successful
     And the command output should contain the text "Searching for reshares that have invalid uid_initiator"
     And the command output should contain the text "Found 0 invalid initiator reshares"
-    And the command output should contain the text "Repaired 0 invalid initiator reshares"
 
   @skipOnEncryptionType:user-keys @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario: troubleshoot transfer ownerships for invalid-owner with share
@@ -359,4 +356,3 @@ Feature: transfer-ownership
     Then the command should have been successful
     And the command output should contain the text "Searching for shares that have invalid uid_owner"
     And the command output should contain the text "Found 0 invalid share owners"
-    And the command output should contain the text "Repaired 0 invalid share owners"
