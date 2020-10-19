@@ -90,13 +90,13 @@ class Crypto implements ICrypto {
 		}
 		$this->cipher->setPassword($password);
 
-		$iv = $this->random->generate($this->ivLength);
+		$iv = \random_bytes($this->ivLength);
 		$this->cipher->setIV($iv);
 
 		$ciphertext = \bin2hex($this->cipher->encrypt($plaintext));
 		$hmac = \bin2hex($this->calculateHMAC($ciphertext.$iv, $password));
 
-		return $ciphertext.'|'.$iv.'|'.$hmac;
+		return 'v2|' . $ciphertext.'|'. \bin2hex($iv).'|'.$hmac;
 	}
 
 	/**
@@ -113,20 +113,36 @@ class Crypto implements ICrypto {
 		$this->cipher->setPassword($password);
 
 		$parts = \explode('|', $authenticatedCiphertext);
-		if (\sizeof($parts) !== 3) {
-			throw new \Exception('Authenticated ciphertext could not be decoded.');
+
+		// v2 uses stronger binary random iv
+		if (\sizeof($parts) === 4 && $parts[0] === 'v2') {
+			$ciphertext = \hex2bin($parts[1]);
+			$iv = \hex2bin($parts[2]);
+			$hmac = \hex2bin($parts[3]);
+
+			$this->cipher->setIV($iv);
+
+			if (!\hash_equals($this->calculateHMAC($parts[1].$iv, $password), $hmac)) {
+				throw new \Exception('HMAC does not match.');
+			}
+
+			return $this->cipher->decrypt($ciphertext);
 		}
 
-		$ciphertext = \hex2bin($parts[0]);
-		$iv = $parts[1];
-		$hmac = \hex2bin($parts[2]);
+		if (\sizeof($parts) === 3) {
+			$ciphertext = \hex2bin($parts[0]);
+			$iv = $parts[1];
+			$hmac = \hex2bin($parts[2]);
 
-		$this->cipher->setIV($iv);
+			$this->cipher->setIV($iv);
 
-		if (!\hash_equals($this->calculateHMAC($parts[0].$parts[1], $password), $hmac)) {
-			throw new \Exception('HMAC does not match.');
+			if (!\hash_equals($this->calculateHMAC($parts[0].$parts[1], $password), $hmac)) {
+				throw new \Exception('HMAC does not match.');
+			}
+
+			return $this->cipher->decrypt($ciphertext);
 		}
 
-		return $this->cipher->decrypt($ciphertext);
+		throw new \Exception('Authenticated ciphertext could not be decoded.');
 	}
 }
