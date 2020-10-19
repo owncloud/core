@@ -65,6 +65,7 @@ OC.L10N.register(
     "Shares" : "Koplietotie",
     "File sharing" : "Failu kopīgošana",
     "Public link" : "Publiska saite",
+    "Couldn't send mail to following recipient(s): %s " : "Nevarēja nosūtīt e-pastu šādam (-iem) saņēmējam (-iem): %s",
     "Share API is disabled" : "Koplietošanas API ir atslēgta",
     "Wrong share ID, share doesn't exist" : "Nepareizs koplietošanas ID, koplietotne neeksistē",
     "Could not delete share" : "Neizdevās dzēst koplietotni",

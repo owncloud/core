@@ -15,6 +15,9 @@ OC.L10N.register(
     "Error occurred while posting comment" : "Radās kļūda, pievienojot komentāru",
     "{count} unread comments" : "{count} nelasīti komentāri",
     "Comment" : "Komentārs",
-    "You commented" : "Jūsu komentāri"
+    "You commented" : "Jūsu komentāri",
+    "%1$s commented" : "%1$s nokomentēja",
+    "You commented on %2$s" : "Jūs nokomentējāt %2$s",
+    "%1$s commented on %2$s" : "%1$s nokomentēja %2$s"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");
