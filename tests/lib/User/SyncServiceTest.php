@@ -138,8 +138,7 @@ class SyncServiceTest extends TestCase {
 		$this->mapper->expects($this->once())->method('getByUid')->with($backendUids[0])->willThrowException(new MultipleObjectsReturnedException('Trigger error'));
 
 		// Should log an error in the log and log the exception
-		$this->logger->expects($this->at(0))->method('error');
-		$this->logger->expects($this->at(1))->method('logException');
+		$this->logger->expects($this->at(0))->method('logException');
 
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		$s->run($backend, new BackendUsersIterator($backend));
