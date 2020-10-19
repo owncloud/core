@@ -38,7 +38,7 @@ config = {
 				'mariadb:10.2',
 			]
 		},
-		'external-samba-windows' : {
+		'external-samba' : {
 			'phpVersions': [
 				'7.2',
 				'7.4',
@@ -48,7 +48,6 @@ config = {
 			],
 			'externalTypes': [
 				'samba',
-				'windows',
 			],
 			'coverage': True,
 			'extraCommandsBeforeTestRun': [
