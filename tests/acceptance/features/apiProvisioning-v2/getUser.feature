@@ -104,7 +104,7 @@ Feature: get user
     Given these users have been created with default attributes and skeleton files:
       | username       | displayname |
       | brand-new-user | New User    |
-    When user "brand-new-user" retrieves the information of user "brand-new-user" using the provisioning API
+    When user "BRAND-NEW-USER" retrieves the information of user "brand-new-user" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
@@ -115,7 +115,7 @@ Feature: get user
     Given these users have been created with default attributes and skeleton files:
       | username       | displayname |
       | brand-new-user | New User    |
-    When user "brand-new-user" retrieves the information of user "brand-new-user" using the provisioning API
+    When user "brand-new-user" retrieves the information of user "BRAND-NEW-USER" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
@@ -125,8 +125,8 @@ Feature: get user
   Scenario: a mixed-case normal user gets their own information, providing lowercase username in the URL
     Given these users have been created with default attributes and skeleton files:
       | username       | displayname |
-      | brand-new-user | New User    |
-    When user "brand-new-user" retrieves the information of user "brand-new-user" using the provisioning API
+      | Brand-New-User | New User    |
+    When user "Brand-New-User" retrieves the information of user "brand-new-user" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
@@ -135,8 +135,8 @@ Feature: get user
   Scenario: a mixed-case normal user gets their own information, providing the mixed-case username in the URL
     Given these users have been created with default attributes and skeleton files:
       | username       | displayname |
-      | brand-new-user | New User    |
-    When user "brand-new-user" retrieves the information of user "brand-new-user" using the provisioning API
+      | Brand-New-User | New User    |
+    When user "brand-new-user" retrieves the information of user "Brand-New-User" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"

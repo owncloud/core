@@ -80,7 +80,7 @@ Feature: add users to group
     And user "mixed-case-user" should not belong to group "<group_id3>"
     Examples:
       | user_id         | group_id1            | group_id2            | group_id3            |
-      | Mixed-Case-USER | Case-Sensitive-Group | case-sensitive-group | CASE-SENSITIVE-GROUP |
+      | MIXED-CASE-USER | Case-Sensitive-Group | case-sensitive-group | CASE-SENSITIVE-GROUP |
       | Mixed-Case-User | case-sensitive-group | CASE-SENSITIVE-GROUP | Case-Sensitive-Group |
       | mixed-case-user | CASE-SENSITIVE-GROUP | Case-Sensitive-Group | case-sensitive-group |
 
