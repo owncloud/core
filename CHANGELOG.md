@@ -33,6 +33,7 @@ Summary
 * Bugfix - Fix icon alignment when avatars are disabled: [#37964](https://github.com/owncloud/core/pull/37964)
 * Bugfix - Fix file target in the accept share API call: [#37973](https://github.com/owncloud/core/pull/37973)
 * Bugfix - Fix for Google Docs not syncing with error "server reported no size": [#37997](https://github.com/owncloud/core/issues/37997)
+* Bugfix - Do not emit "share.failedpasswordcheck" events for authenticated links: [#138](https://github.com/owncloud/brute_force_protection/issues/138)
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 * Change - Update sabre dependencies: [#37684](https://github.com/owncloud/core/pull/37684)
 * Change - Update google/apiclient from 2.5.0 to 2.6.0 and related dependencies: [#37687](https://github.com/owncloud/core/pull/37687)
@@ -303,6 +304,15 @@ Details
 
    https://github.com/owncloud/core/issues/37997
    https://github.com/owncloud/core/pull/37993
+
+* Bugfix - Do not emit "share.failedpasswordcheck" events for authenticated links: [#138](https://github.com/owncloud/brute_force_protection/issues/138)
+
+   ShareManager was checking password of already authenticated public links. This situation
+   led to wrong "share.failedpasswordcheck" events emitting in already authenticated links.
+   This problem has been resolved by first checking link already authenticated.
+
+   https://github.com/owncloud/brute_force_protection/issues/138
+   https://github.com/owncloud/core/pull/38016
 
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 
