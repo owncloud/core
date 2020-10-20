@@ -29,6 +29,7 @@ Summary
 * Bugfix - Fix invisible notification container blocking mouse events: [#37941](https://github.com/owncloud/core/pull/37941)
 * Bugfix - Fix display of public link shares in case avatars are disabled: [#37945](https://github.com/owncloud/core/pull/37945)
 * Bugfix - Clean the user's preferences only if they exist during user sync: [#37947](https://github.com/owncloud/core/pull/37947)
+* Bugfix - OCS and Public WebDAV Apis should handle LoginException: [#112](https://github.com/owncloud/brute_force_protection/issues/112)
 * Bugfix - Properly exit and log during error in user sync command: [#37951](https://github.com/owncloud/core/pull/37951)
 * Bugfix - Fix icon alignment when avatars are disabled: [#37964](https://github.com/owncloud/core/pull/37964)
 * Bugfix - Fix file target in the accept share API call: [#37973](https://github.com/owncloud/core/pull/37973)
@@ -268,6 +269,14 @@ Details
    deletion won't be attempted.
 
    https://github.com/owncloud/core/pull/37947
+
+* Bugfix - OCS and Public WebDAV Apis should handle LoginException: [#112](https://github.com/owncloud/brute_force_protection/issues/112)
+
+   OCS api and new public webdav api was not handle LoginException. This situation was causing
+   HTTP 500 error in response. This bug has been resolved.
+
+   https://github.com/owncloud/brute_force_protection/issues/112
+   https://github.com/owncloud/core/pull/37948
 
 * Bugfix - Properly exit and log during error in user sync command: [#37951](https://github.com/owncloud/core/pull/37951)
 
