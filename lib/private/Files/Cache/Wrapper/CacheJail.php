@@ -306,9 +306,9 @@ class CacheJail extends CacheWrapper {
 	 */
 	public function moveFromCache(\OCP\Files\Cache\ICache $sourceCache, $sourcePath, $targetPath) {
 		if ($sourceCache === $this) {
-			return $this->move($sourcePath, $targetPath);
+			$this->move($sourcePath, $targetPath);
 		}
-		return $this->cache->moveFromCache($sourceCache, $sourcePath, $this->getSourcePath($targetPath));
+		$this->cache->moveFromCache($sourceCache, $sourcePath, $this->getSourcePath($targetPath));
 	}
 
 	protected function getMoveInfo($path) {

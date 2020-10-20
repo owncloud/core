@@ -123,10 +123,14 @@ class Manage extends Command {
 
 	/**
 	 * @param string $timezone
-	 * @throws \Exception
+	 * @throws \InvalidArgumentException
 	 */
 	protected function validateTimezone($timezone) {
-		new \DateTimeZone($timezone);
+		try {
+			new \DateTimeZone($timezone);
+		} catch (\Exception $e) {
+			throw new \InvalidArgumentException("Invalid timezone ($timezone)");
+		}
 	}
 
 	/**

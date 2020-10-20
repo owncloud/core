@@ -428,9 +428,9 @@ class FilesPlugin extends ServerPlugin {
 		if (!$this->server->tree->nodeExists($filePath)) {
 			return;
 		}
-		$node = $this->server->tree->getNodeForPath($filePath);
-		if ($node instanceof \OCA\DAV\Connector\Sabre\Node) {
-			$fileId = $node->getFileId();
+		$nodeForPath = $this->server->tree->getNodeForPath($filePath);
+		if ($nodeForPath instanceof \OCA\DAV\Connector\Sabre\Node) {
+			$fileId = $nodeForPath->getFileId();
 			if ($fileId !== null) {
 				$this->server->httpResponse->setHeader('OC-FileId', $fileId);
 			}

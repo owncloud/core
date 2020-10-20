@@ -364,7 +364,7 @@ class ShareController extends Controller {
 			}
 		}
 
-		$shareTmpl['canDownload'] = !!($share->getPermissions() & \OCP\Constants::PERMISSION_READ > 0);
+		$shareTmpl['canDownload'] = ($share->getPermissions() & \OCP\Constants::PERMISSION_READ) > 0;
 		$shareTmpl['sharePermission'] = $share->getPermissions();
 		$shareTmpl['downloadURL'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.downloadShare', ['token' => $token]);
 		$shareTmpl['shareUrl'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.showShare', ['token' => $token]);
