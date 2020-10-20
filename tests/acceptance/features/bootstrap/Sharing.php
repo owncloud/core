@@ -1759,6 +1759,35 @@ trait Sharing {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" gets the (user|group|user and group|public link) shares shared by him using the sharing API$/
+	 *
+	 * @param string $user
+	 * @param string $shareType
+	 *
+	 * @return void
+	 */
+	public function userGetsFilteredSharesSharedByHimUsingTheSharingApi($user, $shareType) {
+		$user = $this->getActualUsername($user);
+		if ($shareType === 'public link') {
+			$shareType = 'public_link';
+		}
+		if ($shareType === 'user and group') {
+			$rawShareTypes = SharingHelper::SHARE_TYPES['user'] . "," . SharingHelper::SHARE_TYPES['group'];
+		} else {
+			$rawShareTypes = SharingHelper::SHARE_TYPES[$shareType];
+		}
+		$this->response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			"GET",
+			$this->getSharesEndpointPath("?share_types=" . $rawShareTypes),
+			[],
+			$this->ocsApiVersion
+		);
+	}
+
+	/**
 	 * @When user :user gets all the shares from the file :path using the sharing API
 	 *
 	 * @param string $user
