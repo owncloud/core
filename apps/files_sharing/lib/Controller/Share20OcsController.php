@@ -553,13 +553,27 @@ class Share20OcsController extends OCSController {
 	 * @param File|Folder $node
 	 * @param boolean $includeTags include tags in response
 	 * @param int|null $stateFilter state filter or empty for all, defaults to 0 (accepted)
+	 * @param array $requestedShareTypes a key-value array with the requested share types to
+	 * be returned. The keys of the array are the share types to be returned, and the values
+	 * whether the share type will be returned or not.
+	 * [Share::SHARE_TYPE_USER => true, Share::SHARE_TYPE_GROUP => false]
 	 * @return Result
 	 */
-	private function getSharedWithMe($node = null, $includeTags, $stateFilter = 0) {
-		$userShares = $this->shareManager->getSharedWith($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_USER, $node, -1, 0);
-		$groupShares = $this->shareManager->getSharedWith($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_GROUP, $node, -1, 0);
-
-		$shares = \array_merge($userShares, $groupShares);
+	private function getSharedWithMe($node = null, $includeTags, $requestedShareTypes, $stateFilter = 0) {
+		// sharedWithMe is limited to user and group shares for compatibility.
+		$shares = [];
+		if (isset($requestedShareTypes[Share::SHARE_TYPE_USER]) && $requestedShareTypes[Share::SHARE_TYPE_USER]) {
+			$shares = \array_merge(
+				$shares,
+				$this->shareManager->getSharedWith($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_USER, $node, -1, 0)
+			);
+		}
+		if (isset($requestedShareTypes[Share::SHARE_TYPE_GROUP]) && $requestedShareTypes[Share::SHARE_TYPE_GROUP]) {
+			$shares = \array_merge(
+				$shares,
+				$this->shareManager->getSharedWith($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_GROUP, $node, -1, 0)
+			);
+		}
 
 		$shares = \array_filter($shares, function (IShare $share) {
 			return $share->getShareOwner() !== $this->userSession->getUser()->getUID();
@@ -597,10 +611,14 @@ class Share20OcsController extends OCSController {
 
 	/**
 	 * @param Folder $folder
+	 * @param array $requestedShareTypes a key-value array with the requested share types to
+	 * be returned. The keys of the array are the share types to be returned, and the values
+	 * whether the share type will be returned or not.
+	 * [Share::SHARE_TYPE_USER => true, Share::SHARE_TYPE_GROUP => false]
 	 * @return Result
 	 * @throws NotFoundException
 	 */
-	private function getSharesInDir($folder) {
+	private function getSharesInDir($folder, $requestedShareTypes) {
 		if (!($folder instanceof Folder)) {
 			return new Result(null, 400, $this->l->t('Not a directory'));
 		}
@@ -609,11 +627,22 @@ class Share20OcsController extends OCSController {
 		/** @var IShare[] $shares */
 		$shares = [];
 		foreach ($nodes as $node) {
-			$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_USER, $node, false, -1, 0));
-			$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_GROUP, $node, false, -1, 0));
-			$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_LINK, $node, false, -1, 0));
-			if ($this->shareManager->outgoingServer2ServerSharesAllowed()) {
-				$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_REMOTE, $node, false, -1, 0));
+			foreach ($requestedShareTypes as $shareType => $requested) {
+				if (!$requested) {
+					continue;
+				}
+
+				if ($shareType !== Share::SHARE_TYPE_REMOTE) {
+					$shares = \array_merge(
+						$shares,
+						$this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), $shareType, $node, false, -1, 0)
+					);
+				} elseif ($shareType === Share::SHARE_TYPE_REMOTE && $this->shareManager->outgoingServer2ServerSharesAllowed()) {
+					$shares = \array_merge(
+						$shares,
+						$this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), $shareType, $node, false, -1, 0)
+					);
+				}
 			}
 		}
 
@@ -707,7 +736,7 @@ class Share20OcsController extends OCSController {
 			} else {
 				$stateFilter = (int)$stateFilter;
 			}
-			$result = $this->getSharedWithMe($path, $includeTags, $stateFilter);
+			$result = $this->getSharedWithMe($path, $includeTags, $requestedShareTypes, $stateFilter);
 			if ($path !== null) {
 				$path->unlock(ILockingProvider::LOCK_SHARED);
 			}
@@ -715,7 +744,7 @@ class Share20OcsController extends OCSController {
 		}
 
 		if ($subfiles === 'true') {
-			$result = $this->getSharesInDir($path);
+			$result = $this->getSharesInDir($path, $requestedShareTypes);
 			if ($path !== null) {
 				$path->unlock(ILockingProvider::LOCK_SHARED);
 			}
