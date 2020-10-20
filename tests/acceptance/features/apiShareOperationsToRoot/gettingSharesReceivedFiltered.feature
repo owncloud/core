@@ -1,5 +1,5 @@
 @api @files_sharing-app-required @notToImplementOnOCIS
-Feature: sharing
+Feature: get the received shares filtered by type (user, group etc)
   As a user
   I want to be able to know the shares that I have received of a particular type (user, group etc)
   So that I can reduce the amount of data that has to be transferred to be just the data that I need

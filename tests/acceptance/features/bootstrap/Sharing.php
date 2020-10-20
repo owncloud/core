@@ -1066,7 +1066,7 @@ trait Sharing {
 		$count = (int) $count;
 		$data = $this->getResponseXml(null, __METHOD__)->data[0];
 		Assert::assertIsObject($data, __METHOD__ . " data not found in response XML");
-		Assert::assertCount($count, $data);
+		Assert::assertCount($count, $data, __METHOD__ . " the response does not contain $count entries");
 	}
 
 	/**
@@ -1735,15 +1735,21 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" gets the (user|group|user and group|public link) shares shared with him using the sharing API$/
+	 * @When /^user "([^"]*)" gets the (|pending)\s?(user|group|user and group|public link) shares shared with him using the sharing API$/
 	 *
 	 * @param string $user
+	 * @param string $pending
 	 * @param string $shareType
 	 *
 	 * @return void
 	 */
-	public function userGetsFilteredSharesSharedWithHimUsingTheSharingApi($user, $shareType) {
+	public function userGetsFilteredSharesSharedWithHimUsingTheSharingApi($user, $pending, $shareType) {
 		$user = $this->getActualUsername($user);
+		if ($pending === "pending") {
+			$pendingClause = "&state=" . SharingHelper::SHARE_STATES['pending'];
+		} else {
+			$pendingClause = "";
+		}
 		if ($shareType === 'public link') {
 			$shareType = 'public_link';
 		}
@@ -1756,7 +1762,7 @@ trait Sharing {
 			$user,
 			'GET',
 			$this->getSharesEndpointPath(
-				"?shared_with_me=true&share_types=" . $rawShareTypes
+				"?shared_with_me=true" . $pendingClause . "&share_types=" . $rawShareTypes
 			),
 			null
 		);
