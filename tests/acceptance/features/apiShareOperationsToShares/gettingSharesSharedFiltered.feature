@@ -1,11 +1,13 @@
-@api @files_sharing-app-required @notToImplementOnOCIS
+@api @files_sharing-app-required
 Feature: sharing
   As a user
   I want to be able to know the shares that I have made of a particular type (user, group etc)
   So that I can reduce the amount of data that has to be transferred to be just the data that I need
 
   Background:
-    Given these users have been created with default attributes and without skeleton files:
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -18,12 +20,16 @@ Feature: sharing
     And user "Alice" has uploaded file with content "file to share with group" to "/fileToShareWithGroup.txt"
     And user "Alice" has uploaded file with content "file to share with public" to "/fileToShareWithPublic.txt"
     And user "Alice" has shared folder "/folderToShareWithUser" with user "Brian"
+    And user "Brian" has accepted share "/folderToShareWithUser" offered by user "Alice"
     And user "Alice" has shared folder "/folderToShareWithGroup" with group "grp1"
+    And user "Brian" has accepted share "/folderToShareWithGroup" offered by user "Alice"
     And user "Alice" has created a public link share with settings
       | path        | /folderToShareWithPublic |
       | permissions | read                     |
     And user "Alice" has shared file "/fileToShareWithUser.txt" with user "Brian"
+    And user "Brian" has accepted share "/fileToShareWithUser.txt" offered by user "Alice"
     And user "Alice" has shared file "/fileToShareWithGroup.txt" with group "grp1"
+    And user "Brian" has accepted share "/fileToShareWithGroup.txt" offered by user "Alice"
     And user "Alice" has created a public link share with settings
       | path        | /fileToShareWithPublic.txt |
       | permissions | read                       |
@@ -34,8 +40,8 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And exactly 2 files or folders should be included in the response
-    And folder "folderToShareWithUser" should be included in the response
-    And file "fileToShareWithUser.txt" should be included in the response
+    And folder "/Shares/folderToShareWithUser" should be included in the response
+    And file "/Shares/fileToShareWithUser.txt" should be included in the response
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -47,8 +53,8 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And exactly 2 files or folders should be included in the response
-    And folder "folderToShareWithGroup" should be included in the response
-    And folder "fileToShareWithGroup.txt" should be included in the response
+    And folder "/Shares/folderToShareWithGroup" should be included in the response
+    And folder "/Shares/fileToShareWithGroup.txt" should be included in the response
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -60,8 +66,8 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And exactly 2 files or folders should be included in the response
-    And folder "folderToShareWithPublic" should be included in the response
-    And folder "fileToShareWithPublic.txt" should be included in the response
+    And folder "/Shares/folderToShareWithPublic" should be included in the response
+    And folder "/Shares/fileToShareWithPublic.txt" should be included in the response
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -73,10 +79,10 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And exactly 4 files or folders should be included in the response
-    And folder "folderToShareWithUser" should be included in the response
-    And file "fileToShareWithUser.txt" should be included in the response
-    And folder "folderToShareWithGroup" should be included in the response
-    And folder "fileToShareWithGroup.txt" should be included in the response
+    And folder "/Shares/folderToShareWithUser" should be included in the response
+    And file "/Shares/fileToShareWithUser.txt" should be included in the response
+    And folder "/Shares/folderToShareWithGroup" should be included in the response
+    And folder "/Shares/fileToShareWithGroup.txt" should be included in the response
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |

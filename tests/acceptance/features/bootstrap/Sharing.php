@@ -1045,6 +1045,31 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then no files or folders should be included in the response
+	 *
+	 * @return void
+	 */
+	public function checkNoFilesFoldersInResponse() {
+		$data = $this->getResponseXml(null, __METHOD__)->data[0];
+		Assert::assertIsObject($data, __METHOD__ . " data not found in response XML");
+		Assert::assertCount(0, $data);
+	}
+
+	/**
+	 * @Then exactly :count file/files or folder/folders should be included in the response
+	 *
+	 * @param string $count
+	 *
+	 * @return void
+	 */
+	public function checkCountFilesFoldersInResponse($count) {
+		$count = (int) $count;
+		$data = $this->getResponseXml(null, __METHOD__)->data[0];
+		Assert::assertIsObject($data, __METHOD__ . " data not found in response XML");
+		Assert::assertCount($count, $data);
+	}
+
+	/**
 	 * @Then /^(?:file|folder|entry) "([^"]*)" should be included in the response$/
 	 *
 	 * @param string $filename
@@ -1705,6 +1730,34 @@ trait Sharing {
 			$user,
 			'GET',
 			$url,
+			null
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" gets the (user|group|user and group|public link) shares shared with him using the sharing API$/
+	 *
+	 * @param string $user
+	 * @param string $shareType
+	 *
+	 * @return void
+	 */
+	public function userGetsFilteredSharesSharedWithHimUsingTheSharingApi($user, $shareType) {
+		$user = $this->getActualUsername($user);
+		if ($shareType === 'public link') {
+			$shareType = 'public_link';
+		}
+		if ($shareType === 'user and group') {
+			$rawShareTypes = SharingHelper::SHARE_TYPES['user'] . "," . SharingHelper::SHARE_TYPES['group'];
+		} else {
+			$rawShareTypes = SharingHelper::SHARE_TYPES[$shareType];
+		}
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
+			'GET',
+			$this->getSharesEndpointPath(
+				"?shared_with_me=true&share_types=" . $rawShareTypes
+			),
 			null
 		);
 	}
