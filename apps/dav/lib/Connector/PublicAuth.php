@@ -95,10 +95,10 @@ class PublicAuth extends AbstractBasic {
 		// check if the share is password protected
 		if ($share->getPassword() !== null) {
 			if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
-				if ($this->shareManager->checkPassword($share, $password)) {
-					return true;
-				} elseif ($this->session->exists('public_link_authenticated')
+				if ($this->session->exists('public_link_authenticated')
 					&& $this->session->get('public_link_authenticated') === (string)$share->getId()) {
+					return true;
+				} elseif ($this->shareManager->checkPassword($share, $password)) {
 					return true;
 				} else {
 					if (\in_array('XMLHttpRequest', \explode(',', $this->request->getHeader('X-Requested-With')))) {
