@@ -20,9 +20,11 @@
  */
 namespace OCA\DAV\Files\PublicFiles;
 
+use OC\User\LoginException;
 use OCP\Share\IManager;
 use OCP\Share\IShare;
 use Sabre\DAV\Auth\Backend\AbstractBasic;
+use Sabre\DAV\Exception\NotAuthenticated;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\INode;
 use Sabre\DAV\Server;
@@ -86,6 +88,7 @@ class PublicSharingAuth extends AbstractBasic {
 	 * @param ResponseInterface $response
 	 * @return array
 	 * @throws NotFound
+	 * @throws NotAuthenticated
 	 */
 	public function check(RequestInterface $request, ResponseInterface $response) {
 		$node = $this->resolveShare($request->getPath());
@@ -98,7 +101,11 @@ class PublicSharingAuth extends AbstractBasic {
 			return [true, 'principals/system/public'];
 		}
 
-		return parent::check($request, $response);
+		try {
+			return parent::check($request, $response);
+		} catch (LoginException $e) {
+			throw new NotAuthenticated($e->getMessage(), $e->getCode(), $e);
+		}
 	}
 
 	/**
