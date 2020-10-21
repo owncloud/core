@@ -96,7 +96,6 @@ Feature: persistent-locking in case of a public link
       | old                       | exclusive  |
 
   @issue-36064
-  #after fixing the issue delete this Scenario and use the one above
   Scenario Outline: Overwrite a file inside a locked subfolder of a public folder
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
     And user "Alice" has locked folder "PARENT/CHILD" setting following properties

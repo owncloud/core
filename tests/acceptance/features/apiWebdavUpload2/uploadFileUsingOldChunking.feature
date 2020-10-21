@@ -9,7 +9,7 @@ Feature: upload file using old chunking
     And using old DAV path
     And user "Alice" has been created with default attributes and skeleton files
 
-  @issue-36115
+  @skipOnOcV10 @issue-36115
   Scenario: Upload chunked file asc
     When user "Alice" uploads the following "3" chunks to "/myChunkedFile.txt" with old chunking and using the WebDAV API
       | number | content |
@@ -18,8 +18,7 @@ Feature: upload file using old chunking
       | 3      | CCCCC   |
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions for user "Alice"
-      #| ETag | /^"[a-f0-9:\.]{1,32}"$/ |
-      | ETag | /^[a-f0-9:\.]{1,32}$/ |
+      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
     Then as "Alice" file "/myChunkedFile.txt" should exist
     And the content of file "/myChunkedFile.txt" for user "Alice" should be "AAAAABBBBBCCCCC"
 
