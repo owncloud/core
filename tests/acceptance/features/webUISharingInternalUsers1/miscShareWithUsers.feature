@@ -292,7 +292,7 @@ Feature: misc scenarios on sharing with internal users
       just letting you know that %username% shared simple-folder with you.
       """
 
-  @issue-35787
+  @issue-35787 @skipOnOcV10
   Scenario: share a skeleton file after changing its content to a user before the user has logged in
     Given these users have been created with default attributes and skeleton files:
       | username |
@@ -303,8 +303,7 @@ Feature: misc scenarios on sharing with internal users
     When the user shares file "lorem.txt" with user "Alice" using the webUI
     Then the content of file "lorem.txt" for user "Brian" should be "edited original content"
     When the user re-logs in as "Alice" using the webUI
-    Then the content of "lorem.txt" should be the same as the original "lorem.txt"
-#   And the content of file "lorem.txt" for user "Alice" should be "edited original content"
+    And the content of file "lorem.txt" for user "Alice" should be "edited original content"
 
   @skipOnOcV10.3
   Scenario: share with two users having same display name
