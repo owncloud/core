@@ -163,7 +163,7 @@ Feature: Share by public link
     And the public accesses the last created public link using the webUI
     Then the content of the file shared by the last public link should be the same as "lorem.txt"
 
-  @issue-35177
+  @skipOnOcV10 @issue-35177
   Scenario: User renames a subfolder among subfolders with same names which are shared by public links
     Given user "Alice" has created folder "nf1"
     And user "Alice" has created folder "nf1/newfolder"
@@ -181,11 +181,10 @@ Feature: Share by public link
     And the user has browsed to the shared-by-link page
     When the user renames folder "newfolder" to "newfolder1" using the webUI
     Then folder "newfolder1" should be listed on the webUI
-    And folder "newfolder" should not be listed on the webUI
-    #And folder "newfolder" should be listed on the webUI
+    And folder "newfolder" should be listed on the webUI
     And folder "test" should be listed on the webUI
 
-  @issue-35174
+  @skipOnOcV10 @issue-35174
   Scenario: User renames folders with different path in Shared by link page
     Given user "Alice" has created folder "nf1"
     And user "Alice" has created folder "nf1/newfolder"
@@ -197,10 +196,9 @@ Feature: Share by public link
     And user "Alice" has logged in using the webUI
     And the user has browsed to the shared-by-link page
     When the user renames folder "test" to "newfolder" using the webUI
-    Then near folder "test" a tooltip with the text 'newfolder already exists' should be displayed on the webUI
-      #Then the following folder should be listed on the webUI
-        #| newfolder |
-        #| newfolder |
+    Then the following folder should be listed on the webUI
+      | newfolder |
+      | newfolder |
 
   @skipOnOcV10.3
   Scenario: user tries to deletes the expiration date of already existing public link using webUI when expiration date is enforced
