@@ -156,53 +156,33 @@ class FavoritesContext implements Context {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" in folder "([^"]*)" should (not|)\s?have favorited the following elements$/
+	 * @Then /^user "([^"]*)" should (not|)\s?have favorited the following elements$/
 	 *
 	 * @param string $user
-	 * @param string $folder
 	 * @param string $shouldOrNot (not|)
 	 * @param TableNode $expectedElements
 	 *
 	 * @return void
 	 */
 	public function checkFavoritedElements(
-		$user, $folder, $shouldOrNot, $expectedElements
+		$user, $shouldOrNot, $expectedElements
 	) {
 		$user = $this->featureContext->getActualUsername($user);
-		$this->userListsFavoriteOfFolder($user, $folder, null);
+		$this->userListsFavorites($user, null);
 		$this->featureContext->propfindResultShouldContainEntries(
 			$shouldOrNot, $expectedElements, $user
 		);
 	}
 
 	/**
-	 * @Then /^the user in folder "([^"]*)" should (not|)\s?have favorited the following elements$/
-	 *
-	 * @param string $folder
-	 * @param string $shouldOrNot (not|)
-	 * @param TableNode $expectedElements
-	 *
-	 * @return void
-	 */
-	public function checkFavoritedElementsForCurrentUser(
-		$folder, $shouldOrNot, $expectedElements
-	) {
-		$this->checkFavoritedElements(
-			$this->featureContext->getCurrentUser(),
-			$folder, $shouldOrNot, $expectedElements
-		);
-	}
-
-	/**
-	 * @When /^user "([^"]*)" lists the favorites of folder "([^"]*)" and limits the result to ([\d*]) elements using the WebDAV API$/
+	 * @When /^user "([^"]*)" lists the favorites and limits the result to ([\d*]) elements using the WebDAV API$/
 	 *
 	 * @param string $user
-	 * @param string $folder
 	 * @param int $limit
 	 *
 	 * @return void
 	 */
-	public function userListsFavoriteOfFolder($user, $folder, $limit = null) {
+	public function userListsFavorites($user, $limit = null) {
 		$renamedUser = $this->featureContext->getActualUsername($user);
 		$baseUrl = $this->featureContext->getBaseUrl();
 		$password = $this->featureContext->getPasswordForUser($user);
@@ -224,20 +204,6 @@ class FavoritesContext implements Context {
 			$this->featureContext->getDavPathVersion()
 		);
 		$this->featureContext->setResponse($response);
-	}
-
-	/**
-	 * @When /^the user lists the favorites of folder "([^"]*)" and limits the result to ([\d*]) elements using the WebDAV API$/
-	 *
-	 * @param string $folder
-	 * @param int $limit
-	 *
-	 * @return void
-	 */
-	public function listFavoriteOfFolder($folder, $limit = null) {
-		$this->userListsFavoriteOfFolder(
-			$this->featureContext->getCurrentUser(), $folder, $limit
-		);
 	}
 
 	/**

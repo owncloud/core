@@ -82,7 +82,7 @@ Feature: favorite
     And user "Alice" favorites element "/textfile0.txt" using the WebDAV API
     And user "Alice" favorites element "/textfile1.txt" using the WebDAV API
     Then the HTTP status code should be "207"
-    And user "Alice" in folder "/" should have favorited the following elements
+    And user "Alice" should have favorited the following elements
       | /FOLDER        |
       | /textfile0.txt |
       | /textfile1.txt |
@@ -102,10 +102,10 @@ Feature: favorite
     And user "Alice" favorites element "/subfolder/textfile2.txt" using the WebDAV API
     And user "Alice" unfavorites element "/subfolder/textfile1.txt" using the WebDAV API
     Then the HTTP status code should be "207"
-    And user "Alice" in folder "/subfolder" should have favorited the following elements
+    And user "Alice" should have favorited the following elements
       | /subfolder/textfile0.txt |
       | /subfolder/textfile2.txt |
-    And user "Alice" in folder "/subfolder" should not have favorited the following elements
+    And user "Alice" should not have favorited the following elements
       | /subfolder/textfile1.txt |
     Examples:
       | dav_version |
@@ -121,7 +121,7 @@ Feature: favorite
     And user "Alice" has shared folder "/shared" with user "Brian"
     And user "Brian" has favorited element "/shared/shared_file.txt"
     When user "Brian" moves file "/shared/shared_file.txt" to "/taken_out.txt" using the WebDAV API
-    Then user "Brian" in folder "/" should have favorited the following elements
+    Then user "Brian" should have favorited the following elements
       | /taken_out.txt |
     Examples:
       | dav_version |
@@ -136,7 +136,7 @@ Feature: favorite
     And user "Alice" has favorited element "/textfile2.txt"
     And user "Alice" has favorited element "/textfile3.txt"
     And user "Alice" has favorited element "/textfile4.txt"
-    When user "Alice" lists the favorites of folder "/" and limits the result to 3 elements using the WebDAV API
+    When user "Alice" lists the favorites and limits the result to 3 elements using the WebDAV API
     Then the search result should contain any "3" of these entries:
       | /textfile0.txt |
       | /textfile1.txt |
@@ -164,7 +164,7 @@ Feature: favorite
     And user "Alice" has favorited element "/subfolder/textfile3.txt"
     And user "Alice" has favorited element "/subfolder/textfile4.txt"
     And user "Alice" has favorited element "/subfolder/textfile5.txt"
-    When user "Alice" lists the favorites of folder "/" and limits the result to 3 elements using the WebDAV API
+    When user "Alice" lists the favorites and limits the result to 3 elements using the WebDAV API
     Then the search result should contain any "3" of these entries:
       | /subfolder/textfile0.txt |
       | /subfolder/textfile1.txt |
@@ -209,7 +209,7 @@ Feature: favorite
     When user "Alice" favorites element "/PARENT/parent.txt" using the WebDAV API
     And user "Alice" favorites element "/PARENT" using the WebDAV API
     Then the HTTP status code should be "207"
-    And user "Alice" in folder "/" should have favorited the following elements
+    And user "Alice" should have favorited the following elements
       | /PARENT            |
       | /PARENT/parent.txt |
     Examples:
