@@ -164,7 +164,7 @@ Feature: admin storage settings
     And the user re-logs in as "Brian" using the webUI
     And folder "local_storage1" should be listed on the webUI
 
-  @issue-36803
+  @issue-36803 @skipOnOcV10
   @issue-files_primary_s3-351 @skipOnStorage:ceph @skipOnStorage:scality
   Scenario: applicable user is not able to share top-level of read-only storage
     Given these users have been created with default attributes and without skeleton files:
@@ -179,7 +179,4 @@ Feature: admin storage settings
     And the administrator has enabled sharing for the last created local storage mount using the webUI
     And the user has re-logged in as "Alice" using the webUI
     When the user shares folder "local_storage1" with user "Brian" using the webUI
-    Then notifications should be displayed on the webUI with the text
-      | Cannot set the requested share permissions for local_storage1 |
-   # And as "Brian" folder "local_storage1" should exist
-    And as "Brian" folder "local_storage1" should not exist
+    And as "Brian" folder "local_storage1" should exist
