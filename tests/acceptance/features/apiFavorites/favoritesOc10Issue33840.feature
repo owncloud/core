@@ -21,7 +21,7 @@ Feature: current oC10 behavior for issue-33840
     And user "Alice" has favorited element "/textfile2.txt"
     And user "Alice" has favorited element "/textfile3.txt"
     And user "Alice" has favorited element "/textfile4.txt"
-    When user "Alice" lists the favorites of folder "/" and limits the result to 3 elements using the WebDAV API
+    When user "Alice" lists the favorites and limits the result to 3 elements using the WebDAV API
     #Then the search result should contain any "3" of these entries:
     Then the search result should contain any "0" of these entries:
       | /textfile0.txt |
@@ -50,7 +50,7 @@ Feature: current oC10 behavior for issue-33840
     And user "Alice" has favorited element "/subfolder/textfile3.txt"
     And user "Alice" has favorited element "/subfolder/textfile4.txt"
     And user "Alice" has favorited element "/subfolder/textfile5.txt"
-    When user "Alice" lists the favorites of folder "/" and limits the result to 3 elements using the WebDAV API
+    When user "Alice" lists the favorites and limits the result to 3 elements using the WebDAV API
     #Then the search result should contain any "3" of these entries:
     Then the search result should contain any "0" of these entries:
       | /subfolder/textfile0.txt |

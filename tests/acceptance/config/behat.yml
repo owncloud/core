@@ -84,6 +84,8 @@ default:
         - FeatureContext: *common_feature_context_params
         - FavoritesContext:
         - WebDavPropertiesContext:
+        - AppConfigurationContext:
+        - OccContext:
 
     apiFederationToRoot1:
       paths:
