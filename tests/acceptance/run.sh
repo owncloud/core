@@ -495,13 +495,6 @@ function run_behat_tests() {
 					UNEXPECTED_PASSED_SCENARIOS+=("${SUITE_SCENARIO}")
 				fi
 			done < ${EXPECTED_FAILURES_FILE}
-
-		if [ ${#UNEXPECTED_PASSED_SCENARIOS[@]} = 0 ]
-		then
-			echo "Success - all failures were expected"
-		else
-			echo "Failure - actual and expected failures did not match"
-		fi
 	else
 		for FAILED_SCENARIO_PATH in ${FAILED_SCENARIO_PATHS}
 		do
