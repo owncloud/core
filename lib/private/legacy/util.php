@@ -1017,12 +1017,16 @@ class OC_Util {
 		return $errors;
 	}
 
-	private static function checkPreSigneUrl() {
+	/**
+	 * @return bool
+	 * @throws LoginException
+	 */
+	private static function checkPreSignedUrl(): bool {
 		$request = \Sabre\HTTP\Sapi::createFromServerArray($_SERVER);
 		$verifier = new Verifier($request, \OC::$server->getConfig());
 		if ($verifier->isSignedRequest()) {
 			if (!$verifier->signedRequestIsValid()) {
-				return false;
+				throw new LoginException('Invalid pre signed url');
 			}
 
 			$urlCredential = $verifier->getUrlCredential();
@@ -1040,20 +1044,24 @@ class OC_Util {
 			\OC::$server->getSession()->close();
 			return true;
 		}
+		return false;
 	}
+
 	/**
 	 * Check if the user is logged in, redirects to home if not. With
 	 * redirect URL parameter to the request URI.
 	 *
+	 * @param bool $allowPreSigned
 	 * @return void
+	 * @throws LoginException
 	 */
-	public static function checkLoggedIn($allowPreSigned = false) {
+	public static function checkLoggedIn($allowPreSigned = false): void {
+		if ($allowPreSigned && self::checkPreSignedUrl()) {
+			return;
+		}
 		// Check if we are a user
 		$userSession = \OC::$server->getUserSession();
 		if ($userSession && !$userSession->isLoggedIn()) {
-			if ($allowPreSigned && self::checkPreSigneUrl()) {
-				return;
-			}
 			\header('Location: ' . \OC::$server->getURLGenerator()->linkToRoute(
 						'core.login.showLoginForm',
 						[

@@ -60,17 +60,18 @@ class Verifier {
 		$urlDate = $params['OC-Date'];
 		$urlExpires = $params['OC-Expires'];
 		$urlVerb = $params['OC-Verb'];
+		$algo = $params['OC-Algo'] ?? 'PBKDF2/10000-SHA512';
 
-		unset($params['OC-Signature']);
-
-		$qp = \http_build_query($params);
+		unset($params['OC-Signature'], $params['OC-Algo']);
+		
+		$qp = \preg_replace('/%5B\d+%5D/', '%5B%5D', \http_build_query($params));
 		$url =  \Sabre\Uri\parse($this->getAbsoluteUrl());
 		$url['query'] = $qp;
 		$url = \Sabre\Uri\build($url);
 
 		$signingKey = $this->config->getUserValue($urlCredential, 'core', 'signing-key');
 
-		$hash = \hash_pbkdf2("sha512", $url, $signingKey, 10000, 64, false);
+		$hash = $this->computeHash($algo, $url, $signingKey);
 		if ($hash !== $urlSignature) {
 			return false;
 		}
@@ -101,5 +102,28 @@ class Verifier {
 
 	private function getMethod(): string {
 		return $this->request->getMethod();
+	}
+
+	/**
+	 * @param string $algo
+	 * @param string $url
+	 * @param $signingKey
+	 * @return false|mixed|string
+	 */
+	protected function computeHash(string $algo, string $url, $signingKey) {
+		if (\preg_match('/^(.*)\/(.*)-(.*)$/', $algo, $output)) {
+			if ($output[1] !== 'PBKDF2') {
+				return false;
+			}
+			if ($output[3] !== 'SHA512') {
+				return false;
+			}
+			$iterations = (int)$output[2];
+			if ($iterations <= 0) {
+				return false;
+			}
+			return \hash_pbkdf2("sha512", $url, $signingKey, $iterations, 64, false);
+		}
+		return false;
 	}
 }
