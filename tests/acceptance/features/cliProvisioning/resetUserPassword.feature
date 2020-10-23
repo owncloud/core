@@ -27,20 +27,13 @@ Feature: reset user password
       Use the following link to reset your password: <a href=
       """
 
-  @skipOnEncryption @issue-36985
+  @skipOnOcV10 @skipOnEncryption @issue-36985
   Scenario: user should get email when the administrator changes their password and specifies to also send email
     Given these users have been created with skeleton files:
       | username       | password  | displayname | email                    |
       | brand-new-user | %regular% | New user    | brand.new.user@oc.com.np |
     When the administrator resets the password of user "brand-new-user" to "%alt1%" sending email using the occ command
-    Then the command should have been successful
-    And the command output should contain the text "Successfully reset password for %username%" about user "brand-new-user"
-    And the email address "brand.new.user@oc.com.np" should have received an email with the body containing
-      """
-      Password changed successfully
-      """
-    And the content of file "textfile0.txt" for user "brand-new-user" using password "%alt1%" should be "ownCloud test text file 0" plus end-of-line
-    But user "brand-new-user" using password "%regular%" should not be able to download file "textfile0.txt"
+    Then the command should have failed with exit code 1
 
   Scenario: administrator gets error message while trying to reset user password with send email when the email address of the user is not setup
     Given these users have been created with skeleton files:

@@ -60,19 +60,18 @@ Feature: create local storage from the command line
     And as "Alice" folder "/local_storage2" should exist
     And the content of file "/local_storage2/file-in-local-storage.txt" for user "Alice" should be "this is a file in local storage"
 
-  @issue-36713
+  @issue-36713 @skipOnOcV10
   Scenario: create local storage that already exists
     Given the administrator has created the local storage mount "local_storage2"
     And the administrator has uploaded file with content "this is a file in local storage" to "/local_storage2/file-in-local-storage.txt"
     When the administrator creates the local storage mount "local_storage2" using the occ command
-    #Then the command should have failed with exit code 1
-    Then the command should have been successful
+    Then the command should have failed with exit code 1
     And as "Alice" folder "/local_storage2" should exist
     And as "Brian" folder "/local_storage2" should exist
     And the content of file "/local_storage2/file-in-local-storage.txt" for user "Alice" should be "this is a file in local storage"
     And the content of file "/local_storage2/file-in-local-storage.txt" for user "Brian" should be "this is a file in local storage"
 
-  @issue-36719
+  @issue-36719 @skipOnOcV10
   Scenario: create local storage that matches an existing folder of a user
     Given user "Alice" has created folder "reference"
     And user "Alice" has uploaded file with content "this is a reference file" to "/reference/reference-file.txt"
@@ -86,11 +85,11 @@ Feature: create local storage from the command line
     And the content of file "/reference/file-in-local-storage.txt" for user "Alice" should be "this is a file in local storage"
     And the content of file "/reference/file-in-local-storage.txt" for user "Brian" should be "this is a file in local storage"
     And the content of file "/other/other-file.txt" for user "Alice" should be "this is another file"
-    # Some other behaviour is to be defined here. See discussion in the issue.
-    # How can Alice get access to their own previous folder with file?
-    But as "Alice" file "/reference/reference-file.txt" should not exist
+    And as "Alice" folder "/reference (2)" should exist
+    And as "Alice" file "/reference (2)/reference-file.txt" should exist
+    And the content of file "/reference (2)/reference-file.txt" for user "Alice" should be "this is a reference file"
 
-  @issue-36719
+  @issue-36719 @skipOnOcV10
   Scenario: create local storage that matches an existing shared folder of a user
     Given user "Alice" has created folder "reference"
     And user "Alice" has uploaded file with content "this is a reference file" to "/reference/reference-file.txt"
@@ -107,12 +106,14 @@ Feature: create local storage from the command line
     And the content of file "/reference/file-in-local-storage.txt" for user "Brian" should be "this is a file in local storage"
     And the content of file "/other/other-file.txt" for user "Alice" should be "this is another file"
     And the content of file "/other/other-file.txt" for user "Brian" should be "this is another file"
-    # Some other behaviour is to be defined here. See discussion in the issue.
-    # How can Alice and Brian get access to their previous shared folder with file?
-    But as "Alice" file "/reference/reference-file.txt" should not exist
-    And as "Brian" file "/reference/reference-file.txt" should not exist
+    And as "Alice" folder "/reference (2)" should exist
+    And as "Alice" file "/reference (2)/reference-file.txt" should exist
+    And the content of file "/reference (2)/reference-file.txt" for user "Alice" should be "this is a reference file"
+    And as "Brian" folder "/reference (2)" should exist
+    And as "Brian" file "/reference (2)/reference-file.txt" should exist
+    And the content of file "/reference (2)/reference-file.txt" for user "Brian" should be "this is a reference file"
 
-  @issue-36719
+  @issue-36719 @skipOnOcV10
   Scenario: create local storage that matches an existing shared folder, and the sharee has renamed the received folder
     Given user "Alice" has created folder "reference"
     And user "Alice" has uploaded file with content "this is a reference file" to "/reference/reference-file.txt"
@@ -130,8 +131,9 @@ Feature: create local storage from the command line
     And the content of file "/reference/file-in-local-storage.txt" for user "Brian" should be "this is a file in local storage"
     And the content of file "/other/other-file.txt" for user "Alice" should be "this is another file"
     And the content of file "/other/other-file.txt" for user "Brian" should be "this is another file"
-    # Brian receives "/reference" from Alice and has renamed it to "/reference1"
-    # it would be helpful if they could still see "/reference1" as well as the local storage called "/reference"
-    And as "Brian" file "/reference1/reference-file.txt" should not exist
-    #And as "Brian" file "/reference1/reference-file.txt" should exist
-    #And the content of file "/reference1/reference-file.txt" for user "Brian" should be "this is a reference file"
+    And as "Alice" folder "/reference (2)" should exist
+    And as "Alice" file "/reference (2)/reference-file.txt" should exist
+    And the content of file "/reference (2)/reference-file.txt" for user "Alice" should be "this is a reference file"
+    And as "Brian" folder "/reference1" should exist
+    And as "Brian" file "/reference1/reference-file.txt" should exist
+    And the content of file "/reference1/reference-file.txt" for user "Brian" should be "this is a reference file"

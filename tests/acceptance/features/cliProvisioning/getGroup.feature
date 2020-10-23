@@ -39,7 +39,7 @@ Feature: get group
     Then the command should have failed with exit code 1
     And the command output should contain the text 'Group nonexistentgroup does not exist'
 
-  @skipOnLDAP @issue-499
+  @skipOnLDAP @issue-user_ldap-499
   Scenario Outline: admin tries to get users in a group but using wrong case of the group name
     Given group "<group_id1>" has been created
     When the administrator gets the users in group "<group_id2>" in JSON format using the occ command
