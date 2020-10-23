@@ -109,6 +109,7 @@
     "So-so password" : "Contraseña pasable",
     "Good password" : "Contraseña buena",
     "Strong password" : "Contraseña fuerte",
+    "Passwords do not match" : "Las contraseñas no coinciden.",
     "Groups" : "Grupos",
     "Unable to delete {objName}" : "No es posible eliminar {objName}",
     "Error creating group: {message}" : "Error al crear el grupo: {message}",
