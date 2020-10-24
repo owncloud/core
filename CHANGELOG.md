@@ -76,6 +76,7 @@ Summary
 * Change - Update sabre dependencies: [#37975](https://github.com/owncloud/core/pull/37975)
 * Change - Update Symfony components to 4.4.15: [#37975](https://github.com/owncloud/core/pull/37975)
 * Change - Update opis/closure (3.5.7 => 3.6.0): [#38004](https://github.com/owncloud/core/pull/38004)
+* Change - Update symfony/polyfill (1.18.1 => 1.19.0): [#38032](https://github.com/owncloud/core/pull/38032)
 * Enhancement - Cleanup encryption config values on disabling encryption: [#35980](https://github.com/owncloud/core/pull/35980)
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
@@ -562,6 +563,16 @@ Details
 * Change - Update opis/closure (3.5.7 => 3.6.0): [#38004](https://github.com/owncloud/core/pull/38004)
 
    https://github.com/owncloud/core/pull/38004
+
+* Change - Update symfony/polyfill (1.18.1 => 1.19.0): [#38032](https://github.com/owncloud/core/pull/38032)
+
+   The following symfony/polyfill components have been updated to version 1.19.0:
+
+   Symfony/polyfill-ctype symfony/polyfill-iconv symfony/polyfill-intl-idn
+   symfony/polyfill-intl-normalizer symfony/polyfill-mbstring symfony/polyfill-php70
+   symfony/polyfill-php72 symfony/polyfill-php73 symfony/polyfill-php80
+
+   https://github.com/owncloud/core/pull/38032
 
 * Enhancement - Cleanup encryption config values on disabling encryption: [#35980](https://github.com/owncloud/core/pull/35980)
 
