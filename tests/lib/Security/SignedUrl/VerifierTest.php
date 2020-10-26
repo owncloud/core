@@ -42,11 +42,11 @@ class VerifierTest extends TestCase {
 		$config->method('getUserValue')->willReturn('1234567890');
 		$v = new Verifier($r, $config, new \DateTime('2019-05-14T11:01:58.135Z', null));
 		if ($isSignedUrl) {
-			$this->assertTrue($v->isSignedRequest());
-			$this->assertEquals('alice', $v->getUrlCredential());
-			$this->assertEquals($isUrlValid, $v->signedRequestIsValid());
+			self::assertTrue($v->isSignedRequest());
+			self::assertEquals('alice', $v->getUrlCredential());
+			self::assertEquals($isUrlValid, $v->signedRequestIsValid());
 		} else {
-			$this->assertFalse($v->isSignedRequest());
+			self::assertFalse($v->isSignedRequest());
 		}
 	}
 
@@ -56,6 +56,8 @@ class VerifierTest extends TestCase {
 			'no signature' => [false, false, 'get', 'http://cloud.example.net/?OC-Credential=alice&OC-Date=2019-05-14T11%3A01%3A58.135Z&OC-Expires=1200&OC-Verb=GET'],
 			'wrong method' => [true, false, 'post', 'http://cloud.example.net/?OC-Credential=alice&OC-Date=2019-05-14T11%3A01%3A58.135Z&OC-Expires=1200&OC-Verb=GET&OC-Signature=f9e53a1ee23caef10f72ec392c1b537317491b687bfdd224c782be197d9ca2b6'],
 			'invalid signature' => [true, false, 'get', 'http://cloud.example.net/?OC-Credential=alice&OC-Date=2019-05-14T11%3A01%3A58.135Z&OC-Expires=1200&OC-Verb=GET&OC-Signature=f9e53a1ee23caef10f72ec392c1b537317491b687bfdd224c782be197d9ca2b'],
+			'different algo' => [true, false, 'post', 'http://cloud.example.net/?OC-Credential=alice&OC-Date=2019-05-14T11%3A01%3A58.135Z&OC-Expires=1200&OC-Verb=GET&OC-Algo=PBKDF2/5-SHA512&OC-Signature=f9e53a1ee23caef10f72ec392c1b537317491b687bfdd224c782be197d9ca2b6'],
+			'unsupported algo' => [true, false, 'post', 'http://cloud.example.net/?OC-Credential=alice&OC-Date=2019-05-14T11%3A01%3A58.135Z&OC-Expires=1200&OC-Verb=GET&OC-Algo=PBKDF2/x-SHA512&OC-Signature=f9e53a1ee23caef10f72ec392c1b537317491b687bfdd224c782be197d9ca2b6'],
 		];
 	}
 }

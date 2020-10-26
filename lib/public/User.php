@@ -150,7 +150,7 @@ class User {
 	 * redirect URL parameter to the request URI.
 	 * @since 5.0.0
 	 */
-	public static function checkLoggedIn() {
-		\OC_Util::checkLoggedIn();
+	public static function checkLoggedIn($allowPreSigned = false) {
+		\OC_Util::checkLoggedIn($allowPreSigned);
 	}
 }

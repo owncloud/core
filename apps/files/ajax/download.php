@@ -29,7 +29,7 @@
  */
 
 // Check if we are a user
-OCP\User::checkLoggedIn();
+OCP\User::checkLoggedIn(true);
 \OC::$server->getSession()->close();
 
 // files can be an array with multiple "files[]=one.txt&files[]=two.txt" or a single file with "files=filename.txt"
