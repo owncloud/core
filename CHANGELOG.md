@@ -625,8 +625,10 @@ Details
    image tag (for thumbnails) or to another browser window to trigger a download.
 
    https://github.com/owncloud/core/pull/37634
+   https://github.com/owncloud/core/pull/38029
    https://github.com/owncloud/phoenix/pull/3797
    https://github.com/owncloud/owncloud-sdk/pull/504
+   https://github.com/owncloud/owncloud-sdk/pull/616
    https://github.com/owncloud/ocis-proxy/pull/75
 
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
