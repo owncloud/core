@@ -182,3 +182,18 @@ Feature: sharing
       | /shared/shared_file.txt | 2               | 404              | /Shares/shared_file.txt |
       | /shared                 | 1               | 200              | /Shares/shared          |
       | /shared                 | 2               | 404              | /Shares/shared          |
+
+  @issue-ocis-720
+  Scenario Outline: delete a share
+    Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
+    When user "Alice" deletes the last share using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    When user "Brian" requests "/remote.php/dav/files/Brian" with "PROPFIND" using basic auth
+    Then the HTTP status code should be "207"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
