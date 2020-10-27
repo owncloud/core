@@ -26,7 +26,7 @@ body {
 #body-login {
 	text-align: center;
 	background-image: url('../img/background.jpg');
-	background-position: 50% 50%;
+	background-position: right bottom;
 	background-repeat: no-repeat;
 	background-size: cover;
 }
