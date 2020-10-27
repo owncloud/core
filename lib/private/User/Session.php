@@ -1157,11 +1157,17 @@ class Session implements IUserSession, Emitter {
 	}
 
 	public function verifyAuthHeaders($request) {
+		\OC::$server->getEventLogger()->start('verify_auth_headers', 'Verify auth headers');
+
 		$shallLogout = false;
 		try {
 			$lastUser = null;
 			foreach ($this->getAuthModules(true) as $module) {
+				$moduleName = get_class($module);
+				\OC::$server->getEventLogger()->start("verify_auth_headers_$moduleName", "Verify auth headers: {$moduleName}");
 				$user = $module->auth($request);
+				\OC::$server->getEventLogger()->end("verify_auth_headers_$moduleName");
+
 				if ($user !== null) {
 					if ($this->isLoggedIn() && $this->getUser()->getUID() !== $user->getUID()) {
 						$shallLogout = true;
@@ -1177,6 +1183,8 @@ class Session implements IUserSession, Emitter {
 		} catch (Exception $ex) {
 			$shallLogout = true;
 		}
+		\OC::$server->getEventLogger()->end('verify_auth_headers');
+
 		if ($shallLogout) {
 			// the session is bad -> kill it
 			$this->logout();
