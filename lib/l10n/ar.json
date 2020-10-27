@@ -186,6 +186,7 @@
     "Check the value of \"datadirectory\" in your configuration" : "افحص قيمة \"datadirectory\" في تكوينك",
     "Your Data directory  is invalid" : "دليل البيانات غير صالح",
     "Please check that the data directory contains a file \".ocdata\" in its root." : "يُرجى التأكد من أن دليل البيانات يحتوي على ملف .\".ocdata\" في جذره.",
+    "User unknown" : "مستخدم غيرمعروف",
     "Could not obtain lock type %d on \"%s\"." : "لا يمكن الحصول على نوع تأمين %d في \"%s\".",
     "Storage unauthorized. %s" : "التخزين غير معتمد. %s",
     "Storage incomplete configuration. %s" : "تكوين غير كامل للتخزين. %s",

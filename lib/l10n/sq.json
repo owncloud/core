@@ -187,6 +187,7 @@
     "Check the value of \"datadirectory\" in your configuration" : "Kontrolloni vlerën e \"datadirectory\" te formësimi juaj",
     "Your Data directory  is invalid" : "Drejtoria juaj Data është e pavlefshme",
     "Please check that the data directory contains a file \".ocdata\" in its root." : "Ju lutemi, kontrolloni që drejtoria e të dhënave përmban në rrënjën e saj një kartelë \".ocdata\".",
+    "User unknown" : "Përdorues i panjohur",
     "Could not obtain lock type %d on \"%s\"." : "S’u mor dot lloj kyçjeje %d në \"%s\".",
     "Storage unauthorized. %s" : "Depozitë e paautorizuar. %s",
     "Storage incomplete configuration. %s" : "Formësim jo i plotë i depozitës. %s",

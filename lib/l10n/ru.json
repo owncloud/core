@@ -186,6 +186,7 @@
     "Check the value of \"datadirectory\" in your configuration" : "Проверьте значение \"datadirectory\" в настройках.",
     "Your Data directory  is invalid" : "Ваш каталог данных неверен",
     "Please check that the data directory contains a file \".ocdata\" in its root." : "Убедитесь, что файл \".ocdata\" присутствует в корне каталога данных.",
+    "User unknown" : "Пользователь неизвестен",
     "Could not obtain lock type %d on \"%s\"." : "Не удалось получить блокировку типа %d для \"%s\"",
     "Storage unauthorized. %s" : "Хранилище неавторизовано. %s",
     "Storage incomplete configuration. %s" : "Неполная конфигурация хранилища.  %s",
