@@ -36,7 +36,7 @@ class ShutDownManager implements IShutdownManager {
 	public function __construct() {
 		\register_shutdown_function([$this, 'run']);
 	}
-	
+
 	/**
 	 * Any kind of cleanup should be added with priority LOW.
 	 * Anything which shall be processed before the cleanup routes better
@@ -56,10 +56,12 @@ class ShutDownManager implements IShutdownManager {
 
 	public function run() {
 		\ksort($this->callbacks);
+		\OC::$server->getEventLogger()->start("shutdown", "Running shutdown functions");
 		foreach ($this->callbacks as $callbacks) {
 			foreach ($callbacks as $callback) {
 				$callback();
 			}
 		}
+		\OC::$server->getEventLogger()->end("shutdown");
 	}
 }
