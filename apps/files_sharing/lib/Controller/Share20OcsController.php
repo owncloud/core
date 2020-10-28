@@ -632,17 +632,13 @@ class Share20OcsController extends OCSController {
 					continue;
 				}
 
-				if ($shareType !== Share::SHARE_TYPE_REMOTE) {
-					$shares = \array_merge(
-						$shares,
-						$this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), $shareType, $node, false, -1, 0)
-					);
-				} elseif ($shareType === Share::SHARE_TYPE_REMOTE && $this->shareManager->outgoingServer2ServerSharesAllowed()) {
-					$shares = \array_merge(
-						$shares,
-						$this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), $shareType, $node, false, -1, 0)
-					);
-				}
+				// if outgoingServer2ServerSharesAllowed is false, remote shares shouldn't be
+				// returned. This must be checked in the caller method, so the remote share type
+				// shouldn't be present if outgoing remotes shares aren't allowed.
+				$shares = \array_merge(
+					$shares,
+					$this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), $shareType, $node, false, -1, 0)
+				);
 			}
 		}
 
@@ -707,6 +703,11 @@ class Share20OcsController extends OCSController {
 			Share::SHARE_TYPE_LINK => false,
 			Share::SHARE_TYPE_REMOTE => false,
 		];
+
+		if ($this->shareManager->outgoingServer2ServerSharesAllowed() === false) {
+			// if outgoing remote shares aren't allowed, the remote share type can't be chosen
+			unset($requestedShareTypes[Share::SHARE_TYPE_REMOTE]);
+		}
 		foreach ($shareTypes as $shareType) {
 			if (isset($requestedShareTypes[$shareType])) {
 				$requestedShareTypes[$shareType] = true;
@@ -763,17 +764,10 @@ class Share20OcsController extends OCSController {
 				continue;
 			}
 
-			if ($shareType !== Share::SHARE_TYPE_REMOTE) {
-				$shares = \array_merge(
-					$shares,
-					$this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), $shareType, $path, $reshares, -1, 0)
-				);
-			} elseif ($shareType === Share::SHARE_TYPE_REMOTE && $this->shareManager->outgoingServer2ServerSharesAllowed()) {
-				$shares = \array_merge(
-					$shares,
-					$this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), $shareType, $path, $reshares, -1, 0)
-				);
-			}
+			$shares = \array_merge(
+				$shares,
+				$this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), $shareType, $path, $reshares, -1, 0)
+			);
 		}
 
 		$formatted = [];
