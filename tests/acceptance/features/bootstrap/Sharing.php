@@ -1045,6 +1045,31 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then no files or folders should be included in the response
+	 *
+	 * @return void
+	 */
+	public function checkNoFilesFoldersInResponse() {
+		$data = $this->getResponseXml(null, __METHOD__)->data[0];
+		Assert::assertIsObject($data, __METHOD__ . " data not found in response XML");
+		Assert::assertCount(0, $data);
+	}
+
+	/**
+	 * @Then exactly :count file/files or folder/folders should be included in the response
+	 *
+	 * @param string $count
+	 *
+	 * @return void
+	 */
+	public function checkCountFilesFoldersInResponse($count) {
+		$count = (int) $count;
+		$data = $this->getResponseXml(null, __METHOD__)->data[0];
+		Assert::assertIsObject($data, __METHOD__ . " data not found in response XML");
+		Assert::assertCount($count, $data, __METHOD__ . " the response does not contain $count entries");
+	}
+
+	/**
 	 * @Then /^(?:file|folder|entry) "([^"]*)" should be included in the response$/
 	 *
 	 * @param string $filename
@@ -1710,6 +1735,40 @@ trait Sharing {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" gets the (|pending)\s?(user|group|user and group|public link) shares shared with him using the sharing API$/
+	 *
+	 * @param string $user
+	 * @param string $pending
+	 * @param string $shareType
+	 *
+	 * @return void
+	 */
+	public function userGetsFilteredSharesSharedWithHimUsingTheSharingApi($user, $pending, $shareType) {
+		$user = $this->getActualUsername($user);
+		if ($pending === "pending") {
+			$pendingClause = "&state=" . SharingHelper::SHARE_STATES['pending'];
+		} else {
+			$pendingClause = "";
+		}
+		if ($shareType === 'public link') {
+			$shareType = 'public_link';
+		}
+		if ($shareType === 'user and group') {
+			$rawShareTypes = SharingHelper::SHARE_TYPES['user'] . "," . SharingHelper::SHARE_TYPES['group'];
+		} else {
+			$rawShareTypes = SharingHelper::SHARE_TYPES[$shareType];
+		}
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user,
+			'GET',
+			$this->getSharesEndpointPath(
+				"?shared_with_me=true" . $pendingClause . "&share_types=" . $rawShareTypes
+			),
+			null
+		);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" gets all the shares shared with him that are received as (?:file|folder|entry) "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $user
@@ -1756,6 +1815,35 @@ trait Sharing {
 	 */
 	public function theAdministratorGetsAllSharesSharedByHimUsingTheSharingApi() {
 		$this->userGetsAllSharesSharedByHimUsingTheSharingApi($this->getAdminUsername());
+	}
+
+	/**
+	 * @When /^user "([^"]*)" gets the (user|group|user and group|public link) shares shared by him using the sharing API$/
+	 *
+	 * @param string $user
+	 * @param string $shareType
+	 *
+	 * @return void
+	 */
+	public function userGetsFilteredSharesSharedByHimUsingTheSharingApi($user, $shareType) {
+		$user = $this->getActualUsername($user);
+		if ($shareType === 'public link') {
+			$shareType = 'public_link';
+		}
+		if ($shareType === 'user and group') {
+			$rawShareTypes = SharingHelper::SHARE_TYPES['user'] . "," . SharingHelper::SHARE_TYPES['group'];
+		} else {
+			$rawShareTypes = SharingHelper::SHARE_TYPES[$shareType];
+		}
+		$this->response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			"GET",
+			$this->getSharesEndpointPath("?share_types=" . $rawShareTypes),
+			[],
+			$this->ocsApiVersion
+		);
 	}
 
 	/**

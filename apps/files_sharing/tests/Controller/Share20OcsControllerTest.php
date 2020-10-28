@@ -2850,19 +2850,50 @@ class Share20OcsControllerTest extends TestCase {
 			[
 				null,
 				false,
+				false,
+				[],
 			],
 			[
 				'/requested/path',
 				true,
+				false,
+				[],
 			],
 			[
 				'/requested/path',
 				false,
+				false,
+				[],
 			],
 			[
 				'/requested/path',
 				true,
-				true
+				true,
+				[],
+			],
+			[
+				null,
+				false,
+				false,
+				[\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_REMOTE],
+			],
+			[
+				'/requested/path',
+				true,
+				false,
+				[\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_REMOTE],
+			],
+			[
+				'/requested/path',
+				false,
+				false,
+				[\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_REMOTE],
+			],
+			[
+				'/requested/path',
+				true,
+				true,
+				[\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_REMOTE],
 			],
 		];
 	}
@@ -2870,7 +2901,7 @@ class Share20OcsControllerTest extends TestCase {
 	/**
 	 * @dataProvider providesGetSharesAll
 	 */
-	public function testGetSharesAll($requestedPath, $requestedReshares, $fedAllowed = false) {
+	public function testGetSharesAll($requestedPath, $requestedReshares, $fedAllowed, $shareTypes) {
 		$userShare = $this->newShare();
 		$groupShare = $this->newShare();
 		$linkShare = $this->newShare();
@@ -2910,6 +2941,7 @@ class Share20OcsControllerTest extends TestCase {
 			->will($this->returnValueMap([
 				['path', null, $requestedPath],
 				['reshares', null, $requestedReshares ? 'true' : 'false'],
+				['share_types', '', \implode(',', $shareTypes)],
 		]));
 
 		$this->shareManager->method('outgoingServer2ServerSharesAllowed')->willReturn($fedAllowed);
@@ -2918,16 +2950,38 @@ class Share20OcsControllerTest extends TestCase {
 		$ocs->expects($this->any())->method('formatShare')->will($this->returnArgument(0));
 		$result = $ocs->getShares();
 
-		if ($fedAllowed) {
-			$this->assertCount(4, $result->getData());
-			$this->assertContains($federatedShare, $result->getData(), 'result contains federated share');
-		} else {
-			$this->assertCount(3, $result->getData());
+		if (\count($shareTypes) === 0) {
+			$shareTypes = [
+				\OCP\Share::SHARE_TYPE_USER,
+				\OCP\Share::SHARE_TYPE_GROUP,
+				\OCP\Share::SHARE_TYPE_LINK,
+				\OCP\Share::SHARE_TYPE_REMOTE,
+			];
 		}
 
-		$this->assertContains($userShare, $result->getData(), 'result contains user share');
-		$this->assertContains($groupShare, $result->getData(), 'result contains group share');
-		$this->assertContains($linkShare, $result->getData(), 'result contains link share');
+		foreach ($shareTypes as $shareType) {
+			switch ($shareType) {
+				case \OCP\Share::SHARE_TYPE_USER:
+					$this->assertContains($userShare, $result->getData(), 'result contains user share');
+					break;
+				case \OCP\Share::SHARE_TYPE_GROUP:
+					$this->assertContains($groupShare, $result->getData(), 'result contains group share');
+					break;
+				case \OCP\Share::SHARE_TYPE_LINK:
+					$this->assertContains($linkShare, $result->getData(), 'result contains link share');
+					break;
+				case \OCP\Share::SHARE_TYPE_REMOTE:
+					if ($fedAllowed) {
+						$this->assertContains($federatedShare, $result->getData(), 'result contains federated share');
+					}
+					break;
+			}
+		}
+		if ($fedAllowed && \in_array(\OCP\Share::SHARE_TYPE_REMOTE, $shareTypes, true)) {
+			$this->assertCount(\count($shareTypes), $result->getData());
+		} else {
+			$this->assertCount(\count($shareTypes) - 1, $result->getData());
+		}
 	}
 
 	public function providesGetSharesSharedWithMe() {
@@ -2935,22 +2989,77 @@ class Share20OcsControllerTest extends TestCase {
 			[
 				null,
 				'all',
+				[],
 			],
 			[
 				'/requested/path',
 				'all',
+				[],
 			],
 			[
 				'/requested/path',
 				\OCP\Share::STATE_PENDING,
+				[],
 			],
 			[
 				'/requested/path',
 				\OCP\Share::STATE_ACCEPTED,
+				[],
 			],
 			[
 				'/requested/path',
 				'',
+				[],
+			],
+			[
+				null,
+				'all',
+				[\OCP\Share::SHARE_TYPE_USER],
+			],
+			[
+				'/requested/path',
+				'all',
+				[\OCP\Share::SHARE_TYPE_USER],
+			],
+			[
+				'/requested/path',
+				\OCP\Share::STATE_PENDING,
+				[\OCP\Share::SHARE_TYPE_USER],
+			],
+			[
+				'/requested/path',
+				\OCP\Share::STATE_ACCEPTED,
+				[\OCP\Share::SHARE_TYPE_USER],
+			],
+			[
+				'/requested/path',
+				'',
+				[\OCP\Share::SHARE_TYPE_USER],
+			],
+			[
+				null,
+				'all',
+				[\OCP\Share::SHARE_TYPE_GROUP],
+			],
+			[
+				'/requested/path',
+				'all',
+				[\OCP\Share::SHARE_TYPE_GROUP],
+			],
+			[
+				'/requested/path',
+				\OCP\Share::STATE_PENDING,
+				[\OCP\Share::SHARE_TYPE_GROUP],
+			],
+			[
+				'/requested/path',
+				\OCP\Share::STATE_ACCEPTED,
+				[\OCP\Share::SHARE_TYPE_GROUP],
+			],
+			[
+				'/requested/path',
+				'',
+				[\OCP\Share::SHARE_TYPE_GROUP],
 			],
 		];
 	}
@@ -2958,7 +3067,7 @@ class Share20OcsControllerTest extends TestCase {
 	/**
 	 * @dataProvider providesGetSharesSharedWithMe
 	 */
-	public function testGetSharesSharedWithMe($requestedPath, $stateFilter) {
+	public function testGetSharesSharedWithMe($requestedPath, $stateFilter, $shareTypes) {
 		$testStateFilter = $stateFilter;
 		if ($testStateFilter === '' || $testStateFilter === 'all') {
 			$testStateFilter = \OCP\Share::STATE_ACCEPTED;
@@ -3032,22 +3141,43 @@ class Share20OcsControllerTest extends TestCase {
 				['path', null, $requestedPath],
 				['state', \OCP\Share::STATE_ACCEPTED, $stateFilter],
 				['shared_with_me', null, 'true'],
+				['share_types', '', \implode(',', $shareTypes)],
 		]));
 
 		$ocs = $this->mockFormatShare();
 		$ocs->expects($this->any())->method('formatShare')->will($this->returnArgument(0));
 		$result = $ocs->getShares();
 
-		$this->assertContains($userShare, $result->getData(), 'result contains user share');
-		$this->assertContains($groupShare, $result->getData(), 'result contains group share');
-		$this->assertNotContains($groupShareNonOwner, $result->getData(), 'result does not contain share from same owner');
-		$this->assertNotContains($userShareNoAccess, $result->getData(), 'result does not contain inaccessible share');
-		if ($stateFilter === 'all') {
-			$this->assertCount(3, $result->getData());
-			$this->assertContains($userShareDifferentState, $result->getData(), 'result contains shares from all states');
-		} else {
-			$this->assertCount(2, $result->getData());
-			$this->assertNotContains($userShareDifferentState, $result->getData(), 'result contains only share from requested state');
+		if (empty($shareTypes)) {
+			$shareTypes = [
+				\OCP\Share::SHARE_TYPE_USER,
+				\OCP\Share::SHARE_TYPE_GROUP,
+			];
+		}
+
+		if (\in_array(\OCP\Share::SHARE_TYPE_USER, $shareTypes, true)) {
+			$this->assertContains($userShare, $result->getData(), 'result contains user share');
+			$this->assertNotContains($userShareNoAccess, $result->getData(), 'result does not contain inaccessible share');
+			if ($stateFilter === 'all') {
+				if (\in_array(\OCP\Share::SHARE_TYPE_GROUP, $shareTypes, true)) {
+					$this->assertCount(3, $result->getData());
+				} else {
+					$this->assertCount(2, $result->getData());
+				}
+				$this->assertContains($userShareDifferentState, $result->getData(), 'result contains shares from all states');
+			} else {
+				if (\in_array(\OCP\Share::SHARE_TYPE_GROUP, $shareTypes, true)) {
+					$this->assertCount(2, $result->getData());
+				} else {
+					$this->assertCount(1, $result->getData());
+				}
+				$this->assertNotContains($userShareDifferentState, $result->getData(), 'result contains only share from requested state');
+			}
+		}
+
+		if (\in_array(\OCP\Share::SHARE_TYPE_GROUP, $shareTypes, true)) {
+			$this->assertContains($groupShare, $result->getData(), 'result contains group share');
+			$this->assertNotContains($groupShareNonOwner, $result->getData(), 'result does not contain share from same owner');
 		}
 	}
 
@@ -3109,6 +3239,7 @@ class Share20OcsControllerTest extends TestCase {
 				['path', null, $requestedPath],
 				['state', \OCP\Share::STATE_ACCEPTED, $stateFilter],
 				['shared_with_me', null, 'true'],
+				['share_types', '', ''],
 			]));
 
 		$ocs = $this->mockFormatShare();
