@@ -275,24 +275,26 @@
         },
         {
             "name": "dg/composer-cleaner",
-            "version": "v2.1",
+            "version": "v2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dg/composer-cleaner.git",
-                "reference": "91f865f0b50c66dd647955a0e5ba7745d8086945"
+                "reference": "f1e72fb72a37014e421451185550750205993185"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dg/composer-cleaner/zipball/91f865f0b50c66dd647955a0e5ba7745d8086945",
-                "reference": "91f865f0b50c66dd647955a0e5ba7745d8086945",
+                "url": "https://api.github.com/repos/dg/composer-cleaner/zipball/f1e72fb72a37014e421451185550750205993185",
+                "reference": "f1e72fb72a37014e421451185550750205993185",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^1.0",
-                "php": ">=5.4.0"
+                "composer-plugin-api": "^1.0 || ^2.0",
+                "php": ">=7.1"
             },
             "require-dev": {
-                "nette/tester": "^1.7"
+                "composer/composer": "^1.10 || ^2.0",
+                "nette/tester": "^2.2",
+                "phpstan/phpstan": "^0.12"
             },
             "type": "composer-plugin",
             "extra": {
@@ -317,7 +319,7 @@
             "keywords": [
                 "composer"
             ],
-            "time": "2019-02-05T21:18:31+00:00"
+            "time": "2020-10-27T13:01:26+00:00"
         },
         {
             "name": "doctrine/cache",
