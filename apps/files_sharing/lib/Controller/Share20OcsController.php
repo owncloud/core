@@ -610,51 +610,6 @@ class Share20OcsController extends OCSController {
 	}
 
 	/**
-	 * @param Folder $folder
-	 * @param array $requestedShareTypes a key-value array with the requested share types to
-	 * be returned. The keys of the array are the share types to be returned, and the values
-	 * whether the share type will be returned or not.
-	 * [Share::SHARE_TYPE_USER => true, Share::SHARE_TYPE_GROUP => false]
-	 * @return Result
-	 * @throws NotFoundException
-	 */
-	private function getSharesInDir($folder, $requestedShareTypes) {
-		if (!($folder instanceof Folder)) {
-			return new Result(null, 400, $this->l->t('Not a directory'));
-		}
-
-		$nodes = $folder->getDirectoryListing();
-		/** @var IShare[] $shares */
-		$shares = [];
-		foreach ($nodes as $node) {
-			foreach ($requestedShareTypes as $shareType => $requested) {
-				if (!$requested) {
-					continue;
-				}
-
-				// if outgoingServer2ServerSharesAllowed is false, remote shares shouldn't be
-				// returned. This must be checked in the caller method, so the remote share type
-				// shouldn't be present if outgoing remotes shares aren't allowed.
-				$shares = \array_merge(
-					$shares,
-					$this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), $shareType, $node, false, -1, 0)
-				);
-			}
-		}
-
-		$formatted = [];
-		foreach ($shares as $share) {
-			try {
-				$formatted[] = $this->formatShare($share);
-			} catch (NotFoundException $e) {
-				//Ignore this share
-			}
-		}
-
-		return new Result($formatted);
-	}
-
-	/**
 	 * The getShares function.
 	 * For the share type filter, if it isn't provided or is an empty string,
 	 * all the share types will be returned, otherwise just the requested ones.
@@ -745,11 +700,18 @@ class Share20OcsController extends OCSController {
 		}
 
 		if ($subfiles === 'true') {
-			$result = $this->getSharesInDir($path, $requestedShareTypes);
-			if ($path !== null) {
-				$path->unlock(ILockingProvider::LOCK_SHARED);
+			if (!($path instanceof Folder)) {
+				if ($path !== null) {
+					$path->unlock(ILockingProvider::LOCK_SHARED);
+				}
+				return new Result(null, 400, $this->l->t('Not a directory'));
 			}
-			return $result;
+
+			// we'll get only the folder contents, but not going further in
+			// this matches the previous behaviour of the deleted "getSharesInDir" method
+			$nodes = $path->getDirectoryListing();
+		} else {
+			$nodes = [$path];
 		}
 
 		if ($reshares === 'true') {
@@ -759,15 +721,17 @@ class Share20OcsController extends OCSController {
 		}
 
 		$shares = [];
-		foreach ($requestedShareTypes as $shareType => $requested) {
-			if (!$requested) {
-				continue;
-			}
+		foreach ($nodes as $node) {
+			foreach ($requestedShareTypes as $shareType => $requested) {
+				if (!$requested) {
+					continue;
+				}
 
-			$shares = \array_merge(
-				$shares,
-				$this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), $shareType, $path, $reshares, -1, 0)
-			);
+				$shares = \array_merge(
+					$shares,
+					$this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), $shareType, $node, $reshares, -1, 0)
+				);
+			}
 		}
 
 		$formatted = [];
