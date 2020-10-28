@@ -35,6 +35,7 @@ Summary
 * Bugfix - Fix file target in the accept share API call: [#37973](https://github.com/owncloud/core/pull/37973)
 * Bugfix - Fix for Google Docs not syncing with error "server reported no size": [#37997](https://github.com/owncloud/core/issues/37997)
 * Bugfix - Do not emit "share.failedpasswordcheck" events for authenticated links: [#138](https://github.com/owncloud/brute_force_protection/issues/138)
+* Bugfix - Properly handle StorageNotAvailableException in share external: [#38042](https://github.com/owncloud/core/pull/38042)
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 * Change - Update sabre dependencies: [#37684](https://github.com/owncloud/core/pull/37684)
 * Change - Update google/apiclient from 2.5.0 to 2.6.0 and related dependencies: [#37687](https://github.com/owncloud/core/pull/37687)
@@ -325,6 +326,16 @@ Details
 
    https://github.com/owncloud/brute_force_protection/issues/138
    https://github.com/owncloud/core/pull/38016
+
+* Bugfix - Properly handle StorageNotAvailableException in share external: [#38042](https://github.com/owncloud/core/pull/38042)
+
+   Users with Federated Shares of which storage was unavailable, were encountering issues when
+   working with the shares (e.g. unsharing or listing). It was caused by unhandled exception.
+
+   https://github.com/owncloud/enterprise/issues/4217
+   https://github.com/owncloud/enterprise/issues/4117
+   https://github.com/owncloud/enterprise/issues/2721
+   https://github.com/owncloud/core/pull/38042
 
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 
