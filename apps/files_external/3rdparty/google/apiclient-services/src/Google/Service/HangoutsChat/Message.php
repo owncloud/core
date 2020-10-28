@@ -33,6 +33,8 @@ class Google_Service_HangoutsChat_Message extends Google_Collection
   public $previewText;
   protected $senderType = 'Google_Service_HangoutsChat_User';
   protected $senderDataType = '';
+  protected $slashCommandType = 'Google_Service_HangoutsChat_SlashCommand';
+  protected $slashCommandDataType = '';
   protected $spaceType = 'Google_Service_HangoutsChat_Space';
   protected $spaceDataType = '';
   public $text;
@@ -148,6 +150,20 @@ class Google_Service_HangoutsChat_Message extends Google_Collection
   public function getSender()
   {
     return $this->sender;
+  }
+  /**
+   * @param Google_Service_HangoutsChat_SlashCommand
+   */
+  public function setSlashCommand(Google_Service_HangoutsChat_SlashCommand $slashCommand)
+  {
+    $this->slashCommand = $slashCommand;
+  }
+  /**
+   * @return Google_Service_HangoutsChat_SlashCommand
+   */
+  public function getSlashCommand()
+  {
+    return $this->slashCommand;
   }
   /**
    * @param Google_Service_HangoutsChat_Space

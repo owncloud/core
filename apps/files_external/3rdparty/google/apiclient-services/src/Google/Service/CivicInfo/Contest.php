@@ -25,7 +25,6 @@ class Google_Service_CivicInfo_Contest extends Google_Collection
   protected $districtType = 'Google_Service_CivicInfo_ElectoralDistrict';
   protected $districtDataType = '';
   public $electorateSpecifications;
-  public $id;
   public $level;
   public $numberElected;
   public $numberVotingFor;
@@ -99,14 +98,6 @@ class Google_Service_CivicInfo_Contest extends Google_Collection
   public function getElectorateSpecifications()
   {
     return $this->electorateSpecifications;
-  }
-  public function setId($id)
-  {
-    $this->id = $id;
-  }
-  public function getId()
-  {
-    return $this->id;
   }
   public function setLevel($level)
   {

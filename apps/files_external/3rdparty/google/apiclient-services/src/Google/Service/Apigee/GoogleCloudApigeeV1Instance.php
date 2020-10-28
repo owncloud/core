@@ -26,6 +26,7 @@ class Google_Service_Apigee_GoogleCloudApigeeV1Instance extends Google_Model
   public $location;
   public $name;
   public $port;
+  public $state;
 
   public function setCreatedAt($createdAt)
   {
@@ -98,5 +99,13 @@ class Google_Service_Apigee_GoogleCloudApigeeV1Instance extends Google_Model
   public function getPort()
   {
     return $this->port;
+  }
+  public function setState($state)
+  {
+    $this->state = $state;
+  }
+  public function getState()
+  {
+    return $this->state;
   }
 }

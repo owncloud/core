@@ -18,6 +18,8 @@
 class Google_Service_Localservices_GoogleAdsHomeservicesLocalservicesV1AccountReport extends Google_Model
 {
   public $accountId;
+  protected $aggregatorInfoType = 'Google_Service_Localservices_GoogleAdsHomeservicesLocalservicesV1AggregatorInfo';
+  protected $aggregatorInfoDataType = '';
   public $averageFiveStarRating;
   public $averageWeeklyBudget;
   public $businessName;
@@ -40,6 +42,20 @@ class Google_Service_Localservices_GoogleAdsHomeservicesLocalservicesV1AccountRe
   public function getAccountId()
   {
     return $this->accountId;
+  }
+  /**
+   * @param Google_Service_Localservices_GoogleAdsHomeservicesLocalservicesV1AggregatorInfo
+   */
+  public function setAggregatorInfo(Google_Service_Localservices_GoogleAdsHomeservicesLocalservicesV1AggregatorInfo $aggregatorInfo)
+  {
+    $this->aggregatorInfo = $aggregatorInfo;
+  }
+  /**
+   * @return Google_Service_Localservices_GoogleAdsHomeservicesLocalservicesV1AggregatorInfo
+   */
+  public function getAggregatorInfo()
+  {
+    return $this->aggregatorInfo;
   }
   public function setAverageFiveStarRating($averageFiveStarRating)
   {

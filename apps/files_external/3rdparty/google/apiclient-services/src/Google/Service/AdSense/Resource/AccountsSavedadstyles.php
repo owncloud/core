@@ -46,11 +46,11 @@ class Google_Service_AdSense_Resource_AccountsSavedadstyles extends Google_Servi
    * @param string $accountId Account for which to list saved ad styles.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int maxResults The maximum number of saved ad styles to include in
+   * the response, used for paging.
    * @opt_param string pageToken A continuation token, used to page through saved
    * ad styles. To retrieve the next page, set this parameter to the value of
    * "nextPageToken" from the previous response.
-   * @opt_param int maxResults The maximum number of saved ad styles to include in
-   * the response, used for paging.
    * @return Google_Service_AdSense_SavedAdStyles
    */
   public function listAccountsSavedadstyles($accountId, $optParams = array())

@@ -19,8 +19,8 @@
  * The "tiers" collection of methods.
  * Typical usage is:
  *  <code>
- *   $sqlService = new Google_Service_SQLAdmin(...);
- *   $tiers = $sqlService->tiers;
+ *   $sqladminService = new Google_Service_SQLAdmin(...);
+ *   $tiers = $sqladminService->tiers;
  *  </code>
  */
 class Google_Service_SQLAdmin_Resource_Tiers extends Google_Service_Resource

@@ -19,8 +19,8 @@
  * The "instances" collection of methods.
  * Typical usage is:
  *  <code>
- *   $sqlService = new Google_Service_SQLAdmin(...);
- *   $instances = $sqlService->instances;
+ *   $sqladminService = new Google_Service_SQLAdmin(...);
+ *   $instances = $sqladminService->instances;
  *  </code>
  */
 class Google_Service_SQLAdmin_Resource_ProjectsInstances extends Google_Service_Resource
@@ -43,7 +43,7 @@ class Google_Service_SQLAdmin_Resource_ProjectsInstances extends Google_Service_
     return $this->call('rescheduleMaintenance', array($params), "Google_Service_SQLAdmin_Operation");
   }
   /**
-   * Start External master migration. (instances.startExternalSync)
+   * Start External primary instance migration. (instances.startExternalSync)
    *
    * @param string $project ID of the project that contains the instance.
    * @param string $instance Cloud SQL instance ID. This does not include the
@@ -60,7 +60,7 @@ class Google_Service_SQLAdmin_Resource_ProjectsInstances extends Google_Service_
     return $this->call('startExternalSync', array($params), "Google_Service_SQLAdmin_Operation");
   }
   /**
-   * Verify External master external sync settings.
+   * Verify External primary instance external sync settings.
    * (instances.verifyExternalSyncSettings)
    *
    * @param string $project Project ID of the project that contains the instance.

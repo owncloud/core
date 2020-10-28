@@ -32,10 +32,10 @@ class Google_Service_DisplayVideo_Resource_GoogleAudiences extends Google_Servic
    * fetch.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string partnerId The ID of the partner that has access to the
-   * fetched Google audience.
    * @opt_param string advertiserId The ID of the advertiser that has access to
    * the fetched Google audience.
+   * @opt_param string partnerId The ID of the partner that has access to the
+   * fetched Google audience.
    * @return Google_Service_DisplayVideo_GoogleAudience
    */
   public function get($googleAudienceId, $optParams = array())
@@ -57,6 +57,9 @@ class Google_Service_DisplayVideo_Resource_GoogleAudiences extends Google_Servic
    * Supported fields: - `displayName` Examples: * All Google audiences for which
    * the display name contains "Google": `displayName : "Google"`. The length of
    * this field should be no more than 500 characters.
+   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
+   * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
+   * if an invalid value is specified.
    * @opt_param string partnerId The ID of the partner that has access to the
    * fetched Google audiences.
    * @opt_param string pageToken A token identifying a page of results the server
@@ -69,9 +72,6 @@ class Google_Service_DisplayVideo_Resource_GoogleAudiences extends Google_Servic
    * be added to the field name. Example: `displayName desc`.
    * @opt_param string advertiserId The ID of the advertiser that has access to
    * the fetched Google audiences.
-   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
-   * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
-   * if an invalid value is specified.
    * @return Google_Service_DisplayVideo_ListGoogleAudiencesResponse
    */
   public function listGoogleAudiences($optParams = array())

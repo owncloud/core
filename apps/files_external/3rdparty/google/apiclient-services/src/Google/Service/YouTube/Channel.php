@@ -29,8 +29,6 @@ class Google_Service_YouTube_Channel extends Google_Model
   protected $conversionPingsDataType = '';
   public $etag;
   public $id;
-  protected $invideoPromotionType = 'Google_Service_YouTube_InvideoPromotion';
-  protected $invideoPromotionDataType = '';
   public $kind;
   protected $localizationsType = 'Google_Service_YouTube_ChannelLocalization';
   protected $localizationsDataType = 'map';
@@ -128,20 +126,6 @@ class Google_Service_YouTube_Channel extends Google_Model
   public function getId()
   {
     return $this->id;
-  }
-  /**
-   * @param Google_Service_YouTube_InvideoPromotion
-   */
-  public function setInvideoPromotion(Google_Service_YouTube_InvideoPromotion $invideoPromotion)
-  {
-    $this->invideoPromotion = $invideoPromotion;
-  }
-  /**
-   * @return Google_Service_YouTube_InvideoPromotion
-   */
-  public function getInvideoPromotion()
-  {
-    return $this->invideoPromotion;
   }
   public function setKind($kind)
   {

@@ -81,11 +81,11 @@ class Google_Service_Apigee_Resource_OrganizationsInstancesAttachments extends G
    * structure in your request: `organizations/{org}/instances/{instance}`
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Maximum number of instance attachments to return.
+   * Defaults to 25.
    * @opt_param string pageToken Page token, returned by a previous
    * ListInstanceAttachments call, that you can use to retrieve the next page of
    * content.
-   * @opt_param int pageSize Maximum number of instance attachments to return.
-   * Defaults to 25.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ListInstanceAttachmentsResponse
    */
   public function listOrganizationsInstancesAttachments($parent, $optParams = array())

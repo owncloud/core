@@ -257,11 +257,11 @@ class Google_Service_Reseller extends Google_Service
               'path' => 'apps/reseller/v1/subscriptions',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'customerAuthToken' => array(
+                'maxResults' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'integer',
                 ),
-                'pageToken' => array(
+                'customerAuthToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -273,9 +273,9 @@ class Google_Service_Reseller extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'maxResults' => array(
+                'pageToken' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
                 ),
               ),
             ),'startPaidService' => array(

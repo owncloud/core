@@ -28,8 +28,8 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsResourcefiles exte
   /**
    * Creates a resource file. Specify the `Content-Type` as `application/octet-
    * stream` or `multipart/form-data`. For more information about resource files,
-   * see [Resource files](/api-platform/develop/resource-files).
-   * (resourcefiles.create)
+   * see [Resource files](https://cloud.google.com/apigee/docs/api-
+   * platform/develop/resource-files). (resourcefiles.create)
    *
    * @param string $parent Required. Name of the environment in which to create
    * the resource file in the following format:
@@ -50,8 +50,8 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsResourcefiles exte
   }
   /**
    * Deletes a resource file. For more information about resource files, see
-   * [Resource files](/api-platform/develop/resource-files).
-   * (resourcefiles.delete)
+   * [Resource files](https://cloud.google.com/apigee/docs/api-platform/develop
+   * /resource-files). (resourcefiles.delete)
    *
    * @param string $parent Required. Name of the environment in the following
    * format: `organizations/{org}/environments/{env}`.
@@ -69,8 +69,8 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsResourcefiles exte
   }
   /**
    * Gets the contents of a resource file. For more information about resource
-   * files, see [Resource files](/api-platform/develop/resource-files).
-   * (resourcefiles.get)
+   * files, see [Resource files](https://cloud.google.com/apigee/docs/api-
+   * platform/develop/resource-files). (resourcefiles.get)
    *
    * @param string $parent Required. Name of the environment in the following
    * format: `organizations/{org}/environments/{env}`.
@@ -87,9 +87,10 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsResourcefiles exte
     return $this->call('get', array($params), "Google_Service_Apigee_GoogleApiHttpBody");
   }
   /**
-   * Lists all resource files. For more information about resource files, see
-   * [Resource files](/api-platform/develop/resource-files).
-   * (resourcefiles.listOrganizationsEnvironmentsResourcefiles)
+   * Lists all resource files, optionally filtering by type. For more information
+   * about resource files, see [Resource
+   * files](https://cloud.google.com/apigee/docs/api-platform/develop/resource-
+   * files). (resourcefiles.listOrganizationsEnvironmentsResourcefiles)
    *
    * @param string $parent Required. Name of the environment in which to list
    * resource files in the following format:
@@ -107,9 +108,10 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsResourcefiles exte
     return $this->call('list', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1ListEnvironmentResourcesResponse");
   }
   /**
-   * Lists all resource files. For more information about resource files, see
-   * [Resource files](/api-platform/develop/resource-files).
-   * (resourcefiles.listEnvironmentResources)
+   * Lists all resource files, optionally filtering by type. For more information
+   * about resource files, see [Resource
+   * files](https://cloud.google.com/apigee/docs/api-platform/develop/resource-
+   * files). (resourcefiles.listEnvironmentResources)
    *
    * @param string $parent Required. Name of the environment in which to list
    * resource files in the following format:
@@ -128,8 +130,8 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsResourcefiles exte
   /**
    * Updates a resource file. Specify the `Content-Type` as `application/octet-
    * stream` or `multipart/form-data`. For more information about resource files,
-   * see [Resource files](/api-platform/develop/resource-files).
-   * (resourcefiles.update)
+   * see [Resource files](https://cloud.google.com/apigee/docs/api-
+   * platform/develop/resource-files). (resourcefiles.update)
    *
    * @param string $parent Required. Name of the environment in the following
    * format: `organizations/{org}/environments/{env}`.

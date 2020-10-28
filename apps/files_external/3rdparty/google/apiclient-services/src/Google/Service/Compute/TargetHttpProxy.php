@@ -19,6 +19,7 @@ class Google_Service_Compute_TargetHttpProxy extends Google_Model
 {
   public $creationTimestamp;
   public $description;
+  public $fingerprint;
   public $id;
   public $kind;
   public $name;
@@ -41,6 +42,14 @@ class Google_Service_Compute_TargetHttpProxy extends Google_Model
   public function getDescription()
   {
     return $this->description;
+  }
+  public function setFingerprint($fingerprint)
+  {
+    $this->fingerprint = $fingerprint;
+  }
+  public function getFingerprint()
+  {
+    return $this->fingerprint;
   }
   public function setId($id)
   {

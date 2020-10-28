@@ -91,6 +91,15 @@ class Google_Service_CloudTasks_Resource_ProjectsLocationsQueuesTasks extends Go
    * `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID`
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string pageToken A token identifying the page of results to
+   * return. To request the first page results, page_token must be empty. To
+   * request the next page of results, page_token must be the value of
+   * next_page_token returned from the previous call to ListTasks method. The page
+   * token is valid for only 2 hours.
+   * @opt_param int pageSize Maximum page size. Fewer tasks than requested might
+   * be returned, even if more tasks exist; use next_page_token in the response to
+   * determine if more tasks exist. The maximum page size is 1000. If unspecified,
+   * the page size will be the maximum.
    * @opt_param string responseView The response_view specifies which subset of
    * the Task will be returned. By default response_view is BASIC; not all
    * information is retrieved by default because some data, such as payloads,
@@ -98,15 +107,6 @@ class Google_Service_CloudTasks_Resource_ProjectsLocationsQueuesTasks extends Go
    * because of the sensitivity of data that it contains. Authorization for FULL
    * requires `cloudtasks.tasks.fullView` [Google
    * IAM](https://cloud.google.com/iam/) permission on the Task resource.
-   * @opt_param int pageSize Maximum page size. Fewer tasks than requested might
-   * be returned, even if more tasks exist; use next_page_token in the response to
-   * determine if more tasks exist. The maximum page size is 1000. If unspecified,
-   * the page size will be the maximum.
-   * @opt_param string pageToken A token identifying the page of results to
-   * return. To request the first page results, page_token must be empty. To
-   * request the next page of results, page_token must be the value of
-   * next_page_token returned from the previous call to ListTasks method. The page
-   * token is valid for only 2 hours.
    * @return Google_Service_CloudTasks_ListTasksResponse
    */
   public function listProjectsLocationsQueuesTasks($parent, $optParams = array())

@@ -60,6 +60,30 @@ class Google_Service_Localservices extends Google_Service
               'path' => 'v1/accountReports:search',
               'httpMethod' => 'GET',
               'parameters' => array(
+                'startDate.month' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'query' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'startDate.year' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'endDate.day' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
                 'endDate.year' => array(
                   'location' => 'query',
                   'type' => 'integer',
@@ -68,33 +92,9 @@ class Google_Service_Localservices extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'startDate.month' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'startDate.year' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'startDate.day' => array(
                   'location' => 'query',
                   'type' => 'integer',
-                ),
-                'endDate.day' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'query' => array(
-                  'location' => 'query',
-                  'type' => 'string',
                 ),
               ),
             ),
@@ -111,7 +111,7 @@ class Google_Service_Localservices extends Google_Service
               'path' => 'v1/detailedLeadReports:search',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'startDate.year' => array(
+                'startDate.month' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
@@ -120,10 +120,6 @@ class Google_Service_Localservices extends Google_Service
                   'type' => 'integer',
                 ),
                 'endDate.day' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'startDate.month' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
@@ -139,13 +135,17 @@ class Google_Service_Localservices extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'query' => array(
+                'startDate.year' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'integer',
                 ),
                 'endDate.month' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'query' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),

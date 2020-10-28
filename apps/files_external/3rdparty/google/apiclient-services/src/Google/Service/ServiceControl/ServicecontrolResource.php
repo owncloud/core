@@ -21,6 +21,7 @@ class Google_Service_ServiceControl_ServicecontrolResource extends Google_Model
   public $name;
   public $service;
   public $type;
+  public $uid;
 
   public function setLabels($labels)
   {
@@ -53,5 +54,13 @@ class Google_Service_ServiceControl_ServicecontrolResource extends Google_Model
   public function getType()
   {
     return $this->type;
+  }
+  public function setUid($uid)
+  {
+    $this->uid = $uid;
+  }
+  public function getUid()
+  {
+    return $this->uid;
   }
 }

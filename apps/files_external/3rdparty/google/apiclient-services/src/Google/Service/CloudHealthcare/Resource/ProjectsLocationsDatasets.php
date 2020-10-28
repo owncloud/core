@@ -28,9 +28,8 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasets extends 
   /**
    * Creates a new health dataset. Results are returned through the Operation
    * interface which returns either an `Operation.response` which contains a
-   * Dataset or `Operation.error`. The metadata field type is OperationMetadata. A
-   * Google Cloud Platform project can contain up to 500 datasets across all
-   * regions. (datasets.create)
+   * Dataset or `Operation.error`. The metadata field type is OperationMetadata.
+   * (datasets.create)
    *
    * @param string $parent The name of the project where the server creates the
    * dataset. For example, `projects/{project_id}/locations/{location_id}`.
@@ -132,10 +131,10 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasets extends 
    * listed. For example, `projects/{project_id}/locations/{location_id}`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize The maximum number of items to return. Capped to 100
-   * if not specified. May not be larger than 1000.
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.
+   * @opt_param int pageSize The maximum number of items to return. Capped to 100
+   * if not specified. May not be larger than 1000.
    * @return Google_Service_CloudHealthcare_ListDatasetsResponse
    */
   public function listProjectsLocationsDatasets($parent, $optParams = array())

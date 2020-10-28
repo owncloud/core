@@ -90,15 +90,15 @@ class Google_Service_ServiceManagement extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'name' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
                 'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'name' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -120,16 +120,6 @@ class Google_Service_ServiceManagement extends Google_Service
             ),'delete' => array(
               'path' => 'v1/services/{serviceName}',
               'httpMethod' => 'DELETE',
-              'parameters' => array(
-                'serviceName' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),'disable' => array(
-              'path' => 'v1/services/{serviceName}:disable',
-              'httpMethod' => 'POST',
               'parameters' => array(
                 'serviceName' => array(
                   'location' => 'path',
@@ -170,11 +160,11 @@ class Google_Service_ServiceManagement extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'configId' => array(
+                'view' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'view' => array(
+                'configId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -193,7 +183,11 @@ class Google_Service_ServiceManagement extends Google_Service
               'path' => 'v1/services',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageToken' => array(
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'producerProjectId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -201,13 +195,9 @@ class Google_Service_ServiceManagement extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'producerProjectId' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
                 ),
               ),
             ),'setIamPolicy' => array(
@@ -391,15 +381,15 @@ class Google_Service_ServiceManagement extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
                 'filter' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

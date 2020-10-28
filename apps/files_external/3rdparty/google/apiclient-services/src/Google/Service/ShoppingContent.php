@@ -870,6 +870,16 @@ class Google_Service_ShoppingContent extends Google_Service
                   'required' => true,
                 ),
               ),
+            ),'createorderreturn' => array(
+              'path' => '{merchantId}/orderreturns/createOrderReturn',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'merchantId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
             ),'get' => array(
               'path' => '{merchantId}/orderreturns/{returnId}',
               'httpMethod' => 'GET',

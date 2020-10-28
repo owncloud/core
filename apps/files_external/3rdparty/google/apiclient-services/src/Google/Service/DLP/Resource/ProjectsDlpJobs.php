@@ -54,12 +54,13 @@ class Google_Service_DLP_Resource_ProjectsDlpJobs extends Google_Service_Resourc
    *
    * @param string $parent Required. Parent resource name. The format of this
    * value varies depending on whether you have [specified a processing
-   * location](/dlp/docs/specifying-location): + Projects scope, location
-   * specified: `projects/`PROJECT_ID`/locations/`LOCATION_ID + Projects scope, no
-   * location specified (defaults to global): `projects/`PROJECT_ID The following
-   * example `parent` string specifies a parent project with the identifier
-   * `example-project`, and specifies the `europe-west3` location for processing
-   * data: parent=projects/example-project/locations/europe-west3
+   * location](https://cloud.google.com/dlp/docs/specifying-location): + Projects
+   * scope, location specified: `projects/`PROJECT_ID`/locations/`LOCATION_ID +
+   * Projects scope, no location specified (defaults to global):
+   * `projects/`PROJECT_ID The following example `parent` string specifies a
+   * parent project with the identifier `example-project`, and specifies the
+   * `europe-west3` location for processing data: parent=projects/example-
+   * project/locations/europe-west3
    * @param Google_Service_DLP_GooglePrivacyDlpV2CreateDlpJobRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_DLP_GooglePrivacyDlpV2DlpJob
@@ -111,14 +112,26 @@ class Google_Service_DLP_Resource_ProjectsDlpJobs extends Google_Service_Resourc
    *
    * @param string $parent Required. Parent resource name. The format of this
    * value varies depending on whether you have [specified a processing
-   * location](/dlp/docs/specifying-location): + Projects scope, location
-   * specified: `projects/`PROJECT_ID`/locations/`LOCATION_ID + Projects scope, no
-   * location specified (defaults to global): `projects/`PROJECT_ID The following
-   * example `parent` string specifies a parent project with the identifier
-   * `example-project`, and specifies the `europe-west3` location for processing
-   * data: parent=projects/example-project/locations/europe-west3
+   * location](https://cloud.google.com/dlp/docs/specifying-location): + Projects
+   * scope, location specified: `projects/`PROJECT_ID`/locations/`LOCATION_ID +
+   * Projects scope, no location specified (defaults to global):
+   * `projects/`PROJECT_ID The following example `parent` string specifies a
+   * parent project with the identifier `example-project`, and specifies the
+   * `europe-west3` location for processing data: parent=projects/example-
+   * project/locations/europe-west3
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string pageToken The standard list page token.
+   * @opt_param string orderBy Comma separated list of fields to order by,
+   * followed by `asc` or `desc` postfix. This list is case-insensitive, default
+   * sorting order is ascending, redundant space characters are insignificant.
+   * Example: `name asc, end_time asc, create_time desc` Supported fields are: -
+   * `create_time`: corresponds to time the job was created. - `end_time`:
+   * corresponds to time the job ended. - `name`: corresponds to job's name. -
+   * `state`: corresponds to `state`
+   * @opt_param string type The type of job. Defaults to `DlpJobType.INSPECT`
+   * @opt_param string locationId Deprecated. This field has no effect.
+   * @opt_param int pageSize The standard list page size.
    * @opt_param string filter Allows filtering. Supported syntax: * Filter
    * expressions are made up of one or more restrictions. * Restrictions can be
    * combined by `AND` or `OR` logical operators. A sequence of restrictions
@@ -136,17 +149,6 @@ class Google_Service_DLP_Resource_ProjectsDlpJobs extends Google_Service_Resourc
    * inspected_storage = cloud_storage AND (state = done OR state = canceled) *
    * end_time > \"2017-12-12T00:00:00+00:00\" The length of this field should be
    * no more than 500 characters.
-   * @opt_param string orderBy Comma separated list of fields to order by,
-   * followed by `asc` or `desc` postfix. This list is case-insensitive, default
-   * sorting order is ascending, redundant space characters are insignificant.
-   * Example: `name asc, end_time asc, create_time desc` Supported fields are: -
-   * `create_time`: corresponds to time the job was created. - `end_time`:
-   * corresponds to time the job ended. - `name`: corresponds to job's name. -
-   * `state`: corresponds to `state`
-   * @opt_param int pageSize The standard list page size.
-   * @opt_param string type The type of job. Defaults to `DlpJobType.INSPECT`
-   * @opt_param string pageToken The standard list page token.
-   * @opt_param string locationId Deprecated. This field has no effect.
    * @return Google_Service_DLP_GooglePrivacyDlpV2ListDlpJobsResponse
    */
   public function listProjectsDlpJobs($parent, $optParams = array())

@@ -45,6 +45,7 @@ class Google_Service_YouTube_Resource_LiveBroadcasts extends Google_Service_Reso
    * without having to provide authentication credentials for each individual
    * channel. The CMS account that the user authenticates with must be linked to
    * the specified YouTube content owner.
+   * @opt_param string streamId Stream to bind, if not set unbind the current one.
    * @opt_param string onBehalfOfContentOwnerChannel This parameter can only be
    * used in a properly authorized request. *Note:* This parameter is intended
    * exclusively for YouTube content partners. The *onBehalfOfContentOwnerChannel*
@@ -61,7 +62,6 @@ class Google_Service_YouTube_Resource_LiveBroadcasts extends Google_Service_Reso
    * perform actions on behalf of the channel specified in the parameter value,
    * without having to provide authentication credentials for each separate
    * channel.
-   * @opt_param string streamId Stream to bind, if not set unbind the current one.
    * @return Google_Service_YouTube_LiveBroadcast
    */
   public function bind($id, $part, $optParams = array())
@@ -82,6 +82,23 @@ class Google_Service_YouTube_Resource_LiveBroadcasts extends Google_Service_Reso
    * id, snippet, contentDetails, and status.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string onBehalfOfContentOwner *Note:* This parameter is intended
+   * exclusively for YouTube content partners. The *onBehalfOfContentOwner*
+   * parameter indicates that the request's authorization credentials identify a
+   * YouTube CMS user who is acting on behalf of the content owner specified in
+   * the parameter value. This parameter is intended for YouTube content partners
+   * that own and manage many different YouTube channels. It allows content owners
+   * to authenticate once and get access to all their video and channel data,
+   * without having to provide authentication credentials for each individual
+   * channel. The CMS account that the user authenticates with must be linked to
+   * the specified YouTube content owner.
+   * @opt_param string walltime The wall clock time at which the action should be
+   * executed. Only one of offset_time_ms and walltime may be set at a time.
+   * @opt_param string offsetTimeMs The exact time when the actions (e.g. slate
+   * on) are executed. It is an offset from the first frame of the monitor stream.
+   * If not set, it means "now" or ASAP. This field should not be set if the
+   * monitor stream is disabled, otherwise an error will be returned.
+   * @opt_param bool displaySlate Whether display or hide slate.
    * @opt_param string onBehalfOfContentOwnerChannel This parameter can only be
    * used in a properly authorized request. *Note:* This parameter is intended
    * exclusively for YouTube content partners. The *onBehalfOfContentOwnerChannel*
@@ -98,23 +115,6 @@ class Google_Service_YouTube_Resource_LiveBroadcasts extends Google_Service_Reso
    * perform actions on behalf of the channel specified in the parameter value,
    * without having to provide authentication credentials for each separate
    * channel.
-   * @opt_param string walltime The wall clock time at which the action should be
-   * executed. Only one of offset_time_ms and walltime may be set at a time.
-   * @opt_param bool displaySlate Whether display or hide slate.
-   * @opt_param string onBehalfOfContentOwner *Note:* This parameter is intended
-   * exclusively for YouTube content partners. The *onBehalfOfContentOwner*
-   * parameter indicates that the request's authorization credentials identify a
-   * YouTube CMS user who is acting on behalf of the content owner specified in
-   * the parameter value. This parameter is intended for YouTube content partners
-   * that own and manage many different YouTube channels. It allows content owners
-   * to authenticate once and get access to all their video and channel data,
-   * without having to provide authentication credentials for each individual
-   * channel. The CMS account that the user authenticates with must be linked to
-   * the specified YouTube content owner.
-   * @opt_param string offsetTimeMs The exact time when the actions (e.g. slate
-   * on) are executed. It is an offset from the first frame of the monitor stream.
-   * If not set, it means "now" or ASAP. This field should not be set if the
-   * monitor stream is disabled, otherwise an error will be returned.
    * @return Google_Service_YouTube_LiveBroadcast
    */
   public function control($id, $part, $optParams = array())
@@ -129,6 +129,16 @@ class Google_Service_YouTube_Resource_LiveBroadcasts extends Google_Service_Reso
    * @param string $id Broadcast to delete.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string onBehalfOfContentOwner *Note:* This parameter is intended
+   * exclusively for YouTube content partners. The *onBehalfOfContentOwner*
+   * parameter indicates that the request's authorization credentials identify a
+   * YouTube CMS user who is acting on behalf of the content owner specified in
+   * the parameter value. This parameter is intended for YouTube content partners
+   * that own and manage many different YouTube channels. It allows content owners
+   * to authenticate once and get access to all their video and channel data,
+   * without having to provide authentication credentials for each individual
+   * channel. The CMS account that the user authenticates with must be linked to
+   * the specified YouTube content owner.
    * @opt_param string onBehalfOfContentOwnerChannel This parameter can only be
    * used in a properly authorized request. *Note:* This parameter is intended
    * exclusively for YouTube content partners. The *onBehalfOfContentOwnerChannel*
@@ -145,16 +155,6 @@ class Google_Service_YouTube_Resource_LiveBroadcasts extends Google_Service_Reso
    * perform actions on behalf of the channel specified in the parameter value,
    * without having to provide authentication credentials for each separate
    * channel.
-   * @opt_param string onBehalfOfContentOwner *Note:* This parameter is intended
-   * exclusively for YouTube content partners. The *onBehalfOfContentOwner*
-   * parameter indicates that the request's authorization credentials identify a
-   * YouTube CMS user who is acting on behalf of the content owner specified in
-   * the parameter value. This parameter is intended for YouTube content partners
-   * that own and manage many different YouTube channels. It allows content owners
-   * to authenticate once and get access to all their video and channel data,
-   * without having to provide authentication credentials for each individual
-   * channel. The CMS account that the user authenticates with must be linked to
-   * the specified YouTube content owner.
    */
   public function delete($id, $optParams = array())
   {
@@ -173,16 +173,6 @@ class Google_Service_YouTube_Resource_LiveBroadcasts extends Google_Service_Reso
    * @param Google_Service_YouTube_LiveBroadcast $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string onBehalfOfContentOwner *Note:* This parameter is intended
-   * exclusively for YouTube content partners. The *onBehalfOfContentOwner*
-   * parameter indicates that the request's authorization credentials identify a
-   * YouTube CMS user who is acting on behalf of the content owner specified in
-   * the parameter value. This parameter is intended for YouTube content partners
-   * that own and manage many different YouTube channels. It allows content owners
-   * to authenticate once and get access to all their video and channel data,
-   * without having to provide authentication credentials for each individual
-   * channel. The CMS account that the user authenticates with must be linked to
-   * the specified YouTube content owner.
    * @opt_param string onBehalfOfContentOwnerChannel This parameter can only be
    * used in a properly authorized request. *Note:* This parameter is intended
    * exclusively for YouTube content partners. The *onBehalfOfContentOwnerChannel*
@@ -199,6 +189,16 @@ class Google_Service_YouTube_Resource_LiveBroadcasts extends Google_Service_Reso
    * perform actions on behalf of the channel specified in the parameter value,
    * without having to provide authentication credentials for each separate
    * channel.
+   * @opt_param string onBehalfOfContentOwner *Note:* This parameter is intended
+   * exclusively for YouTube content partners. The *onBehalfOfContentOwner*
+   * parameter indicates that the request's authorization credentials identify a
+   * YouTube CMS user who is acting on behalf of the content owner specified in
+   * the parameter value. This parameter is intended for YouTube content partners
+   * that own and manage many different YouTube channels. It allows content owners
+   * to authenticate once and get access to all their video and channel data,
+   * without having to provide authentication credentials for each individual
+   * channel. The CMS account that the user authenticates with must be linked to
+   * the specified YouTube content owner.
    * @return Google_Service_YouTube_LiveBroadcast
    */
   public function insert($part, Google_Service_YouTube_LiveBroadcast $postBody, $optParams = array())
@@ -214,29 +214,13 @@ class Google_Service_YouTube_Resource_LiveBroadcasts extends Google_Service_Reso
    * @param string|array $part The *part* parameter specifies a comma-separated
    * list of one or more liveBroadcast resource properties that the API response
    * will include. The part names that you can include in the parameter value are
-   * id, snippet, contentDetails, and status.
+   * id, snippet, contentDetails, status and statistics.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string broadcastStatus Return broadcasts with a certain status,
-   * e.g. active broadcasts.
    * @opt_param string maxResults The *maxResults* parameter specifies the maximum
    * number of items that should be returned in the result set.
-   * @opt_param string broadcastType Return only broadcasts with the selected
-   * type.
-   * @opt_param string onBehalfOfContentOwner *Note:* This parameter is intended
-   * exclusively for YouTube content partners. The *onBehalfOfContentOwner*
-   * parameter indicates that the request's authorization credentials identify a
-   * YouTube CMS user who is acting on behalf of the content owner specified in
-   * the parameter value. This parameter is intended for YouTube content partners
-   * that own and manage many different YouTube channels. It allows content owners
-   * to authenticate once and get access to all their video and channel data,
-   * without having to provide authentication credentials for each individual
-   * channel. The CMS account that the user authenticates with must be linked to
-   * the specified YouTube content owner.
-   * @opt_param string pageToken The *pageToken* parameter identifies a specific
-   * page in the result set that should be returned. In an API response, the
-   * nextPageToken and prevPageToken properties identify other pages that could be
-   * retrieved.
+   * @opt_param string broadcastStatus Return broadcasts with a certain status,
+   * e.g. active broadcasts.
    * @opt_param string id Return broadcasts with the given ids from Stubby or
    * Apiary.
    * @opt_param string onBehalfOfContentOwnerChannel This parameter can only be
@@ -256,6 +240,22 @@ class Google_Service_YouTube_Resource_LiveBroadcasts extends Google_Service_Reso
    * without having to provide authentication credentials for each separate
    * channel.
    * @opt_param bool mine
+   * @opt_param string onBehalfOfContentOwner *Note:* This parameter is intended
+   * exclusively for YouTube content partners. The *onBehalfOfContentOwner*
+   * parameter indicates that the request's authorization credentials identify a
+   * YouTube CMS user who is acting on behalf of the content owner specified in
+   * the parameter value. This parameter is intended for YouTube content partners
+   * that own and manage many different YouTube channels. It allows content owners
+   * to authenticate once and get access to all their video and channel data,
+   * without having to provide authentication credentials for each individual
+   * channel. The CMS account that the user authenticates with must be linked to
+   * the specified YouTube content owner.
+   * @opt_param string broadcastType Return only broadcasts with the selected
+   * type.
+   * @opt_param string pageToken The *pageToken* parameter identifies a specific
+   * page in the result set that should be returned. In an API response, the
+   * nextPageToken and prevPageToken properties identify other pages that could be
+   * retrieved.
    * @return Google_Service_YouTube_LiveBroadcastListResponse
    */
   public function listLiveBroadcasts($part, $optParams = array())

@@ -82,6 +82,12 @@ class Google_Service_DisplayVideo_Resource_AdvertisersCampaigns extends Google_S
    * @param string $advertiserId The ID of the advertiser to list campaigns for.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string orderBy Field by which to sort the list. Acceptable values
+   * are: * `displayName` (default) * `entityStatus` The default sorting order is
+   * ascending. To specify descending order for a field, a suffix "desc" should be
+   * added to the field name. Example: `displayName desc`.
+   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
+   * If unspecified will default to `100`.
    * @opt_param string pageToken A token identifying a page of results the server
    * should return. Typically, this is the value of next_page_token returned from
    * the previous call to `ListCampaigns` method. If not specified, the first page
@@ -96,12 +102,6 @@ class Google_Service_DisplayVideo_Resource_AdvertisersCampaigns extends Google_S
    * advertiser: `(entityStatus="ENTITY_STATUS_ACTIVE" OR
    * entityStatus="ENTITY_STATUS_PAUSED")` The length of this field should be no
    * more than 500 characters.
-   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
-   * If unspecified will default to `100`.
-   * @opt_param string orderBy Field by which to sort the list. Acceptable values
-   * are: * `displayName` (default) * `entityStatus` The default sorting order is
-   * ascending. To specify descending order for a field, a suffix "desc" should be
-   * added to the field name. Example: `displayName desc`.
    * @return Google_Service_DisplayVideo_ListCampaignsResponse
    */
   public function listAdvertisersCampaigns($advertiserId, $optParams = array())

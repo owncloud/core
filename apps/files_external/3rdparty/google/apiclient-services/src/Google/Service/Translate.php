@@ -82,11 +82,11 @@ class Google_Service_Translate extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'model' => array(
+                'displayLanguageCode' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'displayLanguageCode' => array(
+                'model' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -168,13 +168,13 @@ class Google_Service_Translate extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
                 'filter' => array(
                   'location' => 'query',
@@ -240,17 +240,17 @@ class Google_Service_Translate extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'filter' => array(
+                'pageSize' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'integer',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageSize' => array(
+                'filter' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -302,7 +302,7 @@ class Google_Service_Translate extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -310,7 +310,7 @@ class Google_Service_Translate extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'filter' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

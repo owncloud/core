@@ -29,8 +29,8 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    * Creates a new game server deployment in a given project and location.
    * (gameServerDeployments.create)
    *
-   * @param string $parent Required. The parent resource name. Uses the form:
-   * `projects/{project}/locations/{location}`.
+   * @param string $parent Required. The parent resource name, in the following
+   * form: `projects/{project}/locations/{location}`.
    * @param Google_Service_GameServices_GameServerDeployment $postBody
    * @param array $optParams Optional parameters.
    *
@@ -48,7 +48,7 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    * Deletes a single game server deployment. (gameServerDeployments.delete)
    *
    * @param string $name Required. The name of the game server delpoyment to
-   * delete. Uses the form:
+   * delete, in the following form:
    * `projects/{project}/locations/{location}/gameServerDeployments/{deployment}`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_GameServices_Operation
@@ -65,8 +65,8 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    * running an older version of the game server deployment.
    * (gameServerDeployments.fetchDeploymentState)
    *
-   * @param string $name Required. The name of the game server delpoyment. Uses
-   * the form:
+   * @param string $name Required. The name of the game server delpoyment, in the
+   * following form:
    * `projects/{project}/locations/{location}/gameServerDeployments/{deployment}`.
    * @param Google_Service_GameServices_FetchDeploymentStateRequest $postBody
    * @param array $optParams Optional parameters.
@@ -82,7 +82,7 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    * Gets details of a single game server deployment. (gameServerDeployments.get)
    *
    * @param string $name Required. The name of the game server delpoyment to
-   * retrieve. Uses the form:
+   * retrieve, in the following form:
    * `projects/{project}/locations/{location}/gameServerDeployments/{deployment}`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_GameServices_GameServerDeployment
@@ -124,8 +124,8 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    * (gameServerDeployments.getRollout)
    *
    * @param string $name Required. The name of the game server delpoyment to
-   * retrieve. Uses the form: `projects/{project}/locations/{location}/gameServerD
-   * eployments/{deployment}/rollout`.
+   * retrieve, in the following form: `projects/{project}/locations/{location}/gam
+   * eServerDeployments/{deployment}/rollout`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_GameServices_GameServerDeploymentRollout
    */
@@ -139,12 +139,10 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    * Lists game server deployments in a given project and location.
    * (gameServerDeployments.listProjectsLocationsGameServerDeployments)
    *
-   * @param string $parent Required. The parent resource name. Uses the form:
-   * `projects/{project}/locations/{location}`.
+   * @param string $parent Required. The parent resource name, in the following
+   * form: `projects/{project}/locations/{location}`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional. The next_page_token value returned from
-   * a previous List request, if any.
    * @opt_param string filter Optional. The filter to apply to list results.
    * @opt_param string orderBy Optional. Specifies the ordering of results
    * following syntax at
@@ -154,6 +152,8 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    * return fewer items than requested. A caller should only rely on response's
    * next_page_token to determine if there are more GameServerDeployments left to
    * be queried.
+   * @opt_param string pageToken Optional. The next_page_token value returned from
+   * a previous List request, if any.
    * @return Google_Service_GameServices_ListGameServerDeploymentsResponse
    */
   public function listProjectsLocationsGameServerDeployments($parent, $optParams = array())
@@ -165,8 +165,8 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
   /**
    * Patches a game server deployment. (gameServerDeployments.patch)
    *
-   * @param string $name The resource name of the game server deployment. Uses the
-   * form:
+   * @param string $name The resource name of the game server deployment, in the
+   * following form:
    * `projects/{project}/locations/{location}/gameServerDeployments/{deployment}`.
    * For example, `projects/my-project/locations/global/gameServerDeployments/my-
    * deployment`.
@@ -189,9 +189,9 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    * Previews the game server deployment rollout. This API does not mutate the
    * rollout resource. (gameServerDeployments.previewRollout)
    *
-   * @param string $name The resource name of the game server deployment rollout.
-   * Uses the form: `projects/{project}/locations/{location}/gameServerDeployments
-   * /{deployment}/rollout`. For example, `projects/my-
+   * @param string $name The resource name of the game server deployment rollout,
+   * in the following form: `projects/{project}/locations/{location}/gameServerDep
+   * loyments/{deployment}/rollout`. For example, `projects/my-
    * project/locations/global/gameServerDeployments/my-deployment/rollout`.
    * @param Google_Service_GameServices_GameServerDeploymentRollout $postBody
    * @param array $optParams Optional parameters.
@@ -257,9 +257,9 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    * called out in game_server_config_overrides field, that will also not result
    * in an error. (gameServerDeployments.updateRollout)
    *
-   * @param string $name The resource name of the game server deployment rollout.
-   * Uses the form: `projects/{project}/locations/{location}/gameServerDeployments
-   * /{deployment}/rollout`. For example, `projects/my-
+   * @param string $name The resource name of the game server deployment rollout,
+   * in the following form: `projects/{project}/locations/{location}/gameServerDep
+   * loyments/{deployment}/rollout`. For example, `projects/my-
    * project/locations/global/gameServerDeployments/my-deployment/rollout`.
    * @param Google_Service_GameServices_GameServerDeploymentRollout $postBody
    * @param array $optParams Optional parameters.

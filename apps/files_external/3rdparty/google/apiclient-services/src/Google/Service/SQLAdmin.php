@@ -60,7 +60,7 @@ class Google_Service_SQLAdmin extends Google_Service
     $this->servicePath = '';
     $this->batchPath = 'batch';
     $this->version = 'v1beta4';
-    $this->serviceName = 'sql';
+    $this->serviceName = 'sqladmin';
 
     $this->backupRuns = new Google_Service_SQLAdmin_Resource_BackupRuns(
         $this,
@@ -434,17 +434,17 @@ class Google_Service_SQLAdmin extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'maxResults' => array(
+                'filter' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'filter' => array(
+                'maxResults' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'integer',
                 ),
               ),
             ),'listServerCas' => array(
@@ -646,6 +646,10 @@ class Google_Service_SQLAdmin extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'maxResults' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
                 'instance' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -653,10 +657,6 @@ class Google_Service_SQLAdmin extends Google_Service
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-                'maxResults' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
                 ),
               ),
             ),
@@ -865,11 +865,11 @@ class Google_Service_SQLAdmin extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'name' => array(
+                'host' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'host' => array(
+                'name' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -918,11 +918,11 @@ class Google_Service_SQLAdmin extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'name' => array(
+                'host' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'host' => array(
+                'name' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

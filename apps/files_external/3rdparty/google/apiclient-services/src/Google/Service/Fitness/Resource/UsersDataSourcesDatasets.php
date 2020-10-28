@@ -44,10 +44,10 @@ class Google_Service_Fitness_Resource_UsersDataSourcesDatasets extends Google_Se
    * where startTime and endTime are 64 bit integers.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string modifiedTimeMillis When the operation was performed on the
-   * client.
    * @opt_param string currentTimeMillis The client's current time in milliseconds
    * since epoch.
+   * @opt_param string modifiedTimeMillis When the operation was performed on the
+   * client.
    */
   public function delete($userId, $dataSourceId, $datasetId, $optParams = array())
   {
@@ -79,7 +79,9 @@ class Google_Service_Fitness_Resource_UsersDataSourcesDatasets extends Google_Se
    * strictly smaller than those in the previous partial response.
    * @opt_param int limit If specified, no more than this many data points will be
    * included in the dataset. If there are more data points in the dataset,
-   * nextPageToken will be set in the dataset response.
+   * nextPageToken will be set in the dataset response. The limit is applied from
+   * the end of the time range. That is, if pageToken is absent, the limit most
+   * recent data points will be returned.
    * @return Google_Service_Fitness_Dataset
    */
   public function get($userId, $dataSourceId, $datasetId, $optParams = array())

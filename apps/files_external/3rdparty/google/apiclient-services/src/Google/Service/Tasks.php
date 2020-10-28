@@ -49,9 +49,9 @@ class Google_Service_Tasks extends Google_Service
   public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://tasks.googleapis.com/';
     $this->servicePath = '';
-    $this->batchPath = 'batch/tasks/v1';
+    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'tasks';
 
@@ -89,13 +89,13 @@ class Google_Service_Tasks extends Google_Service
               'path' => 'tasks/v1/users/@me/lists',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'maxResults' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'maxResults' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),'patch' => array(
@@ -177,11 +177,11 @@ class Google_Service_Tasks extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'previous' => array(
+                'parent' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'parent' => array(
+                'previous' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -195,23 +195,11 @@ class Google_Service_Tasks extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'showCompleted' => array(
+                'maxResults' => array(
                   'location' => 'query',
-                  'type' => 'boolean',
+                  'type' => 'integer',
                 ),
-                'updatedMin' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'completedMax' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'dueMin' => array(
+                'completedMin' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -219,7 +207,7 @@ class Google_Service_Tasks extends Google_Service
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
-                'completedMin' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -227,13 +215,25 @@ class Google_Service_Tasks extends Google_Service
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
+                'dueMin' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'completedMax' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'dueMax' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'maxResults' => array(
+                'updatedMin' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
+                ),
+                'showCompleted' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
                 ),
               ),
             ),'move' => array(
@@ -250,11 +250,11 @@ class Google_Service_Tasks extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'previous' => array(
+                'parent' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'parent' => array(
+                'previous' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

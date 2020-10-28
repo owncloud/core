@@ -22,6 +22,7 @@ class Google_Service_Testing_TestMatrix extends Google_Collection
   protected $clientInfoDataType = '';
   protected $environmentMatrixType = 'Google_Service_Testing_EnvironmentMatrix';
   protected $environmentMatrixDataType = '';
+  public $failFast;
   public $flakyTestAttempts;
   public $invalidMatrixDetails;
   public $outcomeSummary;
@@ -63,6 +64,14 @@ class Google_Service_Testing_TestMatrix extends Google_Collection
   public function getEnvironmentMatrix()
   {
     return $this->environmentMatrix;
+  }
+  public function setFailFast($failFast)
+  {
+    $this->failFast = $failFast;
+  }
+  public function getFailFast()
+  {
+    return $this->failFast;
   }
   public function setFlakyTestAttempts($flakyTestAttempts)
   {

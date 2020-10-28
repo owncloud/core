@@ -72,7 +72,7 @@ class Google_Service_RealTimeBidding extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'view' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -80,7 +80,7 @@ class Google_Service_RealTimeBidding extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'pageToken' => array(
+                'view' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -162,7 +162,11 @@ class Google_Service_RealTimeBidding extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'filter' => array(
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'view' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -170,13 +174,9 @@ class Google_Service_RealTimeBidding extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'view' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
                 ),
               ),
             ),'patch' => array(

@@ -35,16 +35,16 @@ class Google_Service_PolyService_Resource_UsersLikedassets extends Google_Servic
    * must pass an OAuth token with the request.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string orderBy Specifies an ordering for assets. Acceptable values
-   * are: `BEST`, `NEWEST`, `OLDEST`, 'LIKED_TIME'. Defaults to `LIKED_TIME`,
-   * which ranks assets based on how recently they were liked.
    * @opt_param string pageToken Specifies a continuation token from a previous
    * search whose results were split into multiple pages. To get the next page,
    * submit the same request specifying the value from next_page_token.
-   * @opt_param int pageSize The maximum number of assets to be returned. This
-   * value must be between `1` and `100`. Defaults to `20`.
+   * @opt_param string orderBy Specifies an ordering for assets. Acceptable values
+   * are: `BEST`, `NEWEST`, `OLDEST`, 'LIKED_TIME'. Defaults to `LIKED_TIME`,
+   * which ranks assets based on how recently they were liked.
    * @opt_param string format Return only assets with the matching format.
    * Acceptable values are: `BLOCKS`, `FBX`, `GLTF`, `GLTF2`, `OBJ`, `TILT`.
+   * @opt_param int pageSize The maximum number of assets to be returned. This
+   * value must be between `1` and `100`. Defaults to `20`.
    * @return Google_Service_PolyService_ListLikedAssetsResponse
    */
   public function listUsersLikedassets($name, $optParams = array())

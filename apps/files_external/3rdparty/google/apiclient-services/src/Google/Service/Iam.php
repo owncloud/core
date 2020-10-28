@@ -237,7 +237,11 @@ class Google_Service_Iam extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'view' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -245,11 +249,7 @@ class Google_Service_Iam extends Google_Service
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'view' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -533,15 +533,11 @@ class Google_Service_Iam extends Google_Service
               'path' => 'v1/roles',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'view' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -552,6 +548,10 @@ class Google_Service_Iam extends Google_Service
                 'showDeleted' => array(
                   'location' => 'query',
                   'type' => 'boolean',
+                ),
+                'view' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'queryGrantableRoles' => array(

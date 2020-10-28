@@ -39,16 +39,16 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * "projects/12345").
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string readTimeWindow.startTime Start time of the time window
+   * (exclusive).
    * @opt_param string contentType Optional. The content type.
+   * @opt_param string readTimeWindow.endTime End time of the time window
+   * (inclusive). If not specified, the current timestamp is used instead.
    * @opt_param string assetNames A list of the full names of the assets. See:
    * https://cloud.google.com/asset-inventory/docs/resource-name-format Example: `
    * //compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instan
    * ce1`. The request becomes a no-op if the asset name list is empty, and the
    * max size of the asset name list is 100 in one request.
-   * @opt_param string readTimeWindow.startTime Start time of the time window
-   * (exclusive).
-   * @opt_param string readTimeWindow.endTime End time of the time window
-   * (inclusive). If not specified, the current timestamp is used instead.
    * @return Google_Service_CloudAsset_BatchGetAssetsHistoryResponse
    */
   public function batchGetAssetsHistory($parent, $optParams = array())
@@ -100,6 +100,15 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * organizations/{ORGANIZATION_NUMBER} (e.g., "organizations/123456")
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Optional. The page size for search result pagination.
+   * Page size is capped at 500 even if a larger value is given. If set to zero,
+   * server will pick an appropriate default. Returned results may be fewer than
+   * requested. When this happens, there could be more results as long as
+   * `next_page_token` is returned.
+   * @opt_param string pageToken Optional. If present, retrieve the next batch of
+   * results from the preceding call to this method. `page_token` must be the
+   * value of `next_page_token` from the previous response. The values of all
+   * other method parameters must be identical to those in the previous call.
    * @opt_param string query Optional. The query statement. See [how to construct
    * a query](https://cloud.google.com/asset-inventory/docs/searching-iam-
    * policies#how_to_construct_a_query) for more information. If not specified or
@@ -119,15 +128,6 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * the included permissions). * `resource:(instance1 OR instance2) policy:amy`
    * to find IAM policy bindings that are set on resources "instance1" or
    * "instance2" and also specify user "amy".
-   * @opt_param string pageToken Optional. If present, retrieve the next batch of
-   * results from the preceding call to this method. `page_token` must be the
-   * value of `next_page_token` from the previous response. The values of all
-   * other method parameters must be identical to those in the previous call.
-   * @opt_param int pageSize Optional. The page size for search result pagination.
-   * Page size is capped at 500 even if a larger value is given. If set to zero,
-   * server will pick an appropriate default. Returned results may be fewer than
-   * requested. When this happens, there could be more results as long as
-   * `next_page_token` is returned.
    * @return Google_Service_CloudAsset_SearchAllIamPoliciesResponse
    */
   public function searchAllIamPolicies($scope, $optParams = array())
@@ -153,22 +153,6 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * organizations/{ORGANIZATION_NUMBER} (e.g., "organizations/123456")
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string assetTypes Optional. A list of asset types that this
-   * request searches for. If empty, it will search all the [searchable asset
-   * types](https://cloud.google.com/asset-inventory/docs/supported-asset-
-   * types#searchable_asset_types).
-   * @opt_param string pageToken Optional. If present, then retrieve the next
-   * batch of results from the preceding call to this method. `page_token` must be
-   * the value of `next_page_token` from the previous response. The values of all
-   * other method parameters, must be identical to those in the previous call.
-   * @opt_param string orderBy Optional. A comma separated list of fields
-   * specifying the sorting order of the results. The default order is ascending.
-   * Add " DESC" after the field name to indicate descending order. Redundant
-   * space characters are ignored. Example: "location DESC, name". Only string
-   * fields in the response are sortable, including `name`, `displayName`,
-   * `description`, `location`. All the other fields such as repeated fields
-   * (e.g., `networkTags`), map fields (e.g., `labels`) and struct fields (e.g.,
-   * `additionalAttributes`) are not supported.
    * @opt_param string query Optional. The query statement. See [how to construct
    * a query](http://cloud.google.com/asset-inventory/docs/searching-
    * resources#how_to_construct_a_query) for more information. If not specified or
@@ -198,6 +182,22 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * server will pick an appropriate default. Returned results may be fewer than
    * requested. When this happens, there could be more results as long as
    * `next_page_token` is returned.
+   * @opt_param string orderBy Optional. A comma separated list of fields
+   * specifying the sorting order of the results. The default order is ascending.
+   * Add " DESC" after the field name to indicate descending order. Redundant
+   * space characters are ignored. Example: "location DESC, name". Only string
+   * fields in the response are sortable, including `name`, `displayName`,
+   * `description`, `location`. All the other fields such as repeated fields
+   * (e.g., `networkTags`), map fields (e.g., `labels`) and struct fields (e.g.,
+   * `additionalAttributes`) are not supported.
+   * @opt_param string assetTypes Optional. A list of asset types that this
+   * request searches for. If empty, it will search all the [searchable asset
+   * types](https://cloud.google.com/asset-inventory/docs/supported-asset-
+   * types#searchable_asset_types).
+   * @opt_param string pageToken Optional. If present, then retrieve the next
+   * batch of results from the preceding call to this method. `page_token` must be
+   * the value of `next_page_token` from the previous response. The values of all
+   * other method parameters, must be identical to those in the previous call.
    * @return Google_Service_CloudAsset_SearchAllResourcesResponse
    */
   public function searchAllResources($scope, $optParams = array())

@@ -55,6 +55,21 @@ class Google_Service_Vault_Resource_Matters extends Google_Service_Resource
     return $this->call('close', array($params), "Google_Service_Vault_CloseMatterResponse");
   }
   /**
+   * Counts the artifacts within the context of a matter and returns a detailed
+   * breakdown of metrics. (matters.count)
+   *
+   * @param string $matterId The matter ID.
+   * @param Google_Service_Vault_CountArtifactsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Vault_Operation
+   */
+  public function count($matterId, Google_Service_Vault_CountArtifactsRequest $postBody, $optParams = array())
+  {
+    $params = array('matterId' => $matterId, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('count', array($params), "Google_Service_Vault_Operation");
+  }
+  /**
    * Creates a new matter with the given name and description. The initial state
    * is open, and the owner is the method caller. Returns the created matter with
    * default view. (matters.create)
@@ -104,10 +119,10 @@ class Google_Service_Vault_Resource_Matters extends Google_Service_Resource
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string view Specifies which parts of the matter to return in
-   * response.
    * @opt_param string state If set, list only matters with that specific state.
    * The default is listing matters of all states.
+   * @opt_param string view Specifies which parts of the matter to return in
+   * response.
    * @opt_param string pageToken The pagination token as returned in the response.
    * @opt_param int pageSize The number of matters to return in the response.
    * Default and maximum are 100.

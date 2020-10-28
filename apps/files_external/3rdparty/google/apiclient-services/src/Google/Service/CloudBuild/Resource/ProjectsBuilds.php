@@ -89,9 +89,12 @@ class Google_Service_CloudBuild_Resource_ProjectsBuilds extends Google_Service_R
    *
    * @opt_param string parent The parent of the collection of `Builds`. Format:
    * `projects/{project}/locations/location`
-   * @opt_param string pageToken Token to provide to skip to a particular spot in
-   * the list.
    * @opt_param int pageSize Number of results to return in the list.
+   * @opt_param string pageToken The page token for the next page of Builds. If
+   * unspecified, the first page of results is returned. If the token is rejected
+   * for any reason, INVALID_ARGUMENT will be thrown. In this case, the token
+   * should be discarded, and pagination should be restarted from the first page
+   * of results. See https://google.aip.dev/158 for more.
    * @opt_param string filter The raw filter text to constrain the results.
    * @return Google_Service_CloudBuild_ListBuildsResponse
    */

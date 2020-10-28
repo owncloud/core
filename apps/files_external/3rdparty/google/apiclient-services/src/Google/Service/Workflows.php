@@ -19,7 +19,8 @@
  * Service definition for Workflows (v1beta).
  *
  * <p>
-</p>
+ * Orchestrate Workflows consisting of Google Cloud APIs, SaaS APIs or private
+ * API endpoints.</p>
  *
  * <p>
  * For more information about this service, see the API
@@ -78,6 +79,10 @@ class Google_Service_Workflows extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -85,10 +90,6 @@ class Google_Service_Workflows extends Google_Service
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
                 ),
               ),
             ),
@@ -134,13 +135,13 @@ class Google_Service_Workflows extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'filter' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -200,7 +201,7 @@ class Google_Service_Workflows extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'filter' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -208,7 +209,7 @@ class Google_Service_Workflows extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'pageToken' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

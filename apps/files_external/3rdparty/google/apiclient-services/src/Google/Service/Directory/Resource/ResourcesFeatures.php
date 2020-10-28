@@ -80,8 +80,8 @@ class Google_Service_Directory_Resource_ResourcesFeatures extends Google_Service
    * your account's customer ID.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string pageToken Token to specify the next page in the list.
+   * @opt_param int maxResults Maximum number of results to return.
    * @return Google_Service_Directory_Features
    */
   public function listResourcesFeatures($customer, $optParams = array())

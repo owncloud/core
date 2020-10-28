@@ -107,9 +107,9 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironments extends Google_Se
   /**
    * Gets the IAM policy on an environment. For more information, see [Manage
    * users, roles, and permissions using the
-   * API](https://docs.apigee.com/hybrid/latest/manage-users-roles). You must have
-   * the `apigee.environments.getIamPolicy` permission to call this API.
-   * (environments.getIamPolicy)
+   * API](https://cloud.google.com/apigee/docs/api-platform/system-administration
+   * /manage-users-roles). You must have the `apigee.environments.getIamPolicy`
+   * permission to call this API. (environments.getIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * requested. See the operation documentation for the appropriate value for this
@@ -135,8 +135,9 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironments extends Google_Se
   /**
    * Sets the IAM policy on an environment, if the policy already exists it will
    * be replaced. For more information, see [Manage users, roles, and permissions
-   * using the API](https://docs.apigee.com/hybrid/latest/manage-users-roles). You
-   * must have the `apigee.environments.setIamPolicy` permission to call this API.
+   * using the API](https://cloud.google.com/apigee/docs/api-platform/system-
+   * administration/manage-users-roles). You must have the
+   * `apigee.environments.setIamPolicy` permission to call this API.
    * (environments.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being

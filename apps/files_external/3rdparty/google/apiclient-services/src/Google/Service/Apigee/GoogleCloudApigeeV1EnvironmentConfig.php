@@ -41,6 +41,8 @@ class Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentConfig extends Google_
   public $sequenceNumber;
   protected $targetsType = 'Google_Service_Apigee_GoogleCloudApigeeV1TargetServerConfig';
   protected $targetsDataType = 'array';
+  protected $traceConfigType = 'Google_Service_Apigee_GoogleCloudApigeeV1RuntimeTraceConfig';
+  protected $traceConfigDataType = '';
   public $uid;
 
   public function setCreateTime($createTime)
@@ -210,6 +212,20 @@ class Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentConfig extends Google_
   public function getTargets()
   {
     return $this->targets;
+  }
+  /**
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1RuntimeTraceConfig
+   */
+  public function setTraceConfig(Google_Service_Apigee_GoogleCloudApigeeV1RuntimeTraceConfig $traceConfig)
+  {
+    $this->traceConfig = $traceConfig;
+  }
+  /**
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1RuntimeTraceConfig
+   */
+  public function getTraceConfig()
+  {
+    return $this->traceConfig;
   }
   public function setUid($uid)
   {

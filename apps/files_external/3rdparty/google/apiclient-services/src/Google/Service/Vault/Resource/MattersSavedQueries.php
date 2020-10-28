@@ -79,9 +79,9 @@ class Google_Service_Vault_Resource_MattersSavedQueries extends Google_Service_R
    * saved queries are to be retrieved.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of saved queries to return.
    * @opt_param string pageToken The pagination token as returned in the previous
    * response. An empty token means start from the beginning.
-   * @opt_param int pageSize The maximum number of saved queries to return.
    * @return Google_Service_Vault_ListSavedQueriesResponse
    */
   public function listMattersSavedQueries($matterId, $optParams = array())

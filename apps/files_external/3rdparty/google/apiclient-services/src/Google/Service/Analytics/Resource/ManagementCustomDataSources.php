@@ -34,11 +34,11 @@ class Google_Service_Analytics_Resource_ManagementCustomDataSources extends Goog
    * retrieve.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int max-results The maximum number of custom data sources to
-   * include in this response.
    * @opt_param int start-index A 1-based index of the first custom data source to
    * retrieve. Use this parameter as a pagination mechanism along with the max-
    * results parameter.
+   * @opt_param int max-results The maximum number of custom data sources to
+   * include in this response.
    * @return Google_Service_Analytics_CustomDataSources
    */
   public function listManagementCustomDataSources($accountId, $webPropertyId, $optParams = array())

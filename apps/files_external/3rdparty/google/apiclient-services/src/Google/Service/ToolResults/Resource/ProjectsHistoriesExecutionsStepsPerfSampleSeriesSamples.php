@@ -68,11 +68,11 @@ class Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsStepsPerfSa
    * @param string $sampleSeriesId A sample series id
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional, the next_page_token returned in the
-   * previous response
    * @opt_param int pageSize The default page size is 500 samples, and the maximum
    * size is 5000. If the page_size is greater than 5000, the effective page size
    * will be 5000
+   * @opt_param string pageToken Optional, the next_page_token returned in the
+   * previous response
    * @return Google_Service_ToolResults_ListPerfSamplesResponse
    */
   public function listProjectsHistoriesExecutionsStepsPerfSampleSeriesSamples($projectId, $historyId, $executionId, $stepId, $sampleSeriesId, $optParams = array())

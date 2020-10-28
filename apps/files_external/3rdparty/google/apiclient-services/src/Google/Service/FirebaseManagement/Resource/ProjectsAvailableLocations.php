@@ -53,13 +53,13 @@ class Google_Service_FirebaseManagement_Resource_ProjectsAvailableLocations exte
    * account org-specific or project-specific location restrictions.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Token returned from a previous call to
-   * `ListAvailableLocations` indicating where in the list of locations to resume
-   * listing.
    * @opt_param int pageSize The maximum number of locations to return in the
    * response. The server may return fewer than this value at its discretion. If
    * no value is specified (or too large a value is specified), then the server
    * will impose its own limit. This value cannot be negative.
+   * @opt_param string pageToken Token returned from a previous call to
+   * `ListAvailableLocations` indicating where in the list of locations to resume
+   * listing.
    * @return Google_Service_FirebaseManagement_ListAvailableLocationsResponse
    */
   public function listProjectsAvailableLocations($parent, $optParams = array())

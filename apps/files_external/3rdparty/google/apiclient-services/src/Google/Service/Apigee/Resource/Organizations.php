@@ -26,9 +26,9 @@
 class Google_Service_Apigee_Resource_Organizations extends Google_Service_Resource
 {
   /**
-   * Creates an Apigee organization. See [Create an
-   * organization](https://docs.apigee.com/hybrid/latest/precog-provision).
-   * (organizations.create)
+   * Creates an Apigee organization. See [Create an Apigee
+   * organization](https://cloud.google.com/apigee/docs/api-platform/get-started
+   * /create-org). (organizations.create)
    *
    * @param Google_Service_Apigee_GoogleCloudApigeeV1Organization $postBody
    * @param array $optParams Optional parameters.
@@ -45,8 +45,9 @@ class Google_Service_Apigee_Resource_Organizations extends Google_Service_Resour
     return $this->call('create', array($params), "Google_Service_Apigee_GoogleLongrunningOperation");
   }
   /**
-   * Gets the profile for an Apigee organization. See [Organizations](https://docs
-   * .apigee.com/hybrid/latest/terminology#organizations). (organizations.get)
+   * Gets the profile for an Apigee organization. See [Understanding
+   * organizations](https://cloud.google.com/apigee/docs/api-platform/fundamentals
+   * /organization-structure). (organizations.get)
    *
    * @param string $name Required. Apigee organization name in the following
    * format: `organizations/{org}`
@@ -67,6 +68,10 @@ class Google_Service_Apigee_Resource_Organizations extends Google_Service_Resour
    * organization in the following format:
    * 'organizations/{org}/deployedIngressConfig'.
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string view When set to FULL, additional details about the
+   * specific deployments receiving traffic will be included in the IngressConfig
+   * response's RoutingRules.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1IngressConfig
    */
   public function getDeployedIngressConfig($name, $optParams = array())
@@ -82,9 +87,9 @@ class Google_Service_Apigee_Resource_Organizations extends Google_Service_Resour
    * calling [setSyncAuthorization](setSyncAuthorization) to ensure that you are
    * updating the correct version. If you don't pass the ETag in the call to
    * `setSyncAuthorization`, then the existing authorization is overwritten
-   * indiscriminately. For more information, see [Enable Synchronizer
-   * access](https://docs.apigee.com/hybrid/latest/synchronizer-access#enable-
-   * synchronizer-access). **Note**: Available to Apigee hybrid only.
+   * indiscriminately. For more information, see [Configure the
+   * Synchronizer](https://cloud.google.com/apigee/docs/hybrid/latest
+   * /synchronizer-access). **Note**: Available to Apigee hybrid only.
    * (organizations.getSyncAuthorization)
    *
    * @param string $name Required. Name of the Apigee organization. Use the
@@ -101,8 +106,9 @@ class Google_Service_Apigee_Resource_Organizations extends Google_Service_Resour
   }
   /**
    * Lists the Apigee organizations and associated GCP projects that you have
-   * permission to access. See [Organizations](https://docs.apigee.com/hybrid/late
-   * st/terminology#organizations). (organizations.listOrganizations)
+   * permission to access. See [Understanding
+   * organizations](https://cloud.google.com/apigee/docs/api-platform/fundamentals
+   * /organization-structure). (organizations.listOrganizations)
    *
    * @param string $parent Required. Use the following structure in your request:
    * `organizations`
@@ -123,9 +129,10 @@ class Google_Service_Apigee_Resource_Organizations extends Google_Service_Resour
    * To get an ETag, call [getSyncAuthorization](getSyncAuthorization). If you
    * don't pass the ETag in the call to `setSyncAuthorization`, then the existing
    * authorization is overwritten indiscriminately. For more information, see
-   * [Enable Synchronizer access](https://docs.apigee.com/hybrid/latest
-   * /synchronizer-access#enable-synchronizer-access). **Note**: Available to
-   * Apigee hybrid only. (organizations.setSyncAuthorization)
+   * [Configure the
+   * Synchronizer](https://cloud.google.com/apigee/docs/hybrid/latest
+   * /synchronizer-access). **Note**: Available to Apigee hybrid only.
+   * (organizations.setSyncAuthorization)
    *
    * @param string $name Required. Name of the Apigee organization. Use the
    * following structure in your request: `organizations/{org}`

@@ -664,12 +664,12 @@ class Google_Service_TagManager extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'variableId' => array(
+                'tagId' => array(
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,
                 ),
-                'tagId' => array(
+                'variableId' => array(
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,

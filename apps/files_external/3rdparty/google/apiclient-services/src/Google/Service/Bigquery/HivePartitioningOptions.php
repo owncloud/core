@@ -18,6 +18,7 @@
 class Google_Service_Bigquery_HivePartitioningOptions extends Google_Model
 {
   public $mode;
+  public $requirePartitionFilter;
   public $sourceUriPrefix;
 
   public function setMode($mode)
@@ -27,6 +28,14 @@ class Google_Service_Bigquery_HivePartitioningOptions extends Google_Model
   public function getMode()
   {
     return $this->mode;
+  }
+  public function setRequirePartitionFilter($requirePartitionFilter)
+  {
+    $this->requirePartitionFilter = $requirePartitionFilter;
+  }
+  public function getRequirePartitionFilter()
+  {
+    return $this->requirePartitionFilter;
   }
   public function setSourceUriPrefix($sourceUriPrefix)
   {

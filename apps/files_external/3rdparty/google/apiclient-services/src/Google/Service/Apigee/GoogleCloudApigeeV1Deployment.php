@@ -19,7 +19,6 @@ class Google_Service_Apigee_GoogleCloudApigeeV1Deployment extends Google_Collect
 {
   protected $collection_key = 'routeConflicts';
   public $apiProxy;
-  public $basePath;
   public $deployStartTime;
   public $environment;
   protected $errorsType = 'Google_Service_Apigee_GoogleRpcStatus';
@@ -40,14 +39,6 @@ class Google_Service_Apigee_GoogleCloudApigeeV1Deployment extends Google_Collect
   public function getApiProxy()
   {
     return $this->apiProxy;
-  }
-  public function setBasePath($basePath)
-  {
-    $this->basePath = $basePath;
-  }
-  public function getBasePath()
-  {
-    return $this->basePath;
   }
   public function setDeployStartTime($deployStartTime)
   {

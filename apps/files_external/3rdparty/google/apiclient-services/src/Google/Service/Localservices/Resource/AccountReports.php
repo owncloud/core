@@ -33,26 +33,11 @@ class Google_Service_Localservices_Resource_AccountReports extends Google_Servic
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int endDate.year Year of date. Must be from 1 to 9999, or 0 if
-   * specifying a date without a year.
-   * @opt_param int endDate.month Month of year. Must be from 1 to 12, or 0 if
-   * specifying a year without a month and day.
+   * @opt_param int startDate.month Month of a year. Must be from 1 to 12, or 0 to
+   * specify a year without a month and day.
    * @opt_param string pageToken The `next_page_token` value returned from a
    * previous request to SearchAccountReports that indicates where listing should
    * continue. Optional.
-   * @opt_param int pageSize The maximum number of accounts to return. If the page
-   * size is unset, page size will default to 1000. Maximum page_size is 10000.
-   * Optional.
-   * @opt_param int startDate.month Month of year. Must be from 1 to 12, or 0 if
-   * specifying a year without a month and day.
-   * @opt_param int startDate.year Year of date. Must be from 1 to 9999, or 0 if
-   * specifying a date without a year.
-   * @opt_param int startDate.day Day of month. Must be from 1 to 31 and valid for
-   * the year and month, or 0 if specifying a year by itself or a year and month
-   * where the day is not significant.
-   * @opt_param int endDate.day Day of month. Must be from 1 to 31 and valid for
-   * the year and month, or 0 if specifying a year by itself or a year and month
-   * where the day is not significant.
    * @opt_param string query A query string for searching for account reports.
    * Caller must provide a customer id of their MCC account with an associated
    * Gaia Mint that allows read permission on their linked accounts. Search
@@ -60,6 +45,21 @@ class Google_Service_Localservices_Resource_AccountReports extends Google_Servic
    * |-------------------------|-----------------------------------------------| |
    * manager_customer_id:123 | Get Account Report for Manager with id 123. |
    * Required.
+   * @opt_param int pageSize The maximum number of accounts to return. If the page
+   * size is unset, page size will default to 1000. Maximum page_size is 10000.
+   * Optional.
+   * @opt_param int startDate.year Year of the date. Must be from 1 to 9999, or 0
+   * to specify a date without a year.
+   * @opt_param int endDate.day Day of a month. Must be from 1 to 31 and valid for
+   * the year and month, or 0 to specify a year by itself or a year and month
+   * where the day isn't significant.
+   * @opt_param int endDate.year Year of the date. Must be from 1 to 9999, or 0 to
+   * specify a date without a year.
+   * @opt_param int endDate.month Month of a year. Must be from 1 to 12, or 0 to
+   * specify a year without a month and day.
+   * @opt_param int startDate.day Day of a month. Must be from 1 to 31 and valid
+   * for the year and month, or 0 to specify a year by itself or a year and month
+   * where the day isn't significant.
    * @return Google_Service_Localservices_GoogleAdsHomeservicesLocalservicesV1SearchAccountReportsResponse
    */
   public function search($optParams = array())

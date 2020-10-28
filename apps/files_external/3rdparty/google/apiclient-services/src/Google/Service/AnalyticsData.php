@@ -37,6 +37,7 @@ class Google_Service_AnalyticsData extends Google_Service
   const ANALYTICS_READONLY =
       "https://www.googleapis.com/auth/analytics.readonly";
 
+  public $properties;
   public $v1alpha;
   
   /**
@@ -54,6 +55,26 @@ class Google_Service_AnalyticsData extends Google_Service
     $this->version = 'v1alpha';
     $this->serviceName = 'analyticsdata';
 
+    $this->properties = new Google_Service_AnalyticsData_Resource_Properties(
+        $this,
+        $this->serviceName,
+        'properties',
+        array(
+          'methods' => array(
+            'getMetadata' => array(
+              'path' => 'v1alpha/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
     $this->v1alpha = new Google_Service_AnalyticsData_Resource_V1alpha(
         $this,
         $this->serviceName,

@@ -19,6 +19,8 @@ class Google_Service_Compute_InstanceProperties extends Google_Collection
 {
   protected $collection_key = 'serviceAccounts';
   public $canIpForward;
+  protected $confidentialInstanceConfigType = 'Google_Service_Compute_ConfidentialInstanceConfig';
+  protected $confidentialInstanceConfigDataType = '';
   public $description;
   protected $disksType = 'Google_Service_Compute_AttachedDisk';
   protected $disksDataType = 'array';
@@ -51,6 +53,20 @@ class Google_Service_Compute_InstanceProperties extends Google_Collection
   public function getCanIpForward()
   {
     return $this->canIpForward;
+  }
+  /**
+   * @param Google_Service_Compute_ConfidentialInstanceConfig
+   */
+  public function setConfidentialInstanceConfig(Google_Service_Compute_ConfidentialInstanceConfig $confidentialInstanceConfig)
+  {
+    $this->confidentialInstanceConfig = $confidentialInstanceConfig;
+  }
+  /**
+   * @return Google_Service_Compute_ConfidentialInstanceConfig
+   */
+  public function getConfidentialInstanceConfig()
+  {
+    return $this->confidentialInstanceConfig;
   }
   public function setDescription($description)
   {

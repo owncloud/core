@@ -72,9 +72,9 @@ class Google_Service_DoubleClickBidManager_Resource_Queries extends Google_Servi
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string pageToken Optional pagination token.
    * @opt_param int pageSize Maximum number of results per page. Must be between 1
    * and 100. Defaults to 100 if unspecified.
-   * @opt_param string pageToken Optional pagination token.
    * @return Google_Service_DoubleClickBidManager_ListQueriesResponse
    */
   public function listqueries($optParams = array())

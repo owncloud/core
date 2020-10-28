@@ -100,6 +100,9 @@ class Google_Service_DisplayVideo_Resource_AdvertisersLineItemsTargetingTypesAss
    * targeting options to list.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
+   * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
+   * if an invalid value is specified.
    * @opt_param string filter Allows filtering by assigned targeting option
    * properties. Supported syntax: * Filter expressions are made up of one or more
    * restrictions. * Restrictions can be combined by the logical operator `OR`. *
@@ -119,9 +122,6 @@ class Google_Service_DisplayVideo_Resource_AdvertisersLineItemsTargetingTypesAss
    * should return. Typically, this is the value of next_page_token returned from
    * the previous call to `ListLineItemAssignedTargetingOptions` method. If not
    * specified, the first page of results will be returned.
-   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
-   * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
-   * if an invalid value is specified.
    * @return Google_Service_DisplayVideo_ListLineItemAssignedTargetingOptionsResponse
    */
   public function listAdvertisersLineItemsTargetingTypesAssignedTargetingOptions($advertiserId, $lineItemId, $targetingType, $optParams = array())

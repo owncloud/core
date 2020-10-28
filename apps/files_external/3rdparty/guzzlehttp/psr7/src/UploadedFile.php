@@ -1,4 +1,5 @@
 <?php
+
 namespace GuzzleHttp\Psr7;
 
 use InvalidArgumentException;
@@ -85,6 +86,7 @@ class UploadedFile implements UploadedFileInterface
      * Depending on the value set file or stream variable
      *
      * @param mixed $streamOrFile
+     *
      * @throws InvalidArgumentException
      */
     private function setStreamOrFile($streamOrFile)
@@ -104,6 +106,7 @@ class UploadedFile implements UploadedFileInterface
 
     /**
      * @param int $error
+     *
      * @throws InvalidArgumentException
      */
     private function setError($error)
@@ -125,6 +128,7 @@ class UploadedFile implements UploadedFileInterface
 
     /**
      * @param int $size
+     *
      * @throws InvalidArgumentException
      */
     private function setSize($size)
@@ -158,6 +162,7 @@ class UploadedFile implements UploadedFileInterface
 
     /**
      * @param string|null $clientFilename
+     *
      * @throws InvalidArgumentException
      */
     private function setClientFilename($clientFilename)
@@ -173,6 +178,7 @@ class UploadedFile implements UploadedFileInterface
 
     /**
      * @param string|null $clientMediaType
+     *
      * @throws InvalidArgumentException
      */
     private function setClientMediaType($clientMediaType)
@@ -220,6 +226,7 @@ class UploadedFile implements UploadedFileInterface
 
     /**
      * {@inheritdoc}
+     *
      * @throws RuntimeException if the upload was not successful.
      */
     public function getStream()
@@ -238,7 +245,9 @@ class UploadedFile implements UploadedFileInterface
      *
      * @see http://php.net/is_uploaded_file
      * @see http://php.net/move_uploaded_file
+     *
      * @param string $targetPath Path to which to move the uploaded file.
+     *
      * @throws RuntimeException if the upload was not successful.
      * @throws InvalidArgumentException if the $path specified is invalid.
      * @throws RuntimeException on any error during the move operation, or on
@@ -259,7 +268,7 @@ class UploadedFile implements UploadedFileInterface
                 ? rename($this->file, $targetPath)
                 : move_uploaded_file($this->file, $targetPath);
         } else {
-            copy_to_stream(
+            Utils::copyToStream(
                 $this->getStream(),
                 new LazyOpenStream($targetPath, 'w')
             );

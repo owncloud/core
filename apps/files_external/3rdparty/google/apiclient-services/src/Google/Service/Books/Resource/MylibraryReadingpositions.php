@@ -50,23 +50,22 @@ class Google_Service_Books_Resource_MylibraryReadingpositions extends Google_Ser
    *
    * @param string $volumeId ID of volume for which to update the reading
    * position.
+   * @param string $position Position string for the new volume reading position.
+   * @param string $timestamp RFC 3339 UTC format timestamp associated with this
+   * reading position.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string deviceCookie Random persistent device cookie optional on
-   * set position.
-   * @opt_param string action Action that caused this reading position to be set.
-   * @opt_param string position Position string for the new volume reading
-   * position.
-   * @opt_param string timestamp RFC 3339 UTC format timestamp associated with
-   * this reading position.
    * @opt_param string contentVersion Volume content version for which this
    * reading position applies.
    * @opt_param string source String to identify the originator of this request.
+   * @opt_param string deviceCookie Random persistent device cookie optional on
+   * set position.
+   * @opt_param string action Action that caused this reading position to be set.
    * @return Google_Service_Books_BooksEmpty
    */
-  public function setPosition($volumeId, $optParams = array())
+  public function setPosition($volumeId, $position, $timestamp, $optParams = array())
   {
-    $params = array('volumeId' => $volumeId);
+    $params = array('volumeId' => $volumeId, 'position' => $position, 'timestamp' => $timestamp);
     $params = array_merge($params, $optParams);
     return $this->call('setPosition', array($params), "Google_Service_Books_BooksEmpty");
   }

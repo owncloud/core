@@ -25,4 +25,36 @@
  */
 class Google_Service_Document_Resource_ProjectsLocations extends Google_Service_Resource
 {
+  /**
+   * Gets information about a location. (locations.get)
+   *
+   * @param string $name Resource name for the location.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Document_GoogleCloudLocationLocation
+   */
+  public function get($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('get', array($params), "Google_Service_Document_GoogleCloudLocationLocation");
+  }
+  /**
+   * Lists information about the supported locations for this service.
+   * (locations.listProjectsLocations)
+   *
+   * @param string $name The resource that owns the locations collection, if
+   * applicable.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string pageToken The standard list page token.
+   * @opt_param string filter The standard list filter.
+   * @opt_param int pageSize The standard list page size.
+   * @return Google_Service_Document_GoogleCloudLocationListLocationsResponse
+   */
+  public function listProjectsLocations($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('list', array($params), "Google_Service_Document_GoogleCloudLocationListLocationsResponse");
+  }
 }

@@ -73,10 +73,10 @@ class Google_Service_Sasportal_Resource_NodesNodes extends Google_Service_Resour
    * "nodes/1".
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken A pagination token returned from a previous call
-   * to ListNodes method that indicates where this listing should continue from.
    * @opt_param int pageSize The maximum number of nodes to return in the
    * response.
+   * @opt_param string pageToken A pagination token returned from a previous call
+   * to ListNodes method that indicates where this listing should continue from.
    * @return Google_Service_Sasportal_SasPortalListNodesResponse
    */
   public function listNodesNodes($parent, $optParams = array())

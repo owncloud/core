@@ -60,9 +60,9 @@ class Google_Service_AndroidEnterprise extends Google_Service
   public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://androidenterprise.googleapis.com/';
     $this->servicePath = '';
-    $this->batchPath = 'batch/androidenterprise/v1';
+    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'androidenterprise';
 
@@ -948,11 +948,11 @@ class Google_Service_AndroidEnterprise extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'token' => array(
+                'language' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'language' => array(
+                'token' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

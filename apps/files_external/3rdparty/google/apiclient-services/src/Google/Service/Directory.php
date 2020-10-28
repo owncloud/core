@@ -117,6 +117,8 @@ class Google_Service_Directory extends Google_Service
   public $asps;
   public $channels;
   public $chromeosdevices;
+  public $customer_devices_chromeos;
+  public $customer_devices_chromeos_commands;
   public $customers;
   public $domainAliases;
   public $domains;
@@ -271,19 +273,11 @@ class Google_Service_Directory extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'maxResults' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'orderBy' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'orgUnitPath' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'sortOrder' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -291,7 +285,15 @@ class Google_Service_Directory extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'sortOrder' => array(
+                'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'maxResults' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -347,6 +349,61 @@ class Google_Service_Directory extends Google_Service
                 'projection' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->customer_devices_chromeos = new Google_Service_Directory_Resource_CustomerDevicesChromeos(
+        $this,
+        $this->serviceName,
+        'chromeos',
+        array(
+          'methods' => array(
+            'issueCommand' => array(
+              'path' => 'admin/directory/v1/customer/{customerId}/devices/chromeos/{deviceId}:issueCommand',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'customerId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'deviceId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->customer_devices_chromeos_commands = new Google_Service_Directory_Resource_CustomerDevicesChromeosCommands(
+        $this,
+        $this->serviceName,
+        'commands',
+        array(
+          'methods' => array(
+            'get' => array(
+              'path' => 'admin/directory/v1/customer/{customerId}/devices/chromeos/{deviceId}/commands/{commandId}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'customerId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'deviceId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'commandId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ),
               ),
             ),
@@ -551,27 +608,7 @@ class Google_Service_Directory extends Google_Service
               'path' => 'admin/directory/v1/groups',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'domain' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'userKey' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'sortOrder' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'customer' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'orderBy' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -579,7 +616,27 @@ class Google_Service_Directory extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
+                'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'query' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'sortOrder' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'domain' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'userKey' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -731,13 +788,13 @@ class Google_Service_Directory extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'includeDerivedMembership' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'includeDerivedMembership' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
                 ),
               ),
             ),'patch' => array(
@@ -838,15 +895,11 @@ class Google_Service_Directory extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'projection' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'sortOrder' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -854,11 +907,15 @@ class Google_Service_Directory extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
+                'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'query' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'projection' => array(
+                'sortOrder' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1150,6 +1207,10 @@ class Google_Service_Directory extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'query' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -1157,10 +1218,6 @@ class Google_Service_Directory extends Google_Service
                 'maxResults' => array(
                   'location' => 'query',
                   'type' => 'integer',
-                ),
-                'orderBy' => array(
-                  'location' => 'query',
-                  'type' => 'string',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
@@ -1256,13 +1313,13 @@ class Google_Service_Directory extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'maxResults' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'maxResults' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),'patch' => array(
@@ -1369,7 +1426,7 @@ class Google_Service_Directory extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'roleId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1377,11 +1434,11 @@ class Google_Service_Directory extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'userKey' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'roleId' => array(
+                'userKey' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1445,13 +1502,13 @@ class Google_Service_Directory extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'maxResults' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'maxResults' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),'patch' => array(
@@ -1673,15 +1730,15 @@ class Google_Service_Directory extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'projection' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'viewType' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'customFieldMask' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'projection' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1698,6 +1755,30 @@ class Google_Service_Directory extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'customer' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'viewType' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'domain' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'showDeleted' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'query' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -1706,35 +1787,11 @@ class Google_Service_Directory extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'customFieldMask' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'viewType' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'showDeleted' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'customer' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'maxResults' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'orderBy' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'domain' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageToken' => array(
+                'customFieldMask' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1797,21 +1854,13 @@ class Google_Service_Directory extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'event' => array(
+                'showDeleted' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'projection' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-                'customFieldMask' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'maxResults' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
                 ),
                 'orderBy' => array(
                   'location' => 'query',
@@ -1821,23 +1870,31 @@ class Google_Service_Directory extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'customer' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'query' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'domain' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'customer' => array(
+                'event' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'maxResults' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'showDeleted' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'query' => array(
+                'customFieldMask' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

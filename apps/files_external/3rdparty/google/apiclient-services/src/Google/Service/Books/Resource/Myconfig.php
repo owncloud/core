@@ -44,42 +44,42 @@ class Google_Service_Books_Resource_Myconfig extends Google_Service_Resource
    * Release downloaded content access restriction.
    * (myconfig.releaseDownloadAccess)
    *
+   * @param string $cpksver The device/version ID from which to release the
+   * restriction.
+   * @param string|array $volumeIds The volume(s) to release restrictions for.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string source String to identify the originator of this request.
    * @opt_param string locale ISO-639-1, ISO-3166-1 codes for message
    * localization, i.e. en_US.
-   * @opt_param string volumeIds The volume(s) to release restrictions for.
-   * @opt_param string cpksver The device/version ID from which to release the
-   * restriction.
+   * @opt_param string source String to identify the originator of this request.
    * @return Google_Service_Books_DownloadAccesses
    */
-  public function releaseDownloadAccess($optParams = array())
+  public function releaseDownloadAccess($cpksver, $volumeIds, $optParams = array())
   {
-    $params = array();
+    $params = array('cpksver' => $cpksver, 'volumeIds' => $volumeIds);
     $params = array_merge($params, $optParams);
     return $this->call('releaseDownloadAccess', array($params), "Google_Service_Books_DownloadAccesses");
   }
   /**
    * Request concurrent and download access restrictions. (myconfig.requestAccess)
    *
+   * @param string $cpksver The device/version ID from which to request the
+   * restrictions.
+   * @param string $nonce The client nonce value.
+   * @param string $source String to identify the originator of this request.
+   * @param string $volumeId The volume to request concurrent/download
+   * restrictions for.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string cpksver The device/version ID from which to request the
-   * restrictions.
-   * @opt_param string volumeId The volume to request concurrent/download
-   * restrictions for.
-   * @opt_param string licenseTypes The type of access license to request. If not
-   * specified, the default is BOTH.
    * @opt_param string locale ISO-639-1, ISO-3166-1 codes for message
    * localization, i.e. en_US.
-   * @opt_param string source String to identify the originator of this request.
-   * @opt_param string nonce The client nonce value.
+   * @opt_param string licenseTypes The type of access license to request. If not
+   * specified, the default is BOTH.
    * @return Google_Service_Books_RequestAccessData
    */
-  public function requestAccess($optParams = array())
+  public function requestAccess($cpksver, $nonce, $source, $volumeId, $optParams = array())
   {
-    $params = array();
+    $params = array('cpksver' => $cpksver, 'nonce' => $nonce, 'source' => $source, 'volumeId' => $volumeId);
     $params = array_merge($params, $optParams);
     return $this->call('requestAccess', array($params), "Google_Service_Books_RequestAccessData");
   }
@@ -87,16 +87,16 @@ class Google_Service_Books_Resource_Myconfig extends Google_Service_Resource
    * Request downloaded content access for specified volumes on the My eBooks
    * shelf. (myconfig.syncVolumeLicenses)
    *
+   * @param string $cpksver The device/version ID from which to release the
+   * restriction.
+   * @param string $nonce The client nonce value.
+   * @param string $source String to identify the originator of this request.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string locale ISO-639-1, ISO-3166-1 codes for message
-   * localization, i.e. en_US.
-   * @opt_param string cpksver The device/version ID from which to release the
-   * restriction.
    * @opt_param bool includeNonComicsSeries Set to true to include non-comics
    * series. Defaults to false.
-   * @opt_param string source String to identify the originator of this request.
-   * @opt_param string nonce The client nonce value.
+   * @opt_param string locale ISO-639-1, ISO-3166-1 codes for message
+   * localization, i.e. en_US.
    * @opt_param string features List of features supported by the client, i.e.,
    * 'RENTALS'
    * @opt_param string volumeIds The volume(s) to request download restrictions
@@ -105,9 +105,9 @@ class Google_Service_Books_Resource_Myconfig extends Google_Service_Resource
    * to false.
    * @return Google_Service_Books_Volumes
    */
-  public function syncVolumeLicenses($optParams = array())
+  public function syncVolumeLicenses($cpksver, $nonce, $source, $optParams = array())
   {
-    $params = array();
+    $params = array('cpksver' => $cpksver, 'nonce' => $nonce, 'source' => $source);
     $params = array_merge($params, $optParams);
     return $this->call('syncVolumeLicenses', array($params), "Google_Service_Books_Volumes");
   }

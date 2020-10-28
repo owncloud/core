@@ -35,13 +35,14 @@ class Google_Service_DLP_Resource_ProjectsLocationsImage extends Google_Service_
    * (image.redact)
    *
    * @param string $parent Parent resource name. The format of this value varies
-   * depending on whether you have [specified a processing location](/dlp/docs
-   * /specifying-location): + Projects scope, location specified:
-   * `projects/`PROJECT_ID`/locations/`LOCATION_ID + Projects scope, no location
-   * specified (defaults to global): `projects/`PROJECT_ID The following example
-   * `parent` string specifies a parent project with the identifier `example-
-   * project`, and specifies the `europe-west3` location for processing data:
-   * parent=projects/example-project/locations/europe-west3
+   * depending on whether you have [specified a processing
+   * location](https://cloud.google.com/dlp/docs/specifying-location): + Projects
+   * scope, location specified: `projects/`PROJECT_ID`/locations/`LOCATION_ID +
+   * Projects scope, no location specified (defaults to global):
+   * `projects/`PROJECT_ID The following example `parent` string specifies a
+   * parent project with the identifier `example-project`, and specifies the
+   * `europe-west3` location for processing data: parent=projects/example-
+   * project/locations/europe-west3
    * @param Google_Service_DLP_GooglePrivacyDlpV2RedactImageRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_DLP_GooglePrivacyDlpV2RedactImageResponse

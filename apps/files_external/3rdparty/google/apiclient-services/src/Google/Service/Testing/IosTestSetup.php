@@ -17,10 +17,14 @@
 
 class Google_Service_Testing_IosTestSetup extends Google_Collection
 {
-  protected $collection_key = 'additionalIpas';
+  protected $collection_key = 'pushFiles';
   protected $additionalIpasType = 'Google_Service_Testing_FileReference';
   protected $additionalIpasDataType = 'array';
   public $networkProfile;
+  protected $pullDirectoriesType = 'Google_Service_Testing_IosDeviceFile';
+  protected $pullDirectoriesDataType = 'array';
+  protected $pushFilesType = 'Google_Service_Testing_IosDeviceFile';
+  protected $pushFilesDataType = 'array';
 
   /**
    * @param Google_Service_Testing_FileReference
@@ -43,5 +47,33 @@ class Google_Service_Testing_IosTestSetup extends Google_Collection
   public function getNetworkProfile()
   {
     return $this->networkProfile;
+  }
+  /**
+   * @param Google_Service_Testing_IosDeviceFile
+   */
+  public function setPullDirectories($pullDirectories)
+  {
+    $this->pullDirectories = $pullDirectories;
+  }
+  /**
+   * @return Google_Service_Testing_IosDeviceFile
+   */
+  public function getPullDirectories()
+  {
+    return $this->pullDirectories;
+  }
+  /**
+   * @param Google_Service_Testing_IosDeviceFile
+   */
+  public function setPushFiles($pushFiles)
+  {
+    $this->pushFiles = $pushFiles;
+  }
+  /**
+   * @return Google_Service_Testing_IosDeviceFile
+   */
+  public function getPushFiles()
+  {
+    return $this->pushFiles;
   }
 }

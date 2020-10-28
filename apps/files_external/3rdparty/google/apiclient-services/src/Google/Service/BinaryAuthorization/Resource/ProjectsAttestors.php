@@ -106,13 +106,13 @@ class Google_Service_BinaryAuthorization_Resource_ProjectsAttestors extends Goog
    * with the attestors, in the format `projects`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Requested page size. The server may return fewer
+   * results than requested. If unspecified, the server will pick an appropriate
+   * default.
    * @opt_param string pageToken A token identifying a page of results the server
    * should return. Typically, this is the value of
    * ListAttestorsResponse.next_page_token returned from the previous call to the
    * `ListAttestors` method.
-   * @opt_param int pageSize Requested page size. The server may return fewer
-   * results than requested. If unspecified, the server will pick an appropriate
-   * default.
    * @return Google_Service_BinaryAuthorization_ListAttestorsResponse
    */
   public function listProjectsAttestors($parent, $optParams = array())
@@ -175,5 +175,21 @@ class Google_Service_BinaryAuthorization_Resource_ProjectsAttestors extends Goog
     $params = array('name' => $name, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('update', array($params), "Google_Service_BinaryAuthorization_Attestor");
+  }
+  /**
+   * Returns whether the given Attestation for the given image URI was signed by
+   * the given Attestor (attestors.validateAttestationOccurrence)
+   *
+   * @param string $attestor Required. The resource name of the Attestor of the
+   * occurrence, in the format `projects/attestors`.
+   * @param Google_Service_BinaryAuthorization_ValidateAttestationOccurrenceRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_BinaryAuthorization_ValidateAttestationOccurrenceResponse
+   */
+  public function validateAttestationOccurrence($attestor, Google_Service_BinaryAuthorization_ValidateAttestationOccurrenceRequest $postBody, $optParams = array())
+  {
+    $params = array('attestor' => $attestor, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('validateAttestationOccurrence', array($params), "Google_Service_BinaryAuthorization_ValidateAttestationOccurrenceResponse");
   }
 }

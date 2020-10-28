@@ -28,7 +28,7 @@ class Google_Service_TPU_Resource_ProjectsLocationsAcceleratorTypes extends Goog
   /**
    * Gets AcceleratorType. (acceleratorTypes.get)
    *
-   * @param string $name The resource name.
+   * @param string $name Required. The resource name.
    * @param array $optParams Optional parameters.
    * @return Google_Service_TPU_AcceleratorType
    */
@@ -42,14 +42,14 @@ class Google_Service_TPU_Resource_ProjectsLocationsAcceleratorTypes extends Goog
    * Lists accelerator types supported by this API.
    * (acceleratorTypes.listProjectsLocationsAcceleratorTypes)
    *
-   * @param string $parent The parent resource name.
+   * @param string $parent Required. The parent resource name.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter List filter.
    * @opt_param int pageSize The maximum number of items to return.
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.
    * @opt_param string orderBy Sort results.
+   * @opt_param string filter List filter.
    * @return Google_Service_TPU_ListAcceleratorTypesResponse
    */
   public function listProjectsLocationsAcceleratorTypes($parent, $optParams = array())

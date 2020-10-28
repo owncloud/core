@@ -21,6 +21,8 @@ class Google_Service_Dataproc_GceClusterConfig extends Google_Collection
   public $internalIpOnly;
   public $metadata;
   public $networkUri;
+  protected $nodeGroupAffinityType = 'Google_Service_Dataproc_NodeGroupAffinity';
+  protected $nodeGroupAffinityDataType = '';
   public $privateIpv6GoogleAccess;
   protected $reservationAffinityType = 'Google_Service_Dataproc_ReservationAffinity';
   protected $reservationAffinityDataType = '';
@@ -53,6 +55,20 @@ class Google_Service_Dataproc_GceClusterConfig extends Google_Collection
   public function getNetworkUri()
   {
     return $this->networkUri;
+  }
+  /**
+   * @param Google_Service_Dataproc_NodeGroupAffinity
+   */
+  public function setNodeGroupAffinity(Google_Service_Dataproc_NodeGroupAffinity $nodeGroupAffinity)
+  {
+    $this->nodeGroupAffinity = $nodeGroupAffinity;
+  }
+  /**
+   * @return Google_Service_Dataproc_NodeGroupAffinity
+   */
+  public function getNodeGroupAffinity()
+  {
+    return $this->nodeGroupAffinity;
   }
   public function setPrivateIpv6GoogleAccess($privateIpv6GoogleAccess)
   {

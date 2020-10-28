@@ -21,7 +21,6 @@ class Google_Service_CivicInfo_PollingLocation extends Google_Collection
   protected $addressType = 'Google_Service_CivicInfo_SimpleAddressType';
   protected $addressDataType = '';
   public $endDate;
-  public $id;
   public $latitude;
   public $longitude;
   public $name;
@@ -53,14 +52,6 @@ class Google_Service_CivicInfo_PollingLocation extends Google_Collection
   public function getEndDate()
   {
     return $this->endDate;
-  }
-  public function setId($id)
-  {
-    $this->id = $id;
-  }
-  public function getId()
-  {
-    return $this->id;
   }
   public function setLatitude($latitude)
   {

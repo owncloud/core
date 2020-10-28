@@ -25,10 +25,6 @@ class Google_Service_Dfareporting_DfareportingFile extends Google_Model
   public $id;
   public $kind;
   public $lastModifiedTime;
-  protected $mediaRequestInfoType = 'Google_Service_Dfareporting_MediaRequestInfo';
-  protected $mediaRequestInfoDataType = '';
-  protected $mediaResponseInfoType = 'Google_Service_Dfareporting_MediaResponseInfo';
-  protected $mediaResponseInfoDataType = '';
   public $reportId;
   public $status;
   protected $urlsType = 'Google_Service_Dfareporting_DfareportingFileUrls';
@@ -95,34 +91,6 @@ class Google_Service_Dfareporting_DfareportingFile extends Google_Model
   public function getLastModifiedTime()
   {
     return $this->lastModifiedTime;
-  }
-  /**
-   * @param Google_Service_Dfareporting_MediaRequestInfo
-   */
-  public function setMediaRequestInfo(Google_Service_Dfareporting_MediaRequestInfo $mediaRequestInfo)
-  {
-    $this->mediaRequestInfo = $mediaRequestInfo;
-  }
-  /**
-   * @return Google_Service_Dfareporting_MediaRequestInfo
-   */
-  public function getMediaRequestInfo()
-  {
-    return $this->mediaRequestInfo;
-  }
-  /**
-   * @param Google_Service_Dfareporting_MediaResponseInfo
-   */
-  public function setMediaResponseInfo(Google_Service_Dfareporting_MediaResponseInfo $mediaResponseInfo)
-  {
-    $this->mediaResponseInfo = $mediaResponseInfo;
-  }
-  /**
-   * @return Google_Service_Dfareporting_MediaResponseInfo
-   */
-  public function getMediaResponseInfo()
-  {
-    return $this->mediaResponseInfo;
   }
   public function setReportId($reportId)
   {

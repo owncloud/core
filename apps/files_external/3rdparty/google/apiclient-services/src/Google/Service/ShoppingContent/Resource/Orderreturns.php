@@ -43,6 +43,22 @@ class Google_Service_ShoppingContent_Resource_Orderreturns extends Google_Servic
     return $this->call('acknowledge', array($params), "Google_Service_ShoppingContent_OrderreturnsAcknowledgeResponse");
   }
   /**
+   * Create return in your Merchant Center account.
+   * (orderreturns.createorderreturn)
+   *
+   * @param string $merchantId The ID of the account that manages the order. This
+   * cannot be a multi-client account.
+   * @param Google_Service_ShoppingContent_OrderreturnsCreateOrderReturnRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_ShoppingContent_OrderreturnsCreateOrderReturnResponse
+   */
+  public function createorderreturn($merchantId, Google_Service_ShoppingContent_OrderreturnsCreateOrderReturnRequest $postBody, $optParams = array())
+  {
+    $params = array('merchantId' => $merchantId, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('createorderreturn', array($params), "Google_Service_ShoppingContent_OrderreturnsCreateOrderReturnResponse");
+  }
+  /**
    * Retrieves an order return from your Merchant Center account.
    * (orderreturns.get)
    *

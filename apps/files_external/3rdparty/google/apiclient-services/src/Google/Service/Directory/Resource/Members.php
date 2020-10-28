@@ -93,9 +93,9 @@ class Google_Service_Directory_Resource_Members extends Google_Service_Resource
    * value is 200.
    * @opt_param string roles Comma separated role values to filter list results
    * on.
+   * @opt_param string pageToken Token to specify next page in the list
    * @opt_param bool includeDerivedMembership Whether to list indirect
    * memberships. Default: false.
-   * @opt_param string pageToken Token to specify next page in the list
    * @return Google_Service_Directory_Members
    */
   public function listMembers($groupKey, $optParams = array())

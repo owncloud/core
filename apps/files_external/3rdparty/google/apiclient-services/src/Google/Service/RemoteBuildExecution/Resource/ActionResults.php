@@ -45,11 +45,11 @@ class Google_Service_RemoteBuildExecution_Resource_ActionResults extends Google_
    *
    * @opt_param bool inlineStdout A hint to the server to request inlining stdout
    * in the ActionResult message.
-   * @opt_param bool inlineStderr A hint to the server to request inlining stderr
-   * in the ActionResult message.
    * @opt_param string inlineOutputFiles A hint to the server to inline the
    * contents of the listed output files. Each path needs to exactly match one
    * path in `output_files` in the Command message.
+   * @opt_param bool inlineStderr A hint to the server to request inlining stderr
+   * in the ActionResult message.
    * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2ActionResult
    */
   public function get($instanceName, $hash, $sizeBytes, $optParams = array())

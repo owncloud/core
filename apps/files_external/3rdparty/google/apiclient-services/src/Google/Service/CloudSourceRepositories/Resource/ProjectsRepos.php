@@ -26,10 +26,9 @@
 class Google_Service_CloudSourceRepositories_Resource_ProjectsRepos extends Google_Service_Resource
 {
   /**
-   * Creates a repo in the given project with the given name.
-   *
-   * If the named repository already exists, `CreateRepo` returns
-   * `ALREADY_EXISTS`. (repos.create)
+   * Creates a repo in the given project with the given name. If the named
+   * repository already exists, `CreateRepo` returns `ALREADY_EXISTS`.
+   * (repos.create)
    *
    * @param string $parent The project in which to create the repo. Values are of
    * the form `projects/`.
@@ -81,17 +80,12 @@ class Google_Service_CloudSourceRepositories_Resource_ProjectsRepos extends Goog
    * @param array $optParams Optional parameters.
    *
    * @opt_param int options.requestedPolicyVersion Optional. The policy format
-   * version to be returned.
-   *
-   * Valid values are 0, 1, and 3. Requests specifying an invalid value will be
-   * rejected.
-   *
-   * Requests for policies with any conditional bindings must specify version 3.
-   * Policies without any conditional bindings may specify any valid value or
-   * leave the field unset.
-   *
-   * To learn which resources support conditions in their IAM policies, see the
-   * [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-
+   * version to be returned. Valid values are 0, 1, and 3. Requests specifying an
+   * invalid value will be rejected. Requests for policies with any conditional
+   * bindings must specify version 3. Policies without any conditional bindings
+   * may specify any valid value or leave the field unset. To learn which
+   * resources support conditions in their IAM policies, see the [IAM
+   * documentation](https://cloud.google.com/iam/help/conditions/resource-
    * policies).
    * @return Google_Service_CloudSourceRepositories_Policy
    */
@@ -103,7 +97,7 @@ class Google_Service_CloudSourceRepositories_Resource_ProjectsRepos extends Goog
   }
   /**
    * Returns all repos belonging to a project. The sizes of the repos are not set
-   * by ListRepos.  To get the size of a repo, use GetRepo.
+   * by ListRepos. To get the size of a repo, use GetRepo.
    * (repos.listProjectsRepos)
    *
    * @param string $name The project ID whose repos should be listed. Values are
@@ -156,9 +150,8 @@ class Google_Service_CloudSourceRepositories_Resource_ProjectsRepos extends Goog
     return $this->call('setIamPolicy', array($params), "Google_Service_CloudSourceRepositories_Policy");
   }
   /**
-   * Synchronize a connected repo.
-   *
-   * The response contains SyncRepoMetadata in the metadata field. (repos.sync)
+   * Synchronize a connected repo. The response contains SyncRepoMetadata in the
+   * metadata field. (repos.sync)
    *
    * @param string $name The name of the repo to synchronize. Values are of the
    * form `projects//repos/`.

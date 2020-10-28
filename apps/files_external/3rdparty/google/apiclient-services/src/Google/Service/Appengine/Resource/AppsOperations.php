@@ -57,8 +57,8 @@ class Google_Service_Appengine_Resource_AppsOperations extends Google_Service_Re
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken The standard list page token.
-   * @opt_param string filter The standard list filter.
    * @opt_param int pageSize The standard list page size.
+   * @opt_param string filter The standard list filter.
    * @return Google_Service_Appengine_ListOperationsResponse
    */
   public function listAppsOperations($appsId, $optParams = array())

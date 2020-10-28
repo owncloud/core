@@ -18,12 +18,10 @@
 class Google_Service_RealTimeBidding_CreativeServingDecision extends Google_Collection
 {
   protected $collection_key = 'detectedVendorIds';
-  protected $adTechnologyProvidersType = 'Google_Service_RealTimeBidding_AdTechnologyProviders';
-  protected $adTechnologyProvidersDataType = '';
-  protected $chinaServingStatusType = 'Google_Service_RealTimeBidding_ServingStatus';
-  protected $chinaServingStatusDataType = '';
-  protected $dealsServingStatusType = 'Google_Service_RealTimeBidding_ServingStatus';
-  protected $dealsServingStatusDataType = '';
+  protected $chinaPolicyComplianceType = 'Google_Service_RealTimeBidding_PolicyCompliance';
+  protected $chinaPolicyComplianceDataType = '';
+  protected $dealsPolicyComplianceType = 'Google_Service_RealTimeBidding_PolicyCompliance';
+  protected $dealsPolicyComplianceDataType = '';
   protected $detectedAdvertisersType = 'Google_Service_RealTimeBidding_AdvertiserAndBrand';
   protected $detectedAdvertisersDataType = 'array';
   public $detectedAttributes;
@@ -34,52 +32,40 @@ class Google_Service_RealTimeBidding_CreativeServingDecision extends Google_Coll
   public $detectedSensitiveCategories;
   public $detectedVendorIds;
   public $lastStatusUpdate;
-  protected $openAuctionServingStatusType = 'Google_Service_RealTimeBidding_ServingStatus';
-  protected $openAuctionServingStatusDataType = '';
-  protected $russiaServingStatusType = 'Google_Service_RealTimeBidding_ServingStatus';
-  protected $russiaServingStatusDataType = '';
+  protected $networkPolicyComplianceType = 'Google_Service_RealTimeBidding_PolicyCompliance';
+  protected $networkPolicyComplianceDataType = '';
+  protected $platformPolicyComplianceType = 'Google_Service_RealTimeBidding_PolicyCompliance';
+  protected $platformPolicyComplianceDataType = '';
+  protected $russiaPolicyComplianceType = 'Google_Service_RealTimeBidding_PolicyCompliance';
+  protected $russiaPolicyComplianceDataType = '';
 
   /**
-   * @param Google_Service_RealTimeBidding_AdTechnologyProviders
+   * @param Google_Service_RealTimeBidding_PolicyCompliance
    */
-  public function setAdTechnologyProviders(Google_Service_RealTimeBidding_AdTechnologyProviders $adTechnologyProviders)
+  public function setChinaPolicyCompliance(Google_Service_RealTimeBidding_PolicyCompliance $chinaPolicyCompliance)
   {
-    $this->adTechnologyProviders = $adTechnologyProviders;
+    $this->chinaPolicyCompliance = $chinaPolicyCompliance;
   }
   /**
-   * @return Google_Service_RealTimeBidding_AdTechnologyProviders
+   * @return Google_Service_RealTimeBidding_PolicyCompliance
    */
-  public function getAdTechnologyProviders()
+  public function getChinaPolicyCompliance()
   {
-    return $this->adTechnologyProviders;
+    return $this->chinaPolicyCompliance;
   }
   /**
-   * @param Google_Service_RealTimeBidding_ServingStatus
+   * @param Google_Service_RealTimeBidding_PolicyCompliance
    */
-  public function setChinaServingStatus(Google_Service_RealTimeBidding_ServingStatus $chinaServingStatus)
+  public function setDealsPolicyCompliance(Google_Service_RealTimeBidding_PolicyCompliance $dealsPolicyCompliance)
   {
-    $this->chinaServingStatus = $chinaServingStatus;
+    $this->dealsPolicyCompliance = $dealsPolicyCompliance;
   }
   /**
-   * @return Google_Service_RealTimeBidding_ServingStatus
+   * @return Google_Service_RealTimeBidding_PolicyCompliance
    */
-  public function getChinaServingStatus()
+  public function getDealsPolicyCompliance()
   {
-    return $this->chinaServingStatus;
-  }
-  /**
-   * @param Google_Service_RealTimeBidding_ServingStatus
-   */
-  public function setDealsServingStatus(Google_Service_RealTimeBidding_ServingStatus $dealsServingStatus)
-  {
-    $this->dealsServingStatus = $dealsServingStatus;
-  }
-  /**
-   * @return Google_Service_RealTimeBidding_ServingStatus
-   */
-  public function getDealsServingStatus()
-  {
-    return $this->dealsServingStatus;
+    return $this->dealsPolicyCompliance;
   }
   /**
    * @param Google_Service_RealTimeBidding_AdvertiserAndBrand
@@ -160,31 +146,45 @@ class Google_Service_RealTimeBidding_CreativeServingDecision extends Google_Coll
     return $this->lastStatusUpdate;
   }
   /**
-   * @param Google_Service_RealTimeBidding_ServingStatus
+   * @param Google_Service_RealTimeBidding_PolicyCompliance
    */
-  public function setOpenAuctionServingStatus(Google_Service_RealTimeBidding_ServingStatus $openAuctionServingStatus)
+  public function setNetworkPolicyCompliance(Google_Service_RealTimeBidding_PolicyCompliance $networkPolicyCompliance)
   {
-    $this->openAuctionServingStatus = $openAuctionServingStatus;
+    $this->networkPolicyCompliance = $networkPolicyCompliance;
   }
   /**
-   * @return Google_Service_RealTimeBidding_ServingStatus
+   * @return Google_Service_RealTimeBidding_PolicyCompliance
    */
-  public function getOpenAuctionServingStatus()
+  public function getNetworkPolicyCompliance()
   {
-    return $this->openAuctionServingStatus;
+    return $this->networkPolicyCompliance;
   }
   /**
-   * @param Google_Service_RealTimeBidding_ServingStatus
+   * @param Google_Service_RealTimeBidding_PolicyCompliance
    */
-  public function setRussiaServingStatus(Google_Service_RealTimeBidding_ServingStatus $russiaServingStatus)
+  public function setPlatformPolicyCompliance(Google_Service_RealTimeBidding_PolicyCompliance $platformPolicyCompliance)
   {
-    $this->russiaServingStatus = $russiaServingStatus;
+    $this->platformPolicyCompliance = $platformPolicyCompliance;
   }
   /**
-   * @return Google_Service_RealTimeBidding_ServingStatus
+   * @return Google_Service_RealTimeBidding_PolicyCompliance
    */
-  public function getRussiaServingStatus()
+  public function getPlatformPolicyCompliance()
   {
-    return $this->russiaServingStatus;
+    return $this->platformPolicyCompliance;
+  }
+  /**
+   * @param Google_Service_RealTimeBidding_PolicyCompliance
+   */
+  public function setRussiaPolicyCompliance(Google_Service_RealTimeBidding_PolicyCompliance $russiaPolicyCompliance)
+  {
+    $this->russiaPolicyCompliance = $russiaPolicyCompliance;
+  }
+  /**
+   * @return Google_Service_RealTimeBidding_PolicyCompliance
+   */
+  public function getRussiaPolicyCompliance()
+  {
+    return $this->russiaPolicyCompliance;
   }
 }

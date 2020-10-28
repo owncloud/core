@@ -19,8 +19,8 @@
  * The "sslCerts" collection of methods.
  * Typical usage is:
  *  <code>
- *   $sqlService = new Google_Service_SQLAdmin(...);
- *   $sslCerts = $sqlService->sslCerts;
+ *   $sqladminService = new Google_Service_SQLAdmin(...);
+ *   $sslCerts = $sqladminService->sslCerts;
  *  </code>
  */
 class Google_Service_SQLAdmin_Resource_SslCerts extends Google_Service_Resource

@@ -87,11 +87,11 @@ class Google_Service_Dns_Resource_Policies extends Google_Service_Resource
    * @param string $project Identifies the project addressed by this request.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int maxResults Optional. Maximum number of results to be returned.
+   * If unspecified, the server will decide how many results to return.
    * @opt_param string pageToken Optional. A tag returned by a previous list
    * request that was truncated. Use this parameter to continue a previous list
    * request.
-   * @opt_param int maxResults Optional. Maximum number of results to be returned.
-   * If unspecified, the server will decide how many results to return.
    * @return Google_Service_Dns_PoliciesListResponse
    */
   public function listPolicies($project, $optParams = array())

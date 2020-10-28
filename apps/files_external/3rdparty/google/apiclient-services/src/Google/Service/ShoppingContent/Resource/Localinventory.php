@@ -40,7 +40,7 @@ class Google_Service_ShoppingContent_Resource_Localinventory extends Google_Serv
     return $this->call('custombatch', array($params), "Google_Service_ShoppingContent_LocalinventoryCustomBatchResponse");
   }
   /**
-   * Update the local inventory of a product in your Merchant Center account.
+   * Updates the local inventory of a product in your Merchant Center account.
    * (localinventory.insert)
    *
    * @param string $merchantId The ID of the account that contains the product.

@@ -76,8 +76,8 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsOperations exte
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken The standard list page token.
-   * @opt_param string filter The standard list filter.
    * @opt_param int pageSize The standard list page size.
+   * @opt_param string filter The standard list filter.
    * @return Google_Service_CloudMachineLearningEngine_GoogleLongrunningListOperationsResponse
    */
   public function listProjectsOperations($name, $optParams = array())

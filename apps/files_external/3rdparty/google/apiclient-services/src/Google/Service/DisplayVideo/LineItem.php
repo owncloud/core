@@ -17,7 +17,7 @@
 
 class Google_Service_DisplayVideo_LineItem extends Google_Collection
 {
-  protected $collection_key = 'partnerCosts';
+  protected $collection_key = 'warningMessages';
   public $advertiserId;
   protected $bidStrategyType = 'Google_Service_DisplayVideo_BiddingStrategy';
   protected $bidStrategyDataType = '';
@@ -47,6 +47,7 @@ class Google_Service_DisplayVideo_LineItem extends Google_Collection
   protected $partnerRevenueModelType = 'Google_Service_DisplayVideo_PartnerRevenueModel';
   protected $partnerRevenueModelDataType = '';
   public $updateTime;
+  public $warningMessages;
 
   public function setAdvertiserId($advertiserId)
   {
@@ -261,5 +262,13 @@ class Google_Service_DisplayVideo_LineItem extends Google_Collection
   public function getUpdateTime()
   {
     return $this->updateTime;
+  }
+  public function setWarningMessages($warningMessages)
+  {
+    $this->warningMessages = $warningMessages;
+  }
+  public function getWarningMessages()
+  {
+    return $this->warningMessages;
   }
 }

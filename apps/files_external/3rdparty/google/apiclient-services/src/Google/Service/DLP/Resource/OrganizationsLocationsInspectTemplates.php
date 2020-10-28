@@ -33,16 +33,16 @@ class Google_Service_DLP_Resource_OrganizationsLocationsInspectTemplates extends
    *
    * @param string $parent Required. Parent resource name. The format of this
    * value varies depending on the scope of the request (project or organization)
-   * and whether you have [specified a processing location](/dlp/docs/specifying-
-   * location): + Projects scope, location specified:
-   * `projects/`PROJECT_ID`/locations/`LOCATION_ID + Projects scope, no location
-   * specified (defaults to global): `projects/`PROJECT_ID + Organizations scope,
-   * location specified: `organizations/`ORG_ID`/locations/`LOCATION_ID +
-   * Organizations scope, no location specified (defaults to global):
-   * `organizations/`ORG_ID The following example `parent` string specifies a
-   * parent project with the identifier `example-project`, and specifies the
-   * `europe-west3` location for processing data: parent=projects/example-
-   * project/locations/europe-west3
+   * and whether you have [specified a processing
+   * location](https://cloud.google.com/dlp/docs/specifying-location): + Projects
+   * scope, location specified: `projects/`PROJECT_ID`/locations/`LOCATION_ID +
+   * Projects scope, no location specified (defaults to global):
+   * `projects/`PROJECT_ID + Organizations scope, location specified:
+   * `organizations/`ORG_ID`/locations/`LOCATION_ID + Organizations scope, no
+   * location specified (defaults to global): `organizations/`ORG_ID The following
+   * example `parent` string specifies a parent project with the identifier
+   * `example-project`, and specifies the `europe-west3` location for processing
+   * data: parent=projects/example-project/locations/europe-west3
    * @param Google_Service_DLP_GooglePrivacyDlpV2CreateInspectTemplateRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_DLP_GooglePrivacyDlpV2InspectTemplate
@@ -94,16 +94,16 @@ class Google_Service_DLP_Resource_OrganizationsLocationsInspectTemplates extends
    *
    * @param string $parent Required. Parent resource name. The format of this
    * value varies depending on the scope of the request (project or organization)
-   * and whether you have [specified a processing location](/dlp/docs/specifying-
-   * location): + Projects scope, location specified:
-   * `projects/`PROJECT_ID`/locations/`LOCATION_ID + Projects scope, no location
-   * specified (defaults to global): `projects/`PROJECT_ID + Organizations scope,
-   * location specified: `organizations/`ORG_ID`/locations/`LOCATION_ID +
-   * Organizations scope, no location specified (defaults to global):
-   * `organizations/`ORG_ID The following example `parent` string specifies a
-   * parent project with the identifier `example-project`, and specifies the
-   * `europe-west3` location for processing data: parent=projects/example-
-   * project/locations/europe-west3
+   * and whether you have [specified a processing
+   * location](https://cloud.google.com/dlp/docs/specifying-location): + Projects
+   * scope, location specified: `projects/`PROJECT_ID`/locations/`LOCATION_ID +
+   * Projects scope, no location specified (defaults to global):
+   * `projects/`PROJECT_ID + Organizations scope, location specified:
+   * `organizations/`ORG_ID`/locations/`LOCATION_ID + Organizations scope, no
+   * location specified (defaults to global): `organizations/`ORG_ID The following
+   * example `parent` string specifies a parent project with the identifier
+   * `example-project`, and specifies the `europe-west3` location for processing
+   * data: parent=projects/example-project/locations/europe-west3
    * @param array $optParams Optional parameters.
    *
    * @opt_param string orderBy Comma separated list of fields to order by,
@@ -113,10 +113,10 @@ class Google_Service_DLP_Resource_OrganizationsLocationsInspectTemplates extends
    * `create_time`: corresponds to time the template was created. - `update_time`:
    * corresponds to time the template was last updated. - `name`: corresponds to
    * template's name. - `display_name`: corresponds to template's display name.
-   * @opt_param string pageToken Page token to continue retrieval. Comes from
-   * previous call to `ListInspectTemplates`.
    * @opt_param int pageSize Size of the page, can be limited by server. If zero
    * server returns a page of max size 100.
+   * @opt_param string pageToken Page token to continue retrieval. Comes from
+   * previous call to `ListInspectTemplates`.
    * @opt_param string locationId Deprecated. This field has no effect.
    * @return Google_Service_DLP_GooglePrivacyDlpV2ListInspectTemplatesResponse
    */

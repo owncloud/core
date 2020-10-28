@@ -1303,18 +1303,36 @@ class OAuth2 implements FetchAuthTokenInterface
     /**
      * The expiration of the last received token.
      *
-     * @return array
+     * @return array|null
      */
     public function getLastReceivedToken()
     {
         if ($token = $this->getAccessToken()) {
-            return [
+            // the bare necessity of an auth token
+            $authToken = [
                 'access_token' => $token,
                 'expires_at' => $this->getExpiresAt(),
             ];
+        } elseif ($idToken = $this->getIdToken()) {
+            $authToken = [
+                'id_token' => $idToken,
+                'expires_at' => $this->getExpiresAt(),
+            ];
+        } else {
+            return null;
         }
 
-        return null;
+        if ($expiresIn = $this->getExpiresIn()) {
+            $authToken['expires_in'] = $expiresIn;
+        }
+        if ($issuedAt = $this->getIssuedAt()) {
+            $authToken['issued_at'] = $issuedAt;
+        }
+        if ($refreshToken = $this->getRefreshToken()) {
+            $authToken['refresh_token'] = $refreshToken;
+        }
+
+        return $authToken;
     }
 
     /**

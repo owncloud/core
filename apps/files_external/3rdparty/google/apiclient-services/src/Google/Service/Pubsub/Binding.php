@@ -18,11 +18,20 @@
 class Google_Service_Pubsub_Binding extends Google_Collection
 {
   protected $collection_key = 'members';
+  public $bindingId;
   protected $conditionType = 'Google_Service_Pubsub_Expr';
   protected $conditionDataType = '';
   public $members;
   public $role;
 
+  public function setBindingId($bindingId)
+  {
+    $this->bindingId = $bindingId;
+  }
+  public function getBindingId()
+  {
+    return $this->bindingId;
+  }
   /**
    * @param Google_Service_Pubsub_Expr
    */

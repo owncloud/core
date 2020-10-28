@@ -131,13 +131,13 @@ class Google_Service_Apigee_Resource_OrganizationsDevelopers extends Google_Serv
    * @opt_param bool expand Specifies whether to expand the results. Set to `true`
    * to expand the results. This query parameter is not valid if you use the
    * `count` or `startKey` query parameters.
-   * @opt_param string ids Optional. List of IDs to include, separated by commas.
    * @opt_param string startKey **Note**: Must be used in conjunction with the
    * `count` parameter. Email address of the developer from which to start
    * displaying the list of developers. For example, if the an unfiltered list
    * returns: ``` westley@example.com fezzik@example.com buttercup@example.com ```
    * and your `startKey` is `fezzik@example.com`, the list returned will be ```
    * fezzik@example.com buttercup@example.com ```
+   * @opt_param string ids Optional. List of IDs to include, separated by commas.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ListOfDevelopersResponse
    */
   public function listOrganizationsDevelopers($parent, $optParams = array())

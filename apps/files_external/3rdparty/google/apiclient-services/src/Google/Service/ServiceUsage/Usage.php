@@ -22,8 +22,6 @@ class Google_Service_ServiceUsage_Usage extends Google_Collection
   public $requirements;
   protected $rulesType = 'Google_Service_ServiceUsage_UsageRule';
   protected $rulesDataType = 'array';
-  protected $serviceIdentityType = 'Google_Service_ServiceUsage_GoogleApiServiceIdentity';
-  protected $serviceIdentityDataType = '';
 
   public function setProducerNotificationChannel($producerNotificationChannel)
   {
@@ -54,19 +52,5 @@ class Google_Service_ServiceUsage_Usage extends Google_Collection
   public function getRules()
   {
     return $this->rules;
-  }
-  /**
-   * @param Google_Service_ServiceUsage_GoogleApiServiceIdentity
-   */
-  public function setServiceIdentity(Google_Service_ServiceUsage_GoogleApiServiceIdentity $serviceIdentity)
-  {
-    $this->serviceIdentity = $serviceIdentity;
-  }
-  /**
-   * @return Google_Service_ServiceUsage_GoogleApiServiceIdentity
-   */
-  public function getServiceIdentity()
-  {
-    return $this->serviceIdentity;
   }
 }

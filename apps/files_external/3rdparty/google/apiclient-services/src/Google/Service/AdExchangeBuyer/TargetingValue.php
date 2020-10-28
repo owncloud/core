@@ -26,6 +26,8 @@ class Google_Service_AdExchangeBuyer_TargetingValue extends Google_Model
   protected $demogGenderCriteriaValueType = 'Google_Service_AdExchangeBuyer_TargetingValueDemogGenderCriteria';
   protected $demogGenderCriteriaValueDataType = '';
   public $longValue;
+  protected $requestPlatformTargetingValueType = 'Google_Service_AdExchangeBuyer_TargetingValueRequestPlatformTargeting';
+  protected $requestPlatformTargetingValueDataType = '';
   public $stringValue;
 
   /**
@@ -91,6 +93,20 @@ class Google_Service_AdExchangeBuyer_TargetingValue extends Google_Model
   public function getLongValue()
   {
     return $this->longValue;
+  }
+  /**
+   * @param Google_Service_AdExchangeBuyer_TargetingValueRequestPlatformTargeting
+   */
+  public function setRequestPlatformTargetingValue(Google_Service_AdExchangeBuyer_TargetingValueRequestPlatformTargeting $requestPlatformTargetingValue)
+  {
+    $this->requestPlatformTargetingValue = $requestPlatformTargetingValue;
+  }
+  /**
+   * @return Google_Service_AdExchangeBuyer_TargetingValueRequestPlatformTargeting
+   */
+  public function getRequestPlatformTargetingValue()
+  {
+    return $this->requestPlatformTargetingValue;
   }
   public function setStringValue($stringValue)
   {

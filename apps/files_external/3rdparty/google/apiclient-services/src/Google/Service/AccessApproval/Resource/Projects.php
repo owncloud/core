@@ -62,10 +62,10 @@ class Google_Service_AccessApproval_Resource_Projects extends Google_Service_Res
    * Settings to update are determined by the value of field_mask.
    * (projects.updateAccessApprovalSettings)
    *
-   * @param string $name The resource name of the settings. Format is one of: 1.
-   * "projects/{project_id}/accessApprovalSettings" 2.
-   * "folders/{folder_id}/accessApprovalSettings" 3.
-   * "organizations/{organization_id}/accessApprovalSettings"
+   * @param string $name The resource name of the settings. Format is one of: *
+   * "projects/{project}/accessApprovalSettings" *
+   * "folders/{folder}/accessApprovalSettings" *
+   * "organizations/{organization}/accessApprovalSettings"
    * @param Google_Service_AccessApproval_AccessApprovalSettings $postBody
    * @param array $optParams Optional parameters.
    *

@@ -95,13 +95,6 @@ class Google_Service_DisplayVideo_Resource_AdvertisersNegativeKeywordListsNegati
    * keyword list to which the requested negative keywords belong.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
-   * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
-   * if an invalid value is specified.
-   * @opt_param string orderBy Field by which to sort the list. Acceptable values
-   * are: * `keywordValue` (default) The default sorting order is ascending. To
-   * specify descending order for a field, a suffix " desc" should be added to the
-   * field name. Example: `keywordValue desc`.
    * @opt_param string filter Allows filtering by negative keyword fields.
    * Supported syntax: * Filter expressions for negative keyword currently can
    * only contain at most one * restriction. * A restriction has the form of
@@ -112,6 +105,13 @@ class Google_Service_DisplayVideo_Resource_AdvertisersNegativeKeywordListsNegati
    * should return. Typically, this is the value of next_page_token returned from
    * the previous call to `ListNegativeKeywords` method. If not specified, the
    * first page of results will be returned.
+   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
+   * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
+   * if an invalid value is specified.
+   * @opt_param string orderBy Field by which to sort the list. Acceptable values
+   * are: * `keywordValue` (default) The default sorting order is ascending. To
+   * specify descending order for a field, a suffix " desc" should be added to the
+   * field name. Example: `keywordValue desc`.
    * @return Google_Service_DisplayVideo_ListNegativeKeywordsResponse
    */
   public function listAdvertisersNegativeKeywordListsNegativeKeywords($advertiserId, $negativeKeywordListId, $optParams = array())

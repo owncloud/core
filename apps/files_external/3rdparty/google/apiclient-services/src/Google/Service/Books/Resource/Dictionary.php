@@ -29,15 +29,13 @@ class Google_Service_Books_Resource_Dictionary extends Google_Service_Resource
    * Returns a list of offline dictionary metadata available
    * (dictionary.listOfflineMetadata)
    *
+   * @param string $cpksver The device/version ID from which to request the data.
    * @param array $optParams Optional parameters.
-   *
-   * @opt_param string cpksver The device/version ID from which to request the
-   * data.
    * @return Google_Service_Books_Metadata
    */
-  public function listOfflineMetadata($optParams = array())
+  public function listOfflineMetadata($cpksver, $optParams = array())
   {
-    $params = array();
+    $params = array('cpksver' => $cpksver);
     $params = array_merge($params, $optParams);
     return $this->call('listOfflineMetadata', array($params), "Google_Service_Books_Metadata");
   }

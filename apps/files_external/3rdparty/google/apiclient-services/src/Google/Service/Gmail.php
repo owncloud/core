@@ -202,6 +202,10 @@ class Google_Service_Gmail extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'includeSpamTrash' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
                 'q' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -209,10 +213,6 @@ class Google_Service_Gmail extends Google_Service
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-                'includeSpamTrash' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
                 ),
                 'maxResults' => array(
                   'location' => 'query',
@@ -263,7 +263,7 @@ class Google_Service_Gmail extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'labelId' => array(
+                'startHistoryId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -272,7 +272,7 @@ class Google_Service_Gmail extends Google_Service
                   'type' => 'string',
                   'repeated' => true,
                 ),
-                'startHistoryId' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -280,7 +280,7 @@ class Google_Service_Gmail extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'pageToken' => array(
+                'labelId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -453,21 +453,21 @@ class Google_Service_Gmail extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'neverMarkSpam' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
                 'processForCalendar' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
-                'deleted' => array(
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
                 'internalDateSource' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'deleted' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
+                'neverMarkSpam' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
                 ),
               ),
             ),'insert' => array(
@@ -479,13 +479,13 @@ class Google_Service_Gmail extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'deleted' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
                 'internalDateSource' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'deleted' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
                 ),
               ),
             ),'list' => array(
@@ -497,17 +497,13 @@ class Google_Service_Gmail extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'q' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'includeSpamTrash' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
                 'maxResults' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'q' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
                 'labelIds' => array(
                   'location' => 'query',
@@ -517,6 +513,10 @@ class Google_Service_Gmail extends Google_Service
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'includeSpamTrash' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
                 ),
               ),
             ),'modify' => array(
@@ -1138,14 +1138,14 @@ class Google_Service_Gmail extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'format' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'metadataHeaders' => array(
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,
-                ),
-                'format' => array(
-                  'location' => 'query',
-                  'type' => 'string',
                 ),
               ),
             ),'list' => array(
@@ -1161,6 +1161,10 @@ class Google_Service_Gmail extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
+                'includeSpamTrash' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -1173,10 +1177,6 @@ class Google_Service_Gmail extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,
-                ),
-                'includeSpamTrash' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
                 ),
               ),
             ),'modify' => array(

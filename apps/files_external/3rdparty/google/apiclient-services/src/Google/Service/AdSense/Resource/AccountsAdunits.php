@@ -64,11 +64,11 @@ class Google_Service_AdSense_Resource_AccountsAdunits extends Google_Service_Res
    * @param string $adClientId Ad client for which to list ad units.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool includeInactive Whether to include inactive ad units.
-   * Default: true.
    * @opt_param string pageToken A continuation token, used to page through ad
    * units. To retrieve the next page, set this parameter to the value of
    * "nextPageToken" from the previous response.
+   * @opt_param bool includeInactive Whether to include inactive ad units.
+   * Default: true.
    * @opt_param int maxResults The maximum number of ad units to include in the
    * response, used for paging.
    * @return Google_Service_AdSense_AdUnits

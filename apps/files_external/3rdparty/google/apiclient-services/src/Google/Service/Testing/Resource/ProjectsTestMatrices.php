@@ -46,11 +46,11 @@ class Google_Service_Testing_Resource_ProjectsTestMatrices extends Google_Servic
   }
   /**
    * Creates and runs a matrix of tests according to the given specifications.
-   * Unsupported environments will be returned in the state UNSUPPORTED. Matrices
-   * are limited to at most 200 supported executions. May return any of the
-   * following canonical error codes: - PERMISSION_DENIED - if the user is not
+   * Unsupported environments will be returned in the state UNSUPPORTED. A test
+   * matrix is limited to use at most 2000 devices in parallel. May return any of
+   * the following canonical error codes: - PERMISSION_DENIED - if the user is not
    * authorized to write to project - INVALID_ARGUMENT - if the request is
-   * malformed or if the matrix expands to more than 200 supported executions
+   * malformed or if the matrix tries to use too many simultaneous devices.
    * (testMatrices.create)
    *
    * @param string $projectId The GCE project under which this job will run.

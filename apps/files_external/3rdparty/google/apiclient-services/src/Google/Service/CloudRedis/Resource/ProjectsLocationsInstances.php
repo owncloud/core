@@ -91,7 +91,7 @@ class Google_Service_CloudRedis_Resource_ProjectsLocationsInstances extends Goog
     return $this->call('export', array($params), "Google_Service_CloudRedis_Operation");
   }
   /**
-   * Initiates a failover of the master node to current replica node for a
+   * Initiates a failover of the primary node to current replica node for a
    * specific STANDARD tier Cloud Memorystore for Redis instance.
    * (instances.failover)
    *
@@ -156,13 +156,13 @@ class Google_Service_CloudRedis_Resource_ProjectsLocationsInstances extends Goog
    * `location_id` refers to a GCP region.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The `next_page_token` value returned from a
-   * previous ListInstances request, if any.
    * @opt_param int pageSize The maximum number of items to return. If not
    * specified, a default value of 1000 will be used by the service. Regardless of
    * the page_size value, the response may include a partial list and a caller
    * should only rely on response's `next_page_token` to determine if there are
    * more instances left to be queried.
+   * @opt_param string pageToken The `next_page_token` value returned from a
+   * previous ListInstances request, if any.
    * @return Google_Service_CloudRedis_ListInstancesResponse
    */
   public function listProjectsLocationsInstances($parent, $optParams = array())
