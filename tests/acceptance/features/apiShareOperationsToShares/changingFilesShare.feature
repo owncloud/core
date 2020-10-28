@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @toImplementOnOCIS @issue-ocis-reva-14 @issue-ocis-reva-243
+@api @files_sharing-app-required @issue-ocis-reva-14 @issue-ocis-reva-243
 Feature: sharing
 
   Background:
@@ -59,6 +59,7 @@ Feature: sharing
       | old              |
       | new              |
 
+
   Scenario: Move files between shares by same user
     Given the administrator has enabled DAV tech_preview
     And user "Alice" has created folder "share1"
@@ -74,6 +75,7 @@ Feature: sharing
     And as "Alice" file "share1/welcome.txt" should not exist
     But as "Alice" file "share2/welcome.txt" should exist
 
+
   Scenario: Move files between shares by same user added by sharee
     Given the administrator has enabled DAV tech_preview
     And user "Alice" has created folder "share1"
@@ -88,6 +90,7 @@ Feature: sharing
     When user "Brian" moves file "/Shares/share1/welcome.txt" to "/Shares/share2/welcome.txt" using the WebDAV API
     Then as "Brian" file "/Shares/share2/welcome.txt" should exist
     And as "Alice" file "share2/welcome.txt" should exist
+
 
   Scenario: Move files between shares by different users
     Given the administrator has enabled DAV tech_preview
