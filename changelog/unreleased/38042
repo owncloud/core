@@ -1,6 +1,6 @@
 Bugfix: Properly handle StorageNotAvailableException in share external
 
-Users with Federates Shares of which storage was unavailable, were encountering
+Users with Federated Shares of which storage was unavailable, were encountering
 issues when working with the shares (e.g. unsharing or listing). It was caused by
 unhandled exception.
 
