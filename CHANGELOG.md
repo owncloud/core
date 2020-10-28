@@ -87,6 +87,7 @@ Summary
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 * Enhancement - Add Support for SGI Image Previews: [#37758](https://github.com/owncloud/core/pull/37758)
 * Enhancement - Re-design UI yellow notification bar: [#37875](https://github.com/owncloud/core/pull/37875)
+* Enhancement - Allow getting the share list filtered by share type via API: [#38000](https://github.com/owncloud/core/pull/38000)
 
 Details
 -------
@@ -683,6 +684,16 @@ Details
    by default so users can dismiss most notifications
 
    https://github.com/owncloud/core/pull/37875
+
+* Enhancement - Allow getting the share list filtered by share type via API: [#38000](https://github.com/owncloud/core/pull/38000)
+
+   Previously, the share API returned all the shares. There were some filters, but you weren't
+   able to filter by share type. You couldn't get only your link shares.
+
+   Now the API allows filtering by share type, along with the filters previously available. The
+   web UI is using this filtering now.
+
+   https://github.com/owncloud/core/pull/38000
 
 Changelog for ownCloud Core [10.5.0] (2020-07-31)
 =======================================
