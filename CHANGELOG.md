@@ -78,6 +78,7 @@ Summary
 * Change - Update opis/closure (3.5.7 => 3.6.0): [#38004](https://github.com/owncloud/core/pull/38004)
 * Change - Update symfony/polyfill (1.18.1 => 1.19.0): [#38032](https://github.com/owncloud/core/pull/38032)
 * Change - Update symfony/polyfill (1.19.0 => 1.20.0): [#38033](https://github.com/owncloud/core/pull/38033)
+* Change - Update dg/composer-cleaner (v2.1 => v2.2): [#38044](https://github.com/owncloud/core/pull/38044)
 * Enhancement - Cleanup encryption config values on disabling encryption: [#35980](https://github.com/owncloud/core/pull/35980)
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
@@ -584,6 +585,10 @@ Details
    symfony/polyfill-php73 symfony/polyfill-php80
 
    https://github.com/owncloud/core/pull/38033
+
+* Change - Update dg/composer-cleaner (v2.1 => v2.2): [#38044](https://github.com/owncloud/core/pull/38044)
+
+   https://github.com/owncloud/core/pull/38044
 
 * Enhancement - Cleanup encryption config values on disabling encryption: [#35980](https://github.com/owncloud/core/pull/35980)
 
