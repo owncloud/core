@@ -455,6 +455,8 @@ default:
         - ChecksumContext:
         - FilesVersionsContext:
         - WebDavPropertiesContext:
+        - OccContext:
+        - AppConfigurationContext:
 
     apiWebdavLocks:
       paths:
