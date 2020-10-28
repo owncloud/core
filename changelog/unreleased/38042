@@ -1,0 +1,10 @@
+Bugfix: Properly handle StorageNotAvailableException in share external
+
+Users with Federated Shares of which storage was unavailable, were encountering
+issues when working with the shares (e.g. unsharing or listing). It was caused by
+unhandled exception.
+
+https://github.com/owncloud/core/pull/38042
+https://github.com/owncloud/enterprise/issues/4217
+https://github.com/owncloud/enterprise/issues/4117
+https://github.com/owncloud/enterprise/issues/2721

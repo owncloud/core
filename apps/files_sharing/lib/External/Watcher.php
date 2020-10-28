@@ -21,6 +21,8 @@
 
 namespace OCA\Files_Sharing\External;
 
+use OCP\Files\StorageNotAvailableException;
+
 class Watcher extends \OC\Files\Cache\Watcher {
 	/**
 	 * remove deleted files in $path from the cache
@@ -29,5 +31,13 @@ class Watcher extends \OC\Files\Cache\Watcher {
 	 */
 	public function cleanFolder($path) {
 		// not needed, the scanner takes care of this
+	}
+
+	public function needsUpdate($path, $cachedData) {
+		try {
+			return parent::needsUpdate($path, $cachedData);
+		} catch (StorageNotAvailableException $e) {
+			return false;
+		}
 	}
 }

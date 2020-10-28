@@ -29,6 +29,11 @@
 				state.dir = null;
 				state.call = null;
 				Files.updateMaxUploadFilesize(response);
+			}).fail(function() {
+				OC.Notification.show(
+					t('files', 'Encountered problem accessing the folder {name}', {name: currentDir}),
+					{type : 'error'}
+				);
 			});
 		},
 		/**
