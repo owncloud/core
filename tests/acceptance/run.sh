@@ -1277,21 +1277,36 @@ then
     for unexpected_passed_value in "${UNEXPECTED_PASSED_SCENARIOS[@]}"
     do
       # check only for the running feature
-      if [[ $BEHAT_FEATURE == *"${unexpected_passed_value}" ]]
+      if [[ $BEHAT_FEATURE == *":"* ]]
       then
-        ACTUAL_UNEXPECTED_PASS+="${unexpected_passed_value}"
+        BEHAT_FEATURE_WITH_LINE_NUM=$BEHAT_FEATURE
+      else
+        LINE_NUM=$(echo ${unexpected_passed_value} | cut -d":" -f2)
+        BEHAT_FEATURE_WITH_LINE_NUM=$BEHAT_FEATURE:$LINE_NUM
+      fi
+      if [[ $BEHAT_FEATURE_WITH_LINE_NUM == *"${unexpected_passed_value}" ]]
+      then
+        ACTUAL_UNEXPECTED_PASS+=("${unexpected_passed_value}")
       fi
     done
   else
     ACTUAL_UNEXPECTED_PASS=("${UNEXPECTED_PASSED_SCENARIOS[@]}")
   fi
 
+  if [ ${#ACTUAL_UNEXPECTED_PASS[@]} -eq 0 ]
+  then
+    UNEXPECTED_SUCCESS=false
+  fi
+fi
+
+if [ "${UNEXPECTED_SUCCESS}" = true ]
+then
   tput setaf 3; echo "runsh: Total unexpected passed scenarios throughout the test run:"
   tput setaf 1; printf "%s\n" "${ACTUAL_UNEXPECTED_PASS[@]}"
-
 else
   tput setaf 2; echo "runsh: There were no unexpected success."
 fi
+
 if [ "${UNEXPECTED_BEHAT_EXIT_STATUS}" = true ]
 then
   tput setaf 3; echo "runsh: The following Behat test runs exited with non-zero status:"
