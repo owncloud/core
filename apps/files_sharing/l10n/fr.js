@@ -97,6 +97,8 @@ OC.L10N.register(
     "Not a directory" : "N'est pas un répertoire",
     "Could not lock path" : "Impossible de verrouiller le chemin",
     "Can't change permissions for public share links" : "Impossible de changer les permissions pour les liens de partage public",
+    "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" a partagé \"%3$s\" avec vous",
+    "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" vous a invité à voir \"%3$s\"",
     "Accept" : "Accepter",
     "Decline" : "Refuser",
     "This share is password-protected" : "Ce partage est protégé par un mot de passe",
@@ -116,6 +118,7 @@ OC.L10N.register(
     "Download" : "Télécharger",
     "Download %s" : "Télécharger %s",
     "Direct link" : "Lien direct",
+    "Nothing to configure." : "Rien à configurer.",
     "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Ces groupes ne seront pas disponibles pour le partage. Les membres du groupe ne sont pas exclus du partage et peuvent recevoir le partage en tant que membres d'autres groupes."
 },
 "nplurals=2; plural=(n > 1);");

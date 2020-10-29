@@ -6,6 +6,8 @@
     "Not allowed to create a federated share with the same user" : "Non autorisé à créer un partage fédéré avec le même utilisateur",
     "File is already shared with %s" : "Le fichier est déjà partagé avec %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Le partage de %s a échoué : impossible de trouver %s. Peut-être le serveur est-il momentanément injoignable.",
+    "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" a partagé \"%3$s\" avec vous",
+    "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" vous a invité à voir \"%3$s\"",
     "Accept" : "Accepter",
     "Decline" : "Refuser",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Partagez avec moi grâce à mon identifiant Federated Cloud #owncloud %s",
@@ -19,6 +21,7 @@
     "Share it:" : "Partager :",
     "Add to your website" : "Ajouter à votre site web",
     "Share with me via ownCloud" : "Partagez avec moi via ownCloud",
-    "HTML Code:" : "Code HTML :"
+    "HTML Code:" : "Code HTML :",
+    "Nothing to configure." : "Rien à configurer."
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }
