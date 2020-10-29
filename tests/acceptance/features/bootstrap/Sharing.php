@@ -2624,9 +2624,15 @@ trait Sharing {
 	 */
 	public function userHasReactedToShareOfferedBy($user, $action, $share, $offeredBy) {
 		$this->userReactsToShareOfferedBy($user, $action, $share, $offeredBy);
+		if ($action === 'declined') {
+			$actionText = 'decline';
+		}
+		if ($action === 'accepted') {
+			$actionText = 'accept';
+		}
 		$this->theHTTPStatusCodeShouldBe(
 			200,
-			__METHOD__ . " could not $action share to $user by $offeredBy"
+			__METHOD__ . " could not $actionText share $share to $user by $offeredBy"
 		);
 	}
 
