@@ -13,7 +13,7 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
-    When user "Brian" shares file "/textfile0.txt" with user "Carol" with permissions "read,update" using the sharing API
+    When user "Brian" shares file "/Shares/textfile0.txt" with user "Carol" with permissions "read,update" using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And as "Carol" file "/Shares/textfile0.txt" should not exist
