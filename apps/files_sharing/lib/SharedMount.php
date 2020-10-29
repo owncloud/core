@@ -202,7 +202,6 @@ class SharedMount extends MountPoint implements MoveableMount {
 		$shareManager = \OC::$server->getShareManager();
 		// FIXME: make it stop earlier in '/$userId/files'
 		while ($targetNode !== null && $targetNode->getPath() !== '/') {
-			'@phan-var \OC\Share20\Manager $shareManager';
 			$shares = $shareManager->getSharesByPath($targetNode);
 
 			foreach ($shares as $share) {

@@ -184,6 +184,15 @@ interface IManager {
 	public function getShareById($id, $recipient = null);
 
 	/**
+	 * Get shares for a given path
+	 *
+	 * @param Node $path
+	 * @return \OCP\Share\IShare[]
+	 * @since 10.6.0
+	 */
+	public function getSharesByPath(Node $path);
+
+	/**
 	 * Get the share by token possible with password
 	 *
 	 * @param string $token
