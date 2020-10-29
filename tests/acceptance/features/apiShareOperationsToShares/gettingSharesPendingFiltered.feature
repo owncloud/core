@@ -1,4 +1,4 @@
-@api @files_sharing-app-required
+@api @files_sharing-app-required @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
 Feature: get the pending shares filtered by type (user, group etc)
   As a user
   I want to be able to know the pending shares that I have received of a particular type (user, group etc)
