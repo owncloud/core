@@ -149,24 +149,30 @@ class OcisHelper {
 		$dir = \opendir($source);
 		while (($file = \readdir($dir)) !== false) {
 			if (($file != '.') && ($file != '..')) {
-				if (\is_dir($source . '/' . $file)) {
+				$sourcePath = $source . '/' . $file;
+				$destinationPath = $destination . '/' . $file;
+				if (\is_dir($sourcePath)) {
 					self::recurseUpload(
 						$baseUrl,
-						$source . '/' . $file,
+						$sourcePath,
 						$userId,
 						$password,
-						$destination . '/' . $file
+						$destinationPath
 					);
 				} else {
 					$response = UploadHelper::upload(
 						$baseUrl,
 						$userId,
 						$password,
-						$source . '/' . $file,
-						$destination . '/' . $file
+						$sourcePath,
+						$destinationPath
 					);
-					if ($response->getStatusCode() !== 201) {
-						throw new \Exception("Could not upload skeleton file" . $response->getBody()->getContents());
+					$responseStatus = $response->getStatusCode();
+					if ($responseStatus !== 201) {
+						throw new \Exception(
+							"Could not upload skeleton file $sourcePath to $destinationPath for user '$userId' status '$responseStatus' response body: '"
+							. $response->getBody()->getContents() . "'"
+						);
 					}
 				}
 			}
