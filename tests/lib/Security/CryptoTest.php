@@ -52,6 +52,13 @@ class CryptoTest extends \Test\TestCase {
 		$this->assertEquals($stringToEncrypt, $this->crypto->decrypt($encryptedString, 'ThisIsAVeryS3cur3P4ssw0rd'));
 	}
 
+	// v2 has stronger generated iv
+	public function testLaterDecryptionV2() {
+		$decrypted = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt.';
+		$encryptedString = 'v2|f71f4fac5e0ccc38857ef1ef85f1bc19fb0a724684623be4106ec03502cbac28ea9e3226e8dfcabdcf075aabc362e83596fdc7868f9ae6b7ff1602f07a8bfc444a8ede9c79897ec61cfa922386a0833e1e1179363a1e26deb332faf4beef73ed17bc525bd4221191af039da52357e73b|07853a2f518e9abee07ea87452222bd4|fb2b33f22184f06261468a71ac4ccff749d27c5f5e76ec0d90e5a1ce559538ce0b12cef08616bd3c4ddd141b7a595e99161b980a273b288c0d79f01debec5dab';
+		$this->assertEquals($decrypted, $this->crypto->decrypt($encryptedString, 'ThisIsAVeryS3cur3P4ssw0rd'));
+	}
+
 	/**
 	 */
 	public function testWrongIV() {
