@@ -55,7 +55,7 @@ class CryptoTest extends \Test\TestCase {
 	// v2 has stronger generated iv
 	public function testLaterDecryptionV2() {
 		$decrypted = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt.';
-		$encryptedString = 'v2|f71f4fac5e0ccc38857ef1ef85f1bc19fb0a724684623be4106ec03502cbac28ea9e3226e8dfcabdcf075aabc362e83596fdc7868f9ae6b7ff1602f07a8bfc444a8ede9c79897ec61cfa922386a0833e1e1179363a1e26deb332faf4beef73ed17bc525bd4221191af039da52357e73b|07853a2f518e9abee07ea87452222bd4|fb2b33f22184f06261468a71ac4ccff749d27c5f5e76ec0d90e5a1ce559538ce0b12cef08616bd3c4ddd141b7a595e99161b980a273b288c0d79f01debec5dab';
+		$encryptedString = 'v2|d57dbe4d1317cdf19d4ddc2df807f6b5d63ab1e119c46590ce54bae56a9cd3969168c4ec1600ac9758dd7e7afb9c4c962dd23072c1463add1d9c77c467723b37bb768ef00e3c50898e59247cbb59ce56b74ce5990648ffe9e40d0e95076c27a785bdcf32c219ea4ad5c316b1f12f48c1|6bd21db258a5e406a2c288a444de195f|a19111a4cf1a11ee95fc1734699c20964eaa05bb007e1cecc4cc6872f827a4b7deedc977c13b138d728d68116aa3d82f9673e20c7e447a9788aa3be994b67cd6';
 		$this->assertEquals($decrypted, $this->crypto->decrypt($encryptedString, 'ThisIsAVeryS3cur3P4ssw0rd'));
 	}
 
