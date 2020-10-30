@@ -104,17 +104,17 @@ Feature: copy file
 
   @issue-ocis-reva-387
   Scenario Outline: copy a file over the top of an existing folder
-      Given using <dav_version> DAV path
-      And user "Alice" has created folder "FOLDER/sample-folder"
-      When user "Alice" copies file "/textfile1.txt" to "/FOLDER" using the WebDAV API
-      Then the HTTP status code should be "204"
-      And the content of file "/FOLDER" for user "Alice" should be "ownCloud test text file 1"
-      And as "Alice" folder "/FOLDER/sample-folder" should not exist
-      And as "Alice" file "/textfile1.txt" should exist
-      Examples:
-        | dav_version |
-        | old         |
-        | new         |
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "FOLDER/sample-folder"
+    When user "Alice" copies file "/textfile1.txt" to "/FOLDER" using the WebDAV API
+    Then the HTTP status code should be "204"
+    And the content of file "/FOLDER" for user "Alice" should be "ownCloud test text file 1"
+    And as "Alice" folder "/FOLDER/sample-folder" should not exist
+    And as "Alice" file "/textfile1.txt" should exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
 
   @issue-ocis-reva-387
   Scenario Outline: copy a folder over the top of an existing file
@@ -253,7 +253,7 @@ Feature: copy file
     And as "Alice" folder "/Sample-Folder-A/sample-folder-b/sample-folder-c" should exist
     And as "Alice" folder "/BRIAN-FOLDER/second-level-folder/third-level-folder/sample-folder-c" should exist
     And the response when user "Alice" gets the info of the last share should include
-      | file_target | /BRIAN-FOLDER   |
+      | file_target | /BRIAN-FOLDER |
     Examples:
       | dav_version |
       | old         |
@@ -277,7 +277,7 @@ Feature: copy file
     And as "Alice" file "BRIAN-FOLDER/second-level-folder" should exist
     And the content of file "BRIAN-FOLDER/second-level-folder" for user "Alice" should be "sample file-c"
     And the response when user "Alice" gets the info of the last share should include
-      | file_target | /BRIAN-FOLDER   |
+      | file_target | /BRIAN-FOLDER |
     Examples:
       | dav_version |
       | old         |
@@ -300,7 +300,7 @@ Feature: copy file
     And as "Alice" file "BRIAN-FOLDER/textfile-c.txt" should not exist
     And the content of file "BRIAN-FOLDER/second-level-file.txt" for user "Alice" should be "sample file-c"
     And the response when user "Alice" gets the info of the last share should include
-      | file_target | /BRIAN-FOLDER   |
+      | file_target | /BRIAN-FOLDER |
     Examples:
       | dav_version |
       | old         |
@@ -323,7 +323,7 @@ Feature: copy file
     And as "Alice" folder "BRIAN-FOLDER/second-level-folder/third-level-file.txt/third-level-folder" should exist
     And as "Alice" folder "BRIAN-FOLDER/second-level-folder/second-level-folder" should not exist
     And the response when user "Alice" gets the info of the last share should include
-      | file_target | /BRIAN-FOLDER   |
+      | file_target | /BRIAN-FOLDER |
     Examples:
       | dav_version |
       | old         |
@@ -389,7 +389,7 @@ Feature: copy file
     And as "Alice" folder "/Sample-Folder-A/sample-folder-b/sample-folder-c" should exist
     And as "Alice" folder "/BRIAN-FOLDER/second-level-folder/third-level-folder/sample-folder-c" should exist
     And the response when user "Alice" gets the info of the last share should include
-      | file_target | /BRIAN-FOLDER   |
+      | file_target | /BRIAN-FOLDER |
     Examples:
       | dav_version |
       | old         |
@@ -416,7 +416,7 @@ Feature: copy file
     And as "Alice" file "BRIAN-FOLDER/second-level-folder" should exist
     And the content of file "BRIAN-FOLDER/second-level-folder" for user "Alice" should be "sample file-c"
     And the response when user "Alice" gets the info of the last share should include
-      | file_target | /BRIAN-FOLDER   |
+      | file_target | /BRIAN-FOLDER |
     Examples:
       | dav_version |
       | old         |
@@ -442,7 +442,7 @@ Feature: copy file
     And as "Alice" file "BRIAN-FOLDER/textfile-c.txt" should not exist
     And the content of file "BRIAN-FOLDER/second-level-file.txt" for user "Alice" should be "sample file-c"
     And the response when user "Alice" gets the info of the last share should include
-      | file_target | /BRIAN-FOLDER   |
+      | file_target | /BRIAN-FOLDER |
     Examples:
       | dav_version |
       | old         |
@@ -468,7 +468,7 @@ Feature: copy file
     And as "Alice" folder "BRIAN-FOLDER/second-level-folder/third-level-file.txt/third-level-folder" should exist
     And as "Alice" folder "BRIAN-FOLDER/second-level-folder/second-level-folder" should not exist
     And the response when user "Alice" gets the info of the last share should include
-      | file_target | /BRIAN-FOLDER   |
+      | file_target | /BRIAN-FOLDER |
     Examples:
       | dav_version |
       | old         |

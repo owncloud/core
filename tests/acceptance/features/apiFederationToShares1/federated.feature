@@ -169,26 +169,26 @@ Feature: federated
     And using OCS API version "<ocs-api-version>"
     When user "Brian" creates a share using the sharing API with settings
       | path        | /Shares/textfile0.txt |
-      | shareType   | user               |
-      | shareWith   | Carol              |
-      | permissions | share,read,update  |
+      | shareType   | user                  |
+      | shareWith   | Carol                 |
+      | permissions | share,read,update     |
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Brian" sharing with user "Carol" should include
-      | id                     | A_STRING           |
-      | item_type              | file               |
-      | item_source            | A_STRING           |
-      | share_type             | user               |
-      | file_source            | A_STRING           |
+      | id                     | A_STRING              |
+      | item_type              | file                  |
+      | item_source            | A_STRING              |
+      | share_type             | user                  |
+      | file_source            | A_STRING              |
       | path                   | /Shares/textfile0.txt |
-      | permissions            | share,read,update  |
-      | stime                  | A_NUMBER           |
-      | storage                | A_STRING           |
-      | mail_send              | 0                  |
-      | uid_owner              | %username%         |
-      | displayname_owner      | %displayname%      |
-      | share_with             | %username%         |
-      | share_with_displayname | %displayname%      |
+      | permissions            | share,read,update     |
+      | stime                  | A_NUMBER              |
+      | storage                | A_STRING              |
+      | mail_send              | 0                     |
+      | uid_owner              | %username%            |
+      | displayname_owner      | %displayname%         |
+      | share_with             | %username%            |
+      | share_with_displayname | %displayname%         |
     Examples:
       | ocs-api-version | ocs-status |
       | 1               | 100        |
@@ -424,14 +424,14 @@ Feature: federated
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response about user "Alice" sharing with user "Brian" should include
-      | id          | A_STRING       |
-      | remote      | REMOTE         |
-      | name        | /zzzfolder     |
-      | owner       | %username%     |
-      | user        | %username%     |
+      | id          | A_STRING          |
+      | remote      | REMOTE            |
+      | name        | /zzzfolder        |
+      | owner       | %username%        |
+      | user        | %username%        |
       | mountpoint  | /Shares/zzzfolder |
-      | type        | dir            |
-      | permissions | all            |
+      | type        | dir               |
+      | permissions | all               |
     And as "Brian" folder "zzzfolder/Brian" should exist
     And as "Brian" folder "Shares/zzzfolder/Alice" should exist
     Examples:

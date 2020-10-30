@@ -23,9 +23,9 @@ Feature: get user groups
     And user "brand-new-user" has been added to group "priv/subadmins/1"
     When the administrator gets all the groups of user "brand-new-user" using the provisioning API
     Then the groups returned by the API should be
-      | Mgmt/Sydney          |
-      | var/../etc           |
-      | priv/subadmins/1     |
+      | Mgmt/Sydney      |
+      | var/../etc       |
+      | priv/subadmins/1 |
     And the OCS status code should be "200"
     And the HTTP status code should be "200"
     # The following steps are needed so that the groups do get cleaned up.

@@ -17,6 +17,7 @@ Feature: previews of files downloaded through the webdav API
       | 1024  | 1024   |
       | 1     | 1024   |
       | 1024  | 1      |
+
   @skipOnOcV10.3 @skipOnOcV10.4.0 @issue-ocis-188
   Scenario Outline: download previews with invalid width
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"

@@ -251,9 +251,9 @@ Feature: Restore deleted files/folders
     And as "Alice" file "<file-to-upload>" should exist
     And the content of file "<file-to-upload>" for user "Alice" should be "file original content"
     Examples:
-      | dav-path | file-to-upload        |
-      | old      | 😛 😜 🐱 🐭 ⌚️ ♀️ 🚴‍♂️     |
-      | new      | 😛 😜 🐱 🐭 ⌚️ ♀️ 🚴‍♂️     |
+      | dav-path | file-to-upload          |
+      | old      | 😛 😜 🐱 🐭 ⌚️ ♀️ 🚴‍♂️ |
+      | new      | 😛 😜 🐱 🐭 ⌚️ ♀️ 🚴‍♂️ |
       | old      | strängé नेपाली file     |
       | new      | strängé नेपाली file     |
       | old      | sample,1.txt            |

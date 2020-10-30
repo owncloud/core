@@ -18,10 +18,10 @@ Feature: delete folder contents
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/FOLDER/SUBFOLDER/textfile0.txt"
     When user "Alice" deletes everything from folder "/FOLDER/" using the WebDAV API
     Then user "Alice" should see the following elements
-      | /FOLDER/           |
-      | /PARENT/           |
-      | /textfile0.txt     |
-      | /textfile1.txt     |
+      | /FOLDER/       |
+      | /PARENT/       |
+      | /textfile0.txt |
+      | /textfile1.txt |
     And user "Alice" should not see the following elements
       | /FOLDER/SUBFOLDER/              |
       | /FOLDER/welcome.txt             |
