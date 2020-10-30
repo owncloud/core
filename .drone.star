@@ -118,6 +118,7 @@ config = {
 				'apiWebdavEtagPropagation2',
 				'apiWebdavLocks',
 				'apiWebdavLocks2',
+				'apiWebdavLocksUnlock',
 				'apiWebdavMove1',
 				'apiWebdavMove2',
 				'apiWebdavOperations',
