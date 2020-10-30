@@ -47,6 +47,7 @@
 use OC\App\DependencyAnalyzer;
 use OC\App\Platform;
 use OC\Installer;
+use OC\NeedsUpdateException;
 use OC\Repair;
 
 /**
@@ -168,7 +169,7 @@ class OC_App {
 	 *
 	 * @param string $app
 	 * @param bool $checkUpgrade whether an upgrade check should be done
-	 * @throws \OC\NeedsUpdateException
+	 * @throws NeedsUpdateException
 	 */
 	public static function loadApp($app, $checkUpgrade = true) {
 		self::$loadedApps[] = $app;
@@ -184,10 +185,24 @@ class OC_App {
 
 		if (\is_file($appPath . '/appinfo/app.php')) {
 			\OC::$server->getEventLogger()->start('load_app_' . $app, 'Load app: ' . $app);
-			if ($checkUpgrade and self::shouldUpgrade($app)) {
-				throw new \OC\NeedsUpdateException();
+			if ($checkUpgrade && self::shouldUpgrade($app)) {
+				throw new NeedsUpdateException();
 			}
-			self::requireAppFile($app);
+			try {
+				self::requireAppFile($app);
+			} catch (Exception $ex) {
+				\OC::$server->getLogger()->logException($ex);
+				$blacklist = \OC::$server->getAppManager()->getAlwaysEnabledApps();
+				if (!\in_array($app, $blacklist)) {
+					if (!self::isType($app, ['authentication', 'filesystem'])) {
+						\OC::$server->getLogger()->warning('Could not load app "' . $app . '", it will be disabled', ['app' => 'core']);
+						self::disable($app);
+					} else {
+						\OC::$server->getLogger()->warning('Could not load app "' . $app . '", see exception above', ['app' => 'core']);
+					}
+				}
+				throw $ex;
+			}
 			if (self::isType($app, ['authentication'])) {
 				// since authentication apps affect the "is app enabled for group" check,
 				// the enabled apps cache needs to be cleared to make sure that the
@@ -234,22 +249,8 @@ class OC_App {
 	 * @param string $app app name
 	 */
 	private static function requireAppFile($app) {
-		try {
-			// encapsulated here to avoid variable scope conflicts
-			require_once self::getAppPath($app) . '/appinfo/app.php';
-		} catch (Exception $ex) {
-			\OC::$server->getLogger()->logException($ex);
-			$blacklist = \OC::$server->getAppManager()->getAlwaysEnabledApps();
-			if (!\in_array($app, $blacklist)) {
-				if (!self::isType($app, ['authentication', 'filesystem'])) {
-					\OC::$server->getLogger()->warning('Could not load app "' . $app . '", it will be disabled', ['app' => 'core']);
-					self::disable($app);
-				} else {
-					\OC::$server->getLogger()->warning('Could not load app "' . $app . '", see exception above', ['app' => 'core']);
-				}
-			}
-			throw $ex;
-		}
+		// encapsulated here to avoid variable scope conflicts
+		require_once self::getAppPath($app) . '/appinfo/app.php';
 	}
 
 	/**
@@ -1010,7 +1011,7 @@ class OC_App {
 	/**
 	 * @param string $appId
 	 * @param string[] $steps
-	 * @throws \OC\NeedsUpdateException
+	 * @throws NeedsUpdateException
 	 */
 	public static function executeRepairSteps($appId, array $steps) {
 		if (empty($steps)) {

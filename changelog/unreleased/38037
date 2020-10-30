@@ -1,0 +1,5 @@
+Bugfix: Fix logging when loading an apps fails
+
+Some apps use the variable $app in app.php - this overwrites the variable in requireAppFile and causes the error
+
+https://github.com/owncloud/core/pull/38037
