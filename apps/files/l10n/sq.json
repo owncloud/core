@@ -72,6 +72,7 @@
     "Lock file" : "Kyçe kartelën",
     "Failed to lock." : "S’u arrit të kyçej.",
     "This resource is locked. Click to see more details." : "Ky burim është i kyçur. Klikoni për të parë më tepër hollësi.",
+    "Encountered problem accessing the folder {name}" : "U has problem në hyrjen te dosja {name}",
     "\"{name}\" is an invalid file name." : "\"{name}\" është emër i pavlefshëm kartele.",
     "File name cannot be empty." : "Emri i kartelës s’mund të jetë i zbrazët.",
     "File name cannot contain \"/\"." : "Emri i kartelës s’mund të përmbajë \"/\".",

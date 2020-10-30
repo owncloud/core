@@ -74,6 +74,7 @@ OC.L10N.register(
     "Lock file" : "Bloquear arquivo",
     "Failed to lock." : "Falha ao bloquear.",
     "This resource is locked. Click to see more details." : "Este recurso está bloqueado. Clique para ver mais detalhes.",
+    "Encountered problem accessing the folder {name}" : "Encontramos um problema acessando a pasta {name}",
     "\"{name}\" is an invalid file name." : "\"{name}\" é um nome de arquivo inválido.",
     "File name cannot be empty." : "O nome do arquivo não pode estar vazio.",
     "File name cannot contain \"/\"." : "O nome do arquivo não pode conter \"/\".",
