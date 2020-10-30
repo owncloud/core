@@ -383,7 +383,7 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
       | propertyName |
       | oc:fileid    |
-    Then the single response should contain a property "oc:fileid" with value like '/[0-9]{10}/'
+    Then the single response should contain a property "oc:fileid" with value like '/[a-zA-Z0-9]+/'
     Examples:
       | dav_version |
       | old         |
@@ -396,7 +396,7 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "/test" using the WebDAV API
       | propertyName |
       | oc:fileid    |
-    Then the single response should contain a property "oc:fileid" with value like '/[0-9]{10}/'
+    Then the single response should contain a property "oc:fileid" with value like '/[a-zA-Z0-9]+/'
     Examples:
       | dav_version |
       | old         |
