@@ -35,6 +35,7 @@ Summary
 * Bugfix - Fix file target in the accept share API call: [#37973](https://github.com/owncloud/core/pull/37973)
 * Bugfix - Fix for Google Docs not syncing with error "server reported no size": [#37997](https://github.com/owncloud/core/issues/37997)
 * Bugfix - Do not emit "share.failedpasswordcheck" events for authenticated links: [#138](https://github.com/owncloud/brute_force_protection/issues/138)
+* Bugfix - Fix logging when loading an apps fails: [#38037](https://github.com/owncloud/core/pull/38037)
 * Bugfix - Properly handle StorageNotAvailableException in share external: [#38042](https://github.com/owncloud/core/pull/38042)
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 * Change - Update sabre dependencies: [#37684](https://github.com/owncloud/core/pull/37684)
@@ -328,6 +329,13 @@ Details
 
    https://github.com/owncloud/brute_force_protection/issues/138
    https://github.com/owncloud/core/pull/38016
+
+* Bugfix - Fix logging when loading an apps fails: [#38037](https://github.com/owncloud/core/pull/38037)
+
+   Some apps use the variable $app in app.php - this overwrites the variable in requireAppFile and
+   causes the error
+
+   https://github.com/owncloud/core/pull/38037
 
 * Bugfix - Properly handle StorageNotAvailableException in share external: [#38042](https://github.com/owncloud/core/pull/38042)
 
