@@ -39,7 +39,7 @@ use OCP\IUser;
 class MountProviderCollection implements IMountProviderCollection, Emitter {
 	use EmitterTrait;
 
-	const MAX_MOVE_ATTEMPTS_PER_MOUNTPOINT = 10;
+	const DEFAULT_MOVE_ATTEMPTS_PER_MOUNTPOINT = 10;
 
 	/**
 	 * @var \OCP\Files\Config\IHomeMountProvider[]
@@ -87,11 +87,12 @@ class MountProviderCollection implements IMountProviderCollection, Emitter {
 
 		$mergedMounts = [];
 		$takenMountpoints = [];
+		$maxMoveAttempts = $this->getMaxMoveAttempts();
 		foreach ($mounts as $providerMounts) {
 			foreach ($providerMounts as $mount) {
 				$mountpoint = $mount->getMountPoint();
 				if (\in_array($mountpoint, $takenMountpoints)) {
-					for ($i = 0; $i < self::MAX_MOVE_ATTEMPTS_PER_MOUNTPOINT; $i++) {
+					for ($i = 0; $i < $maxMoveAttempts; $i++) {
 						$newMountpoint = $this->generateUniqueTarget(
 							$mountpoint,
 							new View('/' . $user->getUID() . '/files'),
@@ -196,5 +197,10 @@ class MountProviderCollection implements IMountProviderCollection, Emitter {
 		}
 
 		return $path;
+	}
+
+	protected function getMaxMoveAttempts() {
+		return \OC::$server->getConfig()
+			->getSystemValue('filesystem.max_mountpoint_move_attempts', self::DEFAULT_MOVE_ATTEMPTS_PER_MOUNTPOINT);
 	}
 }

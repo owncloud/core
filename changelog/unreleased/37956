@@ -1,0 +1,10 @@
+Bugfix: Add a configurable number of retries on unsuccessful mountpoint move
+
+Handling of conflicting mountpoints across different share backends was improved 
+by adding a configurable number of the mountpoint rename attempts. Now when the
+mountpoint rename has been failed on the user filesystem initialization due to 
+internal backend-specific reasons the used mountpoint name is considered
+to be taken, a new name is generated and the rename operation could be repeated
+several times until it either succeeds or rename attempts limit is reached.
+
+https://github.com/owncloud/core/pull/37956
