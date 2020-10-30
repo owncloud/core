@@ -1,9 +1,9 @@
 @cli @external_storage @skipOnLDAP
 Feature: using files external service with storage as webdav_owncloud
 
-As a user
-I want to be able to use webdav_owncloud as external storage
-So that I can extend my storage service
+  As a user
+  I want to be able to use webdav_owncloud as external storage
+  So that I can extend my storage service
 
   Background:
     Given using server "REMOTE"

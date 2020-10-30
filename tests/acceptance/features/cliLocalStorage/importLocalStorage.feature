@@ -20,8 +20,8 @@ Feature: import exported local storage mounts from the command line
     When the administrator imports the local storage mount from file "exportedMounts.json" using the occ command
     And the administrator lists the local storage using the occ command
     Then the following local storage should be listed:
-      | MountPoint         | Storage | AuthenticationType | Configuration | Options | ApplicableUsers | ApplicableGroups |
-      | /local_storage2    | Local   | None               | datadir:      |         | All             |                  |
+      | MountPoint      | Storage | AuthenticationType | Configuration | Options | ApplicableUsers | ApplicableGroups |
+      | /local_storage2 | Local   | None               | datadir:      |         | All             |                  |
     And as "Alice" folder "/local_storage2" should exist
     And the content of file "/local_storage2/file-in-local-storage2.txt" for user "Alice" should be "this is a file in local storage2"
 
