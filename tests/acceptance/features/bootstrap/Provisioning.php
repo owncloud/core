@@ -4362,7 +4362,7 @@ trait Provisioning {
 		if (OcisHelper::isTestingOnOcis() && $this->someUsersHaveBeenCreated()) {
 			foreach ($this->getCreatedUsers() as $user) {
 				$this->deleteAllSharesForUser($user["actualUsername"]);
-				OcisHelper::deleteRevaUserData($user["actualUsername"]);
+				OcisHelper::deleteRevaUserData($this->baseUrl, $this->adminUsername, $this->adminPassword, $user["actualUsername"]);
 			}
 		} elseif (!OcisHelper::isTestingOnOcis()) {
 			$this->resetAdminUserAttributes();

@@ -78,18 +78,16 @@ class OcisHelper {
 	 *
 	 * @return void
 	 */
-	public static function deleteRevaUserData($user = "") {
+	public static function deleteRevaUserData($baseUrl, $adminName, $adminPass, $user = "") {
 		$deleteCmd = self::getDeleteUserDataCommand();
-		if ($deleteCmd === false) {
-			self::recurseRmdir(self::getOcisRevaDataRoot() . $user);
+		if ($deleteCmd === false || self::getStorageDriver() === "OCIS" || self::getStorageDriver() === "OWNCLOUD") {
+			HttpRequestHelper::delete($baseUrl . "/ocs/v2.php/cloud/users/" . $user, $adminName, $adminPass);
 			return;
 		}
 		if (self::getStorageDriver() === "EOS") {
 			$deleteCmd = \str_replace(
 				"%s", $user[0] . '/' . $user, $deleteCmd
 			);
-		} else {
-			$deleteCmd = \sprintf($deleteCmd, $user);
 		}
 		\exec($deleteCmd);
 	}
