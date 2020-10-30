@@ -140,7 +140,7 @@ class TagsContext implements Context {
 	}
 
 	/**
-	 * @param string$type
+	 * @param string $type
 	 * @param string $name
 	 *
 	 * @return void
