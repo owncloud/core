@@ -37,9 +37,9 @@ Feature: LOCK file/folder
   @issue-ocis-reva-9
   Scenario: send LOCK requests to another user's webDav endpoints as normal user
     When user "Brian" requests these endpoints with "LOCK" to get property "d:shared" about user "Alice"
-      | endpoint                                           |
-      | /remote.php/dav/files/%username%/textfile0.txt     |
-      | /remote.php/dav/files/%username%/PARENT            |
+      | endpoint                                       |
+      | /remote.php/dav/files/%username%/textfile0.txt |
+      | /remote.php/dav/files/%username%/PARENT        |
     Then the HTTP status code of responses on all endpoints should be "403"
     When user "Brian" requests these endpoints with "LOCK" to get property "d:shared" about user "Alice"
       | endpoint                                           |

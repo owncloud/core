@@ -31,11 +31,11 @@ Feature: upload file
     When user "Alice" uploads file with content "uploaded content" to <file_name> using the WebDAV API
     Then the content of file <file_name> for user "Alice" should be "uploaded content"
     Examples:
-      | dav_version | file_name           |
-      | old         | "C++ file.cpp"      |
-      | old         | "file #2.txt"       |
-      | new         | "C++ file.cpp"      |
-      | new         | "file #2.txt"       |
+      | dav_version | file_name      |
+      | old         | "C++ file.cpp" |
+      | old         | "file #2.txt"  |
+      | new         | "C++ file.cpp" |
+      | new         | "file #2.txt"  |
 
   @issue-ocis-reva-265
   #after fixing all issues delete this Scenario and merge with the one above
@@ -91,11 +91,11 @@ Feature: upload file
     When user "Alice" uploads file with content "uploaded content" to "<folder_name>/<file_name>" using the WebDAV API
     Then the content of file "<folder_name>/<file_name>" for user "Alice" should be "uploaded content"
     Examples:
-      | dav_version | folder_name                      | file_name                     |
-      | old         | /folder ?2.txt                   | file ?2.txt                   |
-      | old         | /?fi=le&%#2 . txt                | # %ab ab?=ed                  |
-      | new         | /folder ?2.txt                   | file ?2.txt                   |
-      | new         | /?fi=le&%#2 . txt                | # %ab ab?=ed                  |
+      | dav_version | folder_name       | file_name    |
+      | old         | /folder ?2.txt    | file ?2.txt  |
+      | old         | /?fi=le&%#2 . txt | # %ab ab?=ed |
+      | new         | /folder ?2.txt    | file ?2.txt  |
+      | new         | /?fi=le&%#2 . txt | # %ab ab?=ed |
 
   @issue-ocis-reva-15
   Scenario Outline: Uploading file to path with extension .part should not be possible

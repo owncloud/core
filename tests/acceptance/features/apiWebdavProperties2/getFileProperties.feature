@@ -33,11 +33,11 @@ Feature: get file properties
     Then the properties response should contain an etag
     And the value of the item "//d:response/d:href" in the response to user "Alice" should match "/remote\.php\/<expected_href>/"
     Examples:
-      | dav_version | file_name     | expected_href                          |
-      | old         | /C++ file.cpp | webdav\/C%2b%2b%20file\.cpp            |
-      | old         | /file #2.txt  | webdav\/file%20%232\.txt               |
-      | old         | /file ?2.txt  | webdav\/file%20%3f2\.txt               |
-      | old         | /file &2.txt  | webdav\/file%20%262\.txt               |
+      | dav_version | file_name     | expected_href                               |
+      | old         | /C++ file.cpp | webdav\/C%2b%2b%20file\.cpp                 |
+      | old         | /file #2.txt  | webdav\/file%20%232\.txt                    |
+      | old         | /file ?2.txt  | webdav\/file%20%3f2\.txt                    |
+      | old         | /file &2.txt  | webdav\/file%20%262\.txt                    |
       | new         | /C++ file.cpp | dav\/files\/%username%\/C%2b%2b%20file\.cpp |
       | new         | /file #2.txt  | dav\/files\/%username%\/file%20%232\.txt    |
       | new         | /file ?2.txt  | dav\/files\/%username%\/file%20%3f2\.txt    |
@@ -62,7 +62,7 @@ Feature: get file properties
       | old         | /folder #2.txt  | webdav\/folder%20%232\.txt                                                     |
       | old         | /folder ?2.txt  | webdav\/folder%20%3f2\.txt                                                     |
       | old         | /folder &2.txt  | webdav\/folder%20%262\.txt                                                     |
-      | new         | /upload         | dav\/files\/%username%\/upload                                                           |
+      | new         | /upload         | dav\/files\/%username%\/upload                                                 |
       | new         | /strängé folder | dav\/files\/%username%\/str%c3%a4ng%c3%a9%20folder                             |
       | new         | /C++ folder     | dav\/files\/%username%\/C%2b%2b%20folder                                       |
       | new         | /नेपाली         | dav\/files\/%username%\/%e0%a4%a8%e0%a5%87%e0%a4%aa%e0%a4%be%e0%a4%b2%e0%a5%80 |
@@ -98,9 +98,9 @@ Feature: get file properties
     When user "Alice" gets the properties of file "<folder_name>/<file_name>" using the WebDAV API
     Then the properties response should contain an etag
     Examples:
-      | dav_version | folder_name                      | file_name                     |
-      | old         | /folder ?2.txt                   | file ?2.txt                   |
-      | new         | /folder ?2.txt                   | file ?2.txt                   |
+      | dav_version | folder_name    | file_name   |
+      | old         | /folder ?2.txt | file ?2.txt |
+      | new         | /folder ?2.txt | file ?2.txt |
 
   Scenario Outline: A file that is not shared does not have a share-types property
     Given using <dav_version> DAV path
@@ -114,8 +114,8 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @files_sharing-app-required
-  @issue-ocis-reva-11
+
+  @files_sharing-app-required @issue-ocis-reva-11
   Scenario Outline: A file that is shared to a user has a share-types property
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -135,8 +135,8 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @files_sharing-app-required
-  @issue-ocis-reva-11
+
+  @files_sharing-app-required @issue-ocis-reva-11
   Scenario Outline: A file that is shared to a group has a share-types property
     Given using <dav_version> DAV path
     And group "grp1" has been created
@@ -156,8 +156,8 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @public_link_share-feature-required @files_sharing-app-required
-  @issue-ocis-reva-11
+
+  @public_link_share-feature-required @files_sharing-app-required @issue-ocis-reva-11
   Scenario Outline: A file that is shared by link has a share-types property
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/test"
@@ -174,8 +174,8 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @skipOnLDAP @user_ldap-issue-268 @public_link_share-feature-required @files_sharing-app-required
-  @issue-ocis-reva-11
+
+  @skipOnLDAP @user_ldap-issue-268 @public_link_share-feature-required @files_sharing-app-required @issue-ocis-reva-11
   Scenario Outline: A file that is shared by user,group and link has a share-types property
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -218,8 +218,8 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @smokeTest
-  @issue-ocis-reva-216
+
+  @smokeTest @issue-ocis-reva-216
   Scenario Outline: Retrieving private link
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
@@ -306,8 +306,8 @@ Feature: get file properties
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/test"
     When user "Alice" gets the following properties of folder "/test" using the WebDAV API
-      | propertyName      |
-      | d:getcontenttype  |
+      | propertyName     |
+      | d:getcontenttype |
     Then the single response should contain a property "d:getcontenttype" with value ""
     Examples:
       | dav_version |
@@ -319,8 +319,8 @@ Feature: get file properties
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "uploaded content" to "file.txt"
     When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
-      | propertyName      |
-      | d:getcontenttype  |
+      | propertyName     |
+      | d:getcontenttype |
     Then the single response should contain a property "d:getcontenttype" with value "text/plain"
     Examples:
       | dav_version |
@@ -331,8 +331,8 @@ Feature: get file properties
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "uploaded content" to "file.txt"
     When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
-      | propertyName      |
-      | d:getetag  |
+      | propertyName |
+      | d:getetag    |
     Then the single response should contain a property "d:getetag" with value like '%\"[a-z0-9:]{1,32}\"%'
     Examples:
       | dav_version |
@@ -343,8 +343,8 @@ Feature: get file properties
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "uploaded content" to "file.txt"
     When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
-      | propertyName      |
-      | d:resourcetype    |
+      | propertyName   |
+      | d:resourcetype |
     Then the single response should contain a property "d:resourcetype" with value ""
     Examples:
       | dav_version |
@@ -383,7 +383,7 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
       | propertyName |
       | oc:fileid    |
-    Then the single response should contain a property "oc:fileid" with value like '/[0-9]{10}/'
+    Then the single response should contain a property "oc:fileid" with value like '/[a-zA-Z0-9]+/'
     Examples:
       | dav_version |
       | old         |
@@ -396,7 +396,7 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "/test" using the WebDAV API
       | propertyName |
       | oc:fileid    |
-    Then the single response should contain a property "oc:fileid" with value like '/[0-9]{10}/'
+    Then the single response should contain a property "oc:fileid" with value like '/[a-zA-Z0-9]+/'
     Examples:
       | dav_version |
       | old         |
@@ -433,8 +433,8 @@ Feature: get file properties
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "uploaded content" to "file.txt"
     When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
-      | propertyName     |
-      | oc:permissions   |
+      | propertyName   |
+      | oc:permissions |
     Then the single response should contain a property "oc:permissions" with value like '/RM{0,1}DNVW/'
     Examples:
       | dav_version |
@@ -446,8 +446,8 @@ Feature: get file properties
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/test"
     When user "Alice" gets the following properties of folder "/test" using the WebDAV API
-      | propertyName    |
-      | oc:permissions  |
+      | propertyName   |
+      | oc:permissions |
     Then the single response should contain a property "oc:permissions" with value like '/RM{0,1}DNVCK/'
     Examples:
       | dav_version |

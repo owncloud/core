@@ -36,10 +36,10 @@ Feature: create folder using MKCOL
   @issue-ocis-reva-9 @issue-ocis-reva-197
   Scenario: send MKCOL requests to another user's webDav endpoints as normal user
     When user "Brian" requests these endpoints with "MKCOL" including body "" about user "Alice"
-      | endpoint                                           |
-      | /remote.php/dav/files/%username%/textfile0.txt     |
-      | /remote.php/dav/files/%username%/PARENT            |
-      | /remote.php/dav/files/%username%/does-not-exist    |
+      | endpoint                                        |
+      | /remote.php/dav/files/%username%/textfile0.txt  |
+      | /remote.php/dav/files/%username%/PARENT         |
+      | /remote.php/dav/files/%username%/does-not-exist |
     Then the HTTP status code of responses on all endpoints should be "403"
     When user "Brian" requests these endpoints with "MKCOL" including body "" about user "Alice"
       | endpoint                                           |

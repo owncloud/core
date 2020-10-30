@@ -96,8 +96,8 @@ Feature: download file
     And user "Alice" has uploaded file "filesForUpload/simple.pdf" to "/simple.pdf"
     When user "Alice" downloads file "/simple.pdf" using the WebDAV API
     Then the following headers should be set
-      | header           | value   |
-      | Content-Length   | 9622    |
+      | header         | value |
+      | Content-Length | 9622  |
     Examples:
       | dav_version |
       | old         |
@@ -109,23 +109,23 @@ Feature: download file
     And user "Alice" has uploaded file "filesForUpload/testavatar.png" to "/testavatar.png"
     When user "Alice" downloads file "/testavatar.png" using the WebDAV API
     Then the following headers should be set
-      | header             | value  |
-      | Content-Length     | 35323  |
+      | header         | value |
+      | Content-Length | 35323 |
     Examples:
       | dav_version |
       | old         |
       | new         |
 
-    Scenario Outline: Download a file with comma in the filename
-      Given using <dav_version> DAV path
-      And user "Alice" has uploaded file with content "file with comma in filename" to <filename>
-      When user "Alice" downloads file <filename> using the WebDAV API
-      Then the downloaded content should be "file with comma in filename"
-      Examples:
-        | dav_version | filename       |
-        | old         | "sample,1.txt" |
-        | old         | ",,,.txt"      |
-        | old         | ",,,.,"        |
-        | new         | "sample,1.txt" |
-        | new         | ",,,.txt"      |
-        | new         | ",,,.,"        |
+  Scenario Outline: Download a file with comma in the filename
+    Given using <dav_version> DAV path
+    And user "Alice" has uploaded file with content "file with comma in filename" to <filename>
+    When user "Alice" downloads file <filename> using the WebDAV API
+    Then the downloaded content should be "file with comma in filename"
+    Examples:
+      | dav_version | filename       |
+      | old         | "sample,1.txt" |
+      | old         | ",,,.txt"      |
+      | old         | ",,,.,"        |
+      | new         | "sample,1.txt" |
+      | new         | ",,,.txt"      |
+      | new         | ",,,.,"        |

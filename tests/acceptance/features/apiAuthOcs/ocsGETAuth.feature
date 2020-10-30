@@ -160,13 +160,13 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "401"
     And the OCS status code of responses on all endpoints should be "997"
     When user "another-admin" requests these endpoints with "GET" using password "invalid"
-      | endpoint                                                    |
-      | /ocs/v1.php/config                                          |
+      | endpoint           |
+      | /ocs/v1.php/config |
     Then the HTTP status code of responses on all endpoints should be "200"
     And the OCS status code of responses on all endpoints should be "100"
     When user "another-admin" requests these endpoints with "GET" using password "invalid"
-      | endpoint                                                    |
-      | /ocs/v2.php/config                                          |
+      | endpoint           |
+      | /ocs/v2.php/config |
     Then the HTTP status code of responses on all endpoints should be "200"
     And the OCS status code of responses on all endpoints should be "200"
 
@@ -195,13 +195,13 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "200"
     And the OCS status code of responses on all endpoints should be "200"
     When user "Alice" requests these endpoints with "GET" using basic token auth
-      | endpoint                                                    |
-      | /ocs/v1.php/cloud/apps                                      |
-      | /ocs/v1.php/cloud/users                                     |
-      | /ocs/v1.php/cloud/groups                                    |
-      | /ocs/v2.php/cloud/apps                                      |
-      | /ocs/v2.php/cloud/groups                                    |
-      | /ocs/v2.php/cloud/users                                     |
+      | endpoint                 |
+      | /ocs/v1.php/cloud/apps   |
+      | /ocs/v1.php/cloud/users  |
+      | /ocs/v1.php/cloud/groups |
+      | /ocs/v2.php/cloud/apps   |
+      | /ocs/v2.php/cloud/groups |
+      | /ocs/v2.php/cloud/users  |
     Then the HTTP status code of responses on all endpoints should be "401"
     And the OCS status code of responses on all endpoints should be "997"
 
@@ -229,13 +229,13 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "200"
     And the OCS status code of responses on all endpoints should be "200"
     When the user requests these endpoints with "GET" using a new browser session
-      | endpoint                                                    |
-      | /ocs/v1.php/cloud/apps                                      |
-      | /ocs/v2.php/cloud/apps                                      |
-      | /ocs/v1.php/cloud/groups                                    |
-      | /ocs/v2.php/cloud/groups                                    |
-      | /ocs/v1.php/cloud/users                                     |
-      | /ocs/v2.php/cloud/users                                     |
+      | endpoint                 |
+      | /ocs/v1.php/cloud/apps   |
+      | /ocs/v2.php/cloud/apps   |
+      | /ocs/v1.php/cloud/groups |
+      | /ocs/v2.php/cloud/groups |
+      | /ocs/v1.php/cloud/users  |
+      | /ocs/v2.php/cloud/users  |
     Then the HTTP status code of responses on all endpoints should be "401"
     And the OCS status code of responses on all endpoints should be "997"
 
@@ -265,12 +265,12 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "200"
     And the OCS status code of responses on all endpoints should be "200"
     When the user requests these endpoints with "GET" using the generated app password
-      | endpoint                                                    |
-      | /ocs/v1.php/cloud/apps                                      |
-      | /ocs/v2.php/cloud/apps                                      |
-      | /ocs/v1.php/cloud/groups                                    |
-      | /ocs/v2.php/cloud/groups                                    |
-      | /ocs/v1.php/cloud/users                                     |
-      | /ocs/v2.php/cloud/users                                     |
+      | endpoint                 |
+      | /ocs/v1.php/cloud/apps   |
+      | /ocs/v2.php/cloud/apps   |
+      | /ocs/v1.php/cloud/groups |
+      | /ocs/v2.php/cloud/groups |
+      | /ocs/v1.php/cloud/users  |
+      | /ocs/v2.php/cloud/users  |
     Then the HTTP status code of responses on all endpoints should be "401"
     And the OCS status code of responses on all endpoints should be "997"

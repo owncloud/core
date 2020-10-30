@@ -78,35 +78,35 @@ Feature: accept/decline shares coming from internal users
     And the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with user "Brian" should include
-      | id                     | A_STRING                   |
-      | share_type             | user                       |
-      | uid_owner              | %username%                 |
-      | displayname_owner      | %displayname%              |
-      | permissions            | share,read,update          |
-      | uid_file_owner         | %username%                 |
-      | displayname_file_owner | %displayname%              |
-      | state                  | 0                          |
+      | id                     | A_STRING                      |
+      | share_type             | user                          |
+      | uid_owner              | %username%                    |
+      | displayname_owner      | %displayname%                 |
+      | permissions            | share,read,update             |
+      | uid_file_owner         | %username%                    |
+      | displayname_file_owner | %displayname%                 |
+      | state                  | 0                             |
       | path                   | /Shares/textfile0.txt         |
-      | item_type              | file                       |
-      | mimetype               | text/plain                 |
+      | item_type              | file                          |
+      | mimetype               | text/plain                    |
       | storage_id             | shared::/Shares/textfile0.txt |
-      | storage                | A_STRING                   |
-      | item_source            | A_STRING                   |
-      | file_source            | A_STRING                   |
+      | storage                | A_STRING                      |
+      | item_source            | A_STRING                      |
+      | file_source            | A_STRING                      |
       | file_target            | /Shares/textfile0.txt         |
-      | share_with             | %username%                 |
-      | share_with_displayname | %displayname%              |
-      | mail_send              | 0                          |
+      | share_with             | %username%                    |
+      | share_with_displayname | %displayname%                 |
+      | mail_send              | 0                             |
     And user "Brian" should see the following elements
-      | /FOLDER/                 |
-      | /PARENT/                 |
-      | /textfile0.txt           |
+      | /FOLDER/                  |
+      | /PARENT/                  |
+      | /textfile0.txt            |
       | /Shares/PARENT/           |
       | /Shares/PARENT/parent.txt |
       | /Shares/textfile0.txt     |
     And the sharing API should report to user "Brian" that these shares are in the accepted state
-      | path               |
-      | /Shares/PARENT       |
+      | path                  |
+      | /Shares/PARENT        |
       | /Shares/textfile0.txt |
 
   @toImplementInOCIS
@@ -168,7 +168,7 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" should see the following elements
       | /Shares/shared/ |
     And the sharing API should report to user "Brian" that these shares are in the accepted state
-      | path     |
+      | path            |
       | /Shares/shared/ |
 
   @smokeTest
@@ -242,7 +242,7 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT/parent.txt |
       | /Shares/textfile0.txt     |
     And the sharing API should report to user "Brian" that these shares are in the accepted state
-      | path               |
+      | path                  |
       | /Shares/PARENT/       |
       | /Shares/textfile0.txt |
 
@@ -263,7 +263,7 @@ Feature: accept/decline shares coming from internal users
       | /Shares/shared/Brian/       |
       | /Shares/shared%20(2)/Alice/ |
     And the sharing API should report to user "Carol" that these shares are in the accepted state
-      | path         |
+      | path                |
       | /Shares/shared/     |
       | /Shares/shared (2)/ |
 
@@ -288,7 +288,7 @@ Feature: accept/decline shares coming from internal users
     And user "Carol" accepts share "/testfile.txt" offered by user "Brian" using the sharing API
     And user "Carol" accepts share "/testfile.txt" offered by user "Alice" using the sharing API
     Then the sharing API should report to user "Carol" that these shares are in the accepted state
-      | path                  |
+      | path                         |
       | /Shares/testfile (2).txt     |
       | /Shares/testfile (2) (2).txt |
     And the content of file "/Shares/testfile.txt" for user "Carol" should be "Third file"
@@ -312,7 +312,7 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" accepts share "/PARENT" offered by user "Carol" using the sharing API
     And user "Alice" accepts share "/PARENT" offered by user "Brian" using the sharing API
     Then the sharing API should report to user "Alice" that these shares are in the accepted state
-      | path                 | uid_owner |
+      | path                        | uid_owner |
       | /Shares/PARENT (2)/         | David     |
       | /Shares/PARENT (2) (2)/     | Carol     |
       | /Shares/PARENT (2) (2) (2)/ | Brian     |
@@ -327,8 +327,8 @@ Feature: accept/decline shares coming from internal users
     When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
     And user "Brian" accepts share "/FOLDER" offered by user "Alice" using the sharing API
     Then user "Brian" should see the following elements
-      | /FOLDER/              |
-      | /PARENT/              |
+      | /FOLDER/               |
+      | /PARENT/               |
       | /Shares/PARENT/        |
       | /Shares/PARENT/abc.txt |
       | /Shares/FOLDER/        |
@@ -351,8 +351,8 @@ Feature: accept/decline shares coming from internal users
     And user "Carol" accepts share "/PARENT" offered by user "Alice" using the sharing API
     And user "Carol" accepts share "/FOLDER" offered by user "Alice" using the sharing API
     Then user "Brian" should see the following elements
-      | /FOLDER/              |
-      | /PARENT/              |
+      | /FOLDER/               |
+      | /PARENT/               |
       | /Shares/PARENT/        |
       | /Shares/FOLDER/        |
       | /Shares/PARENT/abc.txt |
@@ -361,8 +361,8 @@ Feature: accept/decline shares coming from internal users
       | /FOLDER/abc.txt |
       | /PARENT/abc.txt |
     And user "Carol" should see the following elements
-      | /FOLDER/              |
-      | /PARENT/              |
+      | /FOLDER/               |
+      | /PARENT/               |
       | /Shares/PARENT/        |
       | /Shares/FOLDER/        |
       | /Shares/PARENT/abc.txt |
@@ -385,13 +385,13 @@ Feature: accept/decline shares coming from internal users
     And user "Carol" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     And user "Carol" accepts share "/textfile1.txt" offered by user "Alice" using the sharing API
     Then user "Brian" should see the following elements
-      | /textfile0.txt       |
-      | /textfile1.txt       |
+      | /textfile0.txt        |
+      | /textfile1.txt        |
       | /Shares/textfile0.txt |
       | /Shares/textfile1.txt |
     And user "Carol" should see the following elements
-      | /textfile0.txt       |
-      | /textfile1.txt       |
+      | /textfile0.txt        |
+      | /textfile1.txt        |
       | /Shares/textfile0.txt |
       | /Shares/textfile1.txt |
 
@@ -409,8 +409,8 @@ Feature: accept/decline shares coming from internal users
     When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     And user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
     Then user "Brian" should see the following elements
-      | /PARENT/             |
-      | /textfile0.txt       |
+      | /PARENT/              |
+      | /textfile0.txt        |
       | /Shares/PARENT/       |
       | /Shares/textfile0.txt |
 
@@ -428,11 +428,11 @@ Feature: accept/decline shares coming from internal users
       | /Shares/textfile0.txt |
     When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then user "Brian" should see the following elements
-      | /textfile0.txt       |
+      | /textfile0.txt        |
       | /Shares/textfile0.txt |
     When user "Carol" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then user "Carol" should see the following elements
-      | /textfile0.txt       |
+      | /textfile0.txt        |
       | /Shares/textfile0.txt |
 
   @skipOnLDAP
@@ -446,11 +446,11 @@ Feature: accept/decline shares coming from internal users
     Then user "David" should see the following elements
       | /Shares/PARENT/        |
       | /Shares/PARENT/abc.txt |
-      | /FOLDER/        |
-      | /textfile0.txt  |
-      | /textfile1.txt  |
-      | /textfile2.txt  |
-      | /textfile3.txt  |
+      | /FOLDER/               |
+      | /textfile0.txt         |
+      | /textfile1.txt         |
+      | /textfile2.txt         |
+      | /textfile3.txt         |
     And user "David" should not see the following elements
       | /PARENT%20(2)/ |
     And the content of file "/Shares/PARENT/abc.txt" for user "David" should be "uploaded content"

@@ -26,12 +26,12 @@ Feature: Display notifications when receiving a share
     And user "Alice" shares file "/textfile0.txt" with user "Brian" using the sharing API
     Then user "Brian" should have 2 notifications
     And the last notification of user "Brian" should match these regular expressions about user "Alice"
-      | key         | regex                                           |
-      | app         | /^files_sharing$/                               |
+      | key         | regex                                            |
+      | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/         |
-      | object_type | /^local_share$/                                 |
+      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/          |
+      | object_type | /^local_share$/                                  |
 
   Scenario: share to group sends notification to every member
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
@@ -39,20 +39,20 @@ Feature: Display notifications when receiving a share
     And user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API
     Then user "Brian" should have 2 notifications
     And the last notification of user "Brian" should match these regular expressions about user "Alice"
-      | key         | regex                                           |
-      | app         | /^files_sharing$/                               |
+      | key         | regex                                            |
+      | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/         |
-      | object_type | /^local_share$/                                 |
+      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/          |
+      | object_type | /^local_share$/                                  |
     And user "Carol" should have 2 notifications
     And the last notification of user "Carol" should match these regular expressions about user "Alice"
-      | key         | regex                                           |
-      | app         | /^files_sharing$/                               |
+      | key         | regex                                            |
+      | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/         |
-      | object_type | /^local_share$/                                 |
+      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/          |
+      | object_type | /^local_share$/                                  |
 
 	# This scenario documents behavior discussed in core issue 31870
 	# An old share keeps its old auto-accept behavior, even after auto-accept has been disabled.
@@ -76,20 +76,20 @@ Feature: Display notifications when receiving a share
     And the administrator adds user "David" to group "grp1" using the provisioning API
     Then user "Brian" should have 1 notification
     And the last notification of user "Brian" should match these regular expressions about user "Alice"
-      | key         | regex                                           |
-      | app         | /^files_sharing$/                               |
+      | key         | regex                                            |
+      | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/         |
-      | object_type | /^local_share$/                                 |
+      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/          |
+      | object_type | /^local_share$/                                  |
     And user "Carol" should have 1 notification
     And the last notification of user "Carol" should match these regular expressions about user "Alice"
-      | key         | regex                                           |
-      | app         | /^files_sharing$/                               |
+      | key         | regex                                            |
+      | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/         |
-      | object_type | /^local_share$/                                 |
+      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/          |
+      | object_type | /^local_share$/                                  |
     And user "David" should have 0 notifications
 
 	# This scenario documents behavior discussed in core issue 31870
@@ -104,20 +104,20 @@ Feature: Display notifications when receiving a share
     And the administrator adds user "David" to group "grp1" using the provisioning API
     Then user "Brian" should have 1 notification
     And the last notification of user "Brian" should match these regular expressions about user "Alice"
-      | key         | regex                                           |
-      | app         | /^files_sharing$/                               |
+      | key         | regex                                            |
+      | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/         |
-      | object_type | /^local_share$/                                 |
+      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/          |
+      | object_type | /^local_share$/                                  |
     And user "Carol" should have 1 notification
     And the last notification of user "Carol" should match these regular expressions about user "Alice"
-      | key         | regex                                           |
-      | app         | /^files_sharing$/                               |
+      | key         | regex                                            |
+      | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/         |
-      | object_type | /^local_share$/                                 |
+      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/          |
+      | object_type | /^local_share$/                                  |
     And user "David" should have 0 notifications
 
   @skipOnLDAP

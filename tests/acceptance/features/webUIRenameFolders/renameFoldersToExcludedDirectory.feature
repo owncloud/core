@@ -24,7 +24,7 @@ Feature: users cannot rename a folder to or into an excluded directory
     And user "Alice" has logged in using the webUI
     And the user has opened folder "top-folder" using the webUI
     When the user renames folder "a-folder" to one of these names using the webUI
-      | .github            |
+      | .github |
     Then notifications should be displayed on the webUI with the text
       | Could not rename "a-folder" |
     And folder "a-folder" should be listed on the webUI

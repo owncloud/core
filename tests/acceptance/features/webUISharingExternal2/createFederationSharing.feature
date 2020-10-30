@@ -119,10 +119,10 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then the expiration date input field should be visible for the federated user "Alice" with displayname "%username%@%remote_server% (federated)" in the share dialog
     And the expiration date input field should be empty for the federated user "Alice" with displayname "%username%@%remote_server% (federated)" in the share dialog
     And the information of the last share of user "Alice" should include
-      | share_type  | federated  |
-      | path        | /lorem.txt  |
-      | expiration  |            |
-      | uid_owner   | Alice      |
+      | share_type | federated  |
+      | path       | /lorem.txt |
+      | expiration |            |
+      | uid_owner  | Alice      |
 
   @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
   Scenario: expiration date is enabled for federation sharing, sharer checks the expiration date of a federation share
@@ -150,14 +150,14 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then the expiration date input field should be visible for the federated user "Alice" with displayname "%username%@%remote_server% (federated)" in the share dialog
     And the expiration date input field should be "<days>" for the federated user "Alice" with displayname "%username%@%remote_server% (federated)" in the share dialog
     And the information of the last share of user "Alice" should include
-      | share_type  | federated  |
-      | path        | /lorem.txt |
-      | expiration  | <days>     |
-      | uid_owner   | Alice      |
+      | share_type | federated  |
+      | path       | /lorem.txt |
+      | expiration | <days>     |
+      | uid_owner  | Alice      |
     Examples:
-      | num_days | days     |
-      | 3        | +3 days  |
-      | 0        | today    |
+      | num_days | days    |
+      | 3        | +3 days |
+      | 0        | today   |
 
   @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
   Scenario: expiration date is enforced for federation sharing, user shares and tries to change expiration date more than allowed
@@ -191,11 +191,11 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the user changes expiration date for share of user "Brian" to "+10 days" in the share dialog
     Then the expiration date input field should be "+ 10 days" for the user "Brian" in the share dialog
     And the information of the last share of user "Alice" should include
-      | share_type  | user           |
-      | share_with  | Brian          |
-      | path        | /lorem (2).txt |
-      | expiration  | +10 days       |
-      | uid_owner   | Alice          |
+      | share_type | user           |
+      | share_with | Brian          |
+      | path       | /lorem (2).txt |
+      | expiration | +10 days       |
+      | uid_owner  | Alice          |
 
   @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
   Scenario: expiration date is enforced for federated sharing, user receives a share with expiration date and reshares with expiration date less than the original with another federated user
@@ -212,10 +212,10 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the user changes expiration date for share of federated user "Brian" with displayname "%username%@%remote_server_without_scheme% (federated)" to "+4 days" in the share dialog
     Then the expiration date input field should be "+ 4 days" for the federated user "Brian" with displayname "%username%@%remote_server_without_scheme% (federated)" in the share dialog
     And the information of the last share of user "Alice" should include
-      | share_type  | federated      |
-      | path        | /lorem (2).txt |
-      | expiration  | +4 days        |
-      | uid_owner   | Alice          |
+      | share_type | federated      |
+      | path       | /lorem (2).txt |
+      | expiration | +4 days        |
+      | uid_owner  | Alice          |
 
   @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
   Scenario: expiration date is enforced for federated remote sharer, local receiver reshares received file with another local user
@@ -231,11 +231,11 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user shares file "lorem (2).txt" with user "Brian" using the webUI without closing the share dialog
     Then the expiration date input field should be empty for the user "Brian" in the share dialog
     And the information of the last share of user "Alice" should include
-      | share_type  | user           |
-      | share_with  | Brian          |
-      | path        | /lorem (2).txt |
-      | expiration  |                |
-      | uid_owner   | Alice          |
+      | share_type | user           |
+      | share_with | Brian          |
+      | path       | /lorem (2).txt |
+      | expiration |                |
+      | uid_owner  | Alice          |
 
   @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
   Scenario: expiration date is enforced for federated remote sharer, local receiver reshares received file with another federated user
@@ -251,7 +251,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user shares file "lorem (2).txt" with federated user "Brian" with displayname "%username%@%remote_server_without_scheme%" using the webUI without closing the share dialog
     Then the expiration date input field should be empty for the federated user "Brian" with displayname "%username%@%remote_server_without_scheme% (federated)" in the share dialog
     And the information of the last share of user "Alice" should include
-      | share_type  | federated      |
-      | path        | /lorem (2).txt |
-      | expiration  |                |
-      | uid_owner   | Alice          |
+      | share_type | federated      |
+      | path       | /lorem (2).txt |
+      | expiration |                |
+      | uid_owner  | Alice          |

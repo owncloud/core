@@ -12,8 +12,8 @@ Feature: verify mount configuration using occ command
     When the administrator verifies the mount configuration for local storage "local_storage2" using the occ command
     Then the following mount configuration information should be listed:
       | status | code | message |
-      |   ok   | 0    |         |
+      | ok     | 0    |         |
     When the administrator verifies the mount configuration for local storage "new_local_storage" using the occ command
     Then the following mount configuration information should be listed:
       | status | code | message |
-      |   ok   | 0    |         |
+      | ok     | 0    |         |

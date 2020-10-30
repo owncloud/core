@@ -43,8 +43,8 @@ Feature: add users
   @skipOnOcV10.3 @skipOnOcV10.4
   Scenario: use the webUI to create a user with special invalid username
     When the administrator attempts to create these users then the notifications should be as listed
-      | user | password    | notification                                                                                                    |
-      | meta | "%alt4%"    | Error creating user: The special username meta is not allowed                                                   |
+      | user | password | notification                                                  |
+      | meta | "%alt4%" | Error creating user: The special username meta is not allowed |
 
   Scenario: use the webUI to create a user with empty password
     When the administrator attempts to create a user with the name "bijay" and the password "" using the webUI
@@ -225,11 +225,11 @@ Feature: add users
     Then user "<username>" should exist
     And the user should be redirected to a webUI page with the title "Files - %productname%"
     Examples:
-      | creation-username  | login-username  | username        |
-      | Mixed-Case-user    | mixed-case-user | MIXED-CASE-USER |
-      | mixed-case-user    | Mixed-Case-user | Mixed-Case-user |
-      | Mixed-Case-user    | MIXED-CASE-USER | mixed-case-user |
-      | mixed-case-user    | Mixed-Case-user | MIXED-CASE-USER |
+      | creation-username | login-username  | username        |
+      | Mixed-Case-user   | mixed-case-user | MIXED-CASE-USER |
+      | mixed-case-user   | Mixed-Case-user | Mixed-Case-user |
+      | Mixed-Case-user   | MIXED-CASE-USER | mixed-case-user |
+      | mixed-case-user   | Mixed-Case-user | MIXED-CASE-USER |
 
   Scenario Outline: user names are not case-sensitive, multiple users can't exist with different upper and lower case names
     When the administrator creates a user with the name "<user_id1>" and the password "password" using the webUI

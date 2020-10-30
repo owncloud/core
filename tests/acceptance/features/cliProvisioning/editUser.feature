@@ -22,7 +22,7 @@ Feature: edit users
     And the command output should contain the text 'The email address of brand-new-user updated to '
     And user "brand-new-user" should exist
     And the user attributes returned by the API should include
-      | email | |
+      | email |  |
 
   Scenario: the administrator can edit a user display name
     Given user "brand-new-user" has been created with default attributes and skeleton files
