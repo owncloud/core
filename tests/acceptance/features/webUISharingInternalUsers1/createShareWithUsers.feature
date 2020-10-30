@@ -298,7 +298,7 @@ Feature: Sharing files and folders with internal users
       | path | /lorem.txt  |
       | name | Public link |
     And user "Brian" has created a public link share with settings
-      | path | lorem.txt  |
+      | path | lorem.txt   |
       | name | Public link |
     And user "Alice" has logged in using the webUI
     When the user opens the share dialog for file "lorem.txt"
@@ -321,10 +321,10 @@ Feature: Sharing files and folders with internal users
     Then file "lorem.txt" should be listed on the webUI
     But folder "simple-folder (2)" should not be listed on the webUI
     Examples:
-       | username |
-       | user-1   |
-       | null     |
-       | nil      |
-       | 123      |
-       | -123     |
-       | 0.0      |
+      | username |
+      | user-1   |
+      | null     |
+      | nil      |
+      | 123      |
+      | -123     |
+      | 0.0      |

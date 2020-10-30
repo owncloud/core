@@ -60,9 +60,9 @@ Feature: Sharing files and folders with internal users with expiration date set/
       | expiration  | <days>     |
       | uid_owner   | %username% |
     Examples:
-      | num_days | days     |
-      | 3        | +3 days  |
-      | 0        | today    |
+      | num_days | days    |
+      | 3        | +3 days |
+      | 0        | today   |
 
   Scenario: expiration date is enforced for user, user shares and tries to change expiration date more than allowed
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
@@ -278,8 +278,8 @@ Feature: Sharing files and folders with internal users with expiration date set/
     And user "Carol" has shared folder "/simple-folder" with user "Brian"
     And user "Carol" has logged in using the webUI
     When the user sets the sharing permissions of user "Alice" for "simple-folder" using the webUI to
-      | edit    | no |
-      | create  | no |
+      | edit   | no |
+      | create | no |
     And the user changes expiration date for share of user "Alice" to "+5 days" in the share dialog
     Then the information for user "Alice" about the received share of folder "simple-folder" shared with a user should include
       | share_type  | user           |
@@ -289,8 +289,8 @@ Feature: Sharing files and folders with internal users with expiration date set/
       | share_with  | Alice          |
       | permissions | 17             |
     When the user sets the sharing permissions of user "Brian" for "simple-folder" using the webUI to
-      | share    | no |
-      | delete   | no |
+      | share  | no |
+      | delete | no |
     And the user changes expiration date for share of user "Brian" to "+7 days" in the share dialog
     Then the information for user "Brian" about the received share of folder "simple-folder" shared with a user should include
       | share_type  | user           |

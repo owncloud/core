@@ -319,11 +319,11 @@ Feature: misc scenarios on sharing with internal users
     And user "Carol" has shared folder "/simple-folder" with user "Brian"
     And user "Carol" has logged in using the webUI
     When the user sets the sharing permissions of user "Brian" for "simple-folder" using the webUI to
-      | edit    | no |
-      | create  | no |
+      | edit   | no |
+      | create | no |
     And the user sets the sharing permissions of user "Alice" for "simple-folder" using the webUI to
-      | share    | no |
-      | delete   | no |
+      | share  | no |
+      | delete | no |
     Then the information for user "Alice" about the received share of folder "simple-folder" shared with a user should include
       | share_type  | user           |
       | file_target | /simple-folder |

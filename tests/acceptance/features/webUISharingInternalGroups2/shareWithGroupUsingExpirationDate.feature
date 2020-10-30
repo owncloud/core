@@ -77,9 +77,9 @@ Feature: Sharing files and folders with internal groups with expiration date set
       | expiration  | <days>     |
       | uid_owner   | %username% |
     Examples:
-      | num_days | days     |
-      | 3        | +3 days  |
-      | 0        | today    |
+      | num_days | days    |
+      | 3        | +3 days |
+      | 0        | today   |
 
   Scenario: expiration date is enforced for group, user shares and tries to change expiration date more than allowed
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
