@@ -1,0 +1,8 @@
+Bugfix: Avoid retrieving user root iteratively in share controller
+
+There was a performance problem that with many shares, the "share tab" was slow
+to display entries. Now the performance of displaying that tab should be better
+as we avoid retrieving the same information for all the shares
+
+https://github.com/owncloud/enterprise/issues/4107
+https://github.com/owncloud/core/pull/38055

@@ -86,6 +86,9 @@ class Share20OcsController extends OCSController {
 	 */
 	private $additionalInfoField;
 
+	/** @var Folder[] */
+	private $currentUserFolder;
+
 	public function __construct(
 		$appName,
 		IRequest $request,
@@ -133,6 +136,21 @@ class Share20OcsController extends OCSController {
 	}
 
 	/**
+	 * Returns root folder of the current user
+	 *
+	 * @return Folder
+	 */
+	private function getCurrentUserFolder() {
+		// cache only one key, but be sure to check current user session id in case
+		// current user folder changes
+		$userSessionId = $this->userSession->getUser()->getUID();
+		if (!isset($this->currentUserFolder[$userSessionId])) {
+			$this->currentUserFolder = [$userSessionId => $this->rootFolder->getUserFolder($userSessionId)];
+		}
+		return $this->currentUserFolder[$userSessionId];
+	}
+
+	/**
 	 * Convert an IShare to an array for OCS output
 	 *
 	 * @param IShare $share
@@ -172,34 +190,33 @@ class Share20OcsController extends OCSController {
 
 			// can only fetch path info if mounted already or if owner
 			if ($share->getState() === Share::STATE_ACCEPTED || $share->getShareOwner() === $this->userSession->getUser()->getUID()) {
-				$userFolder = $this->rootFolder->getUserFolder($this->userSession->getUser()->getUID());
+				$userFolder = $this->getCurrentUserFolder();
 			} else {
 				// need to go through owner user for pending shares
 				$userFolder = $this->rootFolder->getUserFolder($share->getShareOwner());
 			}
 		} else {
-			$userFolder = $this->rootFolder->getUserFolder($this->userSession->getUser()->getUID());
+			$userFolder = $this->getCurrentUserFolder();
 		}
 
-		$nodes = $userFolder->getById($share->getNodeId(), true);
-		$node = $nodes[0] ?? null;
-		if ($node === null) {
+		// we need to retrieve a share mountpoint node for the userfolder,
+		// we cannot use share->getNode() as it retrieves the original node and
+		// not a user folder mount. Share node will be needed to retrieve e.g.
+		// shared storage details
+		$shareNodes = $userFolder->getById($share->getNodeId(), true);
+		$shareNode = $shareNodes[0] ?? null;
+		if ($shareNode === null) {
 			throw new NotFoundException();
 		}
-		$node = $nodes[0];
 
-		$result['path'] = $userFolder->getRelativePath($node->getPath());
-		if ($node instanceof Folder) {
-			$result['item_type'] = 'folder';
-		} else {
-			$result['item_type'] = 'file';
-		}
-		$result['mimetype'] = $node->getMimeType();
-		$result['storage_id'] = $node->getStorage()->getId();
-		$result['storage'] = $node->getStorage()->getCache()->getNumericStorageId();
-		$result['item_source'] = $node->getId();
-		$result['file_source'] = $node->getId();
-		$result['file_parent'] = $node->getParent()->getId();
+		$result['path'] = $userFolder->getRelativePath($shareNode->getPath());
+		$result['mimetype'] = $shareNode->getMimeType();
+		$result['storage_id'] = $shareNode->getStorage()->getId();
+		$result['storage'] = $shareNode->getStorage()->getCache()->getNumericStorageId();
+		$result['item_type'] = $share->getNodeType();
+		$result['item_source'] = $shareNode->getId();
+		$result['file_source'] = $shareNode->getId();
+		$result['file_parent'] = $shareNode->getParent()->getId();
 		$result['file_target'] = $share->getTarget();
 
 		$expiration = $share->getExpirationDate();
@@ -344,7 +361,7 @@ class Share20OcsController extends OCSController {
 			return new Result(null, 404, $this->l->t('Please specify a file or folder path'));
 		}
 
-		$userFolder = $this->rootFolder->getUserFolder($this->userSession->getUser()->getUID());
+		$userFolder = $this->getCurrentUserFolder();
 
 		try {
 			$path = $userFolder->get($path);
@@ -672,7 +689,7 @@ class Share20OcsController extends OCSController {
 		// (with "true" value), without duplicate elements, and only valid share types
 
 		if ($path !== null) {
-			$userFolder = $this->rootFolder->getUserFolder($this->userSession->getUser()->getUID());
+			$userFolder = $this->getCurrentUserFolder();
 			try {
 				$path = $userFolder->get($path);
 				$path->lock(ILockingProvider::LOCK_SHARED);
@@ -1006,6 +1023,8 @@ class Share20OcsController extends OCSController {
 
 		$node->unlock(ILockingProvider::LOCK_SHARED);
 
+		// refresh the mounts by teardown of existing user mounts and remounting
+		// by retrieving current user folder
 		// FIXME: needs public API!
 		Filesystem::tearDown();
 		// FIXME: trigger mount for user to make sure the new node is mounted already
@@ -1028,7 +1047,7 @@ class Share20OcsController extends OCSController {
 	 * @return IShare same share with target updated if necessary
 	 */
 	private function deduplicateShareTarget(IShare $share) {
-		$userFolder = $this->rootFolder->getUserFolder($this->userSession->getUser()->getUID());
+		$userFolder = $this->getCurrentUserFolder();
 		$parentDir = \dirname($share->getTarget());
 		if (!$userFolder->nodeExists($parentDir)) {
 			// assume the parent folder matches the configured shared folder
