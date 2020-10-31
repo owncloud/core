@@ -207,6 +207,7 @@ OC.L10N.register(
     "Allow users to share file via social media" : "Benutzern erlauben, Inhalte über die sozialen Medien zu teilen",
     "Set default expiration date for user shares" : "Standardmäßiges Ablaufdatum für Nutzer-Freigaben setzen",
     "Set default expiration date for group shares" : "Standardmäßiges Ablaufdatum für Gruppen-Freigaben setzen",
+    "Set default expiration date for remote shares" : "Ablaufdatum für entfernte Freigaben setzen",
     "Automatically accept new incoming local user shares" : "Neue lokale Benutzerfreigaben automatisch akzeptieren",
     "Allow resharing" : "Weiterverteilen erlauben",
     "Allow sharing with groups" : "Mit Gruppen teilen erlauben",

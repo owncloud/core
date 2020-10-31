@@ -65,6 +65,7 @@
     "Evaluation - expires in %d days." : "Evaluierung - läuft in %d Tagen ab.",
     "Your Enterprise license key is about to expire (days remaining: %d)." : "Ihr Enterprise-Lizenzschlüssel läuft demnächst ab (verbleibende Tage: %d).",
     "The registered enterprise license key expires in %d days" : "Der registrierte Enterprise-Lizenzschlüssel läuft in %d Tagen ab",
+    "New Design" : "Neues Design",
     "Apps" : "Apps",
     "General" : "Allgemein",
     "Storage" : "Speicher",

@@ -100,6 +100,7 @@ OC.L10N.register(
     "Public upload disabled by the administrator" : "La subida pública está deshabilitado por el administrador",
     "Public upload is only possible for publicly shared folders" : "La subida publica solo es posible poara las carpetas publicas compartidas",
     "Sharing %s failed because the back end does not allow shares from type %s" : "Compartir %s ha fallado porque el repositorio no admite compartidos del tipo %s",
+    "shareWith parameter must be a string" : "El parametro shareWith debe ser una cadena de texto",
     "Unknown share type" : "Tipo desconocido de recurso compartido",
     "Not a directory" : "No es un directorio",
     "Could not lock path" : "No se ha podido bloquear la ruta",

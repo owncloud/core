@@ -1,6 +1,4 @@
-OC.L10N.register(
-    "lib",
-    {
+{ "translations": {
     "Cannot write into \"config\" directory!" : "Das Schreiben in das „config“-Verzeichnis ist nicht möglich!",
     "This can usually be fixed by giving the webserver write access to the config directory" : "Dies kann normalerweise repariert werden, indem dem Webserver Schreibzugriff auf das config-Verzeichnis gegeben wird",
     "See %s" : "Siehe %s",
@@ -44,7 +42,7 @@ OC.L10N.register(
     "File name is a reserved word" : "Der Dateiname ist ein reserviertes Wort",
     "File name contains at least one invalid character" : "Der Dateiname enthält mindestens ein ungültiges Zeichen",
     "File name is too long" : "Dateiname ist zu lang",
-    "__language_name__" : "Deutsch (Persönlich)",
+    "__language_name__" : "Deutsch (Schweiz)",
     "App directory already exists" : "Das Applikationsverzeichnis existiert bereits",
     "Can't create app folder. Please fix permissions. %s" : "Es kann kein Applikationsordner erstellt werden. Bitte passe die  Berechtigungen an. %s",
     "Archive does not contain a directory named %s" : "Das Archiv enthält kein Verzeichnis mit dem Namen %s",
@@ -67,7 +65,6 @@ OC.L10N.register(
     "Evaluation - expires in %d days." : "Evaluierung - läuft in %d Tagen ab.",
     "Your Enterprise license key is about to expire (days remaining: %d)." : "Ihr Enterprise-Lizenzschlüssel läuft demnächst ab (verbleibende Tage: %d).",
     "The registered enterprise license key expires in %d days" : "Der registrierte Enterprise-Lizenzschlüssel läuft in %d Tagen ab",
-    "New Design" : "Neues Design",
     "Apps" : "Apps",
     "General" : "Allgemein",
     "Storage" : "Speicher",
@@ -90,9 +87,9 @@ OC.L10N.register(
     "You need to enter either an existing account or the administrator." : "Du musst entweder ein existierendes Benutzerkonto oder das Administratorenkonto angeben.",
     "Offending command was: \"%s\", name: %s, password: %s" : "Fehlerhafter Befehl war: „%s“, Name: %s, Passwort: %s",
     "PostgreSQL username and/or password not valid" : "PostgreSQL-Benutzername und/oder -Passwort ungültig",
-    "%s is not supported and %s will not work properly on this platform. Use it at your own risk! " : "%s wird nicht unterstützt und %s wird auf dieser Plattform nicht ordnungsgemäß funktionieren. Benutzung auf eigene Gefahr!",
+    "%s is not supported and %s will not work properly on this platform. Use it at your own risk! " : "%s wird nicht unterstützt und %s wird auf dieser Plattform nicht ordnungsgemäss funktionieren. Benutzung auf eigene Gefahr!",
     "For the best results, please consider using a GNU/Linux server instead." : "Zur Gewährleistung eines optimalen Betriebs sollte stattdessen ein GNU/Linux-Server verwendet werden.",
-    "It seems that this %s instance is running on a 32-bit PHP environment and the open_basedir has been configured in php.ini. This will lead to problems with files over 4 GB and is highly discouraged." : "Es scheint, dass diese %s-Instanz unter einer 32-Bit-PHP-Umgebung läuft und open_basedir in der Datei php.ini konfiguriert worden ist. Von einem solchen Betrieb wird dringend abgeraten, weil es dabei zu Problemen mit Dateien kommt, deren Größe 4 GB übersteigt.",
+    "It seems that this %s instance is running on a 32-bit PHP environment and the open_basedir has been configured in php.ini. This will lead to problems with files over 4 GB and is highly discouraged." : "Es scheint, dass diese %s-Instanz unter einer 32-Bit-PHP-Umgebung läuft und open_basedir in der Datei php.ini konfiguriert worden ist. Von einem solchen Betrieb wird dringend abgeraten, weil es dabei zu Problemen mit Dateien kommt, deren Grösse 4 GB übersteigt.",
     "Please remove the open_basedir setting within your php.ini or switch to 64-bit PHP." : "Bitte entferne die open_basedir-Einstellung in Deiner php.ini oder wechsele zu 64-Bit-PHP.",
     "Set an admin username." : "Einen Administrator-Benutzernamen setzen.",
     "Set an admin password." : "Ein Administrator-Passwort setzen.",
@@ -197,5 +194,5 @@ OC.L10N.register(
     "Storage is temporarily not available" : "Speicher ist vorübergehend nicht verfügbar",
     "Storage connection timeout. %s" : "Zeitüberschreitung der Verbindung zum Storage. %s",
     "\"%s\" is locked" : "\"%s\" wird im Hintergrund bearbeitet und wird angezeigt, sobald der Vorgang abgeschlossen ist."
-},
-"nplurals=2; plural=(n != 1);");
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}
