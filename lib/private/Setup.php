@@ -150,7 +150,7 @@ class Setup {
 			$configuredDatabases = \array_keys($availableDatabases);
 		} else {
 			$configuredDatabases = $this->config->getSystemValue('supportedDatabases',
-				['sqlite', 'mysql', 'pgsql']);
+				['sqlite', 'mysql', 'pgsql', 'oci']);
 		}
 		if (!\is_array($configuredDatabases)) {
 			throw new Exception('Supported databases are not properly configured.');

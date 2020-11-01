@@ -46,6 +46,8 @@ class SetupTest extends \Test\TestCase {
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
+			->with('supportedDatabases',
+				['sqlite', 'mysql', 'pgsql', 'oci'])
 			->will($this->returnValue(
 				['sqlite', 'mysql', 'oci']
 			));
@@ -73,6 +75,8 @@ class SetupTest extends \Test\TestCase {
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
+			->with('supportedDatabases',
+				['sqlite', 'mysql', 'pgsql', 'oci'])
 			->will($this->returnValue(
 				['sqlite', 'mysql', 'oci', 'pgsql']
 			));
@@ -97,6 +101,8 @@ class SetupTest extends \Test\TestCase {
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
+			->with('supportedDatabases',
+				['sqlite', 'mysql', 'pgsql', 'oci'])
 			->will($this->returnValue(
 				['sqlite', 'mysql', 'pgsql', 'oci']
 			));
@@ -131,6 +137,8 @@ class SetupTest extends \Test\TestCase {
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
+			->with('supportedDatabases',
+				['sqlite', 'mysql', 'pgsql', 'oci'])
 			->will($this->returnValue('NotAnArray'));
 		$this->setupClass->getSupportedDatabases();
 	}

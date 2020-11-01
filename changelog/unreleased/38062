@@ -1,0 +1,7 @@
+Change: Add Oracle to web ui installation wizard
+
+Interactive web UI installation wizard now allows to setup Oracle as database
+backend
+
+https://github.com/owncloud/core/pull/38062
+https://github.com/owncloud/enterprise/issues/4018
