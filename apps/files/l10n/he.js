@@ -74,6 +74,7 @@ OC.L10N.register(
     "Lock file" : "נעילת קובץ",
     "Failed to lock." : "נעילה נכשלה.",
     "This resource is locked. Click to see more details." : "המשאב נעול. יש ללחוץ לקבלת פרטים נוספים.",
+    "Encountered problem accessing the folder {name}" : "נתקל בבעיית גישה לתיקיה {name}",
     "\"{name}\" is an invalid file name." : "\"{name}\" הנו שם קובץ לא חוקי.",
     "File name cannot be empty." : "שם קובץ אינו יכול להיות ריק",
     "File name cannot contain \"/\"." : "שם קובץ אינו יכול להכיל \"/\".",
