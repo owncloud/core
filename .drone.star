@@ -2026,7 +2026,21 @@ def vendorbinInstall(phpVersion):
 			'COMPOSER_HOME': '/drone/src/.cache/composer'
 		},
 		'commands': [
-			'make vendor-bin-deps'
+			'make vendor-bin-codestyle',
+			'make vendor-bin-codesniffer',
+			'make vendor-bin-phan',
+			'make vendor-bin-phpstan'
+		]
+	},
+	{
+		'name': 'vendorbin-behat',
+		'image': 'owncloudci/php:7.4',
+		'pull': 'always',
+		'environment': {
+			'COMPOSER_HOME': '/drone/src/.cache/composer'
+		},
+		'commands': [
+			'make vendor-bin-behat'
 		]
 	}]
 
