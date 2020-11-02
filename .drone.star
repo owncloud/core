@@ -375,7 +375,11 @@ def dependencies(ctx):
 				'steps':
 					cacheRestore() +
 					composerInstall(phpVersion) +
-					vendorbinInstall(phpVersion) +
+					vendorbinCodestyle(phpVersion) +
+					vendorbinCodesniffer(phpVersion) +
+					vendorbinPhan(phpVersion) +
+					vendorbinPhpstan(phpVersion) +
+					vendorbinBehat() +
 					yarnInstall(phpVersion) +
 					cacheRebuildOnEventPush() +
 					cacheFlushOnEventPush(),
@@ -442,7 +446,8 @@ def codestyle():
 				'steps':
 					cacheRestore() +
 					composerInstall(phpVersion) +
-					vendorbinInstall(phpVersion) +
+					vendorbinCodestyle(phpVersion) +
+					vendorbinCodesniffer(phpVersion) +
 					yarnInstall(phpVersion) +
 					[
 						{
@@ -618,7 +623,7 @@ def phpstan():
 				'steps':
 					cacheRestore() +
 					composerInstall(phpVersion) +
-					vendorbinInstall(phpVersion) +
+					vendorbinPhpstan(phpVersion) +
 					yarnInstall(phpVersion) +
 					installServer(phpVersion, 'sqlite', params['logLevel']) +
 				[
@@ -692,7 +697,7 @@ def phan():
 				'steps':
 					cacheRestore() +
 					composerInstall(phpVersion) +
-					vendorbinInstall(phpVersion) +
+					vendorbinPhan(phpVersion) +
 					yarnInstall(phpVersion) +
 					installServer(phpVersion, 'sqlite', params['logLevel']) +
 				[
@@ -775,7 +780,6 @@ def litmus():
 				'steps':
 					cacheRestore() +
 					composerInstall(phpVersion) +
-					vendorbinInstall(phpVersion) +
 					yarnInstall(phpVersion) +
 					installServer(phpVersion, db, params['logLevel'], params['useHttps']) +
 					setupLocalStorage(phpVersion) +
@@ -943,7 +947,6 @@ def dav():
 					'steps':
 						cacheRestore() +
 						composerInstall(phpVersion) +
-						vendorbinInstall(phpVersion) +
 						yarnInstall(phpVersion) +
 						installServer(phpVersion, db, params['logLevel']) +
 						davInstall(phpVersion, scriptPath) +
@@ -1015,7 +1018,6 @@ def javascript(ctx):
 		'steps':
 			cacheRestore() +
 			composerInstall(params['phpVersion']) +
-			vendorbinInstall(params['phpVersion']) +
 			yarnInstall(params['phpVersion']) +
 		[
 			{
@@ -1190,7 +1192,6 @@ def phptests(ctx, testType):
 						'steps':
 							cacheRestore() +
 							composerInstall(phpVersion) +
-							vendorbinInstall(phpVersion) +
 							yarnInstall(phpVersion) +
 							installServer(phpVersion, db, params['logLevel']) +
 							installExtraApps(phpVersion, extraAppsDict) +
@@ -1475,7 +1476,7 @@ def acceptance(ctx):
 									'steps':
 										cacheRestore() +
 										composerInstall(phpVersion) +
-										vendorbinInstall(phpVersion) +
+										vendorbinBehat() +
 										yarnInstall(phpVersion) +
 										installServer(phpVersion, db, params['logLevel'], params['useHttps'], params['federatedServerNeeded'], params['proxyNeeded']) +
 										(
@@ -1544,7 +1545,6 @@ def sonarAnalysis(ctx, phpVersion = '7.4'):
 		'steps':
 			cacheRestore() +
 			composerInstall(phpVersion) +
-			vendorbinInstall(phpVersion) +
 			yarnInstall(phpVersion) +
 			installServer(phpVersion, 'sqlite') +
 		[
@@ -2017,16 +2017,68 @@ def composerInstall(phpVersion):
 		]
 	}]
 
-def vendorbinInstall(phpVersion):
+def vendorbinCodestyle(phpVersion):
 	return [{
-		'name': 'vendorbin-install',
+		'name': 'vendorbin-codestyle',
 		'image': 'owncloudci/php:%s' % phpVersion,
 		'pull': 'always',
 		'environment': {
 			'COMPOSER_HOME': '/drone/src/.cache/composer'
 		},
 		'commands': [
-			'make vendor-bin-deps'
+			'make vendor-bin-codestyle'
+		]
+	}]
+
+def vendorbinCodesniffer(phpVersion):
+	return [{
+		'name': 'vendorbin-codesniffer',
+		'image': 'owncloudci/php:%s' % phpVersion,
+		'pull': 'always',
+		'environment': {
+			'COMPOSER_HOME': '/drone/src/.cache/composer'
+		},
+		'commands': [
+			'make vendor-bin-codesniffer'
+		]
+	}]
+
+def vendorbinPhan(phpVersion):
+	return [{
+		'name': 'vendorbin-phan',
+		'image': 'owncloudci/php:%s' % phpVersion,
+		'pull': 'always',
+		'environment': {
+			'COMPOSER_HOME': '/drone/src/.cache/composer'
+		},
+		'commands': [
+			'make vendor-bin-phan'
+		]
+	}]
+
+def vendorbinPhpstan(phpVersion):
+	return [{
+		'name': 'vendorbin-phpstan',
+		'image': 'owncloudci/php:%s' % phpVersion,
+		'pull': 'always',
+		'environment': {
+			'COMPOSER_HOME': '/drone/src/.cache/composer'
+		},
+		'commands': [
+			'make vendor-bin-phpstan'
+		]
+	}]
+
+def vendorbinBehat():
+	return [{
+		'name': 'vendorbin-behat',
+		'image': 'owncloudci/php:7.4',
+		'pull': 'always',
+		'environment': {
+			'COMPOSER_HOME': '/drone/src/.cache/composer'
+		},
+		'commands': [
+			'make vendor-bin-behat'
 		]
 	}]
 
