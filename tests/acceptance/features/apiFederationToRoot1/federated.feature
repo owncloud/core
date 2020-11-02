@@ -132,9 +132,9 @@ Feature: federated
     Then the HTTP status code should be "405"
     And the body of the response should be empty
     Examples:
-      | ocs-api-version | ocs-status |
-      | 1               | 100        |
-      | 2               | 200        |
+      | ocs-api-version |
+      | 1               |
+      | 2               |
 
   Scenario Outline: sending a GET request to a not existing remote share
     Given using OCS API version "<ocs-api-version>"
