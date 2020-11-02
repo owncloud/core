@@ -39,6 +39,7 @@ Feature: a subfolder of a received share can be reshared
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And as "Carol" folder "/Shares/SUB" should not exist
+    And the sharing API should report to user "Carol" that no shares are in the pending state
     And as "Brian" folder "/Shares/TMP/SUB" should exist
     Examples:
       | ocs_api_version | http_status_code | received_permissions | reshare_permissions |

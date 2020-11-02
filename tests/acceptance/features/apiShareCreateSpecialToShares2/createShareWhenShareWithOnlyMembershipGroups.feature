@@ -19,6 +19,7 @@ Feature: cannot share resources outside the group when share with membership gro
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" folder "/PARENT (2)" should not exist
     And as "Brian" folder "/Shares/PARENT" should not exist
+    And the sharing API should report to user "Brian" that no shares are in the pending state
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 403             | 200              |
@@ -76,6 +77,7 @@ Feature: cannot share resources outside the group when share with membership gro
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" file "/textfile0 (2).txt" should not exist
     And as "Brian" file "/Shares/textfile0.txt" should not exist
+    And the sharing API should report to user "Brian" that no shares are in the pending state
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 403             | 200              |

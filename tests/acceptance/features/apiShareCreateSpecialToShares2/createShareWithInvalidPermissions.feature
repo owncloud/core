@@ -20,6 +20,7 @@ Feature: cannot share resources with invalid permissions
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" entry "<item>" should not exist
     And as "Brian" entry "/Shares/<item>" should not exist
+    And the sharing API should report to user "Brian" that no shares are in the pending state
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | item          | permissions |
       | 1               | 400             | 200              | textfile0.txt | 0           |
@@ -44,6 +45,7 @@ Feature: cannot share resources with invalid permissions
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" entry "textfile0.txt" should not exist
     And as "Brian" entry "/Shares/textfile0.txt" should not exist
+    And the sharing API should report to user "Brian" that no shares are in the pending state
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 400             | 200              |
@@ -62,6 +64,7 @@ Feature: cannot share resources with invalid permissions
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" entry "textfile0.txt" should not exist
     And as "Brian" entry "/Shares/textfile0.txt" should not exist
+    And the sharing API should report to user "Brian" that no shares are in the pending state
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | permissions   |
       | 1               | 400             | 200              | delete        |
@@ -84,6 +87,7 @@ Feature: cannot share resources with invalid permissions
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" entry "textfile0.txt" should not exist
     And as "Brian" entry "/Shares/textfile0.txt" should not exist
+    And the sharing API should report to user "Brian" that no shares are in the pending state
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 400             | 200              |
@@ -104,6 +108,7 @@ Feature: cannot share resources with invalid permissions
     And the HTTP status code should be "<http_status_code>"
     And as "Brian" entry "textfile0.txt" should not exist
     And as "Brian" entry "/Shares/textfile0.txt" should not exist
+    And the sharing API should report to user "Brian" that no shares are in the pending state
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | permissions   |
       | 1               | 400             | 200              | delete        |
