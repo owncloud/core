@@ -60,10 +60,10 @@ Feature: sharing works when a username and group name are the same
       | username |
       | Brian    |
       | Carol    |
-    And group "Brian" has been created
-    And user "Carol" has been added to group "Brian"
+    And group "brian" has been created
+    And user "Carol" has been added to group "brian"
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
-    And user "Alice" has shared file "randomfile.txt" with group "Brian"
+    And user "Alice" has shared file "randomfile.txt" with group "brian"
     And user "Carol" has accepted share "/randomfile.txt" offered by user "Alice"
     When user "Alice" shares file "randomfile.txt" with user "Brian" using the sharing API
     Then the OCS status code should be "100"
@@ -84,12 +84,12 @@ Feature: sharing works when a username and group name are the same
       | username |
       | Brian    |
       | Carol    |
-    And group "Brian" has been created
-    And user "Carol" has been added to group "Brian"
+    And group "brian" has been created
+    And user "Carol" has been added to group "brian"
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
     And user "Alice" has shared file "randomfile.txt" with user "Brian"
     And user "Brian" has accepted share "/randomfile.txt" offered by user "Alice"
-    When user "Alice" shares file "randomfile.txt" with group "Brian" using the sharing API
+    When user "Alice" shares file "randomfile.txt" with group "brian" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     When user "Carol" accepts share "/randomfile.txt" offered by user "Alice" using the sharing API
