@@ -315,6 +315,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "404"
     And the OCS status message should be "Cannot set expiration date more than 7 days in the future"
+    And the sharing API should report to user "Brian" that no shares are in the pending state
     And user "Brian" should not have any received shares
     Examples:
       | ocs_api_version | http_status_code |
@@ -359,6 +360,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "404"
     And the OCS status message should be "Cannot set expiration date more than 30 days in the future"
+    And the sharing API should report to user "Brian" that no shares are in the pending state
     And user "Brian" should not have any received shares
     Examples:
       | ocs_api_version | http_status_code |
@@ -441,6 +443,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "404"
     And the OCS status message should be "Cannot set expiration date more than 7 days in the future"
+    And the sharing API should report to user "Brian" that no shares are in the pending state
     And user "Brian" should not have any received shares
     Examples:
       | ocs_api_version | http_status_code |
@@ -489,6 +492,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "404"
     And the OCS status message should be "Cannot set expiration date more than 30 days in the future"
+    And the sharing API should report to user "Brian" that no shares are in the pending state
     And user "Brian" should not have any received shares
     Examples:
       | ocs_api_version | http_status_code |
@@ -592,6 +596,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "<ocs_status_code>"
     And the OCS status message should be "Invalid date, date format must be YYYY-MM-DD"
+    And the sharing API should report to user "Brian" that no shares are in the pending state
     And user "Brian" should not have any received shares
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
@@ -673,6 +678,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "<ocs_status_code>"
     And the OCS status message should be "Expiration date is in the past"
+    And the sharing API should report to user "Brian" that no shares are in the pending state
     And user "Brian" should not have any received shares
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | default | enforce |
@@ -698,6 +704,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "<ocs_status_code>"
     And the OCS status message should be "Invalid date, date format must be YYYY-MM-DD"
+    And the sharing API should report to user "Brian" that no shares are in the pending state
     And user "Brian" should not have any received shares
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | default | enforce |
@@ -723,6 +730,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "<ocs_status_code>"
     And the OCS status message should be "Expiration date is in the past"
+    And the sharing API should report to user "Brian" that no shares are in the pending state
     And user "Brian" should not have any received shares
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
