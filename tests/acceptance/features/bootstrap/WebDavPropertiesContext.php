@@ -811,17 +811,21 @@ class WebDavPropertiesContext implements Context {
 	/**
 	 * @param string $user
 	 * @param string $path
+	 * @param string $storePath
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function storeEtagOfElement($user, $path) {
+	public function storeEtagOfElement($user, $path, $storePath="") {
+		if ($storePath === "") {
+			$storePath = $path;
+		}
 		$user = $this->featureContext->getActualUsername($user);
 		$propertiesTable = new TableNode([['propertyName'],['getetag']]);
 		$this->userGetsPropertiesOfFolder(
 			$user, $path, $propertiesTable
 		);
-		$this->storedETAG[$user][$path]
+		$this->storedETAG[$user][$storePath]
 			= $this->featureContext->getEtagFromResponseXmlObject();
 	}
 
@@ -839,6 +843,31 @@ class WebDavPropertiesContext implements Context {
 			$user,
 			$path
 		);
+	}
+
+	/**
+	 * @Given user :user has stored etag of element :path on path :storePath
+	 *
+	 * @param string $user
+	 * @param string $path
+	 * @param string $storePath
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userStoresEtagOfElementOnPath($user, $path, $storePath) {
+		$user = $this->featureContext->getActualUsername($user);
+		$this->storeEtagOfElement(
+			$user,
+			$path,
+			$storePath
+		);
+		if ($storePath == "") {
+			$storePath = $path;
+		}
+		if ($this->storedETAG[$user][$storePath] === null) {
+			throw new Exception("Expected stored etag to be some string but found null!");
+		}
 	}
 
 	/**
