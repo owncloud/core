@@ -37,6 +37,7 @@ Summary
 * Bugfix - Do not emit "share.failedpasswordcheck" events for authenticated links: [#138](https://github.com/owncloud/brute_force_protection/issues/138)
 * Bugfix - Fix logging when loading an apps fails: [#38037](https://github.com/owncloud/core/pull/38037)
 * Bugfix - Properly handle StorageNotAvailableException in share external: [#38042](https://github.com/owncloud/core/pull/38042)
+* Bugfix - Pick the translations from templates included from other apps: [#38072](https://github.com/owncloud/core/pull/38072)
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 * Change - Update sabre dependencies: [#37684](https://github.com/owncloud/core/pull/37684)
 * Change - Update google/apiclient from 2.5.0 to 2.6.0 and related dependencies: [#37687](https://github.com/owncloud/core/pull/37687)
@@ -348,6 +349,20 @@ Details
    https://github.com/owncloud/enterprise/issues/4117
    https://github.com/owncloud/enterprise/issues/2721
    https://github.com/owncloud/core/pull/38042
+
+* Bugfix - Pick the translations from templates included from other apps: [#38072](https://github.com/owncloud/core/pull/38072)
+
+   Some apps can include template parts from a different app, normally from core. From example,
+   the activity app can include content from the core templates to be used in the activity email.
+
+   The translated strings were picked from the original app even though the template was within
+   core space. As a result, some string weren't translated because of the missing translation for
+   those strings in the original app. Note that core had the strings correctly translated.
+
+   Now the translations are picked from the requested app template as intended, instead of
+   looking for them in the original app.
+
+   https://github.com/owncloud/core/pull/38072
 
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 
