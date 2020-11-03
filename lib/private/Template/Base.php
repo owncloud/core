@@ -207,7 +207,14 @@ class Base {
 	protected function load($file, $additionalParams = null) {
 		// This variables will be used inside templates, they are not unused!
 		$_ = $this->vars;
-		$l = $this->l10n;
+		if (isset($additionalParams['app'])) {
+			// in case a template wants to include content from another app (usually from core)
+			// we need to change the l10n object and adjust it to use the new app instead of
+			// the one currently set, so the translation are picked from the correct app.
+			$l = \OC::$server->getL10N($additionalParams['app'], $this->l10n->getLanguageCode());
+		} else {
+			$l = $this->l10n;
+		}
 		$theme = $this->themeDefaults;
 
 		if ($additionalParams !== null) {
