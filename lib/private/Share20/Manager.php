@@ -1415,12 +1415,10 @@ class Manager implements IManager {
 	 * Get all the shares for a given path
 	 *
 	 * @param \OCP\Files\Node $path
-	 * @param int $page
-	 * @param int $perPage
 	 *
-	 * @return Share[]
+	 * @return IShare[]
 	 */
-	public function getSharesByPath(\OCP\Files\Node $path, $page=0, $perPage=50) {
+	public function getSharesByPath(\OCP\Files\Node $path) {
 		$types = [\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_GROUP];
 		$providers = [];
 		$results = [];
