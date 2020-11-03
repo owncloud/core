@@ -17,6 +17,7 @@ Feature: sharing
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And as "Carol" file "/Shares/textfile0.txt" should not exist
+    And the sharing API should report to user "Carol" that no shares are in the pending state
     But as "Brian" file "/Shares/textfile0.txt" should exist
     Examples:
       | ocs_api_version | http_status_code |
@@ -31,6 +32,7 @@ Feature: sharing
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And as "Carol" folder "/Shares/FOLDER" should not exist
+    And the sharing API should report to user "Carol" that no shares are in the pending state
     But as "Brian" folder "/Shares/FOLDER" should exist
     Examples:
       | ocs_api_version | http_status_code |
@@ -110,6 +112,7 @@ Feature: sharing
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And as "Carol" file "/Shares/textfile0.txt" should not exist
+    And the sharing API should report to user "Carol" that no shares are in the pending state
     But as "Brian" file "/Shares/textfile0.txt" should exist
     Examples:
       | ocs_api_version | http_status_code | received_permissions | reshare_permissions |
@@ -178,6 +181,7 @@ Feature: sharing
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And as "Carol" folder "/Shares/PARENT" should not exist
+    And the sharing API should report to user "Carol" that no shares are in the pending state
     But as "Brian" folder "/Shares/PARENT" should exist
     Examples:
       | ocs_api_version | http_status_code | received_permissions | reshare_permissions |
@@ -216,6 +220,7 @@ Feature: sharing
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And as "Carol" folder "/Shares/PARENT" should not exist
+    And the sharing API should report to user "Carol" that no shares are in the pending state
     But as "Brian" folder "/Shares/PARENT" should exist
     Examples:
       | ocs_api_version | http_status_code | received_permissions | reshare_permissions |

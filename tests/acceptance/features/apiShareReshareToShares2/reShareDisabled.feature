@@ -18,6 +18,7 @@ Feature: resharing can be disabled
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And as "Carol" file "/Shares/textfile0.txt" should not exist
+    And the sharing API should report to user "Carol" that no shares are in the pending state
     Examples:
       | ocs_api_version | http_status_code |
       | 1               | 200              |
