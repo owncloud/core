@@ -90,6 +90,7 @@ Summary
 * Enhancement - Add Support for SGI Image Previews: [#37758](https://github.com/owncloud/core/pull/37758)
 * Enhancement - Re-design UI yellow notification bar: [#37875](https://github.com/owncloud/core/pull/37875)
 * Enhancement - Allow getting the share list filtered by share type via API: [#38000](https://github.com/owncloud/core/pull/38000)
+* Enhancement - Add new method in the PHP API interface: [#38054](https://github.com/owncloud/core/pull/38054)
 
 Details
 -------
@@ -707,6 +708,12 @@ Details
    web UI is using this filtering now.
 
    https://github.com/owncloud/core/pull/38000
+
+* Enhancement - Add new method in the PHP API interface: [#38054](https://github.com/owncloud/core/pull/38054)
+
+   The share manager interface in the PHP API has a new "getSharesByPath" method available
+
+   https://github.com/owncloud/core/pull/38054
 
 Changelog for ownCloud Core [10.5.0] (2020-07-31)
 =======================================
