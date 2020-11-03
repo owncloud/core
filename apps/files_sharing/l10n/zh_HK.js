@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files_sharing",
     {
+    "Shared by link" : "通過連結分享<br>",
     "Cancel" : "取消",
     "Share" : "分享",
     "Sharing" : "分享",
