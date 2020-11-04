@@ -1316,7 +1316,7 @@ class FeatureContext extends BehatVariablesContext {
 			$urlEnding = \substr($url, \strlen($this->getBaseUrl() . '/'));
 		}
 
-		if (OcisHelper::isTestingOnOcis()) {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
 			return \preg_match("%^(#/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
 		} else {
 			return \preg_match("%^(index.php/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
@@ -3162,7 +3162,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function clearFileLocks() {
-		if (!OcisHelper::isTestingOnOcis()) {
+		if (!OcisHelper::isTestingOnOcisOrReva()) {
 			$this->authContext->deleteTokenAuthEnforcedAfterScenario();
 			$this->clearFileLocksForServer($this->getBaseUrl());
 			if ($this->remoteBaseUrl !== $this->localBaseUrl) {
@@ -3180,7 +3180,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws \Exception
 	 */
 	public static function useBigFileIDs(BeforeSuiteScope $scope) {
-		if (OcisHelper::isTestingOnOcis()) {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
 			return;
 		}
 		$fullUrl = \getenv('TEST_SERVER_URL');
@@ -3596,7 +3596,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function restoreParametersAfterScenario() {
-		if (!OcisHelper::isTestingOnOcis()) {
+		if (!OcisHelper::isTestingOnOcisOrReva()) {
 			$this->authContext->deleteTokenAuthEnforcedAfterScenario();
 			$user = $this->getCurrentUser();
 			$this->setCurrentUser($this->getAdminUsername());
@@ -3686,7 +3686,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function prepareParametersBeforeScenario() {
-		if (!OcisHelper::isTestingOnOcis()) {
+		if (!OcisHelper::isTestingOnOcisOrReva()) {
 			$user = $this->getCurrentUser();
 			$this->setCurrentUser($this->getAdminUsername());
 			$previousServer = $this->getCurrentServer();

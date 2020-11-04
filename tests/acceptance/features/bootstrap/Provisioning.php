@@ -541,7 +541,7 @@ trait Provisioning {
 	 */
 	public function connectToLdap($suiteParameters) {
 		$useSsl = false;
-		if (OcisHelper::isTestingOnOcis()) {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
 			$this->ldapBaseDN = OcisHelper::getBaseDN();
 			$this->ldapHost = OcisHelper::getHostname();
 			$this->ldapPort = OcisHelper::getLdapPort();
@@ -603,7 +603,7 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function theLdapUsersHaveBeenReSynced() {
-		if (!OcisHelper::isTestingOnOcis()) {
+		if (!OcisHelper::isTestingOnOcisOrReva()) {
 			$occResult = SetupHelper::runOcc(
 				['user:sync', 'OCA\User_LDAP\User_Proxy', '-m', 'remove']
 			);
@@ -939,7 +939,7 @@ trait Provisioning {
 			} else {
 				$attributesToCreateUser['userid'] = $userAttributes['userid'];
 				$attributesToCreateUser['password'] = $userAttributes['password'];
-				if (OcisHelper::isTestingOnOcis()) {
+				if (OcisHelper::isTestingOnOcisOrReva()) {
 					$attributesToCreateUser['username'] = $userAttributes['userid'];
 					if ($userAttributes['email'] === null) {
 						Assert::assertArrayHasKey(
@@ -988,7 +988,7 @@ trait Provisioning {
 		$users = [];
 		$editData = [];
 		foreach ($usersAttributes as $userAttributes) {
-			if (OcisHelper::isTestingOnOcis()) {
+			if (OcisHelper::isTestingOnOcisOrReva()) {
 				OcisHelper::createEOSStorageHome(
 					$this->getBaseUrl(),
 					$userAttributes['userid'],
@@ -1018,7 +1018,7 @@ trait Provisioning {
 		// then do some work to "manually" put the skeleton files in place.
 		// When testing on ownCloud 10 the user is already getting whatever
 		// skeleton dir is defined in the server-under-test.
-		if ($skeleton && OcisHelper::isTestingOnOcis()) {
+		if ($skeleton && OcisHelper::isTestingOnOcisOrReva()) {
 			$this->manuallyAddSkeletonFiles($usersAttributes);
 		}
 
@@ -1266,7 +1266,7 @@ trait Provisioning {
 			"email" => $email
 		];
 
-		if (OcisHelper::isTestingOnOcis()) {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
 			if ($email === null) {
 				$email = $username . '@owncloud.org';
 			}
@@ -1289,7 +1289,7 @@ trait Provisioning {
 			$email,
 			$this->theHTTPStatusCodeWasSuccess()
 		);
-		if (OcisHelper::isTestingOnOcis()) {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
 			$this->manuallyAddSkeletonFilesForUser($username, $password);
 		}
 	}
@@ -1306,7 +1306,7 @@ trait Provisioning {
 	public function adminSendsUserCreationRequestUsingTheProvisioningApi($user, $password) {
 		$user = $this->getActualUsername($user);
 		$password = $this->getActualPassword($password);
-		if (OcisHelper::isTestingOnOcis()) {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
 			$email = $user . '@owncloud.org';
 			$bodyTable = new TableNode(
 				[
@@ -1335,7 +1335,7 @@ trait Provisioning {
 			$email,
 			$this->theHTTPStatusCodeWasSuccess()
 		);
-		if (OcisHelper::isTestingOnOcis()) {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
 			OcisHelper::createEOSStorageHome($this->getBaseUrl(), $user, $password);
 			$this->manuallyAddSkeletonFilesForUser($user, $password);
 		}
@@ -1356,7 +1356,7 @@ trait Provisioning {
 	) {
 		$user = $this->getActualUsername($user);
 		$password = $this->getActualPassword($password);
-		if (OcisHelper::isTestingOnOcis()) {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
 			$email = $user . '@owncloud.org';
 			$bodyTable = new TableNode(
 				[
@@ -1388,7 +1388,7 @@ trait Provisioning {
 			$email,
 			$this->theHTTPStatusCodeWasSuccess()
 		);
-		if (OcisHelper::isTestingOnOcis()) {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
 			$this->manuallyAddSkeletonFilesForUser($user, $password);
 		}
 	}
@@ -2605,7 +2605,7 @@ trait Provisioning {
 		// sending the username in lowercase in the auth but in uppercase in
 		// the URL see https://github.com/owncloud/core/issues/36822
 		$user = $this->getActualUsername($user);
-		if (OcisHelper::isTestingOnOcis()) {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
 			$requestingUser = $this->getActualUsername($user);
 			$requestingPassword = $this->getPasswordForUser($requestingUser);
 		} else {
@@ -3431,7 +3431,7 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function groupExists($group) {
-		if ($this->isTestingWithLdap() && OcisHelper::isTestingOnOcis()) {
+		if ($this->isTestingWithLdap() && OcisHelper::isTestingOnOcisOrReva()) {
 			$baseDN = $this->getLdapBaseDN();
 			$newDN = 'cn=' . $group . ',ou=' . $this->ou . ',' . $baseDN;
 			if ($this->ldap->getEntry($newDN) !== null) {
@@ -4359,12 +4359,12 @@ trait Provisioning {
 	public function afterScenario() {
 		$this->restoreParametersAfterScenario();
 
-		if (OcisHelper::isTestingOnOcis() && $this->someUsersHaveBeenCreated()) {
+		if (OcisHelper::isTestingOnOcisOrReva() && $this->someUsersHaveBeenCreated()) {
 			foreach ($this->getCreatedUsers() as $user) {
 				$this->deleteAllSharesForUser($user["actualUsername"]);
 				OcisHelper::deleteRevaUserData($user["actualUsername"]);
 			}
-		} elseif (!OcisHelper::isTestingOnOcis()) {
+		} elseif (OcisHelper::isTestingOnOc10()) {
 			$this->resetAdminUserAttributes();
 		}
 		if ($this->isTestingWithLdap()) {
@@ -4437,7 +4437,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function rememberAppEnabledDisabledState() {
-		if (!OcisHelper::isTestingOnOcis()) {
+		if (!OcisHelper::isTestingOnOcisOrReva()) {
 			SetupHelper::init(
 				$this->getAdminUsername(),
 				$this->getAdminPassword(),
@@ -4457,7 +4457,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function restoreAppEnabledDisabledState() {
-		if (!OcisHelper::isTestingOnOcis()) {
+		if (!OcisHelper::isTestingOnOcisOrReva()) {
 			$this->runOcc(['app:list', '--output json']);
 			$apps = \json_decode($this->getStdOutOfOccCommand(), true);
 			$currentlyEnabledApps = \array_keys($apps["enabled"]);

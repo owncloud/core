@@ -639,7 +639,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		$ocPath = null,
 		$envVariables = null
 	) {
-		if (OcisHelper::isTestingOnOcis()) {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
 			return ['code' => '', 'stdOut' => '', 'stdErr' => '' ];
 		}
 		$baseUrl = self::checkBaseUrl($baseUrl, "runOcc");
