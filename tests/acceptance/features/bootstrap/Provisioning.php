@@ -4646,7 +4646,7 @@ trait Provisioning {
 	public function afterScenario() {
 		$this->restoreParametersAfterScenario();
 
-		if (OcisHelper::isTestingOnOcisOrReva() && $this->someUsersHaveBeenCreated()) {
+		if (OcisHelper::isTestingOnReva() && $this->someUsersHaveBeenCreated()) {
 			foreach ($this->getCreatedUsers() as $user) {
 				$this->deleteAllSharesForUser($user["actualUsername"]);
 				OcisHelper::deleteRevaUserData($user["actualUsername"]);
