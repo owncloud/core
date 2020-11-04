@@ -81,7 +81,8 @@ class OcisHelper {
 	public static function deleteRevaUserData($user = "") {
 		$deleteCmd = self::getDeleteUserDataCommand();
 		if ($deleteCmd === false) {
-			self::recurseRmdir(self::getOcisRevaDataRoot() . $user);
+			// The provisioning api is cleaning up the user home so we don't have to do it here.
+			// self::recurseRmdir(self::getOcisRevaDataRoot() . $user);
 			return;
 		}
 		if (self::getStorageDriver() === "EOS") {
