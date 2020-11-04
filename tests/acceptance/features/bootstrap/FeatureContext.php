@@ -431,7 +431,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return bool
 	 */
 	public function isTestingWithLdap() {
-		return (\getenv("TEST_EXTERNAL_USER_BACKENDS") === "true");
+		return (\getenv("TEST_WITH_LDAP") === "true");
 	}
 
 	/**
