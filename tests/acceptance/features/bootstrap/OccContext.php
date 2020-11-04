@@ -852,8 +852,8 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasSetTheDefaultFolderForReceivedSharesTo($folder) {
-		if (OcisHelper::isTestingOnOcis()) {
-			// The default folder for received shares is already "Shares" on OCIS.
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			// The default folder for received shares is already "Shares" on OCIS and REVA.
 			// If the step is asking for a different folder, then fail.
 			// Otherwise just return - the setting is already done by default.
 			Assert::assertEquals(

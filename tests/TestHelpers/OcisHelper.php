@@ -45,6 +45,20 @@ class OcisHelper {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public static function isTestingOnOcisOrReva() {
+		return (self::isTestingOnOcis() || self::isTestingOnReva());
+	}
+
+	/**
+	 * @return bool
+	 */
+	public static function isTestingOnOc10() {
+		return (!self::isTestingOnOcisOrReva());
+	}
+
+	/**
 	 * @return bool|string false if no command given or the command as string
 	 */
 	public static function getDeleteUserDataCommand() {
@@ -224,7 +238,7 @@ class OcisHelper {
 	 */
 	private static function getOcisRevaDataRoot() {
 		$root = \getenv("OCIS_REVA_DATA_ROOT");
-		if (($root === false || $root === "") && self::isTestingOnOcis()) {
+		if (($root === false || $root === "") && self::isTestingOnOcisOrReva()) {
 			$root = "/var/tmp/ocis/owncloud/";
 		}
 		if (!\file_exists($root)) {

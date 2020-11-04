@@ -1026,7 +1026,7 @@ class PublicWebDavContext implements Context {
 		$tokenArray = $this->featureContext->getLastShareData()->data->token;
 		$token = (string)$tokenArray[0];
 		$baseUrl = $this->featureContext->getBaseUrl();
-		if (\TestHelpers\OcisHelper::isTestingOnOcis()) {
+		if (\TestHelpers\OcisHelper::isTestingOnOcisOrReva()) {
 			$mtime = \explode(" ", $mtime);
 			\array_pop($mtime);
 			$mtime = \implode(" ", $mtime);
