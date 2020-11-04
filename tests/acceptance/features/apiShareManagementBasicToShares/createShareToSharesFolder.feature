@@ -363,7 +363,7 @@ Feature: sharing
       | 2               | 200             |
 
   @issue-35484
-  @skipOnOcis-OC-Storage @issue-ocis-reva-11
+  @issue-ocis-reva-11
   Scenario: share with user when username contains capital letters
     Given these users have been created without skeleton files:
       | username |
@@ -525,7 +525,7 @@ Feature: sharing
     And the content of file "/Shares/common/sub/textfile0.txt" for user "Brian" should be "BLABLABLA" plus end-of-line
     And the content of file "/common/sub/textfile0.txt" for user "Alice" should be "BLABLABLA" plus end-of-line
 
-  @skipOnOcis-OC-Storage @issue-enterprise-3896 @issue-ocis-reva-243
+  @issue-enterprise-3896 @issue-ocis-reva-243
   Scenario: sharing back to resharer is allowed
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -543,7 +543,7 @@ Feature: sharing
     And the sharing API should report to user "Brian" that no shares are in the pending state
     And as "Brian" folder "/Shares/userOneFolder" should not exist
 
-  @skipOnOcis-OC-Storage @issue-enterprise-3896 @issue-ocis-reva-243
+  @issue-enterprise-3896 @issue-ocis-reva-243
   Scenario: sharing back to original sharer is allowed
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -561,7 +561,7 @@ Feature: sharing
     And the sharing API should report to user "Alice" that no shares are in the pending state
     And as "Alice" folder "/Shares/userOneFolder" should not exist
 
-  @skipOnOcis-OC-Storage @issue-enterprise-3896 @issue-ocis-reva-243
+  @issue-enterprise-3896 @issue-ocis-reva-243
   Scenario: sharing a subfolder to a user that already received parent folder share
     Given these users have been created with default attributes and without skeleton files:
       | username |

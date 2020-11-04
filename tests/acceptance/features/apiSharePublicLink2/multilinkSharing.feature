@@ -177,7 +177,7 @@ Feature: multilinksharing
       | /textfile0.txt | 1           | sharedlink1 |
       | /textfile0.txt | 1           | sharedlink2 |
 
-  @skipOnOcis-OC-Storage @issue-ocis-reva-335
+  @issue-ocis-reva-335
   Scenario: Renaming a folder doesn't remove its public shares
     Given using OCS API version "1"
     And user "Alice" has created a public link share with settings
