@@ -75,6 +75,7 @@
     "Your storage is almost full ({usedSpacePercent}%)" : "Uw opslagruimte zit bijna vol ({usedSpacePercent}%)",
     "_matches '{filter}'_::_match '{filter}'_" : ["komt overeen met '{filter}'","komen overeen met '{filter}'"],
     "{owner} has locked this resource via {path}" : "{owner} heeft dit item gelockt via {path}",
+    "Unlock" : "ontgrendel",
     "Unlock failed with status {status}" : "Unlock mislukt met status {status}",
     "Path" : "Pad",
     "_%n byte_::_%n bytes_" : ["%n byte","%n bytes"],
