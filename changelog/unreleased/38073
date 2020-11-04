@@ -1,0 +1,7 @@
+Bugfix: Override browser Accept-Language header in ajax requests
+
+A default Accept-Language header sent by browser in Ajax requests made 
+OCS API to respond in a wrong language sometimes. Now this header is set
+globally to match the current user language.
+
+https://github.com/owncloud/core/pull/38073

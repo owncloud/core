@@ -1451,6 +1451,15 @@ function initCore() {
 	 */
 	moment.locale(OC.getLocale());
 
+	/*
+	 * Override browser locales with OC locale in ajax requests
+	 */
+	$.ajaxSetup({
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader('Accept-Language', OC.getLocale());
+		}
+	});
+
 	var userAgent = window.navigator.userAgent;
 	var msie = userAgent.indexOf('MSIE ');
 	var trident = userAgent.indexOf('Trident/');
