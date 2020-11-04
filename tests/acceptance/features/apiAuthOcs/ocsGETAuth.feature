@@ -239,7 +239,7 @@ Feature: auth
     Then the HTTP status code of responses on all endpoints should be "401"
     And the OCS status code of responses on all endpoints should be "997"
 
-  @toImplementOnOCIS @issue-ocis-reva-30 @issue-ocis-reva-60
+  @issue-ocis-reva-30 @issue-ocis-reva-60
   Scenario: using OCS with an app password of a normal user
     Given a new browser session for "Alice" has been started
     And the user has generated a new app password named "my-client"

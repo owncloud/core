@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @toImplementOnOCIS @issue-ocis-reva-41 @issue-ocis-reva-243 @issue-ocis-reva-333
+@api @files_sharing-app-required @issue-ocis-reva-41 @issue-ocis-reva-243 @issue-ocis-reva-333
 Feature: a default expiration date can be specified for shares with users or groups
 
   Background:

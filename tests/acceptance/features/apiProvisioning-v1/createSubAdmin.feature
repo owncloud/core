@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @toImplementOnOCIS
+@api @provisioning_api-app-required @skipOnLDAP
 Feature: create a subadmin
   As an admin
   I want to be able to make a user the subadmin of a group

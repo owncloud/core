@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @toImplementOnOCIS @issue-ocis-reva-41 @issue-ocis-reva-243
+@api @files_sharing-app-required @issue-ocis-reva-41 @issue-ocis-reva-243
 Feature: cannot share resources outside the group when share with membership groups is enabled
 
   Background:

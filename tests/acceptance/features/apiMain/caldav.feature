@@ -1,4 +1,4 @@
-@api @toImplementOnOCIS
+@api
 Feature: caldav
 
   Background:

@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @toImplementOnOCIS @issue-ocis-reva-34
+@api @files_sharing-app-required @issue-ocis-reva-34
 Feature: share resources where the sharee receives the share in multiple ways
 
   Background:

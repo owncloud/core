@@ -1,4 +1,4 @@
-@api @toImplementOnOCIS @issue-ocis-reva-26 @issue-ocis-reva-27
+@api @issue-ocis-reva-26 @issue-ocis-reva-27
 Feature: CORS headers
 
   Background:
