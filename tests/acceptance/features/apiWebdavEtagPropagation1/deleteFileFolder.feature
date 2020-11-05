@@ -1,4 +1,4 @@
-@api @skipOnOcis-OC-Storage
+@api
 Feature: propagation of etags when deleting a file or folder
 
   Background:
@@ -25,6 +25,7 @@ Feature: propagation of etags when deleting a file or folder
       | old         |
       | new         |
 
+  @skipOnOcis-OC-Storage @issue-product-280
   Scenario Outline: deleting a folder changes the etags of all parents
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/upload/sub"
@@ -182,6 +183,7 @@ Feature: propagation of etags when deleting a file or folder
       | old         |
       | new         |
 
+  @skipOnOcis-OC-Storage @issue-product-280
   Scenario: deleting a file in a publicly shared folder changes its etag for the sharer
     Given the administrator has enabled DAV tech_preview
     And user "Alice" has uploaded file with content "uploaded content" to "/upload/file.txt"
@@ -196,6 +198,7 @@ Feature: propagation of etags when deleting a file or folder
       | Alice | /       |
       | Alice | /upload |
 
+  @skipOnOcis-OC-Storage @issue-product-280
   Scenario: deleting a folder in a publicly shared folder changes its etag for the sharer
     Given the administrator has enabled DAV tech_preview
     And user "Alice" has created folder "/upload/sub"
