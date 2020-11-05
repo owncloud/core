@@ -1,4 +1,4 @@
-@api @skipOnOcis-OC-Storage
+@api
 Feature: propagation of etags when creating folders
 
   Background:
@@ -6,6 +6,7 @@ Feature: propagation of etags when creating folders
     And the administrator has set the default folder for received shares to "Shares"
     And parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
 
+  @skipOnOcis-OC-Storage @issue-product-280
   Scenario Outline: creating a folder inside a folder changes its etag
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/folder"
@@ -87,6 +88,7 @@ Feature: propagation of etags when creating folders
       | old         |
       | new         |
 
+  @skipOnOcis-OC-Storage @issue-product-280
   Scenario: creating a folder in a publicly shared folder changes its etag for the sharer
     Given the administrator has enabled DAV tech_preview
     And user "Alice" has created folder "/folder"

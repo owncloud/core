@@ -1,4 +1,4 @@
-@api @skipOnOcis-OC-Storage
+@api
 Feature: propagation of etags when uploading data
 
   Background:
@@ -7,6 +7,7 @@ Feature: propagation of etags when uploading data
     And parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And user "Alice" has created folder "/upload"
 
+  @skipOnOcis-OC-Storage @issue-product-280
   Scenario Outline: uploading a file inside a folder changes its etag
     Given using <dav_version> DAV path
     And user "Alice" has stored etag of element "/"
@@ -134,6 +135,7 @@ Feature: propagation of etags when uploading data
       | old         |
       | new         |
 
+  @skipOnOcis-OC-Storage @issue-product-280
   Scenario: uploading a file into a publicly shared folder changes its etag for the sharer
     Given the administrator has enabled DAV tech_preview
     And user "Alice" has created a public link share with settings
