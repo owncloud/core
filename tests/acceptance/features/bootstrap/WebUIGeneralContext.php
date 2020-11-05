@@ -296,6 +296,16 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the user dismisses all notifications on the webUI
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function theUserDismissesAllNotificationsOnTheWebUI() {
+		$this->owncloudPage->dismissAllNotifications();
+	}
+
+	/**
 	 * @Then no notification should be displayed on the webUI
 	 *
 	 * @return void

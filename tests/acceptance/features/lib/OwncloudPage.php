@@ -205,6 +205,45 @@ class OwncloudPage extends Page {
 	}
 
 	/**
+	 * Dismiss all notifications
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function dismissAllNotifications() {
+		$notifications = $this->findById($this->notificationId);
+		if ($notifications === null) {
+			// debug - we did this step when there was nothing to dismiss
+			echo "dismissAllNotifications: no notifications found to dismiss\n";
+			// There are no notifications found, so there is nothing to dismiss
+			return;
+		}
+
+		$allNotifications = $notifications->findAll("xpath", "div");
+		$notificationsCount = \count($allNotifications);
+		echo "dismissAllNotifications: found $notificationsCount notifications to dismiss\n";
+
+		foreach ($allNotifications as $notificationElement) {
+			// debug - see what the notification text is
+			$x = $this->getTrimmedText($notificationElement);
+			echo "dismissAllNotifications: dismissing '$x'\n";
+			$dismissButton = $notificationElement->find(
+				"xpath", $this->notificationCloseBtnXpath
+			);
+
+			// We want to dismiss all notifications. If there is a notification that does not
+			// have a dismiss button, then we cannot dismiss all notifications, so fail.
+			$this->assertElementNotNull(
+				$dismissButton,
+				__METHOD__ .
+				" xpath $this->notificationCloseBtnXpath could not find dismiss button of notification"
+			);
+
+			$dismissButton->click();
+		}
+	}
+
+	/**
 	 * Get the text of the first notification
 	 *
 	 * @return string

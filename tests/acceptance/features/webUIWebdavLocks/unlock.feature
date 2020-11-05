@@ -213,14 +213,19 @@ Feature: Unlock locked files and folders
       | lockscope | shared |
     And the user has browsed to the files page
     When the user unlocks the lock no 3 of file "lorem.txt" on the webUI
+    And the user dismisses all notifications on the webUI
     Then file "lorem.txt" should be marked as locked on the webUI
+    And the user dismisses all notifications on the webUI
     And file "lorem.txt" should be marked as locked by user "receiver1" in the locks tab of the details panel on the webUI
+    And the user dismisses all notifications on the webUI
     And file "lorem.txt" should be marked as locked by user "receiver2" in the locks tab of the details panel on the webUI
     And 2 locks should be reported for file "lorem.txt" of user "brand-new-user" by the WebDAV API
     And 2 locks should be reported for file "lorem (2).txt" of user "receiver1" by the WebDAV API
     And 2 locks should be reported for file "lorem (2).txt" of user "receiver2" by the WebDAV API
     When the user unlocks the lock no 3 of folder "FOLDER_TO_SHARE" on the webUI
+    And the user dismisses all notifications on the webUI
     Then folder "FOLDER_TO_SHARE" should be marked as locked on the webUI
+    And the user dismisses all notifications on the webUI
     And folder "FOLDER_TO_SHARE" should be marked as locked by user "receiver1" in the locks tab of the details panel on the webUI
     And folder "FOLDER_TO_SHARE" should be marked as locked by user "receiver2" in the locks tab of the details panel on the webUI
     And 2 locks should be reported for folder "FOLDER_TO_SHARE" of user "brand-new-user" by the WebDAV API
