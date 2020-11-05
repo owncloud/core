@@ -135,7 +135,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcis-OC-Storage @smokeTest @toFixOnOCIS @issue-ocis-reva-357 @issue-ocis-reva-301 @issue-ocis-reva-302
+  @smokeTest @toFixOnOCIS @issue-ocis-reva-357 @issue-ocis-reva-301 @issue-ocis-reva-302
   #after fixing all the issues merge this scenario with the one above
   Scenario Outline: getting share info of a share
     Given using OCS API version "<ocs_api_version>"
