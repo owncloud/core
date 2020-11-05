@@ -1315,7 +1315,7 @@ def acceptance(ctx):
 		'federatedPhpVersion': '7.2',
 		'federatedServerNeeded': False,
 		'federatedDb': '',
-		'filterTags': '',
+		'filterTags': '~@skipOnDbPgsql',
 		'logLevel': '2',
 		'emailNeeded': False,
 		'ldapNeeded': False,
