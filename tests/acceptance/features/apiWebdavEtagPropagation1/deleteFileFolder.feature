@@ -7,6 +7,7 @@ Feature: propagation of etags when deleting a file or folder
     And parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And user "Alice" has created folder "/upload"
 
+
   Scenario Outline: deleting a file changes the etags of all parents
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/upload/sub"
@@ -44,6 +45,7 @@ Feature: propagation of etags when deleting a file or folder
       | old         |
       | new         |
 
+
   Scenario Outline: deleting a folder with content changes the etags of all parents
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/upload/sub"
@@ -62,6 +64,7 @@ Feature: propagation of etags when deleting a file or folder
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: as share receiver deleting a file changes the etags of all parents for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
@@ -92,6 +95,7 @@ Feature: propagation of etags when deleting a file or folder
       | old         |
       | new         |
 
+
   Scenario Outline: as sharer deleting a file changes the etags of all parents for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And using <dav_version> DAV path
@@ -121,6 +125,7 @@ Feature: propagation of etags when deleting a file or folder
       | old         |
       | new         |
 
+  @skipOnOcis-OC-Storage @issue-product-280
   Scenario Outline: as share receiver deleting a folder changes the etags of all parents for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And the administrator has set the default folder for received shares to "Shares"
@@ -152,6 +157,7 @@ Feature: propagation of etags when deleting a file or folder
       | old         |
       | new         |
 
+  @skipOnOcis-OC-Storage @issue-product-280
   Scenario Outline: as sharer deleting a folder changes the etags of all parents for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And the administrator has set the default folder for received shares to "Shares"

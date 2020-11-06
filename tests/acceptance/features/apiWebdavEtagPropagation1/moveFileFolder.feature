@@ -4,6 +4,7 @@ Feature: propagation of etags when moving files or folders
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
+
   Scenario Outline: renaming a file inside a folder changes its etag
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/upload"
@@ -19,6 +20,7 @@ Feature: propagation of etags when moving files or folders
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: moving a file from one folder to an other changes the etags of both folders
     Given using <dav_version> DAV path
@@ -39,6 +41,7 @@ Feature: propagation of etags when moving files or folders
       | old         |
       | new         |
 
+
   Scenario Outline: moving a file into a subfolder changes the etags of all parents
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/upload"
@@ -58,6 +61,7 @@ Feature: propagation of etags when moving files or folders
       | old         |
       | new         |
 
+
   Scenario Outline: renaming a folder inside a folder changes its etag
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/upload"
@@ -73,6 +77,7 @@ Feature: propagation of etags when moving files or folders
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: moving a folder from one folder to an other changes the etags of both folders
     Given using <dav_version> DAV path
@@ -113,6 +118,7 @@ Feature: propagation of etags when moving files or folders
       | old         |
       | new         |
 
+
   Scenario Outline: as share receiver renaming a file inside a folder changes its etag for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And the administrator has set the default folder for received shares to "Shares"
@@ -139,6 +145,7 @@ Feature: propagation of etags when moving files or folders
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: as sharer renaming a file inside a folder changes its etag for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
@@ -201,6 +208,7 @@ Feature: propagation of etags when moving files or folders
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: as share receiver moving a file from one folder to an other changes the etags of both folders for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
@@ -271,6 +279,7 @@ Feature: propagation of etags when moving files or folders
       | old         |
       | new         |
 
+
   Scenario Outline: as share receiver moving a folder from one folder to an other changes the etags of both folders for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And the administrator has set the default folder for received shares to "Shares"
@@ -305,6 +314,7 @@ Feature: propagation of etags when moving files or folders
       | old         |
       | new         |
 
+
   Scenario: renaming a file in a publicly shared folder changes its etag for the sharer
     Given the administrator has enabled DAV tech_preview
     And user "Alice" has created folder "/upload"
@@ -319,6 +329,7 @@ Feature: propagation of etags when moving files or folders
       | user  | path    |
       | Alice | /       |
       | Alice | /upload |
+
 
   Scenario: renaming a folder in a publicly shared folder changes its etag for the sharer
     Given the administrator has enabled DAV tech_preview

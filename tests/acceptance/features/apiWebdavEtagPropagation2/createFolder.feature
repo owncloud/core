@@ -22,6 +22,7 @@ Feature: propagation of etags when creating folders
       | old         |
       | new         |
 
+
   Scenario Outline: creating an invalid folder inside a folder should not change any etags
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/folder"
@@ -40,6 +41,7 @@ Feature: propagation of etags when creating folders
       | old         |
       | new         |
 
+  @skipOnOcis-OC-Storage @issue-product-280
   Scenario Outline: as share receiver creating a folder inside a folder received as a share changes its etag for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And using <dav_version> DAV path
@@ -64,6 +66,7 @@ Feature: propagation of etags when creating folders
       | old         |
       | new         |
 
+  @skipOnOcis-OC-Storage @issue-product-280
   Scenario Outline: as sharer creating a folder inside a folder received as a share changes its etag for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And using <dav_version> DAV path

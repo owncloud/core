@@ -120,6 +120,7 @@ Feature: propagation of etags when copying files or folders
       | old         |
       | new         |
 
+
   Scenario Outline: as share receiver copying a file inside a folder changes its etag for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And the administrator has set the default folder for received shares to "Shares"
@@ -156,6 +157,7 @@ Feature: propagation of etags when copying files or folders
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: as sharer copying a file inside a folder changes its etag for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files

@@ -6,6 +6,7 @@ Feature: propagation of etags when restoring a file or folder from trash
     And user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/upload"
 
+
   Scenario Outline: restoring a file to its original location changes the etags of all parents
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/upload/sub"
@@ -24,6 +25,7 @@ Feature: propagation of etags when restoring a file or folder from trash
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: restoring a file to an other location changes the etags of all parents
     Given using <dav_version> DAV path
@@ -46,6 +48,7 @@ Feature: propagation of etags when restoring a file or folder from trash
       | old         |
       | new         |
 
+
   Scenario Outline: restoring a folder to its original location changes the etags of all parents
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/upload/sub"
@@ -64,6 +67,7 @@ Feature: propagation of etags when restoring a file or folder from trash
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: restoring a folder to an other location changes the etags of all parents
     Given using <dav_version> DAV path
