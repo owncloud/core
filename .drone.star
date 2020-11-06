@@ -1463,7 +1463,7 @@ def acceptance(ctx):
 									if (params['scalityS3'] != False):
 										environment['S3_TYPE'] = 'scality'
 
-								federationDbSuffix = '-federated'
+								federationDbSuffix = 'fed'
 
 								result = {
 									'kind': 'pipeline',
@@ -2211,13 +2211,13 @@ def installServer(phpVersion, db, logLevel = '2', ssl = False, federatedServerNe
 		]
 	}]
 
-def installAndConfigureFederated(ctx, federatedServerVersion, phpVersion, logLevel, protocol, db, dbSuffix = '-federated'):
+def installAndConfigureFederated(ctx, federatedServerVersion, phpVersion, logLevel, protocol, db, dbSuffix = 'fed'):
 	return [
 		installFederated(ctx, federatedServerVersion, db, dbSuffix),
 		configureFederated(phpVersion, logLevel, protocol)
 	]
 
-def installFederated(ctx, federatedServerVersion, db, dbSuffix = '-federated'):
+def installFederated(ctx, federatedServerVersion, db, dbSuffix = 'fed'):
 	host = getDbName(db)
 	dbType = host
 
