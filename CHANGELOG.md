@@ -92,6 +92,7 @@ Summary
 * Enhancement - Add Support for SGI Image Previews: [#37758](https://github.com/owncloud/core/pull/37758)
 * Enhancement - Re-design UI yellow notification bar: [#37875](https://github.com/owncloud/core/pull/37875)
 * Enhancement - Allow getting the share list filtered by share type via API: [#38000](https://github.com/owncloud/core/pull/38000)
+* Enhancement - GetShare API request's "subfiles" parameter allows new interactions: [#38053](https://github.com/owncloud/core/pull/38053)
 * Enhancement - Add new method in the PHP API interface: [#38054](https://github.com/owncloud/core/pull/38054)
 
 Details
@@ -731,6 +732,17 @@ Details
    web UI is using this filtering now.
 
    https://github.com/owncloud/core/pull/38000
+
+* Enhancement - GetShare API request's "subfiles" parameter allows new interactions: [#38053](https://github.com/owncloud/core/pull/38053)
+
+   Previously, the "subfiles" parameter required only the "path" parameter, and the rest of the
+   parameters were ignored.
+
+   Now, the "subfiles" parameter still requires the "path" parameter, but it also interacts with
+   the "reshares" parameter as well as the "share_types" parameter to provide additional
+   filtering capabilities
+
+   https://github.com/owncloud/core/pull/38053
 
 * Enhancement - Add new method in the PHP API interface: [#38054](https://github.com/owncloud/core/pull/38054)
 
