@@ -169,6 +169,8 @@ OC.L10N.register(
     "delete" : "elimina",
     "access control" : "control d'accés",
     "Could not unshare" : "No es pot descompartir",
+    "No users found for {search}" : "No s'ha trobat cap usuari per  {search}",
+    "An error occurred. Please try again" : "Hi ha hagut un error. Siusplau torna-ho a provar",
     "User" : "Usuari",
     "Group" : "Grup",
     "Public Links" : "Enllaços públics",
