@@ -31,6 +31,7 @@ Summary
 * Bugfix - Clean the user's preferences only if they exist during user sync: [#37947](https://github.com/owncloud/core/pull/37947)
 * Bugfix - OCS and Public WebDAV Apis should handle LoginException: [#112](https://github.com/owncloud/brute_force_protection/issues/112)
 * Bugfix - Properly exit and log during error in user sync command: [#37951](https://github.com/owncloud/core/pull/37951)
+* Bugfix - Add a configurable number of retries on unsuccessful mountpoint move: [#37956](https://github.com/owncloud/core/pull/37956)
 * Bugfix - Fix icon alignment when avatars are disabled: [#37964](https://github.com/owncloud/core/pull/37964)
 * Bugfix - Fix file target in the accept share API call: [#37973](https://github.com/owncloud/core/pull/37973)
 * Bugfix - Fix for Google Docs not syncing with error "server reported no size": [#37997](https://github.com/owncloud/core/issues/37997)
@@ -297,6 +298,17 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4218
    https://github.com/owncloud/core/pull/37951
+
+* Bugfix - Add a configurable number of retries on unsuccessful mountpoint move: [#37956](https://github.com/owncloud/core/pull/37956)
+
+   Handling of conflicting mountpoints across different share backends was improved by adding a
+   configurable number of the mountpoint rename attempts. Now when the mountpoint rename has
+   been failed on the user filesystem initialization due to internal backend-specific reasons
+   the used mountpoint name is considered to be taken, a new name is generated and the rename
+   operation could be repeated several times until it either succeeds or rename attempts limit is
+   reached.
+
+   https://github.com/owncloud/core/pull/37956
 
 * Bugfix - Fix icon alignment when avatars are disabled: [#37964](https://github.com/owncloud/core/pull/37964)
 
