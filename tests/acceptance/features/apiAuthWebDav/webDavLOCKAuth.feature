@@ -44,7 +44,7 @@ Feature: LOCK file/folder
     When user "Brian" requests these endpoints with "LOCK" to get property "d:shared" about user "Alice"
       | endpoint                                           |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
-    Then the HTTP status code of responses on all endpoints should be "404"
+    Then the HTTP status code of responses on all endpoints should be "409"
 
   Scenario: send LOCK requests to webDav endpoints using invalid username but correct password
     When user "usero" requests these endpoints with "LOCK" including body "doesnotmatter" using the password of user "Alice"

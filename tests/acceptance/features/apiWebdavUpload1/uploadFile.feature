@@ -97,6 +97,17 @@ Feature: upload file
       | new         | /folder ?2.txt    | file ?2.txt  |
       | new         | /?fi=le&%#2 . txt | # %ab ab?=ed |
 
+  Scenario Outline: attempt to upload a file into a non-existent folder
+    Given using <dav_version> DAV path
+    When user "Alice" uploads file with content "uploaded content" to "non-existent-folder/new-file.txt" using the WebDAV API
+    Then the HTTP status code should be "409"
+    And as "Alice" folder "non-existent-folder" should not exist
+    And as "Alice" file "non-existent-folder/new-file.txt" should not exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
   @issue-ocis-reva-15
   Scenario Outline: Uploading file to path with extension .part should not be possible
     Given using <dav_version> DAV path
