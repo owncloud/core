@@ -7,7 +7,7 @@
         "optimize-autoloader": true,
         "classmap-authoritative": false,
         "platform": {
-            "php": "7.2"
+            "php": "7.3"
         }
     },
     "autoload" : {
@@ -30,8 +30,8 @@
         "roave/security-advisories": "dev-master"
     },
     "require": {
-        "php": ">=7.2",
-        "doctrine/dbal": "^2.10",
+        "php": ">=7.3 || ^8",
+        "doctrine/dbal": "^2.12",
         "phpseclib/phpseclib": "^2.0",
         "opis/closure": "^3.5",
         "bantu/ini-get-wrapper": "v1.0.1",
