@@ -1388,6 +1388,18 @@ $CONFIG = [
 'filesystem_check_changes' => 0,
 
 /**
+ * Define unsuccessful mountpoint rename attempts
+ * This config value avoids infinite loops for seldom cases where a file renaming
+ * conflict between different share backends could occur.
+ * The value defines how many unsuccessful mountpoint rename attempts are allowed.
+ * e.g. target mountpoint name could be claimed as unused by the filesystem but
+ * renaming to this target name will fail due to some other reasons like database
+ * constraints.
+ * Change this value only under supervision of ownCloud support.
+ */
+'filesystem.max_mountpoint_move_attempts' => 10,
+
+/**
  * Define where part files are located
  * By default ownCloud will store the part files created during upload in the
  * same storage as the upload target. Setting this to false will store the part

@@ -39,6 +39,8 @@ use OCP\IUser;
 class MountProviderCollection implements IMountProviderCollection, Emitter {
 	use EmitterTrait;
 
+	const DEFAULT_MOVE_ATTEMPTS_PER_MOUNTPOINT = 10;
+
 	/**
 	 * @var \OCP\Files\Config\IHomeMountProvider[]
 	 */
@@ -85,21 +87,26 @@ class MountProviderCollection implements IMountProviderCollection, Emitter {
 
 		$mergedMounts = [];
 		$takenMountpoints = [];
+		$maxMoveAttempts = $this->getMaxMoveAttempts();
 		foreach ($mounts as $providerMounts) {
 			foreach ($providerMounts as $mount) {
 				$mountpoint = $mount->getMountPoint();
 				if (\in_array($mountpoint, $takenMountpoints)) {
-					$newMountpoint = $this->generateUniqueTarget(
-						$mountpoint,
-						new View('/' . $user->getUID() . '/files'),
-						$takenMountpoints
-					);
-					/* @phan-suppress-next-line PhanUndeclaredMethod */
-					if ($mount->moveMount($newMountpoint)) {
-						$fsMountManager = Filesystem::getMountManager();
-						if ($fsMountManager->findIn($mountpoint)) {
-							$fsMountManager->moveMount($mountpoint, $newMountpoint);
+					for ($i = 0; $i < $maxMoveAttempts; $i++) {
+						$newMountpoint = $this->generateUniqueTarget(
+							$mountpoint,
+							new View('/' . $user->getUID() . '/files'),
+							$takenMountpoints
+						);
+						/* @phan-suppress-next-line PhanUndeclaredMethod */
+						if ($mount->moveMount($newMountpoint) === true) {
+							$fsMountManager = Filesystem::getMountManager();
+							if ($fsMountManager->findIn($mountpoint)) {
+								$fsMountManager->moveMount($mountpoint, $newMountpoint);
+							}
+							break;
 						}
+						$takenMountpoints[] = $newMountpoint;
 					}
 					$takenMountpoints[] = $mount->getMountPoint(); // mount might not have been moved
 				} else {
@@ -184,11 +191,16 @@ class MountProviderCollection implements IMountProviderCollection, Emitter {
 		$dir = $pathinfo['dirname'];
 
 		$i = 2;
-		while ($view->file_exists($path) || \in_array($path, $mountpoints)) {
+		while (\in_array($path, $mountpoints) || $view->file_exists($path)) {
 			$path = Filesystem::normalizePath($dir . '/' . $name . ' ('.$i.')' . $ext);
 			$i++;
 		}
 
 		return $path;
+	}
+
+	protected function getMaxMoveAttempts() {
+		return \OC::$server->getConfig()
+			->getSystemValue('filesystem.max_mountpoint_move_attempts', self::DEFAULT_MOVE_ATTEMPTS_PER_MOUNTPOINT);
 	}
 }
