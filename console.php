@@ -33,17 +33,17 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 \define('OC_CONSOLE', 1);
 
-// Show warning if a PHP version below 7.2.0 is used, this has to happen here
-// because base.php will already use 7.2 syntax.
-if (\version_compare(PHP_VERSION, '7.2.0') === -1) {
-	echo 'This version of ownCloud requires at least PHP 7.2.0'.PHP_EOL;
+// Show warning if a PHP version below 7.3.0 is used, this has to happen here
+// because base.php will already use 7.3 syntax.
+if (\version_compare(PHP_VERSION, '7.3.0') === -1) {
+	echo 'This version of ownCloud requires at least PHP 7.3.0'.PHP_EOL;
 	echo 'You are currently running PHP ' . PHP_VERSION . '. Please update your PHP version.'.PHP_EOL;
 	exit(1);
 }
 
-// Show warning if PHP 7.5 or later is used as ownCloud is not compatible with PHP 7.5
-if (\version_compare(PHP_VERSION, '7.5.0alpha1') !== -1) {
-	echo 'This version of ownCloud is not compatible with PHP 7.5' . PHP_EOL;
+// Show warning if PHP 8.1 or later is used as ownCloud is not compatible with PHP 8.1
+if (\version_compare(PHP_VERSION, '8.1.0alpha1') !== -1) {
+	echo 'This version of ownCloud is not compatible with PHP 8.1' . PHP_EOL;
 	echo 'You are currently running PHP ' . PHP_VERSION . '.' . PHP_EOL;
 	exit(1);
 }
