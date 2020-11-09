@@ -23,6 +23,15 @@ config = {
 	'dav': True,
 
 	'phpunit': {
+		'quick-8.0' : {
+			'phpVersions': [
+				'8.0'
+			],
+			'databases': [
+				'sqlite',
+			],
+			'coverage': False
+		},
 		'allDatabases' : {
 			'phpVersions': [
 				'7.3',
@@ -31,7 +40,6 @@ config = {
 		'reducedDatabases' : {
 			'phpVersions': [
 				'7.4',
-				'8.0'
 			],
 			'databases': [
 				'sqlite',
