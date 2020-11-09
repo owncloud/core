@@ -86,6 +86,8 @@ Summary
 * Change - Update dg/composer-cleaner (v2.1 => v2.2): [#38044](https://github.com/owncloud/core/pull/38044)
 * Change - Update Symfony components to 4.4.16: [#38046](https://github.com/owncloud/core/pull/38046)
 * Change - Update egulias/email-validator (2.1.22 => 2.1.23): [#38061](https://github.com/owncloud/core/pull/38061)
+* Change - Update sabre/vobject (4.3.2 => 4.3.3): [#38091](https://github.com/owncloud/core/pull/38091)
+* Change - Update opis/closure (3.6.0 => 3.6.1): [#38091](https://github.com/owncloud/core/pull/38091)
 * Enhancement - Cleanup encryption config values on disabling encryption: [#35980](https://github.com/owncloud/core/pull/35980)
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
@@ -660,6 +662,14 @@ Details
 * Change - Update egulias/email-validator (2.1.22 => 2.1.23): [#38061](https://github.com/owncloud/core/pull/38061)
 
    https://github.com/owncloud/core/pull/38061
+
+* Change - Update sabre/vobject (4.3.2 => 4.3.3): [#38091](https://github.com/owncloud/core/pull/38091)
+
+   https://github.com/owncloud/core/pull/38091
+
+* Change - Update opis/closure (3.6.0 => 3.6.1): [#38091](https://github.com/owncloud/core/pull/38091)
+
+   https://github.com/owncloud/core/pull/38091
 
 * Enhancement - Cleanup encryption config values on disabling encryption: [#35980](https://github.com/owncloud/core/pull/35980)
 
