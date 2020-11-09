@@ -80,7 +80,7 @@ Feature: upload file using new chunking
     Given user "Alice" has created a new chunking upload with id "chunking-42"
     When using old DAV path
     And user "Alice" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the WebDAV API
-    Then the HTTP status code should be "404"
+    Then the HTTP status code should be "409"
 
   Scenario: New chunked upload MOVE using old DAV path should fail
     Given user "Alice" has created a new chunking upload with id "chunking-42"

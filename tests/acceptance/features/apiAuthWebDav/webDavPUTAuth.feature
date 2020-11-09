@@ -44,7 +44,7 @@ Feature: get file info using PUT
     When user "Brian" requests these endpoints with "PUT" including body "doesnotmatter" about user "Alice"
       | endpoint                                            |
       | /remote.php/dav/files/%username%/PARENTS/parent.txt |
-    Then the HTTP status code of responses on all endpoints should be "404"
+    Then the HTTP status code of responses on all endpoints should be "409"
 
   Scenario: send PUT requests to webDav endpoints using invalid username but correct password
     When user "usero" requests these endpoints with "PUT" including body "doesnotmatter" using the password of user "Alice"
