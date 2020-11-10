@@ -26,6 +26,7 @@ Feature: upload file
       | old         | /s,a,m,p,l,e.txt  |
       | new         | /s,a,m,p,l,e.txt  |
 
+
   Scenario Outline: upload a file and check download content
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to <file_name> using the WebDAV API
@@ -52,6 +53,7 @@ Feature: upload file
       | new         | " ?fi=le&%#2 . txt" |
       | new         | " # %ab ab?=ed "    |
 
+
   Scenario Outline: upload a file with comma in the filename and check download content
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "file with comma" to <file_name> using the WebDAV API
@@ -64,6 +66,7 @@ Feature: upload file
       | new         | "sample,1.txt" |
       | new         | ",,,.txt"      |
       | new         | ",,,.,"        |
+
 
   Scenario Outline: upload a file into a folder and check download content
     Given using <dav_version> DAV path
@@ -97,6 +100,7 @@ Feature: upload file
       | new         | /folder ?2.txt    | file ?2.txt  |
       | new         | /?fi=le&%#2 . txt | # %ab ab?=ed |
 
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario Outline: attempt to upload a file into a non-existent folder
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to "non-existent-folder/new-file.txt" using the WebDAV API
@@ -122,6 +126,7 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: upload a file into a folder with dots in the path and check download content
     Given using <dav_version> DAV path
