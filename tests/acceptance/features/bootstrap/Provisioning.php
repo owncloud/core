@@ -1022,7 +1022,7 @@ trait Provisioning {
 			$this->manuallyAddSkeletonFiles($usersAttributes);
 		}
 
-		if ($initialize) {
+		if ($initialize && !OcisHelper::isTestingOnOcis()) {
 			// We need to initialize each user using the individual authentication of each user.
 			// That is not possible in Guzzle6 batch mode. So we do it with normal requests in serial.
 			$this->initializeUsers($users);
@@ -2606,8 +2606,15 @@ trait Provisioning {
 		// the URL see https://github.com/owncloud/core/issues/36822
 		$user = $this->getActualUsername($user);
 		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$requestingUser = $this->getActualUsername($user);
-			$requestingPassword = $this->getPasswordForUser($requestingUser);
+			// In OCIS an intermittend issue restricts users to list their own account
+			// So use admin account to list the user
+			// https://github.com/owncloud/ocis/issues/820
+			// Uncomment these lines once the issue is fixed
+
+			// $requestingUser = $this->getActualUsername($user);
+			// $requestingPassword = $this->getPasswordForUser($requestingUser);
+			$requestingUser = 'moss';
+			$requestingPassword = 'vista';
 		} else {
 			$requestingUser = $this->getAdminUsername();
 			$requestingPassword = $this->getAdminPassword();
