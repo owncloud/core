@@ -1,0 +1,10 @@
+Enhancement: Fix expiring a wrong share entry problem
+
+Setting an app value via the occ config:app:set command to false may not result to a negation evaluation due the value will be stored in the database as 'false' type string.
+As this is a non-zero value it may evaluate to true.
+To come over this problem we will coerce the value:
+true => 1
+false => 0
+
+https://github.com/owncloud/core/issues/37697
+https://github.com/owncloud/core/pull/38099

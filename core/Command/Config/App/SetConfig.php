@@ -80,10 +80,27 @@ class SetConfig extends Base {
 			return 1;
 		}
 
-		$configValue = $input->getOption('value');
+		$configValue = $this->coerceValue($input->getOption('value'));
 		$this->config->setAppValue($appName, $configName, $configValue);
 
 		$output->writeln('<info>Config value ' . $configName . ' for app ' . $appName . ' set to ' . $configValue . '</info>');
 		return 0;
+	}
+
+	/**
+	 * @param $value string
+	 *
+	 * @return int|string
+	 */
+	protected function coerceValue(string $value) {
+		if ($value === 'false') {
+			return 0;
+		}
+
+		if ($value === 'true') {
+			return 1;
+		}
+
+		return $value;
 	}
 }
