@@ -2606,15 +2606,17 @@ trait Provisioning {
 		// the URL see https://github.com/owncloud/core/issues/36822
 		$user = $this->getActualUsername($user);
 		if (OcisHelper::isTestingOnOcisOrReva()) {
-			// In OCIS an intermittend issue restricts users to list their own account
+			// In OCIS an intermittent issue restricts users to list their own account
 			// So use admin account to list the user
 			// https://github.com/owncloud/ocis/issues/820
-			// Uncomment these lines once the issue is fixed
-
-			// $requestingUser = $this->getActualUsername($user);
-			// $requestingPassword = $this->getPasswordForUser($requestingUser);
-			$requestingUser = 'moss';
-			$requestingPassword = 'vista';
+			// The special code can be reverted once the issue is fixed
+			if (OcisHelper::isTestingOnOcis()) {
+				$requestingUser = 'moss';
+				$requestingPassword = 'vista';
+			} else {
+				$requestingUser = $this->getActualUsername($user);
+				$requestingPassword = $this->getPasswordForUser($requestingUser);
+			}
 		} else {
 			$requestingUser = $this->getAdminUsername();
 			$requestingPassword = $this->getAdminPassword();
