@@ -491,7 +491,7 @@ function run_behat_tests() {
 				echo "${FAILED_SCENARIO_PATHS}" | grep ${SUITE_SCENARIO}$ > /dev/null
 				if [ $? -ne 0 ]
 				then
-					echo "Error: Scenario ${SUITE_SCENARIO} was expected to fail but did not fail."
+					echo "Info: Scenario ${SUITE_SCENARIO} was expected to fail but did not fail."
 					UNEXPECTED_PASSED_SCENARIOS+=("${SUITE_SCENARIO}")
 				fi
 			done < ${EXPECTED_FAILURES_FILE}
@@ -1249,25 +1249,10 @@ else
 	UNEXPECTED_BEHAT_EXIT_STATUS=false
 fi
 
-if [ "${UNEXPECTED_FAILURE}" = false ] && [ "${UNEXPECTED_SUCCESS}" = false ] && [ "${UNEXPECTED_BEHAT_EXIT_STATUS}" = false ]
-then
-	FINAL_EXIT_STATUS=0
-else
-	FINAL_EXIT_STATUS=1
-fi
-
-if [ -n "${EXPECTED_FAILURES_FILE}" ]
-then
-	echo "runsh: Exit code after checking expected failures: ${FINAL_EXIT_STATUS}"
-fi
-
-if [ "${UNEXPECTED_FAILURE}" = true ]
-then
-  tput setaf 3; echo "runsh: Total unexpected failed scenarios throughout the test run:"
-  tput setaf 1; printf "%s\n" "${UNEXPECTED_FAILED_SCENARIOS[@]}"
-else
-  tput setaf 2; echo "runsh: There were no unexpected failures."
-fi
+# If we got some unexpected success, and we only ran a single feature or scenario
+# then the fact that some expected failures did not happen might be because those
+# scenarios were never even run.
+# Filter the UNEXPECTED_PASSED_SCENARIOS to remove scenarios that were not run.
 if [ "${UNEXPECTED_SUCCESS}" = true ]
 then
   ACTUAL_UNEXPECTED_PASS=()
@@ -1297,6 +1282,26 @@ then
   then
     UNEXPECTED_SUCCESS=false
   fi
+fi
+
+if [ "${UNEXPECTED_FAILURE}" = false ] && [ "${UNEXPECTED_SUCCESS}" = false ] && [ "${UNEXPECTED_BEHAT_EXIT_STATUS}" = false ]
+then
+	FINAL_EXIT_STATUS=0
+else
+	FINAL_EXIT_STATUS=1
+fi
+
+if [ -n "${EXPECTED_FAILURES_FILE}" ]
+then
+	echo "runsh: Exit code after checking expected failures: ${FINAL_EXIT_STATUS}"
+fi
+
+if [ "${UNEXPECTED_FAILURE}" = true ]
+then
+  tput setaf 3; echo "runsh: Total unexpected failed scenarios throughout the test run:"
+  tput setaf 1; printf "%s\n" "${UNEXPECTED_FAILED_SCENARIOS[@]}"
+else
+  tput setaf 2; echo "runsh: There were no unexpected failures."
 fi
 
 if [ "${UNEXPECTED_SUCCESS}" = true ]
