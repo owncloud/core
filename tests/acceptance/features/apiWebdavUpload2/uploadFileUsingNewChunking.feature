@@ -9,6 +9,7 @@ Feature: upload file using new chunking
     And using new DAV path
     And user "Alice" has been created with default attributes and skeleton files
 
+
   Scenario: Upload chunked file asc with new chunking
     Given the owncloud log level has been set to debug
     And the owncloud log has been cleared
@@ -26,6 +27,7 @@ Feature: upload file using new chunking
       | app |
       | dav |
 
+
   Scenario: Upload chunked file desc with new chunking
     Given the owncloud log level has been set to debug
     And the owncloud log has been cleared
@@ -40,6 +42,7 @@ Feature: upload file using new chunking
       | app |
       | dav |
 
+
   Scenario: Upload chunked file random with new chunking
     Given the owncloud log level has been set to debug
     And the owncloud log has been cleared
@@ -53,6 +56,7 @@ Feature: upload file using new chunking
     And the log file should not contain any log-entries containing these attributes:
       | app |
       | dav |
+
 
   Scenario: Checking file id after a move overwrite using new chunking endpoint
     Given the owncloud log level has been set to debug
@@ -71,16 +75,19 @@ Feature: upload file using new chunking
       | app |
       | dav |
 
+
   Scenario: New chunked upload MKDIR using old DAV path should fail
     Given using old DAV path
     When user "Alice" creates a new chunking upload with id "chunking-42" using the WebDAV API
     Then the HTTP status code should be "409"
 
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario: New chunked upload PUT using old DAV path should fail
     Given user "Alice" has created a new chunking upload with id "chunking-42"
     When using old DAV path
     And user "Alice" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the WebDAV API
     Then the HTTP status code should be "409"
+
 
   Scenario: New chunked upload MOVE using old DAV path should fail
     Given user "Alice" has created a new chunking upload with id "chunking-42"
@@ -91,9 +98,11 @@ Feature: upload file using new chunking
     And user "Alice" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" using the WebDAV API
     Then the HTTP status code should be "404"
 
+
   Scenario: Upload to new dav path using old way should fail
     When user "Alice" uploads chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt" using the WebDAV API
     Then the HTTP status code should be "503"
+
 
   Scenario: Upload file via new chunking endpoint with wrong size header
     Given user "Alice" has created a new chunking upload with id "chunking-42"
@@ -102,6 +111,7 @@ Feature: upload file using new chunking
     And user "Alice" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
     When user "Alice" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" with size 5 using the WebDAV API
     Then the HTTP status code should be "400"
+
 
   Scenario: Upload file via new chunking endpoint with correct size header
     Given the owncloud log level has been set to debug
@@ -135,6 +145,7 @@ Feature: upload file using new chunking
       | 0         |
       | &#?       |
       | TIÄFÜ     |
+
 
   # This scenario does extra checks with the log level set to debug.
   # It does not run in smoke test runs. (see comments in scenario above)
