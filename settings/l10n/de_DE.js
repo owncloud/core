@@ -353,7 +353,7 @@ OC.L10N.register(
     "Resend activation link" : "Aktivierungslink erneut versenden.",
     "New Password" : "Neues Passwort",
     "Confirm Password" : "Passwort bestätigen",
-    "Please set your password" : "Bitte setzen Sie Ihr Passwort",
+    "Please set your password" : "Passwort setzen",
     "Personal" : "Persönlich",
     "Admin" : "Administrator",
     "Currently no settings are available in this category" : "Momentan sind keine Einstellungen in dieser Kategorie verfügbar",
