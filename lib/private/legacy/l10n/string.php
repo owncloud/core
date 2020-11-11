@@ -66,6 +66,12 @@ class OC_L10N_String implements JsonSerializable {
 
 		// Replace %n first (won't interfere with vsprintf)
 		$text = \str_replace('%n', $this->count, $text);
+
+		// Check if enough parameters are given for vsprintf
+		if (\substr_count($text, '%') != \count($this->parameters)) {
+			return $text;
+		}
+
 		return \vsprintf($text, $this->parameters);
 	}
 
