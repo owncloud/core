@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @toImplementOnOCIS @issue-ocis-reva-41
+@api @files_sharing-app-required @issue-ocis-reva-41
 Feature: capabilities
 
   Background:

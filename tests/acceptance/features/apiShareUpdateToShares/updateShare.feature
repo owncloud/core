@@ -7,7 +7,7 @@ Feature: sharing
     And using OCS API version "1"
     And user "Alice" has been created with default attributes and skeleton files
 
-  @smokeTest @toImplementOnOCIS @issue-ocis-reva-243
+  @smokeTest @issue-ocis-reva-243
   Scenario Outline: Allow modification of reshare
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -29,7 +29,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @toImplementOnOCIS @issue-ocis-reva-194 @issue-ocis-reva-243
+  @issue-ocis-reva-194 @issue-ocis-reva-243
   Scenario Outline: keep group permissions in sync
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and skeleton files
@@ -61,7 +61,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @toImplementOnOCIS @issue-ocis-reva-194 @issue-ocis-reva-243
+  @issue-ocis-reva-194 @issue-ocis-reva-243
   Scenario Outline: Cannot set permissions to zero
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -75,7 +75,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 400              |
 
-  @toImplementOnOCIS @issue-ocis-reva-243
+  @issue-ocis-reva-243
   Scenario Outline: Cannot update a share of a file with a user to have only create and/or delete permission
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -96,7 +96,7 @@ Feature: sharing
       | 1               | 200              | create,delete |
       | 2               | 400              | create,delete |
 
-  @toImplementOnOCIS @issue-ocis-reva-194 @issue-ocis-reva-243
+  @issue-ocis-reva-194 @issue-ocis-reva-243
   Scenario Outline: Cannot update a share of a file with a group to have only create and/or delete permission
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -119,7 +119,7 @@ Feature: sharing
       | 1               | 200              | create,delete |
       | 2               | 400              | create,delete |
 
-  @skipOnFilesClassifier @issue-files-classifier-291 @toImplementOnOCIS @toFixOnOCIS @issue-ocis-reva-243
+  @skipOnFilesClassifier @issue-files-classifier-291 @toFixOnOCIS @issue-ocis-reva-243
   Scenario: Share ownership change after moving a shared file outside of an outer share
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -151,7 +151,7 @@ Feature: sharing
     And as "Alice" folder "/Shares/folder1/folder2" should not exist
     And as "Carol" folder "/Shares/folder2" should exist
 
-  @toImplementOnOCIS @toFixOnOCIS @issue-ocis-reva-243
+  @toFixOnOCIS @issue-ocis-reva-243
   Scenario: Share ownership change after moving a shared file to another share
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -183,7 +183,7 @@ Feature: sharing
     And as "Alice" folder "/Alice-folder/folder2" should not exist
     And as "Carol" folder "/Carol-folder/folder2" should exist
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @toImplementOnOCIS @toFixOnOCIS @toFixOnOcV10 @issue-ocis-reva-243 @issue-ocis-reva-349 @issue-ocis-reva-350 @issue-ocis-reva-352 @issue-37653
+  @skipOnOcV10.3 @skipOnOcV10.4 @toFixOnOCIS @toFixOnOcV10 @issue-ocis-reva-243 @issue-ocis-reva-349 @issue-ocis-reva-350 @issue-ocis-reva-352 @issue-37653
   #after fixing all the issues merge this scenario with the one below
   Scenario Outline: API responds with a full set of parameters when owner changes the permission of a share
     Given using OCS API version "<ocs_api_version>"
@@ -230,7 +230,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @toImplementOnOCIS @issue-ocis-reva-194 @issue-ocis-reva-243
+  @issue-ocis-reva-194 @issue-ocis-reva-243
   Scenario Outline: Increasing permissions is allowed for owner
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -252,7 +252,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @toImplementOnOCIS @issue-ocis-reva-194 @issue-ocis-reva-243
+  @issue-ocis-reva-194 @issue-ocis-reva-243
   Scenario Outline: Forbid sharing with groups
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -265,7 +265,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 404              |
 
-  @toImplementOnOCIS @issue-ocis-reva-194 @issue-ocis-reva-41
+  @issue-ocis-reva-194 @issue-ocis-reva-41
   Scenario Outline: Editing share permission of existing share is forbidden when sharing with groups is forbidden
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -290,7 +290,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 400              |
 
-  @toImplementOnOCIS @issue-ocis-reva-194 @issue-ocis-reva-41
+  @issue-ocis-reva-194 @issue-ocis-reva-41
   Scenario Outline: Deleting group share is allowed when sharing with groups is forbidden
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -306,7 +306,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @toImplementOnOCIS @issue-ocis-reva-194 @issue-ocis-reva-41
+  @issue-ocis-reva-194 @issue-ocis-reva-41
   Scenario Outline: user can update the role in an existing share after the system maximum expiry date has been reduced
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
@@ -334,7 +334,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcV10 @issue-37217 @toImplementOnOCIS @issue-ocis-reva-194 @issue-ocis-reva-41
+  @skipOnOcV10 @issue-37217 @issue-ocis-reva-194 @issue-ocis-reva-41
   Scenario Outline: user cannot concurrently update the role and date in an existing share after the system maximum expiry date has been reduced
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"

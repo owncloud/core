@@ -406,7 +406,7 @@ Feature: sharing
       | /Shares/randomfile.txt |
     And the content of file "/Shares/randomfile.txt" for user "Brian" should be "Random data"
 
-  @issue-ocis-reva-34 @toImplementOnOCIS
+  @issue-ocis-reva-34
   Scenario Outline: Share of folder to a group with emoji in the name
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
