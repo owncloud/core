@@ -73,14 +73,51 @@ $externalManager = new \OCA\Files_Sharing\External\Manager(
 
 // check for ssl cert
 if (\substr($remote, 0, 5) === 'https') {
+	// check allowing redirects
 	try {
 		\OC::$server->getHTTPClientService()->newClient()->get($remote, [
 			'timeout' => 10,
 			'connect_timeout' => 10,
+			'allow_redirects' => [
+				'max'             => 10,
+				'strict'          => false,
+				'referer'         => false,
+				'protocols'       => ['https'],
+				'track_redirects' => false
+			]
 		])->getBody();
+		$sslCertOk = true;
+	} catch (\GuzzleHttp\Exception\TooManyRedirectsException $e) {
+		// we got too many redirects as we allowed redirects but server cannot handle it
+		$sslCertOk = false;
 	} catch (\Exception $e) {
+		\OCP\Util::writeLog(
+			'files_sharing',
+			'Check for SSL Certificate failed: ' . \get_class($e) . ': ' . $e->getMessage(),
+			\OCP\Util::DEBUG
+		);
 		\OCP\JSON::error(['data' => ['message' => $l->t('Invalid or untrusted SSL certificate')]]);
 		exit;
+	}
+
+	// ssl cert check with redirects did not succeed, try disallowing redirects
+	if (!$sslCertOk) {
+		try {
+			\OC::$server->getHTTPClientService()->newClient()->get($remote, [
+				'timeout' => 10,
+				'connect_timeout' => 10,
+				'allow_redirects' => false
+			])->getBody();
+			$sslCertOk = true;
+		} catch (\Exception $e) {
+			\OCP\Util::writeLog(
+				'files_sharing',
+				'Check for SSL Certificate failed: ' . \get_class($e) . ': ' . $e->getMessage(),
+				\OCP\Util::DEBUG
+			);
+			\OCP\JSON::error(['data' => ['message' => $l->t('Invalid or untrusted SSL certificate')]]);
+			exit;
+		}
 	}
 }
 
