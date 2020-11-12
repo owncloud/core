@@ -1,0 +1,5 @@
+Bugfix: Fix request token check for ocs requests
+
+Since the OCS_APIREQUEST header was removed we needed to either implement the header again or implement another way to properly check cookie authenticated ocs requests.
+
+https://github.com/owncloud/core/pull/38019

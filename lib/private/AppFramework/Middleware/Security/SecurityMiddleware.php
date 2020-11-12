@@ -141,7 +141,7 @@ class SecurityMiddleware extends Middleware {
 		// CSRF check - also registers the CSRF token since the session may be closed later
 		Util::callRegister();
 		if (!$this->reflector->hasAnnotation('NoCSRFRequired')) {
-			if (!$this->request->passesCSRFCheck()) {
+			if (!$this->request->passesCSRFCheck() && $this->request->getHeader("Authorization") === null) {
 				throw new CrossSiteRequestForgeryException();
 			}
 		}
