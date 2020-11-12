@@ -250,7 +250,6 @@ class Share20OcsController extends OCSController {
 	/**
 	 * Get a specific share by id
 	 *
-	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 *
 	 * @param string $id
@@ -282,7 +281,6 @@ class Share20OcsController extends OCSController {
 	/**
 	 * Delete a share
 	 *
-	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 *
 	 * @param string $id
@@ -321,7 +319,6 @@ class Share20OcsController extends OCSController {
 	}
 
 	/**
-	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 *
 	 * @return Result
@@ -616,7 +613,6 @@ class Share20OcsController extends OCSController {
 	 * Invalid share types will be ignored. If only invalid share types are requested,
 	 * the function will return an empty list.
 	 *
-	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 *
 	 * - Get shares by the current user
@@ -755,7 +751,6 @@ class Share20OcsController extends OCSController {
 	}
 
 	/**
-	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 *
 	 * @param int $id
@@ -909,7 +904,6 @@ class Share20OcsController extends OCSController {
 	}
 
 	/**
-	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 *
 	 * @param int $id
@@ -920,7 +914,6 @@ class Share20OcsController extends OCSController {
 	}
 
 	/**
-	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 *
 	 * @param int $id
