@@ -39,6 +39,7 @@ Summary
 * Bugfix - Fix request token check for ocs requests: [#38019](https://github.com/owncloud/core/pull/38019)
 * Bugfix - Fix logging when loading an apps fails: [#38037](https://github.com/owncloud/core/pull/38037)
 * Bugfix - Properly handle StorageNotAvailableException in share external: [#38042](https://github.com/owncloud/core/pull/38042)
+* Bugfix - Avoid retrieving user root iteratively in share controller: [#4107](https://github.com/owncloud/enterprise/issues/4107)
 * Bugfix - Pick the translations from templates included from other apps: [#38072](https://github.com/owncloud/core/pull/38072)
 * Bugfix - Override browser Accept-Language header in ajax requests: [#38073](https://github.com/owncloud/core/pull/38073)
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
@@ -374,6 +375,15 @@ Details
    https://github.com/owncloud/enterprise/issues/4117
    https://github.com/owncloud/enterprise/issues/2721
    https://github.com/owncloud/core/pull/38042
+
+* Bugfix - Avoid retrieving user root iteratively in share controller: [#4107](https://github.com/owncloud/enterprise/issues/4107)
+
+   There was a performance problem that with many shares, the "share tab" was slow to display
+   entries. Now the performance of displaying that tab should be better as we avoid retrieving the
+   same information for all the shares
+
+   https://github.com/owncloud/enterprise/issues/4107
+   https://github.com/owncloud/core/pull/38055
 
 * Bugfix - Pick the translations from templates included from other apps: [#38072](https://github.com/owncloud/core/pull/38072)
 
