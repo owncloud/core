@@ -1,7 +1,7 @@
 Bugfix: adding public link - check for ssl for both with and without redirects
 
 When adding public link to owncloud, checking of SSL certificate is performed.
-However when remote servers cannot handle redirects ToManyRedirects
+However when remote servers cannot handle redirects TooManyRedirects
 error was thrown in this case. Now, we check SSL certificate with and without
 redirects allowed.
 
