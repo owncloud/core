@@ -1,0 +1,9 @@
+Bugfix: SSL check when adding a public link to your ownCloud
+
+When adding a public link to your owncloud, a SSL certificate check is performed.
+Prior to this fix, the check was performed on the server's base URL, not on the
+actual share URL. This could cause some problems, for example never ending redirect
+loops. So now the SSL check is performed on the share URL itself.
+
+https://github.com/owncloud/enterprise/issues/4241
+https://github.com/owncloud/core/pull/38107
