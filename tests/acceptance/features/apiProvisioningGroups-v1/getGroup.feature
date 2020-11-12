@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS
+@api @provisioning_api-app-required @skipOnLDAP
 Feature: get group
   As an admin
   I want to be able to get group details
@@ -36,6 +36,7 @@ Feature: get group
     Then the OCS status code should be "998"
     And the HTTP status code should be "200"
 
+  @toImplementOnOCIS
   Scenario Outline: admin tries to get users in a group but using wrong case of the group name
     Given group "<group_id1>" has been created
     When the administrator gets all the members of group "<group_id2>" using the provisioning API

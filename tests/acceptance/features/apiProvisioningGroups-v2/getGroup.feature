@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS
+@api @provisioning_api-app-required @skipOnLDAP
 Feature: get group
   As an admin
   I want to be able to get group details
@@ -9,8 +9,10 @@ Feature: get group
 
   @smokeTest
   Scenario: admin gets users in the group
-    Given user "brand-new-user" has been created with default attributes and skeleton files
-    And user "123" has been created with default attributes and skeleton files
+    Given these users have been created with default attributes and skeleton files:
+      | username       |
+      | brand-new-user |
+      | 123            |
     And group "brand-new-group" has been created
     And user "brand-new-user" has been added to group "brand-new-group"
     And user "123" has been added to group "brand-new-group"
@@ -34,6 +36,7 @@ Feature: get group
     Then the OCS status code should be "404"
     And the HTTP status code should be "404"
 
+  @toImplementOnOCIS
   Scenario Outline: admin tries to get users in a group but using wrong case of the group name
     Given group "<group_id1>" has been created
     When the administrator gets all the members of group "<group_id2>" using the provisioning API

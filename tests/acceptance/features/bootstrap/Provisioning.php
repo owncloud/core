@@ -50,13 +50,6 @@ trait Provisioning {
 	private $ou = "TestGroups";
 
 	/**
-	 * gidnumber 3000 is gid of default group "users"
-	 *
-	 * @var int
-	 */
-	private $baseEosGidNumber = 3000;
-
-	/**
 	 * list of users that were created on the remote server during test runs
 	 * key is the lowercase username, value is an array of user attributes
 	 *
@@ -92,14 +85,6 @@ trait Provisioning {
 		"quota definition", "quota free", "quota user", "quota total", "quota relative"
 	];
 
-	/**
-	 * @param int $offset
-	 *
-	 * @return int
-	 */
-	private function getNewEosUidNumber($offset = 0) {
-		return 40040 + \count($this->getCreatedUsers()) + $offset;
-	}
 	/**
 	 * Check if this is the admin group. That group is always a local group in
 	 * ownCloud10, even if other groups come from LDAP.
@@ -951,8 +936,6 @@ trait Provisioning {
 					} else {
 						$attributesToCreateUser['email'] = $userAttributes['email'];
 					}
-					$attributesToCreateUser['gidnumber'] = $this->baseEosGidNumber;
-					$attributesToCreateUser['uidnumber'] = $this->getNewEosUidNumber($i);
 				}
 				// Create a OCS request for creating the user. The request is not sent to the server yet.
 				$request = OcsApiHelper::createOcsRequest(
@@ -966,6 +949,7 @@ trait Provisioning {
 			}
 		}
 
+		$exceptionToThrow = null;
 		if (!$useLdap) {
 			$results = HttpRequestHelper::sendBatchRequest($requests, $client);
 			// Retrieve all failures.
@@ -976,7 +960,7 @@ trait Provisioning {
 					$ocsStatusCode = (string) $responseXml->xpath("/ocs/meta/statuscode")[0];
 					$httpStatusCode = $e->getResponse()->getStatusCode();
 					$reasonPhrase = $e->getResponse()->getReasonPhrase();
-					throw new Exception(
+					$exceptionToThrow = new Exception(
 						__METHOD__ . "Unexpected failure when creating a user: HTTP status $httpStatusCode HTTP reason $reasonPhrase OCS status $ocsStatusCode OCS message $messageText"
 					);
 				}
@@ -1012,6 +996,10 @@ trait Provisioning {
 				$this->getAdminUsername(),
 				$this->getAdminPassword()
 			);
+		}
+
+		if (isset($exceptionToThrow)) {
+			throw $exceptionToThrow;
 		}
 
 		// If the user should have skeleton files, and we are testing on OCIS
@@ -1272,8 +1260,6 @@ trait Provisioning {
 			}
 			$userAttributes["username"] = $username;
 			$userAttributes["email"] = $email;
-			$userAttributes['uidnumber'] = $this->getNewEosUidNumber();
-			$userAttributes['gidnumber'] = $this->baseEosGidNumber;
 		}
 
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
@@ -1313,9 +1299,7 @@ trait Provisioning {
 					['userid', $user],
 					['password', $password],
 					['username', $user],
-					['email', $email],
-					['uidnumber', $this->getNewEosUidNumber()],
-					['gidnumber', $this->baseEosGidNumber],
+					['email', $email]
 				]
 			);
 		} else {
@@ -1365,8 +1349,6 @@ trait Provisioning {
 					['username', $user],
 					['email', $email],
 					['groups[]', $group],
-					['uidnumber', $this->getNewEosUidNumber()],
-					['gidnumber', $this->baseEosGidNumber],
 				]
 			);
 		} else {
@@ -2587,6 +2569,7 @@ trait Provisioning {
 		if ($this->theGroupShouldBeAbleToBeDeleted($group)
 			&& $this->groupExists($group)
 		) {
+			$this->deleteTheGroupUsingTheProvisioningApi($group);
 			\error_log(
 				"INFORMATION: tried to delete group '$group'" .
 				" at the end of the scenario but it seems to still exist. " .

@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS
+@api @provisioning_api-app-required @skipOnLDAP
 Feature: get user groups
   As an admin
   I want to be able to get groups
@@ -7,7 +7,7 @@ Feature: get user groups
   Background:
     Given using OCS API version "2"
 
-  @smokeTest
+  @smokeTest @toImplementOnOCIS
   Scenario: admin gets groups of an user
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "unused-group" has been created
@@ -81,3 +81,50 @@ Feature: get user groups
     Then the OCS status code should be "401"
     And the HTTP status code should be "401"
     And the API should not return any data
+
+  @notToImplementOnOCIS
+  Scenario: admin gets groups of an user who is not in any groups
+    Given user "brand-new-user" has been created with default attributes and skeleton files
+    And group "unused-group" has been created
+    When the administrator gets all the groups of user "brand-new-user" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the list of groups returned by the API should be empty
+
+  @smokeTest @skipOnOcV10
+  Scenario: admin gets groups of an user
+    Given user "brand-new-user" has been created with default attributes and skeleton files
+    And group "unused-group" has been created
+    And group "brand-new-group" has been created
+    And group "0" has been created
+    And group "Admin & Finance (NP)" has been created
+    And group "admin:Pokhara@Nepal" has been created
+    And group "नेपाली" has been created
+    And group "😅 😆" has been created
+    And user "brand-new-user" has been added to group "brand-new-group"
+    And user "brand-new-user" has been added to group "0"
+    And user "brand-new-user" has been added to group "Admin & Finance (NP)"
+    And user "brand-new-user" has been added to group "admin:Pokhara@Nepal"
+    And user "brand-new-user" has been added to group "नेपाली"
+    And user "brand-new-user" has been added to group "😅 😆"
+    When the administrator gets all the groups of user "brand-new-user" using the provisioning API
+    Then the groups returned by the API should be
+      | brand-new-group      |
+      | 0                    |
+      | Admin & Finance (NP) |
+      | admin:Pokhara@Nepal  |
+      | नेपाली               |
+      | 😅 😆                |
+      | users                |
+    And the OCS status code should be "200"
+    And the HTTP status code should be "200"
+
+  @notToImplementOnOCIS @skipOnOcV10
+  Scenario: admin gets groups of an user who is not in any groups
+    Given user "brand-new-user" has been created with default attributes and skeleton files
+    And group "unused-group" has been created
+    When the administrator gets all the groups of user "brand-new-user" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    Then the groups returned by the API should be
+      | users |

@@ -7,7 +7,7 @@ Feature: sharing
     And using OCS API version "1"
     And user "Alice" has been created with default attributes and skeleton files
 
-  @smokeTest @issue-ocis-reva-243
+  @smokeTest
   Scenario Outline: Allow modification of reshare
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:

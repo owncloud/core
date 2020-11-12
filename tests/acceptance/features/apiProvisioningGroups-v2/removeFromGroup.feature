@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS
+@api @provisioning_api-app-required @skipOnLDAP
 Feature: remove a user from a group
   As an admin
   I want to be able to remove a user from a group
@@ -39,16 +39,28 @@ Feature: remove a user from a group
       | Finance (NP)        | Space and brackets                      |
       | Admin&Finance       | Ampersand                               |
       | admin:Pokhara@Nepal | Colon and @                             |
-      | maintenance#123     | Hash sign                               |
       | maint+eng           | Plus sign                               |
       | $x<=>[y*z^2]!       | Maths symbols                           |
       | Mgmt\Middle         | Backslash                               |
+      | 😁 😂               | emoji                                   |
+
+  @toImplementOnOCIS
+  Scenario Outline: admin removes a user from a group
+    Given user "brand-new-user" has been created with default attributes and skeleton files
+    And group "<group_id>" has been created
+    And user "brand-new-user" has been added to group "<group_id>"
+    When the administrator removes user "brand-new-user" from group "<group_id>" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And user "brand-new-user" should not belong to group "<group_id>"
+    Examples:
+      | group_id            | comment                                 |
+      | maintenance#123     | Hash sign                               |
       | 50%pass             | Percent sign (special escaping happens) |
       | 50%25=0             | %25 literal looks like an escaped "%"   |
       | 50%2Eagle           | %2E literal looks like an escaped "."   |
       | 50%2Fix             | %2F literal looks like an escaped slash |
       | staff?group         | Question mark                           |
-      | 😅 😆               | emoji                                   |
 
   @issue-31015 @skipOnOcV10
   Scenario Outline: admin removes a user from a group that has a forward-slash in the group name
@@ -63,9 +75,9 @@ Feature: remove a user from a group
       | group_id         | comment                            |
       | Mgmt/Sydney      | Slash (special escaping happens)   |
       | Mgmt//NSW/Sydney | Multiple slash                     |
-      | var/../etc       | using slash-dot-dot                |
       | priv/subadmins/1 | Subadmins mentioned not at the end |
 
+  @toImplementOnOCIS
   Scenario Outline: remove a user from a group using mixes of upper and lower case in user and group names
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "<group_id1>" has been created
@@ -135,3 +147,17 @@ Feature: remove a user from a group
     Then the OCS status code should be "401"
     And the HTTP status code should be "401"
     And user "another-new-user" should belong to group "brand-new-group"
+
+  # merge this with scenario on line 62 once the issue is fixed
+  @issue-31015 @skipOnOcV10 @toImplementOnOCIS
+  Scenario Outline: admin removes a user from a group that has a forward-slash in the group name
+    Given user "brand-new-user" has been created with default attributes and skeleton files
+    And group "<group_id>" has been created
+    And user "brand-new-user" has been added to group "<group_id>"
+    When the administrator removes user "brand-new-user" from group "<group_id>" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And user "brand-new-user" should not belong to group "<group_id>"
+    Examples:
+      | group_id         | comment                            |
+      | var/../etc       | using slash-dot-dot                |
