@@ -36,6 +36,7 @@ Summary
 * Bugfix - Fix file target in the accept share API call: [#37973](https://github.com/owncloud/core/pull/37973)
 * Bugfix - Fix for Google Docs not syncing with error "server reported no size": [#37997](https://github.com/owncloud/core/issues/37997)
 * Bugfix - Do not emit "share.failedpasswordcheck" events for authenticated links: [#138](https://github.com/owncloud/brute_force_protection/issues/138)
+* Bugfix - Fix request token check for ocs requests: [#38019](https://github.com/owncloud/core/pull/38019)
 * Bugfix - Fix logging when loading an apps fails: [#38037](https://github.com/owncloud/core/pull/38037)
 * Bugfix - Properly handle StorageNotAvailableException in share external: [#38042](https://github.com/owncloud/core/pull/38042)
 * Bugfix - Pick the translations from templates included from other apps: [#38072](https://github.com/owncloud/core/pull/38072)
@@ -349,6 +350,13 @@ Details
 
    https://github.com/owncloud/brute_force_protection/issues/138
    https://github.com/owncloud/core/pull/38016
+
+* Bugfix - Fix request token check for ocs requests: [#38019](https://github.com/owncloud/core/pull/38019)
+
+   Since the OCS_APIREQUEST header was removed we needed to either implement the header again or
+   implement another way to properly check cookie authenticated ocs requests.
+
+   https://github.com/owncloud/core/pull/38019
 
 * Bugfix - Fix logging when loading an apps fails: [#38037](https://github.com/owncloud/core/pull/38037)
 
