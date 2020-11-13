@@ -385,7 +385,7 @@ Feature: sharing
     #Then user "brian" should see the following elements
     #  | /Shares/randomfile.txt |
     #And the content of file "randomfile.txt" for user "brian" should be "Random data"
-    Then user "brian" should not see the following elements if the upper and lower case username are different
+    Then user "brian" should not see the following elements
       | /Shares/randomfile.txt |
 
   @skipOnLDAP
