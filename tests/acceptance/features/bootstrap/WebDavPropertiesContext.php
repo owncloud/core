@@ -1030,6 +1030,7 @@ class WebDavPropertiesContext implements Context {
 	 * @return void
 	 */
 	public function etagOfElementOfUserShouldNotHaveChanged(string $path, string $user) {
+		$user = $this->featureContext->getActualUsername($user);
 		$actualEtag = $this->getCurrentEtagOfElement($path, $user);
 		$storedEtag = $this->getStoredEtagOfElement($path, $user, __METHOD__);
 		Assert::assertEquals(
@@ -1076,6 +1077,7 @@ class WebDavPropertiesContext implements Context {
 	 * @return void
 	 */
 	public function etagOfElementOfUserShouldHaveChanged(string $path, string $user) {
+		$user = $this->featureContext->getActualUsername($user);
 		$actualEtag = $this->getCurrentEtagOfElement($path, $user);
 		$storedEtag = $this->getStoredEtagOfElement($path, $user, __METHOD__);
 		Assert::assertNotEquals(
