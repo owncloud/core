@@ -1010,6 +1010,7 @@ class WebDavPropertiesContext implements Context {
 		foreach ($etagTable->getColumnsHash() as $row) {
 			$user = $row["user"];
 			$path = $row["path"];
+			$user = $this->featureContext->getActualUsername($user);
 			$actualEtag = $this->getCurrentEtagOfElement($path, $user);
 			$storedEtag = $this->getStoredEtagOfElement($path, $user, __METHOD__);
 			if ($actualEtag !== $storedEtag) {
