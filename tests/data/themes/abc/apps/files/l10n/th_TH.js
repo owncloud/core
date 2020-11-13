@@ -74,6 +74,7 @@ OC.L10N.register(
     "Lock file" : "ล็อคไฟล์",
     "Failed to lock." : "ล็อคไม่สำเร็จ",
     "This resource is locked. Click to see more details." : "ข้อมูลนี้ถูกล็อคคลิกเพื่อดูรายละเอียดเพิ่มเติม",
+    "Encountered problem accessing the folder {name}" : "พบปัญหาในการเข้าถึงโฟลเดอร์ {name}",
     "\"{name}\" is an invalid file name." : "\"{name}\" เป็นชื่อไฟล์ที่ไม่ถูกต้อง",
     "File name cannot be empty." : "ชื่อไฟล์ไม่สามารถเว้นว่างได้",
     "File name cannot contain \"/\"." : "ชื่อไฟล์จะต้องไม่มี \"/\"",
