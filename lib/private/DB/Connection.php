@@ -120,6 +120,10 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 		return $this->tablePrefix;
 	}
 
+	public function getAdapter(): Adapter {
+		return $this->adapter;
+	}
+
 	/**
 	 * Initializes a new instance of the Connection class.
 	 *
@@ -143,6 +147,15 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 
 		parent::setTransactionIsolation(parent::TRANSACTION_READ_COMMITTED);
 	}
+
+	/*
+	public function prepare ($statement, $driver_options = []) {
+		$statement = $this->replaceTablePrefix($statement);
+		$statement = $this->adapter->fixupStatement($statement);
+
+		return parent::prepare($statement);
+	}
+	*/
 
 	/**
 	 * Prepares an SQL statement.
@@ -205,6 +218,12 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 		$query = $this->replaceTablePrefix($query);
 		$query = $this->adapter->fixupStatement($query);
 		return parent::executeUpdate($query, $params, $types);
+	}
+
+	public function executeStatement($sql, array $params = [], array $types = []) {
+		$sql = $this->replaceTablePrefix($sql);
+		$sql = $this->adapter->fixupStatement($sql);
+		return parent::executeStatement($sql, $params, $types);
 	}
 
 	/**
