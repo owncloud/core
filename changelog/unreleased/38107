@@ -1,0 +1,11 @@
+Bugfix: SSL check when adding a public link to your ownCloud
+
+Prior to this fix, a SSL certificate check was performed when adding a
+public link to your ownCloud. As this check was done on the base URL of the
+server, it could cause some issues, for example endless redirect loops.
+This fix gets rid of the SSL check because the storage-check afterwards
+also checks the validity of the server's SSL certificate. This check is
+being made on /status.php, thus it likely wont end up in a redirect loop.
+
+https://github.com/owncloud/enterprise/issues/4241
+https://github.com/owncloud/core/pull/38107

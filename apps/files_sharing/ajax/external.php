@@ -71,19 +71,6 @@ $externalManager = new \OCA\Files_Sharing\External\Manager(
 		\OC::$server->getUserSession()->getUser()->getUID()
 );
 
-// check for ssl cert
-if (\substr($remote, 0, 5) === 'https') {
-	try {
-		\OC::$server->getHTTPClientService()->newClient()->get($remote, [
-			'timeout' => 10,
-			'connect_timeout' => 10,
-		])->getBody();
-	} catch (\Exception $e) {
-		\OCP\JSON::error(['data' => ['message' => $l->t('Invalid or untrusted SSL certificate')]]);
-		exit;
-	}
-}
-
 $mount = $externalManager->addShare($remote, $token, $password, $name, $ownerDisplayName, true);
 
 /**
