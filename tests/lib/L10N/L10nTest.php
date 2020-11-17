@@ -46,6 +46,14 @@ class L10nTest extends TestCase {
 		$this->assertEquals('2 Dateien', (string) $l->n('%n file', '%n files', 2));
 	}
 
+	public function testMalformedTranslations() {
+		$lMock = $this->createMock('OC\L10N\L10N');
+		$lMock->method('getTranslations')->willReturn(['malformed' => 'malformed %']);
+
+		$lString = new \OC_L10N_String($lMock, "malformed", []);
+		self::assertEquals('malformed', $lString->__toString());
+	}
+
 	public function testRussianPluralTranslations() {
 		$transFile = \OC::$SERVERROOT.'/tests/data/l10n/ru.json';
 		$l = new L10N($this->getFactory(), 'test', 'ru', [$transFile]);
