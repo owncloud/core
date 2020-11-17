@@ -71,25 +71,6 @@ $externalManager = new \OCA\Files_Sharing\External\Manager(
 		\OC::$server->getUserSession()->getUser()->getUID()
 );
 
-// check for ssl cert
-if (\substr($remote, 0, 5) === 'https') {
-	try {
-		// try to connect to the status page instead of the main uri, as authentication software like SAML could end up in a redirection loop
-		\OC::$server->getHTTPClientService()->newClient()->get("${$remote}/status.php", [
-			'timeout' => 10,
-			'connect_timeout' => 10,
-		])->getBody();
-	} catch (\Exception $e) {
-		\OCP\Util::writeLog(
-			'files_sharing',
-			'Invalid remote storage: ' . \get_class($e) . ': ' . $e->getMessage(),
-			\OCP\Util::DEBUG
-		);
-		\OCP\JSON::error(['data' => ['message' => $l->t('Invalid or untrusted SSL certificate')]]);
-		exit;
-	}
-}
-
 $mount = $externalManager->addShare($remote, $token, $password, $name, $ownerDisplayName, true);
 
 /**
