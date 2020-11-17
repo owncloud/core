@@ -1395,6 +1395,26 @@ trait WebDav {
 	}
 
 	/**
+	 *
+	 * @param string $user
+	 * @param string $entry
+	 * @param string $path
+	 * @param string $type
+	 *
+	 * @return bool
+	 */
+	public function fileOrFolderExists(
+		$user, $entry, $path, $type = "files"
+	) {
+		try {
+			$this->asFileOrFolderShouldExist($user, $entry, $path, $type);
+			return true;
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+
+	/**
 	 * @Then /^as "([^"]*)" exactly one of these (files|folders|entries) should exist$/
 	 *
 	 * @param string $user
@@ -1940,8 +1960,24 @@ trait WebDav {
 	 * @return void
 	 */
 	public function theUserShouldNotBeAbleToUploadFileTo($user, $source, $destination) {
+		$fileAlreadyExists = $this->fileOrFolderExists($user, "file", $destination);
+		if ($fileAlreadyExists) {
+			$this->downloadFileAsUserUsingPassword($user, $destination);
+			$initialContent = (string) $this->response->getBody();
+		}
 		$this->userUploadsAFileTo($user, $source, $destination);
-		$this->asFileOrFolderShouldNotExist($user, "file", $destination);
+		$this->theHTTPStatusCodeShouldBe("403");
+		if ($fileAlreadyExists) {
+			$this->downloadFileAsUserUsingPassword($user, $destination);
+			$currentContent = (string) $this->response->getBody();
+			Assert::assertSame(
+				$initialContent,
+				$currentContent,
+				__METHOD__ . " user $user was unexpectedly able to upload $source to $destination - the content has changed:"
+			);
+		} else {
+			$this->asFileOrFolderShouldNotExist($user, "file", $destination);
+		}
 	}
 
 	/**

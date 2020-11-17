@@ -12,7 +12,7 @@ Feature: Share by public link
     Given user "Alice" has been created with default attributes and without skeleton files
 
   @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392
-  Scenario: mount public link
+  Scenario: mount public link of a folder
     Given using server "REMOTE"
     And user "Brian" has been created with default attributes and without skeleton files
     And using server "LOCAL"
@@ -29,6 +29,27 @@ Feature: Share by public link
     Then file "lorem.txt" should be listed on the webUI
     And the content of file "simple-folder/lorem.txt" for user "Brian" on server "REMOTE" should be "original content"
     And it should not be possible to delete file "lorem.txt" using the webUI
+    And using server "REMOTE"
+    And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "/file-in-my-own-storage.txt"
+    But user "Brian" should not be able to upload file "filesForUpload/textfile.txt" to "/simple-folder/new-file-in-read-only-public-link.txt"
+
+  @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392
+  Scenario: mount public link of a file
+    Given using server "REMOTE"
+    And user "Brian" has been created with default attributes and without skeleton files
+    And using server "LOCAL"
+    And user "Alice" has uploaded file with content "text in a file shared by public link" to "/file-shared-by-public-link.txt"
+    And user "Alice" has logged in using the webUI
+    When the user creates a new public link for file "file-shared-by-public-link.txt" using the webUI
+    And the user logs out of the webUI
+    And the public accesses the last created public link using the webUI
+    And the public adds the public link to "%remote_server%" as user "Brian" using the webUI
+    And the user accepts the offered remote shares using the webUI
+    Then file "file-shared-by-public-link.txt" should be listed on the webUI
+    And the content of file "file-shared-by-public-link.txt" for user "Brian" on server "REMOTE" should be "text in a file shared by public link"
+    And using server "REMOTE"
+    And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "/file-in-my-own-storage.txt"
+    But user "Brian" should not be able to upload file "filesForUpload/textfile.txt" to "/file-shared-by-public-link.txt"
 
   @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392
   Scenario: mount public link and overwrite file
