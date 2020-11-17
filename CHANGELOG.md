@@ -42,6 +42,8 @@ Summary
 * Bugfix - Avoid retrieving user root iteratively in share controller: [#4107](https://github.com/owncloud/enterprise/issues/4107)
 * Bugfix - Pick the translations from templates included from other apps: [#38072](https://github.com/owncloud/core/pull/38072)
 * Bugfix - Override browser Accept-Language header in ajax requests: [#38073](https://github.com/owncloud/core/pull/38073)
+* Bugfix - Prevent server error when loading invalid/corrupt translations: [#37799](https://github.com/owncloud/core/issues/37799)
+* Bugfix - SSL check when adding a public link to your ownCloud: [#4241](https://github.com/owncloud/enterprise/issues/4241)
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 * Change - Update sabre dependencies: [#37684](https://github.com/owncloud/core/pull/37684)
 * Change - Update google/apiclient from 2.5.0 to 2.6.0 and related dependencies: [#37687](https://github.com/owncloud/core/pull/37687)
@@ -405,6 +407,25 @@ Details
    wrong language sometimes. Now this header is set globally to match the current user language.
 
    https://github.com/owncloud/core/pull/38073
+
+* Bugfix - Prevent server error when loading invalid/corrupt translations: [#37799](https://github.com/owncloud/core/issues/37799)
+
+   This fix prevents server errors when loading invalid or corrupt translations from Transifex.
+   This is critical as every user is able to contribute to the ownCloud translations.
+
+   https://github.com/owncloud/core/issues/37799
+   https://github.com/owncloud/core/pull/38103
+
+* Bugfix - SSL check when adding a public link to your ownCloud: [#4241](https://github.com/owncloud/enterprise/issues/4241)
+
+   Prior to this fix, a SSL certificate check was performed when adding a public link to your
+   ownCloud. As this check was done on the base URL of the server, it could cause some issues, for
+   example endless redirect loops. This fix gets rid of the SSL check because the storage-check
+   afterwards also checks the validity of the server's SSL certificate. This check is being made
+   on /status.php, thus it likely wont end up in a redirect loop.
+
+   https://github.com/owncloud/enterprise/issues/4241
+   https://github.com/owncloud/core/pull/38107
 
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 
