@@ -545,7 +545,7 @@ var UserList = {
 		) {
 			// the select component has added the bogus value, delete it again
 			$select.find('option[selected]').remove();
-			OC.Notification.showTemporary(t('core', 'Invalid quota value "{val}"', {val: quota}));
+			OC.Notification.showTemporary(t('settings', 'Invalid quota value "{val}"', {val: quota}));
 			return;
 		}
 		UserList._updateQuota(uid, quota, function(returnedQuota){
@@ -603,14 +603,14 @@ var UserList = {
                         {username: uid, enabled: enabled},
                         function (result) {
                                	if(result.status == 'success') {
-                                        OC.Notification.showTemporary(t('admin', 'User {uid} has been {state}!',
+                                        OC.Notification.showTemporary(t('settings', 'User {uid} has been {state}!',
                                                                         {uid: uid,
                                                                         state: result.data.enabled === 'true' ?
-                                                                        t('admin', 'enabled') :
-                                                                        t('admin', 'disabled')}
+                                                                        t('settings', 'enabled') :
+                                                                        t('settings', 'disabled')}
                                                                      ));
 				} else {
-                                        OC.Notification.showTemporary(t('admin', result.data.message));
+                                        OC.Notification.showTemporary(t('settings', result.data.message));
 				}
                         }
                );
@@ -750,9 +750,9 @@ $(document).ready(function () {
 							{username: uid, password: $(this).val(), recoveryPassword: recoveryPasswordVal},
 							function (result) {
 								if(result.status == 'success') {
-									OC.Notification.showTemporary(t('admin', 'Password successfully changed'));
+									OC.Notification.showTemporary(t('settings', 'Password successfully changed'));
 								} else {
-									OC.Notification.showTemporary(t('admin', result.data.message));
+									OC.Notification.showTemporary(t('settings', result.data.message));
 								}
 							}
 						);

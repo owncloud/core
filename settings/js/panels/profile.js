@@ -96,7 +96,7 @@ function showAvatarCropper () {
 			aspectRatio: 1,
 			boxHeight: 500,
 			boxWidth: 500,
-			setSelect: [0, 0, 100000, 100000]  /* set to a very large value since 
+			setSelect: [0, 0, 100000, 100000]  /* set to a very large value since
 			this will automatically take the minimum with width and height of
 			parent image and aspect ratio is already one, ensuring a square cropper */
 		});
@@ -312,11 +312,11 @@ $(document).ready(function () {
 	$('#pass2').strengthify({
 		zxcvbn: OC.linkTo('core','vendor/zxcvbn/dist/zxcvbn.js'),
 		titles: [
-			t('core', 'Very weak password'),
-			t('core', 'Weak password'),
-			t('core', 'So-so password'),
-			t('core', 'Good password'),
-			t('core', 'Strong password')
+			t('settings', 'Very weak password'),
+			t('settings', 'Weak password'),
+			t('settings', 'So-so password'),
+			t('settings', 'Good password'),
+			t('settings', 'Strong password')
 		],
 		drawTitles: true
 	});
