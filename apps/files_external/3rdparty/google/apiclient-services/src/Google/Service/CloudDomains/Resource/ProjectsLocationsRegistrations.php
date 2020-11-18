@@ -163,7 +163,6 @@ class Google_Service_CloudDomains_Resource_ProjectsLocationsRegistrations extend
    * `Registration`s, specified in the format `projects/locations`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Maximum number of results to return.
    * @opt_param string filter Filter expression to restrict the `Registration`s
    * returned. The expression must specify the field name, a comparison operator,
    * and the value that you want to use for filtering. The value must be a string,
@@ -176,6 +175,7 @@ class Google_Service_CloudDomains_Resource_ProjectsLocationsRegistrations extend
    * combining expressions with the `AND` and `OR` operators. For example, to find
    * domains that are suspended or have specific issues flagged, use an expression
    * like `(state=SUSPENDED) OR (issue:*)`.
+   * @opt_param int pageSize Maximum number of results to return.
    * @opt_param string pageToken When set to the `next_page_token` from a prior
    * response, provides the next page of results.
    * @return Google_Service_CloudDomains_ListRegistrationsResponse

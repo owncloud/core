@@ -32,10 +32,10 @@ class Google_Service_Analytics_Resource_ManagementAccountSummaries extends Googl
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int max-results The maximum number of account summaries to include
-   * in this response, where the largest acceptable value is 1000.
    * @opt_param int start-index An index of the first entity to retrieve. Use this
    * parameter as a pagination mechanism along with the max-results parameter.
+   * @opt_param int max-results The maximum number of account summaries to include
+   * in this response, where the largest acceptable value is 1000.
    * @return Google_Service_Analytics_AccountSummaries
    */
   public function listManagementAccountSummaries($optParams = array())

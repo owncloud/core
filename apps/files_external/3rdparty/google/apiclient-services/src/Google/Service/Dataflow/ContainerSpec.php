@@ -17,12 +17,28 @@
 
 class Google_Service_Dataflow_ContainerSpec extends Google_Model
 {
+  protected $defaultEnvironmentType = 'Google_Service_Dataflow_FlexTemplateRuntimeEnvironment';
+  protected $defaultEnvironmentDataType = '';
   public $image;
   protected $metadataType = 'Google_Service_Dataflow_TemplateMetadata';
   protected $metadataDataType = '';
   protected $sdkInfoType = 'Google_Service_Dataflow_SDKInfo';
   protected $sdkInfoDataType = '';
 
+  /**
+   * @param Google_Service_Dataflow_FlexTemplateRuntimeEnvironment
+   */
+  public function setDefaultEnvironment(Google_Service_Dataflow_FlexTemplateRuntimeEnvironment $defaultEnvironment)
+  {
+    $this->defaultEnvironment = $defaultEnvironment;
+  }
+  /**
+   * @return Google_Service_Dataflow_FlexTemplateRuntimeEnvironment
+   */
+  public function getDefaultEnvironment()
+  {
+    return $this->defaultEnvironment;
+  }
   public function setImage($image)
   {
     $this->image = $image;

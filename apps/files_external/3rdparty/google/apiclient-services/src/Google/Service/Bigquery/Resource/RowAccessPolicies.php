@@ -36,11 +36,11 @@ class Google_Service_Bigquery_Resource_RowAccessPolicies extends Google_Service_
    * policies.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Page token, returned by a previous call, to
-   * request the next page of results.
    * @opt_param int pageSize The maximum number of results to return in a single
    * response page. Leverage the page tokens to iterate through the entire
    * collection.
+   * @opt_param string pageToken Page token, returned by a previous call, to
+   * request the next page of results.
    * @return Google_Service_Bigquery_ListRowAccessPoliciesResponse
    */
   public function listRowAccessPolicies($projectId, $datasetId, $tableId, $optParams = array())

@@ -81,11 +81,11 @@ class Google_Service_Analytics_Resource_ManagementExperiments extends Google_Ser
    * @param string $profileId View (Profile) ID to retrieve experiments for.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int max-results The maximum number of experiments to include in
-   * this response.
    * @opt_param int start-index An index of the first experiment to retrieve. Use
    * this parameter as a pagination mechanism along with the max-results
    * parameter.
+   * @opt_param int max-results The maximum number of experiments to include in
+   * this response.
    * @return Google_Service_Analytics_Experiments
    */
   public function listManagementExperiments($accountId, $webPropertyId, $profileId, $optParams = array())

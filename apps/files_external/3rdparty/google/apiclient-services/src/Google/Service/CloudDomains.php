@@ -16,7 +16,7 @@
  */
 
 /**
- * Service definition for CloudDomains (v1alpha2).
+ * Service definition for CloudDomains (v1beta1).
  *
  * <p>
  * Enables management and configuration of domain names.</p>
@@ -50,7 +50,7 @@ class Google_Service_CloudDomains extends Google_Service
     $this->rootUrl = $rootUrl ?: 'https://domains.googleapis.com/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
-    $this->version = 'v1alpha2';
+    $this->version = 'v1beta1';
     $this->serviceName = 'domains';
 
     $this->projects_locations = new Google_Service_CloudDomains_Resource_ProjectsLocations(
@@ -60,7 +60,7 @@ class Google_Service_CloudDomains extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'v1alpha2/{+name}',
+              'path' => 'v1beta1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -70,7 +70,7 @@ class Google_Service_CloudDomains extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1alpha2/{+name}/locations',
+              'path' => 'v1beta1/{+name}/locations',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -82,13 +82,13 @@ class Google_Service_CloudDomains extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'filter' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -102,7 +102,7 @@ class Google_Service_CloudDomains extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'v1alpha2/{+name}',
+              'path' => 'v1beta1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -112,7 +112,7 @@ class Google_Service_CloudDomains extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1alpha2/{+name}/operations',
+              'path' => 'v1beta1/{+name}/operations',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -144,7 +144,7 @@ class Google_Service_CloudDomains extends Google_Service
         array(
           'methods' => array(
             'configureContactSettings' => array(
-              'path' => 'v1alpha2/{+registration}:configureContactSettings',
+              'path' => 'v1beta1/{+registration}:configureContactSettings',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'registration' => array(
@@ -154,7 +154,7 @@ class Google_Service_CloudDomains extends Google_Service
                 ),
               ),
             ),'configureDnsSettings' => array(
-              'path' => 'v1alpha2/{+registration}:configureDnsSettings',
+              'path' => 'v1beta1/{+registration}:configureDnsSettings',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'registration' => array(
@@ -164,7 +164,7 @@ class Google_Service_CloudDomains extends Google_Service
                 ),
               ),
             ),'configureManagementSettings' => array(
-              'path' => 'v1alpha2/{+registration}:configureManagementSettings',
+              'path' => 'v1beta1/{+registration}:configureManagementSettings',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'registration' => array(
@@ -174,7 +174,7 @@ class Google_Service_CloudDomains extends Google_Service
                 ),
               ),
             ),'delete' => array(
-              'path' => 'v1alpha2/{+name}',
+              'path' => 'v1beta1/{+name}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'name' => array(
@@ -184,7 +184,7 @@ class Google_Service_CloudDomains extends Google_Service
                 ),
               ),
             ),'export' => array(
-              'path' => 'v1alpha2/{+name}:export',
+              'path' => 'v1beta1/{+name}:export',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -194,7 +194,7 @@ class Google_Service_CloudDomains extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'v1alpha2/{+name}',
+              'path' => 'v1beta1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -204,7 +204,7 @@ class Google_Service_CloudDomains extends Google_Service
                 ),
               ),
             ),'getIamPolicy' => array(
-              'path' => 'v1alpha2/{+resource}:getIamPolicy',
+              'path' => 'v1beta1/{+resource}:getIamPolicy',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'resource' => array(
@@ -218,7 +218,7 @@ class Google_Service_CloudDomains extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1alpha2/{+parent}/registrations',
+              'path' => 'v1beta1/{+parent}/registrations',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'parent' => array(
@@ -226,13 +226,13 @@ class Google_Service_CloudDomains extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
@@ -240,7 +240,7 @@ class Google_Service_CloudDomains extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'v1alpha2/{+name}',
+              'path' => 'v1beta1/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'name' => array(
@@ -254,7 +254,7 @@ class Google_Service_CloudDomains extends Google_Service
                 ),
               ),
             ),'register' => array(
-              'path' => 'v1alpha2/{+parent}/registrations:register',
+              'path' => 'v1beta1/{+parent}/registrations:register',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
@@ -264,7 +264,7 @@ class Google_Service_CloudDomains extends Google_Service
                 ),
               ),
             ),'resetAuthorizationCode' => array(
-              'path' => 'v1alpha2/{+registration}:resetAuthorizationCode',
+              'path' => 'v1beta1/{+registration}:resetAuthorizationCode',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'registration' => array(
@@ -274,7 +274,7 @@ class Google_Service_CloudDomains extends Google_Service
                 ),
               ),
             ),'retrieveAuthorizationCode' => array(
-              'path' => 'v1alpha2/{+registration}:retrieveAuthorizationCode',
+              'path' => 'v1beta1/{+registration}:retrieveAuthorizationCode',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'registration' => array(
@@ -284,7 +284,7 @@ class Google_Service_CloudDomains extends Google_Service
                 ),
               ),
             ),'retrieveRegisterParameters' => array(
-              'path' => 'v1alpha2/{+location}/registrations:retrieveRegisterParameters',
+              'path' => 'v1beta1/{+location}/registrations:retrieveRegisterParameters',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'location' => array(
@@ -298,7 +298,7 @@ class Google_Service_CloudDomains extends Google_Service
                 ),
               ),
             ),'searchDomains' => array(
-              'path' => 'v1alpha2/{+location}/registrations:searchDomains',
+              'path' => 'v1beta1/{+location}/registrations:searchDomains',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'location' => array(
@@ -312,7 +312,7 @@ class Google_Service_CloudDomains extends Google_Service
                 ),
               ),
             ),'setIamPolicy' => array(
-              'path' => 'v1alpha2/{+resource}:setIamPolicy',
+              'path' => 'v1beta1/{+resource}:setIamPolicy',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'resource' => array(
@@ -322,7 +322,7 @@ class Google_Service_CloudDomains extends Google_Service
                 ),
               ),
             ),'testIamPermissions' => array(
-              'path' => 'v1alpha2/{+resource}:testIamPermissions',
+              'path' => 'v1beta1/{+resource}:testIamPermissions',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'resource' => array(

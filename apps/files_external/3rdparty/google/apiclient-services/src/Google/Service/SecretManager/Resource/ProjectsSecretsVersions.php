@@ -113,12 +113,12 @@ class Google_Service_SecretManager_Resource_ProjectsSecretsVersions extends Goog
    * with the SecretVersions to list, in the format `projects/secrets`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional. Pagination token, returned earlier via
-   * ListSecretVersionsResponse.next_page_token][].
    * @opt_param int pageSize Optional. The maximum number of results to be
    * returned in a single page. If set to 0, the server decides the number of
    * results to return. If the number is greater than 25000, it is capped at
    * 25000.
+   * @opt_param string pageToken Optional. Pagination token, returned earlier via
+   * ListSecretVersionsResponse.next_page_token][].
    * @return Google_Service_SecretManager_ListSecretVersionsResponse
    */
   public function listProjectsSecretsVersions($parent, $optParams = array())

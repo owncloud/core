@@ -84,6 +84,9 @@ class Google_Service_GameServices_Resource_ProjectsLocationsRealmsGameServerClus
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Optional. The filter to apply to list results.
+   * @opt_param string orderBy Optional. Specifies the ordering of results
+   * following syntax at
+   * https://cloud.google.com/apis/design/design_patterns#sorting_order.
    * @opt_param string pageToken Optional. The next_page_token value returned from
    * a previous List request, if any.
    * @opt_param int pageSize Optional. The maximum number of items to return. If
@@ -91,9 +94,6 @@ class Google_Service_GameServices_Resource_ProjectsLocationsRealmsGameServerClus
    * return fewer items than requested. A caller should only rely on response's
    * next_page_token to determine if there are more GameServerClusters left to be
    * queried.
-   * @opt_param string orderBy Optional. Specifies the ordering of results
-   * following syntax at
-   * https://cloud.google.com/apis/design/design_patterns#sorting_order.
    * @return Google_Service_GameServices_ListGameServerClustersResponse
    */
   public function listProjectsLocationsRealmsGameServerClusters($parent, $optParams = array())

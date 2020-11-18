@@ -47,13 +47,13 @@ class Google_Service_Dataflow_Resource_ProjectsTemplates extends Google_Service_
    * the job belongs to.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string gcsPath Required. A Cloud Storage path to the template from
-   * which to create the job. Must be valid Cloud Storage URL, beginning with
-   * 'gs://'.
-   * @opt_param string view The view to retrieve. Defaults to METADATA_ONLY.
    * @opt_param string location The [regional endpoint]
    * (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) to which
    * to direct the request.
+   * @opt_param string view The view to retrieve. Defaults to METADATA_ONLY.
+   * @opt_param string gcsPath Required. A Cloud Storage path to the template from
+   * which to create the job. Must be valid Cloud Storage URL, beginning with
+   * 'gs://'.
    * @return Google_Service_Dataflow_GetTemplateResponse
    */
   public function get($projectId, $optParams = array())
@@ -70,6 +70,8 @@ class Google_Service_Dataflow_Resource_ProjectsTemplates extends Google_Service_
    * @param Google_Service_Dataflow_LaunchTemplateParameters $postBody
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string gcsPath A Cloud Storage path to the template from which to
+   * create the job. Must be valid Cloud Storage URL, beginning with 'gs://'.
    * @opt_param string location The [regional endpoint]
    * (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) to which
    * to direct the request.
@@ -78,8 +80,6 @@ class Google_Service_Dataflow_Resource_ProjectsTemplates extends Google_Service_
    * @opt_param string dynamicTemplate.stagingLocation Cloud Storage path for
    * staging dependencies. Must be a valid Cloud Storage URL, beginning with
    * `gs://`.
-   * @opt_param string gcsPath A Cloud Storage path to the template from which to
-   * create the job. Must be valid Cloud Storage URL, beginning with 'gs://'.
    * @opt_param string dynamicTemplate.gcsPath Path to dynamic template spec file
    * on GCS. The file must be a Json serialized DynamicTemplateFieSpec object.
    * @return Google_Service_Dataflow_LaunchTemplateResponse

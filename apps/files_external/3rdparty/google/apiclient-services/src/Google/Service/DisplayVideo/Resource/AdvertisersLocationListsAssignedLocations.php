@@ -94,10 +94,6 @@ class Google_Service_DisplayVideo_Resource_AdvertisersLocationListsAssignedLocat
    * these assignments are assigned.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken A token identifying a page of results the server
-   * should return. Typically, this is the value of next_page_token returned from
-   * the previous call to `ListAssignedLocations` method. If not specified, the
-   * first page of results will be returned.
    * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
    * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
    * if an invalid value is specified.
@@ -111,6 +107,10 @@ class Google_Service_DisplayVideo_Resource_AdvertisersLocationListsAssignedLocat
    * A restriction has the form of `{field} {operator} {value}`. * The operator
    * must be `EQUALS (=)`. * Supported fields: - `assignedLocationId` The length
    * of this field should be no more than 500 characters.
+   * @opt_param string pageToken A token identifying a page of results the server
+   * should return. Typically, this is the value of next_page_token returned from
+   * the previous call to `ListAssignedLocations` method. If not specified, the
+   * first page of results will be returned.
    * @return Google_Service_DisplayVideo_ListAssignedLocationsResponse
    */
   public function listAdvertisersLocationListsAssignedLocations($advertiserId, $locationListId, $optParams = array())

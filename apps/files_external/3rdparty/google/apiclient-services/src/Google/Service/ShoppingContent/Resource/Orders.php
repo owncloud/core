@@ -217,6 +217,10 @@ class Google_Service_ShoppingContent_Resource_Orders extends Google_Service_Reso
    * cannot be a multi-client account.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string orderBy Order results by placement date in descending or
+   * ascending order. Acceptable values are: - placedDateAsc - placedDateDesc
+   * @opt_param string placedDateEnd Obtains orders placed before this date
+   * (exclusively), in ISO 8601 format.
    * @opt_param bool acknowledged Obtains orders that match the acknowledgement
    * status. When set to true, obtains orders that have been acknowledged. When
    * false, obtains orders that have not been acknowledged. We recommend using
@@ -225,15 +229,9 @@ class Google_Service_ShoppingContent_Resource_Orders extends Google_Service_Reso
    * @opt_param string maxResults The maximum number of orders to return in the
    * response, used for paging. The default value is 25 orders per page, and the
    * maximum allowed value is 250 orders per page.
-   * @opt_param string orderBy Order results by placement date in descending or
-   * ascending order.
-   *
-   * Acceptable values are: - placedDateAsc - placedDateDesc
-   * @opt_param string pageToken The token returned by the previous request.
-   * @opt_param string placedDateEnd Obtains orders placed before this date
-   * (exclusively), in ISO 8601 format.
    * @opt_param string placedDateStart Obtains orders placed after this date
    * (inclusively), in ISO 8601 format.
+   * @opt_param string pageToken The token returned by the previous request.
    * @opt_param string statuses Obtains orders that match any of the specified
    * statuses. Please note that `active` is a shortcut for `pendingShipment` and
    * `partiallyShipped`, and `completed` is a shortcut for `shipped`,

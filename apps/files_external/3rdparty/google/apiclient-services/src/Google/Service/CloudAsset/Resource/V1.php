@@ -26,6 +26,135 @@
 class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
 {
   /**
+   * Analyzes IAM policies to answer which identities have what accesses on which
+   * resources. (v1.analyzeIamPolicy)
+   *
+   * @param string $scope Required. The relative name of the root asset. Only
+   * resources and IAM policies within the scope will be analyzed. This can only
+   * be an organization number (such as "organizations/123"), a folder number
+   * (such as "folders/123"), a project ID (such as "projects/my-project-id"), or
+   * a project number (such as "projects/12345"). To know how to get organization
+   * id, visit [here ](https://cloud.google.com/resource-manager/docs/creating-
+   * managing-organization#retrieving_your_organization_id). To know how to get
+   * folder or project id, visit [here ](https://cloud.google.com/resource-
+   * manager/docs/creating-managing-
+   * folders#viewing_or_listing_folders_and_projects).
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string analysisQuery.identitySelector.identity Required. The
+   * identity appear in the form of members in [IAM policy
+   * binding](https://cloud.google.com/iam/reference/rest/v1/Binding). The
+   * examples of supported forms are: "user:mike@example.com",
+   * "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-
+   * id@appspot.gserviceaccount.com". Notice that wildcard characters (such as *
+   * and ?) are not supported. You must give a specific identity.
+   * @opt_param string analysisQuery.resourceSelector.fullResourceName Required.
+   * The [full resource name] (https://cloud.google.com/asset-inventory/docs
+   * /resource-name-format) of a resource of [supported resource
+   * types](https://cloud.google.com/asset-inventory/docs/supported-asset-
+   * types#analyzable_asset_types).
+   * @opt_param bool analysisQuery.options.expandRoles Optional. If true, the
+   * access section of result will expand any roles appearing in IAM policy
+   * bindings to include their permissions. If
+   * IamPolicyAnalysisQuery.access_selector is specified, the access section of
+   * the result will be determined by the selector, and this flag is not allowed
+   * to set. Default is false.
+   * @opt_param bool analysisQuery.options.outputGroupEdges Optional. If true, the
+   * result will output group identity edges, starting from the binding's group
+   * members, to any expanded identities. Default is false.
+   * @opt_param bool analysisQuery.options.outputResourceEdges Optional. If true,
+   * the result will output resource edges, starting from the policy attached
+   * resource, to any expanded resources. Default is false.
+   * @opt_param string executionTimeout Optional. Amount of time executable has to
+   * complete. See JSON representation of [Duration](https://developers.google.com
+   * /protocol-buffers/docs/proto3#json). If this field is set with a value less
+   * than the RPC deadline, and the execution of your query hasn't finished in the
+   * specified execution timeout, you will get a response with partial result.
+   * Otherwise, your query's execution will continue until the RPC deadline. If
+   * it's not finished until then, you will get a DEADLINE_EXCEEDED error. Default
+   * is empty.
+   * @opt_param string analysisQuery.accessSelector.roles Optional. The roles to
+   * appear in result.
+   * @opt_param bool analysisQuery.options.expandGroups Optional. If true, the
+   * identities section of the result will expand any Google groups appearing in
+   * an IAM policy binding. If IamPolicyAnalysisQuery.identity_selector is
+   * specified, the identity in the result will be determined by the selector, and
+   * this flag is not allowed to set. Default is false.
+   * @opt_param string analysisQuery.accessSelector.permissions Optional. The
+   * permissions to appear in result.
+   * @opt_param bool analysisQuery.options.analyzeServiceAccountImpersonation
+   * Optional. If true, the response will include access analysis from identities
+   * to resources via service account impersonation. This is a very expensive
+   * operation, because many derived queries will be executed. We highly recommend
+   * you use AssetService.AnalyzeIamPolicyLongrunning rpc instead. For example, if
+   * the request analyzes for which resources user A has permission P, and there's
+   * an IAM policy states user A has iam.serviceAccounts.getAccessToken permission
+   * to a service account SA, and there's another IAM policy states service
+   * account SA has permission P to a GCP folder F, then user A potentially has
+   * access to the GCP folder F. And those advanced analysis results will be
+   * included in AnalyzeIamPolicyResponse.service_account_impersonation_analysis.
+   * Another example, if the request analyzes for who has permission P to a GCP
+   * folder F, and there's an IAM policy states user A has
+   * iam.serviceAccounts.actAs permission to a service account SA, and there's
+   * another IAM policy states service account SA has permission P to the GCP
+   * folder F, then user A potentially has access to the GCP folder F. And those
+   * advanced analysis results will be included in
+   * AnalyzeIamPolicyResponse.service_account_impersonation_analysis. Default is
+   * false.
+   * @opt_param bool analysisQuery.options.expandResources Optional. If true and
+   * IamPolicyAnalysisQuery.resource_selector is not specified, the resource
+   * section of the result will expand any resource attached to an IAM policy to
+   * include resources lower in the resource hierarchy. For example, if the
+   * request analyzes for which resources user A has permission P, and the results
+   * include an IAM policy with P on a GCP folder, the results will also include
+   * resources in that folder with permission P. If true and
+   * IamPolicyAnalysisQuery.resource_selector is specified, the resource section
+   * of the result will expand the specified resource to include resources lower
+   * in the resource hierarchy. Only project or lower resources are supported.
+   * Folder and organization resource cannot be used together with this option.
+   * For example, if the request analyzes for which users have permission P on a
+   * GCP project with this option enabled, the results will include all users who
+   * have permission P on that project or any lower resource. Default is false.
+   * @return Google_Service_CloudAsset_AnalyzeIamPolicyResponse
+   */
+  public function analyzeIamPolicy($scope, $optParams = array())
+  {
+    $params = array('scope' => $scope);
+    $params = array_merge($params, $optParams);
+    return $this->call('analyzeIamPolicy', array($params), "Google_Service_CloudAsset_AnalyzeIamPolicyResponse");
+  }
+  /**
+   * Analyzes IAM policies asynchronously to answer which identities have what
+   * accesses on which resources, and writes the analysis results to a Google
+   * Cloud Storage or a BigQuery destination. For Cloud Storage destination, the
+   * output format is the JSON format that represents a AnalyzeIamPolicyResponse.
+   * This method implements the google.longrunning.Operation, which allows you to
+   * track the operation status. We recommend intervals of at least 2 seconds with
+   * exponential backoff retry to poll the operation result. The metadata contains
+   * the request to help callers to map responses to requests.
+   * (v1.analyzeIamPolicyLongrunning)
+   *
+   * @param string $scope Required. The relative name of the root asset. Only
+   * resources and IAM policies within the scope will be analyzed. This can only
+   * be an organization number (such as "organizations/123"), a folder number
+   * (such as "folders/123"), a project ID (such as "projects/my-project-id"), or
+   * a project number (such as "projects/12345"). To know how to get organization
+   * id, visit [here ](https://cloud.google.com/resource-manager/docs/creating-
+   * managing-organization#retrieving_your_organization_id). To know how to get
+   * folder or project id, visit [here ](https://cloud.google.com/resource-
+   * manager/docs/creating-managing-
+   * folders#viewing_or_listing_folders_and_projects).
+   * @param Google_Service_CloudAsset_AnalyzeIamPolicyLongrunningRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_CloudAsset_Operation
+   */
+  public function analyzeIamPolicyLongrunning($scope, Google_Service_CloudAsset_AnalyzeIamPolicyLongrunningRequest $postBody, $optParams = array())
+  {
+    $params = array('scope' => $scope, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('analyzeIamPolicyLongrunning', array($params), "Google_Service_CloudAsset_Operation");
+  }
+  /**
    * Batch gets the update history of assets that overlap a time window. For
    * IAM_POLICY content, this API outputs history when the asset and its attached
    * IAM POLICY both exist. This can create gaps in the output history. Otherwise,
@@ -39,9 +168,9 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * "projects/12345").
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string contentType Optional. The content type.
    * @opt_param string readTimeWindow.startTime Start time of the time window
    * (exclusive).
-   * @opt_param string contentType Optional. The content type.
    * @opt_param string readTimeWindow.endTime End time of the time window
    * (inclusive). If not specified, the current timestamp is used instead.
    * @opt_param string assetNames A list of the full names of the assets. See:
@@ -153,6 +282,10 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * organizations/{ORGANIZATION_NUMBER} (e.g., "organizations/123456")
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string pageToken Optional. If present, then retrieve the next
+   * batch of results from the preceding call to this method. `page_token` must be
+   * the value of `next_page_token` from the previous response. The values of all
+   * other method parameters, must be identical to those in the previous call.
    * @opt_param string query Optional. The query statement. See [how to construct
    * a query](http://cloud.google.com/asset-inventory/docs/searching-
    * resources#how_to_construct_a_query) for more information. If not specified or
@@ -194,10 +327,6 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * request searches for. If empty, it will search all the [searchable asset
    * types](https://cloud.google.com/asset-inventory/docs/supported-asset-
    * types#searchable_asset_types).
-   * @opt_param string pageToken Optional. If present, then retrieve the next
-   * batch of results from the preceding call to this method. `page_token` must be
-   * the value of `next_page_token` from the previous response. The values of all
-   * other method parameters, must be identical to those in the previous call.
    * @return Google_Service_CloudAsset_SearchAllResourcesResponse
    */
   public function searchAllResources($scope, $optParams = array())

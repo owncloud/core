@@ -18,11 +18,20 @@
 class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SerializedTaxonomy extends Google_Collection
 {
   protected $collection_key = 'policyTags';
+  public $activatedPolicyTypes;
   public $description;
   public $displayName;
   protected $policyTagsType = 'Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SerializedPolicyTag';
   protected $policyTagsDataType = 'array';
 
+  public function setActivatedPolicyTypes($activatedPolicyTypes)
+  {
+    $this->activatedPolicyTypes = $activatedPolicyTypes;
+  }
+  public function getActivatedPolicyTypes()
+  {
+    return $this->activatedPolicyTypes;
+  }
   public function setDescription($description)
   {
     $this->description = $description;

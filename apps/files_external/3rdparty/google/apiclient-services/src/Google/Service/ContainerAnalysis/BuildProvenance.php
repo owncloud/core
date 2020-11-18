@@ -26,9 +26,9 @@ class Google_Service_ContainerAnalysis_BuildProvenance extends Google_Collection
   protected $commandsDataType = 'array';
   public $createTime;
   public $creator;
-  public $finishTime;
+  public $endTime;
   public $id;
-  public $logsBucket;
+  public $logsUri;
   public $projectId;
   protected $sourceProvenanceType = 'Google_Service_ContainerAnalysis_Source';
   protected $sourceProvenanceDataType = '';
@@ -95,13 +95,13 @@ class Google_Service_ContainerAnalysis_BuildProvenance extends Google_Collection
   {
     return $this->creator;
   }
-  public function setFinishTime($finishTime)
+  public function setEndTime($endTime)
   {
-    $this->finishTime = $finishTime;
+    $this->endTime = $endTime;
   }
-  public function getFinishTime()
+  public function getEndTime()
   {
-    return $this->finishTime;
+    return $this->endTime;
   }
   public function setId($id)
   {
@@ -111,13 +111,13 @@ class Google_Service_ContainerAnalysis_BuildProvenance extends Google_Collection
   {
     return $this->id;
   }
-  public function setLogsBucket($logsBucket)
+  public function setLogsUri($logsUri)
   {
-    $this->logsBucket = $logsBucket;
+    $this->logsUri = $logsUri;
   }
-  public function getLogsBucket()
+  public function getLogsUri()
   {
-    return $this->logsBucket;
+    return $this->logsUri;
   }
   public function setProjectId($projectId)
   {

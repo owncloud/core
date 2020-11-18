@@ -15,12 +15,9 @@
  * the License.
  */
 
-class Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1Structure extends Google_Collection
+class Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1Structure extends Google_Model
 {
-  protected $collection_key = 'parentRelations';
   public $name;
-  protected $parentRelationsType = 'Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1StructureParentRelation';
-  protected $parentRelationsDataType = 'array';
   public $traits;
 
   public function setName($name)
@@ -30,20 +27,6 @@ class Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1Structure ex
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1StructureParentRelation
-   */
-  public function setParentRelations($parentRelations)
-  {
-    $this->parentRelations = $parentRelations;
-  }
-  /**
-   * @return Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1StructureParentRelation
-   */
-  public function getParentRelations()
-  {
-    return $this->parentRelations;
   }
   public function setTraits($traits)
   {

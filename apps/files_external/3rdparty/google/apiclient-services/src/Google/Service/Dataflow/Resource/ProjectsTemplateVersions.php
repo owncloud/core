@@ -37,10 +37,10 @@ class Google_Service_Dataflow_Resource_ProjectsTemplateVersions extends Google_S
    * projects/{pid1}
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The page token, received from a previous
-   * ListTemplateVersions call. Provide this to retrieve the subsequent page.
    * @opt_param int pageSize The maximum number of TemplateVersions to return per
    * page.
+   * @opt_param string pageToken The page token, received from a previous
+   * ListTemplateVersions call. Provide this to retrieve the subsequent page.
    * @return Google_Service_Dataflow_ListTemplateVersionsResponse
    */
   public function listProjectsTemplateVersions($parent, $optParams = array())

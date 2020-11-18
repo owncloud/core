@@ -46,6 +46,8 @@ class Google_Service_DisplayVideo_LineItem extends Google_Collection
   protected $partnerCostsDataType = 'array';
   protected $partnerRevenueModelType = 'Google_Service_DisplayVideo_PartnerRevenueModel';
   protected $partnerRevenueModelDataType = '';
+  protected $targetingExpansionType = 'Google_Service_DisplayVideo_TargetingExpansionConfig';
+  protected $targetingExpansionDataType = '';
   public $updateTime;
   public $warningMessages;
 
@@ -254,6 +256,20 @@ class Google_Service_DisplayVideo_LineItem extends Google_Collection
   public function getPartnerRevenueModel()
   {
     return $this->partnerRevenueModel;
+  }
+  /**
+   * @param Google_Service_DisplayVideo_TargetingExpansionConfig
+   */
+  public function setTargetingExpansion(Google_Service_DisplayVideo_TargetingExpansionConfig $targetingExpansion)
+  {
+    $this->targetingExpansion = $targetingExpansion;
+  }
+  /**
+   * @return Google_Service_DisplayVideo_TargetingExpansionConfig
+   */
+  public function getTargetingExpansion()
+  {
+    return $this->targetingExpansion;
   }
   public function setUpdateTime($updateTime)
   {

@@ -62,11 +62,11 @@ class Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsStepsTestCa
    * TestExecutionStep. Required.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken A continuation token to resume the query at the
-   * next item. Optional.
    * @opt_param int pageSize The maximum number of TestCases to fetch. Default
    * value: 100. The server will use this default if the field is not set or has a
    * value of 0. Optional.
+   * @opt_param string pageToken A continuation token to resume the query at the
+   * next item. Optional.
    * @return Google_Service_ToolResults_ListTestCasesResponse
    */
   public function listProjectsHistoriesExecutionsStepsTestCases($projectId, $historyId, $executionId, $stepId, $optParams = array())

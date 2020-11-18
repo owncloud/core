@@ -31,11 +31,11 @@ class Google_Service_Analytics_Resource_ManagementSegments extends Google_Servic
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int max-results The maximum number of segments to include in this
+   * response.
    * @opt_param int start-index An index of the first segment to retrieve. Use
    * this parameter as a pagination mechanism along with the max-results
    * parameter.
-   * @opt_param int max-results The maximum number of segments to include in this
-   * response.
    * @return Google_Service_Analytics_Segments
    */
   public function listManagementSegments($optParams = array())

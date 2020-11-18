@@ -17,9 +17,25 @@
 
 class Google_Service_ContainerAnalysis_Attestation extends Google_Model
 {
+  protected $genericSignedAttestationType = 'Google_Service_ContainerAnalysis_GenericSignedAttestation';
+  protected $genericSignedAttestationDataType = '';
   protected $pgpSignedAttestationType = 'Google_Service_ContainerAnalysis_PgpSignedAttestation';
   protected $pgpSignedAttestationDataType = '';
 
+  /**
+   * @param Google_Service_ContainerAnalysis_GenericSignedAttestation
+   */
+  public function setGenericSignedAttestation(Google_Service_ContainerAnalysis_GenericSignedAttestation $genericSignedAttestation)
+  {
+    $this->genericSignedAttestation = $genericSignedAttestation;
+  }
+  /**
+   * @return Google_Service_ContainerAnalysis_GenericSignedAttestation
+   */
+  public function getGenericSignedAttestation()
+  {
+    return $this->genericSignedAttestation;
+  }
   /**
    * @param Google_Service_ContainerAnalysis_PgpSignedAttestation
    */

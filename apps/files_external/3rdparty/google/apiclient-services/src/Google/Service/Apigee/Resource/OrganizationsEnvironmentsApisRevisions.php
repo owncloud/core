@@ -43,6 +43,11 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsApisRevisions exte
    * `organizations/{org}/environments/{env}/apis/{api}/revisions/{rev}`
    * @param array $optParams Optional parameters.
    *
+   * @opt_param bool override Flag that specifies whether the new deployment
+   * replaces other deployed revisions of the API proxy in the environment. Set
+   * override to true to replace other deployed revisions. By default, override is
+   * false and the deployment is rejected if other revisions of the API proxy are
+   * deployed in the environment.
    * @opt_param bool sequencedRollout If true, a best-effort attempt will be made
    * to roll out the routing rules corresponding to this deployment and the
    * environment changes to add this deployment in a safe order. This reduces the
@@ -54,11 +59,6 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsApisRevisions exte
    * removal. The GenerateDeployChangeReport API may be used to examine routing
    * changes before issuing the deployment request, and its response will indicate
    * if a sequenced rollout is recommended for the deployment.
-   * @opt_param bool override Flag that specifies whether the new deployment
-   * replaces other deployed revisions of the API proxy in the environment. Set
-   * override to true to replace other deployed revisions. By default, override is
-   * false and the deployment is rejected if other revisions of the API proxy are
-   * deployed in the environment.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1Deployment
    */
   public function deploy($name, $optParams = array())

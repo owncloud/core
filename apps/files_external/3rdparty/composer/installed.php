@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '7abef0bc1309a373f07236f18cbc1b4231ff7aa2',
+    'reference' => '9baf9af51286eccef34bd19bdf097b10d371f1a8',
     'name' => 'files_external/3rdparty',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '7abef0bc1309a373f07236f18cbc1b4231ff7aa2',
+      'reference' => '9baf9af51286eccef34bd19bdf097b10d371f1a8',
     ),
     'firebase/php-jwt' => 
     array (
@@ -40,12 +40,12 @@
     ),
     'google/apiclient-services' => 
     array (
-      'pretty_version' => 'v0.152',
-      'version' => '0.152.0.0',
+      'pretty_version' => 'v0.153',
+      'version' => '0.153.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'e1cc05269e852d62677387f831271ad984b245f8',
+      'reference' => 'db62bb19f32f81c9551f223c72be0682eb58ebd8',
     ),
     'google/auth' => 
     array (

@@ -64,11 +64,11 @@ class Google_Service_Analytics_Resource_ManagementWebpropertyUserLinks extends G
    * to all the web properties that user has access to.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int max-results The maximum number of webProperty-user Links to
-   * include in this response.
    * @opt_param int start-index An index of the first webProperty-user link to
    * retrieve. Use this parameter as a pagination mechanism along with the max-
    * results parameter.
+   * @opt_param int max-results The maximum number of webProperty-user Links to
+   * include in this response.
    * @return Google_Service_Analytics_EntityUserLinks
    */
   public function listManagementWebpropertyUserLinks($accountId, $webPropertyId, $optParams = array())

@@ -90,9 +90,9 @@ class Google_Service_Analytics_Resource_ManagementRemarketingAudience extends Go
    *
    * @opt_param int start-index An index of the first entity to retrieve. Use this
    * parameter as a pagination mechanism along with the max-results parameter.
+   * @opt_param string type
    * @opt_param int max-results The maximum number of remarketing audiences to
    * include in this response.
-   * @opt_param string type
    * @return Google_Service_Analytics_RemarketingAudiences
    */
   public function listManagementRemarketingAudience($accountId, $webPropertyId, $optParams = array())

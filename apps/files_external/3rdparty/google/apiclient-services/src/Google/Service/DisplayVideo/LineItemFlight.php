@@ -20,6 +20,7 @@ class Google_Service_DisplayVideo_LineItemFlight extends Google_Model
   protected $dateRangeType = 'Google_Service_DisplayVideo_DateRange';
   protected $dateRangeDataType = '';
   public $flightDateType;
+  public $triggerId;
 
   /**
    * @param Google_Service_DisplayVideo_DateRange
@@ -42,5 +43,13 @@ class Google_Service_DisplayVideo_LineItemFlight extends Google_Model
   public function getFlightDateType()
   {
     return $this->flightDateType;
+  }
+  public function setTriggerId($triggerId)
+  {
+    $this->triggerId = $triggerId;
+  }
+  public function getTriggerId()
+  {
+    return $this->triggerId;
   }
 }

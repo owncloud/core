@@ -18,10 +18,19 @@
 class Google_Service_Compute_ResourcePolicySnapshotSchedulePolicySnapshotProperties extends Google_Collection
 {
   protected $collection_key = 'storageLocations';
+  public $chainName;
   public $guestFlush;
   public $labels;
   public $storageLocations;
 
+  public function setChainName($chainName)
+  {
+    $this->chainName = $chainName;
+  }
+  public function getChainName()
+  {
+    return $this->chainName;
+  }
   public function setGuestFlush($guestFlush)
   {
     $this->guestFlush = $guestFlush;

@@ -95,6 +95,9 @@ class Google_Service_Translate_Resource_ProjectsLocations extends Google_Service
    * an INVALID_ARGUMENT (400) error is returned.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string displayLanguageCode Optional. The language to use to return
+   * localized, human readable names of supported languages. If missing, then
+   * display names are not returned in a response.
    * @opt_param string model Optional. Get supported languages of this model. The
    * format depends on model type: - AutoML Translation models: `projects
    * /{project-number-or-id}/locations/{location-id}/models/{model-id}` - General
@@ -103,9 +106,6 @@ class Google_Service_Translate_Resource_ProjectsLocations extends Google_Service
    * /{location-id}/models/general/base` Returns languages supported by the
    * specified model. If missing, we get supported languages of Google general
    * base (PBMT) model.
-   * @opt_param string displayLanguageCode Optional. The language to use to return
-   * localized, human readable names of supported languages. If missing, then
-   * display names are not returned in a response.
    * @return Google_Service_Translate_SupportedLanguages
    */
   public function getSupportedLanguages($parent, $optParams = array())
@@ -122,9 +122,9 @@ class Google_Service_Translate_Resource_ProjectsLocations extends Google_Service
    * applicable.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize The standard list page size.
    * @opt_param string pageToken The standard list page token.
    * @opt_param string filter The standard list filter.
+   * @opt_param int pageSize The standard list page size.
    * @return Google_Service_Translate_ListLocationsResponse
    */
   public function listProjectsLocations($name, $optParams = array())

@@ -20,7 +20,6 @@ class Google_Service_ContainerAnalysis_Artifact extends Google_Collection
   protected $collection_key = 'names';
   public $checksum;
   public $id;
-  public $name;
   public $names;
 
   public function setChecksum($checksum)
@@ -38,14 +37,6 @@ class Google_Service_ContainerAnalysis_Artifact extends Google_Collection
   public function getId()
   {
     return $this->id;
-  }
-  public function setName($name)
-  {
-    $this->name = $name;
-  }
-  public function getName()
-  {
-    return $this->name;
   }
   public function setNames($names)
   {

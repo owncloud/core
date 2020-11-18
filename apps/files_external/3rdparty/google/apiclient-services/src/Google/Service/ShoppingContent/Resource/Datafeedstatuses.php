@@ -72,9 +72,9 @@ class Google_Service_ShoppingContent_Resource_Datafeedstatuses extends Google_Se
    * This account cannot be a multi-client account.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string pageToken The token returned by the previous request.
    * @opt_param string maxResults The maximum number of products to return in the
    * response, used for paging.
-   * @opt_param string pageToken The token returned by the previous request.
    * @return Google_Service_ShoppingContent_DatafeedstatusesListResponse
    */
   public function listDatafeedstatuses($merchantId, $optParams = array())

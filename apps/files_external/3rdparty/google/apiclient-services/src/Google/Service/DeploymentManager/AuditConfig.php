@@ -17,10 +17,9 @@
 
 class Google_Service_DeploymentManager_AuditConfig extends Google_Collection
 {
-  protected $collection_key = 'exemptedMembers';
+  protected $collection_key = 'auditLogConfigs';
   protected $auditLogConfigsType = 'Google_Service_DeploymentManager_AuditLogConfig';
   protected $auditLogConfigsDataType = 'array';
-  public $exemptedMembers;
   public $service;
 
   /**
@@ -36,14 +35,6 @@ class Google_Service_DeploymentManager_AuditConfig extends Google_Collection
   public function getAuditLogConfigs()
   {
     return $this->auditLogConfigs;
-  }
-  public function setExemptedMembers($exemptedMembers)
-  {
-    $this->exemptedMembers = $exemptedMembers;
-  }
-  public function getExemptedMembers()
-  {
-    return $this->exemptedMembers;
   }
   public function setService($service)
   {

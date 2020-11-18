@@ -18,12 +18,21 @@
 class Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1Filter extends Google_Collection
 {
   protected $collection_key = 'subaccounts';
+  public $creditTypes;
   public $creditTypesTreatment;
   public $labels;
   public $projects;
   public $services;
   public $subaccounts;
 
+  public function setCreditTypes($creditTypes)
+  {
+    $this->creditTypes = $creditTypes;
+  }
+  public function getCreditTypes()
+  {
+    return $this->creditTypes;
+  }
   public function setCreditTypesTreatment($creditTypesTreatment)
   {
     $this->creditTypesTreatment = $creditTypesTreatment;

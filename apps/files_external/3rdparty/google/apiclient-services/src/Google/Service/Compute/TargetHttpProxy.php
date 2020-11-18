@@ -23,6 +23,7 @@ class Google_Service_Compute_TargetHttpProxy extends Google_Model
   public $id;
   public $kind;
   public $name;
+  public $proxyBind;
   public $region;
   public $selfLink;
   public $urlMap;
@@ -74,6 +75,14 @@ class Google_Service_Compute_TargetHttpProxy extends Google_Model
   public function getName()
   {
     return $this->name;
+  }
+  public function setProxyBind($proxyBind)
+  {
+    $this->proxyBind = $proxyBind;
+  }
+  public function getProxyBind()
+  {
+    return $this->proxyBind;
   }
   public function setRegion($region)
   {

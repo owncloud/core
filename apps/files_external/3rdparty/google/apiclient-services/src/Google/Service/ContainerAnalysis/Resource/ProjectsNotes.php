@@ -26,16 +26,29 @@
 class Google_Service_ContainerAnalysis_Resource_ProjectsNotes extends Google_Service_Resource
 {
   /**
-   * Creates a new `Note`. (notes.create)
+   * Creates new notes in batch. (notes.batchCreate)
    *
-   * @param string $parent This field contains the project Id for example:
-   * "projects/{project_id}
+   * @param string $parent Required. The name of the project in the form of
+   * `projects/[PROJECT_ID]`, under which the notes are to be created.
+   * @param Google_Service_ContainerAnalysis_BatchCreateNotesRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_ContainerAnalysis_BatchCreateNotesResponse
+   */
+  public function batchCreate($parent, Google_Service_ContainerAnalysis_BatchCreateNotesRequest $postBody, $optParams = array())
+  {
+    $params = array('parent' => $parent, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('batchCreate', array($params), "Google_Service_ContainerAnalysis_BatchCreateNotesResponse");
+  }
+  /**
+   * Creates a new note. (notes.create)
+   *
+   * @param string $parent Required. The name of the project in the form of
+   * `projects/[PROJECT_ID]`, under which the note is to be created.
    * @param Google_Service_ContainerAnalysis_Note $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string noteId The ID to use for this note.
-   * @opt_param string name The name of the project. Should be of the form
-   * "providers/{provider_id}". @Deprecated
+   * @opt_param string noteId Required. The ID to use for this note.
    * @return Google_Service_ContainerAnalysis_Note
    */
   public function create($parent, Google_Service_ContainerAnalysis_Note $postBody, $optParams = array())
@@ -45,10 +58,10 @@ class Google_Service_ContainerAnalysis_Resource_ProjectsNotes extends Google_Ser
     return $this->call('create', array($params), "Google_Service_ContainerAnalysis_Note");
   }
   /**
-   * Deletes the given `Note` from the system. (notes.delete)
+   * Deletes the specified note. (notes.delete)
    *
-   * @param string $name The name of the note in the form of
-   * "providers/{provider_id}/notes/{NOTE_ID}"
+   * @param string $name Required. The name of the note in the form of
+   * `projects/[PROVIDER_ID]/notes/[NOTE_ID]`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_ContainerAnalysis_ContaineranalysisEmpty
    */
@@ -59,10 +72,10 @@ class Google_Service_ContainerAnalysis_Resource_ProjectsNotes extends Google_Ser
     return $this->call('delete', array($params), "Google_Service_ContainerAnalysis_ContaineranalysisEmpty");
   }
   /**
-   * Returns the requested `Note`. (notes.get)
+   * Gets the specified note. (notes.get)
    *
-   * @param string $name The name of the note in the form of
-   * "providers/{provider_id}/notes/{NOTE_ID}"
+   * @param string $name Required. The name of the note in the form of
+   * `projects/[PROVIDER_ID]/notes/[NOTE_ID]`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_ContainerAnalysis_Note
    */
@@ -73,16 +86,13 @@ class Google_Service_ContainerAnalysis_Resource_ProjectsNotes extends Google_Ser
     return $this->call('get', array($params), "Google_Service_ContainerAnalysis_Note");
   }
   /**
-   * Gets the access control policy for a note or an `Occurrence` resource.
-   * Requires `containeranalysis.notes.setIamPolicy` or
+   * Gets the access control policy for a note or an occurrence resource. Requires
+   * `containeranalysis.notes.setIamPolicy` or
    * `containeranalysis.occurrences.setIamPolicy` permission if the resource is a
-   * note or occurrence, respectively. Attempting to call this method on a
-   * resource without the required permission will result in a `PERMISSION_DENIED`
-   * error. Attempting to call this method on a non-existent resource will result
-   * in a `NOT_FOUND` error if the user has list permission on the project, or a
-   * `PERMISSION_DENIED` error otherwise. The resource takes the following
-   * formats: `projects/{PROJECT_ID}/occurrences/{OCCURRENCE_ID}` for occurrences
-   * and projects/{PROJECT_ID}/notes/{NOTE_ID} for notes (notes.getIamPolicy)
+   * note or occurrence, respectively. The resource takes the format
+   * `projects/[PROJECT_ID]/notes/[NOTE_ID]` for notes and
+   * `projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]` for occurrences.
+   * (notes.getIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * requested. See the operation documentation for the appropriate value for this
@@ -98,18 +108,18 @@ class Google_Service_ContainerAnalysis_Resource_ProjectsNotes extends Google_Ser
     return $this->call('getIamPolicy', array($params), "Google_Service_ContainerAnalysis_Policy");
   }
   /**
-   * Lists all `Notes` for a given project. (notes.listProjectsNotes)
+   * Lists notes for the specified project. (notes.listProjectsNotes)
    *
-   * @param string $parent This field contains the project Id for example:
-   * "projects/{PROJECT_ID}".
+   * @param string $parent Required. The name of the project to list notes for in
+   * the form of `projects/[PROJECT_ID]`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Number of notes to return in the list.
-   * @opt_param string name The name field will contain the project Id for
-   * example: "providers/{provider_id} @Deprecated
    * @opt_param string pageToken Token to provide to skip to a particular spot in
    * the list.
    * @opt_param string filter The filter expression.
+   * @opt_param int pageSize Number of notes to return in the list. Must be
+   * positive. Max allowed page size is 1000. If not specified, page size defaults
+   * to 20.
    * @return Google_Service_ContainerAnalysis_ListNotesResponse
    */
   public function listProjectsNotes($parent, $optParams = array())
@@ -119,10 +129,10 @@ class Google_Service_ContainerAnalysis_Resource_ProjectsNotes extends Google_Ser
     return $this->call('list', array($params), "Google_Service_ContainerAnalysis_ListNotesResponse");
   }
   /**
-   * Updates an existing `Note`. (notes.patch)
+   * Updates the specified note. (notes.patch)
    *
-   * @param string $name The name of the note. Should be of the form
-   * "projects/{provider_id}/notes/{note_id}".
+   * @param string $name Required. The name of the note in the form of
+   * `projects/[PROVIDER_ID]/notes/[NOTE_ID]`.
    * @param Google_Service_ContainerAnalysis_Note $postBody
    * @param array $optParams Optional parameters.
    *
@@ -136,17 +146,13 @@ class Google_Service_ContainerAnalysis_Resource_ProjectsNotes extends Google_Ser
     return $this->call('patch', array($params), "Google_Service_ContainerAnalysis_Note");
   }
   /**
-   * Sets the access control policy on the specified `Note` or `Occurrence`.
-   * Requires `containeranalysis.notes.setIamPolicy` or
+   * Sets the access control policy on the specified note or occurrence. Requires
+   * `containeranalysis.notes.setIamPolicy` or
    * `containeranalysis.occurrences.setIamPolicy` permission if the resource is a
-   * `Note` or an `Occurrence`, respectively. Attempting to call this method
-   * without these permissions will result in a ` `PERMISSION_DENIED` error.
-   * Attempting to call this method on a non-existent resource will result in a
-   * `NOT_FOUND` error if the user has `containeranalysis.notes.list` permission
-   * on a `Note` or `containeranalysis.occurrences.list` on an `Occurrence`, or a
-   * `PERMISSION_DENIED` error otherwise. The resource takes the following
-   * formats: `projects/{projectid}/occurrences/{occurrenceid}` for occurrences
-   * and projects/{projectid}/notes/{noteid} for notes (notes.setIamPolicy)
+   * note or an occurrence, respectively. The resource takes the format
+   * `projects/[PROJECT_ID]/notes/[NOTE_ID]` for notes and
+   * `projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]` for occurrences.
+   * (notes.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * specified. See the operation documentation for the appropriate value for this
@@ -162,14 +168,11 @@ class Google_Service_ContainerAnalysis_Resource_ProjectsNotes extends Google_Ser
     return $this->call('setIamPolicy', array($params), "Google_Service_ContainerAnalysis_Policy");
   }
   /**
-   * Returns the permissions that a caller has on the specified note or occurrence
-   * resource. Requires list permission on the project (for example,
-   * "storage.objects.list" on the containing bucket for testing permission of an
-   * object). Attempting to call this method on a non-existent resource will
-   * result in a `NOT_FOUND` error if the user has list permission on the project,
-   * or a `PERMISSION_DENIED` error otherwise. The resource takes the following
-   * formats: `projects/{PROJECT_ID}/occurrences/{OCCURRENCE_ID}` for
-   * `Occurrences` and `projects/{PROJECT_ID}/notes/{NOTE_ID}` for `Notes`
+   * Returns the permissions that a caller has on the specified note or
+   * occurrence. Requires list permission on the project (for example,
+   * `containeranalysis.notes.list`). The resource takes the format
+   * `projects/[PROJECT_ID]/notes/[NOTE_ID]` for notes and
+   * `projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]` for occurrences.
    * (notes.testIamPermissions)
    *
    * @param string $resource REQUIRED: The resource for which the policy detail is

@@ -80,11 +80,11 @@ class Google_Service_Apigee_Resource_OrganizationsEnvgroupsAttachments extends G
    * following format: `organizations/{org}/envgroups/{envgroup}`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Maximum number of environment group attachments to
+   * return. The page size defaults to 25.
    * @opt_param string pageToken Page token, returned by a previous
    * ListEnvironmentGroupAttachments call, that you can use to retrieve the next
    * page.
-   * @opt_param int pageSize Maximum number of environment group attachments to
-   * return. The page size defaults to 25.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ListEnvironmentGroupAttachmentsResponse
    */
   public function listOrganizationsEnvgroupsAttachments($parent, $optParams = array())

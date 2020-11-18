@@ -101,10 +101,6 @@ class Google_Service_DisplayVideo_Resource_AdvertisersNegativeKeywordListsNegati
    * `{field} {operator} {value}`. * The operator must be `CONTAINS (:)`. *
    * Supported fields: - `keywordValue` Examples: * All negative keywords for
    * which the keyword value contains "google": `keywordValue : "google"`
-   * @opt_param string pageToken A token identifying a page of results the server
-   * should return. Typically, this is the value of next_page_token returned from
-   * the previous call to `ListNegativeKeywords` method. If not specified, the
-   * first page of results will be returned.
    * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
    * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
    * if an invalid value is specified.
@@ -112,6 +108,10 @@ class Google_Service_DisplayVideo_Resource_AdvertisersNegativeKeywordListsNegati
    * are: * `keywordValue` (default) The default sorting order is ascending. To
    * specify descending order for a field, a suffix " desc" should be added to the
    * field name. Example: `keywordValue desc`.
+   * @opt_param string pageToken A token identifying a page of results the server
+   * should return. Typically, this is the value of next_page_token returned from
+   * the previous call to `ListNegativeKeywords` method. If not specified, the
+   * first page of results will be returned.
    * @return Google_Service_DisplayVideo_ListNegativeKeywordsResponse
    */
   public function listAdvertisersNegativeKeywordListsNegativeKeywords($advertiserId, $negativeKeywordListId, $optParams = array())

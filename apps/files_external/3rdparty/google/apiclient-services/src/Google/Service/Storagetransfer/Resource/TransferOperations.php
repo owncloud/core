@@ -85,8 +85,8 @@ class Google_Service_Storagetransfer_Resource_TransferOperations extends Google_
    * FAILED, and ABORTED.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The list page token.
    * @opt_param int pageSize The list page size. The max allowed value is 256.
+   * @opt_param string pageToken The list page token.
    * @return Google_Service_Storagetransfer_ListOperationsResponse
    */
   public function listTransferOperations($name, $filter, $optParams = array())

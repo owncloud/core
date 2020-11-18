@@ -38,11 +38,11 @@ class Google_Service_Dataflow_Resource_ProjectsLocationsJobsStages extends Googl
    * @param string $stageId The stage for which to fetch information.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string endTime Upper time bound of work items to include, by start
+   * time.
    * @opt_param int pageSize If specified, determines the maximum number of work
    * items to return. If unspecified, the service may choose an appropriate
    * default, or may return an arbitrarily large number of results.
-   * @opt_param string endTime Upper time bound of work items to include, by start
-   * time.
    * @opt_param string startTime Lower time bound of work items to include, by
    * start time.
    * @opt_param string pageToken If supplied, this should be the value of
