@@ -24,7 +24,7 @@
 				retypePasswordObj.val('');
 				passwordObj.parent().addClass('shake');
 				$('#message').addClass('warning');
-				$('#message').text(t('core', 'Passwords do not match'));
+				$('#message').text(t('settings', 'Passwords do not match'));
 				$('#message').show();
 				passwordObj.focus();
 			}
@@ -39,7 +39,7 @@
 			errorMessage = responseObj.message;
 
 			if (!errorMessage) {
-				errorMessage = t('core', 'Failed to set password. Please contact your administrator.');
+				errorMessage = t('settings', 'Failed to set password. Please contact your administrator.');
 			}
 
 			errorObject.text(errorMessage);

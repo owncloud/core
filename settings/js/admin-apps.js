@@ -33,7 +33,7 @@ OC.Settings = OC.Settings || {};
 OC.Settings.Apps = OC.Settings.Apps || {
 	setupGroupsSelect: function($elements) {
 		OC.Settings.setupGroupsSelect($elements, {
-			placeholder: t('core', 'All')
+			placeholder: t('settings', 'All')
 		});
 	},
 

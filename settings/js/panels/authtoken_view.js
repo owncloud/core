@@ -30,7 +30,7 @@
 		+ '<td class="has-tooltip" title="{{name}}"><span class="token-name">{{name}}</span></td>'
 		+ '<td><span class="last-activity has-tooltip" title="{{lastActivityTime}}">{{lastActivity}}</span></td>'
 		+ '{{#if canDelete}}'
-		+ '<td><a class="icon-delete has-tooltip" title="' + t('core', 'Disconnect') + '"></a></td>'
+		+ '<td><a class="icon-delete has-tooltip" title="' + t('settings', 'Disconnect') + '"></a></td>'
 		+ '{{else}}'
 		+ '<td></td>'
 		+ '{{/if}}'
@@ -170,7 +170,7 @@
 				_this.render();
 			});
 			$.when(loadingTokens).fail(function() {
-				OC.Notification.showTemporary(t('core', 'Error while loading browser sessions and device tokens'));
+				OC.Notification.showTemporary(t('settings', 'Error while loading browser sessions and device tokens'));
 			});
 		},
 
@@ -179,7 +179,7 @@
 
 			var deviceName = this._tokenName.val();
 			if (!deviceName) {
-				OC.Notification.showTemporary(t('core', 'Empty app name is not allowed.'));
+				OC.Notification.showTemporary(t('settings', 'Empty app name is not allowed.'));
 				return;
 			}
 
@@ -201,7 +201,7 @@
 				_this._tokenName.val('');
 			});
 			$.when(creatingToken).fail(function() {
-				OC.Notification.showTemporary(t('core', 'Error while creating device token'));
+				OC.Notification.showTemporary(t('settings', 'Error while creating device token'));
 			});
 			$.when(creatingToken).always(function() {
 				_this._toggleAddingToken(false);
@@ -242,7 +242,7 @@
 
 			var _this = this;
 			$.when(destroyingToken).fail(function() {
-				OC.Notification.showTemporary(t('core', 'Error while deleting the token'));
+				OC.Notification.showTemporary(t('settings', 'Error while deleting the token'));
 			});
 			$.when(destroyingToken).always(function() {
 				_this.render();
