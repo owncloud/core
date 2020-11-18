@@ -1,7 +1,6 @@
 { "translations": {
     "Server to server sharing is not enabled on this server" : "Współdzielenie między serwerami nie jest uruchomione na tym serwerze",
     "The mountpoint name contains invalid characters." : "Nazwa zamontowanego zasobu zawiera niedozwolone znaki.",
-    "Invalid or untrusted SSL certificate" : "Niewłaściwy lub niezaufany certyfikat SSL",
     "Could not authenticate to remote share, password might be wrong" : "Nie można zalogować do zdalnego zasobu, hasło może być niepoprawne",
     "Storage not valid" : "Zasób nie jest prawidłowy",
     "Couldn't add remote share" : "Nie można dodać zdalnego folderu",

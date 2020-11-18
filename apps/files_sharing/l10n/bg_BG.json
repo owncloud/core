@@ -2,7 +2,6 @@
     "Server to server sharing is not enabled on this server" : "Споделяне между сървъри не е разрешено на този сървър.",
     "The mountpoint name contains invalid characters." : "Името на mountpoint-a съдържа невалидни символи.",
     "Not allowed to create a federated share with the same user server" : "Не е разрешено създаването на федаривно споделяне със същия потребителски сърър",
-    "Invalid or untrusted SSL certificate" : "Невалиден или ненадежден SSL сертификат",
     "Could not authenticate to remote share, password might be wrong" : "Неуспешно автентициране към отсрещната страна, паролата може да е грешна",
     "Storage not valid" : "Невалидно дисково пространство.",
     "Couldn't add remote share" : "Неуспешно добавяне на отдалечена споделена директория.",

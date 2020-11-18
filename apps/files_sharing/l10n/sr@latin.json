@@ -1,7 +1,6 @@
 { "translations": {
     "Server to server sharing is not enabled on this server" : "Deljenje od servera do servera nije omogućeno na ovom serveru.",
     "The mountpoint name contains invalid characters." : "Ime tačke za montiranje sadrži neispravne karaktere.",
-    "Invalid or untrusted SSL certificate" : "Nevažeći SSL sertifikat ili SSL sertifikat koji nije od poverenja.",
     "Couldn't add remote share" : "Nemoguće dodavanje udaljenog deljenog direktorijuma",
     "Shared with you" : "Deljeno sa Vama",
     "Shared with others" : "Deljeno sa ostalima",

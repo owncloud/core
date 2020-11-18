@@ -1,7 +1,6 @@
 { "translations": {
     "Server to server sharing is not enabled on this server" : "Šajā serverī koplietošana starp serveriem nav ieslēgta",
     "The mountpoint name contains invalid characters." : "Montēšanas punkta nosaukums satur nederīgus simbolus.",
-    "Invalid or untrusted SSL certificate" : "Nepareizs vai neuzticams SSL sertifikāts",
     "Could not authenticate to remote share, password might be wrong" : "Nesanāca autentificēties pie attālinātās koplietotnes, parole varētu būt nepareiza",
     "Storage not valid" : "Glabātuve nav derīga",
     "Couldn't add remote share" : "Nevarēja pievienot attālināto koplietotni",

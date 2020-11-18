@@ -2,7 +2,6 @@
     "Server to server sharing is not enabled on this server" : "Server-till-server-delning är inte aktiverat på denna server",
     "The mountpoint name contains invalid characters." : "Monteringspunktens namn innehåller ogiltiga tecken.",
     "Not allowed to create a federated share with the same user server" : "Ej tillåten att skapa en federerad delning med samma användarserver.",
-    "Invalid or untrusted SSL certificate" : "Ogiltigt eller ej betrott SSL-certifikat",
     "Could not authenticate to remote share, password might be wrong" : "Kunde ej autensiera fjärrdelningen, lösenordet kan vara fel",
     "Storage not valid" : "Lagring ej giltig",
     "Couldn't add remote share" : "Kunde inte lägga till fjärrutdelning",

@@ -4,7 +4,6 @@ OC.L10N.register(
     "Server to server sharing is not enabled on this server" : "Не е овозможено споделувањето од сервер на сервер на вашиот сервер",
     "The mountpoint name contains invalid characters." : "Името на монтираната точка содржи невалидни знаци.",
     "Not allowed to create a federated share with the same user server" : "Не е дозволено да креирате федерален удел со истиот кориснички сервер",
-    "Invalid or untrusted SSL certificate" : "SSL сертификат кој е невалиден или недоверлив",
     "Could not authenticate to remote share, password might be wrong" : "Не можам да се автентицирам на оддалеченото споделевање, веројатно лозинката не е исправна",
     "Storage not valid" : "Сториџот не е валиден",
     "Couldn't add remote share" : "Не можам да додадам оддалечено споделување",

@@ -1,7 +1,6 @@
 { "translations": {
     "Server to server sharing is not enabled on this server" : "Дељење између сервера није укључено на овом серверу",
     "The mountpoint name contains invalid characters." : "Назив тачке монтирања садржи неисправне знакове.",
-    "Invalid or untrusted SSL certificate" : "Неисправан или неповерљив ССЛ сертификат",
     "Could not authenticate to remote share, password might be wrong" : "Не могу да се пријавим на удаљено дељење. Лозинка је можда погрешна",
     "Storage not valid" : "Складиште није исправно",
     "Couldn't add remote share" : "Не могу да додам удаљено дељење",

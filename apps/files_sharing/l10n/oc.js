@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Server to server sharing is not enabled on this server" : "Lo partiment de servidor a servidor es pas activat sus aqueste servidor",
     "The mountpoint name contains invalid characters." : "Lo nom del punt de montatge conten de caractèrs invalids.",
-    "Invalid or untrusted SSL certificate" : "Certificat SSL invalid o pas fisable",
     "Could not authenticate to remote share, password might be wrong" : "Impossible de s'autentificar al partiment distant : lo senhal es probablament incorrècte",
     "Storage not valid" : "Supòrt d'emmagazinatge invalid",
     "Couldn't add remote share" : "Impossible d'apondre lo partiment distant",

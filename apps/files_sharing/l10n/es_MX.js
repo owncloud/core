@@ -4,7 +4,6 @@ OC.L10N.register(
     "Server to server sharing is not enabled on this server" : "El compartir de servidor a servidor no está habilitado en este servidor",
     "The mountpoint name contains invalid characters." : "El nombre del punto de montaje contiene caracteres inválidos.",
     "Not allowed to create a federated share with the same user server" : "No se permite crear un compartimiento federado con el mismo servidor de usuario",
-    "Invalid or untrusted SSL certificate" : "Certificado SSL inválido o no es de confianza",
     "Could not authenticate to remote share, password might be wrong" : "No se pudo autenticar para compartir remotamente, la contraseña puede estar incorrecta",
     "Storage not valid" : "Almacenamiento no válido",
     "Couldn't add remote share" : "No se pudo agregar compartimiento remoto",

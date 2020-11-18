@@ -4,7 +4,6 @@ OC.L10N.register(
     "Server to server sharing is not enabled on this server" : "Ndarja mes shërbyesish s’është e aktivizuar në këtë shërbyes",
     "The mountpoint name contains invalid characters." : "Emri i pikës së montimit përmban shenja të pavlefshme.",
     "Not allowed to create a federated share with the same user server" : "S’ka leje të krijojë një ndarje të federuar me të njëjtin shërbyes përdoruesi",
-    "Invalid or untrusted SSL certificate" : "Dëshmi SSL e pavlefshme ose e pabesuar",
     "Could not authenticate to remote share, password might be wrong" : "S’bëri dot mirëfilltësimin te ndarja e largët, fjalëkalimi mund të jetë i gabuar",
     "Storage not valid" : "Depozitë jo e vlefshme",
     "Couldn't add remote share" : "S’shtoi dot ndarje të largët",

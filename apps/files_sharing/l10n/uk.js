@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Server to server sharing is not enabled on this server" : "На даному сервері вимкнута можливість передачі даних між серверами",
     "The mountpoint name contains invalid characters." : "Ім’я точки монтування містить неприпустимі символи.",
-    "Invalid or untrusted SSL certificate" : "Недійсній або не довірений SSL-сертифікат",
     "Could not authenticate to remote share, password might be wrong" : "Не вдалося провести аутентифікацію для доступу до віддаленого сховища, можливо неправильно вказано пароль",
     "Storage not valid" : "Cховище недоступне",
     "Couldn't add remote share" : "Неможливо додати віддалену загальну теку",

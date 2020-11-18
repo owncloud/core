@@ -4,7 +4,6 @@ OC.L10N.register(
     "Server to server sharing is not enabled on this server" : "Partajarea server-server nu este activată pe acest server",
     "The mountpoint name contains invalid characters." : "Numele de montare conţine caractere invalide.",
     "Not allowed to create a federated share with the same user server" : "Nu este permisă crearea unei partajări federalizate cu acelaşi utilizator server",
-    "Invalid or untrusted SSL certificate" : "Certificat SSL invalid sau emis de o autoritate care nu se află pe lista celor în care se are încredere",
     "Could not authenticate to remote share, password might be wrong" : "Nu mă pot autentifica la partajarea remote, parola poate fi greşită",
     "Storage not valid" : "Stocarea este invalidă",
     "Couldn't add remote share" : "Nu pot adăuga o partajare remote",

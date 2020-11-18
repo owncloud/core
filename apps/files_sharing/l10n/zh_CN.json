@@ -2,7 +2,6 @@
     "Server to server sharing is not enabled on this server" : "此服务器未启用服务器到服务器分享功能",
     "The mountpoint name contains invalid characters." : "挂载点的名称包含无效字符。",
     "Not allowed to create a federated share with the same user server" : "不允许使用相同的用户服务器创建联合共享",
-    "Invalid or untrusted SSL certificate" : "无效或是不被信任的 SSL 证书",
     "Could not authenticate to remote share, password might be wrong" : "无法验证远程共享，可能是密码错误",
     "Storage not valid" : "存储无效",
     "Couldn't add remote share" : "无法添加远程分享",

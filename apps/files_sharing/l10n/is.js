@@ -4,7 +4,6 @@ OC.L10N.register(
     "Server to server sharing is not enabled on this server" : "Deiling frá þjóni til þjóns er ekki virk á þessum þjóni",
     "The mountpoint name contains invalid characters." : "Heiti tengipunktsins inniheldur ógilda stafi.",
     "Not allowed to create a federated share with the same user server" : "Ekki er heimilt að búa til skýjasambandssameign með sama notendaþjóni",
-    "Invalid or untrusted SSL certificate" : "Ógilt eða vantreyst SSL-skilríki",
     "Could not authenticate to remote share, password might be wrong" : "Gat ekki auðkennt á fjartengdri sameign, lykilorð gæti verið rangt",
     "Storage not valid" : "Gagnageymslan er ekki gild",
     "Couldn't add remote share" : "Gat ekki bætt við fjartengdri sameign",

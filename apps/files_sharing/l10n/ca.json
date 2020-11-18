@@ -2,7 +2,6 @@
     "Server to server sharing is not enabled on this server" : "La compartició entre servidors no està activada en aquest servidor",
     "The mountpoint name contains invalid characters." : "El punt de muntatge conté caràcters invàlids.",
     "Not allowed to create a federated share with the same user server" : "No s'ha permés la creació d'un recurs compartit federat amb el mateix servidor de l'usuari",
-    "Invalid or untrusted SSL certificate" : "El certificat SSL és invàlid o no és fiable",
     "Could not authenticate to remote share, password might be wrong" : "No s'ha pogut autenticar al recurs compartit remot, la contrasenya potser estigui equivocada",
     "Storage not valid" : "Emmagatzemament no valit",
     "Couldn't add remote share" : "No s'ha pogut afegir una compartició remota",

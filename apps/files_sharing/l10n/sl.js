@@ -4,7 +4,6 @@ OC.L10N.register(
     "Server to server sharing is not enabled on this server" : "Na tem strežniku ni omogočena možnost souporabe strežnika s strežnikom.",
     "The mountpoint name contains invalid characters." : "Ime točke priklopa vsebuje neveljavne znake.",
     "Not allowed to create a federated share with the same user server" : "Ni dovoljeno ustvariti souporabe zveznega oblaka z istim uporabnikom",
-    "Invalid or untrusted SSL certificate" : "Neveljavno oziroma nepotrjeno potrdilo SSL",
     "Could not authenticate to remote share, password might be wrong" : "Ni mogoče overiti istovetnosti oddaljene mape za souporabo. Najverjetneje je uporabljeno napačno geslo.",
     "Storage not valid" : "Shramba ni veljavna",
     "Couldn't add remote share" : "Ni mogoče dodati oddaljenega mesta za souporabo",

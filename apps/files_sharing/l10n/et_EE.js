@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Server to server sharing is not enabled on this server" : "Serverist serverisse jagamine pole antud serveris lubatud",
     "The mountpoint name contains invalid characters." : "Ühenduspunkti nimes on vigaseid märke.",
-    "Invalid or untrusted SSL certificate" : "Vigane või tundmatu SSL sertifikaat",
     "Storage not valid" : "Andmehoidla pole korrektne",
     "Couldn't add remote share" : "Ei suutnud lisada kaugjagamist",
     "Shared with you" : "Sinuga jagatud",

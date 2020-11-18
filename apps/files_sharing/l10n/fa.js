@@ -4,7 +4,6 @@ OC.L10N.register(
     "Server to server sharing is not enabled on this server" : "اشتراک سرور به سرور در این سرور فعال نیست .",
     "The mountpoint name contains invalid characters." : "نام نقطه ی اتصال حاوی کاراکتر های غیرمجاز است.",
     "Not allowed to create a federated share with the same user server" : "ایجاد اشتراک گذاری گروهی با کاربر سرور یکسان مجاز نمی باشد.",
-    "Invalid or untrusted SSL certificate" : "گواهینامه SSL غیر قابل اعتماد یا غیر معتبر است.",
     "Could not authenticate to remote share, password might be wrong" : "احرازهویت برای اشتراک‌گذاری راه‌دور انجام نشد، احتمالا رمزعبور نادرست است",
     "Storage not valid" : "فضای ذخیره‌سازی معتبر نیست",
     "Couldn't add remote share" : "امکان افزودن اشتراک گذاری از راه دور وجود ندارد",

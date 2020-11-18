@@ -2,7 +2,6 @@ OC.L10N.register(
     "files_sharing",
     {
     "Server to server sharing is not enabled on this server" : "Compartir entre servidores no está habilitado en este servidor",
-    "Invalid or untrusted SSL certificate" : "Certificado SSL inválido o no de confianza",
     "Couldn't add remote share" : "No se puede agregar el compartido remoto",
     "Shared with you" : "Compartido contigo",
     "Shared with others" : "Compartido con otros",

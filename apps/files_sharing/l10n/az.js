@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Server to server sharing is not enabled on this server" : "Bu serverdə, serverlərarası yayımlanma aktiv deyil",
     "The mountpoint name contains invalid characters." : "Bərkidilmə nöqtəsinin adında yalnış simvollar mövcuddur. ",
-    "Invalid or untrusted SSL certificate" : "Yalnış yada inam listindən kənar SSL sertifikatı",
     "Could not authenticate to remote share, password might be wrong" : "Uzaqda olan paylaşımın əslliyini yoxlamaq olmur və ola bilər ki, şifrə yalnışdır. ",
     "Storage not valid" : "Depo etibarlı deyil",
     "Couldn't add remote share" : "Uzaqda olan yayımlanmanı əlavə etmək mümkün olmadı",

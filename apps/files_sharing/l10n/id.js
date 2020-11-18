@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Server to server sharing is not enabled on this server" : "Berbagi server ke server tidak diaktifkan pada server ini",
     "The mountpoint name contains invalid characters." : "Nama mount point berisi karakter yang tidak sah.",
-    "Invalid or untrusted SSL certificate" : "Sertifikast SSL tidak sah atau tidak terpercaya",
     "Could not authenticate to remote share, password might be wrong" : "Tidak dapat mengautentikasi berbagi remote, kata sandi mungkin salah",
     "Storage not valid" : "Penyimpanan tidak sah",
     "Couldn't add remote share" : "Tidak dapat menambahkan berbagi remote",

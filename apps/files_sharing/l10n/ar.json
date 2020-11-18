@@ -2,7 +2,6 @@
     "Server to server sharing is not enabled on this server" : "مشاركة الخادم إلى الخادم غير مفعلة على هذا الخادم",
     "The mountpoint name contains invalid characters." : "يحتوي اسم نقطة التركيب على أحرف غير صالحة.",
     "Not allowed to create a federated share with the same user server" : "غير مسموح بإنشاء مشاركة موحدة مع خادم المستخدم نفسه",
-    "Invalid or untrusted SSL certificate" : "شهادة SSL غير صالحة أو غير موثوقة",
     "Could not authenticate to remote share, password might be wrong" : "لا يمكن توثيق المشاركة عن بُعد، ربما تكون كلمة المرور خاطئة",
     "Storage not valid" : "التخزين غير صالح",
     "Couldn't add remote share" : "تعذّرت إضافة المشاركة عن بُعد",

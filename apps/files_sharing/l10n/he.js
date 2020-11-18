@@ -4,7 +4,6 @@ OC.L10N.register(
     "Server to server sharing is not enabled on this server" : "שיתוף שרת לשרת לא מופעל בשרת זה",
     "The mountpoint name contains invalid characters." : "שם ה- mountpoint מכיל תווים לא חוקיים.",
     "Not allowed to create a federated share with the same user server" : "יצירת שיתוף מאוגד עם אותו שרת משתמש אסורה",
-    "Invalid or untrusted SSL certificate" : "תעודת SSL לא חוקית או לא בטוחה",
     "Could not authenticate to remote share, password might be wrong" : "לא ניתן לאמת שיתוף חיצוני, ייתכן שהסיסמא שגוייה",
     "Storage not valid" : "אחסון לא חוקי",
     "Couldn't add remote share" : "לא ניתן להוסיף שיתוף חיצוני",

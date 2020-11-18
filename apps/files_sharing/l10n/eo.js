@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Server to server sharing is not enabled on this server" : "Interservila kunhavo ne kapabliĝis en ĉi tiu servilo",
     "Not allowed to create a federated share with the same user server" : "Ne kreeblas federa kunhavo per la sama uzantoservilo",
-    "Invalid or untrusted SSL certificate" : "SSL-atestilo ne validas aŭ ne fidindas",
     "Storage not valid" : "Memoro ne validas",
     "Couldn't add remote share" : "Ne aldoneblas fora kunhavo",
     "Shared with you" : "Kunhavata kun vi",

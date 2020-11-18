@@ -2,7 +2,6 @@
     "Server to server sharing is not enabled on this server" : "Ο διαμοιρασμός μεταξύ διακομιστών δεν έχει ενεργοποιηθεί σε αυτόν το διακομιστή",
     "The mountpoint name contains invalid characters." : "Το όνομα σημείου προσάρτησης περιέχει μη έγκυρους χαρακτήρες.",
     "Not allowed to create a federated share with the same user server" : "Δεν επιτρέπεται η δημιουργία federated κοινόχρηστου με τον ίδιο διακομιστή χρήστη",
-    "Invalid or untrusted SSL certificate" : "Μη έγκυρο ή μη έμπιστο πιστοποιητικό SSL",
     "Could not authenticate to remote share, password might be wrong" : "Αδύνατη πιστοποίηση στο απομακρυσμένο κοινόχρηστο, μπορεί να είναι λάθος το συνθηματικό",
     "Storage not valid" : "Μη έγκυρος αποθηκευτικός χώρος",
     "Couldn't add remote share" : "Αδυναμία προσθήκης απομακρυσμένου κοινόχρηστου",

@@ -2,7 +2,6 @@
     "Server to server sharing is not enabled on this server" : "Server to server sharing is not enabled on this server",
     "The mountpoint name contains invalid characters." : "The mountpoint name contains invalid characters.",
     "Not allowed to create a federated share with the same user server" : "Not allowed to create a federated share with the same user server",
-    "Invalid or untrusted SSL certificate" : "Invalid or untrusted SSL certificate",
     "Could not authenticate to remote share, password might be wrong" : "Could not authenticate to remote share, password might be wrong",
     "Storage not valid" : "Storage not valid",
     "Couldn't add remote share" : "Couldn't add remote share",
