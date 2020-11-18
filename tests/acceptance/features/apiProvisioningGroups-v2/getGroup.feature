@@ -36,7 +36,7 @@ Feature: get group
     Then the OCS status code should be "404"
     And the HTTP status code should be "404"
 
-  @toImplementOnOCIS
+  @toImplementOnOCIS @issue-product-283
   Scenario Outline: admin tries to get users in a group but using wrong case of the group name
     Given group "<group_id1>" has been created
     When the administrator gets all the members of group "<group_id2>" using the provisioning API

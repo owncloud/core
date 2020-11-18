@@ -7,7 +7,7 @@ Feature: get user groups
   Background:
     Given using OCS API version "2"
 
-  @smokeTest @toImplementOnOCIS
+  @smokeTest @notToImplementOnOCIS
   Scenario: admin gets groups of an user
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "unused-group" has been created
@@ -119,7 +119,7 @@ Feature: get user groups
     And the OCS status code should be "200"
     And the HTTP status code should be "200"
 
-  @notToImplementOnOCIS @skipOnOcV10
+  @skipOnOcV10
   Scenario: admin gets groups of an user who is not in any groups
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "unused-group" has been created

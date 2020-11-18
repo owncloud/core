@@ -2569,7 +2569,6 @@ trait Provisioning {
 		if ($this->theGroupShouldBeAbleToBeDeleted($group)
 			&& $this->groupExists($group)
 		) {
-			$this->deleteTheGroupUsingTheProvisioningApi($group);
 			\error_log(
 				"INFORMATION: tried to delete group '$group'" .
 				" at the end of the scenario but it seems to still exist. " .

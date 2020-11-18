@@ -51,7 +51,7 @@ Feature: get groups
       | sysusers          |
       | sailing-lovers    |
 
-  @smokeTest @skipOnOcV10 @toImplementOnOCIS
+  @smokeTest @skipOnOcV10 @toImplementOnOCIS @issue-product-283
   Scenario: admin gets all the groups, including groups with mixed case
     Given group "case-sensitive-group" has been created
     And group "Case-Sensitive-Group" has been created

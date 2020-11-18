@@ -19,7 +19,7 @@ Feature: get groups
       | brand-new-group |
       | 0               |
 
-  @skipOnLdap @issue-ldap-499 @toImplementOnOCIS
+  @skipOnLdap @issue-ldap-499 @notToImplementOnOCIS
   Scenario: admin gets all the groups, including groups with mixed case
     Given group "case-sensitive-group" has been created
     And group "Case-Sensitive-Group" has been created
@@ -50,23 +50,23 @@ Feature: get groups
       | users             |
       | sysusers          |
       | sailing-lovers    |
-#
-#  @smokeTest @skipOnOcV10
-#  Scenario: admin gets all the groups, including groups with mixed case
-#    Given group "case-sensitive-group" has been created
-#    And group "Case-Sensitive-Group" has been created
-#    And group "CASE-SENSITIVE-GROUP" has been created
-#    When the administrator gets all the groups using the provisioning API
-#    Then the groups returned by the API should be
-#      | case-sensitive-group |
-#      | Case-Sensitive-Group |
-#      | CASE-SENSITIVE-GROUP |
-#      | philosophy-haters |
-#      | physics-lovers    |
-#      | polonium-lovers   |
-#      | quantum-lovers    |
-#      | radium-lovers     |
-#      | violin-haters     |
-#      | users             |
-#      | sysusers          |
-#      | sailing-lovers    |
+
+  @smokeTest @skipOnOcV10 @toImplementOnOCIS
+  Scenario: admin gets all the groups, including groups with mixed case
+    Given group "case-sensitive-group" has been created
+    And group "Case-Sensitive-Group" has been created
+    And group "CASE-SENSITIVE-GROUP" has been created
+    When the administrator gets all the groups using the provisioning API
+    Then the groups returned by the API should be
+      | case-sensitive-group |
+      | Case-Sensitive-Group |
+      | CASE-SENSITIVE-GROUP |
+      | philosophy-haters |
+      | physics-lovers    |
+      | polonium-lovers   |
+      | quantum-lovers    |
+      | radium-lovers     |
+      | violin-haters     |
+      | users             |
+      | sysusers          |
+      | sailing-lovers    |

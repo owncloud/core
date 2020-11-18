@@ -41,7 +41,7 @@ Feature: add users to group
       | admin:Pokhara@Nepal | Colon and @                             |
 
   # once the issue is fixed merge with scenario above
-  @skipOnLDAP @toImplementOnOCIS
+  @skipOnLDAP @toImplementOnOCIS @issue-product-284
   Scenario Outline: adding a user to a group
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And group "<group_id>" has been created
@@ -157,7 +157,7 @@ Feature: add users to group
     And user "brand-new-user" should not belong to group "brand-new-group"
 
   # merge this with scenario on line 62 once the issue is fixed
-  @issue-31015 @skipOnLDAP @toImplementOnOCIS
+  @issue-31015 @skipOnLDAP @toImplementOnOCIS @issue-product-284
   Scenario Outline: adding a user to a group that has a forward-slash in the group name
     Given user "brand-new-user" has been created with default attributes and skeleton files
     And the administrator sends a group creation request for group "<group_id>" using the provisioning API
