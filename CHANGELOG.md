@@ -44,6 +44,7 @@ Summary
 * Bugfix - Override browser Accept-Language header in ajax requests: [#38073](https://github.com/owncloud/core/pull/38073)
 * Bugfix - Prevent server error when loading invalid/corrupt translations: [#37799](https://github.com/owncloud/core/issues/37799)
 * Bugfix - SSL check when adding a public link to your ownCloud: [#4241](https://github.com/owncloud/enterprise/issues/4241)
+* Bugfix - Fix translations of some strings in settings: [#38119](https://github.com/owncloud/core/pull/38119)
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 * Change - Update sabre dependencies: [#37684](https://github.com/owncloud/core/pull/37684)
 * Change - Update google/apiclient from 2.5.0 to 2.6.0 and related dependencies: [#37687](https://github.com/owncloud/core/pull/37687)
@@ -427,6 +428,10 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4241
    https://github.com/owncloud/core/pull/38107
+
+* Bugfix - Fix translations of some strings in settings: [#38119](https://github.com/owncloud/core/pull/38119)
+
+   https://github.com/owncloud/core/pull/38119
 
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 
