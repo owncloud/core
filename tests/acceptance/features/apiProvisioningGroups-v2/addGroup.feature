@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS
+@api @provisioning_api-app-required @skipOnLDAP
 Feature: add groups
   As an admin
   I want to be able to add groups
@@ -33,17 +33,27 @@ Feature: add groups
       | Finance (NP)        | Space and brackets                      |
       | Admin&Finance       | Ampersand                               |
       | admin:Pokhara@Nepal | Colon and @                             |
-      | maintenance#123     | Hash sign                               |
       | maint+eng           | Plus sign                               |
       | $x<=>[y*z^2]!       | Maths symbols                           |
       | Mgmt\Middle         | Backslash                               |
-      | 50%pass             | Percent sign (special escaping happens) |
-      | 50%25=0             | %25 literal looks like an escaped "%"   |
-      | 50%2Eagle           | %2E literal looks like an escaped "."   |
-      | 50%2Fix             | %2F literal looks like an escaped slash |
-      | staff?group         | Question mark                           |
       | 😅 😆               | emoji                                   |
 
+  @toImplementOnOCIS @issue-product-284
+  Scenario Outline: admin creates a group
+    When the administrator sends a group creation request for group "<group_id>" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And group "<group_id>" should exist
+    Examples:
+      | group_id            | comment                                 |
+      | maintenance#123     | Hash sign                               |
+      | 50%pass             | Percent sign (special escaping happens) |
+      | 50%25=0             | %25 literal looks like an escaped "%"   |
+      | 50%2Fix             | %2F literal looks like an escaped slash |
+      | 50%2Eagle           | %2E literal looks like an escaped "."   |
+      | staff?group         | Question mark                           |
+
+  @toImplementOnOCIS
   Scenario Outline: group names are case-sensitive, multiple groups can exist with different upper and lower case names
     When the administrator sends a group creation request for group "<group_id1>" using the provisioning API
     And the administrator sends a group creation request for group "<group_id2>" using the provisioning API
@@ -58,7 +68,7 @@ Feature: add groups
       | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group |
       | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group |
 
-  @issue-31015 @skipOnOcV10
+  @issue-31015 @skipOnOcV10 @toImplementOnOCIS
   Scenario Outline: admin creates a group with a forward-slash in the group name
     When the administrator sends a group creation request for group "<group_id>" using the provisioning API
     Then the OCS status code should be "200"
