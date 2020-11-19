@@ -376,7 +376,7 @@ class ShareController extends Controller {
 			$shareTmpl['previewImage'] = $this->urlGenerator->linkToRouteAbsolute('core_ajax_public_preview',
 				['x' => 200, 'y' => 200, 'file' => $shareTmpl['directory_path'], 't' => $shareTmpl['dirToken']]);
 		} else {
-			$shareTmpl['previewImage'] = $this->urlGenerator->getAbsoluteURL($this->urlGenerator->imagePath('core', 'favicon-fb.png'));
+			$shareTmpl['previewImage'] = $this->urlGenerator->getAbsoluteURL($this->urlGenerator->imagePath('', 'favicon-fb.png'));
 		}
 
 		$this->eventDispatcher->dispatch('OCA\Files_Sharing::loadAdditionalScripts');
