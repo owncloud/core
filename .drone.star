@@ -301,12 +301,12 @@ def beforePipelines(ctx):
 def coveragePipelines(ctx):
 	# All pipelines that might have coverage or other test analysis reported
 	jsPipelines = javascript(ctx)
-	phpunitPipelines = phptests(ctx, 'phpunit')
-	phpintegrationPipelines = phptests(ctx, 'phpintegration')
-	if (jsPipelines == False) or (phpunitPipelines == False) or (phpintegrationPipelines == False):
+	phpUnitPipelines = phpTests(ctx, 'phpunit')
+	phpIntegrationPipelines = phpTests(ctx, 'phpintegration')
+	if (jsPipelines == False) or (phpUnitPipelines == False) or (phpIntegrationPipelines == False):
 		return False
 
-	return jsPipelines + phpunitPipelines + phpintegrationPipelines
+	return jsPipelines + phpUnitPipelines + phpIntegrationPipelines
 
 def stagePipelines(ctx):
 	# Pipelines that do not produce coverage or other test analysis reports
@@ -1068,7 +1068,7 @@ def javascript(ctx):
 
 	return [result]
 
-def phptests(ctx, testType):
+def phpTests(ctx, testType):
 	pipelines = []
 
 	if testType not in config:
@@ -1109,20 +1109,20 @@ def phptests(ctx, testType):
 			for item in config['defaults'][testType]:
 				default[item] = config['defaults'][testType][item]
 
-	phptestConfig = config[testType]
+	phpTestConfig = config[testType]
 
-	if type(phptestConfig) == "bool":
-		if phptestConfig:
+	if type(phpTestConfig) == "bool":
+		if phpTestConfig:
 			# the config has just True, so specify an empty dict that will get the defaults
-			phptestConfig = {}
+			phpTestConfig = {}
 		else:
 			return pipelines
 
-	if len(phptestConfig) == 0:
+	if len(phpTestConfig) == 0:
 		# the PHP test config is an empty dict, so specify a single section that will get the defaults
-		phptestConfig = {'doDefault': {}}
+		phpTestConfig = {'doDefault': {}}
 
-	for category, matrix in phptestConfig.items():
+	for category, matrix in phpTestConfig.items():
 		params = {}
 		for item in default:
 			params[item] = matrix[item] if item in matrix else default[item]
@@ -1149,10 +1149,10 @@ def phptests(ctx, testType):
 					if ((externalType == 'scality') or (params['scalityS3'] != False)):
 						needScality = True
 						filesExternalType = ''
-						primaryObjectstore = 'files_primary_s3'
+						primaryObjectStore = 'files_primary_s3'
 					else:
 						needScality = False
-						primaryObjectstore = ''
+						primaryObjectStore = ''
 
 					if (filesExternalType == ''):
 						# for the regular unit test runs, the clover coverage results are in a file named like:
@@ -1172,11 +1172,11 @@ def phptests(ctx, testType):
 
 					if ((externalType == 'scality') or (params['cephS3'] != False) or (params['scalityS3'] != False)):
 						# If we need S3 storage, then install the 'files_primary_s3' app
-						extraAppsDict  = {
+						extraAppsDict = {
 							'files_primary_s3': 'composer install'
 						}
 					else:
-						extraAppsDict  = {}
+						extraAppsDict = {}
 
 					for app, command in params['extraApps'].items():
 						extraAppsDict[app] = command
@@ -1208,7 +1208,7 @@ def phptests(ctx, testType):
 									'COVERAGE': params['coverage'],
 									'DB_TYPE': getDbName(db),
 									'FILES_EXTERNAL_TYPE': filesExternalType,
-									'PRIMARY_OBJECTSTORE': primaryObjectstore
+									'PRIMARY_OBJECTSTORE': primaryObjectStore
 								},
 								'commands': params['extraCommandsBeforeTestRun'] + [
 									command
@@ -1250,7 +1250,7 @@ def phptests(ctx, testType):
 									'from_secret': 'cache_s3_endpoint'
 								},
 								'bucket': 'cache',
-								'source': 'tests/output/coverage/clover-%s.xml'  % (name),
+								'source': 'tests/output/coverage/clover-%s.xml' % (name),
 								'target': '%s/%s/coverage' % (ctx.repo.slug, ctx.build.commit + '-${DRONE_BUILD_NUMBER}'),
 								'path_style': True,
 								'strip_prefix': 'tests/output/coverage',
@@ -1272,7 +1272,7 @@ def phptests(ctx, testType):
 										'from_secret': 'cache_s3_endpoint'
 									},
 									'bucket': 'cache',
-									'source': 'tests/output/coverage/clover-%s-%s.xml'  % (name, externalType),
+									'source': 'tests/output/coverage/clover-%s-%s.xml' % (name, externalType),
 									'target': '%s/%s/coverage' % (ctx.repo.slug, ctx.build.commit + '-${DRONE_BUILD_NUMBER}'),
 									'path_style': True,
 									'strip_prefix': 'tests/output/coverage',
@@ -2321,7 +2321,7 @@ def setupScality(phpVersion, scalityS3):
 			'cp /drone/src/apps/files_primary_s3/tests/drone/%s /drone/src/config' % configFile,
 			'php occ s3:create-bucket owncloud --accept-warning'
 		] + ([
-			'for I in $(seq 1 9); do php ./occ s3:create-bucket  owncloud$I --accept-warning; done',
+			'for I in $(seq 1 9); do php ./occ s3:create-bucket owncloud$I --accept-warning; done',
 		] if createExtraBuckets else [])
 	}]
 
