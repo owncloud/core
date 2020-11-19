@@ -76,8 +76,8 @@ class Google_Service_Apigee_Resource_OrganizationsEnvgroupsAttachments extends G
    * Lists all attachments of an environment group.
    * (attachments.listOrganizationsEnvgroupsAttachments)
    *
-   * @param string $parent Required. Name of the organization in the following
-   * format: `organizations/{org}`.
+   * @param string $parent Required. Name of the environment group in the
+   * following format: `organizations/{org}/envgroups/{envgroup}`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Maximum number of environment group attachments to

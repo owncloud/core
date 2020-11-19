@@ -18,6 +18,8 @@
 class Google_Service_TagManager_Entity extends Google_Model
 {
   public $changeStatus;
+  protected $clientType = 'Google_Service_TagManager_Client';
+  protected $clientDataType = '';
   protected $folderType = 'Google_Service_TagManager_Folder';
   protected $folderDataType = '';
   protected $tagType = 'Google_Service_TagManager_Tag';
@@ -34,6 +36,20 @@ class Google_Service_TagManager_Entity extends Google_Model
   public function getChangeStatus()
   {
     return $this->changeStatus;
+  }
+  /**
+   * @param Google_Service_TagManager_Client
+   */
+  public function setClient(Google_Service_TagManager_Client $client)
+  {
+    $this->client = $client;
+  }
+  /**
+   * @return Google_Service_TagManager_Client
+   */
+  public function getClient()
+  {
+    return $this->client;
   }
   /**
    * @param Google_Service_TagManager_Folder

@@ -39,6 +39,7 @@ class Google_Service_AccessContextManager extends Google_Service
   public $accessPolicies_accessLevels;
   public $accessPolicies_servicePerimeters;
   public $operations;
+  public $organizations_gcpUserAccessBindings;
   
   /**
    * Constructs the internal representation of the AccessContextManager service.
@@ -169,10 +170,6 @@ class Google_Service_AccessContextManager extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'accessLevelFormat' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -180,6 +177,10 @@ class Google_Service_AccessContextManager extends Google_Service
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'patch' => array(
@@ -265,13 +266,13 @@ class Google_Service_AccessContextManager extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'patch' => array(
@@ -347,6 +348,10 @@ class Google_Service_AccessContextManager extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -355,9 +360,77 @@ class Google_Service_AccessContextManager extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->organizations_gcpUserAccessBindings = new Google_Service_AccessContextManager_Resource_OrganizationsGcpUserAccessBindings(
+        $this,
+        $this->serviceName,
+        'gcpUserAccessBindings',
+        array(
+          'methods' => array(
+            'create' => array(
+              'path' => 'v1/{+parent}/gcpUserAccessBindings',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'delete' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'get' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'v1/{+parent}/gcpUserAccessBindings',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),'patch' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'updateMask' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),

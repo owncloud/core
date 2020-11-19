@@ -29,6 +29,7 @@ class Google_Service_ContainerAnalysis_Detail extends Google_Model
   public $package;
   public $packageType;
   public $severityName;
+  public $sourceUpdateTime;
 
   public function setCpeUri($cpeUri)
   {
@@ -119,5 +120,13 @@ class Google_Service_ContainerAnalysis_Detail extends Google_Model
   public function getSeverityName()
   {
     return $this->severityName;
+  }
+  public function setSourceUpdateTime($sourceUpdateTime)
+  {
+    $this->sourceUpdateTime = $sourceUpdateTime;
+  }
+  public function getSourceUpdateTime()
+  {
+    return $this->sourceUpdateTime;
   }
 }

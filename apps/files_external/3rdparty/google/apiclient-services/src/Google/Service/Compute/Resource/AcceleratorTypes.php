@@ -77,6 +77,9 @@ class Google_Service_Compute_Resource_AcceleratorTypes extends Google_Service_Re
    * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
+   * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
+   * which provides partial results in case of failure. The default value is false
+   * and the logic is the same as today.
    * @return Google_Service_Compute_AcceleratorTypeAggregatedList
    */
   public function aggregatedList($project, $optParams = array())
@@ -146,6 +149,9 @@ class Google_Service_Compute_Resource_AcceleratorTypes extends Google_Service_Re
    * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
+   * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
+   * which provides partial results in case of failure. The default value is false
+   * and the logic is the same as today.
    * @return Google_Service_Compute_AcceleratorTypeList
    */
   public function listAcceleratorTypes($project, $zone, $optParams = array())

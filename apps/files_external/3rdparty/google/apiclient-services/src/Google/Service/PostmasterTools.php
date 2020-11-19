@@ -112,19 +112,11 @@ class Google_Service_PostmasterTools extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'startDate.month' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'endDate.day' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'endDate.year' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'startDate.year' => array(
+                'endDate.day' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
@@ -136,11 +128,19 @@ class Google_Service_PostmasterTools extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'endDate.month' => array(
+                'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'pageSize' => array(
+                'startDate.month' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'startDate.year' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'endDate.month' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),

@@ -24,6 +24,7 @@ class Google_Service_Bigquery_JobConfigurationLoad extends Google_Collection
   protected $clusteringType = 'Google_Service_Bigquery_Clustering';
   protected $clusteringDataType = '';
   public $createDisposition;
+  public $decimalTargetTypes;
   protected $destinationEncryptionConfigurationType = 'Google_Service_Bigquery_EncryptionConfiguration';
   protected $destinationEncryptionConfigurationDataType = '';
   protected $destinationTableType = 'Google_Service_Bigquery_TableReference';
@@ -99,6 +100,14 @@ class Google_Service_Bigquery_JobConfigurationLoad extends Google_Collection
   public function getCreateDisposition()
   {
     return $this->createDisposition;
+  }
+  public function setDecimalTargetTypes($decimalTargetTypes)
+  {
+    $this->decimalTargetTypes = $decimalTargetTypes;
+  }
+  public function getDecimalTargetTypes()
+  {
+    return $this->decimalTargetTypes;
   }
   /**
    * @param Google_Service_Bigquery_EncryptionConfiguration

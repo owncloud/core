@@ -32,6 +32,7 @@ class Google_Service_Apigee_GoogleCloudApigeeV1Organization extends Google_Colle
   public $projectId;
   protected $propertiesType = 'Google_Service_Apigee_GoogleCloudApigeeV1Properties';
   protected $propertiesDataType = '';
+  public $runtimeDatabaseEncryptionKeyName;
   public $runtimeType;
   public $subscriptionType;
   public $type;
@@ -145,6 +146,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1Organization extends Google_Colle
   public function getProperties()
   {
     return $this->properties;
+  }
+  public function setRuntimeDatabaseEncryptionKeyName($runtimeDatabaseEncryptionKeyName)
+  {
+    $this->runtimeDatabaseEncryptionKeyName = $runtimeDatabaseEncryptionKeyName;
+  }
+  public function getRuntimeDatabaseEncryptionKeyName()
+  {
+    return $this->runtimeDatabaseEncryptionKeyName;
   }
   public function setRuntimeType($runtimeType)
   {

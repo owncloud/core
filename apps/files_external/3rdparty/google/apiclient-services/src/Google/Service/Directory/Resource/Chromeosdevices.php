@@ -65,14 +65,14 @@ class Google_Service_Directory_Resource_Chromeosdevices extends Google_Service_R
    *
    * @opt_param string projection Restrict information returned to a set of
    * selected fields.
-   * @opt_param int maxResults Maximum number of results to return.
-   * @opt_param string orderBy Column to use for sorting results
-   * @opt_param string pageToken Token to specify next page in the list
    * @opt_param string orgUnitPath Full path of the organizational unit or its ID
-   * @opt_param string query Search string in the format given at
-   * http://support.google.com/chromeos/a/bin/answer.py?answer=1698333
    * @opt_param string sortOrder Whether to return results in ascending or
    * descending order. Only of use when orderBy is also used
+   * @opt_param string query Search string in the format given at
+   * http://support.google.com/chromeos/a/bin/answer.py?answer=1698333
+   * @opt_param string orderBy Column to use for sorting results
+   * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string pageToken Token to specify next page in the list
    * @return Google_Service_Directory_ChromeOsDevices
    */
   public function listChromeosdevices($customerId, $optParams = array())

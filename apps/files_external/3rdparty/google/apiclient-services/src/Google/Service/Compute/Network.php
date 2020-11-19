@@ -28,6 +28,7 @@ class Google_Service_Compute_Network extends Google_Collection
   public $gatewayIPv4;
   public $id;
   public $kind;
+  public $mtu;
   public $name;
   protected $peeringsType = 'Google_Service_Compute_NetworkPeering';
   protected $peeringsDataType = 'array';
@@ -91,6 +92,14 @@ class Google_Service_Compute_Network extends Google_Collection
   public function getKind()
   {
     return $this->kind;
+  }
+  public function setMtu($mtu)
+  {
+    $this->mtu = $mtu;
+  }
+  public function getMtu()
+  {
+    return $this->mtu;
   }
   public function setName($name)
   {

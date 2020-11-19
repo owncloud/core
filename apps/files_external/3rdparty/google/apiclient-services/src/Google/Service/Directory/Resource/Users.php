@@ -43,12 +43,12 @@ class Google_Service_Directory_Resource_Users extends Google_Service_Resource
    * @param string $userKey Email or immutable ID of the user
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string projection What subset of fields to fetch for this user.
    * @opt_param string viewType Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC
    * view of the user.
    * @opt_param string customFieldMask Comma-separated list of schema names. All
    * fields from these schemas are fetched. This should only be set when
    * projection=custom.
-   * @opt_param string projection What subset of fields to fetch for this user.
    * @return Google_Service_Directory_User
    */
   public function get($userKey, $optParams = array())
@@ -78,26 +78,26 @@ class Google_Service_Directory_Resource_Users extends Google_Service_Resource
    *
    * @opt_param string sortOrder Whether to return results in ascending or
    * descending order.
+   * @opt_param string customer Immutable ID of the G Suite account. In case of
+   * multi-domain, to fetch all users for a customer, fill this field instead of
+   * domain.
+   * @opt_param string pageToken Token to specify next page in the list
+   * @opt_param string viewType Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC
+   * view of the user.
+   * @opt_param string domain Name of the domain. Fill this field to get users
+   * from only this domain. To return all users in a multi-domain fill customer
+   * field instead.
+   * @opt_param string orderBy Column to use for sorting results
+   * @opt_param string showDeleted If set to true, retrieves the list of deleted
+   * users. (Default: false)
    * @opt_param string query Query string search. Should be of the form "".
    * Complete documentation is at https: //developers.google.com/admin-
    * sdk/directory/v1/guides/search-users
    * @opt_param string projection What subset of fields to fetch for this user.
+   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string customFieldMask Comma-separated list of schema names. All
    * fields from these schemas are fetched. This should only be set when
    * projection=custom.
-   * @opt_param string viewType Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC
-   * view of the user.
-   * @opt_param string showDeleted If set to true, retrieves the list of deleted
-   * users. (Default: false)
-   * @opt_param string customer Immutable ID of the G Suite account. In case of
-   * multi-domain, to fetch all users for a customer, fill this field instead of
-   * domain.
-   * @opt_param int maxResults Maximum number of results to return.
-   * @opt_param string orderBy Column to use for sorting results
-   * @opt_param string domain Name of the domain. Fill this field to get users
-   * from only this domain. To return all users in a multi-domain fill customer
-   * field instead.
-   * @opt_param string pageToken Token to specify next page in the list
    * @return Google_Service_Directory_Users
    */
   public function listUsers($optParams = array())
@@ -185,27 +185,27 @@ class Google_Service_Directory_Resource_Users extends Google_Service_Resource
    *
    * @opt_param string viewType Whether to fetch the ADMIN_VIEW or DOMAIN_PUBLIC
    * view of the user.
-   * @opt_param string event Event on which subscription is intended
+   * @opt_param string showDeleted If set to true, retrieves the list of deleted
+   * users. (Default: false)
    * @opt_param string projection What subset of fields to fetch for this user.
-   * @opt_param string customFieldMask Comma-separated list of schema names. All
-   * fields from these schemas are fetched. This should only be set when
-   * projection=custom.
-   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string orderBy Column to use for sorting results
    * @opt_param string sortOrder Whether to return results in ascending or
    * descending order.
-   * @opt_param string domain Name of the domain. Fill this field to get users
-   * from only this domain. To return all users in a multi-domain fill customer
-   * field instead."
    * @opt_param string customer Immutable ID of the G Suite account. In case of
    * multi-domain, to fetch all users for a customer, fill this field instead of
    * domain.
-   * @opt_param string pageToken Token to specify next page in the list
-   * @opt_param string showDeleted If set to true, retrieves the list of deleted
-   * users. (Default: false)
    * @opt_param string query Query string search. Should be of the form "".
    * Complete documentation is at https: //developers.google.com/admin-
    * sdk/directory/v1/guides/search-users
+   * @opt_param string domain Name of the domain. Fill this field to get users
+   * from only this domain. To return all users in a multi-domain fill customer
+   * field instead."
+   * @opt_param string event Event on which subscription is intended
+   * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string pageToken Token to specify next page in the list
+   * @opt_param string customFieldMask Comma-separated list of schema names. All
+   * fields from these schemas are fetched. This should only be set when
+   * projection=custom.
    * @return Google_Service_Directory_Channel
    */
   public function watch(Google_Service_Directory_Channel $postBody, $optParams = array())

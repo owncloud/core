@@ -17,7 +17,7 @@
 
 class Google_Service_Dataflow_ExecutionStageSummary extends Google_Collection
 {
-  protected $collection_key = 'outputSource';
+  protected $collection_key = 'prerequisiteStage';
   protected $componentSourceType = 'Google_Service_Dataflow_ComponentSource';
   protected $componentSourceDataType = 'array';
   protected $componentTransformType = 'Google_Service_Dataflow_ComponentTransform';
@@ -29,6 +29,7 @@ class Google_Service_Dataflow_ExecutionStageSummary extends Google_Collection
   public $name;
   protected $outputSourceType = 'Google_Service_Dataflow_StageSource';
   protected $outputSourceDataType = 'array';
+  public $prerequisiteStage;
 
   /**
    * @param Google_Service_Dataflow_ComponentSource
@@ -109,5 +110,13 @@ class Google_Service_Dataflow_ExecutionStageSummary extends Google_Collection
   public function getOutputSource()
   {
     return $this->outputSource;
+  }
+  public function setPrerequisiteStage($prerequisiteStage)
+  {
+    $this->prerequisiteStage = $prerequisiteStage;
+  }
+  public function getPrerequisiteStage()
+  {
+    return $this->prerequisiteStage;
   }
 }

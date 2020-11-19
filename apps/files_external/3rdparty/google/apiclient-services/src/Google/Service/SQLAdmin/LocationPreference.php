@@ -19,6 +19,7 @@ class Google_Service_SQLAdmin_LocationPreference extends Google_Model
 {
   public $followGaeApplication;
   public $kind;
+  public $secondaryZone;
   public $zone;
 
   public function setFollowGaeApplication($followGaeApplication)
@@ -36,6 +37,14 @@ class Google_Service_SQLAdmin_LocationPreference extends Google_Model
   public function getKind()
   {
     return $this->kind;
+  }
+  public function setSecondaryZone($secondaryZone)
+  {
+    $this->secondaryZone = $secondaryZone;
+  }
+  public function getSecondaryZone()
+  {
+    return $this->secondaryZone;
   }
   public function setZone($zone)
   {

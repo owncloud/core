@@ -107,6 +107,11 @@ class Google_Service_YouTube_Resource_ChannelSections extends Google_Service_Res
    * nested properties.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string hl Return content in specified language
+   * @opt_param string id Return the ChannelSections with the given IDs for Stubby
+   * or Apiary.
+   * @opt_param string channelId Return the ChannelSections owned by the specified
+   * channel ID.
    * @opt_param string onBehalfOfContentOwner *Note:* This parameter is intended
    * exclusively for YouTube content partners. The *onBehalfOfContentOwner*
    * parameter indicates that the request's authorization credentials identify a
@@ -119,11 +124,6 @@ class Google_Service_YouTube_Resource_ChannelSections extends Google_Service_Res
    * the specified YouTube content owner.
    * @opt_param bool mine Return the ChannelSections owned by the authenticated
    * user.
-   * @opt_param string channelId Return the ChannelSections owned by the specified
-   * channel ID.
-   * @opt_param string hl Return content in specified language
-   * @opt_param string id Return the ChannelSections with the given IDs for Stubby
-   * or Apiary.
    * @return Google_Service_YouTube_ChannelSectionListResponse
    */
   public function listChannelSections($part, $optParams = array())

@@ -69,24 +69,24 @@ class Google_Service_Directory_Resource_Groups extends Google_Service_Resource
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string customer Immutable ID of the G Suite account. In case of
+   * multi-domain, to fetch all groups for a customer, fill this field instead of
+   * domain.
+   * @opt_param int maxResults Maximum number of results to return. Max allowed
+   * value is 200.
+   * @opt_param string orderBy Column to use for sorting results
+   * @opt_param string query Query string search. Should be of the form "".
+   * Complete documentation is at https: //developers.google.com/admin-
+   * sdk/directory/v1/guides/search-groups
+   * @opt_param string pageToken Token to specify next page in the list
+   * @opt_param string sortOrder Whether to return results in ascending or
+   * descending order. Only of use when orderBy is also used
    * @opt_param string domain Name of the domain. Fill this field to get groups
    * from only this domain. To return all groups in a multi-domain fill customer
    * field instead.
    * @opt_param string userKey Email or immutable ID of the user if only those
    * groups are to be listed, the given user is a member of. If it's an ID, it
    * should match with the ID of the user object.
-   * @opt_param string sortOrder Whether to return results in ascending or
-   * descending order. Only of use when orderBy is also used
-   * @opt_param string customer Immutable ID of the G Suite account. In case of
-   * multi-domain, to fetch all groups for a customer, fill this field instead of
-   * domain.
-   * @opt_param string orderBy Column to use for sorting results
-   * @opt_param string pageToken Token to specify next page in the list
-   * @opt_param int maxResults Maximum number of results to return. Max allowed
-   * value is 200.
-   * @opt_param string query Query string search. Should be of the form "".
-   * Complete documentation is at https: //developers.google.com/admin-
-   * sdk/directory/v1/guides/search-groups
    * @return Google_Service_Directory_Groups
    */
   public function listGroups($optParams = array())

@@ -19,8 +19,8 @@
  * The "users" collection of methods.
  * Typical usage is:
  *  <code>
- *   $sqlService = new Google_Service_SQLAdmin(...);
- *   $users = $sqlService->users;
+ *   $sqladminService = new Google_Service_SQLAdmin(...);
+ *   $users = $sqladminService->users;
  *  </code>
  */
 class Google_Service_SQLAdmin_Resource_Users extends Google_Service_Resource
@@ -33,8 +33,8 @@ class Google_Service_SQLAdmin_Resource_Users extends Google_Service_Resource
    * project ID.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string name Name of the user in the instance.
    * @opt_param string host Host of the user in the instance.
+   * @opt_param string name Name of the user in the instance.
    * @return Google_Service_SQLAdmin_Operation
    */
   public function delete($project, $instance, $optParams = array())

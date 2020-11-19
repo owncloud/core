@@ -26,11 +26,15 @@
 class Google_Service_Apigee_Resource_OrganizationsEnvironmentsSharedflowsRevisions extends Google_Service_Resource
 {
   /**
-   * Deploys a revision of a shared flow. If a shared flow revision is currently
-   * deployed, to ensure seamless deployment with zero downtime set the `override`
-   * parameter to `true`. In this case, hybrid attempts to deply the new revision
-   * fully before undeploying the existing revision. You cannot use a shared flows
-   * until it has been deployed to an environment. (revisions.deploy)
+   * Deploys a revision of a shared flow. If another revision of the same shared
+   * flow is currently deployed, set the `override` parameter to `true` to have
+   * this revision replace the currently deployed revision. You cannot use a
+   * shared flow until it has been deployed to an environment. For a request path
+   * `organizations/{org}/environments/{env}/sharedflows/{sf}/revisions/{rev}/depl
+   * oyments`, two permissions are required: * `apigee.deployments.create` on the
+   * resource `organizations/{org}/environments/{env}` *
+   * `apigee.sharedflowrevisions.deploy` on the resource
+   * `organizations/{org}/sharedflows/{sf}/revisions/{rev}` (revisions.deploy)
    *
    * @param string $name Required. Name of the shared flow revision to deploy in
    * the following format: `organizations/{org}/environments/{env}/sharedflows/{sh
@@ -69,7 +73,12 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsSharedflowsRevisio
     return $this->call('getDeployments', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1Deployment");
   }
   /**
-   * Undeploys a shared flow revision from an environment. (revisions.undeploy)
+   * Undeploys a shared flow revision from an environment. For a request path `org
+   * anizations/{org}/environments/{env}/sharedflows/{sf}/revisions/{rev}/deployme
+   * nts`, two permissions are required: * `apigee.deployments.delete` on the
+   * resource `organizations/{org}/environments/{env}` *
+   * `apigee.sharedflowrevisions.undeploy` on the resource
+   * `organizations/{org}/sharedflows/{sf}/revisions/{rev}` (revisions.undeploy)
    *
    * @param string $name Required. Name of the shared flow revision to undeploy in
    * the following format: `organizations/{org}/environments/{env}/sharedflows/{sh

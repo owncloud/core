@@ -31,6 +31,8 @@ class Google_Service_Compute_HealthCheck extends Google_Model
   protected $httpsHealthCheckDataType = '';
   public $id;
   public $kind;
+  protected $logConfigType = 'Google_Service_Compute_HealthCheckLogConfig';
+  protected $logConfigDataType = '';
   public $name;
   public $region;
   public $selfLink;
@@ -145,6 +147,20 @@ class Google_Service_Compute_HealthCheck extends Google_Model
   public function getKind()
   {
     return $this->kind;
+  }
+  /**
+   * @param Google_Service_Compute_HealthCheckLogConfig
+   */
+  public function setLogConfig(Google_Service_Compute_HealthCheckLogConfig $logConfig)
+  {
+    $this->logConfig = $logConfig;
+  }
+  /**
+   * @return Google_Service_Compute_HealthCheckLogConfig
+   */
+  public function getLogConfig()
+  {
+    return $this->logConfig;
   }
   public function setName($name)
   {

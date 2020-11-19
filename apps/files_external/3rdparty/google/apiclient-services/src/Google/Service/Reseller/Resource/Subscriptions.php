@@ -29,7 +29,7 @@ class Google_Service_Reseller_Resource_Subscriptions extends Google_Service_Reso
    * Activates a subscription previously suspended by the reseller
    * (subscriptions.activate)
    *
-   * @param string $customerId Either the customers primary domain name or the
+   * @param string $customerId Either the customer's primary domain name or the
    * customer's unique identifier. If using the domain name, we do not recommend
    * using a customerId as a key for persistent data. If the domain name for a
    * customerId is changed, the Google system automatically updates.
@@ -52,7 +52,7 @@ class Google_Service_Reseller_Resource_Subscriptions extends Google_Service_Reso
    * trial or a flexible plan subscription to an annual commitment plan with
    * monthly or yearly payments. (subscriptions.changePlan)
    *
-   * @param string $customerId Either the customers primary domain name or the
+   * @param string $customerId Either the customer's primary domain name or the
    * customer's unique identifier. If using the domain name, we do not recommend
    * using a customerId as a key for persistent data. If the domain name for a
    * customerId is changed, the Google system automatically updates.
@@ -72,10 +72,10 @@ class Google_Service_Reseller_Resource_Subscriptions extends Google_Service_Reso
     return $this->call('changePlan', array($params), "Google_Service_Reseller_Subscription");
   }
   /**
-   * Update a user licenses renewal settings. This is applicable for accounts with
-   * annual commitment plans only. (subscriptions.changeRenewalSettings)
+   * Update a user license's renewal settings. This is applicable for accounts
+   * with annual commitment plans only. (subscriptions.changeRenewalSettings)
    *
-   * @param string $customerId Either the customers primary domain name or the
+   * @param string $customerId Either the customer's primary domain name or the
    * customer's unique identifier. If using the domain name, we do not recommend
    * using a customerId as a key for persistent data. If the domain name for a
    * customerId is changed, the Google system automatically updates.
@@ -95,9 +95,9 @@ class Google_Service_Reseller_Resource_Subscriptions extends Google_Service_Reso
     return $this->call('changeRenewalSettings', array($params), "Google_Service_Reseller_Subscription");
   }
   /**
-   * Update a subscriptions user license settings. (subscriptions.changeSeats)
+   * Update a subscription's user license settings. (subscriptions.changeSeats)
    *
-   * @param string $customerId Either the customers primary domain name or the
+   * @param string $customerId Either the customer's primary domain name or the
    * customer's unique identifier. If using the domain name, we do not recommend
    * using a customerId as a key for persistent data. If the domain name for a
    * customerId is changed, the Google system automatically updates.
@@ -119,7 +119,7 @@ class Google_Service_Reseller_Resource_Subscriptions extends Google_Service_Reso
   /**
    * Cancel, suspend, or transfer a subscription to direct. (subscriptions.delete)
    *
-   * @param string $customerId Either the customers primary domain name or the
+   * @param string $customerId Either the customer's primary domain name or the
    * customer's unique identifier. If using the domain name, we do not recommend
    * using a customerId as a key for persistent data. If the domain name for a
    * customerId is changed, the Google system automatically updates.
@@ -141,7 +141,7 @@ class Google_Service_Reseller_Resource_Subscriptions extends Google_Service_Reso
   /**
    * Get a specific subscription. (subscriptions.get)
    *
-   * @param string $customerId Either the customers primary domain name or the
+   * @param string $customerId Either the customer's primary domain name or the
    * customer's unique identifier. If using the domain name, we do not recommend
    * using a customerId as a key for persistent data. If the domain name for a
    * customerId is changed, the Google system automatically updates.
@@ -162,7 +162,7 @@ class Google_Service_Reseller_Resource_Subscriptions extends Google_Service_Reso
   /**
    * Create or transfer a subscription. (subscriptions.insert)
    *
-   * @param string $customerId Either the customers primary domain name or the
+   * @param string $customerId Either the customer's primary domain name or the
    * customer's unique identifier. If using the domain name, we do not recommend
    * using a customerId as a key for persistent data. If the domain name for a
    * customerId is changed, the Google system automatically updates.
@@ -185,34 +185,32 @@ class Google_Service_Reseller_Resource_Subscriptions extends Google_Service_Reso
   }
   /**
    * List of subscriptions managed by the reseller. The list can be all
-   * subscriptions, all of a customers subscriptions, or all of a customers
+   * subscriptions, all of a customer's subscriptions, or all of a customer's
    * transferable subscriptions. (subscriptions.listSubscriptions)
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string maxResults When retrieving a large list, the maxResults is
+   * the maximum number of results per page. The nextPageToken value takes you to
+   * the next page. The default is 20.
    * @opt_param string customerAuthToken The customerAuthToken query string is
    * required when creating a resold account that transfers a direct customer's
    * subscription or transfers another reseller customer's subscription to your
    * reseller management. This is a hexadecimal authentication token needed to
    * complete the subscription transfer. For more information, see the
    * administrator help center.
-   * @opt_param string pageToken Token to specify next page in the list
    * @opt_param string customerNamePrefix When retrieving all of your
    * subscriptions and filtering for specific customers, you can enter a prefix
    * for a customer name. Using an example customer group that includes exam.com,
-   * example20.com and example.com:
-   *
-   * exa -- Returns all customer names that start with exa which could include
-   * exam.com, example20.com, and example.com. A name prefix is similar to using a
-   * regular expressions asterisk, exa*. example -- Returns example20.com and
-   * example.com.
-   * @opt_param string customerId Either the customers primary domain name or the
+   * example20.com and example.com: - exa -- Returns all customer names that start
+   * with 'exa' which could include exam.com, example20.com, and example.com. A
+   * name prefix is similar to using a regular expression's asterisk, exa*. -
+   * example -- Returns example20.com and example.com.
+   * @opt_param string customerId Either the customer's primary domain name or the
    * customer's unique identifier. If using the domain name, we do not recommend
    * using a customerId as a key for persistent data. If the domain name for a
    * customerId is changed, the Google system automatically updates.
-   * @opt_param string maxResults When retrieving a large list, the maxResults is
-   * the maximum number of results per page. The nextPageToken value takes you to
-   * the next page. The default is 20.
+   * @opt_param string pageToken Token to specify next page in the list
    * @return Google_Service_Reseller_Subscriptions
    */
   public function listSubscriptions($optParams = array())
@@ -225,7 +223,7 @@ class Google_Service_Reseller_Resource_Subscriptions extends Google_Service_Reso
    * Immediately move a 30-day free trial subscription to a paid service
    * subscription. (subscriptions.startPaidService)
    *
-   * @param string $customerId Either the customers primary domain name or the
+   * @param string $customerId Either the customer's primary domain name or the
    * customer's unique identifier. If using the domain name, we do not recommend
    * using a customerId as a key for persistent data. If the domain name for a
    * customerId is changed, the Google system automatically updates.
@@ -246,7 +244,7 @@ class Google_Service_Reseller_Resource_Subscriptions extends Google_Service_Reso
   /**
    * Suspends an active subscription. (subscriptions.suspend)
    *
-   * @param string $customerId Either the customers primary domain name or the
+   * @param string $customerId Either the customer's primary domain name or the
    * customer's unique identifier. If using the domain name, we do not recommend
    * using a customerId as a key for persistent data. If the domain name for a
    * customerId is changed, the Google system automatically updates.

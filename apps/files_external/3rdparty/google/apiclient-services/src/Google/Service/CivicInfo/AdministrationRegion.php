@@ -23,7 +23,6 @@ class Google_Service_CivicInfo_AdministrationRegion extends Google_Collection
   );
   protected $electionAdministrationBodyType = 'Google_Service_CivicInfo_AdministrativeBody';
   protected $electionAdministrationBodyDataType = '';
-  public $id;
   protected $localJurisdictionType = 'Google_Service_CivicInfo_AdministrationRegion';
   protected $localJurisdictionDataType = '';
   public $name;
@@ -43,14 +42,6 @@ class Google_Service_CivicInfo_AdministrationRegion extends Google_Collection
   public function getElectionAdministrationBody()
   {
     return $this->electionAdministrationBody;
-  }
-  public function setId($id)
-  {
-    $this->id = $id;
-  }
-  public function getId()
-  {
-    return $this->id;
   }
   /**
    * @param Google_Service_CivicInfo_AdministrationRegion

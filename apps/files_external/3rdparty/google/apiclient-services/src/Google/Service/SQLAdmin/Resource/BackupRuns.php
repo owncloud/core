@@ -19,8 +19,8 @@
  * The "backupRuns" collection of methods.
  * Typical usage is:
  *  <code>
- *   $sqlService = new Google_Service_SQLAdmin(...);
- *   $backupRuns = $sqlService->backupRuns;
+ *   $sqladminService = new Google_Service_SQLAdmin(...);
+ *   $backupRuns = $sqladminService->backupRuns;
  *  </code>
  */
 class Google_Service_SQLAdmin_Resource_BackupRuns extends Google_Service_Resource

@@ -19,6 +19,7 @@ class Google_Service_ServiceControl_ServiceAccountDelegationInfo extends Google_
 {
   protected $firstPartyPrincipalType = 'Google_Service_ServiceControl_FirstPartyPrincipal';
   protected $firstPartyPrincipalDataType = '';
+  public $principalSubject;
   protected $thirdPartyPrincipalType = 'Google_Service_ServiceControl_ThirdPartyPrincipal';
   protected $thirdPartyPrincipalDataType = '';
 
@@ -35,6 +36,14 @@ class Google_Service_ServiceControl_ServiceAccountDelegationInfo extends Google_
   public function getFirstPartyPrincipal()
   {
     return $this->firstPartyPrincipal;
+  }
+  public function setPrincipalSubject($principalSubject)
+  {
+    $this->principalSubject = $principalSubject;
+  }
+  public function getPrincipalSubject()
+  {
+    return $this->principalSubject;
   }
   /**
    * @param Google_Service_ServiceControl_ThirdPartyPrincipal

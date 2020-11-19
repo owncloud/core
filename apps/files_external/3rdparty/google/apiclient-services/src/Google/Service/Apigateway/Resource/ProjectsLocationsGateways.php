@@ -26,6 +26,52 @@
 class Google_Service_Apigateway_Resource_ProjectsLocationsGateways extends Google_Service_Resource
 {
   /**
+   * Creates a new Gateway in a given project and location. (gateways.create)
+   *
+   * @param string $parent Required. Parent resource of the Gateway, of the form:
+   * `projects/locations`
+   * @param Google_Service_Apigateway_ApigatewayGateway $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string gatewayId Required. Identifier to assign to the Gateway.
+   * Must be unique within scope of the parent resource.
+   * @return Google_Service_Apigateway_ApigatewayOperation
+   */
+  public function create($parent, Google_Service_Apigateway_ApigatewayGateway $postBody, $optParams = array())
+  {
+    $params = array('parent' => $parent, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('create', array($params), "Google_Service_Apigateway_ApigatewayOperation");
+  }
+  /**
+   * Deletes a single Gateway. (gateways.delete)
+   *
+   * @param string $name Required. Resource name of the form:
+   * `projects/locations/gateways`
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Apigateway_ApigatewayOperation
+   */
+  public function delete($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('delete', array($params), "Google_Service_Apigateway_ApigatewayOperation");
+  }
+  /**
+   * Gets details of a single Gateway. (gateways.get)
+   *
+   * @param string $name Required. Resource name of the form:
+   * `projects/locations/gateways`
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Apigateway_ApigatewayGateway
+   */
+  public function get($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('get', array($params), "Google_Service_Apigateway_ApigatewayGateway");
+  }
+  /**
    * Gets the access control policy for a resource. Returns an empty policy if the
    * resource exists and does not have a policy set. (gateways.getIamPolicy)
    *
@@ -49,6 +95,47 @@ class Google_Service_Apigateway_Resource_ProjectsLocationsGateways extends Googl
     $params = array('resource' => $resource);
     $params = array_merge($params, $optParams);
     return $this->call('getIamPolicy', array($params), "Google_Service_Apigateway_ApigatewayPolicy");
+  }
+  /**
+   * Lists Gateways in a given project and location.
+   * (gateways.listProjectsLocationsGateways)
+   *
+   * @param string $parent Required. Parent resource of the Gateway, of the form:
+   * `projects/locations`
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string filter Filter.
+   * @opt_param int pageSize Page size.
+   * @opt_param string orderBy Order by parameters.
+   * @opt_param string pageToken Page token.
+   * @return Google_Service_Apigateway_ApigatewayListGatewaysResponse
+   */
+  public function listProjectsLocationsGateways($parent, $optParams = array())
+  {
+    $params = array('parent' => $parent);
+    $params = array_merge($params, $optParams);
+    return $this->call('list', array($params), "Google_Service_Apigateway_ApigatewayListGatewaysResponse");
+  }
+  /**
+   * Updates the parameters of a single Gateway. (gateways.patch)
+   *
+   * @param string $name Output only. Resource name of the Gateway. Format:
+   * projects/{project}/locations/{location}/gateways/{gateway}
+   * @param Google_Service_Apigateway_ApigatewayGateway $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask Field mask is used to specify the fields to be
+   * overwritten in the Gateway resource by the update. The fields specified in
+   * the update_mask are relative to the resource, not the full request. A field
+   * will be overwritten if it is in the mask. If the user does not provide a mask
+   * then all fields will be overwritten.
+   * @return Google_Service_Apigateway_ApigatewayOperation
+   */
+  public function patch($name, Google_Service_Apigateway_ApigatewayGateway $postBody, $optParams = array())
+  {
+    $params = array('name' => $name, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', array($params), "Google_Service_Apigateway_ApigatewayOperation");
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any

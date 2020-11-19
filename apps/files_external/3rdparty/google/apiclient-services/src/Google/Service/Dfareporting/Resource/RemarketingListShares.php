@@ -45,16 +45,14 @@ class Google_Service_Dfareporting_Resource_RemarketingListShares extends Google_
    * semantics. (remarketingListShares.patch)
    *
    * @param string $profileId User profile ID associated with this request.
-   * @param string $remarketingListId RemarketingList ID.
+   * @param string $id RemarketingList ID.
    * @param Google_Service_Dfareporting_RemarketingListShare $postBody
    * @param array $optParams Optional parameters.
-   *
-   * @opt_param string id RemarketingListShare ID.
    * @return Google_Service_Dfareporting_RemarketingListShare
    */
-  public function patch($profileId, $remarketingListId, Google_Service_Dfareporting_RemarketingListShare $postBody, $optParams = array())
+  public function patch($profileId, $id, Google_Service_Dfareporting_RemarketingListShare $postBody, $optParams = array())
   {
-    $params = array('profileId' => $profileId, 'remarketingListId' => $remarketingListId, 'postBody' => $postBody);
+    $params = array('profileId' => $profileId, 'id' => $id, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('patch', array($params), "Google_Service_Dfareporting_RemarketingListShare");
   }

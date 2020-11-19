@@ -96,21 +96,23 @@ class Google_Service_Storagetransfer extends Google_Service
                 'projectId' => array(
                   'location' => 'query',
                   'type' => 'string',
+                  'required' => true,
                 ),
               ),
             ),'list' => array(
               'path' => 'v1/transferJobs',
               'httpMethod' => 'GET',
               'parameters' => array(
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                  'required' => true,
+                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
                 'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -167,14 +169,15 @@ class Google_Service_Storagetransfer extends Google_Service
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
+                  'required' => true,
                 ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'pause' => array(

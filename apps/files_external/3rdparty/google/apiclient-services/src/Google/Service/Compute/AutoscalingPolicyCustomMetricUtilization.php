@@ -17,10 +17,20 @@
 
 class Google_Service_Compute_AutoscalingPolicyCustomMetricUtilization extends Google_Model
 {
+  public $filter;
   public $metric;
+  public $singleInstanceAssignment;
   public $utilizationTarget;
   public $utilizationTargetType;
 
+  public function setFilter($filter)
+  {
+    $this->filter = $filter;
+  }
+  public function getFilter()
+  {
+    return $this->filter;
+  }
   public function setMetric($metric)
   {
     $this->metric = $metric;
@@ -28,6 +38,14 @@ class Google_Service_Compute_AutoscalingPolicyCustomMetricUtilization extends Go
   public function getMetric()
   {
     return $this->metric;
+  }
+  public function setSingleInstanceAssignment($singleInstanceAssignment)
+  {
+    $this->singleInstanceAssignment = $singleInstanceAssignment;
+  }
+  public function getSingleInstanceAssignment()
+  {
+    return $this->singleInstanceAssignment;
   }
   public function setUtilizationTarget($utilizationTarget)
   {

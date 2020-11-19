@@ -34,13 +34,14 @@ class Google_Service_DLP_Resource_ProjectsContent extends Google_Service_Resourc
    * change over time as detectors are updated. (content.deidentify)
    *
    * @param string $parent Parent resource name. The format of this value varies
-   * depending on whether you have [specified a processing location](/dlp/docs
-   * /specifying-location): + Projects scope, location specified:
-   * `projects/`PROJECT_ID`/locations/`LOCATION_ID + Projects scope, no location
-   * specified (defaults to global): `projects/`PROJECT_ID The following example
-   * `parent` string specifies a parent project with the identifier `example-
-   * project`, and specifies the `europe-west3` location for processing data:
-   * parent=projects/example-project/locations/europe-west3
+   * depending on whether you have [specified a processing
+   * location](https://cloud.google.com/dlp/docs/specifying-location): + Projects
+   * scope, location specified: `projects/`PROJECT_ID`/locations/`LOCATION_ID +
+   * Projects scope, no location specified (defaults to global):
+   * `projects/`PROJECT_ID The following example `parent` string specifies a
+   * parent project with the identifier `example-project`, and specifies the
+   * `europe-west3` location for processing data: parent=projects/example-
+   * project/locations/europe-west3
    * @param Google_Service_DLP_GooglePrivacyDlpV2DeidentifyContentRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_DLP_GooglePrivacyDlpV2DeidentifyContentResponse
@@ -61,13 +62,14 @@ class Google_Service_DLP_Resource_ProjectsContent extends Google_Service_Resourc
    * https://cloud.google.com/dlp/docs/inspecting-text, (content.inspect)
    *
    * @param string $parent Parent resource name. The format of this value varies
-   * depending on whether you have [specified a processing location](/dlp/docs
-   * /specifying-location): + Projects scope, location specified:
-   * `projects/`PROJECT_ID`/locations/`LOCATION_ID + Projects scope, no location
-   * specified (defaults to global): `projects/`PROJECT_ID The following example
-   * `parent` string specifies a parent project with the identifier `example-
-   * project`, and specifies the `europe-west3` location for processing data:
-   * parent=projects/example-project/locations/europe-west3
+   * depending on whether you have [specified a processing
+   * location](https://cloud.google.com/dlp/docs/specifying-location): + Projects
+   * scope, location specified: `projects/`PROJECT_ID`/locations/`LOCATION_ID +
+   * Projects scope, no location specified (defaults to global):
+   * `projects/`PROJECT_ID The following example `parent` string specifies a
+   * parent project with the identifier `example-project`, and specifies the
+   * `europe-west3` location for processing data: parent=projects/example-
+   * project/locations/europe-west3
    * @param Google_Service_DLP_GooglePrivacyDlpV2InspectContentRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_DLP_GooglePrivacyDlpV2InspectContentResponse
@@ -85,12 +87,13 @@ class Google_Service_DLP_Resource_ProjectsContent extends Google_Service_Resourc
    *
    * @param string $parent Required. Parent resource name. The format of this
    * value varies depending on whether you have [specified a processing
-   * location](/dlp/docs/specifying-location): + Projects scope, location
-   * specified: `projects/`PROJECT_ID`/locations/`LOCATION_ID + Projects scope, no
-   * location specified (defaults to global): `projects/`PROJECT_ID The following
-   * example `parent` string specifies a parent project with the identifier
-   * `example-project`, and specifies the `europe-west3` location for processing
-   * data: parent=projects/example-project/locations/europe-west3
+   * location](https://cloud.google.com/dlp/docs/specifying-location): + Projects
+   * scope, location specified: `projects/`PROJECT_ID`/locations/`LOCATION_ID +
+   * Projects scope, no location specified (defaults to global):
+   * `projects/`PROJECT_ID The following example `parent` string specifies a
+   * parent project with the identifier `example-project`, and specifies the
+   * `europe-west3` location for processing data: parent=projects/example-
+   * project/locations/europe-west3
    * @param Google_Service_DLP_GooglePrivacyDlpV2ReidentifyContentRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_DLP_GooglePrivacyDlpV2ReidentifyContentResponse

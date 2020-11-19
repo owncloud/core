@@ -18,10 +18,19 @@
 class Google_Service_Compute_InstanceGroupManagersApplyUpdatesRequest extends Google_Collection
 {
   protected $collection_key = 'instances';
+  public $allInstances;
   public $instances;
   public $minimalAction;
   public $mostDisruptiveAllowedAction;
 
+  public function setAllInstances($allInstances)
+  {
+    $this->allInstances = $allInstances;
+  }
+  public function getAllInstances()
+  {
+    return $this->allInstances;
+  }
   public function setInstances($instances)
   {
     $this->instances = $instances;

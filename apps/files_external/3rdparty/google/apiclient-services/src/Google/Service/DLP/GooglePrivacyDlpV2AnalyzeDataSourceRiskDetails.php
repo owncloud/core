@@ -29,6 +29,8 @@ class Google_Service_DLP_GooglePrivacyDlpV2AnalyzeDataSourceRiskDetails extends 
   protected $lDiversityResultDataType = '';
   protected $numericalStatsResultType = 'Google_Service_DLP_GooglePrivacyDlpV2NumericalStatsResult';
   protected $numericalStatsResultDataType = '';
+  protected $requestedOptionsType = 'Google_Service_DLP_GooglePrivacyDlpV2RequestedRiskAnalysisOptions';
+  protected $requestedOptionsDataType = '';
   protected $requestedPrivacyMetricType = 'Google_Service_DLP_GooglePrivacyDlpV2PrivacyMetric';
   protected $requestedPrivacyMetricDataType = '';
   protected $requestedSourceTableType = 'Google_Service_DLP_GooglePrivacyDlpV2BigQueryTable';
@@ -117,6 +119,20 @@ class Google_Service_DLP_GooglePrivacyDlpV2AnalyzeDataSourceRiskDetails extends 
   public function getNumericalStatsResult()
   {
     return $this->numericalStatsResult;
+  }
+  /**
+   * @param Google_Service_DLP_GooglePrivacyDlpV2RequestedRiskAnalysisOptions
+   */
+  public function setRequestedOptions(Google_Service_DLP_GooglePrivacyDlpV2RequestedRiskAnalysisOptions $requestedOptions)
+  {
+    $this->requestedOptions = $requestedOptions;
+  }
+  /**
+   * @return Google_Service_DLP_GooglePrivacyDlpV2RequestedRiskAnalysisOptions
+   */
+  public function getRequestedOptions()
+  {
+    return $this->requestedOptions;
   }
   /**
    * @param Google_Service_DLP_GooglePrivacyDlpV2PrivacyMetric

@@ -26,19 +26,28 @@
 class Google_Service_Apigee_Resource_OrganizationsEnvironmentsApisRevisions extends Google_Service_Resource
 {
   /**
-   * Deploys a revision of an API proxy. If an API proxy revision is currently
-   * deployed, to ensure seamless deployment with zero downtime set the `override`
-   * parameter to `true`. In this case, hybrid attempts to deploy the new revision
-   * fully before undeploying the existing revision. You cannot invoke an API
-   * proxy until it has been deployed to an environment. After you deploy an API
-   * proxy revision, you cannot edit it. To edit the API proxy, you must create
-   * and deploy a new revision.  (revisions.deploy)
+   * Deploys a revision of an API proxy. If another revision of the same API proxy
+   * revision is currently deployed, set the `override` parameter to `true` to
+   * have this revision replace the currently deployed revision. You cannot invoke
+   * an API proxy until it has been deployed to an environment. After you deploy
+   * an API proxy revision, you cannot edit it. To edit the API proxy, you must
+   * create and deploy a new revision. For a request path `organizations/{org}/env
+   * ironments/{env}/apis/{api}/revisions/{rev}/deployments`, two permissions are
+   * required: * `apigee.deployments.create` on the resource
+   * `organizations/{org}/environments/{env}` * `apigee.proxyrevisions.deploy` on
+   * the resource `organizations/{org}/apis/{api}/revisions/{rev}`
+   * (revisions.deploy)
    *
    * @param string $name Required. Name of the API proxy revision deployment in
    * the following format:
    * `organizations/{org}/environments/{env}/apis/{api}/revisions/{rev}`
    * @param array $optParams Optional parameters.
    *
+   * @opt_param bool override Flag that specifies whether the new deployment
+   * replaces other deployed revisions of the API proxy in the environment. Set
+   * override to true to replace other deployed revisions. By default, override is
+   * false and the deployment is rejected if other revisions of the API proxy are
+   * deployed in the environment.
    * @opt_param bool sequencedRollout If true, a best-effort attempt will be made
    * to roll out the routing rules corresponding to this deployment and the
    * environment changes to add this deployment in a safe order. This reduces the
@@ -50,11 +59,6 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsApisRevisions exte
    * removal. The GenerateDeployChangeReport API may be used to examine routing
    * changes before issuing the deployment request, and its response will indicate
    * if a sequenced rollout is recommended for the deployment.
-   * @opt_param bool override Flag that specifies whether the new deployment
-   * replaces other deployed revisions of the API proxy in the environment. Set
-   * override to true to replace other deployed revisions. By default, override is
-   * false and the deployment is rejected if other revisions of the API proxy are
-   * deployed in the environment.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1Deployment
    */
   public function deploy($name, $optParams = array())
@@ -80,10 +84,12 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsApisRevisions exte
     return $this->call('getDeployments', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1Deployment");
   }
   /**
-   * Undeploys an API proxy revision from an environment. Because multiple
-   * revisions of the same API proxy can be deployed in the same environment if
-   * the base paths are different, you must specify the revision number of the API
-   * proxy. (revisions.undeploy)
+   * Undeploys an API proxy revision from an environment. For a request path `orga
+   * nizations/{org}/environments/{env}/apis/{api}/revisions/{rev}/deployments`,
+   * two permissions are required: * `apigee.deployments.delete` on the resource
+   * `organizations/{org}/environments/{env}` * `apigee.proxyrevisions.undeploy`
+   * on the resource `organizations/{org}/apis/{api}/revisions/{rev}`
+   * (revisions.undeploy)
    *
    * @param string $name Required. Name of the API proxy revision deployment in
    * the following format:

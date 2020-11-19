@@ -33,10 +33,10 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogs extend
    * location.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional. A page token, received from a previous
-   * `ListCatalogs` call. Provide this to retrieve the subsequent page.
    * @opt_param int pageSize Optional. Maximum number of results to return. If
    * unspecified, defaults to 50. Max allowed value is 1000.
+   * @opt_param string pageToken Optional. A page token, received from a previous
+   * `ListCatalogs` call. Provide this to retrieve the subsequent page.
    * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1ListCatalogsResponse
    */
   public function listProjectsLocationsCatalogs($parent, $optParams = array())

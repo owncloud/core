@@ -44,7 +44,9 @@ class Google_Service_Iam_Resource_ProjectsServiceAccountsKeys extends Google_Ser
     return $this->call('create', array($params), "Google_Service_Iam_ServiceAccountKey");
   }
   /**
-   * Deletes a ServiceAccountKey. (keys.delete)
+   * Deletes a ServiceAccountKey. Deleting a service account key does not revoke
+   * short-lived credentials that have been issued based on the service account
+   * key. (keys.delete)
    *
    * @param string $name Required. The resource name of the service account key in
    * the following format:

@@ -32,11 +32,11 @@ class Google_Service_AdSense_Resource_ReportsSaved extends Google_Service_Resour
    * @param string $savedReportId The saved report to retrieve.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string locale Optional locale to use for translating report output
+   * to a local language. Defaults to "en_US" if not specified.
    * @opt_param int maxResults The maximum number of rows of report data to
    * return.
    * @opt_param int startIndex Index of the first row of report data to return.
-   * @opt_param string locale Optional locale to use for translating report output
-   * to a local language. Defaults to "en_US" if not specified.
    * @return Google_Service_AdSense_AdsenseReportsGenerateResponse
    */
   public function generate($savedReportId, $optParams = array())
@@ -50,11 +50,11 @@ class Google_Service_AdSense_Resource_ReportsSaved extends Google_Service_Resour
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int maxResults The maximum number of saved reports to include in
+   * the response, used for paging.
    * @opt_param string pageToken A continuation token, used to page through saved
    * reports. To retrieve the next page, set this parameter to the value of
    * "nextPageToken" from the previous response.
-   * @opt_param int maxResults The maximum number of saved reports to include in
-   * the response, used for paging.
    * @return Google_Service_AdSense_SavedReports
    */
   public function listReportsSaved($optParams = array())

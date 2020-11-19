@@ -19,6 +19,7 @@ class Google_Service_ArtifactRegistry_GoogleDevtoolsArtifactregistryV1alpha1GcsS
 {
   protected $collection_key = 'uris';
   public $uris;
+  public $useWildcards;
 
   public function setUris($uris)
   {
@@ -27,5 +28,13 @@ class Google_Service_ArtifactRegistry_GoogleDevtoolsArtifactregistryV1alpha1GcsS
   public function getUris()
   {
     return $this->uris;
+  }
+  public function setUseWildcards($useWildcards)
+  {
+    $this->useWildcards = $useWildcards;
+  }
+  public function getUseWildcards()
+  {
+    return $this->useWildcards;
   }
 }

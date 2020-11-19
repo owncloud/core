@@ -18,6 +18,7 @@
 class Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildbotCommandEvents extends Google_Model
 {
   public $dockerCacheHit;
+  public $dockerImageName;
   public $inputCacheMiss;
   public $numErrors;
   public $numWarnings;
@@ -29,6 +30,14 @@ class Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildbotCommandEve
   public function getDockerCacheHit()
   {
     return $this->dockerCacheHit;
+  }
+  public function setDockerImageName($dockerImageName)
+  {
+    $this->dockerImageName = $dockerImageName;
+  }
+  public function getDockerImageName()
+  {
+    return $this->dockerImageName;
   }
   public function setInputCacheMiss($inputCacheMiss)
   {

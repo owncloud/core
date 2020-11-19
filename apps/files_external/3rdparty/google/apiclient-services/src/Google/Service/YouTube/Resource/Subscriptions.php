@@ -67,9 +67,17 @@ class Google_Service_YouTube_Resource_Subscriptions extends Google_Service_Resou
    * properties.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string order The order of the returned subscriptions
+   * @opt_param bool mySubscribers Return the subscribers of the given channel
+   * owner.
+   * @opt_param string pageToken The *pageToken* parameter identifies a specific
+   * page in the result set that should be returned. In an API response, the
+   * nextPageToken and prevPageToken properties identify other pages that could be
+   * retrieved.
    * @opt_param string forChannelId Return the subscriptions to the subset of
    * these channels that the authenticated user is subscribed to.
-   * @opt_param bool myRecentSubscribers
+   * @opt_param string id Return the subscriptions with the given IDs for Stubby
+   * or Apiary.
    * @opt_param string channelId Return the subscriptions of the given channel
    * owner.
    * @opt_param string onBehalfOfContentOwnerChannel This parameter can only be
@@ -90,7 +98,6 @@ class Google_Service_YouTube_Resource_Subscriptions extends Google_Service_Resou
    * channel.
    * @opt_param string maxResults The *maxResults* parameter specifies the maximum
    * number of items that should be returned in the result set.
-   * @opt_param string order The order of the returned subscriptions
    * @opt_param string onBehalfOfContentOwner *Note:* This parameter is intended
    * exclusively for YouTube content partners. The *onBehalfOfContentOwner*
    * parameter indicates that the request's authorization credentials identify a
@@ -103,14 +110,7 @@ class Google_Service_YouTube_Resource_Subscriptions extends Google_Service_Resou
    * the specified YouTube content owner.
    * @opt_param bool mine Flag for returning the subscriptions of the
    * authenticated user.
-   * @opt_param string pageToken The *pageToken* parameter identifies a specific
-   * page in the result set that should be returned. In an API response, the
-   * nextPageToken and prevPageToken properties identify other pages that could be
-   * retrieved.
-   * @opt_param string id Return the subscriptions with the given IDs for Stubby
-   * or Apiary.
-   * @opt_param bool mySubscribers Return the subscribers of the given channel
-   * owner.
+   * @opt_param bool myRecentSubscribers
    * @return Google_Service_YouTube_SubscriptionListResponse
    */
   public function listSubscriptions($part, $optParams = array())

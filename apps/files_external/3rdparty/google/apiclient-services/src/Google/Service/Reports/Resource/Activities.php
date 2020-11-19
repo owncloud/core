@@ -40,13 +40,15 @@ class Google_Service_Reports_Resource_Activities extends Google_Service_Resource
    * be retrieved.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string actorIpAddress The Internet Protocol (IP) Address of host
-   * where the event was performed. This is an additional way to filter a report's
-   * summary using the IP address of the user whose activity is being reported.
-   * This IP address may or may not reflect the user's physical location. For
-   * example, the IP address can be the user's proxy server's address or a virtual
-   * private network (VPN) address. This parameter supports both IPv4 and IPv6
-   * address versions.
+   * @opt_param int maxResults Determines how many activity records are shown on
+   * each response page. For example, if the request sets maxResults=1 and the
+   * report has two activities, the report has two pages. The response's
+   * nextPageToken property has the token to the second page. The maxResults query
+   * string is optional in the request. The default value is 1000.
+   * @opt_param string pageToken The token to specify next page. A report with
+   * multiple pages has a nextPageToken property in the response. In your follow-
+   * on request getting the next page of the report, enter the nextPageToken value
+   * in the pageToken query string.
    * @opt_param string endTime Sets the end of the range of time shown in the
    * report. The date is in the RFC 3339 format, for example
    * 2010-10-28T10:26:35.000Z. The default value is the approximate time of the
@@ -60,15 +62,6 @@ class Google_Service_Reports_Resource_Activities extends Google_Service_Resource
    * can be requested in August. If the endTime is not specified, the report
    * returns all activities from the startTime until the current time or the most
    * recent 180 days if the startTime is more than 180 days in the past.
-   * @opt_param string startTime Sets the beginning of the range of time shown in
-   * the report. The date is in the RFC 3339 format, for example
-   * 2010-10-28T10:26:35.000Z. The report returns all activities from startTime
-   * until endTime. The startTime must be before the endTime (if specified) and
-   * the current time when the request is made, or the API returns an error.
-   * @opt_param string orgUnitID ID of the organizational unit to report on.
-   * Activity records will be shown only for users who belong to the specified
-   * organizational unit. Data before Dec 17, 2018 doesn't appear in the filtered
-   * results.
    * @opt_param string eventName The name of the event being queried by the API.
    * Each eventName is related to a specific G Suite service or feature which the
    * API organizes into types of events. An example is the Google Calendar events
@@ -78,17 +71,15 @@ class Google_Service_Reports_Resource_Activities extends Google_Service_Resource
    * activity in the Calendar Settings type and eventName parameters. For more
    * information about eventName query strings and parameters, see the list of
    * event names for various applications above in applicationName.
-   * @opt_param string customerId The unique ID of the customer to retrieve data
-   * for.
-   * @opt_param string pageToken The token to specify next page. A report with
-   * multiple pages has a nextPageToken property in the response. In your follow-
-   * on request getting the next page of the report, enter the nextPageToken value
-   * in the pageToken query string.
-   * @opt_param int maxResults Determines how many activity records are shown on
-   * each response page. For example, if the request sets maxResults=1 and the
-   * report has two activities, the report has two pages. The response's
-   * nextPageToken property has the token to the second page. The maxResults query
-   * string is optional in the request. The default value is 1000.
+   * @opt_param string startTime Sets the beginning of the range of time shown in
+   * the report. The date is in the RFC 3339 format, for example
+   * 2010-10-28T10:26:35.000Z. The report returns all activities from startTime
+   * until endTime. The startTime must be before the endTime (if specified) and
+   * the current time when the request is made, or the API returns an error.
+   * @opt_param string orgUnitID ID of the organizational unit to report on.
+   * Activity records will be shown only for users who belong to the specified
+   * organizational unit. Data before Dec 17, 2018 doesn't appear in the filtered
+   * results.
    * @opt_param string filters The filters query string is a comma-separated list.
    * The list is composed of event parameters that are manipulated by relational
    * operators. Event parameters are in the form parameter1 name[parameter1
@@ -118,6 +109,19 @@ class Google_Service_Reports_Resource_Activities extends Google_Service_Resource
    * that request parameter and returns the response corresponding to the
    * remaining valid request parameters. If no parameters are requested, all
    * parameters are returned.
+   * @opt_param string groupIdFilter Comma separated group ids (obfuscated) on
+   * which user activities are filtered, i.e, the response will contain activities
+   * for only those users that are a part of at least one of the group ids
+   * mentioned here. Format: "id:abc123,id:xyz456"
+   * @opt_param string actorIpAddress The Internet Protocol (IP) Address of host
+   * where the event was performed. This is an additional way to filter a report's
+   * summary using the IP address of the user whose activity is being reported.
+   * This IP address may or may not reflect the user's physical location. For
+   * example, the IP address can be the user's proxy server's address or a virtual
+   * private network (VPN) address. This parameter supports both IPv4 and IPv6
+   * address versions.
+   * @opt_param string customerId The unique ID of the customer to retrieve data
+   * for.
    * @return Google_Service_Reports_Activities
    */
   public function listActivities($userKey, $applicationName, $optParams = array())
@@ -138,22 +142,15 @@ class Google_Service_Reports_Resource_Activities extends Google_Service_Resource
    * @param Google_Service_Reports_Channel $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string eventName The name of the event being queried by the API.
-   * Each eventName is related to a specific G Suite service or feature which the
-   * API organizes into types of events. An example is the Google Calendar events
-   * in the Admin console application's reports. The Calendar Settings type
-   * structure has all of the Calendar eventName activities reported by the API.
-   * When an administrator changes a Calendar setting, the API reports this
-   * activity in the Calendar Settings type and eventName parameters. For more
-   * information about eventName query strings and parameters, see the list of
-   * event names for various applications above in applicationName.
-   * @opt_param string actorIpAddress The Internet Protocol (IP) Address of host
-   * where the event was performed. This is an additional way to filter a report's
-   * summary using the IP address of the user whose activity is being reported.
-   * This IP address may or may not reflect the user's physical location. For
-   * example, the IP address can be the user's proxy server's address or a virtual
-   * private network (VPN) address. This parameter supports both IPv4 and IPv6
-   * address versions.
+   * @opt_param string groupIdFilter Comma separated group ids (obfuscated) on
+   * which user activities are filtered, i.e, the response will contain activities
+   * for only those users that are a part of at least one of the group ids
+   * mentioned here. Format: "id:abc123,id:xyz456"
+   * @opt_param int maxResults Determines how many activity records are shown on
+   * each response page. For example, if the request sets maxResults=1 and the
+   * report has two activities, the report has two pages. The response's
+   * nextPageToken property has the token to the second page. The maxResults query
+   * string is optional in the request. The default value is 1000.
    * @opt_param string endTime Sets the end of the range of time shown in the
    * report. The date is in the RFC 3339 format, for example
    * 2010-10-28T10:26:35.000Z. The default value is the approximate time of the
@@ -167,11 +164,31 @@ class Google_Service_Reports_Resource_Activities extends Google_Service_Resource
    * can be requested in August. If the endTime is not specified, the report
    * returns all activities from the startTime until the current time or the most
    * recent 180 days if the startTime is more than 180 days in the past.
-   * @opt_param int maxResults Determines how many activity records are shown on
-   * each response page. For example, if the request sets maxResults=1 and the
-   * report has two activities, the report has two pages. The response's
-   * nextPageToken property has the token to the second page. The maxResults query
-   * string is optional in the request. The default value is 1000.
+   * @opt_param string startTime Sets the beginning of the range of time shown in
+   * the report. The date is in the RFC 3339 format, for example
+   * 2010-10-28T10:26:35.000Z. The report returns all activities from startTime
+   * until endTime. The startTime must be before the endTime (if specified) and
+   * the current time when the request is made, or the API returns an error.
+   * @opt_param string pageToken The token to specify next page. A report with
+   * multiple pages has a nextPageToken property in the response. In your follow-
+   * on request getting the next page of the report, enter the nextPageToken value
+   * in the pageToken query string.
+   * @opt_param string actorIpAddress The Internet Protocol (IP) Address of host
+   * where the event was performed. This is an additional way to filter a report's
+   * summary using the IP address of the user whose activity is being reported.
+   * This IP address may or may not reflect the user's physical location. For
+   * example, the IP address can be the user's proxy server's address or a virtual
+   * private network (VPN) address. This parameter supports both IPv4 and IPv6
+   * address versions.
+   * @opt_param string eventName The name of the event being queried by the API.
+   * Each eventName is related to a specific G Suite service or feature which the
+   * API organizes into types of events. An example is the Google Calendar events
+   * in the Admin console application's reports. The Calendar Settings type
+   * structure has all of the Calendar eventName activities reported by the API.
+   * When an administrator changes a Calendar setting, the API reports this
+   * activity in the Calendar Settings type and eventName parameters. For more
+   * information about eventName query strings and parameters, see the list of
+   * event names for various applications above in applicationName.
    * @opt_param string filters The filters query string is a comma-separated list.
    * The list is composed of event parameters that are manipulated by relational
    * operators. Event parameters are in the form parameter1 name[parameter1
@@ -201,21 +218,12 @@ class Google_Service_Reports_Resource_Activities extends Google_Service_Resource
    * that request parameter and returns the response corresponding to the
    * remaining valid request parameters. If no parameters are requested, all
    * parameters are returned.
-   * @opt_param string startTime Sets the beginning of the range of time shown in
-   * the report. The date is in the RFC 3339 format, for example
-   * 2010-10-28T10:26:35.000Z. The report returns all activities from startTime
-   * until endTime. The startTime must be before the endTime (if specified) and
-   * the current time when the request is made, or the API returns an error.
-   * @opt_param string pageToken The token to specify next page. A report with
-   * multiple pages has a nextPageToken property in the response. In your follow-
-   * on request getting the next page of the report, enter the nextPageToken value
-   * in the pageToken query string.
-   * @opt_param string customerId The unique ID of the customer to retrieve data
-   * for.
    * @opt_param string orgUnitID ID of the organizational unit to report on.
    * Activity records will be shown only for users who belong to the specified
    * organizational unit. Data before Dec 17, 2018 doesn't appear in the filtered
    * results.
+   * @opt_param string customerId The unique ID of the customer to retrieve data
+   * for.
    * @return Google_Service_Reports_Channel
    */
   public function watch($userKey, $applicationName, Google_Service_Reports_Channel $postBody, $optParams = array())

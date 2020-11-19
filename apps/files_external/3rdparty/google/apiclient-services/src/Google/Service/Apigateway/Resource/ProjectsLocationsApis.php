@@ -26,6 +26,52 @@
 class Google_Service_Apigateway_Resource_ProjectsLocationsApis extends Google_Service_Resource
 {
   /**
+   * Creates a new Api in a given project and location. (apis.create)
+   *
+   * @param string $parent Required. Parent resource of the API, of the form:
+   * `projects/locations/global`
+   * @param Google_Service_Apigateway_ApigatewayApi $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string apiId Required. Identifier to assign to the API. Must be
+   * unique within scope of the parent resource.
+   * @return Google_Service_Apigateway_ApigatewayOperation
+   */
+  public function create($parent, Google_Service_Apigateway_ApigatewayApi $postBody, $optParams = array())
+  {
+    $params = array('parent' => $parent, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('create', array($params), "Google_Service_Apigateway_ApigatewayOperation");
+  }
+  /**
+   * Deletes a single Api. (apis.delete)
+   *
+   * @param string $name Required. Resource name of the form:
+   * `projects/locations/global/apis`
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Apigateway_ApigatewayOperation
+   */
+  public function delete($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('delete', array($params), "Google_Service_Apigateway_ApigatewayOperation");
+  }
+  /**
+   * Gets details of a single Api. (apis.get)
+   *
+   * @param string $name Required. Resource name of the form:
+   * `projects/locations/global/apis`
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Apigateway_ApigatewayApi
+   */
+  public function get($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('get', array($params), "Google_Service_Apigateway_ApigatewayApi");
+  }
+  /**
    * Gets the access control policy for a resource. Returns an empty policy if the
    * resource exists and does not have a policy set. (apis.getIamPolicy)
    *
@@ -49,6 +95,46 @@ class Google_Service_Apigateway_Resource_ProjectsLocationsApis extends Google_Se
     $params = array('resource' => $resource);
     $params = array_merge($params, $optParams);
     return $this->call('getIamPolicy', array($params), "Google_Service_Apigateway_ApigatewayPolicy");
+  }
+  /**
+   * Lists Apis in a given project and location. (apis.listProjectsLocationsApis)
+   *
+   * @param string $parent Required. Parent resource of the API, of the form:
+   * `projects/locations/global`
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param int pageSize Page size.
+   * @opt_param string orderBy Order by parameters.
+   * @opt_param string filter Filter.
+   * @opt_param string pageToken Page token.
+   * @return Google_Service_Apigateway_ApigatewayListApisResponse
+   */
+  public function listProjectsLocationsApis($parent, $optParams = array())
+  {
+    $params = array('parent' => $parent);
+    $params = array_merge($params, $optParams);
+    return $this->call('list', array($params), "Google_Service_Apigateway_ApigatewayListApisResponse");
+  }
+  /**
+   * Updates the parameters of a single Api. (apis.patch)
+   *
+   * @param string $name Output only. Resource name of the API. Format:
+   * projects/{project}/locations/global/apis/{api}
+   * @param Google_Service_Apigateway_ApigatewayApi $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask Field mask is used to specify the fields to be
+   * overwritten in the Api resource by the update. The fields specified in the
+   * update_mask are relative to the resource, not the full request. A field will
+   * be overwritten if it is in the mask. If the user does not provide a mask then
+   * all fields will be overwritten.
+   * @return Google_Service_Apigateway_ApigatewayOperation
+   */
+  public function patch($name, Google_Service_Apigateway_ApigatewayApi $postBody, $optParams = array())
+  {
+    $params = array('name' => $name, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', array($params), "Google_Service_Apigateway_ApigatewayOperation");
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any

@@ -77,6 +77,9 @@ class Google_Service_Compute_Resource_UrlMaps extends Google_Service_Resource
    * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
+   * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
+   * which provides partial results in case of failure. The default value is false
+   * and the logic is the same as today.
    * @return Google_Service_Compute_UrlMapsAggregatedList
    */
   public function aggregatedList($project, $optParams = array())
@@ -157,7 +160,10 @@ class Google_Service_Compute_Resource_UrlMaps extends Google_Service_Resource
   }
   /**
    * Initiates a cache invalidation operation, invalidating the specified path,
-   * scoped to the specified UrlMap. (urlMaps.invalidateCache)
+   * scoped to the specified UrlMap.
+   *
+   * For more information, see [Invalidating cached content](/cdn/docs
+   * /invalidating-cached-content). (urlMaps.invalidateCache)
    *
    * @param string $project Project ID for this request.
    * @param string $urlMap Name of the UrlMap scoping this request.
@@ -229,6 +235,9 @@ class Google_Service_Compute_Resource_UrlMaps extends Google_Service_Resource
    * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
+   * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
+   * which provides partial results in case of failure. The default value is false
+   * and the logic is the same as today.
    * @return Google_Service_Compute_UrlMapList
    */
   public function listUrlMaps($project, $optParams = array())

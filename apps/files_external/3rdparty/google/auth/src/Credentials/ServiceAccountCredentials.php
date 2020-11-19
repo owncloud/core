@@ -84,6 +84,11 @@ class ServiceAccountCredentials extends CredentialsLoader implements
      */
     protected $projectId;
 
+    /*
+     * @var array|null
+     */
+    private $lastReceivedJwtAccessToken;
+
     /**
      * Create a new ServiceAccountCredentials.
      *
@@ -180,7 +185,11 @@ class ServiceAccountCredentials extends CredentialsLoader implements
      */
     public function getLastReceivedToken()
     {
-        return $this->auth->getLastReceivedToken();
+        // If self-signed JWTs are being used, fetch the last received token
+        // from memory. Else, fetch it from OAuth2
+        return $this->useSelfSignedJwt()
+            ? $this->lastReceivedJwtAccessToken
+            : $this->auth->getLastReceivedToken();
     }
 
     /**
@@ -210,8 +219,7 @@ class ServiceAccountCredentials extends CredentialsLoader implements
         callable $httpHandler = null
     ) {
         // scope exists. use oauth implementation
-        $scope = $this->auth->getScope();
-        if (!is_null($scope)) {
+        if (!$this->useSelfSignedJwt()) {
             return parent::updateMetadata($metadata, $authUri, $httpHandler);
         }
 
@@ -222,7 +230,14 @@ class ServiceAccountCredentials extends CredentialsLoader implements
         );
         $jwtCreds = new ServiceAccountJwtAccessCredentials($credJson);
 
-        return $jwtCreds->updateMetadata($metadata, $authUri, $httpHandler);
+        $updatedMetadata = $jwtCreds->updateMetadata($metadata, $authUri, $httpHandler);
+
+        if ($lastReceivedToken = $jwtCreds->getLastReceivedToken()) {
+            // Keep self-signed JWTs in memory as the last received token
+            $this->lastReceivedJwtAccessToken = $lastReceivedToken;
+        }
+
+        return $updatedMetadata;
     }
 
     /**
@@ -255,5 +270,10 @@ class ServiceAccountCredentials extends CredentialsLoader implements
     public function getQuotaProject()
     {
         return $this->quotaProject;
+    }
+
+    private function useSelfSignedJwt()
+    {
+        return is_null($this->auth->getScope());
     }
 }

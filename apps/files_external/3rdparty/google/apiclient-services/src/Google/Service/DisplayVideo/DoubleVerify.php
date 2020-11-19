@@ -23,6 +23,7 @@ class Google_Service_DisplayVideo_DoubleVerify extends Google_Collection
   public $avoidedAgeRatings;
   protected $brandSafetyCategoriesType = 'Google_Service_DisplayVideo_DoubleVerifyBrandSafetyCategories';
   protected $brandSafetyCategoriesDataType = '';
+  public $customSegmentId;
   protected $displayViewabilityType = 'Google_Service_DisplayVideo_DoubleVerifyDisplayViewability';
   protected $displayViewabilityDataType = '';
   protected $fraudInvalidTrafficType = 'Google_Service_DisplayVideo_DoubleVerifyFraudInvalidTraffic';
@@ -65,6 +66,14 @@ class Google_Service_DisplayVideo_DoubleVerify extends Google_Collection
   public function getBrandSafetyCategories()
   {
     return $this->brandSafetyCategories;
+  }
+  public function setCustomSegmentId($customSegmentId)
+  {
+    $this->customSegmentId = $customSegmentId;
+  }
+  public function getCustomSegmentId()
+  {
+    return $this->customSegmentId;
   }
   /**
    * @param Google_Service_DisplayVideo_DoubleVerifyDisplayViewability

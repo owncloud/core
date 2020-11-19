@@ -22,6 +22,9 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1Taxonomy extends G
   public $description;
   public $displayName;
   public $name;
+  public $policyTagCount;
+  protected $taxonomyTimestampsType = 'Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SystemTimestamps';
+  protected $taxonomyTimestampsDataType = '';
 
   public function setActivatedPolicyTypes($activatedPolicyTypes)
   {
@@ -54,5 +57,27 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1Taxonomy extends G
   public function getName()
   {
     return $this->name;
+  }
+  public function setPolicyTagCount($policyTagCount)
+  {
+    $this->policyTagCount = $policyTagCount;
+  }
+  public function getPolicyTagCount()
+  {
+    return $this->policyTagCount;
+  }
+  /**
+   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SystemTimestamps
+   */
+  public function setTaxonomyTimestamps(Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SystemTimestamps $taxonomyTimestamps)
+  {
+    $this->taxonomyTimestamps = $taxonomyTimestamps;
+  }
+  /**
+   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SystemTimestamps
+   */
+  public function getTaxonomyTimestamps()
+  {
+    return $this->taxonomyTimestamps;
   }
 }

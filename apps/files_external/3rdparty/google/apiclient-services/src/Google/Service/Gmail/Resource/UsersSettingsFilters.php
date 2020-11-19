@@ -26,7 +26,8 @@
 class Google_Service_Gmail_Resource_UsersSettingsFilters extends Google_Service_Resource
 {
   /**
-   * Creates a filter. (filters.create)
+   * Creates a filter. Note: you can only create a maximum of 1,000 filters.
+   * (filters.create)
    *
    * @param string $userId User's email address. The special value "me" can be
    * used to indicate the authenticated user.

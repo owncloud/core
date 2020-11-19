@@ -26,8 +26,9 @@
 class Google_Service_CloudMemorystoreforMemcached_Resource_ProjectsLocationsInstances extends Google_Service_Resource
 {
   /**
-   * ApplyParameters will update current set of Parameters to the set of specified
-   * nodes of the Memcached Instance. (instances.applyParameters)
+   * ApplyParameters will restart the set of specified nodes in order to update
+   * them to the current set of parameters for the Memcached Instance.
+   * (instances.applyParameters)
    *
    * @param string $name Required. Resource name of the Memcached instance for
    * which parameter group updates should be applied.
@@ -42,7 +43,7 @@ class Google_Service_CloudMemorystoreforMemcached_Resource_ProjectsLocationsInst
     return $this->call('applyParameters', array($params), "Google_Service_CloudMemorystoreforMemcached_Operation");
   }
   /**
-   * Creates a new Instance in a given project and location. (instances.create)
+   * Creates a new Instance in a given location. (instances.create)
    *
    * @param string $parent Required. The resource name of the instance location
    * using the form: `projects/{project_id}/locations/{location_id}` where
@@ -54,7 +55,8 @@ class Google_Service_CloudMemorystoreforMemcached_Resource_ProjectsLocationsInst
    * instance in the user project with the following restrictions: * Must contain
    * only lowercase letters, numbers, and hyphens. * Must start with a letter. *
    * Must be between 1-40 characters. * Must end with a number or a letter. * Must
-   * be unique within the user project / location
+   * be unique within the user project / location If any of the above are not met,
+   * will raise an invalid argument error.
    * @return Google_Service_CloudMemorystoreforMemcached_Operation
    */
   public function create($parent, Google_Service_CloudMemorystoreforMemcached_Instance $postBody, $optParams = array())
@@ -94,7 +96,7 @@ class Google_Service_CloudMemorystoreforMemcached_Resource_ProjectsLocationsInst
     return $this->call('get', array($params), "Google_Service_CloudMemorystoreforMemcached_Instance");
   }
   /**
-   * Lists Instances in a given project and location.
+   * Lists Instances in a given location.
    * (instances.listProjectsLocationsInstances)
    *
    * @param string $parent Required. The resource name of the instance location
@@ -102,6 +104,8 @@ class Google_Service_CloudMemorystoreforMemcached_Resource_ProjectsLocationsInst
    * `location_id` refers to a GCP region
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string orderBy Sort results. Supported values are "name", "name
+   * desc" or "" (unsorted).
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.
    * @opt_param int pageSize The maximum number of items to return. If not
@@ -111,8 +115,6 @@ class Google_Service_CloudMemorystoreforMemcached_Resource_ProjectsLocationsInst
    * instances left to be queried.
    * @opt_param string filter List filter. For example, exclude all Memcached
    * instances with name as my-instance by specifying "name != my-instance".
-   * @opt_param string orderBy Sort results. Supported values are "name", "name
-   * desc" or "" (unsorted).
    * @return Google_Service_CloudMemorystoreforMemcached_ListInstancesResponse
    */
   public function listProjectsLocationsInstances($parent, $optParams = array())

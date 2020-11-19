@@ -140,6 +140,9 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
    * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
+   * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
+   * which provides partial results in case of failure. The default value is false
+   * and the logic is the same as today.
    * @return Google_Service_Compute_InstanceAggregatedList
    */
   public function aggregatedList($project, $optParams = array())
@@ -161,7 +164,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool forceAttach Whether to force attach the regional disk even if
-   * it's currently attached to another instance.
+   * it's currently attached to another instance. If you try to force attach a
+   * zonal disk to an instance, you will receive an error.
    * @opt_param string requestId An optional request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
    * server will know to ignore the request if it has already been completed.
@@ -473,6 +477,9 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
    * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
+   * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
+   * which provides partial results in case of failure. The default value is false
+   * and the logic is the same as today.
    * @return Google_Service_Compute_InstanceList
    */
   public function listInstances($project, $zone, $optParams = array())
@@ -483,9 +490,10 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
   }
   /**
    * Retrieves a list of resources that refer to the VM instance specified in the
-   * request. For example, if the VM instance is part of a managed instance group,
-   * the referrers list includes the managed instance group. For more information,
-   * read Viewing Referrers to VM Instances. (instances.listReferrers)
+   * request. For example, if the VM instance is part of a managed or unmanaged
+   * instance group, the referrers list includes the instance group. For more
+   * information, read Viewing referrers to VM instances.
+   * (instances.listReferrers)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -531,6 +539,9 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
    * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
+   * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
+   * which provides partial results in case of failure. The default value is false
+   * and the logic is the same as today.
    * @return Google_Service_Compute_InstanceListReferrers
    */
   public function listReferrers($project, $zone, $instance, $optParams = array())

@@ -109,6 +109,9 @@ class Google_Service_Compute_Resource_InstanceGroups extends Google_Service_Reso
    * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
+   * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
+   * which provides partial results in case of failure. The default value is false
+   * and the logic is the same as today.
    * @return Google_Service_Compute_InstanceGroupAggregatedList
    */
   public function aggregatedList($project, $optParams = array())
@@ -148,8 +151,11 @@ class Google_Service_Compute_Resource_InstanceGroups extends Google_Service_Reso
     return $this->call('delete', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Returns the specified instance group. Gets a list of available instance
-   * groups by making a list() request. (instanceGroups.get)
+   * Returns the specified zonal instance group. Get a list of available zonal
+   * instance groups by making a list() request.
+   *
+   * For managed instance groups, use the instanceGroupManagers or
+   * regionInstanceGroupManagers methods instead. (instanceGroups.get)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone where the instance group is located.
@@ -194,8 +200,12 @@ class Google_Service_Compute_Resource_InstanceGroups extends Google_Service_Reso
     return $this->call('insert', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Retrieves the list of instance groups that are located in the specified
-   * project and zone. (instanceGroups.listInstanceGroups)
+   * Retrieves the list of zonal instance group resources contained within the
+   * specified zone.
+   *
+   * For managed instance groups, use the instanceGroupManagers or
+   * regionInstanceGroupManagers methods instead.
+   * (instanceGroups.listInstanceGroups)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone where the instance group is located.
@@ -239,6 +249,9 @@ class Google_Service_Compute_Resource_InstanceGroups extends Google_Service_Reso
    * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
+   * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
+   * which provides partial results in case of failure. The default value is false
+   * and the logic is the same as today.
    * @return Google_Service_Compute_InstanceGroupList
    */
   public function listInstanceGroups($project, $zone, $optParams = array())
@@ -296,6 +309,9 @@ class Google_Service_Compute_Resource_InstanceGroups extends Google_Service_Reso
    * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
+   * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
+   * which provides partial results in case of failure. The default value is false
+   * and the logic is the same as today.
    * @return Google_Service_Compute_InstanceGroupsListInstances
    */
   public function listInstances($project, $zone, $instanceGroup, Google_Service_Compute_InstanceGroupsListInstancesRequest $postBody, $optParams = array())

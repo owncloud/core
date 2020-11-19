@@ -48,11 +48,13 @@ class Google_Service_CloudBuild_Resource_ProjectsLocationsBuilds extends Google_
    *
    * @param string $parent The parent resource where this build will be created.
    * Format: `projects/{project}/locations/{location}`
-   * @param Google_Service_CloudBuild_CreateBuildRequest $postBody
+   * @param Google_Service_CloudBuild_Build $postBody
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string projectId Required. ID of the project.
    * @return Google_Service_CloudBuild_Operation
    */
-  public function create($parent, Google_Service_CloudBuild_CreateBuildRequest $postBody, $optParams = array())
+  public function create($parent, Google_Service_CloudBuild_Build $postBody, $optParams = array())
   {
     $params = array('parent' => $parent, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
@@ -67,8 +69,8 @@ class Google_Service_CloudBuild_Resource_ProjectsLocationsBuilds extends Google_
    * `projects/{project}/locations/{location}/builds/{build}`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string id Required. ID of the build.
    * @opt_param string projectId Required. ID of the project.
+   * @opt_param string id Required. ID of the build.
    * @return Google_Service_CloudBuild_Build
    */
   public function get($name, $optParams = array())
@@ -86,10 +88,13 @@ class Google_Service_CloudBuild_Resource_ProjectsLocationsBuilds extends Google_
    * `projects/{project}/locations/location`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Token to provide to skip to a particular spot in
-   * the list.
-   * @opt_param string filter The raw filter text to constrain the results.
    * @opt_param string projectId Required. ID of the project.
+   * @opt_param string filter The raw filter text to constrain the results.
+   * @opt_param string pageToken The page token for the next page of Builds. If
+   * unspecified, the first page of results is returned. If the token is rejected
+   * for any reason, INVALID_ARGUMENT will be thrown. In this case, the token
+   * should be discarded, and pagination should be restarted from the first page
+   * of results. See https://google.aip.dev/158 for more.
    * @opt_param int pageSize Number of results to return in the list.
    * @return Google_Service_CloudBuild_ListBuildsResponse
    */

@@ -18,6 +18,8 @@
 class Google_Service_HangoutsChat_Annotation extends Google_Model
 {
   public $length;
+  protected $slashCommandType = 'Google_Service_HangoutsChat_SlashCommandMetadata';
+  protected $slashCommandDataType = '';
   public $startIndex;
   public $type;
   protected $userMentionType = 'Google_Service_HangoutsChat_UserMentionMetadata';
@@ -30,6 +32,20 @@ class Google_Service_HangoutsChat_Annotation extends Google_Model
   public function getLength()
   {
     return $this->length;
+  }
+  /**
+   * @param Google_Service_HangoutsChat_SlashCommandMetadata
+   */
+  public function setSlashCommand(Google_Service_HangoutsChat_SlashCommandMetadata $slashCommand)
+  {
+    $this->slashCommand = $slashCommand;
+  }
+  /**
+   * @return Google_Service_HangoutsChat_SlashCommandMetadata
+   */
+  public function getSlashCommand()
+  {
+    return $this->slashCommand;
   }
   public function setStartIndex($startIndex)
   {

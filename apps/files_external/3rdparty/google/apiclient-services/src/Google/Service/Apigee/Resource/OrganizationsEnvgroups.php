@@ -78,10 +78,10 @@ class Google_Service_Apigee_Resource_OrganizationsEnvgroups extends Google_Servi
    * environment groups in the following format: `organizations/{org}`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Page token, returned from a previous
-   * ListEnvironmentGroups call, that you can use to retrieve the next page.
    * @opt_param int pageSize Maximum number of environment groups to return. The
    * page size defaults to 25.
+   * @opt_param string pageToken Page token, returned from a previous
+   * ListEnvironmentGroups call, that you can use to retrieve the next page.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ListEnvironmentGroupsResponse
    */
   public function listOrganizationsEnvgroups($parent, $optParams = array())

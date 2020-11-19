@@ -26,13 +26,13 @@
 class Google_Service_ServiceConsumerManagement_Resource_ServicesTenancyUnits extends Google_Service_Resource
 {
   /**
-   * Add a new tenant project to the tenancy unit. There can be a maximum of 512
+   * Add a new tenant project to the tenancy unit. There can be a maximum of 1024
    * tenant projects in a tenancy unit. If there are previously failed
    * `AddTenantProject` calls, you might need to call `RemoveTenantProject` first
    * to resolve them before you can make another call to `AddTenantProject` with
    * the same tag. Operation. (tenancyUnits.addProject)
    *
-   * @param string $parent Name of the tenancy unit. Such as
+   * @param string $parent Required. Name of the tenancy unit. Such as
    * 'services/service.googleapis.com/projects/12345/tenancyUnits/abcd'.
    * @param Google_Service_ServiceConsumerManagement_AddTenantProjectRequest $postBody
    * @param array $optParams Optional parameters.
@@ -60,7 +60,7 @@ class Google_Service_ServiceConsumerManagement_Resource_ServicesTenancyUnits ext
    * rollback of already applied configuration changes is attempted. Operation.
    * (tenancyUnits.applyProjectConfig)
    *
-   * @param string $name Name of the tenancy unit. Such as
+   * @param string $name Required. Name of the tenancy unit. Such as
    * 'services/service.googleapis.com/projects/12345/tenancyUnits/abcd'.
    * @param Google_Service_ServiceConsumerManagement_ApplyTenantProjectConfigRequest $postBody
    * @param array $optParams Optional parameters.
@@ -84,8 +84,8 @@ class Google_Service_ServiceConsumerManagement_Resource_ServicesTenancyUnits ext
    * reserved by calling `AddTenantProject`. Operation.
    * (tenancyUnits.attachProject)
    *
-   * @param string $name Name of the tenancy unit that the project will be
-   * attached to. Such as
+   * @param string $name Required. Name of the tenancy unit that the project will
+   * be attached to. Such as
    * 'services/service.googleapis.com/projects/12345/tenancyUnits/abcd'.
    * @param Google_Service_ServiceConsumerManagement_AttachTenantProjectRequest $postBody
    * @param array $optParams Optional parameters.
@@ -103,8 +103,8 @@ class Google_Service_ServiceConsumerManagement_Resource_ServicesTenancyUnits ext
    * not have tenant_resources field set and ListTenancyUnits has to be used to
    * get a complete TenancyUnit with all fields populated. (tenancyUnits.create)
    *
-   * @param string $parent services/{service}/{collection id}/{resource id}
-   * {collection id} is the cloud resource collection type representing the
+   * @param string $parent Required. services/{service}/{collection id}/{resource
+   * id} {collection id} is the cloud resource collection type representing the
    * service consumer, for example 'projects', or 'organizations'. {resource id}
    * is the consumer numeric id, such as project number: '123456'. {service} the
    * name of a managed service, such as 'service.googleapis.com'. Enables service
@@ -124,7 +124,7 @@ class Google_Service_ServiceConsumerManagement_Resource_ServicesTenancyUnits ext
    * tenant resources in it that aren't in a DELETED state. Operation.
    * (tenancyUnits.delete)
    *
-   * @param string $name Name of the tenancy unit to be deleted.
+   * @param string $name Required. Name of the tenancy unit to be deleted.
    * @param array $optParams Optional parameters.
    * @return Google_Service_ServiceConsumerManagement_Operation
    */
@@ -144,7 +144,7 @@ class Google_Service_ServiceConsumerManagement_Resource_ServicesTenancyUnits ext
    * be added if there are existing resources in a DELETED state. Operation.
    * (tenancyUnits.deleteProject)
    *
-   * @param string $name Name of the tenancy unit. Such as
+   * @param string $name Required. Name of the tenancy unit. Such as
    * 'services/service.googleapis.com/projects/12345/tenancyUnits/abcd'.
    * @param Google_Service_ServiceConsumerManagement_DeleteTenantProjectRequest $postBody
    * @param array $optParams Optional parameters.
@@ -163,21 +163,21 @@ class Google_Service_ServiceConsumerManagement_Resource_ServicesTenancyUnits ext
    * the tenant project's information after the project is created.
    * (tenancyUnits.listServicesTenancyUnits)
    *
-   * @param string $parent Managed service and service consumer. Required.
-   * services/{service}/{collection id}/{resource id} {collection id} is the cloud
-   * resource collection type representing the service consumer, for example
-   * 'projects', or 'organizations'. {resource id} is the consumer numeric id,
-   * such as project number: '123456'. {service} the name of a service, such as
-   * 'service.googleapis.com'.
+   * @param string $parent Required. Managed service and service consumer.
+   * Required. services/{service}/{collection id}/{resource id} {collection id} is
+   * the cloud resource collection type representing the service consumer, for
+   * example 'projects', or 'organizations'. {resource id} is the consumer numeric
+   * id, such as project number: '123456'. {service} the name of a service, such
+   * as 'service.googleapis.com'.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize The maximum number of results returned by this
-   * request.
-   * @opt_param string filter Filter expression over tenancy resources field.
-   * Optional.
-   * @opt_param string pageToken The continuation token, which is used to page
-   * through large result sets. To get the next page of results, set this
+   * @opt_param string filter Optional. Filter expression over tenancy resources
+   * field. Optional.
+   * @opt_param string pageToken Optional. The continuation token, which is used
+   * to page through large result sets. To get the next page of results, set this
    * parameter to the value of `nextPageToken` from the previous response.
+   * @opt_param int pageSize Optional. The maximum number of results returned by
+   * this request.
    * @return Google_Service_ServiceConsumerManagement_ListTenancyUnitsResponse
    */
   public function listServicesTenancyUnits($parent, $optParams = array())
@@ -195,7 +195,7 @@ class Google_Service_ServiceConsumerManagement_Resource_ServicesTenancyUnits ext
    * DELETED state, resource metadata is permanently removed from the tenancy
    * unit. Operation. (tenancyUnits.removeProject)
    *
-   * @param string $name Name of the tenancy unit. Such as
+   * @param string $name Required. Name of the tenancy unit. Such as
    * 'services/service.googleapis.com/projects/12345/tenancyUnits/abcd'.
    * @param Google_Service_ServiceConsumerManagement_RemoveTenantProjectRequest $postBody
    * @param array $optParams Optional parameters.
@@ -214,7 +214,7 @@ class Google_Service_ServiceConsumerManagement_Resource_ServicesTenancyUnits ext
    * method to update its configuration and then validate all managed service
    * resources. Operation. (tenancyUnits.undeleteProject)
    *
-   * @param string $name Name of the tenancy unit. Such as
+   * @param string $name Required. Name of the tenancy unit. Such as
    * 'services/service.googleapis.com/projects/12345/tenancyUnits/abcd'.
    * @param Google_Service_ServiceConsumerManagement_UndeleteTenantProjectRequest $postBody
    * @param array $optParams Optional parameters.

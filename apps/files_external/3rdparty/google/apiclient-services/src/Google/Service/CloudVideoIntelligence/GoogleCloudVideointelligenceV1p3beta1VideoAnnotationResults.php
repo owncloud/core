@@ -24,6 +24,8 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p3beta
   protected $errorDataType = '';
   protected $explicitAnnotationType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p3beta1ExplicitContentAnnotation';
   protected $explicitAnnotationDataType = '';
+  protected $faceAnnotationsType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p3beta1FaceAnnotation';
+  protected $faceAnnotationsDataType = 'array';
   protected $faceDetectionAnnotationsType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p3beta1FaceDetectionAnnotation';
   protected $faceDetectionAnnotationsDataType = 'array';
   protected $frameLabelAnnotationsType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p3beta1LabelAnnotation';
@@ -93,6 +95,20 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p3beta
   public function getExplicitAnnotation()
   {
     return $this->explicitAnnotation;
+  }
+  /**
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p3beta1FaceAnnotation
+   */
+  public function setFaceAnnotations($faceAnnotations)
+  {
+    $this->faceAnnotations = $faceAnnotations;
+  }
+  /**
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p3beta1FaceAnnotation
+   */
+  public function getFaceAnnotations()
+  {
+    return $this->faceAnnotations;
   }
   /**
    * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p3beta1FaceDetectionAnnotation

@@ -83,6 +83,12 @@ class Google_Service_Directory_Resource_ResourcesCalendars extends Google_Servic
    * your account's customer ID.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string orderBy Field(s) to sort results by in either ascending or
+   * descending order. Supported fields include resourceId, resourceName,
+   * capacity, buildingId, and floorName. If no order is specified, defaults to
+   * ascending. Should be of the form "field [asc|desc], field [asc|desc], ...".
+   * For example buildingId, capacity desc would return results sorted first by
+   * buildingId in ascending order then by capacity in descending order.
    * @opt_param string query String query used to filter results. Should be of the
    * form "field operator value" where field can be any of supported fields and
    * operators can be any of supported operations. Operators include '=' for exact
@@ -93,12 +99,6 @@ class Google_Service_Directory_Resource_ResourcesCalendars extends Google_Servic
    * capacity, featureInstances.feature.name. For example buildingId=US-NYC-9TH
    * AND featureInstances.feature.name:Phone.
    * @opt_param int maxResults Maximum number of results to return.
-   * @opt_param string orderBy Field(s) to sort results by in either ascending or
-   * descending order. Supported fields include resourceId, resourceName,
-   * capacity, buildingId, and floorName. If no order is specified, defaults to
-   * ascending. Should be of the form "field [asc|desc], field [asc|desc], ...".
-   * For example buildingId, capacity desc would return results sorted first by
-   * buildingId in ascending order then by capacity in descending order.
    * @opt_param string pageToken Token to specify the next page in the list.
    * @return Google_Service_Directory_CalendarResources
    */

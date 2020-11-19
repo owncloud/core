@@ -35,6 +35,7 @@ class Google_Service_Bigquery_Dataset extends Google_Collection
   public $labels;
   public $lastModifiedTime;
   public $location;
+  public $satisfiesPZS;
   public $selfLink;
 
   /**
@@ -166,6 +167,14 @@ class Google_Service_Bigquery_Dataset extends Google_Collection
   public function getLocation()
   {
     return $this->location;
+  }
+  public function setSatisfiesPZS($satisfiesPZS)
+  {
+    $this->satisfiesPZS = $satisfiesPZS;
+  }
+  public function getSatisfiesPZS()
+  {
+    return $this->satisfiesPZS;
   }
   public function setSelfLink($selfLink)
   {

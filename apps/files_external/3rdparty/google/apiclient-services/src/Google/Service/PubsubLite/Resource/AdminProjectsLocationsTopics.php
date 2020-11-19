@@ -94,13 +94,13 @@ class Google_Service_PubsubLite_Resource_AdminProjectsLocationsTopics extends Go
    * Structured like `projects/{project_number}/locations/{location}`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of topics to return. The service
+   * may return fewer than this value. If unset or zero, all topics for the parent
+   * will be returned.
    * @opt_param string pageToken A page token, received from a previous
    * `ListTopics` call. Provide this to retrieve the subsequent page. When
    * paginating, all other parameters provided to `ListTopics` must match the call
    * that provided the page token.
-   * @opt_param int pageSize The maximum number of topics to return. The service
-   * may return fewer than this value. If unset or zero, all topics for the parent
-   * will be returned.
    * @return Google_Service_PubsubLite_ListTopicsResponse
    */
   public function listAdminProjectsLocationsTopics($parent, $optParams = array())

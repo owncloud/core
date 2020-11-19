@@ -16,7 +16,7 @@
  */
 
 /**
- * Service definition for CloudBillingBudget (v1beta1).
+ * Service definition for CloudBillingBudget (v1).
  *
  * <p>
  * The Cloud Billing Budget API stores Cloud Billing budgets, which define a
@@ -52,7 +52,7 @@ class Google_Service_CloudBillingBudget extends Google_Service
     $this->rootUrl = $rootUrl ?: 'https://billingbudgets.googleapis.com/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
-    $this->version = 'v1beta1';
+    $this->version = 'v1';
     $this->serviceName = 'billingbudgets';
 
     $this->billingAccounts_budgets = new Google_Service_CloudBillingBudget_Resource_BillingAccountsBudgets(
@@ -62,7 +62,7 @@ class Google_Service_CloudBillingBudget extends Google_Service
         array(
           'methods' => array(
             'create' => array(
-              'path' => 'v1beta1/{+parent}/budgets',
+              'path' => 'v1/{+parent}/budgets',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
@@ -72,7 +72,7 @@ class Google_Service_CloudBillingBudget extends Google_Service
                 ),
               ),
             ),'delete' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'name' => array(
@@ -82,7 +82,7 @@ class Google_Service_CloudBillingBudget extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -92,7 +92,7 @@ class Google_Service_CloudBillingBudget extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1beta1/{+parent}/budgets',
+              'path' => 'v1/{+parent}/budgets',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'parent' => array(
@@ -100,23 +100,27 @@ class Google_Service_CloudBillingBudget extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
               ),
             ),'patch' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'name' => array(
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ),
+                'updateMask' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),

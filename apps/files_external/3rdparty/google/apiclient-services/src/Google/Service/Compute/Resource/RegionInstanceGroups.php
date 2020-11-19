@@ -86,6 +86,9 @@ class Google_Service_Compute_Resource_RegionInstanceGroups extends Google_Servic
    * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
+   * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
+   * which provides partial results in case of failure. The default value is false
+   * and the logic is the same as today.
    * @return Google_Service_Compute_RegionInstanceGroupList
    */
   public function listRegionInstanceGroups($project, $region, $optParams = array())
@@ -145,6 +148,9 @@ class Google_Service_Compute_Resource_RegionInstanceGroups extends Google_Servic
    * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
+   * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
+   * which provides partial results in case of failure. The default value is false
+   * and the logic is the same as today.
    * @return Google_Service_Compute_RegionInstanceGroupsListInstances
    */
   public function listInstances($project, $region, $instanceGroup, Google_Service_Compute_RegionInstanceGroupsListInstancesRequest $postBody, $optParams = array())

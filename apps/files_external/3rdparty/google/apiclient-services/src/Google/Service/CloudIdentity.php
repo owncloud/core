@@ -121,19 +121,11 @@ class Google_Service_CloudIdentity extends Google_Service
               'path' => 'v1/devices',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'customer' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'orderBy' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -142,6 +134,14 @@ class Google_Service_CloudIdentity extends Google_Service
                   'type' => 'string',
                 ),
                 'view' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'customer' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -237,11 +237,7 @@ class Google_Service_CloudIdentity extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'customer' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -249,9 +245,13 @@ class Google_Service_CloudIdentity extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'filter' => array(
+                'customer' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),'lookup' => array(
@@ -263,15 +263,7 @@ class Google_Service_CloudIdentity extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'androidId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageToken' => array(
+                'userId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -279,7 +271,15 @@ class Google_Service_CloudIdentity extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'userId' => array(
+                'androidId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -327,6 +327,10 @@ class Google_Service_CloudIdentity extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'customer' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -336,10 +340,6 @@ class Google_Service_CloudIdentity extends Google_Service
                   'type' => 'string',
                 ),
                 'orderBy' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'customer' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -353,11 +353,11 @@ class Google_Service_CloudIdentity extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'customer' => array(
+                'updateMask' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'updateMask' => array(
+                'customer' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -375,7 +375,12 @@ class Google_Service_CloudIdentity extends Google_Service
             'create' => array(
               'path' => 'v1/groups',
               'httpMethod' => 'POST',
-              'parameters' => array(),
+              'parameters' => array(
+                'initialGroupConfig' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
             ),'delete' => array(
               'path' => 'v1/{+name}',
               'httpMethod' => 'DELETE',
@@ -408,24 +413,24 @@ class Google_Service_CloudIdentity extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'parent' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),'lookup' => array(
               'path' => 'v1/groups:lookup',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'groupKey.id' => array(
+                'groupKey.namespace' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'groupKey.namespace' => array(
+                'groupKey.id' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -448,6 +453,10 @@ class Google_Service_CloudIdentity extends Google_Service
               'path' => 'v1/groups:search',
               'httpMethod' => 'GET',
               'parameters' => array(
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'view' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -455,10 +464,6 @@ class Google_Service_CloudIdentity extends Google_Service
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
-                ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
                 ),
                 'query' => array(
                   'location' => 'query',
@@ -514,13 +519,13 @@ class Google_Service_CloudIdentity extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'view' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
@@ -536,13 +541,23 @@ class Google_Service_CloudIdentity extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'memberKey.id' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'memberKey.namespace' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'memberKey.id' => array(
-                  'location' => 'query',
+              ),
+            ),'modifyMembershipRoles' => array(
+              'path' => 'v1/{+name}:modifyMembershipRoles',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
                   'type' => 'string',
+                  'required' => true,
                 ),
               ),
             ),

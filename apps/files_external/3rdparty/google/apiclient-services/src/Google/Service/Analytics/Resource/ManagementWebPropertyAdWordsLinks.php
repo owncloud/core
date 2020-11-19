@@ -85,11 +85,11 @@ class Google_Service_Analytics_Resource_ManagementWebPropertyAdWordsLinks extend
    * for.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int max-results The maximum number of webProperty-Google Ads links
-   * to include in this response.
    * @opt_param int start-index An index of the first webProperty-Google Ads link
    * to retrieve. Use this parameter as a pagination mechanism along with the max-
    * results parameter.
+   * @opt_param int max-results The maximum number of webProperty-Google Ads links
+   * to include in this response.
    * @return Google_Service_Analytics_EntityAdWordsLinks
    */
   public function listManagementWebPropertyAdWordsLinks($accountId, $webPropertyId, $optParams = array())

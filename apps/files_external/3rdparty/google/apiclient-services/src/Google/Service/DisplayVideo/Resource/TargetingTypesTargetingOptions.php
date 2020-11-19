@@ -52,28 +52,28 @@ class Google_Service_DisplayVideo_Resource_TargetingTypesTargetingOptions extend
    * listed.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
+   * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
+   * if an invalid value is specified.
+   * @opt_param string advertiserId Required. The Advertiser this request is being
+   * made in the context of.
    * @opt_param string pageToken A token identifying a page of results the server
    * should return. Typically, this is the value of next_page_token returned from
    * the previous call to `ListTargetingOptions` method. If not specified, the
    * first page of results will be returned.
-   * @opt_param string advertiserId Required. The Advertiser this request is being
-   * made in the context of.
-   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
-   * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
-   * if an invalid value is specified.
    * @opt_param string filter Allows filtering by targeting option properties.
    * Supported syntax: * Filter expressions are made up of one or more
    * restrictions. * Restrictions can be combined by `OR` logical operators. * A
    * restriction has the form of `{field} {operator} {value}`. * The operator must
-   * be "=" (equal sign). * Supported fields: - `carrier_and_isp_details.type` -
-   * `geo_region_details.geo_region_type` - `targetingOptionId` Examples: * All
-   * `GEO REGION` targeting options that belong to sub type
-   * `GEO_REGION_TYPE_COUNTRY` or `GEO_REGION_TYPE_STATE`:
-   * `geo_region_details.geo_region_type="GEO_REGION_TYPE_COUNTRY" OR
-   * geo_region_details.geo_region_type="GEO_REGION_TYPE_STATE"` * All `CARRIER
-   * AND ISP` targeting options that belong to sub type
+   * be "=" (equal sign). * Supported fields: - `carrierAndIspDetails.type` -
+   * `geoRegionDetails.geoRegionType` - `targetingOptionId` Examples: * All `GEO
+   * REGION` targeting options that belong to sub type `GEO_REGION_TYPE_COUNTRY`
+   * or `GEO_REGION_TYPE_STATE`:
+   * `geoRegionDetails.geoRegionType="GEO_REGION_TYPE_COUNTRY" OR
+   * geoRegionDetails.geoRegionType="GEO_REGION_TYPE_STATE"` * All `CARRIER AND
+   * ISP` targeting options that belong to sub type
    * `CARRIER_AND_ISP_TYPE_CARRIER`:
-   * `carrier_and_isp_details.type="CARRIER_AND_ISP_TYPE_CARRIER"`. The length of
+   * `carrierAndIspDetails.type="CARRIER_AND_ISP_TYPE_CARRIER"`. The length of
    * this field should be no more than 500 characters.
    * @opt_param string orderBy Field by which to sort the list. Acceptable values
    * are: * `targetingOptionId` (default) The default sorting order is ascending.

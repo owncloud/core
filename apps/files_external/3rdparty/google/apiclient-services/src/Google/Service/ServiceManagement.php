@@ -127,16 +127,6 @@ class Google_Service_ServiceManagement extends Google_Service
                   'required' => true,
                 ),
               ),
-            ),'disable' => array(
-              'path' => 'v1/services/{serviceName}:disable',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'serviceName' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
             ),'enable' => array(
               'path' => 'v1/services/{serviceName}:enable',
               'httpMethod' => 'POST',
@@ -193,14 +183,6 @@ class Google_Service_ServiceManagement extends Google_Service
               'path' => 'v1/services',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'consumerId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'producerProjectId' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -208,6 +190,14 @@ class Google_Service_ServiceManagement extends Google_Service
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'consumerId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'setIamPolicy' => array(
@@ -288,13 +278,13 @@ class Google_Service_ServiceManagement extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),'submit' => array(
@@ -395,11 +385,11 @@ class Google_Service_ServiceManagement extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'filter' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

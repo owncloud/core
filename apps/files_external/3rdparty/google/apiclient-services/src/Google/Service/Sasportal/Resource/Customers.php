@@ -43,11 +43,11 @@ class Google_Service_Sasportal_Resource_Customers extends Google_Service_Resourc
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of customers to return in the
+   * response.
    * @opt_param string pageToken A pagination token returned from a previous call
    * to ListCustomers method that indicates where this listing should continue
    * from.
-   * @opt_param int pageSize The maximum number of customers to return in the
-   * response.
    * @return Google_Service_Sasportal_SasPortalListCustomersResponse
    */
   public function listCustomers($optParams = array())

@@ -45,12 +45,13 @@ class Google_Service_Storagetransfer_Resource_TransferOperations extends Google_
    * today plus any new files discovered tomorrow. (transferOperations.cancel)
    *
    * @param string $name The name of the operation resource to be cancelled.
+   * @param Google_Service_Storagetransfer_CancelOperationRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Storagetransfer_StoragetransferEmpty
    */
-  public function cancel($name, $optParams = array())
+  public function cancel($name, Google_Service_Storagetransfer_CancelOperationRequest $postBody, $optParams = array())
   {
-    $params = array('name' => $name);
+    $params = array('name' => $name, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('cancel', array($params), "Google_Service_Storagetransfer_StoragetransferEmpty");
   }
@@ -73,24 +74,24 @@ class Google_Service_Storagetransfer_Resource_TransferOperations extends Google_
    * Lists transfer operations. (transferOperations.listTransferOperations)
    *
    * @param string $name Required. The value `transferOperations`.
+   * @param string $filter Required. A list of query parameters specified as JSON
+   * text in the form of: `{"projectId":"my_project_id",
+   * "jobNames":["jobid1","jobid2",...], "operationNames":["opid1","opid2",...],
+   * "transferStatuses":["status1","status2",...]}` Since `jobNames`,
+   * `operationNames`, and `transferStatuses` support multiple values, they must
+   * be specified with array notation. `projectId` is required. `jobNames`,
+   * `operationNames`, and `transferStatuses` are optional. The valid values for
+   * `transferStatuses` are case-insensitive: IN_PROGRESS, PAUSED, SUCCESS,
+   * FAILED, and ABORTED.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Required. A list of query parameters specified as
-   * JSON text in the form of: {"project_id":"my_project_id",
-   * "job_names":["jobid1","jobid2",...], "operation_names":["opid1","opid2",...],
-   * "transfer_statuses":["status1","status2",...]}. Since `job_names`,
-   * `operation_names`, and `transfer_statuses` support multiple values, they must
-   * be specified with array notation. `project``_``id` is required. `job_names`,
-   * `operation_names`, and `transfer_statuses` are optional. The valid values for
-   * `transfer_statuses` are case-insensitive: IN_PROGRESS, PAUSED, SUCCESS,
-   * FAILED, and ABORTED.
-   * @opt_param string pageToken The list page token.
    * @opt_param int pageSize The list page size. The max allowed value is 256.
+   * @opt_param string pageToken The list page token.
    * @return Google_Service_Storagetransfer_ListOperationsResponse
    */
-  public function listTransferOperations($name, $optParams = array())
+  public function listTransferOperations($name, $filter, $optParams = array())
   {
-    $params = array('name' => $name);
+    $params = array('name' => $name, 'filter' => $filter);
     $params = array_merge($params, $optParams);
     return $this->call('list', array($params), "Google_Service_Storagetransfer_ListOperationsResponse");
   }

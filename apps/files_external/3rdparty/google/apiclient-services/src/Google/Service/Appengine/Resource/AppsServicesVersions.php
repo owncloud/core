@@ -88,9 +88,9 @@ class Google_Service_Appengine_Resource_AppsServicesVersions extends Google_Serv
    *
    * @opt_param string view Controls the set of fields returned in the List
    * response.
-   * @opt_param int pageSize Maximum results to return per page.
    * @opt_param string pageToken Continuation token for fetching the next page of
    * results.
+   * @opt_param int pageSize Maximum results to return per page.
    * @return Google_Service_Appengine_ListVersionsResponse
    */
   public function listAppsServicesVersions($appsId, $servicesId, $optParams = array())

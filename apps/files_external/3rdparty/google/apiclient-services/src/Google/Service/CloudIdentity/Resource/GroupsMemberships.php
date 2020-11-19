@@ -26,12 +26,10 @@
 class Google_Service_CloudIdentity_Resource_GroupsMemberships extends Google_Service_Resource
 {
   /**
-   * Creates a Membership. (memberships.create)
+   * Creates a `Membership`. (memberships.create)
    *
-   * @param string $parent Required. [Resource
-   * name](https://cloud.google.com/apis/design/resource_names) of the Group to
-   * create Membership within. Format: `groups/{group_id}`, where `group_id` is
-   * the unique ID assigned to the Group.
+   * @param string $parent Required. The parent `Group` resource under which to
+   * create the `Membership`. Must be of the form `groups/{group_id}`.
    * @param Google_Service_CloudIdentity_Membership $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_CloudIdentity_Operation
@@ -43,13 +41,12 @@ class Google_Service_CloudIdentity_Resource_GroupsMemberships extends Google_Ser
     return $this->call('create', array($params), "Google_Service_CloudIdentity_Operation");
   }
   /**
-   * Deletes a Membership. (memberships.delete)
+   * Deletes a `Membership`. (memberships.delete)
    *
-   * @param string $name Required. [Resource
-   * name](https://cloud.google.com/apis/design/resource_names) of the Membership
-   * to be deleted. Format: `groups/{group_id}/memberships/{member_id}`, where
-   * `group_id` is the unique ID assigned to the Group to which Membership belongs
-   * to, and member_id is the unique ID assigned to the member.
+   * @param string $name Required. The [resource
+   * name](https://cloud.google.com/apis/design/resource_names) of the
+   * `Membership` to delete. Must be of the form
+   * `groups/{group_id}/memberships/{membership_id}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_CloudIdentity_Operation
    */
@@ -60,13 +57,12 @@ class Google_Service_CloudIdentity_Resource_GroupsMemberships extends Google_Ser
     return $this->call('delete', array($params), "Google_Service_CloudIdentity_Operation");
   }
   /**
-   * Retrieves a Membership. (memberships.get)
+   * Retrieves a `Membership`. (memberships.get)
    *
-   * @param string $name Required. [Resource
-   * name](https://cloud.google.com/apis/design/resource_names) of the Membership
-   * to be retrieved. Format: `groups/{group_id}/memberships/{member_id}`, where
-   * `group_id` is the unique id assigned to the Group to which Membership belongs
-   * to, and `member_id` is the unique ID assigned to the member.
+   * @param string $name Required. The [resource
+   * name](https://cloud.google.com/apis/design/resource_names) of the
+   * `Membership` to retrieve. Must be of the form
+   * `groups/{group_id}/memberships/{membership_id}`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_CloudIdentity_Membership
    */
@@ -77,20 +73,23 @@ class Google_Service_CloudIdentity_Resource_GroupsMemberships extends Google_Ser
     return $this->call('get', array($params), "Google_Service_CloudIdentity_Membership");
   }
   /**
-   * Lists Memberships within a Group. (memberships.listGroupsMemberships)
+   * Lists the `Membership`s within a `Group`. (memberships.listGroupsMemberships)
    *
-   * @param string $parent Required. [Resource
-   * name](https://cloud.google.com/apis/design/resource_names) of the Group to
-   * list Memberships within. Format: `groups/{group_id}`, where `group_id` is the
-   * unique ID assigned to the Group.
+   * @param string $parent Required. The parent `Group` resource under which to
+   * lookup the `Membership` name. Must be of the form `groups/{group_id}`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize The default page size is 200 (max 1000) for the BASIC
-   * view, and 50 (max 500) for the FULL view.
-   * @opt_param string view Membership resource view to be returned. Defaults to
-   * View.BASIC.
-   * @opt_param string pageToken The next_page_token value returned from a
-   * previous list request, if any.
+   * @opt_param string view The level of detail to be returned. If unspecified,
+   * defaults to `View.BASIC`.
+   * @opt_param int pageSize The maximum number of results to return. Note that
+   * the number of results returned may be less than this value even if there are
+   * more available results. To fetch all results, clients must continue calling
+   * this method repeatedly until the response no longer contains a
+   * `next_page_token`. If unspecified, defaults to 200 for `GroupView.BASIC` and
+   * to 50 for `GroupView.FULL`. Must not be greater than 1000 for
+   * `GroupView.BASIC` or 500 for `GroupView.FULL`.
+   * @opt_param string pageToken The `next_page_token` value returned from a
+   * previous search request, if any.
    * @return Google_Service_CloudIdentity_ListMembershipsResponse
    */
   public function listGroupsMemberships($parent, $optParams = array())
@@ -100,22 +99,24 @@ class Google_Service_CloudIdentity_Resource_GroupsMemberships extends Google_Ser
     return $this->call('list', array($params), "Google_Service_CloudIdentity_ListMembershipsResponse");
   }
   /**
-   * Looks up [resource name](https://cloud.google.com/apis/design/resource_names)
-   * of a Membership within a Group by member's EntityKey. (memberships.lookup)
+   * Looks up the [resource
+   * name](https://cloud.google.com/apis/design/resource_names) of a `Membership`
+   * by its `EntityKey`. (memberships.lookup)
    *
-   * @param string $parent Required. [Resource
-   * name](https://cloud.google.com/apis/design/resource_names) of the Group to
-   * lookup Membership within. Format: `groups/{group_id}`, where `group_id` is
-   * the unique ID assigned to the Group.
+   * @param string $parent Required. The parent `Group` resource under which to
+   * lookup the `Membership` name. Must be of the form `groups/{group_id}`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string memberKey.namespace Namespaces provide isolation for IDs,
-   * so an ID only needs to be unique within its namespace. Namespaces are
-   * currently only created as part of IdentitySource creation from Admin Console.
-   * A namespace `"identitysources/{identity_source_id}"` is created corresponding
-   * to every Identity Source `identity_source_id`.
-   * @opt_param string memberKey.id The ID of the entity within the given
-   * namespace. The ID must be unique within its namespace.
+   * @opt_param string memberKey.id The ID of the entity. For Google-managed
+   * entities, the `id` should be the email address of an existing group or user.
+   * For external-identity-mapped entities, the `id` must be a string conforming
+   * to the Identity Source's requirements. Must be unique within a `namespace`.
+   * @opt_param string memberKey.namespace The namespace in which the entity
+   * exists. If not specified, the `EntityKey` represents a Google-managed entity
+   * such as a Google user or a Google Group. If specified, the `EntityKey`
+   * represents an external-identity-mapped group. The namespace must correspond
+   * to an identity source created in Admin Console and must be in the form of
+   * `identitysources/{identity_source_id}.
    * @return Google_Service_CloudIdentity_LookupMembershipNameResponse
    */
   public function lookup($parent, $optParams = array())
@@ -123,5 +124,23 @@ class Google_Service_CloudIdentity_Resource_GroupsMemberships extends Google_Ser
     $params = array('parent' => $parent);
     $params = array_merge($params, $optParams);
     return $this->call('lookup', array($params), "Google_Service_CloudIdentity_LookupMembershipNameResponse");
+  }
+  /**
+   * Modifies the `MembershipRole`s of a `Membership`.
+   * (memberships.modifyMembershipRoles)
+   *
+   * @param string $name Required. The [resource
+   * name](https://cloud.google.com/apis/design/resource_names) of the
+   * `Membership` whose roles are to be modified. Must be of the form
+   * `groups/{group_id}/memberships/{membership_id}`.
+   * @param Google_Service_CloudIdentity_ModifyMembershipRolesRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_CloudIdentity_ModifyMembershipRolesResponse
+   */
+  public function modifyMembershipRoles($name, Google_Service_CloudIdentity_ModifyMembershipRolesRequest $postBody, $optParams = array())
+  {
+    $params = array('name' => $name, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('modifyMembershipRoles', array($params), "Google_Service_CloudIdentity_ModifyMembershipRolesResponse");
   }
 }

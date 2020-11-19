@@ -26,16 +26,16 @@
 class Google_Service_ContainerAnalysis_Resource_ProjectsNotesOccurrences extends Google_Service_Resource
 {
   /**
-   * Lists `Occurrences` referencing the specified `Note`. Use this method to get
-   * all occurrences referencing your `Note` across all your customer projects.
-   * (occurrences.listProjectsNotesOccurrences)
+   * Lists occurrences referencing the specified note. Provider projects can use
+   * this method to get all occurrences across consumer projects referencing the
+   * specified note. (occurrences.listProjectsNotesOccurrences)
    *
-   * @param string $name The name field will contain the note name for example:
-   * "provider/{provider_id}/notes/{note_id}"
+   * @param string $name Required. The name of the note to list occurrences for in
+   * the form of `projects/[PROVIDER_ID]/notes/[NOTE_ID]`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter The filter expression.
-   * @opt_param int pageSize Number of notes to return in the list.
+   * @opt_param int pageSize Number of occurrences to return in the list.
    * @opt_param string pageToken Token to provide to skip to a particular spot in
    * the list.
    * @return Google_Service_ContainerAnalysis_ListNoteOccurrencesResponse

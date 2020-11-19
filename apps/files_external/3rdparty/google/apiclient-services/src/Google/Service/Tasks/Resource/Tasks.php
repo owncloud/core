@@ -73,11 +73,11 @@ class Google_Service_Tasks_Resource_Tasks extends Google_Service_Resource
    * @param Google_Service_Tasks_Task $postBody
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string parent Parent task identifier. If the task is created at
+   * the top level, this parameter is omitted. Optional.
    * @opt_param string previous Previous sibling task identifier. If the task is
    * created at the first position among its siblings, this parameter is omitted.
    * Optional.
-   * @opt_param string parent Parent task identifier. If the task is created at
-   * the top level, this parameter is omitted. Optional.
    * @return Google_Service_Tasks_Task
    */
   public function insert($tasklist, Google_Service_Tasks_Task $postBody, $optParams = array())
@@ -92,29 +92,31 @@ class Google_Service_Tasks_Resource_Tasks extends Google_Service_Resource
    * @param string $tasklist Task list identifier.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool showCompleted Flag indicating whether completed tasks are
-   * returned in the result. Optional. The default is True.
-   * @opt_param string updatedMin Lower bound for a task's last modification time
-   * (as a RFC 3339 timestamp) to filter by. Optional. The default is not to
-   * filter by last modification time.
-   * @opt_param string pageToken Token specifying the result page to return.
-   * Optional.
-   * @opt_param string completedMax Upper bound for a task's completion date (as a
-   * RFC 3339 timestamp) to filter by. Optional. The default is not to filter by
-   * completion date.
-   * @opt_param string dueMin Lower bound for a task's due date (as a RFC 3339
-   * timestamp) to filter by. Optional. The default is not to filter by due date.
-   * @opt_param bool showDeleted Flag indicating whether deleted tasks are
-   * returned in the result. Optional. The default is False.
+   * @opt_param int maxResults Maximum number of task lists returned on one page.
+   * Optional. The default is 20 (max allowed: 100).
    * @opt_param string completedMin Lower bound for a task's completion date (as a
    * RFC 3339 timestamp) to filter by. Optional. The default is not to filter by
    * completion date.
+   * @opt_param bool showDeleted Flag indicating whether deleted tasks are
+   * returned in the result. Optional. The default is False.
+   * @opt_param string pageToken Token specifying the result page to return.
+   * Optional.
    * @opt_param bool showHidden Flag indicating whether hidden tasks are returned
    * in the result. Optional. The default is False.
+   * @opt_param string dueMin Lower bound for a task's due date (as a RFC 3339
+   * timestamp) to filter by. Optional. The default is not to filter by due date.
+   * @opt_param string completedMax Upper bound for a task's completion date (as a
+   * RFC 3339 timestamp) to filter by. Optional. The default is not to filter by
+   * completion date.
    * @opt_param string dueMax Upper bound for a task's due date (as a RFC 3339
    * timestamp) to filter by. Optional. The default is not to filter by due date.
-   * @opt_param int maxResults Maximum number of task lists returned on one page.
-   * Optional. The default is 20 (max allowed: 100).
+   * @opt_param string updatedMin Lower bound for a task's last modification time
+   * (as a RFC 3339 timestamp) to filter by. Optional. The default is not to
+   * filter by last modification time.
+   * @opt_param bool showCompleted Flag indicating whether completed tasks are
+   * returned in the result. Optional. The default is True. Note that showHidden
+   * must also be True to show tasks completed in first party clients, such as the
+   * web UI and Google's mobile apps.
    * @return Google_Service_Tasks_Tasks
    */
   public function listTasks($tasklist, $optParams = array())
@@ -132,11 +134,11 @@ class Google_Service_Tasks_Resource_Tasks extends Google_Service_Resource
    * @param string $task Task identifier.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string parent New parent task identifier. If the task is moved to
+   * the top level, this parameter is omitted. Optional.
    * @opt_param string previous New previous sibling task identifier. If the task
    * is moved to the first position among its siblings, this parameter is omitted.
    * Optional.
-   * @opt_param string parent New parent task identifier. If the task is moved to
-   * the top level, this parameter is omitted. Optional.
    * @return Google_Service_Tasks_Task
    */
   public function move($tasklist, $task, $optParams = array())

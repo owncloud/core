@@ -73,7 +73,7 @@ class Google_Service_CloudTalentSolution extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'type' => array(
+                'companyName' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -81,26 +81,26 @@ class Google_Service_CloudTalentSolution extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'companyName' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'query' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'languageCode' => array(
+                'pageSize' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'integer',
                 ),
                 'languageCodes' => array(
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,
                 ),
-                'pageSize' => array(
+                'languageCode' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
+                ),
+                'type' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -254,19 +254,19 @@ class Google_Service_CloudTalentSolution extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
+                'jobView' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
                 ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'pageSize' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'integer',
                 ),
-                'jobView' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

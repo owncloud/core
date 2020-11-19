@@ -19,8 +19,8 @@
  * The "projects" collection of methods.
  * Typical usage is:
  *  <code>
- *   $sqlService = new Google_Service_SQLAdmin(...);
- *   $projects = $sqlService->projects;
+ *   $sqladminService = new Google_Service_SQLAdmin(...);
+ *   $projects = $sqladminService->projects;
  *  </code>
  */
 class Google_Service_SQLAdmin_Resource_Projects extends Google_Service_Resource

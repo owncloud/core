@@ -30,6 +30,9 @@ class Google_Service_CloudIdentity_Resource_Groups extends Google_Service_Resour
    *
    * @param Google_Service_CloudIdentity_Group $postBody
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string initialGroupConfig Optional. The initial configuration
+   * option for the `Group`.
    * @return Google_Service_CloudIdentity_Operation
    */
   public function create(Google_Service_CloudIdentity_Group $postBody, $optParams = array())
@@ -39,12 +42,11 @@ class Google_Service_CloudIdentity_Resource_Groups extends Google_Service_Resour
     return $this->call('create', array($params), "Google_Service_CloudIdentity_Operation");
   }
   /**
-   * Deletes a Group. (groups.delete)
+   * Deletes a `Group`. (groups.delete)
    *
-   * @param string $name Required. [Resource
-   * name](https://cloud.google.com/apis/design/resource_names) of the Group in
-   * the format: `groups/{group_id}`, where `group_id` is the unique ID assigned
-   * to the Group.
+   * @param string $name Required. The [resource
+   * name](https://cloud.google.com/apis/design/resource_names) of the `Group` to
+   * retrieve. Must be of the form `groups/{group_id}`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_CloudIdentity_Operation
    */
@@ -55,12 +57,11 @@ class Google_Service_CloudIdentity_Resource_Groups extends Google_Service_Resour
     return $this->call('delete', array($params), "Google_Service_CloudIdentity_Operation");
   }
   /**
-   * Retrieves a Group. (groups.get)
+   * Retrieves a `Group`. (groups.get)
    *
-   * @param string $name Required. [Resource
-   * name](https://cloud.google.com/apis/design/resource_names) of the Group in
-   * the format: `groups/{group_id}`, where `group_id` is the unique ID assigned
-   * to the Group.
+   * @param string $name Required. The [resource
+   * name](https://cloud.google.com/apis/design/resource_names) of the `Group` to
+   * retrieve. Must be of the form `groups/{group_id}`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_CloudIdentity_Group
    */
@@ -71,17 +72,25 @@ class Google_Service_CloudIdentity_Resource_Groups extends Google_Service_Resour
     return $this->call('get', array($params), "Google_Service_CloudIdentity_Group");
   }
   /**
-   * Lists groups within a customer or a domain. (groups.listGroups)
+   * Lists the `Group`s under a customer or namespace. (groups.listGroups)
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The next_page_token value returned from a
+   * @opt_param string pageToken The `next_page_token` value returned from a
    * previous list request, if any.
-   * @opt_param string view Group resource view to be returned. Defaults to
-   * [View.BASIC]().
-   * @opt_param int pageSize The default page size is 200 (max 1000) for the BASIC
-   * view, and 50 (max 500) for the FULL view.
-   * @opt_param string parent Required. Customer ID to list all groups from.
+   * @opt_param string view The level of detail to be returned. If unspecified,
+   * defaults to `View.BASIC`.
+   * @opt_param string parent Required. The parent resource under which to list
+   * all `Group`s. Must be of the form `identitysources/{identity_source_id}` for
+   * external- identity-mapped groups or `customers/{customer_id}` for Google
+   * Groups.
+   * @opt_param int pageSize The maximum number of results to return. Note that
+   * the number of results returned may be less than this value even if there are
+   * more available results. To fetch all results, clients must continue calling
+   * this method repeatedly until the response no longer contains a
+   * `next_page_token`. If unspecified, defaults to 200 for `View.BASIC` and to 50
+   * for `View.FULL`. Must not be greater than 1000 for `View.BASIC` or 500 for
+   * `View.FULL`.
    * @return Google_Service_CloudIdentity_ListGroupsResponse
    */
   public function listGroups($optParams = array())
@@ -91,18 +100,22 @@ class Google_Service_CloudIdentity_Resource_Groups extends Google_Service_Resour
     return $this->call('list', array($params), "Google_Service_CloudIdentity_ListGroupsResponse");
   }
   /**
-   * Looks up [resource name](https://cloud.google.com/apis/design/resource_names)
-   * of a Group by its EntityKey. (groups.lookup)
+   * Looks up the [resource
+   * name](https://cloud.google.com/apis/design/resource_names) of a `Group` by
+   * its `EntityKey`. (groups.lookup)
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string groupKey.id The ID of the entity within the given
-   * namespace. The ID must be unique within its namespace.
-   * @opt_param string groupKey.namespace Namespaces provide isolation for IDs, so
-   * an ID only needs to be unique within its namespace. Namespaces are currently
-   * only created as part of IdentitySource creation from Admin Console. A
-   * namespace `"identitysources/{identity_source_id}"` is created corresponding
-   * to every Identity Source `identity_source_id`.
+   * @opt_param string groupKey.namespace The namespace in which the entity
+   * exists. If not specified, the `EntityKey` represents a Google-managed entity
+   * such as a Google user or a Google Group. If specified, the `EntityKey`
+   * represents an external-identity-mapped group. The namespace must correspond
+   * to an identity source created in Admin Console and must be in the form of
+   * `identitysources/{identity_source_id}.
+   * @opt_param string groupKey.id The ID of the entity. For Google-managed
+   * entities, the `id` should be the email address of an existing group or user.
+   * For external-identity-mapped entities, the `id` must be a string conforming
+   * to the Identity Source's requirements. Must be unique within a `namespace`.
    * @return Google_Service_CloudIdentity_LookupGroupNameResponse
    */
   public function lookup($optParams = array())
@@ -112,17 +125,16 @@ class Google_Service_CloudIdentity_Resource_Groups extends Google_Service_Resour
     return $this->call('lookup', array($params), "Google_Service_CloudIdentity_LookupGroupNameResponse");
   }
   /**
-   * Updates a Group. (groups.patch)
+   * Updates a `Group`. (groups.patch)
    *
-   * @param string $name Output only. [Resource
-   * name](https://cloud.google.com/apis/design/resource_names) of the Group in
-   * the format: `groups/{group_id}`, where group_id is the unique ID assigned to
-   * the Group. Must be left blank while creating a Group.
+   * @param string $name Output only. The [resource
+   * name](https://cloud.google.com/apis/design/resource_names) of the `Group`.
+   * Shall be of the form `groups/{group_id}`.
    * @param Google_Service_CloudIdentity_Group $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask Required. Editable fields: `display_name`,
-   * `description`
+   * @opt_param string updateMask Required. The fully-qualified names of fields to
+   * update. May only contain the following fields: `display_name`, `description`.
    * @return Google_Service_CloudIdentity_Operation
    */
   public function patch($name, Google_Service_CloudIdentity_Group $postBody, $optParams = array())
@@ -132,20 +144,26 @@ class Google_Service_CloudIdentity_Resource_Groups extends Google_Service_Resour
     return $this->call('patch', array($params), "Google_Service_CloudIdentity_Operation");
   }
   /**
-   * Searches for Groups. (groups.search)
+   * Searches for `Group`s matching a specified query. (groups.search)
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string view Group resource view to be returned. Defaults to
-   * [View.BASIC]().
-   * @opt_param int pageSize The default page size is 200 (max 1000) for the BASIC
-   * view, and 50 (max 500) for the FULL view.
-   * @opt_param string pageToken The next_page_token value returned from a
+   * @opt_param string pageToken The `next_page_token` value returned from a
    * previous search request, if any.
-   * @opt_param string query Required. `Required`. Query string for performing
-   * search on groups. Users can search on parent and label attributes of groups.
-   * EXACT match ('==') is supported on parent, and CONTAINS match ('in') is
-   * supported on labels.
+   * @opt_param string view The level of detail to be returned. If unspecified,
+   * defaults to `View.BASIC`.
+   * @opt_param int pageSize The maximum number of results to return. Note that
+   * the number of results returned may be less than this value even if there are
+   * more available results. To fetch all results, clients must continue calling
+   * this method repeatedly until the response no longer contains a
+   * `next_page_token`. If unspecified, defaults to 200 for `GroupView.BASIC` and
+   * 50 for `GroupView.FULL`. Must not be greater than 1000 for `GroupView.BASIC`
+   * or 500 for `GroupView.FULL`.
+   * @opt_param string query Required. The search query. Must be specified in
+   * [Common Expression Language](https://opensource.google/projects/cel). May
+   * only contain equality operators on the parent and inclusion operators on
+   * labels (e.g., `parent == 'customers/{customer_id}' &&
+   * 'cloudidentity.googleapis.com/groups.discussion_forum' in labels`).
    * @return Google_Service_CloudIdentity_SearchGroupsResponse
    */
   public function search($optParams = array())

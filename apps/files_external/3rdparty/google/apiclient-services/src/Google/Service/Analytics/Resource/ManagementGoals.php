@@ -71,10 +71,10 @@ class Google_Service_Analytics_Resource_ManagementGoals extends Google_Service_R
    * (profiles) that user has access to.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int max-results The maximum number of goals to include in this
-   * response.
    * @opt_param int start-index An index of the first goal to retrieve. Use this
    * parameter as a pagination mechanism along with the max-results parameter.
+   * @opt_param int max-results The maximum number of goals to include in this
+   * response.
    * @return Google_Service_Analytics_Goals
    */
   public function listManagementGoals($accountId, $webPropertyId, $profileId, $optParams = array())

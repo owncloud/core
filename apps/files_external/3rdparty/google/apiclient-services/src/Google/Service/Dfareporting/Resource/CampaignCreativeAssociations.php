@@ -51,9 +51,9 @@ class Google_Service_Dfareporting_Resource_CampaignCreativeAssociations extends 
    * @param string $campaignId Campaign ID in this association.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string sortOrder Order of sorted results.
    * @opt_param string pageToken Value of the nextPageToken from the previous
    * result page.
+   * @opt_param string sortOrder Order of sorted results.
    * @opt_param int maxResults Maximum number of results to return.
    * @return Google_Service_Dfareporting_CampaignCreativeAssociationsListResponse
    */

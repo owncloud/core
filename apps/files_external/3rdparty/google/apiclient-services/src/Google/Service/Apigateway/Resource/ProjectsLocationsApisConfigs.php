@@ -26,6 +26,55 @@
 class Google_Service_Apigateway_Resource_ProjectsLocationsApisConfigs extends Google_Service_Resource
 {
   /**
+   * Creates a new ApiConfig in a given project and location. (configs.create)
+   *
+   * @param string $parent Required. Parent resource of the API Config, of the
+   * form: `projects/locations/global/apis`
+   * @param Google_Service_Apigateway_ApigatewayApiConfig $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string apiConfigId Required. Identifier to assign to the API
+   * Config. Must be unique within scope of the parent resource.
+   * @return Google_Service_Apigateway_ApigatewayOperation
+   */
+  public function create($parent, Google_Service_Apigateway_ApigatewayApiConfig $postBody, $optParams = array())
+  {
+    $params = array('parent' => $parent, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('create', array($params), "Google_Service_Apigateway_ApigatewayOperation");
+  }
+  /**
+   * Deletes a single ApiConfig. (configs.delete)
+   *
+   * @param string $name Required. Resource name of the form:
+   * `projects/locations/global/apis/configs`
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Apigateway_ApigatewayOperation
+   */
+  public function delete($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('delete', array($params), "Google_Service_Apigateway_ApigatewayOperation");
+  }
+  /**
+   * Gets details of a single ApiConfig. (configs.get)
+   *
+   * @param string $name Required. Resource name of the form:
+   * `projects/locations/global/apis/configs`
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string view Specifies which fields of the API Config are returned
+   * in the response. Defaults to `BASIC` view.
+   * @return Google_Service_Apigateway_ApigatewayApiConfig
+   */
+  public function get($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('get', array($params), "Google_Service_Apigateway_ApigatewayApiConfig");
+  }
+  /**
    * Gets the access control policy for a resource. Returns an empty policy if the
    * resource exists and does not have a policy set. (configs.getIamPolicy)
    *
@@ -49,6 +98,47 @@ class Google_Service_Apigateway_Resource_ProjectsLocationsApisConfigs extends Go
     $params = array('resource' => $resource);
     $params = array_merge($params, $optParams);
     return $this->call('getIamPolicy', array($params), "Google_Service_Apigateway_ApigatewayPolicy");
+  }
+  /**
+   * Lists ApiConfigs in a given project and location.
+   * (configs.listProjectsLocationsApisConfigs)
+   *
+   * @param string $parent Required. Parent resource of the API Config, of the
+   * form: `projects/locations/global/apis`
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string pageToken Page token.
+   * @opt_param string orderBy Order by parameters.
+   * @opt_param string filter Filter.
+   * @opt_param int pageSize Page size.
+   * @return Google_Service_Apigateway_ApigatewayListApiConfigsResponse
+   */
+  public function listProjectsLocationsApisConfigs($parent, $optParams = array())
+  {
+    $params = array('parent' => $parent);
+    $params = array_merge($params, $optParams);
+    return $this->call('list', array($params), "Google_Service_Apigateway_ApigatewayListApiConfigsResponse");
+  }
+  /**
+   * Updates the parameters of a single ApiConfig. (configs.patch)
+   *
+   * @param string $name Output only. Resource name of the API Config. Format:
+   * projects/{project}/locations/global/apis/{api}/configs/{api_config}
+   * @param Google_Service_Apigateway_ApigatewayApiConfig $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask Field mask is used to specify the fields to be
+   * overwritten in the ApiConfig resource by the update. The fields specified in
+   * the update_mask are relative to the resource, not the full request. A field
+   * will be overwritten if it is in the mask. If the user does not provide a mask
+   * then all fields will be overwritten.
+   * @return Google_Service_Apigateway_ApigatewayOperation
+   */
+  public function patch($name, Google_Service_Apigateway_ApigatewayApiConfig $postBody, $optParams = array())
+  {
+    $params = array('name' => $name, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', array($params), "Google_Service_Apigateway_ApigatewayOperation");
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any

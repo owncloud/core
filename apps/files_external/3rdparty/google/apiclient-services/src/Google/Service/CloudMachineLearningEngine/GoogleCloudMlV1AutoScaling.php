@@ -15,10 +15,36 @@
  * the License.
  */
 
-class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1AutoScaling extends Google_Model
+class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1AutoScaling extends Google_Collection
 {
+  protected $collection_key = 'metrics';
+  public $maxNodes;
+  protected $metricsType = 'Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1MetricSpec';
+  protected $metricsDataType = 'array';
   public $minNodes;
 
+  public function setMaxNodes($maxNodes)
+  {
+    $this->maxNodes = $maxNodes;
+  }
+  public function getMaxNodes()
+  {
+    return $this->maxNodes;
+  }
+  /**
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1MetricSpec
+   */
+  public function setMetrics($metrics)
+  {
+    $this->metrics = $metrics;
+  }
+  /**
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1MetricSpec
+   */
+  public function getMetrics()
+  {
+    return $this->metrics;
+  }
   public function setMinNodes($minNodes)
   {
     $this->minNodes = $minNodes;

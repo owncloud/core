@@ -19,8 +19,8 @@
  * The "databases" collection of methods.
  * Typical usage is:
  *  <code>
- *   $sqlService = new Google_Service_SQLAdmin(...);
- *   $databases = $sqlService->databases;
+ *   $sqladminService = new Google_Service_SQLAdmin(...);
+ *   $databases = $sqladminService->databases;
  *  </code>
  */
 class Google_Service_SQLAdmin_Resource_Databases extends Google_Service_Resource

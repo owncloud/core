@@ -98,11 +98,11 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsCatalog
    * "projects/locations/global/catalogs/default_catalog".
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter Optional. A filter to apply on the list results.
    * @opt_param string pageToken Optional. The previous
    * ListCatalogItemsResponse.next_page_token.
    * @opt_param int pageSize Optional. Maximum number of results to return per
    * page. If zero, the service will choose a reasonable default.
-   * @opt_param string filter Optional. A filter to apply on the list results.
    * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1ListCatalogItemsResponse
    */
   public function listProjectsLocationsCatalogsCatalogItems($parent, $optParams = array())

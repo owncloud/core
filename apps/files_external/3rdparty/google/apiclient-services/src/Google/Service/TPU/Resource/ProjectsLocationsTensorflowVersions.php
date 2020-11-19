@@ -28,7 +28,7 @@ class Google_Service_TPU_Resource_ProjectsLocationsTensorflowVersions extends Go
   /**
    * Gets TensorFlow Version. (tensorflowVersions.get)
    *
-   * @param string $name The resource name.
+   * @param string $name Required. The resource name.
    * @param array $optParams Optional parameters.
    * @return Google_Service_TPU_TensorFlowVersion
    */
@@ -42,14 +42,14 @@ class Google_Service_TPU_Resource_ProjectsLocationsTensorflowVersions extends Go
    * List TensorFlow versions supported by this API.
    * (tensorflowVersions.listProjectsLocationsTensorflowVersions)
    *
-   * @param string $parent The parent resource name.
+   * @param string $parent Required. The parent resource name.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.
-   * @opt_param string filter List filter.
    * @opt_param int pageSize The maximum number of items to return.
    * @opt_param string orderBy Sort results.
+   * @opt_param string filter List filter.
    * @return Google_Service_TPU_ListTensorFlowVersionsResponse
    */
   public function listProjectsLocationsTensorflowVersions($parent, $optParams = array())

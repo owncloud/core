@@ -50,9 +50,8 @@ class Google_Service_DisplayVideo_Resource_CombinedAudiences extends Google_Serv
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
-   * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
-   * if an invalid value is specified.
+   * @opt_param string partnerId The ID of the partner that has access to the
+   * fetched combined audiences.
    * @opt_param string pageToken A token identifying a page of results the server
    * should return. Typically, this is the value of next_page_token returned from
    * the previous call to `ListCombinedAudiences` method. If not specified, the
@@ -61,8 +60,9 @@ class Google_Service_DisplayVideo_Resource_CombinedAudiences extends Google_Serv
    * are: * `combinedAudienceId` (default) * `displayName` The default sorting
    * order is ascending. To specify descending order for a field, a suffix "desc"
    * should be added to the field name. Example: `displayName desc`.
-   * @opt_param string partnerId The ID of the partner that has access to the
-   * fetched combined audiences.
+   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
+   * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
+   * if an invalid value is specified.
    * @opt_param string filter Allows filtering by combined audience fields.
    * Supported syntax: * Filter expressions for combined audiences currently can
    * only contain at most one restriction. * A restriction has the form of

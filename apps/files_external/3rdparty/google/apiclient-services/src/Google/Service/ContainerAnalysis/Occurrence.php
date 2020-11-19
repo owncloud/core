@@ -17,59 +17,58 @@
 
 class Google_Service_ContainerAnalysis_Occurrence extends Google_Model
 {
-  protected $attestationType = 'Google_Service_ContainerAnalysis_Attestation';
+  protected $attestationType = 'Google_Service_ContainerAnalysis_Details';
   protected $attestationDataType = '';
-  protected $buildDetailsType = 'Google_Service_ContainerAnalysis_BuildDetails';
-  protected $buildDetailsDataType = '';
+  protected $buildType = 'Google_Service_ContainerAnalysis_GrafeasV1beta1BuildDetails';
+  protected $buildDataType = '';
   public $createTime;
-  protected $deploymentType = 'Google_Service_ContainerAnalysis_Deployment';
+  protected $deploymentType = 'Google_Service_ContainerAnalysis_GrafeasV1beta1DeploymentDetails';
   protected $deploymentDataType = '';
-  protected $derivedImageType = 'Google_Service_ContainerAnalysis_Derived';
+  protected $derivedImageType = 'Google_Service_ContainerAnalysis_GrafeasV1beta1ImageDetails';
   protected $derivedImageDataType = '';
-  protected $discoveredType = 'Google_Service_ContainerAnalysis_Discovered';
+  protected $discoveredType = 'Google_Service_ContainerAnalysis_GrafeasV1beta1DiscoveryDetails';
   protected $discoveredDataType = '';
-  protected $installationType = 'Google_Service_ContainerAnalysis_Installation';
+  protected $installationType = 'Google_Service_ContainerAnalysis_GrafeasV1beta1PackageDetails';
   protected $installationDataType = '';
+  protected $intotoType = 'Google_Service_ContainerAnalysis_GrafeasV1beta1IntotoDetails';
+  protected $intotoDataType = '';
   public $kind;
   public $name;
   public $noteName;
   public $remediation;
   protected $resourceType = 'Google_Service_ContainerAnalysis_ContaineranalysisResource';
   protected $resourceDataType = '';
-  public $resourceUrl;
   public $updateTime;
-  protected $upgradeType = 'Google_Service_ContainerAnalysis_UpgradeOccurrence';
-  protected $upgradeDataType = '';
-  protected $vulnerabilityDetailsType = 'Google_Service_ContainerAnalysis_VulnerabilityDetails';
-  protected $vulnerabilityDetailsDataType = '';
+  protected $vulnerabilityType = 'Google_Service_ContainerAnalysis_GrafeasV1beta1VulnerabilityDetails';
+  protected $vulnerabilityDataType = '';
 
   /**
-   * @param Google_Service_ContainerAnalysis_Attestation
+   * @param Google_Service_ContainerAnalysis_Details
    */
-  public function setAttestation(Google_Service_ContainerAnalysis_Attestation $attestation)
+  public function setAttestation(Google_Service_ContainerAnalysis_Details $attestation)
   {
     $this->attestation = $attestation;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_Attestation
+   * @return Google_Service_ContainerAnalysis_Details
    */
   public function getAttestation()
   {
     return $this->attestation;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_BuildDetails
+   * @param Google_Service_ContainerAnalysis_GrafeasV1beta1BuildDetails
    */
-  public function setBuildDetails(Google_Service_ContainerAnalysis_BuildDetails $buildDetails)
+  public function setBuild(Google_Service_ContainerAnalysis_GrafeasV1beta1BuildDetails $build)
   {
-    $this->buildDetails = $buildDetails;
+    $this->build = $build;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_BuildDetails
+   * @return Google_Service_ContainerAnalysis_GrafeasV1beta1BuildDetails
    */
-  public function getBuildDetails()
+  public function getBuild()
   {
-    return $this->buildDetails;
+    return $this->build;
   }
   public function setCreateTime($createTime)
   {
@@ -80,60 +79,74 @@ class Google_Service_ContainerAnalysis_Occurrence extends Google_Model
     return $this->createTime;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_Deployment
+   * @param Google_Service_ContainerAnalysis_GrafeasV1beta1DeploymentDetails
    */
-  public function setDeployment(Google_Service_ContainerAnalysis_Deployment $deployment)
+  public function setDeployment(Google_Service_ContainerAnalysis_GrafeasV1beta1DeploymentDetails $deployment)
   {
     $this->deployment = $deployment;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_Deployment
+   * @return Google_Service_ContainerAnalysis_GrafeasV1beta1DeploymentDetails
    */
   public function getDeployment()
   {
     return $this->deployment;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_Derived
+   * @param Google_Service_ContainerAnalysis_GrafeasV1beta1ImageDetails
    */
-  public function setDerivedImage(Google_Service_ContainerAnalysis_Derived $derivedImage)
+  public function setDerivedImage(Google_Service_ContainerAnalysis_GrafeasV1beta1ImageDetails $derivedImage)
   {
     $this->derivedImage = $derivedImage;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_Derived
+   * @return Google_Service_ContainerAnalysis_GrafeasV1beta1ImageDetails
    */
   public function getDerivedImage()
   {
     return $this->derivedImage;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_Discovered
+   * @param Google_Service_ContainerAnalysis_GrafeasV1beta1DiscoveryDetails
    */
-  public function setDiscovered(Google_Service_ContainerAnalysis_Discovered $discovered)
+  public function setDiscovered(Google_Service_ContainerAnalysis_GrafeasV1beta1DiscoveryDetails $discovered)
   {
     $this->discovered = $discovered;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_Discovered
+   * @return Google_Service_ContainerAnalysis_GrafeasV1beta1DiscoveryDetails
    */
   public function getDiscovered()
   {
     return $this->discovered;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_Installation
+   * @param Google_Service_ContainerAnalysis_GrafeasV1beta1PackageDetails
    */
-  public function setInstallation(Google_Service_ContainerAnalysis_Installation $installation)
+  public function setInstallation(Google_Service_ContainerAnalysis_GrafeasV1beta1PackageDetails $installation)
   {
     $this->installation = $installation;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_Installation
+   * @return Google_Service_ContainerAnalysis_GrafeasV1beta1PackageDetails
    */
   public function getInstallation()
   {
     return $this->installation;
+  }
+  /**
+   * @param Google_Service_ContainerAnalysis_GrafeasV1beta1IntotoDetails
+   */
+  public function setIntoto(Google_Service_ContainerAnalysis_GrafeasV1beta1IntotoDetails $intoto)
+  {
+    $this->intoto = $intoto;
+  }
+  /**
+   * @return Google_Service_ContainerAnalysis_GrafeasV1beta1IntotoDetails
+   */
+  public function getIntoto()
+  {
+    return $this->intoto;
   }
   public function setKind($kind)
   {
@@ -181,14 +194,6 @@ class Google_Service_ContainerAnalysis_Occurrence extends Google_Model
   {
     return $this->resource;
   }
-  public function setResourceUrl($resourceUrl)
-  {
-    $this->resourceUrl = $resourceUrl;
-  }
-  public function getResourceUrl()
-  {
-    return $this->resourceUrl;
-  }
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
@@ -198,31 +203,17 @@ class Google_Service_ContainerAnalysis_Occurrence extends Google_Model
     return $this->updateTime;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_UpgradeOccurrence
+   * @param Google_Service_ContainerAnalysis_GrafeasV1beta1VulnerabilityDetails
    */
-  public function setUpgrade(Google_Service_ContainerAnalysis_UpgradeOccurrence $upgrade)
+  public function setVulnerability(Google_Service_ContainerAnalysis_GrafeasV1beta1VulnerabilityDetails $vulnerability)
   {
-    $this->upgrade = $upgrade;
+    $this->vulnerability = $vulnerability;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_UpgradeOccurrence
+   * @return Google_Service_ContainerAnalysis_GrafeasV1beta1VulnerabilityDetails
    */
-  public function getUpgrade()
+  public function getVulnerability()
   {
-    return $this->upgrade;
-  }
-  /**
-   * @param Google_Service_ContainerAnalysis_VulnerabilityDetails
-   */
-  public function setVulnerabilityDetails(Google_Service_ContainerAnalysis_VulnerabilityDetails $vulnerabilityDetails)
-  {
-    $this->vulnerabilityDetails = $vulnerabilityDetails;
-  }
-  /**
-   * @return Google_Service_ContainerAnalysis_VulnerabilityDetails
-   */
-  public function getVulnerabilityDetails()
-  {
-    return $this->vulnerabilityDetails;
+    return $this->vulnerability;
   }
 }

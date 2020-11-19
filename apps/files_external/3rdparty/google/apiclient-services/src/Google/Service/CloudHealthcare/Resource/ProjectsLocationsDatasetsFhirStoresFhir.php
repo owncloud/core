@@ -55,7 +55,6 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
    * is required.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int _count Maximum number of resources in a page. Defaults to 100.
    * @opt_param string _page_token Used to retrieve the next or previous page of
    * results when using pagination. Set `_page_token` to the value of _page_token
    * set in next or previous page links' url. Next and previous page are returned
@@ -66,13 +65,14 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
    * @opt_param string start The response includes records subsequent to the start
    * date. If no start date is provided, all records prior to the end date are in
    * scope.
+   * @opt_param string end The response includes records prior to the end date. If
+   * no end date is provided, all records subsequent to the start date are in
+   * scope.
    * @opt_param string _since If provided, only resources updated after this time
    * are returned. The time uses the format YYYY-MM-DDThh:mm:ss.sss+zz:zz. For
    * example, `2015-02-07T13:28:17.239+02:00` or `2017-01-01T00:00:00Z`. The time
    * must be specified to the second and include a time zone.
-   * @opt_param string end The response includes records prior to the end date. If
-   * no end date is provided, all records subsequent to the start date are in
-   * scope.
+   * @opt_param int _count Maximum number of resources in a page. Defaults to 100.
    * @return Google_Service_CloudHealthcare_HttpBody
    */
   public function PatientEverything($name, $optParams = array())
@@ -243,13 +243,13 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
    * @param string $name The name of the resource to retrieve.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int _count The maximum number of search results on a page.
-   * Defaults to 1000.
    * @opt_param string _since Only include resource versions that were created at
    * or after the given instant in time. The instant in time uses the format YYYY-
    * MM-DDThh:mm:ss.sss+zz:zz (for example 2015-02-07T13:28:17.239+02:00 or
    * 2017-01-01T00:00:00Z). The time must be specified to the second and include a
    * time zone.
+   * @opt_param int _count The maximum number of search results on a page. Default
+   * value is 100. Maximum value is 1,000.
    * @opt_param string _page_token Used to retrieve the first, previous, next, or
    * last page of resource versions when using pagination. Value should be set to
    * the value of `_page_token` set in next or previous page links' URLs. Next and

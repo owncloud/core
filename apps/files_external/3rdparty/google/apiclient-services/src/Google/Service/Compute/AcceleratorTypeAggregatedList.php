@@ -15,14 +15,16 @@
  * the License.
  */
 
-class Google_Service_Compute_AcceleratorTypeAggregatedList extends Google_Model
+class Google_Service_Compute_AcceleratorTypeAggregatedList extends Google_Collection
 {
+  protected $collection_key = 'unreachables';
   public $id;
   protected $itemsType = 'Google_Service_Compute_AcceleratorTypesScopedList';
   protected $itemsDataType = 'map';
   public $kind;
   public $nextPageToken;
   public $selfLink;
+  public $unreachables;
   protected $warningType = 'Google_Service_Compute_AcceleratorTypeAggregatedListWarning';
   protected $warningDataType = '';
 
@@ -71,6 +73,14 @@ class Google_Service_Compute_AcceleratorTypeAggregatedList extends Google_Model
   public function getSelfLink()
   {
     return $this->selfLink;
+  }
+  public function setUnreachables($unreachables)
+  {
+    $this->unreachables = $unreachables;
+  }
+  public function getUnreachables()
+  {
+    return $this->unreachables;
   }
   /**
    * @param Google_Service_Compute_AcceleratorTypeAggregatedListWarning

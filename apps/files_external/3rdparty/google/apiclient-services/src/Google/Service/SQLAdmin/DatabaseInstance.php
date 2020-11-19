@@ -46,8 +46,10 @@ class Google_Service_SQLAdmin_DatabaseInstance extends Google_Collection
   protected $replicaConfigurationDataType = '';
   public $replicaNames;
   public $rootPassword;
+  public $satisfiesPzs;
   protected $scheduledMaintenanceType = 'Google_Service_SQLAdmin_SqlScheduledMaintenance';
   protected $scheduledMaintenanceDataType = '';
+  public $secondaryGceZone;
   public $selfLink;
   protected $serverCaCertType = 'Google_Service_SQLAdmin_SslCert';
   protected $serverCaCertDataType = '';
@@ -269,6 +271,14 @@ class Google_Service_SQLAdmin_DatabaseInstance extends Google_Collection
   {
     return $this->rootPassword;
   }
+  public function setSatisfiesPzs($satisfiesPzs)
+  {
+    $this->satisfiesPzs = $satisfiesPzs;
+  }
+  public function getSatisfiesPzs()
+  {
+    return $this->satisfiesPzs;
+  }
   /**
    * @param Google_Service_SQLAdmin_SqlScheduledMaintenance
    */
@@ -282,6 +292,14 @@ class Google_Service_SQLAdmin_DatabaseInstance extends Google_Collection
   public function getScheduledMaintenance()
   {
     return $this->scheduledMaintenance;
+  }
+  public function setSecondaryGceZone($secondaryGceZone)
+  {
+    $this->secondaryGceZone = $secondaryGceZone;
+  }
+  public function getSecondaryGceZone()
+  {
+    return $this->secondaryGceZone;
   }
   public function setSelfLink($selfLink)
   {

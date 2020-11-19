@@ -80,9 +80,9 @@ class Google_Service_Sheets_Resource_Spreadsheets extends Google_Service_Resourc
    * @param string $spreadsheetId The spreadsheet to request.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string ranges The ranges to retrieve from the spreadsheet.
    * @opt_param bool includeGridData True if grid data should be returned. This
    * parameter is ignored if a field mask was set in the request.
+   * @opt_param string ranges The ranges to retrieve from the spreadsheet.
    * @return Google_Service_Sheets_Spreadsheet
    */
   public function get($spreadsheetId, $optParams = array())

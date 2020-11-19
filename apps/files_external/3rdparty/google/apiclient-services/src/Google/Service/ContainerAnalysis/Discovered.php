@@ -21,9 +21,7 @@ class Google_Service_ContainerAnalysis_Discovered extends Google_Model
   protected $analysisStatusErrorType = 'Google_Service_ContainerAnalysis_Status';
   protected $analysisStatusErrorDataType = '';
   public $continuousAnalysis;
-  public $cpe;
-  protected $operationType = 'Google_Service_ContainerAnalysis_Operation';
-  protected $operationDataType = '';
+  public $lastAnalysisTime;
 
   public function setAnalysisStatus($analysisStatus)
   {
@@ -55,26 +53,12 @@ class Google_Service_ContainerAnalysis_Discovered extends Google_Model
   {
     return $this->continuousAnalysis;
   }
-  public function setCpe($cpe)
+  public function setLastAnalysisTime($lastAnalysisTime)
   {
-    $this->cpe = $cpe;
+    $this->lastAnalysisTime = $lastAnalysisTime;
   }
-  public function getCpe()
+  public function getLastAnalysisTime()
   {
-    return $this->cpe;
-  }
-  /**
-   * @param Google_Service_ContainerAnalysis_Operation
-   */
-  public function setOperation(Google_Service_ContainerAnalysis_Operation $operation)
-  {
-    $this->operation = $operation;
-  }
-  /**
-   * @return Google_Service_ContainerAnalysis_Operation
-   */
-  public function getOperation()
-  {
-    return $this->operation;
+    return $this->lastAnalysisTime;
   }
 }

@@ -141,6 +141,8 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Resour
    * using the form: `projects/{project_id}/locations/global`
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter Optional. A filter specifying constraints of a list
+   * operation. For example, `Domain.fqdn="mydomain.myorginization"`.
    * @opt_param int pageSize Optional. The maximum number of items to return. If
    * not specified, a default value of 1000 will be used. Regardless of the
    * page_size value, the response may include a partial list. Callers should rely
@@ -148,8 +150,6 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Resour
    * to list.
    * @opt_param string pageToken Optional. The `next_page_token` value returned
    * from a previous ListDomainsRequest request, if any.
-   * @opt_param string filter Optional. A filter specifying constraints of a list
-   * operation. For example, `Domain.fqdn="mydomain.myorginization"`.
    * @opt_param string orderBy Optional. Specifies the ordering of results. See
    * [Sorting
    * order](https://cloud.google.com/apis/design/design_patterns#sorting_order)

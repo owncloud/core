@@ -60,6 +60,12 @@ class Google_Service_Fitness extends Google_Service
   /** See and add to info about your body temperature in Google Fit. I consent to Google sharing my body temperature information with this app.. */
   const FITNESS_BODY_TEMPERATURE_WRITE =
       "https://www.googleapis.com/auth/fitness.body_temperature.write";
+  /** See your heart rate data in Google Fit. I consent to Google sharing my heart rate information with this app.. */
+  const FITNESS_HEART_RATE_READ =
+      "https://www.googleapis.com/auth/fitness.heart_rate.read";
+  /** See and add to your heart rate data in Google Fit. I consent to Google sharing my heart rate information with this app.. */
+  const FITNESS_HEART_RATE_WRITE =
+      "https://www.googleapis.com/auth/fitness.heart_rate.write";
   /** See your Google Fit speed and distance data. */
   const FITNESS_LOCATION_READ =
       "https://www.googleapis.com/auth/fitness.location.read";
@@ -84,6 +90,12 @@ class Google_Service_Fitness extends Google_Service
   /** See and add info about your reproductive health in Google Fit. I consent to Google sharing my reproductive health information with this app.. */
   const FITNESS_REPRODUCTIVE_HEALTH_WRITE =
       "https://www.googleapis.com/auth/fitness.reproductive_health.write";
+  /** See your sleep data in Google Fit. I consent to Google sharing my sleep information with this app.. */
+  const FITNESS_SLEEP_READ =
+      "https://www.googleapis.com/auth/fitness.sleep.read";
+  /** See and add to your sleep data in Google Fit. I consent to Google sharing my sleep information with this app.. */
+  const FITNESS_SLEEP_WRITE =
+      "https://www.googleapis.com/auth/fitness.sleep.write";
 
   public $users_dataSources;
   public $users_dataSources_dataPointChanges;
@@ -206,13 +218,13 @@ class Google_Service_Fitness extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'limit' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -244,11 +256,11 @@ class Google_Service_Fitness extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'modifiedTimeMillis' => array(
+                'currentTimeMillis' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'currentTimeMillis' => array(
+                'modifiedTimeMillis' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -363,15 +375,15 @@ class Google_Service_Fitness extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'startTime' => array(
+                'endTime' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'includeDeleted' => array(
+                'pageToken' => array(
                   'location' => 'query',
-                  'type' => 'boolean',
+                  'type' => 'string',
                 ),
-                'endTime' => array(
+                'startTime' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -380,9 +392,9 @@ class Google_Service_Fitness extends Google_Service
                   'type' => 'integer',
                   'repeated' => true,
                 ),
-                'pageToken' => array(
+                'includeDeleted' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'boolean',
                 ),
               ),
             ),'update' => array(

@@ -30,6 +30,7 @@ class Google_Service_AndroidPublisher_ProductPurchase extends Google_Model
   public $purchaseToken;
   public $purchaseType;
   public $quantity;
+  public $regionCode;
 
   public function setAcknowledgementState($acknowledgementState)
   {
@@ -134,5 +135,13 @@ class Google_Service_AndroidPublisher_ProductPurchase extends Google_Model
   public function getQuantity()
   {
     return $this->quantity;
+  }
+  public function setRegionCode($regionCode)
+  {
+    $this->regionCode = $regionCode;
+  }
+  public function getRegionCode()
+  {
+    return $this->regionCode;
   }
 }

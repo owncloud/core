@@ -15,8 +15,10 @@
  * the License.
  */
 
-class Google_Service_DisplayVideo_IntegralAdScience extends Google_Model
+class Google_Service_DisplayVideo_IntegralAdScience extends Google_Collection
 {
+  protected $collection_key = 'customSegmentId';
+  public $customSegmentId;
   public $displayViewability;
   public $excludeUnrateable;
   public $excludedAdFraudRisk;
@@ -31,6 +33,14 @@ class Google_Service_DisplayVideo_IntegralAdScience extends Google_Model
   public $traqScoreOption;
   public $videoViewability;
 
+  public function setCustomSegmentId($customSegmentId)
+  {
+    $this->customSegmentId = $customSegmentId;
+  }
+  public function getCustomSegmentId()
+  {
+    return $this->customSegmentId;
+  }
   public function setDisplayViewability($displayViewability)
   {
     $this->displayViewability = $displayViewability;

@@ -54,12 +54,12 @@ class Google_Service_Monitoring_Resource_ProjectsNotificationChannelDescriptors 
    * use the GetNotificationChannelDescriptor operation, instead.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize The maximum number of results to return in a single
-   * response. If not set to a positive number, a reasonable value will be chosen
-   * by the service.
    * @opt_param string pageToken If non-empty, page_token must contain a value
    * returned as the next_page_token in a previous response to request the next
    * set of results.
+   * @opt_param int pageSize The maximum number of results to return in a single
+   * response. If not set to a positive number, a reasonable value will be chosen
+   * by the service.
    * @return Google_Service_Monitoring_ListNotificationChannelDescriptorsResponse
    */
   public function listProjectsNotificationChannelDescriptors($name, $optParams = array())

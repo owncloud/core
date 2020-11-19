@@ -80,13 +80,13 @@ class Google_Service_PubsubLite_Resource_AdminProjectsLocationsSubscriptions ext
    * listed. Structured like `projects/{project_number}/locations/{location}`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of subscriptions to return. The
+   * service may return fewer than this value. If unset or zero, all subscriptions
+   * for the parent will be returned.
    * @opt_param string pageToken A page token, received from a previous
    * `ListSubscriptions` call. Provide this to retrieve the subsequent page. When
    * paginating, all other parameters provided to `ListSubscriptions` must match
    * the call that provided the page token.
-   * @opt_param int pageSize The maximum number of subscriptions to return. The
-   * service may return fewer than this value. If unset or zero, all subscriptions
-   * for the parent will be returned.
    * @return Google_Service_PubsubLite_ListSubscriptionsResponse
    */
   public function listAdminProjectsLocationsSubscriptions($parent, $optParams = array())

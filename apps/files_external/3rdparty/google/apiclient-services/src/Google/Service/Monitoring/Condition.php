@@ -19,6 +19,8 @@ class Google_Service_Monitoring_Condition extends Google_Model
 {
   protected $conditionAbsentType = 'Google_Service_Monitoring_MetricAbsence';
   protected $conditionAbsentDataType = '';
+  protected $conditionMonitoringQueryLanguageType = 'Google_Service_Monitoring_MonitoringQueryLanguageCondition';
+  protected $conditionMonitoringQueryLanguageDataType = '';
   protected $conditionThresholdType = 'Google_Service_Monitoring_MetricThreshold';
   protected $conditionThresholdDataType = '';
   public $displayName;
@@ -37,6 +39,20 @@ class Google_Service_Monitoring_Condition extends Google_Model
   public function getConditionAbsent()
   {
     return $this->conditionAbsent;
+  }
+  /**
+   * @param Google_Service_Monitoring_MonitoringQueryLanguageCondition
+   */
+  public function setConditionMonitoringQueryLanguage(Google_Service_Monitoring_MonitoringQueryLanguageCondition $conditionMonitoringQueryLanguage)
+  {
+    $this->conditionMonitoringQueryLanguage = $conditionMonitoringQueryLanguage;
+  }
+  /**
+   * @return Google_Service_Monitoring_MonitoringQueryLanguageCondition
+   */
+  public function getConditionMonitoringQueryLanguage()
+  {
+    return $this->conditionMonitoringQueryLanguage;
   }
   /**
    * @param Google_Service_Monitoring_MetricThreshold

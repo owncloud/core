@@ -48,8 +48,8 @@ class Google_Service_Dataflow_Resource_ProjectsSnapshots extends Google_Service_
    * @param string $projectId The project ID to list snapshots for.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string location The location to list snapshots in.
    * @opt_param string jobId If specified, list snapshots created from this job.
+   * @opt_param string location The location to list snapshots in.
    * @return Google_Service_Dataflow_ListSnapshotsResponse
    */
   public function listProjectsSnapshots($projectId, $optParams = array())

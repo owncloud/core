@@ -18,56 +18,45 @@
 class Google_Service_ContainerAnalysis_Source extends Google_Collection
 {
   protected $collection_key = 'additionalContexts';
-  protected $additionalContextsType = 'Google_Service_ContainerAnalysis_GoogleDevtoolsContaineranalysisV1alpha1SourceContext';
+  protected $additionalContextsType = 'Google_Service_ContainerAnalysis_SourceContext';
   protected $additionalContextsDataType = 'array';
-  protected $artifactStorageSourceType = 'Google_Service_ContainerAnalysis_StorageSource';
-  protected $artifactStorageSourceDataType = '';
-  protected $contextType = 'Google_Service_ContainerAnalysis_GoogleDevtoolsContaineranalysisV1alpha1SourceContext';
+  public $artifactStorageSourceUri;
+  protected $contextType = 'Google_Service_ContainerAnalysis_SourceContext';
   protected $contextDataType = '';
   protected $fileHashesType = 'Google_Service_ContainerAnalysis_FileHashes';
   protected $fileHashesDataType = 'map';
-  protected $repoSourceType = 'Google_Service_ContainerAnalysis_RepoSource';
-  protected $repoSourceDataType = '';
-  protected $storageSourceType = 'Google_Service_ContainerAnalysis_StorageSource';
-  protected $storageSourceDataType = '';
 
   /**
-   * @param Google_Service_ContainerAnalysis_GoogleDevtoolsContaineranalysisV1alpha1SourceContext
+   * @param Google_Service_ContainerAnalysis_SourceContext
    */
   public function setAdditionalContexts($additionalContexts)
   {
     $this->additionalContexts = $additionalContexts;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_GoogleDevtoolsContaineranalysisV1alpha1SourceContext
+   * @return Google_Service_ContainerAnalysis_SourceContext
    */
   public function getAdditionalContexts()
   {
     return $this->additionalContexts;
   }
-  /**
-   * @param Google_Service_ContainerAnalysis_StorageSource
-   */
-  public function setArtifactStorageSource(Google_Service_ContainerAnalysis_StorageSource $artifactStorageSource)
+  public function setArtifactStorageSourceUri($artifactStorageSourceUri)
   {
-    $this->artifactStorageSource = $artifactStorageSource;
+    $this->artifactStorageSourceUri = $artifactStorageSourceUri;
+  }
+  public function getArtifactStorageSourceUri()
+  {
+    return $this->artifactStorageSourceUri;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_StorageSource
+   * @param Google_Service_ContainerAnalysis_SourceContext
    */
-  public function getArtifactStorageSource()
-  {
-    return $this->artifactStorageSource;
-  }
-  /**
-   * @param Google_Service_ContainerAnalysis_GoogleDevtoolsContaineranalysisV1alpha1SourceContext
-   */
-  public function setContext(Google_Service_ContainerAnalysis_GoogleDevtoolsContaineranalysisV1alpha1SourceContext $context)
+  public function setContext(Google_Service_ContainerAnalysis_SourceContext $context)
   {
     $this->context = $context;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_GoogleDevtoolsContaineranalysisV1alpha1SourceContext
+   * @return Google_Service_ContainerAnalysis_SourceContext
    */
   public function getContext()
   {
@@ -86,33 +75,5 @@ class Google_Service_ContainerAnalysis_Source extends Google_Collection
   public function getFileHashes()
   {
     return $this->fileHashes;
-  }
-  /**
-   * @param Google_Service_ContainerAnalysis_RepoSource
-   */
-  public function setRepoSource(Google_Service_ContainerAnalysis_RepoSource $repoSource)
-  {
-    $this->repoSource = $repoSource;
-  }
-  /**
-   * @return Google_Service_ContainerAnalysis_RepoSource
-   */
-  public function getRepoSource()
-  {
-    return $this->repoSource;
-  }
-  /**
-   * @param Google_Service_ContainerAnalysis_StorageSource
-   */
-  public function setStorageSource(Google_Service_ContainerAnalysis_StorageSource $storageSource)
-  {
-    $this->storageSource = $storageSource;
-  }
-  /**
-   * @return Google_Service_ContainerAnalysis_StorageSource
-   */
-  public function getStorageSource()
-  {
-    return $this->storageSource;
   }
 }

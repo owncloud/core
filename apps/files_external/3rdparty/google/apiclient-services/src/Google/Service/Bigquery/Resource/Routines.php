@@ -81,9 +81,6 @@ class Google_Service_Bigquery_Resource_Routines extends Google_Service_Resource
    * @param string $datasetId Required. Dataset ID of the routines to list
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string maxResults The maximum number of results to return in a
-   * single response page. Leverage the page tokens to iterate through the entire
-   * collection.
    * @opt_param string filter If set, then only the Routines matching this filter
    * are returned. The current supported form is either "routine_type:" or
    * "routineType:", where is a RoutineType enum. Example:
@@ -93,6 +90,9 @@ class Google_Service_Bigquery_Resource_Routines extends Google_Service_Resource
    * response. If unset, then the following Routine fields are returned: etag,
    * project_id, dataset_id, routine_id, routine_type, creation_time,
    * last_modified_time, and language.
+   * @opt_param string maxResults The maximum number of results to return in a
+   * single response page. Leverage the page tokens to iterate through the entire
+   * collection.
    * @opt_param string pageToken Page token, returned by a previous call, to
    * request the next page of results
    * @return Google_Service_Bigquery_ListRoutinesResponse

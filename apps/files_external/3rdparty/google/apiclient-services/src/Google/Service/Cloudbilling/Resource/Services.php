@@ -30,10 +30,10 @@ class Google_Service_Cloudbilling_Resource_Services extends Google_Service_Resou
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Requested page size. Defaults to 5000.
    * @opt_param string pageToken A token identifying a page of results to return.
    * This should be a `next_page_token` value returned from a previous
    * `ListServices` call. If unspecified, the first page of results is returned.
-   * @opt_param int pageSize Requested page size. Defaults to 5000.
    * @return Google_Service_Cloudbilling_ListServicesResponse
    */
   public function listServices($optParams = array())
