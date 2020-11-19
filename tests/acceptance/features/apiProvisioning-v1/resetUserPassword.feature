@@ -24,7 +24,7 @@ Feature: reset user password
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
 
-  @smokeTest @skipOnEncryptionType:user-keys @encryption-issue-57 @notToImplementOnOCIS
+  @smokeTest @skipOnEncryptionType:user-keys @encryption-issue-57 @toImplementOnOCIS
   Scenario: subadmin should be able to reset the password of a user in their group
     Given these users have been created with skeleton files:
       | username       | password   | displayname | email                    |
@@ -39,7 +39,7 @@ Feature: reset user password
     And the content of file "textfile0.txt" for user "brand-new-user" using password "%alt1%" should be "ownCloud test text file 0" plus end-of-line
     But user "brand-new-user" using password "%regular%" should not be able to download file "textfile0.txt"
 
-  @notToImplementOnOCIS
+  @toImplementOnOCIS
   Scenario: subadmin should not be able to reset the password of a user not in their group
     Given these users have been created with skeleton files:
       | username       | password   | displayname | email                    |
