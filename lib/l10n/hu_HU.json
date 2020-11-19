@@ -153,6 +153,7 @@
     "Check the value of \"datadirectory\" in your configuration" : "Ellenőrízze a \"datadirectory\" értéket a konfigurációban",
     "Your Data directory  is invalid" : "Az Adat mappája érvénytelen",
     "Please check that the data directory contains a file \".ocdata\" in its root." : "Kérjük ellenőrizze, hogy az adatkönyvtár tartalmaz a gyökerében egy \".ocdata\" nevű állományt!",
+    "User unknown" : "Felhasználó ismeretlen",
     "Could not obtain lock type %d on \"%s\"." : "Nem sikerült %d típusú zárolást elérni itt: \"%s\".",
     "Storage unauthorized. %s" : "Jogosulatlan tároló. %s",
     "Storage incomplete configuration. %s" : "A tároló konfiguráció hiányos. %s",
