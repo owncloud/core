@@ -88,6 +88,7 @@ Summary
 * Change - Update opis/closure (3.5.7 => 3.6.0): [#38004](https://github.com/owncloud/core/pull/38004)
 * Change - Update symfony/polyfill (1.18.1 => 1.19.0): [#38032](https://github.com/owncloud/core/pull/38032)
 * Change - Update symfony/polyfill (1.19.0 => 1.20.0): [#38033](https://github.com/owncloud/core/pull/38033)
+* Change - Update google/apiclient from 2.7.1 to 2.8.0 and related dependencies: [#38043](https://github.com/owncloud/core/pull/38043)
 * Change - Update dg/composer-cleaner (v2.1 => v2.2): [#38044](https://github.com/owncloud/core/pull/38044)
 * Change - Update Symfony components to 4.4.16: [#38046](https://github.com/owncloud/core/pull/38046)
 * Change - Update egulias/email-validator (2.1.22 => 2.1.23): [#38061](https://github.com/owncloud/core/pull/38061)
@@ -692,6 +693,14 @@ Details
    symfony/polyfill-php73 symfony/polyfill-php80
 
    https://github.com/owncloud/core/pull/38033
+
+* Change - Update google/apiclient from 2.7.1 to 2.8.0 and related dependencies: [#38043](https://github.com/owncloud/core/pull/38043)
+
+   This change updates the 3rd-party dependencies of files_external: - google/apiclient
+   (v2.7.1 => v2.8.0) - google/apiclient-services (v0.146 => v0.152) - google/auth (v1.12.0 =>
+   v1.14.3) - guzzlehttp/psr7 (1.6.1 => 1.7.0)
+
+   https://github.com/owncloud/core/pull/38043
 
 * Change - Update dg/composer-cleaner (v2.1 => v2.2): [#38044](https://github.com/owncloud/core/pull/38044)
 
