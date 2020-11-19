@@ -184,12 +184,14 @@ class BirthdayService {
 		$vCal->VERSION = '2.0';
 		$vEvent = $vCal->createComponent('VEVENT');
 		$vEvent->add('DTSTART');
+		/* @phan-suppress-next-line PhanUndeclaredMethod */
 		$vEvent->DTSTART->setDateTime(
 			$date
 		);
 		$vEvent->DTSTART['VALUE'] = 'DATE';
 		$vEvent->add('DTEND');
 		$date->add(new \DateInterval('P1D'));
+		/* @phan-suppress-next-line PhanUndeclaredMethod */
 		$vEvent->DTEND->setDateTime(
 			$date
 		);
