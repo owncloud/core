@@ -1030,7 +1030,7 @@ class PublicWebDavContext implements Context {
 			$mtime = \explode(" ", $mtime);
 			\array_pop($mtime);
 			$mtime = \implode(" ", $mtime);
-			Assert::assertContains(
+			Assert::assertStringContainsString(
 				$mtime,
 				\TestHelpers\WebDavHelper::getMtimeOfFileinPublicLinkShare($baseUrl, $fileName, $token)
 			);
