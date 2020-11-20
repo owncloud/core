@@ -28,7 +28,8 @@ return [
 		'lib',
 		'ocs',
 		'ocs-provider',
-		'settings'
+		'settings',
+		'tests'
 	],
 
 	'exclude_file_list' => [
