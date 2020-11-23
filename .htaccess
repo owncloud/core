@@ -43,26 +43,13 @@
   </FilesMatch>
 </IfModule>
 
-<IfModule mod_php5.c>
-    php_value always_populate_raw_post_data -1
-    php_value upload_max_filesize 513M
-    php_value post_max_size 513M
-    php_value memory_limit 512M
-    php_value mbstring.func_overload 0
-    php_value default_charset 'UTF-8'
-    php_value output_buffering 0
-    <IfModule mod_env.c>
-      SetEnv htaccessWorking true
-    </IfModule>
-</IfModule>
-
 <IfModule mod_php7.c>
-    php_value upload_max_filesize 513M
-    php_value post_max_size 513M
-    php_value memory_limit 512M
+    php_value upload_max_filesize 16G
+    php_value post_max_size 16G
+    php_value memory_limit 1G
     php_value mbstring.func_overload 0
     php_value default_charset 'UTF-8'
-    php_value output_buffering 0
+    php_value output_buffering 4096
     <IfModule mod_env.c>
       SetEnv htaccessWorking true
     </IfModule>
@@ -77,10 +64,11 @@
   RewriteRule ^\.well-known/caldav /remote.php/dav/ [R=301,L]
   RewriteRule ^remote/(.*) remote.php [QSA,L]
   RewriteRule ^(?:build|tests|config|lib|3rdparty|templates|changelog)/.* - [R=404,L]
-  RewriteRule ^core/signature\.json - [R=404,L]
-  RewriteRule ^(?:core/skeleton)/.* - [R=404,L]
   RewriteCond %{REQUEST_URI} !^/.well-known/(acme-challenge|pki-validation)/.*
   RewriteRule ^(?:\.|autotest|occ|issue|indie|db_|console).* - [R=404,L]
+  RewriteRule ^/apps/gallery/s/(.*)$ /s/$1 [L,R=301]
+  RewriteRule ^core/signature\.json - [R=404,L]
+  RewriteRule ^(?:core/skeleton)/.* - [R=404,L]
 </IfModule>
 <IfModule mod_mime.c>
   AddType image/svg+xml svg svgz
