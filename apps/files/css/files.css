@@ -991,3 +991,13 @@ html.ie8 #controls .button.new {
 	position: inherit;
 	right: inherit;
 }
+
+.fileActionsApplicationSelectMenu.bubble{
+	right: initial;
+	left: 45px !important;
+}
+
+.fileActionsApplicationSelectMenu.bubble:after{
+	right: initial;
+	left: 15px !important;
+}

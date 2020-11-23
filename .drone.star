@@ -216,6 +216,16 @@ config = {
 				'notifications': 'composer install'
 			},
 		},
+		'webUIFileActionsMenu': {
+			'suites': {
+				'webUIFileActionsMenu': '',
+			},
+			'useHttps': False,
+			'extraApps': {
+				'files_texteditor': 'make vendor',
+				'richdocuments': 'make vendor',
+			},
+		},
 		'webUIFederation': {
 			'suites': {
 				'webUISharingExternal1': 'webUISharingExt1',

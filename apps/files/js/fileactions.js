@@ -215,34 +215,24 @@
 		 * @param {string} type "dir" or "file"
 		 * @param {int} permissions permissions
 		 *
-		 * @return {Array.<OCA.Files.FileAction>} array of action specs
+		 * @return {Object.<OCA.Files.FileAction>} array of action specs
 		 */
 		getActions: function (mime, type, permissions) {
-			var actions = {};
-			if (this.actions.all) {
-				actions = $.extend(actions, this.actions.all);
-			}
-			if (type) {//type is 'dir' or 'file'
-				if (this.actions[type]) {
-					actions = $.extend(actions, this.actions[type]);
-				}
-			}
-			if (mime) {
-				var mimePart = mime.substr(0, mime.indexOf('/'));
-				if (this.actions[mimePart]) {
-					actions = $.extend(actions, this.actions[mimePart]);
-				}
-				if (this.actions[mime]) {
-					actions = $.extend(actions, this.actions[mime]);
-				}
-			}
-			var filteredActions = {};
-			$.each(actions, function (name, action) {
-				if (action.permissions & permissions) {
-					filteredActions[name] = action;
-				}
-			});
-			return filteredActions;
+			return this._getActions(mime, type, permissions, false);
+		},
+
+		/**
+		 * Returns an array of file actions matching the given conditions while
+		 * omitting the actions which apply to all mime types ("Rename", "Download" etc.)
+		 *
+		 * @param {string} mime mime type
+		 * @param {string} type "dir" or "file"
+		 * @param {int} permissions permissions
+		 *
+		 * @return {Object.<OCA.Files.FileAction>} array of action specs
+		 */
+		getActionsWithoutAll: function (mime, type, permissions) {
+			return this._getActions(mime, type, permissions, true);
 		},
 
 		/**
@@ -291,6 +281,45 @@
 			}
 			var actions = this.getActions(mime, type, permissions);
 			return actions[name];
+		},
+
+		/**
+		 * Returns an array of file actions matching the given conditions
+		 *
+		 * @param {string} mime mime type
+		 * @param {string} type "dir" or "file"
+		 * @param {int} permissions permissions
+		 * @param {boolean} excludeAll excludeAll
+		 *
+		 * @return {Object.<OCA.Files.FileAction>} array of action specs
+		 */
+		_getActions: function (mime, type, permissions, excludeAll) {
+			var actions = {};
+
+			if (this.actions.all && excludeAll !== true) {
+				actions = $.extend(actions, this.actions.all);
+			}
+			if (type) {//type is 'dir' or 'file'
+				if (this.actions[type]) {
+					actions = $.extend(actions, this.actions[type]);
+				}
+			}
+			if (mime) {
+				var mimePart = mime.substr(0, mime.indexOf('/'));
+				if (this.actions[mimePart]) {
+					actions = $.extend(actions, this.actions[mimePart]);
+				}
+				if (this.actions[mime]) {
+					actions = $.extend(actions, this.actions[mime]);
+				}
+			}
+			var filteredActions = {};
+			$.each(actions, function (name, action) {
+				if (action.permissions & permissions) {
+					filteredActions[name] = action;
+				}
+			});
+			return filteredActions;
 		},
 
 		/**
@@ -736,6 +765,7 @@
 	 * @property {Object} $file jQuery file row element
 	 * @property {OCA.Files.FileActions} fileActions file actions object
 	 * @property {OCA.Files.FileList} fileList file list object
+	 * @property {String} dir file dir
 	 */
 
 	/**
