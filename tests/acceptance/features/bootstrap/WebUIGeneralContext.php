@@ -286,16 +286,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user dismisses the notification on the webUI
-	 *
-	 * @return void
-	 * @throws ElementNotFoundException
-	 */
-	public function theUserDismissesTheNotificationOnTheWebUI() {
-		$this->owncloudPage->dismissNotification();
-	}
-
-	/**
 	 * @Then no notification should be displayed on the webUI
 	 *
 	 * @return void
@@ -347,10 +337,10 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		$matching, TableNode $table
 	) {
 		$this->featureContext->verifyTableNodeColumnsCount($table, 1);
+		$actualNotifications = $this->owncloudPage->getNotifications();
+		$numActualNotifications = \count($actualNotifications);
 		$expectedNotifications = $table->getRows();
 		$numExpectedNotifications = \count($expectedNotifications);
-		$actualNotifications = $this->owncloudPage->getNotifications($numExpectedNotifications);
-		$numActualNotifications = \count($actualNotifications);
 
 		Assert::assertGreaterThanOrEqual(
 			$numExpectedNotifications,

@@ -239,9 +239,7 @@ Feature: Unlock locked files and folders
     When the user unlocks the lock no 1 of file "lorem.txt" on the webUI
     Then notifications should be displayed on the webUI with the text
       | Could not unlock, please contact the lock owner receiver1 |
-    # Note: dismiss the notification so that it does not accidentally obscure the files page
-    When the user dismisses the notification on the webUI
-    Then file "lorem.txt" should be marked as locked on the webUI
+    And file "lorem.txt" should be marked as locked on the webUI
     And file "lorem.txt" should be marked as locked by user "receiver1" in the locks tab of the details panel on the webUI
     And 1 locks should be reported for file "lorem.txt" of user "brand-new-user" by the WebDAV API
     And 1 locks should be reported for file "lorem (2).txt" of user "receiver1" by the WebDAV API
@@ -258,9 +256,7 @@ Feature: Unlock locked files and folders
     Then notifications should be displayed on the webUI with the text
       | The file "lorem.txt" is locked and cannot be deleted. |
     And as "brand-new-user" file "lorem.txt" should exist
-    # Note: dismiss the notification so that it does not accidentally obscure the files page
-    When the user dismisses the notification on the webUI
-    Then file "lorem.txt" should be listed on the webUI
+    And file "lorem.txt" should be listed on the webUI
     And file "lorem.txt" should be marked as locked on the webUI
     And file "lorem.txt" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
     And 1 locks should be reported for file "lorem.txt" of user "brand-new-user" by the WebDAV API
