@@ -106,6 +106,7 @@
     "So-so password" : "Mot de passe de sécurité tout juste acceptable",
     "Good password" : "Mot de passe de sécurité suffisante",
     "Strong password" : "Mot de passe de forte sécurité",
+    "Passwords do not match" : "Les mots de passe ne correspondent pas",
     "Groups" : "Groupes",
     "Unable to delete {objName}" : "Impossible de supprimer {objName}",
     "Error creating group: {message}" : "Erreur lors de la création du groupe : {message}",
