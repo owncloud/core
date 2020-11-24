@@ -909,7 +909,7 @@ MountConfigListView.prototype = _.extend({
 		var selectAuthMechanism = $('<select class="selectAuthMechanism"></select>');
 		var neededVisibility = (this._isPersonal) ? StorageConfig.Visibility.PERSONAL : StorageConfig.Visibility.ADMIN;
 		$.each(this._allAuthMechanisms, function(authIdentifier, authMechanism) {
-			if (backend.authSchemes[authMechanism.scheme] && (authMechanism.visibility & neededVisibility)) {
+			if ((backend.authSchemes[authMechanism.scheme] || backend.authSchemes[authMechanism.identifier]) && (authMechanism.visibility & neededVisibility)) {
 				selectAuthMechanism.append(
 					$('<option value="'+authMechanism.identifier+'" data-scheme="'+authMechanism.scheme+'">'+authMechanism.name+'</option>')
 				);
@@ -1589,8 +1589,8 @@ OCA.External.Settings.OAuth2.verifyCode = function (backendUrl, data) {
 		}, function (result) {
 			if (result && result.status == 'success') {
 				$(token).val(result.data.token);
-				$(configured).val('true');	
-				
+				$(configured).val('true');
+
 				OCA.External.Settings.mountConfig.saveStorageConfig($tr, function(status) {
 					if (status) {
 						$tr.find('.configuration input.auth-param')

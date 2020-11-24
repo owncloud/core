@@ -29,6 +29,7 @@
 
 namespace OCA\Files_External\AppInfo;
 
+use OCA\Files_External\Lib\Backend\SMB2;
 use OCP\AppFramework\App;
 use OCP\AppFramework\IAppContainer;
 use OCP\Files\External\Config\IAuthMechanismProvider;
@@ -77,6 +78,7 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 			$container->query('OCA\Files_External\Lib\Backend\Google'),
 			$container->query('OCA\Files_External\Lib\Backend\SFTP_Key'),
 			$container->query('OCA\Files_External\Lib\Backend\SMB'),
+			$container->query(SMB2::class),
 			$container->query('OCA\Files_External\Lib\Backend\SMB_OC'),
 		];
 

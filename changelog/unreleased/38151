@@ -1,0 +1,9 @@
+Enhancement: New external storage: SMB Collaborative (shared file IDs))
+
+This new external storage allows the shared use of SMB/CIFS shares among users.
+Independent of the use all files and folders will have the same file id.
+This allows better collaboration especially in the area of tagging, comments,
+private links and any document collaboration like Office Online Server,
+Collabora and OnlyOffice.
+
+https://github.com/owncloud/core/pull/38151
