@@ -924,6 +924,7 @@ trait Provisioning {
 			} else {
 				$attributesToCreateUser['userid'] = $userAttributes['userid'];
 				$attributesToCreateUser['password'] = $userAttributes['password'];
+				$attributesToCreateUser['displayname'] = $userAttributes['displayName'];
 				if (OcisHelper::isTestingOnOcisOrReva()) {
 					$attributesToCreateUser['username'] = $userAttributes['userid'];
 					if ($userAttributes['email'] === null) {
@@ -972,15 +973,19 @@ trait Provisioning {
 		$users = [];
 		$editData = [];
 		foreach ($usersAttributes as $userAttributes) {
+			\array_push($users, $userAttributes['userid']);
+			$this->addUserToCreatedUsersList($userAttributes['userid'], $userAttributes['password'], $userAttributes['displayName'], $userAttributes['email']);
+
 			if (OcisHelper::isTestingOnOcisOrReva()) {
 				OcisHelper::createEOSStorageHome(
 					$this->getBaseUrl(),
 					$userAttributes['userid'],
 					$userAttributes['password']
 				);
+				// We don't need to set displayName and email while running in oCIS
+				// As they are set when creating the user
+				continue;
 			}
-			\array_push($users, $userAttributes['userid']);
-			$this->addUserToCreatedUsersList($userAttributes['userid'], $userAttributes['password'], $userAttributes['displayName'], $userAttributes['email']);
 			if (isset($userAttributes['displayName'])) {
 				\array_push($editData, ['user' => $userAttributes['userid'], 'key' => 'displayname', 'value' => $userAttributes['displayName']]);
 			}
@@ -989,7 +994,7 @@ trait Provisioning {
 			}
 		}
 		// Edit the users in parallel to make the process faster.
-		if (!$useLdap && \count($editData) > 0) {
+		if (!OcisHelper::isTestingOnOcisOrReva() && !$useLdap && \count($editData) > 0) {
 			UserHelper::editUserBatch(
 				$this->getBaseUrl(),
 				$editData,
