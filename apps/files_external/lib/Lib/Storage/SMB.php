@@ -47,6 +47,7 @@ use Icewind\Streams\CallbackWrapper;
 use Icewind\Streams\IteratorDirectory;
 use OC\Cache\CappedMemoryCache;
 use OC\Files\Filesystem;
+use OCA\Files_External\Lib\Cache\SmbCacheWrapper;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Util;
 
@@ -70,6 +71,10 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 	 * @var CappedMemoryCache
 	 */
 	protected $statCache;
+	/**
+	 * @var false|mixed
+	 */
+	private $useSingletonStorage;
 
 	public function __construct($params) {
 		$loggedParams = $params;
@@ -80,7 +85,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		$this->log('enter: '.__FUNCTION__.'('.\json_encode($loggedParams).')');
 
 		if (isset($params['host'], $params['user'], $params['password'], $params['share'])) {
-			$domain = (isset($params['domain'])) ? $params['domain'] : '';
+			$domain = $params['domain'] ?? '';
 
 			$auth = new BasicAuth($params['user'], $domain, $params['password']);
 			$serverFactory = new ServerFactory();
@@ -94,7 +99,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			if (!$this->root || $this->root[0] != '/') {
 				$this->root = '/' . $this->root;
 			}
-			if (\substr($this->root, -1, 1) != '/') {
+			if (\substr($this->root, -1, 1) !== '/') {
 				$this->root .= '/';
 			}
 		} else {
@@ -104,12 +109,13 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		}
 		$this->statCache = new CappedMemoryCache();
 		$this->log('leave: '.__FUNCTION__.', getId:'.$this->getId());
+		$this->useSingletonStorage = $params['one-storage'] ?? false;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getId() {
+	public function getId(): string {
+		if ($this->useSingletonStorage) {
+			return 'smb::' . $this->server->getHost() . '//' . $this->share->getName() . '/' . $this->root;
+		}
 		// FIXME: double slash to keep compatible with the old storage ids,
 		// failure to do so will lead to creation of a new storage id and
 		// loss of shares from the storage
@@ -124,6 +130,14 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		$this->log('enter: '.__FUNCTION__."($path)");
 		$result = Filesystem::normalizePath($this->root . '/' . $path, true, false, true);
 		return $this->leave(__FUNCTION__, $result);
+	}
+
+	public function getCache($path = '', $storage = null) {
+		$parentCache = parent::getCache($path, $storage);
+		if ($this->useSingletonStorage) {
+			return new SmbCacheWrapper($parentCache, $this);
+		}
+		return $parentCache;
 	}
 
 	/**

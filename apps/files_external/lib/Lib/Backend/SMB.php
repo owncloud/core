@@ -46,6 +46,8 @@ class SMB extends ExternalBackend {
 					->setFlag(DefinitionParameter::FLAG_OPTIONAL),
 				(new DefinitionParameter('domain', $l->t('Domain')))
 					->setFlag(DefinitionParameter::FLAG_OPTIONAL),
+				(new DefinitionParameter('one-storage', $l->t('All users share this storage')))
+					->setType(DefinitionParameter::VALUE_BOOLEAN),
 			])
 			->addAuthScheme(AuthMechanism::SCHEME_PASSWORD)
 		;
