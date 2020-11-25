@@ -12,6 +12,7 @@ Summary
 * Bugfix - Google Drive file modifications should not create duplicate files: [#25826](https://github.com/owncloud/core/issues/25826)
 * Bugfix - Fix exit codes of security:certificates commands: [#35364](https://github.com/owncloud/core/issues/35364)
 * Bugfix - Translate public link sharing email subject: [#37321](https://github.com/owncloud/core/issues/37321)
+* Bugfix - Only allow http/https protocol on CORS: [#38101](https://github.com/owncloud/core/pull/38101)
 * Bugfix - Fix problem with the market app installing an app using OpenIDConnect: [#37715](https://github.com/owncloud/core/pull/37715)
 * Bugfix - Fix expiring a wrong share entry problem: [#37729](https://github.com/owncloud/core/pull/37729)
 * Bugfix - Fix decoding of calendars uri: [#37750](https://github.com/owncloud/core/pull/37750)
@@ -143,6 +144,13 @@ Details
 
    https://github.com/owncloud/core/issues/37321
    https://github.com/owncloud/core/pull/37322
+
+* Bugfix - Only allow http/https protocol on CORS: [#38101](https://github.com/owncloud/core/pull/38101)
+
+   Adding a white-listed domain allowed strange protocols like ftp://owncloud.com,
+   restricted to http/https
+
+   https://github.com/owncloud/core/pull/38101
 
 * Bugfix - Fix problem with the market app installing an app using OpenIDConnect: [#37715](https://github.com/owncloud/core/pull/37715)
 
