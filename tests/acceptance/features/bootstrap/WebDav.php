@@ -32,6 +32,9 @@ use TestHelpers\UploadHelper;
 use TestHelpers\WebDavHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\Asserts\WebDav as WebDavAssert;
+use TusPhp\Exception\ConnectionException;
+use TusPhp\Exception\TusException;
+use TusPhp\Tus\Client;
 
 /**
  * WebDav functions
@@ -1597,6 +1600,42 @@ trait WebDav {
 	}
 
 	/**
+	 * @When user :user uploads file :source to :destination using the TUS
+	 *       protocol on the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $source
+	 * @param string $destination
+	 *
+	 * @return void
+	 * @throws ReflectionException
+	 * @throws ConnectionException
+	 * @throws TusException
+	 */
+	public function userUploadsUsingTusAFileTo($user, $source, $destination) {
+		$user = $this->getActualUsername($user);
+		$password = $this->getUserPassword($user);
+		$client = new Client(
+			$this->getBaseUrl(),
+			['verify' => false,
+				'headers' => [
+				'Authorization' => 'Basic ' . \base64_encode($user . ':' . $password)
+				]
+			]
+		);
+		$client->setApiPath(
+			WebDavHelper::getDavPath($user, $this->getDavPathVersion())
+		);
+		$key = 'your unique key';
+		$sourceFile = $this->acceptanceTestsDirLocation() . $source;
+		$client->setKey($key)->file($sourceFile, $destination);
+		$this->pauseUploadDelete();
+
+		$client->file($sourceFile, $destination)->upload();
+		$this->lastUploadDeleteTime = \time();
+	}
+
+	/**
 	 * @Given user :user has uploaded file :source to :destination
 	 *
 	 * @param string $user
@@ -2240,6 +2279,30 @@ trait WebDav {
 		$user, $content, $destination
 	) {
 		return $this->uploadFileWithContent($user, $content, $destination);
+	}
+
+	/**
+	 * @When user :user uploads file with content :content to :destination using the TUS protocol on the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $content
+	 * @param string $destination
+	 *
+	 * @return string
+	 */
+	public function userUploadsAFileWithContentToUsingTus(
+		$user, $content, $destination
+	) {
+		$tmpfname = \tempnam(
+			$this->acceptanceTestsDirLocation(), "tus-upload-test-"
+		);
+		$tempfile = \fopen($tmpfname, "w");
+		\fwrite($tempfile, $content);
+		$this->userUploadsUsingTusAFileTo(
+			$user, \basename($tmpfname), $destination
+		);
+		\fclose($tempfile);
+		\unlink($tmpfname);
 	}
 
 	/**
