@@ -312,3 +312,25 @@ Feature: move (rename) file
       | new         | /upload...1.. | abc...txt.. |
       | new         | /...          | ...         |
       | new         | /..upload     | ..abc       |
+
+  @smokeTest
+  Scenario Outline: user tries to move a file that doesnt exist into a folder
+    Given using <dav_version> DAV path
+    When user "Alice" moves file "/doesNotExist.txt" to "/FOLDER/textfile0.txt" using the WebDAV API
+    Then the HTTP status code should be "404"
+    And as "Alice" file "/FOLDER/textfile0.txt" should not exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  @smokeTest
+  Scenario Outline: user tries to rename a file that doesnt exist
+    Given using <dav_version> DAV path
+    When user "Alice" moves file "/doesNotExist.txt" to "/exist.txt" using the WebDAV API
+    Then the HTTP status code should be "404"
+    And as "Alice" file "/exist.txt" should not exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |

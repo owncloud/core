@@ -275,3 +275,14 @@ Feature: dav-versions
     When user "Brian" tries to get versions of file "textfile0.txt" from "Alice"
     Then the HTTP status code should be "207"
     And the number of versions should be "3"
+
+  Scenario: Receiver tries get file versions of shared file before receiving it
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"
+    And user "Alice" has uploaded file with content "version 1" to "textfile0.txt"
+    And user "Alice" has uploaded file with content "version 2" to "textfile0.txt"
+    And we save it into "FILEID"
+    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    When user "Brian" tries to get versions of file "textfile0.txt" from "Alice"
+    Then the HTTP status code should be "404"
+    And the value of the item "//s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"

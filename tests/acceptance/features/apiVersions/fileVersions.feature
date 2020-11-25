@@ -380,3 +380,13 @@ Feature: dav-versions
     When user "Brian" tries to get versions of file "textfile0.txt" from "Alice"
     Then the HTTP status code should be "207"
     And the number of versions should be "3"
+
+  Scenario: User cannot access meta folder of a file which does not exists
+    Given user "Brian" has been created with default attributes and without skeleton files
+    When user "Brian" sends HTTP method "PROPFIND" to URL "/remote.php/dav/meta/MTI4NGQyMzgtYWE5Mi00MmNlLWJkxzQtMGIwMDAwMDA5MTU2OjhjY2QyNzUxLTkwYTQtNDBmMi1iOWYzLTYxZWRmODQ0MjFmNA==/v"
+    Then the HTTP status code should be "404"
+
+  Scenario: User cannot access meta folder of a file with invalid fileid
+    Given user "Brian" has been created with default attributes and without skeleton files
+    When user "Brian" sends HTTP method "PROPFIND" to URL "/remote.php/dav/meta/MTI4NGQyMzgtYWEMi00MmNlLWJkxzQtMGIwMDAwMsA5MTU2OjhjY2QyNzUxLTkwYTQtNDBmMi1iOWYzLTYxZWRmODQ0MjFmNA==/v"
+    Then the HTTP status code should be "404"

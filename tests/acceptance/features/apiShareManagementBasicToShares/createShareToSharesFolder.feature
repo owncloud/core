@@ -581,3 +581,32 @@ Feature: sharing
 #    Then the HTTP status code should be "405"
     And the sharing API should report to user "Carol" that no shares are in the pending state
     And as "Carol" folder "/Shares/userOneFolder" should not exist
+
+  @smokeTest
+  Scenario Outline: Creating a share of a renamed file
+    Given using OCS API version "<ocs_api_version>"
+    And user "Brian" has been created with default attributes and without skeleton files
+    When user "Alice" moves file "textfile0.txt" to "renamed.txt" using the WebDAV API
+    When user "Alice" shares file "renamed.txt" with user "Brian" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
+      | share_with             | %username%            |
+      | share_with_displayname | %displayname%         |
+      | file_target            | /Shares/renamed.txt |
+      | path                   | /renamed.txt        |
+      | permissions            | share,read,update     |
+      | uid_owner              | %username%            |
+      | displayname_owner      | %displayname%         |
+      | item_type              | file                  |
+      | mimetype               | text/plain            |
+      | storage_id             | ANY_VALUE             |
+      | share_type             | user                  |
+    When user "Brian" accepts share "/renamed.txt" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the content of file "/Shares/renamed.txt" for user "Brian" should be "ownCloud test text file 0"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
