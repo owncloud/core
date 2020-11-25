@@ -639,9 +639,8 @@ td.avatar {
 
 
 #notification-container {
-	position: fixed;
-	bottom: 0;
-	top: auto;
+	position: absolute;
+	top: 0;
 	width: 100%;
 	text-align: center;
 	z-index: 8000;
@@ -651,26 +650,17 @@ td.avatar {
 	pointer-events: auto;
 	margin: 0 auto;
 	max-width: 60%;
-	background-color: #fef4f6;
-	background-image: url('../img/actions/exclamation-triangle-solid.svg');
-	background-position: 20px 50%;
-	background-repeat: no-repeat;
-	background-size: 42px;
-	color: #f0506e;
+	z-index: 8000;
+	background-color: #fc4;
 	border: 0;
-	padding: 10px 40px 0px 75px;
+	padding: 1px 8px;
 	display: none;
 	position: relative;
 	top: 0;
-	border-radius: 3px;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
 	opacity: .9;
-	max-height: none;
-}
-
-#notification-container #notification * {
-	color: #f0506e !important;
-	font-weight: bold;
 }
 #notification span {
 	cursor: pointer;
@@ -679,33 +669,20 @@ td.avatar {
 #notification {
 	overflow-x: hidden;
 	overflow-y: auto;
-}
-#notification-container #notification a:hover {
-	text-decoration: underline;
+	max-height: 100px;
 }
 #notification .row {
 	position: relative;
-	border-bottom: 1px solid #fdc7d1;
-	padding-bottom: 5px;
-	margin-bottom: 5px;
-	text-align: left;
 }
-#notification .row:last-child {
-	border: none;
-}
-
 #notification .row .close {
 	display: inline-block;
 	vertical-align: middle;
 	position: absolute;
 	right: 0;
-	top: calc(50% - 7px);
+	top: 0;
 }
 #notification .row.closeable {
 	padding-right: 20px;
-}
-#notification .row .close.icon-close {
-	background-image: url('../img/actions/close-red.svg');
 }
 
 tr .action:not(.permanent),
