@@ -102,7 +102,6 @@ Summary
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
 * Enhancement - Add capability for the favorite files feature: [#37673](https://github.com/owncloud/core/pull/37673)
 * Enhancement - Add Support for SGI Image Previews: [#37758](https://github.com/owncloud/core/pull/37758)
-* Enhancement - Re-design UI yellow notification bar: [#37875](https://github.com/owncloud/core/pull/37875)
 * Enhancement - Allow getting the share list filtered by share type via API: [#38000](https://github.com/owncloud/core/pull/38000)
 * Enhancement - GetShare API request's "subfiles" parameter allows new interactions: [#38053](https://github.com/owncloud/core/pull/38053)
 * Enhancement - Add new method in the PHP API interface: [#38054](https://github.com/owncloud/core/pull/38054)
@@ -804,14 +803,6 @@ Details
    https://en.wikipedia.org/wiki/Silicon_Graphics_Image
    https://www.iana.org/assignments/media-types/media-types.xhtml
    https://www.php.net/manual/en/book.imagick.php
-
-* Enhancement - Re-design UI yellow notification bar: [#37875](https://github.com/owncloud/core/pull/37875)
-
-   The yellow notification center has been redesigned: - not blocking the top centered logo
-   anymore - gets more attention using icons and red color - looks more modern - shows a close button
-   by default so users can dismiss most notifications
-
-   https://github.com/owncloud/core/pull/37875
 
 * Enhancement - Allow getting the share list filtered by share type via API: [#38000](https://github.com/owncloud/core/pull/38000)
 
