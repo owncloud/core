@@ -113,7 +113,7 @@ class CorsControllerTest extends TestCase {
 		$responseData = $response->getData();
 
 		$this->assertArrayHasKey('message', $responseData);
-		$this->assertEquals("Protocol is missing in '%s'", $responseData['message']);
+		$this->assertEquals("Invalid url '%s'. Urls should be set up like 'http://www.example.com' or 'https://www.example.com'", $responseData['message']);
 	}
 
 	public function testAddInvalidDomain() {
@@ -137,7 +137,7 @@ class CorsControllerTest extends TestCase {
 		$responseData = $response->getData();
 
 		$this->assertArrayHasKey('message', $responseData);
-		$this->assertEquals("'%s' is not a valid domain", $responseData['message']);
+		$this->assertEquals("Invalid url '%s'. Urls should be set up like 'http://www.example.com' or 'https://www.example.com'", $responseData['message']);
 	}
 
 	public function testAddValidDomain() {
@@ -156,6 +156,77 @@ class CorsControllerTest extends TestCase {
 		$expectedResponse = new JSONResponse(['domains' => ['http://www.test.com', 'http://www.test1.com']]);
 
 		$this->assertEquals($response, $expectedResponse);
+	}
+	public function testAddInvalidDomainWithPaths() {
+		// Since this domain is invalid,
+		// the success message that the domain is white-listed, wouldn't be triggered
+		$this->logger
+			->expects($this->never())
+			->method('debug');
+
+		$this->config
+			->expects($this->never())
+			->method("setUserValue");
+
+		$this->l10n->method('t')
+			->willReturnCallback(function ($a) {
+				return $a;
+			});
+
+		$response = $this->corsController->addDomain("http://test.com/path1/path2");
+
+		$responseData = $response->getData();
+
+		$this->assertArrayHasKey('message', $responseData);
+		$this->assertEquals("Invalid url '%s'. Urls should be set up like 'http://www.example.com' or 'https://www.example.com'", $responseData['message']);
+	}
+
+	public function testAddInvalidDomainWithQueryParams() {
+		// Since this domain is invalid,
+		// the success message that the domain is white-listed, wouldn't be triggered
+		$this->logger
+			->expects($this->never())
+			->method('debug');
+
+		$this->config
+			->expects($this->never())
+			->method("setUserValue");
+
+		$this->l10n->method('t')
+			->willReturnCallback(function ($a) {
+				return $a;
+			});
+
+		$response = $this->corsController->addDomain("http://test.com?query=existent");
+
+		$responseData = $response->getData();
+
+		$this->assertArrayHasKey('message', $responseData);
+		$this->assertEquals("Invalid url '%s'. Urls should be set up like 'http://www.example.com' or 'https://www.example.com'", $responseData['message']);
+	}
+
+	public function testAddInvalidProtocol() {
+		// Since this domain is invalid,
+		// the success message that the domain is white-listed, wouldn't be triggered
+		$this->logger
+			->expects($this->never())
+			->method('debug');
+
+		$this->config
+			->expects($this->never())
+			->method("setUserValue");
+
+		$this->l10n->method('t')
+			->willReturnCallback(function ($a) {
+				return $a;
+			});
+
+		$response = $this->corsController->addDomain("ftp://test.com");
+
+		$responseData = $response->getData();
+
+		$this->assertArrayHasKey('message', $responseData);
+		$this->assertEquals("Invalid url '%s'. Urls should be set up like 'http://www.example.com' or 'https://www.example.com'", $responseData['message']);
 	}
 
 	public function testRemoveInvalidDomain() {

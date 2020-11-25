@@ -119,16 +119,7 @@ class CorsController extends Controller {
 			$this->logger->debug("The domain {$domain} has been white-listed.", ['app' => $this->appName]);
 			return new JSONResponse([ 'domains' => $domains]);
 		} else {
-			$cleanDomain = \strip_tags($domain);
-
-			if (
-				\strpos($domain, 'http://') !== 0
-				&& \strpos($domain, 'https://') !== 0
-			) {
-				$errorMsg = $this->l10n->t("Protocol is missing in '%s'", [$cleanDomain]);
-			} else {
-				$errorMsg = $this->l10n->t("'%s' is not a valid domain", [$cleanDomain]);
-			}
+			$errorMsg = $this->l10n->t("Invalid url '%s'. Urls should be set up like 'http://www.example.com' or 'https://www.example.com'", \strip_tags($domain));
 			return new JSONResponse([ 'message' => $errorMsg ]);
 		}
 	}
@@ -162,7 +153,26 @@ class CorsController extends Controller {
 	 * @param  string  $url URL to check
 	 * @return boolean      whether URL is valid
 	 */
-	private function isValidUrl($url) {
-		return (\filter_var($url, FILTER_VALIDATE_URL) !== false);
+	private function isValidUrl(string $url) {
+		$parsedUrl = \parse_url($url);
+
+		if (!\filter_var($url, FILTER_VALIDATE_URL) || !$parsedUrl) {
+			return  false;
+		}
+
+		// Check if uri protocol is http or https
+		$notAllowedUrlComponents = ['user', 'pass', 'path', 'query', 'fragment'];
+		if (!isset($parsedUrl['scheme']) || ($parsedUrl['scheme'] !== 'http' && $parsedUrl['scheme'] !== 'https')) {
+			return false;
+		}
+
+		// Check if uri contains not allowed component
+		foreach ($notAllowedUrlComponents as $fragment) {
+			if (isset($parsedUrl[$fragment])) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
