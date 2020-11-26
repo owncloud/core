@@ -31,7 +31,7 @@ $targetUserObject = \OC::$server->getUserManager()->get($username);
 $targetGroupObject = \OC::$server->getGroupManager()->get($group);
 
 $isSubAdminOfGroup = false;
-if ($targetUserObject !== null && $targetUserObject !== null) {
+if ($targetUserObject !== null && $targetGroupObject !== null) {
 	$isSubAdminOfGroup = $subAdminManager->isSubAdminofGroup($targetUserObject, $targetGroupObject);
 }
 
