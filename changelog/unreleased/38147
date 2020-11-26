@@ -1,0 +1,3 @@
+Bugfix: Fix some code smells reported by SonarCloud
+
+https://github.com/owncloud/core/pull/38147
