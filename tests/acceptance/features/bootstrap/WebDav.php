@@ -2306,7 +2306,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user uploads file to :destination with mtime :mtime using the WebDAV API
+	 * @When user :user uploads a file to :destination with mtime :mtime using the WebDAV API
 	 * @Given user :user has uploaded a file to :destination with mtime :mtime using the WebDAV API
 	 *
 	 * @param string $user
@@ -2315,7 +2315,7 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function userUploadsFileWithContentToWithMtimeUsingTheWebdavApi(
+	public function userUploadsFileWithMtime(
 		$user, $destination, $mtime
 	) {
 		$mtime = new DateTime($mtime);
