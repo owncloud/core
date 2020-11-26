@@ -2217,23 +2217,6 @@ trait WebDav {
 	}
 
 	/**
-	 * @param $user
-	 * @param $destination
-	 * @param $mtime
-	 *
-	 * @return void
-	 */
-	public function uploadFileWithMtime(
-		$user, $destination, $mtime
-	) {
-		$user = $this->getActualUsername($user);
-
-		$this->response = $this->makeDavRequest(
-			$user, "PUT", $destination, ["X-OC-Mtime" => $mtime]
-		);
-	}
-
-	/**
 	 * @When the administrator uploads file with content :content to :destination using the WebDAV API
 	 *
 	 * @param string $content
@@ -2306,21 +2289,27 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user uploads file to :destination with mtime :mtime using the WebDAV API
-	 * @Given user :user has uploaded a file to :destination with mtime :mtime using the WebDAV API
+	 * @When user :user uploads file :source to :destination with mtime :mtime using the WebDAV API
+	 * @Given user :user has uploaded file :source to :destination with mtime :mtime using the WebDAV API
 	 *
 	 * @param string $user
+	 * @param string $source
 	 * @param string $destination
 	 * @param string $mtime Time in human readable format is taken as input which is converted into milliseconds that is used by API
 	 *
 	 * @return void
 	 */
-	public function userUploadsFileWithContentToWithMtimeUsingTheWebdavApi(
-		$user, $destination, $mtime
+	public function userUploadsFileToWithMtimeUsingTheWebdavApi(
+		$user, $source, $destination, $mtime
 	) {
 		$mtime = new DateTime($mtime);
 		$mtime = $mtime->format('U');
-		return $this->uploadFileWithMtime($user, $destination, $mtime);
+		$user = $this->getActualUsername($user);
+		$this->response = UploadHelper::upload(
+			$this->getBaseUrl(), $user, $this->getPasswordForUser($user),
+			$this->acceptanceTestsDirLocation() . $source, $destination,
+			["X-OC-Mtime" => $mtime]
+		);
 	}
 
 	/**
