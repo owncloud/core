@@ -215,7 +215,7 @@ class AccountMapper extends Mapper {
 	}
 
 	public function callForAllUsers($callback, $search, $onlySeen) {
-		return $this->callForUsers($callback, $search, $onlySeen);
+		$this->callForUsers($callback, $search, $onlySeen);
 	}
 
 	public function callForUsers($callback, $search, $onlySeen, $limit = null, $offset = null) {

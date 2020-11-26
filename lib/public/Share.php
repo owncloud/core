@@ -311,7 +311,7 @@ class Share extends \OC\Share\Constants {
 	 * @since 6.0.0 - parameter $originIsSource was added in 8.0.0
 	 */
 	public static function setSendMailStatus($itemType, $itemSource, $shareType, $recipient, $status) {
-		return \OC\Share\Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, $status);
+		\OC\Share\Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, $status);
 	}
 
 	/**
