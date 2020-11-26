@@ -13,8 +13,6 @@ OC.L10N.register(
     "Couldn't send reset email. Please contact your administrator." : "S’u dërgua dot email-i i ricaktimit. Ju lutemi, lidhuni me përgjegjësin tuaj.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "instalim dhe përditësim aplikacionesh përmes tregut ose Federated Cloud Sharing",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL-ja po përdor një version %s të vjetruar (%s). Ju lutemi, përditësoni sistemin tuaj operativ ose përndryshe veçori të tilla si %s nuk do të punojnë në mënyrë të qëndrueshme.",
-    "Protocol is missing in '%s'" : "Mungon protokoll te '%s'",
-    "'%s' is not a valid domain" : "'%s' s’është përkatësi e vlefshme",
     "Group already exists." : "Grupi ekziston tashmë.",
     "Unable to add group." : "S’arrihet të shtohet grup.",
     "Unable to delete group." : "S’arrihet të fshihet grup.",

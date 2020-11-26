@@ -11,8 +11,6 @@
     "Couldn't send reset email. Please contact your administrator." : "لا يمكن إرسال رسالة بريد إلكتروني لإعادة التعيين. يُرجى الاتصال بالمسؤول.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "تثبيت التطبيقات وتحديثها عبر المتجر أو المشاركة السحابية الموحدة",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "يستخدم cURL إصدار %s محدثًا (%s). يُرجى تحديث نظام التشغيل وإلا فلن تعمل ميزات مثل %s بشكل موثوق.",
-    "Protocol is missing in '%s'" : "' %s ' ليس بإسم نطاق صالح",
-    "'%s' is not a valid domain" : "' %s ' ليس بإسم نطاق صالح",
     "Group already exists." : "المجموعة موجودة بالفعل.",
     "Unable to add group." : "تعذّرت إضافة مجموعة.",
     "Unable to delete group." : "تعذّر حذف مجموعة.",

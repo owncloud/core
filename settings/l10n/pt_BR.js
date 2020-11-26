@@ -13,8 +13,6 @@ OC.L10N.register(
     "Couldn't send reset email. Please contact your administrator." : "Não foi possível enviar e-mail de redefinição. Por favor, contate o administrador.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "Instalando e atualizando aplicativos através do mercado ou Compartilhamento de Nuvem Federada",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL está usando um desatualizado %s versão (%s). Por favor, atualize seu sistema operacional ou recursos como %s não vai funcionar de forma confiável.",
-    "Protocol is missing in '%s'" : "Protocolo está perdido em '%s'",
-    "'%s' is not a valid domain" : "'%s' não é um domínio válido",
     "Group already exists." : "O Grupo já existe.",
     "Unable to add group." : "Não é possível adicionar grupo.",
     "Unable to delete group." : "Não é possível excluir grupo.",

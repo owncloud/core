@@ -11,8 +11,6 @@
     "Couldn't send reset email. Please contact your administrator." : "לא ניתן היה לשלוח דואר אלקטרוני לאיפוס. יש לפנות למנהל שלך.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "התקנה ועדכון יישומים באמצעות החנות או שיתוף ענן מאוגד",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL משתמש בגרסה %s ישנה (%s). יש לעדכן את מערכת ההפעלה או  שתכונות כדוגמת %s לא יעבדו באופן מהימן.",
-    "Protocol is missing in '%s'" : "הפרוטוקול חסר ב-  '%s'",
-    "'%s' is not a valid domain" : "'%s' אינו דומיין תקף",
     "Group already exists." : "קבוצה כבר קיימת.",
     "Unable to add group." : "לא ניתן להוסיף קבוצה.",
     "Unable to delete group." : "לא ניתן למחוק קבוצה.",

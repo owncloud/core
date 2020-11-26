@@ -11,8 +11,6 @@
     "Couldn't send reset email. Please contact your administrator." : "Не удалось отправить письмо для сброса пароля. Пожалуйста, свяжитесь с вашим администратором.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "установка и обновление приложений через маркет или Объединение облачных хранилищ",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL использует устаревшую версию %s (%s). Пожалуйста, обновите Вашу операционную систему, иначе такие возможности, как %s, не будут работать надежно.",
-    "Protocol is missing in '%s'" : "В '%s' не задан протокол",
-    "'%s' is not a valid domain" : "'%s' не является допустимым доменом",
     "Group already exists." : "Группа уже существует.",
     "Unable to add group." : "Невозможно добавить группу.",
     "Unable to delete group." : "Невозможно удалить группу.",

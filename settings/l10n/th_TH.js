@@ -13,8 +13,6 @@ OC.L10N.register(
     "Couldn't send reset email. Please contact your administrator." : "ไม่สามารถส่งข้อมูลการตั้งค่าไปยังอีเมลของคุณ กรุณาติดต่อผู้ดูแลระบบ",
     "installing and updating apps via the market or Federated Cloud Sharing" : "กำลังติดตั้งและอัปเดตแอปผ่านตลาดหรือคลาวด์ของสหพันธ์ที่แชร์อยู่",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "คุณกำลังใช้ cURL %s เวอร์ชันเก่ากว่า (%s)โปรดอัปเดตระบบปฏิบัติการหรือคุณสมบัติเป็น %s เพื่อการทำงานที่มีประสิทธิภาพ",
-    "Protocol is missing in '%s'" : "โปรโตคอลหายไปจาก '%s'",
-    "'%s' is not a valid domain" : "'%s' ไม่ใช่โดเมนที่ถูกต้อง",
     "Group already exists." : "มีกลุ่มนี้อยู่แล้ว",
     "Unable to add group." : "ไม่สามารถเพิ่มกลุ่ม",
     "Unable to delete group." : "ไม่สามารถลบกลุ่ม",

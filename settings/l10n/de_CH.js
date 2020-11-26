@@ -13,8 +13,6 @@ OC.L10N.register(
     "Couldn't send reset email. Please contact your administrator." : "Die E-Mail zum Zurücksetzen konnte nicht versendet werden. Bitte kontaktiere Deinen Administrator.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "Das Installieren und Aktualisieren von Apps durch den App-Store oder durch Federated Cloud Sharing",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL verwendet eine veraltete %s Version (%s). Bitte aktualisiere dein Betriebssystem, da ansonsten Funktionen, wie z.B. %s, nicht zuverlässig funktionieren werden.",
-    "Protocol is missing in '%s'" : "Protokoll fehlt in '%s'",
-    "'%s' is not a valid domain" : "'%s' ist keine gültige Domain",
     "Group already exists." : "Gruppe existiert bereits.",
     "Unable to add group." : "Gruppe konnte nicht angelegt werden.",
     "Unable to delete group." : "Gruppe konnte nicht gelöscht werden.",

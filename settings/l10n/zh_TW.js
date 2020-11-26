@@ -13,8 +13,6 @@ OC.L10N.register(
     "Couldn't send reset email. Please contact your administrator." : "無法寄送重設 email ，請聯絡系統管理員",
     "installing and updating apps via the market or Federated Cloud Sharing" : "經由市場或聯合雲共享安裝和更新應用",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL 使用的 %s 版本已經過期 (%s)，請您更新您的作業系統，否則功能如 %s 可能無法正常運作",
-    "Protocol is missing in '%s'" : "缺少協議'%s'",
-    "'%s' is not a valid domain" : "'%s'不是有效的域",
     "Group already exists." : "群組已存在",
     "Unable to add group." : "無法新增群組",
     "Unable to delete group." : "無法刪除群組",
