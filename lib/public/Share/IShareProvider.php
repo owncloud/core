@@ -193,6 +193,17 @@ interface IShareProvider {
 	public function getShareByToken($token);
 
 	/**
+	 * Get the shares which are associated with an invalid or missing fileid.
+	 * This means that the share isn't valid any longer because the source file
+	 * has been deleted.
+	 *
+	 * @param int $limit limit the number of results, -1 to get all results without limit
+	 * @return \OCP\Share\IShare[]
+	 * @since 10.7.0
+	 */
+	public function getSharesWithInvalidFileid(int $limit);
+
+	/**
 	 * A user is deleted from the system
 	 * So clean up the relevant shares.
 	 *
