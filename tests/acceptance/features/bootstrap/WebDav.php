@@ -1600,19 +1600,24 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user uploads file :source to :destination using the TUS
-	 *       protocol on the WebDAV API
+	 * @When user :user uploads file :source to :destination using the TUS protocol on the WebDAV API
 	 *
 	 * @param string $user
 	 * @param string $source
 	 * @param string $destination
+	 * @param array  $uploadMetadata array of metadata to be placed in the
+	 *                               `Upload-Metadata` header.
+	 *                               see https://tus.io/protocols/resumable-upload.html#upload-metadata
+	 *                               Don't Base64 encode the value.
 	 *
 	 * @return void
-	 * @throws ReflectionException
 	 * @throws ConnectionException
+	 * @throws ReflectionException
 	 * @throws TusException
 	 */
-	public function userUploadsUsingTusAFileTo($user, $source, $destination) {
+	public function userUploadsUsingTusAFileTo(
+		string $user, string $source, string $destination, array $uploadMetadata = []
+	) {
 		$user = $this->getActualUsername($user);
 		$password = $this->getUserPassword($user);
 		$client = new Client(
@@ -1626,6 +1631,7 @@ trait WebDav {
 		$client->setApiPath(
 			WebDavHelper::getDavPath($user, $this->getDavPathVersion())
 		);
+		$client->setMetadata($uploadMetadata);
 		$key = 'your unique key';
 		$sourceFile = $this->acceptanceTestsDirLocation() . $source;
 		$client->setKey($key)->file($sourceFile, $destination);
@@ -2274,7 +2280,7 @@ trait WebDav {
 	 * @return string
 	 */
 	public function userUploadsAFileWithContentToUsingTus(
-		$user, $content, $destination
+		string $user, string $content, string $destination
 	) {
 		$tmpfname = \tempnam(
 			$this->acceptanceTestsDirLocation(), "tus-upload-test-"
@@ -2309,6 +2315,27 @@ trait WebDav {
 			$this->getBaseUrl(), $user, $this->getPasswordForUser($user),
 			$this->acceptanceTestsDirLocation() . $source, $destination,
 			["X-OC-Mtime" => $mtime]
+		);
+	}
+
+	/**
+	 * @When user :user uploads file :source to :destination with mtime :mtime using the TUS protocol on the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $source
+	 * @param string $destination
+	 * @param string $mtime Time in human readable format is taken as input which is converted into milliseconds that is used by API
+	 *
+	 * @return void
+	 */
+	public function userUploadsFileWithContentToWithMtimeUsingTUS(
+		string $user, string $source, string $destination, string $mtime
+	) {
+		$mtime = new DateTime($mtime);
+		$mtime = $mtime->format('U');
+		$user = $this->getActualUsername($user);
+		$this->userUploadsUsingTusAFileTo(
+			$user, $source, $destination, ['mtime' => $mtime]
 		);
 	}
 
