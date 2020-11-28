@@ -65,6 +65,7 @@
     "Evaluation - expires in %d days." : "التقييم - ينتهي في %d أيام.",
     "Your Enterprise license key is about to expire (days remaining: %d)." : "مفتاح ترخيص المؤسسة على وشك انتهاء صلاحيته (الأيام المتبقية: %d).",
     "The registered enterprise license key expires in %d days" : "تنتهي صلاحية مفتاح ترخيص المؤسسة المسجل في غضون %d أيام",
+    "New Design" : "تصميم جديد",
     "Apps" : "التطبيقات",
     "General" : "عام",
     "Storage" : "السعة التخزينية",

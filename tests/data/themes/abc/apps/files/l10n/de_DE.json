@@ -72,6 +72,7 @@
     "Lock file" : "Datei sperren",
     "Failed to lock." : "Sperren fehlgeschlagen.",
     "This resource is locked. Click to see more details." : "Die Ressource ist gesperrt. Klicken für mehr Details.",
+    "Encountered problem accessing the folder {name}" : "Problem beim Zugriff auf den Ordner {name} aufgetreten",
     "\"{name}\" is an invalid file name." : "„{name}“ ist kein gültiger Dateiname.",
     "File name cannot be empty." : "Der Dateiname darf nicht leer sein.",
     "File name cannot contain \"/\"." : "Der Dateiname darf kein \"/\" enthalten.",

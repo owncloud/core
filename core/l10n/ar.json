@@ -112,6 +112,7 @@
     "Your files are encrypted. If you haven't enabled the recovery key, there will be no way to get your data back after your password is reset.<br />If you are not sure what to do, please contact your administrator before you continue. <br />Do you really want to continue?" : "تم تشفير ملفاتك. إذا لم تمكِّن مفتاح الاسترداد، فلن تجد طريقة لاستعادة بياناتك مرة أخرى بعد إعادة تعيين كلمة المرور.<br />وإذا لم تكن متأكدًا مما يجب عليك القيام به، فيُرجى الاتصال بالمسؤول قبل المتابعة. <br />هل ترغب حقًا في المتابعة؟",
     "I know what I'm doing" : "أعرف ما عليّ فعله",
     "Password can not be changed. Please contact your administrator." : "لا يمكن تغيير كلمة المرور. يُرجى الاتصال بالمسؤول.",
+    "Passwords do not match" : "كلمتا العبور غير متطابقتان",
     "Error adding {addItem}: {addItem} already exists" : "خطأ في إضافة {addItem}: {addItem} موجود بالفعل",
     "No" : "لا",
     "Yes" : "نعم",
