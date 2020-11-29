@@ -1382,7 +1382,9 @@ def acceptance(ctx):
 						for db in params['databases']:
 							for runPart in range(1, params['numberOfParts'] + 1):
 								name = 'unknown'
-								federatedDb = db if params['federatedDb'] == '' else params['federatedDb']
+								# Hack for problem with specifying 'postgres:10.3' in the databases list
+								databaseToUse = 'postgres:10.3' if db == 'pg:10.3' else db
+								federatedDb = databaseToUse if params['federatedDb'] == '' else params['federatedDb']
 
 								federatedDbName = getDbName(federatedDb)
 
@@ -1396,7 +1398,7 @@ def acceptance(ctx):
 									keyString = '-' + category if params['includeKeyInMatrixName'] else ''
 									partString = '' if params['numberOfParts'] == 1 else '-%d-%d' % (params['numberOfParts'], runPart)
 									federatedServerVersionString = '-' + federatedServerVersion.replace('daily-', '').replace('-qa', '') if (federatedServerVersion != '') else ''
-									dbString = db.replace(':', '')
+									dbString = databaseToUse.replace(':', '')
 									name = '%s%s%s%s%s-%s-php%s' % (alternateSuiteName, keyString, partString, federatedServerVersionString, browserString, dbString, phpVersion)
 									maxLength = 50
 									nameLength = len(name)
@@ -1478,7 +1480,7 @@ def acceptance(ctx):
 										composerInstall(phpVersion) +
 										vendorbinBehat() +
 										yarnInstall(phpVersion) +
-										installServer(phpVersion, db, params['logLevel'], params['useHttps'], params['federatedServerNeeded'], params['proxyNeeded']) +
+										installServer(phpVersion, databaseToUse, params['logLevel'], params['useHttps'], params['federatedServerNeeded'], params['proxyNeeded']) +
 										(
 											installAndConfigureFederated(ctx, federatedServerVersion, params['federatedPhpVersion'], params['logLevel'], protocol, federatedDb, federationDbSuffix) +
 											owncloudLog('federated', 'federated') if params['federatedServerNeeded'] else []
@@ -1504,7 +1506,7 @@ def acceptance(ctx):
 										}),
 									],
 									'services':
-										databaseService(db) +
+										databaseService(databaseToUse) +
 										browserService(browser) +
 										emailService(params['emailNeeded']) +
 										ldapService(params['ldapNeeded']) +
@@ -1877,11 +1879,7 @@ def owncloudService(phpVersion, name = 'server', path = '/drone/src', ssl = True
 	}]
 
 def getDbName(db):
-	firstPart = db.split(':')[0]
-	if firstPart == 'pg':
-		firstPart = 'postgres'
-
-	return firstPart
+	return db.split(':')[0]
 
 def getDbUsername(db):
 	name = getDbName(db)
