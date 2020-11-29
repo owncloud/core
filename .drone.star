@@ -1311,7 +1311,7 @@ def acceptance(ctx):
 		'federatedServerVersions': [''],
 		'browsers': ['chrome'],
 		'phpVersions': ['7.4'],
-		'databases': ['postgres:10.3'],
+		'databases': ['pg:10.3'],
 		'federatedPhpVersion': '7.2',
 		'federatedServerNeeded': False,
 		'federatedDb': '',
@@ -1877,7 +1877,11 @@ def owncloudService(phpVersion, name = 'server', path = '/drone/src', ssl = True
 	}]
 
 def getDbName(db):
-	return db.split(':')[0]
+	firstPart = db.split(':')[0]
+	if firstPart == 'pg':
+		firstPart = 'postgres'
+
+	return firstPart
 
 def getDbUsername(db):
 	name = getDbName(db)
