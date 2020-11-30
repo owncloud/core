@@ -1,0 +1,11 @@
+Change: Update Symfony components to 4.4.17
+
+The following Symfony components have been updated to version 4.4.17
+- console
+- event-dispatcher
+- process
+- routing
+- translation
+
+https://symfony.com/blog/symfony-4-4-17-released
+https://github.com/owncloud/core/pull/38163
