@@ -1609,6 +1609,7 @@ trait WebDav {
 	 *                               `Upload-Metadata` header.
 	 *                               see https://tus.io/protocols/resumable-upload.html#upload-metadata
 	 *                               Don't Base64 encode the value.
+	 * @param int    $noOfChunks
 	 *
 	 * @return void
 	 * @throws ConnectionException
@@ -1616,7 +1617,11 @@ trait WebDav {
 	 * @throws TusException
 	 */
 	public function userUploadsUsingTusAFileTo(
-		string $user, string $source, string $destination, array $uploadMetadata = []
+		string $user,
+		string $source,
+		string $destination,
+		array $uploadMetadata = [],
+		int $noOfChunks = 1
 	) {
 		$user = $this->getActualUsername($user);
 		$password = $this->getUserPassword($user);
@@ -1637,7 +1642,14 @@ trait WebDav {
 		$client->setKey($key)->file($sourceFile, $destination);
 		$this->pauseUploadDelete();
 
-		$client->file($sourceFile, $destination)->upload();
+		if ($noOfChunks === 1) {
+			$client->file($sourceFile, $destination)->upload();
+		} else {
+			$bytesPerChunk = \ceil(\filesize($sourceFile) / $noOfChunks);
+			for ($i = 0; $i < $noOfChunks; $i++) {
+				$client->upload($bytesPerChunk);
+			}
+		}
 		$this->lastUploadDeleteTime = \time();
 	}
 
@@ -2271,6 +2283,27 @@ trait WebDav {
 	}
 
 	/**
+	 * @param string $content
+	 *
+	 * @return string the file name
+	 * @throws Exception
+	 */
+	private function writeDataToTempFile(string $content) {
+		$tmpfname = \tempnam(
+			$this->acceptanceTestsDirLocation(), "tus-upload-test-"
+		);
+		if ($tmpfname === false) {
+			throw new \Exception("could not create a temporary filename");
+		}
+		$tempfile = \fopen($tmpfname, "w");
+		if ($tempfile === false) {
+			throw new \Exception("could not open for " . $tmpfname . " write");
+		}
+		\fwrite($tempfile, $content);
+		\fclose($tempfile);
+		return $tmpfname;
+	}
+	/**
 	 * @When user :user uploads file with content :content to :destination using the TUS protocol on the WebDAV API
 	 *
 	 * @param string $user
@@ -2282,15 +2315,36 @@ trait WebDav {
 	public function userUploadsAFileWithContentToUsingTus(
 		string $user, string $content, string $destination
 	) {
-		$tmpfname = \tempnam(
-			$this->acceptanceTestsDirLocation(), "tus-upload-test-"
-		);
-		$tempfile = \fopen($tmpfname, "w");
-		\fwrite($tempfile, $content);
+		$tmpfname = $this->writeDataToTempFile($content);
 		$this->userUploadsUsingTusAFileTo(
 			$user, \basename($tmpfname), $destination
 		);
-		\fclose($tempfile);
+		\unlink($tmpfname);
+	}
+
+	/**
+	 * @When user :user uploads file with content :content in :noOfChunks chunks to :destination using the TUS protocol on the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $content
+	 * @param int    $noOfChunks
+	 * @param string $destination
+	 *
+	 * @return void
+	 * @throws ConnectionException
+	 * @throws ReflectionException
+	 * @throws TusException
+	 */
+	public function userUploadsAFileWithContentInChunksUsingTus(
+		string $user,
+		string $content,
+		int $noOfChunks,
+		string $destination
+	) {
+		$tmpfname = $this->writeDataToTempFile($content);
+		$this->userUploadsUsingTusAFileTo(
+			$user, \basename($tmpfname), $destination, [], $noOfChunks
+		);
 		\unlink($tmpfname);
 	}
 

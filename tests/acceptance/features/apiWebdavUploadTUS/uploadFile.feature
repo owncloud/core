@@ -49,3 +49,22 @@ Feature: upload file
       | new         | /folder #2.txt                   | file #2.txt                   |
       | new         | /folder ?2.txt                   | file ?2.txt                   |
       | new         | /?fi=le&%#2 . txt                | # %ab ab?=ed                  |
+
+
+  Scenario Outline: Upload chunked file with TUS
+    Given using <dav_version> DAV path
+    When user "Alice" uploads file with content "uploaded content" in 3 chunks to "/myChunkedFile.txt" using the TUS protocol on the WebDAV API
+    Then the content of file "/myChunkedFile.txt" for user "Alice" should be "uploaded content"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Upload 1 byte chunks with TUS
+    Given using <dav_version> DAV path
+    When user "Alice" uploads file with content "0123456789" in 10 chunks to "/myChunkedFile.txt" using the TUS protocol on the WebDAV API
+    Then the content of file "/myChunkedFile.txt" for user "Alice" should be "0123456789"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
