@@ -9,11 +9,12 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "to delete" to "/textfile0.txt"
 
-  @issue-23151
+  @issue-23151 @skipOnDbOracle
   # This scenario deletes many files as close together in time as the test can run.
   # On a very slow system, the file deletes might all happen in different seconds.
   # But on "reasonable" systems, some of the files will be deleted in the same second,
   # thus testing the required behavior.
+  # Note: skipOnDbOracle because Oracle is slow and so "close together in time" does not really happen
   Scenario Outline: trashbin can store two files with the same name but different origins when the files are deleted close together in time
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/folderA"
@@ -42,11 +43,12 @@ Feature: files and folders exist in the trashbin after being deleted
       | old      |
       | new      |
 
-  @notToImplementOnOCIS @issue-23151
+  @issue-23151 @skipOnDbOracle
   # This scenario deletes many files as close together in time as the test can run.
   # On a very slow system, the file deletes might all happen in different seconds.
   # But on "reasonable" systems, some of the files will be deleted in the same second,
   # thus testing the required behavior.
+  # Note: skipOnDbOracle because Oracle is slow and so "close together in time" does not really happen
   Scenario Outline: trashbin can store two files with the same name but different origins when the files are deleted close together in time
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/folderA"
