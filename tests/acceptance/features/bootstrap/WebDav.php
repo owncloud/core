@@ -2296,7 +2296,7 @@ trait WebDav {
 		}
 		$tempfile = \fopen($tmpfname, "w");
 		if ($tempfile === false) {
-			throw new \Exception("could not open for " . $tmpfname . " write");
+			throw new \Exception("could not open " . $tmpfname . " for write");
 		}
 		\fwrite($tempfile, $content);
 		\fclose($tempfile);
