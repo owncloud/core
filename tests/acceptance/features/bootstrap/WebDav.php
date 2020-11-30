@@ -1637,9 +1637,8 @@ trait WebDav {
 			WebDavHelper::getDavPath($user, $this->getDavPathVersion())
 		);
 		$client->setMetadata($uploadMetadata);
-		$key = 'your unique key';
 		$sourceFile = $this->acceptanceTestsDirLocation() . $source;
-		$client->setKey($key)->file($sourceFile, $destination);
+		$client->setKey(\rand())->file($sourceFile, $destination);
 		$this->pauseUploadDelete();
 
 		if ($noOfChunks === 1) {
@@ -2297,7 +2296,7 @@ trait WebDav {
 		}
 		$tempfile = \fopen($tmpfname, "w");
 		if ($tempfile === false) {
-			throw new \Exception("could not open for " . $tmpfname . " write");
+			throw new \Exception("could not open " . $tmpfname . " for write");
 		}
 		\fwrite($tempfile, $content);
 		\fclose($tempfile);
