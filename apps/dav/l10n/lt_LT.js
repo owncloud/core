@@ -2,6 +2,8 @@ OC.L10N.register(
     "dav",
     {
     "Contact birthdays" : "Kontaktų gimtadieniai",
+    "User unknown" : "Naudotojas nežinomas",
+    "User disabled" : "Naudotojas išjungtas",
     "Personal" : "Asmeniniai",
     "Contacts" : "Kontaktai",
     "Technical details" : "Techniniai duomenys",

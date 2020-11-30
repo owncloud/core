@@ -55,6 +55,7 @@
     "Could not find category \"%s\"" : "Nepavyko rasti kategorijos „%s“",
     "A valid username must be provided" : "Vartotojo vardas turi būti tinkamas",
     "A valid password must be provided" : "Slaptažodis turi būti tinkamas",
+    "User disabled" : "Naudotojas išjungtas",
     "Settings" : "Parinktys",
     "Users" : "Vartotojai",
     "A safe home for all your data" : "Saugus namai jūsų visiems duomenims",
@@ -64,6 +65,7 @@
     "Token expired. Please reload page." : "Sesija baigėsi. Prašome perkrauti puslapį.",
     "Unknown user" : "Neatpažintas naudotojas",
     "PostgreSQL >= 9 required" : "Reikalinga PostgreSQL >= 9 versija",
+    "User unknown" : "Naudotojas nežinomas",
     "Storage is temporarily not available" : "Saugykla yra laikinai neprieinama"
 },"pluralForm" :"nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);"
 }
