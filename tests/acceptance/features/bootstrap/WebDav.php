@@ -1637,9 +1637,8 @@ trait WebDav {
 			WebDavHelper::getDavPath($user, $this->getDavPathVersion())
 		);
 		$client->setMetadata($uploadMetadata);
-		$key = 'your unique key';
 		$sourceFile = $this->acceptanceTestsDirLocation() . $source;
-		$client->setKey($key)->file($sourceFile, $destination);
+		$client->setKey(\rand())->file($sourceFile, $destination);
 		$this->pauseUploadDelete();
 
 		if ($noOfChunks === 1) {
