@@ -16,8 +16,7 @@ Feature: upload file to shared folder
     And user "Alice" has shared folder "/FOLDER" with user "Brian"
     And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     When user "Brian" uploads file with content "uploaded content" to "/Shares/FOLDER/textfile.txt" using the TUS protocol on the WebDAV API
-    Then the HTTP status code should be "200"
-    And as "Alice" file "/FOLDER/textfile.txt" should exist
+    Then as "Alice" file "/FOLDER/textfile.txt" should exist
     And the content of file "/FOLDER/textfile.txt" for user "Alice" should be "uploaded content"
     Examples:
       | dav_version |
@@ -38,7 +37,7 @@ Feature: upload file to shared folder
       | old         |
       | new         |
 
-  Scenario Outline: Uploading file in a group to received read/write share folder
+  Scenario Outline: Uploading a file into a group share as share receiver
     Given using <dav_version> DAV path
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
