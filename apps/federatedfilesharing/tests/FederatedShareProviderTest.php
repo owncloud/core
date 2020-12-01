@@ -125,6 +125,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 
 	public function tearDown(): void {
 		$this->connection->getQueryBuilder()->delete('share')->execute();
+		$this->connection->getQueryBuilder()->delete('filecache')->execute();
 
 		parent::tearDown();
 	}
@@ -1023,6 +1024,111 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			'a0b0c0',
 			$this->provider->getRemoteId($shareMock)
 		);
+	}
+
+	public function testGetSharesWithInvalidFileidNoLimit() {
+		$addressMock = $this->createMock(Address::class);
+		$addressMock->method('equalTo')->willReturn(false);
+
+		$this->addressHandler->expects($this->any())
+			->method('getLocalUserFederatedAddress')
+			->willReturn($addressMock);
+
+		$this->notifications->method('sendRemoteShare')
+			->willReturn(self::OCS_GENERIC_SUCCESS);
+
+		$fileid = $this->createTestFileEntry('myOtherFile');
+		$node = $this->getFileMock($fileid, 'myOtherFile');
+		$share = $this->shareManager->newShare();
+		$share->setSharedWith('user@server.com')
+			->setSharedBy('sharedBy')
+			->setShareOwner('shareOwner')
+			->setPermissions(19)
+			->setNode($node);
+		$this->provider->create($share);
+
+		$node2 = $this->getFileMock(48, 'myOtherFile2');
+		$share2 = $this->shareManager->newShare();
+		$share2->setSharedWith('user2@server.com')
+			->setSharedBy('sharedBy')
+			->setShareOwner('shareOwner2')
+			->setPermissions(19)
+			->setNode($node2);
+		$this->provider->create($share2);
+
+		$node3 = $this->getFileMock(49, 'myOtherFile3');
+		$share3 = $this->shareManager->newShare();
+		$share3->setSharedWith('user3@server.com')
+			->setSharedBy('sharedBy')
+			->setShareOwner('shareOwner3')
+			->setPermissions(19)
+			->setNode($node3);
+		$this->provider->create($share3);
+
+		$shares = $this->provider->getSharesWithInvalidFileid(-1);
+		$this->assertSame(2, \count($shares));
+		$this->assertSame(48, $shares[0]->getNodeId());
+		$this->assertSame(49, $shares[1]->getNodeId());
+	}
+
+	public function testGetSharesWithInvalidFileidWithLimit() {
+		$addressMock = $this->createMock(Address::class);
+		$addressMock->method('equalTo')->willReturn(false);
+
+		$this->addressHandler->expects($this->any())
+			->method('getLocalUserFederatedAddress')
+			->willReturn($addressMock);
+
+		$this->notifications->method('sendRemoteShare')
+			->willReturn(self::OCS_GENERIC_SUCCESS);
+
+		$fileid = $this->createTestFileEntry('myOtherFile');
+		$node = $this->getFileMock($fileid, 'myOtherFile');
+		$share = $this->shareManager->newShare();
+		$share->setSharedWith('user@server.com')
+			->setSharedBy('sharedBy')
+			->setShareOwner('shareOwner')
+			->setPermissions(19)
+			->setNode($node);
+		$this->provider->create($share);
+
+		$node2 = $this->getFileMock(48, 'myOtherFile2');
+		$share2 = $this->shareManager->newShare();
+		$share2->setSharedWith('user2@server.com')
+			->setSharedBy('sharedBy')
+			->setShareOwner('shareOwner2')
+			->setPermissions(19)
+			->setNode($node2);
+		$this->provider->create($share2);
+
+		$node3 = $this->getFileMock(49, 'myOtherFile3');
+		$share3 = $this->shareManager->newShare();
+		$share3->setSharedWith('user3@server.com')
+			->setSharedBy('sharedBy')
+			->setShareOwner('shareOwner3')
+			->setPermissions(19)
+			->setNode($node3);
+		$this->provider->create($share3);
+
+		$shares = $this->provider->getSharesWithInvalidFileid(1); // only one result
+		$this->assertSame(1, \count($shares));
+		$this->assertSame(48, $shares[0]->getNodeId());
+	}
+
+	/**
+	 * Copied from tests/lib/Share20/DefaultShareProviderTest.php
+	 */
+	private function createTestFileEntry($path, $storage = 1) {
+		$qb = $this->connection->getQueryBuilder();
+		$qb->insert('filecache')
+			->values([
+				'storage' => $qb->expr()->literal($storage),
+				'path' => $qb->expr()->literal($path),
+				'path_hash' => $qb->expr()->literal(\md5($path)),
+				'name' => $qb->expr()->literal(\basename($path)),
+			]);
+		$this->assertEquals(1, $qb->execute());
+		return $qb->getLastInsertId();
 	}
 
 	/**
