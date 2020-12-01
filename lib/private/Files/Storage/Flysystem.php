@@ -23,9 +23,9 @@ namespace OC\Files\Storage;
 
 use Icewind\Streams\CallbackWrapper;
 use Icewind\Streams\IteratorDirectory;
-use League\Flysystem\AdapterInterface;
-use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemAdapter;
+use League\Flysystem\FilesystemException;
 use League\Flysystem\Plugin\GetWithMetadata;
 
 /**
@@ -47,9 +47,9 @@ abstract class Flysystem extends Common {
 	/**
 	 * Initialize the storage backend with a flyssytem adapter
 	 *
-	 * @param \League\Flysystem\AdapterInterface $adapter
+	 * @param FilesystemAdapter $adapter
 	 */
-	protected function buildFlySystem(AdapterInterface $adapter) {
+	protected function buildFlySystem(FilesystemAdapter $adapter) {
 		$this->flysystem = new Filesystem($adapter);
 		$this->flysystem->addPlugin(new GetWithMetadata());
 	}
@@ -89,7 +89,7 @@ abstract class Flysystem extends Common {
 		}
 		try {
 			return $this->flysystem->delete($this->buildPath($path));
-		} catch (FileNotFoundException $e) {
+		} catch (FilesystemException $e) {
 			return false;
 		}
 	}
@@ -132,7 +132,12 @@ abstract class Flysystem extends Common {
 		if ($this->file_exists($path)) {
 			return false;
 		}
-		return $this->flysystem->createDir($this->buildPath($path));
+		try {
+			$this->flysystem->createDirectory($this->buildPath($path));
+			return true;
+		} catch (FilesystemException $e) {
+			return false;
+		}
 	}
 
 	/**
@@ -147,8 +152,9 @@ abstract class Flysystem extends Common {
 	 */
 	public function rmdir($path) {
 		try {
-			return @$this->flysystem->deleteDir($this->buildPath($path));
-		} catch (FileNotFoundException $e) {
+			@$this->flysystem->deleteDirectory($this->buildPath($path));
+			return true;
+		} catch (FilesystemException $e) {
 			return false;
 		}
 	}
@@ -159,7 +165,7 @@ abstract class Flysystem extends Common {
 	public function opendir($path) {
 		try {
 			$content = $this->flysystem->listContents($this->buildPath($path));
-		} catch (FileNotFoundException $e) {
+		} catch (FilesystemException $e) {
 			return false;
 		}
 		$names = \array_map(function ($object) {
@@ -179,7 +185,7 @@ abstract class Flysystem extends Common {
 			case 'rb':
 				try {
 					return $this->flysystem->readStream($fullPath);
-				} catch (FileNotFoundException $e) {
+				} catch (FilesystemException $e) {
 					return false;
 				}
 			case 'w':
@@ -249,7 +255,7 @@ abstract class Flysystem extends Common {
 		}
 		try {
 			$info = $this->flysystem->getMetadata($this->buildPath($path));
-		} catch (FileNotFoundException $e) {
+		} catch (FilesystemException $e) {
 			return false;
 		}
 		return $info['type'];

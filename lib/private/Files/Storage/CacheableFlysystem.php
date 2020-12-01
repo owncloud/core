@@ -21,8 +21,8 @@
 
 namespace OC\Files\Storage;
 
-use League\Flysystem\FileNotFoundException;
 use Icewind\Streams\IteratorDirectory;
+use League\Flysystem\FilesystemException;
 
 /**
  * Generic Cacheable adapter between flysystem adapters and owncloud's storage system
@@ -76,7 +76,7 @@ abstract class CacheableFlysystem extends \OCP\Files\Storage\FlysystemStorageAda
 		if (!isset($this->cacheContents[$location]) || $overRideCache) {
 			try {
 				$this->cacheContents[$location] = $this->flysystem->getMetadata($location);
-			} catch (FileNotFoundException $e) {
+			} catch (FilesystemException $e) {
 				// do not store this info in cache as it might interfere with Upload process
 				return false;
 			}
@@ -105,7 +105,7 @@ abstract class CacheableFlysystem extends \OCP\Files\Storage\FlysystemStorageAda
 			$location = $this->buildPath($path);
 			$content = $this->flysystem->listContents($location);
 			$this->updateCache($content);
-		} catch (FileNotFoundException $e) {
+		} catch (FilesystemException $e) {
 			return false;
 		}
 		$names = \array_map(function ($object) {
