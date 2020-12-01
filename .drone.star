@@ -1598,7 +1598,19 @@ def sonarAnalysis(ctx, phpVersion = '7.4'):
 						'drone.owncloud.com'
 					],
 				}
-			}
+			},
+			{
+				'name': 'purge-cache',
+				'image': 'minio/mc',
+				'environment': {
+					'MC_HOST_cache': {
+						'from_secret': 'cache_s3_connection_url'
+					}
+				},
+				'commands': [
+					'mc rm --recursive --force cache/cache/%s/%s' % (ctx.repo.slug, ctx.build.commit + '-${DRONE_BUILD_NUMBER}'),
+				]
+			},
 		],
 		'depends_on': [],
 		'trigger': {
