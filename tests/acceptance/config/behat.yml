@@ -583,6 +583,7 @@ default:
         - LoggingContext:
         - OccContext:
         - PublicWebDavContext:
+        - TUSContext:
 
     apiWebdavEtagPropagation1:
       paths:
