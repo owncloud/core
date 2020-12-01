@@ -106,6 +106,7 @@ Summary
 * Enhancement - Allow getting the share list filtered by share type via API: [#38000](https://github.com/owncloud/core/pull/38000)
 * Enhancement - GetShare API request's "subfiles" parameter allows new interactions: [#38053](https://github.com/owncloud/core/pull/38053)
 * Enhancement - Add new method in the PHP API interface: [#38054](https://github.com/owncloud/core/pull/38054)
+* Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
 
 Details
 -------
@@ -838,6 +839,14 @@ Details
    The share manager interface in the PHP API has a new "getSharesByPath" method available
 
    https://github.com/owncloud/core/pull/38054
+
+* Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
+
+   You can now define a subfolder from your Google Drive when mounting. This gives the ability to:
+   subfolder = empty (like you have it without this enhancment) subfolder = name subfolder =
+   name/$user When using encryption, only the subfolder when used gets encrypted.
+
+   https://github.com/owncloud/core/pull/38161
 
 Changelog for ownCloud Core [10.5.0] (2020-07-31)
 =======================================
