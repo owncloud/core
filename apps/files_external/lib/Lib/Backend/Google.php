@@ -2,6 +2,7 @@
 /**
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Martin Mattel <github@diemattels.at>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -39,6 +40,7 @@ class Google extends ExternalBackend {
 			->setText($l->t('Google Drive'))
 			->addParameters([
 				// all parameters handled in OAuth2 mechanism
+				(new DefinitionParameter('root', $l->t('SubFolder')))->setFlag(DefinitionParameter::FLAG_OPTIONAL),
 			])
 			->addAuthScheme(AuthMechanism::SCHEME_OAUTH2)
 			->addCustomJs('gdrive')
