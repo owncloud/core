@@ -51,3 +51,17 @@ Feature: upload file to shared folder
       | dav_version |
       | old         |
       | new         |
+
+  Scenario Outline: Overwrite file to a received share folder
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/FOLDER"
+    And user "Alice" has uploaded file with content "original content" to "/FOLDER/textfile.txt"
+    And user "Alice" has shared folder "/FOLDER" with user "Brian"
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
+    When user "Brian" uploads file with content "overwritten content" to "/Shares/FOLDER/textfile.txt" using the TUS protocol on the WebDAV API
+    Then as "Alice" file "/FOLDER/textfile.txt" should exist
+    And the content of file "/FOLDER/textfile.txt" for user "Alice" should be "overwritten content"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |

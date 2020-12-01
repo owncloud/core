@@ -68,3 +68,13 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
+  Scenario Outline: Upload to overwriting a file
+    Given using <dav_version> DAV path
+    And user "Alice" has uploaded file with content "original content" to "textfile.txt" using the TUS protocol on the WebDAV API
+    When user "Alice" uploads file with content "overwritten content" to "textfile.txt" using the TUS protocol on the WebDAV API
+    Then the content of file "textfile.txt" for user "Alice" should be "overwritten content"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |

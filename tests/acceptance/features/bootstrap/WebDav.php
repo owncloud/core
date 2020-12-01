@@ -2304,6 +2304,7 @@ trait WebDav {
 	}
 	/**
 	 * @When user :user uploads file with content :content to :destination using the TUS protocol on the WebDAV API
+	 * @Given user :user has uploaded file with content :content to :destination using the TUS protocol on the WebDAV API
 	 *
 	 * @param string $user
 	 * @param string $content
