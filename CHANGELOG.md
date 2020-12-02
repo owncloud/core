@@ -107,6 +107,7 @@ Summary
 * Enhancement - GetShare API request's "subfiles" parameter allows new interactions: [#38053](https://github.com/owncloud/core/pull/38053)
 * Enhancement - Add new method in the PHP API interface: [#38054](https://github.com/owncloud/core/pull/38054)
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
+* Enhancement - Make the right scrollbar more visible on the UI: [#38183](https://github.com/owncloud/core/pull/38183)
 
 Details
 -------
@@ -847,6 +848,18 @@ Details
    name/$user When using encryption, only the subfolder when used gets encrypted.
 
    https://github.com/owncloud/core/pull/38161
+
+* Enhancement - Make the right scrollbar more visible on the UI: [#38183](https://github.com/owncloud/core/pull/38183)
+
+   https://github.com/owncloud/core/pull/38183
+   The
+   scrollbar
+   has
+   been
+   made
+   wider
+   and
+   darker.
 
 Changelog for ownCloud Core [10.5.0] (2020-07-31)
 =======================================
