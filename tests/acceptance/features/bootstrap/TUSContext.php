@@ -24,6 +24,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\WebDavHelper;
+use TusPhp\Tus\Client;
 
 require_once 'bootstrap.php';
 
@@ -64,6 +65,147 @@ class TUSContext implements Context {
 				$headers->getRowsHash()
 			)
 		);
+	}
+
+	/**
+	 * @When user :user uploads file :source to :destination using the TUS protocol on the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $source
+	 * @param string $destination
+	 * @param array  $uploadMetadata array of metadata to be placed in the
+	 *                               `Upload-Metadata` header.
+	 *                               see https://tus.io/protocols/resumable-upload.html#upload-metadata
+	 *                               Don't Base64 encode the value.
+	 * @param int    $noOfChunks
+	 *
+	 * @return void
+	 * @throws ConnectionException
+	 * @throws ReflectionException
+	 * @throws TusException
+	 */
+	public function userUploadsUsingTusAFileTo(
+		string $user,
+		string $source,
+		string $destination,
+		array $uploadMetadata = [],
+		int $noOfChunks = 1
+	) {
+		$user = $this->featureContext->getActualUsername($user);
+		$password = $this->featureContext->getUserPassword($user);
+		$client = new Client(
+			$this->featureContext->getBaseUrl(),
+			['verify' => false,
+				'headers' => [
+					'Authorization' => 'Basic ' . \base64_encode($user . ':' . $password)
+				]
+			]
+		);
+		$client->setApiPath(
+			WebDavHelper::getDavPath($user, $this->featureContext->getDavPathVersion())
+		);
+		$client->setMetadata($uploadMetadata);
+		$sourceFile = $this->featureContext->acceptanceTestsDirLocation() . $source;
+		$client->setKey(\rand())->file($sourceFile, $destination);
+		$this->featureContext->pauseUploadDelete();
+
+		if ($noOfChunks === 1) {
+			$client->file($sourceFile, $destination)->upload();
+		} else {
+			$bytesPerChunk = \ceil(\filesize($sourceFile) / $noOfChunks);
+			for ($i = 0; $i < $noOfChunks; $i++) {
+				$client->upload($bytesPerChunk);
+			}
+		}
+		$this->featureContext->setLastUploadDeleteTime(\time());
+	}
+
+	/**
+	 * @When user :user uploads file with content :content to :destination using the TUS protocol on the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $content
+	 * @param string $destination
+	 *
+	 * @return string
+	 */
+	public function userUploadsAFileWithContentToUsingTus(
+		string $user, string $content, string $destination
+	) {
+		$tmpfname = $this->writeDataToTempFile($content);
+		$this->userUploadsUsingTusAFileTo(
+			$user, \basename($tmpfname), $destination
+		);
+		\unlink($tmpfname);
+	}
+
+	/**
+	 * @When user :user uploads file with content :content in :noOfChunks chunks to :destination using the TUS protocol on the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $content
+	 * @param int    $noOfChunks
+	 * @param string $destination
+	 *
+	 * @return void
+	 * @throws ConnectionException
+	 * @throws ReflectionException
+	 * @throws TusException
+	 */
+	public function userUploadsAFileWithContentInChunksUsingTus(
+		string $user,
+		string $content,
+		int $noOfChunks,
+		string $destination
+	) {
+		$tmpfname = $this->writeDataToTempFile($content);
+		$this->userUploadsUsingTusAFileTo(
+			$user, \basename($tmpfname), $destination, [], $noOfChunks
+		);
+		\unlink($tmpfname);
+	}
+
+	/**
+	 * @When user :user uploads file :source to :destination with mtime :mtime using the TUS protocol on the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $source
+	 * @param string $destination
+	 * @param string $mtime Time in human readable format is taken as input which is converted into milliseconds that is used by API
+	 *
+	 * @return void
+	 */
+	public function userUploadsFileWithContentToWithMtimeUsingTUS(
+		string $user, string $source, string $destination, string $mtime
+	) {
+		$mtime = new DateTime($mtime);
+		$mtime = $mtime->format('U');
+		$user = $this->featureContext->getActualUsername($user);
+		$this->userUploadsUsingTusAFileTo(
+			$user, $source, $destination, ['mtime' => $mtime]
+		);
+	}
+
+	/**
+	 * @param string $content
+	 *
+	 * @return string the file name
+	 * @throws Exception
+	 */
+	private function writeDataToTempFile(string $content) {
+		$tmpfname = \tempnam(
+			$this->featureContext->acceptanceTestsDirLocation(), "tus-upload-test-"
+		);
+		if ($tmpfname === false) {
+			throw new \Exception("could not create a temporary filename");
+		}
+		$tempfile = \fopen($tmpfname, "w");
+		if ($tempfile === false) {
+			throw new \Exception("could not open " . $tmpfname . " for write");
+		}
+		\fwrite($tempfile, $content);
+		\fclose($tempfile);
+		return $tmpfname;
 	}
 
 	/**
