@@ -1,3 +1,4 @@
-Enhancement: Make the right scrollbar more visual present due increase the width and darken
+Enhancement: Make the right scrollbar more visible on the UI
 
+The scrollbar has been made wider and darker.
 https://github.com/owncloud/core/pull/38183
