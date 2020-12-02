@@ -81,13 +81,13 @@ a.two-factor-cancel {
 
 /* SCROLLING */
 ::-webkit-scrollbar {
-	width: 5px;
+	width: 8px;
 }
 ::-webkit-scrollbar-track-piece {
 	background-color: transparent;
 }
 ::-webkit-scrollbar-thumb {
-	background: #ddd;
+	background: #888;
 	border-radius: 3px;
 }
 
