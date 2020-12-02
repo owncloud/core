@@ -12,8 +12,8 @@ Feature: low level tests of the creation extension see https://tus.io/protocols/
       | Tus-Resumable   | 1.0.0                                         |
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions
-      | Tus-Resumable | /1\.0\.0/                             |
-      | Location      | /%base_url%\/[a-zA-Z0-9_\-\.]{1,300}/ |
+      | Tus-Resumable | /1\.0\.0/                       |
+      | Location      | /http[s]?:\/\/.*:\d+\/data\/.*/ |
     Examples:
       | dav_version |
       | old         |
