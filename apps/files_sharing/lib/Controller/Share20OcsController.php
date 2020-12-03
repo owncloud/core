@@ -31,6 +31,7 @@ use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
+use OCP\Files\StorageNotAvailableException;
 use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IL10N;
@@ -289,6 +290,11 @@ class Share20OcsController extends OCSController {
 				return new Result([$share]);
 			} catch (NotFoundException $e) {
 				//Fall trough
+			} catch (StorageNotAvailableException $e) {
+				// could happen if the share node points to a storage which isn't available
+				// TODO: This should go through an injected logger instance
+				\OCP\Util::logException('core', $e, \OCP\Util::ERROR);
+				return new Result(null, 404, $this->l->t('Share points to a node not available'));
 			}
 		}
 
@@ -612,6 +618,10 @@ class Share20OcsController extends OCSController {
 					$formatted[] = $this->formatShare($share, true);
 				} catch (NotFoundException $e) {
 					// Ignore this share
+				} catch (StorageNotAvailableException $e) {
+					// could happen if the share node points to a storage which isn't available
+					// TODO: This should go through an injected logger instance
+					\OCP\Util::logException('core', $e, \OCP\Util::ERROR);
 				}
 			}
 		}
@@ -753,6 +763,10 @@ class Share20OcsController extends OCSController {
 				$formatted[] = $this->formatShare($share);
 			} catch (NotFoundException $e) {
 				//Ignore share
+			} catch (StorageNotAvailableException $e) {
+				// could happen if the share node points to a storage which isn't available
+				// TODO: This should go through an injected logger instance
+				\OCP\Util::logException('core', $e, \OCP\Util::ERROR);
 			}
 		}
 
