@@ -69,6 +69,7 @@ OC.L10N.register(
     "Remote subfolder" : "Subcartafol remoto",
     "Secure https://" : "https:// seguro",
     "Google Drive" : "Google Drive",
+    "SubFolder" : "Subcartafol",
     "Local" : "Local",
     "Location" : "Localización",
     "ownCloud" : "ownCloud",

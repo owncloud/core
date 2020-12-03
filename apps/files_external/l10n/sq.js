@@ -69,6 +69,7 @@ OC.L10N.register(
     "Remote subfolder" : "Nëndosje e largët",
     "Secure https://" : "https:// e sigurt",
     "Google Drive" : "Google Drive",
+    "SubFolder" : "NënDosje",
     "Local" : "Vendore",
     "Location" : "Vendndodhje",
     "ownCloud" : "ownCloud",
