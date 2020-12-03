@@ -64,7 +64,7 @@ class Owncloud {
 	 * @param string conditionalLogFile
 	 */
 	public static function write($app, $message, $level, $conditionalLogFile = null) {
-		return self::writeExtra($app, $message, $level, $conditionalLogFile, []);
+		self::writeExtra($app, $message, $level, $conditionalLogFile, []);
 	}
 
 	public static function writeExtra($app, $message, $level, $conditionalLogFile, $extraFields = []) {
@@ -152,7 +152,7 @@ class Owncloud {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * @return string
 	 */

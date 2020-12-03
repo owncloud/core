@@ -127,7 +127,6 @@ abstract class CacheableFlysystem extends \OCP\Files\Storage\FlysystemStorageAda
 				unset($this->cacheContents[$this->getCacheLocation($path)]);
 				return parent::fopen($path, $mode);
 		}
-		return false;
 	}
 
 	/**

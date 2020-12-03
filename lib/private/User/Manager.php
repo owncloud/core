@@ -460,7 +460,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @since 9.0.0
 	 */
 	public function callForAllUsers(\Closure $callback, $search = '', $onlySeen = false) {
-		return $this->callForUsers($callback, '', $onlySeen, null, null);
+		$this->callForUsers($callback, '', $onlySeen, null, null);
 	}
 
 	/**

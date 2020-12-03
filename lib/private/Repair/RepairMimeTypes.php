@@ -144,7 +144,7 @@ class RepairMimeTypes implements IRepairStep {
 				// insert mimetype
 				\OC_DB::executeAudited(self::insertStmt(), [$mimetype]);
 			}
-			
+
 			// get target mimetype id
 			$result = \OC_DB::executeAudited(self::getIdStmt(), [$mimetype]);
 			$mimetypeId = $result->fetchOne();
@@ -306,6 +306,8 @@ class RepairMimeTypes implements IRepairStep {
 
 	/**
 	 * Fix mime types
+	 *
+	 * @param IOutput $out
 	 */
 	public function run(IOutput $out) {
 		$ocVersionFromBeforeUpdate = $this->config->getSystemValue('version', '0.0.0');
@@ -315,62 +317,49 @@ class RepairMimeTypes implements IRepairStep {
 
 		// only update mime types if necessary as it can be expensive
 		if (\version_compare($ocVersionFromBeforeUpdate, '8.2.0', '<')) {
-			if ($this->fixOfficeMimeTypes()) {
-				$out->info('Fixed office mime types');
-			}
+			$this->fixOfficeMimeTypes();
+			$out->info('Fixed office mime types');
 
-			if ($this->fixApkMimeType()) {
-				$out->info('Fixed APK mime type');
-			}
+			$this->fixApkMimeType();
+			$out->info('Fixed APK mime type');
 
-			if ($this->fixFontsMimeTypes()) {
-				$out->info('Fixed fonts mime types');
-			}
+			$this->fixFontsMimeTypes();
+			$out->info('Fixed fonts mime types');
 
-			if ($this->fixPostscriptMimeType()) {
-				$out->info('Fixed Postscript mime types');
-			}
+			$this->fixPostscriptMimeType();
+			$out->info('Fixed Postscript mime types');
 
-			if ($this->introduceRawMimeType()) {
-				$out->info('Fixed Raw mime types');
-			}
+			$this->introduceRawMimeType();
+			$out->info('Fixed Raw mime types');
 
-			if ($this->introduce3dImagesMimeType()) {
-				$out->info('Fixed 3D images mime types');
-			}
+			$this->introduce3dImagesMimeType();
+			$out->info('Fixed 3D images mime types');
 
-			if ($this->introduceConfMimeType()) {
-				$out->info('Fixed Conf/cnf mime types');
-			}
+			$this->introduceConfMimeType();
+			$out->info('Fixed Conf/cnf mime types');
 
-			if ($this->introduceYamlMimeType()) {
-				$out->info('Fixed Yaml/Yml mime types');
-			}
+			$this->introduceYamlMimeType();
+			$out->info('Fixed Yaml/Yml mime types');
 		}
 
 		// Mimetype updates from #19272
 		if (\version_compare($ocVersionFromBeforeUpdate, '8.2.0.8', '<')) {
-			if ($this->introduceJavaMimeType()) {
-				$out->info('Fixed java/class mime types');
-			}
+			$this->introduceJavaMimeType();
+			$out->info('Fixed java/class mime types');
 
-			if ($this->introduceHppMimeType()) {
-				$out->info('Fixed hpp mime type');
-			}
+			$this->introduceHppMimeType();
+			$out->info('Fixed hpp mime type');
 
-			if ($this->introduceRssMimeType()) {
-				$out->info('Fixed rss mime type');
-			}
+			$this->introduceRssMimeType();
+			$out->info('Fixed rss mime type');
 
-			if ($this->introduceRtfMimeType()) {
-				$out->info('Fixed rtf mime type');
-			}
+			$this->introduceRtfMimeType();
+			$out->info('Fixed rtf mime type');
 		}
 
 		if (\version_compare($ocVersionFromBeforeUpdate, '9.0.0.10', '<')) {
-			if ($this->introduceRichDocumentsMimeTypes()) {
-				$out->info('Fixed richdocuments additional office mime types');
-			}
+			$this->introduceRichDocumentsMimeTypes();
+			$out->info('Fixed richdocuments additional office mime types');
 		}
 	}
 }
