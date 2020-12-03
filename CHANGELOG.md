@@ -98,6 +98,7 @@ Summary
 * Change - Update sabre/dav (4.1.2 => 4.1.3): [#38092](https://github.com/owncloud/core/pull/38092)
 * Change - Update egulias/email-validator (2.1.23 => 2.1.24): [#38116](https://github.com/owncloud/core/pull/38116)
 * Change - Update pear/archive_tar (1.4.10 => 1.4.11): [#38137](https://github.com/owncloud/core/pull/38137)
+* Change - Update Symfony components to 4.4.17: [#38163](https://github.com/owncloud/core/pull/38163)
 * Enhancement - Cleanup encryption config values on disabling encryption: [#35980](https://github.com/owncloud/core/pull/35980)
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
@@ -747,6 +748,14 @@ Details
 * Change - Update pear/archive_tar (1.4.10 => 1.4.11): [#38137](https://github.com/owncloud/core/pull/38137)
 
    https://github.com/owncloud/core/pull/38137
+
+* Change - Update Symfony components to 4.4.17: [#38163](https://github.com/owncloud/core/pull/38163)
+
+   The following Symfony components have been updated to version 4.4.17 - console -
+   event-dispatcher - process - routing - translation
+
+   https://github.com/owncloud/core/pull/38163
+   https://symfony.com/blog/symfony-4-4-17-released
 
 * Enhancement - Cleanup encryption config values on disabling encryption: [#35980](https://github.com/owncloud/core/pull/35980)
 
