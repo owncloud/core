@@ -65,3 +65,15 @@ Feature: upload file to shared folder
       | dav_version |
       | old         |
       | new         |
+
+  Scenario Outline: attempt to upload a file into a folder within correctly received read only share
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/FOLDER"
+    And user "Alice" has shared folder "/FOLDER" with user "Brian" with permissions "read"
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
+    When user "Brian" uploads file with content "uploaded content" to "/Shares/FOLDER/textfile.txt" using the TUS protocol on the WebDAV API
+    Then as "Brian" file "/Shares/FOLDER/textfile.txt" should not exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
