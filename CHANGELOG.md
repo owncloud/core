@@ -101,6 +101,7 @@ Summary
 * Change - Update pear/archive_tar (1.4.10 => 1.4.11): [#38137](https://github.com/owncloud/core/pull/38137)
 * Change - Update Symfony components to 4.4.17: [#38163](https://github.com/owncloud/core/pull/38163)
 * Change - Update laminas/laminas-servicemanager (3.5.1 => 3.4.1): [#38187](https://github.com/owncloud/core/pull/38187)
+* Change - Update nikic/php-parser (4.10.2 => 4.10.3): [#38191](https://github.com/owncloud/core/pull/38191)
 * Enhancement - Cleanup encryption config values on disabling encryption: [#35980](https://github.com/owncloud/core/pull/35980)
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
 * Enhancement - Support pre-signed urls: [#37634](https://github.com/owncloud/core/pull/37634)
@@ -766,6 +767,10 @@ Details
 * Change - Update laminas/laminas-servicemanager (3.5.1 => 3.4.1): [#38187](https://github.com/owncloud/core/pull/38187)
 
    https://github.com/owncloud/core/pull/38187
+
+* Change - Update nikic/php-parser (4.10.2 => 4.10.3): [#38191](https://github.com/owncloud/core/pull/38191)
+
+   https://github.com/owncloud/core/pull/38191
 
 * Enhancement - Cleanup encryption config values on disabling encryption: [#35980](https://github.com/owncloud/core/pull/35980)
 
