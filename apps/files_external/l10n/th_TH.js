@@ -69,6 +69,7 @@ OC.L10N.register(
     "Remote subfolder" : "โฟลเดอร์ย่อยรีโมท",
     "Secure https://" : "โหมดปลอดภัย https://",
     "Google Drive" : "Google Drive",
+    "SubFolder" : "โฟลเดอร์ย่อย",
     "Local" : "ในเครื่อง",
     "Location" : "ตำแหน่งที่อยู่",
     "ownCloud" : "ownCloud",
