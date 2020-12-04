@@ -25,6 +25,7 @@ use Behat\Gherkin\Node\TableNode;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\WebDavHelper;
 use TusPhp\Tus\Client;
+use PHPUnit\Framework\Assert;
 
 require_once 'bootstrap.php';
 
@@ -38,6 +39,8 @@ class TUSContext implements Context {
 	 * @var FeatureContext
 	 */
 	private $featureContext;
+
+	private $resourceLocation = null;
 
 	/**
 	 * @When user :user creates a new TUS resource on the WebDAV API with these headers:
@@ -53,7 +56,7 @@ class TUSContext implements Context {
 		$this->featureContext->verifyTableNodeColumnsCount($headers, 2);
 		$user = $this->featureContext->getActualUsername($user);
 		$password = $this->featureContext->getUserPassword($user);
-
+		$this->resourceLocation = null;
 		$this->featureContext->setResponse(
 			HttpRequestHelper::post(
 				$this->featureContext->getBaseUrl() . "/" .
@@ -63,6 +66,55 @@ class TUSContext implements Context {
 				$user,
 				$password,
 				$headers->getRowsHash()
+			)
+		);
+		$locationHeader = $this->featureContext->getResponse()->getHeader('Location');
+		if (\sizeof($locationHeader) > 0) {
+			$this->resourceLocation = $locationHeader[0];
+		}
+	}
+
+	/**
+	 * @Given user :user has created a new TUS resource on the WebDAV API with these headers:
+	 *
+	 * @param string    $user
+	 * @param TableNode $headers Tus-Resumable: 1.0.0 header is added automatically
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 */
+	public function createNewTUSresource(string $user, TableNode $headers) {
+		$rows = $headers->getRows();
+		$rows[] = ['Tus-Resumable', '1.0.0'];
+		$this->createNewTUSresourceWithHeaders($user, new TableNode($rows));
+		$this->featureContext->theHTTPStatusCodeShouldBe(201);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" sends a chunk to the last created TUS Location with offset "([^"]*)" and data "([^"]*)" using the WebDAV API$/
+	 *
+	 * @param string $user
+	 * @param string $offset
+	 * @param string $data
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 */
+	public function sendsAChunkToTUSLocationWithOffsetAndData(string $user, string $offset, string $data) {
+		$user = $this->featureContext->getActualUsername($user);
+		$password = $this->featureContext->getUserPassword($user);
+		$this->featureContext->setResponse(
+			HttpRequestHelper::sendRequest(
+				$this->resourceLocation, 'PATCH',
+				$user, $password,
+				[
+					'Content-Type' => 'application/offset+octet-stream',
+					'Tus-Resumable' => '1.0.0',
+					'Upload-Offset' => $offset
+				],
+				$data
 			)
 		);
 	}
