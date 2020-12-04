@@ -42,6 +42,7 @@ use Icewind\Streams\RetryWrapper;
 class Google extends \OCP\Files\Storage\StorageAdapter {
 	private $client;
 	private $id;
+	private $root;
 	private $service;
 	private $driveFiles;
 
@@ -129,16 +130,15 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 
 	/**
 	 * Transform an external path to one originating from the virtual root.
-	 * @param $path the path relative to the virtual root directory
-	 * @return a path starting at the real root of Google Drive
+	 * @param $path string the path relative to the virtual root directory
+	 * @return string a path starting at the real root of Google Drive
 	 */
 	private function getAbsolutePath($path) {
 		if ($path === '.') {
 			$path = '';
 		}
 		$path = "{$this->root}/{$path}";
-		$path = \trim($path, '/');
-		return $path;
+		return \trim($path, '/');
 	}
 
 	/**
