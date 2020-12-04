@@ -8,3 +8,4 @@ This gives the ability to:
 When using encryption, only the subfolder when used gets encrypted.
 
 https://github.com/owncloud/core/pull/38161
+https://github.com/owncloud/core/pull/38192

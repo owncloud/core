@@ -235,7 +235,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 	 * @param \Google_Service_Drive_DriveFile|false $file
 	 */
 	private function setDriveFile($path, $file) {
-		return $this->setDriveFileHelper($this->getAbsolutePath($path), $file);
+		$this->setDriveFileHelper($this->getAbsolutePath($path), $file);
 	}
 
 	/**
