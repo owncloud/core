@@ -888,6 +888,7 @@ Details
    name/$user When using encryption, only the subfolder when used gets encrypted.
 
    https://github.com/owncloud/core/pull/38161
+   https://github.com/owncloud/core/pull/38192
 
 * Enhancement - Make the right scrollbar more visible on the UI: [#38183](https://github.com/owncloud/core/pull/38183)
 
