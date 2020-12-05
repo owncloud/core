@@ -88,7 +88,7 @@ OC.L10N.register(
     "Unlock" : "Entsperren",
     "Could not unlock, please contact the lock owner {owner}" : "Konnte nicht freigeben werden. Bitte kontaktieren Sie den Besitzer {owner} der Sperre",
     "Unlock failed with status {status}" : "Entsperren mit dem Status {status} fehlgeschlagen",
-    "Locks" : "Sperrt",
+    "Locks" : "Sperre",
     "Resource is not locked" : "Ressource ist nicht gesperrt",
     "Path" : "Pfad",
     "_%n byte_::_%n bytes_" : ["%n Byte","%n Bytes"],
