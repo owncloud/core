@@ -85,6 +85,7 @@
     "Couldn't send mail to following recipient(s): %s " : "ไม่สามารถส่งจดหมายไปยังผู้รับต่อไปนี้: %s",
     "Share API is disabled" : "แชร์ API ถูกปิดใช้งาน",
     "Wrong share ID, share doesn't exist" : "แชร์ไอดีผิด หรือ ไม่มีแชร์นั้นอยู่",
+    "Share points to a node not available" : "ไม่สามารถแชร์คะแนนไปยังโหนด",
     "Could not delete share" : "ไม่สามารถลบแชร์",
     "Please specify a file or folder path" : "โปรดระบุเส้นทางของไฟล์หรือโฟลเดอร์",
     "Wrong path, file/folder doesn't exist" : "เส้นทางที่ผิด, ไม่มีไฟล์หรือโฟลเดอร์นั้นอยู่",

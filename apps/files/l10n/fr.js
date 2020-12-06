@@ -50,6 +50,7 @@ OC.L10N.register(
     "{newName} already exists" : "{newName} existe déjà",
     "Could not rename \"{fileName}\", it does not exist any more" : "Impossible de renommer \"{file}\", il n'existe plus",
     "The name \"{targetName}\" is already used in the folder \"{dir}\". Please choose a different name." : "Le nom \"{targetName}\" est déjà utilisé dans le dossier \"{dir}\". Merci de choisir un nom différent.",
+    "The file \"{fileName}\" is locked and can not be renamed." : "Le fichier \"{fileName}\" est verrouillé et ne peut pas être renommé",
     "Could not rename \"{fileName}\"" : "Impossible de renommer \"{fileName}\"",
     "Could not create file \"{file}\"" : "Impossible de créer le fichier \"{file}\"",
     "Could not create file \"{file}\" because it already exists" : "Impossible de créer le fichier \"{file}\" car il existe déjà",

@@ -85,6 +85,7 @@
     "Couldn't send mail to following recipient(s): %s " : "Non foi posíbel enviar o correo aos seguintes destinatarios: %s",
     "Share API is disabled" : "A API para compartir está desactivada",
     "Wrong share ID, share doesn't exist" : "O ID do recurso compartido non é correcto, o recurso compartido non existe",
+    "Share points to a node not available" : "Compartir puntos a un nodo non dispoñíbel",
     "Could not delete share" : "Non foi posíbel eliminar o recurso compartido",
     "Please specify a file or folder path" : "Especifique a ruta ao ficheiro ou cartafol",
     "Wrong path, file/folder doesn't exist" : "A ruta é incorrecta ou o ficheiro/cartafol non existe",
