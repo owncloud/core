@@ -20,7 +20,6 @@
 */
 
 describe('OCA.SystemTags.SystemTagsInfoView tests', function() {
-	var isAdminStub;
 	var view;
 	var clock;
 
@@ -28,146 +27,26 @@ describe('OCA.SystemTags.SystemTagsInfoView tests', function() {
 		clock = sinon.useFakeTimers();
 		view = new OCA.SystemTags.SystemTagsInfoView();
 		$('#testArea').append(view.$el);
-		isAdminStub = sinon.stub(OC, 'isUserAdmin').returns(true);
+
+
 	});
 	afterEach(function() {
-		isAdminStub.restore();
 		clock.restore();
 		view.remove();
 		view = undefined;
 	});
 	describe('rendering', function() {
-		it('renders input field view', function() {
-			view.render();
-			expect(view.$el.find('input[name=tags]').length).toEqual(1);
-		});
-		it('fetches selected tags then renders when setting file info', function() {
-			var fetchStub = sinon.stub(OC.SystemTags.SystemTagsMappingCollection.prototype, 'fetch');
-			var setDataStub = sinon.stub(OC.SystemTags.SystemTagsInputField.prototype, 'setData');
-
-			expect(view.$el.hasClass('hidden')).toEqual(true);
-
-			view.setFileInfo({id: '123'});
-			expect(view.$el.find('input[name=tags]').length).toEqual(1);
-
-			expect(fetchStub.calledOnce).toEqual(true);
-			expect(view.selectedTagsCollection.url())
-				.toEqual(OC.linkToRemote('dav') + '/systemtags-relations/files/123');
-
+		beforeEach(function() {
 			view.selectedTagsCollection.add([
 				{id: '1', name: 'test1'},
+				{id: '2', name: 'test2'},
 				{id: '3', name: 'test3'}
 			]);
-
-			fetchStub.yieldTo('success', view.selectedTagsCollection);
-			expect(setDataStub.calledOnce).toEqual(true);
-			expect(setDataStub.getCall(0).args[0]).toEqual([{
-				id: '1', name: 'test1', userVisible: true, userAssignable: true, canAssign: true
-			}, {
-				id: '3', name: 'test3', userVisible: true, userAssignable: true, canAssign: true
-			}]);
-
-			expect(view.$el.hasClass('hidden')).toEqual(false);
-
-			fetchStub.restore();
-			setDataStub.restore();
+			view.render();
 		});
-		it('overrides initSelection to use the local collection', function() {
-			var inputViewSpy = sinon.spy(OC.SystemTags, 'SystemTagsInputField');
-			var element = $('<input type="hidden" val="1,3"/>');
-			view.remove();
-			view = new OCA.SystemTags.SystemTagsInfoView();
-			view.selectedTagsCollection.add([
-				{id: '1', name: 'test1'},
-				{id: '3', name: 'test3', userVisible: false, userAssignable: false, canAssign: false}
-			]);
-
-			var callback = sinon.stub();
-			inputViewSpy.getCall(0).args[0].initSelection(element, callback);
-
-			expect(callback.calledOnce).toEqual(true);
-			expect(callback.getCall(0).args[0]).toEqual([{
-				id: '1', name: 'test1', userVisible: true, userAssignable: true, canAssign: true
-			}, {
-				id: '3', name: 'test3', userVisible: false, userAssignable: false, canAssign: false
-			}]);
-
-			inputViewSpy.restore();
-		});
-		it('sets locked flag on non-assignable tags when user is not an admin', function() {
-			isAdminStub.returns(false);
-
-			var inputViewSpy = sinon.spy(OC.SystemTags, 'SystemTagsInputField');
-			var element = $('<input type="hidden" val="1,3"/>');
-			view.remove();
-			view = new OCA.SystemTags.SystemTagsInfoView();
-			view.selectedTagsCollection.add([
-				{id: '1', name: 'test1'},
-				{id: '3', name: 'test3', userAssignable: false, canAssign: false}
-			]);
-
-			var callback = sinon.stub();
-			inputViewSpy.getCall(0).args[0].initSelection(element, callback);
-
-			expect(callback.calledOnce).toEqual(true);
-			expect(callback.getCall(0).args[0]).toEqual([{
-				id: '1', name: 'test1', userVisible: true, userAssignable: true, canAssign: true
-			}, {
-				id: '3', name: 'test3', userVisible: true, userAssignable: false, canAssign: false, locked: true
-			}]);
-
-			inputViewSpy.restore();
-		});
-		it('sets locked flag on static tags when user is not an admin and tag not part of the group', function () {
-			isAdminStub.returns(false);
-
-			var inputViewSpy = sinon.spy(OC.SystemTags, 'SystemTagsInputField');
-			var element = $('<input type="hidden" val="1,3"/>');
-			view.remove();
-			view = new OCA.SystemTags.SystemTagsInfoView();
-			view.selectedTagsCollection.add([
-				{id: '1', name: 'test1'},
-				{id: '3', name: 'test3', userAssignable: false, canAssign: false},
-				{id: '4', name: 'statictag', userAssignable: true, userEditable: false, userVisible: true, canAssign: false, editableInGroup: false}
-			]);
-
-			var callback = sinon.stub();
-			inputViewSpy.getCall(0).args[0].initSelection(element, callback);
-
-			expect(callback.calledOnce).toEqual(true);
-			expect(callback.getCall(0).args[0]).toEqual([{
-				id: '1', name: 'test1', userVisible: true, userAssignable: true, canAssign: true
-			}, {
-				id: '3', name: 'test3', userVisible: true, userAssignable: false, canAssign: false, locked: true
-			}, {
-				id: '4', name: 'statictag', userAssignable: true, userEditable: false, userVisible: true, canAssign: false, editableInGroup: false, locked: true
-			}]);
-
-			inputViewSpy.restore();
-		});
-		it('does not set locked flag on non-assignable tags when canAssign overrides it with true', function() {
-			isAdminStub.returns(false);
-
-			var inputViewSpy = sinon.spy(OC.SystemTags, 'SystemTagsInputField');
-			var element = $('<input type="hidden" val="1,4"/>');
-			view.remove();
-			view = new OCA.SystemTags.SystemTagsInfoView();
-			view.selectedTagsCollection.add([
-				{id: '1', name: 'test1'},
-				{id: '4', name: 'test4', userAssignable: false, canAssign: true}
-			]);
-
-			var callback = sinon.stub();
-			inputViewSpy.getCall(0).args[0].initSelection(element, callback);
-
-			expect(callback.calledOnce).toEqual(true);
-			expect(callback.getCall(0).args[0]).toEqual([{
-				id: '1', name: 'test1', userVisible: true, userAssignable: true, canAssign: true
-			}, {
-				id: '4', name: 'test4', userVisible: true, userAssignable: false, canAssign: true
-			}]);
-
-			inputViewSpy.restore();
+		it('render tag list view including tags', function() {
+			expect(view.$el.find('.system-tag-list').length).toEqual(1);
+			expect(view.$el.find('.system-tag-list-item').length).toEqual(3);
 		});
 	});
 	describe('events', function() {
@@ -178,54 +57,32 @@ describe('OCA.SystemTags.SystemTagsInfoView tests', function() {
 			allTagsCollection.add([
 				{id: '1', name: 'test1'},
 				{id: '2', name: 'test2'},
-				{id: '3', name: 'test3'}
+				{id: '3', name: 'test3'},
+				{id: '4', name: 'test4'},
 			]);
 
 			view.selectedTagsCollection.add([
 				{id: '1', name: 'test1'},
+				{id: '2', name: 'test2'},
 				{id: '3', name: 'test3'}
 			]);
 			view.render();
 		});
-
-		it('renames model in selection collection on rename', function() {
-			allTagsCollection.get('3').set('name', 'test3_renamed');
-
-			expect(view.selectedTagsCollection.get('3').get('name')).toEqual('test3_renamed');
+		it('add tag to list view', function() {
+			view.selectedTagsCollection.add([{id: '4', name: 'test4'}]);
+			expect(view.$el.find('.system-tag-list-item').length).toEqual(4);
 		});
-
-		it('adds tag to selection collection when selected by input', function() {
-			var createStub = sinon.stub(OC.SystemTags.SystemTagsMappingCollection.prototype, 'create');
-			view._inputView.trigger('select', allTagsCollection.get('2'));
-
-			expect(createStub.calledOnce).toEqual(true);
-			expect(createStub.getCall(0).args[0]).toEqual({
-				id: '2',
-				name: 'test2',
-				userVisible: true,
-				userAssignable: true,
-				canAssign: true
-			});
-
-			createStub.restore();
+		it('remove tag from list view', function() {
+			view.selectedTagsCollection.remove([{id: '1', name: 'test1'}]);
+			expect(view.$el.find('.system-tag-list-item').length).toEqual(2);
 		});
-		it('removes tag from selection collection when deselected by input', function() {
-			var destroyStub = sinon.stub(OC.SystemTags.SystemTagModel.prototype, 'destroy');
-			view._inputView.trigger('deselect', '3');
-
-			expect(destroyStub.calledOnce).toEqual(true);
-			expect(destroyStub.calledOn(view.selectedTagsCollection.get('3'))).toEqual(true);
-
-			destroyStub.restore();
+		it('global tag delete also deleted the tag in list view', function() {
+			allTagsCollection.remove([{id: '1', name: 'test1'}]);
+			expect(view.selectedTagsCollection.get('1')).toBeFalsy();
 		});
-
-		it('removes tag from selection whenever the tag was deleted globally', function() {
-			expect(view.selectedTagsCollection.get('3')).not.toBeFalsy();
-
-			allTagsCollection.remove('3');
-			
-			expect(view.selectedTagsCollection.get('3')).toBeFalsy();
-
+		it('global tag name change also changes the tag name in list view', function() {
+			allTagsCollection.get('1').set('name', 'test1_renamed');
+			expect(view.selectedTagsCollection.get('1').get('name')).toEqual('test1_renamed');
 		});
 	});
 });

@@ -144,6 +144,7 @@
 				container: 'body'
 			});
 			$renameForm.find('input').focus().selectRange(0, oldName.length);
+
 			return false;
 		},
 
@@ -408,11 +409,11 @@
 
 			this.$el.find('[title]').tooltip({placement: 'bottom'});
 			this.$tagsField = this.$el.find('[name=tags]');
-			this.$tagsField.select2({
+			var select = this.$tagsField.select2({
 				placeholder: t('core', 'Collaborative tags'),
 				containerCssClass: 'systemtags-select2-container',
 				dropdownCssClass: 'systemtags-select2-dropdown',
-				closeOnSelect: false,
+				closeOnSelect: true,
 				allowClear: false,
 				multiple: this._multiple,
 				toggleSelect: this._multiple,
@@ -441,7 +442,13 @@
 				}
 			})
 				.on('select2-selecting', this._onSelectTag)
-				.on('select2-removing', this._onDeselectTag);
+				.on('select2-removing', this._onDeselectTag)
+				// this is basically a "hack" to enable option select via arrow keys.
+				// it seems to be a known problem in Select2 < v4 when closeOnSelect is false
+				.on("change", function(){
+					select.select2('close');
+					select.select2('open');
+				});
 
 			var $dropDown = this.$tagsField.select2('dropdown');
 			// register events for inside the dropdown
@@ -469,11 +476,10 @@
 
 		setData: function(data) {
 			this.$tagsField.select2('data', data);
-		}
+		},
 	});
 
 	OC.SystemTags = OC.SystemTags || {};
 	OC.SystemTags.SystemTagsInputField = SystemTagsInputField;
 
 })(OC);
-

@@ -2246,6 +2246,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Given the user has switched to :tabName tab in details panel using the webUI
 	 * @When the user switches to :tabName tab in details panel using the webUI
 	 *
 	 * @param string $tabName
