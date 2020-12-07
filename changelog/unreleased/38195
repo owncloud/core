@@ -1,0 +1,7 @@
+Change: Add missing event emitters for Symfony EventDispatcher
+
+Prior to this fix we were missing emitters for the events postUserCreate and
+postSetPassword. This change adds those calls as we need them when working
+with the Symfony EventDispatcher.
+
+https://github.com/owncloud/core/issues/38195
