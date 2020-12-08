@@ -46,6 +46,7 @@ OC.L10N.register(
     "Remote share" : "Partage distant",
     "via" : "via",
     "Could not move \"{file}\", target exists" : "Impossible de déplacer \"{file}\", la cible existe",
+    "Could not move \"{file}\": {message}" : "Impossible de déplacer \"{file}\": {message}",
     "Could not move \"{file}\"" : "Impossible de déplacer \"{file}\"",
     "{newName} already exists" : "{newName} existe déjà",
     "Could not rename \"{fileName}\", it does not exist any more" : "Impossible de renommer \"{file}\", il n'existe plus",

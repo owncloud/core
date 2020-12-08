@@ -20,6 +20,7 @@ OC.L10N.register(
     "Saved" : "Sauvegardé",
     "Disabling external storage will unmount all storages for all users, are you sure ?" : "Désactiver le stockage externe va démonter tous les stockages de tous les utilisateurs, êtes-vous sûr ?",
     "Disable external storage" : "Désactiver le stockage externe",
+    "Error getting OAuth2 URL for " : "Erreur lors de l'obtention de l'URL OAuth2 pour ",
     "Empty response from the server" : "Réponse vide du serveur",
     "Couldn't access. Please logout and login to activate this mount point" : "Impossible d'accéder. Veuillez vous déconnecter et vous reconnecter pour activer ce point de montage.",
     "Couldn't get the information from the ownCloud server: {code} {type}" : "Impossible d'obtenir l'information depuis le serveur ownCloud : {code} {type}",
