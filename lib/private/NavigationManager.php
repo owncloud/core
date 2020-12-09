@@ -190,15 +190,24 @@ class NavigationManager implements INavigationManager {
 			]);
 		}
 
-		// add phoenix if setup
-		$phoenixBaseUrl = $this->config->getSystemValue('phoenix.baseUrl', null);
-		if ($phoenixBaseUrl) {
-			$iconPath = $this->config->getSystemValue('phoenix.icon', $this->urlGenerator->imagePath('core', 'apps/phoenix.svg'));
+		// add web if setup
+		$webBaseUrl = $this->config->getSystemValue('web.baseUrl', null);
+		$webIconKey = 'web.icon';
+		$webIconLabel = 'web.label';
+		if (!$webBaseUrl) {
+			// Check the old phoenix.baseUrl system key to provide compatibility across
+			// the name change from phoenix to web.
+			$webBaseUrl = \OC::$server->getConfig()->getSystemValue('phoenix.baseUrl', null);
+			$webIconKey = 'phoenix.icon';
+			$webIconLabel = 'phoenix.label';
+		}
+		if ($webBaseUrl) {
+			$iconPath = $this->config->getSystemValue($webIconKey, $this->urlGenerator->imagePath('core', 'apps/phoenix.svg'));
 			$l = $this->l10nFac->get("core");
-			$label = $this->config->getSystemValue('phoenix.label', $l->t('New Design'));
+			$label = $this->config->getSystemValue($webIconLabel, $l->t('New Design'));
 			$this->add([
-				'id' => 'phoenix',
-				'href' => $phoenixBaseUrl,
+				'id' => 'web',
+				'href' => $webBaseUrl,
 				'name' => $label,
 				'icon' => $iconPath,
 				'order' => 99
