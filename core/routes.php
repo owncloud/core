@@ -87,10 +87,14 @@ $this->create('core_ajax_update', '/core/ajax/update.php')
 
 // File routes
 $this->create('files.viewcontroller.showFile', '/f/{fileId}')->action(static function ($urlParams) {
-	$phoenixBaseUrl = \OC::$server->getConfig()->getSystemValue('phoenix.baseUrl', null);
-	if ($phoenixBaseUrl) {
+	$webBaseUrl = \OC::$server->getConfig()->getSystemValue('web.baseUrl', null);
+	if (!$webBaseUrl) {
+		// Check the old phoenix.baseUrl system key to provide compatibility across the name change
+		$webBaseUrl = \OC::$server->getConfig()->getSystemValue('phoenix.baseUrl', null);
+	}
+	if ($webBaseUrl) {
 		$fileId = $urlParams['fileId'];
-		\OC_Response::redirect("$phoenixBaseUrl/index.html#/f/$fileId");
+		\OC_Response::redirect("$webBaseUrl/index.html#/f/$fileId");
 		return;
 	}
 	$app = new \OCA\Files\AppInfo\Application($urlParams);
@@ -99,10 +103,14 @@ $this->create('files.viewcontroller.showFile', '/f/{fileId}')->action(static fun
 
 // Sharing routes
 $this->create('files_sharing.sharecontroller.showShare', '/s/{token}')->action(static function ($urlParams) {
-	$phoenixBaseUrl = \OC::$server->getConfig()->getSystemValue('phoenix.baseUrl', null);
-	if ($phoenixBaseUrl) {
+	$webBaseUrl = \OC::$server->getConfig()->getSystemValue('web.baseUrl', null);
+	if (!$webBaseUrl) {
+		// Check the old phoenix.baseUrl system key to provide compatibility across the name change
+		$webBaseUrl = \OC::$server->getConfig()->getSystemValue('phoenix.baseUrl', null);
+	}
+	if ($webBaseUrl) {
 		$token = $urlParams['token'];
-		\OC_Response::redirect("$phoenixBaseUrl/index.html#/s/$token");
+		\OC_Response::redirect("$webBaseUrl/index.html#/s/$token");
 		return;
 	}
 	$app = new \OCA\Files_Sharing\AppInfo\Application($urlParams);
