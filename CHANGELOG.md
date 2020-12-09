@@ -112,6 +112,7 @@ Summary
 * Enhancement - Allow getting the share list filtered by share type via API: [#38000](https://github.com/owncloud/core/pull/38000)
 * Enhancement - GetShare API request's "subfiles" parameter allows new interactions: [#38053](https://github.com/owncloud/core/pull/38053)
 * Enhancement - Add new method in the PHP API interface: [#38054](https://github.com/owncloud/core/pull/38054)
+* Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
 * Enhancement - Make the right scrollbar more visible on the UI: [#38183](https://github.com/owncloud/core/pull/38183)
 
@@ -885,6 +886,15 @@ Details
    The share manager interface in the PHP API has a new "getSharesByPath" method available
 
    https://github.com/owncloud/core/pull/38054
+
+* Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
+
+   This new external storage allows the shared use of SMB/CIFS shares among users. Independent of
+   the use all files and folders will have the same file id. This allows better collaboration
+   especially in the area of tagging, comments, private links and any document collaboration
+   like Office Online Server, Collabora and OnlyOffice.
+
+   https://github.com/owncloud/core/pull/38151
 
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
 
