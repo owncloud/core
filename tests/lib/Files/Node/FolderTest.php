@@ -13,8 +13,13 @@ use OC\Files\FileInfo;
 use OC\Files\Mount\MountPoint;
 use OC\Files\Node\Folder;
 use OC\Files\Node\Node;
+use OC\Files\View;
 use OCP\Constants;
 use OCP\Files\NotFoundException;
+use OC\Files\Mount\Manager;
+use PHPUnit\Framework\MockObject\MockObject;
+use OC\Files\Node\Root;
+use OC\Files\Storage\Storage;
 
 /**
  * Class FolderTest
@@ -35,7 +40,7 @@ class FolderTest extends NodeTest {
 	public function testGetDirectoryContent() {
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
-		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
+		 * @var View | MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->getMockBuilder('\OC\Files\Node\Root')
@@ -67,7 +72,7 @@ class FolderTest extends NodeTest {
 	public function testGet() {
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
-		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
+		 * @var View | MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->getMockBuilder('\OC\Files\Node\Root')
@@ -88,7 +93,7 @@ class FolderTest extends NodeTest {
 	public function testNodeExists() {
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
-		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
+		 * @var View | MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->getMockBuilder('\OC\Files\Node\Root')
@@ -112,7 +117,7 @@ class FolderTest extends NodeTest {
 	public function testNodeExistsNotExists() {
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
-		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
+		 * @var View | MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->getMockBuilder('\OC\Files\Node\Root')
@@ -134,7 +139,7 @@ class FolderTest extends NodeTest {
 	public function testNewFolder() {
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
-		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
+		 * @var View | MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->getMockBuilder('\OC\Files\Node\Root')
@@ -167,7 +172,7 @@ class FolderTest extends NodeTest {
 
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
-		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
+		 * @var View | MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->getMockBuilder('\OC\Files\Node\Root')
@@ -189,7 +194,7 @@ class FolderTest extends NodeTest {
 	public function testNewFile() {
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
-		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
+		 * @var View | MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->getMockBuilder('\OC\Files\Node\Root')
@@ -222,7 +227,7 @@ class FolderTest extends NodeTest {
 
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
-		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
+		 * @var View | MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->getMockBuilder('\OC\Files\Node\Root')
@@ -244,7 +249,7 @@ class FolderTest extends NodeTest {
 	public function testGetFreeSpace() {
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
-		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
+		 * @var View | MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->getMockBuilder('\OC\Files\Node\Root')
@@ -266,7 +271,7 @@ class FolderTest extends NodeTest {
 	public function testSearch() {
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
-		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
+		 * @var View | MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->getMockBuilder('\OC\Files\Node\Root')
@@ -318,7 +323,7 @@ class FolderTest extends NodeTest {
 	public function testSearchInRoot() {
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
-		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
+		 * @var View | MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->getMockBuilder('\OC\Files\Node\Root')
@@ -372,7 +377,7 @@ class FolderTest extends NodeTest {
 	public function testSearchInStorageRoot() {
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
-		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
+		 * @var View | MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->getMockBuilder('\OC\Files\Node\Root')
@@ -422,7 +427,7 @@ class FolderTest extends NodeTest {
 	public function testSearchByTag() {
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
-		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
+		 * @var View | MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->getMockBuilder('\OC\Files\Node\Root')
@@ -473,7 +478,7 @@ class FolderTest extends NodeTest {
 	public function testSearchSubStorages() {
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
-		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
+		 * @var View | MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->getMockBuilder('\OC\Files\Node\Root')
@@ -552,57 +557,58 @@ class FolderTest extends NodeTest {
 		$this->assertFalse($folder->isSubNode($file));
 	}
 
-	public function testGetById() {
-		$manager = $this->createMock('\OC\Files\Mount\Manager');
+	public function testGetById(): void {
+		$manager = $this->createMock(Manager::class);
 		/**
-		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
+		 * @var View | MockObject $view
 		 */
-		$view = $this->createMock('\OC\Files\View');
-		$root = $this->getMockBuilder('\OC\Files\Node\Root')
+		$view = $this->createMock(View::class);
+		$root = $this->getMockBuilder(Root::class)
 			->setMethods(['getUser', 'getMountsIn', 'getMount'])
 			->setConstructorArgs([$manager, $view, $this->user])
 			->getMock();
 
-		$root->expects($this->any())
+		$root->expects(self::any())
 			->method('getUser')
-			->will($this->returnValue($this->user));
-		$storage = $this->createMock('\OC\Files\Storage\Storage');
+			->willReturn($this->user);
+		$storage = $this->createMock(Storage::class);
 		$mount = new MountPoint($storage, '/bar');
 		$cache = $this->createMock(Cache::class);
 
-		$view->expects($this->once())
+		// called twice because of Folder::nodeExists and Folder::get
+		$view->expects(self::exactly(2))
 			->method('getFileInfo')
-			->will($this->returnValue(new FileInfo('/bar/foo/qwerty', null, 'qwerty', ['mimetype' => 'text/plain'], null)));
+			->willReturn(new FileInfo('/bar/foo/qwerty', null, 'qwerty', ['mimetype' => 'text/plain'], null));
 
-		$storage->expects($this->once())
+		$storage->expects(self::once())
 			->method('getCache')
-			->will($this->returnValue($cache));
+			->willReturn($cache);
 
-		$cache->expects($this->once())
+		$cache->expects(self::once())
 			->method('getPathById')
 			->with('1')
-			->will($this->returnValue('foo/qwerty'));
+			->willReturn('foo/qwerty');
 
-		$root->expects($this->once())
+		$root->expects(self::once())
 			->method('getMountsIn')
 			->with('/bar/foo')
-			->will($this->returnValue([]));
+			->willReturn([]);
 
-		$root->expects($this->once())
+		$root->expects(self::once())
 			->method('getMount')
 			->with('/bar/foo')
-			->will($this->returnValue($mount));
+			->willReturn($mount);
 
 		$node = new Folder($root, $view, '/bar/foo');
 		$result = $node->getById(1);
-		$this->assertCount(1, $result);
-		$this->assertEquals('/bar/foo/qwerty', $result[0]->getPath());
+		self::assertCount(1, $result);
+		self::assertEquals('/bar/foo/qwerty', $result[0]->getPath());
 	}
 
 	public function testGetByIdOutsideFolder() {
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
-		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
+		 * @var View | MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->getMockBuilder('\OC\Files\Node\Root')
@@ -643,7 +649,7 @@ class FolderTest extends NodeTest {
 	public function testGetByIdMultipleStorages() {
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
-		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
+		 * @var View | MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->getMockBuilder('\OC\Files\Node\Root')
@@ -704,7 +710,7 @@ class FolderTest extends NodeTest {
 		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		$folderPath = '/bar/foo';
 		/**
-		 * @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject $view
+		 * @var View | MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->getMockBuilder('\OC\Files\Node\Root')

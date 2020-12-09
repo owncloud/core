@@ -38,6 +38,7 @@ use Icewind\SMB\Exception\ForbiddenException;
 use Icewind\SMB\Exception\NotFoundException;
 use Icewind\SMB\BasicAuth;
 use Icewind\SMB\IFileInfo;
+use Icewind\SMB\IServer;
 use Icewind\SMB\Native\NativeServer;
 use Icewind\SMB\Wrapped\FileInfo;
 use Icewind\SMB\ServerFactory;
@@ -47,17 +48,19 @@ use Icewind\Streams\CallbackWrapper;
 use Icewind\Streams\IteratorDirectory;
 use OC\Cache\CappedMemoryCache;
 use OC\Files\Filesystem;
+use OCA\Files_External\Lib\Cache\SmbCacheWrapper;
+use OCP\Files\Storage\StorageAdapter;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Util;
 
-class SMB extends \OCP\Files\Storage\StorageAdapter {
+class SMB extends StorageAdapter {
 	/**
-	 * @var \Icewind\SMB\IServer
+	 * @var IServer
 	 */
 	protected $server;
 
 	/**
-	 * @var \Icewind\SMB\IShare
+	 * @var IShare
 	 */
 	protected $share;
 
@@ -80,7 +83,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		$this->log('enter: '.__FUNCTION__.'('.\json_encode($loggedParams).')');
 
 		if (isset($params['host'], $params['user'], $params['password'], $params['share'])) {
-			$domain = (isset($params['domain'])) ? $params['domain'] : '';
+			$domain = $params['domain'] ?? '';
 
 			$auth = new BasicAuth($params['user'], $domain, $params['password']);
 			$serverFactory = new ServerFactory();
@@ -94,7 +97,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			if (!$this->root || $this->root[0] != '/') {
 				$this->root = '/' . $this->root;
 			}
-			if (\substr($this->root, -1, 1) != '/') {
+			if (\substr($this->root, -1, 1) !== '/') {
 				$this->root .= '/';
 			}
 		} else {
@@ -106,10 +109,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		$this->log('leave: '.__FUNCTION__.', getId:'.$this->getId());
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getId() {
+	public function getId(): string {
 		// FIXME: double slash to keep compatible with the old storage ids,
 		// failure to do so will lead to creation of a new storage id and
 		// loss of shares from the storage
