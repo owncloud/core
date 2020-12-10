@@ -85,6 +85,7 @@
     "Couldn't send mail to following recipient(s): %s " : "נא ניתן לשלוח דוא״ל לנמענים הבאים: %s",
     "Share API is disabled" : "שיתוף API מנוטרל",
     "Wrong share ID, share doesn't exist" : "מספר זיהוי שיתוף שגוי, שיתוף אינו קיים",
+    "Share points to a node not available" : "שיתוף נקודות לצומת אינו זמין",
     "Could not delete share" : "לא ניתן היה למחוק את השיתוף",
     "Please specify a file or folder path" : "יש לספק נתיב לקובץ או תיקייה",
     "Wrong path, file/folder doesn't exist" : "נתיב שגוי, קובץ/תיקייה אינם קיימים",

@@ -28,7 +28,6 @@ OC.L10N.register(
     "SFTP" : "SFTP",
     "Host" : "Mazgas",
     "Root" : "Root",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Dalintis",
     "Domain" : "Domenas",
     "<b>Note:</b> " : "<b>Užrašai:</b> ",

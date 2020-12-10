@@ -74,7 +74,6 @@
     "Host" : "主機",
     "Root" : "根目錄",
     "SFTP with secret key login" : "以密碼金鑰登入SFTP",
-    "SMB / CIFS" : "伺服器訊息區塊-SMB/網路文件共享系統 (CIFS)",
     "Share" : "分享",
     "Domain" : "網域名稱",
     "SMB / CIFS using OC login" : "SMB / CIFS 使用 OC 登入",

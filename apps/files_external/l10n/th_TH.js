@@ -77,7 +77,6 @@ OC.L10N.register(
     "Host" : "โฮสต์",
     "Root" : "รูท",
     "SFTP with secret key login" : "SFTP กับคีย์ลับสำหรับเข้าสู่ระบบ",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "แชร์",
     "Domain" : "โดเมน",
     "SMB / CIFS using OC login" : "SMB/CIFS กำลังใช้ OC เข้าสู่ระบบ",

@@ -70,7 +70,6 @@
     "Host" : "Gostitelj",
     "Root" : "Koren",
     "SFTP with secret key login" : "Prijava prek protokola SFTP z geslom",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Souporaba",
     "Domain" : "Domena",
     "SMB / CIFS using OC login" : "SMB / CIFS z uporabo prijave OC",

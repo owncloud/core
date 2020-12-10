@@ -160,6 +160,7 @@
     "Check the value of \"datadirectory\" in your configuration" : "Verifique o valor de \"datadirectory\" na sua configuração",
     "Your Data directory  is invalid" : "A sua diretoria 'Data' é inválida",
     "Please check that the data directory contains a file \".ocdata\" in its root." : "Por favor, verifique se a diretoria 'data' contém um ficheiro \".ocdata\" na sua raiz.",
+    "User unknown" : "Utilizador desconhecido",
     "Could not obtain lock type %d on \"%s\"." : "Não foi possível obter o tipo de bloqueio %d em \"%s\".",
     "Storage unauthorized. %s" : "Armazenamento desautorizado. %s",
     "Storage incomplete configuration. %s" : "Configuração incompleta do armazenamento. %s",

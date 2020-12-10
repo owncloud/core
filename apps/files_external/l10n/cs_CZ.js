@@ -72,7 +72,6 @@ OC.L10N.register(
     "Host" : "Počítač",
     "Root" : "Kořen",
     "SFTP with secret key login" : "SFTP login s tajným klíčem",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Sdílet",
     "Domain" : "Doména",
     "SMB / CIFS using OC login" : "SMB / CIFS za použití přihlašovacího jména OC",

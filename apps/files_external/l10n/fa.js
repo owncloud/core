@@ -31,7 +31,6 @@ OC.L10N.register(
     "ownCloud" : "ownCloud",
     "SFTP" : "SFTP",
     "Host" : "میزبانی",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "اشتراک‌گذاری",
     "Domain" : "دامنه",
     "No external storage configured" : "هیچ فضای ذخیره‌سازی خارجی‌ای تنظیم نشده است",

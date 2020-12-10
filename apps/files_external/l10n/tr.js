@@ -76,7 +76,6 @@ OC.L10N.register(
     "Host" : "Sunucu",
     "Root" : "Kök",
     "SFTP with secret key login" : "Gizli anahtar oturumu ile SFTP",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Paylaş",
     "Domain" : "Alan adı",
     "SMB / CIFS using OC login" : "OC oturumu kullanarak SMB / CIFS",

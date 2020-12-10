@@ -76,7 +76,6 @@ OC.L10N.register(
     "Host" : "Διακομιστής",
     "Root" : "Root",
     "SFTP with secret key login" : "SFTP με σύνδεση με κρυφό κλειδί",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Διαμοιρασμός",
     "Domain" : "Τομέας",
     "SMB / CIFS using OC login" : "SMB / CIFS χρησιμοποιώντας λογαριασμό OC",

@@ -76,7 +76,6 @@ OC.L10N.register(
     "Host" : "Netþjónn",
     "Root" : "Rót (root)",
     "SFTP with secret key login" : "SFTP innskráning með leynilykli",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Deila",
     "Domain" : "Lén",
     "SMB / CIFS using OC login" : "SMB / CIFS með OC-innskráningu",

@@ -55,7 +55,6 @@ OC.L10N.register(
     "SFTP" : "SFTP",
     "Host" : "Isäntä",
     "SFTP with secret key login" : "SFTP salaisen avaimen kirjautumisella",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Jaa",
     "SMB / CIFS using OC login" : "SMB / CIFS käyttäen OC-kirjautumista",
     "Username as share" : "Käyttäjänimi jakona",

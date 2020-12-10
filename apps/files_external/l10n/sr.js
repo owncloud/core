@@ -35,7 +35,6 @@ OC.L10N.register(
     "Host" : "Домаћин",
     "Root" : "Корен",
     "SFTP with secret key login" : "СФТП са пријавом помоћу тајног кључа",
-    "SMB / CIFS" : "ЦМБ/ЦИФС",
     "Share" : "Дели",
     "Domain" : "Домен",
     "SMB / CIFS using OC login" : "СМБ/ЦИФС користећи оунКлауд пријаву",

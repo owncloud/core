@@ -53,7 +53,6 @@ OC.L10N.register(
     "Host" : "Host",
     "Root" : "Juur",
     "SFTP with secret key login" : "SFTP koos salajase võtmega logimisega",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Jaga",
     "Domain" : "Domeen",
     "SMB / CIFS using OC login" : "SMB / CIFS kasutades OC logimist",

@@ -76,7 +76,6 @@ OC.L10N.register(
     "Host" : "Сервер",
     "Root" : "Корневой каталог",
     "SFTP with secret key login" : "SFTP с помощью секретного ключа",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Общий доступ",
     "Domain" : "Домен",
     "SMB / CIFS using OC login" : "SMB / CIFS с ипользованием логина OC",

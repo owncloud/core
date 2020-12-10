@@ -46,7 +46,6 @@ OC.L10N.register(
     "Host" : "Gazdă",
     "Root" : "Root",
     "SFTP with secret key login" : "SFTP cu cheie secretă de autentificare",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Partajează",
     "Domain" : "Domeniu",
     "SMB / CIFS using OC login" : "SMB / CIFS folosind autentificare OC",

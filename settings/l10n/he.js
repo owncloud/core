@@ -13,6 +13,7 @@ OC.L10N.register(
     "Couldn't send reset email. Please contact your administrator." : "לא ניתן היה לשלוח דואר אלקטרוני לאיפוס. יש לפנות למנהל שלך.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "התקנה ועדכון יישומים באמצעות החנות או שיתוף ענן מאוגד",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL משתמש בגרסה %s ישנה (%s). יש לעדכן את מערכת ההפעלה או  שתכונות כדוגמת %s לא יעבדו באופן מהימן.",
+    "Invalid url '%s'. Urls should be set up like 'http://www.example.com' or 'https://www.example.com'" : "קישור שגוי '%s'. נתיבי אינטרנט צריכים להיות מוגדרים כ- 'http://www.example.com' או 'https://www.example.com'",
     "Group already exists." : "קבוצה כבר קיימת.",
     "Unable to add group." : "לא ניתן להוסיף קבוצה.",
     "Unable to delete group." : "לא ניתן למחוק קבוצה.",

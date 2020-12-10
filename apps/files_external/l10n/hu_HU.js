@@ -48,7 +48,6 @@ OC.L10N.register(
     "Host" : "Kiszolgáló",
     "Root" : "Gyökér",
     "SFTP with secret key login" : "SFTP titkos kulcs belépéssel",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Megosztás",
     "Domain" : "Domain",
     "SMB / CIFS using OC login" : "SMB / CIFS OC belépéssel",

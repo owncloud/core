@@ -76,7 +76,6 @@ OC.L10N.register(
     "Host" : "Host",
     "Root" : "Root",
     "SFTP with secret key login" : "SFTP with secret key login",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Share",
     "Domain" : "Domain",
     "SMB / CIFS using OC login" : "SMB / CIFS using OC login",

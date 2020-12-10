@@ -20,7 +20,6 @@ OC.L10N.register(
     "ownCloud" : "ownCloud",
     "SFTP" : "SFTP",
     "Host" : "Resursdators",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Dalīties",
     "<b>Note:</b> " : "<b>Piezīme:</b>",
     "Name" : "Nosaukums",

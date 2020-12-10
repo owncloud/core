@@ -70,7 +70,6 @@ OC.L10N.register(
     "Host" : "Sirvidor",
     "Root" : "Raíz",
     "SFTP with secret key login" : "Aniciu de sesión SFTP con clave secreta",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Compartir",
     "Domain" : "Dominiu",
     "SMB / CIFS using OC login" : "SMB / CIFS usando accesu OC",

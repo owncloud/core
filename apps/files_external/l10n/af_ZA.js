@@ -29,7 +29,6 @@ OC.L10N.register(
     "Host" : "Gasheer",
     "Root" : "Wortel",
     "SFTP with secret key login" : "SFTP met geheimesleutelaantekening",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Deel",
     "Domain" : "Domein",
     "<b>Note:</b> " : "<b>Nota:</b> ",

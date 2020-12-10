@@ -77,7 +77,6 @@ OC.L10N.register(
     "Host" : "Strehë",
     "Root" : "Rrënjë",
     "SFTP with secret key login" : "SFTP me hyrje me kyç të fshehtë",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Ndajeni me të tjerët",
     "Domain" : "Përkatësi",
     "SMB / CIFS using OC login" : "SMB / CIFS me përdorim hyrjeje OC",

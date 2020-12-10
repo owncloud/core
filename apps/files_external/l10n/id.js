@@ -53,7 +53,6 @@ OC.L10N.register(
     "Host" : "Host",
     "Root" : "Root",
     "SFTP with secret key login" : "SFTP dengan kunci rahasia masuk",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Bagikan",
     "Domain" : "Domain",
     "SMB / CIFS using OC login" : "SMB / CIFS menggunakan OC login",

@@ -54,7 +54,6 @@ OC.L10N.register(
     "Host" : "主机",
     "Root" : "根路径",
     "SFTP with secret key login" : "包含secret key的SFTP",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "共享",
     "Domain" : "域名",
     "SMB / CIFS using OC login" : "SMB / CIFS 使用 OC 登录信息",

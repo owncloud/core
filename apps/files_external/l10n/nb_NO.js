@@ -76,7 +76,6 @@ OC.L10N.register(
     "Host" : "Tjener",
     "Root" : "Rot",
     "SFTP with secret key login" : "SFTP med hemmelig nøkkel for pålogging",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Delt ressurs",
     "Domain" : "Domene",
     "SMB / CIFS using OC login" : "SMB / CIFS med OC-pålogging",

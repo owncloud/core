@@ -50,7 +50,6 @@ OC.L10N.register(
     "SFTP" : "SFTP",
     "Host" : "Hostiteľ",
     "Root" : "Root",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Zdieľať",
     "Domain" : "Doména",
     "SMB / CIFS using OC login" : "SMB / CIFS s použitím OC prihlásenia",

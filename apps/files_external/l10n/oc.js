@@ -69,7 +69,6 @@ OC.L10N.register(
     "Host" : "Òste",
     "Root" : "Raiç",
     "SFTP with secret key login" : "SFTP amb un identificant secret",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Partejar",
     "Domain" : "Domeni",
     "SMB / CIFS using OC login" : "SMB / CIFS en utilizant los identificants OC",
