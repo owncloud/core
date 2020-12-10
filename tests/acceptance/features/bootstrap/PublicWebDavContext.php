@@ -923,6 +923,50 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
+	 * @Then /^the public should be able to upload file "([^"]*)" into the last public shared folder using the (old|new) public WebDAV API with password "([^"]*)"$/
+	 *
+	 * @param string $filename
+	 * @param string $publicWebDAVAPIVersion
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function publiclyUploadingIntoFolderWithPasswordShouldWork(
+		string $filename, string $publicWebDAVAPIVersion, string $password
+	) {
+		$this->publicUploadContent(
+			$filename, $password, 'test', false, [], $publicWebDAVAPIVersion
+		);
+
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @Then /^the public upload of file "([^"]*)" into the last public shared folder using the (old|new) public WebDAV API with password "([^"]*)" should fail with HTTP status code "([^"]*)"$/
+	 *
+	 * @param string $filename
+	 * @param string $publicWebDAVAPIVersion
+	 * @param string $password
+	 * @param string $expectedHttpCode
+	 *
+	 * @return void
+	 */
+	public function publiclyUploadingIntoFolderWithPasswordShouldFail(
+		string $filename, string $publicWebDAVAPIVersion, string $password, $expectedHttpCode
+	) {
+		$this->publicUploadContent(
+			$filename, $password, 'test', false, [], $publicWebDAVAPIVersion
+		);
+
+		$response = $this->featureContext->getResponse();
+		$this->featureContext->theHTTPStatusCodeShouldBe(
+			$expectedHttpCode,
+			"upload of $filename into the last publicly shared folder should have failed with code " .
+			$expectedHttpCode . " but the code was " . $response->getStatusCode()
+		);
+	}
+
+	/**
 	 * @Then /^uploading a file should work using the (old|new) public WebDAV API$/
 	 *
 	 * @param string $publicWebDAVAPIVersion
@@ -985,6 +1029,36 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
+	 * @param string $destination
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function publicCreatesFolderUsingPassword(
+		$destination, $password
+	) {
+		$token = $this->featureContext->getLastShareToken();
+		$davPath = WebDavHelper::getDavPath(
+			$token, 0, "public-files-new"
+		);
+		$url = $this->featureContext->getBaseUrl() . "/$davPath";
+		$password = $this->featureContext->getActualPassword($password);
+		$userName = $this->getUsernameForPublicWebdavApi(
+			$token, $password, "new"
+		);
+		$foldername = \implode(
+			'/', \array_map('rawurlencode', \explode('/', $destination))
+		);
+		$url .= \ltrim($foldername, '/');
+
+		$this->featureContext->setResponse(
+			HttpRequestHelper::sendRequest(
+				$url, 'MKCOL', $userName, $password
+			)
+		);
+	}
+
+	/**
 	 * @When the public creates folder :destination using the new public WebDAV API
 	 *
 	 * @param String $destination
@@ -992,23 +1066,41 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function publicCreatesFolder($destination) {
-		$token = $this->featureContext->getLastShareToken();
-		$davPath = WebDavHelper::getDavPath(
-			$token, 0, "public-files-new"
-		);
-		$url = $this->featureContext->getBaseUrl() . "/$davPath";
-		$userName = $this->getUsernameForPublicWebdavApi(
-			$token, '', "new"
-		);
-		$filename = \implode(
-			'/', \array_map('rawurlencode', \explode('/', $destination))
-		);
-		$url .= \ltrim($filename, '/');
+		$this->publicCreatesFolderUsingPassword($destination, '');
+	}
 
-		$this->featureContext->setResponse(
-			HttpRequestHelper::sendRequest(
-				$url, 'MKCOL', $userName, ''
-			)
+	/**
+	 * @Then /^the public should be able to create folder "([^"]*)" in the last public shared folder using the new public WebDAV API with password "([^"]*)"$/
+	 *
+	 * @param string $foldername
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function publicShouldBeAbleToCreateFolderWithPassword(
+		string $foldername, string $password
+	) {
+		$this->publicCreatesFolderUsingPassword($foldername, $password);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @Then /^the public creation of folder "([^"]*)" in the last public shared folder using the new public WebDAV API with password "([^"]*)" should fail with HTTP status code "([^"]*)"$/
+	 *
+	 * @param string $foldername
+	 * @param string $password
+	 * @param string $expectedHttpCode
+	 *
+	 * @return void
+	 */
+	public function publicCreationOfFolderWithPasswordShouldFail(
+		string $foldername, string $password, $expectedHttpCode
+	) {
+		$this->publicCreatesFolderUsingPassword($foldername, $password);
+		$this->featureContext->theHTTPStatusCodeShouldBe(
+			$expectedHttpCode,
+			"creation of $foldername in the last publicly shared folder should have failed with code " .
+			$expectedHttpCode
 		);
 	}
 
