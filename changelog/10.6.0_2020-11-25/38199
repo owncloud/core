@@ -7,3 +7,4 @@ Phoenix has been renamed to Web. You can now set these keys in config.php to con
 - web.label
 
 https://github.com/owncloud/core/pull/38199
+https://github.com/owncloud/core/pull/38201

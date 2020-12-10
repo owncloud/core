@@ -202,7 +202,7 @@ class NavigationManager implements INavigationManager {
 			$webIconLabel = 'phoenix.label';
 		}
 		if ($webBaseUrl) {
-			$iconPath = $this->config->getSystemValue($webIconKey, $this->urlGenerator->imagePath('core', 'apps/phoenix.svg'));
+			$iconPath = $this->config->getSystemValue($webIconKey, $this->urlGenerator->imagePath('core', 'apps/web.svg'));
 			$l = $this->l10nFac->get("core");
 			$label = $this->config->getSystemValue($webIconLabel, $l->t('New Design'));
 			$this->add([
