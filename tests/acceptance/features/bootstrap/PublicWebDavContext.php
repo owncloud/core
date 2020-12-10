@@ -737,18 +737,20 @@ class PublicWebDavContext implements Context {
 
 	/**
 	 * @Then /^the public should not be able to download file "([^"]*)" from inside the last public shared folder using the (old|new) public WebDAV API with password "([^"]*)"$/
+	 * @Then /^the public download of file "([^"]*)" from inside the last public shared folder using the (old|new) public WebDAV API with password "([^"]*)" should fail with HTTP status code "([^"]*)"$/
 	 *
 	 * @param string $path
 	 * @param string $publicWebDAVAPIVersion
 	 * @param string $password
+	 * @param string $expectedHttpCode
 	 *
 	 * @return void
 	 */
 	public function shouldNotBeAbleToDownloadFileInsidePublicSharedFolderWithPassword(
-		$path, $publicWebDAVAPIVersion, $password
+		$path, $publicWebDAVAPIVersion, $password, $expectedHttpCode = "401"
 	) {
 		$this->shouldNotBeAbleToDownloadRangeOfFileInsidePublicSharedFolderWithPassword(
-			"", $path, $publicWebDAVAPIVersion, $password
+			"", $path, $publicWebDAVAPIVersion, $password, $expectedHttpCode
 		);
 	}
 
