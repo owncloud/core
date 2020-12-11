@@ -73,7 +73,6 @@ OC.L10N.register(
     "Host" : "ホスト",
     "Root" : "ルート",
     "SFTP with secret key login" : "秘密鍵でSFTPログイン",
-    "SMB / CIFS" : "SMB / CIFS",
     "Share" : "共有",
     "Domain" : "ドメイン",
     "SMB / CIFS using OC login" : "ownCloudログインを利用したSMB / CIFS",
