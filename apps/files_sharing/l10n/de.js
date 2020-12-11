@@ -87,6 +87,7 @@ OC.L10N.register(
     "Couldn't send mail to following recipient(s): %s " : "Konnte die Mail an folgende Empfänger nicht senden: %s ",
     "Share API is disabled" : "Teilen-API ist deaktivert",
     "Wrong share ID, share doesn't exist" : "Fehlerhafte Freigabe-ID, Freigabe existiert nicht",
+    "Share points to a node not available" : "Freigabe zeigt auf einen nicht verfügbaren Knoten",
     "Could not delete share" : "Freigabe konnte nicht gelöscht werden",
     "Please specify a file or folder path" : "Bitte eine Datei oder  Verzeichnis definieren",
     "Wrong path, file/folder doesn't exist" : "Falscher Pfad, Datei/Verzeichnis existiert nicht",
