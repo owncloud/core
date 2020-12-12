@@ -47,6 +47,7 @@ Summary
 * Bugfix - SSL check when adding a public link to your ownCloud: [#4241](https://github.com/owncloud/enterprise/issues/4241)
 * Bugfix - Fix translations of some strings in settings: [#38119](https://github.com/owncloud/core/pull/38119)
 * Bugfix - Fix some code smells reported by SonarCloud: [#38147](https://github.com/owncloud/core/pull/38147)
+* Bugfix - Don't redirect if the browser ask for a .properties file: [#38181](https://github.com/owncloud/core/pull/38181)
 * Bugfix - Show the share list even if some shares point to unavailable storages: [#38190](https://github.com/owncloud/core/pull/38190)
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 * Change - Update sabre dependencies: [#37684](https://github.com/owncloud/core/pull/37684)
@@ -116,6 +117,7 @@ Summary
 * Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
 * Enhancement - Make the right scrollbar more visible on the UI: [#38183](https://github.com/owncloud/core/pull/38183)
+* Enhancement - Improve file list tag management: [#38197](https://github.com/owncloud/core/pull/38197)
 
 Details
 -------
@@ -455,6 +457,16 @@ Details
 * Bugfix - Fix some code smells reported by SonarCloud: [#38147](https://github.com/owncloud/core/pull/38147)
 
    https://github.com/owncloud/core/pull/38147
+
+* Bugfix - Don't redirect if the browser ask for a .properties file: [#38181](https://github.com/owncloud/core/pull/38181)
+
+   In order to provide translations, the files_pdfviewer app requested a .properties file. This
+   request failed because the server redirected it to the default page (the files view), so the app
+   couldn't get the translations
+
+   This redirection doesn't happen any longer, and the app can translate the UI elements now.
+
+   https://github.com/owncloud/core/pull/38181
 
 * Bugfix - Show the share list even if some shares point to unavailable storages: [#38190](https://github.com/owncloud/core/pull/38190)
 
@@ -926,6 +938,19 @@ Details
    wider
    and
    darker.
+
+* Enhancement - Improve file list tag management: [#38197](https://github.com/owncloud/core/pull/38197)
+
+   1. Introduce a new tab, where the tag input field will be displayed 1.1 Keyboard navigation in
+   the input field's dropdown works now proper, in the past the user needed to hover over on item in
+   the dropdown before the arrow keys could be used
+
+   2. Replace the tag input field in the file list by a read only tag list 2.1 Improving tag
+   appearance to clarify that these are tags and no shares 2.2 Clicking on a tag opens the tag tab 2.3
+   Tag tab and tag list are in sync, means that editing (select, unselect, rename, remove) tags
+   will appear in the tag list immediately
+
+   https://github.com/owncloud/core/pull/38197
 
 Changelog for ownCloud Core [10.5.0] (2020-07-31)
 =======================================
