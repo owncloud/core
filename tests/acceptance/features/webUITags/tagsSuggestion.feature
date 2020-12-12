@@ -24,6 +24,7 @@ Feature: Suggestion for matching tag names
     Given user "Alice" has created folder "a-folder"
     And user "Alice" has uploaded file with content "some content" to "/a-folder/randomfile.txt"
     When the user browses directly to display the details of file "randomfile.txt" in folder "a-folder"
+    And the user switches to "tags" tab in details panel using the webUI
     And the user types "sp" in the collaborative tags field using the webUI
     Then all the tags starting with "sp" in their name should be listed in the dropdown list on the webUI
     But tag "gham" should not be listed in the dropdown list on the webUI
@@ -35,6 +36,7 @@ Feature: Suggestion for matching tag names
     Given user "Alice" has created folder "a-folder"
     And user "Alice" has uploaded file with content "some content" to "/a-folder/randomfile.txt"
     When the user browses directly to display the details of file "randomfile.txt" in folder "a-folder"
+    And the user switches to "tags" tab in details panel using the webUI
     And the administrator has created a "static" tag with name "StaticTagName" and groups "group1"
     And the user types "St" in the collaborative tags field using the webUI
     Then all the tags starting with "St" in their name should be listed in the dropdown list on the webUI

@@ -8,8 +8,17 @@
  *
  */
 
-(function (OCA) {
+/*
+ * Copyright (c) 2018
+ *
+ * This file is licensed under the Affero General Public License version 3
+ * or later.
+ *
+ * See the COPYING-README file.
+ *
+ */
 
+(function () {
 	function modelToSelection (model) {
 		var data = model.toJSON();
 		if (!OC.isUserAdmin()) {
@@ -29,68 +38,58 @@
 	}
 
 	/**
-	 * @class OCA.SystemTags.SystemTagsInfoView
-	 * @classdesc
-	 *
-	 * Displays a file's system tags
-	 *
+	 * @memberof OCA.SystemTags
 	 */
-	var SystemTagsInfoView = OCA.Files.DetailFileInfoView.extend(
-		/** @lends OCA.SystemTags.SystemTagsInfoView.prototype */ {
+	var SystemTagsTabView = OCA.Files.DetailTabView.extend(
+		/** @lends OCA.SystemTags.SystemTagsTabView.prototype */ {
+			id: 'systemTagsTabView',
+			className: 'tab SystemTagsTabView hidden',
 
-			_rendered: false,
-
-			className: 'systemTagsInfoView hidden',
-
-			/**
-			 * @type OC.SystemTags.SystemTagsInputField
-			 */
-			_inputView: null,
-
+			getLabel: function () {
+				return t('systemtags', 'Tags');
+			},
 
 			initialize: function (options) {
+				OCA.Files.DetailTabView.prototype.initialize.apply(this, arguments);
+				var self = this;
 				options = options || {};
 				this.options = options;
 
-				this._inputView = new OC.SystemTags.SystemTagsList();
-				this._inputView._onClickEdit = this._onClickEdit.bind(this);
+				this._inputView = new OC.SystemTags.SystemTagsInputField({
+					multiple: true,
+					allowActions: true,
+					allowCreate: true,
+					isAdmin: OC.isUserAdmin(),
+					initSelection: function (element, callback) {
+						callback(self.selectedTagsCollection.map(modelToSelection));
+					}
+				});
 
 				this.selectedTagsCollection = this.options.selectedTagsCollection || new OC.SystemTags.SystemTagsMappingCollection([], {objectType: 'files'});
 
-				this._inputView.collection.on('change', this._onTagRenamedGlobally, this);
+				this._inputView.collection.on('change:name', this._onTagRenamedGlobally, this);
 				this._inputView.collection.on('remove', this._onTagDeletedGlobally, this);
 
-				this.selectedTagsCollection.on('add', this._onSelectTag, this);
-				this.selectedTagsCollection.on('remove', this._onDeselectTag, this);
-
+				this._inputView.on('select', this._onSelectTag, this);
+				this._inputView.on('deselect', this._onDeselectTag, this);
 			},
-
-			/**
-			 * Event handler whenever edit was clicked
-			 */
-			_onClickEdit: function (args) {
-				if (typeof this.options.onClickEdit === 'function') {
-					this.options.onClickEdit(args);
-				}
-			},
-
 
 			/**
 			 * Event handler whenever a tag was selected
 			 */
-			_onSelectTag: function () {
-				this._inputView.setData(this.selectedTagsCollection.map(modelToSelection));
-				this._inputView.render();
+			_onSelectTag: function (tag) {
+				// create a mapping entry for this tag
+				this.selectedTagsCollection.create(tag.toJSON());
 			},
 
 			/**
 			 * Event handler whenever a tag gets deselected.
 			 * Removes the selected tag from the mapping collection.
 			 *
+			 * @param {string} tagId tag id
 			 */
-			_onDeselectTag: function () {
-				this._inputView.setData(this.selectedTagsCollection.map(modelToSelection));
-				this._inputView.render();
+			_onDeselectTag: function (tagId) {
+				this.selectedTagsCollection.get(tagId).destroy();
 			},
 
 			/**
@@ -99,6 +98,7 @@
 			 * This will automatically adjust the tag mapping collection to
 			 * container the new name.
 			 *
+			 * @param {OC.Backbone.Model} changedTag tag model that has changed
 			 */
 			_onTagRenamedGlobally: function (changedTag) {
 				// also rename it in the selection, if applicable
@@ -106,8 +106,6 @@
 				if (selectedTagMapping) {
 					selectedTagMapping.set(changedTag.toJSON());
 				}
-				this._inputView.setData(this.selectedTagsCollection.map(modelToSelection));
-				this._inputView.render();
 			},
 
 			/**
@@ -116,15 +114,18 @@
 			 * This will automatically adjust the tag mapping collection to
 			 * container the new name.
 			 *
+			 * @param {OC.Backbone.Model} tagId tag model that has changed
 			 */
 			_onTagDeletedGlobally: function (tagId) {
+				// also rename it in the selection, if applicable
 				this.selectedTagsCollection.remove(tagId);
-				this._inputView.setData(this.selectedTagsCollection.map(modelToSelection));
-				this._inputView.render();
 			},
 
 			setFileInfo: function (fileInfo) {
 				var self = this;
+				if (!this._rendered) {
+					this.render();
+				}
 
 				if (fileInfo) {
 					this.selectedTagsCollection.setObjectId(fileInfo.id);
@@ -133,15 +134,10 @@
 							collection.fetched = true;
 							self._inputView.setData(collection.map(modelToSelection));
 							self.$el.removeClass('hidden');
-							self.render();
 						}
 					});
 				}
-
-				if (!this._rendered) {
-					this.render();
-				}
-
+				this.$el.addClass('hidden');
 			},
 
 			/**
@@ -149,15 +145,18 @@
 			 */
 			render: function () {
 				this.$el.append(this._inputView.$el);
-				this._rendered = true;
+				this._inputView.render();
 			},
 
 			remove: function () {
 				this._inputView.remove();
-			},
+			}
 		});
 
-	OCA.SystemTags.SystemTagsInfoView = SystemTagsInfoView;
+	OCA.SystemTags = OCA.SystemTags || {};
+	OCA.SystemTags.SystemTagsTabView = SystemTagsTabView;
+})();
 
-})(OCA);
+
+
 

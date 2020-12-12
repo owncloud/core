@@ -97,6 +97,10 @@
 	display: none;
 }
 
+.systemtags-item .label{
+	cursor: pointer;
+}
+
 .select2-container-multi .select2-choices .select2-search-choice {
 	background-color: rgba(240,240,240,.9);
 	border-color: rgba(240,240,240,.9);
@@ -115,4 +119,19 @@
 .select2-container-multi.select2-container-active .select2-choices {
 	-webkit-box-shadow: none;
 	box-shadow: none;
+}
+
+.system-tag-list .system-tag-list-item {
+	display: inline-block;
+	padding: .25em .4em;
+	font-size: 90%;
+	font-weight: 700;
+	line-height: 1;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	border-radius: .25rem;
+	color: #fff;
+	background-color: #1B223D;
+	cursor: pointer;
 }

@@ -8,7 +8,7 @@
  *
  */
 
-(function() {
+(function () {
 	OCA.SystemTags = _.extend({}, OCA.SystemTags);
 	if (!OCA.SystemTags) {
 		/**
@@ -26,13 +26,27 @@
 			'files.public'
 		],
 
-		attach: function(fileList) {
+		attach: function (fileList) {
 			if (this.ignoreLists.indexOf(fileList.id) >= 0) {
 				return;
 			}
 
-			fileList.registerDetailView(new OCA.SystemTags.SystemTagsInfoView());
-		}
+			var selectedTagsCollection = new OC.SystemTags.SystemTagsMappingCollection([], {objectType: 'files'});
+
+			fileList.registerDetailView(new OCA.SystemTags.SystemTagsInfoView({
+				selectedTagsCollection: selectedTagsCollection,
+				onClickEdit: function () {
+					fileList._detailsView.selectTab('systemTagsTabView');
+				},
+			}));
+
+			fileList.registerTabView(new OCA.SystemTags.SystemTagsTabView({
+				selectedTagsCollection: selectedTagsCollection,
+			}));
+
+
+		},
+
 	};
 
 })();

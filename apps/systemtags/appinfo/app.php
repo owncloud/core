@@ -35,9 +35,11 @@ $eventDispatcher->addListener(
 		\OCP\Util::addScript('systemtags/systemtagsmappingcollection');
 		\OCP\Util::addScript('systemtags/systemtagscollection');
 		\OCP\Util::addScript('systemtags/systemtagsinputfield');
+		\OCP\Util::addScript('systemtags/systemtagslist');
 		\OCP\Util::addScript('systemtags', 'app');
 		\OCP\Util::addScript('systemtags', 'systemtagsfilelist');
 		\OCP\Util::addScript('systemtags', 'filesplugin');
+		\OCP\Util::addScript('systemtags', 'systemtagstabview');
 		\OCP\Util::addScript('systemtags', 'systemtagsinfoview');
 		\OCP\Util::addStyle('systemtags');
 		\OCP\Util::addStyle('systemtags', 'systemtagsfilelist');

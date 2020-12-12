@@ -47,7 +47,8 @@ class DetailsDialog extends OwncloudPage {
 	private $detailsTabId = [
 		'comments' => "commentsTabView",
 		'sharing' => "shareTabView",
-		'versions' => "versionsTabView"
+		'versions' => "versionsTabView",
+		'tags' => "systemTagsTabView",
 	];
 	private $tabSwitchBtnXpath = "//li[@data-tabid='%s']";
 	private $tagsContainer = "//div[@class='systemTagsInputFieldContainer']";
@@ -62,7 +63,7 @@ class DetailsDialog extends OwncloudPage {
 	private $tagsDropDownResultXpath = "//div[contains(@class, 'systemtags-select2-dropdown')]" .
 	"//ul[@class='select2-results']" .
 	"//span[@class='label']";
-	private $tagEditInputXpath = "//input[@id='view9-rename-input']";
+	private $tagEditInputXpath = "//input[@id='view11-rename-input']";
 
 	private $commentXpath = "//ul[@class='comments']//div[@class='message' and contains(., '%s')]";
 	private $commentInputXpath = "//form[@class='newCommentForm']//textarea[@class='message']";

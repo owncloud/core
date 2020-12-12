@@ -15,6 +15,7 @@ Feature: Deletion of existing tags from files and folders
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And the user browses directly to display the details of file "randomfile.txt" in folder ""
+    And the user switches to "tags" tab in details panel using the webUI
     When the user adds a tag "tag1" to the file using the webUI
     And the user shares file "randomfile.txt" with user "Brian" using the webUI
     And the user re-logs in with username "Brian" using the webUI
@@ -22,6 +23,7 @@ Feature: Deletion of existing tags from files and folders
       | name | type   |
       | tag1 | normal |
     When the user browses directly to display the details of file "randomfile.txt" in folder ""
+    And the user switches to "tags" tab in details panel using the webUI
     And the user deletes tag with name "tag1" using the webUI
     Then tag "tag1" should not exist for user "Alice"
     And tag "tag1" should not exist for user "Brian"
@@ -31,6 +33,7 @@ Feature: Deletion of existing tags from files and folders
     And the user has created a "normal" tag with name "random"
     And the user has added tag "random" to file "randomfile.txt"
     When the user browses directly to display the details of file "randomfile.txt" in folder "/"
+    And the user switches to "tags" tab in details panel using the webUI
     Then file "randomfile.txt" should have the following tags for user "Alice"
       | name   | type   |
       | random | normal |
@@ -43,6 +46,7 @@ Feature: Deletion of existing tags from files and folders
     And the user has created a "normal" tag with name "random"
     And the user has added tag "random" to file "a-folder/randomfile.txt"
     When the user browses directly to display the details of file "randomfile.txt" in folder "a-folder"
+    And the user switches to "tags" tab in details panel using the webUI
     Then file "a-folder/randomfile.txt" should have the following tags for user "Alice"
       | name   | type   |
       | random | normal |
@@ -58,6 +62,7 @@ Feature: Deletion of existing tags from files and folders
     And the user has added tag "random" to file "randomfile.txt"
     And the user has added tag "random" to file "randomfile-big.txt"
     And the user has browsed directly to display the details of file "randomfile.txt" in folder "a-folder"
+    And the user has switched to "tags" tab in details panel using the webUI
     When the user deletes tag with name "random" using the webUI
     Then tag "random" should not exist for user "Alice"
 
@@ -68,6 +73,7 @@ Feature: Deletion of existing tags from files and folders
     And the user has added tag "random" to file "randomfile.txt"
     And the user has added tag "Confidential" to file "randomfile.txt"
     And the user has browsed directly to display the details of file "randomfile.txt" in folder "/"
+    And the user has switched to "tags" tab in details panel using the webUI
     When the user deletes tag with name "random" using the webUI
     And the user deletes tag with name "Confidential" using the webUI
     Then file "randomfile.txt" should have no tags for user "Alice"
@@ -81,6 +87,7 @@ Feature: Deletion of existing tags from files and folders
     And the user has added tag "Confidential" to file "randomfile.txt"
     And the user has added tag "some-tag" to file "randomfile.txt"
     And the user has browsed directly to display the details of file "randomfile.txt" in folder "/"
+    And the user has switched to "tags" tab in details panel using the webUI
     When the user deletes tag with name "random" using the webUI
     And the user deletes tag with name "Confidential" using the webUI
     Then tag "random" should not exist for user "Alice"

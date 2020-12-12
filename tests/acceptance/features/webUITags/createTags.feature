@@ -13,6 +13,7 @@ Feature: Creation of tags for the files and folders
   Scenario: Create a new tag that does not exist for a file in the root
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     When the user browses directly to display the details of file "randomfile.txt" in folder "/"
+    And the user switches to "tags" tab in details panel using the webUI
     And the user adds a tag "Top Secret" to the file using the webUI
     And the user adds a tag "Confidential" to the file using the webUI
     Then file "/randomfile.txt" should have the following tags for user "Alice"
@@ -24,6 +25,7 @@ Feature: Creation of tags for the files and folders
     Given user "Alice" has created folder "a-folder"
     And user "Alice" has uploaded file with content "some content" to "/a-folder/randomfile.txt"
     When the user browses directly to display the details of file "randomfile.txt" in folder "a-folder"
+    And the user switches to "tags" tab in details panel using the webUI
     And the user adds a tag "Top Secret" to the file using the webUI
     And the user adds a tag "Top" to the file using the webUI
     Then file "a-folder/randomfile.txt" should have the following tags for user "Alice"
@@ -38,6 +40,7 @@ Feature: Creation of tags for the files and folders
     And the user has created a "normal" tag with name "randomfile"
     And the user has added tag "randomfile" to file "/a-folder/randomfile.txt"
     When the user browses directly to display the details of file "randomfile-big.txt" in folder "a-folder"
+    And the user switches to "tags" tab in details panel using the webUI
     And the user adds a tag "randomfile" to the file using the webUI
     Then file "a-folder/randomfile.txt" should have the following tags for user "Alice"
       | name       | type   |
@@ -51,10 +54,12 @@ Feature: Creation of tags for the files and folders
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And the user browses directly to display the details of file "randomfile.txt" in folder "/"
-    When the user adds a tag "tag1" to the file using the webUI
+    When the user switches to "tags" tab in details panel using the webUI
+    And the user adds a tag "tag1" to the file using the webUI
     And the user shares file "randomfile.txt" with user "Brian" using the webUI
     And the user re-logs in with username "Brian" using the webUI
     And the user browses directly to display the details of file "randomfile.txt" in folder "/"
+    And the user switches to "tags" tab in details panel using the webUI
     And the user adds a tag "tag2" to the file using the webUI
     Then file "randomfile.txt" should have the following tags for user "Alice"
       | name | type   |
@@ -73,7 +78,8 @@ Feature: Creation of tags for the files and folders
       | Carol    |
     And the user re-logs in as "Brian" using the webUI
     And the user browses directly to display the details of file "lorem.txt" in folder "/"
-    When the user adds a tag "skeleton" to the file using the webUI
+    When the user switches to "tags" tab in details panel using the webUI
+    And the user adds a tag "skeleton" to the file using the webUI
     And the user shares file "lorem.txt" with user "Carol" using the webUI
     Then file "lorem (2).txt" should have the following tags for user "Carol"
       | name     | type   |
@@ -84,6 +90,7 @@ Feature: Creation of tags for the files and folders
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     When the user browses directly to display the details of file "randomfile.txt" in folder "/"
+    And the user switches to "tags" tab in details panel using the webUI
     And the user adds a tag "Confidential" to the file using the webUI
     And the user shares file "randomfile.txt" with user "Brian" using the webUI
     Then file "/randomfile.txt" should have the following tags for user "Brian"
