@@ -16,7 +16,7 @@ Feature: Removal of already existing tags from files and folders
     And the user has created a "normal" tag with name "random"
     And the user has added tag "random" to file "a-folder/randomfile.txt"
     When the user browses directly to display the details of file "randomfile.txt" in folder "a-folder"
-    And the user switches to "tags" tab in details panel using the webUI
+    And the user switches to the "tags" tab in the details panel using the webUI
     And the user toggles a tag "random" on the file using the webUI
     Then file "a-folder/randomfile.txt" should have no tags for user "Alice"
 
@@ -25,7 +25,7 @@ Feature: Removal of already existing tags from files and folders
     And the user has created a "normal" tag with name "random"
     And the user has added tag "random" to file "randomfile.txt"
     When the user browses directly to display the details of file "randomfile.txt" in folder "/"
-    And the user switches to "tags" tab in details panel using the webUI
+    And the user switches to the "tags" tab in the details panel using the webUI
     And the user toggles a tag "random" on the file using the webUI
     Then file "randomfile.txt" should have no tags for user "Alice"
 
@@ -36,7 +36,7 @@ Feature: Removal of already existing tags from files and folders
     And the user has added tag "random" to file "randomfile.txt"
     And the user has added tag "Confidential" to file "randomfile.txt"
     When the user browses directly to display the details of file "randomfile.txt" in folder "/"
-    And the user switches to "tags" tab in details panel using the webUI
+    And the user switches to the "tags" tab in the details panel using the webUI
     And the user toggles a tag "random" on the file using the webUI
     And the user toggles a tag "Confidential" on the file using the webUI
     Then file "randomfile.txt" should have no tags for user "Alice"
@@ -53,7 +53,7 @@ Feature: Removal of already existing tags from files and folders
       | name | type   |
       | tag1 | normal |
     When the user browses directly to display the details of file "coolnewfile.txt" in folder "/"
-    And the user switches to "tags" tab in details panel using the webUI
+    And the user switches to the "tags" tab in the details panel using the webUI
     And the user toggles a tag "tag1" on the file using the webUI
     Then file "coolnewfile.txt" should have no tags for user "Brian"
     And file "coolnewfile.txt" should have no tags for user "Alice"
@@ -71,7 +71,7 @@ Feature: Removal of already existing tags from files and folders
       | tag1 | normal |
     When the user re-logs in with username "Alice" using the webUI
     And the user browses directly to display the details of file "coolnewfile.txt" in folder "/"
-    And the user switches to "tags" tab in details panel using the webUI
+    And the user switches to the "tags" tab in the details panel using the webUI
     And the user toggles a tag "tag1" on the file using the webUI
     Then file "coolnewfile.txt" should have no tags for user "Brian"
     And file "coolnewfile.txt" should have no tags for user "Alice"
@@ -85,7 +85,7 @@ Feature: Removal of already existing tags from files and folders
     And the user has added tag "Confidential" to file "randomfile.txt"
     And the user has added tag "some-tag" to file "randomfile.txt"
     When the user browses directly to display the details of file "randomfile.txt" in folder "/"
-    And the user switches to "tags" tab in details panel using the webUI
+    And the user switches to the "tags" tab in the details panel using the webUI
     And the user toggles a tag "random" on the file using the webUI
     And the user toggles a tag "Confidential" on the file using the webUI
     Then file "randomfile.txt" should have the following tags for user "Alice"
@@ -97,7 +97,7 @@ Feature: Removal of already existing tags from files and folders
     And the user has created a "normal" tag with name "random"
     And the user has added tag "random" to file "randomfile.txt"
     When the user browses directly to display the details of file "randomfile.txt" in folder "/"
-    And the user switches to "tags" tab in details panel using the webUI
+    And the user switches to the "tags" tab in the details panel using the webUI
     And the user toggles a tag "random" on the file using the webUI
     And the user adds a tag "some-tag" to the file using the webUI
     Then file "randomfile.txt" should have the following tags for user "Alice"
