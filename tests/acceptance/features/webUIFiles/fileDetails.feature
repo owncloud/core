@@ -17,11 +17,11 @@ Feature: User can open the details panel for any file or folder
     And the user clicks the details file action on the webUI
     Then the details dialog should be visible on the webUI
     And the thumbnail should be visible in the details panel
-    When the user switches to "sharing" tab in details panel using the webUI
+    When the user switches to the "sharing" tab in the details panel using the webUI
     Then the "sharing" details panel should be visible
-    When the user switches to "comments" tab in details panel using the webUI
+    When the user switches to the "comments" tab in the details panel using the webUI
     Then the "comments" details panel should be visible
-    When the user switches to "versions" tab in details panel using the webUI
+    When the user switches to the "versions" tab in the details panel using the webUI
     Then the "versions" details panel should be visible
 
   @comments-app-required @files_versions-app-required @files_sharing-app-required
@@ -34,11 +34,11 @@ Feature: User can open the details panel for any file or folder
     And the user clicks the details file action on the webUI
     Then the details dialog should be visible on the webUI
     And the thumbnail should be visible in the details panel
-    When the user switches to "sharing" tab in details panel using the webUI
+    When the user switches to the "sharing" tab in the details panel using the webUI
     Then the "sharing" details panel should be visible
-    When the user switches to "comments" tab in details panel using the webUI
+    When the user switches to the "comments" tab in the details panel using the webUI
     Then the "comments" details panel should be visible
-    When the user switches to "versions" tab in details panel using the webUI
+    When the user switches to the "versions" tab in the details panel using the webUI
     Then the "versions" details panel should be visible
 
   @comments-app-required @public_link_share-feature-required @files_sharing-app-required
@@ -52,9 +52,9 @@ Feature: User can open the details panel for any file or folder
     And the user clicks the details file action on the webUI
     Then the details dialog should be visible on the webUI
     And the thumbnail should be visible in the details panel
-    When the user switches to "sharing" tab in details panel using the webUI
+    When the user switches to the "sharing" tab in the details panel using the webUI
     Then the "sharing" details panel should be visible
-    When the user switches to "comments" tab in details panel using the webUI
+    When the user switches to the "comments" tab in the details panel using the webUI
     Then the "comments" details panel should be visible
 
   @comments-app-required @files_sharing-app-required
@@ -69,9 +69,9 @@ Feature: User can open the details panel for any file or folder
     And the user clicks the details file action on the webUI
     Then the details dialog should be visible on the webUI
     And the thumbnail should be visible in the details panel
-    When the user switches to "sharing" tab in details panel using the webUI
+    When the user switches to the "sharing" tab in the details panel using the webUI
     Then the "sharing" details panel should be visible
-    When the user switches to "comments" tab in details panel using the webUI
+    When the user switches to the "comments" tab in the details panel using the webUI
     Then the "comments" details panel should be visible
 
   @comments-app-required @files_sharing-app-required
@@ -86,9 +86,9 @@ Feature: User can open the details panel for any file or folder
     And the user clicks the details file action on the webUI
     Then the details dialog should be visible on the webUI
     And the thumbnail should be visible in the details panel
-    When the user switches to "sharing" tab in details panel using the webUI
+    When the user switches to the "sharing" tab in the details panel using the webUI
     Then the "sharing" details panel should be visible
-    When the user switches to "comments" tab in details panel using the webUI
+    When the user switches to the "comments" tab in the details panel using the webUI
     Then the "comments" details panel should be visible
 
   @comments-app-required @files_sharing-app-required
@@ -104,9 +104,9 @@ Feature: User can open the details panel for any file or folder
     And the user clicks the details file action on the webUI
     Then the details dialog should be visible on the webUI
     And the thumbnail should be visible in the details panel
-    When the user switches to "sharing" tab in details panel using the webUI
+    When the user switches to the "sharing" tab in the details panel using the webUI
     Then the "sharing" details panel should be visible
-    When the user switches to "comments" tab in details panel using the webUI
+    When the user switches to the "comments" tab in the details panel using the webUI
     Then the "comments" details panel should be visible
 
   Scenario Outline: Breadcrumb through folders
