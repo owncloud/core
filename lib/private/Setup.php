@@ -489,7 +489,7 @@ class Setup {
 			$content .= "\n  RewriteRule ^favicon.ico$ core/img/favicon.ico [L]";
 			$content .= "\n  RewriteRule ^core/js/oc.js$ index.php [PT,E=PATH_INFO:$1]";
 			$content .= "\n  RewriteRule ^core/preview.png$ index.php [PT,E=PATH_INFO:$1]";
-			$content .= "\n  RewriteCond %{REQUEST_FILENAME} !\\.(css|js|svg|gif|png|html|ttf|woff|ico|jpg|jpeg|json)$";
+			$content .= "\n  RewriteCond %{REQUEST_FILENAME} !\\.(css|js|svg|gif|png|html|ttf|woff|ico|jpg|jpeg|json|properties)$";
 			$content .= "\n  RewriteCond %{REQUEST_FILENAME} !core/img/favicon.ico$";
 			$content .= "\n  RewriteCond %{REQUEST_FILENAME} !/robots.txt";
 			$content .= "\n  RewriteCond %{REQUEST_FILENAME} !/remote.php";
