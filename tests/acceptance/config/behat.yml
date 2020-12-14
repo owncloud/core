@@ -584,6 +584,7 @@ default:
         - OccContext:
         - PublicWebDavContext:
         - TUSContext:
+        - FilesVersionsContext:
 
     apiWebdavEtagPropagation1:
       paths:
