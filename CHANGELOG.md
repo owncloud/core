@@ -815,6 +815,7 @@ Details
 
    https://github.com/owncloud/core/pull/38199
    https://github.com/owncloud/core/pull/38201
+   https://github.com/owncloud/core/pull/38212
 
 * Enhancement - Cleanup encryption config values on disabling encryption: [#35980](https://github.com/owncloud/core/pull/35980)
 
