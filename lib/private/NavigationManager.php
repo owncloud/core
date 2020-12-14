@@ -207,7 +207,7 @@ class NavigationManager implements INavigationManager {
 			$label = $this->config->getSystemValue($webIconLabel, $l->t('New Design'));
 			$this->add([
 				'id' => 'web',
-				'href' => $webBaseUrl,
+				'href' => \rtrim($webBaseUrl, '/') . '/index.html',
 				'name' => $label,
 				'icon' => $iconPath,
 				'order' => 99
