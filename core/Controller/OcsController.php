@@ -80,7 +80,6 @@ class OcsController extends \OCP\AppFramework\OCSController {
 
 	/**
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 * @PublicPage
 	 *
 	 * @param string $login
@@ -108,7 +107,6 @@ class OcsController extends \OCP\AppFramework\OCSController {
 	 * test: curl http://login:passwd@oc/core/ocs/v1.php/privatedata/getattribute
 	 *
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 *
 	 * @return Result
 	 */
@@ -121,7 +119,6 @@ class OcsController extends \OCP\AppFramework\OCSController {
 	 * test: curl http://login:passwd@oc/core/ocs/v1.php/privatedata/getattribute/testy
 	 *
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 *
 	 * @param string $app
 	 *
@@ -136,7 +133,6 @@ class OcsController extends \OCP\AppFramework\OCSController {
 	 * test: curl http://login:passwd@oc/core/ocs/v1.php/privatedata/getattribute/testy/123
 	 *
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 *
 	 * @param string $app
 	 * @param string|null $key
@@ -175,7 +171,6 @@ class OcsController extends \OCP\AppFramework\OCSController {
 	 * test: curl http://login:passwd@oc/core/ocs/v1.php/privatedata/setattribute/testy/123  --data "value=foobar"
 	 *
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 *
 	 * @param string $app
 	 * @param string $key
@@ -211,7 +206,6 @@ class OcsController extends \OCP\AppFramework\OCSController {
 	 * test: curl http://login:passwd@oc/core/ocs/v1.php/privatedata/deleteattribute/testy/123 --data "post=1"
 	 *
 	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 *
 	 * @param string $app
 	 * @param string $key
