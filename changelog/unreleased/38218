@@ -1,0 +1,8 @@
+Enhancement: Improve error messages for invalid file names
+
+When using blacklisted or excluded filenames, you just get a default error
+message that you do not have permissions to write there (basis is 403). This is
+confusing because of the missing reason. Applies when you drag and drop a file
+into the browser. With this change, a proper error message is shown to the user.
+
+https://github.com/owncloud/core/pull/38218

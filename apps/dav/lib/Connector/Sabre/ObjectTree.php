@@ -64,9 +64,9 @@ class ObjectTree extends \Sabre\DAV\Tree {
 		\Sabre\DAV\INode $rootNode,
 		\OC\Files\View $view,
 		\OCP\Files\Mount\IMountManager $mountManager) {
-			$this->rootNode = $rootNode;
-			$this->fileView = $view;
-			$this->mountManager = $mountManager;
+		$this->rootNode = $rootNode;
+		$this->fileView = $view;
+		$this->mountManager = $mountManager;
 	}
 
 	/**

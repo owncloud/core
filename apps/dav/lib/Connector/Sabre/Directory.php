@@ -123,7 +123,6 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 	 * @throws ServiceUnavailable
 	 */
 	public function createFile($name, $data = null) {
-
 		try {
 			# the check here is necessary, because createFile uses put covered in sabre/file.php
 			# and not touch covered in files/view.php
@@ -190,7 +189,6 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 	 * @throws SabreServiceUnavailable
 	 */
 	public function createDirectory($name) {
-
 		try {
 			# the check here is necessary, because createDirectory does not use the methods in files/view.php
 			if (Filesystem::isForbiddenFileOrDir($name)) {
