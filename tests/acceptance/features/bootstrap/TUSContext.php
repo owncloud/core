@@ -185,9 +185,13 @@ class TUSContext implements Context {
 		string $user, string $content, string $destination
 	) {
 		$tmpfname = $this->writeDataToTempFile($content);
-		$this->userUploadsUsingTusAFileTo(
-			$user, \basename($tmpfname), $destination
-		);
+		try {
+			$this->userUploadsUsingTusAFileTo(
+				$user, \basename($tmpfname), $destination
+			);
+		} catch (Exception $e) {
+			Assert::assertStringContainsString('TusPhp\Exception\FileException: Unable to create resource', $e);
+		}
 		\unlink($tmpfname);
 	}
 
