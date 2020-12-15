@@ -603,11 +603,12 @@ class AuthContext implements Context {
 	 * @param string|null $authHeader
 	 * @param bool $useCookies
 	 * @param string $body
+	 * @param array $headers
 	 *
 	 * @return void
 	 */
 	public function sendRequest(
-		$url, $method, $authHeader = null, $useCookies = false, $body = null
+		$url, $method, $authHeader = null, $useCookies = false, $body = null, $headers = []
 	) {
 		// reset responseXml
 		$this->featureContext->setResponseXml([]);
@@ -619,7 +620,6 @@ class AuthContext implements Context {
 			$cookies = $this->featureContext->getCookieJar();
 		}
 
-		$headers = [];
 		if ($authHeader) {
 			$headers['Authorization'] = $authHeader;
 		}
@@ -766,6 +766,36 @@ class AuthContext implements Context {
 		}
 		$this->sendRequest(
 			$url, $method, 'basic ' . \base64_encode($authString), false, $body
+		);
+	}
+
+	/**
+	 * @When user :user requests :url with :method using basic auth and with headers
+	 *
+	 * @param string $user
+	 * @param string $url
+	 * @param string $method
+	 * @param TableNode $headersTable
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userRequestsURLWithUsingBasicAuthAndDepthHeader($user, $url, $method, TableNode $headersTable) {
+		$user = $this->featureContext->getActualUsername($user);
+		$authString = "$user:" . $this->featureContext->getPasswordForUser($user);
+		$url = $this->featureContext->substituteInLineCodes(
+			$url, $user
+		);
+		$this->featureContext->verifyTableNodeColumns(
+			$headersTable,
+			['header', 'value']
+		);
+		$headers = [];
+		foreach ($headersTable as $row) {
+			$headers[$row['header']] = $row ['value'];
+		}
+		$this->sendRequest(
+			$url, $method, 'basic ' . \base64_encode($authString), false, null, $headers
 		);
 	}
 
