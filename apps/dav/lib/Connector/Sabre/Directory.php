@@ -36,6 +36,7 @@ use OC\Files\Mount\MoveableMount;
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
+use OCA\DAV\Connector\Sabre\Exception\ServiceUnavailable;
 use OCA\DAV\TrashBin\ITrashBinNode;
 use OCA\DAV\Upload\FutureFile;
 use OCP\Files\FileContentNotAllowedException;
@@ -123,17 +124,11 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 	 */
 	public function createFile($name, $data = null) {
 
-		# the check here is necessary, because createFile uses put covered in sabre/file.php
-		# and not touch covered in files/view.php
-		if (Filesystem::isForbiddenFileOrDir($name)) {
-			throw new SabreForbidden();
-		}
-
 		try {
 			# the check here is necessary, because createFile uses put covered in sabre/file.php
 			# and not touch covered in files/view.php
 			if (Filesystem::isForbiddenFileOrDir($name)) {
-				throw new SabreForbidden();
+				throw new ServiceUnavailable('Excluded or Blacklisted name: ' . $sname);
 			}
 
 			$info = false;
@@ -196,25 +191,20 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 	 */
 	public function createDirectory($name) {
 
-		# the check here is necessary, because createDirectory does not use the methods in files/view.php
-		if (Filesystem::isForbiddenFileOrDir($name)) {
-			throw new SabreForbidden();
-		}
-
 		try {
 			# the check here is necessary, because createDirectory does not use the methods in files/view.php
 			if (Filesystem::isForbiddenFileOrDir($name)) {
-				throw new SabreForbidden();
+				throw new ServiceUnavailable('Excluded or Blacklisted name: ' . $sname);
 			}
 
 			if (!$this->info->isCreatable()) {
-				throw new SabreForbidden();
+				throw new ServiceUnavailable('Directory seems to be write protected');
 			}
 
 			$this->fileView->verifyPath($this->path, $name);
 			$newPath = $this->path . '/' . $name;
 			if (!$this->fileView->mkdir($newPath)) {
-				throw new SabreForbidden('Could not create directory ' . $newPath);
+				throw new ServiceUnavailable('Could not create directory: ' . $newPath);
 			}
 		} catch (StorageNotAvailableException $e) {
 			throw new SabreServiceUnavailable($e->getMessage());
@@ -419,14 +409,14 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 		}
 
 		if (!$this->fileView) {
-			throw new SabreServiceUnavailable('filesystem not setup');
+			throw new SabreServiceUnavailable('Filesystem Not Setup');
 		}
 
 		$destinationPath = $this->getPath() . '/' . $targetName;
 
 		# check the destination path, for source see below
 		if (Filesystem::isForbiddenFileOrDir($destinationPath)) {
-			throw new SabreForbidden();
+			throw new SabreForbidden('Excluded or Blacklisted name: ' . $destinationPath);
 		}
 
 		$targetNodeExists = $this->childExists($targetName);

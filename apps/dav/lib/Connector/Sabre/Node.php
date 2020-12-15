@@ -38,6 +38,7 @@ use OC\Files\Mount\MoveableMount;
 use OC\Lock\Persistent\Lock;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
+use OCA\DAV\Connector\Sabre\Exception\ServiceUnavailable;
 use OCP\Files\ForbiddenException;
 use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\Share\Exceptions\ShareNotFound;
@@ -120,6 +121,7 @@ abstract class Node implements \Sabre\DAV\INode {
 	 * @param string $name The new name
 	 * @throws \Sabre\DAV\Exception\BadRequest
 	 * @throws \Sabre\DAV\Exception\Forbidden
+	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
 	 * @throws InvalidPath
 	 */
 	public function setName($name) {
@@ -137,7 +139,7 @@ abstract class Node implements \Sabre\DAV\INode {
 
 		// verify path of target
 		if (\OC\Files\Filesystem::isForbiddenFileOrDir($parentPath . '/' . $newName)) {
-			throw new \Sabre\DAV\Exception\Forbidden();
+			throw new \Sabre\DAV\Exception\ServiceUnavailable('Excluded or Blacklisted name: ' . $parentPath . '/' . $newName);
 		}
 
 		try {
@@ -354,7 +356,7 @@ abstract class Node implements \Sabre\DAV\INode {
 
 	protected function verifyPath() {
 		if (\OC\Files\Filesystem::isForbiddenFileOrDir($this->info->getPath())) {
-			throw new \Sabre\DAV\Exception\Forbidden();
+			throw new \Sabre\DAV\Exception\ServiceUnavailable('Excluded or Blacklisted name: ' . $this->info->getPath());
 		}
 
 		try {

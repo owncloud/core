@@ -139,7 +139,7 @@ class CertificateManager implements ICertificateManager {
 	 */
 	public function addCertificate($certificate, $name) {
 		if (!Filesystem::isValidPath($name) or Filesystem::isForbiddenFileOrDir($name)) {
-			throw new \Exception('Filename is not valid');
+			throw new \Exception('Invalid path or Excluded or Blacklisted name: ' . $sname);
 		}
 
 		$dir = $this->getPathToCertificates() . 'uploads/';

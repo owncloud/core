@@ -31,6 +31,7 @@ use OC\Files\FileInfo;
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
+use OCA\DAV\Connector\Sabre\Exception\ServiceUnavailable;
 use OCP\Files\ForbiddenException;
 use OCP\Files\StorageInvalidException;
 use OCP\Files\StorageNotAvailableException;
@@ -57,12 +58,15 @@ class ObjectTree extends \Sabre\DAV\Tree {
 	/**
 	 * @param \Sabre\DAV\INode $rootNode
 	 * @param \OC\Files\View $view
-	 * @param  \OCP\Files\Mount\IMountManager $mountManager
+	 * @param \OCP\Files\Mount\IMountManager $mountManager
 	 */
-	public function init(\Sabre\DAV\INode $rootNode, \OC\Files\View $view, \OCP\Files\Mount\IMountManager $mountManager) {
-		$this->rootNode = $rootNode;
-		$this->fileView = $view;
-		$this->mountManager = $mountManager;
+	public function init(
+		\Sabre\DAV\INode $rootNode,
+		\OC\Files\View $view,
+		\OCP\Files\Mount\IMountManager $mountManager) {
+			$this->rootNode = $rootNode;
+			$this->fileView = $view;
+			$this->mountManager = $mountManager;
 	}
 
 	/**
@@ -127,7 +131,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 	 */
 	public function getNodeForPath($path) {
 		if (!$this->fileView) {
-			throw new \Sabre\DAV\Exception\ServiceUnavailable('filesystem not setup');
+			throw new \Sabre\DAV\Exception\ServiceUnavailable('Filesystem Not Setup');
 		}
 
 		$path = \trim($path, '/');
@@ -138,7 +142,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 
 		// check the path, also called when the path has been entered manually eg via a file explorer
 		if (\OC\Files\Filesystem::isForbiddenFileOrDir($path)) {
-			throw new \Sabre\DAV\Exception\Forbidden();
+			throw new \Sabre\DAV\Exception\ServiceUnavailable('Excluded or Blacklisted name: ' . $path);
 		}
 
 		if ($path !== '') {
@@ -216,12 +220,12 @@ class ObjectTree extends \Sabre\DAV\Tree {
 	 */
 	public function copy($source, $destination) {
 		if (!$this->fileView) {
-			throw new \Sabre\DAV\Exception\ServiceUnavailable('filesystem not setup');
+			throw new \Sabre\DAV\Exception\ServiceUnavailable('Filesystem Not Setup');
 		}
 
 		# check the destination path, for source see below
 		if (\OC\Files\Filesystem::isForbiddenFileOrDir($destination)) {
-			throw new \Sabre\DAV\Exception\Forbidden();
+			throw new \Sabre\DAV\Exception\ServiceUnavailable($destination);
 		}
 
 		// at getNodeForPath we also check the path for isForbiddenFileOrDir
