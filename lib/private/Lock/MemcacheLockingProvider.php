@@ -76,11 +76,15 @@ class MemcacheLockingProvider extends AbstractLockingProvider {
 			throw new \InvalidArgumentException('Lock key length too long');
 		}
 		if ($type === self::LOCK_SHARED) {
-			if (!$this->memcache->inc($path)) {
+			if ($this->memcache->inc($path) === false) {
+				// "inc" will return false if the key has "exclusive" (or a non-integer) as value
 				throw new LockedException($path);
 			}
 		} else {
 			$this->memcache->add($path, 0);
+			// (wrongly-named) "add" will set a 0 if the key doesn't exists
+			// in case a shared lock is acquired exactly at this time, this exclusive lock will
+			// return a LockedException, which is fine.
 			if (!$this->memcache->cas($path, 0, 'exclusive')) {
 				throw new LockedException($path);
 			}
@@ -95,15 +99,8 @@ class MemcacheLockingProvider extends AbstractLockingProvider {
 	 */
 	public function releaseLock($path, $type) {
 		if ($type === self::LOCK_SHARED) {
-			if ($this->getOwnSharedLockCount($path) === 1) {
-				$removed = $this->memcache->cad($path, 1); // if we're the only one having a shared lock we can remove it in one go
-				if (!$removed) { //someone else also has a shared lock, decrease only
-					$this->memcache->dec($path);
-				}
-			} else {
-				// if we own more than one lock ourselves just decrease
-				$this->memcache->dec($path);
-			}
+			$this->memcache->dec($path);
+			$this->memcache->cad($path, 0);  // remove only if there is no more
 		} elseif ($type === self::LOCK_EXCLUSIVE) {
 			$this->memcache->cad($path, 'exclusive');
 		}
@@ -118,6 +115,8 @@ class MemcacheLockingProvider extends AbstractLockingProvider {
 	 * @throws \OCP\Lock\LockedException
 	 */
 	public function changeLock($path, $targetType) {
+		// TODO: We MUST ensure we have a lock acquired before using this function
+		// If a different process changes the lock type we could break things
 		if ($targetType === self::LOCK_SHARED) {
 			if (!$this->memcache->cas($path, 'exclusive', 1)) {
 				throw new LockedException($path);

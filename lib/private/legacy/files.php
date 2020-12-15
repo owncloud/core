@@ -333,8 +333,7 @@ class OC_Files {
 	 */
 	public static function lockFiles($view, $dir, $files) {
 		if (!\is_array($files)) {
-			$file = $dir . '/' . $files;
-			$files = [$file];
+			$files = [$files];
 		}
 		foreach ($files as $file) {
 			$file = $dir . '/' . $file;
