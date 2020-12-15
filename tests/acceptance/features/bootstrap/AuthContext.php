@@ -603,11 +603,12 @@ class AuthContext implements Context {
 	 * @param string|null $authHeader
 	 * @param bool $useCookies
 	 * @param string $body
+	 * @param array $headers
 	 *
 	 * @return void
 	 */
 	public function sendRequest(
-		$url, $method, $authHeader = null, $useCookies = false, $body = null, $headers = null
+		$url, $method, $authHeader = null, $useCookies = false, $body = null, $headers = []
 	) {
 		// reset responseXml
 		$this->featureContext->setResponseXml([]);
