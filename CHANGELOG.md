@@ -3,7 +3,135 @@ Changelog for ownCloud Core [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.5.0...master
+[unreleased]: https://github.com/owncloud/core/compare/v10.6.0...master
+
+Summary
+-------
+
+* Bugfix - Fix some code smells reported by SonarCloud: [#38147](https://github.com/owncloud/core/pull/38147)
+* Bugfix - Don't redirect if the browser ask for a .properties file: [#38181](https://github.com/owncloud/core/pull/38181)
+* Bugfix - Show the share list even if some shares point to unavailable storages: [#38190](https://github.com/owncloud/core/pull/38190)
+* Change - Update Symfony components to 4.4.17: [#38163](https://github.com/owncloud/core/pull/38163)
+* Change - Update laminas/laminas-servicemanager (3.5.1 => 3.4.1): [#38187](https://github.com/owncloud/core/pull/38187)
+* Change - Update nikic/php-parser (4.10.2 => 4.10.3): [#38191](https://github.com/owncloud/core/pull/38191)
+* Change - Update swiftmailer/swiftmailer (v6.2.3 => v6.2.4): [#38198](https://github.com/owncloud/core/pull/38198)
+* Change - Rename phoenix to web: [#38199](https://github.com/owncloud/core/pull/38199)
+* Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
+* Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
+* Enhancement - Make the right scrollbar more visible on the UI: [#38183](https://github.com/owncloud/core/pull/38183)
+* Enhancement - Improve file list tag management: [#38197](https://github.com/owncloud/core/pull/38197)
+
+Details
+-------
+
+* Bugfix - Fix some code smells reported by SonarCloud: [#38147](https://github.com/owncloud/core/pull/38147)
+
+   https://github.com/owncloud/core/pull/38147
+
+* Bugfix - Don't redirect if the browser ask for a .properties file: [#38181](https://github.com/owncloud/core/pull/38181)
+
+   In order to provide translations, the files_pdfviewer app requested a .properties file. This
+   request failed because the server redirected it to the default page (the files view), so the app
+   couldn't get the translations
+
+   This redirection doesn't happen any longer, and the app can translate the UI elements now.
+
+   https://github.com/owncloud/core/pull/38181
+
+* Bugfix - Show the share list even if some shares point to unavailable storages: [#38190](https://github.com/owncloud/core/pull/38190)
+
+   Previously, if some shares pointed to file nodes that belonged to unavailable storages, the
+   share list wouldn't show any share due to the exception not being handled correctly.
+
+   Now, the exception is handled. The affected shares will be ignored (an error message will
+   appear in the log with the exception), and the rest of the shares will show in the web UI.
+
+   Note that the steps to reproduce the problem are still unclear, and it might be impossible to
+   reproduce the issue using recent ownCloud versions. So far, not only it seems required to have a
+   share pointing to an unavailable storage, but also there has to be a pending modification for
+   ownCloud to scan the file. Such conditions shouldn't be possible at the same time.
+
+   https://github.com/owncloud/core/pull/38190
+
+* Change - Update Symfony components to 4.4.17: [#38163](https://github.com/owncloud/core/pull/38163)
+
+   The following Symfony components have been updated to version 4.4.17 - console -
+   event-dispatcher - process - routing - translation
+
+   https://github.com/owncloud/core/pull/38163
+   https://symfony.com/blog/symfony-4-4-17-released
+
+* Change - Update laminas/laminas-servicemanager (3.5.1 => 3.4.1): [#38187](https://github.com/owncloud/core/pull/38187)
+
+   https://github.com/owncloud/core/pull/38187
+
+* Change - Update nikic/php-parser (4.10.2 => 4.10.3): [#38191](https://github.com/owncloud/core/pull/38191)
+
+   https://github.com/owncloud/core/pull/38191
+
+* Change - Update swiftmailer/swiftmailer (v6.2.3 => v6.2.4): [#38198](https://github.com/owncloud/core/pull/38198)
+
+   https://github.com/owncloud/core/pull/38198
+
+* Change - Rename phoenix to web: [#38199](https://github.com/owncloud/core/pull/38199)
+
+   Phoenix has been renamed to Web. You can now set these keys in config.php to control Web:
+
+   - web.baseUrl - web.icon - web.label
+
+   https://github.com/owncloud/core/pull/38199
+   https://github.com/owncloud/core/pull/38201
+   https://github.com/owncloud/core/pull/38212
+
+* Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
+
+   This new external storage allows the shared use of SMB/CIFS shares among users. Independent of
+   the use all files and folders will have the same file id. This allows better collaboration
+   especially in the area of tagging, comments, private links and any document collaboration
+   like Office Online Server, Collabora and OnlyOffice.
+
+   https://github.com/owncloud/core/pull/38151
+
+* Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
+
+   You can now define a subfolder from your Google Drive when mounting. This gives the ability to:
+   subfolder = empty (like you have it without this enhancment) subfolder = name subfolder =
+   name/$user When using encryption, only the subfolder when used gets encrypted.
+
+   https://github.com/owncloud/core/pull/38161
+   https://github.com/owncloud/core/pull/38192
+
+* Enhancement - Make the right scrollbar more visible on the UI: [#38183](https://github.com/owncloud/core/pull/38183)
+
+   https://github.com/owncloud/core/pull/38183
+   The
+   scrollbar
+   has
+   been
+   made
+   wider
+   and
+   darker.
+
+* Enhancement - Improve file list tag management: [#38197](https://github.com/owncloud/core/pull/38197)
+
+   1. Introduce a new tab, where the tag input field will be displayed 1.1 Keyboard navigation in
+   the input field's dropdown works now proper, in the past the user needed to hover over on item in
+   the dropdown before the arrow keys could be used
+
+   2. Replace the tag input field in the file list by a read only tag list 2.1 Improving tag
+   appearance to clarify that these are tags and no shares 2.2 Clicking on a tag opens the tag tab 2.3
+   Tag tab and tag list are in sync, means that editing (select, unselect, rename, remove) tags
+   will appear in the tag list immediately
+
+   https://github.com/owncloud/core/pull/38197
+
+Changelog for ownCloud Core [10.6.0] (2020-11-25)
+=======================================
+The following sections list the changes in ownCloud core 10.6.0 relevant to
+ownCloud admins and users.
+
+[10.6.0]: https://github.com/owncloud/core/compare/v10.5.0...v10.6.0
 
 Summary
 -------
@@ -46,9 +174,6 @@ Summary
 * Bugfix - Prevent server error when loading invalid/corrupt translations: [#37799](https://github.com/owncloud/core/issues/37799)
 * Bugfix - SSL check when adding a public link to your ownCloud: [#4241](https://github.com/owncloud/enterprise/issues/4241)
 * Bugfix - Fix translations of some strings in settings: [#38119](https://github.com/owncloud/core/pull/38119)
-* Bugfix - Fix some code smells reported by SonarCloud: [#38147](https://github.com/owncloud/core/pull/38147)
-* Bugfix - Don't redirect if the browser ask for a .properties file: [#38181](https://github.com/owncloud/core/pull/38181)
-* Bugfix - Show the share list even if some shares point to unavailable storages: [#38190](https://github.com/owncloud/core/pull/38190)
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 * Change - Update sabre dependencies: [#37684](https://github.com/owncloud/core/pull/37684)
 * Change - Update google/apiclient from 2.5.0 to 2.6.0 and related dependencies: [#37687](https://github.com/owncloud/core/pull/37687)
@@ -101,10 +226,6 @@ Summary
 * Change - Update sabre/dav (4.1.2 => 4.1.3): [#38092](https://github.com/owncloud/core/pull/38092)
 * Change - Update egulias/email-validator (2.1.23 => 2.1.24): [#38116](https://github.com/owncloud/core/pull/38116)
 * Change - Update pear/archive_tar (1.4.10 => 1.4.11): [#38137](https://github.com/owncloud/core/pull/38137)
-* Change - Update Symfony components to 4.4.17: [#38163](https://github.com/owncloud/core/pull/38163)
-* Change - Update laminas/laminas-servicemanager (3.5.1 => 3.4.1): [#38187](https://github.com/owncloud/core/pull/38187)
-* Change - Update nikic/php-parser (4.10.2 => 4.10.3): [#38191](https://github.com/owncloud/core/pull/38191)
-* Change - Update swiftmailer/swiftmailer (v6.2.3 => v6.2.4): [#38198](https://github.com/owncloud/core/pull/38198)
 * Change - Rename phoenix to web: [#38199](https://github.com/owncloud/core/pull/38199)
 * Enhancement - Cleanup encryption config values on disabling encryption: [#35980](https://github.com/owncloud/core/pull/35980)
 * Enhancement - Add support for date expiration on remote shares: [#37548](https://github.com/owncloud/core/pull/37548)
@@ -114,10 +235,6 @@ Summary
 * Enhancement - Allow getting the share list filtered by share type via API: [#38000](https://github.com/owncloud/core/pull/38000)
 * Enhancement - GetShare API request's "subfiles" parameter allows new interactions: [#38053](https://github.com/owncloud/core/pull/38053)
 * Enhancement - Add new method in the PHP API interface: [#38054](https://github.com/owncloud/core/pull/38054)
-* Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
-* Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
-* Enhancement - Make the right scrollbar more visible on the UI: [#38183](https://github.com/owncloud/core/pull/38183)
-* Enhancement - Improve file list tag management: [#38197](https://github.com/owncloud/core/pull/38197)
 
 Details
 -------
@@ -454,35 +571,6 @@ Details
 
    https://github.com/owncloud/core/pull/38119
 
-* Bugfix - Fix some code smells reported by SonarCloud: [#38147](https://github.com/owncloud/core/pull/38147)
-
-   https://github.com/owncloud/core/pull/38147
-
-* Bugfix - Don't redirect if the browser ask for a .properties file: [#38181](https://github.com/owncloud/core/pull/38181)
-
-   In order to provide translations, the files_pdfviewer app requested a .properties file. This
-   request failed because the server redirected it to the default page (the files view), so the app
-   couldn't get the translations
-
-   This redirection doesn't happen any longer, and the app can translate the UI elements now.
-
-   https://github.com/owncloud/core/pull/38181
-
-* Bugfix - Show the share list even if some shares point to unavailable storages: [#38190](https://github.com/owncloud/core/pull/38190)
-
-   Previously, if some shares pointed to file nodes that belonged to unavailable storages, the
-   share list wouldn't show any share due to the exception not being handled correctly.
-
-   Now, the exception is handled. The affected shares will be ignored (an error message will
-   appear in the log with the exception), and the rest of the shares will show in the web UI.
-
-   Note that the steps to reproduce the problem are still unclear, and it might be impossible to
-   reproduce the issue using recent ownCloud versions. So far, not only it seems required to have a
-   share pointing to an unavailable storage, but also there has to be a pending modification for
-   ownCloud to scan the file. Such conditions shouldn't be possible at the same time.
-
-   https://github.com/owncloud/core/pull/38190
-
 * Change - Update deepdiver/zipstreamer (1.1.1 => 2.0.0): [#37159](https://github.com/owncloud/core/issues/37159)
 
    https://github.com/owncloud/core/issues/37159
@@ -787,26 +875,6 @@ Details
 
    https://github.com/owncloud/core/pull/38137
 
-* Change - Update Symfony components to 4.4.17: [#38163](https://github.com/owncloud/core/pull/38163)
-
-   The following Symfony components have been updated to version 4.4.17 - console -
-   event-dispatcher - process - routing - translation
-
-   https://github.com/owncloud/core/pull/38163
-   https://symfony.com/blog/symfony-4-4-17-released
-
-* Change - Update laminas/laminas-servicemanager (3.5.1 => 3.4.1): [#38187](https://github.com/owncloud/core/pull/38187)
-
-   https://github.com/owncloud/core/pull/38187
-
-* Change - Update nikic/php-parser (4.10.2 => 4.10.3): [#38191](https://github.com/owncloud/core/pull/38191)
-
-   https://github.com/owncloud/core/pull/38191
-
-* Change - Update swiftmailer/swiftmailer (v6.2.3 => v6.2.4): [#38198](https://github.com/owncloud/core/pull/38198)
-
-   https://github.com/owncloud/core/pull/38198
-
 * Change - Rename phoenix to web: [#38199](https://github.com/owncloud/core/pull/38199)
 
    Phoenix has been renamed to Web. You can now set these keys in config.php to control Web:
@@ -909,49 +977,6 @@ Details
    The share manager interface in the PHP API has a new "getSharesByPath" method available
 
    https://github.com/owncloud/core/pull/38054
-
-* Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
-
-   This new external storage allows the shared use of SMB/CIFS shares among users. Independent of
-   the use all files and folders will have the same file id. This allows better collaboration
-   especially in the area of tagging, comments, private links and any document collaboration
-   like Office Online Server, Collabora and OnlyOffice.
-
-   https://github.com/owncloud/core/pull/38151
-
-* Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
-
-   You can now define a subfolder from your Google Drive when mounting. This gives the ability to:
-   subfolder = empty (like you have it without this enhancment) subfolder = name subfolder =
-   name/$user When using encryption, only the subfolder when used gets encrypted.
-
-   https://github.com/owncloud/core/pull/38161
-   https://github.com/owncloud/core/pull/38192
-
-* Enhancement - Make the right scrollbar more visible on the UI: [#38183](https://github.com/owncloud/core/pull/38183)
-
-   https://github.com/owncloud/core/pull/38183
-   The
-   scrollbar
-   has
-   been
-   made
-   wider
-   and
-   darker.
-
-* Enhancement - Improve file list tag management: [#38197](https://github.com/owncloud/core/pull/38197)
-
-   1. Introduce a new tab, where the tag input field will be displayed 1.1 Keyboard navigation in
-   the input field's dropdown works now proper, in the past the user needed to hover over on item in
-   the dropdown before the arrow keys could be used
-
-   2. Replace the tag input field in the file list by a read only tag list 2.1 Improving tag
-   appearance to clarify that these are tags and no shares 2.2 Clicking on a tag opens the tag tab 2.3
-   Tag tab and tag list are in sync, means that editing (select, unselect, rename, remove) tags
-   will appear in the tag list immediately
-
-   https://github.com/owncloud/core/pull/38197
 
 Changelog for ownCloud Core [10.5.0] (2020-07-31)
 =======================================
