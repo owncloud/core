@@ -39,15 +39,18 @@ class PersistentLocking implements ISettings {
 	}
 
 	public function getSectionID() {
-		return 'additional';
+		return 'general';
 	}
 
 	public function getPanel() {
+		$lockBreakerGroups = \json_decode($this->config->getAppValue('core', 'lock-breaker-groups', '[]'), true);
+
 		// we must use the same container
 		$tmpl = new Template('settings', 'panels/admin/persistentlocking');
 		$tmpl->assign('defaultTimeout', $this->config->getAppValue('core', 'lock_timeout_default', LockManager::LOCK_TIMEOUT_DEFAULT));
 		$tmpl->assign('maximumTimeout', $this->config->getAppValue('core', 'lock_timeout_max', LockManager::LOCK_TIMEOUT_MAX));
 		$tmpl->assign('manualFileLockOnClientsEnabled', $this->config->getAppValue('files', 'enable_lock_file_action', 'no'));
+		$tmpl->assign('lock-breaker-groups', \implode('|', $lockBreakerGroups));
 
 		return $tmpl;
 	}
