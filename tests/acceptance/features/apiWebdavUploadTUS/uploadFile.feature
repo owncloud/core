@@ -78,3 +78,44 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
+  Scenario Outline: upload a file and no version is available
+    Given using <dav_version> DAV path
+    When user "Alice" uploads file with content "uploaded content" to "/upload.txt" using the TUS protocol on the WebDAV API
+    Then the version folder of file "/upload.txt" for user "Alice" should contain "0" elements
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: upload a file twice and versions are available
+    Given using <dav_version> DAV path
+    When user "Alice" uploads file with content "uploaded content" to "/upload.txt" using the TUS protocol on the WebDAV API
+    And user "Alice" uploads file with content "re-uploaded content" to "/upload.txt" using the TUS protocol on the WebDAV API
+    Then the version folder of file "/upload.txt" for user "Alice" should contain "1" element
+    And the content of file "/upload.txt" for user "Alice" should be "re-uploaded content"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: upload a file in chunks with TUS and no version is available
+    Given using <dav_version> DAV path
+    When user "Alice" uploads file with content "0123456789" in 10 chunks to "/myChunkedFile.txt" using the TUS protocol on the WebDAV API
+    Then the version folder of file "/myChunkedFile.txt" for user "Alice" should contain "0" elements
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: upload a twice file in chunks with TUS and versions are available
+    Given using <dav_version> DAV path
+    When user "Alice" uploads file with content "0123456789" in 10 chunks to "/myChunkedFile.txt" using the TUS protocol on the WebDAV API
+    And user "Alice" uploads file with content "01234" in 5 chunks to "/myChunkedFile.txt" using the TUS protocol on the WebDAV API
+    Then the version folder of file "/myChunkedFile.txt" for user "Alice" should contain "1" elements
+    And the content of file "/myChunkedFile.txt" for user "Alice" should be "01234"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
