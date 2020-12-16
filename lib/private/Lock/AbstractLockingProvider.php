@@ -110,12 +110,14 @@ abstract class AbstractLockingProvider implements ILockingProvider {
 	 */
 	public function releaseAll() {
 		foreach ($this->acquiredLocks['shared'] as $path => $count) {
+			\OCP\Util::writeLog('core', "cleaning $count stray shared locks for $path", \OCP\Util::WARN);
 			for ($i = 0; $i < $count; $i++) {
 				$this->releaseLock($path, self::LOCK_SHARED);
 			}
 		}
 
 		foreach ($this->acquiredLocks['exclusive'] as $path => $hasLock) {
+			\OCP\Util::writeLog('core', "cleaning stray exclusive locks for $path", \OCP\Util::WARN);
 			$this->releaseLock($path, self::LOCK_EXCLUSIVE);
 		}
 	}
