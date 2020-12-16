@@ -1,5 +1,11 @@
 $(document).ready(function() {
 
+	var lockBreakersGroupsList = $('#lock_breakers_groups_list');
+	OC.Settings.setupGroupsSelect(lockBreakersGroupsList);
+	lockBreakersGroupsList.change(function(ev) {
+		OC.AppConfig.setValue('core', 'lock-breaker-groups', JSON.stringify(ev.val || []));
+	});
+
 	$('#persistentlocking input').change(function () {
 		var currentInput = $(this);
 		var name = currentInput.attr('name');
@@ -7,6 +13,10 @@ $(document).ready(function() {
 		var app = '';
 		var value = '';
 
+		// handled above
+		if (name === 'lock_breakers_groups_list') {
+			return;
+		}
 		if (name === 'enable_lock_file_action') {
 			app = 'files';
 			if (this.checked) {
