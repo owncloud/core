@@ -129,13 +129,14 @@ Feature: upload file
     And the following headers should not be set
       | header   |
       | Location |
+    And as "Alice" file <file_name> should not exist
     Examples:
-      | dav_version | metadata                     |
-      | old         | IA==                         |
-      | old         | ZmlsZXdpdGhMRi1hbmQtQ1INCgo= |
-      | old         | Zm9sZGVyL2ZpbGU=             |
-      | old         | bXkMaWxl                     |
-      | new         | IA==                         |
-      | new         | ZmlsZXdpdGhMRi1hbmQtQ1INCgo= |
-      | new         | Zm9sZGVyL2ZpbGU=             |
-      | new         | bXkMaWxl                     |
+      | dav_version | file_name               | metadata                     |
+      | old         | " "                     | IA==                         |
+      | old         | "filewithLF-and-CR\r\n" | ZmlsZXdpdGhMRi1hbmQtQ1INCgo= |
+      | old         | "folder/file"           | Zm9sZGVyL2ZpbGU=             |
+      | old         | "my\\file"              | bXkMaWxl                     |
+      | new         | " "                     | IA==                         |
+      | new         | "filewithLF-and-CR\r\n" | ZmlsZXdpdGhMRi1hbmQtQ1INCgo= |
+      | new         | "folder/file"           | Zm9sZGVyL2ZpbGU=             |
+      | new         | "my\\file"              | bXkMaWxl                     |
