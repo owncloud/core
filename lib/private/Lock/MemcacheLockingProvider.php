@@ -98,6 +98,11 @@ class MemcacheLockingProvider extends AbstractLockingProvider {
 	 * @param int $type self::LOCK_SHARED or self::LOCK_EXCLUSIVE
 	 */
 	public function releaseLock($path, $type) {
+		if (!$this->hasAcquiredLock($path, $type)) {
+			\OCP\Util::writeLog('core', "ignoring lock release with type $type for $path. Lock hasn't been acquired before", \OCP\Util::WARN);
+			return;
+		}
+
 		if ($type === self::LOCK_SHARED) {
 			$this->memcache->dec($path);
 			$this->memcache->cad($path, 0);  // remove only if there is no more
@@ -115,8 +120,11 @@ class MemcacheLockingProvider extends AbstractLockingProvider {
 	 * @throws \OCP\Lock\LockedException
 	 */
 	public function changeLock($path, $targetType) {
-		// TODO: We MUST ensure we have a lock acquired before using this function
-		// If a different process changes the lock type we could break things
+		if (!$this->hasAcquiredLock($path, $targetType)) {
+			\OCP\Util::writeLog('core', "ignoring lock change to type $targetType for $path. Lock hasn't been acquired before", \OCP\Util::WARN);
+			return;
+		}
+
 		if ($targetType === self::LOCK_SHARED) {
 			if (!$this->memcache->cas($path, 'exclusive', 1)) {
 				throw new LockedException($path);

@@ -290,7 +290,7 @@ class OC_Files {
 			} else {
 				$msg = 'Access denied';
 			}
-			\OC_Template::printErrorPage('Access denied', $message, 403);
+			\OC_Template::printErrorPage('Access denied', $msg, 403);
 			return;
 		}
 
