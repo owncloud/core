@@ -16,6 +16,7 @@ Summary
 * Change - Update nikic/php-parser (4.10.2 => 4.10.3): [#38191](https://github.com/owncloud/core/pull/38191)
 * Change - Update swiftmailer/swiftmailer (v6.2.3 => v6.2.4): [#38198](https://github.com/owncloud/core/pull/38198)
 * Change - Rename phoenix to web: [#38199](https://github.com/owncloud/core/pull/38199)
+* Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 * Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
 * Enhancement - Make the right scrollbar more visible on the UI: [#38183](https://github.com/owncloud/core/pull/38183)
@@ -82,6 +83,18 @@ Details
    https://github.com/owncloud/core/pull/38199
    https://github.com/owncloud/core/pull/38201
    https://github.com/owncloud/core/pull/38212
+
+* Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
+
+   When triggering the default action for a file which can be opened or edited with more than one
+   app, a new context menu is displayed. This menu will ask the user with which app the
+   corresponding file should be opened.
+
+   This also solves the problem with some apps which set themselves as default without asking or
+   even informing the user.
+
+   https://github.com/owncloud/enterprise/issues/4261
+   https://github.com/owncloud/core/pull/38132
 
 * Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
 
