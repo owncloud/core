@@ -31,14 +31,14 @@ class Google_Service_OSConfig_ListPatchDeploymentsResponse extends Google_Collec
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_OSConfig_PatchDeployment
+   * @param Google_Service_OSConfig_PatchDeployment[]
    */
   public function setPatchDeployments($patchDeployments)
   {
     $this->patchDeployments = $patchDeployments;
   }
   /**
-   * @return Google_Service_OSConfig_PatchDeployment
+   * @return Google_Service_OSConfig_PatchDeployment[]
    */
   public function getPatchDeployments()
   {

@@ -32,14 +32,14 @@ class Google_Service_Compute_XpnHostListWarning extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_XpnHostListWarningData
+   * @param Google_Service_Compute_XpnHostListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_XpnHostListWarningData
+   * @return Google_Service_Compute_XpnHostListWarningData[]
    */
   public function getData()
   {

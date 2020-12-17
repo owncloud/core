@@ -39,14 +39,14 @@ class Google_Service_Dfareporting_ConversionStatus extends Google_Collection
     return $this->conversion;
   }
   /**
-   * @param Google_Service_Dfareporting_ConversionError
+   * @param Google_Service_Dfareporting_ConversionError[]
    */
   public function setErrors($errors)
   {
     $this->errors = $errors;
   }
   /**
-   * @return Google_Service_Dfareporting_ConversionError
+   * @return Google_Service_Dfareporting_ConversionError[]
    */
   public function getErrors()
   {

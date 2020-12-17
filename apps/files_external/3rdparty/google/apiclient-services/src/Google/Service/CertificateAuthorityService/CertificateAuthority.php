@@ -59,14 +59,14 @@ class Google_Service_CertificateAuthorityService_CertificateAuthority extends Go
     return $this->accessUrls;
   }
   /**
-   * @param Google_Service_CertificateAuthorityService_CertificateDescription
+   * @param Google_Service_CertificateAuthorityService_CertificateDescription[]
    */
   public function setCaCertificateDescriptions($caCertificateDescriptions)
   {
     $this->caCertificateDescriptions = $caCertificateDescriptions;
   }
   /**
-   * @return Google_Service_CertificateAuthorityService_CertificateDescription
+   * @return Google_Service_CertificateAuthorityService_CertificateDescription[]
    */
   public function getCaCertificateDescriptions()
   {

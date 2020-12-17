@@ -40,14 +40,14 @@ class Google_Service_AndroidProvisioningPartner_ListVendorsResponse extends Goog
     return $this->totalSize;
   }
   /**
-   * @param Google_Service_AndroidProvisioningPartner_Company
+   * @param Google_Service_AndroidProvisioningPartner_Company[]
    */
   public function setVendors($vendors)
   {
     $this->vendors = $vendors;
   }
   /**
-   * @return Google_Service_AndroidProvisioningPartner_Company
+   * @return Google_Service_AndroidProvisioningPartner_Company[]
    */
   public function getVendors()
   {

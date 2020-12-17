@@ -58,14 +58,14 @@ class Google_Service_Vision_Product extends Google_Collection
     return $this->productCategory;
   }
   /**
-   * @param Google_Service_Vision_KeyValue
+   * @param Google_Service_Vision_KeyValue[]
    */
   public function setProductLabels($productLabels)
   {
     $this->productLabels = $productLabels;
   }
   /**
-   * @return Google_Service_Vision_KeyValue
+   * @return Google_Service_Vision_KeyValue[]
    */
   public function getProductLabels()
   {

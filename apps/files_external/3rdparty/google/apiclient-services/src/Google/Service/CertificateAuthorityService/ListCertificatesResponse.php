@@ -24,14 +24,14 @@ class Google_Service_CertificateAuthorityService_ListCertificatesResponse extend
   public $unreachable;
 
   /**
-   * @param Google_Service_CertificateAuthorityService_Certificate
+   * @param Google_Service_CertificateAuthorityService_Certificate[]
    */
   public function setCertificates($certificates)
   {
     $this->certificates = $certificates;
   }
   /**
-   * @return Google_Service_CertificateAuthorityService_Certificate
+   * @return Google_Service_CertificateAuthorityService_Certificate[]
    */
   public function getCertificates()
   {

@@ -44,14 +44,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1Result extends Google_Collection
     return $this->actionResult;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Access
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Access[]
    */
   public function setAccessList($accessList)
   {
     $this->accessList = $accessList;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Access
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Access[]
    */
   public function getAccessList()
   {
@@ -66,14 +66,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1Result extends Google_Collection
     return $this->content;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Property
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Property[]
    */
   public function setHeaders($headers)
   {
     $this->headers = $headers;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Property
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Property[]
    */
   public function getHeaders()
   {

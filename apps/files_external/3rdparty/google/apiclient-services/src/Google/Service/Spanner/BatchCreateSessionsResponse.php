@@ -22,14 +22,14 @@ class Google_Service_Spanner_BatchCreateSessionsResponse extends Google_Collecti
   protected $sessionDataType = 'array';
 
   /**
-   * @param Google_Service_Spanner_Session
+   * @param Google_Service_Spanner_Session[]
    */
   public function setSession($session)
   {
     $this->session = $session;
   }
   /**
-   * @return Google_Service_Spanner_Session
+   * @return Google_Service_Spanner_Session[]
    */
   public function getSession()
   {

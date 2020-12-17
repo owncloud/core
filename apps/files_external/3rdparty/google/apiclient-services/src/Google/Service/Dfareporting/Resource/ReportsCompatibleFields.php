@@ -30,7 +30,7 @@ class Google_Service_Dfareporting_Resource_ReportsCompatibleFields extends Googl
    * sections of a report criteria, given the fields already selected in the input
    * report and user permissions. (compatibleFields.query)
    *
-   * @param string $profileId The DFA user profile ID.
+   * @param string $profileId The Campaign Manager 360 user profile ID.
    * @param Google_Service_Dfareporting_Report $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Dfareporting_CompatibleFields

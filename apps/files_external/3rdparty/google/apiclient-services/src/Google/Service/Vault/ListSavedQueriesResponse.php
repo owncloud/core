@@ -31,14 +31,14 @@ class Google_Service_Vault_ListSavedQueriesResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Vault_SavedQuery
+   * @param Google_Service_Vault_SavedQuery[]
    */
   public function setSavedQueries($savedQueries)
   {
     $this->savedQueries = $savedQueries;
   }
   /**
-   * @return Google_Service_Vault_SavedQuery
+   * @return Google_Service_Vault_SavedQuery[]
    */
   public function getSavedQueries()
   {

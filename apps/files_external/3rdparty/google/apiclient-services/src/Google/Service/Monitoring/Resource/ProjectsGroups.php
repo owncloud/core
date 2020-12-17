@@ -82,10 +82,6 @@ class Google_Service_Monitoring_Resource_ProjectsGroups extends Google_Service_R
    * format is: projects/[PROJECT_ID_OR_NUMBER]
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string descendantsOfGroup A group name. The format is:
-   * projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID] Returns the descendants of
-   * the specified group. This is a superset of the results returned by the
-   * children_of_group filter, and includes children-of-children, and so forth.
    * @opt_param string ancestorsOfGroup A group name. The format is:
    * projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID] Returns groups that are
    * ancestors of the specified group. The groups are returned in order, starting
@@ -95,6 +91,10 @@ class Google_Service_Monitoring_Resource_ProjectsGroups extends Google_Service_R
    * projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID] Returns groups whose
    * parent_name field contains the group name. If no groups have this parent, the
    * results are empty.
+   * @opt_param string descendantsOfGroup A group name. The format is:
+   * projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID] Returns the descendants of
+   * the specified group. This is a superset of the results returned by the
+   * children_of_group filter, and includes children-of-children, and so forth.
    * @opt_param int pageSize A positive number that is the maximum number of
    * results to return.
    * @opt_param string pageToken If this field is not empty then it must contain

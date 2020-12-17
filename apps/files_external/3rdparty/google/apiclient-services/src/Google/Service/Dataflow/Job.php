@@ -210,14 +210,14 @@ class Google_Service_Dataflow_Job extends Google_Collection
     return $this->requestedState;
   }
   /**
-   * @param Google_Service_Dataflow_ExecutionStageState
+   * @param Google_Service_Dataflow_ExecutionStageState[]
    */
   public function setStageStates($stageStates)
   {
     $this->stageStates = $stageStates;
   }
   /**
-   * @return Google_Service_Dataflow_ExecutionStageState
+   * @return Google_Service_Dataflow_ExecutionStageState[]
    */
   public function getStageStates()
   {
@@ -232,14 +232,14 @@ class Google_Service_Dataflow_Job extends Google_Collection
     return $this->startTime;
   }
   /**
-   * @param Google_Service_Dataflow_Step
+   * @param Google_Service_Dataflow_Step[]
    */
   public function setSteps($steps)
   {
     $this->steps = $steps;
   }
   /**
-   * @return Google_Service_Dataflow_Step
+   * @return Google_Service_Dataflow_Step[]
    */
   public function getSteps()
   {

@@ -40,22 +40,22 @@ class Google_Service_Analytics_Resource_DataGa extends Google_Service_Resource
    * 'ga:sessions,ga:pageviews'. At least one metric must be specified.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string samplingLevel The desired sampling level.
-   * @opt_param string segment An Analytics segment to be applied to data.
-   * @opt_param string filters A comma-separated list of dimension or metric
-   * filters to be applied to Analytics data.
-   * @opt_param int start-index An index of the first entity to retrieve. Use this
-   * parameter as a pagination mechanism along with the max-results parameter.
-   * @opt_param int max-results The maximum number of entries to include in this
-   * feed.
-   * @opt_param string sort A comma-separated list of dimensions or metrics that
-   * determine the sort order for Analytics data.
-   * @opt_param string output The selected format for the response. Default format
-   * is JSON.
    * @opt_param string dimensions A comma-separated list of Analytics dimensions.
    * E.g., 'ga:browser,ga:city'.
+   * @opt_param string filters A comma-separated list of dimension or metric
+   * filters to be applied to Analytics data.
    * @opt_param bool include-empty-rows The response will include empty rows if
    * this parameter is set to true, the default is true
+   * @opt_param int max-results The maximum number of entries to include in this
+   * feed.
+   * @opt_param string output The selected format for the response. Default format
+   * is JSON.
+   * @opt_param string samplingLevel The desired sampling level.
+   * @opt_param string segment An Analytics segment to be applied to data.
+   * @opt_param string sort A comma-separated list of dimensions or metrics that
+   * determine the sort order for Analytics data.
+   * @opt_param int start-index An index of the first entity to retrieve. Use this
+   * parameter as a pagination mechanism along with the max-results parameter.
    * @return Google_Service_Analytics_GaData
    */
   public function get($ids, $startDate, $endDate, $metrics, $optParams = array())

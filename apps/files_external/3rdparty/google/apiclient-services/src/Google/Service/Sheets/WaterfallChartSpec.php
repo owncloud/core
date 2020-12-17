@@ -73,14 +73,14 @@ class Google_Service_Sheets_WaterfallChartSpec extends Google_Collection
     return $this->hideConnectorLines;
   }
   /**
-   * @param Google_Service_Sheets_WaterfallChartSeries
+   * @param Google_Service_Sheets_WaterfallChartSeries[]
    */
   public function setSeries($series)
   {
     $this->series = $series;
   }
   /**
-   * @return Google_Service_Sheets_WaterfallChartSeries
+   * @return Google_Service_Sheets_WaterfallChartSeries[]
    */
   public function getSeries()
   {

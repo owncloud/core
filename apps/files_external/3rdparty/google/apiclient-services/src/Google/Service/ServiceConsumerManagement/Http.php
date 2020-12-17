@@ -31,14 +31,14 @@ class Google_Service_ServiceConsumerManagement_Http extends Google_Collection
     return $this->fullyDecodeReservedExpansion;
   }
   /**
-   * @param Google_Service_ServiceConsumerManagement_HttpRule
+   * @param Google_Service_ServiceConsumerManagement_HttpRule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_HttpRule
+   * @return Google_Service_ServiceConsumerManagement_HttpRule[]
    */
   public function getRules()
   {

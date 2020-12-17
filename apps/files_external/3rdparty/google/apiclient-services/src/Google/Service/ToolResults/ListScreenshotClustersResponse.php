@@ -22,14 +22,14 @@ class Google_Service_ToolResults_ListScreenshotClustersResponse extends Google_C
   protected $clustersDataType = 'array';
 
   /**
-   * @param Google_Service_ToolResults_ScreenshotCluster
+   * @param Google_Service_ToolResults_ScreenshotCluster[]
    */
   public function setClusters($clusters)
   {
     $this->clusters = $clusters;
   }
   /**
-   * @return Google_Service_ToolResults_ScreenshotCluster
+   * @return Google_Service_ToolResults_ScreenshotCluster[]
    */
   public function getClusters()
   {

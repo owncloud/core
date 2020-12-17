@@ -31,6 +31,8 @@ class Google_Service_YouTube_Resource_ChannelBanners extends Google_Service_Reso
    * @param Google_Service_YouTube_ChannelBannerResource $postBody
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string channelId Unused, channel_id is currently derived from the
+   * security context of the requestor.
    * @opt_param string onBehalfOfContentOwner *Note:* This parameter is intended
    * exclusively for YouTube content partners. The *onBehalfOfContentOwner*
    * parameter indicates that the request's authorization credentials identify a
@@ -41,8 +43,6 @@ class Google_Service_YouTube_Resource_ChannelBanners extends Google_Service_Reso
    * without having to provide authentication credentials for each individual
    * channel. The actual CMS account that the user authenticates with must be
    * linked to the specified YouTube content owner.
-   * @opt_param string channelId Unused, channel_id is currently derived from the
-   * security context of the requestor.
    * @opt_param string onBehalfOfContentOwnerChannel This parameter can only be
    * used in a properly authorized request. *Note:* This parameter is intended
    * exclusively for YouTube content partners. The *onBehalfOfContentOwnerChannel*

@@ -22,14 +22,14 @@ class Google_Service_Dataproc_WorkflowGraph extends Google_Collection
   protected $nodesDataType = 'array';
 
   /**
-   * @param Google_Service_Dataproc_WorkflowNode
+   * @param Google_Service_Dataproc_WorkflowNode[]
    */
   public function setNodes($nodes)
   {
     $this->nodes = $nodes;
   }
   /**
-   * @return Google_Service_Dataproc_WorkflowNode
+   * @return Google_Service_Dataproc_WorkflowNode[]
    */
   public function getNodes()
   {

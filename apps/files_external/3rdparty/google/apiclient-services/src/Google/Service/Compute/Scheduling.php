@@ -42,14 +42,14 @@ class Google_Service_Compute_Scheduling extends Google_Collection
     return $this->minNodeCpus;
   }
   /**
-   * @param Google_Service_Compute_SchedulingNodeAffinity
+   * @param Google_Service_Compute_SchedulingNodeAffinity[]
    */
   public function setNodeAffinities($nodeAffinities)
   {
     $this->nodeAffinities = $nodeAffinities;
   }
   /**
-   * @return Google_Service_Compute_SchedulingNodeAffinity
+   * @return Google_Service_Compute_SchedulingNodeAffinity[]
    */
   public function getNodeAffinities()
   {

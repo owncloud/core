@@ -33,14 +33,14 @@ class Google_Service_DomainsRDAP_Notice extends Google_Collection
     return $this->description;
   }
   /**
-   * @param Google_Service_DomainsRDAP_Link
+   * @param Google_Service_DomainsRDAP_Link[]
    */
   public function setLinks($links)
   {
     $this->links = $links;
   }
   /**
-   * @return Google_Service_DomainsRDAP_Link
+   * @return Google_Service_DomainsRDAP_Link[]
    */
   public function getLinks()
   {

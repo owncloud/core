@@ -24,14 +24,14 @@ class Google_Service_GameServices_ListGameServerDeploymentsResponse extends Goog
   public $unreachable;
 
   /**
-   * @param Google_Service_GameServices_GameServerDeployment
+   * @param Google_Service_GameServices_GameServerDeployment[]
    */
   public function setGameServerDeployments($gameServerDeployments)
   {
     $this->gameServerDeployments = $gameServerDeployments;
   }
   /**
-   * @return Google_Service_GameServices_GameServerDeployment
+   * @return Google_Service_GameServices_GameServerDeployment[]
    */
   public function getGameServerDeployments()
   {

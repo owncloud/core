@@ -37,14 +37,14 @@ class Google_Service_Compute_ReservationAggregatedList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_ReservationsScopedList
+   * @param Google_Service_Compute_ReservationsScopedList[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_ReservationsScopedList
+   * @return Google_Service_Compute_ReservationsScopedList[]
    */
   public function getItems()
   {

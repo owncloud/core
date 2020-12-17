@@ -23,28 +23,28 @@ class Google_Service_AdMob_ReportRow extends Google_Model
   protected $metricValuesDataType = 'map';
 
   /**
-   * @param Google_Service_AdMob_ReportRowDimensionValue
+   * @param Google_Service_AdMob_ReportRowDimensionValue[]
    */
   public function setDimensionValues($dimensionValues)
   {
     $this->dimensionValues = $dimensionValues;
   }
   /**
-   * @return Google_Service_AdMob_ReportRowDimensionValue
+   * @return Google_Service_AdMob_ReportRowDimensionValue[]
    */
   public function getDimensionValues()
   {
     return $this->dimensionValues;
   }
   /**
-   * @param Google_Service_AdMob_ReportRowMetricValue
+   * @param Google_Service_AdMob_ReportRowMetricValue[]
    */
   public function setMetricValues($metricValues)
   {
     $this->metricValues = $metricValues;
   }
   /**
-   * @return Google_Service_AdMob_ReportRowMetricValue
+   * @return Google_Service_AdMob_ReportRowMetricValue[]
    */
   public function getMetricValues()
   {

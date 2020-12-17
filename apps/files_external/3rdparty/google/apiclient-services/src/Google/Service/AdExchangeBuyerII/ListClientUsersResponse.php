@@ -31,14 +31,14 @@ class Google_Service_AdExchangeBuyerII_ListClientUsersResponse extends Google_Co
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_AdExchangeBuyerII_ClientUser
+   * @param Google_Service_AdExchangeBuyerII_ClientUser[]
    */
   public function setUsers($users)
   {
     $this->users = $users;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_ClientUser
+   * @return Google_Service_AdExchangeBuyerII_ClientUser[]
    */
   public function getUsers()
   {

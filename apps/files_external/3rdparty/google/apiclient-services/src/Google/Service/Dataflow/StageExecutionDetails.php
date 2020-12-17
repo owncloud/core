@@ -31,14 +31,14 @@ class Google_Service_Dataflow_StageExecutionDetails extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Dataflow_WorkerDetails
+   * @param Google_Service_Dataflow_WorkerDetails[]
    */
   public function setWorkers($workers)
   {
     $this->workers = $workers;
   }
   /**
-   * @return Google_Service_Dataflow_WorkerDetails
+   * @return Google_Service_Dataflow_WorkerDetails[]
    */
   public function getWorkers()
   {

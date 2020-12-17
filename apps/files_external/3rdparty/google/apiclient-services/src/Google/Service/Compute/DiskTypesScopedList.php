@@ -24,14 +24,14 @@ class Google_Service_Compute_DiskTypesScopedList extends Google_Collection
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_DiskType
+   * @param Google_Service_Compute_DiskType[]
    */
   public function setDiskTypes($diskTypes)
   {
     $this->diskTypes = $diskTypes;
   }
   /**
-   * @return Google_Service_Compute_DiskType
+   * @return Google_Service_Compute_DiskType[]
    */
   public function getDiskTypes()
   {

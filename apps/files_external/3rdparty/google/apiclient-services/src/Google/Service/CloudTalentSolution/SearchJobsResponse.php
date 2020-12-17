@@ -64,28 +64,28 @@ class Google_Service_CloudTalentSolution_SearchJobsResponse extends Google_Colle
     return $this->histogramResults;
   }
   /**
-   * @param Google_Service_CloudTalentSolution_Location
+   * @param Google_Service_CloudTalentSolution_Location[]
    */
   public function setLocationFilters($locationFilters)
   {
     $this->locationFilters = $locationFilters;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_Location
+   * @return Google_Service_CloudTalentSolution_Location[]
    */
   public function getLocationFilters()
   {
     return $this->locationFilters;
   }
   /**
-   * @param Google_Service_CloudTalentSolution_MatchingJob
+   * @param Google_Service_CloudTalentSolution_MatchingJob[]
    */
   public function setMatchingJobs($matchingJobs)
   {
     $this->matchingJobs = $matchingJobs;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_MatchingJob
+   * @return Google_Service_CloudTalentSolution_MatchingJob[]
    */
   public function getMatchingJobs()
   {

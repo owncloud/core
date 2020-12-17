@@ -23,14 +23,14 @@ class Google_Service_ShoppingContent_ListCssesResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_ShoppingContent_Css
+   * @param Google_Service_ShoppingContent_Css[]
    */
   public function setCsses($csses)
   {
     $this->csses = $csses;
   }
   /**
-   * @return Google_Service_ShoppingContent_Css
+   * @return Google_Service_ShoppingContent_Css[]
    */
   public function getCsses()
   {

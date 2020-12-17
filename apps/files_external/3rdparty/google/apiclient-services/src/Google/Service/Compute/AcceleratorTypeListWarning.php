@@ -32,14 +32,14 @@ class Google_Service_Compute_AcceleratorTypeListWarning extends Google_Collectio
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_AcceleratorTypeListWarningData
+   * @param Google_Service_Compute_AcceleratorTypeListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_AcceleratorTypeListWarningData
+   * @return Google_Service_Compute_AcceleratorTypeListWarningData[]
    */
   public function getData()
   {

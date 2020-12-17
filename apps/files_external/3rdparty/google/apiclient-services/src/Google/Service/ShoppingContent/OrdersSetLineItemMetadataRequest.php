@@ -25,14 +25,14 @@ class Google_Service_ShoppingContent_OrdersSetLineItemMetadataRequest extends Go
   public $productId;
 
   /**
-   * @param Google_Service_ShoppingContent_OrderMerchantProvidedAnnotation
+   * @param Google_Service_ShoppingContent_OrderMerchantProvidedAnnotation[]
    */
   public function setAnnotations($annotations)
   {
     $this->annotations = $annotations;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderMerchantProvidedAnnotation
+   * @return Google_Service_ShoppingContent_OrderMerchantProvidedAnnotation[]
    */
   public function getAnnotations()
   {

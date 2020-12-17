@@ -24,14 +24,14 @@ class Google_Service_Compute_UrlMapsScopedList extends Google_Collection
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_UrlMap
+   * @param Google_Service_Compute_UrlMap[]
    */
   public function setUrlMaps($urlMaps)
   {
     $this->urlMaps = $urlMaps;
   }
   /**
-   * @return Google_Service_Compute_UrlMap
+   * @return Google_Service_Compute_UrlMap[]
    */
   public function getUrlMaps()
   {

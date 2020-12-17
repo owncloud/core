@@ -31,14 +31,14 @@ class Google_Service_ContainerAnalysis_ListOccurrencesResponse extends Google_Co
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_Occurrence
+   * @param Google_Service_ContainerAnalysis_Occurrence[]
    */
   public function setOccurrences($occurrences)
   {
     $this->occurrences = $occurrences;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_Occurrence
+   * @return Google_Service_ContainerAnalysis_Occurrence[]
    */
   public function getOccurrences()
   {

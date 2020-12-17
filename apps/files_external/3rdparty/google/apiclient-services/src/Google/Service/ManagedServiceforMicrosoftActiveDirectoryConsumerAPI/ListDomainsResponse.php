@@ -24,14 +24,14 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_ListDo
   public $unreachable;
 
   /**
-   * @param Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Domain
+   * @param Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Domain[]
    */
   public function setDomains($domains)
   {
     $this->domains = $domains;
   }
   /**
-   * @return Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Domain
+   * @return Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Domain[]
    */
   public function getDomains()
   {

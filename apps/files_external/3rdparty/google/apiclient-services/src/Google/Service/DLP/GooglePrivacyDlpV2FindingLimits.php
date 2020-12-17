@@ -24,14 +24,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2FindingLimits extends Google_Collecti
   public $maxFindingsPerRequest;
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2InfoTypeLimit
+   * @param Google_Service_DLP_GooglePrivacyDlpV2InfoTypeLimit[]
    */
   public function setMaxFindingsPerInfoType($maxFindingsPerInfoType)
   {
     $this->maxFindingsPerInfoType = $maxFindingsPerInfoType;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2InfoTypeLimit
+   * @return Google_Service_DLP_GooglePrivacyDlpV2InfoTypeLimit[]
    */
   public function getMaxFindingsPerInfoType()
   {

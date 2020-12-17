@@ -58,14 +58,14 @@ class Google_Service_ServiceConsumerManagement_TenancyUnit extends Google_Collec
     return $this->service;
   }
   /**
-   * @param Google_Service_ServiceConsumerManagement_TenantResource
+   * @param Google_Service_ServiceConsumerManagement_TenantResource[]
    */
   public function setTenantResources($tenantResources)
   {
     $this->tenantResources = $tenantResources;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_TenantResource
+   * @return Google_Service_ServiceConsumerManagement_TenantResource[]
    */
   public function getTenantResources()
   {

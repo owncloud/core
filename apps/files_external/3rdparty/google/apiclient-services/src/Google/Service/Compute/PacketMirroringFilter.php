@@ -23,6 +23,7 @@ class Google_Service_Compute_PacketMirroringFilter extends Google_Collection
   );
   public $iPProtocols;
   public $cidrRanges;
+  public $direction;
 
   public function setIPProtocols($iPProtocols)
   {
@@ -39,5 +40,13 @@ class Google_Service_Compute_PacketMirroringFilter extends Google_Collection
   public function getCidrRanges()
   {
     return $this->cidrRanges;
+  }
+  public function setDirection($direction)
+  {
+    $this->direction = $direction;
+  }
+  public function getDirection()
+  {
+    return $this->direction;
   }
 }

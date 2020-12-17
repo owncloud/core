@@ -24,14 +24,14 @@ class Google_Service_Bigquery_BigtableOptions extends Google_Collection
   public $readRowkeyAsString;
 
   /**
-   * @param Google_Service_Bigquery_BigtableColumnFamily
+   * @param Google_Service_Bigquery_BigtableColumnFamily[]
    */
   public function setColumnFamilies($columnFamilies)
   {
     $this->columnFamilies = $columnFamilies;
   }
   /**
-   * @return Google_Service_Bigquery_BigtableColumnFamily
+   * @return Google_Service_Bigquery_BigtableColumnFamily[]
    */
   public function getColumnFamilies()
   {

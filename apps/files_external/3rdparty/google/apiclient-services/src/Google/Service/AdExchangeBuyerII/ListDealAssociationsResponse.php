@@ -23,14 +23,14 @@ class Google_Service_AdExchangeBuyerII_ListDealAssociationsResponse extends Goog
   public $nextPageToken;
 
   /**
-   * @param Google_Service_AdExchangeBuyerII_CreativeDealAssociation
+   * @param Google_Service_AdExchangeBuyerII_CreativeDealAssociation[]
    */
   public function setAssociations($associations)
   {
     $this->associations = $associations;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_CreativeDealAssociation
+   * @return Google_Service_AdExchangeBuyerII_CreativeDealAssociation[]
    */
   public function getAssociations()
   {

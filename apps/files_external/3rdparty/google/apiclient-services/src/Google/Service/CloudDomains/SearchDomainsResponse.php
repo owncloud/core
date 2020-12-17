@@ -22,14 +22,14 @@ class Google_Service_CloudDomains_SearchDomainsResponse extends Google_Collectio
   protected $registerParametersDataType = 'array';
 
   /**
-   * @param Google_Service_CloudDomains_RegisterParameters
+   * @param Google_Service_CloudDomains_RegisterParameters[]
    */
   public function setRegisterParameters($registerParameters)
   {
     $this->registerParameters = $registerParameters;
   }
   /**
-   * @return Google_Service_CloudDomains_RegisterParameters
+   * @return Google_Service_CloudDomains_RegisterParameters[]
    */
   public function getRegisterParameters()
   {

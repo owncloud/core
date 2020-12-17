@@ -32,28 +32,28 @@ class Google_Service_Books_DictlayerdataDictWordsSenses extends Google_Collectio
   protected $synonymsDataType = 'array';
 
   /**
-   * @param Google_Service_Books_DictlayerdataDictWordsSensesConjugations
+   * @param Google_Service_Books_DictlayerdataDictWordsSensesConjugations[]
    */
   public function setConjugations($conjugations)
   {
     $this->conjugations = $conjugations;
   }
   /**
-   * @return Google_Service_Books_DictlayerdataDictWordsSensesConjugations
+   * @return Google_Service_Books_DictlayerdataDictWordsSensesConjugations[]
    */
   public function getConjugations()
   {
     return $this->conjugations;
   }
   /**
-   * @param Google_Service_Books_DictlayerdataDictWordsSensesDefinitions
+   * @param Google_Service_Books_DictlayerdataDictWordsSensesDefinitions[]
    */
   public function setDefinitions($definitions)
   {
     $this->definitions = $definitions;
   }
   /**
-   * @return Google_Service_Books_DictlayerdataDictWordsSensesDefinitions
+   * @return Google_Service_Books_DictlayerdataDictWordsSensesDefinitions[]
    */
   public function getDefinitions()
   {
@@ -106,14 +106,14 @@ class Google_Service_Books_DictlayerdataDictWordsSenses extends Google_Collectio
     return $this->syllabification;
   }
   /**
-   * @param Google_Service_Books_DictlayerdataDictWordsSensesSynonyms
+   * @param Google_Service_Books_DictlayerdataDictWordsSensesSynonyms[]
    */
   public function setSynonyms($synonyms)
   {
     $this->synonyms = $synonyms;
   }
   /**
-   * @return Google_Service_Books_DictlayerdataDictWordsSensesSynonyms
+   * @return Google_Service_Books_DictlayerdataDictWordsSensesSynonyms[]
    */
   public function getSynonyms()
   {

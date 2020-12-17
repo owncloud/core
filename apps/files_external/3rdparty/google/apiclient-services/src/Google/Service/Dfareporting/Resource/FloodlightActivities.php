@@ -89,10 +89,24 @@ class Google_Service_Dfareporting_Resource_FloodlightActivities extends Google_S
    * @param string $profileId User profile ID associated with this request.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string advertiserId Select only floodlight activities for the
+   * specified advertiser ID. Must specify either ids, advertiserId, or
+   * floodlightConfigurationId for a non-empty result.
+   * @opt_param string floodlightActivityGroupIds Select only floodlight
+   * activities with the specified floodlight activity group IDs.
+   * @opt_param string floodlightActivityGroupName Select only floodlight
+   * activities with the specified floodlight activity group name.
+   * @opt_param string floodlightActivityGroupTagString Select only floodlight
+   * activities with the specified floodlight activity group tag string.
+   * @opt_param string floodlightActivityGroupType Select only floodlight
+   * activities with the specified floodlight activity group type.
    * @opt_param string floodlightConfigurationId Select only floodlight activities
    * for the specified floodlight configuration ID. Must specify either ids,
    * advertiserId, or floodlightConfigurationId for a non-empty result.
+   * @opt_param string ids Select only floodlight activities with the specified
+   * IDs. Must specify either ids, advertiserId, or floodlightConfigurationId for
+   * a non-empty result.
+   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string pageToken Value of the nextPageToken from the previous
    * result page.
    * @opt_param string searchString Allows searching for objects by name or ID.
@@ -103,24 +117,10 @@ class Google_Service_Dfareporting_Resource_FloodlightActivities extends Google_S
    * example, a search string of "floodlightactivity" will match objects with name
    * "my floodlightactivity activity", "floodlightactivity 2015", or simply
    * "floodlightactivity".
-   * @opt_param string advertiserId Select only floodlight activities for the
-   * specified advertiser ID. Must specify either ids, advertiserId, or
-   * floodlightConfigurationId for a non-empty result.
-   * @opt_param string floodlightActivityGroupTagString Select only floodlight
-   * activities with the specified floodlight activity group tag string.
+   * @opt_param string sortField Field by which to sort the list.
+   * @opt_param string sortOrder Order of sorted results.
    * @opt_param string tagString Select only floodlight activities with the
    * specified tag string.
-   * @opt_param string floodlightActivityGroupType Select only floodlight
-   * activities with the specified floodlight activity group type.
-   * @opt_param string floodlightActivityGroupIds Select only floodlight
-   * activities with the specified floodlight activity group IDs.
-   * @opt_param string ids Select only floodlight activities with the specified
-   * IDs. Must specify either ids, advertiserId, or floodlightConfigurationId for
-   * a non-empty result.
-   * @opt_param string sortOrder Order of sorted results.
-   * @opt_param string floodlightActivityGroupName Select only floodlight
-   * activities with the specified floodlight activity group name.
-   * @opt_param string sortField Field by which to sort the list.
    * @return Google_Service_Dfareporting_FloodlightActivitiesListResponse
    */
   public function listFloodlightActivities($profileId, $optParams = array())

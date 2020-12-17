@@ -47,14 +47,14 @@ class Google_Service_Dfareporting_Conversion extends Google_Collection
     return $this->childDirectedTreatment;
   }
   /**
-   * @param Google_Service_Dfareporting_CustomFloodlightVariable
+   * @param Google_Service_Dfareporting_CustomFloodlightVariable[]
    */
   public function setCustomVariables($customVariables)
   {
     $this->customVariables = $customVariables;
   }
   /**
-   * @return Google_Service_Dfareporting_CustomFloodlightVariable
+   * @return Google_Service_Dfareporting_CustomFloodlightVariable[]
    */
   public function getCustomVariables()
   {

@@ -66,14 +66,14 @@ class Google_Service_CivicInfo_AdministrationRegion extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_CivicInfo_Source
+   * @param Google_Service_CivicInfo_Source[]
    */
   public function setSources($sources)
   {
     $this->sources = $sources;
   }
   /**
-   * @return Google_Service_CivicInfo_Source
+   * @return Google_Service_CivicInfo_Source[]
    */
   public function getSources()
   {

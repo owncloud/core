@@ -31,14 +31,14 @@ class Google_Service_Bigquery_GlobalExplanation extends Google_Collection
     return $this->classLabel;
   }
   /**
-   * @param Google_Service_Bigquery_Explanation
+   * @param Google_Service_Bigquery_Explanation[]
    */
   public function setExplanations($explanations)
   {
     $this->explanations = $explanations;
   }
   /**
-   * @return Google_Service_Bigquery_Explanation
+   * @return Google_Service_Bigquery_Explanation[]
    */
   public function getExplanations()
   {

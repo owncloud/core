@@ -31,14 +31,14 @@ class Google_Service_AdExchangeBuyerII_ListProposalsResponse extends Google_Coll
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_AdExchangeBuyerII_Proposal
+   * @param Google_Service_AdExchangeBuyerII_Proposal[]
    */
   public function setProposals($proposals)
   {
     $this->proposals = $proposals;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_Proposal
+   * @return Google_Service_AdExchangeBuyerII_Proposal[]
    */
   public function getProposals()
   {

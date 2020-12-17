@@ -23,14 +23,14 @@ class Google_Service_Sheets_DataSourceSheetDimensionRange extends Google_Collect
   public $sheetId;
 
   /**
-   * @param Google_Service_Sheets_DataSourceColumnReference
+   * @param Google_Service_Sheets_DataSourceColumnReference[]
    */
   public function setColumnReferences($columnReferences)
   {
     $this->columnReferences = $columnReferences;
   }
   /**
-   * @return Google_Service_Sheets_DataSourceColumnReference
+   * @return Google_Service_Sheets_DataSourceColumnReference[]
    */
   public function getColumnReferences()
   {

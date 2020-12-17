@@ -31,14 +31,14 @@ class Google_Service_HangoutsChat_Section extends Google_Collection
     return $this->header;
   }
   /**
-   * @param Google_Service_HangoutsChat_WidgetMarkup
+   * @param Google_Service_HangoutsChat_WidgetMarkup[]
    */
   public function setWidgets($widgets)
   {
     $this->widgets = $widgets;
   }
   /**
-   * @return Google_Service_HangoutsChat_WidgetMarkup
+   * @return Google_Service_HangoutsChat_WidgetMarkup[]
    */
   public function getWidgets()
   {

@@ -23,14 +23,14 @@ class Google_Service_Bigquery_TableDataInsertAllResponseInsertErrors extends Goo
   public $index;
 
   /**
-   * @param Google_Service_Bigquery_ErrorProto
+   * @param Google_Service_Bigquery_ErrorProto[]
    */
   public function setErrors($errors)
   {
     $this->errors = $errors;
   }
   /**
-   * @return Google_Service_Bigquery_ErrorProto
+   * @return Google_Service_Bigquery_ErrorProto[]
    */
   public function getErrors()
   {

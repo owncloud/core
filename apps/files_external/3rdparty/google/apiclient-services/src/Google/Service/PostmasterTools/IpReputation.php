@@ -18,10 +18,19 @@
 class Google_Service_PostmasterTools_IpReputation extends Google_Collection
 {
   protected $collection_key = 'sampleIps';
+  public $ipCount;
   public $numIps;
   public $reputation;
   public $sampleIps;
 
+  public function setIpCount($ipCount)
+  {
+    $this->ipCount = $ipCount;
+  }
+  public function getIpCount()
+  {
+    return $this->ipCount;
+  }
   public function setNumIps($numIps)
   {
     $this->numIps = $numIps;

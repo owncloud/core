@@ -24,28 +24,28 @@ class Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2Dire
   protected $filesDataType = 'array';
 
   /**
-   * @param Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2DirectoryMetadata
+   * @param Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2DirectoryMetadata[]
    */
   public function setDirectories($directories)
   {
     $this->directories = $directories;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2DirectoryMetadata
+   * @return Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2DirectoryMetadata[]
    */
   public function getDirectories()
   {
     return $this->directories;
   }
   /**
-   * @param Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2FileMetadata
+   * @param Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2FileMetadata[]
    */
   public function setFiles($files)
   {
     $this->files = $files;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2FileMetadata
+   * @return Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2FileMetadata[]
    */
   public function getFiles()
   {

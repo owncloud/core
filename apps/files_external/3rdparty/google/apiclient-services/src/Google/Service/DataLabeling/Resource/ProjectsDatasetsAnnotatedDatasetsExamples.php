@@ -56,12 +56,12 @@ class Google_Service_DataLabeling_Resource_ProjectsDatasetsAnnotatedDatasetsExam
    * annotated datasets that have annotation spec set, filter by
    * annotation_spec.display_name is supported. Format
    * "annotation_spec.display_name = {display_name}"
+   * @opt_param int pageSize Optional. Requested page size. Server may return
+   * fewer results than requested. Default value is 100.
    * @opt_param string pageToken Optional. A token identifying a page of results
    * for the server to return. Typically obtained by
    * ListExamplesResponse.next_page_token of the previous
    * [DataLabelingService.ListExamples] call. Return first page if empty.
-   * @opt_param int pageSize Optional. Requested page size. Server may return
-   * fewer results than requested. Default value is 100.
    * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ListExamplesResponse
    */
   public function listProjectsDatasetsAnnotatedDatasetsExamples($parent, $optParams = array())

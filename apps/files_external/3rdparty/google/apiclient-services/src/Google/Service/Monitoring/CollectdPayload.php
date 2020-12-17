@@ -38,14 +38,14 @@ class Google_Service_Monitoring_CollectdPayload extends Google_Collection
     return $this->endTime;
   }
   /**
-   * @param Google_Service_Monitoring_TypedValue
+   * @param Google_Service_Monitoring_TypedValue[]
    */
   public function setMetadata($metadata)
   {
     $this->metadata = $metadata;
   }
   /**
-   * @return Google_Service_Monitoring_TypedValue
+   * @return Google_Service_Monitoring_TypedValue[]
    */
   public function getMetadata()
   {
@@ -92,14 +92,14 @@ class Google_Service_Monitoring_CollectdPayload extends Google_Collection
     return $this->typeInstance;
   }
   /**
-   * @param Google_Service_Monitoring_CollectdValue
+   * @param Google_Service_Monitoring_CollectdValue[]
    */
   public function setValues($values)
   {
     $this->values = $values;
   }
   /**
-   * @return Google_Service_Monitoring_CollectdValue
+   * @return Google_Service_Monitoring_CollectdValue[]
    */
   public function getValues()
   {

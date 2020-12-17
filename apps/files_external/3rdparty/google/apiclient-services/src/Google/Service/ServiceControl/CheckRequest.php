@@ -39,14 +39,14 @@ class Google_Service_ServiceControl_CheckRequest extends Google_Collection
     return $this->attributes;
   }
   /**
-   * @param Google_Service_ServiceControl_ResourceInfo
+   * @param Google_Service_ServiceControl_ResourceInfo[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_ServiceControl_ResourceInfo
+   * @return Google_Service_ServiceControl_ResourceInfo[]
    */
   public function getResources()
   {

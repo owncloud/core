@@ -40,14 +40,14 @@ class Google_Service_ShoppingContent_OrdersListResponse extends Google_Collectio
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ShoppingContent_Order
+   * @param Google_Service_ShoppingContent_Order[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_ShoppingContent_Order
+   * @return Google_Service_ShoppingContent_Order[]
    */
   public function getResources()
   {

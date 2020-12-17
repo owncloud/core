@@ -26,14 +26,14 @@ class Google_Service_Monitoring_ListTimeSeriesResponse extends Google_Collection
   public $unit;
 
   /**
-   * @param Google_Service_Monitoring_Status
+   * @param Google_Service_Monitoring_Status[]
    */
   public function setExecutionErrors($executionErrors)
   {
     $this->executionErrors = $executionErrors;
   }
   /**
-   * @return Google_Service_Monitoring_Status
+   * @return Google_Service_Monitoring_Status[]
    */
   public function getExecutionErrors()
   {
@@ -48,14 +48,14 @@ class Google_Service_Monitoring_ListTimeSeriesResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Monitoring_TimeSeries
+   * @param Google_Service_Monitoring_TimeSeries[]
    */
   public function setTimeSeries($timeSeries)
   {
     $this->timeSeries = $timeSeries;
   }
   /**
-   * @return Google_Service_Monitoring_TimeSeries
+   * @return Google_Service_Monitoring_TimeSeries[]
    */
   public function getTimeSeries()
   {

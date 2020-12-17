@@ -48,14 +48,14 @@ class Google_Service_YouTube_VideoListResponse extends Google_Collection
     return $this->eventId;
   }
   /**
-   * @param Google_Service_YouTube_Video
+   * @param Google_Service_YouTube_Video[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_YouTube_Video
+   * @return Google_Service_YouTube_Video[]
    */
   public function getItems()
   {

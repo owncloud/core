@@ -22,14 +22,14 @@ class Google_Service_FirebaseManagement_ListShaCertificatesResponse extends Goog
   protected $certificatesDataType = 'array';
 
   /**
-   * @param Google_Service_FirebaseManagement_ShaCertificate
+   * @param Google_Service_FirebaseManagement_ShaCertificate[]
    */
   public function setCertificates($certificates)
   {
     $this->certificates = $certificates;
   }
   /**
-   * @return Google_Service_FirebaseManagement_ShaCertificate
+   * @return Google_Service_FirebaseManagement_ShaCertificate[]
    */
   public function getCertificates()
   {

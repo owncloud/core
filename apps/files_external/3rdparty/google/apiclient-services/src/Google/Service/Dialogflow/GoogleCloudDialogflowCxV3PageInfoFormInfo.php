@@ -22,14 +22,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3PageInfoFormInfo extend
   protected $parameterInfoDataType = 'array';
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3PageInfoFormInfoParameterInfo
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3PageInfoFormInfoParameterInfo[]
    */
   public function setParameterInfo($parameterInfo)
   {
     $this->parameterInfo = $parameterInfo;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3PageInfoFormInfoParameterInfo
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3PageInfoFormInfoParameterInfo[]
    */
   public function getParameterInfo()
   {

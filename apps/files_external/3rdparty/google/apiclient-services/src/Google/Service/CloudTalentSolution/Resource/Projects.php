@@ -38,21 +38,6 @@ class Google_Service_CloudTalentSolution_Resource_Projects extends Google_Servic
    * specified company. The format is
    * "projects/{project_id}/companies/{company_id}", for example, "projects/api-
    * test-project/companies/foo".
-   * @opt_param string scope Optional. The scope of the completion. The defaults
-   * is CompletionScope.PUBLIC.
-   * @opt_param string query Required. The query used to generate suggestions. The
-   * maximum number of allowed characters is 255.
-   * @opt_param int pageSize Required. Completion result count. The maximum
-   * allowed page size is 10.
-   * @opt_param string languageCodes Optional. The list of languages of the query.
-   * This is the BCP-47 language code, such as "en-US" or "sr-Latn". For more
-   * information, see [Tags for Identifying
-   * Languages](https://tools.ietf.org/html/bcp47). For CompletionType.JOB_TITLE
-   * type, only open jobs with the same language_codes are returned. For
-   * CompletionType.COMPANY_NAME type, only companies having open jobs with the
-   * same language_codes are returned. For CompletionType.COMBINED type, only open
-   * jobs with the same language_codes or companies having open jobs with the same
-   * language_codes are returned. The maximum number of allowed characters is 255.
    * @opt_param string languageCode Deprecated. Use language_codes instead.
    * Optional. The language of the query. This is the BCP-47 language code, such
    * as "en-US" or "sr-Latn". For more information, see [Tags for Identifying
@@ -62,6 +47,21 @@ class Google_Service_CloudTalentSolution_Resource_Projects extends Google_Servic
    * same language_code are returned. For CompletionType.COMBINED type, only open
    * jobs with the same language_code or companies having open jobs with the same
    * language_code are returned. The maximum number of allowed characters is 255.
+   * @opt_param string languageCodes Optional. The list of languages of the query.
+   * This is the BCP-47 language code, such as "en-US" or "sr-Latn". For more
+   * information, see [Tags for Identifying
+   * Languages](https://tools.ietf.org/html/bcp47). For CompletionType.JOB_TITLE
+   * type, only open jobs with the same language_codes are returned. For
+   * CompletionType.COMPANY_NAME type, only companies having open jobs with the
+   * same language_codes are returned. For CompletionType.COMBINED type, only open
+   * jobs with the same language_codes or companies having open jobs with the same
+   * language_codes are returned. The maximum number of allowed characters is 255.
+   * @opt_param int pageSize Required. Completion result count. The maximum
+   * allowed page size is 10.
+   * @opt_param string query Required. The query used to generate suggestions. The
+   * maximum number of allowed characters is 255.
+   * @opt_param string scope Optional. The scope of the completion. The defaults
+   * is CompletionScope.PUBLIC.
    * @opt_param string type Optional. The completion topic. The default is
    * CompletionType.COMBINED.
    * @return Google_Service_CloudTalentSolution_CompleteQueryResponse

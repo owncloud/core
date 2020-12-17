@@ -31,14 +31,14 @@ class Google_Service_Pubsub_ListSnapshotsResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Pubsub_Snapshot
+   * @param Google_Service_Pubsub_Snapshot[]
    */
   public function setSnapshots($snapshots)
   {
     $this->snapshots = $snapshots;
   }
   /**
-   * @return Google_Service_Pubsub_Snapshot
+   * @return Google_Service_Pubsub_Snapshot[]
    */
   public function getSnapshots()
   {

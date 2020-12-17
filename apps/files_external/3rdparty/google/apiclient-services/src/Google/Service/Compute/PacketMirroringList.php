@@ -36,14 +36,14 @@ class Google_Service_Compute_PacketMirroringList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_PacketMirroring
+   * @param Google_Service_Compute_PacketMirroring[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_PacketMirroring
+   * @return Google_Service_Compute_PacketMirroring[]
    */
   public function getItems()
   {

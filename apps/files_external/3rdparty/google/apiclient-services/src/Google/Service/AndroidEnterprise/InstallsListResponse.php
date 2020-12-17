@@ -22,14 +22,14 @@ class Google_Service_AndroidEnterprise_InstallsListResponse extends Google_Colle
   protected $installDataType = 'array';
 
   /**
-   * @param Google_Service_AndroidEnterprise_Install
+   * @param Google_Service_AndroidEnterprise_Install[]
    */
   public function setInstall($install)
   {
     $this->install = $install;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_Install
+   * @return Google_Service_AndroidEnterprise_Install[]
    */
   public function getInstall()
   {

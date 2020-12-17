@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_ListLocationListsResponse extends Google_Colle
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DisplayVideo_LocationList
+   * @param Google_Service_DisplayVideo_LocationList[]
    */
   public function setLocationLists($locationLists)
   {
     $this->locationLists = $locationLists;
   }
   /**
-   * @return Google_Service_DisplayVideo_LocationList
+   * @return Google_Service_DisplayVideo_LocationList[]
    */
   public function getLocationLists()
   {

@@ -28,56 +28,56 @@ class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Directory e
   protected $symlinksDataType = 'array';
 
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2DirectoryNode
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2DirectoryNode[]
    */
   public function setDirectories($directories)
   {
     $this->directories = $directories;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2DirectoryNode
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2DirectoryNode[]
    */
   public function getDirectories()
   {
     return $this->directories;
   }
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2FileNode
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2FileNode[]
    */
   public function setFiles($files)
   {
     $this->files = $files;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2FileNode
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2FileNode[]
    */
   public function getFiles()
   {
     return $this->files;
   }
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2NodeProperty
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2NodeProperty[]
    */
   public function setNodeProperties($nodeProperties)
   {
     $this->nodeProperties = $nodeProperties;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2NodeProperty
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2NodeProperty[]
    */
   public function getNodeProperties()
   {
     return $this->nodeProperties;
   }
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2SymlinkNode
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2SymlinkNode[]
    */
   public function setSymlinks($symlinks)
   {
     $this->symlinks = $symlinks;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2SymlinkNode
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2SymlinkNode[]
    */
   public function getSymlinks()
   {

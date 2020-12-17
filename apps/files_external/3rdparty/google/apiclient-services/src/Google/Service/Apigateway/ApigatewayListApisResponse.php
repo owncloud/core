@@ -24,14 +24,14 @@ class Google_Service_Apigateway_ApigatewayListApisResponse extends Google_Collec
   public $unreachableLocations;
 
   /**
-   * @param Google_Service_Apigateway_ApigatewayApi
+   * @param Google_Service_Apigateway_ApigatewayApi[]
    */
   public function setApis($apis)
   {
     $this->apis = $apis;
   }
   /**
-   * @return Google_Service_Apigateway_ApigatewayApi
+   * @return Google_Service_Apigateway_ApigatewayApi[]
    */
   public function getApis()
   {

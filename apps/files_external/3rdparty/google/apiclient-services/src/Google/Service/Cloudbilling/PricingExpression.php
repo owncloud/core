@@ -60,14 +60,14 @@ class Google_Service_Cloudbilling_PricingExpression extends Google_Collection
     return $this->displayQuantity;
   }
   /**
-   * @param Google_Service_Cloudbilling_TierRate
+   * @param Google_Service_Cloudbilling_TierRate[]
    */
   public function setTieredRates($tieredRates)
   {
     $this->tieredRates = $tieredRates;
   }
   /**
-   * @return Google_Service_Cloudbilling_TierRate
+   * @return Google_Service_Cloudbilling_TierRate[]
    */
   public function getTieredRates()
   {

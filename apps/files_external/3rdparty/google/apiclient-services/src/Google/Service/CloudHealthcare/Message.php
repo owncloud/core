@@ -85,14 +85,14 @@ class Google_Service_CloudHealthcare_Message extends Google_Collection
     return $this->parsedData;
   }
   /**
-   * @param Google_Service_CloudHealthcare_PatientId
+   * @param Google_Service_CloudHealthcare_PatientId[]
    */
   public function setPatientIds($patientIds)
   {
     $this->patientIds = $patientIds;
   }
   /**
-   * @return Google_Service_CloudHealthcare_PatientId
+   * @return Google_Service_CloudHealthcare_PatientId[]
    */
   public function getPatientIds()
   {

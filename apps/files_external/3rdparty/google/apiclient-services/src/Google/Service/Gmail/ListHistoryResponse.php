@@ -24,14 +24,14 @@ class Google_Service_Gmail_ListHistoryResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Gmail_History
+   * @param Google_Service_Gmail_History[]
    */
   public function setHistory($history)
   {
     $this->history = $history;
   }
   /**
-   * @return Google_Service_Gmail_History
+   * @return Google_Service_Gmail_History[]
    */
   public function getHistory()
   {

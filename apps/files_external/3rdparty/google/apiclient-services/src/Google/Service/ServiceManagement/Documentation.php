@@ -44,28 +44,28 @@ class Google_Service_ServiceManagement_Documentation extends Google_Collection
     return $this->overview;
   }
   /**
-   * @param Google_Service_ServiceManagement_Page
+   * @param Google_Service_ServiceManagement_Page[]
    */
   public function setPages($pages)
   {
     $this->pages = $pages;
   }
   /**
-   * @return Google_Service_ServiceManagement_Page
+   * @return Google_Service_ServiceManagement_Page[]
    */
   public function getPages()
   {
     return $this->pages;
   }
   /**
-   * @param Google_Service_ServiceManagement_DocumentationRule
+   * @param Google_Service_ServiceManagement_DocumentationRule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_ServiceManagement_DocumentationRule
+   * @return Google_Service_ServiceManagement_DocumentationRule[]
    */
   public function getRules()
   {

@@ -36,14 +36,14 @@ class Google_Service_Compute_RegionInstanceGroupList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_InstanceGroup
+   * @param Google_Service_Compute_InstanceGroup[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_InstanceGroup
+   * @return Google_Service_Compute_InstanceGroup[]
    */
   public function getItems()
   {

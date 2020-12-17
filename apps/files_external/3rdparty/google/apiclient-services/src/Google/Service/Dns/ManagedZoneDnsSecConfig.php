@@ -25,14 +25,14 @@ class Google_Service_Dns_ManagedZoneDnsSecConfig extends Google_Collection
   public $state;
 
   /**
-   * @param Google_Service_Dns_DnsKeySpec
+   * @param Google_Service_Dns_DnsKeySpec[]
    */
   public function setDefaultKeySpecs($defaultKeySpecs)
   {
     $this->defaultKeySpecs = $defaultKeySpecs;
   }
   /**
-   * @return Google_Service_Dns_DnsKeySpec
+   * @return Google_Service_Dns_DnsKeySpec[]
    */
   public function getDefaultKeySpecs()
   {

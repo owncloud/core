@@ -36,14 +36,14 @@ class Google_Service_Compute_UrlMapList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_UrlMap
+   * @param Google_Service_Compute_UrlMap[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_UrlMap
+   * @return Google_Service_Compute_UrlMap[]
    */
   public function getItems()
   {

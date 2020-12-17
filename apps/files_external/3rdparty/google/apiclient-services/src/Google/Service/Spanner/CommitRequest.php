@@ -25,14 +25,14 @@ class Google_Service_Spanner_CommitRequest extends Google_Collection
   public $transactionId;
 
   /**
-   * @param Google_Service_Spanner_Mutation
+   * @param Google_Service_Spanner_Mutation[]
    */
   public function setMutations($mutations)
   {
     $this->mutations = $mutations;
   }
   /**
-   * @return Google_Service_Spanner_Mutation
+   * @return Google_Service_Spanner_Mutation[]
    */
   public function getMutations()
   {

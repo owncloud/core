@@ -30,28 +30,28 @@ class Google_Service_BinaryAuthorization_Policy extends Google_Collection
   public $updateTime;
 
   /**
-   * @param Google_Service_BinaryAuthorization_AdmissionWhitelistPattern
+   * @param Google_Service_BinaryAuthorization_AdmissionWhitelistPattern[]
    */
   public function setAdmissionWhitelistPatterns($admissionWhitelistPatterns)
   {
     $this->admissionWhitelistPatterns = $admissionWhitelistPatterns;
   }
   /**
-   * @return Google_Service_BinaryAuthorization_AdmissionWhitelistPattern
+   * @return Google_Service_BinaryAuthorization_AdmissionWhitelistPattern[]
    */
   public function getAdmissionWhitelistPatterns()
   {
     return $this->admissionWhitelistPatterns;
   }
   /**
-   * @param Google_Service_BinaryAuthorization_AdmissionRule
+   * @param Google_Service_BinaryAuthorization_AdmissionRule[]
    */
   public function setClusterAdmissionRules($clusterAdmissionRules)
   {
     $this->clusterAdmissionRules = $clusterAdmissionRules;
   }
   /**
-   * @return Google_Service_BinaryAuthorization_AdmissionRule
+   * @return Google_Service_BinaryAuthorization_AdmissionRule[]
    */
   public function getClusterAdmissionRules()
   {

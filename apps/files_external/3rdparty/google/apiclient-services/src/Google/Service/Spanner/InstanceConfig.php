@@ -40,14 +40,14 @@ class Google_Service_Spanner_InstanceConfig extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Spanner_ReplicaInfo
+   * @param Google_Service_Spanner_ReplicaInfo[]
    */
   public function setReplicas($replicas)
   {
     $this->replicas = $replicas;
   }
   /**
-   * @return Google_Service_Spanner_ReplicaInfo
+   * @return Google_Service_Spanner_ReplicaInfo[]
    */
   public function getReplicas()
   {

@@ -31,14 +31,14 @@ class Google_Service_Dataflow_ReportWorkItemStatusResponse extends Google_Collec
     return $this->unifiedWorkerResponse;
   }
   /**
-   * @param Google_Service_Dataflow_WorkItemServiceState
+   * @param Google_Service_Dataflow_WorkItemServiceState[]
    */
   public function setWorkItemServiceStates($workItemServiceStates)
   {
     $this->workItemServiceStates = $workItemServiceStates;
   }
   /**
-   * @return Google_Service_Dataflow_WorkItemServiceState
+   * @return Google_Service_Dataflow_WorkItemServiceState[]
    */
   public function getWorkItemServiceStates()
   {

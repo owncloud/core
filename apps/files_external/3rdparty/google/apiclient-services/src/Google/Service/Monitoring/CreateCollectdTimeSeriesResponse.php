@@ -24,14 +24,14 @@ class Google_Service_Monitoring_CreateCollectdTimeSeriesResponse extends Google_
   protected $summaryDataType = '';
 
   /**
-   * @param Google_Service_Monitoring_CollectdPayloadError
+   * @param Google_Service_Monitoring_CollectdPayloadError[]
    */
   public function setPayloadErrors($payloadErrors)
   {
     $this->payloadErrors = $payloadErrors;
   }
   /**
-   * @return Google_Service_Monitoring_CollectdPayloadError
+   * @return Google_Service_Monitoring_CollectdPayloadError[]
    */
   public function getPayloadErrors()
   {

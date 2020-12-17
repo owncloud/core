@@ -47,14 +47,14 @@ class Google_Service_YouTube_SuperChatEventListResponse extends Google_Collectio
     return $this->eventId;
   }
   /**
-   * @param Google_Service_YouTube_SuperChatEvent
+   * @param Google_Service_YouTube_SuperChatEvent[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_YouTube_SuperChatEvent
+   * @return Google_Service_YouTube_SuperChatEvent[]
    */
   public function getItems()
   {

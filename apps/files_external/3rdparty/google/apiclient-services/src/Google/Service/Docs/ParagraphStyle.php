@@ -279,14 +279,14 @@ class Google_Service_Docs_ParagraphStyle extends Google_Collection
     return $this->spacingMode;
   }
   /**
-   * @param Google_Service_Docs_TabStop
+   * @param Google_Service_Docs_TabStop[]
    */
   public function setTabStops($tabStops)
   {
     $this->tabStops = $tabStops;
   }
   /**
-   * @return Google_Service_Docs_TabStop
+   * @return Google_Service_Docs_TabStop[]
    */
   public function getTabStops()
   {

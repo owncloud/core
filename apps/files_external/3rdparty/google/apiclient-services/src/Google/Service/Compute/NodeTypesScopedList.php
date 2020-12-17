@@ -24,14 +24,14 @@ class Google_Service_Compute_NodeTypesScopedList extends Google_Collection
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_NodeType
+   * @param Google_Service_Compute_NodeType[]
    */
   public function setNodeTypes($nodeTypes)
   {
     $this->nodeTypes = $nodeTypes;
   }
   /**
-   * @return Google_Service_Compute_NodeType
+   * @return Google_Service_Compute_NodeType[]
    */
   public function getNodeTypes()
   {

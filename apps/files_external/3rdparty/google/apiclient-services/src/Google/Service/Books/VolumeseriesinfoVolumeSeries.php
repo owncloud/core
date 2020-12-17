@@ -25,14 +25,14 @@ class Google_Service_Books_VolumeseriesinfoVolumeSeries extends Google_Collectio
   public $seriesId;
 
   /**
-   * @param Google_Service_Books_VolumeseriesinfoVolumeSeriesIssue
+   * @param Google_Service_Books_VolumeseriesinfoVolumeSeriesIssue[]
    */
   public function setIssue($issue)
   {
     $this->issue = $issue;
   }
   /**
-   * @return Google_Service_Books_VolumeseriesinfoVolumeSeriesIssue
+   * @return Google_Service_Books_VolumeseriesinfoVolumeSeriesIssue[]
    */
   public function getIssue()
   {

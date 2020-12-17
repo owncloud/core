@@ -26,14 +26,14 @@ class Google_Service_CloudRun_RevisionStatus extends Google_Collection
   public $serviceName;
 
   /**
-   * @param Google_Service_CloudRun_GoogleCloudRunV1Condition
+   * @param Google_Service_CloudRun_GoogleCloudRunV1Condition[]
    */
   public function setConditions($conditions)
   {
     $this->conditions = $conditions;
   }
   /**
-   * @return Google_Service_CloudRun_GoogleCloudRunV1Condition
+   * @return Google_Service_CloudRun_GoogleCloudRunV1Condition[]
    */
   public function getConditions()
   {

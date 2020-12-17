@@ -40,7 +40,7 @@ class Google_Service_CloudResourceManager extends Google_Service
 
   public $folders;
   public $operations;
-  
+
   /**
    * Constructs the internal representation of the CloudResourceManager service.
    *
@@ -109,11 +109,11 @@ class Google_Service_CloudResourceManager extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'parent' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'parent' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

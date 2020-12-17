@@ -108,11 +108,6 @@ class Google_Service_FirebaseRules_Resource_ProjectsReleases extends Google_Serv
    * `projects/{project_id}`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Page size to load. Maximum of 100. Defaults to 10.
-   * Note: `page_size` is just a hint and the service may choose to load fewer
-   * than `page_size` results due to the size of the output. To traverse all of
-   * the releases, the caller should iterate until the `page_token` on the
-   * response is empty.
    * @opt_param string filter `Release` filter. The list method supports filters
    * with restrictions on the `Release.name`, `Release.ruleset_name`, and
    * `Release.test_suite_name`. Example 1: A filter of 'name=prod*' might return
@@ -129,6 +124,11 @@ class Google_Service_FirebaseRules_Resource_ProjectsReleases extends Google_Serv
    * projects/foo/rulesets/1234 In the examples, the filter parameters refer to
    * the search filters are relative to the project. Fully qualified prefixed may
    * also be used. e.g. `test_suite_name=projects/foo/testsuites/uuid1`
+   * @opt_param int pageSize Page size to load. Maximum of 100. Defaults to 10.
+   * Note: `page_size` is just a hint and the service may choose to load fewer
+   * than `page_size` results due to the size of the output. To traverse all of
+   * the releases, the caller should iterate until the `page_token` on the
+   * response is empty.
    * @opt_param string pageToken Next page token for the next batch of `Release`
    * instances.
    * @return Google_Service_FirebaseRules_ListReleasesResponse

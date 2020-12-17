@@ -22,14 +22,14 @@ class Google_Service_Compute_PreservedState extends Google_Model
   public $metadata;
 
   /**
-   * @param Google_Service_Compute_PreservedStatePreservedDisk
+   * @param Google_Service_Compute_PreservedStatePreservedDisk[]
    */
   public function setDisks($disks)
   {
     $this->disks = $disks;
   }
   /**
-   * @return Google_Service_Compute_PreservedStatePreservedDisk
+   * @return Google_Service_Compute_PreservedStatePreservedDisk[]
    */
   public function getDisks()
   {

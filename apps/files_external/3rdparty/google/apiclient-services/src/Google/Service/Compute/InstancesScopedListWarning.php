@@ -32,14 +32,14 @@ class Google_Service_Compute_InstancesScopedListWarning extends Google_Collectio
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_InstancesScopedListWarningData
+   * @param Google_Service_Compute_InstancesScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_InstancesScopedListWarningData
+   * @return Google_Service_Compute_InstancesScopedListWarningData[]
    */
   public function getData()
   {

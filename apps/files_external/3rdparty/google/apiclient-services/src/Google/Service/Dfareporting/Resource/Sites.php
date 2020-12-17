@@ -60,32 +60,32 @@ class Google_Service_Dfareporting_Resource_Sites extends Google_Service_Resource
    * @param string $profileId User profile ID associated with this request.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string subaccountId Select only sites with this subaccount ID.
-   * @opt_param string pageToken Value of the nextPageToken from the previous
-   * result page.
-   * @opt_param string sortField Field by which to sort the list.
-   * @opt_param string campaignIds Select only sites with these campaign IDs.
-   * @opt_param bool acceptsPublisherPaidPlacements Select only sites that accept
-   * publisher paid placements.
-   * @opt_param bool unmappedSite Select only sites that have not been mapped to a
-   * directory site.
    * @opt_param bool acceptsInStreamVideoPlacements This search filter is no
    * longer supported and will have no effect on the results returned.
+   * @opt_param bool acceptsInterstitialPlacements This search filter is no longer
+   * supported and will have no effect on the results returned.
+   * @opt_param bool acceptsPublisherPaidPlacements Select only sites that accept
+   * publisher paid placements.
+   * @opt_param bool adWordsSite Select only AdWords sites.
+   * @opt_param bool approved Select only approved sites.
+   * @opt_param string campaignIds Select only sites with these campaign IDs.
+   * @opt_param string directorySiteIds Select only sites with these directory
+   * site IDs.
+   * @opt_param string ids Select only sites with these IDs.
+   * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string pageToken Value of the nextPageToken from the previous
+   * result page.
    * @opt_param string searchString Allows searching for objects by name, ID or
    * keyName. Wildcards (*) are allowed. For example, "site*2015" will return
    * objects with names like "site June 2015", "site April 2015", or simply "site
    * 2015". Most of the searches also add wildcards implicitly at the start and
    * the end of the search string. For example, a search string of "site" will
    * match objects with name "my site", "site 2015", or simply "site".
-   * @opt_param int maxResults Maximum number of results to return.
-   * @opt_param bool adWordsSite Select only AdWords sites.
-   * @opt_param string directorySiteIds Select only sites with these directory
-   * site IDs.
-   * @opt_param string ids Select only sites with these IDs.
-   * @opt_param bool acceptsInterstitialPlacements This search filter is no longer
-   * supported and will have no effect on the results returned.
+   * @opt_param string sortField Field by which to sort the list.
    * @opt_param string sortOrder Order of sorted results.
-   * @opt_param bool approved Select only approved sites.
+   * @opt_param string subaccountId Select only sites with this subaccount ID.
+   * @opt_param bool unmappedSite Select only sites that have not been mapped to a
+   * directory site.
    * @return Google_Service_Dfareporting_SitesListResponse
    */
   public function listSites($profileId, $optParams = array())

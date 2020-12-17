@@ -32,14 +32,14 @@ class Google_Service_Compute_InterconnectAttachmentAggregatedListWarning extends
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_InterconnectAttachmentAggregatedListWarningData
+   * @param Google_Service_Compute_InterconnectAttachmentAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_InterconnectAttachmentAggregatedListWarningData
+   * @return Google_Service_Compute_InterconnectAttachmentAggregatedListWarningData[]
    */
   public function getData()
   {

@@ -34,7 +34,7 @@ class Google_Service_SemanticTile extends Google_Service
 
   public $featuretiles;
   public $terraintiles;
-  
+
   /**
    * Constructs the internal representation of the SemanticTile service.
    *
@@ -65,29 +65,9 @@ class Google_Service_SemanticTile extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'clientInfo.operatingSystem' => array(
+                'clientInfo.apiClient' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-                'regionCode' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'clientInfo.userId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'enableDetailedHighwayTypes' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
-                'clientInfo.platform' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'enableModeledVolumes' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
                 ),
                 'clientInfo.applicationId' => array(
                   'location' => 'query',
@@ -97,19 +77,19 @@ class Google_Service_SemanticTile extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'enableUnclippedBuildings' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
-                'enableFeatureNames' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
-                'enablePrivateRoads' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
                 'clientInfo.deviceModel' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'clientInfo.operatingSystem' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'clientInfo.platform' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'clientInfo.userId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -117,7 +97,27 @@ class Google_Service_SemanticTile extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'enableDetailedHighwayTypes' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
+                'enableFeatureNames' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
+                'enableModeledVolumes' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
                 'enablePoliticalFeatures' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
+                'enablePrivateRoads' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
+                'enableUnclippedBuildings' => array(
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
@@ -125,7 +125,7 @@ class Google_Service_SemanticTile extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'clientInfo.apiClient' => array(
+                'regionCode' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -149,19 +149,11 @@ class Google_Service_SemanticTile extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'clientInfo.applicationVersion' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'minElevationResolutionCells' => array(
+                'altitudePrecisionCentimeters' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'clientInfo.platform' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'clientInfo.deviceModel' => array(
+                'clientInfo.apiClient' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -169,16 +161,19 @@ class Google_Service_SemanticTile extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'terrainFormats' => array(
+                'clientInfo.applicationVersion' => array(
                   'location' => 'query',
                   'type' => 'string',
-                  'repeated' => true,
+                ),
+                'clientInfo.deviceModel' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
                 'clientInfo.operatingSystem' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'clientInfo.apiClient' => array(
+                'clientInfo.platform' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -190,9 +185,14 @@ class Google_Service_SemanticTile extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'altitudePrecisionCentimeters' => array(
+                'minElevationResolutionCells' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'terrainFormats' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
                 ),
               ),
             ),

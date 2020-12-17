@@ -81,6 +81,15 @@ class Google_Service_YouTubeAnalytics_Resource_Groups extends Google_Service_Res
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string id The `id` parameter specifies a comma-separated list of
+   * the YouTube group ID(s) for the resource(s) that are being retrieved. Each
+   * group must be owned by the authenticated user. In a `group` resource, the
+   * `id` property specifies the group's YouTube group ID. Note that if you do not
+   * specify a value for the `id` parameter, then you must set the `mine`
+   * parameter to `true`.
+   * @opt_param bool mine This parameter can only be used in a properly authorized
+   * request. Set this parameter's value to true to retrieve all groups owned by
+   * the authenticated user.
    * @opt_param string onBehalfOfContentOwner This parameter can only be used in a
    * properly authorized request. **Note:** This parameter is intended exclusively
    * for YouTube content partners that own and manage many different YouTube
@@ -91,15 +100,6 @@ class Google_Service_YouTubeAnalytics_Resource_Groups extends Google_Service_Res
    * without having to provide authentication credentials for each individual
    * channel. The account that the user authenticates with must be linked to the
    * specified YouTube content owner.
-   * @opt_param bool mine This parameter can only be used in a properly authorized
-   * request. Set this parameter's value to true to retrieve all groups owned by
-   * the authenticated user.
-   * @opt_param string id The `id` parameter specifies a comma-separated list of
-   * the YouTube group ID(s) for the resource(s) that are being retrieved. Each
-   * group must be owned by the authenticated user. In a `group` resource, the
-   * `id` property specifies the group's YouTube group ID. Note that if you do not
-   * specify a value for the `id` parameter, then you must set the `mine`
-   * parameter to `true`.
    * @opt_param string pageToken The `pageToken` parameter identifies a specific
    * page in the result set that should be returned. In an API response, the
    * `nextPageToken` property identifies the next page that can be retrieved.

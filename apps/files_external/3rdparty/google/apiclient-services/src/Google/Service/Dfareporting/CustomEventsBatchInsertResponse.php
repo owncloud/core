@@ -40,14 +40,14 @@ class Google_Service_Dfareporting_CustomEventsBatchInsertResponse extends Google
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dfareporting_CustomEventStatus
+   * @param Google_Service_Dfareporting_CustomEventStatus[]
    */
   public function setStatus($status)
   {
     $this->status = $status;
   }
   /**
-   * @return Google_Service_Dfareporting_CustomEventStatus
+   * @return Google_Service_Dfareporting_CustomEventStatus[]
    */
   public function getStatus()
   {

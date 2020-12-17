@@ -31,14 +31,14 @@ class Google_Service_Dns_PolicyAlternativeNameServerConfig extends Google_Collec
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dns_PolicyAlternativeNameServerConfigTargetNameServer
+   * @param Google_Service_Dns_PolicyAlternativeNameServerConfigTargetNameServer[]
    */
   public function setTargetNameServers($targetNameServers)
   {
     $this->targetNameServers = $targetNameServers;
   }
   /**
-   * @return Google_Service_Dns_PolicyAlternativeNameServerConfigTargetNameServer
+   * @return Google_Service_Dns_PolicyAlternativeNameServerConfigTargetNameServer[]
    */
   public function getTargetNameServers()
   {

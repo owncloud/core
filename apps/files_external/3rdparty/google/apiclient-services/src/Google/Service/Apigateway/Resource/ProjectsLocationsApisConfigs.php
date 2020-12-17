@@ -107,10 +107,10 @@ class Google_Service_Apigateway_Resource_ProjectsLocationsApisConfigs extends Go
    * form: `projects/locations/global/apis`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Page token.
-   * @opt_param string orderBy Order by parameters.
    * @opt_param string filter Filter.
+   * @opt_param string orderBy Order by parameters.
    * @opt_param int pageSize Page size.
+   * @opt_param string pageToken Page token.
    * @return Google_Service_Apigateway_ApigatewayListApiConfigsResponse
    */
   public function listProjectsLocationsApisConfigs($parent, $optParams = array())

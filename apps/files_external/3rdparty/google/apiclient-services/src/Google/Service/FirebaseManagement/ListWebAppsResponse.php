@@ -23,14 +23,14 @@ class Google_Service_FirebaseManagement_ListWebAppsResponse extends Google_Colle
   public $nextPageToken;
 
   /**
-   * @param Google_Service_FirebaseManagement_WebApp
+   * @param Google_Service_FirebaseManagement_WebApp[]
    */
   public function setApps($apps)
   {
     $this->apps = $apps;
   }
   /**
-   * @return Google_Service_FirebaseManagement_WebApp
+   * @return Google_Service_FirebaseManagement_WebApp[]
    */
   public function getApps()
   {

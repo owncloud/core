@@ -24,14 +24,14 @@ class Google_Service_AdExchangeBuyerII_Correction extends Google_Collection
   public $type;
 
   /**
-   * @param Google_Service_AdExchangeBuyerII_ServingContext
+   * @param Google_Service_AdExchangeBuyerII_ServingContext[]
    */
   public function setContexts($contexts)
   {
     $this->contexts = $contexts;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_ServingContext
+   * @return Google_Service_AdExchangeBuyerII_ServingContext[]
    */
   public function getContexts()
   {

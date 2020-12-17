@@ -27,14 +27,14 @@ class Google_Service_Vision_AnnotateFileRequest extends Google_Collection
   public $pages;
 
   /**
-   * @param Google_Service_Vision_Feature
+   * @param Google_Service_Vision_Feature[]
    */
   public function setFeatures($features)
   {
     $this->features = $features;
   }
   /**
-   * @return Google_Service_Vision_Feature
+   * @return Google_Service_Vision_Feature[]
    */
   public function getFeatures()
   {

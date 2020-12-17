@@ -53,14 +53,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1RuntimeTraceConfig extends Google
     return $this->name;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1RuntimeTraceConfigOverride
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1RuntimeTraceConfigOverride[]
    */
   public function setOverrides($overrides)
   {
     $this->overrides = $overrides;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1RuntimeTraceConfigOverride
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1RuntimeTraceConfigOverride[]
    */
   public function getOverrides()
   {

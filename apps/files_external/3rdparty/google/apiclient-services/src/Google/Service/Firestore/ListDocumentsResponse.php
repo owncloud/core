@@ -23,14 +23,14 @@ class Google_Service_Firestore_ListDocumentsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Firestore_Document
+   * @param Google_Service_Firestore_Document[]
    */
   public function setDocuments($documents)
   {
     $this->documents = $documents;
   }
   /**
-   * @return Google_Service_Firestore_Document
+   * @return Google_Service_Firestore_Document[]
    */
   public function getDocuments()
   {

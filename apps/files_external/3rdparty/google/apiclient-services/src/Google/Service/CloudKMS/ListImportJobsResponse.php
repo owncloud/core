@@ -24,14 +24,14 @@ class Google_Service_CloudKMS_ListImportJobsResponse extends Google_Collection
   public $totalSize;
 
   /**
-   * @param Google_Service_CloudKMS_ImportJob
+   * @param Google_Service_CloudKMS_ImportJob[]
    */
   public function setImportJobs($importJobs)
   {
     $this->importJobs = $importJobs;
   }
   /**
-   * @return Google_Service_CloudKMS_ImportJob
+   * @return Google_Service_CloudKMS_ImportJob[]
    */
   public function getImportJobs()
   {

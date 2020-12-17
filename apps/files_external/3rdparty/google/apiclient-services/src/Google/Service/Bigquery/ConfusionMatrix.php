@@ -31,14 +31,14 @@ class Google_Service_Bigquery_ConfusionMatrix extends Google_Collection
     return $this->confidenceThreshold;
   }
   /**
-   * @param Google_Service_Bigquery_Row
+   * @param Google_Service_Bigquery_Row[]
    */
   public function setRows($rows)
   {
     $this->rows = $rows;
   }
   /**
-   * @return Google_Service_Bigquery_Row
+   * @return Google_Service_Bigquery_Row[]
    */
   public function getRows()
   {

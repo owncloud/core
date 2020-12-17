@@ -36,14 +36,14 @@ class Google_Service_ServiceConsumerManagement_Method extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_ServiceConsumerManagement_Option
+   * @param Google_Service_ServiceConsumerManagement_Option[]
    */
   public function setOptions($options)
   {
     $this->options = $options;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_Option
+   * @return Google_Service_ServiceConsumerManagement_Option[]
    */
   public function getOptions()
   {

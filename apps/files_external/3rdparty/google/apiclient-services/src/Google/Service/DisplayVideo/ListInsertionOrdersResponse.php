@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_ListInsertionOrdersResponse extends Google_Col
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DisplayVideo_InsertionOrder
+   * @param Google_Service_DisplayVideo_InsertionOrder[]
    */
   public function setInsertionOrders($insertionOrders)
   {
     $this->insertionOrders = $insertionOrders;
   }
   /**
-   * @return Google_Service_DisplayVideo_InsertionOrder
+   * @return Google_Service_DisplayVideo_InsertionOrder[]
    */
   public function getInsertionOrders()
   {

@@ -131,14 +131,14 @@ class Google_Service_Sheets_PivotGroup extends Google_Collection
     return $this->valueBucket;
   }
   /**
-   * @param Google_Service_Sheets_PivotGroupValueMetadata
+   * @param Google_Service_Sheets_PivotGroupValueMetadata[]
    */
   public function setValueMetadata($valueMetadata)
   {
     $this->valueMetadata = $valueMetadata;
   }
   /**
-   * @return Google_Service_Sheets_PivotGroupValueMetadata
+   * @return Google_Service_Sheets_PivotGroupValueMetadata[]
    */
   public function getValueMetadata()
   {

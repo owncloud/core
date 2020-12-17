@@ -27,14 +27,14 @@ class Google_Service_Testing_IosTestSetup extends Google_Collection
   protected $pushFilesDataType = 'array';
 
   /**
-   * @param Google_Service_Testing_FileReference
+   * @param Google_Service_Testing_FileReference[]
    */
   public function setAdditionalIpas($additionalIpas)
   {
     $this->additionalIpas = $additionalIpas;
   }
   /**
-   * @return Google_Service_Testing_FileReference
+   * @return Google_Service_Testing_FileReference[]
    */
   public function getAdditionalIpas()
   {
@@ -49,28 +49,28 @@ class Google_Service_Testing_IosTestSetup extends Google_Collection
     return $this->networkProfile;
   }
   /**
-   * @param Google_Service_Testing_IosDeviceFile
+   * @param Google_Service_Testing_IosDeviceFile[]
    */
   public function setPullDirectories($pullDirectories)
   {
     $this->pullDirectories = $pullDirectories;
   }
   /**
-   * @return Google_Service_Testing_IosDeviceFile
+   * @return Google_Service_Testing_IosDeviceFile[]
    */
   public function getPullDirectories()
   {
     return $this->pullDirectories;
   }
   /**
-   * @param Google_Service_Testing_IosDeviceFile
+   * @param Google_Service_Testing_IosDeviceFile[]
    */
   public function setPushFiles($pushFiles)
   {
     $this->pushFiles = $pushFiles;
   }
   /**
-   * @return Google_Service_Testing_IosDeviceFile
+   * @return Google_Service_Testing_IosDeviceFile[]
    */
   public function getPushFiles()
   {

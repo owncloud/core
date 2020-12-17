@@ -32,8 +32,8 @@ class Google_Service_Dataflow_Resource_Projects extends Google_Service_Resource
    * snapshot belongs to.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string snapshotId The ID of the snapshot.
    * @opt_param string location The location that contains this snapshot.
+   * @opt_param string snapshotId The ID of the snapshot.
    * @return Google_Service_Dataflow_DeleteSnapshotResponse
    */
   public function deleteSnapshots($projectId, $optParams = array())

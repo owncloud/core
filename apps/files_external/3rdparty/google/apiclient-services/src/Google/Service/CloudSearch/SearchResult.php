@@ -30,14 +30,14 @@ class Google_Service_CloudSearch_SearchResult extends Google_Collection
   public $url;
 
   /**
-   * @param Google_Service_CloudSearch_SearchResult
+   * @param Google_Service_CloudSearch_SearchResult[]
    */
   public function setClusteredResults($clusteredResults)
   {
     $this->clusteredResults = $clusteredResults;
   }
   /**
-   * @return Google_Service_CloudSearch_SearchResult
+   * @return Google_Service_CloudSearch_SearchResult[]
    */
   public function getClusteredResults()
   {

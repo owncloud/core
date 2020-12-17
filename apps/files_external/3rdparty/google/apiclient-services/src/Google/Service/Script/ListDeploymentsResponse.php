@@ -23,14 +23,14 @@ class Google_Service_Script_ListDeploymentsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Script_Deployment
+   * @param Google_Service_Script_Deployment[]
    */
   public function setDeployments($deployments)
   {
     $this->deployments = $deployments;
   }
   /**
-   * @return Google_Service_Script_Deployment
+   * @return Google_Service_Script_Deployment[]
    */
   public function getDeployments()
   {

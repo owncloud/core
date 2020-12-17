@@ -24,28 +24,28 @@ class Google_Service_ArtifactRegistry_GoogleDevtoolsArtifactregistryV1alpha1Impo
   protected $packagesDataType = 'array';
 
   /**
-   * @param Google_Service_ArtifactRegistry_GoogleDevtoolsArtifactregistryV1alpha1ErrorInfo
+   * @param Google_Service_ArtifactRegistry_GoogleDevtoolsArtifactregistryV1alpha1ErrorInfo[]
    */
   public function setErrors($errors)
   {
     $this->errors = $errors;
   }
   /**
-   * @return Google_Service_ArtifactRegistry_GoogleDevtoolsArtifactregistryV1alpha1ErrorInfo
+   * @return Google_Service_ArtifactRegistry_GoogleDevtoolsArtifactregistryV1alpha1ErrorInfo[]
    */
   public function getErrors()
   {
     return $this->errors;
   }
   /**
-   * @param Google_Service_ArtifactRegistry_GoogleDevtoolsArtifactregistryV1alpha1Package
+   * @param Google_Service_ArtifactRegistry_GoogleDevtoolsArtifactregistryV1alpha1Package[]
    */
   public function setPackages($packages)
   {
     $this->packages = $packages;
   }
   /**
-   * @return Google_Service_ArtifactRegistry_GoogleDevtoolsArtifactregistryV1alpha1Package
+   * @return Google_Service_ArtifactRegistry_GoogleDevtoolsArtifactregistryV1alpha1Package[]
    */
   public function getPackages()
   {

@@ -38,14 +38,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2KAnonymityConfig extends Google_Colle
     return $this->entityId;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2FieldId
+   * @param Google_Service_DLP_GooglePrivacyDlpV2FieldId[]
    */
   public function setQuasiIds($quasiIds)
   {
     $this->quasiIds = $quasiIds;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2FieldId
+   * @return Google_Service_DLP_GooglePrivacyDlpV2FieldId[]
    */
   public function getQuasiIds()
   {

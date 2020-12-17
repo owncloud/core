@@ -24,14 +24,14 @@ class Google_Service_GameServices_TargetDetails extends Google_Collection
   public $gameServerDeploymentName;
 
   /**
-   * @param Google_Service_GameServices_TargetFleetDetails
+   * @param Google_Service_GameServices_TargetFleetDetails[]
    */
   public function setFleetDetails($fleetDetails)
   {
     $this->fleetDetails = $fleetDetails;
   }
   /**
-   * @return Google_Service_GameServices_TargetFleetDetails
+   * @return Google_Service_GameServices_TargetFleetDetails[]
    */
   public function getFleetDetails()
   {

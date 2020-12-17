@@ -48,14 +48,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1PrCurve extends 
     return $this->areaUnderCurve;
   }
   /**
-   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ConfidenceMetricsEntry
+   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ConfidenceMetricsEntry[]
    */
   public function setConfidenceMetricsEntries($confidenceMetricsEntries)
   {
     $this->confidenceMetricsEntries = $confidenceMetricsEntries;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ConfidenceMetricsEntry
+   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ConfidenceMetricsEntry[]
    */
   public function getConfidenceMetricsEntries()
   {

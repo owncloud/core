@@ -32,14 +32,14 @@ class Google_Service_Compute_UrlMapsAggregatedListWarning extends Google_Collect
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_UrlMapsAggregatedListWarningData
+   * @param Google_Service_Compute_UrlMapsAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_UrlMapsAggregatedListWarningData
+   * @return Google_Service_Compute_UrlMapsAggregatedListWarningData[]
    */
   public function getData()
   {

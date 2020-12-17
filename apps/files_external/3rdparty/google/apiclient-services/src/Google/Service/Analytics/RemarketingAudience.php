@@ -107,14 +107,14 @@ class Google_Service_Analytics_RemarketingAudience extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_Analytics_LinkedForeignAccount
+   * @param Google_Service_Analytics_LinkedForeignAccount[]
    */
   public function setLinkedAdAccounts($linkedAdAccounts)
   {
     $this->linkedAdAccounts = $linkedAdAccounts;
   }
   /**
-   * @return Google_Service_Analytics_LinkedForeignAccount
+   * @return Google_Service_Analytics_LinkedForeignAccount[]
    */
   public function getLinkedAdAccounts()
   {

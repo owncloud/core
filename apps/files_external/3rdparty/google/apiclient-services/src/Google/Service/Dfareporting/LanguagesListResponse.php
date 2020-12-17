@@ -31,14 +31,14 @@ class Google_Service_Dfareporting_LanguagesListResponse extends Google_Collectio
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dfareporting_Language
+   * @param Google_Service_Dfareporting_Language[]
    */
   public function setLanguages($languages)
   {
     $this->languages = $languages;
   }
   /**
-   * @return Google_Service_Dfareporting_Language
+   * @return Google_Service_Dfareporting_Language[]
    */
   public function getLanguages()
   {

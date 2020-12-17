@@ -49,14 +49,14 @@ class Google_Service_Dfareporting_ReportDelivery extends Google_Collection
     return $this->message;
   }
   /**
-   * @param Google_Service_Dfareporting_Recipient
+   * @param Google_Service_Dfareporting_Recipient[]
    */
   public function setRecipients($recipients)
   {
     $this->recipients = $recipients;
   }
   /**
-   * @return Google_Service_Dfareporting_Recipient
+   * @return Google_Service_Dfareporting_Recipient[]
    */
   public function getRecipients()
   {

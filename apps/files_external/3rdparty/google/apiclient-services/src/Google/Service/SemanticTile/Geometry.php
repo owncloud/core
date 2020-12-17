@@ -28,56 +28,56 @@ class Google_Service_SemanticTile_Geometry extends Google_Collection
   protected $modeledVolumesDataType = 'array';
 
   /**
-   * @param Google_Service_SemanticTile_Area
+   * @param Google_Service_SemanticTile_Area[]
    */
   public function setAreas($areas)
   {
     $this->areas = $areas;
   }
   /**
-   * @return Google_Service_SemanticTile_Area
+   * @return Google_Service_SemanticTile_Area[]
    */
   public function getAreas()
   {
     return $this->areas;
   }
   /**
-   * @param Google_Service_SemanticTile_ExtrudedArea
+   * @param Google_Service_SemanticTile_ExtrudedArea[]
    */
   public function setExtrudedAreas($extrudedAreas)
   {
     $this->extrudedAreas = $extrudedAreas;
   }
   /**
-   * @return Google_Service_SemanticTile_ExtrudedArea
+   * @return Google_Service_SemanticTile_ExtrudedArea[]
    */
   public function getExtrudedAreas()
   {
     return $this->extrudedAreas;
   }
   /**
-   * @param Google_Service_SemanticTile_Line
+   * @param Google_Service_SemanticTile_Line[]
    */
   public function setLines($lines)
   {
     $this->lines = $lines;
   }
   /**
-   * @return Google_Service_SemanticTile_Line
+   * @return Google_Service_SemanticTile_Line[]
    */
   public function getLines()
   {
     return $this->lines;
   }
   /**
-   * @param Google_Service_SemanticTile_ModeledVolume
+   * @param Google_Service_SemanticTile_ModeledVolume[]
    */
   public function setModeledVolumes($modeledVolumes)
   {
     $this->modeledVolumes = $modeledVolumes;
   }
   /**
-   * @return Google_Service_SemanticTile_ModeledVolume
+   * @return Google_Service_SemanticTile_ModeledVolume[]
    */
   public function getModeledVolumes()
   {

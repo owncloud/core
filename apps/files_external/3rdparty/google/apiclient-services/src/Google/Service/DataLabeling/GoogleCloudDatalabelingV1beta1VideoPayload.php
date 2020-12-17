@@ -50,14 +50,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1VideoPayload ext
     return $this->signedUri;
   }
   /**
-   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1VideoThumbnail
+   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1VideoThumbnail[]
    */
   public function setVideoThumbnails($videoThumbnails)
   {
     $this->videoThumbnails = $videoThumbnails;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1VideoThumbnail
+   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1VideoThumbnail[]
    */
   public function getVideoThumbnails()
   {

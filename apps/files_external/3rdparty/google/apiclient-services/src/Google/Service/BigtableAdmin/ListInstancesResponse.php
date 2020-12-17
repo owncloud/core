@@ -32,14 +32,14 @@ class Google_Service_BigtableAdmin_ListInstancesResponse extends Google_Collecti
     return $this->failedLocations;
   }
   /**
-   * @param Google_Service_BigtableAdmin_Instance
+   * @param Google_Service_BigtableAdmin_Instance[]
    */
   public function setInstances($instances)
   {
     $this->instances = $instances;
   }
   /**
-   * @return Google_Service_BigtableAdmin_Instance
+   * @return Google_Service_BigtableAdmin_Instance[]
    */
   public function getInstances()
   {

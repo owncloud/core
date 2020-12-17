@@ -34,14 +34,14 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageTableTable
     return $this->colSpan;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageDetectedLanguage
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageDetectedLanguage[]
    */
   public function setDetectedLanguages($detectedLanguages)
   {
     $this->detectedLanguages = $detectedLanguages;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageDetectedLanguage
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageDetectedLanguage[]
    */
   public function getDetectedLanguages()
   {

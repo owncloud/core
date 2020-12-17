@@ -24,14 +24,14 @@ class Google_Service_GameServices_CounterOptions extends Google_Collection
   public $metric;
 
   /**
-   * @param Google_Service_GameServices_CustomField
+   * @param Google_Service_GameServices_CustomField[]
    */
   public function setCustomFields($customFields)
   {
     $this->customFields = $customFields;
   }
   /**
-   * @return Google_Service_GameServices_CustomField
+   * @return Google_Service_GameServices_CustomField[]
    */
   public function getCustomFields()
   {

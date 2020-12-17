@@ -32,14 +32,14 @@ class Google_Service_Compute_RegionInstanceGroupManagerListWarning extends Googl
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_RegionInstanceGroupManagerListWarningData
+   * @param Google_Service_Compute_RegionInstanceGroupManagerListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_RegionInstanceGroupManagerListWarningData
+   * @return Google_Service_Compute_RegionInstanceGroupManagerListWarningData[]
    */
   public function getData()
   {

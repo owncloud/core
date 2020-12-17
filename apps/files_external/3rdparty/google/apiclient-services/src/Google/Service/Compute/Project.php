@@ -114,14 +114,14 @@ class Google_Service_Compute_Project extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Compute_Quota
+   * @param Google_Service_Compute_Quota[]
    */
   public function setQuotas($quotas)
   {
     $this->quotas = $quotas;
   }
   /**
-   * @return Google_Service_Compute_Quota
+   * @return Google_Service_Compute_Quota[]
    */
   public function getQuotas()
   {

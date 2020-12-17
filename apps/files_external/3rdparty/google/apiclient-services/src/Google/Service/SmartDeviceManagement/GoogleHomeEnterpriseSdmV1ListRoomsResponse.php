@@ -31,14 +31,14 @@ class Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1ListRoomsRes
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1Room
+   * @param Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1Room[]
    */
   public function setRooms($rooms)
   {
     $this->rooms = $rooms;
   }
   /**
-   * @return Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1Room
+   * @return Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1Room[]
    */
   public function getRooms()
   {

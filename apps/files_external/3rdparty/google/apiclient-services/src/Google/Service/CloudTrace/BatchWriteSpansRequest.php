@@ -22,14 +22,14 @@ class Google_Service_CloudTrace_BatchWriteSpansRequest extends Google_Collection
   protected $spansDataType = 'array';
 
   /**
-   * @param Google_Service_CloudTrace_Span
+   * @param Google_Service_CloudTrace_Span[]
    */
   public function setSpans($spans)
   {
     $this->spans = $spans;
   }
   /**
-   * @return Google_Service_CloudTrace_Span
+   * @return Google_Service_CloudTrace_Span[]
    */
   public function getSpans()
   {

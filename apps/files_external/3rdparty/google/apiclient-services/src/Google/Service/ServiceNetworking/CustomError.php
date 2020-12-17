@@ -23,14 +23,14 @@ class Google_Service_ServiceNetworking_CustomError extends Google_Collection
   public $types;
 
   /**
-   * @param Google_Service_ServiceNetworking_CustomErrorRule
+   * @param Google_Service_ServiceNetworking_CustomErrorRule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_ServiceNetworking_CustomErrorRule
+   * @return Google_Service_ServiceNetworking_CustomErrorRule[]
    */
   public function getRules()
   {

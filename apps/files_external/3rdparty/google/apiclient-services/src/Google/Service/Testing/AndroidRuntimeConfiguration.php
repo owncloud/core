@@ -24,28 +24,28 @@ class Google_Service_Testing_AndroidRuntimeConfiguration extends Google_Collecti
   protected $orientationsDataType = 'array';
 
   /**
-   * @param Google_Service_Testing_Locale
+   * @param Google_Service_Testing_Locale[]
    */
   public function setLocales($locales)
   {
     $this->locales = $locales;
   }
   /**
-   * @return Google_Service_Testing_Locale
+   * @return Google_Service_Testing_Locale[]
    */
   public function getLocales()
   {
     return $this->locales;
   }
   /**
-   * @param Google_Service_Testing_Orientation
+   * @param Google_Service_Testing_Orientation[]
    */
   public function setOrientations($orientations)
   {
     $this->orientations = $orientations;
   }
   /**
-   * @return Google_Service_Testing_Orientation
+   * @return Google_Service_Testing_Orientation[]
    */
   public function getOrientations()
   {

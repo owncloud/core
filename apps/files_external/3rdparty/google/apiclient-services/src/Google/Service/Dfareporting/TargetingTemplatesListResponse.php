@@ -40,14 +40,14 @@ class Google_Service_Dfareporting_TargetingTemplatesListResponse extends Google_
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Dfareporting_TargetingTemplate
+   * @param Google_Service_Dfareporting_TargetingTemplate[]
    */
   public function setTargetingTemplates($targetingTemplates)
   {
     $this->targetingTemplates = $targetingTemplates;
   }
   /**
-   * @return Google_Service_Dfareporting_TargetingTemplate
+   * @return Google_Service_Dfareporting_TargetingTemplate[]
    */
   public function getTargetingTemplates()
   {

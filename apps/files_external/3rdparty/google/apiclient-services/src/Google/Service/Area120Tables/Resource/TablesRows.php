@@ -112,8 +112,6 @@ class Google_Service_Area120Tables_Resource_TablesRows extends Google_Service_Re
    * @param string $parent Required. The parent table. Format: tables/{table}
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string view Optional. Column key to use for values in the row.
-   * Defaults to user entered name.
    * @opt_param int pageSize The maximum number of rows to return. The service may
    * return fewer than this value. If unspecified, at most 50 rows are returned.
    * The maximum value is 1,000; values above 1,000 are coerced to 1,000.
@@ -121,6 +119,8 @@ class Google_Service_Area120Tables_Resource_TablesRows extends Google_Service_Re
    * call. Provide this to retrieve the subsequent page. When paginating, all
    * other parameters provided to `ListRows` must match the call that provided the
    * page token.
+   * @opt_param string view Optional. Column key to use for values in the row.
+   * Defaults to user entered name.
    * @return Google_Service_Area120Tables_ListRowsResponse
    */
   public function listTablesRows($parent, $optParams = array())

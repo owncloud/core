@@ -34,28 +34,28 @@ class Google_Service_Datastore_GqlQuery extends Google_Collection
     return $this->allowLiterals;
   }
   /**
-   * @param Google_Service_Datastore_GqlQueryParameter
+   * @param Google_Service_Datastore_GqlQueryParameter[]
    */
   public function setNamedBindings($namedBindings)
   {
     $this->namedBindings = $namedBindings;
   }
   /**
-   * @return Google_Service_Datastore_GqlQueryParameter
+   * @return Google_Service_Datastore_GqlQueryParameter[]
    */
   public function getNamedBindings()
   {
     return $this->namedBindings;
   }
   /**
-   * @param Google_Service_Datastore_GqlQueryParameter
+   * @param Google_Service_Datastore_GqlQueryParameter[]
    */
   public function setPositionalBindings($positionalBindings)
   {
     $this->positionalBindings = $positionalBindings;
   }
   /**
-   * @return Google_Service_Datastore_GqlQueryParameter
+   * @return Google_Service_Datastore_GqlQueryParameter[]
    */
   public function getPositionalBindings()
   {

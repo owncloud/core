@@ -32,14 +32,14 @@ class Google_Service_Compute_TargetVpnGatewaysScopedListWarning extends Google_C
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_TargetVpnGatewaysScopedListWarningData
+   * @param Google_Service_Compute_TargetVpnGatewaysScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_TargetVpnGatewaysScopedListWarningData
+   * @return Google_Service_Compute_TargetVpnGatewaysScopedListWarningData[]
    */
   public function getData()
   {

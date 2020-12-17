@@ -25,14 +25,14 @@ class Google_Service_CloudTalentSolution_ListJobsResponse extends Google_Collect
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudTalentSolution_Job
+   * @param Google_Service_CloudTalentSolution_Job[]
    */
   public function setJobs($jobs)
   {
     $this->jobs = $jobs;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_Job
+   * @return Google_Service_CloudTalentSolution_Job[]
    */
   public function getJobs()
   {

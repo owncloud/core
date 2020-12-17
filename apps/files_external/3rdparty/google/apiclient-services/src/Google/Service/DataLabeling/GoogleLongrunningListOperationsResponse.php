@@ -31,14 +31,14 @@ class Google_Service_DataLabeling_GoogleLongrunningListOperationsResponse extend
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_DataLabeling_GoogleLongrunningOperation
+   * @param Google_Service_DataLabeling_GoogleLongrunningOperation[]
    */
   public function setOperations($operations)
   {
     $this->operations = $operations;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleLongrunningOperation
+   * @return Google_Service_DataLabeling_GoogleLongrunningOperation[]
    */
   public function getOperations()
   {

@@ -25,14 +25,14 @@ class Google_Service_DeploymentManager_GlobalSetPolicyRequest extends Google_Col
   protected $policyDataType = '';
 
   /**
-   * @param Google_Service_DeploymentManager_Binding
+   * @param Google_Service_DeploymentManager_Binding[]
    */
   public function setBindings($bindings)
   {
     $this->bindings = $bindings;
   }
   /**
-   * @return Google_Service_DeploymentManager_Binding
+   * @return Google_Service_DeploymentManager_Binding[]
    */
   public function getBindings()
   {

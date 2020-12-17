@@ -27,14 +27,14 @@ class Google_Service_Container_ServerConfig extends Google_Collection
   public $validNodeVersions;
 
   /**
-   * @param Google_Service_Container_ReleaseChannelConfig
+   * @param Google_Service_Container_ReleaseChannelConfig[]
    */
   public function setChannels($channels)
   {
     $this->channels = $channels;
   }
   /**
-   * @return Google_Service_Container_ReleaseChannelConfig
+   * @return Google_Service_Container_ReleaseChannelConfig[]
    */
   public function getChannels()
   {

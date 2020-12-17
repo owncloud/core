@@ -50,14 +50,14 @@ class Google_Service_PolicyTroubleshooter_GoogleCloudPolicytroubleshooterV1Bindi
     return $this->condition;
   }
   /**
-   * @param Google_Service_PolicyTroubleshooter_GoogleCloudPolicytroubleshooterV1BindingExplanationAnnotatedMembership
+   * @param Google_Service_PolicyTroubleshooter_GoogleCloudPolicytroubleshooterV1BindingExplanationAnnotatedMembership[]
    */
   public function setMemberships($memberships)
   {
     $this->memberships = $memberships;
   }
   /**
-   * @return Google_Service_PolicyTroubleshooter_GoogleCloudPolicytroubleshooterV1BindingExplanationAnnotatedMembership
+   * @return Google_Service_PolicyTroubleshooter_GoogleCloudPolicytroubleshooterV1BindingExplanationAnnotatedMembership[]
    */
   public function getMemberships()
   {

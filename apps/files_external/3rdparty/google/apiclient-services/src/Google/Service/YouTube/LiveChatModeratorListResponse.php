@@ -48,14 +48,14 @@ class Google_Service_YouTube_LiveChatModeratorListResponse extends Google_Collec
     return $this->eventId;
   }
   /**
-   * @param Google_Service_YouTube_LiveChatModerator
+   * @param Google_Service_YouTube_LiveChatModerator[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_YouTube_LiveChatModerator
+   * @return Google_Service_YouTube_LiveChatModerator[]
    */
   public function getItems()
   {

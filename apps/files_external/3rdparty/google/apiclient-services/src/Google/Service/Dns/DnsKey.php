@@ -56,14 +56,14 @@ class Google_Service_Dns_DnsKey extends Google_Collection
     return $this->description;
   }
   /**
-   * @param Google_Service_Dns_DnsKeyDigest
+   * @param Google_Service_Dns_DnsKeyDigest[]
    */
   public function setDigests($digests)
   {
     $this->digests = $digests;
   }
   /**
-   * @return Google_Service_Dns_DnsKeyDigest
+   * @return Google_Service_Dns_DnsKeyDigest[]
    */
   public function getDigests()
   {

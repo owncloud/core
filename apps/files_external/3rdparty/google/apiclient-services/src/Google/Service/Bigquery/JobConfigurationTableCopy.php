@@ -98,14 +98,14 @@ class Google_Service_Bigquery_JobConfigurationTableCopy extends Google_Collectio
     return $this->sourceTable;
   }
   /**
-   * @param Google_Service_Bigquery_TableReference
+   * @param Google_Service_Bigquery_TableReference[]
    */
   public function setSourceTables($sourceTables)
   {
     $this->sourceTables = $sourceTables;
   }
   /**
-   * @return Google_Service_Bigquery_TableReference
+   * @return Google_Service_Bigquery_TableReference[]
    */
   public function getSourceTables()
   {

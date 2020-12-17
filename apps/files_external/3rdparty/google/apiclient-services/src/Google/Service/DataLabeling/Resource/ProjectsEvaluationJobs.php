@@ -76,10 +76,6 @@ class Google_Service_DataLabeling_Resource_ProjectsEvaluationJobs extends Google
    * "projects/{project_id}"
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional. A token identifying a page of results
-   * for the server to return. Typically obtained by the nextPageToken in the
-   * response to the previous request. The request returns the first page if this
-   * is empty.
    * @opt_param string filter Optional. You can filter the jobs to list by
    * model_id (also known as model_name, as described in
    * EvaluationJob.modelVersion) or by evaluation job state (as described in
@@ -89,6 +85,10 @@ class Google_Service_DataLabeling_Resource_ProjectsEvaluationJobs extends Google
    * {evaluation_job_state}"
    * @opt_param int pageSize Optional. Requested page size. Server may return
    * fewer results than requested. Default value is 100.
+   * @opt_param string pageToken Optional. A token identifying a page of results
+   * for the server to return. Typically obtained by the nextPageToken in the
+   * response to the previous request. The request returns the first page if this
+   * is empty.
    * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ListEvaluationJobsResponse
    */
   public function listProjectsEvaluationJobs($parent, $optParams = array())

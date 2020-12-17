@@ -39,7 +39,7 @@ class Google_Service_DoubleClickBidManager extends Google_Service
   public $queries;
   public $reports;
   public $sdf;
-  
+
   /**
    * Constructs the internal representation of the DoubleClickBidManager
    * service.
@@ -113,13 +113,13 @@ class Google_Service_DoubleClickBidManager extends Google_Service
               'path' => 'queries',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'runquery' => array(
@@ -155,13 +155,13 @@ class Google_Service_DoubleClickBidManager extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),

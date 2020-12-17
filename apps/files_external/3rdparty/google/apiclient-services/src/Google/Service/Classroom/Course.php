@@ -64,14 +64,14 @@ class Google_Service_Classroom_Course extends Google_Collection
     return $this->courseGroupEmail;
   }
   /**
-   * @param Google_Service_Classroom_CourseMaterialSet
+   * @param Google_Service_Classroom_CourseMaterialSet[]
    */
   public function setCourseMaterialSets($courseMaterialSets)
   {
     $this->courseMaterialSets = $courseMaterialSets;
   }
   /**
-   * @return Google_Service_Classroom_CourseMaterialSet
+   * @return Google_Service_Classroom_CourseMaterialSet[]
    */
   public function getCourseMaterialSets()
   {

@@ -31,14 +31,14 @@ class Google_Service_SemanticTile_FirstDerivativeElevationGrid extends Google_Co
     return $this->altitudeMultiplier;
   }
   /**
-   * @param Google_Service_SemanticTile_Row
+   * @param Google_Service_SemanticTile_Row[]
    */
   public function setRows($rows)
   {
     $this->rows = $rows;
   }
   /**
-   * @return Google_Service_SemanticTile_Row
+   * @return Google_Service_SemanticTile_Row[]
    */
   public function getRows()
   {

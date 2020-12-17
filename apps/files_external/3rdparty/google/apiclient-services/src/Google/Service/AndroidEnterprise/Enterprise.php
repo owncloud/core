@@ -25,14 +25,14 @@ class Google_Service_AndroidEnterprise_Enterprise extends Google_Collection
   public $primaryDomain;
 
   /**
-   * @param Google_Service_AndroidEnterprise_Administrator
+   * @param Google_Service_AndroidEnterprise_Administrator[]
    */
   public function setAdministrator($administrator)
   {
     $this->administrator = $administrator;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_Administrator
+   * @return Google_Service_AndroidEnterprise_Administrator[]
    */
   public function getAdministrator()
   {

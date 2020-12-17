@@ -32,14 +32,14 @@ class Google_Service_DisplayVideo_InsertionOrderBudget extends Google_Collection
     return $this->automationType;
   }
   /**
-   * @param Google_Service_DisplayVideo_InsertionOrderBudgetSegment
+   * @param Google_Service_DisplayVideo_InsertionOrderBudgetSegment[]
    */
   public function setBudgetSegments($budgetSegments)
   {
     $this->budgetSegments = $budgetSegments;
   }
   /**
-   * @return Google_Service_DisplayVideo_InsertionOrderBudgetSegment
+   * @return Google_Service_DisplayVideo_InsertionOrderBudgetSegment[]
    */
   public function getBudgetSegments()
   {

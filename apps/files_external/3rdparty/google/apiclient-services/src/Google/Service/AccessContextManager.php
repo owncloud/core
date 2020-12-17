@@ -40,7 +40,7 @@ class Google_Service_AccessContextManager extends Google_Service
   public $accessPolicies_servicePerimeters;
   public $operations;
   public $organizations_gcpUserAccessBindings;
-  
+
   /**
    * Constructs the internal representation of the AccessContextManager service.
    *
@@ -348,13 +348,13 @@ class Google_Service_AccessContextManager extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
                 'pageToken' => array(
                   'location' => 'query',

@@ -49,14 +49,14 @@ class Google_Service_Firestore_WriteResponse extends Google_Collection
     return $this->streamToken;
   }
   /**
-   * @param Google_Service_Firestore_WriteResult
+   * @param Google_Service_Firestore_WriteResult[]
    */
   public function setWriteResults($writeResults)
   {
     $this->writeResults = $writeResults;
   }
   /**
-   * @return Google_Service_Firestore_WriteResult
+   * @return Google_Service_Firestore_WriteResult[]
    */
   public function getWriteResults()
   {

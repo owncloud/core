@@ -43,9 +43,13 @@ class Google_Service_Digitalassetlinks_Resource_Statements extends Google_Servic
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string source.androidApp.packageName Android App assets are
-   * naturally identified by their Java package name. For example, the Google Maps
-   * app uses the package name `com.google.android.apps.maps`. REQUIRED
+   * @opt_param string relation Use only associations that match the specified
+   * relation. See the [`Statement`](#Statement) message for a detailed definition
+   * of relation strings. For a query to match a statement, one of the following
+   * must be true: * both the query's and the statement's relation strings match
+   * exactly, or * the query's relation string is empty or missing. Example: A
+   * query with relation `delegate_permission/common.handle_all_urls` matches an
+   * asset link with relation `delegate_permission/common.handle_all_urls`.
    * @opt_param string source.androidApp.certificate.sha256Fingerprint The
    * uppercase SHA-265 fingerprint of the certificate. From the PEM certificate,
    * it can be acquired like this: $ keytool -printcert -file $CERTFILE | grep
@@ -60,6 +64,9 @@ class Google_Service_Digitalassetlinks_Resource_Statements extends Google_Servic
    * certificate into the DER format, compute the SHA-256 hash of that string and
    * represent the result as a hexstring (that is, uppercase hexadecimal
    * representations of each octet, separated by colons).
+   * @opt_param string source.androidApp.packageName Android App assets are
+   * naturally identified by their Java package name. For example, the Google Maps
+   * app uses the package name `com.google.android.apps.maps`. REQUIRED
    * @opt_param string source.web.site Web assets are identified by a URL that
    * contains only the scheme, hostname and port parts. The format is
    * http[s]://[:] Hostnames must be fully qualified: they must end in a single
@@ -75,13 +82,6 @@ class Google_Service_Digitalassetlinks_Resource_Statements extends Google_Servic
    * But it does not contain these URLs: * `http://www.google.com/` (wrong scheme)
    * * `https://google.com/` (hostname does not match) *
    * `https://www.google.com:444/` (port does not match) REQUIRED
-   * @opt_param string relation Use only associations that match the specified
-   * relation. See the [`Statement`](#Statement) message for a detailed definition
-   * of relation strings. For a query to match a statement, one of the following
-   * must be true: * both the query's and the statement's relation strings match
-   * exactly, or * the query's relation string is empty or missing. Example: A
-   * query with relation `delegate_permission/common.handle_all_urls` matches an
-   * asset link with relation `delegate_permission/common.handle_all_urls`.
    * @return Google_Service_Digitalassetlinks_ListResponse
    */
   public function listStatements($optParams = array())

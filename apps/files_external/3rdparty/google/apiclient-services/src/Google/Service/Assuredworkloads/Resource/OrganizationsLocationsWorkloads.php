@@ -30,7 +30,7 @@ class Google_Service_Assuredworkloads_Resource_OrganizationsLocationsWorkloads e
    *
    * @param string $parent Required. The resource name of the new Workload's
    * parent. Must be of the form `organizations/{org_id}/locations/{location_id}`.
-   * @param Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1Workload $postBody
+   * @param Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1Workload $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string externalId Optional. A identifier associated with the
@@ -39,7 +39,7 @@ class Google_Service_Assuredworkloads_Resource_OrganizationsLocationsWorkloads e
    * to the workload and contained projects with the identifier as the value.
    * @return Google_Service_Assuredworkloads_GoogleLongrunningOperation
    */
-  public function create($parent, Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1Workload $postBody, $optParams = array())
+  public function create($parent, Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1Workload $postBody, $optParams = array())
   {
     $params = array('parent' => $parent, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
@@ -73,13 +73,13 @@ class Google_Service_Assuredworkloads_Resource_OrganizationsLocationsWorkloads e
    * /{organization_id}/locations/{location_id}/workloads/{workload_id}". For
    * example, "organizations/123/locations/us-east1/workloads/assured-workload-1".
    * @param array $optParams Optional parameters.
-   * @return Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1Workload
+   * @return Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1Workload
    */
   public function get($name, $optParams = array())
   {
     $params = array('name' => $name);
     $params = array_merge($params, $optParams);
-    return $this->call('get', array($params), "Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1Workload");
+    return $this->call('get', array($params), "Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1Workload");
   }
   /**
    * Lists Assured Workloads under a CRM Node.
@@ -89,19 +89,19 @@ class Google_Service_Assuredworkloads_Resource_OrganizationsLocationsWorkloads e
    * be of the form `organizations/{org_id}/locations/{location}`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Page size.
    * @opt_param string filter A custom filter for filtering by properties of a
    * workload. At this time, only filtering by labels is supported.
+   * @opt_param int pageSize Page size.
    * @opt_param string pageToken Page token returned from previous request. Page
    * token contains context from previous request. Page token needs to be passed
    * in the second and following requests.
-   * @return Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1ListWorkloadsResponse
+   * @return Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1ListWorkloadsResponse
    */
   public function listOrganizationsLocationsWorkloads($parent, $optParams = array())
   {
     $params = array('parent' => $parent);
     $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1ListWorkloadsResponse");
+    return $this->call('list', array($params), "Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1ListWorkloadsResponse");
   }
   /**
    * Updates an existing workload. Currently allows updating of workload
@@ -112,16 +112,16 @@ class Google_Service_Assuredworkloads_Resource_OrganizationsLocationsWorkloads e
    * @param string $name Optional. The resource name of the workload. Format:
    * organizations/{organization}/locations/{location}/workloads/{workload} Read-
    * only.
-   * @param Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1Workload $postBody
+   * @param Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1Workload $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Required. The list of fields to be updated.
-   * @return Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1Workload
+   * @return Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1Workload
    */
-  public function patch($name, Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1Workload $postBody, $optParams = array())
+  public function patch($name, Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1Workload $postBody, $optParams = array())
   {
     $params = array('name' => $name, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
-    return $this->call('patch', array($params), "Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1Workload");
+    return $this->call('patch', array($params), "Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1Workload");
   }
 }

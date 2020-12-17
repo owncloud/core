@@ -25,28 +25,28 @@ class Google_Service_TrafficDirectorService_ListenersConfigDump extends Google_C
   public $versionInfo;
 
   /**
-   * @param Google_Service_TrafficDirectorService_DynamicListener
+   * @param Google_Service_TrafficDirectorService_DynamicListener[]
    */
   public function setDynamicListeners($dynamicListeners)
   {
     $this->dynamicListeners = $dynamicListeners;
   }
   /**
-   * @return Google_Service_TrafficDirectorService_DynamicListener
+   * @return Google_Service_TrafficDirectorService_DynamicListener[]
    */
   public function getDynamicListeners()
   {
     return $this->dynamicListeners;
   }
   /**
-   * @param Google_Service_TrafficDirectorService_StaticListener
+   * @param Google_Service_TrafficDirectorService_StaticListener[]
    */
   public function setStaticListeners($staticListeners)
   {
     $this->staticListeners = $staticListeners;
   }
   /**
-   * @return Google_Service_TrafficDirectorService_StaticListener
+   * @return Google_Service_TrafficDirectorService_StaticListener[]
    */
   public function getStaticListeners()
   {

@@ -24,28 +24,28 @@ class Google_Service_DisplayVideo_BulkEditAdvertiserAssignedTargetingOptionsRequ
   protected $deleteRequestsDataType = 'array';
 
   /**
-   * @param Google_Service_DisplayVideo_CreateAssignedTargetingOptionsRequest
+   * @param Google_Service_DisplayVideo_CreateAssignedTargetingOptionsRequest[]
    */
   public function setCreateRequests($createRequests)
   {
     $this->createRequests = $createRequests;
   }
   /**
-   * @return Google_Service_DisplayVideo_CreateAssignedTargetingOptionsRequest
+   * @return Google_Service_DisplayVideo_CreateAssignedTargetingOptionsRequest[]
    */
   public function getCreateRequests()
   {
     return $this->createRequests;
   }
   /**
-   * @param Google_Service_DisplayVideo_DeleteAssignedTargetingOptionsRequest
+   * @param Google_Service_DisplayVideo_DeleteAssignedTargetingOptionsRequest[]
    */
   public function setDeleteRequests($deleteRequests)
   {
     $this->deleteRequests = $deleteRequests;
   }
   /**
-   * @return Google_Service_DisplayVideo_DeleteAssignedTargetingOptionsRequest
+   * @return Google_Service_DisplayVideo_DeleteAssignedTargetingOptionsRequest[]
    */
   public function getDeleteRequests()
   {

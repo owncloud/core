@@ -162,10 +162,10 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstancesTables extends Goog
    * page_size will cause an error. Following the first request, subsequent
    * paginated calls are not required to pass a page_size. If a page_size is set
    * in subsequent calls, it must match the page_size given in the first request.
-   * @opt_param string view The view to be applied to the returned tables' fields.
-   * Only NAME_ONLY view (default) and REPLICATION_VIEW are supported.
    * @opt_param string pageToken The value of `next_page_token` returned by a
    * previous call.
+   * @opt_param string view The view to be applied to the returned tables' fields.
+   * Only NAME_ONLY view (default) and REPLICATION_VIEW are supported.
    * @return Google_Service_BigtableAdmin_ListTablesResponse
    */
   public function listProjectsInstancesTables($parent, $optParams = array())

@@ -22,14 +22,14 @@ class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2BatchUpdate
   protected $requestsDataType = 'array';
 
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2BatchUpdateBlobsRequestRequest
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2BatchUpdateBlobsRequestRequest[]
    */
   public function setRequests($requests)
   {
     $this->requests = $requests;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2BatchUpdateBlobsRequestRequest
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2BatchUpdateBlobsRequestRequest[]
    */
   public function getRequests()
   {

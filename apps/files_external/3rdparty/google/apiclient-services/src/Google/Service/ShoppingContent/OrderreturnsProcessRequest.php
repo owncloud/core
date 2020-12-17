@@ -56,14 +56,14 @@ class Google_Service_ShoppingContent_OrderreturnsProcessRequest extends Google_C
     return $this->refundShippingFee;
   }
   /**
-   * @param Google_Service_ShoppingContent_OrderreturnsReturnItem
+   * @param Google_Service_ShoppingContent_OrderreturnsReturnItem[]
    */
   public function setReturnItems($returnItems)
   {
     $this->returnItems = $returnItems;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderreturnsReturnItem
+   * @return Google_Service_ShoppingContent_OrderreturnsReturnItem[]
    */
   public function getReturnItems()
   {

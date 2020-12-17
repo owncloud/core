@@ -40,14 +40,14 @@ class Google_Service_Dfareporting_PlacementStrategiesListResponse extends Google
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Dfareporting_PlacementStrategy
+   * @param Google_Service_Dfareporting_PlacementStrategy[]
    */
   public function setPlacementStrategies($placementStrategies)
   {
     $this->placementStrategies = $placementStrategies;
   }
   /**
-   * @return Google_Service_Dfareporting_PlacementStrategy
+   * @return Google_Service_Dfareporting_PlacementStrategy[]
    */
   public function getPlacementStrategies()
   {

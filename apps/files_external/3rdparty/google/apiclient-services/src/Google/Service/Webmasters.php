@@ -40,7 +40,7 @@ class Google_Service_Webmasters extends Google_Service
   public $searchanalytics;
   public $sitemaps;
   public $sites;
-  
+
   /**
    * Constructs the internal representation of the Webmasters service.
    *

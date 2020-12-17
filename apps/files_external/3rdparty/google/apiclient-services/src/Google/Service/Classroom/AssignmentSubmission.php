@@ -22,14 +22,14 @@ class Google_Service_Classroom_AssignmentSubmission extends Google_Collection
   protected $attachmentsDataType = 'array';
 
   /**
-   * @param Google_Service_Classroom_Attachment
+   * @param Google_Service_Classroom_Attachment[]
    */
   public function setAttachments($attachments)
   {
     $this->attachments = $attachments;
   }
   /**
-   * @return Google_Service_Classroom_Attachment
+   * @return Google_Service_Classroom_Attachment[]
    */
   public function getAttachments()
   {

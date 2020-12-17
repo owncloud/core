@@ -23,14 +23,14 @@ class Google_Service_AdExchangeBuyer_CreateOrdersRequest extends Google_Collecti
   public $webPropertyCode;
 
   /**
-   * @param Google_Service_AdExchangeBuyer_Proposal
+   * @param Google_Service_AdExchangeBuyer_Proposal[]
    */
   public function setProposals($proposals)
   {
     $this->proposals = $proposals;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_Proposal
+   * @return Google_Service_AdExchangeBuyer_Proposal[]
    */
   public function getProposals()
   {

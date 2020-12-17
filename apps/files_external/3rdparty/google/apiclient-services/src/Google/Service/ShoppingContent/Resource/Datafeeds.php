@@ -55,8 +55,9 @@ class Google_Service_ShoppingContent_Resource_Datafeeds extends Google_Service_R
     return $this->call('delete', array($params));
   }
   /**
-   * Invokes a fetch for the datafeed in your Merchant Center account.
-   * (datafeeds.fetchnow)
+   * Invokes a fetch for the datafeed in your Merchant Center account. If you need
+   * to call this method more than once per day, we recommend you use the Products
+   * service to update your product data. (datafeeds.fetchnow)
    *
    * @param string $merchantId The ID of the account that manages the datafeed.
    * This account cannot be a multi-client account.

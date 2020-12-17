@@ -32,14 +32,14 @@ class Google_Service_Compute_AutoscalerAggregatedListWarning extends Google_Coll
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_AutoscalerAggregatedListWarningData
+   * @param Google_Service_Compute_AutoscalerAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_AutoscalerAggregatedListWarningData
+   * @return Google_Service_Compute_AutoscalerAggregatedListWarningData[]
    */
   public function getData()
   {

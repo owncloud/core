@@ -31,14 +31,14 @@ class Google_Service_Datastore_CommitResponse extends Google_Collection
     return $this->indexUpdates;
   }
   /**
-   * @param Google_Service_Datastore_MutationResult
+   * @param Google_Service_Datastore_MutationResult[]
    */
   public function setMutationResults($mutationResults)
   {
     $this->mutationResults = $mutationResults;
   }
   /**
-   * @return Google_Service_Datastore_MutationResult
+   * @return Google_Service_Datastore_MutationResult[]
    */
   public function getMutationResults()
   {

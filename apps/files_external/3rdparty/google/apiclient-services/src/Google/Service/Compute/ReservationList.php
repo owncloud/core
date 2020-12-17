@@ -36,14 +36,14 @@ class Google_Service_Compute_ReservationList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_Reservation
+   * @param Google_Service_Compute_Reservation[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_Reservation
+   * @return Google_Service_Compute_Reservation[]
    */
   public function getItems()
   {

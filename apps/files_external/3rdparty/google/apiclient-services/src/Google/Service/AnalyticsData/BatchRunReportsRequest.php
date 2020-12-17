@@ -38,14 +38,14 @@ class Google_Service_AnalyticsData_BatchRunReportsRequest extends Google_Collect
     return $this->entity;
   }
   /**
-   * @param Google_Service_AnalyticsData_RunReportRequest
+   * @param Google_Service_AnalyticsData_RunReportRequest[]
    */
   public function setRequests($requests)
   {
     $this->requests = $requests;
   }
   /**
-   * @return Google_Service_AnalyticsData_RunReportRequest
+   * @return Google_Service_AnalyticsData_RunReportRequest[]
    */
   public function getRequests()
   {

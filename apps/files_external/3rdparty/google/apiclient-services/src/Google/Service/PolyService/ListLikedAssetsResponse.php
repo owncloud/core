@@ -24,14 +24,14 @@ class Google_Service_PolyService_ListLikedAssetsResponse extends Google_Collecti
   public $totalSize;
 
   /**
-   * @param Google_Service_PolyService_Asset
+   * @param Google_Service_PolyService_Asset[]
    */
   public function setAssets($assets)
   {
     $this->assets = $assets;
   }
   /**
-   * @return Google_Service_PolyService_Asset
+   * @return Google_Service_PolyService_Asset[]
    */
   public function getAssets()
   {

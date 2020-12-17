@@ -22,14 +22,14 @@ class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2PriorityCap
   protected $prioritiesDataType = 'array';
 
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2PriorityCapabilitiesPriorityRange
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2PriorityCapabilitiesPriorityRange[]
    */
   public function setPriorities($priorities)
   {
     $this->priorities = $priorities;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2PriorityCapabilitiesPriorityRange
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2PriorityCapabilitiesPriorityRange[]
    */
   public function getPriorities()
   {

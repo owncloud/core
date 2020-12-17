@@ -53,28 +53,28 @@ class Google_Service_ManufacturerCenter_Product extends Google_Collection
     return $this->contentLanguage;
   }
   /**
-   * @param Google_Service_ManufacturerCenter_DestinationStatus
+   * @param Google_Service_ManufacturerCenter_DestinationStatus[]
    */
   public function setDestinationStatuses($destinationStatuses)
   {
     $this->destinationStatuses = $destinationStatuses;
   }
   /**
-   * @return Google_Service_ManufacturerCenter_DestinationStatus
+   * @return Google_Service_ManufacturerCenter_DestinationStatus[]
    */
   public function getDestinationStatuses()
   {
     return $this->destinationStatuses;
   }
   /**
-   * @param Google_Service_ManufacturerCenter_Issue
+   * @param Google_Service_ManufacturerCenter_Issue[]
    */
   public function setIssues($issues)
   {
     $this->issues = $issues;
   }
   /**
-   * @return Google_Service_ManufacturerCenter_Issue
+   * @return Google_Service_ManufacturerCenter_Issue[]
    */
   public function getIssues()
   {

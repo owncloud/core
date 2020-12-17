@@ -36,14 +36,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1App extends Google_Collection
   public $status;
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1ApiProductRef
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1ApiProductRef[]
    */
   public function setApiProducts($apiProducts)
   {
     $this->apiProducts = $apiProducts;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1ApiProductRef
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1ApiProductRef[]
    */
   public function getApiProducts()
   {
@@ -58,14 +58,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1App extends Google_Collection
     return $this->appId;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Attribute
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Attribute[]
    */
   public function setAttributes($attributes)
   {
     $this->attributes = $attributes;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Attribute
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Attribute[]
    */
   public function getAttributes()
   {
@@ -96,14 +96,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1App extends Google_Collection
     return $this->createdAt;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Credential
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Credential[]
    */
   public function setCredentials($credentials)
   {
     $this->credentials = $credentials;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Credential
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Credential[]
    */
   public function getCredentials()
   {

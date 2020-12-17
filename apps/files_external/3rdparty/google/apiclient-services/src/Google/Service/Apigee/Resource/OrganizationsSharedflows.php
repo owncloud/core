@@ -88,10 +88,10 @@ class Google_Service_Apigee_Resource_OrganizationsSharedflows extends Google_Ser
    * `organizations/{organization_id}`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool includeRevisions Indicates whether to include a list of
-   * revisions in the response.
    * @opt_param bool includeMetaData Indicates whether to include shared flow
    * metadata in the response.
+   * @opt_param bool includeRevisions Indicates whether to include a list of
+   * revisions in the response.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ListSharedFlowsResponse
    */
   public function listOrganizationsSharedflows($parent, $optParams = array())

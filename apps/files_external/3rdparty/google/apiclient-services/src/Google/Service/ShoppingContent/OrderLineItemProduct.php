@@ -62,14 +62,14 @@ class Google_Service_ShoppingContent_OrderLineItemProduct extends Google_Collect
     return $this->contentLanguage;
   }
   /**
-   * @param Google_Service_ShoppingContent_OrderLineItemProductFee
+   * @param Google_Service_ShoppingContent_OrderLineItemProductFee[]
    */
   public function setFees($fees)
   {
     $this->fees = $fees;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderLineItemProductFee
+   * @return Google_Service_ShoppingContent_OrderLineItemProductFee[]
    */
   public function getFees()
   {
@@ -162,14 +162,14 @@ class Google_Service_ShoppingContent_OrderLineItemProduct extends Google_Collect
     return $this->title;
   }
   /**
-   * @param Google_Service_ShoppingContent_OrderLineItemProductVariantAttribute
+   * @param Google_Service_ShoppingContent_OrderLineItemProductVariantAttribute[]
    */
   public function setVariantAttributes($variantAttributes)
   {
     $this->variantAttributes = $variantAttributes;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderLineItemProductVariantAttribute
+   * @return Google_Service_ShoppingContent_OrderLineItemProductVariantAttribute[]
    */
   public function getVariantAttributes()
   {

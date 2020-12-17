@@ -49,13 +49,13 @@ class Google_Service_DataLabeling_Resource_ProjectsDatasetsDataItems extends Goo
    * format: projects/{project_id}/datasets/{dataset_id}
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter Optional. Filter is not supported at this moment.
+   * @opt_param int pageSize Optional. Requested page size. Server may return
+   * fewer results than requested. Default value is 100.
    * @opt_param string pageToken Optional. A token identifying a page of results
    * for the server to return. Typically obtained by
    * ListDataItemsResponse.next_page_token of the previous
    * [DataLabelingService.ListDataItems] call. Return first page if empty.
-   * @opt_param int pageSize Optional. Requested page size. Server may return
-   * fewer results than requested. Default value is 100.
-   * @opt_param string filter Optional. Filter is not supported at this moment.
    * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ListDataItemsResponse
    */
   public function listProjectsDatasetsDataItems($parent, $optParams = array())

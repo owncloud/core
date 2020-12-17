@@ -34,14 +34,14 @@ class Google_Service_Datastore_Query extends Google_Collection
   public $startCursor;
 
   /**
-   * @param Google_Service_Datastore_PropertyReference
+   * @param Google_Service_Datastore_PropertyReference[]
    */
   public function setDistinctOn($distinctOn)
   {
     $this->distinctOn = $distinctOn;
   }
   /**
-   * @return Google_Service_Datastore_PropertyReference
+   * @return Google_Service_Datastore_PropertyReference[]
    */
   public function getDistinctOn()
   {
@@ -70,14 +70,14 @@ class Google_Service_Datastore_Query extends Google_Collection
     return $this->filter;
   }
   /**
-   * @param Google_Service_Datastore_KindExpression
+   * @param Google_Service_Datastore_KindExpression[]
    */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
   /**
-   * @return Google_Service_Datastore_KindExpression
+   * @return Google_Service_Datastore_KindExpression[]
    */
   public function getKind()
   {
@@ -100,28 +100,28 @@ class Google_Service_Datastore_Query extends Google_Collection
     return $this->offset;
   }
   /**
-   * @param Google_Service_Datastore_PropertyOrder
+   * @param Google_Service_Datastore_PropertyOrder[]
    */
   public function setOrder($order)
   {
     $this->order = $order;
   }
   /**
-   * @return Google_Service_Datastore_PropertyOrder
+   * @return Google_Service_Datastore_PropertyOrder[]
    */
   public function getOrder()
   {
     return $this->order;
   }
   /**
-   * @param Google_Service_Datastore_Projection
+   * @param Google_Service_Datastore_Projection[]
    */
   public function setProjection($projection)
   {
     $this->projection = $projection;
   }
   /**
-   * @return Google_Service_Datastore_Projection
+   * @return Google_Service_Datastore_Projection[]
    */
   public function getProjection()
   {

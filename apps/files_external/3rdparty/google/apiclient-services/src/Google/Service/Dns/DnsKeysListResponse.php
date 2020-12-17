@@ -26,14 +26,14 @@ class Google_Service_Dns_DnsKeysListResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Dns_DnsKey
+   * @param Google_Service_Dns_DnsKey[]
    */
   public function setDnsKeys($dnsKeys)
   {
     $this->dnsKeys = $dnsKeys;
   }
   /**
-   * @return Google_Service_Dns_DnsKey
+   * @return Google_Service_Dns_DnsKey[]
    */
   public function getDnsKeys()
   {

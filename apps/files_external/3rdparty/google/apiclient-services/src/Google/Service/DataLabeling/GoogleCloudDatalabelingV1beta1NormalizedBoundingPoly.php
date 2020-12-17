@@ -22,14 +22,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1NormalizedBoundi
   protected $normalizedVerticesDataType = 'array';
 
   /**
-   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1NormalizedVertex
+   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1NormalizedVertex[]
    */
   public function setNormalizedVertices($normalizedVertices)
   {
     $this->normalizedVertices = $normalizedVertices;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1NormalizedVertex
+   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1NormalizedVertex[]
    */
   public function getNormalizedVertices()
   {

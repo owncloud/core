@@ -40,14 +40,14 @@ class Google_Service_SecretManager_ListSecretVersionsResponse extends Google_Col
     return $this->totalSize;
   }
   /**
-   * @param Google_Service_SecretManager_SecretVersion
+   * @param Google_Service_SecretManager_SecretVersion[]
    */
   public function setVersions($versions)
   {
     $this->versions = $versions;
   }
   /**
-   * @return Google_Service_SecretManager_SecretVersion
+   * @return Google_Service_SecretManager_SecretVersion[]
    */
   public function getVersions()
   {

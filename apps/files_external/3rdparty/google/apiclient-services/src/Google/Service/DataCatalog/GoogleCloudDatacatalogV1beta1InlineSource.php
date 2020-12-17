@@ -22,14 +22,14 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1InlineSource exten
   protected $taxonomiesDataType = 'array';
 
   /**
-   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SerializedTaxonomy
+   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SerializedTaxonomy[]
    */
   public function setTaxonomies($taxonomies)
   {
     $this->taxonomies = $taxonomies;
   }
   /**
-   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SerializedTaxonomy
+   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SerializedTaxonomy[]
    */
   public function getTaxonomies()
   {

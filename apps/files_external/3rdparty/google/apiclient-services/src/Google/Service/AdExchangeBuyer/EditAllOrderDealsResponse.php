@@ -23,14 +23,14 @@ class Google_Service_AdExchangeBuyer_EditAllOrderDealsResponse extends Google_Co
   public $orderRevisionNumber;
 
   /**
-   * @param Google_Service_AdExchangeBuyer_MarketplaceDeal
+   * @param Google_Service_AdExchangeBuyer_MarketplaceDeal[]
    */
   public function setDeals($deals)
   {
     $this->deals = $deals;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_MarketplaceDeal
+   * @return Google_Service_AdExchangeBuyer_MarketplaceDeal[]
    */
   public function getDeals()
   {

@@ -29,14 +29,14 @@ class Google_Service_Analytics_Segments extends Google_Collection
   public $username;
 
   /**
-   * @param Google_Service_Analytics_Segment
+   * @param Google_Service_Analytics_Segment[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Analytics_Segment
+   * @return Google_Service_Analytics_Segment[]
    */
   public function getItems()
   {

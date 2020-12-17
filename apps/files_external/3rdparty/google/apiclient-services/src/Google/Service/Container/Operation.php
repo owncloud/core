@@ -37,14 +37,14 @@ class Google_Service_Container_Operation extends Google_Collection
   public $zone;
 
   /**
-   * @param Google_Service_Container_StatusCondition
+   * @param Google_Service_Container_StatusCondition[]
    */
   public function setClusterConditions($clusterConditions)
   {
     $this->clusterConditions = $clusterConditions;
   }
   /**
-   * @return Google_Service_Container_StatusCondition
+   * @return Google_Service_Container_StatusCondition[]
    */
   public function getClusterConditions()
   {
@@ -83,14 +83,14 @@ class Google_Service_Container_Operation extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Container_StatusCondition
+   * @param Google_Service_Container_StatusCondition[]
    */
   public function setNodepoolConditions($nodepoolConditions)
   {
     $this->nodepoolConditions = $nodepoolConditions;
   }
   /**
-   * @return Google_Service_Container_StatusCondition
+   * @return Google_Service_Container_StatusCondition[]
    */
   public function getNodepoolConditions()
   {

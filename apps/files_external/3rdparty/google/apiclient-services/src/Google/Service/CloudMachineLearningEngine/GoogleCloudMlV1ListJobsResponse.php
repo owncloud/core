@@ -23,14 +23,14 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ListJobsResponse 
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Job
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Job[]
    */
   public function setJobs($jobs)
   {
     $this->jobs = $jobs;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Job
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Job[]
    */
   public function getJobs()
   {

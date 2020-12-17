@@ -29,28 +29,28 @@ class Google_Service_Bigquery_ArimaForecastingMetrics extends Google_Collection
   public $timeSeriesId;
 
   /**
-   * @param Google_Service_Bigquery_ArimaFittingMetrics
+   * @param Google_Service_Bigquery_ArimaFittingMetrics[]
    */
   public function setArimaFittingMetrics($arimaFittingMetrics)
   {
     $this->arimaFittingMetrics = $arimaFittingMetrics;
   }
   /**
-   * @return Google_Service_Bigquery_ArimaFittingMetrics
+   * @return Google_Service_Bigquery_ArimaFittingMetrics[]
    */
   public function getArimaFittingMetrics()
   {
     return $this->arimaFittingMetrics;
   }
   /**
-   * @param Google_Service_Bigquery_ArimaSingleModelForecastingMetrics
+   * @param Google_Service_Bigquery_ArimaSingleModelForecastingMetrics[]
    */
   public function setArimaSingleModelForecastingMetrics($arimaSingleModelForecastingMetrics)
   {
     $this->arimaSingleModelForecastingMetrics = $arimaSingleModelForecastingMetrics;
   }
   /**
-   * @return Google_Service_Bigquery_ArimaSingleModelForecastingMetrics
+   * @return Google_Service_Bigquery_ArimaSingleModelForecastingMetrics[]
    */
   public function getArimaSingleModelForecastingMetrics()
   {
@@ -65,14 +65,14 @@ class Google_Service_Bigquery_ArimaForecastingMetrics extends Google_Collection
     return $this->hasDrift;
   }
   /**
-   * @param Google_Service_Bigquery_ArimaOrder
+   * @param Google_Service_Bigquery_ArimaOrder[]
    */
   public function setNonSeasonalOrder($nonSeasonalOrder)
   {
     $this->nonSeasonalOrder = $nonSeasonalOrder;
   }
   /**
-   * @return Google_Service_Bigquery_ArimaOrder
+   * @return Google_Service_Bigquery_ArimaOrder[]
    */
   public function getNonSeasonalOrder()
   {

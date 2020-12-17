@@ -31,14 +31,14 @@ class Google_Service_CloudBuild_ListBuildTriggersResponse extends Google_Collect
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_CloudBuild_BuildTrigger
+   * @param Google_Service_CloudBuild_BuildTrigger[]
    */
   public function setTriggers($triggers)
   {
     $this->triggers = $triggers;
   }
   /**
-   * @return Google_Service_CloudBuild_BuildTrigger
+   * @return Google_Service_CloudBuild_BuildTrigger[]
    */
   public function getTriggers()
   {

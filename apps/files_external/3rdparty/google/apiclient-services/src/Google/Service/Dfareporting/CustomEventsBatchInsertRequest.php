@@ -23,14 +23,14 @@ class Google_Service_Dfareporting_CustomEventsBatchInsertRequest extends Google_
   public $kind;
 
   /**
-   * @param Google_Service_Dfareporting_CustomEvent
+   * @param Google_Service_Dfareporting_CustomEvent[]
    */
   public function setCustomEvents($customEvents)
   {
     $this->customEvents = $customEvents;
   }
   /**
-   * @return Google_Service_Dfareporting_CustomEvent
+   * @return Google_Service_Dfareporting_CustomEvent[]
    */
   public function getCustomEvents()
   {

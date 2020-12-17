@@ -23,14 +23,14 @@ class Google_Service_Analytics_McfDataRows extends Google_Collection
   public $primitiveValue;
 
   /**
-   * @param Google_Service_Analytics_McfDataRowsConversionPathValue
+   * @param Google_Service_Analytics_McfDataRowsConversionPathValue[]
    */
   public function setConversionPathValue($conversionPathValue)
   {
     $this->conversionPathValue = $conversionPathValue;
   }
   /**
-   * @return Google_Service_Analytics_McfDataRowsConversionPathValue
+   * @return Google_Service_Analytics_McfDataRowsConversionPathValue[]
    */
   public function getConversionPathValue()
   {

@@ -47,14 +47,14 @@ class Google_Service_FirebaseDynamicLinks_CreateManagedShortLinkResponse extends
     return $this->previewLink;
   }
   /**
-   * @param Google_Service_FirebaseDynamicLinks_DynamicLinkWarning
+   * @param Google_Service_FirebaseDynamicLinks_DynamicLinkWarning[]
    */
   public function setWarning($warning)
   {
     $this->warning = $warning;
   }
   /**
-   * @return Google_Service_FirebaseDynamicLinks_DynamicLinkWarning
+   * @return Google_Service_FirebaseDynamicLinks_DynamicLinkWarning[]
    */
   public function getWarning()
   {

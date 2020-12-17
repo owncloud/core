@@ -65,14 +65,14 @@ class Google_Service_Apigateway_ApigatewayApiConfig extends Google_Collection
     return $this->gatewayConfig;
   }
   /**
-   * @param Google_Service_Apigateway_ApigatewayApiConfigGrpcServiceDefinition
+   * @param Google_Service_Apigateway_ApigatewayApiConfigGrpcServiceDefinition[]
    */
   public function setGrpcServices($grpcServices)
   {
     $this->grpcServices = $grpcServices;
   }
   /**
-   * @return Google_Service_Apigateway_ApigatewayApiConfigGrpcServiceDefinition
+   * @return Google_Service_Apigateway_ApigatewayApiConfigGrpcServiceDefinition[]
    */
   public function getGrpcServices()
   {
@@ -87,14 +87,14 @@ class Google_Service_Apigateway_ApigatewayApiConfig extends Google_Collection
     return $this->labels;
   }
   /**
-   * @param Google_Service_Apigateway_ApigatewayApiConfigFile
+   * @param Google_Service_Apigateway_ApigatewayApiConfigFile[]
    */
   public function setManagedServiceConfigs($managedServiceConfigs)
   {
     $this->managedServiceConfigs = $managedServiceConfigs;
   }
   /**
-   * @return Google_Service_Apigateway_ApigatewayApiConfigFile
+   * @return Google_Service_Apigateway_ApigatewayApiConfigFile[]
    */
   public function getManagedServiceConfigs()
   {
@@ -109,14 +109,14 @@ class Google_Service_Apigateway_ApigatewayApiConfig extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Apigateway_ApigatewayApiConfigOpenApiDocument
+   * @param Google_Service_Apigateway_ApigatewayApiConfigOpenApiDocument[]
    */
   public function setOpenapiDocuments($openapiDocuments)
   {
     $this->openapiDocuments = $openapiDocuments;
   }
   /**
-   * @return Google_Service_Apigateway_ApigatewayApiConfigOpenApiDocument
+   * @return Google_Service_Apigateway_ApigatewayApiConfigOpenApiDocument[]
    */
   public function getOpenapiDocuments()
   {

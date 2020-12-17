@@ -76,14 +76,14 @@ class Google_Service_SASPortalTesting_SasPortalDeviceGrant extends Google_Collec
     return $this->maxEirp;
   }
   /**
-   * @param Google_Service_SASPortalTesting_SasPortalDpaMoveList
+   * @param Google_Service_SASPortalTesting_SasPortalDpaMoveList[]
    */
   public function setMoveList($moveList)
   {
     $this->moveList = $moveList;
   }
   /**
-   * @return Google_Service_SASPortalTesting_SasPortalDpaMoveList
+   * @return Google_Service_SASPortalTesting_SasPortalDpaMoveList[]
    */
   public function getMoveList()
   {

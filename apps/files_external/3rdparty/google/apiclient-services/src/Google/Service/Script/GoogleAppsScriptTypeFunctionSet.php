@@ -22,14 +22,14 @@ class Google_Service_Script_GoogleAppsScriptTypeFunctionSet extends Google_Colle
   protected $valuesDataType = 'array';
 
   /**
-   * @param Google_Service_Script_GoogleAppsScriptTypeFunction
+   * @param Google_Service_Script_GoogleAppsScriptTypeFunction[]
    */
   public function setValues($values)
   {
     $this->values = $values;
   }
   /**
-   * @return Google_Service_Script_GoogleAppsScriptTypeFunction
+   * @return Google_Service_Script_GoogleAppsScriptTypeFunction[]
    */
   public function getValues()
   {

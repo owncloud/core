@@ -40,11 +40,6 @@ class Google_Service_Spanner_Resource_ProjectsInstancesBackupOperations extends 
    * are of the form `projects//instances/`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Number of operations to be returned in the response.
-   * If 0 or less, defaults to the server's maximum allowed page size.
-   * @opt_param string pageToken If non-empty, `page_token` should contain a
-   * next_page_token from a previous ListBackupOperationsResponse to the same
-   * `parent` and with the same `filter`.
    * @opt_param string filter An expression that filters the list of returned
    * backup operations. A filter expression consists of a field name, a comparison
    * operator, and a value for filtering. The value must be a string, a number, or
@@ -69,6 +64,11 @@ class Google_Service_Spanner_Resource_ProjectsInstancesBackupOperations extends 
    * The operation's metadata type is CreateBackupMetadata. * The backup name
    * contains the string "howl". * The operation started before
    * 2018-03-28T14:50:00Z. * The operation resulted in an error.
+   * @opt_param int pageSize Number of operations to be returned in the response.
+   * If 0 or less, defaults to the server's maximum allowed page size.
+   * @opt_param string pageToken If non-empty, `page_token` should contain a
+   * next_page_token from a previous ListBackupOperationsResponse to the same
+   * `parent` and with the same `filter`.
    * @return Google_Service_Spanner_ListBackupOperationsResponse
    */
   public function listProjectsInstancesBackupOperations($parent, $optParams = array())

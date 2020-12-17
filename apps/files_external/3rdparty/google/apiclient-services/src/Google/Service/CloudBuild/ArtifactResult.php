@@ -23,14 +23,14 @@ class Google_Service_CloudBuild_ArtifactResult extends Google_Collection
   public $location;
 
   /**
-   * @param Google_Service_CloudBuild_FileHashes
+   * @param Google_Service_CloudBuild_FileHashes[]
    */
   public function setFileHash($fileHash)
   {
     $this->fileHash = $fileHash;
   }
   /**
-   * @return Google_Service_CloudBuild_FileHashes
+   * @return Google_Service_CloudBuild_FileHashes[]
    */
   public function getFileHash()
   {

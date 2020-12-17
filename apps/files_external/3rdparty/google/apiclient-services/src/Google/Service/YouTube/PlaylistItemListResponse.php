@@ -48,14 +48,14 @@ class Google_Service_YouTube_PlaylistItemListResponse extends Google_Collection
     return $this->eventId;
   }
   /**
-   * @param Google_Service_YouTube_PlaylistItem
+   * @param Google_Service_YouTube_PlaylistItem[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_YouTube_PlaylistItem
+   * @return Google_Service_YouTube_PlaylistItem[]
    */
   public function getItems()
   {

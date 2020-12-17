@@ -219,14 +219,14 @@ class Google_Service_DeploymentManager_Operation extends Google_Collection
     return $this->user;
   }
   /**
-   * @param Google_Service_DeploymentManager_OperationWarnings
+   * @param Google_Service_DeploymentManager_OperationWarnings[]
    */
   public function setWarnings($warnings)
   {
     $this->warnings = $warnings;
   }
   /**
-   * @return Google_Service_DeploymentManager_OperationWarnings
+   * @return Google_Service_DeploymentManager_OperationWarnings[]
    */
   public function getWarnings()
   {

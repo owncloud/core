@@ -118,14 +118,14 @@ class Google_Service_Compute_HttpRouteAction extends Google_Collection
     return $this->urlRewrite;
   }
   /**
-   * @param Google_Service_Compute_WeightedBackendService
+   * @param Google_Service_Compute_WeightedBackendService[]
    */
   public function setWeightedBackendServices($weightedBackendServices)
   {
     $this->weightedBackendServices = $weightedBackendServices;
   }
   /**
-   * @return Google_Service_Compute_WeightedBackendService
+   * @return Google_Service_Compute_WeightedBackendService[]
    */
   public function getWeightedBackendServices()
   {

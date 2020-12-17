@@ -31,14 +31,14 @@ class Google_Service_CloudSearch_ListSearchApplicationsResponse extends Google_C
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_CloudSearch_SearchApplication
+   * @param Google_Service_CloudSearch_SearchApplication[]
    */
   public function setSearchApplications($searchApplications)
   {
     $this->searchApplications = $searchApplications;
   }
   /**
-   * @return Google_Service_CloudSearch_SearchApplication
+   * @return Google_Service_CloudSearch_SearchApplication[]
    */
   public function getSearchApplications()
   {

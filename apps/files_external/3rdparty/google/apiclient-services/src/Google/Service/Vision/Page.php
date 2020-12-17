@@ -27,14 +27,14 @@ class Google_Service_Vision_Page extends Google_Collection
   public $width;
 
   /**
-   * @param Google_Service_Vision_Block
+   * @param Google_Service_Vision_Block[]
    */
   public function setBlocks($blocks)
   {
     $this->blocks = $blocks;
   }
   /**
-   * @return Google_Service_Vision_Block
+   * @return Google_Service_Vision_Block[]
    */
   public function getBlocks()
   {

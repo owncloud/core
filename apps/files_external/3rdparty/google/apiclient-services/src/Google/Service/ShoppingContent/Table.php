@@ -63,14 +63,14 @@ class Google_Service_ShoppingContent_Table extends Google_Collection
     return $this->rowHeaders;
   }
   /**
-   * @param Google_Service_ShoppingContent_Row
+   * @param Google_Service_ShoppingContent_Row[]
    */
   public function setRows($rows)
   {
     $this->rows = $rows;
   }
   /**
-   * @return Google_Service_ShoppingContent_Row
+   * @return Google_Service_ShoppingContent_Row[]
    */
   public function getRows()
   {

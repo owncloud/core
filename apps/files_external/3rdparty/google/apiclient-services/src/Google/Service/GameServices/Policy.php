@@ -29,28 +29,28 @@ class Google_Service_GameServices_Policy extends Google_Collection
   public $version;
 
   /**
-   * @param Google_Service_GameServices_AuditConfig
+   * @param Google_Service_GameServices_AuditConfig[]
    */
   public function setAuditConfigs($auditConfigs)
   {
     $this->auditConfigs = $auditConfigs;
   }
   /**
-   * @return Google_Service_GameServices_AuditConfig
+   * @return Google_Service_GameServices_AuditConfig[]
    */
   public function getAuditConfigs()
   {
     return $this->auditConfigs;
   }
   /**
-   * @param Google_Service_GameServices_Binding
+   * @param Google_Service_GameServices_Binding[]
    */
   public function setBindings($bindings)
   {
     $this->bindings = $bindings;
   }
   /**
-   * @return Google_Service_GameServices_Binding
+   * @return Google_Service_GameServices_Binding[]
    */
   public function getBindings()
   {
@@ -73,14 +73,14 @@ class Google_Service_GameServices_Policy extends Google_Collection
     return $this->iamOwned;
   }
   /**
-   * @param Google_Service_GameServices_Rule
+   * @param Google_Service_GameServices_Rule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_GameServices_Rule
+   * @return Google_Service_GameServices_Rule[]
    */
   public function getRules()
   {

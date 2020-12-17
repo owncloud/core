@@ -19,6 +19,7 @@ class Google_Service_AnalyticsData_DimensionMetadata extends Google_Collection
 {
   protected $collection_key = 'deprecatedApiNames';
   public $apiName;
+  public $customDefinition;
   public $deprecatedApiNames;
   public $description;
   public $uiName;
@@ -30,6 +31,14 @@ class Google_Service_AnalyticsData_DimensionMetadata extends Google_Collection
   public function getApiName()
   {
     return $this->apiName;
+  }
+  public function setCustomDefinition($customDefinition)
+  {
+    $this->customDefinition = $customDefinition;
+  }
+  public function getCustomDefinition()
+  {
+    return $this->customDefinition;
   }
   public function setDeprecatedApiNames($deprecatedApiNames)
   {

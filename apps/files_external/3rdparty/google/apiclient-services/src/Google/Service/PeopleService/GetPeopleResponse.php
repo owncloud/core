@@ -22,14 +22,14 @@ class Google_Service_PeopleService_GetPeopleResponse extends Google_Collection
   protected $responsesDataType = 'array';
 
   /**
-   * @param Google_Service_PeopleService_PersonResponse
+   * @param Google_Service_PeopleService_PersonResponse[]
    */
   public function setResponses($responses)
   {
     $this->responses = $responses;
   }
   /**
-   * @return Google_Service_PeopleService_PersonResponse
+   * @return Google_Service_PeopleService_PersonResponse[]
    */
   public function getResponses()
   {

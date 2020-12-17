@@ -24,14 +24,14 @@ class Google_Service_Storage_Buckets extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Storage_Bucket
+   * @param Google_Service_Storage_Bucket[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Storage_Bucket
+   * @return Google_Service_Storage_Bucket[]
    */
   public function getItems()
   {

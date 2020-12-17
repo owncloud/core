@@ -47,42 +47,42 @@ class Google_Service_ShoppingContent_OrderLineItem extends Google_Collection
   protected $taxDataType = '';
 
   /**
-   * @param Google_Service_ShoppingContent_OrderLineItemAdjustment
+   * @param Google_Service_ShoppingContent_OrderLineItemAdjustment[]
    */
   public function setAdjustments($adjustments)
   {
     $this->adjustments = $adjustments;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderLineItemAdjustment
+   * @return Google_Service_ShoppingContent_OrderLineItemAdjustment[]
    */
   public function getAdjustments()
   {
     return $this->adjustments;
   }
   /**
-   * @param Google_Service_ShoppingContent_OrderMerchantProvidedAnnotation
+   * @param Google_Service_ShoppingContent_OrderMerchantProvidedAnnotation[]
    */
   public function setAnnotations($annotations)
   {
     $this->annotations = $annotations;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderMerchantProvidedAnnotation
+   * @return Google_Service_ShoppingContent_OrderMerchantProvidedAnnotation[]
    */
   public function getAnnotations()
   {
     return $this->annotations;
   }
   /**
-   * @param Google_Service_ShoppingContent_OrderCancellation
+   * @param Google_Service_ShoppingContent_OrderCancellation[]
    */
   public function setCancellations($cancellations)
   {
     $this->cancellations = $cancellations;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderCancellation
+   * @return Google_Service_ShoppingContent_OrderCancellation[]
    */
   public function getCancellations()
   {
@@ -203,14 +203,14 @@ class Google_Service_ShoppingContent_OrderLineItem extends Google_Collection
     return $this->returnInfo;
   }
   /**
-   * @param Google_Service_ShoppingContent_OrderReturn
+   * @param Google_Service_ShoppingContent_OrderReturn[]
    */
   public function setReturns($returns)
   {
     $this->returns = $returns;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderReturn
+   * @return Google_Service_ShoppingContent_OrderReturn[]
    */
   public function getReturns()
   {

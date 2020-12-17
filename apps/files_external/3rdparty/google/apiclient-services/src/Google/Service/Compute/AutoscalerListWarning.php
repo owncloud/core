@@ -32,14 +32,14 @@ class Google_Service_Compute_AutoscalerListWarning extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_AutoscalerListWarningData
+   * @param Google_Service_Compute_AutoscalerListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_AutoscalerListWarningData
+   * @return Google_Service_Compute_AutoscalerListWarningData[]
    */
   public function getData()
   {

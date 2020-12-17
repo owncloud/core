@@ -24,14 +24,14 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p3beta
   protected $faceTrackDataType = '';
 
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p3beta1RecognizedCelebrity
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p3beta1RecognizedCelebrity[]
    */
   public function setCelebrities($celebrities)
   {
     $this->celebrities = $celebrities;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p3beta1RecognizedCelebrity
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p3beta1RecognizedCelebrity[]
    */
   public function getCelebrities()
   {

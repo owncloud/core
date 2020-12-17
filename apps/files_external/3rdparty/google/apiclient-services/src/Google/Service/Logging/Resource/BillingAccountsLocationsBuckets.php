@@ -67,7 +67,7 @@ class Google_Service_Logging_Resource_BillingAccountsLocationsBuckets extends Go
     return $this->call('delete', array($params), "Google_Service_Logging_LoggingEmpty");
   }
   /**
-   * Lists buckets (Beta). (buckets.listBillingAccountsLocationsBuckets)
+   * Lists buckets. (buckets.listBillingAccountsLocationsBuckets)
    *
    * @param string $parent Required. The parent resource whose buckets are to be
    * listed: "projects/[PROJECT_ID]/locations/[LOCATION_ID]"
@@ -78,13 +78,13 @@ class Google_Service_Logging_Resource_BillingAccountsLocationsBuckets extends Go
    * LOCATION_ID will return all buckets.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Optional. The maximum number of results to return
+   * from this request. Non-positive values are ignored. The presence of
+   * nextPageToken in the response indicates that more results might be available.
    * @opt_param string pageToken Optional. If present, then retrieve the next
    * batch of results from the preceding call to this method. pageToken must be
    * the value of nextPageToken from the previous response. The values of other
    * method parameters should be identical to those in the previous call.
-   * @opt_param int pageSize Optional. The maximum number of results to return
-   * from this request. Non-positive values are ignored. The presence of
-   * nextPageToken in the response indicates that more results might be available.
    * @return Google_Service_Logging_ListBucketsResponse
    */
   public function listBillingAccountsLocationsBuckets($parent, $optParams = array())
@@ -99,7 +99,7 @@ class Google_Service_Logging_Resource_BillingAccountsLocationsBuckets extends Go
    * period is decreased and the bucket is locked, FAILED_PRECONDITION will be
    * returned.If the bucket has a LifecycleState of DELETE_REQUESTED,
    * FAILED_PRECONDITION will be returned.A buckets region may not be modified
-   * after it is created. This method is in Beta. (buckets.patch)
+   * after it is created. (buckets.patch)
    *
    * @param string $name Required. The full resource name of the bucket to update.
    * "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"

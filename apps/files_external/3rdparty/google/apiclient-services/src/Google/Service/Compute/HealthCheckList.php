@@ -36,14 +36,14 @@ class Google_Service_Compute_HealthCheckList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_HealthCheck
+   * @param Google_Service_Compute_HealthCheck[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_HealthCheck
+   * @return Google_Service_Compute_HealthCheck[]
    */
   public function getItems()
   {

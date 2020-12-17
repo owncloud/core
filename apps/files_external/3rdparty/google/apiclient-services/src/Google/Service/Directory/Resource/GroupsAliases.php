@@ -26,9 +26,10 @@
 class Google_Service_Directory_Resource_GroupsAliases extends Google_Service_Resource
 {
   /**
-   * Remove a alias for the group (aliases.delete)
+   * Removes an alias. (aliases.delete)
    *
-   * @param string $groupKey Email or immutable ID of the group
+   * @param string $groupKey Identifies the group in the API request. The value
+   * can be the group's email address, group alias, or the unique group ID.
    * @param string $alias The alias to be removed
    * @param array $optParams Optional parameters.
    */
@@ -39,9 +40,10 @@ class Google_Service_Directory_Resource_GroupsAliases extends Google_Service_Res
     return $this->call('delete', array($params));
   }
   /**
-   * Add a alias for the group (aliases.insert)
+   * Adds an alias for the group. (aliases.insert)
    *
-   * @param string $groupKey Email or immutable ID of the group
+   * @param string $groupKey Identifies the group in the API request. The value
+   * can be the group's email address, group alias, or the unique group ID.
    * @param Google_Service_Directory_Alias $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_Alias
@@ -53,9 +55,10 @@ class Google_Service_Directory_Resource_GroupsAliases extends Google_Service_Res
     return $this->call('insert', array($params), "Google_Service_Directory_Alias");
   }
   /**
-   * List all aliases for a group (aliases.listGroupsAliases)
+   * Lists all aliases for a group. (aliases.listGroupsAliases)
    *
-   * @param string $groupKey Email or immutable ID of the group
+   * @param string $groupKey Identifies the group in the API request. The value
+   * can be the group's email address, group alias, or the unique group ID.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_Aliases
    */

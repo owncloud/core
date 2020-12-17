@@ -35,7 +35,7 @@ class Google_Service_TrafficDirectorService extends Google_Service
       "https://www.googleapis.com/auth/cloud-platform";
 
   public $discovery;
-  
+
   /**
    * Constructs the internal representation of the TrafficDirectorService
    * service.

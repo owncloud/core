@@ -25,28 +25,28 @@ class Google_Service_Compute_PacketMirroringMirroredResourceInfo extends Google_
   public $tags;
 
   /**
-   * @param Google_Service_Compute_PacketMirroringMirroredResourceInfoInstanceInfo
+   * @param Google_Service_Compute_PacketMirroringMirroredResourceInfoInstanceInfo[]
    */
   public function setInstances($instances)
   {
     $this->instances = $instances;
   }
   /**
-   * @return Google_Service_Compute_PacketMirroringMirroredResourceInfoInstanceInfo
+   * @return Google_Service_Compute_PacketMirroringMirroredResourceInfoInstanceInfo[]
    */
   public function getInstances()
   {
     return $this->instances;
   }
   /**
-   * @param Google_Service_Compute_PacketMirroringMirroredResourceInfoSubnetInfo
+   * @param Google_Service_Compute_PacketMirroringMirroredResourceInfoSubnetInfo[]
    */
   public function setSubnetworks($subnetworks)
   {
     $this->subnetworks = $subnetworks;
   }
   /**
-   * @return Google_Service_Compute_PacketMirroringMirroredResourceInfoSubnetInfo
+   * @return Google_Service_Compute_PacketMirroringMirroredResourceInfoSubnetInfo[]
    */
   public function getSubnetworks()
   {

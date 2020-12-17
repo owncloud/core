@@ -23,14 +23,14 @@ class Google_Service_BigQueryDataTransfer_ListDataSourcesResponse extends Google
   public $nextPageToken;
 
   /**
-   * @param Google_Service_BigQueryDataTransfer_DataSource
+   * @param Google_Service_BigQueryDataTransfer_DataSource[]
    */
   public function setDataSources($dataSources)
   {
     $this->dataSources = $dataSources;
   }
   /**
-   * @return Google_Service_BigQueryDataTransfer_DataSource
+   * @return Google_Service_BigQueryDataTransfer_DataSource[]
    */
   public function getDataSources()
   {

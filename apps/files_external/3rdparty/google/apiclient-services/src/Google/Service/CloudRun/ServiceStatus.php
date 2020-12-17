@@ -44,14 +44,14 @@ class Google_Service_CloudRun_ServiceStatus extends Google_Collection
     return $this->address;
   }
   /**
-   * @param Google_Service_CloudRun_GoogleCloudRunV1Condition
+   * @param Google_Service_CloudRun_GoogleCloudRunV1Condition[]
    */
   public function setConditions($conditions)
   {
     $this->conditions = $conditions;
   }
   /**
-   * @return Google_Service_CloudRun_GoogleCloudRunV1Condition
+   * @return Google_Service_CloudRun_GoogleCloudRunV1Condition[]
    */
   public function getConditions()
   {
@@ -82,14 +82,14 @@ class Google_Service_CloudRun_ServiceStatus extends Google_Collection
     return $this->observedGeneration;
   }
   /**
-   * @param Google_Service_CloudRun_TrafficTarget
+   * @param Google_Service_CloudRun_TrafficTarget[]
    */
   public function setTraffic($traffic)
   {
     $this->traffic = $traffic;
   }
   /**
-   * @return Google_Service_CloudRun_TrafficTarget
+   * @return Google_Service_CloudRun_TrafficTarget[]
    */
   public function getTraffic()
   {

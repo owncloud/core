@@ -24,14 +24,14 @@ class Google_Service_ToolResults_ShardSummary extends Google_Collection
   protected $shardResultDataType = '';
 
   /**
-   * @param Google_Service_ToolResults_StepSummary
+   * @param Google_Service_ToolResults_StepSummary[]
    */
   public function setRuns($runs)
   {
     $this->runs = $runs;
   }
   /**
-   * @return Google_Service_ToolResults_StepSummary
+   * @return Google_Service_ToolResults_StepSummary[]
    */
   public function getRuns()
   {

@@ -23,14 +23,14 @@ class Google_Service_Storage_ObjectAccessControls extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_Storage_ObjectAccessControl
+   * @param Google_Service_Storage_ObjectAccessControl[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Storage_ObjectAccessControl
+   * @return Google_Service_Storage_ObjectAccessControl[]
    */
   public function getItems()
   {

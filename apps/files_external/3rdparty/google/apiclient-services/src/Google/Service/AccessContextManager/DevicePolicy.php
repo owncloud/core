@@ -43,14 +43,14 @@ class Google_Service_AccessContextManager_DevicePolicy extends Google_Collection
     return $this->allowedEncryptionStatuses;
   }
   /**
-   * @param Google_Service_AccessContextManager_OsConstraint
+   * @param Google_Service_AccessContextManager_OsConstraint[]
    */
   public function setOsConstraints($osConstraints)
   {
     $this->osConstraints = $osConstraints;
   }
   /**
-   * @return Google_Service_AccessContextManager_OsConstraint
+   * @return Google_Service_AccessContextManager_OsConstraint[]
    */
   public function getOsConstraints()
   {

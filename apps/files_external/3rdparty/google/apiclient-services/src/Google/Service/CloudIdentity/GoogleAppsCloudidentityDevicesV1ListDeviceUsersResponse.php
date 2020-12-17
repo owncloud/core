@@ -23,14 +23,14 @@ class Google_Service_CloudIdentity_GoogleAppsCloudidentityDevicesV1ListDeviceUse
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudIdentity_GoogleAppsCloudidentityDevicesV1DeviceUser
+   * @param Google_Service_CloudIdentity_GoogleAppsCloudidentityDevicesV1DeviceUser[]
    */
   public function setDeviceUsers($deviceUsers)
   {
     $this->deviceUsers = $deviceUsers;
   }
   /**
-   * @return Google_Service_CloudIdentity_GoogleAppsCloudidentityDevicesV1DeviceUser
+   * @return Google_Service_CloudIdentity_GoogleAppsCloudidentityDevicesV1DeviceUser[]
    */
   public function getDeviceUsers()
   {

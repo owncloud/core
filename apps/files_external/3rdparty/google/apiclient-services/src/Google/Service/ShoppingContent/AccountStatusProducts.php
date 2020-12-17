@@ -51,14 +51,14 @@ class Google_Service_ShoppingContent_AccountStatusProducts extends Google_Collec
     return $this->destination;
   }
   /**
-   * @param Google_Service_ShoppingContent_AccountStatusItemLevelIssue
+   * @param Google_Service_ShoppingContent_AccountStatusItemLevelIssue[]
    */
   public function setItemLevelIssues($itemLevelIssues)
   {
     $this->itemLevelIssues = $itemLevelIssues;
   }
   /**
-   * @return Google_Service_ShoppingContent_AccountStatusItemLevelIssue
+   * @return Google_Service_ShoppingContent_AccountStatusItemLevelIssue[]
    */
   public function getItemLevelIssues()
   {

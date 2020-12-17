@@ -90,14 +90,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p2beta1AnnotateImageResponse exte
     return $this->error;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p2beta1FaceAnnotation
+   * @param Google_Service_Vision_GoogleCloudVisionV1p2beta1FaceAnnotation[]
    */
   public function setFaceAnnotations($faceAnnotations)
   {
     $this->faceAnnotations = $faceAnnotations;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p2beta1FaceAnnotation
+   * @return Google_Service_Vision_GoogleCloudVisionV1p2beta1FaceAnnotation[]
    */
   public function getFaceAnnotations()
   {
@@ -132,56 +132,56 @@ class Google_Service_Vision_GoogleCloudVisionV1p2beta1AnnotateImageResponse exte
     return $this->imagePropertiesAnnotation;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p2beta1EntityAnnotation
+   * @param Google_Service_Vision_GoogleCloudVisionV1p2beta1EntityAnnotation[]
    */
   public function setLabelAnnotations($labelAnnotations)
   {
     $this->labelAnnotations = $labelAnnotations;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p2beta1EntityAnnotation
+   * @return Google_Service_Vision_GoogleCloudVisionV1p2beta1EntityAnnotation[]
    */
   public function getLabelAnnotations()
   {
     return $this->labelAnnotations;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p2beta1EntityAnnotation
+   * @param Google_Service_Vision_GoogleCloudVisionV1p2beta1EntityAnnotation[]
    */
   public function setLandmarkAnnotations($landmarkAnnotations)
   {
     $this->landmarkAnnotations = $landmarkAnnotations;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p2beta1EntityAnnotation
+   * @return Google_Service_Vision_GoogleCloudVisionV1p2beta1EntityAnnotation[]
    */
   public function getLandmarkAnnotations()
   {
     return $this->landmarkAnnotations;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p2beta1LocalizedObjectAnnotation
+   * @param Google_Service_Vision_GoogleCloudVisionV1p2beta1LocalizedObjectAnnotation[]
    */
   public function setLocalizedObjectAnnotations($localizedObjectAnnotations)
   {
     $this->localizedObjectAnnotations = $localizedObjectAnnotations;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p2beta1LocalizedObjectAnnotation
+   * @return Google_Service_Vision_GoogleCloudVisionV1p2beta1LocalizedObjectAnnotation[]
    */
   public function getLocalizedObjectAnnotations()
   {
     return $this->localizedObjectAnnotations;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p2beta1EntityAnnotation
+   * @param Google_Service_Vision_GoogleCloudVisionV1p2beta1EntityAnnotation[]
    */
   public function setLogoAnnotations($logoAnnotations)
   {
     $this->logoAnnotations = $logoAnnotations;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p2beta1EntityAnnotation
+   * @return Google_Service_Vision_GoogleCloudVisionV1p2beta1EntityAnnotation[]
    */
   public function getLogoAnnotations()
   {
@@ -216,14 +216,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p2beta1AnnotateImageResponse exte
     return $this->safeSearchAnnotation;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p2beta1EntityAnnotation
+   * @param Google_Service_Vision_GoogleCloudVisionV1p2beta1EntityAnnotation[]
    */
   public function setTextAnnotations($textAnnotations)
   {
     $this->textAnnotations = $textAnnotations;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p2beta1EntityAnnotation
+   * @return Google_Service_Vision_GoogleCloudVisionV1p2beta1EntityAnnotation[]
    */
   public function getTextAnnotations()
   {

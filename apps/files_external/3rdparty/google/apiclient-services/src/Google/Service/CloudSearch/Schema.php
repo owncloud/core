@@ -23,14 +23,14 @@ class Google_Service_CloudSearch_Schema extends Google_Collection
   public $operationIds;
 
   /**
-   * @param Google_Service_CloudSearch_ObjectDefinition
+   * @param Google_Service_CloudSearch_ObjectDefinition[]
    */
   public function setObjectDefinitions($objectDefinitions)
   {
     $this->objectDefinitions = $objectDefinitions;
   }
   /**
-   * @return Google_Service_CloudSearch_ObjectDefinition
+   * @return Google_Service_CloudSearch_ObjectDefinition[]
    */
   public function getObjectDefinitions()
   {

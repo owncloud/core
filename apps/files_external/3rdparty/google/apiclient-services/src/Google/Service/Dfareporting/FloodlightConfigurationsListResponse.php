@@ -23,14 +23,14 @@ class Google_Service_Dfareporting_FloodlightConfigurationsListResponse extends G
   public $kind;
 
   /**
-   * @param Google_Service_Dfareporting_FloodlightConfiguration
+   * @param Google_Service_Dfareporting_FloodlightConfiguration[]
    */
   public function setFloodlightConfigurations($floodlightConfigurations)
   {
     $this->floodlightConfigurations = $floodlightConfigurations;
   }
   /**
-   * @return Google_Service_Dfareporting_FloodlightConfiguration
+   * @return Google_Service_Dfareporting_FloodlightConfiguration[]
    */
   public function getFloodlightConfigurations()
   {

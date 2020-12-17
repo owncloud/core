@@ -51,14 +51,14 @@ class Google_Service_AndroidManagement_PersonalUsagePolicies extends Google_Coll
     return $this->maxDaysWithWorkOff;
   }
   /**
-   * @param Google_Service_AndroidManagement_PersonalApplicationPolicy
+   * @param Google_Service_AndroidManagement_PersonalApplicationPolicy[]
    */
   public function setPersonalApplications($personalApplications)
   {
     $this->personalApplications = $personalApplications;
   }
   /**
-   * @return Google_Service_AndroidManagement_PersonalApplicationPolicy
+   * @return Google_Service_AndroidManagement_PersonalApplicationPolicy[]
    */
   public function getPersonalApplications()
   {

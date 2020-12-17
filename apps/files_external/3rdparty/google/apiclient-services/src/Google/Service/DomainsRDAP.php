@@ -39,7 +39,7 @@ class Google_Service_DomainsRDAP extends Google_Service
   public $ip;
   public $nameserver;
   public $v1;
-  
+
   /**
    * Constructs the internal representation of the DomainsRDAP service.
    *

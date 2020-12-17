@@ -22,14 +22,14 @@ class Google_Service_AndroidEnterprise_ServiceAccountKeysListResponse extends Go
   protected $serviceAccountKeyDataType = 'array';
 
   /**
-   * @param Google_Service_AndroidEnterprise_ServiceAccountKey
+   * @param Google_Service_AndroidEnterprise_ServiceAccountKey[]
    */
   public function setServiceAccountKey($serviceAccountKey)
   {
     $this->serviceAccountKey = $serviceAccountKey;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_ServiceAccountKey
+   * @return Google_Service_AndroidEnterprise_ServiceAccountKey[]
    */
   public function getServiceAccountKey()
   {

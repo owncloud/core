@@ -43,9 +43,10 @@ class Google_Service_ServiceNetworking extends Google_Service
   public $services_connections;
   public $services_dnsRecordSets;
   public $services_dnsZones;
+  public $services_projects_global_networks;
   public $services_projects_global_networks_peeredDnsDomains;
   public $services_roles;
-  
+
   /**
    * Constructs the internal representation of the ServiceNetworking service.
    *
@@ -106,13 +107,13 @@ class Google_Service_ServiceNetworking extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
@@ -294,6 +295,36 @@ class Google_Service_ServiceNetworking extends Google_Service
             ),'remove' => array(
               'path' => 'v1/{+parent}/dnsZones:remove',
               'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->services_projects_global_networks = new Google_Service_ServiceNetworking_Resource_ServicesProjectsServicenetworkingGlobalNetworks(
+        $this,
+        $this->serviceName,
+        'networks',
+        array(
+          'methods' => array(
+            'get' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'updateConsumerConfig' => array(
+              'path' => 'v1/{+parent}:updateConsumerConfig',
+              'httpMethod' => 'PATCH',
               'parameters' => array(
                 'parent' => array(
                   'location' => 'path',

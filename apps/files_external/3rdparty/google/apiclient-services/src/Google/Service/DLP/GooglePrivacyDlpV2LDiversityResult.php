@@ -22,14 +22,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2LDiversityResult extends Google_Colle
   protected $sensitiveValueFrequencyHistogramBucketsDataType = 'array';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2LDiversityHistogramBucket
+   * @param Google_Service_DLP_GooglePrivacyDlpV2LDiversityHistogramBucket[]
    */
   public function setSensitiveValueFrequencyHistogramBuckets($sensitiveValueFrequencyHistogramBuckets)
   {
     $this->sensitiveValueFrequencyHistogramBuckets = $sensitiveValueFrequencyHistogramBuckets;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2LDiversityHistogramBucket
+   * @return Google_Service_DLP_GooglePrivacyDlpV2LDiversityHistogramBucket[]
    */
   public function getSensitiveValueFrequencyHistogramBuckets()
   {

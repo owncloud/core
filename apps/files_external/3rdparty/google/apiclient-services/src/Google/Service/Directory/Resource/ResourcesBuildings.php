@@ -29,8 +29,8 @@ class Google_Service_Directory_Resource_ResourcesBuildings extends Google_Servic
    * Deletes a building. (buildings.delete)
    *
    * @param string $customer The unique ID for the customer's G Suite account. As
-   * an account administrator, you can also use the my_customer alias to represent
-   * your account's customer ID.
+   * an account administrator, you can also use the `my_customer` alias to
+   * represent your account's customer ID.
    * @param string $buildingId The id of the building to delete.
    * @param array $optParams Optional parameters.
    */
@@ -44,8 +44,8 @@ class Google_Service_Directory_Resource_ResourcesBuildings extends Google_Servic
    * Retrieves a building. (buildings.get)
    *
    * @param string $customer The unique ID for the customer's G Suite account. As
-   * an account administrator, you can also use the my_customer alias to represent
-   * your account's customer ID.
+   * an account administrator, you can also use the `my_customer` alias to
+   * represent your account's customer ID.
    * @param string $buildingId The unique ID of the building to retrieve.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_Building
@@ -60,8 +60,8 @@ class Google_Service_Directory_Resource_ResourcesBuildings extends Google_Servic
    * Inserts a building. (buildings.insert)
    *
    * @param string $customer The unique ID for the customer's G Suite account. As
-   * an account administrator, you can also use the my_customer alias to represent
-   * your account's customer ID.
+   * an account administrator, you can also use the `my_customer` alias to
+   * represent your account's customer ID.
    * @param Google_Service_Directory_Building $postBody
    * @param array $optParams Optional parameters.
    *
@@ -80,12 +80,12 @@ class Google_Service_Directory_Resource_ResourcesBuildings extends Google_Servic
    * (buildings.listResourcesBuildings)
    *
    * @param string $customer The unique ID for the customer's G Suite account. As
-   * an account administrator, you can also use the my_customer alias to represent
-   * your account's customer ID.
+   * an account administrator, you can also use the `my_customer` alias to
+   * represent your account's customer ID.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Token to specify the next page in the list.
    * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string pageToken Token to specify the next page in the list.
    * @return Google_Service_Directory_Buildings
    */
   public function listResourcesBuildings($customer, $optParams = array())
@@ -98,8 +98,8 @@ class Google_Service_Directory_Resource_ResourcesBuildings extends Google_Servic
    * Patches a building via Apiary Patch Orchestration. (buildings.patch)
    *
    * @param string $customer The unique ID for the customer's G Suite account. As
-   * an account administrator, you can also use the my_customer alias to represent
-   * your account's customer ID.
+   * an account administrator, you can also use the `my_customer` alias to
+   * represent your account's customer ID.
    * @param string $buildingId The id of the building to update.
    * @param Google_Service_Directory_Building $postBody
    * @param array $optParams Optional parameters.
@@ -118,8 +118,8 @@ class Google_Service_Directory_Resource_ResourcesBuildings extends Google_Servic
    * Updates a building. (buildings.update)
    *
    * @param string $customer The unique ID for the customer's G Suite account. As
-   * an account administrator, you can also use the my_customer alias to represent
-   * your account's customer ID.
+   * an account administrator, you can also use the `my_customer` alias to
+   * represent your account's customer ID.
    * @param string $buildingId The id of the building to update.
    * @param Google_Service_Directory_Building $postBody
    * @param array $optParams Optional parameters.

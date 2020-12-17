@@ -34,13 +34,13 @@ class Google_Service_Calendar_Resource_Events extends Google_Service_Resource
    * @param string $eventId Event identifier.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string sendUpdates Guests who should receive notifications about
-   * the deletion of the event.
    * @opt_param bool sendNotifications Deprecated. Please use sendUpdates instead.
    *
    * Whether to send notifications about the deletion of the event. Note that some
    * emails might still be sent even if you set the value to false. The default is
    * false.
+   * @opt_param string sendUpdates Guests who should receive notifications about
+   * the deletion of the event.
    */
   public function delete($calendarId, $eventId, $optParams = array())
   {
@@ -61,11 +61,11 @@ class Google_Service_Calendar_Resource_Events extends Google_Service_Resource
    * always be returned in the email field for the organizer, creator and
    * attendees, even if no real email address is available (i.e. a generated, non-
    * working value will be provided).
-   * @opt_param string timeZone Time zone used in the response. Optional. The
-   * default is the time zone of the calendar.
    * @opt_param int maxAttendees The maximum number of attendees to include in the
    * response. If there are more than the specified number of attendees, only the
    * participant is returned. Optional.
+   * @opt_param string timeZone Time zone used in the response. Optional. The
+   * default is the time zone of the calendar.
    * @return Google_Service_Calendar_Event
    */
   public function get($calendarId, $eventId, $optParams = array())
@@ -84,13 +84,13 @@ class Google_Service_Calendar_Resource_Events extends Google_Service_Resource
    * @param Google_Service_Calendar_Event $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool supportsAttachments Whether API client performing operation
-   * supports event attachments. Optional. The default is False.
    * @opt_param int conferenceDataVersion Version number of conference data
    * supported by the API client. Version 0 assumes no conference data support and
    * ignores conference data in the event's body. Version 1 enables support for
    * copying of ConferenceData as well as for creating new conferences using the
    * createRequest field of conferenceData. The default is 0.
+   * @opt_param bool supportsAttachments Whether API client performing operation
+   * supports event attachments. Optional. The default is False.
    * @return Google_Service_Calendar_Event
    */
   public function import($calendarId, Google_Service_Calendar_Event $postBody, $optParams = array())
@@ -108,24 +108,24 @@ class Google_Service_Calendar_Resource_Events extends Google_Service_Resource
    * @param Google_Service_Calendar_Event $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool supportsAttachments Whether API client performing operation
-   * supports event attachments. Optional. The default is False.
-   * @opt_param int maxAttendees The maximum number of attendees to include in the
-   * response. If there are more than the specified number of attendees, only the
-   * participant is returned. Optional.
    * @opt_param int conferenceDataVersion Version number of conference data
    * supported by the API client. Version 0 assumes no conference data support and
    * ignores conference data in the event's body. Version 1 enables support for
    * copying of ConferenceData as well as for creating new conferences using the
    * createRequest field of conferenceData. The default is 0.
-   * @opt_param string sendUpdates Whether to send notifications about the
-   * creation of the new event. Note that some emails might still be sent. The
-   * default is false.
+   * @opt_param int maxAttendees The maximum number of attendees to include in the
+   * response. If there are more than the specified number of attendees, only the
+   * participant is returned. Optional.
    * @opt_param bool sendNotifications Deprecated. Please use sendUpdates instead.
    *
    * Whether to send notifications about the creation of the new event. Note that
    * some emails might still be sent even if you set the value to false. The
    * default is false.
+   * @opt_param string sendUpdates Whether to send notifications about the
+   * creation of the new event. Note that some emails might still be sent. The
+   * default is false.
+   * @opt_param bool supportsAttachments Whether API client performing operation
+   * supports event attachments. Optional. The default is False.
    * @return Google_Service_Calendar_Event
    */
   public function insert($calendarId, Google_Service_Calendar_Event $postBody, $optParams = array())
@@ -143,32 +143,32 @@ class Google_Service_Calendar_Resource_Events extends Google_Service_Resource
    * @param string $eventId Recurring event identifier.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int maxResults Maximum number of events returned on one result
-   * page. By default the value is 250 events. The page size can never be larger
-   * than 2500 events. Optional.
    * @opt_param bool alwaysIncludeEmail Deprecated and ignored. A value will
    * always be returned in the email field for the organizer, creator and
    * attendees, even if no real email address is available (i.e. a generated, non-
    * working value will be provided).
-   * @opt_param string timeMin Lower bound (inclusive) for an event's end time to
-   * filter by. Optional. The default is not to filter by end time. Must be an
-   * RFC3339 timestamp with mandatory time zone offset.
-   * @opt_param string pageToken Token specifying which result page to return.
-   * Optional.
-   * @opt_param string timeZone Time zone used in the response. Optional. The
-   * default is the time zone of the calendar.
-   * @opt_param string timeMax Upper bound (exclusive) for an event's start time
-   * to filter by. Optional. The default is not to filter by start time. Must be
-   * an RFC3339 timestamp with mandatory time zone offset.
    * @opt_param int maxAttendees The maximum number of attendees to include in the
    * response. If there are more than the specified number of attendees, only the
    * participant is returned. Optional.
+   * @opt_param int maxResults Maximum number of events returned on one result
+   * page. By default the value is 250 events. The page size can never be larger
+   * than 2500 events. Optional.
+   * @opt_param string originalStart The original start time of the instance in
+   * the result. Optional.
+   * @opt_param string pageToken Token specifying which result page to return.
+   * Optional.
    * @opt_param bool showDeleted Whether to include deleted events (with status
    * equals "cancelled") in the result. Cancelled instances of recurring events
    * will still be included if singleEvents is False. Optional. The default is
    * False.
-   * @opt_param string originalStart The original start time of the instance in
-   * the result. Optional.
+   * @opt_param string timeMax Upper bound (exclusive) for an event's start time
+   * to filter by. Optional. The default is not to filter by start time. Must be
+   * an RFC3339 timestamp with mandatory time zone offset.
+   * @opt_param string timeMin Lower bound (inclusive) for an event's end time to
+   * filter by. Optional. The default is not to filter by end time. Must be an
+   * RFC3339 timestamp with mandatory time zone offset.
+   * @opt_param string timeZone Time zone used in the response. Optional. The
+   * default is the time zone of the calendar.
    * @return Google_Service_Calendar_Events
    */
   public function instances($calendarId, $eventId, $optParams = array())
@@ -185,35 +185,47 @@ class Google_Service_Calendar_Resource_Events extends Google_Service_Resource
    * the currently logged in user, use the "primary" keyword.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string timeMin Lower bound (exclusive) for an event's end time to
-   * filter by. Optional. The default is not to filter by end time. Must be an
-   * RFC3339 timestamp with mandatory time zone offset, for example,
-   * 2011-06-03T10:00:00-07:00, 2011-06-03T10:00:00Z. Milliseconds may be provided
-   * but are ignored. If timeMax is set, timeMin must be smaller than timeMax.
-   * @opt_param string privateExtendedProperty Extended properties constraint
-   * specified as propertyName=value. Matches only private properties. This
-   * parameter might be repeated multiple times to return events that match all
-   * given constraints.
-   * @opt_param string timeZone Time zone used in the response. Optional. The
-   * default is the time zone of the calendar.
+   * @opt_param bool alwaysIncludeEmail Deprecated and ignored. A value will
+   * always be returned in the email field for the organizer, creator and
+   * attendees, even if no real email address is available (i.e. a generated, non-
+   * working value will be provided).
+   * @opt_param string iCalUID Specifies event ID in the iCalendar format to be
+   * included in the response. Optional.
+   * @opt_param int maxAttendees The maximum number of attendees to include in the
+   * response. If there are more than the specified number of attendees, only the
+   * participant is returned. Optional.
    * @opt_param int maxResults Maximum number of events returned on one result
    * page. The number of events in the resulting page may be less than this value,
    * or none at all, even if there are more events matching the query. Incomplete
    * pages can be detected by a non-empty nextPageToken field in the response. By
    * default the value is 250 events. The page size can never be larger than 2500
    * events. Optional.
-   * @opt_param bool alwaysIncludeEmail Deprecated and ignored. A value will
-   * always be returned in the email field for the organizer, creator and
-   * attendees, even if no real email address is available (i.e. a generated, non-
-   * working value will be provided).
+   * @opt_param string orderBy The order of the events returned in the result.
+   * Optional. The default is an unspecified, stable order.
+   * @opt_param string pageToken Token specifying which result page to return.
+   * Optional.
+   * @opt_param string privateExtendedProperty Extended properties constraint
+   * specified as propertyName=value. Matches only private properties. This
+   * parameter might be repeated multiple times to return events that match all
+   * given constraints.
+   * @opt_param string q Free text search terms to find events that match these
+   * terms in any field, except for extended properties. Optional.
+   * @opt_param string sharedExtendedProperty Extended properties constraint
+   * specified as propertyName=value. Matches only shared properties. This
+   * parameter might be repeated multiple times to return events that match all
+   * given constraints.
    * @opt_param bool showDeleted Whether to include deleted events (with status
    * equals "cancelled") in the result. Cancelled instances of recurring events
    * (but not the underlying recurring event) will still be included if
    * showDeleted and singleEvents are both False. If showDeleted and singleEvents
    * are both True, only single instances of deleted events (but not the
    * underlying recurring events) are returned. Optional. The default is False.
-   * @opt_param string q Free text search terms to find events that match these
-   * terms in any field, except for extended properties. Optional.
+   * @opt_param bool showHiddenInvitations Whether to include hidden invitations
+   * in the result. Optional. The default is False.
+   * @opt_param bool singleEvents Whether to expand recurring events into
+   * instances and only return single one-off events and instances of recurring
+   * events, but not the underlying recurring events themselves. Optional. The
+   * default is False.
    * @opt_param string syncToken Token obtained from the nextSyncToken field
    * returned on the last page of results from the previous list request. It makes
    * the result of this list request contain only entries that have changed since
@@ -228,34 +240,22 @@ class Google_Service_Calendar_Resource_Events extends Google_Service_Resource
    * should clear its storage and perform a full synchronization without any
    * syncToken. Learn more about incremental synchronization. Optional. The
    * default is to return all entries.
-   * @opt_param string updatedMin Lower bound for an event's last modification
-   * time (as a RFC3339 timestamp) to filter by. When specified, entries deleted
-   * since this time will always be included regardless of showDeleted. Optional.
-   * The default is not to filter by last modification time.
-   * @opt_param string pageToken Token specifying which result page to return.
-   * Optional.
-   * @opt_param string iCalUID Specifies event ID in the iCalendar format to be
-   * included in the response. Optional.
-   * @opt_param int maxAttendees The maximum number of attendees to include in the
-   * response. If there are more than the specified number of attendees, only the
-   * participant is returned. Optional.
-   * @opt_param string orderBy The order of the events returned in the result.
-   * Optional. The default is an unspecified, stable order.
-   * @opt_param string sharedExtendedProperty Extended properties constraint
-   * specified as propertyName=value. Matches only shared properties. This
-   * parameter might be repeated multiple times to return events that match all
-   * given constraints.
-   * @opt_param bool singleEvents Whether to expand recurring events into
-   * instances and only return single one-off events and instances of recurring
-   * events, but not the underlying recurring events themselves. Optional. The
-   * default is False.
-   * @opt_param bool showHiddenInvitations Whether to include hidden invitations
-   * in the result. Optional. The default is False.
    * @opt_param string timeMax Upper bound (exclusive) for an event's start time
    * to filter by. Optional. The default is not to filter by start time. Must be
    * an RFC3339 timestamp with mandatory time zone offset, for example,
    * 2011-06-03T10:00:00-07:00, 2011-06-03T10:00:00Z. Milliseconds may be provided
    * but are ignored. If timeMin is set, timeMax must be greater than timeMin.
+   * @opt_param string timeMin Lower bound (exclusive) for an event's end time to
+   * filter by. Optional. The default is not to filter by end time. Must be an
+   * RFC3339 timestamp with mandatory time zone offset, for example,
+   * 2011-06-03T10:00:00-07:00, 2011-06-03T10:00:00Z. Milliseconds may be provided
+   * but are ignored. If timeMax is set, timeMin must be smaller than timeMax.
+   * @opt_param string timeZone Time zone used in the response. Optional. The
+   * default is the time zone of the calendar.
+   * @opt_param string updatedMin Lower bound for an event's last modification
+   * time (as a RFC3339 timestamp) to filter by. When specified, entries deleted
+   * since this time will always be included regardless of showDeleted. Optional.
+   * The default is not to filter by last modification time.
    * @return Google_Service_Calendar_Events
    */
   public function listEvents($calendarId, $optParams = array())
@@ -300,8 +300,6 @@ class Google_Service_Calendar_Resource_Events extends Google_Service_Resource
    * @param Google_Service_Calendar_Event $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool supportsAttachments Whether API client performing operation
-   * supports event attachments. Optional. The default is False.
    * @opt_param bool alwaysIncludeEmail Deprecated and ignored. A value will
    * always be returned in the email field for the organizer, creator and
    * attendees, even if no real email address is available (i.e. a generated, non-
@@ -311,16 +309,18 @@ class Google_Service_Calendar_Resource_Events extends Google_Service_Resource
    * ignores conference data in the event's body. Version 1 enables support for
    * copying of ConferenceData as well as for creating new conferences using the
    * createRequest field of conferenceData. The default is 0.
+   * @opt_param int maxAttendees The maximum number of attendees to include in the
+   * response. If there are more than the specified number of attendees, only the
+   * participant is returned. Optional.
    * @opt_param bool sendNotifications Deprecated. Please use sendUpdates instead.
    *
    * Whether to send notifications about the event update (for example,
    * description changes, etc.). Note that some emails might still be sent even if
    * you set the value to false. The default is false.
-   * @opt_param int maxAttendees The maximum number of attendees to include in the
-   * response. If there are more than the specified number of attendees, only the
-   * participant is returned. Optional.
    * @opt_param string sendUpdates Guests who should receive notifications about
    * the event update (for example, title changes, etc.).
+   * @opt_param bool supportsAttachments Whether API client performing operation
+   * supports event attachments. Optional. The default is False.
    * @return Google_Service_Calendar_Event
    */
   public function patch($calendarId, $eventId, Google_Service_Calendar_Event $postBody, $optParams = array())
@@ -363,27 +363,27 @@ class Google_Service_Calendar_Resource_Events extends Google_Service_Resource
    * @param Google_Service_Calendar_Event $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string sendUpdates Guests who should receive notifications about
-   * the event update (for example, title changes, etc.).
-   * @opt_param bool supportsAttachments Whether API client performing operation
-   * supports event attachments. Optional. The default is False.
+   * @opt_param bool alwaysIncludeEmail Deprecated and ignored. A value will
+   * always be returned in the email field for the organizer, creator and
+   * attendees, even if no real email address is available (i.e. a generated, non-
+   * working value will be provided).
    * @opt_param int conferenceDataVersion Version number of conference data
    * supported by the API client. Version 0 assumes no conference data support and
    * ignores conference data in the event's body. Version 1 enables support for
    * copying of ConferenceData as well as for creating new conferences using the
    * createRequest field of conferenceData. The default is 0.
-   * @opt_param bool alwaysIncludeEmail Deprecated and ignored. A value will
-   * always be returned in the email field for the organizer, creator and
-   * attendees, even if no real email address is available (i.e. a generated, non-
-   * working value will be provided).
+   * @opt_param int maxAttendees The maximum number of attendees to include in the
+   * response. If there are more than the specified number of attendees, only the
+   * participant is returned. Optional.
    * @opt_param bool sendNotifications Deprecated. Please use sendUpdates instead.
    *
    * Whether to send notifications about the event update (for example,
    * description changes, etc.). Note that some emails might still be sent even if
    * you set the value to false. The default is false.
-   * @opt_param int maxAttendees The maximum number of attendees to include in the
-   * response. If there are more than the specified number of attendees, only the
-   * participant is returned. Optional.
+   * @opt_param string sendUpdates Guests who should receive notifications about
+   * the event update (for example, title changes, etc.).
+   * @opt_param bool supportsAttachments Whether API client performing operation
+   * supports event attachments. Optional. The default is False.
    * @return Google_Service_Calendar_Event
    */
   public function update($calendarId, $eventId, Google_Service_Calendar_Event $postBody, $optParams = array())
@@ -401,33 +401,47 @@ class Google_Service_Calendar_Resource_Events extends Google_Service_Resource
    * @param Google_Service_Calendar_Channel $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Token specifying which result page to return.
-   * Optional.
-   * @opt_param string sharedExtendedProperty Extended properties constraint
-   * specified as propertyName=value. Matches only shared properties. This
-   * parameter might be repeated multiple times to return events that match all
-   * given constraints.
-   * @opt_param string timeZone Time zone used in the response. Optional. The
-   * default is the time zone of the calendar.
+   * @opt_param bool alwaysIncludeEmail Deprecated and ignored. A value will
+   * always be returned in the email field for the organizer, creator and
+   * attendees, even if no real email address is available (i.e. a generated, non-
+   * working value will be provided).
+   * @opt_param string iCalUID Specifies event ID in the iCalendar format to be
+   * included in the response. Optional.
+   * @opt_param int maxAttendees The maximum number of attendees to include in the
+   * response. If there are more than the specified number of attendees, only the
+   * participant is returned. Optional.
    * @opt_param int maxResults Maximum number of events returned on one result
    * page. The number of events in the resulting page may be less than this value,
    * or none at all, even if there are more events matching the query. Incomplete
    * pages can be detected by a non-empty nextPageToken field in the response. By
    * default the value is 250 events. The page size can never be larger than 2500
    * events. Optional.
-   * @opt_param int maxAttendees The maximum number of attendees to include in the
-   * response. If there are more than the specified number of attendees, only the
-   * participant is returned. Optional.
    * @opt_param string orderBy The order of the events returned in the result.
    * Optional. The default is an unspecified, stable order.
-   * @opt_param string iCalUID Specifies event ID in the iCalendar format to be
-   * included in the response. Optional.
-   * @opt_param string updatedMin Lower bound for an event's last modification
-   * time (as a RFC3339 timestamp) to filter by. When specified, entries deleted
-   * since this time will always be included regardless of showDeleted. Optional.
-   * The default is not to filter by last modification time.
+   * @opt_param string pageToken Token specifying which result page to return.
+   * Optional.
+   * @opt_param string privateExtendedProperty Extended properties constraint
+   * specified as propertyName=value. Matches only private properties. This
+   * parameter might be repeated multiple times to return events that match all
+   * given constraints.
    * @opt_param string q Free text search terms to find events that match these
    * terms in any field, except for extended properties. Optional.
+   * @opt_param string sharedExtendedProperty Extended properties constraint
+   * specified as propertyName=value. Matches only shared properties. This
+   * parameter might be repeated multiple times to return events that match all
+   * given constraints.
+   * @opt_param bool showDeleted Whether to include deleted events (with status
+   * equals "cancelled") in the result. Cancelled instances of recurring events
+   * (but not the underlying recurring event) will still be included if
+   * showDeleted and singleEvents are both False. If showDeleted and singleEvents
+   * are both True, only single instances of deleted events (but not the
+   * underlying recurring events) are returned. Optional. The default is False.
+   * @opt_param bool showHiddenInvitations Whether to include hidden invitations
+   * in the result. Optional. The default is False.
+   * @opt_param bool singleEvents Whether to expand recurring events into
+   * instances and only return single one-off events and instances of recurring
+   * events, but not the underlying recurring events themselves. Optional. The
+   * default is False.
    * @opt_param string syncToken Token obtained from the nextSyncToken field
    * returned on the last page of results from the previous list request. It makes
    * the result of this list request contain only entries that have changed since
@@ -442,36 +456,22 @@ class Google_Service_Calendar_Resource_Events extends Google_Service_Resource
    * should clear its storage and perform a full synchronization without any
    * syncToken. Learn more about incremental synchronization. Optional. The
    * default is to return all entries.
-   * @opt_param bool alwaysIncludeEmail Deprecated and ignored. A value will
-   * always be returned in the email field for the organizer, creator and
-   * attendees, even if no real email address is available (i.e. a generated, non-
-   * working value will be provided).
-   * @opt_param bool singleEvents Whether to expand recurring events into
-   * instances and only return single one-off events and instances of recurring
-   * events, but not the underlying recurring events themselves. Optional. The
-   * default is False.
-   * @opt_param string privateExtendedProperty Extended properties constraint
-   * specified as propertyName=value. Matches only private properties. This
-   * parameter might be repeated multiple times to return events that match all
-   * given constraints.
-   * @opt_param string timeMin Lower bound (exclusive) for an event's end time to
-   * filter by. Optional. The default is not to filter by end time. Must be an
-   * RFC3339 timestamp with mandatory time zone offset, for example,
-   * 2011-06-03T10:00:00-07:00, 2011-06-03T10:00:00Z. Milliseconds may be provided
-   * but are ignored. If timeMax is set, timeMin must be smaller than timeMax.
    * @opt_param string timeMax Upper bound (exclusive) for an event's start time
    * to filter by. Optional. The default is not to filter by start time. Must be
    * an RFC3339 timestamp with mandatory time zone offset, for example,
    * 2011-06-03T10:00:00-07:00, 2011-06-03T10:00:00Z. Milliseconds may be provided
    * but are ignored. If timeMin is set, timeMax must be greater than timeMin.
-   * @opt_param bool showDeleted Whether to include deleted events (with status
-   * equals "cancelled") in the result. Cancelled instances of recurring events
-   * (but not the underlying recurring event) will still be included if
-   * showDeleted and singleEvents are both False. If showDeleted and singleEvents
-   * are both True, only single instances of deleted events (but not the
-   * underlying recurring events) are returned. Optional. The default is False.
-   * @opt_param bool showHiddenInvitations Whether to include hidden invitations
-   * in the result. Optional. The default is False.
+   * @opt_param string timeMin Lower bound (exclusive) for an event's end time to
+   * filter by. Optional. The default is not to filter by end time. Must be an
+   * RFC3339 timestamp with mandatory time zone offset, for example,
+   * 2011-06-03T10:00:00-07:00, 2011-06-03T10:00:00Z. Milliseconds may be provided
+   * but are ignored. If timeMax is set, timeMin must be smaller than timeMax.
+   * @opt_param string timeZone Time zone used in the response. Optional. The
+   * default is the time zone of the calendar.
+   * @opt_param string updatedMin Lower bound for an event's last modification
+   * time (as a RFC3339 timestamp) to filter by. When specified, entries deleted
+   * since this time will always be included regardless of showDeleted. Optional.
+   * The default is not to filter by last modification time.
    * @return Google_Service_Calendar_Channel
    */
   public function watch($calendarId, Google_Service_Calendar_Channel $postBody, $optParams = array())

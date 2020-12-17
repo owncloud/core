@@ -40,14 +40,14 @@ class Google_Service_Dfareporting_ProjectsListResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Dfareporting_Project
+   * @param Google_Service_Dfareporting_Project[]
    */
   public function setProjects($projects)
   {
     $this->projects = $projects;
   }
   /**
-   * @return Google_Service_Dfareporting_Project
+   * @return Google_Service_Dfareporting_Project[]
    */
   public function getProjects()
   {

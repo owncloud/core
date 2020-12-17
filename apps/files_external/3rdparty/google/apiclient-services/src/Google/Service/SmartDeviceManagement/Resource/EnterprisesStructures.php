@@ -48,10 +48,10 @@ class Google_Service_SmartDeviceManagement_Resource_EnterprisesStructures extend
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Optional filter to list structures.
-   * @opt_param string pageToken The token of the page to retrieve.
    * @opt_param int pageSize Requested page size. Server may return fewer
    * structures than requested. If unspecified, server will pick an appropriate
    * default.
+   * @opt_param string pageToken The token of the page to retrieve.
    * @return Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1ListStructuresResponse
    */
   public function listEnterprisesStructures($parent, $optParams = array())

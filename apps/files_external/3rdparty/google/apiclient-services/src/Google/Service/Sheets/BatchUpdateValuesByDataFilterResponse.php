@@ -27,14 +27,14 @@ class Google_Service_Sheets_BatchUpdateValuesByDataFilterResponse extends Google
   public $totalUpdatedSheets;
 
   /**
-   * @param Google_Service_Sheets_UpdateValuesByDataFilterResponse
+   * @param Google_Service_Sheets_UpdateValuesByDataFilterResponse[]
    */
   public function setResponses($responses)
   {
     $this->responses = $responses;
   }
   /**
-   * @return Google_Service_Sheets_UpdateValuesByDataFilterResponse
+   * @return Google_Service_Sheets_UpdateValuesByDataFilterResponse[]
    */
   public function getResponses()
   {

@@ -31,14 +31,14 @@ class Google_Service_Monitoring_ListUptimeCheckIpsResponse extends Google_Collec
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Monitoring_UptimeCheckIp
+   * @param Google_Service_Monitoring_UptimeCheckIp[]
    */
   public function setUptimeCheckIps($uptimeCheckIps)
   {
     $this->uptimeCheckIps = $uptimeCheckIps;
   }
   /**
-   * @return Google_Service_Monitoring_UptimeCheckIp
+   * @return Google_Service_Monitoring_UptimeCheckIp[]
    */
   public function getUptimeCheckIps()
   {

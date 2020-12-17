@@ -28,14 +28,14 @@ class Google_Service_ShoppingContent_Headers extends Google_Collection
   protected $weightsDataType = 'array';
 
   /**
-   * @param Google_Service_ShoppingContent_LocationIdSet
+   * @param Google_Service_ShoppingContent_LocationIdSet[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_ShoppingContent_LocationIdSet
+   * @return Google_Service_ShoppingContent_LocationIdSet[]
    */
   public function getLocations()
   {
@@ -58,28 +58,28 @@ class Google_Service_ShoppingContent_Headers extends Google_Collection
     return $this->postalCodeGroupNames;
   }
   /**
-   * @param Google_Service_ShoppingContent_Price
+   * @param Google_Service_ShoppingContent_Price[]
    */
   public function setPrices($prices)
   {
     $this->prices = $prices;
   }
   /**
-   * @return Google_Service_ShoppingContent_Price
+   * @return Google_Service_ShoppingContent_Price[]
    */
   public function getPrices()
   {
     return $this->prices;
   }
   /**
-   * @param Google_Service_ShoppingContent_Weight
+   * @param Google_Service_ShoppingContent_Weight[]
    */
   public function setWeights($weights)
   {
     $this->weights = $weights;
   }
   /**
-   * @return Google_Service_ShoppingContent_Weight
+   * @return Google_Service_ShoppingContent_Weight[]
    */
   public function getWeights()
   {

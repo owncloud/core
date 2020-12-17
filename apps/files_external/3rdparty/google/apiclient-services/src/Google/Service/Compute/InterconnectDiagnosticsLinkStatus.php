@@ -30,14 +30,14 @@ class Google_Service_Compute_InterconnectDiagnosticsLinkStatus extends Google_Co
   protected $transmittingOpticalPowerDataType = '';
 
   /**
-   * @param Google_Service_Compute_InterconnectDiagnosticsARPEntry
+   * @param Google_Service_Compute_InterconnectDiagnosticsARPEntry[]
    */
   public function setArpCaches($arpCaches)
   {
     $this->arpCaches = $arpCaches;
   }
   /**
-   * @return Google_Service_Compute_InterconnectDiagnosticsARPEntry
+   * @return Google_Service_Compute_InterconnectDiagnosticsARPEntry[]
    */
   public function getArpCaches()
   {

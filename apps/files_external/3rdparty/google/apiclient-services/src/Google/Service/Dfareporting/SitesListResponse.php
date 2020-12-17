@@ -40,14 +40,14 @@ class Google_Service_Dfareporting_SitesListResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Dfareporting_Site
+   * @param Google_Service_Dfareporting_Site[]
    */
   public function setSites($sites)
   {
     $this->sites = $sites;
   }
   /**
-   * @return Google_Service_Dfareporting_Site
+   * @return Google_Service_Dfareporting_Site[]
    */
   public function getSites()
   {

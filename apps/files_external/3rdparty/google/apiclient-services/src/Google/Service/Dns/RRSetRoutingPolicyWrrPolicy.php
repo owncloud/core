@@ -23,14 +23,14 @@ class Google_Service_Dns_RRSetRoutingPolicyWrrPolicy extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_Dns_RRSetRoutingPolicyWrrPolicyWrrPolicyItem
+   * @param Google_Service_Dns_RRSetRoutingPolicyWrrPolicyWrrPolicyItem[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Dns_RRSetRoutingPolicyWrrPolicyWrrPolicyItem
+   * @return Google_Service_Dns_RRSetRoutingPolicyWrrPolicyWrrPolicyItem[]
    */
   public function getItems()
   {

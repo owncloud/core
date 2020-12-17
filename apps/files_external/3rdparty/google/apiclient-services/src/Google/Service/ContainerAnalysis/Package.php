@@ -23,14 +23,14 @@ class Google_Service_ContainerAnalysis_Package extends Google_Collection
   public $name;
 
   /**
-   * @param Google_Service_ContainerAnalysis_Distribution
+   * @param Google_Service_ContainerAnalysis_Distribution[]
    */
   public function setDistribution($distribution)
   {
     $this->distribution = $distribution;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_Distribution
+   * @return Google_Service_ContainerAnalysis_Distribution[]
    */
   public function getDistribution()
   {

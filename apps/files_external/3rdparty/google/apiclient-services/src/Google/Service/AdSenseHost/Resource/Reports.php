@@ -36,16 +36,16 @@ class Google_Service_AdSenseHost_Resource_Reports extends Google_Service_Resourc
    * format, inclusive.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string dimension Dimensions to base the report on.
+   * @opt_param string filter Filters to be run on the report.
    * @opt_param string locale Optional locale to use for translating report output
    * to a local language. Defaults to "en_US" if not specified.
-   * @opt_param string metric Numeric columns to include in the report.
    * @opt_param string maxResults The maximum number of rows of report data to
    * return.
+   * @opt_param string metric Numeric columns to include in the report.
    * @opt_param string sort The name of a dimension or metric to sort the
    * resulting report on, optionally prefixed with "+" to sort ascending or "-" to
    * sort descending. If no prefix is specified, the column is sorted ascending.
-   * @opt_param string dimension Dimensions to base the report on.
-   * @opt_param string filter Filters to be run on the report.
    * @opt_param string startIndex Index of the first row of report data to return.
    * @return Google_Service_AdSenseHost_Report
    */

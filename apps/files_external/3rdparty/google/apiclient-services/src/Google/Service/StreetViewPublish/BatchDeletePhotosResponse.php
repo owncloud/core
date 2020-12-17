@@ -22,14 +22,14 @@ class Google_Service_StreetViewPublish_BatchDeletePhotosResponse extends Google_
   protected $statusDataType = 'array';
 
   /**
-   * @param Google_Service_StreetViewPublish_Status
+   * @param Google_Service_StreetViewPublish_Status[]
    */
   public function setStatus($status)
   {
     $this->status = $status;
   }
   /**
-   * @return Google_Service_StreetViewPublish_Status
+   * @return Google_Service_StreetViewPublish_Status[]
    */
   public function getStatus()
   {

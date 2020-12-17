@@ -23,14 +23,14 @@ class Google_Service_Logging_ListExclusionsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Logging_LogExclusion
+   * @param Google_Service_Logging_LogExclusion[]
    */
   public function setExclusions($exclusions)
   {
     $this->exclusions = $exclusions;
   }
   /**
-   * @return Google_Service_Logging_LogExclusion
+   * @return Google_Service_Logging_LogExclusion[]
    */
   public function getExclusions()
   {

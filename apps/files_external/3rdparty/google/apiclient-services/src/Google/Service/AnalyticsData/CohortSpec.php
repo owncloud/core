@@ -40,14 +40,14 @@ class Google_Service_AnalyticsData_CohortSpec extends Google_Collection
     return $this->cohortReportSettings;
   }
   /**
-   * @param Google_Service_AnalyticsData_Cohort
+   * @param Google_Service_AnalyticsData_Cohort[]
    */
   public function setCohorts($cohorts)
   {
     $this->cohorts = $cohorts;
   }
   /**
-   * @return Google_Service_AnalyticsData_Cohort
+   * @return Google_Service_AnalyticsData_Cohort[]
    */
   public function getCohorts()
   {

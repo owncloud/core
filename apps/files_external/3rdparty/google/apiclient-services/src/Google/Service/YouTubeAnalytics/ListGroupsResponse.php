@@ -49,14 +49,14 @@ class Google_Service_YouTubeAnalytics_ListGroupsResponse extends Google_Collecti
     return $this->etag;
   }
   /**
-   * @param Google_Service_YouTubeAnalytics_Group
+   * @param Google_Service_YouTubeAnalytics_Group[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_YouTubeAnalytics_Group
+   * @return Google_Service_YouTubeAnalytics_Group[]
    */
   public function getItems()
   {

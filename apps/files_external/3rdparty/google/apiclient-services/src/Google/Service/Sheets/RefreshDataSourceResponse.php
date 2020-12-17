@@ -22,14 +22,14 @@ class Google_Service_Sheets_RefreshDataSourceResponse extends Google_Collection
   protected $statusesDataType = 'array';
 
   /**
-   * @param Google_Service_Sheets_RefreshDataSourceObjectExecutionStatus
+   * @param Google_Service_Sheets_RefreshDataSourceObjectExecutionStatus[]
    */
   public function setStatuses($statuses)
   {
     $this->statuses = $statuses;
   }
   /**
-   * @return Google_Service_Sheets_RefreshDataSourceObjectExecutionStatus
+   * @return Google_Service_Sheets_RefreshDataSourceObjectExecutionStatus[]
    */
   public function getStatuses()
   {

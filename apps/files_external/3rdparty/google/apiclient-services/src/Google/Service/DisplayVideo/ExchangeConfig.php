@@ -22,14 +22,14 @@ class Google_Service_DisplayVideo_ExchangeConfig extends Google_Collection
   protected $enabledExchangesDataType = 'array';
 
   /**
-   * @param Google_Service_DisplayVideo_ExchangeConfigEnabledExchange
+   * @param Google_Service_DisplayVideo_ExchangeConfigEnabledExchange[]
    */
   public function setEnabledExchanges($enabledExchanges)
   {
     $this->enabledExchanges = $enabledExchanges;
   }
   /**
-   * @return Google_Service_DisplayVideo_ExchangeConfigEnabledExchange
+   * @return Google_Service_DisplayVideo_ExchangeConfigEnabledExchange[]
    */
   public function getEnabledExchanges()
   {

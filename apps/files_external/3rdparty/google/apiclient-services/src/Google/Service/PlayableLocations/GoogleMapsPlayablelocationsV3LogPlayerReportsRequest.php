@@ -39,14 +39,14 @@ class Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3LogPlayerRep
     return $this->clientInfo;
   }
   /**
-   * @param Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3PlayerReport
+   * @param Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3PlayerReport[]
    */
   public function setPlayerReports($playerReports)
   {
     $this->playerReports = $playerReports;
   }
   /**
-   * @return Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3PlayerReport
+   * @return Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3PlayerReport[]
    */
   public function getPlayerReports()
   {

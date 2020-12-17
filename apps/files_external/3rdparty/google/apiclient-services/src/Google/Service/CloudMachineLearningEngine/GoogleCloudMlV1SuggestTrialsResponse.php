@@ -49,14 +49,14 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1SuggestTrialsResp
     return $this->studyState;
   }
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Trial
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Trial[]
    */
   public function setTrials($trials)
   {
     $this->trials = $trials;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Trial
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Trial[]
    */
   public function getTrials()
   {

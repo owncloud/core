@@ -31,14 +31,14 @@ class Google_Service_ToolResults_ListPerfSamplesResponse extends Google_Collecti
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ToolResults_PerfSample
+   * @param Google_Service_ToolResults_PerfSample[]
    */
   public function setPerfSamples($perfSamples)
   {
     $this->perfSamples = $perfSamples;
   }
   /**
-   * @return Google_Service_ToolResults_PerfSample
+   * @return Google_Service_ToolResults_PerfSample[]
    */
   public function getPerfSamples()
   {

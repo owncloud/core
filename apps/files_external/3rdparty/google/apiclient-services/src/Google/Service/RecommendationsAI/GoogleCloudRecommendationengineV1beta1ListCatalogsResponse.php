@@ -23,14 +23,14 @@ class Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1Lis
   public $nextPageToken;
 
   /**
-   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1Catalog
+   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1Catalog[]
    */
   public function setCatalogs($catalogs)
   {
     $this->catalogs = $catalogs;
   }
   /**
-   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1Catalog
+   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1Catalog[]
    */
   public function getCatalogs()
   {

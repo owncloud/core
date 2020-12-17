@@ -26,14 +26,14 @@ class Google_Service_Games_SnapshotExtended extends Google_Collection
   public $name;
 
   /**
-   * @param Google_Service_Games_SnapshotRevision
+   * @param Google_Service_Games_SnapshotRevision[]
    */
   public function setConflictingRevisions($conflictingRevisions)
   {
     $this->conflictingRevisions = $conflictingRevisions;
   }
   /**
-   * @return Google_Service_Games_SnapshotRevision
+   * @return Google_Service_Games_SnapshotRevision[]
    */
   public function getConflictingRevisions()
   {

@@ -23,14 +23,14 @@ class Google_Service_CloudIAP_ListIdentityAwareProxyClientsResponse extends Goog
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudIAP_IdentityAwareProxyClient
+   * @param Google_Service_CloudIAP_IdentityAwareProxyClient[]
    */
   public function setIdentityAwareProxyClients($identityAwareProxyClients)
   {
     $this->identityAwareProxyClients = $identityAwareProxyClients;
   }
   /**
-   * @return Google_Service_CloudIAP_IdentityAwareProxyClient
+   * @return Google_Service_CloudIAP_IdentityAwareProxyClient[]
    */
   public function getIdentityAwareProxyClients()
   {

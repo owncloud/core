@@ -32,14 +32,14 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1HyperparameterOut
   public $trialId;
 
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1HyperparameterOutputHyperparameterMetric
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1HyperparameterOutputHyperparameterMetric[]
    */
   public function setAllMetrics($allMetrics)
   {
     $this->allMetrics = $allMetrics;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1HyperparameterOutputHyperparameterMetric
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1HyperparameterOutputHyperparameterMetric[]
    */
   public function getAllMetrics()
   {

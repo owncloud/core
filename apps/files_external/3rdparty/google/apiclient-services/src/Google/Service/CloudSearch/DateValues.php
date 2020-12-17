@@ -22,14 +22,14 @@ class Google_Service_CloudSearch_DateValues extends Google_Collection
   protected $valuesDataType = 'array';
 
   /**
-   * @param Google_Service_CloudSearch_Date
+   * @param Google_Service_CloudSearch_Date[]
    */
   public function setValues($values)
   {
     $this->values = $values;
   }
   /**
-   * @return Google_Service_CloudSearch_Date
+   * @return Google_Service_CloudSearch_Date[]
    */
   public function getValues()
   {

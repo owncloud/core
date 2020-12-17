@@ -89,10 +89,10 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsApisRevisionsDebug
    * zation}/environments/{environment}/apis/{api}/revisions/{revision}`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Page token, returned from a previous
-   * ListDebugSessions call, that you can use to retrieve the next page.
    * @opt_param int pageSize Maximum number of debug sessions to return. The page
    * size defaults to 25.
+   * @opt_param string pageToken Page token, returned from a previous
+   * ListDebugSessions call, that you can use to retrieve the next page.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ListDebugSessionsResponse
    */
   public function listOrganizationsEnvironmentsApisRevisionsDebugsessions($parent, $optParams = array())

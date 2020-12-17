@@ -54,14 +54,14 @@ class Google_Service_CloudTalentSolution_CompensationInfo extends Google_Collect
     return $this->annualizedTotalCompensationRange;
   }
   /**
-   * @param Google_Service_CloudTalentSolution_CompensationEntry
+   * @param Google_Service_CloudTalentSolution_CompensationEntry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_CompensationEntry
+   * @return Google_Service_CloudTalentSolution_CompensationEntry[]
    */
   public function getEntries()
   {

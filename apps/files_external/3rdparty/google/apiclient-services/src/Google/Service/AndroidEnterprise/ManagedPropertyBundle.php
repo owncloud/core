@@ -22,14 +22,14 @@ class Google_Service_AndroidEnterprise_ManagedPropertyBundle extends Google_Coll
   protected $managedPropertyDataType = 'array';
 
   /**
-   * @param Google_Service_AndroidEnterprise_ManagedProperty
+   * @param Google_Service_AndroidEnterprise_ManagedProperty[]
    */
   public function setManagedProperty($managedProperty)
   {
     $this->managedProperty = $managedProperty;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_ManagedProperty
+   * @return Google_Service_AndroidEnterprise_ManagedProperty[]
    */
   public function getManagedProperty()
   {

@@ -24,14 +24,14 @@ class Google_Service_Compute_VpnTunnelsScopedList extends Google_Collection
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_VpnTunnel
+   * @param Google_Service_Compute_VpnTunnel[]
    */
   public function setVpnTunnels($vpnTunnels)
   {
     $this->vpnTunnels = $vpnTunnels;
   }
   /**
-   * @return Google_Service_Compute_VpnTunnel
+   * @return Google_Service_Compute_VpnTunnel[]
    */
   public function getVpnTunnels()
   {

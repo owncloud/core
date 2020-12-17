@@ -47,14 +47,14 @@ class Google_Service_CloudAsset_AnalyzeIamPolicyResponse extends Google_Collecti
     return $this->mainAnalysis;
   }
   /**
-   * @param Google_Service_CloudAsset_IamPolicyAnalysis
+   * @param Google_Service_CloudAsset_IamPolicyAnalysis[]
    */
   public function setServiceAccountImpersonationAnalysis($serviceAccountImpersonationAnalysis)
   {
     $this->serviceAccountImpersonationAnalysis = $serviceAccountImpersonationAnalysis;
   }
   /**
-   * @return Google_Service_CloudAsset_IamPolicyAnalysis
+   * @return Google_Service_CloudAsset_IamPolicyAnalysis[]
    */
   public function getServiceAccountImpersonationAnalysis()
   {

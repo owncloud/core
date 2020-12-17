@@ -23,14 +23,14 @@ class Google_Service_Apigateway_ApigatewayListLocationsResponse extends Google_C
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Apigateway_ApigatewayLocation
+   * @param Google_Service_Apigateway_ApigatewayLocation[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_Apigateway_ApigatewayLocation
+   * @return Google_Service_Apigateway_ApigatewayLocation[]
    */
   public function getLocations()
   {

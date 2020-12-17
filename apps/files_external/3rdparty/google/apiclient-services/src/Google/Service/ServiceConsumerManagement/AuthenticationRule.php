@@ -48,14 +48,14 @@ class Google_Service_ServiceConsumerManagement_AuthenticationRule extends Google
     return $this->oauth;
   }
   /**
-   * @param Google_Service_ServiceConsumerManagement_AuthRequirement
+   * @param Google_Service_ServiceConsumerManagement_AuthRequirement[]
    */
   public function setRequirements($requirements)
   {
     $this->requirements = $requirements;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_AuthRequirement
+   * @return Google_Service_ServiceConsumerManagement_AuthRequirement[]
    */
   public function getRequirements()
   {

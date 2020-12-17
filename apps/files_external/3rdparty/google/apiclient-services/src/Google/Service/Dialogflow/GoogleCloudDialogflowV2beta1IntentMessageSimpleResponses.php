@@ -22,14 +22,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageSimpleR
   protected $simpleResponsesDataType = 'array';
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageSimpleResponse
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageSimpleResponse[]
    */
   public function setSimpleResponses($simpleResponses)
   {
     $this->simpleResponses = $simpleResponses;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageSimpleResponse
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageSimpleResponse[]
    */
   public function getSimpleResponses()
   {

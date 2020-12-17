@@ -31,14 +31,14 @@ class Google_Service_CloudTalentSolution_GoogleCloudTalentV4JobDerivedInfo exten
     return $this->jobCategories;
   }
   /**
-   * @param Google_Service_CloudTalentSolution_GoogleCloudTalentV4Location
+   * @param Google_Service_CloudTalentSolution_GoogleCloudTalentV4Location[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_GoogleCloudTalentV4Location
+   * @return Google_Service_CloudTalentSolution_GoogleCloudTalentV4Location[]
    */
   public function getLocations()
   {

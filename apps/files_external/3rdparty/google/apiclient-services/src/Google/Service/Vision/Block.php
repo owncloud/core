@@ -58,14 +58,14 @@ class Google_Service_Vision_Block extends Google_Collection
     return $this->confidence;
   }
   /**
-   * @param Google_Service_Vision_Paragraph
+   * @param Google_Service_Vision_Paragraph[]
    */
   public function setParagraphs($paragraphs)
   {
     $this->paragraphs = $paragraphs;
   }
   /**
-   * @return Google_Service_Vision_Paragraph
+   * @return Google_Service_Vision_Paragraph[]
    */
   public function getParagraphs()
   {

@@ -24,14 +24,14 @@ class Google_Service_Games_PlayerListResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Games_Player
+   * @param Google_Service_Games_Player[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Games_Player
+   * @return Google_Service_Games_Player[]
    */
   public function getItems()
   {

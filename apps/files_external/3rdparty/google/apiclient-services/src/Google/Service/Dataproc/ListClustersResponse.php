@@ -23,14 +23,14 @@ class Google_Service_Dataproc_ListClustersResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Dataproc_Cluster
+   * @param Google_Service_Dataproc_Cluster[]
    */
   public function setClusters($clusters)
   {
     $this->clusters = $clusters;
   }
   /**
-   * @return Google_Service_Dataproc_Cluster
+   * @return Google_Service_Dataproc_Cluster[]
    */
   public function getClusters()
   {

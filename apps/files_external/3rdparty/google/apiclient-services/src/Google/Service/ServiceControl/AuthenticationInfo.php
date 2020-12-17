@@ -51,14 +51,14 @@ class Google_Service_ServiceControl_AuthenticationInfo extends Google_Collection
     return $this->principalSubject;
   }
   /**
-   * @param Google_Service_ServiceControl_ServiceAccountDelegationInfo
+   * @param Google_Service_ServiceControl_ServiceAccountDelegationInfo[]
    */
   public function setServiceAccountDelegationInfo($serviceAccountDelegationInfo)
   {
     $this->serviceAccountDelegationInfo = $serviceAccountDelegationInfo;
   }
   /**
-   * @return Google_Service_ServiceControl_ServiceAccountDelegationInfo
+   * @return Google_Service_ServiceControl_ServiceAccountDelegationInfo[]
    */
   public function getServiceAccountDelegationInfo()
   {

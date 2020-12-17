@@ -40,14 +40,14 @@ class Google_Service_ShoppingContent_DatafeedstatusesListResponse extends Google
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ShoppingContent_DatafeedStatus
+   * @param Google_Service_ShoppingContent_DatafeedStatus[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_ShoppingContent_DatafeedStatus
+   * @return Google_Service_ShoppingContent_DatafeedStatus[]
    */
   public function getResources()
   {

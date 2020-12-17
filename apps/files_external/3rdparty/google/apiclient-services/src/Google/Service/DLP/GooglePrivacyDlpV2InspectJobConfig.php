@@ -27,14 +27,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2InspectJobConfig extends Google_Colle
   protected $storageConfigDataType = '';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2Action
+   * @param Google_Service_DLP_GooglePrivacyDlpV2Action[]
    */
   public function setActions($actions)
   {
     $this->actions = $actions;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2Action
+   * @return Google_Service_DLP_GooglePrivacyDlpV2Action[]
    */
   public function getActions()
   {

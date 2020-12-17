@@ -68,14 +68,14 @@ class Google_Service_ShoppingContent_TestOrder extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_ShoppingContent_TestOrderLineItem
+   * @param Google_Service_ShoppingContent_TestOrderLineItem[]
    */
   public function setLineItems($lineItems)
   {
     $this->lineItems = $lineItems;
   }
   /**
-   * @return Google_Service_ShoppingContent_TestOrderLineItem
+   * @return Google_Service_ShoppingContent_TestOrderLineItem[]
    */
   public function getLineItems()
   {
@@ -136,14 +136,14 @@ class Google_Service_ShoppingContent_TestOrder extends Google_Collection
     return $this->predefinedPickupDetails;
   }
   /**
-   * @param Google_Service_ShoppingContent_OrderPromotion
+   * @param Google_Service_ShoppingContent_OrderPromotion[]
    */
   public function setPromotions($promotions)
   {
     $this->promotions = $promotions;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderPromotion
+   * @return Google_Service_ShoppingContent_OrderPromotion[]
    */
   public function getPromotions()
   {

@@ -25,14 +25,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1Schema extends Google_Collection
   protected $metricsDataType = 'array';
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1SchemaSchemaElement
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1SchemaSchemaElement[]
    */
   public function setDimensions($dimensions)
   {
     $this->dimensions = $dimensions;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1SchemaSchemaElement
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1SchemaSchemaElement[]
    */
   public function getDimensions()
   {
@@ -47,14 +47,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1Schema extends Google_Collection
     return $this->meta;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1SchemaSchemaElement
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1SchemaSchemaElement[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1SchemaSchemaElement
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1SchemaSchemaElement[]
    */
   public function getMetrics()
   {

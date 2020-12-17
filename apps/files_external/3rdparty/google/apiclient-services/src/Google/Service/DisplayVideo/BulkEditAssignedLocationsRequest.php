@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_BulkEditAssignedLocationsRequest extends Googl
   public $deletedAssignedLocations;
 
   /**
-   * @param Google_Service_DisplayVideo_AssignedLocation
+   * @param Google_Service_DisplayVideo_AssignedLocation[]
    */
   public function setCreatedAssignedLocations($createdAssignedLocations)
   {
     $this->createdAssignedLocations = $createdAssignedLocations;
   }
   /**
-   * @return Google_Service_DisplayVideo_AssignedLocation
+   * @return Google_Service_DisplayVideo_AssignedLocation[]
    */
   public function getCreatedAssignedLocations()
   {

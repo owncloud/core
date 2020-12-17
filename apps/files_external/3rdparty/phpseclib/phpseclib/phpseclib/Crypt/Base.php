@@ -2627,7 +2627,7 @@ abstract class Base
      *
      * @see self::_setupInlineCrypt()
      * @access private
-     * @param $bytes
+     * @param string $bytes
      * @return string
      */
     function _hashInlineCryptFunction($bytes)

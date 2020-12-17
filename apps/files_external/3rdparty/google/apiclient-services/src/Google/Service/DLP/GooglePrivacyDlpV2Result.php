@@ -40,14 +40,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2Result extends Google_Collection
     return $this->hybridStats;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2InfoTypeStats
+   * @param Google_Service_DLP_GooglePrivacyDlpV2InfoTypeStats[]
    */
   public function setInfoTypeStats($infoTypeStats)
   {
     $this->infoTypeStats = $infoTypeStats;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2InfoTypeStats
+   * @return Google_Service_DLP_GooglePrivacyDlpV2InfoTypeStats[]
    */
   public function getInfoTypeStats()
   {

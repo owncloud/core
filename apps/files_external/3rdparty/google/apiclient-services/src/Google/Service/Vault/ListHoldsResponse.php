@@ -23,14 +23,14 @@ class Google_Service_Vault_ListHoldsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Vault_Hold
+   * @param Google_Service_Vault_Hold[]
    */
   public function setHolds($holds)
   {
     $this->holds = $holds;
   }
   /**
-   * @return Google_Service_Vault_Hold
+   * @return Google_Service_Vault_Hold[]
    */
   public function getHolds()
   {

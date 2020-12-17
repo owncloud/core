@@ -40,14 +40,14 @@ class Google_Service_ServiceConsumerManagement_EnumValue extends Google_Collecti
     return $this->number;
   }
   /**
-   * @param Google_Service_ServiceConsumerManagement_Option
+   * @param Google_Service_ServiceConsumerManagement_Option[]
    */
   public function setOptions($options)
   {
     $this->options = $options;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_Option
+   * @return Google_Service_ServiceConsumerManagement_Option[]
    */
   public function getOptions()
   {

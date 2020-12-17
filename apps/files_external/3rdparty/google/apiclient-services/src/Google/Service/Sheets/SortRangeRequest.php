@@ -38,14 +38,14 @@ class Google_Service_Sheets_SortRangeRequest extends Google_Collection
     return $this->range;
   }
   /**
-   * @param Google_Service_Sheets_SortSpec
+   * @param Google_Service_Sheets_SortSpec[]
    */
   public function setSortSpecs($sortSpecs)
   {
     $this->sortSpecs = $sortSpecs;
   }
   /**
-   * @return Google_Service_Sheets_SortSpec
+   * @return Google_Service_Sheets_SortSpec[]
    */
   public function getSortSpecs()
   {

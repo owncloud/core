@@ -23,14 +23,14 @@ class Google_Service_ToolResults_ListHistoriesResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_ToolResults_History
+   * @param Google_Service_ToolResults_History[]
    */
   public function setHistories($histories)
   {
     $this->histories = $histories;
   }
   /**
-   * @return Google_Service_ToolResults_History
+   * @return Google_Service_ToolResults_History[]
    */
   public function getHistories()
   {

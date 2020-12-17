@@ -102,7 +102,7 @@ class Google_Service_Fitness extends Google_Service
   public $users_dataSources_datasets;
   public $users_dataset;
   public $users_sessions;
-  
+
   /**
    * Constructs the internal representation of the Fitness service.
    *
@@ -284,13 +284,13 @@ class Google_Service_Fitness extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'limit' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'patch' => array(
@@ -375,9 +375,18 @@ class Google_Service_Fitness extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'activityType' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                  'repeated' => true,
+                ),
                 'endTime' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'includeDeleted' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
@@ -386,15 +395,6 @@ class Google_Service_Fitness extends Google_Service
                 'startTime' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-                'activityType' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                  'repeated' => true,
-                ),
-                'includeDeleted' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
                 ),
               ),
             ),'update' => array(

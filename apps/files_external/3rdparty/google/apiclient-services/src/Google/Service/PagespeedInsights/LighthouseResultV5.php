@@ -44,14 +44,14 @@ class Google_Service_PagespeedInsights_LighthouseResultV5 extends Google_Collect
   public $userAgent;
 
   /**
-   * @param Google_Service_PagespeedInsights_LighthouseAuditResultV5
+   * @param Google_Service_PagespeedInsights_LighthouseAuditResultV5[]
    */
   public function setAudits($audits)
   {
     $this->audits = $audits;
   }
   /**
-   * @return Google_Service_PagespeedInsights_LighthouseAuditResultV5
+   * @return Google_Service_PagespeedInsights_LighthouseAuditResultV5[]
    */
   public function getAudits()
   {
@@ -72,14 +72,14 @@ class Google_Service_PagespeedInsights_LighthouseResultV5 extends Google_Collect
     return $this->categories;
   }
   /**
-   * @param Google_Service_PagespeedInsights_CategoryGroupV5
+   * @param Google_Service_PagespeedInsights_CategoryGroupV5[]
    */
   public function setCategoryGroups($categoryGroups)
   {
     $this->categoryGroups = $categoryGroups;
   }
   /**
-   * @return Google_Service_PagespeedInsights_CategoryGroupV5
+   * @return Google_Service_PagespeedInsights_CategoryGroupV5[]
    */
   public function getCategoryGroups()
   {
@@ -182,14 +182,14 @@ class Google_Service_PagespeedInsights_LighthouseResultV5 extends Google_Collect
     return $this->runtimeError;
   }
   /**
-   * @param Google_Service_PagespeedInsights_StackPack
+   * @param Google_Service_PagespeedInsights_StackPack[]
    */
   public function setStackPacks($stackPacks)
   {
     $this->stackPacks = $stackPacks;
   }
   /**
-   * @return Google_Service_PagespeedInsights_StackPack
+   * @return Google_Service_PagespeedInsights_StackPack[]
    */
   public function getStackPacks()
   {

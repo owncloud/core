@@ -39,14 +39,14 @@ class Google_Service_ShoppingContent_ShipmentInvoice extends Google_Collection
     return $this->invoiceSummary;
   }
   /**
-   * @param Google_Service_ShoppingContent_ShipmentInvoiceLineItemInvoice
+   * @param Google_Service_ShoppingContent_ShipmentInvoiceLineItemInvoice[]
    */
   public function setLineItemInvoices($lineItemInvoices)
   {
     $this->lineItemInvoices = $lineItemInvoices;
   }
   /**
-   * @return Google_Service_ShoppingContent_ShipmentInvoiceLineItemInvoice
+   * @return Google_Service_ShoppingContent_ShipmentInvoiceLineItemInvoice[]
    */
   public function getLineItemInvoices()
   {

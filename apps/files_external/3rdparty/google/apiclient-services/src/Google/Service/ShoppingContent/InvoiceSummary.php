@@ -24,14 +24,14 @@ class Google_Service_ShoppingContent_InvoiceSummary extends Google_Collection
   protected $productTotalDataType = '';
 
   /**
-   * @param Google_Service_ShoppingContent_InvoiceSummaryAdditionalChargeSummary
+   * @param Google_Service_ShoppingContent_InvoiceSummaryAdditionalChargeSummary[]
    */
   public function setAdditionalChargeSummaries($additionalChargeSummaries)
   {
     $this->additionalChargeSummaries = $additionalChargeSummaries;
   }
   /**
-   * @return Google_Service_ShoppingContent_InvoiceSummaryAdditionalChargeSummary
+   * @return Google_Service_ShoppingContent_InvoiceSummaryAdditionalChargeSummary[]
    */
   public function getAdditionalChargeSummaries()
   {

@@ -63,7 +63,9 @@ class Google_Service_Dfareporting_Resource_RemarketingLists extends Google_Servi
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool active Select only active or only inactive remarketing lists.
-   * @opt_param string sortOrder Order of sorted results.
+   * @opt_param string floodlightActivityId Select only remarketing lists that
+   * have this floodlight activity ID.
+   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string name Allows searching for objects by name or ID. Wildcards
    * (*) are allowed. For example, "remarketing list*2015" will return objects
    * with names like "remarketing list June 2015", "remarketing list April 2015",
@@ -74,9 +76,7 @@ class Google_Service_Dfareporting_Resource_RemarketingLists extends Google_Servi
    * @opt_param string pageToken Value of the nextPageToken from the previous
    * result page.
    * @opt_param string sortField Field by which to sort the list.
-   * @opt_param int maxResults Maximum number of results to return.
-   * @opt_param string floodlightActivityId Select only remarketing lists that
-   * have this floodlight activity ID.
+   * @opt_param string sortOrder Order of sorted results.
    * @return Google_Service_Dfareporting_RemarketingListsListResponse
    */
   public function listRemarketingLists($profileId, $advertiserId, $optParams = array())

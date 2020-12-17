@@ -31,14 +31,14 @@ class Google_Service_Firestore_PartitionQueryResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Firestore_Cursor
+   * @param Google_Service_Firestore_Cursor[]
    */
   public function setPartitions($partitions)
   {
     $this->partitions = $partitions;
   }
   /**
-   * @return Google_Service_Firestore_Cursor
+   * @return Google_Service_Firestore_Cursor[]
    */
   public function getPartitions()
   {

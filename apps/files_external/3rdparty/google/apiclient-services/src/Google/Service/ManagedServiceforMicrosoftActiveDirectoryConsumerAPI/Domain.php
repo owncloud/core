@@ -113,14 +113,14 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Domain
     return $this->statusMessage;
   }
   /**
-   * @param Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Trust
+   * @param Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Trust[]
    */
   public function setTrusts($trusts)
   {
     $this->trusts = $trusts;
   }
   /**
-   * @return Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Trust
+   * @return Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Trust[]
    */
   public function getTrusts()
   {

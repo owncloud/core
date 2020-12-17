@@ -31,14 +31,14 @@ class Google_Service_Dataflow_ProgressTimeseries extends Google_Collection
     return $this->currentProgress;
   }
   /**
-   * @param Google_Service_Dataflow_Point
+   * @param Google_Service_Dataflow_Point[]
    */
   public function setDataPoints($dataPoints)
   {
     $this->dataPoints = $dataPoints;
   }
   /**
-   * @return Google_Service_Dataflow_Point
+   * @return Google_Service_Dataflow_Point[]
    */
   public function getDataPoints()
   {

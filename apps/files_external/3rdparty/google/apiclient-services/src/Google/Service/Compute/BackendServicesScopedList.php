@@ -24,14 +24,14 @@ class Google_Service_Compute_BackendServicesScopedList extends Google_Collection
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_BackendService
+   * @param Google_Service_Compute_BackendService[]
    */
   public function setBackendServices($backendServices)
   {
     $this->backendServices = $backendServices;
   }
   /**
-   * @return Google_Service_Compute_BackendService
+   * @return Google_Service_Compute_BackendService[]
    */
   public function getBackendServices()
   {

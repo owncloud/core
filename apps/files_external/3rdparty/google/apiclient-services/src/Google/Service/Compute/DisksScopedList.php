@@ -24,14 +24,14 @@ class Google_Service_Compute_DisksScopedList extends Google_Collection
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_Disk
+   * @param Google_Service_Compute_Disk[]
    */
   public function setDisks($disks)
   {
     $this->disks = $disks;
   }
   /**
-   * @return Google_Service_Compute_Disk
+   * @return Google_Service_Compute_Disk[]
    */
   public function getDisks()
   {

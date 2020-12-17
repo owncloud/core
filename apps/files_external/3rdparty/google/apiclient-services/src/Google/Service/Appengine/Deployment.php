@@ -55,14 +55,14 @@ class Google_Service_Appengine_Deployment extends Google_Model
     return $this->container;
   }
   /**
-   * @param Google_Service_Appengine_FileInfo
+   * @param Google_Service_Appengine_FileInfo[]
    */
   public function setFiles($files)
   {
     $this->files = $files;
   }
   /**
-   * @return Google_Service_Appengine_FileInfo
+   * @return Google_Service_Appengine_FileInfo[]
    */
   public function getFiles()
   {

@@ -31,14 +31,14 @@ class Google_Service_AlertCenter_SuspiciousActivity extends Google_Collection
     return $this->email;
   }
   /**
-   * @param Google_Service_AlertCenter_SuspiciousActivitySecurityDetail
+   * @param Google_Service_AlertCenter_SuspiciousActivitySecurityDetail[]
    */
   public function setEvents($events)
   {
     $this->events = $events;
   }
   /**
-   * @return Google_Service_AlertCenter_SuspiciousActivitySecurityDetail
+   * @return Google_Service_AlertCenter_SuspiciousActivitySecurityDetail[]
    */
   public function getEvents()
   {

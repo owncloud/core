@@ -31,14 +31,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1WebhookResponseFul
     return $this->mergeBehavior;
   }
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessage
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessage[]
    */
   public function setMessages($messages)
   {
     $this->messages = $messages;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessage
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessage[]
    */
   public function getMessages()
   {

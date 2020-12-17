@@ -24,14 +24,14 @@ class Google_Service_BinaryAuthorization_IamPolicy extends Google_Collection
   public $version;
 
   /**
-   * @param Google_Service_BinaryAuthorization_Binding
+   * @param Google_Service_BinaryAuthorization_Binding[]
    */
   public function setBindings($bindings)
   {
     $this->bindings = $bindings;
   }
   /**
-   * @return Google_Service_BinaryAuthorization_Binding
+   * @return Google_Service_BinaryAuthorization_Binding[]
    */
   public function getBindings()
   {

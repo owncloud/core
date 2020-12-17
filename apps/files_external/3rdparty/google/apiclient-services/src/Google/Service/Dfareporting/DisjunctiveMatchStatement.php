@@ -23,14 +23,14 @@ class Google_Service_Dfareporting_DisjunctiveMatchStatement extends Google_Colle
   public $kind;
 
   /**
-   * @param Google_Service_Dfareporting_EventFilter
+   * @param Google_Service_Dfareporting_EventFilter[]
    */
   public function setEventFilters($eventFilters)
   {
     $this->eventFilters = $eventFilters;
   }
   /**
-   * @return Google_Service_Dfareporting_EventFilter
+   * @return Google_Service_Dfareporting_EventFilter[]
    */
   public function getEventFilters()
   {

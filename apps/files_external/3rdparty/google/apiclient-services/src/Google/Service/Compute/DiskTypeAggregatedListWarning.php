@@ -32,14 +32,14 @@ class Google_Service_Compute_DiskTypeAggregatedListWarning extends Google_Collec
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_DiskTypeAggregatedListWarningData
+   * @param Google_Service_Compute_DiskTypeAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_DiskTypeAggregatedListWarningData
+   * @return Google_Service_Compute_DiskTypeAggregatedListWarningData[]
    */
   public function getData()
   {

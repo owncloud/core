@@ -31,14 +31,14 @@ class Google_Service_SecurityCommandCenter_ListSourcesResponse extends Google_Co
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_SecurityCommandCenter_Source
+   * @param Google_Service_SecurityCommandCenter_Source[]
    */
   public function setSources($sources)
   {
     $this->sources = $sources;
   }
   /**
-   * @return Google_Service_SecurityCommandCenter_Source
+   * @return Google_Service_SecurityCommandCenter_Source[]
    */
   public function getSources()
   {

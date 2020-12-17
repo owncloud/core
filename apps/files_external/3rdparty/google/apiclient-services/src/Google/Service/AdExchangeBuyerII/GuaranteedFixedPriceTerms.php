@@ -25,14 +25,14 @@ class Google_Service_AdExchangeBuyerII_GuaranteedFixedPriceTerms extends Google_
   public $minimumDailyLooks;
 
   /**
-   * @param Google_Service_AdExchangeBuyerII_PricePerBuyer
+   * @param Google_Service_AdExchangeBuyerII_PricePerBuyer[]
    */
   public function setFixedPrices($fixedPrices)
   {
     $this->fixedPrices = $fixedPrices;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_PricePerBuyer
+   * @return Google_Service_AdExchangeBuyerII_PricePerBuyer[]
    */
   public function getFixedPrices()
   {

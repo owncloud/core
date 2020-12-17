@@ -33,14 +33,14 @@ class Google_Service_AccessApproval_AccessApprovalSettings extends Google_Collec
     return $this->enrolledAncestor;
   }
   /**
-   * @param Google_Service_AccessApproval_EnrolledService
+   * @param Google_Service_AccessApproval_EnrolledService[]
    */
   public function setEnrolledServices($enrolledServices)
   {
     $this->enrolledServices = $enrolledServices;
   }
   /**
-   * @return Google_Service_AccessApproval_EnrolledService
+   * @return Google_Service_AccessApproval_EnrolledService[]
    */
   public function getEnrolledServices()
   {

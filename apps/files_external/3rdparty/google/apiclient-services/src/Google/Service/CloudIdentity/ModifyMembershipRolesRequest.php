@@ -23,14 +23,14 @@ class Google_Service_CloudIdentity_ModifyMembershipRolesRequest extends Google_C
   public $removeRoles;
 
   /**
-   * @param Google_Service_CloudIdentity_MembershipRole
+   * @param Google_Service_CloudIdentity_MembershipRole[]
    */
   public function setAddRoles($addRoles)
   {
     $this->addRoles = $addRoles;
   }
   /**
-   * @return Google_Service_CloudIdentity_MembershipRole
+   * @return Google_Service_CloudIdentity_MembershipRole[]
    */
   public function getAddRoles()
   {

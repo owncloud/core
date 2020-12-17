@@ -38,14 +38,14 @@ class Google_Service_Container_GetJSONWebKeysResponse extends Google_Collection
     return $this->cacheHeader;
   }
   /**
-   * @param Google_Service_Container_Jwk
+   * @param Google_Service_Container_Jwk[]
    */
   public function setKeys($keys)
   {
     $this->keys = $keys;
   }
   /**
-   * @return Google_Service_Container_Jwk
+   * @return Google_Service_Container_Jwk[]
    */
   public function getKeys()
   {

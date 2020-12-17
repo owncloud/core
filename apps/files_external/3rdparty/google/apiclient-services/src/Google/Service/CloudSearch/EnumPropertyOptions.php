@@ -47,14 +47,14 @@ class Google_Service_CloudSearch_EnumPropertyOptions extends Google_Collection
     return $this->orderedRanking;
   }
   /**
-   * @param Google_Service_CloudSearch_EnumValuePair
+   * @param Google_Service_CloudSearch_EnumValuePair[]
    */
   public function setPossibleValues($possibleValues)
   {
     $this->possibleValues = $possibleValues;
   }
   /**
-   * @return Google_Service_CloudSearch_EnumValuePair
+   * @return Google_Service_CloudSearch_EnumValuePair[]
    */
   public function getPossibleValues()
   {

@@ -23,14 +23,14 @@ class Google_Service_HangoutsChat_ListMembershipsResponse extends Google_Collect
   public $nextPageToken;
 
   /**
-   * @param Google_Service_HangoutsChat_Membership
+   * @param Google_Service_HangoutsChat_Membership[]
    */
   public function setMemberships($memberships)
   {
     $this->memberships = $memberships;
   }
   /**
-   * @return Google_Service_HangoutsChat_Membership
+   * @return Google_Service_HangoutsChat_Membership[]
    */
   public function getMemberships()
   {

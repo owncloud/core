@@ -24,14 +24,14 @@ class Google_Service_Dfareporting_AdsListResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Dfareporting_Ad
+   * @param Google_Service_Dfareporting_Ad[]
    */
   public function setAds($ads)
   {
     $this->ads = $ads;
   }
   /**
-   * @return Google_Service_Dfareporting_Ad
+   * @return Google_Service_Dfareporting_Ad[]
    */
   public function getAds()
   {

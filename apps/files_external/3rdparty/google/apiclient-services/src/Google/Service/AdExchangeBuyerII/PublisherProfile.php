@@ -27,6 +27,8 @@ class Google_Service_AdExchangeBuyerII_PublisherProfile extends Google_Collectio
   public $isParent;
   public $logoUrl;
   public $mediaKitUrl;
+  protected $mobileAppsType = 'Google_Service_AdExchangeBuyerII_PublisherProfileMobileApplication';
+  protected $mobileAppsDataType = 'array';
   public $overview;
   public $programmaticDealsContact;
   public $publisherProfileId;
@@ -107,6 +109,20 @@ class Google_Service_AdExchangeBuyerII_PublisherProfile extends Google_Collectio
   public function getMediaKitUrl()
   {
     return $this->mediaKitUrl;
+  }
+  /**
+   * @param Google_Service_AdExchangeBuyerII_PublisherProfileMobileApplication[]
+   */
+  public function setMobileApps($mobileApps)
+  {
+    $this->mobileApps = $mobileApps;
+  }
+  /**
+   * @return Google_Service_AdExchangeBuyerII_PublisherProfileMobileApplication[]
+   */
+  public function getMobileApps()
+  {
+    return $this->mobileApps;
   }
   public function setOverview($overview)
   {

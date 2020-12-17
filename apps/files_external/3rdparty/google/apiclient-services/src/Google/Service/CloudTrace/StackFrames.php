@@ -31,14 +31,14 @@ class Google_Service_CloudTrace_StackFrames extends Google_Collection
     return $this->droppedFramesCount;
   }
   /**
-   * @param Google_Service_CloudTrace_StackFrame
+   * @param Google_Service_CloudTrace_StackFrame[]
    */
   public function setFrame($frame)
   {
     $this->frame = $frame;
   }
   /**
-   * @return Google_Service_CloudTrace_StackFrame
+   * @return Google_Service_CloudTrace_StackFrame[]
    */
   public function getFrame()
   {

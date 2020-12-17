@@ -22,14 +22,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2ValidationResult extends 
   protected $validationErrorsDataType = 'array';
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2ValidationError
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2ValidationError[]
    */
   public function setValidationErrors($validationErrors)
   {
     $this->validationErrors = $validationErrors;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2ValidationError
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2ValidationError[]
    */
   public function getValidationErrors()
   {

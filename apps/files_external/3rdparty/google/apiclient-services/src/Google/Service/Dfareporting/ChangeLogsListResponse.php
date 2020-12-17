@@ -24,14 +24,14 @@ class Google_Service_Dfareporting_ChangeLogsListResponse extends Google_Collecti
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Dfareporting_ChangeLog
+   * @param Google_Service_Dfareporting_ChangeLog[]
    */
   public function setChangeLogs($changeLogs)
   {
     $this->changeLogs = $changeLogs;
   }
   /**
-   * @return Google_Service_Dfareporting_ChangeLog
+   * @return Google_Service_Dfareporting_ChangeLog[]
    */
   public function getChangeLogs()
   {

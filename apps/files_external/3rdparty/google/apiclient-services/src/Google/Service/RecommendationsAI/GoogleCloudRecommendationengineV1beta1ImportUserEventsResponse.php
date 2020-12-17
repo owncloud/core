@@ -26,14 +26,14 @@ class Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1Imp
   protected $importSummaryDataType = '';
 
   /**
-   * @param Google_Service_RecommendationsAI_GoogleRpcStatus
+   * @param Google_Service_RecommendationsAI_GoogleRpcStatus[]
    */
   public function setErrorSamples($errorSamples)
   {
     $this->errorSamples = $errorSamples;
   }
   /**
-   * @return Google_Service_RecommendationsAI_GoogleRpcStatus
+   * @return Google_Service_RecommendationsAI_GoogleRpcStatus[]
    */
   public function getErrorSamples()
   {

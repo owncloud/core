@@ -31,14 +31,14 @@ class Google_Service_Dfareporting_OperatingSystemVersionsListResponse extends Go
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dfareporting_OperatingSystemVersion
+   * @param Google_Service_Dfareporting_OperatingSystemVersion[]
    */
   public function setOperatingSystemVersions($operatingSystemVersions)
   {
     $this->operatingSystemVersions = $operatingSystemVersions;
   }
   /**
-   * @return Google_Service_Dfareporting_OperatingSystemVersion
+   * @return Google_Service_Dfareporting_OperatingSystemVersion[]
    */
   public function getOperatingSystemVersions()
   {

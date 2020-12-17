@@ -34,7 +34,7 @@ class MongoDBFormatter implements FormatterInterface
         $this->maxNestingLevel = max($maxNestingLevel, 0);
         $this->exceptionTraceAsString = $exceptionTraceAsString;
 
-        $this->isLegacyMongoExt = version_compare(phpversion('mongodb'), '1.1.9', '<=');
+        $this->isLegacyMongoExt = extension_loaded('mongodb') && version_compare(phpversion('mongodb'), '1.1.9', '<=');
     }
 
     /**
@@ -118,7 +118,7 @@ class MongoDBFormatter implements FormatterInterface
 
     private function getMongoDbDateTime(\DateTimeInterface $value): UTCDateTime
     {
-        return new UTCDateTime((int) (string) floor($value->format('U.u') * 1000));
+        return new UTCDateTime((int) floor(((float) $value->format('U.u')) * 1000));
     }
 
     /**
@@ -130,7 +130,7 @@ class MongoDBFormatter implements FormatterInterface
      */
     private function legacyGetMongoDbDateTime(\DateTimeInterface $value): UTCDateTime
     {
-        $milliseconds = floor($value->format('U.u') * 1000);
+        $milliseconds = floor(((float) $value->format('U.u')) * 1000);
 
         $milliseconds = (PHP_INT_SIZE == 8) //64-bit OS?
             ? (int) $milliseconds

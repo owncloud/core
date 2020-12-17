@@ -32,14 +32,14 @@ class Google_Service_Compute_UrlMapsScopedListWarning extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_UrlMapsScopedListWarningData
+   * @param Google_Service_Compute_UrlMapsScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_UrlMapsScopedListWarningData
+   * @return Google_Service_Compute_UrlMapsScopedListWarningData[]
    */
   public function getData()
   {

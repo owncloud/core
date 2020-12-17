@@ -97,14 +97,14 @@ class Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1Budget extend
     return $this->notificationsRule;
   }
   /**
-   * @param Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1ThresholdRule
+   * @param Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1ThresholdRule[]
    */
   public function setThresholdRules($thresholdRules)
   {
     $this->thresholdRules = $thresholdRules;
   }
   /**
-   * @return Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1ThresholdRule
+   * @return Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1ThresholdRule[]
    */
   public function getThresholdRules()
   {

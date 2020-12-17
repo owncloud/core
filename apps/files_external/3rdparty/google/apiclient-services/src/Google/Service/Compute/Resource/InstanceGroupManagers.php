@@ -751,7 +751,8 @@ class Google_Service_Compute_Resource_InstanceGroupManagers extends Google_Servi
   /**
    * Specifies the instance template to use when creating new instances in this
    * group. The templates for existing instances in the group do not change unless
-   * you recreate them. (instanceGroupManagers.setInstanceTemplate)
+   * you run recreateInstances, run applyUpdatesToInstances, or set the group's
+   * updatePolicy.type to PROACTIVE. (instanceGroupManagers.setInstanceTemplate)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone where the managed instance group is

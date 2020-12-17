@@ -40,14 +40,14 @@ class Google_Service_ShoppingContent_SettlementreportsListResponse extends Googl
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ShoppingContent_SettlementReport
+   * @param Google_Service_ShoppingContent_SettlementReport[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_ShoppingContent_SettlementReport
+   * @return Google_Service_ShoppingContent_SettlementReport[]
    */
   public function getResources()
   {

@@ -53,14 +53,14 @@ class Google_Service_Compute_HttpRouteRule extends Google_Collection
     return $this->headerAction;
   }
   /**
-   * @param Google_Service_Compute_HttpRouteRuleMatch
+   * @param Google_Service_Compute_HttpRouteRuleMatch[]
    */
   public function setMatchRules($matchRules)
   {
     $this->matchRules = $matchRules;
   }
   /**
-   * @return Google_Service_Compute_HttpRouteRuleMatch
+   * @return Google_Service_Compute_HttpRouteRuleMatch[]
    */
   public function getMatchRules()
   {

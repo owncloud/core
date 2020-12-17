@@ -22,14 +22,14 @@ class Google_Service_Docs_TableStyle extends Google_Collection
   protected $tableColumnPropertiesDataType = 'array';
 
   /**
-   * @param Google_Service_Docs_TableColumnProperties
+   * @param Google_Service_Docs_TableColumnProperties[]
    */
   public function setTableColumnProperties($tableColumnProperties)
   {
     $this->tableColumnProperties = $tableColumnProperties;
   }
   /**
-   * @return Google_Service_Docs_TableColumnProperties
+   * @return Google_Service_Docs_TableColumnProperties[]
    */
   public function getTableColumnProperties()
   {

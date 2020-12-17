@@ -23,14 +23,14 @@ class Google_Service_Sasportal_SasPortalListCustomersResponse extends Google_Col
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Sasportal_SasPortalCustomer
+   * @param Google_Service_Sasportal_SasPortalCustomer[]
    */
   public function setCustomers($customers)
   {
     $this->customers = $customers;
   }
   /**
-   * @return Google_Service_Sasportal_SasPortalCustomer
+   * @return Google_Service_Sasportal_SasPortalCustomer[]
    */
   public function getCustomers()
   {

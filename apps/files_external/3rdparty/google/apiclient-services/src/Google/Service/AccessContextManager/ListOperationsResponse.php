@@ -31,14 +31,14 @@ class Google_Service_AccessContextManager_ListOperationsResponse extends Google_
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_AccessContextManager_Operation
+   * @param Google_Service_AccessContextManager_Operation[]
    */
   public function setOperations($operations)
   {
     $this->operations = $operations;
   }
   /**
-   * @return Google_Service_AccessContextManager_Operation
+   * @return Google_Service_AccessContextManager_Operation[]
    */
   public function getOperations()
   {

@@ -22,14 +22,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ListHybridIssuersResponse extends
   protected $issuersDataType = 'array';
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1ServiceIssuersMapping
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1ServiceIssuersMapping[]
    */
   public function setIssuers($issuers)
   {
     $this->issuers = $issuers;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1ServiceIssuersMapping
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1ServiceIssuersMapping[]
    */
   public function getIssuers()
   {

@@ -26,14 +26,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2AuxiliaryTable extends Google_Collect
   protected $tableDataType = '';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2QuasiIdField
+   * @param Google_Service_DLP_GooglePrivacyDlpV2QuasiIdField[]
    */
   public function setQuasiIds($quasiIds)
   {
     $this->quasiIds = $quasiIds;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2QuasiIdField
+   * @return Google_Service_DLP_GooglePrivacyDlpV2QuasiIdField[]
    */
   public function getQuasiIds()
   {

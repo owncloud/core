@@ -24,14 +24,14 @@ class Google_Service_Compute_OperationsScopedList extends Google_Collection
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_Operation
+   * @param Google_Service_Compute_Operation[]
    */
   public function setOperations($operations)
   {
     $this->operations = $operations;
   }
   /**
-   * @return Google_Service_Compute_Operation
+   * @return Google_Service_Compute_Operation[]
    */
   public function getOperations()
   {

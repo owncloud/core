@@ -31,14 +31,14 @@ class Google_Service_IdentityToolkit_GetAccountInfoResponse extends Google_Colle
     return $this->kind;
   }
   /**
-   * @param Google_Service_IdentityToolkit_UserInfo
+   * @param Google_Service_IdentityToolkit_UserInfo[]
    */
   public function setUsers($users)
   {
     $this->users = $users;
   }
   /**
-   * @return Google_Service_IdentityToolkit_UserInfo
+   * @return Google_Service_IdentityToolkit_UserInfo[]
    */
   public function getUsers()
   {

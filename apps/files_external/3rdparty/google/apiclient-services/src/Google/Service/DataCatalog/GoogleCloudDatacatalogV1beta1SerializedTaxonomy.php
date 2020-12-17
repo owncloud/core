@@ -49,14 +49,14 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SerializedTaxonomy
     return $this->displayName;
   }
   /**
-   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SerializedPolicyTag
+   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SerializedPolicyTag[]
    */
   public function setPolicyTags($policyTags)
   {
     $this->policyTags = $policyTags;
   }
   /**
-   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SerializedPolicyTag
+   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SerializedPolicyTag[]
    */
   public function getPolicyTags()
   {

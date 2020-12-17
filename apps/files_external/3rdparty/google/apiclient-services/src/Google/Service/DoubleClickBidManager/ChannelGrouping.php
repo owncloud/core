@@ -40,14 +40,14 @@ class Google_Service_DoubleClickBidManager_ChannelGrouping extends Google_Collec
     return $this->name;
   }
   /**
-   * @param Google_Service_DoubleClickBidManager_Rule
+   * @param Google_Service_DoubleClickBidManager_Rule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_DoubleClickBidManager_Rule
+   * @return Google_Service_DoubleClickBidManager_Rule[]
    */
   public function getRules()
   {

@@ -73,12 +73,12 @@ class Google_Service_AdExchangeBuyerII_Resource_AccountsClientsInvitations exten
    * all the invitations for all the clients of a given sponsor buyer.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Requested page size. Server may return fewer clients
+   * than requested. If unspecified, server will pick an appropriate default.
    * @opt_param string pageToken A token identifying a page of results the server
    * should return. Typically, this is the value of
    * ListClientUserInvitationsResponse.nextPageToken returned from the previous
    * call to the clients.invitations.list method.
-   * @opt_param int pageSize Requested page size. Server may return fewer clients
-   * than requested. If unspecified, server will pick an appropriate default.
    * @return Google_Service_AdExchangeBuyerII_ListClientUserInvitationsResponse
    */
   public function listAccountsClientsInvitations($accountId, $clientAccountId, $optParams = array())

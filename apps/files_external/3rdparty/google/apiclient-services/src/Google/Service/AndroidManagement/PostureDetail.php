@@ -23,14 +23,14 @@ class Google_Service_AndroidManagement_PostureDetail extends Google_Collection
   public $securityRisk;
 
   /**
-   * @param Google_Service_AndroidManagement_UserFacingMessage
+   * @param Google_Service_AndroidManagement_UserFacingMessage[]
    */
   public function setAdvice($advice)
   {
     $this->advice = $advice;
   }
   /**
-   * @return Google_Service_AndroidManagement_UserFacingMessage
+   * @return Google_Service_AndroidManagement_UserFacingMessage[]
    */
   public function getAdvice()
   {

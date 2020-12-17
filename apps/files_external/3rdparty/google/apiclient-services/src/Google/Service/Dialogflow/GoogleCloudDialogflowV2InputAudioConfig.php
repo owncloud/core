@@ -94,14 +94,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2InputAudioConfig extends 
     return $this->singleUtterance;
   }
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2SpeechContext
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2SpeechContext[]
    */
   public function setSpeechContexts($speechContexts)
   {
     $this->speechContexts = $speechContexts;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2SpeechContext
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2SpeechContext[]
    */
   public function getSpeechContexts()
   {

@@ -36,42 +36,42 @@ class Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2Comm
     return $this->arguments;
   }
   /**
-   * @param Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2CommandTaskInputsEnvironmentVariable
+   * @param Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2CommandTaskInputsEnvironmentVariable[]
    */
   public function setEnvironmentVariables($environmentVariables)
   {
     $this->environmentVariables = $environmentVariables;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2CommandTaskInputsEnvironmentVariable
+   * @return Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2CommandTaskInputsEnvironmentVariable[]
    */
   public function getEnvironmentVariables()
   {
     return $this->environmentVariables;
   }
   /**
-   * @param Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2Digest
+   * @param Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2Digest[]
    */
   public function setFiles($files)
   {
     $this->files = $files;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2Digest
+   * @return Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2Digest[]
    */
   public function getFiles()
   {
     return $this->files;
   }
   /**
-   * @param Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2Blob
+   * @param Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2Blob[]
    */
   public function setInlineBlobs($inlineBlobs)
   {
     $this->inlineBlobs = $inlineBlobs;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2Blob
+   * @return Google_Service_RemoteBuildExecution_GoogleDevtoolsRemoteworkersV1test2Blob[]
    */
   public function getInlineBlobs()
   {

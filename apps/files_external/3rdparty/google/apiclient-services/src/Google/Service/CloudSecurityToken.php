@@ -34,7 +34,7 @@ class Google_Service_CloudSecurityToken extends Google_Service
 
 
   public $v1;
-  
+
   /**
    * Constructs the internal representation of the CloudSecurityToken service.
    *

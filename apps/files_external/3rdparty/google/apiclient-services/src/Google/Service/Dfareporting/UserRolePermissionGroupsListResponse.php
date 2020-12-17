@@ -31,14 +31,14 @@ class Google_Service_Dfareporting_UserRolePermissionGroupsListResponse extends G
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dfareporting_UserRolePermissionGroup
+   * @param Google_Service_Dfareporting_UserRolePermissionGroup[]
    */
   public function setUserRolePermissionGroups($userRolePermissionGroups)
   {
     $this->userRolePermissionGroups = $userRolePermissionGroups;
   }
   /**
-   * @return Google_Service_Dfareporting_UserRolePermissionGroup
+   * @return Google_Service_Dfareporting_UserRolePermissionGroup[]
    */
   public function getUserRolePermissionGroups()
   {

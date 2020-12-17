@@ -31,14 +31,14 @@ class Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1Pur
     return $this->purgedEventsCount;
   }
   /**
-   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1UserEvent
+   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1UserEvent[]
    */
   public function setUserEventsSample($userEventsSample)
   {
     $this->userEventsSample = $userEventsSample;
   }
   /**
-   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1UserEvent
+   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1UserEvent[]
    */
   public function getUserEventsSample()
   {

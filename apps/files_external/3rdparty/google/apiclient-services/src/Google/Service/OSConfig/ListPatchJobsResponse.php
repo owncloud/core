@@ -31,14 +31,14 @@ class Google_Service_OSConfig_ListPatchJobsResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_OSConfig_PatchJob
+   * @param Google_Service_OSConfig_PatchJob[]
    */
   public function setPatchJobs($patchJobs)
   {
     $this->patchJobs = $patchJobs;
   }
   /**
-   * @return Google_Service_OSConfig_PatchJob
+   * @return Google_Service_OSConfig_PatchJob[]
    */
   public function getPatchJobs()
   {

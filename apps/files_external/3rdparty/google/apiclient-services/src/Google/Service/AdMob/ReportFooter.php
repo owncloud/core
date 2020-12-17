@@ -31,14 +31,14 @@ class Google_Service_AdMob_ReportFooter extends Google_Collection
     return $this->matchingRowCount;
   }
   /**
-   * @param Google_Service_AdMob_ReportWarning
+   * @param Google_Service_AdMob_ReportWarning[]
    */
   public function setWarnings($warnings)
   {
     $this->warnings = $warnings;
   }
   /**
-   * @return Google_Service_AdMob_ReportWarning
+   * @return Google_Service_AdMob_ReportWarning[]
    */
   public function getWarnings()
   {

@@ -25,14 +25,14 @@ class Google_Service_CloudRun_ConfigurationStatus extends Google_Collection
   public $observedGeneration;
 
   /**
-   * @param Google_Service_CloudRun_GoogleCloudRunV1Condition
+   * @param Google_Service_CloudRun_GoogleCloudRunV1Condition[]
    */
   public function setConditions($conditions)
   {
     $this->conditions = $conditions;
   }
   /**
-   * @return Google_Service_CloudRun_GoogleCloudRunV1Condition
+   * @return Google_Service_CloudRun_GoogleCloudRunV1Condition[]
    */
   public function getConditions()
   {

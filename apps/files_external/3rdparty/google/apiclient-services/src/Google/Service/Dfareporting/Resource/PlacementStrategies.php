@@ -73,12 +73,10 @@ class Google_Service_Dfareporting_Resource_PlacementStrategies extends Google_Se
    * @param string $profileId User profile ID associated with this request.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string sortField Field by which to sort the list.
-   * @opt_param string pageToken Value of the nextPageToken from the previous
-   * result page.
-   * @opt_param string sortOrder Order of sorted results.
    * @opt_param string ids Select only placement strategies with these IDs.
    * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string pageToken Value of the nextPageToken from the previous
+   * result page.
    * @opt_param string searchString Allows searching for objects by name or ID.
    * Wildcards (*) are allowed. For example, "placementstrategy*2015" will return
    * objects with names like "placementstrategy June 2015", "placementstrategy
@@ -87,6 +85,8 @@ class Google_Service_Dfareporting_Resource_PlacementStrategies extends Google_Se
    * example, a search string of "placementstrategy" will match objects with name
    * "my placementstrategy", "placementstrategy 2015", or simply
    * "placementstrategy".
+   * @opt_param string sortField Field by which to sort the list.
+   * @opt_param string sortOrder Order of sorted results.
    * @return Google_Service_Dfareporting_PlacementStrategiesListResponse
    */
   public function listPlacementStrategies($profileId, $optParams = array())

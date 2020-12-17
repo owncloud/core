@@ -22,14 +22,14 @@ class Google_Service_Appengine_BatchUpdateIngressRulesResponse extends Google_Co
   protected $ingressRulesDataType = 'array';
 
   /**
-   * @param Google_Service_Appengine_FirewallRule
+   * @param Google_Service_Appengine_FirewallRule[]
    */
   public function setIngressRules($ingressRules)
   {
     $this->ingressRules = $ingressRules;
   }
   /**
-   * @return Google_Service_Appengine_FirewallRule
+   * @return Google_Service_Appengine_FirewallRule[]
    */
   public function getIngressRules()
   {

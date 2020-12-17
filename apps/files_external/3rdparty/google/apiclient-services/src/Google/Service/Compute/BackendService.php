@@ -69,14 +69,14 @@ class Google_Service_Compute_BackendService extends Google_Collection
     return $this->affinityCookieTtlSec;
   }
   /**
-   * @param Google_Service_Compute_Backend
+   * @param Google_Service_Compute_Backend[]
    */
   public function setBackends($backends)
   {
     $this->backends = $backends;
   }
   /**
-   * @return Google_Service_Compute_Backend
+   * @return Google_Service_Compute_Backend[]
    */
   public function getBackends()
   {

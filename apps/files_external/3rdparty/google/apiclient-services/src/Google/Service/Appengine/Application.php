@@ -85,14 +85,14 @@ class Google_Service_Appengine_Application extends Google_Collection
     return $this->defaultHostname;
   }
   /**
-   * @param Google_Service_Appengine_UrlDispatchRule
+   * @param Google_Service_Appengine_UrlDispatchRule[]
    */
   public function setDispatchRules($dispatchRules)
   {
     $this->dispatchRules = $dispatchRules;
   }
   /**
-   * @return Google_Service_Appengine_UrlDispatchRule
+   * @return Google_Service_Appengine_UrlDispatchRule[]
    */
   public function getDispatchRules()
   {

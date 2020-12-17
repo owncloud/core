@@ -40,14 +40,14 @@ class Google_Service_ShoppingContent_OrderreturnsListResponse extends Google_Col
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ShoppingContent_MerchantOrderReturn
+   * @param Google_Service_ShoppingContent_MerchantOrderReturn[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_ShoppingContent_MerchantOrderReturn
+   * @return Google_Service_ShoppingContent_MerchantOrderReturn[]
    */
   public function getResources()
   {

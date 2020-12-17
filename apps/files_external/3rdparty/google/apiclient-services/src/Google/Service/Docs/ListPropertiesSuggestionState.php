@@ -22,14 +22,14 @@ class Google_Service_Docs_ListPropertiesSuggestionState extends Google_Collectio
   protected $nestingLevelsSuggestionStatesDataType = 'array';
 
   /**
-   * @param Google_Service_Docs_NestingLevelSuggestionState
+   * @param Google_Service_Docs_NestingLevelSuggestionState[]
    */
   public function setNestingLevelsSuggestionStates($nestingLevelsSuggestionStates)
   {
     $this->nestingLevelsSuggestionStates = $nestingLevelsSuggestionStates;
   }
   /**
-   * @return Google_Service_Docs_NestingLevelSuggestionState
+   * @return Google_Service_Docs_NestingLevelSuggestionState[]
    */
   public function getNestingLevelsSuggestionStates()
   {

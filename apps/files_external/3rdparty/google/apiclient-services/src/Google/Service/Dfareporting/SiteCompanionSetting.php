@@ -33,14 +33,14 @@ class Google_Service_Dfareporting_SiteCompanionSetting extends Google_Collection
     return $this->companionsDisabled;
   }
   /**
-   * @param Google_Service_Dfareporting_Size
+   * @param Google_Service_Dfareporting_Size[]
    */
   public function setEnabledSizes($enabledSizes)
   {
     $this->enabledSizes = $enabledSizes;
   }
   /**
-   * @return Google_Service_Dfareporting_Size
+   * @return Google_Service_Dfareporting_Size[]
    */
   public function getEnabledSizes()
   {

@@ -23,14 +23,14 @@ class Google_Service_Translate_ListGlossariesResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Translate_Glossary
+   * @param Google_Service_Translate_Glossary[]
    */
   public function setGlossaries($glossaries)
   {
     $this->glossaries = $glossaries;
   }
   /**
-   * @return Google_Service_Translate_Glossary
+   * @return Google_Service_Translate_Glossary[]
    */
   public function getGlossaries()
   {

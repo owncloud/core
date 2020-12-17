@@ -22,14 +22,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentBatch extends Googl
   protected $intentsDataType = 'array';
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2Intent
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2Intent[]
    */
   public function setIntents($intents)
   {
     $this->intents = $intents;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2Intent
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2Intent[]
    */
   public function getIntents()
   {

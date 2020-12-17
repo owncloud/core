@@ -61,14 +61,14 @@ class Google_Service_Drive_About extends Google_Collection
     return $this->canCreateTeamDrives;
   }
   /**
-   * @param Google_Service_Drive_AboutDriveThemes
+   * @param Google_Service_Drive_AboutDriveThemes[]
    */
   public function setDriveThemes($driveThemes)
   {
     $this->driveThemes = $driveThemes;
   }
   /**
-   * @return Google_Service_Drive_AboutDriveThemes
+   * @return Google_Service_Drive_AboutDriveThemes[]
    */
   public function getDriveThemes()
   {
@@ -137,14 +137,14 @@ class Google_Service_Drive_About extends Google_Collection
     return $this->storageQuota;
   }
   /**
-   * @param Google_Service_Drive_AboutTeamDriveThemes
+   * @param Google_Service_Drive_AboutTeamDriveThemes[]
    */
   public function setTeamDriveThemes($teamDriveThemes)
   {
     $this->teamDriveThemes = $teamDriveThemes;
   }
   /**
-   * @return Google_Service_Drive_AboutTeamDriveThemes
+   * @return Google_Service_Drive_AboutTeamDriveThemes[]
    */
   public function getTeamDriveThemes()
   {

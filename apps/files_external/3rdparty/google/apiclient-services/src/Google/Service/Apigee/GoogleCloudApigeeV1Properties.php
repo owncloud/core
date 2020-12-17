@@ -22,14 +22,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1Properties extends Google_Collect
   protected $propertyDataType = 'array';
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Property
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Property[]
    */
   public function setProperty($property)
   {
     $this->property = $property;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Property
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Property[]
    */
   public function getProperty()
   {

@@ -45,14 +45,14 @@ class Google_Service_Apigateway_ApigatewayOperationMetadata extends Google_Colle
     return $this->createTime;
   }
   /**
-   * @param Google_Service_Apigateway_ApigatewayOperationMetadataDiagnostic
+   * @param Google_Service_Apigateway_ApigatewayOperationMetadataDiagnostic[]
    */
   public function setDiagnostics($diagnostics)
   {
     $this->diagnostics = $diagnostics;
   }
   /**
-   * @return Google_Service_Apigateway_ApigatewayOperationMetadataDiagnostic
+   * @return Google_Service_Apigateway_ApigatewayOperationMetadataDiagnostic[]
    */
   public function getDiagnostics()
   {

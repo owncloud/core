@@ -95,9 +95,9 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsReservationsA
    * `projects/myproject/locations/US/reservations/-`
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of items to return per page.
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.
-   * @opt_param int pageSize The maximum number of items to return per page.
    * @return Google_Service_BigQueryReservation_ListAssignmentsResponse
    */
   public function listProjectsLocationsReservationsAssignments($parent, $optParams = array())

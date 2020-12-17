@@ -63,14 +63,14 @@ class Google_Service_Vision_Word extends Google_Collection
     return $this->property;
   }
   /**
-   * @param Google_Service_Vision_Symbol
+   * @param Google_Service_Vision_Symbol[]
    */
   public function setSymbols($symbols)
   {
     $this->symbols = $symbols;
   }
   /**
-   * @return Google_Service_Vision_Symbol
+   * @return Google_Service_Vision_Symbol[]
    */
   public function getSymbols()
   {

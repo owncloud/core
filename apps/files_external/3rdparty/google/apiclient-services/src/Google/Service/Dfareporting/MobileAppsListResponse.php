@@ -32,14 +32,14 @@ class Google_Service_Dfareporting_MobileAppsListResponse extends Google_Collecti
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dfareporting_MobileApp
+   * @param Google_Service_Dfareporting_MobileApp[]
    */
   public function setMobileApps($mobileApps)
   {
     $this->mobileApps = $mobileApps;
   }
   /**
-   * @return Google_Service_Dfareporting_MobileApp
+   * @return Google_Service_Dfareporting_MobileApp[]
    */
   public function getMobileApps()
   {

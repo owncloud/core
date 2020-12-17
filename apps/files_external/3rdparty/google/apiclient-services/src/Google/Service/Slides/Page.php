@@ -85,14 +85,14 @@ class Google_Service_Slides_Page extends Google_Collection
     return $this->objectId;
   }
   /**
-   * @param Google_Service_Slides_PageElement
+   * @param Google_Service_Slides_PageElement[]
    */
   public function setPageElements($pageElements)
   {
     $this->pageElements = $pageElements;
   }
   /**
-   * @return Google_Service_Slides_PageElement
+   * @return Google_Service_Slides_PageElement[]
    */
   public function getPageElements()
   {

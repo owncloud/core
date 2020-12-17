@@ -23,14 +23,14 @@ class Google_Service_CertificateAuthorityService_ListLocationsResponse extends G
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CertificateAuthorityService_Location
+   * @param Google_Service_CertificateAuthorityService_Location[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_CertificateAuthorityService_Location
+   * @return Google_Service_CertificateAuthorityService_Location[]
    */
   public function getLocations()
   {

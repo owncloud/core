@@ -27,14 +27,14 @@ class Google_Service_Dataflow_TransformSummary extends Google_Collection
   public $outputCollectionName;
 
   /**
-   * @param Google_Service_Dataflow_DisplayData
+   * @param Google_Service_Dataflow_DisplayData[]
    */
   public function setDisplayData($displayData)
   {
     $this->displayData = $displayData;
   }
   /**
-   * @return Google_Service_Dataflow_DisplayData
+   * @return Google_Service_Dataflow_DisplayData[]
    */
   public function getDisplayData()
   {

@@ -29,14 +29,14 @@ class Google_Service_Analytics_Profiles extends Google_Collection
   public $username;
 
   /**
-   * @param Google_Service_Analytics_Profile
+   * @param Google_Service_Analytics_Profile[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Analytics_Profile
+   * @return Google_Service_Analytics_Profile[]
    */
   public function getItems()
   {

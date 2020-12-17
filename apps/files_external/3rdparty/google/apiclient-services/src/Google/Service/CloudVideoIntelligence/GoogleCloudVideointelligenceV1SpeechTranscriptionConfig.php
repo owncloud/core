@@ -94,14 +94,14 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1Speech
     return $this->maxAlternatives;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1SpeechContext
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1SpeechContext[]
    */
   public function setSpeechContexts($speechContexts)
   {
     $this->speechContexts = $speechContexts;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1SpeechContext
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1SpeechContext[]
    */
   public function getSpeechContexts()
   {

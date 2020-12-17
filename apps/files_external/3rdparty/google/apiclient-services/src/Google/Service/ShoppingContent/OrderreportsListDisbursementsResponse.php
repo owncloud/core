@@ -24,14 +24,14 @@ class Google_Service_ShoppingContent_OrderreportsListDisbursementsResponse exten
   public $nextPageToken;
 
   /**
-   * @param Google_Service_ShoppingContent_OrderReportDisbursement
+   * @param Google_Service_ShoppingContent_OrderReportDisbursement[]
    */
   public function setDisbursements($disbursements)
   {
     $this->disbursements = $disbursements;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderReportDisbursement
+   * @return Google_Service_ShoppingContent_OrderReportDisbursement[]
    */
   public function getDisbursements()
   {

@@ -133,6 +133,14 @@ class Google_Service_Logging_Resource_FoldersSinks extends Google_Service_Resour
    * @param Google_Service_Logging_LogSink $postBody
    * @param array $optParams Optional parameters.
    *
+   * @opt_param bool uniqueWriterIdentity Optional. See sinks.create for a
+   * description of this field. When updating a sink, the effect of this field on
+   * the value of writer_identity in the updated sink depends on both the old and
+   * new values of this field: If the old and new values of this field are both
+   * false or both true, then there is no change to the sink's writer_identity. If
+   * the old value is false and the new value is true, then writer_identity is
+   * changed to a unique service account. It is an error if the old value is true
+   * and the new value is set to false or defaulted to false.
    * @opt_param string updateMask Optional. Field mask that specifies the fields
    * in sink that need an update. A sink field will be overwritten if, and only
    * if, it is in the update mask. name and output only fields cannot be
@@ -143,14 +151,6 @@ class Google_Service_Logging_Resource_FoldersSinks extends Google_Service_Resour
    * https://developers.google.com/protocol-
    * buffers/docs/reference/google.protobuf#google.protobuf.FieldMaskExample:
    * updateMask=filter.
-   * @opt_param bool uniqueWriterIdentity Optional. See sinks.create for a
-   * description of this field. When updating a sink, the effect of this field on
-   * the value of writer_identity in the updated sink depends on both the old and
-   * new values of this field: If the old and new values of this field are both
-   * false or both true, then there is no change to the sink's writer_identity. If
-   * the old value is false and the new value is true, then writer_identity is
-   * changed to a unique service account. It is an error if the old value is true
-   * and the new value is set to false or defaulted to false.
    * @return Google_Service_Logging_LogSink
    */
   public function patch($sinkName, Google_Service_Logging_LogSink $postBody, $optParams = array())

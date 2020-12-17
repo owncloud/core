@@ -23,14 +23,14 @@ class Google_Service_Container_MasterAuthorizedNetworksConfig extends Google_Col
   public $enabled;
 
   /**
-   * @param Google_Service_Container_CidrBlock
+   * @param Google_Service_Container_CidrBlock[]
    */
   public function setCidrBlocks($cidrBlocks)
   {
     $this->cidrBlocks = $cidrBlocks;
   }
   /**
-   * @return Google_Service_Container_CidrBlock
+   * @return Google_Service_Container_CidrBlock[]
    */
   public function getCidrBlocks()
   {

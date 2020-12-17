@@ -142,14 +142,14 @@ class Google_Service_CloudLifeSciences_Action extends Google_Collection
     return $this->labels;
   }
   /**
-   * @param Google_Service_CloudLifeSciences_Mount
+   * @param Google_Service_CloudLifeSciences_Mount[]
    */
   public function setMounts($mounts)
   {
     $this->mounts = $mounts;
   }
   /**
-   * @return Google_Service_CloudLifeSciences_Mount
+   * @return Google_Service_CloudLifeSciences_Mount[]
    */
   public function getMounts()
   {

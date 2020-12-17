@@ -40,14 +40,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1EvaluationJob ex
     return $this->annotationSpecSet;
   }
   /**
-   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Attempt
+   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Attempt[]
    */
   public function setAttempts($attempts)
   {
     $this->attempts = $attempts;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Attempt
+   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Attempt[]
    */
   public function getAttempts()
   {

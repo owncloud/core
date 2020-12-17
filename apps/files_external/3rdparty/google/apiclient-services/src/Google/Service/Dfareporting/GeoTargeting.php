@@ -31,28 +31,28 @@ class Google_Service_Dfareporting_GeoTargeting extends Google_Collection
   protected $regionsDataType = 'array';
 
   /**
-   * @param Google_Service_Dfareporting_City
+   * @param Google_Service_Dfareporting_City[]
    */
   public function setCities($cities)
   {
     $this->cities = $cities;
   }
   /**
-   * @return Google_Service_Dfareporting_City
+   * @return Google_Service_Dfareporting_City[]
    */
   public function getCities()
   {
     return $this->cities;
   }
   /**
-   * @param Google_Service_Dfareporting_Country
+   * @param Google_Service_Dfareporting_Country[]
    */
   public function setCountries($countries)
   {
     $this->countries = $countries;
   }
   /**
-   * @return Google_Service_Dfareporting_Country
+   * @return Google_Service_Dfareporting_Country[]
    */
   public function getCountries()
   {
@@ -67,42 +67,42 @@ class Google_Service_Dfareporting_GeoTargeting extends Google_Collection
     return $this->excludeCountries;
   }
   /**
-   * @param Google_Service_Dfareporting_Metro
+   * @param Google_Service_Dfareporting_Metro[]
    */
   public function setMetros($metros)
   {
     $this->metros = $metros;
   }
   /**
-   * @return Google_Service_Dfareporting_Metro
+   * @return Google_Service_Dfareporting_Metro[]
    */
   public function getMetros()
   {
     return $this->metros;
   }
   /**
-   * @param Google_Service_Dfareporting_PostalCode
+   * @param Google_Service_Dfareporting_PostalCode[]
    */
   public function setPostalCodes($postalCodes)
   {
     $this->postalCodes = $postalCodes;
   }
   /**
-   * @return Google_Service_Dfareporting_PostalCode
+   * @return Google_Service_Dfareporting_PostalCode[]
    */
   public function getPostalCodes()
   {
     return $this->postalCodes;
   }
   /**
-   * @param Google_Service_Dfareporting_Region
+   * @param Google_Service_Dfareporting_Region[]
    */
   public function setRegions($regions)
   {
     $this->regions = $regions;
   }
   /**
-   * @return Google_Service_Dfareporting_Region
+   * @return Google_Service_Dfareporting_Region[]
    */
   public function getRegions()
   {

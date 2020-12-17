@@ -31,14 +31,14 @@ class Google_Service_Sheets_BatchGetValuesByDataFilterResponse extends Google_Co
     return $this->spreadsheetId;
   }
   /**
-   * @param Google_Service_Sheets_MatchedValueRange
+   * @param Google_Service_Sheets_MatchedValueRange[]
    */
   public function setValueRanges($valueRanges)
   {
     $this->valueRanges = $valueRanges;
   }
   /**
-   * @return Google_Service_Sheets_MatchedValueRange
+   * @return Google_Service_Sheets_MatchedValueRange[]
    */
   public function getValueRanges()
   {

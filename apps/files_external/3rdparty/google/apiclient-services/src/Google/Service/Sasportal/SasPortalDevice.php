@@ -77,14 +77,14 @@ class Google_Service_Sasportal_SasPortalDevice extends Google_Collection
     return $this->fccId;
   }
   /**
-   * @param Google_Service_Sasportal_SasPortalDeviceGrant
+   * @param Google_Service_Sasportal_SasPortalDeviceGrant[]
    */
   public function setGrants($grants)
   {
     $this->grants = $grants;
   }
   /**
-   * @return Google_Service_Sasportal_SasPortalDeviceGrant
+   * @return Google_Service_Sasportal_SasPortalDeviceGrant[]
    */
   public function getGrants()
   {

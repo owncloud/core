@@ -32,14 +32,14 @@ class Google_Service_GameServices_ListRealmsResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_GameServices_Realm
+   * @param Google_Service_GameServices_Realm[]
    */
   public function setRealms($realms)
   {
     $this->realms = $realms;
   }
   /**
-   * @return Google_Service_GameServices_Realm
+   * @return Google_Service_GameServices_Realm[]
    */
   public function getRealms()
   {

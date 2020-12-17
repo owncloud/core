@@ -22,14 +22,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2CategoricalStatsResult extends Google
   protected $valueFrequencyHistogramBucketsDataType = 'array';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2CategoricalStatsHistogramBucket
+   * @param Google_Service_DLP_GooglePrivacyDlpV2CategoricalStatsHistogramBucket[]
    */
   public function setValueFrequencyHistogramBuckets($valueFrequencyHistogramBuckets)
   {
     $this->valueFrequencyHistogramBuckets = $valueFrequencyHistogramBuckets;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2CategoricalStatsHistogramBucket
+   * @return Google_Service_DLP_GooglePrivacyDlpV2CategoricalStatsHistogramBucket[]
    */
   public function getValueFrequencyHistogramBuckets()
   {

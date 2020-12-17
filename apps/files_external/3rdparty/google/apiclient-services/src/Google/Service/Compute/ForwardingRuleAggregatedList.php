@@ -37,14 +37,14 @@ class Google_Service_Compute_ForwardingRuleAggregatedList extends Google_Collect
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_ForwardingRulesScopedList
+   * @param Google_Service_Compute_ForwardingRulesScopedList[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_ForwardingRulesScopedList
+   * @return Google_Service_Compute_ForwardingRulesScopedList[]
    */
   public function getItems()
   {

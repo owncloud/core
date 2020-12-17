@@ -23,14 +23,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1VideoClassificat
   public $applyShotDetection;
 
   /**
-   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1AnnotationSpecSetConfig
+   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1AnnotationSpecSetConfig[]
    */
   public function setAnnotationSpecSetConfigs($annotationSpecSetConfigs)
   {
     $this->annotationSpecSetConfigs = $annotationSpecSetConfigs;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1AnnotationSpecSetConfig
+   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1AnnotationSpecSetConfig[]
    */
   public function getAnnotationSpecSetConfigs()
   {

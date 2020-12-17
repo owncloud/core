@@ -25,14 +25,14 @@ class Google_Service_Firestore_GoogleFirestoreAdminV1Index extends Google_Collec
   public $state;
 
   /**
-   * @param Google_Service_Firestore_GoogleFirestoreAdminV1IndexField
+   * @param Google_Service_Firestore_GoogleFirestoreAdminV1IndexField[]
    */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
   /**
-   * @return Google_Service_Firestore_GoogleFirestoreAdminV1IndexField
+   * @return Google_Service_Firestore_GoogleFirestoreAdminV1IndexField[]
    */
   public function getFields()
   {

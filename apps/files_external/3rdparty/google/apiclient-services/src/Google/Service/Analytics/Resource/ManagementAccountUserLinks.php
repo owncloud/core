@@ -59,11 +59,11 @@ class Google_Service_Analytics_Resource_ManagementAccountUserLinks extends Googl
    * @param string $accountId Account ID to retrieve the user links for.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int max-results The maximum number of account-user links to
+   * include in this response.
    * @opt_param int start-index An index of the first account-user link to
    * retrieve. Use this parameter as a pagination mechanism along with the max-
    * results parameter.
-   * @opt_param int max-results The maximum number of account-user links to
-   * include in this response.
    * @return Google_Service_Analytics_EntityUserLinks
    */
   public function listManagementAccountUserLinks($accountId, $optParams = array())

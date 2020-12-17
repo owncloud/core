@@ -26,14 +26,14 @@ class Google_Service_Storage_Policy extends Google_Collection
   public $version;
 
   /**
-   * @param Google_Service_Storage_PolicyBindings
+   * @param Google_Service_Storage_PolicyBindings[]
    */
   public function setBindings($bindings)
   {
     $this->bindings = $bindings;
   }
   /**
-   * @return Google_Service_Storage_PolicyBindings
+   * @return Google_Service_Storage_PolicyBindings[]
    */
   public function getBindings()
   {

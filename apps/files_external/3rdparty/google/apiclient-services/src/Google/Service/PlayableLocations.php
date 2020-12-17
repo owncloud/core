@@ -33,7 +33,7 @@ class Google_Service_PlayableLocations extends Google_Service
 
 
   public $v3;
-  
+
   /**
    * Constructs the internal representation of the PlayableLocations service.
    *

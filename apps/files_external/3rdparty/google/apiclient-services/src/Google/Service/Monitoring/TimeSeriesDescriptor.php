@@ -24,28 +24,28 @@ class Google_Service_Monitoring_TimeSeriesDescriptor extends Google_Collection
   protected $pointDescriptorsDataType = 'array';
 
   /**
-   * @param Google_Service_Monitoring_LabelDescriptor
+   * @param Google_Service_Monitoring_LabelDescriptor[]
    */
   public function setLabelDescriptors($labelDescriptors)
   {
     $this->labelDescriptors = $labelDescriptors;
   }
   /**
-   * @return Google_Service_Monitoring_LabelDescriptor
+   * @return Google_Service_Monitoring_LabelDescriptor[]
    */
   public function getLabelDescriptors()
   {
     return $this->labelDescriptors;
   }
   /**
-   * @param Google_Service_Monitoring_ValueDescriptor
+   * @param Google_Service_Monitoring_ValueDescriptor[]
    */
   public function setPointDescriptors($pointDescriptors)
   {
     $this->pointDescriptors = $pointDescriptors;
   }
   /**
-   * @return Google_Service_Monitoring_ValueDescriptor
+   * @return Google_Service_Monitoring_ValueDescriptor[]
    */
   public function getPointDescriptors()
   {

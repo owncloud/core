@@ -24,14 +24,14 @@ class Google_Service_Blogger_BlogPosts extends Google_Collection
   public $totalItems;
 
   /**
-   * @param Google_Service_Blogger_Post
+   * @param Google_Service_Blogger_Post[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Blogger_Post
+   * @return Google_Service_Blogger_Post[]
    */
   public function getItems()
   {

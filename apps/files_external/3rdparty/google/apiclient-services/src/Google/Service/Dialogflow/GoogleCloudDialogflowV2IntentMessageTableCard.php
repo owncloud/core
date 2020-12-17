@@ -30,28 +30,28 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageTableCard ex
   public $title;
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageBasicCardButton
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageBasicCardButton[]
    */
   public function setButtons($buttons)
   {
     $this->buttons = $buttons;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageBasicCardButton
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageBasicCardButton[]
    */
   public function getButtons()
   {
     return $this->buttons;
   }
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageColumnProperties
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageColumnProperties[]
    */
   public function setColumnProperties($columnProperties)
   {
     $this->columnProperties = $columnProperties;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageColumnProperties
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageColumnProperties[]
    */
   public function getColumnProperties()
   {
@@ -72,14 +72,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageTableCard ex
     return $this->image;
   }
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageTableCardRow
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageTableCardRow[]
    */
   public function setRows($rows)
   {
     $this->rows = $rows;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageTableCardRow
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageTableCardRow[]
    */
   public function getRows()
   {

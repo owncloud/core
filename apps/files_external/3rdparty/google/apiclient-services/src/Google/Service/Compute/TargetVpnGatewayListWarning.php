@@ -32,14 +32,14 @@ class Google_Service_Compute_TargetVpnGatewayListWarning extends Google_Collecti
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_TargetVpnGatewayListWarningData
+   * @param Google_Service_Compute_TargetVpnGatewayListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_TargetVpnGatewayListWarningData
+   * @return Google_Service_Compute_TargetVpnGatewayListWarningData[]
    */
   public function getData()
   {

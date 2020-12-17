@@ -32,14 +32,14 @@ class Google_Service_ShoppingContent_AccountsListLinksResponse extends Google_Co
     return $this->kind;
   }
   /**
-   * @param Google_Service_ShoppingContent_LinkedAccount
+   * @param Google_Service_ShoppingContent_LinkedAccount[]
    */
   public function setLinks($links)
   {
     $this->links = $links;
   }
   /**
-   * @return Google_Service_ShoppingContent_LinkedAccount
+   * @return Google_Service_ShoppingContent_LinkedAccount[]
    */
   public function getLinks()
   {

@@ -86,14 +86,14 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1HyperparameterSpe
     return $this->maxTrials;
   }
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ParameterSpec
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ParameterSpec[]
    */
   public function setParams($params)
   {
     $this->params = $params;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ParameterSpec
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ParameterSpec[]
    */
   public function getParams()
   {

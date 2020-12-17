@@ -76,14 +76,14 @@ class Google_Service_AndroidEnterprise_AppRestrictionsSchemaRestriction extends 
     return $this->key;
   }
   /**
-   * @param Google_Service_AndroidEnterprise_AppRestrictionsSchemaRestriction
+   * @param Google_Service_AndroidEnterprise_AppRestrictionsSchemaRestriction[]
    */
   public function setNestedRestriction($nestedRestriction)
   {
     $this->nestedRestriction = $nestedRestriction;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_AppRestrictionsSchemaRestriction
+   * @return Google_Service_AndroidEnterprise_AppRestrictionsSchemaRestriction[]
    */
   public function getNestedRestriction()
   {

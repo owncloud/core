@@ -66,14 +66,14 @@ class Google_Service_Dataflow_PartialGroupByKeyInstruction extends Google_Collec
     return $this->originalCombineValuesStepName;
   }
   /**
-   * @param Google_Service_Dataflow_SideInputInfo
+   * @param Google_Service_Dataflow_SideInputInfo[]
    */
   public function setSideInputs($sideInputs)
   {
     $this->sideInputs = $sideInputs;
   }
   /**
-   * @return Google_Service_Dataflow_SideInputInfo
+   * @return Google_Service_Dataflow_SideInputInfo[]
    */
   public function getSideInputs()
   {

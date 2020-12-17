@@ -22,14 +22,14 @@ class Google_Service_ServiceUsage_BatchGetServicesResponse extends Google_Collec
   protected $servicesDataType = 'array';
 
   /**
-   * @param Google_Service_ServiceUsage_GoogleApiServiceusageV1Service
+   * @param Google_Service_ServiceUsage_GoogleApiServiceusageV1Service[]
    */
   public function setServices($services)
   {
     $this->services = $services;
   }
   /**
-   * @return Google_Service_ServiceUsage_GoogleApiServiceusageV1Service
+   * @return Google_Service_ServiceUsage_GoogleApiServiceusageV1Service[]
    */
   public function getServices()
   {

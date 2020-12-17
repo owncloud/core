@@ -39,14 +39,14 @@ class Google_Service_ShoppingContent_ProductStatus extends Google_Collection
     return $this->creationDate;
   }
   /**
-   * @param Google_Service_ShoppingContent_ProductStatusDestinationStatus
+   * @param Google_Service_ShoppingContent_ProductStatusDestinationStatus[]
    */
   public function setDestinationStatuses($destinationStatuses)
   {
     $this->destinationStatuses = $destinationStatuses;
   }
   /**
-   * @return Google_Service_ShoppingContent_ProductStatusDestinationStatus
+   * @return Google_Service_ShoppingContent_ProductStatusDestinationStatus[]
    */
   public function getDestinationStatuses()
   {
@@ -61,14 +61,14 @@ class Google_Service_ShoppingContent_ProductStatus extends Google_Collection
     return $this->googleExpirationDate;
   }
   /**
-   * @param Google_Service_ShoppingContent_ProductStatusItemLevelIssue
+   * @param Google_Service_ShoppingContent_ProductStatusItemLevelIssue[]
    */
   public function setItemLevelIssues($itemLevelIssues)
   {
     $this->itemLevelIssues = $itemLevelIssues;
   }
   /**
-   * @return Google_Service_ShoppingContent_ProductStatusItemLevelIssue
+   * @return Google_Service_ShoppingContent_ProductStatusItemLevelIssue[]
    */
   public function getItemLevelIssues()
   {

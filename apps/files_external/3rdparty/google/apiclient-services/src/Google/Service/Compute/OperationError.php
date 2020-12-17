@@ -22,14 +22,14 @@ class Google_Service_Compute_OperationError extends Google_Collection
   protected $errorsDataType = 'array';
 
   /**
-   * @param Google_Service_Compute_OperationErrorErrors
+   * @param Google_Service_Compute_OperationErrorErrors[]
    */
   public function setErrors($errors)
   {
     $this->errors = $errors;
   }
   /**
-   * @return Google_Service_Compute_OperationErrorErrors
+   * @return Google_Service_Compute_OperationErrorErrors[]
    */
   public function getErrors()
   {

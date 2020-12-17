@@ -88,14 +88,14 @@ class Google_Service_ShoppingContent_LiasettingsCustomBatchResponseEntry extends
     return $this->liaSettings;
   }
   /**
-   * @param Google_Service_ShoppingContent_PosDataProviders
+   * @param Google_Service_ShoppingContent_PosDataProviders[]
    */
   public function setPosDataProviders($posDataProviders)
   {
     $this->posDataProviders = $posDataProviders;
   }
   /**
-   * @return Google_Service_ShoppingContent_PosDataProviders
+   * @return Google_Service_ShoppingContent_PosDataProviders[]
    */
   public function getPosDataProviders()
   {

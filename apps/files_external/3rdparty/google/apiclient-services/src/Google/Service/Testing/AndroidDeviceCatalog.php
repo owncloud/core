@@ -26,14 +26,14 @@ class Google_Service_Testing_AndroidDeviceCatalog extends Google_Collection
   protected $versionsDataType = 'array';
 
   /**
-   * @param Google_Service_Testing_AndroidModel
+   * @param Google_Service_Testing_AndroidModel[]
    */
   public function setModels($models)
   {
     $this->models = $models;
   }
   /**
-   * @return Google_Service_Testing_AndroidModel
+   * @return Google_Service_Testing_AndroidModel[]
    */
   public function getModels()
   {
@@ -54,14 +54,14 @@ class Google_Service_Testing_AndroidDeviceCatalog extends Google_Collection
     return $this->runtimeConfiguration;
   }
   /**
-   * @param Google_Service_Testing_AndroidVersion
+   * @param Google_Service_Testing_AndroidVersion[]
    */
   public function setVersions($versions)
   {
     $this->versions = $versions;
   }
   /**
-   * @return Google_Service_Testing_AndroidVersion
+   * @return Google_Service_Testing_AndroidVersion[]
    */
   public function getVersions()
   {

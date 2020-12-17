@@ -88,17 +88,17 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsQueries extends Go
    *
    * @opt_param string dataset Filter response list by dataset. Example: `api`,
    * `mint`
-   * @opt_param string submittedBy Filter response list by user who submitted
-   * queries.
-   * @opt_param string inclQueriesWithoutReport Flag to include asynchronous
-   * queries that don't have a report denifition.
    * @opt_param string from Filter response list by returning asynchronous queries
    * that created after this date time. Time must be in ISO date-time format like
    * '2011-12-03T10:15:30Z'.
+   * @opt_param string inclQueriesWithoutReport Flag to include asynchronous
+   * queries that don't have a report denifition.
+   * @opt_param string status Filter response list by asynchronous query status.
+   * @opt_param string submittedBy Filter response list by user who submitted
+   * queries.
    * @opt_param string to Filter response list by returning asynchronous queries
    * that created before this date time. Time must be in ISO date-time format like
    * '2011-12-03T10:16:30Z'.
-   * @opt_param string status Filter response list by asynchronous query status.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ListAsyncQueriesResponse
    */
   public function listOrganizationsEnvironmentsQueries($parent, $optParams = array())

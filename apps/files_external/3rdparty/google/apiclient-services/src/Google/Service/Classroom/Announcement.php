@@ -96,14 +96,14 @@ class Google_Service_Classroom_Announcement extends Google_Collection
     return $this->individualStudentsOptions;
   }
   /**
-   * @param Google_Service_Classroom_Material
+   * @param Google_Service_Classroom_Material[]
    */
   public function setMaterials($materials)
   {
     $this->materials = $materials;
   }
   /**
-   * @return Google_Service_Classroom_Material
+   * @return Google_Service_Classroom_Material[]
    */
   public function getMaterials()
   {

@@ -22,14 +22,14 @@ class Google_Service_CloudSearch_Metaline extends Google_Collection
   protected $propertiesDataType = 'array';
 
   /**
-   * @param Google_Service_CloudSearch_DisplayedProperty
+   * @param Google_Service_CloudSearch_DisplayedProperty[]
    */
   public function setProperties($properties)
   {
     $this->properties = $properties;
   }
   /**
-   * @return Google_Service_CloudSearch_DisplayedProperty
+   * @return Google_Service_CloudSearch_DisplayedProperty[]
    */
   public function getProperties()
   {

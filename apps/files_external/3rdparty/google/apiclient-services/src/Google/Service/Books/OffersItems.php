@@ -49,14 +49,14 @@ class Google_Service_Books_OffersItems extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Books_OffersItemsItems
+   * @param Google_Service_Books_OffersItemsItems[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Books_OffersItemsItems
+   * @return Google_Service_Books_OffersItemsItems[]
    */
   public function getItems()
   {

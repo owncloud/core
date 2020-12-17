@@ -48,14 +48,14 @@ class Google_Service_YouTube_LiveBroadcastListResponse extends Google_Collection
     return $this->eventId;
   }
   /**
-   * @param Google_Service_YouTube_LiveBroadcast
+   * @param Google_Service_YouTube_LiveBroadcast[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_YouTube_LiveBroadcast
+   * @return Google_Service_YouTube_LiveBroadcast[]
    */
   public function getItems()
   {

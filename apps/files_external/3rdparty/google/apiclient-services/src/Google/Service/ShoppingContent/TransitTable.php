@@ -32,14 +32,14 @@ class Google_Service_ShoppingContent_TransitTable extends Google_Collection
     return $this->postalCodeGroupNames;
   }
   /**
-   * @param Google_Service_ShoppingContent_TransitTableTransitTimeRow
+   * @param Google_Service_ShoppingContent_TransitTableTransitTimeRow[]
    */
   public function setRows($rows)
   {
     $this->rows = $rows;
   }
   /**
-   * @return Google_Service_ShoppingContent_TransitTableTransitTimeRow
+   * @return Google_Service_ShoppingContent_TransitTableTransitTimeRow[]
    */
   public function getRows()
   {

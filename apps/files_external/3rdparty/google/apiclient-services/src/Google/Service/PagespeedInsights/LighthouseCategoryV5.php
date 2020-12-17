@@ -27,14 +27,14 @@ class Google_Service_PagespeedInsights_LighthouseCategoryV5 extends Google_Colle
   public $title;
 
   /**
-   * @param Google_Service_PagespeedInsights_AuditRefs
+   * @param Google_Service_PagespeedInsights_AuditRefs[]
    */
   public function setAuditRefs($auditRefs)
   {
     $this->auditRefs = $auditRefs;
   }
   /**
-   * @return Google_Service_PagespeedInsights_AuditRefs
+   * @return Google_Service_PagespeedInsights_AuditRefs[]
    */
   public function getAuditRefs()
   {

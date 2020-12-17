@@ -38,14 +38,14 @@ class Google_Service_CloudSearch_CustomerIndexStats extends Google_Collection
     return $this->date;
   }
   /**
-   * @param Google_Service_CloudSearch_ItemCountByStatus
+   * @param Google_Service_CloudSearch_ItemCountByStatus[]
    */
   public function setItemCountByStatus($itemCountByStatus)
   {
     $this->itemCountByStatus = $itemCountByStatus;
   }
   /**
-   * @return Google_Service_CloudSearch_ItemCountByStatus
+   * @return Google_Service_CloudSearch_ItemCountByStatus[]
    */
   public function getItemCountByStatus()
   {

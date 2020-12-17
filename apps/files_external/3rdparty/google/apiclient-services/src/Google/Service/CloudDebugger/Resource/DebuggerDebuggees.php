@@ -31,12 +31,12 @@ class Google_Service_CloudDebugger_Resource_DebuggerDebuggees extends Google_Ser
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string clientVersion Required. The client version making the call.
+   * Schema: `domain/type/version` (e.g., `google.com/intellij/v1`).
    * @opt_param bool includeInactive When set to `true`, the result includes all
    * debuggees. Otherwise, the result includes only debuggees that are active.
    * @opt_param string project Required. Project number of a Google Cloud project
    * whose debuggees to list.
-   * @opt_param string clientVersion Required. The client version making the call.
-   * Schema: `domain/type/version` (e.g., `google.com/intellij/v1`).
    * @return Google_Service_CloudDebugger_ListDebuggeesResponse
    */
   public function listDebuggerDebuggees($optParams = array())

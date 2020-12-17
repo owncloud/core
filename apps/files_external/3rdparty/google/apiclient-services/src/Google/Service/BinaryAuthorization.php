@@ -38,7 +38,7 @@ class Google_Service_BinaryAuthorization extends Google_Service
   public $projects;
   public $projects_attestors;
   public $projects_policy;
-  
+
   /**
    * Constructs the internal representation of the BinaryAuthorization service.
    *

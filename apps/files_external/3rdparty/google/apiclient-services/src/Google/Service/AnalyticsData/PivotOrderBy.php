@@ -31,14 +31,14 @@ class Google_Service_AnalyticsData_PivotOrderBy extends Google_Collection
     return $this->metricName;
   }
   /**
-   * @param Google_Service_AnalyticsData_PivotSelection
+   * @param Google_Service_AnalyticsData_PivotSelection[]
    */
   public function setPivotSelections($pivotSelections)
   {
     $this->pivotSelections = $pivotSelections;
   }
   /**
-   * @return Google_Service_AnalyticsData_PivotSelection
+   * @return Google_Service_AnalyticsData_PivotSelection[]
    */
   public function getPivotSelections()
   {

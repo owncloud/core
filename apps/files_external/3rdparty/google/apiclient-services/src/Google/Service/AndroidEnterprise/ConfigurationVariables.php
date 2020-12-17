@@ -31,14 +31,14 @@ class Google_Service_AndroidEnterprise_ConfigurationVariables extends Google_Col
     return $this->mcmId;
   }
   /**
-   * @param Google_Service_AndroidEnterprise_VariableSet
+   * @param Google_Service_AndroidEnterprise_VariableSet[]
    */
   public function setVariableSet($variableSet)
   {
     $this->variableSet = $variableSet;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_VariableSet
+   * @return Google_Service_AndroidEnterprise_VariableSet[]
    */
   public function getVariableSet()
   {

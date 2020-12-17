@@ -31,14 +31,14 @@ class Google_Service_Sheets_WaterfallChartSeries extends Google_Collection
   protected $subtotalColumnsStyleDataType = '';
 
   /**
-   * @param Google_Service_Sheets_WaterfallChartCustomSubtotal
+   * @param Google_Service_Sheets_WaterfallChartCustomSubtotal[]
    */
   public function setCustomSubtotals($customSubtotals)
   {
     $this->customSubtotals = $customSubtotals;
   }
   /**
-   * @return Google_Service_Sheets_WaterfallChartCustomSubtotal
+   * @return Google_Service_Sheets_WaterfallChartCustomSubtotal[]
    */
   public function getCustomSubtotals()
   {

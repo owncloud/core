@@ -32,14 +32,14 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1AutoScaling exten
     return $this->maxNodes;
   }
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1MetricSpec
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1MetricSpec[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1MetricSpec
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1MetricSpec[]
    */
   public function getMetrics()
   {

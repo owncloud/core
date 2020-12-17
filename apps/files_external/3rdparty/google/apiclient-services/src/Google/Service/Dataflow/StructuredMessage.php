@@ -40,14 +40,14 @@ class Google_Service_Dataflow_StructuredMessage extends Google_Collection
     return $this->messageText;
   }
   /**
-   * @param Google_Service_Dataflow_Parameter
+   * @param Google_Service_Dataflow_Parameter[]
    */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
   /**
-   * @return Google_Service_Dataflow_Parameter
+   * @return Google_Service_Dataflow_Parameter[]
    */
   public function getParameters()
   {

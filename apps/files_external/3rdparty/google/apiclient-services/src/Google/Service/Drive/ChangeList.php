@@ -25,14 +25,14 @@ class Google_Service_Drive_ChangeList extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Drive_Change
+   * @param Google_Service_Drive_Change[]
    */
   public function setChanges($changes)
   {
     $this->changes = $changes;
   }
   /**
-   * @return Google_Service_Drive_Change
+   * @return Google_Service_Drive_Change[]
    */
   public function getChanges()
   {

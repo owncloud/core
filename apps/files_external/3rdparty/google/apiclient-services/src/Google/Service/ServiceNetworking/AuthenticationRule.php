@@ -48,14 +48,14 @@ class Google_Service_ServiceNetworking_AuthenticationRule extends Google_Collect
     return $this->oauth;
   }
   /**
-   * @param Google_Service_ServiceNetworking_AuthRequirement
+   * @param Google_Service_ServiceNetworking_AuthRequirement[]
    */
   public function setRequirements($requirements)
   {
     $this->requirements = $requirements;
   }
   /**
-   * @return Google_Service_ServiceNetworking_AuthRequirement
+   * @return Google_Service_ServiceNetworking_AuthRequirement[]
    */
   public function getRequirements()
   {

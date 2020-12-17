@@ -26,14 +26,14 @@ class Google_Service_ServiceManagement_ConfigChange extends Google_Collection
   public $oldValue;
 
   /**
-   * @param Google_Service_ServiceManagement_Advice
+   * @param Google_Service_ServiceManagement_Advice[]
    */
   public function setAdvices($advices)
   {
     $this->advices = $advices;
   }
   /**
-   * @return Google_Service_ServiceManagement_Advice
+   * @return Google_Service_ServiceManagement_Advice[]
    */
   public function getAdvices()
   {

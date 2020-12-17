@@ -27,14 +27,14 @@ class Google_Service_Spanner_PartitionQueryRequest extends Google_Model
   protected $transactionDataType = '';
 
   /**
-   * @param Google_Service_Spanner_Type
+   * @param Google_Service_Spanner_Type[]
    */
   public function setParamTypes($paramTypes)
   {
     $this->paramTypes = $paramTypes;
   }
   /**
-   * @return Google_Service_Spanner_Type
+   * @return Google_Service_Spanner_Type[]
    */
   public function getParamTypes()
   {

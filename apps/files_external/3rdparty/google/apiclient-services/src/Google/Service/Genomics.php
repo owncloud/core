@@ -38,7 +38,7 @@ class Google_Service_Genomics extends Google_Service
       "https://www.googleapis.com/auth/genomics";
 
   public $operations;
-  
+
   /**
    * Constructs the internal representation of the Genomics service.
    *
@@ -89,15 +89,15 @@ class Google_Service_Genomics extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
                 'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

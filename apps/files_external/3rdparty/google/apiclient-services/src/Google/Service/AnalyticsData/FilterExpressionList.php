@@ -22,14 +22,14 @@ class Google_Service_AnalyticsData_FilterExpressionList extends Google_Collectio
   protected $expressionsDataType = 'array';
 
   /**
-   * @param Google_Service_AnalyticsData_FilterExpression
+   * @param Google_Service_AnalyticsData_FilterExpression[]
    */
   public function setExpressions($expressions)
   {
     $this->expressions = $expressions;
   }
   /**
-   * @return Google_Service_AnalyticsData_FilterExpression
+   * @return Google_Service_AnalyticsData_FilterExpression[]
    */
   public function getExpressions()
   {

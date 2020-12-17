@@ -37,7 +37,7 @@ class Google_Service_CloudAsset extends Google_Service
   public $feeds;
   public $operations;
   public $v1;
-  
+
   /**
    * Constructs the internal representation of the CloudAsset service.
    *
@@ -148,13 +148,31 @@ class Google_Service_CloudAsset extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'analysisQuery.accessSelector.permissions' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
+                ),
+                'analysisQuery.accessSelector.roles' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
+                ),
                 'analysisQuery.identitySelector.identity' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'analysisQuery.resourceSelector.fullResourceName' => array(
+                'analysisQuery.options.analyzeServiceAccountImpersonation' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'boolean',
+                ),
+                'analysisQuery.options.expandGroups' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
+                'analysisQuery.options.expandResources' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
                 ),
                 'analysisQuery.options.expandRoles' => array(
                   'location' => 'query',
@@ -168,31 +186,13 @@ class Google_Service_CloudAsset extends Google_Service
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
+                'analysisQuery.resourceSelector.fullResourceName' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'executionTimeout' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-                'analysisQuery.accessSelector.roles' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                  'repeated' => true,
-                ),
-                'analysisQuery.options.expandGroups' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
-                'analysisQuery.accessSelector.permissions' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                  'repeated' => true,
-                ),
-                'analysisQuery.options.analyzeServiceAccountImpersonation' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
-                'analysisQuery.options.expandResources' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
                 ),
               ),
             ),'analyzeIamPolicyLongrunning' => array(
@@ -214,11 +214,12 @@ class Google_Service_CloudAsset extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'contentType' => array(
+                'assetNames' => array(
                   'location' => 'query',
                   'type' => 'string',
+                  'repeated' => true,
                 ),
-                'readTimeWindow.startTime' => array(
+                'contentType' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -226,10 +227,9 @@ class Google_Service_CloudAsset extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'assetNames' => array(
+                'readTimeWindow.startTime' => array(
                   'location' => 'query',
                   'type' => 'string',
-                  'repeated' => true,
                 ),
               ),
             ),'exportAssets' => array(
@@ -273,11 +273,12 @@ class Google_Service_CloudAsset extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'assetTypes' => array(
                   'location' => 'query',
                   'type' => 'string',
+                  'repeated' => true,
                 ),
-                'query' => array(
+                'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -285,14 +286,13 @@ class Google_Service_CloudAsset extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'orderBy' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'assetTypes' => array(
+                'query' => array(
                   'location' => 'query',
                   'type' => 'string',
-                  'repeated' => true,
                 ),
               ),
             ),

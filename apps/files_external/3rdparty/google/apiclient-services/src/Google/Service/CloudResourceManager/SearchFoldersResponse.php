@@ -23,14 +23,14 @@ class Google_Service_CloudResourceManager_SearchFoldersResponse extends Google_C
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudResourceManager_Folder
+   * @param Google_Service_CloudResourceManager_Folder[]
    */
   public function setFolders($folders)
   {
     $this->folders = $folders;
   }
   /**
-   * @return Google_Service_CloudResourceManager_Folder
+   * @return Google_Service_CloudResourceManager_Folder[]
    */
   public function getFolders()
   {

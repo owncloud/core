@@ -25,14 +25,14 @@ class Google_Service_Dfareporting_ConversionsBatchInsertRequest extends Google_C
   public $kind;
 
   /**
-   * @param Google_Service_Dfareporting_Conversion
+   * @param Google_Service_Dfareporting_Conversion[]
    */
   public function setConversions($conversions)
   {
     $this->conversions = $conversions;
   }
   /**
-   * @return Google_Service_Dfareporting_Conversion
+   * @return Google_Service_Dfareporting_Conversion[]
    */
   public function getConversions()
   {

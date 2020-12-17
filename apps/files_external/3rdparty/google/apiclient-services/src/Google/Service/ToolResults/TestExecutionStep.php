@@ -28,28 +28,28 @@ class Google_Service_ToolResults_TestExecutionStep extends Google_Collection
   protected $toolExecutionDataType = '';
 
   /**
-   * @param Google_Service_ToolResults_TestIssue
+   * @param Google_Service_ToolResults_TestIssue[]
    */
   public function setTestIssues($testIssues)
   {
     $this->testIssues = $testIssues;
   }
   /**
-   * @return Google_Service_ToolResults_TestIssue
+   * @return Google_Service_ToolResults_TestIssue[]
    */
   public function getTestIssues()
   {
     return $this->testIssues;
   }
   /**
-   * @param Google_Service_ToolResults_TestSuiteOverview
+   * @param Google_Service_ToolResults_TestSuiteOverview[]
    */
   public function setTestSuiteOverviews($testSuiteOverviews)
   {
     $this->testSuiteOverviews = $testSuiteOverviews;
   }
   /**
-   * @return Google_Service_ToolResults_TestSuiteOverview
+   * @return Google_Service_ToolResults_TestSuiteOverview[]
    */
   public function getTestSuiteOverviews()
   {

@@ -22,14 +22,14 @@ class Google_Service_StreetViewPublish_BatchUpdatePhotosRequest extends Google_C
   protected $updatePhotoRequestsDataType = 'array';
 
   /**
-   * @param Google_Service_StreetViewPublish_UpdatePhotoRequest
+   * @param Google_Service_StreetViewPublish_UpdatePhotoRequest[]
    */
   public function setUpdatePhotoRequests($updatePhotoRequests)
   {
     $this->updatePhotoRequests = $updatePhotoRequests;
   }
   /**
-   * @return Google_Service_StreetViewPublish_UpdatePhotoRequest
+   * @return Google_Service_StreetViewPublish_UpdatePhotoRequest[]
    */
   public function getUpdatePhotoRequests()
   {

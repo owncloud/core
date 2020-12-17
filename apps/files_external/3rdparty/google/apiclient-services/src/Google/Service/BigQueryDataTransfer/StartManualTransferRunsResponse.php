@@ -22,14 +22,14 @@ class Google_Service_BigQueryDataTransfer_StartManualTransferRunsResponse extend
   protected $runsDataType = 'array';
 
   /**
-   * @param Google_Service_BigQueryDataTransfer_TransferRun
+   * @param Google_Service_BigQueryDataTransfer_TransferRun[]
    */
   public function setRuns($runs)
   {
     $this->runs = $runs;
   }
   /**
-   * @return Google_Service_BigQueryDataTransfer_TransferRun
+   * @return Google_Service_BigQueryDataTransfer_TransferRun[]
    */
   public function getRuns()
   {

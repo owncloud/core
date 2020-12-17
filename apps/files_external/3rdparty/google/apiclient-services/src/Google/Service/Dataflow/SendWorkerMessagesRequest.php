@@ -31,14 +31,14 @@ class Google_Service_Dataflow_SendWorkerMessagesRequest extends Google_Collectio
     return $this->location;
   }
   /**
-   * @param Google_Service_Dataflow_WorkerMessage
+   * @param Google_Service_Dataflow_WorkerMessage[]
    */
   public function setWorkerMessages($workerMessages)
   {
     $this->workerMessages = $workerMessages;
   }
   /**
-   * @return Google_Service_Dataflow_WorkerMessage
+   * @return Google_Service_Dataflow_WorkerMessage[]
    */
   public function getWorkerMessages()
   {

@@ -31,14 +31,14 @@ class Google_Service_ShoppingContent_PosListResponse extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_ShoppingContent_PosStore
+   * @param Google_Service_ShoppingContent_PosStore[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_ShoppingContent_PosStore
+   * @return Google_Service_ShoppingContent_PosStore[]
    */
   public function getResources()
   {

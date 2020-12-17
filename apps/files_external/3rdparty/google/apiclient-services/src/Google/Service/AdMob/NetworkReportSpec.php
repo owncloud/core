@@ -46,14 +46,14 @@ class Google_Service_AdMob_NetworkReportSpec extends Google_Collection
     return $this->dateRange;
   }
   /**
-   * @param Google_Service_AdMob_NetworkReportSpecDimensionFilter
+   * @param Google_Service_AdMob_NetworkReportSpecDimensionFilter[]
    */
   public function setDimensionFilters($dimensionFilters)
   {
     $this->dimensionFilters = $dimensionFilters;
   }
   /**
-   * @return Google_Service_AdMob_NetworkReportSpecDimensionFilter
+   * @return Google_Service_AdMob_NetworkReportSpecDimensionFilter[]
    */
   public function getDimensionFilters()
   {
@@ -98,14 +98,14 @@ class Google_Service_AdMob_NetworkReportSpec extends Google_Collection
     return $this->metrics;
   }
   /**
-   * @param Google_Service_AdMob_NetworkReportSpecSortCondition
+   * @param Google_Service_AdMob_NetworkReportSpecSortCondition[]
    */
   public function setSortConditions($sortConditions)
   {
     $this->sortConditions = $sortConditions;
   }
   /**
-   * @return Google_Service_AdMob_NetworkReportSpecSortCondition
+   * @return Google_Service_AdMob_NetworkReportSpecSortCondition[]
    */
   public function getSortConditions()
   {

@@ -23,14 +23,14 @@ class Google_Service_Logging_ListLogMetricsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Logging_LogMetric
+   * @param Google_Service_Logging_LogMetric[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_Logging_LogMetric
+   * @return Google_Service_Logging_LogMetric[]
    */
   public function getMetrics()
   {

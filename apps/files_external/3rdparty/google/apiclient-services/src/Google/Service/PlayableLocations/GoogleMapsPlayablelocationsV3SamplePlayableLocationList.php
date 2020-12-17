@@ -22,14 +22,14 @@ class Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3SamplePlayab
   protected $locationsDataType = 'array';
 
   /**
-   * @param Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3SamplePlayableLocation
+   * @param Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3SamplePlayableLocation[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3SamplePlayableLocation
+   * @return Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3SamplePlayableLocation[]
    */
   public function getLocations()
   {

@@ -40,14 +40,14 @@ class Google_Service_PolyService_ListUserAssetsResponse extends Google_Collectio
     return $this->totalSize;
   }
   /**
-   * @param Google_Service_PolyService_UserAsset
+   * @param Google_Service_PolyService_UserAsset[]
    */
   public function setUserAssets($userAssets)
   {
     $this->userAssets = $userAssets;
   }
   /**
-   * @return Google_Service_PolyService_UserAsset
+   * @return Google_Service_PolyService_UserAsset[]
    */
   public function getUserAssets()
   {

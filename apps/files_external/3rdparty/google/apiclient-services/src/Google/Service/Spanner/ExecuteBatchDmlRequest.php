@@ -33,14 +33,14 @@ class Google_Service_Spanner_ExecuteBatchDmlRequest extends Google_Collection
     return $this->seqno;
   }
   /**
-   * @param Google_Service_Spanner_Statement
+   * @param Google_Service_Spanner_Statement[]
    */
   public function setStatements($statements)
   {
     $this->statements = $statements;
   }
   /**
-   * @return Google_Service_Spanner_Statement
+   * @return Google_Service_Spanner_Statement[]
    */
   public function getStatements()
   {

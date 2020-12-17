@@ -38,14 +38,14 @@ class Google_Service_CloudRun_ServiceSpec extends Google_Collection
     return $this->template;
   }
   /**
-   * @param Google_Service_CloudRun_TrafficTarget
+   * @param Google_Service_CloudRun_TrafficTarget[]
    */
   public function setTraffic($traffic)
   {
     $this->traffic = $traffic;
   }
   /**
-   * @return Google_Service_CloudRun_TrafficTarget
+   * @return Google_Service_CloudRun_TrafficTarget[]
    */
   public function getTraffic()
   {

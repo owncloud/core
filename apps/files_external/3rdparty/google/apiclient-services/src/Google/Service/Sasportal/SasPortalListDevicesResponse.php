@@ -23,14 +23,14 @@ class Google_Service_Sasportal_SasPortalListDevicesResponse extends Google_Colle
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Sasportal_SasPortalDevice
+   * @param Google_Service_Sasportal_SasPortalDevice[]
    */
   public function setDevices($devices)
   {
     $this->devices = $devices;
   }
   /**
-   * @return Google_Service_Sasportal_SasPortalDevice
+   * @return Google_Service_Sasportal_SasPortalDevice[]
    */
   public function getDevices()
   {

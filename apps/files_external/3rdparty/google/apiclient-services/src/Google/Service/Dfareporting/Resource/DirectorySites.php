@@ -60,8 +60,20 @@ class Google_Service_Dfareporting_Resource_DirectorySites extends Google_Service
    * @param string $profileId User profile ID associated with this request.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param bool acceptsInStreamVideoPlacements This search filter is no
+   * longer supported and will have no effect on the results returned.
+   * @opt_param bool acceptsInterstitialPlacements This search filter is no longer
+   * supported and will have no effect on the results returned.
+   * @opt_param bool acceptsPublisherPaidPlacements Select only directory sites
+   * that accept publisher paid placements. This field can be left blank.
+   * @opt_param bool active Select only active directory sites. Leave blank to
+   * retrieve both active and inactive directory sites.
    * @opt_param string dfpNetworkCode Select only directory sites with this Ad
    * Manager network code.
+   * @opt_param string ids Select only directory sites with these IDs.
+   * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string pageToken Value of the nextPageToken from the previous
+   * result page.
    * @opt_param string searchString Allows searching for objects by name, ID or
    * URL. Wildcards (*) are allowed. For example, "directory site*2015" will
    * return objects with names like "directory site June 2015", "directory site
@@ -69,20 +81,8 @@ class Google_Service_Dfareporting_Resource_DirectorySites extends Google_Service
    * wildcards implicitly at the start and the end of the search string. For
    * example, a search string of "directory site" will match objects with name "my
    * directory site", "directory site 2015" or simply, "directory site".
-   * @opt_param string ids Select only directory sites with these IDs.
-   * @opt_param bool acceptsInStreamVideoPlacements This search filter is no
-   * longer supported and will have no effect on the results returned.
    * @opt_param string sortField Field by which to sort the list.
-   * @opt_param string pageToken Value of the nextPageToken from the previous
-   * result page.
-   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string sortOrder Order of sorted results.
-   * @opt_param bool acceptsInterstitialPlacements This search filter is no longer
-   * supported and will have no effect on the results returned.
-   * @opt_param bool active Select only active directory sites. Leave blank to
-   * retrieve both active and inactive directory sites.
-   * @opt_param bool acceptsPublisherPaidPlacements Select only directory sites
-   * that accept publisher paid placements. This field can be left blank.
    * @return Google_Service_Dfareporting_DirectorySitesListResponse
    */
   public function listDirectorySites($profileId, $optParams = array())

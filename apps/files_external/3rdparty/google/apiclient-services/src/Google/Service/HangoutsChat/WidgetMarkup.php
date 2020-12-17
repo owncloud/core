@@ -28,14 +28,14 @@ class Google_Service_HangoutsChat_WidgetMarkup extends Google_Collection
   protected $textParagraphDataType = '';
 
   /**
-   * @param Google_Service_HangoutsChat_Button
+   * @param Google_Service_HangoutsChat_Button[]
    */
   public function setButtons($buttons)
   {
     $this->buttons = $buttons;
   }
   /**
-   * @return Google_Service_HangoutsChat_Button
+   * @return Google_Service_HangoutsChat_Button[]
    */
   public function getButtons()
   {

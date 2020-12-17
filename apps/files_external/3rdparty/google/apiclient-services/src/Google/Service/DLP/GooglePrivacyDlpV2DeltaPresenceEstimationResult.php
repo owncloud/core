@@ -22,14 +22,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2DeltaPresenceEstimationResult extends
   protected $deltaPresenceEstimationHistogramDataType = 'array';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2DeltaPresenceEstimationHistogramBucket
+   * @param Google_Service_DLP_GooglePrivacyDlpV2DeltaPresenceEstimationHistogramBucket[]
    */
   public function setDeltaPresenceEstimationHistogram($deltaPresenceEstimationHistogram)
   {
     $this->deltaPresenceEstimationHistogram = $deltaPresenceEstimationHistogram;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2DeltaPresenceEstimationHistogramBucket
+   * @return Google_Service_DLP_GooglePrivacyDlpV2DeltaPresenceEstimationHistogramBucket[]
    */
   public function getDeltaPresenceEstimationHistogram()
   {

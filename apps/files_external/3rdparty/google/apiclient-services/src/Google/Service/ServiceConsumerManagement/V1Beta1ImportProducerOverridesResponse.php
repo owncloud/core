@@ -22,14 +22,14 @@ class Google_Service_ServiceConsumerManagement_V1Beta1ImportProducerOverridesRes
   protected $overridesDataType = 'array';
 
   /**
-   * @param Google_Service_ServiceConsumerManagement_V1Beta1QuotaOverride
+   * @param Google_Service_ServiceConsumerManagement_V1Beta1QuotaOverride[]
    */
   public function setOverrides($overrides)
   {
     $this->overrides = $overrides;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_V1Beta1QuotaOverride
+   * @return Google_Service_ServiceConsumerManagement_V1Beta1QuotaOverride[]
    */
   public function getOverrides()
   {

@@ -42,14 +42,14 @@ class Google_Service_Slides_CreateSlideRequest extends Google_Collection
     return $this->objectId;
   }
   /**
-   * @param Google_Service_Slides_LayoutPlaceholderIdMapping
+   * @param Google_Service_Slides_LayoutPlaceholderIdMapping[]
    */
   public function setPlaceholderIdMappings($placeholderIdMappings)
   {
     $this->placeholderIdMappings = $placeholderIdMappings;
   }
   /**
-   * @return Google_Service_Slides_LayoutPlaceholderIdMapping
+   * @return Google_Service_Slides_LayoutPlaceholderIdMapping[]
    */
   public function getPlaceholderIdMappings()
   {

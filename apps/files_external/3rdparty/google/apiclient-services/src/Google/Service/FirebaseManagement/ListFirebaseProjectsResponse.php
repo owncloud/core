@@ -31,14 +31,14 @@ class Google_Service_FirebaseManagement_ListFirebaseProjectsResponse extends Goo
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_FirebaseManagement_FirebaseProject
+   * @param Google_Service_FirebaseManagement_FirebaseProject[]
    */
   public function setResults($results)
   {
     $this->results = $results;
   }
   /**
-   * @return Google_Service_FirebaseManagement_FirebaseProject
+   * @return Google_Service_FirebaseManagement_FirebaseProject[]
    */
   public function getResults()
   {

@@ -68,14 +68,14 @@ class Google_Service_CertificateAuthorityService_CertificateAuthorityPolicy exte
     return $this->allowedIssuanceModes;
   }
   /**
-   * @param Google_Service_CertificateAuthorityService_Subject
+   * @param Google_Service_CertificateAuthorityService_Subject[]
    */
   public function setAllowedLocationsAndOrganizations($allowedLocationsAndOrganizations)
   {
     $this->allowedLocationsAndOrganizations = $allowedLocationsAndOrganizations;
   }
   /**
-   * @return Google_Service_CertificateAuthorityService_Subject
+   * @return Google_Service_CertificateAuthorityService_Subject[]
    */
   public function getAllowedLocationsAndOrganizations()
   {

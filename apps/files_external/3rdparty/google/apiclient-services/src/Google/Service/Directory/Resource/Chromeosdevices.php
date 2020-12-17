@@ -26,10 +26,25 @@
 class Google_Service_Directory_Resource_Chromeosdevices extends Google_Service_Resource
 {
   /**
-   * Take action on Chrome OS Device (chromeosdevices.action)
+   * Takes an action that affects a Chrome OS Device. This includes
+   * deprovisioning, disabling, and re-enabling devices. *Warning:* *
+   * Deprovisioning a device will stop device policy syncing and remove device-
+   * level printers. After a device is deprovisioned, it must be wiped before it
+   * can be re-enrolled. * Lost or stolen devices should use the disable action. *
+   * Re-enabling a disabled device will consume a device license. If you do not
+   * have sufficient licenses available when completing the re-enable action, you
+   * will receive an error. For more information about deprovisioning and
+   * disabling devices, visit the [help
+   * center](https://support.google.com/chrome/a/answer/3523633).
+   * (chromeosdevices.action)
    *
-   * @param string $customerId Immutable ID of the G Suite account
-   * @param string $resourceId Immutable ID of Chrome OS Device
+   * @param string $customerId The unique ID for the customer's G Suite account.
+   * As an account administrator, you can also use the `my_customer` alias to
+   * represent your account's `customerId`. The `customerId` is also returned as
+   * part of the [Users resource](/admin-sdk/directory/v1/reference/users).
+   * @param string $resourceId The unique ID of the device. The `resourceId`s are
+   * returned in the response from the [chromeosdevices.list](/admin-
+   * sdk/directory/v1/reference/chromeosdevices/list) method.
    * @param Google_Service_Directory_ChromeOsDeviceAction $postBody
    * @param array $optParams Optional parameters.
    */
@@ -40,14 +55,19 @@ class Google_Service_Directory_Resource_Chromeosdevices extends Google_Service_R
     return $this->call('action', array($params));
   }
   /**
-   * Retrieve Chrome OS Device (chromeosdevices.get)
+   * Retrieves a Chrome OS device's properties. (chromeosdevices.get)
    *
-   * @param string $customerId Immutable ID of the G Suite account
-   * @param string $deviceId Immutable ID of Chrome OS Device
+   * @param string $customerId The unique ID for the customer's G Suite account.
+   * As an account administrator, you can also use the `my_customer` alias to
+   * represent your account's `customerId`. The `customerId` is also returned as
+   * part of the [Users resource](/admin-sdk/directory/v1/reference/users).
+   * @param string $deviceId The unique ID of the device. The `deviceId`s are
+   * returned in the response from the [chromeosdevices.list](/admin-
+   * sdk/directory/v1/reference/chromeosdevices/list) method.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string projection Restrict information returned to a set of
-   * selected fields.
+   * @opt_param string projection Determines whether the response contains the
+   * full list of properties or only a subset.
    * @return Google_Service_Directory_ChromeOsDevice
    */
   public function get($customerId, $deviceId, $optParams = array())
@@ -57,22 +77,28 @@ class Google_Service_Directory_Resource_Chromeosdevices extends Google_Service_R
     return $this->call('get', array($params), "Google_Service_Directory_ChromeOsDevice");
   }
   /**
-   * Retrieve all Chrome OS Devices of a customer (paginated)
+   * Retrieves a paginated list of Chrome OS devices within an account.
    * (chromeosdevices.listChromeosdevices)
    *
-   * @param string $customerId Immutable ID of the G Suite account
+   * @param string $customerId The unique ID for the customer's G Suite account.
+   * As an account administrator, you can also use the `my_customer` alias to
+   * represent your account's `customerId`. The `customerId` is also returned as
+   * part of the [Users resource](/admin-sdk/directory/v1/reference/users).
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string orderBy Device property to use for sorting results.
+   * @opt_param string orgUnitPath The full path of the organizational unit or its
+   * unique ID.
+   * @opt_param string pageToken The `pageToken` query parameter is used to
+   * request the next page of query results. The follow-on request's `pageToken`
+   * query parameter is the `nextPageToken` from your previous response.
    * @opt_param string projection Restrict information returned to a set of
    * selected fields.
-   * @opt_param string orgUnitPath Full path of the organizational unit or its ID
-   * @opt_param string sortOrder Whether to return results in ascending or
-   * descending order. Only of use when orderBy is also used
    * @opt_param string query Search string in the format given at
    * http://support.google.com/chromeos/a/bin/answer.py?answer=1698333
-   * @opt_param string orderBy Column to use for sorting results
-   * @opt_param int maxResults Maximum number of results to return.
-   * @opt_param string pageToken Token to specify next page in the list
+   * @opt_param string sortOrder Whether to return results in ascending or
+   * descending order. Must be used with the `orderBy` parameter.
    * @return Google_Service_Directory_ChromeOsDevices
    */
   public function listChromeosdevices($customerId, $optParams = array())
@@ -82,8 +108,8 @@ class Google_Service_Directory_Resource_Chromeosdevices extends Google_Service_R
     return $this->call('list', array($params), "Google_Service_Directory_ChromeOsDevices");
   }
   /**
-   * Move or insert multiple Chrome OS Devices to organizational unit
-   * (chromeosdevices.moveDevicesToOu)
+   * Move or insert multiple Chrome OS devices to an organizational unit. You can
+   * move up to 50 devices at once. (chromeosdevices.moveDevicesToOu)
    *
    * @param string $customerId Immutable ID of the G Suite account
    * @param string $orgUnitPath Full path of the target organizational unit or its
@@ -98,10 +124,18 @@ class Google_Service_Directory_Resource_Chromeosdevices extends Google_Service_R
     return $this->call('moveDevicesToOu', array($params));
   }
   /**
-   * Patch Chrome OS Device (chromeosdevices.patch)
+   * Updates a device's updatable properties, such as `annotatedUser`,
+   * `annotatedLocation`, `notes`, `orgUnitPath`, or `annotatedAssetId`. This
+   * method supports [patch semantics](/admin-
+   * sdk/directory/v1/guides/performance#patch). (chromeosdevices.patch)
    *
-   * @param string $customerId Immutable ID of the G Suite account
-   * @param string $deviceId Immutable ID of Chrome OS Device
+   * @param string $customerId The unique ID for the customer's G Suite account.
+   * As an account administrator, you can also use the `my_customer` alias to
+   * represent your account's `customerId`. The `customerId` is also returned as
+   * part of the [Users resource](/admin-sdk/directory/v1/reference/users).
+   * @param string $deviceId The unique ID of the device. The `deviceId`s are
+   * returned in the response from the [chromeosdevices.list](/admin-
+   * sdk/v1/reference/chromeosdevices/list) method.
    * @param Google_Service_Directory_ChromeOsDevice $postBody
    * @param array $optParams Optional parameters.
    *
@@ -116,10 +150,17 @@ class Google_Service_Directory_Resource_Chromeosdevices extends Google_Service_R
     return $this->call('patch', array($params), "Google_Service_Directory_ChromeOsDevice");
   }
   /**
-   * Update Chrome OS Device (chromeosdevices.update)
+   * Updates a device's updatable properties, such as `annotatedUser`,
+   * `annotatedLocation`, `notes`, `orgUnitPath`, or `annotatedAssetId`.
+   * (chromeosdevices.update)
    *
-   * @param string $customerId Immutable ID of the G Suite account
-   * @param string $deviceId Immutable ID of Chrome OS Device
+   * @param string $customerId The unique ID for the customer's G Suite account.
+   * As an account administrator, you can also use the `my_customer` alias to
+   * represent your account's `customerId`. The `customerId` is also returned as
+   * part of the [Users resource](/admin-sdk/directory/v1/reference/users).
+   * @param string $deviceId The unique ID of the device. The `deviceId`s are
+   * returned in the response from the [chromeosdevices.list](/admin-
+   * sdk/v1/reference/chromeosdevices/list) method.
    * @param Google_Service_Directory_ChromeOsDevice $postBody
    * @param array $optParams Optional parameters.
    *

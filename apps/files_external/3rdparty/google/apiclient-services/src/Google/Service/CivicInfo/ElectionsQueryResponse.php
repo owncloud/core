@@ -23,14 +23,14 @@ class Google_Service_CivicInfo_ElectionsQueryResponse extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_CivicInfo_Election
+   * @param Google_Service_CivicInfo_Election[]
    */
   public function setElections($elections)
   {
     $this->elections = $elections;
   }
   /**
-   * @return Google_Service_CivicInfo_Election
+   * @return Google_Service_CivicInfo_Election[]
    */
   public function getElections()
   {

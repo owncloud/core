@@ -32,14 +32,14 @@ class Google_Service_Compute_TargetInstanceAggregatedListWarning extends Google_
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_TargetInstanceAggregatedListWarningData
+   * @param Google_Service_Compute_TargetInstanceAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_TargetInstanceAggregatedListWarningData
+   * @return Google_Service_Compute_TargetInstanceAggregatedListWarningData[]
    */
   public function getData()
   {

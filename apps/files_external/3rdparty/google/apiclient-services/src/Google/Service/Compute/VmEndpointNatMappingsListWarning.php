@@ -32,14 +32,14 @@ class Google_Service_Compute_VmEndpointNatMappingsListWarning extends Google_Col
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_VmEndpointNatMappingsListWarningData
+   * @param Google_Service_Compute_VmEndpointNatMappingsListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_VmEndpointNatMappingsListWarningData
+   * @return Google_Service_Compute_VmEndpointNatMappingsListWarningData[]
    */
   public function getData()
   {

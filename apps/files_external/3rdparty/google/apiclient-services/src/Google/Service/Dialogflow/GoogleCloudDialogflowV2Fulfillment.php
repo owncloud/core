@@ -43,14 +43,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2Fulfillment extends Googl
     return $this->enabled;
   }
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2FulfillmentFeature
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2FulfillmentFeature[]
    */
   public function setFeatures($features)
   {
     $this->features = $features;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2FulfillmentFeature
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2FulfillmentFeature[]
    */
   public function getFeatures()
   {

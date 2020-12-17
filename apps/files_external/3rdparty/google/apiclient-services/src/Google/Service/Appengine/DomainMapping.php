@@ -42,14 +42,14 @@ class Google_Service_Appengine_DomainMapping extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Appengine_ResourceRecord
+   * @param Google_Service_Appengine_ResourceRecord[]
    */
   public function setResourceRecords($resourceRecords)
   {
     $this->resourceRecords = $resourceRecords;
   }
   /**
-   * @return Google_Service_Appengine_ResourceRecord
+   * @return Google_Service_Appengine_ResourceRecord[]
    */
   public function getResourceRecords()
   {

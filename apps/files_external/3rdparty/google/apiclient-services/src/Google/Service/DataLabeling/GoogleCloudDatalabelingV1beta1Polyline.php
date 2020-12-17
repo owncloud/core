@@ -22,14 +22,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Polyline extends
   protected $verticesDataType = 'array';
 
   /**
-   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Vertex
+   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Vertex[]
    */
   public function setVertices($vertices)
   {
     $this->vertices = $vertices;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Vertex
+   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Vertex[]
    */
   public function getVertices()
   {

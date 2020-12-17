@@ -74,11 +74,11 @@ class Google_Service_Script_Resource_ProjectsDeployments extends Google_Service_
    * @param string $scriptId The script project's Drive ID.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of deployments on each returned
+   * page. Defaults to 50.
    * @opt_param string pageToken The token for continuing a previous list request
    * on the next page. This should be set to the value of `nextPageToken` from a
    * previous response.
-   * @opt_param int pageSize The maximum number of deployments on each returned
-   * page. Defaults to 50.
    * @return Google_Service_Script_ListDeploymentsResponse
    */
   public function listProjectsDeployments($scriptId, $optParams = array())

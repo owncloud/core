@@ -81,11 +81,11 @@ class Google_Service_AndroidPublisher_Resource_Inappproducts extends Google_Serv
    * @param string $packageName Package name of the app.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string token Pagination token. If empty, list starts at the first
-   * product.
-   * @opt_param string startIndex The index of the first element to return.
    * @opt_param string maxResults How many results the list operation should
    * return.
+   * @opt_param string startIndex The index of the first element to return.
+   * @opt_param string token Pagination token. If empty, list starts at the first
+   * product.
    * @return Google_Service_AndroidPublisher_InappproductsListResponse
    */
   public function listInappproducts($packageName, $optParams = array())

@@ -32,14 +32,14 @@ class Google_Service_Compute_TargetHttpProxiesScopedListWarning extends Google_C
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_TargetHttpProxiesScopedListWarningData
+   * @param Google_Service_Compute_TargetHttpProxiesScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_TargetHttpProxiesScopedListWarningData
+   * @return Google_Service_Compute_TargetHttpProxiesScopedListWarningData[]
    */
   public function getData()
   {

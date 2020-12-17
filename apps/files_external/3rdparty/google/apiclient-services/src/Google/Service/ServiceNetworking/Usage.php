@@ -40,14 +40,14 @@ class Google_Service_ServiceNetworking_Usage extends Google_Collection
     return $this->requirements;
   }
   /**
-   * @param Google_Service_ServiceNetworking_UsageRule
+   * @param Google_Service_ServiceNetworking_UsageRule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_ServiceNetworking_UsageRule
+   * @return Google_Service_ServiceNetworking_UsageRule[]
    */
   public function getRules()
   {

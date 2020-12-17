@@ -135,14 +135,14 @@ class Google_Service_DeploymentManager_DeploymentmanagerResource extends Google_
     return $this->url;
   }
   /**
-   * @param Google_Service_DeploymentManager_DeploymentmanagerResourceWarnings
+   * @param Google_Service_DeploymentManager_DeploymentmanagerResourceWarnings[]
    */
   public function setWarnings($warnings)
   {
     $this->warnings = $warnings;
   }
   /**
-   * @return Google_Service_DeploymentManager_DeploymentmanagerResourceWarnings
+   * @return Google_Service_DeploymentManager_DeploymentmanagerResourceWarnings[]
    */
   public function getWarnings()
   {

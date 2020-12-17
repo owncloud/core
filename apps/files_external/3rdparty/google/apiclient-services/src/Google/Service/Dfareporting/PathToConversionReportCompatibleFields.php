@@ -29,28 +29,28 @@ class Google_Service_Dfareporting_PathToConversionReportCompatibleFields extends
   protected $perInteractionDimensionsDataType = 'array';
 
   /**
-   * @param Google_Service_Dfareporting_Dimension
+   * @param Google_Service_Dfareporting_Dimension[]
    */
   public function setConversionDimensions($conversionDimensions)
   {
     $this->conversionDimensions = $conversionDimensions;
   }
   /**
-   * @return Google_Service_Dfareporting_Dimension
+   * @return Google_Service_Dfareporting_Dimension[]
    */
   public function getConversionDimensions()
   {
     return $this->conversionDimensions;
   }
   /**
-   * @param Google_Service_Dfareporting_Dimension
+   * @param Google_Service_Dfareporting_Dimension[]
    */
   public function setCustomFloodlightVariables($customFloodlightVariables)
   {
     $this->customFloodlightVariables = $customFloodlightVariables;
   }
   /**
-   * @return Google_Service_Dfareporting_Dimension
+   * @return Google_Service_Dfareporting_Dimension[]
    */
   public function getCustomFloodlightVariables()
   {
@@ -65,28 +65,28 @@ class Google_Service_Dfareporting_PathToConversionReportCompatibleFields extends
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dfareporting_Metric
+   * @param Google_Service_Dfareporting_Metric[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_Dfareporting_Metric
+   * @return Google_Service_Dfareporting_Metric[]
    */
   public function getMetrics()
   {
     return $this->metrics;
   }
   /**
-   * @param Google_Service_Dfareporting_Dimension
+   * @param Google_Service_Dfareporting_Dimension[]
    */
   public function setPerInteractionDimensions($perInteractionDimensions)
   {
     $this->perInteractionDimensions = $perInteractionDimensions;
   }
   /**
-   * @return Google_Service_Dfareporting_Dimension
+   * @return Google_Service_Dfareporting_Dimension[]
    */
   public function getPerInteractionDimensions()
   {

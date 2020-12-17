@@ -84,13 +84,6 @@ class Google_Service_GoogleAnalyticsAdmin_Resource_Properties extends Google_Ser
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize The maximum number of resources to return. The
-   * service may return fewer than this value, even if there are additional pages.
-   * If unspecified, at most 50 resources will be returned. The maximum value is
-   * 200; (higher values will be coerced to the maximum)
-   * @opt_param bool showDeleted Whether to include soft-deleted (ie: "trashed")
-   * Properties in the results. Properties can be inspected to determine whether
-   * they are deleted or not.
    * @opt_param string filter Required. An expression for filtering the results of
    * the request. Fields eligible for filtering are: `parent:`(The resource name
    * of the parent account) or `firebase_project:`(The id or number of the linked
@@ -99,10 +92,17 @@ class Google_Service_GoogleAnalyticsAdmin_Resource_Properties extends Google_Ser
    * parent:accounts/123 | The account with account id: 123. | | firebase_project
    * :project-id | The firebase project with id: project-id. | |
    * firebase_project:123 | The firebase project with number: 123. |
+   * @opt_param int pageSize The maximum number of resources to return. The
+   * service may return fewer than this value, even if there are additional pages.
+   * If unspecified, at most 50 resources will be returned. The maximum value is
+   * 200; (higher values will be coerced to the maximum)
    * @opt_param string pageToken A page token, received from a previous
    * `ListProperties` call. Provide this to retrieve the subsequent page. When
    * paginating, all other parameters provided to `ListProperties` must match the
    * call that provided the page token.
+   * @opt_param bool showDeleted Whether to include soft-deleted (ie: "trashed")
+   * Properties in the results. Properties can be inspected to determine whether
+   * they are deleted or not.
    * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaListPropertiesResponse
    */
   public function listProperties($optParams = array())

@@ -42,14 +42,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2FieldTransformation extends Google_Co
     return $this->condition;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2FieldId
+   * @param Google_Service_DLP_GooglePrivacyDlpV2FieldId[]
    */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2FieldId
+   * @return Google_Service_DLP_GooglePrivacyDlpV2FieldId[]
    */
   public function getFields()
   {

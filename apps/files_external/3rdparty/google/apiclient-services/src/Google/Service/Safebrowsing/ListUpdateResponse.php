@@ -31,14 +31,14 @@ class Google_Service_Safebrowsing_ListUpdateResponse extends Google_Collection
   public $threatType;
 
   /**
-   * @param Google_Service_Safebrowsing_ThreatEntrySet
+   * @param Google_Service_Safebrowsing_ThreatEntrySet[]
    */
   public function setAdditions($additions)
   {
     $this->additions = $additions;
   }
   /**
-   * @return Google_Service_Safebrowsing_ThreatEntrySet
+   * @return Google_Service_Safebrowsing_ThreatEntrySet[]
    */
   public function getAdditions()
   {
@@ -75,14 +75,14 @@ class Google_Service_Safebrowsing_ListUpdateResponse extends Google_Collection
     return $this->platformType;
   }
   /**
-   * @param Google_Service_Safebrowsing_ThreatEntrySet
+   * @param Google_Service_Safebrowsing_ThreatEntrySet[]
    */
   public function setRemovals($removals)
   {
     $this->removals = $removals;
   }
   /**
-   * @return Google_Service_Safebrowsing_ThreatEntrySet
+   * @return Google_Service_Safebrowsing_ThreatEntrySet[]
    */
   public function getRemovals()
   {

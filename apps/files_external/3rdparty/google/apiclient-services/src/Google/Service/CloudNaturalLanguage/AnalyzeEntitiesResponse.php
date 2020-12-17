@@ -23,14 +23,14 @@ class Google_Service_CloudNaturalLanguage_AnalyzeEntitiesResponse extends Google
   public $language;
 
   /**
-   * @param Google_Service_CloudNaturalLanguage_Entity
+   * @param Google_Service_CloudNaturalLanguage_Entity[]
    */
   public function setEntities($entities)
   {
     $this->entities = $entities;
   }
   /**
-   * @return Google_Service_CloudNaturalLanguage_Entity
+   * @return Google_Service_CloudNaturalLanguage_Entity[]
    */
   public function getEntities()
   {

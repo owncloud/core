@@ -52,14 +52,14 @@ class Google_Service_Reports_Activity extends Google_Collection
     return $this->etag;
   }
   /**
-   * @param Google_Service_Reports_ActivityEvents
+   * @param Google_Service_Reports_ActivityEvents[]
    */
   public function setEvents($events)
   {
     $this->events = $events;
   }
   /**
-   * @return Google_Service_Reports_ActivityEvents
+   * @return Google_Service_Reports_ActivityEvents[]
    */
   public function getEvents()
   {

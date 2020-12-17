@@ -31,14 +31,14 @@ class Google_Service_AdExchangeBuyerII_ListPublisherProfilesResponse extends Goo
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_AdExchangeBuyerII_PublisherProfile
+   * @param Google_Service_AdExchangeBuyerII_PublisherProfile[]
    */
   public function setPublisherProfiles($publisherProfiles)
   {
     $this->publisherProfiles = $publisherProfiles;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_PublisherProfile
+   * @return Google_Service_AdExchangeBuyerII_PublisherProfile[]
    */
   public function getPublisherProfiles()
   {

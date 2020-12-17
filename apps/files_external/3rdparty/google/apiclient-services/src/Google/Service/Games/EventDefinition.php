@@ -29,14 +29,14 @@ class Google_Service_Games_EventDefinition extends Google_Collection
   public $visibility;
 
   /**
-   * @param Google_Service_Games_EventChild
+   * @param Google_Service_Games_EventChild[]
    */
   public function setChildEvents($childEvents)
   {
     $this->childEvents = $childEvents;
   }
   /**
-   * @return Google_Service_Games_EventChild
+   * @return Google_Service_Games_EventChild[]
    */
   public function getChildEvents()
   {

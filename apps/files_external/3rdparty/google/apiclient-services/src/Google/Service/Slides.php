@@ -54,7 +54,7 @@ class Google_Service_Slides extends Google_Service
 
   public $presentations;
   public $presentations_pages;
-  
+
   /**
    * Constructs the internal representation of the Slides service.
    *

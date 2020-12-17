@@ -43,14 +43,14 @@ class Google_Service_Bigquery_IterationResult extends Google_Collection
     return $this->arimaResult;
   }
   /**
-   * @param Google_Service_Bigquery_ClusterInfo
+   * @param Google_Service_Bigquery_ClusterInfo[]
    */
   public function setClusterInfos($clusterInfos)
   {
     $this->clusterInfos = $clusterInfos;
   }
   /**
-   * @return Google_Service_Bigquery_ClusterInfo
+   * @return Google_Service_Bigquery_ClusterInfo[]
    */
   public function getClusterInfos()
   {

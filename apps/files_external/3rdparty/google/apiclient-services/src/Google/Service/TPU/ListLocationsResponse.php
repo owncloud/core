@@ -23,14 +23,14 @@ class Google_Service_TPU_ListLocationsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_TPU_Location
+   * @param Google_Service_TPU_Location[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_TPU_Location
+   * @return Google_Service_TPU_Location[]
    */
   public function getLocations()
   {

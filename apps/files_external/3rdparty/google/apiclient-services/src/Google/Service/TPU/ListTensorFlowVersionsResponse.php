@@ -32,14 +32,14 @@ class Google_Service_TPU_ListTensorFlowVersionsResponse extends Google_Collectio
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_TPU_TensorFlowVersion
+   * @param Google_Service_TPU_TensorFlowVersion[]
    */
   public function setTensorflowVersions($tensorflowVersions)
   {
     $this->tensorflowVersions = $tensorflowVersions;
   }
   /**
-   * @return Google_Service_TPU_TensorFlowVersion
+   * @return Google_Service_TPU_TensorFlowVersion[]
    */
   public function getTensorflowVersions()
   {

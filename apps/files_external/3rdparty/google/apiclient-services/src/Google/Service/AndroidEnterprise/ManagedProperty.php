@@ -59,14 +59,14 @@ class Google_Service_AndroidEnterprise_ManagedProperty extends Google_Collection
     return $this->valueBundle;
   }
   /**
-   * @param Google_Service_AndroidEnterprise_ManagedPropertyBundle
+   * @param Google_Service_AndroidEnterprise_ManagedPropertyBundle[]
    */
   public function setValueBundleArray($valueBundleArray)
   {
     $this->valueBundleArray = $valueBundleArray;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_ManagedPropertyBundle
+   * @return Google_Service_AndroidEnterprise_ManagedPropertyBundle[]
    */
   public function getValueBundleArray()
   {

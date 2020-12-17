@@ -66,14 +66,14 @@ class Google_Service_CloudSearch_ItemMetadata extends Google_Collection
     return $this->hash;
   }
   /**
-   * @param Google_Service_CloudSearch_Interaction
+   * @param Google_Service_CloudSearch_Interaction[]
    */
   public function setInteractions($interactions)
   {
     $this->interactions = $interactions;
   }
   /**
-   * @return Google_Service_CloudSearch_Interaction
+   * @return Google_Service_CloudSearch_Interaction[]
    */
   public function getInteractions()
   {

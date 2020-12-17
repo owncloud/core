@@ -45,14 +45,14 @@ class Google_Service_GameServices_GameServerConfig extends Google_Collection
     return $this->description;
   }
   /**
-   * @param Google_Service_GameServices_FleetConfig
+   * @param Google_Service_GameServices_FleetConfig[]
    */
   public function setFleetConfigs($fleetConfigs)
   {
     $this->fleetConfigs = $fleetConfigs;
   }
   /**
-   * @return Google_Service_GameServices_FleetConfig
+   * @return Google_Service_GameServices_FleetConfig[]
    */
   public function getFleetConfigs()
   {
@@ -75,14 +75,14 @@ class Google_Service_GameServices_GameServerConfig extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_GameServices_ScalingConfig
+   * @param Google_Service_GameServices_ScalingConfig[]
    */
   public function setScalingConfigs($scalingConfigs)
   {
     $this->scalingConfigs = $scalingConfigs;
   }
   /**
-   * @return Google_Service_GameServices_ScalingConfig
+   * @return Google_Service_GameServices_ScalingConfig[]
    */
   public function getScalingConfigs()
   {

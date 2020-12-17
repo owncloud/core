@@ -22,14 +22,14 @@ class Google_Service_HomeGraphService_QueryRequestPayload extends Google_Collect
   protected $devicesDataType = 'array';
 
   /**
-   * @param Google_Service_HomeGraphService_AgentDeviceId
+   * @param Google_Service_HomeGraphService_AgentDeviceId[]
    */
   public function setDevices($devices)
   {
     $this->devices = $devices;
   }
   /**
-   * @return Google_Service_HomeGraphService_AgentDeviceId
+   * @return Google_Service_HomeGraphService_AgentDeviceId[]
    */
   public function getDevices()
   {

@@ -40,14 +40,14 @@ class Google_Service_Dfareporting_RemarketingListsListResponse extends Google_Co
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Dfareporting_RemarketingList
+   * @param Google_Service_Dfareporting_RemarketingList[]
    */
   public function setRemarketingLists($remarketingLists)
   {
     $this->remarketingLists = $remarketingLists;
   }
   /**
-   * @return Google_Service_Dfareporting_RemarketingList
+   * @return Google_Service_Dfareporting_RemarketingList[]
    */
   public function getRemarketingLists()
   {

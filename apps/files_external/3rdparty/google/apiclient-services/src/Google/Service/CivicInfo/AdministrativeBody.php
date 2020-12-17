@@ -95,14 +95,14 @@ class Google_Service_CivicInfo_AdministrativeBody extends Google_Collection
     return $this->electionNoticeUrl;
   }
   /**
-   * @param Google_Service_CivicInfo_ElectionOfficial
+   * @param Google_Service_CivicInfo_ElectionOfficial[]
    */
   public function setElectionOfficials($electionOfficials)
   {
     $this->electionOfficials = $electionOfficials;
   }
   /**
-   * @return Google_Service_CivicInfo_ElectionOfficial
+   * @return Google_Service_CivicInfo_ElectionOfficial[]
    */
   public function getElectionOfficials()
   {

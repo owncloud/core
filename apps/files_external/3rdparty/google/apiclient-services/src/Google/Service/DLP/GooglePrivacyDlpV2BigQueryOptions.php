@@ -29,28 +29,28 @@ class Google_Service_DLP_GooglePrivacyDlpV2BigQueryOptions extends Google_Collec
   protected $tableReferenceDataType = '';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2FieldId
+   * @param Google_Service_DLP_GooglePrivacyDlpV2FieldId[]
    */
   public function setExcludedFields($excludedFields)
   {
     $this->excludedFields = $excludedFields;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2FieldId
+   * @return Google_Service_DLP_GooglePrivacyDlpV2FieldId[]
    */
   public function getExcludedFields()
   {
     return $this->excludedFields;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2FieldId
+   * @param Google_Service_DLP_GooglePrivacyDlpV2FieldId[]
    */
   public function setIdentifyingFields($identifyingFields)
   {
     $this->identifyingFields = $identifyingFields;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2FieldId
+   * @return Google_Service_DLP_GooglePrivacyDlpV2FieldId[]
    */
   public function getIdentifyingFields()
   {

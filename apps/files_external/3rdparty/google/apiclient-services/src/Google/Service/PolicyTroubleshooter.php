@@ -35,7 +35,7 @@ class Google_Service_PolicyTroubleshooter extends Google_Service
       "https://www.googleapis.com/auth/cloud-platform";
 
   public $iam;
-  
+
   /**
    * Constructs the internal representation of the PolicyTroubleshooter service.
    *

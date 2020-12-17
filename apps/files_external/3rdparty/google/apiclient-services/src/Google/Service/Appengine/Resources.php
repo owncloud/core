@@ -58,14 +58,14 @@ class Google_Service_Appengine_Resources extends Google_Collection
     return $this->memoryGb;
   }
   /**
-   * @param Google_Service_Appengine_Volume
+   * @param Google_Service_Appengine_Volume[]
    */
   public function setVolumes($volumes)
   {
     $this->volumes = $volumes;
   }
   /**
-   * @return Google_Service_Appengine_Volume
+   * @return Google_Service_Appengine_Volume[]
    */
   public function getVolumes()
   {

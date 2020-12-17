@@ -22,14 +22,14 @@ class Google_Service_DisplayVideo_CombinedAudienceGroup extends Google_Collectio
   protected $settingsDataType = 'array';
 
   /**
-   * @param Google_Service_DisplayVideo_CombinedAudienceTargetingSetting
+   * @param Google_Service_DisplayVideo_CombinedAudienceTargetingSetting[]
    */
   public function setSettings($settings)
   {
     $this->settings = $settings;
   }
   /**
-   * @return Google_Service_DisplayVideo_CombinedAudienceTargetingSetting
+   * @return Google_Service_DisplayVideo_CombinedAudienceTargetingSetting[]
    */
   public function getSettings()
   {
