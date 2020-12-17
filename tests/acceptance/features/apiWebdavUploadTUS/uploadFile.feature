@@ -125,17 +125,17 @@ Feature: upload file
       | Upload-Length   | 100                 |
       | Upload-Metadata | filename <metadata> |
       | Tus-Resumable   | 1.0.0               |
-    And user "Alice" sends a chunk to the last created TUS Location with offset "0" and data "123" using the WebDAV API
-    Then the HTTP status code should be "204"
-    And user "Alice" downloads file <file_name> using the WebDAV API
-    And the HTTP status code should be "404"
+    Then the HTTP status code should be "412"
+    And the following headers should not be set
+      | header   |
+      | Location |
     Examples:
-      | dav_version | file_name               | metadata                     |
-      | old         | " "                     | IA==                         |
-      | old         | "filewithLF-and-CR\r\n" | ZmlsZXdpdGhMRi1hbmQtQ1INCgo= |
-      | old         | "folder/file"           | Zm9sZGVyL2ZpbGU=             |
-      | old         | "my\\file"              | bXkMaWxl                     |
-      | new         | " "                     | IA==                         |
-      | new         | "filewithLF-and-CR\r\n" | ZmlsZXdpdGhMRi1hbmQtQ1INCgo= |
-      | new         | "folder/file"           | Zm9sZGVyL2ZpbGU=             |
-      | new         | "my\\file"              | bXkMaWxl                     |
+      | dav_version | metadata                     |
+      | old         | IA==                         |
+      | old         | ZmlsZXdpdGhMRi1hbmQtQ1INCgo= |
+      | old         | Zm9sZGVyL2ZpbGU=             |
+      | old         | bXkMaWxl                     |
+      | new         | IA==                         |
+      | new         | ZmlsZXdpdGhMRi1hbmQtQ1INCgo= |
+      | new         | Zm9sZGVyL2ZpbGU=             |
+      | new         | bXkMaWxl                     |
