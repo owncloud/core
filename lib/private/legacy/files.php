@@ -254,10 +254,9 @@ class OC_Files {
 	 * @param string $name
 	 * @param string $dir
 	 * @param array $params ; 'head' boolean to only send header of the request ; 'range' http range header
-	 * @throws \OC\ForbiddenException
 	 */
 	private static function getSingleFile($view, $dir, $name, $params) {
-		$filename = $dir . '/' . $name;
+		$filename = "{$dir}/{$name}";
 		OC_Util::obEnd();
 		$view->lockFile($filename, ILockingProvider::LOCK_SHARED);
 
@@ -273,22 +272,28 @@ class OC_Files {
 
 		if (\OC\Files\Filesystem::isReadable($filename) && !$event->hasArgument('errorMessage')) {
 			self::sendHeaders($filename, $name, $rangeArray);
+			if (isset($params['head']) && $params['head']) {
+				// if it's a HEAD request, stop here.
+				$view->unlockFile($filename, ILockingProvider::LOCK_SHARED);
+				return;
+			}
 		} elseif (!\OC\Files\Filesystem::file_exists($filename)) {
+			$view->unlockFile($filename, ILockingProvider::LOCK_SHARED);
 			\http_response_code(404);
 			$tmpl = new OC_Template('', '404', 'guest');
 			$tmpl->printPage();
 			exit();
 		} else {
+			$view->unlockFile($filename, ILockingProvider::LOCK_SHARED);
 			if (!$event->hasArgument('errorMessage')) {
 				$msg = $event->getArgument('errorMessage');
 			} else {
 				$msg = 'Access denied';
 			}
-			throw new \OC\ForbiddenException($msg);
-		}
-		if (isset($params['head']) && $params['head']) {
+			\OC_Template::printErrorPage('Access denied', $message, 403);
 			return;
 		}
+
 		if (!empty($rangeArray)) {
 			try {
 				if (\count($rangeArray) == 1) {
@@ -319,6 +324,7 @@ class OC_Files {
 		} else {
 			$view->readfile($filename);
 		}
+		$view->unlockFile($filename, ILockingProvider::LOCK_SHARED);
 	}
 
 	/**
