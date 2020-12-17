@@ -24,8 +24,8 @@
 
 namespace OC\Security;
 
-use phpseclib\Crypt\AES;
-use phpseclib\Crypt\Hash;
+use phpseclib3\Crypt\AES;
+use phpseclib3\Crypt\Hash;
 use OCP\Security\ICrypto;
 use OCP\Security\ISecureRandom;
 use OCP\IConfig;

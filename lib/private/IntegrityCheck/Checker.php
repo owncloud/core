@@ -37,8 +37,8 @@ use OCP\ICache;
 use OCP\ICacheFactory;
 use OCP\IConfig;
 use OCP\ITempManager;
-use phpseclib\Crypt\RSA;
-use phpseclib\File\X509;
+use phpseclib3\Crypt\RSA;
+use phpseclib3\File\X509;
 
 /**
  * Class Checker handles the code signing using X.509 and RSA. ownCloud ships with
@@ -335,7 +335,7 @@ class Checker {
 		$certificate = $signatureData['certificate'];
 
 		// Check if certificate is signed by ownCloud Root Authority
-		$x509 = new \phpseclib\File\X509();
+		$x509 = new X509();
 		$rootCertificatePublicKey = $this->fileAccessHelper->file_get_contents($this->environmentHelper->getServerRoot().'/resources/codesigning/root.crt');
 		$x509->loadCA($rootCertificatePublicKey);
 		$loadedCertificate = $x509->loadX509($certificate);
@@ -346,7 +346,7 @@ class Checker {
 		// Check if the certificate has been revoked
 		$crlFileContent = $this->fileAccessHelper->file_get_contents($this->environmentHelper->getServerRoot().'/resources/codesigning/intermediate.crl.pem');
 		if ($crlFileContent && \strlen($crlFileContent) > 0) {
-			$crl = new \phpseclib\File\X509();
+			$crl = new X509();
 			$crl->loadCA($rootCertificatePublicKey);
 			$crl->loadCRL($crlFileContent);
 			if (!$crl->validateSignature()) {
@@ -370,7 +370,7 @@ class Checker {
 		}
 
 		// Check if the signature of the files is valid
-		$rsa = new \phpseclib\Crypt\RSA();
+		$rsa = new RSA();
 		$rsa->loadKey($x509->currentCert['tbsCertificate']['subjectPublicKeyInfo']['subjectPublicKey']);
 		$rsa->setSignatureMode(RSA::SIGNATURE_PSS);
 		$rsa->setSaltLength(0);
