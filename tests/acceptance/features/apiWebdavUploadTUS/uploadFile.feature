@@ -119,3 +119,23 @@ Feature: upload file
       | old         |
       | new         |
 
+  Scenario Outline: upload a file with invalid-name
+    Given using <dav_version> DAV path
+    When user "Alice" creates a new TUS resource on the WebDAV API with these headers:
+      | Upload-Length   | 100                 |
+      | Upload-Metadata | filename <metadata> |
+      | Tus-Resumable   | 1.0.0               |
+    Then the HTTP status code should be "412"
+    And the following headers should not be set
+      | header   |
+      | Location |
+    Examples:
+      | dav_version | metadata                     |
+      | old         | IA==                         |
+      | old         | ZmlsZXdpdGhMRi1hbmQtQ1INCgo= |
+      | old         | Zm9sZGVyL2ZpbGU=             |
+      | old         | bXkMaWxl                     |
+      | new         | IA==                         |
+      | new         | ZmlsZXdpdGhMRi1hbmQtQ1INCgo= |
+      | new         | Zm9sZGVyL2ZpbGU=             |
+      | new         | bXkMaWxl                     |
