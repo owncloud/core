@@ -1143,6 +1143,17 @@ default:
         - OccContext:
         - PublicWebDavContext:
 
+    webUIFileActionsMenu:
+      paths:
+        - '%paths.base%/../features/webUIFileActionsMenu'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIFileActionsMenuContext:
+
   extensions:
     jarnaiz\JUnitFormatter\JUnitFormatterExtension:
       filename: report.xml

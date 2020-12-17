@@ -278,6 +278,52 @@ describe('OCA.Files.FileActions tests', function() {
 			expect($tr.find('.action.action-iconnoalttext').find('.icon').length).toEqual(1);
 			expect($tr.find('.action.action-iconnoalttext').find('.hidden-visually').length).toEqual(0);
 		});
+		it('get all file actions for a specific mime type', function() {
+			fileActions.registerAction({
+				mime: 'application/pdf',
+				name: 'View PDF file',
+				type: OCA.Files.FileActions.TYPE_INLINE,
+				permissions: OC.PERMISSION_READ,
+				icon: OC.imagePath('core', 'actions/test')
+			});
+
+			fileActions.registerAction({
+				mime: 'application/pdf',
+				name: 'Edit PDF file',
+				type: OCA.Files.FileActions.TYPE_INLINE,
+				permissions: OC.PERMISSION_UPDATE,
+				icon: OC.imagePath('core', 'actions/test')
+			});
+
+			var actions = fileActions.getActions(
+				'application/pdf',
+				OCA.Files.FileActions.TYPE_INLINE,
+				OC.PERMISSION_READ
+			);
+
+			expect(Object.keys(actions).length).toEqual(3);
+			expect(Object.keys(actions).indexOf('View PDF file') >= 0).toEqual(true);
+			expect(Object.keys(actions).indexOf('Edit PDF file') <= 0).toEqual(true);
+		});
+		it('get file actions for a specific mime type omitting the ones which apply to all mime types', function() {
+			fileActions.registerAction({
+				mime: 'application/pdf',
+				name: 'View PDF file',
+				type: OCA.Files.FileActions.TYPE_INLINE,
+				permissions: OC.PERMISSION_READ,
+				icon: OC.imagePath('core', 'actions/test')
+			});
+
+			var actions = fileActions.getActionsWithoutAll(
+				'application/pdf',
+				OCA.Files.FileActions.TYPE_INLINE,
+				OC.PERMISSION_READ
+			);
+
+			expect(Object.keys(actions).length).toEqual(1);
+			expect(Object.keys(actions).indexOf('View PDF file') >= 0).toEqual(true);
+			expect(Object.keys(actions).indexOf('Testdefault') <= 0).toEqual(true);
+		});
 	});
 	describe('action handler', function() {
 		var actionStub, $tr, clock;

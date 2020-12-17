@@ -52,6 +52,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	protected $styleOfCheckboxWhenVisible = "display: block;";
 	protected $detailsDialogXpath = "//*[contains(@id, 'app-sidebar') and not(contains(@class, 'disappear'))]";
 	protected $newFileFolderButtonXpath = './/*[@id="controls"]//a[@class="button new"]';
+	protected $fileActionsApplicationSelectMenuXpath = ".//div[contains(@class, 'fileActionsApplicationSelectMenu')]";
 
 	/**
 	 * @return string
@@ -662,5 +663,39 @@ abstract class FilesPageBasic extends OwncloudPage {
 			return false;
 		}
 		return $btn->isVisible();
+	}
+
+	/**
+	 * get file actions application select menu
+	 *
+	 * @return string
+	 */
+	public function getFileActionsApplicationSelectMenu() {
+		$menu = $this->find("xpath", $this->fileActionsApplicationSelectMenuXpath);
+
+		if ($menu === null) {
+			throw new ElementNotFoundException(
+				"could not find file actions application select menu"
+			);
+		}
+
+		return $menu->getText();
+	}
+
+	/**
+	 * get file actions menu
+	 *
+	 * @return string
+	 */
+	public function getFileActionsMenu() {
+		$menu = $this->find("xpath", $this->fileActionMenuXpath);
+
+		if ($menu === null) {
+			throw new ElementNotFoundException(
+				"could not find file actions menu"
+			);
+		}
+
+		return $menu->getText();
 	}
 }

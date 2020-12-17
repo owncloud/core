@@ -106,10 +106,15 @@
 
 			actions = fileActions._advancedFilter(actions, this._context);
 
+			// always show default actions for files but not for directories
 			var items = _.filter(actions, function(actionSpec) {
 				return (
 					actionSpec.type === OCA.Files.FileActions.TYPE_DROPDOWN &&
-					(!defaultAction || actionSpec.name !== defaultAction.name)
+					(
+						!defaultAction ||
+						actionSpec.name !== defaultAction.name ||
+						fileActions.getCurrentType() !== 'dir'
+					)
 				);
 			});
 			items = _.map(items, function(item) {

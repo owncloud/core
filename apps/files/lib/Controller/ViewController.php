@@ -186,6 +186,7 @@ class ViewController extends Controller {
 
 		\OCP\Util::addScript('files', 'fileactions');
 		\OCP\Util::addScript('files', 'fileactionsmenu');
+		\OCP\Util::addScript('files', 'fileactionsapplicationselectmenu');
 		\OCP\Util::addScript('files', 'files');
 		\OCP\Util::addScript('files', 'keyboardshortcuts');
 		\OCP\Util::addScript('files', 'navigation');

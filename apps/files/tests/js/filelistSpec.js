@@ -2351,6 +2351,67 @@ describe('OCA.Files.FileList tests', function() {
 			expect(context.fileActions).toBeDefined();
 			expect(context.dir).toEqual('/subdir');
 		});
+		it('clicking on a file name will render the app drawer context menu if more than one action applies for this mime type', function() {
+			var actionStub = sinon.stub();
+			fileList.setFiles(testFiles);
+			fileList.fileActions.registerAction({
+				mime: 'text/plain',
+				name: 'View file',
+				type: OCA.Files.FileActions.TYPE_INLINE,
+				permissions: OC.PERMISSION_ALL,
+				icon: function() {
+					return OC.imagePath('core','actions/history');
+				},
+				actionHandler: actionStub,
+			});
+			fileList.fileActions.registerAction({
+				mime: 'text/plain',
+				name: 'Edit file',
+				type: OCA.Files.FileActions.TYPE_INLINE,
+				permissions: OC.PERMISSION_ALL,
+				icon: function() {
+					return OC.imagePath('core','actions/history');
+				},
+			});
+
+			fileList.fileActions.setDefault('text/plain', 'View file');
+			var $tr = fileList.findFileEl('One.txt');
+			$tr.find('td.filename .nametext').click();
+			expect(actionStub.calledOnce).toEqual(false);
+			expect($tr.find('td.filename .fileActionsApplicationSelectMenu').length).toEqual(1);
+			expect($tr.find('td.filename .fileActionsApplicationSelectMenu a').length).toEqual(2);
+			var firstAction = $tr.find('td.filename .fileActionsApplicationSelectMenu a')[0];
+			firstAction.click();
+			expect(actionStub.calledOnce).toEqual(true);
+		});
+		it('clicking on a directory name will never render the app drawer context menu', function() {
+			var actionStub = sinon.stub();
+			fileList.setFiles(testFiles);
+			fileList.fileActions.registerAction({
+				mime: 'httpd/unix-directory',
+				name: 'View dir',
+				type: 'dir',
+				permissions: OC.PERMISSION_ALL,
+				icon: function() {
+					return OC.imagePath('core','actions/history');
+				},
+				actionHandler: actionStub,
+			});
+			fileList.fileActions.registerAction({
+				mime: 'httpd/unix-directory',
+				name: 'Edit dir',
+				type: 'dir',
+				permissions: OC.PERMISSION_ALL,
+				icon: function() {
+					return OC.imagePath('core','actions/history');
+				},
+			});
+
+			fileList.fileActions.setDefault('httpd/unix-directory', 'View dir');
+			var $tr = fileList.findFileEl('somedir');
+			$tr.find('td.filename .nametext').click();
+			expect(actionStub.calledOnce).toEqual(true);
+		});
 		it('redisplays actions when new actions have been registered', function() {
 			var actionStub = sinon.stub();
 			var readyHandler = sinon.stub();
