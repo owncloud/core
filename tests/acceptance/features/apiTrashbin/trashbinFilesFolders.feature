@@ -256,3 +256,18 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | old      |
       | new      |
+
+
+  Scenario Outline: deleting a folder moves all its content to the trashbin
+    Given using <dav-path> DAV path
+    And user "Alice" has created folder "/new-folder"
+    And user "Alice" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
+    When user "Alice" deletes folder "/new-folder/" using the WebDAV API
+    Then as "Alice" the file with original path "/new-folder/new-file.txt" should exist in the trashbin
+    Then as "Alice" the folder with original path "/new-folder/" should exist in the trashbin
+    And as "Alice" file "/new-folder/new-file.txt" should exist in the trashbin
+    But as "Alice" file "/new-folder/new-file.txt" should not exist
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
