@@ -1316,7 +1316,7 @@ class CheckerTest extends TestCase {
 		$expected = [
 			'EXCEPTION' => [
 				'class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException',
-				'message' => 'Certificate has been revoked.',
+				'message' => 'App Certificate is not valid.',
 			]
 		];
 
