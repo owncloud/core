@@ -27,14 +27,14 @@ class Google_Service_ContainerAnalysis_Source extends Google_Collection
   protected $fileHashesDataType = 'map';
 
   /**
-   * @param Google_Service_ContainerAnalysis_SourceContext
+   * @param Google_Service_ContainerAnalysis_SourceContext[]
    */
   public function setAdditionalContexts($additionalContexts)
   {
     $this->additionalContexts = $additionalContexts;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_SourceContext
+   * @return Google_Service_ContainerAnalysis_SourceContext[]
    */
   public function getAdditionalContexts()
   {
@@ -63,14 +63,14 @@ class Google_Service_ContainerAnalysis_Source extends Google_Collection
     return $this->context;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_FileHashes
+   * @param Google_Service_ContainerAnalysis_FileHashes[]
    */
   public function setFileHashes($fileHashes)
   {
     $this->fileHashes = $fileHashes;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_FileHashes
+   * @return Google_Service_ContainerAnalysis_FileHashes[]
    */
   public function getFileHashes()
   {

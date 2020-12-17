@@ -37,14 +37,14 @@ class Google_Service_Compute_HealthChecksAggregatedList extends Google_Collectio
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_HealthChecksScopedList
+   * @param Google_Service_Compute_HealthChecksScopedList[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_HealthChecksScopedList
+   * @return Google_Service_Compute_HealthChecksScopedList[]
    */
   public function getItems()
   {

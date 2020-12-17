@@ -98,10 +98,10 @@ class Google_Service_Appengine_Resource_AppsFirewallIngressRules extends Google_
    * retrieve. Example: apps/myapp/firewall/ingressRules.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Maximum results to return per page.
    * @opt_param string matchingAddress A valid IP Address. If set, only rules
    * matching this address will be returned. The first returned rule will be the
    * rule that fires on requests from this IP.
+   * @opt_param int pageSize Maximum results to return per page.
    * @opt_param string pageToken Continuation token for fetching the next page of
    * results.
    * @return Google_Service_Appengine_ListIngressRulesResponse

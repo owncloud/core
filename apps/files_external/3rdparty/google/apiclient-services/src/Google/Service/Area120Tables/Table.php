@@ -24,14 +24,14 @@ class Google_Service_Area120Tables_Table extends Google_Collection
   public $name;
 
   /**
-   * @param Google_Service_Area120Tables_ColumnDescription
+   * @param Google_Service_Area120Tables_ColumnDescription[]
    */
   public function setColumns($columns)
   {
     $this->columns = $columns;
   }
   /**
-   * @return Google_Service_Area120Tables_ColumnDescription
+   * @return Google_Service_Area120Tables_ColumnDescription[]
    */
   public function getColumns()
   {

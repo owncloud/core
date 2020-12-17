@@ -54,14 +54,14 @@ class Google_Service_AndroidPublisher_VoidedPurchasesListResponse extends Google
     return $this->tokenPagination;
   }
   /**
-   * @param Google_Service_AndroidPublisher_VoidedPurchase
+   * @param Google_Service_AndroidPublisher_VoidedPurchase[]
    */
   public function setVoidedPurchases($voidedPurchases)
   {
     $this->voidedPurchases = $voidedPurchases;
   }
   /**
-   * @return Google_Service_AndroidPublisher_VoidedPurchase
+   * @return Google_Service_AndroidPublisher_VoidedPurchase[]
    */
   public function getVoidedPurchases()
   {

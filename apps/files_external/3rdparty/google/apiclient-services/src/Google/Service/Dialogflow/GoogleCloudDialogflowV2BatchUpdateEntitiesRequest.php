@@ -24,14 +24,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2BatchUpdateEntitiesReques
   public $updateMask;
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityTypeEntity
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityTypeEntity[]
    */
   public function setEntities($entities)
   {
     $this->entities = $entities;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityTypeEntity
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityTypeEntity[]
    */
   public function getEntities()
   {

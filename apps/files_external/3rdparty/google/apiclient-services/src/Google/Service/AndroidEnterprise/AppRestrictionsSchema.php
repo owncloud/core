@@ -31,14 +31,14 @@ class Google_Service_AndroidEnterprise_AppRestrictionsSchema extends Google_Coll
     return $this->kind;
   }
   /**
-   * @param Google_Service_AndroidEnterprise_AppRestrictionsSchemaRestriction
+   * @param Google_Service_AndroidEnterprise_AppRestrictionsSchemaRestriction[]
    */
   public function setRestrictions($restrictions)
   {
     $this->restrictions = $restrictions;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_AppRestrictionsSchemaRestriction
+   * @return Google_Service_AndroidEnterprise_AppRestrictionsSchemaRestriction[]
    */
   public function getRestrictions()
   {

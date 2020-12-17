@@ -32,14 +32,14 @@ class Google_Service_HomeGraphService_QueryRequest extends Google_Collection
     return $this->agentUserId;
   }
   /**
-   * @param Google_Service_HomeGraphService_QueryRequestInput
+   * @param Google_Service_HomeGraphService_QueryRequestInput[]
    */
   public function setInputs($inputs)
   {
     $this->inputs = $inputs;
   }
   /**
-   * @return Google_Service_HomeGraphService_QueryRequestInput
+   * @return Google_Service_HomeGraphService_QueryRequestInput[]
    */
   public function getInputs()
   {

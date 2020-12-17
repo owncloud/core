@@ -23,14 +23,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ListInstancesResponse extends Goo
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Instance
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Instance[]
    */
   public function setInstances($instances)
   {
     $this->instances = $instances;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Instance
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Instance[]
    */
   public function getInstances()
   {

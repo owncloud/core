@@ -32,14 +32,14 @@ class Google_Service_Compute_SubnetworksScopedListWarning extends Google_Collect
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_SubnetworksScopedListWarningData
+   * @param Google_Service_Compute_SubnetworksScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_SubnetworksScopedListWarningData
+   * @return Google_Service_Compute_SubnetworksScopedListWarningData[]
    */
   public function getData()
   {

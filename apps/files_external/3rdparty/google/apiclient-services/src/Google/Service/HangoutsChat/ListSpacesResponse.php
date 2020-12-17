@@ -31,14 +31,14 @@ class Google_Service_HangoutsChat_ListSpacesResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_HangoutsChat_Space
+   * @param Google_Service_HangoutsChat_Space[]
    */
   public function setSpaces($spaces)
   {
     $this->spaces = $spaces;
   }
   /**
-   * @return Google_Service_HangoutsChat_Space
+   * @return Google_Service_HangoutsChat_Space[]
    */
   public function getSpaces()
   {

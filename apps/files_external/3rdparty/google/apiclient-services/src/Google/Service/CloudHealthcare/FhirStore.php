@@ -84,14 +84,14 @@ class Google_Service_CloudHealthcare_FhirStore extends Google_Collection
     return $this->notificationConfig;
   }
   /**
-   * @param Google_Service_CloudHealthcare_StreamConfig
+   * @param Google_Service_CloudHealthcare_StreamConfig[]
    */
   public function setStreamConfigs($streamConfigs)
   {
     $this->streamConfigs = $streamConfigs;
   }
   /**
-   * @return Google_Service_CloudHealthcare_StreamConfig
+   * @return Google_Service_CloudHealthcare_StreamConfig[]
    */
   public function getStreamConfigs()
   {

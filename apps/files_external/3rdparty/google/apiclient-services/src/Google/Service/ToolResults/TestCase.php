@@ -71,14 +71,14 @@ class Google_Service_ToolResults_TestCase extends Google_Collection
     return $this->skippedMessage;
   }
   /**
-   * @param Google_Service_ToolResults_StackTrace
+   * @param Google_Service_ToolResults_StackTrace[]
    */
   public function setStackTraces($stackTraces)
   {
     $this->stackTraces = $stackTraces;
   }
   /**
-   * @return Google_Service_ToolResults_StackTrace
+   * @return Google_Service_ToolResults_StackTrace[]
    */
   public function getStackTraces()
   {
@@ -129,14 +129,14 @@ class Google_Service_ToolResults_TestCase extends Google_Collection
     return $this->testCaseReference;
   }
   /**
-   * @param Google_Service_ToolResults_ToolOutputReference
+   * @param Google_Service_ToolResults_ToolOutputReference[]
    */
   public function setToolOutputs($toolOutputs)
   {
     $this->toolOutputs = $toolOutputs;
   }
   /**
-   * @return Google_Service_ToolResults_ToolOutputReference
+   * @return Google_Service_ToolResults_ToolOutputReference[]
    */
   public function getToolOutputs()
   {

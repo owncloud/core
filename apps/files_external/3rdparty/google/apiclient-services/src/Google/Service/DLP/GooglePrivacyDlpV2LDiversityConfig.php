@@ -24,14 +24,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2LDiversityConfig extends Google_Colle
   protected $sensitiveAttributeDataType = '';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2FieldId
+   * @param Google_Service_DLP_GooglePrivacyDlpV2FieldId[]
    */
   public function setQuasiIds($quasiIds)
   {
     $this->quasiIds = $quasiIds;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2FieldId
+   * @return Google_Service_DLP_GooglePrivacyDlpV2FieldId[]
    */
   public function getQuasiIds()
   {

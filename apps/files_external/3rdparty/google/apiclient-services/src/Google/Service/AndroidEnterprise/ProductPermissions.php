@@ -23,14 +23,14 @@ class Google_Service_AndroidEnterprise_ProductPermissions extends Google_Collect
   public $productId;
 
   /**
-   * @param Google_Service_AndroidEnterprise_ProductPermission
+   * @param Google_Service_AndroidEnterprise_ProductPermission[]
    */
   public function setPermission($permission)
   {
     $this->permission = $permission;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_ProductPermission
+   * @return Google_Service_AndroidEnterprise_ProductPermission[]
    */
   public function getPermission()
   {

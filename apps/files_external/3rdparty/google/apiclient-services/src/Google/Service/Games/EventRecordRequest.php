@@ -49,14 +49,14 @@ class Google_Service_Games_EventRecordRequest extends Google_Collection
     return $this->requestId;
   }
   /**
-   * @param Google_Service_Games_EventPeriodUpdate
+   * @param Google_Service_Games_EventPeriodUpdate[]
    */
   public function setTimePeriods($timePeriods)
   {
     $this->timePeriods = $timePeriods;
   }
   /**
-   * @return Google_Service_Games_EventPeriodUpdate
+   * @return Google_Service_Games_EventPeriodUpdate[]
    */
   public function getTimePeriods()
   {

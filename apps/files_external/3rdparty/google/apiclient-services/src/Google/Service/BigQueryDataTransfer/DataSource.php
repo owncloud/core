@@ -135,14 +135,14 @@ class Google_Service_BigQueryDataTransfer_DataSource extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_BigQueryDataTransfer_DataSourceParameter
+   * @param Google_Service_BigQueryDataTransfer_DataSourceParameter[]
    */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
   /**
-   * @return Google_Service_BigQueryDataTransfer_DataSourceParameter
+   * @return Google_Service_BigQueryDataTransfer_DataSourceParameter[]
    */
   public function getParameters()
   {

@@ -42,7 +42,7 @@ class Google_Service_Pubsub extends Google_Service
   public $projects_topics;
   public $projects_topics_snapshots;
   public $projects_topics_subscriptions;
-  
+
   /**
    * Constructs the internal representation of the Pubsub service.
    *
@@ -477,13 +477,13 @@ class Google_Service_Pubsub extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),

@@ -33,19 +33,19 @@ class Google_Service_YouTube_Resource_Members extends Google_Service_Resource
    * parts that the API response will include. Set the parameter value to snippet.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string maxResults The *maxResults* parameter specifies the maximum
-   * number of items that should be returned in the result set.
-   * @opt_param string hasAccessToLevel Filter members in the results set to the
-   * ones that have access to a level.
    * @opt_param string filterByMemberChannelId Comma separated list of channel
    * IDs. Only data about members that are part of this list will be included in
    * the response.
+   * @opt_param string hasAccessToLevel Filter members in the results set to the
+   * ones that have access to a level.
+   * @opt_param string maxResults The *maxResults* parameter specifies the maximum
+   * number of items that should be returned in the result set.
+   * @opt_param string mode Parameter that specifies which channel members to
+   * return.
    * @opt_param string pageToken The *pageToken* parameter identifies a specific
    * page in the result set that should be returned. In an API response, the
    * nextPageToken and prevPageToken properties identify other pages that could be
    * retrieved.
-   * @opt_param string mode Parameter that specifies which channel members to
-   * return.
    * @return Google_Service_YouTube_MemberListResponse
    */
   public function listMembers($part, $optParams = array())

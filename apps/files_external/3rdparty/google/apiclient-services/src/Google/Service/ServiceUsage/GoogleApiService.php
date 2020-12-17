@@ -69,14 +69,14 @@ class Google_Service_ServiceUsage_GoogleApiService extends Google_Collection
   protected $usageDataType = '';
 
   /**
-   * @param Google_Service_ServiceUsage_Api
+   * @param Google_Service_ServiceUsage_Api[]
    */
   public function setApis($apis)
   {
     $this->apis = $apis;
   }
   /**
-   * @return Google_Service_ServiceUsage_Api
+   * @return Google_Service_ServiceUsage_Api[]
    */
   public function getApis()
   {
@@ -189,28 +189,28 @@ class Google_Service_ServiceUsage_GoogleApiService extends Google_Collection
     return $this->documentation;
   }
   /**
-   * @param Google_Service_ServiceUsage_Endpoint
+   * @param Google_Service_ServiceUsage_Endpoint[]
    */
   public function setEndpoints($endpoints)
   {
     $this->endpoints = $endpoints;
   }
   /**
-   * @return Google_Service_ServiceUsage_Endpoint
+   * @return Google_Service_ServiceUsage_Endpoint[]
    */
   public function getEndpoints()
   {
     return $this->endpoints;
   }
   /**
-   * @param Google_Service_ServiceUsage_Enum
+   * @param Google_Service_ServiceUsage_Enum[]
    */
   public function setEnums($enums)
   {
     $this->enums = $enums;
   }
   /**
-   * @return Google_Service_ServiceUsage_Enum
+   * @return Google_Service_ServiceUsage_Enum[]
    */
   public function getEnums()
   {
@@ -253,42 +253,42 @@ class Google_Service_ServiceUsage_GoogleApiService extends Google_Collection
     return $this->logging;
   }
   /**
-   * @param Google_Service_ServiceUsage_LogDescriptor
+   * @param Google_Service_ServiceUsage_LogDescriptor[]
    */
   public function setLogs($logs)
   {
     $this->logs = $logs;
   }
   /**
-   * @return Google_Service_ServiceUsage_LogDescriptor
+   * @return Google_Service_ServiceUsage_LogDescriptor[]
    */
   public function getLogs()
   {
     return $this->logs;
   }
   /**
-   * @param Google_Service_ServiceUsage_MetricDescriptor
+   * @param Google_Service_ServiceUsage_MetricDescriptor[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_ServiceUsage_MetricDescriptor
+   * @return Google_Service_ServiceUsage_MetricDescriptor[]
    */
   public function getMetrics()
   {
     return $this->metrics;
   }
   /**
-   * @param Google_Service_ServiceUsage_MonitoredResourceDescriptor
+   * @param Google_Service_ServiceUsage_MonitoredResourceDescriptor[]
    */
   public function setMonitoredResources($monitoredResources)
   {
     $this->monitoredResources = $monitoredResources;
   }
   /**
-   * @return Google_Service_ServiceUsage_MonitoredResourceDescriptor
+   * @return Google_Service_ServiceUsage_MonitoredResourceDescriptor[]
    */
   public function getMonitoredResources()
   {
@@ -367,14 +367,14 @@ class Google_Service_ServiceUsage_GoogleApiService extends Google_Collection
     return $this->systemParameters;
   }
   /**
-   * @param Google_Service_ServiceUsage_Type
+   * @param Google_Service_ServiceUsage_Type[]
    */
   public function setSystemTypes($systemTypes)
   {
     $this->systemTypes = $systemTypes;
   }
   /**
-   * @return Google_Service_ServiceUsage_Type
+   * @return Google_Service_ServiceUsage_Type[]
    */
   public function getSystemTypes()
   {
@@ -389,14 +389,14 @@ class Google_Service_ServiceUsage_GoogleApiService extends Google_Collection
     return $this->title;
   }
   /**
-   * @param Google_Service_ServiceUsage_Type
+   * @param Google_Service_ServiceUsage_Type[]
    */
   public function setTypes($types)
   {
     $this->types = $types;
   }
   /**
-   * @return Google_Service_ServiceUsage_Type
+   * @return Google_Service_ServiceUsage_Type[]
    */
   public function getTypes()
   {

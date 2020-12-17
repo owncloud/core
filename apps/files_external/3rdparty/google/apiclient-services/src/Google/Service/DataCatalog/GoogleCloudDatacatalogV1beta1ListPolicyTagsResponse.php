@@ -31,14 +31,14 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ListPolicyTagsResp
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1PolicyTag
+   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1PolicyTag[]
    */
   public function setPolicyTags($policyTags)
   {
     $this->policyTags = $policyTags;
   }
   /**
-   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1PolicyTag
+   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1PolicyTag[]
    */
   public function getPolicyTags()
   {

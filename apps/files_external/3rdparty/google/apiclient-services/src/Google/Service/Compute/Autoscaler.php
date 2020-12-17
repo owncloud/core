@@ -121,14 +121,14 @@ class Google_Service_Compute_Autoscaler extends Google_Collection
     return $this->status;
   }
   /**
-   * @param Google_Service_Compute_AutoscalerStatusDetails
+   * @param Google_Service_Compute_AutoscalerStatusDetails[]
    */
   public function setStatusDetails($statusDetails)
   {
     $this->statusDetails = $statusDetails;
   }
   /**
-   * @return Google_Service_Compute_AutoscalerStatusDetails
+   * @return Google_Service_Compute_AutoscalerStatusDetails[]
    */
   public function getStatusDetails()
   {

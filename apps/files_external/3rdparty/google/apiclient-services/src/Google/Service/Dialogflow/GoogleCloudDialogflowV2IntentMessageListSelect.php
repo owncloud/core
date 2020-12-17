@@ -24,14 +24,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageListSelect e
   public $title;
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageListSelectItem
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageListSelectItem[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageListSelectItem
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageListSelectItem[]
    */
   public function getItems()
   {

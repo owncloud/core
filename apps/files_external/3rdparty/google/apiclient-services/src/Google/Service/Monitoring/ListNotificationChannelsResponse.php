@@ -32,14 +32,14 @@ class Google_Service_Monitoring_ListNotificationChannelsResponse extends Google_
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Monitoring_NotificationChannel
+   * @param Google_Service_Monitoring_NotificationChannel[]
    */
   public function setNotificationChannels($notificationChannels)
   {
     $this->notificationChannels = $notificationChannels;
   }
   /**
-   * @return Google_Service_Monitoring_NotificationChannel
+   * @return Google_Service_Monitoring_NotificationChannel[]
    */
   public function getNotificationChannels()
   {

@@ -34,70 +34,70 @@ class Google_Service_Dataflow_JobMetadata extends Google_Collection
   protected $spannerDetailsDataType = 'array';
 
   /**
-   * @param Google_Service_Dataflow_BigTableIODetails
+   * @param Google_Service_Dataflow_BigTableIODetails[]
    */
   public function setBigTableDetails($bigTableDetails)
   {
     $this->bigTableDetails = $bigTableDetails;
   }
   /**
-   * @return Google_Service_Dataflow_BigTableIODetails
+   * @return Google_Service_Dataflow_BigTableIODetails[]
    */
   public function getBigTableDetails()
   {
     return $this->bigTableDetails;
   }
   /**
-   * @param Google_Service_Dataflow_BigQueryIODetails
+   * @param Google_Service_Dataflow_BigQueryIODetails[]
    */
   public function setBigqueryDetails($bigqueryDetails)
   {
     $this->bigqueryDetails = $bigqueryDetails;
   }
   /**
-   * @return Google_Service_Dataflow_BigQueryIODetails
+   * @return Google_Service_Dataflow_BigQueryIODetails[]
    */
   public function getBigqueryDetails()
   {
     return $this->bigqueryDetails;
   }
   /**
-   * @param Google_Service_Dataflow_DatastoreIODetails
+   * @param Google_Service_Dataflow_DatastoreIODetails[]
    */
   public function setDatastoreDetails($datastoreDetails)
   {
     $this->datastoreDetails = $datastoreDetails;
   }
   /**
-   * @return Google_Service_Dataflow_DatastoreIODetails
+   * @return Google_Service_Dataflow_DatastoreIODetails[]
    */
   public function getDatastoreDetails()
   {
     return $this->datastoreDetails;
   }
   /**
-   * @param Google_Service_Dataflow_FileIODetails
+   * @param Google_Service_Dataflow_FileIODetails[]
    */
   public function setFileDetails($fileDetails)
   {
     $this->fileDetails = $fileDetails;
   }
   /**
-   * @return Google_Service_Dataflow_FileIODetails
+   * @return Google_Service_Dataflow_FileIODetails[]
    */
   public function getFileDetails()
   {
     return $this->fileDetails;
   }
   /**
-   * @param Google_Service_Dataflow_PubSubIODetails
+   * @param Google_Service_Dataflow_PubSubIODetails[]
    */
   public function setPubsubDetails($pubsubDetails)
   {
     $this->pubsubDetails = $pubsubDetails;
   }
   /**
-   * @return Google_Service_Dataflow_PubSubIODetails
+   * @return Google_Service_Dataflow_PubSubIODetails[]
    */
   public function getPubsubDetails()
   {
@@ -118,14 +118,14 @@ class Google_Service_Dataflow_JobMetadata extends Google_Collection
     return $this->sdkVersion;
   }
   /**
-   * @param Google_Service_Dataflow_SpannerIODetails
+   * @param Google_Service_Dataflow_SpannerIODetails[]
    */
   public function setSpannerDetails($spannerDetails)
   {
     $this->spannerDetails = $spannerDetails;
   }
   /**
-   * @return Google_Service_Dataflow_SpannerIODetails
+   * @return Google_Service_Dataflow_SpannerIODetails[]
    */
   public function getSpannerDetails()
   {

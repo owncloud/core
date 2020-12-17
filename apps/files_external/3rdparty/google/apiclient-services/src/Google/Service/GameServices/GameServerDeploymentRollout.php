@@ -51,14 +51,14 @@ class Google_Service_GameServices_GameServerDeploymentRollout extends Google_Col
     return $this->etag;
   }
   /**
-   * @param Google_Service_GameServices_GameServerConfigOverride
+   * @param Google_Service_GameServices_GameServerConfigOverride[]
    */
   public function setGameServerConfigOverrides($gameServerConfigOverrides)
   {
     $this->gameServerConfigOverrides = $gameServerConfigOverrides;
   }
   /**
-   * @return Google_Service_GameServices_GameServerConfigOverride
+   * @return Google_Service_GameServices_GameServerConfigOverride[]
    */
   public function getGameServerConfigOverrides()
   {

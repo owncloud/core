@@ -40,14 +40,14 @@ class Google_Service_ContainerAnalysis_GenericSignedAttestation extends Google_C
     return $this->serializedPayload;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_Signature
+   * @param Google_Service_ContainerAnalysis_Signature[]
    */
   public function setSignatures($signatures)
   {
     $this->signatures = $signatures;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_Signature
+   * @return Google_Service_ContainerAnalysis_Signature[]
    */
   public function getSignatures()
   {

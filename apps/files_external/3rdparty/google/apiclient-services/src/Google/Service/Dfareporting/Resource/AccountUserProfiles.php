@@ -60,9 +60,9 @@ class Google_Service_Dfareporting_Resource_AccountUserProfiles extends Google_Se
    * @param string $profileId User profile ID associated with this request.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param bool active Select only active user profiles.
    * @opt_param string ids Select only user profiles with these IDs.
-   * @opt_param string sortOrder Order of sorted results.
+   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string pageToken Value of the nextPageToken from the previous
    * result page.
    * @opt_param string searchString Allows searching for objects by name, ID or
@@ -73,11 +73,11 @@ class Google_Service_Dfareporting_Resource_AccountUserProfiles extends Google_Se
    * search string of "user profile" will match objects with name "my user
    * profile", "user profile 2015", or simply "user profile".
    * @opt_param string sortField Field by which to sort the list.
-   * @opt_param string userRoleId Select only user profiles with the specified
-   * user role ID.
+   * @opt_param string sortOrder Order of sorted results.
    * @opt_param string subaccountId Select only user profiles with the specified
    * subaccount ID.
-   * @opt_param bool active Select only active user profiles.
+   * @opt_param string userRoleId Select only user profiles with the specified
+   * user role ID.
    * @return Google_Service_Dfareporting_AccountUserProfilesListResponse
    */
   public function listAccountUserProfiles($profileId, $optParams = array())

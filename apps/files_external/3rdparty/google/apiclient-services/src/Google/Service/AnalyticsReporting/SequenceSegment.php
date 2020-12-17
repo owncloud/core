@@ -31,14 +31,14 @@ class Google_Service_AnalyticsReporting_SequenceSegment extends Google_Collectio
     return $this->firstStepShouldMatchFirstHit;
   }
   /**
-   * @param Google_Service_AnalyticsReporting_SegmentSequenceStep
+   * @param Google_Service_AnalyticsReporting_SegmentSequenceStep[]
    */
   public function setSegmentSequenceSteps($segmentSequenceSteps)
   {
     $this->segmentSequenceSteps = $segmentSequenceSteps;
   }
   /**
-   * @return Google_Service_AnalyticsReporting_SegmentSequenceStep
+   * @return Google_Service_AnalyticsReporting_SegmentSequenceStep[]
    */
   public function getSegmentSequenceSteps()
   {

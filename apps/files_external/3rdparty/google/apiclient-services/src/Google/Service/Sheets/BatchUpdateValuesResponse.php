@@ -27,14 +27,14 @@ class Google_Service_Sheets_BatchUpdateValuesResponse extends Google_Collection
   public $totalUpdatedSheets;
 
   /**
-   * @param Google_Service_Sheets_UpdateValuesResponse
+   * @param Google_Service_Sheets_UpdateValuesResponse[]
    */
   public function setResponses($responses)
   {
     $this->responses = $responses;
   }
   /**
-   * @return Google_Service_Sheets_UpdateValuesResponse
+   * @return Google_Service_Sheets_UpdateValuesResponse[]
    */
   public function getResponses()
   {

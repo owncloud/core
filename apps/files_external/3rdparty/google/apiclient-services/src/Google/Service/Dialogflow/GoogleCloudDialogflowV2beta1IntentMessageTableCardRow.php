@@ -23,14 +23,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageTableCa
   public $dividerAfter;
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageTableCardCell
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageTableCardCell[]
    */
   public function setCells($cells)
   {
     $this->cells = $cells;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageTableCardCell
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageTableCardCell[]
    */
   public function getCells()
   {

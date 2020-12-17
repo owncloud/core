@@ -31,14 +31,14 @@ class Google_Service_DisplayVideo_ListPartnersResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_DisplayVideo_Partner
+   * @param Google_Service_DisplayVideo_Partner[]
    */
   public function setPartners($partners)
   {
     $this->partners = $partners;
   }
   /**
-   * @return Google_Service_DisplayVideo_Partner
+   * @return Google_Service_DisplayVideo_Partner[]
    */
   public function getPartners()
   {

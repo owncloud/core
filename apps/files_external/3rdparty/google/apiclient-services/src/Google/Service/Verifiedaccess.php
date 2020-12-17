@@ -36,7 +36,7 @@ class Google_Service_Verifiedaccess extends Google_Service
       "https://www.googleapis.com/auth/verifiedaccess";
 
   public $challenge;
-  
+
   /**
    * Constructs the internal representation of the Verifiedaccess service.
    *

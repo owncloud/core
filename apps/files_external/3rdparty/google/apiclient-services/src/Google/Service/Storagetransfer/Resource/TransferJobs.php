@@ -77,10 +77,9 @@ class Google_Service_Storagetransfer_Resource_TransferJobs extends Google_Servic
   }
   /**
    * Updates a transfer job. Updating a job's transfer spec does not affect
-   * transfer operations that are running already. Updating a job's schedule is
-   * not allowed. **Note:** The job's status field can be modified using this RPC
-   * (for example, to set a job's status to DELETED, DISABLED, or ENABLED).
-   * (transferJobs.patch)
+   * transfer operations that are running already. **Note:** The job's status
+   * field can be modified using this RPC (for example, to set a job's status to
+   * DELETED, DISABLED, or ENABLED). (transferJobs.patch)
    *
    * @param string $jobName Required. The name of job to update.
    * @param Google_Service_Storagetransfer_UpdateTransferJobRequest $postBody

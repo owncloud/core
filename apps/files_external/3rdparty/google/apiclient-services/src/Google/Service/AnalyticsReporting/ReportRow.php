@@ -31,14 +31,14 @@ class Google_Service_AnalyticsReporting_ReportRow extends Google_Collection
     return $this->dimensions;
   }
   /**
-   * @param Google_Service_AnalyticsReporting_DateRangeValues
+   * @param Google_Service_AnalyticsReporting_DateRangeValues[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_AnalyticsReporting_DateRangeValues
+   * @return Google_Service_AnalyticsReporting_DateRangeValues[]
    */
   public function getMetrics()
   {

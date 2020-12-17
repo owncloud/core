@@ -54,14 +54,14 @@ class Google_Service_Compute_AutoscalingPolicy extends Google_Collection
     return $this->cpuUtilization;
   }
   /**
-   * @param Google_Service_Compute_AutoscalingPolicyCustomMetricUtilization
+   * @param Google_Service_Compute_AutoscalingPolicyCustomMetricUtilization[]
    */
   public function setCustomMetricUtilizations($customMetricUtilizations)
   {
     $this->customMetricUtilizations = $customMetricUtilizations;
   }
   /**
-   * @return Google_Service_Compute_AutoscalingPolicyCustomMetricUtilization
+   * @return Google_Service_Compute_AutoscalingPolicyCustomMetricUtilization[]
    */
   public function getCustomMetricUtilizations()
   {

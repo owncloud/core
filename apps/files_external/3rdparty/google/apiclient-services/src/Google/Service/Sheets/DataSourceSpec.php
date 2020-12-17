@@ -38,14 +38,14 @@ class Google_Service_Sheets_DataSourceSpec extends Google_Collection
     return $this->bigQuery;
   }
   /**
-   * @param Google_Service_Sheets_DataSourceParameter
+   * @param Google_Service_Sheets_DataSourceParameter[]
    */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
   /**
-   * @return Google_Service_Sheets_DataSourceParameter
+   * @return Google_Service_Sheets_DataSourceParameter[]
    */
   public function getParameters()
   {

@@ -36,7 +36,7 @@ class Google_Service_FactCheckTools extends Google_Service
 
   public $claims;
   public $pages;
-  
+
   /**
    * Constructs the internal representation of the FactCheckTools service.
    *
@@ -62,11 +62,11 @@ class Google_Service_FactCheckTools extends Google_Service
               'path' => 'v1alpha1/claims:search',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageToken' => array(
+                'languageCode' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageSize' => array(
+                'maxAgeDays' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
@@ -74,11 +74,11 @@ class Google_Service_FactCheckTools extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'maxAgeDays' => array(
+                'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'reviewPublisherSiteFilter' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -86,7 +86,7 @@ class Google_Service_FactCheckTools extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'languageCode' => array(
+                'reviewPublisherSiteFilter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -129,14 +129,6 @@ class Google_Service_FactCheckTools extends Google_Service
               'path' => 'v1alpha1/pages',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'url' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'offset' => array(
                   'location' => 'query',
                   'type' => 'integer',
@@ -145,7 +137,15 @@ class Google_Service_FactCheckTools extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
                 'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'url' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

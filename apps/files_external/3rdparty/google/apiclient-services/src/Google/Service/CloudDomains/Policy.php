@@ -26,28 +26,28 @@ class Google_Service_CloudDomains_Policy extends Google_Collection
   public $version;
 
   /**
-   * @param Google_Service_CloudDomains_AuditConfig
+   * @param Google_Service_CloudDomains_AuditConfig[]
    */
   public function setAuditConfigs($auditConfigs)
   {
     $this->auditConfigs = $auditConfigs;
   }
   /**
-   * @return Google_Service_CloudDomains_AuditConfig
+   * @return Google_Service_CloudDomains_AuditConfig[]
    */
   public function getAuditConfigs()
   {
     return $this->auditConfigs;
   }
   /**
-   * @param Google_Service_CloudDomains_Binding
+   * @param Google_Service_CloudDomains_Binding[]
    */
   public function setBindings($bindings)
   {
     $this->bindings = $bindings;
   }
   /**
-   * @return Google_Service_CloudDomains_Binding
+   * @return Google_Service_CloudDomains_Binding[]
    */
   public function getBindings()
   {

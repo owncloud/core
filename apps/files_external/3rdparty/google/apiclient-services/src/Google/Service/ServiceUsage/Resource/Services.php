@@ -139,12 +139,12 @@ class Google_Service_ServiceUsage_Resource_Services extends Google_Service_Resou
    * be: `projects/123` where `123` is the project number.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter Only list services that conform to the given filter.
+   * The allowed filter strings are `state:ENABLED` and `state:DISABLED`.
    * @opt_param int pageSize Requested size of the next page of data. Requested
    * page size cannot exceed 200. If not set, the default page size is 50.
    * @opt_param string pageToken Token identifying which result to start with,
    * which is returned by a previous list call.
-   * @opt_param string filter Only list services that conform to the given filter.
-   * The allowed filter strings are `state:ENABLED` and `state:DISABLED`.
    * @return Google_Service_ServiceUsage_ListServicesResponse
    */
   public function listServices($parent, $optParams = array())

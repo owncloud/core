@@ -23,14 +23,14 @@ class Google_Service_CloudComposer_ListEnvironmentsResponse extends Google_Colle
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudComposer_Environment
+   * @param Google_Service_CloudComposer_Environment[]
    */
   public function setEnvironments($environments)
   {
     $this->environments = $environments;
   }
   /**
-   * @return Google_Service_CloudComposer_Environment
+   * @return Google_Service_CloudComposer_Environment[]
    */
   public function getEnvironments()
   {

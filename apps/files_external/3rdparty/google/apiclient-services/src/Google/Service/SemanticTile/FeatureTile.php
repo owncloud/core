@@ -43,14 +43,14 @@ class Google_Service_SemanticTile_FeatureTile extends Google_Collection
     return $this->coordinates;
   }
   /**
-   * @param Google_Service_SemanticTile_Feature
+   * @param Google_Service_SemanticTile_Feature[]
    */
   public function setFeatures($features)
   {
     $this->features = $features;
   }
   /**
-   * @return Google_Service_SemanticTile_Feature
+   * @return Google_Service_SemanticTile_Feature[]
    */
   public function getFeatures()
   {
@@ -65,14 +65,14 @@ class Google_Service_SemanticTile_FeatureTile extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_SemanticTile_ProviderInfo
+   * @param Google_Service_SemanticTile_ProviderInfo[]
    */
   public function setProviders($providers)
   {
     $this->providers = $providers;
   }
   /**
-   * @return Google_Service_SemanticTile_ProviderInfo
+   * @return Google_Service_SemanticTile_ProviderInfo[]
    */
   public function getProviders()
   {

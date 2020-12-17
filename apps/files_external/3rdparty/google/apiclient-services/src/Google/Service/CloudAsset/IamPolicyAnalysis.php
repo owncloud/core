@@ -41,14 +41,14 @@ class Google_Service_CloudAsset_IamPolicyAnalysis extends Google_Collection
     return $this->analysisQuery;
   }
   /**
-   * @param Google_Service_CloudAsset_IamPolicyAnalysisResult
+   * @param Google_Service_CloudAsset_IamPolicyAnalysisResult[]
    */
   public function setAnalysisResults($analysisResults)
   {
     $this->analysisResults = $analysisResults;
   }
   /**
-   * @return Google_Service_CloudAsset_IamPolicyAnalysisResult
+   * @return Google_Service_CloudAsset_IamPolicyAnalysisResult[]
    */
   public function getAnalysisResults()
   {
@@ -63,14 +63,14 @@ class Google_Service_CloudAsset_IamPolicyAnalysis extends Google_Collection
     return $this->fullyExplored;
   }
   /**
-   * @param Google_Service_CloudAsset_IamPolicyAnalysisState
+   * @param Google_Service_CloudAsset_IamPolicyAnalysisState[]
    */
   public function setNonCriticalErrors($nonCriticalErrors)
   {
     $this->nonCriticalErrors = $nonCriticalErrors;
   }
   /**
-   * @return Google_Service_CloudAsset_IamPolicyAnalysisState
+   * @return Google_Service_CloudAsset_IamPolicyAnalysisState[]
    */
   public function getNonCriticalErrors()
   {

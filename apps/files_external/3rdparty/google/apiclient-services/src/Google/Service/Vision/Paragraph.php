@@ -63,14 +63,14 @@ class Google_Service_Vision_Paragraph extends Google_Collection
     return $this->property;
   }
   /**
-   * @param Google_Service_Vision_Word
+   * @param Google_Service_Vision_Word[]
    */
   public function setWords($words)
   {
     $this->words = $words;
   }
   /**
-   * @return Google_Service_Vision_Word
+   * @return Google_Service_Vision_Word[]
    */
   public function getWords()
   {

@@ -32,14 +32,14 @@ class Google_Service_Compute_InterconnectListWarning extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_InterconnectListWarningData
+   * @param Google_Service_Compute_InterconnectListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_InterconnectListWarningData
+   * @return Google_Service_Compute_InterconnectListWarningData[]
    */
   public function getData()
   {

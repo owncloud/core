@@ -32,14 +32,14 @@ class Google_Service_ServiceManagement_HttpRule extends Google_Collection
   public $selector;
 
   /**
-   * @param Google_Service_ServiceManagement_HttpRule
+   * @param Google_Service_ServiceManagement_HttpRule[]
    */
   public function setAdditionalBindings($additionalBindings)
   {
     $this->additionalBindings = $additionalBindings;
   }
   /**
-   * @return Google_Service_ServiceManagement_HttpRule
+   * @return Google_Service_ServiceManagement_HttpRule[]
    */
   public function getAdditionalBindings()
   {

@@ -33,28 +33,28 @@ class Google_Service_ShoppingContent_ShippingSettings extends Google_Collection
     return $this->accountId;
   }
   /**
-   * @param Google_Service_ShoppingContent_PostalCodeGroup
+   * @param Google_Service_ShoppingContent_PostalCodeGroup[]
    */
   public function setPostalCodeGroups($postalCodeGroups)
   {
     $this->postalCodeGroups = $postalCodeGroups;
   }
   /**
-   * @return Google_Service_ShoppingContent_PostalCodeGroup
+   * @return Google_Service_ShoppingContent_PostalCodeGroup[]
    */
   public function getPostalCodeGroups()
   {
     return $this->postalCodeGroups;
   }
   /**
-   * @param Google_Service_ShoppingContent_Service
+   * @param Google_Service_ShoppingContent_Service[]
    */
   public function setServices($services)
   {
     $this->services = $services;
   }
   /**
-   * @return Google_Service_ShoppingContent_Service
+   * @return Google_Service_ShoppingContent_Service[]
    */
   public function getServices()
   {

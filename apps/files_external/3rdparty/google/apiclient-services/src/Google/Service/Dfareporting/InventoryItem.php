@@ -51,14 +51,14 @@ class Google_Service_Dfareporting_InventoryItem extends Google_Collection
     return $this->accountId;
   }
   /**
-   * @param Google_Service_Dfareporting_AdSlot
+   * @param Google_Service_Dfareporting_AdSlot[]
    */
   public function setAdSlots($adSlots)
   {
     $this->adSlots = $adSlots;
   }
   /**
-   * @return Google_Service_Dfareporting_AdSlot
+   * @return Google_Service_Dfareporting_AdSlot[]
    */
   public function getAdSlots()
   {

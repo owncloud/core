@@ -31,14 +31,14 @@ class Google_Service_Logging_ListViewsResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Logging_LogView
+   * @param Google_Service_Logging_LogView[]
    */
   public function setViews($views)
   {
     $this->views = $views;
   }
   /**
-   * @return Google_Service_Logging_LogView
+   * @return Google_Service_Logging_LogView[]
    */
   public function getViews()
   {

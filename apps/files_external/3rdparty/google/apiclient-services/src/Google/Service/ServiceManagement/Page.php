@@ -40,14 +40,14 @@ class Google_Service_ServiceManagement_Page extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_ServiceManagement_Page
+   * @param Google_Service_ServiceManagement_Page[]
    */
   public function setSubpages($subpages)
   {
     $this->subpages = $subpages;
   }
   /**
-   * @return Google_Service_ServiceManagement_Page
+   * @return Google_Service_ServiceManagement_Page[]
    */
   public function getSubpages()
   {

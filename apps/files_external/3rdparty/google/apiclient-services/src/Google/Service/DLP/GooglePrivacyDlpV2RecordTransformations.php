@@ -24,28 +24,28 @@ class Google_Service_DLP_GooglePrivacyDlpV2RecordTransformations extends Google_
   protected $recordSuppressionsDataType = 'array';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2FieldTransformation
+   * @param Google_Service_DLP_GooglePrivacyDlpV2FieldTransformation[]
    */
   public function setFieldTransformations($fieldTransformations)
   {
     $this->fieldTransformations = $fieldTransformations;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2FieldTransformation
+   * @return Google_Service_DLP_GooglePrivacyDlpV2FieldTransformation[]
    */
   public function getFieldTransformations()
   {
     return $this->fieldTransformations;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2RecordSuppression
+   * @param Google_Service_DLP_GooglePrivacyDlpV2RecordSuppression[]
    */
   public function setRecordSuppressions($recordSuppressions)
   {
     $this->recordSuppressions = $recordSuppressions;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2RecordSuppression
+   * @return Google_Service_DLP_GooglePrivacyDlpV2RecordSuppression[]
    */
   public function getRecordSuppressions()
   {

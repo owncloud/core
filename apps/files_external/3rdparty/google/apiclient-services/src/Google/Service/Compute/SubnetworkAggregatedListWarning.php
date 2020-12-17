@@ -32,14 +32,14 @@ class Google_Service_Compute_SubnetworkAggregatedListWarning extends Google_Coll
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_SubnetworkAggregatedListWarningData
+   * @param Google_Service_Compute_SubnetworkAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_SubnetworkAggregatedListWarningData
+   * @return Google_Service_Compute_SubnetworkAggregatedListWarningData[]
    */
   public function getData()
   {

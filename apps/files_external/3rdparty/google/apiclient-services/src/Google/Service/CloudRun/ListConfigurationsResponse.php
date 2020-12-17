@@ -35,14 +35,14 @@ class Google_Service_CloudRun_ListConfigurationsResponse extends Google_Collecti
     return $this->apiVersion;
   }
   /**
-   * @param Google_Service_CloudRun_Configuration
+   * @param Google_Service_CloudRun_Configuration[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_CloudRun_Configuration
+   * @return Google_Service_CloudRun_Configuration[]
    */
   public function getItems()
   {

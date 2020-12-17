@@ -23,14 +23,14 @@ class Google_Service_Classroom_ListCourseWorkResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Classroom_CourseWork
+   * @param Google_Service_Classroom_CourseWork[]
    */
   public function setCourseWork($courseWork)
   {
     $this->courseWork = $courseWork;
   }
   /**
-   * @return Google_Service_Classroom_CourseWork
+   * @return Google_Service_Classroom_CourseWork[]
    */
   public function getCourseWork()
   {

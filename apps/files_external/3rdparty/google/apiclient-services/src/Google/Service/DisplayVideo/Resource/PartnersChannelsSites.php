@@ -89,6 +89,8 @@ class Google_Service_DisplayVideo_Resource_PartnersChannelsSites extends Google_
    * requested sites belong.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string advertiserId The ID of the advertiser that owns the parent
+   * channel.
    * @opt_param string filter Allows filtering by site fields. Supported syntax: *
    * Filter expressions for site currently can only contain at most one *
    * restriction. * A restriction has the form of `{field} {operator} {value}`. *
@@ -106,8 +108,6 @@ class Google_Service_DisplayVideo_Resource_PartnersChannelsSites extends Google_
    * should return. Typically, this is the value of next_page_token returned from
    * the previous call to `ListSites` method. If not specified, the first page of
    * results will be returned.
-   * @opt_param string advertiserId The ID of the advertiser that owns the parent
-   * channel.
    * @return Google_Service_DisplayVideo_ListSitesResponse
    */
   public function listPartnersChannelsSites($partnerId, $channelId, $optParams = array())

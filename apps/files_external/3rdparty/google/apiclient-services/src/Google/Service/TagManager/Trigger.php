@@ -81,14 +81,14 @@ class Google_Service_TagManager_Trigger extends Google_Collection
     return $this->accountId;
   }
   /**
-   * @param Google_Service_TagManager_Condition
+   * @param Google_Service_TagManager_Condition[]
    */
   public function setAutoEventFilter($autoEventFilter)
   {
     $this->autoEventFilter = $autoEventFilter;
   }
   /**
-   * @return Google_Service_TagManager_Condition
+   * @return Google_Service_TagManager_Condition[]
    */
   public function getAutoEventFilter()
   {
@@ -131,14 +131,14 @@ class Google_Service_TagManager_Trigger extends Google_Collection
     return $this->continuousTimeMinMilliseconds;
   }
   /**
-   * @param Google_Service_TagManager_Condition
+   * @param Google_Service_TagManager_Condition[]
    */
   public function setCustomEventFilter($customEventFilter)
   {
     $this->customEventFilter = $customEventFilter;
   }
   /**
-   * @return Google_Service_TagManager_Condition
+   * @return Google_Service_TagManager_Condition[]
    */
   public function getCustomEventFilter()
   {
@@ -159,14 +159,14 @@ class Google_Service_TagManager_Trigger extends Google_Collection
     return $this->eventName;
   }
   /**
-   * @param Google_Service_TagManager_Condition
+   * @param Google_Service_TagManager_Condition[]
    */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
   /**
-   * @return Google_Service_TagManager_Condition
+   * @return Google_Service_TagManager_Condition[]
    */
   public function getFilter()
   {
@@ -267,14 +267,14 @@ class Google_Service_TagManager_Trigger extends Google_Collection
     return $this->notes;
   }
   /**
-   * @param Google_Service_TagManager_Parameter
+   * @param Google_Service_TagManager_Parameter[]
    */
   public function setParameter($parameter)
   {
     $this->parameter = $parameter;
   }
   /**
-   * @return Google_Service_TagManager_Parameter
+   * @return Google_Service_TagManager_Parameter[]
    */
   public function getParameter()
   {

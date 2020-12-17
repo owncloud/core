@@ -24,14 +24,14 @@ class Google_Service_Sheets_CandlestickChartSpec extends Google_Collection
   protected $domainDataType = '';
 
   /**
-   * @param Google_Service_Sheets_CandlestickData
+   * @param Google_Service_Sheets_CandlestickData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Sheets_CandlestickData
+   * @return Google_Service_Sheets_CandlestickData[]
    */
   public function getData()
   {

@@ -29,14 +29,14 @@ class Google_Service_DataTransfer_DataTransfer extends Google_Collection
   public $requestTime;
 
   /**
-   * @param Google_Service_DataTransfer_ApplicationDataTransfer
+   * @param Google_Service_DataTransfer_ApplicationDataTransfer[]
    */
   public function setApplicationDataTransfers($applicationDataTransfers)
   {
     $this->applicationDataTransfers = $applicationDataTransfers;
   }
   /**
-   * @return Google_Service_DataTransfer_ApplicationDataTransfer
+   * @return Google_Service_DataTransfer_ApplicationDataTransfer[]
    */
   public function getApplicationDataTransfers()
   {

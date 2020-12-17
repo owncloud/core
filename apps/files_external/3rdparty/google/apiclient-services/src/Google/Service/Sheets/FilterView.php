@@ -31,28 +31,28 @@ class Google_Service_Sheets_FilterView extends Google_Collection
   public $title;
 
   /**
-   * @param Google_Service_Sheets_FilterCriteria
+   * @param Google_Service_Sheets_FilterCriteria[]
    */
   public function setCriteria($criteria)
   {
     $this->criteria = $criteria;
   }
   /**
-   * @return Google_Service_Sheets_FilterCriteria
+   * @return Google_Service_Sheets_FilterCriteria[]
    */
   public function getCriteria()
   {
     return $this->criteria;
   }
   /**
-   * @param Google_Service_Sheets_FilterSpec
+   * @param Google_Service_Sheets_FilterSpec[]
    */
   public function setFilterSpecs($filterSpecs)
   {
     $this->filterSpecs = $filterSpecs;
   }
   /**
-   * @return Google_Service_Sheets_FilterSpec
+   * @return Google_Service_Sheets_FilterSpec[]
    */
   public function getFilterSpecs()
   {
@@ -89,14 +89,14 @@ class Google_Service_Sheets_FilterView extends Google_Collection
     return $this->range;
   }
   /**
-   * @param Google_Service_Sheets_SortSpec
+   * @param Google_Service_Sheets_SortSpec[]
    */
   public function setSortSpecs($sortSpecs)
   {
     $this->sortSpecs = $sortSpecs;
   }
   /**
-   * @return Google_Service_Sheets_SortSpec
+   * @return Google_Service_Sheets_SortSpec[]
    */
   public function getSortSpecs()
   {

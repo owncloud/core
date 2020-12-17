@@ -83,14 +83,14 @@ class Google_Service_AdExchangeBuyer_PretargetingConfig extends Google_Collectio
     return $this->creativeType;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_PretargetingConfigDimensions
+   * @param Google_Service_AdExchangeBuyer_PretargetingConfigDimensions[]
    */
   public function setDimensions($dimensions)
   {
     $this->dimensions = $dimensions;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_PretargetingConfigDimensions
+   * @return Google_Service_AdExchangeBuyer_PretargetingConfigDimensions[]
    */
   public function getDimensions()
   {
@@ -113,14 +113,14 @@ class Google_Service_AdExchangeBuyer_PretargetingConfig extends Google_Collectio
     return $this->excludedGeoCriteriaIds;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_PretargetingConfigExcludedPlacements
+   * @param Google_Service_AdExchangeBuyer_PretargetingConfigExcludedPlacements[]
    */
   public function setExcludedPlacements($excludedPlacements)
   {
     $this->excludedPlacements = $excludedPlacements;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_PretargetingConfigExcludedPlacements
+   * @return Google_Service_AdExchangeBuyer_PretargetingConfigExcludedPlacements[]
    */
   public function getExcludedPlacements()
   {
@@ -215,14 +215,14 @@ class Google_Service_AdExchangeBuyer_PretargetingConfig extends Google_Collectio
     return $this->mobileOperatingSystemVersions;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_PretargetingConfigPlacements
+   * @param Google_Service_AdExchangeBuyer_PretargetingConfigPlacements[]
    */
   public function setPlacements($placements)
   {
     $this->placements = $placements;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_PretargetingConfigPlacements
+   * @return Google_Service_AdExchangeBuyer_PretargetingConfigPlacements[]
    */
   public function getPlacements()
   {
@@ -277,14 +277,14 @@ class Google_Service_AdExchangeBuyer_PretargetingConfig extends Google_Collectio
     return $this->verticals;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_PretargetingConfigVideoPlayerSizes
+   * @param Google_Service_AdExchangeBuyer_PretargetingConfigVideoPlayerSizes[]
    */
   public function setVideoPlayerSizes($videoPlayerSizes)
   {
     $this->videoPlayerSizes = $videoPlayerSizes;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_PretargetingConfigVideoPlayerSizes
+   * @return Google_Service_AdExchangeBuyer_PretargetingConfigVideoPlayerSizes[]
    */
   public function getVideoPlayerSizes()
   {

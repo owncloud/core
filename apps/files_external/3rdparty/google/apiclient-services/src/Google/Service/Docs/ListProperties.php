@@ -22,14 +22,14 @@ class Google_Service_Docs_ListProperties extends Google_Collection
   protected $nestingLevelsDataType = 'array';
 
   /**
-   * @param Google_Service_Docs_NestingLevel
+   * @param Google_Service_Docs_NestingLevel[]
    */
   public function setNestingLevels($nestingLevels)
   {
     $this->nestingLevels = $nestingLevels;
   }
   /**
-   * @return Google_Service_Docs_NestingLevel
+   * @return Google_Service_Docs_NestingLevel[]
    */
   public function getNestingLevels()
   {

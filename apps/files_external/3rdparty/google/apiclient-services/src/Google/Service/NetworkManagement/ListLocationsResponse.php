@@ -23,14 +23,14 @@ class Google_Service_NetworkManagement_ListLocationsResponse extends Google_Coll
   public $nextPageToken;
 
   /**
-   * @param Google_Service_NetworkManagement_Location
+   * @param Google_Service_NetworkManagement_Location[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_NetworkManagement_Location
+   * @return Google_Service_NetworkManagement_Location[]
    */
   public function getLocations()
   {

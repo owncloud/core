@@ -33,14 +33,14 @@ class Google_Service_Tasks_Tasks extends Google_Collection
     return $this->etag;
   }
   /**
-   * @param Google_Service_Tasks_Task
+   * @param Google_Service_Tasks_Task[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Tasks_Task
+   * @return Google_Service_Tasks_Task[]
    */
   public function getItems()
   {

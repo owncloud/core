@@ -35,14 +35,14 @@ class Google_Service_Bigquery_Routine extends Google_Collection
   public $routineType;
 
   /**
-   * @param Google_Service_Bigquery_Argument
+   * @param Google_Service_Bigquery_Argument[]
    */
   public function setArguments($arguments)
   {
     $this->arguments = $arguments;
   }
   /**
-   * @return Google_Service_Bigquery_Argument
+   * @return Google_Service_Bigquery_Argument[]
    */
   public function getArguments()
   {

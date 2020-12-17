@@ -108,14 +108,14 @@ class Google_Service_Dfareporting_FloodlightActivity extends Google_Collection
     return $this->countingMethod;
   }
   /**
-   * @param Google_Service_Dfareporting_FloodlightActivityDynamicTag
+   * @param Google_Service_Dfareporting_FloodlightActivityDynamicTag[]
    */
   public function setDefaultTags($defaultTags)
   {
     $this->defaultTags = $defaultTags;
   }
   /**
-   * @return Google_Service_Dfareporting_FloodlightActivityDynamicTag
+   * @return Google_Service_Dfareporting_FloodlightActivityDynamicTag[]
    */
   public function getDefaultTags()
   {
@@ -238,14 +238,14 @@ class Google_Service_Dfareporting_FloodlightActivity extends Google_Collection
     return $this->notes;
   }
   /**
-   * @param Google_Service_Dfareporting_FloodlightActivityPublisherDynamicTag
+   * @param Google_Service_Dfareporting_FloodlightActivityPublisherDynamicTag[]
    */
   public function setPublisherTags($publisherTags)
   {
     $this->publisherTags = $publisherTags;
   }
   /**
-   * @return Google_Service_Dfareporting_FloodlightActivityPublisherDynamicTag
+   * @return Google_Service_Dfareporting_FloodlightActivityPublisherDynamicTag[]
    */
   public function getPublisherTags()
   {

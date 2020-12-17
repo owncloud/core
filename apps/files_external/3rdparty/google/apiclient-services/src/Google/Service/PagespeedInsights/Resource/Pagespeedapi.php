@@ -32,16 +32,16 @@ class Google_Service_PagespeedInsights_Resource_Pagespeedapi extends Google_Serv
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string utm_source Campaign source for analytics.
    * @opt_param string captchaToken The captcha token passed when filling out a
    * captcha.
-   * @opt_param string url Required. The URL to fetch and analyze
    * @opt_param string category A Lighthouse category to run; if none are given,
    * only Performance category will be run
+   * @opt_param string locale The locale used to localize formatted results
    * @opt_param string strategy The analysis strategy (desktop or mobile) to use,
    * and desktop is the default
-   * @opt_param string locale The locale used to localize formatted results
+   * @opt_param string url Required. The URL to fetch and analyze
    * @opt_param string utm_campaign Campaign name for analytics.
+   * @opt_param string utm_source Campaign source for analytics.
    * @return Google_Service_PagespeedInsights_PagespeedApiPagespeedResponseV5
    */
   public function runpagespeed($optParams = array())

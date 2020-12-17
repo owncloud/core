@@ -40,14 +40,14 @@ class Google_Service_AndroidEnterprise_StorePage extends Google_Collection
     return $this->link;
   }
   /**
-   * @param Google_Service_AndroidEnterprise_LocalizedText
+   * @param Google_Service_AndroidEnterprise_LocalizedText[]
    */
   public function setName($name)
   {
     $this->name = $name;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_LocalizedText
+   * @return Google_Service_AndroidEnterprise_LocalizedText[]
    */
   public function getName()
   {

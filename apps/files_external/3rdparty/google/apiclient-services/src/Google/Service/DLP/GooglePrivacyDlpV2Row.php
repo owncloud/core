@@ -22,14 +22,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2Row extends Google_Collection
   protected $valuesDataType = 'array';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2Value
+   * @param Google_Service_DLP_GooglePrivacyDlpV2Value[]
    */
   public function setValues($values)
   {
     $this->values = $values;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2Value
+   * @return Google_Service_DLP_GooglePrivacyDlpV2Value[]
    */
   public function getValues()
   {

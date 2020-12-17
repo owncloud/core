@@ -25,14 +25,14 @@ class Google_Service_Compute_ZoneSetPolicyRequest extends Google_Collection
   protected $policyDataType = '';
 
   /**
-   * @param Google_Service_Compute_Binding
+   * @param Google_Service_Compute_Binding[]
    */
   public function setBindings($bindings)
   {
     $this->bindings = $bindings;
   }
   /**
-   * @return Google_Service_Compute_Binding
+   * @return Google_Service_Compute_Binding[]
    */
   public function getBindings()
   {

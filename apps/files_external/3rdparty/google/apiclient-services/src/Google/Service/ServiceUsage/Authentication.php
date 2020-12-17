@@ -24,28 +24,28 @@ class Google_Service_ServiceUsage_Authentication extends Google_Collection
   protected $rulesDataType = 'array';
 
   /**
-   * @param Google_Service_ServiceUsage_AuthProvider
+   * @param Google_Service_ServiceUsage_AuthProvider[]
    */
   public function setProviders($providers)
   {
     $this->providers = $providers;
   }
   /**
-   * @return Google_Service_ServiceUsage_AuthProvider
+   * @return Google_Service_ServiceUsage_AuthProvider[]
    */
   public function getProviders()
   {
     return $this->providers;
   }
   /**
-   * @param Google_Service_ServiceUsage_AuthenticationRule
+   * @param Google_Service_ServiceUsage_AuthenticationRule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_ServiceUsage_AuthenticationRule
+   * @return Google_Service_ServiceUsage_AuthenticationRule[]
    */
   public function getRules()
   {

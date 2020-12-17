@@ -22,14 +22,14 @@ class Google_Service_SiteVerification_SiteVerificationWebResourceListResponse ex
   protected $itemsDataType = 'array';
 
   /**
-   * @param Google_Service_SiteVerification_SiteVerificationWebResourceResource
+   * @param Google_Service_SiteVerification_SiteVerificationWebResourceResource[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_SiteVerification_SiteVerificationWebResourceResource
+   * @return Google_Service_SiteVerification_SiteVerificationWebResourceResource[]
    */
   public function getItems()
   {

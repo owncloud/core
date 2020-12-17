@@ -219,14 +219,14 @@ class Google_Service_Compute_Operation extends Google_Collection
     return $this->user;
   }
   /**
-   * @param Google_Service_Compute_OperationWarnings
+   * @param Google_Service_Compute_OperationWarnings[]
    */
   public function setWarnings($warnings)
   {
     $this->warnings = $warnings;
   }
   /**
-   * @return Google_Service_Compute_OperationWarnings
+   * @return Google_Service_Compute_OperationWarnings[]
    */
   public function getWarnings()
   {

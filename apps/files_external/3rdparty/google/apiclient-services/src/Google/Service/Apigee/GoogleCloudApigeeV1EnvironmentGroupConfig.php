@@ -50,14 +50,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentGroupConfig extends Go
     return $this->revisionId;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1RoutingRule
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1RoutingRule[]
    */
   public function setRoutingRules($routingRules)
   {
     $this->routingRules = $routingRules;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1RoutingRule
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1RoutingRule[]
    */
   public function getRoutingRules()
   {

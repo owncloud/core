@@ -49,28 +49,28 @@ class Google_Service_AnalyticsReporting_ReportData extends Google_Collection
     return $this->isDataGolden;
   }
   /**
-   * @param Google_Service_AnalyticsReporting_DateRangeValues
+   * @param Google_Service_AnalyticsReporting_DateRangeValues[]
    */
   public function setMaximums($maximums)
   {
     $this->maximums = $maximums;
   }
   /**
-   * @return Google_Service_AnalyticsReporting_DateRangeValues
+   * @return Google_Service_AnalyticsReporting_DateRangeValues[]
    */
   public function getMaximums()
   {
     return $this->maximums;
   }
   /**
-   * @param Google_Service_AnalyticsReporting_DateRangeValues
+   * @param Google_Service_AnalyticsReporting_DateRangeValues[]
    */
   public function setMinimums($minimums)
   {
     $this->minimums = $minimums;
   }
   /**
-   * @return Google_Service_AnalyticsReporting_DateRangeValues
+   * @return Google_Service_AnalyticsReporting_DateRangeValues[]
    */
   public function getMinimums()
   {
@@ -85,14 +85,14 @@ class Google_Service_AnalyticsReporting_ReportData extends Google_Collection
     return $this->rowCount;
   }
   /**
-   * @param Google_Service_AnalyticsReporting_ReportRow
+   * @param Google_Service_AnalyticsReporting_ReportRow[]
    */
   public function setRows($rows)
   {
     $this->rows = $rows;
   }
   /**
-   * @return Google_Service_AnalyticsReporting_ReportRow
+   * @return Google_Service_AnalyticsReporting_ReportRow[]
    */
   public function getRows()
   {
@@ -115,14 +115,14 @@ class Google_Service_AnalyticsReporting_ReportData extends Google_Collection
     return $this->samplingSpaceSizes;
   }
   /**
-   * @param Google_Service_AnalyticsReporting_DateRangeValues
+   * @param Google_Service_AnalyticsReporting_DateRangeValues[]
    */
   public function setTotals($totals)
   {
     $this->totals = $totals;
   }
   /**
-   * @return Google_Service_AnalyticsReporting_DateRangeValues
+   * @return Google_Service_AnalyticsReporting_DateRangeValues[]
    */
   public function getTotals()
   {

@@ -24,14 +24,14 @@ class Google_Service_GamesConfiguration_LeaderboardConfigurationListResponse ext
   public $nextPageToken;
 
   /**
-   * @param Google_Service_GamesConfiguration_LeaderboardConfiguration
+   * @param Google_Service_GamesConfiguration_LeaderboardConfiguration[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_GamesConfiguration_LeaderboardConfiguration
+   * @return Google_Service_GamesConfiguration_LeaderboardConfiguration[]
    */
   public function getItems()
   {

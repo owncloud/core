@@ -37,14 +37,14 @@ class Google_Service_Compute_InstanceGroupAggregatedList extends Google_Collecti
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_InstanceGroupsScopedList
+   * @param Google_Service_Compute_InstanceGroupsScopedList[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_InstanceGroupsScopedList
+   * @return Google_Service_Compute_InstanceGroupsScopedList[]
    */
   public function getItems()
   {

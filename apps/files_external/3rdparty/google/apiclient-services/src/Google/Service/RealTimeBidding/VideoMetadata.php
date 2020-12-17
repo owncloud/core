@@ -51,14 +51,14 @@ class Google_Service_RealTimeBidding_VideoMetadata extends Google_Collection
     return $this->isVpaid;
   }
   /**
-   * @param Google_Service_RealTimeBidding_MediaFile
+   * @param Google_Service_RealTimeBidding_MediaFile[]
    */
   public function setMediaFiles($mediaFiles)
   {
     $this->mediaFiles = $mediaFiles;
   }
   /**
-   * @return Google_Service_RealTimeBidding_MediaFile
+   * @return Google_Service_RealTimeBidding_MediaFile[]
    */
   public function getMediaFiles()
   {

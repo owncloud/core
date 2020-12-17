@@ -31,14 +31,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2KAnonymityEquivalenceClass extends Go
     return $this->equivalenceClassSize;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2Value
+   * @param Google_Service_DLP_GooglePrivacyDlpV2Value[]
    */
   public function setQuasiIdsValues($quasiIdsValues)
   {
     $this->quasiIdsValues = $quasiIdsValues;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2Value
+   * @return Google_Service_DLP_GooglePrivacyDlpV2Value[]
    */
   public function getQuasiIdsValues()
   {

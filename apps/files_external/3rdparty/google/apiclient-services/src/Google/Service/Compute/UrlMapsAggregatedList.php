@@ -37,14 +37,14 @@ class Google_Service_Compute_UrlMapsAggregatedList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_UrlMapsScopedList
+   * @param Google_Service_Compute_UrlMapsScopedList[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_UrlMapsScopedList
+   * @return Google_Service_Compute_UrlMapsScopedList[]
    */
   public function getItems()
   {

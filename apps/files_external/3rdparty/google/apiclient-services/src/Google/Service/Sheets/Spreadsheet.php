@@ -34,56 +34,56 @@ class Google_Service_Sheets_Spreadsheet extends Google_Collection
   public $spreadsheetUrl;
 
   /**
-   * @param Google_Service_Sheets_DataSourceRefreshSchedule
+   * @param Google_Service_Sheets_DataSourceRefreshSchedule[]
    */
   public function setDataSourceSchedules($dataSourceSchedules)
   {
     $this->dataSourceSchedules = $dataSourceSchedules;
   }
   /**
-   * @return Google_Service_Sheets_DataSourceRefreshSchedule
+   * @return Google_Service_Sheets_DataSourceRefreshSchedule[]
    */
   public function getDataSourceSchedules()
   {
     return $this->dataSourceSchedules;
   }
   /**
-   * @param Google_Service_Sheets_DataSource
+   * @param Google_Service_Sheets_DataSource[]
    */
   public function setDataSources($dataSources)
   {
     $this->dataSources = $dataSources;
   }
   /**
-   * @return Google_Service_Sheets_DataSource
+   * @return Google_Service_Sheets_DataSource[]
    */
   public function getDataSources()
   {
     return $this->dataSources;
   }
   /**
-   * @param Google_Service_Sheets_DeveloperMetadata
+   * @param Google_Service_Sheets_DeveloperMetadata[]
    */
   public function setDeveloperMetadata($developerMetadata)
   {
     $this->developerMetadata = $developerMetadata;
   }
   /**
-   * @return Google_Service_Sheets_DeveloperMetadata
+   * @return Google_Service_Sheets_DeveloperMetadata[]
    */
   public function getDeveloperMetadata()
   {
     return $this->developerMetadata;
   }
   /**
-   * @param Google_Service_Sheets_NamedRange
+   * @param Google_Service_Sheets_NamedRange[]
    */
   public function setNamedRanges($namedRanges)
   {
     $this->namedRanges = $namedRanges;
   }
   /**
-   * @return Google_Service_Sheets_NamedRange
+   * @return Google_Service_Sheets_NamedRange[]
    */
   public function getNamedRanges()
   {
@@ -104,14 +104,14 @@ class Google_Service_Sheets_Spreadsheet extends Google_Collection
     return $this->properties;
   }
   /**
-   * @param Google_Service_Sheets_Sheet
+   * @param Google_Service_Sheets_Sheet[]
    */
   public function setSheets($sheets)
   {
     $this->sheets = $sheets;
   }
   /**
-   * @return Google_Service_Sheets_Sheet
+   * @return Google_Service_Sheets_Sheet[]
    */
   public function getSheets()
   {

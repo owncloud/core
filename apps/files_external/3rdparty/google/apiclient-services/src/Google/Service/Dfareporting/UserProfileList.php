@@ -32,14 +32,14 @@ class Google_Service_Dfareporting_UserProfileList extends Google_Collection
     return $this->etag;
   }
   /**
-   * @param Google_Service_Dfareporting_UserProfile
+   * @param Google_Service_Dfareporting_UserProfile[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Dfareporting_UserProfile
+   * @return Google_Service_Dfareporting_UserProfile[]
    */
   public function getItems()
   {

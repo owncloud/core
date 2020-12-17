@@ -19,6 +19,7 @@ class Google_Service_Storage_BucketIamConfiguration extends Google_Model
 {
   protected $bucketPolicyOnlyType = 'Google_Service_Storage_BucketIamConfigurationBucketPolicyOnly';
   protected $bucketPolicyOnlyDataType = '';
+  public $publicAccessPrevention;
   protected $uniformBucketLevelAccessType = 'Google_Service_Storage_BucketIamConfigurationUniformBucketLevelAccess';
   protected $uniformBucketLevelAccessDataType = '';
 
@@ -35,6 +36,14 @@ class Google_Service_Storage_BucketIamConfiguration extends Google_Model
   public function getBucketPolicyOnly()
   {
     return $this->bucketPolicyOnly;
+  }
+  public function setPublicAccessPrevention($publicAccessPrevention)
+  {
+    $this->publicAccessPrevention = $publicAccessPrevention;
+  }
+  public function getPublicAccessPrevention()
+  {
+    return $this->publicAccessPrevention;
   }
   /**
    * @param Google_Service_Storage_BucketIamConfigurationUniformBucketLevelAccess

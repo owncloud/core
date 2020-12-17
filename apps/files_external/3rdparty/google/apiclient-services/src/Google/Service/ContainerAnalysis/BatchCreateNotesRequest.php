@@ -21,14 +21,14 @@ class Google_Service_ContainerAnalysis_BatchCreateNotesRequest extends Google_Mo
   protected $notesDataType = 'map';
 
   /**
-   * @param Google_Service_ContainerAnalysis_Note
+   * @param Google_Service_ContainerAnalysis_Note[]
    */
   public function setNotes($notes)
   {
     $this->notes = $notes;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_Note
+   * @return Google_Service_ContainerAnalysis_Note[]
    */
   public function getNotes()
   {

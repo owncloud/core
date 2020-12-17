@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_ListLineItemAssignedTargetingOptionsResponse e
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DisplayVideo_AssignedTargetingOption
+   * @param Google_Service_DisplayVideo_AssignedTargetingOption[]
    */
   public function setAssignedTargetingOptions($assignedTargetingOptions)
   {
     $this->assignedTargetingOptions = $assignedTargetingOptions;
   }
   /**
-   * @return Google_Service_DisplayVideo_AssignedTargetingOption
+   * @return Google_Service_DisplayVideo_AssignedTargetingOption[]
    */
   public function getAssignedTargetingOptions()
   {

@@ -22,14 +22,14 @@ class Google_Service_DoubleClickBidManager_DisjunctiveMatchStatement extends Goo
   protected $eventFiltersDataType = 'array';
 
   /**
-   * @param Google_Service_DoubleClickBidManager_EventFilter
+   * @param Google_Service_DoubleClickBidManager_EventFilter[]
    */
   public function setEventFilters($eventFilters)
   {
     $this->eventFilters = $eventFilters;
   }
   /**
-   * @return Google_Service_DoubleClickBidManager_EventFilter
+   * @return Google_Service_DoubleClickBidManager_EventFilter[]
    */
   public function getEventFilters()
   {

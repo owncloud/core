@@ -23,14 +23,14 @@ class Google_Service_AccessApproval_ListApprovalRequestsResponse extends Google_
   public $nextPageToken;
 
   /**
-   * @param Google_Service_AccessApproval_ApprovalRequest
+   * @param Google_Service_AccessApproval_ApprovalRequest[]
    */
   public function setApprovalRequests($approvalRequests)
   {
     $this->approvalRequests = $approvalRequests;
   }
   /**
-   * @return Google_Service_AccessApproval_ApprovalRequest
+   * @return Google_Service_AccessApproval_ApprovalRequest[]
    */
   public function getApprovalRequests()
   {

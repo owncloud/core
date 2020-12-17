@@ -25,14 +25,14 @@ class Google_Service_ShoppingContent_OrderreturnsCreateOrderReturnRequest extend
   public $returnMethodType;
 
   /**
-   * @param Google_Service_ShoppingContent_OrderreturnsLineItem
+   * @param Google_Service_ShoppingContent_OrderreturnsLineItem[]
    */
   public function setLineItems($lineItems)
   {
     $this->lineItems = $lineItems;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderreturnsLineItem
+   * @return Google_Service_ShoppingContent_OrderreturnsLineItem[]
    */
   public function getLineItems()
   {

@@ -33,14 +33,14 @@ class Google_Service_Docs_BatchUpdateDocumentResponse extends Google_Collection
     return $this->documentId;
   }
   /**
-   * @param Google_Service_Docs_Response
+   * @param Google_Service_Docs_Response[]
    */
   public function setReplies($replies)
   {
     $this->replies = $replies;
   }
   /**
-   * @return Google_Service_Docs_Response
+   * @return Google_Service_Docs_Response[]
    */
   public function getReplies()
   {

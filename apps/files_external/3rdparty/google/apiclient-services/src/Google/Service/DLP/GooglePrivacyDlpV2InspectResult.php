@@ -23,14 +23,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2InspectResult extends Google_Collecti
   public $findingsTruncated;
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2Finding
+   * @param Google_Service_DLP_GooglePrivacyDlpV2Finding[]
    */
   public function setFindings($findings)
   {
     $this->findings = $findings;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2Finding
+   * @return Google_Service_DLP_GooglePrivacyDlpV2Finding[]
    */
   public function getFindings()
   {

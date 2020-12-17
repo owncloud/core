@@ -24,14 +24,14 @@ class Google_Service_Storage_HmacKeysMetadata extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Storage_HmacKeyMetadata
+   * @param Google_Service_Storage_HmacKeyMetadata[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Storage_HmacKeyMetadata
+   * @return Google_Service_Storage_HmacKeyMetadata[]
    */
   public function getItems()
   {

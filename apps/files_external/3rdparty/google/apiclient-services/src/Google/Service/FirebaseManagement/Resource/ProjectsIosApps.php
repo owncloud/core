@@ -96,12 +96,12 @@ class Google_Service_FirebaseManagement_Resource_ProjectsIosApps extends Google_
    * PROJECT_IDENTIFIER values.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Token returned from a previous call to
-   * `ListIosApps` indicating where in the set of Apps to resume listing.
    * @opt_param int pageSize The maximum number of Apps to return in the response.
    * The server may return fewer than this at its discretion. If no value is
    * specified (or too large a value is specified), the server will impose its own
    * limit.
+   * @opt_param string pageToken Token returned from a previous call to
+   * `ListIosApps` indicating where in the set of Apps to resume listing.
    * @return Google_Service_FirebaseManagement_ListIosAppsResponse
    */
   public function listProjectsIosApps($parent, $optParams = array())

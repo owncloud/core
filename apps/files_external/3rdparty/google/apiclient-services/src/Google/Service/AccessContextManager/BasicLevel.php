@@ -31,14 +31,14 @@ class Google_Service_AccessContextManager_BasicLevel extends Google_Collection
     return $this->combiningFunction;
   }
   /**
-   * @param Google_Service_AccessContextManager_Condition
+   * @param Google_Service_AccessContextManager_Condition[]
    */
   public function setConditions($conditions)
   {
     $this->conditions = $conditions;
   }
   /**
-   * @return Google_Service_AccessContextManager_Condition
+   * @return Google_Service_AccessContextManager_Condition[]
    */
   public function getConditions()
   {

@@ -31,14 +31,14 @@ class Google_Service_CloudTasks_ListQueuesResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_CloudTasks_Queue
+   * @param Google_Service_CloudTasks_Queue[]
    */
   public function setQueues($queues)
   {
     $this->queues = $queues;
   }
   /**
-   * @return Google_Service_CloudTasks_Queue
+   * @return Google_Service_CloudTasks_Queue[]
    */
   public function getQueues()
   {

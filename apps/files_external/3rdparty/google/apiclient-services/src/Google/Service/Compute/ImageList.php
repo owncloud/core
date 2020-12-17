@@ -36,14 +36,14 @@ class Google_Service_Compute_ImageList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_Image
+   * @param Google_Service_Compute_Image[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_Image
+   * @return Google_Service_Compute_Image[]
    */
   public function getItems()
   {

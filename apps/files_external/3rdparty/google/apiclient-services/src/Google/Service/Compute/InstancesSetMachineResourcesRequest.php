@@ -22,14 +22,14 @@ class Google_Service_Compute_InstancesSetMachineResourcesRequest extends Google_
   protected $guestAcceleratorsDataType = 'array';
 
   /**
-   * @param Google_Service_Compute_AcceleratorConfig
+   * @param Google_Service_Compute_AcceleratorConfig[]
    */
   public function setGuestAccelerators($guestAccelerators)
   {
     $this->guestAccelerators = $guestAccelerators;
   }
   /**
-   * @return Google_Service_Compute_AcceleratorConfig
+   * @return Google_Service_Compute_AcceleratorConfig[]
    */
   public function getGuestAccelerators()
   {

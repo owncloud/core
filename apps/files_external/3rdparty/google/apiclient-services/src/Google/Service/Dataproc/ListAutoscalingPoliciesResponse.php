@@ -31,14 +31,14 @@ class Google_Service_Dataproc_ListAutoscalingPoliciesResponse extends Google_Col
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Dataproc_AutoscalingPolicy
+   * @param Google_Service_Dataproc_AutoscalingPolicy[]
    */
   public function setPolicies($policies)
   {
     $this->policies = $policies;
   }
   /**
-   * @return Google_Service_Dataproc_AutoscalingPolicy
+   * @return Google_Service_Dataproc_AutoscalingPolicy[]
    */
   public function getPolicies()
   {

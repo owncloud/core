@@ -32,14 +32,14 @@ class Google_Service_Dataflow_SideInputInfo extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dataflow_Source
+   * @param Google_Service_Dataflow_Source[]
    */
   public function setSources($sources)
   {
     $this->sources = $sources;
   }
   /**
-   * @return Google_Service_Dataflow_Source
+   * @return Google_Service_Dataflow_Source[]
    */
   public function getSources()
   {

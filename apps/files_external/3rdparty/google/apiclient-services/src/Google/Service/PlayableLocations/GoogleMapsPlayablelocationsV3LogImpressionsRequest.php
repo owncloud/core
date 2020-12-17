@@ -39,14 +39,14 @@ class Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3LogImpressio
     return $this->clientInfo;
   }
   /**
-   * @param Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3Impression
+   * @param Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3Impression[]
    */
   public function setImpressions($impressions)
   {
     $this->impressions = $impressions;
   }
   /**
-   * @return Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3Impression
+   * @return Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3Impression[]
    */
   public function getImpressions()
   {

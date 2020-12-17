@@ -22,14 +22,14 @@ class Google_Service_ShoppingContent_LocalinventoryCustomBatchRequest extends Go
   protected $entriesDataType = 'array';
 
   /**
-   * @param Google_Service_ShoppingContent_LocalinventoryCustomBatchRequestEntry
+   * @param Google_Service_ShoppingContent_LocalinventoryCustomBatchRequestEntry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_ShoppingContent_LocalinventoryCustomBatchRequestEntry
+   * @return Google_Service_ShoppingContent_LocalinventoryCustomBatchRequestEntry[]
    */
   public function getEntries()
   {

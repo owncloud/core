@@ -38,8 +38,6 @@ class Google_Service_PolyService_Resource_UsersAssets extends Google_Service_Res
    *
    * @opt_param string format Return only assets with the matching format.
    * Acceptable values are: `BLOCKS`, `FBX`, `GLTF`, `GLTF2`, `OBJ`, and `TILT`.
-   * @opt_param string visibility The visibility of the assets to be returned.
-   * Defaults to VISIBILITY_UNSPECIFIED which returns all assets.
    * @opt_param string orderBy Specifies an ordering for assets. Acceptable values
    * are: `BEST`, `NEWEST`, `OLDEST`. Defaults to `BEST`, which ranks assets based
    * on a combination of popularity and other features.
@@ -48,6 +46,8 @@ class Google_Service_PolyService_Resource_UsersAssets extends Google_Service_Res
    * @opt_param string pageToken Specifies a continuation token from a previous
    * search whose results were split into multiple pages. To get the next page,
    * submit the same request specifying the value from next_page_token.
+   * @opt_param string visibility The visibility of the assets to be returned.
+   * Defaults to VISIBILITY_UNSPECIFIED which returns all assets.
    * @return Google_Service_PolyService_ListUserAssetsResponse
    */
   public function listUsersAssets($name, $optParams = array())

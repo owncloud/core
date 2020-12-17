@@ -29,14 +29,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Example extends 
   protected $videoPayloadDataType = '';
 
   /**
-   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Annotation
+   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Annotation[]
    */
   public function setAnnotations($annotations)
   {
     $this->annotations = $annotations;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Annotation
+   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Annotation[]
    */
   public function getAnnotations()
   {

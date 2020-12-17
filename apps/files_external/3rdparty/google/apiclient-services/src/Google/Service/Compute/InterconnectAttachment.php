@@ -24,6 +24,7 @@ class Google_Service_Compute_InterconnectAttachment extends Google_Collection
   public $cloudRouterIpAddress;
   public $creationTimestamp;
   public $customerRouterIpAddress;
+  public $dataplaneVersion;
   public $description;
   public $edgeAvailabilityDomain;
   public $googleReferenceId;
@@ -92,6 +93,14 @@ class Google_Service_Compute_InterconnectAttachment extends Google_Collection
   public function getCustomerRouterIpAddress()
   {
     return $this->customerRouterIpAddress;
+  }
+  public function setDataplaneVersion($dataplaneVersion)
+  {
+    $this->dataplaneVersion = $dataplaneVersion;
+  }
+  public function getDataplaneVersion()
+  {
+    return $this->dataplaneVersion;
   }
   public function setDescription($description)
   {

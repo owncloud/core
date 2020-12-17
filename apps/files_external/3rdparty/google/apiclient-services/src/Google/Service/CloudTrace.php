@@ -43,7 +43,7 @@ class Google_Service_CloudTrace extends Google_Service
 
   public $projects_traces;
   public $projects_traces_spans;
-  
+
   /**
    * Constructs the internal representation of the CloudTrace service.
    *

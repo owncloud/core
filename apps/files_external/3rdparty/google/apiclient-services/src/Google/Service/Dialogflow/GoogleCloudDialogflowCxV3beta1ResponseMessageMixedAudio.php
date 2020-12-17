@@ -22,14 +22,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageMix
   protected $segmentsDataType = 'array';
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageMixedAudioSegment
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageMixedAudioSegment[]
    */
   public function setSegments($segments)
   {
     $this->segments = $segments;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageMixedAudioSegment
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessageMixedAudioSegment[]
    */
   public function getSegments()
   {

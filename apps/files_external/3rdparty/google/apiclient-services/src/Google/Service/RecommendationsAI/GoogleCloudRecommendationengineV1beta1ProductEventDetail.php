@@ -45,28 +45,28 @@ class Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1Pro
     return $this->listId;
   }
   /**
-   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1CatalogItemCategoryHierarchy
+   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1CatalogItemCategoryHierarchy[]
    */
   public function setPageCategories($pageCategories)
   {
     $this->pageCategories = $pageCategories;
   }
   /**
-   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1CatalogItemCategoryHierarchy
+   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1CatalogItemCategoryHierarchy[]
    */
   public function getPageCategories()
   {
     return $this->pageCategories;
   }
   /**
-   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1ProductDetail
+   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1ProductDetail[]
    */
   public function setProductDetails($productDetails)
   {
     $this->productDetails = $productDetails;
   }
   /**
-   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1ProductDetail
+   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1ProductDetail[]
    */
   public function getProductDetails()
   {

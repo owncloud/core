@@ -47,14 +47,14 @@ class Google_Service_Storage_ComposeRequest extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_Storage_ComposeRequestSourceObjects
+   * @param Google_Service_Storage_ComposeRequestSourceObjects[]
    */
   public function setSourceObjects($sourceObjects)
   {
     $this->sourceObjects = $sourceObjects;
   }
   /**
-   * @return Google_Service_Storage_ComposeRequestSourceObjects
+   * @return Google_Service_Storage_ComposeRequestSourceObjects[]
    */
   public function getSourceObjects()
   {

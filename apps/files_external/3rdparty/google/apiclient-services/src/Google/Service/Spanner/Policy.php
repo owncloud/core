@@ -24,14 +24,14 @@ class Google_Service_Spanner_Policy extends Google_Collection
   public $version;
 
   /**
-   * @param Google_Service_Spanner_Binding
+   * @param Google_Service_Spanner_Binding[]
    */
   public function setBindings($bindings)
   {
     $this->bindings = $bindings;
   }
   /**
-   * @return Google_Service_Spanner_Binding
+   * @return Google_Service_Spanner_Binding[]
    */
   public function getBindings()
   {

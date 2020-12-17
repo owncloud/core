@@ -36,14 +36,14 @@ class Google_Service_CloudSearch_ItemAcl extends Google_Collection
     return $this->aclInheritanceType;
   }
   /**
-   * @param Google_Service_CloudSearch_Principal
+   * @param Google_Service_CloudSearch_Principal[]
    */
   public function setDeniedReaders($deniedReaders)
   {
     $this->deniedReaders = $deniedReaders;
   }
   /**
-   * @return Google_Service_CloudSearch_Principal
+   * @return Google_Service_CloudSearch_Principal[]
    */
   public function getDeniedReaders()
   {
@@ -58,28 +58,28 @@ class Google_Service_CloudSearch_ItemAcl extends Google_Collection
     return $this->inheritAclFrom;
   }
   /**
-   * @param Google_Service_CloudSearch_Principal
+   * @param Google_Service_CloudSearch_Principal[]
    */
   public function setOwners($owners)
   {
     $this->owners = $owners;
   }
   /**
-   * @return Google_Service_CloudSearch_Principal
+   * @return Google_Service_CloudSearch_Principal[]
    */
   public function getOwners()
   {
     return $this->owners;
   }
   /**
-   * @param Google_Service_CloudSearch_Principal
+   * @param Google_Service_CloudSearch_Principal[]
    */
   public function setReaders($readers)
   {
     $this->readers = $readers;
   }
   /**
-   * @return Google_Service_CloudSearch_Principal
+   * @return Google_Service_CloudSearch_Principal[]
    */
   public function getReaders()
   {

@@ -48,10 +48,10 @@ class Google_Service_AndroidEnterprise_Resource_Enterprises extends Google_Servi
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string enterpriseToken The Enterprise token appended to the
-   * Callback URL.
    * @opt_param string completionToken The Completion token initially returned by
    * GenerateSignupUrl.
+   * @opt_param string enterpriseToken The Enterprise token appended to the
+   * Callback URL.
    * @return Google_Service_AndroidEnterprise_Enterprise
    */
   public function completeSignup($optParams = array())

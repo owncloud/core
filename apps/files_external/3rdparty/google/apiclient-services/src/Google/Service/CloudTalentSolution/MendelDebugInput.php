@@ -21,14 +21,14 @@ class Google_Service_CloudTalentSolution_MendelDebugInput extends Google_Model
   protected $namespacedDebugInputDataType = 'map';
 
   /**
-   * @param Google_Service_CloudTalentSolution_NamespacedDebugInput
+   * @param Google_Service_CloudTalentSolution_NamespacedDebugInput[]
    */
   public function setNamespacedDebugInput($namespacedDebugInput)
   {
     $this->namespacedDebugInput = $namespacedDebugInput;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_NamespacedDebugInput
+   * @return Google_Service_CloudTalentSolution_NamespacedDebugInput[]
    */
   public function getNamespacedDebugInput()
   {

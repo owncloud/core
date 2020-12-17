@@ -27,28 +27,28 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2T
   public $timeOffset;
 
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2DetectedAttribute
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2DetectedAttribute[]
    */
   public function setAttributes($attributes)
   {
     $this->attributes = $attributes;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2DetectedAttribute
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2DetectedAttribute[]
    */
   public function getAttributes()
   {
     return $this->attributes;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2DetectedLandmark
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2DetectedLandmark[]
    */
   public function setLandmarks($landmarks)
   {
     $this->landmarks = $landmarks;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2DetectedLandmark
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2DetectedLandmark[]
    */
   public function getLandmarks()
   {

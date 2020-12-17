@@ -34,7 +34,7 @@ class Google_Service_ChromeUXReport extends Google_Service
 
 
   public $records;
-  
+
   /**
    * Constructs the internal representation of the ChromeUXReport service.
    *

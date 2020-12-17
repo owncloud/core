@@ -25,14 +25,14 @@ class Google_Service_Sheets_BatchGetValuesByDataFilterRequest extends Google_Col
   public $valueRenderOption;
 
   /**
-   * @param Google_Service_Sheets_DataFilter
+   * @param Google_Service_Sheets_DataFilter[]
    */
   public function setDataFilters($dataFilters)
   {
     $this->dataFilters = $dataFilters;
   }
   /**
-   * @return Google_Service_Sheets_DataFilter
+   * @return Google_Service_Sheets_DataFilter[]
    */
   public function getDataFilters()
   {

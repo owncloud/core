@@ -36,14 +36,14 @@ class Google_Service_Compute_TargetHttpProxyList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_TargetHttpProxy
+   * @param Google_Service_Compute_TargetHttpProxy[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_TargetHttpProxy
+   * @return Google_Service_Compute_TargetHttpProxy[]
    */
   public function getItems()
   {

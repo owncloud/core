@@ -31,14 +31,14 @@ class Google_Service_Dfareporting_RegionsListResponse extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dfareporting_Region
+   * @param Google_Service_Dfareporting_Region[]
    */
   public function setRegions($regions)
   {
     $this->regions = $regions;
   }
   /**
-   * @return Google_Service_Dfareporting_Region
+   * @return Google_Service_Dfareporting_Region[]
    */
   public function getRegions()
   {

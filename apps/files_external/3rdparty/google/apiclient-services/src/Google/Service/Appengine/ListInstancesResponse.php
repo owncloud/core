@@ -23,14 +23,14 @@ class Google_Service_Appengine_ListInstancesResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Appengine_Instance
+   * @param Google_Service_Appengine_Instance[]
    */
   public function setInstances($instances)
   {
     $this->instances = $instances;
   }
   /**
-   * @return Google_Service_Appengine_Instance
+   * @return Google_Service_Appengine_Instance[]
    */
   public function getInstances()
   {

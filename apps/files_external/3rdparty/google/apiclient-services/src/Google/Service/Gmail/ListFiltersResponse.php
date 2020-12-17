@@ -22,14 +22,14 @@ class Google_Service_Gmail_ListFiltersResponse extends Google_Collection
   protected $filterDataType = 'array';
 
   /**
-   * @param Google_Service_Gmail_Filter
+   * @param Google_Service_Gmail_Filter[]
    */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
   /**
-   * @return Google_Service_Gmail_Filter
+   * @return Google_Service_Gmail_Filter[]
    */
   public function getFilter()
   {

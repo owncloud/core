@@ -41,14 +41,14 @@ class Google_Service_Directory_MobileDevices extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_Directory_MobileDevice
+   * @param Google_Service_Directory_MobileDevice[]
    */
   public function setMobiledevices($mobiledevices)
   {
     $this->mobiledevices = $mobiledevices;
   }
   /**
-   * @return Google_Service_Directory_MobileDevice
+   * @return Google_Service_Directory_MobileDevice[]
    */
   public function getMobiledevices()
   {

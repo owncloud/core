@@ -22,14 +22,14 @@ class Google_Service_CloudSearch_ErrorInfo extends Google_Collection
   protected $errorMessagesDataType = 'array';
 
   /**
-   * @param Google_Service_CloudSearch_ErrorMessage
+   * @param Google_Service_CloudSearch_ErrorMessage[]
    */
   public function setErrorMessages($errorMessages)
   {
     $this->errorMessages = $errorMessages;
   }
   /**
-   * @return Google_Service_CloudSearch_ErrorMessage
+   * @return Google_Service_CloudSearch_ErrorMessage[]
    */
   public function getErrorMessages()
   {

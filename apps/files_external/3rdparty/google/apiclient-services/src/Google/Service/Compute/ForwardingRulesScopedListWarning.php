@@ -32,14 +32,14 @@ class Google_Service_Compute_ForwardingRulesScopedListWarning extends Google_Col
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_ForwardingRulesScopedListWarningData
+   * @param Google_Service_Compute_ForwardingRulesScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_ForwardingRulesScopedListWarningData
+   * @return Google_Service_Compute_ForwardingRulesScopedListWarningData[]
    */
   public function getData()
   {

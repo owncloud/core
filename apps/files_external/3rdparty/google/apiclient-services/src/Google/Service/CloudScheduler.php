@@ -36,7 +36,7 @@ class Google_Service_CloudScheduler extends Google_Service
 
   public $projects_locations;
   public $projects_locations_jobs;
-  
+
   /**
    * Constructs the internal representation of the CloudScheduler service.
    *
@@ -77,10 +77,6 @@ class Google_Service_CloudScheduler extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -88,6 +84,10 @@ class Google_Service_CloudScheduler extends Google_Service
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -139,13 +139,13 @@ class Google_Service_CloudScheduler extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'patch' => array(

@@ -23,14 +23,14 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2S
   public $languageCode;
 
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2SpeechRecognitionAlternative
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2SpeechRecognitionAlternative[]
    */
   public function setAlternatives($alternatives)
   {
     $this->alternatives = $alternatives;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2SpeechRecognitionAlternative
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2SpeechRecognitionAlternative[]
    */
   public function getAlternatives()
   {

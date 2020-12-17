@@ -41,14 +41,14 @@ class Google_Service_Dfareporting_CreativeOptimizationConfiguration extends Goog
     return $this->name;
   }
   /**
-   * @param Google_Service_Dfareporting_OptimizationActivity
+   * @param Google_Service_Dfareporting_OptimizationActivity[]
    */
   public function setOptimizationActivitys($optimizationActivitys)
   {
     $this->optimizationActivitys = $optimizationActivitys;
   }
   /**
-   * @return Google_Service_Dfareporting_OptimizationActivity
+   * @return Google_Service_Dfareporting_OptimizationActivity[]
    */
   public function getOptimizationActivitys()
   {

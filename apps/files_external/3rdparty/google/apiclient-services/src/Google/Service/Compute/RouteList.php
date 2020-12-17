@@ -36,14 +36,14 @@ class Google_Service_Compute_RouteList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_Route
+   * @param Google_Service_Compute_Route[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_Route
+   * @return Google_Service_Compute_Route[]
    */
   public function getItems()
   {

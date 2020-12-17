@@ -24,28 +24,28 @@ class Google_Service_AdExchangeBuyerII_InventorySizeTargeting extends Google_Col
   protected $targetedInventorySizesDataType = 'array';
 
   /**
-   * @param Google_Service_AdExchangeBuyerII_AdSize
+   * @param Google_Service_AdExchangeBuyerII_AdSize[]
    */
   public function setExcludedInventorySizes($excludedInventorySizes)
   {
     $this->excludedInventorySizes = $excludedInventorySizes;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_AdSize
+   * @return Google_Service_AdExchangeBuyerII_AdSize[]
    */
   public function getExcludedInventorySizes()
   {
     return $this->excludedInventorySizes;
   }
   /**
-   * @param Google_Service_AdExchangeBuyerII_AdSize
+   * @param Google_Service_AdExchangeBuyerII_AdSize[]
    */
   public function setTargetedInventorySizes($targetedInventorySizes)
   {
     $this->targetedInventorySizes = $targetedInventorySizes;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_AdSize
+   * @return Google_Service_AdExchangeBuyerII_AdSize[]
    */
   public function getTargetedInventorySizes()
   {

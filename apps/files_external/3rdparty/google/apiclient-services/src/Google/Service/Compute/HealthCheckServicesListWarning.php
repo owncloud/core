@@ -32,14 +32,14 @@ class Google_Service_Compute_HealthCheckServicesListWarning extends Google_Colle
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_HealthCheckServicesListWarningData
+   * @param Google_Service_Compute_HealthCheckServicesListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_HealthCheckServicesListWarningData
+   * @return Google_Service_Compute_HealthCheckServicesListWarningData[]
    */
   public function getData()
   {

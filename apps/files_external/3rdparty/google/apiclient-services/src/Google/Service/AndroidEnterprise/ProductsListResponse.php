@@ -40,14 +40,14 @@ class Google_Service_AndroidEnterprise_ProductsListResponse extends Google_Colle
     return $this->pageInfo;
   }
   /**
-   * @param Google_Service_AndroidEnterprise_Product
+   * @param Google_Service_AndroidEnterprise_Product[]
    */
   public function setProduct($product)
   {
     $this->product = $product;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_Product
+   * @return Google_Service_AndroidEnterprise_Product[]
    */
   public function getProduct()
   {

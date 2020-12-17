@@ -31,14 +31,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2ListSessionEntityTypesRes
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2SessionEntityType
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2SessionEntityType[]
    */
   public function setSessionEntityTypes($sessionEntityTypes)
   {
     $this->sessionEntityTypes = $sessionEntityTypes;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2SessionEntityType
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2SessionEntityType[]
    */
   public function getSessionEntityTypes()
   {

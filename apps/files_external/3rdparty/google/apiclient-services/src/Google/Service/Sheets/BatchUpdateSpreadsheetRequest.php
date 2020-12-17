@@ -33,14 +33,14 @@ class Google_Service_Sheets_BatchUpdateSpreadsheetRequest extends Google_Collect
     return $this->includeSpreadsheetInResponse;
   }
   /**
-   * @param Google_Service_Sheets_Request
+   * @param Google_Service_Sheets_Request[]
    */
   public function setRequests($requests)
   {
     $this->requests = $requests;
   }
   /**
-   * @return Google_Service_Sheets_Request
+   * @return Google_Service_Sheets_Request[]
    */
   public function getRequests()
   {

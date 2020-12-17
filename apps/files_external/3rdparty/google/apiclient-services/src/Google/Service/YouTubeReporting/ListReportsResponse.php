@@ -31,14 +31,14 @@ class Google_Service_YouTubeReporting_ListReportsResponse extends Google_Collect
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_YouTubeReporting_Report
+   * @param Google_Service_YouTubeReporting_Report[]
    */
   public function setReports($reports)
   {
     $this->reports = $reports;
   }
   /**
-   * @return Google_Service_YouTubeReporting_Report
+   * @return Google_Service_YouTubeReporting_Report[]
    */
   public function getReports()
   {

@@ -38,14 +38,14 @@ class Google_Service_TrafficDirectorService_ClientConfig extends Google_Collecti
     return $this->node;
   }
   /**
-   * @param Google_Service_TrafficDirectorService_PerXdsConfig
+   * @param Google_Service_TrafficDirectorService_PerXdsConfig[]
    */
   public function setXdsConfig($xdsConfig)
   {
     $this->xdsConfig = $xdsConfig;
   }
   /**
-   * @return Google_Service_TrafficDirectorService_PerXdsConfig
+   * @return Google_Service_TrafficDirectorService_PerXdsConfig[]
    */
   public function getXdsConfig()
   {

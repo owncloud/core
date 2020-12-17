@@ -31,14 +31,14 @@ class Google_Service_AndroidManagement_SecurityPosture extends Google_Collection
     return $this->devicePosture;
   }
   /**
-   * @param Google_Service_AndroidManagement_PostureDetail
+   * @param Google_Service_AndroidManagement_PostureDetail[]
    */
   public function setPostureDetails($postureDetails)
   {
     $this->postureDetails = $postureDetails;
   }
   /**
-   * @return Google_Service_AndroidManagement_PostureDetail
+   * @return Google_Service_AndroidManagement_PostureDetail[]
    */
   public function getPostureDetails()
   {

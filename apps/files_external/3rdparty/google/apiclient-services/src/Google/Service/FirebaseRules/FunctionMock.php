@@ -25,14 +25,14 @@ class Google_Service_FirebaseRules_FunctionMock extends Google_Collection
   protected $resultDataType = '';
 
   /**
-   * @param Google_Service_FirebaseRules_Arg
+   * @param Google_Service_FirebaseRules_Arg[]
    */
   public function setArgs($args)
   {
     $this->args = $args;
   }
   /**
-   * @return Google_Service_FirebaseRules_Arg
+   * @return Google_Service_FirebaseRules_Arg[]
    */
   public function getArgs()
   {

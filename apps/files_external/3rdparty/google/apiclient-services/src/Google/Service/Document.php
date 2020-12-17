@@ -40,7 +40,7 @@ class Google_Service_Document extends Google_Service
   public $projects_locations_operations;
   public $projects_locations_processors;
   public $projects_locations_processors_humanReviewConfig;
-  
+
   /**
    * Constructs the internal representation of the Document service.
    *
@@ -81,10 +81,6 @@ class Google_Service_Document extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -92,6 +88,10 @@ class Google_Service_Document extends Google_Service
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),

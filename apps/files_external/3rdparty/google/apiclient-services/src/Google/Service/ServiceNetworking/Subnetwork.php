@@ -58,14 +58,14 @@ class Google_Service_ServiceNetworking_Subnetwork extends Google_Collection
     return $this->outsideAllocation;
   }
   /**
-   * @param Google_Service_ServiceNetworking_SecondaryIpRange
+   * @param Google_Service_ServiceNetworking_SecondaryIpRange[]
    */
   public function setSecondaryIpRanges($secondaryIpRanges)
   {
     $this->secondaryIpRanges = $secondaryIpRanges;
   }
   /**
-   * @return Google_Service_ServiceNetworking_SecondaryIpRange
+   * @return Google_Service_ServiceNetworking_SecondaryIpRange[]
    */
   public function getSecondaryIpRanges()
   {

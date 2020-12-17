@@ -38,14 +38,14 @@ class Google_Service_Datastore_Key extends Google_Collection
     return $this->partitionId;
   }
   /**
-   * @param Google_Service_Datastore_PathElement
+   * @param Google_Service_Datastore_PathElement[]
    */
   public function setPath($path)
   {
     $this->path = $path;
   }
   /**
-   * @return Google_Service_Datastore_PathElement
+   * @return Google_Service_Datastore_PathElement[]
    */
   public function getPath()
   {

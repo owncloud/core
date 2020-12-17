@@ -122,14 +122,14 @@ class Google_Service_Compute_Instance extends Google_Collection
     return $this->description;
   }
   /**
-   * @param Google_Service_Compute_AttachedDisk
+   * @param Google_Service_Compute_AttachedDisk[]
    */
   public function setDisks($disks)
   {
     $this->disks = $disks;
   }
   /**
-   * @return Google_Service_Compute_AttachedDisk
+   * @return Google_Service_Compute_AttachedDisk[]
    */
   public function getDisks()
   {
@@ -158,14 +158,14 @@ class Google_Service_Compute_Instance extends Google_Collection
     return $this->fingerprint;
   }
   /**
-   * @param Google_Service_Compute_AcceleratorConfig
+   * @param Google_Service_Compute_AcceleratorConfig[]
    */
   public function setGuestAccelerators($guestAccelerators)
   {
     $this->guestAccelerators = $guestAccelerators;
   }
   /**
-   * @return Google_Service_Compute_AcceleratorConfig
+   * @return Google_Service_Compute_AcceleratorConfig[]
    */
   public function getGuestAccelerators()
   {
@@ -274,14 +274,14 @@ class Google_Service_Compute_Instance extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Compute_NetworkInterface
+   * @param Google_Service_Compute_NetworkInterface[]
    */
   public function setNetworkInterfaces($networkInterfaces)
   {
     $this->networkInterfaces = $networkInterfaces;
   }
   /**
-   * @return Google_Service_Compute_NetworkInterface
+   * @return Google_Service_Compute_NetworkInterface[]
    */
   public function getNetworkInterfaces()
   {
@@ -340,14 +340,14 @@ class Google_Service_Compute_Instance extends Google_Collection
     return $this->selfLink;
   }
   /**
-   * @param Google_Service_Compute_ServiceAccount
+   * @param Google_Service_Compute_ServiceAccount[]
    */
   public function setServiceAccounts($serviceAccounts)
   {
     $this->serviceAccounts = $serviceAccounts;
   }
   /**
-   * @return Google_Service_Compute_ServiceAccount
+   * @return Google_Service_Compute_ServiceAccount[]
    */
   public function getServiceAccounts()
   {

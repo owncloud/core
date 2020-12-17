@@ -134,14 +134,14 @@ class Google_Service_SQLAdmin_Settings extends Google_Collection
     return $this->dataDiskType;
   }
   /**
-   * @param Google_Service_SQLAdmin_DatabaseFlags
+   * @param Google_Service_SQLAdmin_DatabaseFlags[]
    */
   public function setDatabaseFlags($databaseFlags)
   {
     $this->databaseFlags = $databaseFlags;
   }
   /**
-   * @return Google_Service_SQLAdmin_DatabaseFlags
+   * @return Google_Service_SQLAdmin_DatabaseFlags[]
    */
   public function getDatabaseFlags()
   {
@@ -156,14 +156,14 @@ class Google_Service_SQLAdmin_Settings extends Google_Collection
     return $this->databaseReplicationEnabled;
   }
   /**
-   * @param Google_Service_SQLAdmin_DenyMaintenancePeriod
+   * @param Google_Service_SQLAdmin_DenyMaintenancePeriod[]
    */
   public function setDenyMaintenancePeriods($denyMaintenancePeriods)
   {
     $this->denyMaintenancePeriods = $denyMaintenancePeriods;
   }
   /**
-   * @return Google_Service_SQLAdmin_DenyMaintenancePeriod
+   * @return Google_Service_SQLAdmin_DenyMaintenancePeriod[]
    */
   public function getDenyMaintenancePeriods()
   {

@@ -106,14 +106,14 @@ class Google_Service_Dataproc_Cluster extends Google_Collection
     return $this->status;
   }
   /**
-   * @param Google_Service_Dataproc_ClusterStatus
+   * @param Google_Service_Dataproc_ClusterStatus[]
    */
   public function setStatusHistory($statusHistory)
   {
     $this->statusHistory = $statusHistory;
   }
   /**
-   * @return Google_Service_Dataproc_ClusterStatus
+   * @return Google_Service_Dataproc_ClusterStatus[]
    */
   public function getStatusHistory()
   {

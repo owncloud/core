@@ -114,14 +114,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p3beta1FaceAnnotation extends Goo
     return $this->landmarkingConfidence;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p3beta1FaceAnnotationLandmark
+   * @param Google_Service_Vision_GoogleCloudVisionV1p3beta1FaceAnnotationLandmark[]
    */
   public function setLandmarks($landmarks)
   {
     $this->landmarks = $landmarks;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p3beta1FaceAnnotationLandmark
+   * @return Google_Service_Vision_GoogleCloudVisionV1p3beta1FaceAnnotationLandmark[]
    */
   public function getLandmarks()
   {

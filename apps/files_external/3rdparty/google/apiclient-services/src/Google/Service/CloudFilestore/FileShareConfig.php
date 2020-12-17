@@ -19,6 +19,7 @@ class Google_Service_CloudFilestore_FileShareConfig extends Google_Model
 {
   public $capacityGb;
   public $name;
+  public $sourceBackup;
 
   public function setCapacityGb($capacityGb)
   {
@@ -35,5 +36,13 @@ class Google_Service_CloudFilestore_FileShareConfig extends Google_Model
   public function getName()
   {
     return $this->name;
+  }
+  public function setSourceBackup($sourceBackup)
+  {
+    $this->sourceBackup = $sourceBackup;
+  }
+  public function getSourceBackup()
+  {
+    return $this->sourceBackup;
   }
 }

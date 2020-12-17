@@ -128,6 +128,24 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsLocationsStudie
     return $this->call('list', array($params), "Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ListTrialsResponse");
   }
   /**
+   * Lists the pareto-optimal trials for multi-objective study or the optimal
+   * trials for single-objective study. The definition of pareto-optimal can be
+   * checked in wiki page. https://en.wikipedia.org/wiki/Pareto_efficiency
+   * (trials.listOptimalTrials)
+   *
+   * @param string $parent Required. The name of the study that the pareto-optimal
+   * trial belongs to.
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ListOptimalTrialsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ListOptimalTrialsResponse
+   */
+  public function listOptimalTrials($parent, Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ListOptimalTrialsRequest $postBody, $optParams = array())
+  {
+    $params = array('parent' => $parent, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('listOptimalTrials', array($params), "Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ListOptimalTrialsResponse");
+  }
+  /**
    * Stops a trial. (trials.stop)
    *
    * @param string $name Required. The trial name.

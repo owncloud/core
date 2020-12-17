@@ -167,14 +167,14 @@ class Google_Service_AdExchangeBuyer_PublisherProfileApiProto extends Google_Col
     return $this->publisherAppIds;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_MobileApplication
+   * @param Google_Service_AdExchangeBuyer_MobileApplication[]
    */
   public function setPublisherApps($publisherApps)
   {
     $this->publisherApps = $publisherApps;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_MobileApplication
+   * @return Google_Service_AdExchangeBuyer_MobileApplication[]
    */
   public function getPublisherApps()
   {

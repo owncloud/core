@@ -23,14 +23,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2ListJobTriggersResponse extends Googl
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2JobTrigger
+   * @param Google_Service_DLP_GooglePrivacyDlpV2JobTrigger[]
    */
   public function setJobTriggers($jobTriggers)
   {
     $this->jobTriggers = $jobTriggers;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2JobTrigger
+   * @return Google_Service_DLP_GooglePrivacyDlpV2JobTrigger[]
    */
   public function getJobTriggers()
   {

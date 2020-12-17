@@ -24,28 +24,28 @@ class Google_Service_ServiceConsumerManagement_Logging extends Google_Collection
   protected $producerDestinationsDataType = 'array';
 
   /**
-   * @param Google_Service_ServiceConsumerManagement_LoggingDestination
+   * @param Google_Service_ServiceConsumerManagement_LoggingDestination[]
    */
   public function setConsumerDestinations($consumerDestinations)
   {
     $this->consumerDestinations = $consumerDestinations;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_LoggingDestination
+   * @return Google_Service_ServiceConsumerManagement_LoggingDestination[]
    */
   public function getConsumerDestinations()
   {
     return $this->consumerDestinations;
   }
   /**
-   * @param Google_Service_ServiceConsumerManagement_LoggingDestination
+   * @param Google_Service_ServiceConsumerManagement_LoggingDestination[]
    */
   public function setProducerDestinations($producerDestinations)
   {
     $this->producerDestinations = $producerDestinations;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_LoggingDestination
+   * @return Google_Service_ServiceConsumerManagement_LoggingDestination[]
    */
   public function getProducerDestinations()
   {

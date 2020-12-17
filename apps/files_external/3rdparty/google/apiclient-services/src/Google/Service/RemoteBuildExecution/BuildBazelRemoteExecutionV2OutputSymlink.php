@@ -24,14 +24,14 @@ class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputSymli
   public $target;
 
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2NodeProperty
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2NodeProperty[]
    */
   public function setNodeProperties($nodeProperties)
   {
     $this->nodeProperties = $nodeProperties;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2NodeProperty
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2NodeProperty[]
    */
   public function getNodeProperties()
   {

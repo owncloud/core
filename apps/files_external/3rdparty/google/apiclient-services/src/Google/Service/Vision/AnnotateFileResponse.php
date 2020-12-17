@@ -55,14 +55,14 @@ class Google_Service_Vision_AnnotateFileResponse extends Google_Collection
     return $this->inputConfig;
   }
   /**
-   * @param Google_Service_Vision_AnnotateImageResponse
+   * @param Google_Service_Vision_AnnotateImageResponse[]
    */
   public function setResponses($responses)
   {
     $this->responses = $responses;
   }
   /**
-   * @return Google_Service_Vision_AnnotateImageResponse
+   * @return Google_Service_Vision_AnnotateImageResponse[]
    */
   public function getResponses()
   {

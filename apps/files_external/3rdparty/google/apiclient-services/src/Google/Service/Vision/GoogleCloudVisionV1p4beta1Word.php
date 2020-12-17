@@ -63,14 +63,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p4beta1Word extends Google_Collec
     return $this->property;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1Symbol
+   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1Symbol[]
    */
   public function setSymbols($symbols)
   {
     $this->symbols = $symbols;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1Symbol
+   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1Symbol[]
    */
   public function getSymbols()
   {

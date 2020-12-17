@@ -85,14 +85,14 @@ class Google_Service_Fitness_DataPoint extends Google_Collection
     return $this->startTimeNanos;
   }
   /**
-   * @param Google_Service_Fitness_Value
+   * @param Google_Service_Fitness_Value[]
    */
   public function setValue($value)
   {
     $this->value = $value;
   }
   /**
-   * @return Google_Service_Fitness_Value
+   * @return Google_Service_Fitness_Value[]
    */
   public function getValue()
   {

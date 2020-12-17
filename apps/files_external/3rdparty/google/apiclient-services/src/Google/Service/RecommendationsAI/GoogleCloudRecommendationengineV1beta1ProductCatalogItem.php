@@ -77,14 +77,14 @@ class Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1Pro
     return $this->exactPrice;
   }
   /**
-   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1Image
+   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1Image[]
    */
   public function setImages($images)
   {
     $this->images = $images;
   }
   /**
-   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1Image
+   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1Image[]
    */
   public function getImages()
   {

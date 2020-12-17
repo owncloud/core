@@ -47,14 +47,14 @@ class Google_Service_Monitoring_CollectdPayloadError extends Google_Collection
     return $this->index;
   }
   /**
-   * @param Google_Service_Monitoring_CollectdValueError
+   * @param Google_Service_Monitoring_CollectdValueError[]
    */
   public function setValueErrors($valueErrors)
   {
     $this->valueErrors = $valueErrors;
   }
   /**
-   * @return Google_Service_Monitoring_CollectdValueError
+   * @return Google_Service_Monitoring_CollectdValueError[]
    */
   public function getValueErrors()
   {

@@ -41,14 +41,14 @@ class Google_Service_Compute_UrlMapValidationResult extends Google_Collection
     return $this->loadSucceeded;
   }
   /**
-   * @param Google_Service_Compute_TestFailure
+   * @param Google_Service_Compute_TestFailure[]
    */
   public function setTestFailures($testFailures)
   {
     $this->testFailures = $testFailures;
   }
   /**
-   * @return Google_Service_Compute_TestFailure
+   * @return Google_Service_Compute_TestFailure[]
    */
   public function getTestFailures()
   {

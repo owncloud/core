@@ -44,7 +44,7 @@ class Google_Service_CloudIot extends Google_Service
   public $projects_locations_registries_devices_states;
   public $projects_locations_registries_groups;
   public $projects_locations_registries_groups_devices;
-  
+
   /**
    * Constructs the internal representation of the CloudIot service.
    *
@@ -236,11 +236,20 @@ class Google_Service_CloudIot extends Google_Service
                   'type' => 'string',
                   'repeated' => true,
                 ),
-                'gatewayListOptions.associationsGatewayId' => array(
+                'deviceNumIds' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
+                ),
+                'fieldMask' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'gatewayListOptions.associationsDeviceId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'gatewayListOptions.associationsGatewayId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -252,16 +261,7 @@ class Google_Service_CloudIot extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'fieldMask' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'deviceNumIds' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                  'repeated' => true,
-                ),
-                'gatewayListOptions.associationsDeviceId' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -412,19 +412,12 @@ class Google_Service_CloudIot extends Google_Service
                   'type' => 'string',
                   'repeated' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'gatewayListOptions.associationsGatewayId' => array(
+                'deviceNumIds' => array(
                   'location' => 'query',
                   'type' => 'string',
+                  'repeated' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'gatewayListOptions.gatewayType' => array(
+                'fieldMask' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -432,12 +425,19 @@ class Google_Service_CloudIot extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'deviceNumIds' => array(
+                'gatewayListOptions.associationsGatewayId' => array(
                   'location' => 'query',
                   'type' => 'string',
-                  'repeated' => true,
                 ),
-                'fieldMask' => array(
+                'gatewayListOptions.gatewayType' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

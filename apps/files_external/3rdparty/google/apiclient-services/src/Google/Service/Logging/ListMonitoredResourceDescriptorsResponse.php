@@ -31,14 +31,14 @@ class Google_Service_Logging_ListMonitoredResourceDescriptorsResponse extends Go
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Logging_MonitoredResourceDescriptor
+   * @param Google_Service_Logging_MonitoredResourceDescriptor[]
    */
   public function setResourceDescriptors($resourceDescriptors)
   {
     $this->resourceDescriptors = $resourceDescriptors;
   }
   /**
-   * @return Google_Service_Logging_MonitoredResourceDescriptor
+   * @return Google_Service_Logging_MonitoredResourceDescriptor[]
    */
   public function getResourceDescriptors()
   {

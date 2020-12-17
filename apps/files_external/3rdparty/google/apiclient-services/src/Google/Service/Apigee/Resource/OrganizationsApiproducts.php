@@ -29,16 +29,16 @@ class Google_Service_Apigee_Resource_OrganizationsApiproducts extends Google_Ser
    * Updates or creates API product attributes. This API **replaces** the current
    * list of attributes with the attributes specified in the request body. In this
    * way, you can update existing attributes, add new attributes, or delete
-   * existing attributes by omitting them from the request body. OAuth access
-   * tokens and Key Management Service (KMS) entities (apps, developers, and API
-   * products) are cached for 180 seconds (current default). Any custom attributes
-   * associated with entities also get cached for at least 180 seconds after
-   * entity is accessed during runtime. In this case, the `ExpiresIn` element on
-   * the OAuthV2 policy won't be able to expire an access token in less than 180
-   * seconds. (apiproducts.attributes)
+   * existing attributes by omitting them from the request body. **Note**: OAuth
+   * access tokens and Key Management Service (KMS) entities (apps, developers,
+   * and API products) are cached for 180 seconds (current default). Any custom
+   * attributes associated with entities also get cached for at least 180 seconds
+   * after entity is accessed during runtime. In this case, the `ExpiresIn`
+   * element on the OAuthV2 policy won't be able to expire an access token in less
+   * than 180 seconds. (apiproducts.attributes)
    *
-   * @param string $name **Required.** API product name in the following form:
-   * organizations/organization_ID/apiproducts/api_product_name
+   * @param string $name Required. Name of the API product. Use the following
+   * structure in your request: `organizations/{org}/apiproducts/{apiproduct}`
    * @param Google_Service_Apigee_GoogleCloudApigeeV1Attributes $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1Attributes
@@ -62,15 +62,15 @@ class Google_Service_Apigee_Resource_OrganizationsApiproducts extends Google_Ser
    * testing your APIs. After you have authentication and authorization working
    * against a simple API product, you can iterate to create finer grained API
    * products, defining different sets of API resources for each API product.
-   * *WARNING:* - If you don't specify an API proxy in the request body, *any* app
-   * associated with the product can make calls to *any* API in your entire
+   * **WARNING:** - If you don't specify an API proxy in the request body, *any*
+   * app associated with the product can make calls to *any* API in your entire
    * organization. - If you don't specify an environment in the request body, the
-   * product allows access to all environments. For more information, see
-   * {{what_api_product}} (apiproducts.create)
+   * product allows access to all environments. For more information, see What is
+   * an API product? (apiproducts.create)
    *
-   * @param string $parent Required. The parent organization name under which the
-   * API product will be created. Must be in the following form:
-   * organizations/organization_ID
+   * @param string $parent Required. Name of the organization in which the API
+   * product will be created. Use the following structure in your request:
+   * `organizations/{org}`
    * @param Google_Service_Apigee_GoogleCloudApigeeV1ApiProduct $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ApiProduct
@@ -91,8 +91,8 @@ class Google_Service_Apigee_Resource_OrganizationsApiproducts extends Google_Ser
    * whether the API product was created via the UI or the API. View the list of
    * API products to verify the internal name. (apiproducts.delete)
    *
-   * @param string $name Required. API product name in the following form:
-   * organizations/organization_ID/apiproducts/api_product_name
+   * @param string $name Required. Name of the API product. Use the following
+   * structure in your request: `organizations/{org}/apiproducts/{apiproduct}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ApiProduct
    */
@@ -109,8 +109,8 @@ class Google_Service_Apigee_Resource_OrganizationsApiproducts extends Google_Ser
    * via the UI or the API. View the list of API products to verify the internal
    * name. (apiproducts.get)
    *
-   * @param string $name **Required.** API product name in the following form:
-   * organizations/organization_ID/apiproducts/api_product_name
+   * @param string $name Required. Name of the API product. Use the following
+   * structure in your request: `organizations/{org}/apiproducts/{apiproduct}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ApiProduct
    */
@@ -127,20 +127,23 @@ class Google_Service_Apigee_Resource_OrganizationsApiproducts extends Google_Ser
    * products returned using the `startKey` and `count` query parameters.
    * (apiproducts.listOrganizationsApiproducts)
    *
-   * @param string $parent **Required.** The parent organization name in the
-   * following form: organizations/organization_ID
+   * @param string $parent Required. Name of the organization. Use the following
+   * structure in your request: `organizations/{org}`
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string attributename Name of the attribute used to filter the
+   * search.
+   * @opt_param string attributevalue Value of the attribute used to filter the
+   * search.
+   * @opt_param string count Enter the number of API products you want returned in
+   * the API call. The limit is 1000.
+   * @opt_param bool expand Flag that specifies whether to expand the results. Set
+   * to `true` to get expanded details about each API.
    * @opt_param string startKey Gets a list of API products starting with a
    * specific API product in the list. For example, if you're returning 50 API
    * products at a time (using the `count` query parameter), you can view products
    * 50-99 by entering the name of the 50th API product in the first API (without
    * using `startKey`). Product name is case sensitive.
-   * @opt_param string attributename The name of the attribute to search.
-   * @opt_param string attributevalue The value of the attribute.
-   * @opt_param bool expand Set to `true` to get expanded details about each API.
-   * @opt_param string count Enter the number of API products you want returned in
-   * the API call. The limit is 1000.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ListApiProductsResponse
    */
   public function listOrganizationsApiproducts($parent, $optParams = array())
@@ -158,8 +161,8 @@ class Google_Service_Apigee_Resource_OrganizationsApiproducts extends Google_Ser
    * the list of API products to identify their internal names.
    * (apiproducts.update)
    *
-   * @param string $name **Required.** API product name in the following form:
-   * organizations/organization_ID/apiproducts/api_product_name
+   * @param string $name Required. Name of the API product. Use the following
+   * structure in your request: `organizations/{org}/apiproducts/{apiproduct}`
    * @param Google_Service_Apigee_GoogleCloudApigeeV1ApiProduct $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ApiProduct

@@ -31,14 +31,14 @@ class Google_Service_Firestore_GoogleLongrunningListOperationsResponse extends G
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Firestore_GoogleLongrunningOperation
+   * @param Google_Service_Firestore_GoogleLongrunningOperation[]
    */
   public function setOperations($operations)
   {
     $this->operations = $operations;
   }
   /**
-   * @return Google_Service_Firestore_GoogleLongrunningOperation
+   * @return Google_Service_Firestore_GoogleLongrunningOperation[]
    */
   public function getOperations()
   {

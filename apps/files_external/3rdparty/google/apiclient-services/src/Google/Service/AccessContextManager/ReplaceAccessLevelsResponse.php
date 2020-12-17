@@ -22,14 +22,14 @@ class Google_Service_AccessContextManager_ReplaceAccessLevelsResponse extends Go
   protected $accessLevelsDataType = 'array';
 
   /**
-   * @param Google_Service_AccessContextManager_AccessLevel
+   * @param Google_Service_AccessContextManager_AccessLevel[]
    */
   public function setAccessLevels($accessLevels)
   {
     $this->accessLevels = $accessLevels;
   }
   /**
-   * @return Google_Service_AccessContextManager_AccessLevel
+   * @return Google_Service_AccessContextManager_AccessLevel[]
    */
   public function getAccessLevels()
   {

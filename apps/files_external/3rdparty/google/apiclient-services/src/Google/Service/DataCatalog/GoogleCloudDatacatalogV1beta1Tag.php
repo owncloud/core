@@ -33,14 +33,14 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1Tag extends Google
     return $this->column;
   }
   /**
-   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1TagField
+   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1TagField[]
    */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
   /**
-   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1TagField
+   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1TagField[]
    */
   public function getFields()
   {

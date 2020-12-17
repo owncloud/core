@@ -36,14 +36,14 @@ class Google_Service_Compute_NotificationEndpointList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_NotificationEndpoint
+   * @param Google_Service_Compute_NotificationEndpoint[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_NotificationEndpoint
+   * @return Google_Service_Compute_NotificationEndpoint[]
    */
   public function getItems()
   {

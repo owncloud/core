@@ -24,28 +24,28 @@ class Google_Service_Vision_GoogleCloudVisionV1p3beta1BoundingPoly extends Googl
   protected $verticesDataType = 'array';
 
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p3beta1NormalizedVertex
+   * @param Google_Service_Vision_GoogleCloudVisionV1p3beta1NormalizedVertex[]
    */
   public function setNormalizedVertices($normalizedVertices)
   {
     $this->normalizedVertices = $normalizedVertices;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p3beta1NormalizedVertex
+   * @return Google_Service_Vision_GoogleCloudVisionV1p3beta1NormalizedVertex[]
    */
   public function getNormalizedVertices()
   {
     return $this->normalizedVertices;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p3beta1Vertex
+   * @param Google_Service_Vision_GoogleCloudVisionV1p3beta1Vertex[]
    */
   public function setVertices($vertices)
   {
     $this->vertices = $vertices;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p3beta1Vertex
+   * @return Google_Service_Vision_GoogleCloudVisionV1p3beta1Vertex[]
    */
   public function getVertices()
   {

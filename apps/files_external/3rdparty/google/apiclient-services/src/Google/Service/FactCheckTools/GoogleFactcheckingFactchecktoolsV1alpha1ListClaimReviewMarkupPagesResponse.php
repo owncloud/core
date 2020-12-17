@@ -23,14 +23,14 @@ class Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1List
   public $nextPageToken;
 
   /**
-   * @param Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1ClaimReviewMarkupPage
+   * @param Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1ClaimReviewMarkupPage[]
    */
   public function setClaimReviewMarkupPages($claimReviewMarkupPages)
   {
     $this->claimReviewMarkupPages = $claimReviewMarkupPages;
   }
   /**
-   * @return Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1ClaimReviewMarkupPage
+   * @return Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1ClaimReviewMarkupPage[]
    */
   public function getClaimReviewMarkupPages()
   {

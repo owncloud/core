@@ -23,14 +23,14 @@ class Google_Service_Datastore_CompositeFilter extends Google_Collection
   public $op;
 
   /**
-   * @param Google_Service_Datastore_Filter
+   * @param Google_Service_Datastore_Filter[]
    */
   public function setFilters($filters)
   {
     $this->filters = $filters;
   }
   /**
-   * @return Google_Service_Datastore_Filter
+   * @return Google_Service_Datastore_Filter[]
    */
   public function getFilters()
   {

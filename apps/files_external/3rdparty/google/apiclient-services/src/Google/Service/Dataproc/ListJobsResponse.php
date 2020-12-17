@@ -23,14 +23,14 @@ class Google_Service_Dataproc_ListJobsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Dataproc_Job
+   * @param Google_Service_Dataproc_Job[]
    */
   public function setJobs($jobs)
   {
     $this->jobs = $jobs;
   }
   /**
-   * @return Google_Service_Dataproc_Job
+   * @return Google_Service_Dataproc_Job[]
    */
   public function getJobs()
   {

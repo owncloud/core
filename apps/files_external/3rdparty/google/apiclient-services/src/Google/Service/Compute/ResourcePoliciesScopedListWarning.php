@@ -32,14 +32,14 @@ class Google_Service_Compute_ResourcePoliciesScopedListWarning extends Google_Co
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_ResourcePoliciesScopedListWarningData
+   * @param Google_Service_Compute_ResourcePoliciesScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_ResourcePoliciesScopedListWarningData
+   * @return Google_Service_Compute_ResourcePoliciesScopedListWarningData[]
    */
   public function getData()
   {

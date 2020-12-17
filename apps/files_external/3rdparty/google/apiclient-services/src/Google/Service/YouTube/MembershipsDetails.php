@@ -65,14 +65,14 @@ class Google_Service_YouTube_MembershipsDetails extends Google_Collection
     return $this->membershipsDuration;
   }
   /**
-   * @param Google_Service_YouTube_MembershipsDurationAtLevel
+   * @param Google_Service_YouTube_MembershipsDurationAtLevel[]
    */
   public function setMembershipsDurationAtLevels($membershipsDurationAtLevels)
   {
     $this->membershipsDurationAtLevels = $membershipsDurationAtLevels;
   }
   /**
-   * @return Google_Service_YouTube_MembershipsDurationAtLevel
+   * @return Google_Service_YouTube_MembershipsDurationAtLevel[]
    */
   public function getMembershipsDurationAtLevels()
   {

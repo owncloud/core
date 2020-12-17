@@ -323,7 +323,7 @@ class Google_Service_Compute_Resource_Subnetworks extends Google_Service_Resourc
   }
   /**
    * Patches the specified subnetwork with the data included in the request. Only
-   * certain fields can up updated with a patch request as indicated in the field
+   * certain fields can be updated with a patch request as indicated in the field
    * descriptions. You must specify the current fingerprint of the subnetwork
    * resource being patched. (subnetworks.patch)
    *

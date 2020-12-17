@@ -35,14 +35,14 @@ class Google_Service_ArtifactRegistry_ArtifactregistryFile extends Google_Collec
     return $this->createTime;
   }
   /**
-   * @param Google_Service_ArtifactRegistry_Hash
+   * @param Google_Service_ArtifactRegistry_Hash[]
    */
   public function setHashes($hashes)
   {
     $this->hashes = $hashes;
   }
   /**
-   * @return Google_Service_ArtifactRegistry_Hash
+   * @return Google_Service_ArtifactRegistry_Hash[]
    */
   public function getHashes()
   {

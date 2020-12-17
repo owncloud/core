@@ -69,14 +69,14 @@ class Google_Service_BigQueryDataTransfer_DataSourceParameter extends Google_Col
     return $this->displayName;
   }
   /**
-   * @param Google_Service_BigQueryDataTransfer_DataSourceParameter
+   * @param Google_Service_BigQueryDataTransfer_DataSourceParameter[]
    */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
   /**
-   * @return Google_Service_BigQueryDataTransfer_DataSourceParameter
+   * @return Google_Service_BigQueryDataTransfer_DataSourceParameter[]
    */
   public function getFields()
   {

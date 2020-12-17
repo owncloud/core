@@ -23,14 +23,14 @@ class Google_Service_Books_Bookshelves extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_Books_Bookshelf
+   * @param Google_Service_Books_Bookshelf[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Books_Bookshelf
+   * @return Google_Service_Books_Bookshelf[]
    */
   public function getItems()
   {

@@ -38,14 +38,14 @@ class Google_Service_CloudSearch_CustomerQueryStats extends Google_Collection
     return $this->date;
   }
   /**
-   * @param Google_Service_CloudSearch_QueryCountByStatus
+   * @param Google_Service_CloudSearch_QueryCountByStatus[]
    */
   public function setQueryCountByStatus($queryCountByStatus)
   {
     $this->queryCountByStatus = $queryCountByStatus;
   }
   /**
-   * @return Google_Service_CloudSearch_QueryCountByStatus
+   * @return Google_Service_CloudSearch_QueryCountByStatus[]
    */
   public function getQueryCountByStatus()
   {

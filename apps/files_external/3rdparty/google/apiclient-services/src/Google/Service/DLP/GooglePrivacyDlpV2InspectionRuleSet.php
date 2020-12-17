@@ -24,28 +24,28 @@ class Google_Service_DLP_GooglePrivacyDlpV2InspectionRuleSet extends Google_Coll
   protected $rulesDataType = 'array';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2InfoType
+   * @param Google_Service_DLP_GooglePrivacyDlpV2InfoType[]
    */
   public function setInfoTypes($infoTypes)
   {
     $this->infoTypes = $infoTypes;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2InfoType
+   * @return Google_Service_DLP_GooglePrivacyDlpV2InfoType[]
    */
   public function getInfoTypes()
   {
     return $this->infoTypes;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2InspectionRule
+   * @param Google_Service_DLP_GooglePrivacyDlpV2InspectionRule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2InspectionRule
+   * @return Google_Service_DLP_GooglePrivacyDlpV2InspectionRule[]
    */
   public function getRules()
   {

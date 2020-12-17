@@ -23,14 +23,14 @@ class Google_Service_ServiceManagement_SystemParameterRule extends Google_Collec
   public $selector;
 
   /**
-   * @param Google_Service_ServiceManagement_SystemParameter
+   * @param Google_Service_ServiceManagement_SystemParameter[]
    */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
   /**
-   * @return Google_Service_ServiceManagement_SystemParameter
+   * @return Google_Service_ServiceManagement_SystemParameter[]
    */
   public function getParameters()
   {

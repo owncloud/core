@@ -23,14 +23,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2ListEnvironmentsResponse 
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2Environment
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2Environment[]
    */
   public function setEnvironments($environments)
   {
     $this->environments = $environments;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2Environment
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2Environment[]
    */
   public function getEnvironments()
   {

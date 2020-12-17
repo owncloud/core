@@ -40,14 +40,14 @@ class Google_Service_Dfareporting_PlacementGroupsListResponse extends Google_Col
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Dfareporting_PlacementGroup
+   * @param Google_Service_Dfareporting_PlacementGroup[]
    */
   public function setPlacementGroups($placementGroups)
   {
     $this->placementGroups = $placementGroups;
   }
   /**
-   * @return Google_Service_Dfareporting_PlacementGroup
+   * @return Google_Service_Dfareporting_PlacementGroup[]
    */
   public function getPlacementGroups()
   {

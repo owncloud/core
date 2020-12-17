@@ -23,14 +23,14 @@ class Google_Service_ShoppingContent_ProductsCustomBatchResponse extends Google_
   public $kind;
 
   /**
-   * @param Google_Service_ShoppingContent_ProductsCustomBatchResponseEntry
+   * @param Google_Service_ShoppingContent_ProductsCustomBatchResponseEntry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_ShoppingContent_ProductsCustomBatchResponseEntry
+   * @return Google_Service_ShoppingContent_ProductsCustomBatchResponseEntry[]
    */
   public function getEntries()
   {

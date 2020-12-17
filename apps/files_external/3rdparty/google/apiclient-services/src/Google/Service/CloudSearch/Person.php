@@ -28,14 +28,14 @@ class Google_Service_CloudSearch_Person extends Google_Collection
   protected $photosDataType = 'array';
 
   /**
-   * @param Google_Service_CloudSearch_EmailAddress
+   * @param Google_Service_CloudSearch_EmailAddress[]
    */
   public function setEmailAddresses($emailAddresses)
   {
     $this->emailAddresses = $emailAddresses;
   }
   /**
-   * @return Google_Service_CloudSearch_EmailAddress
+   * @return Google_Service_CloudSearch_EmailAddress[]
    */
   public function getEmailAddresses()
   {
@@ -58,28 +58,28 @@ class Google_Service_CloudSearch_Person extends Google_Collection
     return $this->obfuscatedId;
   }
   /**
-   * @param Google_Service_CloudSearch_Name
+   * @param Google_Service_CloudSearch_Name[]
    */
   public function setPersonNames($personNames)
   {
     $this->personNames = $personNames;
   }
   /**
-   * @return Google_Service_CloudSearch_Name
+   * @return Google_Service_CloudSearch_Name[]
    */
   public function getPersonNames()
   {
     return $this->personNames;
   }
   /**
-   * @param Google_Service_CloudSearch_Photo
+   * @param Google_Service_CloudSearch_Photo[]
    */
   public function setPhotos($photos)
   {
     $this->photos = $photos;
   }
   /**
-   * @return Google_Service_CloudSearch_Photo
+   * @return Google_Service_CloudSearch_Photo[]
    */
   public function getPhotos()
   {

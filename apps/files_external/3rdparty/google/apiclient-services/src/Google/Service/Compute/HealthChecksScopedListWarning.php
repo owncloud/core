@@ -32,14 +32,14 @@ class Google_Service_Compute_HealthChecksScopedListWarning extends Google_Collec
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_HealthChecksScopedListWarningData
+   * @param Google_Service_Compute_HealthChecksScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_HealthChecksScopedListWarningData
+   * @return Google_Service_Compute_HealthChecksScopedListWarningData[]
    */
   public function getData()
   {

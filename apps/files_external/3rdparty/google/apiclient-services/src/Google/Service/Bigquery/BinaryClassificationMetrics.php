@@ -40,14 +40,14 @@ class Google_Service_Bigquery_BinaryClassificationMetrics extends Google_Collect
     return $this->aggregateClassificationMetrics;
   }
   /**
-   * @param Google_Service_Bigquery_BinaryConfusionMatrix
+   * @param Google_Service_Bigquery_BinaryConfusionMatrix[]
    */
   public function setBinaryConfusionMatrixList($binaryConfusionMatrixList)
   {
     $this->binaryConfusionMatrixList = $binaryConfusionMatrixList;
   }
   /**
-   * @return Google_Service_Bigquery_BinaryConfusionMatrix
+   * @return Google_Service_Bigquery_BinaryConfusionMatrix[]
    */
   public function getBinaryConfusionMatrixList()
   {

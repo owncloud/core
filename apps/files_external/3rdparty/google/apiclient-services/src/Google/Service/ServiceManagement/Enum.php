@@ -28,14 +28,14 @@ class Google_Service_ServiceManagement_Enum extends Google_Collection
   public $syntax;
 
   /**
-   * @param Google_Service_ServiceManagement_EnumValue
+   * @param Google_Service_ServiceManagement_EnumValue[]
    */
   public function setEnumvalue($enumvalue)
   {
     $this->enumvalue = $enumvalue;
   }
   /**
-   * @return Google_Service_ServiceManagement_EnumValue
+   * @return Google_Service_ServiceManagement_EnumValue[]
    */
   public function getEnumvalue()
   {
@@ -50,14 +50,14 @@ class Google_Service_ServiceManagement_Enum extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_ServiceManagement_Option
+   * @param Google_Service_ServiceManagement_Option[]
    */
   public function setOptions($options)
   {
     $this->options = $options;
   }
   /**
-   * @return Google_Service_ServiceManagement_Option
+   * @return Google_Service_ServiceManagement_Option[]
    */
   public function getOptions()
   {

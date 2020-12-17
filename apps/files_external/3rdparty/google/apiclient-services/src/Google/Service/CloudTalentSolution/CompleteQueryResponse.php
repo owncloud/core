@@ -24,14 +24,14 @@ class Google_Service_CloudTalentSolution_CompleteQueryResponse extends Google_Co
   protected $metadataDataType = '';
 
   /**
-   * @param Google_Service_CloudTalentSolution_CompletionResult
+   * @param Google_Service_CloudTalentSolution_CompletionResult[]
    */
   public function setCompletionResults($completionResults)
   {
     $this->completionResults = $completionResults;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_CompletionResult
+   * @return Google_Service_CloudTalentSolution_CompletionResult[]
    */
   public function getCompletionResults()
   {

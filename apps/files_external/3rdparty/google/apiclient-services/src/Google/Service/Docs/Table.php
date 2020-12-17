@@ -60,14 +60,14 @@ class Google_Service_Docs_Table extends Google_Collection
     return $this->suggestedInsertionIds;
   }
   /**
-   * @param Google_Service_Docs_TableRow
+   * @param Google_Service_Docs_TableRow[]
    */
   public function setTableRows($tableRows)
   {
     $this->tableRows = $tableRows;
   }
   /**
-   * @return Google_Service_Docs_TableRow
+   * @return Google_Service_Docs_TableRow[]
    */
   public function getTableRows()
   {

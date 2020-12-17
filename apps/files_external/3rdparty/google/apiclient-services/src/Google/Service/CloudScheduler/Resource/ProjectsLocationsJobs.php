@@ -75,15 +75,15 @@ class Google_Service_CloudScheduler_Resource_ProjectsLocationsJobs extends Googl
    * `projects/PROJECT_ID/locations/LOCATION_ID`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Requested page size. The maximum page size is 500. If
+   * unspecified, the page size will be the maximum. Fewer jobs than requested
+   * might be returned, even if more jobs exist; use next_page_token to determine
+   * if more jobs exist.
    * @opt_param string pageToken A token identifying a page of results the server
    * will return. To request the first page results, page_token must be empty. To
    * request the next page of results, page_token must be the value of
    * next_page_token returned from the previous call to ListJobs. It is an error
    * to switch the value of filter or order_by while iterating through pages.
-   * @opt_param int pageSize Requested page size. The maximum page size is 500. If
-   * unspecified, the page size will be the maximum. Fewer jobs than requested
-   * might be returned, even if more jobs exist; use next_page_token to determine
-   * if more jobs exist.
    * @return Google_Service_CloudScheduler_ListJobsResponse
    */
   public function listProjectsLocationsJobs($parent, $optParams = array())

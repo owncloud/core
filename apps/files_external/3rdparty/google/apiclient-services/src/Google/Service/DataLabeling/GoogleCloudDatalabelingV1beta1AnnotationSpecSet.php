@@ -26,14 +26,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1AnnotationSpecSe
   public $name;
 
   /**
-   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1AnnotationSpec
+   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1AnnotationSpec[]
    */
   public function setAnnotationSpecs($annotationSpecs)
   {
     $this->annotationSpecs = $annotationSpecs;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1AnnotationSpec
+   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1AnnotationSpec[]
    */
   public function getAnnotationSpecs()
   {

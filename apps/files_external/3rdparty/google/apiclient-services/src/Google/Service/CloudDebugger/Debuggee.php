@@ -59,14 +59,14 @@ class Google_Service_CloudDebugger_Debuggee extends Google_Collection
     return $this->description;
   }
   /**
-   * @param Google_Service_CloudDebugger_ExtendedSourceContext
+   * @param Google_Service_CloudDebugger_ExtendedSourceContext[]
    */
   public function setExtSourceContexts($extSourceContexts)
   {
     $this->extSourceContexts = $extSourceContexts;
   }
   /**
-   * @return Google_Service_CloudDebugger_ExtendedSourceContext
+   * @return Google_Service_CloudDebugger_ExtendedSourceContext[]
    */
   public function getExtSourceContexts()
   {
@@ -113,14 +113,14 @@ class Google_Service_CloudDebugger_Debuggee extends Google_Collection
     return $this->project;
   }
   /**
-   * @param Google_Service_CloudDebugger_SourceContext
+   * @param Google_Service_CloudDebugger_SourceContext[]
    */
   public function setSourceContexts($sourceContexts)
   {
     $this->sourceContexts = $sourceContexts;
   }
   /**
-   * @return Google_Service_CloudDebugger_SourceContext
+   * @return Google_Service_CloudDebugger_SourceContext[]
    */
   public function getSourceContexts()
   {

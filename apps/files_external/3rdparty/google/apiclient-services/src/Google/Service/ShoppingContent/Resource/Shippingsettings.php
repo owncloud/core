@@ -109,9 +109,9 @@ class Google_Service_ShoppingContent_Resource_Shippingsettings extends Google_Se
    * multi-client account.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The token returned by the previous request.
    * @opt_param string maxResults The maximum number of shipping settings to
    * return in the response, used for paging.
+   * @opt_param string pageToken The token returned by the previous request.
    * @return Google_Service_ShoppingContent_ShippingsettingsListResponse
    */
   public function listShippingsettings($merchantId, $optParams = array())

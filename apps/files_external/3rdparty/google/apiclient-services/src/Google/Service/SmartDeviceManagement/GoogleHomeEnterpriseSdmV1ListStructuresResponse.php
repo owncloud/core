@@ -31,14 +31,14 @@ class Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1ListStructur
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1Structure
+   * @param Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1Structure[]
    */
   public function setStructures($structures)
   {
     $this->structures = $structures;
   }
   /**
-   * @return Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1Structure
+   * @return Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1Structure[]
    */
   public function getStructures()
   {

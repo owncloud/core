@@ -33,14 +33,14 @@ class Google_Service_ToolResults_GraphicsStats extends Google_Collection
   public $totalFrames;
 
   /**
-   * @param Google_Service_ToolResults_GraphicsStatsBucket
+   * @param Google_Service_ToolResults_GraphicsStatsBucket[]
    */
   public function setBuckets($buckets)
   {
     $this->buckets = $buckets;
   }
   /**
-   * @return Google_Service_ToolResults_GraphicsStatsBucket
+   * @return Google_Service_ToolResults_GraphicsStatsBucket[]
    */
   public function getBuckets()
   {

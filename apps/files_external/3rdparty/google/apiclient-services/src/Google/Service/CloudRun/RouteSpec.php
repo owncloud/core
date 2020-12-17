@@ -22,14 +22,14 @@ class Google_Service_CloudRun_RouteSpec extends Google_Collection
   protected $trafficDataType = 'array';
 
   /**
-   * @param Google_Service_CloudRun_TrafficTarget
+   * @param Google_Service_CloudRun_TrafficTarget[]
    */
   public function setTraffic($traffic)
   {
     $this->traffic = $traffic;
   }
   /**
-   * @return Google_Service_CloudRun_TrafficTarget
+   * @return Google_Service_CloudRun_TrafficTarget[]
    */
   public function getTraffic()
   {

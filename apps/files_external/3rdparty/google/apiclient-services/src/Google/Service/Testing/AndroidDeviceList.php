@@ -22,14 +22,14 @@ class Google_Service_Testing_AndroidDeviceList extends Google_Collection
   protected $androidDevicesDataType = 'array';
 
   /**
-   * @param Google_Service_Testing_AndroidDevice
+   * @param Google_Service_Testing_AndroidDevice[]
    */
   public function setAndroidDevices($androidDevices)
   {
     $this->androidDevices = $androidDevices;
   }
   /**
-   * @return Google_Service_Testing_AndroidDevice
+   * @return Google_Service_Testing_AndroidDevice[]
    */
   public function getAndroidDevices()
   {

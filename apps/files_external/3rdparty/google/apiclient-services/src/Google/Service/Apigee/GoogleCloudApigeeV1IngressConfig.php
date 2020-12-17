@@ -26,14 +26,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1IngressConfig extends Google_Coll
   public $uid;
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentGroupConfig
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentGroupConfig[]
    */
   public function setEnvironmentGroups($environmentGroups)
   {
     $this->environmentGroups = $environmentGroups;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentGroupConfig
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentGroupConfig[]
    */
   public function getEnvironmentGroups()
   {

@@ -22,14 +22,14 @@ class Google_Service_AndroidEnterprise_StoreLayoutPagesListResponse extends Goog
   protected $pageDataType = 'array';
 
   /**
-   * @param Google_Service_AndroidEnterprise_StorePage
+   * @param Google_Service_AndroidEnterprise_StorePage[]
    */
   public function setPage($page)
   {
     $this->page = $page;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_StorePage
+   * @return Google_Service_AndroidEnterprise_StorePage[]
    */
   public function getPage()
   {

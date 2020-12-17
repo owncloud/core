@@ -65,14 +65,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1QueryResult extends 
     return $this->diagnosticInfo;
   }
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessage
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessage[]
    */
   public function setFulfillmentMessages($fulfillmentMessages)
   {
     $this->fulfillmentMessages = $fulfillmentMessages;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessage
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessage[]
    */
   public function getFulfillmentMessages()
   {
@@ -131,14 +131,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1QueryResult extends 
     return $this->languageCode;
   }
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1Context
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1Context[]
    */
   public function setOutputContexts($outputContexts)
   {
     $this->outputContexts = $outputContexts;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1Context
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1Context[]
    */
   public function getOutputContexts()
   {

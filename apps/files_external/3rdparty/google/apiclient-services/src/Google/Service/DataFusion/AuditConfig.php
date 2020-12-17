@@ -23,14 +23,14 @@ class Google_Service_DataFusion_AuditConfig extends Google_Collection
   public $service;
 
   /**
-   * @param Google_Service_DataFusion_AuditLogConfig
+   * @param Google_Service_DataFusion_AuditLogConfig[]
    */
   public function setAuditLogConfigs($auditLogConfigs)
   {
     $this->auditLogConfigs = $auditLogConfigs;
   }
   /**
-   * @return Google_Service_DataFusion_AuditLogConfig
+   * @return Google_Service_DataFusion_AuditLogConfig[]
    */
   public function getAuditLogConfigs()
   {

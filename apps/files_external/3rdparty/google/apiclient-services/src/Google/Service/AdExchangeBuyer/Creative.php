@@ -153,14 +153,14 @@ class Google_Service_AdExchangeBuyer_Creative extends Google_Collection
     return $this->clickThroughUrl;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_CreativeCorrections
+   * @param Google_Service_AdExchangeBuyer_CreativeCorrections[]
    */
   public function setCorrections($corrections)
   {
     $this->corrections = $corrections;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_CreativeCorrections
+   * @return Google_Service_AdExchangeBuyer_CreativeCorrections[]
    */
   public function getCorrections()
   {
@@ -283,14 +283,14 @@ class Google_Service_AdExchangeBuyer_Creative extends Google_Collection
     return $this->sensitiveCategories;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_CreativeServingRestrictions
+   * @param Google_Service_AdExchangeBuyer_CreativeServingRestrictions[]
    */
   public function setServingRestrictions($servingRestrictions)
   {
     $this->servingRestrictions = $servingRestrictions;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_CreativeServingRestrictions
+   * @return Google_Service_AdExchangeBuyer_CreativeServingRestrictions[]
    */
   public function getServingRestrictions()
   {

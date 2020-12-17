@@ -31,14 +31,14 @@ class Google_Service_SASPortalTesting_SasPortalListNodesResponse extends Google_
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_SASPortalTesting_SasPortalNode
+   * @param Google_Service_SASPortalTesting_SasPortalNode[]
    */
   public function setNodes($nodes)
   {
     $this->nodes = $nodes;
   }
   /**
-   * @return Google_Service_SASPortalTesting_SasPortalNode
+   * @return Google_Service_SASPortalTesting_SasPortalNode[]
    */
   public function getNodes()
   {

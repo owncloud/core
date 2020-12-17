@@ -23,14 +23,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2ListInspectTemplatesResponse extends 
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2InspectTemplate
+   * @param Google_Service_DLP_GooglePrivacyDlpV2InspectTemplate[]
    */
   public function setInspectTemplates($inspectTemplates)
   {
     $this->inspectTemplates = $inspectTemplates;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2InspectTemplate
+   * @return Google_Service_DLP_GooglePrivacyDlpV2InspectTemplate[]
    */
   public function getInspectTemplates()
   {

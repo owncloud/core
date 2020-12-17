@@ -31,14 +31,14 @@ class Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1Lis
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1PredictionApiKeyRegistration
+   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1PredictionApiKeyRegistration[]
    */
   public function setPredictionApiKeyRegistrations($predictionApiKeyRegistrations)
   {
     $this->predictionApiKeyRegistrations = $predictionApiKeyRegistrations;
   }
   /**
-   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1PredictionApiKeyRegistration
+   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1PredictionApiKeyRegistration[]
    */
   public function getPredictionApiKeyRegistrations()
   {

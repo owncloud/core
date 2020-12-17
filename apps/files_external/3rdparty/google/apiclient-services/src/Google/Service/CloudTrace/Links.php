@@ -31,14 +31,14 @@ class Google_Service_CloudTrace_Links extends Google_Collection
     return $this->droppedLinksCount;
   }
   /**
-   * @param Google_Service_CloudTrace_Link
+   * @param Google_Service_CloudTrace_Link[]
    */
   public function setLink($link)
   {
     $this->link = $link;
   }
   /**
-   * @return Google_Service_CloudTrace_Link
+   * @return Google_Service_CloudTrace_Link[]
    */
   public function getLink()
   {

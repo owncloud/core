@@ -121,14 +121,14 @@ class Google_Service_Compute_SslPolicy extends Google_Collection
     return $this->selfLink;
   }
   /**
-   * @param Google_Service_Compute_SslPolicyWarnings
+   * @param Google_Service_Compute_SslPolicyWarnings[]
    */
   public function setWarnings($warnings)
   {
     $this->warnings = $warnings;
   }
   /**
-   * @return Google_Service_Compute_SslPolicyWarnings
+   * @return Google_Service_Compute_SslPolicyWarnings[]
    */
   public function getWarnings()
   {

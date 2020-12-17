@@ -40,28 +40,28 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LogoRe
     return $this->entity;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoSegment
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoSegment[]
    */
   public function setSegments($segments)
   {
     $this->segments = $segments;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoSegment
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoSegment[]
    */
   public function getSegments()
   {
     return $this->segments;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1Track
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1Track[]
    */
   public function setTracks($tracks)
   {
     $this->tracks = $tracks;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1Track
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1Track[]
    */
   public function getTracks()
   {

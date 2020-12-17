@@ -60,14 +60,22 @@ class Google_Service_Dfareporting_Resource_Creatives extends Google_Service_Reso
    * @param string $profileId User profile ID associated with this request.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param bool active Select only active creatives. Leave blank to select
+   * active and inactive creatives.
+   * @opt_param string advertiserId Select only creatives with this advertiser ID.
+   * @opt_param bool archived Select only archived creatives. Leave blank to
+   * select archived and unarchived creatives.
+   * @opt_param string campaignId Select only creatives with this campaign ID.
+   * @opt_param string companionCreativeIds Select only in-stream video creatives
+   * with these companion IDs.
+   * @opt_param string creativeFieldIds Select only creatives with these creative
+   * field IDs.
+   * @opt_param string ids Select only creatives with these IDs.
+   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string pageToken Value of the nextPageToken from the previous
    * result page.
    * @opt_param string renderingIds Select only creatives with these rendering
    * IDs.
-   * @opt_param string advertiserId Select only creatives with this advertiser ID.
-   * @opt_param string types Select only creatives with these creative types.
-   * @opt_param string creativeFieldIds Select only creatives with these creative
-   * field IDs.
    * @opt_param string searchString Allows searching for objects by name or ID.
    * Wildcards (*) are allowed. For example, "creative*2015" will return objects
    * with names like "creative June 2015", "creative April 2015", or simply
@@ -75,20 +83,12 @@ class Google_Service_Dfareporting_Resource_Creatives extends Google_Service_Reso
    * start and the end of the search string. For example, a search string of
    * "creative" will match objects with name "my creative", "creative 2015", or
    * simply "creative".
+   * @opt_param string sizeIds Select only creatives with these size IDs.
+   * @opt_param string sortField Field by which to sort the list.
    * @opt_param string sortOrder Order of sorted results.
-   * @opt_param bool archived Select only archived creatives. Leave blank to
-   * select archived and unarchived creatives.
-   * @opt_param string companionCreativeIds Select only in-stream video creatives
-   * with these companion IDs.
-   * @opt_param bool active Select only active creatives. Leave blank to select
-   * active and inactive creatives.
-   * @opt_param string ids Select only creatives with these IDs.
    * @opt_param string studioCreativeId Select only creatives corresponding to
    * this Studio creative ID.
-   * @opt_param string sizeIds Select only creatives with these size IDs.
-   * @opt_param int maxResults Maximum number of results to return.
-   * @opt_param string sortField Field by which to sort the list.
-   * @opt_param string campaignId Select only creatives with this campaign ID.
+   * @opt_param string types Select only creatives with these creative types.
    * @return Google_Service_Dfareporting_CreativesListResponse
    */
   public function listCreatives($profileId, $optParams = array())

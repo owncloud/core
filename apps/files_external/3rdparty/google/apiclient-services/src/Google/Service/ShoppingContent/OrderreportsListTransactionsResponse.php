@@ -40,14 +40,14 @@ class Google_Service_ShoppingContent_OrderreportsListTransactionsResponse extend
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ShoppingContent_OrderReportTransaction
+   * @param Google_Service_ShoppingContent_OrderReportTransaction[]
    */
   public function setTransactions($transactions)
   {
     $this->transactions = $transactions;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderReportTransaction
+   * @return Google_Service_ShoppingContent_OrderReportTransaction[]
    */
   public function getTransactions()
   {

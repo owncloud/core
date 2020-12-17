@@ -27,14 +27,14 @@ class Google_Service_AndroidPublisher_InappproductsListResponse extends Google_C
   protected $tokenPaginationDataType = '';
 
   /**
-   * @param Google_Service_AndroidPublisher_InAppProduct
+   * @param Google_Service_AndroidPublisher_InAppProduct[]
    */
   public function setInappproduct($inappproduct)
   {
     $this->inappproduct = $inappproduct;
   }
   /**
-   * @return Google_Service_AndroidPublisher_InAppProduct
+   * @return Google_Service_AndroidPublisher_InAppProduct[]
    */
   public function getInappproduct()
   {

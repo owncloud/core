@@ -22,14 +22,14 @@ class Google_Service_CertificateAuthorityService_AllowedConfigList extends Googl
   protected $allowedConfigValuesDataType = 'array';
 
   /**
-   * @param Google_Service_CertificateAuthorityService_ReusableConfigWrapper
+   * @param Google_Service_CertificateAuthorityService_ReusableConfigWrapper[]
    */
   public function setAllowedConfigValues($allowedConfigValues)
   {
     $this->allowedConfigValues = $allowedConfigValues;
   }
   /**
-   * @return Google_Service_CertificateAuthorityService_ReusableConfigWrapper
+   * @return Google_Service_CertificateAuthorityService_ReusableConfigWrapper[]
    */
   public function getAllowedConfigValues()
   {

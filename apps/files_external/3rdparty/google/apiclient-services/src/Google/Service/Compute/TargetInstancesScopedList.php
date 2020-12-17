@@ -24,14 +24,14 @@ class Google_Service_Compute_TargetInstancesScopedList extends Google_Collection
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_TargetInstance
+   * @param Google_Service_Compute_TargetInstance[]
    */
   public function setTargetInstances($targetInstances)
   {
     $this->targetInstances = $targetInstances;
   }
   /**
-   * @return Google_Service_Compute_TargetInstance
+   * @return Google_Service_Compute_TargetInstance[]
    */
   public function getTargetInstances()
   {

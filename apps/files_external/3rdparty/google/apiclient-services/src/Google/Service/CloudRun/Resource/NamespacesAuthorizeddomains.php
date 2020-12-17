@@ -32,9 +32,9 @@ class Google_Service_CloudRun_Resource_NamespacesAuthorizeddomains extends Googl
    * `projects/myproject`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Maximum results to return per page.
    * @opt_param string pageToken Continuation token for fetching the next page of
    * results.
-   * @opt_param int pageSize Maximum results to return per page.
    * @return Google_Service_CloudRun_ListAuthorizedDomainsResponse
    */
   public function listNamespacesAuthorizeddomains($parent, $optParams = array())

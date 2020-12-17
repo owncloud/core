@@ -49,7 +49,7 @@ class Google_Service_YouTubeAnalytics extends Google_Service
   public $groupItems;
   public $groups;
   public $reports;
-  
+
   /**
    * Constructs the internal representation of the YouTubeAnalytics service.
    *
@@ -142,7 +142,7 @@ class Google_Service_YouTubeAnalytics extends Google_Service
               'path' => 'v2/groups',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'onBehalfOfContentOwner' => array(
+                'id' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -150,7 +150,7 @@ class Google_Service_YouTubeAnalytics extends Google_Service
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
-                'id' => array(
+                'onBehalfOfContentOwner' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -182,33 +182,9 @@ class Google_Service_YouTubeAnalytics extends Google_Service
               'path' => 'v2/reports',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'metrics' => array(
+                'currency' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-                'startIndex' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'sort' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'ids' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'filters' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'startDate' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'includeHistoricalChannelData' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
                 ),
                 'dimensions' => array(
                   'location' => 'query',
@@ -218,13 +194,37 @@ class Google_Service_YouTubeAnalytics extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'filters' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'ids' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'includeHistoricalChannelData' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
                 'maxResults' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'currency' => array(
+                'metrics' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'sort' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'startDate' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'startIndex' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),

@@ -32,14 +32,14 @@ class Google_Service_Compute_PacketMirroringListWarning extends Google_Collectio
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_PacketMirroringListWarningData
+   * @param Google_Service_Compute_PacketMirroringListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_PacketMirroringListWarningData
+   * @return Google_Service_Compute_PacketMirroringListWarningData[]
    */
   public function getData()
   {

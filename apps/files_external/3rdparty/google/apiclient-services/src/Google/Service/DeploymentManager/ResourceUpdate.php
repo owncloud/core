@@ -99,14 +99,14 @@ class Google_Service_DeploymentManager_ResourceUpdate extends Google_Collection
     return $this->state;
   }
   /**
-   * @param Google_Service_DeploymentManager_ResourceUpdateWarnings
+   * @param Google_Service_DeploymentManager_ResourceUpdateWarnings[]
    */
   public function setWarnings($warnings)
   {
     $this->warnings = $warnings;
   }
   /**
-   * @return Google_Service_DeploymentManager_ResourceUpdateWarnings
+   * @return Google_Service_DeploymentManager_ResourceUpdateWarnings[]
    */
   public function getWarnings()
   {

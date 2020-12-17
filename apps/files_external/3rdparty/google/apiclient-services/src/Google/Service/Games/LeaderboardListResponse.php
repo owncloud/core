@@ -24,14 +24,14 @@ class Google_Service_Games_LeaderboardListResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Games_Leaderboard
+   * @param Google_Service_Games_Leaderboard[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Games_Leaderboard
+   * @return Google_Service_Games_Leaderboard[]
    */
   public function getItems()
   {

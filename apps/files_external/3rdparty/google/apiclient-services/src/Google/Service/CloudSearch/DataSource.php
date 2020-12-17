@@ -61,14 +61,14 @@ class Google_Service_CloudSearch_DataSource extends Google_Collection
     return $this->indexingServiceAccounts;
   }
   /**
-   * @param Google_Service_CloudSearch_GSuitePrincipal
+   * @param Google_Service_CloudSearch_GSuitePrincipal[]
    */
   public function setItemsVisibility($itemsVisibility)
   {
     $this->itemsVisibility = $itemsVisibility;
   }
   /**
-   * @return Google_Service_CloudSearch_GSuitePrincipal
+   * @return Google_Service_CloudSearch_GSuitePrincipal[]
    */
   public function getItemsVisibility()
   {

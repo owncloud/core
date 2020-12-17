@@ -22,14 +22,14 @@ class Google_Service_TrafficDirectorService_ClientStatusRequest extends Google_C
   protected $nodeMatchersDataType = 'array';
 
   /**
-   * @param Google_Service_TrafficDirectorService_NodeMatcher
+   * @param Google_Service_TrafficDirectorService_NodeMatcher[]
    */
   public function setNodeMatchers($nodeMatchers)
   {
     $this->nodeMatchers = $nodeMatchers;
   }
   /**
-   * @return Google_Service_TrafficDirectorService_NodeMatcher
+   * @return Google_Service_TrafficDirectorService_NodeMatcher[]
    */
   public function getNodeMatchers()
   {

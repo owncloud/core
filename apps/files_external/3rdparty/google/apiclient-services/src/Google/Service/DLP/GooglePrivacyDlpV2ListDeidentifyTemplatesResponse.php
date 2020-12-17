@@ -23,14 +23,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2ListDeidentifyTemplatesResponse exten
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2DeidentifyTemplate
+   * @param Google_Service_DLP_GooglePrivacyDlpV2DeidentifyTemplate[]
    */
   public function setDeidentifyTemplates($deidentifyTemplates)
   {
     $this->deidentifyTemplates = $deidentifyTemplates;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2DeidentifyTemplate
+   * @return Google_Service_DLP_GooglePrivacyDlpV2DeidentifyTemplate[]
    */
   public function getDeidentifyTemplates()
   {

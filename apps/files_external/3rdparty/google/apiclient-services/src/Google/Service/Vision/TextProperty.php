@@ -38,14 +38,14 @@ class Google_Service_Vision_TextProperty extends Google_Collection
     return $this->detectedBreak;
   }
   /**
-   * @param Google_Service_Vision_DetectedLanguage
+   * @param Google_Service_Vision_DetectedLanguage[]
    */
   public function setDetectedLanguages($detectedLanguages)
   {
     $this->detectedLanguages = $detectedLanguages;
   }
   /**
-   * @return Google_Service_Vision_DetectedLanguage
+   * @return Google_Service_Vision_DetectedLanguage[]
    */
   public function getDetectedLanguages()
   {

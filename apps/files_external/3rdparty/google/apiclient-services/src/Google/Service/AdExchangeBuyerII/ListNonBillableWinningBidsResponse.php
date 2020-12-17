@@ -31,14 +31,14 @@ class Google_Service_AdExchangeBuyerII_ListNonBillableWinningBidsResponse extend
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_AdExchangeBuyerII_NonBillableWinningBidStatusRow
+   * @param Google_Service_AdExchangeBuyerII_NonBillableWinningBidStatusRow[]
    */
   public function setNonBillableWinningBidStatusRows($nonBillableWinningBidStatusRows)
   {
     $this->nonBillableWinningBidStatusRows = $nonBillableWinningBidStatusRows;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_NonBillableWinningBidStatusRow
+   * @return Google_Service_AdExchangeBuyerII_NonBillableWinningBidStatusRow[]
    */
   public function getNonBillableWinningBidStatusRows()
   {

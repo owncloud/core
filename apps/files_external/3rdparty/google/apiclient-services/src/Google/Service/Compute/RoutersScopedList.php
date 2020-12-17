@@ -24,14 +24,14 @@ class Google_Service_Compute_RoutersScopedList extends Google_Collection
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_Router
+   * @param Google_Service_Compute_Router[]
    */
   public function setRouters($routers)
   {
     $this->routers = $routers;
   }
   /**
-   * @return Google_Service_Compute_Router
+   * @return Google_Service_Compute_Router[]
    */
   public function getRouters()
   {

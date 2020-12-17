@@ -61,14 +61,14 @@ class Google_Service_Directory_Users extends Google_Collection
     return $this->triggerEvent;
   }
   /**
-   * @param Google_Service_Directory_User
+   * @param Google_Service_Directory_User[]
    */
   public function setUsers($users)
   {
     $this->users = $users;
   }
   /**
-   * @return Google_Service_Directory_User
+   * @return Google_Service_Directory_User[]
    */
   public function getUsers()
   {

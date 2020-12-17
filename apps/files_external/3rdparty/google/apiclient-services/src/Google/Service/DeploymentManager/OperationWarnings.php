@@ -32,14 +32,14 @@ class Google_Service_DeploymentManager_OperationWarnings extends Google_Collecti
     return $this->code;
   }
   /**
-   * @param Google_Service_DeploymentManager_OperationWarningsData
+   * @param Google_Service_DeploymentManager_OperationWarningsData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_DeploymentManager_OperationWarningsData
+   * @return Google_Service_DeploymentManager_OperationWarningsData[]
    */
   public function getData()
   {

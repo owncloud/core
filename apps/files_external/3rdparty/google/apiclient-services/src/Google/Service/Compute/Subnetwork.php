@@ -184,14 +184,14 @@ class Google_Service_Compute_Subnetwork extends Google_Collection
     return $this->role;
   }
   /**
-   * @param Google_Service_Compute_SubnetworkSecondaryRange
+   * @param Google_Service_Compute_SubnetworkSecondaryRange[]
    */
   public function setSecondaryIpRanges($secondaryIpRanges)
   {
     $this->secondaryIpRanges = $secondaryIpRanges;
   }
   /**
-   * @return Google_Service_Compute_SubnetworkSecondaryRange
+   * @return Google_Service_Compute_SubnetworkSecondaryRange[]
    */
   public function getSecondaryIpRanges()
   {

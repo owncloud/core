@@ -31,14 +31,14 @@ class Google_Service_ServiceConsumerManagement_SearchTenancyUnitsResponse extend
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ServiceConsumerManagement_TenancyUnit
+   * @param Google_Service_ServiceConsumerManagement_TenancyUnit[]
    */
   public function setTenancyUnits($tenancyUnits)
   {
     $this->tenancyUnits = $tenancyUnits;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_TenancyUnit
+   * @return Google_Service_ServiceConsumerManagement_TenancyUnit[]
    */
   public function getTenancyUnits()
   {

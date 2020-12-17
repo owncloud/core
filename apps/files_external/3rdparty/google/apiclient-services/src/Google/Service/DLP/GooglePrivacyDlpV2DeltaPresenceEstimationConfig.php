@@ -25,28 +25,28 @@ class Google_Service_DLP_GooglePrivacyDlpV2DeltaPresenceEstimationConfig extends
   public $regionCode;
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2StatisticalTable
+   * @param Google_Service_DLP_GooglePrivacyDlpV2StatisticalTable[]
    */
   public function setAuxiliaryTables($auxiliaryTables)
   {
     $this->auxiliaryTables = $auxiliaryTables;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2StatisticalTable
+   * @return Google_Service_DLP_GooglePrivacyDlpV2StatisticalTable[]
    */
   public function getAuxiliaryTables()
   {
     return $this->auxiliaryTables;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2QuasiId
+   * @param Google_Service_DLP_GooglePrivacyDlpV2QuasiId[]
    */
   public function setQuasiIds($quasiIds)
   {
     $this->quasiIds = $quasiIds;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2QuasiId
+   * @return Google_Service_DLP_GooglePrivacyDlpV2QuasiId[]
    */
   public function getQuasiIds()
   {

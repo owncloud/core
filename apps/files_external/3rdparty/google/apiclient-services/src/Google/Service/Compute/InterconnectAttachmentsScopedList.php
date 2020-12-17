@@ -24,14 +24,14 @@ class Google_Service_Compute_InterconnectAttachmentsScopedList extends Google_Co
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_InterconnectAttachment
+   * @param Google_Service_Compute_InterconnectAttachment[]
    */
   public function setInterconnectAttachments($interconnectAttachments)
   {
     $this->interconnectAttachments = $interconnectAttachments;
   }
   /**
-   * @return Google_Service_Compute_InterconnectAttachment
+   * @return Google_Service_Compute_InterconnectAttachment[]
    */
   public function getInterconnectAttachments()
   {

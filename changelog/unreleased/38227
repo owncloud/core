@@ -1,3 +1,9 @@
 Change: Update phpseclib/phpseclib (2.0.29 => 2.0.30)
 
+- Update phpseclib/phpseclib (2.0.29 => 2.0.30) in core
+- Update dependencies in apps/files_external:
+  - google/apiclient-services (v0.153 => v0.156)
+  - monolog/monolog (2.1.1 => 2.2.0)
+  - phpseclib/phpseclib (2.0.29 => 2.0.30)
+
 https://github.com/owncloud/core/pull/38227

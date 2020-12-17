@@ -22,14 +22,14 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2N
   protected $verticesDataType = 'array';
 
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2NormalizedVertex
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2NormalizedVertex[]
    */
   public function setVertices($vertices)
   {
     $this->vertices = $vertices;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2NormalizedVertex
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2NormalizedVertex[]
    */
   public function getVertices()
   {

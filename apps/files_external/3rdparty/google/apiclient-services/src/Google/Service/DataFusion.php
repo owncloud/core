@@ -44,7 +44,7 @@ class Google_Service_DataFusion extends Google_Service
   public $projects_locations_instances;
   public $projects_locations_operations;
   public $projects_locations_versions;
-  
+
   /**
    * Constructs the internal representation of the DataFusion service.
    *
@@ -85,6 +85,10 @@ class Google_Service_DataFusion extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'includeUnrevealedLocations' => array(
                   'location' => 'query',
                   'type' => 'boolean',
@@ -92,10 +96,6 @@ class Google_Service_DataFusion extends Google_Service
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
-                ),
-                'filter' => array(
-                  'location' => 'query',
-                  'type' => 'string',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
@@ -173,15 +173,15 @@ class Google_Service_DataFusion extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
                 'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -283,13 +283,13 @@ class Google_Service_DataFusion extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -311,10 +311,6 @@ class Google_Service_DataFusion extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'latestPatchOnly' => array(
                   'location' => 'query',
                   'type' => 'boolean',
@@ -322,6 +318,10 @@ class Google_Service_DataFusion extends Google_Service
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),

@@ -31,14 +31,14 @@ class Google_Service_CloudAsset_SearchAllIamPoliciesResponse extends Google_Coll
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_CloudAsset_IamPolicySearchResult
+   * @param Google_Service_CloudAsset_IamPolicySearchResult[]
    */
   public function setResults($results)
   {
     $this->results = $results;
   }
   /**
-   * @return Google_Service_CloudAsset_IamPolicySearchResult
+   * @return Google_Service_CloudAsset_IamPolicySearchResult[]
    */
   public function getResults()
   {

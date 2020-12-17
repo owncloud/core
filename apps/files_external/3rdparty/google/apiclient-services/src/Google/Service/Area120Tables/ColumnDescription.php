@@ -45,14 +45,14 @@ class Google_Service_Area120Tables_ColumnDescription extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Area120Tables_LabeledItem
+   * @param Google_Service_Area120Tables_LabeledItem[]
    */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
   /**
-   * @return Google_Service_Area120Tables_LabeledItem
+   * @return Google_Service_Area120Tables_LabeledItem[]
    */
   public function getLabels()
   {

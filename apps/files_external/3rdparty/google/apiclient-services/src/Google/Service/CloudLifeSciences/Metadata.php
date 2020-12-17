@@ -44,14 +44,14 @@ class Google_Service_CloudLifeSciences_Metadata extends Google_Collection
     return $this->endTime;
   }
   /**
-   * @param Google_Service_CloudLifeSciences_Event
+   * @param Google_Service_CloudLifeSciences_Event[]
    */
   public function setEvents($events)
   {
     $this->events = $events;
   }
   /**
-   * @return Google_Service_CloudLifeSciences_Event
+   * @return Google_Service_CloudLifeSciences_Event[]
    */
   public function getEvents()
   {

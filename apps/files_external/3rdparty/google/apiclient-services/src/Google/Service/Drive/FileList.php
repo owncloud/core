@@ -25,14 +25,14 @@ class Google_Service_Drive_FileList extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Drive_DriveFile
+   * @param Google_Service_Drive_DriveFile[]
    */
   public function setFiles($files)
   {
     $this->files = $files;
   }
   /**
-   * @return Google_Service_Drive_DriveFile
+   * @return Google_Service_Drive_DriveFile[]
    */
   public function getFiles()
   {

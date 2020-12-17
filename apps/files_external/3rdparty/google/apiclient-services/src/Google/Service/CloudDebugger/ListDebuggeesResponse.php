@@ -22,14 +22,14 @@ class Google_Service_CloudDebugger_ListDebuggeesResponse extends Google_Collecti
   protected $debuggeesDataType = 'array';
 
   /**
-   * @param Google_Service_CloudDebugger_Debuggee
+   * @param Google_Service_CloudDebugger_Debuggee[]
    */
   public function setDebuggees($debuggees)
   {
     $this->debuggees = $debuggees;
   }
   /**
-   * @return Google_Service_CloudDebugger_Debuggee
+   * @return Google_Service_CloudDebugger_Debuggee[]
    */
   public function getDebuggees()
   {

@@ -78,14 +78,14 @@ class Google_Service_ServiceNetworking_AddSubnetworkRequest extends Google_Colle
     return $this->requestedAddress;
   }
   /**
-   * @param Google_Service_ServiceNetworking_SecondaryIpRangeSpec
+   * @param Google_Service_ServiceNetworking_SecondaryIpRangeSpec[]
    */
   public function setSecondaryIpRangeSpecs($secondaryIpRangeSpecs)
   {
     $this->secondaryIpRangeSpecs = $secondaryIpRangeSpecs;
   }
   /**
-   * @return Google_Service_ServiceNetworking_SecondaryIpRangeSpec
+   * @return Google_Service_ServiceNetworking_SecondaryIpRangeSpec[]
    */
   public function getSecondaryIpRangeSpecs()
   {

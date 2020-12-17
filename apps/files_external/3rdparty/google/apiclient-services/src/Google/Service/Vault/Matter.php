@@ -42,14 +42,14 @@ class Google_Service_Vault_Matter extends Google_Collection
     return $this->matterId;
   }
   /**
-   * @param Google_Service_Vault_MatterPermission
+   * @param Google_Service_Vault_MatterPermission[]
    */
   public function setMatterPermissions($matterPermissions)
   {
     $this->matterPermissions = $matterPermissions;
   }
   /**
-   * @return Google_Service_Vault_MatterPermission
+   * @return Google_Service_Vault_MatterPermission[]
    */
   public function getMatterPermissions()
   {

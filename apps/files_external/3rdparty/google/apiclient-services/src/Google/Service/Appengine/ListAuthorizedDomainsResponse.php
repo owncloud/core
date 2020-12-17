@@ -23,14 +23,14 @@ class Google_Service_Appengine_ListAuthorizedDomainsResponse extends Google_Coll
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Appengine_AuthorizedDomain
+   * @param Google_Service_Appengine_AuthorizedDomain[]
    */
   public function setDomains($domains)
   {
     $this->domains = $domains;
   }
   /**
-   * @return Google_Service_Appengine_AuthorizedDomain
+   * @return Google_Service_Appengine_AuthorizedDomain[]
    */
   public function getDomains()
   {

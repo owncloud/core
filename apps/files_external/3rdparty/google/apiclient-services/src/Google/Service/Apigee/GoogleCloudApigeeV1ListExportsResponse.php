@@ -22,14 +22,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ListExportsResponse extends Googl
   protected $exportsDataType = 'array';
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Export
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Export[]
    */
   public function setExports($exports)
   {
     $this->exports = $exports;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Export
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Export[]
    */
   public function getExports()
   {

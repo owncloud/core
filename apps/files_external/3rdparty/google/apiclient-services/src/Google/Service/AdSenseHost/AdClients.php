@@ -33,14 +33,14 @@ class Google_Service_AdSenseHost_AdClients extends Google_Collection
     return $this->etag;
   }
   /**
-   * @param Google_Service_AdSenseHost_AdClient
+   * @param Google_Service_AdSenseHost_AdClient[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_AdSenseHost_AdClient
+   * @return Google_Service_AdSenseHost_AdClient[]
    */
   public function getItems()
   {

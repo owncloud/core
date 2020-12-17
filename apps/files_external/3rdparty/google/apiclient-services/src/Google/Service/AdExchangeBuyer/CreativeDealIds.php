@@ -23,14 +23,14 @@ class Google_Service_AdExchangeBuyer_CreativeDealIds extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_AdExchangeBuyer_CreativeDealIdsDealStatuses
+   * @param Google_Service_AdExchangeBuyer_CreativeDealIdsDealStatuses[]
    */
   public function setDealStatuses($dealStatuses)
   {
     $this->dealStatuses = $dealStatuses;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_CreativeDealIdsDealStatuses
+   * @return Google_Service_AdExchangeBuyer_CreativeDealIdsDealStatuses[]
    */
   public function getDealStatuses()
   {

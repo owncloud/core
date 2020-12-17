@@ -124,14 +124,14 @@ class Google_Service_Drive_DriveFile extends Google_Collection
     return $this->contentHints;
   }
   /**
-   * @param Google_Service_Drive_ContentRestriction
+   * @param Google_Service_Drive_ContentRestriction[]
    */
   public function setContentRestrictions($contentRestrictions)
   {
     $this->contentRestrictions = $contentRestrictions;
   }
   /**
-   * @return Google_Service_Drive_ContentRestriction
+   * @return Google_Service_Drive_ContentRestriction[]
    */
   public function getContentRestrictions()
   {
@@ -358,14 +358,14 @@ class Google_Service_Drive_DriveFile extends Google_Collection
     return $this->ownedByMe;
   }
   /**
-   * @param Google_Service_Drive_User
+   * @param Google_Service_Drive_User[]
    */
   public function setOwners($owners)
   {
     $this->owners = $owners;
   }
   /**
-   * @return Google_Service_Drive_User
+   * @return Google_Service_Drive_User[]
    */
   public function getOwners()
   {
@@ -388,14 +388,14 @@ class Google_Service_Drive_DriveFile extends Google_Collection
     return $this->permissionIds;
   }
   /**
-   * @param Google_Service_Drive_Permission
+   * @param Google_Service_Drive_Permission[]
    */
   public function setPermissions($permissions)
   {
     $this->permissions = $permissions;
   }
   /**
-   * @return Google_Service_Drive_Permission
+   * @return Google_Service_Drive_Permission[]
    */
   public function getPermissions()
   {

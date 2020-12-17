@@ -22,14 +22,14 @@ class Google_Service_ShoppingContent_RegionalinventoryCustomBatchRequest extends
   protected $entriesDataType = 'array';
 
   /**
-   * @param Google_Service_ShoppingContent_RegionalinventoryCustomBatchRequestEntry
+   * @param Google_Service_ShoppingContent_RegionalinventoryCustomBatchRequestEntry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_ShoppingContent_RegionalinventoryCustomBatchRequestEntry
+   * @return Google_Service_ShoppingContent_RegionalinventoryCustomBatchRequestEntry[]
    */
   public function getEntries()
   {

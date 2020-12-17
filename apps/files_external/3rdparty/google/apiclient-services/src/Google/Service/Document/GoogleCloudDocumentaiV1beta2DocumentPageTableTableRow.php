@@ -22,14 +22,14 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageTableTable
   protected $cellsDataType = 'array';
 
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageTableTableCell
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageTableTableCell[]
    */
   public function setCells($cells)
   {
     $this->cells = $cells;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageTableTableCell
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageTableTableCell[]
    */
   public function getCells()
   {

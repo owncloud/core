@@ -24,14 +24,14 @@ class Google_Service_Monitoring_CreateTimeSeriesSummary extends Google_Collectio
   public $totalPointCount;
 
   /**
-   * @param Google_Service_Monitoring_Error
+   * @param Google_Service_Monitoring_Error[]
    */
   public function setErrors($errors)
   {
     $this->errors = $errors;
   }
   /**
-   * @return Google_Service_Monitoring_Error
+   * @return Google_Service_Monitoring_Error[]
    */
   public function getErrors()
   {

@@ -22,14 +22,14 @@ class Google_Service_Firestore_ArrayValue extends Google_Collection
   protected $valuesDataType = 'array';
 
   /**
-   * @param Google_Service_Firestore_Value
+   * @param Google_Service_Firestore_Value[]
    */
   public function setValues($values)
   {
     $this->values = $values;
   }
   /**
-   * @return Google_Service_Firestore_Value
+   * @return Google_Service_Firestore_Value[]
    */
   public function getValues()
   {

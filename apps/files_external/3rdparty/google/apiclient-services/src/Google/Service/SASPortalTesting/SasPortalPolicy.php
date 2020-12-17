@@ -23,14 +23,14 @@ class Google_Service_SASPortalTesting_SasPortalPolicy extends Google_Collection
   public $etag;
 
   /**
-   * @param Google_Service_SASPortalTesting_SasPortalAssignment
+   * @param Google_Service_SASPortalTesting_SasPortalAssignment[]
    */
   public function setAssignments($assignments)
   {
     $this->assignments = $assignments;
   }
   /**
-   * @return Google_Service_SASPortalTesting_SasPortalAssignment
+   * @return Google_Service_SASPortalTesting_SasPortalAssignment[]
    */
   public function getAssignments()
   {

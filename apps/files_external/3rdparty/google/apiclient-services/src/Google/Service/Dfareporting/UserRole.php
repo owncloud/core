@@ -77,14 +77,14 @@ class Google_Service_Dfareporting_UserRole extends Google_Collection
     return $this->parentUserRoleId;
   }
   /**
-   * @param Google_Service_Dfareporting_UserRolePermission
+   * @param Google_Service_Dfareporting_UserRolePermission[]
    */
   public function setPermissions($permissions)
   {
     $this->permissions = $permissions;
   }
   /**
-   * @return Google_Service_Dfareporting_UserRolePermission
+   * @return Google_Service_Dfareporting_UserRolePermission[]
    */
   public function getPermissions()
   {

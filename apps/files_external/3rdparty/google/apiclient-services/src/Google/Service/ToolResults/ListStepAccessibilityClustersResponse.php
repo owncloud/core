@@ -23,14 +23,14 @@ class Google_Service_ToolResults_ListStepAccessibilityClustersResponse extends G
   public $name;
 
   /**
-   * @param Google_Service_ToolResults_SuggestionClusterProto
+   * @param Google_Service_ToolResults_SuggestionClusterProto[]
    */
   public function setClusters($clusters)
   {
     $this->clusters = $clusters;
   }
   /**
-   * @return Google_Service_ToolResults_SuggestionClusterProto
+   * @return Google_Service_ToolResults_SuggestionClusterProto[]
    */
   public function getClusters()
   {

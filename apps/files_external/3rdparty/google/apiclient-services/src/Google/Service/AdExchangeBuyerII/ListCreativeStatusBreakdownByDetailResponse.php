@@ -32,14 +32,14 @@ class Google_Service_AdExchangeBuyerII_ListCreativeStatusBreakdownByDetailRespon
     return $this->detailType;
   }
   /**
-   * @param Google_Service_AdExchangeBuyerII_FilteredBidDetailRow
+   * @param Google_Service_AdExchangeBuyerII_FilteredBidDetailRow[]
    */
   public function setFilteredBidDetailRows($filteredBidDetailRows)
   {
     $this->filteredBidDetailRows = $filteredBidDetailRows;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_FilteredBidDetailRow
+   * @return Google_Service_AdExchangeBuyerII_FilteredBidDetailRow[]
    */
   public function getFilteredBidDetailRows()
   {

@@ -33,14 +33,14 @@ class Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1Clai
     return $this->claimDate;
   }
   /**
-   * @param Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1ClaimReview
+   * @param Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1ClaimReview[]
    */
   public function setClaimReview($claimReview)
   {
     $this->claimReview = $claimReview;
   }
   /**
-   * @return Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1ClaimReview
+   * @return Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1ClaimReview[]
    */
   public function getClaimReview()
   {

@@ -38,14 +38,14 @@ class Google_Service_Bigquery_MultiClassClassificationMetrics extends Google_Col
     return $this->aggregateClassificationMetrics;
   }
   /**
-   * @param Google_Service_Bigquery_ConfusionMatrix
+   * @param Google_Service_Bigquery_ConfusionMatrix[]
    */
   public function setConfusionMatrixList($confusionMatrixList)
   {
     $this->confusionMatrixList = $confusionMatrixList;
   }
   /**
-   * @return Google_Service_Bigquery_ConfusionMatrix
+   * @return Google_Service_Bigquery_ConfusionMatrix[]
    */
   public function getConfusionMatrixList()
   {

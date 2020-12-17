@@ -27,28 +27,28 @@ class Google_Service_Games_EventUpdateResponse extends Google_Collection
   protected $playerEventsDataType = 'array';
 
   /**
-   * @param Google_Service_Games_EventBatchRecordFailure
+   * @param Google_Service_Games_EventBatchRecordFailure[]
    */
   public function setBatchFailures($batchFailures)
   {
     $this->batchFailures = $batchFailures;
   }
   /**
-   * @return Google_Service_Games_EventBatchRecordFailure
+   * @return Google_Service_Games_EventBatchRecordFailure[]
    */
   public function getBatchFailures()
   {
     return $this->batchFailures;
   }
   /**
-   * @param Google_Service_Games_EventRecordFailure
+   * @param Google_Service_Games_EventRecordFailure[]
    */
   public function setEventFailures($eventFailures)
   {
     $this->eventFailures = $eventFailures;
   }
   /**
-   * @return Google_Service_Games_EventRecordFailure
+   * @return Google_Service_Games_EventRecordFailure[]
    */
   public function getEventFailures()
   {
@@ -63,14 +63,14 @@ class Google_Service_Games_EventUpdateResponse extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_Games_PlayerEvent
+   * @param Google_Service_Games_PlayerEvent[]
    */
   public function setPlayerEvents($playerEvents)
   {
     $this->playerEvents = $playerEvents;
   }
   /**
-   * @return Google_Service_Games_PlayerEvent
+   * @return Google_Service_Games_PlayerEvent[]
    */
   public function getPlayerEvents()
   {

@@ -22,14 +22,14 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1Schema extends Goo
   protected $columnsDataType = 'array';
 
   /**
-   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ColumnSchema
+   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ColumnSchema[]
    */
   public function setColumns($columns)
   {
     $this->columns = $columns;
   }
   /**
-   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ColumnSchema
+   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ColumnSchema[]
    */
   public function getColumns()
   {

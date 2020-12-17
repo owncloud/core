@@ -24,14 +24,14 @@ class Google_Service_Monitoring_ListGroupMembersResponse extends Google_Collecti
   public $totalSize;
 
   /**
-   * @param Google_Service_Monitoring_MonitoredResource
+   * @param Google_Service_Monitoring_MonitoredResource[]
    */
   public function setMembers($members)
   {
     $this->members = $members;
   }
   /**
-   * @return Google_Service_Monitoring_MonitoredResource
+   * @return Google_Service_Monitoring_MonitoredResource[]
    */
   public function getMembers()
   {

@@ -26,28 +26,28 @@ class Google_Service_DeploymentManager_Policy extends Google_Collection
   public $version;
 
   /**
-   * @param Google_Service_DeploymentManager_AuditConfig
+   * @param Google_Service_DeploymentManager_AuditConfig[]
    */
   public function setAuditConfigs($auditConfigs)
   {
     $this->auditConfigs = $auditConfigs;
   }
   /**
-   * @return Google_Service_DeploymentManager_AuditConfig
+   * @return Google_Service_DeploymentManager_AuditConfig[]
    */
   public function getAuditConfigs()
   {
     return $this->auditConfigs;
   }
   /**
-   * @param Google_Service_DeploymentManager_Binding
+   * @param Google_Service_DeploymentManager_Binding[]
    */
   public function setBindings($bindings)
   {
     $this->bindings = $bindings;
   }
   /**
-   * @return Google_Service_DeploymentManager_Binding
+   * @return Google_Service_DeploymentManager_Binding[]
    */
   public function getBindings()
   {

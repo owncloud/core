@@ -31,14 +31,14 @@ class Google_Service_Doubleclicksearch_Report extends Google_Collection
   public $statisticsTimeZone;
 
   /**
-   * @param Google_Service_Doubleclicksearch_ReportFiles
+   * @param Google_Service_Doubleclicksearch_ReportFiles[]
    */
   public function setFiles($files)
   {
     $this->files = $files;
   }
   /**
-   * @return Google_Service_Doubleclicksearch_ReportFiles
+   * @return Google_Service_Doubleclicksearch_ReportFiles[]
    */
   public function getFiles()
   {

@@ -230,14 +230,14 @@ class Google_Service_DisplayVideo_LineItem extends Google_Collection
     return $this->pacing;
   }
   /**
-   * @param Google_Service_DisplayVideo_PartnerCost
+   * @param Google_Service_DisplayVideo_PartnerCost[]
    */
   public function setPartnerCosts($partnerCosts)
   {
     $this->partnerCosts = $partnerCosts;
   }
   /**
-   * @return Google_Service_DisplayVideo_PartnerCost
+   * @return Google_Service_DisplayVideo_PartnerCost[]
    */
   public function getPartnerCosts()
   {

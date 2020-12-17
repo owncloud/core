@@ -25,28 +25,28 @@ class Google_Service_Apigee_GoogleCloudApigeeV1InstanceDeploymentStatus extends 
   public $instance;
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1InstanceDeploymentStatusDeployedRevision
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1InstanceDeploymentStatusDeployedRevision[]
    */
   public function setDeployedRevisions($deployedRevisions)
   {
     $this->deployedRevisions = $deployedRevisions;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1InstanceDeploymentStatusDeployedRevision
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1InstanceDeploymentStatusDeployedRevision[]
    */
   public function getDeployedRevisions()
   {
     return $this->deployedRevisions;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1InstanceDeploymentStatusDeployedRoute
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1InstanceDeploymentStatusDeployedRoute[]
    */
   public function setDeployedRoutes($deployedRoutes)
   {
     $this->deployedRoutes = $deployedRoutes;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1InstanceDeploymentStatusDeployedRoute
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1InstanceDeploymentStatusDeployedRoute[]
    */
   public function getDeployedRoutes()
   {

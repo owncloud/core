@@ -23,14 +23,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2TransformationOverview extends Google
   public $transformedBytes;
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2TransformationSummary
+   * @param Google_Service_DLP_GooglePrivacyDlpV2TransformationSummary[]
    */
   public function setTransformationSummaries($transformationSummaries)
   {
     $this->transformationSummaries = $transformationSummaries;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2TransformationSummary
+   * @return Google_Service_DLP_GooglePrivacyDlpV2TransformationSummary[]
    */
   public function getTransformationSummaries()
   {

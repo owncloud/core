@@ -22,14 +22,14 @@ class Google_Service_CloudTrace_Attributes extends Google_Model
   public $droppedAttributesCount;
 
   /**
-   * @param Google_Service_CloudTrace_AttributeValue
+   * @param Google_Service_CloudTrace_AttributeValue[]
    */
   public function setAttributeMap($attributeMap)
   {
     $this->attributeMap = $attributeMap;
   }
   /**
-   * @return Google_Service_CloudTrace_AttributeValue
+   * @return Google_Service_CloudTrace_AttributeValue[]
    */
   public function getAttributeMap()
   {

@@ -43,14 +43,14 @@ class Google_Service_Dfareporting_Pricing extends Google_Collection
     return $this->endDate;
   }
   /**
-   * @param Google_Service_Dfareporting_Flight
+   * @param Google_Service_Dfareporting_Flight[]
    */
   public function setFlights($flights)
   {
     $this->flights = $flights;
   }
   /**
-   * @return Google_Service_Dfareporting_Flight
+   * @return Google_Service_Dfareporting_Flight[]
    */
   public function getFlights()
   {

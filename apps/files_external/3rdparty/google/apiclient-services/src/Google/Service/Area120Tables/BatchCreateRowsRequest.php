@@ -22,14 +22,14 @@ class Google_Service_Area120Tables_BatchCreateRowsRequest extends Google_Collect
   protected $requestsDataType = 'array';
 
   /**
-   * @param Google_Service_Area120Tables_CreateRowRequest
+   * @param Google_Service_Area120Tables_CreateRowRequest[]
    */
   public function setRequests($requests)
   {
     $this->requests = $requests;
   }
   /**
-   * @return Google_Service_Area120Tables_CreateRowRequest
+   * @return Google_Service_Area120Tables_CreateRowRequest[]
    */
   public function getRequests()
   {

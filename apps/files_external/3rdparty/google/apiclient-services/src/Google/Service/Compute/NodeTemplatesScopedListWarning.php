@@ -32,14 +32,14 @@ class Google_Service_Compute_NodeTemplatesScopedListWarning extends Google_Colle
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_NodeTemplatesScopedListWarningData
+   * @param Google_Service_Compute_NodeTemplatesScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_NodeTemplatesScopedListWarningData
+   * @return Google_Service_Compute_NodeTemplatesScopedListWarningData[]
    */
   public function getData()
   {

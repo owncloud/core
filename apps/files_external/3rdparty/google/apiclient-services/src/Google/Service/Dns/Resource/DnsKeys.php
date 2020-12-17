@@ -59,11 +59,11 @@ class Google_Service_Dns_Resource_DnsKeys extends Google_Service_Resource
    * @opt_param string digestType An optional comma-separated list of digest types
    * to compute and display for key signing keys. If omitted, the recommended
    * digest type will be computed and displayed.
+   * @opt_param int maxResults Optional. Maximum number of results to be returned.
+   * If unspecified, the server will decide how many results to return.
    * @opt_param string pageToken Optional. A tag returned by a previous list
    * request that was truncated. Use this parameter to continue a previous list
    * request.
-   * @opt_param int maxResults Optional. Maximum number of results to be returned.
-   * If unspecified, the server will decide how many results to return.
    * @return Google_Service_Dns_DnsKeysListResponse
    */
   public function listDnsKeys($project, $managedZone, $optParams = array())

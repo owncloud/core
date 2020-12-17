@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_ListCustomBiddingAlgorithmsResponse extends Go
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DisplayVideo_CustomBiddingAlgorithm
+   * @param Google_Service_DisplayVideo_CustomBiddingAlgorithm[]
    */
   public function setCustomBiddingAlgorithms($customBiddingAlgorithms)
   {
     $this->customBiddingAlgorithms = $customBiddingAlgorithms;
   }
   /**
-   * @return Google_Service_DisplayVideo_CustomBiddingAlgorithm
+   * @return Google_Service_DisplayVideo_CustomBiddingAlgorithm[]
    */
   public function getCustomBiddingAlgorithms()
   {

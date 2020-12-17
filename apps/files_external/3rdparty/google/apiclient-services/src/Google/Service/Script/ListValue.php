@@ -22,14 +22,14 @@ class Google_Service_Script_ListValue extends Google_Collection
   protected $valuesDataType = 'array';
 
   /**
-   * @param Google_Service_Script_Value
+   * @param Google_Service_Script_Value[]
    */
   public function setValues($values)
   {
     $this->values = $values;
   }
   /**
-   * @return Google_Service_Script_Value
+   * @return Google_Service_Script_Value[]
    */
   public function getValues()
   {

@@ -64,14 +64,14 @@ class Google_Service_AnalyticsData_RunReportRequest extends Google_Collection
     return $this->currencyCode;
   }
   /**
-   * @param Google_Service_AnalyticsData_DateRange
+   * @param Google_Service_AnalyticsData_DateRange[]
    */
   public function setDateRanges($dateRanges)
   {
     $this->dateRanges = $dateRanges;
   }
   /**
-   * @return Google_Service_AnalyticsData_DateRange
+   * @return Google_Service_AnalyticsData_DateRange[]
    */
   public function getDateRanges()
   {
@@ -92,14 +92,14 @@ class Google_Service_AnalyticsData_RunReportRequest extends Google_Collection
     return $this->dimensionFilter;
   }
   /**
-   * @param Google_Service_AnalyticsData_Dimension
+   * @param Google_Service_AnalyticsData_Dimension[]
    */
   public function setDimensions($dimensions)
   {
     $this->dimensions = $dimensions;
   }
   /**
-   * @return Google_Service_AnalyticsData_Dimension
+   * @return Google_Service_AnalyticsData_Dimension[]
    */
   public function getDimensions()
   {
@@ -158,14 +158,14 @@ class Google_Service_AnalyticsData_RunReportRequest extends Google_Collection
     return $this->metricFilter;
   }
   /**
-   * @param Google_Service_AnalyticsData_Metric
+   * @param Google_Service_AnalyticsData_Metric[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_AnalyticsData_Metric
+   * @return Google_Service_AnalyticsData_Metric[]
    */
   public function getMetrics()
   {
@@ -180,14 +180,14 @@ class Google_Service_AnalyticsData_RunReportRequest extends Google_Collection
     return $this->offset;
   }
   /**
-   * @param Google_Service_AnalyticsData_OrderBy
+   * @param Google_Service_AnalyticsData_OrderBy[]
    */
   public function setOrderBys($orderBys)
   {
     $this->orderBys = $orderBys;
   }
   /**
-   * @return Google_Service_AnalyticsData_OrderBy
+   * @return Google_Service_AnalyticsData_OrderBy[]
    */
   public function getOrderBys()
   {

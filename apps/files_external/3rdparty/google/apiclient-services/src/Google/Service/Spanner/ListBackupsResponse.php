@@ -23,14 +23,14 @@ class Google_Service_Spanner_ListBackupsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Spanner_Backup
+   * @param Google_Service_Spanner_Backup[]
    */
   public function setBackups($backups)
   {
     $this->backups = $backups;
   }
   /**
-   * @return Google_Service_Spanner_Backup
+   * @return Google_Service_Spanner_Backup[]
    */
   public function getBackups()
   {

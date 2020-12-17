@@ -174,12 +174,12 @@ class Google_Service_Iam_Resource_ProjectsServiceAccounts extends Google_Service
    * with the service accounts, such as `projects/my-project-123`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional pagination token returned in an earlier
-   * ListServiceAccountsResponse.next_page_token.
    * @opt_param int pageSize Optional limit on the number of service accounts to
    * include in the response. Further accounts can subsequently be obtained by
    * including the ListServiceAccountsResponse.next_page_token in a subsequent
    * request. The default is 20, and the maximum is 100.
+   * @opt_param string pageToken Optional pagination token returned in an earlier
+   * ListServiceAccountsResponse.next_page_token.
    * @return Google_Service_Iam_ListServiceAccountsResponse
    */
   public function listProjectsServiceAccounts($name, $optParams = array())

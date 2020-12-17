@@ -68,14 +68,14 @@ class Google_Service_RealTimeBidding_CreativeServingDecision extends Google_Coll
     return $this->dealsPolicyCompliance;
   }
   /**
-   * @param Google_Service_RealTimeBidding_AdvertiserAndBrand
+   * @param Google_Service_RealTimeBidding_AdvertiserAndBrand[]
    */
   public function setDetectedAdvertisers($detectedAdvertisers)
   {
     $this->detectedAdvertisers = $detectedAdvertisers;
   }
   /**
-   * @return Google_Service_RealTimeBidding_AdvertiserAndBrand
+   * @return Google_Service_RealTimeBidding_AdvertiserAndBrand[]
    */
   public function getDetectedAdvertisers()
   {

@@ -23,14 +23,14 @@ class Google_Service_PostmasterTools_ListDomainsResponse extends Google_Collecti
   public $nextPageToken;
 
   /**
-   * @param Google_Service_PostmasterTools_Domain
+   * @param Google_Service_PostmasterTools_Domain[]
    */
   public function setDomains($domains)
   {
     $this->domains = $domains;
   }
   /**
-   * @return Google_Service_PostmasterTools_Domain
+   * @return Google_Service_PostmasterTools_Domain[]
    */
   public function getDomains()
   {

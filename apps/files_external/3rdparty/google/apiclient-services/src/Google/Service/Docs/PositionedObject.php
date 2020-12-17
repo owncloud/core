@@ -65,14 +65,14 @@ class Google_Service_Docs_PositionedObject extends Google_Collection
     return $this->suggestedInsertionId;
   }
   /**
-   * @param Google_Service_Docs_SuggestedPositionedObjectProperties
+   * @param Google_Service_Docs_SuggestedPositionedObjectProperties[]
    */
   public function setSuggestedPositionedObjectPropertiesChanges($suggestedPositionedObjectPropertiesChanges)
   {
     $this->suggestedPositionedObjectPropertiesChanges = $suggestedPositionedObjectPropertiesChanges;
   }
   /**
-   * @return Google_Service_Docs_SuggestedPositionedObjectProperties
+   * @return Google_Service_Docs_SuggestedPositionedObjectProperties[]
    */
   public function getSuggestedPositionedObjectPropertiesChanges()
   {

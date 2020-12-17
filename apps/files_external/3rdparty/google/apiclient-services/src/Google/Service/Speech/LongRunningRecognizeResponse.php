@@ -22,14 +22,14 @@ class Google_Service_Speech_LongRunningRecognizeResponse extends Google_Collecti
   protected $resultsDataType = 'array';
 
   /**
-   * @param Google_Service_Speech_SpeechRecognitionResult
+   * @param Google_Service_Speech_SpeechRecognitionResult[]
    */
   public function setResults($results)
   {
     $this->results = $results;
   }
   /**
-   * @return Google_Service_Speech_SpeechRecognitionResult
+   * @return Google_Service_Speech_SpeechRecognitionResult[]
    */
   public function getResults()
   {

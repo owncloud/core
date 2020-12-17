@@ -31,14 +31,14 @@ class Google_Service_ServiceNetworking_Http extends Google_Collection
     return $this->fullyDecodeReservedExpansion;
   }
   /**
-   * @param Google_Service_ServiceNetworking_HttpRule
+   * @param Google_Service_ServiceNetworking_HttpRule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_ServiceNetworking_HttpRule
+   * @return Google_Service_ServiceNetworking_HttpRule[]
    */
   public function getRules()
   {

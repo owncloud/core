@@ -22,14 +22,14 @@ class Google_Service_GameServices_TargetState extends Google_Collection
   protected $detailsDataType = 'array';
 
   /**
-   * @param Google_Service_GameServices_TargetDetails
+   * @param Google_Service_GameServices_TargetDetails[]
    */
   public function setDetails($details)
   {
     $this->details = $details;
   }
   /**
-   * @return Google_Service_GameServices_TargetDetails
+   * @return Google_Service_GameServices_TargetDetails[]
    */
   public function getDetails()
   {

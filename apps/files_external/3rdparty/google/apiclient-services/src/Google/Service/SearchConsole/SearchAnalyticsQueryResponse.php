@@ -31,14 +31,14 @@ class Google_Service_SearchConsole_SearchAnalyticsQueryResponse extends Google_C
     return $this->responseAggregationType;
   }
   /**
-   * @param Google_Service_SearchConsole_ApiDataRow
+   * @param Google_Service_SearchConsole_ApiDataRow[]
    */
   public function setRows($rows)
   {
     $this->rows = $rows;
   }
   /**
-   * @return Google_Service_SearchConsole_ApiDataRow
+   * @return Google_Service_SearchConsole_ApiDataRow[]
    */
   public function getRows()
   {

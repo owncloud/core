@@ -22,14 +22,14 @@ class Google_Service_AnalyticsData_PivotDimensionHeader extends Google_Collectio
   protected $dimensionValuesDataType = 'array';
 
   /**
-   * @param Google_Service_AnalyticsData_DimensionValue
+   * @param Google_Service_AnalyticsData_DimensionValue[]
    */
   public function setDimensionValues($dimensionValues)
   {
     $this->dimensionValues = $dimensionValues;
   }
   /**
-   * @return Google_Service_AnalyticsData_DimensionValue
+   * @return Google_Service_AnalyticsData_DimensionValue[]
    */
   public function getDimensionValues()
   {

@@ -157,14 +157,14 @@ class Google_Service_Container_Cluster extends Google_Collection
     return $this->clusterIpv4Cidr;
   }
   /**
-   * @param Google_Service_Container_StatusCondition
+   * @param Google_Service_Container_StatusCondition[]
    */
   public function setConditions($conditions)
   {
     $this->conditions = $conditions;
   }
   /**
-   * @return Google_Service_Container_StatusCondition
+   * @return Google_Service_Container_StatusCondition[]
    */
   public function getConditions()
   {
@@ -471,14 +471,14 @@ class Google_Service_Container_Cluster extends Google_Collection
     return $this->nodeIpv4CidrSize;
   }
   /**
-   * @param Google_Service_Container_NodePool
+   * @param Google_Service_Container_NodePool[]
    */
   public function setNodePools($nodePools)
   {
     $this->nodePools = $nodePools;
   }
   /**
-   * @return Google_Service_Container_NodePool
+   * @return Google_Service_Container_NodePool[]
    */
   public function getNodePools()
   {

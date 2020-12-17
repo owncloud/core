@@ -22,14 +22,14 @@ class Google_Service_Container_ListNodePoolsResponse extends Google_Collection
   protected $nodePoolsDataType = 'array';
 
   /**
-   * @param Google_Service_Container_NodePool
+   * @param Google_Service_Container_NodePool[]
    */
   public function setNodePools($nodePools)
   {
     $this->nodePools = $nodePools;
   }
   /**
-   * @return Google_Service_Container_NodePool
+   * @return Google_Service_Container_NodePool[]
    */
   public function getNodePools()
   {

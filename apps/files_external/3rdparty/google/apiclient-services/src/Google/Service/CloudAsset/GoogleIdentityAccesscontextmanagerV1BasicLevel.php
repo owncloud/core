@@ -31,14 +31,14 @@ class Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1BasicLevel e
     return $this->combiningFunction;
   }
   /**
-   * @param Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1Condition
+   * @param Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1Condition[]
    */
   public function setConditions($conditions)
   {
     $this->conditions = $conditions;
   }
   /**
-   * @return Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1Condition
+   * @return Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1Condition[]
    */
   public function getConditions()
   {

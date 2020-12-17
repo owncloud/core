@@ -48,14 +48,14 @@ class Google_Service_YouTubeAnalytics_ListGroupItemsResponse extends Google_Coll
     return $this->etag;
   }
   /**
-   * @param Google_Service_YouTubeAnalytics_GroupItem
+   * @param Google_Service_YouTubeAnalytics_GroupItem[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_YouTubeAnalytics_GroupItem
+   * @return Google_Service_YouTubeAnalytics_GroupItem[]
    */
   public function getItems()
   {

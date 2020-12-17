@@ -23,14 +23,14 @@ class Google_Service_SQLAdmin_DatabasesListResponse extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_SQLAdmin_Database
+   * @param Google_Service_SQLAdmin_Database[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_SQLAdmin_Database
+   * @return Google_Service_SQLAdmin_Database[]
    */
   public function getItems()
   {

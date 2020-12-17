@@ -22,14 +22,14 @@ class Google_Service_Books_VolumeLayerInfo extends Google_Collection
   protected $layersDataType = 'array';
 
   /**
-   * @param Google_Service_Books_VolumeLayerInfoLayers
+   * @param Google_Service_Books_VolumeLayerInfoLayers[]
    */
   public function setLayers($layers)
   {
     $this->layers = $layers;
   }
   /**
-   * @return Google_Service_Books_VolumeLayerInfoLayers
+   * @return Google_Service_Books_VolumeLayerInfoLayers[]
    */
   public function getLayers()
   {

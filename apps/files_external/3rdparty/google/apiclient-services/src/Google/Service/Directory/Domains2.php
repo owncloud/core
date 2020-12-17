@@ -24,14 +24,14 @@ class Google_Service_Directory_Domains2 extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_Directory_Domains
+   * @param Google_Service_Directory_Domains[]
    */
   public function setDomains($domains)
   {
     $this->domains = $domains;
   }
   /**
-   * @return Google_Service_Directory_Domains
+   * @return Google_Service_Directory_Domains[]
    */
   public function getDomains()
   {

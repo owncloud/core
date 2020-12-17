@@ -22,14 +22,14 @@ class Google_Service_Testing_NetworkConfigurationCatalog extends Google_Collecti
   protected $configurationsDataType = 'array';
 
   /**
-   * @param Google_Service_Testing_NetworkConfiguration
+   * @param Google_Service_Testing_NetworkConfiguration[]
    */
   public function setConfigurations($configurations)
   {
     $this->configurations = $configurations;
   }
   /**
-   * @return Google_Service_Testing_NetworkConfiguration
+   * @return Google_Service_Testing_NetworkConfiguration[]
    */
   public function getConfigurations()
   {

@@ -34,12 +34,12 @@ class Google_Service_ShoppingContent_Resource_Settlementtransactions extends Goo
    * @param string $settlementId The Google-provided ID of the settlement.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string transactionIds The list of transactions to return. If not
-   * set, all transactions will be returned.
-   * @opt_param string pageToken The token returned by the previous request.
    * @opt_param string maxResults The maximum number of transactions to return in
    * the response, used for paging. The default value is 200 transactions per
    * page, and the maximum allowed value is 5000 transactions per page.
+   * @opt_param string pageToken The token returned by the previous request.
+   * @opt_param string transactionIds The list of transactions to return. If not
+   * set, all transactions will be returned.
    * @return Google_Service_ShoppingContent_SettlementtransactionsListResponse
    */
   public function listSettlementtransactions($merchantId, $settlementId, $optParams = array())

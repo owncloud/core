@@ -47,11 +47,11 @@ class Google_Service_AdSenseHost_Resource_AccountsAdclients extends Google_Servi
    * @param string $accountId Account for which to list ad clients.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string maxResults The maximum number of ad clients to include in
+   * the response, used for paging.
    * @opt_param string pageToken A continuation token, used to page through ad
    * clients. To retrieve the next page, set this parameter to the value of
    * "nextPageToken" from the previous response.
-   * @opt_param string maxResults The maximum number of ad clients to include in
-   * the response, used for paging.
    * @return Google_Service_AdSenseHost_AdClients
    */
   public function listAccountsAdclients($accountId, $optParams = array())

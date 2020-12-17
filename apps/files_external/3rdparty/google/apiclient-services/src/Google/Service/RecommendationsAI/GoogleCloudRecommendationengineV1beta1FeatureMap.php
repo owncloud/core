@@ -23,28 +23,28 @@ class Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1Fea
   protected $numericalFeaturesDataType = 'map';
 
   /**
-   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1FeatureMapStringList
+   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1FeatureMapStringList[]
    */
   public function setCategoricalFeatures($categoricalFeatures)
   {
     $this->categoricalFeatures = $categoricalFeatures;
   }
   /**
-   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1FeatureMapStringList
+   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1FeatureMapStringList[]
    */
   public function getCategoricalFeatures()
   {
     return $this->categoricalFeatures;
   }
   /**
-   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1FeatureMapFloatList
+   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1FeatureMapFloatList[]
    */
   public function setNumericalFeatures($numericalFeatures)
   {
     $this->numericalFeatures = $numericalFeatures;
   }
   /**
-   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1FeatureMapFloatList
+   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1FeatureMapFloatList[]
    */
   public function getNumericalFeatures()
   {

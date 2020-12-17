@@ -121,11 +121,11 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsEntryGroups extends G
    * projects/{project_id}/locations/{location}
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional. Token that specifies which page is
-   * requested. If empty, the first page is returned.
    * @opt_param int pageSize Optional. The maximum number of items to return.
    * Default is 10. Max limit is 1000. Throws an invalid argument for `page_size >
    * 1000`.
+   * @opt_param string pageToken Optional. Token that specifies which page is
+   * requested. If empty, the first page is returned.
    * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ListEntryGroupsResponse
    */
   public function listProjectsLocationsEntryGroups($parent, $optParams = array())

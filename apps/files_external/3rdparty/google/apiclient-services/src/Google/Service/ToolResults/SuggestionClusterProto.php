@@ -31,14 +31,14 @@ class Google_Service_ToolResults_SuggestionClusterProto extends Google_Collectio
     return $this->category;
   }
   /**
-   * @param Google_Service_ToolResults_SuggestionProto
+   * @param Google_Service_ToolResults_SuggestionProto[]
    */
   public function setSuggestions($suggestions)
   {
     $this->suggestions = $suggestions;
   }
   /**
-   * @return Google_Service_ToolResults_SuggestionProto
+   * @return Google_Service_ToolResults_SuggestionProto[]
    */
   public function getSuggestions()
   {

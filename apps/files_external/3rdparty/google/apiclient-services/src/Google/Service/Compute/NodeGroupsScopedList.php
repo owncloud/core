@@ -24,14 +24,14 @@ class Google_Service_Compute_NodeGroupsScopedList extends Google_Collection
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_NodeGroup
+   * @param Google_Service_Compute_NodeGroup[]
    */
   public function setNodeGroups($nodeGroups)
   {
     $this->nodeGroups = $nodeGroups;
   }
   /**
-   * @return Google_Service_Compute_NodeGroup
+   * @return Google_Service_Compute_NodeGroup[]
    */
   public function getNodeGroups()
   {

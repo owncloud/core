@@ -32,14 +32,14 @@ class Google_Service_Compute_RoutersScopedListWarning extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_RoutersScopedListWarningData
+   * @param Google_Service_Compute_RoutersScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_RoutersScopedListWarningData
+   * @return Google_Service_Compute_RoutersScopedListWarningData[]
    */
   public function getData()
   {

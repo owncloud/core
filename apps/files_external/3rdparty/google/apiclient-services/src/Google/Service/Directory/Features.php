@@ -33,14 +33,14 @@ class Google_Service_Directory_Features extends Google_Collection
     return $this->etag;
   }
   /**
-   * @param Google_Service_Directory_Feature
+   * @param Google_Service_Directory_Feature[]
    */
   public function setFeatures($features)
   {
     $this->features = $features;
   }
   /**
-   * @return Google_Service_Directory_Feature
+   * @return Google_Service_Directory_Feature[]
    */
   public function getFeatures()
   {

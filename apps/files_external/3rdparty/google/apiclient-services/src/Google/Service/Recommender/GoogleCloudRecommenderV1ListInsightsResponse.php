@@ -23,14 +23,14 @@ class Google_Service_Recommender_GoogleCloudRecommenderV1ListInsightsResponse ex
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Recommender_GoogleCloudRecommenderV1Insight
+   * @param Google_Service_Recommender_GoogleCloudRecommenderV1Insight[]
    */
   public function setInsights($insights)
   {
     $this->insights = $insights;
   }
   /**
-   * @return Google_Service_Recommender_GoogleCloudRecommenderV1Insight
+   * @return Google_Service_Recommender_GoogleCloudRecommenderV1Insight[]
    */
   public function getInsights()
   {

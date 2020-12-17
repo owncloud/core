@@ -22,14 +22,14 @@ class Google_Service_CloudSearch_ObjectPropertyOptions extends Google_Collection
   protected $subobjectPropertiesDataType = 'array';
 
   /**
-   * @param Google_Service_CloudSearch_PropertyDefinition
+   * @param Google_Service_CloudSearch_PropertyDefinition[]
    */
   public function setSubobjectProperties($subobjectProperties)
   {
     $this->subobjectProperties = $subobjectProperties;
   }
   /**
-   * @return Google_Service_CloudSearch_PropertyDefinition
+   * @return Google_Service_CloudSearch_PropertyDefinition[]
    */
   public function getSubobjectProperties()
   {

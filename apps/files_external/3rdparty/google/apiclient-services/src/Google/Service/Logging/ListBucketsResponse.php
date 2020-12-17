@@ -23,14 +23,14 @@ class Google_Service_Logging_ListBucketsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Logging_LogBucket
+   * @param Google_Service_Logging_LogBucket[]
    */
   public function setBuckets($buckets)
   {
     $this->buckets = $buckets;
   }
   /**
-   * @return Google_Service_Logging_LogBucket
+   * @return Google_Service_Logging_LogBucket[]
    */
   public function getBuckets()
   {

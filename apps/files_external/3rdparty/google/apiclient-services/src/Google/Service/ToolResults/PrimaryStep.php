@@ -23,14 +23,14 @@ class Google_Service_ToolResults_PrimaryStep extends Google_Collection
   public $rollUp;
 
   /**
-   * @param Google_Service_ToolResults_IndividualOutcome
+   * @param Google_Service_ToolResults_IndividualOutcome[]
    */
   public function setIndividualOutcome($individualOutcome)
   {
     $this->individualOutcome = $individualOutcome;
   }
   /**
-   * @return Google_Service_ToolResults_IndividualOutcome
+   * @return Google_Service_ToolResults_IndividualOutcome[]
    */
   public function getIndividualOutcome()
   {

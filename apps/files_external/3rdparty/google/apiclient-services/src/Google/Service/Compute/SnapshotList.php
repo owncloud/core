@@ -36,14 +36,14 @@ class Google_Service_Compute_SnapshotList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_Snapshot
+   * @param Google_Service_Compute_Snapshot[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_Snapshot
+   * @return Google_Service_Compute_Snapshot[]
    */
   public function getItems()
   {

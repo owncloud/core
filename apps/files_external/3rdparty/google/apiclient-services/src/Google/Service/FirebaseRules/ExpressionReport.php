@@ -26,14 +26,14 @@ class Google_Service_FirebaseRules_ExpressionReport extends Google_Collection
   protected $valuesDataType = 'array';
 
   /**
-   * @param Google_Service_FirebaseRules_ExpressionReport
+   * @param Google_Service_FirebaseRules_ExpressionReport[]
    */
   public function setChildren($children)
   {
     $this->children = $children;
   }
   /**
-   * @return Google_Service_FirebaseRules_ExpressionReport
+   * @return Google_Service_FirebaseRules_ExpressionReport[]
    */
   public function getChildren()
   {
@@ -54,14 +54,14 @@ class Google_Service_FirebaseRules_ExpressionReport extends Google_Collection
     return $this->sourcePosition;
   }
   /**
-   * @param Google_Service_FirebaseRules_ValueCount
+   * @param Google_Service_FirebaseRules_ValueCount[]
    */
   public function setValues($values)
   {
     $this->values = $values;
   }
   /**
-   * @return Google_Service_FirebaseRules_ValueCount
+   * @return Google_Service_FirebaseRules_ValueCount[]
    */
   public function getValues()
   {

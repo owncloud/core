@@ -31,14 +31,14 @@ class Google_Service_ServiceManagement_ListServiceConfigsResponse extends Google
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ServiceManagement_Service
+   * @param Google_Service_ServiceManagement_Service[]
    */
   public function setServiceConfigs($serviceConfigs)
   {
     $this->serviceConfigs = $serviceConfigs;
   }
   /**
-   * @return Google_Service_ServiceManagement_Service
+   * @return Google_Service_ServiceManagement_Service[]
    */
   public function getServiceConfigs()
   {

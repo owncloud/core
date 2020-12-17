@@ -75,9 +75,9 @@ class Google_Service_CloudComposer_Resource_ProjectsLocationsEnvironments extend
    * the form: "projects/{projectId}/locations/{locationId}"
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of environments to return.
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.
-   * @opt_param int pageSize The maximum number of environments to return.
    * @return Google_Service_CloudComposer_ListEnvironmentsResponse
    */
   public function listProjectsLocationsEnvironments($parent, $optParams = array())

@@ -23,14 +23,14 @@ class Google_Service_AdExchangeBuyerII_ListClientsResponse extends Google_Collec
   public $nextPageToken;
 
   /**
-   * @param Google_Service_AdExchangeBuyerII_Client
+   * @param Google_Service_AdExchangeBuyerII_Client[]
    */
   public function setClients($clients)
   {
     $this->clients = $clients;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_Client
+   * @return Google_Service_AdExchangeBuyerII_Client[]
    */
   public function getClients()
   {

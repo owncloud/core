@@ -18,6 +18,7 @@
 class Google_Service_DLP_GooglePrivacyDlpV2Finding extends Google_Model
 {
   public $createTime;
+  public $findingId;
   protected $infoTypeType = 'Google_Service_DLP_GooglePrivacyDlpV2InfoType';
   protected $infoTypeDataType = '';
   public $jobCreateTime;
@@ -40,6 +41,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2Finding extends Google_Model
   public function getCreateTime()
   {
     return $this->createTime;
+  }
+  public function setFindingId($findingId)
+  {
+    $this->findingId = $findingId;
+  }
+  public function getFindingId()
+  {
+    return $this->findingId;
   }
   /**
    * @param Google_Service_DLP_GooglePrivacyDlpV2InfoType

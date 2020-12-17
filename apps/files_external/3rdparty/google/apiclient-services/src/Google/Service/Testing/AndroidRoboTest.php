@@ -94,14 +94,14 @@ class Google_Service_Testing_AndroidRoboTest extends Google_Collection
     return $this->maxSteps;
   }
   /**
-   * @param Google_Service_Testing_RoboDirective
+   * @param Google_Service_Testing_RoboDirective[]
    */
   public function setRoboDirectives($roboDirectives)
   {
     $this->roboDirectives = $roboDirectives;
   }
   /**
-   * @return Google_Service_Testing_RoboDirective
+   * @return Google_Service_Testing_RoboDirective[]
    */
   public function getRoboDirectives()
   {
@@ -122,14 +122,14 @@ class Google_Service_Testing_AndroidRoboTest extends Google_Collection
     return $this->roboScript;
   }
   /**
-   * @param Google_Service_Testing_RoboStartingIntent
+   * @param Google_Service_Testing_RoboStartingIntent[]
    */
   public function setStartingIntents($startingIntents)
   {
     $this->startingIntents = $startingIntents;
   }
   /**
-   * @return Google_Service_Testing_RoboStartingIntent
+   * @return Google_Service_Testing_RoboStartingIntent[]
    */
   public function getStartingIntents()
   {

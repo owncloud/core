@@ -40,14 +40,14 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2S
     return $this->transcript;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2WordInfo
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2WordInfo[]
    */
   public function setWords($words)
   {
     $this->words = $words;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2WordInfo
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2WordInfo[]
    */
   public function getWords()
   {

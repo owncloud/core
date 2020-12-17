@@ -21,14 +21,14 @@ class Google_Service_CloudRedis_GoogleCloudRedisV1LocationMetadata extends Googl
   protected $availableZonesDataType = 'map';
 
   /**
-   * @param Google_Service_CloudRedis_GoogleCloudRedisV1ZoneMetadata
+   * @param Google_Service_CloudRedis_GoogleCloudRedisV1ZoneMetadata[]
    */
   public function setAvailableZones($availableZones)
   {
     $this->availableZones = $availableZones;
   }
   /**
-   * @return Google_Service_CloudRedis_GoogleCloudRedisV1ZoneMetadata
+   * @return Google_Service_CloudRedis_GoogleCloudRedisV1ZoneMetadata[]
    */
   public function getAvailableZones()
   {

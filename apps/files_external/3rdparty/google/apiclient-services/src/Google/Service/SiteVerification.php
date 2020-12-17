@@ -38,7 +38,7 @@ class Google_Service_SiteVerification extends Google_Service
       "https://www.googleapis.com/auth/siteverification.verify_only";
 
   public $webResource;
-  
+
   /**
    * Constructs the internal representation of the SiteVerification service.
    *

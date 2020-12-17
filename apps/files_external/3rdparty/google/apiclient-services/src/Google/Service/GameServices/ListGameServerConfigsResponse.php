@@ -24,14 +24,14 @@ class Google_Service_GameServices_ListGameServerConfigsResponse extends Google_C
   public $unreachable;
 
   /**
-   * @param Google_Service_GameServices_GameServerConfig
+   * @param Google_Service_GameServices_GameServerConfig[]
    */
   public function setGameServerConfigs($gameServerConfigs)
   {
     $this->gameServerConfigs = $gameServerConfigs;
   }
   /**
-   * @return Google_Service_GameServices_GameServerConfig
+   * @return Google_Service_GameServices_GameServerConfig[]
    */
   public function getGameServerConfigs()
   {

@@ -22,14 +22,14 @@ class Google_Service_ServiceManagement_SystemParameters extends Google_Collectio
   protected $rulesDataType = 'array';
 
   /**
-   * @param Google_Service_ServiceManagement_SystemParameterRule
+   * @param Google_Service_ServiceManagement_SystemParameterRule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_ServiceManagement_SystemParameterRule
+   * @return Google_Service_ServiceManagement_SystemParameterRule[]
    */
   public function getRules()
   {

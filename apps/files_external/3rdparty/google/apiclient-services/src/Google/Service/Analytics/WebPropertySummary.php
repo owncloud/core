@@ -69,14 +69,14 @@ class Google_Service_Analytics_WebPropertySummary extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Analytics_ProfileSummary
+   * @param Google_Service_Analytics_ProfileSummary[]
    */
   public function setProfiles($profiles)
   {
     $this->profiles = $profiles;
   }
   /**
-   * @return Google_Service_Analytics_ProfileSummary
+   * @return Google_Service_Analytics_ProfileSummary[]
    */
   public function getProfiles()
   {

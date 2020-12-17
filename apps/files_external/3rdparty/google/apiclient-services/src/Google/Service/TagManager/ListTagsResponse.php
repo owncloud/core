@@ -31,14 +31,14 @@ class Google_Service_TagManager_ListTagsResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_TagManager_Tag
+   * @param Google_Service_TagManager_Tag[]
    */
   public function setTag($tag)
   {
     $this->tag = $tag;
   }
   /**
-   * @return Google_Service_TagManager_Tag
+   * @return Google_Service_TagManager_Tag[]
    */
   public function getTag()
   {

@@ -23,14 +23,14 @@ class Google_Service_AndroidEnterprise_AppState extends Google_Collection
   public $packageName;
 
   /**
-   * @param Google_Service_AndroidEnterprise_KeyedAppState
+   * @param Google_Service_AndroidEnterprise_KeyedAppState[]
    */
   public function setKeyedAppState($keyedAppState)
   {
     $this->keyedAppState = $keyedAppState;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_KeyedAppState
+   * @return Google_Service_AndroidEnterprise_KeyedAppState[]
    */
   public function getKeyedAppState()
   {

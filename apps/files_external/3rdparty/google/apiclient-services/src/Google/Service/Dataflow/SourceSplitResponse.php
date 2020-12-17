@@ -25,14 +25,14 @@ class Google_Service_Dataflow_SourceSplitResponse extends Google_Collection
   protected $shardsDataType = 'array';
 
   /**
-   * @param Google_Service_Dataflow_DerivedSource
+   * @param Google_Service_Dataflow_DerivedSource[]
    */
   public function setBundles($bundles)
   {
     $this->bundles = $bundles;
   }
   /**
-   * @return Google_Service_Dataflow_DerivedSource
+   * @return Google_Service_Dataflow_DerivedSource[]
    */
   public function getBundles()
   {
@@ -47,14 +47,14 @@ class Google_Service_Dataflow_SourceSplitResponse extends Google_Collection
     return $this->outcome;
   }
   /**
-   * @param Google_Service_Dataflow_SourceSplitShard
+   * @param Google_Service_Dataflow_SourceSplitShard[]
    */
   public function setShards($shards)
   {
     $this->shards = $shards;
   }
   /**
-   * @return Google_Service_Dataflow_SourceSplitShard
+   * @return Google_Service_Dataflow_SourceSplitShard[]
    */
   public function getShards()
   {

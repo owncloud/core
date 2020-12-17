@@ -248,14 +248,14 @@ class Google_Service_Analytics_Experiment extends Google_Collection
     return $this->updated;
   }
   /**
-   * @param Google_Service_Analytics_ExperimentVariations
+   * @param Google_Service_Analytics_ExperimentVariations[]
    */
   public function setVariations($variations)
   {
     $this->variations = $variations;
   }
   /**
-   * @return Google_Service_Analytics_ExperimentVariations
+   * @return Google_Service_Analytics_ExperimentVariations[]
    */
   public function getVariations()
   {

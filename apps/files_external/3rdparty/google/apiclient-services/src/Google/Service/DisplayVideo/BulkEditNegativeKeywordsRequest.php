@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_BulkEditNegativeKeywordsRequest extends Google
   public $deletedNegativeKeywords;
 
   /**
-   * @param Google_Service_DisplayVideo_NegativeKeyword
+   * @param Google_Service_DisplayVideo_NegativeKeyword[]
    */
   public function setCreatedNegativeKeywords($createdNegativeKeywords)
   {
     $this->createdNegativeKeywords = $createdNegativeKeywords;
   }
   /**
-   * @return Google_Service_DisplayVideo_NegativeKeyword
+   * @return Google_Service_DisplayVideo_NegativeKeyword[]
    */
   public function getCreatedNegativeKeywords()
   {

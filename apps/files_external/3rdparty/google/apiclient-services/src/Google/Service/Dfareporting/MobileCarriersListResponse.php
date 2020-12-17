@@ -31,14 +31,14 @@ class Google_Service_Dfareporting_MobileCarriersListResponse extends Google_Coll
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dfareporting_MobileCarrier
+   * @param Google_Service_Dfareporting_MobileCarrier[]
    */
   public function setMobileCarriers($mobileCarriers)
   {
     $this->mobileCarriers = $mobileCarriers;
   }
   /**
-   * @return Google_Service_Dfareporting_MobileCarrier
+   * @return Google_Service_Dfareporting_MobileCarrier[]
    */
   public function getMobileCarriers()
   {

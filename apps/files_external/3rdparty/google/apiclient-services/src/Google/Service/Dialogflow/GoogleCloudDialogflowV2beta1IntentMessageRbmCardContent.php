@@ -48,14 +48,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageRbmCard
     return $this->media;
   }
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageRbmSuggestion
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageRbmSuggestion[]
    */
   public function setSuggestions($suggestions)
   {
     $this->suggestions = $suggestions;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageRbmSuggestion
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageRbmSuggestion[]
    */
   public function getSuggestions()
   {

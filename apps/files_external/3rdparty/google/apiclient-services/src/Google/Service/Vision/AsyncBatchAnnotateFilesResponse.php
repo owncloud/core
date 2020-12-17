@@ -22,14 +22,14 @@ class Google_Service_Vision_AsyncBatchAnnotateFilesResponse extends Google_Colle
   protected $responsesDataType = 'array';
 
   /**
-   * @param Google_Service_Vision_AsyncAnnotateFileResponse
+   * @param Google_Service_Vision_AsyncAnnotateFileResponse[]
    */
   public function setResponses($responses)
   {
     $this->responses = $responses;
   }
   /**
-   * @return Google_Service_Vision_AsyncAnnotateFileResponse
+   * @return Google_Service_Vision_AsyncAnnotateFileResponse[]
    */
   public function getResponses()
   {

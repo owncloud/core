@@ -47,14 +47,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2TransformationSummary extends Google_
     return $this->field;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2FieldTransformation
+   * @param Google_Service_DLP_GooglePrivacyDlpV2FieldTransformation[]
    */
   public function setFieldTransformations($fieldTransformations)
   {
     $this->fieldTransformations = $fieldTransformations;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2FieldTransformation
+   * @return Google_Service_DLP_GooglePrivacyDlpV2FieldTransformation[]
    */
   public function getFieldTransformations()
   {
@@ -89,14 +89,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2TransformationSummary extends Google_
     return $this->recordSuppress;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2SummaryResult
+   * @param Google_Service_DLP_GooglePrivacyDlpV2SummaryResult[]
    */
   public function setResults($results)
   {
     $this->results = $results;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2SummaryResult
+   * @return Google_Service_DLP_GooglePrivacyDlpV2SummaryResult[]
    */
   public function getResults()
   {

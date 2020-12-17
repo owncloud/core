@@ -22,14 +22,14 @@ class Google_Service_Sheets_DeleteDimensionGroupResponse extends Google_Collecti
   protected $dimensionGroupsDataType = 'array';
 
   /**
-   * @param Google_Service_Sheets_DimensionGroup
+   * @param Google_Service_Sheets_DimensionGroup[]
    */
   public function setDimensionGroups($dimensionGroups)
   {
     $this->dimensionGroups = $dimensionGroups;
   }
   /**
-   * @return Google_Service_Sheets_DimensionGroup
+   * @return Google_Service_Sheets_DimensionGroup[]
    */
   public function getDimensionGroups()
   {

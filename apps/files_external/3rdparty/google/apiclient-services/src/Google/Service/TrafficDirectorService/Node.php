@@ -59,14 +59,14 @@ class Google_Service_TrafficDirectorService_Node extends Google_Collection
     return $this->cluster;
   }
   /**
-   * @param Google_Service_TrafficDirectorService_Extension
+   * @param Google_Service_TrafficDirectorService_Extension[]
    */
   public function setExtensions($extensions)
   {
     $this->extensions = $extensions;
   }
   /**
-   * @return Google_Service_TrafficDirectorService_Extension
+   * @return Google_Service_TrafficDirectorService_Extension[]
    */
   public function getExtensions()
   {
@@ -81,14 +81,14 @@ class Google_Service_TrafficDirectorService_Node extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_TrafficDirectorService_Address
+   * @param Google_Service_TrafficDirectorService_Address[]
    */
   public function setListeningAddresses($listeningAddresses)
   {
     $this->listeningAddresses = $listeningAddresses;
   }
   /**
-   * @return Google_Service_TrafficDirectorService_Address
+   * @return Google_Service_TrafficDirectorService_Address[]
    */
   public function getListeningAddresses()
   {

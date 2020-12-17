@@ -26,28 +26,28 @@ class Google_Service_Calendar_FreeBusyResponse extends Google_Model
   public $timeMin;
 
   /**
-   * @param Google_Service_Calendar_FreeBusyCalendar
+   * @param Google_Service_Calendar_FreeBusyCalendar[]
    */
   public function setCalendars($calendars)
   {
     $this->calendars = $calendars;
   }
   /**
-   * @return Google_Service_Calendar_FreeBusyCalendar
+   * @return Google_Service_Calendar_FreeBusyCalendar[]
    */
   public function getCalendars()
   {
     return $this->calendars;
   }
   /**
-   * @param Google_Service_Calendar_FreeBusyGroup
+   * @param Google_Service_Calendar_FreeBusyGroup[]
    */
   public function setGroups($groups)
   {
     $this->groups = $groups;
   }
   /**
-   * @return Google_Service_Calendar_FreeBusyGroup
+   * @return Google_Service_Calendar_FreeBusyGroup[]
    */
   public function getGroups()
   {

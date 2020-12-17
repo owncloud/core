@@ -261,28 +261,28 @@ class Google_Service_Dataproc_Job extends Google_Collection
     return $this->status;
   }
   /**
-   * @param Google_Service_Dataproc_JobStatus
+   * @param Google_Service_Dataproc_JobStatus[]
    */
   public function setStatusHistory($statusHistory)
   {
     $this->statusHistory = $statusHistory;
   }
   /**
-   * @return Google_Service_Dataproc_JobStatus
+   * @return Google_Service_Dataproc_JobStatus[]
    */
   public function getStatusHistory()
   {
     return $this->statusHistory;
   }
   /**
-   * @param Google_Service_Dataproc_YarnApplication
+   * @param Google_Service_Dataproc_YarnApplication[]
    */
   public function setYarnApplications($yarnApplications)
   {
     $this->yarnApplications = $yarnApplications;
   }
   /**
-   * @return Google_Service_Dataproc_YarnApplication
+   * @return Google_Service_Dataproc_YarnApplication[]
    */
   public function getYarnApplications()
   {

@@ -96,14 +96,14 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentEntity extends
     return $this->pageAnchor;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentEntity
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentEntity[]
    */
   public function setProperties($properties)
   {
     $this->properties = $properties;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentEntity
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentEntity[]
    */
   public function getProperties()
   {

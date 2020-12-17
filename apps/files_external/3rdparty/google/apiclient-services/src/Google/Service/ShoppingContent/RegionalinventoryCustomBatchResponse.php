@@ -23,14 +23,14 @@ class Google_Service_ShoppingContent_RegionalinventoryCustomBatchResponse extend
   public $kind;
 
   /**
-   * @param Google_Service_ShoppingContent_RegionalinventoryCustomBatchResponseEntry
+   * @param Google_Service_ShoppingContent_RegionalinventoryCustomBatchResponseEntry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_ShoppingContent_RegionalinventoryCustomBatchResponseEntry
+   * @return Google_Service_ShoppingContent_RegionalinventoryCustomBatchResponseEntry[]
    */
   public function getEntries()
   {

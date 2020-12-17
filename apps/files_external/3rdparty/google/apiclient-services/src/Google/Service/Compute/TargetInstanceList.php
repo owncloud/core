@@ -36,14 +36,14 @@ class Google_Service_Compute_TargetInstanceList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_TargetInstance
+   * @param Google_Service_Compute_TargetInstance[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_TargetInstance
+   * @return Google_Service_Compute_TargetInstance[]
    */
   public function getItems()
   {

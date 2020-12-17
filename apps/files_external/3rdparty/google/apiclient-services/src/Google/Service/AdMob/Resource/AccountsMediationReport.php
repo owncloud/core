@@ -27,7 +27,8 @@ class Google_Service_AdMob_Resource_AccountsMediationReport extends Google_Servi
 {
   /**
    * Generates an AdMob Mediation report based on the provided report
-   * specification. (mediationReport.generate)
+   * specification. Returns result of a server-side streaming RPC. The result is
+   * returned in a sequence of responses. (mediationReport.generate)
    *
    * @param string $parent Resource name of the account to generate the report
    * for. Example: accounts/pub-9876543210987654

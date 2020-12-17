@@ -23,14 +23,14 @@ class Google_Service_SQLAdmin_SslCertsListResponse extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_SQLAdmin_SslCert
+   * @param Google_Service_SQLAdmin_SslCert[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_SQLAdmin_SslCert
+   * @return Google_Service_SQLAdmin_SslCert[]
    */
   public function getItems()
   {

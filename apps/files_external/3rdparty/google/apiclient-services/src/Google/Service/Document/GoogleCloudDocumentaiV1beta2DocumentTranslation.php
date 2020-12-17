@@ -34,14 +34,14 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentTranslation ex
     return $this->languageCode;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentProvenance
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentProvenance[]
    */
   public function setProvenance($provenance)
   {
     $this->provenance = $provenance;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentProvenance
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentProvenance[]
    */
   public function getProvenance()
   {

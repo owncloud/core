@@ -22,14 +22,14 @@ class Google_Service_AbusiveExperienceReport_ViolatingSitesResponse extends Goog
   protected $violatingSitesDataType = 'array';
 
   /**
-   * @param Google_Service_AbusiveExperienceReport_SiteSummaryResponse
+   * @param Google_Service_AbusiveExperienceReport_SiteSummaryResponse[]
    */
   public function setViolatingSites($violatingSites)
   {
     $this->violatingSites = $violatingSites;
   }
   /**
-   * @return Google_Service_AbusiveExperienceReport_SiteSummaryResponse
+   * @return Google_Service_AbusiveExperienceReport_SiteSummaryResponse[]
    */
   public function getViolatingSites()
   {

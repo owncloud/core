@@ -33,14 +33,14 @@ class Google_Service_AdSense_UrlChannels extends Google_Collection
     return $this->etag;
   }
   /**
-   * @param Google_Service_AdSense_UrlChannel
+   * @param Google_Service_AdSense_UrlChannel[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_AdSense_UrlChannel
+   * @return Google_Service_AdSense_UrlChannel[]
    */
   public function getItems()
   {

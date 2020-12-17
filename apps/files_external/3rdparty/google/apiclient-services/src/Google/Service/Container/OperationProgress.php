@@ -26,14 +26,14 @@ class Google_Service_Container_OperationProgress extends Google_Collection
   public $status;
 
   /**
-   * @param Google_Service_Container_Metric
+   * @param Google_Service_Container_Metric[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_Container_Metric
+   * @return Google_Service_Container_Metric[]
    */
   public function getMetrics()
   {
@@ -48,14 +48,14 @@ class Google_Service_Container_OperationProgress extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Container_OperationProgress
+   * @param Google_Service_Container_OperationProgress[]
    */
   public function setStages($stages)
   {
     $this->stages = $stages;
   }
   /**
-   * @return Google_Service_Container_OperationProgress
+   * @return Google_Service_Container_OperationProgress[]
    */
   public function getStages()
   {

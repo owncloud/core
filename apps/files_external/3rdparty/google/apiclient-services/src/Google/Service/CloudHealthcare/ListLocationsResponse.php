@@ -23,14 +23,14 @@ class Google_Service_CloudHealthcare_ListLocationsResponse extends Google_Collec
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudHealthcare_Location
+   * @param Google_Service_CloudHealthcare_Location[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_CloudHealthcare_Location
+   * @return Google_Service_CloudHealthcare_Location[]
    */
   public function getLocations()
   {

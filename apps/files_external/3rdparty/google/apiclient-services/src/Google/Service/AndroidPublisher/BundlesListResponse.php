@@ -23,14 +23,14 @@ class Google_Service_AndroidPublisher_BundlesListResponse extends Google_Collect
   public $kind;
 
   /**
-   * @param Google_Service_AndroidPublisher_Bundle
+   * @param Google_Service_AndroidPublisher_Bundle[]
    */
   public function setBundles($bundles)
   {
     $this->bundles = $bundles;
   }
   /**
-   * @return Google_Service_AndroidPublisher_Bundle
+   * @return Google_Service_AndroidPublisher_Bundle[]
    */
   public function getBundles()
   {

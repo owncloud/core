@@ -67,14 +67,14 @@ class Google_Service_CloudSearch_SearchResponse extends Google_Collection
     return $this->errorInfo;
   }
   /**
-   * @param Google_Service_CloudSearch_FacetResult
+   * @param Google_Service_CloudSearch_FacetResult[]
    */
   public function setFacetResults($facetResults)
   {
     $this->facetResults = $facetResults;
   }
   /**
-   * @return Google_Service_CloudSearch_FacetResult
+   * @return Google_Service_CloudSearch_FacetResult[]
    */
   public function getFacetResults()
   {
@@ -133,42 +133,42 @@ class Google_Service_CloudSearch_SearchResponse extends Google_Collection
     return $this->resultCounts;
   }
   /**
-   * @param Google_Service_CloudSearch_SearchResult
+   * @param Google_Service_CloudSearch_SearchResult[]
    */
   public function setResults($results)
   {
     $this->results = $results;
   }
   /**
-   * @return Google_Service_CloudSearch_SearchResult
+   * @return Google_Service_CloudSearch_SearchResult[]
    */
   public function getResults()
   {
     return $this->results;
   }
   /**
-   * @param Google_Service_CloudSearch_SpellResult
+   * @param Google_Service_CloudSearch_SpellResult[]
    */
   public function setSpellResults($spellResults)
   {
     $this->spellResults = $spellResults;
   }
   /**
-   * @return Google_Service_CloudSearch_SpellResult
+   * @return Google_Service_CloudSearch_SpellResult[]
    */
   public function getSpellResults()
   {
     return $this->spellResults;
   }
   /**
-   * @param Google_Service_CloudSearch_StructuredResult
+   * @param Google_Service_CloudSearch_StructuredResult[]
    */
   public function setStructuredResults($structuredResults)
   {
     $this->structuredResults = $structuredResults;
   }
   /**
-   * @return Google_Service_CloudSearch_StructuredResult
+   * @return Google_Service_CloudSearch_StructuredResult[]
    */
   public function getStructuredResults()
   {

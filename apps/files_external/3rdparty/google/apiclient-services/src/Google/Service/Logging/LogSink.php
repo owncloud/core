@@ -80,14 +80,14 @@ class Google_Service_Logging_LogSink extends Google_Collection
     return $this->disabled;
   }
   /**
-   * @param Google_Service_Logging_LogExclusion
+   * @param Google_Service_Logging_LogExclusion[]
    */
   public function setExclusions($exclusions)
   {
     $this->exclusions = $exclusions;
   }
   /**
-   * @return Google_Service_Logging_LogExclusion
+   * @return Google_Service_Logging_LogExclusion[]
    */
   public function getExclusions()
   {

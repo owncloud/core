@@ -23,14 +23,14 @@ class Google_Service_Localservices_GoogleAdsHomeservicesLocalservicesV1SearchDet
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Localservices_GoogleAdsHomeservicesLocalservicesV1DetailedLeadReport
+   * @param Google_Service_Localservices_GoogleAdsHomeservicesLocalservicesV1DetailedLeadReport[]
    */
   public function setDetailedLeadReports($detailedLeadReports)
   {
     $this->detailedLeadReports = $detailedLeadReports;
   }
   /**
-   * @return Google_Service_Localservices_GoogleAdsHomeservicesLocalservicesV1DetailedLeadReport
+   * @return Google_Service_Localservices_GoogleAdsHomeservicesLocalservicesV1DetailedLeadReport[]
    */
   public function getDetailedLeadReports()
   {

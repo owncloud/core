@@ -23,14 +23,14 @@ class Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1Fact
   public $nextPageToken;
 
   /**
-   * @param Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1Claim
+   * @param Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1Claim[]
    */
   public function setClaims($claims)
   {
     $this->claims = $claims;
   }
   /**
-   * @return Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1Claim
+   * @return Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1Claim[]
    */
   public function getClaims()
   {

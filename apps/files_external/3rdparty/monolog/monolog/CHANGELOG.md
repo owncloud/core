@@ -1,3 +1,18 @@
+### 2.2.0 (2020-12-14)
+
+  * Added JSON_PARTIAL_OUTPUT_ON_ERROR to default json encoding flags, to avoid dropping entire context data or even records due to an invalid subset of it somewhere
+  * Added setDateFormat to NormalizerFormatter (and Line/Json formatters by extension) to allow changing this after object creation
+  * Added RedisPubSubHandler to log records to a Redis channel using PUBLISH
+  * Added support for Elastica 7, and deprecated the $type argument of ElasticaFormatter which is not in use anymore as of Elastica 7
+  * Added support for millisecond write timeouts in SocketHandler, you can now pass floats to setWritingTimeout, e.g. 0.2 is 200ms
+  * Added support for unix sockets in SyslogUdpHandler (set $port to 0 to make the $host a unix socket)
+  * Added handleBatch support for TelegramBotHandler
+  * Added RFC5424e extended date format including milliseconds to SyslogUdpHandler
+  * Added support for configuring handlers with numeric level values in strings (coming from e.g. env vars)
+  * Fixed Wildfire/FirePHP/ChromePHP handling of unicode characters
+  * Fixed PHP 8 issues in SyslogUdpHandler
+  * Fixed internal type error when mbstring is missing
+
 ### 2.1.1 (2020-07-23)
 
   * Fixed removing of json encoding options
@@ -85,6 +100,10 @@
   * Added a `$dateFormat` option to the PsrLogMessageProcessor which lets you format DateTime instances nicely
   * Added support for the PHP 7.x `mongodb` extension in the MongoDBHandler
   * Fixed many minor issues in various handlers, and probably added a few regressions too
+
+### 1.26.0 (2020-12-14)
+
+  * Added $dateFormat and $removeUsedContextFields arguments to PsrLogMessageProcessor (backport from 2.x)
 
 ### 1.25.5 (2020-07-23)
 

@@ -43,14 +43,14 @@ class Google_Service_Docs_AutoText extends Google_Collection
     return $this->suggestedInsertionIds;
   }
   /**
-   * @param Google_Service_Docs_SuggestedTextStyle
+   * @param Google_Service_Docs_SuggestedTextStyle[]
    */
   public function setSuggestedTextStyleChanges($suggestedTextStyleChanges)
   {
     $this->suggestedTextStyleChanges = $suggestedTextStyleChanges;
   }
   /**
-   * @return Google_Service_Docs_SuggestedTextStyle
+   * @return Google_Service_Docs_SuggestedTextStyle[]
    */
   public function getSuggestedTextStyleChanges()
   {

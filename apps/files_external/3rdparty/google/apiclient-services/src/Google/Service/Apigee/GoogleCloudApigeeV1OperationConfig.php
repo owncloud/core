@@ -35,28 +35,28 @@ class Google_Service_Apigee_GoogleCloudApigeeV1OperationConfig extends Google_Co
     return $this->apiSource;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Attribute
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Attribute[]
    */
   public function setAttributes($attributes)
   {
     $this->attributes = $attributes;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Attribute
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Attribute[]
    */
   public function getAttributes()
   {
     return $this->attributes;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Operation
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Operation[]
    */
   public function setOperations($operations)
   {
     $this->operations = $operations;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Operation
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Operation[]
    */
   public function getOperations()
   {

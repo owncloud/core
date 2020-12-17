@@ -136,14 +136,14 @@ class Google_Service_CloudBuild_BuildStep extends Google_Collection
     return $this->timing;
   }
   /**
-   * @param Google_Service_CloudBuild_Volume
+   * @param Google_Service_CloudBuild_Volume[]
    */
   public function setVolumes($volumes)
   {
     $this->volumes = $volumes;
   }
   /**
-   * @return Google_Service_CloudBuild_Volume
+   * @return Google_Service_CloudBuild_Volume[]
    */
   public function getVolumes()
   {

@@ -78,28 +78,28 @@ class Google_Service_Calendar_Event extends Google_Collection
     return $this->anyoneCanAddSelf;
   }
   /**
-   * @param Google_Service_Calendar_EventAttachment
+   * @param Google_Service_Calendar_EventAttachment[]
    */
   public function setAttachments($attachments)
   {
     $this->attachments = $attachments;
   }
   /**
-   * @return Google_Service_Calendar_EventAttachment
+   * @return Google_Service_Calendar_EventAttachment[]
    */
   public function getAttachments()
   {
     return $this->attachments;
   }
   /**
-   * @param Google_Service_Calendar_EventAttendee
+   * @param Google_Service_Calendar_EventAttendee[]
    */
   public function setAttendees($attendees)
   {
     $this->attendees = $attendees;
   }
   /**
-   * @return Google_Service_Calendar_EventAttendee
+   * @return Google_Service_Calendar_EventAttendee[]
    */
   public function getAttendees()
   {

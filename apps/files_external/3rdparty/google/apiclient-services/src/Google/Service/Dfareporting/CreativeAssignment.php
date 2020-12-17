@@ -68,28 +68,28 @@ class Google_Service_Dfareporting_CreativeAssignment extends Google_Collection
     return $this->clickThroughUrl;
   }
   /**
-   * @param Google_Service_Dfareporting_CompanionClickThroughOverride
+   * @param Google_Service_Dfareporting_CompanionClickThroughOverride[]
    */
   public function setCompanionCreativeOverrides($companionCreativeOverrides)
   {
     $this->companionCreativeOverrides = $companionCreativeOverrides;
   }
   /**
-   * @return Google_Service_Dfareporting_CompanionClickThroughOverride
+   * @return Google_Service_Dfareporting_CompanionClickThroughOverride[]
    */
   public function getCompanionCreativeOverrides()
   {
     return $this->companionCreativeOverrides;
   }
   /**
-   * @param Google_Service_Dfareporting_CreativeGroupAssignment
+   * @param Google_Service_Dfareporting_CreativeGroupAssignment[]
    */
   public function setCreativeGroupAssignments($creativeGroupAssignments)
   {
     $this->creativeGroupAssignments = $creativeGroupAssignments;
   }
   /**
-   * @return Google_Service_Dfareporting_CreativeGroupAssignment
+   * @return Google_Service_Dfareporting_CreativeGroupAssignment[]
    */
   public function getCreativeGroupAssignments()
   {
@@ -126,14 +126,14 @@ class Google_Service_Dfareporting_CreativeAssignment extends Google_Collection
     return $this->endTime;
   }
   /**
-   * @param Google_Service_Dfareporting_RichMediaExitOverride
+   * @param Google_Service_Dfareporting_RichMediaExitOverride[]
    */
   public function setRichMediaExitOverrides($richMediaExitOverrides)
   {
     $this->richMediaExitOverrides = $richMediaExitOverrides;
   }
   /**
-   * @return Google_Service_Dfareporting_RichMediaExitOverride
+   * @return Google_Service_Dfareporting_RichMediaExitOverride[]
    */
   public function getRichMediaExitOverrides()
   {

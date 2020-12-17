@@ -22,14 +22,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2KMapEstimationResult extends Google_C
   protected $kMapEstimationHistogramDataType = 'array';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2KMapEstimationHistogramBucket
+   * @param Google_Service_DLP_GooglePrivacyDlpV2KMapEstimationHistogramBucket[]
    */
   public function setKMapEstimationHistogram($kMapEstimationHistogram)
   {
     $this->kMapEstimationHistogram = $kMapEstimationHistogram;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2KMapEstimationHistogramBucket
+   * @return Google_Service_DLP_GooglePrivacyDlpV2KMapEstimationHistogramBucket[]
    */
   public function getKMapEstimationHistogram()
   {

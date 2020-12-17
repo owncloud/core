@@ -56,14 +56,14 @@ class Google_Service_Container_ClusterAutoscaling extends Google_Collection
     return $this->enableNodeAutoprovisioning;
   }
   /**
-   * @param Google_Service_Container_ResourceLimit
+   * @param Google_Service_Container_ResourceLimit[]
    */
   public function setResourceLimits($resourceLimits)
   {
     $this->resourceLimits = $resourceLimits;
   }
   /**
-   * @return Google_Service_Container_ResourceLimit
+   * @return Google_Service_Container_ResourceLimit[]
    */
   public function getResourceLimits()
   {

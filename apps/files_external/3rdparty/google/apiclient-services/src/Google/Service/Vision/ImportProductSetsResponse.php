@@ -24,28 +24,28 @@ class Google_Service_Vision_ImportProductSetsResponse extends Google_Collection
   protected $statusesDataType = 'array';
 
   /**
-   * @param Google_Service_Vision_ReferenceImage
+   * @param Google_Service_Vision_ReferenceImage[]
    */
   public function setReferenceImages($referenceImages)
   {
     $this->referenceImages = $referenceImages;
   }
   /**
-   * @return Google_Service_Vision_ReferenceImage
+   * @return Google_Service_Vision_ReferenceImage[]
    */
   public function getReferenceImages()
   {
     return $this->referenceImages;
   }
   /**
-   * @param Google_Service_Vision_Status
+   * @param Google_Service_Vision_Status[]
    */
   public function setStatuses($statuses)
   {
     $this->statuses = $statuses;
   }
   /**
-   * @return Google_Service_Vision_Status
+   * @return Google_Service_Vision_Status[]
    */
   public function getStatuses()
   {

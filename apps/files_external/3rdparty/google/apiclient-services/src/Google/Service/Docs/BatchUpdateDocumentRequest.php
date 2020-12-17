@@ -24,14 +24,14 @@ class Google_Service_Docs_BatchUpdateDocumentRequest extends Google_Collection
   protected $writeControlDataType = '';
 
   /**
-   * @param Google_Service_Docs_Request
+   * @param Google_Service_Docs_Request[]
    */
   public function setRequests($requests)
   {
     $this->requests = $requests;
   }
   /**
-   * @return Google_Service_Docs_Request
+   * @return Google_Service_Docs_Request[]
    */
   public function getRequests()
   {

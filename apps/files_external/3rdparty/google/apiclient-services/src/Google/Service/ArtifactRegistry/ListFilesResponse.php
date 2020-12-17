@@ -23,14 +23,14 @@ class Google_Service_ArtifactRegistry_ListFilesResponse extends Google_Collectio
   public $nextPageToken;
 
   /**
-   * @param Google_Service_ArtifactRegistry_ArtifactregistryFile
+   * @param Google_Service_ArtifactRegistry_ArtifactregistryFile[]
    */
   public function setFiles($files)
   {
     $this->files = $files;
   }
   /**
-   * @return Google_Service_ArtifactRegistry_ArtifactregistryFile
+   * @return Google_Service_ArtifactRegistry_ArtifactregistryFile[]
    */
   public function getFiles()
   {

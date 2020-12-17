@@ -38,14 +38,14 @@ class Google_Service_FirebaseManagement_AnalyticsDetails extends Google_Collecti
     return $this->analyticsProperty;
   }
   /**
-   * @param Google_Service_FirebaseManagement_StreamMapping
+   * @param Google_Service_FirebaseManagement_StreamMapping[]
    */
   public function setStreamMappings($streamMappings)
   {
     $this->streamMappings = $streamMappings;
   }
   /**
-   * @return Google_Service_FirebaseManagement_StreamMapping
+   * @return Google_Service_FirebaseManagement_StreamMapping[]
    */
   public function getStreamMappings()
   {

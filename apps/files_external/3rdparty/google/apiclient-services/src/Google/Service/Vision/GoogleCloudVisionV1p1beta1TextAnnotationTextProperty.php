@@ -38,14 +38,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p1beta1TextAnnotationTextProperty
     return $this->detectedBreak;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p1beta1TextAnnotationDetectedLanguage
+   * @param Google_Service_Vision_GoogleCloudVisionV1p1beta1TextAnnotationDetectedLanguage[]
    */
   public function setDetectedLanguages($detectedLanguages)
   {
     $this->detectedLanguages = $detectedLanguages;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p1beta1TextAnnotationDetectedLanguage
+   * @return Google_Service_Vision_GoogleCloudVisionV1p1beta1TextAnnotationDetectedLanguage[]
    */
   public function getDetectedLanguages()
   {

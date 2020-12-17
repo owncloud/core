@@ -40,14 +40,14 @@ class Google_Service_Dfareporting_PlacementsListResponse extends Google_Collecti
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Dfareporting_Placement
+   * @param Google_Service_Dfareporting_Placement[]
    */
   public function setPlacements($placements)
   {
     $this->placements = $placements;
   }
   /**
-   * @return Google_Service_Dfareporting_Placement
+   * @return Google_Service_Dfareporting_Placement[]
    */
   public function getPlacements()
   {

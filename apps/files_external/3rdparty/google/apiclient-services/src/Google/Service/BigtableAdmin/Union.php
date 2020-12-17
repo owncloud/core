@@ -22,14 +22,14 @@ class Google_Service_BigtableAdmin_Union extends Google_Collection
   protected $rulesDataType = 'array';
 
   /**
-   * @param Google_Service_BigtableAdmin_GcRule
+   * @param Google_Service_BigtableAdmin_GcRule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_BigtableAdmin_GcRule
+   * @return Google_Service_BigtableAdmin_GcRule[]
    */
   public function getRules()
   {

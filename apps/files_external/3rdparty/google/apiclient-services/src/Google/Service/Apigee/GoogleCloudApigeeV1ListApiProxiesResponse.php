@@ -22,14 +22,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ListApiProxiesResponse extends Go
   protected $proxiesDataType = 'array';
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1ApiProxy
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1ApiProxy[]
    */
   public function setProxies($proxies)
   {
     $this->proxies = $proxies;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1ApiProxy
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1ApiProxy[]
    */
   public function getProxies()
   {

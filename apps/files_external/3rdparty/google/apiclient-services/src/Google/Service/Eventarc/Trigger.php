@@ -61,14 +61,14 @@ class Google_Service_Eventarc_Trigger extends Google_Collection
     return $this->etag;
   }
   /**
-   * @param Google_Service_Eventarc_MatchingCriteria
+   * @param Google_Service_Eventarc_MatchingCriteria[]
    */
   public function setMatchingCriteria($matchingCriteria)
   {
     $this->matchingCriteria = $matchingCriteria;
   }
   /**
-   * @return Google_Service_Eventarc_MatchingCriteria
+   * @return Google_Service_Eventarc_MatchingCriteria[]
    */
   public function getMatchingCriteria()
   {

@@ -24,14 +24,14 @@ class Google_Service_Compute_ResourcePoliciesScopedList extends Google_Collectio
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_ResourcePolicy
+   * @param Google_Service_Compute_ResourcePolicy[]
    */
   public function setResourcePolicies($resourcePolicies)
   {
     $this->resourcePolicies = $resourcePolicies;
   }
   /**
-   * @return Google_Service_Compute_ResourcePolicy
+   * @return Google_Service_Compute_ResourcePolicy[]
    */
   public function getResourcePolicies()
   {

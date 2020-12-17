@@ -40,14 +40,14 @@ class Google_Service_Games_MetagameConfig extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_Games_PlayerLevel
+   * @param Google_Service_Games_PlayerLevel[]
    */
   public function setPlayerLevels($playerLevels)
   {
     $this->playerLevels = $playerLevels;
   }
   /**
-   * @return Google_Service_Games_PlayerLevel
+   * @return Google_Service_Games_PlayerLevel[]
    */
   public function getPlayerLevels()
   {

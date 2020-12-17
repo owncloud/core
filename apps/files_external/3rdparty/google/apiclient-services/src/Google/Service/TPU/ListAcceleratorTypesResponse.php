@@ -24,14 +24,14 @@ class Google_Service_TPU_ListAcceleratorTypesResponse extends Google_Collection
   public $unreachable;
 
   /**
-   * @param Google_Service_TPU_AcceleratorType
+   * @param Google_Service_TPU_AcceleratorType[]
    */
   public function setAcceleratorTypes($acceleratorTypes)
   {
     $this->acceleratorTypes = $acceleratorTypes;
   }
   /**
-   * @return Google_Service_TPU_AcceleratorType
+   * @return Google_Service_TPU_AcceleratorType[]
    */
   public function getAcceleratorTypes()
   {

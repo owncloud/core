@@ -23,14 +23,14 @@ class Google_Service_CloudDebugger_ListBreakpointsResponse extends Google_Collec
   public $nextWaitToken;
 
   /**
-   * @param Google_Service_CloudDebugger_Breakpoint
+   * @param Google_Service_CloudDebugger_Breakpoint[]
    */
   public function setBreakpoints($breakpoints)
   {
     $this->breakpoints = $breakpoints;
   }
   /**
-   * @return Google_Service_CloudDebugger_Breakpoint
+   * @return Google_Service_CloudDebugger_Breakpoint[]
    */
   public function getBreakpoints()
   {

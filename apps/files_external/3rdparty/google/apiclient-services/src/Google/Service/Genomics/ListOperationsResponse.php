@@ -31,14 +31,14 @@ class Google_Service_Genomics_ListOperationsResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Genomics_Operation
+   * @param Google_Service_Genomics_Operation[]
    */
   public function setOperations($operations)
   {
     $this->operations = $operations;
   }
   /**
-   * @return Google_Service_Genomics_Operation
+   * @return Google_Service_Genomics_Operation[]
    */
   public function getOperations()
   {

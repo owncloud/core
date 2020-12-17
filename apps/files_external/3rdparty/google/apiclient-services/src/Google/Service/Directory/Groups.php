@@ -33,14 +33,14 @@ class Google_Service_Directory_Groups extends Google_Collection
     return $this->etag;
   }
   /**
-   * @param Google_Service_Directory_Group
+   * @param Google_Service_Directory_Group[]
    */
   public function setGroups($groups)
   {
     $this->groups = $groups;
   }
   /**
-   * @return Google_Service_Directory_Group
+   * @return Google_Service_Directory_Group[]
    */
   public function getGroups()
   {

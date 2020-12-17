@@ -42,14 +42,14 @@ class Google_Service_AnalyticsReporting_EcommerceData extends Google_Collection
     return $this->ecommerceType;
   }
   /**
-   * @param Google_Service_AnalyticsReporting_ProductData
+   * @param Google_Service_AnalyticsReporting_ProductData[]
    */
   public function setProducts($products)
   {
     $this->products = $products;
   }
   /**
-   * @return Google_Service_AnalyticsReporting_ProductData
+   * @return Google_Service_AnalyticsReporting_ProductData[]
    */
   public function getProducts()
   {

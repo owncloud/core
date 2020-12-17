@@ -38,14 +38,14 @@ class Google_Service_Monitoring_PointData extends Google_Collection
     return $this->timeInterval;
   }
   /**
-   * @param Google_Service_Monitoring_TypedValue
+   * @param Google_Service_Monitoring_TypedValue[]
    */
   public function setValues($values)
   {
     $this->values = $values;
   }
   /**
-   * @return Google_Service_Monitoring_TypedValue
+   * @return Google_Service_Monitoring_TypedValue[]
    */
   public function getValues()
   {

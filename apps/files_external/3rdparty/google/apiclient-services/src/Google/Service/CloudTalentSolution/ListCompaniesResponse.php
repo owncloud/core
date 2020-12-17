@@ -25,14 +25,14 @@ class Google_Service_CloudTalentSolution_ListCompaniesResponse extends Google_Co
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudTalentSolution_Company
+   * @param Google_Service_CloudTalentSolution_Company[]
    */
   public function setCompanies($companies)
   {
     $this->companies = $companies;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_Company
+   * @return Google_Service_CloudTalentSolution_Company[]
    */
   public function getCompanies()
   {

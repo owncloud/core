@@ -24,14 +24,14 @@ class Google_Service_Datastore_LookupRequest extends Google_Collection
   protected $readOptionsDataType = '';
 
   /**
-   * @param Google_Service_Datastore_Key
+   * @param Google_Service_Datastore_Key[]
    */
   public function setKeys($keys)
   {
     $this->keys = $keys;
   }
   /**
-   * @return Google_Service_Datastore_Key
+   * @return Google_Service_Datastore_Key[]
    */
   public function getKeys()
   {

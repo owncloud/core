@@ -24,14 +24,14 @@ class Google_Service_DataFusion_ListInstancesResponse extends Google_Collection
   public $unreachable;
 
   /**
-   * @param Google_Service_DataFusion_Instance
+   * @param Google_Service_DataFusion_Instance[]
    */
   public function setInstances($instances)
   {
     $this->instances = $instances;
   }
   /**
-   * @return Google_Service_DataFusion_Instance
+   * @return Google_Service_DataFusion_Instance[]
    */
   public function getInstances()
   {

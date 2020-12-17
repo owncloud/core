@@ -31,14 +31,14 @@ class Google_Service_AndroidManagement_ListWebAppsResponse extends Google_Collec
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_AndroidManagement_WebApp
+   * @param Google_Service_AndroidManagement_WebApp[]
    */
   public function setWebApps($webApps)
   {
     $this->webApps = $webApps;
   }
   /**
-   * @return Google_Service_AndroidManagement_WebApp
+   * @return Google_Service_AndroidManagement_WebApp[]
    */
   public function getWebApps()
   {

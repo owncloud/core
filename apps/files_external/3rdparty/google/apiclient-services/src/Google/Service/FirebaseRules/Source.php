@@ -22,14 +22,14 @@ class Google_Service_FirebaseRules_Source extends Google_Collection
   protected $filesDataType = 'array';
 
   /**
-   * @param Google_Service_FirebaseRules_FirebaserulesFile
+   * @param Google_Service_FirebaseRules_FirebaserulesFile[]
    */
   public function setFiles($files)
   {
     $this->files = $files;
   }
   /**
-   * @return Google_Service_FirebaseRules_FirebaserulesFile
+   * @return Google_Service_FirebaseRules_FirebaserulesFile[]
    */
   public function getFiles()
   {

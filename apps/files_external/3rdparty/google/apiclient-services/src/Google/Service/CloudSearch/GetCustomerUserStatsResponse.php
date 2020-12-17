@@ -22,14 +22,14 @@ class Google_Service_CloudSearch_GetCustomerUserStatsResponse extends Google_Col
   protected $statsDataType = 'array';
 
   /**
-   * @param Google_Service_CloudSearch_CustomerUserStats
+   * @param Google_Service_CloudSearch_CustomerUserStats[]
    */
   public function setStats($stats)
   {
     $this->stats = $stats;
   }
   /**
-   * @return Google_Service_CloudSearch_CustomerUserStats
+   * @return Google_Service_CloudSearch_CustomerUserStats[]
    */
   public function getStats()
   {

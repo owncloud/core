@@ -38,14 +38,14 @@ class Google_Service_DeploymentManager_TargetConfiguration extends Google_Collec
     return $this->config;
   }
   /**
-   * @param Google_Service_DeploymentManager_ImportFile
+   * @param Google_Service_DeploymentManager_ImportFile[]
    */
   public function setImports($imports)
   {
     $this->imports = $imports;
   }
   /**
-   * @return Google_Service_DeploymentManager_ImportFile
+   * @return Google_Service_DeploymentManager_ImportFile[]
    */
   public function getImports()
   {

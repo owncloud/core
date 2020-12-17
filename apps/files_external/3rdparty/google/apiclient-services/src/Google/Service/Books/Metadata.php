@@ -23,14 +23,14 @@ class Google_Service_Books_Metadata extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_Books_MetadataItems
+   * @param Google_Service_Books_MetadataItems[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Books_MetadataItems
+   * @return Google_Service_Books_MetadataItems[]
    */
   public function getItems()
   {

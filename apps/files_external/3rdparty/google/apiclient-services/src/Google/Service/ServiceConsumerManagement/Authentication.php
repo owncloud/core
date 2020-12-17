@@ -24,28 +24,28 @@ class Google_Service_ServiceConsumerManagement_Authentication extends Google_Col
   protected $rulesDataType = 'array';
 
   /**
-   * @param Google_Service_ServiceConsumerManagement_AuthProvider
+   * @param Google_Service_ServiceConsumerManagement_AuthProvider[]
    */
   public function setProviders($providers)
   {
     $this->providers = $providers;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_AuthProvider
+   * @return Google_Service_ServiceConsumerManagement_AuthProvider[]
    */
   public function getProviders()
   {
     return $this->providers;
   }
   /**
-   * @param Google_Service_ServiceConsumerManagement_AuthenticationRule
+   * @param Google_Service_ServiceConsumerManagement_AuthenticationRule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_AuthenticationRule
+   * @return Google_Service_ServiceConsumerManagement_AuthenticationRule[]
    */
   public function getRules()
   {

@@ -23,14 +23,14 @@ class Google_Service_Speech_SpeechRecognitionResult extends Google_Collection
   public $channelTag;
 
   /**
-   * @param Google_Service_Speech_SpeechRecognitionAlternative
+   * @param Google_Service_Speech_SpeechRecognitionAlternative[]
    */
   public function setAlternatives($alternatives)
   {
     $this->alternatives = $alternatives;
   }
   /**
-   * @return Google_Service_Speech_SpeechRecognitionAlternative
+   * @return Google_Service_Speech_SpeechRecognitionAlternative[]
    */
   public function getAlternatives()
   {

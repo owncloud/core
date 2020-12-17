@@ -25,28 +25,28 @@ class Google_Service_Dns_RRSetRoutingPolicyGeoPolicy extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_Dns_RRSetRoutingPolicyGeoPolicyGeoPolicyItem
+   * @param Google_Service_Dns_RRSetRoutingPolicyGeoPolicyGeoPolicyItem[]
    */
   public function setFailovers($failovers)
   {
     $this->failovers = $failovers;
   }
   /**
-   * @return Google_Service_Dns_RRSetRoutingPolicyGeoPolicyGeoPolicyItem
+   * @return Google_Service_Dns_RRSetRoutingPolicyGeoPolicyGeoPolicyItem[]
    */
   public function getFailovers()
   {
     return $this->failovers;
   }
   /**
-   * @param Google_Service_Dns_RRSetRoutingPolicyGeoPolicyGeoPolicyItem
+   * @param Google_Service_Dns_RRSetRoutingPolicyGeoPolicyGeoPolicyItem[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Dns_RRSetRoutingPolicyGeoPolicyGeoPolicyItem
+   * @return Google_Service_Dns_RRSetRoutingPolicyGeoPolicyGeoPolicyItem[]
    */
   public function getItems()
   {

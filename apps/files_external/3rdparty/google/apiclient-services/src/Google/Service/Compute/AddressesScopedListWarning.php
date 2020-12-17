@@ -32,14 +32,14 @@ class Google_Service_Compute_AddressesScopedListWarning extends Google_Collectio
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_AddressesScopedListWarningData
+   * @param Google_Service_Compute_AddressesScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_AddressesScopedListWarningData
+   * @return Google_Service_Compute_AddressesScopedListWarningData[]
    */
   public function getData()
   {

@@ -22,14 +22,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ListDeploymentsResponse extends G
   protected $deploymentsDataType = 'array';
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Deployment
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Deployment[]
    */
   public function setDeployments($deployments)
   {
     $this->deployments = $deployments;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Deployment
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Deployment[]
    */
   public function getDeployments()
   {

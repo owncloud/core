@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_ListLineItemsResponse extends Google_Collectio
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DisplayVideo_LineItem
+   * @param Google_Service_DisplayVideo_LineItem[]
    */
   public function setLineItems($lineItems)
   {
     $this->lineItems = $lineItems;
   }
   /**
-   * @return Google_Service_DisplayVideo_LineItem
+   * @return Google_Service_DisplayVideo_LineItem[]
    */
   public function getLineItems()
   {

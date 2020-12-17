@@ -29,14 +29,14 @@ class Google_Service_Analytics_Goals extends Google_Collection
   public $username;
 
   /**
-   * @param Google_Service_Analytics_Goal
+   * @param Google_Service_Analytics_Goal[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Analytics_Goal
+   * @return Google_Service_Analytics_Goal[]
    */
   public function getItems()
   {

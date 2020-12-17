@@ -22,14 +22,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ConfusionMatrix 
   protected $rowDataType = 'array';
 
   /**
-   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Row
+   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Row[]
    */
   public function setRow($row)
   {
     $this->row = $row;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Row
+   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Row[]
    */
   public function getRow()
   {

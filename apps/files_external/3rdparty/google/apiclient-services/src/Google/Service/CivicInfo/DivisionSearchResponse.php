@@ -31,14 +31,14 @@ class Google_Service_CivicInfo_DivisionSearchResponse extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_CivicInfo_DivisionSearchResult
+   * @param Google_Service_CivicInfo_DivisionSearchResult[]
    */
   public function setResults($results)
   {
     $this->results = $results;
   }
   /**
-   * @return Google_Service_CivicInfo_DivisionSearchResult
+   * @return Google_Service_CivicInfo_DivisionSearchResult[]
    */
   public function getResults()
   {

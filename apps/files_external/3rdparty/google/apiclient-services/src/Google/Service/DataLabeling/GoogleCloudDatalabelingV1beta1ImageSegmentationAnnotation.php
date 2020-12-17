@@ -23,14 +23,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ImageSegmentatio
   public $mimeType;
 
   /**
-   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1AnnotationSpec
+   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1AnnotationSpec[]
    */
   public function setAnnotationColors($annotationColors)
   {
     $this->annotationColors = $annotationColors;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1AnnotationSpec
+   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1AnnotationSpec[]
    */
   public function getAnnotationColors()
   {

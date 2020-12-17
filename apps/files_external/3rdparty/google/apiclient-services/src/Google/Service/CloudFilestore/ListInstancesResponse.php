@@ -24,14 +24,14 @@ class Google_Service_CloudFilestore_ListInstancesResponse extends Google_Collect
   public $unreachable;
 
   /**
-   * @param Google_Service_CloudFilestore_Instance
+   * @param Google_Service_CloudFilestore_Instance[]
    */
   public function setInstances($instances)
   {
     $this->instances = $instances;
   }
   /**
-   * @return Google_Service_CloudFilestore_Instance
+   * @return Google_Service_CloudFilestore_Instance[]
    */
   public function getInstances()
   {

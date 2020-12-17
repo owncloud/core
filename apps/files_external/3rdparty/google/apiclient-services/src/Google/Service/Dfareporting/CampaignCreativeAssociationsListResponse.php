@@ -24,14 +24,14 @@ class Google_Service_Dfareporting_CampaignCreativeAssociationsListResponse exten
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Dfareporting_CampaignCreativeAssociation
+   * @param Google_Service_Dfareporting_CampaignCreativeAssociation[]
    */
   public function setCampaignCreativeAssociations($campaignCreativeAssociations)
   {
     $this->campaignCreativeAssociations = $campaignCreativeAssociations;
   }
   /**
-   * @return Google_Service_Dfareporting_CampaignCreativeAssociation
+   * @return Google_Service_Dfareporting_CampaignCreativeAssociation[]
    */
   public function getCampaignCreativeAssociations()
   {

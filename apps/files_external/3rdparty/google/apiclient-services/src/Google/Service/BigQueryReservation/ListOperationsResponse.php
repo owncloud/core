@@ -31,14 +31,14 @@ class Google_Service_BigQueryReservation_ListOperationsResponse extends Google_C
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_BigQueryReservation_Operation
+   * @param Google_Service_BigQueryReservation_Operation[]
    */
   public function setOperations($operations)
   {
     $this->operations = $operations;
   }
   /**
-   * @return Google_Service_BigQueryReservation_Operation
+   * @return Google_Service_BigQueryReservation_Operation[]
    */
   public function getOperations()
   {

@@ -47,14 +47,14 @@ class Google_Service_YouTube_CommentThreadListResponse extends Google_Collection
     return $this->eventId;
   }
   /**
-   * @param Google_Service_YouTube_CommentThread
+   * @param Google_Service_YouTube_CommentThread[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_YouTube_CommentThread
+   * @return Google_Service_YouTube_CommentThread[]
    */
   public function getItems()
   {

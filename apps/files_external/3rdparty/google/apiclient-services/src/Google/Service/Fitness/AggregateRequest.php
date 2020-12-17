@@ -33,14 +33,14 @@ class Google_Service_Fitness_AggregateRequest extends Google_Collection
   public $startTimeMillis;
 
   /**
-   * @param Google_Service_Fitness_AggregateBy
+   * @param Google_Service_Fitness_AggregateBy[]
    */
   public function setAggregateBy($aggregateBy)
   {
     $this->aggregateBy = $aggregateBy;
   }
   /**
-   * @return Google_Service_Fitness_AggregateBy
+   * @return Google_Service_Fitness_AggregateBy[]
    */
   public function getAggregateBy()
   {

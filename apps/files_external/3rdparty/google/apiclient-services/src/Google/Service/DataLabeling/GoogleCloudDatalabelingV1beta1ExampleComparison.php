@@ -38,14 +38,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ExampleCompariso
     return $this->groundTruthExample;
   }
   /**
-   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Example
+   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Example[]
    */
   public function setModelCreatedExamples($modelCreatedExamples)
   {
     $this->modelCreatedExamples = $modelCreatedExamples;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Example
+   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Example[]
    */
   public function getModelCreatedExamples()
   {

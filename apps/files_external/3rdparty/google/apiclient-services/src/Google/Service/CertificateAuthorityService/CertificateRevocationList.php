@@ -70,14 +70,14 @@ class Google_Service_CertificateAuthorityService_CertificateRevocationList exten
     return $this->pemCrl;
   }
   /**
-   * @param Google_Service_CertificateAuthorityService_RevokedCertificate
+   * @param Google_Service_CertificateAuthorityService_RevokedCertificate[]
    */
   public function setRevokedCertificates($revokedCertificates)
   {
     $this->revokedCertificates = $revokedCertificates;
   }
   /**
-   * @return Google_Service_CertificateAuthorityService_RevokedCertificate
+   * @return Google_Service_CertificateAuthorityService_RevokedCertificate[]
    */
   public function getRevokedCertificates()
   {

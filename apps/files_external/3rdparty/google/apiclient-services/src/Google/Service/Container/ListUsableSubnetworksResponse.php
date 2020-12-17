@@ -31,14 +31,14 @@ class Google_Service_Container_ListUsableSubnetworksResponse extends Google_Coll
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Container_UsableSubnetwork
+   * @param Google_Service_Container_UsableSubnetwork[]
    */
   public function setSubnetworks($subnetworks)
   {
     $this->subnetworks = $subnetworks;
   }
   /**
-   * @return Google_Service_Container_UsableSubnetwork
+   * @return Google_Service_Container_UsableSubnetwork[]
    */
   public function getSubnetworks()
   {

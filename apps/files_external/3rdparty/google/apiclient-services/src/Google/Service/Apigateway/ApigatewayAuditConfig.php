@@ -23,14 +23,14 @@ class Google_Service_Apigateway_ApigatewayAuditConfig extends Google_Collection
   public $service;
 
   /**
-   * @param Google_Service_Apigateway_ApigatewayAuditLogConfig
+   * @param Google_Service_Apigateway_ApigatewayAuditLogConfig[]
    */
   public function setAuditLogConfigs($auditLogConfigs)
   {
     $this->auditLogConfigs = $auditLogConfigs;
   }
   /**
-   * @return Google_Service_Apigateway_ApigatewayAuditLogConfig
+   * @return Google_Service_Apigateway_ApigatewayAuditLogConfig[]
    */
   public function getAuditLogConfigs()
   {

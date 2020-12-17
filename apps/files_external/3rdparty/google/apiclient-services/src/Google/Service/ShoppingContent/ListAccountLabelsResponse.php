@@ -23,14 +23,14 @@ class Google_Service_ShoppingContent_ListAccountLabelsResponse extends Google_Co
   public $nextPageToken;
 
   /**
-   * @param Google_Service_ShoppingContent_AccountLabel
+   * @param Google_Service_ShoppingContent_AccountLabel[]
    */
   public function setAccountLabels($accountLabels)
   {
     $this->accountLabels = $accountLabels;
   }
   /**
-   * @return Google_Service_ShoppingContent_AccountLabel
+   * @return Google_Service_ShoppingContent_AccountLabel[]
    */
   public function getAccountLabels()
   {

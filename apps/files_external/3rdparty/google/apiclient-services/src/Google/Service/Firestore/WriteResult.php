@@ -23,14 +23,14 @@ class Google_Service_Firestore_WriteResult extends Google_Collection
   public $updateTime;
 
   /**
-   * @param Google_Service_Firestore_Value
+   * @param Google_Service_Firestore_Value[]
    */
   public function setTransformResults($transformResults)
   {
     $this->transformResults = $transformResults;
   }
   /**
-   * @return Google_Service_Firestore_Value
+   * @return Google_Service_Firestore_Value[]
    */
   public function getTransformResults()
   {

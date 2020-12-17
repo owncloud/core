@@ -29,8 +29,8 @@ class Google_Service_Directory_Resource_ResourcesCalendars extends Google_Servic
    * Deletes a calendar resource. (calendars.delete)
    *
    * @param string $customer The unique ID for the customer's G Suite account. As
-   * an account administrator, you can also use the my_customer alias to represent
-   * your account's customer ID.
+   * an account administrator, you can also use the `my_customer` alias to
+   * represent your account's customer ID.
    * @param string $calendarResourceId The unique ID of the calendar resource to
    * delete.
    * @param array $optParams Optional parameters.
@@ -45,8 +45,8 @@ class Google_Service_Directory_Resource_ResourcesCalendars extends Google_Servic
    * Retrieves a calendar resource. (calendars.get)
    *
    * @param string $customer The unique ID for the customer's G Suite account. As
-   * an account administrator, you can also use the my_customer alias to represent
-   * your account's customer ID.
+   * an account administrator, you can also use the `my_customer` alias to
+   * represent your account's customer ID.
    * @param string $calendarResourceId The unique ID of the calendar resource to
    * retrieve.
    * @param array $optParams Optional parameters.
@@ -62,8 +62,8 @@ class Google_Service_Directory_Resource_ResourcesCalendars extends Google_Servic
    * Inserts a calendar resource. (calendars.insert)
    *
    * @param string $customer The unique ID for the customer's G Suite account. As
-   * an account administrator, you can also use the my_customer alias to represent
-   * your account's customer ID.
+   * an account administrator, you can also use the `my_customer` alias to
+   * represent your account's customer ID.
    * @param Google_Service_Directory_CalendarResource $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_CalendarResource
@@ -79,27 +79,29 @@ class Google_Service_Directory_Resource_ResourcesCalendars extends Google_Servic
    * (calendars.listResourcesCalendars)
    *
    * @param string $customer The unique ID for the customer's G Suite account. As
-   * an account administrator, you can also use the my_customer alias to represent
-   * your account's customer ID.
+   * an account administrator, you can also use the `my_customer` alias to
+   * represent your account's customer ID.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string orderBy Field(s) to sort results by in either ascending or
-   * descending order. Supported fields include resourceId, resourceName,
-   * capacity, buildingId, and floorName. If no order is specified, defaults to
-   * ascending. Should be of the form "field [asc|desc], field [asc|desc], ...".
-   * For example buildingId, capacity desc would return results sorted first by
-   * buildingId in ascending order then by capacity in descending order.
+   * descending order. Supported fields include `resourceId`, `resourceName`,
+   * `capacity`, `buildingId`, and `floorName`. If no order is specified, defaults
+   * to ascending. Should be of the form "field [asc|desc], field [asc|desc],
+   * ...". For example `buildingId, capacity desc` would return results sorted
+   * first by `buildingId` in ascending order then by `capacity` in descending
+   * order.
+   * @opt_param string pageToken Token to specify the next page in the list.
    * @opt_param string query String query used to filter results. Should be of the
    * form "field operator value" where field can be any of supported fields and
    * operators can be any of supported operations. Operators include '=' for exact
    * match, '!=' for mismatch and ':' for prefix match or HAS match where
    * applicable. For prefix match, the value should always be followed by a *.
    * Logical operators NOT and AND are supported (in this order of precedence).
-   * Supported fields include generatedResourceName, name, buildingId, floor_name,
-   * capacity, featureInstances.feature.name. For example buildingId=US-NYC-9TH
-   * AND featureInstances.feature.name:Phone.
-   * @opt_param int maxResults Maximum number of results to return.
-   * @opt_param string pageToken Token to specify the next page in the list.
+   * Supported fields include `generatedResourceName`, `name`, `buildingId`,
+   * `floor_name`, `capacity`, `featureInstances.feature.name`, `resourceEmail`,
+   * `resourceCategory`. For example `buildingId=US-NYC-9TH AND
+   * featureInstances.feature.name:Phone`.
    * @return Google_Service_Directory_CalendarResources
    */
   public function listResourcesCalendars($customer, $optParams = array())
@@ -112,8 +114,8 @@ class Google_Service_Directory_Resource_ResourcesCalendars extends Google_Servic
    * Patches a calendar resource via Apiary Patch Orchestration. (calendars.patch)
    *
    * @param string $customer The unique ID for the customer's G Suite account. As
-   * an account administrator, you can also use the my_customer alias to represent
-   * your account's customer ID.
+   * an account administrator, you can also use the `my_customer` alias to
+   * represent your account's customer ID.
    * @param string $calendarResourceId The unique ID of the calendar resource to
    * update.
    * @param Google_Service_Directory_CalendarResource $postBody
@@ -132,8 +134,8 @@ class Google_Service_Directory_Resource_ResourcesCalendars extends Google_Servic
    * present in the request will be preserved. (calendars.update)
    *
    * @param string $customer The unique ID for the customer's G Suite account. As
-   * an account administrator, you can also use the my_customer alias to represent
-   * your account's customer ID.
+   * an account administrator, you can also use the `my_customer` alias to
+   * represent your account's customer ID.
    * @param string $calendarResourceId The unique ID of the calendar resource to
    * update.
    * @param Google_Service_Directory_CalendarResource $postBody

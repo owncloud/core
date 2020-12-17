@@ -26,14 +26,14 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageParagraph 
   protected $provenanceDataType = '';
 
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageDetectedLanguage
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageDetectedLanguage[]
    */
   public function setDetectedLanguages($detectedLanguages)
   {
     $this->detectedLanguages = $detectedLanguages;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageDetectedLanguage
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageDetectedLanguage[]
    */
   public function getDetectedLanguages()
   {

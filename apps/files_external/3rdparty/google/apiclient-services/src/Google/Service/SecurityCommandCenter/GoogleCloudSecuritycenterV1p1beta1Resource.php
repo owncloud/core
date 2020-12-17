@@ -15,14 +15,31 @@
  * the License.
  */
 
-class Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1Resource extends Google_Model
+class Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1Resource extends Google_Collection
 {
+  protected $collection_key = 'folders';
+  protected $foldersType = 'Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1Folder';
+  protected $foldersDataType = 'array';
   public $name;
   public $parent;
   public $parentDisplayName;
   public $project;
   public $projectDisplayName;
 
+  /**
+   * @param Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1Folder[]
+   */
+  public function setFolders($folders)
+  {
+    $this->folders = $folders;
+  }
+  /**
+   * @return Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1Folder[]
+   */
+  public function getFolders()
+  {
+    return $this->folders;
+  }
   public function setName($name)
   {
     $this->name = $name;

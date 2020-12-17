@@ -22,14 +22,14 @@ class Google_Service_Dataflow_ListSnapshotsResponse extends Google_Collection
   protected $snapshotsDataType = 'array';
 
   /**
-   * @param Google_Service_Dataflow_Snapshot
+   * @param Google_Service_Dataflow_Snapshot[]
    */
   public function setSnapshots($snapshots)
   {
     $this->snapshots = $snapshots;
   }
   /**
-   * @return Google_Service_Dataflow_Snapshot
+   * @return Google_Service_Dataflow_Snapshot[]
    */
   public function getSnapshots()
   {

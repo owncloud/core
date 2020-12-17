@@ -64,12 +64,12 @@ class Google_Service_DataLabeling_Resource_ProjectsDatasetsAnnotatedDatasetsFeed
    * id}"
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Optional. Requested page size. Server may return
+   * fewer results than requested. Default value is 100.
    * @opt_param string pageToken Optional. A token identifying a page of results
    * for the server to return. Typically obtained by
    * ListFeedbackThreads.next_page_token of the previous
    * [DataLabelingService.ListFeedbackThreads] call. Return first page if empty.
-   * @opt_param int pageSize Optional. Requested page size. Server may return
-   * fewer results than requested. Default value is 100.
    * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ListFeedbackThreadsResponse
    */
   public function listProjectsDatasetsAnnotatedDatasetsFeedbackThreads($parent, $optParams = array())

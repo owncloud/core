@@ -31,14 +31,14 @@ class Google_Service_Dfareporting_PostalCodesListResponse extends Google_Collect
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dfareporting_PostalCode
+   * @param Google_Service_Dfareporting_PostalCode[]
    */
   public function setPostalCodes($postalCodes)
   {
     $this->postalCodes = $postalCodes;
   }
   /**
-   * @return Google_Service_Dfareporting_PostalCode
+   * @return Google_Service_Dfareporting_PostalCode[]
    */
   public function getPostalCodes()
   {

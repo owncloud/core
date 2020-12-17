@@ -65,13 +65,13 @@ class Google_Service_YouTube_Resource_LiveChatMessages extends Google_Service_Re
    * and snippet.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string hl Specifies the localization language in which the system
+   * messages should be returned.
+   * @opt_param string maxResults The *maxResults* parameter specifies the maximum
+   * number of items that should be returned in the result set.
    * @opt_param string pageToken The *pageToken* parameter identifies a specific
    * page in the result set that should be returned. In an API response, the
    * nextPageToken property identify other pages that could be retrieved.
-   * @opt_param string maxResults The *maxResults* parameter specifies the maximum
-   * number of items that should be returned in the result set.
-   * @opt_param string hl Specifies the localization language in which the system
-   * messages should be returned.
    * @opt_param string profileImageSize Specifies the size of the profile image
    * that should be returned for each user.
    * @return Google_Service_YouTube_LiveChatMessageListResponse

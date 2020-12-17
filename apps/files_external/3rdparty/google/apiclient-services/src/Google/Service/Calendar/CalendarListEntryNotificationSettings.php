@@ -22,14 +22,14 @@ class Google_Service_Calendar_CalendarListEntryNotificationSettings extends Goog
   protected $notificationsDataType = 'array';
 
   /**
-   * @param Google_Service_Calendar_CalendarNotification
+   * @param Google_Service_Calendar_CalendarNotification[]
    */
   public function setNotifications($notifications)
   {
     $this->notifications = $notifications;
   }
   /**
-   * @return Google_Service_Calendar_CalendarNotification
+   * @return Google_Service_Calendar_CalendarNotification[]
    */
   public function getNotifications()
   {

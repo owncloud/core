@@ -37,14 +37,14 @@ class Google_Service_CivicInfo_Candidate extends Google_Collection
     return $this->candidateUrl;
   }
   /**
-   * @param Google_Service_CivicInfo_Channel
+   * @param Google_Service_CivicInfo_Channel[]
    */
   public function setChannels($channels)
   {
     $this->channels = $channels;
   }
   /**
-   * @return Google_Service_CivicInfo_Channel
+   * @return Google_Service_CivicInfo_Channel[]
    */
   public function getChannels()
   {

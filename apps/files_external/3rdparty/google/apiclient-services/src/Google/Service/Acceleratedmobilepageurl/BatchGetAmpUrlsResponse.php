@@ -24,28 +24,28 @@ class Google_Service_Acceleratedmobilepageurl_BatchGetAmpUrlsResponse extends Go
   protected $urlErrorsDataType = 'array';
 
   /**
-   * @param Google_Service_Acceleratedmobilepageurl_AmpUrl
+   * @param Google_Service_Acceleratedmobilepageurl_AmpUrl[]
    */
   public function setAmpUrls($ampUrls)
   {
     $this->ampUrls = $ampUrls;
   }
   /**
-   * @return Google_Service_Acceleratedmobilepageurl_AmpUrl
+   * @return Google_Service_Acceleratedmobilepageurl_AmpUrl[]
    */
   public function getAmpUrls()
   {
     return $this->ampUrls;
   }
   /**
-   * @param Google_Service_Acceleratedmobilepageurl_AmpUrlError
+   * @param Google_Service_Acceleratedmobilepageurl_AmpUrlError[]
    */
   public function setUrlErrors($urlErrors)
   {
     $this->urlErrors = $urlErrors;
   }
   /**
-   * @return Google_Service_Acceleratedmobilepageurl_AmpUrlError
+   * @return Google_Service_Acceleratedmobilepageurl_AmpUrlError[]
    */
   public function getUrlErrors()
   {

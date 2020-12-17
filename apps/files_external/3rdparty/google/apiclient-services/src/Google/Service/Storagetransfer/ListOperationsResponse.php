@@ -31,14 +31,14 @@ class Google_Service_Storagetransfer_ListOperationsResponse extends Google_Colle
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Storagetransfer_Operation
+   * @param Google_Service_Storagetransfer_Operation[]
    */
   public function setOperations($operations)
   {
     $this->operations = $operations;
   }
   /**
-   * @return Google_Service_Storagetransfer_Operation
+   * @return Google_Service_Storagetransfer_Operation[]
    */
   public function getOperations()
   {

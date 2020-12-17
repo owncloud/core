@@ -21,14 +21,14 @@ class Google_Service_CloudMemorystoreforMemcached_GoogleCloudMemcacheV1beta2Loca
   protected $availableZonesDataType = 'map';
 
   /**
-   * @param Google_Service_CloudMemorystoreforMemcached_ZoneMetadata
+   * @param Google_Service_CloudMemorystoreforMemcached_ZoneMetadata[]
    */
   public function setAvailableZones($availableZones)
   {
     $this->availableZones = $availableZones;
   }
   /**
-   * @return Google_Service_CloudMemorystoreforMemcached_ZoneMetadata
+   * @return Google_Service_CloudMemorystoreforMemcached_ZoneMetadata[]
    */
   public function getAvailableZones()
   {

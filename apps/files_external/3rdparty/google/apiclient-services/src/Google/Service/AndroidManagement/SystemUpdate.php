@@ -33,14 +33,14 @@ class Google_Service_AndroidManagement_SystemUpdate extends Google_Collection
     return $this->endMinutes;
   }
   /**
-   * @param Google_Service_AndroidManagement_FreezePeriod
+   * @param Google_Service_AndroidManagement_FreezePeriod[]
    */
   public function setFreezePeriods($freezePeriods)
   {
     $this->freezePeriods = $freezePeriods;
   }
   /**
-   * @return Google_Service_AndroidManagement_FreezePeriod
+   * @return Google_Service_AndroidManagement_FreezePeriod[]
    */
   public function getFreezePeriods()
   {

@@ -23,14 +23,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ListFeedbackThre
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1FeedbackThread
+   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1FeedbackThread[]
    */
   public function setFeedbackThreads($feedbackThreads)
   {
     $this->feedbackThreads = $feedbackThreads;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1FeedbackThread
+   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1FeedbackThread[]
    */
   public function getFeedbackThreads()
   {

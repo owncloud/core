@@ -22,14 +22,14 @@ class Google_Service_ServiceManagement_ChangeReport extends Google_Collection
   protected $configChangesDataType = 'array';
 
   /**
-   * @param Google_Service_ServiceManagement_ConfigChange
+   * @param Google_Service_ServiceManagement_ConfigChange[]
    */
   public function setConfigChanges($configChanges)
   {
     $this->configChanges = $configChanges;
   }
   /**
-   * @return Google_Service_ServiceManagement_ConfigChange
+   * @return Google_Service_ServiceManagement_ConfigChange[]
    */
   public function getConfigChanges()
   {

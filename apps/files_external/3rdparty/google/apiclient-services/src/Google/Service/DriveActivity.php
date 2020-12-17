@@ -38,7 +38,7 @@ class Google_Service_DriveActivity extends Google_Service
       "https://www.googleapis.com/auth/drive.activity.readonly";
 
   public $activity;
-  
+
   /**
    * Constructs the internal representation of the DriveActivity service.
    *

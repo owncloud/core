@@ -23,14 +23,14 @@ class Google_Service_AnalyticsReporting_GetReportsRequest extends Google_Collect
   public $useResourceQuotas;
 
   /**
-   * @param Google_Service_AnalyticsReporting_ReportRequest
+   * @param Google_Service_AnalyticsReporting_ReportRequest[]
    */
   public function setReportRequests($reportRequests)
   {
     $this->reportRequests = $reportRequests;
   }
   /**
-   * @return Google_Service_AnalyticsReporting_ReportRequest
+   * @return Google_Service_AnalyticsReporting_ReportRequest[]
    */
   public function getReportRequests()
   {

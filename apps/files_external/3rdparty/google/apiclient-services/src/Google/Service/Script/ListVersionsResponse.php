@@ -31,14 +31,14 @@ class Google_Service_Script_ListVersionsResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Script_Version
+   * @param Google_Service_Script_Version[]
    */
   public function setVersions($versions)
   {
     $this->versions = $versions;
   }
   /**
-   * @return Google_Service_Script_Version
+   * @return Google_Service_Script_Version[]
    */
   public function getVersions()
   {

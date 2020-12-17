@@ -92,14 +92,14 @@ class Google_Service_Dns_Policy extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Dns_PolicyNetwork
+   * @param Google_Service_Dns_PolicyNetwork[]
    */
   public function setNetworks($networks)
   {
     $this->networks = $networks;
   }
   /**
-   * @return Google_Service_Dns_PolicyNetwork
+   * @return Google_Service_Dns_PolicyNetwork[]
    */
   public function getNetworks()
   {

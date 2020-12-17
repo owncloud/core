@@ -58,14 +58,14 @@ class Google_Service_AnalyticsData_Pivot extends Google_Collection
     return $this->offset;
   }
   /**
-   * @param Google_Service_AnalyticsData_OrderBy
+   * @param Google_Service_AnalyticsData_OrderBy[]
    */
   public function setOrderBys($orderBys)
   {
     $this->orderBys = $orderBys;
   }
   /**
-   * @return Google_Service_AnalyticsData_OrderBy
+   * @return Google_Service_AnalyticsData_OrderBy[]
    */
   public function getOrderBys()
   {
