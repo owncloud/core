@@ -141,7 +141,7 @@ Feature: upload file
       | new         | "folder/file"           | Zm9sZGVyL2ZpbGU=             |
       | new         | "my\\file"              | bXkMaWxl                     |
 
-  Scenario Outline: upload a file using resource URL as an other user
+  Scenario Outline: upload a file using the resource URL of another user
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
