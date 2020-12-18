@@ -140,3 +140,17 @@ Feature: upload file
       | new         | "filewithLF-and-CR\r\n" | ZmlsZXdpdGhMRi1hbmQtQ1INCgo= |
       | new         | "folder/file"           | Zm9sZGVyL2ZpbGU=             |
       | new         | "my\\file"              | bXkMaWxl                     |
+
+  Scenario Outline: upload a file using the resource URL of another user
+    Given using <dav_version> DAV path
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
+      | Upload-Length   | 10                        |
+      | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
+    When user "Brian" sends a chunk to the last created TUS Location with offset "0" and data "12345" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And as "Alice" file "/textFile.txt" should not exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
