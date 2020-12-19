@@ -33,6 +33,7 @@ OC.L10N.register(
     "Delete" : "Eliminar",
     "Disconnect storage" : "Desconectar o almacenamento",
     "Unshare" : "Deixar de compartir",
+    "How do you want to open this file?" : "Como quere abrir este ficheiro?",
     "Could not load info for file \"{file}\"" : "Non foi posíbel cargar información para o ficheiro «{file}»",
     "Files" : "Ficheiros",
     "Details" : "Detalles",

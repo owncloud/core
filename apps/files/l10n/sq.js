@@ -33,6 +33,7 @@ OC.L10N.register(
     "Delete" : "Fshije",
     "Disconnect storage" : "Shkëpute depozitën",
     "Unshare" : "Hiqi ndarjen me të tjerë",
+    "How do you want to open this file?" : "Si doni të hapet kjo kartelë?",
     "Could not load info for file \"{file}\"" : "S’u ngarkuan dot të dhëna ose kartelë \"{file}\"",
     "Files" : "Kartela",
     "Details" : "Hollësi",
