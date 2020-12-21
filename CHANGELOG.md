@@ -16,6 +16,7 @@ Summary
 * Change - Update nikic/php-parser (4.10.2 => 4.10.3): [#38191](https://github.com/owncloud/core/pull/38191)
 * Change - Update swiftmailer/swiftmailer (v6.2.3 => v6.2.4): [#38198](https://github.com/owncloud/core/pull/38198)
 * Change - Rename phoenix to web: [#38199](https://github.com/owncloud/core/pull/38199)
+* Change - Update Symfony components to 4.4.18: [#38234](https://github.com/owncloud/core/pull/38234)
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 * Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
@@ -83,6 +84,14 @@ Details
    https://github.com/owncloud/core/pull/38199
    https://github.com/owncloud/core/pull/38201
    https://github.com/owncloud/core/pull/38212
+
+* Change - Update Symfony components to 4.4.18: [#38234](https://github.com/owncloud/core/pull/38234)
+
+   The following Symfony components have been updated to version 4.4.18 - console -
+   event-dispatcher - process - routing - translation
+
+   https://github.com/owncloud/core/pull/38234
+   https://symfony.com/blog/symfony-4-4-18-released
 
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 
