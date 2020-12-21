@@ -105,6 +105,13 @@ trait WebDav {
 	}
 
 	/**
+	 * @return number
+	 */
+	public function getLastUploadDeleteTime() {
+		return $this->lastUploadDeleteTime;
+	}
+
+	/**
 	 * @return SimpleXMLElement
 	 */
 	public function getResponseXmlObject() {

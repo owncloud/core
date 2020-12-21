@@ -260,13 +260,25 @@ class TrashbinContext implements Context {
 		foreach ($elementRows as $expectedElement) {
 			$found = false;
 			$expectedPath = $expectedElement['path'];
-			foreach ($files as $file) {
-				if (\ltrim($expectedPath, "/") === \ltrim($file['original-location'], "/")) {
-					$found = true;
-					break;
+			$expectedMtime = $expectedElement['mtime'] === "deleted_mtime" ? $this->featureContext->getLastUploadDeleteTime() : $expectedElement['mtime'];
+			
+			if (isset($expectedElement['mtime'])) {
+				foreach ($files as $file) {
+					if (\ltrim($expectedPath, "/") === \ltrim($file['original-location'], "/") && \ltrim($expectedMtime, "/") === \ltrim($file['mtime'], "/")) {
+						$found = true;
+						break;
+					}
 				}
+				Assert::assertTrue($found, "$expectedPath with mtime $expectedMtime expected to be listed in response but not found");
+			} else {
+				foreach ($files as $file) {
+					if (\ltrim($expectedPath, "/") === \ltrim($file['original-location'], "/")) {
+						$found = true;
+						break;
+					}
+				}
+				Assert::assertTrue($found, "$expectedPath expected to be listed in response but not found");
 			}
-			Assert::assertTrue($found, "$expectedPath expected to be listed in response but not found");
 		}
 	}
 
