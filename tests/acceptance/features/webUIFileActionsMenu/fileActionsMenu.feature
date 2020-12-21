@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @richdocuments-app-required @files_texteditor-app-required
+@webUI @insulated @disablePreviews @app-required @richdocuments-app-required @files_texteditor-app-required
 Feature: File actions menu
 
   Background:
