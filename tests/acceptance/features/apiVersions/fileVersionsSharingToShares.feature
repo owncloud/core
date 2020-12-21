@@ -286,3 +286,14 @@ Feature: dav-versions
     When user "Brian" tries to get versions of file "textfile0.txt" from "Alice"
     Then the HTTP status code should be "404"
     And the value of the item "//s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
+
+
+  Scenario: sharer tries get file versions of shared file when the sharee changes the content of the file
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "First content" to "sharefile.txt"
+    And user "Alice" has shared file "sharefile.txt" with user "Brian"
+    And user "Brian" has accepted share "/sharefile.txt" offered by user "Alice"
+    When user "Brian" has uploaded file with content "Second content" to "/Shares/sharefile.txt"
+    Then the HTTP status code should be "204"
+    And the version folder of file "/Shares/sharefile.txt" for user "Brian" should contain "1" element
+    And the version folder of file "/sharefile.txt" for user "Alice" should contain "1" element
