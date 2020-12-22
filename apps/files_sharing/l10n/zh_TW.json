@@ -85,6 +85,7 @@
     "Couldn't send mail to following recipient(s): %s " : "無法發送郵件給以下人員：%s",
     "Share API is disabled" : "分享 API 已停用",
     "Wrong share ID, share doesn't exist" : "錯誤的分享 ID，分享不存在",
+    "Share points to a node not available" : "分享點到節點不可用的",
     "Could not delete share" : "可能不能刪除分享",
     "Please specify a file or folder path" : "請指定檔案或資料夾路徑",
     "Wrong path, file/folder doesn't exist" : "錯誤路徑，檔案/資料夾不存在",
