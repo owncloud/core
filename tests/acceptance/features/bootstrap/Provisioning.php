@@ -1525,6 +1525,19 @@ trait Provisioning {
 		);
 		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
+	/**
+	 * @Given /^the administrator has deleted user "([^"]*)" using the provisioning API$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAdministratorHasDeletedUserUsingTheProvisioningApi($user) {
+		$user = $this->getActualUsername($user);
+		$this->deleteTheUserUsingTheProvisioningApi($user);
+		$this->userShouldNotExist($user);
+	}
 
 	/**
 	 * @When /^the administrator deletes user "([^"]*)" using the provisioning API$/

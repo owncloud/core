@@ -503,3 +503,22 @@ Feature: sharing
     Then the HTTP status code should be "200"
 #    Then the HTTP status code should be "405"
     And as "Carol" folder "userOneFolder" should not exist
+
+  Scenario Outline: shares to a deleted user should not be listed as shares for the sharer
+    Given using OCS API version "<ocs_api_version>"
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | Brian    |
+      | Carol    |
+    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    And user "Alice" has shared file "textfile0.txt" with user "Carol"
+    And the administrator has deleted user "Brian" using the provisioning API
+    When user "Alice" gets all the shares from the file "textfile0.txt" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And user "Carol" should be included in the response
+    But user "Brian" should not be included in the response
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
