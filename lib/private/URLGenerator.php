@@ -52,7 +52,7 @@ class URLGenerator implements IURLGenerator {
 	private $router;
 	/** @var ITheme */
 	private $theme;
-	
+
 	/** @var EnvironmentHelper */
 	private $environmentHelper;
 
@@ -71,7 +71,6 @@ class URLGenerator implements IURLGenerator {
 		$this->cacheFactory = $cacheFactory;
 		$this->router = $router;
 		$this->environmentHelper = $environmentHelper;
-		$this->theme = \OC_Util::getTheme();
 	}
 
 	/**
@@ -159,7 +158,8 @@ class URLGenerator implements IURLGenerator {
 	 */
 	public function imagePath($app, $image) {
 		$cache = $this->cacheFactory->create('imagePath');
-		$cacheKey = $this->theme->getName().'-'.$app.'-'.$image;
+		$theme = $this->getTheme();
+		$cacheKey = $theme->getName().'-'.$app.'-'.$image;
 		if ($key = $cache->get($cacheKey)) {
 			return $key;
 		}
@@ -184,6 +184,7 @@ class URLGenerator implements IURLGenerator {
 	 * @return string
 	 */
 	private function getImagePath($app, $imageName) {
+		$theme = $this->getTheme();
 		$webRoot = $this->environmentHelper->getWebRoot();
 		if ($app !== '') {
 			$appWebPath = \OC_App::getAppWebPath($app);
@@ -198,15 +199,15 @@ class URLGenerator implements IURLGenerator {
 			\array_unshift($directories, "$appPath", "/$app");
 		}
 
-		$themeDirectory = $this->theme->getDirectory();
+		$themeDirectory = $theme->getDirectory();
 		foreach ($directories as $directory) {
 			$directory = $directory . "/img/";
 			$file = $directory . $imageName;
 
 			if ($themeDirectory !== ''
-				&& $imagePath = $this->getImagePathOrFallback($this->theme->getBaseDirectory() . '/' . $themeDirectory . $file)
+				&& $imagePath = $this->getImagePathOrFallback($theme->getBaseDirectory() . '/' . $themeDirectory . $file)
 			) {
-				return $this->theme->getWebPath() . $file;
+				return $theme->getWebPath() . $file;
 			}
 
 			if ($imagePath = $this->getImagePathOrFallback($this->environmentHelper->getServerRoot() . $file)) {
@@ -258,5 +259,17 @@ class URLGenerator implements IURLGenerator {
 	public function linkToDocs($key) {
 		$theme = new OC_Defaults();
 		return $theme->buildDocLinkToKey($key);
+	}
+
+	/**
+	 * Do not move it to ctor as theme could be not loaded yet
+	 * when the ctor is executed
+	 * @return ITheme
+	 */
+	private function getTheme() {
+		if ($this->theme === null) {
+			$this->theme = \OC_Util::getTheme();
+		}
+		return $this->theme;
 	}
 }
