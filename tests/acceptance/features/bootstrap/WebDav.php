@@ -883,11 +883,45 @@ trait WebDav {
 		// But if the content is wrong (e.g. empty) then it is useful to
 		// report the HTTP status to give some clue what might be the problem.
 		$actualStatus = $this->response->getStatusCode();
+		$pattern = ["/--\w*/", "/\s*/m"];
+		$actualContent = \preg_replace($pattern, "", $actualContent);
+		$content = \preg_replace("/\s*/m", '', $content);
 		Assert::assertEquals(
 			$content,
 			$actualContent,
 			"The downloaded content was expected to be '$content', but actually is '$actualContent'. HTTP status was $actualStatus"
 		);
+	}
+
+	/**
+	 * @Then /^if the HTTP status code was "([^"]*)" then the downloaded content for multipart byterange should be:$/
+	 *
+	 * @param int|string $statusCode
+	 * @param PyStringNode $content
+	 *
+	 * @return void
+	 *
+	 */
+	public function theDownloadedContentForMultipartByterangeShouldBe($statusCode, PyStringNode $content) {
+		$actualStatusCode = $this->response->getStatusCode();
+		if ($actualStatusCode === $statusCode) {
+			$this->downloadedContentShouldBe($content->getRaw());
+		}
+	}
+
+	/**
+	 * @Then /^if the HTTP status code was "([^"]*)" then the downloaded content should be "([^"]*)"$/
+	 *
+	 * @param int|string $statusCode
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function checkStatusCodeForDownloadedContentShouldBe($statusCode, $content) {
+		$actualStatusCode = $this->response->getStatusCode();
+		if ($actualStatusCode === $statusCode) {
+			$this->downloadedContentShouldBe($content);
+		}
 	}
 
 	/**
@@ -3285,6 +3319,22 @@ trait WebDav {
 				(bool) \preg_match($expectedHeaderValue, $returnedHeader),
 				"'$expectedHeaderValue' does not match '$returnedHeader'"
 			);
+		}
+	}
+
+	/**
+	 * @Then /^if the HTTP status code was "([^"]*)" then the following headers should match these regular expressions$/
+	 *
+	 * @param int|string $statusCode
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function statusCodeShouldMatchTheseRegularExpressions($statusCode, TableNode $table) {
+		$actualStatusCode = $this->response->getStatusCode();
+		if ($actualStatusCode === $statusCode) {
+			$this->headersShouldMatchRegularExpressions($table);
 		}
 	}
 
