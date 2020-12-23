@@ -13,7 +13,7 @@ Summary
 * Bugfix - Show the share list even if some shares point to unavailable storages: [#38190](https://github.com/owncloud/core/pull/38190)
 * Bugfix - Fix a regression with theming of settings menu icons: [#38246](https://github.com/owncloud/core/pull/38246)
 * Change - Update Symfony components to 4.4.17: [#38163](https://github.com/owncloud/core/pull/38163)
-* Change - Update laminas/laminas-servicemanager (3.5.1 => 3.4.1): [#38187](https://github.com/owncloud/core/pull/38187)
+* Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.1): [#38188](https://github.com/owncloud/core/pull/38188)
 * Change - Update nikic/php-parser (4.10.2 => 4.10.4): [#38191](https://github.com/owncloud/core/pull/38191)
 * Change - Update swiftmailer/swiftmailer (v6.2.3 => v6.2.4): [#38198](https://github.com/owncloud/core/pull/38198)
 * Change - Rename phoenix to web: [#38199](https://github.com/owncloud/core/pull/38199)
@@ -71,9 +71,9 @@ Details
    https://github.com/owncloud/core/pull/38163
    https://symfony.com/blog/symfony-4-4-17-released
 
-* Change - Update laminas/laminas-servicemanager (3.5.1 => 3.4.1): [#38187](https://github.com/owncloud/core/pull/38187)
+* Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.1): [#38188](https://github.com/owncloud/core/pull/38188)
 
-   https://github.com/owncloud/core/pull/38187
+   https://github.com/owncloud/core/pull/38188
 
 * Change - Update nikic/php-parser (4.10.2 => 4.10.4): [#38191](https://github.com/owncloud/core/pull/38191)
 
