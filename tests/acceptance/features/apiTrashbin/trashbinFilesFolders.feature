@@ -271,3 +271,15 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | old      |
       | new      |
+
+  Scenario Outline: deleted file has appropriate deletion time information 
+    Given using <dav-path> DAV path
+    And user "Alice" has deleted file "textfile0.txt"
+    When user "Alice" tries to list the trashbin content for user "Alice"
+    Then the last webdav response should contain the following elements
+      | path           | mtime         |
+      | /textfile0.txt | deleted_mtime |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
