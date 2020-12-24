@@ -22,7 +22,7 @@ Feature: sharing
 
   Scenario Outline: Uploading file to a group read-only share folder does not work
     Given using <dav-path> DAV path
-    Given user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
     And user "Alice" has created a share with settings
@@ -259,3 +259,22 @@ Feature: sharing
       | 2      | welt    |
     Then the HTTP status code should be "403"
     And as "Alice" file "/FOLDER/myfile.txt" should not exist
+
+
+  Scenario Outline: Sharer can download file uploaded with different permission by sharee to a shared folder
+    Given using <dav-path> DAV path
+    And user "Brian" has been created with default attributes and skeleton files
+    And user "Alice" has created a share with settings
+      | path        | FOLDER        |
+      | shareType   | user          |
+      | permissions | <permissions> |
+      | shareWith   | Brian         |
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
+    When user "Brian" uploads file with content "some content" to "/Shares/FOLDER/textFile.txt" using the WebDAV API
+    And user "Alice" downloads file "/FOLDER/textFile.txt" using the WebDAV API
+    Then the HTTP status code should be "200"
+    And the downloaded content should be "some content"
+    Examples:
+      | dav-path | permissions |
+      | old      | change      |
+      | new      | create      |

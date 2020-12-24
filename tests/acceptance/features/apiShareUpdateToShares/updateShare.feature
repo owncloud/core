@@ -363,3 +363,23 @@ Feature: sharing
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 404              |
+
+
+  Scenario Outline: Sharer deletes file uploaded with upload-only permission by sharee to a shared folder
+    Given using <dav-path> DAV path
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created a share with settings
+      | path        | FOLDER |
+      | shareType   | user   |
+      | permissions | create |
+      | shareWith   | Brian  |
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
+    And user "Brian" has uploaded file with content "some content" to "/Shares/FOLDER/textFile.txt"
+    When user "Alice" deletes file "/FOLDER/textFile.txt" using the WebDAV API
+    Then the HTTP status code should be "204"
+    And as "Brian" file "/Shares/FOLDER/textFile.txt" should not exist
+    And as "Alice" file "/textFile.txt" should not exist
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
