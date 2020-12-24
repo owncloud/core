@@ -18,6 +18,7 @@ Summary
 * Change - Update swiftmailer/swiftmailer (v6.2.3 => v6.2.4): [#38198](https://github.com/owncloud/core/pull/38198)
 * Change - Rename phoenix to web: [#38199](https://github.com/owncloud/core/pull/38199)
 * Change - Update Symfony components to 4.4.18: [#38234](https://github.com/owncloud/core/pull/38234)
+* Change - Update phpseclib/phpseclib (2.0.29 => 2.0.30): [#38244](https://github.com/owncloud/core/pull/38244)
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 * Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
@@ -101,6 +102,10 @@ Details
 
    https://github.com/owncloud/core/pull/38234
    https://symfony.com/blog/symfony-4-4-18-released
+
+* Change - Update phpseclib/phpseclib (2.0.29 => 2.0.30): [#38244](https://github.com/owncloud/core/pull/38244)
+
+   https://github.com/owncloud/core/pull/38244
 
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 
