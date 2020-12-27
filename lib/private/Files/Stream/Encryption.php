@@ -234,7 +234,6 @@ class Encryption extends Wrapper {
 		$this->position = 0;
 		$this->cache = '';
 		$this->writeFlag = false;
-		$this->unencryptedBlockSize = $this->encryptionModule->getUnencryptedBlockSize($this->signed);
 
 		if (
 			$mode === 'w'
@@ -256,7 +255,8 @@ class Encryption extends Wrapper {
 
 		$accessList = $this->file->getAccessList($sharePath);
 		$this->newHeader = $this->encryptionModule->begin($this->fullPath, $this->uid, $mode, $this->header, $accessList, $context['sourceFileOfRename']);
-
+		$this->unencryptedBlockSize = $this->encryptionModule->getUnencryptedBlockSize($this->signed);
+		
 		if (
 			$mode === 'w'
 			|| $mode === 'w+'
