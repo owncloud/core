@@ -42,7 +42,7 @@
     "File name is a reserved word" : "ชื่อแฟ้มเป็นคำสงวน",
     "File name contains at least one invalid character" : "ชื่อแฟ้มมีหนึ่งตัวอักษรที่ไม่ถูกต้อง",
     "File name is too long" : "ชื่อแฟ้มยาวเกินไป",
-    "__language_name__" : "ภาษาไทย - Thai language",
+    "__language_name__" : "Thai (ภาษาไทย)",
     "App directory already exists" : "มีไดเรกทอรีแอปฯอยู่แล้ว",
     "Can't create app folder. Please fix permissions. %s" : "ไม่สามารถสร้างโฟลเดอร์แอปพลิเคชัน โปรดแก้ไขการอนุญาต: %s",
     "Archive does not contain a directory named %s" : "เอกสารไม่สามารถประกอบด้วยไดเรกทอรีชื่อ %s",

@@ -33,6 +33,7 @@ OC.L10N.register(
     "Delete" : "ลบ",
     "Disconnect storage" : "ยกเลิกการเชื่อมต่อการจัดเก็บข้อมูล",
     "Unshare" : "ยกเลิกการแชร์",
+    "How do you want to open this file?" : "คุณต้องการเปิดไฟล์นี้อย่างไร?",
     "Could not load info for file \"{file}\"" : "ไม่สามารถโหลดข้อมูลของไฟล์ \"{file}\"",
     "Files" : "ไฟล์",
     "Details" : "รายละเอียด",
