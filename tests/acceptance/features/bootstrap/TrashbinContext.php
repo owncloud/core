@@ -265,10 +265,9 @@ class TrashbinContext implements Context {
 			
 			if (isset($expectedElement['mtime'])) {
 				foreach ($files as $file) {
-					$responseMtime = $file['mtime'];
-
 					if (\ltrim($expectedPath, "/") === \ltrim($file['original-location'], "/")) {
-						$mtime_difference = \abs((int)\trim($expectedMtime) - (int)\trim($file['mtime']));
+						$responseMtime = $file['mtime'];
+						$mtime_difference = \abs((int)\trim($expectedMtime) - (int)\trim($responseMtime));
 
 						if ($mtime_difference <= 2) {
 							$found = true;
@@ -276,7 +275,7 @@ class TrashbinContext implements Context {
 						}
 					}
 				}
-				Assert::assertTrue($found, "$expectedPath expected to be listed in response with mtime $responseMtime but found $expectedMtime");
+				Assert::assertTrue($found, "$expectedPath expected to be listed in response with mtime '$responseMtime' but found '$expectedMtime'");
 			} else {
 				foreach ($files as $file) {
 					if (\ltrim($expectedPath, "/") === \ltrim($file['original-location'], "/")) {
