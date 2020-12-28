@@ -28,7 +28,7 @@ use OCP\Files\External\IStorageConfig;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IUser;
-use phpseclib\Crypt\RSA as RSACrypt;
+use phpseclib3\Crypt\RSA as RSACrypt;
 
 /**
  * RSA public key authentication
@@ -57,14 +57,17 @@ class RSA extends AuthMechanism {
 	}
 
 	public function manipulateStorageConfig(IStorageConfig &$storage, IUser $user = null) {
-		$auth = new RSACrypt();
-		$auth->setPassword($this->config->getSystemValue('secret', ''));
-		$privateKey =  $storage->getBackendOption('private_key');
-		if (!$auth->loadKey($privateKey)) {
+		$privateKey = $storage->getBackendOption('private_key');
+		$password = $this->config->getSystemValue('secret', '');
+
+		try {
+			$rsaKey = RSACrypt::load($privateKey, $password)->withHash('sha1');
+		} catch (\phpseclib3\Exception\NoKeyLoadedException $e) {
 			throw new \RuntimeException('unable to load private key');
 		}
+
 		$storage->setBackendOption('private_key', \base64_encode($privateKey));
-		$storage->setBackendOption('public_key_auth', $auth);
+		$storage->setBackendOption('public_key_auth', $rsaKey);
 	}
 
 	/**
@@ -73,10 +76,14 @@ class RSA extends AuthMechanism {
 	 * @return array ['privatekey' => $privateKey, 'publickey' => $publicKey]
 	 */
 	public function createKey() {
-		$rsa = new RSACrypt();
-		$rsa->setPublicKeyFormat(RSACrypt::PUBLIC_FORMAT_OPENSSH);
-		$rsa->setPassword($this->config->getSystemValue('secret', ''));
-
-		return $rsa->createKey(self::CREATE_KEY_BITS);
+		/** @var RSACrypt\PrivateKey $rsaKey */
+		$rsaKey = RSACrypt::createKey(self::CREATE_KEY_BITS)
+			->withHash('sha1')
+			->withMGFHash('sha1');
+		$password = $this->config->getSystemValue('secret', '');
+		return [
+			'privatekey' => $rsaKey->withPassword($password)->toString('PKCS1'),
+			'publickey' => $rsaKey->getPublicKey()->toString('OpenSSH')
+		];
 	}
 }

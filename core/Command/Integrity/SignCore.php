@@ -24,8 +24,9 @@ namespace OC\Core\Command\Integrity;
 
 use OC\IntegrityCheck\Checker;
 use OC\IntegrityCheck\Helpers\FileAccessHelper;
-use phpseclib\Crypt\RSA;
-use phpseclib\File\X509;
+use phpseclib3\Crypt\Common\AsymmetricKey;
+use phpseclib3\Crypt\RSA;
+use phpseclib3\File\X509;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -87,14 +88,13 @@ class SignCore extends Command {
 			return null;
 		}
 
-		$rsa = new RSA();
-		$rsa->loadKey($privateKey);
+		/** @var RSA $rsa */
+		$rsa = RSA::load($privateKey)->withHash('sha1');
 		$x509 = new X509();
-		$x509->loadX509($keyBundle);
-		$x509->setPrivateKey($rsa);
+		$certificate = $x509->loadX509($keyBundle);
 
 		try {
-			$this->checker->writeCoreSignature($x509, $rsa, $path);
+			$this->checker->writeCoreSignature($path, $certificate, $x509, $rsa);
 			$output->writeln('Successfully signed "core"');
 		} catch (\Exception $e) {
 			$output->writeln('Error: ' . $e->getMessage());

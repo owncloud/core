@@ -21,7 +21,7 @@
 
 namespace OC\Files\External;
 
-use phpseclib\Crypt\AES;
+use phpseclib3\Crypt\AES;
 use \OCP\Files\External\IStorageConfig;
 use \OCP\Files\External\Backend\Backend;
 use \OCP\Files\StorageNotAvailableException;
@@ -309,7 +309,7 @@ class LegacyUtil {
 	 * @return AES
 	 */
 	private static function getCipher() {
-		$cipher = new AES(AES::MODE_CBC);
+		$cipher = new AES('cbc');
 		$cipher->setKey(\OC::$server->getConfig()->getSystemValue('passwordsalt', null));
 		return $cipher;
 	}

@@ -34,7 +34,7 @@
 namespace OCA\Files_External\Lib\Storage;
 use Icewind\Streams\IteratorDirectory;
 use Icewind\Streams\RetryWrapper;
-use phpseclib\Net\SFTP\Stream;
+use phpseclib3\Net\SFTP\Stream;
 
 /**
 * Uses phpseclib's Net\SFTP class and the Net\SFTP\Stream stream wrapper to
@@ -124,7 +124,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 		}
 
 		$hostKeys = $this->readHostKeys();
-		$this->client = new \phpseclib\Net\SFTP($this->host, $this->port);
+		$this->client = new \phpseclib3\Net\SFTP($this->host, $this->port);
 
 		// The SSH Host Key MUST be verified before login().
 		$currentHostKey = $this->client->getServerPublicHostKey();
