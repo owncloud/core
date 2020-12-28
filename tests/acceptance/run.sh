@@ -1318,4 +1318,9 @@ then
   tput setaf 1; printf "%s\n" "${UNEXPECTED_BEHAT_EXIT_STATUSES[@]}"
 fi
 
+# sync the file-system so all output will be flushed to storage.
+# In drone we sometimes see that the last lines of output are missing from the
+# drone log.
+sync
+
 exit ${FINAL_EXIT_STATUS}
