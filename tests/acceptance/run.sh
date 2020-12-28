@@ -1323,4 +1323,12 @@ fi
 # drone log.
 sync
 
+# If we are running in drone CI, then sleep for a bit to (hopefully) let the
+# drone agent send all the output to the drone server.
+if [ -n "${CI_REPO}" ]
+then
+  echo "sleeping for 10 seconds at end of test run"
+  sleep 10
+fi
+
 exit ${FINAL_EXIT_STATUS}
