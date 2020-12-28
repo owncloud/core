@@ -30,8 +30,8 @@ use OC\Memcache\Redis;
 use OCP\App\IAppManager;
 use OCP\ICacheFactory;
 use OCP\IConfig;
-use phpseclib\Crypt\RSA;
-use phpseclib\File\X509;
+use phpseclib3\Crypt\RSA;
+use phpseclib3\File\X509;
 use Test\TestCase;
 
 /**
@@ -92,11 +92,11 @@ class CheckerTest extends TestCase {
 
 		$keyBundle = \file_get_contents(__DIR__ .'/../../data/integritycheck/SomeApp.crt');
 		$rsaPrivateKey = \file_get_contents(__DIR__ .'/../../data/integritycheck/SomeApp.key');
-		$rsa = new RSA();
-		$rsa->loadKey($rsaPrivateKey);
+		/** @var RSA $rsa */
+		$rsa = RSA::load($rsaPrivateKey)->withHash('sha1');
 		$x509 = new X509();
-		$x509->loadX509($keyBundle);
-		$this->checker->writeAppSignature('NotExistingApp', $x509, $rsa);
+		$certificate = $x509->loadX509($keyBundle);
+		$this->checker->writeAppSignature('NotExistingApp', $certificate, $x509, $rsa);
 	}
 
 	/**
@@ -111,11 +111,11 @@ class CheckerTest extends TestCase {
 		;
 		$keyBundle = \file_get_contents(__DIR__ .'/../../data/integritycheck/SomeApp.crt');
 		$rsaPrivateKey = \file_get_contents(__DIR__ .'/../../data/integritycheck/SomeApp.key');
-		$rsa = new RSA();
-		$rsa->loadKey($rsaPrivateKey);
+		/** @var RSA $rsa */
+		$rsa = RSA::load($rsaPrivateKey)->withHash('sha1');
 		$x509 = new X509();
-		$x509->loadX509($keyBundle);
-		$this->checker->writeAppSignature(\OC::$SERVERROOT . '/tests/data/integritycheck/app/', $x509, $rsa);
+		$certificate = $x509->loadX509($keyBundle);
+		$this->checker->writeAppSignature(\OC::$SERVERROOT . '/tests/data/integritycheck/app/', $certificate, $x509, $rsa);
 	}
 
 	public function testWriteAppSignature() {
@@ -143,11 +143,11 @@ class CheckerTest extends TestCase {
 
 		$keyBundle = \file_get_contents(__DIR__ .'/../../data/integritycheck/SomeApp.crt');
 		$rsaPrivateKey = \file_get_contents(__DIR__ .'/../../data/integritycheck/SomeApp.key');
-		$rsa = new RSA();
-		$rsa->loadKey($rsaPrivateKey);
+		/** @var RSA $rsa */
+		$rsa = RSA::load($rsaPrivateKey)->withHash('sha1');
 		$x509 = new X509();
-		$x509->loadX509($keyBundle);
-		$this->checker->writeAppSignature(\OC::$SERVERROOT . '/tests/data/integritycheck/app/', $x509, $rsa);
+		$certificate = $x509->loadX509($keyBundle);
+		$this->checker->writeAppSignature(\OC::$SERVERROOT . '/tests/data/integritycheck/app/', $certificate, $x509, $rsa);
 	}
 
 	public function testIgnoredAppSignatureWithoutSignatureData() {
@@ -588,11 +588,11 @@ class CheckerTest extends TestCase {
 
 		$keyBundle = \file_get_contents(__DIR__ .'/../../data/integritycheck/core.crt');
 		$rsaPrivateKey = \file_get_contents(__DIR__ .'/../../data/integritycheck/core.key');
-		$rsa = new RSA();
-		$rsa->loadKey($rsaPrivateKey);
+		/** @var RSA $rsa */
+		$rsa = RSA::load($rsaPrivateKey)->withHash('sha1');
 		$x509 = new X509();
-		$x509->loadX509($keyBundle);
-		$this->checker->writeCoreSignature($x509, $rsa, \OC::$SERVERROOT . '/tests/data/integritycheck/app/');
+		$certificate = $x509->loadX509($keyBundle);
+		$this->checker->writeCoreSignature(\OC::$SERVERROOT . '/tests/data/integritycheck/app/', $certificate, $x509, $rsa);
 	}
 
 	public function testWriteCoreSignatureWithUnmodifiedHtaccess() {
@@ -624,11 +624,11 @@ class CheckerTest extends TestCase {
 
 		$keyBundle = \file_get_contents(__DIR__ .'/../../data/integritycheck/core.crt');
 		$rsaPrivateKey = \file_get_contents(__DIR__ .'/../../data/integritycheck/core.key');
-		$rsa = new RSA();
-		$rsa->loadKey($rsaPrivateKey);
+		/** @var RSA $rsa */
+		$rsa = RSA::load($rsaPrivateKey)->withHash('sha1');
 		$x509 = new X509();
-		$x509->loadX509($keyBundle);
-		$this->checker->writeCoreSignature($x509, $rsa, \OC::$SERVERROOT . '/tests/data/integritycheck/htaccessUnmodified/');
+		$certificate = $x509->loadX509($keyBundle);
+		$this->checker->writeCoreSignature(\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessUnmodified/', $certificate, $x509, $rsa);
 	}
 
 	public function testWriteCoreSignatureWithInvalidModifiedHtaccess() {
@@ -655,11 +655,11 @@ class CheckerTest extends TestCase {
 
 		$keyBundle = \file_get_contents(__DIR__ .'/../../data/integritycheck/core.crt');
 		$rsaPrivateKey = \file_get_contents(__DIR__ .'/../../data/integritycheck/core.key');
-		$rsa = new RSA();
-		$rsa->loadKey($rsaPrivateKey);
+		/** @var RSA $rsa */
+		$rsa = RSA::load($rsaPrivateKey)->withHash('sha1');
 		$x509 = new X509();
-		$x509->loadX509($keyBundle);
-		$this->checker->writeCoreSignature($x509, $rsa, \OC::$SERVERROOT . '/tests/data/integritycheck/htaccessWithInvalidModifiedContent/');
+		$certificate = $x509->loadX509($keyBundle);
+		$this->checker->writeCoreSignature(\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessWithInvalidModifiedContent/', $certificate, $x509, $rsa);
 	}
 
 	public function testWriteCoreSignatureWithValidModifiedHtaccessAndUserIni() {
@@ -696,11 +696,11 @@ class CheckerTest extends TestCase {
 
 		$keyBundle = \file_get_contents(__DIR__ .'/../../data/integritycheck/core.crt');
 		$rsaPrivateKey = \file_get_contents(__DIR__ .'/../../data/integritycheck/core.key');
-		$rsa = new RSA();
-		$rsa->loadKey($rsaPrivateKey);
+		/** @var RSA $rsa */
+		$rsa = RSA::load($rsaPrivateKey)->withHash('sha1');
 		$x509 = new X509();
-		$x509->loadX509($keyBundle);
-		$this->checker->writeCoreSignature($x509, $rsa, \OC::$SERVERROOT . '/tests/data/integritycheck/htaccessWithValidModifiedContent');
+		$certificate = $x509->loadX509($keyBundle);
+		$this->checker->writeCoreSignature(\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessWithValidModifiedContent', $certificate, $x509, $rsa);
 	}
 
 	public function testVerifyCoreSignatureWithoutSignatureData() {
