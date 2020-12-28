@@ -260,16 +260,22 @@ class TrashbinContext implements Context {
 		foreach ($elementRows as $expectedElement) {
 			$found = false;
 			$expectedPath = $expectedElement['path'];
-			$expectedMtime = $expectedElement['mtime'] === "deleted_mtime" ? $this->featureContext->getLastUploadDeleteTime() : $expectedElement['mtime'];
+			$expectedMtime = $this->featureContext->getLastUploadDeleteTime();
+			$responseMtime = '';
 			
 			if (isset($expectedElement['mtime'])) {
 				foreach ($files as $file) {
-					if (\ltrim($expectedPath, "/") === \ltrim($file['original-location'], "/") && \ltrim($expectedMtime, "/") === \ltrim($file['mtime'], "/")) {
-						$found = true;
-						break;
+					if (\ltrim($expectedPath, "/") === \ltrim($file['original-location'], "/")) {
+						$responseMtime = $file['mtime'];
+						$mtime_difference = \abs((int)\trim($expectedMtime) - (int)\trim($responseMtime));
+
+						if ($mtime_difference <= 2) {
+							$found = true;
+							break;
+						}
 					}
 				}
-				Assert::assertTrue($found, "$expectedPath with mtime $expectedMtime expected to be listed in response but not found");
+				Assert::assertTrue($found, "$expectedPath expected to be listed in response with mtime '$expectedMtime' but found '$responseMtime'");
 			} else {
 				foreach ($files as $file) {
 					if (\ltrim($expectedPath, "/") === \ltrim($file['original-location'], "/")) {
