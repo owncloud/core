@@ -275,7 +275,7 @@ class TrashbinContext implements Context {
 						}
 					}
 				}
-				Assert::assertTrue($found, "$expectedPath expected to be listed in response with mtime '$responseMtime' but found '$expectedMtime'");
+				Assert::assertTrue($found, "$expectedPath expected to be listed in response with mtime '$expectedMtime' but found '$responseMtime'");
 			} else {
 				foreach ($files as $file) {
 					if (\ltrim($expectedPath, "/") === \ltrim($file['original-location'], "/")) {
