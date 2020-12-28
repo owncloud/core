@@ -32,7 +32,7 @@
     "require": {
         "php": ">=7.2",
         "doctrine/dbal": "^2.10",
-        "phpseclib/phpseclib": "^2.0",
+        "phpseclib/phpseclib": "^3.0",
         "opis/closure": "^3.5",
         "bantu/ini-get-wrapper": "v1.0.1",
         "punic/punic": "^3.5",
