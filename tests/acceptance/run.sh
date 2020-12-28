@@ -1327,8 +1327,8 @@ sync
 # drone agent send all the output to the drone server.
 if [ -n "${CI_REPO}" ]
 then
-  echo "sleeping for 10 seconds at end of test run"
-  sleep 10
+  echo "sleeping for 30 seconds at end of test run"
+  sleep 30
 fi
 
 exit ${FINAL_EXIT_STATUS}
