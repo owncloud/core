@@ -24,8 +24,8 @@
 
 namespace OC\Security;
 
-use phpseclib\Crypt\AES;
-use phpseclib\Crypt\Hash;
+use phpseclib3\Crypt\AES;
+use phpseclib3\Crypt\Hash;
 use OCP\Security\ICrypto;
 use OCP\Security\ISecureRandom;
 use OCP\IConfig;
@@ -41,6 +41,11 @@ use OCP\IConfig;
  * @package OC\Security
  */
 class Crypto implements ICrypto {
+	const CRYPT_MODE = 'cbc';
+	const CRYPT_METHOD = 'pbkdf2';
+	const CRYPT_HASH = 'sha1';
+	const SALT = 'phpseclib';
+
 	/** @var AES $cipher */
 	private $cipher;
 	/** @var int */
@@ -55,7 +60,7 @@ class Crypto implements ICrypto {
 	 * @param ISecureRandom $random
 	 */
 	public function __construct(IConfig $config, ISecureRandom $random) {
-		$this->cipher = new AES();
+		$this->cipher = new AES($this::CRYPT_MODE);
 		$this->config = $config;
 		$this->random = $random;
 	}
@@ -94,7 +99,7 @@ class Crypto implements ICrypto {
 		// https://github.com/owncloud/encryption/issues/215
 		$derived = \hash_hkdf('sha512', $password, 0);
 		list($password, $hmacKey) = \str_split($derived, 32);
-		$this->cipher->setPassword($password);
+		$this->cipher->setPassword($password, $this::CRYPT_METHOD, $this::CRYPT_HASH, $this::SALT);
 
 		$iv = \random_bytes($this->ivLength);
 		$this->cipher->setIV($iv);
@@ -123,7 +128,7 @@ class Crypto implements ICrypto {
 		if (\sizeof($parts) === 4 && $parts[0] === 'v2') {
 			$derived = \hash_hkdf('sha512', $password, 0);
 			list($password, $hmacKey) = \str_split($derived, 32);
-			$this->cipher->setPassword($password);
+			$this->cipher->setPassword($password, $this::CRYPT_METHOD, $this::CRYPT_HASH, $this::SALT);
 
 			$ciphertext = \hex2bin($parts[1]);
 			$iv = \hex2bin($parts[2]);
@@ -139,7 +144,7 @@ class Crypto implements ICrypto {
 		}
 
 		if (\sizeof($parts) === 3) {
-			$this->cipher->setPassword($password);
+			$this->cipher->setPassword($password, $this::CRYPT_METHOD, $this::CRYPT_HASH, $this::SALT);
 			$ciphertext = \hex2bin($parts[0]);
 			$iv = $parts[1];
 			$hmac = \hex2bin($parts[2]);
