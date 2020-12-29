@@ -1527,16 +1527,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "2.0.0",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "88ab4780a5cc573fb943c8a6987da880b3ec0474"
+                "reference": "1d68c2325a56b6b847f3a40b9564cabfa7bb2594"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/88ab4780a5cc573fb943c8a6987da880b3ec0474",
-                "reference": "88ab4780a5cc573fb943c8a6987da880b3ec0474",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/1d68c2325a56b6b847f3a40b9564cabfa7bb2594",
+                "reference": "1d68c2325a56b6b847f3a40b9564cabfa7bb2594",
                 "shasum": ""
             },
             "require": {
@@ -1591,7 +1591,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/2.0.0"
+                "source": "https://github.com/thephpleague/flysystem/tree/2.0.2"
             },
             "funding": [
                 {
@@ -1607,7 +1607,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-11-24T14:30:57+00:00"
+            "time": "2020-12-28T17:02:23+00:00"
         },
         {
             "name": "league/mime-type-detection",
