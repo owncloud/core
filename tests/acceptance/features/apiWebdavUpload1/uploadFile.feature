@@ -199,3 +199,15 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
+  @issue-ocis-1154
+  Scenario Outline: files and folders have standard datetime
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "testFolder"
+    And user "Alice" has uploaded file with content "first time upload content" to "file.txt"
+    When user "Alice" gets all information about files and folders from "/" directory using the WebDAV API
+    Then the files and folders should have the standard datetime format in the last response
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |

@@ -272,6 +272,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | old      |
       | new      |
 
+  @issue-ocis-541
   Scenario Outline: deleted file has appropriate deletion time information 
     Given using <dav-path> DAV path
     And user "Alice" has deleted file "textfile0.txt"

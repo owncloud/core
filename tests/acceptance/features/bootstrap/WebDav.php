@@ -3792,4 +3792,131 @@ trait WebDav {
 			);
 		}
 	}
+
+	/**
+	 * @When /^user "([^"]*)" gets all information about files and folders from "([^"]*)" directory using the WebDAV API$/
+	 *
+	 * @param string $user
+	 * @param string $directory for root directory use "/" and for sub-directory use "/directoryname"
+	 *
+	 * @return void
+	 */
+	public function userGetsAllInformationAboutFilesAndFoldersFromDirectoryUsingTheWebdavReportApi($user, $directory) {
+		$this->sendDirectoryListRequest($user, $directory);
+	}
+
+	/**
+	 * @Then /^the files and folders should have the standard datetime format in the last response$/
+	 *
+	 * @return void
+	 */
+	public function theFilesAndFoldersShouldHaveStandardDatetimeFormat() {
+		$isValid = false;
+		$invalidDate = '';
+		$files = $this->getDirectoryContentFromResponseXml();
+
+		foreach ($files as $file) {
+			$isValid = $this->isStandardDateTime($file['lastmodified']);
+			if (!$isValid) {
+				$invalidDate = $file['lastmodified'];
+				break;
+			}
+		}
+		Assert::assertTrue($isValid, "DateTime expected to be in GMT format but found '$invalidDate'");
+	}
+
+	/**
+	 * Send a webdav request to list the directory content
+	 *
+	 * @param string $user user
+	 * @param string $directory directory or sub directory
+	 *
+	 * @return void
+	 */
+	public function sendDirectoryListRequest($user, $directory) {
+		$this->responseXmlObject = $this->listFolderAndReturnResponseXml(
+			$user, $directory, 1,
+			[
+				'd:getlastmodified',
+				'd:getetag',
+				'd:getcontenttype',
+				'oc:fileid',
+				'oc:size',
+				'd:getcontentlength',
+				'oc:favorite',
+				'oc:owner-display-name'
+			]
+		);
+	}
+
+	/**
+	 *
+	 * @return array information of each existing file/folder in the directory
+	 */
+	public function getDirectoryContentFromResponseXml() {
+		$responseXml = $this->getResponseXmlObject();
+		$xmlElements = $responseXml->xpath('//d:response');
+		$files = \array_map(
+			static function (SimpleXMLElement $element) {
+				$href = $element->xpath('./d:href')[0];
+
+				$propStats = $element->xpath('./d:propstat');
+				$successPropStat = \array_filter(
+					$propStats, static function (SimpleXMLElement $propStat) {
+						$status = $propStat->xpath('./d:status');
+						return (string) $status[0] === 'HTTP/1.1 200 OK';
+					}
+				);
+				if (isset($successPropStat[0])) {
+					$successPropStat = $successPropStat[0];
+
+					$lastModified = $propStats[0]->xpath('//d:prop/d:getlastmodified');
+					$eTag = $propStats[0]->xpath('//d:prop/d:getetag');
+					$contentType = $propStats[0]->xpath('//d:prop/d:getcontenttype');
+					$fileId = $propStats[0]->xpath('//d:prop/oc:fileid');
+					$size = $propStats[0]->xpath('//d:prop/oc:size');
+					$favorite = $propStats[0]->xpath('//d:prop/oc:favorite');
+					$owner = $propStats[0]->xpath('//d:prop/oc:owner-display-name');
+				} else {
+					$lastModified = [];
+					$eTag = [];
+					$contentType = [];
+					$fileId = [];
+					$size = [];
+					$favorite = [];
+					$owner = [];
+				}
+
+				return [
+					'href' => (string) $href,
+					'lastmodified' => isset($lastModified[0]) ? (string) $lastModified[0] : null,
+					'etag' => isset($eTag[0]) ? (string) $eTag[0] : null,
+					'contenttype' => isset($contentType[0]) ? (string) $contentType[0] : null,
+					'fileid' => isset($fileId[0]) ? (string) $fileId[0] : null,
+					'size' => isset($size[0]) ? (string) $size[0] : null,
+					'favorite' => isset($favorite[0]) ? (string) $favorite[0] : null,
+					'owner' => isset($owner[0]) ? (string) $owner[0] : null,
+				];
+			}, $xmlElements
+		);
+		return $files;
+	}
+
+	/**
+	 * @param string $datetime eg: Tue, 29 Dec 2020 08:13:34 GMT
+	 *
+	 * @return array information of each existing file/folder in the directory
+	 */
+	public function isStandardDateTime($datetime) {
+		// date format implementation:
+		// oc10: Tue, 29 Dec 2020 08:13:34 GMT (RFC's IMF-fixdate format)
+
+		$regex = "/^[F-W]{1}[a-z]{2},\s[0-9]{2}\s[A-S]{1}[a-z]{2}\s[0-9]{4}\s[0-9]{2}:[0-9]{2}:[0-9]{2}\s(\bGMT\b)$/";
+		
+		if (\preg_match($regex, $datetime)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
