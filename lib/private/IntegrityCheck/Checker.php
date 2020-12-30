@@ -37,8 +37,8 @@ use OCP\ICache;
 use OCP\ICacheFactory;
 use OCP\IConfig;
 use OCP\ITempManager;
-use phpseclib\Crypt\RSA;
-use phpseclib\File\X509;
+use phpseclib3\Crypt\RSA;
+use phpseclib3\File\X509;
 
 /**
  * Class Checker handles the code signing using X.509 and RSA. ownCloud ships with
@@ -224,24 +224,28 @@ class Checker {
 	 * Creates the signature data
 	 *
 	 * @param array $hashes
-	 * @param X509 $certificate
+	 * @param array $certificate
 	 * @param RSA $privateKey
+	 * @param X509 $x509,
 	 * @return array
 	 */
 	private function createSignatureData(array $hashes,
-										 X509 $certificate,
-										 RSA $privateKey) {
+										 array $certificate,
+										 RSA $privateKey,
+										 X509 $x509) {
 		\ksort($hashes);
 
-		$privateKey->setSignatureMode(RSA::SIGNATURE_PSS);
-		$privateKey->setMGFHash('sha512');
-		$privateKey->setSaltLength(0);
+		$privateKey = $privateKey
+			->withMGFHash('sha512')
+            ->withSaltLength(0)
+            ->withPadding(RSA::SIGNATURE_PSS);
+
 		$signature = $privateKey->sign(\json_encode($hashes));
 
 		return [
 				'hashes' => $hashes,
 				'signature' => \base64_encode($signature),
-				'certificate' => $certificate->saveX509($certificate->currentCert),
+				'certificate' => $x509->saveX509($certificate),
 			];
 	}
 
@@ -249,12 +253,14 @@ class Checker {
 	 * Write the signature of the app in the specified folder
 	 *
 	 * @param string $path
-	 * @param X509 $certificate
+	 * @param array $certificate
+	 * @param X509 $x509
 	 * @param RSA $privateKey
 	 * @throws \Exception
 	 */
-	public function writeAppSignature($path,
-									  X509 $certificate,
+	public function writeAppSignature(string $path,
+									  array $certificate,
+									  X509 $x509,
 									  RSA $privateKey) {
 		$appInfoDir = $path . '/appinfo';
 		$this->fileAccessHelper->assertDirectoryExists($path);
@@ -262,7 +268,7 @@ class Checker {
 
 		$iterator = $this->getFolderIterator($path);
 		$hashes = $this->generateHashes($iterator, $path);
-		$signature = $this->createSignatureData($hashes, $certificate, $privateKey);
+		$signature = $this->createSignatureData($hashes, $certificate, $privateKey, $x509);
 		try {
 			$this->fileAccessHelper->file_put_contents(
 				$appInfoDir . '/signature.json',
@@ -279,21 +285,23 @@ class Checker {
 	/**
 	 * Write the signature of core
 	 *
-	 * @param X509 $certificate
-	 * @param RSA $rsa
 	 * @param string $path
+	 * @param array $certificate
+	 * @param X509 $x509
+	 * @param RSA $privateKey
 	 * @throws \Exception
 	 */
-	public function writeCoreSignature(X509 $certificate,
-									   RSA $rsa,
-									   $path) {
+	public function writeCoreSignature(string $path,
+									   array $certificate,
+									   X509 $x509,
+									   RSA $privateKey) {
 		$coreDir = $path . '/core';
 		$this->fileAccessHelper->assertDirectoryExists($path);
 		$this->fileAccessHelper->assertDirectoryExists($coreDir);
 
 		$iterator = $this->getFolderIterator($path, $path);
 		$hashes = $this->generateHashes($iterator, $path);
-		$signatureData = $this->createSignatureData($hashes, $certificate, $rsa);
+		$signatureData = $this->createSignatureData($hashes, $certificate, $privateKey, $x509);
 		try {
 			$this->fileAccessHelper->file_put_contents(
 				$coreDir . '/signature.json',
@@ -335,7 +343,7 @@ class Checker {
 		$certificate = $signatureData['certificate'];
 
 		// Check if certificate is signed by ownCloud Root Authority
-		$x509 = new \phpseclib\File\X509();
+		$x509 = new \phpseclib3\File\X509();
 		$rootCertificatePublicKey = $this->fileAccessHelper->file_get_contents($this->environmentHelper->getServerRoot().'/resources/codesigning/root.crt');
 		$x509->loadCA($rootCertificatePublicKey);
 		$loadedCertificate = $x509->loadX509($certificate);
@@ -346,7 +354,7 @@ class Checker {
 		// Check if the certificate has been revoked
 		$crlFileContent = $this->fileAccessHelper->file_get_contents($this->environmentHelper->getServerRoot().'/resources/codesigning/intermediate.crl.pem');
 		if ($crlFileContent && \strlen($crlFileContent) > 0) {
-			$crl = new \phpseclib\File\X509();
+			$crl = new \phpseclib3\File\X509();
 			$crl->loadCA($rootCertificatePublicKey);
 			$crl->loadCRL($crlFileContent);
 			if (!$crl->validateSignature()) {
@@ -369,12 +377,12 @@ class Checker {
 					"Certificate is not valid for required scope. (Requested: $certificateCN, current: CN=$cn)");
 		}
 
-		// Check if the signature of the files is valid
-		$rsa = new \phpseclib\Crypt\RSA();
-		$rsa->loadKey($x509->currentCert['tbsCertificate']['subjectPublicKeyInfo']['subjectPublicKey']);
-		$rsa->setSignatureMode(RSA::SIGNATURE_PSS);
-		$rsa->setSaltLength(0);
-		$rsa->setMGFHash('sha512');
+		$rsa = RSA::load($loadedCertificate['tbsCertificate']['subjectPublicKeyInfo']['subjectPublicKey'])
+			->withHash('sha1')
+			->withMGFHash('sha512')
+			->withPadding(RSA::SIGNATURE_PSS)
+			->withSaltLength(0);
+
 		if (!$rsa->verify(\json_encode($expectedHashes), $signature)) {
 			throw new InvalidSignatureException('Signature could not get verified.');
 		}
