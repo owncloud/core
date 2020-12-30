@@ -129,3 +129,71 @@ Feature: download file
       | new         | "sample,1.txt" |
       | new         | ",,,.txt"      |
       | new         | ",,,.,"        |
+
+  Scenario Outline: download a file with single part ranges
+    Given using <dav_version> DAV path
+    When user "Alice" downloads file "/welcome.txt" with range "bytes=0-51" using the WebDAV API
+    Then the HTTP status code should be "206"
+    And the following headers should be set
+      | header         | value         |
+      | Content-Length | 52            |
+      | Content-Range  | bytes 0-51/52 |
+    And the downloaded content should be "Welcome this is just an example file for developers."
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: download a file with multipart ranges
+    Given using <dav_version> DAV path
+    When user "Alice" downloads file "/welcome.txt" with range "bytes=0-6, 40-51" using the WebDAV API
+    Then the HTTP status code should be "206" or "200"
+    And if the HTTP status code was "206" then the following headers should match these regular expressions
+      | Content-Length | /\d+/                                               |
+      | Content-Type   | /^multipart\/byteranges; boundary=[a-zA-Z0-9_.-]*$/ |
+    And if the HTTP status code was "206" then the downloaded content for multipart byterange should be:
+      """
+      Content-type: text/plain;charset=UTF-8
+      Content-range: bytes 0-6/52
+
+      Welcome
+
+      Content-type: text/plain;charset=UTF-8
+      Content-range: bytes 40-51/52
+
+      developers.
+      """
+    But if the HTTP status code was "200" then the downloaded content should be "Welcome this is just an example file for developers."
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: download a file with last byte range out of bounds
+    Given using <dav_version> DAV path
+    When user "Alice" downloads file "/welcome.txt" with range "bytes=0-55" using the WebDAV API
+    Then the HTTP status code should be "206"
+    And the downloaded content should be "Welcome this is just an example file for developers."
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: download a range at the end of a file
+    Given using <dav_version> DAV path
+    When user "Alice" downloads file "/welcome.txt" with range "bytes=-11" using the WebDAV API
+    Then the HTTP status code should be "206"
+    And the downloaded content should be "developers."
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: download a file with range out of bounds
+    Given using <dav_version> DAV path
+    When user "Alice" downloads file "/welcome.txt" with range "bytes=55-60" using the WebDAV API
+    Then the HTTP status code should be "416"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
