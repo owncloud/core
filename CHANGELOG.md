@@ -19,6 +19,7 @@ Summary
 * Change - Rename phoenix to web: [#38199](https://github.com/owncloud/core/pull/38199)
 * Change - Update Symfony components to 4.4.18: [#38234](https://github.com/owncloud/core/pull/38234)
 * Change - Update phpseclib/phpseclib (2.0.29 => 2.0.30): [#38244](https://github.com/owncloud/core/pull/38244)
+* Change - Update egulias/email-validator (2.1.24 => 2.1.25): [#38255](https://github.com/owncloud/core/pull/38255)
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 * Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
@@ -106,6 +107,10 @@ Details
 * Change - Update phpseclib/phpseclib (2.0.29 => 2.0.30): [#38244](https://github.com/owncloud/core/pull/38244)
 
    https://github.com/owncloud/core/pull/38244
+
+* Change - Update egulias/email-validator (2.1.24 => 2.1.25): [#38255](https://github.com/owncloud/core/pull/38255)
+
+   https://github.com/owncloud/core/pull/38255
 
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 
