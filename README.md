@@ -1,7 +1,9 @@
 # ownCloud Core
 
 [![Build Status](https://drone.owncloud.com/api/badges/owncloud/core/status.svg?branch=master)](https://drone.owncloud.com/owncloud/core)
-[![codecov.io](https://codecov.io/github/owncloud/core/coverage.svg?branch=master)](https://codecov.io/github/owncloud/core?branch=master)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=owncloud_core&metric=alert_status)](https://sonarcloud.io/dashboard?id=owncloud_core)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=owncloud_core&metric=security_rating)](https://sonarcloud.io/dashboard?id=owncloud_core)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=owncloud_core&metric=coverage)](https://sonarcloud.io/dashboard?id=owncloud_core)
 
 **[ownCloud](http://ownCloud.org) gives you freedom and control over your own data.
 A personal cloud which runs on your own server.**
