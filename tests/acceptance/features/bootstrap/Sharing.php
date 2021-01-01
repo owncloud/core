@@ -1216,7 +1216,7 @@ trait Sharing {
 		$user1Actual = $this->getActualUsername($user1);
 		$user2Actual = $this->getActualUsername($user2);
 
-		$path = $this->getSharesEndpointPath("?path=$filepath");
+		$path = $this->getSharesEndpointPath("?path=" . \urlencode($filepath));
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
 			$user1Actual,
