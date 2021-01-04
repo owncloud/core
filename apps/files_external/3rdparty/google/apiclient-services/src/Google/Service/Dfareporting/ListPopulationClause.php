@@ -22,14 +22,14 @@ class Google_Service_Dfareporting_ListPopulationClause extends Google_Collection
   protected $termsDataType = 'array';
 
   /**
-   * @param Google_Service_Dfareporting_ListPopulationTerm
+   * @param Google_Service_Dfareporting_ListPopulationTerm[]
    */
   public function setTerms($terms)
   {
     $this->terms = $terms;
   }
   /**
-   * @return Google_Service_Dfareporting_ListPopulationTerm
+   * @return Google_Service_Dfareporting_ListPopulationTerm[]
    */
   public function getTerms()
   {

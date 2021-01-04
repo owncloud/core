@@ -24,14 +24,14 @@ class Google_Service_Slides_BatchUpdatePresentationRequest extends Google_Collec
   protected $writeControlDataType = '';
 
   /**
-   * @param Google_Service_Slides_Request
+   * @param Google_Service_Slides_Request[]
    */
   public function setRequests($requests)
   {
     $this->requests = $requests;
   }
   /**
-   * @return Google_Service_Slides_Request
+   * @return Google_Service_Slides_Request[]
    */
   public function getRequests()
   {

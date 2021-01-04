@@ -23,14 +23,14 @@ class Google_Service_TagManager_ListEnabledBuiltInVariablesResponse extends Goog
   public $nextPageToken;
 
   /**
-   * @param Google_Service_TagManager_BuiltInVariable
+   * @param Google_Service_TagManager_BuiltInVariable[]
    */
   public function setBuiltInVariable($builtInVariable)
   {
     $this->builtInVariable = $builtInVariable;
   }
   /**
-   * @return Google_Service_TagManager_BuiltInVariable
+   * @return Google_Service_TagManager_BuiltInVariable[]
    */
   public function getBuiltInVariable()
   {

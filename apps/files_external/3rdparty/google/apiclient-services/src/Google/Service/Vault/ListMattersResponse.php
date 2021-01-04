@@ -23,14 +23,14 @@ class Google_Service_Vault_ListMattersResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Vault_Matter
+   * @param Google_Service_Vault_Matter[]
    */
   public function setMatters($matters)
   {
     $this->matters = $matters;
   }
   /**
-   * @return Google_Service_Vault_Matter
+   * @return Google_Service_Vault_Matter[]
    */
   public function getMatters()
   {

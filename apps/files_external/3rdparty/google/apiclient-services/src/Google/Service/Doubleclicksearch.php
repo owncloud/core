@@ -38,7 +38,7 @@ class Google_Service_Doubleclicksearch extends Google_Service
   public $conversion;
   public $reports;
   public $savedColumns;
-  
+
   /**
    * Constructs the internal representation of the Doubleclicksearch service.
    *
@@ -103,11 +103,11 @@ class Google_Service_Doubleclicksearch extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'campaignId' => array(
+                'adId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'adId' => array(
+                'campaignId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

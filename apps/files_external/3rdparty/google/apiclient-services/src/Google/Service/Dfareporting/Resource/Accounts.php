@@ -46,20 +46,20 @@ class Google_Service_Dfareporting_Resource_Accounts extends Google_Service_Resou
    * @param string $profileId User profile ID associated with this request.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string sortOrder Order of sorted results.
-   * @opt_param string sortField Field by which to sort the list.
    * @opt_param bool active Select only active accounts. Don't set this field to
    * select both active and non-active accounts.
+   * @opt_param string ids Select only accounts with these IDs.
+   * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string pageToken Value of the nextPageToken from the previous
+   * result page.
    * @opt_param string searchString Allows searching for objects by name or ID.
    * Wildcards (*) are allowed. For example, "account*2015" will return objects
    * with names like "account June 2015", "account April 2015", or simply "account
    * 2015". Most of the searches also add wildcards implicitly at the start and
    * the end of the search string. For example, a search string of "account" will
    * match objects with name "my account", "account 2015", or simply "account".
-   * @opt_param string pageToken Value of the nextPageToken from the previous
-   * result page.
-   * @opt_param int maxResults Maximum number of results to return.
-   * @opt_param string ids Select only accounts with these IDs.
+   * @opt_param string sortField Field by which to sort the list.
+   * @opt_param string sortOrder Order of sorted results.
    * @return Google_Service_Dfareporting_AccountsListResponse
    */
   public function listAccounts($profileId, $optParams = array())

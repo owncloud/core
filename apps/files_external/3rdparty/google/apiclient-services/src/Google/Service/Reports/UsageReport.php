@@ -65,14 +65,14 @@ class Google_Service_Reports_UsageReport extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_Reports_UsageReportParameters
+   * @param Google_Service_Reports_UsageReportParameters[]
    */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
   /**
-   * @return Google_Service_Reports_UsageReportParameters
+   * @return Google_Service_Reports_UsageReportParameters[]
    */
   public function getParameters()
   {

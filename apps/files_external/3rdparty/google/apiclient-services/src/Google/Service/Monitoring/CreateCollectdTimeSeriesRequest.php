@@ -25,14 +25,14 @@ class Google_Service_Monitoring_CreateCollectdTimeSeriesRequest extends Google_C
   protected $resourceDataType = '';
 
   /**
-   * @param Google_Service_Monitoring_CollectdPayload
+   * @param Google_Service_Monitoring_CollectdPayload[]
    */
   public function setCollectdPayloads($collectdPayloads)
   {
     $this->collectdPayloads = $collectdPayloads;
   }
   /**
-   * @return Google_Service_Monitoring_CollectdPayload
+   * @return Google_Service_Monitoring_CollectdPayload[]
    */
   public function getCollectdPayloads()
   {

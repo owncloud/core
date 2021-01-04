@@ -22,14 +22,14 @@ class Google_Service_Firestore_Projection extends Google_Collection
   protected $fieldsDataType = 'array';
 
   /**
-   * @param Google_Service_Firestore_FieldReference
+   * @param Google_Service_Firestore_FieldReference[]
    */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
   /**
-   * @return Google_Service_Firestore_FieldReference
+   * @return Google_Service_Firestore_FieldReference[]
    */
   public function getFields()
   {

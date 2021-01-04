@@ -23,14 +23,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ListDataItemsRes
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1DataItem
+   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1DataItem[]
    */
   public function setDataItems($dataItems)
   {
     $this->dataItems = $dataItems;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1DataItem
+   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1DataItem[]
    */
   public function getDataItems()
   {

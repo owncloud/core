@@ -63,14 +63,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p3beta1Paragraph extends Google_C
     return $this->property;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p3beta1Word
+   * @param Google_Service_Vision_GoogleCloudVisionV1p3beta1Word[]
    */
   public function setWords($words)
   {
     $this->words = $words;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p3beta1Word
+   * @return Google_Service_Vision_GoogleCloudVisionV1p3beta1Word[]
    */
   public function getWords()
   {

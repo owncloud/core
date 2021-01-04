@@ -37,28 +37,28 @@ class Google_Service_SearchConsole_RunMobileFriendlyTestResponse extends Google_
     return $this->mobileFriendliness;
   }
   /**
-   * @param Google_Service_SearchConsole_MobileFriendlyIssue
+   * @param Google_Service_SearchConsole_MobileFriendlyIssue[]
    */
   public function setMobileFriendlyIssues($mobileFriendlyIssues)
   {
     $this->mobileFriendlyIssues = $mobileFriendlyIssues;
   }
   /**
-   * @return Google_Service_SearchConsole_MobileFriendlyIssue
+   * @return Google_Service_SearchConsole_MobileFriendlyIssue[]
    */
   public function getMobileFriendlyIssues()
   {
     return $this->mobileFriendlyIssues;
   }
   /**
-   * @param Google_Service_SearchConsole_ResourceIssue
+   * @param Google_Service_SearchConsole_ResourceIssue[]
    */
   public function setResourceIssues($resourceIssues)
   {
     $this->resourceIssues = $resourceIssues;
   }
   /**
-   * @return Google_Service_SearchConsole_ResourceIssue
+   * @return Google_Service_SearchConsole_ResourceIssue[]
    */
   public function getResourceIssues()
   {

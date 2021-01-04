@@ -31,14 +31,14 @@ class Google_Service_ShoppingContent_LinkedAccount extends Google_Collection
     return $this->linkedAccountId;
   }
   /**
-   * @param Google_Service_ShoppingContent_LinkService
+   * @param Google_Service_ShoppingContent_LinkService[]
    */
   public function setServices($services)
   {
     $this->services = $services;
   }
   /**
-   * @return Google_Service_ShoppingContent_LinkService
+   * @return Google_Service_ShoppingContent_LinkService[]
    */
   public function getServices()
   {

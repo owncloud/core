@@ -23,14 +23,14 @@ class Google_Service_ServiceDirectory_ListLocationsResponse extends Google_Colle
   public $nextPageToken;
 
   /**
-   * @param Google_Service_ServiceDirectory_Location
+   * @param Google_Service_ServiceDirectory_Location[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_ServiceDirectory_Location
+   * @return Google_Service_ServiceDirectory_Location[]
    */
   public function getLocations()
   {

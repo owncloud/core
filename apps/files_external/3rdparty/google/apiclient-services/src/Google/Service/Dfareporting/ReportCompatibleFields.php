@@ -29,28 +29,28 @@ class Google_Service_Dfareporting_ReportCompatibleFields extends Google_Collecti
   protected $pivotedActivityMetricsDataType = 'array';
 
   /**
-   * @param Google_Service_Dfareporting_Dimension
+   * @param Google_Service_Dfareporting_Dimension[]
    */
   public function setDimensionFilters($dimensionFilters)
   {
     $this->dimensionFilters = $dimensionFilters;
   }
   /**
-   * @return Google_Service_Dfareporting_Dimension
+   * @return Google_Service_Dfareporting_Dimension[]
    */
   public function getDimensionFilters()
   {
     return $this->dimensionFilters;
   }
   /**
-   * @param Google_Service_Dfareporting_Dimension
+   * @param Google_Service_Dfareporting_Dimension[]
    */
   public function setDimensions($dimensions)
   {
     $this->dimensions = $dimensions;
   }
   /**
-   * @return Google_Service_Dfareporting_Dimension
+   * @return Google_Service_Dfareporting_Dimension[]
    */
   public function getDimensions()
   {
@@ -65,28 +65,28 @@ class Google_Service_Dfareporting_ReportCompatibleFields extends Google_Collecti
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dfareporting_Metric
+   * @param Google_Service_Dfareporting_Metric[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_Dfareporting_Metric
+   * @return Google_Service_Dfareporting_Metric[]
    */
   public function getMetrics()
   {
     return $this->metrics;
   }
   /**
-   * @param Google_Service_Dfareporting_Metric
+   * @param Google_Service_Dfareporting_Metric[]
    */
   public function setPivotedActivityMetrics($pivotedActivityMetrics)
   {
     $this->pivotedActivityMetrics = $pivotedActivityMetrics;
   }
   /**
-   * @return Google_Service_Dfareporting_Metric
+   * @return Google_Service_Dfareporting_Metric[]
    */
   public function getPivotedActivityMetrics()
   {

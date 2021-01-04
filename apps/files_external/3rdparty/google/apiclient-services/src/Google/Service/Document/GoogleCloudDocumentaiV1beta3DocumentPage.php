@@ -45,28 +45,28 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPage extends G
   protected $visualElementsDataType = 'array';
 
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageBlock
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageBlock[]
    */
   public function setBlocks($blocks)
   {
     $this->blocks = $blocks;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageBlock
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageBlock[]
    */
   public function getBlocks()
   {
     return $this->blocks;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageDetectedLanguage
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageDetectedLanguage[]
    */
   public function setDetectedLanguages($detectedLanguages)
   {
     $this->detectedLanguages = $detectedLanguages;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageDetectedLanguage
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageDetectedLanguage[]
    */
   public function getDetectedLanguages()
   {
@@ -87,14 +87,14 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPage extends G
     return $this->dimension;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageFormField
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageFormField[]
    */
   public function setFormFields($formFields)
   {
     $this->formFields = $formFields;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageFormField
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageFormField[]
    */
   public function getFormFields()
   {
@@ -129,14 +129,14 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPage extends G
     return $this->layout;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageLine
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageLine[]
    */
   public function setLines($lines)
   {
     $this->lines = $lines;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageLine
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageLine[]
    */
   public function getLines()
   {
@@ -151,70 +151,70 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPage extends G
     return $this->pageNumber;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageParagraph
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageParagraph[]
    */
   public function setParagraphs($paragraphs)
   {
     $this->paragraphs = $paragraphs;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageParagraph
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageParagraph[]
    */
   public function getParagraphs()
   {
     return $this->paragraphs;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageTable
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageTable[]
    */
   public function setTables($tables)
   {
     $this->tables = $tables;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageTable
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageTable[]
    */
   public function getTables()
   {
     return $this->tables;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageToken
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageToken[]
    */
   public function setTokens($tokens)
   {
     $this->tokens = $tokens;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageToken
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageToken[]
    */
   public function getTokens()
   {
     return $this->tokens;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageMatrix
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageMatrix[]
    */
   public function setTransforms($transforms)
   {
     $this->transforms = $transforms;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageMatrix
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageMatrix[]
    */
   public function getTransforms()
   {
     return $this->transforms;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageVisualElement
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageVisualElement[]
    */
   public function setVisualElements($visualElements)
   {
     $this->visualElements = $visualElements;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageVisualElement
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageVisualElement[]
    */
   public function getVisualElements()
   {

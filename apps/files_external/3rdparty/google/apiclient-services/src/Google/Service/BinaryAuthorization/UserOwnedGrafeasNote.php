@@ -40,14 +40,14 @@ class Google_Service_BinaryAuthorization_UserOwnedGrafeasNote extends Google_Col
     return $this->noteReference;
   }
   /**
-   * @param Google_Service_BinaryAuthorization_AttestorPublicKey
+   * @param Google_Service_BinaryAuthorization_AttestorPublicKey[]
    */
   public function setPublicKeys($publicKeys)
   {
     $this->publicKeys = $publicKeys;
   }
   /**
-   * @return Google_Service_BinaryAuthorization_AttestorPublicKey
+   * @return Google_Service_BinaryAuthorization_AttestorPublicKey[]
    */
   public function getPublicKeys()
   {

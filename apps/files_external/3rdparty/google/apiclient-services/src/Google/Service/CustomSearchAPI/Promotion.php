@@ -28,14 +28,14 @@ class Google_Service_CustomSearchAPI_Promotion extends Google_Collection
   public $title;
 
   /**
-   * @param Google_Service_CustomSearchAPI_PromotionBodyLines
+   * @param Google_Service_CustomSearchAPI_PromotionBodyLines[]
    */
   public function setBodyLines($bodyLines)
   {
     $this->bodyLines = $bodyLines;
   }
   /**
-   * @return Google_Service_CustomSearchAPI_PromotionBodyLines
+   * @return Google_Service_CustomSearchAPI_PromotionBodyLines[]
    */
   public function getBodyLines()
   {

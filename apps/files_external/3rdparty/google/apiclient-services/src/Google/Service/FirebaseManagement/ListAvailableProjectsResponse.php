@@ -31,14 +31,14 @@ class Google_Service_FirebaseManagement_ListAvailableProjectsResponse extends Go
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_FirebaseManagement_ProjectInfo
+   * @param Google_Service_FirebaseManagement_ProjectInfo[]
    */
   public function setProjectInfo($projectInfo)
   {
     $this->projectInfo = $projectInfo;
   }
   /**
-   * @return Google_Service_FirebaseManagement_ProjectInfo
+   * @return Google_Service_FirebaseManagement_ProjectInfo[]
    */
   public function getProjectInfo()
   {

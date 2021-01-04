@@ -58,14 +58,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p2beta1Block extends Google_Colle
     return $this->confidence;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p2beta1Paragraph
+   * @param Google_Service_Vision_GoogleCloudVisionV1p2beta1Paragraph[]
    */
   public function setParagraphs($paragraphs)
   {
     $this->paragraphs = $paragraphs;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p2beta1Paragraph
+   * @return Google_Service_Vision_GoogleCloudVisionV1p2beta1Paragraph[]
    */
   public function getParagraphs()
   {

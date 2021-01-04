@@ -40,14 +40,14 @@ class Google_Service_Bigquery_Cluster extends Google_Collection
     return $this->count;
   }
   /**
-   * @param Google_Service_Bigquery_FeatureValue
+   * @param Google_Service_Bigquery_FeatureValue[]
    */
   public function setFeatureValues($featureValues)
   {
     $this->featureValues = $featureValues;
   }
   /**
-   * @return Google_Service_Bigquery_FeatureValue
+   * @return Google_Service_Bigquery_FeatureValue[]
    */
   public function getFeatureValues()
   {

@@ -34,14 +34,14 @@ class Google_Service_Calendar_Acl extends Google_Collection
     return $this->etag;
   }
   /**
-   * @param Google_Service_Calendar_AclRule
+   * @param Google_Service_Calendar_AclRule[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Calendar_AclRule
+   * @return Google_Service_Calendar_AclRule[]
    */
   public function getItems()
   {

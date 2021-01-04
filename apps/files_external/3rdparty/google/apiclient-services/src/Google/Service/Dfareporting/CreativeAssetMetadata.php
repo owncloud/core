@@ -51,28 +51,28 @@ class Google_Service_Dfareporting_CreativeAssetMetadata extends Google_Collectio
     return $this->assetIdentifier;
   }
   /**
-   * @param Google_Service_Dfareporting_ClickTag
+   * @param Google_Service_Dfareporting_ClickTag[]
    */
   public function setClickTags($clickTags)
   {
     $this->clickTags = $clickTags;
   }
   /**
-   * @return Google_Service_Dfareporting_ClickTag
+   * @return Google_Service_Dfareporting_ClickTag[]
    */
   public function getClickTags()
   {
     return $this->clickTags;
   }
   /**
-   * @param Google_Service_Dfareporting_CreativeCustomEvent
+   * @param Google_Service_Dfareporting_CreativeCustomEvent[]
    */
   public function setCounterCustomEvents($counterCustomEvents)
   {
     $this->counterCustomEvents = $counterCustomEvents;
   }
   /**
-   * @return Google_Service_Dfareporting_CreativeCustomEvent
+   * @return Google_Service_Dfareporting_CreativeCustomEvent[]
    */
   public function getCounterCustomEvents()
   {
@@ -87,14 +87,14 @@ class Google_Service_Dfareporting_CreativeAssetMetadata extends Google_Collectio
     return $this->detectedFeatures;
   }
   /**
-   * @param Google_Service_Dfareporting_CreativeCustomEvent
+   * @param Google_Service_Dfareporting_CreativeCustomEvent[]
    */
   public function setExitCustomEvents($exitCustomEvents)
   {
     $this->exitCustomEvents = $exitCustomEvents;
   }
   /**
-   * @return Google_Service_Dfareporting_CreativeCustomEvent
+   * @return Google_Service_Dfareporting_CreativeCustomEvent[]
    */
   public function getExitCustomEvents()
   {
@@ -139,14 +139,14 @@ class Google_Service_Dfareporting_CreativeAssetMetadata extends Google_Collectio
     return $this->richMedia;
   }
   /**
-   * @param Google_Service_Dfareporting_CreativeCustomEvent
+   * @param Google_Service_Dfareporting_CreativeCustomEvent[]
    */
   public function setTimerCustomEvents($timerCustomEvents)
   {
     $this->timerCustomEvents = $timerCustomEvents;
   }
   /**
-   * @return Google_Service_Dfareporting_CreativeCustomEvent
+   * @return Google_Service_Dfareporting_CreativeCustomEvent[]
    */
   public function getTimerCustomEvents()
   {

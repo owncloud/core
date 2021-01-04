@@ -23,14 +23,14 @@ class Google_Service_BigQueryReservation_SearchAllAssignmentsResponse extends Go
   public $nextPageToken;
 
   /**
-   * @param Google_Service_BigQueryReservation_Assignment
+   * @param Google_Service_BigQueryReservation_Assignment[]
    */
   public function setAssignments($assignments)
   {
     $this->assignments = $assignments;
   }
   /**
-   * @return Google_Service_BigQueryReservation_Assignment
+   * @return Google_Service_BigQueryReservation_Assignment[]
    */
   public function getAssignments()
   {

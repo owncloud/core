@@ -1,0 +1,7 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$function of function register_shutdown_function expects callable\\(\\)\\: void, Closure\\(\\)\\: mixed given\\.$#"
+			count: 1
+			path: src/TaskQueue.php
+

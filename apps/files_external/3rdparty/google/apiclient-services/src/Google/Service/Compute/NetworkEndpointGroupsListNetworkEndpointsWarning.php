@@ -32,14 +32,14 @@ class Google_Service_Compute_NetworkEndpointGroupsListNetworkEndpointsWarning ex
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_NetworkEndpointGroupsListNetworkEndpointsWarningData
+   * @param Google_Service_Compute_NetworkEndpointGroupsListNetworkEndpointsWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_NetworkEndpointGroupsListNetworkEndpointsWarningData
+   * @return Google_Service_Compute_NetworkEndpointGroupsListNetworkEndpointsWarningData[]
    */
   public function getData()
   {

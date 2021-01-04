@@ -46,14 +46,14 @@ class Google_Service_Container_NodeConfig extends Google_Collection
   protected $workloadMetadataConfigDataType = '';
 
   /**
-   * @param Google_Service_Container_AcceleratorConfig
+   * @param Google_Service_Container_AcceleratorConfig[]
    */
   public function setAccelerators($accelerators)
   {
     $this->accelerators = $accelerators;
   }
   /**
-   * @return Google_Service_Container_AcceleratorConfig
+   * @return Google_Service_Container_AcceleratorConfig[]
    */
   public function getAccelerators()
   {
@@ -214,14 +214,14 @@ class Google_Service_Container_NodeConfig extends Google_Collection
     return $this->tags;
   }
   /**
-   * @param Google_Service_Container_NodeTaint
+   * @param Google_Service_Container_NodeTaint[]
    */
   public function setTaints($taints)
   {
     $this->taints = $taints;
   }
   /**
-   * @return Google_Service_Container_NodeTaint
+   * @return Google_Service_Container_NodeTaint[]
    */
   public function getTaints()
   {

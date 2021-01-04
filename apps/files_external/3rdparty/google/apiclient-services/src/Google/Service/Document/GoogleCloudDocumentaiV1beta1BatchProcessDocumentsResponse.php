@@ -22,14 +22,14 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta1BatchProcessDocumentsR
   protected $responsesDataType = 'array';
 
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta1ProcessDocumentResponse
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta1ProcessDocumentResponse[]
    */
   public function setResponses($responses)
   {
     $this->responses = $responses;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta1ProcessDocumentResponse
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta1ProcessDocumentResponse[]
    */
   public function getResponses()
   {

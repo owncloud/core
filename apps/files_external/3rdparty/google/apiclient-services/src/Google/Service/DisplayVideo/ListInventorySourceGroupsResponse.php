@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_ListInventorySourceGroupsResponse extends Goog
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DisplayVideo_InventorySourceGroup
+   * @param Google_Service_DisplayVideo_InventorySourceGroup[]
    */
   public function setInventorySourceGroups($inventorySourceGroups)
   {
     $this->inventorySourceGroups = $inventorySourceGroups;
   }
   /**
-   * @return Google_Service_DisplayVideo_InventorySourceGroup
+   * @return Google_Service_DisplayVideo_InventorySourceGroup[]
    */
   public function getInventorySourceGroups()
   {

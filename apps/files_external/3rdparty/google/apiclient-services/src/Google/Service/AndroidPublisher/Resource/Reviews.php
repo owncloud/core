@@ -49,9 +49,9 @@ class Google_Service_AndroidPublisher_Resource_Reviews extends Google_Service_Re
    *
    * @opt_param string maxResults How many results the list operation should
    * return.
+   * @opt_param string startIndex The index of the first element to return.
    * @opt_param string token Pagination token. If empty, list starts at the first
    * review.
-   * @opt_param string startIndex The index of the first element to return.
    * @opt_param string translationLanguage Language localization code.
    * @return Google_Service_AndroidPublisher_ReviewsListResponse
    */

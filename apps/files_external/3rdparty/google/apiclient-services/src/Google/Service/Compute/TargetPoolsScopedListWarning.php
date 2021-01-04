@@ -32,14 +32,14 @@ class Google_Service_Compute_TargetPoolsScopedListWarning extends Google_Collect
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_TargetPoolsScopedListWarningData
+   * @param Google_Service_Compute_TargetPoolsScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_TargetPoolsScopedListWarningData
+   * @return Google_Service_Compute_TargetPoolsScopedListWarningData[]
    */
   public function getData()
   {

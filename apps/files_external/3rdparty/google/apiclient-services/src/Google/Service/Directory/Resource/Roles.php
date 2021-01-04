@@ -72,8 +72,8 @@ class Google_Service_Directory_Resource_Roles extends Google_Service_Resource
    * @param string $customer Immutable ID of the G Suite account.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Token to specify the next page in the list.
    * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string pageToken Token to specify the next page in the list.
    * @return Google_Service_Directory_Roles
    */
   public function listRoles($customer, $optParams = array())

@@ -27,14 +27,14 @@ class Google_Service_YouTube_AbuseReport extends Google_Collection
   protected $subjectDataType = '';
 
   /**
-   * @param Google_Service_YouTube_AbuseType
+   * @param Google_Service_YouTube_AbuseType[]
    */
   public function setAbuseTypes($abuseTypes)
   {
     $this->abuseTypes = $abuseTypes;
   }
   /**
-   * @return Google_Service_YouTube_AbuseType
+   * @return Google_Service_YouTube_AbuseType[]
    */
   public function getAbuseTypes()
   {
@@ -49,14 +49,14 @@ class Google_Service_YouTube_AbuseReport extends Google_Collection
     return $this->description;
   }
   /**
-   * @param Google_Service_YouTube_RelatedEntity
+   * @param Google_Service_YouTube_RelatedEntity[]
    */
   public function setRelatedEntities($relatedEntities)
   {
     $this->relatedEntities = $relatedEntities;
   }
   /**
-   * @return Google_Service_YouTube_RelatedEntity
+   * @return Google_Service_YouTube_RelatedEntity[]
    */
   public function getRelatedEntities()
   {

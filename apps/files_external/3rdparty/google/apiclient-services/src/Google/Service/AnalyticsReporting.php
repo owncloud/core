@@ -39,7 +39,7 @@ class Google_Service_AnalyticsReporting extends Google_Service
 
   public $reports;
   public $userActivity;
-  
+
   /**
    * Constructs the internal representation of the AnalyticsReporting service.
    *

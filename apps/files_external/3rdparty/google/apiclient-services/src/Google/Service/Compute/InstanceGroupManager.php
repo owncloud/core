@@ -50,14 +50,14 @@ class Google_Service_Compute_InstanceGroupManager extends Google_Collection
   public $zone;
 
   /**
-   * @param Google_Service_Compute_InstanceGroupManagerAutoHealingPolicy
+   * @param Google_Service_Compute_InstanceGroupManagerAutoHealingPolicy[]
    */
   public function setAutoHealingPolicies($autoHealingPolicies)
   {
     $this->autoHealingPolicies = $autoHealingPolicies;
   }
   /**
-   * @return Google_Service_Compute_InstanceGroupManagerAutoHealingPolicy
+   * @return Google_Service_Compute_InstanceGroupManagerAutoHealingPolicy[]
    */
   public function getAutoHealingPolicies()
   {
@@ -164,14 +164,14 @@ class Google_Service_Compute_InstanceGroupManager extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Compute_NamedPort
+   * @param Google_Service_Compute_NamedPort[]
    */
   public function setNamedPorts($namedPorts)
   {
     $this->namedPorts = $namedPorts;
   }
   /**
-   * @return Google_Service_Compute_NamedPort
+   * @return Google_Service_Compute_NamedPort[]
    */
   public function getNamedPorts()
   {
@@ -252,14 +252,14 @@ class Google_Service_Compute_InstanceGroupManager extends Google_Collection
     return $this->updatePolicy;
   }
   /**
-   * @param Google_Service_Compute_InstanceGroupManagerVersion
+   * @param Google_Service_Compute_InstanceGroupManagerVersion[]
    */
   public function setVersions($versions)
   {
     $this->versions = $versions;
   }
   /**
-   * @return Google_Service_Compute_InstanceGroupManagerVersion
+   * @return Google_Service_Compute_InstanceGroupManagerVersion[]
    */
   public function getVersions()
   {

@@ -22,14 +22,14 @@ class Google_Service_ContainerAnalysis_BatchCreateOccurrencesResponse extends Go
   protected $occurrencesDataType = 'array';
 
   /**
-   * @param Google_Service_ContainerAnalysis_Occurrence
+   * @param Google_Service_ContainerAnalysis_Occurrence[]
    */
   public function setOccurrences($occurrences)
   {
     $this->occurrences = $occurrences;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_Occurrence
+   * @return Google_Service_ContainerAnalysis_Occurrence[]
    */
   public function getOccurrences()
   {

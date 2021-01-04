@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_ConversionCountingConfig extends Google_Collec
   public $postViewCountPercentageMillis;
 
   /**
-   * @param Google_Service_DisplayVideo_TrackingFloodlightActivityConfig
+   * @param Google_Service_DisplayVideo_TrackingFloodlightActivityConfig[]
    */
   public function setFloodlightActivityConfigs($floodlightActivityConfigs)
   {
     $this->floodlightActivityConfigs = $floodlightActivityConfigs;
   }
   /**
-   * @return Google_Service_DisplayVideo_TrackingFloodlightActivityConfig
+   * @return Google_Service_DisplayVideo_TrackingFloodlightActivityConfig[]
    */
   public function getFloodlightActivityConfigs()
   {

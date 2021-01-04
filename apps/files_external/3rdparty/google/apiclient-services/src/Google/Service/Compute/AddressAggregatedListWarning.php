@@ -32,14 +32,14 @@ class Google_Service_Compute_AddressAggregatedListWarning extends Google_Collect
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_AddressAggregatedListWarningData
+   * @param Google_Service_Compute_AddressAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_AddressAggregatedListWarningData
+   * @return Google_Service_Compute_AddressAggregatedListWarningData[]
    */
   public function getData()
   {

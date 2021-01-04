@@ -22,14 +22,14 @@ class Google_Service_Compute_GuestAttributesValue extends Google_Collection
   protected $itemsDataType = 'array';
 
   /**
-   * @param Google_Service_Compute_GuestAttributesEntry
+   * @param Google_Service_Compute_GuestAttributesEntry[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_GuestAttributesEntry
+   * @return Google_Service_Compute_GuestAttributesEntry[]
    */
   public function getItems()
   {

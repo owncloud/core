@@ -22,14 +22,14 @@ class Google_Service_ServiceUsage_ImportAdminQuotaPoliciesResponse extends Googl
   protected $policiesDataType = 'array';
 
   /**
-   * @param Google_Service_ServiceUsage_AdminQuotaPolicy
+   * @param Google_Service_ServiceUsage_AdminQuotaPolicy[]
    */
   public function setPolicies($policies)
   {
     $this->policies = $policies;
   }
   /**
-   * @return Google_Service_ServiceUsage_AdminQuotaPolicy
+   * @return Google_Service_ServiceUsage_AdminQuotaPolicy[]
    */
   public function getPolicies()
   {

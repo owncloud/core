@@ -32,84 +32,84 @@ class Google_Service_Vision_WebDetection extends Google_Collection
   protected $webEntitiesDataType = 'array';
 
   /**
-   * @param Google_Service_Vision_WebLabel
+   * @param Google_Service_Vision_WebLabel[]
    */
   public function setBestGuessLabels($bestGuessLabels)
   {
     $this->bestGuessLabels = $bestGuessLabels;
   }
   /**
-   * @return Google_Service_Vision_WebLabel
+   * @return Google_Service_Vision_WebLabel[]
    */
   public function getBestGuessLabels()
   {
     return $this->bestGuessLabels;
   }
   /**
-   * @param Google_Service_Vision_WebImage
+   * @param Google_Service_Vision_WebImage[]
    */
   public function setFullMatchingImages($fullMatchingImages)
   {
     $this->fullMatchingImages = $fullMatchingImages;
   }
   /**
-   * @return Google_Service_Vision_WebImage
+   * @return Google_Service_Vision_WebImage[]
    */
   public function getFullMatchingImages()
   {
     return $this->fullMatchingImages;
   }
   /**
-   * @param Google_Service_Vision_WebPage
+   * @param Google_Service_Vision_WebPage[]
    */
   public function setPagesWithMatchingImages($pagesWithMatchingImages)
   {
     $this->pagesWithMatchingImages = $pagesWithMatchingImages;
   }
   /**
-   * @return Google_Service_Vision_WebPage
+   * @return Google_Service_Vision_WebPage[]
    */
   public function getPagesWithMatchingImages()
   {
     return $this->pagesWithMatchingImages;
   }
   /**
-   * @param Google_Service_Vision_WebImage
+   * @param Google_Service_Vision_WebImage[]
    */
   public function setPartialMatchingImages($partialMatchingImages)
   {
     $this->partialMatchingImages = $partialMatchingImages;
   }
   /**
-   * @return Google_Service_Vision_WebImage
+   * @return Google_Service_Vision_WebImage[]
    */
   public function getPartialMatchingImages()
   {
     return $this->partialMatchingImages;
   }
   /**
-   * @param Google_Service_Vision_WebImage
+   * @param Google_Service_Vision_WebImage[]
    */
   public function setVisuallySimilarImages($visuallySimilarImages)
   {
     $this->visuallySimilarImages = $visuallySimilarImages;
   }
   /**
-   * @return Google_Service_Vision_WebImage
+   * @return Google_Service_Vision_WebImage[]
    */
   public function getVisuallySimilarImages()
   {
     return $this->visuallySimilarImages;
   }
   /**
-   * @param Google_Service_Vision_WebEntity
+   * @param Google_Service_Vision_WebEntity[]
    */
   public function setWebEntities($webEntities)
   {
     $this->webEntities = $webEntities;
   }
   /**
-   * @return Google_Service_Vision_WebEntity
+   * @return Google_Service_Vision_WebEntity[]
    */
   public function getWebEntities()
   {

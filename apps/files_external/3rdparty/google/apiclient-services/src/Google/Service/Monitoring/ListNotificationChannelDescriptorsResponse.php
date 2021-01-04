@@ -23,14 +23,14 @@ class Google_Service_Monitoring_ListNotificationChannelDescriptorsResponse exten
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Monitoring_NotificationChannelDescriptor
+   * @param Google_Service_Monitoring_NotificationChannelDescriptor[]
    */
   public function setChannelDescriptors($channelDescriptors)
   {
     $this->channelDescriptors = $channelDescriptors;
   }
   /**
-   * @return Google_Service_Monitoring_NotificationChannelDescriptor
+   * @return Google_Service_Monitoring_NotificationChannelDescriptor[]
    */
   public function getChannelDescriptors()
   {

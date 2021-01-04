@@ -24,14 +24,14 @@ class Google_Service_GamesConfiguration_AchievementConfigurationListResponse ext
   public $nextPageToken;
 
   /**
-   * @param Google_Service_GamesConfiguration_AchievementConfiguration
+   * @param Google_Service_GamesConfiguration_AchievementConfiguration[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_GamesConfiguration_AchievementConfiguration
+   * @return Google_Service_GamesConfiguration_AchievementConfiguration[]
    */
   public function getItems()
   {

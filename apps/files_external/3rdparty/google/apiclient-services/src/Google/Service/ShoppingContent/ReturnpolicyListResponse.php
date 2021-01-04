@@ -31,14 +31,14 @@ class Google_Service_ShoppingContent_ReturnpolicyListResponse extends Google_Col
     return $this->kind;
   }
   /**
-   * @param Google_Service_ShoppingContent_ReturnPolicy
+   * @param Google_Service_ShoppingContent_ReturnPolicy[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_ShoppingContent_ReturnPolicy
+   * @return Google_Service_ShoppingContent_ReturnPolicy[]
    */
   public function getResources()
   {

@@ -31,14 +31,14 @@ class Google_Service_Eventarc_ListOperationsResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Eventarc_Operation
+   * @param Google_Service_Eventarc_Operation[]
    */
   public function setOperations($operations)
   {
     $this->operations = $operations;
   }
   /**
-   * @return Google_Service_Eventarc_Operation
+   * @return Google_Service_Eventarc_Operation[]
    */
   public function getOperations()
   {

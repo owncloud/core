@@ -28,14 +28,14 @@ class Google_Service_Testing_IosDeviceCatalog extends Google_Collection
   protected $xcodeVersionsDataType = 'array';
 
   /**
-   * @param Google_Service_Testing_IosModel
+   * @param Google_Service_Testing_IosModel[]
    */
   public function setModels($models)
   {
     $this->models = $models;
   }
   /**
-   * @return Google_Service_Testing_IosModel
+   * @return Google_Service_Testing_IosModel[]
    */
   public function getModels()
   {
@@ -56,28 +56,28 @@ class Google_Service_Testing_IosDeviceCatalog extends Google_Collection
     return $this->runtimeConfiguration;
   }
   /**
-   * @param Google_Service_Testing_IosVersion
+   * @param Google_Service_Testing_IosVersion[]
    */
   public function setVersions($versions)
   {
     $this->versions = $versions;
   }
   /**
-   * @return Google_Service_Testing_IosVersion
+   * @return Google_Service_Testing_IosVersion[]
    */
   public function getVersions()
   {
     return $this->versions;
   }
   /**
-   * @param Google_Service_Testing_XcodeVersion
+   * @param Google_Service_Testing_XcodeVersion[]
    */
   public function setXcodeVersions($xcodeVersions)
   {
     $this->xcodeVersions = $xcodeVersions;
   }
   /**
-   * @return Google_Service_Testing_XcodeVersion
+   * @return Google_Service_Testing_XcodeVersion[]
    */
   public function getXcodeVersions()
   {

@@ -22,14 +22,14 @@ class Google_Service_CloudHealthcare_ParsedData extends Google_Collection
   protected $segmentsDataType = 'array';
 
   /**
-   * @param Google_Service_CloudHealthcare_Segment
+   * @param Google_Service_CloudHealthcare_Segment[]
    */
   public function setSegments($segments)
   {
     $this->segments = $segments;
   }
   /**
-   * @return Google_Service_CloudHealthcare_Segment
+   * @return Google_Service_CloudHealthcare_Segment[]
    */
   public function getSegments()
   {

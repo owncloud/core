@@ -24,14 +24,14 @@ class Google_Service_GameServices_ListGameServerClustersResponse extends Google_
   public $unreachable;
 
   /**
-   * @param Google_Service_GameServices_GameServerCluster
+   * @param Google_Service_GameServices_GameServerCluster[]
    */
   public function setGameServerClusters($gameServerClusters)
   {
     $this->gameServerClusters = $gameServerClusters;
   }
   /**
-   * @return Google_Service_GameServices_GameServerCluster
+   * @return Google_Service_GameServices_GameServerCluster[]
    */
   public function getGameServerClusters()
   {

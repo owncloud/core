@@ -22,14 +22,14 @@ class Google_Service_SearchConsole_SitemapsListResponse extends Google_Collectio
   protected $sitemapDataType = 'array';
 
   /**
-   * @param Google_Service_SearchConsole_WmxSitemap
+   * @param Google_Service_SearchConsole_WmxSitemap[]
    */
   public function setSitemap($sitemap)
   {
     $this->sitemap = $sitemap;
   }
   /**
-   * @return Google_Service_SearchConsole_WmxSitemap
+   * @return Google_Service_SearchConsole_WmxSitemap[]
    */
   public function getSitemap()
   {

@@ -19,6 +19,8 @@ class Google_Service_CloudLifeSciences_Volume extends Google_Model
 {
   protected $existingDiskType = 'Google_Service_CloudLifeSciences_ExistingDisk';
   protected $existingDiskDataType = '';
+  protected $nfsMountType = 'Google_Service_CloudLifeSciences_NFSMount';
+  protected $nfsMountDataType = '';
   protected $persistentDiskType = 'Google_Service_CloudLifeSciences_PersistentDisk';
   protected $persistentDiskDataType = '';
   public $volume;
@@ -36,6 +38,20 @@ class Google_Service_CloudLifeSciences_Volume extends Google_Model
   public function getExistingDisk()
   {
     return $this->existingDisk;
+  }
+  /**
+   * @param Google_Service_CloudLifeSciences_NFSMount
+   */
+  public function setNfsMount(Google_Service_CloudLifeSciences_NFSMount $nfsMount)
+  {
+    $this->nfsMount = $nfsMount;
+  }
+  /**
+   * @return Google_Service_CloudLifeSciences_NFSMount
+   */
+  public function getNfsMount()
+  {
+    return $this->nfsMount;
   }
   /**
    * @param Google_Service_CloudLifeSciences_PersistentDisk

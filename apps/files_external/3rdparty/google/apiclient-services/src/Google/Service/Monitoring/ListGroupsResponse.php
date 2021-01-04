@@ -23,14 +23,14 @@ class Google_Service_Monitoring_ListGroupsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Monitoring_Group
+   * @param Google_Service_Monitoring_Group[]
    */
   public function setGroup($group)
   {
     $this->group = $group;
   }
   /**
-   * @return Google_Service_Monitoring_Group
+   * @return Google_Service_Monitoring_Group[]
    */
   public function getGroup()
   {

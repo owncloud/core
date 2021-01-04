@@ -22,14 +22,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2Conditions extends Google_Collection
   protected $conditionsDataType = 'array';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2Condition
+   * @param Google_Service_DLP_GooglePrivacyDlpV2Condition[]
    */
   public function setConditions($conditions)
   {
     $this->conditions = $conditions;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2Condition
+   * @return Google_Service_DLP_GooglePrivacyDlpV2Condition[]
    */
   public function getConditions()
   {

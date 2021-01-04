@@ -24,6 +24,8 @@ class Google_Service_AndroidManagement_Device extends Google_Collection
   public $appliedPolicyName;
   public $appliedPolicyVersion;
   public $appliedState;
+  protected $commonCriteriaModeInfoType = 'Google_Service_AndroidManagement_CommonCriteriaModeInfo';
+  protected $commonCriteriaModeInfoDataType = '';
   protected $deviceSettingsType = 'Google_Service_AndroidManagement_DeviceSettings';
   protected $deviceSettingsDataType = '';
   protected $disabledReasonType = 'Google_Service_AndroidManagement_UserFacingMessage';
@@ -75,14 +77,14 @@ class Google_Service_AndroidManagement_Device extends Google_Collection
     return $this->apiLevel;
   }
   /**
-   * @param Google_Service_AndroidManagement_ApplicationReport
+   * @param Google_Service_AndroidManagement_ApplicationReport[]
    */
   public function setApplicationReports($applicationReports)
   {
     $this->applicationReports = $applicationReports;
   }
   /**
-   * @return Google_Service_AndroidManagement_ApplicationReport
+   * @return Google_Service_AndroidManagement_ApplicationReport[]
    */
   public function getApplicationReports()
   {
@@ -113,6 +115,20 @@ class Google_Service_AndroidManagement_Device extends Google_Collection
     return $this->appliedState;
   }
   /**
+   * @param Google_Service_AndroidManagement_CommonCriteriaModeInfo
+   */
+  public function setCommonCriteriaModeInfo(Google_Service_AndroidManagement_CommonCriteriaModeInfo $commonCriteriaModeInfo)
+  {
+    $this->commonCriteriaModeInfo = $commonCriteriaModeInfo;
+  }
+  /**
+   * @return Google_Service_AndroidManagement_CommonCriteriaModeInfo
+   */
+  public function getCommonCriteriaModeInfo()
+  {
+    return $this->commonCriteriaModeInfo;
+  }
+  /**
    * @param Google_Service_AndroidManagement_DeviceSettings
    */
   public function setDeviceSettings(Google_Service_AndroidManagement_DeviceSettings $deviceSettings)
@@ -141,14 +157,14 @@ class Google_Service_AndroidManagement_Device extends Google_Collection
     return $this->disabledReason;
   }
   /**
-   * @param Google_Service_AndroidManagement_Display
+   * @param Google_Service_AndroidManagement_Display[]
    */
   public function setDisplays($displays)
   {
     $this->displays = $displays;
   }
   /**
-   * @return Google_Service_AndroidManagement_Display
+   * @return Google_Service_AndroidManagement_Display[]
    */
   public function getDisplays()
   {
@@ -193,14 +209,14 @@ class Google_Service_AndroidManagement_Device extends Google_Collection
     return $this->hardwareInfo;
   }
   /**
-   * @param Google_Service_AndroidManagement_HardwareStatus
+   * @param Google_Service_AndroidManagement_HardwareStatus[]
    */
   public function setHardwareStatusSamples($hardwareStatusSamples)
   {
     $this->hardwareStatusSamples = $hardwareStatusSamples;
   }
   /**
-   * @return Google_Service_AndroidManagement_HardwareStatus
+   * @return Google_Service_AndroidManagement_HardwareStatus[]
    */
   public function getHardwareStatusSamples()
   {
@@ -239,14 +255,14 @@ class Google_Service_AndroidManagement_Device extends Google_Collection
     return $this->managementMode;
   }
   /**
-   * @param Google_Service_AndroidManagement_MemoryEvent
+   * @param Google_Service_AndroidManagement_MemoryEvent[]
    */
   public function setMemoryEvents($memoryEvents)
   {
     $this->memoryEvents = $memoryEvents;
   }
   /**
-   * @return Google_Service_AndroidManagement_MemoryEvent
+   * @return Google_Service_AndroidManagement_MemoryEvent[]
    */
   public function getMemoryEvents()
   {
@@ -289,14 +305,14 @@ class Google_Service_AndroidManagement_Device extends Google_Collection
     return $this->networkInfo;
   }
   /**
-   * @param Google_Service_AndroidManagement_NonComplianceDetail
+   * @param Google_Service_AndroidManagement_NonComplianceDetail[]
    */
   public function setNonComplianceDetails($nonComplianceDetails)
   {
     $this->nonComplianceDetails = $nonComplianceDetails;
   }
   /**
-   * @return Google_Service_AndroidManagement_NonComplianceDetail
+   * @return Google_Service_AndroidManagement_NonComplianceDetail[]
    */
   public function getNonComplianceDetails()
   {
@@ -327,14 +343,14 @@ class Google_Service_AndroidManagement_Device extends Google_Collection
     return $this->policyName;
   }
   /**
-   * @param Google_Service_AndroidManagement_PowerManagementEvent
+   * @param Google_Service_AndroidManagement_PowerManagementEvent[]
    */
   public function setPowerManagementEvents($powerManagementEvents)
   {
     $this->powerManagementEvents = $powerManagementEvents;
   }
   /**
-   * @return Google_Service_AndroidManagement_PowerManagementEvent
+   * @return Google_Service_AndroidManagement_PowerManagementEvent[]
    */
   public function getPowerManagementEvents()
   {

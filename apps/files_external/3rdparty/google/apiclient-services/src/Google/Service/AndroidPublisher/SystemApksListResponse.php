@@ -22,14 +22,14 @@ class Google_Service_AndroidPublisher_SystemApksListResponse extends Google_Coll
   protected $variantsDataType = 'array';
 
   /**
-   * @param Google_Service_AndroidPublisher_Variant
+   * @param Google_Service_AndroidPublisher_Variant[]
    */
   public function setVariants($variants)
   {
     $this->variants = $variants;
   }
   /**
-   * @return Google_Service_AndroidPublisher_Variant
+   * @return Google_Service_AndroidPublisher_Variant[]
    */
   public function getVariants()
   {

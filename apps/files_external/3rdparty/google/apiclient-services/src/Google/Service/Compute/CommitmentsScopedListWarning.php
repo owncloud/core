@@ -32,14 +32,14 @@ class Google_Service_Compute_CommitmentsScopedListWarning extends Google_Collect
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_CommitmentsScopedListWarningData
+   * @param Google_Service_Compute_CommitmentsScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_CommitmentsScopedListWarningData
+   * @return Google_Service_Compute_CommitmentsScopedListWarningData[]
    */
   public function getData()
   {

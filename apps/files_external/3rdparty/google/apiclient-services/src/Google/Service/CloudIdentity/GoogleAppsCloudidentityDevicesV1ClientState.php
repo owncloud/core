@@ -81,14 +81,14 @@ class Google_Service_CloudIdentity_GoogleAppsCloudidentityDevicesV1ClientState e
     return $this->healthScore;
   }
   /**
-   * @param Google_Service_CloudIdentity_GoogleAppsCloudidentityDevicesV1CustomAttributeValue
+   * @param Google_Service_CloudIdentity_GoogleAppsCloudidentityDevicesV1CustomAttributeValue[]
    */
   public function setKeyValuePairs($keyValuePairs)
   {
     $this->keyValuePairs = $keyValuePairs;
   }
   /**
-   * @return Google_Service_CloudIdentity_GoogleAppsCloudidentityDevicesV1CustomAttributeValue
+   * @return Google_Service_CloudIdentity_GoogleAppsCloudidentityDevicesV1CustomAttributeValue[]
    */
   public function getKeyValuePairs()
   {

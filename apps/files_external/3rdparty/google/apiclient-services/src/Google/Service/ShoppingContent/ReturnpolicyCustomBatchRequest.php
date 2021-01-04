@@ -22,14 +22,14 @@ class Google_Service_ShoppingContent_ReturnpolicyCustomBatchRequest extends Goog
   protected $entriesDataType = 'array';
 
   /**
-   * @param Google_Service_ShoppingContent_ReturnpolicyCustomBatchRequestEntry
+   * @param Google_Service_ShoppingContent_ReturnpolicyCustomBatchRequestEntry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_ShoppingContent_ReturnpolicyCustomBatchRequestEntry
+   * @return Google_Service_ShoppingContent_ReturnpolicyCustomBatchRequestEntry[]
    */
   public function getEntries()
   {

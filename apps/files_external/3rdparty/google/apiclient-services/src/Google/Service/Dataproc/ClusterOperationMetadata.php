@@ -84,14 +84,14 @@ class Google_Service_Dataproc_ClusterOperationMetadata extends Google_Collection
     return $this->status;
   }
   /**
-   * @param Google_Service_Dataproc_ClusterOperationStatus
+   * @param Google_Service_Dataproc_ClusterOperationStatus[]
    */
   public function setStatusHistory($statusHistory)
   {
     $this->statusHistory = $statusHistory;
   }
   /**
-   * @return Google_Service_Dataproc_ClusterOperationStatus
+   * @return Google_Service_Dataproc_ClusterOperationStatus[]
    */
   public function getStatusHistory()
   {

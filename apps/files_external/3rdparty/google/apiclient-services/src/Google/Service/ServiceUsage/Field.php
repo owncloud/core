@@ -87,14 +87,14 @@ class Google_Service_ServiceUsage_Field extends Google_Collection
     return $this->oneofIndex;
   }
   /**
-   * @param Google_Service_ServiceUsage_Option
+   * @param Google_Service_ServiceUsage_Option[]
    */
   public function setOptions($options)
   {
     $this->options = $options;
   }
   /**
-   * @return Google_Service_ServiceUsage_Option
+   * @return Google_Service_ServiceUsage_Option[]
    */
   public function getOptions()
   {

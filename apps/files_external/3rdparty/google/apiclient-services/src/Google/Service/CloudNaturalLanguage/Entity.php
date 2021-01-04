@@ -28,14 +28,14 @@ class Google_Service_CloudNaturalLanguage_Entity extends Google_Collection
   public $type;
 
   /**
-   * @param Google_Service_CloudNaturalLanguage_EntityMention
+   * @param Google_Service_CloudNaturalLanguage_EntityMention[]
    */
   public function setMentions($mentions)
   {
     $this->mentions = $mentions;
   }
   /**
-   * @return Google_Service_CloudNaturalLanguage_EntityMention
+   * @return Google_Service_CloudNaturalLanguage_EntityMention[]
    */
   public function getMentions()
   {

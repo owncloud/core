@@ -27,14 +27,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p2beta1Page extends Google_Collec
   public $width;
 
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p2beta1Block
+   * @param Google_Service_Vision_GoogleCloudVisionV1p2beta1Block[]
    */
   public function setBlocks($blocks)
   {
     $this->blocks = $blocks;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p2beta1Block
+   * @return Google_Service_Vision_GoogleCloudVisionV1p2beta1Block[]
    */
   public function getBlocks()
   {

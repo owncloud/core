@@ -31,14 +31,14 @@ class Google_Service_AccessContextManager_ReplaceServicePerimetersRequest extend
     return $this->etag;
   }
   /**
-   * @param Google_Service_AccessContextManager_ServicePerimeter
+   * @param Google_Service_AccessContextManager_ServicePerimeter[]
    */
   public function setServicePerimeters($servicePerimeters)
   {
     $this->servicePerimeters = $servicePerimeters;
   }
   /**
-   * @return Google_Service_AccessContextManager_ServicePerimeter
+   * @return Google_Service_AccessContextManager_ServicePerimeter[]
    */
   public function getServicePerimeters()
   {

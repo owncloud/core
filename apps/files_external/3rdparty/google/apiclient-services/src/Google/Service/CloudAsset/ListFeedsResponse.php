@@ -22,14 +22,14 @@ class Google_Service_CloudAsset_ListFeedsResponse extends Google_Collection
   protected $feedsDataType = 'array';
 
   /**
-   * @param Google_Service_CloudAsset_Feed
+   * @param Google_Service_CloudAsset_Feed[]
    */
   public function setFeeds($feeds)
   {
     $this->feeds = $feeds;
   }
   /**
-   * @return Google_Service_CloudAsset_Feed
+   * @return Google_Service_CloudAsset_Feed[]
    */
   public function getFeeds()
   {

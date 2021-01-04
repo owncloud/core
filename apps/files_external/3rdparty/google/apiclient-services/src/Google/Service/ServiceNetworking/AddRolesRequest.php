@@ -31,14 +31,14 @@ class Google_Service_ServiceNetworking_AddRolesRequest extends Google_Collection
     return $this->consumerNetwork;
   }
   /**
-   * @param Google_Service_ServiceNetworking_PolicyBinding
+   * @param Google_Service_ServiceNetworking_PolicyBinding[]
    */
   public function setPolicyBinding($policyBinding)
   {
     $this->policyBinding = $policyBinding;
   }
   /**
-   * @return Google_Service_ServiceNetworking_PolicyBinding
+   * @return Google_Service_ServiceNetworking_PolicyBinding[]
    */
   public function getPolicyBinding()
   {

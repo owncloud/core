@@ -29,6 +29,7 @@ class Google_Service_AndroidManagement_Policy extends Google_Collection
   public $appAutoUpdatePolicy;
   protected $applicationsType = 'Google_Service_AndroidManagement_ApplicationPolicy';
   protected $applicationsDataType = 'array';
+  public $autoDateAndTimeZone;
   public $autoTimeRequired;
   public $blockApplicationsEnabled;
   public $bluetoothConfigDisabled;
@@ -190,18 +191,26 @@ class Google_Service_AndroidManagement_Policy extends Google_Collection
     return $this->appAutoUpdatePolicy;
   }
   /**
-   * @param Google_Service_AndroidManagement_ApplicationPolicy
+   * @param Google_Service_AndroidManagement_ApplicationPolicy[]
    */
   public function setApplications($applications)
   {
     $this->applications = $applications;
   }
   /**
-   * @return Google_Service_AndroidManagement_ApplicationPolicy
+   * @return Google_Service_AndroidManagement_ApplicationPolicy[]
    */
   public function getApplications()
   {
     return $this->applications;
+  }
+  public function setAutoDateAndTimeZone($autoDateAndTimeZone)
+  {
+    $this->autoDateAndTimeZone = $autoDateAndTimeZone;
+  }
+  public function getAutoDateAndTimeZone()
+  {
+    return $this->autoDateAndTimeZone;
   }
   public function setAutoTimeRequired($autoTimeRequired)
   {
@@ -260,28 +269,28 @@ class Google_Service_AndroidManagement_Policy extends Google_Collection
     return $this->cellBroadcastsConfigDisabled;
   }
   /**
-   * @param Google_Service_AndroidManagement_ChoosePrivateKeyRule
+   * @param Google_Service_AndroidManagement_ChoosePrivateKeyRule[]
    */
   public function setChoosePrivateKeyRules($choosePrivateKeyRules)
   {
     $this->choosePrivateKeyRules = $choosePrivateKeyRules;
   }
   /**
-   * @return Google_Service_AndroidManagement_ChoosePrivateKeyRule
+   * @return Google_Service_AndroidManagement_ChoosePrivateKeyRule[]
    */
   public function getChoosePrivateKeyRules()
   {
     return $this->choosePrivateKeyRules;
   }
   /**
-   * @param Google_Service_AndroidManagement_ComplianceRule
+   * @param Google_Service_AndroidManagement_ComplianceRule[]
    */
   public function setComplianceRules($complianceRules)
   {
     $this->complianceRules = $complianceRules;
   }
   /**
-   * @return Google_Service_AndroidManagement_ComplianceRule
+   * @return Google_Service_AndroidManagement_ComplianceRule[]
    */
   public function getComplianceRules()
   {
@@ -546,14 +555,14 @@ class Google_Service_AndroidManagement_Policy extends Google_Collection
     return $this->outgoingCallsDisabled;
   }
   /**
-   * @param Google_Service_AndroidManagement_PasswordRequirements
+   * @param Google_Service_AndroidManagement_PasswordRequirements[]
    */
   public function setPasswordPolicies($passwordPolicies)
   {
     $this->passwordPolicies = $passwordPolicies;
   }
   /**
-   * @return Google_Service_AndroidManagement_PasswordRequirements
+   * @return Google_Service_AndroidManagement_PasswordRequirements[]
    */
   public function getPasswordPolicies()
   {
@@ -574,14 +583,14 @@ class Google_Service_AndroidManagement_Policy extends Google_Collection
     return $this->passwordRequirements;
   }
   /**
-   * @param Google_Service_AndroidManagement_PermissionGrant
+   * @param Google_Service_AndroidManagement_PermissionGrant[]
    */
   public function setPermissionGrants($permissionGrants)
   {
     $this->permissionGrants = $permissionGrants;
   }
   /**
-   * @return Google_Service_AndroidManagement_PermissionGrant
+   * @return Google_Service_AndroidManagement_PermissionGrant[]
    */
   public function getPermissionGrants()
   {
@@ -616,14 +625,14 @@ class Google_Service_AndroidManagement_Policy extends Google_Collection
     return $this->permittedInputMethods;
   }
   /**
-   * @param Google_Service_AndroidManagement_PersistentPreferredActivity
+   * @param Google_Service_AndroidManagement_PersistentPreferredActivity[]
    */
   public function setPersistentPreferredActivities($persistentPreferredActivities)
   {
     $this->persistentPreferredActivities = $persistentPreferredActivities;
   }
   /**
-   * @return Google_Service_AndroidManagement_PersistentPreferredActivity
+   * @return Google_Service_AndroidManagement_PersistentPreferredActivity[]
    */
   public function getPersistentPreferredActivities()
   {
@@ -652,14 +661,14 @@ class Google_Service_AndroidManagement_Policy extends Google_Collection
     return $this->playStoreMode;
   }
   /**
-   * @param Google_Service_AndroidManagement_PolicyEnforcementRule
+   * @param Google_Service_AndroidManagement_PolicyEnforcementRule[]
    */
   public function setPolicyEnforcementRules($policyEnforcementRules)
   {
     $this->policyEnforcementRules = $policyEnforcementRules;
   }
   /**
-   * @return Google_Service_AndroidManagement_PolicyEnforcementRule
+   * @return Google_Service_AndroidManagement_PolicyEnforcementRule[]
    */
   public function getPolicyEnforcementRules()
   {
@@ -728,14 +737,14 @@ class Google_Service_AndroidManagement_Policy extends Google_Collection
     return $this->setWallpaperDisabled;
   }
   /**
-   * @param Google_Service_AndroidManagement_SetupAction
+   * @param Google_Service_AndroidManagement_SetupAction[]
    */
   public function setSetupActions($setupActions)
   {
     $this->setupActions = $setupActions;
   }
   /**
-   * @return Google_Service_AndroidManagement_SetupAction
+   * @return Google_Service_AndroidManagement_SetupAction[]
    */
   public function getSetupActions()
   {

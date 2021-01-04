@@ -40,14 +40,14 @@ class Google_Service_Dataflow_TemplateMetadata extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Dataflow_ParameterMetadata
+   * @param Google_Service_Dataflow_ParameterMetadata[]
    */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
   /**
-   * @return Google_Service_Dataflow_ParameterMetadata
+   * @return Google_Service_Dataflow_ParameterMetadata[]
    */
   public function getParameters()
   {

@@ -22,14 +22,14 @@ class Google_Service_Testing_DeviceIpBlockCatalog extends Google_Collection
   protected $ipBlocksDataType = 'array';
 
   /**
-   * @param Google_Service_Testing_DeviceIpBlock
+   * @param Google_Service_Testing_DeviceIpBlock[]
    */
   public function setIpBlocks($ipBlocks)
   {
     $this->ipBlocks = $ipBlocks;
   }
   /**
-   * @return Google_Service_Testing_DeviceIpBlock
+   * @return Google_Service_Testing_DeviceIpBlock[]
    */
   public function getIpBlocks()
   {

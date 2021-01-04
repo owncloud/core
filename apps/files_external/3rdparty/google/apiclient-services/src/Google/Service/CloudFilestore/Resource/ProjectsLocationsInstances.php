@@ -26,7 +26,10 @@
 class Google_Service_CloudFilestore_Resource_ProjectsLocationsInstances extends Google_Service_Resource
 {
   /**
-   * Creates an instance. (instances.create)
+   * Creates an instance. When creating from a backup, the capacity of the new
+   * instance needs to be equal to or larger than the capacity of the backup (and
+   * also equal to or larger than the minimum capacity of the tier).
+   * (instances.create)
    *
    * @param string $parent Required. The instance's project and location, in the
    * format projects/{project_id}/locations/{location}. In Cloud Filestore,
@@ -83,12 +86,12 @@ class Google_Service_CloudFilestore_Resource_ProjectsLocationsInstances extends 
    * for all locations, use "-" for the {location} value.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter List filter.
    * @opt_param string orderBy Sort results. Supported values are "name", "name
    * desc" or "" (unsorted).
+   * @opt_param int pageSize The maximum number of items to return.
    * @opt_param string pageToken The next_page_token value to use if there are
    * additional results to retrieve for this list request.
-   * @opt_param int pageSize The maximum number of items to return.
-   * @opt_param string filter List filter.
    * @return Google_Service_CloudFilestore_ListInstancesResponse
    */
   public function listProjectsLocationsInstances($parent, $optParams = array())
@@ -115,5 +118,23 @@ class Google_Service_CloudFilestore_Resource_ProjectsLocationsInstances extends 
     $params = array('name' => $name, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('patch', array($params), "Google_Service_CloudFilestore_Operation");
+  }
+  /**
+   * Restores an existing instance's file share from a backup. The instance's file
+   * share capacity will be set to the backup's capacity or the minimum capacity
+   * of the tier, whichever is larger. (instances.restore)
+   *
+   * @param string $name Required. The resource name of the instance, in the
+   * format
+   * projects/{project_number}/locations/{location_id}/instances/{instance_id}.
+   * @param Google_Service_CloudFilestore_RestoreInstanceRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_CloudFilestore_Operation
+   */
+  public function restore($name, Google_Service_CloudFilestore_RestoreInstanceRequest $postBody, $optParams = array())
+  {
+    $params = array('name' => $name, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('restore', array($params), "Google_Service_CloudFilestore_Operation");
   }
 }

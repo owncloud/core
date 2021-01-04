@@ -32,14 +32,14 @@ class Google_Service_Compute_VpnGatewayAggregatedListWarning extends Google_Coll
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_VpnGatewayAggregatedListWarningData
+   * @param Google_Service_Compute_VpnGatewayAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_VpnGatewayAggregatedListWarningData
+   * @return Google_Service_Compute_VpnGatewayAggregatedListWarningData[]
    */
   public function getData()
   {

@@ -32,14 +32,14 @@ class Google_Service_Compute_BackendServicesScopedListWarning extends Google_Col
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_BackendServicesScopedListWarningData
+   * @param Google_Service_Compute_BackendServicesScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_BackendServicesScopedListWarningData
+   * @return Google_Service_Compute_BackendServicesScopedListWarningData[]
    */
   public function getData()
   {

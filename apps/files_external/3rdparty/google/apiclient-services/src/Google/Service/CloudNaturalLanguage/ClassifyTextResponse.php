@@ -22,14 +22,14 @@ class Google_Service_CloudNaturalLanguage_ClassifyTextResponse extends Google_Co
   protected $categoriesDataType = 'array';
 
   /**
-   * @param Google_Service_CloudNaturalLanguage_ClassificationCategory
+   * @param Google_Service_CloudNaturalLanguage_ClassificationCategory[]
    */
   public function setCategories($categories)
   {
     $this->categories = $categories;
   }
   /**
-   * @return Google_Service_CloudNaturalLanguage_ClassificationCategory
+   * @return Google_Service_CloudNaturalLanguage_ClassificationCategory[]
    */
   public function getCategories()
   {

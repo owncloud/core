@@ -35,14 +35,14 @@ class Google_Service_Compute_TargetHttpProxyAggregatedList extends Google_Collec
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_TargetHttpProxiesScopedList
+   * @param Google_Service_Compute_TargetHttpProxiesScopedList[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_TargetHttpProxiesScopedList
+   * @return Google_Service_Compute_TargetHttpProxiesScopedList[]
    */
   public function getItems()
   {

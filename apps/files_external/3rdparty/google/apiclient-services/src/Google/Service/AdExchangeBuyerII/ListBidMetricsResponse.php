@@ -23,14 +23,14 @@ class Google_Service_AdExchangeBuyerII_ListBidMetricsResponse extends Google_Col
   public $nextPageToken;
 
   /**
-   * @param Google_Service_AdExchangeBuyerII_BidMetricsRow
+   * @param Google_Service_AdExchangeBuyerII_BidMetricsRow[]
    */
   public function setBidMetricsRows($bidMetricsRows)
   {
     $this->bidMetricsRows = $bidMetricsRows;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_BidMetricsRow
+   * @return Google_Service_AdExchangeBuyerII_BidMetricsRow[]
    */
   public function getBidMetricsRows()
   {

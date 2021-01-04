@@ -72,14 +72,14 @@ class Google_Service_CloudMemorystoreforMemcached_Instance extends Google_Collec
     return $this->displayName;
   }
   /**
-   * @param Google_Service_CloudMemorystoreforMemcached_InstanceMessage
+   * @param Google_Service_CloudMemorystoreforMemcached_InstanceMessage[]
    */
   public function setInstanceMessages($instanceMessages)
   {
     $this->instanceMessages = $instanceMessages;
   }
   /**
-   * @return Google_Service_CloudMemorystoreforMemcached_InstanceMessage
+   * @return Google_Service_CloudMemorystoreforMemcached_InstanceMessage[]
    */
   public function getInstanceMessages()
   {
@@ -102,14 +102,14 @@ class Google_Service_CloudMemorystoreforMemcached_Instance extends Google_Collec
     return $this->memcacheFullVersion;
   }
   /**
-   * @param Google_Service_CloudMemorystoreforMemcached_Node
+   * @param Google_Service_CloudMemorystoreforMemcached_Node[]
    */
   public function setMemcacheNodes($memcacheNodes)
   {
     $this->memcacheNodes = $memcacheNodes;
   }
   /**
-   * @return Google_Service_CloudMemorystoreforMemcached_Node
+   * @return Google_Service_CloudMemorystoreforMemcached_Node[]
    */
   public function getMemcacheNodes()
   {

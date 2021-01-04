@@ -41,14 +41,14 @@ class Google_Service_ContainerAnalysis_WindowsDetail extends Google_Collection
     return $this->description;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_KnowledgeBase
+   * @param Google_Service_ContainerAnalysis_KnowledgeBase[]
    */
   public function setFixingKbs($fixingKbs)
   {
     $this->fixingKbs = $fixingKbs;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_KnowledgeBase
+   * @return Google_Service_ContainerAnalysis_KnowledgeBase[]
    */
   public function getFixingKbs()
   {

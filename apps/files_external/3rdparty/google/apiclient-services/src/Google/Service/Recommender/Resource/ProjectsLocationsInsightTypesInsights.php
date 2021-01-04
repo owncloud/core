@@ -52,12 +52,12 @@ class Google_Service_Recommender_Resource_ProjectsLocationsInsightTypesInsights 
    * https://cloud.google.com/recommender/docs/insights/insight-types.)
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Optional. The maximum number of results to return
-   * from this request. Non-positive values are ignored. If not specified, the
-   * server will determine the number of results to return.
    * @opt_param string filter Optional. Filter expression to restrict the insights
    * returned. Supported filter fields: state Eg: `state:"DISMISSED" or
    * state:"ACTIVE"
+   * @opt_param int pageSize Optional. The maximum number of results to return
+   * from this request. Non-positive values are ignored. If not specified, the
+   * server will determine the number of results to return.
    * @opt_param string pageToken Optional. If present, retrieves the next batch of
    * results from the preceding call to this method. `page_token` must be the
    * value of `next_page_token` from the previous response. The values of other

@@ -25,28 +25,28 @@ class Google_Service_AdExchangeBuyer_CreativeServingRestrictions extends Google_
   public $reason;
 
   /**
-   * @param Google_Service_AdExchangeBuyer_CreativeServingRestrictionsContexts
+   * @param Google_Service_AdExchangeBuyer_CreativeServingRestrictionsContexts[]
    */
   public function setContexts($contexts)
   {
     $this->contexts = $contexts;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_CreativeServingRestrictionsContexts
+   * @return Google_Service_AdExchangeBuyer_CreativeServingRestrictionsContexts[]
    */
   public function getContexts()
   {
     return $this->contexts;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_CreativeServingRestrictionsDisapprovalReasons
+   * @param Google_Service_AdExchangeBuyer_CreativeServingRestrictionsDisapprovalReasons[]
    */
   public function setDisapprovalReasons($disapprovalReasons)
   {
     $this->disapprovalReasons = $disapprovalReasons;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_CreativeServingRestrictionsDisapprovalReasons
+   * @return Google_Service_AdExchangeBuyer_CreativeServingRestrictionsDisapprovalReasons[]
    */
   public function getDisapprovalReasons()
   {

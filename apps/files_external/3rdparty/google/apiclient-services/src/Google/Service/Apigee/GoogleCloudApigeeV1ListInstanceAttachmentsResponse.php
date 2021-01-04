@@ -23,14 +23,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ListInstanceAttachmentsResponse e
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1InstanceAttachment
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1InstanceAttachment[]
    */
   public function setAttachments($attachments)
   {
     $this->attachments = $attachments;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1InstanceAttachment
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1InstanceAttachment[]
    */
   public function getAttachments()
   {

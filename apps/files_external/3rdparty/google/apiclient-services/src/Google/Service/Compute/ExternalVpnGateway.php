@@ -55,14 +55,14 @@ class Google_Service_Compute_ExternalVpnGateway extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_ExternalVpnGatewayInterface
+   * @param Google_Service_Compute_ExternalVpnGatewayInterface[]
    */
   public function setInterfaces($interfaces)
   {
     $this->interfaces = $interfaces;
   }
   /**
-   * @return Google_Service_Compute_ExternalVpnGatewayInterface
+   * @return Google_Service_Compute_ExternalVpnGatewayInterface[]
    */
   public function getInterfaces()
   {

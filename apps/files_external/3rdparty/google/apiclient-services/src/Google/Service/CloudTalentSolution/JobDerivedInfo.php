@@ -31,14 +31,14 @@ class Google_Service_CloudTalentSolution_JobDerivedInfo extends Google_Collectio
     return $this->jobCategories;
   }
   /**
-   * @param Google_Service_CloudTalentSolution_Location
+   * @param Google_Service_CloudTalentSolution_Location[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_Location
+   * @return Google_Service_CloudTalentSolution_Location[]
    */
   public function getLocations()
   {

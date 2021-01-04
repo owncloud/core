@@ -51,28 +51,28 @@ class Google_Service_DisplayVideo_ReviewStatusInfo extends Google_Collection
     return $this->creativeAndLandingPageReviewStatus;
   }
   /**
-   * @param Google_Service_DisplayVideo_ExchangeReviewStatus
+   * @param Google_Service_DisplayVideo_ExchangeReviewStatus[]
    */
   public function setExchangeReviewStatuses($exchangeReviewStatuses)
   {
     $this->exchangeReviewStatuses = $exchangeReviewStatuses;
   }
   /**
-   * @return Google_Service_DisplayVideo_ExchangeReviewStatus
+   * @return Google_Service_DisplayVideo_ExchangeReviewStatus[]
    */
   public function getExchangeReviewStatuses()
   {
     return $this->exchangeReviewStatuses;
   }
   /**
-   * @param Google_Service_DisplayVideo_PublisherReviewStatus
+   * @param Google_Service_DisplayVideo_PublisherReviewStatus[]
    */
   public function setPublisherReviewStatuses($publisherReviewStatuses)
   {
     $this->publisherReviewStatuses = $publisherReviewStatuses;
   }
   /**
-   * @return Google_Service_DisplayVideo_PublisherReviewStatus
+   * @return Google_Service_DisplayVideo_PublisherReviewStatus[]
    */
   public function getPublisherReviewStatuses()
   {

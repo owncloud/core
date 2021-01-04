@@ -32,14 +32,14 @@ class Google_Service_Compute_CommitmentAggregatedListWarning extends Google_Coll
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_CommitmentAggregatedListWarningData
+   * @param Google_Service_Compute_CommitmentAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_CommitmentAggregatedListWarningData
+   * @return Google_Service_Compute_CommitmentAggregatedListWarningData[]
    */
   public function getData()
   {

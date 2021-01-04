@@ -23,14 +23,14 @@ class Google_Service_BigQueryConnectionService_ListConnectionsResponse extends G
   public $nextPageToken;
 
   /**
-   * @param Google_Service_BigQueryConnectionService_Connection
+   * @param Google_Service_BigQueryConnectionService_Connection[]
    */
   public function setConnections($connections)
   {
     $this->connections = $connections;
   }
   /**
-   * @return Google_Service_BigQueryConnectionService_Connection
+   * @return Google_Service_BigQueryConnectionService_Connection[]
    */
   public function getConnections()
   {

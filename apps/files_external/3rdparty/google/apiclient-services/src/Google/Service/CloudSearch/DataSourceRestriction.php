@@ -24,14 +24,14 @@ class Google_Service_CloudSearch_DataSourceRestriction extends Google_Collection
   protected $sourceDataType = '';
 
   /**
-   * @param Google_Service_CloudSearch_FilterOptions
+   * @param Google_Service_CloudSearch_FilterOptions[]
    */
   public function setFilterOptions($filterOptions)
   {
     $this->filterOptions = $filterOptions;
   }
   /**
-   * @return Google_Service_CloudSearch_FilterOptions
+   * @return Google_Service_CloudSearch_FilterOptions[]
    */
   public function getFilterOptions()
   {

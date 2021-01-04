@@ -23,14 +23,14 @@ class Google_Service_Classroom_ListGuardiansResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Classroom_Guardian
+   * @param Google_Service_Classroom_Guardian[]
    */
   public function setGuardians($guardians)
   {
     $this->guardians = $guardians;
   }
   /**
-   * @return Google_Service_Classroom_Guardian
+   * @return Google_Service_Classroom_Guardian[]
    */
   public function getGuardians()
   {

@@ -31,14 +31,14 @@ class Google_Service_Cloudbilling_ListSkusResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Cloudbilling_Sku
+   * @param Google_Service_Cloudbilling_Sku[]
    */
   public function setSkus($skus)
   {
     $this->skus = $skus;
   }
   /**
-   * @return Google_Service_Cloudbilling_Sku
+   * @return Google_Service_Cloudbilling_Sku[]
    */
   public function getSkus()
   {

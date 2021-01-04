@@ -82,14 +82,14 @@ class Google_Service_Compute_InstanceGroup extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Compute_NamedPort
+   * @param Google_Service_Compute_NamedPort[]
    */
   public function setNamedPorts($namedPorts)
   {
     $this->namedPorts = $namedPorts;
   }
   /**
-   * @return Google_Service_Compute_NamedPort
+   * @return Google_Service_Compute_NamedPort[]
    */
   public function getNamedPorts()
   {

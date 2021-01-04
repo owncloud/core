@@ -33,14 +33,14 @@ class Google_Service_Recommender_GoogleCloudRecommenderV1Insight extends Google_
   public $targetResources;
 
   /**
-   * @param Google_Service_Recommender_GoogleCloudRecommenderV1InsightRecommendationReference
+   * @param Google_Service_Recommender_GoogleCloudRecommenderV1InsightRecommendationReference[]
    */
   public function setAssociatedRecommendations($associatedRecommendations)
   {
     $this->associatedRecommendations = $associatedRecommendations;
   }
   /**
-   * @return Google_Service_Recommender_GoogleCloudRecommenderV1InsightRecommendationReference
+   * @return Google_Service_Recommender_GoogleCloudRecommenderV1InsightRecommendationReference[]
    */
   public function getAssociatedRecommendations()
   {

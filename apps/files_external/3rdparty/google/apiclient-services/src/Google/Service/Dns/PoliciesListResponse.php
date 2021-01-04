@@ -56,14 +56,14 @@ class Google_Service_Dns_PoliciesListResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Dns_Policy
+   * @param Google_Service_Dns_Policy[]
    */
   public function setPolicies($policies)
   {
     $this->policies = $policies;
   }
   /**
-   * @return Google_Service_Dns_Policy
+   * @return Google_Service_Dns_Policy[]
    */
   public function getPolicies()
   {

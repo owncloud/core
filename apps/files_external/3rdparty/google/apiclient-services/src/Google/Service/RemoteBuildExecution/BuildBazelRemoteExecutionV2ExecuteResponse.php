@@ -57,14 +57,14 @@ class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2ExecuteResp
     return $this->result;
   }
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2LogFile
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2LogFile[]
    */
   public function setServerLogs($serverLogs)
   {
     $this->serverLogs = $serverLogs;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2LogFile
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2LogFile[]
    */
   public function getServerLogs()
   {

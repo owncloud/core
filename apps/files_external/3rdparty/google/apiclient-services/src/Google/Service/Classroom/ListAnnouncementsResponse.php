@@ -23,14 +23,14 @@ class Google_Service_Classroom_ListAnnouncementsResponse extends Google_Collecti
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Classroom_Announcement
+   * @param Google_Service_Classroom_Announcement[]
    */
   public function setAnnouncements($announcements)
   {
     $this->announcements = $announcements;
   }
   /**
-   * @return Google_Service_Classroom_Announcement
+   * @return Google_Service_Classroom_Announcement[]
    */
   public function getAnnouncements()
   {

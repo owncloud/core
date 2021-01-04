@@ -32,14 +32,14 @@ class Google_Service_Compute_RegionInstanceGroupsListInstancesWarning extends Go
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_RegionInstanceGroupsListInstancesWarningData
+   * @param Google_Service_Compute_RegionInstanceGroupsListInstancesWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_RegionInstanceGroupsListInstancesWarningData
+   * @return Google_Service_Compute_RegionInstanceGroupsListInstancesWarningData[]
    */
   public function getData()
   {

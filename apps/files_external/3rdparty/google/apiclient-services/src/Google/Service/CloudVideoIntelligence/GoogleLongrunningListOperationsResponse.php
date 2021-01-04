@@ -31,14 +31,14 @@ class Google_Service_CloudVideoIntelligence_GoogleLongrunningListOperationsRespo
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleLongrunningOperation
+   * @param Google_Service_CloudVideoIntelligence_GoogleLongrunningOperation[]
    */
   public function setOperations($operations)
   {
     $this->operations = $operations;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleLongrunningOperation
+   * @return Google_Service_CloudVideoIntelligence_GoogleLongrunningOperation[]
    */
   public function getOperations()
   {

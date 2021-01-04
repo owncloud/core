@@ -124,14 +124,14 @@ class Google_Service_CloudRun_ObjectMeta extends Google_Collection
     return $this->namespace;
   }
   /**
-   * @param Google_Service_CloudRun_OwnerReference
+   * @param Google_Service_CloudRun_OwnerReference[]
    */
   public function setOwnerReferences($ownerReferences)
   {
     $this->ownerReferences = $ownerReferences;
   }
   /**
-   * @return Google_Service_CloudRun_OwnerReference
+   * @return Google_Service_CloudRun_OwnerReference[]
    */
   public function getOwnerReferences()
   {

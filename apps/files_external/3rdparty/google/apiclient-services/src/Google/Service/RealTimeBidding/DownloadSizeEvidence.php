@@ -23,14 +23,14 @@ class Google_Service_RealTimeBidding_DownloadSizeEvidence extends Google_Collect
   public $totalDownloadSizeKb;
 
   /**
-   * @param Google_Service_RealTimeBidding_UrlDownloadSize
+   * @param Google_Service_RealTimeBidding_UrlDownloadSize[]
    */
   public function setTopUrlDownloadSizeBreakdowns($topUrlDownloadSizeBreakdowns)
   {
     $this->topUrlDownloadSizeBreakdowns = $topUrlDownloadSizeBreakdowns;
   }
   /**
-   * @return Google_Service_RealTimeBidding_UrlDownloadSize
+   * @return Google_Service_RealTimeBidding_UrlDownloadSize[]
    */
   public function getTopUrlDownloadSizeBreakdowns()
   {

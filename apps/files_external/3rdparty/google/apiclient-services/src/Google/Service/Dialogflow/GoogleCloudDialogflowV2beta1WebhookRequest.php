@@ -28,14 +28,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1WebhookRequest exten
   public $session;
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1QueryResult
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1QueryResult[]
    */
   public function setAlternativeQueryResults($alternativeQueryResults)
   {
     $this->alternativeQueryResults = $alternativeQueryResults;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1QueryResult
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1QueryResult[]
    */
   public function getAlternativeQueryResults()
   {

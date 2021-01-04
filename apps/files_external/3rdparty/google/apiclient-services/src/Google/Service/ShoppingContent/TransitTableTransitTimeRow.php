@@ -22,14 +22,14 @@ class Google_Service_ShoppingContent_TransitTableTransitTimeRow extends Google_C
   protected $valuesDataType = 'array';
 
   /**
-   * @param Google_Service_ShoppingContent_TransitTableTransitTimeRowTransitTimeValue
+   * @param Google_Service_ShoppingContent_TransitTableTransitTimeRowTransitTimeValue[]
    */
   public function setValues($values)
   {
     $this->values = $values;
   }
   /**
-   * @return Google_Service_ShoppingContent_TransitTableTransitTimeRowTransitTimeValue
+   * @return Google_Service_ShoppingContent_TransitTableTransitTimeRowTransitTimeValue[]
    */
   public function getValues()
   {

@@ -37,14 +37,14 @@ class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Command ext
     return $this->arguments;
   }
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2CommandEnvironmentVariable
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2CommandEnvironmentVariable[]
    */
   public function setEnvironmentVariables($environmentVariables)
   {
     $this->environmentVariables = $environmentVariables;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2CommandEnvironmentVariable
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2CommandEnvironmentVariable[]
    */
   public function getEnvironmentVariables()
   {

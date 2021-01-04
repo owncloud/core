@@ -29,7 +29,7 @@ class Google_Service_Dfareporting_Resource_DimensionValues extends Google_Servic
    * Retrieves list of report dimension values for a list of filters.
    * (dimensionValues.query)
    *
-   * @param string $profileId The DFA user profile ID.
+   * @param string $profileId The Campaign Manager 360 user profile ID.
    * @param Google_Service_Dfareporting_DimensionValueRequest $postBody
    * @param array $optParams Optional parameters.
    *

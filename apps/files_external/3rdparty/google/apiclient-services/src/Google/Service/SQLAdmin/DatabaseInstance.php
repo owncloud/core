@@ -158,14 +158,14 @@ class Google_Service_SQLAdmin_DatabaseInstance extends Google_Collection
     return $this->instanceType;
   }
   /**
-   * @param Google_Service_SQLAdmin_IpMapping
+   * @param Google_Service_SQLAdmin_IpMapping[]
    */
   public function setIpAddresses($ipAddresses)
   {
     $this->ipAddresses = $ipAddresses;
   }
   /**
-   * @return Google_Service_SQLAdmin_IpMapping
+   * @return Google_Service_SQLAdmin_IpMapping[]
    */
   public function getIpAddresses()
   {

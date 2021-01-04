@@ -42,14 +42,14 @@ class Google_Service_NetworkManagement_LoadBalancerInfo extends Google_Collectio
     return $this->backendUri;
   }
   /**
-   * @param Google_Service_NetworkManagement_LoadBalancerBackend
+   * @param Google_Service_NetworkManagement_LoadBalancerBackend[]
    */
   public function setBackends($backends)
   {
     $this->backends = $backends;
   }
   /**
-   * @return Google_Service_NetworkManagement_LoadBalancerBackend
+   * @return Google_Service_NetworkManagement_LoadBalancerBackend[]
    */
   public function getBackends()
   {

@@ -31,14 +31,14 @@ class Google_Service_CloudDomains_ListRegistrationsResponse extends Google_Colle
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_CloudDomains_Registration
+   * @param Google_Service_CloudDomains_Registration[]
    */
   public function setRegistrations($registrations)
   {
     $this->registrations = $registrations;
   }
   /**
-   * @return Google_Service_CloudDomains_Registration
+   * @return Google_Service_CloudDomains_Registration[]
    */
   public function getRegistrations()
   {

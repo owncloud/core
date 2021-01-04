@@ -38,14 +38,14 @@ class Google_Service_Sheets_ManualRuleGroup extends Google_Collection
     return $this->groupName;
   }
   /**
-   * @param Google_Service_Sheets_ExtendedValue
+   * @param Google_Service_Sheets_ExtendedValue[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Sheets_ExtendedValue
+   * @return Google_Service_Sheets_ExtendedValue[]
    */
   public function getItems()
   {

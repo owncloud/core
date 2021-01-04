@@ -22,14 +22,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ListOrganizationsResponse extends
   protected $organizationsDataType = 'array';
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1OrganizationProjectMapping
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1OrganizationProjectMapping[]
    */
   public function setOrganizations($organizations)
   {
     $this->organizations = $organizations;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1OrganizationProjectMapping
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1OrganizationProjectMapping[]
    */
   public function getOrganizations()
   {

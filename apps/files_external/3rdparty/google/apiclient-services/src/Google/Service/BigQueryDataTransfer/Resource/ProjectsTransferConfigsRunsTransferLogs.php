@@ -35,14 +35,14 @@ class Google_Service_BigQueryDataTransfer_Resource_ProjectsTransferConfigsRunsTr
    * id}`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Pagination token, which can be used to request a
-   * specific page of `ListTransferLogsRequest` list results. For multiple-page
-   * results, `ListTransferLogsResponse` outputs a `next_page` token, which can be
-   * used as the `page_token` value to request the next page of list results.
    * @opt_param string messageTypes Message types to return. If not populated -
    * INFO, WARNING and ERROR messages are returned.
    * @opt_param int pageSize Page size. The default page size is the maximum value
    * of 1000 results.
+   * @opt_param string pageToken Pagination token, which can be used to request a
+   * specific page of `ListTransferLogsRequest` list results. For multiple-page
+   * results, `ListTransferLogsResponse` outputs a `next_page` token, which can be
+   * used as the `page_token` value to request the next page of list results.
    * @return Google_Service_BigQueryDataTransfer_ListTransferLogsResponse
    */
   public function listProjectsTransferConfigsRunsTransferLogs($parent, $optParams = array())

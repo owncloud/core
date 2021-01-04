@@ -23,14 +23,14 @@ class Google_Service_Dfareporting_AccountPermissionGroupsListResponse extends Go
   public $kind;
 
   /**
-   * @param Google_Service_Dfareporting_AccountPermissionGroup
+   * @param Google_Service_Dfareporting_AccountPermissionGroup[]
    */
   public function setAccountPermissionGroups($accountPermissionGroups)
   {
     $this->accountPermissionGroups = $accountPermissionGroups;
   }
   /**
-   * @return Google_Service_Dfareporting_AccountPermissionGroup
+   * @return Google_Service_Dfareporting_AccountPermissionGroup[]
    */
   public function getAccountPermissionGroups()
   {

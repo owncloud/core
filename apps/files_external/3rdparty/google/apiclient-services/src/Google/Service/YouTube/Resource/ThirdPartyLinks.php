@@ -66,9 +66,9 @@ class Google_Service_YouTube_Resource_ThirdPartyLinks extends Google_Service_Res
    * linkingToken, status, and snippet.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string type Get a third party link of the given type.
    * @opt_param string linkingToken Get a third party link with the given linking
    * token.
+   * @opt_param string type Get a third party link of the given type.
    * @return Google_Service_YouTube_ThirdPartyLink
    */
   public function listThirdPartyLinks($part, $optParams = array())

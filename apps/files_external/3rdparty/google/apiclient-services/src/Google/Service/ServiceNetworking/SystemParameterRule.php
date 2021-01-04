@@ -23,14 +23,14 @@ class Google_Service_ServiceNetworking_SystemParameterRule extends Google_Collec
   public $selector;
 
   /**
-   * @param Google_Service_ServiceNetworking_SystemParameter
+   * @param Google_Service_ServiceNetworking_SystemParameter[]
    */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
   /**
-   * @return Google_Service_ServiceNetworking_SystemParameter
+   * @return Google_Service_ServiceNetworking_SystemParameter[]
    */
   public function getParameters()
   {

@@ -27,14 +27,14 @@ class Google_Service_ShoppingContent_OrdersRefundItemRequest extends Google_Coll
   protected $shippingDataType = '';
 
   /**
-   * @param Google_Service_ShoppingContent_OrdersCustomBatchRequestEntryRefundItemItem
+   * @param Google_Service_ShoppingContent_OrdersCustomBatchRequestEntryRefundItemItem[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrdersCustomBatchRequestEntryRefundItemItem
+   * @return Google_Service_ShoppingContent_OrdersCustomBatchRequestEntryRefundItemItem[]
    */
   public function getItems()
   {

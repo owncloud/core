@@ -23,14 +23,14 @@ class Google_Service_Fitness_DataType extends Google_Collection
   public $name;
 
   /**
-   * @param Google_Service_Fitness_DataTypeField
+   * @param Google_Service_Fitness_DataTypeField[]
    */
   public function setField($field)
   {
     $this->field = $field;
   }
   /**
-   * @return Google_Service_Fitness_DataTypeField
+   * @return Google_Service_Fitness_DataTypeField[]
    */
   public function getField()
   {

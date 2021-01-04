@@ -47,14 +47,14 @@ class Google_Service_Games_EventPeriodUpdate extends Google_Collection
     return $this->timePeriod;
   }
   /**
-   * @param Google_Service_Games_EventUpdateRequest
+   * @param Google_Service_Games_EventUpdateRequest[]
    */
   public function setUpdates($updates)
   {
     $this->updates = $updates;
   }
   /**
-   * @return Google_Service_Games_EventUpdateRequest
+   * @return Google_Service_Games_EventUpdateRequest[]
    */
   public function getUpdates()
   {

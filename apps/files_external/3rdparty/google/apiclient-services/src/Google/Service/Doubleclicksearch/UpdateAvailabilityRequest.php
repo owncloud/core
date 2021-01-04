@@ -22,14 +22,14 @@ class Google_Service_Doubleclicksearch_UpdateAvailabilityRequest extends Google_
   protected $availabilitiesDataType = 'array';
 
   /**
-   * @param Google_Service_Doubleclicksearch_Availability
+   * @param Google_Service_Doubleclicksearch_Availability[]
    */
   public function setAvailabilities($availabilities)
   {
     $this->availabilities = $availabilities;
   }
   /**
-   * @return Google_Service_Doubleclicksearch_Availability
+   * @return Google_Service_Doubleclicksearch_Availability[]
    */
   public function getAvailabilities()
   {

@@ -32,14 +32,14 @@ class Google_Service_Compute_NodeTemplateAggregatedListWarning extends Google_Co
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_NodeTemplateAggregatedListWarningData
+   * @param Google_Service_Compute_NodeTemplateAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_NodeTemplateAggregatedListWarningData
+   * @return Google_Service_Compute_NodeTemplateAggregatedListWarningData[]
    */
   public function getData()
   {

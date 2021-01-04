@@ -24,14 +24,14 @@ class Google_Service_SQLAdmin_OperationsListResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_SQLAdmin_Operation
+   * @param Google_Service_SQLAdmin_Operation[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_SQLAdmin_Operation
+   * @return Google_Service_SQLAdmin_Operation[]
    */
   public function getItems()
   {

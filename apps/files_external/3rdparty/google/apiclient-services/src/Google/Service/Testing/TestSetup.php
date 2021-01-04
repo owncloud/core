@@ -47,14 +47,14 @@ class Google_Service_Testing_TestSetup extends Google_Collection
     return $this->account;
   }
   /**
-   * @param Google_Service_Testing_Apk
+   * @param Google_Service_Testing_Apk[]
    */
   public function setAdditionalApks($additionalApks)
   {
     $this->additionalApks = $additionalApks;
   }
   /**
-   * @return Google_Service_Testing_Apk
+   * @return Google_Service_Testing_Apk[]
    */
   public function getAdditionalApks()
   {
@@ -77,28 +77,28 @@ class Google_Service_Testing_TestSetup extends Google_Collection
     return $this->dontAutograntPermissions;
   }
   /**
-   * @param Google_Service_Testing_EnvironmentVariable
+   * @param Google_Service_Testing_EnvironmentVariable[]
    */
   public function setEnvironmentVariables($environmentVariables)
   {
     $this->environmentVariables = $environmentVariables;
   }
   /**
-   * @return Google_Service_Testing_EnvironmentVariable
+   * @return Google_Service_Testing_EnvironmentVariable[]
    */
   public function getEnvironmentVariables()
   {
     return $this->environmentVariables;
   }
   /**
-   * @param Google_Service_Testing_DeviceFile
+   * @param Google_Service_Testing_DeviceFile[]
    */
   public function setFilesToPush($filesToPush)
   {
     $this->filesToPush = $filesToPush;
   }
   /**
-   * @return Google_Service_Testing_DeviceFile
+   * @return Google_Service_Testing_DeviceFile[]
    */
   public function getFilesToPush()
   {

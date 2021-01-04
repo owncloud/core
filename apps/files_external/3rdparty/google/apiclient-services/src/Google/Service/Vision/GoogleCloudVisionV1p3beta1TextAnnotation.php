@@ -23,14 +23,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p3beta1TextAnnotation extends Goo
   public $text;
 
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p3beta1Page
+   * @param Google_Service_Vision_GoogleCloudVisionV1p3beta1Page[]
    */
   public function setPages($pages)
   {
     $this->pages = $pages;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p3beta1Page
+   * @return Google_Service_Vision_GoogleCloudVisionV1p3beta1Page[]
    */
   public function getPages()
   {

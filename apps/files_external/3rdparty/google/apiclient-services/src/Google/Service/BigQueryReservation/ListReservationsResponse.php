@@ -31,14 +31,14 @@ class Google_Service_BigQueryReservation_ListReservationsResponse extends Google
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_BigQueryReservation_Reservation
+   * @param Google_Service_BigQueryReservation_Reservation[]
    */
   public function setReservations($reservations)
   {
     $this->reservations = $reservations;
   }
   /**
-   * @return Google_Service_BigQueryReservation_Reservation
+   * @return Google_Service_BigQueryReservation_Reservation[]
    */
   public function getReservations()
   {

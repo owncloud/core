@@ -22,14 +22,14 @@ class Google_Service_AndroidProvisioningPartner_UpdateDeviceMetadataInBatchReque
   protected $updatesDataType = 'array';
 
   /**
-   * @param Google_Service_AndroidProvisioningPartner_UpdateMetadataArguments
+   * @param Google_Service_AndroidProvisioningPartner_UpdateMetadataArguments[]
    */
   public function setUpdates($updates)
   {
     $this->updates = $updates;
   }
   /**
-   * @return Google_Service_AndroidProvisioningPartner_UpdateMetadataArguments
+   * @return Google_Service_AndroidProvisioningPartner_UpdateMetadataArguments[]
    */
   public function getUpdates()
   {

@@ -40,14 +40,14 @@ class Google_Service_ShoppingContent_AccounttaxListResponse extends Google_Colle
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ShoppingContent_AccountTax
+   * @param Google_Service_ShoppingContent_AccountTax[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_ShoppingContent_AccountTax
+   * @return Google_Service_ShoppingContent_AccountTax[]
    */
   public function getResources()
   {

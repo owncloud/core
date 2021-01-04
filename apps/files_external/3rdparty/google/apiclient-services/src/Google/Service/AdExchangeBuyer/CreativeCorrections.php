@@ -24,14 +24,14 @@ class Google_Service_AdExchangeBuyer_CreativeCorrections extends Google_Collecti
   public $reason;
 
   /**
-   * @param Google_Service_AdExchangeBuyer_CreativeCorrectionsContexts
+   * @param Google_Service_AdExchangeBuyer_CreativeCorrectionsContexts[]
    */
   public function setContexts($contexts)
   {
     $this->contexts = $contexts;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_CreativeCorrectionsContexts
+   * @return Google_Service_AdExchangeBuyer_CreativeCorrectionsContexts[]
    */
   public function getContexts()
   {

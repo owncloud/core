@@ -59,14 +59,14 @@ class Google_Service_SemanticTile_Feature extends Google_Collection
     return $this->placeId;
   }
   /**
-   * @param Google_Service_SemanticTile_Relation
+   * @param Google_Service_SemanticTile_Relation[]
    */
   public function setRelations($relations)
   {
     $this->relations = $relations;
   }
   /**
-   * @return Google_Service_SemanticTile_Relation
+   * @return Google_Service_SemanticTile_Relation[]
    */
   public function getRelations()
   {

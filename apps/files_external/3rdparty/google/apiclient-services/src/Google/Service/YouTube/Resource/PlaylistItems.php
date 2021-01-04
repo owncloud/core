@@ -89,15 +89,7 @@ class Google_Service_YouTube_Resource_PlaylistItems extends Google_Service_Resou
    * all of those properties.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string videoId Return the playlist items associated with the given
-   * video ID.
    * @opt_param string id
-   * @opt_param string playlistId Return the playlist items within the given
-   * playlist.
-   * @opt_param string pageToken The *pageToken* parameter identifies a specific
-   * page in the result set that should be returned. In an API response, the
-   * nextPageToken and prevPageToken properties identify other pages that could be
-   * retrieved.
    * @opt_param string maxResults The *maxResults* parameter specifies the maximum
    * number of items that should be returned in the result set.
    * @opt_param string onBehalfOfContentOwner *Note:* This parameter is intended
@@ -110,6 +102,14 @@ class Google_Service_YouTube_Resource_PlaylistItems extends Google_Service_Resou
    * without having to provide authentication credentials for each individual
    * channel. The CMS account that the user authenticates with must be linked to
    * the specified YouTube content owner.
+   * @opt_param string pageToken The *pageToken* parameter identifies a specific
+   * page in the result set that should be returned. In an API response, the
+   * nextPageToken and prevPageToken properties identify other pages that could be
+   * retrieved.
+   * @opt_param string playlistId Return the playlist items within the given
+   * playlist.
+   * @opt_param string videoId Return the playlist items associated with the given
+   * video ID.
    * @return Google_Service_YouTube_PlaylistItemListResponse
    */
   public function listPlaylistItems($part, $optParams = array())

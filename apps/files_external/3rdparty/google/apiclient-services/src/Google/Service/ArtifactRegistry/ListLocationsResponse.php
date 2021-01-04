@@ -23,14 +23,14 @@ class Google_Service_ArtifactRegistry_ListLocationsResponse extends Google_Colle
   public $nextPageToken;
 
   /**
-   * @param Google_Service_ArtifactRegistry_Location
+   * @param Google_Service_ArtifactRegistry_Location[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_ArtifactRegistry_Location
+   * @return Google_Service_ArtifactRegistry_Location[]
    */
   public function getLocations()
   {

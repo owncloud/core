@@ -40,7 +40,6 @@ class Google_Service_Games_Resource_Scores extends Google_Service_Resource
    * requesting.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The token returned by the previous request.
    * @opt_param string includeRankType The types of ranks to return. If the
    * parameter is omitted, no ranks will be returned.
    * @opt_param string language The preferred language to use for strings returned
@@ -48,6 +47,7 @@ class Google_Service_Games_Resource_Scores extends Google_Service_Resource
    * @opt_param int maxResults The maximum number of leaderboard scores to return
    * in the response. For any response, the actual number of leaderboard scores
    * returned may be less than the specified `maxResults`.
+   * @opt_param string pageToken The token returned by the previous request.
    * @return Google_Service_Games_PlayerLeaderboardScoreListResponse
    */
   public function get($playerId, $leaderboardId, $timeSpan, $optParams = array())
@@ -91,16 +91,16 @@ class Google_Service_Games_Resource_Scores extends Google_Service_Resource
    *
    * @opt_param string language The preferred language to use for strings returned
    * by this method.
+   * @opt_param int maxResults The maximum number of leaderboard scores to return
+   * in the response. For any response, the actual number of leaderboard scores
+   * returned may be less than the specified `maxResults`.
+   * @opt_param string pageToken The token returned by the previous request.
    * @opt_param int resultsAbove The preferred number of scores to return above
    * the player's score. More scores may be returned if the player is at the
    * bottom of the leaderboard; fewer may be returned if the player is at the top.
    * Must be less than or equal to maxResults.
    * @opt_param bool returnTopIfAbsent True if the top scores should be returned
    * when the player is not in the leaderboard. Defaults to true.
-   * @opt_param int maxResults The maximum number of leaderboard scores to return
-   * in the response. For any response, the actual number of leaderboard scores
-   * returned may be less than the specified `maxResults`.
-   * @opt_param string pageToken The token returned by the previous request.
    * @return Google_Service_Games_LeaderboardScores
    */
   public function listWindow($leaderboardId, $collection, $timeSpan, $optParams = array())
@@ -121,11 +121,11 @@ class Google_Service_Games_Resource_Scores extends Google_Service_Resource
    * the score represents a value in micro units.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string language The preferred language to use for strings returned
+   * by this method.
    * @opt_param string scoreTag Additional information about the score you're
    * submitting. Values must contain no more than 64 URI-safe characters as
    * defined by section 2.3 of RFC 3986.
-   * @opt_param string language The preferred language to use for strings returned
-   * by this method.
    * @return Google_Service_Games_PlayerScoreResponse
    */
   public function submit($leaderboardId, $score, $optParams = array())

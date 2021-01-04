@@ -25,14 +25,14 @@ class Google_Service_CloudSearch_SuggestRequest extends Google_Collection
   protected $requestOptionsDataType = '';
 
   /**
-   * @param Google_Service_CloudSearch_DataSourceRestriction
+   * @param Google_Service_CloudSearch_DataSourceRestriction[]
    */
   public function setDataSourceRestrictions($dataSourceRestrictions)
   {
     $this->dataSourceRestrictions = $dataSourceRestrictions;
   }
   /**
-   * @return Google_Service_CloudSearch_DataSourceRestriction
+   * @return Google_Service_CloudSearch_DataSourceRestriction[]
    */
   public function getDataSourceRestrictions()
   {

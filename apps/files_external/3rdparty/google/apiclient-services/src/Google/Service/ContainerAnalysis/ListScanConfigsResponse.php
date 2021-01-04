@@ -31,14 +31,14 @@ class Google_Service_ContainerAnalysis_ListScanConfigsResponse extends Google_Co
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_ScanConfig
+   * @param Google_Service_ContainerAnalysis_ScanConfig[]
    */
   public function setScanConfigs($scanConfigs)
   {
     $this->scanConfigs = $scanConfigs;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_ScanConfig
+   * @return Google_Service_ContainerAnalysis_ScanConfig[]
    */
   public function getScanConfigs()
   {

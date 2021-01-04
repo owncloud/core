@@ -36,14 +36,14 @@ class Google_Service_Directory_Domains extends Google_Collection
     return $this->creationTime;
   }
   /**
-   * @param Google_Service_Directory_DomainAlias
+   * @param Google_Service_Directory_DomainAlias[]
    */
   public function setDomainAliases($domainAliases)
   {
     $this->domainAliases = $domainAliases;
   }
   /**
-   * @return Google_Service_Directory_DomainAlias
+   * @return Google_Service_Directory_DomainAlias[]
    */
   public function getDomainAliases()
   {

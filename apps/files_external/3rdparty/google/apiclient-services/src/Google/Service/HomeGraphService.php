@@ -36,7 +36,7 @@ class Google_Service_HomeGraphService extends Google_Service
 
   public $agentUsers;
   public $devices;
-  
+
   /**
    * Constructs the internal representation of the HomeGraphService service.
    *

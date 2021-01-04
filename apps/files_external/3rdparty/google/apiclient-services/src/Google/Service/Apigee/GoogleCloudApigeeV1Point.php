@@ -31,14 +31,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1Point extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Result
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Result[]
    */
   public function setResults($results)
   {
     $this->results = $results;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Result
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Result[]
    */
   public function getResults()
   {

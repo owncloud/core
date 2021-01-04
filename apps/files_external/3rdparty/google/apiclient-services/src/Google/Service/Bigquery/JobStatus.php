@@ -39,14 +39,14 @@ class Google_Service_Bigquery_JobStatus extends Google_Collection
     return $this->errorResult;
   }
   /**
-   * @param Google_Service_Bigquery_ErrorProto
+   * @param Google_Service_Bigquery_ErrorProto[]
    */
   public function setErrors($errors)
   {
     $this->errors = $errors;
   }
   /**
-   * @return Google_Service_Bigquery_ErrorProto
+   * @return Google_Service_Bigquery_ErrorProto[]
    */
   public function getErrors()
   {

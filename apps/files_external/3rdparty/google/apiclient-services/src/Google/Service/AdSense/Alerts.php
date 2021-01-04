@@ -23,14 +23,14 @@ class Google_Service_AdSense_Alerts extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_AdSense_Alert
+   * @param Google_Service_AdSense_Alert[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_AdSense_Alert
+   * @return Google_Service_AdSense_Alert[]
    */
   public function getItems()
   {

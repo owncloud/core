@@ -21,14 +21,14 @@ class Google_Service_Script_Struct extends Google_Model
   protected $fieldsDataType = 'map';
 
   /**
-   * @param Google_Service_Script_Value
+   * @param Google_Service_Script_Value[]
    */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
   /**
-   * @return Google_Service_Script_Value
+   * @return Google_Service_Script_Value[]
    */
   public function getFields()
   {

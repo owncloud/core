@@ -31,14 +31,14 @@ class Google_Service_RecommendationsAI_GoogleLongrunningListOperationsResponse e
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_RecommendationsAI_GoogleLongrunningOperation
+   * @param Google_Service_RecommendationsAI_GoogleLongrunningOperation[]
    */
   public function setOperations($operations)
   {
     $this->operations = $operations;
   }
   /**
-   * @return Google_Service_RecommendationsAI_GoogleLongrunningOperation
+   * @return Google_Service_RecommendationsAI_GoogleLongrunningOperation[]
    */
   public function getOperations()
   {

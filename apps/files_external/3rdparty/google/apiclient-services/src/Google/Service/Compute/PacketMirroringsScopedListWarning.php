@@ -32,14 +32,14 @@ class Google_Service_Compute_PacketMirroringsScopedListWarning extends Google_Co
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_PacketMirroringsScopedListWarningData
+   * @param Google_Service_Compute_PacketMirroringsScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_PacketMirroringsScopedListWarningData
+   * @return Google_Service_Compute_PacketMirroringsScopedListWarningData[]
    */
   public function getData()
   {

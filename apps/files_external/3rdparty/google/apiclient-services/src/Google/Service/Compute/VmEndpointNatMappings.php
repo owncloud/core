@@ -31,14 +31,14 @@ class Google_Service_Compute_VmEndpointNatMappings extends Google_Collection
     return $this->instanceName;
   }
   /**
-   * @param Google_Service_Compute_VmEndpointNatMappingsInterfaceNatMappings
+   * @param Google_Service_Compute_VmEndpointNatMappingsInterfaceNatMappings[]
    */
   public function setInterfaceNatMappings($interfaceNatMappings)
   {
     $this->interfaceNatMappings = $interfaceNatMappings;
   }
   /**
-   * @return Google_Service_Compute_VmEndpointNatMappingsInterfaceNatMappings
+   * @return Google_Service_Compute_VmEndpointNatMappingsInterfaceNatMappings[]
    */
   public function getInterfaceNatMappings()
   {

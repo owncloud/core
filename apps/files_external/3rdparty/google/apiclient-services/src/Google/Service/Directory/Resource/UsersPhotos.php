@@ -26,9 +26,10 @@
 class Google_Service_Directory_Resource_UsersPhotos extends Google_Service_Resource
 {
   /**
-   * Remove photos for the user (photos.delete)
+   * Removes the user's photo. (photos.delete)
    *
-   * @param string $userKey Email or immutable ID of the user
+   * @param string $userKey Identifies the user in the API request. The value can
+   * be the user's primary email address, alias email address, or unique user ID.
    * @param array $optParams Optional parameters.
    */
   public function delete($userKey, $optParams = array())
@@ -38,9 +39,10 @@ class Google_Service_Directory_Resource_UsersPhotos extends Google_Service_Resou
     return $this->call('delete', array($params));
   }
   /**
-   * Retrieve photo of a user (photos.get)
+   * Retrieves the user's photo. (photos.get)
    *
-   * @param string $userKey Email or immutable ID of the user
+   * @param string $userKey Identifies the user in the API request. The value can
+   * be the user's primary email address, alias email address, or unique user ID.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_UserPhoto
    */
@@ -51,9 +53,11 @@ class Google_Service_Directory_Resource_UsersPhotos extends Google_Service_Resou
     return $this->call('get', array($params), "Google_Service_Directory_UserPhoto");
   }
   /**
-   * Patch Photo via Apiary Patch Orchestration (photos.patch)
+   * Adds a photo for the user. This method supports [patch semantics](/admin-
+   * sdk/directory/v1/guides/performance#patch). (photos.patch)
    *
-   * @param string $userKey Email or immutable ID of the user
+   * @param string $userKey Identifies the user in the API request. The value can
+   * be the user's primary email address, alias email address, or unique user ID.
    * @param Google_Service_Directory_UserPhoto $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_UserPhoto
@@ -65,9 +69,10 @@ class Google_Service_Directory_Resource_UsersPhotos extends Google_Service_Resou
     return $this->call('patch', array($params), "Google_Service_Directory_UserPhoto");
   }
   /**
-   * Add a photo for the user (photos.update)
+   * Adds a photo for the user. (photos.update)
    *
-   * @param string $userKey Email or immutable ID of the user
+   * @param string $userKey Identifies the user in the API request. The value can
+   * be the user's primary email address, alias email address, or unique user ID.
    * @param Google_Service_Directory_UserPhoto $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_UserPhoto

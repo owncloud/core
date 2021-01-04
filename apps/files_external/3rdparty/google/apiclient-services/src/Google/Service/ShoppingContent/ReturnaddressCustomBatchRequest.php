@@ -22,14 +22,14 @@ class Google_Service_ShoppingContent_ReturnaddressCustomBatchRequest extends Goo
   protected $entriesDataType = 'array';
 
   /**
-   * @param Google_Service_ShoppingContent_ReturnaddressCustomBatchRequestEntry
+   * @param Google_Service_ShoppingContent_ReturnaddressCustomBatchRequestEntry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_ShoppingContent_ReturnaddressCustomBatchRequestEntry
+   * @return Google_Service_ShoppingContent_ReturnaddressCustomBatchRequestEntry[]
    */
   public function getEntries()
   {

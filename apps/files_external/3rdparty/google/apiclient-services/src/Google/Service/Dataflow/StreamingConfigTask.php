@@ -52,14 +52,14 @@ class Google_Service_Dataflow_StreamingConfigTask extends Google_Collection
     return $this->maxWorkItemCommitBytes;
   }
   /**
-   * @param Google_Service_Dataflow_StreamingComputationConfig
+   * @param Google_Service_Dataflow_StreamingComputationConfig[]
    */
   public function setStreamingComputationConfigs($streamingComputationConfigs)
   {
     $this->streamingComputationConfigs = $streamingComputationConfigs;
   }
   /**
-   * @return Google_Service_Dataflow_StreamingComputationConfig
+   * @return Google_Service_Dataflow_StreamingComputationConfig[]
    */
   public function getStreamingComputationConfigs()
   {

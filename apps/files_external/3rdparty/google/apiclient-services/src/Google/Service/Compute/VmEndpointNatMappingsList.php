@@ -52,14 +52,14 @@ class Google_Service_Compute_VmEndpointNatMappingsList extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Compute_VmEndpointNatMappings
+   * @param Google_Service_Compute_VmEndpointNatMappings[]
    */
   public function setResult($result)
   {
     $this->result = $result;
   }
   /**
-   * @return Google_Service_Compute_VmEndpointNatMappings
+   * @return Google_Service_Compute_VmEndpointNatMappings[]
    */
   public function getResult()
   {

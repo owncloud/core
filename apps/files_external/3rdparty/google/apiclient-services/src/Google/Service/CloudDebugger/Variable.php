@@ -28,14 +28,14 @@ class Google_Service_CloudDebugger_Variable extends Google_Collection
   public $varTableIndex;
 
   /**
-   * @param Google_Service_CloudDebugger_Variable
+   * @param Google_Service_CloudDebugger_Variable[]
    */
   public function setMembers($members)
   {
     $this->members = $members;
   }
   /**
-   * @return Google_Service_CloudDebugger_Variable
+   * @return Google_Service_CloudDebugger_Variable[]
    */
   public function getMembers()
   {

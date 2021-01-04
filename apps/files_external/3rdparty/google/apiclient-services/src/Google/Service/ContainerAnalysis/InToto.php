@@ -37,42 +37,42 @@ class Google_Service_ContainerAnalysis_InToto extends Google_Collection
     return $this->expectedCommand;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_ArtifactRule
+   * @param Google_Service_ContainerAnalysis_ArtifactRule[]
    */
   public function setExpectedMaterials($expectedMaterials)
   {
     $this->expectedMaterials = $expectedMaterials;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_ArtifactRule
+   * @return Google_Service_ContainerAnalysis_ArtifactRule[]
    */
   public function getExpectedMaterials()
   {
     return $this->expectedMaterials;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_ArtifactRule
+   * @param Google_Service_ContainerAnalysis_ArtifactRule[]
    */
   public function setExpectedProducts($expectedProducts)
   {
     $this->expectedProducts = $expectedProducts;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_ArtifactRule
+   * @return Google_Service_ContainerAnalysis_ArtifactRule[]
    */
   public function getExpectedProducts()
   {
     return $this->expectedProducts;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_SigningKey
+   * @param Google_Service_ContainerAnalysis_SigningKey[]
    */
   public function setSigningKeys($signingKeys)
   {
     $this->signingKeys = $signingKeys;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_SigningKey
+   * @return Google_Service_ContainerAnalysis_SigningKey[]
    */
   public function getSigningKeys()
   {

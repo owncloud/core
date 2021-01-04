@@ -26,14 +26,14 @@ class Google_Service_Fitness_ListSessionsResponse extends Google_Collection
   protected $sessionDataType = 'array';
 
   /**
-   * @param Google_Service_Fitness_Session
+   * @param Google_Service_Fitness_Session[]
    */
   public function setDeletedSession($deletedSession)
   {
     $this->deletedSession = $deletedSession;
   }
   /**
-   * @return Google_Service_Fitness_Session
+   * @return Google_Service_Fitness_Session[]
    */
   public function getDeletedSession()
   {
@@ -56,14 +56,14 @@ class Google_Service_Fitness_ListSessionsResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Fitness_Session
+   * @param Google_Service_Fitness_Session[]
    */
   public function setSession($session)
   {
     $this->session = $session;
   }
   /**
-   * @return Google_Service_Fitness_Session
+   * @return Google_Service_Fitness_Session[]
    */
   public function getSession()
   {

@@ -22,14 +22,14 @@ class Google_Service_AdExchangeBuyer_GetPublisherProfilesByAccountIdResponse ext
   protected $profilesDataType = 'array';
 
   /**
-   * @param Google_Service_AdExchangeBuyer_PublisherProfileApiProto
+   * @param Google_Service_AdExchangeBuyer_PublisherProfileApiProto[]
    */
   public function setProfiles($profiles)
   {
     $this->profiles = $profiles;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_PublisherProfileApiProto
+   * @return Google_Service_AdExchangeBuyer_PublisherProfileApiProto[]
    */
   public function getProfiles()
   {

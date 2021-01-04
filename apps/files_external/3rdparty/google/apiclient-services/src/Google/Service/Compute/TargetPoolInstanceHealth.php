@@ -23,14 +23,14 @@ class Google_Service_Compute_TargetPoolInstanceHealth extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_Compute_HealthStatus
+   * @param Google_Service_Compute_HealthStatus[]
    */
   public function setHealthStatus($healthStatus)
   {
     $this->healthStatus = $healthStatus;
   }
   /**
-   * @return Google_Service_Compute_HealthStatus
+   * @return Google_Service_Compute_HealthStatus[]
    */
   public function getHealthStatus()
   {

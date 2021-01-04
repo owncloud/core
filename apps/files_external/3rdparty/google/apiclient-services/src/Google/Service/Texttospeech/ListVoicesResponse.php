@@ -22,14 +22,14 @@ class Google_Service_Texttospeech_ListVoicesResponse extends Google_Collection
   protected $voicesDataType = 'array';
 
   /**
-   * @param Google_Service_Texttospeech_Voice
+   * @param Google_Service_Texttospeech_Voice[]
    */
   public function setVoices($voices)
   {
     $this->voices = $voices;
   }
   /**
-   * @return Google_Service_Texttospeech_Voice
+   * @return Google_Service_Texttospeech_Voice[]
    */
   public function getVoices()
   {

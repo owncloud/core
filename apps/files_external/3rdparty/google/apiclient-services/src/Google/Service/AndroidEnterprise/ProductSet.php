@@ -40,14 +40,14 @@ class Google_Service_AndroidEnterprise_ProductSet extends Google_Collection
     return $this->productSetBehavior;
   }
   /**
-   * @param Google_Service_AndroidEnterprise_ProductVisibility
+   * @param Google_Service_AndroidEnterprise_ProductVisibility[]
    */
   public function setProductVisibility($productVisibility)
   {
     $this->productVisibility = $productVisibility;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_ProductVisibility
+   * @return Google_Service_AndroidEnterprise_ProductVisibility[]
    */
   public function getProductVisibility()
   {

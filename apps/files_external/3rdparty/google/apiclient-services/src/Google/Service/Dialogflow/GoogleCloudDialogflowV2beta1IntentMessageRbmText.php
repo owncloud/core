@@ -23,14 +23,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageRbmText
   public $text;
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageRbmSuggestion
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageRbmSuggestion[]
    */
   public function setRbmSuggestion($rbmSuggestion)
   {
     $this->rbmSuggestion = $rbmSuggestion;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageRbmSuggestion
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageRbmSuggestion[]
    */
   public function getRbmSuggestion()
   {

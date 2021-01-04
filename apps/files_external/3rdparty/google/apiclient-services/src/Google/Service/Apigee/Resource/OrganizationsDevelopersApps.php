@@ -129,14 +129,14 @@ class Google_Service_Apigee_Resource_OrganizationsDevelopersApps extends Google_
    * `organizations/{org}/developers/{developer_email}/apps/{app}`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string query **Note**: Must be used in conjunction with the
-   * `entity` parameter. Set to `count` to return the number of API resources that
-   * have been approved for access by a developer app in the specified Apigee
-   * organization.
    * @opt_param string entity **Note**: Must be used in conjunction with the
    * `query` parameter. Set to `apiresources` to return the number of API
    * resources that have been approved for access by a developer app in the
    * specified Apigee organization.
+   * @opt_param string query **Note**: Must be used in conjunction with the
+   * `entity` parameter. Set to `count` to return the number of API resources that
+   * have been approved for access by a developer app in the specified Apigee
+   * organization.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1DeveloperApp
    */
   public function get($name, $optParams = array())
@@ -156,20 +156,20 @@ class Google_Service_Apigee_Resource_OrganizationsDevelopersApps extends Google_
    * structure in your request: `organizations/{org}/developers/{developer_email}`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string startKey **Note**: Must be used in conjunction with the
-   * `count` parameter. Name of the developer app from which to start displaying
-   * the list of developer apps. For example, if you're returning 50 developer
-   * apps at a time (using the `count` query parameter), you can view developer
-   * apps 50-99 by entering the name of the 50th developer app. The developer app
-   * name is case sensitive.
-   * @opt_param bool shallowExpand Optional. Specifies whether to expand the
-   * results in shallow mode. Set to `true` to expand the results in shallow mode.
    * @opt_param string count Number of developer apps to return in the API call.
    * Use with the `startKey` parameter to provide more targeted filtering. The
    * limit is 1000.
    * @opt_param bool expand Optional. Specifies whether to expand the results. Set
    * to `true` to expand the results. This query parameter is not valid if you use
    * the `count` or `startKey` query parameters.
+   * @opt_param bool shallowExpand Optional. Specifies whether to expand the
+   * results in shallow mode. Set to `true` to expand the results in shallow mode.
+   * @opt_param string startKey **Note**: Must be used in conjunction with the
+   * `count` parameter. Name of the developer app from which to start displaying
+   * the list of developer apps. For example, if you're returning 50 developer
+   * apps at a time (using the `count` query parameter), you can view developer
+   * apps 50-99 by entering the name of the 50th developer app. The developer app
+   * name is case sensitive.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1ListDeveloperAppsResponse
    */
   public function listOrganizationsDevelopersApps($parent, $optParams = array())

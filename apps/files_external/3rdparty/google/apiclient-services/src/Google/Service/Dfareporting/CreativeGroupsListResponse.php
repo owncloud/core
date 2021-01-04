@@ -24,14 +24,14 @@ class Google_Service_Dfareporting_CreativeGroupsListResponse extends Google_Coll
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Dfareporting_CreativeGroup
+   * @param Google_Service_Dfareporting_CreativeGroup[]
    */
   public function setCreativeGroups($creativeGroups)
   {
     $this->creativeGroups = $creativeGroups;
   }
   /**
-   * @return Google_Service_Dfareporting_CreativeGroup
+   * @return Google_Service_Dfareporting_CreativeGroup[]
    */
   public function getCreativeGroups()
   {

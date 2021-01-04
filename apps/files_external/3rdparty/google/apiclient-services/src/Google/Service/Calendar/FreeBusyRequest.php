@@ -43,14 +43,14 @@ class Google_Service_Calendar_FreeBusyRequest extends Google_Collection
     return $this->groupExpansionMax;
   }
   /**
-   * @param Google_Service_Calendar_FreeBusyRequestItem
+   * @param Google_Service_Calendar_FreeBusyRequestItem[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Calendar_FreeBusyRequestItem
+   * @return Google_Service_Calendar_FreeBusyRequestItem[]
    */
   public function getItems()
   {

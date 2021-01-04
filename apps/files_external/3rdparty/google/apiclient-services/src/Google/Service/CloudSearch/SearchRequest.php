@@ -33,28 +33,28 @@ class Google_Service_CloudSearch_SearchRequest extends Google_Collection
   public $start;
 
   /**
-   * @param Google_Service_CloudSearch_DataSourceRestriction
+   * @param Google_Service_CloudSearch_DataSourceRestriction[]
    */
   public function setDataSourceRestrictions($dataSourceRestrictions)
   {
     $this->dataSourceRestrictions = $dataSourceRestrictions;
   }
   /**
-   * @return Google_Service_CloudSearch_DataSourceRestriction
+   * @return Google_Service_CloudSearch_DataSourceRestriction[]
    */
   public function getDataSourceRestrictions()
   {
     return $this->dataSourceRestrictions;
   }
   /**
-   * @param Google_Service_CloudSearch_FacetOptions
+   * @param Google_Service_CloudSearch_FacetOptions[]
    */
   public function setFacetOptions($facetOptions)
   {
     $this->facetOptions = $facetOptions;
   }
   /**
-   * @return Google_Service_CloudSearch_FacetOptions
+   * @return Google_Service_CloudSearch_FacetOptions[]
    */
   public function getFacetOptions()
   {

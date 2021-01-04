@@ -103,16 +103,16 @@ class Google_Service_Eventarc_Resource_ProjectsLocationsTriggers extends Google_
    * @param string $parent Required. The parent collection to list triggers on.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The page token; provide the value from the
-   * `next_page_token` field in a previous `ListTriggers` call to retrieve the
-   * subsequent page. When paginating, all other parameters provided to
-   * `ListTriggers` must match the call that provided the page token.
-   * @opt_param int pageSize The maximum number of triggers to return on each
-   * page. Note: The service may send fewer.
    * @opt_param string orderBy The sorting order of the resources returned. Value
    * should be a comma separated list of fields. The default sorting oder is
    * ascending. To specify descending order for a field, append a ` desc` suffix;
    * for example: `name desc, trigger_id`.
+   * @opt_param int pageSize The maximum number of triggers to return on each
+   * page. Note: The service may send fewer.
+   * @opt_param string pageToken The page token; provide the value from the
+   * `next_page_token` field in a previous `ListTriggers` call to retrieve the
+   * subsequent page. When paginating, all other parameters provided to
+   * `ListTriggers` must match the call that provided the page token.
    * @return Google_Service_Eventarc_ListTriggersResponse
    */
   public function listProjectsLocationsTriggers($parent, $optParams = array())

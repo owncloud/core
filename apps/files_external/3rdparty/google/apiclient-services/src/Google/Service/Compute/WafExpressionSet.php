@@ -32,14 +32,14 @@ class Google_Service_Compute_WafExpressionSet extends Google_Collection
     return $this->aliases;
   }
   /**
-   * @param Google_Service_Compute_WafExpressionSetExpression
+   * @param Google_Service_Compute_WafExpressionSetExpression[]
    */
   public function setExpressions($expressions)
   {
     $this->expressions = $expressions;
   }
   /**
-   * @return Google_Service_Compute_WafExpressionSetExpression
+   * @return Google_Service_Compute_WafExpressionSetExpression[]
    */
   public function getExpressions()
   {

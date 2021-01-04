@@ -22,14 +22,14 @@ class Google_Service_Bigquery_StandardSqlStructType extends Google_Collection
   protected $fieldsDataType = 'array';
 
   /**
-   * @param Google_Service_Bigquery_StandardSqlField
+   * @param Google_Service_Bigquery_StandardSqlField[]
    */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
   /**
-   * @return Google_Service_Bigquery_StandardSqlField
+   * @return Google_Service_Bigquery_StandardSqlField[]
    */
   public function getFields()
   {

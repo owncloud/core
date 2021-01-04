@@ -28,14 +28,14 @@ class Google_Service_Directory_Privilege extends Google_Collection
   public $serviceName;
 
   /**
-   * @param Google_Service_Directory_Privilege
+   * @param Google_Service_Directory_Privilege[]
    */
   public function setChildPrivileges($childPrivileges)
   {
     $this->childPrivileges = $childPrivileges;
   }
   /**
-   * @return Google_Service_Directory_Privilege
+   * @return Google_Service_Directory_Privilege[]
    */
   public function getChildPrivileges()
   {

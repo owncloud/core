@@ -47,14 +47,14 @@ class Google_Service_YouTube_LocalizedProperty extends Google_Collection
     return $this->defaultLanguage;
   }
   /**
-   * @param Google_Service_YouTube_LocalizedString
+   * @param Google_Service_YouTube_LocalizedString[]
    */
   public function setLocalized($localized)
   {
     $this->localized = $localized;
   }
   /**
-   * @return Google_Service_YouTube_LocalizedString
+   * @return Google_Service_YouTube_LocalizedString[]
    */
   public function getLocalized()
   {

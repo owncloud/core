@@ -49,14 +49,14 @@ class Google_Service_TagManager_UserPermission extends Google_Collection
     return $this->accountId;
   }
   /**
-   * @param Google_Service_TagManager_ContainerAccess
+   * @param Google_Service_TagManager_ContainerAccess[]
    */
   public function setContainerAccess($containerAccess)
   {
     $this->containerAccess = $containerAccess;
   }
   /**
-   * @return Google_Service_TagManager_ContainerAccess
+   * @return Google_Service_TagManager_ContainerAccess[]
    */
   public function getContainerAccess()
   {

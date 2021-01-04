@@ -23,14 +23,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2ListContextsResponse exte
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2Context
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2Context[]
    */
   public function setContexts($contexts)
   {
     $this->contexts = $contexts;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2Context
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2Context[]
    */
   public function getContexts()
   {

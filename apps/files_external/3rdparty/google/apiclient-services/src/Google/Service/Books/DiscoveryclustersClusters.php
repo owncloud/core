@@ -77,14 +77,14 @@ class Google_Service_Books_DiscoveryclustersClusters extends Google_Collection
     return $this->uid;
   }
   /**
-   * @param Google_Service_Books_Volume
+   * @param Google_Service_Books_Volume[]
    */
   public function setVolumes($volumes)
   {
     $this->volumes = $volumes;
   }
   /**
-   * @return Google_Service_Books_Volume
+   * @return Google_Service_Books_Volume[]
    */
   public function getVolumes()
   {

@@ -58,14 +58,14 @@ class Google_Service_Compute_ManagedInstance extends Google_Collection
     return $this->instance;
   }
   /**
-   * @param Google_Service_Compute_ManagedInstanceInstanceHealth
+   * @param Google_Service_Compute_ManagedInstanceInstanceHealth[]
    */
   public function setInstanceHealth($instanceHealth)
   {
     $this->instanceHealth = $instanceHealth;
   }
   /**
-   * @return Google_Service_Compute_ManagedInstanceInstanceHealth
+   * @return Google_Service_Compute_ManagedInstanceInstanceHealth[]
    */
   public function getInstanceHealth()
   {

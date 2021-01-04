@@ -42,7 +42,7 @@ class Google_Service_AndroidProvisioningPartner extends Google_Service
   public $partners_devices;
   public $partners_vendors;
   public $partners_vendors_customers;
-  
+
   /**
    * Constructs the internal representation of the AndroidProvisioningPartner
    * service.
@@ -181,11 +181,11 @@ class Google_Service_AndroidProvisioningPartner extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'pageSize' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageSize' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -412,13 +412,13 @@ class Google_Service_AndroidProvisioningPartner extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),

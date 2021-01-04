@@ -23,14 +23,14 @@ class Google_Service_Storage_Notifications extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_Storage_Notification
+   * @param Google_Service_Storage_Notification[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Storage_Notification
+   * @return Google_Service_Storage_Notification[]
    */
   public function getItems()
   {

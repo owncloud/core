@@ -22,14 +22,14 @@ class Google_Service_ServiceConsumerManagement_SystemParameters extends Google_C
   protected $rulesDataType = 'array';
 
   /**
-   * @param Google_Service_ServiceConsumerManagement_SystemParameterRule
+   * @param Google_Service_ServiceConsumerManagement_SystemParameterRule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_SystemParameterRule
+   * @return Google_Service_ServiceConsumerManagement_SystemParameterRule[]
    */
   public function getRules()
   {

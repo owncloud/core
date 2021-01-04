@@ -132,14 +132,14 @@ class Google_Service_YouTube_Video extends Google_Model
     return $this->liveStreamingDetails;
   }
   /**
-   * @param Google_Service_YouTube_VideoLocalization
+   * @param Google_Service_YouTube_VideoLocalization[]
    */
   public function setLocalizations($localizations)
   {
     $this->localizations = $localizations;
   }
   /**
-   * @return Google_Service_YouTube_VideoLocalization
+   * @return Google_Service_YouTube_VideoLocalization[]
    */
   public function getLocalizations()
   {

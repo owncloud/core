@@ -23,14 +23,14 @@ class Google_Service_TagManager_ListContainerVersionsResponse extends Google_Col
   public $nextPageToken;
 
   /**
-   * @param Google_Service_TagManager_ContainerVersionHeader
+   * @param Google_Service_TagManager_ContainerVersionHeader[]
    */
   public function setContainerVersionHeader($containerVersionHeader)
   {
     $this->containerVersionHeader = $containerVersionHeader;
   }
   /**
-   * @return Google_Service_TagManager_ContainerVersionHeader
+   * @return Google_Service_TagManager_ContainerVersionHeader[]
    */
   public function getContainerVersionHeader()
   {

@@ -23,14 +23,14 @@ class Google_Service_Localservices_GoogleAdsHomeservicesLocalservicesV1SearchAcc
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Localservices_GoogleAdsHomeservicesLocalservicesV1AccountReport
+   * @param Google_Service_Localservices_GoogleAdsHomeservicesLocalservicesV1AccountReport[]
    */
   public function setAccountReports($accountReports)
   {
     $this->accountReports = $accountReports;
   }
   /**
-   * @return Google_Service_Localservices_GoogleAdsHomeservicesLocalservicesV1AccountReport
+   * @return Google_Service_Localservices_GoogleAdsHomeservicesLocalservicesV1AccountReport[]
    */
   public function getAccountReports()
   {

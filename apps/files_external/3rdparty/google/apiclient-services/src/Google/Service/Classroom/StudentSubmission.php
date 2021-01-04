@@ -171,14 +171,14 @@ class Google_Service_Classroom_StudentSubmission extends Google_Collection
     return $this->state;
   }
   /**
-   * @param Google_Service_Classroom_SubmissionHistory
+   * @param Google_Service_Classroom_SubmissionHistory[]
    */
   public function setSubmissionHistory($submissionHistory)
   {
     $this->submissionHistory = $submissionHistory;
   }
   /**
-   * @return Google_Service_Classroom_SubmissionHistory
+   * @return Google_Service_Classroom_SubmissionHistory[]
    */
   public function getSubmissionHistory()
   {

@@ -25,28 +25,28 @@ class Google_Service_Compute_InterconnectDiagnostics extends Google_Collection
   public $macAddress;
 
   /**
-   * @param Google_Service_Compute_InterconnectDiagnosticsARPEntry
+   * @param Google_Service_Compute_InterconnectDiagnosticsARPEntry[]
    */
   public function setArpCaches($arpCaches)
   {
     $this->arpCaches = $arpCaches;
   }
   /**
-   * @return Google_Service_Compute_InterconnectDiagnosticsARPEntry
+   * @return Google_Service_Compute_InterconnectDiagnosticsARPEntry[]
    */
   public function getArpCaches()
   {
     return $this->arpCaches;
   }
   /**
-   * @param Google_Service_Compute_InterconnectDiagnosticsLinkStatus
+   * @param Google_Service_Compute_InterconnectDiagnosticsLinkStatus[]
    */
   public function setLinks($links)
   {
     $this->links = $links;
   }
   /**
-   * @return Google_Service_Compute_InterconnectDiagnosticsLinkStatus
+   * @return Google_Service_Compute_InterconnectDiagnosticsLinkStatus[]
    */
   public function getLinks()
   {

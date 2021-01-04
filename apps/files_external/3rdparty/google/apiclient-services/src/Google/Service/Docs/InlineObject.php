@@ -57,14 +57,14 @@ class Google_Service_Docs_InlineObject extends Google_Collection
     return $this->suggestedDeletionIds;
   }
   /**
-   * @param Google_Service_Docs_SuggestedInlineObjectProperties
+   * @param Google_Service_Docs_SuggestedInlineObjectProperties[]
    */
   public function setSuggestedInlineObjectPropertiesChanges($suggestedInlineObjectPropertiesChanges)
   {
     $this->suggestedInlineObjectPropertiesChanges = $suggestedInlineObjectPropertiesChanges;
   }
   /**
-   * @return Google_Service_Docs_SuggestedInlineObjectProperties
+   * @return Google_Service_Docs_SuggestedInlineObjectProperties[]
    */
   public function getSuggestedInlineObjectPropertiesChanges()
   {

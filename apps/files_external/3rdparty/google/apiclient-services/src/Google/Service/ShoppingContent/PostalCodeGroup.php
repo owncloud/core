@@ -40,14 +40,14 @@ class Google_Service_ShoppingContent_PostalCodeGroup extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_ShoppingContent_PostalCodeRange
+   * @param Google_Service_ShoppingContent_PostalCodeRange[]
    */
   public function setPostalCodeRanges($postalCodeRanges)
   {
     $this->postalCodeRanges = $postalCodeRanges;
   }
   /**
-   * @return Google_Service_ShoppingContent_PostalCodeRange
+   * @return Google_Service_ShoppingContent_PostalCodeRange[]
    */
   public function getPostalCodeRanges()
   {

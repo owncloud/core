@@ -24,14 +24,14 @@ class Google_Service_Compute_SslCertificatesScopedList extends Google_Collection
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_SslCertificate
+   * @param Google_Service_Compute_SslCertificate[]
    */
   public function setSslCertificates($sslCertificates)
   {
     $this->sslCertificates = $sslCertificates;
   }
   /**
-   * @return Google_Service_Compute_SslCertificate
+   * @return Google_Service_Compute_SslCertificate[]
    */
   public function getSslCertificates()
   {

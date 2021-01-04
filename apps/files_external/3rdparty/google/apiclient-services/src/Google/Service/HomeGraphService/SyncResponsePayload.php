@@ -31,14 +31,14 @@ class Google_Service_HomeGraphService_SyncResponsePayload extends Google_Collect
     return $this->agentUserId;
   }
   /**
-   * @param Google_Service_HomeGraphService_Device
+   * @param Google_Service_HomeGraphService_Device[]
    */
   public function setDevices($devices)
   {
     $this->devices = $devices;
   }
   /**
-   * @return Google_Service_HomeGraphService_Device
+   * @return Google_Service_HomeGraphService_Device[]
    */
   public function getDevices()
   {

@@ -35,21 +35,21 @@ class Google_Service_Clouderrorreporting_Resource_ProjectsEvents extends Google_
    * project-123`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional. A `next_page_token` provided by a
-   * previous response.
-   * @opt_param int pageSize Optional. The maximum number of results to return per
-   * response.
    * @opt_param string groupId Required. The group for which events shall be
    * returned.
+   * @opt_param int pageSize Optional. The maximum number of results to return per
+   * response.
+   * @opt_param string pageToken Optional. A `next_page_token` provided by a
+   * previous response.
+   * @opt_param string serviceFilter.resourceType Optional. The exact value to
+   * match against [`ServiceContext.resource_type`](/error-
+   * reporting/reference/rest/v1beta1/ServiceContext#FIELDS.resource_type).
    * @opt_param string serviceFilter.service Optional. The exact value to match
    * against [`ServiceContext.service`](/error-
    * reporting/reference/rest/v1beta1/ServiceContext#FIELDS.service).
    * @opt_param string serviceFilter.version Optional. The exact value to match
    * against [`ServiceContext.version`](/error-
    * reporting/reference/rest/v1beta1/ServiceContext#FIELDS.version).
-   * @opt_param string serviceFilter.resourceType Optional. The exact value to
-   * match against [`ServiceContext.resource_type`](/error-
-   * reporting/reference/rest/v1beta1/ServiceContext#FIELDS.resource_type).
    * @opt_param string timeRange.period Restricts the query to the specified time
    * range.
    * @return Google_Service_Clouderrorreporting_ListEventsResponse

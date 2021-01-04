@@ -22,14 +22,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ListOfDevelopersResponse extends 
   protected $developerDataType = 'array';
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Developer
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Developer[]
    */
   public function setDeveloper($developer)
   {
     $this->developer = $developer;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Developer
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Developer[]
    */
   public function getDeveloper()
   {

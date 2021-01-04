@@ -22,14 +22,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1BatchUpdateIntentsRe
   protected $intentsDataType = 'array';
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1Intent
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1Intent[]
    */
   public function setIntents($intents)
   {
     $this->intents = $intents;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1Intent
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1Intent[]
    */
   public function getIntents()
   {

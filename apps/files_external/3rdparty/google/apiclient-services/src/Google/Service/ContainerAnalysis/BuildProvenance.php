@@ -52,28 +52,28 @@ class Google_Service_ContainerAnalysis_BuildProvenance extends Google_Collection
     return $this->builderVersion;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_Artifact
+   * @param Google_Service_ContainerAnalysis_Artifact[]
    */
   public function setBuiltArtifacts($builtArtifacts)
   {
     $this->builtArtifacts = $builtArtifacts;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_Artifact
+   * @return Google_Service_ContainerAnalysis_Artifact[]
    */
   public function getBuiltArtifacts()
   {
     return $this->builtArtifacts;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_Command
+   * @param Google_Service_ContainerAnalysis_Command[]
    */
   public function setCommands($commands)
   {
     $this->commands = $commands;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_Command
+   * @return Google_Service_ContainerAnalysis_Command[]
    */
   public function getCommands()
   {

@@ -24,14 +24,14 @@ class Google_Service_Compute_HealthChecksScopedList extends Google_Collection
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_HealthCheck
+   * @param Google_Service_Compute_HealthCheck[]
    */
   public function setHealthChecks($healthChecks)
   {
     $this->healthChecks = $healthChecks;
   }
   /**
-   * @return Google_Service_Compute_HealthCheck
+   * @return Google_Service_Compute_HealthCheck[]
    */
   public function getHealthChecks()
   {

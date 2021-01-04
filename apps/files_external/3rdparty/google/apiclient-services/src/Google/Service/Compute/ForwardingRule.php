@@ -154,14 +154,14 @@ class Google_Service_Compute_ForwardingRule extends Google_Collection
     return $this->loadBalancingScheme;
   }
   /**
-   * @param Google_Service_Compute_MetadataFilter
+   * @param Google_Service_Compute_MetadataFilter[]
    */
   public function setMetadataFilters($metadataFilters)
   {
     $this->metadataFilters = $metadataFilters;
   }
   /**
-   * @return Google_Service_Compute_MetadataFilter
+   * @return Google_Service_Compute_MetadataFilter[]
    */
   public function getMetadataFilters()
   {

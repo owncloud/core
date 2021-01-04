@@ -34,14 +34,14 @@ class Google_Service_Calendar_Settings extends Google_Collection
     return $this->etag;
   }
   /**
-   * @param Google_Service_Calendar_Setting
+   * @param Google_Service_Calendar_Setting[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Calendar_Setting
+   * @return Google_Service_Calendar_Setting[]
    */
   public function getItems()
   {

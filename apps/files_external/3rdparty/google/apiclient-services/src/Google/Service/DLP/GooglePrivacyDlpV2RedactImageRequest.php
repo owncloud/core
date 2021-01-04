@@ -42,14 +42,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2RedactImageRequest extends Google_Col
     return $this->byteItem;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2ImageRedactionConfig
+   * @param Google_Service_DLP_GooglePrivacyDlpV2ImageRedactionConfig[]
    */
   public function setImageRedactionConfigs($imageRedactionConfigs)
   {
     $this->imageRedactionConfigs = $imageRedactionConfigs;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2ImageRedactionConfig
+   * @return Google_Service_DLP_GooglePrivacyDlpV2ImageRedactionConfig[]
    */
   public function getImageRedactionConfigs()
   {

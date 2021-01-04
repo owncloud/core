@@ -31,14 +31,14 @@ class Google_Service_Dfareporting_CreativeAssetSelection extends Google_Collecti
     return $this->defaultAssetId;
   }
   /**
-   * @param Google_Service_Dfareporting_Rule
+   * @param Google_Service_Dfareporting_Rule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_Dfareporting_Rule
+   * @return Google_Service_Dfareporting_Rule[]
    */
   public function getRules()
   {

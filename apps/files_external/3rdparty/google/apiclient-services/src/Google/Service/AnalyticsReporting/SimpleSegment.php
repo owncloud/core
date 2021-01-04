@@ -22,14 +22,14 @@ class Google_Service_AnalyticsReporting_SimpleSegment extends Google_Collection
   protected $orFiltersForSegmentDataType = 'array';
 
   /**
-   * @param Google_Service_AnalyticsReporting_OrFiltersForSegment
+   * @param Google_Service_AnalyticsReporting_OrFiltersForSegment[]
    */
   public function setOrFiltersForSegment($orFiltersForSegment)
   {
     $this->orFiltersForSegment = $orFiltersForSegment;
   }
   /**
-   * @return Google_Service_AnalyticsReporting_OrFiltersForSegment
+   * @return Google_Service_AnalyticsReporting_OrFiltersForSegment[]
    */
   public function getOrFiltersForSegment()
   {

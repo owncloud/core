@@ -47,14 +47,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2StoredInfoType extends Google_Collect
     return $this->name;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2StoredInfoTypeVersion
+   * @param Google_Service_DLP_GooglePrivacyDlpV2StoredInfoTypeVersion[]
    */
   public function setPendingVersions($pendingVersions)
   {
     $this->pendingVersions = $pendingVersions;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2StoredInfoTypeVersion
+   * @return Google_Service_DLP_GooglePrivacyDlpV2StoredInfoTypeVersion[]
    */
   public function getPendingVersions()
   {

@@ -23,14 +23,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ListAnnotatedDat
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1AnnotatedDataset
+   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1AnnotatedDataset[]
    */
   public function setAnnotatedDatasets($annotatedDatasets)
   {
     $this->annotatedDatasets = $annotatedDatasets;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1AnnotatedDataset
+   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1AnnotatedDataset[]
    */
   public function getAnnotatedDatasets()
   {

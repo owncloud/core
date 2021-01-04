@@ -38,14 +38,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2Key extends Google_Collection
     return $this->partitionId;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2PathElement
+   * @param Google_Service_DLP_GooglePrivacyDlpV2PathElement[]
    */
   public function setPath($path)
   {
     $this->path = $path;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2PathElement
+   * @return Google_Service_DLP_GooglePrivacyDlpV2PathElement[]
    */
   public function getPath()
   {

@@ -31,14 +31,14 @@ class Google_Service_AdExchangeBuyer_Dimension extends Google_Collection
     return $this->dimensionType;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_DimensionDimensionValue
+   * @param Google_Service_AdExchangeBuyer_DimensionDimensionValue[]
    */
   public function setDimensionValues($dimensionValues)
   {
     $this->dimensionValues = $dimensionValues;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_DimensionDimensionValue
+   * @return Google_Service_AdExchangeBuyer_DimensionDimensionValue[]
    */
   public function getDimensionValues()
   {

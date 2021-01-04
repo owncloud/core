@@ -66,14 +66,14 @@ class Google_Service_CloudBuild_Results extends Google_Collection
     return $this->buildStepOutputs;
   }
   /**
-   * @param Google_Service_CloudBuild_BuiltImage
+   * @param Google_Service_CloudBuild_BuiltImage[]
    */
   public function setImages($images)
   {
     $this->images = $images;
   }
   /**
-   * @return Google_Service_CloudBuild_BuiltImage
+   * @return Google_Service_CloudBuild_BuiltImage[]
    */
   public function getImages()
   {

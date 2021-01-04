@@ -54,14 +54,14 @@ class Google_Service_Sheets_ConditionalFormatRule extends Google_Collection
     return $this->gradientRule;
   }
   /**
-   * @param Google_Service_Sheets_GridRange
+   * @param Google_Service_Sheets_GridRange[]
    */
   public function setRanges($ranges)
   {
     $this->ranges = $ranges;
   }
   /**
-   * @return Google_Service_Sheets_GridRange
+   * @return Google_Service_Sheets_GridRange[]
    */
   public function getRanges()
   {

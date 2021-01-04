@@ -23,14 +23,14 @@ class Google_Service_Books_Category extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_Books_CategoryItems
+   * @param Google_Service_Books_CategoryItems[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Books_CategoryItems
+   * @return Google_Service_Books_CategoryItems[]
    */
   public function getItems()
   {

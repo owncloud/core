@@ -22,14 +22,14 @@ class Google_Service_Vault_AddHeldAccountsResponse extends Google_Collection
   protected $responsesDataType = 'array';
 
   /**
-   * @param Google_Service_Vault_AddHeldAccountResult
+   * @param Google_Service_Vault_AddHeldAccountResult[]
    */
   public function setResponses($responses)
   {
     $this->responses = $responses;
   }
   /**
-   * @return Google_Service_Vault_AddHeldAccountResult
+   * @return Google_Service_Vault_AddHeldAccountResult[]
    */
   public function getResponses()
   {

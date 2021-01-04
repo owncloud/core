@@ -23,14 +23,14 @@ class Google_Service_ShoppingContent_DatafeedstatusesCustomBatchResponse extends
   public $kind;
 
   /**
-   * @param Google_Service_ShoppingContent_DatafeedstatusesCustomBatchResponseEntry
+   * @param Google_Service_ShoppingContent_DatafeedstatusesCustomBatchResponseEntry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_ShoppingContent_DatafeedstatusesCustomBatchResponseEntry
+   * @return Google_Service_ShoppingContent_DatafeedstatusesCustomBatchResponseEntry[]
    */
   public function getEntries()
   {

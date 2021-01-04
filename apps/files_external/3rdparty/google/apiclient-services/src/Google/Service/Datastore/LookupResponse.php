@@ -26,42 +26,42 @@ class Google_Service_Datastore_LookupResponse extends Google_Collection
   protected $missingDataType = 'array';
 
   /**
-   * @param Google_Service_Datastore_Key
+   * @param Google_Service_Datastore_Key[]
    */
   public function setDeferred($deferred)
   {
     $this->deferred = $deferred;
   }
   /**
-   * @return Google_Service_Datastore_Key
+   * @return Google_Service_Datastore_Key[]
    */
   public function getDeferred()
   {
     return $this->deferred;
   }
   /**
-   * @param Google_Service_Datastore_EntityResult
+   * @param Google_Service_Datastore_EntityResult[]
    */
   public function setFound($found)
   {
     $this->found = $found;
   }
   /**
-   * @return Google_Service_Datastore_EntityResult
+   * @return Google_Service_Datastore_EntityResult[]
    */
   public function getFound()
   {
     return $this->found;
   }
   /**
-   * @param Google_Service_Datastore_EntityResult
+   * @param Google_Service_Datastore_EntityResult[]
    */
   public function setMissing($missing)
   {
     $this->missing = $missing;
   }
   /**
-   * @return Google_Service_Datastore_EntityResult
+   * @return Google_Service_Datastore_EntityResult[]
    */
   public function getMissing()
   {

@@ -57,14 +57,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2JobTrigger extends Google_Collection
     return $this->displayName;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2Error
+   * @param Google_Service_DLP_GooglePrivacyDlpV2Error[]
    */
   public function setErrors($errors)
   {
     $this->errors = $errors;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2Error
+   * @return Google_Service_DLP_GooglePrivacyDlpV2Error[]
    */
   public function getErrors()
   {
@@ -109,14 +109,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2JobTrigger extends Google_Collection
     return $this->status;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2Trigger
+   * @param Google_Service_DLP_GooglePrivacyDlpV2Trigger[]
    */
   public function setTriggers($triggers)
   {
     $this->triggers = $triggers;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2Trigger
+   * @return Google_Service_DLP_GooglePrivacyDlpV2Trigger[]
    */
   public function getTriggers()
   {

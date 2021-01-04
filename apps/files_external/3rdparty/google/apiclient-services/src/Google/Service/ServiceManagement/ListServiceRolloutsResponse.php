@@ -31,14 +31,14 @@ class Google_Service_ServiceManagement_ListServiceRolloutsResponse extends Googl
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ServiceManagement_Rollout
+   * @param Google_Service_ServiceManagement_Rollout[]
    */
   public function setRollouts($rollouts)
   {
     $this->rollouts = $rollouts;
   }
   /**
-   * @return Google_Service_ServiceManagement_Rollout
+   * @return Google_Service_ServiceManagement_Rollout[]
    */
   public function getRollouts()
   {

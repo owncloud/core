@@ -22,14 +22,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ListApiProductsResponse extends G
   protected $apiProductDataType = 'array';
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1ApiProduct
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1ApiProduct[]
    */
   public function setApiProduct($apiProduct)
   {
     $this->apiProduct = $apiProduct;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1ApiProduct
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1ApiProduct[]
    */
   public function getApiProduct()
   {

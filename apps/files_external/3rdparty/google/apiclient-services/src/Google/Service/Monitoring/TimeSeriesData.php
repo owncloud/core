@@ -24,28 +24,28 @@ class Google_Service_Monitoring_TimeSeriesData extends Google_Collection
   protected $pointDataDataType = 'array';
 
   /**
-   * @param Google_Service_Monitoring_LabelValue
+   * @param Google_Service_Monitoring_LabelValue[]
    */
   public function setLabelValues($labelValues)
   {
     $this->labelValues = $labelValues;
   }
   /**
-   * @return Google_Service_Monitoring_LabelValue
+   * @return Google_Service_Monitoring_LabelValue[]
    */
   public function getLabelValues()
   {
     return $this->labelValues;
   }
   /**
-   * @param Google_Service_Monitoring_PointData
+   * @param Google_Service_Monitoring_PointData[]
    */
   public function setPointData($pointData)
   {
     $this->pointData = $pointData;
   }
   /**
-   * @return Google_Service_Monitoring_PointData
+   * @return Google_Service_Monitoring_PointData[]
    */
   public function getPointData()
   {

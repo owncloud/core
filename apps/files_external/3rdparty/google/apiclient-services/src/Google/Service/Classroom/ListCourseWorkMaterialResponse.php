@@ -23,14 +23,14 @@ class Google_Service_Classroom_ListCourseWorkMaterialResponse extends Google_Col
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Classroom_CourseWorkMaterial
+   * @param Google_Service_Classroom_CourseWorkMaterial[]
    */
   public function setCourseWorkMaterial($courseWorkMaterial)
   {
     $this->courseWorkMaterial = $courseWorkMaterial;
   }
   /**
-   * @return Google_Service_Classroom_CourseWorkMaterial
+   * @return Google_Service_Classroom_CourseWorkMaterial[]
    */
   public function getCourseWorkMaterial()
   {

@@ -69,10 +69,10 @@ class Google_Service_Tasks_Resource_Tasklists extends Google_Service_Resource
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Token specifying the result page to return.
-   * Optional.
    * @opt_param int maxResults Maximum number of task lists returned on one page.
    * Optional. The default is 20 (max allowed: 100).
+   * @opt_param string pageToken Token specifying the result page to return.
+   * Optional.
    * @return Google_Service_Tasks_TaskLists
    */
   public function listTasklists($optParams = array())

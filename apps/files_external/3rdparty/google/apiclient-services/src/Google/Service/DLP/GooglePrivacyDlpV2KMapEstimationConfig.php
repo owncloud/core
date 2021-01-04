@@ -25,28 +25,28 @@ class Google_Service_DLP_GooglePrivacyDlpV2KMapEstimationConfig extends Google_C
   public $regionCode;
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2AuxiliaryTable
+   * @param Google_Service_DLP_GooglePrivacyDlpV2AuxiliaryTable[]
    */
   public function setAuxiliaryTables($auxiliaryTables)
   {
     $this->auxiliaryTables = $auxiliaryTables;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2AuxiliaryTable
+   * @return Google_Service_DLP_GooglePrivacyDlpV2AuxiliaryTable[]
    */
   public function getAuxiliaryTables()
   {
     return $this->auxiliaryTables;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2TaggedField
+   * @param Google_Service_DLP_GooglePrivacyDlpV2TaggedField[]
    */
   public function setQuasiIds($quasiIds)
   {
     $this->quasiIds = $quasiIds;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2TaggedField
+   * @return Google_Service_DLP_GooglePrivacyDlpV2TaggedField[]
    */
   public function getQuasiIds()
   {

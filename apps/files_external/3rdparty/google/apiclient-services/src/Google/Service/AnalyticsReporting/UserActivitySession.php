@@ -27,14 +27,14 @@ class Google_Service_AnalyticsReporting_UserActivitySession extends Google_Colle
   public $sessionId;
 
   /**
-   * @param Google_Service_AnalyticsReporting_Activity
+   * @param Google_Service_AnalyticsReporting_Activity[]
    */
   public function setActivities($activities)
   {
     $this->activities = $activities;
   }
   /**
-   * @return Google_Service_AnalyticsReporting_Activity
+   * @return Google_Service_AnalyticsReporting_Activity[]
    */
   public function getActivities()
   {

@@ -30,14 +30,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3WebhookRequestIntentInf
     return $this->lastMatchedIntent;
   }
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3WebhookRequestIntentInfoIntentParameterValue
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3WebhookRequestIntentInfoIntentParameterValue[]
    */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3WebhookRequestIntentInfoIntentParameterValue
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3WebhookRequestIntentInfoIntentParameterValue[]
    */
   public function getParameters()
   {

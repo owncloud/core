@@ -26,14 +26,14 @@ class Google_Service_Compute_HttpHeaderAction extends Google_Collection
   public $responseHeadersToRemove;
 
   /**
-   * @param Google_Service_Compute_HttpHeaderOption
+   * @param Google_Service_Compute_HttpHeaderOption[]
    */
   public function setRequestHeadersToAdd($requestHeadersToAdd)
   {
     $this->requestHeadersToAdd = $requestHeadersToAdd;
   }
   /**
-   * @return Google_Service_Compute_HttpHeaderOption
+   * @return Google_Service_Compute_HttpHeaderOption[]
    */
   public function getRequestHeadersToAdd()
   {
@@ -48,14 +48,14 @@ class Google_Service_Compute_HttpHeaderAction extends Google_Collection
     return $this->requestHeadersToRemove;
   }
   /**
-   * @param Google_Service_Compute_HttpHeaderOption
+   * @param Google_Service_Compute_HttpHeaderOption[]
    */
   public function setResponseHeadersToAdd($responseHeadersToAdd)
   {
     $this->responseHeadersToAdd = $responseHeadersToAdd;
   }
   /**
-   * @return Google_Service_Compute_HttpHeaderOption
+   * @return Google_Service_Compute_HttpHeaderOption[]
    */
   public function getResponseHeadersToAdd()
   {

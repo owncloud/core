@@ -23,14 +23,14 @@ class Google_Service_AdExchangeBuyerII_ListFilteredBidsResponse extends Google_C
   public $nextPageToken;
 
   /**
-   * @param Google_Service_AdExchangeBuyerII_CreativeStatusRow
+   * @param Google_Service_AdExchangeBuyerII_CreativeStatusRow[]
    */
   public function setCreativeStatusRows($creativeStatusRows)
   {
     $this->creativeStatusRows = $creativeStatusRows;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_CreativeStatusRow
+   * @return Google_Service_AdExchangeBuyerII_CreativeStatusRow[]
    */
   public function getCreativeStatusRows()
   {

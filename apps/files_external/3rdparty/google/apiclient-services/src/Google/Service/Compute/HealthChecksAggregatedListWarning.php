@@ -32,14 +32,14 @@ class Google_Service_Compute_HealthChecksAggregatedListWarning extends Google_Co
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_HealthChecksAggregatedListWarningData
+   * @param Google_Service_Compute_HealthChecksAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_HealthChecksAggregatedListWarningData
+   * @return Google_Service_Compute_HealthChecksAggregatedListWarningData[]
    */
   public function getData()
   {

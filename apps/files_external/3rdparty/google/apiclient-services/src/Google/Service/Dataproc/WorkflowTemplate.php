@@ -48,14 +48,14 @@ class Google_Service_Dataproc_WorkflowTemplate extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Dataproc_OrderedJob
+   * @param Google_Service_Dataproc_OrderedJob[]
    */
   public function setJobs($jobs)
   {
     $this->jobs = $jobs;
   }
   /**
-   * @return Google_Service_Dataproc_OrderedJob
+   * @return Google_Service_Dataproc_OrderedJob[]
    */
   public function getJobs()
   {
@@ -78,14 +78,14 @@ class Google_Service_Dataproc_WorkflowTemplate extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Dataproc_TemplateParameter
+   * @param Google_Service_Dataproc_TemplateParameter[]
    */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
   /**
-   * @return Google_Service_Dataproc_TemplateParameter
+   * @return Google_Service_Dataproc_TemplateParameter[]
    */
   public function getParameters()
   {

@@ -60,14 +60,14 @@ class Google_Service_ShoppingContent_ReturnShipment extends Google_Collection
     return $this->shipmentId;
   }
   /**
-   * @param Google_Service_ShoppingContent_ShipmentTrackingInfo
+   * @param Google_Service_ShoppingContent_ShipmentTrackingInfo[]
    */
   public function setShipmentTrackingInfos($shipmentTrackingInfos)
   {
     $this->shipmentTrackingInfos = $shipmentTrackingInfos;
   }
   /**
-   * @return Google_Service_ShoppingContent_ShipmentTrackingInfo
+   * @return Google_Service_ShoppingContent_ShipmentTrackingInfo[]
    */
   public function getShipmentTrackingInfos()
   {

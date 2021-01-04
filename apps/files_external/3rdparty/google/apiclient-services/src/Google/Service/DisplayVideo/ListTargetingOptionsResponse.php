@@ -31,14 +31,14 @@ class Google_Service_DisplayVideo_ListTargetingOptionsResponse extends Google_Co
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_DisplayVideo_TargetingOption
+   * @param Google_Service_DisplayVideo_TargetingOption[]
    */
   public function setTargetingOptions($targetingOptions)
   {
     $this->targetingOptions = $targetingOptions;
   }
   /**
-   * @return Google_Service_DisplayVideo_TargetingOption
+   * @return Google_Service_DisplayVideo_TargetingOption[]
    */
   public function getTargetingOptions()
   {

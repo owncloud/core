@@ -38,14 +38,14 @@ class Google_Service_ShoppingContent_RegionalInventory extends Google_Collection
     return $this->availability;
   }
   /**
-   * @param Google_Service_ShoppingContent_CustomAttribute
+   * @param Google_Service_ShoppingContent_CustomAttribute[]
    */
   public function setCustomAttributes($customAttributes)
   {
     $this->customAttributes = $customAttributes;
   }
   /**
-   * @return Google_Service_ShoppingContent_CustomAttribute
+   * @return Google_Service_ShoppingContent_CustomAttribute[]
    */
   public function getCustomAttributes()
   {

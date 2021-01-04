@@ -33,14 +33,14 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentTextChange ext
     return $this->changedText;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentProvenance
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentProvenance[]
    */
   public function setProvenance($provenance)
   {
     $this->provenance = $provenance;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentProvenance
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentProvenance[]
    */
   public function getProvenance()
   {

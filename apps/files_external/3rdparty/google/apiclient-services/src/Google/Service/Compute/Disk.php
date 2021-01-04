@@ -86,14 +86,14 @@ class Google_Service_Compute_Disk extends Google_Collection
     return $this->diskEncryptionKey;
   }
   /**
-   * @param Google_Service_Compute_GuestOsFeature
+   * @param Google_Service_Compute_GuestOsFeature[]
    */
   public function setGuestOsFeatures($guestOsFeatures)
   {
     $this->guestOsFeatures = $guestOsFeatures;
   }
   /**
-   * @return Google_Service_Compute_GuestOsFeature
+   * @return Google_Service_Compute_GuestOsFeature[]
    */
   public function getGuestOsFeatures()
   {

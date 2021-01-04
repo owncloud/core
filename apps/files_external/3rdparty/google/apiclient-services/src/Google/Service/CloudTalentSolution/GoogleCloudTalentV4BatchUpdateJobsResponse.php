@@ -22,14 +22,14 @@ class Google_Service_CloudTalentSolution_GoogleCloudTalentV4BatchUpdateJobsRespo
   protected $jobResultsDataType = 'array';
 
   /**
-   * @param Google_Service_CloudTalentSolution_GoogleCloudTalentV4JobResult
+   * @param Google_Service_CloudTalentSolution_GoogleCloudTalentV4JobResult[]
    */
   public function setJobResults($jobResults)
   {
     $this->jobResults = $jobResults;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_GoogleCloudTalentV4JobResult
+   * @return Google_Service_CloudTalentSolution_GoogleCloudTalentV4JobResult[]
    */
   public function getJobResults()
   {

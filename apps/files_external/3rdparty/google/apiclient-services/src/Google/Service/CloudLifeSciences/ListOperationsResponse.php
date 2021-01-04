@@ -31,14 +31,14 @@ class Google_Service_CloudLifeSciences_ListOperationsResponse extends Google_Col
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_CloudLifeSciences_Operation
+   * @param Google_Service_CloudLifeSciences_Operation[]
    */
   public function setOperations($operations)
   {
     $this->operations = $operations;
   }
   /**
-   * @return Google_Service_CloudLifeSciences_Operation
+   * @return Google_Service_CloudLifeSciences_Operation[]
    */
   public function getOperations()
   {

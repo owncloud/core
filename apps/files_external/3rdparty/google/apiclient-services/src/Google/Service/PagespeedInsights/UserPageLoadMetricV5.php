@@ -35,14 +35,14 @@ class Google_Service_PagespeedInsights_UserPageLoadMetricV5 extends Google_Colle
     return $this->category;
   }
   /**
-   * @param Google_Service_PagespeedInsights_Bucket
+   * @param Google_Service_PagespeedInsights_Bucket[]
    */
   public function setDistributions($distributions)
   {
     $this->distributions = $distributions;
   }
   /**
-   * @return Google_Service_PagespeedInsights_Bucket
+   * @return Google_Service_PagespeedInsights_Bucket[]
    */
   public function getDistributions()
   {

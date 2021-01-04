@@ -31,14 +31,14 @@ class Google_Service_CloudAsset_SearchAllResourcesResponse extends Google_Collec
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_CloudAsset_ResourceSearchResult
+   * @param Google_Service_CloudAsset_ResourceSearchResult[]
    */
   public function setResults($results)
   {
     $this->results = $results;
   }
   /**
-   * @return Google_Service_CloudAsset_ResourceSearchResult
+   * @return Google_Service_CloudAsset_ResourceSearchResult[]
    */
   public function getResults()
   {

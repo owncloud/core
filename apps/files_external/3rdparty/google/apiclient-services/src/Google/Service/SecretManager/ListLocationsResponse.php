@@ -23,14 +23,14 @@ class Google_Service_SecretManager_ListLocationsResponse extends Google_Collecti
   public $nextPageToken;
 
   /**
-   * @param Google_Service_SecretManager_Location
+   * @param Google_Service_SecretManager_Location[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_SecretManager_Location
+   * @return Google_Service_SecretManager_Location[]
    */
   public function getLocations()
   {

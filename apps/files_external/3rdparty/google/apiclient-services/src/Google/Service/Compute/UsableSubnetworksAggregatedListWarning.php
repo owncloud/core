@@ -32,14 +32,14 @@ class Google_Service_Compute_UsableSubnetworksAggregatedListWarning extends Goog
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_UsableSubnetworksAggregatedListWarningData
+   * @param Google_Service_Compute_UsableSubnetworksAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_UsableSubnetworksAggregatedListWarningData
+   * @return Google_Service_Compute_UsableSubnetworksAggregatedListWarningData[]
    */
   public function getData()
   {

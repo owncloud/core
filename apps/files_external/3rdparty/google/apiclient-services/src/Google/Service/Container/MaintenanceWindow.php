@@ -39,14 +39,14 @@ class Google_Service_Container_MaintenanceWindow extends Google_Model
     return $this->dailyMaintenanceWindow;
   }
   /**
-   * @param Google_Service_Container_TimeWindow
+   * @param Google_Service_Container_TimeWindow[]
    */
   public function setMaintenanceExclusions($maintenanceExclusions)
   {
     $this->maintenanceExclusions = $maintenanceExclusions;
   }
   /**
-   * @return Google_Service_Container_TimeWindow
+   * @return Google_Service_Container_TimeWindow[]
    */
   public function getMaintenanceExclusions()
   {

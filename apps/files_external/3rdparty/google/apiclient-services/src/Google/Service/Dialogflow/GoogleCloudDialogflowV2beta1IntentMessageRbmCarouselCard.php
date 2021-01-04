@@ -23,14 +23,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageRbmCaro
   public $cardWidth;
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageRbmCardContent
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageRbmCardContent[]
    */
   public function setCardContents($cardContents)
   {
     $this->cardContents = $cardContents;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageRbmCardContent
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageRbmCardContent[]
    */
   public function getCardContents()
   {

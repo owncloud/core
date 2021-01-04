@@ -22,14 +22,14 @@ class Google_Service_Sheets_DataSourceObjectReferences extends Google_Collection
   protected $referencesDataType = 'array';
 
   /**
-   * @param Google_Service_Sheets_DataSourceObjectReference
+   * @param Google_Service_Sheets_DataSourceObjectReference[]
    */
   public function setReferences($references)
   {
     $this->references = $references;
   }
   /**
-   * @return Google_Service_Sheets_DataSourceObjectReference
+   * @return Google_Service_Sheets_DataSourceObjectReference[]
    */
   public function getReferences()
   {

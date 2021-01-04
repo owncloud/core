@@ -32,13 +32,16 @@
 class Google_Service_AdMob extends Google_Service
 {
   /** See your AdMob data. */
+  const ADMOB_READONLY =
+      "https://www.googleapis.com/auth/admob.readonly";
+  /** See your AdMob data. */
   const ADMOB_REPORT =
       "https://www.googleapis.com/auth/admob.report";
 
   public $accounts;
   public $accounts_mediationReport;
   public $accounts_networkReport;
-  
+
   /**
    * Constructs the internal representation of the AdMob service.
    *

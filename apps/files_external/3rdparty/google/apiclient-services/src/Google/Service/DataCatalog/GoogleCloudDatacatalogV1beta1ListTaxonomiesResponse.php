@@ -31,14 +31,14 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ListTaxonomiesResp
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1Taxonomy
+   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1Taxonomy[]
    */
   public function setTaxonomies($taxonomies)
   {
     $this->taxonomies = $taxonomies;
   }
   /**
-   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1Taxonomy
+   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1Taxonomy[]
    */
   public function getTaxonomies()
   {

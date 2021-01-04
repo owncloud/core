@@ -37,56 +37,56 @@ class Google_Service_Dfareporting_ReportPathToConversionCriteria extends Google_
   protected $reportPropertiesDataType = '';
 
   /**
-   * @param Google_Service_Dfareporting_DimensionValue
+   * @param Google_Service_Dfareporting_DimensionValue[]
    */
   public function setActivityFilters($activityFilters)
   {
     $this->activityFilters = $activityFilters;
   }
   /**
-   * @return Google_Service_Dfareporting_DimensionValue
+   * @return Google_Service_Dfareporting_DimensionValue[]
    */
   public function getActivityFilters()
   {
     return $this->activityFilters;
   }
   /**
-   * @param Google_Service_Dfareporting_SortedDimension
+   * @param Google_Service_Dfareporting_SortedDimension[]
    */
   public function setConversionDimensions($conversionDimensions)
   {
     $this->conversionDimensions = $conversionDimensions;
   }
   /**
-   * @return Google_Service_Dfareporting_SortedDimension
+   * @return Google_Service_Dfareporting_SortedDimension[]
    */
   public function getConversionDimensions()
   {
     return $this->conversionDimensions;
   }
   /**
-   * @param Google_Service_Dfareporting_SortedDimension
+   * @param Google_Service_Dfareporting_SortedDimension[]
    */
   public function setCustomFloodlightVariables($customFloodlightVariables)
   {
     $this->customFloodlightVariables = $customFloodlightVariables;
   }
   /**
-   * @return Google_Service_Dfareporting_SortedDimension
+   * @return Google_Service_Dfareporting_SortedDimension[]
    */
   public function getCustomFloodlightVariables()
   {
     return $this->customFloodlightVariables;
   }
   /**
-   * @param Google_Service_Dfareporting_DimensionValue
+   * @param Google_Service_Dfareporting_DimensionValue[]
    */
   public function setCustomRichMediaEvents($customRichMediaEvents)
   {
     $this->customRichMediaEvents = $customRichMediaEvents;
   }
   /**
-   * @return Google_Service_Dfareporting_DimensionValue
+   * @return Google_Service_Dfareporting_DimensionValue[]
    */
   public function getCustomRichMediaEvents()
   {
@@ -129,14 +129,14 @@ class Google_Service_Dfareporting_ReportPathToConversionCriteria extends Google_
     return $this->metricNames;
   }
   /**
-   * @param Google_Service_Dfareporting_SortedDimension
+   * @param Google_Service_Dfareporting_SortedDimension[]
    */
   public function setPerInteractionDimensions($perInteractionDimensions)
   {
     $this->perInteractionDimensions = $perInteractionDimensions;
   }
   /**
-   * @return Google_Service_Dfareporting_SortedDimension
+   * @return Google_Service_Dfareporting_SortedDimension[]
    */
   public function getPerInteractionDimensions()
   {

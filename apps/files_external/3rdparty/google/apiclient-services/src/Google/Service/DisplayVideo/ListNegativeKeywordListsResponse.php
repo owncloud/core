@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_ListNegativeKeywordListsResponse extends Googl
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DisplayVideo_NegativeKeywordList
+   * @param Google_Service_DisplayVideo_NegativeKeywordList[]
    */
   public function setNegativeKeywordLists($negativeKeywordLists)
   {
     $this->negativeKeywordLists = $negativeKeywordLists;
   }
   /**
-   * @return Google_Service_DisplayVideo_NegativeKeywordList
+   * @return Google_Service_DisplayVideo_NegativeKeywordList[]
    */
   public function getNegativeKeywordLists()
   {

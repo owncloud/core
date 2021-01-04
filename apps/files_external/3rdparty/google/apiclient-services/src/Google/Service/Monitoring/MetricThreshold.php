@@ -31,14 +31,14 @@ class Google_Service_Monitoring_MetricThreshold extends Google_Collection
   protected $triggerDataType = '';
 
   /**
-   * @param Google_Service_Monitoring_Aggregation
+   * @param Google_Service_Monitoring_Aggregation[]
    */
   public function setAggregations($aggregations)
   {
     $this->aggregations = $aggregations;
   }
   /**
-   * @return Google_Service_Monitoring_Aggregation
+   * @return Google_Service_Monitoring_Aggregation[]
    */
   public function getAggregations()
   {
@@ -53,14 +53,14 @@ class Google_Service_Monitoring_MetricThreshold extends Google_Collection
     return $this->comparison;
   }
   /**
-   * @param Google_Service_Monitoring_Aggregation
+   * @param Google_Service_Monitoring_Aggregation[]
    */
   public function setDenominatorAggregations($denominatorAggregations)
   {
     $this->denominatorAggregations = $denominatorAggregations;
   }
   /**
-   * @return Google_Service_Monitoring_Aggregation
+   * @return Google_Service_Monitoring_Aggregation[]
    */
   public function getDenominatorAggregations()
   {

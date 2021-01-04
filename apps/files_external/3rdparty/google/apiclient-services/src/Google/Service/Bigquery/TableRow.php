@@ -22,14 +22,14 @@ class Google_Service_Bigquery_TableRow extends Google_Collection
   protected $fDataType = 'array';
 
   /**
-   * @param Google_Service_Bigquery_TableCell
+   * @param Google_Service_Bigquery_TableCell[]
    */
   public function setF($f)
   {
     $this->f = $f;
   }
   /**
-   * @return Google_Service_Bigquery_TableCell
+   * @return Google_Service_Bigquery_TableCell[]
    */
   public function getF()
   {

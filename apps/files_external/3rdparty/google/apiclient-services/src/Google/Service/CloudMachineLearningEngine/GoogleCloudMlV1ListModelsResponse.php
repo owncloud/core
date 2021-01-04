@@ -23,14 +23,14 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ListModelsRespons
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Model
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Model[]
    */
   public function setModels($models)
   {
     $this->models = $models;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Model
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Model[]
    */
   public function getModels()
   {

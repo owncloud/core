@@ -22,14 +22,14 @@ class Google_Service_ServiceUsage_ImportConsumerOverridesResponse extends Google
   protected $overridesDataType = 'array';
 
   /**
-   * @param Google_Service_ServiceUsage_QuotaOverride
+   * @param Google_Service_ServiceUsage_QuotaOverride[]
    */
   public function setOverrides($overrides)
   {
     $this->overrides = $overrides;
   }
   /**
-   * @return Google_Service_ServiceUsage_QuotaOverride
+   * @return Google_Service_ServiceUsage_QuotaOverride[]
    */
   public function getOverrides()
   {

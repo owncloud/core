@@ -24,14 +24,14 @@ class Google_Service_Dfareporting_AccountsListResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Dfareporting_Account
+   * @param Google_Service_Dfareporting_Account[]
    */
   public function setAccounts($accounts)
   {
     $this->accounts = $accounts;
   }
   /**
-   * @return Google_Service_Dfareporting_Account
+   * @return Google_Service_Dfareporting_Account[]
    */
   public function getAccounts()
   {

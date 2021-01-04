@@ -22,14 +22,14 @@ class Google_Service_Vision_DominantColorsAnnotation extends Google_Collection
   protected $colorsDataType = 'array';
 
   /**
-   * @param Google_Service_Vision_ColorInfo
+   * @param Google_Service_Vision_ColorInfo[]
    */
   public function setColors($colors)
   {
     $this->colors = $colors;
   }
   /**
-   * @return Google_Service_Vision_ColorInfo
+   * @return Google_Service_Vision_ColorInfo[]
    */
   public function getColors()
   {

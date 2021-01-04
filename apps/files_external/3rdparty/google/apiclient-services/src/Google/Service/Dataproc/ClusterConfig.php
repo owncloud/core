@@ -108,14 +108,14 @@ class Google_Service_Dataproc_ClusterConfig extends Google_Collection
     return $this->gceClusterConfig;
   }
   /**
-   * @param Google_Service_Dataproc_NodeInitializationAction
+   * @param Google_Service_Dataproc_NodeInitializationAction[]
    */
   public function setInitializationActions($initializationActions)
   {
     $this->initializationActions = $initializationActions;
   }
   /**
-   * @return Google_Service_Dataproc_NodeInitializationAction
+   * @return Google_Service_Dataproc_NodeInitializationAction[]
    */
   public function getInitializationActions()
   {

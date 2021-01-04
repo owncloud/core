@@ -39,14 +39,14 @@ class Google_Service_Bigquery_Dataset extends Google_Collection
   public $selfLink;
 
   /**
-   * @param Google_Service_Bigquery_DatasetAccess
+   * @param Google_Service_Bigquery_DatasetAccess[]
    */
   public function setAccess($access)
   {
     $this->access = $access;
   }
   /**
-   * @return Google_Service_Bigquery_DatasetAccess
+   * @return Google_Service_Bigquery_DatasetAccess[]
    */
   public function getAccess()
   {

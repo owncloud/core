@@ -25,14 +25,14 @@ class Google_Service_SecurityCommandCenter_GroupAssetsResponse extends Google_Co
   public $totalSize;
 
   /**
-   * @param Google_Service_SecurityCommandCenter_GroupResult
+   * @param Google_Service_SecurityCommandCenter_GroupResult[]
    */
   public function setGroupByResults($groupByResults)
   {
     $this->groupByResults = $groupByResults;
   }
   /**
-   * @return Google_Service_SecurityCommandCenter_GroupResult
+   * @return Google_Service_SecurityCommandCenter_GroupResult[]
    */
   public function getGroupByResults()
   {

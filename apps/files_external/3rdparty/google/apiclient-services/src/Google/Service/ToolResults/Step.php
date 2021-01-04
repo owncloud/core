@@ -95,14 +95,14 @@ class Google_Service_ToolResults_Step extends Google_Collection
     return $this->deviceUsageDuration;
   }
   /**
-   * @param Google_Service_ToolResults_StepDimensionValueEntry
+   * @param Google_Service_ToolResults_StepDimensionValueEntry[]
    */
   public function setDimensionValue($dimensionValue)
   {
     $this->dimensionValue = $dimensionValue;
   }
   /**
-   * @return Google_Service_ToolResults_StepDimensionValueEntry
+   * @return Google_Service_ToolResults_StepDimensionValueEntry[]
    */
   public function getDimensionValue()
   {
@@ -117,14 +117,14 @@ class Google_Service_ToolResults_Step extends Google_Collection
     return $this->hasImages;
   }
   /**
-   * @param Google_Service_ToolResults_StepLabelsEntry
+   * @param Google_Service_ToolResults_StepLabelsEntry[]
    */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
   /**
-   * @return Google_Service_ToolResults_StepLabelsEntry
+   * @return Google_Service_ToolResults_StepLabelsEntry[]
    */
   public function getLabels()
   {

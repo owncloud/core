@@ -32,14 +32,14 @@ class Google_Service_Compute_TargetHttpsProxyAggregatedListWarning extends Googl
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_TargetHttpsProxyAggregatedListWarningData
+   * @param Google_Service_Compute_TargetHttpsProxyAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_TargetHttpsProxyAggregatedListWarningData
+   * @return Google_Service_Compute_TargetHttpsProxyAggregatedListWarningData[]
    */
   public function getData()
   {

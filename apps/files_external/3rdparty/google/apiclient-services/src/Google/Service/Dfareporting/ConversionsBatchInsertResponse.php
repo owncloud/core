@@ -40,14 +40,14 @@ class Google_Service_Dfareporting_ConversionsBatchInsertResponse extends Google_
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dfareporting_ConversionStatus
+   * @param Google_Service_Dfareporting_ConversionStatus[]
    */
   public function setStatus($status)
   {
     $this->status = $status;
   }
   /**
-   * @return Google_Service_Dfareporting_ConversionStatus
+   * @return Google_Service_Dfareporting_ConversionStatus[]
    */
   public function getStatus()
   {

@@ -66,14 +66,14 @@ class Google_Service_Safebrowsing_ThreatHit extends Google_Collection
     return $this->platformType;
   }
   /**
-   * @param Google_Service_Safebrowsing_ThreatSource
+   * @param Google_Service_Safebrowsing_ThreatSource[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_Safebrowsing_ThreatSource
+   * @return Google_Service_Safebrowsing_ThreatSource[]
    */
   public function getResources()
   {

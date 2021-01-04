@@ -33,14 +33,14 @@ class Google_Service_Dfareporting_ReportPathCriteria extends Google_Collection
   protected $pathFiltersDataType = 'array';
 
   /**
-   * @param Google_Service_Dfareporting_DimensionValue
+   * @param Google_Service_Dfareporting_DimensionValue[]
    */
   public function setActivityFilters($activityFilters)
   {
     $this->activityFilters = $activityFilters;
   }
   /**
-   * @return Google_Service_Dfareporting_DimensionValue
+   * @return Google_Service_Dfareporting_DimensionValue[]
    */
   public function getActivityFilters()
   {
@@ -75,14 +75,14 @@ class Google_Service_Dfareporting_ReportPathCriteria extends Google_Collection
     return $this->dateRange;
   }
   /**
-   * @param Google_Service_Dfareporting_SortedDimension
+   * @param Google_Service_Dfareporting_SortedDimension[]
    */
   public function setDimensions($dimensions)
   {
     $this->dimensions = $dimensions;
   }
   /**
-   * @return Google_Service_Dfareporting_SortedDimension
+   * @return Google_Service_Dfareporting_SortedDimension[]
    */
   public function getDimensions()
   {
@@ -111,14 +111,14 @@ class Google_Service_Dfareporting_ReportPathCriteria extends Google_Collection
     return $this->metricNames;
   }
   /**
-   * @param Google_Service_Dfareporting_PathFilter
+   * @param Google_Service_Dfareporting_PathFilter[]
    */
   public function setPathFilters($pathFilters)
   {
     $this->pathFilters = $pathFilters;
   }
   /**
-   * @return Google_Service_Dfareporting_PathFilter
+   * @return Google_Service_Dfareporting_PathFilter[]
    */
   public function getPathFilters()
   {

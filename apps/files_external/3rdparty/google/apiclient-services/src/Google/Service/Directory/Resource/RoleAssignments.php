@@ -73,10 +73,10 @@ class Google_Service_Directory_Resource_RoleAssignments extends Google_Service_R
    * @param string $customer Immutable ID of the G Suite account.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string roleId Immutable ID of a role. If included in the request,
-   * returns only role assignments containing this role ID.
    * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string pageToken Token to specify the next page in the list.
+   * @opt_param string roleId Immutable ID of a role. If included in the request,
+   * returns only role assignments containing this role ID.
    * @opt_param string userKey The user's primary email address, alias email
    * address, or unique user ID. If included in the request, returns role
    * assignments only for this user.

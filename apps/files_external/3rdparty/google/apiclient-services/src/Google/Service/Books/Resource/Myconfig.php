@@ -71,10 +71,10 @@ class Google_Service_Books_Resource_Myconfig extends Google_Service_Resource
    * restrictions for.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string locale ISO-639-1, ISO-3166-1 codes for message
-   * localization, i.e. en_US.
    * @opt_param string licenseTypes The type of access license to request. If not
    * specified, the default is BOTH.
+   * @opt_param string locale ISO-639-1, ISO-3166-1 codes for message
+   * localization, i.e. en_US.
    * @return Google_Service_Books_RequestAccessData
    */
   public function requestAccess($cpksver, $nonce, $source, $volumeId, $optParams = array())
@@ -93,16 +93,16 @@ class Google_Service_Books_Resource_Myconfig extends Google_Service_Resource
    * @param string $source String to identify the originator of this request.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string features List of features supported by the client, i.e.,
+   * 'RENTALS'
    * @opt_param bool includeNonComicsSeries Set to true to include non-comics
    * series. Defaults to false.
    * @opt_param string locale ISO-639-1, ISO-3166-1 codes for message
    * localization, i.e. en_US.
-   * @opt_param string features List of features supported by the client, i.e.,
-   * 'RENTALS'
-   * @opt_param string volumeIds The volume(s) to request download restrictions
-   * for.
    * @opt_param bool showPreorders Set to true to show pre-ordered books. Defaults
    * to false.
+   * @opt_param string volumeIds The volume(s) to request download restrictions
+   * for.
    * @return Google_Service_Books_Volumes
    */
   public function syncVolumeLicenses($cpksver, $nonce, $source, $optParams = array())

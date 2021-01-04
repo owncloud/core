@@ -22,14 +22,14 @@ class Google_Service_AlertCenter_Settings extends Google_Collection
   protected $notificationsDataType = 'array';
 
   /**
-   * @param Google_Service_AlertCenter_Notification
+   * @param Google_Service_AlertCenter_Notification[]
    */
   public function setNotifications($notifications)
   {
     $this->notifications = $notifications;
   }
   /**
-   * @return Google_Service_AlertCenter_Notification
+   * @return Google_Service_AlertCenter_Notification[]
    */
   public function getNotifications()
   {

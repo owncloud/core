@@ -31,14 +31,14 @@ class Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1Lis
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1UserEvent
+   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1UserEvent[]
    */
   public function setUserEvents($userEvents)
   {
     $this->userEvents = $userEvents;
   }
   /**
-   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1UserEvent
+   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1UserEvent[]
    */
   public function getUserEvents()
   {

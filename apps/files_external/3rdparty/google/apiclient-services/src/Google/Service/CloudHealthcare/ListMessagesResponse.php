@@ -23,14 +23,14 @@ class Google_Service_CloudHealthcare_ListMessagesResponse extends Google_Collect
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudHealthcare_Message
+   * @param Google_Service_CloudHealthcare_Message[]
    */
   public function setHl7V2Messages($hl7V2Messages)
   {
     $this->hl7V2Messages = $hl7V2Messages;
   }
   /**
-   * @return Google_Service_CloudHealthcare_Message
+   * @return Google_Service_CloudHealthcare_Message[]
    */
   public function getHl7V2Messages()
   {

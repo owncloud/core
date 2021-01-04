@@ -24,14 +24,14 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta3BatchProcessRequest ex
   protected $outputConfigDataType = '';
 
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3BatchProcessRequestBatchInputConfig
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3BatchProcessRequestBatchInputConfig[]
    */
   public function setInputConfigs($inputConfigs)
   {
     $this->inputConfigs = $inputConfigs;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3BatchProcessRequestBatchInputConfig
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3BatchProcessRequestBatchInputConfig[]
    */
   public function getInputConfigs()
   {

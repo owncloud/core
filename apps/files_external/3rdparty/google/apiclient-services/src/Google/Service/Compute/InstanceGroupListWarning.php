@@ -32,14 +32,14 @@ class Google_Service_Compute_InstanceGroupListWarning extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_InstanceGroupListWarningData
+   * @param Google_Service_Compute_InstanceGroupListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_InstanceGroupListWarningData
+   * @return Google_Service_Compute_InstanceGroupListWarningData[]
    */
   public function getData()
   {

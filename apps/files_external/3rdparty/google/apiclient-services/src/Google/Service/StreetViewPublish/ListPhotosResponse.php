@@ -31,14 +31,14 @@ class Google_Service_StreetViewPublish_ListPhotosResponse extends Google_Collect
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_StreetViewPublish_Photo
+   * @param Google_Service_StreetViewPublish_Photo[]
    */
   public function setPhotos($photos)
   {
     $this->photos = $photos;
   }
   /**
-   * @return Google_Service_StreetViewPublish_Photo
+   * @return Google_Service_StreetViewPublish_Photo[]
    */
   public function getPhotos()
   {

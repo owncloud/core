@@ -23,14 +23,14 @@ class Google_Service_ShoppingContent_AccountsAuthInfoResponse extends Google_Col
   public $kind;
 
   /**
-   * @param Google_Service_ShoppingContent_AccountIdentifier
+   * @param Google_Service_ShoppingContent_AccountIdentifier[]
    */
   public function setAccountIdentifiers($accountIdentifiers)
   {
     $this->accountIdentifiers = $accountIdentifiers;
   }
   /**
-   * @return Google_Service_ShoppingContent_AccountIdentifier
+   * @return Google_Service_ShoppingContent_AccountIdentifier[]
    */
   public function getAccountIdentifiers()
   {

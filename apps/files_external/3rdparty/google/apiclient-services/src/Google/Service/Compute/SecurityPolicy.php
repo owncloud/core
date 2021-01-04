@@ -77,14 +77,14 @@ class Google_Service_Compute_SecurityPolicy extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Compute_SecurityPolicyRule
+   * @param Google_Service_Compute_SecurityPolicyRule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_Compute_SecurityPolicyRule
+   * @return Google_Service_Compute_SecurityPolicyRule[]
    */
   public function getRules()
   {

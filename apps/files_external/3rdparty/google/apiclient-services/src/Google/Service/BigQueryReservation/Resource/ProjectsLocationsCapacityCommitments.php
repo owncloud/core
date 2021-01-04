@@ -81,9 +81,9 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsCapacityCommi
    * E.g., `projects/myproject/locations/US`
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of items to return.
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.
-   * @opt_param int pageSize The maximum number of items to return.
    * @return Google_Service_BigQueryReservation_ListCapacityCommitmentsResponse
    */
   public function listProjectsLocationsCapacityCommitments($parent, $optParams = array())

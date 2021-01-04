@@ -85,16 +85,16 @@ class Google_Service_Bigquery_Resource_Routines extends Google_Service_Resource
    * are returned. The current supported form is either "routine_type:" or
    * "routineType:", where is a RoutineType enum. Example:
    * "routineType:SCALAR_FUNCTION".
-   * @opt_param string readMask If set, then only the Routine fields in the field
-   * mask, as well as project_id, dataset_id and routine_id, are returned in the
-   * response. If unset, then the following Routine fields are returned: etag,
-   * project_id, dataset_id, routine_id, routine_type, creation_time,
-   * last_modified_time, and language.
    * @opt_param string maxResults The maximum number of results to return in a
    * single response page. Leverage the page tokens to iterate through the entire
    * collection.
    * @opt_param string pageToken Page token, returned by a previous call, to
    * request the next page of results
+   * @opt_param string readMask If set, then only the Routine fields in the field
+   * mask, as well as project_id, dataset_id and routine_id, are returned in the
+   * response. If unset, then the following Routine fields are returned: etag,
+   * project_id, dataset_id, routine_id, routine_type, creation_time,
+   * last_modified_time, and language.
    * @return Google_Service_Bigquery_ListRoutinesResponse
    */
   public function listRoutines($projectId, $datasetId, $optParams = array())

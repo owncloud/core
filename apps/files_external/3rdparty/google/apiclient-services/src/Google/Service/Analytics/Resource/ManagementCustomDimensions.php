@@ -66,10 +66,10 @@ class Google_Service_Analytics_Resource_ManagementCustomDimensions extends Googl
    * retrieve.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int start-index An index of the first entity to retrieve. Use this
-   * parameter as a pagination mechanism along with the max-results parameter.
    * @opt_param int max-results The maximum number of custom dimensions to include
    * in this response.
+   * @opt_param int start-index An index of the first entity to retrieve. Use this
+   * parameter as a pagination mechanism along with the max-results parameter.
    * @return Google_Service_Analytics_CustomDimensions
    */
   public function listManagementCustomDimensions($accountId, $webPropertyId, $optParams = array())

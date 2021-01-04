@@ -34,14 +34,14 @@ class Google_Service_PostmasterTools_TrafficStats extends Google_Collection
   public $userReportedSpamRatio;
 
   /**
-   * @param Google_Service_PostmasterTools_DeliveryError
+   * @param Google_Service_PostmasterTools_DeliveryError[]
    */
   public function setDeliveryErrors($deliveryErrors)
   {
     $this->deliveryErrors = $deliveryErrors;
   }
   /**
-   * @return Google_Service_PostmasterTools_DeliveryError
+   * @return Google_Service_PostmasterTools_DeliveryError[]
    */
   public function getDeliveryErrors()
   {
@@ -80,14 +80,14 @@ class Google_Service_PostmasterTools_TrafficStats extends Google_Collection
     return $this->inboundEncryptionRatio;
   }
   /**
-   * @param Google_Service_PostmasterTools_IpReputation
+   * @param Google_Service_PostmasterTools_IpReputation[]
    */
   public function setIpReputations($ipReputations)
   {
     $this->ipReputations = $ipReputations;
   }
   /**
-   * @return Google_Service_PostmasterTools_IpReputation
+   * @return Google_Service_PostmasterTools_IpReputation[]
    */
   public function getIpReputations()
   {
@@ -110,14 +110,14 @@ class Google_Service_PostmasterTools_TrafficStats extends Google_Collection
     return $this->outboundEncryptionRatio;
   }
   /**
-   * @param Google_Service_PostmasterTools_FeedbackLoop
+   * @param Google_Service_PostmasterTools_FeedbackLoop[]
    */
   public function setSpammyFeedbackLoops($spammyFeedbackLoops)
   {
     $this->spammyFeedbackLoops = $spammyFeedbackLoops;
   }
   /**
-   * @return Google_Service_PostmasterTools_FeedbackLoop
+   * @return Google_Service_PostmasterTools_FeedbackLoop[]
    */
   public function getSpammyFeedbackLoops()
   {

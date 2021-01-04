@@ -22,14 +22,14 @@ class Google_Service_AndroidEnterprise_EntitlementsListResponse extends Google_C
   protected $entitlementDataType = 'array';
 
   /**
-   * @param Google_Service_AndroidEnterprise_Entitlement
+   * @param Google_Service_AndroidEnterprise_Entitlement[]
    */
   public function setEntitlement($entitlement)
   {
     $this->entitlement = $entitlement;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_Entitlement
+   * @return Google_Service_AndroidEnterprise_Entitlement[]
    */
   public function getEntitlement()
   {

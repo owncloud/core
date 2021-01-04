@@ -36,7 +36,7 @@ class Google_Service_FirebaseCloudMessaging extends Google_Service
       "https://www.googleapis.com/auth/cloud-platform";
 
   public $projects_messages;
-  
+
   /**
    * Constructs the internal representation of the FirebaseCloudMessaging
    * service.

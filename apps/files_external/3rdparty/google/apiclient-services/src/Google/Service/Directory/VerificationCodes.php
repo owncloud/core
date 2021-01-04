@@ -32,14 +32,14 @@ class Google_Service_Directory_VerificationCodes extends Google_Collection
     return $this->etag;
   }
   /**
-   * @param Google_Service_Directory_VerificationCode
+   * @param Google_Service_Directory_VerificationCode[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Directory_VerificationCode
+   * @return Google_Service_Directory_VerificationCode[]
    */
   public function getItems()
   {

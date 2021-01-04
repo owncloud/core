@@ -26,14 +26,14 @@ class Google_Service_YouTubeAnalytics_QueryResponse extends Google_Collection
   public $rows;
 
   /**
-   * @param Google_Service_YouTubeAnalytics_ResultTableColumnHeader
+   * @param Google_Service_YouTubeAnalytics_ResultTableColumnHeader[]
    */
   public function setColumnHeaders($columnHeaders)
   {
     $this->columnHeaders = $columnHeaders;
   }
   /**
-   * @return Google_Service_YouTubeAnalytics_ResultTableColumnHeader
+   * @return Google_Service_YouTubeAnalytics_ResultTableColumnHeader[]
    */
   public function getColumnHeaders()
   {

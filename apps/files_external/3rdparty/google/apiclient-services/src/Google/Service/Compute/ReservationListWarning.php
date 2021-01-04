@@ -32,14 +32,14 @@ class Google_Service_Compute_ReservationListWarning extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_ReservationListWarningData
+   * @param Google_Service_Compute_ReservationListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_ReservationListWarningData
+   * @return Google_Service_Compute_ReservationListWarningData[]
    */
   public function getData()
   {

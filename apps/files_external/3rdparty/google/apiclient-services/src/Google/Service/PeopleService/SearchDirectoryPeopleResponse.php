@@ -32,14 +32,14 @@ class Google_Service_PeopleService_SearchDirectoryPeopleResponse extends Google_
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_PeopleService_Person
+   * @param Google_Service_PeopleService_Person[]
    */
   public function setPeople($people)
   {
     $this->people = $people;
   }
   /**
-   * @return Google_Service_PeopleService_Person
+   * @return Google_Service_PeopleService_Person[]
    */
   public function getPeople()
   {

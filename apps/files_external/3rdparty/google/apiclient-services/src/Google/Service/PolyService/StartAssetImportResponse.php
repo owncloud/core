@@ -41,14 +41,14 @@ class Google_Service_PolyService_StartAssetImportResponse extends Google_Collect
     return $this->assetImportId;
   }
   /**
-   * @param Google_Service_PolyService_AssetImportMessage
+   * @param Google_Service_PolyService_AssetImportMessage[]
    */
   public function setAssetImportMessages($assetImportMessages)
   {
     $this->assetImportMessages = $assetImportMessages;
   }
   /**
-   * @return Google_Service_PolyService_AssetImportMessage
+   * @return Google_Service_PolyService_AssetImportMessage[]
    */
   public function getAssetImportMessages()
   {

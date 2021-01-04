@@ -126,13 +126,13 @@ class Google_Service_AlertCenter_Resource_Alerts extends Google_Service_Resource
    * results in descending order based on the creation timestamp using
    * `order_by="create_time desc"`. Currently, supported sorting are `create_time
    * asc`, `create_time desc`, `update_time desc`
+   * @opt_param int pageSize Optional. The requested page size. Server may return
+   * fewer items than requested. If unspecified, server picks an appropriate
+   * default.
    * @opt_param string pageToken Optional. A token identifying a page of results
    * the server should return. If empty, a new iteration is started. To continue
    * an iteration, pass in the value from the previous ListAlertsResponse's
    * next_page_token field.
-   * @opt_param int pageSize Optional. The requested page size. Server may return
-   * fewer items than requested. If unspecified, server picks an appropriate
-   * default.
    * @return Google_Service_AlertCenter_ListAlertsResponse
    */
   public function listAlerts($optParams = array())

@@ -41,7 +41,7 @@ class Google_Service_Testing extends Google_Service
   public $applicationDetailService;
   public $projects_testMatrices;
   public $testEnvironmentCatalog;
-  
+
   /**
    * Constructs the internal representation of the Testing service.
    *

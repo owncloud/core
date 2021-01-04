@@ -75,14 +75,14 @@ class Google_Service_Cloudbilling_Sku extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Cloudbilling_PricingInfo
+   * @param Google_Service_Cloudbilling_PricingInfo[]
    */
   public function setPricingInfo($pricingInfo)
   {
     $this->pricingInfo = $pricingInfo;
   }
   /**
-   * @return Google_Service_Cloudbilling_PricingInfo
+   * @return Google_Service_Cloudbilling_PricingInfo[]
    */
   public function getPricingInfo()
   {

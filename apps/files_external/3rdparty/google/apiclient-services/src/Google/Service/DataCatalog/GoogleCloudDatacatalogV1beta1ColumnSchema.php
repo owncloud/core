@@ -50,14 +50,14 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ColumnSchema exten
     return $this->mode;
   }
   /**
-   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ColumnSchema
+   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ColumnSchema[]
    */
   public function setSubcolumns($subcolumns)
   {
     $this->subcolumns = $subcolumns;
   }
   /**
-   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ColumnSchema
+   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ColumnSchema[]
    */
   public function getSubcolumns()
   {

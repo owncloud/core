@@ -47,7 +47,7 @@ class Google_Service_Docs extends Google_Service
       "https://www.googleapis.com/auth/drive.readonly";
 
   public $documents;
-  
+
   /**
    * Constructs the internal representation of the Docs service.
    *

@@ -17,6 +17,9 @@
 
 class Google_Service_Storagetransfer_Schedule extends Google_Model
 {
+  protected $endTimeOfDayType = 'Google_Service_Storagetransfer_TimeOfDay';
+  protected $endTimeOfDayDataType = '';
+  public $repeatInterval;
   protected $scheduleEndDateType = 'Google_Service_Storagetransfer_Date';
   protected $scheduleEndDateDataType = '';
   protected $scheduleStartDateType = 'Google_Service_Storagetransfer_Date';
@@ -24,6 +27,28 @@ class Google_Service_Storagetransfer_Schedule extends Google_Model
   protected $startTimeOfDayType = 'Google_Service_Storagetransfer_TimeOfDay';
   protected $startTimeOfDayDataType = '';
 
+  /**
+   * @param Google_Service_Storagetransfer_TimeOfDay
+   */
+  public function setEndTimeOfDay(Google_Service_Storagetransfer_TimeOfDay $endTimeOfDay)
+  {
+    $this->endTimeOfDay = $endTimeOfDay;
+  }
+  /**
+   * @return Google_Service_Storagetransfer_TimeOfDay
+   */
+  public function getEndTimeOfDay()
+  {
+    return $this->endTimeOfDay;
+  }
+  public function setRepeatInterval($repeatInterval)
+  {
+    $this->repeatInterval = $repeatInterval;
+  }
+  public function getRepeatInterval()
+  {
+    return $this->repeatInterval;
+  }
   /**
    * @param Google_Service_Storagetransfer_Date
    */

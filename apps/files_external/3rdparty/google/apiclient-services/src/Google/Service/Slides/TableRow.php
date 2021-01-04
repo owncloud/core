@@ -40,14 +40,14 @@ class Google_Service_Slides_TableRow extends Google_Collection
     return $this->rowHeight;
   }
   /**
-   * @param Google_Service_Slides_TableCell
+   * @param Google_Service_Slides_TableCell[]
    */
   public function setTableCells($tableCells)
   {
     $this->tableCells = $tableCells;
   }
   /**
-   * @return Google_Service_Slides_TableCell
+   * @return Google_Service_Slides_TableCell[]
    */
   public function getTableCells()
   {

@@ -31,14 +31,14 @@ class Google_Service_Recommender_GoogleCloudRecommenderV1ListRecommendationsResp
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Recommender_GoogleCloudRecommenderV1Recommendation
+   * @param Google_Service_Recommender_GoogleCloudRecommenderV1Recommendation[]
    */
   public function setRecommendations($recommendations)
   {
     $this->recommendations = $recommendations;
   }
   /**
-   * @return Google_Service_Recommender_GoogleCloudRecommenderV1Recommendation
+   * @return Google_Service_Recommender_GoogleCloudRecommenderV1Recommendation[]
    */
   public function getRecommendations()
   {

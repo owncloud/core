@@ -32,14 +32,14 @@ class Google_Service_Compute_NetworkListWarning extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_NetworkListWarningData
+   * @param Google_Service_Compute_NetworkListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_NetworkListWarningData
+   * @return Google_Service_Compute_NetworkListWarningData[]
    */
   public function getData()
   {

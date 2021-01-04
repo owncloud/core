@@ -39,14 +39,14 @@ class Google_Service_CloudSourceRepositories_ProjectConfig extends Google_Model
     return $this->name;
   }
   /**
-   * @param Google_Service_CloudSourceRepositories_PubsubConfig
+   * @param Google_Service_CloudSourceRepositories_PubsubConfig[]
    */
   public function setPubsubConfigs($pubsubConfigs)
   {
     $this->pubsubConfigs = $pubsubConfigs;
   }
   /**
-   * @return Google_Service_CloudSourceRepositories_PubsubConfig
+   * @return Google_Service_CloudSourceRepositories_PubsubConfig[]
    */
   public function getPubsubConfigs()
   {

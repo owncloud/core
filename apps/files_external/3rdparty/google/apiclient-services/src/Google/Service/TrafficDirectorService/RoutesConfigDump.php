@@ -24,28 +24,28 @@ class Google_Service_TrafficDirectorService_RoutesConfigDump extends Google_Coll
   protected $staticRouteConfigsDataType = 'array';
 
   /**
-   * @param Google_Service_TrafficDirectorService_DynamicRouteConfig
+   * @param Google_Service_TrafficDirectorService_DynamicRouteConfig[]
    */
   public function setDynamicRouteConfigs($dynamicRouteConfigs)
   {
     $this->dynamicRouteConfigs = $dynamicRouteConfigs;
   }
   /**
-   * @return Google_Service_TrafficDirectorService_DynamicRouteConfig
+   * @return Google_Service_TrafficDirectorService_DynamicRouteConfig[]
    */
   public function getDynamicRouteConfigs()
   {
     return $this->dynamicRouteConfigs;
   }
   /**
-   * @param Google_Service_TrafficDirectorService_StaticRouteConfig
+   * @param Google_Service_TrafficDirectorService_StaticRouteConfig[]
    */
   public function setStaticRouteConfigs($staticRouteConfigs)
   {
     $this->staticRouteConfigs = $staticRouteConfigs;
   }
   /**
-   * @return Google_Service_TrafficDirectorService_StaticRouteConfig
+   * @return Google_Service_TrafficDirectorService_StaticRouteConfig[]
    */
   public function getStaticRouteConfigs()
   {

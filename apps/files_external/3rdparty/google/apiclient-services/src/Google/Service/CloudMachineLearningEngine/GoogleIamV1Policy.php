@@ -26,28 +26,28 @@ class Google_Service_CloudMachineLearningEngine_GoogleIamV1Policy extends Google
   public $version;
 
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleIamV1AuditConfig
+   * @param Google_Service_CloudMachineLearningEngine_GoogleIamV1AuditConfig[]
    */
   public function setAuditConfigs($auditConfigs)
   {
     $this->auditConfigs = $auditConfigs;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleIamV1AuditConfig
+   * @return Google_Service_CloudMachineLearningEngine_GoogleIamV1AuditConfig[]
    */
   public function getAuditConfigs()
   {
     return $this->auditConfigs;
   }
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleIamV1Binding
+   * @param Google_Service_CloudMachineLearningEngine_GoogleIamV1Binding[]
    */
   public function setBindings($bindings)
   {
     $this->bindings = $bindings;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleIamV1Binding
+   * @return Google_Service_CloudMachineLearningEngine_GoogleIamV1Binding[]
    */
   public function getBindings()
   {

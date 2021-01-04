@@ -32,14 +32,14 @@ class Google_Service_Compute_TargetTcpProxyListWarning extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_TargetTcpProxyListWarningData
+   * @param Google_Service_Compute_TargetTcpProxyListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_TargetTcpProxyListWarningData
+   * @return Google_Service_Compute_TargetTcpProxyListWarningData[]
    */
   public function getData()
   {

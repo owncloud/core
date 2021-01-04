@@ -42,14 +42,14 @@ class Google_Service_YouTube_MembershipsLevelListResponse extends Google_Collect
     return $this->eventId;
   }
   /**
-   * @param Google_Service_YouTube_MembershipsLevel
+   * @param Google_Service_YouTube_MembershipsLevel[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_YouTube_MembershipsLevel
+   * @return Google_Service_YouTube_MembershipsLevel[]
    */
   public function getItems()
   {

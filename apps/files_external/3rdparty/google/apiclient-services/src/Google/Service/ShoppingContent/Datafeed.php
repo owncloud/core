@@ -108,14 +108,14 @@ class Google_Service_ShoppingContent_Datafeed extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_ShoppingContent_DatafeedTarget
+   * @param Google_Service_ShoppingContent_DatafeedTarget[]
    */
   public function setTargets($targets)
   {
     $this->targets = $targets;
   }
   /**
-   * @return Google_Service_ShoppingContent_DatafeedTarget
+   * @return Google_Service_ShoppingContent_DatafeedTarget[]
    */
   public function getTargets()
   {

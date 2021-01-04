@@ -22,14 +22,14 @@ class Google_Service_AndroidProvisioningPartner_CustomerListConfigurationsRespon
   protected $configurationsDataType = 'array';
 
   /**
-   * @param Google_Service_AndroidProvisioningPartner_Configuration
+   * @param Google_Service_AndroidProvisioningPartner_Configuration[]
    */
   public function setConfigurations($configurations)
   {
     $this->configurations = $configurations;
   }
   /**
-   * @return Google_Service_AndroidProvisioningPartner_Configuration
+   * @return Google_Service_AndroidProvisioningPartner_Configuration[]
    */
   public function getConfigurations()
   {

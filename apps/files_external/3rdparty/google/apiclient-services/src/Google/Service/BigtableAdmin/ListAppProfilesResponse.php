@@ -24,14 +24,14 @@ class Google_Service_BigtableAdmin_ListAppProfilesResponse extends Google_Collec
   public $nextPageToken;
 
   /**
-   * @param Google_Service_BigtableAdmin_AppProfile
+   * @param Google_Service_BigtableAdmin_AppProfile[]
    */
   public function setAppProfiles($appProfiles)
   {
     $this->appProfiles = $appProfiles;
   }
   /**
-   * @return Google_Service_BigtableAdmin_AppProfile
+   * @return Google_Service_BigtableAdmin_AppProfile[]
    */
   public function getAppProfiles()
   {

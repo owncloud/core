@@ -23,14 +23,14 @@ class Google_Service_Sasportal_SasPortalPolicy extends Google_Collection
   public $etag;
 
   /**
-   * @param Google_Service_Sasportal_SasPortalAssignment
+   * @param Google_Service_Sasportal_SasPortalAssignment[]
    */
   public function setAssignments($assignments)
   {
     $this->assignments = $assignments;
   }
   /**
-   * @return Google_Service_Sasportal_SasPortalAssignment
+   * @return Google_Service_Sasportal_SasPortalAssignment[]
    */
   public function getAssignments()
   {

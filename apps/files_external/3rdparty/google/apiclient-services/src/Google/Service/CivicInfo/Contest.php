@@ -64,14 +64,14 @@ class Google_Service_CivicInfo_Contest extends Google_Collection
     return $this->ballotTitle;
   }
   /**
-   * @param Google_Service_CivicInfo_Candidate
+   * @param Google_Service_CivicInfo_Candidate[]
    */
   public function setCandidates($candidates)
   {
     $this->candidates = $candidates;
   }
   /**
-   * @return Google_Service_CivicInfo_Candidate
+   * @return Google_Service_CivicInfo_Candidate[]
    */
   public function getCandidates()
   {
@@ -236,14 +236,14 @@ class Google_Service_CivicInfo_Contest extends Google_Collection
     return $this->roles;
   }
   /**
-   * @param Google_Service_CivicInfo_Source
+   * @param Google_Service_CivicInfo_Source[]
    */
   public function setSources($sources)
   {
     $this->sources = $sources;
   }
   /**
-   * @return Google_Service_CivicInfo_Source
+   * @return Google_Service_CivicInfo_Source[]
    */
   public function getSources()
   {

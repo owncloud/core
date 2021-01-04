@@ -90,14 +90,14 @@ class Google_Service_IdentityToolkit_IdentitytoolkitRelyingpartySetProjectConfig
     return $this->enableAnonymousUser;
   }
   /**
-   * @param Google_Service_IdentityToolkit_IdpConfig
+   * @param Google_Service_IdentityToolkit_IdpConfig[]
    */
   public function setIdpConfig($idpConfig)
   {
     $this->idpConfig = $idpConfig;
   }
   /**
-   * @return Google_Service_IdentityToolkit_IdpConfig
+   * @return Google_Service_IdentityToolkit_IdpConfig[]
    */
   public function getIdpConfig()
   {

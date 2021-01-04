@@ -31,28 +31,28 @@ class Google_Service_DriveActivity_DriveActivity extends Google_Collection
   public $timestamp;
 
   /**
-   * @param Google_Service_DriveActivity_Action
+   * @param Google_Service_DriveActivity_Action[]
    */
   public function setActions($actions)
   {
     $this->actions = $actions;
   }
   /**
-   * @return Google_Service_DriveActivity_Action
+   * @return Google_Service_DriveActivity_Action[]
    */
   public function getActions()
   {
     return $this->actions;
   }
   /**
-   * @param Google_Service_DriveActivity_Actor
+   * @param Google_Service_DriveActivity_Actor[]
    */
   public function setActors($actors)
   {
     $this->actors = $actors;
   }
   /**
-   * @return Google_Service_DriveActivity_Actor
+   * @return Google_Service_DriveActivity_Actor[]
    */
   public function getActors()
   {
@@ -73,14 +73,14 @@ class Google_Service_DriveActivity_DriveActivity extends Google_Collection
     return $this->primaryActionDetail;
   }
   /**
-   * @param Google_Service_DriveActivity_Target
+   * @param Google_Service_DriveActivity_Target[]
    */
   public function setTargets($targets)
   {
     $this->targets = $targets;
   }
   /**
-   * @return Google_Service_DriveActivity_Target
+   * @return Google_Service_DriveActivity_Target[]
    */
   public function getTargets()
   {

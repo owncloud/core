@@ -98,13 +98,6 @@ class Google_Service_ServiceDirectory_Resource_ProjectsLocationsNamespaces exten
    * whose namespaces we'd like to list.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional. The next_page_token value returned from
-   * a previous List request, if any.
-   * @opt_param string orderBy Optional. The order to list result by. General
-   * order by string syntax: () (,) allows values {"name"} ascending or descending
-   * order by . If this is left blank, "asc" is used. Note that an empty order_by
-   * string result in default order, which is order by name in ascending order.
-   * @opt_param int pageSize Optional. The maximum number of items to return.
    * @opt_param string filter Optional. The filter to list result by. General
    * filter string syntax: () can be "name", or "labels." for map field. can be
    * "<, >, <=, >=, !=, =, :". Of which ":" means HAS, and is roughly the same as
@@ -119,6 +112,13 @@ class Google_Service_ServiceDirectory_Resource_ProjectsLocationsNamespaces exten
    * is not "sd" AND have key/value foo=bar. * "doesnotexist.foo=bar" returns an
    * empty list. Note that Namespace doesn't have a field called "doesnotexist".
    * Since the filter does not match any Namespaces, it returns no results.
+   * @opt_param string orderBy Optional. The order to list result by. General
+   * order by string syntax: () (,) allows values {"name"} ascending or descending
+   * order by . If this is left blank, "asc" is used. Note that an empty order_by
+   * string result in default order, which is order by name in ascending order.
+   * @opt_param int pageSize Optional. The maximum number of items to return.
+   * @opt_param string pageToken Optional. The next_page_token value returned from
+   * a previous List request, if any.
    * @return Google_Service_ServiceDirectory_ListNamespacesResponse
    */
   public function listProjectsLocationsNamespaces($parent, $optParams = array())

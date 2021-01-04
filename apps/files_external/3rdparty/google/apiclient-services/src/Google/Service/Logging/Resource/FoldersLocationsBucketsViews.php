@@ -77,7 +77,7 @@ class Google_Service_Logging_Resource_FoldersLocationsBucketsViews extends Googl
     return $this->call('get', array($params), "Google_Service_Logging_LogView");
   }
   /**
-   * Lists views on a bucket.. (views.listFoldersLocationsBucketsViews)
+   * Lists views on a bucket. (views.listFoldersLocationsBucketsViews)
    *
    * @param string $parent Required. The bucket whose views are to be listed:
    * "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"

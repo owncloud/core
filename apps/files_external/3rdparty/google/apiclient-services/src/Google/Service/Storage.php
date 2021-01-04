@@ -55,7 +55,7 @@ class Google_Service_Storage extends Google_Service
   public $objects;
   public $projects_hmacKeys;
   public $projects_serviceAccount;
-  
+
   /**
    * Constructs the internal representation of the Storage service.
    *

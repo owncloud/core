@@ -22,14 +22,14 @@ class Google_Service_DisplayVideo_BulkEditAssignedUserRolesResponse extends Goog
   protected $createdAssignedUserRolesDataType = 'array';
 
   /**
-   * @param Google_Service_DisplayVideo_AssignedUserRole
+   * @param Google_Service_DisplayVideo_AssignedUserRole[]
    */
   public function setCreatedAssignedUserRoles($createdAssignedUserRoles)
   {
     $this->createdAssignedUserRoles = $createdAssignedUserRoles;
   }
   /**
-   * @return Google_Service_DisplayVideo_AssignedUserRole
+   * @return Google_Service_DisplayVideo_AssignedUserRole[]
    */
   public function getCreatedAssignedUserRoles()
   {

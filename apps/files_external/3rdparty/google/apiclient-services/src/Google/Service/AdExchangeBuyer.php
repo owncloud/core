@@ -47,7 +47,7 @@ class Google_Service_AdExchangeBuyer extends Google_Service
   public $products;
   public $proposals;
   public $pubprofiles;
-  
+
   /**
    * Constructs the internal representation of the AdExchangeBuyer service.
    *

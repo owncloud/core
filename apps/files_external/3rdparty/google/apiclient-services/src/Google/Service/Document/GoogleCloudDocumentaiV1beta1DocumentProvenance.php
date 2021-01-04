@@ -33,14 +33,14 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentProvenance ext
     return $this->id;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentProvenanceParent
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentProvenanceParent[]
    */
   public function setParents($parents)
   {
     $this->parents = $parents;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentProvenanceParent
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentProvenanceParent[]
    */
   public function getParents()
   {

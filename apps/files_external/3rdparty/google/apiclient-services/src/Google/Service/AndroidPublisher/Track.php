@@ -23,14 +23,14 @@ class Google_Service_AndroidPublisher_Track extends Google_Collection
   public $track;
 
   /**
-   * @param Google_Service_AndroidPublisher_TrackRelease
+   * @param Google_Service_AndroidPublisher_TrackRelease[]
    */
   public function setReleases($releases)
   {
     $this->releases = $releases;
   }
   /**
-   * @return Google_Service_AndroidPublisher_TrackRelease
+   * @return Google_Service_AndroidPublisher_TrackRelease[]
    */
   public function getReleases()
   {

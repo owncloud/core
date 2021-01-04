@@ -27,14 +27,14 @@ class Google_Service_Vision_WebPage extends Google_Collection
   public $url;
 
   /**
-   * @param Google_Service_Vision_WebImage
+   * @param Google_Service_Vision_WebImage[]
    */
   public function setFullMatchingImages($fullMatchingImages)
   {
     $this->fullMatchingImages = $fullMatchingImages;
   }
   /**
-   * @return Google_Service_Vision_WebImage
+   * @return Google_Service_Vision_WebImage[]
    */
   public function getFullMatchingImages()
   {
@@ -49,14 +49,14 @@ class Google_Service_Vision_WebPage extends Google_Collection
     return $this->pageTitle;
   }
   /**
-   * @param Google_Service_Vision_WebImage
+   * @param Google_Service_Vision_WebImage[]
    */
   public function setPartialMatchingImages($partialMatchingImages)
   {
     $this->partialMatchingImages = $partialMatchingImages;
   }
   /**
-   * @return Google_Service_Vision_WebImage
+   * @return Google_Service_Vision_WebImage[]
    */
   public function getPartialMatchingImages()
   {

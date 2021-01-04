@@ -55,14 +55,14 @@ class Google_Service_Clouderrorreporting_ErrorContext extends Google_Collection
     return $this->reportLocation;
   }
   /**
-   * @param Google_Service_Clouderrorreporting_SourceReference
+   * @param Google_Service_Clouderrorreporting_SourceReference[]
    */
   public function setSourceReferences($sourceReferences)
   {
     $this->sourceReferences = $sourceReferences;
   }
   /**
-   * @return Google_Service_Clouderrorreporting_SourceReference
+   * @return Google_Service_Clouderrorreporting_SourceReference[]
    */
   public function getSourceReferences()
   {

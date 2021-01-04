@@ -61,14 +61,14 @@ class Google_Service_Dfareporting_PricingSchedule extends Google_Collection
     return $this->floodlightActivityId;
   }
   /**
-   * @param Google_Service_Dfareporting_PricingSchedulePricingPeriod
+   * @param Google_Service_Dfareporting_PricingSchedulePricingPeriod[]
    */
   public function setPricingPeriods($pricingPeriods)
   {
     $this->pricingPeriods = $pricingPeriods;
   }
   /**
-   * @return Google_Service_Dfareporting_PricingSchedulePricingPeriod
+   * @return Google_Service_Dfareporting_PricingSchedulePricingPeriod[]
    */
   public function getPricingPeriods()
   {

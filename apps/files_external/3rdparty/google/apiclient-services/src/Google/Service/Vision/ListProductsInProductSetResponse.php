@@ -31,14 +31,14 @@ class Google_Service_Vision_ListProductsInProductSetResponse extends Google_Coll
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Vision_Product
+   * @param Google_Service_Vision_Product[]
    */
   public function setProducts($products)
   {
     $this->products = $products;
   }
   /**
-   * @return Google_Service_Vision_Product
+   * @return Google_Service_Vision_Product[]
    */
   public function getProducts()
   {

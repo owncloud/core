@@ -35,7 +35,7 @@ class Google_Service_Digitalassetlinks extends Google_Service
 
   public $assetlinks;
   public $statements;
-  
+
   /**
    * Constructs the internal representation of the Digitalassetlinks service.
    *
@@ -65,18 +65,6 @@ class Google_Service_Digitalassetlinks extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'target.web.site' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'target.androidApp.certificate.sha256Fingerprint' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'source.web.site' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'source.androidApp.certificate.sha256Fingerprint' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -85,7 +73,19 @@ class Google_Service_Digitalassetlinks extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'source.web.site' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'target.androidApp.certificate.sha256Fingerprint' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'target.androidApp.packageName' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'target.web.site' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -104,7 +104,7 @@ class Google_Service_Digitalassetlinks extends Google_Service
               'path' => 'v1/statements:list',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'source.androidApp.packageName' => array(
+                'relation' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -112,11 +112,11 @@ class Google_Service_Digitalassetlinks extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'source.web.site' => array(
+                'source.androidApp.packageName' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'relation' => array(
+                'source.web.site' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

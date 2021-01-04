@@ -37,14 +37,14 @@ class Google_Service_Compute_PacketMirroringAggregatedList extends Google_Collec
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_PacketMirroringsScopedList
+   * @param Google_Service_Compute_PacketMirroringsScopedList[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_PacketMirroringsScopedList
+   * @return Google_Service_Compute_PacketMirroringsScopedList[]
    */
   public function getItems()
   {

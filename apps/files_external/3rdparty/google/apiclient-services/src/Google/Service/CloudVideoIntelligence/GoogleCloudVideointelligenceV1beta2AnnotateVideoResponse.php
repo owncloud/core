@@ -22,14 +22,14 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2A
   protected $annotationResultsDataType = 'array';
 
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2VideoAnnotationResults
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2VideoAnnotationResults[]
    */
   public function setAnnotationResults($annotationResults)
   {
     $this->annotationResults = $annotationResults;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2VideoAnnotationResults
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2VideoAnnotationResults[]
    */
   public function getAnnotationResults()
   {

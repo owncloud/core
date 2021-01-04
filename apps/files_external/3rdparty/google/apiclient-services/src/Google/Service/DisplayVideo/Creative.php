@@ -79,14 +79,14 @@ class Google_Service_DisplayVideo_Creative extends Google_Collection
   public $vpaid;
 
   /**
-   * @param Google_Service_DisplayVideo_Dimensions
+   * @param Google_Service_DisplayVideo_Dimensions[]
    */
   public function setAdditionalDimensions($additionalDimensions)
   {
     $this->additionalDimensions = $additionalDimensions;
   }
   /**
-   * @return Google_Service_DisplayVideo_Dimensions
+   * @return Google_Service_DisplayVideo_Dimensions[]
    */
   public function getAdditionalDimensions()
   {
@@ -109,14 +109,14 @@ class Google_Service_DisplayVideo_Creative extends Google_Collection
     return $this->appendedTag;
   }
   /**
-   * @param Google_Service_DisplayVideo_AssetAssociation
+   * @param Google_Service_DisplayVideo_AssetAssociation[]
    */
   public function setAssets($assets)
   {
     $this->assets = $assets;
   }
   /**
-   * @return Google_Service_DisplayVideo_AssetAssociation
+   * @return Google_Service_DisplayVideo_AssetAssociation[]
    */
   public function getAssets()
   {
@@ -153,14 +153,14 @@ class Google_Service_DisplayVideo_Creative extends Google_Collection
     return $this->companionCreativeIds;
   }
   /**
-   * @param Google_Service_DisplayVideo_CounterEvent
+   * @param Google_Service_DisplayVideo_CounterEvent[]
    */
   public function setCounterEvents($counterEvents)
   {
     $this->counterEvents = $counterEvents;
   }
   /**
-   * @return Google_Service_DisplayVideo_CounterEvent
+   * @return Google_Service_DisplayVideo_CounterEvent[]
    */
   public function getCounterEvents()
   {
@@ -237,14 +237,14 @@ class Google_Service_DisplayVideo_Creative extends Google_Collection
     return $this->entityStatus;
   }
   /**
-   * @param Google_Service_DisplayVideo_ExitEvent
+   * @param Google_Service_DisplayVideo_ExitEvent[]
    */
   public function setExitEvents($exitEvents)
   {
     $this->exitEvents = $exitEvents;
   }
   /**
-   * @return Google_Service_DisplayVideo_ExitEvent
+   * @return Google_Service_DisplayVideo_ExitEvent[]
    */
   public function getExitEvents()
   {
@@ -435,28 +435,28 @@ class Google_Service_DisplayVideo_Creative extends Google_Collection
     return $this->thirdPartyTag;
   }
   /**
-   * @param Google_Service_DisplayVideo_ThirdPartyUrl
+   * @param Google_Service_DisplayVideo_ThirdPartyUrl[]
    */
   public function setThirdPartyUrls($thirdPartyUrls)
   {
     $this->thirdPartyUrls = $thirdPartyUrls;
   }
   /**
-   * @return Google_Service_DisplayVideo_ThirdPartyUrl
+   * @return Google_Service_DisplayVideo_ThirdPartyUrl[]
    */
   public function getThirdPartyUrls()
   {
     return $this->thirdPartyUrls;
   }
   /**
-   * @param Google_Service_DisplayVideo_TimerEvent
+   * @param Google_Service_DisplayVideo_TimerEvent[]
    */
   public function setTimerEvents($timerEvents)
   {
     $this->timerEvents = $timerEvents;
   }
   /**
-   * @return Google_Service_DisplayVideo_TimerEvent
+   * @return Google_Service_DisplayVideo_TimerEvent[]
    */
   public function getTimerEvents()
   {
@@ -471,14 +471,14 @@ class Google_Service_DisplayVideo_Creative extends Google_Collection
     return $this->trackerUrls;
   }
   /**
-   * @param Google_Service_DisplayVideo_Transcode
+   * @param Google_Service_DisplayVideo_Transcode[]
    */
   public function setTranscodes($transcodes)
   {
     $this->transcodes = $transcodes;
   }
   /**
-   * @return Google_Service_DisplayVideo_Transcode
+   * @return Google_Service_DisplayVideo_Transcode[]
    */
   public function getTranscodes()
   {

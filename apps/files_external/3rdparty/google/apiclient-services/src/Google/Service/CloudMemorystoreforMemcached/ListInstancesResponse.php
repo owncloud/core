@@ -32,14 +32,14 @@ class Google_Service_CloudMemorystoreforMemcached_ListInstancesResponse extends 
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_CloudMemorystoreforMemcached_Instance
+   * @param Google_Service_CloudMemorystoreforMemcached_Instance[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_CloudMemorystoreforMemcached_Instance
+   * @return Google_Service_CloudMemorystoreforMemcached_Instance[]
    */
   public function getResources()
   {

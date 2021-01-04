@@ -31,14 +31,14 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ListVersionsRespo
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Version
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Version[]
    */
   public function setVersions($versions)
   {
     $this->versions = $versions;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Version
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Version[]
    */
   public function getVersions()
   {

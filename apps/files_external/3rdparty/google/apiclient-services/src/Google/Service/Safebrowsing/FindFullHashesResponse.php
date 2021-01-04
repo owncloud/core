@@ -24,14 +24,14 @@ class Google_Service_Safebrowsing_FindFullHashesResponse extends Google_Collecti
   public $negativeCacheDuration;
 
   /**
-   * @param Google_Service_Safebrowsing_ThreatMatch
+   * @param Google_Service_Safebrowsing_ThreatMatch[]
    */
   public function setMatches($matches)
   {
     $this->matches = $matches;
   }
   /**
-   * @return Google_Service_Safebrowsing_ThreatMatch
+   * @return Google_Service_Safebrowsing_ThreatMatch[]
    */
   public function getMatches()
   {

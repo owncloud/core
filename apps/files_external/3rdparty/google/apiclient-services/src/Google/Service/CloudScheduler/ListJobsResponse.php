@@ -23,14 +23,14 @@ class Google_Service_CloudScheduler_ListJobsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudScheduler_Job
+   * @param Google_Service_CloudScheduler_Job[]
    */
   public function setJobs($jobs)
   {
     $this->jobs = $jobs;
   }
   /**
-   * @return Google_Service_CloudScheduler_Job
+   * @return Google_Service_CloudScheduler_Job[]
    */
   public function getJobs()
   {

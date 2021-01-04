@@ -56,14 +56,14 @@ class Google_Service_ShoppingContent_TestOrderPickupDetails extends Google_Colle
     return $this->pickupLocationType;
   }
   /**
-   * @param Google_Service_ShoppingContent_TestOrderPickupDetailsPickupPerson
+   * @param Google_Service_ShoppingContent_TestOrderPickupDetailsPickupPerson[]
    */
   public function setPickupPersons($pickupPersons)
   {
     $this->pickupPersons = $pickupPersons;
   }
   /**
-   * @return Google_Service_ShoppingContent_TestOrderPickupDetailsPickupPerson
+   * @return Google_Service_ShoppingContent_TestOrderPickupDetailsPickupPerson[]
    */
   public function getPickupPersons()
   {

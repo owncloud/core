@@ -38,14 +38,14 @@ class Google_Service_ServiceUsage_GoogleApiServiceusageV1ServiceConfig extends G
   protected $usageDataType = '';
 
   /**
-   * @param Google_Service_ServiceUsage_Api
+   * @param Google_Service_ServiceUsage_Api[]
    */
   public function setApis($apis)
   {
     $this->apis = $apis;
   }
   /**
-   * @return Google_Service_ServiceUsage_Api
+   * @return Google_Service_ServiceUsage_Api[]
    */
   public function getApis()
   {
@@ -80,28 +80,28 @@ class Google_Service_ServiceUsage_GoogleApiServiceusageV1ServiceConfig extends G
     return $this->documentation;
   }
   /**
-   * @param Google_Service_ServiceUsage_Endpoint
+   * @param Google_Service_ServiceUsage_Endpoint[]
    */
   public function setEndpoints($endpoints)
   {
     $this->endpoints = $endpoints;
   }
   /**
-   * @return Google_Service_ServiceUsage_Endpoint
+   * @return Google_Service_ServiceUsage_Endpoint[]
    */
   public function getEndpoints()
   {
     return $this->endpoints;
   }
   /**
-   * @param Google_Service_ServiceUsage_MonitoredResourceDescriptor
+   * @param Google_Service_ServiceUsage_MonitoredResourceDescriptor[]
    */
   public function setMonitoredResources($monitoredResources)
   {
     $this->monitoredResources = $monitoredResources;
   }
   /**
-   * @return Google_Service_ServiceUsage_MonitoredResourceDescriptor
+   * @return Google_Service_ServiceUsage_MonitoredResourceDescriptor[]
    */
   public function getMonitoredResources()
   {

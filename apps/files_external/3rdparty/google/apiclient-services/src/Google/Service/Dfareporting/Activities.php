@@ -24,14 +24,14 @@ class Google_Service_Dfareporting_Activities extends Google_Collection
   public $metricNames;
 
   /**
-   * @param Google_Service_Dfareporting_DimensionValue
+   * @param Google_Service_Dfareporting_DimensionValue[]
    */
   public function setFilters($filters)
   {
     $this->filters = $filters;
   }
   /**
-   * @return Google_Service_Dfareporting_DimensionValue
+   * @return Google_Service_Dfareporting_DimensionValue[]
    */
   public function getFilters()
   {

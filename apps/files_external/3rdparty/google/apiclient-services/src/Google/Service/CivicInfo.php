@@ -36,7 +36,7 @@ class Google_Service_CivicInfo extends Google_Service
   public $divisions;
   public $elections;
   public $representatives;
-  
+
   /**
    * Constructs the internal representation of the CivicInfo service.
    *
@@ -117,13 +117,13 @@ class Google_Service_CivicInfo extends Google_Service
               'path' => 'civicinfo/v2/representatives',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'includeOffices' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
                 'address' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'includeOffices' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
                 ),
                 'levels' => array(
                   'location' => 'query',
@@ -145,16 +145,16 @@ class Google_Service_CivicInfo extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'levels' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
+                ),
                 'recursive' => array(
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
                 'roles' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                  'repeated' => true,
-                ),
-                'levels' => array(
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,

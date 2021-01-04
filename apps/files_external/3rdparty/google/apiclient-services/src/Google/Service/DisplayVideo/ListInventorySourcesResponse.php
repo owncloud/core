@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_ListInventorySourcesResponse extends Google_Co
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DisplayVideo_InventorySource
+   * @param Google_Service_DisplayVideo_InventorySource[]
    */
   public function setInventorySources($inventorySources)
   {
     $this->inventorySources = $inventorySources;
   }
   /**
-   * @return Google_Service_DisplayVideo_InventorySource
+   * @return Google_Service_DisplayVideo_InventorySource[]
    */
   public function getInventorySources()
   {

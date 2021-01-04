@@ -48,13 +48,13 @@ class Google_Service_CloudMachineLearningEngine_Resource_ProjectsLocations exten
    * specific projects).
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional. A page token to request the next page
-   * of results. You get the token from the `next_page_token` field of the
-   * response from the previous call.
    * @opt_param int pageSize Optional. The number of locations to retrieve per
    * "page" of results. If there are more remaining results than this number, the
    * response message will contain a valid value in the `next_page_token` field.
    * The default value is 20, and the maximum page size is 100.
+   * @opt_param string pageToken Optional. A page token to request the next page
+   * of results. You get the token from the `next_page_token` field of the
+   * response from the previous call.
    * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ListLocationsResponse
    */
   public function listProjectsLocations($parent, $optParams = array())

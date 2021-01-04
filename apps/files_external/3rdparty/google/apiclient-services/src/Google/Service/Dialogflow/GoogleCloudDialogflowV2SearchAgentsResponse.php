@@ -23,14 +23,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2SearchAgentsResponse exte
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2Agent
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2Agent[]
    */
   public function setAgents($agents)
   {
     $this->agents = $agents;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2Agent
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2Agent[]
    */
   public function getAgents()
   {

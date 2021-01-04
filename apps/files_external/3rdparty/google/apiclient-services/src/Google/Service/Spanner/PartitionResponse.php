@@ -24,14 +24,14 @@ class Google_Service_Spanner_PartitionResponse extends Google_Collection
   protected $transactionDataType = '';
 
   /**
-   * @param Google_Service_Spanner_Partition
+   * @param Google_Service_Spanner_Partition[]
    */
   public function setPartitions($partitions)
   {
     $this->partitions = $partitions;
   }
   /**
-   * @return Google_Service_Spanner_Partition
+   * @return Google_Service_Spanner_Partition[]
    */
   public function getPartitions()
   {

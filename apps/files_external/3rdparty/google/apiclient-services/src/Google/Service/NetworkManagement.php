@@ -38,7 +38,7 @@ class Google_Service_NetworkManagement extends Google_Service
   public $projects_locations;
   public $projects_locations_global_connectivityTests;
   public $projects_locations_global_operations;
-  
+
   /**
    * Constructs the internal representation of the NetworkManagement service.
    *
@@ -83,13 +83,13 @@ class Google_Service_NetworkManagement extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -159,7 +159,11 @@ class Google_Service_NetworkManagement extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -167,11 +171,7 @@ class Google_Service_NetworkManagement extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'orderBy' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'filter' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

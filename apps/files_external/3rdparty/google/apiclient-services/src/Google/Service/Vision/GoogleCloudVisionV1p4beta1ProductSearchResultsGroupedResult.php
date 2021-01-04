@@ -40,28 +40,28 @@ class Google_Service_Vision_GoogleCloudVisionV1p4beta1ProductSearchResultsGroupe
     return $this->boundingPoly;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1ProductSearchResultsObjectAnnotation
+   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1ProductSearchResultsObjectAnnotation[]
    */
   public function setObjectAnnotations($objectAnnotations)
   {
     $this->objectAnnotations = $objectAnnotations;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1ProductSearchResultsObjectAnnotation
+   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1ProductSearchResultsObjectAnnotation[]
    */
   public function getObjectAnnotations()
   {
     return $this->objectAnnotations;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1ProductSearchResultsResult
+   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1ProductSearchResultsResult[]
    */
   public function setResults($results)
   {
     $this->results = $results;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1ProductSearchResultsResult
+   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1ProductSearchResultsResult[]
    */
   public function getResults()
   {

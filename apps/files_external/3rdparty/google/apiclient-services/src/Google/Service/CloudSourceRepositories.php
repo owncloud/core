@@ -45,7 +45,7 @@ class Google_Service_CloudSourceRepositories extends Google_Service
 
   public $projects;
   public $projects_repos;
-  
+
   /**
    * Constructs the internal representation of the CloudSourceRepositories
    * service.

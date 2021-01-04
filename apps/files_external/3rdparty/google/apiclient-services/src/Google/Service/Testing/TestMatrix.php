@@ -128,14 +128,14 @@ class Google_Service_Testing_TestMatrix extends Google_Collection
     return $this->state;
   }
   /**
-   * @param Google_Service_Testing_TestExecution
+   * @param Google_Service_Testing_TestExecution[]
    */
   public function setTestExecutions($testExecutions)
   {
     $this->testExecutions = $testExecutions;
   }
   /**
-   * @return Google_Service_Testing_TestExecution
+   * @return Google_Service_Testing_TestExecution[]
    */
   public function getTestExecutions()
   {

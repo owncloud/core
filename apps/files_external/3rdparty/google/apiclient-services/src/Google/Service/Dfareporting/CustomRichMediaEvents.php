@@ -23,14 +23,14 @@ class Google_Service_Dfareporting_CustomRichMediaEvents extends Google_Collectio
   public $kind;
 
   /**
-   * @param Google_Service_Dfareporting_DimensionValue
+   * @param Google_Service_Dfareporting_DimensionValue[]
    */
   public function setFilteredEventIds($filteredEventIds)
   {
     $this->filteredEventIds = $filteredEventIds;
   }
   /**
-   * @return Google_Service_Dfareporting_DimensionValue
+   * @return Google_Service_Dfareporting_DimensionValue[]
    */
   public function getFilteredEventIds()
   {

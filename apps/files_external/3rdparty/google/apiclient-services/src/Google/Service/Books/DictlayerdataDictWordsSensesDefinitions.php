@@ -31,14 +31,14 @@ class Google_Service_Books_DictlayerdataDictWordsSensesDefinitions extends Googl
     return $this->definition;
   }
   /**
-   * @param Google_Service_Books_DictlayerdataDictWordsSensesDefinitionsExamples
+   * @param Google_Service_Books_DictlayerdataDictWordsSensesDefinitionsExamples[]
    */
   public function setExamples($examples)
   {
     $this->examples = $examples;
   }
   /**
-   * @return Google_Service_Books_DictlayerdataDictWordsSensesDefinitionsExamples
+   * @return Google_Service_Books_DictlayerdataDictWordsSensesDefinitionsExamples[]
    */
   public function getExamples()
   {

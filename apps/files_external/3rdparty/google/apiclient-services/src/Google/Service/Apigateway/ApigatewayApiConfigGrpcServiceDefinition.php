@@ -38,14 +38,14 @@ class Google_Service_Apigateway_ApigatewayApiConfigGrpcServiceDefinition extends
     return $this->fileDescriptorSet;
   }
   /**
-   * @param Google_Service_Apigateway_ApigatewayApiConfigFile
+   * @param Google_Service_Apigateway_ApigatewayApiConfigFile[]
    */
   public function setSource($source)
   {
     $this->source = $source;
   }
   /**
-   * @return Google_Service_Apigateway_ApigatewayApiConfigFile
+   * @return Google_Service_Apigateway_ApigatewayApiConfigFile[]
    */
   public function getSource()
   {

@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_ListCustomListsResponse extends Google_Collect
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DisplayVideo_CustomList
+   * @param Google_Service_DisplayVideo_CustomList[]
    */
   public function setCustomLists($customLists)
   {
     $this->customLists = $customLists;
   }
   /**
-   * @return Google_Service_DisplayVideo_CustomList
+   * @return Google_Service_DisplayVideo_CustomList[]
    */
   public function getCustomLists()
   {

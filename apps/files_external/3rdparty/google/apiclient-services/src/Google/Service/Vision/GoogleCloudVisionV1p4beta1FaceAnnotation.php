@@ -116,14 +116,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p4beta1FaceAnnotation extends Goo
     return $this->landmarkingConfidence;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1FaceAnnotationLandmark
+   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1FaceAnnotationLandmark[]
    */
   public function setLandmarks($landmarks)
   {
     $this->landmarks = $landmarks;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1FaceAnnotationLandmark
+   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1FaceAnnotationLandmark[]
    */
   public function getLandmarks()
   {
@@ -138,14 +138,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p4beta1FaceAnnotation extends Goo
     return $this->panAngle;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1FaceRecognitionResult
+   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1FaceRecognitionResult[]
    */
   public function setRecognitionResult($recognitionResult)
   {
     $this->recognitionResult = $recognitionResult;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1FaceRecognitionResult
+   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1FaceRecognitionResult[]
    */
   public function getRecognitionResult()
   {

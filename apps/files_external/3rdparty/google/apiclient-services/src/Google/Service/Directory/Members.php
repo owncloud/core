@@ -41,14 +41,14 @@ class Google_Service_Directory_Members extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_Directory_Member
+   * @param Google_Service_Directory_Member[]
    */
   public function setMembers($members)
   {
     $this->members = $members;
   }
   /**
-   * @return Google_Service_Directory_Member
+   * @return Google_Service_Directory_Member[]
    */
   public function getMembers()
   {

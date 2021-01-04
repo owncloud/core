@@ -32,14 +32,14 @@ class Google_Service_Compute_RegionAutoscalerListWarning extends Google_Collecti
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_RegionAutoscalerListWarningData
+   * @param Google_Service_Compute_RegionAutoscalerListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_RegionAutoscalerListWarningData
+   * @return Google_Service_Compute_RegionAutoscalerListWarningData[]
    */
   public function getData()
   {

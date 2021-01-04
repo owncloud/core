@@ -29,14 +29,14 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LabelA
   public $version;
 
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1Entity
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1Entity[]
    */
   public function setCategoryEntities($categoryEntities)
   {
     $this->categoryEntities = $categoryEntities;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1Entity
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1Entity[]
    */
   public function getCategoryEntities()
   {
@@ -57,28 +57,28 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LabelA
     return $this->entity;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LabelFrame
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LabelFrame[]
    */
   public function setFrames($frames)
   {
     $this->frames = $frames;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LabelFrame
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LabelFrame[]
    */
   public function getFrames()
   {
     return $this->frames;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LabelSegment
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LabelSegment[]
    */
   public function setSegments($segments)
   {
     $this->segments = $segments;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LabelSegment
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LabelSegment[]
    */
   public function getSegments()
   {

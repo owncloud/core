@@ -235,14 +235,14 @@ class Google_Service_AdExchangeBuyerII_Deal extends Google_Collection
     return $this->proposalId;
   }
   /**
-   * @param Google_Service_AdExchangeBuyerII_ContactInformation
+   * @param Google_Service_AdExchangeBuyerII_ContactInformation[]
    */
   public function setSellerContacts($sellerContacts)
   {
     $this->sellerContacts = $sellerContacts;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_ContactInformation
+   * @return Google_Service_AdExchangeBuyerII_ContactInformation[]
    */
   public function getSellerContacts()
   {
@@ -271,14 +271,14 @@ class Google_Service_AdExchangeBuyerII_Deal extends Google_Collection
     return $this->targeting;
   }
   /**
-   * @param Google_Service_AdExchangeBuyerII_TargetingCriteria
+   * @param Google_Service_AdExchangeBuyerII_TargetingCriteria[]
    */
   public function setTargetingCriterion($targetingCriterion)
   {
     $this->targetingCriterion = $targetingCriterion;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_TargetingCriteria
+   * @return Google_Service_AdExchangeBuyerII_TargetingCriteria[]
    */
   public function getTargetingCriterion()
   {

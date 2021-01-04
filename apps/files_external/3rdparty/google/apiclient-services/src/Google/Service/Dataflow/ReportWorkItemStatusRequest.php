@@ -50,14 +50,14 @@ class Google_Service_Dataflow_ReportWorkItemStatusRequest extends Google_Collect
     return $this->unifiedWorkerRequest;
   }
   /**
-   * @param Google_Service_Dataflow_WorkItemStatus
+   * @param Google_Service_Dataflow_WorkItemStatus[]
    */
   public function setWorkItemStatuses($workItemStatuses)
   {
     $this->workItemStatuses = $workItemStatuses;
   }
   /**
-   * @return Google_Service_Dataflow_WorkItemStatus
+   * @return Google_Service_Dataflow_WorkItemStatus[]
    */
   public function getWorkItemStatuses()
   {

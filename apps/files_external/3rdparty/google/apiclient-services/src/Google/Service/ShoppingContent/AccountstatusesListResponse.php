@@ -40,14 +40,14 @@ class Google_Service_ShoppingContent_AccountstatusesListResponse extends Google_
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ShoppingContent_AccountStatus
+   * @param Google_Service_ShoppingContent_AccountStatus[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_ShoppingContent_AccountStatus
+   * @return Google_Service_ShoppingContent_AccountStatus[]
    */
   public function getResources()
   {

@@ -33,14 +33,14 @@ class Google_Service_Clouderrorreporting_ErrorGroupStats extends Google_Collecti
   protected $timedCountsDataType = 'array';
 
   /**
-   * @param Google_Service_Clouderrorreporting_ServiceContext
+   * @param Google_Service_Clouderrorreporting_ServiceContext[]
    */
   public function setAffectedServices($affectedServices)
   {
     $this->affectedServices = $affectedServices;
   }
   /**
-   * @return Google_Service_Clouderrorreporting_ServiceContext
+   * @return Google_Service_Clouderrorreporting_ServiceContext[]
    */
   public function getAffectedServices()
   {
@@ -115,14 +115,14 @@ class Google_Service_Clouderrorreporting_ErrorGroupStats extends Google_Collecti
     return $this->representative;
   }
   /**
-   * @param Google_Service_Clouderrorreporting_TimedCount
+   * @param Google_Service_Clouderrorreporting_TimedCount[]
    */
   public function setTimedCounts($timedCounts)
   {
     $this->timedCounts = $timedCounts;
   }
   /**
-   * @return Google_Service_Clouderrorreporting_TimedCount
+   * @return Google_Service_Clouderrorreporting_TimedCount[]
    */
   public function getTimedCounts()
   {

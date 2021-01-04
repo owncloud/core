@@ -22,14 +22,14 @@ class Google_Service_Directory_ChromeOsDeviceDiskVolumeReports extends Google_Co
   protected $volumeInfoDataType = 'array';
 
   /**
-   * @param Google_Service_Directory_ChromeOsDeviceDiskVolumeReportsVolumeInfo
+   * @param Google_Service_Directory_ChromeOsDeviceDiskVolumeReportsVolumeInfo[]
    */
   public function setVolumeInfo($volumeInfo)
   {
     $this->volumeInfo = $volumeInfo;
   }
   /**
-   * @return Google_Service_Directory_ChromeOsDeviceDiskVolumeReportsVolumeInfo
+   * @return Google_Service_Directory_ChromeOsDeviceDiskVolumeReportsVolumeInfo[]
    */
   public function getVolumeInfo()
   {

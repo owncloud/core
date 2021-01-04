@@ -22,14 +22,14 @@ class Google_Service_Compute_InstanceGroupsAddInstancesRequest extends Google_Co
   protected $instancesDataType = 'array';
 
   /**
-   * @param Google_Service_Compute_InstanceReference
+   * @param Google_Service_Compute_InstanceReference[]
    */
   public function setInstances($instances)
   {
     $this->instances = $instances;
   }
   /**
-   * @return Google_Service_Compute_InstanceReference
+   * @return Google_Service_Compute_InstanceReference[]
    */
   public function getInstances()
   {

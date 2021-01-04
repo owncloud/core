@@ -22,14 +22,14 @@ class Google_Service_CloudIot_ListDeviceConfigVersionsResponse extends Google_Co
   protected $deviceConfigsDataType = 'array';
 
   /**
-   * @param Google_Service_CloudIot_DeviceConfig
+   * @param Google_Service_CloudIot_DeviceConfig[]
    */
   public function setDeviceConfigs($deviceConfigs)
   {
     $this->deviceConfigs = $deviceConfigs;
   }
   /**
-   * @return Google_Service_CloudIot_DeviceConfig
+   * @return Google_Service_CloudIot_DeviceConfig[]
    */
   public function getDeviceConfigs()
   {

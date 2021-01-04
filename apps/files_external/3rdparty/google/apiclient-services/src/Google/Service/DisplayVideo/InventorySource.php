@@ -46,14 +46,14 @@ class Google_Service_DisplayVideo_InventorySource extends Google_Collection
     return $this->commitment;
   }
   /**
-   * @param Google_Service_DisplayVideo_CreativeConfig
+   * @param Google_Service_DisplayVideo_CreativeConfig[]
    */
   public function setCreativeConfigs($creativeConfigs)
   {
     $this->creativeConfigs = $creativeConfigs;
   }
   /**
-   * @return Google_Service_DisplayVideo_CreativeConfig
+   * @return Google_Service_DisplayVideo_CreativeConfig[]
    */
   public function getCreativeConfigs()
   {

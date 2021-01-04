@@ -22,14 +22,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2ImageLocation extends Google_Collecti
   protected $boundingBoxesDataType = 'array';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2BoundingBox
+   * @param Google_Service_DLP_GooglePrivacyDlpV2BoundingBox[]
    */
   public function setBoundingBoxes($boundingBoxes)
   {
     $this->boundingBoxes = $boundingBoxes;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2BoundingBox
+   * @return Google_Service_DLP_GooglePrivacyDlpV2BoundingBox[]
    */
   public function getBoundingBoxes()
   {

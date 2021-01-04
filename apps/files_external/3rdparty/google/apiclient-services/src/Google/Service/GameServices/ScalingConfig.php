@@ -42,28 +42,28 @@ class Google_Service_GameServices_ScalingConfig extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_GameServices_Schedule
+   * @param Google_Service_GameServices_Schedule[]
    */
   public function setSchedules($schedules)
   {
     $this->schedules = $schedules;
   }
   /**
-   * @return Google_Service_GameServices_Schedule
+   * @return Google_Service_GameServices_Schedule[]
    */
   public function getSchedules()
   {
     return $this->schedules;
   }
   /**
-   * @param Google_Service_GameServices_LabelSelector
+   * @param Google_Service_GameServices_LabelSelector[]
    */
   public function setSelectors($selectors)
   {
     $this->selectors = $selectors;
   }
   /**
-   * @return Google_Service_GameServices_LabelSelector
+   * @return Google_Service_GameServices_LabelSelector[]
    */
   public function getSelectors()
   {

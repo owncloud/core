@@ -25,14 +25,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1RevisionStatus extends Google_Col
   public $revisionId;
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1UpdateError
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1UpdateError[]
    */
   public function setErrors($errors)
   {
     $this->errors = $errors;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1UpdateError
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1UpdateError[]
    */
   public function getErrors()
   {

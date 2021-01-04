@@ -31,14 +31,14 @@ class Google_Service_SecurityCommandCenter_ListNotificationConfigsResponse exten
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_SecurityCommandCenter_NotificationConfig
+   * @param Google_Service_SecurityCommandCenter_NotificationConfig[]
    */
   public function setNotificationConfigs($notificationConfigs)
   {
     $this->notificationConfigs = $notificationConfigs;
   }
   /**
-   * @return Google_Service_SecurityCommandCenter_NotificationConfig
+   * @return Google_Service_SecurityCommandCenter_NotificationConfig[]
    */
   public function getNotificationConfigs()
   {

@@ -49,14 +49,14 @@ class Google_Service_YouTube_LiveChatMessageListResponse extends Google_Collecti
     return $this->eventId;
   }
   /**
-   * @param Google_Service_YouTube_LiveChatMessage
+   * @param Google_Service_YouTube_LiveChatMessage[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_YouTube_LiveChatMessage
+   * @return Google_Service_YouTube_LiveChatMessage[]
    */
   public function getItems()
   {

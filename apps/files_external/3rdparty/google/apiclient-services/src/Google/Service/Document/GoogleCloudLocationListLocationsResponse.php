@@ -23,14 +23,14 @@ class Google_Service_Document_GoogleCloudLocationListLocationsResponse extends G
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Document_GoogleCloudLocationLocation
+   * @param Google_Service_Document_GoogleCloudLocationLocation[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudLocationLocation
+   * @return Google_Service_Document_GoogleCloudLocationLocation[]
    */
   public function getLocations()
   {

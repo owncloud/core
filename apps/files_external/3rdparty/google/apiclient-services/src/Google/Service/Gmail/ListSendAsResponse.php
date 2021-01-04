@@ -22,14 +22,14 @@ class Google_Service_Gmail_ListSendAsResponse extends Google_Collection
   protected $sendAsDataType = 'array';
 
   /**
-   * @param Google_Service_Gmail_SendAs
+   * @param Google_Service_Gmail_SendAs[]
    */
   public function setSendAs($sendAs)
   {
     $this->sendAs = $sendAs;
   }
   /**
-   * @return Google_Service_Gmail_SendAs
+   * @return Google_Service_Gmail_SendAs[]
    */
   public function getSendAs()
   {

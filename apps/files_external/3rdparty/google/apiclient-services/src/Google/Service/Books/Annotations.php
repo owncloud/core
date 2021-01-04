@@ -25,14 +25,14 @@ class Google_Service_Books_Annotations extends Google_Collection
   public $totalItems;
 
   /**
-   * @param Google_Service_Books_Annotation
+   * @param Google_Service_Books_Annotation[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Books_Annotation
+   * @return Google_Service_Books_Annotation[]
    */
   public function getItems()
   {

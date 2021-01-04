@@ -44,14 +44,14 @@ class Google_Service_Bigquery_GetQueryResultsResponse extends Google_Collection
     return $this->cacheHit;
   }
   /**
-   * @param Google_Service_Bigquery_ErrorProto
+   * @param Google_Service_Bigquery_ErrorProto[]
    */
   public function setErrors($errors)
   {
     $this->errors = $errors;
   }
   /**
-   * @return Google_Service_Bigquery_ErrorProto
+   * @return Google_Service_Bigquery_ErrorProto[]
    */
   public function getErrors()
   {
@@ -112,14 +112,14 @@ class Google_Service_Bigquery_GetQueryResultsResponse extends Google_Collection
     return $this->pageToken;
   }
   /**
-   * @param Google_Service_Bigquery_TableRow
+   * @param Google_Service_Bigquery_TableRow[]
    */
   public function setRows($rows)
   {
     $this->rows = $rows;
   }
   /**
-   * @return Google_Service_Bigquery_TableRow
+   * @return Google_Service_Bigquery_TableRow[]
    */
   public function getRows()
   {

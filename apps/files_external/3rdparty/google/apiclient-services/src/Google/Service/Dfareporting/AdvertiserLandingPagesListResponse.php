@@ -32,14 +32,14 @@ class Google_Service_Dfareporting_AdvertiserLandingPagesListResponse extends Goo
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dfareporting_LandingPage
+   * @param Google_Service_Dfareporting_LandingPage[]
    */
   public function setLandingPages($landingPages)
   {
     $this->landingPages = $landingPages;
   }
   /**
-   * @return Google_Service_Dfareporting_LandingPage
+   * @return Google_Service_Dfareporting_LandingPage[]
    */
   public function getLandingPages()
   {

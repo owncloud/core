@@ -31,14 +31,14 @@ class Google_Service_Iam_ListRolesResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Iam_Role
+   * @param Google_Service_Iam_Role[]
    */
   public function setRoles($roles)
   {
     $this->roles = $roles;
   }
   /**
-   * @return Google_Service_Iam_Role
+   * @return Google_Service_Iam_Role[]
    */
   public function getRoles()
   {

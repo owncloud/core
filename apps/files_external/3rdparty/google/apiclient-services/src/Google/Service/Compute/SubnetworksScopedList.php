@@ -24,14 +24,14 @@ class Google_Service_Compute_SubnetworksScopedList extends Google_Collection
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_Subnetwork
+   * @param Google_Service_Compute_Subnetwork[]
    */
   public function setSubnetworks($subnetworks)
   {
     $this->subnetworks = $subnetworks;
   }
   /**
-   * @return Google_Service_Compute_Subnetwork
+   * @return Google_Service_Compute_Subnetwork[]
    */
   public function getSubnetworks()
   {

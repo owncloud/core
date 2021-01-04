@@ -22,14 +22,14 @@ class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2BatchReadBl
   protected $responsesDataType = 'array';
 
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2BatchReadBlobsResponseResponse
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2BatchReadBlobsResponseResponse[]
    */
   public function setResponses($responses)
   {
     $this->responses = $responses;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2BatchReadBlobsResponseResponse
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2BatchReadBlobsResponseResponse[]
    */
   public function getResponses()
   {

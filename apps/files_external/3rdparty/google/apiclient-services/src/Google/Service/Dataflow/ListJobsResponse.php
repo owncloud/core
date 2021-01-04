@@ -25,28 +25,28 @@ class Google_Service_Dataflow_ListJobsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Dataflow_FailedLocation
+   * @param Google_Service_Dataflow_FailedLocation[]
    */
   public function setFailedLocation($failedLocation)
   {
     $this->failedLocation = $failedLocation;
   }
   /**
-   * @return Google_Service_Dataflow_FailedLocation
+   * @return Google_Service_Dataflow_FailedLocation[]
    */
   public function getFailedLocation()
   {
     return $this->failedLocation;
   }
   /**
-   * @param Google_Service_Dataflow_Job
+   * @param Google_Service_Dataflow_Job[]
    */
   public function setJobs($jobs)
   {
     $this->jobs = $jobs;
   }
   /**
-   * @return Google_Service_Dataflow_Job
+   * @return Google_Service_Dataflow_Job[]
    */
   public function getJobs()
   {

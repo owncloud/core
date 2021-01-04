@@ -35,7 +35,7 @@ class Google_Service_FirebaseHosting extends Google_Service
 
 
   public $operations;
-  
+
   /**
    * Constructs the internal representation of the FirebaseHosting service.
    *
@@ -86,7 +86,7 @@ class Google_Service_FirebaseHosting extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -94,7 +94,7 @@ class Google_Service_FirebaseHosting extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'filter' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

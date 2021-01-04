@@ -24,14 +24,14 @@ class Google_Service_Apigateway_ApigatewayListApiConfigsResponse extends Google_
   public $unreachableLocations;
 
   /**
-   * @param Google_Service_Apigateway_ApigatewayApiConfig
+   * @param Google_Service_Apigateway_ApigatewayApiConfig[]
    */
   public function setApiConfigs($apiConfigs)
   {
     $this->apiConfigs = $apiConfigs;
   }
   /**
-   * @return Google_Service_Apigateway_ApigatewayApiConfig
+   * @return Google_Service_Apigateway_ApigatewayApiConfig[]
    */
   public function getApiConfigs()
   {

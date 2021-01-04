@@ -31,14 +31,14 @@ class Google_Service_CloudSearch_ListDataSourceResponse extends Google_Collectio
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_CloudSearch_DataSource
+   * @param Google_Service_CloudSearch_DataSource[]
    */
   public function setSources($sources)
   {
     $this->sources = $sources;
   }
   /**
-   * @return Google_Service_CloudSearch_DataSource
+   * @return Google_Service_CloudSearch_DataSource[]
    */
   public function getSources()
   {

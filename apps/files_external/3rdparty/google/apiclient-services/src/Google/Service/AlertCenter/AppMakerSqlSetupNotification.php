@@ -22,14 +22,14 @@ class Google_Service_AlertCenter_AppMakerSqlSetupNotification extends Google_Col
   protected $requestInfoDataType = 'array';
 
   /**
-   * @param Google_Service_AlertCenter_RequestInfo
+   * @param Google_Service_AlertCenter_RequestInfo[]
    */
   public function setRequestInfo($requestInfo)
   {
     $this->requestInfo = $requestInfo;
   }
   /**
-   * @return Google_Service_AlertCenter_RequestInfo
+   * @return Google_Service_AlertCenter_RequestInfo[]
    */
   public function getRequestInfo()
   {

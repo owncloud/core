@@ -22,14 +22,14 @@ class Google_Service_YouTube_CommentThreadReplies extends Google_Collection
   protected $commentsDataType = 'array';
 
   /**
-   * @param Google_Service_YouTube_Comment
+   * @param Google_Service_YouTube_Comment[]
    */
   public function setComments($comments)
   {
     $this->comments = $comments;
   }
   /**
-   * @return Google_Service_YouTube_Comment
+   * @return Google_Service_YouTube_Comment[]
    */
   public function getComments()
   {

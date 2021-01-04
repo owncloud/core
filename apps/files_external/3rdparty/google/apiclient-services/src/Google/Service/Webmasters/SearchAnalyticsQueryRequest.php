@@ -37,14 +37,14 @@ class Google_Service_Webmasters_SearchAnalyticsQueryRequest extends Google_Colle
     return $this->aggregationType;
   }
   /**
-   * @param Google_Service_Webmasters_ApiDimensionFilterGroup
+   * @param Google_Service_Webmasters_ApiDimensionFilterGroup[]
    */
   public function setDimensionFilterGroups($dimensionFilterGroups)
   {
     $this->dimensionFilterGroups = $dimensionFilterGroups;
   }
   /**
-   * @return Google_Service_Webmasters_ApiDimensionFilterGroup
+   * @return Google_Service_Webmasters_ApiDimensionFilterGroup[]
    */
   public function getDimensionFilterGroups()
   {

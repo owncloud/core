@@ -83,13 +83,15 @@ class Google_Service_AccessApproval_Resource_FoldersApprovalRequests extends Goo
    * "folders/{folder}", or "organizations/{organization}".
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Requested page size.
    * @opt_param string filter A filter on the type of approval requests to
    * retrieve. Must be one of the following values: * [not set]: Requests that are
    * pending or have active approvals. * ALL: All requests. * PENDING: Only
    * pending requests. * ACTIVE: Only active (i.e. currently approved) requests. *
-   * DISMISSED: Only dismissed (including expired) requests. * HISTORY: Active and
-   * dismissed (including expired) requests.
+   * DISMISSED: Only requests that have been dismissed, or requests that . are not
+   * approved and past expiration. * EXPIRED: Only requests that have been
+   * approved, and the approval has expired. * HISTORY: Active, dismissed and
+   * expired requests.
+   * @opt_param int pageSize Requested page size.
    * @opt_param string pageToken A token identifying the page of results to
    * return.
    * @return Google_Service_AccessApproval_ListApprovalRequestsResponse

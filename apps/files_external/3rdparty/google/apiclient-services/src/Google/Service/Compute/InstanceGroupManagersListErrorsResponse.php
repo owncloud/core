@@ -23,14 +23,14 @@ class Google_Service_Compute_InstanceGroupManagersListErrorsResponse extends Goo
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Compute_InstanceManagedByIgmError
+   * @param Google_Service_Compute_InstanceManagedByIgmError[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_InstanceManagedByIgmError
+   * @return Google_Service_Compute_InstanceManagedByIgmError[]
    */
   public function getItems()
   {

@@ -60,38 +60,42 @@ class Google_Service_Dfareporting_Resource_PlacementGroups extends Google_Servic
    * @param string $profileId User profile ID associated with this request.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string advertiserIds Select only placement groups that belong to
+   * these advertisers.
+   * @opt_param bool archived Select only archived placements. Don't set this
+   * field to select both archived and non-archived placements.
+   * @opt_param string campaignIds Select only placement groups that belong to
+   * these campaigns.
    * @opt_param string contentCategoryIds Select only placement groups that are
    * associated with these content categories.
+   * @opt_param string directorySiteIds Select only placement groups that are
+   * associated with these directory sites.
+   * @opt_param string ids Select only placement groups with these IDs.
+   * @opt_param string maxEndDate Select only placements or placement groups whose
+   * end date is on or before the specified maxEndDate. The date should be
+   * formatted as "yyyy-MM-dd".
+   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string maxStartDate Select only placements or placement groups
    * whose start date is on or before the specified maxStartDate. The date should
    * be formatted as "yyyy-MM-dd".
-   * @opt_param string siteIds Select only placement groups that are associated
-   * with these sites.
-   * @opt_param int maxResults Maximum number of results to return.
-   * @opt_param bool archived Select only archived placements. Don't set this
-   * field to select both archived and non-archived placements.
-   * @opt_param string directorySiteIds Select only placement groups that are
-   * associated with these directory sites.
+   * @opt_param string minEndDate Select only placements or placement groups whose
+   * end date is on or after the specified minEndDate. The date should be
+   * formatted as "yyyy-MM-dd".
+   * @opt_param string minStartDate Select only placements or placement groups
+   * whose start date is on or after the specified minStartDate. The date should
+   * be formatted as "yyyy-MM-dd".
    * @opt_param string pageToken Value of the nextPageToken from the previous
    * result page.
-   * @opt_param string campaignIds Select only placement groups that belong to
-   * these campaigns.
-   * @opt_param string advertiserIds Select only placement groups that belong to
-   * these advertisers.
-   * @opt_param string pricingTypes Select only placement groups with these
-   * pricing types.
    * @opt_param string placementGroupType Select only placement groups belonging
    * with this group type. A package is a simple group of placements that acts as
    * a single pricing point for a group of tags. A roadblock is a group of
    * placements that not only acts as a single pricing point but also assumes that
    * all the tags in it will be served at the same time. A roadblock requires one
    * of its assigned placements to be marked as primary for reporting.
-   * @opt_param string minEndDate Select only placements or placement groups whose
-   * end date is on or after the specified minEndDate. The date should be
-   * formatted as "yyyy-MM-dd".
    * @opt_param string placementStrategyIds Select only placement groups that are
    * associated with these placement strategies.
-   * @opt_param string sortField Field by which to sort the list.
+   * @opt_param string pricingTypes Select only placement groups with these
+   * pricing types.
    * @opt_param string searchString Allows searching for placement groups by name
    * or ID. Wildcards (*) are allowed. For example, "placement*2015" will return
    * placement groups with names like "placement group June 2015", "placement
@@ -99,14 +103,10 @@ class Google_Service_Dfareporting_Resource_PlacementGroups extends Google_Servic
    * wildcards implicitly at the start and the end of the search string. For
    * example, a search string of "placementgroup" will match placement groups with
    * name "my placementgroup", "placementgroup 2015", or simply "placementgroup".
+   * @opt_param string siteIds Select only placement groups that are associated
+   * with these sites.
+   * @opt_param string sortField Field by which to sort the list.
    * @opt_param string sortOrder Order of sorted results.
-   * @opt_param string maxEndDate Select only placements or placement groups whose
-   * end date is on or before the specified maxEndDate. The date should be
-   * formatted as "yyyy-MM-dd".
-   * @opt_param string minStartDate Select only placements or placement groups
-   * whose start date is on or after the specified minStartDate. The date should
-   * be formatted as "yyyy-MM-dd".
-   * @opt_param string ids Select only placement groups with these IDs.
    * @return Google_Service_Dfareporting_PlacementGroupsListResponse
    */
   public function listPlacementGroups($profileId, $optParams = array())

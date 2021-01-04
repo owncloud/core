@@ -22,14 +22,14 @@ class Google_Service_DeploymentManager_OperationError extends Google_Collection
   protected $errorsDataType = 'array';
 
   /**
-   * @param Google_Service_DeploymentManager_OperationErrorErrors
+   * @param Google_Service_DeploymentManager_OperationErrorErrors[]
    */
   public function setErrors($errors)
   {
     $this->errors = $errors;
   }
   /**
-   * @return Google_Service_DeploymentManager_OperationErrorErrors
+   * @return Google_Service_DeploymentManager_OperationErrorErrors[]
    */
   public function getErrors()
   {

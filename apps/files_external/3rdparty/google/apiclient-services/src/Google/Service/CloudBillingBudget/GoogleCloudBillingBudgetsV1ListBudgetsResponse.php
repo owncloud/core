@@ -23,14 +23,14 @@ class Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1ListBudgetsRe
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1Budget
+   * @param Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1Budget[]
    */
   public function setBudgets($budgets)
   {
     $this->budgets = $budgets;
   }
   /**
-   * @return Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1Budget
+   * @return Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1Budget[]
    */
   public function getBudgets()
   {

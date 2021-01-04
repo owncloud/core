@@ -22,14 +22,14 @@ class Google_Service_Compute_ManagedInstanceLastAttemptErrors extends Google_Col
   protected $errorsDataType = 'array';
 
   /**
-   * @param Google_Service_Compute_ManagedInstanceLastAttemptErrorsErrors
+   * @param Google_Service_Compute_ManagedInstanceLastAttemptErrorsErrors[]
    */
   public function setErrors($errors)
   {
     $this->errors = $errors;
   }
   /**
-   * @return Google_Service_Compute_ManagedInstanceLastAttemptErrorsErrors
+   * @return Google_Service_Compute_ManagedInstanceLastAttemptErrorsErrors[]
    */
   public function getErrors()
   {

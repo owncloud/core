@@ -29,28 +29,28 @@ class Google_Service_Dns_Change extends Google_Collection
   public $status;
 
   /**
-   * @param Google_Service_Dns_ResourceRecordSet
+   * @param Google_Service_Dns_ResourceRecordSet[]
    */
   public function setAdditions($additions)
   {
     $this->additions = $additions;
   }
   /**
-   * @return Google_Service_Dns_ResourceRecordSet
+   * @return Google_Service_Dns_ResourceRecordSet[]
    */
   public function getAdditions()
   {
     return $this->additions;
   }
   /**
-   * @param Google_Service_Dns_ResourceRecordSet
+   * @param Google_Service_Dns_ResourceRecordSet[]
    */
   public function setDeletions($deletions)
   {
     $this->deletions = $deletions;
   }
   /**
-   * @return Google_Service_Dns_ResourceRecordSet
+   * @return Google_Service_Dns_ResourceRecordSet[]
    */
   public function getDeletions()
   {

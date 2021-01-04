@@ -22,14 +22,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ListAppsResponse extends Google_C
   protected $appDataType = 'array';
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1App
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1App[]
    */
   public function setApp($app)
   {
     $this->app = $app;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1App
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1App[]
    */
   public function getApp()
   {

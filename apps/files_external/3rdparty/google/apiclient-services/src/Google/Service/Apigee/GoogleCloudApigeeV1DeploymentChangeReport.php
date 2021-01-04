@@ -26,28 +26,28 @@ class Google_Service_Apigee_GoogleCloudApigeeV1DeploymentChangeReport extends Go
   protected $validationErrorsDataType = '';
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1DeploymentChangeReportRoutingChange
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1DeploymentChangeReportRoutingChange[]
    */
   public function setRoutingChanges($routingChanges)
   {
     $this->routingChanges = $routingChanges;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1DeploymentChangeReportRoutingChange
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1DeploymentChangeReportRoutingChange[]
    */
   public function getRoutingChanges()
   {
     return $this->routingChanges;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1DeploymentChangeReportRoutingConflict
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1DeploymentChangeReportRoutingConflict[]
    */
   public function setRoutingConflicts($routingConflicts)
   {
     $this->routingConflicts = $routingConflicts;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1DeploymentChangeReportRoutingConflict
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1DeploymentChangeReportRoutingConflict[]
    */
   public function getRoutingConflicts()
   {

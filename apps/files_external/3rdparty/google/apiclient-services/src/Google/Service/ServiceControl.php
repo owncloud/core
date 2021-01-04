@@ -39,7 +39,7 @@ class Google_Service_ServiceControl extends Google_Service
       "https://www.googleapis.com/auth/servicecontrol";
 
   public $services;
-  
+
   /**
    * Constructs the internal representation of the ServiceControl service.
    *

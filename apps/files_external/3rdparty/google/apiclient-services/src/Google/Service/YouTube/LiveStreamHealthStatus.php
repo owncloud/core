@@ -24,14 +24,14 @@ class Google_Service_YouTube_LiveStreamHealthStatus extends Google_Collection
   public $status;
 
   /**
-   * @param Google_Service_YouTube_LiveStreamConfigurationIssue
+   * @param Google_Service_YouTube_LiveStreamConfigurationIssue[]
    */
   public function setConfigurationIssues($configurationIssues)
   {
     $this->configurationIssues = $configurationIssues;
   }
   /**
-   * @return Google_Service_YouTube_LiveStreamConfigurationIssue
+   * @return Google_Service_YouTube_LiveStreamConfigurationIssue[]
    */
   public function getConfigurationIssues()
   {

@@ -47,11 +47,11 @@ class Google_Service_AdSense_Resource_Customchannels extends Google_Service_Reso
    * @param string $adClientId Ad client for which to list custom channels.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int maxResults The maximum number of custom channels to include in
+   * the response, used for paging.
    * @opt_param string pageToken A continuation token, used to page through custom
    * channels. To retrieve the next page, set this parameter to the value of
    * "nextPageToken" from the previous response.
-   * @opt_param int maxResults The maximum number of custom channels to include in
-   * the response, used for paging.
    * @return Google_Service_AdSense_CustomChannels
    */
   public function listCustomchannels($adClientId, $optParams = array())

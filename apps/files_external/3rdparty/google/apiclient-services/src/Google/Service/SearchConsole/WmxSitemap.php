@@ -30,14 +30,14 @@ class Google_Service_SearchConsole_WmxSitemap extends Google_Collection
   public $warnings;
 
   /**
-   * @param Google_Service_SearchConsole_WmxSitemapContent
+   * @param Google_Service_SearchConsole_WmxSitemapContent[]
    */
   public function setContents($contents)
   {
     $this->contents = $contents;
   }
   /**
-   * @return Google_Service_SearchConsole_WmxSitemapContent
+   * @return Google_Service_SearchConsole_WmxSitemapContent[]
    */
   public function getContents()
   {

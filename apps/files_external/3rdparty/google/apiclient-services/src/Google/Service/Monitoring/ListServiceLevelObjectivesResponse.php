@@ -31,14 +31,14 @@ class Google_Service_Monitoring_ListServiceLevelObjectivesResponse extends Googl
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Monitoring_ServiceLevelObjective
+   * @param Google_Service_Monitoring_ServiceLevelObjective[]
    */
   public function setServiceLevelObjectives($serviceLevelObjectives)
   {
     $this->serviceLevelObjectives = $serviceLevelObjectives;
   }
   /**
-   * @return Google_Service_Monitoring_ServiceLevelObjective
+   * @return Google_Service_Monitoring_ServiceLevelObjective[]
    */
   public function getServiceLevelObjectives()
   {

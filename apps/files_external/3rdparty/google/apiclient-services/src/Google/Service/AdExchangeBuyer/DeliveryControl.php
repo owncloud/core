@@ -40,14 +40,14 @@ class Google_Service_AdExchangeBuyer_DeliveryControl extends Google_Collection
     return $this->deliveryRateType;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_DeliveryControlFrequencyCap
+   * @param Google_Service_AdExchangeBuyer_DeliveryControlFrequencyCap[]
    */
   public function setFrequencyCaps($frequencyCaps)
   {
     $this->frequencyCaps = $frequencyCaps;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_DeliveryControlFrequencyCap
+   * @return Google_Service_AdExchangeBuyer_DeliveryControlFrequencyCap[]
    */
   public function getFrequencyCaps()
   {

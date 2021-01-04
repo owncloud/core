@@ -92,14 +92,14 @@ class Google_Service_ShoppingContent_ReturnPolicy extends Google_Collection
     return $this->returnPolicyId;
   }
   /**
-   * @param Google_Service_ShoppingContent_ReturnPolicySeasonalOverride
+   * @param Google_Service_ShoppingContent_ReturnPolicySeasonalOverride[]
    */
   public function setSeasonalOverrides($seasonalOverrides)
   {
     $this->seasonalOverrides = $seasonalOverrides;
   }
   /**
-   * @return Google_Service_ShoppingContent_ReturnPolicySeasonalOverride
+   * @return Google_Service_ShoppingContent_ReturnPolicySeasonalOverride[]
    */
   public function getSeasonalOverrides()
   {

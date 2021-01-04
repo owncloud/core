@@ -22,14 +22,14 @@ class Google_Service_Compute_RegionInstanceGroupManagerPatchInstanceConfigReq ex
   protected $perInstanceConfigsDataType = 'array';
 
   /**
-   * @param Google_Service_Compute_PerInstanceConfig
+   * @param Google_Service_Compute_PerInstanceConfig[]
    */
   public function setPerInstanceConfigs($perInstanceConfigs)
   {
     $this->perInstanceConfigs = $perInstanceConfigs;
   }
   /**
-   * @return Google_Service_Compute_PerInstanceConfig
+   * @return Google_Service_Compute_PerInstanceConfig[]
    */
   public function getPerInstanceConfigs()
   {

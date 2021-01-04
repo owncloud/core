@@ -31,14 +31,14 @@ class Google_Service_Sheets_SpreadsheetTheme extends Google_Collection
     return $this->primaryFontFamily;
   }
   /**
-   * @param Google_Service_Sheets_ThemeColorPair
+   * @param Google_Service_Sheets_ThemeColorPair[]
    */
   public function setThemeColors($themeColors)
   {
     $this->themeColors = $themeColors;
   }
   /**
-   * @return Google_Service_Sheets_ThemeColorPair
+   * @return Google_Service_Sheets_ThemeColorPair[]
    */
   public function getThemeColors()
   {

@@ -34,14 +34,14 @@ class Google_Service_Slides_Presentation extends Google_Collection
   public $title;
 
   /**
-   * @param Google_Service_Slides_Page
+   * @param Google_Service_Slides_Page[]
    */
   public function setLayouts($layouts)
   {
     $this->layouts = $layouts;
   }
   /**
-   * @return Google_Service_Slides_Page
+   * @return Google_Service_Slides_Page[]
    */
   public function getLayouts()
   {
@@ -56,14 +56,14 @@ class Google_Service_Slides_Presentation extends Google_Collection
     return $this->locale;
   }
   /**
-   * @param Google_Service_Slides_Page
+   * @param Google_Service_Slides_Page[]
    */
   public function setMasters($masters)
   {
     $this->masters = $masters;
   }
   /**
-   * @return Google_Service_Slides_Page
+   * @return Google_Service_Slides_Page[]
    */
   public function getMasters()
   {
@@ -114,14 +114,14 @@ class Google_Service_Slides_Presentation extends Google_Collection
     return $this->revisionId;
   }
   /**
-   * @param Google_Service_Slides_Page
+   * @param Google_Service_Slides_Page[]
    */
   public function setSlides($slides)
   {
     $this->slides = $slides;
   }
   /**
-   * @return Google_Service_Slides_Page
+   * @return Google_Service_Slides_Page[]
    */
   public function getSlides()
   {

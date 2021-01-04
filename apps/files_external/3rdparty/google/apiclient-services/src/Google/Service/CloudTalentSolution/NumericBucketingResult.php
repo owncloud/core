@@ -24,14 +24,14 @@ class Google_Service_CloudTalentSolution_NumericBucketingResult extends Google_C
   public $minValue;
 
   /**
-   * @param Google_Service_CloudTalentSolution_BucketizedCount
+   * @param Google_Service_CloudTalentSolution_BucketizedCount[]
    */
   public function setCounts($counts)
   {
     $this->counts = $counts;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_BucketizedCount
+   * @return Google_Service_CloudTalentSolution_BucketizedCount[]
    */
   public function getCounts()
   {

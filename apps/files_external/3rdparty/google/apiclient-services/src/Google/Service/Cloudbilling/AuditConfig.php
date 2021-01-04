@@ -23,14 +23,14 @@ class Google_Service_Cloudbilling_AuditConfig extends Google_Collection
   public $service;
 
   /**
-   * @param Google_Service_Cloudbilling_AuditLogConfig
+   * @param Google_Service_Cloudbilling_AuditLogConfig[]
    */
   public function setAuditLogConfigs($auditLogConfigs)
   {
     $this->auditLogConfigs = $auditLogConfigs;
   }
   /**
-   * @return Google_Service_Cloudbilling_AuditLogConfig
+   * @return Google_Service_Cloudbilling_AuditLogConfig[]
    */
   public function getAuditLogConfigs()
   {

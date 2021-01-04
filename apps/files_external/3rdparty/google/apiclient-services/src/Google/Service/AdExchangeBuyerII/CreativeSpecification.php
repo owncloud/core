@@ -24,14 +24,14 @@ class Google_Service_AdExchangeBuyerII_CreativeSpecification extends Google_Coll
   protected $creativeSizeDataType = '';
 
   /**
-   * @param Google_Service_AdExchangeBuyerII_AdSize
+   * @param Google_Service_AdExchangeBuyerII_AdSize[]
    */
   public function setCreativeCompanionSizes($creativeCompanionSizes)
   {
     $this->creativeCompanionSizes = $creativeCompanionSizes;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_AdSize
+   * @return Google_Service_AdExchangeBuyerII_AdSize[]
    */
   public function getCreativeCompanionSizes()
   {

@@ -23,14 +23,14 @@ class Google_Service_CloudSearch_ResultDisplayMetadata extends Google_Collection
   public $objectTypeLabel;
 
   /**
-   * @param Google_Service_CloudSearch_ResultDisplayLine
+   * @param Google_Service_CloudSearch_ResultDisplayLine[]
    */
   public function setMetalines($metalines)
   {
     $this->metalines = $metalines;
   }
   /**
-   * @return Google_Service_CloudSearch_ResultDisplayLine
+   * @return Google_Service_CloudSearch_ResultDisplayLine[]
    */
   public function getMetalines()
   {

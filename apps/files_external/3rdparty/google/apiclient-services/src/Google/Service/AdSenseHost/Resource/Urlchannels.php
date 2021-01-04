@@ -61,11 +61,11 @@ class Google_Service_AdSenseHost_Resource_Urlchannels extends Google_Service_Res
    * @param string $adClientId Ad client for which to list URL channels.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string maxResults The maximum number of URL channels to include in
+   * the response, used for paging.
    * @opt_param string pageToken A continuation token, used to page through URL
    * channels. To retrieve the next page, set this parameter to the value of
    * "nextPageToken" from the previous response.
-   * @opt_param string maxResults The maximum number of URL channels to include in
-   * the response, used for paging.
    * @return Google_Service_AdSenseHost_UrlChannels
    */
   public function listUrlchannels($adClientId, $optParams = array())

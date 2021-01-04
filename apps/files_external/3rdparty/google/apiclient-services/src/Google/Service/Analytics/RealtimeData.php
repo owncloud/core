@@ -32,14 +32,14 @@ class Google_Service_Analytics_RealtimeData extends Google_Collection
   public $totalsForAllResults;
 
   /**
-   * @param Google_Service_Analytics_RealtimeDataColumnHeaders
+   * @param Google_Service_Analytics_RealtimeDataColumnHeaders[]
    */
   public function setColumnHeaders($columnHeaders)
   {
     $this->columnHeaders = $columnHeaders;
   }
   /**
-   * @return Google_Service_Analytics_RealtimeDataColumnHeaders
+   * @return Google_Service_Analytics_RealtimeDataColumnHeaders[]
    */
   public function getColumnHeaders()
   {

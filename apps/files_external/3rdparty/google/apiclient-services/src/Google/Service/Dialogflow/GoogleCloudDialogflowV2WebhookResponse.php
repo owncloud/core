@@ -45,14 +45,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2WebhookResponse extends G
     return $this->followupEventInput;
   }
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessage
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessage[]
    */
   public function setFulfillmentMessages($fulfillmentMessages)
   {
     $this->fulfillmentMessages = $fulfillmentMessages;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessage
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessage[]
    */
   public function getFulfillmentMessages()
   {
@@ -67,14 +67,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2WebhookResponse extends G
     return $this->fulfillmentText;
   }
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2Context
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2Context[]
    */
   public function setOutputContexts($outputContexts)
   {
     $this->outputContexts = $outputContexts;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2Context
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2Context[]
    */
   public function getOutputContexts()
   {
@@ -89,14 +89,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2WebhookResponse extends G
     return $this->payload;
   }
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2SessionEntityType
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2SessionEntityType[]
    */
   public function setSessionEntityTypes($sessionEntityTypes)
   {
     $this->sessionEntityTypes = $sessionEntityTypes;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2SessionEntityType
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2SessionEntityType[]
    */
   public function getSessionEntityTypes()
   {

@@ -84,13 +84,13 @@ class Google_Service_GoogleAnalyticsAdmin_Resource_PropertiesAndroidAppDataStrea
    * "properties/123"
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of resources to return. If
+   * unspecified, at most 50 resources will be returned. The maximum value is 200;
+   * (higher values will be coerced to the maximum)
    * @opt_param string pageToken A page token, received from a previous call.
    * Provide this to retrieve the subsequent page. When paginating, all other
    * parameters provided to `ListAndroidAppDataStreams` must match the call that
    * provided the page token.
-   * @opt_param int pageSize The maximum number of resources to return. If
-   * unspecified, at most 50 resources will be returned. The maximum value is 200;
-   * (higher values will be coerced to the maximum)
    * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaListAndroidAppDataStreamsResponse
    */
   public function listPropertiesAndroidAppDataStreams($parent, $optParams = array())

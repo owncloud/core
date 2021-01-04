@@ -25,14 +25,14 @@ class Google_Service_Bigquery_DatasetList extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Bigquery_DatasetListDatasets
+   * @param Google_Service_Bigquery_DatasetListDatasets[]
    */
   public function setDatasets($datasets)
   {
     $this->datasets = $datasets;
   }
   /**
-   * @return Google_Service_Bigquery_DatasetListDatasets
+   * @return Google_Service_Bigquery_DatasetListDatasets[]
    */
   public function getDatasets()
   {

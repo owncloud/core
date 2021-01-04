@@ -48,14 +48,14 @@ class Google_Service_YouTube_LiveStreamListResponse extends Google_Collection
     return $this->eventId;
   }
   /**
-   * @param Google_Service_YouTube_LiveStream
+   * @param Google_Service_YouTube_LiveStream[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_YouTube_LiveStream
+   * @return Google_Service_YouTube_LiveStream[]
    */
   public function getItems()
   {

@@ -32,84 +32,84 @@ class Google_Service_Dfareporting_TechnologyTargeting extends Google_Collection
   protected $platformTypesDataType = 'array';
 
   /**
-   * @param Google_Service_Dfareporting_Browser
+   * @param Google_Service_Dfareporting_Browser[]
    */
   public function setBrowsers($browsers)
   {
     $this->browsers = $browsers;
   }
   /**
-   * @return Google_Service_Dfareporting_Browser
+   * @return Google_Service_Dfareporting_Browser[]
    */
   public function getBrowsers()
   {
     return $this->browsers;
   }
   /**
-   * @param Google_Service_Dfareporting_ConnectionType
+   * @param Google_Service_Dfareporting_ConnectionType[]
    */
   public function setConnectionTypes($connectionTypes)
   {
     $this->connectionTypes = $connectionTypes;
   }
   /**
-   * @return Google_Service_Dfareporting_ConnectionType
+   * @return Google_Service_Dfareporting_ConnectionType[]
    */
   public function getConnectionTypes()
   {
     return $this->connectionTypes;
   }
   /**
-   * @param Google_Service_Dfareporting_MobileCarrier
+   * @param Google_Service_Dfareporting_MobileCarrier[]
    */
   public function setMobileCarriers($mobileCarriers)
   {
     $this->mobileCarriers = $mobileCarriers;
   }
   /**
-   * @return Google_Service_Dfareporting_MobileCarrier
+   * @return Google_Service_Dfareporting_MobileCarrier[]
    */
   public function getMobileCarriers()
   {
     return $this->mobileCarriers;
   }
   /**
-   * @param Google_Service_Dfareporting_OperatingSystemVersion
+   * @param Google_Service_Dfareporting_OperatingSystemVersion[]
    */
   public function setOperatingSystemVersions($operatingSystemVersions)
   {
     $this->operatingSystemVersions = $operatingSystemVersions;
   }
   /**
-   * @return Google_Service_Dfareporting_OperatingSystemVersion
+   * @return Google_Service_Dfareporting_OperatingSystemVersion[]
    */
   public function getOperatingSystemVersions()
   {
     return $this->operatingSystemVersions;
   }
   /**
-   * @param Google_Service_Dfareporting_OperatingSystem
+   * @param Google_Service_Dfareporting_OperatingSystem[]
    */
   public function setOperatingSystems($operatingSystems)
   {
     $this->operatingSystems = $operatingSystems;
   }
   /**
-   * @return Google_Service_Dfareporting_OperatingSystem
+   * @return Google_Service_Dfareporting_OperatingSystem[]
    */
   public function getOperatingSystems()
   {
     return $this->operatingSystems;
   }
   /**
-   * @param Google_Service_Dfareporting_PlatformType
+   * @param Google_Service_Dfareporting_PlatformType[]
    */
   public function setPlatformTypes($platformTypes)
   {
     $this->platformTypes = $platformTypes;
   }
   /**
-   * @return Google_Service_Dfareporting_PlatformType
+   * @return Google_Service_Dfareporting_PlatformType[]
    */
   public function getPlatformTypes()
   {

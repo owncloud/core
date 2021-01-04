@@ -31,14 +31,14 @@ class Google_Service_ServiceDirectory_ListServicesResponse extends Google_Collec
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ServiceDirectory_Service
+   * @param Google_Service_ServiceDirectory_Service[]
    */
   public function setServices($services)
   {
     $this->services = $services;
   }
   /**
-   * @return Google_Service_ServiceDirectory_Service
+   * @return Google_Service_ServiceDirectory_Service[]
    */
   public function getServices()
   {

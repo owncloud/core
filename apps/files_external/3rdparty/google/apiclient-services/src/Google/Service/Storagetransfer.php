@@ -38,7 +38,7 @@ class Google_Service_Storagetransfer extends Google_Service
   public $googleServiceAccounts;
   public $transferJobs;
   public $transferOperations;
-  
+
   /**
    * Constructs the internal representation of the Storagetransfer service.
    *

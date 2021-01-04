@@ -23,14 +23,14 @@ class Google_Service_SQLAdmin_TiersListResponse extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_SQLAdmin_Tier
+   * @param Google_Service_SQLAdmin_Tier[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_SQLAdmin_Tier
+   * @return Google_Service_SQLAdmin_Tier[]
    */
   public function getItems()
   {

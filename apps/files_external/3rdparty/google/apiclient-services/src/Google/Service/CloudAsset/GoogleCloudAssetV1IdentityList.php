@@ -24,28 +24,28 @@ class Google_Service_CloudAsset_GoogleCloudAssetV1IdentityList extends Google_Co
   protected $identitiesDataType = 'array';
 
   /**
-   * @param Google_Service_CloudAsset_GoogleCloudAssetV1Edge
+   * @param Google_Service_CloudAsset_GoogleCloudAssetV1Edge[]
    */
   public function setGroupEdges($groupEdges)
   {
     $this->groupEdges = $groupEdges;
   }
   /**
-   * @return Google_Service_CloudAsset_GoogleCloudAssetV1Edge
+   * @return Google_Service_CloudAsset_GoogleCloudAssetV1Edge[]
    */
   public function getGroupEdges()
   {
     return $this->groupEdges;
   }
   /**
-   * @param Google_Service_CloudAsset_GoogleCloudAssetV1Identity
+   * @param Google_Service_CloudAsset_GoogleCloudAssetV1Identity[]
    */
   public function setIdentities($identities)
   {
     $this->identities = $identities;
   }
   /**
-   * @return Google_Service_CloudAsset_GoogleCloudAssetV1Identity
+   * @return Google_Service_CloudAsset_GoogleCloudAssetV1Identity[]
    */
   public function getIdentities()
   {

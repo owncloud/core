@@ -46,14 +46,14 @@ class Google_Service_Compute_ResourcePolicyAggregatedList extends Google_Collect
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_ResourcePoliciesScopedList
+   * @param Google_Service_Compute_ResourcePoliciesScopedList[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_ResourcePoliciesScopedList
+   * @return Google_Service_Compute_ResourcePoliciesScopedList[]
    */
   public function getItems()
   {

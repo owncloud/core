@@ -22,14 +22,14 @@ class Google_Service_AndroidProvisioningPartner_ClaimDevicesRequest extends Goog
   protected $claimsDataType = 'array';
 
   /**
-   * @param Google_Service_AndroidProvisioningPartner_PartnerClaim
+   * @param Google_Service_AndroidProvisioningPartner_PartnerClaim[]
    */
   public function setClaims($claims)
   {
     $this->claims = $claims;
   }
   /**
-   * @return Google_Service_AndroidProvisioningPartner_PartnerClaim
+   * @return Google_Service_AndroidProvisioningPartner_PartnerClaim[]
    */
   public function getClaims()
   {

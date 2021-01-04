@@ -49,14 +49,14 @@ class Google_Service_ShoppingContent_OrderinvoicesCreateChargeInvoiceRequest ext
     return $this->invoiceSummary;
   }
   /**
-   * @param Google_Service_ShoppingContent_ShipmentInvoiceLineItemInvoice
+   * @param Google_Service_ShoppingContent_ShipmentInvoiceLineItemInvoice[]
    */
   public function setLineItemInvoices($lineItemInvoices)
   {
     $this->lineItemInvoices = $lineItemInvoices;
   }
   /**
-   * @return Google_Service_ShoppingContent_ShipmentInvoiceLineItemInvoice
+   * @return Google_Service_ShoppingContent_ShipmentInvoiceLineItemInvoice[]
    */
   public function getLineItemInvoices()
   {

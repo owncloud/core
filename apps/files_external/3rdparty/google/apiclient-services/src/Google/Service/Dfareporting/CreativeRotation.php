@@ -25,14 +25,14 @@ class Google_Service_Dfareporting_CreativeRotation extends Google_Collection
   public $weightCalculationStrategy;
 
   /**
-   * @param Google_Service_Dfareporting_CreativeAssignment
+   * @param Google_Service_Dfareporting_CreativeAssignment[]
    */
   public function setCreativeAssignments($creativeAssignments)
   {
     $this->creativeAssignments = $creativeAssignments;
   }
   /**
-   * @return Google_Service_Dfareporting_CreativeAssignment
+   * @return Google_Service_Dfareporting_CreativeAssignment[]
    */
   public function getCreativeAssignments()
   {

@@ -24,14 +24,14 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Policy
   public $version;
 
   /**
-   * @param Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Binding
+   * @param Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Binding[]
    */
   public function setBindings($bindings)
   {
     $this->bindings = $bindings;
   }
   /**
-   * @return Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Binding
+   * @return Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Binding[]
    */
   public function getBindings()
   {

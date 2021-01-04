@@ -22,14 +22,14 @@ class Google_Service_CloudIAP_ListBrandsResponse extends Google_Collection
   protected $brandsDataType = 'array';
 
   /**
-   * @param Google_Service_CloudIAP_Brand
+   * @param Google_Service_CloudIAP_Brand[]
    */
   public function setBrands($brands)
   {
     $this->brands = $brands;
   }
   /**
-   * @return Google_Service_CloudIAP_Brand
+   * @return Google_Service_CloudIAP_Brand[]
    */
   public function getBrands()
   {

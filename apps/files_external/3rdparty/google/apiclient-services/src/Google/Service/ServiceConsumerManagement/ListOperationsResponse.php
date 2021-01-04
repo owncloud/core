@@ -31,14 +31,14 @@ class Google_Service_ServiceConsumerManagement_ListOperationsResponse extends Go
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ServiceConsumerManagement_Operation
+   * @param Google_Service_ServiceConsumerManagement_Operation[]
    */
   public function setOperations($operations)
   {
     $this->operations = $operations;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_Operation
+   * @return Google_Service_ServiceConsumerManagement_Operation[]
    */
   public function getOperations()
   {

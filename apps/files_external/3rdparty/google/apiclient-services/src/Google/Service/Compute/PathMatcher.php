@@ -99,28 +99,28 @@ class Google_Service_Compute_PathMatcher extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Compute_PathRule
+   * @param Google_Service_Compute_PathRule[]
    */
   public function setPathRules($pathRules)
   {
     $this->pathRules = $pathRules;
   }
   /**
-   * @return Google_Service_Compute_PathRule
+   * @return Google_Service_Compute_PathRule[]
    */
   public function getPathRules()
   {
     return $this->pathRules;
   }
   /**
-   * @param Google_Service_Compute_HttpRouteRule
+   * @param Google_Service_Compute_HttpRouteRule[]
    */
   public function setRouteRules($routeRules)
   {
     $this->routeRules = $routeRules;
   }
   /**
-   * @return Google_Service_Compute_HttpRouteRule
+   * @return Google_Service_Compute_HttpRouteRule[]
    */
   public function getRouteRules()
   {

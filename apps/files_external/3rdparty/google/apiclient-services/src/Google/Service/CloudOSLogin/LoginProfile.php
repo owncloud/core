@@ -33,28 +33,28 @@ class Google_Service_CloudOSLogin_LoginProfile extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_CloudOSLogin_PosixAccount
+   * @param Google_Service_CloudOSLogin_PosixAccount[]
    */
   public function setPosixAccounts($posixAccounts)
   {
     $this->posixAccounts = $posixAccounts;
   }
   /**
-   * @return Google_Service_CloudOSLogin_PosixAccount
+   * @return Google_Service_CloudOSLogin_PosixAccount[]
    */
   public function getPosixAccounts()
   {
     return $this->posixAccounts;
   }
   /**
-   * @param Google_Service_CloudOSLogin_SshPublicKey
+   * @param Google_Service_CloudOSLogin_SshPublicKey[]
    */
   public function setSshPublicKeys($sshPublicKeys)
   {
     $this->sshPublicKeys = $sshPublicKeys;
   }
   /**
-   * @return Google_Service_CloudOSLogin_SshPublicKey
+   * @return Google_Service_CloudOSLogin_SshPublicKey[]
    */
   public function getSshPublicKeys()
   {

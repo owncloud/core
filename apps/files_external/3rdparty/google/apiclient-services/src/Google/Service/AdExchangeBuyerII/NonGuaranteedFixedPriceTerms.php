@@ -22,14 +22,14 @@ class Google_Service_AdExchangeBuyerII_NonGuaranteedFixedPriceTerms extends Goog
   protected $fixedPricesDataType = 'array';
 
   /**
-   * @param Google_Service_AdExchangeBuyerII_PricePerBuyer
+   * @param Google_Service_AdExchangeBuyerII_PricePerBuyer[]
    */
   public function setFixedPrices($fixedPrices)
   {
     $this->fixedPrices = $fixedPrices;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_PricePerBuyer
+   * @return Google_Service_AdExchangeBuyerII_PricePerBuyer[]
    */
   public function getFixedPrices()
   {

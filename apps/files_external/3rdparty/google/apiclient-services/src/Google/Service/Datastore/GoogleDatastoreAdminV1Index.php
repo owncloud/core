@@ -59,14 +59,14 @@ class Google_Service_Datastore_GoogleDatastoreAdminV1Index extends Google_Collec
     return $this->projectId;
   }
   /**
-   * @param Google_Service_Datastore_GoogleDatastoreAdminV1IndexedProperty
+   * @param Google_Service_Datastore_GoogleDatastoreAdminV1IndexedProperty[]
    */
   public function setProperties($properties)
   {
     $this->properties = $properties;
   }
   /**
-   * @return Google_Service_Datastore_GoogleDatastoreAdminV1IndexedProperty
+   * @return Google_Service_Datastore_GoogleDatastoreAdminV1IndexedProperty[]
    */
   public function getProperties()
   {

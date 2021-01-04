@@ -75,10 +75,10 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsEntryGroupsEntriesTag
    * {entry_id}
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Token that specifies which page is requested. If
-   * empty, the first page is returned.
    * @opt_param int pageSize The maximum number of tags to return. Default is 10.
    * Max limit is 1000.
+   * @opt_param string pageToken Token that specifies which page is requested. If
+   * empty, the first page is returned.
    * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ListTagsResponse
    */
   public function listProjectsLocationsEntryGroupsEntriesTags($parent, $optParams = array())

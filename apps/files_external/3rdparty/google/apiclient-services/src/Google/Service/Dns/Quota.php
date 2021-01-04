@@ -148,14 +148,14 @@ class Google_Service_Dns_Quota extends Google_Collection
     return $this->totalRrdataSizePerChange;
   }
   /**
-   * @param Google_Service_Dns_DnsKeySpec
+   * @param Google_Service_Dns_DnsKeySpec[]
    */
   public function setWhitelistedKeySpecs($whitelistedKeySpecs)
   {
     $this->whitelistedKeySpecs = $whitelistedKeySpecs;
   }
   /**
-   * @return Google_Service_Dns_DnsKeySpec
+   * @return Google_Service_Dns_DnsKeySpec[]
    */
   public function getWhitelistedKeySpecs()
   {

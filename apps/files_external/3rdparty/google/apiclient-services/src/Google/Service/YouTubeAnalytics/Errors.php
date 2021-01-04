@@ -32,14 +32,14 @@ class Google_Service_YouTubeAnalytics_Errors extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_YouTubeAnalytics_ErrorProto
+   * @param Google_Service_YouTubeAnalytics_ErrorProto[]
    */
   public function setError($error)
   {
     $this->error = $error;
   }
   /**
-   * @return Google_Service_YouTubeAnalytics_ErrorProto
+   * @return Google_Service_YouTubeAnalytics_ErrorProto[]
    */
   public function getError()
   {

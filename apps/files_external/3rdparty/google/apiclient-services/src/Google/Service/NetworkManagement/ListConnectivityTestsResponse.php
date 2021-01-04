@@ -32,14 +32,14 @@ class Google_Service_NetworkManagement_ListConnectivityTestsResponse extends Goo
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_NetworkManagement_ConnectivityTest
+   * @param Google_Service_NetworkManagement_ConnectivityTest[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_NetworkManagement_ConnectivityTest
+   * @return Google_Service_NetworkManagement_ConnectivityTest[]
    */
   public function getResources()
   {

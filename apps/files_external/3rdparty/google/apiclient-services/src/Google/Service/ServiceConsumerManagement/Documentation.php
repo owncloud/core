@@ -44,28 +44,28 @@ class Google_Service_ServiceConsumerManagement_Documentation extends Google_Coll
     return $this->overview;
   }
   /**
-   * @param Google_Service_ServiceConsumerManagement_Page
+   * @param Google_Service_ServiceConsumerManagement_Page[]
    */
   public function setPages($pages)
   {
     $this->pages = $pages;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_Page
+   * @return Google_Service_ServiceConsumerManagement_Page[]
    */
   public function getPages()
   {
     return $this->pages;
   }
   /**
-   * @param Google_Service_ServiceConsumerManagement_DocumentationRule
+   * @param Google_Service_ServiceConsumerManagement_DocumentationRule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_DocumentationRule
+   * @return Google_Service_ServiceConsumerManagement_DocumentationRule[]
    */
   public function getRules()
   {

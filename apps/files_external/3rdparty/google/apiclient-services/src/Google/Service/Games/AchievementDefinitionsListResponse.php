@@ -24,14 +24,14 @@ class Google_Service_Games_AchievementDefinitionsListResponse extends Google_Col
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Games_AchievementDefinition
+   * @param Google_Service_Games_AchievementDefinition[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Games_AchievementDefinition
+   * @return Google_Service_Games_AchievementDefinition[]
    */
   public function getItems()
   {

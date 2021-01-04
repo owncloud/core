@@ -23,14 +23,14 @@ class Google_Service_CloudSearch_SearchItemsByViewUrlResponse extends Google_Col
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudSearch_Item
+   * @param Google_Service_CloudSearch_Item[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_CloudSearch_Item
+   * @return Google_Service_CloudSearch_Item[]
    */
   public function getItems()
   {

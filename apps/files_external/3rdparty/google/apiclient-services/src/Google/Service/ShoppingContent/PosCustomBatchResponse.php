@@ -23,14 +23,14 @@ class Google_Service_ShoppingContent_PosCustomBatchResponse extends Google_Colle
   public $kind;
 
   /**
-   * @param Google_Service_ShoppingContent_PosCustomBatchResponseEntry
+   * @param Google_Service_ShoppingContent_PosCustomBatchResponseEntry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_ShoppingContent_PosCustomBatchResponseEntry
+   * @return Google_Service_ShoppingContent_PosCustomBatchResponseEntry[]
    */
   public function getEntries()
   {

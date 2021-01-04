@@ -23,14 +23,14 @@ class Google_Service_Dataflow_WorkerDetails extends Google_Collection
   public $workerName;
 
   /**
-   * @param Google_Service_Dataflow_WorkItemDetails
+   * @param Google_Service_Dataflow_WorkItemDetails[]
    */
   public function setWorkItems($workItems)
   {
     $this->workItems = $workItems;
   }
   /**
-   * @return Google_Service_Dataflow_WorkItemDetails
+   * @return Google_Service_Dataflow_WorkItemDetails[]
    */
   public function getWorkItems()
   {

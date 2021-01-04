@@ -36,14 +36,14 @@ class Google_Service_Compute_OperationList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_Operation
+   * @param Google_Service_Compute_Operation[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_Operation
+   * @return Google_Service_Compute_Operation[]
    */
   public function getItems()
   {

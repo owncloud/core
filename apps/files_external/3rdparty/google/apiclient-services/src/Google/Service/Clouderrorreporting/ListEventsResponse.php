@@ -24,14 +24,14 @@ class Google_Service_Clouderrorreporting_ListEventsResponse extends Google_Colle
   public $timeRangeBegin;
 
   /**
-   * @param Google_Service_Clouderrorreporting_ErrorEvent
+   * @param Google_Service_Clouderrorreporting_ErrorEvent[]
    */
   public function setErrorEvents($errorEvents)
   {
     $this->errorEvents = $errorEvents;
   }
   /**
-   * @return Google_Service_Clouderrorreporting_ErrorEvent
+   * @return Google_Service_Clouderrorreporting_ErrorEvent[]
    */
   public function getErrorEvents()
   {

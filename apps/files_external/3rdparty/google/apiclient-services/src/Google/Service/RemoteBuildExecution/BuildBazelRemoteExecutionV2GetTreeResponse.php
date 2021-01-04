@@ -23,14 +23,14 @@ class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2GetTreeResp
   public $nextPageToken;
 
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Directory
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Directory[]
    */
   public function setDirectories($directories)
   {
     $this->directories = $directories;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Directory
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Directory[]
    */
   public function getDirectories()
   {

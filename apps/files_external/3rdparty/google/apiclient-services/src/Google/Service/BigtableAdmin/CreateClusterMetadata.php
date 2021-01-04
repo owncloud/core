@@ -55,14 +55,14 @@ class Google_Service_BigtableAdmin_CreateClusterMetadata extends Google_Model
     return $this->requestTime;
   }
   /**
-   * @param Google_Service_BigtableAdmin_TableProgress
+   * @param Google_Service_BigtableAdmin_TableProgress[]
    */
   public function setTables($tables)
   {
     $this->tables = $tables;
   }
   /**
-   * @return Google_Service_BigtableAdmin_TableProgress
+   * @return Google_Service_BigtableAdmin_TableProgress[]
    */
   public function getTables()
   {

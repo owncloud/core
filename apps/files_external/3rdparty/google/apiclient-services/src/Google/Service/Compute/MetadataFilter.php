@@ -23,14 +23,14 @@ class Google_Service_Compute_MetadataFilter extends Google_Collection
   public $filterMatchCriteria;
 
   /**
-   * @param Google_Service_Compute_MetadataFilterLabelMatch
+   * @param Google_Service_Compute_MetadataFilterLabelMatch[]
    */
   public function setFilterLabels($filterLabels)
   {
     $this->filterLabels = $filterLabels;
   }
   /**
-   * @return Google_Service_Compute_MetadataFilterLabelMatch
+   * @return Google_Service_Compute_MetadataFilterLabelMatch[]
    */
   public function getFilterLabels()
   {

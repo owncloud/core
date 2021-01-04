@@ -31,14 +31,14 @@ class Google_Service_Datastore_ReserveIdsRequest extends Google_Collection
     return $this->databaseId;
   }
   /**
-   * @param Google_Service_Datastore_Key
+   * @param Google_Service_Datastore_Key[]
    */
   public function setKeys($keys)
   {
     $this->keys = $keys;
   }
   /**
-   * @return Google_Service_Datastore_Key
+   * @return Google_Service_Datastore_Key[]
    */
   public function getKeys()
   {

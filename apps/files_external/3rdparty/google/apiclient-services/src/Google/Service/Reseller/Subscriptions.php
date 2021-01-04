@@ -40,14 +40,14 @@ class Google_Service_Reseller_Subscriptions extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Reseller_Subscription
+   * @param Google_Service_Reseller_Subscription[]
    */
   public function setSubscriptions($subscriptions)
   {
     $this->subscriptions = $subscriptions;
   }
   /**
-   * @return Google_Service_Reseller_Subscription
+   * @return Google_Service_Reseller_Subscription[]
    */
   public function getSubscriptions()
   {

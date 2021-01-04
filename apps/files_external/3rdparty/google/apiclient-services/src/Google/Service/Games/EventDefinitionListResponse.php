@@ -24,14 +24,14 @@ class Google_Service_Games_EventDefinitionListResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Games_EventDefinition
+   * @param Google_Service_Games_EventDefinition[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Games_EventDefinition
+   * @return Google_Service_Games_EventDefinition[]
    */
   public function getItems()
   {

@@ -31,14 +31,14 @@ class Google_Service_PubsubLite_ListPartitionCursorsResponse extends Google_Coll
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_PubsubLite_PartitionCursor
+   * @param Google_Service_PubsubLite_PartitionCursor[]
    */
   public function setPartitionCursors($partitionCursors)
   {
     $this->partitionCursors = $partitionCursors;
   }
   /**
-   * @return Google_Service_PubsubLite_PartitionCursor
+   * @return Google_Service_PubsubLite_PartitionCursor[]
    */
   public function getPartitionCursors()
   {

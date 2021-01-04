@@ -22,14 +22,14 @@ class Google_Service_Pubsub_PublishRequest extends Google_Collection
   protected $messagesDataType = 'array';
 
   /**
-   * @param Google_Service_Pubsub_PubsubMessage
+   * @param Google_Service_Pubsub_PubsubMessage[]
    */
   public function setMessages($messages)
   {
     $this->messages = $messages;
   }
   /**
-   * @return Google_Service_Pubsub_PubsubMessage
+   * @return Google_Service_Pubsub_PubsubMessage[]
    */
   public function getMessages()
   {

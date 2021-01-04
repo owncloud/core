@@ -121,14 +121,14 @@ class Google_Service_CloudTalentSolution_JobQuery extends Google_Collection
     return $this->languageCodes;
   }
   /**
-   * @param Google_Service_CloudTalentSolution_LocationFilter
+   * @param Google_Service_CloudTalentSolution_LocationFilter[]
    */
   public function setLocationFilters($locationFilters)
   {
     $this->locationFilters = $locationFilters;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_LocationFilter
+   * @return Google_Service_CloudTalentSolution_LocationFilter[]
    */
   public function getLocationFilters()
   {

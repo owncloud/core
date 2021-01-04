@@ -23,14 +23,14 @@ class Google_Service_AlertCenter_ListAlertsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_AlertCenter_Alert
+   * @param Google_Service_AlertCenter_Alert[]
    */
   public function setAlerts($alerts)
   {
     $this->alerts = $alerts;
   }
   /**
-   * @return Google_Service_AlertCenter_Alert
+   * @return Google_Service_AlertCenter_Alert[]
    */
   public function getAlerts()
   {

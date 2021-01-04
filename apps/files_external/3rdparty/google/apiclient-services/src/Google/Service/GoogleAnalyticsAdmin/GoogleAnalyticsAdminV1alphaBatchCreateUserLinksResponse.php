@@ -22,14 +22,14 @@ class Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaBatchCreate
   protected $userLinksDataType = 'array';
 
   /**
-   * @param Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaUserLink
+   * @param Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaUserLink[]
    */
   public function setUserLinks($userLinks)
   {
     $this->userLinks = $userLinks;
   }
   /**
-   * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaUserLink
+   * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaUserLink[]
    */
   public function getUserLinks()
   {

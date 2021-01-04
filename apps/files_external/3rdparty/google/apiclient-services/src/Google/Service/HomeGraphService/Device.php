@@ -95,14 +95,14 @@ class Google_Service_HomeGraphService_Device extends Google_Collection
     return $this->notificationSupportedByAgent;
   }
   /**
-   * @param Google_Service_HomeGraphService_AgentOtherDeviceId
+   * @param Google_Service_HomeGraphService_AgentOtherDeviceId[]
    */
   public function setOtherDeviceIds($otherDeviceIds)
   {
     $this->otherDeviceIds = $otherDeviceIds;
   }
   /**
-   * @return Google_Service_HomeGraphService_AgentOtherDeviceId
+   * @return Google_Service_HomeGraphService_AgentOtherDeviceId[]
    */
   public function getOtherDeviceIds()
   {

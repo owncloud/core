@@ -81,7 +81,6 @@ class Google_Service_ServiceDirectory_Resource_ProjectsLocationsNamespacesServic
    * endpoints we'd like to list.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Optional. The maximum number of items to return.
    * @opt_param string filter Optional. The filter to list result by. General
    * filter string syntax: () can be "name", "address", "port" or "metadata." for
    * map field. can be "<, >, <=, >=, !=, =, :". Of which ":" means HAS, and is
@@ -99,9 +98,10 @@ class Google_Service_ServiceDirectory_Resource_ProjectsLocationsNamespacesServic
    * is not "sd" AND have key/value foo=bar. * "doesnotexist.foo=bar" returns an
    * empty list. Note that Endpoint doesn't have a field called "doesnotexist".
    * Since the filter does not match any Endpoints, it returns no results.
+   * @opt_param string orderBy Optional. The order to list result by.
+   * @opt_param int pageSize Optional. The maximum number of items to return.
    * @opt_param string pageToken Optional. The next_page_token value returned from
    * a previous List request, if any.
-   * @opt_param string orderBy Optional. The order to list result by.
    * @return Google_Service_ServiceDirectory_ListEndpointsResponse
    */
   public function listProjectsLocationsNamespacesServicesEndpoints($parent, $optParams = array())

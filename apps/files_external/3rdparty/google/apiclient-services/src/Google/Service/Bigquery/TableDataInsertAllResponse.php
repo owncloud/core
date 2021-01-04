@@ -23,14 +23,14 @@ class Google_Service_Bigquery_TableDataInsertAllResponse extends Google_Collecti
   public $kind;
 
   /**
-   * @param Google_Service_Bigquery_TableDataInsertAllResponseInsertErrors
+   * @param Google_Service_Bigquery_TableDataInsertAllResponseInsertErrors[]
    */
   public function setInsertErrors($insertErrors)
   {
     $this->insertErrors = $insertErrors;
   }
   /**
-   * @return Google_Service_Bigquery_TableDataInsertAllResponseInsertErrors
+   * @return Google_Service_Bigquery_TableDataInsertAllResponseInsertErrors[]
    */
   public function getInsertErrors()
   {

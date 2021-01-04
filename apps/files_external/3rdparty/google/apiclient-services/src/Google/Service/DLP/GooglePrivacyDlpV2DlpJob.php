@@ -49,14 +49,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2DlpJob extends Google_Collection
     return $this->endTime;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2Error
+   * @param Google_Service_DLP_GooglePrivacyDlpV2Error[]
    */
   public function setErrors($errors)
   {
     $this->errors = $errors;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2Error
+   * @return Google_Service_DLP_GooglePrivacyDlpV2Error[]
    */
   public function getErrors()
   {

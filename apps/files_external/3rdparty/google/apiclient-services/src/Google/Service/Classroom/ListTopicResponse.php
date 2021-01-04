@@ -31,14 +31,14 @@ class Google_Service_Classroom_ListTopicResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Classroom_Topic
+   * @param Google_Service_Classroom_Topic[]
    */
   public function setTopic($topic)
   {
     $this->topic = $topic;
   }
   /**
-   * @return Google_Service_Classroom_Topic
+   * @return Google_Service_Classroom_Topic[]
    */
   public function getTopic()
   {

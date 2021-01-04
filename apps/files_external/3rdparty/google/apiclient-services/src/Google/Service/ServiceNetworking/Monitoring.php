@@ -24,28 +24,28 @@ class Google_Service_ServiceNetworking_Monitoring extends Google_Collection
   protected $producerDestinationsDataType = 'array';
 
   /**
-   * @param Google_Service_ServiceNetworking_MonitoringDestination
+   * @param Google_Service_ServiceNetworking_MonitoringDestination[]
    */
   public function setConsumerDestinations($consumerDestinations)
   {
     $this->consumerDestinations = $consumerDestinations;
   }
   /**
-   * @return Google_Service_ServiceNetworking_MonitoringDestination
+   * @return Google_Service_ServiceNetworking_MonitoringDestination[]
    */
   public function getConsumerDestinations()
   {
     return $this->consumerDestinations;
   }
   /**
-   * @param Google_Service_ServiceNetworking_MonitoringDestination
+   * @param Google_Service_ServiceNetworking_MonitoringDestination[]
    */
   public function setProducerDestinations($producerDestinations)
   {
     $this->producerDestinations = $producerDestinations;
   }
   /**
-   * @return Google_Service_ServiceNetworking_MonitoringDestination
+   * @return Google_Service_ServiceNetworking_MonitoringDestination[]
    */
   public function getProducerDestinations()
   {

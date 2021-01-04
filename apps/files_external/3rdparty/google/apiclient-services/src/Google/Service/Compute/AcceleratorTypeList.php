@@ -36,14 +36,14 @@ class Google_Service_Compute_AcceleratorTypeList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_AcceleratorType
+   * @param Google_Service_Compute_AcceleratorType[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_AcceleratorType
+   * @return Google_Service_Compute_AcceleratorType[]
    */
   public function getItems()
   {

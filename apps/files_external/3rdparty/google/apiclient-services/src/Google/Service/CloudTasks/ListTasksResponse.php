@@ -31,14 +31,14 @@ class Google_Service_CloudTasks_ListTasksResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_CloudTasks_Task
+   * @param Google_Service_CloudTasks_Task[]
    */
   public function setTasks($tasks)
   {
     $this->tasks = $tasks;
   }
   /**
-   * @return Google_Service_CloudTasks_Task
+   * @return Google_Service_CloudTasks_Task[]
    */
   public function getTasks()
   {

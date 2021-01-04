@@ -37,14 +37,14 @@ class Google_Service_Compute_VpnGatewayAggregatedList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_VpnGatewaysScopedList
+   * @param Google_Service_Compute_VpnGatewaysScopedList[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_VpnGatewaysScopedList
+   * @return Google_Service_Compute_VpnGatewaysScopedList[]
    */
   public function getItems()
   {

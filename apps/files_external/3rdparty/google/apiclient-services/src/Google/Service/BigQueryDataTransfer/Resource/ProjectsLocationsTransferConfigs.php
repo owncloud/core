@@ -36,16 +36,6 @@ class Google_Service_BigQueryDataTransfer_Resource_ProjectsLocationsTransferConf
    * @param Google_Service_BigQueryDataTransfer_TransferConfig $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string versionInfo Optional version info. If users want to find a
-   * very recent access token, that is, immediately after approving access, users
-   * have to set the version_info claim in the token request. To obtain the
-   * version_info, users must use the "none+gsession" response type. which be
-   * return a version_info back in the authorization response which be be put in a
-   * JWT claim in the token request.
-   * @opt_param string serviceAccountName Optional service account name. If this
-   * field is set, transfer config will be created with this service account
-   * credentials. It requires that requesting user calling this API has
-   * permissions to act as this service account.
    * @opt_param string authorizationCode Optional OAuth2 authorization code to use
    * with this transfer configuration. This is required if new credentials are
    * needed, as indicated by `CheckValidCreds`. In order to obtain
@@ -59,6 +49,16 @@ class Google_Service_BigQueryDataTransfer_Resource_ProjectsLocationsTransferConf
    * A special value of urn:ietf:wg:oauth:2.0:oob means that authorization code
    * should be returned in the title bar of the browser, with the page text
    * prompting the user to copy the code and paste it in the application.
+   * @opt_param string serviceAccountName Optional service account name. If this
+   * field is set, transfer config will be created with this service account
+   * credentials. It requires that requesting user calling this API has
+   * permissions to act as this service account.
+   * @opt_param string versionInfo Optional version info. If users want to find a
+   * very recent access token, that is, immediately after approving access, users
+   * have to set the version_info claim in the token request. To obtain the
+   * version_info, users must use the "none+gsession" response type. which be
+   * return a version_info back in the authorization response which be be put in a
+   * JWT claim in the token request.
    * @return Google_Service_BigQueryDataTransfer_TransferConfig
    */
   public function create($parent, Google_Service_BigQueryDataTransfer_TransferConfig $postBody, $optParams = array())
@@ -109,14 +109,14 @@ class Google_Service_BigQueryDataTransfer_Resource_ProjectsLocationsTransferConf
    * `projects/{project_id}/locations/{location_id}`
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string dataSourceIds When specified, only configurations of
+   * requested data sources are returned.
+   * @opt_param int pageSize Page size. The default page size is the maximum value
+   * of 1000 results.
    * @opt_param string pageToken Pagination token, which can be used to request a
    * specific page of `ListTransfersRequest` list results. For multiple-page
    * results, `ListTransfersResponse` outputs a `next_page` token, which can be
    * used as the `page_token` value to request the next page of list results.
-   * @opt_param int pageSize Page size. The default page size is the maximum value
-   * of 1000 results.
-   * @opt_param string dataSourceIds When specified, only configurations of
-   * requested data sources are returned.
    * @return Google_Service_BigQueryDataTransfer_ListTransferConfigsResponse
    */
   public function listProjectsLocationsTransferConfigs($parent, $optParams = array())
@@ -139,14 +139,6 @@ class Google_Service_BigQueryDataTransfer_Resource_ProjectsLocationsTransferConf
    * @param Google_Service_BigQueryDataTransfer_TransferConfig $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string versionInfo Optional version info. If users want to find a
-   * very recent access token, that is, immediately after approving access, users
-   * have to set the version_info claim in the token request. To obtain the
-   * version_info, users must use the "none+gsession" response type. which be
-   * return a version_info back in the authorization response which be be put in a
-   * JWT claim in the token request.
-   * @opt_param string updateMask Required. Required list of fields to be updated
-   * in this request.
    * @opt_param string authorizationCode Optional OAuth2 authorization code to use
    * with this transfer configuration. If it is provided, the transfer
    * configuration will be associated with the authorizing user. In order to
@@ -165,6 +157,14 @@ class Google_Service_BigQueryDataTransfer_Resource_ProjectsLocationsTransferConf
    * config will be updated to use this service account credentials. It requires
    * that requesting user calling this API has permissions to act as this service
    * account.
+   * @opt_param string updateMask Required. Required list of fields to be updated
+   * in this request.
+   * @opt_param string versionInfo Optional version info. If users want to find a
+   * very recent access token, that is, immediately after approving access, users
+   * have to set the version_info claim in the token request. To obtain the
+   * version_info, users must use the "none+gsession" response type. which be
+   * return a version_info back in the authorization response which be be put in a
+   * JWT claim in the token request.
    * @return Google_Service_BigQueryDataTransfer_TransferConfig
    */
   public function patch($name, Google_Service_BigQueryDataTransfer_TransferConfig $postBody, $optParams = array())

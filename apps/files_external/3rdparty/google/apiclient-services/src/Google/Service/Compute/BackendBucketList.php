@@ -36,14 +36,14 @@ class Google_Service_Compute_BackendBucketList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_BackendBucket
+   * @param Google_Service_Compute_BackendBucket[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_BackendBucket
+   * @return Google_Service_Compute_BackendBucket[]
    */
   public function getItems()
   {

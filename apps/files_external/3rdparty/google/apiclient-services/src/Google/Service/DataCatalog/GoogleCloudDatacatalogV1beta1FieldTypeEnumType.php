@@ -22,14 +22,14 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1FieldTypeEnumType 
   protected $allowedValuesDataType = 'array';
 
   /**
-   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1FieldTypeEnumTypeEnumValue
+   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1FieldTypeEnumTypeEnumValue[]
    */
   public function setAllowedValues($allowedValues)
   {
     $this->allowedValues = $allowedValues;
   }
   /**
-   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1FieldTypeEnumTypeEnumValue
+   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1FieldTypeEnumTypeEnumValue[]
    */
   public function getAllowedValues()
   {

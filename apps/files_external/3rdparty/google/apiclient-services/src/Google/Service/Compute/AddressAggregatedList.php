@@ -37,14 +37,14 @@ class Google_Service_Compute_AddressAggregatedList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_AddressesScopedList
+   * @param Google_Service_Compute_AddressesScopedList[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_AddressesScopedList
+   * @return Google_Service_Compute_AddressesScopedList[]
    */
   public function getItems()
   {

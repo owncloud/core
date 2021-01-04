@@ -23,14 +23,14 @@ class Google_Service_ShoppingContent_ReturnaddressCustomBatchResponse extends Go
   public $kind;
 
   /**
-   * @param Google_Service_ShoppingContent_ReturnaddressCustomBatchResponseEntry
+   * @param Google_Service_ShoppingContent_ReturnaddressCustomBatchResponseEntry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_ShoppingContent_ReturnaddressCustomBatchResponseEntry
+   * @return Google_Service_ShoppingContent_ReturnaddressCustomBatchResponseEntry[]
    */
   public function getEntries()
   {

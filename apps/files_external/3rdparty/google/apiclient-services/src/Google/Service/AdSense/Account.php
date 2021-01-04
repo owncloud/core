@@ -71,14 +71,14 @@ class Google_Service_AdSense_Account extends Google_Collection
     return $this->premium;
   }
   /**
-   * @param Google_Service_AdSense_Account
+   * @param Google_Service_AdSense_Account[]
    */
   public function setSubAccounts($subAccounts)
   {
     $this->subAccounts = $subAccounts;
   }
   /**
-   * @return Google_Service_AdSense_Account
+   * @return Google_Service_AdSense_Account[]
    */
   public function getSubAccounts()
   {

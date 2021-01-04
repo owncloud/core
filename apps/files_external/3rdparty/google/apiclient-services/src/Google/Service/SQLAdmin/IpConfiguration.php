@@ -25,14 +25,14 @@ class Google_Service_SQLAdmin_IpConfiguration extends Google_Collection
   public $requireSsl;
 
   /**
-   * @param Google_Service_SQLAdmin_AclEntry
+   * @param Google_Service_SQLAdmin_AclEntry[]
    */
   public function setAuthorizedNetworks($authorizedNetworks)
   {
     $this->authorizedNetworks = $authorizedNetworks;
   }
   /**
-   * @return Google_Service_SQLAdmin_AclEntry
+   * @return Google_Service_SQLAdmin_AclEntry[]
    */
   public function getAuthorizedNetworks()
   {

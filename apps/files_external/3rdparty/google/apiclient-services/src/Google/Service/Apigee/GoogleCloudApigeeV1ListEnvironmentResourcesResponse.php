@@ -22,14 +22,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ListEnvironmentResourcesResponse 
   protected $resourceFileDataType = 'array';
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1ResourceFile
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1ResourceFile[]
    */
   public function setResourceFile($resourceFile)
   {
     $this->resourceFile = $resourceFile;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1ResourceFile
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1ResourceFile[]
    */
   public function getResourceFile()
   {

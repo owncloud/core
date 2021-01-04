@@ -47,14 +47,14 @@ class Google_Service_ToolResults_MergedResult extends Google_Collection
     return $this->state;
   }
   /**
-   * @param Google_Service_ToolResults_TestSuiteOverview
+   * @param Google_Service_ToolResults_TestSuiteOverview[]
    */
   public function setTestSuiteOverviews($testSuiteOverviews)
   {
     $this->testSuiteOverviews = $testSuiteOverviews;
   }
   /**
-   * @return Google_Service_ToolResults_TestSuiteOverview
+   * @return Google_Service_ToolResults_TestSuiteOverview[]
    */
   public function getTestSuiteOverviews()
   {

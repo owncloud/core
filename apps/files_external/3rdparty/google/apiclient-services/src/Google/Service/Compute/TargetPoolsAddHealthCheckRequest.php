@@ -22,14 +22,14 @@ class Google_Service_Compute_TargetPoolsAddHealthCheckRequest extends Google_Col
   protected $healthChecksDataType = 'array';
 
   /**
-   * @param Google_Service_Compute_HealthCheckReference
+   * @param Google_Service_Compute_HealthCheckReference[]
    */
   public function setHealthChecks($healthChecks)
   {
     $this->healthChecks = $healthChecks;
   }
   /**
-   * @return Google_Service_Compute_HealthCheckReference
+   * @return Google_Service_Compute_HealthCheckReference[]
    */
   public function getHealthChecks()
   {

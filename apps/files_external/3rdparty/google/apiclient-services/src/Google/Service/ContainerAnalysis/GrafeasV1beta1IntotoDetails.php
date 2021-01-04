@@ -24,14 +24,14 @@ class Google_Service_ContainerAnalysis_GrafeasV1beta1IntotoDetails extends Googl
   protected $signedDataType = '';
 
   /**
-   * @param Google_Service_ContainerAnalysis_GrafeasV1beta1IntotoSignature
+   * @param Google_Service_ContainerAnalysis_GrafeasV1beta1IntotoSignature[]
    */
   public function setSignatures($signatures)
   {
     $this->signatures = $signatures;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_GrafeasV1beta1IntotoSignature
+   * @return Google_Service_ContainerAnalysis_GrafeasV1beta1IntotoSignature[]
    */
   public function getSignatures()
   {

@@ -49,14 +49,14 @@ class Google_Service_ServiceConsumerManagement_MetricDescriptor extends Google_C
     return $this->displayName;
   }
   /**
-   * @param Google_Service_ServiceConsumerManagement_LabelDescriptor
+   * @param Google_Service_ServiceConsumerManagement_LabelDescriptor[]
    */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_LabelDescriptor
+   * @return Google_Service_ServiceConsumerManagement_LabelDescriptor[]
    */
   public function getLabels()
   {

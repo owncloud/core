@@ -31,14 +31,14 @@ class Google_Service_ShoppingContent_ShippingsettingsGetSupportedPickupServicesR
     return $this->kind;
   }
   /**
-   * @param Google_Service_ShoppingContent_PickupServicesPickupService
+   * @param Google_Service_ShoppingContent_PickupServicesPickupService[]
    */
   public function setPickupServices($pickupServices)
   {
     $this->pickupServices = $pickupServices;
   }
   /**
-   * @return Google_Service_ShoppingContent_PickupServicesPickupService
+   * @return Google_Service_ShoppingContent_PickupServicesPickupService[]
    */
   public function getPickupServices()
   {

@@ -56,14 +56,14 @@ class Google_Service_Docs_DocsList extends Google_Collection
     return $this->suggestedInsertionId;
   }
   /**
-   * @param Google_Service_Docs_SuggestedListProperties
+   * @param Google_Service_Docs_SuggestedListProperties[]
    */
   public function setSuggestedListPropertiesChanges($suggestedListPropertiesChanges)
   {
     $this->suggestedListPropertiesChanges = $suggestedListPropertiesChanges;
   }
   /**
-   * @return Google_Service_Docs_SuggestedListProperties
+   * @return Google_Service_Docs_SuggestedListProperties[]
    */
   public function getSuggestedListPropertiesChanges()
   {

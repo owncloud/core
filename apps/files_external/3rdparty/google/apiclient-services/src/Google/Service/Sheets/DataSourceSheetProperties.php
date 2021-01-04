@@ -25,14 +25,14 @@ class Google_Service_Sheets_DataSourceSheetProperties extends Google_Collection
   public $dataSourceId;
 
   /**
-   * @param Google_Service_Sheets_DataSourceColumn
+   * @param Google_Service_Sheets_DataSourceColumn[]
    */
   public function setColumns($columns)
   {
     $this->columns = $columns;
   }
   /**
-   * @return Google_Service_Sheets_DataSourceColumn
+   * @return Google_Service_Sheets_DataSourceColumn[]
    */
   public function getColumns()
   {

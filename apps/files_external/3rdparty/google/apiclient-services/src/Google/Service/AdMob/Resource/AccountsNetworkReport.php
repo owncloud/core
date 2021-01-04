@@ -27,7 +27,8 @@ class Google_Service_AdMob_Resource_AccountsNetworkReport extends Google_Service
 {
   /**
    * Generates an AdMob Network report based on the provided report specification.
-   * (networkReport.generate)
+   * Returns result of a server-side streaming RPC. The result is returned in a
+   * sequence of responses. (networkReport.generate)
    *
    * @param string $parent Resource name of the account to generate the report
    * for. Example: accounts/pub-9876543210987654

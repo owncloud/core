@@ -70,14 +70,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2Location extends Google_Collection
     return $this->container;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2ContentLocation
+   * @param Google_Service_DLP_GooglePrivacyDlpV2ContentLocation[]
    */
   public function setContentLocations($contentLocations)
   {
     $this->contentLocations = $contentLocations;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2ContentLocation
+   * @return Google_Service_DLP_GooglePrivacyDlpV2ContentLocation[]
    */
   public function getContentLocations()
   {

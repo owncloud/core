@@ -27,14 +27,14 @@ class Google_Service_CloudRun_StatusDetails extends Google_Collection
   public $uid;
 
   /**
-   * @param Google_Service_CloudRun_StatusCause
+   * @param Google_Service_CloudRun_StatusCause[]
    */
   public function setCauses($causes)
   {
     $this->causes = $causes;
   }
   /**
-   * @return Google_Service_CloudRun_StatusCause
+   * @return Google_Service_CloudRun_StatusCause[]
    */
   public function getCauses()
   {

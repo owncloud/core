@@ -23,14 +23,14 @@ class Google_Service_AnalyticsReporting_DateRangeValues extends Google_Collectio
   public $values;
 
   /**
-   * @param Google_Service_AnalyticsReporting_PivotValueRegion
+   * @param Google_Service_AnalyticsReporting_PivotValueRegion[]
    */
   public function setPivotValueRegions($pivotValueRegions)
   {
     $this->pivotValueRegions = $pivotValueRegions;
   }
   /**
-   * @return Google_Service_AnalyticsReporting_PivotValueRegion
+   * @return Google_Service_AnalyticsReporting_PivotValueRegion[]
    */
   public function getPivotValueRegions()
   {

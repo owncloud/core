@@ -67,14 +67,14 @@ class Google_Service_Games_PlayerScoreResponse extends Google_Collection
     return $this->scoreTag;
   }
   /**
-   * @param Google_Service_Games_PlayerScore
+   * @param Google_Service_Games_PlayerScore[]
    */
   public function setUnbeatenScores($unbeatenScores)
   {
     $this->unbeatenScores = $unbeatenScores;
   }
   /**
-   * @return Google_Service_Games_PlayerScore
+   * @return Google_Service_Games_PlayerScore[]
    */
   public function getUnbeatenScores()
   {

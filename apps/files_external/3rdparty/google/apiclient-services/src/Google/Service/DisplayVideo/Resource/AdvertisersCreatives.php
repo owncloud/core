@@ -83,14 +83,6 @@ class Google_Service_DisplayVideo_Resource_AdvertisersCreatives extends Google_S
    * creatives for.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
-   * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
-   * if an invalid value is specified.
-   * @opt_param string orderBy Field by which to sort the list. Acceptable values
-   * are: * `creativeId` (default) * `createTime` * `mediaDuration` * `dimensions`
-   * (sorts by width first, then by height) The default sorting order is
-   * ascending. To specify descending order for a field, a suffix "desc" should be
-   * added to the field name. Example: `createTime desc`.
    * @opt_param string filter Allows filtering by creative properties. Supported
    * syntax: * Filter expressions are made up of one or more restrictions. *
    * Restriction for the same field must be combined by `OR`. * Restriction for
@@ -120,6 +112,14 @@ class Google_Service_DisplayVideo_Resource_AdvertisersCreatives extends Google_S
    * (lineItemIds:1 OR lineItemIds:2)` * Find creatives by multiple creative IDs:
    * `creativeId=1 OR creativeId=2` The length of this field should be no more
    * than 500 characters.
+   * @opt_param string orderBy Field by which to sort the list. Acceptable values
+   * are: * `creativeId` (default) * `createTime` * `mediaDuration` * `dimensions`
+   * (sorts by width first, then by height) The default sorting order is
+   * ascending. To specify descending order for a field, a suffix "desc" should be
+   * added to the field name. Example: `createTime desc`.
+   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
+   * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
+   * if an invalid value is specified.
    * @opt_param string pageToken A token identifying a page of results the server
    * should return. Typically, this is the value of next_page_token returned from
    * the previous call to `ListCreatives` method. If not specified, the first page

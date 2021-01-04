@@ -31,14 +31,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1OperationGroup extends Google_Col
     return $this->operationConfigType;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1OperationConfig
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1OperationConfig[]
    */
   public function setOperationConfigs($operationConfigs)
   {
     $this->operationConfigs = $operationConfigs;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1OperationConfig
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1OperationConfig[]
    */
   public function getOperationConfigs()
   {

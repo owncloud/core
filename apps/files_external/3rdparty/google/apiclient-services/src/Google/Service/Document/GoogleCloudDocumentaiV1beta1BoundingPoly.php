@@ -24,28 +24,28 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta1BoundingPoly extends G
   protected $verticesDataType = 'array';
 
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta1NormalizedVertex
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta1NormalizedVertex[]
    */
   public function setNormalizedVertices($normalizedVertices)
   {
     $this->normalizedVertices = $normalizedVertices;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta1NormalizedVertex
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta1NormalizedVertex[]
    */
   public function getNormalizedVertices()
   {
     return $this->normalizedVertices;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta1Vertex
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta1Vertex[]
    */
   public function setVertices($vertices)
   {
     $this->vertices = $vertices;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta1Vertex
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta1Vertex[]
    */
   public function getVertices()
   {

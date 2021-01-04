@@ -33,11 +33,11 @@ class Google_Service_AdSense_Resource_AccountsReportsSaved extends Google_Servic
    * @param string $savedReportId The saved report to retrieve.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int startIndex Index of the first row of report data to return.
    * @opt_param string locale Optional locale to use for translating report output
    * to a local language. Defaults to "en_US" if not specified.
    * @opt_param int maxResults The maximum number of rows of report data to
    * return.
+   * @opt_param int startIndex Index of the first row of report data to return.
    * @return Google_Service_AdSense_AdsenseReportsGenerateResponse
    */
   public function generate($accountId, $savedReportId, $optParams = array())

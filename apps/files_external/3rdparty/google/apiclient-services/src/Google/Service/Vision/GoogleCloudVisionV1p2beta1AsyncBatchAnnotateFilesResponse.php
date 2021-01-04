@@ -22,14 +22,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p2beta1AsyncBatchAnnotateFilesRes
   protected $responsesDataType = 'array';
 
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p2beta1AsyncAnnotateFileResponse
+   * @param Google_Service_Vision_GoogleCloudVisionV1p2beta1AsyncAnnotateFileResponse[]
    */
   public function setResponses($responses)
   {
     $this->responses = $responses;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p2beta1AsyncAnnotateFileResponse
+   * @return Google_Service_Vision_GoogleCloudVisionV1p2beta1AsyncAnnotateFileResponse[]
    */
   public function getResponses()
   {

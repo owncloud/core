@@ -17,25 +17,41 @@
 
 class Google_Service_Apigee_GoogleCloudApigeeV1Stats extends Google_Collection
 {
-  protected $collection_key = 'environments';
+  protected $collection_key = 'hosts';
   protected $environmentsType = 'Google_Service_Apigee_GoogleCloudApigeeV1StatsEnvironmentStats';
   protected $environmentsDataType = 'array';
+  protected $hostsType = 'Google_Service_Apigee_GoogleCloudApigeeV1StatsHostStats';
+  protected $hostsDataType = 'array';
   protected $metaDataType = 'Google_Service_Apigee_GoogleCloudApigeeV1Metadata';
   protected $metaDataDataType = '';
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1StatsEnvironmentStats
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1StatsEnvironmentStats[]
    */
   public function setEnvironments($environments)
   {
     $this->environments = $environments;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1StatsEnvironmentStats
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1StatsEnvironmentStats[]
    */
   public function getEnvironments()
   {
     return $this->environments;
+  }
+  /**
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1StatsHostStats[]
+   */
+  public function setHosts($hosts)
+  {
+    $this->hosts = $hosts;
+  }
+  /**
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1StatsHostStats[]
+   */
+  public function getHosts()
+  {
+    return $this->hosts;
   }
   /**
    * @param Google_Service_Apigee_GoogleCloudApigeeV1Metadata

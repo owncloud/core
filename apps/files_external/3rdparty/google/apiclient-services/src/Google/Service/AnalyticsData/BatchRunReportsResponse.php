@@ -22,14 +22,14 @@ class Google_Service_AnalyticsData_BatchRunReportsResponse extends Google_Collec
   protected $reportsDataType = 'array';
 
   /**
-   * @param Google_Service_AnalyticsData_RunReportResponse
+   * @param Google_Service_AnalyticsData_RunReportResponse[]
    */
   public function setReports($reports)
   {
     $this->reports = $reports;
   }
   /**
-   * @return Google_Service_AnalyticsData_RunReportResponse
+   * @return Google_Service_AnalyticsData_RunReportResponse[]
    */
   public function getReports()
   {
