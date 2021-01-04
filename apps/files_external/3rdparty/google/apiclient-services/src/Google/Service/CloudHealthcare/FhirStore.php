@@ -18,6 +18,7 @@
 class Google_Service_CloudHealthcare_FhirStore extends Google_Collection
 {
   protected $collection_key = 'streamConfigs';
+  public $defaultSearchHandlingStrict;
   public $disableReferentialIntegrity;
   public $disableResourceVersioning;
   public $enableUpdateCreate;
@@ -29,6 +30,14 @@ class Google_Service_CloudHealthcare_FhirStore extends Google_Collection
   protected $streamConfigsDataType = 'array';
   public $version;
 
+  public function setDefaultSearchHandlingStrict($defaultSearchHandlingStrict)
+  {
+    $this->defaultSearchHandlingStrict = $defaultSearchHandlingStrict;
+  }
+  public function getDefaultSearchHandlingStrict()
+  {
+    return $this->defaultSearchHandlingStrict;
+  }
   public function setDisableReferentialIntegrity($disableReferentialIntegrity)
   {
     $this->disableReferentialIntegrity = $disableReferentialIntegrity;

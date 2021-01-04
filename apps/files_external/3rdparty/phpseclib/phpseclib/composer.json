@@ -57,7 +57,11 @@
     },
     "require-dev": {
         "phing/phing": "~2.7",
+<<<<<<< HEAD
         "phpunit/phpunit": "^5.7|^6.0|^9.4",
+=======
+        "phpunit/phpunit": "^4.8.35|^5.7|^6.0|^9.4",
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
         "squizlabs/php_codesniffer": "~2.0"
     },
     "suggest": {

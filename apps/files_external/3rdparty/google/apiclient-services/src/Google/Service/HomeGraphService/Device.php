@@ -25,8 +25,6 @@ class Google_Service_HomeGraphService_Device extends Google_Collection
   public $id;
   protected $nameType = 'Google_Service_HomeGraphService_DeviceNames';
   protected $nameDataType = '';
-  protected $nonLocalTraitsType = 'Google_Service_HomeGraphService_NonLocalTrait';
-  protected $nonLocalTraitsDataType = 'array';
   public $notificationSupportedByAgent;
   protected $otherDeviceIdsType = 'Google_Service_HomeGraphService_AgentOtherDeviceId';
   protected $otherDeviceIdsDataType = 'array';
@@ -87,20 +85,6 @@ class Google_Service_HomeGraphService_Device extends Google_Collection
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param Google_Service_HomeGraphService_NonLocalTrait[]
-   */
-  public function setNonLocalTraits($nonLocalTraits)
-  {
-    $this->nonLocalTraits = $nonLocalTraits;
-  }
-  /**
-   * @return Google_Service_HomeGraphService_NonLocalTrait[]
-   */
-  public function getNonLocalTraits()
-  {
-    return $this->nonLocalTraits;
   }
   public function setNotificationSupportedByAgent($notificationSupportedByAgent)
   {

@@ -732,6 +732,14 @@ class SSH2
     private $keepAlive;
 
     /**
+     * Keep Alive Interval
+     *
+     * @see self::setKeepAlive()
+     * @access private
+     */
+    var $keepAlive;
+
+    /**
      * Real-time log file pointer
      *
      * @see self::_append_log()
@@ -1581,6 +1589,32 @@ class SSH2
                 $kexHash = new Hash('sha1');
         }
 
+        $server_host_key_algorithm = $this->_array_intersect_first($server_host_key_algorithms, $this->server_host_key_algorithms);
+        if ($server_host_key_algorithm === false) {
+            user_error('No compatible server host key algorithms found');
+            return $this->_disconnect(NET_SSH2_DISCONNECT_KEY_EXCHANGE_FAILED);
+        }
+
+        $mac_algorithm_in = $this->_array_intersect_first($s2c_mac_algorithms, $this->mac_algorithms_server_to_client);
+        if ($mac_algorithm_in === false) {
+            user_error('No compatible server to client message authentication algorithms found');
+            return $this->_disconnect(NET_SSH2_DISCONNECT_KEY_EXCHANGE_FAILED);
+        }
+
+        $compression_algorithm_out = $this->_array_intersect_first($c2s_compression_algorithms, $this->compression_algorithms_client_to_server);
+        if ($compression_algorithm_out === false) {
+            user_error('No compatible client to server compression algorithms found');
+            return $this->_disconnect(NET_SSH2_DISCONNECT_KEY_EXCHANGE_FAILED);
+        }
+        //$this->decompress = $compression_algorithm_out == 'zlib';
+
+        $compression_algorithm_in = $this->_array_intersect_first($s2c_compression_algorithms, $this->compression_algorithms_client_to_server);
+        if ($compression_algorithm_in === false) {
+            user_error('No compatible server to client compression algorithms found');
+            return $this->_disconnect(NET_SSH2_DISCONNECT_KEY_EXCHANGE_FAILED);
+        }
+        //$this->compress = $compression_algorithm_in == 'zlib';
+
         // Only relevant in diffie-hellman-group-exchange-sha{1,256}, otherwise empty.
 
         $exchange_hash_rfc4419 = '';
@@ -1861,6 +1895,7 @@ class SSH2
             $this->decrypt->decrypt(str_repeat("\0", 1536));
         }
 
+<<<<<<< HEAD
         if (!$this->encrypt->usesNonce()) {
             list($this->hmac_create, $createKeyLength) = self::mac_algorithm_to_hash_instance($mac_algorithm_out);
         } else {
@@ -1868,6 +1903,71 @@ class SSH2
             $this->hmac_create->name = $mac_algorithm_out;
             //$mac_algorithm_out = 'none';
             $createKeyLength = 0;
+=======
+        $mac_algorithm_out = $this->_array_intersect_first($c2s_mac_algorithms, $this->mac_algorithms_client_to_server);
+        if ($mac_algorithm_out === false) {
+            user_error('No compatible client to server message authentication algorithms found');
+            return $this->_disconnect(NET_SSH2_DISCONNECT_KEY_EXCHANGE_FAILED);
+        }
+
+        $createKeyLength = 0; // ie. $mac_algorithm == 'none'
+        switch ($mac_algorithm_out) {
+            case 'hmac-sha2-256':
+                $this->hmac_create = new Hash('sha256');
+                $createKeyLength = 32;
+                break;
+            case 'hmac-sha1':
+                $this->hmac_create = new Hash('sha1');
+                $createKeyLength = 20;
+                break;
+            case 'hmac-sha1-96':
+                $this->hmac_create = new Hash('sha1-96');
+                $createKeyLength = 20;
+                break;
+            case 'hmac-md5':
+                $this->hmac_create = new Hash('md5');
+                $createKeyLength = 16;
+                break;
+            case 'hmac-md5-96':
+                $this->hmac_create = new Hash('md5-96');
+                $createKeyLength = 16;
+        }
+        $this->hmac_create->name = $mac_algorithm_out;
+
+        $checkKeyLength = 0;
+        $this->hmac_size = 0;
+        switch ($mac_algorithm_in) {
+            case 'hmac-sha2-256':
+                $this->hmac_check = new Hash('sha256');
+                $checkKeyLength = 32;
+                $this->hmac_size = 32;
+                break;
+            case 'hmac-sha1':
+                $this->hmac_check = new Hash('sha1');
+                $checkKeyLength = 20;
+                $this->hmac_size = 20;
+                break;
+            case 'hmac-sha1-96':
+                $this->hmac_check = new Hash('sha1-96');
+                $checkKeyLength = 20;
+                $this->hmac_size = 12;
+                break;
+            case 'hmac-md5':
+                $this->hmac_check = new Hash('md5');
+                $checkKeyLength = 16;
+                $this->hmac_size = 16;
+                break;
+            case 'hmac-md5-96':
+                $this->hmac_check = new Hash('md5-96');
+                $checkKeyLength = 16;
+                $this->hmac_size = 12;
+        }
+        $this->hmac_check->name = $mac_algorithm_in;
+
+        $key = $kexHash->hash($keyBytes . $this->exchange_hash . 'E' . $this->session_id);
+        while ($createKeyLength > strlen($key)) {
+            $key.= $kexHash->hash($keyBytes . $this->exchange_hash . $key);
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
         }
 
         if ($this->hmac_create instanceof Hash) {
@@ -1880,6 +1980,7 @@ class SSH2
             $this->hmac_create->etm = preg_match('#-etm@openssh\.com$#', $mac_algorithm_out);
         }
 
+<<<<<<< HEAD
         if (!$this->decrypt->usesNonce()) {
             list($this->hmac_check, $checkKeyLength) = self::mac_algorithm_to_hash_instance($mac_algorithm_in);
             $this->hmac_size = $this->hmac_check->getLengthInBytes();
@@ -1901,6 +2002,8 @@ class SSH2
             $this->hmac_check->etm = preg_match('#-etm@openssh\.com$#', $mac_algorithm_in);
         }
 
+=======
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
         return true;
     }
 
@@ -2062,7 +2165,10 @@ class SSH2
      * The $password parameter can be a plaintext password, a \phpseclib3\Crypt\RSA|EC|DSA object, a \phpseclib3\System\SSH\Agent object or an array
      *
      * @param string $username
+<<<<<<< HEAD
      * @param string|AsymmetricKey|array[]|Agent|null ...$args
+=======
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      * @return bool
      * @see self::_login()
      * @access public
@@ -2088,7 +2194,10 @@ class SSH2
      * Login Helper
      *
      * @param string $username
+<<<<<<< HEAD
      * @param string[] ...$args
+=======
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      * @return bool
      * @see self::_login_helper()
      * @access private
@@ -2300,7 +2409,10 @@ class SSH2
     /**
      * Handle the keyboard-interactive requests / responses.
      *
+<<<<<<< HEAD
      * @param mixed[] ...$responses
+=======
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      * @return bool
      * @throws \RuntimeException on connection error
      * @access private
@@ -2424,7 +2536,11 @@ class SSH2
      *           by sending dummy SSH_MSG_IGNORE messages.}
      *
      * @param string $username
+<<<<<<< HEAD
      * @param \phpseclib3\Crypt\Common\PrivateKey $privatekey
+=======
+     * @param \phpseclib\Crypt\RSA $privatekey
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      * @return bool
      * @throws \RuntimeException on connection error
      * @access private
@@ -2576,7 +2692,11 @@ class SSH2
      *
      * Sends an SSH2_MSG_IGNORE message every x seconds, if x is a positive non-zero number.
      *
+<<<<<<< HEAD
      * @param int $interval
+=======
+     * @param mixed $timeout
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      * @access public
      */
     function setKeepAlive($interval)
@@ -3190,16 +3310,26 @@ class SSH2
     private function get_binary_packet($skip_channel_filter = false)
     {
         if ($skip_channel_filter) {
+<<<<<<< HEAD
             $read = [$this->fsock];
+=======
+            $read = array($this->fsock);
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
             $write = $except = null;
 
             if ($this->curTimeout <= 0) {
                 if ($this->keepAlive <= 0) {
                     @stream_select($read, $write, $except, null);
                 } else {
+<<<<<<< HEAD
                     if (!@stream_select($read, $write, $except, $this->keepAlive)) {
                         $this->send_binary_packet(pack('CN', NET_SSH2_MSG_IGNORE, 0));
                         return $this->get_binary_packet(true);
+=======
+                    if (!@stream_select($read, $write, $except, $this->keepAlive) && !count($read)) {
+                        $this->_send_binary_packet(pack('CN', NET_SSH2_MSG_IGNORE, 0));
+                        return $this->_get_binary_packet(true);
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
                     }
                 }
             } else {
@@ -3208,17 +3338,29 @@ class SSH2
                     return true;
                 }
 
+<<<<<<< HEAD
                 $read = [$this->fsock];
+=======
+                $read = array($this->fsock);
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
                 $write = $except = null;
 
                 $start = microtime(true);
 
                 if ($this->keepAlive > 0 && $this->keepAlive < $this->curTimeout) {
+<<<<<<< HEAD
                     if (!@stream_select($read, $write, $except, $this->keepAlive)) {
                         $this->send_binary_packet(pack('CN', NET_SSH2_MSG_IGNORE, 0));
                         $elapsed = microtime(true) - $start;
                         $this->curTimeout-= $elapsed;
                         return $this->get_binary_packet(true);
+=======
+                    if (!@stream_select($read, $write, $except, $this->keepAlive) && !count($read)) {
+                        $this->_send_binary_packet(pack('CN', NET_SSH2_MSG_IGNORE, 0));
+                        $elapsed = microtime(true) - $start;
+                        $this->curTimeout-= $elapsed;
+                        return $this->_get_binary_packet(true);
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
                     }
                     $elapsed = microtime(true) - $start;
                     $this->curTimeout-= $elapsed;
@@ -3227,8 +3369,13 @@ class SSH2
                 $sec = floor($this->curTimeout);
                 $usec = 1000000 * ($this->curTimeout - $sec);
 
+<<<<<<< HEAD
                 // this can return a "stream_select(): unable to select [4]: Interrupted system call" error
                 if (!@stream_select($read, $write, $except, $sec, $usec)) {
+=======
+                // on windows this returns a "Warning: Invalid CRT parameters detected" error
+                if (!@stream_select($read, $write, $except, $sec, $usec) && !count($read)) {
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
                     $this->is_timeout = true;
                     return true;
                 }
@@ -3498,9 +3645,15 @@ class SSH2
                         extract(unpack('cpacket_type/Nchannel/Nlength', $payload));
                         if (substr($payload, 9, $length) == 'keepalive@openssh.com' && isset($this->server_channels[$channel])) {
                             if (ord(substr($payload, 9 + $length))) { // want reply
+<<<<<<< HEAD
                                 $this->send_binary_packet(pack('CN', NET_SSH2_MSG_CHANNEL_SUCCESS, $this->server_channels[$channel]));
                             }
                             $payload = $this->get_binary_packet($skip_channel_filter);
+=======
+                                $this->_send_binary_packet(pack('CN', NET_SSH2_MSG_CHANNEL_SUCCESS, $this->server_channels[$channel]));
+                            }
+                            $payload = $this->_get_binary_packet($skip_channel_filter);
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
                         }
                     }
                     break;
@@ -3674,8 +3827,12 @@ class SSH2
      *
      * @param int $client_channel
      * @param bool $skip_extended
+<<<<<<< HEAD
      * @return mixed
      * @throws \RuntimeException on connection error
+=======
+     * @return mixed|bool
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      * @access private
      */
     protected function get_channel_packet($client_channel, $skip_extended = false)
@@ -3689,10 +3846,17 @@ class SSH2
                 $response = $this->binary_packet_buffer;
                 $this->binary_packet_buffer = false;
             } else {
+<<<<<<< HEAD
                 $response = $this->get_binary_packet(true);
                 if ($response === true && $this->is_timeout) {
                     if ($client_channel == self::CHANNEL_EXEC && !$this->request_pty) {
                         $this->close_channel($client_channel);
+=======
+                $response = $this->_get_binary_packet(true);
+                if ($response === true && $this->is_timeout) {
+                    if ($client_channel == self::CHANNEL_EXEC && !$this->request_pty) {
+                        $this->_close_channel($client_channel);
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
                     }
                     return true;
                 }
@@ -4207,8 +4371,12 @@ class SSH2
      * named constants from it, using the value as the name of the constant and the index as the value of the constant.
      * If any of the constants that would be defined already exists, none of the constants will be defined.
      *
+<<<<<<< HEAD
      * @param mixed[] ...$args
      * @access protected
+=======
+     * @access private
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      */
     protected function define_array(...$args)
     {

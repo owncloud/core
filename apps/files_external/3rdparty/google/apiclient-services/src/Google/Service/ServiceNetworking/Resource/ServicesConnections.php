@@ -48,6 +48,26 @@ class Google_Service_ServiceNetworking_Resource_ServicesConnections extends Goog
     return $this->call('create', array($params), "Google_Service_ServiceNetworking_Operation");
   }
   /**
+   * Deletes a private service access connection. (connections.deleteConnection)
+   *
+   * @param string $name Required. The private service connection that connects to
+   * a service producer organization. The name includes both the private service
+   * name and the VPC network peering name in the format of
+   * `services/{peering_service_name}/connections/{vpc_peering_name}`. For Google
+   * services that support this functionality, this is
+   * `services/servicenetworking.googleapis.com/connections/servicenetworking-
+   * googleapis-com`.
+   * @param Google_Service_ServiceNetworking_DeleteConnectionRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_ServiceNetworking_Operation
+   */
+  public function deleteConnection($name, Google_Service_ServiceNetworking_DeleteConnectionRequest $postBody, $optParams = array())
+  {
+    $params = array('name' => $name, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('deleteConnection', array($params), "Google_Service_ServiceNetworking_Operation");
+  }
+  /**
    * List the private connections that are configured in a service consumer's VPC
    * network. (connections.listServicesConnections)
    *

@@ -27,6 +27,7 @@ class Google_Service_DataFusion_Instance extends Google_Collection
   public $dataprocServiceAccount;
   public $description;
   public $displayName;
+  public $enableRbac;
   public $enableStackdriverLogging;
   public $enableStackdriverMonitoring;
   public $gcsBucket;
@@ -114,6 +115,14 @@ class Google_Service_DataFusion_Instance extends Google_Collection
   public function getDisplayName()
   {
     return $this->displayName;
+  }
+  public function setEnableRbac($enableRbac)
+  {
+    $this->enableRbac = $enableRbac;
+  }
+  public function getEnableRbac()
+  {
+    return $this->enableRbac;
   }
   public function setEnableStackdriverLogging($enableStackdriverLogging)
   {

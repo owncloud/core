@@ -431,8 +431,11 @@ class SFTP extends SSH2
      * Login
      *
      * @param string $username
+<<<<<<< HEAD
      * @param string|AsymmetricKey|array[]|Agent|null ...$args
      * @throws \UnexpectedValueException on receipt of unexpected packets
+=======
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      * @return bool
      * @access public
      */
@@ -2658,7 +2661,11 @@ class SFTP extends SSH2
      *
      * @param string $path
      * @param string $prop
+<<<<<<< HEAD
      * @param string $type
+=======
+     * @param mixed $type
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      * @return mixed
      * @access private
      */

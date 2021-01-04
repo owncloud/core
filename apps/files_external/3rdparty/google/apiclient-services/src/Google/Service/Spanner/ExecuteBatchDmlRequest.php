@@ -18,12 +18,28 @@
 class Google_Service_Spanner_ExecuteBatchDmlRequest extends Google_Collection
 {
   protected $collection_key = 'statements';
+  protected $requestOptionsType = 'Google_Service_Spanner_RequestOptions';
+  protected $requestOptionsDataType = '';
   public $seqno;
   protected $statementsType = 'Google_Service_Spanner_Statement';
   protected $statementsDataType = 'array';
   protected $transactionType = 'Google_Service_Spanner_TransactionSelector';
   protected $transactionDataType = '';
 
+  /**
+   * @param Google_Service_Spanner_RequestOptions
+   */
+  public function setRequestOptions(Google_Service_Spanner_RequestOptions $requestOptions)
+  {
+    $this->requestOptions = $requestOptions;
+  }
+  /**
+   * @return Google_Service_Spanner_RequestOptions
+   */
+  public function getRequestOptions()
+  {
+    return $this->requestOptions;
+  }
   public function setSeqno($seqno)
   {
     $this->seqno = $seqno;

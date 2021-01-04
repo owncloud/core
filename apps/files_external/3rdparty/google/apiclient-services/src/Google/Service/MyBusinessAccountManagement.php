@@ -36,6 +36,7 @@ class Google_Service_MyBusinessAccountManagement extends Google_Service
   public $accounts;
   public $accounts_admins;
   public $accounts_invitations;
+  public $locations;
   public $locations_admins;
 
   /**
@@ -209,6 +210,26 @@ class Google_Service_MyBusinessAccountManagement extends Google_Service
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->locations = new Google_Service_MyBusinessAccountManagement_Resource_Locations(
+        $this,
+        $this->serviceName,
+        'locations',
+        array(
+          'methods' => array(
+            'transferLocation' => array(
+              'path' => 'v1/locations/{locationsId}:transferLocation',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'locationsId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ),
               ),
             ),

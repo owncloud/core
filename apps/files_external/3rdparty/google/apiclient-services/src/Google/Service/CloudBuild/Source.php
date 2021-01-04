@@ -21,6 +21,8 @@ class Google_Service_CloudBuild_Source extends Google_Model
   protected $repoSourceDataType = '';
   protected $storageSourceType = 'Google_Service_CloudBuild_StorageSource';
   protected $storageSourceDataType = '';
+  protected $storageSourceManifestType = 'Google_Service_CloudBuild_StorageSourceManifest';
+  protected $storageSourceManifestDataType = '';
 
   /**
    * @param Google_Service_CloudBuild_RepoSource
@@ -49,5 +51,19 @@ class Google_Service_CloudBuild_Source extends Google_Model
   public function getStorageSource()
   {
     return $this->storageSource;
+  }
+  /**
+   * @param Google_Service_CloudBuild_StorageSourceManifest
+   */
+  public function setStorageSourceManifest(Google_Service_CloudBuild_StorageSourceManifest $storageSourceManifest)
+  {
+    $this->storageSourceManifest = $storageSourceManifest;
+  }
+  /**
+   * @return Google_Service_CloudBuild_StorageSourceManifest
+   */
+  public function getStorageSourceManifest()
+  {
+    return $this->storageSourceManifest;
   }
 }

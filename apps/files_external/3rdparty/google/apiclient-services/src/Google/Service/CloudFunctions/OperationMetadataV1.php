@@ -18,6 +18,7 @@
 class Google_Service_CloudFunctions_OperationMetadataV1 extends Google_Model
 {
   public $buildId;
+  public $buildName;
   public $request;
   public $sourceToken;
   public $target;
@@ -32,6 +33,14 @@ class Google_Service_CloudFunctions_OperationMetadataV1 extends Google_Model
   public function getBuildId()
   {
     return $this->buildId;
+  }
+  public function setBuildName($buildName)
+  {
+    $this->buildName = $buildName;
+  }
+  public function getBuildName()
+  {
+    return $this->buildName;
   }
   public function setRequest($request)
   {

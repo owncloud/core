@@ -3106,10 +3106,55 @@ abstract class SymmetricKey
                 break;
         }
 
+<<<<<<< HEAD:apps/files_external/3rdparty/phpseclib/phpseclib/phpseclib/Crypt/Common/SymmetricKey.php
         // Before discrediting this, please read the following:
         // @see https://github.com/phpseclib/phpseclib/issues/1293
         // @see https://github.com/phpseclib/phpseclib/pull/1143
         eval('$func = function ($_action, $_text) { ' . $init_crypt . 'if ($_action == "encrypt") { ' . $encrypt . ' } else { ' . $decrypt . ' }};');
+=======
+        // Create the $inline function and return its name as string. Ready to run!
+        eval('$func = function ($_action, &$self, $_text) { ' . $init_crypt . 'if ($_action == "encrypt") { ' . $encrypt . ' } else { ' . $decrypt . ' } };');
+        return $func;
+    }
+
+    /**
+     * Holds the lambda_functions table (classwide)
+     *
+     * Each name of the lambda function, created from
+     * _setupInlineCrypt() && _createInlineCryptFunction()
+     * is stored, classwide (!), here for reusing.
+     *
+     * The string-based index of $function is a classwide
+     * unique value representing, at least, the $mode of
+     * operation (or more... depends of the optimizing level)
+     * for which $mode the lambda function was created.
+     *
+     * @access private
+     * @return array &$functions
+     */
+    function &_getLambdaFunctions()
+    {
+        static $functions = array();
+        return $functions;
+    }
+
+    /**
+     * Generates a digest from $bytes
+     *
+     * @see self::_setupInlineCrypt()
+     * @access private
+     * @param string $bytes
+     * @return string
+     */
+    function _hashInlineCryptFunction($bytes)
+    {
+        if (!isset(self::$WHIRLPOOL_AVAILABLE)) {
+            self::$WHIRLPOOL_AVAILABLE = extension_loaded('hash') && in_array('whirlpool', hash_algos());
+        }
+
+        $result = '';
+        $hash = $bytes;
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty:apps/files_external/3rdparty/phpseclib/phpseclib/phpseclib/Crypt/Base.php
 
         return \Closure::bind($func, $this, static::class);
     }

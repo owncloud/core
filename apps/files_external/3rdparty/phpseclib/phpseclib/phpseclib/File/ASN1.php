@@ -853,8 +853,13 @@ abstract class ASN1
      *
      * "Special" mappings can be applied via $special.
      *
+<<<<<<< HEAD
      * @param Element|string|array $source
      * @param array $mapping
+=======
+     * @param string $source
+     * @param string $mapping
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      * @param array $special
      * @return string
      * @access public
@@ -1209,7 +1214,11 @@ abstract class ASN1
      *
      * Called by _encode_der()
      *
+<<<<<<< HEAD
      * @access public
+=======
+     * @access private
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      * @param string $source
      * @return string
      */

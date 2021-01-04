@@ -36,9 +36,6 @@ class Google_Service_Bigquery extends Google_Service
   /** Insert data into Google BigQuery. */
   const BIGQUERY_INSERTDATA =
       "https://www.googleapis.com/auth/bigquery.insertdata";
-  /** View your data in Google BigQuery. */
-  const BIGQUERY_READONLY =
-      "https://www.googleapis.com/auth/bigquery.readonly";
   /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
@@ -198,6 +195,25 @@ class Google_Service_Bigquery extends Google_Service
             'cancel' => array(
               'path' => 'projects/{projectId}/jobs/{jobId}/cancel',
               'httpMethod' => 'POST',
+              'parameters' => array(
+                'projectId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'jobId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'location' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),'delete' => array(
+              'path' => 'projects/{+projectId}/jobs/{+jobId}/delete',
+              'httpMethod' => 'DELETE',
               'parameters' => array(
                 'projectId' => array(
                   'location' => 'path',

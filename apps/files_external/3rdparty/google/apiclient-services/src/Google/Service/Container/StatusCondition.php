@@ -17,9 +17,18 @@
 
 class Google_Service_Container_StatusCondition extends Google_Model
 {
+  public $canonicalCode;
   public $code;
   public $message;
 
+  public function setCanonicalCode($canonicalCode)
+  {
+    $this->canonicalCode = $canonicalCode;
+  }
+  public function getCanonicalCode()
+  {
+    return $this->canonicalCode;
+  }
   public function setCode($code)
   {
     $this->code = $code;

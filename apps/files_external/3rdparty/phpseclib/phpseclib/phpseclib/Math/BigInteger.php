@@ -153,7 +153,20 @@ class BigInteger implements \Serializable
      * If the second parameter - $base - is negative, then it will be assumed that the number's are encoded using
      * two's compliment.  The sole exception to this is -10, which is treated the same as 10 is.
      *
+<<<<<<< HEAD
      * @param int|BigInteger\Engines\Engine $x Base-10 number or base-$base number if $base set.
+=======
+     * Here's an example:
+     * <code>
+     * <?php
+     *    $a = new \phpseclib\Math\BigInteger('0x32', 16); // 50 in base-16
+     *
+     *    echo $a->toString(); // outputs 50
+     * ?>
+     * </code>
+     *
+     * @param int|string|resource $x base-10 number or base-$base number if $base set.
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      * @param int $base
      * @return BigInteger
      */
@@ -341,8 +354,15 @@ class BigInteger implements \Serializable
      *
      * Say you have 693 and 609.  The GCD is 21.
      *
+<<<<<<< HEAD
      * @param BigInteger $n
      * @return BigInteger
+=======
+     * @see self::_slidingWindow()
+     * @access private
+     * @param \phpseclib\Math\BigInteger $n
+     * @return \phpseclib\Math\BigInteger
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      */
     public function gcd(BigInteger $n)
     {
@@ -462,10 +482,15 @@ class BigInteger implements \Serializable
      *
      * Note how the same comparison operator is used.  If you want to test for equality, use $x->equals($y).
      *
+<<<<<<< HEAD
      * {@internal Could return $this->subtract($x), but that's not as fast as what we do do.}
      *
      * @param BigInteger $y
      * @return int in case < 0 if $this is less than $y; > 0 if $this is greater than $y, and 0 if they are equal.
+=======
+     * @param \phpseclib\Math\BigInteger $y
+     * @return int that is < 0 if $this is less than $y; > 0 if $this is greater than $y, and 0 if they are equal.
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      * @access public
      * @see self::equals()
      */
@@ -585,8 +610,14 @@ class BigInteger implements \Serializable
     /**
      * Returns the smallest and largest n-bit number
      *
+<<<<<<< HEAD
      * @param int $bits
      * @return BigInteger[]
+=======
+     * @param int $size
+     * @return \phpseclib\Math\BigInteger
+     * @access private
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      */
     public static function minMaxBits($bits)
     {
@@ -731,8 +762,15 @@ class BigInteger implements \Serializable
     /**
      * Return the minimum BigInteger between an arbitrary number of BigIntegers.
      *
+<<<<<<< HEAD
      * @param BigInteger ...$nums
      * @return BigInteger
+=======
+     * @param \phpseclib\Math\BigInteger $result
+     * @return \phpseclib\Math\BigInteger
+     * @see self::_trim()
+     * @access private
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      */
     public static function min(BigInteger ...$nums)
     {
@@ -777,7 +815,14 @@ class BigInteger implements \Serializable
     /**
      * Is Odd?
      *
+<<<<<<< HEAD
      * @return boolean
+=======
+     * @param array $input
+     * @param mixed $multiplier
+     * @return array
+     * @access private
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      */
     public function isOdd()
     {
@@ -787,8 +832,17 @@ class BigInteger implements \Serializable
     /**
      * Tests if a bit is set
      *
+<<<<<<< HEAD
      * @param int $x
      * @return boolean
+=======
+     * Shifts binary strings $shift bits, essentially multiplying by 2**$shift.
+     *
+     * @param string $x (by reference)
+     * @param int $shift
+     * @return string
+     * @access private
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      */
     public function testBit($x)
     {
@@ -798,7 +852,16 @@ class BigInteger implements \Serializable
     /**
      * Is Negative?
      *
+<<<<<<< HEAD
      * @return boolean
+=======
+     * Shifts binary strings $shift bits, essentially dividing by 2**$shift and returning the remainder.
+     *
+     * @param string $x (by referenc)
+     * @param int $shift
+     * @return string
+     * @access private
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      */
     public function isNegative()
     {

@@ -18,6 +18,7 @@
 class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3ExportAgentRequest extends Google_Model
 {
   public $agentUri;
+  public $environment;
 
   public function setAgentUri($agentUri)
   {
@@ -26,5 +27,13 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3ExportAgentRequest exte
   public function getAgentUri()
   {
     return $this->agentUri;
+  }
+  public function setEnvironment($environment)
+  {
+    $this->environment = $environment;
+  }
+  public function getEnvironment()
+  {
+    return $this->environment;
   }
 }

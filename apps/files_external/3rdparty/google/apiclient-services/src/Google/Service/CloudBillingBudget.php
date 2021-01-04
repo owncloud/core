@@ -34,7 +34,7 @@ class Google_Service_CloudBillingBudget extends Google_Service
   /** View and manage your Google Cloud Platform billing accounts. */
   const CLOUD_BILLING =
       "https://www.googleapis.com/auth/cloud-billing";
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 

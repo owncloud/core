@@ -30,7 +30,7 @@
  */
 class Google_Service_Dataflow extends Google_Service
 {
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
   /** View and manage your Google Compute Engine resources. */
@@ -39,13 +39,11 @@ class Google_Service_Dataflow extends Google_Service
   /** View your Google Compute Engine resources. */
   const COMPUTE_READONLY =
       "https://www.googleapis.com/auth/compute.readonly";
-  /** View your email address. */
+  /** See your primary Google Account email address. */
   const USERINFO_EMAIL =
       "https://www.googleapis.com/auth/userinfo.email";
 
   public $projects;
-  public $projects_catalogTemplates;
-  public $projects_catalogTemplates_templateVersions;
   public $projects_jobs;
   public $projects_jobs_debug;
   public $projects_jobs_messages;
@@ -62,7 +60,6 @@ class Google_Service_Dataflow extends Google_Service
   public $projects_locations_sql;
   public $projects_locations_templates;
   public $projects_snapshots;
-  public $projects_templateVersions;
   public $projects_templates;
 
   /**
@@ -109,86 +106,6 @@ class Google_Service_Dataflow extends Google_Service
               'httpMethod' => 'POST',
               'parameters' => array(
                 'projectId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),
-          )
-        )
-    );
-    $this->projects_catalogTemplates = new Google_Service_Dataflow_Resource_ProjectsCatalogTemplates(
-        $this,
-        $this->serviceName,
-        'catalogTemplates',
-        array(
-          'methods' => array(
-            'commit' => array(
-              'path' => 'v1b3/{+name}:commit',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'name' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),'delete' => array(
-              'path' => 'v1b3/{+name}',
-              'httpMethod' => 'DELETE',
-              'parameters' => array(
-                'name' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),'get' => array(
-              'path' => 'v1b3/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => array(
-                'name' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),'label' => array(
-              'path' => 'v1b3/{+name}:label',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'name' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),'tag' => array(
-              'path' => 'v1b3/{+name}:tag',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'name' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),
-          )
-        )
-    );
-    $this->projects_catalogTemplates_templateVersions = new Google_Service_Dataflow_Resource_ProjectsCatalogTemplatesTemplateVersions(
-        $this,
-        $this->serviceName,
-        'templateVersions',
-        array(
-          'methods' => array(
-            'create' => array(
-              'path' => 'v1b3/{+parent}/templateVersions',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'parent' => array(
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
@@ -1176,34 +1093,6 @@ class Google_Service_Dataflow extends Google_Service
                   'type' => 'string',
                 ),
                 'location' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-              ),
-            ),
-          )
-        )
-    );
-    $this->projects_templateVersions = new Google_Service_Dataflow_Resource_ProjectsTemplateVersions(
-        $this,
-        $this->serviceName,
-        'templateVersions',
-        array(
-          'methods' => array(
-            'list' => array(
-              'path' => 'v1b3/{+parent}/templateVersions',
-              'httpMethod' => 'GET',
-              'parameters' => array(
-                'parent' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

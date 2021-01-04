@@ -2220,8 +2220,14 @@ class X509
     /**
      * Load a Certificate Signing Request
      *
+<<<<<<< HEAD
      * @param string $csr
      * @param int $mode
+=======
+     * @param string|array $csr
+     * @param int $mode
+     * @access public
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      * @return mixed
      * @access public
      */
@@ -2342,7 +2348,11 @@ class X509
      *
      * https://developer.mozilla.org/en-US/docs/HTML/Element/keygen
      *
+<<<<<<< HEAD
      * @param string $spkac
+=======
+     * @param string|array $spkac
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      * @access public
      * @return mixed
      */
@@ -2406,7 +2416,11 @@ class X509
     /**
      * Save a SPKAC CSR request
      *
+<<<<<<< HEAD
      * @param array $spkac
+=======
+     * @param string|array $spkac
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      * @param int $format optional
      * @access public
      * @return string
@@ -2446,6 +2460,10 @@ class X509
      *
      * @param string $crl
      * @param int $mode
+<<<<<<< HEAD
+=======
+     * @access public
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      * @return mixed
      * @access public
      */
@@ -3040,10 +3058,17 @@ class X509
     /**
      * Identify signature algorithm from key settings
      *
+<<<<<<< HEAD
      * @param PrivateKey $key
      * @access private
      * @throws \phpseclib3\Exception\UnsupportedAlgorithmException if the algorithm is unsupported
      * @return string
+=======
+     * @param \phpseclib\File\X509 $key
+     * @param string $signatureAlgorithm
+     * @access public
+     * @return mixed
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      */
     private static function identifySignatureAlgorithm(PrivateKey $key)
     {
@@ -3803,7 +3828,10 @@ class X509
      * Set the IP Addresses's which the cert is to be valid for
      *
      * @access public
+<<<<<<< HEAD
      * @param mixed[] ...$ipAddresses
+=======
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      */
     public function setIPAddress(...$ipAddresses)
     {
@@ -4065,6 +4093,7 @@ class X509
      */
     public static function registerExtension($id, array $mapping)
     {
+<<<<<<< HEAD
         if (isset(self::$extensions[$id]) && self::$extensions[$id] !== $mapping) {
             throw new \RuntimeException(
                 'Extension ' . $id . ' has already been defined with a different mapping.'
@@ -4072,6 +4101,26 @@ class X509
         }
 
         self::$extensions[$id] = $mapping;
+=======
+        /* X.509 certs are assumed to be base64 encoded but sometimes they'll have additional things in them
+         * above and beyond the ceritificate.
+         * ie. some may have the following preceding the -----BEGIN CERTIFICATE----- line:
+         *
+         * Bag Attributes
+         *     localKeyID: 01 00 00 00
+         * subject=/O=organization/OU=org unit/CN=common name
+         * issuer=/O=organization/CN=common name
+         */
+        $temp = strlen($str) <= ini_get('pcre.backtrack_limit') ?
+            preg_replace('#.*?^-+[^-]+-+[\r\n ]*$#ms', '', $str, 1) :
+            $str;
+        // remove new lines
+        $temp = str_replace(array("\r", "\n", ' '), '', $temp);
+        // remove the -----BEGIN CERTIFICATE----- and -----END CERTIFICATE----- stuff
+        $temp = preg_replace('#^-+[^-]+-+|-+[^-]+-+$#', '', $temp);
+        $temp = preg_match('#^[a-zA-Z\d/+]*={0,2}$#', $temp) ? base64_decode($temp) : false;
+        return $temp != false ? $temp : $str;
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
     }
 
     /**

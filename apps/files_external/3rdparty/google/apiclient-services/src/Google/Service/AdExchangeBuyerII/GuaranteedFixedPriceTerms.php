@@ -22,7 +22,10 @@ class Google_Service_AdExchangeBuyerII_GuaranteedFixedPriceTerms extends Google_
   protected $fixedPricesDataType = 'array';
   public $guaranteedImpressions;
   public $guaranteedLooks;
+  public $impressionCap;
   public $minimumDailyLooks;
+  public $percentShareOfVoice;
+  public $reservationType;
 
   /**
    * @param Google_Service_AdExchangeBuyerII_PricePerBuyer[]
@@ -54,6 +57,14 @@ class Google_Service_AdExchangeBuyerII_GuaranteedFixedPriceTerms extends Google_
   {
     return $this->guaranteedLooks;
   }
+  public function setImpressionCap($impressionCap)
+  {
+    $this->impressionCap = $impressionCap;
+  }
+  public function getImpressionCap()
+  {
+    return $this->impressionCap;
+  }
   public function setMinimumDailyLooks($minimumDailyLooks)
   {
     $this->minimumDailyLooks = $minimumDailyLooks;
@@ -61,5 +72,21 @@ class Google_Service_AdExchangeBuyerII_GuaranteedFixedPriceTerms extends Google_
   public function getMinimumDailyLooks()
   {
     return $this->minimumDailyLooks;
+  }
+  public function setPercentShareOfVoice($percentShareOfVoice)
+  {
+    $this->percentShareOfVoice = $percentShareOfVoice;
+  }
+  public function getPercentShareOfVoice()
+  {
+    return $this->percentShareOfVoice;
+  }
+  public function setReservationType($reservationType)
+  {
+    $this->reservationType = $reservationType;
+  }
+  public function getReservationType()
+  {
+    return $this->reservationType;
   }
 }

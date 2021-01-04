@@ -25,4 +25,37 @@
  */
 class Google_Service_CloudSearch_Resource_Settings extends Google_Service_Resource
 {
+  /**
+   * Get customer settings. **Note:** This API requires an admin account to
+   * execute. (settings.getCustomer)
+   *
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_CloudSearch_CustomerSettings
+   */
+  public function getCustomer($optParams = array())
+  {
+    $params = array();
+    $params = array_merge($params, $optParams);
+    return $this->call('getCustomer', array($params), "Google_Service_CloudSearch_CustomerSettings");
+  }
+  /**
+   * Update customer settings. **Note:** This API requires an admin account to
+   * execute. (settings.updateCustomer)
+   *
+   * @param Google_Service_CloudSearch_CustomerSettings $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask Update mask to control which fields get updated.
+   * If you specify a field in the update_mask but don't specify its value here,
+   * that field will be cleared. If the mask is not present or empty, all fields
+   * will be updated. Currently supported field paths: vpc_settings and
+   * audit_logging_settings
+   * @return Google_Service_CloudSearch_Operation
+   */
+  public function updateCustomer(Google_Service_CloudSearch_CustomerSettings $postBody, $optParams = array())
+  {
+    $params = array('postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('updateCustomer', array($params), "Google_Service_CloudSearch_Operation");
+  }
 }

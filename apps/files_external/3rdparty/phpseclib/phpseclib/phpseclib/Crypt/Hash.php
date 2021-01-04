@@ -1475,7 +1475,93 @@ class Hash
     }
 
     /**
+<<<<<<< HEAD
      *  __toString() magic method
+=======
+     * Right Rotate
+     *
+     * @access private
+     * @param int $int
+     * @param int $amt
+     * @see self::_sha256()
+     * @return int
+     */
+    function _rightRotate($int, $amt)
+    {
+        $invamt = 32 - $amt;
+        $mask = (1 << $invamt) - 1;
+        return (($int << $invamt) & 0xFFFFFFFF) | (($int >> $amt) & $mask);
+    }
+
+    /**
+     * Right Shift
+     *
+     * @access private
+     * @param int $int
+     * @param int $amt
+     * @see self::_sha256()
+     * @return int
+     */
+    function _rightShift($int, $amt)
+    {
+        $mask = (1 << (32 - $amt)) - 1;
+        return ($int >> $amt) & $mask;
+    }
+
+    /**
+     * Not
+     *
+     * @access private
+     * @param int $int
+     * @see self::_sha256()
+     * @return int
+     */
+    function _not($int)
+    {
+        return ~$int & 0xFFFFFFFF;
+    }
+
+    /**
+     * Add
+     *
+     * _sha256() adds multiple unsigned 32-bit integers.  Since PHP doesn't support unsigned integers and since the
+     * possibility of overflow exists, care has to be taken.  BigInteger could be used but this should be faster.
+     *
+     * @return int
+     * @see self::_sha256()
+     * @access private
+     */
+    function _add()
+    {
+        static $mod;
+        if (!isset($mod)) {
+            $mod = pow(2, 32);
+        }
+
+        $result = 0;
+        $arguments = func_get_args();
+        foreach ($arguments as $argument) {
+            $result+= $argument < 0 ? ($argument & 0x7FFFFFFF) + 0x80000000 : $argument;
+        }
+
+        if ((php_uname('m') & "\xDF\xDF\xDF") != 'ARM') {
+            return fmod($result, $mod);
+        }
+
+        return (fmod($result, 0x80000000) & 0x7FFFFFFF) |
+            ((fmod(floor($result / 0x80000000), 2) & 1) << 31);
+    }
+
+    /**
+     * String Shift
+     *
+     * Inspired by array_shift
+     *
+     * @param string $string
+     * @param int $index
+     * @return string
+     * @access private
+>>>>>>> Update guzzle to 6.5 in apps/files_external/3rdparty
      */
     public function __toString()
     {
