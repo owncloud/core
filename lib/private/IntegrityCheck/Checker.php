@@ -237,8 +237,8 @@ class Checker {
 
 		$privateKey = $privateKey
 			->withMGFHash('sha512')
-            ->withSaltLength(0)
-            ->withPadding(RSA::SIGNATURE_PSS);
+			->withSaltLength(0)
+			->withPadding(RSA::SIGNATURE_PSS);
 
 		$signature = $privateKey->sign(\json_encode($hashes));
 
@@ -345,6 +345,11 @@ class Checker {
 		// Check if certificate is signed by ownCloud Root Authority
 		$x509 = new \phpseclib3\File\X509();
 		$rootCertificatePublicKey = $this->fileAccessHelper->file_get_contents($this->environmentHelper->getServerRoot().'/resources/codesigning/root.crt');
+		// Strip out -----BEGIN/END CERTIFICATE----- in certificate chains
+		if (\substr_count($rootCertificatePublicKey, 'BEGIN CERTIFICATE') > 1) {
+			$rootCertificatePublicKey = \preg_replace('#-+[^-]+-+#', '', $rootCertificatePublicKey);
+		}
+
 		$x509->loadCA($rootCertificatePublicKey);
 		$loadedCertificate = $x509->loadX509($certificate);
 		if (!$x509->validateSignature()) {
