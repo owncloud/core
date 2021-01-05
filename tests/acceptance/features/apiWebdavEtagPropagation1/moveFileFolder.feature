@@ -78,7 +78,7 @@ Feature: propagation of etags when moving files or folders
       | old         |
       | new         |
 
-
+  @skipOnOcis-OC-Storage @issue-product-280
   Scenario Outline: moving a folder from one folder to an other changes the etags of both folders
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/src"
