@@ -1227,7 +1227,11 @@ MountConfigListView.prototype = _.extend({
 				if (concurrentTimer === undefined
 					|| $tr.data('save-timer') === concurrentTimer
 				) {
-					self.updateStatus($tr, result.status);
+					if(result.status === StorageConfig.Status.ERROR && 'statusMessage' in result){
+						OC.Notification.show(result.statusMessage, {type: "error", timeout: 7});
+					}
+
+					self.updateStatus($tr, result.status, result.statusMessage);
 					$tr.data('id', result.id);
 
 					if (_.isFunction(callback)) {
@@ -1235,11 +1239,15 @@ MountConfigListView.prototype = _.extend({
 					}
 				}
 			},
-			error: function() {
+			error: function(error) {
 				if (concurrentTimer === undefined
 					|| $tr.data('save-timer') === concurrentTimer
 				) {
-					self.updateStatus($tr, StorageConfig.Status.ERROR);
+					if('message' in error.responseJSON){
+						OC.Notification.show(error.responseJSON.message, {type: "error", timeout: 7});
+					}
+
+					self.updateStatus($tr, StorageConfig.Status.ERROR, error.responseJSON.message);
 				}
 			}
 		});
@@ -1263,8 +1271,8 @@ MountConfigListView.prototype = _.extend({
 			success: function(result) {
 				self.updateStatus($tr, result.status, result.statusMessage);
 			},
-			error: function() {
-				self.updateStatus($tr, StorageConfig.Status.ERROR);
+			error: function(error) {
+				self.updateStatus($tr, StorageConfig.Status.ERROR, error.responseJSON.message);
 			}
 		});
 	},
@@ -1278,7 +1286,11 @@ MountConfigListView.prototype = _.extend({
 	 */
 	updateStatus: function($tr, status, message) {
 		var $statusSpan = $tr.find('.status span');
+		var $statusMessage = $tr.find('.status .message');
+
+		$statusSpan.tooltip('disable');
 		$statusSpan.removeClass('loading-small success indeterminate error');
+
 		switch (status) {
 			case null:
 				// remove status
@@ -1293,6 +1305,10 @@ MountConfigListView.prototype = _.extend({
 				$statusSpan.addClass('indeterminate');
 				break;
 			default:
+				if(typeof message === 'string' && message.length){
+					$statusSpan.tooltip('enable');
+					$statusSpan.tooltip('show')
+				}
 				$statusSpan.addClass('error');
 		}
 		$statusSpan.attr('data-original-title', (typeof message === 'string') ? message : '');

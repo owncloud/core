@@ -9,6 +9,7 @@
 	height: 16px;
 	width: 16px;
 	vertical-align: text-bottom;
+	cursor: pointer;
 }
 
 td.mountPoint, td.backend { width:160px; }
