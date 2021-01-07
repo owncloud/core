@@ -51,7 +51,6 @@ abstract class Flysystem extends Common {
 	 */
 	protected function buildFlySystem(FilesystemAdapter $adapter) {
 		$this->flysystem = new Filesystem($adapter);
-		$this->flysystem->addPlugin(new GetWithMetadata());
 	}
 
 	protected function buildPath($path) {
@@ -70,14 +69,14 @@ abstract class Flysystem extends Common {
 	 * {@inheritdoc}
 	 */
 	public function file_put_contents($path, $data) {
-		return $this->flysystem->put($this->buildPath($path), $data);
+		$this->flysystem->write($this->buildPath($path), $data);
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function file_exists($path) {
-		return $this->flysystem->has($this->buildPath($path));
+		return $this->flysystem->fileExists($this->buildPath($path));
 	}
 
 	/**
@@ -88,7 +87,7 @@ abstract class Flysystem extends Common {
 			return $this->rmdir($path);
 		}
 		try {
-			return $this->flysystem->delete($this->buildPath($path));
+			$this->flysystem->delete($this->buildPath($path));
 		} catch (FilesystemException $e) {
 			return false;
 		}
@@ -101,7 +100,7 @@ abstract class Flysystem extends Common {
 		if ($this->file_exists($target)) {
 			$this->unlink($target);
 		}
-		return $this->flysystem->rename($this->buildPath($source), $this->buildPath($target));
+		$this->flysystem->move($this->buildPath($source), $this->buildPath($target));
 	}
 
 	/**
@@ -111,7 +110,7 @@ abstract class Flysystem extends Common {
 		if ($this->file_exists($target)) {
 			$this->unlink($target);
 		}
-		return $this->flysystem->copy($this->buildPath($source), $this->buildPath($target));
+		$this->flysystem->copy($this->buildPath($source), $this->buildPath($target));
 	}
 
 	/**
@@ -121,7 +120,7 @@ abstract class Flysystem extends Common {
 		if ($this->is_dir($path)) {
 			return 0;
 		} else {
-			return $this->flysystem->getSize($this->buildPath($path));
+			return $this->flysystem->fileSize($this->buildPath($path));
 		}
 	}
 
@@ -144,7 +143,7 @@ abstract class Flysystem extends Common {
 	 * {@inheritdoc}
 	 */
 	public function filemtime($path) {
-		return $this->flysystem->getTimestamp($this->buildPath($path));
+		return $this->flysystem->lastModified($this->buildPath($path));
 	}
 
 	/**
@@ -216,7 +215,7 @@ abstract class Flysystem extends Common {
 				}
 				$source = \fopen($tmpFile, $mode);
 				return CallbackWrapper::wrap($source, null, null, function () use ($tmpFile, $fullPath) {
-					$this->flysystem->putStream($fullPath, \fopen($tmpFile, 'r'));
+					$this->flysystem->writeStream($fullPath, \fopen($tmpFile, 'r'));
 					\unlink($tmpFile);
 				});
 		}
@@ -239,10 +238,10 @@ abstract class Flysystem extends Common {
 	 * {@inheritdoc}
 	 */
 	public function stat($path) {
-		$info = $this->flysystem->getWithMetadata($this->buildPath($path), ['timestamp', 'size']);
+		$builtPath = $this->buildPath($path);
 		return [
-			'mtime' => $info['timestamp'],
-			'size' => $info['size']
+			'mtime' => $this->flysystem->lastModified($builtPath),
+			'size' => $this->flysystem->fileSize($builtPath),
 		];
 	}
 
@@ -254,10 +253,10 @@ abstract class Flysystem extends Common {
 			return 'dir';
 		}
 		try {
-			$info = $this->flysystem->getMetadata($this->buildPath($path));
+			$mimeType = $this->flysystem->mimeType($this->buildPath($path));
 		} catch (FilesystemException $e) {
 			return false;
 		}
-		return $info['type'];
+		return $mimeType;
 	}
 }

@@ -75,7 +75,11 @@ abstract class CacheableFlysystem extends \OCP\Files\Storage\FlysystemStorageAda
 		$location = $this->getCacheLocation($path);
 		if (!isset($this->cacheContents[$location]) || $overRideCache) {
 			try {
-				$this->cacheContents[$location] = $this->flysystem->getMetadata($location);
+				$this->cacheContents[$location] = [
+					'size' => $this->flysystem->fileSize($location),
+					'timestamp' => $this->flysystem->lastModified($location),
+					'type' => $this->flysystem->mimeType($location),
+				];
 			} catch (FilesystemException $e) {
 				// do not store this info in cache as it might interfere with Upload process
 				return false;
