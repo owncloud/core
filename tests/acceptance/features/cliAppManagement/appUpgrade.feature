@@ -13,7 +13,7 @@ Feature: App upgrade
     And app "updatetest" has been disabled
     When the administrator puts app "updatetest" with version "2.1.0" in dir "apps"
     And the administrator enables app "updatetest"
-    And the administrator runs upgrade routines on local server using the occ command
+    And the administrator runs an upgrade using the occ command
     Then the installed version of "updatetest" should be "2.1.0"
 
   Scenario: Update of major version of an app
@@ -22,5 +22,5 @@ Feature: App upgrade
     And app "updatetest" has been disabled
     When the administrator puts app "updatetest" with version "3.0.0" in dir "apps"
     And the administrator enables app "updatetest"
-    And the administrator runs upgrade routines on local server using the occ command
+    And the administrator runs an upgrade using the occ command
     Then the installed version of "updatetest" should be "3.0.0"

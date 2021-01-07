@@ -1708,7 +1708,7 @@ def acceptance(ctx):
                                              [
                                                  ({
                                                      "name": "acceptance-tests",
-                                                     "image": "owncloudci/php:%s" % phpVersion,
+                                                     "image": "owncloudci/php:8.0",
                                                      "pull": "always",
                                                      "environment": environment,
                                                      "commands": params["extraCommandsBeforeTestRun"] + [
@@ -1723,6 +1723,7 @@ def acceptance(ctx):
                                                  }),
                                              ] + buildGithubCommentForBuildStopped(name, params["earlyFail"]) + githubComment(params["earlyFail"]) + stopBuild(params["earlyFail"]),
                                     "services": databaseService(db) +
+                                                occUpgradeService(isCLI) +
                                                 browserService(browser) +
                                                 emailService(params["emailNeeded"]) +
                                                 ldapService(params["ldapNeeded"]) +
@@ -2106,6 +2107,19 @@ def proxyService(proxyNeeded):
 
     return []
 
+def occUpgradeService(needed):
+    if not needed:
+        return []
+
+    return [{
+        "name": "occupgrade",
+        "image": "owncloudci/php:7.4",
+        "pull": "always",
+        "command": [
+            "php -S occupgrade:8123 tests/acceptance/occUpgrade.php",
+        ],
+    }]
+
 def webdavService(needed):
     if not needed:
         return []
@@ -2445,7 +2459,7 @@ def vendorbinPhpstan(phpVersion):
 def vendorbinBehat():
     return [{
         "name": "vendorbin-behat",
-        "image": "owncloudci/php:7.4",
+        "image": "owncloudci/php:8.0",
         "pull": "always",
         "environment": {
             "COMPOSER_HOME": "%s/.cache/composer" % dir["server"],

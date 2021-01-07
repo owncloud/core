@@ -24,6 +24,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
+use TestHelpers\HttpRequestHelper;
 use TestHelpers\OcisHelper;
 use TestHelpers\SetupHelper;
 use Behat\Gherkin\Node\PyStringNode;
@@ -496,7 +497,7 @@ class OccContext implements Context {
 	public function deleteExpiredVersionsForMultipleUsersUsingOccCommand(string $users): void {
 		$this->deleteExpiredVersionsForUserUsingOccCommand($users);
 	}
-	
+
 	/**
 	 * @return void
 	 * @throws Exception
@@ -768,6 +769,35 @@ class OccContext implements Context {
 			// if the above command fails make sure to turn off maintenance mode
 			\system("./occ maintenance:mode --off");
 		}
+	}
+
+	/**
+	 * @When the administrator runs an upgrade using the occ command
+	 *
+	 * @return void
+	 */
+	public function theAdministratorRunsAnUpgradeUsingTheOccCommand() {
+		//$this->invokingTheCommand("upgrade");
+		// Send a "ping" to an endpoint that is (hopefully) ready and waiting
+		// to "php occ upgrade". That endpoint should be served by a PHP
+		// process that is:
+		// - running a version of PHP that is supported by the system-under-test
+		// - not processing the incoming request through oC10 code
+		//   (because oC10 code might reject because "the system is waiting for upgrade")
+		HttpRequestHelper::sendRequest('occupgrade:8123');
+		//if (!$this->theOccCommandExitStatusWasSuccess()) {
+		// If the above command fails make sure to turn off maintenance mode.
+		// This uses the testing app to run the command for us. So it might
+		// fail if the testing app refuses to work, because maintenance mode
+		// is on.
+		//$this->invokingTheCommand("maintenance:mode --off");
+		//if (!$this->theOccCommandExitStatusWasSuccess()) {
+		// As a last resort, try a local occ command.
+		// If the test-runner happens to be on the same file-system as
+		// the system-under-test, then this might be a way to recover.
+		//\system("./occ maintenance:mode --off");
+		//}
+		//}
 	}
 
 	/**
