@@ -9,8 +9,6 @@
 namespace Test\Files\Storage\Wrapper;
 
 use OC\Files\Storage\Common;
-use OCP\Files\Storage\IStorage;
-use OCP\Files\Storage\IVersionedStorage;
 
 class JailTest extends \Test\Files\Storage\Storage {
 

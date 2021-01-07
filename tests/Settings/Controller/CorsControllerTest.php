@@ -23,7 +23,6 @@ namespace Tests\Settings\Controller;
 
 use OC\Settings\Controller\CorsController;
 use OCP\AppFramework\Http\JSONResponse;
-use OCP\AppFramework\Http\RedirectResponse;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\ILogger;

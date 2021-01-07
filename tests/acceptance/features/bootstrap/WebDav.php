@@ -32,8 +32,6 @@ use TestHelpers\UploadHelper;
 use TestHelpers\WebDavHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\Asserts\WebDav as WebDavAssert;
-use TusPhp\Exception\ConnectionException;
-use TusPhp\Exception\TusException;
 
 /**
  * WebDav functions

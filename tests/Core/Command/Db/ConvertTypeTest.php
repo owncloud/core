@@ -25,8 +25,6 @@ use OC\App\AppManager;
 use OC\Core\Command\Db\ConvertType;
 use OC\DB\ConnectionFactory;
 use OCP\IConfig;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 

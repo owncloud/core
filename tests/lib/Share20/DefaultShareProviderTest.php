@@ -24,7 +24,6 @@ namespace Test\Share20;
 use OC\Authentication\Token\DefaultTokenMapper;
 use OC\Share20\DefaultShareProvider;
 use OC\Share20\ShareAttributes;
-use OCP\Share\IAttributes as IShareAttributes;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\File;
 use OCP\Files\Folder;

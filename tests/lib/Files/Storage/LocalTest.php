@@ -23,7 +23,6 @@
 namespace Test\Files\Storage;
 
 use OC\Files\Storage\Local;
-use PHPUnit\Framework\Constraint\IsType as IsType;
 
 /**
  * Class LocalTest

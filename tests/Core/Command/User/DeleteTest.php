@@ -25,7 +25,6 @@ namespace Tests\Core\Command\User;
 use OC\Core\Command\User\Delete;
 use OCP\IUser;
 use OCP\IUserManager;
-use OCP\Files\Node;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;

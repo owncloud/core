@@ -11,7 +11,6 @@ namespace Test;
 use OC\Log;
 use OC\User\AccountMapper;
 use OC\User\Manager;
-use OC\User\Session;
 use OC\User\SyncService;
 use OCP\IConfig;
 use OCP\ILogger;
