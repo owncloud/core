@@ -26,8 +26,6 @@ use Test\TestCase;
 use OCP\Files\Node;
 use OC\Files\Meta\MetaVersionCollection;
 use OCP\Files\IRootFolder;
-use OCP\Files\Storage\IStorage;
-use OCP\Files\Storage;
 use OCP\Files\Storage\IVersionedStorage;
 use OC\Files\Meta\MetaFileVersionNode;
 

@@ -11,7 +11,6 @@ namespace Test;
 use OC\Log;
 use OC\User\AccountMapper;
 use OC\User\Manager;
-use OC\User\Session;
 use OC\User\SyncService;
 use OCP\IConfig;
 use OCP\ILogger;
@@ -21,7 +20,6 @@ use OCP\Util\UserSearch;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Zend\EventManager\Event;
 
 class LoggerTest extends TestCase {
 	/** @var \OCP\ILogger */

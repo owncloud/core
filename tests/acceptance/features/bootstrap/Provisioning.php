@@ -28,8 +28,8 @@ use TestHelpers\SetupHelper;
 use TestHelpers\UserHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\OcisHelper;
-use Zend\Ldap\Exception\LdapException;
-use Zend\Ldap\Ldap;
+use Laminas\Ldap\Exception\LdapException;
+use Laminas\Ldap\Ldap;
 
 /**
  * Functions for provisioning of users and groups
@@ -497,7 +497,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function importLdifData($ldifData) {
-		$items = Zend\Ldap\Ldif\Encoder::decode($ldifData);
+		$items = Laminas\Ldap\Ldif\Encoder::decode($ldifData);
 		if (isset($items['dn'])) {
 			//only one item in the ldif data
 			$this->ldap->add($items['dn'], $items);
@@ -3117,7 +3117,7 @@ trait Provisioning {
 		$attribute, $entry, $value, $append=false
 	) {
 		$ldapEntry = $this->ldap->getEntry($entry . "," . $this->ldapBaseDN);
-		Zend\Ldap\Attribute::setAttribute($ldapEntry, $attribute, $value, $append);
+		Laminas\Ldap\Attribute::setAttribute($ldapEntry, $attribute, $value, $append);
 		$this->ldap->update($entry . "," . $this->ldapBaseDN, $ldapEntry);
 		$this->theLdapUsersHaveBeenReSynced();
 	}

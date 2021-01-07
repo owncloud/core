@@ -12,7 +12,6 @@ namespace Test\DB;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use OC\DB\MDB2SchemaManager;
 use OCP\DB\QueryBuilder\IQueryBuilder;
-use PHPUnit\Framework\Constraint\IsType as IsType;
 
 /**
  * Class Connection

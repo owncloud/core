@@ -23,7 +23,6 @@ declare(strict_types = 1);
 namespace Tests\Core\Controller;
 
 use OC\Core\Controller\UserSyncController;
-use OC\OCS\Result;
 use OC\User\SyncService;
 use OCP\IRequest;
 use OCP\IUser;

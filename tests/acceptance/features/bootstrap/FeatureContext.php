@@ -35,7 +35,7 @@ use TestHelpers\SetupHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\UploadHelper;
 use TestHelpers\OcisHelper;
-use Zend\Ldap\Ldap;
+use Laminas\Ldap\Ldap;
 
 require_once 'bootstrap.php';
 

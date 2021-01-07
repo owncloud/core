@@ -10,7 +10,6 @@ namespace Test;
 
 use OC\Log;
 use OCP\IConfig;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class LoggerWithoutWriteExtraTest extends TestCase {

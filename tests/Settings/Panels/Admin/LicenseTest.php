@@ -22,8 +22,6 @@ namespace Tests\Settings\Panels\Admin;
 
 use OC\Settings\Panels\Admin\License;
 use OC\License\ILicense;
-use OC\License\LicenseFetcher;
-use OC\License\MessageService;
 use OCP\License\ILicenseManager;
 
 /**
