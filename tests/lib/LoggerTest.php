@@ -21,7 +21,6 @@ use OCP\Util\UserSearch;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Zend\EventManager\Event;
 
 class LoggerTest extends TestCase {
 	/** @var \OCP\ILogger */
