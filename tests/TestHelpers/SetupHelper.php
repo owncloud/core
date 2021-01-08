@@ -934,7 +934,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 *
 	 * @return array array of lines that matched
 	 */
-	public function findLines($input, $text) {
+	public static function findLines($input, $text) {
 		$results = [];
 		foreach (\explode("\n", $input) as $line) {
 			if (\strpos($line, $text) !== false) {
