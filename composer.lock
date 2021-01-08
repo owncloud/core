@@ -1796,16 +1796,16 @@
         },
         {
             "name": "patchwork/utf8",
-            "version": "v1.3.2",
+            "version": "v1.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tchwork/utf8.git",
-                "reference": "d296e0026e7ce10b2a9fe594feca9628ef00e9e8"
+                "reference": "e1fa4d4a57896d074c9a8d01742b688d5db4e9d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tchwork/utf8/zipball/d296e0026e7ce10b2a9fe594feca9628ef00e9e8",
-                "reference": "d296e0026e7ce10b2a9fe594feca9628ef00e9e8",
+                "url": "https://api.github.com/repos/tchwork/utf8/zipball/e1fa4d4a57896d074c9a8d01742b688d5db4e9d5",
+                "reference": "e1fa4d4a57896d074c9a8d01742b688d5db4e9d5",
                 "shasum": ""
             },
             "require": {
@@ -1856,9 +1856,20 @@
             ],
             "support": {
                 "issues": "https://github.com/tchwork/utf8/issues",
-                "source": "https://github.com/tchwork/utf8/tree/master"
+                "source": "https://github.com/tchwork/utf8/tree/v1.3.3"
             },
-            "time": "2019-12-03T14:44:12+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/patchwork/utf8",
+                    "type": "tidelift"
+                }
+            ],
+            "abandoned": "symfony/polyfill-mbstring or symfony/string",
+            "time": "2021-01-07T16:38:58+00:00"
         },
         {
             "name": "pear/archive_tar",
