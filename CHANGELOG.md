@@ -20,6 +20,9 @@ Summary
 * Change - Update Symfony components to 4.4.18: [#38234](https://github.com/owncloud/core/pull/38234)
 * Change - Update phpseclib/phpseclib (2.0.29 => 2.0.30): [#38244](https://github.com/owncloud/core/pull/38244)
 * Change - Update egulias/email-validator (2.1.24 => 2.1.25): [#38255](https://github.com/owncloud/core/pull/38255)
+* Change - Update laminas/laminas-validator (2.13.4 => 2.13.5): [#38275](https://github.com/owncloud/core/pull/38275)
+* Change - Update patchwork/utf8 (v1.3.2 => v1.3.3): [#38275](https://github.com/owncloud/core/pull/38275)
+* Change - Update symfony/polyfill (1.20.0 => 1.22.0): [#38275](https://github.com/owncloud/core/pull/38275)
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 * Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
@@ -111,6 +114,24 @@ Details
 * Change - Update egulias/email-validator (2.1.24 => 2.1.25): [#38255](https://github.com/owncloud/core/pull/38255)
 
    https://github.com/owncloud/core/pull/38255
+
+* Change - Update laminas/laminas-validator (2.13.4 => 2.13.5): [#38275](https://github.com/owncloud/core/pull/38275)
+
+   https://github.com/owncloud/core/pull/38275
+
+* Change - Update patchwork/utf8 (v1.3.2 => v1.3.3): [#38275](https://github.com/owncloud/core/pull/38275)
+
+   https://github.com/owncloud/core/pull/38275
+
+* Change - Update symfony/polyfill (1.20.0 => 1.22.0): [#38275](https://github.com/owncloud/core/pull/38275)
+
+   The following symfony/polyfill components have been updated to version 1.22.0:
+
+   Symfony/polyfill-ctype symfony/polyfill-iconv symfony/polyfill-intl-idn
+   symfony/polyfill-intl-normalizer symfony/polyfill-mbstring symfony/polyfill-php72
+   symfony/polyfill-php73 symfony/polyfill-php80
+
+   https://github.com/owncloud/core/pull/38275
 
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 
