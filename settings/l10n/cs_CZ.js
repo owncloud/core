@@ -110,6 +110,7 @@ OC.L10N.register(
     "So-so password" : "Středně silné heslo",
     "Good password" : "Dobré heslo",
     "Strong password" : "Silné heslo",
+    "Passwords do not match" : "Hesla se neshodují",
     "Groups" : "Skupiny",
     "Unable to delete {objName}" : "Nelze smazat {objName}",
     "Error creating group: {message}" : "Chyba vytvoření skupiny: {message}",

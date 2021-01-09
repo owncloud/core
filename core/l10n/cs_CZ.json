@@ -102,6 +102,7 @@
     "Your files are encrypted. If you haven't enabled the recovery key, there will be no way to get your data back after your password is reset.<br />If you are not sure what to do, please contact your administrator before you continue. <br />Do you really want to continue?" : "Vaše soubory jsou šifrovány. Pokud jste nepovolili klíč pro obnovení, neexistuje způsob jak získat po změně hesla vaše data zpět.<br />Pokud si nejste jisti co dělat, kontaktujte nejprve svého správce systému, než budete pokračovat. <br />Opravdu si přejete pokračovat?",
     "I know what I'm doing" : "Vím co dělám",
     "Password can not be changed. Please contact your administrator." : "Heslo nelze změnit. Kontaktujte prosím svého správce systému.",
+    "Passwords do not match" : "Hesla se neshodují",
     "No" : "Ne",
     "Yes" : "Ano",
     "Choose" : "Vybrat",
