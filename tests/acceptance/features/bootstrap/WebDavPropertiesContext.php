@@ -1051,6 +1051,8 @@ class WebDavPropertiesContext implements Context {
 	 * @return void
 	 */
 	public function theseEtagsShouldHaveChanged(TableNode $etagTable) {
+		// See if it helps to "wait a bit" before checking etags
+		\sleep(2);
 		$this->featureContext->verifyTableNodeColumns($etagTable, ["user", "path"]);
 		$this->featureContext->verifyTableNodeColumnsCount($etagTable, 2);
 		$unchangedEtagCount = 0;
