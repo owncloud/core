@@ -468,6 +468,13 @@ class Users {
 	 * @return Result
 	 */
 	public function addToGroup($parameters) {
+
+		// Check if user is logged in
+		$currentLoggedInUser = $this->userSession->getUser();
+		if ($currentLoggedInUser === null) {
+			return new Result(null, API::RESPOND_UNAUTHORISED);
+		}
+
 		// Check if user is logged in
 		$user = $this->userSession->getUser();
 		if ($user === null) {
@@ -484,7 +491,13 @@ class Users {
 			return new Result(null, 102);
 		}
 
-		if (!$this->groupManager->isAdmin($user->getUID())) {
+		// ensure admin or existing subadmin of user via group
+		if (!$this->groupManager->isAdmin($user->getUID())
+		&& !$this->groupManager->getSubAdmin()->isUserAccessible($currentLoggedInUser, $user)) {
+			return new Result(null, 104);
+		}
+
+		if (!$this->canUserManageGroup($user, $group)) {
 			return new Result(null, 104);
 		}
 
