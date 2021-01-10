@@ -827,6 +827,8 @@ class WebDavPropertiesContext implements Context {
 		);
 		$this->storedETAG[$user][$storePath]
 			= $this->featureContext->getEtagFromResponseXmlObject();
+		// wait a bit so that the next steps will happen in a different Unix timestamp second
+		\sleep(2);
 	}
 
 	/**
