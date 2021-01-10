@@ -484,7 +484,7 @@ class Users {
 			return new Result(null, 102);
 		}
 
-		if (!$this->groupManager->isAdmin($user->getUID())) {
+		if (!$this->canUserManageGroup($user, $group)) {
 			return new Result(null, 104);
 		}
 
