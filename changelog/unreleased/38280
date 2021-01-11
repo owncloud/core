@@ -1,0 +1,3 @@
+Change: Allow subadministrators to add users to groups they manage
+
+https://github.com/owncloud/core/pull/38280
