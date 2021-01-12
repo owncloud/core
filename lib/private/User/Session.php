@@ -535,12 +535,11 @@ class Session implements IUserSession, Emitter {
 			$this->setLoginName($login);
 			$firstTimeLogin = $user->updateLastLoginTimestamp();
 			$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
+			$afterEvent = new GenericEvent(null, ['loginType' => 'password', 'user' => $user, 'uid' => $user->getUID(), 'password' => $password]);
+			$this->eventDispatcher->dispatch($afterEvent, 'user.afterlogin');
+
 			if ($this->isLoggedIn()) {
 				$this->prepareUserLogin($firstTimeLogin);
-
-				$afterEvent = new GenericEvent(null, ['loginType' => 'password', 'user' => $user, 'uid' => $user->getUID(), 'password' => $password]);
-				$this->eventDispatcher->dispatch($afterEvent, 'user.afterlogin');
-
 				return true;
 			}
 
