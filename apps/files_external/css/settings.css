@@ -5,6 +5,7 @@
 }
 
 #externalStorage td.status > span {
+	cursor: pointer;
 	display: inline-block;
 	height: 16px;
 	width: 16px;

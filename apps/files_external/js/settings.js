@@ -1233,12 +1233,24 @@ MountConfigListView.prototype = _.extend({
 					if (_.isFunction(callback)) {
 						callback(storage);
 					}
+
+					if (result.status === StorageConfig.Status.ERROR) {
+						OC.Notification.show(t('files_external', 'An error occured while adding the external storage, please check the logs or contact the administrator'),
+							{ type: "error", timeout: 7 });
+					}
+
+					if (result.status === StorageConfig.Status.SUCCESS) {
+						OC.Notification.show(t('files_external', 'External storage has been added successfully'),
+							{ timeout: 7 });
+					}
 				}
 			},
 			error: function() {
 				if (concurrentTimer === undefined
 					|| $tr.data('save-timer') === concurrentTimer
 				) {
+					OC.Notification.show(t('files_external', 'An error occured while adding the external storage please check the logs'),
+					{ type: "error", timeout: 7 });
 					self.updateStatus($tr, StorageConfig.Status.ERROR);
 				}
 			}
