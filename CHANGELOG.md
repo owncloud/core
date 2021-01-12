@@ -23,6 +23,7 @@ Summary
 * Change - Update laminas/laminas-validator (2.13.4 => 2.13.5): [#38275](https://github.com/owncloud/core/pull/38275)
 * Change - Update patchwork/utf8 (v1.3.2 => v1.3.3): [#38275](https://github.com/owncloud/core/pull/38275)
 * Change - Update symfony/polyfill (1.20.0 => 1.22.0): [#38275](https://github.com/owncloud/core/pull/38275)
+* Change - Update sabre/dav (4.1.3 => 4.1.4): [#380285](https://github.com/owncloud/core/pull/380285)
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 * Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
@@ -132,6 +133,10 @@ Details
    symfony/polyfill-php73 symfony/polyfill-php80
 
    https://github.com/owncloud/core/pull/38275
+
+* Change - Update sabre/dav (4.1.3 => 4.1.4): [#380285](https://github.com/owncloud/core/pull/380285)
+
+   https://github.com/owncloud/core/pull/380285
 
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 
