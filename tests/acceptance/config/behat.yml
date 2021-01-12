@@ -13,7 +13,7 @@ default:
           ldapInitialUserFilePath: /../../config/ldap-users.ldif
       contexts:
         - FeatureContext: &common_feature_context_params
-            baseUrl:  http://localhost:8080
+            baseUrl: http://localhost:8080
             adminUsername: admin
             adminPassword: admin
             regularUserPassword: 123456
@@ -138,6 +138,7 @@ default:
         - OccContext:
         - OccUsersGroupsContext:
         - AuthContext:
+        - PublicWebDavContext:
 
     apiProvisioning-v2:
       paths:
@@ -148,6 +149,7 @@ default:
         - OccContext:
         - OccUsersGroupsContext:
         - AuthContext:
+        - PublicWebDavContext:
 
     apiProvisioningGroups-v1:
       paths:
