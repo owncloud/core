@@ -337,10 +337,10 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		$matching, TableNode $table
 	) {
 		$this->featureContext->verifyTableNodeColumnsCount($table, 1);
-		$actualNotifications = $this->owncloudPage->getNotifications();
-		$numActualNotifications = \count($actualNotifications);
 		$expectedNotifications = $table->getRows();
 		$numExpectedNotifications = \count($expectedNotifications);
+		$actualNotifications = $this->owncloudPage->getNotifications($numExpectedNotifications);
+		$numActualNotifications = \count($actualNotifications);
 
 		Assert::assertGreaterThanOrEqual(
 			$numExpectedNotifications,

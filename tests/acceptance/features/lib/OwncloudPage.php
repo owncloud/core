@@ -197,10 +197,12 @@ class OwncloudPage extends Page {
 	/**
 	 * Get the text of any notifications
 	 *
+	 * @param int $expectedCount
+	 *
 	 * @return array
 	 * @throws ElementNotFoundException
 	 */
-	public function getNotifications() {
+	public function getNotifications($expectedCount = 0) {
 		$notificationsText = [];
 		$notifications = $this->findById($this->notificationId);
 
@@ -209,6 +211,23 @@ class OwncloudPage extends Page {
 			__METHOD__ . " could not find element with id $this->notificationId"
 		);
 
+		// Notifications might take some time to be displayed.
+		// Check until there are at least the expected number of notifications
+		// or the standard wait time has expired.
+		$currentTime = \microtime(true);
+		$end = $currentTime + (STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000);
+		$firstLoop = true;
+		$actualCount = 0;
+		do {
+			if (!$firstLoop) {
+				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
+				echo "Notice: " . __METHOD__ . " expecting $expectedCount notifications but found only $actualCount - checking again\n";
+			}
+			$allNotifications = $notifications->findAll("xpath", "div");
+			$actualCount = \count($allNotifications);
+			$currentTime = \microtime(true);
+			$firstLoop = false;
+		} while ($currentTime <= $end && ($actualCount < $expectedCount));
 		foreach ($notifications->findAll("xpath", "div") as $notification) {
 			\array_push($notificationsText, $this->getTrimmedText($notification));
 		}
