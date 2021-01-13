@@ -76,6 +76,43 @@ Feature: update a public link share
       | 1               | 100             |
       | 2               | 200             |
 
+  @issue-product-295 @skipOnOcV10
+  Scenario Outline: API responds with a full set of parameters when owner renames the file with a public link
+    Given using OCS API version "<ocs_api_version>"
+    When user "Alice" creates a public link share using the sharing API with settings
+      | path | FOLDER |
+    And user "Alice" has moved folder "/FOLDER" to "/RENAMED_FOLDER"
+    And user "Alice" gets the info of the last share using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response to user "Alice" should include
+      | id                         | A_STRING             |
+      | share_type                 | public_link          |
+      | uid_owner                  | %username%           |
+      | displayname_owner          | %displayname%        |
+      | permissions                | read                 |
+      | stime                      | A_NUMBER             |
+      | parent                     |                      |
+      | expiration                 |                      |
+      | token                      | A_STRING             |
+      | uid_file_owner             | %username%           |
+      | displayname_file_owner     | %displayname%        |
+      | additional_info_owner      |                      |
+      | additional_info_file_owner |                      |
+      | item_type                  |                      |
+      | item_source                |                      |
+      | path                       |                      |
+      | mimetype                   | httpd/unix-directory |
+      | storage_id                 |                      |
+      | storage                    | 0                    |
+      | file_source                |                      |
+      | file_target                |                      |
+      | mail_send                  | 0                    |
+      | name                       |                      |
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   Scenario Outline: Creating a new public link share with password and adding an expiration date using the old public API
     Given using OCS API version "<ocs_api_version>"
