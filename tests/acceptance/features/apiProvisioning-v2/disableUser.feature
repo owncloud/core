@@ -132,3 +132,78 @@ Feature: disable user
     And user "Alice" has been disabled
     When user "Alice" sends HTTP method "GET" to URL "/index.php/apps/files"
     And the HTTP status code should be "403"
+
+  Scenario: Disabled user tries to download file
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been disabled
+    When user "Alice" downloads file "/textfile0.txt" using the WebDAV API
+    Then the HTTP status code should be "401"
+  
+  Scenario: Disabled user tries to upload file
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been disabled
+    When user "Alice" uploads file with content "uploaded content" to "newTextFile.txt" using the WebDAV API
+    Then the HTTP status code should be "401"
+
+  Scenario: Disabled user tries to rename file
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been disabled
+    When user "Alice" moves file "/textfile0.txt" to "/renamedTextfile0.txt" using the WebDAV API
+    Then the HTTP status code should be "401"
+
+  Scenario: Disabled user tries to move file
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been disabled
+    When user "Alice" moves file "/textfile0.txt" to "/PARENT/textfile0.txt" using the WebDAV API
+    Then the HTTP status code should be "401"
+
+  Scenario: Disabled user tries to delete file
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been disabled
+    When user "Alice" deletes file "/textfile0.txt" using the WebDAV API
+    Then the HTTP status code should be "401"
+
+  Scenario: Disabled user tries to share a file
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has been disabled
+    When user "Alice" shares file "textfile0.txt" with user "Brian" using the sharing API
+    Then the HTTP status code should be "401"
+
+  Scenario: Disabled user tries to share a folder
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has been disabled
+    When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
+    Then the HTTP status code should be "401"
+
+  Scenario: getting shares shared by disabled user
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And user "Alice" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
+    When the administrator disables user "Alice" using the provisioning API
+    Then as "Brian" file "/Shares/textfile0.txt" should exist
+    And the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud test text file 0"
+
+  Scenario: getting shares shared by disabled user in a group
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And user "Alice" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
+    And group "group0" has been created
+    And user "Brian" has been added to group "group0"
+    And user "Alice" has shared folder "/PARENT" with group "group0"
+    And user "Brian" has accepted share "/PARENT" offered by user "Alice"
+    When the administrator disables user "Alice" using the provisioning API
+    Then as "Brian" folder "/Shares/PARENT" should exist
+    And the content of file "/Shares/PARENT/parent.txt" for user "Brian" should be "ownCloud test text file parent"
+
+  Scenario: Disabled user tries to create public link share
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been disabled
+    When user "Alice" creates a public link share using the sharing API with settings
+      | path | textfile0.txt |
+    Then the HTTP status code should be "401"
