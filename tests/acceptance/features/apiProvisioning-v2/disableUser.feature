@@ -178,20 +178,28 @@ Feature: disable user
     Then the HTTP status code should be "401"
 
   Scenario: getting shares shared by disabled user
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And user "Alice" has been created with default attributes and skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When the administrator disables user "Alice" using the provisioning API
     Then as "Brian" file "/Shares/textfile0.txt" should exist
+    And the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud test text file 0"
 
   Scenario: getting shares shared by disabled user in a group
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And user "Alice" has been created with default attributes and skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
     And group "group0" has been created
     And user "Brian" has been added to group "group0"
     And user "Alice" has shared folder "/PARENT" with group "group0"
+    And user "Brian" has accepted share "/PARENT" offered by user "Alice"
     When the administrator disables user "Alice" using the provisioning API
     Then as "Brian" folder "/Shares/PARENT" should exist
+    And the content of file "/Shares/PARENT/parent.txt" for user "Brian" should be "ownCloud test text file parent"
 
   Scenario: Disabled user tries to create public link share
     Given user "Alice" has been created with default attributes and skeleton files
@@ -199,21 +207,3 @@ Feature: disable user
     When user "Alice" creates a public link share using the sharing API with settings
       | path | textfile0.txt |
     Then the HTTP status code should be "401"
-
-  Scenario: getting public link share shared by disabled user using the new public WebDAV API
-    Given user "Alice" has been created with default attributes and skeleton files
-    And user "Alice" has created a public link share with settings
-      | path        | /textfile0.txt |
-      | permissions | read           |
-    And user "Alice" has been disabled
-    When the public downloads the last public shared file using the new public WebDAV API
-    Then the HTTP status code should be "404"
-
-  Scenario: getting public link share shared by disabled user using the old public WebDAV API
-    Given user "Alice" has been created with default attributes and skeleton files
-    And user "Alice" has created a public link share with settings
-      | path        | /textfile0.txt |
-      | permissions | read           |
-    And user "Alice" has been disabled
-    When the public downloads the last public shared file using the old public WebDAV API
-    Then the HTTP status code should be "200"
