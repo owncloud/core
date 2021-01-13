@@ -12,6 +12,7 @@ Summary
 * Bugfix - Don't redirect if the browser ask for a .properties file: [#38181](https://github.com/owncloud/core/pull/38181)
 * Bugfix - Show the share list even if some shares point to unavailable storages: [#38190](https://github.com/owncloud/core/pull/38190)
 * Bugfix - Fix a regression with theming of settings menu icons: [#38246](https://github.com/owncloud/core/pull/38246)
+* Bugfix - Determine unencrypted block size after begin operation: [#38249](https://github.com/owncloud/core/pull/38249)
 * Bugfix - Fix the position of the user afterLogin-event: [#38289](https://github.com/owncloud/core/pull/38289)
 * Change - Update Symfony components to 4.4.17: [#38163](https://github.com/owncloud/core/pull/38163)
 * Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.1): [#38188](https://github.com/owncloud/core/pull/38188)
@@ -71,6 +72,14 @@ Details
    menu.
 
    https://github.com/owncloud/core/pull/38246
+
+* Bugfix - Determine unencrypted block size after begin operation: [#38249](https://github.com/owncloud/core/pull/38249)
+
+   Unencrypted block size of encrypted file can change with different encoding types.
+   Unencrypted block size determination has been moved after begin operation in stream opening.
+   In this way, EncryptionModule can decide block size after reading the header of the file.
+
+   https://github.com/owncloud/core/pull/38249
 
 * Bugfix - Fix the position of the user afterLogin-event: [#38289](https://github.com/owncloud/core/pull/38289)
 
