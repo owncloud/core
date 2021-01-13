@@ -31,6 +31,7 @@ Summary
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
 * Enhancement - Make the right scrollbar more visible on the UI: [#38183](https://github.com/owncloud/core/pull/38183)
 * Enhancement - Improve file list tag management: [#38197](https://github.com/owncloud/core/pull/38197)
+* Enhancement - Improve the UX in the external storage settings page: [#38288](https://github.com/owncloud/core/pull/38288)
 
 Details
 -------
@@ -206,6 +207,14 @@ Details
    will appear in the tag list immediately
 
    https://github.com/owncloud/core/pull/38197
+
+* Enhancement - Improve the UX in the external storage settings page: [#38288](https://github.com/owncloud/core/pull/38288)
+
+   When a user adds or edits an external storage, the user will see a notification if the storage has
+   been added or an error occured. When a user hovers over the status indicator, the user will see a
+   pointer cursor, this clarifies that a click will result in a config (re-)check.
+
+   https://github.com/owncloud/core/pull/38288
 
 Changelog for ownCloud Core [10.6.0] (2020-11-25)
 =======================================
