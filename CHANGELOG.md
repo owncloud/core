@@ -14,6 +14,7 @@ Summary
 * Bugfix - Fix a regression with theming of settings menu icons: [#38246](https://github.com/owncloud/core/pull/38246)
 * Bugfix - Determine unencrypted block size after begin operation: [#38249](https://github.com/owncloud/core/pull/38249)
 * Bugfix - Fix the position of the user afterLogin-event: [#38289](https://github.com/owncloud/core/pull/38289)
+* Bugfix - Fix file_target in response when creating a public link share: [#38291](https://github.com/owncloud/core/issues/38291)
 * Change - Update Symfony components to 4.4.17: [#38163](https://github.com/owncloud/core/pull/38163)
 * Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.1): [#38188](https://github.com/owncloud/core/pull/38188)
 * Change - Update nikic/php-parser (4.10.2 => 4.10.4): [#38191](https://github.com/owncloud/core/pull/38191)
@@ -88,6 +89,15 @@ Details
    using Symfony event listeners.
 
    https://github.com/owncloud/core/pull/38289
+
+* Bugfix - Fix file_target in response when creating a public link share: [#38291](https://github.com/owncloud/core/issues/38291)
+
+   The value of share_folder (if set in config.php) was being prepended to the file_target field
+   in the response to a request to create a public link share. share_folder is not relevant to
+   public link shares. It is no longer prepended.
+
+   https://github.com/owncloud/core/issues/38291
+   https://github.com/owncloud/core/pull/38295
 
 * Change - Update Symfony components to 4.4.17: [#38163](https://github.com/owncloud/core/pull/38163)
 
