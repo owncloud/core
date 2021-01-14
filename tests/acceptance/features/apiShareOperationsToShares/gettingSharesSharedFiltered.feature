@@ -66,8 +66,8 @@ Feature: get shares filtered by type (user, group etc)
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And exactly 2 files or folders should be included in the response
-    And folder "/Shares/folderToShareWithPublic" should be included in the response
-    And folder "/Shares/fileToShareWithPublic.txt" should be included in the response
+    And folder "/folderToShareWithPublic" should be included in the response
+    And folder "/fileToShareWithPublic.txt" should be included in the response
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |

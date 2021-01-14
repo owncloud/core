@@ -1,0 +1,8 @@
+Bugfix: Fix file_target in response when creating a public link share
+
+The value of share_folder (if set in config.php) was being prepended to the
+file_target field in the response to a request to create a public link share.
+share_folder is not relevant to public link shares. It is no longer prepended.
+
+https://github.com/owncloud/core/issues/38291
+https://github.com/owncloud/core/pull/38295
