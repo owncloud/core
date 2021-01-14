@@ -134,6 +134,9 @@
 				if(settings.singleSelect) {
 					input.attr('name', 'ms'+multiSelectId+'-option');
 				}
+				if(element.is('[disabled=disabled]')) {
+					input.prop('disabled', true);
+				}
 				var label=$('<label/>');
 				label.attr('for', id);
 				label.text(element.text() || item);

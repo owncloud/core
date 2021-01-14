@@ -207,6 +207,10 @@ class UsersController extends Controller {
 			}
 		}
 
+		$isGuest = (bool) $this->config->getUserValue(
+			$user->getUID(), 'owncloud', 'isGuest', false
+		);
+
 		return [
 			'name' => $user->getUID(),
 			'displayname' => $user->getDisplayName(),
@@ -220,6 +224,7 @@ class UsersController extends Controller {
 			'email' => $displayName,
 			'isRestoreDisabled' => !$restorePossible,
 			'isAvatarAvailable' => $avatarAvailable,
+			'isGuest' => $isGuest,
 		];
 	}
 

@@ -49,8 +49,9 @@ var UserList = {
 	 *				'storageLocation':	'/srv/www/owncloud/data/username',
 	 *				'lastLogin':		'1418632333'
 	 *				'backend':			'LDAP',
-	 *				'email':			'username@example.org'
-	 *				'isRestoreDisabled':false
+	 *				'email':			'username@example.org',
+	 *				'isRestoreDisabled':false,
+	 *				'isGuest': 		    false
 	 * 			}
 	 * @param sort
 	 * @returns table row created for this user
@@ -80,6 +81,7 @@ var UserList = {
 		 */
 		$tr.data('uid', user.name);
 		$tr.data('displayname', user.displayname);
+		$tr.data('isGuest', user.isGuest);
 		$tr.data('mailAddress', user.email);
 		$tr.data('restoreDisabled', user.isRestoreDisabled);
 		$tr.find('.name').text(user.name);
@@ -358,6 +360,9 @@ var UserList = {
 	getRestoreDisabled: function(element) {
 		return ($(element).closest('tr').data('restoreDisabled') || '');
 	},
+	getIsGuest: function(element) {
+		return ($(element).closest('tr').data('isGuest') || '').toString() === 'true';
+	},
 	initDeleteHandling: function() {
 		//set up handler
 		UserDeleteHandler = new DeleteHandler('/settings/users/users', 'username',
@@ -626,6 +631,7 @@ var UserList = {
 		var user = UserList.getUID($td);
 		var checked = $td.data('groups') || [];
 		var extraGroups = [].concat(checked);
+		var isGuest = UserList.getIsGuest($td);
 
 		$td.find('.multiselectoptions').remove();
 
@@ -642,7 +648,16 @@ var UserList = {
 				// can't become subadmin of "admin" group
 				return;
 			}
-			$groupsSelect.append($('<option value="' + escapeHTML(group) + '">' + escapeHTML(group) + '</option>'));
+			// hide guest group for non-guest-users
+			if (isGuest !== true && group === 'guest_app' && !isSubadminSelect) {
+				return;
+			}
+			if (isGuest === true && group === 'guest_app' && !isSubadminSelect) {
+				// disable the guest group option for guests as they are bound to it
+				$groupsSelect.append($('<option value="' + escapeHTML(group) + '" disabled="disabled">' + escapeHTML(group) + '</option>'));
+			} else {
+				$groupsSelect.append($('<option value="' + escapeHTML(group) + '">' + escapeHTML(group) + '</option>'));
+			}
 		}
 
 		$.each(this.availableGroups, function (i, group) {
