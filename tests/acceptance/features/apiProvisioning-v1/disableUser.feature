@@ -137,7 +137,7 @@ Feature: disable user
     And user "Alice" has been disabled
     When user "Alice" downloads file "/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "401"
-  
+
   Scenario: Disabled user tries to upload file
     Given user "Alice" has been created with default attributes and skeleton files
     And user "Alice" has been disabled
@@ -206,3 +206,15 @@ Feature: disable user
     When user "Alice" creates a public link share using the sharing API with settings
       | path | textfile0.txt |
     Then the HTTP status code should be "401"
+
+  Scenario Outline: getting public link share shared by disabled user using the new public WebDAV API
+    Given user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has created a public link share with settings
+      | path        | /textfile0.txt |
+      | permissions | read           |
+    When the administrator disables user "Alice" using the provisioning API
+    Then the public should be able to download the last publicly shared file using the <dav_version> public WebDAV API without a password and the content should be "ownCloud test text file 0"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
