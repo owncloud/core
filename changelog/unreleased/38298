@@ -1,0 +1,9 @@
+Enhancement: Prevent migration between normal and guest users in UI
+
+OC 10 does not support the migration from normal users to guest users and
+vice versa. The fix clarifies this behavior in the Web UI by omitting the
+guest-group when adding or editing (non-guest) users and by disabling the
+ability to remove guest users from the guest group.
+
+https://github.com/owncloud/core/pull/38298
+https://github.com/owncloud/guests/issues/431
