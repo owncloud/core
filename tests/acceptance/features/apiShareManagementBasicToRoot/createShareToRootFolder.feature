@@ -530,7 +530,6 @@ Feature: sharing
     And user "Alice" has created folder "/Folder1"
     And user "Alice" has created folder "/Folder2"
     And user "Alice" has shared folder "/Folder1" with user "Brian"
-    And user "Brian" has accepted share "/Folder1" offered by user "Alice"
     When user "Alice" moves folder "/Folder2" to "/renamedFolder2" using the WebDAV API
     And user "Alice" shares folder "/renamedFolder2" with user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -547,9 +546,7 @@ Feature: sharing
       | mimetype               | httpd/unix-directory   |
       | storage_id             | ANY_VALUE              |
       | share_type             | user                   |
-    When user "Brian" accepts share "/renamedFolder2" offered by user "Alice" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
+    And as "Brian" folder "/renamedFolder2" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
