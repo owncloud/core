@@ -631,3 +631,36 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
+  @issue-ocis-719
+  Scenario Outline: Creating a share of a renamed file when another share exists
+    Given using OCS API version "<ocs_api_version>"
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/Folder1"
+    And user "Alice" has created folder "/Folder2"
+    And user "Alice" has shared folder "/Folder1" with user "Brian"
+    And user "Brian" has accepted share "/Folder1" offered by user "Alice"
+    When user "Alice" moves folder "/Folder2" to "/renamedFolder2" using the WebDAV API
+    And user "Alice" shares folder "/renamedFolder2" with user "Brian" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
+      | share_with             | %username%             |
+      | share_with_displayname | %displayname%          |
+      | file_target            | /Shares/renamedFolder2 |
+      | path                   | /renamedFolder2        |
+      | permissions            | all                    |
+      | uid_owner              | %username%             |
+      | displayname_owner      | %displayname%          |
+      | item_type              | folder                 |
+      | mimetype               | httpd/unix-directory   |
+      | storage_id             | ANY_VALUE              |
+      | share_type             | user                   |
+    When user "Brian" accepts share "/renamedFolder2" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And as "Brian" folder "/Shares/renamedFolder2" should exist
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
