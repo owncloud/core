@@ -172,10 +172,11 @@ class UsersController extends Controller {
 		// is enabled - so we eliminate the else paths in the conditional tree
 		// below
 		$restorePossible = false;
+		$uID = $user->getUID();
 
 		if ($this->isRestoreEnabled) {
 			// check for the users recovery setting
-			$recoveryMode = $this->config->getUserValue($user->getUID(), 'encryption', 'recoveryEnabled', '0');
+			$recoveryMode = $this->config->getUserValue($uID, 'encryption', 'recoveryEnabled', '0');
 			// method call inside empty is possible with PHP 5.5+
 			$recoveryModeEnabled = !empty($recoveryMode);
 			if ($recoveryModeEnabled) {
@@ -201,14 +202,14 @@ class UsersController extends Controller {
 		$avatarAvailable = false;
 		if ($this->config->getSystemValue('enable_avatars', true) === true) {
 			try {
-				$avatarAvailable = $this->avatarManager->getAvatar($user->getUID())->exists();
+				$avatarAvailable = $this->avatarManager->getAvatar($uID)->exists();
 			} catch (\Exception $e) {
 				//No avatar yet
 			}
 		}
 
 		$isGuest = (bool) $this->config->getUserValue(
-			$user->getUID(), 'owncloud', 'isGuest', false
+			$uID, 'owncloud', 'isGuest', false
 		);
 
 		return [

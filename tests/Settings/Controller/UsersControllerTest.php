@@ -116,7 +116,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$foo = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$foo
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('foo'));
 		$foo
@@ -148,7 +148,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$admin = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$admin
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('admin'));
 		$admin
@@ -182,7 +182,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$bar = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$bar
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('bar'));
 		$bar
@@ -326,7 +326,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$foo = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$foo
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('foo'));
 		$foo
@@ -358,7 +358,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$admin = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$admin
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('admin'));
 		$admin
@@ -392,7 +392,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$bar = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$bar
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('bar'));
 		$bar
@@ -548,7 +548,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$foo = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$foo
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('foo'));
 		$foo
@@ -580,7 +580,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$admin = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$admin
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('admin'));
 		$admin
@@ -614,7 +614,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$bar = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$bar
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('bar'));
 		$bar
@@ -724,7 +724,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('foo'));
 		$user

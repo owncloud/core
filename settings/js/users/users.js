@@ -632,6 +632,7 @@ var UserList = {
 		var checked = $td.data('groups') || [];
 		var extraGroups = [].concat(checked);
 		var isGuest = UserList.getIsGuest($td);
+		var guestAppName;
 
 		$td.find('.multiselectoptions').remove();
 
@@ -649,10 +650,10 @@ var UserList = {
 				return;
 			}
 			// hide guest group for non-guest-users
-			if (isGuest !== true && group === 'guest_app' && !isSubadminSelect) {
+			if (isGuest !== true && group === guestAppName && !isSubadminSelect) {
 				return;
 			}
-			if (isGuest === true && group === 'guest_app' && !isSubadminSelect) {
+			if (isGuest === true && group === guestAppName && !isSubadminSelect) {
 				// disable the guest group option for guests as they are bound to it
 				$groupsSelect.append($('<option value="' + escapeHTML(group) + '" disabled="disabled">' + escapeHTML(group) + '</option>'));
 			} else {
@@ -660,36 +661,45 @@ var UserList = {
 			}
 		}
 
-		$.each(this.availableGroups, function (i, group) {
-			// some new groups might be selected but not in the available groups list yet
-			var extraIndex = extraGroups.indexOf(group);
-			if (extraIndex >= 0) {
-				// remove extra group as it was found
-				extraGroups.splice(extraIndex, 1);
+		$.ajax({
+			type: 'GET',
+			url: OC.generateUrl('/settings/groups/guest'),
+		}).then(function (result) {
+			if (result.data && result.data.name) {
+				guestAppName = result.data.name;
 			}
-			createItem(group);
-		});
-		$.each(extraGroups, function (i, group) {
-			createItem(group);
-		});
 
-		$td.append($groupsSelect);
+			$.each(this.availableGroups, function (i, group) {
+				// some new groups might be selected but not in the available groups list yet
+				var extraIndex = extraGroups.indexOf(group);
+				if (extraIndex >= 0) {
+					// remove extra group as it was found
+					extraGroups.splice(extraIndex, 1);
+				}
+				createItem(group);
+			});
+			$.each(extraGroups, function (i, group) {
+				createItem(group);
+			});
 
-		if (isSubadminSelect) {
-			UserList.applySubadminSelect($groupsSelect, user, checked);
-		} else {
-			UserList.applyGroupSelect($groupsSelect, user, checked);
-		}
+			$td.append($groupsSelect);
 
-		$groupsListContainer.addClass('hidden');
-		$td.find('.multiselect:not(.groupsListContainer):first').click();
-		$groupsSelect.on('dropdownclosed', function(e) {
-			$groupsSelect.remove();
-			$td.find('.multiselect:not(.groupsListContainer)').parent().remove();
-			$td.find('.multiselectoptions').remove();
-			$groupsListContainer.removeClass('hidden');
-			UserList._updateGroupListLabel($td, e.checked);
-		});
+			if (isSubadminSelect) {
+				UserList.applySubadminSelect($groupsSelect, user, checked);
+			} else {
+				UserList.applyGroupSelect($groupsSelect, user, checked);
+			}
+
+			$groupsListContainer.addClass('hidden');
+			$td.find('.multiselect:not(.groupsListContainer):first').click();
+			$groupsSelect.on('dropdownclosed', function(e) {
+				$groupsSelect.remove();
+				$td.find('.multiselect:not(.groupsListContainer)').parent().remove();
+				$td.find('.multiselectoptions').remove();
+				$groupsListContainer.removeClass('hidden');
+				UserList._updateGroupListLabel($td, e.checked);
+			});
+		}.bind(this));
 	},
 
 	/**
