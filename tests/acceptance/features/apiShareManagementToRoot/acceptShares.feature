@@ -696,3 +696,12 @@ Feature: accept/decline shares coming from internal users
     And user "David" should not see the following elements
       | /PARENT%20(2)/ |
     And the content of file "/PARENT/abc.txt" for user "David" should be "uploaded content"
+
+  @issue-ocis-765
+  Scenario: shares exist after restoring already shared file to a previous version
+    And user "Alice" has uploaded file with content "Test Content." to "/toShareFile.txt"
+    And user "Alice" has uploaded file with content "Content Test Updated." to "/toShareFile.txt"
+    And user "Alice" has shared file "/toShareFile.txt" with user "Brian"
+    When user "Alice" restores version index "1" of file "/toShareFile.txt" using the WebDAV API
+    Then the content of file "/toShareFile.txt" for user "Alice" should be "Test Content."
+    And the content of file "/toShareFile.txt" for user "Brian" should be "Test Content."

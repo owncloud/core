@@ -233,6 +233,7 @@ default:
         - TrashbinContext:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
+        - FilesVersionsContext:
 
     apiShareManagementToShares:
       paths:
@@ -245,6 +246,7 @@ default:
         - TrashbinContext:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
+        - FilesVersionsContext:
 
     apiShareManagementBasicToRoot:
       paths:
