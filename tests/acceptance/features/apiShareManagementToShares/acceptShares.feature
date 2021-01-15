@@ -468,3 +468,13 @@ Feature: accept/decline shares coming from internal users
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
+  @issue-ocis-765
+  Scenario: shares exist after restoring already shared file to a previous version
+    And user "Alice" has uploaded file with content "Test Content." to "/toShareFile.txt"
+    And user "Alice" has uploaded file with content "Content Test Updated." to "/toShareFile.txt"
+    And user "Alice" has shared file "/toShareFile.txt" with user "Brian"
+    And user "Brian" has accepted share "/toShareFile.txt" offered by user "Alice"
+    When user "Alice" restores version index "1" of file "/toShareFile.txt" using the WebDAV API
+    Then the content of file "/toShareFile.txt" for user "Alice" should be "Test Content."
+    And the content of file "/Shares/toShareFile.txt" for user "Brian" should be "Test Content."
