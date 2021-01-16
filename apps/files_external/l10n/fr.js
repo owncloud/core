@@ -93,7 +93,7 @@ OC.L10N.register(
     "Once every direct access" : "Une fois à chaque accès direct",
     "External Storage" : "Stockage externe",
     "Enable external storage" : "Activer le stockage externe",
-    "External storage has been disabled by the administrator" : "Le stockage externe a été désactivé par l'adminstrateur",
+    "External storage has been disabled by the administrator" : "Le stockage externe a été désactivé par l'administrateur",
     "Folder name" : "Nom du dossier",
     "Authentication" : "Authentification",
     "Configuration" : "Configuration",
