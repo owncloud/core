@@ -236,7 +236,7 @@
 
 			if (xhr.status === 200) {
 				var securityHeaders = {
-					'X-XSS-Protection': '1; mode=block',
+					'X-XSS-Protection': '0',
 					'X-Content-Type-Options': 'nosniff',
 					'X-Robots-Tag': 'none',
 					'X-Frame-Options': 'SAMEORIGIN',
