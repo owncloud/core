@@ -1,0 +1,4 @@
+Change: Change X-XSS-Protection "1; block" -> "0"
+
+https://github.com/owncloud/core/issues/38236
+https://github.com/owncloud/core/pull/38305
