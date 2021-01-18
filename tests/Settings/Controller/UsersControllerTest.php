@@ -275,7 +275,6 @@ class UsersControllerTest extends \Test\TestCase {
 					'email' => 'foo@bar.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => true,
-					'isGuest' => false,
 				],
 				1 => [
 					'name' => 'admin',
@@ -290,7 +289,6 @@ class UsersControllerTest extends \Test\TestCase {
 					'email' => 'admin@bar.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => false,
-					'isGuest' => false,
 				],
 				2 => [
 					'name' => 'bar',
@@ -305,7 +303,6 @@ class UsersControllerTest extends \Test\TestCase {
 					'email' => 'bar@dummy.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => true,
-					'isGuest' => false,
 				],
 			]
 		);
@@ -499,7 +496,6 @@ class UsersControllerTest extends \Test\TestCase {
 					'email' => 'bar@dummy.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => true,
-					'isGuest' => false,
 				],
 				1=> [
 					'name' => 'foo',
@@ -514,7 +510,6 @@ class UsersControllerTest extends \Test\TestCase {
 					'email' => 'foo@bar.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => true,
-					'isGuest' => false,
 				],
 				2 => [
 					'name' => 'admin',
@@ -529,7 +524,6 @@ class UsersControllerTest extends \Test\TestCase {
 					'email' => 'admin@bar.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => false,
-					'isGuest' => false,
 				],
 			]
 		);
@@ -680,7 +674,6 @@ class UsersControllerTest extends \Test\TestCase {
 					'email' => 'foo@bar.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => true,
-					'isGuest' => false,
 				],
 				1 => [
 					'name' => 'admin',
@@ -695,7 +688,6 @@ class UsersControllerTest extends \Test\TestCase {
 					'email' => 'admin@bar.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => false,
-					'isGuest' => false,
 				],
 				2 => [
 					'name' => 'bar',
@@ -710,7 +702,6 @@ class UsersControllerTest extends \Test\TestCase {
 					'email' => 'bar@dummy.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => true,
-					'isGuest' => false,
 				],
 			]
 		);
@@ -792,7 +783,6 @@ class UsersControllerTest extends \Test\TestCase {
 					'email' => null,
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => true,
-					'isGuest' => false,
 				]
 			]
 		);
@@ -866,7 +856,6 @@ class UsersControllerTest extends \Test\TestCase {
 				'email' => null,
 				'isRestoreDisabled' => false,
 				'isAvatarAvailable' => true,
-				'isGuest' => false,
 			],
 			Http::STATUS_CREATED
 		);
@@ -957,7 +946,6 @@ class UsersControllerTest extends \Test\TestCase {
 				'email' => null,
 				'isRestoreDisabled' => false,
 				'isAvatarAvailable' => true,
-				'isGuest' => false,
 			],
 			Http::STATUS_CREATED
 		);
@@ -1042,7 +1030,6 @@ class UsersControllerTest extends \Test\TestCase {
 				'email' => null,
 				'isRestoreDisabled' => false,
 				'isAvatarAvailable' => true,
-				'isGuest' => false,
 			],
 			Http::STATUS_CREATED
 		);
@@ -1140,7 +1127,6 @@ class UsersControllerTest extends \Test\TestCase {
 				'email' => null,
 				'isRestoreDisabled' => false,
 				'isAvatarAvailable' => true,
-				'isGuest' => false,
 			],
 			Http::STATUS_CREATED
 		);
@@ -1642,7 +1628,6 @@ class UsersControllerTest extends \Test\TestCase {
 			'email' => null,
 			'isRestoreDisabled' => false,
 			'isAvatarAvailable' => true,
-			'isGuest' => false,
 		];
 
 		return [$user, $result];

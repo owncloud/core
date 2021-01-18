@@ -49,9 +49,8 @@ var UserList = {
 	 *				'storageLocation':	'/srv/www/owncloud/data/username',
 	 *				'lastLogin':		'1418632333'
 	 *				'backend':			'LDAP',
-	 *				'email':			'username@example.org',
-	 *				'isRestoreDisabled':false,
-	 *				'isGuest': 		    false
+	 *				'email':			'username@example.org'
+	 *				'isRestoreDisabled':false
 	 * 			}
 	 * @param sort
 	 * @returns table row created for this user
@@ -81,7 +80,6 @@ var UserList = {
 		 */
 		$tr.data('uid', user.name);
 		$tr.data('displayname', user.displayname);
-		$tr.data('isGuest', user.isGuest);
 		$tr.data('mailAddress', user.email);
 		$tr.data('restoreDisabled', user.isRestoreDisabled);
 		$tr.find('.name').text(user.name);
@@ -360,9 +358,6 @@ var UserList = {
 	getRestoreDisabled: function(element) {
 		return ($(element).closest('tr').data('restoreDisabled') || '');
 	},
-	getIsGuest: function(element) {
-		return ($(element).closest('tr').data('isGuest') || '').toString() === 'true';
-	},
 	initDeleteHandling: function() {
 		//set up handler
 		UserDeleteHandler = new DeleteHandler('/settings/users/users', 'username',
@@ -631,8 +626,8 @@ var UserList = {
 		var user = UserList.getUID($td);
 		var checked = $td.data('groups') || [];
 		var extraGroups = [].concat(checked);
-		var isGuest = UserList.getIsGuest($td);
-		var guestAppName;
+		var assignableGroups = [];
+		var removableGroups = [];
 
 		$td.find('.multiselectoptions').remove();
 
@@ -645,28 +640,38 @@ var UserList = {
 		}
 
 		function createItem(group) {
-			if (isSubadminSelect && group === 'admin') {
-				// can't become subadmin of "admin" group
-				return;
-			}
-			// hide guest group for non-guest-users
-			if (isGuest !== true && group === guestAppName && !isSubadminSelect) {
-				return;
-			}
-			if (isGuest === true && group === guestAppName && !isSubadminSelect) {
-				// disable the guest group option for guests as they are bound to it
-				$groupsSelect.append($('<option value="' + escapeHTML(group) + '" disabled="disabled">' + escapeHTML(group) + '</option>'));
-			} else {
+			if (isSubadminSelect) {
+				if (group === 'admin') {
+					// can't become subadmin of "admin" group
+					return;
+				}
+
 				$groupsSelect.append($('<option value="' + escapeHTML(group) + '">' + escapeHTML(group) + '</option>'));
+				return;
 			}
+
+			var groupIsChecked = checked.indexOf(group) !== -1;
+			var groupIsAssignable = assignableGroups.indexOf(group) !== -1;
+			var groupIsRemovable = removableGroups.indexOf(group) !== -1;
+			if (!groupIsChecked && !groupIsAssignable) {
+				$groupsSelect.append($('<option value="' + escapeHTML(group) + '" disabled="disabled">' + escapeHTML(group) + '</option>'));
+				return;
+			}
+			if (groupIsChecked && !groupIsRemovable) {
+				$groupsSelect.append($('<option value="' + escapeHTML(group) + '" disabled="disabled">' + escapeHTML(group) + '</option>'));
+				return;
+			}
+			$groupsSelect.append($('<option value="' + escapeHTML(group) + '">' + escapeHTML(group) + '</option>'));
 		}
 
 		$.ajax({
 			type: 'GET',
-			url: OC.generateUrl('/settings/groups/guest'),
+			url: OC.generateUrl('/settings/groups/available'),
+			data: {groups: this.availableGroups.concat(extraGroups)},
 		}).then(function (result) {
-			if (result.data && result.data.name) {
-				guestAppName = result.data.name;
+			if (result.data) {
+				assignableGroups = result.data.assignableGroups;
+				removableGroups = result.data.removableGroups;
 			}
 
 			$.each(this.availableGroups, function (i, group) {

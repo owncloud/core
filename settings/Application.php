@@ -125,8 +125,7 @@ class Application extends App {
 				$c->query('GroupManager'),
 				$c->query('UserSession'),
 				$c->query('IsAdmin'),
-				$c->query('L10N'),
-				$c->query('Config')
+				$c->query('L10N')
 			);
 		});
 		$container->registerService('UsersController', function (IContainer $c) {

@@ -28,7 +28,6 @@ use OC\AppFramework\Http;
 use OC\Group\MetaData;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
-use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\IRequest;
@@ -46,8 +45,6 @@ class GroupsController extends Controller {
 	private $userSession;
 	/** @var bool */
 	private $isAdmin;
-	/** @var IConfig */
-	private $config;
 
 	/**
 	 * @param string $appName
@@ -56,21 +53,18 @@ class GroupsController extends Controller {
 	 * @param IUserSession $userSession
 	 * @param bool $isAdmin
 	 * @param IL10N $l10n
-	 * @param IConfig $config
 	 */
 	public function __construct($appName,
 								IRequest $request,
 								IGroupManager $groupManager,
 								IUserSession $userSession,
 								$isAdmin,
-								IL10N $l10n,
-								IConfig $config) {
+								IL10N $l10n) {
 		parent::__construct($appName, $request);
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
 		$this->isAdmin = $isAdmin;
 		$this->l10n = $l10n;
-		$this->config = $config;
 	}
 
 	/**
@@ -164,18 +158,34 @@ class GroupsController extends Controller {
 	}
 
 	/**
+	 * Get available groups for assigning and removing via WebUI.
+	 *
+	 * @param array $groups
 	 * @return DataResponse
 	 */
-	public function getGuestGroupName() {
-		$guestGroupName = '';
-		if (\class_exists('\OCA\Guests\GroupBackend', false) && \OC_App::isEnabled('guests')) {
-			/* @phan-suppress-next-line PhanUndeclaredClassConstant */
-			$guestGroupName = $this->config->getAppValue('guests', 'group', \OCA\Guests\GroupBackend::DEFAULT_NAME);
+	public function getAvailableGroups($groups) {
+		$assignableGroups = [];
+		$removableGroups = [];
+		foreach ($groups as $gID) {
+			$group = $this->groupManager->get($gID);
+			if ($group) {
+				$backend = $group->getBackend();
+				$supportedActions = $backend->getSupportedActions();
+				if ($backend::ADD_TO_GROUP & $supportedActions) {
+					$assignableGroups[] = $gID;
+				}
+				if ($backend::REMOVE_FROM_GROUP & $supportedActions) {
+					$removableGroups[] = $gID;
+				}
+			}
 		}
 
 		return new DataResponse(
 			[
-				'data' => ['name' => $guestGroupName],
+				'data' => [
+					'assignableGroups' => $assignableGroups,
+					'removableGroups' => $removableGroups,
+				],
 				Http::STATUS_OK
 			]
 		);
