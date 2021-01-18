@@ -5083,16 +5083,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "8.5.13",
+            "version": "8.5.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "8e86be391a58104ef86037ba8a846524528d784e"
+                "reference": "c25f79895d27b6ecd5abfa63de1606b786a461a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/8e86be391a58104ef86037ba8a846524528d784e",
-                "reference": "8e86be391a58104ef86037ba8a846524528d784e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/c25f79895d27b6ecd5abfa63de1606b786a461a3",
+                "reference": "c25f79895d27b6ecd5abfa63de1606b786a461a3",
                 "shasum": ""
             },
             "require": {
@@ -5164,7 +5164,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/8.5.13"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/8.5.14"
             },
             "funding": [
                 {
@@ -5176,7 +5176,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-12-01T04:53:52+00:00"
+            "time": "2021-01-17T07:37:30+00:00"
         },
         {
             "name": "roave/security-advisories",
@@ -6423,5 +6423,5 @@
     "platform-overrides": {
         "php": "7.2"
     },
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }
