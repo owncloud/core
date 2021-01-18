@@ -34,6 +34,7 @@ Feature: get shares filtered by type (user, group etc)
       | path        | /fileToShareWithPublic.txt |
       | permissions | read                       |
 
+
   Scenario Outline: getting shares shared to users
     Given using OCS API version "<ocs_api_version>"
     When user "Alice" gets the user shares shared by him using the sharing API
@@ -46,6 +47,7 @@ Feature: get shares filtered by type (user, group etc)
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: getting shares shared to groups
     Given using OCS API version "<ocs_api_version>"
@@ -60,6 +62,7 @@ Feature: get shares filtered by type (user, group etc)
       | 1               | 100             |
       | 2               | 200             |
 
+  @skipOnOcV10.5 @skipOnOcV10.6.0
   Scenario Outline: getting shares shared to public links
     Given using OCS API version "<ocs_api_version>"
     When user "Alice" gets the public link shares shared by him using the sharing API
@@ -72,6 +75,7 @@ Feature: get shares filtered by type (user, group etc)
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: getting shares shared to users and groups
     Given using OCS API version "<ocs_api_version>"
