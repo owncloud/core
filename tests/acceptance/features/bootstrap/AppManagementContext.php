@@ -238,15 +238,16 @@ class AppManagementContext implements Context {
 	}
 
 	/**
-	 * @Then app :appId with version :appVersion should have been listed in the enabled apps section
+	 * @Then app :appId with version :appVersion and path :appPath should have been listed in the enabled apps section
 	 *
 	 * @param string $appId
 	 * @param string $appVersion
+	 * @param string $appPath
 	 *
 	 * @return void
 	 */
-	public function appWithVersionShouldHaveBeenListedInTheEnabledAppsSection(
-		$appId, $appVersion
+	public function appWithVersionAndPathShouldHaveBeenListedInTheEnabledAppsSection(
+		$appId, $appVersion, $appPath
 	) {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$expectedStartOfOutput = "Enabled:";
@@ -259,7 +260,7 @@ class AppManagementContext implements Context {
 		if ($startOfDisabledSection) {
 			$commandOutput = \substr($commandOutput, 0, $startOfDisabledSection);
 		}
-		$expectedString = "- $appId: $appVersion";
+		$expectedString = \sprintf("- %s:\n    - Version: %s\n    - Path: %s/%s", $appId, $appVersion, $this->featureContext->getServerRoot(), $appPath);
 		Assert::assertNotFalse(
 			\strpos($commandOutput, $expectedString),
 			"app:list output did not contain '$expectedString' in the enabled section"
@@ -267,15 +268,16 @@ class AppManagementContext implements Context {
 	}
 
 	/**
-	 * @Then app :appId with version :appVersion should have been listed in the disabled apps section
+	 * @Then app :appId with version :appVersion and path :appPath should have been listed in the disabled apps section
 	 *
 	 * @param string $appId
 	 * @param string $appVersion
+	 * @param string $appPath
 	 *
 	 * @return void
 	 */
-	public function appWithVersionShouldHaveBeenListedInTheDisabledAppsSection(
-		$appId, $appVersion
+	public function appWithVersionAndPathShouldHaveBeenListedInTheDisabledAppsSection(
+		$appId, $appVersion, $appPath
 	) {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$startOfDisabledSection = \strpos($commandOutput, "Disabled:");
@@ -284,7 +286,7 @@ class AppManagementContext implements Context {
 			"app:list output did not contain the disabled section"
 		);
 		$commandOutput = \substr($commandOutput, $startOfDisabledSection);
-		$expectedString = "- $appId: $appVersion";
+		$expectedString = \sprintf("- %s:\n    - Version: %s\n    - Path: %s/%s", $appId, $appVersion, $this->featureContext->getServerRoot(), $appPath);
 		Assert::assertNotFalse(
 			\strpos($commandOutput, $expectedString),
 			"app:list output did not contain '$expectedString' in the disabled section"
