@@ -60,7 +60,7 @@ class Crypto implements ICrypto {
 	 * @param ISecureRandom $random
 	 */
 	public function __construct(IConfig $config, ISecureRandom $random) {
-		$this->cipher = new AES($this::CRYPT_MODE);
+		$this->cipher = new AES(self::CRYPT_MODE);
 		$this->config = $config;
 		$this->random = $random;
 	}
