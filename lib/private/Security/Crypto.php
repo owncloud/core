@@ -99,7 +99,7 @@ class Crypto implements ICrypto {
 		// https://github.com/owncloud/encryption/issues/215
 		$derived = \hash_hkdf('sha512', $password, 0);
 		list($password, $hmacKey) = \str_split($derived, 32);
-		$this->cipher->setPassword($password, $this::CRYPT_METHOD, $this::CRYPT_HASH, $this::SALT);
+		$this->cipher->setPassword($password, self::CRYPT_METHOD, self::CRYPT_HASH, self::SALT);
 
 		$iv = \random_bytes($this->ivLength);
 		$this->cipher->setIV($iv);
@@ -128,7 +128,7 @@ class Crypto implements ICrypto {
 		if (\sizeof($parts) === 4 && $parts[0] === 'v2') {
 			$derived = \hash_hkdf('sha512', $password, 0);
 			list($password, $hmacKey) = \str_split($derived, 32);
-			$this->cipher->setPassword($password, $this::CRYPT_METHOD, $this::CRYPT_HASH, $this::SALT);
+			$this->cipher->setPassword($password, self::CRYPT_METHOD, self::CRYPT_HASH, self::SALT);
 
 			$ciphertext = \hex2bin($parts[1]);
 			$iv = \hex2bin($parts[2]);
@@ -144,7 +144,7 @@ class Crypto implements ICrypto {
 		}
 
 		if (\sizeof($parts) === 3) {
-			$this->cipher->setPassword($password, $this::CRYPT_METHOD, $this::CRYPT_HASH, $this::SALT);
+			$this->cipher->setPassword($password, self::CRYPT_METHOD, self::CRYPT_HASH, self::SALT);
 			$ciphertext = \hex2bin($parts[0]);
 			$iv = $parts[1];
 			$hmac = \hex2bin($parts[2]);
