@@ -16,7 +16,7 @@ Summary
 * Bugfix - Fix the position of the user afterLogin-event: [#38289](https://github.com/owncloud/core/pull/38289)
 * Bugfix - Fix file_target in response when creating a public link share: [#38291](https://github.com/owncloud/core/issues/38291)
 * Change - Update Symfony components to 4.4.17: [#38163](https://github.com/owncloud/core/pull/38163)
-* Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.1): [#38188](https://github.com/owncloud/core/pull/38188)
+* Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.2): [#38306](https://github.com/owncloud/core/pull/38306)
 * Change - Update nikic/php-parser (4.10.2 => 4.10.4): [#38191](https://github.com/owncloud/core/pull/38191)
 * Change - Update swiftmailer/swiftmailer (v6.2.3 => v6.2.4): [#38198](https://github.com/owncloud/core/pull/38198)
 * Change - Rename phoenix to web: [#38199](https://github.com/owncloud/core/pull/38199)
@@ -28,6 +28,7 @@ Summary
 * Change - Update symfony/polyfill (1.20.0 => 1.22.0): [#38275](https://github.com/owncloud/core/pull/38275)
 * Change - Update sabre/dav (4.1.3 => 4.1.4): [#380285](https://github.com/owncloud/core/pull/380285)
 * Change - Remove package patchwork/utf8: [#38286](https://github.com/owncloud/core/pull/38286)
+* Change - Update swiftmailer/swiftmailer (v6.2.4 => v6.2.5): [#38306](https://github.com/owncloud/core/pull/38306)
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 * Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
@@ -107,8 +108,9 @@ Details
    https://github.com/owncloud/core/pull/38163
    https://symfony.com/blog/symfony-4-4-17-released
 
-* Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.1): [#38188](https://github.com/owncloud/core/pull/38188)
+* Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.2): [#38306](https://github.com/owncloud/core/pull/38306)
 
+   https://github.com/owncloud/core/pull/38306
    https://github.com/owncloud/core/pull/38188
 
 * Change - Update nikic/php-parser (4.10.2 => 4.10.4): [#38191](https://github.com/owncloud/core/pull/38191)
@@ -171,6 +173,10 @@ Details
 * Change - Remove package patchwork/utf8: [#38286](https://github.com/owncloud/core/pull/38286)
 
    https://github.com/owncloud/core/pull/38286
+
+* Change - Update swiftmailer/swiftmailer (v6.2.4 => v6.2.5): [#38306](https://github.com/owncloud/core/pull/38306)
+
+   https://github.com/owncloud/core/pull/38306
 
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 
