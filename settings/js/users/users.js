@@ -667,7 +667,6 @@ var UserList = {
 		$.ajax({
 			type: 'GET',
 			url: OC.generateUrl('/settings/groups/available'),
-			data: {groups: this.availableGroups.concat(extraGroups)},
 		}).then(function (result) {
 			if (result.data) {
 				assignableGroups = result.data.assignableGroups;

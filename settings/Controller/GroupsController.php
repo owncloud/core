@@ -160,23 +160,19 @@ class GroupsController extends Controller {
 	/**
 	 * Get available groups for assigning and removing via WebUI.
 	 *
-	 * @param array $groups
 	 * @return DataResponse
 	 */
-	public function getAvailableGroups($groups) {
+	public function getAvailableGroups() {
 		$assignableGroups = [];
 		$removableGroups = [];
-		foreach ($groups as $gID) {
-			$group = $this->groupManager->get($gID);
-			if ($group) {
-				$backend = $group->getBackend();
-				$supportedActions = $backend->getSupportedActions();
-				if ($backend::ADD_TO_GROUP & $supportedActions) {
-					$assignableGroups[] = $gID;
-				}
-				if ($backend::REMOVE_FROM_GROUP & $supportedActions) {
-					$removableGroups[] = $gID;
-				}
+
+		foreach ($this->groupManager->getBackends() as $backend) {
+			$groups = $backend->getGroups();
+			if ($backend->implementsActions($backend::ADD_TO_GROUP)) {
+				\array_push($assignableGroups, ...$groups);
+			}
+			if ($backend->implementsActions($backend::REMOVE_FROM_GROUP)) {
+				\array_push($removableGroups, ...$groups);
 			}
 		}
 

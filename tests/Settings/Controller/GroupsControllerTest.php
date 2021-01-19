@@ -349,4 +349,32 @@ class GroupsControllerTest extends \Test\TestCase {
 		$response = $this->groupsController->destroy('ExistingGroup');
 		$this->assertEquals($expectedResponse, $response);
 	}
+
+	public function testGetAvailableGroups() {
+		$assignableGroups = ['assignableGroup'];
+		$backend = $this->createMock('\OCP\GroupInterface');
+		$backend
+			->expects($this->once())
+			->method('getGroups')
+			->willReturn($assignableGroups);
+		$backend->expects($this->exactly(2))
+			->method('implementsActions')
+			->willReturn(true, false);
+		$this->container['GroupManager']
+			->expects($this->once())
+			->method('getBackends')
+			->will($this->returnValue([$backend]));
+
+		$expectedResponse = new DataResponse(
+			[
+				'data' => [
+					'assignableGroups' => $assignableGroups,
+					'removableGroups' => [],
+				],
+				\OC\AppFramework\Http::STATUS_OK
+			]
+		);
+		$response = $this->groupsController->getAvailableGroups();
+		$this->assertEquals($expectedResponse, $response);
+	}
 }
