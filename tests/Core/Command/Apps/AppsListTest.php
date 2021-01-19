@@ -57,10 +57,11 @@ class AppsListTest extends TestCase {
 
 	public function providesAppIds() {
 		return [
-			[[], '- files: 1.5'],
-			[['--shipped' => 'true'], '- dav: 0.6.0'],
+			[[], "- files:\n    - Version: 1.5"],
+			[[], "- dav:\n    - Version: 0.6.0\n    - Path: ".\realpath(__DIR__ . '/../../../../apps/dav')],
+			[['--shipped' => 'true'],  "- dav:\n    - Version: 0.6.0"],
 			[['--shipped' => 'false'], '- comments:'],
-			[['search-pattern' => 'dav'], '- dav: 0.6.0']
+			[['search-pattern' => 'dav'], "- dav:\n    - Version: 0.6.0"]
 		];
 	}
 }

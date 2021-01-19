@@ -84,7 +84,7 @@ class ListApps extends Base {
 		} else {
 			$shippedFilter = null;
 		}
-		
+
 		$apps = \OC_App::getAllApps();
 		$enabledApps = $disabledApps = [];
 		$versions = \OC_App::getAppVersions();
@@ -98,7 +98,7 @@ class ListApps extends Base {
 			if ($appNameSubString !== null && !\preg_match('/' . $appNameSubString . '/', $app)) {
 				continue;
 			}
-			
+
 			if ($this->manager->isInstalled($app)) {
 				$enabledApps[] = $app;
 			} else {
@@ -112,14 +112,27 @@ class ListApps extends Base {
 		if ($input->getOption('enabled') || $neitherSpecified) {
 			\sort($enabledApps);
 			foreach ($enabledApps as $app) {
-				$apps['enabled'][$app] = (isset($versions[$app])) ? $versions[$app] : true;
+				$appDetailRecord = [];
+
+				if (isset($versions[$app])) {
+					$appDetailRecord['Version'] = $versions[$app];
+				}
+
+				$appDetailRecord['Path'] = \OC_App::getAppPath($app);
+				$apps['enabled'][$app] = $appDetailRecord;
 			}
 		}
 
 		if ($input->getOption('disabled') || $neitherSpecified) {
 			\sort($disabledApps);
 			foreach ($disabledApps as $app) {
-				$apps['disabled'][$app] = ($input->getOption('disabled') && isset($versions[$app])) ? $versions[$app] : null;
+				$appDetailRecord = [];
+				if (($input->getOption('disabled') && isset($versions[$app]))) {
+					$appDetailRecord['Version'] = $versions[$app];
+				}
+
+				$appDetailRecord['Path'] = \OC_App::getAppPath($app);
+				$apps['disabled'][$app] = $appDetailRecord;
 			}
 		}
 
