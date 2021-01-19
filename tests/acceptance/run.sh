@@ -454,7 +454,7 @@ function run_behat_tests() {
 				SUITE=`basename ${SUITE_PATH}`
 				SCENARIO=`basename ${FAILED_SCENARIO_PATH}`
 				SUITE_SCENARIO="${SUITE}/${SCENARIO}"
-				grep -x ${SUITE_SCENARIO} ${EXPECTED_FAILURES_FILE} > /dev/null
+				grep "\[${SUITE_SCENARIO}\]" "${EXPECTED_FAILURES_FILE}" > /dev/null
 				if [ $? -ne 0 ]
 				then
 					echo "Error: Scenario ${SUITE_SCENARIO} failed but was not expected to fail."
@@ -470,7 +470,14 @@ function run_behat_tests() {
 				then
 					continue
 				fi
-
+				# Match lines that have [someSuite/someName.feature:n] - the part inside the
+				# brackets is the suite, feature and line number of the expected failure.
+				# Else ignore the line.
+				if [[ "${SUITE_SCENARIO}" =~ \[(\S+\/\S+\.feature:\d+)] ]]; then
+				  SUITE_SCENARIO="${BASH_REMATCH[1]}"
+				else
+				  continue
+				fi
 				if [ -n "${BEHAT_SUITE_TO_RUN}" ]
 				then
 					# If the expected failure is not in the suite that is currently being run,
