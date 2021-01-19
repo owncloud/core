@@ -36,6 +36,7 @@ Summary
 * Enhancement - Make the right scrollbar more visible on the UI: [#38183](https://github.com/owncloud/core/pull/38183)
 * Enhancement - Improve file list tag management: [#38197](https://github.com/owncloud/core/pull/38197)
 * Enhancement - Improve the UX in the external storage settings page: [#38288](https://github.com/owncloud/core/pull/38288)
+* Enhancement - Display path in the occ app:list command: [#38309](https://github.com/owncloud/core/pull/38309)
 
 Details
 -------
@@ -245,6 +246,12 @@ Details
    pointer cursor, this clarifies that a click will result in a config (re-)check.
 
    https://github.com/owncloud/core/pull/38288
+
+* Enhancement - Display path in the occ app:list command: [#38309](https://github.com/owncloud/core/pull/38309)
+
+   Occ app:list Additionally displays the located app path
+
+   https://github.com/owncloud/core/pull/38309
 
 Changelog for ownCloud Core [10.6.0] (2020-11-25)
 =======================================
