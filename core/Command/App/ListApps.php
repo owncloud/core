@@ -119,7 +119,7 @@ class ListApps extends Base {
 				}
 
 				$appDetailRecord['Path'] = \OC_App::getAppPath($app);
-				$apps['enabled'][$app] =$appDetailRecord;
+				$apps['enabled'][$app] = $appDetailRecord;
 			}
 		}
 
