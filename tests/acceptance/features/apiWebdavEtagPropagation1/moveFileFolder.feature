@@ -21,7 +21,7 @@ Feature: propagation of etags when moving files or folders
       | old         |
       | new         |
 
-
+  @skipOnOcis-OC-Storage @issue-product-280
   Scenario Outline: moving a file from one folder to an other changes the etags of both folders
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/src"
@@ -41,7 +41,7 @@ Feature: propagation of etags when moving files or folders
       | old         |
       | new         |
 
-
+  @skipOnOcis-OC-Storage @issue-product-280
   Scenario Outline: moving a file into a subfolder changes the etags of all parents
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/upload"
