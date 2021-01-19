@@ -87,6 +87,7 @@ OC.L10N.register(
     "Couldn't send mail to following recipient(s): %s " : "Não foi possível enviar email para o(s) seguinte(s) destinatário(s): %s ",
     "Share API is disabled" : "O compartilhamento de API está desabilitado.",
     "Wrong share ID, share doesn't exist" : "ID de compartilhamento errado, o compartilhamento não existe",
+    "Share points to a node not available" : "Pontos de compartilhamento para um nó não disponível",
     "Could not delete share" : "Não foi possível eliminar o compartilhamento",
     "Please specify a file or folder path" : "Por favor especifique um arquivo ou caminho",
     "Wrong path, file/folder doesn't exist" : "Caminho errado, arquivo/pasta não existe",
