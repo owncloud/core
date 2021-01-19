@@ -175,6 +175,7 @@ Details
 * Change - Remove package patchwork/utf8: [#38286](https://github.com/owncloud/core/pull/38286)
 
    https://github.com/owncloud/core/pull/38286
+   https://github.com/owncloud/core/pull/38315
 
 * Change - Update swiftmailer/swiftmailer (v6.2.4 => v6.2.5): [#38306](https://github.com/owncloud/core/pull/38306)
 
