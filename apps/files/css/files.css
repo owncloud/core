@@ -437,6 +437,7 @@ table td.filename .nametext .innernametext {
 	position: relative;
 	display: inline-block;
 	vertical-align: top;
+	white-space: pre;
 }
 
 @media only screen and (min-width: 1500px) {
