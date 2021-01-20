@@ -650,9 +650,9 @@ var UserList = {
 				return;
 			}
 
-			var groupIsChecked = checked.indexOf(group) !== -1;
-			var groupIsAssignable = assignableGroups.indexOf(group) !== -1;
-			var groupIsRemovable = removableGroups.indexOf(group) !== -1;
+			var groupIsChecked = new Set(checked).has(group) === true;
+			var groupIsAssignable = new Set(assignableGroups).has(group) === true;
+			var groupIsRemovable = new Set(removableGroups).has(group) === true;
 			if (!groupIsChecked && !groupIsAssignable) {
 				$groupsSelect.append($('<option value="' + escapeHTML(group) + '" disabled="disabled">' + escapeHTML(group) + '</option>'));
 				return;

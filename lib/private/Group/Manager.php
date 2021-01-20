@@ -502,6 +502,6 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return \OCP\GroupInterface[]
 	 */
 	public function getBackends() {
-		return \array_values($this->backends);
+		return $this->backends;
 	}
 }

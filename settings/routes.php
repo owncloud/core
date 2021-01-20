@@ -71,7 +71,7 @@ $application->registerRoutes($this, [
 		['name' => 'Users#setPasswordForm', 'url' => '/settings/users/setpassword/form/{token}/{userId}', 'verb' => 'GET'],
 		['name' => 'Users#resendToken', 'url' => '/resend/token/{userId}', 'verb' => 'POST'],
 		['name' => 'Users#setPassword', 'url' => '/setpassword/{token}/{userId}', 'verb' => 'POST'],
-		['name' => 'Groups#getAvailableGroups', 'url' => '/settings/groups/available', 'verb' => 'GET'],
+		['name' => 'Groups#getAssignableAndRemovableGroups', 'url' => '/settings/groups/available', 'verb' => 'GET'],
 	]
 ]);
 

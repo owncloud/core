@@ -350,7 +350,7 @@ class GroupsControllerTest extends \Test\TestCase {
 		$this->assertEquals($expectedResponse, $response);
 	}
 
-	public function testGetAvailableGroups() {
+	public function testGetAssignableAndRemovableGroups() {
 		$assignableGroups = ['assignableGroup'];
 		$backend = $this->createMock('\OCP\GroupInterface');
 		$backend
@@ -374,7 +374,7 @@ class GroupsControllerTest extends \Test\TestCase {
 				\OC\AppFramework\Http::STATUS_OK
 			]
 		);
-		$response = $this->groupsController->getAvailableGroups();
+		$response = $this->groupsController->getAssignableAndRemovableGroups();
 		$this->assertEquals($expectedResponse, $response);
 	}
 }

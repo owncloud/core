@@ -162,7 +162,7 @@ class GroupsController extends Controller {
 	 *
 	 * @return DataResponse
 	 */
-	public function getAvailableGroups() {
+	public function getAssignableAndRemovableGroups() {
 		$assignableGroups = [];
 		$removableGroups = [];
 
