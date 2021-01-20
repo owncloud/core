@@ -626,8 +626,12 @@ var UserList = {
 		var user = UserList.getUID($td);
 		var checked = $td.data('groups') || [];
 		var extraGroups = [].concat(checked);
-		var assignableGroups = [];
-		var removableGroups = [];
+		var assignableGroups = new Set();
+		var removableGroups = new Set();
+		var checkedSet = new Set();
+		$.each(checked, function(i, group) {
+			checkedSet.add(group);
+		});
 
 		$td.find('.multiselectoptions').remove();
 
@@ -641,18 +645,20 @@ var UserList = {
 
 		function createItem(group) {
 			if (isSubadminSelect) {
+				// this is solely for the dropdown menu "Group Admin for"
 				if (group === 'admin') {
 					// can't become subadmin of "admin" group
 					return;
 				}
 
 				$groupsSelect.append($('<option value="' + escapeHTML(group) + '">' + escapeHTML(group) + '</option>'));
+				// return as we need to bypass the following group restrictions here
 				return;
 			}
 
-			var groupIsChecked = new Set(checked).has(group) === true;
-			var groupIsAssignable = new Set(assignableGroups).has(group) === true;
-			var groupIsRemovable = new Set(removableGroups).has(group) === true;
+			var groupIsChecked = checkedSet.has(group);
+			var groupIsAssignable = assignableGroups.has(group);
+			var groupIsRemovable = removableGroups.has(group);
 			if (!groupIsChecked && !groupIsAssignable) {
 				$groupsSelect.append($('<option value="' + escapeHTML(group) + '" disabled="disabled">' + escapeHTML(group) + '</option>'));
 				return;
@@ -669,8 +675,12 @@ var UserList = {
 			url: OC.generateUrl('/settings/groups/available'),
 		}).then(function (result) {
 			if (result.data) {
-				assignableGroups = result.data.assignableGroups;
-				removableGroups = result.data.removableGroups;
+				$.each(result.data.assignableGroups, function(i, group) {
+					assignableGroups.add(group);
+				});
+				$.each(result.data.removableGroups, function(i, group) {
+					removableGroups.add(group);
+				});
 			}
 
 			$.each(this.availableGroups, function (i, group) {
