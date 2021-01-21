@@ -30,6 +30,7 @@ Summary
 * Change - Update symfony/polyfill (1.20.0 => 1.22.0): [#38275](https://github.com/owncloud/core/pull/38275)
 * Change - Update sabre/dav (4.1.3 => 4.1.4): [#380285](https://github.com/owncloud/core/pull/380285)
 * Change - Remove package patchwork/utf8: [#38286](https://github.com/owncloud/core/pull/38286)
+* Change - Change X-XSS-Protection "1; block" -> "0": [#38236](https://github.com/owncloud/core/issues/38236)
 * Change - Update swiftmailer/swiftmailer (v6.2.4 => v6.2.5): [#38306](https://github.com/owncloud/core/pull/38306)
 * Change - Update pear/archive_tar (1.4.11 => 1.4.12): [#38312](https://github.com/owncloud/core/pull/38312)
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
@@ -194,6 +195,18 @@ Details
 
    https://github.com/owncloud/core/pull/38286
    https://github.com/owncloud/core/pull/38315
+
+* Change - Change X-XSS-Protection "1; block" -> "0": [#38236](https://github.com/owncloud/core/issues/38236)
+
+   OWASP/CheatSheetSeries#376 (comment)
+   https://github.com/OWASP/CheatSheetSeries/issues/376#issuecomment-602663932
+   Suggest remove vs. "0"
+   https://github.com/helmetjs/helmet/issues/230#issuecomment-614106165
+   X-XSS-Protection header has been deprecated
+   https://owasp.org/www-project-secure-headers/#x-xss-protection
+
+   https://github.com/owncloud/core/issues/38236
+   https://github.com/owncloud/core/pull/38305
 
 * Change - Update swiftmailer/swiftmailer (v6.2.4 => v6.2.5): [#38306](https://github.com/owncloud/core/pull/38306)
 
