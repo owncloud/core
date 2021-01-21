@@ -18,7 +18,7 @@
     Header      unset X-Content-Type-Options
     Header always set X-Content-Type-Options "nosniff"
     Header      unset X-XSS-Protection
-    Header always set X-XSS-Protection "1; mode=block"
+    Header always set X-XSS-Protection "0"
     Header      unset X-Robots-Tag
     Header always set X-Robots-Tag "none"
     Header      unset X-Frame-Options

@@ -416,7 +416,7 @@ describe('OC.SetupChecks tests', function() {
 			async.done(function( data, s, x ){
 				expect(data).toEqual([
 				{
-					msg: 'The "X-XSS-Protection" HTTP header is not configured to equal to "1; mode=block". This is a potential security or privacy risk and we recommend adjusting this setting.',
+					msg: 'The "X-XSS-Protection" HTTP header is not configured to equal to "0". This is a potential security or privacy risk and we recommend adjusting this setting.',
 					type: OC.SetupChecks.MESSAGE_TYPE_WARNING
 				}, {
 					msg: 'The "X-Content-Type-Options" HTTP header is not configured to equal to "nosniff". This is a potential security or privacy risk and we recommend adjusting this setting.',
@@ -457,7 +457,7 @@ describe('OC.SetupChecks tests', function() {
 
 			async.done(function( data, s, x ){
 				expect(data).toEqual([{
-					msg: 'The "X-XSS-Protection" HTTP header is not configured to equal to "1; mode=block". This is a potential security or privacy risk and we recommend adjusting this setting.',
+					msg: 'The "X-XSS-Protection" HTTP header is not configured to equal to "0". This is a potential security or privacy risk and we recommend adjusting this setting.',
 					type: OC.SetupChecks.MESSAGE_TYPE_WARNING,
 				}, {
 					msg: 'The "X-Content-Type-Options" HTTP header is not configured to equal to "nosniff". This is a potential security or privacy risk and we recommend adjusting this setting.',
@@ -474,7 +474,7 @@ describe('OC.SetupChecks tests', function() {
 			suite.server.requests[0].respond(
 				200,
 				{
-					'X-XSS-Protection': '1; mode=block',
+					'X-XSS-Protection': '0',
 					'X-Content-Type-Options': 'nosniff',
 					'X-Robots-Tag': 'none',
 					'X-Frame-Options': 'SAMEORIGIN',
@@ -497,7 +497,7 @@ describe('OC.SetupChecks tests', function() {
 
 		suite.server.requests[0].respond(200,
 			{
-				'X-XSS-Protection': '1; mode=block',
+				'X-XSS-Protection': '0',
 				'X-Content-Type-Options': 'nosniff',
 				'X-Robots-Tag': 'none',
 				'X-Frame-Options': 'SAMEORIGIN',
@@ -543,7 +543,7 @@ describe('OC.SetupChecks tests', function() {
 
 		suite.server.requests[0].respond(200,
 			{
-				'X-XSS-Protection': '1; mode=block',
+				'X-XSS-Protection': '0',
 				'X-Content-Type-Options': 'nosniff',
 				'X-Robots-Tag': 'none',
 				'X-Frame-Options': 'SAMEORIGIN',
@@ -568,7 +568,7 @@ describe('OC.SetupChecks tests', function() {
 		suite.server.requests[0].respond(200,
 			{
 				'Strict-Transport-Security': 'max-age=15551999',
-				'X-XSS-Protection': '1; mode=block',
+				'X-XSS-Protection': '0',
 				'X-Content-Type-Options': 'nosniff',
 				'X-Robots-Tag': 'none',
 				'X-Frame-Options': 'SAMEORIGIN',
@@ -593,7 +593,7 @@ describe('OC.SetupChecks tests', function() {
 		suite.server.requests[0].respond(200,
 			{
 				'Strict-Transport-Security': 'iAmABogusHeader342',
-				'X-XSS-Protection': '1; mode=block',
+				'X-XSS-Protection': '0',
 				'X-Content-Type-Options': 'nosniff',
 				'X-Robots-Tag': 'none',
 				'X-Frame-Options': 'SAMEORIGIN',
@@ -617,7 +617,7 @@ describe('OC.SetupChecks tests', function() {
 
 		suite.server.requests[0].respond(200, {
 			'Strict-Transport-Security': 'max-age=15768000',
-			'X-XSS-Protection': '1; mode=block',
+			'X-XSS-Protection': '0',
 			'X-Content-Type-Options': 'nosniff',
 			'X-Robots-Tag': 'none',
 			'X-Frame-Options': 'SAMEORIGIN',
@@ -637,7 +637,7 @@ describe('OC.SetupChecks tests', function() {
 
 		suite.server.requests[0].respond(200, {
 			'Strict-Transport-Security': 'max-age=99999999',
-			'X-XSS-Protection': '1; mode=block',
+			'X-XSS-Protection': '0',
 			'X-Content-Type-Options': 'nosniff',
 			'X-Robots-Tag': 'none',
 			'X-Frame-Options': 'SAMEORIGIN',
@@ -657,7 +657,7 @@ describe('OC.SetupChecks tests', function() {
 
 		suite.server.requests[0].respond(200, {
 			'Strict-Transport-Security': 'max-age=99999999; includeSubDomains',
-			'X-XSS-Protection': '1; mode=block',
+			'X-XSS-Protection': '0',
 			'X-Content-Type-Options': 'nosniff',
 			'X-Robots-Tag': 'none',
 			'X-Frame-Options': 'SAMEORIGIN',
@@ -677,7 +677,7 @@ describe('OC.SetupChecks tests', function() {
 
 		suite.server.requests[0].respond(200, {
 			'Strict-Transport-Security': 'max-age=99999999; preload; includeSubDomains',
-			'X-XSS-Protection': '1; mode=block',
+			'X-XSS-Protection': '0',
 			'X-Content-Type-Options': 'nosniff',
 			'X-Robots-Tag': 'none',
 			'X-Frame-Options': 'SAMEORIGIN',

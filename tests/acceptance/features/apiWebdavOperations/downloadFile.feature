@@ -53,7 +53,7 @@ Feature: download file
       | X-Frame-Options                   | SAMEORIGIN                                                       |
       | X-Permitted-Cross-Domain-Policies | none                                                             |
       | X-Robots-Tag                      | none                                                             |
-      | X-XSS-Protection                  | 1; mode=block                                                    |
+      | X-XSS-Protection                  | 0                                                                |
     And the downloaded content should start with "Welcome"
     Examples:
       | dav_version |
