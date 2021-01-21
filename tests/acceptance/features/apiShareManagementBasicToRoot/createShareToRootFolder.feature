@@ -488,6 +488,7 @@ Feature: sharing
 #    Then the HTTP status code should be "405"
     And as "Alice" folder "userOneFolder" should not exist
 
+  @issue-enterprise-3896
   Scenario: sharing a subfolder to a user that already received parent folder share
     Given these users have been created with default attributes and without skeleton files:
       | username |
