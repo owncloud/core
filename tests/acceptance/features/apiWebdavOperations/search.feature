@@ -10,7 +10,6 @@ Feature: Search
     And user "Alice" has created folder "/फनी näme"
     And user "Alice" has created folder "/upload folder"
     And user "Alice" has created folder "/upload😀 😁"
-    And user "Alice" has created folder "/just-a-folder/inner-folder"
     And user "Alice" has uploaded file with content "does-not-matter" to "/upload.txt"
     And user "Alice" has uploaded file with content "does-not-matter" to "/a-image.png"
     And user "Alice" has uploaded file with content "does-not-matter" to "/just-a-folder/upload.txt"
@@ -21,7 +20,6 @@ Feature: Search
     And user "Alice" has uploaded file with content "does-not-matter" to "/फनी näme/a-image.png"
     And user "Alice" has uploaded file with content "does-not-matter" to "/upload😀 😁/upload😀 😁.txt"
     And user "Alice" has uploaded file with content "file with comma in filename" to "/upload😀 😁/upload,1.txt"
-    And user "Alice" has uploaded file with content "inner file" to "/just-a-folder/inner-folder/upload.txt"
 
   @smokeTest
   Scenario Outline: search for entry by pattern
@@ -254,7 +252,9 @@ Feature: Search
     And as user "Brian" the response should not contain file "फनी näme"
 
   Scenario: search for entries across various folders by tags using REPORT method
-    Given user "Alice" has created a "normal" tag with name "JustARegularTag1"
+    Given user "Alice" has created folder "/just-a-folder/inner-folder"
+    And user "Alice" has uploaded file with content "inner file" to "/just-a-folder/inner-folder/upload.txt"
+    And user "Alice" has created a "normal" tag with name "JustARegularTag1"
     And user "Alice" has created a "normal" tag with name "JustARegularTag2"
     And user "Alice" has added tag "JustARegularTag1" to folder "/just-a-folder/upload.txt"
     And user "Alice" has added tag "JustARegularTag1" to file "/फनी näme/upload.txt"
