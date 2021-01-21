@@ -105,3 +105,38 @@ Feature: add user
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
     And the API should not return any data
+
+  Scenario Outline: admin creates a user with unusual username
+    Given user "<username>" has been deleted
+    When the administrator sends a user creation request for user "<username>" password "%alt1%" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And user "<username>" should exist
+    And user "<username>" should be able to access a skeleton file
+    Examples:
+      | username |
+      | user-1   |
+      | null     |
+      | nil      |
+      | 123      |
+      | -123     |
+      | 0.0      |
+
+  Scenario: subadmin should not be to create a user
+    Given user "brand-new-user" has been deleted
+    And user "subadmin" has been created with default attributes and without skeleton files
+    And group "group101" has been created
+    And user "subadmin" has been added to group "group101"
+    And user "subadmin" has been made a subadmin of group "group101"
+    When the user "subadmin" sends a user creation request for user "brand-new-user" password "%alt1%" using the provisioning API
+    Then the OCS status code should be "400"
+    And the HTTP status code should be "400"
+    And user "brand-new-user" should not exist
+
+  Scenario: normal user should not be to create another user
+    Given user "brand-new-user" has been deleted
+    And user "Alice" has been created with default attributes and without skeleton files
+    When the user "Alice" sends a user creation request for user "brand-new-user" password "%alt1%" using the provisioning API
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
+    And user "brand-new-user" should not exist

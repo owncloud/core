@@ -218,3 +218,39 @@ Feature: disable user
       | dav_version |
       | old         |
       | new         |
+
+  Scenario: Subadmin should be able to disable user with subadmin permissions in their group
+    Given these users have been created with default attributes and skeleton files:
+      | username         |
+      | subadmin         |
+      | another-subadmin |
+    And group "brand-new-group" has been created
+    And user "another-subadmin" has been added to group "brand-new-group"
+    And user "another-subadmin" has been made a subadmin of group "brand-new-group"
+    And user "subadmin" has been made a subadmin of group "brand-new-group"
+    When user "subadmin" disables user "another-subadmin" using the provisioning API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "another-subadmin" should be disabled
+
+  Scenario: Subadmin should not be able to disable another subadmin of same group
+    Given these users have been created with default attributes and skeleton files:
+      | username         |
+      | subadmin         |
+      | another-subadmin |
+    And group "brand-new-group" has been created
+    And user "another-subadmin" has been made a subadmin of group "brand-new-group"
+    And user "subadmin" has been made a subadmin of group "brand-new-group"
+    When user "subadmin" disables user "another-subadmin" using the provisioning API
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
+    And user "another-subadmin" should be enabled
+
+  Scenario: normal user cannot disable himself
+    Given these users have been created with default attributes and skeleton files:
+      | username |
+      | Alice    |
+    When user "Alice" disables user "Alice" using the provisioning API
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
+    And user "Alice" should be enabled
