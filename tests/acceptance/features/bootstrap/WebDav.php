@@ -2007,7 +2007,7 @@ trait WebDav {
 			$initialContent = (string) $this->response->getBody();
 		}
 		$this->userUploadsAFileTo($user, $source, $destination);
-		$this->theHTTPStatusCodeShouldBe("403");
+		$this->theHTTPStatusCodeShouldBe(["403", "423"]);
 		if ($fileAlreadyExists) {
 			$this->downloadFileAsUserUsingPassword($user, $destination);
 			$currentContent = (string) $this->response->getBody();

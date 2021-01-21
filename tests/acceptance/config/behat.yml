@@ -484,6 +484,17 @@ default:
         - WebDavLockingContext:
         - WebDavPropertiesContext:
 
+    apiWebdavLocks3:
+      paths:
+        - '%paths.base%/../features/apiWebdavLocks3'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - PublicWebDavContext:
+        - WebDavLockingContext:
+        - WebDavPropertiesContext:
+
     apiWebdavLocksUnlock:
       paths:
         - '%paths.base%/../features/apiWebdavLocksUnlock'
