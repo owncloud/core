@@ -10,7 +10,7 @@ Feature: persistent-locking in case of a public link
   Scenario Outline: Uploading a file into a locked public folder
     Given using <dav-path> DAV path
     And user "Alice" has created a public link share of folder "FOLDER" with change permission
-    When user "Alice" locks folder "FOLDER" using the WebDAV API setting following properties
+    When user "Alice" locks folder "FOLDER" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
     Then uploading a file should not work using the old public WebDAV API
     And the HTTP status code should be "423"
@@ -25,7 +25,7 @@ Feature: persistent-locking in case of a public link
   @issue-36064
   Scenario Outline: Uploading a file into a locked subfolder of a public folder
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
-    And user "Alice" has locked folder "PARENT/CHILD" setting following properties
+    And user "Alice" has locked folder "PARENT/CHILD" setting the following properties
       | lockscope | <lock-scope> |
     When the public uploads file "test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     And the public uploads file "CHILD/test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
@@ -41,7 +41,7 @@ Feature: persistent-locking in case of a public link
   #after fixing the issue delete this Scenario and use the one above
   Scenario Outline: Uploading a file into a locked subfolder of a public folder
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
-    And user "Alice" has locked folder "PARENT/CHILD" setting following properties
+    And user "Alice" has locked folder "PARENT/CHILD" setting the following properties
       | lockscope | <lock-scope> |
     When the public uploads file "test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     And the public uploads file "CHILD/test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
@@ -56,7 +56,7 @@ Feature: persistent-locking in case of a public link
   @smokeTest @issue-36064
   Scenario Outline: Overwrite a file inside a locked public folder
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
-    And user "Alice" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When the public uploads file "parent.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "423"
@@ -70,7 +70,7 @@ Feature: persistent-locking in case of a public link
   #after fixing the issue delete this Scenario and use the one above
   Scenario Outline: Overwrite a file inside a locked public folder
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
-    And user "Alice" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When the public uploads file "parent.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "204"
@@ -83,7 +83,7 @@ Feature: persistent-locking in case of a public link
   @issue-36064
   Scenario Outline: Overwrite a file inside a locked subfolder of a public folder
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
-    And user "Alice" has locked folder "PARENT/CHILD" setting following properties
+    And user "Alice" has locked folder "PARENT/CHILD" setting the following properties
       | lockscope | <lock-scope> |
     When the public uploads file "parent.txt" with content "changed text" using the <public-webdav-api-version> public WebDAV API
     And the public uploads file "CHILD/child.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
@@ -98,7 +98,7 @@ Feature: persistent-locking in case of a public link
   @issue-36064
   Scenario Outline: Overwrite a file inside a locked subfolder of a public folder
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
-    And user "Alice" has locked folder "PARENT/CHILD" setting following properties
+    And user "Alice" has locked folder "PARENT/CHILD" setting the following properties
       | lockscope | <lock-scope> |
     When the public uploads file "parent.txt" with content "changed text" using the <public-webdav-api-version> public WebDAV API
     And the public uploads file "CHILD/child.txt" with content "test" using the <public-webdav-api-version> public WebDAV API

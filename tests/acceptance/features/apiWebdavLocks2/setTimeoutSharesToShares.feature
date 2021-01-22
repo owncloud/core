@@ -13,7 +13,7 @@ Feature: set timeouts of LOCKS on shares
     And user "Brian" has been created with default attributes and skeleton files
     And user "Alice" has shared folder "PARENT" with user "Brian"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
-    When user "Alice" locks folder "PARENT" using the WebDAV API setting following properties
+    When user "Alice" locks folder "PARENT" using the WebDAV API setting the following properties
       | lockscope | shared    |
       | timeout   | <timeout> |
     And user "Brian" gets the following properties of folder "Shares/PARENT" using the WebDAV API
@@ -47,7 +47,7 @@ Feature: set timeouts of LOCKS on shares
     And user "Brian" has been created with default attributes and skeleton files
     And user "Alice" has shared folder "PARENT" with user "Brian"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
-    When user "Brian" locks folder "Shares/PARENT" using the WebDAV API setting following properties
+    When user "Brian" locks folder "Shares/PARENT" using the WebDAV API setting the following properties
       | lockscope | shared    |
       | timeout   | <timeout> |
     And user "Alice" gets the following properties of folder "PARENT" using the WebDAV API

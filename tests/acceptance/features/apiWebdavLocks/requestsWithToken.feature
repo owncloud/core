@@ -7,7 +7,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
   @smokeTest
   Scenario Outline: rename a file in a locked folder
     Given using <dav-path> DAV path
-    And user "Alice" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When user "Alice" moves file "/PARENT/parent.txt" to "/PARENT/renamed-file.txt" sending the locktoken of folder "PARENT" using the WebDAV API
     Then the HTTP status code should be "201"
@@ -23,7 +23,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
   @smokeTest
   Scenario Outline: move a file into a locked folder
     Given using <dav-path> DAV path
-    And user "Alice" has locked folder "FOLDER" setting following properties
+    And user "Alice" has locked folder "FOLDER" setting the following properties
       | lockscope | <lock-scope> |
     When user "Alice" moves file "/PARENT/parent.txt" to "/FOLDER/moved-file.txt" sending the locktoken of folder "FOLDER" using the WebDAV API
     Then the HTTP status code should be "201"
@@ -39,9 +39,9 @@ Feature: actions on a locked item are possible if the token is sent with the req
   @smokeTest
   Scenario Outline: move a file into a locked folder is impossible when using the wrong token
     Given using <dav-path> DAV path
-    And user "Alice" has locked folder "FOLDER" setting following properties
+    And user "Alice" has locked folder "FOLDER" setting the following properties
       | lockscope | <lock-scope> |
-    And user "Alice" has locked folder "PARENT/CHILD" setting following properties
+    And user "Alice" has locked folder "PARENT/CHILD" setting the following properties
       | lockscope | <lock-scope> |
     When user "Alice" moves file "/PARENT/parent.txt" to "/FOLDER/moved-file.txt" sending the locktoken of folder "PARENT/CHILD" using the WebDAV API
     Then the HTTP status code should be "423"
@@ -59,7 +59,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and skeleton files
     And user "Alice" has shared folder "PARENT" with user "Brian"
-    And user "Alice" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When user "Brian" moves file "PARENT (2)/parent.txt" to "PARENT (2)/renamed-file.txt" sending the locktoken of file "PARENT" of user "Alice" using the WebDAV API
     Then the HTTP status code should be "423"
@@ -76,7 +76,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
   Scenario Outline: public cannot overwrite a file in a folder locked by the owner even when sending the locktoken
     Given the administrator has enabled DAV tech_preview
     And user "Alice" has created a public link share of folder "PARENT" with change permission
-    And user "Alice" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When the public uploads file "parent.txt" with content "test" sending the locktoken of file "PARENT" of user "Alice" using the old public WebDAV API
     Then the HTTP status code should be "423"
@@ -93,9 +93,9 @@ Feature: actions on a locked item are possible if the token is sent with the req
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and skeleton files
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
-    And user "Alice" has locked file "textfile0.txt" setting following properties
+    And user "Alice" has locked file "textfile0.txt" setting the following properties
       | lockscope | shared |
-    And user "Brian" has locked file "textfile0 (2).txt" setting following properties
+    And user "Brian" has locked file "textfile0 (2).txt" setting the following properties
       | lockscope | shared |
     When user "Alice" uploads file with content "from user 0" to "textfile0.txt" sending the locktoken of file "textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "200"

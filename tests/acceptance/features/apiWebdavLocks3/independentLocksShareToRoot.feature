@@ -14,7 +14,7 @@ Feature: independent locks
     And user "Brian" has created folder "toShare"
     And user "Alice" has shared folder "toShare" with user "Carol"
     And user "Brian" has shared folder "toShare" with user "Carol"
-    When user "Carol" locks folder "/toShare" using the WebDAV API setting following properties
+    When user "Carol" locks folder "/toShare" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
     Then user "Carol" should be able to upload file "filesForUpload/lorem.txt" to "/toShare (2)/file.txt"
     But user "Carol" should not be able to upload file "filesForUpload/lorem.txt" to "/toShare/file.txt"
@@ -34,7 +34,7 @@ Feature: independent locks
     And user "Alice" has created folder "notlocked/toShare"
     And user "Alice" has shared folder "locked/toShare" with user "Brian"
     And user "Alice" has shared folder "notlocked/toShare" with user "Brian"
-    When user "Brian" locks folder "/toShare" using the WebDAV API setting following properties
+    When user "Brian" locks folder "/toShare" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
     Then user "Brian" should be able to upload file "filesForUpload/lorem.txt" to "/toShare (2)/file.txt"
     But user "Brian" should not be able to upload file "filesForUpload/lorem.txt" to "/toShare/file.txt"
@@ -55,7 +55,7 @@ Feature: independent locks
     And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "/FromBrian/textfile0.txt"
     And user "Alice" has shared folder "FromAlice" with user "Carol"
     And user "Brian" has shared folder "FromBrian" with user "Carol"
-    When user "Carol" locks file "/FromBrian/textfile0.txt" using the WebDAV API setting following properties
+    When user "Carol" locks file "/FromBrian/textfile0.txt" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
     Then user "Carol" should be able to upload file "filesForUpload/lorem.txt" to "/FromAlice/textfile0.txt"
     But user "Carol" should not be able to upload file "filesForUpload/lorem.txt" to "/FromBrian/textfile0.txt"
@@ -75,7 +75,7 @@ Feature: independent locks
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "notlocked/textfile0.txt"
     And user "Alice" has shared folder "locked" with user "Brian"
     And user "Alice" has shared folder "notlocked" with user "Brian"
-    When user "Brian" locks file "/locked/textfile0.txt" using the WebDAV API setting following properties
+    When user "Brian" locks file "/locked/textfile0.txt" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
     Then user "Brian" should be able to upload file "filesForUpload/lorem.txt" to "/notlocked/textfile0.txt"
     But user "Brian" should not be able to upload file "filesForUpload/lorem.txt" to "/locked/textfile0.txt"

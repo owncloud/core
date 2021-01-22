@@ -9,7 +9,7 @@ Feature: set timeouts of LOCKS
     Given using <dav-path> DAV path
     And parameter "lock_timeout_default" of app "core" has been set to "<default-timeout>"
     And parameter "lock_timeout_max" of app "core" has been set to "<max-timeout>"
-    When user "Alice" locks folder "PARENT" using the WebDAV API setting following properties
+    When user "Alice" locks folder "PARENT" using the WebDAV API setting the following properties
       | lockscope | exclusive |
     And user "Alice" gets the following properties of folder "PARENT" using the WebDAV API
       | propertyName    |
@@ -33,7 +33,7 @@ Feature: set timeouts of LOCKS
 
   Scenario Outline: set timeout on folder
     Given using <dav-path> DAV path
-    When user "Alice" locks folder "PARENT" using the WebDAV API setting following properties
+    When user "Alice" locks folder "PARENT" using the WebDAV API setting the following properties
       | lockscope | shared    |
       | timeout   | <timeout> |
     And user "Alice" gets the following properties of folder "PARENT" using the WebDAV API
@@ -66,7 +66,7 @@ Feature: set timeouts of LOCKS
     Given using <dav-path> DAV path
     And parameter "lock_timeout_default" of app "core" has been set to "<default-timeout>"
     And parameter "lock_timeout_max" of app "core" has been set to "<max-timeout>"
-    When user "Alice" locks folder "PARENT" using the WebDAV API setting following properties
+    When user "Alice" locks folder "PARENT" using the WebDAV API setting the following properties
       | lockscope | shared    |
       | timeout   | <timeout> |
     And user "Alice" gets the following properties of folder "PARENT" using the WebDAV API
@@ -100,7 +100,7 @@ Feature: set timeouts of LOCKS
   Scenario Outline: as owner set timeout on folder as public check it
     Given using <dav-path> DAV path
     And user "Alice" has created a public link share of folder "PARENT"
-    When user "Alice" locks folder "PARENT" using the WebDAV API setting following properties
+    When user "Alice" locks folder "PARENT" using the WebDAV API setting the following properties
       | lockscope | shared    |
       | timeout   | <timeout> |
     And the public gets the following properties of entry "/" in the last created public link using the WebDAV API

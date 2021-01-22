@@ -16,9 +16,9 @@ Feature: Locks
     Given these users have been created with skeleton files:
       | username |
       | sharer   |
-    And user "sharer" has locked folder "simple-folder" setting following properties
+    And user "sharer" has locked folder "simple-folder" setting the following properties
       | lockscope | shared |
-    And user "sharer" has locked file "data.zip" setting following properties
+    And user "sharer" has locked file "data.zip" setting the following properties
       | lockscope | exclusive |
     And user "sharer" has shared file "data.zip" with user "brand-new-user"
     And user "sharer" has shared file "data.tar.gz" with user "brand-new-user"
@@ -38,9 +38,9 @@ Feature: Locks
 
   @issue-33867 @files_sharing-app-required
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-by-link page
-    Given user "brand-new-user" has locked folder "simple-folder" setting following properties
+    Given user "brand-new-user" has locked folder "simple-folder" setting the following properties
       | lockscope | shared |
-    And user "brand-new-user" has locked file "data.zip" setting following properties
+    And user "brand-new-user" has locked file "data.zip" setting the following properties
       | lockscope | exclusive |
     And user "brand-new-user" has created a public link share with settings
       | path | data.zip |
@@ -67,9 +67,9 @@ Feature: Locks
     Given these users have been created with skeleton files:
       | username |
       | sharer   |
-    And user "sharer" has locked folder "simple-folder" setting following properties
+    And user "sharer" has locked folder "simple-folder" setting the following properties
       | lockscope | shared |
-    And user "sharer" has locked file "data.zip" setting following properties
+    And user "sharer" has locked file "data.zip" setting the following properties
       | lockscope | exclusive |
     And user "sharer" has shared file "data.zip" with user "brand-new-user"
     And user "sharer" has shared file "data.tar.gz" with user "brand-new-user"

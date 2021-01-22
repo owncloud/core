@@ -7,7 +7,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
     And using <dav-path> DAV path
     And user "Brian" has been created with default attributes and skeleton files
     And user "Alice" has shared folder "PARENT" with user "Brian"
-    And user "Alice" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When user "Brian" moves file "PARENT (2)/parent.txt" to "PARENT (2)/renamed-file.txt" sending the locktoken of file "PARENT" of user "Alice" using the WebDAV API
     Then the HTTP status code should be "403"

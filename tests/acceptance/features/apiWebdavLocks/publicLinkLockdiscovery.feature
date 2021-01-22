@@ -6,7 +6,7 @@ Feature: LOCKDISCOVERY for public links
 
   Scenario Outline: lockdiscovery root of public link when root is locked
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
-    And user "Alice" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When the public gets the following properties of entry "/" in the last created public link using the WebDAV API
       | propertyName    |
@@ -21,7 +21,7 @@ Feature: LOCKDISCOVERY for public links
 
   Scenario Outline: lockdiscovery subfolder of a locked public link when root is locked
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
-    And user "Alice" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When the public gets the following properties of entry "/CHILD" in the last created public link using the WebDAV API
       | propertyName    |
@@ -36,7 +36,7 @@ Feature: LOCKDISCOVERY for public links
 
   Scenario Outline: lockdiscovery subfolder of a public link when subfolder is locked
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
-    And user "Alice" has locked folder "PARENT/CHILD" setting following properties
+    And user "Alice" has locked folder "PARENT/CHILD" setting the following properties
       | lockscope | <lock-scope> |
     When the public gets the following properties of entry "/CHILD" in the last created public link using the WebDAV API
       | propertyName    |
@@ -51,7 +51,7 @@ Feature: LOCKDISCOVERY for public links
 
   Scenario Outline: lockdiscovery file in a subfolder of a public link when subfolder is locked
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
-    And user "Alice" has locked folder "PARENT/CHILD" setting following properties
+    And user "Alice" has locked folder "PARENT/CHILD" setting the following properties
       | lockscope | <lock-scope> |
     When the public gets the following properties of entry "/CHILD/child.txt" in the last created public link using the WebDAV API
       | propertyName    |
@@ -66,7 +66,7 @@ Feature: LOCKDISCOVERY for public links
 
   Scenario Outline: lockdiscovery file in a subfolder of a public link when root is locked
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
-    And user "Alice" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When the public gets the following properties of entry "/CHILD/child.txt" in the last created public link using the WebDAV API
       | propertyName    |
@@ -81,7 +81,7 @@ Feature: LOCKDISCOVERY for public links
 
   Scenario Outline: lockdiscovery file in a subfolder of a public link when the file is locked
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
-    And user "Alice" has locked folder "PARENT/CHILD/child.txt" setting following properties
+    And user "Alice" has locked folder "PARENT/CHILD/child.txt" setting the following properties
       | lockscope | <lock-scope> |
     When the public gets the following properties of entry "/CHILD/child.txt" in the last created public link using the WebDAV API
       | propertyName    |
@@ -96,7 +96,7 @@ Feature: LOCKDISCOVERY for public links
 
   Scenario Outline: lockdiscovery file in a subfolder of a public link when the folder above the public link is locked
     Given user "Alice" has created a public link share of folder "PARENT/CHILD" with change permission
-    And user "Alice" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When the public gets the following properties of entry "/child.txt" in the last created public link using the WebDAV API
       | propertyName    |

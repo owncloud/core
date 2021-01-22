@@ -14,7 +14,7 @@ Feature: Locks
   Scenario Outline: deleting a file in a public share of a locked folder
     Given user "brand-new-user" has created folder "/simple-folder"
     And user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
-    And user "brand-new-user" has locked folder "simple-folder" setting following properties
+    And user "brand-new-user" has locked folder "simple-folder" setting the following properties
       | lockscope | <lockscope> |
     And user "brand-new-user" has created a public link share with settings
       | path        | /simple-folder            |
