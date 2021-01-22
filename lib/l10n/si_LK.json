@@ -12,10 +12,12 @@
     "Encryption" : "ගුප්ත කේතනය",
     "Sharing" : "හුවමාරු කිරීම",
     "Search" : "සොයන්න",
+    "User disabled" : "පරිශීලක අක්‍රීය කර ඇත",
     "Settings" : "සිටුවම්",
     "Users" : "පරිශීලකයන්",
     "Application is not enabled" : "යෙදුම සක්‍රිය කර නොමැත",
     "Authentication error" : "සත්‍යාපන දෝෂයක්",
-    "Token expired. Please reload page." : "ටෝකනය කල් ඉකුත් වී ඇත. පිටුව නැවුම් කරන්න"
+    "Token expired. Please reload page." : "ටෝකනය කල් ඉකුත් වී ඇත. පිටුව නැවුම් කරන්න",
+    "User unknown" : "නොදන්නා පරිශීලකයෙක්"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
