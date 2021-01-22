@@ -104,7 +104,7 @@ class WebDavLockingContext implements Context {
 			$this->tokenOfLastLock[$user][$file] = (string) $xmlPart[0];
 		} else {
 			if ($expectToSucceed === true) {
-				Assert::fail("could not find lock token");
+				Assert::fail("could not find lock token after trying to lock '$file'");
 			}
 		}
 	}
@@ -271,6 +271,12 @@ class WebDavLockingContext implements Context {
 			$password = $this->featureContext->getPasswordForUser($user);
 		}
 		$baseUrl = $this->featureContext->getBaseUrl();
+		if (!isset($this->tokenOfLastLock[$lockOwner][$itemToUseLockOf])) {
+			Assert::fail(
+				"could not find saved token of '$itemToUseLockOf' " .
+				"owned by user '$lockOwner'"
+			);
+		}
 		$headers = [
 			"Lock-Token" => $this->tokenOfLastLock[$lockOwner][$itemToUseLockOf]
 		];
