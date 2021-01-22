@@ -12,7 +12,7 @@ Feature: Locks
 
   Scenario Outline: uploading a file, trying to overwrite a locked file
     Given user "brand-new-user" has uploaded file with content "original content" to "/lorem.txt"
-    And user "brand-new-user" has locked file "lorem.txt" setting following properties
+    And user "brand-new-user" has locked file "lorem.txt" setting the following properties
       | lockscope | <lockscope> |
     And user "brand-new-user" has logged in using the webUI
     When the user uploads overwriting file "lorem.txt" using the webUI
@@ -30,7 +30,7 @@ Feature: Locks
   Scenario Outline: uploading a file, trying to overwrite a file in a locked folder
     Given user "brand-new-user" has created folder "/simple-folder"
     And user "brand-new-user" has uploaded file with content "original content" to "/simple-folder/lorem.txt"
-    And user "brand-new-user" has locked folder "simple-folder" setting following properties
+    And user "brand-new-user" has locked folder "simple-folder" setting the following properties
       | lockscope | <lockscope> |
     And user "brand-new-user" has logged in using the webUI
     And the user has opened folder "simple-folder" using the webUI
@@ -48,7 +48,7 @@ Feature: Locks
 
   Scenario Outline: uploading a new file into a locked folder
     Given user "brand-new-user" has created folder "/simple-folder"
-    And user "brand-new-user" has locked folder "simple-folder" setting following properties
+    And user "brand-new-user" has locked folder "simple-folder" setting the following properties
       | lockscope | <lockscope> |
     And user "brand-new-user" has logged in using the webUI
     And the user has opened folder "simple-folder" using the webUI
@@ -66,7 +66,7 @@ Feature: Locks
   Scenario Outline: uploading a file, trying to overwrite a file in a locked folder in a public share
     Given user "brand-new-user" has created folder "/simple-folder"
     And user "brand-new-user" has uploaded file with content "original content" to "/simple-folder/lorem.txt"
-    And user "brand-new-user" has locked folder "simple-folder" setting following properties
+    And user "brand-new-user" has locked folder "simple-folder" setting the following properties
       | lockscope | <lockscope> |
     And user "brand-new-user" has logged in using the webUI
     And the user has created a new public link for folder "simple-folder" using the webUI with

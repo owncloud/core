@@ -13,7 +13,7 @@ Feature: Locks
   Scenario Outline: moving a locked file
     Given user "brand-new-user" has created folder "/simple-empty-folder"
     And user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
-    And user "brand-new-user" has locked file "lorem.txt" setting following properties
+    And user "brand-new-user" has locked file "lorem.txt" setting the following properties
       | lockscope | <lockscope> |
     And user "brand-new-user" has logged in using the webUI
     When the user moves file "lorem.txt" into folder "simple-empty-folder" using the webUI
@@ -33,7 +33,7 @@ Feature: Locks
     Given user "brand-new-user" has created folder "/simple-folder"
     And user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
     And user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
-    And user "brand-new-user" has locked file "/simple-folder/lorem.txt" setting following properties
+    And user "brand-new-user" has locked file "/simple-folder/lorem.txt" setting the following properties
       | lockscope | <lockscope> |
     And user "brand-new-user" has logged in using the webUI
     When the user moves file "lorem.txt" into folder "simple-folder" using the webUI
@@ -50,7 +50,7 @@ Feature: Locks
   Scenario Outline: moving a file into a locked folder
     Given user "brand-new-user" has created folder "/simple-empty-folder"
     And user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
-    And user "brand-new-user" has locked file "/simple-empty-folder" setting following properties
+    And user "brand-new-user" has locked file "/simple-empty-folder" setting the following properties
       | lockscope | <lockscope> |
     And user "brand-new-user" has logged in using the webUI
     When the user moves file "lorem.txt" into folder "simple-empty-folder" using the webUI
@@ -68,7 +68,7 @@ Feature: Locks
 
   Scenario Outline: renaming of a locked file
     Given user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
-    And user "brand-new-user" has locked file "lorem.txt" setting following properties
+    And user "brand-new-user" has locked file "lorem.txt" setting the following properties
       | lockscope | <lockscope> |
     And user "brand-new-user" has logged in using the webUI
     When the user renames file "lorem.txt" to "a-renamed-file.txt" using the webUI
@@ -88,7 +88,7 @@ Feature: Locks
   Scenario Outline: renaming a file in a public share of a locked folder
     Given user "brand-new-user" has created folder "/simple-folder"
     And user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
-    And user "brand-new-user" has locked folder "simple-folder" setting following properties
+    And user "brand-new-user" has locked folder "simple-folder" setting the following properties
       | lockscope | <lockscope> |
     And user "brand-new-user" has logged in using the webUI
     And the user has created a new public link for folder "simple-folder" using the webUI with
@@ -110,7 +110,7 @@ Feature: Locks
     Given user "brand-new-user" has created folder "/simple-folder"
     And user "brand-new-user" has created folder "/simple-folder/simple-empty-folder"
     And user "brand-new-user" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
-    And user "brand-new-user" has locked file "simple-folder/lorem.txt" setting following properties
+    And user "brand-new-user" has locked file "simple-folder/lorem.txt" setting the following properties
       | lockscope | <lockscope> |
     And user "brand-new-user" has logged in using the webUI
     And the user has created a new public link for folder "simple-folder" using the webUI with

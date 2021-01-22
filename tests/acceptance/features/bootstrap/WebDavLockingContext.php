@@ -110,7 +110,7 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
-	 * @When user :user locks file/folder :file using the WebDAV API setting following properties
+	 * @When user :user locks file/folder :file using the WebDAV API setting the following properties
 	 *
 	 * @param string $user
 	 * @param string $file
@@ -123,7 +123,7 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
-	 * @Given user :user has locked file/folder :file setting following properties
+	 * @Given user :user has locked file/folder :file setting the following properties
 	 *
 	 * @param string $user
 	 * @param string $file
@@ -136,7 +136,7 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
-	 * @Given the public has locked the last public shared file/folder setting following properties
+	 * @Given the public has locked the last public shared file/folder setting the following properties
 	 *
 	 * @param TableNode $properties
 	 *
@@ -150,7 +150,7 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
-	 * @When the public locks the last public shared file/folder using the WebDAV API setting following properties
+	 * @When the public locks the last public shared file/folder using the WebDAV API setting the following properties
 	 *
 	 * @param TableNode $properties
 	 *
@@ -164,7 +164,7 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
-	 * @Given the public has locked :file in the last public shared folder setting following properties
+	 * @Given the public has locked :file in the last public shared folder setting the following properties
 	 *
 	 * @param string $file
 	 * @param TableNode $properties
@@ -181,7 +181,7 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
-	 * @When /^the public locks "([^"]*)" in the last public shared folder using the (old|new) public WebDAV API setting following properties$/
+	 * @When /^the public locks "([^"]*)" in the last public shared folder using the (old|new) public WebDAV API setting the following properties$/
 	 *
 	 * @param string $file
 	 * @param string $publicWebDAVAPIVersion

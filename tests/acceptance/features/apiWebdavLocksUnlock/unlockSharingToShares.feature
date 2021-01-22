@@ -11,7 +11,7 @@ Feature: UNLOCK locked items (sharing)
   Scenario Outline: as share receiver unlocking a shared file locked by the file owner is not possible. To unlock use the owners locktoken
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and skeleton files
-    And user "Alice" has locked file "PARENT/parent.txt" setting following properties
+    And user "Alice" has locked file "PARENT/parent.txt" setting the following properties
       | lockscope | <lock-scope> |
     And user "Alice" has shared file "PARENT/parent.txt" with user "Brian"
     And user "Brian" has accepted share "/PARENT/parent.txt" offered by user "Alice"
@@ -30,7 +30,7 @@ Feature: UNLOCK locked items (sharing)
   Scenario Outline: as share receiver unlocking a file in a share locked by the file owner is not possible. To unlock use the owners locktoken
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and skeleton files
-    And user "Alice" has locked file "PARENT/parent.txt" setting following properties
+    And user "Alice" has locked file "PARENT/parent.txt" setting the following properties
       | lockscope | <lock-scope> |
     And user "Alice" has shared folder "PARENT" with user "Brian"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
@@ -49,7 +49,7 @@ Feature: UNLOCK locked items (sharing)
   Scenario Outline: as share receiver unlocking a shared folder locked by the file owner is not possible. To unlock use the owners locktoken
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and skeleton files
-    And user "Alice" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     And user "Alice" has shared folder "PARENT" with user "Brian"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
@@ -72,7 +72,7 @@ Feature: UNLOCK locked items (sharing)
   Scenario Outline: as share receiver unlocking a shared file locked by the file owner is not possible. To unlock use the owners locktoken
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and skeleton files
-    And user "Alice" has locked file "PARENT/parent.txt" setting following properties
+    And user "Alice" has locked file "PARENT/parent.txt" setting the following properties
       | lockscope | <lock-scope> |
     And user "Alice" has shared file "PARENT/parent.txt" with user "Brian"
     And user "Brian" has accepted share "/PARENT/parent.txt" offered by user "Alice"
@@ -93,7 +93,7 @@ Feature: UNLOCK locked items (sharing)
     And user "Brian" has been created with default attributes and skeleton files
     And user "Alice" has shared file "PARENT/parent.txt" with user "Brian"
     And user "Brian" has accepted share "/PARENT/parent.txt" offered by user "Alice"
-    And user "Brian" has locked file "Shares/parent.txt" setting following properties
+    And user "Brian" has locked file "Shares/parent.txt" setting the following properties
       | lockscope | <lock-scope> |
     When user "Brian" unlocks the last created lock of file "Shares/parent.txt" using the WebDAV API
     Then the HTTP status code should be "204"
@@ -112,7 +112,7 @@ Feature: UNLOCK locked items (sharing)
     And user "Brian" has been created with default attributes and skeleton files
     And user "Alice" has shared file "PARENT/parent.txt" with user "Brian"
     And user "Brian" has accepted share "/PARENT/parent.txt" offered by user "Alice"
-    And user "Brian" has locked file "Shares/parent.txt" setting following properties
+    And user "Brian" has locked file "Shares/parent.txt" setting the following properties
       | lockscope | <lock-scope> |
     When user "Alice" unlocks file "PARENT/parent.txt" with the last created lock of file "Shares/parent.txt" of user "Brian" using the WebDAV API
     Then the HTTP status code should be "403"
@@ -131,7 +131,7 @@ Feature: UNLOCK locked items (sharing)
     And user "Brian" has been created with default attributes and skeleton files
     And user "Alice" has shared folder "PARENT" with user "Brian"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
-    And user "Brian" has locked file "Shares/PARENT/parent.txt" setting following properties
+    And user "Brian" has locked file "Shares/PARENT/parent.txt" setting the following properties
       | lockscope | <lock-scope> |
     When user "Alice" unlocks file "PARENT/parent.txt" with the last created lock of file "Shares/PARENT/parent.txt" of user "Brian" using the WebDAV API
     Then the HTTP status code should be "403"
@@ -150,7 +150,7 @@ Feature: UNLOCK locked items (sharing)
     And user "Brian" has been created with default attributes and skeleton files
     And user "Alice" has shared folder "PARENT" with user "Brian"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
-    And user "Brian" has locked folder "Shares/PARENT" setting following properties
+    And user "Brian" has locked folder "Shares/PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When user "Alice" unlocks folder "PARENT" with the last created lock of folder "Shares/PARENT" of user "Brian" using the WebDAV API
     Then the HTTP status code should be "403"

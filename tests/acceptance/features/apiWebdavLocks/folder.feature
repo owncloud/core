@@ -7,7 +7,7 @@ Feature: lock folders
   @smokeTest
   Scenario Outline: upload to a locked folder
     Given using <dav-path> DAV path
-    And user "Alice" has locked folder "FOLDER" setting following properties
+    And user "Alice" has locked folder "FOLDER" setting the following properties
       | lockscope | <lock-scope> |
     When user "Alice" uploads file "filesForUpload/textfile.txt" to "/FOLDER/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "423"
@@ -21,7 +21,7 @@ Feature: lock folders
 
   Scenario Outline: upload to a subfolder of a locked folder
     Given using <dav-path> DAV path
-    And user "Alice" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When user "Alice" uploads file "filesForUpload/textfile.txt" to "/PARENT/CHILD/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "423"
@@ -36,7 +36,7 @@ Feature: lock folders
   @smokeTest
   Scenario Outline: create folder in a locked folder
     Given using <dav-path> DAV path
-    And user "Alice" has locked folder "FOLDER" setting following properties
+    And user "Alice" has locked folder "FOLDER" setting the following properties
       | lockscope | <lock-scope> |
     When user "Alice" creates folder "/FOLDER/new-folder" using the WebDAV API
     Then the HTTP status code should be "423"
@@ -50,7 +50,7 @@ Feature: lock folders
 
   Scenario Outline: create folder in a subfolder of a locked folder
     Given using <dav-path> DAV path
-    And user "Alice" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When user "Alice" creates folder "/PARENT/CHILD/new-folder" using the WebDAV API
     Then the HTTP status code should be "423"
@@ -64,7 +64,7 @@ Feature: lock folders
 
   Scenario Outline: Move file out of a locked folder
     Given using <dav-path> DAV path
-    And user "Alice" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When user "Alice" moves file "/PARENT/parent.txt" to "/parent.txt" using the WebDAV API
     Then the HTTP status code should be "423"
@@ -79,7 +79,7 @@ Feature: lock folders
 
   Scenario Outline: Move file out of a locked sub folder one level higher into locked parent folder
     Given using <dav-path> DAV path
-    And user "Alice" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When user "Alice" moves file "/PARENT/CHILD/child.txt" to "/PARENT/child.txt" using the WebDAV API
     Then the HTTP status code should be "423"
@@ -95,7 +95,7 @@ Feature: lock folders
   Scenario Outline: lockdiscovery of a locked folder
     Given using <dav-path> DAV path
     And user "Alice" has created a public link share of folder "PARENT" with change permission
-    And user "Alice" has locked folder "PARENT" setting following properties
+    And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When user "Alice" gets the following properties of folder "PARENT" using the WebDAV API
       | propertyName    |
