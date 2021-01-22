@@ -20,7 +20,7 @@ Feature: Locks
       | path        | /simple-folder            |
       | permissions | read,update,create,delete |
     When the public accesses the last created public link using the webUI
-    And the user deletes folder "lorem.txt" using the webUI
+    And the user deletes file "lorem.txt" using the webUI
     Then notifications should be displayed on the webUI with the text
       | The file "lorem.txt" is locked and cannot be deleted. |
     And as "brand-new-user" file "simple-folder/lorem.txt" should exist
