@@ -59,3 +59,55 @@ Feature: UNLOCK locked items
       | lock-scope |
       | shared     |
       | exclusive  |
+
+
+  Scenario Outline: locking a folder does not lock other items with the same name in other parts of the file system
+    Given using <dav-path> DAV path
+    And user "Alice" has created folder "locked"
+    And user "Alice" has created folder "locked/PARENT"
+    And user "Alice" has created folder "notlocked"
+    And user "Alice" has created folder "notlocked/PARENT"
+    And user "Alice" has created folder "alsonotlocked"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/alsonotlocked/PARENT"
+    Given user "Alice" has locked folder "locked/PARENT" setting following properties
+      | lockscope | <lock-scope> |
+    Given user "Alice" has locked folder "notlocked/PARENT" setting following properties
+      | lockscope | <lock-scope> |
+    Given user "Alice" has locked file "alsonotlocked/PARENT" setting following properties
+      | lockscope | <lock-scope> |
+    When user "Alice" unlocks the last created lock of folder "notlocked/PARENT" using the WebDAV API
+    And user "Alice" unlocks the last created lock of file "alsonotlocked/PARENT" using the WebDAV API
+    Then user "Alice" should be able to upload file "filesForUpload/lorem.txt" to "/notlocked/PARENT/file.txt"
+    And user "Alice" should be able to upload file "filesForUpload/lorem.txt" to "/alsonotlocked/PARENT"
+    But user "Alice" should not be able to upload file "filesForUpload/lorem.txt" to "/locked/PARENT/textfile0.txt"
+    Examples:
+      | dav-path | lock-scope |
+      | old      | shared     |
+      | old      | exclusive  |
+      | new      | shared     |
+      | new      | exclusive  |
+
+
+  Scenario Outline: unlocking a file does not unlock other items with the same name in other parts of the file system
+    Given using <dav-path> DAV path
+    And user "Alice" has created folder "locked"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/locked/textfile0.txt"
+    And user "Alice" has created folder "notlocked"
+    And user "Alice" has created folder "notlocked/textfile0.txt"
+    Given user "Alice" has locked file "locked/textfile0.txt" setting following properties
+      | lockscope | <lock-scope> |
+    And user "Alice" has locked file "notlocked/textfile0.txt" setting following properties
+      | lockscope | <lock-scope> |
+    And user "Alice" has locked file "textfile0.txt" setting following properties
+      | lockscope | <lock-scope> |
+    When user "Alice" unlocks the last created lock of file "unlocked/textfile0.txt" using the WebDAV API
+    And user "Alice" unlocks the last created lock of file "textfile0.txt" using the WebDAV API
+    Then user "Alice" should be able to upload file "filesForUpload/lorem.txt" to "/notlocked/textfile0.txt/real-file.txt"
+    And user "Alice" should be able to upload file "filesForUpload/lorem.txt" to "/textfile0.txt"
+    But user "Alice" should not be able to upload file "filesForUpload/lorem.txt" to "/locked/textfile0.txt"
+    Examples:
+      | dav-path | lock-scope |
+      | old      | shared     |
+      | old      | exclusive  |
+      | new      | shared     |
+      | new      | exclusive  |
