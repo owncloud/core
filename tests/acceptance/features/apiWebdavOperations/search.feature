@@ -250,3 +250,25 @@ Feature: Search
     Then the HTTP status code should be "207"
     And as user "Brian" the response should contain file "upload.txt"
     And as user "Brian" the response should not contain file "फनी näme"
+
+  Scenario: search for entries across various folders by tags using REPORT method
+    Given user "Alice" has created folder "/just-a-folder/inner-folder"
+    And user "Alice" has uploaded file with content "inner file" to "/just-a-folder/inner-folder/upload.txt"
+    And user "Alice" has created a "normal" tag with name "JustARegularTag1"
+    And user "Alice" has created a "normal" tag with name "JustARegularTag2"
+    And user "Alice" has added tag "JustARegularTag1" to folder "/just-a-folder/upload.txt"
+    And user "Alice" has added tag "JustARegularTag1" to file "/फनी näme/upload.txt"
+    And user "Alice" has added tag "JustARegularTag1" to file "/just-a-folder/inner-folder/upload.txt"
+    And user "Alice" has added tag "JustARegularTag2" to file "/upload😀 😁/upload,1.txt"
+    And user "Alice" has added tag "JustARegularTag2" to file "/upload.txt"
+    When user "Alice" searches for resources tagged with tag "JustARegularTag1" using the webDAV API
+    Then the HTTP status code should be "207"
+    And the search result by tags for user "Alice" should contain these entries:
+      | upload.txt |
+      | upload.txt |
+      | upload.txt |
+    When user "Alice" searches for resources tagged with tag "JustARegularTag2" using the webDAV API
+    Then the HTTP status code should be "207"
+    And the search result by tags for user "Alice" should contain these entries:
+      | upload,1.txt |
+      | upload.txt   |
