@@ -962,7 +962,10 @@ trait Provisioning {
 					$httpStatusCode = $e->getResponse()->getStatusCode();
 					$reasonPhrase = $e->getResponse()->getReasonPhrase();
 					$exceptionToThrow = new Exception(
-						__METHOD__ . "Unexpected failure when creating a user: HTTP status $httpStatusCode HTTP reason $reasonPhrase OCS status $ocsStatusCode OCS message $messageText"
+						__METHOD__ . " Unexpected failure when creating the user '" .
+						$userAttributes['userid'] . "': HTTP status $httpStatusCode " .
+						"HTTP reason $reasonPhrase OCS status $ocsStatusCode " .
+						"OCS message $messageText"
 					);
 				}
 			}
