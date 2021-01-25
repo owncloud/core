@@ -32,6 +32,7 @@ use OCP\AppFramework\Http\StreamResponse;
 use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IConfig;
+use OCP\AppFramework\Http\DataResponse;
 
 /**
  * Class LogSettingsController
@@ -67,18 +68,25 @@ class LogSettingsController extends Controller {
 	 * set log level for logger
 	 *
 	 * @param int $level
-	 * @return JSONResponse
+	 * @return DataResponse
 	 */
 	public function setLogLevel($level) {
 		if ($level < 0 || $level > 4) {
-			return new JSONResponse([
-				'message' => (string) $this->l10n->t('log-level out of allowed range'),
+			return new DataResponse([
+				'status' => 'error',
+				'data' => [
+					'message' => (string)$this->l10n->t('log-level out of allowed range'),
+				],
 			], Http::STATUS_BAD_REQUEST);
 		}
 
 		$this->config->setSystemValue('loglevel', $level);
-		return new JSONResponse([
-			'level' => $level,
+		return new DataResponse([
+			'status' => 'success',
+			'data' => [
+				'message' => $this->l10n->t('Updated log level'),
+				'level' => $level
+			]
 		]);
 	}
 
