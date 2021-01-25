@@ -197,3 +197,16 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
+  @issue-ocis-1229
+  Scenario Outline: delete a share with wrong authentication
+    Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
+    When user "Brian" tries to delete the last share using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 404             | 200              |
+      | 2               | 404             | 404              |

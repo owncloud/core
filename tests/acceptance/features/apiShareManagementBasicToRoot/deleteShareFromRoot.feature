@@ -174,3 +174,20 @@ Feature: sharing
       | /PARENT/parent.txt | 2               | 404              | parent.txt     |
       | /PARENT            | 1               | 200              | PARENT         |
       | /PARENT            | 2               | 404              | PARENT         |
+
+  @issue-ocis-1229
+  Scenario Outline: delete a share with wrong authentication
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+    And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"
+    And using OCS API version "<ocs_api_version>"
+    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    When user "Brian" tries to delete the last share using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 404             | 200              |
+      | 2               | 404             | 404              |
