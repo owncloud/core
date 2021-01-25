@@ -96,3 +96,43 @@ Feature: reset user password
     When the administrator resets the password of user "nonexistentuser" to "%alt1%" using the provisioning API
     Then the OCS status code should be "998"
     And the HTTP status code should be "404"
+
+  Scenario: admin resets password of user with admin permissions
+    Given these users have been created with skeleton files:
+      | username | password  | displayname | email           |
+      | Alice    | %regular% | New user    | alice@oc.com.np |
+    And user "Alice" has been added to group "admin"
+    When the administrator resets the password of user "Alice" to "%alt1%" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the content of file "textfile0.txt" for user "Alice" using password "%alt1%" should be "ownCloud test text file 0" plus end-of-line
+    But user "Alice" using password "%regular%" should not be able to download file "textfile0.txt"
+
+  Scenario: subadmin should be able to reset the password of a user with subadmin permissions in their group
+    Given these users have been created with skeleton files:
+      | username       | password   | displayname | email                    |
+      | brand-new-user | %regular%  | New user    | brand.new.user@oc.com.np |
+      | subadmin       | %subadmin% | Sub Admin   | sub.admin@oc.com.np      |
+    And group "new-group" has been created
+    And user "brand-new-user" has been added to group "new-group"
+    And user "brand-new-user" has been made a subadmin of group "new-group"
+    And user "subadmin" has been made a subadmin of group "new-group"
+    When user "subadmin" tries to reset the password of user "brand-new-user" to "%alt1%" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the content of file "textfile0.txt" for user "brand-new-user" using password "%alt1%" should be "ownCloud test text file 0" plus end-of-line
+    But user "brand-new-user" using password "%regular%" should not be able to download file "textfile0.txt"
+
+  Scenario: subadmin should not be able to reset the password of another subadmin of same group
+    Given these users have been created with skeleton files:
+      | username         | password   | displayname | email                      |
+      | another-subadmin | %regular%  | New user    | another.subadmin@oc.com.np |
+      | subadmin         | %subadmin% | Sub Admin   | sub.admin@oc.com.np        |
+    And group "new-group" has been created
+    And user "another-subadmin" has been made a subadmin of group "new-group"
+    And user "subadmin" has been made a subadmin of group "new-group"
+    When user "subadmin" tries to reset the password of user "another-subadmin" to "%alt1%" using the provisioning API
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
+    And the content of file "textfile0.txt" for user "another-subadmin" using password "%regular%" should be "ownCloud test text file 0" plus end-of-line
+    But user "another-subadmin" using password "%alt1%" should not be able to download file "textfile0.txt"

@@ -42,3 +42,17 @@ Feature: remove subadmin
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And user "subadmin" should be a subadmin of group "brand-new-group"
+
+  Scenario: subadmin should not be able to remove subadmin of another group
+    Given these users have been created with default attributes and skeleton files:
+      | username         |
+      | subadmin         |
+      | another-subadmin |
+    And group "new-group-1" has been created
+    And group "new-group-2" has been created
+    And user "subadmin" has been made a subadmin of group "new-group-1"
+    And user "another-subadmin" has been made a subadmin of group "new-group-2"
+    When user "subadmin" removes user "another-subadmin" from being a subadmin of group "new-group-2" using the provisioning API
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
+    And user "another-subadmin" should be a subadmin of group "new-group-2"

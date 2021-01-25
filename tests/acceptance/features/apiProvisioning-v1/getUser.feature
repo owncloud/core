@@ -140,3 +140,42 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
+
+  Scenario: admin gets information of a user with admin permissions
+    Given these users have been created with default attributes and skeleton files:
+      | username       | displayname    |
+      | Alice          | Admin Alice    |
+    And user "Alice" has been added to group "admin"
+    When the administrator retrieves the information of user "Alice" using the provisioning API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the display name returned by the API should be "Admin Alice"
+    And the quota definition returned by the API should be "default"
+
+  Scenario: a subadmin should be able to get information of a user with subadmin permissions in their group
+    Given these users have been created with default attributes and skeleton files:
+      | username         |
+      | subadmin         |
+      | another-subadmin |
+    And group "brand-new-group" has been created
+    And user "another-subadmin" has been added to group "brand-new-group"
+    And user "another-subadmin" has been made a subadmin of group "brand-new-group"
+    And user "subadmin" has been made a subadmin of group "brand-new-group"
+    When user "subadmin" retrieves the information of user "another-subadmin" using the provisioning API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the display name returned by the API should be "Regular User"
+    And the quota definition returned by the API should be "default"
+
+  Scenario: a subadmin should not be able to get information of another subadmin of same group
+    Given these users have been created with default attributes and skeleton files:
+      | username         |
+      | subadmin         |
+      | another-subadmin |
+    And group "brand-new-group" has been created
+    And user "another-subadmin" has been made a subadmin of group "brand-new-group"
+    And user "subadmin" has been made a subadmin of group "brand-new-group"
+    When user "subadmin" retrieves the information of user "another-subadmin" using the provisioning API
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
+    And the API should not return any data
