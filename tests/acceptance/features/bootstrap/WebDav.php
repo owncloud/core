@@ -881,8 +881,6 @@ trait WebDav {
 		// But if the content is wrong (e.g. empty) then it is useful to
 		// report the HTTP status to give some clue what might be the problem.
 		$actualStatus = $this->response->getStatusCode();
-		$pattern = ["/\n\s*$(?!\n)/"];
-		$actualContent = \preg_replace($pattern, "", $actualContent);
 		Assert::assertEquals(
 			$content,
 			$actualContent,
@@ -902,7 +900,16 @@ trait WebDav {
 	public function theDownloadedContentForMultipartByterangeShouldBe($statusCode, PyStringNode $content) {
 		$actualStatusCode = $this->response->getStatusCode();
 		if ($actualStatusCode === $statusCode) {
-			$this->downloadedContentShouldBe($content->getRaw());
+			$actualContent = (string) $this->response->setBody();
+			$pattern = ["/--\w*/", "/\s*/m"];
+			$actualContent = \preg_replace($pattern, "", $actualContent);
+			$content = \preg_replace("/\s*/m", '', $content->getRaw());
+			Assert::assertEquals(
+				$content,
+				$actualContent,
+				"The downloaded content was expected to be '$content', but actually is '$actualContent'. HTTP status was $actualStatus"
+			);
+			$this->downloadedContentShouldBe($content);
 		}
 	}
 
