@@ -185,7 +185,7 @@ Feature: disable user
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When the administrator disables user "Alice" using the provisioning API
     Then as "Brian" file "/Shares/textfile0.txt" should exist
-    And the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud test text file 0"
+    And the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud test text file 0" plus end-of-line
 
   Scenario: getting shares shared by disabled user in a group
     Given the administrator has set the default folder for received shares to "Shares"
@@ -198,7 +198,7 @@ Feature: disable user
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
     When the administrator disables user "Alice" using the provisioning API
     Then as "Brian" folder "/Shares/PARENT" should exist
-    And the content of file "/Shares/PARENT/parent.txt" for user "Brian" should be "ownCloud test text file parent"
+    And the content of file "/Shares/PARENT/parent.txt" for user "Brian" should be "ownCloud test text file parent" plus end-of-line
 
   Scenario: Disabled user tries to create public link share
     Given user "Alice" has been created with default attributes and skeleton files
@@ -213,7 +213,7 @@ Feature: disable user
       | path        | /textfile0.txt |
       | permissions | read           |
     When the administrator disables user "Alice" using the provisioning API
-    Then the public should be able to download the last publicly shared file using the <dav_version> public WebDAV API without a password and the content should be "ownCloud test text file 0"
+    Then the public should be able to download the last publicly shared file using the <dav_version> public WebDAV API without a password and the content should be "ownCloud test text file 0" plus end-of-line
     Examples:
       | dav_version |
       | old         |
