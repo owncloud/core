@@ -579,6 +579,23 @@ class PublicWebDavContext implements Context {
 	}
 
 	/**
+	 * @Then /^the public should be able to download the last publicly shared file using the (old|new) public WebDAV API without a password and the content should be "([^"]*)" plus end-of-line$/
+	 *
+	 * @param string $publicWebDAVAPIVersion
+	 * @param string $expectedContent
+	 *
+	 * @return void
+	 */
+	public function checkLastPublicSharedFileDownloadPlusEndOfLine(
+		$publicWebDAVAPIVersion, $expectedContent
+	) {
+		$this->checkLastPublicSharedFileWithPasswordDownload(
+			$publicWebDAVAPIVersion, "", "$expectedContent\n"
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
 	 * @Then /^the public should be able to download the last publicly shared file using the (old|new) public WebDAV API with password "([^"]*)" and the content should be "([^"]*)"$/
 	 *
 	 * @param string $publicWebDAVAPIVersion
