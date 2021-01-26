@@ -114,7 +114,7 @@ Feature: enable user
     And the HTTP status code should be "200"
     And user "Alice" should be enabled
 
-  Scenario: subadmin should not be to enable user not in their group
+  Scenario: subadmin should not be able to enable user not in their group
     Given these users have been created with default attributes and skeleton files:
       | username    |
       | Alice       |
