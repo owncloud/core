@@ -1587,6 +1587,7 @@ trait Sharing {
 
 	/**
 	 * @When /^user "([^"]*)" deletes the last share using the sharing API$/
+	 * @When /^user "([^"]*)" tries to delete the last share using the sharing API$/
 	 *
 	 * @param string $user
 	 *
