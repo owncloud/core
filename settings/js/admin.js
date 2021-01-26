@@ -11,8 +11,12 @@ $(document).ready(function(){
 	});
 
 
-	$('#loglevel').change(function(){
-		$.post(OC.generateUrl('/settings/admin/log/level'), {level: $(this).val()});
+	$('#loglevel').change(function () {
+		$.post(OC.generateUrl('/settings/admin/log/level'), {level: $(this).val()}).done(function (data) {
+			OC.msg.finishedAction('#log_level_save_msg', data);
+		}).fail(function (data) {
+			OC.msg.finishedAction('#log_level_save_msg', data.responseJSON);
+		});
 	});
 
 	$('#shareAPIEnabled').change(function() {

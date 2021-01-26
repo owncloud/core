@@ -47,9 +47,9 @@ class LogSettingsControllerTest extends \Test\TestCase {
 		$response = $this->logSettingsController->setLogLevel($level)->getData();
 
 		if ($inRange) {
-			$expectedResponse = ['level' => $level];
+			$expectedResponse = ['status' => 'success', 'data' => ['message' => 'Updated log level', 'level' => $level]];
 		} else {
-			$expectedResponse = ['message' => 'log-level out of allowed range'];
+			$expectedResponse = ['status' => 'error', 'data' => ['message' => 'log-level out of allowed range']];
 		}
 
 		$this->assertSame($expectedResponse, $response);
