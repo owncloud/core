@@ -1,4 +1,6 @@
 { "translations": {
+    "Wrong current password" : "Mot de passe actuel incorrect",
+    "The new password cannot be the same as the previous one" : "Le nouveau mot de passe ne peut pas être le même que l'ancien",
     "No user supplied" : "Aucun utilisateur fourni",
     "Authentication error" : "Erreur d'authentification",
     "Please provide an admin recovery password; otherwise, all user data will be lost." : "Veuillez fournir un mot de passe administrateur de récupération de données, sinon toutes les données de l'utilisateur seront perdues.",
@@ -9,6 +11,7 @@
     "Couldn't send reset email. Please contact your administrator." : "Impossible d'envoyer le courriel de réinitialisation. Veuillez contacter votre administrateur.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "installation et mise à jour des applications via le marché ou le Cloud Fédéré Partagé",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL utilise %s %s, qui est une version obsolète. Veuillez mettre à jour votre système d'exploitation, ou des fonctionnalités telles que %s ne fonctionneront pas correctement.",
+    "Invalid url '%s'. Urls should be set up like 'http://www.example.com' or 'https://www.example.com'" : "Url invalide '%s'. Les Urls doivent être de la forme 'http://www.exemple.com' ou 'https://www.exemple.com'",
     "Group already exists." : "Ce groupe existe déjà.",
     "Unable to add group." : "Impossible d'ajouter le groupe.",
     "Unable to delete group." : "Impossible de supprimer le groupe.",
@@ -188,6 +191,7 @@
     "Allow users to share via link" : "Autoriser les utilisateurs à partager par lien",
     "Allow public uploads" : "Autoriser les téléversements publics",
     "Enforce password protection for read-only links" : "Forcer la protection par mot de passe pour les liens en lecture seule",
+    "Enforce password protection for read + write links" : "Forcer la protection par mot de passe pour les liens en écriture et lecture",
     "Set default expiration date" : "Spécifier une date d'expiration par défaut",
     "Expire after " : "Expiration après ",
     "days" : "jours",
