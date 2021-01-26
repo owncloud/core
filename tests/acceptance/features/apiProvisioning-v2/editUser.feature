@@ -127,3 +127,66 @@ Feature: edit users
     And the attributes of user "brand-new-user" returned by the API should include
       | quota definition | default |
     And the quota definition of user "brand-new-user" should be "default"
+
+  Scenario: the administrator can edit user information with admin permissions
+    Given these users have been created with default attributes and skeleton files:
+      | username            |
+      | another-admin       |
+    And user "another-admin" has been added to group "admin"
+    When user "another-admin" changes the quota of user "another-admin" to "12MB" using the provisioning API
+    And user "another-admin" changes the email of user "another-admin" to "another-admin@example.com" using the provisioning API
+    And user "another-admin" changes the display of user "another-admin" to "Anne Brown" using the provisioning API
+    Then the display name of user "another-admin" should be "Anne Brown"
+    And the email address of user "another-admin" should be "another-admin@example.com"
+    And the quota definition of user "another-admin" should be "12 MB"
+
+  Scenario: a subadmin should be able to edit user information with subadmin permissions in their group
+    Given these users have been created with default attributes and skeleton files:
+      | username         |
+      | subadmin         |
+      | another-subadmin |
+    And group "new-group" has been created
+    And user "another-subadmin" has been added to group "new-group"
+    And user "another-subadmin" has been made a subadmin of group "new-group"
+    And user "subadmin" has been made a subadmin of group "new-group"
+    When user "subadmin" changes the quota of user "another-subadmin" to "12MB" using the provisioning API
+    And user "subadmin" changes the email of user "another-subadmin" to "brand-new-user@example.com" using the provisioning API
+    And user "subadmin" changes the display of user "another-subadmin" to "Anne Brown" using the provisioning API
+    Then the display name of user "another-subadmin" should be "Anne Brown"
+    And the email address of user "another-subadmin" should be "brand-new-user@example.com"
+    And the quota definition of user "another-subadmin" should be "12 MB"
+
+  Scenario: a subadmin should not be able to edit user information of another subadmin of same group
+    Given these users have been created with default attributes and skeleton files:
+      | username         |
+      | subadmin         |
+      | another-subadmin |
+    And group "new-group" has been created
+    And user "another-subadmin" has been made a subadmin of group "new-group"
+    And user "subadmin" has been made a subadmin of group "new-group"
+    When user "subadmin" changes the quota of user "another-subadmin" to "12MB" using the provisioning API
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
+    When user "subadmin" changes the email of user "another-subadmin" to "brand-new-user@example.com" using the provisioning API
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
+    When user "subadmin" changes the display of user "another-subadmin" to "Anne Brown" using the provisioning API
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
+    And the display name of user "another-subadmin" should be "Regular User"
+    And the email address of user "another-subadmin" should be "another-subadmin@owncloud.org"
+    And the quota definition of user "another-subadmin" should be "default"
+
+  Scenario: a normal user should not be able to edit another user's information
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+    When user "Alice" changes the display name of user "Brian" to "New Brian" using the provisioning API
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
+    When user "Alice" changes the email of user "Brian" to "brian-new-email@example.com" using the provisioning API
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
+    And the display name of user "Brian" should be "Brian Murphy"
+    And the email address of user "Brian" should be "brian@example.org"

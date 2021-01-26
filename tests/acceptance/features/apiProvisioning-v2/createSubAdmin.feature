@@ -44,3 +44,14 @@ Feature: create a subadmin
     Then the OCS status code should be "401"
     And the HTTP status code should be "401"
     And user "brand-new-user" should not be a subadmin of group "brand-new-group"
+
+  Scenario: normal user should not be to make another user a subadmin
+    Given these users have been created with default attributes and skeleton files:
+      | username       |
+      | Alice          |
+      | Brian          |
+    And group "group101" has been created
+    When user "Alice" makes user "Brian" a subadmin of group "group101" using the provisioning API
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
+    And user "Brian" should not be a subadmin of group "group101"
