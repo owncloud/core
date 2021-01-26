@@ -900,16 +900,15 @@ trait WebDav {
 	public function theDownloadedContentForMultipartByterangeShouldBe($statusCode, PyStringNode $content) {
 		$actualStatusCode = $this->response->getStatusCode();
 		if ($actualStatusCode === $statusCode) {
-			$actualContent = (string) $this->response->setBody();
+			$actualContent = (string) $this->response->getBody();
 			$pattern = ["/--\w*/", "/\s*/m"];
 			$actualContent = \preg_replace($pattern, "", $actualContent);
 			$content = \preg_replace("/\s*/m", '', $content->getRaw());
 			Assert::assertEquals(
 				$content,
 				$actualContent,
-				"The downloaded content was expected to be '$content', but actually is '$actualContent'. HTTP status was $actualStatus"
+				"The downloaded content was expected to be '$content', but actually is '$actualContent'. HTTP status was $actualStatusCode"
 			);
-			$this->downloadedContentShouldBe($content);
 		}
 	}
 
