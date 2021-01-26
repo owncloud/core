@@ -40,6 +40,7 @@ Summary
 * Enhancement - Improve file list tag management: [#38197](https://github.com/owncloud/core/pull/38197)
 * Enhancement - Improve the UX in the external storage settings page: [#38288](https://github.com/owncloud/core/pull/38288)
 * Enhancement - Display path in the occ app:list command: [#38309](https://github.com/owncloud/core/pull/38309)
+* Enhancement - Display error/success message while changing the log level: [#38340](https://github.com/owncloud/core/pull/38340)
 
 Details
 -------
@@ -284,6 +285,14 @@ Details
    Occ app:list Additionally displays the located app path
 
    https://github.com/owncloud/core/pull/38309
+
+* Enhancement - Display error/success message while changing the log level: [#38340](https://github.com/owncloud/core/pull/38340)
+
+   In order to provide instant user feedback, changing the log level in
+   settings->administration->general will display an error/success message next to the
+   select box.
+
+   https://github.com/owncloud/core/pull/38340
 
 Changelog for ownCloud Core [10.6.0] (2020-11-25)
 =======================================
