@@ -4,7 +4,7 @@ Feature: CORS headers
   Background:
     Given user "Alice" has been created with default attributes and skeleton files
 
-  @files_sharing-app-required
+  @files_sharing-app-required @skipOnOcV10.5 @skipOnOcV10.6.0
   Scenario Outline: CORS headers should be returned when setting CORS domain sending Origin header
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has added "https://aphno.badal" to the list of personal CORS domains
