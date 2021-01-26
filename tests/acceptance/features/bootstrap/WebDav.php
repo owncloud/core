@@ -881,6 +881,7 @@ trait WebDav {
 		// But if the content is wrong (e.g. empty) then it is useful to
 		// report the HTTP status to give some clue what might be the problem.
 		$actualStatus = $this->response->getStatusCode();
+		$actualContent = \preg_replace("/\n/", "", $actualContent);
 		Assert::assertEquals(
 			$content,
 			$actualContent,
