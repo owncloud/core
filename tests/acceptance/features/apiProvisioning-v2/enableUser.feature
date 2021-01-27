@@ -90,6 +90,7 @@ Feature: enable user
     When user "Alice" sends HTTP method "GET" to URL "/index.php/apps/files"
     Then the HTTP status code should be "200"
 
+  @notToImplementOnOCIS
   Scenario: normal user should not be able to enable himself
     Given these users have been created with default attributes and skeleton files:
       | username |

@@ -45,7 +45,7 @@ Feature: create a subadmin
     And the HTTP status code should be "401"
     And user "brand-new-user" should not be a subadmin of group "brand-new-group"
 
-  Scenario: normal user should not be to make another user a subadmin
+  Scenario: normal user should not be able to make another user a subadmin
     Given these users have been created with default attributes and skeleton files:
       | username       |
       | Alice          |

@@ -175,7 +175,6 @@ Feature: sharing
       | /PARENT            | 1               | 200              | PARENT         |
       | /PARENT            | 2               | 404              | PARENT         |
 
-  @issue-ocis-1229
   Scenario Outline: delete a share with wrong authentication
     Given these users have been created with default attributes and without skeleton files:
       | username |
