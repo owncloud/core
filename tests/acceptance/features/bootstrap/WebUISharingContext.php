@@ -1046,6 +1046,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When /^the user (declines|accepts) share "([^"]*)" offered by user "([^"]*)" using the webUI$/
+	 * @Given /^the user has (declined|accepted) share "([^"]*)" offered by user "([^"]*)" using the webUI$/
 	 *
 	 * @param string $action
 	 * @param string $share

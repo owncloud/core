@@ -220,3 +220,14 @@ Feature: sharing
       | sharer_folder | group_folder    | receiver_file  |
       | ?abc=oc #     | ?abc=oc g%rp#   | # oc?test=oc&a |
       | @a#8a=b?c=d   | @a#8a=b?c=d grp | ?a#8 a=b?c=d   |
+
+  Scenario: receiver moves file within a received folder to new folder
+    Given user "Alice" has uploaded file with content "file to share 1" to "/FOLDER/fileToShare1.txt"
+    And user "Alice" has uploaded file with content "file to share 2" to "/FOLDER/fileToShare2.txt"
+    And user "Alice" has shared folder "FOLDER" with user "Brian"
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
+    When user "Brian" moves folder "/Shares/FOLDER/fileToShare1.txt" to "/PARENT" using the WebDAV API
+    And user "Brian" moves folder "/Shares/FOLDER/fileToShare2.txt" to "/PARENT" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "Brian" file "PARENT/fileToShare1.txt" should exist
+    But as "Alice" file "/FOLDER/fileToShare1.txt" should not exist
