@@ -92,3 +92,20 @@ Feature: move files
     Then file "data.zip" should not be listed on the webUI
     And as "Alice" file "simple-folder/simple-empty-folder/data.zip" should exist
     But as "Alice" file "simple-folder/data.zip" should not exist
+
+  @files_sharing-app-required
+  Scenario: receiver moves file within a received folder to new folder using webUI
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
+    And user "Alice" has uploaded file with content "file to share 1" to "/simple-empty-folder/fileToShare1.txt"
+    And user "Alice" has uploaded file with content "file to share 2" to "/simple-empty-folder/fileToShare2.txt"
+    And user "Alice" has shared folder "simple-empty-folder" with user "Brian"
+    And user "Brian" has logged in using the webUI
+    And the user accepts share "simple-empty-folder" offered by user "Alice" using the webUI
+    When the user moves file "/Shares/simple-empty/fileToShare1.txt" into folder "/simple-folder" using the webUI
+    And user "Brian" moves folder "/Shares/FOLDER/fileToShare2.txt" to "/simple-folder" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "Brian" file "/simple-folder/fileToShare1.txt" should exist
+    And as "Brian" file "/simple-folder/fileToShare2.txt" should exist
+    But as "Alice" file "/simple-empty-folder/fileToShare1.txt" should not exist
+    But as "Alice" file "/simple-empty-folder/fileToShare2.txt" should not exist

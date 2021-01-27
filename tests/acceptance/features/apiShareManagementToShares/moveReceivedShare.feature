@@ -220,3 +220,17 @@ Feature: sharing
       | sharer_folder | group_folder    | receiver_file  |
       | ?abc=oc #     | ?abc=oc g%rp#   | # oc?test=oc&a |
       | @a#8a=b?c=d   | @a#8a=b?c=d grp | ?a#8 a=b?c=d   |
+
+  Scenario: receiver moves file within a received folder to new folder
+    Given user "Alice" has created folder "folderToShare"
+    And user "Alice" has uploaded file with content "thisIsAFileInsideTheSharedFolder" to "/folderToShare/fileToShare1.txt"
+    And user "Alice" has uploaded file with content "thisIsAFileInsideTheSharedFolder" to "/folderToShare/fileToShare2.txt"
+    And user "Alice" has shared folder "folderToShare" with user "Brian" with permissions "share,read,change"
+    And user "Brian" has accepted share "/folderToShare" offered by user "Alice"
+    When user "Brian" moves folder "/Shares/folderToShare/fileToShare1.txt" to "FOLDER" using the WebDAV API
+    And user "Brian" moves folder "/Shares/folderToShare/fileToShare2.txt" to "FOLDER" using the WebDAV API
+    Then the HTTP status code should be "204"
+    And as "Brian" file "FOLDER/fileToShare1.txt" should exist
+    And as "Brian" file "FOLDER/fileToShare2.txt" should exist
+    But as "Alice" folder "/folderToShare/fileToShare1.txt" should not exist
+    And as "Alice" folder "/folderToShare/fileToShare2.txt" should not exist
