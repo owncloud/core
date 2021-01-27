@@ -89,7 +89,7 @@ Feature: enable user
     When user "Alice" sends HTTP method "GET" to URL "/index.php/apps/files"
     Then the HTTP status code should be "200"
 
-  Scenario: normal user should not be to enable himself
+  Scenario: normal user should not be able to enable himself
     Given these users have been created with default attributes and skeleton files:
       | username |
       | Alice    |
@@ -99,7 +99,7 @@ Feature: enable user
     And the HTTP status code should be "401"
     And user "Alice" should be disabled
 
-  Scenario: subadmin should be to enable user in their group
+  Scenario: subadmin should be able to enable user in their group
     Given these users have been created with default attributes and skeleton files:
       | username    |
       | Alice       |
@@ -113,7 +113,7 @@ Feature: enable user
     And the HTTP status code should be "200"
     And user "Alice" should be enabled
 
-  Scenario: subadmin should not be to enable user not in their group
+  Scenario: subadmin should not be able to enable user not in their group
     Given these users have been created with default attributes and skeleton files:
       | username    |
       | Alice       |
@@ -126,7 +126,7 @@ Feature: enable user
     And the HTTP status code should be "401"
     And user "Alice" should be disabled
 
-  Scenario: subadmin should be to enable user with subadmin permissions in their group
+  Scenario: subadmin should be able to enable user with subadmin permissions in their group
     Given these users have been created with default attributes and skeleton files:
       | username    |
       | Alice       |
@@ -141,7 +141,7 @@ Feature: enable user
     And the HTTP status code should be "200"
     And user "Alice" should be enabled
 
-  Scenario: subadmin should not be to enable another subadmin of same group
+  Scenario: subadmin should not be able to enable another subadmin of same group
     Given these users have been created with default attributes and skeleton files:
       | username            |
       | subadmin            |

@@ -1334,7 +1334,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the user "([^"]*)" sends a user creation request for user "([^"]*)" password "([^"]*)" using the provisioning API$/
+	 * @When /^unauthorized user "([^"]*)" tries to create new user "([^"]*)" with password "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $user
 	 * @param string $userToCreate
@@ -1366,17 +1366,6 @@ trait Provisioning {
 			"/cloud/users",
 			$bodyTable
 		);
-		$this->addUserToCreatedUsersList(
-			$userToCreate,
-			$password,
-			null,
-			$email,
-			$this->theHTTPStatusCodeWasSuccess()
-		);
-		if (OcisHelper::isTestingOnOcisOrReva()) {
-			OcisHelper::createEOSStorageHome($this->getBaseUrl(), $userToCreate, $password);
-			$this->manuallyAddSkeletonFilesForUser($userToCreate, $password);
-		}
 	}
 
 	/**

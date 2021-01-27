@@ -122,21 +122,21 @@ Feature: add user
       | -123     |
       | 0.0      |
 
-  Scenario: subadmin should not be to create a user
+  Scenario: subadmin should not be able to create a user
     Given user "brand-new-user" has been deleted
     And user "subadmin" has been created with default attributes and without skeleton files
     And group "group101" has been created
     And user "subadmin" has been added to group "group101"
     And user "subadmin" has been made a subadmin of group "group101"
-    When the user "subadmin" sends a user creation request for user "brand-new-user" password "%alt1%" using the provisioning API
+    When unauthorized user "subadmin" tries to create new user "brand-new-user" with password "%alt1%" using the provisioning API
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
     And user "brand-new-user" should not exist
 
-  Scenario: normal user should not be to create another user
+  Scenario: normal user should not be able to create another user
     Given user "brand-new-user" has been deleted
     And user "Alice" has been created with default attributes and without skeleton files
-    When the user "Alice" sends a user creation request for user "brand-new-user" password "%alt1%" using the provisioning API
+    When unauthorized user "Alice" tries to create new user "brand-new-user" with password "%alt1%" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And user "brand-new-user" should not exist

@@ -84,7 +84,7 @@ Feature: delete users
     And the HTTP status code should be "200"
     And user "another-subadmin" should not exist
   
-  Scenario: subadmin should not be to delete another subadmin of same group
+  Scenario: subadmin should not be able to delete another subadmin of same group
     Given these users have been created with default attributes and skeleton files:
       | username         |
       | subadmin         |
