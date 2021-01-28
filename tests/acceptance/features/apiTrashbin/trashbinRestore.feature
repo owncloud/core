@@ -14,31 +14,27 @@ Feature: Restore deleted files/folders
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/FOLDER"
     And user "Alice" has created folder "/PARENT"
-    And user "Alice" has uploaded file with content "to delete" to "/PARENT/parent.txt"
-    And user "Alice" has uploaded file with content "to delete" to "/textfile1.txt"
-    And user "Alice" has uploaded file with content "to delete" to "/textfile2.txt"
-    And user "Alice" has uploaded file with content "to delete" to "/textfile3.txt"
-    And user "Alice" has uploaded file with content "to delete" to "/textfile4.txt"
+    And user "Alice" has uploaded file with content "parent text" to "/PARENT/parent.txt"
+    And user "Alice" has uploaded file with content "text file 1" to "/textfile1.txt"
     And user "Alice" has deleted file "/textfile0.txt"
     And as "Alice" file "/textfile0.txt" should exist in the trashbin
-    When user "Alice" restores the folder with original path "/textfile0.txt" using the trashbin API
+    When user "Alice" restores the file with original path "/textfile0.txt" using the trashbin API
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions for user "Alice"
       | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
-    And as "Alice" the folder with original path "/textfile0.txt" should not exist in the trashbin
+    And as "Alice" the file with original path "/textfile0.txt" should not exist in the trashbin
+    And the content of file "/textfile0.txt" for user "Alice" should be "file to delete"
     And user "Alice" should see the following elements
       | /FOLDER/           |
       | /PARENT/           |
       | /PARENT/parent.txt |
       | /textfile0.txt     |
       | /textfile1.txt     |
-      | /textfile2.txt     |
-      | /textfile3.txt     |
-      | /textfile4.txt     |
     Examples:
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario Outline: A file deleted from a folder can be restored to the original folder
     Given using <dav-path> DAV path
@@ -49,10 +45,12 @@ Feature: Restore deleted files/folders
     Then the HTTP status code should be "201"
     And as "Alice" the file with original path "/new-folder/new-file.txt" should not exist in the trashbin
     And as "Alice" file "/new-folder/new-file.txt" should exist
+    And the content of file "/new-folder/new-file.txt" for user "Alice" should be "file to delete"
     Examples:
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario Outline: A file deleted from a folder is restored to the original folder if the original folder was deleted and restored
     Given using <dav-path> DAV path
@@ -65,6 +63,7 @@ Feature: Restore deleted files/folders
     Then the HTTP status code should be "201"
     And as "Alice" the file with original path "/new-folder/new-file.txt" should not exist in the trashbin
     And as "Alice" file "/new-folder/new-file.txt" should exist
+    And the content of file "/new-folder/new-file.txt" for user "Alice" should be "file to delete"
     Examples:
       | dav-path |
       | old      |
@@ -120,6 +119,7 @@ Feature: Restore deleted files/folders
       | old      | "/PARENT/.hiddenfile0.txt" | ".hiddenfile0.txt" |
       | new      | "/PARENT/.hiddenfile0.txt" | ".hiddenfile0.txt" |
 
+
   Scenario Outline: A file deleted from a folder is restored to the original folder if the original folder was deleted and recreated
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/new-folder"
@@ -133,14 +133,15 @@ Feature: Restore deleted files/folders
       | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
     And as "Alice" the file with original path "/new-folder/new-file.txt" should not exist in the trashbin
     And as "Alice" file "/new-folder/new-file.txt" should exist
+    And the content of file "/new-folder/new-file.txt" for user "Alice" should be "file to delete"
     Examples:
       | dav-path |
       | old      |
       | new      |
 
   @local_storage
-    @skipOnEncryptionType:user-keys @encryption-issue-42
-    @skip_on_objectstore
+  @skipOnEncryptionType:user-keys @encryption-issue-42
+  @skip_on_objectstore
   Scenario Outline: Deleting a file into external storage moves it to the trashbin and can be restored
     Given using <dav-path> DAV path
     And the administrator has invoked occ command "files:scan --all"
@@ -153,6 +154,7 @@ Feature: Restore deleted files/folders
     And the following headers should match these regular expressions for user "Alice"
       | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
     And as "Alice" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in the trashbin
+    And the content of file "/local_storage/tmp/textfile0.txt" for user "Alice" should be "file to delete"
     And user "Alice" should see the following elements
       | /local_storage/                  |
       | /local_storage/tmp/              |
@@ -241,6 +243,7 @@ Feature: Restore deleted files/folders
       | old      |
       | new      |
 
+
   Scenario Outline: Files with strange names can be restored
     Given using <dav-path> DAV path
     And user "Alice" has uploaded file with content "file original content" to "<file-to-upload>"
@@ -259,6 +262,7 @@ Feature: Restore deleted files/folders
       | old      | sample,1.txt            |
       | new      | sample,1.txt            |
 
+
   Scenario Outline: A file deleted from a multi level sub-folder can be restored to the original folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/new-folder"
@@ -270,6 +274,7 @@ Feature: Restore deleted files/folders
     Then the HTTP status code should be "201"
     And as "Alice" the file with original path "/new-folder/folder1/folder2/new-file.txt" should not exist in the trashbin
     And as "Alice" file "/new-folder/folder1/folder2/new-file.txt" should exist
+    And the content of file "/new-folder/folder1/folder2/new-file.txt" for user "Alice" should be "file to delete"
     Examples:
       | dav-path |
       | old      |
@@ -287,6 +292,7 @@ Feature: Restore deleted files/folders
     Then the HTTP status code should be "201"
     And as "Alice" the file with original path "/new-folder/folder1/folder2/new-file.txt" should not exist in the trashbin
     And as "Alice" file "/new-folder/folder1/folder2/new-file.txt" should exist
+    And the content of file "/new-folder/folder1/folder2/new-file.txt" for user "Alice" should be "file to delete"
     Examples:
       | dav-path |
       | old      |
@@ -305,6 +311,7 @@ Feature: Restore deleted files/folders
     And as "Alice" the file with original path "/new-folder/folder1/folder2/new-file.txt" should not exist in the trashbin
     And as "Alice" the folder with original path "/new-folder/folder1/" should not exist in the trashbin
     And as "Alice" file "/folder1/folder2/new-file.txt" should exist
+    And the content of file "/folder1/folder2/new-file.txt" for user "Alice" should be "file to delete"
     But as "Alice" the folder with original path "/new-folder/" should exist in the trashbin
     Examples:
       | dav-path |
@@ -324,6 +331,7 @@ Feature: Restore deleted files/folders
     Then the HTTP status code should be "201"
     And as "Alice" the file with original path "/new-folder/folder1/folder2/new-file.txt" should not exist in the trashbin
     And as "Alice" file "/new-file.txt" should exist
+    And the content of file "/new-file.txt" for user "Alice" should be "file to delete"
     But as "Alice" the file with original path "/new-folder/folder1/folder2/not-restored.txt" should exist in the trashbin
     Examples:
       | dav-path |

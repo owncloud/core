@@ -58,6 +58,7 @@ Feature: using trashbin together with sharing
     And user "Brian" should see the following elements
       | /Shares/renamed_shared/                |
       | /Shares/renamed_shared/shared_file.txt |
+    And the content of file "/Shares/renamed_shared/shared_file.txt" for user "Brian" should be "file to delete"
     Examples:
       | dav-path |
       | old      |
