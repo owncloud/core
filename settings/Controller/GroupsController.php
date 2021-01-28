@@ -156,4 +156,34 @@ class GroupsController extends Controller {
 			Http::STATUS_FORBIDDEN
 		);
 	}
+
+	/**
+	 * Get available groups for assigning and removing via WebUI.
+	 *
+	 * @return DataResponse
+	 */
+	public function getAssignableAndRemovableGroups() {
+		$assignableGroups = [];
+		$removableGroups = [];
+
+		foreach ($this->groupManager->getBackends() as $backend) {
+			$groups = $backend->getGroups();
+			if ($backend->implementsActions($backend::ADD_TO_GROUP)) {
+				\array_push($assignableGroups, ...$groups);
+			}
+			if ($backend->implementsActions($backend::REMOVE_FROM_GROUP)) {
+				\array_push($removableGroups, ...$groups);
+			}
+		}
+
+		return new DataResponse(
+			[
+				'data' => [
+					'assignableGroups' => $assignableGroups,
+					'removableGroups' => $removableGroups,
+				],
+				Http::STATUS_OK
+			]
+		);
+	}
 }

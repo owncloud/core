@@ -496,4 +496,12 @@ class Manager extends PublicEmitter implements IGroupManager {
 		}
 		return false;
 	}
+
+	/**
+	 * Get the active backends
+	 * @return \OCP\GroupInterface[]
+	 */
+	public function getBackends() {
+		return $this->backends;
+	}
 }

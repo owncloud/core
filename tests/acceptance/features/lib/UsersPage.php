@@ -425,6 +425,7 @@ class UsersPage extends OwncloudPage {
 			);
 		}
 		$newUserGroupsDropDown->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
 		$groupDropDownList = $this->find("xpath", $this->newUserGroupsListXpath);
 		if ($groupDropDownList === null) {
 			throw new ElementNotFoundException(

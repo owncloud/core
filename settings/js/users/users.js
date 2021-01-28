@@ -626,6 +626,12 @@ var UserList = {
 		var user = UserList.getUID($td);
 		var checked = $td.data('groups') || [];
 		var extraGroups = [].concat(checked);
+		var assignableGroups = new Set();
+		var removableGroups = new Set();
+		var checkedSet = new Set();
+		$.each(checked, function(i, group) {
+			checkedSet.add(group);
+		});
 
 		$td.find('.multiselectoptions').remove();
 
@@ -638,43 +644,76 @@ var UserList = {
 		}
 
 		function createItem(group) {
-			if (isSubadminSelect && group === 'admin') {
-				// can't become subadmin of "admin" group
+			if (isSubadminSelect) {
+				// this is solely for the dropdown menu "Group Admin for"
+				if (group === 'admin') {
+					// can't become subadmin of "admin" group
+					return;
+				}
+
+				$groupsSelect.append($('<option value="' + escapeHTML(group) + '">' + escapeHTML(group) + '</option>'));
+				// return as we need to bypass the following group restrictions here
+				return;
+			}
+
+			var groupIsChecked = checkedSet.has(group);
+			var groupIsAssignable = assignableGroups.has(group);
+			var groupIsRemovable = removableGroups.has(group);
+			if (!groupIsChecked && !groupIsAssignable) {
+				$groupsSelect.append($('<option value="' + escapeHTML(group) + '" disabled="disabled">' + escapeHTML(group) + '</option>'));
+				return;
+			}
+			if (groupIsChecked && !groupIsRemovable) {
+				$groupsSelect.append($('<option value="' + escapeHTML(group) + '" disabled="disabled">' + escapeHTML(group) + '</option>'));
 				return;
 			}
 			$groupsSelect.append($('<option value="' + escapeHTML(group) + '">' + escapeHTML(group) + '</option>'));
 		}
 
-		$.each(this.availableGroups, function (i, group) {
-			// some new groups might be selected but not in the available groups list yet
-			var extraIndex = extraGroups.indexOf(group);
-			if (extraIndex >= 0) {
-				// remove extra group as it was found
-				extraGroups.splice(extraIndex, 1);
+		$.ajax({
+			type: 'GET',
+			url: OC.generateUrl('/settings/groups/available'),
+		}).then(function (result) {
+			if (result.data) {
+				$.each(result.data.assignableGroups, function(i, group) {
+					assignableGroups.add(group);
+				});
+				$.each(result.data.removableGroups, function(i, group) {
+					removableGroups.add(group);
+				});
 			}
-			createItem(group);
-		});
-		$.each(extraGroups, function (i, group) {
-			createItem(group);
-		});
 
-		$td.append($groupsSelect);
+			$.each(this.availableGroups, function (i, group) {
+				// some new groups might be selected but not in the available groups list yet
+				var extraIndex = extraGroups.indexOf(group);
+				if (extraIndex >= 0) {
+					// remove extra group as it was found
+					extraGroups.splice(extraIndex, 1);
+				}
+				createItem(group);
+			});
+			$.each(extraGroups, function (i, group) {
+				createItem(group);
+			});
 
-		if (isSubadminSelect) {
-			UserList.applySubadminSelect($groupsSelect, user, checked);
-		} else {
-			UserList.applyGroupSelect($groupsSelect, user, checked);
-		}
+			$td.append($groupsSelect);
 
-		$groupsListContainer.addClass('hidden');
-		$td.find('.multiselect:not(.groupsListContainer):first').click();
-		$groupsSelect.on('dropdownclosed', function(e) {
-			$groupsSelect.remove();
-			$td.find('.multiselect:not(.groupsListContainer)').parent().remove();
-			$td.find('.multiselectoptions').remove();
-			$groupsListContainer.removeClass('hidden');
-			UserList._updateGroupListLabel($td, e.checked);
-		});
+			if (isSubadminSelect) {
+				UserList.applySubadminSelect($groupsSelect, user, checked);
+			} else {
+				UserList.applyGroupSelect($groupsSelect, user, checked);
+			}
+
+			$groupsListContainer.addClass('hidden');
+			$td.find('.multiselect:not(.groupsListContainer):first').click();
+			$groupsSelect.on('dropdownclosed', function(e) {
+				$groupsSelect.remove();
+				$td.find('.multiselect:not(.groupsListContainer)').parent().remove();
+				$td.find('.multiselectoptions').remove();
+				$groupsListContainer.removeClass('hidden');
+				UserList._updateGroupListLabel($td, e.checked);
+			});
+		}.bind(this));
 	},
 
 	/**
