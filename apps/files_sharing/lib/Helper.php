@@ -140,8 +140,7 @@ class Helper {
 					 *
 					 * @link https://github.com/owncloud/core/issues/10671
 					 */
-					if (!empty($newHash)) {
-					}
+					
 				} else {
 					return false;
 				}

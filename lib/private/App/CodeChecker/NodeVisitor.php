@@ -128,31 +128,8 @@ class NodeVisitor extends NodeVisitorAbstract {
 			if ($node->class !== null) {
 				if ($node->class instanceof Name) {
 					$this->checkBlackList($node->class->toString(), CodeChecker::STATIC_CALL_NOT_ALLOWED, $node);
-
 					$this->checkBlackListFunction($node->class->toString(), $node->name, $node);
 					$this->checkBlackListMethod($node->class->toString(), $node->name, $node);
-				}
-
-				if ($node->class instanceof Node\Expr\Variable) {
-					/**
-					 * TODO: find a way to detect something like this:
-					 *       $c = "OC_API";
-					 *       $n = $c::call();
-					 */
-					// $this->checkBlackListMethod($node->class->..., $node->name, $node);
-				}
-			}
-		}
-		if ($node instanceof Node\Expr\MethodCall) {
-			if ($node->var !== null) {
-				if ($node->var instanceof Node\Expr\Variable) {
-					/**
-					 * TODO: find a way to detect something like this:
-					 *       $c = new OC_API();
-					 *       $n = $c::call();
-					 *       $n = $c->call();
-					 */
-					// $this->checkBlackListMethod($node->var->..., $node->name, $node);
 				}
 			}
 		}
@@ -161,13 +138,7 @@ class NodeVisitor extends NodeVisitorAbstract {
 				if ($node->class instanceof Name) {
 					$this->checkBlackList($node->class->toString(), CodeChecker::CLASS_CONST_FETCH_NOT_ALLOWED, $node);
 				}
-				if ($node->class instanceof Node\Expr\Variable) {
-					/**
-					 * TODO: find a way to detect something like this:
-					 *       $c = "OC_API";
-					 *       $n = $i::ADMIN_AUTH;
-					 */
-				} else {
+				else {
 					$this->checkBlackListConstant($node->class->toString(), $node->name, $node);
 				}
 			}
@@ -176,13 +147,6 @@ class NodeVisitor extends NodeVisitorAbstract {
 			if ($node->class !== null) {
 				if ($node->class instanceof Name) {
 					$this->checkBlackList($node->class->toString(), CodeChecker::CLASS_NEW_NOT_ALLOWED, $node);
-				}
-				if ($node->class instanceof Node\Expr\Variable) {
-					/**
-					 * TODO: find a way to detect something like this:
-					 *       $c = "OC_API";
-					 *       $n = new $i;
-					 */
 				}
 			}
 		}

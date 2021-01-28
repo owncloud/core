@@ -427,16 +427,17 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 	 * @return string cleaned path
 	 */
 	public function cleanPath($path) {
+		//In the issue was described that here (line:430) there was a empty code block, but I didn't see problem here
 		if (\strlen($path) == 0 or $path[0] != '/') {
 			$path = '/' . $path;
 		}
-
+		//But in the line 439 I saw an elseif without funcionality so, I removed it
 		$output = [];
 		foreach (\explode('/', $path) as $chunk) {
 			if ($chunk == '..') {
 				\array_pop($output);
-			} elseif ($chunk == '.') {
-			} else {
+			}
+			else {
 				$output[] = $chunk;
 			}
 		}
