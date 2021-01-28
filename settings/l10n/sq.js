@@ -19,6 +19,7 @@ OC.L10N.register(
     "Unable to delete group." : "S’arrihet të fshihet grup.",
     "Saved" : "U ruajt",
     "log-level out of allowed range" : "nivel regjistrimi jashtë intervalit të lejuar",
+    "Updated log level" : "U përditësua shkallë regjistrimi",
     "Invalid email address" : "Adresë email e pavlefshme",
     "test email settings" : "testoni rregullime email-i",
     "A problem occurred while sending the email. Please revise your settings. (Error: %s)" : "Ndodhi një gabim gjatë dërgimit të email-it. Ju lutemi, rishikoni rregullimet tuaja. (Gabim: %s)",
