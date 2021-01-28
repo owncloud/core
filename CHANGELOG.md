@@ -38,6 +38,7 @@ Summary
 * Enhancement - Make the right scrollbar more visible on the UI: [#38183](https://github.com/owncloud/core/pull/38183)
 * Enhancement - Improve file list tag management: [#38197](https://github.com/owncloud/core/pull/38197)
 * Enhancement - Improve the UX in the external storage settings page: [#38288](https://github.com/owncloud/core/pull/38288)
+* Enhancement - Prevent group assignment in Web UI if not supported: [#38298](https://github.com/owncloud/core/pull/38298)
 * Enhancement - Display path in the occ app:list command: [#38309](https://github.com/owncloud/core/pull/38309)
 * Enhancement - Display error/success message while changing the log level: [#38340](https://github.com/owncloud/core/pull/38340)
 
@@ -274,6 +275,15 @@ Details
    pointer cursor, this clarifies that a click will result in a config (re-)check.
 
    https://github.com/owncloud/core/pull/38288
+
+* Enhancement - Prevent group assignment in Web UI if not supported: [#38298](https://github.com/owncloud/core/pull/38298)
+
+   This enhancement checks if users can be assigned to (or removed from) groups via Web UI. All
+   group backends which do not support this functionality will be disabled in corresponding
+   menus.
+
+   https://github.com/owncloud/guests/issues/431
+   https://github.com/owncloud/core/pull/38298
 
 * Enhancement - Display path in the occ app:list command: [#38309](https://github.com/owncloud/core/pull/38309)
 
