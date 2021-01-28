@@ -2426,6 +2426,21 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" tries to get all the groups using the provisioning API$/
+	 * @When /^user "([^"]*)" gets all the groups using the provisioning API$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userTriesToGetAllTheGroupsUsingTheProvisioningApi($user) {
+		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/groups";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getActualUsername($user), $this->getUserPassword($user)
+		);
+	}
+
+	/**
 	 * @When the administrator gets all the groups of user :user using the provisioning API
 	 *
 	 * @param string $user
@@ -3755,6 +3770,23 @@ trait Provisioning {
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user/subadmins";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" gets all the groups where user "([^"]*)" is subadmin using the provisioning API$/
+	 * @When /^user "([^"]*)" tries to get all the groups where user "([^"]*)" is subadmin using the provisioning API$/
+	 *
+	 * @param string $user
+	 * @param string $anotherUser
+	 *
+	 * @return void
+	 */
+	public function userTriesToGetAllTheGroupsWhereUserIsSubadminUsingTheProvisioningApi($user, $anotherUser) {
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$anotherUser/subadmins";
+		$this->response = HttpRequestHelper::get(
+			$fullUrl, $this->getActualUsername($user), $this->getUserPassword($user)
 		);
 	}
 
