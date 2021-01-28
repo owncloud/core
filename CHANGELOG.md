@@ -17,12 +17,10 @@ Summary
 * Bugfix - Fix file_target in response when creating a public link share: [#38291](https://github.com/owncloud/core/issues/38291)
 * Bugfix - Fix rendering of leading/trailing spaces in the file name: [#38316](https://github.com/owncloud/core/issues/38316)
 * Change - Use OcsController and routes instead of API::register: [#37272](https://github.com/owncloud/core/pull/37272)
-* Change - Update Symfony components to 4.4.17: [#38163](https://github.com/owncloud/core/pull/38163)
 * Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.2): [#38306](https://github.com/owncloud/core/pull/38306)
 * Change - Update nikic/php-parser (4.10.2 => 4.10.4): [#38191](https://github.com/owncloud/core/pull/38191)
 * Change - Update swiftmailer/swiftmailer (v6.2.3 => v6.2.4): [#38198](https://github.com/owncloud/core/pull/38198)
 * Change - Rename phoenix to web: [#38199](https://github.com/owncloud/core/pull/38199)
-* Change - Update Symfony components to 4.4.18: [#38234](https://github.com/owncloud/core/pull/38234)
 * Change - Update phpseclib/phpseclib (2.0.29 => 2.0.30): [#38244](https://github.com/owncloud/core/pull/38244)
 * Change - Update egulias/email-validator (2.1.24 => 2.1.25): [#38255](https://github.com/owncloud/core/pull/38255)
 * Change - Update laminas/laminas-validator (2.13.4 => 2.13.5): [#38275](https://github.com/owncloud/core/pull/38275)
@@ -33,6 +31,7 @@ Summary
 * Change - Change X-XSS-Protection "1; block" -> "0": [#38236](https://github.com/owncloud/core/issues/38236)
 * Change - Update swiftmailer/swiftmailer (v6.2.4 => v6.2.5): [#38306](https://github.com/owncloud/core/pull/38306)
 * Change - Update pear/archive_tar (1.4.11 => 1.4.12): [#38312](https://github.com/owncloud/core/pull/38312)
+* Change - Update Symfony components to 4.4.19: [#38355](https://github.com/owncloud/core/pull/38355)
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 * Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
@@ -122,14 +121,6 @@ Details
    https://github.com/owncloud/core/issues/12454
    https://github.com/owncloud/core/pull/37272
 
-* Change - Update Symfony components to 4.4.17: [#38163](https://github.com/owncloud/core/pull/38163)
-
-   The following Symfony components have been updated to version 4.4.17 - console -
-   event-dispatcher - process - routing - translation
-
-   https://github.com/owncloud/core/pull/38163
-   https://symfony.com/blog/symfony-4-4-17-released
-
 * Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.2): [#38306](https://github.com/owncloud/core/pull/38306)
 
    https://github.com/owncloud/core/pull/38306
@@ -153,14 +144,6 @@ Details
    https://github.com/owncloud/core/pull/38199
    https://github.com/owncloud/core/pull/38201
    https://github.com/owncloud/core/pull/38212
-
-* Change - Update Symfony components to 4.4.18: [#38234](https://github.com/owncloud/core/pull/38234)
-
-   The following Symfony components have been updated to version 4.4.18 - console -
-   event-dispatcher - process - routing - translation
-
-   https://github.com/owncloud/core/pull/38234
-   https://symfony.com/blog/symfony-4-4-18-released
 
 * Change - Update phpseclib/phpseclib (2.0.29 => 2.0.30): [#38244](https://github.com/owncloud/core/pull/38244)
 
@@ -216,6 +199,18 @@ Details
 * Change - Update pear/archive_tar (1.4.11 => 1.4.12): [#38312](https://github.com/owncloud/core/pull/38312)
 
    https://github.com/owncloud/core/pull/38312
+
+* Change - Update Symfony components to 4.4.19: [#38355](https://github.com/owncloud/core/pull/38355)
+
+   The following Symfony components have been updated from 4.4.16 to 4.4.19 - console -
+   event-dispatcher - process - routing - translation
+
+   https://github.com/owncloud/core/pull/38355
+   https://github.com/owncloud/core/pull/38234
+   https://github.com/owncloud/core/pull/38163
+   https://symfony.com/blog/symfony-4-4-19-released
+   https://symfony.com/blog/symfony-4-4-18-released
+   https://symfony.com/blog/symfony-4-4-17-released
 
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 
