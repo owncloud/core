@@ -1366,6 +1366,13 @@ trait Provisioning {
 			"/cloud/users",
 			$bodyTable
 		);
+		$this->addUserToCreatedUsersList(
+			$userToCreate,
+			$password,
+			null,
+			$email,
+			$this->theHTTPStatusCodeWasSuccess()
+		);
 	}
 
 	/**
@@ -1416,6 +1423,105 @@ trait Provisioning {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			$this->manuallyAddSkeletonFilesForUser($user, $password);
 		}
+	}
+
+	/**
+	 * @When /^the groupadmin "([^"]*)" sends a user creation request for user "([^"]*)" password "([^"]*)" group "([^"]*)" using the provisioning API$/
+	 *
+	 * @param string $groupadmin
+	 * @param string $userToCreate
+	 * @param string $password
+	 * @param string $group
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theGroupAdminCreatesUserPasswordGroupUsingTheProvisioningApi(
+		$groupadmin, $userToCreate, $password, $group
+	) {
+		$userToCreate = $this->getActualUsername($userToCreate);
+		$password = $this->getActualPassword($password);
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			$email = $userToCreate . '@owncloud.org';
+			$bodyTable = new TableNode(
+				[
+					['userid', $userToCreate],
+					['password', $userToCreate],
+					['username', $userToCreate],
+					['email', $email],
+					['groups[]', $group],
+				]
+			);
+		} else {
+			$email = null;
+			$bodyTable = new TableNode(
+				[['userid', $userToCreate], ['password', $password], ['groups[]', $group]]
+			);
+		}
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$groupadmin,
+			"POST",
+			"/cloud/users",
+			$bodyTable
+		);
+		$this->addUserToCreatedUsersList(
+			$userToCreate,
+			$password,
+			null,
+			$email,
+			$this->theHTTPStatusCodeWasSuccess()
+		);
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			$this->manuallyAddSkeletonFilesForUser($userToCreate, $password);
+		}
+	}
+
+	/**
+	 * @When /^the groupadmin "([^"]*)" tries to create new user "([^"]*)" password "([^"]*)" in other group "([^"]*)" using the provisioning API$/
+	 *
+	 * @param string $groupadmin
+	 * @param string $userToCreate
+	 * @param string $password
+	 * @param string $group
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theGroupAdminCreatesUserPasswordInOtherGroupUsingTheProvisioningApi(
+		$groupadmin, $userToCreate, $password, $group
+	) {
+		$userToCreate = $this->getActualUsername($userToCreate);
+		$password = $this->getActualPassword($password);
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			$email = $userToCreate . '@owncloud.org';
+			$bodyTable = new TableNode(
+				[
+					['userid', $userToCreate],
+					['password', $userToCreate],
+					['username', $userToCreate],
+					['email', $email],
+					['groups[]', $group],
+				]
+			);
+		} else {
+			$email = null;
+			$bodyTable = new TableNode(
+				[['userid', $userToCreate], ['password', $password], ['groups[]', $group]]
+			);
+		}
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$groupadmin,
+			"POST",
+			"/cloud/users",
+			$bodyTable
+		);
+		$this->addUserToCreatedUsersList(
+			$userToCreate,
+			$password,
+			null,
+			$email,
+			$this->theHTTPStatusCodeWasSuccess()
+		);
 	}
 
 	/**

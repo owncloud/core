@@ -140,3 +140,26 @@ Feature: add user
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And user "brand-new-user" should not exist
+
+  Scenario: subadmin should be able to create a new user into their group
+    Given user "brand-new-user" has been deleted
+    And user "subadmin" has been created with default attributes and without skeleton files
+    And group "group101" has been created
+    And user "subadmin" has been added to group "group101"
+    And user "subadmin" has been made a subadmin of group "group101"
+    When the groupadmin "subadmin" sends a user creation request for user "brand-new-user" password "%alt1%" group "group101" using the provisioning API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "brand-new-user" should exist
+
+  Scenario: subadmin should not be able to create a new user into other group
+    Given user "brand-new-user" has been deleted
+    And user "subadmin" has been created with default attributes and without skeleton files
+    And group "group101" has been created
+    And group "group102" has been created
+    And user "subadmin" has been added to group "group101"
+    And user "subadmin" has been made a subadmin of group "group101"
+    When the groupadmin "subadmin" tries to create new user "brand-new-user" password "%alt1%" in other group "group102" using the provisioning API
+    Then the OCS status code should be "105"
+    And the HTTP status code should be "200"
+    And user "brand-new-user" should not exist
