@@ -19,6 +19,7 @@ OC.L10N.register(
     "Unable to delete group." : "Non é posíbel eliminar o grupo.",
     "Saved" : "Gardado",
     "log-level out of allowed range" : "o nivel do rexistro está fora do intervalo admitido",
+    "Updated log level" : "Actualizar o nivel do rexistro",
     "Invalid email address" : "Enderezo de correo incorrecto",
     "test email settings" : "correo de proba dos axustes",
     "A problem occurred while sending the email. Please revise your settings. (Error: %s)" : "Ocorreu un problema ao enviar o correo. Revise a súa configuración. (Erro: %s)",
