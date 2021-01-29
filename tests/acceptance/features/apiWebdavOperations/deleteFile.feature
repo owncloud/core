@@ -69,3 +69,18 @@ Feature: delete file
       | new         | "sample,1.txt" |
       | new         | ",,,.txt"      |
       | new         | ",,,.,"        |
+
+  @smokeTest
+  Scenario Outline: delete a hidden file
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/FOLDER"
+    And user "Alice" has uploaded file with content "to delete" to "<path>"
+    When user "Alice" deletes file "<path>" using the WebDAV API
+    Then the HTTP status code should be "204"
+    And as "Alice" file "<path>" should not exist
+    Examples:
+      | dav_version | path                 |
+      | old         | .hidden_file         |
+      | old         | /FOLDER/.hidden_file |
+      | new         | .hidden_file         |
+      | new         | /FOLDER/.hidden_file |

@@ -337,3 +337,23 @@ Feature: Restore deleted files/folders
       | dav-path |
       | old      |
       | new      |
+
+  @smokeTest
+  Scenario Outline: A deleted hidden file can be restored
+    Given using <dav-path> DAV path
+    And user "Alice" has created folder "/FOLDER"
+    And user "Alice" has uploaded file with content "to delete" to "<path>"
+    And user "Alice" has deleted file "<path>"
+    When user "Alice" restores the folder with original path "<path>" using the trashbin API
+    Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions for user "Alice"
+      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
+    And as "Alice" the file with original path "<path>" should not exist in the trashbin
+    And as "Alice" file "<path>" should exist
+    And the content of file "<path>" for user "Alice" should be "to delete"
+    Examples:
+      | dav-path | path                 |
+      | old      | .hidden_file         |
+      | old      | /FOLDER/.hidden_file |
+      | new      | .hidden_file         |
+      | new      | /FOLDER/.hidden_file |

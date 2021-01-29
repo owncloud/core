@@ -197,3 +197,17 @@ Feature: download file
       | dav_version |
       | old         |
       | new         |
+
+  @smokeTest
+  Scenario Outline: download a hidden file
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/FOLDER"
+    And user "Alice" has uploaded file with content "I am a hidden file" to "<path>"
+    When user "Alice" downloads file "<path>" using the WebDAV API
+    Then the downloaded content should be "I am a hidden file"
+    Examples:
+      | dav_version | path                 |
+      | old         | .hidden_file         |
+      | old         | /FOLDER/.hidden_file |
+      | new         | .hidden_file         |
+      | new         | /FOLDER/.hidden_file |

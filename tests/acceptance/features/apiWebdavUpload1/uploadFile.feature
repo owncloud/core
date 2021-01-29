@@ -199,3 +199,18 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
+  @smokeTest
+  Scenario Outline: upload a hidden file and check download content
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/FOLDER"
+    When user "Alice" uploads file with content "uploaded content" to "<path>" using the WebDAV API
+    Then the following headers should match these regular expressions for user "Alice"
+      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
+    And the content of file "<path>" for user "Alice" should be "uploaded content"
+    Examples:
+      | dav_version | path                 |
+      | old         | .hidden_file         |
+      | old         | /FOLDER/.hidden_file |
+      | new         | .hidden_file         |
+      | new         | /FOLDER/.hidden_file |
