@@ -5,7 +5,7 @@ Feature: propagation of etags when copying files or folders
     Given user "Alice" has been created with default attributes and without skeleton files
 
   @skipOnOcis-OC-Storage @issue-product-280
-  Scenario Outline: copying a file does not changes its etag
+  Scenario Outline: copying a file does not change its etag
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "uploaded content" to "file.txt"
     And user "Alice" has stored etag of element "/"

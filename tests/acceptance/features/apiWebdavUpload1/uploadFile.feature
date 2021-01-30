@@ -174,7 +174,7 @@ Feature: upload file
       | new         |
 
   @issue-ocis-reva-174
-  Scenario Outline: moving a file does not changes its mtime
+  Scenario Outline: moving a file does not change its mtime
     Given using <dav_version> DAV path
     And user "Alice" has created folder "testFolder"
     When user "Alice" uploads file "filesForUpload/textfile.txt" to "file.txt" with mtime "Thu, 08 Aug 2019 04:18:13 GMT" using the WebDAV API
