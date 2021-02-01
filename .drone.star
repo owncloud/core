@@ -1335,6 +1335,7 @@ def acceptance(ctx):
 		'scalityS3': False,
 		'testingRemoteSystem': True,
 		'useHttps': True,
+		'replaceUsernames': False,
 		'extraSetup': [],
 		'extraServices': [],
 		'extraEnvironment': {},
@@ -1432,6 +1433,7 @@ def acceptance(ctx):
 								environment['TEST_SERVER_URL'] = '%s://%s' % (protocol, serverUnderTest)
 
 								environment['BEHAT_FILTER_TAGS'] = params['filterTags']
+								environment['REPLACE_USERNAMES'] = params['replaceUsernames']
 
 								if (params['runAllSuites'] == False):
 									environment['BEHAT_SUITE'] = suite
