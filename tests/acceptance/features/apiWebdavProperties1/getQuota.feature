@@ -62,7 +62,7 @@ Feature: get quota
       | new         |
 
   @files_sharing-app-required
-  Scenario Outline: Retrieving folder quota when quota is set and a file was recieved
+  Scenario Outline: Retrieving folder quota when quota is set and a file was received
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and skeleton files
     And the quota of user "Brian" has been set to "1 KB"

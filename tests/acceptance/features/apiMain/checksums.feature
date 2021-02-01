@@ -171,7 +171,7 @@ Feature: checksums
     And the content of file "/myChunkedFile.txt" for user "Alice" should be "BBBBBCCCCC"
 
   @issue-ocis-reva-56
-  Scenario: Upload new dav chunked file using async MOVE where checksum does not matches
+  Scenario: Upload new dav chunked file using async MOVE where checksum does not match
     Given using new DAV path
     And the administrator has enabled async operations
     When user "Alice" creates a new chunking upload with id "chunking-42" using the WebDAV API
@@ -189,7 +189,7 @@ Feature: checksums
       | /myChunkedFile.txt |
 
   @issue-ocis-reva-56
-  Scenario: Upload new dav chunked file using async MOVE where checksum does not matches - retry with correct checksum
+  Scenario: Upload new dav chunked file using async MOVE where checksum does not match - retry with correct checksum
     Given using new DAV path
     And the administrator has enabled async operations
     When user "Alice" creates a new chunking upload with id "chunking-42" using the WebDAV API

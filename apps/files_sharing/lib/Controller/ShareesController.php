@@ -466,7 +466,7 @@ class ShareesController extends OCSController {
 		if (!$foundRemoteById && \substr_count($search, '@') >= 1
 			&& $this->offset === 0 && $this->userSearch->isSearchable($search)
 			// if an exact local user is found, only keep the remote entry if
-			// its domain does not matches the trusted domains
+			// its domain does not match the trusted domains
 			// (if it does, it is a user whose local login domain matches the ownCloud
 			// instance domain)
 			&& (empty($this->result['exact']['users'])
