@@ -1,8 +1,8 @@
 {
   "Alice": {
-    "username": "123456",
-    "displayname": "Alice Student 123456",
-    "email": "123456@example.org",
+    "username": "23456",
+    "displayname": "Alice Student 23456",
+    "email": "23456@example.org",
     "password": "0123"
   },
   "Brian": {
