@@ -129,6 +129,7 @@ config = {
 				'apiWebdavUpload1',
 				'apiWebdavUpload2',
 			],
+			'replaceUsernames': True,
 		},
 		'apiNotifications': {
 			'suites': [
@@ -138,6 +139,7 @@ config = {
 			'extraApps': {
 				'notifications': 'composer install'
 			},
+			'replaceUsernames': True,
 		},
 		'apiFederation': {
 			'suites': [
@@ -146,6 +148,7 @@ config = {
 				'apiFederationToShares1',
 				'apiFederationToShares2',
 			],
+			'replaceUsernames': True,
 			'federatedServerNeeded': True,
 			'federatedServerVersions': ['git', 'latest', '10.4.1']
 		},
@@ -157,18 +160,21 @@ config = {
 				'cliProvisioning',
 				'cliTrashbin',
 			],
+			'replaceUsernames': True,
 			'emailNeeded': True,
 		},
 		'cliAppManagement': {
 			'suites': [
 				'cliAppManagement',
 			],
+			'replaceUsernames': True,
 			'testingRemoteSystem': False
 		},
 		'cliExternalStorage': {
 			'suites': [
 				'cliExternalStorage',
 			],
+			'replaceUsernames': True,
 			'federatedServerNeeded': True,
 			'federatedServerVersions': ['git', 'latest', '10.4.1']
 		},
@@ -206,6 +212,7 @@ config = {
 			},
 			'emailNeeded': True,
 			'useHttps': False,
+			'replaceUsernames': True,
 		},
 		'webUINotifications': {
 			'suites': {
@@ -213,6 +220,7 @@ config = {
 			},
 			'emailNeeded': True,
 			'useHttps': False,
+			'replaceUsernames': True,
 			'extraApps': {
 				'notifications': 'composer install'
 			},
@@ -222,6 +230,7 @@ config = {
 				'webUIFileActionsMenu': '',
 			},
 			'useHttps': False,
+			'replaceUsernames': True,
 			'extraApps': {
 				'files_texteditor': 'make vendor',
 				'richdocuments': 'make vendor',
@@ -232,6 +241,7 @@ config = {
 				'webUISharingExternal1': 'webUISharingExt1',
 				'webUISharingExternal2': 'webUISharingExt2',
 			},
+			'replaceUsernames': True,
 			'federatedServerNeeded': True,
 			'federatedServerVersions': ['git', 'latest', '10.3.2']
 		},
