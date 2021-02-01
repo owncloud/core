@@ -283,3 +283,69 @@ Feature: files and folders exist in the trashbin after being deleted
       | dav-path |
       | old      |
       | new      |
+
+  @issue-ocis-1547
+  Scenario Outline: deleting files with special characters moves it to trashbin
+    Given using <dav-path> DAV path
+    And user "Alice" has uploaded the following files with content "special character file"
+      | path             |
+      | qa&dev.txt       |
+      | !@tester$^.txt   |
+      | %file *?2.txt    |
+      | # %ab ab?=ed.txt |
+    When user "Alice" deletes the following files
+      | path             |
+      | qa&dev.txt       |
+      | !@tester$^.txt   |
+      | %file *?2.txt    |
+      | # %ab ab?=ed.txt |
+    Then the HTTP status code of responses on all endpoints should be "204"
+    And as "Alice" the following files should not exist
+      | path             |
+      | qa&dev.txt       |
+      | !@tester$^.txt   |
+      | %file *?2.txt    |
+      | # %ab ab?=ed.txt |
+    But as "Alice" the files with following original paths should exist in the trashbin
+      | path             |
+      | qa&dev.txt       |
+      | !@tester$^.txt   |
+      | %file *?2.txt    |
+      | # %ab ab?=ed.txt |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+  @issue-ocis-1547
+  Scenario Outline: deleting folders with special characters moves it to trashbin
+    Given using <dav-path> DAV path
+    And user "Alice" has created the following folders
+      | path         |
+      | qa&dev       |
+      | !@tester$^   |
+      | %file *?2    |
+      | # %ab ab?=ed |
+    When user "Alice" deletes the following files
+      | path         |
+      | qa&dev       |
+      | !@tester$^   |
+      | %file *?2    |
+      | # %ab ab?=ed |
+    Then the HTTP status code of responses on all endpoints should be "204"
+    But as "Alice" the following folders should not exist
+      | path         |
+      | qa&dev       |
+      | !@tester$^   |
+      | %file *?2    |
+      | # %ab ab?=ed |
+    And as "Alice" the folders with following original paths should exist in the trashbin
+      | path         |
+      | qa&dev       |
+      | !@tester$^   |
+      | %file *?2    |
+      | # %ab ab?=ed |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
