@@ -1577,11 +1577,12 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userResetUserPasswordUsingProvisioningApi($user, $username, $password) {
+		$targetUsername = $this->getActualUsername($username);
 		$password = $this->getActualPassword($password);
 		$this->userTriesToResetUserPasswordUsingTheProvisioningApi(
-			$user, $username, $password
+			$user, $targetUsername, $password
 		);
-		$this->rememberUserPassword($username, $password);
+		$this->rememberUserPassword($targetUsername, $password);
 	}
 
 	/**
@@ -1698,24 +1699,25 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When user :user deletes user :anotheruser using the provisioning API
+	 * @When user :user deletes user :otherUser using the provisioning API
 	 *
 	 * @param string $user
-	 * @param string $anotheruser
+	 * @param string $otherUser
 	 *
 	 * @return void
 	 */
 	public function userDeletesUserUsingTheProvisioningApi(
-		$user, $anotheruser
+		$user, $otherUser
 	) {
-		$user = $this->getActualUsername($user);
-		$anotheruser = $this->getActualUsername($anotheruser);
+		$actualUser = $this->getActualUsername($user);
+		$actualPassword = $this->getUserPassword($actualUser);
+		$actualOtherUser = $this->getActualUsername($otherUser);
 
 		$this->response = UserHelper::deleteUser(
 			$this->getBaseUrl(),
-			$anotheruser,
-			$user,
-			$this->getUserPassword($user),
+			$actualOtherUser,
+			$actualUser,
+			$actualPassword,
 			$this->ocsApiVersion
 		);
 	}
@@ -1807,6 +1809,25 @@ trait Provisioning {
 	public function userChangesTheEmailOfUserUsingTheProvisioningApi(
 		$requestingUser, $targetUser, $email
 	) {
+		$this->userTriesToChangeTheEmailOfUserUsingTheProvisioningApi(
+			$requestingUser, $targetUser, $email
+		);
+		$targetUser = $this->getActualUsername($targetUser);
+		$this->rememberUserEmailAddress($targetUser, $email);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" tries to change the email of user "([^"]*)" to "([^"]*)" using the provisioning API$/
+	 *
+	 * @param string $requestingUser
+	 * @param string $targetUser
+	 * @param string $email
+	 *
+	 * @return void
+	 */
+	public function userTriesToChangeTheEmailOfUserUsingTheProvisioningApi(
+		$requestingUser, $targetUser, $email
+	) {
 		$requestingUser = $this->getActualUsername($requestingUser);
 		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesUserEmailUsingProvisioningApi(
@@ -1814,7 +1835,6 @@ trait Provisioning {
 			$targetUser,
 			$email
 		);
-		$this->rememberUserEmailAddress($targetUser, $email);
 	}
 
 	/**
@@ -1971,12 +1991,36 @@ trait Provisioning {
 	public function userChangesTheDisplayNameOfUserUsingTheProvisioningApi(
 		$requestingUser, $targetUser, $displayName
 	) {
+		$this->userTriesToChangeTheDisplayNameOfUserUsingTheProvisioningApi(
+			$requestingUser, $targetUser, $displayName
+		);
+		$targetUser = $this->getActualUsername($targetUser);
+		$this->rememberUserDisplayName($targetUser, $displayName);
+	}
+
+	/**
+	 * As a user, try to edit the "display name" of a user by sending the key "displayname" to the API end point.
+	 *
+	 * This is the newer and consistent key name.
+	 *
+	 * @see https://github.com/owncloud/core/pull/33040
+	 *
+	 * @When /^user "([^"]*)" tries to change the display name of user "([^"]*)" to "([^"]*)" using the provisioning API$/
+	 *
+	 * @param string $requestingUser
+	 * @param string $targetUser
+	 * @param string $displayName
+	 *
+	 * @return void
+	 */
+	public function userTriesToChangeTheDisplayNameOfUserUsingTheProvisioningApi(
+		$requestingUser, $targetUser, $displayName
+	) {
 		$requestingUser = $this->getActualUsername($requestingUser);
 		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesTheDisplayNameOfUserUsingKey(
 			$requestingUser, $targetUser, 'displayname', $displayName
 		);
-		$this->rememberUserDisplayName($targetUser, $displayName);
 	}
 
 	/**
@@ -2435,8 +2479,10 @@ trait Provisioning {
 	 */
 	public function userTriesToGetAllTheGroupsUsingTheProvisioningApi($user) {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/groups";
+		$actualUser = $this->getActualUsername($user);
+		$actualPassword = $this->getUserPassword($actualUser);
 		$this->response = HttpRequestHelper::get(
-			$fullUrl, $this->getActualUsername($user), $this->getUserPassword($user)
+			$fullUrl, $actualUser, $actualPassword
 		);
 	}
 
@@ -2452,17 +2498,20 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When user :user gets all the groups of user :anotheruser using the provisioning API
+	 * @When user :user gets all the groups of user :otherUser using the provisioning API
 	 *
 	 * @param string $user
-	 * @param string $anotheruser
+	 * @param string $otherUser
 	 *
 	 * @return void
 	 */
-	public function userGetsAllTheGroupsOfUser($user, $anotheruser) {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$anotheruser/groups";
+	public function userGetsAllTheGroupsOfUser($user, $otherUser) {
+		$actualOtherUser = $this->getActualUsername($otherUser);
+		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$actualOtherUser/groups";
+		$actualUser = $this->getActualUsername($user);
+		$actualPassword = $this->getUserPassword($actualUser);
 		$this->response = HttpRequestHelper::get(
-			$fullUrl, $this->getActualUsername($user), $this->getUserPassword($user)
+			$fullUrl, $actualUser, $actualPassword
 		);
 	}
 
@@ -2484,8 +2533,10 @@ trait Provisioning {
 	 */
 	public function userGetsTheListOfAllUsersUsingTheProvisioningApi($user) {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/users";
+		$actualUser = $this->getActualUsername($user);
+		$actualPassword = $this->getUserPassword($actualUser);
 		$this->response = HttpRequestHelper::get(
-			$fullUrl, $this->getActualUsername($user), $this->getUserPassword($user)
+			$fullUrl, $actualUser, $actualPassword
 		);
 	}
 
@@ -2905,20 +2956,24 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When user :user tries to add user :anotheruser to group :group using the provisioning API
+	 * @When user :user tries to add user :otherUser to group :group using the provisioning API
 	 *
 	 * @param string $user
-	 * @param string $anotheruser
+	 * @param string $otherUser
 	 * @param string $group
 	 *
 	 * @return void
 	 */
-	public function userTriesToAddUserToGroupUsingTheProvisioningApi($user, $anotheruser, $group) {
+	public function userTriesToAddUserToGroupUsingTheProvisioningApi($user, $otherUser, $group) {
+		$actualUser = $this->getActualUsername($user);
+		$actualPassword = $this->getUserPassword($actualUser);
+		$actualOtherUser = $this->getActualUsername($otherUser);
 		$result = UserHelper::addUserToGroup(
 			$this->getBaseUrl(),
-			$anotheruser, $group,
-			$this->getActualUsername($user),
-			$this->getUserPassword($user),
+			$actualOtherUser,
+			$group,
+			$actualUser,
+			$actualPassword,
 			$this->ocsApiVersion
 		);
 		$this->response = $result;
@@ -3432,17 +3487,17 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When user :user disables user :anotheruser using the provisioning API
+	 * @When user :user disables user :otherUser using the provisioning API
 	 *
 	 * @param string $user
-	 * @param string $anotheruser
+	 * @param string $otherUser
 	 *
 	 * @return void
 	 */
-	public function userDisablesUserUsingTheProvisioningApi($user, $anotheruser) {
+	public function userDisablesUserUsingTheProvisioningApi($user, $otherUser) {
 		$user = $this->getActualUsername($user);
-		$anotheruser = $this->getActualUsername($anotheruser);
-		$this->disableOrEnableUser($user, $anotheruser, 'disable');
+		$actualOtherUser = $this->getActualUsername($otherUser);
+		$this->disableOrEnableUser($user, $actualOtherUser, 'disable');
 	}
 
 	/**
@@ -3461,14 +3516,14 @@ trait Provisioning {
 	 * @When /^user "([^"]*)" tries to enable user "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $user
-	 * @param string $anotheruser
+	 * @param string $otherUser
 	 *
 	 * @return void
 	 */
 	public function userTriesToEnableUserUsingTheProvisioningApi(
-		$user, $anotheruser
+		$user, $otherUser
 	) {
-		$this->disableOrEnableUser($user, $anotheruser, 'enable');
+		$this->disableOrEnableUser($user, $otherUser, 'enable');
 	}
 
 	/**
@@ -3672,19 +3727,19 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When user :user removes user :anotheruser from group :group using the provisioning API
+	 * @When user :user removes user :otherUser from group :group using the provisioning API
 	 *
 	 * @param string $user
-	 * @param string $anotheruser
+	 * @param string $otherUser
 	 * @param string $group
 	 *
 	 * @return void
 	 */
 	public function userRemovesUserFromGroupUsingTheProvisioningApi(
-		$user, $anotheruser, $group
+		$user, $otherUser, $group
 	) {
 		$this->userTriesToRemoveUserFromGroupUsingTheProvisioningApi(
-			$user, $anotheruser, $group
+			$user, $otherUser, $group
 		);
 
 		if ($this->response->getStatusCode() !== 200) {
@@ -3696,23 +3751,26 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When user :user tries to remove user :anotheruser from group :group using the provisioning API
+	 * @When user :user tries to remove user :otherUser from group :group using the provisioning API
 	 *
 	 * @param string $user
-	 * @param string $anotheruser
+	 * @param string $otherUser
 	 * @param string $group
 	 *
 	 * @return void
 	 */
 	public function userTriesToRemoveUserFromGroupUsingTheProvisioningApi(
-		$user, $anotheruser, $group
+		$user, $otherUser, $group
 	) {
+		$actualUser = $this->getActualUsername($user);
+		$actualPassword = $this->getUserPassword($actualUser);
+		$actualOtherUser = $this->getActualUsername($otherUser);
 		$this->response = UserHelper::removeUserFromGroup(
 			$this->getBaseUrl(),
-			$anotheruser,
+			$actualOtherUser,
 			$group,
-			$this->getActualUsername($user),
-			$this->getUserPassword($user),
+			$actualUser,
+			$actualPassword,
 			$this->ocsApiVersion
 		);
 	}
@@ -3735,24 +3793,28 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When user :user makes user :anotheruser a subadmin of group :group using the provisioning API
+	 * @When user :user makes user :otherUser a subadmin of group :group using the provisioning API
 	 *
 	 * @param string $user
-	 * @param string $anotheruser
+	 * @param string $otherUser
 	 * @param string $group
 	 *
 	 * @return void
 	 */
 	public function userMakesUserASubadminOfGroupUsingTheProvisioningApi(
-		$user, $anotheruser, $group
+		$user, $otherUser, $group
 	) {
+		$actualUser = $this->getActualUsername($user);
+		$actualPassword = $this->getUserPassword($actualUser);
+		$actualSubadminUsername = $this->getActualUsername($otherUser);
+
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$anotheruser/subadmins";
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$actualSubadminUsername/subadmins";
 		$body = ['groupid' => $group];
 		$this->response = HttpRequestHelper::post(
 			$fullUrl,
-			$this->getActualUsername($user),
-			$this->getUserPassword($user),
+			$actualUser,
+			$actualPassword,
 			null,
 			$body
 		);
@@ -3778,15 +3840,18 @@ trait Provisioning {
 	 * @When /^user "([^"]*)" tries to get all the groups where user "([^"]*)" is subadmin using the provisioning API$/
 	 *
 	 * @param string $user
-	 * @param string $anotherUser
+	 * @param string $otherUser
 	 *
 	 * @return void
 	 */
-	public function userTriesToGetAllTheGroupsWhereUserIsSubadminUsingTheProvisioningApi($user, $anotherUser) {
+	public function userTriesToGetAllTheGroupsWhereUserIsSubadminUsingTheProvisioningApi($user, $otherUser) {
+		$actualOtherUser = $this->getActualUsername($otherUser);
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$anotherUser/subadmins";
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$actualOtherUser/subadmins";
+		$actualUser = $this->getActualUsername($user);
+		$actualPassword = $this->getUserPassword($actualUser);
 		$this->response = HttpRequestHelper::get(
-			$fullUrl, $this->getActualUsername($user), $this->getUserPassword($user)
+			$fullUrl, $actualUser, $actualPassword
 		);
 	}
 
@@ -3833,8 +3898,10 @@ trait Provisioning {
 	public function userGetsAllTheSubadminsOfGroupUsingTheProvisioningApi($user, $group) {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/groups/$group/subadmins";
+		$actualUser = $this->getActualUsername($user);
+		$actualPassword = $this->getUserPassword($actualUser);
 		$this->response = HttpRequestHelper::get(
-			$fullUrl, $this->getActualUsername($user), $this->getUserPassword($user)
+			$fullUrl, $actualUser, $actualPassword
 		);
 	}
 
@@ -3855,23 +3922,26 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When user :user removes user :anotheruser from being a subadmin of group :group using the provisioning API
+	 * @When user :user removes user :otherUser from being a subadmin of group :group using the provisioning API
 	 *
 	 * @param string $user
-	 * @param string $anotheruser
+	 * @param string $otherUser
 	 * @param string $group
 	 *
 	 * @return void
 	 */
 	public function userRemovesUserFromBeingASubadminOfGroupUsingTheProvisioningApi(
-		$user, $anotheruser, $group
+		$user, $otherUser, $group
 	) {
+		$actualOtherUser = $this->getActualUsername($otherUser);
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$anotheruser/subadmins";
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$actualOtherUser/subadmins";
+		$actualUser = $this->getActualUsername($user);
+		$actualPassword = $this->getUserPassword($actualUser);
 		$this->response = HttpRequestHelper::delete(
 			$fullUrl,
-			$this->getActualUsername($user),
-			$this->getUserPassword($user),
+			$actualUser,
+			$actualPassword,
 			null,
 			['groupid' => $group]
 		);
@@ -4136,8 +4206,23 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theDisplayNameOfUserShouldBe($user, $displayname) {
-		$this->retrieveUserInformationAsAdminUsingProvisioningApi($user);
+		$actualUser = $this->getActualUsername($user);
+		$this->retrieveUserInformationAsAdminUsingProvisioningApi($actualUser);
 		$this->theDisplayNameReturnedByTheApiShouldBe($displayname);
+	}
+
+	/**
+	 * @Then /^the display name of user "([^"]*)" should not have changed$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function theDisplayNameOfUserShouldNotHaveChanged($user) {
+		$actualUser = $this->getActualUsername($user);
+		$expectedDisplayName = $this->getDisplayNameForUser($user);
+		$this->retrieveUserInformationAsAdminUsingProvisioningApi($actualUser);
+		$this->theDisplayNameReturnedByTheApiShouldBe($expectedDisplayName);
 	}
 
 	/**
@@ -4165,6 +4250,20 @@ trait Provisioning {
 	 */
 	public function theEmailAddressOfUserShouldBe($user, $expectedEmailAddress) {
 		$user = $this->getActualUsername($user);
+		$this->retrieveUserInformationAsAdminUsingProvisioningApi($user);
+		$this->theEmailAddressReturnedByTheApiShouldBe($expectedEmailAddress);
+	}
+
+	/**
+	 * @Then /^the email address of user "([^"]*)" should not have changed$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function theEmailAddressOfUserShouldNotHaveChanged($user) {
+		$user = $this->getActualUsername($user);
+		$expectedEmailAddress = $this->getEmailAddressForUser($user);
 		$this->retrieveUserInformationAsAdminUsingProvisioningApi($user);
 		$this->theEmailAddressReturnedByTheApiShouldBe($expectedEmailAddress);
 	}
@@ -4667,21 +4766,22 @@ trait Provisioning {
 	 * disable or enable user
 	 *
 	 * @param string $user
-	 * @param string $anotheruser
+	 * @param string $otherUser
 	 * @param string $action
 	 *
 	 * @return void
 	 */
-	public function disableOrEnableUser($user, $anotheruser, $action) {
-		$user = $this->getActualUsername($user);
-		$anotheruser = $this->getActualUsername($anotheruser);
+	public function disableOrEnableUser($user, $otherUser, $action) {
+		$actualUser = $this->getActualUsername($user);
+		$actualPassword = $this->getPasswordForUser($actualUser);
+		$actualOtherUser = $this->getActualUsername($otherUser);
 
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$anotheruser/$action";
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$actualOtherUser/$action";
 		$this->response = HttpRequestHelper::put(
 			$fullUrl,
-			$this->getActualUsername($user),
-			$this->getPasswordForUser($user)
+			$actualUser,
+			$actualPassword
 		);
 	}
 

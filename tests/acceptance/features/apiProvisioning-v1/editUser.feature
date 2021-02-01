@@ -182,11 +182,11 @@ Feature: edit users
       | username |
       | Alice    |
       | Brian    |
-    When user "Alice" changes the display name of user "Brian" to "New Brian" using the provisioning API
+    When user "Alice" tries to change the display name of user "Brian" to "New Brian" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
-    When user "Alice" changes the email of user "Brian" to "brian-new-email@example.com" using the provisioning API
+    When user "Alice" tries to change the email of user "Brian" to "brian-new-email@example.com" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
-    And the display name of user "Brian" should be "Brian Murphy"
-    And the email address of user "Brian" should be "brian@example.org"
+    And the display name of user "Brian" should not have changed
+    And the email address of user "Brian" should not have changed
