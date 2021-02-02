@@ -198,16 +198,20 @@ Feature: download file
       | old         |
       | new         |
 
-  @smokeTest
   Scenario Outline: download a hidden file
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/FOLDER"
-    And user "Alice" has uploaded file with content "I am a hidden file" to "<path>"
-    When user "Alice" downloads file "<path>" using the WebDAV API
-    Then the downloaded content should be "I am a hidden file"
+    And user "Alice" has uploaded the following files with content "hidden file"
+      | path                 |
+      | .hidden_file         |
+      | /FOLDER/.hidden_file |
+    When user "Alice" downloads file ".hidden_file" using the WebDAV API
+    Then the HTTP status code should be "200"
+    And the downloaded content should be "hidden file"
+    When user "Alice" downloads file "./FOLDER/.hidden_file" using the WebDAV API
+    Then the HTTP status code should be "200"
+    And the downloaded content should be "hidden file"
     Examples:
-      | dav_version | path                 |
-      | old         | .hidden_file         |
-      | old         | /FOLDER/.hidden_file |
-      | new         | .hidden_file         |
-      | new         | /FOLDER/.hidden_file |
+      | dav_version |
+      | old         |
+      | new         |

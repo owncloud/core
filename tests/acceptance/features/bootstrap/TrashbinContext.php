@@ -616,6 +616,28 @@ class TrashbinContext implements Context {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" restores the following (?:files|folders|entries) with original path$/
+	 *
+	 * @param string $user
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userRestoresFollowingFiles($user, TableNode $table) {
+		$this->featureContext->verifyTableNodeColumns($table, ["path"]);
+		$paths = $table->getHash();
+
+		foreach ($paths as $originalPath) {
+			$this->elementInTrashIsRestored($user, $originalPath["path"]);
+			
+			$this->featureContext->pushToLastHttpStatusCodesArray(
+				$this->featureContext->getResponse()->getStatusCode()
+			);
+		}
+	}
+
+	/**
 	 * @Given /^user "([^"]*)" has restored the (?:file|folder|entry) with original path "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -681,6 +703,25 @@ class TrashbinContext implements Context {
 			$this->isInTrash($user, $originalPath),
 			"File previously located at $originalPath was found in the trashbin"
 		);
+	}
+
+	/**
+	 * @Then /^as "([^"]*)" the (?:files|folders|entries) with following original paths should not exist in the trashbin$/
+	 *
+	 * @param string $user
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function followingElementsAreNotInTrashCheckingOriginalPath(
+		$user, TableNode $table
+	) {
+		$this->featureContext->verifyTableNodeColumns($table, ["path"]);
+		$paths = $table->getHash($table);
+
+		foreach ($paths as $originalPath) {
+			$this->elementIsNotInTrashCheckingOriginalPath($user, $originalPath["path"]);
+		}
 	}
 
 	/**

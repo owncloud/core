@@ -335,34 +335,42 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  @smokeTest
   Scenario Outline: Moving a hidden file
     Given using <dav_version> DAV path
-    And user "Alice" has uploaded file with content "I am a hidden file" to "<file_name_from>"
-    When user "Alice" moves file "<file_name_from>" to "<file_name_to>" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And the following headers should match these regular expressions for user "Alice"
-      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
-    And the content of file "<file_name_to>" for user "Alice" should be "I am a hidden file"
+    And user "Alice" has uploaded the following files with content "hidden file"
+      | path                    |
+      | .hidden_file101         |
+      | /FOLDER/.hidden_file102 |
+    When user "Alice" moves the following files using the WebDAV API
+      | from                    | to                      |
+      | .hidden_file101         | /FOLDER/.hidden_file101 |
+      | /FOLDER/.hidden_file102 | .hidden_file102         |
+    Then the HTTP status code of responses on all endpoints should be "201"
+    And as "Alice" the following files should exist
+      | path                    |
+      | .hidden_file102         |
+      | /FOLDER/.hidden_file101 |
     Examples:
-      | dav_version | file_name_from         | file_name_to          |
-      | old         | .hidden_file           | /FOLDER/.hidden_file  |
-      | old         | /FOLDER/.hidden_file   | .hidden_file          |
-      | new         | .hidden_file           | /FOLDER/.hidden_file  |
-      | new         | /FOLDER/.hidden_file   | .hidden_file          |
+      | dav_version |
+      | old         |
+      | new         |
 
-  @smokeTest
   Scenario Outline: Renaming to/from a hidden file
     Given using <dav_version> DAV path
-    And user "Alice" has uploaded file with content "I am a hidden file" to "<file_name_from>"
-    When user "Alice" moves file "<file_name_from>" to "<file_name_to>" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And the following headers should match these regular expressions for user "Alice"
-      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
-    And the content of file "<file_name_to>" for user "Alice" should be "I am a hidden file"
+    And user "Alice" has uploaded the following files with content "hidden file"
+      | path                    |
+      | .hidden_file101         |
+      | hidden_file101.txt      |
+    When user "Alice" moves the following files using the WebDAV API
+      | from               | to                 |
+      | .hidden_file101    | hidden_file102.txt |
+      | hidden_file101.txt | .hidden_file102    |
+    Then the HTTP status code of responses on all endpoints should be "201"
+    And as "Alice" the following files should exist
+      | path               |
+      | .hidden_file102    |
+      | hidden_file102.txt |
     Examples:
-      | dav_version | file_name_from  | file_name_to    |
-      | old         | .hidden_file    | hidden_file.txt |
-      | old         | hidden_file.txt | .hidden_file    |
-      | new         | .hidden_file    | hidden_file.txt |
-      | new         | hidden_file.txt | .hidden_file    |
+      | dav_version |
+      | old         |
+      | new         |
