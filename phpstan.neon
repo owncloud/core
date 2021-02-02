@@ -16,7 +16,6 @@ parameters:
     - '#Instantiated class Test\\Util\\User\\Dummy not found.#'
     # errors below are to be addressed by own pull requests - non trivial changes required
     - '#Unsafe usage of new static\(\).#'
-    - '#Cannot instantiate interface OCP\\Files\\ObjectStore\\IObjectStore.#'
     - '#Instantiated class OCA\\Encryption\\Crypto\\Crypt not found.#'
     - '#Instantiated class OCA\\Encryption\\Util not found.#'
     - '#Instantiated class OCA\\Encryption\\KeyManager not found.#'
