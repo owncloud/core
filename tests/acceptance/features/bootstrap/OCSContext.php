@@ -487,19 +487,26 @@ class OCSContext implements Context {
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$ofUser = $this->featureContext->getActualUsername($ofUser);
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint'], ['destination']);
 		$this->featureContext->emptyLastHTTPStatusCodesArray();
 		$this->featureContext->emptyLastOCSStatusCodesArray();
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
 				$row['endpoint'], $ofUser
 			);
+			$header = [];
+			if (isset($row['destination'])) {
+				$header['Destination'] = $this->featureContext->substituteInLineCodes(
+					$this->featureContext->getBaseUrl() . $row['destination'], $ofUser
+				);
+			}
 			$this->featureContext->authContext->userRequestsURLWithUsingBasicAuth(
 				$user,
 				$row['endpoint'],
 				$method,
 				$password,
-				$body
+				$body,
+				$header
 			);
 			$this->featureContext->pushToLastHttpStatusCodesArray(
 				$this->featureContext->getResponse()->getStatusCode()

@@ -2025,6 +2025,25 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then the HTTP status code of responses on all endpoints should be :statusCode1 or :statusCode2
+	 *
+	 * @param $statusCode1
+	 * @param $statusCode2
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theHTTPStatusCodeOfResponsesOnAllEndpointsShouldBeOr($statusCode1, $statusCode2) {
+		$duplicateRemovedStatusCodes = \array_unique($this->lastHttpStatusCodesArray);
+		foreach ($duplicateRemovedStatusCodes as $status) {
+			$status = (string)$status;
+			if (($status != $statusCode1) && ($status != $statusCode2)) {
+				Assert::fail("Unexpected status code received " . $status);
+			}
+		}
+	}
+
+	/**
 	 * @Then the OCS status code of responses on all endpoints should be :statusCode
 	 *
 	 * @param $statusCode
