@@ -147,6 +147,57 @@ class PublicFilesPlugin extends ServerPlugin {
 			$propFind->handle(FilesPlugin::SIZE_PROPERTYNAME, static function () use ($node) {
 				return $node->getNode()->getSize();
 			});
+			if ($node->getNode()->getType() === FileInfo::TYPE_FILE) {
+				$server = $this->server;
+				$propFind->handle(FilesPlugin::DOWNLOADURL_PROPERTYNAME, static function () use ($node, $server) {
+					$share = $node->getShare();
+					$shareNode = $share->getNode();
+					// We want to get the relative path of the shared file.
+					// If the shared resource is a folder e.g.
+					// - <shared folder>/
+					//   - subfolder/
+					//     - meme.jpg
+					//   - somefile.txt
+					// And we want the path of 'meme.jpg' we expect the resource
+					// path to be '/subfolder/meme.jpg'.
+					// If the shared resource is a file we can just take the
+					// name of that file prefixed with a slash like '/cool.gif'
+					if ($shareNode->getType() === FileInfo::TYPE_FOLDER) {
+						$shareRoot = $shareNode->getPath();
+						$sharedResourcePath = \substr($node->getNode()->getPath(), \strlen($shareRoot));
+					} else {
+						$sharedResourcePath = '/' . $shareNode->getName();
+					}
+
+					$path = $server->getBaseUri() . $server->getRequestUri();
+					// Let's assume we have this share
+					// - <shared folder>/
+					//   - subfolder/
+					//     - meme.jpg
+					//   - somefile.txt
+					// If the PROPFIND request is done against
+					// 'remote.php/dav/public-files/{token}/subfolder/meme.jpg'
+					// then we don't need to append the file name for response as
+					// it is already in the path.
+					// Otherwise if the PROPFIND is done against
+					// 'remote.php/dav/public-files/{token}/subfolder/'
+					// then we need to append the file name to the path.
+					if (\substr($path, -\strlen($sharedResourcePath)) !== $sharedResourcePath) {
+						$path .= '/' . $node->getNode()->getName();
+					}
+
+					if ($share->getPassword() === null) {
+						return $path;
+					}
+
+					$validUntil = new \DateTime();
+					$validUntil->add(new \DateInterval("PT30M")); // valid for 30 minutes
+					$key = \hash_hkdf('sha256', $share->getPassword());
+
+					$s = new PublicShareSigner($share->getToken(), $sharedResourcePath, $validUntil, $key);
+					return $path . '?signature=' . $s->getSignature() . '&expires=' . \urlencode($validUntil->format(\DateTime::ATOM));
+				});
+			}
 		}
 	}
 

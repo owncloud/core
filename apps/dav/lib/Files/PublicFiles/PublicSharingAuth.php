@@ -101,6 +101,25 @@ class PublicSharingAuth extends AbstractBasic {
 			return [true, 'principals/system/public'];
 		}
 
+		// Clients which don't use cookie based session authentication and want
+		// to use anchor tags `<a href...` to download password protected files
+		// can't add the basic authentication header.
+		// They can use pre-signed urls instead.
+		$query = $request->getQueryParameters();
+		if (isset($query['signature'], $query['expires'])) {
+			$sig = $query['signature'];
+			$validUntil = \DateTime::createFromFormat(\DateTime::ATOM, $query['expires']);
+			$now = new \DateTime();
+			if ($now < $validUntil) {
+				$key = \hash_hkdf('sha256', $this->share->getPassword());
+				$resource_path = \explode($this->share->getToken(), $request->getPath())[1];
+				$s = new PublicShareSigner($this->share->getToken(), $resource_path, $validUntil, $key);
+				if (\hash_equals($s->getSignature(), $sig)) {
+					return [true, 'principals/system/public'];
+				}
+			}
+		}
+
 		try {
 			return parent::check($request, $response);
 		} catch (LoginException $e) {
