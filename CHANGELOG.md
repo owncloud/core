@@ -32,6 +32,7 @@ Summary
 * Change - Update swiftmailer/swiftmailer (v6.2.4 => v6.2.5): [#38306](https://github.com/owncloud/core/pull/38306)
 * Change - Update pear/archive_tar (1.4.11 => 1.4.12): [#38312](https://github.com/owncloud/core/pull/38312)
 * Change - Update Symfony components to 4.4.19: [#38355](https://github.com/owncloud/core/pull/38355)
+* Change - Update sabre/vobject (4.3.3 => 4.3.4): [#38380](https://github.com/owncloud/core/pull/38380)
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 * Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
@@ -212,6 +213,10 @@ Details
    https://symfony.com/blog/symfony-4-4-19-released
    https://symfony.com/blog/symfony-4-4-18-released
    https://symfony.com/blog/symfony-4-4-17-released
+
+* Change - Update sabre/vobject (4.3.3 => 4.3.4): [#38380](https://github.com/owncloud/core/pull/38380)
+
+   https://github.com/owncloud/core/pull/38380
 
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 
