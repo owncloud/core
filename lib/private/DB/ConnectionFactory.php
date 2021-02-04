@@ -78,6 +78,10 @@ class ConnectionFactory {
 		if ($this->config->getValue('mysql.utf8mb4', false)) {
 			$this->defaultConnectionParams['mysql']['charset'] = 'utf8mb4';
 		}
+		$dbPlatform = $this->config->getValue('db.platform', false);
+		if ($dbPlatform !== false) {
+			$this->defaultConnectionParams['mysql']['platform'] = new $dbPlatform();
+		}
 	}
 
 	/**

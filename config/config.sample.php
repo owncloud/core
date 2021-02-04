@@ -1223,6 +1223,18 @@ $CONFIG = [
 'mysql.utf8mb4' => false,
 
 /**
+ * Force a specific database platform class.
+ * False means that autodetection will take place.
+ *
+ * E.g. to fix MariaDB 1.2.7+ taken for MySQL
+ * 'db.platform' => '\Doctrine\DBAL\Platforms\MariaDb1027Platform',
+ *
+ * See:
+ * https://docs.microsoft.com/en-us/azure/mariadb/concepts-limits#current-known-issues
+ */
+'db.platform' => false,
+
+/**
  * Define supported database types
  * Database types that are supported for installation.
  *
