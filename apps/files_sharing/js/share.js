@@ -123,38 +123,41 @@
 				return data;
 			});
 
-			// use delegate to catch the case with multiple file lists
-			fileList.$el.on('fileActionsReady', function(ev){
-				var $files = ev.$files;
+			if (!fileList.$el.data('shareEventsSet')) { // to prevent setting the same events twice
+				// use delegate to catch the case with multiple file lists
+				fileList.$el.on('fileActionsReady', function(ev){
+					var $files = ev.$files;
 
-				_.each($files, function(file) {
-					var $tr = $(file);
-					var shareTypes = $tr.attr('data-share-types') || '';
-					var shareOwner = $tr.attr('data-share-owner');
-					if (shareTypes || shareOwner) {
-						var hasLink = false;
-						var hasShares = false;
-						_.each(shareTypes.split(',') || [], function(shareType) {
-							shareType = parseInt(shareType, 10);
-							if (shareType === OC.Share.SHARE_TYPE_LINK) {
-								hasLink = true;
-							} else if (shareType === OC.Share.SHARE_TYPE_USER) {
-								hasShares = true;
-							} else if (shareType === OC.Share.SHARE_TYPE_GROUP) {
-								hasShares = true;
-							} else if (shareType === OC.Share.SHARE_TYPE_REMOTE) {
-								hasShares = true;
-							}
-						});
-						OCA.Sharing.Util._updateFileActionIcon($tr, hasShares, hasLink);
-					}
+					_.each($files, function(file) {
+						var $tr = $(file);
+						var shareTypes = $tr.attr('data-share-types') || '';
+						var shareOwner = $tr.attr('data-share-owner');
+						if (shareTypes || shareOwner) {
+							var hasLink = false;
+							var hasShares = false;
+							_.each(shareTypes.split(',') || [], function(shareType) {
+								shareType = parseInt(shareType, 10);
+								if (shareType === OC.Share.SHARE_TYPE_LINK) {
+									hasLink = true;
+								} else if (shareType === OC.Share.SHARE_TYPE_USER) {
+									hasShares = true;
+								} else if (shareType === OC.Share.SHARE_TYPE_GROUP) {
+									hasShares = true;
+								} else if (shareType === OC.Share.SHARE_TYPE_REMOTE) {
+									hasShares = true;
+								}
+							});
+							OCA.Sharing.Util._updateFileActionIcon($tr, hasShares, hasLink);
+						}
+					});
 				});
-			});
 
 
-			fileList.$el.on('changeDirectory', function() {
-				OCA.Sharing.sharesLoaded = false;
-			});
+				fileList.$el.on('changeDirectory', function() {
+					OCA.Sharing.sharesLoaded = false;
+				});
+			}
+			fileList.$el.data('shareEventsSet', true);
 
 			fileActions.registerAction({
 				name: 'Share',

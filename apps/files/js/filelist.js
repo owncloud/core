@@ -328,14 +328,18 @@
 			this.$fileList.on('click','td.filename>a.name, td.filesize, td.date', _.bind(this._onClickFile, this));
 
 			this.$fileList.on('change', 'td.filename>.selectCheckBox', _.bind(this._onClickFileCheckbox, this));
-			this.$el.on('urlChanged', _.bind(this._onUrlChanged, this));
+			// use namespaced event because "bind" will get in the way to remove the event later
+			this.$el.on('urlChanged.filelistbound', _.bind(this._onUrlChanged, this));
 			this.$el.find('.select-all').click(_.bind(this._onClickSelectAll, this));
 			this.$el.find('.download').click(_.bind(this._onClickDownloadSelected, this));
 			this.$el.find('.delete-selected').click(_.bind(this._onClickDeleteSelected, this));
 
 			this.$el.find('.selectedActions a').tooltip({placement:'top'});
 
-			this.$container.on('scroll', _.bind(this._onScroll, this));
+			if (!this.$container.data('scrollEventSet')) {
+				this.$container.on('scroll', _.bind(this._onScroll, this));
+			}
+			this.$container.data('scrollEventSet', true);
 
 			if (options.scrollTo) {
 				this.$fileList.one('updated', function() {
@@ -386,6 +390,9 @@
 			// remove summary
 			this.$el.find('tfoot tr.summary').remove();
 			this.$fileList.empty();
+			// remove events attached to the $el
+			this.$el.off('show', this._onResize);
+			this.$el.off('urlChanged.filelistbound');
 
 		},
 
@@ -1909,7 +1916,7 @@
 					var $path = $('<span>',   { class : 'shareTree-item-path', text : t('files', 'via') + " " + folder.name });
 					var $name = $('<strong>', { class : 'shareTree-item-name', text : shareWith });
 					var $icon = $('<div>',    { class : 'shareTree-item-avatar' });
-                                       
+
 					if (oc_config.enable_avatars) {
 					       $icon.avatar(share.share_with, 32);
 					}
