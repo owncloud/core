@@ -33,15 +33,15 @@ Feature: get file properties
     Then the properties response should contain an etag
     And the value of the item "//d:response/d:href" in the response to user "Alice" should match "/remote\.php\/<expected_href>/"
     Examples:
-      | dav_version | file_name     | expected_href                               |
-      | old         | /C++ file.cpp | webdav\/C%2b%2b%20file\.cpp                 |
-      | old         | /file #2.txt  | webdav\/file%20%232\.txt                    |
-      | old         | /file ?2.txt  | webdav\/file%20%3f2\.txt                    |
-      | old         | /file &2.txt  | webdav\/file%20%262\.txt                    |
-      | new         | /C++ file.cpp | dav\/files\/%username%\/C%2b%2b%20file\.cpp |
-      | new         | /file #2.txt  | dav\/files\/%username%\/file%20%232\.txt    |
-      | new         | /file ?2.txt  | dav\/files\/%username%\/file%20%3f2\.txt    |
-      | new         | /file &2.txt  | dav\/files\/%username%\/file%20%262\.txt    |
+      | dav_version | file_name     | expected_href                                     |
+      | old         | /C++ file.cpp | webdav\/C%2[bB]%2[bB]%20file\.cpp                 |
+      | old         | /file #2.txt  | webdav\/file%20%232\.txt                          |
+      | old         | /file ?2.txt  | webdav\/file%20%3[fF]2\.txt                       |
+      | old         | /file &2.txt  | webdav\/file%20%262\.txt                          |
+      | new         | /C++ file.cpp | dav\/files\/%username%\/C%2[bB]%2[bB]%20file\.cpp |
+      | new         | /file #2.txt  | dav\/files\/%username%\/file%20%232\.txt          |
+      | new         | /file ?2.txt  | dav\/files\/%username%\/file%20%3[fF]2\.txt       |
+      | new         | /file &2.txt  | dav\/files\/%username%\/file%20%262\.txt          |
 
   @issue-ocis-reva-214
   Scenario Outline: Do a PROPFIND of various folder names
@@ -54,21 +54,21 @@ Feature: get file properties
     And there should be an entry with href matching "/remote\.php\/<expected_href>\/file1.txt/" in the response to user "Alice"
     And there should be an entry with href matching "/remote\.php\/<expected_href>\/file2.txt/" in the response to user "Alice"
     Examples:
-      | dav_version | folder_name     | expected_href                                                                  |
-      | old         | /upload         | webdav\/upload                                                                 |
-      | old         | /strängé folder | webdav\/str%c3%a4ng%c3%a9%20folder                                             |
-      | old         | /C++ folder     | webdav\/C%2b%2b%20folder                                                       |
-      | old         | /नेपाली         | webdav\/%e0%a4%a8%e0%a5%87%e0%a4%aa%e0%a4%be%e0%a4%b2%e0%a5%80                 |
-      | old         | /folder #2.txt  | webdav\/folder%20%232\.txt                                                     |
-      | old         | /folder ?2.txt  | webdav\/folder%20%3f2\.txt                                                     |
-      | old         | /folder &2.txt  | webdav\/folder%20%262\.txt                                                     |
-      | new         | /upload         | dav\/files\/%username%\/upload                                                 |
-      | new         | /strängé folder | dav\/files\/%username%\/str%c3%a4ng%c3%a9%20folder                             |
-      | new         | /C++ folder     | dav\/files\/%username%\/C%2b%2b%20folder                                       |
-      | new         | /नेपाली         | dav\/files\/%username%\/%e0%a4%a8%e0%a5%87%e0%a4%aa%e0%a4%be%e0%a4%b2%e0%a5%80 |
-      | new         | /folder #2.txt  | dav\/files\/%username%\/folder%20%232\.txt                                     |
-      | new         | /folder ?2.txt  | dav\/files\/%username%\/folder%20%3f2\.txt                                     |
-      | new         | /folder &2.txt  | dav\/files\/%username%\/folder%20%262\.txt                                     |
+      | dav_version | folder_name     | expected_href                                                                                                            |
+      | old         | /upload         | webdav\/upload                                                                                                           |
+      | old         | /strängé folder | webdav\/str%[cC]3%[aA]4ng%[cC]3%[aA]9%20folder                                                                           |
+      | old         | /C++ folder     | webdav\/C%2[bB]%2[bB]%20folder                                                                                           |
+      | old         | /नेपाली         | webdav\/%[eE]0%[aA]4%[aA]8%[eE]0%[aA]5%87%[eE]0%[aA]4%[aA]a%[eE]0%[aA]4%be%[eE]0%[aA]4%b2%[eE]0%[aA]5%80                 |
+      | old         | /folder #2.txt  | webdav\/folder%20%232\.txt                                                                                               |
+      | old         | /folder ?2.txt  | webdav\/folder%20%3[fF]2\.txt                                                                                            |
+      | old         | /folder &2.txt  | webdav\/folder%20%262\.txt                                                                                               |
+      | new         | /upload         | dav\/files\/%username%\/upload                                                                                           |
+      | new         | /strängé folder | dav\/files\/%username%\/str%[cC]3%[aA]4ng%[cC]3%[aA]9%20folder                                                           |
+      | new         | /C++ folder     | dav\/files\/%username%\/C%2[bB]%2[bB]%20folder                                                                           |
+      | new         | /नेपाली         | dav\/files\/%username%\/%[eE]0%[aA]4%[aA]8%[eE]0%[aA]5%87%[eE]0%[aA]4%[aA]a%[eE]0%[aA]4%be%[eE]0%[aA]4%b2%[eE]0%[aA]5%80 |
+      | new         | /folder #2.txt  | dav\/files\/%username%\/folder%20%232\.txt                                                                               |
+      | new         | /folder ?2.txt  | dav\/files\/%username%\/folder%20%3[fF]2\.txt                                                                            |
+      | new         | /folder &2.txt  | dav\/files\/%username%\/folder%20%262\.txt                                                                               |
 
   Scenario Outline: Do a PROPFIND of various files inside various folders
     Given using <dav_version> DAV path
