@@ -69,3 +69,24 @@ Feature: delete file
       | new         | "sample,1.txt" |
       | new         | ",,,.txt"      |
       | new         | ",,,.,"        |
+
+  Scenario Outline: delete a hidden file
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/FOLDER"
+    And user "Alice" has uploaded the following files with content "hidden file"
+      | path                 |
+      | .hidden_file         |
+      | /FOLDER/.hidden_file |
+    When user "Alice" deletes the following files
+      | path                 |
+      | .hidden_file         |
+      | /FOLDER/.hidden_file |
+    Then the HTTP status code of responses on all endpoints should be "204"
+    And as "Alice" the following files should not exist
+      | path                 |
+      | .hidden_file         |
+      | /FOLDER/.hidden_file |
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |

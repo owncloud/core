@@ -334,3 +334,43 @@ Feature: move (rename) file
       | dav_version |
       | old         |
       | new         |
+
+  Scenario Outline: Moving a hidden file
+    Given using <dav_version> DAV path
+    And user "Alice" has uploaded the following files with content "hidden file"
+      | path                    |
+      | .hidden_file101         |
+      | /FOLDER/.hidden_file102 |
+    When user "Alice" moves the following files using the WebDAV API
+      | from                    | to                      |
+      | .hidden_file101         | /FOLDER/.hidden_file101 |
+      | /FOLDER/.hidden_file102 | .hidden_file102         |
+    Then the HTTP status code of responses on all endpoints should be "201"
+    And as "Alice" the following files should exist
+      | path                    |
+      | .hidden_file102         |
+      | /FOLDER/.hidden_file101 |
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Renaming to/from a hidden file
+    Given using <dav_version> DAV path
+    And user "Alice" has uploaded the following files with content "hidden file"
+      | path                    |
+      | .hidden_file101         |
+      | hidden_file101.txt      |
+    When user "Alice" moves the following files using the WebDAV API
+      | from               | to                 |
+      | .hidden_file101    | hidden_file102.txt |
+      | hidden_file101.txt | .hidden_file102    |
+    Then the HTTP status code of responses on all endpoints should be "201"
+    And as "Alice" the following files should exist
+      | path               |
+      | .hidden_file102    |
+      | hidden_file102.txt |
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |

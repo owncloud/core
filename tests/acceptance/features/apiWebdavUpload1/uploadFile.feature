@@ -199,3 +199,24 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
+  Scenario Outline: upload a hidden file and check download content
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/FOLDER"
+    When user "Alice" uploads the following files with content "hidden file"
+      | path                 |
+      | .hidden_file         |
+      | /FOLDER/.hidden_file |
+    Then the HTTP status code of responses on all endpoints should be "201"
+    And as "Alice" the following files should exist
+      | path                 |
+      | .hidden_file         |
+      | /FOLDER/.hidden_file |
+    And the content of the following files for user "Alice" should be "hidden file"
+      | path                 |
+      | .hidden_file         |
+      | /FOLDER/.hidden_file |
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |

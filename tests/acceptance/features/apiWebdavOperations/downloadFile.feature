@@ -197,3 +197,21 @@ Feature: download file
       | dav_version |
       | old         |
       | new         |
+
+  Scenario Outline: download a hidden file
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/FOLDER"
+    And user "Alice" has uploaded the following files with content "hidden file"
+      | path                 |
+      | .hidden_file         |
+      | /FOLDER/.hidden_file |
+    When user "Alice" downloads file ".hidden_file" using the WebDAV API
+    Then the HTTP status code should be "200"
+    And the downloaded content should be "hidden file"
+    When user "Alice" downloads file "./FOLDER/.hidden_file" using the WebDAV API
+    Then the HTTP status code should be "200"
+    And the downloaded content should be "hidden file"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |

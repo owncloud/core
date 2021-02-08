@@ -641,6 +641,29 @@ trait WebDav {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" moves the following (?:files|folders|entries)\s?(asynchronously|) using the WebDAV API$/
+	 *
+	 * @param string $user
+	 * @param string $type "asynchronously" or empty
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function userMovesFollowingFileUsingTheAPI(
+		$user, $type, TableNode $table
+	) {
+		$this->verifyTableNodeColumns($table, ["from", "to"]);
+		$paths = $table->getHash();
+
+		foreach ($paths as $file) {
+			$this->userMovesFileUsingTheAPI($user, $file['from'], $type, $file['to']);
+			$this->pushToLastHttpStatusCodesArray(
+				$this->getResponse()->getStatusCode()
+			);
+		}
+	}
+
+	/**
 	 * @Then /^user "([^"]*)" should be able to rename (file|folder|entry) "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -991,6 +1014,24 @@ trait WebDav {
 		$user = $this->getActualUsername($user);
 		$this->downloadFileAsUserUsingPassword($user, $fileName);
 		$this->downloadedContentShouldBe($content);
+	}
+
+	/**
+	 * @Then /^the content of the following files for user "([^"]*)" should be "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $content
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function contentOfFollowingFilesShouldBe($user, $content, TableNode $table) {
+		$this->verifyTableNodeColumns($table, ["path"]);
+		$paths = $table->getHash();
+
+		foreach ($paths as $file) {
+			$this->contentOfFileForUserShouldBe($file["path"], $user, $content);
+		}
 	}
 
 	/**
@@ -1410,6 +1451,27 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then /^as "([^"]*)" the following (files|folders) should not exist$/
+	 *
+	 * @param string $user
+	 * @param string $entry
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function followingFilesShouldNotExist(
+		$user, $entry, TableNode $table
+	) {
+		$this->verifyTableNodeColumns($table, ["path"]);
+		$paths = $table->getHash();
+		$entry = \rtrim($entry, "s");
+
+		foreach ($paths as $file) {
+			$this->asFileOrFolderShouldNotExist($user, $entry, $file["path"]);
+		}
+	}
+
+	/**
 	 * @Then /^as "([^"]*)" (file|folder|entry) "([^"]*)" should exist$/
 	 *
 	 * @param string $user
@@ -1437,6 +1499,28 @@ trait WebDav {
 			Assert::assertEquals(\count($isCollection), 1, "Unexpectedly, `$path` is not a folder");
 		} elseif ($entry === "file") {
 			Assert::assertEquals(\count($isCollection), 0, "Unexpectedly, `$path` is not a file");
+		}
+	}
+
+	/**
+	 * @Then /^as "([^"]*)" the following (files|folders) should exist$/
+	 *
+	 * @param string $user
+	 * @param string $entry
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function followingFilesOrFoldersShouldExist(
+		$user, $entry, TableNode $table
+	) {
+		$this->verifyTableNodeColumns($table, ["path"]);
+		$paths = $table->getHash();
+		$entry = \rtrim($entry, "s");
+
+		foreach ($paths as $file) {
+			$this->asFileOrFolderShouldExist($user, $entry, $file["path"]);
 		}
 	}
 
@@ -2272,6 +2356,29 @@ trait WebDav {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" uploads the following files with content "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $content
+	 * @param TableNode $table
+	 *
+	 * @return string
+	 */
+	public function userUploadsFollowingFilesWithContentTo(
+		$user, $content, TableNode $table
+	) {
+		$this->verifyTableNodeColumns($table, ["path"]);
+		$paths = $table->getHash();
+
+		foreach ($paths as $destination) {
+			$this->uploadFileWithContent($user, $content, $destination["path"]);
+			$this->pushToLastHttpStatusCodesArray(
+				$this->getResponse()->getStatusCode()
+			);
+		}
+	}
+
+	/**
 	 * @When user :user uploads file :source to :destination with mtime :mtime using the WebDAV API
 	 * @Given user :user has uploaded file :source to :destination with mtime :mtime using the WebDAV API
 	 *
@@ -2360,6 +2467,30 @@ trait WebDav {
 			"HTTP status code was not 201 or 204 while trying to upload file '$destination' for user '$user'"
 		);
 		return $fileId;
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has uploaded the following files with content "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $content
+	 * @param TableNode $table
+	 *
+	 * @return string
+	 */
+	public function userHasUploadedFollowingFiles(
+		$user, $content, TableNode $table
+	) {
+		$this->verifyTableNodeColumns($table, ["path"]);
+		$files = $table->getHash();
+
+		$fileIds = [];
+		foreach ($files as $destination) {
+			$fileId = $this->userHasUploadedAFileWithContentTo($user, $content, $destination["path"])[0];
+			\array_push($fileIds, $fileId);
+		}
+
+		return $fileIds;
 	}
 
 	/**
@@ -2525,6 +2656,46 @@ trait WebDav {
 			["204", "404"],
 			"HTTP status code was not 204 or 404 while trying to $deleteText $fileOrFolder '$entry' for user '$user'"
 		);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has (deleted|unshared) the following (files|folders)$/
+	 *
+	 * @param string $user
+	 * @param string $deletedOrUnshared
+	 * @param string $fileOrFolder
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function userHasDeletedFollowingFiles($user, $deletedOrUnshared, $fileOrFolder, TableNode $table) {
+		$this->verifyTableNodeColumns($table, ["path"]);
+		$paths = $table->getHash();
+
+		foreach ($paths as $file) {
+			$this->userHasDeletedFile($user, $deletedOrUnshared, $fileOrFolder, $file["path"]);
+		}
+	}
+
+	/**
+	 * @When /^user "([^"]*)" (?:deletes|unshares) the following (?:files|folders)$/
+	 *
+	 * @param string $user
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function userDeletesFollowingFiles($user, TableNode $table) {
+		$user = $this->getActualUsername($user);
+		$this->verifyTableNodeColumns($table, ["path"]);
+		$paths = $table->getHash();
+
+		foreach ($paths as $file) {
+			$this->userDeletesFile($user, $file["path"]);
+			$this->pushToLastHttpStatusCodesArray(
+				$this->getResponse()->getStatusCode()
+			);
+		}
 	}
 
 	/**

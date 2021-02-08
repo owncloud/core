@@ -337,3 +337,37 @@ Feature: Restore deleted files/folders
       | dav-path |
       | old      |
       | new      |
+
+
+  Scenario Outline: A deleted hidden file can be restored
+    Given using <dav-path> DAV path
+    And user "Alice" has created folder "/FOLDER"
+    And user "Alice" has uploaded the following files with content "hidden file"
+      | path                 |
+      | .hidden_file         |
+      | /FOLDER/.hidden_file |
+    And user "Alice" has deleted the following files
+      | path                 |
+      | .hidden_file         |
+      | /FOLDER/.hidden_file |
+    When user "Alice" restores the following files with original path
+      | path                 |
+      | .hidden_file         |
+      | /FOLDER/.hidden_file |
+    Then the HTTP status code of responses on all endpoints should be "201"
+    And as "Alice" the files with following original paths should not exist in the trashbin
+      | path                 |
+      | .hidden_file         |
+      | /FOLDER/.hidden_file |
+    And as "Alice" the following files should exist
+      | path                 |
+      | .hidden_file         |
+      | /FOLDER/.hidden_file |
+    And the content of the following files for user "Alice" should be "hidden file"
+      | path                 |
+      | .hidden_file         |
+      | /FOLDER/.hidden_file |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
