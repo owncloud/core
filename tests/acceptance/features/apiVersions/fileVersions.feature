@@ -403,3 +403,15 @@ Feature: dav-versions
     When user "Alice" restores version index "1" of file "/renamedfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And the content of file "/renamedfile.txt" for user "Alice" should be "old content"
+    
+  @issue-ocis-1238
+  Scenario: The version number is wrong after moving a file
+    Given user "Alice" has created folder "testFolder"
+    And user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"
+    And user "Alice" has uploaded file with content "version 1" to "textfile0.txt"
+    And user "Alice" has uploaded file with content "version 2" to "textfile0.txt"
+    And user "Alice" has uploaded file with content "version 3" to "textfile0.txt"
+    When user "Alice" moves file "textfile0.txt" to "/testFolder/textfile0.txt" using the WebDAV API
+    And user "Alice" tries to get versions of file "/testFolder/textfile0.txt" from "Alice"
+    Then the HTTP status code should be "207"
+    And the number of versions should be "3"
