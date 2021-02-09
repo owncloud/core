@@ -1364,6 +1364,16 @@ $CONFIG = [
 'cipher' => 'AES-256-CFB',
 
 /**
+ * Define the file format for encrypting files
+ * Define if encrypted files will be written in the old format (`true`) or the new
+ * binary format (`false`) which has a significant reduced filesize. Defaults to `false`.
+ * With binary, only new files are written in the binary format, existing encrypted files
+ * in the old format stay readable. This guarantees a smooth transition.
+ */
+
+'encryption.use_legacy_encoding' => false,
+
+/**
  * Define the minimum supported ownCloud desktop client version
  * Define the minimum ownCloud desktop client version that is allowed to sync with
  * this server instance. All connections made from earlier clients will be denied
