@@ -1055,6 +1055,20 @@ $CONFIG = [
 	'timeout' => 0.0,
 	'password' => '', // Optional, if not defined no password will be used.
 	'dbindex' => 0,   // Optional, if undefined SELECT will not run and will use Redis Server's default DB Index. Out of the box, every Redis instance supports 16 databases so `<dbIndex>` has to be set between 0 and 15.
+	 // Optional config option
+	 // In order to use connection_parameters php-redis extension >= 5.3.0 is required
+	 // In order to use SSL/TLS redis server >= 6.0 is required
+	 // In a single-server configuration, prefix the host with tls:// like tls://localhost
+	 // In a single-server configuration the SSL/TLS data **must** be in the stream section
+	'connection_parameters' => [
+		'stream' => [
+			'local_cert' => '/file/path/to/redis.crt',
+			'local_pk' => '/file/path/to/redis.key',
+			'cafile' => '/file/path/to/ca.crt',
+			'verify_peer_name' => true
+		],
+	],
+
   ],
 
 /**
@@ -1077,7 +1091,18 @@ $CONFIG = [
 	],
 	'timeout' => 0.0,
 	'read_timeout' => 0.0,
-	'failover_mode' => \RedisCluster::FAILOVER_DISTRIBUTE
+	'failover_mode' => \RedisCluster::FAILOVER_DISTRIBUTE,
+	 // Optional config option
+	 // In order to use connection_parameters php-redis extension >= 5.3.0 is required
+	 // In order to use SSL/TLS redis server >= 6.0 is required
+	 // In a cluster configuration, prefix the seeds with tls:// like tls://localhost:7000
+	 // In a cluster configuration the SSL/TLS data **must not** be in the stream section
+	'connection_parameters' => [
+		'local_cert' => '/file/path/to/redis.crt',
+		'local_pk' => '/file/path/to/redis.key',
+		'cafile' => '/file/path/to/ca.crt',
+		'verify_peer_name' => true
+	],
   ],
 
 /**
