@@ -42,6 +42,7 @@ Summary
 * Enhancement - Prevent group assignment in Web UI if not supported: [#38298](https://github.com/owncloud/core/pull/38298)
 * Enhancement - Display path in the occ app:list command: [#38309](https://github.com/owncloud/core/pull/38309)
 * Enhancement - Display error/success message while changing the log level: [#38340](https://github.com/owncloud/core/pull/38340)
+* Enhancement - Allow force set DB patforms: [#38379](https://github.com/owncloud/core/pull/38379)
 
 Details
 -------
@@ -303,6 +304,13 @@ Details
    select box.
 
    https://github.com/owncloud/core/pull/38340
+
+* Enhancement - Allow force set DB patforms: [#38379](https://github.com/owncloud/core/pull/38379)
+
+   A new 'db.platform' option added to config.php. It allows using a specific database platform
+   and do not rely on autodetection.
+
+   https://github.com/owncloud/core/pull/38379
 
 Changelog for ownCloud Core [10.6.0] (2020-11-25)
 =======================================
