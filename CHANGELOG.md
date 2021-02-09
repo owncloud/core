@@ -41,6 +41,7 @@ Summary
 * Enhancement - Improve the UX in the external storage settings page: [#38288](https://github.com/owncloud/core/pull/38288)
 * Enhancement - Prevent group assignment in Web UI if not supported: [#38298](https://github.com/owncloud/core/pull/38298)
 * Enhancement - Display path in the occ app:list command: [#38309](https://github.com/owncloud/core/pull/38309)
+* Enhancement - New config parameter to define the encrypted file format: [#38337](https://github.com/owncloud/core/pull/38337)
 * Enhancement - Display error/success message while changing the log level: [#38340](https://github.com/owncloud/core/pull/38340)
 * Enhancement - Allow force set DB patforms: [#38379](https://github.com/owncloud/core/pull/38379)
 
@@ -296,6 +297,15 @@ Details
    Occ app:list Additionally displays the located app path
 
    https://github.com/owncloud/core/pull/38309
+
+* Enhancement - New config parameter to define the encrypted file format: [#38337](https://github.com/owncloud/core/pull/38337)
+
+   A new config parameter has been introduced to define if encrypted files are written in the old or
+   new format. The new format has a significant reduced filesize and is set to default. Files in the
+   old format are still readable, only new encrypted files are written in the new format.
+
+   https://github.com/owncloud/core/pull/38337
+   https://github.com/owncloud/encryption/pull/224
 
 * Enhancement - Display error/success message while changing the log level: [#38340](https://github.com/owncloud/core/pull/38340)
 
