@@ -19,6 +19,7 @@ OC.L10N.register(
     "Unable to delete group." : "ไม่สามารถลบกลุ่ม",
     "Saved" : "บันทึกแล้ว",
     "log-level out of allowed range" : "ระดับของไฟล์ log ไม่ได้อยู่ในช่วงที่ได้รับอนุญาต",
+    "Updated log level" : "อัปเดตระดับ Log",
     "Invalid email address" : "ที่อยู่อีเมลไม่ถูกต้อง",
     "test email settings" : "ทดสอบส่งอีเมล",
     "A problem occurred while sending the email. Please revise your settings. (Error: %s)" : "เกิดปัญหาขึ้นในขณะที่ส่งอีเมล กรุณาแก้ไขการตั้งค่าของคุณ (ข้อผิดพลาด: %s)",
