@@ -329,6 +329,8 @@
 
 			this.$fileList.on('change', 'td.filename>.selectCheckBox', _.bind(this._onClickFileCheckbox, this));
 			// use namespaced event because "bind" will get in the way to remove the event later
+			// note that the jquery element won't be removed, so it's possible to register
+			// the same listener twice or more. We'll remove the listener in the destroy method.
 			this.$el.on('urlChanged.filelistbound', _.bind(this._onUrlChanged, this));
 			this.$el.find('.select-all').click(_.bind(this._onClickSelectAll, this));
 			this.$el.find('.download').click(_.bind(this._onClickDownloadSelected, this));
@@ -336,10 +338,9 @@
 
 			this.$el.find('.selectedActions a').tooltip({placement:'top'});
 
-			if (!this.$container.data('scrollEventSet')) {
-				this.$container.on('scroll', _.bind(this._onScroll, this));
-			}
-			this.$container.data('scrollEventSet', true);
+			// namespaced event based on this jquery element, to be removed when is destroyed
+			// note that the listener is attached to the container, not to the element
+			this.$container.on('scroll.' + this.$el.attr('id'), _.bind(this._onScroll, this));
 
 			if (options.scrollTo) {
 				this.$fileList.one('updated', function() {
@@ -393,6 +394,8 @@
 			// remove events attached to the $el
 			this.$el.off('show', this._onResize);
 			this.$el.off('urlChanged.filelistbound');
+			// remove events attached to the $container
+			this.$container.off('scroll.' + this.$el.attr('id'));
 
 		},
 
