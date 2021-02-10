@@ -538,7 +538,7 @@ class Storage {
 	protected static function getExpireList($time, $versions, $quotaExceeded = false) {
 		$expiration = self::getExpiration();
 
-		if ($expiration->shouldAutoExpire()) {
+		if ($expiration->shouldAutoExpire() && \count($versions) > 0) {
 			list($toDelete, $size) = self::getAutoExpireList($time, $versions);
 		} else {
 			$size = 0;
