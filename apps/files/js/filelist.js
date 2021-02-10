@@ -328,14 +328,19 @@
 			this.$fileList.on('click','td.filename>a.name, td.filesize, td.date', _.bind(this._onClickFile, this));
 
 			this.$fileList.on('change', 'td.filename>.selectCheckBox', _.bind(this._onClickFileCheckbox, this));
-			this.$el.on('urlChanged', _.bind(this._onUrlChanged, this));
+			// use namespaced event because "bind" will get in the way to remove the event later
+			// note that the jquery element won't be removed, so it's possible to register
+			// the same listener twice or more. We'll remove the listener in the destroy method.
+			this.$el.on('urlChanged.filelistbound', _.bind(this._onUrlChanged, this));
 			this.$el.find('.select-all').click(_.bind(this._onClickSelectAll, this));
 			this.$el.find('.download').click(_.bind(this._onClickDownloadSelected, this));
 			this.$el.find('.delete-selected').click(_.bind(this._onClickDeleteSelected, this));
 
 			this.$el.find('.selectedActions a').tooltip({placement:'top'});
 
-			this.$container.on('scroll', _.bind(this._onScroll, this));
+			// namespaced event based on this jquery element, to be removed when is destroyed
+			// note that the listener is attached to the container, not to the element
+			this.$container.on('scroll.' + this.$el.attr('id'), _.bind(this._onScroll, this));
 
 			if (options.scrollTo) {
 				this.$fileList.one('updated', function() {
@@ -386,6 +391,11 @@
 			// remove summary
 			this.$el.find('tfoot tr.summary').remove();
 			this.$fileList.empty();
+			// remove events attached to the $el
+			this.$el.off('show', this._onResize);
+			this.$el.off('urlChanged.filelistbound');
+			// remove events attached to the $container
+			this.$container.off('scroll.' + this.$el.attr('id'));
 
 		},
 
@@ -1909,7 +1919,7 @@
 					var $path = $('<span>',   { class : 'shareTree-item-path', text : t('files', 'via') + " " + folder.name });
 					var $name = $('<strong>', { class : 'shareTree-item-name', text : shareWith });
 					var $icon = $('<div>',    { class : 'shareTree-item-avatar' });
-                                       
+
 					if (oc_config.enable_avatars) {
 					       $icon.avatar(share.share_with, 32);
 					}
