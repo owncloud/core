@@ -1,0 +1,8 @@
+Enhancement: Hide federated user suggestions if system users are found
+
+Hide federated user suggestions when sharing if system users are
+found. This improves the usability of sharing resources with existing users
+via email address.
+
+https://github.com/owncloud/core/pull/38389
+https://github.com/owncloud/enterprise/issues/4392

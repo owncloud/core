@@ -264,8 +264,10 @@
 							}
 						}
 
-						var suggestions = users.concat(groups).concat(remotes);
-
+						var suggestions = users.concat(groups);
+						if (suggestions.length < 1) {
+							suggestions = suggestions.concat(remotes);
+						}
 
 						if (suggestions.length > 0) {
 							suggestions.sort(function (a, b) {
