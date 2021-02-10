@@ -33,6 +33,7 @@ Summary
 * Change - Update pear/archive_tar (1.4.11 => 1.4.12): [#38312](https://github.com/owncloud/core/pull/38312)
 * Change - Update Symfony components to 4.4.19: [#38355](https://github.com/owncloud/core/pull/38355)
 * Change - Update sabre/vobject (4.3.3 => 4.3.4): [#38380](https://github.com/owncloud/core/pull/38380)
+* Change - Update christophwurst/id3parser (v0.1.1 => v0.1.2): [#38387](https://github.com/owncloud/core/pull/38387)
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 * Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
@@ -219,6 +220,10 @@ Details
 * Change - Update sabre/vobject (4.3.3 => 4.3.4): [#38380](https://github.com/owncloud/core/pull/38380)
 
    https://github.com/owncloud/core/pull/38380
+
+* Change - Update christophwurst/id3parser (v0.1.1 => v0.1.2): [#38387](https://github.com/owncloud/core/pull/38387)
+
+   https://github.com/owncloud/core/pull/38387
 
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 
