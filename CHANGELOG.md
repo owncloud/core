@@ -46,6 +46,7 @@ Summary
 * Enhancement - New config parameter to define the encrypted file format: [#38337](https://github.com/owncloud/core/pull/38337)
 * Enhancement - Display error/success message while changing the log level: [#38340](https://github.com/owncloud/core/pull/38340)
 * Enhancement - Allow force set DB patforms: [#38379](https://github.com/owncloud/core/pull/38379)
+* Enhancement - Hide federated user suggestions if system users are found: [#38389](https://github.com/owncloud/core/pull/38389)
 
 Details
 -------
@@ -337,6 +338,14 @@ Details
    and do not rely on autodetection.
 
    https://github.com/owncloud/core/pull/38379
+
+* Enhancement - Hide federated user suggestions if system users are found: [#38389](https://github.com/owncloud/core/pull/38389)
+
+   Hide federated user suggestions when sharing if system users are found. This improves the
+   usability of sharing resources with existing users via email address.
+
+   https://github.com/owncloud/enterprise/issues/4392
+   https://github.com/owncloud/core/pull/38389
 
 Changelog for ownCloud Core [10.6.0] (2020-11-25)
 =======================================
