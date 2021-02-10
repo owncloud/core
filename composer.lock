@@ -42,16 +42,16 @@
         },
         {
             "name": "christophwurst/id3parser",
-            "version": "v0.1.1",
+            "version": "v0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ChristophWurst/ID3Parser.git",
-                "reference": "c0e56c336bd6131c199827f928e5a9aec89aa4da"
+                "reference": "d7f5e9e7db69a24e3111a2033cbdf640f9456f2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ChristophWurst/ID3Parser/zipball/c0e56c336bd6131c199827f928e5a9aec89aa4da",
-                "reference": "c0e56c336bd6131c199827f928e5a9aec89aa4da",
+                "url": "https://api.github.com/repos/ChristophWurst/ID3Parser/zipball/d7f5e9e7db69a24e3111a2033cbdf640f9456f2f",
+                "reference": "d7f5e9e7db69a24e3111a2033cbdf640f9456f2f",
                 "shasum": ""
             },
             "require": {
@@ -76,9 +76,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ChristophWurst/ID3Parser/issues",
-                "source": "https://github.com/ChristophWurst/ID3Parser/tree/v0.1.1"
+                "source": "https://github.com/ChristophWurst/ID3Parser/tree/v0.1.2"
             },
-            "time": "2020-01-07T09:05:03+00:00"
+            "time": "2021-02-09T08:04:08+00:00"
         },
         {
             "name": "composer/semver",
