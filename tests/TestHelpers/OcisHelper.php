@@ -78,10 +78,10 @@ class OcisHelper {
 		if ($storageDriver === false) {
 			return "OWNCLOUD";
 		}
-		if ($storageDriver !== "OCIS" && $storageDriver !== "EOS" && $storageDriver !== "OWNCLOUD") {
+		if ($storageDriver !== "OCIS" && $storageDriver !== "EOS" && $storageDriver !== "OWNCLOUD" && $storageDriver !== "S3NG") {
 			throw new \Exception(
 				"Invalid storage driver. " .
-				"STORAGE_DRIVER must be OCIS|EOS|OWNCLOUD"
+				"STORAGE_DRIVER must be OCIS|EOS|OWNCLOUD|S3NG"
 			);
 		}
 		return $storageDriver;
