@@ -16,6 +16,7 @@ Summary
 * Bugfix - Fix the position of the user afterLogin-event: [#38289](https://github.com/owncloud/core/pull/38289)
 * Bugfix - Fix file_target in response when creating a public link share: [#38291](https://github.com/owncloud/core/issues/38291)
 * Bugfix - Fix rendering of leading/trailing spaces in the file name: [#38316](https://github.com/owncloud/core/issues/38316)
+* Bugfix - Prevent multiple calls by not registering the same listener twice: [#38385](https://github.com/owncloud/core/pull/38385)
 * Change - Use OcsController and routes instead of API::register: [#37272](https://github.com/owncloud/core/pull/37272)
 * Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.2): [#38306](https://github.com/owncloud/core/pull/38306)
 * Change - Update nikic/php-parser (4.10.2 => 4.10.4): [#38191](https://github.com/owncloud/core/pull/38191)
@@ -116,6 +117,16 @@ Details
 
    https://github.com/owncloud/core/issues/38316
    https://github.com/owncloud/core/pull/38319
+
+* Bugfix - Prevent multiple calls by not registering the same listener twice: [#38385](https://github.com/owncloud/core/pull/38385)
+
+   Going back and forth among the file sections ("all files", "shared with you", etc) was making
+   some event listeners to be registered twice or more times. This was causing the same ajax
+   request to be called several times causing unnecessary load in the server.
+
+   Now, these additional requests won't happen
+
+   https://github.com/owncloud/core/pull/38385
 
 * Change - Use OcsController and routes instead of API::register: [#37272](https://github.com/owncloud/core/pull/37272)
 
