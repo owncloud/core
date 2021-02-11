@@ -2831,6 +2831,23 @@ trait WebDav {
 	}
 
 	/**
+	 * @Given /^user "([^"]*)" has created the following folders$/
+	 *
+	 * @param string $user
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function userHasCreatedFollowingFolders($user, TableNode $table) {
+		$this->verifyTableNodeColumns($table, ["path"]);
+		$paths = $table->getHash();
+
+		foreach ($paths as $path) {
+			$this->userHasCreatedFolder($user, $path["path"]);
+		}
+	}
+
+	/**
 	 * @When the user creates folder :destination using the WebDAV API
 	 *
 	 * @param string $destination

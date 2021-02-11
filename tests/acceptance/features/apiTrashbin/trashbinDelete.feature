@@ -134,3 +134,67 @@ Feature: files and folders can be deleted from the trashbin
     But as "Alice" the file with original path "/PARENT/parent.txt" should exist in the trashbin
     But as "Alice" the file with original path "/FOLDER/parent.txt" should exist in the trashbin
     And as "Alice" the file with original path "/FOLDER/CHILD/child.txt" should exist in the trashbin
+
+
+  Scenario Outline: delete files with special characters from the trashbin
+    Given user "Alice" has uploaded the following files with content "special character file"
+      | path             |
+      | qa&dev.txt       |
+      | !@tester$^.txt   |
+      | %file *?2.txt    |
+      | # %ab ab?=ed.txt |
+    And user "Alice" has deleted the following files
+      | path             |
+      | qa&dev.txt       |
+      | !@tester$^.txt   |
+      | %file *?2.txt    |
+      | # %ab ab?=ed.txt |
+    When user "Alice" deletes the following files with original path from the trashbin
+      | path             |
+      | qa&dev.txt       |
+      | !@tester$^.txt   |
+      | %file *?2.txt    |
+      | # %ab ab?=ed.txt |
+    Then the HTTP status code of responses on all endpoints should be "204"
+    And as "Alice" the files with following original paths should not exist in the trashbin
+      | path             |
+      | qa&dev.txt       |
+      | !@tester$^.txt   |
+      | %file *?2.txt    |
+      | # %ab ab?=ed.txt |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+
+  Scenario Outline: delete folders with special characters from the trashbin
+    Given user "Alice" has created the following folders
+      | path         |
+      | qa&dev       |
+      | !@tester$^   |
+      | %file *?2    |
+      | # %ab ab?=ed |
+    And user "Alice" has deleted the following folders
+      | path         |
+      | qa&dev       |
+      | !@tester$^   |
+      | %file *?2    |
+      | # %ab ab?=ed |
+    When user "Alice" deletes the following files with original path from the trashbin
+      | path         |
+      | qa&dev       |
+      | !@tester$^   |
+      | %file *?2    |
+      | # %ab ab?=ed |
+    Then the HTTP status code of responses on all endpoints should be "204"
+    And as "Alice" the folders with following original paths should not exist in the trashbin
+      | path         |
+      | qa&dev       |
+      | !@tester$^   |
+      | %file *?2    |
+      | # %ab ab?=ed |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
