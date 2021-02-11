@@ -47,6 +47,7 @@ Summary
 * Enhancement - New config parameter to define the encrypted file format: [#38337](https://github.com/owncloud/core/pull/38337)
 * Enhancement - Display error/success message while changing the log level: [#38340](https://github.com/owncloud/core/pull/38340)
 * Enhancement - Allow force set DB patforms: [#38379](https://github.com/owncloud/core/pull/38379)
+* Enhancement - Added additional connection parameters to redis config: [#38386](https://github.com/owncloud/core/pull/38386)
 * Enhancement - Hide federated user suggestions if system users are found: [#38389](https://github.com/owncloud/core/pull/38389)
 
 Details
@@ -347,6 +348,14 @@ Details
    and do not rely on autodetection.
 
    https://github.com/owncloud/core/pull/38379
+
+* Enhancement - Added additional connection parameters to redis config: [#38386](https://github.com/owncloud/core/pull/38386)
+
+   In order to provide redis SLL/TLS support a new section connection_parameters added to redis
+   and redis.cluster configuration in config.php. Requirements for connection_parameters:
+   php-redis extension >= 5.3.0 Requirements for redis ssl/tls: redis server >= 6.0
+
+   https://github.com/owncloud/core/pull/38386
 
 * Enhancement - Hide federated user suggestions if system users are found: [#38389](https://github.com/owncloud/core/pull/38389)
 
