@@ -15,9 +15,9 @@ Feature: dav-versions
   Scenario: Upload file and no version is available using various chunking methods
     When user "Alice" uploads file "filesForUpload/davtest.txt" to filenames based on "/davtest.txt" with all mechanisms using the WebDAV API
     Then the version folder of file "/davtest.txt-olddav-regular" for user "Alice" should contain "0" elements
-    Then the version folder of file "/davtest.txt-newdav-regular" for user "Alice" should contain "0" elements
-    Then the version folder of file "/davtest.txt-olddav-oldchunking" for user "Alice" should contain "0" elements
-    Then the version folder of file "/davtest.txt-newdav-newchunking" for user "Alice" should contain "0" elements
+    And the version folder of file "/davtest.txt-newdav-regular" for user "Alice" should contain "0" elements
+    And the version folder of file "/davtest.txt-olddav-oldchunking" for user "Alice" should contain "0" elements
+    And the version folder of file "/davtest.txt-newdav-newchunking" for user "Alice" should contain "0" elements
 
   @issue-ocis-reva-56
   Scenario: Upload file and no version is available using async upload
@@ -37,9 +37,9 @@ Feature: dav-versions
     When user "Alice" uploads file "filesForUpload/davtest.txt" to filenames based on "/davtest.txt" with all mechanisms using the WebDAV API
     And user "Alice" uploads file "filesForUpload/davtest.txt" to filenames based on "/davtest.txt" with all mechanisms using the WebDAV API
     Then the version folder of file "/davtest.txt-olddav-regular" for user "Alice" should contain "1" element
-    Then the version folder of file "/davtest.txt-newdav-regular" for user "Alice" should contain "1" element
-    Then the version folder of file "/davtest.txt-olddav-oldchunking" for user "Alice" should contain "1" element
-    Then the version folder of file "/davtest.txt-newdav-newchunking" for user "Alice" should contain "1" element
+    And the version folder of file "/davtest.txt-newdav-regular" for user "Alice" should contain "1" element
+    And the version folder of file "/davtest.txt-olddav-oldchunking" for user "Alice" should contain "1" element
+    And the version folder of file "/davtest.txt-newdav-newchunking" for user "Alice" should contain "1" element
 
   @issue-ocis-reva-17 @issue-ocis-reva-56
   Scenario: Upload a file twice and versions are available using async upload
@@ -366,7 +366,7 @@ Feature: dav-versions
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     When user "Brian" tries to get versions of file "textfile1.txt" from "Alice"
     Then the HTTP status code should be "404"
-    Then the value of the item "//s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
+    And the value of the item "//s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
 
   @skipOnStorage:ceph @files_primary_s3-issue-161 @files_sharing-app-required
   @issue-ocis-reva-376
@@ -395,3 +395,11 @@ Feature: dav-versions
      | MTI4NGQyMzgtYWE5Mi00MmNlLWJkYzQtMGIwMDAwMDA5MTU3PThjY2QyNzUxLTkwYTQtNDBmMi1iOWYzLTYxZWRmODQ0MjFmNA== | 1284d238-aa92-42ce-bdc4-0b0000009157=8ccd2751-90a4-40f2-b9f3-61edf84421f4          | with = sign        |
      | MTI4NGQyMzgtYWE5Mi00MmNlLWJkYzQtMGIwMDAwMDA5MTU3OGNjZDI3NTEtOTBhNC00MGYyLWI5ZjMtNjFlZGY4NDQyMWY0     |  1284d238-aa92-42ce-bdc4-0b00000091578ccd2751-90a4-40f2-b9f3-61edf84421f4          | no = sign          |
      | c29tZS1yYW5kb20tZmlsZUlkPWFub3RoZXItcmFuZG9tLWZpbGVJZA==                                             | some-random-fileId=another-random-fileId                                           | some random string |
+
+  Scenario: the version history is preserved when a file is renamed
+    Given user "Alice" has uploaded file with content "old content" to "/textfile.txt"
+    And user "Alice" has uploaded file with content "new content" to "/textfile.txt"
+    And user "Alice" has moved file "/textfile.txt" to "/renamedfile.txt"
+    When user "Alice" restores version index "1" of file "/renamedfile.txt" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the content of file "/renamedfile.txt" for user "Alice" should be "old content"
