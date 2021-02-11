@@ -16,6 +16,7 @@ Summary
 * Bugfix - Fix the position of the user afterLogin-event: [#38289](https://github.com/owncloud/core/pull/38289)
 * Bugfix - Fix file_target in response when creating a public link share: [#38291](https://github.com/owncloud/core/issues/38291)
 * Bugfix - Fix rendering of leading/trailing spaces in the file name: [#38316](https://github.com/owncloud/core/issues/38316)
+* Bugfix - Prevent getting a version expiry list when no versions available: [#38390](https://github.com/owncloud/core/pull/38390)
 * Bugfix - Prevent multiple calls by not registering the same listener twice: [#38385](https://github.com/owncloud/core/pull/38385)
 * Change - Use OcsController and routes instead of API::register: [#37272](https://github.com/owncloud/core/pull/37272)
 * Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.2): [#38306](https://github.com/owncloud/core/pull/38306)
@@ -118,6 +119,14 @@ Details
 
    https://github.com/owncloud/core/issues/38316
    https://github.com/owncloud/core/pull/38319
+
+* Bugfix - Prevent getting a version expiry list when no versions available: [#38390](https://github.com/owncloud/core/pull/38390)
+
+   Previous to this fix, when getting a version expiry list with an empty version array, ownCloud
+   ran into an error. Not a critical one, but still not nice and spams the owncloud.log file.
+
+   https://github.com/owncloud/core/issues/38373
+   https://github.com/owncloud/core/pull/38390
 
 * Bugfix - Prevent multiple calls by not registering the same listener twice: [#38385](https://github.com/owncloud/core/pull/38385)
 
