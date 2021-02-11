@@ -3659,8 +3659,10 @@ trait Provisioning {
 			$baseDN = $this->getLdapBaseDN();
 			$newDN = 'cn=' . $group . ',ou=' . $this->ou . ',' . $baseDN;
 			if ($this->ldap->getEntry($newDN) !== null) {
+				echo "LDAP group exists: $newDN\n";
 				return true;
 			}
+			echo "LDAP group not found: $newDN\n";
 			return false;
 		}
 		$group = \rawurlencode($group);
