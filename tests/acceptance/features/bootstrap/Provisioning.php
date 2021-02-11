@@ -720,7 +720,9 @@ trait Provisioning {
 		$this->ldap->add($newDN, $entry);
 		\array_push($this->ldapCreatedGroups, $group);
 		// For syncing the ldap groups
-		$this->runOcc(['group:list']);
+		if (OcisHelper::isTestingOnOc10()) {
+			$this->runOcc(['group:list']);
+		}
 	}
 
 	/**
