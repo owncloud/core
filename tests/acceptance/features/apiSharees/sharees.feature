@@ -536,3 +536,26 @@ Feature: sharees
       | ocs-api-version | ocs-status | http-status |
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
+
+  Scenario Outline: Search without exact match such that the search string matches the user getting the sharees
+    Given user "sharee2" has been created with default attributes and skeleton files
+    And using OCS API version "<ocs-api-version>"
+    When user "sharee1" gets the sharees using the sharing API with parameters
+      | search   | sharee |
+      | itemType | file   |
+    Then the OCS status code should be "<ocs-status>"
+    And the HTTP status code should be "<http-status>"
+    And the "exact users" sharees returned should be empty
+    And the "users" sharees returned should be
+      | Sharee One | 0 | sharee1 |
+      | Sharee Two | 0 | sharee2 |
+    And the "exact groups" sharees returned should be empty
+    And the "groups" sharees returned should be
+      | ShareeGroup  | 1 | ShareeGroup  |
+      | ShareeGroup2 | 1 | ShareeGroup2 |
+    And the "exact remotes" sharees returned should be empty
+    And the "remotes" sharees returned should be empty
+    Examples:
+      | ocs-api-version | ocs-status | http-status |
+      | 1               | 100        | 200         |
+      | 2               | 200        | 200         |
