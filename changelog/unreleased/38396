@@ -1,0 +1,7 @@
+Bugfix: Add the owner to public link shares
+
+Add the owner to public link shares because we cannot retrieve this
+information otherwise.
+
+https://github.com/owncloud/core/pull/38396
+https://github.com/owncloud/files_spaces/issues/51

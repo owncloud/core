@@ -70,14 +70,10 @@
 			delete data.url;
 
 			// these can be read from the parent object or fileinfo
-			delete data.displayname_file_owner;
-			delete data.displayname_owner;
 			delete data.file_parent;
 			delete data.path;
 			delete data.storage;
 			delete data.storage_id;
-			delete data.uid_file_owner;
-			delete data.uid_owner;
 			delete data.mimetype;
 			delete data.parent;
 
