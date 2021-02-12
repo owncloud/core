@@ -18,6 +18,7 @@ Summary
 * Bugfix - Fix rendering of leading/trailing spaces in the file name: [#38316](https://github.com/owncloud/core/issues/38316)
 * Bugfix - Prevent getting a version expiry list when no versions available: [#38390](https://github.com/owncloud/core/pull/38390)
 * Bugfix - Prevent multiple calls by not registering the same listener twice: [#38385](https://github.com/owncloud/core/pull/38385)
+* Bugfix - Add the owner to public link shares: [#38396](https://github.com/owncloud/core/pull/38396)
 * Change - Use OcsController and routes instead of API::register: [#37272](https://github.com/owncloud/core/pull/37272)
 * Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.2): [#38306](https://github.com/owncloud/core/pull/38306)
 * Change - Update nikic/php-parser (4.10.2 => 4.10.4): [#38191](https://github.com/owncloud/core/pull/38191)
@@ -138,6 +139,13 @@ Details
    Now, these additional requests won't happen
 
    https://github.com/owncloud/core/pull/38385
+
+* Bugfix - Add the owner to public link shares: [#38396](https://github.com/owncloud/core/pull/38396)
+
+   Add the owner to public link shares because we cannot retrieve this information otherwise.
+
+   https://github.com/owncloud/files_spaces/issues/51
+   https://github.com/owncloud/core/pull/38396
 
 * Change - Use OcsController and routes instead of API::register: [#37272](https://github.com/owncloud/core/pull/37272)
 
