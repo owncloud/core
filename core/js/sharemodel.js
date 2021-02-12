@@ -74,8 +74,6 @@
 			delete data.path;
 			delete data.storage;
 			delete data.storage_id;
-			delete data.uid_file_owner;
-			delete data.uid_owner;
 			delete data.mimetype;
 			delete data.parent;
 
