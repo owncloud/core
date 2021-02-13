@@ -29,13 +29,13 @@ Summary
 * Change - Update laminas/laminas-validator (2.13.4 => 2.13.5): [#38275](https://github.com/owncloud/core/pull/38275)
 * Change - Update patchwork/utf8 (v1.3.2 => v1.3.3): [#38275](https://github.com/owncloud/core/pull/38275)
 * Change - Update symfony/polyfill (1.20.0 => 1.22.0): [#38275](https://github.com/owncloud/core/pull/38275)
-* Change - Update sabre/dav (4.1.3 => 4.1.4): [#380285](https://github.com/owncloud/core/pull/380285)
+* Change - Update sabre/dav (4.1.3 => 4.1.5): [#38285](https://github.com/owncloud/core/pull/38285)
 * Change - Remove package patchwork/utf8: [#38286](https://github.com/owncloud/core/pull/38286)
 * Change - Change X-XSS-Protection "1; block" -> "0": [#38236](https://github.com/owncloud/core/issues/38236)
 * Change - Update swiftmailer/swiftmailer (v6.2.4 => v6.2.5): [#38306](https://github.com/owncloud/core/pull/38306)
 * Change - Update pear/archive_tar (1.4.11 => 1.4.12): [#38312](https://github.com/owncloud/core/pull/38312)
 * Change - Update Symfony components to 4.4.19: [#38355](https://github.com/owncloud/core/pull/38355)
-* Change - Update sabre/vobject (4.3.3 => 4.3.4): [#38380](https://github.com/owncloud/core/pull/38380)
+* Change - Update sabre/vobject (4.3.3 => 4.3.5): [#38380](https://github.com/owncloud/core/pull/38380)
 * Change - Update christophwurst/id3parser (v0.1.1 => v0.1.2): [#38387](https://github.com/owncloud/core/pull/38387)
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 * Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
@@ -206,9 +206,10 @@ Details
 
    https://github.com/owncloud/core/pull/38275
 
-* Change - Update sabre/dav (4.1.3 => 4.1.4): [#380285](https://github.com/owncloud/core/pull/380285)
+* Change - Update sabre/dav (4.1.3 => 4.1.5): [#38285](https://github.com/owncloud/core/pull/38285)
 
-   https://github.com/owncloud/core/pull/380285
+   https://github.com/owncloud/core/pull/38285
+   https://github.com/owncloud/core/pull/38399
 
 * Change - Remove package patchwork/utf8: [#38286](https://github.com/owncloud/core/pull/38286)
 
@@ -247,9 +248,10 @@ Details
    https://symfony.com/blog/symfony-4-4-18-released
    https://symfony.com/blog/symfony-4-4-17-released
 
-* Change - Update sabre/vobject (4.3.3 => 4.3.4): [#38380](https://github.com/owncloud/core/pull/38380)
+* Change - Update sabre/vobject (4.3.3 => 4.3.5): [#38380](https://github.com/owncloud/core/pull/38380)
 
    https://github.com/owncloud/core/pull/38380
+   https://github.com/owncloud/core/pull/38399
 
 * Change - Update christophwurst/id3parser (v0.1.1 => v0.1.2): [#38387](https://github.com/owncloud/core/pull/38387)
 
