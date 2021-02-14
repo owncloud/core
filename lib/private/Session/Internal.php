@@ -27,6 +27,7 @@
 
 namespace OC\Session;
 
+use OC\Http\CookieHelper;
 use OC\AppFramework\Http\Request;
 use OCP\Session\Exceptions\SessionNotAvailableException;
 
@@ -159,22 +160,20 @@ class Internal extends Session {
 
 	private function start() {
 		if (@\session_id() === '') {
-			// prevents javascript from accessing php session cookies
-			\ini_set('session.cookie_httponly', true);
-
-			// set the cookie path to the ownCloud directory
-			$cookie_path = \OC::$WEBROOT ? : '/';
-			\ini_set('session.cookie_path', $cookie_path);
-
-			if ($this->getServerProtocol() === 'https') {
-				\ini_set('session.cookie_secure', true);
-			}
-
-			//try to set the session lifetime
 			$sessionLifeTime = self::getSessionLifeTime();
 			@\ini_set('session.gc_maxlifetime', (string)$sessionLifeTime);
 		}
+
 		\session_start();
+
+		CookieHelper::setCookie(
+			\session_name(),
+			\session_id(), [
+			CookieHelper::PATH => \OC::$WEBROOT ?: '/',
+			CookieHelper::HTTPONLY => true,
+			CookieHelper::SECURE => $this->getServerProtocol() === 'https',
+			CookieHelper::SAMESITE => CookieHelper::SAMESITE_NONE
+		], CookieHelper::POLYFILL_DETECT);
 	}
 
 	/**
