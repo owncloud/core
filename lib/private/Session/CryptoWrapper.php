@@ -24,6 +24,7 @@
 
 namespace OC\Session;
 
+use OC\Http\CookieHelper;
 use OCP\IConfig;
 use OCP\IRequest;
 use OCP\ISession;
@@ -58,10 +59,10 @@ class CryptoWrapper {
 	/** @var ISecureRandom */
 	protected $random;
 
-	/** @var IConfig  */
+	/** @var IConfig */
 	private $config;
 
-	/** @var string  */
+	/** @var string */
 	private $passphrase;
 
 	/**
@@ -82,28 +83,17 @@ class CryptoWrapper {
 			$this->passphrase = $request->getCookie(self::COOKIE_NAME);
 		} else {
 			$this->passphrase = $this->random->generate(128);
-			$secureCookie = $request->getServerProtocol() === 'https';
+
 			// FIXME: Required for CI
 			if (!\defined('PHPUNIT_RUN')) {
-				$webRoot = \OC::$WEBROOT;
-				if ($webRoot === '') {
-					$webRoot = '/';
-				}
-
-				if (\version_compare(PHP_VERSION, '7.3.0') === -1) {
-					\setcookie(self::COOKIE_NAME, $this->passphrase, 0, $webRoot, '', $secureCookie, true);
-				} else {
-					$options = [
-						"expires" => 0,
-						"path" => $webRoot,
-						"domain" => '',
-						"secure" => $secureCookie,
-						"httponly" => true,
-						"samesite" => 'strict'
-					];
-
-					\setcookie(self::COOKIE_NAME, $this->passphrase, $options);
-				}
+				CookieHelper::setCookie(
+					self::COOKIE_NAME,
+					$this->passphrase, [
+					CookieHelper::PATH => \OC::$WEBROOT === '' ? '/' : \OC::$WEBROOT,
+					CookieHelper::SECURE => $request->getServerProtocol() === 'https',
+					CookieHelper::HTTPONLY => true,
+					CookieHelper::SAMESITE => CookieHelper::SAMESITE_NONE
+				], CookieHelper::POLYFILL_FALLBACK);
 			}
 		}
 	}

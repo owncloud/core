@@ -40,6 +40,7 @@ use OCP\IConfig;
 use OCP\IRequest;
 use OCP\Security\ICrypto;
 use OCP\Security\ISecureRandom;
+use OC\Http\CookieHelper;
 
 /**
  * Class for accessing variables in the request.
@@ -371,7 +372,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return string|null the value in the $_COOKIE element
 	 */
 	public function getCookie($key) {
-		return isset($this->cookies[$key]) ? $this->cookies[$key] : null;
+		return CookieHelper::getRequestCookie($this, $key);
 	}
 
 	/**
