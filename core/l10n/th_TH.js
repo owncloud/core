@@ -108,7 +108,7 @@ OC.L10N.register(
     "Upgrade to ownCloud Enterprise" : "อัปเกรดเป็น ownCloud Enterprise",
     "Remaining time: {rtime}" : "เวลาที่เหลือ: {rtime}",
     "Get your demo key" : "รับรหัสตัวอย่างของคุณ",
-    "Enter license key" : "กรอก License key",
+    "Enter license key" : "License key",
     "Set new key" : "ตั้งค่ารหัสใหม่",
     "The link to reset your password has been sent to your email. If you do not receive it within a reasonable amount of time, check your spam/junk folders.<br>If it is not there ask your local administrator." : "ลิงก์ที่ใช้สำหรับตั้งค่ารหัสผ่านใหม่ ของคุณ ได้ถูกส่งไปยังอีเมลของคุณ หากคุณยังไม่ได้รับอีเมล ลองไปดูที่โฟลเดอร์ สแปม/ถังขยะ ในอีเมลของคุณ <br>ทั้งนี้หากคุณหาอีเมลไม่พบกรุณาติดต่อผู้ดูแลระบบ",
     "Your files are encrypted. If you haven't enabled the recovery key, there will be no way to get your data back after your password is reset.<br />If you are not sure what to do, please contact your administrator before you continue. <br />Do you really want to continue?" : "ไฟล์ของคุณถูกเข้ารหัสแล้ว หากคุณยังไม่ได้เปิดใช้งานรหัสการกู้คืน คุณจะไม่ได้รับข้อมูลของคุณกลับมาหลังจากที่รหัสผ่านของคุณถูกรีเซ็ต<br /> หากคุณไม่แน่ใจว่าควรทำอย่างไรโปรดติดต่อผู้ดูแลระบบของคุณก่อนที่คุณจะดำเนินการต่อไป <br /> คุณต้องการดำเนินการต่อ?",

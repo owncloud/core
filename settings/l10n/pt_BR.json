@@ -17,6 +17,7 @@
     "Unable to delete group." : "Não é possível excluir grupo.",
     "Saved" : "Salvo",
     "log-level out of allowed range" : "log-nível acima do permitido",
+    "Updated log level" : "Nível de registro atualizado",
     "Invalid email address" : "Endereço de email inválido",
     "test email settings" : "testar configurações de email",
     "A problem occurred while sending the email. Please revise your settings. (Error: %s)" : "Ocorreu um problema ao enviar o e-mail. Por favor, revise suas configurações. (Erro: %s)",

@@ -82,7 +82,7 @@
     "Shares" : "แชร์",
     "File sharing" : "กำลังแชร์ไฟล์",
     "Public link" : "ลิงก์สาธารณะ",
-    "Couldn't send mail to following recipient(s): %s " : "ไม่สามารถส่งจดหมายไปยังผู้รับต่อไปนี้: %s",
+    "Couldn't send mail to following recipient(s): %s " : "ไม่สามารถส่งอีเมลไปยังผู้รับต่อไปนี้: %s",
     "Share API is disabled" : "แชร์ API ถูกปิดใช้งาน",
     "Wrong share ID, share doesn't exist" : "แชร์ไอดีผิด หรือ ไม่มีแชร์นั้นอยู่",
     "Share points to a node not available" : "ไม่สามารถแชร์คะแนนไปยังโหนด",
@@ -112,7 +112,7 @@
     "Accept" : "ยอมรับ",
     "Decline" : "ลดลง",
     "Automatically accept new incoming local user shares" : "ยอมรับแชร์ที่เข้ามาใหม่จากในเครื่องโดยอัตโนมัติ",
-    "Allow finding you via autocomplete in share dialog. If this is disabled the full username needs to be entered." : "อนุญาตให้ค้นหาคุณผ่านกล่องข้อความอัตโนมัติ จำเป็นต้องป้อนชื่อผู้ใช้แบบเต็มหากส่วนนี้ถูกปิดใช้งาน",
+    "Allow finding you via autocomplete in share dialog. If this is disabled the full username needs to be entered." : "อนุญาตให้ค้นหาคุณผ่านกล่องข้อความอัตโนมัติ (จำเป็นต้องป้อนชื่อ-นามสกุลของผู้ใช้หากฟังก์ชันนี้ถูกปิดใช้งาน)",
     "This share is password-protected" : "นี้แชร์การป้องกันด้วยรหัสผ่าน",
     "The password is wrong. Try again." : "รหัสผ่านที่ไม่ถูกต้อง กรุณาลองอีกครั้ง",
     "Password" : "รหัสผ่าน",
@@ -132,8 +132,8 @@
     "Download %s" : "ดาวน์โหลด %s",
     "Direct link" : "ลิงก์โดยตรง",
     "Nothing to configure." : "ไม่มีการกำหนดค่า",
-    "Group Sharing Blacklist" : "แชร์กลุ่มบัญชีดำ",
-    "Exclude groups from receiving shares" : "ยกเว้นกลุ่มจากการแชร์",
+    "Group Sharing Blacklist" : "บัญชีดำกลุ่มแชร์",
+    "Exclude groups from receiving shares" : "กลุ่มที่ไม่สามารถสร้างแชร์",
     "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "กลุ่มเหล่านี้จะไม่สามารถแชร์กับสมาชิกของกลุ่มที่ถูกจำกัดไว้ แต่สามารถแชร์กับกลุ่มอื่นๆที่เป็นสมาชิกได้ตามปกติ"
 },"pluralForm" :"nplurals=1; plural=0;"
 }
