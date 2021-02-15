@@ -1903,10 +1903,10 @@ def owncloudService(phpVersion, name = 'server', path = '/drone/src', ssl = True
 	}]
 
 def getDbName(db):
-	return db.split(':')[0]
+	return db.partition(':')[0]
 
 def getDbVersion(db):
-	return db.split(':')[1]
+	return db.partition(':')[2]
 
 def getDbUsername(db):
 	name = getDbName(db)
