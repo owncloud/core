@@ -1677,7 +1677,7 @@ def databaseService(db):
 	dbName = 'postgres'
 	return [{
 		'name': dbName,
-		'image': 'postgres:10.3',
+		'image': 'postgres:9.4',
 		'pull': 'always',
 		'environment': {
 			'POSTGRES_USER': getDbUsername('postgres'),
