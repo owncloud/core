@@ -147,7 +147,7 @@ config = {
 				'apiFederationToShares2',
 			],
 			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.4.1']
+			'federatedServerVersions': ['git', 'latest', '10.5.0']
 		},
 		'cli': {
 			'suites': [
@@ -170,7 +170,7 @@ config = {
 				'cliExternalStorage',
 			],
 			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.4.1']
+			'federatedServerVersions': ['git', 'latest', '10.5.0']
 		},
 		'webUI': {
 			'suites': {
@@ -233,7 +233,7 @@ config = {
 				'webUISharingExternal2': 'webUISharingExt2',
 			},
 			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.3.2']
+			'federatedServerVersions': ['git', 'latest', '10.5.0']
 		},
 		'webUIFirefox': {
 			'suites': {
@@ -1150,7 +1150,7 @@ def phpTests(ctx, testType):
 					keyString = '-' + category if params['includeKeyInMatrixName'] else ''
 					filesExternalType = externalType if externalType != 'none' else ''
 					externalNameString = '-' + externalType if externalType != 'none' else ''
-					name = '%s%s-php%s-%s%s' % (testType, keyString, phpVersion, db.replace(":", ""), externalNameString)
+					name = '%s%s-php%s-%s%s' % (testType, keyString, phpVersion, getShortDbNameAndVersion(db), externalNameString)
 					maxLength = 50
 					nameLength = len(name)
 					if nameLength > maxLength:
@@ -1408,8 +1408,7 @@ def acceptance(ctx):
 									keyString = '-' + category if params['includeKeyInMatrixName'] else ''
 									partString = '' if params['numberOfParts'] == 1 else '-%d-%d' % (params['numberOfParts'], runPart)
 									federatedServerVersionString = '-' + federatedServerVersion.replace('daily-', '').replace('-qa', '') if (federatedServerVersion != '') else ''
-									dbString = db.replace(':', '')
-									name = '%s%s%s%s%s-%s-php%s' % (alternateSuiteName, keyString, partString, federatedServerVersionString, browserString, dbString, phpVersion)
+									name = '%s%s%s%s%s-%s-php%s' % (alternateSuiteName, keyString, partString, federatedServerVersionString, browserString, getShortDbNameAndVersion(db), phpVersion)
 									maxLength = 50
 									nameLength = len(name)
 									if nameLength > maxLength:
@@ -1901,8 +1900,14 @@ def owncloudService(phpVersion, name = 'server', path = '/drone/src', ssl = True
 		]
 	}]
 
+def getShortDbNameAndVersion(db):
+	return '%s%s' % (getDbType(db), getDbVersion(db))
+
 def getDbName(db):
-	return db.split(':')[0]
+	return db.partition(':')[0]
+
+def getDbVersion(db):
+	return db.partition(':')[2]
 
 def getDbUsername(db):
 	name = getDbName(db)
