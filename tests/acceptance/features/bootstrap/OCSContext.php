@@ -698,12 +698,25 @@ class OCSContext implements Context {
 	 * Check the text in an OCS status message
 	 *
 	 * @Then /^the OCS status message should be "([^"]*)"$/
+	 * @Then /^the OCS status message should be "([^"]*)" in language "([^"]*)"$/
 	 *
 	 * @param string $statusMessage
+	 * @param string $language
 	 *
 	 * @return void
 	 */
-	public function theOCSStatusMessageShouldBe($statusMessage) {
+	public function theOCSStatusMessageShouldBe($statusMessage, $language=null) {
+		if ($language !== null) {
+			$multiLingualMessage = \json_decode(
+				\file_get_contents("./tests/acceptance/multiLanguageErrors.json"),
+				true
+			);
+
+			if (isset($multiLingualMessage[$statusMessage][$language])) {
+				$statusMessage = $multiLingualMessage[$statusMessage][$language];
+			}
+		}
+
 		Assert::assertEquals(
 			$statusMessage,
 			$this->getOCSResponseStatusMessage(
