@@ -159,7 +159,7 @@ OC.L10N.register(
     "Enable only for specific groups" : "Activer uniquement pour certains groupes",
     "Uninstall App" : "Désinstaller l'application",
     "Show enabled apps" : "Montrer les applications activées",
-    "Show disabled apps" : "Monter les applications désactivées",
+    "Show disabled apps" : "Montrer les applications désactivées",
     "Cron" : "Cron",
     "Last cron job execution: %s." : "Dernière tâche cron exécutée : %s.",
     "Last cron job execution: %s. Something seems wrong." : "Dernière tâche cron exécutée : %s. Quelque chose s'est mal passé.",

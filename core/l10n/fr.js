@@ -103,7 +103,7 @@ OC.L10N.register(
     "Dismiss" : "Ignorer",
     "seconds ago" : "à l'instant",
     "You have enabled one or more ownCloud Enterprise apps but your installation does not have a valid license yet." : "Vous avez activé une ou plusieurs applications ownCloud Enterprise mais votre installation ne possède aucune licence valide.",
-    "A grace period of 24 hours has started to allow you to get going right away. Once the grace period ends, all Enterprise apps will become disabled unless you supply a valid license key." : "Une période de grâce de 24 heures a commencée pour vous permettre de démarrer. Une fois la période de grâce terminée, toutes les applications d'entreprise seront désactivées à moins que vous ne fournissiez une clé de licence valide.",
+    "A grace period of 24 hours has started to allow you to get going right away. Once the grace period ends, all Enterprise apps will become disabled unless you supply a valid license key." : "Une période de grâce de 24 heures a commencé pour vous permettre de démarrer. Une fois la période de grâce terminée, toutes les applications d'entreprise seront désactivées à moins que vous ne fournissiez une clé de licence valide.",
     "To try ownCloud Enterprise, just start a 30-day demo and enter the provided license key below." : "Pour essayer ownCloud Enterprise,  lancez une démo de 30 jours et d'entrer la clé de licence fournie ci-dessous.",
     "Upgrade to ownCloud Enterprise" : "Passer à ownCloud Enterprise",
     "Remaining time: {rtime}" : "Temps restant: {rtime}",
