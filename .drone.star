@@ -1321,7 +1321,7 @@ def acceptance(ctx):
 		'federatedServerVersions': [''],
 		'browsers': ['chrome'],
 		'phpVersions': ['7.4'],
-		'databases': ['postgres:9.3'],
+		'databases': ['postgres:9.4'],
 		'federatedPhpVersion': '7.2',
 		'federatedServerNeeded': False,
 		'federatedDb': '',
@@ -1511,7 +1511,7 @@ def acceptance(ctx):
 										}),
 									],
 									'services':
-										databaseService('postgres:9.3') +
+										databaseService('postgres:9.4') +
 										browserService(browser) +
 										emailService(params['emailNeeded']) +
 										ldapService(params['ldapNeeded']) +
