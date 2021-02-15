@@ -23,12 +23,11 @@ namespace OC\Http;
 
 use OCP\IRequest;
 
-
 /**
  * Class CookieHelper
  *
  * This Class polyfills cookie to work around samesite restrictions on unsupported browsers.
- * It supports POLYFILL_DETECT mode which tries to detect if the samesite attribute ist supported.
+ * It supports POLYFILL_DETECT mode which tries to detect if the samesite attribute is supported.
  * It supports POLYFILL_FALLBACK mode which creates a second cookie without samesite attribute.
  *
  * @package OC\Http
@@ -48,9 +47,9 @@ class CookieHelper {
 
 	public static function setCookie(string $name, string $value = '', array $options = [], string $polyfill = self::POLYFILL_FALLBACK): void {
 		// check if given cookie options are allowed
-		foreach (array_keys($options) as $option) {
-			if (!in_array($option, array(self::PATH, self::DOMAIN, self::EXPIRES, self::SECURE, self::HTTPONLY, self::SAMESITE))) {
-				trigger_error(
+		foreach (\array_keys($options) as $option) {
+			if (!\in_array($option, [self::PATH, self::DOMAIN, self::EXPIRES, self::SECURE, self::HTTPONLY, self::SAMESITE])) {
+				\trigger_error(
 					'unknown cookie option : ' . $option,
 					E_WARNING
 				);
@@ -58,21 +57,21 @@ class CookieHelper {
 		}
 
 		// check if given polyfill mode is supported
-		if (!in_array($polyfill, array(self::POLYFILL_DETECT, self::POLYFILL_FALLBACK))) {
-			trigger_error(
+		if (!\in_array($polyfill, [self::POLYFILL_DETECT, self::POLYFILL_FALLBACK])) {
+			\trigger_error(
 				'unknown cookie polyfill : ' . $polyfill,
 				E_WARNING
 			);
 		}
 
 		// defaults
-		$path = array_key_exists(self::PATH, $options) ? $options[self::PATH] : '';
-		$domain = array_key_exists(self::DOMAIN, $options) ? $options[self::DOMAIN] : '';
-		$expires = array_key_exists(self::EXPIRES, $options) ? $options[self::EXPIRES] : 0;
-		$secure = array_key_exists(self::SECURE, $options) ? $options[self::SECURE] : false;
-		$httponly = array_key_exists(self::HTTPONLY, $options) ? $options[self::HTTPONLY] : false;
-		$sameSite = array_key_exists(self::SAMESITE, $options) ? $options[self::SAMESITE] : '';
-		$header = array(sprintf('Set-Cookie: %s=%s', $name, rawurlencode($value)));
+		$path = \array_key_exists(self::PATH, $options) ? $options[self::PATH] : '';
+		$domain = \array_key_exists(self::DOMAIN, $options) ? $options[self::DOMAIN] : '';
+		$expires = \array_key_exists(self::EXPIRES, $options) ? $options[self::EXPIRES] : 0;
+		$secure = \array_key_exists(self::SECURE, $options) ? $options[self::SECURE] : false;
+		$httponly = \array_key_exists(self::HTTPONLY, $options) ? $options[self::HTTPONLY] : false;
+		$sameSite = \array_key_exists(self::SAMESITE, $options) ? $options[self::SAMESITE] : '';
+		$header = [\sprintf('Set-Cookie: %s=%s', $name, \rawurlencode($value))];
 
 		// disable samesite
 		// if samesite is set to none secure is required
@@ -93,48 +92,46 @@ class CookieHelper {
 		}
 
 		if ($path !== '') {
-			array_push($header, sprintf('Path=%s', $path));
+			\array_push($header, \sprintf('Path=%s', $path));
 		}
 
 		if ($domain !== '') {
-			array_push($header, sprintf('Domain=%s', $domain));
+			\array_push($header, \sprintf('Domain=%s', $domain));
 		}
 
 		if ($expires > 0) {
-			array_push($header, sprintf('Max-Age=%d', $expires));
+			\array_push($header, \sprintf('Max-Age=%d', $expires));
 		}
 
 		if ($secure === true) {
-			array_push($header, 'Secure');
-		} else {
-			$sameSite = '';
+			\array_push($header, 'Secure');
 		}
 
 		if ($httponly) {
-			array_push($header, 'HttpOnly');
+			\array_push($header, 'HttpOnly');
 		}
 
-		foreach (array(self::SAMESITE_NONE, self::SAMESITE_LAX, self::SAMESITE_STRICT) as $v) {
-			if (strtolower($sameSite) === strtolower($v)) {
-				array_push($header, sprintf('SameSite=%s', $v));
+		foreach ([self::SAMESITE_NONE, self::SAMESITE_LAX, self::SAMESITE_STRICT] as $v) {
+			if (\strtolower($sameSite) === \strtolower($v)) {
+				\array_push($header, \sprintf('SameSite=%s', $v));
 				break;
 			}
 		}
 
-		header(implode('; ', $header), false);
+		\header(\implode('; ', $header), false);
 	}
 
-	// if polyfill is set to true it returns the cookie legacy name
+	// return the cookie legacy name
 	private static function legacyName(string $name): string {
-		return sprintf('%s-legacy', $name);
+		return \sprintf('%s-legacy', $name);
 	}
 
 	public static function getRequestCookie(IRequest $request, string $name) {
-		if (array_key_exists($name, $request->cookies)) {
+		if (\array_key_exists($name, $request->cookies)) {
 			return $request->cookies[$name];
 		}
 
-		if (array_key_exists(self::legacyName($name), $request->cookies)) {
+		if (\array_key_exists(self::legacyName($name), $request->cookies)) {
 			return $request->cookies[self::legacyName($name)];
 		}
 
@@ -150,7 +147,7 @@ class CookieHelper {
 		// https://developer.mozilla.org/de/docs/Web/HTTP/Headers/Set-Cookie/SameSite
 		// https://devblogs.microsoft.com/aspnet/upcoming-samesite-cookie-changes-in-asp-net-and-asp-net-core/
 		foreach (
-			array(
+			[
 				// chrome
 				'#(CriOS|Chrome)/([0-9]*)#' => function ($matches, $user_agent): bool {
 					$version = $matches[2];
@@ -170,8 +167,8 @@ class CookieHelper {
 						$version_major == 10 &&
 						$version_minor == 14 &&
 						(
-							preg_match('#Version\/.* Safari\/#', $user_agent) == true ||
-							preg_match('#AppleWebKit\/[\.\d]+ \(KHTML, like Gecko\)#', $user_agent) == true
+							\preg_match('#Version\/.* Safari\/#', $user_agent) == true ||
+							\preg_match('#AppleWebKit\/[\.\d]+ \(KHTML, like Gecko\)#', $user_agent) == true
 						)
 					);
 				},
@@ -182,8 +179,8 @@ class CookieHelper {
 					$version_build = $matches[3];
 					return !($version_major == 12 && $version_minor == 13 && $version_build == 2);
 				},
-			) as $regex => $check) {
-			if (preg_match($regex, $user_agent, $matches) == true) {
+			] as $regex => $check) {
+			if (\preg_match($regex, $user_agent, $matches) == true) {
 				if ($check($matches, $user_agent)) {
 					return false;
 				};
