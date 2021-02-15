@@ -1099,7 +1099,6 @@ def phpTests(ctx, testType):
 			'mysql:5.7',
 			'mysql:8.0',
 			'postgres:9.4',
-			'postgres:10.3',
 			'oracle'
 		],
 		'coverage': True,
