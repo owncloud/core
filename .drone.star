@@ -1897,7 +1897,7 @@ def owncloudService(phpVersion, name = 'server', path = '/drone/src', ssl = True
 	}]
 
 def getDbName(db):
-	return db.split(':')[0]
+	return 'postgres'
 
 def getDbUsername(db):
 	name = getDbName(db)
