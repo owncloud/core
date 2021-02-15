@@ -132,7 +132,6 @@ config = {
 		'apiNotifications': {
 			'suites': [
 				'apiSharingNotificationsToRoot',
-				'apiSharingNotificationsToShares',
 			],
 			'extraApps': {
 				'notifications': 'composer install'
