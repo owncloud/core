@@ -1402,7 +1402,7 @@ def acceptance(ctx):
 									keyString = '-' + category if params['includeKeyInMatrixName'] else ''
 									partString = '' if params['numberOfParts'] == 1 else '-%d-%d' % (params['numberOfParts'], runPart)
 									federatedServerVersionString = '-' + federatedServerVersion.replace('daily-', '').replace('-qa', '') if (federatedServerVersion != '') else ''
-									dbString = 'postgres10.3'
+									dbString = 'postgres1.1'
 									name = '%s%s%s%s%s-%s-php%s' % (alternateSuiteName, keyString, partString, federatedServerVersionString, browserString, dbString, phpVersion)
 									maxLength = 50
 									nameLength = len(name)
