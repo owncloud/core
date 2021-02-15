@@ -399,6 +399,31 @@ trait WebDav {
 	}
 
 	/**
+	 * @When user :user gets the number of versions of file :file
+	 *
+	 * @param string $user
+	 * @param string $file
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userGetsFileVersions($user, $file) {
+		$user = $this->getActualUsername($user);
+		$fileId = $this->getFileIdForPath($user, $file);
+		$path = "/meta/" . $fileId . "/v";
+		$response = $this->makeDavRequest(
+			$user,
+			"PROPFIND",
+			$path,
+			null,
+			null,
+			null,
+			2
+		);
+		$this->setResponse($response);
+	}
+
+	/**
 	 * @Then the number of versions should be :arg1
 	 *
 	 * @param int $number
