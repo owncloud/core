@@ -1900,44 +1900,19 @@ def getDbName(db):
 	return 'postgres'
 
 def getDbUsername(db):
-	name = getDbName(db)
-
-	# The Oracle image has the Db Username hardcoded
-	if name == 'oracle':
-		return 'autotest'
-
 	return 'owncloud'
 
 def getDbPassword(db):
-	name = getDbName(db)
-
-	# The Oracle image has the Db Password hardcoded
-	if name == 'oracle':
-		return 'owncloud'
-
 	return 'owncloud'
 
 def getDbRootPassword():
 	return 'owncloud'
 
 def getDbDatabase(db):
-	name = getDbName(db)
-
-	# The Oracle image has the Db Name hardcoded
-	if name == 'oracle':
-		return 'XE'
-
 	return 'owncloud'
 
 def getDbType(db):
-	dbName = getDbName(db)
-	if dbName == 'postgres':
-		return 'pgsql'
-
-	if dbName == 'oracle':
-		return 'oci'
-
-	return dbName
+	return 'pgsql'
 
 def cacheRestore():
 	return [{
