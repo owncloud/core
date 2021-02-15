@@ -1394,21 +1394,16 @@ def acceptance(ctx):
 						for db in params['databases']:
 							for runPart in range(1, params['numberOfParts'] + 1):
 								name = 'unknown'
-								federatedDb = db if params['federatedDb'] == '' else params['federatedDb']
 
+								federatedDb = 'mariadb:10.2'
 								federatedDbName = getDbName(federatedDb)
-
-								if federatedDbName not in ['mariadb', 'mysql']:
-									# Do not try to run 2 sets of Oracle, Postgres etc databases
-									# When testing with these, let the federated server use mariadb
-									federatedDb = 'mariadb:10.2'
 
 								if isWebUI or isAPI or isCLI:
 									browserString = '' if browser == '' else '-' + browser
 									keyString = '-' + category if params['includeKeyInMatrixName'] else ''
 									partString = '' if params['numberOfParts'] == 1 else '-%d-%d' % (params['numberOfParts'], runPart)
 									federatedServerVersionString = '-' + federatedServerVersion.replace('daily-', '').replace('-qa', '') if (federatedServerVersion != '') else ''
-									dbString = db.replace(':', '')
+									dbString = 'postgres10.3'
 									name = '%s%s%s%s%s-%s-php%s' % (alternateSuiteName, keyString, partString, federatedServerVersionString, browserString, dbString, phpVersion)
 									maxLength = 50
 									nameLength = len(name)
@@ -1491,7 +1486,7 @@ def acceptance(ctx):
 										composerInstall(phpVersion) +
 										vendorbinBehat() +
 										yarnInstall(phpVersion) +
-										installServer(phpVersion, db, params['logLevel'], params['useHttps'], params['federatedServerNeeded'], params['proxyNeeded']) +
+										installServer(phpVersion, 'postgres:10.3', params['logLevel'], params['useHttps'], params['federatedServerNeeded'], params['proxyNeeded']) +
 										(
 											installAndConfigureFederated(ctx, federatedServerVersion, params['federatedPhpVersion'], params['logLevel'], protocol, federatedDb, federationDbSuffix) +
 											owncloudLog('federated', 'federated') if params['federatedServerNeeded'] else []
@@ -1517,7 +1512,7 @@ def acceptance(ctx):
 										}),
 									],
 									'services':
-										databaseService(db) +
+										databaseService('postgres:10.3') +
 										browserService(browser) +
 										emailService(params['emailNeeded']) +
 										ldapService(params['ldapNeeded']) +
