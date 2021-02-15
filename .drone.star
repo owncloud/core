@@ -1486,7 +1486,7 @@ def acceptance(ctx):
 										composerInstall(phpVersion) +
 										vendorbinBehat() +
 										yarnInstall(phpVersion) +
-										installServer(phpVersion, 'postgres:10.3', params['logLevel'], params['useHttps'], params['federatedServerNeeded'], params['proxyNeeded']) +
+										installServer(phpVersion, 'postgres:9.4', params['logLevel'], params['useHttps'], params['federatedServerNeeded'], params['proxyNeeded']) +
 										(
 											installAndConfigureFederated(ctx, federatedServerVersion, params['federatedPhpVersion'], params['logLevel'], protocol, federatedDb, federationDbSuffix) +
 											owncloudLog('federated', 'federated') if params['federatedServerNeeded'] else []
