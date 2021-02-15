@@ -1512,7 +1512,7 @@ def acceptance(ctx):
 										}),
 									],
 									'services':
-										databaseService('postgres:10.3') +
+										databaseService('postgres:9.3') +
 										browserService(browser) +
 										emailService(params['emailNeeded']) +
 										ldapService(params['ldapNeeded']) +
@@ -1674,47 +1674,17 @@ def notify():
 	return result
 
 def databaseService(db):
-	dbName = getDbName(db)
-	if (dbName == 'mariadb') or (dbName == 'mysql'):
-		service = {
-			'name': dbName,
-			'image': db,
-			'pull': 'always',
-			'environment': {
-				'MYSQL_USER': getDbUsername(db),
-				'MYSQL_PASSWORD': getDbPassword(db),
-				'MYSQL_DATABASE': getDbDatabase(db),
-				'MYSQL_ROOT_PASSWORD': getDbRootPassword()
-			}
+	dbName = 'postgres'
+	return [{
+		'name': dbName,
+		'image': 'postgres:10.3',
+		'pull': 'always',
+		'environment': {
+			'POSTGRES_USER': getDbUsername('postgres'),
+			'POSTGRES_PASSWORD': getDbPassword('postgres'),
+			'POSTGRES_DB': getDbDatabase('postgres')
 		}
-		if (db == 'mysql:8.0'):
-			service['command'] = ['--default-authentication-plugin=mysql_native_password']
-		return [service]
-
-	if dbName == 'postgres':
-		return [{
-			'name': dbName,
-			'image': db,
-			'pull': 'always',
-			'environment': {
-				'POSTGRES_USER': getDbUsername(db),
-				'POSTGRES_PASSWORD': getDbPassword(db),
-				'POSTGRES_DB': getDbDatabase(db)
-			}
-		}]
-
-	if dbName == 'oracle':
-		return [{
-			'name': dbName,
-			'image': 'owncloudci/oracle-xe:latest',
-			'pull': 'always',
-			'environment': {
-				'ORACLE_USER': getDbUsername(db),
-				'ORACLE_PASSWORD': getDbPassword(db),
-				'ORACLE_DB': getDbDatabase(db),
-				'ORACLE_DISABLE_ASYNCH_IO': 'true',
-			}
-		}]
+	}]
 
 	return []
 
