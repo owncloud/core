@@ -147,7 +147,7 @@ config = {
 				'apiFederationToShares2',
 			],
 			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.4.1']
+			'federatedServerVersions': ['git', 'latest', '10.5.0']
 		},
 		'cli': {
 			'suites': [
@@ -170,7 +170,7 @@ config = {
 				'cliExternalStorage',
 			],
 			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.4.1']
+			'federatedServerVersions': ['git', 'latest', '10.5.0']
 		},
 		'webUI': {
 			'suites': {
@@ -233,7 +233,7 @@ config = {
 				'webUISharingExternal2': 'webUISharingExt2',
 			},
 			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.3.2']
+			'federatedServerVersions': ['git', 'latest', '10.5.0']
 		},
 		'webUIFirefox': {
 			'suites': {
