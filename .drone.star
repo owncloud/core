@@ -97,7 +97,6 @@ config = {
 				'apiShareManagementToRoot',
 				'apiShareManagementToShares',
 				'apiShareManagementBasicToRoot',
-				'apiShareManagementBasicToShares',
 				'apiShareOperationsToRoot',
 				'apiShareOperationsToShares',
 				'apiSharePublicLink1',
