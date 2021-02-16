@@ -19,6 +19,7 @@ Summary
 * Bugfix - Prevent getting a version expiry list when no versions available: [#38390](https://github.com/owncloud/core/pull/38390)
 * Bugfix - Prevent multiple calls by not registering the same listener twice: [#38385](https://github.com/owncloud/core/pull/38385)
 * Bugfix - Add the owner to public link shares: [#38396](https://github.com/owncloud/core/pull/38396)
+* Bugfix - Show non-generic messages for 403 HTTP status to end user: [#395](https://github.com/owncloud/files_antivirus/issues/395)
 * Change - Use OcsController and routes instead of API::register: [#37272](https://github.com/owncloud/core/pull/37272)
 * Change - API changes to remove shares pointing to missing files: [#38152](https://github.com/owncloud/core/pull/38152)
 * Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.2): [#38306](https://github.com/owncloud/core/pull/38306)
@@ -147,6 +148,15 @@ Details
 
    https://github.com/owncloud/files_spaces/issues/51
    https://github.com/owncloud/core/pull/38396
+
+* Bugfix - Show non-generic messages for 403 HTTP status to end user: [#395](https://github.com/owncloud/files_antivirus/issues/395)
+
+   The real reason why 3rd party app canceled upload was ignored by Web UI and a generic 'You are not
+   allowed to upload here' message was shown instead. Now 'You are not allowed to upload here' is
+   shown only if a real reason is empty.
+
+   https://github.com/owncloud/files_antivirus/issues/395
+   https://github.com/owncloud/core/pull/38416
 
 * Change - Use OcsController and routes instead of API::register: [#37272](https://github.com/owncloud/core/pull/37272)
 
