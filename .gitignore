@@ -17,7 +17,6 @@
 !/apps/comments
 !/apps/dav
 !/apps/files
-!/apps/encryption
 !/apps/federatedfilesharing
 !/apps/federation
 !/apps/files_external
@@ -26,7 +25,6 @@
 !/apps/files_versions
 !/apps/provisioning_api
 !/apps/systemtags
-!/apps/theme-example
 !/apps/updatenotification
 /apps/files_external/3rdparty/irodsphp/PHPUnitTest
 /apps/files_external/3rdparty/irodsphp/web
