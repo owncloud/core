@@ -20,6 +20,7 @@ Summary
 * Bugfix - Prevent multiple calls by not registering the same listener twice: [#38385](https://github.com/owncloud/core/pull/38385)
 * Bugfix - Add the owner to public link shares: [#38396](https://github.com/owncloud/core/pull/38396)
 * Change - Use OcsController and routes instead of API::register: [#37272](https://github.com/owncloud/core/pull/37272)
+* Change - API changes to remove shares pointing to missing files: [#38152](https://github.com/owncloud/core/pull/38152)
 * Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.2): [#38306](https://github.com/owncloud/core/pull/38306)
 * Change - Update nikic/php-parser (4.10.2 => 4.10.4): [#38191](https://github.com/owncloud/core/pull/38191)
 * Change - Update swiftmailer/swiftmailer (v6.2.3 => v6.2.4): [#38198](https://github.com/owncloud/core/pull/38198)
@@ -155,6 +156,13 @@ Details
 
    https://github.com/owncloud/core/issues/12454
    https://github.com/owncloud/core/pull/37272
+
+* Change - API changes to remove shares pointing to missing files: [#38152](https://github.com/owncloud/core/pull/38152)
+
+   If a file was completely deleted without unsharing first, the share would still exist in the DB
+   even though it wouldn't be shown to the users. This change prepares a way to remove those shares.
+
+   https://github.com/owncloud/core/pull/38152
 
 * Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.2): [#38306](https://github.com/owncloud/core/pull/38306)
 
