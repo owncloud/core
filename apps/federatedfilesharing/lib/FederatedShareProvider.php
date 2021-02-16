@@ -847,6 +847,44 @@ class FederatedShareProvider implements IShareProvider {
 	}
 
 	/**
+	 * @inheritDoc
+	 */
+	public function getSharesWithInvalidFileid(int $limit) {
+		// mimic the implementation for the default share provider in core
+		$validShareTypes = [
+			\OCP\Share::SHARE_TYPE_REMOTE,
+		];
+		// other share types aren't handled by this provider
+
+		$qb = $this->dbConnection->getQueryBuilder();
+
+		$qb = $qb->select('s.*')
+			->from('share', 's')
+			->leftJoin('s', 'filecache', 'f', $qb->expr()->eq('s.file_source', 'f.fileid'))
+			->where($qb->expr()->isNull('f.fileid'))
+			->andWhere(
+				$qb->expr()->in(
+					'share_type',
+					$qb->createNamedParameter($validShareTypes, IQueryBuilder::PARAM_INT_ARRAY)
+				)
+			)
+			->orderBy('s.id');
+
+		if ($limit >= 0) {
+			$qb->setMaxResults($limit);
+		}
+		$cursor = $qb->execute();
+
+		$shares = [];
+		while ($data = $cursor->fetch()) {
+			$shares[] = $this->createShareObject($data);
+		}
+		$cursor->closeCursor();
+
+		return $shares;
+	}
+
+	/**
 	 * get database row of a give share
 	 *
 	 * @param $id

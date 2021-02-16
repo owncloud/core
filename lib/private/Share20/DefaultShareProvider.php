@@ -947,6 +947,45 @@ class DefaultShareProvider implements IShareProvider {
 	}
 
 	/**
+	 * @inheritDoc
+	 */
+	public function getSharesWithInvalidFileid(int $limit) {
+		$validShareTypes = [
+			\OCP\Share::SHARE_TYPE_USER,
+			\OCP\Share::SHARE_TYPE_GROUP,
+			\OCP\Share::SHARE_TYPE_LINK,
+		];
+		// other share types aren't handled by this provider
+
+		$qb = $this->dbConn->getQueryBuilder();
+
+		$qb = $qb->select('s.*')
+			->from('share', 's')
+			->leftJoin('s', 'filecache', 'f', $qb->expr()->eq('s.file_source', 'f.fileid'))
+			->where($qb->expr()->isNull('f.fileid'))
+			->andWhere(
+				$qb->expr()->in(
+					'share_type',
+					$qb->createNamedParameter($validShareTypes, IQueryBuilder::PARAM_INT_ARRAY)
+				)
+			)
+			->orderBy('s.id');
+
+		if ($limit >= 0) {
+			$qb->setMaxResults($limit);
+		}
+		$cursor = $qb->execute();
+
+		$shares = [];
+		while ($data = $cursor->fetch()) {
+			$shares[] = $this->createShare($data);
+		}
+		$cursor->closeCursor();
+
+		return $shares;
+	}
+
+	/**
 	 * Create a share object from an database row
 	 *
 	 * @param mixed[] $data
