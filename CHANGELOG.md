@@ -30,7 +30,7 @@ Summary
 * Change - Update egulias/email-validator (2.1.24 => 2.1.25): [#38255](https://github.com/owncloud/core/pull/38255)
 * Change - Update laminas/laminas-validator (2.13.4 => 2.13.5): [#38275](https://github.com/owncloud/core/pull/38275)
 * Change - Update patchwork/utf8 (v1.3.2 => v1.3.3): [#38275](https://github.com/owncloud/core/pull/38275)
-* Change - Update symfony/polyfill (1.20.0 => 1.22.0): [#38275](https://github.com/owncloud/core/pull/38275)
+* Change - Update symfony/polyfill (1.20.0 => 1.22.1): [#38275](https://github.com/owncloud/core/pull/38275)
 * Change - Update sabre/dav (4.1.3 => 4.1.5): [#38285](https://github.com/owncloud/core/pull/38285)
 * Change - Remove package patchwork/utf8: [#38286](https://github.com/owncloud/core/pull/38286)
 * Change - Change X-XSS-Protection "1; block" -> "0": [#38236](https://github.com/owncloud/core/issues/38236)
@@ -214,15 +214,16 @@ Details
 
    https://github.com/owncloud/core/pull/38275
 
-* Change - Update symfony/polyfill (1.20.0 => 1.22.0): [#38275](https://github.com/owncloud/core/pull/38275)
+* Change - Update symfony/polyfill (1.20.0 => 1.22.1): [#38275](https://github.com/owncloud/core/pull/38275)
 
-   The following symfony/polyfill components have been updated to version 1.22.0:
+   The following symfony/polyfill components have been updated to version 1.22.1:
 
    Symfony/polyfill-ctype symfony/polyfill-iconv symfony/polyfill-intl-idn
    symfony/polyfill-intl-normalizer symfony/polyfill-mbstring symfony/polyfill-php72
    symfony/polyfill-php73 symfony/polyfill-php80
 
    https://github.com/owncloud/core/pull/38275
+   https://github.com/owncloud/core/pull/38419
 
 * Change - Update sabre/dav (4.1.3 => 4.1.5): [#38285](https://github.com/owncloud/core/pull/38285)
 
