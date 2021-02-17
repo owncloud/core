@@ -92,6 +92,11 @@
 		initialized: false,
 
 		/**
+		 * Last clicked row
+		 */
+		$currentRow: null,
+
+		/**
 		 * Number of files per page
 		 *
 		 * @return {int} page size
@@ -325,6 +330,7 @@
 
 			this.updateSearch();
 
+			this.$fileList.on('setCurrentRow', _.bind(this._setCurrentRow, this));
 			this.$fileList.on('click','td.filename>a.name, td.filesize, td.date', _.bind(this._onClickFile, this));
 
 			this.$fileList.on('change', 'td.filename>.selectCheckBox', _.bind(this._onClickFileCheckbox, this));
@@ -396,7 +402,7 @@
 			this.$el.off('urlChanged.filelistbound');
 			// remove events attached to the $container
 			this.$container.off('scroll.' + this.$el.attr('id'));
-
+			this.$fileList.off('setCurrentRow');
 		},
 
 		/**
@@ -453,7 +459,10 @@
 			}
 
 			// if requesting the selected model, return it
-			if (this._currentFileModel && this._currentFileModel.get('name') === fileName) {
+			if (this._currentFileModel &&
+				this._currentFileModel.get('name') === fileName &&
+				(!this.$currentRow || this.$currentRow.data('id') === this._currentFileModel.id)
+			) {
 				return this._currentFileModel;
 			}
 
@@ -630,6 +639,9 @@
 		 * Event handler for when clicking on files to select them
 		 */
 		_onClickFile: function(event) {
+			var currentRow = $(event.currentTarget).closest('tr');
+			this.$fileList.trigger(new jQuery.Event('setCurrentRow', {currentRow: currentRow}));
+
 			var $link = $(event.target).closest('a');
 			if ($link.attr('href') === '#' || $link.hasClass('disable-click')) {
 				event.preventDefault();
@@ -930,7 +942,13 @@
 		 */
 		findFileEl: function(fileName){
 			// use filterAttr to avoid escaping issues
-			return this.$fileList.find('tr').filterAttr('data-file', fileName);
+			var $fileEl = this.$fileList.find('tr').filterAttr('data-file', fileName);
+
+			if (this.$currentRow && $fileEl.length > 1) {
+				$fileEl = $fileEl.filter('[data-id="' + this.$currentRow.data('id') + '"]');
+			}
+
+			return $fileEl;
 		},
 
 		/**
@@ -1566,6 +1584,15 @@
 			}
 			this.breadcrumb.setDirectory(this.getCurrentDirectory());
 		},
+
+		/**
+		 * Sets the currently clicked row
+		 * We use this event to give the findFileEl a unique identifier.
+		 */
+		_setCurrentRow: function(data) {
+			this.$currentRow = data.currentRow;
+		},
+
 		/**
 		 * Sets the current sorting and refreshes the list
 		 *

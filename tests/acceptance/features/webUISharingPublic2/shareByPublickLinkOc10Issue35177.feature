@@ -29,6 +29,5 @@ Feature: Share by public link
     And the user has browsed to the shared-by-link page
     When the user renames folder "newfolder" to "newfolder1" using the webUI
     Then folder "newfolder1" should be listed on the webUI
-    And folder "newfolder" should not be listed on the webUI
-    #And folder "newfolder" should be listed on the webUI
+    And folder "newfolder" should be listed on the webUI
     And folder "test" should be listed on the webUI
