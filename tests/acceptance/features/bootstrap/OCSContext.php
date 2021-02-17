@@ -706,16 +706,7 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function theOCSStatusMessageShouldBe($statusMessage, $language=null) {
-		if ($language !== null) {
-			$multiLingualMessage = \json_decode(
-				\file_get_contents("./tests/acceptance/multiLanguageErrors.json"),
-				true
-			);
-
-			if (isset($multiLingualMessage[$statusMessage][$language])) {
-				$statusMessage = $multiLingualMessage[$statusMessage][$language];
-			}
-		}
+		$statusMessage = $this->getActualStatusMessage($statusMessage, $language);
 
 		Assert::assertEquals(
 			$statusMessage,
@@ -815,6 +806,28 @@ class OCSContext implements Context {
 	 */
 	public function getOCSResponseStatusMessage($response) {
 		return (string) $this->featureContext->getResponseXml($response, __METHOD__)->meta[0]->message;
+	}
+
+	/**
+	 * convert status message in the desired language
+	 *
+	 * @param $statusMessage
+	 * @param $language
+	 *
+	 * @return string
+	 */
+	public function getActualStatusMessage($statusMessage, $language) {
+		if ($language !== null) {
+			$multiLingualMessage = \json_decode(
+				\file_get_contents("./tests/acceptance/fixtures/multiLanguageErrors.json"),
+				true
+			);
+
+			if (isset($multiLingualMessage[$statusMessage][$language])) {
+				$statusMessage = $multiLingualMessage[$statusMessage][$language];
+			}
+		}
+		return $statusMessage;
 	}
 
 	/**
