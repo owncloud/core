@@ -102,6 +102,9 @@ abstract class AbstractLockingProvider implements ILockingProvider {
 		} elseif ($targetType === self::LOCK_EXCLUSIVE) {
 			$this->acquiredLocks['exclusive'][$path] = true;
 			$this->acquiredLocks['shared'][$path]--;
+			if ($this->acquiredLocks['shared'][$path] === 0) {
+				unset($this->acquiredLocks['shared'][$path]);
+			}
 		}
 	}
 
