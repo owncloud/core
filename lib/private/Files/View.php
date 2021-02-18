@@ -1552,6 +1552,20 @@ class View {
 			$mounts = Filesystem::getMountManager()->findIn($path);
 			$dirLength = \strlen($path);
 			foreach ($mounts as $mount) {
+				$comparissonName = \trim(\substr($mount->getMountPoint(), $dirLength), '/');
+				//remove any existing entry with the same name
+				foreach ($files as $i => $file) {
+					if ($file['name'] === $comparissonName) {
+						$mountpoints = \array_map(function ($mount) {
+							return $mount->getShare()->getTarget();
+						}, $mounts);
+						$anotherpoints = \array_map(function ($file) {
+							return $file['name'];
+						}, $files);
+						$mount->deDuplicate(\array_merge($mountpoints, $anotherpoints));
+						break;
+					}
+				}
 				$mountPoint = $mount->getMountPoint();
 				$subStorage = $mount->getStorage();
 				if ($subStorage) {
@@ -1601,13 +1615,6 @@ class View {
 								$rootEntry['permissions'] = $permissions & (\OCP\Constants::PERMISSION_ALL - (\OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE));
 							}
 
-							//remove any existing entry with the same name
-							foreach ($files as $i => $file) {
-								if ($file['name'] === $rootEntry['name']) {
-									unset($files[$i]);
-									break;
-								}
-							}
 							$rootEntry['path'] = \substr(Filesystem::normalizePath($path . '/' . $rootEntry['name']), \strlen($user) + 2); // full path without /$user/
 
 							// if sharing was disabled for the user we remove the share permissions
