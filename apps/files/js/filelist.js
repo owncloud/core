@@ -459,6 +459,8 @@
 			}
 
 			// if requesting the selected model, return it
+			// also take the file id into account if possible because
+			// the file name may not be unique
 			if (this._currentFileModel &&
 				this._currentFileModel.get('name') === fileName &&
 				(!this.$currentRow || this.$currentRow.data('id') === this._currentFileModel.id)
@@ -640,7 +642,7 @@
 		 */
 		_onClickFile: function(event) {
 			var currentRow = $(event.currentTarget).closest('tr');
-			this.$fileList.trigger(new jQuery.Event('setCurrentRow', {currentRow: currentRow}));
+			this._setCurrentRow({currentRow: currentRow});
 
 			var $link = $(event.target).closest('a');
 			if ($link.attr('href') === '#' || $link.hasClass('disable-click')) {
@@ -944,6 +946,8 @@
 			// use filterAttr to avoid escaping issues
 			var $fileEl = this.$fileList.find('tr').filterAttr('data-file', fileName);
 
+			// take the file id into account if possible because the file name
+			// may not be unique which results in multiple elements
 			if (this.$currentRow && $fileEl.length > 1) {
 				$fileEl = $fileEl.filter('[data-id="' + this.$currentRow.data('id') + '"]');
 			}
