@@ -246,4 +246,92 @@ class LoggingHelper {
 			throw new \Exception("could not clear logfile");
 		}
 	}
+
+	/**
+	 *
+	 * @param string $logLevel
+	 * @param string $backend
+	 * @param string $timezone
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public static function restoreLoggingStatus($logLevel, $backend, $timezone) {
+		if (!\in_array(\strtolower($logLevel), self::LOG_LEVEL_ARRAY)) {
+			throw new \InvalidArgumentException("invalid log level");
+		}
+		if (!\in_array(\strtolower($backend), ["owncloud", "syslog", "errorlog"])) {
+			throw new \InvalidArgumentException("invalid log backend");
+		}
+
+		$commands = ["log:manage"];
+
+		if ($timezone) {
+			\array_push($commands, "--timezone=$timezone");
+		}
+		if ($logLevel) {
+			\array_push($commands, "--backend=$backend");
+		}
+		if ($backend) {
+			\array_push($commands, "--level=$logLevel");
+		}
+
+		if (\count($commands) > 1) {
+			$result = SetupHelper::runOcc($commands);
+			if ($result["code"] != 0) {
+				throw new \Exception(
+					"could not restore log status " . $result ["stdOut"] . " " .
+					$result ["stdErr"]
+				);
+			}
+		}
+	}
+
+	/**
+	 * returns the currently set log level, backend and timezone
+	 *
+	 * @throws \Exception
+	 * @return string
+	 */
+	public static function getLogInfo() {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			return [
+				"level" => "debug",
+				"backend" => "errorlog",
+				"timezone" => "UTC"
+			];
+		}
+		$result = SetupHelper::runOcc(["log:manage"]);
+		if ($result["code"] != 0) {
+			throw new \Exception(
+				"could not get log level " . $result ["stdOut"] . " " .
+				$result ["stdErr"]
+			);
+		}
+
+		$logging = [];
+		if (!\preg_match("/Log level:\s(\w+)\s\(/", $result["stdOut"], $matches)) {
+			throw new \Exception("could not get log level");
+		}
+		$logging["level"] = $matches[1];
+
+		$pregResult = \preg_match(
+			"/Log timezone:\s(\w+)/", $result ["stdOut"], $matches
+		);
+		if (!$pregResult) {
+			throw new \Exception("could not get log timezone");
+		}
+		$logging["timezone"] = $matches[1];
+
+		$pregResult = \preg_match(
+			"/Enabled logging backend:\s(\w+)\n/",
+			$result ["stdOut"], $matches
+		);
+		if (!$pregResult) {
+			throw new \Exception("could not get log backend");
+		}
+		$logging["backend"] = $matches[1];
+
+		return $logging;
+	}
 }

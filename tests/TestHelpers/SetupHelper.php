@@ -618,6 +618,67 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	}
 
 	/**
+	 * Runs a list of occ commands at once
+	 *
+	 * @param Array $commands
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 *
+	 * @return SimpleXMLElement
+	 */
+	public static function runBulkOcc(
+		$commands,
+		$adminUsername = null,
+		$adminPassword = null,
+		$baseUrl = null
+	) {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			return [];
+		}
+		$baseUrl = self::checkBaseUrl($baseUrl, "runOcc");
+		$adminUsername = self::checkAdminUsername($adminUsername, "runOcc");
+		$adminPassword = self::checkAdminPassword($adminPassword, "runOcc");
+
+		if (!\is_array($commands)) {
+			throw new Exception("commands must be an array");
+		}
+
+		$isTestingAppEnabledText = "Is the testing app installed and enabled?\n";
+		$bodies = [];
+
+		foreach ($commands as $occ) {
+			if (!\array_key_exists('command', $occ)) {
+				throw new \InvalidArgumentException("command key is missing in array passed to runBulkOcc");
+			}
+
+			$body = [
+				'command' => \implode(' ', $occ['command'])
+			];
+
+			if (isset($occ['envVariables'])) {
+				$body['env_variables'] = $occ['envVariables'];
+			}
+			\array_push($bodies, $body);
+		}
+		try {
+			$result = OcsApiHelper::sendRequest(
+				$baseUrl, $adminUsername, $adminPassword,
+				"POST", "/apps/testing/api/v1/occ/bulk?format=json", \json_encode($bodies)
+			);
+		} catch (ServerException $e) {
+			throw new Exception(
+				"Could not execute 'occ'. " .
+				$isTestingAppEnabledText .
+				$e->getResponse()->getBody()
+			);
+		}
+		$result = \json_decode($result->getBody()->getContents());
+
+		return $result->ocs->data;
+	}
+
+	/**
 	 * invokes an OCC command
 	 *
 	 * @param array $args anything behind "occ".
