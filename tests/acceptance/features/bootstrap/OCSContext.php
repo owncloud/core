@@ -713,6 +713,11 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function theOCSStatusMessageShouldBe($statusMessage, $language=null) {
+		if (!isset($language)) {
+			if (\getenv('OC_LANGUAGE') !== false) {
+				$language = \getenv('OC_LANGUAGE');
+			}
+		}
 		$statusMessage = $this->getActualStatusMessage($statusMessage, $language);
 
 		Assert::assertEquals(

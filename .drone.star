@@ -1338,7 +1338,7 @@ def acceptance(ctx):
 		'replaceUsernames': False,
 		'extraSetup': [],
 		'extraServices': [],
-		'extraEnvironment': {},
+		'extraEnvironment': {'OC_LANGUAGE':'en-EN'},
 		'extraCommandsBeforeTestRun': [],
 		'extraApps': {},
 		'useBundledApp': False,

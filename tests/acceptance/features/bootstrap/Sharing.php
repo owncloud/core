@@ -1631,6 +1631,11 @@ trait Sharing {
 	 */
 	public function userGetsInfoOfLastShareUsingTheSharingApi($user, $language=null) {
 		$share_id = $this->getLastShareIdOf($user);
+		if (!isset($language)) {
+			if (\getenv('OC_LANGUAGE') !== false) {
+				$language = \getenv('OC_LANGUAGE');
+			}
+		}
 		$this->getShareData($user, $share_id, $language);
 	}
 
