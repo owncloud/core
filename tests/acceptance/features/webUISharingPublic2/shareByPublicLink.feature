@@ -184,7 +184,7 @@ Feature: Share by public link
     And the public accesses the last created public link using the webUI
     Then the content of the file shared by the last public link should be the same as "lorem.txt"
 
-  @skipOnOcV10 @issue-35177
+  @skipOnOcV10.5 @skipOnOcV10.6
   Scenario: User renames a subfolder among subfolders with same names which are shared by public links
     Given user "Alice" has created folder "nf1"
     And user "Alice" has created folder "nf1/newfolder"
