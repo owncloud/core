@@ -434,7 +434,7 @@
 					a: null
 				},
 				function(event) {
-					context.fileList.$fileList.trigger(new jQuery.Event('setCurrentRow', {currentRow: context.$file}));
+					context.fileList._setCurrentRow(context.$file);
 					event.stopPropagation();
 					event.preventDefault();
 

@@ -330,7 +330,6 @@
 
 			this.updateSearch();
 
-			this.$fileList.on('setCurrentRow', _.bind(this._setCurrentRow, this));
 			this.$fileList.on('click','td.filename>a.name, td.filesize, td.date', _.bind(this._onClickFile, this));
 
 			this.$fileList.on('change', 'td.filename>.selectCheckBox', _.bind(this._onClickFileCheckbox, this));
@@ -402,7 +401,6 @@
 			this.$el.off('urlChanged.filelistbound');
 			// remove events attached to the $container
 			this.$container.off('scroll.' + this.$el.attr('id'));
-			this.$fileList.off('setCurrentRow');
 		},
 
 		/**
@@ -641,8 +639,7 @@
 		 * Event handler for when clicking on files to select them
 		 */
 		_onClickFile: function(event) {
-			var currentRow = $(event.currentTarget).closest('tr');
-			this._setCurrentRow({currentRow: currentRow});
+			this._setCurrentRow($(event.currentTarget).closest('tr'));
 
 			var $link = $(event.target).closest('a');
 			if ($link.attr('href') === '#' || $link.hasClass('disable-click')) {
@@ -1593,8 +1590,8 @@
 		 * Sets the currently clicked row
 		 * We use this event to give the findFileEl a unique identifier.
 		 */
-		_setCurrentRow: function(data) {
-			this.$currentRow = data.currentRow;
+		_setCurrentRow: function($rowEl) {
+			this.$currentRow = $rowEl;
 		},
 
 		/**
