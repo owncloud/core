@@ -1,0 +1,8 @@
+Bugfix: Fix issues with duplicated file names in the same directory
+
+In some views like the "Shared by link"-list it is possible to have
+one or more files with the same name in one directory. This fix corrects
+plenty of wrong behaviors that such a scenario caused in the UI.
+
+https://github.com/owncloud/core/pull/38415
+https://github.com/owncloud/enterprise/issues/4412
