@@ -169,7 +169,7 @@ class Loader implements IMimeTypeLoader {
 				'mimetype', $update->createPositionalParameter($is_folderId)
 			))
 			->andWhere($update->expr()->like(
-				$update->createFunction('LOWER(`name`)'), $update->createPositionalParameter($ext)
+				$update->createFunction('LOWER(`name`)'), $update->createPositionalParameter("%.$ext")
 			));
 		return $update->execute();
 	}

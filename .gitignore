@@ -4,6 +4,8 @@
 /config/config.php
 /config/*.config.php
 /config/mount.php
+/config/mimetypealiases.json
+/config/mimetypemapping.json
 /apps/inc.php
 /assets
 /build/composer.phar
