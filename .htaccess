@@ -44,12 +44,10 @@
 </IfModule>
 
 <IfModule mod_php7.c>
-    php_value upload_max_filesize 16G
-    php_value post_max_size 16G
     php_value memory_limit 1G
     php_value mbstring.func_overload 0
     php_value default_charset 'UTF-8'
-    php_value output_buffering 4096
+    php_value output_buffering 0
     <IfModule mod_env.c>
       SetEnv htaccessWorking true
     </IfModule>
