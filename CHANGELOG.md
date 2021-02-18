@@ -19,6 +19,7 @@ Summary
 * Bugfix - Prevent getting a version expiry list when no versions available: [#38390](https://github.com/owncloud/core/pull/38390)
 * Bugfix - Prevent multiple calls by not registering the same listener twice: [#38385](https://github.com/owncloud/core/pull/38385)
 * Bugfix - Add the owner to public link shares: [#38396](https://github.com/owncloud/core/pull/38396)
+* Bugfix - Fix issues with duplicated file names in the same directory: [#38415](https://github.com/owncloud/core/pull/38415)
 * Bugfix - Show non-generic messages for 403 HTTP status to end user: [#395](https://github.com/owncloud/files_antivirus/issues/395)
 * Change - Use OcsController and routes instead of API::register: [#37272](https://github.com/owncloud/core/pull/37272)
 * Change - API changes to remove shares pointing to missing files: [#38152](https://github.com/owncloud/core/pull/38152)
@@ -148,6 +149,15 @@ Details
 
    https://github.com/owncloud/files_spaces/issues/51
    https://github.com/owncloud/core/pull/38396
+
+* Bugfix - Fix issues with duplicated file names in the same directory: [#38415](https://github.com/owncloud/core/pull/38415)
+
+   In some views like the "Shared by link"-list it is possible to have one or more files with the same
+   name in one directory. This fix corrects plenty of wrong behaviors that such a scenario caused
+   in the UI.
+
+   https://github.com/owncloud/enterprise/issues/4412
+   https://github.com/owncloud/core/pull/38415
 
 * Bugfix - Show non-generic messages for 403 HTTP status to end user: [#395](https://github.com/owncloud/files_antivirus/issues/395)
 
