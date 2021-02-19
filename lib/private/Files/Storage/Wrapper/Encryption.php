@@ -685,7 +685,11 @@ class Encryption extends Wrapper {
 			'encrypted' => (bool)$isEncrypted,
 		];
 		if ($isEncrypted === 1) {
-			$encryptedVersion = $sourceStorage->getCache()->get($sourceInternalPath)['encryptedVersion'];
+			$encryptedVersion = null;  // initialize as null for backwards compatibility
+			$sourceInfo = $sourceStorage->getCache()->get($sourceInternalPath);
+			if ($sourceInfo !== false) {
+				$encryptedVersion = $sourceInfo['encryptedVersion'];
+			}
 
 			// In case of a move operation from an unencrypted to an encrypted
 			// storage the old encrypted version would stay with "0" while the
@@ -797,7 +801,14 @@ class Encryption extends Wrapper {
 				if ($preserveMtime) {
 					$this->touch($targetInternalPath, $sourceStorage->filemtime($sourceInternalPath));
 				}
-				$this->updateEncryptedVersion($sourceStorage, $sourceInternalPath, $targetInternalPath, $isRename);
+				if (\substr($targetInternalPath, 0, \strlen('files_trashbin/')) !== 'files_trashbin/') {
+					// 1. user1 moves file from home storage to admins's shared folder
+					// 2. user2 grabs the file from admin's shared folder to his own home storage
+					// Admin has a broken copy in his trashbin, which is caused by a wrong encrypted
+					// version stored in the DB. We simply won't update the encrypted version in this
+					// particular case.
+					$this->updateEncryptedVersion($sourceStorage, $sourceInternalPath, $targetInternalPath, $isRename);
+				}
 			} else {
 				// delete partially written target file
 				$this->unlink($targetInternalPath);

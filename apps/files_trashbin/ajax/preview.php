@@ -82,5 +82,5 @@ try {
 	$image->show();
 } catch (\Exception $e) {
 	\OC_Response::setStatus(500);
-	\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::DEBUG);
+	\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::ERROR);
 }
