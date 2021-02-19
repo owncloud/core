@@ -502,9 +502,10 @@ class LoggingContext implements Context {
 	 * @throws \Exception
 	 */
 	public function setUpScenarioLogging() {
-		$this->oldLogLevel = LoggingHelper::getLogLevel();
-		$this->oldLogBackend = LoggingHelper::getLogBackend();
-		$this->oldLogTimezone = LoggingHelper::getLogTimezone();
+		$logging = LoggingHelper::getLogInfo();
+		$this->oldLogLevel = $logging["level"];
+		$this->oldLogBackend = $logging["backend"];
+		$this->oldLogTimezone = $logging["timezone"];
 	}
 
 	/**
@@ -516,21 +517,7 @@ class LoggingContext implements Context {
 	 * @throws \Exception
 	 */
 	public function tearDownScenarioLogging() {
-		if ($this->oldLogLevel !== null
-			&& $this->oldLogLevel !== LoggingHelper::getLogLevel()
-		) {
-			LoggingHelper::setLogLevel($this->oldLogLevel);
-		}
-		if ($this->oldLogBackend !== null
-			&& $this->oldLogBackend !== LoggingHelper::getLogBackend()
-		) {
-			LoggingHelper::setLogBackend($this->oldLogBackend);
-		}
-		if ($this->oldLogTimezone !== null
-			&& $this->oldLogTimezone !== LoggingHelper::getLogTimezone()
-		) {
-			LoggingHelper::setLogTimezone($this->oldLogTimezone);
-		}
+		LoggingHelper::restoreLoggingStatus($this->oldLogLevel, $this->oldLogBackend, $this->oldLogTimezone);
 	}
 
 	/**
