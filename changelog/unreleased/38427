@@ -1,0 +1,10 @@
+Change: Move file name deduplication from SharedMount contructor to View class
+
+The deduplication of shared filenames is being done in the SharedMount constructor,
+accesing the filesystem constantly, and hiting the performance as more files are
+shared.
+
+I just move code around to achieve the same result.
+
+https://github.com/owncloud/core/pull/38427
+https://github.com/owncloud/core/issues/38063
