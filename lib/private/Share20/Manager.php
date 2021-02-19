@@ -1479,6 +1479,39 @@ class Manager implements IManager {
 	}
 
 	/**
+	 * @inheritDoc
+	 */
+	public function cleanSharesWithInvalidNodes() {
+		$types = [
+			\OCP\Share::SHARE_TYPE_USER,
+			\OCP\Share::SHARE_TYPE_GROUP,
+			\OCP\Share::SHARE_TYPE_LINK,
+			\OCP\Share::SHARE_TYPE_REMOTE,
+		];
+
+		$providers = [];
+		foreach ($types as $type) {
+			$provider = $this->factory->getProviderForType($type);
+			// store this way to deduplicate entries by id
+			$providers[$provider->identifier()] = $provider;
+		}
+
+		$limit = 500;
+		foreach ($providers as $provider) {
+			do {
+				$shares = $provider->getSharesWithInvalidFileid($limit);
+				foreach ($shares as $share) {
+					try {
+						$this->deleteShare($share);
+					} catch (NotFoundException $e) {
+						// the share is deleted, so nothing to do
+					}
+				}
+			} while (\count($shares) >= $limit);  // there could be more shares to clean
+		}
+	}
+
+	/**
 	 * Verify the password of a public share
 	 * Dispatches following events:
 	 * 'share.beforepasswordcheck' is dispatched before every password verification

@@ -399,6 +399,31 @@ trait WebDav {
 	}
 
 	/**
+	 * @When user :user gets the number of versions of file :file
+	 *
+	 * @param string $user
+	 * @param string $file
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userGetsFileVersions($user, $file) {
+		$user = $this->getActualUsername($user);
+		$fileId = $this->getFileIdForPath($user, $file);
+		$path = "/meta/" . $fileId . "/v";
+		$response = $this->makeDavRequest(
+			$user,
+			"PROPFIND",
+			$path,
+			null,
+			null,
+			null,
+			2
+		);
+		$this->setResponse($response);
+	}
+
+	/**
 	 * @Then the number of versions should be :arg1
 	 *
 	 * @param int $number
@@ -2021,6 +2046,25 @@ trait WebDav {
 				'Expected same but found different http status codes of last requested responses.' .
 				'Found status codes: ' . \implode(',', $this->lastHttpStatusCodesArray)
 			);
+		}
+	}
+
+	/**
+	 * @Then the HTTP status code of responses on all endpoints should be :statusCode1 or :statusCode2
+	 *
+	 * @param $statusCode1
+	 * @param $statusCode2
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theHTTPStatusCodeOfResponsesOnAllEndpointsShouldBeOr($statusCode1, $statusCode2) {
+		$duplicateRemovedStatusCodes = \array_unique($this->lastHttpStatusCodesArray);
+		foreach ($duplicateRemovedStatusCodes as $status) {
+			$status = (string)$status;
+			if (($status != $statusCode1) && ($status != $statusCode2)) {
+				Assert::fail("Unexpected status code received " . $status);
+			}
 		}
 	}
 

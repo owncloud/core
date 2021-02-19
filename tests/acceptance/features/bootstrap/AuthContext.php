@@ -288,6 +288,26 @@ class AuthContext implements Context {
 	}
 
 	/**
+	 * @When /^the user "([^"]*)" requests these endpoints with "([^"]*)" to (?:get|set) property "([^"]*)" with password "([^"]*)" about user "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $method
+	 * @param string $property
+	 * @param string $ofUser
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userRequestsEndpointsWithPasswordWithProperty(
+		$user, $method, $property, $ofUser, TableNode $table
+	) {
+		$this->userRequestsEndpointsWithPassword(
+			$user, $method, $ofUser, $table, $property
+		);
+	}
+
+	/**
 	 * @When the user :user requests these endpoints with :method with body :body using basic auth and generated app password about user :ofUser
 	 *
 	 * @param string $user
@@ -360,17 +380,22 @@ class AuthContext implements Context {
 	 * @param string $method
 	 * @param string $password
 	 * @param TableNode $table
+	 * @param string $property
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsEndpointsWithPassword($user, $method, $password, TableNode $table) {
+	public function userRequestsEndpointsWithPassword($user, $method, $password, TableNode $table, $property = null) {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->emptyLastOCSStatusCodesArray();
 		$this->featureContext->emptyLastHTTPStatusCodesArray();
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		foreach ($table->getHash() as $row) {
-			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $password);
+			$body = null;
+			if ($property !== null) {
+				$body = $this->featureContext->getBodyForOCSRequest($method, $property);
+			}
+			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $password, $body);
 			$this->featureContext->pushToLastHttpStatusCodesArray(
 				$this->featureContext->getResponse()->getStatusCode()
 			);
@@ -750,11 +775,12 @@ class AuthContext implements Context {
 	 * @param string $method
 	 * @param string $password
 	 * @param string $body
+	 * @param Array $header
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsURLWithUsingBasicAuth($user, $url, $method, $password = null, $body = null) {
+	public function userRequestsURLWithUsingBasicAuth($user, $url, $method, $password = null, $body = null, $header = null) {
 		$userRenamed = $this->featureContext->getActualUsername($user);
 		$url = $this->featureContext->substituteInLineCodes(
 			$url, $userRenamed
@@ -762,10 +788,10 @@ class AuthContext implements Context {
 		if ($password === null) {
 			$authString = "$userRenamed:" . $this->featureContext->getPasswordForUser($user);
 		} else {
-			$authString = $userRenamed . ":" . $password;
+			$authString = $userRenamed . ":" . $this->featureContext->getActualPassword($password);
 		}
 		$this->sendRequest(
-			$url, $method, 'basic ' . \base64_encode($authString), false, $body
+			$url, $method, 'basic ' . \base64_encode($authString), false, $body, $header
 		);
 	}
 

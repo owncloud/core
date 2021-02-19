@@ -92,6 +92,11 @@
 		initialized: false,
 
 		/**
+		 * Last clicked row
+		 */
+		$currentRow: null,
+
+		/**
 		 * Number of files per page
 		 *
 		 * @return {int} page size
@@ -396,7 +401,6 @@
 			this.$el.off('urlChanged.filelistbound');
 			// remove events attached to the $container
 			this.$container.off('scroll.' + this.$el.attr('id'));
-
 		},
 
 		/**
@@ -453,7 +457,12 @@
 			}
 
 			// if requesting the selected model, return it
-			if (this._currentFileModel && this._currentFileModel.get('name') === fileName) {
+			// also take the file id into account if possible because
+			// the file name may not be unique
+			if (this._currentFileModel &&
+				this._currentFileModel.get('name') === fileName &&
+				(!this.$currentRow || this.$currentRow.data('id') === this._currentFileModel.id)
+			) {
 				return this._currentFileModel;
 			}
 
@@ -630,6 +639,8 @@
 		 * Event handler for when clicking on files to select them
 		 */
 		_onClickFile: function(event) {
+			this._setCurrentRow($(event.currentTarget).closest('tr'));
+
 			var $link = $(event.target).closest('a');
 			if ($link.attr('href') === '#' || $link.hasClass('disable-click')) {
 				event.preventDefault();
@@ -930,7 +941,15 @@
 		 */
 		findFileEl: function(fileName){
 			// use filterAttr to avoid escaping issues
-			return this.$fileList.find('tr').filterAttr('data-file', fileName);
+			var $fileEl = this.$fileList.find('tr').filterAttr('data-file', fileName);
+
+			// take the file id into account if possible because the file name
+			// may not be unique which results in multiple elements
+			if (this.$currentRow && $fileEl.length > 1) {
+				$fileEl = $fileEl.filter('[data-id="' + this.$currentRow.data('id') + '"]');
+			}
+
+			return $fileEl;
 		},
 
 		/**
@@ -1566,6 +1585,15 @@
 			}
 			this.breadcrumb.setDirectory(this.getCurrentDirectory());
 		},
+
+		/**
+		 * Sets the currently clicked row
+		 * We use this event to give the findFileEl a unique identifier.
+		 */
+		_setCurrentRow: function($rowEl) {
+			this.$currentRow = $rowEl;
+		},
+
 		/**
 		 * Sets the current sorting and refreshes the list
 		 *

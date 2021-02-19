@@ -2981,4 +2981,105 @@ class DefaultShareProviderTest extends TestCase {
 
 		$this->assertCount($toDelete ? 0 : 1, $data);
 	}
+
+	public function testGetSharesWithInvalidFileidNoLimit() {
+		// only the first share will contain a valid reference to the filecache
+		$fileId = $this->createTestFileEntry('aiya/ooo');
+
+		$qb = $this->dbConn->getQueryBuilder();
+
+		$qb->insert('share')
+			->values([
+				'share_type'  => $qb->expr()->literal(Share::SHARE_TYPE_USER),
+				'share_with'  => $qb->expr()->literal('sharedWith'),
+				'uid_owner'   => $qb->expr()->literal('shareOwner'),
+				'uid_initiator' => $qb->expr()->literal('sharedBy'),
+				'item_type'   => $qb->expr()->literal('file'),
+				'file_source' => $qb->expr()->literal($fileId),
+				'file_target' => $qb->expr()->literal('myTarget'),
+				'permissions' => $qb->expr()->literal(13),
+			]);
+		$qb->execute();
+
+		$qb->insert('share')
+			->values([
+				'share_type'  => $qb->expr()->literal(Share::SHARE_TYPE_GROUP),
+				'share_with'  => $qb->expr()->literal('sharedWith02'),
+				'uid_owner'   => $qb->expr()->literal('shareOwner02'),
+				'uid_initiator' => $qb->expr()->literal('sharedBy02'),
+				'item_type'   => $qb->expr()->literal('folder'),
+				'file_source' => $qb->expr()->literal($fileId + 422),
+				'file_target' => $qb->expr()->literal('myTarget02'),
+				'permissions' => $qb->expr()->literal(13),
+			]);
+		$qb->execute();
+
+		$qb->insert('share')
+			->values([
+				'share_type'  => $qb->expr()->literal(Share::SHARE_TYPE_LINK),
+				'share_with'  => $qb->expr()->literal('sharedWith03'),
+				'uid_owner'   => $qb->expr()->literal('shareOwner03'),
+				'uid_initiator' => $qb->expr()->literal('sharedBy03'),
+				'item_type'   => $qb->expr()->literal('file'),
+				'file_source' => $qb->expr()->literal($fileId + 433),
+				'file_target' => $qb->expr()->literal('myTarget03'),
+				'permissions' => $qb->expr()->literal(13),
+			]);
+		$qb->execute();
+
+		$shares = $this->provider->getSharesWithInvalidFileid(-1);
+		$this->assertSame(2, \count($shares));
+		$this->assertSame($fileId + 422, $shares[0]->getNodeId());
+		$this->assertSame($fileId + 433, $shares[1]->getNodeId());
+	}
+
+	public function testGetSharesWithInvalidFileidWithLimit() {
+		// only the first share will contain a valid reference to the filecache
+		$fileId = $this->createTestFileEntry('aiya/ooo');
+
+		$qb = $this->dbConn->getQueryBuilder();
+
+		$qb->insert('share')
+			->values([
+				'share_type'  => $qb->expr()->literal(Share::SHARE_TYPE_USER),
+				'share_with'  => $qb->expr()->literal('sharedWith'),
+				'uid_owner'   => $qb->expr()->literal('shareOwner'),
+				'uid_initiator' => $qb->expr()->literal('sharedBy'),
+				'item_type'   => $qb->expr()->literal('file'),
+				'file_source' => $qb->expr()->literal($fileId),
+				'file_target' => $qb->expr()->literal('myTarget'),
+				'permissions' => $qb->expr()->literal(13),
+			]);
+		$qb->execute();
+
+		$qb->insert('share')
+			->values([
+				'share_type'  => $qb->expr()->literal(Share::SHARE_TYPE_GROUP),
+				'share_with'  => $qb->expr()->literal('sharedWith02'),
+				'uid_owner'   => $qb->expr()->literal('shareOwner02'),
+				'uid_initiator' => $qb->expr()->literal('sharedBy02'),
+				'item_type'   => $qb->expr()->literal('folder'),
+				'file_source' => $qb->expr()->literal($fileId + 422),
+				'file_target' => $qb->expr()->literal('myTarget02'),
+				'permissions' => $qb->expr()->literal(13),
+			]);
+		$qb->execute();
+
+		$qb->insert('share')
+			->values([
+				'share_type'  => $qb->expr()->literal(Share::SHARE_TYPE_LINK),
+				'share_with'  => $qb->expr()->literal('sharedWith03'),
+				'uid_owner'   => $qb->expr()->literal('shareOwner03'),
+				'uid_initiator' => $qb->expr()->literal('sharedBy03'),
+				'item_type'   => $qb->expr()->literal('file'),
+				'file_source' => $qb->expr()->literal($fileId + 433),
+				'file_target' => $qb->expr()->literal('myTarget03'),
+				'permissions' => $qb->expr()->literal(13),
+			]);
+		$qb->execute();
+
+		$shares = $this->provider->getSharesWithInvalidFileid(1); // only one result
+		$this->assertSame(1, \count($shares));
+		$this->assertSame($fileId + 422, $shares[0]->getNodeId());
+	}
 }

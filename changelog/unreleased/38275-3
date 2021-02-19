@@ -1,6 +1,6 @@
-Change: Update symfony/polyfill (1.20.0 => 1.22.0)
+Change: Update symfony/polyfill (1.20.0 => 1.22.1)
 
-The following symfony/polyfill components have been updated to version 1.22.0:
+The following symfony/polyfill components have been updated to version 1.22.1:
 
 symfony/polyfill-ctype
 symfony/polyfill-iconv
@@ -12,3 +12,4 @@ symfony/polyfill-php73
 symfony/polyfill-php80
 
 https://github.com/owncloud/core/pull/38275
+https://github.com/owncloud/core/pull/38419

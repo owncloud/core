@@ -1202,8 +1202,14 @@ OC.Uploader.prototype = _.extend({
 						// file already exists
 						self.showConflict(upload);
 					} else if (status === 403) {
-						// not enough space
-						const message = t('files', 'You don’t have permission to upload or create files here');
+						// permission denied
+						var response = upload.getResponse();
+						message = response.message;
+						// If the message comes from a storage wrapper exception it should be already
+						// translated. Otherwise we have a default exception message and translate it here
+						if (message === '' || message === 'You don’t have permission to upload or create files here') {
+							message = t('files', 'You don’t have permission to upload or create files here');
+						}
 						OC.Notification.show(message, {type: 'error'});
 					} else if (status === 404) {
 						// target folder does not exist any more
@@ -1215,7 +1221,7 @@ OC.Uploader.prototype = _.extend({
 						}
 						self.cancelUploads();
 					} else if (status === 423) {
-						// not enough space
+						// file is locked
 						OC.Notification.show(t('files', 'The file {file} is currently locked, please try again later', {file: upload.getFileName()}), {type: 'error'});
 					} else if (status === 507) {
 						// not enough space

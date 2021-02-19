@@ -337,6 +337,8 @@
     "Please set your password" : "Veuillez entrer votre mot de passe",
     "Personal" : "Personnel",
     "Admin" : "Administration",
+    "Currently no settings are available in this category" : "Actuellement, aucun paramètre n'est disponible dans cette catégorie",
+    "The administrators can enable additional apps which add settings sections here." : "Les administrateurs peuvent activer des applications supplémentaires qui ajoutent des rubriques de paramètres ici.",
     "Activation link was sent to an email address, if one was configured." : "Le lien d'activation a été envoyé à une adresse électronique, si elle a été configurée.",
     "Settings" : "Paramètres",
     "Show enabled/disabled option" : "Afficher l'option Activé/Désactivé",

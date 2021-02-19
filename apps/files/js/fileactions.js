@@ -434,6 +434,7 @@
 					a: null
 				},
 				function(event) {
+					context.fileList._setCurrentRow(context.$file);
 					event.stopPropagation();
 					event.preventDefault();
 

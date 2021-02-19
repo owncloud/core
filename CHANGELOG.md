@@ -17,9 +17,14 @@ Summary
 * Bugfix - Fix file_target in response when creating a public link share: [#38291](https://github.com/owncloud/core/issues/38291)
 * Bugfix - Fix rendering of leading/trailing spaces in the file name: [#38316](https://github.com/owncloud/core/issues/38316)
 * Bugfix - Prevent getting a version expiry list when no versions available: [#38390](https://github.com/owncloud/core/pull/38390)
+* Bugfix - Fix broken signature when a backup copy is generated: [#38375](https://github.com/owncloud/core/pull/38375)
 * Bugfix - Prevent multiple calls by not registering the same listener twice: [#38385](https://github.com/owncloud/core/pull/38385)
 * Bugfix - Add the owner to public link shares: [#38396](https://github.com/owncloud/core/pull/38396)
+* Bugfix - Fix issues with duplicated file names in the same directory: [#38415](https://github.com/owncloud/core/pull/38415)
+* Bugfix - Show non-generic messages for 403 HTTP status to end user: [#395](https://github.com/owncloud/files_antivirus/issues/395)
+* Bugfix - Fix command maintenance:mimetype:update-db --repair-filecache: [#38425](https://github.com/owncloud/core/issues/38425)
 * Change - Use OcsController and routes instead of API::register: [#37272](https://github.com/owncloud/core/pull/37272)
+* Change - API changes to remove shares pointing to missing files: [#38152](https://github.com/owncloud/core/pull/38152)
 * Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.2): [#38306](https://github.com/owncloud/core/pull/38306)
 * Change - Update nikic/php-parser (4.10.2 => 4.10.4): [#38191](https://github.com/owncloud/core/pull/38191)
 * Change - Update swiftmailer/swiftmailer (v6.2.3 => v6.2.4): [#38198](https://github.com/owncloud/core/pull/38198)
@@ -28,7 +33,7 @@ Summary
 * Change - Update egulias/email-validator (2.1.24 => 2.1.25): [#38255](https://github.com/owncloud/core/pull/38255)
 * Change - Update laminas/laminas-validator (2.13.4 => 2.13.5): [#38275](https://github.com/owncloud/core/pull/38275)
 * Change - Update patchwork/utf8 (v1.3.2 => v1.3.3): [#38275](https://github.com/owncloud/core/pull/38275)
-* Change - Update symfony/polyfill (1.20.0 => 1.22.0): [#38275](https://github.com/owncloud/core/pull/38275)
+* Change - Update symfony/polyfill (1.20.0 => 1.22.1): [#38275](https://github.com/owncloud/core/pull/38275)
 * Change - Update sabre/dav (4.1.3 => 4.1.5): [#38285](https://github.com/owncloud/core/pull/38285)
 * Change - Remove package patchwork/utf8: [#38286](https://github.com/owncloud/core/pull/38286)
 * Change - Change X-XSS-Protection "1; block" -> "0": [#38236](https://github.com/owncloud/core/issues/38236)
@@ -130,6 +135,17 @@ Details
    https://github.com/owncloud/core/issues/38373
    https://github.com/owncloud/core/pull/38390
 
+* Bugfix - Fix broken signature when a backup copy is generated: [#38375](https://github.com/owncloud/core/pull/38375)
+
+   Previously, when a user uploaded a file and then moved it to a shared folder in order for a second
+   user to get the file, a copy of the file was generated inside the share owner's trashbin. This
+   allowed the share owner to restore the file into the share again if needed. Using encryption,
+   that backup copy was wrongly generated and couldn't be decrypted due to a wrong signature.
+
+   This issue is now fixed, and the backup copy can be restored normally.
+
+   https://github.com/owncloud/core/pull/38375
+
 * Bugfix - Prevent multiple calls by not registering the same listener twice: [#38385](https://github.com/owncloud/core/pull/38385)
 
    Going back and forth among the file sections ("all files", "shared with you", etc) was making
@@ -147,6 +163,32 @@ Details
    https://github.com/owncloud/files_spaces/issues/51
    https://github.com/owncloud/core/pull/38396
 
+* Bugfix - Fix issues with duplicated file names in the same directory: [#38415](https://github.com/owncloud/core/pull/38415)
+
+   In some views like the "Shared by link"-list it is possible to have one or more files with the same
+   name in one directory. This fix corrects plenty of wrong behaviors that such a scenario caused
+   in the UI.
+
+   https://github.com/owncloud/enterprise/issues/4412
+   https://github.com/owncloud/core/pull/38415
+
+* Bugfix - Show non-generic messages for 403 HTTP status to end user: [#395](https://github.com/owncloud/files_antivirus/issues/395)
+
+   The real reason why 3rd party app canceled upload was ignored by Web UI and a generic 'You are not
+   allowed to upload here' message was shown instead. Now 'You are not allowed to upload here' is
+   shown only if a real reason is empty.
+
+   https://github.com/owncloud/files_antivirus/issues/395
+   https://github.com/owncloud/core/pull/38416
+
+* Bugfix - Fix command maintenance:mimetype:update-db --repair-filecache: [#38425](https://github.com/owncloud/core/issues/38425)
+
+   While running the command maintenance:mimetype:update-db --repair-filecache, existing
+   records in the filecache table were not updated due to a faulty sql statement.
+
+   https://github.com/owncloud/core/issues/38425
+   https://github.com/owncloud/core/pull/38426
+
 * Change - Use OcsController and routes instead of API::register: [#37272](https://github.com/owncloud/core/pull/37272)
 
    Implemented OcsController and removed a separate file to register ocs routes. Also some
@@ -155,6 +197,13 @@ Details
 
    https://github.com/owncloud/core/issues/12454
    https://github.com/owncloud/core/pull/37272
+
+* Change - API changes to remove shares pointing to missing files: [#38152](https://github.com/owncloud/core/pull/38152)
+
+   If a file was completely deleted without unsharing first, the share would still exist in the DB
+   even though it wouldn't be shown to the users. This change prepares a way to remove those shares.
+
+   https://github.com/owncloud/core/pull/38152
 
 * Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.2): [#38306](https://github.com/owncloud/core/pull/38306)
 
@@ -196,15 +245,16 @@ Details
 
    https://github.com/owncloud/core/pull/38275
 
-* Change - Update symfony/polyfill (1.20.0 => 1.22.0): [#38275](https://github.com/owncloud/core/pull/38275)
+* Change - Update symfony/polyfill (1.20.0 => 1.22.1): [#38275](https://github.com/owncloud/core/pull/38275)
 
-   The following symfony/polyfill components have been updated to version 1.22.0:
+   The following symfony/polyfill components have been updated to version 1.22.1:
 
    Symfony/polyfill-ctype symfony/polyfill-iconv symfony/polyfill-intl-idn
    symfony/polyfill-intl-normalizer symfony/polyfill-mbstring symfony/polyfill-php72
    symfony/polyfill-php73 symfony/polyfill-php80
 
    https://github.com/owncloud/core/pull/38275
+   https://github.com/owncloud/core/pull/38419
 
 * Change - Update sabre/dav (4.1.3 => 4.1.5): [#38285](https://github.com/owncloud/core/pull/38285)
 

@@ -12,19 +12,16 @@ Feature: translate messages in api response to preferred language
       | Carol    |
     And using <dav_version> DAV path
     And user "Brian" has shared file "textfile0.txt" with user "Carol"
-    When user "Alice" gets the info of the last share in language "de-DE" using the sharing API
+    When user "Alice" gets the info of the last share in language "<language>" using the sharing API
     Then the OCS status code should be "404"
-    And the OCS status message should be "Fehlerhafte Freigabe-ID, Freigabe existiert nicht"
-    When user "Alice" gets the info of the last share in language "zh-CN" using the sharing API
-    Then the OCS status code should be "404"
-    And the OCS status message should be "错误的共享 ID，共享不存在"
-    When user "Alice" gets the info of the last share in language "fr-FR" using the sharing API
-    Then the OCS status code should be "404"
-    And the OCS status message should be "Mauvais ID de partage, le partage n'existe pas"
-    When user "Alice" gets the info of the last share in language "es-ES" using the sharing API
-    Then the OCS status code should be "404"
-    And the OCS status message should be "El ID del recurso compartido no es correcto, el recurso compartido no existe"
+    And the OCS status message should be "Wrong share ID, share doesn't exist" in language "<language>"
     Examples:
-      | dav_version |
-      | old         |
-      | new         |
+      | dav_version | language |
+      | old         | de-DE    |
+      | new         | de-DE    |
+      | old         | zh-CN    |
+      | new         | zh-CN    |
+      | old         | fr-FR    |
+      | new         | fr-FR    |
+      | old         | es-ES    |
+      | new         | es-ES    |

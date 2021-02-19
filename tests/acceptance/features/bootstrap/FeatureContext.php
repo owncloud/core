@@ -3733,6 +3733,7 @@ class FeatureContext extends BehatVariablesContext {
 	 *
 	 */
 	private function restoreParameters($server) {
+		$commands = [];
 		if ($this->isTestingWithLdap()) {
 			$this->resetOldLdapConfig();
 		}
@@ -3750,26 +3751,14 @@ class FeatureContext extends BehatVariablesContext {
 				$configKey, $this->savedConfigList[$server]['system']
 			)
 			) {
-				SetupHelper::runOcc(
-					['config:system:delete', $configKey],
-					$this->getAdminUsername(),
-					$this->getAdminPassword(),
-					$this->getBaseUrl(),
-					$this->getOcPath()
-				);
+				\array_push($commands, ["command" => ['config:system:delete', $configKey]]);
 			}
 		}
 		foreach ($this->savedConfigList[$server]['system'] as $configKey => $configValue) {
 			if (!\array_key_exists($configKey, $currentConfigList["system"])
 				|| $currentConfigList["system"][$configKey] !== $this->savedConfigList[$server]['system'][$configKey]
 			) {
-				SetupHelper::runOcc(
-					['config:system:set', "--type=json", "--value=" . \json_encode($configValue), $configKey],
-					$this->getAdminUsername(),
-					$this->getAdminPassword(),
-					$this->getBaseUrl(),
-					$this->getOcPath()
-				);
+				\array_push($commands, ["command" => ['config:system:set', "--type=json", "--value=" . \json_encode($configValue), $configKey]]);
 			}
 		}
 		foreach ($currentConfigList['apps'] as $appName => $appSettings) {
@@ -3780,13 +3769,7 @@ class FeatureContext extends BehatVariablesContext {
 						$configKey, $this->savedConfigList[$server]['apps'][$appName]
 					)
 				) {
-					SetupHelper::runOcc(
-						['config:app:delete', $appName, $configKey],
-						$this->getAdminUsername(),
-						$this->getAdminPassword(),
-						$this->getBaseUrl(),
-						$this->getOcPath()
-					);
+					\array_push($commands, ["command" => ['config:app:delete', $appName, $configKey]]);
 				} elseif (\array_key_exists($appName, $this->savedConfigList[$server]['apps'])
 					&& \array_key_exists($configKey, $this->savedConfigList[$server]['apps'][$appName])
 					&& $this->savedConfigList[$server]['apps'][$appName][$configKey] !== $configValue
@@ -3794,21 +3777,25 @@ class FeatureContext extends BehatVariablesContext {
 					// Do not accidentally disable apps here (perhaps too early)
 					// That is done in Provisioning.php restoreAppEnabledDisabledState()
 					if ($configKey !== "enabled") {
-						SetupHelper::runOcc(
-							[
-								'config:app:set',
-								$appName,
-								$configKey,
-								"--value=" . $this->savedConfigList[$server]['apps'][$appName][$configKey]
-							],
-							$this->getAdminUsername(),
-							$this->getAdminPassword(),
-							$this->getBaseUrl(),
-							$this->getOcPath()
+						\array_push(
+							$commands, [
+								"command" => [
+									'config:app:set',
+									$appName,
+									$configKey,
+									"--value=" . $this->savedConfigList[$server]['apps'][$appName][$configKey]
+								]
+							]
 						);
 					}
 				}
 			}
 		}
+		SetupHelper::runBulkOcc(
+			$commands,
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			$this->getBaseUrl()
+		);
 	}
 }

@@ -203,6 +203,17 @@ interface IManager {
 	public function getShareByToken($token);
 
 	/**
+	 * Delete all the shares that have an invalid node (because the node has been removed,
+	 * for example)
+	 * This method will automatically call the "deleteShare" method with those share,
+	 * so the delete events will also be sent. However, as said, the node won't be accessible,
+	 * and trying to get the node from the share will throw an exception within the callback
+	 *
+	 * @since 10.7.0
+	 */
+	public function cleanSharesWithInvalidNodes();
+
+	/**
 	 * Get the capabilities that the providers have. Foreach provider, a list of capabilities
 	 * (IShareProvider::CAPABILITY_*) for the supported types will be returned. An empty
 	 * list of capabilities could be returned

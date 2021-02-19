@@ -487,19 +487,26 @@ class OCSContext implements Context {
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$ofUser = $this->featureContext->getActualUsername($ofUser);
-		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
+		$this->featureContext->verifyTableNodeColumns($table, ['endpoint'], ['destination']);
 		$this->featureContext->emptyLastHTTPStatusCodesArray();
 		$this->featureContext->emptyLastOCSStatusCodesArray();
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
 				$row['endpoint'], $ofUser
 			);
+			$header = [];
+			if (isset($row['destination'])) {
+				$header['Destination'] = $this->featureContext->substituteInLineCodes(
+					$this->featureContext->getBaseUrl() . $row['destination'], $ofUser
+				);
+			}
 			$this->featureContext->authContext->userRequestsURLWithUsingBasicAuth(
 				$user,
 				$row['endpoint'],
 				$method,
 				$password,
-				$body
+				$body,
+				$header
 			);
 			$this->featureContext->pushToLastHttpStatusCodesArray(
 				$this->featureContext->getResponse()->getStatusCode()
@@ -698,12 +705,16 @@ class OCSContext implements Context {
 	 * Check the text in an OCS status message
 	 *
 	 * @Then /^the OCS status message should be "([^"]*)"$/
+	 * @Then /^the OCS status message should be "([^"]*)" in language "([^"]*)"$/
 	 *
 	 * @param string $statusMessage
+	 * @param string $language
 	 *
 	 * @return void
 	 */
-	public function theOCSStatusMessageShouldBe($statusMessage) {
+	public function theOCSStatusMessageShouldBe($statusMessage, $language=null) {
+		$statusMessage = $this->getActualStatusMessage($statusMessage, $language);
+
 		Assert::assertEquals(
 			$statusMessage,
 			$this->getOCSResponseStatusMessage(
@@ -802,6 +813,28 @@ class OCSContext implements Context {
 	 */
 	public function getOCSResponseStatusMessage($response) {
 		return (string) $this->featureContext->getResponseXml($response, __METHOD__)->meta[0]->message;
+	}
+
+	/**
+	 * convert status message in the desired language
+	 *
+	 * @param $statusMessage
+	 * @param $language
+	 *
+	 * @return string
+	 */
+	public function getActualStatusMessage($statusMessage, $language) {
+		if ($language !== null) {
+			$multiLingualMessage = \json_decode(
+				\file_get_contents(__DIR__ . "/../../fixtures/multiLanguageErrors.json"),
+				true
+			);
+
+			if (isset($multiLingualMessage[$statusMessage][$language])) {
+				$statusMessage = $multiLingualMessage[$statusMessage][$language];
+			}
+		}
+		return $statusMessage;
 	}
 
 	/**
