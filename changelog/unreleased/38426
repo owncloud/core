@@ -1,0 +1,7 @@
+Bugfix: Fix command maintenance:mimetype:update-db --repair-filecache
+
+While running the command maintenance:mimetype:update-db --repair-filecache,
+existing records in the filecache table were not updated due to a faulty sql statement.
+
+https://github.com/owncloud/core/issues/38425
+https://github.com/owncloud/core/pull/38426
