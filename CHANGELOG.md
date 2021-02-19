@@ -17,6 +17,7 @@ Summary
 * Bugfix - Fix file_target in response when creating a public link share: [#38291](https://github.com/owncloud/core/issues/38291)
 * Bugfix - Fix rendering of leading/trailing spaces in the file name: [#38316](https://github.com/owncloud/core/issues/38316)
 * Bugfix - Prevent getting a version expiry list when no versions available: [#38390](https://github.com/owncloud/core/pull/38390)
+* Bugfix - Fix broken signature when a backup copy is generated: [#38375](https://github.com/owncloud/core/pull/38375)
 * Bugfix - Prevent multiple calls by not registering the same listener twice: [#38385](https://github.com/owncloud/core/pull/38385)
 * Bugfix - Add the owner to public link shares: [#38396](https://github.com/owncloud/core/pull/38396)
 * Bugfix - Fix issues with duplicated file names in the same directory: [#38415](https://github.com/owncloud/core/pull/38415)
@@ -132,6 +133,17 @@ Details
 
    https://github.com/owncloud/core/issues/38373
    https://github.com/owncloud/core/pull/38390
+
+* Bugfix - Fix broken signature when a backup copy is generated: [#38375](https://github.com/owncloud/core/pull/38375)
+
+   Previously, when a user uploaded a file and then moved it to a shared folder in order for a second
+   user to get the file, a copy of the file was generated inside the share owner's trashbin. This
+   allowed the share owner to restore the file into the share again if needed. Using encryption,
+   that backup copy was wrongly generated and couldn't be decrypted due to a wrong signature.
+
+   This issue is now fixed, and the backup copy can be restored normally.
+
+   https://github.com/owncloud/core/pull/38375
 
 * Bugfix - Prevent multiple calls by not registering the same listener twice: [#38385](https://github.com/owncloud/core/pull/38385)
 
