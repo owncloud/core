@@ -8,27 +8,26 @@ Feature: add users to group
     Given using OCS API version "1"
 
   @smokeTest @skipOnLDAP
-  Scenario Outline: adding a user to a group
+  Scenario: adding a user to a group
     Given user "brand-new-user" has been created with default attributes and skeleton files
-    And group "<group_id>" has been created
-    When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
-    Examples:
-      | group_id    | comment                               |
-      | simplegroup | nothing special here                  |
-      | España§àôœ€ | special European and other characters |
-      | नेपाली      | Unicode group name                    |
+    And these groups have been created:
+      | groupname   |
+      | simplegroup |
+      | España§àôœ€ |
+      | नेपाली        |
+    When the administrator adds the following users to the following groups using the provisioning API
+      | username       | groupname   | comment                               |
+      | brand-new-user | simplegroup | nothing special here                  |
+      | brand-new-user | España§àôœ€ | special European and other characters |
+      | brand-new-user | नेपाली        | Unicode group name                    |
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
 
   @skipOnLDAP
-  Scenario Outline: adding a user to a group
+  Scenario: adding a user to a group
     Given user "brand-new-user" has been created with default attributes and skeleton files
-    And group "<group_id>" has been created
-    When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
-    Examples:
-      | group_id            | comment                                 |
+    And these groups have been created:
+      | groupname           | comment                                 |
       | brand-new-group     | dash                                    |
       | the.group           | dot                                     |
       | left,right          | comma                                   |
@@ -39,17 +38,27 @@ Feature: add users to group
       | $x<=>[y*z^2]!       | Maths symbols                           |
       | 😁 😂               | emoji                                   |
       | admin:Pokhara@Nepal | Colon and @                             |
+    When the administrator adds the following users to the following groups using the provisioning API
+      | username       | groupname           |
+      | brand-new-user | brand-new-group     |
+      | brand-new-user | the.group           |
+      | brand-new-user | left,right          |
+      | brand-new-user | 0                   |
+      | brand-new-user | Finance (NP)        |
+      | brand-new-user | Admin&Finance       |
+      | brand-new-user | maint+eng           |
+      | brand-new-user | $x<=>[y*z^2]!       |
+      | brand-new-user | 😁 😂               |
+      | brand-new-user | admin:Pokhara@Nepal |
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
 
   # once the issue is fixed merge with scenario above
   @skipOnLDAP @toImplementOnOCIS @issue-product-284
-  Scenario Outline: adding a user to a group
+  Scenario: adding a user to a group
     Given user "brand-new-user" has been created with default attributes and skeleton files
-    And group "<group_id>" has been created
-    When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
-    Examples:
-      | group_id            | comment                                 |
+    And these groups have been created:
+      | groupname           | comment                                 |
       | maintenance#123     | Hash sign                               |
       | 50%pass             | Percent sign (special escaping happens) |
       | 50%25=0             | %25 literal looks like an escaped "%"   |
@@ -57,25 +66,42 @@ Feature: add users to group
       | 50%2Fix             | %2F literal looks like an escaped slash |
       | Mgmt\Middle         | Backslash                               |
       | staff?group         | Question mark                           |
+    When the administrator adds the following users to the following groups using the provisioning API
+      | username       | groupname           |
+      | brand-new-user | maintenance#123     |
+      | brand-new-user | 50%pass             |
+      | brand-new-user | 50%25=0             |
+      | brand-new-user | 50%2Eagle           |
+      | brand-new-user | 50%2Fix             |
+      | brand-new-user | Mgmt\Middle         |
+      | brand-new-user | staff?group         |
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
 
   @issue-31015 @skipOnLDAP
-  Scenario Outline: adding a user to a group that has a forward-slash in the group name
+  Scenario: adding a user to a group that has a forward-slash in the group name
     Given user "brand-new-user" has been created with default attributes and skeleton files
     # After fixing issue-31015, change the following step to "has been created"
-    And the administrator sends a group creation request for group "<group_id>" using the provisioning API
-    #And group "<group_id>" has been created
-    When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
-    # The following step is needed so that the group does get cleaned up.
-    # After fixing issue-31015, remove the following step:
-    And the administrator deletes group "<group_id>" using the occ command
-    Examples:
-      | group_id         | comment                            |
+    And the administrator sends a group creation request for the following group using the provisioning API
+      | groupname        | comment                            |
       | Mgmt/Sydney      | Slash (special escaping happens)   |
       | Mgmt//NSW/Sydney | Multiple slash                     |
       | priv/subadmins/1 | Subadmins mentioned not at the end |
-
+    #And group "<group_id>" has been created
+    When the administrator adds the following users to the following groups using the provisioning API
+      | username       | groupname        |
+      | brand-new-user | Mgmt/Sydney      |
+      | brand-new-user | Mgmt//NSW/Sydney |
+      | brand-new-user | priv/subadmins/1 |
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    # The following step is needed so that the group does get cleaned up.
+    # After fixing issue-31015, remove the following step:
+    And the administrator deletes the following groups using the occ command
+      | groupname        |
+      | Mgmt/Sydney      |
+      | Mgmt//NSW/Sydney |
+      | priv/subadmins/1 |
 
   @skipOnLDAP  @toImplementOnOCIS
   Scenario Outline: adding a user to a group using mixes of upper and lower case in user and group names

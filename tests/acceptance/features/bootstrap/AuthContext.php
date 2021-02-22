@@ -190,19 +190,7 @@ class AuthContext implements Context {
 				$row['endpoint'], $ofUser
 			);
 			$this->sendRequest($row['endpoint'], $method, null, false, $body);
-			$this->featureContext->pushToLastHttpStatusCodesArray(
-				$this->featureContext->getResponse()->getStatusCode()
-			);
-			try {
-				$this->featureContext->pushToLastOcsCodesArray(
-					$this->featureContext->ocsContext->getOCSResponseStatusCode(
-						$this->featureContext->getResponse()
-					)
-				);
-			} catch (\Exception $e) {
-				// if response couldn't be converted into xml then push "notset" to last ocs status codes array
-				$this->featureContext->pushToLastOcsCodesArray("notset");
-			}
+			$this->featureContext->pushToLastStatusCodesArrays();
 		}
 	}
 
@@ -221,19 +209,7 @@ class AuthContext implements Context {
 		$this->featureContext->emptyLastHTTPStatusCodesArray();
 		foreach ($table->getHash() as $row) {
 			$this->sendRequest($row['endpoint'], $method);
-			$this->featureContext->pushToLastHttpStatusCodesArray(
-				$this->featureContext->getResponse()->getStatusCode()
-			);
-			try {
-				$this->featureContext->pushToLastOcsCodesArray(
-					$this->featureContext->ocsContext->getOCSResponseStatusCode(
-						$this->featureContext->getResponse()
-					)
-				);
-			} catch (\Exception $e) {
-				// if response couldn't be converted into xml then push "notset" to last ocs status codes array
-				$this->featureContext->pushToLastOcsCodesArray("notset");
-			}
+			$this->featureContext->pushToLastStatusCodesArrays();
 		}
 	}
 
@@ -357,19 +333,7 @@ class AuthContext implements Context {
 				$row['endpoint'], $ofUser
 			);
 			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $this->appToken, $body);
-			$this->featureContext->pushToLastHttpStatusCodesArray(
-				$this->featureContext->getResponse()->getStatusCode()
-			);
-			try {
-				$this->featureContext->pushToLastOcsCodesArray(
-					$this->featureContext->ocsContext->getOCSResponseStatusCode(
-						$this->featureContext->getResponse()
-					)
-				);
-			} catch (\Exception $e) {
-				// if response couldn't be converted into xml then push "notset" to last ocs status codes array
-				$this->featureContext->pushToLastOcsCodesArray("notset");
-			}
+			$this->featureContext->pushToLastStatusCodesArrays();
 		}
 	}
 
@@ -396,19 +360,7 @@ class AuthContext implements Context {
 				$body = $this->featureContext->getBodyForOCSRequest($method, $property);
 			}
 			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $password, $body);
-			$this->featureContext->pushToLastHttpStatusCodesArray(
-				$this->featureContext->getResponse()->getStatusCode()
-			);
-			try {
-				$this->featureContext->pushToLastOcsCodesArray(
-					$this->featureContext->ocsContext->getOCSResponseStatusCode(
-						$this->featureContext->getResponse()
-					)
-				);
-			} catch (\Exception $e) {
-				// if response couldn't be converted into xml then push "notset" to last ocs status codes array
-				$this->featureContext->pushToLastOcsCodesArray("notset");
-			}
+			$this->featureContext->pushToLastStatusCodesArrays();
 		}
 	}
 
@@ -455,19 +407,7 @@ class AuthContext implements Context {
 			$this->userRequestsURLWithUsingBasicAuth(
 				$this->featureContext->getAdminUsername(), $row['endpoint'], $method, $password, $body
 			);
-			$this->featureContext->pushToLastHttpStatusCodesArray(
-				$this->featureContext->getResponse()->getStatusCode()
-			);
-			try {
-				$this->featureContext->pushToLastOcsCodesArray(
-					$this->featureContext->ocsContext->getOCSResponseStatusCode(
-						$this->featureContext->getResponse()
-					)
-				);
-			} catch (\Exception $e) {
-				// if response couldn't be converted into xml then push "notset" to last ocs status codes array
-				$this->featureContext->pushToLastOcsCodesArray("notset");
-			}
+			$this->featureContext->pushToLastStatusCodesArrays();
 		}
 	}
 
@@ -508,19 +448,7 @@ class AuthContext implements Context {
 		$this->featureContext->emptyLastOCSStatusCodesArray();
 		foreach ($table->getHash() as $row) {
 			$this->userRequestsURLWithUsingBasicTokenAuth($user, $row['endpoint'], $method);
-			$this->featureContext->pushToLastHttpStatusCodesArray(
-				$this->featureContext->getResponse()->getStatusCode()
-			);
-			try {
-				$this->featureContext->pushToLastOcsCodesArray(
-					$this->featureContext->ocsContext->getOCSResponseStatusCode(
-						$this->featureContext->getResponse()
-					)
-				);
-			} catch (\Exception $e) {
-				// if response couldn't be converted into xml then push "notset" to last ocs status codes array
-				$this->featureContext->pushToLastOcsCodesArray("notset");
-			}
+			$this->featureContext->pushToLastStatusCodesArrays();
 		}
 	}
 
@@ -539,19 +467,7 @@ class AuthContext implements Context {
 		$this->featureContext->emptyLastOCSStatusCodesArray();
 		foreach ($table->getHash() as $row) {
 			$this->userRequestsURLWithBrowserSession($row['endpoint'], $method);
-			$this->featureContext->pushToLastHttpStatusCodesArray(
-				$this->featureContext->getResponse()->getStatusCode()
-			);
-			try {
-				$this->featureContext->pushToLastOcsCodesArray(
-					$this->featureContext->ocsContext->getOCSResponseStatusCode(
-						$this->featureContext->getResponse()
-					)
-				);
-			} catch (\Exception $e) {
-				// if response couldn't be converted into xml then push "notset" to last ocs status codes array
-				$this->featureContext->pushToLastOcsCodesArray("notset");
-			}
+			$this->featureContext->pushToLastStatusCodesArrays();
 		}
 	}
 
@@ -575,19 +491,7 @@ class AuthContext implements Context {
 				$row['endpoint'], $user
 			);
 			$this->userRequestsURLWithUsingAppPassword($row['endpoint'], $method);
-			$this->featureContext->pushToLastHttpStatusCodesArray(
-				$this->featureContext->getResponse()->getStatusCode()
-			);
-			try {
-				$this->featureContext->pushToLastOcsCodesArray(
-					$this->featureContext->ocsContext->getOCSResponseStatusCode(
-						$this->featureContext->getResponse()
-					)
-				);
-			} catch (\Exception $e) {
-				// if response couldn't be converted into xml then push "notset" to last ocs status codes array
-				$this->featureContext->pushToLastOcsCodesArray("notset");
-			}
+			$this->featureContext->pushToLastStatusCodesArrays();
 		}
 	}
 
@@ -606,19 +510,7 @@ class AuthContext implements Context {
 		$this->featureContext->emptyLastOCSStatusCodesArray();
 		foreach ($table->getHash() as $row) {
 			$this->userRequestsURLWithUsingAppPassword($row['endpoint'], $method);
-			$this->featureContext->pushToLastHttpStatusCodesArray(
-				$this->featureContext->getResponse()->getStatusCode()
-			);
-			try {
-				$this->featureContext->pushToLastOcsCodesArray(
-					$this->featureContext->ocsContext->getOCSResponseStatusCode(
-						$this->featureContext->getResponse()
-					)
-				);
-			} catch (\Exception $e) {
-				// if response couldn't be converted into xml then push "notset" to last ocs status codes array
-				$this->featureContext->pushToLastOcsCodesArray("notset");
-			}
+			$this->featureContext->pushToLastStatusCodesArrays();
 		}
 	}
 

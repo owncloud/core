@@ -458,6 +458,21 @@ class OccUsersGroupsContext implements Context {
 	}
 
 	/**
+	 * @Then the administrator deletes the following groups using the occ command
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDeletesTheFollowingGroupsUsingTheOccCommand(TableNode $table) {
+		$this->featureContext->verifyTableNodeColumns($table, ["groupname"]);
+		$groups = $table->getHash();
+		foreach ($groups as $group) {
+			$this->theAdministratorDeletesGroupUsingTheOccCommand($group["groupname"]);
+		}
+	}
+
+	/**
 	 * @When the administrator gets the users in group :groupName in JSON format using the occ command
 	 *
 	 * @param string $groupName

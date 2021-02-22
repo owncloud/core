@@ -682,9 +682,7 @@ trait WebDav {
 
 		foreach ($paths as $file) {
 			$this->userMovesFileUsingTheAPI($user, $file['from'], $type, $file['to']);
-			$this->pushToLastHttpStatusCodesArray(
-				$this->getResponse()->getStatusCode()
-			);
+			$this->pushToLastStatusCodesArrays();
 		}
 	}
 
@@ -881,6 +879,21 @@ trait WebDav {
 		$this->contentOfFileForUserShouldBePlusEndOfLine(
 			"textfile0.txt", $user, "ownCloud test text file 0"
 		);
+	}
+
+	/**
+	 * @Then the following users should be able to access a skeleton file
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theFollowingUsersShouldBeAbleToAccessASkeletonFile(TableNode $table) {
+		$this->verifyTableNodeColumns($table, ["username"]);
+		$usernames = $table->getHash();
+		foreach ($usernames as $username) {
+			$this->userShouldBeAbleToAccessASkeletonFile($username["username"]);
+		}
 	}
 
 	/**
@@ -2416,9 +2429,7 @@ trait WebDav {
 
 		foreach ($paths as $destination) {
 			$this->uploadFileWithContent($user, $content, $destination["path"]);
-			$this->pushToLastHttpStatusCodesArray(
-				$this->getResponse()->getStatusCode()
-			);
+			$this->pushToLastStatusCodesArrays();
 		}
 	}
 
@@ -2736,9 +2747,7 @@ trait WebDav {
 
 		foreach ($paths as $file) {
 			$this->userDeletesFile($user, $file["path"]);
-			$this->pushToLastHttpStatusCodesArray(
-				$this->getResponse()->getStatusCode()
-			);
+			$this->pushToLastStatusCodesArrays();
 		}
 	}
 

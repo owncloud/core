@@ -143,7 +143,6 @@ class OCSContext implements Context {
 			$user = null;
 			$password = null;
 		}
-
 		$response = OcsApiHelper::sendRequest(
 			$this->featureContext->getBaseUrl(), $user, $password, $verb,
 			$url, $bodyArray, $this->featureContext->getOcsApiVersion(), $headers
@@ -508,19 +507,7 @@ class OCSContext implements Context {
 				$body,
 				$header
 			);
-			$this->featureContext->pushToLastHttpStatusCodesArray(
-				$this->featureContext->getResponse()->getStatusCode()
-			);
-			try {
-				$this->featureContext->pushToLastOcsCodesArray(
-					$this->getOCSResponseStatusCode(
-						$this->featureContext->getResponse()
-					)
-				);
-			} catch (\Exception $e) {
-				// if response couldn't be converted into xml then push "notset" to last ocs status codes array
-				$this->featureContext->pushToLastOcsCodesArray("notset");
-			}
+			$this->featureContext->pushToLastStatusCodesArrays();
 		}
 	}
 
@@ -593,19 +580,7 @@ class OCSContext implements Context {
 				$this->featureContext->getPasswordForUser($user),
 				$body
 			);
-			$this->featureContext->pushToLastHttpStatusCodesArray(
-				$this->featureContext->getResponse()->getStatusCode()
-			);
-			try {
-				$this->featureContext->pushToLastOcsCodesArray(
-					$this->getOCSResponseStatusCode(
-						$this->featureContext->getResponse()
-					)
-				);
-			} catch (\Exception $e) {
-				// if response couldn't be converted into xml then push "notset" to last ocs status codes array
-				$this->featureContext->pushToLastOcsCodesArray("notset");
-			}
+			$this->featureContext->pushToLastStatusCodesArrays();
 		}
 	}
 
@@ -638,19 +613,7 @@ class OCSContext implements Context {
 				$this->featureContext->getPasswordForUser($user),
 				$body
 			);
-			$this->featureContext->pushToLastHttpStatusCodesArray(
-				$this->featureContext->getResponse()->getStatusCode()
-			);
-			try {
-				$this->featureContext->pushToLastOcsCodesArray(
-					$this->getOCSResponseStatusCode(
-						$this->featureContext->getResponse()
-					)
-				);
-			} catch (\Exception $e) {
-				// if response couldn't be converted into xml then push "notset" to last ocs status codes array
-				$this->featureContext->pushToLastOcsCodesArray("notset");
-			}
+			$this->featureContext->pushToLastStatusCodesArrays();
 		}
 	}
 
