@@ -38,7 +38,7 @@ Summary
 * Change - Remove package patchwork/utf8: [#38286](https://github.com/owncloud/core/pull/38286)
 * Change - Change X-XSS-Protection "1; block" -> "0": [#38236](https://github.com/owncloud/core/issues/38236)
 * Change - Update swiftmailer/swiftmailer (v6.2.4 => v6.2.5): [#38306](https://github.com/owncloud/core/pull/38306)
-* Change - Update pear/archive_tar (1.4.11 => 1.4.12): [#38312](https://github.com/owncloud/core/pull/38312)
+* Change - Update pear/archive_tar (1.4.11 => 1.4.13): [#38312](https://github.com/owncloud/core/pull/38312)
 * Change - Update Symfony components to 4.4.19: [#38355](https://github.com/owncloud/core/pull/38355)
 * Change - Update sabre/vobject (4.3.3 => 4.3.5): [#38380](https://github.com/owncloud/core/pull/38380)
 * Change - Update christophwurst/id3parser (v0.1.1 => v0.1.2): [#38387](https://github.com/owncloud/core/pull/38387)
@@ -282,9 +282,10 @@ Details
 
    https://github.com/owncloud/core/pull/38306
 
-* Change - Update pear/archive_tar (1.4.11 => 1.4.12): [#38312](https://github.com/owncloud/core/pull/38312)
+* Change - Update pear/archive_tar (1.4.11 => 1.4.13): [#38312](https://github.com/owncloud/core/pull/38312)
 
    https://github.com/owncloud/core/pull/38312
+   https://github.com/owncloud/core/pull/38434
 
 * Change - Update Symfony components to 4.4.19: [#38355](https://github.com/owncloud/core/pull/38355)
 
