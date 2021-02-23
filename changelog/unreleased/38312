@@ -1,3 +1,4 @@
-Change: Update pear/archive_tar (1.4.11 => 1.4.12)
+Change: Update pear/archive_tar (1.4.11 => 1.4.13)
 
 https://github.com/owncloud/core/pull/38312
+https://github.com/owncloud/core/pull/38434
