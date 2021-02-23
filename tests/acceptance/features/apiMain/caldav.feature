@@ -2,7 +2,7 @@
 Feature: caldav
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
 
   @caldav
   Scenario: Accessing a not existing calendar of another user

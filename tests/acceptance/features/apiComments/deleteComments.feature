@@ -3,7 +3,7 @@ Feature: Comments
 
   Background:
     Given using new DAV path
-    And these users have been created with default attributes and skeleton files:
+    And these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -98,6 +98,6 @@ Feature: Comments
     Given user "Alice" has created folder "/FOLDER_TO_COMMENT"
     And user "Alice" has commented with content "Comment from owner" on folder "/FOLDER_TO_COMMENT"
     And user "Alice" has been deleted
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
     When user "Alice" creates folder "/FOLDER_TO_COMMENT" using the WebDAV API
     Then user "Alice" should have 0 comments on folder "/FOLDER_TO_COMMENT"

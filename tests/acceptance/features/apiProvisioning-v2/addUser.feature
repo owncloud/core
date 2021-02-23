@@ -30,14 +30,14 @@ Feature: add user
       | a space  |
 
   Scenario: admin tries to create an existing user
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     When the administrator sends a user creation request for user "brand-new-user" password "%alt1%" using the provisioning API
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
     And the API should not return any data
 
   Scenario: admin tries to create an existing disabled user
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     And user "brand-new-user" has been disabled
     When the administrator sends a user creation request for user "brand-new-user" password "%alt1%" using the provisioning API
     Then the OCS status code should be "400"
@@ -100,7 +100,7 @@ Feature: add user
       | BrAnD-nEw-UsEr |
 
   Scenario: admin tries to create an existing user but with username containing capital letters
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     When the administrator sends a user creation request for user "BRAND-NEW-USER" password "%alt1%" using the provisioning API
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"

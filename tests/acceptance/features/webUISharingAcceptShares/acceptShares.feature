@@ -6,7 +6,7 @@ Feature: accept/decline shares coming from internal users
 
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
-    Given user "Brian" has been created with default attributes and skeleton files
+    Given user "Brian" has been created with default attributes and large skeleton files
     And these groups have been created:
       | groupname |
       | grp1      |
@@ -45,7 +45,7 @@ Feature: accept/decline shares coming from internal users
 
   Scenario: receive shares with same name from different users
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
-    And user "Carol" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and large skeleton files
     And user "Brian" has shared folder "/simple-folder" with user "Alice"
     And user "Carol" has shared folder "/simple-folder" with user "Alice"
     When user "Alice" logs in using the webUI

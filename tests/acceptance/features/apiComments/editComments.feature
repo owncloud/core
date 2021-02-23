@@ -3,7 +3,7 @@ Feature: Comments
 
   Background:
     Given using new DAV path
-    And these users have been created with default attributes and skeleton files:
+    And these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |

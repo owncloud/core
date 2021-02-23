@@ -2,7 +2,7 @@
 Feature: shares are received in the default folder for received shares
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
 
   @skipOnOcV10.3.0 @skipOnOcV10.3.1
   Scenario Outline: Do not allow sharing of the entire share_folder

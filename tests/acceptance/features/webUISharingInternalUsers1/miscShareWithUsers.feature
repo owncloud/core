@@ -4,7 +4,7 @@ Feature: misc scenarios on sharing with internal users
   @skipOnFIREFOX
   Scenario: share a file with another internal user who overwrites and unshares the file
     Given user "Alice" has been created with default attributes and without skeleton files
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and large skeleton files
     And user "Brian" has logged in using the webUI
     When the user renames file "lorem.txt" to "new-lorem.txt" using the webUI
     And the user shares file "new-lorem.txt" with user "Alice" using the webUI
@@ -23,7 +23,7 @@ Feature: misc scenarios on sharing with internal users
 
   Scenario: share a folder with another internal user who uploads, overwrites and deletes files
     Given user "Alice" has been created with default attributes and without skeleton files
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and large skeleton files
     And user "Brian" has logged in using the webUI
     When the user renames folder "simple-folder" to "new-simple-folder" using the webUI
     And the user shares folder "new-simple-folder" with user "Alice" using the webUI
@@ -51,7 +51,7 @@ Feature: misc scenarios on sharing with internal users
 
   Scenario: share a folder with another internal user who unshares the folder
     Given user "Alice" has been created with default attributes and without skeleton files
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and large skeleton files
     And user "Brian" has logged in using the webUI
     When the user renames folder "simple-folder" to "new-simple-folder" using the webUI
     And the user shares folder "new-simple-folder" with user "Alice" using the webUI
@@ -68,7 +68,7 @@ Feature: misc scenarios on sharing with internal users
 
   @skipOnMICROSOFTEDGE @skipOnOcV10.3
   Scenario: share a folder with another internal user and prohibit deleting
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and large skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -83,7 +83,7 @@ Feature: misc scenarios on sharing with internal users
   @skipOnFIREFOX
   Scenario: share a folder with other user and then it should be listed on Shared with You for other user
     Given user "Alice" has been created with default attributes and without skeleton files
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and large skeleton files
     And user "Brian" has moved file "lorem.txt" to "ipsum.txt"
     And user "Brian" has moved file "simple-folder" to "new-simple-folder"
     And user "Brian" has shared file "ipsum.txt" with user "Alice"
@@ -99,7 +99,7 @@ Feature: misc scenarios on sharing with internal users
       | username |
       | Alice    |
       | Carol    |
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and large skeleton files
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
     And user "Alice" has been added to group "grp1"
     And the administrator has browsed to the admin sharing settings page
@@ -112,7 +112,7 @@ Feature: misc scenarios on sharing with internal users
       | username |
       | Alice    |
       | Carol    |
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and large skeleton files
     And group "grp1" has been created
     And user "Alice" has created folder "new-folder"
     And user "Alice" has been added to group "grp1"
@@ -122,7 +122,7 @@ Feature: misc scenarios on sharing with internal users
     Then user "Alice" should not be able to share folder "new-folder" with user "Carol" using the sharing API
 
   Scenario: member of a blacklisted from sharing group tries to re-share a file received as a share
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and large skeleton files:
       | username |
       | Alice    |
       | Carol    |
@@ -160,7 +160,7 @@ Feature: misc scenarios on sharing with internal users
       | Alice    |
       | Brian    |
       | David    |
-    And user "Carol" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and large skeleton files
     And group "grp1" has been created
     And user "Alice" has been added to group "grp1"
     And user "Carol" has created folder "/common"
@@ -190,7 +190,7 @@ Feature: misc scenarios on sharing with internal users
 
   Scenario: user tries to share a file from a group which is blacklisted from sharing using webUI from files page
     Given group "grp1" has been created
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and large skeleton files
     And user "Alice" has been added to group "grp1"
     And the administrator has enabled exclude groups from sharing
     And the administrator has browsed to the admin sharing settings page
@@ -202,7 +202,7 @@ Feature: misc scenarios on sharing with internal users
 
   Scenario: user tries to re-share a file from a group which is blacklisted from sharing using webUI from shared with you page
     Given group "grp1" has been created
-    And these users have been created with default attributes and skeleton files:
+    And these users have been created with default attributes and large skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -223,7 +223,7 @@ Feature: misc scenarios on sharing with internal users
   @mailhog
   Scenario: user should be able to send notification by email when allow share mail notification has been enabled
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and large skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has logged in using the webUI
     And user "Alice" has shared file "lorem.txt" with user "Brian"
@@ -238,7 +238,7 @@ Feature: misc scenarios on sharing with internal users
   @mailhog @skipOnOcV10.3
   Scenario: user should get and error message when trying to send notification by email to a user who has not setup their email
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and large skeleton files
     And these users have been created without skeleton files:
       | username | password |
       | Brian    | 1234     |
@@ -253,7 +253,7 @@ Feature: misc scenarios on sharing with internal users
   @mailhog @skipOnOcV10.3
   Scenario: user should not be able to send notification by email more than once
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and large skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has logged in using the webUI
     And user "Alice" has shared file "lorem.txt" with user "Brian"
@@ -267,7 +267,7 @@ Feature: misc scenarios on sharing with internal users
   @skipOnOcV10.3
   Scenario: user should not be able to send notification by email when allow share mail notification has been disabled
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "no"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and large skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has logged in using the webUI
     And user "Alice" has shared file "lorem.txt" with user "Brian"
@@ -294,7 +294,7 @@ Feature: misc scenarios on sharing with internal users
 
   @issue-35787 @skipOnOcV10
   Scenario: share a skeleton file after changing its content to a user before the user has logged in
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and large skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -311,7 +311,7 @@ Feature: misc scenarios on sharing with internal users
       | username |
       | Alice    |
       | Brian    |
-    And user "Carol" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and large skeleton files
     And the administrator has changed the display name of user "Alice" to "USER"
     And the administrator has changed the display name of user "Brian" to "USER"
     And parameter "user_additional_info_field" of app "core" has been set to "id"

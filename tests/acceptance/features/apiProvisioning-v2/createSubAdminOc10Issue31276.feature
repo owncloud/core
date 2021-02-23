@@ -7,7 +7,7 @@ Feature: current oC10 behavior for issue-31276
   @issue-31276
   Scenario: subadmin of a group tries to make another user subadmin of their group
     Given using OCS API version "2"
-    And these users have been created with default attributes and skeleton files:
+    And these users have been created with default attributes and small skeleton files:
       | username       |
       | subadmin       |
       | brand-new-user |

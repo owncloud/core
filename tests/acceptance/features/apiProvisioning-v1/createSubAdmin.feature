@@ -9,7 +9,7 @@ Feature: create a subadmin
 
   @smokeTest
   Scenario: admin creates a subadmin
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     And group "brand-new-group" has been created
     When the administrator makes user "brand-new-user" a subadmin of group "brand-new-group" using the provisioning API
     Then the OCS status code should be "100"
@@ -25,7 +25,7 @@ Feature: create a subadmin
     And user "nonexistentuser" should not be a subadmin of group "brand-new-group"
 
   Scenario: admin tries to create a subadmin using a group which does not exist
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     And group "not-group" has been deleted
     When the administrator makes user "brand-new-user" a subadmin of group "not-group" using the provisioning API
     Then the OCS status code should be "102"
@@ -33,7 +33,7 @@ Feature: create a subadmin
     And the API should not return any data
 
   Scenario: subadmin of a group tries to make another user subadmin of their group
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username       |
       | subadmin       |
       | brand-new-user |
@@ -46,7 +46,7 @@ Feature: create a subadmin
     And user "brand-new-user" should not be a subadmin of group "brand-new-group"
 
   Scenario: normal user should not be able to make another user a subadmin
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username       |
       | Alice          |
       | Brian          |

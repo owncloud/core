@@ -2,7 +2,7 @@
 Feature: sharees
 
   Background:
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | sharee1  |
@@ -453,7 +453,7 @@ Feature: sharees
   @skipOnLDAP
   Scenario Outline: Enumerate only group members - only show partial results from member groups
     Given using OCS API version "<ocs-api-version>"
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username | displayname |
       | another  | Another     |
     And user "Another" has been added to group "ShareeGroup2"
@@ -538,7 +538,7 @@ Feature: sharees
       | 2               | 200        | 200         |
 
   Scenario Outline: Search without exact match such that the search string matches the user getting the sharees
-    Given user "sharee2" has been created with default attributes and skeleton files
+    Given user "sharee2" has been created with default attributes and small skeleton files
     And using OCS API version "<ocs-api-version>"
     When user "sharee1" gets the sharees using the sharing API with parameters
       | search   | sharee |

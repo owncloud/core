@@ -9,7 +9,7 @@ Feature: remove subadmin
 
   @smokeTest
   Scenario: admin removes subadmin from a group
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     And group "brand-new-group" has been created
     And user "brand-new-user" has been made a subadmin of group "brand-new-group"
     When the administrator removes user "brand-new-user" from being a subadmin of group "brand-new-group" using the provisioning API
@@ -18,7 +18,7 @@ Feature: remove subadmin
     And user "brand-new-user" should not be a subadmin of group "brand-new-group"
 
   Scenario: subadmin tries to remove other subadmin in the group
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username         |
       | subadmin         |
       | another-subadmin |
@@ -31,7 +31,7 @@ Feature: remove subadmin
     And user "another-subadmin" should be a subadmin of group "brand-new-group"
 
   Scenario: normal user tries to remove subadmin in the group
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username       |
       | subadmin       |
       | brand-new-user |
@@ -44,7 +44,7 @@ Feature: remove subadmin
     And user "subadmin" should be a subadmin of group "brand-new-group"
 
   Scenario: subadmin should not be able to remove subadmin of another group
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username         |
       | subadmin         |
       | another-subadmin |

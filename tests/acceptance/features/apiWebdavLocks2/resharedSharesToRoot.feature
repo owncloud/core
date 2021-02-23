@@ -2,7 +2,7 @@
 Feature: lock should propagate correctly if a share is reshared
 
   Background:
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |

@@ -3,7 +3,7 @@ Feature: Comments
 
   Background:
     Given using new DAV path
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
 
   @smokeTest
   Scenario: Getting info of comments using files endpoint

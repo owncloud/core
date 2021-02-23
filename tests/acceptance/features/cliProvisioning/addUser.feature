@@ -35,13 +35,13 @@ Feature: add a user using the using the occ command
       | email       | brand-new-user@example.com |
 
   Scenario: admin tries to create an existing user
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     When the administrator tries to create a user "brand-new-user" using the occ command
     Then the command should have failed with exit code 1
     And the command output should contain the text 'The user "%username%" already exists.' about user "brand-new-user"
 
   Scenario: admin tries to create an existing disabled user
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     And user "brand-new-user" has been disabled
     When the administrator tries to create a user "brand-new-user" using the occ command
     Then the command should have failed with exit code 1
@@ -86,7 +86,7 @@ Feature: add a user using the using the occ command
     And the display name of user "brand-new-user" should be "Brand-New-User"
 
   Scenario: admin tries to create an existing user but with username containing capital letters
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     When the administrator creates this user using the occ command:
       | username       |
       | Brand-New-User |

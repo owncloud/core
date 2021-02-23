@@ -3,7 +3,7 @@ Feature: sharing - current oC10 behavior for issue-30325
 
   Background:
     Given using OCS API version "1"
-    And these users have been created with default attributes and skeleton files:
+    And these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |

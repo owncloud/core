@@ -9,7 +9,7 @@ Feature: remove subadmin - current oC10 behavior for issue-31276
 
   @issue-31276
   Scenario: subadmin tries to remove other subadmin in the group
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username         |
       | subadmin         |
       | another-subadmin |
@@ -24,7 +24,7 @@ Feature: remove subadmin - current oC10 behavior for issue-31276
 
   @issue-31276
   Scenario: normal user tries to remove subadmin in the group
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username       |
       | subadmin       |
       | brand-new-user |

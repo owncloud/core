@@ -3,9 +3,9 @@ Feature: current oC10 behavior for issue-31276
 
   Background:
     Given using server "REMOTE"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
     And using server "LOCAL"
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
 
   @issue-31276
   Scenario Outline: Remote sharee tries to delete an accepted federated share sending wrong password

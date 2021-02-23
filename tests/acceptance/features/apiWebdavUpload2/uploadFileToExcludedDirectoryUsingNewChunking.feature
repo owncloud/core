@@ -7,7 +7,7 @@ Feature: users cannot upload a file to or into an excluded directory using new c
   Background:
     Given using OCS API version "1"
     And using new DAV path
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
 
   Scenario: Upload a file to an excluded directory name using new chunking
     When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command

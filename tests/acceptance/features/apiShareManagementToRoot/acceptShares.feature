@@ -7,7 +7,7 @@ Feature: accept/decline shares coming from internal users
   Background:
     Given using OCS API version "1"
     And using new DAV path
-    And these users have been created with default attributes and skeleton files:
+    And these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -549,7 +549,7 @@ Feature: accept/decline shares coming from internal users
 
   Scenario: user accepts shares received from multiple users with the same name when auto-accept share is disabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
-    And user "David" has been created with default attributes and skeleton files
+    And user "David" has been created with default attributes and small skeleton files
     And user "Brian" has shared folder "/PARENT" with user "Alice"
     And user "Carol" has shared folder "/PARENT" with user "Alice"
     When user "Alice" accepts share "/PARENT" offered by user "Brian" using the sharing API
@@ -680,7 +680,7 @@ Feature: accept/decline shares coming from internal users
 
   @skipOnLDAP @skipOnOcV10.5 @skipOnOcV10.6.0
   Scenario: user shares folder with matching folder name a user before that user has logged in
-    Given these users have been created with skeleton files but not initialized:
+    Given these users have been created with small skeleton files but not initialized:
       | username |
       | David    |
     And user "Alice" uploads file with content "uploaded content" to "/PARENT/abc.txt" using the WebDAV API

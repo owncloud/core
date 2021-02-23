@@ -6,7 +6,7 @@ Feature: reset user password
 
   @skipOnEncryption @issue-36985
   Scenario: user should get email when the administrator changes their password and specifies to also send email
-    Given these users have been created with skeleton files:
+    Given these users have been created with small skeleton files:
       | username       | password  | displayname | email                    |
       | brand-new-user | %regular% | New user    | brand.new.user@oc.com.np |
     When the administrator resets the password of user "brand-new-user" to "%alt1%" sending email using the occ command

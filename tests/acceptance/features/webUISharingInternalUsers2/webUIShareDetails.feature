@@ -6,7 +6,7 @@ Feature: WebUI share details for shares created using internal users
 
   @skipOnOcV10.3
   Scenario: sharing indicator of items inside a shared folder
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and large skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -19,7 +19,7 @@ Feature: WebUI share details for shares created using internal users
 
   @skipOnOcV10.3
   Scenario: sharing indicator of items inside a shared folder two levels down
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and large skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -35,7 +35,7 @@ Feature: WebUI share details for shares created using internal users
 
   @skipOnOcV10.3
   Scenario: sharing indicator of items inside a re-shared folder
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and large skeleton files:
       | username |
       | Alice    |
     And these users have been created without skeleton files:
@@ -52,7 +52,7 @@ Feature: WebUI share details for shares created using internal users
 
   @skipOnOcV10.3
   Scenario: no sharing indicator of items inside a not shared folder
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and large skeleton files:
       | username |
       | Alice    |
     And user "Alice" has logged in using the webUI
@@ -99,7 +99,7 @@ Feature: WebUI share details for shares created using internal users
 
   @skipOnOcV10.3
   Scenario: sharing indicator for file uploaded inside a shared folder
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and large skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -112,7 +112,7 @@ Feature: WebUI share details for shares created using internal users
 
   @skipOnOcV10.3
   Scenario: sharing indicator for folder created inside a shared folder
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and large skeleton files:
       | username |
       | Alice    |
       | Brian    |

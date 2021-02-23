@@ -6,7 +6,7 @@ Feature: Scanning files on local storage
 
   @issue-33670 @skipOnOcV10
   Scenario: Adding a file to local storage and running scan should add files.
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And using new DAV path
     And the administrator has set the external storage "local_storage" to be never scanned automatically
     When the administrator creates file "hello1.txt" with content "<? php :)" in local storage using the testing API
@@ -23,7 +23,7 @@ Feature: Scanning files on local storage
 
   @issue-33670 @skipOnOcV10
   Scenario: Adding a file to local storage and running scan for a specific path should add files for only that path.
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And using new DAV path
     And the administrator has set the external storage "local_storage" to be never scanned automatically
     And user "Alice" has created folder "/local_storage/folder1"
@@ -47,7 +47,7 @@ Feature: Scanning files on local storage
 
   @files_sharing-app-required @skipOnLDAP
   Scenario Outline: Adding a folder to local storage, sharing with groups and running scan for specific group should add files for users of that group
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -80,7 +80,7 @@ Feature: Scanning files on local storage
       | commas,in,group,name |
 
   Scenario: Adding a folder to local storage, sharing with groups and running scan for a list of groups should add files for users in the groups
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -138,7 +138,7 @@ Feature: Scanning files on local storage
       | /local_storage3/folder3/hello3.txt |
 
   Scenario: Deleting a file from local storage and running scan for a specific path should remove the file.
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And using new DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/local_storage/hello1.txt"
     When user "Alice" requests "/remote.php/dav/files/%username%/local_storage" with "PROPFIND" using basic auth
@@ -154,7 +154,7 @@ Feature: Scanning files on local storage
       | /local_storage/hello1.txt |
 
   Scenario: Adding a file on local storage and running file scan for a specific user should add file for only that user
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -183,7 +183,7 @@ Feature: Scanning files on local storage
       | /local_storage2/hello1.txt |
 
   Scenario: Adding a file on local storage and running file scan for a specific group should add file for only the users of that group
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |

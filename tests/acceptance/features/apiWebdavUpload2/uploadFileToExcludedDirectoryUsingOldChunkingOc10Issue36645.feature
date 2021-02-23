@@ -7,7 +7,7 @@ Feature: users cannot upload a file to or into an excluded directory using old c
   Background:
     Given using OCS API version "1"
     And using old DAV path
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
 
   @issue-36645
   Scenario: Upload a file to an excluded directory name using old chunking

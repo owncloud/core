@@ -9,7 +9,7 @@ Feature: get users - current oC10 behavior for issue-31276
 
   @issue-31276
   Scenario: normal user tries to get other users
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username         |
       | brand-new-user   |
       | another-new-user |

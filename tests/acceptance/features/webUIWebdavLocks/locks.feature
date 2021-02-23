@@ -6,7 +6,7 @@ Feature: Locks
 
   Background:
     #do not set email, see bugs in https://github.com/owncloud/core/pull/32250#issuecomment-434615887
-    Given these users have been created with skeleton files:
+    Given these users have been created with large skeleton files:
       | username       |
       | brand-new-user |
     And user "brand-new-user" has logged in using the webUI
@@ -25,7 +25,7 @@ Feature: Locks
     But file "data.tar.gz" should not be marked as locked on the webUI
 
   Scenario: setting a lock shows the display name of a user in the locking details
-    Given these users have been created with skeleton files:
+    Given these users have been created with large skeleton files:
       | username               | displayname   |
       | user-with-display-name | My fancy name |
     Given user "user-with-display-name" has locked folder "simple-folder" setting the following properties
@@ -38,7 +38,7 @@ Feature: Locks
 
   @skipOnOcV10 @issue-34315
   Scenario: setting a lock shows the current display name of a user in the locking details
-    Given these users have been created with skeleton files:
+    Given these users have been created with large skeleton files:
       | username               | displayname   |
       | user-with-display-name | My fancy name |
     Given user "user-with-display-name" has locked folder "simple-folder" setting the following properties
@@ -51,7 +51,7 @@ Feature: Locks
     And file "data.zip" should be marked as locked by user "An ordinary name" in the locks tab of the details panel on the webUI
 
   Scenario: setting a lock shows the display name of a user in the locking details (user has set email address)
-    Given these users have been created with skeleton files:
+    Given these users have been created with large skeleton files:
       | username               | displayname   | email       |
       | user-with-display-name | My fancy name | mail@oc.org |
     Given user "user-with-display-name" has locked folder "simple-folder" setting the following properties
@@ -63,7 +63,7 @@ Feature: Locks
     And file "data.zip" should be marked as locked by user "My fancy name (mail@oc.org)" in the locks tab of the details panel on the webUI
 
   Scenario: setting a lock shows the user name of a user in the locking details (user has set email address)
-    Given these users have been created with skeleton files:
+    Given these users have been created with large skeleton files:
       | username        | email       |
       | user-with-email | mail@oc.org |
     Given user "user-with-email" has locked folder "simple-folder" setting the following properties
@@ -93,7 +93,7 @@ Feature: Locks
 
   @skipOnOcV10 @issue-33867 @files_sharing-app-required
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-with-others page
-    Given these users have been created with skeleton files:
+    Given these users have been created with large skeleton files:
       | username |
       | receiver |
     And user "brand-new-user" has locked folder "simple-folder" setting the following properties
@@ -136,7 +136,7 @@ Feature: Locks
 
   @skipOnOcV10 @issue-33867 @files_sharing-app-required
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-with-you page
-    Given these users have been created with skeleton files:
+    Given these users have been created with large skeleton files:
       | username |
       | sharer   |
     And user "sharer" has locked folder "simple-folder" setting the following properties
@@ -162,7 +162,7 @@ Feature: Locks
 
   @files_sharing-app-required
   Scenario: lock set on a shared file shows the lock information for all involved users
-    Given these users have been created with skeleton files:
+    Given these users have been created with large skeleton files:
       | username  |
       | sharer    |
       | receiver  |
@@ -217,7 +217,7 @@ Feature: Locks
 
   @files_sharing-app-required
   Scenario Outline: decline locked folder
-    Given these users have been created with skeleton files:
+    Given these users have been created with large skeleton files:
       | username |
       | sharer   |
     And user "sharer" has created folder "/to-share-folder"
@@ -236,7 +236,7 @@ Feature: Locks
 
   @files_sharing-app-required
   Scenario Outline: accept previously declined locked folder
-    Given these users have been created with skeleton files:
+    Given these users have been created with large skeleton files:
       | username |
       | sharer   |
     And user "sharer" has created folder "/to-share-folder"
@@ -257,7 +257,7 @@ Feature: Locks
 
   @files_sharing-app-required
   Scenario Outline: accept previously declined locked folder but create a folder with same name in between
-    Given these users have been created with skeleton files:
+    Given these users have been created with large skeleton files:
       | username |
       | sharer   |
     And user "sharer" has created folder "/to-share-folder"
@@ -280,7 +280,7 @@ Feature: Locks
 
   @files_sharing-app-required
   Scenario Outline: creating a subfolder structure that is the same as the structure of a declined & locked share
-    Given these users have been created with skeleton files:
+    Given these users have been created with large skeleton files:
       | username |
       | sharer   |
     And user "sharer" has created folder "/parent"
@@ -304,7 +304,7 @@ Feature: Locks
 
   @files_sharing-app-required
   Scenario Outline: unsharing a locked file/folder
-    Given these users have been created with skeleton files:
+    Given these users have been created with large skeleton files:
       | username |
       | sharer   |
     And user "sharer" has locked file "lorem.txt" setting the following properties

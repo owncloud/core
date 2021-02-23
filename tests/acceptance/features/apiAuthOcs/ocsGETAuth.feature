@@ -2,7 +2,7 @@
 Feature: auth
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
 
   @issue-32068 @skipOnOcV10
   @issue-ocis-reva-30

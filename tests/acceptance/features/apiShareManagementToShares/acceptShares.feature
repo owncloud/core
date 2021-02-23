@@ -9,7 +9,7 @@ Feature: accept/decline shares coming from internal users
     And auto-accept shares has been disabled
     And using OCS API version "1"
     And using new DAV path
-    And these users have been created with default attributes and skeleton files:
+    And these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -296,7 +296,7 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/Shares/testfile (2) (2).txt" for user "Carol" should be "First file"
 
   Scenario: user accepts shares received from multiple users with the same name when auto-accept share is disabled
-    Given user "David" has been created with default attributes and skeleton files
+    Given user "David" has been created with default attributes and small skeleton files
     And user "Brian" has shared folder "/PARENT" with user "Alice"
     And user "Carol" has shared folder "/PARENT" with user "Alice"
     And user "Alice" has created folder "Shares"
@@ -437,7 +437,7 @@ Feature: accept/decline shares coming from internal users
 
   @skipOnLDAP
   Scenario: user shares folder with matching folder name a user before that user has logged in
-    Given these users have been created with skeleton files but not initialized:
+    Given these users have been created with small skeleton files but not initialized:
       | username |
       | David    |
     And user "Alice" uploads file with content "uploaded content" to "/PARENT/abc.txt" using the WebDAV API

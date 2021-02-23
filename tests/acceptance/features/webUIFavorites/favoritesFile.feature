@@ -37,7 +37,7 @@ Feature: Mark file as favorite
     And folder "simple-empty-folder" should not be listed in the favorites page on the webUI
 
   Scenario: mark files with same name and different path as favorites and list them in favourites page
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and large skeleton files
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
     When the user marks file "lorem.txt" as favorite using the webUI

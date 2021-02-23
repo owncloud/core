@@ -5,7 +5,7 @@ Feature: sharing
   So that ownCloud users cannot share file or folder
 
   Background:
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -99,7 +99,7 @@ Feature: sharing
   Scenario Outline: user shares a file with user who is in their group when sharing outside the group has been restricted
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    And user "Carol" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and small skeleton files
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"
     When parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
@@ -115,7 +115,7 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And group "grp2" has been created
     And group "grp1" has been created
-    And user "Carol" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and small skeleton files
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp2"
     When parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
@@ -144,7 +144,7 @@ Feature: sharing
   Scenario Outline: user who is a member of a group tries to share a file in the group when group sharing has been disabled
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    And user "Carol" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and small skeleton files
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"
     When parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"

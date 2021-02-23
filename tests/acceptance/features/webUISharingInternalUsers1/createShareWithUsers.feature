@@ -6,7 +6,7 @@ Feature: Sharing files and folders with internal users
 
   @smokeTest
   Scenario: share a file & folder with another internal user
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and large skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -23,7 +23,7 @@ Feature: Sharing files and folders with internal users
 
   Scenario: share a folder with other user and then it should be listed on Shared with Others page
     Given user "Alice" has been created with default attributes and without skeleton files
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and large skeleton files
     And user "Brian" has shared file "lorem.txt" with user "Alice"
     And user "Brian" has shared file "simple-folder" with user "Alice"
     And user "Brian" has logged in using the webUI
@@ -33,7 +33,7 @@ Feature: Sharing files and folders with internal users
 
   Scenario: share two file with same name but different paths
     Given user "Alice" has been created with default attributes and without skeleton files
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and large skeleton files
     And user "Brian" has shared file "lorem.txt" with user "Alice"
     And user "Brian" has logged in using the webUI
     When the user opens folder "simple-folder" using the webUI
@@ -43,7 +43,7 @@ Feature: Sharing files and folders with internal users
     And file "lorem.txt" with path "/simple-folder" should be listed in the shared with others page on the webUI
 
   Scenario: user shares the file/folder with another internal user and delete the share with user
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and large skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -57,7 +57,7 @@ Feature: Sharing files and folders with internal users
 
   @skipOnOcV10.3 @skipOnOcV10.4
   Scenario Outline: user shares a file with another user with unusual usernames
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and large skeleton files
     And these users have been created without skeleton files:
       | username   |
       | <username> |
@@ -306,7 +306,7 @@ Feature: Sharing files and folders with internal users
     Then 2 public link shares with name "Public link" should be visible on the webUI
 
   Scenario Outline: user with unusual username shares a file & folder with another internal user
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and large skeleton files:
       | username   |
       | Alice      |
       | <username> |

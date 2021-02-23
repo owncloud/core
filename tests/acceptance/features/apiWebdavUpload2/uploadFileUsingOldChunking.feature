@@ -7,7 +7,7 @@ Feature: upload file using old chunking
   Background:
     Given using OCS API version "1"
     And using old DAV path
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
 
   @skipOnOcV10 @issue-36115
   Scenario: Upload chunked file asc

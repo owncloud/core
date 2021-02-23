@@ -4,7 +4,7 @@ Feature: sharing
   Background:
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And these users have been created with default attributes and skeleton files:
+    And these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -94,7 +94,7 @@ Feature: sharing
 
   Scenario: Move files between shares by different users
     Given the administrator has enabled DAV tech_preview
-    And user "Carol" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and small skeleton files
     And user "Alice" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "Alice" has shared folder "/PARENT" with user "Carol"
     And user "Brian" has shared folder "/PARENT" with user "Carol"

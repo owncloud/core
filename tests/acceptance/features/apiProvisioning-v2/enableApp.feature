@@ -17,7 +17,7 @@ Feature: enable an app
 
   @issue-31276 @skipOnOcV10
   Scenario: subadmin tries to enable an app
-    Given user "subadmin" has been created with default attributes and skeleton files
+    Given user "subadmin" has been created with default attributes and small skeleton files
     And group "brand-new-group" has been created
     And user "subadmin" has been made a subadmin of group "brand-new-group"
     And app "comments" has been disabled
@@ -28,7 +28,7 @@ Feature: enable an app
 
   @issue-31276 @skipOnOcV10
   Scenario: normal user tries to enable an app
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     And app "comments" has been disabled
     When user "brand-new-user" enables app "comments"
     Then the OCS status code should be "401"

@@ -9,7 +9,7 @@ Feature: get user groups
 
   @issue-31276
   Scenario: normal user tries to get the groups of another user
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username         |
       | brand-new-user   |
       | another-new-user |

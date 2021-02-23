@@ -9,7 +9,7 @@ Feature: add users to group
 
   @smokeTest @skipOnLDAP
   Scenario Outline: adding a user to a group
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     And group "<group_id>" has been created
     When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API
     Then the OCS status code should be "200"
@@ -22,7 +22,7 @@ Feature: add users to group
 
   @skipOnLDAP
   Scenario Outline: adding a user to a group
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     And group "<group_id>" has been created
     When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API
     Then the OCS status code should be "200"
@@ -43,7 +43,7 @@ Feature: add users to group
   # once the issue is fixed merge with scenario above
   @skipOnLDAP @toImplementOnOCIS @issue-product-284
   Scenario Outline: adding a user to a group
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     And group "<group_id>" has been created
     When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API
     Then the OCS status code should be "200"
@@ -60,7 +60,7 @@ Feature: add users to group
 
   @issue-31015 @skipOnOcV10
   Scenario Outline: adding a user to a group that has a forward-slash in the group name
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     And group "<group_id>" has been created
     When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API
     Then the OCS status code should be "200"
@@ -74,7 +74,7 @@ Feature: add users to group
 
   @skipOnLDAP @toImplementOnOCIS @issue-product-283
   Scenario Outline: adding a user to a group using mixes of upper and lower case in user and group names
-    Given user "mixed-case-user" has been created with default attributes and skeleton files
+    Given user "mixed-case-user" has been created with default attributes and small skeleton files
     And group "<group_id1>" has been created
     And group "<group_id2>" has been created
     And group "<group_id3>" has been created
@@ -92,7 +92,7 @@ Feature: add users to group
 
   @issue-31276 @skipOnLDAP @skipOnOcV10
   Scenario: normal user tries to add himself to a group
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     When user "brand-new-user" tries to add himself to group "brand-new-group" using the provisioning API
     Then the OCS status code should be "401"
     And the HTTP status code should be "401"
@@ -100,7 +100,7 @@ Feature: add users to group
 
   @skipOnLDAP
   Scenario: admin tries to add user to a group which does not exist
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     And group "nonexistentgroup" has been deleted
     When the administrator tries to add user "brand-new-user" to group "nonexistentgroup" using the provisioning API
     Then the OCS status code should be "400"
@@ -109,7 +109,7 @@ Feature: add users to group
 
   @skipOnLDAP
   Scenario: admin tries to add user to a group without sending the group
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     When the administrator tries to add user "brand-new-user" to group "" using the provisioning API
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
@@ -126,7 +126,7 @@ Feature: add users to group
 
   @skipOnLDAP
   Scenario: subadmin adds users to groups the subadmin is responsible for
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username       |
       | brand-new-user |
       | subadmin       |
@@ -139,7 +139,7 @@ Feature: add users to group
 
   @skipOnLDAP
   Scenario: subadmin tries to add user to groups the subadmin is not responsible for
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username         |
       | brand-new-user   |
       | another-subadmin |
@@ -154,7 +154,7 @@ Feature: add users to group
   # merge this with scenario on line 62 once the issue is fixed
   @issue-31015 @skipOnLDAP @toImplementOnOCIS @issue-product-284
   Scenario Outline: adding a user to a group that has a forward-slash in the group name
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     And the administrator sends a group creation request for group "<group_id>" using the provisioning API
     When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API
     Then the OCS status code should be "200"

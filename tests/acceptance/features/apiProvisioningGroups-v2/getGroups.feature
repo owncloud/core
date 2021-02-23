@@ -73,7 +73,7 @@ Feature: get groups
 
 
   Scenario: subadmin gets all the groups
-    Given user "subadmin" has been created with default attributes and skeleton files
+    Given user "subadmin" has been created with default attributes and small skeleton files
     And group "brand-new-group" has been created
     And group "0" has been created
     And group "España" has been created
@@ -89,7 +89,7 @@ Feature: get groups
 
 
   Scenario: normal user cannot get a list of all the groups
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And group "brand-new-group" has been created
     And group "0" has been created
     And group "España" has been created

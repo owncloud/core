@@ -6,14 +6,14 @@ Feature: Locks
 
   Background:
     #do not set email, see bugs in https://github.com/owncloud/core/pull/32250#issuecomment-434615887
-    Given these users have been created with skeleton files:
+    Given these users have been created with large skeleton files:
       | username       |
       | brand-new-user |
     And user "brand-new-user" has logged in using the webUI
 
   @issue-33867 @files_sharing-app-required
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-with-you page
-    Given these users have been created with skeleton files:
+    Given these users have been created with large skeleton files:
       | username |
       | sharer   |
     And user "sharer" has locked folder "simple-folder" setting the following properties
@@ -64,7 +64,7 @@ Feature: Locks
 
   @issue-33867 @files_sharing-app-required
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-with-you page
-    Given these users have been created with skeleton files:
+    Given these users have been created with large skeleton files:
       | username |
       | sharer   |
     And user "sharer" has locked folder "simple-folder" setting the following properties

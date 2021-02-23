@@ -2,7 +2,7 @@
 Feature: actions on a locked item are possible if the token is sent with the request
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
 
   @smokeTest
   Scenario Outline: rename a file in a locked folder
@@ -57,7 +57,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
   @skipOnOcV10 @issue-34338 @files_sharing-app-required
   Scenario Outline: share receiver cannot rename a file in a folder locked by the owner even when sending the locktoken
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" has shared folder "PARENT" with user "Brian"
     And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
@@ -91,7 +91,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
   @skipOnOcV10 @issue-34360 @files_sharing-app-required
   Scenario Outline: two users having both a shared lock can use the resource
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     And user "Alice" has locked file "textfile0.txt" setting the following properties
       | lockscope | shared |

@@ -6,7 +6,7 @@ Feature: Search
   So that I can find needed files quickly
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and large skeleton files
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
 
@@ -78,7 +78,7 @@ Feature: Search
 
   @files_sharing-app-required
   Scenario: Search for a shared file
-    Given user "Carol" has been created with default attributes and skeleton files
+    Given user "Carol" has been created with default attributes and large skeleton files
     When user "Carol" shares file "/lorem.txt" with user "Alice" using the sharing API
     And the user reloads the current page of the webUI
     And the user searches for "lorem" using the webUI
@@ -86,8 +86,8 @@ Feature: Search
 
   @files_sharing-app-required
   Scenario: Search for a re-shared file
-    Given user "Brian" has been created with default attributes and skeleton files
-    And user "Carol" has been created with default attributes and skeleton files
+    Given user "Brian" has been created with default attributes and large skeleton files
+    And user "Carol" has been created with default attributes and large skeleton files
     When user "Brian" shares file "/lorem.txt" with user "Carol" using the sharing API
     And user "Carol" shares file "/lorem (2).txt" with user "Alice" using the sharing API
     And the user reloads the current page of the webUI
@@ -96,7 +96,7 @@ Feature: Search
 
   @files_sharing-app-required
   Scenario: Search for a shared folder
-    Given user "Carol" has been created with default attributes and skeleton files
+    Given user "Carol" has been created with default attributes and large skeleton files
     When user "Carol" shares folder "simple-folder" with user "Alice" using the sharing API
     And the user reloads the current page of the webUI
     And the user searches for "simple" using the webUI

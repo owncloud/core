@@ -9,7 +9,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
       | username |
       | Alice    |
       | Brian    |
-    And user "Carol" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and large skeleton files
 
   Scenario: expiration date is disabled for sharing with users, user shares with another user
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"

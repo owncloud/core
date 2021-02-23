@@ -9,7 +9,7 @@ Feature: Sharing files and folders with internal groups
       | username |
       | Alice    |
       | Brian    |
-    And user "Carol" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and large skeleton files
     And these groups have been created:
       | groupname |
       | grp1      |
@@ -169,7 +169,7 @@ Feature: Sharing files and folders with internal groups
   @mailhog @skipOnLDAP @skipOnOcV10.3
   Scenario: user should not get an email notification if the user is added to the group after the mail notification was sent
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
-    And user "David" has been created with default attributes and skeleton files
+    And user "David" has been created with default attributes and large skeleton files
     And user "Carol" has logged in using the webUI
     And user "Carol" has shared file "lorem.txt" with group "grp1"
     And the user has opened the share dialog for file "lorem.txt"

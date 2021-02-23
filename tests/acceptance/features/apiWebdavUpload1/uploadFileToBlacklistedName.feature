@@ -6,7 +6,7 @@ Feature: users cannot upload a file to a blacklisted name
 
   Background:
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
 
   @issue-ocis-reva-15
   Scenario Outline: upload a file to a filename that is banned by default

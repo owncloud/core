@@ -2,7 +2,7 @@
 Feature: UNLOCK locked items
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
 
   @smokeTest
   Scenario Outline: unlock a single lock set by the user itself

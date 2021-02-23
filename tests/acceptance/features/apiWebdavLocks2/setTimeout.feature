@@ -2,7 +2,7 @@
 Feature: set timeouts of LOCKS
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
 
   @skipOnOcV10.3 @skipOnOcV10.4
   Scenario Outline: do not set timeout on folder and check the default timeout

@@ -2,12 +2,12 @@
 Feature: cannot share resources outside the group when share with membership groups is enabled
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
 
   Scenario Outline: sharer should not be able to share a folder to a group which he/she is not member of when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And group "grp0" has been created
     And group "grp1" has been created
     And user "Alice" has been added to group "grp0"
@@ -24,7 +24,7 @@ Feature: cannot share resources outside the group when share with membership gro
   Scenario Outline: sharer should be able to share a folder to a user who is not member of sharer group when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And group "grp0" has been created
     And user "Alice" has been added to group "grp0"
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
@@ -39,7 +39,7 @@ Feature: cannot share resources outside the group when share with membership gro
   Scenario Outline: sharer should be able to share a folder to a group which he/she is member of when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And group "grp0" has been created
     And user "Alice" has been added to group "grp0"
     And user "Brian" has been added to group "grp0"
@@ -55,7 +55,7 @@ Feature: cannot share resources outside the group when share with membership gro
   Scenario Outline: sharer should not be able to share a file to a group which he/she is not member of when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And group "grp0" has been created
     And group "grp1" has been created
     And user "Alice" has been added to group "grp0"
@@ -72,7 +72,7 @@ Feature: cannot share resources outside the group when share with membership gro
   Scenario Outline: sharer should be able to share a file to a group which he/she is member of when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And group "grp0" has been created
     And user "Alice" has been added to group "grp0"
     And user "Brian" has been added to group "grp0"
@@ -88,7 +88,7 @@ Feature: cannot share resources outside the group when share with membership gro
   Scenario Outline: sharer should be able to share a file to a user who is not a member of sharer group when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And group "grp0" has been created
     And user "Alice" has been added to group "grp0"
     When user "Alice" shares folder "/textfile0.txt" with user "Brian" using the sharing API

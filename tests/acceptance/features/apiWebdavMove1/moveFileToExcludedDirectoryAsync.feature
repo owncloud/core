@@ -6,7 +6,7 @@ Feature: users cannot move (rename) a file to or into an excluded directory
 
   Background:
     Given using new DAV path
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
     And the administrator has enabled async operations
 
   Scenario: rename a file to an excluded directory name

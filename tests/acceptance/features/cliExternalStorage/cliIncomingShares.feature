@@ -7,7 +7,7 @@ Feature: poll incoming shares
   @files_sharing-app-required
   Scenario: poll incoming share with a federation share of deep nested folders when there is a file change in remote end
     Given using server "REMOTE"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has created folder "/really/"
     And user "Alice" has created folder "/really/very/"
     And user "Alice" has created folder "/really/very/deeply/"
@@ -17,7 +17,7 @@ Feature: poll incoming shares
     And user "Alice" has created folder "/really/very/deeply/nested/folder/with/sub/"
     And user "Alice" has created folder "/really/very/deeply/nested/folder/with/sub/folders"
     And using server "LOCAL"
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Brian" has stored etag of element "/"
     And user "Alice" from server "REMOTE" has shared "/really" with user "Brian" from server "LOCAL"
     And user "Brian" from server "LOCAL" has accepted the last pending share
@@ -30,10 +30,10 @@ Feature: poll incoming shares
   @files_sharing-app-required
   Scenario: poll incoming share with a federation share and no file change
     Given using server "REMOTE"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has created folder "/shareFolder/"
     And using server "LOCAL"
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Brian" has stored etag of element "/"
     And user "Alice" from server "REMOTE" has shared "/shareFolder" with user "Brian" from server "LOCAL"
     And user "Brian" from server "LOCAL" has accepted the last pending share
@@ -45,11 +45,11 @@ Feature: poll incoming shares
   @files_sharing-app-required
   Scenario: poll incoming share multiple times
     Given using server "REMOTE"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has created folder "/shareFolder/"
     And using server "LOCAL"
     And user "Brian" has stored etag of element "/"
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" from server "REMOTE" has shared "/shareFolder" with user "Brian" from server "LOCAL"
     And user "Brian" from server "LOCAL" has accepted the last pending share
     And using server "LOCAL"
@@ -62,7 +62,7 @@ Feature: poll incoming shares
     Then the etag of element "/" of user "Brian" should not have changed
 
   Scenario: poll incoming share when there is no share
-    Given user "Brian" has been created with default attributes and skeleton files
+    Given user "Brian" has been created with default attributes and small skeleton files
     And user "Brian" has stored etag of element "/"
     When the administrator invokes occ command "incoming-shares:poll"
     Then the etag of element "/" of user "Brian" should not have changed

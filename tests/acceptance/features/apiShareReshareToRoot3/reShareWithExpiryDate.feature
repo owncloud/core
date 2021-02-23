@@ -2,7 +2,7 @@
 Feature: resharing a resource with an expiration date
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
 
   @skipOnOcV10.3
