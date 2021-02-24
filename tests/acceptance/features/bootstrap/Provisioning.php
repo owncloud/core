@@ -1316,12 +1316,15 @@ trait Provisioning {
 			$email = null;
 			$bodyTable = new TableNode([['userid', $user], ['password', $password]]);
 		}
+		$this->emptyLastHTTPStatusCodesArray();
+		$this->emptyLastOCSStatusCodesArray();
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->getAdminUsername(),
 			"POST",
 			"/cloud/users",
 			$bodyTable
 		);
+		$this->pushToLastStatusCodesArrays();
 		$this->addUserToCreatedUsersList(
 			$user,
 			$password,
@@ -1332,6 +1335,21 @@ trait Provisioning {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			OcisHelper::createEOSStorageHome($this->getBaseUrl(), $user, $password);
 			$this->manuallyAddSkeletonFilesForUser($user, $password);
+		}
+	}
+
+	/**
+	 * @When /^the administrator sends a user creation request for the following users with password using the provisioning API$/
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSendsAUserCreationRequestForTheFollowingUsersWithPasswordUsingTheProvisioningApi(TableNode $table) {
+		$this->verifyTableNodeColumns($table, ["username", "password"], ["comment"]);
+		$users = $table->getHash();
+		foreach ($users as $user) {
+			$this->adminSendsUserCreationRequestUsingTheProvisioningApi($user["username"], $user["password"]);
 		}
 	}
 
@@ -1698,6 +1716,21 @@ trait Provisioning {
 		$user = $this->getActualUsername($user);
 		$this->deleteTheUserUsingTheProvisioningApi($user);
 		$this->rememberThatUserIsNotExpectedToExist($user);
+	}
+
+	/**
+	 * @When the administrator deletes the following users using the provisioning API
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDeletesTheFollowingUsersUsingTheProvisioningApi(TableNode $table) {
+		$this->verifyTableNodeColumns($table, ["username"]);
+		$usernames = $table->getHash();
+		foreach ($usernames as $username) {
+			$this->theAdminDeletesUserUsingTheProvisioningApi($username["username"]);
+		}
 	}
 
 	/**
@@ -2318,6 +2351,21 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Then the following users should exist
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theFollowingUsersShouldExist(TableNode $table) {
+		$this->verifyTableNodeColumns($table, ["username"]);
+		$usernames = $table->getHash();
+		foreach ($usernames as $username) {
+			$this->userShouldExist($username["username"]);
+		}
+	}
+
+	/**
 	 * @Then /^user "([^"]*)" should not exist$/
 	 *
 	 * @param string $user
@@ -2331,6 +2379,21 @@ trait Provisioning {
 			"User '$user' should not exist but does exist"
 		);
 		$this->rememberThatUserIsNotExpectedToExist($user);
+	}
+
+	/**
+	 * @Then the following users should not exist
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theFollowingUsersShouldNotExist(TableNode $table) {
+		$this->verifyTableNodeColumns($table, ["username"]);
+		$usernames = $table->getHash();
+		foreach ($usernames as $username) {
+			$this->userShouldNotExist($username["username"]);
+		}
 	}
 
 	/**
@@ -2406,6 +2469,21 @@ trait Provisioning {
 			}
 		}
 		$this->userShouldNotExist($user);
+	}
+
+	/**
+	 * @Given the following users have been deleted
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theFollowingUsersHaveBeenDeleted(TableNode $table) {
+		$this->verifyTableNodeColumns($table, ["username"]);
+		$usernames = $table->getHash();
+		foreach ($usernames as $username) {
+			$this->userHasBeenDeleted($username["username"]);
+		}
 	}
 
 	/**
@@ -2958,6 +3036,21 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When the administrator adds the following users to the following groups using the provisioning API
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theAdministratorAddsUserToTheFollowingGroupsUsingTheProvisioningApi(TableNode $table) {
+		$this->verifyTableNodeColumns($table, ["username", "groupname"], ["comment"]);
+		$rows = $table->getHash();
+		foreach ($rows as $row) {
+			$this->adminAddsUserToGroupUsingTheProvisioningApi($row["username"], $row["groupname"]);
+		}
+	}
+
+	/**
 	 * @When user :user tries to add user :otherUser to group :group using the provisioning API
 	 *
 	 * @param string $user
@@ -3061,6 +3154,8 @@ trait Provisioning {
 		$method = \trim(\strtolower($method));
 		switch ($method) {
 			case "api":
+				$this->emptyLastHTTPStatusCodesArray();
+				$this->emptyLastOCSStatusCodesArray();
 				$result = UserHelper::addUserToGroup(
 					$this->getBaseUrl(),
 					$user, $group,
@@ -3075,6 +3170,7 @@ trait Provisioning {
 					);
 				}
 				$this->response = $result;
+				$this->pushToLastStatusCodesArrays();
 				break;
 			case "occ":
 				$result = SetupHelper::addUserToGroup($group, $user);
@@ -3204,7 +3300,7 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function theseGroupsHaveBeenCreated(TableNode $table) {
-		$this->verifyTableNodeColumns($table, ['groupname']);
+		$this->verifyTableNodeColumns($table, ['groupname'], ['comment']);
 		foreach ($table as $row) {
 			$this->createTheGroup($row['groupname']);
 		}
@@ -3230,6 +3326,21 @@ trait Provisioning {
 			$bodyTable
 		);
 		$this->addGroupToCreatedGroupsList($group);
+	}
+
+	/**
+	 * @Given the administrator sends a group creation request for the following group using the provisioning API
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theAdministratorSendsAGroupCreationRequestForTheFollowingGroupUsingTheProvisioningApi(TableNode $table) {
+		$this->verifyTableNodeColumns($table, ["groupname"], ["comment"]);
+		$groups = $table->getHash();
+		foreach ($groups as $group) {
+			$this->adminSendsGroupCreationRequestUsingTheProvisioningApi($group["groupname"]);
+		}
 	}
 
 	/**
@@ -3535,6 +3646,8 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function deleteTheUserUsingTheProvisioningApi($user) {
+		$this->emptyLastHTTPStatusCodesArray();
+		$this->emptyLastOCSStatusCodesArray();
 		// Always try to delete the user
 		$this->response = UserHelper::deleteUser(
 			$this->getBaseUrl(),
@@ -3543,6 +3656,7 @@ trait Provisioning {
 			$this->getAdminPassword(),
 			$this->ocsApiVersion
 		);
+		$this->pushToLastStatusCodesArrays();
 
 		// Only log a message if the test really expected the user to have been
 		// successfully created (i.e. the delete is expected to work) and
@@ -4211,6 +4325,21 @@ trait Provisioning {
 		$actualUser = $this->getActualUsername($user);
 		$this->retrieveUserInformationAsAdminUsingProvisioningApi($actualUser);
 		$this->theDisplayNameReturnedByTheApiShouldBe($displayname);
+	}
+
+	/**
+	 * @Then the display name of the following users should be
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theDisplayNameOfTheFollowingUsersShouldBe(TableNode $table) {
+		$this->verifyTableNodeColumns($table, ["name", "display-name"]);
+		$users = $table->getHash();
+		foreach ($users as $user) {
+			$this->theDisplayNameOfUserShouldBe($user["name"], $user["display-name"]);
+		}
 	}
 
 	/**

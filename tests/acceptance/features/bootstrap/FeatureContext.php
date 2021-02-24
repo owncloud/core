@@ -315,6 +315,27 @@ class FeatureContext extends BehatVariablesContext {
 		\array_push($this->lastOCSStatusCodesArray, $ocsStatusCode);
 	}
 
+	/**
+	 * Add HTTP and OCS status code of the last response to the respective status code array
+	 *
+	 * @return void
+	 */
+	public function pushToLastStatusCodesArrays() {
+		$this->pushToLastHttpStatusCodesArray(
+			$this->getResponse()->getStatusCode()
+		);
+		try {
+			$this->pushToLastOcsCodesArray(
+				$this->ocsContext->getOCSResponseStatusCode(
+					$this->getResponse()
+				)
+			);
+		} catch (Exception $exception) {
+			// if response couldn't be converted into xml then push "notset" to last ocs status codes array
+			$this->pushToLastOcsCodesArray("notset");
+		}
+	}
+
 	/*
 	 * @var Ldap
 	 */

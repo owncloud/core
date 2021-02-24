@@ -17,14 +17,22 @@ Feature: add user
     And user "brand-new-user" should be able to access a skeleton file
 
   @skipOnOcV10.3
-  Scenario Outline: admin creates a user with special characters in the username
-    Given user "<username>" has been deleted
-    When the administrator sends a user creation request for user "<username>" password "%alt1%" using the provisioning API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
-    And user "<username>" should exist
-    And user "<username>" should be able to access a skeleton file
-    Examples:
+  Scenario: admin creates a user with special characters in the username
+    Given the following users have been deleted
+      | username |
+      | a@-+_.b  |
+      | a space  |
+    When the administrator sends a user creation request for the following users with password using the provisioning API
+      | username | password |
+      | a@-+_.b  | %alt1%   |
+      | a space  | %alt1%   |
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And the following users should exist
+      | username |
+      | a@-+_.b  |
+      | a space  |
+    And the following users should be able to access a skeleton file
       | username |
       | a@-+_.b  |
       | a space  |
@@ -53,18 +61,24 @@ Feature: add user
     And user "brand-new-user" should belong to group "brand-new-group"
     And user "brand-new-user" should be able to access a skeleton file
 
-  Scenario Outline: admin creates a user and specifies a password with special characters
-    Given user "brand-new-user" has been deleted
-    When the administrator sends a user creation request for user "brand-new-user" password "<password>" using the provisioning API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
-    And user "brand-new-user" should exist
-    And user "brand-new-user" should be able to access a skeleton file
-    Examples:
-      | password                     | comment                               |
-      | !@#$%^&*()-_+=[]{}:;,.<>?~/\ | special characters                    |
-      | España§àôœ€                  | special European and other characters |
-      | नेपाली                       | Unicode                               |
+  Scenario: admin creates a user and specifies a password with special characters
+    When the administrator sends a user creation request for the following users with password using the provisioning API
+      | username        | password                     | comment                               |
+      | brand-new-user1 | !@#$%^&*()-_+=[]{}:;,.<>?~/\ | special characters                    |
+      | brand-new-user2 | España§àôœ€                  | special European and other characters |
+      | brand-new-user3 | नेपाली                         | Unicode                               |
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And the following users should exist
+      | username        |
+      | brand-new-user1 |
+      | brand-new-user2 |
+      | brand-new-user3 |
+    And the following users should be able to access a skeleton file
+      | username        |
+      | brand-new-user1 |
+      | brand-new-user2 |
+      | brand-new-user3 |
 
   Scenario: admin creates a user and specifies an invalid password, containing just space
     Given user "brand-new-user" has been deleted
@@ -106,14 +120,34 @@ Feature: add user
     And the HTTP status code should be "200"
     And the API should not return any data
 
-  Scenario Outline: admin creates a user with unusual username
-    Given user "<username>" has been deleted
-    When the administrator sends a user creation request for user "<username>" password "%alt1%" using the provisioning API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
-    And user "<username>" should exist
-    And user "<username>" should be able to access a skeleton file
-    Examples:
+  Scenario: admin creates a user with unusual username
+    Given the following users have been deleted
+      | username |
+      | user-1   |
+      | null     |
+      | nil      |
+      | 123      |
+      | -123     |
+      | 0.0      |
+    When the administrator sends a user creation request for the following users with password using the provisioning API
+      | username | password |
+      | user-1   | %alt1%   |
+      | null     | %alt1%   |
+      | nil      | %alt1%   |
+      | 123      | %alt1%   |
+      | -123     | %alt1%   |
+      | 0.0      | %alt1%   |
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And the following users should exist
+      | username |
+      | user-1   |
+      | null     |
+      | nil      |
+      | 123      |
+      | -123     |
+      | 0.0      |
+    And the following users should be able to access a skeleton file
       | username |
       | user-1   |
       | null     |

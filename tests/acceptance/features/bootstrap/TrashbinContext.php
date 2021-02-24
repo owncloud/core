@@ -437,9 +437,7 @@ class TrashbinContext implements Context {
 		foreach ($paths as $path) {
 			$this->deleteFileFromTrashbin($user, $path["path"]);
 			
-			$this->featureContext->pushToLastHttpStatusCodesArray(
-				$this->featureContext->getResponse()->getStatusCode()
-			);
+			$this->featureContext->pushToLastStatusCodesArrays();
 		}
 	}
 
@@ -652,9 +650,7 @@ class TrashbinContext implements Context {
 		foreach ($paths as $originalPath) {
 			$this->elementInTrashIsRestored($user, $originalPath["path"]);
 			
-			$this->featureContext->pushToLastHttpStatusCodesArray(
-				$this->featureContext->getResponse()->getStatusCode()
-			);
+			$this->featureContext->pushToLastStatusCodesArrays();
 		}
 	}
 
