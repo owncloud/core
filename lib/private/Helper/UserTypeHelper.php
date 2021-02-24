@@ -23,6 +23,7 @@ namespace OC\Helper;
 
 use OCP\App\IAppManager;
 use OCP\IConfig;
+use OCP\User;
 
 class UserTypeHelper {
 	/** @var IAppManager */
@@ -56,5 +57,13 @@ class UserTypeHelper {
 			);
 		}
 		return false;
+	}
+
+	public function getUserType($uid) {
+		if ($this->isGuestUser($uid)) {
+			return User::USER_TYPE_GUEST;
+		}
+
+		return User::USER_TYPE_USER;
 	}
 }
