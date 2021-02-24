@@ -78,7 +78,7 @@ class Storage {
 		//until the end one version per week
 		6 => ['intervalEndsAfter' => -1,      'step' => 604800],
 	];
-	
+
 	/** @var \OCA\Files_Versions\AppInfo\Application */
 	private static $application;
 
@@ -161,8 +161,11 @@ class Storage {
 			}
 
 			list($uid, $filename) = self::getUidAndFilename($filename);
+			// $filename is expected to start with "/" and be a
+			// full path such as "/folder1/folder2/filename"
+			$fullFileName = "/$uid/files$filename";
 			/** @var \OCP\Files\Storage\IStorage $storage */
-			list($storage, $internalPath) = Filesystem::resolvePath($filename);
+			list($storage, $internalPath) = Filesystem::resolvePath($fullFileName);
 			if ($storage->instanceOfStorage(IVersionedStorage::class)) {
 				/** @var IVersionedStorage $storage */
 				if ($storage->saveVersion($internalPath)) {
@@ -762,7 +765,7 @@ class Storage {
 
 		return false;
 	}
-	
+
 	/**
 	 * Static workaround
 	 * @return FileHelper
