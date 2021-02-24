@@ -23,6 +23,7 @@ Summary
 * Bugfix - Fix issues with duplicated file names in the same directory: [#38415](https://github.com/owncloud/core/pull/38415)
 * Bugfix - Show non-generic messages for 403 HTTP status to end user: [#395](https://github.com/owncloud/files_antivirus/issues/395)
 * Bugfix - Fix command maintenance:mimetype:update-db --repair-filecache: [#38425](https://github.com/owncloud/core/issues/38425)
+* Bugfix - Fix storage lookup in versions when storing a new version: [#38430](https://github.com/owncloud/core/pull/38430)
 * Change - Use OcsController and routes instead of API::register: [#37272](https://github.com/owncloud/core/pull/37272)
 * Change - API changes to remove shares pointing to missing files: [#38152](https://github.com/owncloud/core/pull/38152)
 * Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.2): [#38306](https://github.com/owncloud/core/pull/38306)
@@ -188,6 +189,15 @@ Details
 
    https://github.com/owncloud/core/issues/38425
    https://github.com/owncloud/core/pull/38426
+
+* Bugfix - Fix storage lookup in versions when storing a new version: [#38430](https://github.com/owncloud/core/pull/38430)
+
+   Versioning has been integrated with the new storage based versioning IVersionedStorage.
+   Until today this was only tested with objectstore versioning which is hooked up as primary
+   storage. When trying to access a versioned storage which is mounted as non-root this logic did
+   not work out.
+
+   https://github.com/owncloud/core/pull/38430
 
 * Change - Use OcsController and routes instead of API::register: [#37272](https://github.com/owncloud/core/pull/37272)
 
