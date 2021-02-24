@@ -1,0 +1,10 @@
+Enhancement: Polyfill samesite cookie attribute
+
+Polyfill same-site cookie attribute for browsers which don't support it.
+https://auth0.com/blog/browser-behavior-changes-what-developers-need-to-know/
+
+1.) DETECT: tries to detect if given user_agent supports samesite attribute
+2.) FALLBACK: creates a second cookie "cookie-name-legacy" wich has no
+    samesite attribute (recommended by google)
+
+https://github.com/owncloud/core/pull/38400
