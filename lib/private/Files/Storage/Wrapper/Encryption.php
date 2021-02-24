@@ -801,12 +801,13 @@ class Encryption extends Wrapper {
 				if ($preserveMtime) {
 					$this->touch($targetInternalPath, $sourceStorage->filemtime($sourceInternalPath));
 				}
-				if (\substr($targetInternalPath, 0, \strlen('files_trashbin/')) !== 'files_trashbin/') {
+				if ($this->storage->getOwner('/') === $this->uid) {
 					// 1. user1 moves file from home storage to admins's shared folder
 					// 2. user2 grabs the file from admin's shared folder to his own home storage
 					// Admin has a broken copy in his trashbin, which is caused by a wrong encrypted
 					// version stored in the DB. We simply won't update the encrypted version in this
 					// particular case.
+					// If the storage owner different from session uid, deletion should be happening in shared storage.
 					$this->updateEncryptedVersion($sourceStorage, $sourceInternalPath, $targetInternalPath, $isRename);
 				}
 			} else {
