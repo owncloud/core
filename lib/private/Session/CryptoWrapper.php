@@ -86,7 +86,8 @@ class CryptoWrapper {
 
 			// FIXME: Required for CI
 			if (!\defined('PHPUNIT_RUN')) {
-				CookieHelper::setCookie(
+				$cookieHelper = new CookieHelper();
+				$cookieHelper->setCookie(
 					self::COOKIE_NAME,
 					$this->passphrase, [
 					CookieHelper::PATH => \OC::$WEBROOT === '' ? '/' : \OC::$WEBROOT,

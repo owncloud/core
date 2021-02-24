@@ -45,7 +45,7 @@ class CookieHelper {
 	public const POLYFILL_DETECT = 'detect';
 	public const POLYFILL_FALLBACK = 'fallback';
 
-	public static function setCookie(string $name, string $value = '', array $options = [], string $polyfill = self::POLYFILL_FALLBACK): void {
+	public function setCookie(string $name, string $value = '', array $options = [], string $polyfill = self::POLYFILL_FALLBACK): void {
 		// check if given cookie options are allowed
 		foreach (\array_keys($options) as $option) {
 			if (!\in_array($option, [self::PATH, self::DOMAIN, self::EXPIRES, self::SECURE, self::HTTPONLY, self::SAMESITE])) {
@@ -78,7 +78,7 @@ class CookieHelper {
 		// if polyfill is set to POLYFILL_DETECT and $user_agent does not support samesite
 		if (
 			$sameSite === self::SAMESITE_NONE && $secure !== true ||
-			$polyfill === self::POLYFILL_DETECT && !self::canSameSite()
+			$polyfill === self::POLYFILL_DETECT && !$this->canSameSite()
 		) {
 			$sameSite = '';
 		}
@@ -88,7 +88,7 @@ class CookieHelper {
 		// https://web.dev/samesite-cookie-recipes/#handling-incompatible-clients
 		if ($polyfill === self::POLYFILL_FALLBACK && $sameSite !== '') {
 			unset($options[self::SAMESITE]);
-			self::setCookie(self::legacyName($name), $value, $options, self::POLYFILL_DETECT);
+			$this->setCookie(self::legacyName($name), $value, $options, self::POLYFILL_DETECT);
 		}
 
 		if ($path !== '') {
@@ -122,23 +122,23 @@ class CookieHelper {
 	}
 
 	// return the cookie legacy name
-	private static function legacyName(string $name): string {
+	private function legacyName(string $name): string {
 		return \sprintf('%s-legacy', $name);
 	}
 
-	public static function getRequestCookie(IRequest $request, string $name) {
+	public function getRequestCookie(IRequest $request, string $name) {
 		if (\array_key_exists($name, $request->cookies)) {
 			return $request->cookies[$name];
 		}
 
-		if (\array_key_exists(self::legacyName($name), $request->cookies)) {
-			return $request->cookies[self::legacyName($name)];
+		if (\array_key_exists($this->legacyName($name), $request->cookies)) {
+			return $request->cookies[$this->legacyName($name)];
 		}
 
 		return null;
 	}
 
-	public static function canSameSite($user_agent = ''): bool {
+	public function canSameSite($user_agent = ''): bool {
 		if ($user_agent === '') {
 			$user_agent = $_SERVER['HTTP_USER_AGENT'];
 		}
