@@ -138,7 +138,7 @@ class CookieHelper {
 		return null;
 	}
 
-	public function canSameSite($user_agent = ''): bool {
+	public function canSameSite(string $user_agent = ''): bool {
 		if ($user_agent === '') {
 			$user_agent = $_SERVER['HTTP_USER_AGENT'];
 		}
