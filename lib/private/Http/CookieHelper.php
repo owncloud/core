@@ -49,19 +49,14 @@ class CookieHelper {
 		// check if given cookie options are allowed
 		foreach (\array_keys($options) as $option) {
 			if (!\in_array($option, [self::PATH, self::DOMAIN, self::EXPIRES, self::SECURE, self::HTTPONLY, self::SAMESITE])) {
-				\trigger_error(
-					'unknown cookie option : ' . $option,
-					E_WARNING
-				);
+				throw new \Exception('Unknown cookie option:' . $option);
 			}
 		}
 
 		// check if given polyfill mode is supported
 		if (!\in_array($polyfill, [self::POLYFILL_DETECT, self::POLYFILL_FALLBACK])) {
-			\trigger_error(
-				'unknown cookie polyfill : ' . $polyfill,
-				E_WARNING
-			);
+			throw new \Exception('Unknown cookie polyfill:' . $polyfill);
+
 		}
 
 		// defaults
