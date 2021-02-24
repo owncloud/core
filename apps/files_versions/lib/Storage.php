@@ -161,6 +161,8 @@ class Storage {
 			}
 
 			list($uid, $filename) = self::getUidAndFilename($filename);
+			// $filename is expected to start with "/" and be a
+			// full path such as "/folder1/folder2/filename"
 			$fullFileName = "/$uid/files$filename";
 			/** @var \OCP\Files\Storage\IStorage $storage */
 			list($storage, $internalPath) = Filesystem::resolvePath($fullFileName);
