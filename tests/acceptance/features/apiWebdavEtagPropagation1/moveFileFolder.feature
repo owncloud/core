@@ -4,7 +4,7 @@ Feature: propagation of etags when moving files or folders
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-
+  @issue-ocis-1590
   Scenario Outline: renaming a file inside a folder changes its etag
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/upload"
