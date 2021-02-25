@@ -26,6 +26,7 @@
 
 namespace OCA\Files_Sharing\Controller;
 
+use OC\Helper\UserTypeHelper;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\OCSController;
@@ -189,18 +190,22 @@ class ShareesController extends OCSController {
 
 		$foundUserById = false;
 		$lowerSearch = \strtolower($search);
+		$userTypeHelper = new UserTypeHelper();
+
 		foreach ($users as $user) {
 			/**
 			 * Php parses numeric UID strings as integer in array key,
 			 * because of that, we need to learn uid from User object
 			 */
 			$uid = $user->getUID();
+
 			/* @var $user IUser */
 			$entry = [
 				'label' => $user->getDisplayName(),
 				'value' => [
 					'shareType' => Share::SHARE_TYPE_USER,
 					'shareWith' => $uid,
+					'userType' => $userTypeHelper->getUserType($uid),
 				],
 			];
 			$additionalInfo = $this->getAdditionalUserInfo($user);
@@ -281,6 +286,7 @@ class ShareesController extends OCSController {
 		} elseif ($this->additionalInfoField === 'id') {
 			return $user->getUID();
 		}
+
 		return null;
 	}
 

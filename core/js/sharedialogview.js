@@ -334,6 +334,9 @@
 					typeInfo = t('core', 'Federated');
 				}
 			}
+			if(item.value.userType === OC.User.USER_TYPE_GUEST){
+				typeInfo = t('core', 'Guest');
+			}
 
 			var template = this._getAutocompleteItemTemplate();
 			var $el = $(template({

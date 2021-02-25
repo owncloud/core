@@ -41,6 +41,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Share;
+use OCP\User;
 use OCP\Util\UserSearch;
 
 /**
@@ -240,7 +241,7 @@ class ShareesTest extends TestCase {
 				],
 				[],
 				[
-					['label' => 'Test One', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test1']],
+					['label' => 'Test One', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test1' , 'userType' => User::USER_TYPE_USER]],
 				],
 				true,
 				false,
@@ -269,8 +270,8 @@ class ShareesTest extends TestCase {
 				],
 				[],
 				[
-					['label' => 'Test One', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test1']],
-					['label' => 'Test Two', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test2']],
+					['label' => 'Test One', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test1', 'userType' => User::USER_TYPE_USER]],
+					['label' => 'Test Two', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test2', 'userType' => User::USER_TYPE_USER]],
 				],
 				false,
 				false,
@@ -318,11 +319,11 @@ class ShareesTest extends TestCase {
 					$this->getUserMock('test2', 'Test Two'),
 				],
 				[
-					['label' => 'Test', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test0']],
+					['label' => 'Test', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test0', 'userType' => User::USER_TYPE_USER]],
 				],
 				[
-					['label' => 'Test One', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test1']],
-					['label' => 'Test Two', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test2']],
+					['label' => 'Test One', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test1', 'userType' => User::USER_TYPE_USER]],
+					['label' => 'Test Two', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test2', 'userType' => User::USER_TYPE_USER]],
 				],
 				false,
 				false,
@@ -338,7 +339,7 @@ class ShareesTest extends TestCase {
 					$this->getUserMock('test2', 'Test Two'),
 				],
 				[
-					['label' => 'Test', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test0']],
+					['label' => 'Test', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test0', 'userType' => User::USER_TYPE_USER]],
 				],
 				[],
 				true,
@@ -355,7 +356,7 @@ class ShareesTest extends TestCase {
 				],
 				[],
 				[
-					['label' => 'Test One', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test1']],
+					['label' => 'Test One', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test1', 'userType' => User::USER_TYPE_USER]],
 				],
 				true,
 				false,
@@ -391,8 +392,8 @@ class ShareesTest extends TestCase {
 				],
 				[],
 				[
-					['label' => 'Test One', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test1']],
-					['label' => 'Test Two', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test2']],
+					['label' => 'Test One', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test1', 'userType' => User::USER_TYPE_USER]],
+					['label' => 'Test Two', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test2', 'userType' => User::USER_TYPE_USER]],
 				],
 				false,
 				false,
@@ -431,10 +432,10 @@ class ShareesTest extends TestCase {
 					]],
 				],
 				[
-					['label' => 'Test One', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test']],
+					['label' => 'Test One', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test', 'userType' => User::USER_TYPE_USER]],
 				],
 				[
-					['label' => 'Test Two', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test2']],
+					['label' => 'Test Two', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test2', 'userType' => User::USER_TYPE_USER]],
 				],
 				false,
 				false,
@@ -453,7 +454,7 @@ class ShareesTest extends TestCase {
 					]],
 				],
 				[
-					['label' => 'Test One', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test']],
+					['label' => 'Test One', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test', 'userType' => User::USER_TYPE_USER]],
 				],
 				[],
 				true,
@@ -484,7 +485,8 @@ class ShareesTest extends TestCase {
 						'value' => [
 							'shareType' => Share::SHARE_TYPE_USER,
 							'shareWith' => 'another1',
-							'shareWithAdditionalInfo' => 'another1'
+							'shareWithAdditionalInfo' => 'another1',
+							'userType' => User::USER_TYPE_USER
 						]
 					],
 				],
@@ -1964,7 +1966,7 @@ class ShareesTest extends TestCase {
 					$this->invokePrivate($this->sharees, 'offset'))
 			->willReturn([$user]);
 
-		$exactExpected = [['label' => 'Bob', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'testBob']]];
+		$exactExpected = [['label' => 'Bob', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'testBob', 'userType' => User::USER_TYPE_USER]]];
 		$expected = [];
 
 		$this->invokePrivate($this->sharees, 'getUsers', [$searchTerm]);

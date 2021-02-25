@@ -106,6 +106,7 @@ class Share extends Constants {
 					\OC_Util::addScript('core', 'sharedialogview');
 					\OC_Util::addScript('core', 'share');
 					\OC_Util::addStyle('core', 'share');
+					\OC_Util::addScript('core', 'user');
 				}
 				return true;
 			}

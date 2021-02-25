@@ -28,6 +28,7 @@
 		"l10n.js",
 		"apps.js",
 		"share.js",
+		"user.js",
 		"shareconfigmodel.js",
 		"sharemodel.js",
 		"sharescollection.js",
