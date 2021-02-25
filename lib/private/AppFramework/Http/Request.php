@@ -372,7 +372,8 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return string|null the value in the $_COOKIE element
 	 */
 	public function getCookie($key) {
-		return CookieHelper::getRequestCookie($this, $key);
+		$cookieHelper = new CookieHelper();
+		return $cookieHelper->getRequestCookie($this, $key);
 	}
 
 	/**

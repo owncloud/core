@@ -166,7 +166,8 @@ class Internal extends Session {
 
 		\session_start();
 
-		CookieHelper::setCookie(
+		$cookieHelper = new CookieHelper();
+		$cookieHelper->setCookie(
 			\session_name(),
 			\session_id(), [
 			CookieHelper::PATH => \OC::$WEBROOT ?: '/',
