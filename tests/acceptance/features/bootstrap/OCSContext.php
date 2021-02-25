@@ -27,6 +27,7 @@ use Behat\Gherkin\Node\TableNode;
 use Psr\Http\Message\ResponseInterface;
 use PHPUnit\Framework\Assert;
 use TestHelpers\OcsApiHelper;
+use TestHelpers\TranslationHelper;
 
 require_once 'bootstrap.php';
 
@@ -713,11 +714,7 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function theOCSStatusMessageShouldBe($statusMessage, $language=null) {
-		if (!isset($language)) {
-			if (\getenv('OC_LANGUAGE') !== false) {
-				$language = \getenv('OC_LANGUAGE');
-			}
-		}
+		$language = TranslationHelper::getLanguage($language);
 		$statusMessage = $this->getActualStatusMessage($statusMessage, $language);
 
 		Assert::assertEquals(
