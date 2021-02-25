@@ -14,7 +14,7 @@ Feature: add user
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "brand-new-user" should exist
-    And user "brand-new-user" should be able to access a skeleton file
+    And user "brand-new-user" should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
 
   @skipOnOcV10.3
   Scenario Outline: admin creates a user with special characters in the username
@@ -23,7 +23,7 @@ Feature: add user
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "<username>" should exist
-    And user "<username>" should be able to access a skeleton file
+    And user "<username>" should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
     Examples:
       | username |
       | a@-+_.b  |
@@ -51,7 +51,7 @@ Feature: add user
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "brand-new-user" should belong to group "brand-new-group"
-    And user "brand-new-user" should be able to access a skeleton file
+    And user "brand-new-user" should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
 
   Scenario Outline: admin creates a user and specifies a password with special characters
     Given user "brand-new-user" has been deleted
@@ -59,7 +59,7 @@ Feature: add user
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "brand-new-user" should exist
-    And user "brand-new-user" should be able to access a skeleton file
+    And user "brand-new-user" should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
     Examples:
       | password                     | comment                               |
       | !@#$%^&*()-_+=[]{}:;,.<>?~/\ | special characters                    |
@@ -79,7 +79,7 @@ Feature: add user
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "brand-new-user" should exist
-    And user "brand-new-user" should be able to access a skeleton file
+    And user "brand-new-user" should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
 
   Scenario Outline: admin creates a user with username that contains capital letters
     When the administrator sends a user creation request for user "<display-name>" password "%alt1%" using the provisioning API
@@ -112,7 +112,7 @@ Feature: add user
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "<username>" should exist
-    And user "<username>" should be able to access a skeleton file
+    And user "<username>" should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
     Examples:
       | username |
       | user-1   |

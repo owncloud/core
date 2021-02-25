@@ -13,7 +13,7 @@ Feature: add a user using the using the occ command
     Then the command should have been successful
     And the command output should contain the text 'The user "%username%" was created successfully' about user "<username>"
     And user "<username>" should exist
-    And user "<username>" should be able to access a skeleton file
+    And user "<username>" should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
     Examples:
       | username       |
       | brand-new-user |
@@ -28,7 +28,7 @@ Feature: add a user using the using the occ command
     And the command output should contain the text 'Display name set to "Brand New User"'
     And the command output should contain the text 'Email address set to "brand-new-user@example.com"'
     And user "brand-new-user" should exist
-    And user "brand-new-user" should be able to access a skeleton file
+    And user "brand-new-user" should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
     When the administrator retrieves the information of user "brand-new-user" using the provisioning API
     Then the user attributes returned by the API should include
       | displayname | Brand New User             |
@@ -60,7 +60,7 @@ Feature: add a user using the using the occ command
     Then the command should have been successful
     And the command output should contain the text 'The user "%username%" was created successfully' about user "brand-new-user"
     And user "brand-new-user" should exist
-    And user "brand-new-user" should be able to access a skeleton file
+    And user "brand-new-user" should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
     Examples:
       | password                     | comment                               |
       | !@#$%^&*()-_+=[]{}:;,.<>?~/\ | special characters                    |
@@ -82,7 +82,7 @@ Feature: add a user using the using the occ command
     And the command output should contain the text 'The user "%username%" was created successfully' about user "Brand-New-User"
     And user "Brand-New-User" should exist
     And user "brand-new-user" should exist
-    And user "Brand-New-User" should be able to access a skeleton file
+    And user "Brand-New-User" should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
     And the display name of user "brand-new-user" should be "Brand-New-User"
 
   Scenario: admin tries to create an existing user but with username containing capital letters

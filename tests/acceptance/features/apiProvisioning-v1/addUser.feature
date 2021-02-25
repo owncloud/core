@@ -14,7 +14,7 @@ Feature: add user
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "brand-new-user" should exist
-    And user "brand-new-user" should be able to access a skeleton file
+    And user "brand-new-user" should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
 
   @skipOnOcV10.3
   Scenario: admin creates a user with special characters in the username
@@ -32,7 +32,7 @@ Feature: add user
       | username |
       | a@-+_.b  |
       | a space  |
-    And the following users should be able to access a skeleton file
+    And the following users should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
       | username |
       | a@-+_.b  |
       | a space  |
@@ -59,7 +59,7 @@ Feature: add user
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "brand-new-user" should belong to group "brand-new-group"
-    And user "brand-new-user" should be able to access a skeleton file
+    And user "brand-new-user" should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
 
   Scenario: admin creates a user and specifies a password with special characters
     When the administrator sends a user creation request for the following users with password using the provisioning API
@@ -74,7 +74,7 @@ Feature: add user
       | brand-new-user1 |
       | brand-new-user2 |
       | brand-new-user3 |
-    And the following users should be able to access a skeleton file
+    And the following users should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
       | username        |
       | brand-new-user1 |
       | brand-new-user2 |
@@ -93,7 +93,7 @@ Feature: add user
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "brand-new-user" should exist
-    And user "brand-new-user" should be able to access a skeleton file
+    And user "brand-new-user" should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
 
   Scenario Outline: admin creates a user with username that contains capital letters
     When the administrator sends a user creation request for user "<display-name>" password "%alt1%" using the provisioning API
@@ -147,7 +147,7 @@ Feature: add user
       | 123      |
       | -123     |
       | 0.0      |
-    And the following users should be able to access a skeleton file
+    And the following users should be able to upload file "filesForUpload/textfile.txt" to "/textfile.txt"
       | username |
       | user-1   |
       | null     |
