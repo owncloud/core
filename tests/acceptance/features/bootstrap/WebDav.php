@@ -907,21 +907,6 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then the following users should be able to access a skeleton file
-	 *
-	 * @param TableNode $table
-	 *
-	 * @return void
-	 */
-	public function theFollowingUsersShouldBeAbleToAccessASkeletonFile(TableNode $table) {
-		$this->verifyTableNodeColumns($table, ["username"]);
-		$usernames = $table->getHash();
-		foreach ($usernames as $username) {
-			$this->userShouldBeAbleToAccessASkeletonFile($username["username"]);
-		}
-	}
-
-	/**
 	 * @Then the size of the downloaded file should be :size bytes
 	 *
 	 * @param string $size

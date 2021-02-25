@@ -82,7 +82,7 @@ Feature: add users to group
   Scenario: adding a user to a group that has a forward-slash in the group name
     Given user "brand-new-user" has been created with default attributes and small skeleton files
     # After fixing issue-31015, change the following step to "has been created"
-    And the administrator sends a group creation request for the following group using the provisioning API
+    And the administrator sends a group creation request for the following groups using the provisioning API
       | groupname        | comment                            |
       | Mgmt/Sydney      | Slash (special escaping happens)   |
       | Mgmt//NSW/Sydney | Multiple slash                     |
@@ -104,22 +104,39 @@ Feature: add users to group
       | priv/subadmins/1 |
 
   @skipOnLDAP  @toImplementOnOCIS
-  Scenario Outline: adding a user to a group using mixes of upper and lower case in user and group names
+  Scenario: adding a user to a group using mixes of upper and lower case in user and group names
     Given user "mixed-case-user" has been created with default attributes and small skeleton files
-    And group "<group_id1>" has been created
-    And group "<group_id2>" has been created
-    And group "<group_id3>" has been created
-    When the administrator adds user "<user_id>" to group "<group_id1>" using the provisioning API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
-    And user "mixed-case-user" should belong to group "<group_id1>"
-    But user "mixed-case-user" should not belong to group "<group_id2>"
-    And user "mixed-case-user" should not belong to group "<group_id3>"
-    Examples:
-      | user_id         | group_id1            | group_id2            | group_id3            |
-      | MIXED-CASE-USER | Case-Sensitive-Group | case-sensitive-group | CASE-SENSITIVE-GROUP |
-      | Mixed-Case-User | case-sensitive-group | CASE-SENSITIVE-GROUP | Case-Sensitive-Group |
-      | mixed-case-user | CASE-SENSITIVE-GROUP | Case-Sensitive-Group | case-sensitive-group |
+    And these groups have been created:
+      | groupname             |
+      | Case-Sensitive-Group1 |
+      | case-sensitive-group1 |
+      | CASE-SENSITIVE-GROUP1 |
+      | Case-Sensitive-Group2 |
+      | case-sensitive-group2 |
+      | CASE-SENSITIVE-GROUP2 |
+      | Case-Sensitive-Group3 |
+      | case-sensitive-group3 |
+      | CASE-SENSITIVE-GROUP3 |
+    When the administrator adds the following users to the following groups using the provisioning API
+      | username        | groupname             |
+      | Mixed-Case-USER | Case-Sensitive-Group1 |
+      | mixed-case-user | case-sensitive-group2 |
+      | MIXED-CASE-USER | CASE-SENSITIVE-GROUP3 |
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And the following users should belong to the following groups
+      | username        | groupname             |
+      | Mixed-Case-USER | Case-Sensitive-Group1 |
+      | Mixed-Case-User | case-sensitive-group2 |
+      | mixed-case-user | CASE-SENSITIVE-GROUP3 |
+    But the following users should not belong to the following groups
+      | username        | groupname             |
+      | Mixed-Case-USER | Case-Sensitive-Group2 |
+      | mixed-case-user | case-sensitive-group1 |
+      | MIXED-CASE-USER | CASE-SENSITIVE-GROUP1 |
+      | Mixed-Case-USER | Case-Sensitive-Group3 |
+      | mixed-case-user | case-sensitive-group3 |
+      | MIXED-CASE-USER | CASE-SENSITIVE-GROUP2 |
 
   @skipOnLDAP
   Scenario: normal user tries to add himself to a group
