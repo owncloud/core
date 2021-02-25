@@ -56,6 +56,7 @@ Summary
 * Enhancement - Allow force set DB patforms: [#38379](https://github.com/owncloud/core/pull/38379)
 * Enhancement - Added additional connection parameters to redis config: [#38386](https://github.com/owncloud/core/pull/38386)
 * Enhancement - Hide federated user suggestions if system users are found: [#38389](https://github.com/owncloud/core/pull/38389)
+* Enhancement - Indicate existing guest-user as a guest in the share tab: [#38440](https://github.com/owncloud/core/pull/38440)
 
 Details
 -------
@@ -435,6 +436,14 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4392
    https://github.com/owncloud/core/pull/38389
+
+* Enhancement - Indicate existing guest-user as a guest in the share tab: [#38440](https://github.com/owncloud/core/pull/38440)
+
+   Previously, after sharing a file via email with a guest, enter the same email in the tab view on
+   another file, indicates the guest as a user. With this fix, we will see guest instead of user.
+
+   https://github.com/owncloud/core/issues/38422
+   https://github.com/owncloud/core/pull/38440
 
 Changelog for ownCloud Core [10.6.0] (2020-11-25)
 =======================================
