@@ -13,7 +13,7 @@ Feature: Sharing files and folders with internal groups with expiration date set
       | username |
       | Alice    |
       | Brian    |
-    And user "Carol" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and large skeleton files
     And these groups have been created:
       | groupname |
       | grp1      |

@@ -6,7 +6,7 @@ Feature: move (rename) file
 
   Background:
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
 
   @smokeTest
   Scenario Outline: Moving a file
@@ -165,7 +165,7 @@ Feature: move (rename) file
   @files_sharing-app-required
   Scenario Outline: Moving a file to a shared folder with no permissions
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Brian" has created folder "/testshare"
     And user "Brian" has created a share with settings
       | path        | testshare |
@@ -184,7 +184,7 @@ Feature: move (rename) file
   @files_sharing-app-required
   Scenario Outline: Moving a file to overwrite a file in a shared folder with no permissions
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Brian" has created folder "/testshare"
     And user "Brian" has created a share with settings
       | path        | testshare |
@@ -234,7 +234,7 @@ Feature: move (rename) file
   @files_sharing-app-required
   Scenario Outline: Checking file id after a move between received shares
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" has created folder "/folderA"
     And user "Alice" has created folder "/folderB"
     And user "Alice" has shared folder "/folderA" with user "Brian"

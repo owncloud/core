@@ -7,7 +7,7 @@ Feature: upload file using new chunking
   Background:
     Given using OCS API version "1"
     And using new DAV path
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
 
 
   Scenario: Upload chunked file asc with new chunking

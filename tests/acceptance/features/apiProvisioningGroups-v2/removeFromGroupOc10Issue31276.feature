@@ -9,7 +9,7 @@ Feature: remove a user from a group
 
   @issue-31276
   Scenario: normal user tries to remove a user in their group
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username         |
       | brand-new-user   |
       | another-new-user |

@@ -49,7 +49,7 @@ Feature: copy file
   @issue-ocis-reva-11
   Scenario Outline: Copying a file to a folder with no permissions
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Brian" has created folder "/testshare"
     And user "Brian" has created a share with settings
       | path        | testshare |
@@ -69,7 +69,7 @@ Feature: copy file
   @issue-ocis-reva-11
   Scenario Outline: Copying a file to overwrite a file into a folder with no permissions
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Brian" has created folder "/testshare"
     And user "Brian" has created a share with settings
       | path        | testshare |

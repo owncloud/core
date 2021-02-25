@@ -3,7 +3,7 @@
 Feature: changing a public link share
 
   Background:
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
 

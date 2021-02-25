@@ -9,7 +9,7 @@ Feature: get subadmins
 
   @smokeTest
   Scenario: admin gets subadmin users of a group
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     And group "brand-new-group" has been created
     And user "brand-new-user" has been made a subadmin of group "brand-new-group"
     When the administrator gets all the subadmins of group "brand-new-group" using the provisioning API
@@ -19,7 +19,7 @@ Feature: get subadmins
     And the HTTP status code should be "200"
 
   Scenario: admin tries to get subadmin users of a group which does not exist
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     And group "nonexistentgroup" has been deleted
     When the administrator gets all the subadmins of group "nonexistentgroup" using the provisioning API
     Then the OCS status code should be "400"
@@ -28,7 +28,7 @@ Feature: get subadmins
 
   @issue-31276 @skipOnOcV10
   Scenario: subadmin tries to get other subadmins of the same group
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username         |
       | subadmin         |
       | another-subadmin |
@@ -42,7 +42,7 @@ Feature: get subadmins
 
   @issue-31276 @skipOnOcV10
   Scenario: normal user tries to get the subadmins of the group
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username       |
       | subadmin       |
       | brand-new-user |

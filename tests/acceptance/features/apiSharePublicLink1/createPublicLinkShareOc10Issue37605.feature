@@ -3,7 +3,7 @@
 Feature: create a public link share
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
 
   @issue-37605
   Scenario: Get the mtime of a file inside a folder shared by public link using new webDAV version

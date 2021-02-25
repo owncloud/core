@@ -3,7 +3,7 @@ Feature: persistent-locking in case of a public link
 
   Background:
     Given the administrator has enabled DAV tech_preview
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
 
   @skipOnOcV10 @smokeTest @issue-36064
   Scenario Outline: Uploading a file into a locked public folder

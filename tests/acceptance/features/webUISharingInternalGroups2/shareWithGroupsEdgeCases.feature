@@ -9,7 +9,7 @@ Feature: Sharing files and folders with internal groups
       | username |
       | Alice    |
       | Brian    |
-    And user "Carol" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and large skeleton files
 
   Scenario Outline: sharing  files and folder with an internal problematic group name
     Given these groups have been created:

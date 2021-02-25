@@ -4,7 +4,7 @@ Feature: create a public link share when share_folder is set to Shares
   Background:
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
 
   @skipOnOcV10.5 @skipOnOcV10.6.0
   Scenario Outline: Creating a new public link share of a file gives the correct response

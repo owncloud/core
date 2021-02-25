@@ -5,7 +5,7 @@ Feature: sharing
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
     And using OCS API version "1"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
 
   @smokeTest
   Scenario Outline: Allow modification of reshare
@@ -32,7 +32,7 @@ Feature: sharing
   @issue-ocis-reva-194 @issue-ocis-reva-243
   Scenario Outline: keep group permissions in sync
     Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
     And user "Alice" has shared file "textfile0.txt" with group "grp1"
@@ -234,7 +234,7 @@ Feature: sharing
   Scenario Outline: Increasing permissions is allowed for owner
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
-    And user "Carol" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and small skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"

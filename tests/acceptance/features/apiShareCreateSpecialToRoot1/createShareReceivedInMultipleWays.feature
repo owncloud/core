@@ -2,7 +2,7 @@
 Feature: share resources where the sharee receives the share in multiple ways
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
 
   Scenario Outline: Creating a new share with user who already received a share through their group
     Given using OCS API version "<ocs_api_version>"
@@ -33,7 +33,7 @@ Feature: share resources where the sharee receives the share in multiple ways
   @issue-ocis-reva-243
   Scenario Outline: Share of folder and sub-folder to same user - core#20645
     Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And group "grp4" has been created
     And user "Brian" has been added to group "grp4"
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API

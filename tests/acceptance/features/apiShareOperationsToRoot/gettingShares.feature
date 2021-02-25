@@ -2,7 +2,7 @@
 Feature: sharing
 
   Background:
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -36,7 +36,7 @@ Feature: sharing
   @smokeTest
   Scenario Outline: getting all shares of a file
     Given using OCS API version "<ocs_api_version>"
-    And these users have been created with default attributes and skeleton files:
+    And these users have been created with default attributes and small skeleton files:
       | username |
       | Carol    |
       | David    |
@@ -56,7 +56,7 @@ Feature: sharing
   @smokeTest
   Scenario Outline: getting all shares of a file with reshares
     Given using OCS API version "<ocs_api_version>"
-    And these users have been created with default attributes and skeleton files:
+    And these users have been created with default attributes and small skeleton files:
       | username |
       | Carol    |
       | David    |
@@ -77,7 +77,7 @@ Feature: sharing
   Scenario Outline: User's own shares reshared to him don't appear when getting "shared with me" shares
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    And user "Carol" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and small skeleton files
     And user "Carol" has been added to group "grp1"
     And user "Carol" has created folder "/shared"
     And user "Carol" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
@@ -108,7 +108,7 @@ Feature: sharing
   @skipOnLDAP
   Scenario: Share of folder to a group, remove user from that group
     Given using OCS API version "1"
-    And user "Carol" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and small skeleton files
     And group "group0" has been created
     And user "Brian" has been added to group "group0"
     And user "Carol" has been added to group "group0"

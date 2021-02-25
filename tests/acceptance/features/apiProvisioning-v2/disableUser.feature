@@ -9,7 +9,7 @@ Feature: disable user
 
   @smokeTest
   Scenario: admin disables an user
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     When the administrator disables user "Alice" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
@@ -17,7 +17,7 @@ Feature: disable user
 
   @skipOnOcV10.3
   Scenario Outline: admin disables an user with special characters in the username
-    Given these users have been created with skeleton files:
+    Given these users have been created with small skeleton files:
       | username   | email   |
       | <username> | <email> |
     When the administrator disables user "<username>" using the provisioning API
@@ -31,7 +31,7 @@ Feature: disable user
 
   @smokeTest @notToImplementOnOCIS
   Scenario: Subadmin should be able to disable an user in their group
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | subadmin |
@@ -46,7 +46,7 @@ Feature: disable user
 
   @issue-31276 @skipOnOcV10
   Scenario: Subadmin should not be able to disable an user not in their group
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | subadmin |
@@ -62,7 +62,7 @@ Feature: disable user
 
   @issue-31276 @skipOnOcV10
   Scenario: Subadmins should not be able to disable users that have admin permissions in their group
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username      |
       | subadmin      |
       | another-admin |
@@ -77,7 +77,7 @@ Feature: disable user
     And user "another-admin" should be enabled
 
   Scenario: Admin can disable another admin user
-    Given user "another-admin" has been created with default attributes and skeleton files
+    Given user "another-admin" has been created with default attributes and small skeleton files
     And user "another-admin" has been added to group "admin"
     When the administrator disables user "another-admin" using the provisioning API
     Then the OCS status code should be "200"
@@ -86,7 +86,7 @@ Feature: disable user
 
   @notToImplementOnOCIS
   Scenario: Admin can disable subadmins in the same group
-    Given user "subadmin" has been created with default attributes and skeleton files
+    Given user "subadmin" has been created with default attributes and small skeleton files
     And group "brand-new-group" has been created
     And user "subadmin" has been added to group "brand-new-group"
     And the administrator has been added to group "brand-new-group"
@@ -97,7 +97,7 @@ Feature: disable user
     And user "subadmin" should be disabled
 
   Scenario: Admin user cannot disable himself
-    Given user "another-admin" has been created with default attributes and skeleton files
+    Given user "another-admin" has been created with default attributes and small skeleton files
     And user "another-admin" has been added to group "admin"
     When user "another-admin" disables user "another-admin" using the provisioning API
     Then the OCS status code should be "400"
@@ -106,7 +106,7 @@ Feature: disable user
 
   @issue-31276 @skipOnOcV10
   Scenario: disable an user with a regular user
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -117,7 +117,7 @@ Feature: disable user
 
   @notToImplementOnOCIS
   Scenario: Subadmin should not be able to disable himself
-    Given user "subadmin" has been created with default attributes and skeleton files
+    Given user "subadmin" has been created with default attributes and small skeleton files
     And group "brand-new-group" has been created
     And user "subadmin" has been added to group "brand-new-group"
     And user "subadmin" has been made a subadmin of group "brand-new-group"
@@ -128,50 +128,50 @@ Feature: disable user
 
   @smokeTest
   Scenario: Making a web request with a disabled user
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has been disabled
     When user "Alice" sends HTTP method "GET" to URL "/index.php/apps/files"
     And the HTTP status code should be "403"
 
   Scenario: Disabled user tries to download file
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has been disabled
     When user "Alice" downloads file "/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "401"
 
   Scenario: Disabled user tries to upload file
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has been disabled
     When user "Alice" uploads file with content "uploaded content" to "newTextFile.txt" using the WebDAV API
     Then the HTTP status code should be "401"
 
   Scenario: Disabled user tries to rename file
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has been disabled
     When user "Alice" moves file "/textfile0.txt" to "/renamedTextfile0.txt" using the WebDAV API
     Then the HTTP status code should be "401"
 
   Scenario: Disabled user tries to move file
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has been disabled
     When user "Alice" moves file "/textfile0.txt" to "/PARENT/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "401"
 
   Scenario: Disabled user tries to delete file
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has been disabled
     When user "Alice" deletes file "/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "401"
 
   Scenario: Disabled user tries to share a file
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has been disabled
     When user "Alice" shares file "textfile0.txt" with user "Brian" using the sharing API
     Then the HTTP status code should be "401"
 
   Scenario: Disabled user tries to share a folder
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has been disabled
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
@@ -180,7 +180,7 @@ Feature: disable user
   Scenario: getting shares shared by disabled user
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
@@ -191,7 +191,7 @@ Feature: disable user
   Scenario: getting shares shared by disabled user in a group
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
     And group "group0" has been created
     And user "Brian" has been added to group "group0"
@@ -202,14 +202,14 @@ Feature: disable user
     And the content of file "/Shares/PARENT/parent.txt" for user "Brian" should be "ownCloud test text file parent" plus end-of-line
 
   Scenario: Disabled user tries to create public link share
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has been disabled
     When user "Alice" creates a public link share using the sharing API with settings
       | path | textfile0.txt |
     Then the HTTP status code should be "401"
 
   Scenario Outline: getting public link share shared by disabled user using the new public WebDAV API
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has created a public link share with settings
       | path        | /textfile0.txt |
       | permissions | read           |
@@ -221,7 +221,7 @@ Feature: disable user
       | new         |
 
   Scenario: Subadmin should be able to disable user with subadmin permissions in their group
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username         |
       | subadmin         |
       | another-subadmin |
@@ -235,7 +235,7 @@ Feature: disable user
     And user "another-subadmin" should be disabled
 
   Scenario: Subadmin should not be able to disable another subadmin of same group
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username         |
       | subadmin         |
       | another-subadmin |
@@ -248,7 +248,7 @@ Feature: disable user
     And user "another-subadmin" should be enabled
 
   Scenario: normal user cannot disable himself
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
     When user "Alice" disables user "Alice" using the provisioning API

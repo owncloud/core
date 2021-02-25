@@ -141,7 +141,7 @@ Feature: files and folders exist in the trashbin after being deleted
   @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
   Scenario Outline: Listing other user's trashbin is prohibited
     Given using <dav-path> DAV path
-    And user "testtrashbin100" has been created with default attributes and skeleton files
+    And user "testtrashbin100" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
     And user "testtrashbin100" has deleted file "/textfile1.txt"
     When user "Brian" tries to list the trashbin content for user "testtrashbin100"
@@ -157,7 +157,7 @@ Feature: files and folders exist in the trashbin after being deleted
   @smokeTest @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
   Scenario Outline: Listing other user's trashbin is prohibited
     Given using <dav-path> DAV path
-    And user "testtrashbin101" has been created with default attributes and skeleton files
+    And user "testtrashbin101" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
     And user "testtrashbin101" has deleted file "/textfile0.txt"
     And user "testtrashbin101" has deleted file "/textfile2.txt"
@@ -175,12 +175,12 @@ Feature: files and folders exist in the trashbin after being deleted
   @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
   Scenario Outline: Listing other user's trashbin is prohibited
     Given using <dav-path> DAV path
-    And user "testtrashbin102" has been created with default attributes and skeleton files
+    And user "testtrashbin102" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
     And user "testtrashbin102" has deleted file "/textfile0.txt"
     And user "testtrashbin102" has deleted file "/textfile2.txt"
     And the administrator deletes user "testtrashbin102" using the provisioning API
-    And these users have been created with default attributes and skeleton files but not initialized:
+    And these users have been created with default attributes and small skeleton files but not initialized:
       | username        |
       | testtrashbin102 |
     And user "testtrashbin102" has deleted file "/textfile3.txt"
@@ -273,7 +273,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | new      |
 
   @issue-ocis-541
-  Scenario Outline: deleted file has appropriate deletion time information 
+  Scenario Outline: deleted file has appropriate deletion time information
     Given using <dav-path> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "file.txt" with mtime "Thu, 08 Aug 2018 04:18:13 GMT" using the WebDAV API
     And user "Alice" has deleted file "file.txt"

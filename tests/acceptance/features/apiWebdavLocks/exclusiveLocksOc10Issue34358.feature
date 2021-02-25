@@ -3,7 +3,7 @@ Feature: there can be only one exclusive lock on a resource
 
   @issue-34358
   Scenario Outline: if a child resource is exclusively locked a parent resource cannot be locked again
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And using <dav-path> DAV path
     And user "Alice" has locked folder "PARENT/CHILD" setting the following properties
       | lockscope | exclusive |

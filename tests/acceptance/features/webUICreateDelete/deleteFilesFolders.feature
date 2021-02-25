@@ -5,7 +5,7 @@ Feature: deleting files and folders
   So that I can keep my filing system clean and tidy
 
   Background:
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and large skeleton files:
       | username |
       | Alice    |
     And user "Alice" has logged in using the webUI

@@ -7,7 +7,7 @@ Feature: enable user - current oC10 behavior for issue-31276
   @issue-31276
   Scenario: normal user tries to enable other user
     Given using OCS API version "2"
-    And these users have been created with default attributes and skeleton files:
+    And these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |

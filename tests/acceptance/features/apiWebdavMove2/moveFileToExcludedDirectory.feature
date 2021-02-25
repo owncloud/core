@@ -6,7 +6,7 @@ Feature: users cannot move (rename) a file to or into an excluded directory
 
   Background:
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
 
   Scenario Outline: rename a file to an excluded directory name
     Given using <dav_version> DAV path

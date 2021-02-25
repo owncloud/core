@@ -8,7 +8,7 @@ Feature: Share by public link
     Given user "Alice" has been created with default attributes and without skeleton files
 
   Scenario: creating a public link with read & write permissions makes it possible to delete files via the link
-    Given user "Brian" has been created with default attributes and skeleton files
+    Given user "Brian" has been created with default attributes and large skeleton files
     And user "Brian" has logged in using the webUI
     When the user creates a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |

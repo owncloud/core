@@ -3,9 +3,9 @@ Feature: federated
 
   Background:
     Given using server "REMOTE"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
     And using server "LOCAL"
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
 
   @smokeTest
   Scenario Outline: Federate share a file with another server
@@ -161,7 +161,7 @@ Feature: federated
     Given user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
     And user "Brian" from server "LOCAL" has accepted the last pending share
     And using server "LOCAL"
-    And user "Carol" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and small skeleton files
     And using OCS API version "<ocs-api-version>"
     When user "Brian" creates a share using the sharing API with settings
       | path        | /textfile0 (2).txt |
@@ -472,7 +472,7 @@ Feature: federated
     And user "Alice" has created folder "zzzfolder/remote"
     And user "Alice" has uploaded file with content "remote content" to "/randomfile.txt"
     And using server "LOCAL"
-    And user "Carol" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and small skeleton files
     And user "Brian" has created folder "/zzzfolder"
     And user "Brian" has created folder "zzzfolder/local"
     And user "Brian" has uploaded file with content "local content" to "/randomfile.txt"
@@ -494,7 +494,7 @@ Feature: federated
     And user "Alice" has created folder "zzzfolder/remote"
     And user "Alice" has uploaded file with content "remote content" to "/randomfile.txt"
     And using server "LOCAL"
-    And user "Carol" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and small skeleton files
     And user "Brian" has created folder "/zzzfolder"
     And user "Brian" has created folder "zzzfolder/local"
     And user "Brian" has uploaded file with content "local content" to "/randomfile.txt"

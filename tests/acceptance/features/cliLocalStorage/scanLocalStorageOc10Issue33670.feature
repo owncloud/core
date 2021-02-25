@@ -5,7 +5,7 @@ Feature: Scanning files on local storage
   So that I can manage the balance between performance and "up-to-date-ness" of local storage
 
   Scenario: Adding a file to local storage and running scan should add files.
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And using new DAV path
     And the administrator has set the external storage "local_storage" to be never scanned automatically
     # Need to re-scan. Config change doesn't come into effect until once scanned
@@ -23,7 +23,7 @@ Feature: Scanning files on local storage
       | /local_storage/hello2.txt |
 
   Scenario: Adding a file to local storage and running scan for a specific path should add files for only that path.
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And using new DAV path
     And the administrator has set the external storage "local_storage" to be never scanned automatically
     And user "Alice" has created folder "/local_storage/folder1"

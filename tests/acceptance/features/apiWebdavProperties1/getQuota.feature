@@ -6,7 +6,7 @@ Feature: get quota
 
   Background:
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
 
   Scenario Outline: Retrieving folder quota when no quota is set
     Given using <dav_version> DAV path
@@ -30,7 +30,7 @@ Feature: get quota
   @files_sharing-app-required
   Scenario Outline: Retrieving folder quota of shared folder with quota when no quota is set for recipient
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" has been given unlimited quota
     And the quota of user "Brian" has been set to "10 MB"
     And user "Brian" has created folder "/testquota"
@@ -64,7 +64,7 @@ Feature: get quota
   @files_sharing-app-required
   Scenario Outline: Retrieving folder quota when quota is set and a file was received
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And the quota of user "Brian" has been set to "1 KB"
     And user "Alice" has uploaded file "/Alice.txt" of size 93 bytes
     And user "Alice" has shared file "Alice.txt" with user "Brian"

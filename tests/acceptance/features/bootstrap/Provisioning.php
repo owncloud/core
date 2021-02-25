@@ -380,17 +380,27 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has been created with default attributes and skeleton files$/
+	 * @Given /^user "([^"]*)" has been created with default attributes and (small|large|)\s?skeleton files$/
 	 *
 	 * @param string $user
+	 * @param string $skeletonType
 	 * @param boolean $skeleton
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function userHasBeenCreatedWithDefaultAttributes($user, $skeleton = true) {
-		$this->createUser($user, null, null, null, true, null, true, $skeleton);
-		$this->userShouldExist($user);
+	public function userHasBeenCreatedWithDefaultAttributes(
+		string $user, string $skeletonType, $skeleton = true
+	) {
+		$originalSkeletonPath = $this->setSkeletonDirByType($skeletonType);
+		try {
+			$this->createUser(
+				$user, null, null, null, true, null, true, $skeleton
+			);
+			$this->userShouldExist($user);
+		} finally {
+			$this->setSkeletonDir($originalSkeletonPath);
+		}
 	}
 
 	/**
@@ -405,13 +415,10 @@ trait Provisioning {
 		$baseUrl = $this->getBaseUrl();
 		$path = $this->popSkeletonDirectoryConfig($baseUrl);
 		try {
-			$this->userHasBeenCreatedWithDefaultAttributes($user, false);
+			$this->userHasBeenCreatedWithDefaultAttributes($user, "", false);
 		} finally {
 			// restore skeletondirectory even if user creation failed
-			$this->runOcc(
-				["config:system:set skeletondirectory --value $path"],
-				null, null, $baseUrl
-			);
+			$this->setSkeletonDir($path);
 		}
 	}
 
@@ -432,10 +439,7 @@ trait Provisioning {
 			$this->createTheseUsers(true, true, false, $table);
 		} finally {
 			// restore skeletondirectory even if user creation failed
-			$this->runOcc(
-				["config:system:set skeletondirectory --value $path"],
-				null, null, $baseUrl
-			);
+			$this->setSkeletonDir($path);
 		}
 	}
 
@@ -454,13 +458,10 @@ trait Provisioning {
 		$baseUrl = $this->getBaseUrl();
 		$path = $this->popSkeletonDirectoryConfig($baseUrl);
 		try {
-			$this->theseUsersHaveBeenCreated("", "", $table);
+			$this->theseUsersHaveBeenCreated("", "", "", $table);
 		} finally {
 			// restore skeletondirectory even if user creation failed
-			$this->runOcc(
-				["config:system:set skeletondirectory --value $path"],
-				null, null, $baseUrl
-			);
+			$this->setSkeletonDir($path);
 		}
 	}
 
@@ -1082,23 +1083,35 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^these users have been created with ?(default attributes and|) skeleton files ?(but not initialized|):$/
+	 * @Given /^these users have been created with ?(default attributes and|) (small|large|)\s?skeleton files ?(but not initialized|):$/
 	 *
 	 * expects a table of users with the heading
 	 * "|username|password|displayname|email|"
 	 * password, displayname & email are optional
 	 *
 	 * @param string $defaultAttributesText
+	 * @param string $skeletonType
 	 * @param string $doNotInitialize
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theseUsersHaveBeenCreated($defaultAttributesText, $doNotInitialize, TableNode $table) {
+	public function theseUsersHaveBeenCreated(
+		string $defaultAttributesText,
+		string $skeletonType,
+		string $doNotInitialize,
+		TableNode $table
+	) {
+		$originalSkeletonPath = $this->setSkeletonDirByType($skeletonType);
+
 		$setDefaultAttributes = $defaultAttributesText !== "";
 		$initialize = $doNotInitialize === "";
-		$this->createTheseUsers($setDefaultAttributes, $initialize, true, $table);
+		try {
+			$this->createTheseUsers($setDefaultAttributes, $initialize, true, $table);
+		} finally {
+			$this->setSkeletonDir($originalSkeletonPath);
+		}
 	}
 
 	/**
@@ -4966,15 +4979,91 @@ trait Provisioning {
 	 * @return string
 	 */
 	public function popSkeletonDirectoryConfig($baseUrl = null) {
-		$this->runOcc(
-			["config:system:get skeletondirectory"],
-			null, null, $baseUrl
-		);
-		$path = \trim($this->getStdOutOfOccCommand());
+		$path = $this->getSkeletonDirectory($baseUrl);
 		$this->runOcc(
 			["config:system:delete skeletondirectory"],
 			null, null, $baseUrl
 		);
 		return $path;
+	}
+
+	/**
+	 * @param string|null $baseUrl
+	 *
+	 * @return string
+	 */
+	private function getSkeletonDirectory(string $baseUrl = null): string {
+		$this->runOcc(
+			["config:system:get skeletondirectory"],
+			null, null, $baseUrl
+		);
+		return \trim($this->getStdOutOfOccCommand());
+	}
+
+	/**
+	 * sets the skeletondirectory according to the type
+	 *
+	 * @param string $skeletonType can be "small" OR "large" OR empty.
+	 *                             If an empty string is given, the current
+	 *                             setting will not be changed
+	 *
+	 * @return string skeleton folder before the change
+	 */
+	private function setSkeletonDirByType(string $skeletonType): string {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			$originalSkeletonPath = \getenv("SKELETON_DIR");
+			if ($skeletonType !== '') {
+				\putenv(
+					"SKELETON_DIR=" .
+					\dirname($originalSkeletonPath) . '/' . $skeletonType . "Skeleton"
+				);
+			}
+		} else {
+			$baseUrl = $this->getBaseUrl();
+			$originalSkeletonPath = $this->getSkeletonDirectory($baseUrl);
+
+			if ($skeletonType !== '') {
+				OcsApiHelper::sendRequest(
+					$baseUrl,
+					$this->getAdminUsername(),
+					$this->getAdminPassword(),
+					'POST',
+					"/apps/testing/api/v1/testingskeletondirectory",
+					[
+						'directory' => $skeletonType . "Skeleton"
+					],
+					$this->getOcsApiVersion()
+				);
+			}
+		}
+		return $originalSkeletonPath;
+	}
+
+	/**
+	 * sets the skeletondirectory
+	 *
+	 * @param string $skeletonDir Full path of the skeleton directory
+	 *                            If an empty string is given, the current
+	 *                            setting will not be changed
+	 *
+	 * @return string skeleton folder before the change
+	 */
+	private function setSkeletonDir(string $skeletonDir): string {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			$originalSkeletonPath = \getenv("SKELETON_DIR");
+			if ($skeletonDir !== '') {
+				\putenv("SKELETON_DIR=" . $skeletonDir);
+			}
+		} else {
+			$baseUrl = $this->getBaseUrl();
+			$originalSkeletonPath = $this->getSkeletonDirectory($baseUrl);
+			if ($skeletonDir !== '') {
+				$this->runOcc(
+					["config:system:set skeletondirectory --value $skeletonDir"],
+					null, null, $baseUrl
+				);
+			}
+		}
+		return $originalSkeletonPath;
 	}
 }

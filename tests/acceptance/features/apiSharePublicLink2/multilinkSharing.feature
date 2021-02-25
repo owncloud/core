@@ -2,7 +2,7 @@
 Feature: multilinksharing
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
 
   @smokeTest
   Scenario Outline: Creating three public shares of a folder

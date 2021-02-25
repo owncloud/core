@@ -2,12 +2,12 @@
 Feature: UNLOCK locked items (sharing)
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
 
 
   Scenario Outline: as share receiver unlocking a shared file locked by the file owner is not possible. To unlock use the owners locktoken
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" has locked file "PARENT/parent.txt" setting the following properties
       | lockscope | <lock-scope> |
     And user "Alice" has shared file "PARENT/parent.txt" with user "Brian"
@@ -25,7 +25,7 @@ Feature: UNLOCK locked items (sharing)
 
   Scenario Outline: as share receiver unlocking a file in a share locked by the file owner is not possible. To unlock use the owners locktoken
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" has locked file "PARENT/parent.txt" setting the following properties
       | lockscope | <lock-scope> |
     And user "Alice" has shared folder "PARENT" with user "Brian"
@@ -43,7 +43,7 @@ Feature: UNLOCK locked items (sharing)
 
   Scenario Outline: as share receiver unlocking a shared folder locked by the file owner is not possible. To unlock use the owners locktoken
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     And user "Alice" has shared folder "PARENT" with user "Brian"
@@ -65,7 +65,7 @@ Feature: UNLOCK locked items (sharing)
 
   Scenario Outline: as share receiver unlocking a shared file locked by the file owner is not possible. To unlock use the owners locktoken
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" has locked file "PARENT/parent.txt" setting the following properties
       | lockscope | <lock-scope> |
     And user "Alice" has shared file "PARENT/parent.txt" with user "Brian"
@@ -83,7 +83,7 @@ Feature: UNLOCK locked items (sharing)
 
   Scenario Outline: as share receiver unlock a shared file
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" has shared file "PARENT/parent.txt" with user "Brian"
     And user "Brian" has locked file "parent.txt" setting the following properties
       | lockscope | <lock-scope> |
@@ -101,7 +101,7 @@ Feature: UNLOCK locked items (sharing)
 
   Scenario Outline: as owner unlocking a shared file locked by the receiver is not possible. To unlock use the receivers locktoken
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" has shared file "PARENT/parent.txt" with user "Brian"
     And user "Brian" has locked file "parent.txt" setting the following properties
       | lockscope | <lock-scope> |
@@ -119,7 +119,7 @@ Feature: UNLOCK locked items (sharing)
 
   Scenario Outline: as owner unlocking a file in a share that was locked by the share receiver is not possible. To unlock use the receivers locktoken
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" has shared folder "PARENT" with user "Brian"
     And user "Brian" has locked file "PARENT (2)/parent.txt" setting the following properties
       | lockscope | <lock-scope> |
@@ -137,7 +137,7 @@ Feature: UNLOCK locked items (sharing)
 
   Scenario Outline: as owner unlocking a shared folder locked by the share receiver is not possible. To unlock use the receivers locktoken
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" has shared folder "PARENT" with user "Brian"
     And user "Brian" has locked folder "PARENT (2)" setting the following properties
       | lockscope | <lock-scope> |

@@ -4,7 +4,7 @@ Feature: sharing
   Background:
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And these users have been created with default attributes and skeleton files:
+    And these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |

@@ -3,7 +3,7 @@
 Feature: create a public link share
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
 
   @smokeTest
   Scenario Outline: Creating a new public link share of a file, the default permissions are read (1) using the old public WebDAV API

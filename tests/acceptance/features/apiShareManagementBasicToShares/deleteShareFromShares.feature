@@ -88,7 +88,7 @@ Feature: sharing
   @smokeTest
   Scenario: unshare from self
     And group "grp1" has been created
-    And these users have been created with default attributes and skeleton files:
+    And these users have been created with default attributes and small skeleton files:
       | username |
       | Carol    |
     And user "Brian" has been added to group "grp1"

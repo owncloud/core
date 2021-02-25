@@ -9,7 +9,7 @@ Feature: get group
 
   @smokeTest
   Scenario: admin gets users in the group
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username       |
       | brand-new-user |
       | 123            |
@@ -53,7 +53,7 @@ Feature: get group
 
   @smokeTest
   Scenario: subadmin gets users in a group they are responsible for
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -71,7 +71,7 @@ Feature: get group
 
   @issue-31276 @skipOnOcV10
   Scenario: subadmin tries to get users in a group they are not responsible for
-    Given user "subadmin" has been created with default attributes and skeleton files
+    Given user "subadmin" has been created with default attributes and small skeleton files
     And group "brand-new-group" has been created
     And group "another-group" has been created
     And user "subadmin" has been made a subadmin of group "brand-new-group"
@@ -81,7 +81,7 @@ Feature: get group
 
   @issue-31276 @skipOnOcV10
   Scenario: normal user tries to get users in their group
-    Given user "newuser" has been created with default attributes and skeleton files
+    Given user "newuser" has been created with default attributes and small skeleton files
     And group "brand-new-group" has been created
     When user "newuser" gets all the members of group "brand-new-group" using the provisioning API
     Then the OCS status code should be "401"

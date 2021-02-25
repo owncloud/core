@@ -38,7 +38,7 @@ Feature: create local storage from the command line
     And the content of file "/local_storage2/file-in-local-storage2.txt" for user "Brian" should be "this is a file in local storage2"
 
   Scenario: user should not get access if the group of the user is removed from the applicable group and that group was not the only applicable group
-    And these users have been created with default attributes and skeleton files:
+    And these users have been created with default attributes and small skeleton files:
       | username |
       | Carol    |
     And group "grp1" has been created
@@ -70,7 +70,7 @@ Feature: create local storage from the command line
     And the content of file "/local_storage2/file-in-local-storage2.txt" for user "Brian" should be "this is a file in local storage2"
 
   Scenario: users should get access if all the users and groups are removed from the applicable groups
-    And these users have been created with default attributes and skeleton files:
+    And these users have been created with default attributes and small skeleton files:
       | username |
       | Carol    |
       | David    |

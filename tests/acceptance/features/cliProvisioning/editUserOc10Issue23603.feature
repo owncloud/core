@@ -6,7 +6,7 @@ Feature: edit users
 
   @issue-23603
   Scenario: the administrator can edit a user quota
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     When the administrator changes the quota of user "brand-new-user" to "12MB" using the occ command
     Then the command should have failed with exit code 1
     #Then the command should have been successful

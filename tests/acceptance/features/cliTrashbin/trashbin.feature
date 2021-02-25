@@ -5,7 +5,7 @@ Feature: files and folders can be deleted from the trashbin
   So that I can control user trashbin space and which files are kept in that space
 
   Scenario: delete files and folder of a user from the trashbin
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has deleted file "/textfile0.txt"
     And user "Alice" has deleted file "/textfile1.txt"
     And user "Alice" has deleted folder "/PARENT"
@@ -17,8 +17,8 @@ Feature: files and folders can be deleted from the trashbin
     And as "Alice" the folder with original path "/PARENT" should not exist in the trashbin
 
   Scenario: delete files and folder of all user from the trashbin
-    Given user "Alice" has been created with default attributes and skeleton files
-    And user "Brian" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" has deleted file "/textfile0.txt"
     And user "Brian" has deleted file "/textfile1.txt"
     And user "Brian" has deleted folder "/PARENT"

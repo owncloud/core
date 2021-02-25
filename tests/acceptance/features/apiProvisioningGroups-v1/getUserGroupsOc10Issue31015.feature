@@ -9,7 +9,7 @@ Feature: get user groups
 
   @issue-31015
   Scenario: admin gets groups of an user, including groups containing a slash
-    Given user "brand-new-user" has been created with default attributes and skeleton files
+    Given user "brand-new-user" has been created with default attributes and small skeleton files
     And group "unused-group" has been created
     # After fixing issue-31015, change the following steps to "has been created"
     And the administrator sends a group creation request for group "Mgmt/Sydney" using the provisioning API

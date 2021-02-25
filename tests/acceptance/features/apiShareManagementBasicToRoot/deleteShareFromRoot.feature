@@ -2,7 +2,7 @@
 Feature: sharing
 
   Scenario Outline: Delete all group shares
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -22,7 +22,7 @@ Feature: sharing
 
   @smokeTest
   Scenario Outline: delete a share
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
     And using OCS API version "<ocs_api_version>"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
@@ -51,7 +51,7 @@ Feature: sharing
   @smokeTest @files_trashbin-app-required
   Scenario: deleting a file out of a share as recipient creates a backup for the owner
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/shared"
     And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
@@ -66,7 +66,7 @@ Feature: sharing
   @files_trashbin-app-required
   Scenario: deleting a folder out of a share as recipient creates a backup for the owner
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/shared"
     And user "Alice" has created folder "/shared/sub"
@@ -88,7 +88,7 @@ Feature: sharing
       | username |
       | Alice    |
       | Brian    |
-    And user "Carol" has been created with default attributes and skeleton files
+    And user "Carol" has been created with default attributes and small skeleton files
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"
     And user "Carol" has shared file "/PARENT/parent.txt" with group "grp1"
@@ -101,7 +101,7 @@ Feature: sharing
 
   Scenario: sharee of a read-only share folder tries to delete the shared folder
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/shared"
     And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
@@ -112,7 +112,7 @@ Feature: sharing
 
   Scenario: sharee of a upload-only shared folder tries to delete a file in the shared folder
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/shared"
     And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
@@ -137,7 +137,7 @@ Feature: sharing
   Scenario Outline: A Group share recipient tries to delete the share
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
     And these users have been created with default attributes and without skeleton files:
       | username |
       | Brian    |
@@ -160,7 +160,7 @@ Feature: sharing
 
   Scenario Outline: An individual share recipient tries to delete the share
     Given using OCS API version "<ocs_api_version>"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has shared entry "<entry_to_share>" with user "Brian"
     When user "Brian" deletes the last share using the sharing API

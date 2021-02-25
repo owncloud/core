@@ -4,7 +4,7 @@ Feature: share with groups, group names are case-sensitive
   Background:
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
 
   @skipOnLDAP @issue-ldap-250
   Scenario Outline: group names are case-sensitive, sharing with groups with different upper and lower case names

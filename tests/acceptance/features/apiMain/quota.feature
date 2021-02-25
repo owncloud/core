@@ -7,28 +7,28 @@ Feature: quota
 	# Owner
 
   Scenario: Uploading a file as owner having enough quota
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And the quota of user "Alice" has been set to "10 MB"
     When user "Alice" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "201"
 
   @smokeTest
   Scenario: Uploading a file as owner having insufficient quota
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And the quota of user "Alice" has been set to "20 B"
     When user "Alice" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
     Then as "Alice" the files uploaded to "/testquota.txt" with all mechanisms should not exist
 
   Scenario: Overwriting a file as owner having enough quota
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has uploaded file with content "test" to "/testquota.txt"
     And the quota of user "Alice" has been set to "10 MB"
     When user "Alice" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be between "201" and "204"
 
   Scenario: Overwriting a file as owner having insufficient quota
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has uploaded file with content "test" to "/testquota.txt"
     And the quota of user "Alice" has been set to "20 B"
     When user "Alice" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms using the WebDAV API
@@ -39,7 +39,7 @@ Feature: quota
 
   @files_sharing-app-required
   Scenario: Uploading a file in received folder having enough quota
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -52,7 +52,7 @@ Feature: quota
 
   @files_sharing-app-required
   Scenario: Uploading a file in received folder having insufficient quota
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -66,7 +66,7 @@ Feature: quota
 
   @files_sharing-app-required
   Scenario: Overwriting a file in received folder having enough quota
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -80,7 +80,7 @@ Feature: quota
 
   @files_sharing-app-required
   Scenario: Overwriting a file in received folder having insufficient quota
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -97,7 +97,7 @@ Feature: quota
 
   @files_sharing-app-required
   Scenario: Overwriting a received file having enough quota
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -110,7 +110,7 @@ Feature: quota
 
   @files_sharing-app-required
   Scenario: Overwriting a received file having insufficient quota
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |

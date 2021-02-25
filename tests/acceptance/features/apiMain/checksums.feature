@@ -299,7 +299,7 @@ Feature: checksums
   @issue-ocis-reva-196
   Scenario Outline: Uploading a file with invalid SHA1 checksum overwriting an existing file
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     When user "Brian" uploads file "filesForUpload/textfile.txt" to "/textfile0.txt" with checksum "SHA1:f005ba11f005ba11f005ba11f005ba11f005ba11" using the WebDAV API
     Then as user "Brian" the webdav checksum of "/textfile0.txt" via propfind should match "SHA1:0c1d334e686d1039c9ead0dbc047f02dbf696be8 MD5:d991cd854c53729d066c6ed5e34bcda3 ADLER32:8685092b"
     And the content of file "/textfile0.txt" for user "Brian" should be "ownCloud test text file 0" plus end-of-line
@@ -311,7 +311,7 @@ Feature: checksums
   @issue-ocis-reva-56
   Scenario: Upload overwriting a file with new chunking and correct checksum
     Given using new DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     When user "Brian" creates a new chunking upload with id "chunking-42" using the WebDAV API
     And user "Brian" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
     And user "Brian" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
@@ -323,7 +323,7 @@ Feature: checksums
   @issue-ocis-reva-56
   Scenario: Upload overwriting a file with new chunking and invalid checksum
     Given using new DAV path
-    And user "Brian" has been created with default attributes and skeleton files
+    And user "Brian" has been created with default attributes and small skeleton files
     When user "Brian" creates a new chunking upload with id "chunking-42" using the WebDAV API
     And user "Brian" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
     And user "Brian" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API

@@ -6,7 +6,7 @@ Feature: translate messages in api response to preferred language
 
   Scenario Outline: user tries to get non existing share and uses some preferred language
     Given user "Alice" has been created with default attributes and without skeleton files
-    And these users have been created with default attributes and skeleton files:
+    And these users have been created with default attributes and small skeleton files:
       | username |
       | Brian    |
       | Carol    |

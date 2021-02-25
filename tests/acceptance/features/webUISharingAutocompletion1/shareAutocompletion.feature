@@ -5,7 +5,7 @@ Feature: Autocompletion of share-with names
   So that I can efficiently share my files with other users or groups
 
   Background:
-    Given these users have been created with skeleton files:
+    Given these users have been created with large skeleton files:
       | username               | password  | displayname   | email        |
       | autocomplete-test-user | %regular% | Thomas Krause | ur@oc.net.np |
       | another-test-user      | %regular% | Another Name  | an@oc.com.np |
@@ -58,7 +58,7 @@ Feature: Autocompletion of share-with names
     Given the administrator has set the minimum characters for sharing autocomplete to "4"
     And user "autocomplete-test-user" has logged in using the webUI
     And the user has browsed to the files page
-    And these users have been created with skeleton files but not initialized:
+    And these users have been created with large skeleton files but not initialized:
       | username | password | displayname | email        |
       | fiv      | %alt1%   | Someone     | fi@oc.com.np |
     And the user has opened the share dialog for folder "simple-folder"

@@ -5,7 +5,7 @@ Feature: Autocompletion of share-with names
   So that I can efficiently share my files with other users or groups
 
   Background:
-    Given these users have been created with skeleton files:
+    Given these users have been created with large skeleton files:
       | username               | password  | displayname   | email        |
       | autocomplete-test-user | %regular% | Thomas Krause | ur@oc.net.np |
       | another-test-user      | %regular% | Another Name  | an@oc.com.np |
@@ -85,7 +85,7 @@ Feature: Autocompletion of share-with names
     And user "User Five" should not be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the username of existing user contains the pattern somewhere in the middle
-    Given user "ivan" has been created with default attributes and skeleton files
+    Given user "ivan" has been created with default attributes and large skeleton files
     And user "autocomplete-test-user" has logged in using the webUI
     And the user has browsed to the files page
     And the user has opened the share dialog for folder "simple-folder"
@@ -182,7 +182,7 @@ Feature: Autocompletion of share-with names
     And group "ncell-customers" should not be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the user name contains the pattern somewhere in the middle but accounts medial search is disabled
-    Given these users have been created with default attributes and skeleton files but not initialized:
+    Given these users have been created with default attributes and large skeleton files but not initialized:
       | username | displayname |
       | ivan     | Ivan        |
     And user "autocomplete-test-user" has logged in using the webUI
@@ -193,7 +193,7 @@ Feature: Autocompletion of share-with names
     Then only user "Ivan" should be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the user name contains the pattern somewhere in the end but accounts medial search is disabled
-    Given these users have been created with default attributes and skeleton files but not initialized:
+    Given these users have been created with default attributes and large skeleton files but not initialized:
       | username              | displayname |
       | autocomplete-test-jb1 | Guest User  |
     And user "autocomplete-test-user" has logged in using the webUI
@@ -204,7 +204,7 @@ Feature: Autocompletion of share-with names
     Then only user "James Baker" should be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the name of existing user contains the pattern somewhere in the middle but accounts medial search is disabled
-    Given these users have been created with default attributes and skeleton files but not initialized:
+    Given these users have been created with default attributes and large skeleton files but not initialized:
       | username | displayname   |
       | someone  | finnance typo |
     And user "autocomplete-test-user" has logged in using the webUI
@@ -215,7 +215,7 @@ Feature: Autocompletion of share-with names
     Then only user "finnance typo" should be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the display name of existing user contains the pattern somewhere in the end but accounts medial search is disabled
-    Given these users have been created with default attributes and skeleton files but not initialized:
+    Given these users have been created with default attributes and large skeleton files but not initialized:
       | username | displayname |
       | someone  | Smith User  |
     And user "autocomplete-test-user" has logged in using the webUI
@@ -226,7 +226,7 @@ Feature: Autocompletion of share-with names
     Then only user "Smith User" should be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the beginning but accounts medial search is disabled
-    Given these users have been created with default attributes and skeleton files but not initialized:
+    Given these users have been created with default attributes and large skeleton files but not initialized:
       | username | displayname | email              |
       | someone  | Some One    | hello2js@oc.com.np |
     And user "autocomplete-test-user" has logged in using the webUI
@@ -237,7 +237,7 @@ Feature: Autocompletion of share-with names
     Then only user "John Finn Smith" should be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the middle but accounts medial search is disabled
-    Given these users have been created with default attributes and skeleton files but not initialized:
+    Given these users have been created with default attributes and large skeleton files but not initialized:
       | username | displayname | email         |
       | someone  | Some One    | net@oc.com.np |
     And user "autocomplete-test-user" has logged in using the webUI
@@ -248,7 +248,7 @@ Feature: Autocompletion of share-with names
     Then only user "Some One" should be listed in the autocomplete list on the webUI
 
   Scenario: autocompletion of a pattern where the email of the existing user contains the pattern somewhere at the end but accounts medial search is disabled
-    Given these users have been created with default attributes and skeleton files but not initialized:
+    Given these users have been created with default attributes and large skeleton files but not initialized:
       | username | displayname | email        |
       | someone  | Some One    | de@oc.com.np |
     And user "autocomplete-test-user" has logged in using the webUI

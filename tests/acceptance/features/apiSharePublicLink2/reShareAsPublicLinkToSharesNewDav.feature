@@ -5,7 +5,7 @@ Feature: reshare as public link
   So that I can give controlled access to others
 
   Background:
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
     And the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled

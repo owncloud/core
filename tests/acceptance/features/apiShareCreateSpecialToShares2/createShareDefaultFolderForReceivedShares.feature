@@ -4,7 +4,7 @@ Feature: shares are received in the default folder for received shares
   Background:
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
 
   @skipOnOcV10.3.0 @skipOnOcV10.3.1
   Scenario Outline: Do not allow sharing of the entire share_folder

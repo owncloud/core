@@ -7,7 +7,7 @@ Feature: external-storage
 
   @public_link_share-feature-required @files_sharing-app-required
   Scenario: Share by public link a file inside a local external storage
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -25,7 +25,7 @@ Feature: external-storage
       | mimetype | httpd/unix-directory |
 
   Scenario: Move a file into storage
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -35,7 +35,7 @@ Feature: external-storage
     And as "Alice" file "/local_storage/foo1/textfile0.txt" should exist
 
   Scenario: Move a file out of storage
-    Given these users have been created with default attributes and skeleton files:
+    Given these users have been created with default attributes and small skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -47,7 +47,7 @@ Feature: external-storage
     And as "Brian" file "/local.txt" should exist
 
   Scenario: Download a file that exists in filecache but not storage fails with 404
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has created folder "/local_storage/foo3"
     And user "Alice" has moved file "/textfile0.txt" to "/local_storage/foo3/textfile0.txt"
     And file "foo3/textfile0.txt" has been deleted from local storage on the server
@@ -58,7 +58,7 @@ Feature: external-storage
     And as "Alice" file "local_storage/foo3/textfile0.txt" should exist
 
   Scenario: Upload a file to external storage while quota is set on home storage
-    Given user "Alice" has been created with default attributes and skeleton files
+    Given user "Alice" has been created with default attributes and small skeleton files
     And the quota of user "Alice" has been set to "1 B"
     When user "Alice" uploads file "filesForUpload/textfile.txt" to filenames based on "/local_storage/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "201"
@@ -66,7 +66,7 @@ Feature: external-storage
 
   Scenario Outline: query OCS endpoint for information about the mount
     Given using OCS API version "<ocs_api_version>"
-    And user "Alice" has been created with default attributes and skeleton files
+    And user "Alice" has been created with default attributes and small skeleton files
     When user "Alice" sends HTTP method "GET" to OCS API endpoint "<endpoint>"
     Then the OCS status code should be "<ocs-code>"
     And the HTTP status code should be "<http-code>"

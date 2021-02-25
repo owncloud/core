@@ -72,7 +72,7 @@ Feature: Creation of tags for the files and folders
 
   @files_sharing-app-required
   Scenario: Add tags on skeleton file before sharing
-    Given these users have been created with skeleton files:
+    Given these users have been created with large skeleton files:
       | username |
       | Brian    |
       | Carol    |
