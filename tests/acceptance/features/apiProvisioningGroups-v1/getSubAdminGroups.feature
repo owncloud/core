@@ -26,7 +26,7 @@ Feature: get subadmin groups
     Given user "nonexistentuser" has been deleted
     And group "brand-new-group" has been created
     When the administrator gets all the groups where user "nonexistentuser" is subadmin using the provisioning API
-    Then the OCS status code should be "101"
+    Then the OCS status code should be "998"
     And the HTTP status code should be "200"
     And the API should not return any data
 
@@ -38,15 +38,11 @@ Feature: get subadmin groups
     And user "Alice" has been made a subadmin of group "brand-new-group"
     And user "Alice" has been made a subadmin of group "😅 😆"
     When user "Alice" gets all the groups where user "Alice" is subadmin using the provisioning API
-    # Then the OCS status code should be "100"
-    # And the HTTP status code should be "200"
-    # Then the subadmin groups returned by the API should be
-    #   | brand-new-group |
-    #   | 😅 😆           |
-    Then the OCS status code should be "997"
-    And the HTTP status code should be "401"
-    And the API should not return any data
-
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    Then the subadmin groups returned by the API should be
+      | brand-new-group |
+      | 😅 😆          |
 
   Scenario: subadmin of a group should not be able to get subadmin groups of another subadmin user
     Given these users have been created with default attributes and small skeleton files:

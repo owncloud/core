@@ -628,8 +628,6 @@ class Users {
 	 * @return Result
 	 */
 	public function getUserSubAdminGroups($parameters) {
-		$targetUserId = $parameters['userid'];
-		$targetUser = $this->userManager->get($targetUserId);
 
 		// Check if user is logged in
 		$currentLoggedInUser = $this->userSession->getUser();
@@ -637,31 +635,32 @@ class Users {
 			return new Result(null, API::RESPOND_UNAUTHORISED);
 		}
 
+		$currentLoggedInUserId = $currentLoggedInUser->getUID();
+
+		$targetUserId = $parameters['userid'];
+		$targetUser = $this->userManager->get($targetUserId);
+
+		// Check if the user exists
+		if ($targetUser === null) {
+			return new Result(null, API::RESPOND_NOT_FOUND, 'The requested user could not be found');
+		}
+
 		// Check if same user or subadmin or admin
 		$subAdminManager = $this->groupManager->getSubAdmin();
-		if ($targetUserId === $currentLoggedInUser->getUID() ||
-			$subAdminManager->isUserAccessible($currentLoggedInUser, $targetUser) ||
-			$this->groupManager->isAdmin($currentLoggedInUser->getUID())) {
-
-			// Check if the user exists
-			if ($targetUser === null) {
-				return new Result(null, 101, 'User does not exist');
-			}
+		if ($targetUserId === $currentLoggedInUserId
+			|| $subAdminManager->isUserAccessible($currentLoggedInUser, $targetUser)
+			|| $this->groupManager->isAdmin($currentLoggedInUserId)) {
 
 			// Get the subadmin groups
-			$groups = $this->groupManager->getSubAdmin()->getSubAdminsGroups($targetUser);
+			$groups = $subAdminManager->getSubAdminsGroups($targetUser);
 			foreach ($groups as $key => $group) {
 				$groups[$key] = $group->getGID();
 			}
 
-			if (!$groups) {
-				return new Result(null, 102, 'Unknown error occurred');
-			} else {
-				return new Result($groups);
-			}
+			return new Result($groups ? $groups : []);
 		} else {
-			// No rights
-			return new Result(null, 997);
+			// No permission to access users groups
+			return new Result(null, API::RESPOND_UNAUTHORISED);
 		}
 	}
 
