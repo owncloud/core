@@ -45,6 +45,13 @@ class CookieHelper {
 	public const POLYFILL_DETECT = 'detect';
 	public const POLYFILL_FALLBACK = 'fallback';
 
+	/**
+	 * @param string $name
+	 * @param string $value
+	 * @param array $options
+	 * @param string $polyfill
+	 * @throws \Exception
+	 */
 	public function setCookie(string $name, string $value = '', array $options = [], string $polyfill = self::POLYFILL_FALLBACK): void {
 		// check if given cookie options are allowed
 		foreach (\array_keys($options) as $option) {
@@ -112,7 +119,7 @@ class CookieHelper {
 			}
 		}
 
-		\header(\implode('; ', $header), false);
+		$this->setHeader($header);
 	}
 
 	// return the cookie legacy name
@@ -120,6 +127,18 @@ class CookieHelper {
 		return \sprintf('%s-legacy', $name);
 	}
 
+	/**
+	 * @param array $header
+	 */
+	public function setHeader(array $header) {
+		\header(\implode('; ', $header), false);
+	}
+
+	/**
+	 * @param IRequest $request
+	 * @param string $name
+	 * @return mixed|null
+	 */
 	public function getRequestCookie(IRequest $request, string $name) {
 		if (\array_key_exists($name, $request->cookies)) {
 			return $request->cookies[$name];
@@ -132,6 +151,10 @@ class CookieHelper {
 		return null;
 	}
 
+	/**
+	 * @param string $user_agent
+	 * @return bool
+	 */
 	public function canSameSite(string $user_agent = ''): bool {
 		if ($user_agent === '') {
 			$user_agent = $_SERVER['HTTP_USER_AGENT'];
