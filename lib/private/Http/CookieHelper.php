@@ -40,7 +40,7 @@ class CookieHelper {
 	public const DOMAIN = 'domain';
 	public const EXPIRES = 'expires';
 	public const SECURE = 'secure';
-	public const HTTPONLY = 'httponly ';
+	public const HTTPONLY = 'httponly';
 	public const SAMESITE = 'samesite';
 	public const POLYFILL_DETECT = 'detect';
 	public const POLYFILL_FALLBACK = 'fallback';
