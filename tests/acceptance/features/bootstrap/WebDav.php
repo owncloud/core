@@ -449,6 +449,31 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then the number of etag elements in the response should be :number
+	 *
+	 * @param int $number
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theNumberOfEtagElementInTheResponseShouldBe($number) {
+		$resXml = $this->getResponseXmlObject();
+		if ($resXml === null) {
+			$resXml = HttpRequestHelper::getResponseXml(
+				$this->getResponse(),
+				__METHOD__
+			);
+		}
+		$xmlPart = $resXml->xpath("//d:getetag");
+		$actualNumber = \count($xmlPart);
+		Assert::assertEquals(
+			$number,
+			$actualNumber,
+			"Expected number of etag elements was '$number', but got '$actualNumber'"
+		);
+	}
+
+	/**
 	 * @Given /^the administrator has (enabled|disabled) async operations$/
 	 *
 	 * @param string $enabledOrDisabled

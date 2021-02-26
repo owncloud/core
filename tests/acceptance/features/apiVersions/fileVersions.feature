@@ -420,3 +420,13 @@ Feature: dav-versions
     Given user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"
     When user "Alice" gets the number of versions of file "textfile0.txt"
     Then the number of versions should be "0"
+
+  @issue-ocis-1234
+  Scenario: the number of etag elements in response changes according to version of the file
+    Given user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"
+    And user "Alice" has uploaded file with content "version 1" to "textfile0.txt"
+    And user "Alice" has uploaded file with content "version 2" to "textfile0.txt"
+    When user "Alice" gets the number of versions of file "textfile0.txt"
+    Then the HTTP status code should be "207"
+    And the number of etag elements in the response should be "2"
+    And the number of versions should be "2"
