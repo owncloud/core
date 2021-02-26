@@ -473,7 +473,7 @@ function run_behat_tests() {
 				# Match lines that have [someSuite/someName.feature:n] - the part inside the
 				# brackets is the suite, feature and line number of the expected failure.
 				# Else ignore the line.
-				if [[ "${SUITE_SCENARIO}" =~ \[([a-zA-Z0-9]+/[a-zA-Z0-9]+\.feature:[0-9]+)] ]]; then
+				if [[ "${SUITE_SCENARIO}" =~ \[([a-zA-Z0-9-]+/[a-zA-Z0-9-]+\.feature:[0-9]+)] ]]; then
 				  SUITE_SCENARIO="${BASH_REMATCH[1]}"
 				else
 				  continue
