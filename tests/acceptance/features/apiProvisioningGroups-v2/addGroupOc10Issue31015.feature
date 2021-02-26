@@ -12,23 +12,32 @@ Feature: add groups
     # 2) the ordinary group deletion in AfterScenario does not work, because the
     #    group-delete API does not work for groups with a slash in the name
   @issue-31015
-  Scenario Outline: admin creates a group with a forward-slash in the group name
-    When the administrator sends a group creation request for group "<group_id>" using the provisioning API
-    Then the OCS status code should be "200"
-    And the HTTP status code should be "200"
-    # After fixing issue-31015, change the following step to "should exist"
-    And group "<group_id>" should not exist
-    #And group "<group_id>" should exist
-    #
-    # The following step is needed so that the group does get cleaned up.
-    # After fixing issue-31015, remove the following step:
-    And the administrator deletes group "<group_id>" using the occ command
-    Examples:
-      | group_id         | comment                            |
+  Scenario: admin creates a group with a forward-slash in the group name
+    When the administrator sends a group creation request for the following groups using the provisioning API
+      | groupname        | comment                            |
       | Mgmt/Sydney      | Slash (special escaping happens)   |
       | Mgmt//NSW/Sydney | Multiple slash                     |
       | var/../etc       | using slash-dot-dot                |
       | priv/subadmins/1 | Subadmins mentioned not at the end |
+    Then the OCS status code of responses on all endpoints should be "200"
+    And the HTTP status code of responses on all endpoints should be "200"
+    # After fixing issue-31015, change the following step to "should exist"
+    And the following groups should not exist
+      | groupname        |
+      | Mgmt/Sydney      |
+      | Mgmt//NSW/Sydney |
+      | var/../etc       |
+      | priv/subadmins/1 |
+    #And group "<group_id>" should exist
+    #
+    # The following step is needed so that the group does get cleaned up.
+    # After fixing issue-31015, remove the following step:
+    And the administrator deletes the following groups using the occ command
+      | groupname        |
+      | Mgmt/Sydney      |
+      | Mgmt//NSW/Sydney |
+      | var/../etc       |
+      | priv/subadmins/1 |
 
   # A group name must not end in "/subadmins" because that would create ambiguity
   # with the endpoint for getting the subadmins of a group

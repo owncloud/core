@@ -17,19 +17,25 @@ Feature: enable user
     And user "Alice" should be enabled
 
   @skipOnOcV10.3
-  Scenario Outline: admin enables an user with special characters in the username
+  Scenario: admin enables an user with special characters in the username
     Given these users have been created with small skeleton files:
-      | username   | email   |
-      | <username> | <email> |
-    And user "<username>" has been disabled
-    When the administrator enables user "<username>" using the provisioning API
-    Then the OCS status code should be "200"
-    And the HTTP status code should be "200"
-    And user "<username>" should be enabled
-    Examples:
       | username | email               |
       | a@-+_.b  | a.b@example.com     |
       | a space  | a.space@example.com |
+    And the following users have been disabled
+      | username |
+      | a@-+_.b  |
+      | a space  |
+    When the administrator enables the following users using the provisioning API
+      | username |
+      | a@-+_.b  |
+      | a space  |
+    Then the OCS status code of responses on all endpoints should be "200"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And the following users should be enabled
+      | username |
+      | a@-+_.b  |
+      | a space  |
 
   Scenario: admin enables another admin user
     Given user "another-admin" has been created with default attributes and small skeleton files
