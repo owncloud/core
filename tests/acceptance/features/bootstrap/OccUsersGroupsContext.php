@@ -173,14 +173,15 @@ class OccUsersGroupsContext implements Context {
 	public function theAdministratorCreatesUserPasswordGroupUsingTheOccCommand($username, $password, $group) {
 		$user = $this->featureContext->getActualUsername($username);
 		$cmd = "user:add $user  --password-from-env --group=$group";
+		$actualPassword = $this->featureContext->getActualPassword($password);
 		$this->occContext->invokingTheCommandWithEnvVariable(
 			$cmd,
 			'OC_PASS',
-			$this->featureContext->getActualPassword($password)
+			$actualPassword
 		);
 		$this->featureContext->addUserToCreatedUsersList(
 			$user,
-			$password,
+			$actualPassword,
 			null,
 			null,
 			$this->occContext->theOccCommandExitStatusWasSuccess()

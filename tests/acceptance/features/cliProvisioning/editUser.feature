@@ -57,12 +57,13 @@ Feature: edit users
   Scenario Outline: Admin resets user password with special characters
     Given user "brand-new-user" has been deleted
     When the administrator creates user "brand-new-user" password "%alt1%" group "brand-new-group" using the occ command
+    And user "brand-new-user" uploads file with content "some text" to "atextfile.txt" using the WebDAV API
     And the administrator resets the password of user "brand-new-user" to "<password>" using the occ command
     Then the command should have been successful
     And the command output should contain the text 'Successfully reset password for %username%' about user "brand-new-user"
     And user "brand-new-user" should exist
-    And the content of file "textfile0.txt" for user "brand-new-user" using password "<password>" should be "ownCloud test text file 0" plus end-of-line
-    But user "brand-new-user" using password "%alt1%" should not be able to download file "textfile0.txt"
+    And the content of file "atextfile.txt" for user "brand-new-user" using password "<password>" should be "some text"
+    But user "brand-new-user" using password "%alt1%" should not be able to download file "atextfile.txt"
     Examples:
       | password                     | comment                               |
       | !@#$%^&*()-_+=[]{}:;,.<>?~/\ | special characters                    |
@@ -73,7 +74,8 @@ Feature: edit users
   Scenario: admin creates a user and specifies an invalid password, containing just space
     Given user "brand-new-user" has been deleted
     When the administrator creates user "brand-new-user" password "%alt1%" group "brand-new-group" using the occ command
+    And user "Brand-New-User" uploads file with content "some text" to "/atextfile.txt" using the WebDAV API
     And the administrator resets the password of user "brand-new-user" to " " using the occ command
     Then the command should have failed with exit code 1
-    And the content of file "textfile0.txt" for user "brand-new-user" using password "%alt1%" should be "ownCloud test text file 0" plus end-of-line
-    But user "brand-new-user" using password " " should not be able to download file "textfile0.txt"
+    And the content of file "atextfile.txt" for user "brand-new-user" using password "%alt1%" should be "some text"
+    But user "brand-new-user" using password " " should not be able to download file "atextfile.txt"

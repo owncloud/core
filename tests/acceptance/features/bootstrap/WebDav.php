@@ -2138,6 +2138,27 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then the following users should be able to upload file :source to :destination
+	 *
+	 * @param string $source
+	 * @param string $destination
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function usersShouldBeAbleToUploadFileTo(
+		string $source, string $destination, TableNode $table
+	) {
+		$this->verifyTableNodeColumns($table, ["username"]);
+		$usernames = $table->getHash();
+		foreach ($usernames as $username) {
+			$actualUser = $this->getActualUsername($username["username"]);
+			$this->userUploadsAFileTo($actualUser, $source, $destination);
+			$this->asFileOrFolderShouldExist($actualUser, "file", $destination);
+		}
+	}
+
+	/**
 	 * @Then user :user should not be able to upload file :source to :destination
 	 *
 	 * @param string $user

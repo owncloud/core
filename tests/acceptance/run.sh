@@ -978,22 +978,8 @@ do
 done
 
 #set the skeleton folder
-if [ -z "${SKELETON_DIR}" ]
+if [ -n "${SKELETON_DIR}" ]
 then
-	# calculate the correct skeleton folder
-	if [ "${RUNNING_API_TESTS}" = true ] || [ "${RUNNING_CLI_TESTS}" = true ]
-	then
-		# CLI tests use the apiSkeleton so that API-based "then" steps can be used
-		# to check the state of users after CLI commands
-		export SRC_SKELETON_DIR="apiSkeleton"
-	else
-		export SRC_SKELETON_DIR="webUISkeleton"
-	fi
-	for URL in ${TESTING_APP_URL} ${TESTING_APP_FED_URL}
-	do
-		curl -k -s -u ${ADMIN_AUTH} ${URL}testingskeletondirectory -d "directory=${SRC_SKELETON_DIR}" > /dev/null
-	done
-else
 	for URL in ${OCC_URL} ${OCC_FED_URL}
 	do
 		remote_occ ${ADMIN_AUTH} ${URL} "config:system:set skeletondirectory --value=${SKELETON_DIR}"
