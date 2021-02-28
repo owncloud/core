@@ -10,3 +10,5 @@ decrypted due to a wrong signature.
 This issue is now fixed, and the backup copy can be restored normally.
 
 https://github.com/owncloud/core/pull/38375
+https://github.com/owncloud/core/pull/38452
+https://github.com/owncloud/encryption/issues/244
