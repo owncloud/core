@@ -85,6 +85,7 @@
     "Couldn't send mail to following recipient(s): %s " : "Не удалось отправить почту следующим получателям: %s ",
     "Share API is disabled" : "API общего доступа отключён",
     "Wrong share ID, share doesn't exist" : "Неверный идентификатор публикации, публикация не существует",
+    "Share points to a node not available" : "Доступ указывает на недоступный узел",
     "Could not delete share" : "Не удалось удалить публикацию",
     "Please specify a file or folder path" : "Пожалуйста, укажите путь к файлу или каталогу",
     "Wrong path, file/folder doesn't exist" : "Неверный путь, файл/каталог не существует",

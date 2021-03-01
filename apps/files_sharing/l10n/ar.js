@@ -87,6 +87,7 @@ OC.L10N.register(
     "Couldn't send mail to following recipient(s): %s " : "لا يمكن إرسال بريد إلكتروني إلى المستلم (المستلمين) التالي: %s ",
     "Share API is disabled" : "تم تعطيل واجهة برمجة تطبيقات المشاركة",
     "Wrong share ID, share doesn't exist" : "معرف مشاركة خاطئ، المشاركة غير موجودة",
+    "Share points to a node not available" : "مشاركة النقاط إلى عقدة غير متوفّرة",
     "Could not delete share" : "لا يمكن حذف المشاركة",
     "Please specify a file or folder path" : "يُرجى تحديد مسار ملف أو مجلد",
     "Wrong path, file/folder doesn't exist" : "مسار خاطئ، الملف/المجلد غير موجود",
