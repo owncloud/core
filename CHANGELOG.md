@@ -43,6 +43,7 @@ Summary
 * Change - Update Symfony components to 4.4.19: [#38355](https://github.com/owncloud/core/pull/38355)
 * Change - Update sabre/vobject (4.3.3 => 4.3.5): [#38380](https://github.com/owncloud/core/pull/38380)
 * Change - Update christophwurst/id3parser (v0.1.1 => v0.1.2): [#38387](https://github.com/owncloud/core/pull/38387)
+* Change - Update phpseclib/phpseclib (2.0.30 => 3.0.3): [#38453](https://github.com/owncloud/core/pull/38453)
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 * Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
@@ -318,6 +319,10 @@ Details
 * Change - Update christophwurst/id3parser (v0.1.1 => v0.1.2): [#38387](https://github.com/owncloud/core/pull/38387)
 
    https://github.com/owncloud/core/pull/38387
+
+* Change - Update phpseclib/phpseclib (2.0.30 => 3.0.3): [#38453](https://github.com/owncloud/core/pull/38453)
+
+   https://github.com/owncloud/core/pull/38453
 
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 
