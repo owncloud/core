@@ -99,6 +99,9 @@ class CryptoWrapper {
 						"httponly" => true,
 						"samesite" => 'strict'
 					]);
+					# legacy cookis for openid connect
+					# TODO: remove index.php if necessary ....
+					$webRoot .= 'index.php/apps/openidconnect/redirect';
 					\setcookie(self::LEGACY_COOKIE_NAME, $this->passphrase, [
 						"expires" => 0,
 						"path" => $webRoot,
