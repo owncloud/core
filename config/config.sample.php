@@ -266,6 +266,15 @@ $CONFIG = [
 'csrf.disabled' => false,
 
 /**
+ * Allows to relax ownClouds same site cookie settings.
+ *
+ * Possible values: Strict, Lax or None
+ * Setting the same site cookie to none is necessary in case of OpenID Connect.
+ */
+
+'http.cookie.samesite' => 'strict',
+
+/**
  * Define the directory where the skeleton files are located
  * These files will be copied to the data directory of new users.
  * Leave this directory empty if you do not want to copy any skeleton files.
