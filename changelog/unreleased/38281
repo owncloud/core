@@ -1,0 +1,3 @@
+Bugfix: Allow all users to see which groups they manage
+
+https://github.com/owncloud/core/pull/38281

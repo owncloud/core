@@ -2506,20 +2506,42 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->removeSubAdmin(['userid' => 'ExistingUser', '_delete' => ['groupid' => 'GroupToDeleteFrom']]));
 	}
 
+	public function testGetUserSubAdminGroupsNoCurrentUserInSession() {
+		$expected = new Result(null, 997);
+		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
+	}
+
 	public function testGetUserSubAdminGroupsNotExistingTargetUser() {
+		$currentUser = $this->createMock(IUser::class);
+		$this->userSession
+			->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($currentUser));
+		$currentUser
+			->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('RequestedUser'));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('RequestedUser')
 			->will($this->returnValue(null));
 
-		$expected = new Result(null, 101, 'User does not exist');
+		$expected = new Result(null, 998, 'The requested user could not be found');
 		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
 	}
 
-	public function testGetUserSubAdminGroupsWithGroups() {
+	public function testGetUserSubAdminGroupsWithGroupsAsSameUser() {
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
+		$this->userSession
+			->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($targetUser));
+		$targetUser
+			->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('RequestedUser'));
 		$targetGroup
 			->expects($this->once())
 			->method('getGID')
@@ -2545,8 +2567,115 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
 	}
 
-	public function testGetUserSubAdminGroupsWithoutGroups() {
+	public function testGetUserSubAdminGroupsAsSubadmin() {
+		$currentUser = $this->createMock(IUser::class);
 		$targetUser = $this->createMock(IUser::class);
+		$targetGroup = $this->createMock(IGroup::class);
+		$this->userSession
+			->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($currentUser));
+		$targetGroup
+			->expects($this->once())
+			->method('getGID')
+			->will($this->returnValue('TargetGroup'));
+		$this->userManager
+			->expects($this->once())
+			->method('get')
+			->with('RequestedUser')
+			->will($this->returnValue($targetUser));
+		$subAdminManager = $this->getMockBuilder(SubAdmin::class)
+			->disableOriginalConstructor()->getMock();
+		$subAdminManager
+			->expects($this->once())
+			->method('getSubAdminsGroups')
+			->with($targetUser)
+			->will($this->returnValue([$targetGroup]));
+		$subAdminManager
+			->expects($this->once())
+			->method('isUserAccessible')
+			->with($currentUser, $targetUser)
+			->will($this->returnValue(true));
+		$this->groupManager
+			->expects($this->once())
+			->method('getSubAdmin')
+			->will($this->returnValue($subAdminManager));
+
+		$expected = new Result(['TargetGroup'], 100);
+		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
+	}
+
+	public function testGetUserSubAdminGroupsAsSubadminUserNotAccessible() {
+		$currentUser = $this->createMock(IUser::class);
+		$targetUser = $this->createMock(IUser::class);
+		$targetGroup = $this->createMock(IGroup::class);
+		$this->userSession
+			->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($currentUser));
+		$this->userManager
+			->expects($this->once())
+			->method('get')
+			->with('RequestedUser')
+			->will($this->returnValue($targetUser));
+		$subAdminManager = $this->getMockBuilder(SubAdmin::class)
+			->disableOriginalConstructor()->getMock();
+		$subAdminManager
+			->expects($this->once())
+			->method('isUserAccessible')
+			->with($currentUser, $targetUser)
+			->will($this->returnValue(false));
+		$this->groupManager
+			->expects($this->once())
+			->method('getSubAdmin')
+			->will($this->returnValue($subAdminManager));
+
+		$expected = new Result(null, 997);
+		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
+	}
+
+	public function testGetUserSubAdminGroupsWithGroupsAsAdmin() {
+		$targetUser = $this->createMock(IUser::class);
+		$targetGroup = $this->createMock(IGroup::class);
+		$this->userSession
+			->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($targetUser));
+		$targetGroup
+			->expects($this->once())
+			->method('getGID')
+			->will($this->returnValue('TargetGroup'));
+		$this->userManager
+			->expects($this->once())
+			->method('get')
+			->with('RequestedUser')
+			->will($this->returnValue($targetUser));
+		$subAdminManager = $this->getMockBuilder(SubAdmin::class)
+			->disableOriginalConstructor()->getMock();
+		$subAdminManager
+			->expects($this->once())
+			->method('getSubAdminsGroups')
+			->with($targetUser)
+			->will($this->returnValue([$targetGroup]));
+		$this->groupManager
+			->expects($this->once())
+			->method('getSubAdmin')
+			->will($this->returnValue($subAdminManager));
+		$this->groupManager
+			->expects($this->once())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
+		$expected = new Result(['TargetGroup'], 100);
+		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
+	}
+
+	public function testGetUserSubAdminGroupsWithoutAnyGroups() {
+		$targetUser = $this->createMock(IUser::class);
+		$this->userSession
+			->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($targetUser));
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -2563,8 +2692,12 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('getSubAdmin')
 			->will($this->returnValue($subAdminManager));
+		$this->groupManager
+			->expects($this->once())
+			->method('isAdmin')
+			->will($this->returnValue(true));
 
-		$expected = new Result(null, 102, 'Unknown error occurred');
+		$expected = new Result([], 100);
 		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
 	}
 
