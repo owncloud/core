@@ -47,19 +47,17 @@ use OCP\Security\ISecureRandom;
  * @package OC\Session
  */
 class CryptoWrapper {
-	const COOKIE_NAME = 'oc_sessionPassphrase';
+	public const COOKIE_NAME = 'oc_sessionPassphrase';
+	public const LEGACY_COOKIE_NAME = 'oc_sessionPassphrase-legacy';
 
 	/** @var ISession */
 	protected $session;
 
-	/** @var \OCP\Security\ICrypto */
+	/** @var ICrypto */
 	protected $crypto;
 
 	/** @var ISecureRandom */
 	protected $random;
-
-	/** @var IConfig  */
-	private $config;
 
 	/** @var string  */
 	private $passphrase;
@@ -75,12 +73,12 @@ class CryptoWrapper {
 								ISecureRandom $random,
 								IRequest $request) {
 		$this->crypto = $crypto;
-		$this->config = $config;
 		$this->random = $random;
-
-		if ($request->getCookie(self::COOKIE_NAME) !== null) {
-			$this->passphrase = $request->getCookie(self::COOKIE_NAME);
-		} else {
+		$this->passphrase = $request->getCookie(self::COOKIE_NAME);
+		if ($this->passphrase === null) {
+			$this->passphrase = $request->getCookie(self::LEGACY_COOKIE_NAME);
+		}
+		if ($this->passphrase === null) {
 			$this->passphrase = $this->random->generate(128);
 			$secureCookie = $request->getServerProtocol() === 'https';
 			// FIXME: Required for CI
@@ -90,19 +88,25 @@ class CryptoWrapper {
 					$webRoot = '/';
 				}
 
-				if (\version_compare(PHP_VERSION, '7.3.0') === -1) {
+				if (PHP_VERSION_ID < 70300) {
 					\setcookie(self::COOKIE_NAME, $this->passphrase, 0, $webRoot, '', $secureCookie, true);
 				} else {
-					$options = [
+					\setcookie(self::COOKIE_NAME, $this->passphrase, [
 						"expires" => 0,
 						"path" => $webRoot,
 						"domain" => '',
 						"secure" => $secureCookie,
 						"httponly" => true,
 						"samesite" => 'strict'
-					];
-
-					\setcookie(self::COOKIE_NAME, $this->passphrase, $options);
+					]);
+					\setcookie(self::LEGACY_COOKIE_NAME, $this->passphrase, [
+						"expires" => 0,
+						"path" => $webRoot,
+						"domain" => '',
+						"secure" => true,
+						"httponly" => true,
+						"samesite" => 'none'
+					]);
 				}
 			}
 		}
