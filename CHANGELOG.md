@@ -13,6 +13,7 @@ Summary
 * Bugfix - Show the share list even if some shares point to unavailable storages: [#38190](https://github.com/owncloud/core/pull/38190)
 * Bugfix - Fix a regression with theming of settings menu icons: [#38246](https://github.com/owncloud/core/pull/38246)
 * Bugfix - Determine unencrypted block size after begin operation: [#38249](https://github.com/owncloud/core/pull/38249)
+* Bugfix - Allow all users to see which groups they manage: [#38281](https://github.com/owncloud/core/pull/38281)
 * Bugfix - Fix the position of the user afterLogin-event: [#38289](https://github.com/owncloud/core/pull/38289)
 * Bugfix - Fix file_target in response when creating a public link share: [#38291](https://github.com/owncloud/core/issues/38291)
 * Bugfix - Fix rendering of leading/trailing spaces in the file name: [#38316](https://github.com/owncloud/core/issues/38316)
@@ -105,6 +106,10 @@ Details
    In this way, EncryptionModule can decide block size after reading the header of the file.
 
    https://github.com/owncloud/core/pull/38249
+
+* Bugfix - Allow all users to see which groups they manage: [#38281](https://github.com/owncloud/core/pull/38281)
+
+   https://github.com/owncloud/core/pull/38281
 
 * Bugfix - Fix the position of the user afterLogin-event: [#38289](https://github.com/owncloud/core/pull/38289)
 
