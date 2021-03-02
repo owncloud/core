@@ -664,3 +664,17 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
+  @issue-ocis-1710
+  Scenario Outline: Sharing a same file twice to the same group is not possible
+    Given using OCS API version "<ocs-api-version>"
+    And group "grp1" has been created
+    And user "Alice" has shared file "textfile0.txt" with group "grp1"
+    When user "Alice" shares file "textfile0.txt" with group "grp1" using the sharing API
+    Then the HTTP status code should be "<http-status>"
+    And the OCS status code should be "403"
+    And the OCS status message should be "Path already shared with this group"
+    Examples:
+      | ocs-api-version | http-status |
+      | 1               | 200         |
+      | 2               | 403         |
