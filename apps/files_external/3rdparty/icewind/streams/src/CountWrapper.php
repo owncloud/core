@@ -64,7 +64,7 @@ class CountWrapper extends Wrapper {
 			throw new \InvalidArgumentException('Invalid or missing callback');
 		}
 		return self::wrapSource($source, [
-			'source' => $source,
+			'source'   => $source,
 			'callback' => $callback
 		]);
 	}

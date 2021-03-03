@@ -48,17 +48,25 @@ class UrlCallback extends Wrapper implements Url {
 	 *
 	 * @throws \BadMethodCallException
 	 */
-	public static function wrap($source, $fopen = null, $opendir = null, $mkdir = null, $rename = null, $rmdir = null,
-								$unlink = null, $stat = null) {
+	public static function wrap(
+		$source,
+		$fopen = null,
+		$opendir = null,
+		$mkdir = null,
+		$rename = null,
+		$rmdir = null,
+		$unlink = null,
+		$stat = null
+	) {
 		return new Path(static::class, [
-			'source' => $source,
-			'fopen' => $fopen,
+			'source'  => $source,
+			'fopen'   => $fopen,
 			'opendir' => $opendir,
-			'mkdir' => $mkdir,
-			'rename' => $rename,
-			'rmdir' => $rmdir,
-			'unlink' => $unlink,
-			'stat' => $stat
+			'mkdir'   => $mkdir,
+			'rename'  => $rename,
+			'rmdir'   => $rmdir,
+			'unlink'  => $unlink,
+			'stat'    => $stat
 		]);
 	}
 

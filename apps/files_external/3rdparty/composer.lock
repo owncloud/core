@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3f5cf71892eba165ab9d24e1c1f8c7dd",
+    "content-hash": "0b8ee9c1f24f0ab195753e929fee3c27",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -517,24 +517,25 @@
         },
         {
             "name": "icewind/streams",
-            "version": "v0.7.2",
+            "version": "v0.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/icewind1991/Streams.git",
-                "reference": "77d750ccc654c0eda4a41fedb2dbd71053755790"
+                "reference": "22ef9fc5b50d645dbc202206a656cc4dde28f95c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/icewind1991/Streams/zipball/77d750ccc654c0eda4a41fedb2dbd71053755790",
-                "reference": "77d750ccc654c0eda4a41fedb2dbd71053755790",
+                "url": "https://api.github.com/repos/icewind1991/Streams/zipball/22ef9fc5b50d645dbc202206a656cc4dde28f95c",
+                "reference": "22ef9fc5b50d645dbc202206a656cc4dde28f95c",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6"
+                "php": ">=7.1"
             },
             "require-dev": {
-                "php-coveralls/php-coveralls": "v2.1.0",
-                "phpunit/phpunit": "^5.7"
+                "friendsofphp/php-cs-fixer": "^2",
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "^9"
             },
             "type": "library",
             "autoload": {
@@ -555,9 +556,9 @@
             "description": "A set of generic stream wrappers",
             "support": {
                 "issues": "https://github.com/icewind1991/Streams/issues",
-                "source": "https://github.com/icewind1991/Streams/tree/master"
+                "source": "https://github.com/icewind1991/Streams/tree/v0.7.3"
             },
-            "time": "2020-04-08T14:59:33+00:00"
+            "time": "2021-03-02T19:33:35+00:00"
         },
         {
             "name": "monolog/monolog",

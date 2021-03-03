@@ -63,7 +63,7 @@ class SeekableWrapper extends Wrapper {
 	public function stream_seek($offset, $whence = SEEK_SET) {
 		if ($whence === SEEK_SET) {
 			$target = $offset;
-		} else if ($whence === SEEK_CUR) {
+		} elseif ($whence === SEEK_CUR) {
 			$current = ftell($this->cache);
 			$target = $current + $offset;
 		} else {

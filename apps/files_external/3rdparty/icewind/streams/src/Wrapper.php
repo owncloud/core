@@ -62,14 +62,13 @@ abstract class Wrapper extends WrapperHandler implements File, Directory {
 	public function stream_set_option($option, $arg1, $arg2) {
 		switch ($option) {
 			case STREAM_OPTION_BLOCKING:
-				stream_set_blocking($this->source, $arg1);
-				break;
+				return stream_set_blocking($this->source, (bool)$arg1);
 			case STREAM_OPTION_READ_TIMEOUT:
-				stream_set_timeout($this->source, $arg1, $arg2);
-				break;
+				return stream_set_timeout($this->source, $arg1, $arg2);
 			case STREAM_OPTION_WRITE_BUFFER:
-				stream_set_write_buffer($this->source, $arg1);
+				return stream_set_write_buffer($this->source, $arg1) === 0;
 		}
+		return false;
 	}
 
 	public function stream_truncate($size) {

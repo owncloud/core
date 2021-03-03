@@ -42,7 +42,7 @@ class IteratorDirectory extends WrapperHandler implements Directory {
 		$context = parent::loadContext($name);
 		if (isset($context['iterator'])) {
 			$this->iterator = $context['iterator'];
-		} else if (isset($context['array'])) {
+		} elseif (isset($context['array'])) {
 			$this->iterator = new \ArrayIterator($context['array']);
 		} else {
 			throw new \BadMethodCallException('Invalid context, iterator or array not set');
@@ -101,7 +101,7 @@ class IteratorDirectory extends WrapperHandler implements Directory {
 			$options = [
 				'iterator' => $source
 			];
-		} else if (is_array($source)) {
+		} elseif (is_array($source)) {
 			$options = [
 				'array' => $source
 			];
