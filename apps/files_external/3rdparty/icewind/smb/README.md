@@ -1,9 +1,8 @@
 SMB
 ===
 
-[![Code Coverage](https://scrutinizer-ci.com/g/icewind1991/SMB/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/icewind1991/SMB/?branch=master)
-[![Build Status](https://travis-ci.org/icewind1991/SMB.svg?branch=master)](https://travis-ci.org/icewind1991/SMB)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/icewind1991/SMB/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/icewind1991/SMB/?branch=master)
+[![CI](https://github.com/icewind1991/SMB/actions/workflows/ci.yaml/badge.svg)](https://github.com/icewind1991/SMB/actions/workflows/ci.yaml)
+[![codecov](https://codecov.io/gh/icewind1991/SMB/branch/master/graph/badge.svg?token=eTg0P466k6)](https://codecov.io/gh/icewind1991/SMB)
 
 PHP wrapper for `smbclient` and [`libsmbclient-php`](https://github.com/eduardok/libsmbclient-php)
 
@@ -126,6 +125,17 @@ $options = new Options();
 $options->setTimeout(5);
 $serverFactory = new ServerFactory($options);
 ```
+
+### Setting protocol version
+
+```php
+$options = new Options();
+$options->setMinProtocol(IOptions::PROTOCOL_SMB2);
+$options->setMaxProtocol(IOptions::PROTOCOL_SMB3);
+$serverFactory = new ServerFactory($options);
+```
+
+Note, setting the protocol version is not supported with php-smbclient version 1.0.1 or lower.
 
 ### Customizing system integration
 

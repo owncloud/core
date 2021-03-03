@@ -10,6 +10,7 @@ namespace Icewind\SMB\Wrapped;
 use Icewind\SMB\Exception\AuthenticationException;
 use Icewind\SMB\Exception\ConnectException;
 use Icewind\SMB\Exception\ConnectionException;
+use Icewind\SMB\Exception\ConnectionRefusedException;
 use Icewind\SMB\Exception\InvalidHostException;
 use Icewind\SMB\Exception\NoLoginServerException;
 
@@ -31,7 +32,7 @@ class Connection extends RawConnection {
 	 * @param string $input
 	 */
 	public function write($input) {
-		parent::write($input . PHP_EOL);
+		return parent::write($input . PHP_EOL);
 	}
 
 	/**
@@ -41,9 +42,14 @@ class Connection extends RawConnection {
 		$this->write('');
 		do {
 			$promptLine = $this->readLine();
+			if ($promptLine === false) {
+				break;
+			}
 			$this->parser->checkConnectionError($promptLine);
 		} while (!$this->isPrompt($promptLine));
-		$this->write('');
+		if ($this->write('') === false) {
+			throw new ConnectionRefusedException();
+		}
 		$this->readLine();
 	}
 
@@ -63,6 +69,9 @@ class Connection extends RawConnection {
 			throw new ConnectionException('Connection not valid');
 		}
 		$promptLine = $this->readLine(); //first line is prompt
+		if ($promptLine === false) {
+			$this->unknownError($promptLine);
+		}
 		$this->parser->checkConnectionError($promptLine);
 
 		$output = [];
@@ -74,7 +83,7 @@ class Connection extends RawConnection {
 		if ($line === false) {
 			$this->unknownError($promptLine);
 		}
-		while (!$this->isPrompt($line)) { //next prompt functions as delimiter
+		while ($line !== false && !$this->isPrompt($line)) { //next prompt functions as delimiter
 			if (is_callable($callback)) {
 				$result = $callback($line);
 				if ($result === false) { // allow the callback to close the connection for infinite running commands
@@ -82,7 +91,7 @@ class Connection extends RawConnection {
 					break;
 				}
 			} else {
-				$output[] .= $line;
+				$output[] = $line;
 			}
 			$line = $this->readLine();
 		}
@@ -92,15 +101,15 @@ class Connection extends RawConnection {
 	/**
 	 * Check
 	 *
-	 * @param $line
+	 * @param string $line
 	 * @return bool
 	 */
-	private function isPrompt($line) {
-		return mb_substr($line, 0, self::DELIMITER_LENGTH) === self::DELIMITER || $line === false;
+	private function isPrompt(string $line) {
+		return mb_substr($line, 0, self::DELIMITER_LENGTH) === self::DELIMITER;
 	}
 
 	/**
-	 * @param string $promptLine (optional) prompt line that might contain some info about the error
+	 * @param string|bool $promptLine (optional) prompt line that might contain some info about the error
 	 * @throws ConnectException
 	 */
 	private function unknownError($promptLine = '') {

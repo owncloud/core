@@ -28,7 +28,7 @@ class NativeShare extends AbstractShare {
 	private $name;
 
 	/**
-	 * @var NativeState $state
+	 * @var ?NativeState $state
 	 */
 	private $state;
 

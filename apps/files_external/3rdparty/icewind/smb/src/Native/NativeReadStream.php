@@ -30,7 +30,7 @@ class NativeReadStream extends NativeStream {
 	/**
 	 * Wrap a stream from libsmbclient-php into a regular php stream
 	 *
-	 * @param \Icewind\SMB\NativeState $state
+	 * @param NativeState $state
 	 * @param resource $smbStream
 	 * @param string $mode
 	 * @param string $url

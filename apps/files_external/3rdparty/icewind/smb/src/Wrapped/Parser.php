@@ -60,7 +60,7 @@ class Parser {
 	/**
 	 * @param string $timeZone
 	 */
-	public function __construct($timeZone) {
+	public function __construct(string $timeZone) {
 		$this->timeZone = $timeZone;
 	}
 
@@ -91,13 +91,13 @@ class Parser {
 	/**
 	 * check if the first line holds a connection failure
 	 *
-	 * @param $line
+	 * @param string $line
 	 * @throws AuthenticationException
 	 * @throws InvalidHostException
 	 * @throws NoLoginServerException
 	 * @throws AccessDeniedException
 	 */
-	public function checkConnectionError($line) {
+	public function checkConnectionError(string $line) {
 		$line = rtrim($line, ')');
 		if (substr($line, -23) === ErrorCodes::LogonFailure) {
 			throw new AuthenticationException('Invalid login');

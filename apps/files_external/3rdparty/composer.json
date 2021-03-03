@@ -8,7 +8,7 @@
 		"classmap-authoritative": true
 	},
 	"require": {
-		"icewind/smb": "3.2.7",
+		"icewind/smb": "3.3.0",
 		"icewind/streams": "0.7.3",
 		"google/apiclient": "2.8.3",
 		"guzzlehttp/guzzle": "^5.3"

@@ -91,6 +91,14 @@ class NativeState {
 		$this->state = smbclient_state_new();
 		smbclient_option_set($this->state, SMBCLIENT_OPT_AUTO_ANONYMOUS_LOGIN, false);
 		smbclient_option_set($this->state, SMBCLIENT_OPT_TIMEOUT, $options->getTimeout() * 1000);
+
+		if (function_exists('smbclient_client_protocols')) {
+			$maxProtocol = $options->getMaxProtocol();
+			$minProtocol = $options->getMinProtocol();
+
+			smbclient_client_protocols($this->state, $minProtocol, $maxProtocol);
+		}
+
 		$auth->setExtraSmbClientOptions($this->state);
 		$result = @smbclient_state_init($this->state, $auth->getWorkgroup(), $auth->getUsername(), $auth->getPassword());
 
@@ -122,7 +130,7 @@ class NativeState {
 	}
 
 	/**
-	 * @param $dir
+	 * @param resource $dir
 	 * @return bool
 	 */
 	public function closedir($dir) {

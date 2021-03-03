@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '125e68da0ccf0d8d94fd8c68ed17aa5b517bf532',
+    'reference' => '253084d5ac2304c3229f422eecb215192376484b',
     'name' => 'files_external/3rdparty',
   ),
   'versions' => 
@@ -42,7 +42,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '125e68da0ccf0d8d94fd8c68ed17aa5b517bf532',
+      'reference' => '253084d5ac2304c3229f422eecb215192376484b',
     ),
     'firebase/php-jwt' => 
     array (
@@ -118,12 +118,12 @@ private static $installed = array (
     ),
     'icewind/smb' => 
     array (
-      'pretty_version' => 'v3.2.7',
-      'version' => '3.2.7.0',
+      'pretty_version' => 'v3.3.0',
+      'version' => '3.3.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '743a7bf35317f1b76cf8e8b804e54a6c5faacad6',
+      'reference' => 'e7cabee5097dbc6926e4b607c7df968802993467',
     ),
     'icewind/streams' => 
     array (

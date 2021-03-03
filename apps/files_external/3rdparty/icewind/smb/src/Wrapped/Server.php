@@ -11,6 +11,7 @@ use Icewind\SMB\AbstractServer;
 use Icewind\SMB\Exception\AuthenticationException;
 use Icewind\SMB\Exception\ConnectException;
 use Icewind\SMB\Exception\ConnectionException;
+use Icewind\SMB\Exception\ConnectionRefusedException;
 use Icewind\SMB\Exception\InvalidHostException;
 use Icewind\SMB\IShare;
 use Icewind\SMB\ISystem;
@@ -42,11 +43,15 @@ class Server extends AbstractServer {
 	 * @throws ConnectException
 	 */
 	public function listShares() {
+		$maxProtocol = $this->options->getMaxProtocol();
+		$minProtocol = $this->options->getMinProtocol();
 		$command = sprintf(
-			'%s %s %s -L %s',
+			'%s %s %s %s %s -L %s',
 			$this->system->getSmbclientPath(),
 			$this->getAuthFileArgument(),
 			$this->getAuth()->getExtraCommandLineArguments(),
+			$maxProtocol ? "--option='client max protocol=" . $maxProtocol . "'" : "",
+			$minProtocol ? "--option='client min protocol=" . $minProtocol . "'" : "",
 			escapeshellarg('//' . $this->getHost())
 		);
 		$connection = new RawConnection($command);
@@ -56,7 +61,7 @@ class Server extends AbstractServer {
 			throw new ConnectionException($connection->readLine());
 		}
 
-		$parser = new Parser($this->timezoneProvider);
+		$parser = new Parser($this->timezoneProvider->get($this->host));
 
 		$output = $connection->readAll();
 		if (isset($output[0])) {
@@ -70,6 +75,9 @@ class Server extends AbstractServer {
 
 		if (isset($output[0])) {
 			$parser->checkConnectionError($output[0]);
+		}
+		if (count($output) === 0) {
+			throw new ConnectionRefusedException();
 		}
 
 		$shareNames = $parser->parseListShares($output);

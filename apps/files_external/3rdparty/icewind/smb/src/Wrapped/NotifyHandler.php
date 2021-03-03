@@ -49,13 +49,13 @@ class NotifyHandler implements INotifyHandler {
 		if (!$this->listening) {
 			return [];
 		}
-		stream_set_blocking($this->connection->getOutputStream(), 0);
+		stream_set_blocking($this->connection->getOutputStream(), false);
 		$lines = [];
 		while (($line = $this->connection->readLine())) {
 			$this->checkForError($line);
 			$lines[] = $line;
 		}
-		stream_set_blocking($this->connection->getOutputStream(), 1);
+		stream_set_blocking($this->connection->getOutputStream(), true);
 		return array_values(array_filter(array_map([$this, 'parseChangeLine'], $lines)));
 	}
 

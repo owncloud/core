@@ -112,7 +112,7 @@ class NativeFileInfo implements IFileInfo {
 
 		// Let us ignore the ATTR_NOT_CONTENT_INDEXED for now
 		$mode &= ~0x00002000;
-		
+
 		return $mode;
 	}
 
@@ -188,7 +188,7 @@ class NativeFileInfo implements IFileInfo {
 			list($type, $flags, $mask) = explode('/', $permissions);
 			$mask = hexdec($mask);
 
-			$acls[$user] = new ACL($type, $flags, $mask);
+			$acls[$user] = new ACL((int)$type, (int)$flags, (int)$mask);
 		}
 
 		return $acls;

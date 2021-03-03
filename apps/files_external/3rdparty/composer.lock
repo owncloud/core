@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0b8ee9c1f24f0ab195753e929fee3c27",
+    "content-hash": "f0711a20908048ee54420b4f2cea7359",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -472,25 +472,26 @@
         },
         {
             "name": "icewind/smb",
-            "version": "v3.2.7",
+            "version": "v3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/icewind1991/SMB.git",
-                "reference": "743a7bf35317f1b76cf8e8b804e54a6c5faacad6"
+                "reference": "e7cabee5097dbc6926e4b607c7df968802993467"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/icewind1991/SMB/zipball/743a7bf35317f1b76cf8e8b804e54a6c5faacad6",
-                "reference": "743a7bf35317f1b76cf8e8b804e54a6c5faacad6",
+                "url": "https://api.github.com/repos/icewind1991/SMB/zipball/e7cabee5097dbc6926e4b607c7df968802993467",
+                "reference": "e7cabee5097dbc6926e4b607c7df968802993467",
                 "shasum": ""
             },
             "require": {
-                "icewind/streams": ">=0.2.0",
-                "php": ">=7.1"
+                "icewind/streams": ">=0.7.3",
+                "php": ">=7.3"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.13",
-                "phpunit/phpunit": "^7.0"
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "phpstan/phpstan": "^0.12.57",
+                "phpunit/phpunit": "^9.3.8"
             },
             "type": "library",
             "autoload": {
@@ -511,9 +512,9 @@
             "description": "php wrapper for smbclient and libsmbclient-php",
             "support": {
                 "issues": "https://github.com/icewind1991/SMB/issues",
-                "source": "https://github.com/icewind1991/SMB/tree/v3.2.7"
+                "source": "https://github.com/icewind1991/SMB/tree/v3.3.0"
             },
-            "time": "2020-09-03T13:00:22+00:00"
+            "time": "2021-03-02T20:40:37+00:00"
         },
         {
             "name": "icewind/streams",
