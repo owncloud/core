@@ -31,14 +31,14 @@ class Google_Service_ShoppingContent_PosDataProviders extends Google_Collection
     return $this->country;
   }
   /**
-   * @param Google_Service_ShoppingContent_PosDataProvidersPosDataProvider
+   * @param Google_Service_ShoppingContent_PosDataProvidersPosDataProvider[]
    */
   public function setPosDataProviders($posDataProviders)
   {
     $this->posDataProviders = $posDataProviders;
   }
   /**
-   * @return Google_Service_ShoppingContent_PosDataProvidersPosDataProvider
+   * @return Google_Service_ShoppingContent_PosDataProvidersPosDataProvider[]
    */
   public function getPosDataProviders()
   {

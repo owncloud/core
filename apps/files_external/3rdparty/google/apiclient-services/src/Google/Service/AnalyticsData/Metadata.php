@@ -25,28 +25,28 @@ class Google_Service_AnalyticsData_Metadata extends Google_Collection
   public $name;
 
   /**
-   * @param Google_Service_AnalyticsData_DimensionMetadata
+   * @param Google_Service_AnalyticsData_DimensionMetadata[]
    */
   public function setDimensions($dimensions)
   {
     $this->dimensions = $dimensions;
   }
   /**
-   * @return Google_Service_AnalyticsData_DimensionMetadata
+   * @return Google_Service_AnalyticsData_DimensionMetadata[]
    */
   public function getDimensions()
   {
     return $this->dimensions;
   }
   /**
-   * @param Google_Service_AnalyticsData_MetricMetadata
+   * @param Google_Service_AnalyticsData_MetricMetadata[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_AnalyticsData_MetricMetadata
+   * @return Google_Service_AnalyticsData_MetricMetadata[]
    */
   public function getMetrics()
   {

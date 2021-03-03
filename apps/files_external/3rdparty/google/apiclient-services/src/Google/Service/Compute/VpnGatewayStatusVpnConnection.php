@@ -56,14 +56,14 @@ class Google_Service_Compute_VpnGatewayStatusVpnConnection extends Google_Collec
     return $this->state;
   }
   /**
-   * @param Google_Service_Compute_VpnGatewayStatusTunnel
+   * @param Google_Service_Compute_VpnGatewayStatusTunnel[]
    */
   public function setTunnels($tunnels)
   {
     $this->tunnels = $tunnels;
   }
   /**
-   * @return Google_Service_Compute_VpnGatewayStatusTunnel
+   * @return Google_Service_Compute_VpnGatewayStatusTunnel[]
    */
   public function getTunnels()
   {

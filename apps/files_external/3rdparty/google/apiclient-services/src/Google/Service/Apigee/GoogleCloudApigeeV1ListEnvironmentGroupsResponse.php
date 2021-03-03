@@ -23,14 +23,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ListEnvironmentGroupsResponse ext
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentGroup
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentGroup[]
    */
   public function setEnvironmentGroups($environmentGroups)
   {
     $this->environmentGroups = $environmentGroups;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentGroup
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentGroup[]
    */
   public function getEnvironmentGroups()
   {

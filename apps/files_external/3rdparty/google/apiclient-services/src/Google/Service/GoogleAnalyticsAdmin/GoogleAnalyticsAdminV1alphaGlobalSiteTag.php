@@ -17,8 +17,17 @@
 
 class Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaGlobalSiteTag extends Google_Model
 {
+  public $name;
   public $snippet;
 
+  public function setName($name)
+  {
+    $this->name = $name;
+  }
+  public function getName()
+  {
+    return $this->name;
+  }
   public function setSnippet($snippet)
   {
     $this->snippet = $snippet;

@@ -80,14 +80,14 @@ class Google_Service_Dataflow_WorkItemServiceState extends Google_Collection
     return $this->leaseExpireTime;
   }
   /**
-   * @param Google_Service_Dataflow_MetricShortId
+   * @param Google_Service_Dataflow_MetricShortId[]
    */
   public function setMetricShortId($metricShortId)
   {
     $this->metricShortId = $metricShortId;
   }
   /**
-   * @return Google_Service_Dataflow_MetricShortId
+   * @return Google_Service_Dataflow_MetricShortId[]
    */
   public function getMetricShortId()
   {

@@ -71,9 +71,6 @@ class Google_Service_Genomics_Resource_Operations extends Google_Service_Resourc
    * @param string $name The name of the operation's parent resource.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize The maximum number of results to return. The maximum
-   * value is 256.
-   * @opt_param string pageToken The standard list page token.
    * @opt_param string filter A string for filtering Operations. In v2alpha1, the
    * following filter fields are supported: * createTime: The time this job was
    * created * events: The set of event (names) that have occurred while running
@@ -92,6 +89,9 @@ class Google_Service_Genomics_Resource_Operations extends Google_Service_Resourc
    * `projectId = my-project AND createTime >= 1432140000 AND createTime <=
    * 1432150000 AND status = RUNNING` * `projectId = my-project AND labels.color =
    * *` * `projectId = my-project AND labels.color = red`
+   * @opt_param int pageSize The maximum number of results to return. The maximum
+   * value is 256.
+   * @opt_param string pageToken The standard list page token.
    * @return Google_Service_Genomics_ListOperationsResponse
    */
   public function listOperations($name, $optParams = array())

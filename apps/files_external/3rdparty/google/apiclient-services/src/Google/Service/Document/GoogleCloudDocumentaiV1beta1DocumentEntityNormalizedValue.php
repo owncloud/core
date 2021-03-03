@@ -19,6 +19,7 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentEntityNormaliz
 {
   protected $addressValueType = 'Google_Service_Document_GoogleTypePostalAddress';
   protected $addressValueDataType = '';
+  public $booleanValue;
   protected $dateValueType = 'Google_Service_Document_GoogleTypeDate';
   protected $dateValueDataType = '';
   protected $datetimeValueType = 'Google_Service_Document_GoogleTypeDateTime';
@@ -40,6 +41,14 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentEntityNormaliz
   public function getAddressValue()
   {
     return $this->addressValue;
+  }
+  public function setBooleanValue($booleanValue)
+  {
+    $this->booleanValue = $booleanValue;
+  }
+  public function getBooleanValue()
+  {
+    return $this->booleanValue;
   }
   /**
    * @param Google_Service_Document_GoogleTypeDate

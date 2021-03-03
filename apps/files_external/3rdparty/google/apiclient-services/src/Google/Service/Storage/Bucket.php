@@ -48,6 +48,7 @@ class Google_Service_Storage_Bucket extends Google_Collection
   public $projectNumber;
   protected $retentionPolicyType = 'Google_Service_Storage_BucketRetentionPolicy';
   protected $retentionPolicyDataType = '';
+  public $satisfiesPZS;
   public $selfLink;
   public $storageClass;
   public $timeCreated;
@@ -59,14 +60,14 @@ class Google_Service_Storage_Bucket extends Google_Collection
   public $zoneAffinity;
 
   /**
-   * @param Google_Service_Storage_BucketAccessControl
+   * @param Google_Service_Storage_BucketAccessControl[]
    */
   public function setAcl($acl)
   {
     $this->acl = $acl;
   }
   /**
-   * @return Google_Service_Storage_BucketAccessControl
+   * @return Google_Service_Storage_BucketAccessControl[]
    */
   public function getAcl()
   {
@@ -87,14 +88,14 @@ class Google_Service_Storage_Bucket extends Google_Collection
     return $this->billing;
   }
   /**
-   * @param Google_Service_Storage_BucketCors
+   * @param Google_Service_Storage_BucketCors[]
    */
   public function setCors($cors)
   {
     $this->cors = $cors;
   }
   /**
-   * @return Google_Service_Storage_BucketCors
+   * @return Google_Service_Storage_BucketCors[]
    */
   public function getCors()
   {
@@ -109,14 +110,14 @@ class Google_Service_Storage_Bucket extends Google_Collection
     return $this->defaultEventBasedHold;
   }
   /**
-   * @param Google_Service_Storage_ObjectAccessControl
+   * @param Google_Service_Storage_ObjectAccessControl[]
    */
   public function setDefaultObjectAcl($defaultObjectAcl)
   {
     $this->defaultObjectAcl = $defaultObjectAcl;
   }
   /**
-   * @return Google_Service_Storage_ObjectAccessControl
+   * @return Google_Service_Storage_ObjectAccessControl[]
    */
   public function getDefaultObjectAcl()
   {
@@ -277,6 +278,14 @@ class Google_Service_Storage_Bucket extends Google_Collection
   public function getRetentionPolicy()
   {
     return $this->retentionPolicy;
+  }
+  public function setSatisfiesPZS($satisfiesPZS)
+  {
+    $this->satisfiesPZS = $satisfiesPZS;
+  }
+  public function getSatisfiesPZS()
+  {
+    return $this->satisfiesPZS;
   }
   public function setSelfLink($selfLink)
   {

@@ -28,7 +28,7 @@ class Google_Service_Directory_Resource_DomainAliases extends Google_Service_Res
   /**
    * Deletes a domain Alias of the customer. (domainAliases.delete)
    *
-   * @param string $customer Immutable ID of the G Suite account.
+   * @param string $customer Immutable ID of the Google Workspace account.
    * @param string $domainAliasName Name of domain alias to be retrieved.
    * @param array $optParams Optional parameters.
    */
@@ -41,7 +41,7 @@ class Google_Service_Directory_Resource_DomainAliases extends Google_Service_Res
   /**
    * Retrieves a domain alias of the customer. (domainAliases.get)
    *
-   * @param string $customer Immutable ID of the G Suite account.
+   * @param string $customer Immutable ID of the Google Workspace account.
    * @param string $domainAliasName Name of domain alias to be retrieved.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_DomainAlias
@@ -55,7 +55,7 @@ class Google_Service_Directory_Resource_DomainAliases extends Google_Service_Res
   /**
    * Inserts a domain alias of the customer. (domainAliases.insert)
    *
-   * @param string $customer Immutable ID of the G Suite account.
+   * @param string $customer Immutable ID of the Google Workspace account.
    * @param Google_Service_Directory_DomainAlias $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_DomainAlias
@@ -69,7 +69,7 @@ class Google_Service_Directory_Resource_DomainAliases extends Google_Service_Res
   /**
    * Lists the domain aliases of the customer. (domainAliases.listDomainAliases)
    *
-   * @param string $customer Immutable ID of the G Suite account.
+   * @param string $customer Immutable ID of the Google Workspace account.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string parentDomainName Name of the parent domain for which domain

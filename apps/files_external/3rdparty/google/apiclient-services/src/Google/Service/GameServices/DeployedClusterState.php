@@ -31,14 +31,14 @@ class Google_Service_GameServices_DeployedClusterState extends Google_Collection
     return $this->cluster;
   }
   /**
-   * @param Google_Service_GameServices_DeployedFleetDetails
+   * @param Google_Service_GameServices_DeployedFleetDetails[]
    */
   public function setFleetDetails($fleetDetails)
   {
     $this->fleetDetails = $fleetDetails;
   }
   /**
-   * @return Google_Service_GameServices_DeployedFleetDetails
+   * @return Google_Service_GameServices_DeployedFleetDetails[]
    */
   public function getFleetDetails()
   {

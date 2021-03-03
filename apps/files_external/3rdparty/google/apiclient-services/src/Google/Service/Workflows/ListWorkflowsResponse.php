@@ -40,14 +40,14 @@ class Google_Service_Workflows_ListWorkflowsResponse extends Google_Collection
     return $this->unreachable;
   }
   /**
-   * @param Google_Service_Workflows_Workflow
+   * @param Google_Service_Workflows_Workflow[]
    */
   public function setWorkflows($workflows)
   {
     $this->workflows = $workflows;
   }
   /**
-   * @return Google_Service_Workflows_Workflow
+   * @return Google_Service_Workflows_Workflow[]
    */
   public function getWorkflows()
   {

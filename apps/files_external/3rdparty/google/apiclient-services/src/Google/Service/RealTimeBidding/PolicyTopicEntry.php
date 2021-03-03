@@ -24,14 +24,14 @@ class Google_Service_RealTimeBidding_PolicyTopicEntry extends Google_Collection
   public $policyTopic;
 
   /**
-   * @param Google_Service_RealTimeBidding_PolicyTopicEvidence
+   * @param Google_Service_RealTimeBidding_PolicyTopicEvidence[]
    */
   public function setEvidences($evidences)
   {
     $this->evidences = $evidences;
   }
   /**
-   * @return Google_Service_RealTimeBidding_PolicyTopicEvidence
+   * @return Google_Service_RealTimeBidding_PolicyTopicEvidence[]
    */
   public function getEvidences()
   {

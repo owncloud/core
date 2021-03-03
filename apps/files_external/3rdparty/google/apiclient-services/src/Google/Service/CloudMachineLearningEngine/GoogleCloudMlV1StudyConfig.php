@@ -49,28 +49,28 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1StudyConfig exten
     return $this->automatedStoppingConfig;
   }
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1StudyConfigMetricSpec
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1StudyConfigMetricSpec[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1StudyConfigMetricSpec
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1StudyConfigMetricSpec[]
    */
   public function getMetrics()
   {
     return $this->metrics;
   }
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1StudyConfigParameterSpec
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1StudyConfigParameterSpec[]
    */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1StudyConfigParameterSpec
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1StudyConfigParameterSpec[]
    */
   public function getParameters()
   {

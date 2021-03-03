@@ -34,6 +34,8 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Version extends G
   public $framework;
   public $isDefault;
   public $labels;
+  public $lastMigrationModelId;
+  public $lastMigrationTime;
   public $lastUseTime;
   public $machineType;
   protected $manualScalingType = 'Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ManualScaling';
@@ -169,6 +171,22 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Version extends G
   public function getLabels()
   {
     return $this->labels;
+  }
+  public function setLastMigrationModelId($lastMigrationModelId)
+  {
+    $this->lastMigrationModelId = $lastMigrationModelId;
+  }
+  public function getLastMigrationModelId()
+  {
+    return $this->lastMigrationModelId;
+  }
+  public function setLastMigrationTime($lastMigrationTime)
+  {
+    $this->lastMigrationTime = $lastMigrationTime;
+  }
+  public function getLastMigrationTime()
+  {
+    return $this->lastMigrationTime;
   }
   public function setLastUseTime($lastUseTime)
   {

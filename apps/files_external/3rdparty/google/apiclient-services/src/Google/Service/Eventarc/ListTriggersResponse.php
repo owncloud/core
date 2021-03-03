@@ -32,14 +32,14 @@ class Google_Service_Eventarc_ListTriggersResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Eventarc_Trigger
+   * @param Google_Service_Eventarc_Trigger[]
    */
   public function setTriggers($triggers)
   {
     $this->triggers = $triggers;
   }
   /**
-   * @return Google_Service_Eventarc_Trigger
+   * @return Google_Service_Eventarc_Trigger[]
    */
   public function getTriggers()
   {

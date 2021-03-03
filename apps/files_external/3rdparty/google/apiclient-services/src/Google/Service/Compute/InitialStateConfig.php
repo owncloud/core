@@ -28,42 +28,42 @@ class Google_Service_Compute_InitialStateConfig extends Google_Collection
   protected $pkDataType = '';
 
   /**
-   * @param Google_Service_Compute_FileContentBuffer
+   * @param Google_Service_Compute_FileContentBuffer[]
    */
   public function setDbs($dbs)
   {
     $this->dbs = $dbs;
   }
   /**
-   * @return Google_Service_Compute_FileContentBuffer
+   * @return Google_Service_Compute_FileContentBuffer[]
    */
   public function getDbs()
   {
     return $this->dbs;
   }
   /**
-   * @param Google_Service_Compute_FileContentBuffer
+   * @param Google_Service_Compute_FileContentBuffer[]
    */
   public function setDbxs($dbxs)
   {
     $this->dbxs = $dbxs;
   }
   /**
-   * @return Google_Service_Compute_FileContentBuffer
+   * @return Google_Service_Compute_FileContentBuffer[]
    */
   public function getDbxs()
   {
     return $this->dbxs;
   }
   /**
-   * @param Google_Service_Compute_FileContentBuffer
+   * @param Google_Service_Compute_FileContentBuffer[]
    */
   public function setKeks($keks)
   {
     $this->keks = $keks;
   }
   /**
-   * @return Google_Service_Compute_FileContentBuffer
+   * @return Google_Service_Compute_FileContentBuffer[]
    */
   public function getKeks()
   {

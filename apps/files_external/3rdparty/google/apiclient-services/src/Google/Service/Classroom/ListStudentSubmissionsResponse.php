@@ -31,14 +31,14 @@ class Google_Service_Classroom_ListStudentSubmissionsResponse extends Google_Col
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Classroom_StudentSubmission
+   * @param Google_Service_Classroom_StudentSubmission[]
    */
   public function setStudentSubmissions($studentSubmissions)
   {
     $this->studentSubmissions = $studentSubmissions;
   }
   /**
-   * @return Google_Service_Classroom_StudentSubmission
+   * @return Google_Service_Classroom_StudentSubmission[]
    */
   public function getStudentSubmissions()
   {

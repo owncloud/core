@@ -22,14 +22,14 @@ class Google_Service_PeopleService_BatchGetContactGroupsResponse extends Google_
   protected $responsesDataType = 'array';
 
   /**
-   * @param Google_Service_PeopleService_ContactGroupResponse
+   * @param Google_Service_PeopleService_ContactGroupResponse[]
    */
   public function setResponses($responses)
   {
     $this->responses = $responses;
   }
   /**
-   * @return Google_Service_PeopleService_ContactGroupResponse
+   * @return Google_Service_PeopleService_ContactGroupResponse[]
    */
   public function getResponses()
   {

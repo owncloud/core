@@ -65,14 +65,14 @@ class Google_Service_Dataflow_ParallelInstruction extends Google_Collection
     return $this->originalName;
   }
   /**
-   * @param Google_Service_Dataflow_InstructionOutput
+   * @param Google_Service_Dataflow_InstructionOutput[]
    */
   public function setOutputs($outputs)
   {
     $this->outputs = $outputs;
   }
   /**
-   * @return Google_Service_Dataflow_InstructionOutput
+   * @return Google_Service_Dataflow_InstructionOutput[]
    */
   public function getOutputs()
   {

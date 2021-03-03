@@ -78,8 +78,8 @@ class Google_Service_Compute_Resource_ForwardingRules extends Google_Service_Res
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
+   * which provides partial results in case of failure. The default value is
+   * false.
    * @return Google_Service_Compute_ForwardingRuleAggregatedList
    */
   public function aggregatedList($project, $optParams = array())
@@ -207,8 +207,8 @@ class Google_Service_Compute_Resource_ForwardingRules extends Google_Service_Res
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
+   * which provides partial results in case of failure. The default value is
+   * false.
    * @return Google_Service_Compute_ForwardingRuleList
    */
   public function listForwardingRules($project, $region, $optParams = array())
@@ -248,6 +248,36 @@ class Google_Service_Compute_Resource_ForwardingRules extends Google_Service_Res
     $params = array('project' => $project, 'region' => $region, 'forwardingRule' => $forwardingRule, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('patch', array($params), "Google_Service_Compute_Operation");
+  }
+  /**
+   * Sets the labels on the specified resource. To learn more about labels, read
+   * the Labeling Resources documentation. (forwardingRules.setLabels)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $region The region for this request.
+   * @param string $resource Name or id of the resource for this request.
+   * @param Google_Service_Compute_RegionSetLabelsRequest $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string requestId An optional request ID to identify requests.
+   * Specify a unique request ID so that if you must retry your request, the
+   * server will know to ignore the request if it has already been completed.
+   *
+   * For example, consider a situation where you make an initial request and the
+   * request times out. If you make the request again with the same request ID,
+   * the server can check if original operation with the same request ID was
+   * received, and if so, will ignore the second request. This prevents clients
+   * from accidentally creating duplicate commitments.
+   *
+   * The request ID must be a valid UUID with the exception that zero UUID is not
+   * supported (00000000-0000-0000-0000-000000000000).
+   * @return Google_Service_Compute_Operation
+   */
+  public function setLabels($project, $region, $resource, Google_Service_Compute_RegionSetLabelsRequest $postBody, $optParams = array())
+  {
+    $params = array('project' => $project, 'region' => $region, 'resource' => $resource, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('setLabels', array($params), "Google_Service_Compute_Operation");
   }
   /**
    * Changes target URL for forwarding rule. The new target should be of the same

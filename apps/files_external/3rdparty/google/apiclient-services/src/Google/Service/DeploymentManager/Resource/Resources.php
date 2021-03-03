@@ -47,9 +47,6 @@ class Google_Service_DeploymentManager_Resource_Resources extends Google_Service
    * @param string $deployment The name of the deployment for this request.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
    * @opt_param string filter A filter expression that filters resources listed in
    * the response. The expression must specify the field name, a comparison
    * operator, and the value that you want to use for filtering. The value must be
@@ -71,9 +68,6 @@ class Google_Service_DeploymentManager_Resource_Resources extends Google_Service
    * `maxResults`, Compute Engine returns a `nextPageToken` that can be used to
    * get the next page of results in subsequent list requests. Acceptable values
    * are `0` to `500`, inclusive. (Default: `500`)
-   * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
-   * the `nextPageToken` returned by a previous list request to get the next page
-   * of results.
    * @opt_param string orderBy Sorts list results by a certain order. By default,
    * results are returned in alphanumerical order based on the resource name. You
    * can also sort results in descending order based on the creation timestamp
@@ -82,6 +76,9 @@ class Google_Service_DeploymentManager_Resource_Resources extends Google_Service
    * first). Use this to sort resources like operations so that the newest
    * operation is returned first. Currently, only sorting by `name` or
    * `creationTimestamp desc` is supported.
+   * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
+   * the `nextPageToken` returned by a previous list request to get the next page
+   * of results.
    * @return Google_Service_DeploymentManager_ResourcesListResponse
    */
   public function listResources($project, $deployment, $optParams = array())

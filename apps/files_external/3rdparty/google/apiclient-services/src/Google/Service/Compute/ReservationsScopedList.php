@@ -24,14 +24,14 @@ class Google_Service_Compute_ReservationsScopedList extends Google_Collection
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_Reservation
+   * @param Google_Service_Compute_Reservation[]
    */
   public function setReservations($reservations)
   {
     $this->reservations = $reservations;
   }
   /**
-   * @return Google_Service_Compute_Reservation
+   * @return Google_Service_Compute_Reservation[]
    */
   public function getReservations()
   {

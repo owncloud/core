@@ -22,14 +22,14 @@ class Google_Service_ShoppingContent_RepricingRuleEffectiveTime extends Google_C
   protected $fixedTimePeriodsDataType = 'array';
 
   /**
-   * @param Google_Service_ShoppingContent_RepricingRuleEffectiveTimeFixedTimePeriod
+   * @param Google_Service_ShoppingContent_RepricingRuleEffectiveTimeFixedTimePeriod[]
    */
   public function setFixedTimePeriods($fixedTimePeriods)
   {
     $this->fixedTimePeriods = $fixedTimePeriods;
   }
   /**
-   * @return Google_Service_ShoppingContent_RepricingRuleEffectiveTimeFixedTimePeriod
+   * @return Google_Service_ShoppingContent_RepricingRuleEffectiveTimeFixedTimePeriod[]
    */
   public function getFixedTimePeriods()
   {

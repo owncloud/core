@@ -67,14 +67,14 @@ class Google_Service_ServiceConsumerManagement_AuthProvider extends Google_Colle
     return $this->jwksUri;
   }
   /**
-   * @param Google_Service_ServiceConsumerManagement_JwtLocation
+   * @param Google_Service_ServiceConsumerManagement_JwtLocation[]
    */
   public function setJwtLocations($jwtLocations)
   {
     $this->jwtLocations = $jwtLocations;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_JwtLocation
+   * @return Google_Service_ServiceConsumerManagement_JwtLocation[]
    */
   public function getJwtLocations()
   {

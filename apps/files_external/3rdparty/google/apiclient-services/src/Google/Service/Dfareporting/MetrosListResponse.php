@@ -31,14 +31,14 @@ class Google_Service_Dfareporting_MetrosListResponse extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dfareporting_Metro
+   * @param Google_Service_Dfareporting_Metro[]
    */
   public function setMetros($metros)
   {
     $this->metros = $metros;
   }
   /**
-   * @return Google_Service_Dfareporting_Metro
+   * @return Google_Service_Dfareporting_Metro[]
    */
   public function getMetros()
   {

@@ -17,6 +17,8 @@
 
 class Google_Service_ShoppingContent_RepricingRule extends Google_Model
 {
+  protected $cogsBasedRuleType = 'Google_Service_ShoppingContent_RepricingRuleCostOfGoodsSaleRule';
+  protected $cogsBasedRuleDataType = '';
   public $countryCode;
   protected $effectiveTimePeriodType = 'Google_Service_ShoppingContent_RepricingRuleEffectiveTime';
   protected $effectiveTimePeriodDataType = '';
@@ -28,9 +30,25 @@ class Google_Service_ShoppingContent_RepricingRule extends Google_Model
   protected $restrictionType = 'Google_Service_ShoppingContent_RepricingRuleRestriction';
   protected $restrictionDataType = '';
   public $ruleId;
+  protected $statsBasedRuleType = 'Google_Service_ShoppingContent_RepricingRuleStatsBasedRule';
+  protected $statsBasedRuleDataType = '';
   public $title;
   public $type;
 
+  /**
+   * @param Google_Service_ShoppingContent_RepricingRuleCostOfGoodsSaleRule
+   */
+  public function setCogsBasedRule(Google_Service_ShoppingContent_RepricingRuleCostOfGoodsSaleRule $cogsBasedRule)
+  {
+    $this->cogsBasedRule = $cogsBasedRule;
+  }
+  /**
+   * @return Google_Service_ShoppingContent_RepricingRuleCostOfGoodsSaleRule
+   */
+  public function getCogsBasedRule()
+  {
+    return $this->cogsBasedRule;
+  }
   public function setCountryCode($countryCode)
   {
     $this->countryCode = $countryCode;
@@ -112,6 +130,20 @@ class Google_Service_ShoppingContent_RepricingRule extends Google_Model
   public function getRuleId()
   {
     return $this->ruleId;
+  }
+  /**
+   * @param Google_Service_ShoppingContent_RepricingRuleStatsBasedRule
+   */
+  public function setStatsBasedRule(Google_Service_ShoppingContent_RepricingRuleStatsBasedRule $statsBasedRule)
+  {
+    $this->statsBasedRule = $statsBasedRule;
+  }
+  /**
+   * @return Google_Service_ShoppingContent_RepricingRuleStatsBasedRule
+   */
+  public function getStatsBasedRule()
+  {
+    return $this->statsBasedRule;
   }
   public function setTitle($title)
   {

@@ -23,14 +23,14 @@ class Google_Service_Apigee_GoogleIamV1AuditConfig extends Google_Collection
   public $service;
 
   /**
-   * @param Google_Service_Apigee_GoogleIamV1AuditLogConfig
+   * @param Google_Service_Apigee_GoogleIamV1AuditLogConfig[]
    */
   public function setAuditLogConfigs($auditLogConfigs)
   {
     $this->auditLogConfigs = $auditLogConfigs;
   }
   /**
-   * @return Google_Service_Apigee_GoogleIamV1AuditLogConfig
+   * @return Google_Service_Apigee_GoogleIamV1AuditLogConfig[]
    */
   public function getAuditLogConfigs()
   {

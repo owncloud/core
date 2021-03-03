@@ -42,14 +42,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2KMapEstimationHistogramBucket extends
     return $this->bucketValueCount;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2KMapEstimationQuasiIdValues
+   * @param Google_Service_DLP_GooglePrivacyDlpV2KMapEstimationQuasiIdValues[]
    */
   public function setBucketValues($bucketValues)
   {
     $this->bucketValues = $bucketValues;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2KMapEstimationQuasiIdValues
+   * @return Google_Service_DLP_GooglePrivacyDlpV2KMapEstimationQuasiIdValues[]
    */
   public function getBucketValues()
   {

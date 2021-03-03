@@ -21,14 +21,14 @@ class Google_Service_Compute_StatefulPolicyPreservedState extends Google_Model
   protected $disksDataType = 'map';
 
   /**
-   * @param Google_Service_Compute_StatefulPolicyPreservedStateDiskDevice
+   * @param Google_Service_Compute_StatefulPolicyPreservedStateDiskDevice[]
    */
   public function setDisks($disks)
   {
     $this->disks = $disks;
   }
   /**
-   * @return Google_Service_Compute_StatefulPolicyPreservedStateDiskDevice
+   * @return Google_Service_Compute_StatefulPolicyPreservedStateDiskDevice[]
    */
   public function getDisks()
   {

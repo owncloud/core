@@ -54,23 +54,6 @@ class Google_Service_AnalyticsData_Resource_V1alpha extends Google_Service_Resou
     return $this->call('batchRunReports', array($params), "Google_Service_AnalyticsData_BatchRunReportsResponse");
   }
   /**
-   * Returns metadata for dimensions and metrics available in reporting methods.
-   * Used to explore the dimensions and metrics. Dimensions and metrics will be
-   * mostly added over time, but renames and deletions may occur. This method
-   * returns Universal Metadata. Universal Metadata are dimensions and metrics
-   * applicable to any property such as `country` and `totalUsers`.
-   * (v1alpha.getUniversalMetadata)
-   *
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_AnalyticsData_UniversalMetadata
-   */
-  public function getUniversalMetadata($optParams = array())
-  {
-    $params = array();
-    $params = array_merge($params, $optParams);
-    return $this->call('getUniversalMetadata', array($params), "Google_Service_AnalyticsData_UniversalMetadata");
-  }
-  /**
    * Returns a customized pivot report of your Google Analytics event data. Pivot
    * reports are more advanced and expressive formats than regular reports. In a
    * pivot report, dimensions are only visible if they are included in a pivot.

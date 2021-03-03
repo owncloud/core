@@ -23,14 +23,14 @@ class Google_Service_AdExchangeBuyerII_ListClientUserInvitationsResponse extends
   public $nextPageToken;
 
   /**
-   * @param Google_Service_AdExchangeBuyerII_ClientUserInvitation
+   * @param Google_Service_AdExchangeBuyerII_ClientUserInvitation[]
    */
   public function setInvitations($invitations)
   {
     $this->invitations = $invitations;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_ClientUserInvitation
+   * @return Google_Service_AdExchangeBuyerII_ClientUserInvitation[]
    */
   public function getInvitations()
   {

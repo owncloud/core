@@ -25,14 +25,14 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SerializedPolicyTa
   public $policyTag;
 
   /**
-   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SerializedPolicyTag
+   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SerializedPolicyTag[]
    */
   public function setChildPolicyTags($childPolicyTags)
   {
     $this->childPolicyTags = $childPolicyTags;
   }
   /**
-   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SerializedPolicyTag
+   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SerializedPolicyTag[]
    */
   public function getChildPolicyTags()
   {

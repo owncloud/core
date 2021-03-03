@@ -39,7 +39,7 @@ class Google_Service_PubsubLite extends Google_Service
   public $admin_projects_locations_topics_subscriptions;
   public $cursor_projects_locations_subscriptions_cursors;
   public $topicStats_projects_locations_topics;
-  
+
   /**
    * Constructs the internal representation of the PubsubLite service.
    *
@@ -279,7 +279,17 @@ class Google_Service_PubsubLite extends Google_Service
         'topics',
         array(
           'methods' => array(
-            'computeMessageStats' => array(
+            'computeHeadCursor' => array(
+              'path' => 'v1/topicStats/{+topic}:computeHeadCursor',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'topic' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'computeMessageStats' => array(
               'path' => 'v1/topicStats/{+topic}:computeMessageStats',
               'httpMethod' => 'POST',
               'parameters' => array(

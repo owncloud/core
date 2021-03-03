@@ -17,9 +17,12 @@
 
 class Google_Service_ServiceNetworking_RangeReservation extends Google_Collection
 {
-  protected $collection_key = 'secondaryRangeIpPrefixLengths';
+  protected $collection_key = 'subnetworkCandidates';
   public $ipPrefixLength;
+  public $requestedRanges;
   public $secondaryRangeIpPrefixLengths;
+  protected $subnetworkCandidatesType = 'Google_Service_ServiceNetworking_Subnetwork';
+  protected $subnetworkCandidatesDataType = 'array';
 
   public function setIpPrefixLength($ipPrefixLength)
   {
@@ -29,6 +32,14 @@ class Google_Service_ServiceNetworking_RangeReservation extends Google_Collectio
   {
     return $this->ipPrefixLength;
   }
+  public function setRequestedRanges($requestedRanges)
+  {
+    $this->requestedRanges = $requestedRanges;
+  }
+  public function getRequestedRanges()
+  {
+    return $this->requestedRanges;
+  }
   public function setSecondaryRangeIpPrefixLengths($secondaryRangeIpPrefixLengths)
   {
     $this->secondaryRangeIpPrefixLengths = $secondaryRangeIpPrefixLengths;
@@ -36,5 +47,19 @@ class Google_Service_ServiceNetworking_RangeReservation extends Google_Collectio
   public function getSecondaryRangeIpPrefixLengths()
   {
     return $this->secondaryRangeIpPrefixLengths;
+  }
+  /**
+   * @param Google_Service_ServiceNetworking_Subnetwork[]
+   */
+  public function setSubnetworkCandidates($subnetworkCandidates)
+  {
+    $this->subnetworkCandidates = $subnetworkCandidates;
+  }
+  /**
+   * @return Google_Service_ServiceNetworking_Subnetwork[]
+   */
+  public function getSubnetworkCandidates()
+  {
+    return $this->subnetworkCandidates;
   }
 }

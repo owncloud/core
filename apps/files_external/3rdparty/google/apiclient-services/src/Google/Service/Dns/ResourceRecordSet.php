@@ -20,8 +20,6 @@ class Google_Service_Dns_ResourceRecordSet extends Google_Collection
   protected $collection_key = 'signatureRrdatas';
   public $kind;
   public $name;
-  protected $routingPolicyType = 'Google_Service_Dns_RRSetRoutingPolicy';
-  protected $routingPolicyDataType = '';
   public $rrdatas;
   public $signatureRrdatas;
   public $ttl;
@@ -42,20 +40,6 @@ class Google_Service_Dns_ResourceRecordSet extends Google_Collection
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param Google_Service_Dns_RRSetRoutingPolicy
-   */
-  public function setRoutingPolicy(Google_Service_Dns_RRSetRoutingPolicy $routingPolicy)
-  {
-    $this->routingPolicy = $routingPolicy;
-  }
-  /**
-   * @return Google_Service_Dns_RRSetRoutingPolicy
-   */
-  public function getRoutingPolicy()
-  {
-    return $this->routingPolicy;
   }
   public function setRrdatas($rrdatas)
   {

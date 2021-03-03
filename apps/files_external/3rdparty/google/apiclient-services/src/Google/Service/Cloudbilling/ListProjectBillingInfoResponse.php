@@ -31,14 +31,14 @@ class Google_Service_Cloudbilling_ListProjectBillingInfoResponse extends Google_
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Cloudbilling_ProjectBillingInfo
+   * @param Google_Service_Cloudbilling_ProjectBillingInfo[]
    */
   public function setProjectBillingInfo($projectBillingInfo)
   {
     $this->projectBillingInfo = $projectBillingInfo;
   }
   /**
-   * @return Google_Service_Cloudbilling_ProjectBillingInfo
+   * @return Google_Service_Cloudbilling_ProjectBillingInfo[]
    */
   public function getProjectBillingInfo()
   {

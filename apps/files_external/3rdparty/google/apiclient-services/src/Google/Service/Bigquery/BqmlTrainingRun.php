@@ -26,14 +26,14 @@ class Google_Service_Bigquery_BqmlTrainingRun extends Google_Collection
   protected $trainingOptionsDataType = '';
 
   /**
-   * @param Google_Service_Bigquery_BqmlIterationResult
+   * @param Google_Service_Bigquery_BqmlIterationResult[]
    */
   public function setIterationResults($iterationResults)
   {
     $this->iterationResults = $iterationResults;
   }
   /**
-   * @return Google_Service_Bigquery_BqmlIterationResult
+   * @return Google_Service_Bigquery_BqmlIterationResult[]
    */
   public function getIterationResults()
   {

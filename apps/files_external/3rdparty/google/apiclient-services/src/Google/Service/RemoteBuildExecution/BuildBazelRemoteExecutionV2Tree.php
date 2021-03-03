@@ -24,14 +24,14 @@ class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Tree extend
   protected $rootDataType = '';
 
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Directory
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Directory[]
    */
   public function setChildren($children)
   {
     $this->children = $children;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Directory
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Directory[]
    */
   public function getChildren()
   {

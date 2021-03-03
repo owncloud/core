@@ -17,12 +17,22 @@
 
 class Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildbotCommandEvents extends Google_Model
 {
+  public $cmUsage;
   public $dockerCacheHit;
   public $dockerImageName;
   public $inputCacheMiss;
   public $numErrors;
   public $numWarnings;
+  public $usedAsyncContainer;
 
+  public function setCmUsage($cmUsage)
+  {
+    $this->cmUsage = $cmUsage;
+  }
+  public function getCmUsage()
+  {
+    return $this->cmUsage;
+  }
   public function setDockerCacheHit($dockerCacheHit)
   {
     $this->dockerCacheHit = $dockerCacheHit;
@@ -62,5 +72,13 @@ class Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildbotCommandEve
   public function getNumWarnings()
   {
     return $this->numWarnings;
+  }
+  public function setUsedAsyncContainer($usedAsyncContainer)
+  {
+    $this->usedAsyncContainer = $usedAsyncContainer;
+  }
+  public function getUsedAsyncContainer()
+  {
+    return $this->usedAsyncContainer;
   }
 }

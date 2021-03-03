@@ -41,14 +41,14 @@ class Google_Service_Compute_UsableSubnetwork extends Google_Collection
     return $this->network;
   }
   /**
-   * @param Google_Service_Compute_UsableSubnetworkSecondaryRange
+   * @param Google_Service_Compute_UsableSubnetworkSecondaryRange[]
    */
   public function setSecondaryIpRanges($secondaryIpRanges)
   {
     $this->secondaryIpRanges = $secondaryIpRanges;
   }
   /**
-   * @return Google_Service_Compute_UsableSubnetworkSecondaryRange
+   * @return Google_Service_Compute_UsableSubnetworkSecondaryRange[]
    */
   public function getSecondaryIpRanges()
   {

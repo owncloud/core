@@ -31,14 +31,14 @@ class Google_Service_Spanner_ListSessionsResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Spanner_Session
+   * @param Google_Service_Spanner_Session[]
    */
   public function setSessions($sessions)
   {
     $this->sessions = $sessions;
   }
   /**
-   * @return Google_Service_Spanner_Session
+   * @return Google_Service_Spanner_Session[]
    */
   public function getSessions()
   {

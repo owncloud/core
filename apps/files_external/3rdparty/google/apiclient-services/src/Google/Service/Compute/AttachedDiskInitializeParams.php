@@ -24,6 +24,7 @@ class Google_Service_Compute_AttachedDiskInitializeParams extends Google_Collect
   public $diskType;
   public $labels;
   public $onUpdateAction;
+  public $provisionedIops;
   public $resourcePolicies;
   public $sourceImage;
   protected $sourceImageEncryptionKeyType = 'Google_Service_Compute_CustomerEncryptionKey';
@@ -79,6 +80,14 @@ class Google_Service_Compute_AttachedDiskInitializeParams extends Google_Collect
   public function getOnUpdateAction()
   {
     return $this->onUpdateAction;
+  }
+  public function setProvisionedIops($provisionedIops)
+  {
+    $this->provisionedIops = $provisionedIops;
+  }
+  public function getProvisionedIops()
+  {
+    return $this->provisionedIops;
   }
   public function setResourcePolicies($resourcePolicies)
   {

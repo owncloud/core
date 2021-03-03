@@ -40,14 +40,14 @@ class Google_Service_DoubleClickBidManager_ListReportsResponse extends Google_Co
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_DoubleClickBidManager_Report
+   * @param Google_Service_DoubleClickBidManager_Report[]
    */
   public function setReports($reports)
   {
     $this->reports = $reports;
   }
   /**
-   * @return Google_Service_DoubleClickBidManager_Report
+   * @return Google_Service_DoubleClickBidManager_Report[]
    */
   public function getReports()
   {

@@ -100,17 +100,6 @@ class Google_Service_DisplayVideo_Resource_AdvertisersLineItemsTargetingTypesAss
    * targeting options to list.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken A token identifying a page of results the server
-   * should return. Typically, this is the value of next_page_token returned from
-   * the previous call to `ListLineItemAssignedTargetingOptions` method. If not
-   * specified, the first page of results will be returned.
-   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
-   * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
-   * if an invalid value is specified.
-   * @opt_param string orderBy Field by which to sort the list. Acceptable values
-   * are: * `assignedTargetingOptionId` (default) The default sorting order is
-   * ascending. To specify descending order for a field, a suffix "desc" should be
-   * added to the field name. Example: `assignedTargetingOptionId desc`.
    * @opt_param string filter Allows filtering by assigned targeting option
    * properties. Supported syntax: * Filter expressions are made up of one or more
    * restrictions. * Restrictions can be combined by the logical operator `OR`. *
@@ -122,6 +111,17 @@ class Google_Service_DisplayVideo_Resource_AdvertisersLineItemsTargetingTypesAss
    * INHERITED_FROM_PARTNER `inheritance="NOT_INHERITED" OR
    * inheritance="INHERITED_FROM_PARTNER"` The length of this field should be no
    * more than 500 characters.
+   * @opt_param string orderBy Field by which to sort the list. Acceptable values
+   * are: * `assignedTargetingOptionId` (default) The default sorting order is
+   * ascending. To specify descending order for a field, a suffix "desc" should be
+   * added to the field name. Example: `assignedTargetingOptionId desc`.
+   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
+   * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
+   * if an invalid value is specified.
+   * @opt_param string pageToken A token identifying a page of results the server
+   * should return. Typically, this is the value of next_page_token returned from
+   * the previous call to `ListLineItemAssignedTargetingOptions` method. If not
+   * specified, the first page of results will be returned.
    * @return Google_Service_DisplayVideo_ListLineItemAssignedTargetingOptionsResponse
    */
   public function listAdvertisersLineItemsTargetingTypesAssignedTargetingOptions($advertiserId, $lineItemId, $targetingType, $optParams = array())

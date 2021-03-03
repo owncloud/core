@@ -31,14 +31,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ListDebugSessionsResponse extends
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Session
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Session[]
    */
   public function setSessions($sessions)
   {
     $this->sessions = $sessions;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Session
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Session[]
    */
   public function getSessions()
   {

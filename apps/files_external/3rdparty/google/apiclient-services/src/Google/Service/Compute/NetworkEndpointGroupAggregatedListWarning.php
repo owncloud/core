@@ -32,14 +32,14 @@ class Google_Service_Compute_NetworkEndpointGroupAggregatedListWarning extends G
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_NetworkEndpointGroupAggregatedListWarningData
+   * @param Google_Service_Compute_NetworkEndpointGroupAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_NetworkEndpointGroupAggregatedListWarningData
+   * @return Google_Service_Compute_NetworkEndpointGroupAggregatedListWarningData[]
    */
   public function getData()
   {

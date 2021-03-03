@@ -24,7 +24,11 @@ class Google_Service_Container_NodeConfig extends Google_Collection
   public $diskSizeGb;
   public $diskType;
   public $imageType;
+  protected $kubeletConfigType = 'Google_Service_Container_NodeKubeletConfig';
+  protected $kubeletConfigDataType = '';
   public $labels;
+  protected $linuxNodeConfigType = 'Google_Service_Container_LinuxNodeConfig';
+  protected $linuxNodeConfigDataType = '';
   public $localSsdCount;
   public $machineType;
   public $metadata;
@@ -46,14 +50,14 @@ class Google_Service_Container_NodeConfig extends Google_Collection
   protected $workloadMetadataConfigDataType = '';
 
   /**
-   * @param Google_Service_Container_AcceleratorConfig
+   * @param Google_Service_Container_AcceleratorConfig[]
    */
   public function setAccelerators($accelerators)
   {
     $this->accelerators = $accelerators;
   }
   /**
-   * @return Google_Service_Container_AcceleratorConfig
+   * @return Google_Service_Container_AcceleratorConfig[]
    */
   public function getAccelerators()
   {
@@ -91,6 +95,20 @@ class Google_Service_Container_NodeConfig extends Google_Collection
   {
     return $this->imageType;
   }
+  /**
+   * @param Google_Service_Container_NodeKubeletConfig
+   */
+  public function setKubeletConfig(Google_Service_Container_NodeKubeletConfig $kubeletConfig)
+  {
+    $this->kubeletConfig = $kubeletConfig;
+  }
+  /**
+   * @return Google_Service_Container_NodeKubeletConfig
+   */
+  public function getKubeletConfig()
+  {
+    return $this->kubeletConfig;
+  }
   public function setLabels($labels)
   {
     $this->labels = $labels;
@@ -98,6 +116,20 @@ class Google_Service_Container_NodeConfig extends Google_Collection
   public function getLabels()
   {
     return $this->labels;
+  }
+  /**
+   * @param Google_Service_Container_LinuxNodeConfig
+   */
+  public function setLinuxNodeConfig(Google_Service_Container_LinuxNodeConfig $linuxNodeConfig)
+  {
+    $this->linuxNodeConfig = $linuxNodeConfig;
+  }
+  /**
+   * @return Google_Service_Container_LinuxNodeConfig
+   */
+  public function getLinuxNodeConfig()
+  {
+    return $this->linuxNodeConfig;
   }
   public function setLocalSsdCount($localSsdCount)
   {
@@ -214,14 +246,14 @@ class Google_Service_Container_NodeConfig extends Google_Collection
     return $this->tags;
   }
   /**
-   * @param Google_Service_Container_NodeTaint
+   * @param Google_Service_Container_NodeTaint[]
    */
   public function setTaints($taints)
   {
     $this->taints = $taints;
   }
   /**
-   * @return Google_Service_Container_NodeTaint
+   * @return Google_Service_Container_NodeTaint[]
    */
   public function getTaints()
   {

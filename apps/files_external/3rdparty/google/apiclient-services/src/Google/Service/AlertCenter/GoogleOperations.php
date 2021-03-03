@@ -22,6 +22,7 @@ class Google_Service_AlertCenter_GoogleOperations extends Google_Collection
   protected $attachmentDataType = 'Google_Service_AlertCenter_Attachment';
   protected $attachmentDataDataType = '';
   public $description;
+  public $header;
   public $title;
 
   public function setAffectedUserEmails($affectedUserEmails)
@@ -53,6 +54,14 @@ class Google_Service_AlertCenter_GoogleOperations extends Google_Collection
   public function getDescription()
   {
     return $this->description;
+  }
+  public function setHeader($header)
+  {
+    $this->header = $header;
+  }
+  public function getHeader()
+  {
+    return $this->header;
   }
   public function setTitle($title)
   {

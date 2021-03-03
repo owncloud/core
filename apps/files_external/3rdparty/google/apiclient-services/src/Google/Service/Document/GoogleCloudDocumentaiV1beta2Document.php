@@ -52,28 +52,28 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta2Document extends Googl
     return $this->content;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentEntity
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentEntity[]
    */
   public function setEntities($entities)
   {
     $this->entities = $entities;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentEntity
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentEntity[]
    */
   public function getEntities()
   {
     return $this->entities;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentEntityRelation
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentEntityRelation[]
    */
   public function setEntityRelations($entityRelations)
   {
     $this->entityRelations = $entityRelations;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentEntityRelation
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentEntityRelation[]
    */
   public function getEntityRelations()
   {
@@ -94,14 +94,14 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta2Document extends Googl
     return $this->error;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentLabel
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentLabel[]
    */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentLabel
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentLabel[]
    */
   public function getLabels()
   {
@@ -116,28 +116,28 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta2Document extends Googl
     return $this->mimeType;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPage
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPage[]
    */
   public function setPages($pages)
   {
     $this->pages = $pages;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPage
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPage[]
    */
   public function getPages()
   {
     return $this->pages;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentRevision
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentRevision[]
    */
   public function setRevisions($revisions)
   {
     $this->revisions = $revisions;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentRevision
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentRevision[]
    */
   public function getRevisions()
   {
@@ -166,42 +166,42 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta2Document extends Googl
     return $this->text;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentTextChange
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentTextChange[]
    */
   public function setTextChanges($textChanges)
   {
     $this->textChanges = $textChanges;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentTextChange
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentTextChange[]
    */
   public function getTextChanges()
   {
     return $this->textChanges;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentStyle
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentStyle[]
    */
   public function setTextStyles($textStyles)
   {
     $this->textStyles = $textStyles;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentStyle
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentStyle[]
    */
   public function getTextStyles()
   {
     return $this->textStyles;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentTranslation
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentTranslation[]
    */
   public function setTranslations($translations)
   {
     $this->translations = $translations;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentTranslation
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentTranslation[]
    */
   public function getTranslations()
   {

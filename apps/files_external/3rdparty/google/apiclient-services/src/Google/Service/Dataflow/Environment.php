@@ -26,6 +26,7 @@ class Google_Service_Dataflow_Environment extends Google_Collection
   public $sdkPipelineOptions;
   public $serviceAccountEmail;
   public $serviceKmsKeyName;
+  public $shuffleMode;
   public $tempStoragePrefix;
   public $userAgent;
   public $version;
@@ -98,6 +99,14 @@ class Google_Service_Dataflow_Environment extends Google_Collection
   {
     return $this->serviceKmsKeyName;
   }
+  public function setShuffleMode($shuffleMode)
+  {
+    $this->shuffleMode = $shuffleMode;
+  }
+  public function getShuffleMode()
+  {
+    return $this->shuffleMode;
+  }
   public function setTempStoragePrefix($tempStoragePrefix)
   {
     $this->tempStoragePrefix = $tempStoragePrefix;
@@ -123,14 +132,14 @@ class Google_Service_Dataflow_Environment extends Google_Collection
     return $this->version;
   }
   /**
-   * @param Google_Service_Dataflow_WorkerPool
+   * @param Google_Service_Dataflow_WorkerPool[]
    */
   public function setWorkerPools($workerPools)
   {
     $this->workerPools = $workerPools;
   }
   /**
-   * @return Google_Service_Dataflow_WorkerPool
+   * @return Google_Service_Dataflow_WorkerPool[]
    */
   public function getWorkerPools()
   {

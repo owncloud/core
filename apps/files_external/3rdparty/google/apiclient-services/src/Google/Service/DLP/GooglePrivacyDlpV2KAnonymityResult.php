@@ -22,14 +22,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2KAnonymityResult extends Google_Colle
   protected $equivalenceClassHistogramBucketsDataType = 'array';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2KAnonymityHistogramBucket
+   * @param Google_Service_DLP_GooglePrivacyDlpV2KAnonymityHistogramBucket[]
    */
   public function setEquivalenceClassHistogramBuckets($equivalenceClassHistogramBuckets)
   {
     $this->equivalenceClassHistogramBuckets = $equivalenceClassHistogramBuckets;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2KAnonymityHistogramBucket
+   * @return Google_Service_DLP_GooglePrivacyDlpV2KAnonymityHistogramBucket[]
    */
   public function getEquivalenceClassHistogramBuckets()
   {

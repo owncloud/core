@@ -32,14 +32,14 @@ class Google_Service_Compute_TargetInstancesScopedListWarning extends Google_Col
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_TargetInstancesScopedListWarningData
+   * @param Google_Service_Compute_TargetInstancesScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_TargetInstancesScopedListWarningData
+   * @return Google_Service_Compute_TargetInstancesScopedListWarningData[]
    */
   public function getData()
   {

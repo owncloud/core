@@ -29,6 +29,7 @@ class Google_Service_Compute_Region extends Google_Collection
   protected $quotasDataType = 'array';
   public $selfLink;
   public $status;
+  public $supportsPzs;
   public $zones;
 
   public function setCreationTimestamp($creationTimestamp)
@@ -86,14 +87,14 @@ class Google_Service_Compute_Region extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Compute_Quota
+   * @param Google_Service_Compute_Quota[]
    */
   public function setQuotas($quotas)
   {
     $this->quotas = $quotas;
   }
   /**
-   * @return Google_Service_Compute_Quota
+   * @return Google_Service_Compute_Quota[]
    */
   public function getQuotas()
   {
@@ -114,6 +115,14 @@ class Google_Service_Compute_Region extends Google_Collection
   public function getStatus()
   {
     return $this->status;
+  }
+  public function setSupportsPzs($supportsPzs)
+  {
+    $this->supportsPzs = $supportsPzs;
+  }
+  public function getSupportsPzs()
+  {
+    return $this->supportsPzs;
   }
   public function setZones($zones)
   {

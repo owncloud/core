@@ -34,14 +34,14 @@ class Google_Service_OSConfig_PatchInstanceFilter extends Google_Collection
     return $this->all;
   }
   /**
-   * @param Google_Service_OSConfig_PatchInstanceFilterGroupLabel
+   * @param Google_Service_OSConfig_PatchInstanceFilterGroupLabel[]
    */
   public function setGroupLabels($groupLabels)
   {
     $this->groupLabels = $groupLabels;
   }
   /**
-   * @return Google_Service_OSConfig_PatchInstanceFilterGroupLabel
+   * @return Google_Service_OSConfig_PatchInstanceFilterGroupLabel[]
    */
   public function getGroupLabels()
   {

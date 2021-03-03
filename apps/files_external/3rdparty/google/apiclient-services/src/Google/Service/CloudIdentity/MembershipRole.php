@@ -17,8 +17,24 @@
 
 class Google_Service_CloudIdentity_MembershipRole extends Google_Model
 {
+  protected $expiryDetailType = 'Google_Service_CloudIdentity_ExpiryDetail';
+  protected $expiryDetailDataType = '';
   public $name;
 
+  /**
+   * @param Google_Service_CloudIdentity_ExpiryDetail
+   */
+  public function setExpiryDetail(Google_Service_CloudIdentity_ExpiryDetail $expiryDetail)
+  {
+    $this->expiryDetail = $expiryDetail;
+  }
+  /**
+   * @return Google_Service_CloudIdentity_ExpiryDetail
+   */
+  public function getExpiryDetail()
+  {
+    return $this->expiryDetail;
+  }
   public function setName($name)
   {
     $this->name = $name;

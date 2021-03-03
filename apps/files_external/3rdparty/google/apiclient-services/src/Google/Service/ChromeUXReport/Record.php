@@ -37,14 +37,14 @@ class Google_Service_ChromeUXReport_Record extends Google_Model
     return $this->key;
   }
   /**
-   * @param Google_Service_ChromeUXReport_Metric
+   * @param Google_Service_ChromeUXReport_Metric[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_ChromeUXReport_Metric
+   * @return Google_Service_ChromeUXReport_Metric[]
    */
   public function getMetrics()
   {

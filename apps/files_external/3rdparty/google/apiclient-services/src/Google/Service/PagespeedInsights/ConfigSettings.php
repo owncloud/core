@@ -19,6 +19,7 @@ class Google_Service_PagespeedInsights_ConfigSettings extends Google_Model
 {
   public $channel;
   public $emulatedFormFactor;
+  public $formFactor;
   public $locale;
   public $onlyCategories;
 
@@ -37,6 +38,14 @@ class Google_Service_PagespeedInsights_ConfigSettings extends Google_Model
   public function getEmulatedFormFactor()
   {
     return $this->emulatedFormFactor;
+  }
+  public function setFormFactor($formFactor)
+  {
+    $this->formFactor = $formFactor;
+  }
+  public function getFormFactor()
+  {
+    return $this->formFactor;
   }
   public function setLocale($locale)
   {

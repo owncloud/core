@@ -60,15 +60,18 @@ class Google_Service_Dfareporting_Resource_Advertisers extends Google_Service_Re
    * @param string $profileId User profile ID associated with this request.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string sortField Field by which to sort the list.
-   * @opt_param string pageToken Value of the nextPageToken from the previous
-   * result page.
-   * @opt_param string status Select only advertisers with the specified status.
-   * @opt_param string ids Select only advertisers with these IDs.
-   * @opt_param bool onlyParent Select only advertisers which use another
-   * advertiser's floodlight configuration.
+   * @opt_param string advertiserGroupIds Select only advertisers with these
+   * advertiser group IDs.
    * @opt_param string floodlightConfigurationIds Select only advertisers with
    * these floodlight configuration IDs.
+   * @opt_param string ids Select only advertisers with these IDs.
+   * @opt_param bool includeAdvertisersWithoutGroupsOnly Select only advertisers
+   * which do not belong to any advertiser group.
+   * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param bool onlyParent Select only advertisers which use another
+   * advertiser's floodlight configuration.
+   * @opt_param string pageToken Value of the nextPageToken from the previous
+   * result page.
    * @opt_param string searchString Allows searching for objects by name or ID.
    * Wildcards (*) are allowed. For example, "advertiser*2015" will return objects
    * with names like "advertiser June 2015", "advertiser April 2015", or simply
@@ -76,14 +79,11 @@ class Google_Service_Dfareporting_Resource_Advertisers extends Google_Service_Re
    * start and the end of the search string. For example, a search string of
    * "advertiser" will match objects with name "my advertiser", "advertiser 2015",
    * or simply "advertiser" .
-   * @opt_param string advertiserGroupIds Select only advertisers with these
-   * advertiser group IDs.
+   * @opt_param string sortField Field by which to sort the list.
+   * @opt_param string sortOrder Order of sorted results.
+   * @opt_param string status Select only advertisers with the specified status.
    * @opt_param string subaccountId Select only advertisers with these subaccount
    * IDs.
-   * @opt_param string sortOrder Order of sorted results.
-   * @opt_param bool includeAdvertisersWithoutGroupsOnly Select only advertisers
-   * which do not belong to any advertiser group.
-   * @opt_param int maxResults Maximum number of results to return.
    * @return Google_Service_Dfareporting_AdvertisersListResponse
    */
   public function listAdvertisers($profileId, $optParams = array())

@@ -50,14 +50,14 @@ class Google_Service_ArtifactRegistry_Version extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_ArtifactRegistry_Tag
+   * @param Google_Service_ArtifactRegistry_Tag[]
    */
   public function setRelatedTags($relatedTags)
   {
     $this->relatedTags = $relatedTags;
   }
   /**
-   * @return Google_Service_ArtifactRegistry_Tag
+   * @return Google_Service_ArtifactRegistry_Tag[]
    */
   public function getRelatedTags()
   {

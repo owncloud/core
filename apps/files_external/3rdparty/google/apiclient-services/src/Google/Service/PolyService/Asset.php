@@ -70,14 +70,14 @@ class Google_Service_PolyService_Asset extends Google_Collection
     return $this->displayName;
   }
   /**
-   * @param Google_Service_PolyService_Format
+   * @param Google_Service_PolyService_Format[]
    */
   public function setFormats($formats)
   {
     $this->formats = $formats;
   }
   /**
-   * @return Google_Service_PolyService_Format
+   * @return Google_Service_PolyService_Format[]
    */
   public function getFormats()
   {

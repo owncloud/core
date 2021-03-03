@@ -87,13 +87,15 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsTagTemplatesFields ex
    * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1TagTemplateField $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask Optional. The field mask specifies the parts of
-   * the template to be updated. Allowed fields: * `display_name` *
-   * `type.enum_type` * `is_required` If `update_mask` is not set or empty, all of
-   * the allowed fields above will be updated. When updating an enum type, the
-   * provided values will be merged with the existing values. Therefore, enum
-   * values can only be added, existing enum values cannot be deleted nor renamed.
-   * Updating a template field from optional to required is NOT allowed.
+   * @opt_param string updateMask Optional. Names of fields whose values to
+   * overwrite on an individual field of a tag template. The following fields are
+   * modifiable: * `display_name` * `type.enum_type` * `is_required` If this
+   * parameter is absent or empty, all modifiable fields are overwritten. If such
+   * fields are non-required and omitted in the request body, their values are
+   * emptied with one exception: when updating an enum type, the provided values
+   * are merged with the existing values. Therefore, enum values can only be
+   * added, existing enum values cannot be deleted or renamed. Additionally,
+   * updating a template field from optional to required is *not* allowed.
    * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1TagTemplateField
    */
   public function patch($name, Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1TagTemplateField $postBody, $optParams = array())

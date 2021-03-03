@@ -23,7 +23,6 @@ class Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaGoogleAdsLi
   public $customerId;
   public $emailAddress;
   public $name;
-  public $parent;
   public $updateTime;
 
   public function setAdsPersonalizationEnabled($adsPersonalizationEnabled)
@@ -73,14 +72,6 @@ class Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaGoogleAdsLi
   public function getName()
   {
     return $this->name;
-  }
-  public function setParent($parent)
-  {
-    $this->parent = $parent;
-  }
-  public function getParent()
-  {
-    return $this->parent;
   }
   public function setUpdateTime($updateTime)
   {

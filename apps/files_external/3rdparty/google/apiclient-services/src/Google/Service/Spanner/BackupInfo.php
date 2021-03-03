@@ -20,6 +20,7 @@ class Google_Service_Spanner_BackupInfo extends Google_Model
   public $backup;
   public $createTime;
   public $sourceDatabase;
+  public $versionTime;
 
   public function setBackup($backup)
   {
@@ -44,5 +45,13 @@ class Google_Service_Spanner_BackupInfo extends Google_Model
   public function getSourceDatabase()
   {
     return $this->sourceDatabase;
+  }
+  public function setVersionTime($versionTime)
+  {
+    $this->versionTime = $versionTime;
+  }
+  public function getVersionTime()
+  {
+    return $this->versionTime;
   }
 }

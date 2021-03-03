@@ -32,14 +32,14 @@ class Google_Service_Compute_ReservationsScopedListWarning extends Google_Collec
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_ReservationsScopedListWarningData
+   * @param Google_Service_Compute_ReservationsScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_ReservationsScopedListWarningData
+   * @return Google_Service_Compute_ReservationsScopedListWarningData[]
    */
   public function getData()
   {

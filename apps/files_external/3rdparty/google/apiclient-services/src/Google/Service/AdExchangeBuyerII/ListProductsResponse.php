@@ -31,14 +31,14 @@ class Google_Service_AdExchangeBuyerII_ListProductsResponse extends Google_Colle
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_AdExchangeBuyerII_Product
+   * @param Google_Service_AdExchangeBuyerII_Product[]
    */
   public function setProducts($products)
   {
     $this->products = $products;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_Product
+   * @return Google_Service_AdExchangeBuyerII_Product[]
    */
   public function getProducts()
   {

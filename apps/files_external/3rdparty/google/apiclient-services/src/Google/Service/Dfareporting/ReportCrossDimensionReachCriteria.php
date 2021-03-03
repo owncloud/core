@@ -30,14 +30,14 @@ class Google_Service_Dfareporting_ReportCrossDimensionReachCriteria extends Goog
   public $pivoted;
 
   /**
-   * @param Google_Service_Dfareporting_SortedDimension
+   * @param Google_Service_Dfareporting_SortedDimension[]
    */
   public function setBreakdown($breakdown)
   {
     $this->breakdown = $breakdown;
   }
   /**
-   * @return Google_Service_Dfareporting_SortedDimension
+   * @return Google_Service_Dfareporting_SortedDimension[]
    */
   public function getBreakdown()
   {
@@ -66,14 +66,14 @@ class Google_Service_Dfareporting_ReportCrossDimensionReachCriteria extends Goog
     return $this->dimension;
   }
   /**
-   * @param Google_Service_Dfareporting_DimensionValue
+   * @param Google_Service_Dfareporting_DimensionValue[]
    */
   public function setDimensionFilters($dimensionFilters)
   {
     $this->dimensionFilters = $dimensionFilters;
   }
   /**
-   * @return Google_Service_Dfareporting_DimensionValue
+   * @return Google_Service_Dfareporting_DimensionValue[]
    */
   public function getDimensionFilters()
   {

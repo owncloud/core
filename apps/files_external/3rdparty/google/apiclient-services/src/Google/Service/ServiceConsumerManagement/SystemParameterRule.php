@@ -23,14 +23,14 @@ class Google_Service_ServiceConsumerManagement_SystemParameterRule extends Googl
   public $selector;
 
   /**
-   * @param Google_Service_ServiceConsumerManagement_SystemParameter
+   * @param Google_Service_ServiceConsumerManagement_SystemParameter[]
    */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_SystemParameter
+   * @return Google_Service_ServiceConsumerManagement_SystemParameter[]
    */
   public function getParameters()
   {

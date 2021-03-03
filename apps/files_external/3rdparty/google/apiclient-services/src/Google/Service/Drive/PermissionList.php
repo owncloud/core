@@ -40,14 +40,14 @@ class Google_Service_Drive_PermissionList extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Drive_Permission
+   * @param Google_Service_Drive_Permission[]
    */
   public function setPermissions($permissions)
   {
     $this->permissions = $permissions;
   }
   /**
-   * @return Google_Service_Drive_Permission
+   * @return Google_Service_Drive_Permission[]
    */
   public function getPermissions()
   {

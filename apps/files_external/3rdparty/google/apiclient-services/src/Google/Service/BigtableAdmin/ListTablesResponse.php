@@ -31,14 +31,14 @@ class Google_Service_BigtableAdmin_ListTablesResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_BigtableAdmin_Table
+   * @param Google_Service_BigtableAdmin_Table[]
    */
   public function setTables($tables)
   {
     $this->tables = $tables;
   }
   /**
-   * @return Google_Service_BigtableAdmin_Table
+   * @return Google_Service_BigtableAdmin_Table[]
    */
   public function getTables()
   {

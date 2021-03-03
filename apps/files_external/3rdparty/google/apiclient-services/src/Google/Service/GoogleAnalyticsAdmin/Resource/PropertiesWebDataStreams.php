@@ -57,9 +57,7 @@ class Google_Service_GoogleAnalyticsAdmin_Resource_PropertiesWebDataStreams exte
     return $this->call('delete', array($params), "Google_Service_GoogleAnalyticsAdmin_GoogleProtobufEmpty");
   }
   /**
-   * Lookup for a single WebDataStream Throws "Target not found" if no such web
-   * data stream found, or if the caller does not have permissions to access it.
-   * (webDataStreams.get)
+   * Lookup for a single WebDataStream (webDataStreams.get)
    *
    * @param string $name Required. The name of the web data stream to lookup.
    * Format: properties/{property_id}/webDataStreams/{stream_id} Example:
@@ -118,13 +116,13 @@ class Google_Service_GoogleAnalyticsAdmin_Resource_PropertiesWebDataStreams exte
    * "properties/123"
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of resources to return. If
+   * unspecified, at most 50 resources will be returned. The maximum value is 200;
+   * (higher values will be coerced to the maximum)
    * @opt_param string pageToken A page token, received from a previous
    * `ListWebDataStreams` call. Provide this to retrieve the subsequent page. When
    * paginating, all other parameters provided to `ListWebDataStreams` must match
    * the call that provided the page token.
-   * @opt_param int pageSize The maximum number of resources to return. If
-   * unspecified, at most 50 resources will be returned. The maximum value is 200;
-   * (higher values will be coerced to the maximum)
    * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaListWebDataStreamsResponse
    */
   public function listPropertiesWebDataStreams($parent, $optParams = array())
@@ -142,8 +140,10 @@ class Google_Service_GoogleAnalyticsAdmin_Resource_PropertiesWebDataStreams exte
    * @param Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaWebDataStream $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask The list of fields to be updated. Omitted fields
-   * will not be updated.
+   * @opt_param string updateMask Required. The list of fields to be updated.
+   * Field names must be in snake case (e.g., "field_to_update"). Omitted fields
+   * will not be updated. To replace the entire entity, use one path with the
+   * string "*" to match all fields.
    * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaWebDataStream
    */
   public function patch($name, Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaWebDataStream $postBody, $optParams = array())
@@ -163,8 +163,10 @@ class Google_Service_GoogleAnalyticsAdmin_Resource_PropertiesWebDataStreams exte
    * @param Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaEnhancedMeasurementSettings $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask The list of fields to be updated. Omitted fields
-   * will not be updated.
+   * @opt_param string updateMask Required. The list of fields to be updated.
+   * Field names must be in snake case (e.g., "field_to_update"). Omitted fields
+   * will not be updated. To replace the entire entity, use one path with the
+   * string "*" to match all fields.
    * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaEnhancedMeasurementSettings
    */
   public function updateEnhancedMeasurementSettings($name, Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaEnhancedMeasurementSettings $postBody, $optParams = array())

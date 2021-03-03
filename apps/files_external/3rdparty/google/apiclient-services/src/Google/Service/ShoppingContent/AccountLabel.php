@@ -20,6 +20,7 @@ class Google_Service_ShoppingContent_AccountLabel extends Google_Model
   public $accountId;
   public $description;
   public $labelId;
+  public $labelType;
   public $name;
 
   public function setAccountId($accountId)
@@ -45,6 +46,14 @@ class Google_Service_ShoppingContent_AccountLabel extends Google_Model
   public function getLabelId()
   {
     return $this->labelId;
+  }
+  public function setLabelType($labelType)
+  {
+    $this->labelType = $labelType;
+  }
+  public function getLabelType()
+  {
+    return $this->labelType;
   }
   public function setName($name)
   {

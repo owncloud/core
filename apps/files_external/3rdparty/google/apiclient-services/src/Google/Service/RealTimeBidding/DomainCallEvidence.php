@@ -23,14 +23,14 @@ class Google_Service_RealTimeBidding_DomainCallEvidence extends Google_Collectio
   public $totalHttpCallCount;
 
   /**
-   * @param Google_Service_RealTimeBidding_DomainCalls
+   * @param Google_Service_RealTimeBidding_DomainCalls[]
    */
   public function setTopHttpCallDomains($topHttpCallDomains)
   {
     $this->topHttpCallDomains = $topHttpCallDomains;
   }
   /**
-   * @return Google_Service_RealTimeBidding_DomainCalls
+   * @return Google_Service_RealTimeBidding_DomainCalls[]
    */
   public function getTopHttpCallDomains()
   {

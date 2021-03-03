@@ -61,14 +61,14 @@ class Google_Service_ToolResults_Execution extends Google_Collection
     return $this->creationTime;
   }
   /**
-   * @param Google_Service_ToolResults_MatrixDimensionDefinition
+   * @param Google_Service_ToolResults_MatrixDimensionDefinition[]
    */
   public function setDimensionDefinitions($dimensionDefinitions)
   {
     $this->dimensionDefinitions = $dimensionDefinitions;
   }
   /**
-   * @return Google_Service_ToolResults_MatrixDimensionDefinition
+   * @return Google_Service_ToolResults_MatrixDimensionDefinition[]
    */
   public function getDimensionDefinitions()
   {

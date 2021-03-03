@@ -23,14 +23,14 @@ class Google_Service_ContainerAnalysis_Installation extends Google_Collection
   public $name;
 
   /**
-   * @param Google_Service_ContainerAnalysis_Location
+   * @param Google_Service_ContainerAnalysis_Location[]
    */
   public function setLocation($location)
   {
     $this->location = $location;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_Location
+   * @return Google_Service_ContainerAnalysis_Location[]
    */
   public function getLocation()
   {

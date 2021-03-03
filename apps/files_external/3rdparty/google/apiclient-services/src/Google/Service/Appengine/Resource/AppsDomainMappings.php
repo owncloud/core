@@ -89,9 +89,9 @@ class Google_Service_Appengine_Resource_AppsDomainMappings extends Google_Servic
    * resource. Example: apps/myapp.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Maximum results to return per page.
    * @opt_param string pageToken Continuation token for fetching the next page of
    * results.
-   * @opt_param int pageSize Maximum results to return per page.
    * @return Google_Service_Appengine_ListDomainMappingsResponse
    */
   public function listAppsDomainMappings($appsId, $optParams = array())

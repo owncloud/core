@@ -23,14 +23,14 @@ class Google_Service_SASPortalTesting_SasPortalListCustomersResponse extends Goo
   public $nextPageToken;
 
   /**
-   * @param Google_Service_SASPortalTesting_SasPortalCustomer
+   * @param Google_Service_SASPortalTesting_SasPortalCustomer[]
    */
   public function setCustomers($customers)
   {
     $this->customers = $customers;
   }
   /**
-   * @return Google_Service_SASPortalTesting_SasPortalCustomer
+   * @return Google_Service_SASPortalTesting_SasPortalCustomer[]
    */
   public function getCustomers()
   {

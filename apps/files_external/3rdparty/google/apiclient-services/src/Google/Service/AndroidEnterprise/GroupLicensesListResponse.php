@@ -22,14 +22,14 @@ class Google_Service_AndroidEnterprise_GroupLicensesListResponse extends Google_
   protected $groupLicenseDataType = 'array';
 
   /**
-   * @param Google_Service_AndroidEnterprise_GroupLicense
+   * @param Google_Service_AndroidEnterprise_GroupLicense[]
    */
   public function setGroupLicense($groupLicense)
   {
     $this->groupLicense = $groupLicense;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_GroupLicense
+   * @return Google_Service_AndroidEnterprise_GroupLicense[]
    */
   public function getGroupLicense()
   {

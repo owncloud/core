@@ -23,6 +23,7 @@ class Google_Service_Compute_Reservation extends Google_Model
   public $id;
   public $kind;
   public $name;
+  public $satisfiesPzs;
   public $selfLink;
   protected $specificReservationType = 'Google_Service_Compute_AllocationSpecificSKUReservation';
   protected $specificReservationDataType = '';
@@ -77,6 +78,14 @@ class Google_Service_Compute_Reservation extends Google_Model
   public function getName()
   {
     return $this->name;
+  }
+  public function setSatisfiesPzs($satisfiesPzs)
+  {
+    $this->satisfiesPzs = $satisfiesPzs;
+  }
+  public function getSatisfiesPzs()
+  {
+    return $this->satisfiesPzs;
   }
   public function setSelfLink($selfLink)
   {

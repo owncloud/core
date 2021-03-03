@@ -32,14 +32,14 @@ class Google_Service_Compute_PacketMirroringAggregatedListWarning extends Google
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_PacketMirroringAggregatedListWarningData
+   * @param Google_Service_Compute_PacketMirroringAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_PacketMirroringAggregatedListWarningData
+   * @return Google_Service_Compute_PacketMirroringAggregatedListWarningData[]
    */
   public function getData()
   {

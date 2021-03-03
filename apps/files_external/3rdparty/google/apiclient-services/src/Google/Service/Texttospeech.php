@@ -37,7 +37,7 @@ class Google_Service_Texttospeech extends Google_Service
 
   public $text;
   public $voices;
-  
+
   /**
    * Constructs the internal representation of the Texttospeech service.
    *

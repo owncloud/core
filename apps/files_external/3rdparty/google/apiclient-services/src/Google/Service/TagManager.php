@@ -66,7 +66,7 @@ class Google_Service_TagManager extends Google_Service
   public $accounts_containers_workspaces_variables;
   public $accounts_containers_workspaces_zones;
   public $accounts_user_permissions;
-  
+
   /**
    * Constructs the internal representation of the TagManager service.
    *
@@ -669,12 +669,12 @@ class Google_Service_TagManager extends Google_Service
                   'type' => 'string',
                   'repeated' => true,
                 ),
-                'variableId' => array(
+                'triggerId' => array(
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,
                 ),
-                'triggerId' => array(
+                'variableId' => array(
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,

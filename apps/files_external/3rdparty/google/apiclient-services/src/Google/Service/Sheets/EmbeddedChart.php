@@ -17,12 +17,28 @@
 
 class Google_Service_Sheets_EmbeddedChart extends Google_Model
 {
+  protected $borderType = 'Google_Service_Sheets_EmbeddedObjectBorder';
+  protected $borderDataType = '';
   public $chartId;
   protected $positionType = 'Google_Service_Sheets_EmbeddedObjectPosition';
   protected $positionDataType = '';
   protected $specType = 'Google_Service_Sheets_ChartSpec';
   protected $specDataType = '';
 
+  /**
+   * @param Google_Service_Sheets_EmbeddedObjectBorder
+   */
+  public function setBorder(Google_Service_Sheets_EmbeddedObjectBorder $border)
+  {
+    $this->border = $border;
+  }
+  /**
+   * @return Google_Service_Sheets_EmbeddedObjectBorder
+   */
+  public function getBorder()
+  {
+    return $this->border;
+  }
   public function setChartId($chartId)
   {
     $this->chartId = $chartId;

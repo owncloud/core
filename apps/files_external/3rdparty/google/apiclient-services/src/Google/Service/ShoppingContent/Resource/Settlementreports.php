@@ -49,14 +49,14 @@ class Google_Service_ShoppingContent_Resource_Settlementreports extends Google_S
    * for.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The token returned by the previous request.
    * @opt_param string maxResults The maximum number of settlements to return in
    * the response, used for paging. The default value is 200 returns per page, and
    * the maximum allowed value is 5000 returns per page.
-   * @opt_param string transferStartDate Obtains settlements which have
-   * transactions after this date (inclusively), in ISO 8601 format.
+   * @opt_param string pageToken The token returned by the previous request.
    * @opt_param string transferEndDate Obtains settlements which have transactions
    * before this date (inclusively), in ISO 8601 format.
+   * @opt_param string transferStartDate Obtains settlements which have
+   * transactions after this date (inclusively), in ISO 8601 format.
    * @return Google_Service_ShoppingContent_SettlementreportsListResponse
    */
   public function listSettlementreports($merchantId, $optParams = array())

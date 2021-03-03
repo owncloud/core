@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_ListAdvertisersResponse extends Google_Collect
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DisplayVideo_Advertiser
+   * @param Google_Service_DisplayVideo_Advertiser[]
    */
   public function setAdvertisers($advertisers)
   {
     $this->advertisers = $advertisers;
   }
   /**
-   * @return Google_Service_DisplayVideo_Advertiser
+   * @return Google_Service_DisplayVideo_Advertiser[]
    */
   public function getAdvertisers()
   {

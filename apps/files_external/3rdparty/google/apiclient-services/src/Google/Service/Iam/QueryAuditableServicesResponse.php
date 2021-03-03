@@ -22,14 +22,14 @@ class Google_Service_Iam_QueryAuditableServicesResponse extends Google_Collectio
   protected $servicesDataType = 'array';
 
   /**
-   * @param Google_Service_Iam_AuditableService
+   * @param Google_Service_Iam_AuditableService[]
    */
   public function setServices($services)
   {
     $this->services = $services;
   }
   /**
-   * @return Google_Service_Iam_AuditableService
+   * @return Google_Service_Iam_AuditableService[]
    */
   public function getServices()
   {

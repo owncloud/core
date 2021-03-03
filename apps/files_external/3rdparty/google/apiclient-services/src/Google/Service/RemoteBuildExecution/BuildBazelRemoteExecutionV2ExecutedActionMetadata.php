@@ -15,8 +15,10 @@
  * the License.
  */
 
-class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2ExecutedActionMetadata extends Google_Model
+class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2ExecutedActionMetadata extends Google_Collection
 {
+  protected $collection_key = 'auxiliaryMetadata';
+  public $auxiliaryMetadata;
   public $executionCompletedTimestamp;
   public $executionStartTimestamp;
   public $inputFetchCompletedTimestamp;
@@ -28,6 +30,14 @@ class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2ExecutedAct
   public $workerCompletedTimestamp;
   public $workerStartTimestamp;
 
+  public function setAuxiliaryMetadata($auxiliaryMetadata)
+  {
+    $this->auxiliaryMetadata = $auxiliaryMetadata;
+  }
+  public function getAuxiliaryMetadata()
+  {
+    return $this->auxiliaryMetadata;
+  }
   public function setExecutionCompletedTimestamp($executionCompletedTimestamp)
   {
     $this->executionCompletedTimestamp = $executionCompletedTimestamp;

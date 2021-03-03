@@ -31,28 +31,28 @@ class Google_Service_ServiceUsage_Api extends Google_Collection
   public $version;
 
   /**
-   * @param Google_Service_ServiceUsage_Method
+   * @param Google_Service_ServiceUsage_Method[]
    */
   public function setMethods($methods)
   {
     $this->methods = $methods;
   }
   /**
-   * @return Google_Service_ServiceUsage_Method
+   * @return Google_Service_ServiceUsage_Method[]
    */
   public function getMethods()
   {
     return $this->methods;
   }
   /**
-   * @param Google_Service_ServiceUsage_Mixin
+   * @param Google_Service_ServiceUsage_Mixin[]
    */
   public function setMixins($mixins)
   {
     $this->mixins = $mixins;
   }
   /**
-   * @return Google_Service_ServiceUsage_Mixin
+   * @return Google_Service_ServiceUsage_Mixin[]
    */
   public function getMixins()
   {
@@ -67,14 +67,14 @@ class Google_Service_ServiceUsage_Api extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_ServiceUsage_Option
+   * @param Google_Service_ServiceUsage_Option[]
    */
   public function setOptions($options)
   {
     $this->options = $options;
   }
   /**
-   * @return Google_Service_ServiceUsage_Option
+   * @return Google_Service_ServiceUsage_Option[]
    */
   public function getOptions()
   {

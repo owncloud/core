@@ -26,21 +26,6 @@
 class Google_Service_SASPortalTesting_Resource_NodesDevices extends Google_Service_Resource
 {
   /**
-   * Creates a device under a node or customer. Returned devices are unordered.
-   * (devices.bulk)
-   *
-   * @param string $parent Required. The name of the parent resource.
-   * @param Google_Service_SASPortalTesting_SasPortalBulkCreateDeviceRequest $postBody
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_SASPortalTesting_SasPortalBulkCreateDeviceResponse
-   */
-  public function bulk($parent, Google_Service_SASPortalTesting_SasPortalBulkCreateDeviceRequest $postBody, $optParams = array())
-  {
-    $params = array('parent' => $parent, 'postBody' => $postBody);
-    $params = array_merge($params, $optParams);
-    return $this->call('bulk', array($params), "Google_Service_SASPortalTesting_SasPortalBulkCreateDeviceResponse");
-  }
-  /**
    * Creates a device under a node or customer. (devices.create)
    *
    * @param string $parent Required. The name of the parent resource.
@@ -102,7 +87,7 @@ class Google_Service_SASPortalTesting_Resource_NodesDevices extends Google_Servi
    *
    * @opt_param string filter The filter expression. The filter should have one of
    * the following formats: "sn=123454" or "display_name=MyDevice". sn corresponds
-   * to serial_number of the device. The filter is case insensitive.
+   * to serial number of the device. The filter is case insensitive.
    * @opt_param int pageSize The maximum number of devices to return in the
    * response. If empty or zero, all devices will be listed. Must be in the range
    * [0, 1000].

@@ -40,14 +40,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ReportInstanceStatusRequest exten
     return $this->reportTime;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1ResourceStatus
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1ResourceStatus[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1ResourceStatus
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1ResourceStatus[]
    */
   public function getResources()
   {

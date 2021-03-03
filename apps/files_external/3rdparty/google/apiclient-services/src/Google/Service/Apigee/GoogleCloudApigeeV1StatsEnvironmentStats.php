@@ -25,28 +25,28 @@ class Google_Service_Apigee_GoogleCloudApigeeV1StatsEnvironmentStats extends Goo
   public $name;
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1DimensionMetric
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1DimensionMetric[]
    */
   public function setDimensions($dimensions)
   {
     $this->dimensions = $dimensions;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1DimensionMetric
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1DimensionMetric[]
    */
   public function getDimensions()
   {
     return $this->dimensions;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Metric
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Metric[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Metric
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Metric[]
    */
   public function getMetrics()
   {

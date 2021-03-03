@@ -56,14 +56,14 @@ class Google_Service_Storagetransfer_TransferOperation extends Google_Collection
     return $this->endTime;
   }
   /**
-   * @param Google_Service_Storagetransfer_ErrorSummary
+   * @param Google_Service_Storagetransfer_ErrorSummary[]
    */
   public function setErrorBreakdowns($errorBreakdowns)
   {
     $this->errorBreakdowns = $errorBreakdowns;
   }
   /**
-   * @return Google_Service_Storagetransfer_ErrorSummary
+   * @return Google_Service_Storagetransfer_ErrorSummary[]
    */
   public function getErrorBreakdowns()
   {

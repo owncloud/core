@@ -26,10 +26,11 @@
 class Google_Service_Directory_Resource_UsersAliases extends Google_Service_Resource
 {
   /**
-   * Remove a alias for the user (aliases.delete)
+   * Removes an alias. (aliases.delete)
    *
-   * @param string $userKey Email or immutable ID of the user
-   * @param string $alias The alias to be removed
+   * @param string $userKey Identifies the user in the API request. The value can
+   * be the user's primary email address, alias email address, or unique user ID.
+   * @param string $alias The alias to be removed.
    * @param array $optParams Optional parameters.
    */
   public function delete($userKey, $alias, $optParams = array())
@@ -39,9 +40,10 @@ class Google_Service_Directory_Resource_UsersAliases extends Google_Service_Reso
     return $this->call('delete', array($params));
   }
   /**
-   * Add a alias for the user (aliases.insert)
+   * Adds an alias. (aliases.insert)
    *
-   * @param string $userKey Email or immutable ID of the user
+   * @param string $userKey Identifies the user in the API request. The value can
+   * be the user's primary email address, alias email address, or unique user ID.
    * @param Google_Service_Directory_Alias $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_Alias
@@ -53,9 +55,10 @@ class Google_Service_Directory_Resource_UsersAliases extends Google_Service_Reso
     return $this->call('insert', array($params), "Google_Service_Directory_Alias");
   }
   /**
-   * List all aliases for a user (aliases.listUsersAliases)
+   * Lists all aliases for a user. (aliases.listUsersAliases)
    *
-   * @param string $userKey Email or immutable ID of the user
+   * @param string $userKey Identifies the user in the API request. The value can
+   * be the user's primary email address, alias email address, or unique user ID.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_Aliases
    */
@@ -66,14 +69,13 @@ class Google_Service_Directory_Resource_UsersAliases extends Google_Service_Reso
     return $this->call('list', array($params), "Google_Service_Directory_Aliases");
   }
   /**
-   * Watch for changes in users list (aliases.watch)
+   * Watch for changes in users list. (aliases.watch)
    *
    * @param string $userKey Email or immutable ID of the user
    * @param Google_Service_Directory_Channel $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string event Event on which subscription is intended (if
-   * subscribing)
+   * @opt_param string event Events to watch for.
    * @return Google_Service_Directory_Channel
    */
   public function watch($userKey, Google_Service_Directory_Channel $postBody, $optParams = array())

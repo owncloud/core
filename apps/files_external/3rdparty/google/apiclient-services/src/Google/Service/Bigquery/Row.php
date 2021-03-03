@@ -31,14 +31,14 @@ class Google_Service_Bigquery_Row extends Google_Collection
     return $this->actualLabel;
   }
   /**
-   * @param Google_Service_Bigquery_Entry
+   * @param Google_Service_Bigquery_Entry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_Bigquery_Entry
+   * @return Google_Service_Bigquery_Entry[]
    */
   public function getEntries()
   {

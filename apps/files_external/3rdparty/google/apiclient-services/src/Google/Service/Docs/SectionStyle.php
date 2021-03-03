@@ -45,14 +45,14 @@ class Google_Service_Docs_SectionStyle extends Google_Collection
   public $useFirstPageHeaderFooter;
 
   /**
-   * @param Google_Service_Docs_SectionColumnProperties
+   * @param Google_Service_Docs_SectionColumnProperties[]
    */
   public function setColumnProperties($columnProperties)
   {
     $this->columnProperties = $columnProperties;
   }
   /**
-   * @return Google_Service_Docs_SectionColumnProperties
+   * @return Google_Service_Docs_SectionColumnProperties[]
    */
   public function getColumnProperties()
   {

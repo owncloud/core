@@ -47,14 +47,14 @@ class Google_Service_Docs_Paragraph extends Google_Collection
     return $this->bullet;
   }
   /**
-   * @param Google_Service_Docs_ParagraphElement
+   * @param Google_Service_Docs_ParagraphElement[]
    */
   public function setElements($elements)
   {
     $this->elements = $elements;
   }
   /**
-   * @return Google_Service_Docs_ParagraphElement
+   * @return Google_Service_Docs_ParagraphElement[]
    */
   public function getElements()
   {
@@ -83,42 +83,42 @@ class Google_Service_Docs_Paragraph extends Google_Collection
     return $this->positionedObjectIds;
   }
   /**
-   * @param Google_Service_Docs_SuggestedBullet
+   * @param Google_Service_Docs_SuggestedBullet[]
    */
   public function setSuggestedBulletChanges($suggestedBulletChanges)
   {
     $this->suggestedBulletChanges = $suggestedBulletChanges;
   }
   /**
-   * @return Google_Service_Docs_SuggestedBullet
+   * @return Google_Service_Docs_SuggestedBullet[]
    */
   public function getSuggestedBulletChanges()
   {
     return $this->suggestedBulletChanges;
   }
   /**
-   * @param Google_Service_Docs_SuggestedParagraphStyle
+   * @param Google_Service_Docs_SuggestedParagraphStyle[]
    */
   public function setSuggestedParagraphStyleChanges($suggestedParagraphStyleChanges)
   {
     $this->suggestedParagraphStyleChanges = $suggestedParagraphStyleChanges;
   }
   /**
-   * @return Google_Service_Docs_SuggestedParagraphStyle
+   * @return Google_Service_Docs_SuggestedParagraphStyle[]
    */
   public function getSuggestedParagraphStyleChanges()
   {
     return $this->suggestedParagraphStyleChanges;
   }
   /**
-   * @param Google_Service_Docs_ObjectReferences
+   * @param Google_Service_Docs_ObjectReferences[]
    */
   public function setSuggestedPositionedObjectIds($suggestedPositionedObjectIds)
   {
     $this->suggestedPositionedObjectIds = $suggestedPositionedObjectIds;
   }
   /**
-   * @return Google_Service_Docs_ObjectReferences
+   * @return Google_Service_Docs_ObjectReferences[]
    */
   public function getSuggestedPositionedObjectIds()
   {

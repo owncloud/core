@@ -45,10 +45,10 @@ class Google_Service_DataTransfer_Resource_Applications extends Google_Service_R
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Token to specify next page in the list.
+   * @opt_param string customerId Immutable ID of the Google Workspace account.
    * @opt_param int maxResults Maximum number of results to return. Default is
    * 100.
-   * @opt_param string customerId Immutable ID of the Google Apps account.
+   * @opt_param string pageToken Token to specify next page in the list.
    * @return Google_Service_DataTransfer_ApplicationsListResponse
    */
   public function listApplications($optParams = array())

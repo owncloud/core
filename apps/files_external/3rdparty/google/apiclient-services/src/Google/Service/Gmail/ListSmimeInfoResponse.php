@@ -22,14 +22,14 @@ class Google_Service_Gmail_ListSmimeInfoResponse extends Google_Collection
   protected $smimeInfoDataType = 'array';
 
   /**
-   * @param Google_Service_Gmail_SmimeInfo
+   * @param Google_Service_Gmail_SmimeInfo[]
    */
   public function setSmimeInfo($smimeInfo)
   {
     $this->smimeInfo = $smimeInfo;
   }
   /**
-   * @return Google_Service_Gmail_SmimeInfo
+   * @return Google_Service_Gmail_SmimeInfo[]
    */
   public function getSmimeInfo()
   {

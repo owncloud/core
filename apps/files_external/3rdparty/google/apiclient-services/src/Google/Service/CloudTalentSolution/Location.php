@@ -22,7 +22,7 @@ class Google_Service_CloudTalentSolution_Location extends Google_Model
   public $locationType;
   protected $postalAddressType = 'Google_Service_CloudTalentSolution_PostalAddress';
   protected $postalAddressDataType = '';
-  public $radiusInMiles;
+  public $radiusMiles;
 
   /**
    * @param Google_Service_CloudTalentSolution_LatLng
@@ -60,12 +60,12 @@ class Google_Service_CloudTalentSolution_Location extends Google_Model
   {
     return $this->postalAddress;
   }
-  public function setRadiusInMiles($radiusInMiles)
+  public function setRadiusMiles($radiusMiles)
   {
-    $this->radiusInMiles = $radiusInMiles;
+    $this->radiusMiles = $radiusMiles;
   }
-  public function getRadiusInMiles()
+  public function getRadiusMiles()
   {
-    return $this->radiusInMiles;
+    return $this->radiusMiles;
   }
 }

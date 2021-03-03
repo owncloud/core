@@ -24,14 +24,14 @@ class Google_Service_ShoppingContent_CustomAttribute extends Google_Collection
   public $value;
 
   /**
-   * @param Google_Service_ShoppingContent_CustomAttribute
+   * @param Google_Service_ShoppingContent_CustomAttribute[]
    */
   public function setGroupValues($groupValues)
   {
     $this->groupValues = $groupValues;
   }
   /**
-   * @return Google_Service_ShoppingContent_CustomAttribute
+   * @return Google_Service_ShoppingContent_CustomAttribute[]
    */
   public function getGroupValues()
   {

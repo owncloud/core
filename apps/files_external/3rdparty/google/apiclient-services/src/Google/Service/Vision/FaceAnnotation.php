@@ -114,14 +114,14 @@ class Google_Service_Vision_FaceAnnotation extends Google_Collection
     return $this->landmarkingConfidence;
   }
   /**
-   * @param Google_Service_Vision_Landmark
+   * @param Google_Service_Vision_Landmark[]
    */
   public function setLandmarks($landmarks)
   {
     $this->landmarks = $landmarks;
   }
   /**
-   * @return Google_Service_Vision_Landmark
+   * @return Google_Service_Vision_Landmark[]
    */
   public function getLandmarks()
   {

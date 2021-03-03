@@ -32,14 +32,14 @@ class Google_Service_Compute_SslCertificateAggregatedListWarning extends Google_
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_SslCertificateAggregatedListWarningData
+   * @param Google_Service_Compute_SslCertificateAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_SslCertificateAggregatedListWarningData
+   * @return Google_Service_Compute_SslCertificateAggregatedListWarningData[]
    */
   public function getData()
   {

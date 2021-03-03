@@ -22,14 +22,14 @@ class Google_Service_DriveActivity_SettingsChange extends Google_Collection
   protected $restrictionChangesDataType = 'array';
 
   /**
-   * @param Google_Service_DriveActivity_RestrictionChange
+   * @param Google_Service_DriveActivity_RestrictionChange[]
    */
   public function setRestrictionChanges($restrictionChanges)
   {
     $this->restrictionChanges = $restrictionChanges;
   }
   /**
-   * @return Google_Service_DriveActivity_RestrictionChange
+   * @return Google_Service_DriveActivity_RestrictionChange[]
    */
   public function getRestrictionChanges()
   {

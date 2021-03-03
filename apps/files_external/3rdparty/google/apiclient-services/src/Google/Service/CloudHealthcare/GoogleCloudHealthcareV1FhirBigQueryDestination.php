@@ -21,6 +21,7 @@ class Google_Service_CloudHealthcare_GoogleCloudHealthcareV1FhirBigQueryDestinat
   public $force;
   protected $schemaConfigType = 'Google_Service_CloudHealthcare_SchemaConfig';
   protected $schemaConfigDataType = '';
+  public $writeDisposition;
 
   public function setDatasetUri($datasetUri)
   {
@@ -51,5 +52,13 @@ class Google_Service_CloudHealthcare_GoogleCloudHealthcareV1FhirBigQueryDestinat
   public function getSchemaConfig()
   {
     return $this->schemaConfig;
+  }
+  public function setWriteDisposition($writeDisposition)
+  {
+    $this->writeDisposition = $writeDisposition;
+  }
+  public function getWriteDisposition()
+  {
+    return $this->writeDisposition;
   }
 }

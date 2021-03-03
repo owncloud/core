@@ -15,10 +15,14 @@
  * the License.
  */
 
-class Google_Service_CloudFilestore_FileShareConfig extends Google_Model
+class Google_Service_CloudFilestore_FileShareConfig extends Google_Collection
 {
+  protected $collection_key = 'nfsExportOptions';
   public $capacityGb;
   public $name;
+  protected $nfsExportOptionsType = 'Google_Service_CloudFilestore_NfsExportOptions';
+  protected $nfsExportOptionsDataType = 'array';
+  public $sourceBackup;
 
   public function setCapacityGb($capacityGb)
   {
@@ -35,5 +39,27 @@ class Google_Service_CloudFilestore_FileShareConfig extends Google_Model
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param Google_Service_CloudFilestore_NfsExportOptions[]
+   */
+  public function setNfsExportOptions($nfsExportOptions)
+  {
+    $this->nfsExportOptions = $nfsExportOptions;
+  }
+  /**
+   * @return Google_Service_CloudFilestore_NfsExportOptions[]
+   */
+  public function getNfsExportOptions()
+  {
+    return $this->nfsExportOptions;
+  }
+  public function setSourceBackup($sourceBackup)
+  {
+    $this->sourceBackup = $sourceBackup;
+  }
+  public function getSourceBackup()
+  {
+    return $this->sourceBackup;
   }
 }

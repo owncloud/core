@@ -33,28 +33,28 @@ class Google_Service_Vision_ProductSearchResults extends Google_Collection
     return $this->indexTime;
   }
   /**
-   * @param Google_Service_Vision_GroupedResult
+   * @param Google_Service_Vision_GroupedResult[]
    */
   public function setProductGroupedResults($productGroupedResults)
   {
     $this->productGroupedResults = $productGroupedResults;
   }
   /**
-   * @return Google_Service_Vision_GroupedResult
+   * @return Google_Service_Vision_GroupedResult[]
    */
   public function getProductGroupedResults()
   {
     return $this->productGroupedResults;
   }
   /**
-   * @param Google_Service_Vision_Result
+   * @param Google_Service_Vision_Result[]
    */
   public function setResults($results)
   {
     $this->results = $results;
   }
   /**
-   * @return Google_Service_Vision_Result
+   * @return Google_Service_Vision_Result[]
    */
   public function getResults()
   {

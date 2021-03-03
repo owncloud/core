@@ -42,14 +42,14 @@ class Google_Service_ToolResults_NonSdkApi extends Google_Collection
     return $this->exampleStackTraces;
   }
   /**
-   * @param Google_Service_ToolResults_NonSdkApiInsight
+   * @param Google_Service_ToolResults_NonSdkApiInsight[]
    */
   public function setInsights($insights)
   {
     $this->insights = $insights;
   }
   /**
-   * @return Google_Service_ToolResults_NonSdkApiInsight
+   * @return Google_Service_ToolResults_NonSdkApiInsight[]
    */
   public function getInsights()
   {

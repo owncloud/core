@@ -15,16 +15,23 @@
  * the License.
  */
 
-class Google_Service_Sheets_BasicChartSeries extends Google_Model
+class Google_Service_Sheets_BasicChartSeries extends Google_Collection
 {
+  protected $collection_key = 'styleOverrides';
   protected $colorType = 'Google_Service_Sheets_Color';
   protected $colorDataType = '';
   protected $colorStyleType = 'Google_Service_Sheets_ColorStyle';
   protected $colorStyleDataType = '';
+  protected $dataLabelType = 'Google_Service_Sheets_DataLabel';
+  protected $dataLabelDataType = '';
   protected $lineStyleType = 'Google_Service_Sheets_LineStyle';
   protected $lineStyleDataType = '';
+  protected $pointStyleType = 'Google_Service_Sheets_PointStyle';
+  protected $pointStyleDataType = '';
   protected $seriesType = 'Google_Service_Sheets_ChartData';
   protected $seriesDataType = '';
+  protected $styleOverridesType = 'Google_Service_Sheets_BasicSeriesDataPointStyleOverride';
+  protected $styleOverridesDataType = 'array';
   public $targetAxis;
   public $type;
 
@@ -57,6 +64,20 @@ class Google_Service_Sheets_BasicChartSeries extends Google_Model
     return $this->colorStyle;
   }
   /**
+   * @param Google_Service_Sheets_DataLabel
+   */
+  public function setDataLabel(Google_Service_Sheets_DataLabel $dataLabel)
+  {
+    $this->dataLabel = $dataLabel;
+  }
+  /**
+   * @return Google_Service_Sheets_DataLabel
+   */
+  public function getDataLabel()
+  {
+    return $this->dataLabel;
+  }
+  /**
    * @param Google_Service_Sheets_LineStyle
    */
   public function setLineStyle(Google_Service_Sheets_LineStyle $lineStyle)
@@ -71,6 +92,20 @@ class Google_Service_Sheets_BasicChartSeries extends Google_Model
     return $this->lineStyle;
   }
   /**
+   * @param Google_Service_Sheets_PointStyle
+   */
+  public function setPointStyle(Google_Service_Sheets_PointStyle $pointStyle)
+  {
+    $this->pointStyle = $pointStyle;
+  }
+  /**
+   * @return Google_Service_Sheets_PointStyle
+   */
+  public function getPointStyle()
+  {
+    return $this->pointStyle;
+  }
+  /**
    * @param Google_Service_Sheets_ChartData
    */
   public function setSeries(Google_Service_Sheets_ChartData $series)
@@ -83,6 +118,20 @@ class Google_Service_Sheets_BasicChartSeries extends Google_Model
   public function getSeries()
   {
     return $this->series;
+  }
+  /**
+   * @param Google_Service_Sheets_BasicSeriesDataPointStyleOverride[]
+   */
+  public function setStyleOverrides($styleOverrides)
+  {
+    $this->styleOverrides = $styleOverrides;
+  }
+  /**
+   * @return Google_Service_Sheets_BasicSeriesDataPointStyleOverride[]
+   */
+  public function getStyleOverrides()
+  {
+    return $this->styleOverrides;
   }
   public function setTargetAxis($targetAxis)
   {

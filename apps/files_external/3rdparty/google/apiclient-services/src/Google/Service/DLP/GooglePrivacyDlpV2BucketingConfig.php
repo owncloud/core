@@ -22,14 +22,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2BucketingConfig extends Google_Collec
   protected $bucketsDataType = 'array';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2Bucket
+   * @param Google_Service_DLP_GooglePrivacyDlpV2Bucket[]
    */
   public function setBuckets($buckets)
   {
     $this->buckets = $buckets;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2Bucket
+   * @return Google_Service_DLP_GooglePrivacyDlpV2Bucket[]
    */
   public function getBuckets()
   {

@@ -22,14 +22,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ListCustomReportsResponse extends
   protected $qualifierDataType = 'array';
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1CustomReport
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1CustomReport[]
    */
   public function setQualifier($qualifier)
   {
     $this->qualifier = $qualifier;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1CustomReport
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1CustomReport[]
    */
   public function getQualifier()
   {

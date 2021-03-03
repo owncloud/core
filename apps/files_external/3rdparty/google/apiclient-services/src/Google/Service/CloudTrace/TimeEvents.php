@@ -40,14 +40,14 @@ class Google_Service_CloudTrace_TimeEvents extends Google_Collection
     return $this->droppedMessageEventsCount;
   }
   /**
-   * @param Google_Service_CloudTrace_TimeEvent
+   * @param Google_Service_CloudTrace_TimeEvent[]
    */
   public function setTimeEvent($timeEvent)
   {
     $this->timeEvent = $timeEvent;
   }
   /**
-   * @return Google_Service_CloudTrace_TimeEvent
+   * @return Google_Service_CloudTrace_TimeEvent[]
    */
   public function getTimeEvent()
   {

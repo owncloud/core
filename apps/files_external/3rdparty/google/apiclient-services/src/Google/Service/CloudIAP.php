@@ -37,7 +37,7 @@ class Google_Service_CloudIAP extends Google_Service
   public $projects_brands;
   public $projects_brands_identityAwareProxyClients;
   public $v1;
-  
+
   /**
    * Constructs the internal representation of the CloudIAP service.
    *

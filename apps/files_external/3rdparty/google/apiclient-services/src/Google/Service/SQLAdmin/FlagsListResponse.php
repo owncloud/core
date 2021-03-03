@@ -23,14 +23,14 @@ class Google_Service_SQLAdmin_FlagsListResponse extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_SQLAdmin_Flag
+   * @param Google_Service_SQLAdmin_Flag[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_SQLAdmin_Flag
+   * @return Google_Service_SQLAdmin_Flag[]
    */
   public function getItems()
   {

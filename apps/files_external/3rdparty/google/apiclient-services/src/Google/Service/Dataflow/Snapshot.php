@@ -70,14 +70,14 @@ class Google_Service_Dataflow_Snapshot extends Google_Collection
     return $this->projectId;
   }
   /**
-   * @param Google_Service_Dataflow_PubsubSnapshotMetadata
+   * @param Google_Service_Dataflow_PubsubSnapshotMetadata[]
    */
   public function setPubsubMetadata($pubsubMetadata)
   {
     $this->pubsubMetadata = $pubsubMetadata;
   }
   /**
-   * @return Google_Service_Dataflow_PubsubSnapshotMetadata
+   * @return Google_Service_Dataflow_PubsubSnapshotMetadata[]
    */
   public function getPubsubMetadata()
   {

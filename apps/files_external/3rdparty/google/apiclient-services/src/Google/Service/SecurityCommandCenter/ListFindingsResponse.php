@@ -25,14 +25,14 @@ class Google_Service_SecurityCommandCenter_ListFindingsResponse extends Google_C
   public $totalSize;
 
   /**
-   * @param Google_Service_SecurityCommandCenter_ListFindingsResult
+   * @param Google_Service_SecurityCommandCenter_ListFindingsResult[]
    */
   public function setListFindingsResults($listFindingsResults)
   {
     $this->listFindingsResults = $listFindingsResults;
   }
   /**
-   * @return Google_Service_SecurityCommandCenter_ListFindingsResult
+   * @return Google_Service_SecurityCommandCenter_ListFindingsResult[]
    */
   public function getListFindingsResults()
   {

@@ -23,14 +23,14 @@ class Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1ListDevicesR
   public $nextPageToken;
 
   /**
-   * @param Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1Device
+   * @param Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1Device[]
    */
   public function setDevices($devices)
   {
     $this->devices = $devices;
   }
   /**
-   * @return Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1Device
+   * @return Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1Device[]
    */
   public function getDevices()
   {

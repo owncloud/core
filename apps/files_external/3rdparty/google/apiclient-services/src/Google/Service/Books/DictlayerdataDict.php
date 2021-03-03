@@ -38,14 +38,14 @@ class Google_Service_Books_DictlayerdataDict extends Google_Collection
     return $this->source;
   }
   /**
-   * @param Google_Service_Books_DictlayerdataDictWords
+   * @param Google_Service_Books_DictlayerdataDictWords[]
    */
   public function setWords($words)
   {
     $this->words = $words;
   }
   /**
-   * @return Google_Service_Books_DictlayerdataDictWords
+   * @return Google_Service_Books_DictlayerdataDictWords[]
    */
   public function getWords()
   {

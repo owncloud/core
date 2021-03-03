@@ -53,14 +53,14 @@ class Google_Service_ServiceControl_AuditLog extends Google_Collection
     return $this->authenticationInfo;
   }
   /**
-   * @param Google_Service_ServiceControl_AuthorizationInfo
+   * @param Google_Service_ServiceControl_AuthorizationInfo[]
    */
   public function setAuthorizationInfo($authorizationInfo)
   {
     $this->authorizationInfo = $authorizationInfo;
   }
   /**
-   * @return Google_Service_ServiceControl_AuthorizationInfo
+   * @return Google_Service_ServiceControl_AuthorizationInfo[]
    */
   public function getAuthorizationInfo()
   {

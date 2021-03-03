@@ -42,14 +42,14 @@ class Google_Service_YouTube_ChannelBrandingSettings extends Google_Collection
     return $this->channel;
   }
   /**
-   * @param Google_Service_YouTube_PropertyValue
+   * @param Google_Service_YouTube_PropertyValue[]
    */
   public function setHints($hints)
   {
     $this->hints = $hints;
   }
   /**
-   * @return Google_Service_YouTube_PropertyValue
+   * @return Google_Service_YouTube_PropertyValue[]
    */
   public function getHints()
   {

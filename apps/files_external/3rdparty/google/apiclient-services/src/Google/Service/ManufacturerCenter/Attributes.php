@@ -45,6 +45,7 @@ class Google_Service_ManufacturerCenter_Attributes extends Google_Collection
   public $pattern;
   protected $productDetailType = 'Google_Service_ManufacturerCenter_ProductDetail';
   protected $productDetailDataType = 'array';
+  public $productHighlight;
   public $productLine;
   public $productName;
   public $productPageUrl;
@@ -63,14 +64,14 @@ class Google_Service_ManufacturerCenter_Attributes extends Google_Collection
   public $videoLink;
 
   /**
-   * @param Google_Service_ManufacturerCenter_Image
+   * @param Google_Service_ManufacturerCenter_Image[]
    */
   public function setAdditionalImageLink($additionalImageLink)
   {
     $this->additionalImageLink = $additionalImageLink;
   }
   /**
-   * @return Google_Service_ManufacturerCenter_Image
+   * @return Google_Service_ManufacturerCenter_Image[]
    */
   public function getAdditionalImageLink()
   {
@@ -153,14 +154,14 @@ class Google_Service_ManufacturerCenter_Attributes extends Google_Collection
     return $this->excludedDestination;
   }
   /**
-   * @param Google_Service_ManufacturerCenter_FeatureDescription
+   * @param Google_Service_ManufacturerCenter_FeatureDescription[]
    */
   public function setFeatureDescription($featureDescription)
   {
     $this->featureDescription = $featureDescription;
   }
   /**
-   * @return Google_Service_ManufacturerCenter_FeatureDescription
+   * @return Google_Service_ManufacturerCenter_FeatureDescription[]
    */
   public function getFeatureDescription()
   {
@@ -253,18 +254,26 @@ class Google_Service_ManufacturerCenter_Attributes extends Google_Collection
     return $this->pattern;
   }
   /**
-   * @param Google_Service_ManufacturerCenter_ProductDetail
+   * @param Google_Service_ManufacturerCenter_ProductDetail[]
    */
   public function setProductDetail($productDetail)
   {
     $this->productDetail = $productDetail;
   }
   /**
-   * @return Google_Service_ManufacturerCenter_ProductDetail
+   * @return Google_Service_ManufacturerCenter_ProductDetail[]
    */
   public function getProductDetail()
   {
     return $this->productDetail;
+  }
+  public function setProductHighlight($productHighlight)
+  {
+    $this->productHighlight = $productHighlight;
+  }
+  public function getProductHighlight()
+  {
+    return $this->productHighlight;
   }
   public function setProductLine($productLine)
   {

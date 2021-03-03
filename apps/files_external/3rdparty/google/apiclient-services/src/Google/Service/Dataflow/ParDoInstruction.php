@@ -42,14 +42,14 @@ class Google_Service_Dataflow_ParDoInstruction extends Google_Collection
     return $this->input;
   }
   /**
-   * @param Google_Service_Dataflow_MultiOutputInfo
+   * @param Google_Service_Dataflow_MultiOutputInfo[]
    */
   public function setMultiOutputInfos($multiOutputInfos)
   {
     $this->multiOutputInfos = $multiOutputInfos;
   }
   /**
-   * @return Google_Service_Dataflow_MultiOutputInfo
+   * @return Google_Service_Dataflow_MultiOutputInfo[]
    */
   public function getMultiOutputInfos()
   {
@@ -64,14 +64,14 @@ class Google_Service_Dataflow_ParDoInstruction extends Google_Collection
     return $this->numOutputs;
   }
   /**
-   * @param Google_Service_Dataflow_SideInputInfo
+   * @param Google_Service_Dataflow_SideInputInfo[]
    */
   public function setSideInputs($sideInputs)
   {
     $this->sideInputs = $sideInputs;
   }
   /**
-   * @return Google_Service_Dataflow_SideInputInfo
+   * @return Google_Service_Dataflow_SideInputInfo[]
    */
   public function getSideInputs()
   {

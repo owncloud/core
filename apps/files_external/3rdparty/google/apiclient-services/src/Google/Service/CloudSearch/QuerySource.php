@@ -34,14 +34,14 @@ class Google_Service_CloudSearch_QuerySource extends Google_Collection
     return $this->displayName;
   }
   /**
-   * @param Google_Service_CloudSearch_QueryOperator
+   * @param Google_Service_CloudSearch_QueryOperator[]
    */
   public function setOperators($operators)
   {
     $this->operators = $operators;
   }
   /**
-   * @return Google_Service_CloudSearch_QueryOperator
+   * @return Google_Service_CloudSearch_QueryOperator[]
    */
   public function getOperators()
   {

@@ -17,8 +17,17 @@
 
 class Google_Service_CertificateAuthorityService_ScheduleDeleteCertificateAuthorityRequest extends Google_Model
 {
+  public $ignoreActiveCertificates;
   public $requestId;
 
+  public function setIgnoreActiveCertificates($ignoreActiveCertificates)
+  {
+    $this->ignoreActiveCertificates = $ignoreActiveCertificates;
+  }
+  public function getIgnoreActiveCertificates()
+  {
+    return $this->ignoreActiveCertificates;
+  }
   public function setRequestId($requestId)
   {
     $this->requestId = $requestId;

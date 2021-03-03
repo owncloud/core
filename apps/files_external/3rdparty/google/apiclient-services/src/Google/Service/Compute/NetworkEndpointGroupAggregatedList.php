@@ -37,14 +37,14 @@ class Google_Service_Compute_NetworkEndpointGroupAggregatedList extends Google_C
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_NetworkEndpointGroupsScopedList
+   * @param Google_Service_Compute_NetworkEndpointGroupsScopedList[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_NetworkEndpointGroupsScopedList
+   * @return Google_Service_Compute_NetworkEndpointGroupsScopedList[]
    */
   public function getItems()
   {

@@ -61,14 +61,14 @@ class Google_Service_Dataflow_WorkerPool extends Google_Collection
     return $this->autoscalingSettings;
   }
   /**
-   * @param Google_Service_Dataflow_Disk
+   * @param Google_Service_Dataflow_Disk[]
    */
   public function setDataDisks($dataDisks)
   {
     $this->dataDisks = $dataDisks;
   }
   /**
-   * @return Google_Service_Dataflow_Disk
+   * @return Google_Service_Dataflow_Disk[]
    */
   public function getDataDisks()
   {
@@ -171,14 +171,14 @@ class Google_Service_Dataflow_WorkerPool extends Google_Collection
     return $this->onHostMaintenance;
   }
   /**
-   * @param Google_Service_Dataflow_Package
+   * @param Google_Service_Dataflow_Package[]
    */
   public function setPackages($packages)
   {
     $this->packages = $packages;
   }
   /**
-   * @return Google_Service_Dataflow_Package
+   * @return Google_Service_Dataflow_Package[]
    */
   public function getPackages()
   {
@@ -193,14 +193,14 @@ class Google_Service_Dataflow_WorkerPool extends Google_Collection
     return $this->poolArgs;
   }
   /**
-   * @param Google_Service_Dataflow_SdkHarnessContainerImage
+   * @param Google_Service_Dataflow_SdkHarnessContainerImage[]
    */
   public function setSdkHarnessContainerImages($sdkHarnessContainerImages)
   {
     $this->sdkHarnessContainerImages = $sdkHarnessContainerImages;
   }
   /**
-   * @return Google_Service_Dataflow_SdkHarnessContainerImage
+   * @return Google_Service_Dataflow_SdkHarnessContainerImage[]
    */
   public function getSdkHarnessContainerImages()
   {

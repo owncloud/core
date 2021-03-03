@@ -78,14 +78,14 @@ class Google_Service_AdExchangeBuyer_Proposal extends Google_Collection
     return $this->buyer;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_ContactInformation
+   * @param Google_Service_AdExchangeBuyer_ContactInformation[]
    */
   public function setBuyerContacts($buyerContacts)
   {
     $this->buyerContacts = $buyerContacts;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_ContactInformation
+   * @return Google_Service_AdExchangeBuyer_ContactInformation[]
    */
   public function getBuyerContacts()
   {
@@ -162,14 +162,14 @@ class Google_Service_AdExchangeBuyer_Proposal extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_MarketplaceLabel
+   * @param Google_Service_AdExchangeBuyer_MarketplaceLabel[]
    */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_MarketplaceLabel
+   * @return Google_Service_AdExchangeBuyer_MarketplaceLabel[]
    */
   public function getLabels()
   {
@@ -262,14 +262,14 @@ class Google_Service_AdExchangeBuyer_Proposal extends Google_Collection
     return $this->seller;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_ContactInformation
+   * @param Google_Service_AdExchangeBuyer_ContactInformation[]
    */
   public function setSellerContacts($sellerContacts)
   {
     $this->sellerContacts = $sellerContacts;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_ContactInformation
+   * @return Google_Service_AdExchangeBuyer_ContactInformation[]
    */
   public function getSellerContacts()
   {

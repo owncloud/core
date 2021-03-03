@@ -77,8 +77,8 @@ class Google_Service_Compute_Resource_Subnetworks extends Google_Service_Resourc
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
+   * which provides partial results in case of failure. The default value is
+   * false.
    * @return Google_Service_Compute_SubnetworkAggregatedList
    */
   public function aggregatedList($project, $optParams = array())
@@ -255,8 +255,8 @@ class Google_Service_Compute_Resource_Subnetworks extends Google_Service_Resourc
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
+   * which provides partial results in case of failure. The default value is
+   * false.
    * @return Google_Service_Compute_SubnetworkList
    */
   public function listSubnetworks($project, $region, $optParams = array())
@@ -311,8 +311,8 @@ class Google_Service_Compute_Resource_Subnetworks extends Google_Service_Resourc
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
+   * which provides partial results in case of failure. The default value is
+   * false.
    * @return Google_Service_Compute_UsableSubnetworksAggregatedList
    */
   public function listUsable($project, $optParams = array())
@@ -323,7 +323,7 @@ class Google_Service_Compute_Resource_Subnetworks extends Google_Service_Resourc
   }
   /**
    * Patches the specified subnetwork with the data included in the request. Only
-   * certain fields can up updated with a patch request as indicated in the field
+   * certain fields can be updated with a patch request as indicated in the field
    * descriptions. You must specify the current fingerprint of the subnetwork
    * resource being patched. (subnetworks.patch)
    *

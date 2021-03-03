@@ -45,6 +45,21 @@ class Google_Service_Apigee_Resource_Organizations extends Google_Service_Resour
     return $this->call('create', array($params), "Google_Service_Apigee_GoogleLongrunningOperation");
   }
   /**
+   * Delete an Apigee organization. Only supported for SubscriptionType TRIAL.
+   * (organizations.delete)
+   *
+   * @param string $name Required. Name of the organization. Use the following
+   * structure in your request: `organizations/{org}`
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Apigee_GoogleLongrunningOperation
+   */
+  public function delete($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('delete', array($params), "Google_Service_Apigee_GoogleLongrunningOperation");
+  }
+  /**
    * Gets the profile for an Apigee organization. See [Understanding
    * organizations](https://cloud.google.com/apigee/docs/api-platform/fundamentals
    * /organization-structure). (organizations.get)

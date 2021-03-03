@@ -22,14 +22,14 @@ class Google_Service_Iam_ListServiceAccountKeysResponse extends Google_Collectio
   protected $keysDataType = 'array';
 
   /**
-   * @param Google_Service_Iam_ServiceAccountKey
+   * @param Google_Service_Iam_ServiceAccountKey[]
    */
   public function setKeys($keys)
   {
     $this->keys = $keys;
   }
   /**
-   * @return Google_Service_Iam_ServiceAccountKey
+   * @return Google_Service_Iam_ServiceAccountKey[]
    */
   public function getKeys()
   {

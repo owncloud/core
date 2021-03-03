@@ -90,14 +90,14 @@ class Google_Service_Dfareporting_Order extends Google_Collection
     return $this->comments;
   }
   /**
-   * @param Google_Service_Dfareporting_OrderContact
+   * @param Google_Service_Dfareporting_OrderContact[]
    */
   public function setContacts($contacts)
   {
     $this->contacts = $contacts;
   }
   /**
-   * @return Google_Service_Dfareporting_OrderContact
+   * @return Google_Service_Dfareporting_OrderContact[]
    */
   public function getContacts()
   {

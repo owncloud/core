@@ -36,14 +36,14 @@ class Google_Service_Compute_VpnGatewayList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_VpnGateway
+   * @param Google_Service_Compute_VpnGateway[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_VpnGateway
+   * @return Google_Service_Compute_VpnGateway[]
    */
   public function getItems()
   {

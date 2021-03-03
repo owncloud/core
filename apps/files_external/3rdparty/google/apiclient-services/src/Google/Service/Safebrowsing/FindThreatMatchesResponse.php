@@ -22,14 +22,14 @@ class Google_Service_Safebrowsing_FindThreatMatchesResponse extends Google_Colle
   protected $matchesDataType = 'array';
 
   /**
-   * @param Google_Service_Safebrowsing_ThreatMatch
+   * @param Google_Service_Safebrowsing_ThreatMatch[]
    */
   public function setMatches($matches)
   {
     $this->matches = $matches;
   }
   /**
-   * @return Google_Service_Safebrowsing_ThreatMatch
+   * @return Google_Service_Safebrowsing_ThreatMatch[]
    */
   public function getMatches()
   {

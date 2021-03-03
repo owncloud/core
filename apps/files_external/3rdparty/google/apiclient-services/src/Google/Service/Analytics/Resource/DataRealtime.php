@@ -34,14 +34,14 @@ class Google_Service_Analytics_Resource_DataRealtime extends Google_Service_Reso
    * 'rt:activeUsers'. At least one metric must be specified.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int max-results The maximum number of entries to include in this
-   * feed.
-   * @opt_param string sort A comma-separated list of dimensions or metrics that
-   * determine the sort order for real time data.
    * @opt_param string dimensions A comma-separated list of real time dimensions.
    * E.g., 'rt:medium,rt:city'.
    * @opt_param string filters A comma-separated list of dimension or metric
    * filters to be applied to real time data.
+   * @opt_param int max-results The maximum number of entries to include in this
+   * feed.
+   * @opt_param string sort A comma-separated list of dimensions or metrics that
+   * determine the sort order for real time data.
    * @return Google_Service_Analytics_RealtimeData
    */
   public function get($ids, $metrics, $optParams = array())

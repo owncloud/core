@@ -192,14 +192,14 @@ class Google_Service_ContainerAnalysis_Note extends Google_Collection
     return $this->relatedNoteNames;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_RelatedUrl
+   * @param Google_Service_ContainerAnalysis_RelatedUrl[]
    */
   public function setRelatedUrl($relatedUrl)
   {
     $this->relatedUrl = $relatedUrl;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_RelatedUrl
+   * @return Google_Service_ContainerAnalysis_RelatedUrl[]
    */
   public function getRelatedUrl()
   {

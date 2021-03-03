@@ -23,14 +23,14 @@ class Google_Service_AlertCenter_BatchUndeleteAlertsResponse extends Google_Coll
   public $successAlertIds;
 
   /**
-   * @param Google_Service_AlertCenter_Status
+   * @param Google_Service_AlertCenter_Status[]
    */
   public function setFailedAlertStatus($failedAlertStatus)
   {
     $this->failedAlertStatus = $failedAlertStatus;
   }
   /**
-   * @return Google_Service_AlertCenter_Status
+   * @return Google_Service_AlertCenter_Status[]
    */
   public function getFailedAlertStatus()
   {

@@ -23,14 +23,14 @@ class Google_Service_AnalyticsData_PivotHeader extends Google_Collection
   public $rowCount;
 
   /**
-   * @param Google_Service_AnalyticsData_PivotDimensionHeader
+   * @param Google_Service_AnalyticsData_PivotDimensionHeader[]
    */
   public function setPivotDimensionHeaders($pivotDimensionHeaders)
   {
     $this->pivotDimensionHeaders = $pivotDimensionHeaders;
   }
   /**
-   * @return Google_Service_AnalyticsData_PivotDimensionHeader
+   * @return Google_Service_AnalyticsData_PivotDimensionHeader[]
    */
   public function getPivotDimensionHeaders()
   {

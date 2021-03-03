@@ -22,14 +22,14 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageAnchor ext
   protected $pageRefsDataType = 'array';
 
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageAnchorPageRef
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageAnchorPageRef[]
    */
   public function setPageRefs($pageRefs)
   {
     $this->pageRefs = $pageRefs;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageAnchorPageRef
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentPageAnchorPageRef[]
    */
   public function getPageRefs()
   {

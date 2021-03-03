@@ -31,14 +31,14 @@ class Google_Service_Firestore_DocumentTransform extends Google_Collection
     return $this->document;
   }
   /**
-   * @param Google_Service_Firestore_FieldTransform
+   * @param Google_Service_Firestore_FieldTransform[]
    */
   public function setFieldTransforms($fieldTransforms)
   {
     $this->fieldTransforms = $fieldTransforms;
   }
   /**
-   * @return Google_Service_Firestore_FieldTransform
+   * @return Google_Service_Firestore_FieldTransform[]
    */
   public function getFieldTransforms()
   {

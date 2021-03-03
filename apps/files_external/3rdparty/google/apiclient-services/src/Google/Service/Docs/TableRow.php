@@ -62,28 +62,28 @@ class Google_Service_Docs_TableRow extends Google_Collection
     return $this->suggestedInsertionIds;
   }
   /**
-   * @param Google_Service_Docs_SuggestedTableRowStyle
+   * @param Google_Service_Docs_SuggestedTableRowStyle[]
    */
   public function setSuggestedTableRowStyleChanges($suggestedTableRowStyleChanges)
   {
     $this->suggestedTableRowStyleChanges = $suggestedTableRowStyleChanges;
   }
   /**
-   * @return Google_Service_Docs_SuggestedTableRowStyle
+   * @return Google_Service_Docs_SuggestedTableRowStyle[]
    */
   public function getSuggestedTableRowStyleChanges()
   {
     return $this->suggestedTableRowStyleChanges;
   }
   /**
-   * @param Google_Service_Docs_TableCell
+   * @param Google_Service_Docs_TableCell[]
    */
   public function setTableCells($tableCells)
   {
     $this->tableCells = $tableCells;
   }
   /**
-   * @return Google_Service_Docs_TableCell
+   * @return Google_Service_Docs_TableCell[]
    */
   public function getTableCells()
   {

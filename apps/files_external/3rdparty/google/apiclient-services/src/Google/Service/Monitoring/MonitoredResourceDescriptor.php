@@ -43,14 +43,14 @@ class Google_Service_Monitoring_MonitoredResourceDescriptor extends Google_Colle
     return $this->displayName;
   }
   /**
-   * @param Google_Service_Monitoring_LabelDescriptor
+   * @param Google_Service_Monitoring_LabelDescriptor[]
    */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
   /**
-   * @return Google_Service_Monitoring_LabelDescriptor
+   * @return Google_Service_Monitoring_LabelDescriptor[]
    */
   public function getLabels()
   {

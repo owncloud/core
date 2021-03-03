@@ -36,7 +36,6 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsEventSt
    * re".
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string userEvent Required. URL encoded UserEvent proto.
    * @opt_param string ets Optional. The event timestamp in milliseconds. This
    * prevents browser caching of otherwise identical get requests. The name is
    * abbreviated to reduce the payload bytes.
@@ -45,6 +44,7 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsEventSt
    * conservatively be under the 2K bytes. This is often more useful than the
    * referer url, because many browsers only send the domain for 3rd party
    * requests.
+   * @opt_param string userEvent Required. URL encoded UserEvent proto.
    * @return Google_Service_RecommendationsAI_GoogleApiHttpBody
    */
   public function collect($parent, $optParams = array())
@@ -86,8 +86,6 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsEventSt
    * .
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Optional. Maximum number of results to return per
-   * page. If zero, the service will choose a reasonable default.
    * @opt_param string filter Optional. Filtering expression to specify
    * restrictions over returned events. This is a sequence of terms, where each
    * term applies some kind of a restriction to the returned user events. Use this
@@ -109,6 +107,8 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsEventSt
    * "2018-04-23T18:30:43.511Z" * Example 4: eventTime >
    * "2012-04-23T18:25:43.511Z" * Example 5: eventType = search * Example 6:
    * eventsMissingCatalogItems
+   * @opt_param int pageSize Optional. Maximum number of results to return per
+   * page. If zero, the service will choose a reasonable default.
    * @opt_param string pageToken Optional. The previous
    * ListUserEventsResponse.next_page_token.
    * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1ListUserEventsResponse

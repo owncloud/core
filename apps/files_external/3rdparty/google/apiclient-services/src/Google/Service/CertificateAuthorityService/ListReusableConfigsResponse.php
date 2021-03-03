@@ -32,14 +32,14 @@ class Google_Service_CertificateAuthorityService_ListReusableConfigsResponse ext
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_CertificateAuthorityService_ReusableConfig
+   * @param Google_Service_CertificateAuthorityService_ReusableConfig[]
    */
   public function setReusableConfigs($reusableConfigs)
   {
     $this->reusableConfigs = $reusableConfigs;
   }
   /**
-   * @return Google_Service_CertificateAuthorityService_ReusableConfig
+   * @return Google_Service_CertificateAuthorityService_ReusableConfig[]
    */
   public function getReusableConfigs()
   {

@@ -31,14 +31,14 @@ class Google_Service_Dns_ManagedZonePrivateVisibilityConfig extends Google_Colle
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dns_ManagedZonePrivateVisibilityConfigNetwork
+   * @param Google_Service_Dns_ManagedZonePrivateVisibilityConfigNetwork[]
    */
   public function setNetworks($networks)
   {
     $this->networks = $networks;
   }
   /**
-   * @return Google_Service_Dns_ManagedZonePrivateVisibilityConfigNetwork
+   * @return Google_Service_Dns_ManagedZonePrivateVisibilityConfigNetwork[]
    */
   public function getNetworks()
   {

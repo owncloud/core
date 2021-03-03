@@ -32,14 +32,14 @@ class Google_Service_Compute_RegionInstanceGroupManagersListInstanceConfigsRespW
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_RegionInstanceGroupManagersListInstanceConfigsRespWarningData
+   * @param Google_Service_Compute_RegionInstanceGroupManagersListInstanceConfigsRespWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_RegionInstanceGroupManagersListInstanceConfigsRespWarningData
+   * @return Google_Service_Compute_RegionInstanceGroupManagersListInstanceConfigsRespWarningData[]
    */
   public function getData()
   {

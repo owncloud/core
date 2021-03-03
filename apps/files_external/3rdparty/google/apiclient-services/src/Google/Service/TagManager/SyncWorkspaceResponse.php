@@ -24,14 +24,14 @@ class Google_Service_TagManager_SyncWorkspaceResponse extends Google_Collection
   protected $syncStatusDataType = '';
 
   /**
-   * @param Google_Service_TagManager_MergeConflict
+   * @param Google_Service_TagManager_MergeConflict[]
    */
   public function setMergeConflict($mergeConflict)
   {
     $this->mergeConflict = $mergeConflict;
   }
   /**
-   * @return Google_Service_TagManager_MergeConflict
+   * @return Google_Service_TagManager_MergeConflict[]
    */
   public function getMergeConflict()
   {

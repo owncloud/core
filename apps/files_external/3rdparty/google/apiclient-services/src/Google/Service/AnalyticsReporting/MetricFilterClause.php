@@ -23,14 +23,14 @@ class Google_Service_AnalyticsReporting_MetricFilterClause extends Google_Collec
   public $operator;
 
   /**
-   * @param Google_Service_AnalyticsReporting_MetricFilter
+   * @param Google_Service_AnalyticsReporting_MetricFilter[]
    */
   public function setFilters($filters)
   {
     $this->filters = $filters;
   }
   /**
-   * @return Google_Service_AnalyticsReporting_MetricFilter
+   * @return Google_Service_AnalyticsReporting_MetricFilter[]
    */
   public function getFilters()
   {

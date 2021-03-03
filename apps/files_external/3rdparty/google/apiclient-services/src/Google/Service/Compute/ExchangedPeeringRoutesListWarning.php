@@ -32,14 +32,14 @@ class Google_Service_Compute_ExchangedPeeringRoutesListWarning extends Google_Co
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_ExchangedPeeringRoutesListWarningData
+   * @param Google_Service_Compute_ExchangedPeeringRoutesListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_ExchangedPeeringRoutesListWarningData
+   * @return Google_Service_Compute_ExchangedPeeringRoutesListWarningData[]
    */
   public function getData()
   {

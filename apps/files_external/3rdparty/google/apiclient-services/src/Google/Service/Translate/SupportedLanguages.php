@@ -22,14 +22,14 @@ class Google_Service_Translate_SupportedLanguages extends Google_Collection
   protected $languagesDataType = 'array';
 
   /**
-   * @param Google_Service_Translate_SupportedLanguage
+   * @param Google_Service_Translate_SupportedLanguage[]
    */
   public function setLanguages($languages)
   {
     $this->languages = $languages;
   }
   /**
-   * @return Google_Service_Translate_SupportedLanguage
+   * @return Google_Service_Translate_SupportedLanguage[]
    */
   public function getLanguages()
   {

@@ -38,14 +38,14 @@ class Google_Service_Compute_HttpRouteRuleMatch extends Google_Collection
     return $this->fullPathMatch;
   }
   /**
-   * @param Google_Service_Compute_HttpHeaderMatch
+   * @param Google_Service_Compute_HttpHeaderMatch[]
    */
   public function setHeaderMatches($headerMatches)
   {
     $this->headerMatches = $headerMatches;
   }
   /**
-   * @return Google_Service_Compute_HttpHeaderMatch
+   * @return Google_Service_Compute_HttpHeaderMatch[]
    */
   public function getHeaderMatches()
   {
@@ -60,14 +60,14 @@ class Google_Service_Compute_HttpRouteRuleMatch extends Google_Collection
     return $this->ignoreCase;
   }
   /**
-   * @param Google_Service_Compute_MetadataFilter
+   * @param Google_Service_Compute_MetadataFilter[]
    */
   public function setMetadataFilters($metadataFilters)
   {
     $this->metadataFilters = $metadataFilters;
   }
   /**
-   * @return Google_Service_Compute_MetadataFilter
+   * @return Google_Service_Compute_MetadataFilter[]
    */
   public function getMetadataFilters()
   {
@@ -82,14 +82,14 @@ class Google_Service_Compute_HttpRouteRuleMatch extends Google_Collection
     return $this->prefixMatch;
   }
   /**
-   * @param Google_Service_Compute_HttpQueryParameterMatch
+   * @param Google_Service_Compute_HttpQueryParameterMatch[]
    */
   public function setQueryParameterMatches($queryParameterMatches)
   {
     $this->queryParameterMatches = $queryParameterMatches;
   }
   /**
-   * @return Google_Service_Compute_HttpQueryParameterMatch
+   * @return Google_Service_Compute_HttpQueryParameterMatch[]
    */
   public function getQueryParameterMatches()
   {

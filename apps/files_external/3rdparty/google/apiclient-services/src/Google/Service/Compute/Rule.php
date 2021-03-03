@@ -37,14 +37,14 @@ class Google_Service_Compute_Rule extends Google_Collection
     return $this->action;
   }
   /**
-   * @param Google_Service_Compute_Condition
+   * @param Google_Service_Compute_Condition[]
    */
   public function setConditions($conditions)
   {
     $this->conditions = $conditions;
   }
   /**
-   * @return Google_Service_Compute_Condition
+   * @return Google_Service_Compute_Condition[]
    */
   public function getConditions()
   {
@@ -67,14 +67,14 @@ class Google_Service_Compute_Rule extends Google_Collection
     return $this->ins;
   }
   /**
-   * @param Google_Service_Compute_LogConfig
+   * @param Google_Service_Compute_LogConfig[]
    */
   public function setLogConfigs($logConfigs)
   {
     $this->logConfigs = $logConfigs;
   }
   /**
-   * @return Google_Service_Compute_LogConfig
+   * @return Google_Service_Compute_LogConfig[]
    */
   public function getLogConfigs()
   {

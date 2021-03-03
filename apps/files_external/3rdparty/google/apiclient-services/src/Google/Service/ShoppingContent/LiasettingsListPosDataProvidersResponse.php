@@ -31,14 +31,14 @@ class Google_Service_ShoppingContent_LiasettingsListPosDataProvidersResponse ext
     return $this->kind;
   }
   /**
-   * @param Google_Service_ShoppingContent_PosDataProviders
+   * @param Google_Service_ShoppingContent_PosDataProviders[]
    */
   public function setPosDataProviders($posDataProviders)
   {
     $this->posDataProviders = $posDataProviders;
   }
   /**
-   * @return Google_Service_ShoppingContent_PosDataProviders
+   * @return Google_Service_ShoppingContent_PosDataProviders[]
    */
   public function getPosDataProviders()
   {

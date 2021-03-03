@@ -32,14 +32,14 @@ class Google_Service_Compute_HttpHealthCheckListWarning extends Google_Collectio
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_HttpHealthCheckListWarningData
+   * @param Google_Service_Compute_HttpHealthCheckListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_HttpHealthCheckListWarningData
+   * @return Google_Service_Compute_HttpHealthCheckListWarningData[]
    */
   public function getData()
   {

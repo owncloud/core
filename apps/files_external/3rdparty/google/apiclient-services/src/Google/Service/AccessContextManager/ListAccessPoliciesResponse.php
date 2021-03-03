@@ -23,14 +23,14 @@ class Google_Service_AccessContextManager_ListAccessPoliciesResponse extends Goo
   public $nextPageToken;
 
   /**
-   * @param Google_Service_AccessContextManager_AccessPolicy
+   * @param Google_Service_AccessContextManager_AccessPolicy[]
    */
   public function setAccessPolicies($accessPolicies)
   {
     $this->accessPolicies = $accessPolicies;
   }
   /**
-   * @return Google_Service_AccessContextManager_AccessPolicy
+   * @return Google_Service_AccessContextManager_AccessPolicy[]
    */
   public function getAccessPolicies()
   {

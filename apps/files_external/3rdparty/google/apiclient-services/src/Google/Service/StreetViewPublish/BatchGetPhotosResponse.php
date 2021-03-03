@@ -22,14 +22,14 @@ class Google_Service_StreetViewPublish_BatchGetPhotosResponse extends Google_Col
   protected $resultsDataType = 'array';
 
   /**
-   * @param Google_Service_StreetViewPublish_PhotoResponse
+   * @param Google_Service_StreetViewPublish_PhotoResponse[]
    */
   public function setResults($results)
   {
     $this->results = $results;
   }
   /**
-   * @return Google_Service_StreetViewPublish_PhotoResponse
+   * @return Google_Service_StreetViewPublish_PhotoResponse[]
    */
   public function getResults()
   {

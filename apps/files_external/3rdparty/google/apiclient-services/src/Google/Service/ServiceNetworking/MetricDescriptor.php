@@ -49,14 +49,14 @@ class Google_Service_ServiceNetworking_MetricDescriptor extends Google_Collectio
     return $this->displayName;
   }
   /**
-   * @param Google_Service_ServiceNetworking_LabelDescriptor
+   * @param Google_Service_ServiceNetworking_LabelDescriptor[]
    */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
   /**
-   * @return Google_Service_ServiceNetworking_LabelDescriptor
+   * @return Google_Service_ServiceNetworking_LabelDescriptor[]
    */
   public function getLabels()
   {

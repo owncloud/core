@@ -23,14 +23,14 @@ class Google_Service_Firestore_CompositeFilter extends Google_Collection
   public $op;
 
   /**
-   * @param Google_Service_Firestore_Filter
+   * @param Google_Service_Firestore_Filter[]
    */
   public function setFilters($filters)
   {
     $this->filters = $filters;
   }
   /**
-   * @return Google_Service_Firestore_Filter
+   * @return Google_Service_Firestore_Filter[]
    */
   public function getFilters()
   {

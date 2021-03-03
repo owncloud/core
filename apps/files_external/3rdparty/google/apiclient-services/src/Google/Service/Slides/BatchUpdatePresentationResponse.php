@@ -33,14 +33,14 @@ class Google_Service_Slides_BatchUpdatePresentationResponse extends Google_Colle
     return $this->presentationId;
   }
   /**
-   * @param Google_Service_Slides_Response
+   * @param Google_Service_Slides_Response[]
    */
   public function setReplies($replies)
   {
     $this->replies = $replies;
   }
   /**
-   * @return Google_Service_Slides_Response
+   * @return Google_Service_Slides_Response[]
    */
   public function getReplies()
   {

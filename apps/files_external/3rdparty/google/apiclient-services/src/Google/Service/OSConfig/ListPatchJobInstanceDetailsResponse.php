@@ -31,14 +31,14 @@ class Google_Service_OSConfig_ListPatchJobInstanceDetailsResponse extends Google
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_OSConfig_PatchJobInstanceDetails
+   * @param Google_Service_OSConfig_PatchJobInstanceDetails[]
    */
   public function setPatchJobInstanceDetails($patchJobInstanceDetails)
   {
     $this->patchJobInstanceDetails = $patchJobInstanceDetails;
   }
   /**
-   * @return Google_Service_OSConfig_PatchJobInstanceDetails
+   * @return Google_Service_OSConfig_PatchJobInstanceDetails[]
    */
   public function getPatchJobInstanceDetails()
   {

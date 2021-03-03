@@ -23,14 +23,14 @@ class Google_Service_FirebaseManagement_ListIosAppsResponse extends Google_Colle
   public $nextPageToken;
 
   /**
-   * @param Google_Service_FirebaseManagement_IosApp
+   * @param Google_Service_FirebaseManagement_IosApp[]
    */
   public function setApps($apps)
   {
     $this->apps = $apps;
   }
   /**
-   * @return Google_Service_FirebaseManagement_IosApp
+   * @return Google_Service_FirebaseManagement_IosApp[]
    */
   public function getApps()
   {

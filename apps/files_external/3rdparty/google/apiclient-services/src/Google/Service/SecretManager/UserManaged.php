@@ -22,14 +22,14 @@ class Google_Service_SecretManager_UserManaged extends Google_Collection
   protected $replicasDataType = 'array';
 
   /**
-   * @param Google_Service_SecretManager_Replica
+   * @param Google_Service_SecretManager_Replica[]
    */
   public function setReplicas($replicas)
   {
     $this->replicas = $replicas;
   }
   /**
-   * @return Google_Service_SecretManager_Replica
+   * @return Google_Service_SecretManager_Replica[]
    */
   public function getReplicas()
   {

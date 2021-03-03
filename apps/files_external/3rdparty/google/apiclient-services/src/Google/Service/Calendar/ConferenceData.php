@@ -67,14 +67,14 @@ class Google_Service_Calendar_ConferenceData extends Google_Collection
     return $this->createRequest;
   }
   /**
-   * @param Google_Service_Calendar_EntryPoint
+   * @param Google_Service_Calendar_EntryPoint[]
    */
   public function setEntryPoints($entryPoints)
   {
     $this->entryPoints = $entryPoints;
   }
   /**
-   * @return Google_Service_Calendar_EntryPoint
+   * @return Google_Service_Calendar_EntryPoint[]
    */
   public function getEntryPoints()
   {

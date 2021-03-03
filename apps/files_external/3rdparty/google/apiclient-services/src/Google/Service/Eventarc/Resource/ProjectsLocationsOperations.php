@@ -37,11 +37,11 @@ class Google_Service_Eventarc_Resource_ProjectsLocationsOperations extends Googl
    * `Code.CANCELLED`. (operations.cancel)
    *
    * @param string $name The name of the operation resource to be cancelled.
-   * @param Google_Service_Eventarc_CancelOperationRequest $postBody
+   * @param Google_Service_Eventarc_GoogleLongrunningCancelOperationRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Eventarc_EventarcEmpty
    */
-  public function cancel($name, Google_Service_Eventarc_CancelOperationRequest $postBody, $optParams = array())
+  public function cancel($name, Google_Service_Eventarc_GoogleLongrunningCancelOperationRequest $postBody, $optParams = array())
   {
     $params = array('name' => $name, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
@@ -70,13 +70,13 @@ class Google_Service_Eventarc_Resource_ProjectsLocationsOperations extends Googl
    *
    * @param string $name The name of the operation resource.
    * @param array $optParams Optional parameters.
-   * @return Google_Service_Eventarc_Operation
+   * @return Google_Service_Eventarc_GoogleLongrunningOperation
    */
   public function get($name, $optParams = array())
   {
     $params = array('name' => $name);
     $params = array_merge($params, $optParams);
-    return $this->call('get', array($params), "Google_Service_Eventarc_Operation");
+    return $this->call('get', array($params), "Google_Service_Eventarc_GoogleLongrunningOperation");
   }
   /**
    * Lists operations that match the specified filter in the request. If the
@@ -92,15 +92,15 @@ class Google_Service_Eventarc_Resource_ProjectsLocationsOperations extends Googl
    * @param string $name The name of the operation's parent resource.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter The standard list filter.
    * @opt_param int pageSize The standard list page size.
    * @opt_param string pageToken The standard list page token.
-   * @opt_param string filter The standard list filter.
-   * @return Google_Service_Eventarc_ListOperationsResponse
+   * @return Google_Service_Eventarc_GoogleLongrunningListOperationsResponse
    */
   public function listProjectsLocationsOperations($name, $optParams = array())
   {
     $params = array('name' => $name);
     $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_Eventarc_ListOperationsResponse");
+    return $this->call('list', array($params), "Google_Service_Eventarc_GoogleLongrunningListOperationsResponse");
   }
 }

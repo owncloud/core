@@ -31,14 +31,14 @@ class Google_Service_RealTimeBidding_ListUserListsResponse extends Google_Collec
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_RealTimeBidding_UserList
+   * @param Google_Service_RealTimeBidding_UserList[]
    */
   public function setUserLists($userLists)
   {
     $this->userLists = $userLists;
   }
   /**
-   * @return Google_Service_RealTimeBidding_UserList
+   * @return Google_Service_RealTimeBidding_UserList[]
    */
   public function getUserLists()
   {

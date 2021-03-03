@@ -17,11 +17,27 @@
 
 class Google_Service_Document_GoogleCloudDocumentaiV1beta3ReviewDocumentOperationMetadata extends Google_Model
 {
+  protected $commonMetadataType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta3CommonOperationMetadata';
+  protected $commonMetadataDataType = '';
   public $createTime;
   public $state;
   public $stateMessage;
   public $updateTime;
 
+  /**
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3CommonOperationMetadata
+   */
+  public function setCommonMetadata(Google_Service_Document_GoogleCloudDocumentaiV1beta3CommonOperationMetadata $commonMetadata)
+  {
+    $this->commonMetadata = $commonMetadata;
+  }
+  /**
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3CommonOperationMetadata
+   */
+  public function getCommonMetadata()
+  {
+    return $this->commonMetadata;
+  }
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;

@@ -30,6 +30,7 @@ class Google_Service_Appengine_Instance extends Google_Model
   public $vmDebugEnabled;
   public $vmId;
   public $vmIp;
+  public $vmLiveness;
   public $vmName;
   public $vmStatus;
   public $vmZoneName;
@@ -137,6 +138,14 @@ class Google_Service_Appengine_Instance extends Google_Model
   public function getVmIp()
   {
     return $this->vmIp;
+  }
+  public function setVmLiveness($vmLiveness)
+  {
+    $this->vmLiveness = $vmLiveness;
+  }
+  public function getVmLiveness()
+  {
+    return $this->vmLiveness;
   }
   public function setVmName($vmName)
   {

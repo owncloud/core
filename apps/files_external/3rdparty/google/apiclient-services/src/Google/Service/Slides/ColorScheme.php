@@ -22,14 +22,14 @@ class Google_Service_Slides_ColorScheme extends Google_Collection
   protected $colorsDataType = 'array';
 
   /**
-   * @param Google_Service_Slides_ThemeColorPair
+   * @param Google_Service_Slides_ThemeColorPair[]
    */
   public function setColors($colors)
   {
     $this->colors = $colors;
   }
   /**
-   * @return Google_Service_Slides_ThemeColorPair
+   * @return Google_Service_Slides_ThemeColorPair[]
    */
   public function getColors()
   {

@@ -41,14 +41,14 @@ class Google_Service_ServiceManagement_LogDescriptor extends Google_Collection
     return $this->displayName;
   }
   /**
-   * @param Google_Service_ServiceManagement_LabelDescriptor
+   * @param Google_Service_ServiceManagement_LabelDescriptor[]
    */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
   /**
-   * @return Google_Service_ServiceManagement_LabelDescriptor
+   * @return Google_Service_ServiceManagement_LabelDescriptor[]
    */
   public function getLabels()
   {

@@ -42,14 +42,14 @@ class Google_Service_YouTube_ThumbnailSetResponse extends Google_Collection
     return $this->eventId;
   }
   /**
-   * @param Google_Service_YouTube_ThumbnailDetails
+   * @param Google_Service_YouTube_ThumbnailDetails[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_YouTube_ThumbnailDetails
+   * @return Google_Service_YouTube_ThumbnailDetails[]
    */
   public function getItems()
   {

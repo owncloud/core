@@ -17,21 +17,13 @@
 
 class Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaAccount extends Google_Model
 {
-  public $countryCode;
   public $createTime;
   public $deleted;
   public $displayName;
   public $name;
+  public $regionCode;
   public $updateTime;
 
-  public function setCountryCode($countryCode)
-  {
-    $this->countryCode = $countryCode;
-  }
-  public function getCountryCode()
-  {
-    return $this->countryCode;
-  }
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
@@ -63,6 +55,14 @@ class Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaAccount ext
   public function getName()
   {
     return $this->name;
+  }
+  public function setRegionCode($regionCode)
+  {
+    $this->regionCode = $regionCode;
+  }
+  public function getRegionCode()
+  {
+    return $this->regionCode;
   }
   public function setUpdateTime($updateTime)
   {

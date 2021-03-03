@@ -35,28 +35,28 @@ class Google_Service_TagManager_Parameter extends Google_Collection
     return $this->key;
   }
   /**
-   * @param Google_Service_TagManager_Parameter
+   * @param Google_Service_TagManager_Parameter[]
    */
   public function setList($list)
   {
     $this->list = $list;
   }
   /**
-   * @return Google_Service_TagManager_Parameter
+   * @return Google_Service_TagManager_Parameter[]
    */
   public function getList()
   {
     return $this->list;
   }
   /**
-   * @param Google_Service_TagManager_Parameter
+   * @param Google_Service_TagManager_Parameter[]
    */
   public function setMap($map)
   {
     $this->map = $map;
   }
   /**
-   * @return Google_Service_TagManager_Parameter
+   * @return Google_Service_TagManager_Parameter[]
    */
   public function getMap()
   {

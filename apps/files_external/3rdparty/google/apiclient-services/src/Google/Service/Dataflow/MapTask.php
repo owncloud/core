@@ -33,14 +33,14 @@ class Google_Service_Dataflow_MapTask extends Google_Collection
     return $this->counterPrefix;
   }
   /**
-   * @param Google_Service_Dataflow_ParallelInstruction
+   * @param Google_Service_Dataflow_ParallelInstruction[]
    */
   public function setInstructions($instructions)
   {
     $this->instructions = $instructions;
   }
   /**
-   * @return Google_Service_Dataflow_ParallelInstruction
+   * @return Google_Service_Dataflow_ParallelInstruction[]
    */
   public function getInstructions()
   {

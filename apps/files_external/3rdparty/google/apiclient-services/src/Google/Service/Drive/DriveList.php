@@ -24,14 +24,14 @@ class Google_Service_Drive_DriveList extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Drive_Drive
+   * @param Google_Service_Drive_Drive[]
    */
   public function setDrives($drives)
   {
     $this->drives = $drives;
   }
   /**
-   * @return Google_Service_Drive_Drive
+   * @return Google_Service_Drive_Drive[]
    */
   public function getDrives()
   {

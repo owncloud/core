@@ -24,14 +24,14 @@ class Google_Service_AndroidProvisioningPartner_ListCustomersResponse extends Go
   public $totalSize;
 
   /**
-   * @param Google_Service_AndroidProvisioningPartner_Company
+   * @param Google_Service_AndroidProvisioningPartner_Company[]
    */
   public function setCustomers($customers)
   {
     $this->customers = $customers;
   }
   /**
-   * @return Google_Service_AndroidProvisioningPartner_Company
+   * @return Google_Service_AndroidProvisioningPartner_Company[]
    */
   public function getCustomers()
   {

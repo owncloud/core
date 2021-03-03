@@ -45,20 +45,22 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsApisRevisions exte
    *
    * @opt_param bool override Flag that specifies whether the new deployment
    * replaces other deployed revisions of the API proxy in the environment. Set
-   * override to true to replace other deployed revisions. By default, override is
-   * false and the deployment is rejected if other revisions of the API proxy are
-   * deployed in the environment.
-   * @opt_param bool sequencedRollout If true, a best-effort attempt will be made
-   * to roll out the routing rules corresponding to this deployment and the
+   * `override` to `true` to replace other deployed revisions. By default,
+   * `override` is `false` and the deployment is rejected if other revisions of
+   * the API proxy are deployed in the environment.
+   * @opt_param bool sequencedRollout Flag that specifies whether to enable
+   * sequenced rollout. If set to `true`, a best-effort attempt will be made to
+   * roll out the routing rules corresponding to this deployment and the
    * environment changes to add this deployment in a safe order. This reduces the
    * risk of downtime that could be caused by changing the environment group's
    * routing before the new destination for the affected traffic is ready to
    * receive it. This should only be necessary if the new deployment will be
    * capturing traffic from another environment under a shared environment group
-   * or if traffic will be rerouted to a different environment due to a basepath
-   * removal. The GenerateDeployChangeReport API may be used to examine routing
-   * changes before issuing the deployment request, and its response will indicate
-   * if a sequenced rollout is recommended for the deployment.
+   * or if traffic will be rerouted to a different environment due to a base path
+   * removal. The [GenerateDeployChangeReport API](GenerateDeployChangeReport) may
+   * be used to examine routing changes before issuing the deployment request, and
+   * its response will indicate if a sequenced rollout is recommended for the
+   * deployment.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1Deployment
    */
   public function deploy($name, $optParams = array())
@@ -96,15 +98,17 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsApisRevisions exte
    * `organizations/{org}/environments/{env}/apis/{api}/revisions/{rev}`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool sequencedRollout If true, a best-effort attempt will be made
-   * to remove the environment group routing rules corresponding to this
-   * deployment before removing the deployment from the runtime. This is likely to
-   * be a rare use case; it is only needed when the intended effect of undeploying
-   * this proxy is to cause the traffic it currently handles to be rerouted to
-   * some other existing proxy in the environment group. The
-   * GenerateUndeployChangeReport API may be used to examine routing changes
-   * before issuing the undeployment request, and its response will indicate if a
-   * sequenced rollout is recommended for the undeployment.
+   * @opt_param bool sequencedRollout Flag that specifies whether to enable
+   * sequenced rollout. If set to `true`, a best-effort attempt will be made to
+   * remove the environment group routing rules corresponding to this deployment
+   * before removing the deployment from the runtime. This is likely to be a rare
+   * use case; it is only needed when the intended effect of undeploying this
+   * proxy is to cause the traffic it currently handles to be rerouted to some
+   * other existing proxy in the environment group. The
+   * [GenerateUndeployChangeReport API](GenerateUndeployChangeReport) may be used
+   * to examine routing changes before issuing the undeployment request, and its
+   * response will indicate if a sequenced rollout is recommended for the
+   * undeployment.
    * @return Google_Service_Apigee_GoogleProtobufEmpty
    */
   public function undeploy($name, $optParams = array())

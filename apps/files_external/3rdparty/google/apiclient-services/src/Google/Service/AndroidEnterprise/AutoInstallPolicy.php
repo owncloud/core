@@ -25,14 +25,14 @@ class Google_Service_AndroidEnterprise_AutoInstallPolicy extends Google_Collecti
   public $minimumVersionCode;
 
   /**
-   * @param Google_Service_AndroidEnterprise_AutoInstallConstraint
+   * @param Google_Service_AndroidEnterprise_AutoInstallConstraint[]
    */
   public function setAutoInstallConstraint($autoInstallConstraint)
   {
     $this->autoInstallConstraint = $autoInstallConstraint;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_AutoInstallConstraint
+   * @return Google_Service_AndroidEnterprise_AutoInstallConstraint[]
    */
   public function getAutoInstallConstraint()
   {

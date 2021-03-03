@@ -100,9 +100,9 @@ class Google_Service_Bigquery_Resource_Tables extends Google_Service_Resource
    * @param string $datasetId Dataset ID of the tables to list
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string maxResults Maximum number of results to return
    * @opt_param string pageToken Page token, returned by a previous call, to
    * request the next page of results
-   * @opt_param string maxResults Maximum number of results to return
    * @return Google_Service_Bigquery_TableList
    */
   public function listTables($projectId, $datasetId, $optParams = array())

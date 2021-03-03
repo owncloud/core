@@ -17,21 +17,21 @@
 
 class Google_Service_Eventarc_Destination extends Google_Model
 {
-  protected $cloudRunServiceType = 'Google_Service_Eventarc_CloudRunService';
-  protected $cloudRunServiceDataType = '';
+  protected $cloudRunType = 'Google_Service_Eventarc_CloudRun';
+  protected $cloudRunDataType = '';
 
   /**
-   * @param Google_Service_Eventarc_CloudRunService
+   * @param Google_Service_Eventarc_CloudRun
    */
-  public function setCloudRunService(Google_Service_Eventarc_CloudRunService $cloudRunService)
+  public function setCloudRun(Google_Service_Eventarc_CloudRun $cloudRun)
   {
-    $this->cloudRunService = $cloudRunService;
+    $this->cloudRun = $cloudRun;
   }
   /**
-   * @return Google_Service_Eventarc_CloudRunService
+   * @return Google_Service_Eventarc_CloudRun
    */
-  public function getCloudRunService()
+  public function getCloudRun()
   {
-    return $this->cloudRunService;
+    return $this->cloudRun;
   }
 }

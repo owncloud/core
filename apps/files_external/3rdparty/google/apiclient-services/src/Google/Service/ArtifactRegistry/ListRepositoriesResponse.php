@@ -31,14 +31,14 @@ class Google_Service_ArtifactRegistry_ListRepositoriesResponse extends Google_Co
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ArtifactRegistry_Repository
+   * @param Google_Service_ArtifactRegistry_Repository[]
    */
   public function setRepositories($repositories)
   {
     $this->repositories = $repositories;
   }
   /**
-   * @return Google_Service_ArtifactRegistry_Repository
+   * @return Google_Service_ArtifactRegistry_Repository[]
    */
   public function getRepositories()
   {

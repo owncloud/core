@@ -23,14 +23,14 @@ class Google_Service_CloudHealthcare_ListHl7V2StoresResponse extends Google_Coll
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudHealthcare_Hl7V2Store
+   * @param Google_Service_CloudHealthcare_Hl7V2Store[]
    */
   public function setHl7V2Stores($hl7V2Stores)
   {
     $this->hl7V2Stores = $hl7V2Stores;
   }
   /**
-   * @return Google_Service_CloudHealthcare_Hl7V2Store
+   * @return Google_Service_CloudHealthcare_Hl7V2Store[]
    */
   public function getHl7V2Stores()
   {

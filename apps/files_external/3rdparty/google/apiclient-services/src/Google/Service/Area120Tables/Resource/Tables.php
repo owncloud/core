@@ -44,13 +44,13 @@ class Google_Service_Area120Tables_Resource_Tables extends Google_Service_Resour
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of tables to return. The service
+   * may return fewer than this value. If unspecified, at most 20 tables are
+   * returned. The maximum value is 100; values above 100 are coerced to 100.
    * @opt_param string pageToken A page token, received from a previous
    * `ListTables` call. Provide this to retrieve the subsequent page. When
    * paginating, all other parameters provided to `ListTables` must match the call
    * that provided the page token.
-   * @opt_param int pageSize The maximum number of tables to return. The service
-   * may return fewer than this value. If unspecified, at most 20 tables are
-   * returned. The maximum value is 100; values above 100 are coerced to 100.
    * @return Google_Service_Area120Tables_ListTablesResponse
    */
   public function listTables($optParams = array())

@@ -49,14 +49,14 @@ class Google_Service_AndroidManagement_ApplicationReport extends Google_Collecti
     return $this->displayName;
   }
   /**
-   * @param Google_Service_AndroidManagement_ApplicationEvent
+   * @param Google_Service_AndroidManagement_ApplicationEvent[]
    */
   public function setEvents($events)
   {
     $this->events = $events;
   }
   /**
-   * @return Google_Service_AndroidManagement_ApplicationEvent
+   * @return Google_Service_AndroidManagement_ApplicationEvent[]
    */
   public function getEvents()
   {
@@ -71,14 +71,14 @@ class Google_Service_AndroidManagement_ApplicationReport extends Google_Collecti
     return $this->installerPackageName;
   }
   /**
-   * @param Google_Service_AndroidManagement_KeyedAppState
+   * @param Google_Service_AndroidManagement_KeyedAppState[]
    */
   public function setKeyedAppStates($keyedAppStates)
   {
     $this->keyedAppStates = $keyedAppStates;
   }
   /**
-   * @return Google_Service_AndroidManagement_KeyedAppState
+   * @return Google_Service_AndroidManagement_KeyedAppState[]
    */
   public function getKeyedAppStates()
   {

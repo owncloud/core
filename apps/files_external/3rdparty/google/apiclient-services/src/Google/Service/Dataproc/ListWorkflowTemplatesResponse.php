@@ -31,14 +31,14 @@ class Google_Service_Dataproc_ListWorkflowTemplatesResponse extends Google_Colle
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Dataproc_WorkflowTemplate
+   * @param Google_Service_Dataproc_WorkflowTemplate[]
    */
   public function setTemplates($templates)
   {
     $this->templates = $templates;
   }
   /**
-   * @return Google_Service_Dataproc_WorkflowTemplate
+   * @return Google_Service_Dataproc_WorkflowTemplate[]
    */
   public function getTemplates()
   {

@@ -67,14 +67,14 @@ class Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1Pre
     return $this->recommendationToken;
   }
   /**
-   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1PredictResponsePredictionResult
+   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1PredictResponsePredictionResult[]
    */
   public function setResults($results)
   {
     $this->results = $results;
   }
   /**
-   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1PredictResponsePredictionResult
+   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1PredictResponsePredictionResult[]
    */
   public function getResults()
   {

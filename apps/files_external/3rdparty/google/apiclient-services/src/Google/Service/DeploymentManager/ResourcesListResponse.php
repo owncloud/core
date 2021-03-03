@@ -31,14 +31,14 @@ class Google_Service_DeploymentManager_ResourcesListResponse extends Google_Coll
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_DeploymentManager_DeploymentmanagerResource
+   * @param Google_Service_DeploymentManager_DeploymentmanagerResource[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_DeploymentManager_DeploymentmanagerResource
+   * @return Google_Service_DeploymentManager_DeploymentmanagerResource[]
    */
   public function getResources()
   {

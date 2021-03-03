@@ -38,14 +38,14 @@ class Google_Service_Bigquery_ModelDefinition extends Google_Collection
     return $this->modelOptions;
   }
   /**
-   * @param Google_Service_Bigquery_BqmlTrainingRun
+   * @param Google_Service_Bigquery_BqmlTrainingRun[]
    */
   public function setTrainingRuns($trainingRuns)
   {
     $this->trainingRuns = $trainingRuns;
   }
   /**
-   * @return Google_Service_Bigquery_BqmlTrainingRun
+   * @return Google_Service_Bigquery_BqmlTrainingRun[]
    */
   public function getTrainingRuns()
   {

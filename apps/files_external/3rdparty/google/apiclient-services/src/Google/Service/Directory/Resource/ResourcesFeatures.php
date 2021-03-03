@@ -28,9 +28,9 @@ class Google_Service_Directory_Resource_ResourcesFeatures extends Google_Service
   /**
    * Deletes a feature. (features.delete)
    *
-   * @param string $customer The unique ID for the customer's G Suite account. As
-   * an account administrator, you can also use the my_customer alias to represent
-   * your account's customer ID.
+   * @param string $customer The unique ID for the customer's Google Workspace
+   * account. As an account administrator, you can also use the `my_customer`
+   * alias to represent your account's customer ID.
    * @param string $featureKey The unique ID of the feature to delete.
    * @param array $optParams Optional parameters.
    */
@@ -43,9 +43,9 @@ class Google_Service_Directory_Resource_ResourcesFeatures extends Google_Service
   /**
    * Retrieves a feature. (features.get)
    *
-   * @param string $customer The unique ID for the customer's G Suite account. As
-   * an account administrator, you can also use the my_customer alias to represent
-   * your account's customer ID.
+   * @param string $customer The unique ID for the customer's Google Workspace
+   * account. As an account administrator, you can also use the `my_customer`
+   * alias to represent your account's customer ID.
    * @param string $featureKey The unique ID of the feature to retrieve.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_Feature
@@ -59,9 +59,9 @@ class Google_Service_Directory_Resource_ResourcesFeatures extends Google_Service
   /**
    * Inserts a feature. (features.insert)
    *
-   * @param string $customer The unique ID for the customer's G Suite account. As
-   * an account administrator, you can also use the my_customer alias to represent
-   * your account's customer ID.
+   * @param string $customer The unique ID for the customer's Google Workspace
+   * account. As an account administrator, you can also use the `my_customer`
+   * alias to represent your account's customer ID.
    * @param Google_Service_Directory_Feature $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_Feature
@@ -75,13 +75,13 @@ class Google_Service_Directory_Resource_ResourcesFeatures extends Google_Service
   /**
    * Retrieves a list of features for an account. (features.listResourcesFeatures)
    *
-   * @param string $customer The unique ID for the customer's G Suite account. As
-   * an account administrator, you can also use the my_customer alias to represent
-   * your account's customer ID.
+   * @param string $customer The unique ID for the customer's Google Workspace
+   * account. As an account administrator, you can also use the `my_customer`
+   * alias to represent your account's customer ID.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Token to specify the next page in the list.
    * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string pageToken Token to specify the next page in the list.
    * @return Google_Service_Directory_Features
    */
   public function listResourcesFeatures($customer, $optParams = array())
@@ -93,9 +93,9 @@ class Google_Service_Directory_Resource_ResourcesFeatures extends Google_Service
   /**
    * Patches a feature via Apiary Patch Orchestration. (features.patch)
    *
-   * @param string $customer The unique ID for the customer's G Suite account. As
-   * an account administrator, you can also use the my_customer alias to represent
-   * your account's customer ID.
+   * @param string $customer The unique ID for the customer's Google Workspace
+   * account. As an account administrator, you can also use the `my_customer`
+   * alias to represent your account's customer ID.
    * @param string $featureKey The unique ID of the feature to update.
    * @param Google_Service_Directory_Feature $postBody
    * @param array $optParams Optional parameters.
@@ -110,9 +110,9 @@ class Google_Service_Directory_Resource_ResourcesFeatures extends Google_Service
   /**
    * Renames a feature. (features.rename)
    *
-   * @param string $customer The unique ID for the customer's G Suite account. As
-   * an account administrator, you can also use the my_customer alias to represent
-   * your account's customer ID.
+   * @param string $customer The unique ID for the customer's Google Workspace
+   * account. As an account administrator, you can also use the `my_customer`
+   * alias to represent your account's customer ID.
    * @param string $oldName The unique ID of the feature to rename.
    * @param Google_Service_Directory_FeatureRename $postBody
    * @param array $optParams Optional parameters.
@@ -126,9 +126,9 @@ class Google_Service_Directory_Resource_ResourcesFeatures extends Google_Service
   /**
    * Updates a feature. (features.update)
    *
-   * @param string $customer The unique ID for the customer's G Suite account. As
-   * an account administrator, you can also use the my_customer alias to represent
-   * your account's customer ID.
+   * @param string $customer The unique ID for the customer's Google Workspace
+   * account. As an account administrator, you can also use the `my_customer`
+   * alias to represent your account's customer ID.
    * @param string $featureKey The unique ID of the feature to update.
    * @param Google_Service_Directory_Feature $postBody
    * @param array $optParams Optional parameters.

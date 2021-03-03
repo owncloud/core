@@ -33,10 +33,8 @@ class Google_Service_Drive_Resource_Files extends Google_Service_Resource
    * @param Google_Service_Drive_DriveFile $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool enforceSingleParent Set to true to opt in to API behavior
-   * that aims for all items to have exactly one parent. This parameter only takes
-   * effect if the item is not in a shared drive. Requests that specify more than
-   * one parent fail.
+   * @opt_param bool enforceSingleParent Deprecated. Copying files into multiple
+   * folders is no longer supported. Use shortcuts instead.
    * @opt_param bool ignoreDefaultVisibility Whether to ignore the domain's
    * default visibility settings for the created file. Domain administrators can
    * choose to make all uploaded files visible to the domain by default; this
@@ -67,10 +65,8 @@ class Google_Service_Drive_Resource_Files extends Google_Service_Resource
    * @param Google_Service_Drive_DriveFile $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool enforceSingleParent Set to true to opt in to API behavior
-   * that aims for all items to have exactly one parent. This parameter only takes
-   * effect if the item is not in a shared drive. Requests that specify more than
-   * one parent fail.
+   * @opt_param bool enforceSingleParent Deprecated. Creating files in multiple
+   * folders is no longer supported.
    * @opt_param bool ignoreDefaultVisibility Whether to ignore the domain's
    * default visibility settings for the created file. Domain administrators can
    * choose to make all uploaded files visible to the domain by default; this
@@ -106,11 +102,9 @@ class Google_Service_Drive_Resource_Files extends Google_Service_Resource
    * @param string $fileId The ID of the file.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool enforceSingleParent Set to true to opt in to API behavior
-   * that aims for all items to have exactly one parent. This parameter will only
-   * take effect if the item is not in a shared drive. If an item's last parent is
-   * deleted but the item itself is not, the item will be placed under its owner's
-   * root.
+   * @opt_param bool enforceSingleParent Deprecated. If an item is not in a shared
+   * drive and its last parent is deleted but the item itself is not, the item
+   * will be placed under its owner's root.
    * @opt_param bool supportsAllDrives Whether the requesting application supports
    * both My Drives and shared drives.
    * @opt_param bool supportsTeamDrives Deprecated use supportsAllDrives instead.
@@ -126,11 +120,9 @@ class Google_Service_Drive_Resource_Files extends Google_Service_Resource
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool enforceSingleParent Set to true to opt in to API behavior
-   * that aims for all items to have exactly one parent. This parameter will only
-   * take effect if the item is not in a shared drive. If an item's last parent is
-   * deleted but the item itself is not, the item will be placed under its owner's
-   * root.
+   * @opt_param bool enforceSingleParent Deprecated. If an item is not in a shared
+   * drive and its last parent is deleted but the item itself is not, the item
+   * will be placed under its owner's root.
    */
   public function emptyTrash($optParams = array())
   {
@@ -253,13 +245,8 @@ class Google_Service_Drive_Resource_Files extends Google_Service_Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string addParents A comma-separated list of parent IDs to add.
-   * @opt_param bool enforceSingleParent Set to true to opt in to API behavior
-   * that aims for all items to have exactly one parent. This parameter only takes
-   * effect if the item is not in a shared drive. If the item's owner makes a
-   * request to add a single parent, the item is removed from all current folders
-   * and placed in the requested folder. Other requests that increase the number
-   * of parents fail, except when the canAddMyDriveParent file capability is true
-   * and a single parent is being added.
+   * @opt_param bool enforceSingleParent Deprecated. Adding files to multiple
+   * folders is no longer supported. Use shortcuts instead.
    * @opt_param string includePermissionsForView Specifies which additional view's
    * permissions to include in the response. Only 'published' is supported.
    * @opt_param bool keepRevisionForever Whether to set the 'keepForever' field in

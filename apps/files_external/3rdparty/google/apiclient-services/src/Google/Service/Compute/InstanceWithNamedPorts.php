@@ -32,14 +32,14 @@ class Google_Service_Compute_InstanceWithNamedPorts extends Google_Collection
     return $this->instance;
   }
   /**
-   * @param Google_Service_Compute_NamedPort
+   * @param Google_Service_Compute_NamedPort[]
    */
   public function setNamedPorts($namedPorts)
   {
     $this->namedPorts = $namedPorts;
   }
   /**
-   * @return Google_Service_Compute_NamedPort
+   * @return Google_Service_Compute_NamedPort[]
    */
   public function getNamedPorts()
   {

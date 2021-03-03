@@ -32,14 +32,14 @@ class Google_Service_Sheets_AppendCellsRequest extends Google_Collection
     return $this->fields;
   }
   /**
-   * @param Google_Service_Sheets_RowData
+   * @param Google_Service_Sheets_RowData[]
    */
   public function setRows($rows)
   {
     $this->rows = $rows;
   }
   /**
-   * @return Google_Service_Sheets_RowData
+   * @return Google_Service_Sheets_RowData[]
    */
   public function getRows()
   {

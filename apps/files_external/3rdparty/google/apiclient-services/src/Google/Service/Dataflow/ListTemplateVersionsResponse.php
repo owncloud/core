@@ -31,14 +31,14 @@ class Google_Service_Dataflow_ListTemplateVersionsResponse extends Google_Collec
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Dataflow_TemplateVersion
+   * @param Google_Service_Dataflow_TemplateVersion[]
    */
   public function setTemplateVersions($templateVersions)
   {
     $this->templateVersions = $templateVersions;
   }
   /**
-   * @return Google_Service_Dataflow_TemplateVersion
+   * @return Google_Service_Dataflow_TemplateVersion[]
    */
   public function getTemplateVersions()
   {

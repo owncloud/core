@@ -87,14 +87,14 @@ class Google_Service_ServiceConsumerManagement_Field extends Google_Collection
     return $this->oneofIndex;
   }
   /**
-   * @param Google_Service_ServiceConsumerManagement_Option
+   * @param Google_Service_ServiceConsumerManagement_Option[]
    */
   public function setOptions($options)
   {
     $this->options = $options;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_Option
+   * @return Google_Service_ServiceConsumerManagement_Option[]
    */
   public function getOptions()
   {

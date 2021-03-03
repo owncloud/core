@@ -56,14 +56,14 @@ class Google_Service_ContainerAnalysis_Derived extends Google_Collection
     return $this->fingerprint;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_Layer
+   * @param Google_Service_ContainerAnalysis_Layer[]
    */
   public function setLayerInfo($layerInfo)
   {
     $this->layerInfo = $layerInfo;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_Layer
+   * @return Google_Service_ContainerAnalysis_Layer[]
    */
   public function getLayerInfo()
   {

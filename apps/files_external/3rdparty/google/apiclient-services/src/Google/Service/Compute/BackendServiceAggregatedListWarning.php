@@ -32,14 +32,14 @@ class Google_Service_Compute_BackendServiceAggregatedListWarning extends Google_
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_BackendServiceAggregatedListWarningData
+   * @param Google_Service_Compute_BackendServiceAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_BackendServiceAggregatedListWarningData
+   * @return Google_Service_Compute_BackendServiceAggregatedListWarningData[]
    */
   public function getData()
   {

@@ -46,14 +46,14 @@ class Google_Service_Sheets_Sheet extends Google_Collection
   protected $slicersDataType = 'array';
 
   /**
-   * @param Google_Service_Sheets_BandedRange
+   * @param Google_Service_Sheets_BandedRange[]
    */
   public function setBandedRanges($bandedRanges)
   {
     $this->bandedRanges = $bandedRanges;
   }
   /**
-   * @return Google_Service_Sheets_BandedRange
+   * @return Google_Service_Sheets_BandedRange[]
    */
   public function getBandedRanges()
   {
@@ -74,98 +74,98 @@ class Google_Service_Sheets_Sheet extends Google_Collection
     return $this->basicFilter;
   }
   /**
-   * @param Google_Service_Sheets_EmbeddedChart
+   * @param Google_Service_Sheets_EmbeddedChart[]
    */
   public function setCharts($charts)
   {
     $this->charts = $charts;
   }
   /**
-   * @return Google_Service_Sheets_EmbeddedChart
+   * @return Google_Service_Sheets_EmbeddedChart[]
    */
   public function getCharts()
   {
     return $this->charts;
   }
   /**
-   * @param Google_Service_Sheets_DimensionGroup
+   * @param Google_Service_Sheets_DimensionGroup[]
    */
   public function setColumnGroups($columnGroups)
   {
     $this->columnGroups = $columnGroups;
   }
   /**
-   * @return Google_Service_Sheets_DimensionGroup
+   * @return Google_Service_Sheets_DimensionGroup[]
    */
   public function getColumnGroups()
   {
     return $this->columnGroups;
   }
   /**
-   * @param Google_Service_Sheets_ConditionalFormatRule
+   * @param Google_Service_Sheets_ConditionalFormatRule[]
    */
   public function setConditionalFormats($conditionalFormats)
   {
     $this->conditionalFormats = $conditionalFormats;
   }
   /**
-   * @return Google_Service_Sheets_ConditionalFormatRule
+   * @return Google_Service_Sheets_ConditionalFormatRule[]
    */
   public function getConditionalFormats()
   {
     return $this->conditionalFormats;
   }
   /**
-   * @param Google_Service_Sheets_GridData
+   * @param Google_Service_Sheets_GridData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Sheets_GridData
+   * @return Google_Service_Sheets_GridData[]
    */
   public function getData()
   {
     return $this->data;
   }
   /**
-   * @param Google_Service_Sheets_DeveloperMetadata
+   * @param Google_Service_Sheets_DeveloperMetadata[]
    */
   public function setDeveloperMetadata($developerMetadata)
   {
     $this->developerMetadata = $developerMetadata;
   }
   /**
-   * @return Google_Service_Sheets_DeveloperMetadata
+   * @return Google_Service_Sheets_DeveloperMetadata[]
    */
   public function getDeveloperMetadata()
   {
     return $this->developerMetadata;
   }
   /**
-   * @param Google_Service_Sheets_FilterView
+   * @param Google_Service_Sheets_FilterView[]
    */
   public function setFilterViews($filterViews)
   {
     $this->filterViews = $filterViews;
   }
   /**
-   * @return Google_Service_Sheets_FilterView
+   * @return Google_Service_Sheets_FilterView[]
    */
   public function getFilterViews()
   {
     return $this->filterViews;
   }
   /**
-   * @param Google_Service_Sheets_GridRange
+   * @param Google_Service_Sheets_GridRange[]
    */
   public function setMerges($merges)
   {
     $this->merges = $merges;
   }
   /**
-   * @return Google_Service_Sheets_GridRange
+   * @return Google_Service_Sheets_GridRange[]
    */
   public function getMerges()
   {
@@ -186,42 +186,42 @@ class Google_Service_Sheets_Sheet extends Google_Collection
     return $this->properties;
   }
   /**
-   * @param Google_Service_Sheets_ProtectedRange
+   * @param Google_Service_Sheets_ProtectedRange[]
    */
   public function setProtectedRanges($protectedRanges)
   {
     $this->protectedRanges = $protectedRanges;
   }
   /**
-   * @return Google_Service_Sheets_ProtectedRange
+   * @return Google_Service_Sheets_ProtectedRange[]
    */
   public function getProtectedRanges()
   {
     return $this->protectedRanges;
   }
   /**
-   * @param Google_Service_Sheets_DimensionGroup
+   * @param Google_Service_Sheets_DimensionGroup[]
    */
   public function setRowGroups($rowGroups)
   {
     $this->rowGroups = $rowGroups;
   }
   /**
-   * @return Google_Service_Sheets_DimensionGroup
+   * @return Google_Service_Sheets_DimensionGroup[]
    */
   public function getRowGroups()
   {
     return $this->rowGroups;
   }
   /**
-   * @param Google_Service_Sheets_Slicer
+   * @param Google_Service_Sheets_Slicer[]
    */
   public function setSlicers($slicers)
   {
     $this->slicers = $slicers;
   }
   /**
-   * @return Google_Service_Sheets_Slicer
+   * @return Google_Service_Sheets_Slicer[]
    */
   public function getSlicers()
   {

@@ -145,14 +145,14 @@ class Google_Service_Speech_RecognitionConfig extends Google_Collection
     return $this->sampleRateHertz;
   }
   /**
-   * @param Google_Service_Speech_SpeechContext
+   * @param Google_Service_Speech_SpeechContext[]
    */
   public function setSpeechContexts($speechContexts)
   {
     $this->speechContexts = $speechContexts;
   }
   /**
-   * @return Google_Service_Speech_SpeechContext
+   * @return Google_Service_Speech_SpeechContext[]
    */
   public function getSpeechContexts()
   {

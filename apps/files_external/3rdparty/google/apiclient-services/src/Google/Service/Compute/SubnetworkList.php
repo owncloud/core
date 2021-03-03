@@ -36,14 +36,14 @@ class Google_Service_Compute_SubnetworkList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_Subnetwork
+   * @param Google_Service_Compute_Subnetwork[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_Subnetwork
+   * @return Google_Service_Compute_Subnetwork[]
    */
   public function getItems()
   {

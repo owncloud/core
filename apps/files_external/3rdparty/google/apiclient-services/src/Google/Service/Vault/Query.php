@@ -41,6 +41,8 @@ class Google_Service_Vault_Query extends Google_Model
   protected $teamDriveInfoDataType = '';
   public $terms;
   public $timeZone;
+  protected $voiceOptionsType = 'Google_Service_Vault_VoiceOptions';
+  protected $voiceOptionsDataType = '';
 
   /**
    * @param Google_Service_Vault_AccountInfo
@@ -217,5 +219,19 @@ class Google_Service_Vault_Query extends Google_Model
   public function getTimeZone()
   {
     return $this->timeZone;
+  }
+  /**
+   * @param Google_Service_Vault_VoiceOptions
+   */
+  public function setVoiceOptions(Google_Service_Vault_VoiceOptions $voiceOptions)
+  {
+    $this->voiceOptions = $voiceOptions;
+  }
+  /**
+   * @return Google_Service_Vault_VoiceOptions
+   */
+  public function getVoiceOptions()
+  {
+    return $this->voiceOptions;
   }
 }

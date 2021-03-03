@@ -72,14 +72,14 @@ class Google_Service_ShoppingContent_OrderinvoicesCreateRefundInvoiceRequest ext
     return $this->returnOption;
   }
   /**
-   * @param Google_Service_ShoppingContent_ShipmentInvoice
+   * @param Google_Service_ShoppingContent_ShipmentInvoice[]
    */
   public function setShipmentInvoices($shipmentInvoices)
   {
     $this->shipmentInvoices = $shipmentInvoices;
   }
   /**
-   * @return Google_Service_ShoppingContent_ShipmentInvoice
+   * @return Google_Service_ShoppingContent_ShipmentInvoice[]
    */
   public function getShipmentInvoices()
   {

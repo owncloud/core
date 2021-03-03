@@ -23,14 +23,14 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ListLocationsResp
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Location
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Location[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Location
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Location[]
    */
   public function getLocations()
   {

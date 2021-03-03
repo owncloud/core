@@ -24,14 +24,14 @@ class Google_Service_Dfareporting_CreativesListResponse extends Google_Collectio
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Dfareporting_Creative
+   * @param Google_Service_Dfareporting_Creative[]
    */
   public function setCreatives($creatives)
   {
     $this->creatives = $creatives;
   }
   /**
-   * @return Google_Service_Dfareporting_Creative
+   * @return Google_Service_Dfareporting_Creative[]
    */
   public function getCreatives()
   {

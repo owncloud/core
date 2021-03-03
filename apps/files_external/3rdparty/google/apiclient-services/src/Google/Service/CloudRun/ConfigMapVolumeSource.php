@@ -33,14 +33,14 @@ class Google_Service_CloudRun_ConfigMapVolumeSource extends Google_Collection
     return $this->defaultMode;
   }
   /**
-   * @param Google_Service_CloudRun_KeyToPath
+   * @param Google_Service_CloudRun_KeyToPath[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_CloudRun_KeyToPath
+   * @return Google_Service_CloudRun_KeyToPath[]
    */
   public function getItems()
   {

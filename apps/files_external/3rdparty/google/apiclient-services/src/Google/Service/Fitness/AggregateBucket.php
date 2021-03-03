@@ -36,14 +36,14 @@ class Google_Service_Fitness_AggregateBucket extends Google_Collection
     return $this->activity;
   }
   /**
-   * @param Google_Service_Fitness_Dataset
+   * @param Google_Service_Fitness_Dataset[]
    */
   public function setDataset($dataset)
   {
     $this->dataset = $dataset;
   }
   /**
-   * @return Google_Service_Fitness_Dataset
+   * @return Google_Service_Fitness_Dataset[]
    */
   public function getDataset()
   {

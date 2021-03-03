@@ -23,14 +23,14 @@ class Google_Service_RealTimeBidding_ListCreativesResponse extends Google_Collec
   public $nextPageToken;
 
   /**
-   * @param Google_Service_RealTimeBidding_Creative
+   * @param Google_Service_RealTimeBidding_Creative[]
    */
   public function setCreatives($creatives)
   {
     $this->creatives = $creatives;
   }
   /**
-   * @return Google_Service_RealTimeBidding_Creative
+   * @return Google_Service_RealTimeBidding_Creative[]
    */
   public function getCreatives()
   {

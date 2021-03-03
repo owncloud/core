@@ -27,14 +27,14 @@ class Google_Service_CloudDebugger_StackFrame extends Google_Collection
   protected $locationDataType = '';
 
   /**
-   * @param Google_Service_CloudDebugger_Variable
+   * @param Google_Service_CloudDebugger_Variable[]
    */
   public function setArguments($arguments)
   {
     $this->arguments = $arguments;
   }
   /**
-   * @return Google_Service_CloudDebugger_Variable
+   * @return Google_Service_CloudDebugger_Variable[]
    */
   public function getArguments()
   {
@@ -49,14 +49,14 @@ class Google_Service_CloudDebugger_StackFrame extends Google_Collection
     return $this->function;
   }
   /**
-   * @param Google_Service_CloudDebugger_Variable
+   * @param Google_Service_CloudDebugger_Variable[]
    */
   public function setLocals($locals)
   {
     $this->locals = $locals;
   }
   /**
-   * @return Google_Service_CloudDebugger_Variable
+   * @return Google_Service_CloudDebugger_Variable[]
    */
   public function getLocals()
   {

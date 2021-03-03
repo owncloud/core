@@ -40,14 +40,14 @@ class Google_Service_ServiceManagement_Usage extends Google_Collection
     return $this->requirements;
   }
   /**
-   * @param Google_Service_ServiceManagement_UsageRule
+   * @param Google_Service_ServiceManagement_UsageRule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_ServiceManagement_UsageRule
+   * @return Google_Service_ServiceManagement_UsageRule[]
    */
   public function getRules()
   {

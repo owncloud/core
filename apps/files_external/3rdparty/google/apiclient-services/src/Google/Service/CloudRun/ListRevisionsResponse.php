@@ -35,14 +35,14 @@ class Google_Service_CloudRun_ListRevisionsResponse extends Google_Collection
     return $this->apiVersion;
   }
   /**
-   * @param Google_Service_CloudRun_Revision
+   * @param Google_Service_CloudRun_Revision[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_CloudRun_Revision
+   * @return Google_Service_CloudRun_Revision[]
    */
   public function getItems()
   {

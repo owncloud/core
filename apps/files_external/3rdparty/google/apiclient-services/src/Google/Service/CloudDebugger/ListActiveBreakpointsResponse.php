@@ -24,14 +24,14 @@ class Google_Service_CloudDebugger_ListActiveBreakpointsResponse extends Google_
   public $waitExpired;
 
   /**
-   * @param Google_Service_CloudDebugger_Breakpoint
+   * @param Google_Service_CloudDebugger_Breakpoint[]
    */
   public function setBreakpoints($breakpoints)
   {
     $this->breakpoints = $breakpoints;
   }
   /**
-   * @return Google_Service_CloudDebugger_Breakpoint
+   * @return Google_Service_CloudDebugger_Breakpoint[]
    */
   public function getBreakpoints()
   {

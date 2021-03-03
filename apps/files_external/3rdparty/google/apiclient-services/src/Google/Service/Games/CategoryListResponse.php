@@ -24,14 +24,14 @@ class Google_Service_Games_CategoryListResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Games_Category
+   * @param Google_Service_Games_Category[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Games_Category
+   * @return Google_Service_Games_Category[]
    */
   public function getItems()
   {

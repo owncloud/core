@@ -17,11 +17,20 @@
 
 class Google_Service_ServiceControl_Response extends Google_Model
 {
+  public $backendLatency;
   public $code;
   public $headers;
   public $size;
   public $time;
 
+  public function setBackendLatency($backendLatency)
+  {
+    $this->backendLatency = $backendLatency;
+  }
+  public function getBackendLatency()
+  {
+    return $this->backendLatency;
+  }
   public function setCode($code)
   {
     $this->code = $code;

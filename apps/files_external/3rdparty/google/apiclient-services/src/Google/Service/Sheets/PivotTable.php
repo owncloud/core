@@ -36,28 +36,28 @@ class Google_Service_Sheets_PivotTable extends Google_Collection
   protected $valuesDataType = 'array';
 
   /**
-   * @param Google_Service_Sheets_PivotGroup
+   * @param Google_Service_Sheets_PivotGroup[]
    */
   public function setColumns($columns)
   {
     $this->columns = $columns;
   }
   /**
-   * @return Google_Service_Sheets_PivotGroup
+   * @return Google_Service_Sheets_PivotGroup[]
    */
   public function getColumns()
   {
     return $this->columns;
   }
   /**
-   * @param Google_Service_Sheets_PivotFilterCriteria
+   * @param Google_Service_Sheets_PivotFilterCriteria[]
    */
   public function setCriteria($criteria)
   {
     $this->criteria = $criteria;
   }
   /**
-   * @return Google_Service_Sheets_PivotFilterCriteria
+   * @return Google_Service_Sheets_PivotFilterCriteria[]
    */
   public function getCriteria()
   {
@@ -86,28 +86,28 @@ class Google_Service_Sheets_PivotTable extends Google_Collection
     return $this->dataSourceId;
   }
   /**
-   * @param Google_Service_Sheets_PivotFilterSpec
+   * @param Google_Service_Sheets_PivotFilterSpec[]
    */
   public function setFilterSpecs($filterSpecs)
   {
     $this->filterSpecs = $filterSpecs;
   }
   /**
-   * @return Google_Service_Sheets_PivotFilterSpec
+   * @return Google_Service_Sheets_PivotFilterSpec[]
    */
   public function getFilterSpecs()
   {
     return $this->filterSpecs;
   }
   /**
-   * @param Google_Service_Sheets_PivotGroup
+   * @param Google_Service_Sheets_PivotGroup[]
    */
   public function setRows($rows)
   {
     $this->rows = $rows;
   }
   /**
-   * @return Google_Service_Sheets_PivotGroup
+   * @return Google_Service_Sheets_PivotGroup[]
    */
   public function getRows()
   {
@@ -136,14 +136,14 @@ class Google_Service_Sheets_PivotTable extends Google_Collection
     return $this->valueLayout;
   }
   /**
-   * @param Google_Service_Sheets_PivotValue
+   * @param Google_Service_Sheets_PivotValue[]
    */
   public function setValues($values)
   {
     $this->values = $values;
   }
   /**
-   * @return Google_Service_Sheets_PivotValue
+   * @return Google_Service_Sheets_PivotValue[]
    */
   public function getValues()
   {

@@ -22,14 +22,14 @@ class Google_Service_ServiceConsumerManagement_V1Beta1ImportProducerQuotaPolicie
   protected $policiesDataType = 'array';
 
   /**
-   * @param Google_Service_ServiceConsumerManagement_V1Beta1ProducerQuotaPolicy
+   * @param Google_Service_ServiceConsumerManagement_V1Beta1ProducerQuotaPolicy[]
    */
   public function setPolicies($policies)
   {
     $this->policies = $policies;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_V1Beta1ProducerQuotaPolicy
+   * @return Google_Service_ServiceConsumerManagement_V1Beta1ProducerQuotaPolicy[]
    */
   public function getPolicies()
   {

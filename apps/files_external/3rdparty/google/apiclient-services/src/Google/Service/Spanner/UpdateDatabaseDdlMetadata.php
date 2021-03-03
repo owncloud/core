@@ -21,6 +21,7 @@ class Google_Service_Spanner_UpdateDatabaseDdlMetadata extends Google_Collection
   public $commitTimestamps;
   public $database;
   public $statements;
+  public $throttled;
 
   public function setCommitTimestamps($commitTimestamps)
   {
@@ -45,5 +46,13 @@ class Google_Service_Spanner_UpdateDatabaseDdlMetadata extends Google_Collection
   public function getStatements()
   {
     return $this->statements;
+  }
+  public function setThrottled($throttled)
+  {
+    $this->throttled = $throttled;
+  }
+  public function getThrottled()
+  {
+    return $this->throttled;
   }
 }

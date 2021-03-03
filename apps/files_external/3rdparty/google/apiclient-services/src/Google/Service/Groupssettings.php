@@ -35,7 +35,7 @@ class Google_Service_Groupssettings extends Google_Service
       "https://www.googleapis.com/auth/apps.groups.settings";
 
   public $groups;
-  
+
   /**
    * Constructs the internal representation of the Groupssettings service.
    *

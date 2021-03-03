@@ -22,6 +22,8 @@ class Google_Service_ShoppingContent_OrdersUpdateShipmentRequest extends Google_
   public $lastPickupDate;
   public $operationId;
   public $readyPickupDate;
+  protected $scheduledDeliveryDetailsType = 'Google_Service_ShoppingContent_OrdersCustomBatchRequestEntryUpdateShipmentScheduledDeliveryDetails';
+  protected $scheduledDeliveryDetailsDataType = '';
   public $shipmentId;
   public $status;
   public $trackingId;
@@ -66,6 +68,20 @@ class Google_Service_ShoppingContent_OrdersUpdateShipmentRequest extends Google_
   public function getReadyPickupDate()
   {
     return $this->readyPickupDate;
+  }
+  /**
+   * @param Google_Service_ShoppingContent_OrdersCustomBatchRequestEntryUpdateShipmentScheduledDeliveryDetails
+   */
+  public function setScheduledDeliveryDetails(Google_Service_ShoppingContent_OrdersCustomBatchRequestEntryUpdateShipmentScheduledDeliveryDetails $scheduledDeliveryDetails)
+  {
+    $this->scheduledDeliveryDetails = $scheduledDeliveryDetails;
+  }
+  /**
+   * @return Google_Service_ShoppingContent_OrdersCustomBatchRequestEntryUpdateShipmentScheduledDeliveryDetails
+   */
+  public function getScheduledDeliveryDetails()
+  {
+    return $this->scheduledDeliveryDetails;
   }
   public function setShipmentId($shipmentId)
   {

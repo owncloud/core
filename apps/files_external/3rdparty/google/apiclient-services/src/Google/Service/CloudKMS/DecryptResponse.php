@@ -19,6 +19,8 @@ class Google_Service_CloudKMS_DecryptResponse extends Google_Model
 {
   public $plaintext;
   public $plaintextCrc32c;
+  public $protectionLevel;
+  public $usedPrimary;
 
   public function setPlaintext($plaintext)
   {
@@ -35,5 +37,21 @@ class Google_Service_CloudKMS_DecryptResponse extends Google_Model
   public function getPlaintextCrc32c()
   {
     return $this->plaintextCrc32c;
+  }
+  public function setProtectionLevel($protectionLevel)
+  {
+    $this->protectionLevel = $protectionLevel;
+  }
+  public function getProtectionLevel()
+  {
+    return $this->protectionLevel;
+  }
+  public function setUsedPrimary($usedPrimary)
+  {
+    $this->usedPrimary = $usedPrimary;
+  }
+  public function getUsedPrimary()
+  {
+    return $this->usedPrimary;
   }
 }

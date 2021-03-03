@@ -23,14 +23,14 @@ class Google_Service_DriveActivity_QueryDriveActivityResponse extends Google_Col
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DriveActivity_DriveActivity
+   * @param Google_Service_DriveActivity_DriveActivity[]
    */
   public function setActivities($activities)
   {
     $this->activities = $activities;
   }
   /**
-   * @return Google_Service_DriveActivity_DriveActivity
+   * @return Google_Service_DriveActivity_DriveActivity[]
    */
   public function getActivities()
   {

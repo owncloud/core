@@ -15,16 +15,17 @@
  * the License.
  */
 
-class Google_Service_CloudTalentSolution_BatchDeleteJobsRequest extends Google_Model
+class Google_Service_CloudTalentSolution_BatchDeleteJobsRequest extends Google_Collection
 {
-  public $filter;
+  protected $collection_key = 'names';
+  public $names;
 
-  public function setFilter($filter)
+  public function setNames($names)
   {
-    $this->filter = $filter;
+    $this->names = $names;
   }
-  public function getFilter()
+  public function getNames()
   {
-    return $this->filter;
+    return $this->names;
   }
 }

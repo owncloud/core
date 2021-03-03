@@ -22,14 +22,14 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ListStudiesRespon
   protected $studiesDataType = 'array';
 
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Study
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Study[]
    */
   public function setStudies($studies)
   {
     $this->studies = $studies;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Study
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Study[]
    */
   public function getStudies()
   {

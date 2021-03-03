@@ -28,6 +28,8 @@ class Google_Service_Dataproc_GceClusterConfig extends Google_Collection
   protected $reservationAffinityDataType = '';
   public $serviceAccount;
   public $serviceAccountScopes;
+  protected $shieldedInstanceConfigType = 'Google_Service_Dataproc_ShieldedInstanceConfig';
+  protected $shieldedInstanceConfigDataType = '';
   public $subnetworkUri;
   public $tags;
   public $zoneUri;
@@ -107,6 +109,20 @@ class Google_Service_Dataproc_GceClusterConfig extends Google_Collection
   public function getServiceAccountScopes()
   {
     return $this->serviceAccountScopes;
+  }
+  /**
+   * @param Google_Service_Dataproc_ShieldedInstanceConfig
+   */
+  public function setShieldedInstanceConfig(Google_Service_Dataproc_ShieldedInstanceConfig $shieldedInstanceConfig)
+  {
+    $this->shieldedInstanceConfig = $shieldedInstanceConfig;
+  }
+  /**
+   * @return Google_Service_Dataproc_ShieldedInstanceConfig
+   */
+  public function getShieldedInstanceConfig()
+  {
+    return $this->shieldedInstanceConfig;
   }
   public function setSubnetworkUri($subnetworkUri)
   {

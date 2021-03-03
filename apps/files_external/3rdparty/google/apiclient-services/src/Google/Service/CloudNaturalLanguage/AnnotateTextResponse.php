@@ -31,14 +31,14 @@ class Google_Service_CloudNaturalLanguage_AnnotateTextResponse extends Google_Co
   protected $tokensDataType = 'array';
 
   /**
-   * @param Google_Service_CloudNaturalLanguage_ClassificationCategory
+   * @param Google_Service_CloudNaturalLanguage_ClassificationCategory[]
    */
   public function setCategories($categories)
   {
     $this->categories = $categories;
   }
   /**
-   * @return Google_Service_CloudNaturalLanguage_ClassificationCategory
+   * @return Google_Service_CloudNaturalLanguage_ClassificationCategory[]
    */
   public function getCategories()
   {
@@ -59,14 +59,14 @@ class Google_Service_CloudNaturalLanguage_AnnotateTextResponse extends Google_Co
     return $this->documentSentiment;
   }
   /**
-   * @param Google_Service_CloudNaturalLanguage_Entity
+   * @param Google_Service_CloudNaturalLanguage_Entity[]
    */
   public function setEntities($entities)
   {
     $this->entities = $entities;
   }
   /**
-   * @return Google_Service_CloudNaturalLanguage_Entity
+   * @return Google_Service_CloudNaturalLanguage_Entity[]
    */
   public function getEntities()
   {
@@ -81,28 +81,28 @@ class Google_Service_CloudNaturalLanguage_AnnotateTextResponse extends Google_Co
     return $this->language;
   }
   /**
-   * @param Google_Service_CloudNaturalLanguage_Sentence
+   * @param Google_Service_CloudNaturalLanguage_Sentence[]
    */
   public function setSentences($sentences)
   {
     $this->sentences = $sentences;
   }
   /**
-   * @return Google_Service_CloudNaturalLanguage_Sentence
+   * @return Google_Service_CloudNaturalLanguage_Sentence[]
    */
   public function getSentences()
   {
     return $this->sentences;
   }
   /**
-   * @param Google_Service_CloudNaturalLanguage_Token
+   * @param Google_Service_CloudNaturalLanguage_Token[]
    */
   public function setTokens($tokens)
   {
     $this->tokens = $tokens;
   }
   /**
-   * @return Google_Service_CloudNaturalLanguage_Token
+   * @return Google_Service_CloudNaturalLanguage_Token[]
    */
   public function getTokens()
   {

@@ -23,14 +23,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ListEvaluationJo
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1EvaluationJob
+   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1EvaluationJob[]
    */
   public function setEvaluationJobs($evaluationJobs)
   {
     $this->evaluationJobs = $evaluationJobs;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1EvaluationJob
+   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1EvaluationJob[]
    */
   public function getEvaluationJobs()
   {

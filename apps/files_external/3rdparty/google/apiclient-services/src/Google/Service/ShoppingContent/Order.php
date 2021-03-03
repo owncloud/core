@@ -63,14 +63,14 @@ class Google_Service_ShoppingContent_Order extends Google_Collection
     return $this->acknowledged;
   }
   /**
-   * @param Google_Service_ShoppingContent_OrderOrderAnnotation
+   * @param Google_Service_ShoppingContent_OrderOrderAnnotation[]
    */
   public function setAnnotations($annotations)
   {
     $this->annotations = $annotations;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderOrderAnnotation
+   * @return Google_Service_ShoppingContent_OrderOrderAnnotation[]
    */
   public function getAnnotations()
   {
@@ -135,14 +135,14 @@ class Google_Service_ShoppingContent_Order extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_ShoppingContent_OrderLineItem
+   * @param Google_Service_ShoppingContent_OrderLineItem[]
    */
   public function setLineItems($lineItems)
   {
     $this->lineItems = $lineItems;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderLineItem
+   * @return Google_Service_ShoppingContent_OrderLineItem[]
    */
   public function getLineItems()
   {
@@ -223,42 +223,42 @@ class Google_Service_ShoppingContent_Order extends Google_Collection
     return $this->placedDate;
   }
   /**
-   * @param Google_Service_ShoppingContent_OrderPromotion
+   * @param Google_Service_ShoppingContent_OrderPromotion[]
    */
   public function setPromotions($promotions)
   {
     $this->promotions = $promotions;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderPromotion
+   * @return Google_Service_ShoppingContent_OrderPromotion[]
    */
   public function getPromotions()
   {
     return $this->promotions;
   }
   /**
-   * @param Google_Service_ShoppingContent_OrderRefund
+   * @param Google_Service_ShoppingContent_OrderRefund[]
    */
   public function setRefunds($refunds)
   {
     $this->refunds = $refunds;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderRefund
+   * @return Google_Service_ShoppingContent_OrderRefund[]
    */
   public function getRefunds()
   {
     return $this->refunds;
   }
   /**
-   * @param Google_Service_ShoppingContent_OrderShipment
+   * @param Google_Service_ShoppingContent_OrderShipment[]
    */
   public function setShipments($shipments)
   {
     $this->shipments = $shipments;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderShipment
+   * @return Google_Service_ShoppingContent_OrderShipment[]
    */
   public function getShipments()
   {

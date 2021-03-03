@@ -30,14 +30,14 @@ class Google_Service_Slides_SlidesList extends Google_Model
     return $this->listId;
   }
   /**
-   * @param Google_Service_Slides_NestingLevel
+   * @param Google_Service_Slides_NestingLevel[]
    */
   public function setNestingLevel($nestingLevel)
   {
     $this->nestingLevel = $nestingLevel;
   }
   /**
-   * @return Google_Service_Slides_NestingLevel
+   * @return Google_Service_Slides_NestingLevel[]
    */
   public function getNestingLevel()
   {

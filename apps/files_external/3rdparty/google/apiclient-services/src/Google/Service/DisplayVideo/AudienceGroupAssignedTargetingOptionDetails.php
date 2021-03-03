@@ -88,14 +88,14 @@ class Google_Service_DisplayVideo_AudienceGroupAssignedTargetingOptionDetails ex
     return $this->includedCustomListGroup;
   }
   /**
-   * @param Google_Service_DisplayVideo_FirstAndThirdPartyAudienceGroup
+   * @param Google_Service_DisplayVideo_FirstAndThirdPartyAudienceGroup[]
    */
   public function setIncludedFirstAndThirdPartyAudienceGroups($includedFirstAndThirdPartyAudienceGroups)
   {
     $this->includedFirstAndThirdPartyAudienceGroups = $includedFirstAndThirdPartyAudienceGroups;
   }
   /**
-   * @return Google_Service_DisplayVideo_FirstAndThirdPartyAudienceGroup
+   * @return Google_Service_DisplayVideo_FirstAndThirdPartyAudienceGroup[]
    */
   public function getIncludedFirstAndThirdPartyAudienceGroups()
   {

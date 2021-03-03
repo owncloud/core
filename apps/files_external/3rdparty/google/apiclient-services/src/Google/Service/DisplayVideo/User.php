@@ -26,14 +26,14 @@ class Google_Service_DisplayVideo_User extends Google_Collection
   public $userId;
 
   /**
-   * @param Google_Service_DisplayVideo_AssignedUserRole
+   * @param Google_Service_DisplayVideo_AssignedUserRole[]
    */
   public function setAssignedUserRoles($assignedUserRoles)
   {
     $this->assignedUserRoles = $assignedUserRoles;
   }
   /**
-   * @return Google_Service_DisplayVideo_AssignedUserRole
+   * @return Google_Service_DisplayVideo_AssignedUserRole[]
    */
   public function getAssignedUserRoles()
   {

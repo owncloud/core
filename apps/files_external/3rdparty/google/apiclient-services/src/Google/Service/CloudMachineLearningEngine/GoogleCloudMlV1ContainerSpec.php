@@ -43,14 +43,14 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ContainerSpec ext
     return $this->command;
   }
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1EnvVar
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1EnvVar[]
    */
   public function setEnv($env)
   {
     $this->env = $env;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1EnvVar
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1EnvVar[]
    */
   public function getEnv()
   {
@@ -65,14 +65,14 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ContainerSpec ext
     return $this->image;
   }
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ContainerPort
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ContainerPort[]
    */
   public function setPorts($ports)
   {
     $this->ports = $ports;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ContainerPort
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ContainerPort[]
    */
   public function getPorts()
   {

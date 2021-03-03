@@ -31,14 +31,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2MessageAnnotation extends
     return $this->containEntities;
   }
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2AnnotatedMessagePart
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2AnnotatedMessagePart[]
    */
   public function setParts($parts)
   {
     $this->parts = $parts;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2AnnotatedMessagePart
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2AnnotatedMessagePart[]
    */
   public function getParts()
   {

@@ -41,8 +41,11 @@ class Google_Service_Container_ClusterUpdate extends Google_Collection
   protected $desiredNodePoolAutoscalingDataType = '';
   public $desiredNodePoolId;
   public $desiredNodeVersion;
+  protected $desiredNotificationConfigType = 'Google_Service_Container_NotificationConfig';
+  protected $desiredNotificationConfigDataType = '';
   protected $desiredPrivateClusterConfigType = 'Google_Service_Container_PrivateClusterConfig';
   protected $desiredPrivateClusterConfigDataType = '';
+  public $desiredPrivateIpv6GoogleAccess;
   protected $desiredReleaseChannelType = 'Google_Service_Container_ReleaseChannel';
   protected $desiredReleaseChannelDataType = '';
   protected $desiredResourceUsageExportConfigType = 'Google_Service_Container_ResourceUsageExportConfig';
@@ -223,6 +226,20 @@ class Google_Service_Container_ClusterUpdate extends Google_Collection
     return $this->desiredNodeVersion;
   }
   /**
+   * @param Google_Service_Container_NotificationConfig
+   */
+  public function setDesiredNotificationConfig(Google_Service_Container_NotificationConfig $desiredNotificationConfig)
+  {
+    $this->desiredNotificationConfig = $desiredNotificationConfig;
+  }
+  /**
+   * @return Google_Service_Container_NotificationConfig
+   */
+  public function getDesiredNotificationConfig()
+  {
+    return $this->desiredNotificationConfig;
+  }
+  /**
    * @param Google_Service_Container_PrivateClusterConfig
    */
   public function setDesiredPrivateClusterConfig(Google_Service_Container_PrivateClusterConfig $desiredPrivateClusterConfig)
@@ -235,6 +252,14 @@ class Google_Service_Container_ClusterUpdate extends Google_Collection
   public function getDesiredPrivateClusterConfig()
   {
     return $this->desiredPrivateClusterConfig;
+  }
+  public function setDesiredPrivateIpv6GoogleAccess($desiredPrivateIpv6GoogleAccess)
+  {
+    $this->desiredPrivateIpv6GoogleAccess = $desiredPrivateIpv6GoogleAccess;
+  }
+  public function getDesiredPrivateIpv6GoogleAccess()
+  {
+    return $this->desiredPrivateIpv6GoogleAccess;
   }
   /**
    * @param Google_Service_Container_ReleaseChannel

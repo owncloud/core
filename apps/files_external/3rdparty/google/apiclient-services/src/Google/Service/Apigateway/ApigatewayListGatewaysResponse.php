@@ -24,14 +24,14 @@ class Google_Service_Apigateway_ApigatewayListGatewaysResponse extends Google_Co
   public $unreachableLocations;
 
   /**
-   * @param Google_Service_Apigateway_ApigatewayGateway
+   * @param Google_Service_Apigateway_ApigatewayGateway[]
    */
   public function setGateways($gateways)
   {
     $this->gateways = $gateways;
   }
   /**
-   * @return Google_Service_Apigateway_ApigatewayGateway
+   * @return Google_Service_Apigateway_ApigatewayGateway[]
    */
   public function getGateways()
   {

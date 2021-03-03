@@ -17,6 +17,8 @@
 
 class Google_Service_Bigquery_DatasetAccess extends Google_Model
 {
+  protected $datasetType = 'Google_Service_Bigquery_DatasetAccessEntry';
+  protected $datasetDataType = '';
   public $domain;
   public $groupByEmail;
   public $iamMember;
@@ -28,6 +30,20 @@ class Google_Service_Bigquery_DatasetAccess extends Google_Model
   protected $viewType = 'Google_Service_Bigquery_TableReference';
   protected $viewDataType = '';
 
+  /**
+   * @param Google_Service_Bigquery_DatasetAccessEntry
+   */
+  public function setDataset(Google_Service_Bigquery_DatasetAccessEntry $dataset)
+  {
+    $this->dataset = $dataset;
+  }
+  /**
+   * @return Google_Service_Bigquery_DatasetAccessEntry
+   */
+  public function getDataset()
+  {
+    return $this->dataset;
+  }
   public function setDomain($domain)
   {
     $this->domain = $domain;

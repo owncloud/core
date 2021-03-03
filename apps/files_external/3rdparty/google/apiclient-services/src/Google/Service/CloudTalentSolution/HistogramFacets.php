@@ -25,28 +25,28 @@ class Google_Service_CloudTalentSolution_HistogramFacets extends Google_Collecti
   public $simpleHistogramFacets;
 
   /**
-   * @param Google_Service_CloudTalentSolution_CompensationHistogramRequest
+   * @param Google_Service_CloudTalentSolution_CompensationHistogramRequest[]
    */
   public function setCompensationHistogramFacets($compensationHistogramFacets)
   {
     $this->compensationHistogramFacets = $compensationHistogramFacets;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_CompensationHistogramRequest
+   * @return Google_Service_CloudTalentSolution_CompensationHistogramRequest[]
    */
   public function getCompensationHistogramFacets()
   {
     return $this->compensationHistogramFacets;
   }
   /**
-   * @param Google_Service_CloudTalentSolution_CustomAttributeHistogramRequest
+   * @param Google_Service_CloudTalentSolution_CustomAttributeHistogramRequest[]
    */
   public function setCustomAttributeHistogramFacets($customAttributeHistogramFacets)
   {
     $this->customAttributeHistogramFacets = $customAttributeHistogramFacets;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_CustomAttributeHistogramRequest
+   * @return Google_Service_CloudTalentSolution_CustomAttributeHistogramRequest[]
    */
   public function getCustomAttributeHistogramFacets()
   {

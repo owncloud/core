@@ -36,14 +36,14 @@ class Google_Service_Compute_ZoneList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_Zone
+   * @param Google_Service_Compute_Zone[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_Zone
+   * @return Google_Service_Compute_Zone[]
    */
   public function getItems()
   {

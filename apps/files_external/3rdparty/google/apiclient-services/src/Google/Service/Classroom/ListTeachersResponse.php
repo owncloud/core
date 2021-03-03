@@ -31,14 +31,14 @@ class Google_Service_Classroom_ListTeachersResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Classroom_Teacher
+   * @param Google_Service_Classroom_Teacher[]
    */
   public function setTeachers($teachers)
   {
     $this->teachers = $teachers;
   }
   /**
-   * @return Google_Service_Classroom_Teacher
+   * @return Google_Service_Classroom_Teacher[]
    */
   public function getTeachers()
   {

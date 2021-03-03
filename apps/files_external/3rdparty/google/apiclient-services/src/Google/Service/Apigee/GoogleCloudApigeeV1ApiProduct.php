@@ -53,14 +53,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ApiProduct extends Google_Collect
     return $this->approvalType;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Attribute
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Attribute[]
    */
   public function setAttributes($attributes)
   {
     $this->attributes = $attributes;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Attribute
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Attribute[]
    */
   public function getAttributes()
   {

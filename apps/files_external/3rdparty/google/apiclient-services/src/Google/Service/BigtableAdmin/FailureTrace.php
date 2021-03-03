@@ -22,14 +22,14 @@ class Google_Service_BigtableAdmin_FailureTrace extends Google_Collection
   protected $framesDataType = 'array';
 
   /**
-   * @param Google_Service_BigtableAdmin_Frame
+   * @param Google_Service_BigtableAdmin_Frame[]
    */
   public function setFrames($frames)
   {
     $this->frames = $frames;
   }
   /**
-   * @return Google_Service_BigtableAdmin_Frame
+   * @return Google_Service_BigtableAdmin_Frame[]
    */
   public function getFrames()
   {

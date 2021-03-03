@@ -32,14 +32,14 @@ class Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1Cat
   public $title;
 
   /**
-   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1CatalogItemCategoryHierarchy
+   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1CatalogItemCategoryHierarchy[]
    */
   public function setCategoryHierarchies($categoryHierarchies)
   {
     $this->categoryHierarchies = $categoryHierarchies;
   }
   /**
-   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1CatalogItemCategoryHierarchy
+   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1CatalogItemCategoryHierarchy[]
    */
   public function getCategoryHierarchies()
   {

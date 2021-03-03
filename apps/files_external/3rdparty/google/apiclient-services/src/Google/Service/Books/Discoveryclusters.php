@@ -24,14 +24,14 @@ class Google_Service_Books_Discoveryclusters extends Google_Collection
   public $totalClusters;
 
   /**
-   * @param Google_Service_Books_DiscoveryclustersClusters
+   * @param Google_Service_Books_DiscoveryclustersClusters[]
    */
   public function setClusters($clusters)
   {
     $this->clusters = $clusters;
   }
   /**
-   * @return Google_Service_Books_DiscoveryclustersClusters
+   * @return Google_Service_Books_DiscoveryclustersClusters[]
    */
   public function getClusters()
   {

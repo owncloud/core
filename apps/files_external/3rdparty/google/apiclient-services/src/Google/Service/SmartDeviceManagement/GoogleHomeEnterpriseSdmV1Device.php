@@ -33,14 +33,14 @@ class Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1Device exten
     return $this->name;
   }
   /**
-   * @param Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1ParentRelation
+   * @param Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1ParentRelation[]
    */
   public function setParentRelations($parentRelations)
   {
     $this->parentRelations = $parentRelations;
   }
   /**
-   * @return Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1ParentRelation
+   * @return Google_Service_SmartDeviceManagement_GoogleHomeEnterpriseSdmV1ParentRelation[]
    */
   public function getParentRelations()
   {

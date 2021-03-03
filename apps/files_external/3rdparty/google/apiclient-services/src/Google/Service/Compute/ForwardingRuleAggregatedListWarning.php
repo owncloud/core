@@ -32,14 +32,14 @@ class Google_Service_Compute_ForwardingRuleAggregatedListWarning extends Google_
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_ForwardingRuleAggregatedListWarningData
+   * @param Google_Service_Compute_ForwardingRuleAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_ForwardingRuleAggregatedListWarningData
+   * @return Google_Service_Compute_ForwardingRuleAggregatedListWarningData[]
    */
   public function getData()
   {

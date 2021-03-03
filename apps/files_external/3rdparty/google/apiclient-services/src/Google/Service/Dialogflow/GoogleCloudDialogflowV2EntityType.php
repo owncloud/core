@@ -51,14 +51,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityType extends Google
     return $this->enableFuzzyExtraction;
   }
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityTypeEntity
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityTypeEntity[]
    */
   public function setEntities($entities)
   {
     $this->entities = $entities;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityTypeEntity
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityTypeEntity[]
    */
   public function getEntities()
   {

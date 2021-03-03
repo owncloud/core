@@ -21,6 +21,7 @@ class Google_Service_ShoppingContent_Account extends Google_Collection
   protected $adsLinksType = 'Google_Service_ShoppingContent_AccountAdsLink';
   protected $adsLinksDataType = 'array';
   public $adultContent;
+  public $automaticLabelIds;
   protected $businessInformationType = 'Google_Service_ShoppingContent_AccountBusinessInformation';
   protected $businessInformationDataType = '';
   public $cssId;
@@ -38,14 +39,14 @@ class Google_Service_ShoppingContent_Account extends Google_Collection
   protected $youtubeChannelLinksDataType = 'array';
 
   /**
-   * @param Google_Service_ShoppingContent_AccountAdsLink
+   * @param Google_Service_ShoppingContent_AccountAdsLink[]
    */
   public function setAdsLinks($adsLinks)
   {
     $this->adsLinks = $adsLinks;
   }
   /**
-   * @return Google_Service_ShoppingContent_AccountAdsLink
+   * @return Google_Service_ShoppingContent_AccountAdsLink[]
    */
   public function getAdsLinks()
   {
@@ -58,6 +59,14 @@ class Google_Service_ShoppingContent_Account extends Google_Collection
   public function getAdultContent()
   {
     return $this->adultContent;
+  }
+  public function setAutomaticLabelIds($automaticLabelIds)
+  {
+    $this->automaticLabelIds = $automaticLabelIds;
+  }
+  public function getAutomaticLabelIds()
+  {
+    return $this->automaticLabelIds;
   }
   /**
    * @param Google_Service_ShoppingContent_AccountBusinessInformation
@@ -136,14 +145,14 @@ class Google_Service_ShoppingContent_Account extends Google_Collection
     return $this->sellerId;
   }
   /**
-   * @param Google_Service_ShoppingContent_AccountUser
+   * @param Google_Service_ShoppingContent_AccountUser[]
    */
   public function setUsers($users)
   {
     $this->users = $users;
   }
   /**
-   * @return Google_Service_ShoppingContent_AccountUser
+   * @return Google_Service_ShoppingContent_AccountUser[]
    */
   public function getUsers()
   {
@@ -158,14 +167,14 @@ class Google_Service_ShoppingContent_Account extends Google_Collection
     return $this->websiteUrl;
   }
   /**
-   * @param Google_Service_ShoppingContent_AccountYouTubeChannelLink
+   * @param Google_Service_ShoppingContent_AccountYouTubeChannelLink[]
    */
   public function setYoutubeChannelLinks($youtubeChannelLinks)
   {
     $this->youtubeChannelLinks = $youtubeChannelLinks;
   }
   /**
-   * @return Google_Service_ShoppingContent_AccountYouTubeChannelLink
+   * @return Google_Service_ShoppingContent_AccountYouTubeChannelLink[]
    */
   public function getYoutubeChannelLinks()
   {

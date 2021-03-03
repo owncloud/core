@@ -31,6 +31,8 @@ class Google_Service_Bigquery_ExternalDataConfiguration extends Google_Collectio
   protected $hivePartitioningOptionsDataType = '';
   public $ignoreUnknownValues;
   public $maxBadRecords;
+  protected $parquetOptionsType = 'Google_Service_Bigquery_ParquetOptions';
+  protected $parquetOptionsDataType = '';
   protected $schemaType = 'Google_Service_Bigquery_TableSchema';
   protected $schemaDataType = '';
   public $sourceFormat;
@@ -131,6 +133,20 @@ class Google_Service_Bigquery_ExternalDataConfiguration extends Google_Collectio
   public function getMaxBadRecords()
   {
     return $this->maxBadRecords;
+  }
+  /**
+   * @param Google_Service_Bigquery_ParquetOptions
+   */
+  public function setParquetOptions(Google_Service_Bigquery_ParquetOptions $parquetOptions)
+  {
+    $this->parquetOptions = $parquetOptions;
+  }
+  /**
+   * @return Google_Service_Bigquery_ParquetOptions
+   */
+  public function getParquetOptions()
+  {
+    return $this->parquetOptions;
   }
   /**
    * @param Google_Service_Bigquery_TableSchema

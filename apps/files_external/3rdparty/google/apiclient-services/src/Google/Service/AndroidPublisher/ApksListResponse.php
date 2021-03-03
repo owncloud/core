@@ -23,14 +23,14 @@ class Google_Service_AndroidPublisher_ApksListResponse extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_AndroidPublisher_Apk
+   * @param Google_Service_AndroidPublisher_Apk[]
    */
   public function setApks($apks)
   {
     $this->apks = $apks;
   }
   /**
-   * @return Google_Service_AndroidPublisher_Apk
+   * @return Google_Service_AndroidPublisher_Apk[]
    */
   public function getApks()
   {

@@ -141,8 +141,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
+   * which provides partial results in case of failure. The default value is
+   * false.
    * @return Google_Service_Compute_InstanceAggregatedList
    */
   public function aggregatedList($project, $optParams = array())
@@ -185,6 +185,35 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     $params = array('project' => $project, 'zone' => $zone, 'instance' => $instance, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('attachDisk', array($params), "Google_Service_Compute_Operation");
+  }
+  /**
+   * Creates multiple instances. Count specifies the number of instances to
+   * create. (instances.bulkInsert)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $zone The name of the zone for this request.
+   * @param Google_Service_Compute_BulkInsertInstanceResource $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string requestId An optional request ID to identify requests.
+   * Specify a unique request ID so that if you must retry your request, the
+   * server will know to ignore the request if it has already been completed.
+   *
+   * For example, consider a situation where you make an initial request and the
+   * request times out. If you make the request again with the same request ID,
+   * the server can check if original operation with the same request ID was
+   * received, and if so, will ignore the second request. This prevents clients
+   * from accidentally creating duplicate commitments.
+   *
+   * The request ID must be a valid UUID with the exception that zero UUID is not
+   * supported (00000000-0000-0000-0000-000000000000).
+   * @return Google_Service_Compute_Operation
+   */
+  public function bulkInsert($project, $zone, Google_Service_Compute_BulkInsertInstanceResource $postBody, $optParams = array())
+  {
+    $params = array('project' => $project, 'zone' => $zone, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('bulkInsert', array($params), "Google_Service_Compute_Operation");
   }
   /**
    * Deletes the specified Instance resource. For more information, see Stopping
@@ -291,6 +320,24 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     $params = array('project' => $project, 'zone' => $zone, 'instance' => $instance);
     $params = array_merge($params, $optParams);
     return $this->call('get', array($params), "Google_Service_Compute_Instance");
+  }
+  /**
+   * Returns effective firewalls applied to an interface of the instance.
+   * (instances.getEffectiveFirewalls)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $zone The name of the zone for this request.
+   * @param string $instance Name of the instance scoping this request.
+   * @param string $networkInterface The name of the network interface to get the
+   * effective firewalls.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Compute_InstancesGetEffectiveFirewallsResponse
+   */
+  public function getEffectiveFirewalls($project, $zone, $instance, $networkInterface, $optParams = array())
+  {
+    $params = array('project' => $project, 'zone' => $zone, 'instance' => $instance, 'networkInterface' => $networkInterface);
+    $params = array_merge($params, $optParams);
+    return $this->call('getEffectiveFirewalls', array($params), "Google_Service_Compute_InstancesGetEffectiveFirewallsResponse");
   }
   /**
    * Returns the specified guest attributes entry. (instances.getGuestAttributes)
@@ -478,8 +525,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
+   * which provides partial results in case of failure. The default value is
+   * false.
    * @return Google_Service_Compute_InstanceList
    */
   public function listInstances($project, $zone, $optParams = array())
@@ -540,8 +587,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
+   * which provides partial results in case of failure. The default value is
+   * false.
    * @return Google_Service_Compute_InstanceListReferrers
    */
   public function listReferrers($project, $zone, $instance, $optParams = array())
@@ -1198,7 +1245,11 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     return $this->call('updateDisplayDevice', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Updates an instance's network interface. This method follows PATCH semantics.
+   * Updates an instance's network interface. This method can only update an
+   * interface's alias IP range and attached network. See Modifying alias IP
+   * ranges for an existing instance for instructions on changing alias IP ranges.
+   * See Migrating a VM between networks for instructions on migrating an
+   * interface. This method follows PATCH semantics.
    * (instances.updateNetworkInterface)
    *
    * @param string $project Project ID for this request.

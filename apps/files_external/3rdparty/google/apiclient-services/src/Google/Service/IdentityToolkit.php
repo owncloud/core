@@ -38,7 +38,7 @@ class Google_Service_IdentityToolkit extends Google_Service
       "https://www.googleapis.com/auth/firebase";
 
   public $relyingparty;
-  
+
   /**
    * Constructs the internal representation of the IdentityToolkit service.
    *

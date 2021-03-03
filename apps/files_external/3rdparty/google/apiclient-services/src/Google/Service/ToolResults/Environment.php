@@ -65,14 +65,14 @@ class Google_Service_ToolResults_Environment extends Google_Collection
     return $this->creationTime;
   }
   /**
-   * @param Google_Service_ToolResults_EnvironmentDimensionValueEntry
+   * @param Google_Service_ToolResults_EnvironmentDimensionValueEntry[]
    */
   public function setDimensionValue($dimensionValue)
   {
     $this->dimensionValue = $dimensionValue;
   }
   /**
-   * @return Google_Service_ToolResults_EnvironmentDimensionValueEntry
+   * @return Google_Service_ToolResults_EnvironmentDimensionValueEntry[]
    */
   public function getDimensionValue()
   {
@@ -147,14 +147,14 @@ class Google_Service_ToolResults_Environment extends Google_Collection
     return $this->resultsStorage;
   }
   /**
-   * @param Google_Service_ToolResults_ShardSummary
+   * @param Google_Service_ToolResults_ShardSummary[]
    */
   public function setShardSummaries($shardSummaries)
   {
     $this->shardSummaries = $shardSummaries;
   }
   /**
-   * @return Google_Service_ToolResults_ShardSummary
+   * @return Google_Service_ToolResults_ShardSummary[]
    */
   public function getShardSummaries()
   {

@@ -18,10 +18,22 @@
 class Google_Service_CloudComposer_ImageVersion extends Google_Collection
 {
   protected $collection_key = 'supportedPythonVersions';
+  public $creationDisabled;
   public $imageVersionId;
   public $isDefault;
+  protected $releaseDateType = 'Google_Service_CloudComposer_Date';
+  protected $releaseDateDataType = '';
   public $supportedPythonVersions;
+  public $upgradeDisabled;
 
+  public function setCreationDisabled($creationDisabled)
+  {
+    $this->creationDisabled = $creationDisabled;
+  }
+  public function getCreationDisabled()
+  {
+    return $this->creationDisabled;
+  }
   public function setImageVersionId($imageVersionId)
   {
     $this->imageVersionId = $imageVersionId;
@@ -38,6 +50,20 @@ class Google_Service_CloudComposer_ImageVersion extends Google_Collection
   {
     return $this->isDefault;
   }
+  /**
+   * @param Google_Service_CloudComposer_Date
+   */
+  public function setReleaseDate(Google_Service_CloudComposer_Date $releaseDate)
+  {
+    $this->releaseDate = $releaseDate;
+  }
+  /**
+   * @return Google_Service_CloudComposer_Date
+   */
+  public function getReleaseDate()
+  {
+    return $this->releaseDate;
+  }
   public function setSupportedPythonVersions($supportedPythonVersions)
   {
     $this->supportedPythonVersions = $supportedPythonVersions;
@@ -45,5 +71,13 @@ class Google_Service_CloudComposer_ImageVersion extends Google_Collection
   public function getSupportedPythonVersions()
   {
     return $this->supportedPythonVersions;
+  }
+  public function setUpgradeDisabled($upgradeDisabled)
+  {
+    $this->upgradeDisabled = $upgradeDisabled;
+  }
+  public function getUpgradeDisabled()
+  {
+    return $this->upgradeDisabled;
   }
 }

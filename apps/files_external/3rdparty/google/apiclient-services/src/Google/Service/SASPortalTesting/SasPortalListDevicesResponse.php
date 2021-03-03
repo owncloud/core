@@ -23,14 +23,14 @@ class Google_Service_SASPortalTesting_SasPortalListDevicesResponse extends Googl
   public $nextPageToken;
 
   /**
-   * @param Google_Service_SASPortalTesting_SasPortalDevice
+   * @param Google_Service_SASPortalTesting_SasPortalDevice[]
    */
   public function setDevices($devices)
   {
     $this->devices = $devices;
   }
   /**
-   * @return Google_Service_SASPortalTesting_SasPortalDevice
+   * @return Google_Service_SASPortalTesting_SasPortalDevice[]
    */
   public function getDevices()
   {

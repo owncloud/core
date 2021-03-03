@@ -31,11 +31,11 @@ class Google_Service_CivicInfo_Resource_Representatives extends Google_Service_R
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string address The address to look up. May only be specified if
+   * the field ocdId is not given in the URL
    * @opt_param bool includeOffices Whether to return information about offices
    * and officials. If false, only the top-level district information will be
    * returned.
-   * @opt_param string address The address to look up. May only be specified if
-   * the field ocdId is not given in the URL
    * @opt_param string levels A list of office levels to filter by. Only offices
    * that serve at least one of these levels will be returned. Divisions that
    * don't contain a matching office will not be returned.
@@ -58,6 +58,9 @@ class Google_Service_CivicInfo_Resource_Representatives extends Google_Service_R
    * to look up.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string levels A list of office levels to filter by. Only offices
+   * that serve at least one of these levels will be returned. Divisions that
+   * don't contain a matching office will not be returned.
    * @opt_param bool recursive If true, information about all divisions contained
    * in the division requested will be included as well. For example, if querying
    * ocd-division/country:us/district:dc, this would also return all DC's wards
@@ -65,9 +68,6 @@ class Google_Service_CivicInfo_Resource_Representatives extends Google_Service_R
    * @opt_param string roles A list of office roles to filter by. Only offices
    * fulfilling one of these roles will be returned. Divisions that don't contain
    * a matching office will not be returned.
-   * @opt_param string levels A list of office levels to filter by. Only offices
-   * that serve at least one of these levels will be returned. Divisions that
-   * don't contain a matching office will not be returned.
    * @return Google_Service_CivicInfo_RepresentativeInfoData
    */
   public function representativeInfoByDivision($ocdId, $optParams = array())

@@ -26,14 +26,14 @@ class Google_Service_Sheets_DataSource extends Google_Collection
   protected $specDataType = '';
 
   /**
-   * @param Google_Service_Sheets_DataSourceColumn
+   * @param Google_Service_Sheets_DataSourceColumn[]
    */
   public function setCalculatedColumns($calculatedColumns)
   {
     $this->calculatedColumns = $calculatedColumns;
   }
   /**
-   * @return Google_Service_Sheets_DataSourceColumn
+   * @return Google_Service_Sheets_DataSourceColumn[]
    */
   public function getCalculatedColumns()
   {

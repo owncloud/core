@@ -32,16 +32,18 @@ class Google_Service_Sheets_BasicChartSpec extends Google_Collection
   protected $seriesDataType = 'array';
   public $stackedType;
   public $threeDimensional;
+  protected $totalDataLabelType = 'Google_Service_Sheets_DataLabel';
+  protected $totalDataLabelDataType = '';
 
   /**
-   * @param Google_Service_Sheets_BasicChartAxis
+   * @param Google_Service_Sheets_BasicChartAxis[]
    */
   public function setAxis($axis)
   {
     $this->axis = $axis;
   }
   /**
-   * @return Google_Service_Sheets_BasicChartAxis
+   * @return Google_Service_Sheets_BasicChartAxis[]
    */
   public function getAxis()
   {
@@ -64,14 +66,14 @@ class Google_Service_Sheets_BasicChartSpec extends Google_Collection
     return $this->compareMode;
   }
   /**
-   * @param Google_Service_Sheets_BasicChartDomain
+   * @param Google_Service_Sheets_BasicChartDomain[]
    */
   public function setDomains($domains)
   {
     $this->domains = $domains;
   }
   /**
-   * @return Google_Service_Sheets_BasicChartDomain
+   * @return Google_Service_Sheets_BasicChartDomain[]
    */
   public function getDomains()
   {
@@ -110,14 +112,14 @@ class Google_Service_Sheets_BasicChartSpec extends Google_Collection
     return $this->lineSmoothing;
   }
   /**
-   * @param Google_Service_Sheets_BasicChartSeries
+   * @param Google_Service_Sheets_BasicChartSeries[]
    */
   public function setSeries($series)
   {
     $this->series = $series;
   }
   /**
-   * @return Google_Service_Sheets_BasicChartSeries
+   * @return Google_Service_Sheets_BasicChartSeries[]
    */
   public function getSeries()
   {
@@ -138,5 +140,19 @@ class Google_Service_Sheets_BasicChartSpec extends Google_Collection
   public function getThreeDimensional()
   {
     return $this->threeDimensional;
+  }
+  /**
+   * @param Google_Service_Sheets_DataLabel
+   */
+  public function setTotalDataLabel(Google_Service_Sheets_DataLabel $totalDataLabel)
+  {
+    $this->totalDataLabel = $totalDataLabel;
+  }
+  /**
+   * @return Google_Service_Sheets_DataLabel
+   */
+  public function getTotalDataLabel()
+  {
+    return $this->totalDataLabel;
   }
 }

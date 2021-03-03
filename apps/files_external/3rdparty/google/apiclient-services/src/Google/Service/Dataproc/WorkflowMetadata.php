@@ -21,6 +21,9 @@ class Google_Service_Dataproc_WorkflowMetadata extends Google_Model
   public $clusterUuid;
   protected $createClusterType = 'Google_Service_Dataproc_ClusterOperation';
   protected $createClusterDataType = '';
+  public $dagEndTime;
+  public $dagStartTime;
+  public $dagTimeout;
   protected $deleteClusterType = 'Google_Service_Dataproc_ClusterOperation';
   protected $deleteClusterDataType = '';
   public $endTime;
@@ -61,6 +64,30 @@ class Google_Service_Dataproc_WorkflowMetadata extends Google_Model
   public function getCreateCluster()
   {
     return $this->createCluster;
+  }
+  public function setDagEndTime($dagEndTime)
+  {
+    $this->dagEndTime = $dagEndTime;
+  }
+  public function getDagEndTime()
+  {
+    return $this->dagEndTime;
+  }
+  public function setDagStartTime($dagStartTime)
+  {
+    $this->dagStartTime = $dagStartTime;
+  }
+  public function getDagStartTime()
+  {
+    return $this->dagStartTime;
+  }
+  public function setDagTimeout($dagTimeout)
+  {
+    $this->dagTimeout = $dagTimeout;
+  }
+  public function getDagTimeout()
+  {
+    return $this->dagTimeout;
   }
   /**
    * @param Google_Service_Dataproc_ClusterOperation

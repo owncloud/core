@@ -23,14 +23,14 @@ class Google_Service_ShoppingContent_AccounttaxCustomBatchResponse extends Googl
   public $kind;
 
   /**
-   * @param Google_Service_ShoppingContent_AccounttaxCustomBatchResponseEntry
+   * @param Google_Service_ShoppingContent_AccounttaxCustomBatchResponseEntry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_ShoppingContent_AccounttaxCustomBatchResponseEntry
+   * @return Google_Service_ShoppingContent_AccounttaxCustomBatchResponseEntry[]
    */
   public function getEntries()
   {

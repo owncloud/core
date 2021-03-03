@@ -32,14 +32,14 @@ class Google_Service_Directory_Tokens extends Google_Collection
     return $this->etag;
   }
   /**
-   * @param Google_Service_Directory_Token
+   * @param Google_Service_Directory_Token[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Directory_Token
+   * @return Google_Service_Directory_Token[]
    */
   public function getItems()
   {

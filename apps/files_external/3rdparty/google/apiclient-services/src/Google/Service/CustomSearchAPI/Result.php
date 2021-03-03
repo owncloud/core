@@ -115,14 +115,14 @@ class Google_Service_CustomSearchAPI_Result extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_CustomSearchAPI_ResultLabels
+   * @param Google_Service_CustomSearchAPI_ResultLabels[]
    */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
   /**
-   * @return Google_Service_CustomSearchAPI_ResultLabels
+   * @return Google_Service_CustomSearchAPI_ResultLabels[]
    */
   public function getLabels()
   {

@@ -24,14 +24,14 @@ class Google_Service_Directory_DomainAliases extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_Directory_DomainAlias
+   * @param Google_Service_Directory_DomainAlias[]
    */
   public function setDomainAliases($domainAliases)
   {
     $this->domainAliases = $domainAliases;
   }
   /**
-   * @return Google_Service_Directory_DomainAlias
+   * @return Google_Service_Directory_DomainAlias[]
    */
   public function getDomainAliases()
   {

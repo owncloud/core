@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_ListCreativesResponse extends Google_Collectio
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DisplayVideo_Creative
+   * @param Google_Service_DisplayVideo_Creative[]
    */
   public function setCreatives($creatives)
   {
     $this->creatives = $creatives;
   }
   /**
-   * @return Google_Service_DisplayVideo_Creative
+   * @return Google_Service_DisplayVideo_Creative[]
    */
   public function getCreatives()
   {

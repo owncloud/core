@@ -48,14 +48,14 @@ class Google_Service_Script_Deployment extends Google_Collection
     return $this->deploymentId;
   }
   /**
-   * @param Google_Service_Script_EntryPoint
+   * @param Google_Service_Script_EntryPoint[]
    */
   public function setEntryPoints($entryPoints)
   {
     $this->entryPoints = $entryPoints;
   }
   /**
-   * @return Google_Service_Script_EntryPoint
+   * @return Google_Service_Script_EntryPoint[]
    */
   public function getEntryPoints()
   {

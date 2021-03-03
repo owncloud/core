@@ -54,14 +54,14 @@ class Google_Service_CloudSearch_Metadata extends Google_Collection
     return $this->displayOptions;
   }
   /**
-   * @param Google_Service_CloudSearch_NamedProperty
+   * @param Google_Service_CloudSearch_NamedProperty[]
    */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
   /**
-   * @return Google_Service_CloudSearch_NamedProperty
+   * @return Google_Service_CloudSearch_NamedProperty[]
    */
   public function getFields()
   {

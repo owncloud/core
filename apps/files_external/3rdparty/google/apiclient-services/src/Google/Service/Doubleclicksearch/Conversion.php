@@ -167,28 +167,28 @@ class Google_Service_Doubleclicksearch_Conversion extends Google_Collection
     return $this->currencyCode;
   }
   /**
-   * @param Google_Service_Doubleclicksearch_CustomDimension
+   * @param Google_Service_Doubleclicksearch_CustomDimension[]
    */
   public function setCustomDimension($customDimension)
   {
     $this->customDimension = $customDimension;
   }
   /**
-   * @return Google_Service_Doubleclicksearch_CustomDimension
+   * @return Google_Service_Doubleclicksearch_CustomDimension[]
    */
   public function getCustomDimension()
   {
     return $this->customDimension;
   }
   /**
-   * @param Google_Service_Doubleclicksearch_CustomMetric
+   * @param Google_Service_Doubleclicksearch_CustomMetric[]
    */
   public function setCustomMetric($customMetric)
   {
     $this->customMetric = $customMetric;
   }
   /**
-   * @return Google_Service_Doubleclicksearch_CustomMetric
+   * @return Google_Service_Doubleclicksearch_CustomMetric[]
    */
   public function getCustomMetric()
   {

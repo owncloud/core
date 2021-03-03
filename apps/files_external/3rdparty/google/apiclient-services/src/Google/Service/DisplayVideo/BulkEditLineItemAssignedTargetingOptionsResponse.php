@@ -22,14 +22,14 @@ class Google_Service_DisplayVideo_BulkEditLineItemAssignedTargetingOptionsRespon
   protected $createdAssignedTargetingOptionsDataType = 'array';
 
   /**
-   * @param Google_Service_DisplayVideo_AssignedTargetingOption
+   * @param Google_Service_DisplayVideo_AssignedTargetingOption[]
    */
   public function setCreatedAssignedTargetingOptions($createdAssignedTargetingOptions)
   {
     $this->createdAssignedTargetingOptions = $createdAssignedTargetingOptions;
   }
   /**
-   * @return Google_Service_DisplayVideo_AssignedTargetingOption
+   * @return Google_Service_DisplayVideo_AssignedTargetingOption[]
    */
   public function getCreatedAssignedTargetingOptions()
   {

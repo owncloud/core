@@ -42,14 +42,14 @@ class Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1Clai
     return $this->claimReviewAuthor;
   }
   /**
-   * @param Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1ClaimReviewMarkup
+   * @param Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1ClaimReviewMarkup[]
    */
   public function setClaimReviewMarkups($claimReviewMarkups)
   {
     $this->claimReviewMarkups = $claimReviewMarkups;
   }
   /**
-   * @return Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1ClaimReviewMarkup
+   * @return Google_Service_FactCheckTools_GoogleFactcheckingFactchecktoolsV1alpha1ClaimReviewMarkup[]
    */
   public function getClaimReviewMarkups()
   {

@@ -29,6 +29,7 @@ class Google_Service_Compute_Zone extends Google_Collection
   public $region;
   public $selfLink;
   public $status;
+  public $supportsPzs;
 
   public function setAvailableCpuPlatforms($availableCpuPlatforms)
   {
@@ -115,5 +116,13 @@ class Google_Service_Compute_Zone extends Google_Collection
   public function getStatus()
   {
     return $this->status;
+  }
+  public function setSupportsPzs($supportsPzs)
+  {
+    $this->supportsPzs = $supportsPzs;
+  }
+  public function getSupportsPzs()
+  {
+    return $this->supportsPzs;
   }
 }

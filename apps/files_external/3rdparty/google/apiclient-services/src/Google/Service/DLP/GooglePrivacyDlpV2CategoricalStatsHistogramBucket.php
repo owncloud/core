@@ -42,14 +42,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2CategoricalStatsHistogramBucket exten
     return $this->bucketValueCount;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2ValueFrequency
+   * @param Google_Service_DLP_GooglePrivacyDlpV2ValueFrequency[]
    */
   public function setBucketValues($bucketValues)
   {
     $this->bucketValues = $bucketValues;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2ValueFrequency
+   * @return Google_Service_DLP_GooglePrivacyDlpV2ValueFrequency[]
    */
   public function getBucketValues()
   {

@@ -22,14 +22,14 @@ class Google_Service_CloudSearch_GetDataSourceIndexStatsResponse extends Google_
   protected $statsDataType = 'array';
 
   /**
-   * @param Google_Service_CloudSearch_DataSourceIndexStats
+   * @param Google_Service_CloudSearch_DataSourceIndexStats[]
    */
   public function setStats($stats)
   {
     $this->stats = $stats;
   }
   /**
-   * @return Google_Service_CloudSearch_DataSourceIndexStats
+   * @return Google_Service_CloudSearch_DataSourceIndexStats[]
    */
   public function getStats()
   {

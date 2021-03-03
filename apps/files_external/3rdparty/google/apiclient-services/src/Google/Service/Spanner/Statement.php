@@ -23,14 +23,14 @@ class Google_Service_Spanner_Statement extends Google_Model
   public $sql;
 
   /**
-   * @param Google_Service_Spanner_Type
+   * @param Google_Service_Spanner_Type[]
    */
   public function setParamTypes($paramTypes)
   {
     $this->paramTypes = $paramTypes;
   }
   /**
-   * @return Google_Service_Spanner_Type
+   * @return Google_Service_Spanner_Type[]
    */
   public function getParamTypes()
   {

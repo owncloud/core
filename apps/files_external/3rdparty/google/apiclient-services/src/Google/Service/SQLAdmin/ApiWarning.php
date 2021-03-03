@@ -19,6 +19,7 @@ class Google_Service_SQLAdmin_ApiWarning extends Google_Model
 {
   public $code;
   public $message;
+  public $region;
 
   public function setCode($code)
   {
@@ -35,5 +36,13 @@ class Google_Service_SQLAdmin_ApiWarning extends Google_Model
   public function getMessage()
   {
     return $this->message;
+  }
+  public function setRegion($region)
+  {
+    $this->region = $region;
+  }
+  public function getRegion()
+  {
+    return $this->region;
   }
 }

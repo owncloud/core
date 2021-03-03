@@ -29,14 +29,14 @@ class Google_Service_ServiceConsumerManagement_Type extends Google_Collection
   public $syntax;
 
   /**
-   * @param Google_Service_ServiceConsumerManagement_Field
+   * @param Google_Service_ServiceConsumerManagement_Field[]
    */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_Field
+   * @return Google_Service_ServiceConsumerManagement_Field[]
    */
   public function getFields()
   {
@@ -59,14 +59,14 @@ class Google_Service_ServiceConsumerManagement_Type extends Google_Collection
     return $this->oneofs;
   }
   /**
-   * @param Google_Service_ServiceConsumerManagement_Option
+   * @param Google_Service_ServiceConsumerManagement_Option[]
    */
   public function setOptions($options)
   {
     $this->options = $options;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_Option
+   * @return Google_Service_ServiceConsumerManagement_Option[]
    */
   public function getOptions()
   {

@@ -22,14 +22,14 @@ class Google_Service_Vault_RemoveHeldAccountsResponse extends Google_Collection
   protected $statusesDataType = 'array';
 
   /**
-   * @param Google_Service_Vault_Status
+   * @param Google_Service_Vault_Status[]
    */
   public function setStatuses($statuses)
   {
     $this->statuses = $statuses;
   }
   /**
-   * @return Google_Service_Vault_Status
+   * @return Google_Service_Vault_Status[]
    */
   public function getStatuses()
   {

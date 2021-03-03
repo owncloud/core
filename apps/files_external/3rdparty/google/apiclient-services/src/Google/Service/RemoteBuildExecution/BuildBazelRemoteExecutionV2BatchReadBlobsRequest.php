@@ -22,14 +22,14 @@ class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2BatchReadBl
   protected $digestsDataType = 'array';
 
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Digest
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Digest[]
    */
   public function setDigests($digests)
   {
     $this->digests = $digests;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Digest
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Digest[]
    */
   public function getDigests()
   {

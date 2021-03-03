@@ -17,9 +17,18 @@
 
 class Google_Service_DisplayVideo_ContentInstreamPositionAssignedTargetingOptionDetails extends Google_Model
 {
+  public $adType;
   public $contentInstreamPosition;
   public $targetingOptionId;
 
+  public function setAdType($adType)
+  {
+    $this->adType = $adType;
+  }
+  public function getAdType()
+  {
+    return $this->adType;
+  }
   public function setContentInstreamPosition($contentInstreamPosition)
   {
     $this->contentInstreamPosition = $contentInstreamPosition;

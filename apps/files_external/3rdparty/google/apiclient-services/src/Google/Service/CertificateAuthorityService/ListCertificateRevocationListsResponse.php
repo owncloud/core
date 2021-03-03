@@ -24,14 +24,14 @@ class Google_Service_CertificateAuthorityService_ListCertificateRevocationListsR
   public $unreachable;
 
   /**
-   * @param Google_Service_CertificateAuthorityService_CertificateRevocationList
+   * @param Google_Service_CertificateAuthorityService_CertificateRevocationList[]
    */
   public function setCertificateRevocationLists($certificateRevocationLists)
   {
     $this->certificateRevocationLists = $certificateRevocationLists;
   }
   /**
-   * @return Google_Service_CertificateAuthorityService_CertificateRevocationList
+   * @return Google_Service_CertificateAuthorityService_CertificateRevocationList[]
    */
   public function getCertificateRevocationLists()
   {

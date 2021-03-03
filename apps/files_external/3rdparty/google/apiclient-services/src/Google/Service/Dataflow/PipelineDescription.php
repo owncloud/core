@@ -26,42 +26,42 @@ class Google_Service_Dataflow_PipelineDescription extends Google_Collection
   protected $originalPipelineTransformDataType = 'array';
 
   /**
-   * @param Google_Service_Dataflow_DisplayData
+   * @param Google_Service_Dataflow_DisplayData[]
    */
   public function setDisplayData($displayData)
   {
     $this->displayData = $displayData;
   }
   /**
-   * @return Google_Service_Dataflow_DisplayData
+   * @return Google_Service_Dataflow_DisplayData[]
    */
   public function getDisplayData()
   {
     return $this->displayData;
   }
   /**
-   * @param Google_Service_Dataflow_ExecutionStageSummary
+   * @param Google_Service_Dataflow_ExecutionStageSummary[]
    */
   public function setExecutionPipelineStage($executionPipelineStage)
   {
     $this->executionPipelineStage = $executionPipelineStage;
   }
   /**
-   * @return Google_Service_Dataflow_ExecutionStageSummary
+   * @return Google_Service_Dataflow_ExecutionStageSummary[]
    */
   public function getExecutionPipelineStage()
   {
     return $this->executionPipelineStage;
   }
   /**
-   * @param Google_Service_Dataflow_TransformSummary
+   * @param Google_Service_Dataflow_TransformSummary[]
    */
   public function setOriginalPipelineTransform($originalPipelineTransform)
   {
     $this->originalPipelineTransform = $originalPipelineTransform;
   }
   /**
-   * @return Google_Service_Dataflow_TransformSummary
+   * @return Google_Service_Dataflow_TransformSummary[]
    */
   public function getOriginalPipelineTransform()
   {

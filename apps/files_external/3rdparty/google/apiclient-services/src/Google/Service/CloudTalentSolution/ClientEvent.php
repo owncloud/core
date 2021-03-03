@@ -19,10 +19,9 @@ class Google_Service_CloudTalentSolution_ClientEvent extends Google_Model
 {
   public $createTime;
   public $eventId;
-  public $extraInfo;
+  public $eventNotes;
   protected $jobEventType = 'Google_Service_CloudTalentSolution_JobEvent';
   protected $jobEventDataType = '';
-  public $parentEventId;
   public $requestId;
 
   public function setCreateTime($createTime)
@@ -41,13 +40,13 @@ class Google_Service_CloudTalentSolution_ClientEvent extends Google_Model
   {
     return $this->eventId;
   }
-  public function setExtraInfo($extraInfo)
+  public function setEventNotes($eventNotes)
   {
-    $this->extraInfo = $extraInfo;
+    $this->eventNotes = $eventNotes;
   }
-  public function getExtraInfo()
+  public function getEventNotes()
   {
-    return $this->extraInfo;
+    return $this->eventNotes;
   }
   /**
    * @param Google_Service_CloudTalentSolution_JobEvent
@@ -62,14 +61,6 @@ class Google_Service_CloudTalentSolution_ClientEvent extends Google_Model
   public function getJobEvent()
   {
     return $this->jobEvent;
-  }
-  public function setParentEventId($parentEventId)
-  {
-    $this->parentEventId = $parentEventId;
-  }
-  public function getParentEventId()
-  {
-    return $this->parentEventId;
   }
   public function setRequestId($requestId)
   {

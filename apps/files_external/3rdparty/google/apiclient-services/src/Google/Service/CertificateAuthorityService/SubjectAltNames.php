@@ -26,14 +26,14 @@ class Google_Service_CertificateAuthorityService_SubjectAltNames extends Google_
   public $uris;
 
   /**
-   * @param Google_Service_CertificateAuthorityService_X509Extension
+   * @param Google_Service_CertificateAuthorityService_X509Extension[]
    */
   public function setCustomSans($customSans)
   {
     $this->customSans = $customSans;
   }
   /**
-   * @return Google_Service_CertificateAuthorityService_X509Extension
+   * @return Google_Service_CertificateAuthorityService_X509Extension[]
    */
   public function getCustomSans()
   {

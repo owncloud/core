@@ -32,14 +32,14 @@ class Google_Service_ServiceConsumerManagement_HttpRule extends Google_Collectio
   public $selector;
 
   /**
-   * @param Google_Service_ServiceConsumerManagement_HttpRule
+   * @param Google_Service_ServiceConsumerManagement_HttpRule[]
    */
   public function setAdditionalBindings($additionalBindings)
   {
     $this->additionalBindings = $additionalBindings;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_HttpRule
+   * @return Google_Service_ServiceConsumerManagement_HttpRule[]
    */
   public function getAdditionalBindings()
   {

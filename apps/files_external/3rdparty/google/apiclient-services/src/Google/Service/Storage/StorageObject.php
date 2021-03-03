@@ -55,14 +55,14 @@ class Google_Service_Storage_StorageObject extends Google_Collection
   public $updated;
 
   /**
-   * @param Google_Service_Storage_ObjectAccessControl
+   * @param Google_Service_Storage_ObjectAccessControl[]
    */
   public function setAcl($acl)
   {
     $this->acl = $acl;
   }
   /**
-   * @return Google_Service_Storage_ObjectAccessControl
+   * @return Google_Service_Storage_ObjectAccessControl[]
    */
   public function getAcl()
   {

@@ -25,14 +25,14 @@ class Google_Service_Directory_Buildings extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Directory_Building
+   * @param Google_Service_Directory_Building[]
    */
   public function setBuildings($buildings)
   {
     $this->buildings = $buildings;
   }
   /**
-   * @return Google_Service_Directory_Building
+   * @return Google_Service_Directory_Building[]
    */
   public function getBuildings()
   {

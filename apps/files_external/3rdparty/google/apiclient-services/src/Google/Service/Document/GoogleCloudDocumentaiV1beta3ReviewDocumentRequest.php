@@ -19,6 +19,8 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta3ReviewDocumentRequest 
 {
   protected $documentType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta3Document';
   protected $documentDataType = '';
+  protected $inlineDocumentType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta3Document';
+  protected $inlineDocumentDataType = '';
 
   /**
    * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3Document
@@ -33,5 +35,19 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta3ReviewDocumentRequest 
   public function getDocument()
   {
     return $this->document;
+  }
+  /**
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3Document
+   */
+  public function setInlineDocument(Google_Service_Document_GoogleCloudDocumentaiV1beta3Document $inlineDocument)
+  {
+    $this->inlineDocument = $inlineDocument;
+  }
+  /**
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3Document
+   */
+  public function getInlineDocument()
+  {
+    return $this->inlineDocument;
   }
 }

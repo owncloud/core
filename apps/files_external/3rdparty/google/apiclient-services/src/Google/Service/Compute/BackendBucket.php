@@ -15,12 +15,14 @@
  * the License.
  */
 
-class Google_Service_Compute_BackendBucket extends Google_Model
+class Google_Service_Compute_BackendBucket extends Google_Collection
 {
+  protected $collection_key = 'customResponseHeaders';
   public $bucketName;
   protected $cdnPolicyType = 'Google_Service_Compute_BackendBucketCdnPolicy';
   protected $cdnPolicyDataType = '';
   public $creationTimestamp;
+  public $customResponseHeaders;
   public $description;
   public $enableCdn;
   public $id;
@@ -57,6 +59,14 @@ class Google_Service_Compute_BackendBucket extends Google_Model
   public function getCreationTimestamp()
   {
     return $this->creationTimestamp;
+  }
+  public function setCustomResponseHeaders($customResponseHeaders)
+  {
+    $this->customResponseHeaders = $customResponseHeaders;
+  }
+  public function getCustomResponseHeaders()
+  {
+    return $this->customResponseHeaders;
   }
   public function setDescription($description)
   {

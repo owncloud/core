@@ -22,14 +22,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ListDatastoresResponse extends Go
   protected $datastoresDataType = 'array';
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Datastore
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Datastore[]
    */
   public function setDatastores($datastores)
   {
     $this->datastores = $datastores;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Datastore
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Datastore[]
    */
   public function getDatastores()
   {

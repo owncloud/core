@@ -24,14 +24,14 @@ class Google_Service_Compute_AddressesScopedList extends Google_Collection
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_Address
+   * @param Google_Service_Compute_Address[]
    */
   public function setAddresses($addresses)
   {
     $this->addresses = $addresses;
   }
   /**
-   * @return Google_Service_Compute_Address
+   * @return Google_Service_Compute_Address[]
    */
   public function getAddresses()
   {

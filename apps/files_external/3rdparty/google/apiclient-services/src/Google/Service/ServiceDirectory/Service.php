@@ -18,32 +18,32 @@
 class Google_Service_ServiceDirectory_Service extends Google_Collection
 {
   protected $collection_key = 'endpoints';
+  public $annotations;
   protected $endpointsType = 'Google_Service_ServiceDirectory_Endpoint';
   protected $endpointsDataType = 'array';
-  public $metadata;
   public $name;
 
+  public function setAnnotations($annotations)
+  {
+    $this->annotations = $annotations;
+  }
+  public function getAnnotations()
+  {
+    return $this->annotations;
+  }
   /**
-   * @param Google_Service_ServiceDirectory_Endpoint
+   * @param Google_Service_ServiceDirectory_Endpoint[]
    */
   public function setEndpoints($endpoints)
   {
     $this->endpoints = $endpoints;
   }
   /**
-   * @return Google_Service_ServiceDirectory_Endpoint
+   * @return Google_Service_ServiceDirectory_Endpoint[]
    */
   public function getEndpoints()
   {
     return $this->endpoints;
-  }
-  public function setMetadata($metadata)
-  {
-    $this->metadata = $metadata;
-  }
-  public function getMetadata()
-  {
-    return $this->metadata;
   }
   public function setName($name)
   {

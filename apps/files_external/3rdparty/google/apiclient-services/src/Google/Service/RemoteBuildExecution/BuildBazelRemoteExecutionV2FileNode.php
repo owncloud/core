@@ -15,15 +15,14 @@
  * the License.
  */
 
-class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2FileNode extends Google_Collection
+class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2FileNode extends Google_Model
 {
-  protected $collection_key = 'nodeProperties';
   protected $digestType = 'Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Digest';
   protected $digestDataType = '';
   public $isExecutable;
   public $name;
-  protected $nodePropertiesType = 'Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2NodeProperty';
-  protected $nodePropertiesDataType = 'array';
+  protected $nodePropertiesType = 'Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2NodeProperties';
+  protected $nodePropertiesDataType = '';
 
   /**
    * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Digest
@@ -56,14 +55,14 @@ class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2FileNode ex
     return $this->name;
   }
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2NodeProperty
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2NodeProperties
    */
-  public function setNodeProperties($nodeProperties)
+  public function setNodeProperties(Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2NodeProperties $nodeProperties)
   {
     $this->nodeProperties = $nodeProperties;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2NodeProperty
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2NodeProperties
    */
   public function getNodeProperties()
   {

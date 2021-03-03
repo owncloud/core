@@ -22,14 +22,14 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2A
   protected $annotationProgressDataType = 'array';
 
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2VideoAnnotationProgress
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2VideoAnnotationProgress[]
    */
   public function setAnnotationProgress($annotationProgress)
   {
     $this->annotationProgress = $annotationProgress;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2VideoAnnotationProgress
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2VideoAnnotationProgress[]
    */
   public function getAnnotationProgress()
   {

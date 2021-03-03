@@ -31,14 +31,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1DebugSessionTransaction extends G
     return $this->completed;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Point
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Point[]
    */
   public function setPoint($point)
   {
     $this->point = $point;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Point
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Point[]
    */
   public function getPoint()
   {

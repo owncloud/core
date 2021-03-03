@@ -142,8 +142,8 @@ class Google_Service_Compute_Resource_GlobalForwardingRules extends Google_Servi
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
+   * which provides partial results in case of failure. The default value is
+   * false.
    * @return Google_Service_Compute_ForwardingRuleList
    */
   public function listGlobalForwardingRules($project, $optParams = array())
@@ -182,6 +182,22 @@ class Google_Service_Compute_Resource_GlobalForwardingRules extends Google_Servi
     $params = array('project' => $project, 'forwardingRule' => $forwardingRule, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('patch', array($params), "Google_Service_Compute_Operation");
+  }
+  /**
+   * Sets the labels on the specified resource. To learn more about labels, read
+   * the Labeling Resources documentation. (globalForwardingRules.setLabels)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $resource Name or id of the resource for this request.
+   * @param Google_Service_Compute_GlobalSetLabelsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Compute_Operation
+   */
+  public function setLabels($project, $resource, Google_Service_Compute_GlobalSetLabelsRequest $postBody, $optParams = array())
+  {
+    $params = array('project' => $project, 'resource' => $resource, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('setLabels', array($params), "Google_Service_Compute_Operation");
   }
   /**
    * Changes target URL for the GlobalForwardingRule resource. The new target

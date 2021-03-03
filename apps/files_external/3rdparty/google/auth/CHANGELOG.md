@@ -1,3 +1,7 @@
+## 1.15.0 (02/05/2021)
+
+ * [feat]: support for PHP 8.0: updated dependencies and tests (#318, #319)
+
 ## 1.14.3 (10/16/2020)
 
  * [fix]: add expires_at to GCECredentials (#314)

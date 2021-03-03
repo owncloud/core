@@ -21,8 +21,8 @@ class Google_Service_CloudTalentSolution_Job extends Google_Collection
   public $addresses;
   protected $applicationInfoType = 'Google_Service_CloudTalentSolution_ApplicationInfo';
   protected $applicationInfoDataType = '';
+  public $company;
   public $companyDisplayName;
-  public $companyName;
   protected $compensationInfoType = 'Google_Service_CloudTalentSolution_CompensationInfo';
   protected $compensationInfoDataType = '';
   protected $customAttributesType = 'Google_Service_CloudTalentSolution_CustomAttribute';
@@ -76,6 +76,14 @@ class Google_Service_CloudTalentSolution_Job extends Google_Collection
   {
     return $this->applicationInfo;
   }
+  public function setCompany($company)
+  {
+    $this->company = $company;
+  }
+  public function getCompany()
+  {
+    return $this->company;
+  }
   public function setCompanyDisplayName($companyDisplayName)
   {
     $this->companyDisplayName = $companyDisplayName;
@@ -83,14 +91,6 @@ class Google_Service_CloudTalentSolution_Job extends Google_Collection
   public function getCompanyDisplayName()
   {
     return $this->companyDisplayName;
-  }
-  public function setCompanyName($companyName)
-  {
-    $this->companyName = $companyName;
-  }
-  public function getCompanyName()
-  {
-    return $this->companyName;
   }
   /**
    * @param Google_Service_CloudTalentSolution_CompensationInfo
@@ -107,14 +107,14 @@ class Google_Service_CloudTalentSolution_Job extends Google_Collection
     return $this->compensationInfo;
   }
   /**
-   * @param Google_Service_CloudTalentSolution_CustomAttribute
+   * @param Google_Service_CloudTalentSolution_CustomAttribute[]
    */
   public function setCustomAttributes($customAttributes)
   {
     $this->customAttributes = $customAttributes;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_CustomAttribute
+   * @return Google_Service_CloudTalentSolution_CustomAttribute[]
    */
   public function getCustomAttributes()
   {

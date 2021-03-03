@@ -23,14 +23,14 @@ class Google_Service_Script_Content extends Google_Collection
   public $scriptId;
 
   /**
-   * @param Google_Service_Script_ScriptFile
+   * @param Google_Service_Script_ScriptFile[]
    */
   public function setFiles($files)
   {
     $this->files = $files;
   }
   /**
-   * @return Google_Service_Script_ScriptFile
+   * @return Google_Service_Script_ScriptFile[]
    */
   public function getFiles()
   {

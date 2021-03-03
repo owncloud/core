@@ -24,14 +24,14 @@ class Google_Service_Drive_CommentList extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Drive_Comment
+   * @param Google_Service_Drive_Comment[]
    */
   public function setComments($comments)
   {
     $this->comments = $comments;
   }
   /**
-   * @return Google_Service_Drive_Comment
+   * @return Google_Service_Drive_Comment[]
    */
   public function getComments()
   {

@@ -22,14 +22,14 @@ class Google_Service_ServiceUsage_Billing extends Google_Collection
   protected $consumerDestinationsDataType = 'array';
 
   /**
-   * @param Google_Service_ServiceUsage_BillingDestination
+   * @param Google_Service_ServiceUsage_BillingDestination[]
    */
   public function setConsumerDestinations($consumerDestinations)
   {
     $this->consumerDestinations = $consumerDestinations;
   }
   /**
-   * @return Google_Service_ServiceUsage_BillingDestination
+   * @return Google_Service_ServiceUsage_BillingDestination[]
    */
   public function getConsumerDestinations()
   {

@@ -28,7 +28,8 @@ class Google_Service_Directory_Resource_CustomerDevicesChromeos extends Google_S
   /**
    * Issues a command for the device to execute. (chromeos.issueCommand)
    *
-   * @param string $customerId Immutable. Immutable ID of the G Suite account.
+   * @param string $customerId Immutable. Immutable ID of the Google Workspace
+   * account.
    * @param string $deviceId Immutable. Immutable ID of Chrome OS Device.
    * @param Google_Service_Directory_DirectoryChromeosdevicesIssueCommandRequest $postBody
    * @param array $optParams Optional parameters.

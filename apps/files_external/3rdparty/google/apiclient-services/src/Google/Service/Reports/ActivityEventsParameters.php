@@ -68,14 +68,14 @@ class Google_Service_Reports_ActivityEventsParameters extends Google_Collection
     return $this->multiIntValue;
   }
   /**
-   * @param Google_Service_Reports_ActivityEventsParametersMultiMessageValue
+   * @param Google_Service_Reports_ActivityEventsParametersMultiMessageValue[]
    */
   public function setMultiMessageValue($multiMessageValue)
   {
     $this->multiMessageValue = $multiMessageValue;
   }
   /**
-   * @return Google_Service_Reports_ActivityEventsParametersMultiMessageValue
+   * @return Google_Service_Reports_ActivityEventsParametersMultiMessageValue[]
    */
   public function getMultiMessageValue()
   {

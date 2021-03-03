@@ -40,14 +40,14 @@ class Google_Service_ShoppingContent_OrderPickupDetails extends Google_Collectio
     return $this->address;
   }
   /**
-   * @param Google_Service_ShoppingContent_OrderPickupDetailsCollector
+   * @param Google_Service_ShoppingContent_OrderPickupDetailsCollector[]
    */
   public function setCollectors($collectors)
   {
     $this->collectors = $collectors;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderPickupDetailsCollector
+   * @return Google_Service_ShoppingContent_OrderPickupDetailsCollector[]
    */
   public function getCollectors()
   {

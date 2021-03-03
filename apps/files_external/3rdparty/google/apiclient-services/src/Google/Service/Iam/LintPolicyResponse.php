@@ -22,14 +22,14 @@ class Google_Service_Iam_LintPolicyResponse extends Google_Collection
   protected $lintResultsDataType = 'array';
 
   /**
-   * @param Google_Service_Iam_LintResult
+   * @param Google_Service_Iam_LintResult[]
    */
   public function setLintResults($lintResults)
   {
     $this->lintResults = $lintResults;
   }
   /**
-   * @return Google_Service_Iam_LintResult
+   * @return Google_Service_Iam_LintResult[]
    */
   public function getLintResults()
   {

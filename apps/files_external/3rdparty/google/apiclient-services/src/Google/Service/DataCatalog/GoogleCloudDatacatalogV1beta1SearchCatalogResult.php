@@ -18,6 +18,7 @@
 class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SearchCatalogResult extends Google_Model
 {
   public $linkedResource;
+  public $modifyTime;
   public $relativeResourceName;
   public $searchResultSubtype;
   public $searchResultType;
@@ -29,6 +30,14 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SearchCatalogResul
   public function getLinkedResource()
   {
     return $this->linkedResource;
+  }
+  public function setModifyTime($modifyTime)
+  {
+    $this->modifyTime = $modifyTime;
+  }
+  public function getModifyTime()
+  {
+    return $this->modifyTime;
   }
   public function setRelativeResourceName($relativeResourceName)
   {

@@ -33,28 +33,28 @@ class Google_Service_CloudSearch_SearchApplication extends Google_Collection
   protected $sourceConfigDataType = 'array';
 
   /**
-   * @param Google_Service_CloudSearch_DataSourceRestriction
+   * @param Google_Service_CloudSearch_DataSourceRestriction[]
    */
   public function setDataSourceRestrictions($dataSourceRestrictions)
   {
     $this->dataSourceRestrictions = $dataSourceRestrictions;
   }
   /**
-   * @return Google_Service_CloudSearch_DataSourceRestriction
+   * @return Google_Service_CloudSearch_DataSourceRestriction[]
    */
   public function getDataSourceRestrictions()
   {
     return $this->dataSourceRestrictions;
   }
   /**
-   * @param Google_Service_CloudSearch_FacetOptions
+   * @param Google_Service_CloudSearch_FacetOptions[]
    */
   public function setDefaultFacetOptions($defaultFacetOptions)
   {
     $this->defaultFacetOptions = $defaultFacetOptions;
   }
   /**
-   * @return Google_Service_CloudSearch_FacetOptions
+   * @return Google_Service_CloudSearch_FacetOptions[]
    */
   public function getDefaultFacetOptions()
   {
@@ -113,14 +113,14 @@ class Google_Service_CloudSearch_SearchApplication extends Google_Collection
     return $this->scoringConfig;
   }
   /**
-   * @param Google_Service_CloudSearch_SourceConfig
+   * @param Google_Service_CloudSearch_SourceConfig[]
    */
   public function setSourceConfig($sourceConfig)
   {
     $this->sourceConfig = $sourceConfig;
   }
   /**
-   * @return Google_Service_CloudSearch_SourceConfig
+   * @return Google_Service_CloudSearch_SourceConfig[]
    */
   public function getSourceConfig()
   {

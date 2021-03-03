@@ -32,14 +32,14 @@ class Google_Service_Firestore_Document extends Google_Model
     return $this->createTime;
   }
   /**
-   * @param Google_Service_Firestore_Value
+   * @param Google_Service_Firestore_Value[]
    */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
   /**
-   * @return Google_Service_Firestore_Value
+   * @return Google_Service_Firestore_Value[]
    */
   public function getFields()
   {

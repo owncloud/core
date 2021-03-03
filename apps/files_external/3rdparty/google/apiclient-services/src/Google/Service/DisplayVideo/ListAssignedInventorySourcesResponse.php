@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_ListAssignedInventorySourcesResponse extends G
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DisplayVideo_AssignedInventorySource
+   * @param Google_Service_DisplayVideo_AssignedInventorySource[]
    */
   public function setAssignedInventorySources($assignedInventorySources)
   {
     $this->assignedInventorySources = $assignedInventorySources;
   }
   /**
-   * @return Google_Service_DisplayVideo_AssignedInventorySource
+   * @return Google_Service_DisplayVideo_AssignedInventorySource[]
    */
   public function getAssignedInventorySources()
   {

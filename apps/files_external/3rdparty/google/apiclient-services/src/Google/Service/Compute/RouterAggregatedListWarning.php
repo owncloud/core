@@ -32,14 +32,14 @@ class Google_Service_Compute_RouterAggregatedListWarning extends Google_Collecti
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_RouterAggregatedListWarningData
+   * @param Google_Service_Compute_RouterAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_RouterAggregatedListWarningData
+   * @return Google_Service_Compute_RouterAggregatedListWarningData[]
    */
   public function getData()
   {

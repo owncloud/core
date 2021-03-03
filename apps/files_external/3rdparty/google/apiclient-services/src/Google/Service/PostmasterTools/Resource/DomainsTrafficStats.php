@@ -52,11 +52,16 @@ class Google_Service_PostmasterTools_Resource_DomainsTrafficStats extends Google
    * name.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int endDate.year Year of the date. Must be from 1 to 9999, or 0 to
-   * specify a date without a year.
    * @opt_param int endDate.day Day of a month. Must be from 1 to 31 and valid for
    * the year and month, or 0 to specify a year by itself or a year and month
    * where the day isn't significant.
+   * @opt_param int endDate.month Month of a year. Must be from 1 to 12, or 0 to
+   * specify a year without a month and day.
+   * @opt_param int endDate.year Year of the date. Must be from 1 to 9999, or 0 to
+   * specify a date without a year.
+   * @opt_param int pageSize Requested page size. Server may return fewer
+   * TrafficStats than requested. If unspecified, server will pick an appropriate
+   * default.
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any. This is the value of
    * ListTrafficStatsResponse.next_page_token returned from the previous call to
@@ -64,15 +69,10 @@ class Google_Service_PostmasterTools_Resource_DomainsTrafficStats extends Google
    * @opt_param int startDate.day Day of a month. Must be from 1 to 31 and valid
    * for the year and month, or 0 to specify a year by itself or a year and month
    * where the day isn't significant.
-   * @opt_param int pageSize Requested page size. Server may return fewer
-   * TrafficStats than requested. If unspecified, server will pick an appropriate
-   * default.
    * @opt_param int startDate.month Month of a year. Must be from 1 to 12, or 0 to
    * specify a year without a month and day.
    * @opt_param int startDate.year Year of the date. Must be from 1 to 9999, or 0
    * to specify a date without a year.
-   * @opt_param int endDate.month Month of a year. Must be from 1 to 12, or 0 to
-   * specify a year without a month and day.
    * @return Google_Service_PostmasterTools_ListTrafficStatsResponse
    */
   public function listDomainsTrafficStats($parent, $optParams = array())

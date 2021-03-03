@@ -23,14 +23,14 @@ class Google_Service_ShoppingContent_ReturnpolicyCustomBatchResponse extends Goo
   public $kind;
 
   /**
-   * @param Google_Service_ShoppingContent_ReturnpolicyCustomBatchResponseEntry
+   * @param Google_Service_ShoppingContent_ReturnpolicyCustomBatchResponseEntry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_ShoppingContent_ReturnpolicyCustomBatchResponseEntry
+   * @return Google_Service_ShoppingContent_ReturnpolicyCustomBatchResponseEntry[]
    */
   public function getEntries()
   {

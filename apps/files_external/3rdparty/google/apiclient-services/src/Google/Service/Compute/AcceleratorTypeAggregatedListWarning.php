@@ -32,14 +32,14 @@ class Google_Service_Compute_AcceleratorTypeAggregatedListWarning extends Google
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_AcceleratorTypeAggregatedListWarningData
+   * @param Google_Service_Compute_AcceleratorTypeAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_AcceleratorTypeAggregatedListWarningData
+   * @return Google_Service_Compute_AcceleratorTypeAggregatedListWarningData[]
    */
   public function getData()
   {

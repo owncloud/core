@@ -37,7 +37,7 @@ class Google_Service_CloudShell extends Google_Service
 
   public $operations;
   public $users_environments;
-  
+
   /**
    * Constructs the internal representation of the CloudShell service.
    *
@@ -98,7 +98,7 @@ class Google_Service_CloudShell extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -106,7 +106,7 @@ class Google_Service_CloudShell extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'filter' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

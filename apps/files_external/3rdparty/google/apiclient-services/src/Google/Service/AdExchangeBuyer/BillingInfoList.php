@@ -23,14 +23,14 @@ class Google_Service_AdExchangeBuyer_BillingInfoList extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_AdExchangeBuyer_BillingInfo
+   * @param Google_Service_AdExchangeBuyer_BillingInfo[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_BillingInfo
+   * @return Google_Service_AdExchangeBuyer_BillingInfo[]
    */
   public function getItems()
   {

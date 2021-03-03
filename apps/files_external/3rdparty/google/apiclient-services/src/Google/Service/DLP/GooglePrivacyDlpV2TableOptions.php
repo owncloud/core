@@ -22,14 +22,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2TableOptions extends Google_Collectio
   protected $identifyingFieldsDataType = 'array';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2FieldId
+   * @param Google_Service_DLP_GooglePrivacyDlpV2FieldId[]
    */
   public function setIdentifyingFields($identifyingFields)
   {
     $this->identifyingFields = $identifyingFields;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2FieldId
+   * @return Google_Service_DLP_GooglePrivacyDlpV2FieldId[]
    */
   public function getIdentifyingFields()
   {

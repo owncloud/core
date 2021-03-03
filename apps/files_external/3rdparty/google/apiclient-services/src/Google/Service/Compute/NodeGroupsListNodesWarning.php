@@ -32,14 +32,14 @@ class Google_Service_Compute_NodeGroupsListNodesWarning extends Google_Collectio
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_NodeGroupsListNodesWarningData
+   * @param Google_Service_Compute_NodeGroupsListNodesWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_NodeGroupsListNodesWarningData
+   * @return Google_Service_Compute_NodeGroupsListNodesWarningData[]
    */
   public function getData()
   {

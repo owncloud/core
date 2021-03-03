@@ -43,14 +43,14 @@ class Google_Service_FirebaseRules_TestCase extends Google_Collection
     return $this->expressionReportLevel;
   }
   /**
-   * @param Google_Service_FirebaseRules_FunctionMock
+   * @param Google_Service_FirebaseRules_FunctionMock[]
    */
   public function setFunctionMocks($functionMocks)
   {
     $this->functionMocks = $functionMocks;
   }
   /**
-   * @return Google_Service_FirebaseRules_FunctionMock
+   * @return Google_Service_FirebaseRules_FunctionMock[]
    */
   public function getFunctionMocks()
   {

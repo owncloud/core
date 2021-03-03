@@ -25,14 +25,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageCard extends
   public $title;
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageCardButton
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageCardButton[]
    */
   public function setButtons($buttons)
   {
     $this->buttons = $buttons;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageCardButton
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessageCardButton[]
    */
   public function getButtons()
   {

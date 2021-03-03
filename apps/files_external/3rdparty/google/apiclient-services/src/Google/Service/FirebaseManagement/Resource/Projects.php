@@ -188,13 +188,13 @@ class Google_Service_FirebaseManagement_Resource_Projects extends Google_Service
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Token returned from a previous call to
-   * `ListFirebaseProjects` indicating where in the set of Projects to resume
-   * listing.
    * @opt_param int pageSize The maximum number of Projects to return in the
    * response. The server may return fewer than this at its discretion. If no
    * value is specified (or too large a value is specified), the server will
    * impose its own limit. This value cannot be negative.
+   * @opt_param string pageToken Token returned from a previous call to
+   * `ListFirebaseProjects` indicating where in the set of Projects to resume
+   * listing.
    * @return Google_Service_FirebaseManagement_ListFirebaseProjectsResponse
    */
   public function listProjects($optParams = array())

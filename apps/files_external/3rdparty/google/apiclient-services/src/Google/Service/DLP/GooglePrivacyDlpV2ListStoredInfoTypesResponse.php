@@ -31,14 +31,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2ListStoredInfoTypesResponse extends G
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2StoredInfoType
+   * @param Google_Service_DLP_GooglePrivacyDlpV2StoredInfoType[]
    */
   public function setStoredInfoTypes($storedInfoTypes)
   {
     $this->storedInfoTypes = $storedInfoTypes;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2StoredInfoType
+   * @return Google_Service_DLP_GooglePrivacyDlpV2StoredInfoType[]
    */
   public function getStoredInfoTypes()
   {

@@ -36,14 +36,14 @@ class Google_Service_Compute_NetworkEndpointGroupList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_NetworkEndpointGroup
+   * @param Google_Service_Compute_NetworkEndpointGroup[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_NetworkEndpointGroup
+   * @return Google_Service_Compute_NetworkEndpointGroup[]
    */
   public function getItems()
   {

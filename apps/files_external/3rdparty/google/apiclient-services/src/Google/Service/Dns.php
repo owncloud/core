@@ -50,7 +50,7 @@ class Google_Service_Dns extends Google_Service
   public $policies;
   public $projects;
   public $resourceRecordSets;
-  
+
   /**
    * Constructs the internal representation of the Dns service.
    *
@@ -129,11 +129,11 @@ class Google_Service_Dns extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'maxResults' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'integer',
                 ),
-                'sortOrder' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -141,9 +141,9 @@ class Google_Service_Dns extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'maxResults' => array(
+                'sortOrder' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -202,13 +202,13 @@ class Google_Service_Dns extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'maxResults' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -259,17 +259,17 @@ class Google_Service_Dns extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'sortBy' => array(
+                'maxResults' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'integer',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'maxResults' => array(
+                'sortBy' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -343,7 +343,7 @@ class Google_Service_Dns extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'dnsName' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -351,7 +351,7 @@ class Google_Service_Dns extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'dnsName' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -560,9 +560,9 @@ class Google_Service_Dns extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'type' => array(
+                'maxResults' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'integer',
                 ),
                 'name' => array(
                   'location' => 'query',
@@ -572,9 +572,9 @@ class Google_Service_Dns extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'maxResults' => array(
+                'type' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
                 ),
               ),
             ),

@@ -22,14 +22,14 @@ class Google_Service_AndroidEnterprise_ManagedConfigurationsForDeviceListRespons
   protected $managedConfigurationForDeviceDataType = 'array';
 
   /**
-   * @param Google_Service_AndroidEnterprise_ManagedConfiguration
+   * @param Google_Service_AndroidEnterprise_ManagedConfiguration[]
    */
   public function setManagedConfigurationForDevice($managedConfigurationForDevice)
   {
     $this->managedConfigurationForDevice = $managedConfigurationForDevice;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_ManagedConfiguration
+   * @return Google_Service_AndroidEnterprise_ManagedConfiguration[]
    */
   public function getManagedConfigurationForDevice()
   {

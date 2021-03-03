@@ -25,14 +25,14 @@ class Google_Service_CloudSearch_FacetResult extends Google_Collection
   public $sourceName;
 
   /**
-   * @param Google_Service_CloudSearch_FacetBucket
+   * @param Google_Service_CloudSearch_FacetBucket[]
    */
   public function setBuckets($buckets)
   {
     $this->buckets = $buckets;
   }
   /**
-   * @return Google_Service_CloudSearch_FacetBucket
+   * @return Google_Service_CloudSearch_FacetBucket[]
    */
   public function getBuckets()
   {

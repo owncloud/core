@@ -31,14 +31,14 @@ class Google_Service_GamesManagement_PlayerScoreResetAllResponse extends Google_
     return $this->kind;
   }
   /**
-   * @param Google_Service_GamesManagement_PlayerScoreResetResponse
+   * @param Google_Service_GamesManagement_PlayerScoreResetResponse[]
    */
   public function setResults($results)
   {
     $this->results = $results;
   }
   /**
-   * @return Google_Service_GamesManagement_PlayerScoreResetResponse
+   * @return Google_Service_GamesManagement_PlayerScoreResetResponse[]
    */
   public function getResults()
   {

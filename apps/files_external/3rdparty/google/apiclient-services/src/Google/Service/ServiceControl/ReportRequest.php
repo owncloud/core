@@ -23,14 +23,14 @@ class Google_Service_ServiceControl_ReportRequest extends Google_Collection
   public $serviceConfigId;
 
   /**
-   * @param Google_Service_ServiceControl_AttributeContext
+   * @param Google_Service_ServiceControl_AttributeContext[]
    */
   public function setOperations($operations)
   {
     $this->operations = $operations;
   }
   /**
-   * @return Google_Service_ServiceControl_AttributeContext
+   * @return Google_Service_ServiceControl_AttributeContext[]
    */
   public function getOperations()
   {

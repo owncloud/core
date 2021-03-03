@@ -49,14 +49,14 @@ class Google_Service_Dfareporting_ChannelGrouping extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Dfareporting_ChannelGroupingRule
+   * @param Google_Service_Dfareporting_ChannelGroupingRule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_Dfareporting_ChannelGroupingRule
+   * @return Google_Service_Dfareporting_ChannelGroupingRule[]
    */
   public function getRules()
   {

@@ -65,12 +65,12 @@ class Google_Service_YouTube_Resource_LiveChatModerators extends Google_Service_
    * Supported values are id and snippet.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string maxResults The *maxResults* parameter specifies the maximum
+   * number of items that should be returned in the result set.
    * @opt_param string pageToken The *pageToken* parameter identifies a specific
    * page in the result set that should be returned. In an API response, the
    * nextPageToken and prevPageToken properties identify other pages that could be
    * retrieved.
-   * @opt_param string maxResults The *maxResults* parameter specifies the maximum
-   * number of items that should be returned in the result set.
    * @return Google_Service_YouTube_LiveChatModeratorListResponse
    */
   public function listLiveChatModerators($liveChatId, $part, $optParams = array())

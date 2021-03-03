@@ -132,14 +132,14 @@ class Google_Service_AndroidPublisher_ExternallyHostedApk extends Google_Collect
     return $this->usesFeatures;
   }
   /**
-   * @param Google_Service_AndroidPublisher_UsesPermission
+   * @param Google_Service_AndroidPublisher_UsesPermission[]
    */
   public function setUsesPermissions($usesPermissions)
   {
     $this->usesPermissions = $usesPermissions;
   }
   /**
-   * @return Google_Service_AndroidPublisher_UsesPermission
+   * @return Google_Service_AndroidPublisher_UsesPermission[]
    */
   public function getUsesPermissions()
   {

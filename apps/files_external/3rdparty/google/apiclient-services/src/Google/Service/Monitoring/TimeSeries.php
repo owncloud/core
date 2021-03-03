@@ -67,14 +67,14 @@ class Google_Service_Monitoring_TimeSeries extends Google_Collection
     return $this->metricKind;
   }
   /**
-   * @param Google_Service_Monitoring_Point
+   * @param Google_Service_Monitoring_Point[]
    */
   public function setPoints($points)
   {
     $this->points = $points;
   }
   /**
-   * @return Google_Service_Monitoring_Point
+   * @return Google_Service_Monitoring_Point[]
    */
   public function getPoints()
   {

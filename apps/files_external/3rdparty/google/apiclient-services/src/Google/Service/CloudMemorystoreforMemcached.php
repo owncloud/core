@@ -16,7 +16,7 @@
  */
 
 /**
- * Service definition for CloudMemorystoreforMemcached (v1beta2).
+ * Service definition for CloudMemorystoreforMemcached (v1).
  *
  * <p>
  * Google Cloud Memorystore for Memcached API is used for creating and managing
@@ -38,7 +38,7 @@ class Google_Service_CloudMemorystoreforMemcached extends Google_Service
   public $projects_locations;
   public $projects_locations_instances;
   public $projects_locations_operations;
-  
+
   /**
    * Constructs the internal representation of the CloudMemorystoreforMemcached
    * service.
@@ -52,7 +52,7 @@ class Google_Service_CloudMemorystoreforMemcached extends Google_Service
     $this->rootUrl = $rootUrl ?: 'https://memcache.googleapis.com/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
-    $this->version = 'v1beta2';
+    $this->version = 'v1';
     $this->serviceName = 'memcache';
 
     $this->projects_locations = new Google_Service_CloudMemorystoreforMemcached_Resource_ProjectsLocations(
@@ -62,7 +62,7 @@ class Google_Service_CloudMemorystoreforMemcached extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'v1beta2/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -72,7 +72,7 @@ class Google_Service_CloudMemorystoreforMemcached extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1beta2/{+name}/locations',
+              'path' => 'v1/{+name}/locations',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -84,13 +84,13 @@ class Google_Service_CloudMemorystoreforMemcached extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -104,7 +104,7 @@ class Google_Service_CloudMemorystoreforMemcached extends Google_Service
         array(
           'methods' => array(
             'applyParameters' => array(
-              'path' => 'v1beta2/{+name}:applyParameters',
+              'path' => 'v1/{+name}:applyParameters',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -114,7 +114,7 @@ class Google_Service_CloudMemorystoreforMemcached extends Google_Service
                 ),
               ),
             ),'create' => array(
-              'path' => 'v1beta2/{+parent}/instances',
+              'path' => 'v1/{+parent}/instances',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
@@ -128,7 +128,7 @@ class Google_Service_CloudMemorystoreforMemcached extends Google_Service
                 ),
               ),
             ),'delete' => array(
-              'path' => 'v1beta2/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'name' => array(
@@ -138,7 +138,7 @@ class Google_Service_CloudMemorystoreforMemcached extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'v1beta2/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -148,7 +148,7 @@ class Google_Service_CloudMemorystoreforMemcached extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1beta2/{+parent}/instances',
+              'path' => 'v1/{+parent}/instances',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'parent' => array(
@@ -156,11 +156,11 @@ class Google_Service_CloudMemorystoreforMemcached extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'orderBy' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -168,13 +168,13 @@ class Google_Service_CloudMemorystoreforMemcached extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'filter' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
               ),
             ),'patch' => array(
-              'path' => 'v1beta2/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'name' => array(
@@ -188,7 +188,7 @@ class Google_Service_CloudMemorystoreforMemcached extends Google_Service
                 ),
               ),
             ),'updateParameters' => array(
-              'path' => 'v1beta2/{+name}:updateParameters',
+              'path' => 'v1/{+name}:updateParameters',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'name' => array(
@@ -208,7 +208,7 @@ class Google_Service_CloudMemorystoreforMemcached extends Google_Service
         array(
           'methods' => array(
             'cancel' => array(
-              'path' => 'v1beta2/{+name}:cancel',
+              'path' => 'v1/{+name}:cancel',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -218,7 +218,7 @@ class Google_Service_CloudMemorystoreforMemcached extends Google_Service
                 ),
               ),
             ),'delete' => array(
-              'path' => 'v1beta2/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'name' => array(
@@ -228,7 +228,7 @@ class Google_Service_CloudMemorystoreforMemcached extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'v1beta2/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -238,7 +238,7 @@ class Google_Service_CloudMemorystoreforMemcached extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1beta2/{+name}/operations',
+              'path' => 'v1/{+name}/operations',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -250,13 +250,13 @@ class Google_Service_CloudMemorystoreforMemcached extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),

@@ -31,14 +31,14 @@ class Google_Service_Iam_QueryTestablePermissionsResponse extends Google_Collect
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Iam_Permission
+   * @param Google_Service_Iam_Permission[]
    */
   public function setPermissions($permissions)
   {
     $this->permissions = $permissions;
   }
   /**
-   * @return Google_Service_Iam_Permission
+   * @return Google_Service_Iam_Permission[]
    */
   public function getPermissions()
   {

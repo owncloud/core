@@ -26,14 +26,14 @@ class Google_Service_Bigquery_BigtableColumnFamily extends Google_Collection
   public $type;
 
   /**
-   * @param Google_Service_Bigquery_BigtableColumn
+   * @param Google_Service_Bigquery_BigtableColumn[]
    */
   public function setColumns($columns)
   {
     $this->columns = $columns;
   }
   /**
-   * @return Google_Service_Bigquery_BigtableColumn
+   * @return Google_Service_Bigquery_BigtableColumn[]
    */
   public function getColumns()
   {

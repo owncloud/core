@@ -43,14 +43,14 @@ class Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1DevicePolicy
     return $this->allowedEncryptionStatuses;
   }
   /**
-   * @param Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1OsConstraint
+   * @param Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1OsConstraint[]
    */
   public function setOsConstraints($osConstraints)
   {
     $this->osConstraints = $osConstraints;
   }
   /**
-   * @return Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1OsConstraint
+   * @return Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1OsConstraint[]
    */
   public function getOsConstraints()
   {

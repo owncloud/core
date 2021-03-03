@@ -31,14 +31,14 @@ class Google_Service_GamesConfiguration_LocalizedStringBundle extends Google_Col
     return $this->kind;
   }
   /**
-   * @param Google_Service_GamesConfiguration_LocalizedString
+   * @param Google_Service_GamesConfiguration_LocalizedString[]
    */
   public function setTranslations($translations)
   {
     $this->translations = $translations;
   }
   /**
-   * @return Google_Service_GamesConfiguration_LocalizedString
+   * @return Google_Service_GamesConfiguration_LocalizedString[]
    */
   public function getTranslations()
   {

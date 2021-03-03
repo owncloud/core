@@ -42,14 +42,14 @@ class Google_Service_DriveActivity_Comment extends Google_Collection
     return $this->assignment;
   }
   /**
-   * @param Google_Service_DriveActivity_User
+   * @param Google_Service_DriveActivity_User[]
    */
   public function setMentionedUsers($mentionedUsers)
   {
     $this->mentionedUsers = $mentionedUsers;
   }
   /**
-   * @return Google_Service_DriveActivity_User
+   * @return Google_Service_DriveActivity_User[]
    */
   public function getMentionedUsers()
   {

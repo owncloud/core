@@ -107,14 +107,14 @@ class Google_Service_CloudTalentSolution_GoogleCloudTalentV4Job extends Google_C
     return $this->compensationInfo;
   }
   /**
-   * @param Google_Service_CloudTalentSolution_GoogleCloudTalentV4CustomAttribute
+   * @param Google_Service_CloudTalentSolution_GoogleCloudTalentV4CustomAttribute[]
    */
   public function setCustomAttributes($customAttributes)
   {
     $this->customAttributes = $customAttributes;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_GoogleCloudTalentV4CustomAttribute
+   * @return Google_Service_CloudTalentSolution_GoogleCloudTalentV4CustomAttribute[]
    */
   public function getCustomAttributes()
   {

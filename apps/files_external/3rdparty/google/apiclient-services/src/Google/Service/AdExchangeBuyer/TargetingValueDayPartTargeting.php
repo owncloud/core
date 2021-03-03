@@ -23,14 +23,14 @@ class Google_Service_AdExchangeBuyer_TargetingValueDayPartTargeting extends Goog
   public $timeZoneType;
 
   /**
-   * @param Google_Service_AdExchangeBuyer_TargetingValueDayPartTargetingDayPart
+   * @param Google_Service_AdExchangeBuyer_TargetingValueDayPartTargetingDayPart[]
    */
   public function setDayParts($dayParts)
   {
     $this->dayParts = $dayParts;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_TargetingValueDayPartTargetingDayPart
+   * @return Google_Service_AdExchangeBuyer_TargetingValueDayPartTargetingDayPart[]
    */
   public function getDayParts()
   {

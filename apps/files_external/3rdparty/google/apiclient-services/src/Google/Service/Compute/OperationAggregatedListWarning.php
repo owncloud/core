@@ -32,14 +32,14 @@ class Google_Service_Compute_OperationAggregatedListWarning extends Google_Colle
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_OperationAggregatedListWarningData
+   * @param Google_Service_Compute_OperationAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_OperationAggregatedListWarningData
+   * @return Google_Service_Compute_OperationAggregatedListWarningData[]
    */
   public function getData()
   {

@@ -31,14 +31,14 @@ class Google_Service_Monitoring_ListMonitoredResourceDescriptorsResponse extends
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Monitoring_MonitoredResourceDescriptor
+   * @param Google_Service_Monitoring_MonitoredResourceDescriptor[]
    */
   public function setResourceDescriptors($resourceDescriptors)
   {
     $this->resourceDescriptors = $resourceDescriptors;
   }
   /**
-   * @return Google_Service_Monitoring_MonitoredResourceDescriptor
+   * @return Google_Service_Monitoring_MonitoredResourceDescriptor[]
    */
   public function getResourceDescriptors()
   {

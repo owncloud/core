@@ -23,14 +23,14 @@ class Google_Service_Bigquery_ArimaResult extends Google_Collection
   public $seasonalPeriods;
 
   /**
-   * @param Google_Service_Bigquery_ArimaModelInfo
+   * @param Google_Service_Bigquery_ArimaModelInfo[]
    */
   public function setArimaModelInfo($arimaModelInfo)
   {
     $this->arimaModelInfo = $arimaModelInfo;
   }
   /**
-   * @return Google_Service_Bigquery_ArimaModelInfo
+   * @return Google_Service_Bigquery_ArimaModelInfo[]
    */
   public function getArimaModelInfo()
   {

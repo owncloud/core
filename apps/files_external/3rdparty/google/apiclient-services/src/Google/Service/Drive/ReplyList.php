@@ -40,14 +40,14 @@ class Google_Service_Drive_ReplyList extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Drive_Reply
+   * @param Google_Service_Drive_Reply[]
    */
   public function setReplies($replies)
   {
     $this->replies = $replies;
   }
   /**
-   * @return Google_Service_Drive_Reply
+   * @return Google_Service_Drive_Reply[]
    */
   public function getReplies()
   {

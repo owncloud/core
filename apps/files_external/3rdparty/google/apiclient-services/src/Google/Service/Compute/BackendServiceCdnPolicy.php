@@ -20,6 +20,10 @@ class Google_Service_Compute_BackendServiceCdnPolicy extends Google_Collection
   protected $collection_key = 'signedUrlKeyNames';
   protected $cacheKeyPolicyType = 'Google_Service_Compute_CacheKeyPolicy';
   protected $cacheKeyPolicyDataType = '';
+  public $cacheMode;
+  public $clientTtl;
+  public $defaultTtl;
+  public $maxTtl;
   public $signedUrlCacheMaxAgeSec;
   public $signedUrlKeyNames;
 
@@ -36,6 +40,38 @@ class Google_Service_Compute_BackendServiceCdnPolicy extends Google_Collection
   public function getCacheKeyPolicy()
   {
     return $this->cacheKeyPolicy;
+  }
+  public function setCacheMode($cacheMode)
+  {
+    $this->cacheMode = $cacheMode;
+  }
+  public function getCacheMode()
+  {
+    return $this->cacheMode;
+  }
+  public function setClientTtl($clientTtl)
+  {
+    $this->clientTtl = $clientTtl;
+  }
+  public function getClientTtl()
+  {
+    return $this->clientTtl;
+  }
+  public function setDefaultTtl($defaultTtl)
+  {
+    $this->defaultTtl = $defaultTtl;
+  }
+  public function getDefaultTtl()
+  {
+    return $this->defaultTtl;
+  }
+  public function setMaxTtl($maxTtl)
+  {
+    $this->maxTtl = $maxTtl;
+  }
+  public function getMaxTtl()
+  {
+    return $this->maxTtl;
   }
   public function setSignedUrlCacheMaxAgeSec($signedUrlCacheMaxAgeSec)
   {

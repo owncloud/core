@@ -69,14 +69,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Dataset extends 
     return $this->displayName;
   }
   /**
-   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1InputConfig
+   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1InputConfig[]
    */
   public function setInputConfigs($inputConfigs)
   {
     $this->inputConfigs = $inputConfigs;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1InputConfig
+   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1InputConfig[]
    */
   public function getInputConfigs()
   {

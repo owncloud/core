@@ -25,6 +25,7 @@ class Google_Service_CloudLifeSciences_Metadata extends Google_Collection
   public $labels;
   protected $pipelineType = 'Google_Service_CloudLifeSciences_Pipeline';
   protected $pipelineDataType = '';
+  public $pubSubTopic;
   public $startTime;
 
   public function setCreateTime($createTime)
@@ -44,14 +45,14 @@ class Google_Service_CloudLifeSciences_Metadata extends Google_Collection
     return $this->endTime;
   }
   /**
-   * @param Google_Service_CloudLifeSciences_Event
+   * @param Google_Service_CloudLifeSciences_Event[]
    */
   public function setEvents($events)
   {
     $this->events = $events;
   }
   /**
-   * @return Google_Service_CloudLifeSciences_Event
+   * @return Google_Service_CloudLifeSciences_Event[]
    */
   public function getEvents()
   {
@@ -78,6 +79,14 @@ class Google_Service_CloudLifeSciences_Metadata extends Google_Collection
   public function getPipeline()
   {
     return $this->pipeline;
+  }
+  public function setPubSubTopic($pubSubTopic)
+  {
+    $this->pubSubTopic = $pubSubTopic;
+  }
+  public function getPubSubTopic()
+  {
+    return $this->pubSubTopic;
   }
   public function setStartTime($startTime)
   {

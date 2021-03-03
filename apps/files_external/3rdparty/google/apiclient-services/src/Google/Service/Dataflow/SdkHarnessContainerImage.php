@@ -18,6 +18,7 @@
 class Google_Service_Dataflow_SdkHarnessContainerImage extends Google_Model
 {
   public $containerImage;
+  public $environmentId;
   public $useSingleCorePerContainer;
 
   public function setContainerImage($containerImage)
@@ -27,6 +28,14 @@ class Google_Service_Dataflow_SdkHarnessContainerImage extends Google_Model
   public function getContainerImage()
   {
     return $this->containerImage;
+  }
+  public function setEnvironmentId($environmentId)
+  {
+    $this->environmentId = $environmentId;
+  }
+  public function getEnvironmentId()
+  {
+    return $this->environmentId;
   }
   public function setUseSingleCorePerContainer($useSingleCorePerContainer)
   {

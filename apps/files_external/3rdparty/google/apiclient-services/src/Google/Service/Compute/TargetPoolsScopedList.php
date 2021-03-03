@@ -24,14 +24,14 @@ class Google_Service_Compute_TargetPoolsScopedList extends Google_Collection
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_TargetPool
+   * @param Google_Service_Compute_TargetPool[]
    */
   public function setTargetPools($targetPools)
   {
     $this->targetPools = $targetPools;
   }
   /**
-   * @return Google_Service_Compute_TargetPool
+   * @return Google_Service_Compute_TargetPool[]
    */
   public function getTargetPools()
   {

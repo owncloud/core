@@ -40,9 +40,9 @@ class Google_Service_Dataflow_Resource_ProjectsLocationsJobs extends Google_Serv
    * @param Google_Service_Dataflow_Job $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string view The level of information requested in response.
    * @opt_param string replaceJobId Deprecated. This field is now in the Job
    * message.
+   * @opt_param string view The level of information requested in response.
    * @return Google_Service_Dataflow_Job
    */
   public function create($projectId, $location, Google_Service_Dataflow_Job $postBody, $optParams = array())
@@ -87,12 +87,12 @@ class Google_Service_Dataflow_Resource_ProjectsLocationsJobs extends Google_Serv
    * @param string $jobId The job to get execution details for.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken If supplied, this should be the value of
-   * next_page_token returned by an earlier call. This will cause the next page of
-   * results to be returned.
    * @opt_param int pageSize If specified, determines the maximum number of stages
    * to return. If unspecified, the service may choose an appropriate default, or
    * may return an arbitrarily large number of results.
+   * @opt_param string pageToken If supplied, this should be the value of
+   * next_page_token returned by an earlier call. This will cause the next page of
+   * results to be returned.
    * @return Google_Service_Dataflow_JobExecutionDetails
    */
   public function getExecutionDetails($projectId, $location, $jobId, $optParams = array())
@@ -144,10 +144,10 @@ class Google_Service_Dataflow_Resource_ProjectsLocationsJobs extends Google_Serv
    * @opt_param int pageSize If there are many jobs, limit response to at most
    * this many. The actual number of jobs returned will be the lesser of
    * max_responses and an unspecified server-defined limit.
-   * @opt_param string view Level of information requested in response. Default is
-   * `JOB_VIEW_SUMMARY`.
    * @opt_param string pageToken Set this to the 'next_page_token' field of a
    * previous response to request additional results in a long list.
+   * @opt_param string view Deprecated. ListJobs always returns summaries now. Use
+   * GetJob for other JobViews.
    * @return Google_Service_Dataflow_ListJobsResponse
    */
   public function listProjectsLocationsJobs($projectId, $location, $optParams = array())

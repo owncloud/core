@@ -23,14 +23,14 @@ class Google_Service_CloudKMS_ListLocationsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudKMS_Location
+   * @param Google_Service_CloudKMS_Location[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_CloudKMS_Location
+   * @return Google_Service_CloudKMS_Location[]
    */
   public function getLocations()
   {

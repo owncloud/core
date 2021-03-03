@@ -25,14 +25,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2CharacterMaskConfig extends Google_Co
   public $reverseOrder;
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2CharsToIgnore
+   * @param Google_Service_DLP_GooglePrivacyDlpV2CharsToIgnore[]
    */
   public function setCharactersToIgnore($charactersToIgnore)
   {
     $this->charactersToIgnore = $charactersToIgnore;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2CharsToIgnore
+   * @return Google_Service_DLP_GooglePrivacyDlpV2CharsToIgnore[]
    */
   public function getCharactersToIgnore()
   {

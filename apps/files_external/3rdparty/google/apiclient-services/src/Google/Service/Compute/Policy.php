@@ -29,28 +29,28 @@ class Google_Service_Compute_Policy extends Google_Collection
   public $version;
 
   /**
-   * @param Google_Service_Compute_AuditConfig
+   * @param Google_Service_Compute_AuditConfig[]
    */
   public function setAuditConfigs($auditConfigs)
   {
     $this->auditConfigs = $auditConfigs;
   }
   /**
-   * @return Google_Service_Compute_AuditConfig
+   * @return Google_Service_Compute_AuditConfig[]
    */
   public function getAuditConfigs()
   {
     return $this->auditConfigs;
   }
   /**
-   * @param Google_Service_Compute_Binding
+   * @param Google_Service_Compute_Binding[]
    */
   public function setBindings($bindings)
   {
     $this->bindings = $bindings;
   }
   /**
-   * @return Google_Service_Compute_Binding
+   * @return Google_Service_Compute_Binding[]
    */
   public function getBindings()
   {
@@ -73,14 +73,14 @@ class Google_Service_Compute_Policy extends Google_Collection
     return $this->iamOwned;
   }
   /**
-   * @param Google_Service_Compute_Rule
+   * @param Google_Service_Compute_Rule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_Compute_Rule
+   * @return Google_Service_Compute_Rule[]
    */
   public function getRules()
   {

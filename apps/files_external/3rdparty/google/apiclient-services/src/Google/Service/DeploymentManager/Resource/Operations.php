@@ -61,6 +61,11 @@ class Google_Service_DeploymentManager_Resource_Operations extends Google_Servic
    * you can include `AND` and `OR` expressions explicitly. For example: ```
    * (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND
    * (scheduling.automaticRestart = true) ```
+   * @opt_param string maxResults The maximum number of results per page that
+   * should be returned. If the number of available results is larger than
+   * `maxResults`, Compute Engine returns a `nextPageToken` that can be used to
+   * get the next page of results in subsequent list requests. Acceptable values
+   * are `0` to `500`, inclusive. (Default: `500`)
    * @opt_param string orderBy Sorts list results by a certain order. By default,
    * results are returned in alphanumerical order based on the resource name. You
    * can also sort results in descending order based on the creation timestamp
@@ -69,17 +74,9 @@ class Google_Service_DeploymentManager_Resource_Operations extends Google_Servic
    * first). Use this to sort resources like operations so that the newest
    * operation is returned first. Currently, only sorting by `name` or
    * `creationTimestamp desc` is supported.
-   * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
    * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
-   * @opt_param string maxResults The maximum number of results per page that
-   * should be returned. If the number of available results is larger than
-   * `maxResults`, Compute Engine returns a `nextPageToken` that can be used to
-   * get the next page of results in subsequent list requests. Acceptable values
-   * are `0` to `500`, inclusive. (Default: `500`)
    * @return Google_Service_DeploymentManager_OperationsListResponse
    */
   public function listOperations($project, $optParams = array())

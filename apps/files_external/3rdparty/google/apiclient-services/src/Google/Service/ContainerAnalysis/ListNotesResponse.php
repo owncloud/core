@@ -31,14 +31,14 @@ class Google_Service_ContainerAnalysis_ListNotesResponse extends Google_Collecti
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_Note
+   * @param Google_Service_ContainerAnalysis_Note[]
    */
   public function setNotes($notes)
   {
     $this->notes = $notes;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_Note
+   * @return Google_Service_ContainerAnalysis_Note[]
    */
   public function getNotes()
   {

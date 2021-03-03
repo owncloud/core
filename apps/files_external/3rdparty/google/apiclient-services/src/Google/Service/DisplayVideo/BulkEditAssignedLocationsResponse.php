@@ -22,14 +22,14 @@ class Google_Service_DisplayVideo_BulkEditAssignedLocationsResponse extends Goog
   protected $assignedLocationsDataType = 'array';
 
   /**
-   * @param Google_Service_DisplayVideo_AssignedLocation
+   * @param Google_Service_DisplayVideo_AssignedLocation[]
    */
   public function setAssignedLocations($assignedLocations)
   {
     $this->assignedLocations = $assignedLocations;
   }
   /**
-   * @return Google_Service_DisplayVideo_AssignedLocation
+   * @return Google_Service_DisplayVideo_AssignedLocation[]
    */
   public function getAssignedLocations()
   {

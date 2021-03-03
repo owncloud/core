@@ -22,14 +22,14 @@ class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Platform ex
   protected $propertiesDataType = 'array';
 
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2PlatformProperty
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2PlatformProperty[]
    */
   public function setProperties($properties)
   {
     $this->properties = $properties;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2PlatformProperty
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2PlatformProperty[]
    */
   public function getProperties()
   {

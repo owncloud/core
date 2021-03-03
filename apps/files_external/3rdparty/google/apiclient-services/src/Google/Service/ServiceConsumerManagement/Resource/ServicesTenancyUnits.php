@@ -173,11 +173,11 @@ class Google_Service_ServiceConsumerManagement_Resource_ServicesTenancyUnits ext
    *
    * @opt_param string filter Optional. Filter expression over tenancy resources
    * field. Optional.
+   * @opt_param int pageSize Optional. The maximum number of results returned by
+   * this request.
    * @opt_param string pageToken Optional. The continuation token, which is used
    * to page through large result sets. To get the next page of results, set this
    * parameter to the value of `nextPageToken` from the previous response.
-   * @opt_param int pageSize Optional. The maximum number of results returned by
-   * this request.
    * @return Google_Service_ServiceConsumerManagement_ListTenancyUnitsResponse
    */
   public function listServicesTenancyUnits($parent, $optParams = array())

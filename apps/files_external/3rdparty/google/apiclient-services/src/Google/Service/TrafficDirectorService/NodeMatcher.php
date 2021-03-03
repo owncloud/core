@@ -38,14 +38,14 @@ class Google_Service_TrafficDirectorService_NodeMatcher extends Google_Collectio
     return $this->nodeId;
   }
   /**
-   * @param Google_Service_TrafficDirectorService_StructMatcher
+   * @param Google_Service_TrafficDirectorService_StructMatcher[]
    */
   public function setNodeMetadatas($nodeMetadatas)
   {
     $this->nodeMetadatas = $nodeMetadatas;
   }
   /**
-   * @return Google_Service_TrafficDirectorService_StructMatcher
+   * @return Google_Service_TrafficDirectorService_StructMatcher[]
    */
   public function getNodeMetadatas()
   {

@@ -38,14 +38,14 @@ class Google_Service_NetworkManagement_Trace extends Google_Collection
     return $this->endpointInfo;
   }
   /**
-   * @param Google_Service_NetworkManagement_Step
+   * @param Google_Service_NetworkManagement_Step[]
    */
   public function setSteps($steps)
   {
     $this->steps = $steps;
   }
   /**
-   * @return Google_Service_NetworkManagement_Step
+   * @return Google_Service_NetworkManagement_Step[]
    */
   public function getSteps()
   {

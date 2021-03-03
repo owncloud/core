@@ -105,8 +105,8 @@ class Google_Service_Apigateway_Resource_ProjectsLocationsGateways extends Googl
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Filter.
-   * @opt_param int pageSize Page size.
    * @opt_param string orderBy Order by parameters.
+   * @opt_param int pageSize Page size.
    * @opt_param string pageToken Page token.
    * @return Google_Service_Apigateway_ApigatewayListGatewaysResponse
    */

@@ -18,6 +18,8 @@
 class Google_Service_SecurityCommandCenter_SecurityCenterProperties extends Google_Collection
 {
   protected $collection_key = 'resourceOwners';
+  protected $foldersType = 'Google_Service_SecurityCommandCenter_Folder';
+  protected $foldersDataType = 'array';
   public $resourceDisplayName;
   public $resourceName;
   public $resourceOwners;
@@ -27,6 +29,20 @@ class Google_Service_SecurityCommandCenter_SecurityCenterProperties extends Goog
   public $resourceProjectDisplayName;
   public $resourceType;
 
+  /**
+   * @param Google_Service_SecurityCommandCenter_Folder[]
+   */
+  public function setFolders($folders)
+  {
+    $this->folders = $folders;
+  }
+  /**
+   * @return Google_Service_SecurityCommandCenter_Folder[]
+   */
+  public function getFolders()
+  {
+    return $this->folders;
+  }
   public function setResourceDisplayName($resourceDisplayName)
   {
     $this->resourceDisplayName = $resourceDisplayName;

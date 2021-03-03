@@ -22,14 +22,14 @@ class Google_Service_AndroidEnterprise_WebAppsListResponse extends Google_Collec
   protected $webAppDataType = 'array';
 
   /**
-   * @param Google_Service_AndroidEnterprise_WebApp
+   * @param Google_Service_AndroidEnterprise_WebApp[]
    */
   public function setWebApp($webApp)
   {
     $this->webApp = $webApp;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_WebApp
+   * @return Google_Service_AndroidEnterprise_WebApp[]
    */
   public function getWebApp()
   {

@@ -19,6 +19,10 @@
  * Service definition for RecommendationsAI (v1beta1).
  *
  * <p>
+ * Note that we now highly recommend new customers to use Retail API, which
+ * incorporates the GA version of the Recommendations AI funtionalities. To
+ * enable Retail API, please visit
+ * https://console.cloud.google.com/apis/library/retail.googleapis.com. The
  * Recommendations AI service enables customers to build end-to-end personalized
  * recommendation systems without requiring a high level of expertise in machine
  * learning, recommendation system, or Google Cloud.</p>
@@ -43,7 +47,7 @@ class Google_Service_RecommendationsAI extends Google_Service
   public $projects_locations_catalogs_eventStores_predictionApiKeyRegistrations;
   public $projects_locations_catalogs_eventStores_userEvents;
   public $projects_locations_catalogs_operations;
-  
+
   /**
    * Constructs the internal representation of the RecommendationsAI service.
    *
@@ -160,13 +164,13 @@ class Google_Service_RecommendationsAI extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'patch' => array(
@@ -312,15 +316,15 @@ class Google_Service_RecommendationsAI extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'userEvent' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'ets' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'uri' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'userEvent' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -344,13 +348,13 @@ class Google_Service_RecommendationsAI extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
@@ -416,7 +420,7 @@ class Google_Service_RecommendationsAI extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -424,7 +428,7 @@ class Google_Service_RecommendationsAI extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'filter' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

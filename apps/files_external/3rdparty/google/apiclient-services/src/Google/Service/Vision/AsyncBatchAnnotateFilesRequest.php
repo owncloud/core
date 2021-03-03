@@ -31,14 +31,14 @@ class Google_Service_Vision_AsyncBatchAnnotateFilesRequest extends Google_Collec
     return $this->parent;
   }
   /**
-   * @param Google_Service_Vision_AsyncAnnotateFileRequest
+   * @param Google_Service_Vision_AsyncAnnotateFileRequest[]
    */
   public function setRequests($requests)
   {
     $this->requests = $requests;
   }
   /**
-   * @return Google_Service_Vision_AsyncAnnotateFileRequest
+   * @return Google_Service_Vision_AsyncAnnotateFileRequest[]
    */
   public function getRequests()
   {

@@ -23,14 +23,14 @@ class Google_Service_AndroidEnterprise_DeviceReport extends Google_Collection
   public $lastUpdatedTimestampMillis;
 
   /**
-   * @param Google_Service_AndroidEnterprise_AppState
+   * @param Google_Service_AndroidEnterprise_AppState[]
    */
   public function setAppState($appState)
   {
     $this->appState = $appState;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_AppState
+   * @return Google_Service_AndroidEnterprise_AppState[]
    */
   public function getAppState()
   {

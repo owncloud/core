@@ -18,6 +18,7 @@
 class Google_Service_ContainerAnalysis_Version extends Google_Model
 {
   public $epoch;
+  public $inclusive;
   public $kind;
   public $name;
   public $revision;
@@ -29,6 +30,14 @@ class Google_Service_ContainerAnalysis_Version extends Google_Model
   public function getEpoch()
   {
     return $this->epoch;
+  }
+  public function setInclusive($inclusive)
+  {
+    $this->inclusive = $inclusive;
+  }
+  public function getInclusive()
+  {
+    return $this->inclusive;
   }
   public function setKind($kind)
   {

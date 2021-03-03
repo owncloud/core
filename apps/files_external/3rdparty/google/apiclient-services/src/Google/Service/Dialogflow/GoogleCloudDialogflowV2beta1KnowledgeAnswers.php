@@ -22,14 +22,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1KnowledgeAnswers ext
   protected $answersDataType = 'array';
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1KnowledgeAnswersAnswer
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1KnowledgeAnswersAnswer[]
    */
   public function setAnswers($answers)
   {
     $this->answers = $answers;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1KnowledgeAnswersAnswer
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1KnowledgeAnswersAnswer[]
    */
   public function getAnswers()
   {

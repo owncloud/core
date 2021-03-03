@@ -32,14 +32,14 @@ class Google_Service_DeploymentManager_ResourceUpdateWarnings extends Google_Col
     return $this->code;
   }
   /**
-   * @param Google_Service_DeploymentManager_ResourceUpdateWarningsData
+   * @param Google_Service_DeploymentManager_ResourceUpdateWarningsData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_DeploymentManager_ResourceUpdateWarningsData
+   * @return Google_Service_DeploymentManager_ResourceUpdateWarningsData[]
    */
   public function getData()
   {

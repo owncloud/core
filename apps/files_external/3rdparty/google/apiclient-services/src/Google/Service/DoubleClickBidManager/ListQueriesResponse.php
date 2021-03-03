@@ -40,14 +40,14 @@ class Google_Service_DoubleClickBidManager_ListQueriesResponse extends Google_Co
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_DoubleClickBidManager_Query
+   * @param Google_Service_DoubleClickBidManager_Query[]
    */
   public function setQueries($queries)
   {
     $this->queries = $queries;
   }
   /**
-   * @return Google_Service_DoubleClickBidManager_Query
+   * @return Google_Service_DoubleClickBidManager_Query[]
    */
   public function getQueries()
   {

@@ -46,14 +46,14 @@ class Google_Service_AdMob_MediationReportSpec extends Google_Collection
     return $this->dateRange;
   }
   /**
-   * @param Google_Service_AdMob_MediationReportSpecDimensionFilter
+   * @param Google_Service_AdMob_MediationReportSpecDimensionFilter[]
    */
   public function setDimensionFilters($dimensionFilters)
   {
     $this->dimensionFilters = $dimensionFilters;
   }
   /**
-   * @return Google_Service_AdMob_MediationReportSpecDimensionFilter
+   * @return Google_Service_AdMob_MediationReportSpecDimensionFilter[]
    */
   public function getDimensionFilters()
   {
@@ -98,14 +98,14 @@ class Google_Service_AdMob_MediationReportSpec extends Google_Collection
     return $this->metrics;
   }
   /**
-   * @param Google_Service_AdMob_MediationReportSpecSortCondition
+   * @param Google_Service_AdMob_MediationReportSpecSortCondition[]
    */
   public function setSortConditions($sortConditions)
   {
     $this->sortConditions = $sortConditions;
   }
   /**
-   * @return Google_Service_AdMob_MediationReportSpecSortCondition
+   * @return Google_Service_AdMob_MediationReportSpecSortCondition[]
    */
   public function getSortConditions()
   {

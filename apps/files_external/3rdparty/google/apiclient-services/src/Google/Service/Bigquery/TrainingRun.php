@@ -59,28 +59,28 @@ class Google_Service_Bigquery_TrainingRun extends Google_Collection
     return $this->evaluationMetrics;
   }
   /**
-   * @param Google_Service_Bigquery_GlobalExplanation
+   * @param Google_Service_Bigquery_GlobalExplanation[]
    */
   public function setGlobalExplanations($globalExplanations)
   {
     $this->globalExplanations = $globalExplanations;
   }
   /**
-   * @return Google_Service_Bigquery_GlobalExplanation
+   * @return Google_Service_Bigquery_GlobalExplanation[]
    */
   public function getGlobalExplanations()
   {
     return $this->globalExplanations;
   }
   /**
-   * @param Google_Service_Bigquery_IterationResult
+   * @param Google_Service_Bigquery_IterationResult[]
    */
   public function setResults($results)
   {
     $this->results = $results;
   }
   /**
-   * @return Google_Service_Bigquery_IterationResult
+   * @return Google_Service_Bigquery_IterationResult[]
    */
   public function getResults()
   {

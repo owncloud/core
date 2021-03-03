@@ -107,8 +107,8 @@ class Google_Service_Compute_Resource_NodeGroups extends Google_Service_Resource
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
+   * which provides partial results in case of failure. The default value is
+   * false.
    * @return Google_Service_Compute_NodeGroupAggregatedList
    */
   public function aggregatedList($project, $optParams = array())
@@ -288,8 +288,8 @@ class Google_Service_Compute_Resource_NodeGroups extends Google_Service_Resource
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
+   * which provides partial results in case of failure. The default value is
+   * false.
    * @return Google_Service_Compute_NodeGroupList
    */
   public function listNodeGroups($project, $zone, $optParams = array())
@@ -346,8 +346,8 @@ class Google_Service_Compute_Resource_NodeGroups extends Google_Service_Resource
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
+   * which provides partial results in case of failure. The default value is
+   * false.
    * @return Google_Service_Compute_NodeGroupsListNodes
    */
   public function listNodes($project, $zone, $nodeGroup, $optParams = array())

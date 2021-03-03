@@ -23,14 +23,14 @@ class Google_Service_SQLAdmin_SqlInstancesVerifyExternalSyncSettingsResponse ext
   public $kind;
 
   /**
-   * @param Google_Service_SQLAdmin_SqlExternalSyncSettingError
+   * @param Google_Service_SQLAdmin_SqlExternalSyncSettingError[]
    */
   public function setErrors($errors)
   {
     $this->errors = $errors;
   }
   /**
-   * @return Google_Service_SQLAdmin_SqlExternalSyncSettingError
+   * @return Google_Service_SQLAdmin_SqlExternalSyncSettingError[]
    */
   public function getErrors()
   {

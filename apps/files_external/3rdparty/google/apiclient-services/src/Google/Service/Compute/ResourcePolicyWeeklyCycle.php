@@ -22,14 +22,14 @@ class Google_Service_Compute_ResourcePolicyWeeklyCycle extends Google_Collection
   protected $dayOfWeeksDataType = 'array';
 
   /**
-   * @param Google_Service_Compute_ResourcePolicyWeeklyCycleDayOfWeek
+   * @param Google_Service_Compute_ResourcePolicyWeeklyCycleDayOfWeek[]
    */
   public function setDayOfWeeks($dayOfWeeks)
   {
     $this->dayOfWeeks = $dayOfWeeks;
   }
   /**
-   * @return Google_Service_Compute_ResourcePolicyWeeklyCycleDayOfWeek
+   * @return Google_Service_Compute_ResourcePolicyWeeklyCycleDayOfWeek[]
    */
   public function getDayOfWeeks()
   {

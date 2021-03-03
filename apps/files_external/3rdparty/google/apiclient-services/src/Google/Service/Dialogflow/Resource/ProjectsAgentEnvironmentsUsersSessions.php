@@ -47,7 +47,9 @@ class Google_Service_Dialogflow_Resource_ProjectsAgentEnvironmentsUsersSessions 
    * Processes a natural language query and returns structured, actionable data as
    * a result. This method is not idempotent, because it may cause contexts and
    * session entity types to be updated, which in turn might affect results of
-   * future queries. (sessions.detectIntent)
+   * future queries. Note: Always use agent versions for production traffic. See
+   * [Versions and environments](https://cloud.google.com/dialogflow/es/docs
+   * /agents-versions). (sessions.detectIntent)
    *
    * @param string $session Required. The name of the session this query is sent
    * to. Format: `projects//agent/sessions/`, or
@@ -58,7 +60,9 @@ class Google_Service_Dialogflow_Resource_ProjectsAgentEnvironmentsUsersSessions 
    * type of user and session identifiers (preferably hashed). The length of the
    * `Session ID` and `User ID` must not exceed 36 characters. For more
    * information, see the [API interactions
-   * guide](https://cloud.google.com/dialogflow/docs/api-overview).
+   * guide](https://cloud.google.com/dialogflow/docs/api-overview). Note: Always
+   * use agent versions for production traffic. See [Versions and
+   * environments](https://cloud.google.com/dialogflow/es/docs/agents-versions).
    * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2DetectIntentRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2DetectIntentResponse

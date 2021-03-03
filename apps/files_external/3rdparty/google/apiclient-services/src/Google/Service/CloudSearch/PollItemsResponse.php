@@ -22,14 +22,14 @@ class Google_Service_CloudSearch_PollItemsResponse extends Google_Collection
   protected $itemsDataType = 'array';
 
   /**
-   * @param Google_Service_CloudSearch_Item
+   * @param Google_Service_CloudSearch_Item[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_CloudSearch_Item
+   * @return Google_Service_CloudSearch_Item[]
    */
   public function getItems()
   {

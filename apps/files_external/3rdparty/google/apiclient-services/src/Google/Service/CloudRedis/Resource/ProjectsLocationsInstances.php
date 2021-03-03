@@ -124,6 +124,23 @@ class Google_Service_CloudRedis_Resource_ProjectsLocationsInstances extends Goog
     return $this->call('get', array($params), "Google_Service_CloudRedis_Instance");
   }
   /**
+   * Gets the AUTH string for a Redis instance. If AUTH is not enabled for the
+   * instance the response will be empty. This information is not included in the
+   * details returned to GetInstance. (instances.getAuthString)
+   *
+   * @param string $name Required. Redis instance resource name using the form:
+   * `projects/{project_id}/locations/{location_id}/instances/{instance_id}` where
+   * `location_id` refers to a GCP region.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_CloudRedis_InstanceAuthString
+   */
+  public function getAuthString($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('getAuthString', array($params), "Google_Service_CloudRedis_InstanceAuthString");
+  }
+  /**
    * Import a Redis RDB snapshot file from Cloud Storage into a Redis instance.
    * Redis may stop serving during this operation. Instance state will be
    * IMPORTING for entire operation. When complete, the instance will contain only

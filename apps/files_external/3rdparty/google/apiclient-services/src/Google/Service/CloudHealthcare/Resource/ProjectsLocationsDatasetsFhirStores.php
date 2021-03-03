@@ -146,27 +146,31 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
    * method is not appropriate, consider using ExecuteBundle to load data. Every
    * resource in the input must contain a client-supplied ID. Each resource is
    * stored using the supplied ID regardless of the enable_update_create setting
-   * on the FHIR store. The import process does not enforce referential integrity,
-   * regardless of the disable_referential_integrity setting on the FHIR store.
-   * This allows the import of resources with arbitrary interdependencies without
-   * considering grouping or ordering, but if the input data contains invalid
-   * references or if some resources fail to be imported, the FHIR store might be
-   * left in a state that violates referential integrity. The import process does
-   * not trigger Pub/Sub notification or BigQuery streaming update, regardless of
-   * how those are configured on the FHIR store. If a resource with the specified
-   * ID already exists, the most recent version of the resource is overwritten
-   * without creating a new historical version, regardless of the
-   * disable_resource_versioning setting on the FHIR store. If transient failures
-   * occur during the import, it's possible that successfully imported resources
-   * will be overwritten more than once. The import operation is idempotent unless
-   * the input data contains multiple valid resources with the same ID but
-   * different contents. In that case, after the import completes, the store
-   * contains exactly one resource with that ID but there is no ordering guarantee
-   * on which version of the contents it will have. The operation result counters
-   * do not count duplicate IDs as an error and count one success for each
-   * resource in the input, which might result in a success count larger than the
-   * number of resources in the FHIR store. This often occurs when importing data
-   * organized in bundles produced by Patient-everything where each bundle
+   * on the FHIR store. It is strongly advised not to include or encode any
+   * sensitive data such as patient identifiers in client-specified resource IDs.
+   * Those IDs are part of the FHIR resource path recorded in Cloud audit logs and
+   * Cloud Pub/Sub notifications. Those IDs can also be contained in reference
+   * fields within other resources. The import process does not enforce
+   * referential integrity, regardless of the disable_referential_integrity
+   * setting on the FHIR store. This allows the import of resources with arbitrary
+   * interdependencies without considering grouping or ordering, but if the input
+   * data contains invalid references or if some resources fail to be imported,
+   * the FHIR store might be left in a state that violates referential integrity.
+   * The import process does not trigger Pub/Sub notification or BigQuery
+   * streaming update, regardless of how those are configured on the FHIR store.
+   * If a resource with the specified ID already exists, the most recent version
+   * of the resource is overwritten without creating a new historical version,
+   * regardless of the disable_resource_versioning setting on the FHIR store. If
+   * transient failures occur during the import, it's possible that successfully
+   * imported resources will be overwritten more than once. The import operation
+   * is idempotent unless the input data contains multiple valid resources with
+   * the same ID but different contents. In that case, after the import completes,
+   * the store contains exactly one resource with that ID but there is no ordering
+   * guarantee on which version of the contents it will have. The operation result
+   * counters do not count duplicate IDs as an error and count one success for
+   * each resource in the input, which might result in a success count larger than
+   * the number of resources in the FHIR store. This often occurs when importing
+   * data organized in bundles produced by Patient-everything where each bundle
    * contains its own copy of a resource such as Practitioner that might be
    * referred to by many patients. If some resources fail to import, for example
    * due to parsing errors, successfully imported resources are not rolled back.
@@ -208,14 +212,33 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
    * @param string $parent Name of the dataset.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter Restricts stores returned to those matching a
+   * filter. The following syntax is available: * A string field value can be
+   * written as text inside quotation marks, for example `"query text"`. The only
+   * valid relational operation for text fields is equality (`=`), where text is
+   * searched within the field, rather than having the field be equal to the text.
+   * For example, `"Comment = great"` returns messages with `great` in the comment
+   * field. * A number field value can be written as an integer, a decimal, or an
+   * exponential. The valid relational operators for number fields are the
+   * equality operator (`=`), along with the less than/greater than operators
+   * (`<`, `<=`, `>`, `>=`). Note that there is no inequality (`!=`) operator. You
+   * can prepend the `NOT` operator to an expression to negate it. * A date field
+   * value must be written in `yyyy-mm-dd` form. Fields with date and time use the
+   * RFC3339 time format. Leading zeros are required for one-digit months and
+   * days. The valid relational operators for date fields are the equality
+   * operator (`=`) , along with the less than/greater than operators (`<`, `<=`,
+   * `>`, `>=`). Note that there is no inequality (`!=`) operator. You can prepend
+   * the `NOT` operator to an expression to negate it. * Multiple field query
+   * expressions can be combined in one query by adding `AND` or `OR` operators
+   * between the expressions. If a boolean operator appears within a quoted
+   * string, it is not treated as special, it's just another part of the character
+   * string to be matched. You can prepend the `NOT` operator to an expression to
+   * negate it. Only filtering on labels is supported, for example
+   * `labels.key=value`.
+   * @opt_param int pageSize Limit on the number of FHIR stores to return in a
+   * single response. If not specified, 100 is used. May not be larger than 1000.
    * @opt_param string pageToken The next_page_token value returned from the
    * previous List request, if any.
-   * @opt_param string filter Restricts stores returned to those matching a
-   * filter. Syntax:
-   * https://cloud.google.com/appengine/docs/standard/python/search/query_strings
-   * Only filtering on labels is supported, for example `labels.key=value`.
-   * @opt_param int pageSize Limit on the number of FHIR stores to return in a
-   * single response. If zero the default page size of 100 is used.
    * @return Google_Service_CloudHealthcare_ListFhirStoresResponse
    */
   public function listProjectsLocationsDatasetsFhirStores($parent, $optParams = array())

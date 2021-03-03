@@ -45,14 +45,14 @@ class Google_Service_AndroidManagement_ManagedProperty extends Google_Collection
     return $this->description;
   }
   /**
-   * @param Google_Service_AndroidManagement_ManagedPropertyEntry
+   * @param Google_Service_AndroidManagement_ManagedPropertyEntry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_AndroidManagement_ManagedPropertyEntry
+   * @return Google_Service_AndroidManagement_ManagedPropertyEntry[]
    */
   public function getEntries()
   {
@@ -67,14 +67,14 @@ class Google_Service_AndroidManagement_ManagedProperty extends Google_Collection
     return $this->key;
   }
   /**
-   * @param Google_Service_AndroidManagement_ManagedProperty
+   * @param Google_Service_AndroidManagement_ManagedProperty[]
    */
   public function setNestedProperties($nestedProperties)
   {
     $this->nestedProperties = $nestedProperties;
   }
   /**
-   * @return Google_Service_AndroidManagement_ManagedProperty
+   * @return Google_Service_AndroidManagement_ManagedProperty[]
    */
   public function getNestedProperties()
   {

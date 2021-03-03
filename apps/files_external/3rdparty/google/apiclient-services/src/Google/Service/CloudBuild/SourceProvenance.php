@@ -25,14 +25,14 @@ class Google_Service_CloudBuild_SourceProvenance extends Google_Model
   protected $resolvedStorageSourceDataType = '';
 
   /**
-   * @param Google_Service_CloudBuild_FileHashes
+   * @param Google_Service_CloudBuild_FileHashes[]
    */
   public function setFileHashes($fileHashes)
   {
     $this->fileHashes = $fileHashes;
   }
   /**
-   * @return Google_Service_CloudBuild_FileHashes
+   * @return Google_Service_CloudBuild_FileHashes[]
    */
   public function getFileHashes()
   {

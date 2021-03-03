@@ -40,14 +40,14 @@ class Google_Service_ServiceManagement_EnumValue extends Google_Collection
     return $this->number;
   }
   /**
-   * @param Google_Service_ServiceManagement_Option
+   * @param Google_Service_ServiceManagement_Option[]
    */
   public function setOptions($options)
   {
     $this->options = $options;
   }
   /**
-   * @return Google_Service_ServiceManagement_Option
+   * @return Google_Service_ServiceManagement_Option[]
    */
   public function getOptions()
   {

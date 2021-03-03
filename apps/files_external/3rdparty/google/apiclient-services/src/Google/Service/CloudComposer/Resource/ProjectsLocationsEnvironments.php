@@ -75,9 +75,9 @@ class Google_Service_CloudComposer_Resource_ProjectsLocationsEnvironments extend
    * the form: "projects/{projectId}/locations/{locationId}"
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of environments to return.
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.
-   * @opt_param int pageSize The maximum number of environments to return.
    * @return Google_Service_CloudComposer_ListEnvironmentsResponse
    */
   public function listProjectsLocationsEnvironments($parent, $optParams = array())
@@ -139,6 +139,10 @@ class Google_Service_CloudComposer_Resource_ProjectsLocationsEnvironments extend
    * and the "labels" mask. config.nodeCount Horizontally scale the number of
    * nodes in the environment. An integer greater than or equal to 3 must be
    * provided in the `config.nodeCount` field.
+   * config.webServerNetworkAccessControl Replace the environment's current
+   * WebServerNetworkAccessControl. config.databaseConfig Replace the
+   * environment's current DatabaseConfig. config.webServerConfig Replace the
+   * environment's current WebServerConfig.
    * config.softwareConfig.airflowConfigOverrides Replace all Apache Airflow
    * config overrides. If a replacement config overrides map is not included in
    * `environment`, all config overrides are cleared. It is an error to provide

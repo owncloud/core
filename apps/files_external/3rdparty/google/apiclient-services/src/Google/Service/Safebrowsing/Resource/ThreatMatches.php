@@ -29,14 +29,14 @@ class Google_Service_Safebrowsing_Resource_ThreatMatches extends Google_Service_
    * Finds the threat entries that match the Safe Browsing lists.
    * (threatMatches.find)
    *
-   * @param Google_Service_Safebrowsing_FindThreatMatchesRequest $postBody
+   * @param Google_Service_Safebrowsing_GoogleSecuritySafebrowsingV4FindThreatMatchesRequest $postBody
    * @param array $optParams Optional parameters.
-   * @return Google_Service_Safebrowsing_FindThreatMatchesResponse
+   * @return Google_Service_Safebrowsing_GoogleSecuritySafebrowsingV4FindThreatMatchesResponse
    */
-  public function find(Google_Service_Safebrowsing_FindThreatMatchesRequest $postBody, $optParams = array())
+  public function find(Google_Service_Safebrowsing_GoogleSecuritySafebrowsingV4FindThreatMatchesRequest $postBody, $optParams = array())
   {
     $params = array('postBody' => $postBody);
     $params = array_merge($params, $optParams);
-    return $this->call('find', array($params), "Google_Service_Safebrowsing_FindThreatMatchesResponse");
+    return $this->call('find', array($params), "Google_Service_Safebrowsing_GoogleSecuritySafebrowsingV4FindThreatMatchesResponse");
   }
 }

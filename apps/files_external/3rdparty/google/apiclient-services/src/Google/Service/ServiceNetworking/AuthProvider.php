@@ -67,14 +67,14 @@ class Google_Service_ServiceNetworking_AuthProvider extends Google_Collection
     return $this->jwksUri;
   }
   /**
-   * @param Google_Service_ServiceNetworking_JwtLocation
+   * @param Google_Service_ServiceNetworking_JwtLocation[]
    */
   public function setJwtLocations($jwtLocations)
   {
     $this->jwtLocations = $jwtLocations;
   }
   /**
-   * @return Google_Service_ServiceNetworking_JwtLocation
+   * @return Google_Service_ServiceNetworking_JwtLocation[]
    */
   public function getJwtLocations()
   {

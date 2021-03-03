@@ -22,14 +22,14 @@ class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2FindMissing
   protected $blobDigestsDataType = 'array';
 
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Digest
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Digest[]
    */
   public function setBlobDigests($blobDigests)
   {
     $this->blobDigests = $blobDigests;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Digest
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Digest[]
    */
   public function getBlobDigests()
   {

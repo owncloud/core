@@ -40,14 +40,14 @@ class Google_Service_Monitoring_ListUptimeCheckConfigsResponse extends Google_Co
     return $this->totalSize;
   }
   /**
-   * @param Google_Service_Monitoring_UptimeCheckConfig
+   * @param Google_Service_Monitoring_UptimeCheckConfig[]
    */
   public function setUptimeCheckConfigs($uptimeCheckConfigs)
   {
     $this->uptimeCheckConfigs = $uptimeCheckConfigs;
   }
   /**
-   * @return Google_Service_Monitoring_UptimeCheckConfig
+   * @return Google_Service_Monitoring_UptimeCheckConfig[]
    */
   public function getUptimeCheckConfigs()
   {

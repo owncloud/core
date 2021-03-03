@@ -24,14 +24,14 @@ class Google_Service_Directory_ChromeOsDeviceCpuStatusReports extends Google_Col
   public $reportTime;
 
   /**
-   * @param Google_Service_Directory_ChromeOsDeviceCpuStatusReportsCpuTemperatureInfo
+   * @param Google_Service_Directory_ChromeOsDeviceCpuStatusReportsCpuTemperatureInfo[]
    */
   public function setCpuTemperatureInfo($cpuTemperatureInfo)
   {
     $this->cpuTemperatureInfo = $cpuTemperatureInfo;
   }
   /**
-   * @return Google_Service_Directory_ChromeOsDeviceCpuStatusReportsCpuTemperatureInfo
+   * @return Google_Service_Directory_ChromeOsDeviceCpuStatusReportsCpuTemperatureInfo[]
    */
   public function getCpuTemperatureInfo()
   {

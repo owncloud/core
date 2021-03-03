@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_ListFirstAndThirdPartyAudiencesResponse extend
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DisplayVideo_FirstAndThirdPartyAudience
+   * @param Google_Service_DisplayVideo_FirstAndThirdPartyAudience[]
    */
   public function setFirstAndThirdPartyAudiences($firstAndThirdPartyAudiences)
   {
     $this->firstAndThirdPartyAudiences = $firstAndThirdPartyAudiences;
   }
   /**
-   * @return Google_Service_DisplayVideo_FirstAndThirdPartyAudience
+   * @return Google_Service_DisplayVideo_FirstAndThirdPartyAudience[]
    */
   public function getFirstAndThirdPartyAudiences()
   {

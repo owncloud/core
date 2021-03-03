@@ -22,14 +22,14 @@ class Google_Service_ShoppingContent_LiasettingsCustomBatchRequest extends Googl
   protected $entriesDataType = 'array';
 
   /**
-   * @param Google_Service_ShoppingContent_LiasettingsCustomBatchRequestEntry
+   * @param Google_Service_ShoppingContent_LiasettingsCustomBatchRequestEntry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_ShoppingContent_LiasettingsCustomBatchRequestEntry
+   * @return Google_Service_ShoppingContent_LiasettingsCustomBatchRequestEntry[]
    */
   public function getEntries()
   {

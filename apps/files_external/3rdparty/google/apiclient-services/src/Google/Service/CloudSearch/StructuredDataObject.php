@@ -22,14 +22,14 @@ class Google_Service_CloudSearch_StructuredDataObject extends Google_Collection
   protected $propertiesDataType = 'array';
 
   /**
-   * @param Google_Service_CloudSearch_NamedProperty
+   * @param Google_Service_CloudSearch_NamedProperty[]
    */
   public function setProperties($properties)
   {
     $this->properties = $properties;
   }
   /**
-   * @return Google_Service_CloudSearch_NamedProperty
+   * @return Google_Service_CloudSearch_NamedProperty[]
    */
   public function getProperties()
   {

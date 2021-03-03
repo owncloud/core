@@ -33,14 +33,14 @@ class Google_Service_Bigquery_JobList extends Google_Collection
     return $this->etag;
   }
   /**
-   * @param Google_Service_Bigquery_JobListJobs
+   * @param Google_Service_Bigquery_JobListJobs[]
    */
   public function setJobs($jobs)
   {
     $this->jobs = $jobs;
   }
   /**
-   * @return Google_Service_Bigquery_JobListJobs
+   * @return Google_Service_Bigquery_JobListJobs[]
    */
   public function getJobs()
   {

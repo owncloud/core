@@ -22,14 +22,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2InfoTypeTransformations extends Googl
   protected $transformationsDataType = 'array';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2InfoTypeTransformation
+   * @param Google_Service_DLP_GooglePrivacyDlpV2InfoTypeTransformation[]
    */
   public function setTransformations($transformations)
   {
     $this->transformations = $transformations;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2InfoTypeTransformation
+   * @return Google_Service_DLP_GooglePrivacyDlpV2InfoTypeTransformation[]
    */
   public function getTransformations()
   {

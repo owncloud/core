@@ -15,6 +15,7 @@ use Monolog\Logger;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\LogglyFormatter;
 use function array_key_exists;
+use CurlHandle;
 
 /**
  * Sends errors to Loggly.
@@ -32,7 +33,7 @@ class LogglyHandler extends AbstractProcessingHandler
     /**
      * Caches the curl handlers for every given endpoint.
      *
-     * @var array
+     * @var resource[]|CurlHandle[]
      */
     protected $curlHandlers = [];
 
@@ -63,12 +64,12 @@ class LogglyHandler extends AbstractProcessingHandler
      *
      * @param string $endpoint
      *
-     * @return resource
+     * @return resource|CurlHandle
      */
     protected function getCurlHandler(string $endpoint)
     {
         if (!array_key_exists($endpoint, $this->curlHandlers)) {
-            $this->curlHandlers[$endpoint] = $this->loadCurlHandler($endpoint);
+            $this->curlHandlers[$endpoint] = $this->loadCurlHandle($endpoint);
         }
 
         return $this->curlHandlers[$endpoint];
@@ -79,9 +80,9 @@ class LogglyHandler extends AbstractProcessingHandler
      *
      * @param string $endpoint
      *
-     * @return resource
+     * @return resource|CurlHandle
      */
-    private function loadCurlHandler(string $endpoint)
+    private function loadCurlHandle(string $endpoint)
     {
         $url = sprintf("https://%s/%s/%s/", static::HOST, $endpoint, $this->token);
 

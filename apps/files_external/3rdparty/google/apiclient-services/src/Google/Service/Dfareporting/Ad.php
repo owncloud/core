@@ -213,14 +213,14 @@ class Google_Service_Dfareporting_Ad extends Google_Collection
     return $this->createInfo;
   }
   /**
-   * @param Google_Service_Dfareporting_CreativeGroupAssignment
+   * @param Google_Service_Dfareporting_CreativeGroupAssignment[]
    */
   public function setCreativeGroupAssignments($creativeGroupAssignments)
   {
     $this->creativeGroupAssignments = $creativeGroupAssignments;
   }
   /**
-   * @return Google_Service_Dfareporting_CreativeGroupAssignment
+   * @return Google_Service_Dfareporting_CreativeGroupAssignment[]
    */
   public function getCreativeGroupAssignments()
   {
@@ -299,14 +299,14 @@ class Google_Service_Dfareporting_Ad extends Google_Collection
     return $this->endTime;
   }
   /**
-   * @param Google_Service_Dfareporting_EventTagOverride
+   * @param Google_Service_Dfareporting_EventTagOverride[]
    */
   public function setEventTagOverrides($eventTagOverrides)
   {
     $this->eventTagOverrides = $eventTagOverrides;
   }
   /**
-   * @return Google_Service_Dfareporting_EventTagOverride
+   * @return Google_Service_Dfareporting_EventTagOverride[]
    */
   public function getEventTagOverrides()
   {
@@ -407,14 +407,14 @@ class Google_Service_Dfareporting_Ad extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Dfareporting_PlacementAssignment
+   * @param Google_Service_Dfareporting_PlacementAssignment[]
    */
   public function setPlacementAssignments($placementAssignments)
   {
     $this->placementAssignments = $placementAssignments;
   }
   /**
-   * @return Google_Service_Dfareporting_PlacementAssignment
+   * @return Google_Service_Dfareporting_PlacementAssignment[]
    */
   public function getPlacementAssignments()
   {

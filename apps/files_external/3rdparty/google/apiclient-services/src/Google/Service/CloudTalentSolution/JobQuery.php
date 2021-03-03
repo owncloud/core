@@ -20,13 +20,14 @@ class Google_Service_CloudTalentSolution_JobQuery extends Google_Collection
   protected $collection_key = 'locationFilters';
   protected $commuteFilterType = 'Google_Service_CloudTalentSolution_CommuteFilter';
   protected $commuteFilterDataType = '';
+  public $companies;
   public $companyDisplayNames;
-  public $companyNames;
   protected $compensationFilterType = 'Google_Service_CloudTalentSolution_CompensationFilter';
   protected $compensationFilterDataType = '';
   public $customAttributeFilter;
   public $disableSpellCheck;
   public $employmentTypes;
+  public $excludedJobs;
   public $jobCategories;
   public $languageCodes;
   protected $locationFiltersType = 'Google_Service_CloudTalentSolution_LocationFilter';
@@ -50,6 +51,14 @@ class Google_Service_CloudTalentSolution_JobQuery extends Google_Collection
   {
     return $this->commuteFilter;
   }
+  public function setCompanies($companies)
+  {
+    $this->companies = $companies;
+  }
+  public function getCompanies()
+  {
+    return $this->companies;
+  }
   public function setCompanyDisplayNames($companyDisplayNames)
   {
     $this->companyDisplayNames = $companyDisplayNames;
@@ -57,14 +66,6 @@ class Google_Service_CloudTalentSolution_JobQuery extends Google_Collection
   public function getCompanyDisplayNames()
   {
     return $this->companyDisplayNames;
-  }
-  public function setCompanyNames($companyNames)
-  {
-    $this->companyNames = $companyNames;
-  }
-  public function getCompanyNames()
-  {
-    return $this->companyNames;
   }
   /**
    * @param Google_Service_CloudTalentSolution_CompensationFilter
@@ -104,6 +105,14 @@ class Google_Service_CloudTalentSolution_JobQuery extends Google_Collection
   {
     return $this->employmentTypes;
   }
+  public function setExcludedJobs($excludedJobs)
+  {
+    $this->excludedJobs = $excludedJobs;
+  }
+  public function getExcludedJobs()
+  {
+    return $this->excludedJobs;
+  }
   public function setJobCategories($jobCategories)
   {
     $this->jobCategories = $jobCategories;
@@ -121,14 +130,14 @@ class Google_Service_CloudTalentSolution_JobQuery extends Google_Collection
     return $this->languageCodes;
   }
   /**
-   * @param Google_Service_CloudTalentSolution_LocationFilter
+   * @param Google_Service_CloudTalentSolution_LocationFilter[]
    */
   public function setLocationFilters($locationFilters)
   {
     $this->locationFilters = $locationFilters;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_LocationFilter
+   * @return Google_Service_CloudTalentSolution_LocationFilter[]
    */
   public function getLocationFilters()
   {

@@ -23,14 +23,14 @@ class Google_Service_AdSense_Payments extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_AdSense_Payment
+   * @param Google_Service_AdSense_Payment[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_AdSense_Payment
+   * @return Google_Service_AdSense_Payment[]
    */
   public function getItems()
   {

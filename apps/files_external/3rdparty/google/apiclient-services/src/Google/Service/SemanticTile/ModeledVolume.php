@@ -24,14 +24,14 @@ class Google_Service_SemanticTile_ModeledVolume extends Google_Collection
   protected $vertexOffsetsDataType = '';
 
   /**
-   * @param Google_Service_SemanticTile_TriangleStrip
+   * @param Google_Service_SemanticTile_TriangleStrip[]
    */
   public function setStrips($strips)
   {
     $this->strips = $strips;
   }
   /**
-   * @return Google_Service_SemanticTile_TriangleStrip
+   * @return Google_Service_SemanticTile_TriangleStrip[]
    */
   public function getStrips()
   {

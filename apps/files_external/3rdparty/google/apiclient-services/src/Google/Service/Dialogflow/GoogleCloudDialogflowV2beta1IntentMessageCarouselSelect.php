@@ -22,14 +22,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageCarouse
   protected $itemsDataType = 'array';
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageCarouselSelectItem
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageCarouselSelectItem[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageCarouselSelectItem
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageCarouselSelectItem[]
    */
   public function getItems()
   {

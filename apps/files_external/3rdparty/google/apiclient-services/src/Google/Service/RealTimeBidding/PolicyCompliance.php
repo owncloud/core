@@ -31,14 +31,14 @@ class Google_Service_RealTimeBidding_PolicyCompliance extends Google_Collection
     return $this->status;
   }
   /**
-   * @param Google_Service_RealTimeBidding_PolicyTopicEntry
+   * @param Google_Service_RealTimeBidding_PolicyTopicEntry[]
    */
   public function setTopics($topics)
   {
     $this->topics = $topics;
   }
   /**
-   * @return Google_Service_RealTimeBidding_PolicyTopicEntry
+   * @return Google_Service_RealTimeBidding_PolicyTopicEntry[]
    */
   public function getTopics()
   {

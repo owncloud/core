@@ -23,14 +23,14 @@ class Google_Service_AnalyticsReporting_PivotHeader extends Google_Collection
   public $totalPivotGroupsCount;
 
   /**
-   * @param Google_Service_AnalyticsReporting_PivotHeaderEntry
+   * @param Google_Service_AnalyticsReporting_PivotHeaderEntry[]
    */
   public function setPivotHeaderEntries($pivotHeaderEntries)
   {
     $this->pivotHeaderEntries = $pivotHeaderEntries;
   }
   /**
-   * @return Google_Service_AnalyticsReporting_PivotHeaderEntry
+   * @return Google_Service_AnalyticsReporting_PivotHeaderEntry[]
    */
   public function getPivotHeaderEntries()
   {

@@ -29,7 +29,7 @@ class Google_Service_Directory_Resource_Privileges extends Google_Service_Resour
    * Retrieves a paginated list of all privileges for a customer.
    * (privileges.listPrivileges)
    *
-   * @param string $customer Immutable ID of the G Suite account.
+   * @param string $customer Immutable ID of the Google Workspace account.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_Privileges
    */

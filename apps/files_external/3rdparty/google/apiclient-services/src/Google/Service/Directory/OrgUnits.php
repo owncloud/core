@@ -40,14 +40,14 @@ class Google_Service_Directory_OrgUnits extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_Directory_OrgUnit
+   * @param Google_Service_Directory_OrgUnit[]
    */
   public function setOrganizationUnits($organizationUnits)
   {
     $this->organizationUnits = $organizationUnits;
   }
   /**
-   * @return Google_Service_Directory_OrgUnit
+   * @return Google_Service_Directory_OrgUnit[]
    */
   public function getOrganizationUnits()
   {

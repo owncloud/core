@@ -34,14 +34,14 @@ class Google_Service_Blogger_PostList extends Google_Collection
     return $this->etag;
   }
   /**
-   * @param Google_Service_Blogger_Post
+   * @param Google_Service_Blogger_Post[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Blogger_Post
+   * @return Google_Service_Blogger_Post[]
    */
   public function getItems()
   {

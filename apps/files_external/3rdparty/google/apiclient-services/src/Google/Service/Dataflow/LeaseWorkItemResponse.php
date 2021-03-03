@@ -31,14 +31,14 @@ class Google_Service_Dataflow_LeaseWorkItemResponse extends Google_Collection
     return $this->unifiedWorkerResponse;
   }
   /**
-   * @param Google_Service_Dataflow_WorkItem
+   * @param Google_Service_Dataflow_WorkItem[]
    */
   public function setWorkItems($workItems)
   {
     $this->workItems = $workItems;
   }
   /**
-   * @return Google_Service_Dataflow_WorkItem
+   * @return Google_Service_Dataflow_WorkItem[]
    */
   public function getWorkItems()
   {

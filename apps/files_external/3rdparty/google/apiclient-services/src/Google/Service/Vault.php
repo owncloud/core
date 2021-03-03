@@ -43,7 +43,7 @@ class Google_Service_Vault extends Google_Service
   public $matters_holds_accounts;
   public $matters_savedQueries;
   public $operations;
-  
+
   /**
    * Constructs the internal representation of the Vault service.
    *
@@ -127,6 +127,14 @@ class Google_Service_Vault extends Google_Service
               'path' => 'v1/matters',
               'httpMethod' => 'GET',
               'parameters' => array(
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'state' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -134,14 +142,6 @@ class Google_Service_Vault extends Google_Service
                 'view' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
                 ),
               ),
             ),'removePermissions' => array(
@@ -334,11 +334,11 @@ class Google_Service_Vault extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'view' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'view' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

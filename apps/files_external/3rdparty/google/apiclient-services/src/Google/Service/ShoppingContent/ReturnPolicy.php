@@ -26,6 +26,8 @@ class Google_Service_ShoppingContent_ReturnPolicy extends Google_Collection
   protected $policyType = 'Google_Service_ShoppingContent_ReturnPolicyPolicy';
   protected $policyDataType = '';
   public $returnPolicyId;
+  protected $returnShippingFeeType = 'Google_Service_ShoppingContent_Price';
+  protected $returnShippingFeeDataType = '';
   protected $seasonalOverridesType = 'Google_Service_ShoppingContent_ReturnPolicySeasonalOverride';
   protected $seasonalOverridesDataType = 'array';
 
@@ -92,14 +94,28 @@ class Google_Service_ShoppingContent_ReturnPolicy extends Google_Collection
     return $this->returnPolicyId;
   }
   /**
-   * @param Google_Service_ShoppingContent_ReturnPolicySeasonalOverride
+   * @param Google_Service_ShoppingContent_Price
+   */
+  public function setReturnShippingFee(Google_Service_ShoppingContent_Price $returnShippingFee)
+  {
+    $this->returnShippingFee = $returnShippingFee;
+  }
+  /**
+   * @return Google_Service_ShoppingContent_Price
+   */
+  public function getReturnShippingFee()
+  {
+    return $this->returnShippingFee;
+  }
+  /**
+   * @param Google_Service_ShoppingContent_ReturnPolicySeasonalOverride[]
    */
   public function setSeasonalOverrides($seasonalOverrides)
   {
     $this->seasonalOverrides = $seasonalOverrides;
   }
   /**
-   * @return Google_Service_ShoppingContent_ReturnPolicySeasonalOverride
+   * @return Google_Service_ShoppingContent_ReturnPolicySeasonalOverride[]
    */
   public function getSeasonalOverrides()
   {

@@ -23,14 +23,14 @@ class Google_Service_CloudRun_ListAuthorizedDomainsResponse extends Google_Colle
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudRun_AuthorizedDomain
+   * @param Google_Service_CloudRun_AuthorizedDomain[]
    */
   public function setDomains($domains)
   {
     $this->domains = $domains;
   }
   /**
-   * @return Google_Service_CloudRun_AuthorizedDomain
+   * @return Google_Service_CloudRun_AuthorizedDomain[]
    */
   public function getDomains()
   {

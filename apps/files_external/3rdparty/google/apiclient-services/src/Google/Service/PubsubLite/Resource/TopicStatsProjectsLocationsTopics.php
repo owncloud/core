@@ -26,6 +26,25 @@
 class Google_Service_PubsubLite_Resource_TopicStatsProjectsLocationsTopics extends Google_Service_Resource
 {
   /**
+   * Compute the head cursor for the partition. The head cursor’s offset is
+   * guaranteed to be before or equal to all messages which have not yet been
+   * acknowledged to be published, and greater than the offset of any message
+   * whose publish has already been acknowledged. It is 0 if there have never been
+   * messages on the partition. (topics.computeHeadCursor)
+   *
+   * @param string $topic Required. The topic for which we should compute the head
+   * cursor.
+   * @param Google_Service_PubsubLite_ComputeHeadCursorRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_PubsubLite_ComputeHeadCursorResponse
+   */
+  public function computeHeadCursor($topic, Google_Service_PubsubLite_ComputeHeadCursorRequest $postBody, $optParams = array())
+  {
+    $params = array('topic' => $topic, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('computeHeadCursor', array($params), "Google_Service_PubsubLite_ComputeHeadCursorResponse");
+  }
+  /**
    * Compute statistics about a range of messages in a given topic and partition.
    * (topics.computeMessageStats)
    *

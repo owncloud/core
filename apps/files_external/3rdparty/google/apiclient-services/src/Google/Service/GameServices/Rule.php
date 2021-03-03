@@ -37,14 +37,14 @@ class Google_Service_GameServices_Rule extends Google_Collection
     return $this->action;
   }
   /**
-   * @param Google_Service_GameServices_Condition
+   * @param Google_Service_GameServices_Condition[]
    */
   public function setConditions($conditions)
   {
     $this->conditions = $conditions;
   }
   /**
-   * @return Google_Service_GameServices_Condition
+   * @return Google_Service_GameServices_Condition[]
    */
   public function getConditions()
   {
@@ -67,14 +67,14 @@ class Google_Service_GameServices_Rule extends Google_Collection
     return $this->in;
   }
   /**
-   * @param Google_Service_GameServices_LogConfig
+   * @param Google_Service_GameServices_LogConfig[]
    */
   public function setLogConfig($logConfig)
   {
     $this->logConfig = $logConfig;
   }
   /**
-   * @return Google_Service_GameServices_LogConfig
+   * @return Google_Service_GameServices_LogConfig[]
    */
   public function getLogConfig()
   {

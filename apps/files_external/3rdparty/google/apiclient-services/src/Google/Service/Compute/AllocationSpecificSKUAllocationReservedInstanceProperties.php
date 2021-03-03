@@ -22,36 +22,45 @@ class Google_Service_Compute_AllocationSpecificSKUAllocationReservedInstanceProp
   protected $guestAcceleratorsDataType = 'array';
   protected $localSsdsType = 'Google_Service_Compute_AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk';
   protected $localSsdsDataType = 'array';
+  public $locationHint;
   public $machineType;
   public $minCpuPlatform;
 
   /**
-   * @param Google_Service_Compute_AcceleratorConfig
+   * @param Google_Service_Compute_AcceleratorConfig[]
    */
   public function setGuestAccelerators($guestAccelerators)
   {
     $this->guestAccelerators = $guestAccelerators;
   }
   /**
-   * @return Google_Service_Compute_AcceleratorConfig
+   * @return Google_Service_Compute_AcceleratorConfig[]
    */
   public function getGuestAccelerators()
   {
     return $this->guestAccelerators;
   }
   /**
-   * @param Google_Service_Compute_AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk
+   * @param Google_Service_Compute_AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk[]
    */
   public function setLocalSsds($localSsds)
   {
     $this->localSsds = $localSsds;
   }
   /**
-   * @return Google_Service_Compute_AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk
+   * @return Google_Service_Compute_AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk[]
    */
   public function getLocalSsds()
   {
     return $this->localSsds;
+  }
+  public function setLocationHint($locationHint)
+  {
+    $this->locationHint = $locationHint;
+  }
+  public function getLocationHint()
+  {
+    return $this->locationHint;
   }
   public function setMachineType($machineType)
   {

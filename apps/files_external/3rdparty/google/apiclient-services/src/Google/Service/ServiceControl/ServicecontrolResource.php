@@ -23,6 +23,7 @@ class Google_Service_ServiceControl_ServicecontrolResource extends Google_Model
   public $displayName;
   public $etag;
   public $labels;
+  public $location;
   public $name;
   public $service;
   public $type;
@@ -76,6 +77,14 @@ class Google_Service_ServiceControl_ServicecontrolResource extends Google_Model
   public function getLabels()
   {
     return $this->labels;
+  }
+  public function setLocation($location)
+  {
+    $this->location = $location;
+  }
+  public function getLocation()
+  {
+    return $this->location;
   }
   public function setName($name)
   {

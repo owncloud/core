@@ -22,14 +22,14 @@ class Google_Service_ServiceUsage_Backend extends Google_Collection
   protected $rulesDataType = 'array';
 
   /**
-   * @param Google_Service_ServiceUsage_BackendRule
+   * @param Google_Service_ServiceUsage_BackendRule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_ServiceUsage_BackendRule
+   * @return Google_Service_ServiceUsage_BackendRule[]
    */
   public function getRules()
   {

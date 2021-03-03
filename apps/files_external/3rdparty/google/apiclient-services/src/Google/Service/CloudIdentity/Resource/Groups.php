@@ -76,14 +76,6 @@ class Google_Service_CloudIdentity_Resource_Groups extends Google_Service_Resour
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The `next_page_token` value returned from a
-   * previous list request, if any.
-   * @opt_param string view The level of detail to be returned. If unspecified,
-   * defaults to `View.BASIC`.
-   * @opt_param string parent Required. The parent resource under which to list
-   * all `Group`s. Must be of the form `identitysources/{identity_source_id}` for
-   * external- identity-mapped groups or `customers/{customer_id}` for Google
-   * Groups.
    * @opt_param int pageSize The maximum number of results to return. Note that
    * the number of results returned may be less than this value even if there are
    * more available results. To fetch all results, clients must continue calling
@@ -91,6 +83,14 @@ class Google_Service_CloudIdentity_Resource_Groups extends Google_Service_Resour
    * `next_page_token`. If unspecified, defaults to 200 for `View.BASIC` and to 50
    * for `View.FULL`. Must not be greater than 1000 for `View.BASIC` or 500 for
    * `View.FULL`.
+   * @opt_param string pageToken The `next_page_token` value returned from a
+   * previous list request, if any.
+   * @opt_param string parent Required. The parent resource under which to list
+   * all `Group`s. Must be of the form `identitysources/{identity_source_id}` for
+   * external- identity-mapped groups or `customers/{customer_id}` for Google
+   * Groups.
+   * @opt_param string view The level of detail to be returned. If unspecified,
+   * defaults to `View.BASIC`.
    * @return Google_Service_CloudIdentity_ListGroupsResponse
    */
   public function listGroups($optParams = array())
@@ -106,16 +106,16 @@ class Google_Service_CloudIdentity_Resource_Groups extends Google_Service_Resour
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string groupKey.id The ID of the entity. For Google-managed
+   * entities, the `id` should be the email address of an existing group or user.
+   * For external-identity-mapped entities, the `id` must be a string conforming
+   * to the Identity Source's requirements. Must be unique within a `namespace`.
    * @opt_param string groupKey.namespace The namespace in which the entity
    * exists. If not specified, the `EntityKey` represents a Google-managed entity
    * such as a Google user or a Google Group. If specified, the `EntityKey`
    * represents an external-identity-mapped group. The namespace must correspond
    * to an identity source created in Admin Console and must be in the form of
    * `identitysources/{identity_source_id}.
-   * @opt_param string groupKey.id The ID of the entity. For Google-managed
-   * entities, the `id` should be the email address of an existing group or user.
-   * For external-identity-mapped entities, the `id` must be a string conforming
-   * to the Identity Source's requirements. Must be unique within a `namespace`.
    * @return Google_Service_CloudIdentity_LookupGroupNameResponse
    */
   public function lookup($optParams = array())
@@ -148,10 +148,6 @@ class Google_Service_CloudIdentity_Resource_Groups extends Google_Service_Resour
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The `next_page_token` value returned from a
-   * previous search request, if any.
-   * @opt_param string view The level of detail to be returned. If unspecified,
-   * defaults to `View.BASIC`.
    * @opt_param int pageSize The maximum number of results to return. Note that
    * the number of results returned may be less than this value even if there are
    * more available results. To fetch all results, clients must continue calling
@@ -159,11 +155,15 @@ class Google_Service_CloudIdentity_Resource_Groups extends Google_Service_Resour
    * `next_page_token`. If unspecified, defaults to 200 for `GroupView.BASIC` and
    * 50 for `GroupView.FULL`. Must not be greater than 1000 for `GroupView.BASIC`
    * or 500 for `GroupView.FULL`.
+   * @opt_param string pageToken The `next_page_token` value returned from a
+   * previous search request, if any.
    * @opt_param string query Required. The search query. Must be specified in
    * [Common Expression Language](https://opensource.google/projects/cel). May
    * only contain equality operators on the parent and inclusion operators on
    * labels (e.g., `parent == 'customers/{customer_id}' &&
    * 'cloudidentity.googleapis.com/groups.discussion_forum' in labels`).
+   * @opt_param string view The level of detail to be returned. If unspecified,
+   * defaults to `View.BASIC`.
    * @return Google_Service_CloudIdentity_SearchGroupsResponse
    */
   public function search($optParams = array())

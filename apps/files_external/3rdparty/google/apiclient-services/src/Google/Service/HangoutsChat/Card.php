@@ -27,14 +27,14 @@ class Google_Service_HangoutsChat_Card extends Google_Collection
   protected $sectionsDataType = 'array';
 
   /**
-   * @param Google_Service_HangoutsChat_CardAction
+   * @param Google_Service_HangoutsChat_CardAction[]
    */
   public function setCardActions($cardActions)
   {
     $this->cardActions = $cardActions;
   }
   /**
-   * @return Google_Service_HangoutsChat_CardAction
+   * @return Google_Service_HangoutsChat_CardAction[]
    */
   public function getCardActions()
   {
@@ -63,14 +63,14 @@ class Google_Service_HangoutsChat_Card extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_HangoutsChat_Section
+   * @param Google_Service_HangoutsChat_Section[]
    */
   public function setSections($sections)
   {
     $this->sections = $sections;
   }
   /**
-   * @return Google_Service_HangoutsChat_Section
+   * @return Google_Service_HangoutsChat_Section[]
    */
   public function getSections()
   {

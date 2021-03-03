@@ -32,14 +32,14 @@ class Google_Service_Compute_SslPoliciesListWarning extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_SslPoliciesListWarningData
+   * @param Google_Service_Compute_SslPoliciesListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_SslPoliciesListWarningData
+   * @return Google_Service_Compute_SslPoliciesListWarningData[]
    */
   public function getData()
   {

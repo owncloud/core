@@ -18,6 +18,7 @@
 class Google_Service_CloudTalentSolution_SpellingCorrection extends Google_Model
 {
   public $corrected;
+  public $correctedHtml;
   public $correctedText;
 
   public function setCorrected($corrected)
@@ -27,6 +28,14 @@ class Google_Service_CloudTalentSolution_SpellingCorrection extends Google_Model
   public function getCorrected()
   {
     return $this->corrected;
+  }
+  public function setCorrectedHtml($correctedHtml)
+  {
+    $this->correctedHtml = $correctedHtml;
+  }
+  public function getCorrectedHtml()
+  {
+    return $this->correctedHtml;
   }
   public function setCorrectedText($correctedText)
   {

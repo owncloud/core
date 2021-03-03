@@ -23,14 +23,14 @@ class Google_Service_GameServices_FetchDeploymentStateResponse extends Google_Co
   public $unavailable;
 
   /**
-   * @param Google_Service_GameServices_DeployedClusterState
+   * @param Google_Service_GameServices_DeployedClusterState[]
    */
   public function setClusterState($clusterState)
   {
     $this->clusterState = $clusterState;
   }
   /**
-   * @return Google_Service_GameServices_DeployedClusterState
+   * @return Google_Service_GameServices_DeployedClusterState[]
    */
   public function getClusterState()
   {

@@ -93,7 +93,7 @@ class Google_Service_DisplayVideo_Resource_AdvertisersManualTriggers extends Goo
   }
   /**
    * Lists manual triggers that are accessible to the current user for a given
-   * advertiser id. The order is defined by the order_by parameter. A single
+   * advertiser ID. The order is defined by the order_by parameter. A single
    * advertiser_id is required. (manualTriggers.listAdvertisersManualTriggers)
    *
    * @param string $advertiserId Required. The ID of the advertiser that the

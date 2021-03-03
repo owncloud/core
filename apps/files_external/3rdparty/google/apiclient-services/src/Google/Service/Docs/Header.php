@@ -23,14 +23,14 @@ class Google_Service_Docs_Header extends Google_Collection
   public $headerId;
 
   /**
-   * @param Google_Service_Docs_StructuralElement
+   * @param Google_Service_Docs_StructuralElement[]
    */
   public function setContent($content)
   {
     $this->content = $content;
   }
   /**
-   * @return Google_Service_Docs_StructuralElement
+   * @return Google_Service_Docs_StructuralElement[]
    */
   public function getContent()
   {

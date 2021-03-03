@@ -24,28 +24,28 @@ class Google_Service_AnalyticsData_Row extends Google_Collection
   protected $metricValuesDataType = 'array';
 
   /**
-   * @param Google_Service_AnalyticsData_DimensionValue
+   * @param Google_Service_AnalyticsData_DimensionValue[]
    */
   public function setDimensionValues($dimensionValues)
   {
     $this->dimensionValues = $dimensionValues;
   }
   /**
-   * @return Google_Service_AnalyticsData_DimensionValue
+   * @return Google_Service_AnalyticsData_DimensionValue[]
    */
   public function getDimensionValues()
   {
     return $this->dimensionValues;
   }
   /**
-   * @param Google_Service_AnalyticsData_MetricValue
+   * @param Google_Service_AnalyticsData_MetricValue[]
    */
   public function setMetricValues($metricValues)
   {
     $this->metricValues = $metricValues;
   }
   /**
-   * @return Google_Service_AnalyticsData_MetricValue
+   * @return Google_Service_AnalyticsData_MetricValue[]
    */
   public function getMetricValues()
   {

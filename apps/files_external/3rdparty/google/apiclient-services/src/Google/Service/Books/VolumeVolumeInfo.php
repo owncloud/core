@@ -146,14 +146,14 @@ class Google_Service_Books_VolumeVolumeInfo extends Google_Collection
     return $this->imageLinks;
   }
   /**
-   * @param Google_Service_Books_VolumeVolumeInfoIndustryIdentifiers
+   * @param Google_Service_Books_VolumeVolumeInfoIndustryIdentifiers[]
    */
   public function setIndustryIdentifiers($industryIdentifiers)
   {
     $this->industryIdentifiers = $industryIdentifiers;
   }
   /**
-   * @return Google_Service_Books_VolumeVolumeInfoIndustryIdentifiers
+   * @return Google_Service_Books_VolumeVolumeInfoIndustryIdentifiers[]
    */
   public function getIndustryIdentifiers()
   {

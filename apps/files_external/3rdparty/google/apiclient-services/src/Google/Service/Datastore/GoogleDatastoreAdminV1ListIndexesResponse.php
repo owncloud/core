@@ -23,14 +23,14 @@ class Google_Service_Datastore_GoogleDatastoreAdminV1ListIndexesResponse extends
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Datastore_GoogleDatastoreAdminV1Index
+   * @param Google_Service_Datastore_GoogleDatastoreAdminV1Index[]
    */
   public function setIndexes($indexes)
   {
     $this->indexes = $indexes;
   }
   /**
-   * @return Google_Service_Datastore_GoogleDatastoreAdminV1Index
+   * @return Google_Service_Datastore_GoogleDatastoreAdminV1Index[]
    */
   public function getIndexes()
   {

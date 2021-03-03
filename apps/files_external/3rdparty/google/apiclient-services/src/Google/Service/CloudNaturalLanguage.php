@@ -40,7 +40,7 @@ class Google_Service_CloudNaturalLanguage extends Google_Service
       "https://www.googleapis.com/auth/cloud-platform";
 
   public $documents;
-  
+
   /**
    * Constructs the internal representation of the CloudNaturalLanguage service.
    *

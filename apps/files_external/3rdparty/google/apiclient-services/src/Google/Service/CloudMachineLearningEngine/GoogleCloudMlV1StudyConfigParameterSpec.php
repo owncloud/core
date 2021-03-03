@@ -53,14 +53,14 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1StudyConfigParame
     return $this->categoricalValueSpec;
   }
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1StudyConfigParameterSpec
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1StudyConfigParameterSpec[]
    */
   public function setChildParameterSpecs($childParameterSpecs)
   {
     $this->childParameterSpecs = $childParameterSpecs;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1StudyConfigParameterSpec
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1StudyConfigParameterSpec[]
    */
   public function getChildParameterSpecs()
   {

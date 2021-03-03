@@ -25,14 +25,14 @@ class Google_Service_BinaryAuthorization_AttestationOccurrence extends Google_Co
   protected $signaturesDataType = 'array';
 
   /**
-   * @param Google_Service_BinaryAuthorization_Jwt
+   * @param Google_Service_BinaryAuthorization_Jwt[]
    */
   public function setJwts($jwts)
   {
     $this->jwts = $jwts;
   }
   /**
-   * @return Google_Service_BinaryAuthorization_Jwt
+   * @return Google_Service_BinaryAuthorization_Jwt[]
    */
   public function getJwts()
   {
@@ -47,14 +47,14 @@ class Google_Service_BinaryAuthorization_AttestationOccurrence extends Google_Co
     return $this->serializedPayload;
   }
   /**
-   * @param Google_Service_BinaryAuthorization_Signature
+   * @param Google_Service_BinaryAuthorization_Signature[]
    */
   public function setSignatures($signatures)
   {
     $this->signatures = $signatures;
   }
   /**
-   * @return Google_Service_BinaryAuthorization_Signature
+   * @return Google_Service_BinaryAuthorization_Signature[]
    */
   public function getSignatures()
   {

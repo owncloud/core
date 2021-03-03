@@ -23,6 +23,8 @@ class Google_Service_Container_AddonsConfig extends Google_Model
   protected $configConnectorConfigDataType = '';
   protected $dnsCacheConfigType = 'Google_Service_Container_DnsCacheConfig';
   protected $dnsCacheConfigDataType = '';
+  protected $gcePersistentDiskCsiDriverConfigType = 'Google_Service_Container_GcePersistentDiskCsiDriverConfig';
+  protected $gcePersistentDiskCsiDriverConfigDataType = '';
   protected $horizontalPodAutoscalingType = 'Google_Service_Container_HorizontalPodAutoscaling';
   protected $horizontalPodAutoscalingDataType = '';
   protected $httpLoadBalancingType = 'Google_Service_Container_HttpLoadBalancing';
@@ -73,6 +75,20 @@ class Google_Service_Container_AddonsConfig extends Google_Model
   public function getDnsCacheConfig()
   {
     return $this->dnsCacheConfig;
+  }
+  /**
+   * @param Google_Service_Container_GcePersistentDiskCsiDriverConfig
+   */
+  public function setGcePersistentDiskCsiDriverConfig(Google_Service_Container_GcePersistentDiskCsiDriverConfig $gcePersistentDiskCsiDriverConfig)
+  {
+    $this->gcePersistentDiskCsiDriverConfig = $gcePersistentDiskCsiDriverConfig;
+  }
+  /**
+   * @return Google_Service_Container_GcePersistentDiskCsiDriverConfig
+   */
+  public function getGcePersistentDiskCsiDriverConfig()
+  {
+    return $this->gcePersistentDiskCsiDriverConfig;
   }
   /**
    * @param Google_Service_Container_HorizontalPodAutoscaling

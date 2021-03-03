@@ -17,9 +17,19 @@
 
 class Google_Service_Area120Tables_Row extends Google_Model
 {
+  public $createTime;
   public $name;
+  public $updateTime;
   public $values;
 
+  public function setCreateTime($createTime)
+  {
+    $this->createTime = $createTime;
+  }
+  public function getCreateTime()
+  {
+    return $this->createTime;
+  }
   public function setName($name)
   {
     $this->name = $name;
@@ -27,6 +37,14 @@ class Google_Service_Area120Tables_Row extends Google_Model
   public function getName()
   {
     return $this->name;
+  }
+  public function setUpdateTime($updateTime)
+  {
+    $this->updateTime = $updateTime;
+  }
+  public function getUpdateTime()
+  {
+    return $this->updateTime;
   }
   public function setValues($values)
   {

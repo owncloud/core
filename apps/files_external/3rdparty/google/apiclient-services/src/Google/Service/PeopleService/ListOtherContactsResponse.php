@@ -40,14 +40,14 @@ class Google_Service_PeopleService_ListOtherContactsResponse extends Google_Coll
     return $this->nextSyncToken;
   }
   /**
-   * @param Google_Service_PeopleService_Person
+   * @param Google_Service_PeopleService_Person[]
    */
   public function setOtherContacts($otherContacts)
   {
     $this->otherContacts = $otherContacts;
   }
   /**
-   * @return Google_Service_PeopleService_Person
+   * @return Google_Service_PeopleService_Person[]
    */
   public function getOtherContacts()
   {

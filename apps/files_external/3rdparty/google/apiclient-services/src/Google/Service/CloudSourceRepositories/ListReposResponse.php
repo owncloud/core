@@ -31,14 +31,14 @@ class Google_Service_CloudSourceRepositories_ListReposResponse extends Google_Co
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_CloudSourceRepositories_Repo
+   * @param Google_Service_CloudSourceRepositories_Repo[]
    */
   public function setRepos($repos)
   {
     $this->repos = $repos;
   }
   /**
-   * @return Google_Service_CloudSourceRepositories_Repo
+   * @return Google_Service_CloudSourceRepositories_Repo[]
    */
   public function getRepos()
   {

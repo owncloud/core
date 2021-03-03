@@ -48,20 +48,20 @@ class Google_Service_Dfareporting_Resource_Orders extends Google_Service_Resourc
    * @param string $projectId Project ID for orders.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string siteId Select only orders that are associated with these
-   * site IDs.
    * @opt_param string ids Select only orders with these IDs.
-   * @opt_param string sortOrder Order of sorted results.
+   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string pageToken Value of the nextPageToken from the previous
    * result page.
-   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string searchString Allows searching for orders by name or ID.
    * Wildcards (*) are allowed. For example, "order*2015" will return orders with
    * names like "order June 2015", "order April 2015", or simply "order 2015".
    * Most of the searches also add wildcards implicitly at the start and the end
    * of the search string. For example, a search string of "order" will match
    * orders with name "my order", "order 2015", or simply "order".
+   * @opt_param string siteId Select only orders that are associated with these
+   * site IDs.
    * @opt_param string sortField Field by which to sort the list.
+   * @opt_param string sortOrder Order of sorted results.
    * @return Google_Service_Dfareporting_OrdersListResponse
    */
   public function listOrders($profileId, $projectId, $optParams = array())

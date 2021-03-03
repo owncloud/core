@@ -32,14 +32,14 @@ class Google_Service_Compute_DisksScopedListWarning extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_DisksScopedListWarningData
+   * @param Google_Service_Compute_DisksScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_DisksScopedListWarningData
+   * @return Google_Service_Compute_DisksScopedListWarningData[]
    */
   public function getData()
   {

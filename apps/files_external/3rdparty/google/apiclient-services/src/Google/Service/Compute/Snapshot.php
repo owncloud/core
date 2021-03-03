@@ -30,7 +30,9 @@ class Google_Service_Compute_Snapshot extends Google_Collection
   public $labels;
   public $licenseCodes;
   public $licenses;
+  public $locationHint;
   public $name;
+  public $satisfiesPzs;
   public $selfLink;
   protected $snapshotEncryptionKeyType = 'Google_Service_Compute_CustomerEncryptionKey';
   protected $snapshotEncryptionKeyDataType = '';
@@ -139,6 +141,14 @@ class Google_Service_Compute_Snapshot extends Google_Collection
   {
     return $this->licenses;
   }
+  public function setLocationHint($locationHint)
+  {
+    $this->locationHint = $locationHint;
+  }
+  public function getLocationHint()
+  {
+    return $this->locationHint;
+  }
   public function setName($name)
   {
     $this->name = $name;
@@ -146,6 +156,14 @@ class Google_Service_Compute_Snapshot extends Google_Collection
   public function getName()
   {
     return $this->name;
+  }
+  public function setSatisfiesPzs($satisfiesPzs)
+  {
+    $this->satisfiesPzs = $satisfiesPzs;
+  }
+  public function getSatisfiesPzs()
+  {
+    return $this->satisfiesPzs;
   }
   public function setSelfLink($selfLink)
   {

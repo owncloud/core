@@ -36,14 +36,14 @@ class Google_Service_AndroidEnterprise_WebApp extends Google_Collection
     return $this->displayMode;
   }
   /**
-   * @param Google_Service_AndroidEnterprise_WebAppIcon
+   * @param Google_Service_AndroidEnterprise_WebAppIcon[]
    */
   public function setIcons($icons)
   {
     $this->icons = $icons;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_WebAppIcon
+   * @return Google_Service_AndroidEnterprise_WebAppIcon[]
    */
   public function getIcons()
   {

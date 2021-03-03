@@ -23,14 +23,14 @@ class Google_Service_CloudIot_ListDeviceRegistriesResponse extends Google_Collec
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudIot_DeviceRegistry
+   * @param Google_Service_CloudIot_DeviceRegistry[]
    */
   public function setDeviceRegistries($deviceRegistries)
   {
     $this->deviceRegistries = $deviceRegistries;
   }
   /**
-   * @return Google_Service_CloudIot_DeviceRegistry
+   * @return Google_Service_CloudIot_DeviceRegistry[]
    */
   public function getDeviceRegistries()
   {

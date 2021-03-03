@@ -29,7 +29,7 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocations extends Goog
    * Retrieves a BI reservation. (locations.getBiReservation)
    *
    * @param string $name Required. Name of the requested reservation, for example:
-   * `projects/{project_id}/locations/{location_id}/bireservation`
+   * `projects/{project_id}/locations/{location_id}/biReservation`
    * @param array $optParams Optional parameters.
    * @return Google_Service_BigQueryReservation_BiReservation
    */
@@ -57,9 +57,9 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocations extends Goog
    * could be the wildcard '-'), e.g.: `projects/-/locations/US`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of items to return per page.
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.
-   * @opt_param int pageSize The maximum number of items to return per page.
    * @opt_param string query Please specify resource name as assignee in the
    * query. Examples: * `assignee=projects/myproject` * `assignee=folders/123` *
    * `assignee=organizations/456`
@@ -90,9 +90,9 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocations extends Goog
    * `projects/myproject/locations/US`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of items to return per page.
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.
-   * @opt_param int pageSize The maximum number of items to return per page.
    * @opt_param string query Please specify resource name as assignee in the
    * query. Examples: * `assignee=projects/myproject` * `assignee=folders/123` *
    * `assignee=organizations/456`
@@ -113,7 +113,7 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocations extends Goog
    *
    * @param string $name The resource name of the singleton BI reservation.
    * Reservation names have the form
-   * `projects/{project_id}/locations/{location_id}/bireservation`.
+   * `projects/{project_id}/locations/{location_id}/biReservation`.
    * @param Google_Service_BigQueryReservation_BiReservation $postBody
    * @param array $optParams Optional parameters.
    *

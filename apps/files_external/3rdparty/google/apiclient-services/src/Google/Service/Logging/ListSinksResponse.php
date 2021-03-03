@@ -31,14 +31,14 @@ class Google_Service_Logging_ListSinksResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Logging_LogSink
+   * @param Google_Service_Logging_LogSink[]
    */
   public function setSinks($sinks)
   {
     $this->sinks = $sinks;
   }
   /**
-   * @return Google_Service_Logging_LogSink
+   * @return Google_Service_Logging_LogSink[]
    */
   public function getSinks()
   {

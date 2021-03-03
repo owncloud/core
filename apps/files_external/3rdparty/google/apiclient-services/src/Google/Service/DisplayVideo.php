@@ -37,7 +37,7 @@ class Google_Service_DisplayVideo extends Google_Service
   /** Create, see, and edit Display & Video 360 Campaign entities and see billing invoices. */
   const DISPLAY_VIDEO_MEDIAPLANNING =
       "https://www.googleapis.com/auth/display-video-mediaplanning";
-  /** New Service: https://www.googleapis.com/auth/display-video-user-management. */
+  /** Private Service: https://www.googleapis.com/auth/display-video-user-management. */
   const DISPLAY_VIDEO_USER_MANAGEMENT =
       "https://www.googleapis.com/auth/display-video-user-management";
   /** View and manage your reports in DoubleClick Bid Manager. */
@@ -51,6 +51,7 @@ class Google_Service_DisplayVideo extends Google_Service
   public $advertisers_channels_sites;
   public $advertisers_creatives;
   public $advertisers_insertionOrders;
+  public $advertisers_insertionOrders_targetingTypes_assignedTargetingOptions;
   public $advertisers_lineItems;
   public $advertisers_lineItems_targetingTypes_assignedTargetingOptions;
   public $advertisers_locationLists;
@@ -77,7 +78,7 @@ class Google_Service_DisplayVideo extends Google_Service
   public $sdfdownloadtasks_operations;
   public $targetingTypes_targetingOptions;
   public $users;
-  
+
   /**
    * Constructs the internal representation of the DisplayVideo service.
    *
@@ -136,7 +137,7 @@ class Google_Service_DisplayVideo extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -144,7 +145,7 @@ class Google_Service_DisplayVideo extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'orderBy' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -177,7 +178,7 @@ class Google_Service_DisplayVideo extends Google_Service
               'path' => 'v1/advertisers',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageToken' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -185,17 +186,17 @@ class Google_Service_DisplayVideo extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'filter' => array(
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'partnerId' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
                 ),
               ),
             ),'patch' => array(
@@ -291,7 +292,11 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -299,11 +304,7 @@ class Google_Service_DisplayVideo extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'filter' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'orderBy' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -379,11 +380,11 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'orderBy' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -391,7 +392,7 @@ class Google_Service_DisplayVideo extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'filter' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -414,11 +415,11 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'updateMask' => array(
+                'partnerId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'partnerId' => array(
+                'updateMask' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -509,14 +510,6 @@ class Google_Service_DisplayVideo extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'partnerId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -524,6 +517,14 @@ class Google_Service_DisplayVideo extends Google_Service
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'partnerId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -585,17 +586,17 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
+                'filter' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
                 ),
                 'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'filter' => array(
+                'pageSize' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'integer',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
@@ -631,7 +632,38 @@ class Google_Service_DisplayVideo extends Google_Service
         'insertionOrders',
         array(
           'methods' => array(
-            'create' => array(
+            'bulkListInsertionOrderAssignedTargetingOptions' => array(
+              'path' => 'v1/advertisers/{+advertiserId}/insertionOrders/{+insertionOrderId}:bulkListInsertionOrderAssignedTargetingOptions',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'advertiserId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'insertionOrderId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),'create' => array(
               'path' => 'v1/advertisers/{+advertiserId}/insertionOrders',
               'httpMethod' => 'POST',
               'parameters' => array(
@@ -680,10 +712,6 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -691,6 +719,10 @@ class Google_Service_DisplayVideo extends Google_Service
                 'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
@@ -712,6 +744,77 @@ class Google_Service_DisplayVideo extends Google_Service
                   'required' => true,
                 ),
                 'updateMask' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->advertisers_insertionOrders_targetingTypes_assignedTargetingOptions = new Google_Service_DisplayVideo_Resource_AdvertisersInsertionOrdersTargetingTypesAssignedTargetingOptions(
+        $this,
+        $this->serviceName,
+        'assignedTargetingOptions',
+        array(
+          'methods' => array(
+            'get' => array(
+              'path' => 'v1/advertisers/{+advertiserId}/insertionOrders/{+insertionOrderId}/targetingTypes/{+targetingType}/assignedTargetingOptions/{+assignedTargetingOptionId}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'advertiserId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'insertionOrderId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'targetingType' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'assignedTargetingOptionId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'v1/advertisers/{+advertiserId}/insertionOrders/{+insertionOrderId}/targetingTypes/{+targetingType}/assignedTargetingOptions',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'advertiserId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'insertionOrderId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'targetingType' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -821,6 +924,10 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -828,10 +935,6 @@ class Google_Service_DisplayVideo extends Google_Service
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
-                ),
-                'filter' => array(
-                  'location' => 'query',
-                  'type' => 'string',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
@@ -956,7 +1059,11 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -964,11 +1071,7 @@ class Google_Service_DisplayVideo extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'orderBy' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'filter' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1017,19 +1120,19 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1127,17 +1230,17 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
+                'filter' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
                 ),
                 'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'filter' => array(
+                'pageSize' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'integer',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
@@ -1419,13 +1522,13 @@ class Google_Service_DisplayVideo extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
@@ -1511,21 +1614,21 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'orderBy' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -1547,11 +1650,11 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'partnerId' => array(
+                'advertiserId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'advertiserId' => array(
+                'partnerId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1560,11 +1663,11 @@ class Google_Service_DisplayVideo extends Google_Service
               'path' => 'v1/combinedAudiences',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'partnerId' => array(
+                'advertiserId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1576,11 +1679,11 @@ class Google_Service_DisplayVideo extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'filter' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'advertiserId' => array(
+                'partnerId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1604,11 +1707,11 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'partnerId' => array(
+                'advertiserId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'advertiserId' => array(
+                'partnerId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1617,19 +1720,7 @@ class Google_Service_DisplayVideo extends Google_Service
               'path' => 'v1/customBiddingAlgorithms',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'orderBy' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'advertiserId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'partnerId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1637,7 +1728,19 @@ class Google_Service_DisplayVideo extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
                 'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'partnerId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1670,14 +1773,6 @@ class Google_Service_DisplayVideo extends Google_Service
               'path' => 'v1/customLists',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'advertiserId' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -1687,6 +1782,14 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'string',
                 ),
                 'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1710,11 +1813,11 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'partnerId' => array(
+                'advertiserId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'advertiserId' => array(
+                'partnerId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1727,11 +1830,7 @@ class Google_Service_DisplayVideo extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'partnerId' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1739,13 +1838,17 @@ class Google_Service_DisplayVideo extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'filter' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'partnerId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -1822,27 +1925,27 @@ class Google_Service_DisplayVideo extends Google_Service
               'path' => 'v1/googleAudiences',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageSize' => array(
+                'advertiserId' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
                 ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'advertiserId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'partnerId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1861,11 +1964,11 @@ class Google_Service_DisplayVideo extends Google_Service
               'path' => 'v1/inventorySourceGroups',
               'httpMethod' => 'POST',
               'parameters' => array(
-                'partnerId' => array(
+                'advertiserId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'advertiserId' => array(
+                'partnerId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1910,15 +2013,15 @@ class Google_Service_DisplayVideo extends Google_Service
               'path' => 'v1/inventorySourceGroups',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'orderBy' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'advertiserId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1926,11 +2029,11 @@ class Google_Service_DisplayVideo extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'partnerId' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'filter' => array(
+                'partnerId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1986,11 +2089,11 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'partnerId' => array(
+                'advertiserId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'advertiserId' => array(
+                'partnerId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -2027,11 +2130,15 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'orderBy' => array(
+                'advertiserId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'advertiserId' => array(
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -2039,15 +2146,11 @@ class Google_Service_DisplayVideo extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'partnerId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'filter' => array(
+                'partnerId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -2080,7 +2183,7 @@ class Google_Service_DisplayVideo extends Google_Service
               'path' => 'v1/inventorySources',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageToken' => array(
+                'advertiserId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -2088,7 +2191,7 @@ class Google_Service_DisplayVideo extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'advertiserId' => array(
+                'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -2096,11 +2199,11 @@ class Google_Service_DisplayVideo extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'partnerId' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'orderBy' => array(
+                'partnerId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -2163,13 +2266,13 @@ class Google_Service_DisplayVideo extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
@@ -2232,21 +2335,21 @@ class Google_Service_DisplayVideo extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'orderBy' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'patch' => array(
@@ -2354,6 +2457,10 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'advertiserId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -2367,10 +2474,6 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'integer',
                 ),
                 'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'advertiserId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -2454,7 +2557,7 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -2462,13 +2565,13 @@ class Google_Service_DisplayVideo extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'filter' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -2543,15 +2646,7 @@ class Google_Service_DisplayVideo extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'advertiserId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -2562,6 +2657,24 @@ class Google_Service_DisplayVideo extends Google_Service
                 'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),'search' => array(
+              'path' => 'v1/targetingTypes/{+targetingType}/targetingOptions:search',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'targetingType' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ),
               ),
             ),
@@ -2612,19 +2725,19 @@ class Google_Service_DisplayVideo extends Google_Service
               'path' => 'v1/users',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'orderBy' => array(
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

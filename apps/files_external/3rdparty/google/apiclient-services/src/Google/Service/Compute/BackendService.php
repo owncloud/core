@@ -31,6 +31,7 @@ class Google_Service_Compute_BackendService extends Google_Collection
   protected $consistentHashDataType = '';
   public $creationTimestamp;
   public $customRequestHeaders;
+  public $customResponseHeaders;
   public $description;
   public $enableCDN;
   protected $failoverPolicyType = 'Google_Service_Compute_BackendServiceFailoverPolicy';
@@ -69,14 +70,14 @@ class Google_Service_Compute_BackendService extends Google_Collection
     return $this->affinityCookieTtlSec;
   }
   /**
-   * @param Google_Service_Compute_Backend
+   * @param Google_Service_Compute_Backend[]
    */
   public function setBackends($backends)
   {
     $this->backends = $backends;
   }
   /**
-   * @return Google_Service_Compute_Backend
+   * @return Google_Service_Compute_Backend[]
    */
   public function getBackends()
   {
@@ -153,6 +154,14 @@ class Google_Service_Compute_BackendService extends Google_Collection
   public function getCustomRequestHeaders()
   {
     return $this->customRequestHeaders;
+  }
+  public function setCustomResponseHeaders($customResponseHeaders)
+  {
+    $this->customResponseHeaders = $customResponseHeaders;
+  }
+  public function getCustomResponseHeaders()
+  {
+    return $this->customResponseHeaders;
   }
   public function setDescription($description)
   {

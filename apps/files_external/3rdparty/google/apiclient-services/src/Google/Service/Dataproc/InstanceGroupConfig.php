@@ -35,14 +35,14 @@ class Google_Service_Dataproc_InstanceGroupConfig extends Google_Collection
   public $preemptibility;
 
   /**
-   * @param Google_Service_Dataproc_AcceleratorConfig
+   * @param Google_Service_Dataproc_AcceleratorConfig[]
    */
   public function setAccelerators($accelerators)
   {
     $this->accelerators = $accelerators;
   }
   /**
-   * @return Google_Service_Dataproc_AcceleratorConfig
+   * @return Google_Service_Dataproc_AcceleratorConfig[]
    */
   public function getAccelerators()
   {
@@ -79,14 +79,14 @@ class Google_Service_Dataproc_InstanceGroupConfig extends Google_Collection
     return $this->instanceNames;
   }
   /**
-   * @param Google_Service_Dataproc_InstanceReference
+   * @param Google_Service_Dataproc_InstanceReference[]
    */
   public function setInstanceReferences($instanceReferences)
   {
     $this->instanceReferences = $instanceReferences;
   }
   /**
-   * @return Google_Service_Dataproc_InstanceReference
+   * @return Google_Service_Dataproc_InstanceReference[]
    */
   public function getInstanceReferences()
   {

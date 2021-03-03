@@ -38,7 +38,10 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsReservationsA
    * exist at higher levels. Example: * The organization `organizationA` contains
    * two projects, `project1` and `project2`. * Assignments for all three entities
    * (`organizationA`, `project1`, and `project2`) could all be created and mapped
-   * to the same or different reservations. Returns
+   * to the same or different reservations. "None" assignments represent an
+   * absence of the assignment. Projects assigned to None use on-demand pricing.
+   * To create a "None" assignment, use "none" as a reservation_id in the parent.
+   * Example parent: `projects/myproject/locations/US/reservations/none`. Returns
    * `google.rpc.Code.PERMISSION_DENIED` if user does not have 'bigquery.admin'
    * permissions on the project using the reservation and the project that owns
    * this reservation. Returns `google.rpc.Code.INVALID_ARGUMENT` when location of
@@ -95,9 +98,9 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsReservationsA
    * `projects/myproject/locations/US/reservations/-`
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of items to return per page.
    * @opt_param string pageToken The next_page_token value returned from a
    * previous List request, if any.
-   * @opt_param int pageSize The maximum number of items to return per page.
    * @return Google_Service_BigQueryReservation_ListAssignmentsResponse
    */
   public function listProjectsLocationsReservationsAssignments($parent, $optParams = array())

@@ -54,14 +54,14 @@ class Google_Service_CertificateAuthorityService_KeyUsage extends Google_Collect
     return $this->extendedKeyUsage;
   }
   /**
-   * @param Google_Service_CertificateAuthorityService_ObjectId
+   * @param Google_Service_CertificateAuthorityService_ObjectId[]
    */
   public function setUnknownExtendedKeyUsages($unknownExtendedKeyUsages)
   {
     $this->unknownExtendedKeyUsages = $unknownExtendedKeyUsages;
   }
   /**
-   * @return Google_Service_CertificateAuthorityService_ObjectId
+   * @return Google_Service_CertificateAuthorityService_ObjectId[]
    */
   public function getUnknownExtendedKeyUsages()
   {

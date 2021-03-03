@@ -31,15 +31,15 @@ class Google_Service_Safebrowsing_Resource_EncodedFullHashes extends Google_Serv
    * @param string $encodedRequest A serialized FindFullHashesRequest proto.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string clientVersion The version of the client implementation.
    * @opt_param string clientId A client ID that (hopefully) uniquely identifies
    * the client implementation of the Safe Browsing API.
-   * @return Google_Service_Safebrowsing_FindFullHashesResponse
+   * @opt_param string clientVersion The version of the client implementation.
+   * @return Google_Service_Safebrowsing_GoogleSecuritySafebrowsingV4FindFullHashesResponse
    */
   public function get($encodedRequest, $optParams = array())
   {
     $params = array('encodedRequest' => $encodedRequest);
     $params = array_merge($params, $optParams);
-    return $this->call('get', array($params), "Google_Service_Safebrowsing_FindFullHashesResponse");
+    return $this->call('get', array($params), "Google_Service_Safebrowsing_GoogleSecuritySafebrowsingV4FindFullHashesResponse");
   }
 }

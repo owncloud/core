@@ -28,7 +28,8 @@ class Google_Service_Directory_Resource_CustomerDevicesChromeosCommands extends 
   /**
    * Gets command data a specific command issued to the device. (commands.get)
    *
-   * @param string $customerId Immutable. Immutable ID of the G Suite account.
+   * @param string $customerId Immutable. Immutable ID of the Google Workspace
+   * account.
    * @param string $deviceId Immutable. Immutable ID of Chrome OS Device.
    * @param string $commandId Immutable. Immutable ID of Chrome OS Device Command.
    * @param array $optParams Optional parameters.

@@ -1,0 +1,10 @@
+Change: Update dependencies in apps/files_external/3rdparty
+
+The following dependencies were updated:
+  - Upgrading firebase/php-jwt (v5.2.0 => v5.2.1)
+  - Upgrading google/apiclient-services (v0.153 => v0.162.0)
+  - Upgrading google/auth (v1.14.3 => v1.15.0)
+  - Upgrading monolog/monolog (2.1.1 => 2.2.0)
+  - Upgrading phpseclib/phpseclib (2.0.29 => 2.0.30)
+
+https://github.com/owncloud/core/pull/38462

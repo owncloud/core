@@ -29,14 +29,14 @@ class Google_Service_Analytics_RemarketingAudiences extends Google_Collection
   public $username;
 
   /**
-   * @param Google_Service_Analytics_RemarketingAudience
+   * @param Google_Service_Analytics_RemarketingAudience[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Analytics_RemarketingAudience
+   * @return Google_Service_Analytics_RemarketingAudience[]
    */
   public function getItems()
   {

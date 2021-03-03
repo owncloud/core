@@ -37,7 +37,7 @@ class Google_Service_FirebaseDynamicLinks extends Google_Service
   public $managedShortLinks;
   public $shortLinks;
   public $v1;
-  
+
   /**
    * Constructs the internal representation of the FirebaseDynamicLinks service.
    *

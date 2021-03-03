@@ -45,14 +45,14 @@ class Google_Service_Compute_ResourcePolicyList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_ResourcePolicy
+   * @param Google_Service_Compute_ResourcePolicy[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_ResourcePolicy
+   * @return Google_Service_Compute_ResourcePolicy[]
    */
   public function getItems()
   {

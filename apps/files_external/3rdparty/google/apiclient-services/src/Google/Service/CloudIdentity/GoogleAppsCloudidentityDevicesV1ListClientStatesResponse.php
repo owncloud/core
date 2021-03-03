@@ -23,14 +23,14 @@ class Google_Service_CloudIdentity_GoogleAppsCloudidentityDevicesV1ListClientSta
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudIdentity_GoogleAppsCloudidentityDevicesV1ClientState
+   * @param Google_Service_CloudIdentity_GoogleAppsCloudidentityDevicesV1ClientState[]
    */
   public function setClientStates($clientStates)
   {
     $this->clientStates = $clientStates;
   }
   /**
-   * @return Google_Service_CloudIdentity_GoogleAppsCloudidentityDevicesV1ClientState
+   * @return Google_Service_CloudIdentity_GoogleAppsCloudidentityDevicesV1ClientState[]
    */
   public function getClientStates()
   {

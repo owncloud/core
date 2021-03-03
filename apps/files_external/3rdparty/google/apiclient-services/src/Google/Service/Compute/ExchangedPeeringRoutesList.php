@@ -36,14 +36,14 @@ class Google_Service_Compute_ExchangedPeeringRoutesList extends Google_Collectio
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_ExchangedPeeringRoute
+   * @param Google_Service_Compute_ExchangedPeeringRoute[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_ExchangedPeeringRoute
+   * @return Google_Service_Compute_ExchangedPeeringRoute[]
    */
   public function getItems()
   {

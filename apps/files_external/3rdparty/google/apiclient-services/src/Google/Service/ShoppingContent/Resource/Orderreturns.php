@@ -89,36 +89,36 @@ class Google_Service_ShoppingContent_Resource_Orderreturns extends Google_Servic
    * acknowledgement status. We recommend using this filter set to `false`, in
    * conjunction with the `acknowledge` call, such that only un-acknowledged order
    * returns are returned.
-   * @opt_param string shipmentStatus Obtains order returns that match any
-   * shipment status provided in this parameter. When this parameter is not
-   * provided, order returns are obtained regardless of their shipment statuses.
    * @opt_param string createdEndDate Obtains order returns created before this
    * date (inclusively), in ISO 8601 format.
    * @opt_param string createdStartDate Obtains order returns created after this
    * date (inclusively), in ISO 8601 format.
-   * @opt_param string pageToken The token returned by the previous request.
-   * @opt_param string maxResults The maximum number of order returns to return in
-   * the response, used for paging. The default value is 25 returns per page, and
-   * the maximum allowed value is 250 returns per page.
-   * @opt_param string shipmentTrackingNumbers Obtains order returns with the
-   * specified tracking numbers. If this parameter is provided, createdStartDate,
-   * createdEndDate, shipmentType, shipmentStatus, shipmentState and acknowledged
-   * parameters must be not set. Note: if googleOrderId and shipmentTrackingNumber
-   * parameters are provided, the obtained results will include all order returns
-   * that either match the specified order id or the specified tracking number.
-   * @opt_param string shipmentStates Obtains order returns that match any
-   * shipment state provided in this parameter. When this parameter is not
-   * provided, order returns are obtained regardless of their shipment states.
    * @opt_param string googleOrderIds Obtains order returns with the specified
    * order ids. If this parameter is provided, createdStartDate, createdEndDate,
    * shipmentType, shipmentStatus, shipmentState and acknowledged parameters must
    * be not set. Note: if googleOrderId and shipmentTrackingNumber parameters are
    * provided, the obtained results will include all order returns that either
    * match the specified order id or the specified tracking number.
+   * @opt_param string maxResults The maximum number of order returns to return in
+   * the response, used for paging. The default value is 25 returns per page, and
+   * the maximum allowed value is 250 returns per page.
+   * @opt_param string orderBy Return the results in the specified order.
+   * @opt_param string pageToken The token returned by the previous request.
+   * @opt_param string shipmentStates Obtains order returns that match any
+   * shipment state provided in this parameter. When this parameter is not
+   * provided, order returns are obtained regardless of their shipment states.
+   * @opt_param string shipmentStatus Obtains order returns that match any
+   * shipment status provided in this parameter. When this parameter is not
+   * provided, order returns are obtained regardless of their shipment statuses.
+   * @opt_param string shipmentTrackingNumbers Obtains order returns with the
+   * specified tracking numbers. If this parameter is provided, createdStartDate,
+   * createdEndDate, shipmentType, shipmentStatus, shipmentState and acknowledged
+   * parameters must be not set. Note: if googleOrderId and shipmentTrackingNumber
+   * parameters are provided, the obtained results will include all order returns
+   * that either match the specified order id or the specified tracking number.
    * @opt_param string shipmentTypes Obtains order returns that match any shipment
    * type provided in this parameter. When this parameter is not provided, order
    * returns are obtained regardless of their shipment types.
-   * @opt_param string orderBy Return the results in the specified order.
    * @return Google_Service_ShoppingContent_OrderreturnsListResponse
    */
   public function listOrderreturns($merchantId, $optParams = array())

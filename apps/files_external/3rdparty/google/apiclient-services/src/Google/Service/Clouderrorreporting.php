@@ -40,7 +40,7 @@ class Google_Service_Clouderrorreporting extends Google_Service
   public $projects_events;
   public $projects_groupStats;
   public $projects_groups;
-  
+
   /**
    * Constructs the internal representation of the Clouderrorreporting service.
    *
@@ -91,7 +91,7 @@ class Google_Service_Clouderrorreporting extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'groupId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -99,7 +99,11 @@ class Google_Service_Clouderrorreporting extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'groupId' => array(
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'serviceFilter.resourceType' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -108,10 +112,6 @@ class Google_Service_Clouderrorreporting extends Google_Service
                   'type' => 'string',
                 ),
                 'serviceFilter.version' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'serviceFilter.resourceType' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -149,7 +149,7 @@ class Google_Service_Clouderrorreporting extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'alignment' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -157,11 +157,12 @@ class Google_Service_Clouderrorreporting extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'order' => array(
+                'groupId' => array(
                   'location' => 'query',
                   'type' => 'string',
+                  'repeated' => true,
                 ),
-                'serviceFilter.resourceType' => array(
+                'order' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -169,12 +170,11 @@ class Google_Service_Clouderrorreporting extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'groupId' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
-                  'repeated' => true,
                 ),
-                'serviceFilter.version' => array(
+                'serviceFilter.resourceType' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -182,7 +182,7 @@ class Google_Service_Clouderrorreporting extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'timedCountDuration' => array(
+                'serviceFilter.version' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -190,7 +190,7 @@ class Google_Service_Clouderrorreporting extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'alignment' => array(
+                'timedCountDuration' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

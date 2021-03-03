@@ -24,7 +24,10 @@ class Google_Service_Compute_NodeGroup extends Google_Model
   public $fingerprint;
   public $id;
   public $kind;
+  public $locationHint;
   public $maintenancePolicy;
+  protected $maintenanceWindowType = 'Google_Service_Compute_NodeGroupMaintenanceWindow';
+  protected $maintenanceWindowDataType = '';
   public $name;
   public $nodeTemplate;
   public $selfLink;
@@ -86,6 +89,14 @@ class Google_Service_Compute_NodeGroup extends Google_Model
   {
     return $this->kind;
   }
+  public function setLocationHint($locationHint)
+  {
+    $this->locationHint = $locationHint;
+  }
+  public function getLocationHint()
+  {
+    return $this->locationHint;
+  }
   public function setMaintenancePolicy($maintenancePolicy)
   {
     $this->maintenancePolicy = $maintenancePolicy;
@@ -93,6 +104,20 @@ class Google_Service_Compute_NodeGroup extends Google_Model
   public function getMaintenancePolicy()
   {
     return $this->maintenancePolicy;
+  }
+  /**
+   * @param Google_Service_Compute_NodeGroupMaintenanceWindow
+   */
+  public function setMaintenanceWindow(Google_Service_Compute_NodeGroupMaintenanceWindow $maintenanceWindow)
+  {
+    $this->maintenanceWindow = $maintenanceWindow;
+  }
+  /**
+   * @return Google_Service_Compute_NodeGroupMaintenanceWindow
+   */
+  public function getMaintenanceWindow()
+  {
+    return $this->maintenanceWindow;
   }
   public function setName($name)
   {

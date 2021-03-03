@@ -112,14 +112,14 @@ class Google_Service_Compute_VpnGateway extends Google_Collection
     return $this->selfLink;
   }
   /**
-   * @param Google_Service_Compute_VpnGatewayVpnGatewayInterface
+   * @param Google_Service_Compute_VpnGatewayVpnGatewayInterface[]
    */
   public function setVpnInterfaces($vpnInterfaces)
   {
     $this->vpnInterfaces = $vpnInterfaces;
   }
   /**
-   * @return Google_Service_Compute_VpnGatewayVpnGatewayInterface
+   * @return Google_Service_Compute_VpnGatewayVpnGatewayInterface[]
    */
   public function getVpnInterfaces()
   {

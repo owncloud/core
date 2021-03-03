@@ -22,14 +22,14 @@ class Google_Service_Slides_Group extends Google_Collection
   protected $childrenDataType = 'array';
 
   /**
-   * @param Google_Service_Slides_PageElement
+   * @param Google_Service_Slides_PageElement[]
    */
   public function setChildren($children)
   {
     $this->children = $children;
   }
   /**
-   * @return Google_Service_Slides_PageElement
+   * @return Google_Service_Slides_PageElement[]
    */
   public function getChildren()
   {

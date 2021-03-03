@@ -43,14 +43,14 @@ class Google_Service_Logging_MonitoredResourceDescriptor extends Google_Collecti
     return $this->displayName;
   }
   /**
-   * @param Google_Service_Logging_LabelDescriptor
+   * @param Google_Service_Logging_LabelDescriptor[]
    */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
   /**
-   * @return Google_Service_Logging_LabelDescriptor
+   * @return Google_Service_Logging_LabelDescriptor[]
    */
   public function getLabels()
   {

@@ -92,14 +92,14 @@ class Google_Service_AdExchangeBuyer_Product extends Google_Collection
     return $this->creationTimeMs;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_ContactInformation
+   * @param Google_Service_AdExchangeBuyer_ContactInformation[]
    */
   public function setCreatorContacts($creatorContacts)
   {
     $this->creatorContacts = $creatorContacts;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_ContactInformation
+   * @return Google_Service_AdExchangeBuyer_ContactInformation[]
    */
   public function getCreatorContacts()
   {
@@ -168,14 +168,14 @@ class Google_Service_AdExchangeBuyer_Product extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_MarketplaceLabel
+   * @param Google_Service_AdExchangeBuyer_MarketplaceLabel[]
    */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_MarketplaceLabel
+   * @return Google_Service_AdExchangeBuyer_MarketplaceLabel[]
    */
   public function getLabels()
   {
@@ -274,14 +274,14 @@ class Google_Service_AdExchangeBuyer_Product extends Google_Collection
     return $this->seller;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_SharedTargeting
+   * @param Google_Service_AdExchangeBuyer_SharedTargeting[]
    */
   public function setSharedTargetings($sharedTargetings)
   {
     $this->sharedTargetings = $sharedTargetings;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_SharedTargeting
+   * @return Google_Service_AdExchangeBuyer_SharedTargeting[]
    */
   public function getSharedTargetings()
   {

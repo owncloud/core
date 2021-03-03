@@ -25,14 +25,14 @@ class Google_Service_Sheets_BatchUpdateSpreadsheetResponse extends Google_Collec
   protected $updatedSpreadsheetDataType = '';
 
   /**
-   * @param Google_Service_Sheets_Response
+   * @param Google_Service_Sheets_Response[]
    */
   public function setReplies($replies)
   {
     $this->replies = $replies;
   }
   /**
-   * @return Google_Service_Sheets_Response
+   * @return Google_Service_Sheets_Response[]
    */
   public function getReplies()
   {

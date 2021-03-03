@@ -46,14 +46,14 @@ class Google_Service_Firestore_GoogleFirestoreAdminV1FieldOperationMetadata exte
     return $this->field;
   }
   /**
-   * @param Google_Service_Firestore_GoogleFirestoreAdminV1IndexConfigDelta
+   * @param Google_Service_Firestore_GoogleFirestoreAdminV1IndexConfigDelta[]
    */
   public function setIndexConfigDeltas($indexConfigDeltas)
   {
     $this->indexConfigDeltas = $indexConfigDeltas;
   }
   /**
-   * @return Google_Service_Firestore_GoogleFirestoreAdminV1IndexConfigDelta
+   * @return Google_Service_Firestore_GoogleFirestoreAdminV1IndexConfigDelta[]
    */
   public function getIndexConfigDeltas()
   {

@@ -46,16 +46,16 @@ class Google_Service_Books_Resource_Onboarding extends Google_Service_Resource
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string categoryId List of category ids requested.
    * @opt_param string locale ISO-639-1 language and ISO-3166-1 country code.
    * Default is en-US if unset.
+   * @opt_param string maxAllowedMaturityRating The maximum allowed maturity
+   * rating of returned volumes. Books with a higher maturity rating are filtered
+   * out.
    * @opt_param string pageSize Number of maximum results per page to be included
    * in the response.
    * @opt_param string pageToken The value of the nextToken from the previous
    * page.
-   * @opt_param string categoryId List of category ids requested.
-   * @opt_param string maxAllowedMaturityRating The maximum allowed maturity
-   * rating of returned volumes. Books with a higher maturity rating are filtered
-   * out.
    * @return Google_Service_Books_Volume2
    */
   public function listCategoryVolumes($optParams = array())

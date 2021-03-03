@@ -38,14 +38,14 @@ class Google_Service_AdExchangeBuyer_Account extends Google_Collection
     return $this->applyPretargetingToNonGuaranteedDeals;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_AccountBidderLocation
+   * @param Google_Service_AdExchangeBuyer_AccountBidderLocation[]
    */
   public function setBidderLocation($bidderLocation)
   {
     $this->bidderLocation = $bidderLocation;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_AccountBidderLocation
+   * @return Google_Service_AdExchangeBuyer_AccountBidderLocation[]
    */
   public function getBidderLocation()
   {

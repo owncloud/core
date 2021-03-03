@@ -22,14 +22,14 @@ class Google_Service_Spanner_StructType extends Google_Collection
   protected $fieldsDataType = 'array';
 
   /**
-   * @param Google_Service_Spanner_Field
+   * @param Google_Service_Spanner_Field[]
    */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
   /**
-   * @return Google_Service_Spanner_Field
+   * @return Google_Service_Spanner_Field[]
    */
   public function getFields()
   {

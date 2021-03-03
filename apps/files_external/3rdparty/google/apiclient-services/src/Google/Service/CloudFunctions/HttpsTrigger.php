@@ -17,8 +17,17 @@
 
 class Google_Service_CloudFunctions_HttpsTrigger extends Google_Model
 {
+  public $securityLevel;
   public $url;
 
+  public function setSecurityLevel($securityLevel)
+  {
+    $this->securityLevel = $securityLevel;
+  }
+  public function getSecurityLevel()
+  {
+    return $this->securityLevel;
+  }
   public function setUrl($url)
   {
     $this->url = $url;

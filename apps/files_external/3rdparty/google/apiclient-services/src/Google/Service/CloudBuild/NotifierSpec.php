@@ -38,14 +38,14 @@ class Google_Service_CloudBuild_NotifierSpec extends Google_Collection
     return $this->notification;
   }
   /**
-   * @param Google_Service_CloudBuild_NotifierSecret
+   * @param Google_Service_CloudBuild_NotifierSecret[]
    */
   public function setSecrets($secrets)
   {
     $this->secrets = $secrets;
   }
   /**
-   * @return Google_Service_CloudBuild_NotifierSecret
+   * @return Google_Service_CloudBuild_NotifierSecret[]
    */
   public function getSecrets()
   {

@@ -22,14 +22,14 @@ class Google_Service_Compute_InstancesStartWithEncryptionKeyRequest extends Goog
   protected $disksDataType = 'array';
 
   /**
-   * @param Google_Service_Compute_CustomerEncryptionKeyProtectedDisk
+   * @param Google_Service_Compute_CustomerEncryptionKeyProtectedDisk[]
    */
   public function setDisks($disks)
   {
     $this->disks = $disks;
   }
   /**
-   * @return Google_Service_Compute_CustomerEncryptionKeyProtectedDisk
+   * @return Google_Service_Compute_CustomerEncryptionKeyProtectedDisk[]
    */
   public function getDisks()
   {

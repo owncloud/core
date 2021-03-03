@@ -22,14 +22,14 @@ class Google_Service_ServiceNetworking_ListPeeredDnsDomainsResponse extends Goog
   protected $peeredDnsDomainsDataType = 'array';
 
   /**
-   * @param Google_Service_ServiceNetworking_PeeredDnsDomain
+   * @param Google_Service_ServiceNetworking_PeeredDnsDomain[]
    */
   public function setPeeredDnsDomains($peeredDnsDomains)
   {
     $this->peeredDnsDomains = $peeredDnsDomains;
   }
   /**
-   * @return Google_Service_ServiceNetworking_PeeredDnsDomain
+   * @return Google_Service_ServiceNetworking_PeeredDnsDomain[]
    */
   public function getPeeredDnsDomains()
   {

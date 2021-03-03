@@ -23,14 +23,14 @@ class Google_Service_Classroom_ListCoursesResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Classroom_Course
+   * @param Google_Service_Classroom_Course[]
    */
   public function setCourses($courses)
   {
     $this->courses = $courses;
   }
   /**
-   * @return Google_Service_Classroom_Course
+   * @return Google_Service_Classroom_Course[]
    */
   public function getCourses()
   {

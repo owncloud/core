@@ -24,14 +24,14 @@ class Google_Service_Books_Volumes extends Google_Collection
   public $totalItems;
 
   /**
-   * @param Google_Service_Books_Volume
+   * @param Google_Service_Books_Volume[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Books_Volume
+   * @return Google_Service_Books_Volume[]
    */
   public function getItems()
   {

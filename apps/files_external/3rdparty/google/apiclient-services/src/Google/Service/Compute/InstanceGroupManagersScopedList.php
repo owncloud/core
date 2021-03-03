@@ -24,14 +24,14 @@ class Google_Service_Compute_InstanceGroupManagersScopedList extends Google_Coll
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_InstanceGroupManager
+   * @param Google_Service_Compute_InstanceGroupManager[]
    */
   public function setInstanceGroupManagers($instanceGroupManagers)
   {
     $this->instanceGroupManagers = $instanceGroupManagers;
   }
   /**
-   * @return Google_Service_Compute_InstanceGroupManager
+   * @return Google_Service_Compute_InstanceGroupManager[]
    */
   public function getInstanceGroupManagers()
   {

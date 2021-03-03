@@ -30,28 +30,28 @@ class Google_Service_Translate_BatchTranslateTextRequest extends Google_Collecti
   public $targetLanguageCodes;
 
   /**
-   * @param Google_Service_Translate_TranslateTextGlossaryConfig
+   * @param Google_Service_Translate_TranslateTextGlossaryConfig[]
    */
   public function setGlossaries($glossaries)
   {
     $this->glossaries = $glossaries;
   }
   /**
-   * @return Google_Service_Translate_TranslateTextGlossaryConfig
+   * @return Google_Service_Translate_TranslateTextGlossaryConfig[]
    */
   public function getGlossaries()
   {
     return $this->glossaries;
   }
   /**
-   * @param Google_Service_Translate_InputConfig
+   * @param Google_Service_Translate_InputConfig[]
    */
   public function setInputConfigs($inputConfigs)
   {
     $this->inputConfigs = $inputConfigs;
   }
   /**
-   * @return Google_Service_Translate_InputConfig
+   * @return Google_Service_Translate_InputConfig[]
    */
   public function getInputConfigs()
   {

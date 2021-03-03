@@ -23,14 +23,14 @@ class Google_Service_Dfareporting_DynamicTargetingKeysListResponse extends Googl
   public $kind;
 
   /**
-   * @param Google_Service_Dfareporting_DynamicTargetingKey
+   * @param Google_Service_Dfareporting_DynamicTargetingKey[]
    */
   public function setDynamicTargetingKeys($dynamicTargetingKeys)
   {
     $this->dynamicTargetingKeys = $dynamicTargetingKeys;
   }
   /**
-   * @return Google_Service_Dfareporting_DynamicTargetingKey
+   * @return Google_Service_Dfareporting_DynamicTargetingKey[]
    */
   public function getDynamicTargetingKeys()
   {

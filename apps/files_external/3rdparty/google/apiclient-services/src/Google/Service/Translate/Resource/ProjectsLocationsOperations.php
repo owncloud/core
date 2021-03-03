@@ -92,8 +92,8 @@ class Google_Service_Translate_Resource_ProjectsLocationsOperations extends Goog
    * @param string $name The name of the operation's parent resource.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize The standard list page size.
    * @opt_param string filter The standard list filter.
+   * @opt_param int pageSize The standard list page size.
    * @opt_param string pageToken The standard list page token.
    * @return Google_Service_Translate_ListOperationsResponse
    */
@@ -104,11 +104,11 @@ class Google_Service_Translate_Resource_ProjectsLocationsOperations extends Goog
     return $this->call('list', array($params), "Google_Service_Translate_ListOperationsResponse");
   }
   /**
-   * Waits for the specified long-running operation until it is done or reaches at
-   * most a specified timeout, returning the latest state. If the operation is
-   * already done, the latest state is immediately returned. If the timeout
-   * specified is greater than the default HTTP/RPC timeout, the HTTP/RPC timeout
-   * is used. If the server does not support this method, it returns
+   * Waits until the specified long-running operation is done or reaches at most a
+   * specified timeout, returning the latest state. If the operation is already
+   * done, the latest state is immediately returned. If the timeout specified is
+   * greater than the default HTTP/RPC timeout, the HTTP/RPC timeout is used. If
+   * the server does not support this method, it returns
    * `google.rpc.Code.UNIMPLEMENTED`. Note that this method is on a best-effort
    * basis. It may return the latest state before the specified timeout (including
    * immediately), meaning even an immediate response is no guarantee that the

@@ -38,10 +38,11 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsClusters extends Google_Se
    * @param array $optParams Optional parameters.
    *
    * @opt_param string requestId Optional. A unique id used to identify the
-   * request. If the server receives two CreateClusterRequest requests with the
-   * same id, then the second request will be ignored and the first
-   * google.longrunning.Operation created and stored in the backend is returned.It
-   * is recommended to always set this value to a UUID
+   * request. If the server receives two CreateClusterRequest (https://cloud.googl
+   * e.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.datap
+   * roc.v1.CreateClusterRequest)s with the same id, then the second request will
+   * be ignored and the first google.longrunning.Operation created and stored in
+   * the backend is returned.It is recommended to always set this value to a UUID
    * (https://en.wikipedia.org/wiki/Universally_unique_identifier).The id must
    * contain only letters (a-z, A-Z), numbers (0-9), underscores (_), and hyphens
    * (-). The maximum length is 40 characters.
@@ -65,17 +66,18 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsClusters extends Google_Se
    * @param string $clusterName Required. The cluster name.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string requestId Optional. A unique id used to identify the
-   * request. If the server receives two DeleteClusterRequest requests with the
-   * same id, then the second request will be ignored and the first
-   * google.longrunning.Operation created and stored in the backend is returned.It
-   * is recommended to always set this value to a UUID
-   * (https://en.wikipedia.org/wiki/Universally_unique_identifier).The id must
-   * contain only letters (a-z, A-Z), numbers (0-9), underscores (_), and hyphens
-   * (-). The maximum length is 40 characters.
    * @opt_param string clusterUuid Optional. Specifying the cluster_uuid means the
    * RPC should fail (with error NOT_FOUND) if cluster with specified UUID does
    * not exist.
+   * @opt_param string requestId Optional. A unique id used to identify the
+   * request. If the server receives two DeleteClusterRequest (https://cloud.googl
+   * e.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.datap
+   * roc.v1.DeleteClusterRequest)s with the same id, then the second request will
+   * be ignored and the first google.longrunning.Operation created and stored in
+   * the backend is returned.It is recommended to always set this value to a UUID
+   * (https://en.wikipedia.org/wiki/Universally_unique_identifier).The id must
+   * contain only letters (a-z, A-Z), numbers (0-9), underscores (_), and hyphens
+   * (-). The maximum length is 40 characters.
    * @return Google_Service_Dataproc_Operation
    */
   public function delete($projectId, $region, $clusterName, $optParams = array())
@@ -142,6 +144,26 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsClusters extends Google_Se
     return $this->call('getIamPolicy', array($params), "Google_Service_Dataproc_Policy");
   }
   /**
+   * Inject encrypted credentials into all of the VMs in a cluster.The target
+   * cluster must be a personal auth cluster assigned to the user who is issuing
+   * the RPC. (clusters.injectCredentials)
+   *
+   * @param string $project Required. The ID of the Google Cloud Platform project
+   * the cluster belongs to, of the form projects/.
+   * @param string $region Required. The region containing the cluster, of the
+   * form regions/.
+   * @param string $cluster Required. The cluster, in the form clusters/.
+   * @param Google_Service_Dataproc_InjectCredentialsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Dataproc_Operation
+   */
+  public function injectCredentials($project, $region, $cluster, Google_Service_Dataproc_InjectCredentialsRequest $postBody, $optParams = array())
+  {
+    $params = array('project' => $project, 'region' => $region, 'cluster' => $cluster, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('injectCredentials', array($params), "Google_Service_Dataproc_Operation");
+  }
+  /**
    * Lists all regions/{region}/clusters in a project alphabetically.
    * (clusters.listProjectsRegionsClusters)
    *
@@ -151,8 +173,6 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsClusters extends Google_Se
    * request.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional. The standard List page token.
-   * @opt_param int pageSize Optional. The standard List page size.
    * @opt_param string filter Optional. A filter constraining the clusters to
    * list. Filters are case-sensitive and have the following syntax:field = value
    * AND field = value ...where field is one of status.state, clusterName, or
@@ -164,6 +184,8 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsClusters extends Google_Se
    * Only the logical AND operator is supported; space-separated items are treated
    * as having an implicit AND operator.Example filter:status.state = ACTIVE AND
    * clusterName = mycluster AND labels.env = staging AND labels.starred = *
+   * @opt_param int pageSize Optional. The standard List page size.
+   * @opt_param string pageToken Optional. The standard List page token.
    * @return Google_Service_Dataproc_ListClustersResponse
    */
   public function listProjectsRegionsClusters($projectId, $region, $optParams = array())
@@ -185,6 +207,24 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsClusters extends Google_Se
    * @param Google_Service_Dataproc_Cluster $postBody
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string gracefulDecommissionTimeout Optional. Timeout for graceful
+   * YARN decomissioning. Graceful decommissioning allows removing nodes from the
+   * cluster without interrupting jobs in progress. Timeout specifies how long to
+   * wait for jobs in progress to finish before forcefully removing nodes (and
+   * potentially interrupting jobs). Default timeout is 0 (for forceful
+   * decommission), and the maximum allowed timeout is 1 day. (see JSON
+   * representation of Duration (https://developers.google.com/protocol-
+   * buffers/docs/proto3#json)).Only supported on Dataproc image versions 1.2 and
+   * higher.
+   * @opt_param string requestId Optional. A unique id used to identify the
+   * request. If the server receives two UpdateClusterRequest (https://cloud.googl
+   * e.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.datap
+   * roc.v1.UpdateClusterRequest)s with the same id, then the second request will
+   * be ignored and the first google.longrunning.Operation created and stored in
+   * the backend is returned.It is recommended to always set this value to a UUID
+   * (https://en.wikipedia.org/wiki/Universally_unique_identifier).The id must
+   * contain only letters (a-z, A-Z), numbers (0-9), underscores (_), and hyphens
+   * (-). The maximum length is 40 characters.
    * @opt_param string updateMask Required. Specifies the path, relative to
    * Cluster, of the field to update. For example, to change the number of workers
    * in a cluster to 5, the update_mask parameter would be specified as
@@ -200,23 +240,6 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsClusters extends Google_Se
    * *config.secondary_worker_config.num_instances* Resize secondary worker group
    * config.autoscaling_config.policy_uri Use, stop using, or change autoscaling
    * policies
-   * @opt_param string requestId Optional. A unique id used to identify the
-   * request. If the server receives two UpdateClusterRequest requests with the
-   * same id, then the second request will be ignored and the first
-   * google.longrunning.Operation created and stored in the backend is returned.It
-   * is recommended to always set this value to a UUID
-   * (https://en.wikipedia.org/wiki/Universally_unique_identifier).The id must
-   * contain only letters (a-z, A-Z), numbers (0-9), underscores (_), and hyphens
-   * (-). The maximum length is 40 characters.
-   * @opt_param string gracefulDecommissionTimeout Optional. Timeout for graceful
-   * YARN decomissioning. Graceful decommissioning allows removing nodes from the
-   * cluster without interrupting jobs in progress. Timeout specifies how long to
-   * wait for jobs in progress to finish before forcefully removing nodes (and
-   * potentially interrupting jobs). Default timeout is 0 (for forceful
-   * decommission), and the maximum allowed timeout is 1 day. (see JSON
-   * representation of Duration (https://developers.google.com/protocol-
-   * buffers/docs/proto3#json)).Only supported on Dataproc image versions 1.2 and
-   * higher.
    * @return Google_Service_Dataproc_Operation
    */
   public function patch($projectId, $region, $clusterName, Google_Service_Dataproc_Cluster $postBody, $optParams = array())
@@ -242,6 +265,42 @@ class Google_Service_Dataproc_Resource_ProjectsRegionsClusters extends Google_Se
     $params = array('resource' => $resource, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('setIamPolicy', array($params), "Google_Service_Dataproc_Policy");
+  }
+  /**
+   * Starts a cluster in a project. (clusters.start)
+   *
+   * @param string $projectId Required. The ID of the Google Cloud Platform
+   * project the cluster belongs to.
+   * @param string $region Required. The Dataproc region in which to handle the
+   * request.
+   * @param string $clusterName Required. The cluster name.
+   * @param Google_Service_Dataproc_StartClusterRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Dataproc_Operation
+   */
+  public function start($projectId, $region, $clusterName, Google_Service_Dataproc_StartClusterRequest $postBody, $optParams = array())
+  {
+    $params = array('projectId' => $projectId, 'region' => $region, 'clusterName' => $clusterName, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('start', array($params), "Google_Service_Dataproc_Operation");
+  }
+  /**
+   * Stops a cluster in a project. (clusters.stop)
+   *
+   * @param string $projectId Required. The ID of the Google Cloud Platform
+   * project the cluster belongs to.
+   * @param string $region Required. The Dataproc region in which to handle the
+   * request.
+   * @param string $clusterName Required. The cluster name.
+   * @param Google_Service_Dataproc_StopClusterRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Dataproc_Operation
+   */
+  public function stop($projectId, $region, $clusterName, Google_Service_Dataproc_StopClusterRequest $postBody, $optParams = array())
+  {
+    $params = array('projectId' => $projectId, 'region' => $region, 'clusterName' => $clusterName, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('stop', array($params), "Google_Service_Dataproc_Operation");
   }
   /**
    * Returns permissions that a caller has on the specified resource. If the

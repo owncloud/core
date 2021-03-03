@@ -46,9 +46,9 @@ class Google_Service_Books_Resource_Familysharing extends Google_Service_Resourc
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string volumeId The volume to share.
-   * @opt_param string source String to identify the originator of this request.
    * @opt_param string docId The docid to share.
+   * @opt_param string source String to identify the originator of this request.
+   * @opt_param string volumeId The volume to share.
    * @return Google_Service_Books_BooksEmpty
    */
   public function share($optParams = array())
@@ -63,8 +63,8 @@ class Google_Service_Books_Resource_Familysharing extends Google_Service_Resourc
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string source String to identify the originator of this request.
    * @opt_param string docId The docid to unshare.
+   * @opt_param string source String to identify the originator of this request.
    * @opt_param string volumeId The volume to unshare.
    * @return Google_Service_Books_BooksEmpty
    */

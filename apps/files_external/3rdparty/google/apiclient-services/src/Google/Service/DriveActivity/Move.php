@@ -24,28 +24,28 @@ class Google_Service_DriveActivity_Move extends Google_Collection
   protected $removedParentsDataType = 'array';
 
   /**
-   * @param Google_Service_DriveActivity_TargetReference
+   * @param Google_Service_DriveActivity_TargetReference[]
    */
   public function setAddedParents($addedParents)
   {
     $this->addedParents = $addedParents;
   }
   /**
-   * @return Google_Service_DriveActivity_TargetReference
+   * @return Google_Service_DriveActivity_TargetReference[]
    */
   public function getAddedParents()
   {
     return $this->addedParents;
   }
   /**
-   * @param Google_Service_DriveActivity_TargetReference
+   * @param Google_Service_DriveActivity_TargetReference[]
    */
   public function setRemovedParents($removedParents)
   {
     $this->removedParents = $removedParents;
   }
   /**
-   * @return Google_Service_DriveActivity_TargetReference
+   * @return Google_Service_DriveActivity_TargetReference[]
    */
   public function getRemovedParents()
   {

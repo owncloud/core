@@ -22,14 +22,14 @@ class Google_Service_ContainerAnalysis_FileHashes extends Google_Collection
   protected $fileHashDataType = 'array';
 
   /**
-   * @param Google_Service_ContainerAnalysis_Hash
+   * @param Google_Service_ContainerAnalysis_Hash[]
    */
   public function setFileHash($fileHash)
   {
     $this->fileHash = $fileHash;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_Hash
+   * @return Google_Service_ContainerAnalysis_Hash[]
    */
   public function getFileHash()
   {

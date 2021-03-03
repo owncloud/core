@@ -111,6 +111,21 @@ class Google_Service_DLP_Resource_ProjectsJobTriggers extends Google_Service_Res
    * project/locations/europe-west3
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter Allows filtering. Supported syntax: * Filter
+   * expressions are made up of one or more restrictions. * Restrictions can be
+   * combined by `AND` or `OR` logical operators. A sequence of restrictions
+   * implicitly uses `AND`. * A restriction has the form of `{field} {operator}
+   * {value}`. * Supported fields/values for inspect triggers: - `status` -
+   * HEALTHY|PAUSED|CANCELLED - `inspected_storage` -
+   * DATASTORE|CLOUD_STORAGE|BIGQUERY - 'last_run_time` - RFC 3339 formatted
+   * timestamp, surrounded by quotation marks. Nanoseconds are ignored. -
+   * 'error_count' - Number of errors that have occurred while running. * The
+   * operator must be `=` or `!=` for status and inspected_storage. Examples: *
+   * inspected_storage = cloud_storage AND status = HEALTHY * inspected_storage =
+   * cloud_storage OR inspected_storage = bigquery * inspected_storage =
+   * cloud_storage AND (state = PAUSED OR state = HEALTHY) * last_run_time >
+   * \"2017-12-12T00:00:00+00:00\" The length of this field should be no more than
+   * 500 characters.
    * @opt_param string locationId Deprecated. This field has no effect.
    * @opt_param string orderBy Comma separated list of triggeredJob fields to
    * order by, followed by `asc` or `desc` postfix. This list is case-insensitive,
@@ -125,21 +140,6 @@ class Google_Service_DLP_Resource_ProjectsJobTriggers extends Google_Service_Res
    * @opt_param string pageToken Page token to continue retrieval. Comes from
    * previous call to ListJobTriggers. `order_by` field must not change for
    * subsequent calls.
-   * @opt_param string filter Allows filtering. Supported syntax: * Filter
-   * expressions are made up of one or more restrictions. * Restrictions can be
-   * combined by `AND` or `OR` logical operators. A sequence of restrictions
-   * implicitly uses `AND`. * A restriction has the form of `{field} {operator}
-   * {value}`. * Supported fields/values for inspect jobs: - `status` -
-   * HEALTHY|PAUSED|CANCELLED - `inspected_storage` -
-   * DATASTORE|CLOUD_STORAGE|BIGQUERY - 'last_run_time` - RFC 3339 formatted
-   * timestamp, surrounded by quotation marks. Nanoseconds are ignored. -
-   * 'error_count' - Number of errors that have occurred while running. * The
-   * operator must be `=` or `!=` for status and inspected_storage. Examples: *
-   * inspected_storage = cloud_storage AND status = HEALTHY * inspected_storage =
-   * cloud_storage OR inspected_storage = bigquery * inspected_storage =
-   * cloud_storage AND (state = PAUSED OR state = HEALTHY) * last_run_time >
-   * \"2017-12-12T00:00:00+00:00\" The length of this field should be no more than
-   * 500 characters.
    * @return Google_Service_DLP_GooglePrivacyDlpV2ListJobTriggersResponse
    */
   public function listProjectsJobTriggers($parent, $optParams = array())

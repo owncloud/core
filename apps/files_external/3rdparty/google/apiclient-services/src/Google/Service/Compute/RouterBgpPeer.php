@@ -47,14 +47,14 @@ class Google_Service_Compute_RouterBgpPeer extends Google_Collection
     return $this->advertisedGroups;
   }
   /**
-   * @param Google_Service_Compute_RouterAdvertisedIpRange
+   * @param Google_Service_Compute_RouterAdvertisedIpRange[]
    */
   public function setAdvertisedIpRanges($advertisedIpRanges)
   {
     $this->advertisedIpRanges = $advertisedIpRanges;
   }
   /**
-   * @return Google_Service_Compute_RouterAdvertisedIpRange
+   * @return Google_Service_Compute_RouterAdvertisedIpRange[]
    */
   public function getAdvertisedIpRanges()
   {

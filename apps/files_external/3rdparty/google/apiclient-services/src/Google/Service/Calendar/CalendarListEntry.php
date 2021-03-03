@@ -80,14 +80,14 @@ class Google_Service_Calendar_CalendarListEntry extends Google_Collection
     return $this->conferenceProperties;
   }
   /**
-   * @param Google_Service_Calendar_EventReminder
+   * @param Google_Service_Calendar_EventReminder[]
    */
   public function setDefaultReminders($defaultReminders)
   {
     $this->defaultReminders = $defaultReminders;
   }
   /**
-   * @return Google_Service_Calendar_EventReminder
+   * @return Google_Service_Calendar_EventReminder[]
    */
   public function getDefaultReminders()
   {

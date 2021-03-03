@@ -50,7 +50,7 @@ class Google_Service_Sheets extends Google_Service
   public $spreadsheets_developerMetadata;
   public $spreadsheets_sheets;
   public $spreadsheets_values;
-  
+
   /**
    * Constructs the internal representation of the Sheets service.
    *
@@ -203,7 +203,7 @@ class Google_Service_Sheets extends Google_Service
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
-                'valueInputOption' => array(
+                'insertDataOption' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -211,11 +211,11 @@ class Google_Service_Sheets extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'insertDataOption' => array(
+                'responseValueRenderOption' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'responseValueRenderOption' => array(
+                'valueInputOption' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -326,7 +326,7 @@ class Google_Service_Sheets extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'valueRenderOption' => array(
+                'dateTimeRenderOption' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -334,7 +334,7 @@ class Google_Service_Sheets extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'dateTimeRenderOption' => array(
+                'valueRenderOption' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -357,7 +357,7 @@ class Google_Service_Sheets extends Google_Service
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
-                'valueInputOption' => array(
+                'responseDateTimeRenderOption' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -365,7 +365,7 @@ class Google_Service_Sheets extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'responseDateTimeRenderOption' => array(
+                'valueInputOption' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

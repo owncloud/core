@@ -47,14 +47,14 @@ class Google_Service_YouTube_MemberListResponse extends Google_Collection
     return $this->eventId;
   }
   /**
-   * @param Google_Service_YouTube_Member
+   * @param Google_Service_YouTube_Member[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_YouTube_Member
+   * @return Google_Service_YouTube_Member[]
    */
   public function getItems()
   {

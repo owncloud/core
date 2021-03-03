@@ -24,6 +24,8 @@ class Google_Service_CloudFilestore_GoogleCloudSaasacceleratorManagementProvider
   protected $exclusionsDataType = 'array';
   protected $nodesType = 'Google_Service_CloudFilestore_GoogleCloudSaasacceleratorManagementProvidersV1NodeSloMetadata';
   protected $nodesDataType = 'array';
+  protected $perSliEligibilityType = 'Google_Service_CloudFilestore_GoogleCloudSaasacceleratorManagementProvidersV1PerSliSloEligibility';
+  protected $perSliEligibilityDataType = '';
   public $tier;
 
   /**
@@ -41,32 +43,46 @@ class Google_Service_CloudFilestore_GoogleCloudSaasacceleratorManagementProvider
     return $this->eligibility;
   }
   /**
-   * @param Google_Service_CloudFilestore_GoogleCloudSaasacceleratorManagementProvidersV1SloExclusion
+   * @param Google_Service_CloudFilestore_GoogleCloudSaasacceleratorManagementProvidersV1SloExclusion[]
    */
   public function setExclusions($exclusions)
   {
     $this->exclusions = $exclusions;
   }
   /**
-   * @return Google_Service_CloudFilestore_GoogleCloudSaasacceleratorManagementProvidersV1SloExclusion
+   * @return Google_Service_CloudFilestore_GoogleCloudSaasacceleratorManagementProvidersV1SloExclusion[]
    */
   public function getExclusions()
   {
     return $this->exclusions;
   }
   /**
-   * @param Google_Service_CloudFilestore_GoogleCloudSaasacceleratorManagementProvidersV1NodeSloMetadata
+   * @param Google_Service_CloudFilestore_GoogleCloudSaasacceleratorManagementProvidersV1NodeSloMetadata[]
    */
   public function setNodes($nodes)
   {
     $this->nodes = $nodes;
   }
   /**
-   * @return Google_Service_CloudFilestore_GoogleCloudSaasacceleratorManagementProvidersV1NodeSloMetadata
+   * @return Google_Service_CloudFilestore_GoogleCloudSaasacceleratorManagementProvidersV1NodeSloMetadata[]
    */
   public function getNodes()
   {
     return $this->nodes;
+  }
+  /**
+   * @param Google_Service_CloudFilestore_GoogleCloudSaasacceleratorManagementProvidersV1PerSliSloEligibility
+   */
+  public function setPerSliEligibility(Google_Service_CloudFilestore_GoogleCloudSaasacceleratorManagementProvidersV1PerSliSloEligibility $perSliEligibility)
+  {
+    $this->perSliEligibility = $perSliEligibility;
+  }
+  /**
+   * @return Google_Service_CloudFilestore_GoogleCloudSaasacceleratorManagementProvidersV1PerSliSloEligibility
+   */
+  public function getPerSliEligibility()
+  {
+    return $this->perSliEligibility;
   }
   public function setTier($tier)
   {

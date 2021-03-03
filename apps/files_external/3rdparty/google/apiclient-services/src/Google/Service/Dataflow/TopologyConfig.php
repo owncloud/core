@@ -27,28 +27,28 @@ class Google_Service_Dataflow_TopologyConfig extends Google_Collection
   public $userStageToComputationNameMap;
 
   /**
-   * @param Google_Service_Dataflow_ComputationTopology
+   * @param Google_Service_Dataflow_ComputationTopology[]
    */
   public function setComputations($computations)
   {
     $this->computations = $computations;
   }
   /**
-   * @return Google_Service_Dataflow_ComputationTopology
+   * @return Google_Service_Dataflow_ComputationTopology[]
    */
   public function getComputations()
   {
     return $this->computations;
   }
   /**
-   * @param Google_Service_Dataflow_DataDiskAssignment
+   * @param Google_Service_Dataflow_DataDiskAssignment[]
    */
   public function setDataDiskAssignments($dataDiskAssignments)
   {
     $this->dataDiskAssignments = $dataDiskAssignments;
   }
   /**
-   * @return Google_Service_Dataflow_DataDiskAssignment
+   * @return Google_Service_Dataflow_DataDiskAssignment[]
    */
   public function getDataDiskAssignments()
   {

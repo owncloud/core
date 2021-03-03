@@ -31,14 +31,14 @@ class Google_Service_DisplayVideo_ListUsersResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_DisplayVideo_User
+   * @param Google_Service_DisplayVideo_User[]
    */
   public function setUsers($users)
   {
     $this->users = $users;
   }
   /**
-   * @return Google_Service_DisplayVideo_User
+   * @return Google_Service_DisplayVideo_User[]
    */
   public function getUsers()
   {

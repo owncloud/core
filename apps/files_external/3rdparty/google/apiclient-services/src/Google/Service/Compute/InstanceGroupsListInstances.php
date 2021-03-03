@@ -36,14 +36,14 @@ class Google_Service_Compute_InstanceGroupsListInstances extends Google_Collecti
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_InstanceWithNamedPorts
+   * @param Google_Service_Compute_InstanceWithNamedPorts[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_InstanceWithNamedPorts
+   * @return Google_Service_Compute_InstanceWithNamedPorts[]
    */
   public function getItems()
   {

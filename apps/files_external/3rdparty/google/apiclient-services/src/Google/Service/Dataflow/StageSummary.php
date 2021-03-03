@@ -36,14 +36,14 @@ class Google_Service_Dataflow_StageSummary extends Google_Collection
     return $this->endTime;
   }
   /**
-   * @param Google_Service_Dataflow_MetricUpdate
+   * @param Google_Service_Dataflow_MetricUpdate[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_Dataflow_MetricUpdate
+   * @return Google_Service_Dataflow_MetricUpdate[]
    */
   public function getMetrics()
   {

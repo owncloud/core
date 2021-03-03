@@ -18,9 +18,45 @@
 class Google_Service_Compute_BackendBucketCdnPolicy extends Google_Collection
 {
   protected $collection_key = 'signedUrlKeyNames';
+  public $cacheMode;
+  public $clientTtl;
+  public $defaultTtl;
+  public $maxTtl;
   public $signedUrlCacheMaxAgeSec;
   public $signedUrlKeyNames;
 
+  public function setCacheMode($cacheMode)
+  {
+    $this->cacheMode = $cacheMode;
+  }
+  public function getCacheMode()
+  {
+    return $this->cacheMode;
+  }
+  public function setClientTtl($clientTtl)
+  {
+    $this->clientTtl = $clientTtl;
+  }
+  public function getClientTtl()
+  {
+    return $this->clientTtl;
+  }
+  public function setDefaultTtl($defaultTtl)
+  {
+    $this->defaultTtl = $defaultTtl;
+  }
+  public function getDefaultTtl()
+  {
+    return $this->defaultTtl;
+  }
+  public function setMaxTtl($maxTtl)
+  {
+    $this->maxTtl = $maxTtl;
+  }
+  public function getMaxTtl()
+  {
+    return $this->maxTtl;
+  }
   public function setSignedUrlCacheMaxAgeSec($signedUrlCacheMaxAgeSec)
   {
     $this->signedUrlCacheMaxAgeSec = $signedUrlCacheMaxAgeSec;

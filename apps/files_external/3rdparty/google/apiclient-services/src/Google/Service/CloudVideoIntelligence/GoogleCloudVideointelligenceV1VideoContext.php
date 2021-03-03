@@ -108,14 +108,14 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoC
     return $this->personDetectionConfig;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoSegment
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoSegment[]
    */
   public function setSegments($segments)
   {
     $this->segments = $segments;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoSegment
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoSegment[]
    */
   public function getSegments()
   {

@@ -26,14 +26,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ListApiCategoriesResponse extends
   public $status;
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1ApiCategoryData
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1ApiCategoryData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1ApiCategoryData
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1ApiCategoryData[]
    */
   public function getData()
   {

@@ -31,14 +31,14 @@ class Google_Service_CloudSearch_ListUnmappedIdentitiesResponse extends Google_C
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_CloudSearch_UnmappedIdentity
+   * @param Google_Service_CloudSearch_UnmappedIdentity[]
    */
   public function setUnmappedIdentities($unmappedIdentities)
   {
     $this->unmappedIdentities = $unmappedIdentities;
   }
   /**
-   * @return Google_Service_CloudSearch_UnmappedIdentity
+   * @return Google_Service_CloudSearch_UnmappedIdentity[]
    */
   public function getUnmappedIdentities()
   {

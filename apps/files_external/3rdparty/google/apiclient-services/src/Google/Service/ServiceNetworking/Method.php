@@ -36,14 +36,14 @@ class Google_Service_ServiceNetworking_Method extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_ServiceNetworking_Option
+   * @param Google_Service_ServiceNetworking_Option[]
    */
   public function setOptions($options)
   {
     $this->options = $options;
   }
   /**
-   * @return Google_Service_ServiceNetworking_Option
+   * @return Google_Service_ServiceNetworking_Option[]
    */
   public function getOptions()
   {

@@ -111,7 +111,10 @@ class Google_Service_AndroidEnterprise_Resource_Devices extends Google_Service_R
     return $this->call('setState', array($params), "Google_Service_AndroidEnterprise_DeviceState");
   }
   /**
-   * Updates the device policy (devices.update)
+   * Updates the device policy. To ensure the policy is properly enforced, you
+   * need to prevent unmanaged accounts from accessing Google Play by setting the
+   * allowed_accounts in the managed configuration for the Google Play package.
+   * See restrict accounts in Google Play. (devices.update)
    *
    * @param string $enterpriseId The ID of the enterprise.
    * @param string $userId The ID of the user.

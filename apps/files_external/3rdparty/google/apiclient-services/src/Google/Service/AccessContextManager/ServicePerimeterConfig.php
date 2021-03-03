@@ -19,6 +19,10 @@ class Google_Service_AccessContextManager_ServicePerimeterConfig extends Google_
 {
   protected $collection_key = 'restrictedServices';
   public $accessLevels;
+  protected $egressPoliciesType = 'Google_Service_AccessContextManager_EgressPolicy';
+  protected $egressPoliciesDataType = 'array';
+  protected $ingressPoliciesType = 'Google_Service_AccessContextManager_IngressPolicy';
+  protected $ingressPoliciesDataType = 'array';
   public $resources;
   public $restrictedServices;
   protected $vpcAccessibleServicesType = 'Google_Service_AccessContextManager_VpcAccessibleServices';
@@ -31,6 +35,34 @@ class Google_Service_AccessContextManager_ServicePerimeterConfig extends Google_
   public function getAccessLevels()
   {
     return $this->accessLevels;
+  }
+  /**
+   * @param Google_Service_AccessContextManager_EgressPolicy[]
+   */
+  public function setEgressPolicies($egressPolicies)
+  {
+    $this->egressPolicies = $egressPolicies;
+  }
+  /**
+   * @return Google_Service_AccessContextManager_EgressPolicy[]
+   */
+  public function getEgressPolicies()
+  {
+    return $this->egressPolicies;
+  }
+  /**
+   * @param Google_Service_AccessContextManager_IngressPolicy[]
+   */
+  public function setIngressPolicies($ingressPolicies)
+  {
+    $this->ingressPolicies = $ingressPolicies;
+  }
+  /**
+   * @return Google_Service_AccessContextManager_IngressPolicy[]
+   */
+  public function getIngressPolicies()
+  {
+    return $this->ingressPolicies;
   }
   public function setResources($resources)
   {

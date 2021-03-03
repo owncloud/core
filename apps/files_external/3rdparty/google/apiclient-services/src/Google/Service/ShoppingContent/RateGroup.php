@@ -38,14 +38,14 @@ class Google_Service_ShoppingContent_RateGroup extends Google_Collection
     return $this->applicableShippingLabels;
   }
   /**
-   * @param Google_Service_ShoppingContent_CarrierRate
+   * @param Google_Service_ShoppingContent_CarrierRate[]
    */
   public function setCarrierRates($carrierRates)
   {
     $this->carrierRates = $carrierRates;
   }
   /**
-   * @return Google_Service_ShoppingContent_CarrierRate
+   * @return Google_Service_ShoppingContent_CarrierRate[]
    */
   public function getCarrierRates()
   {
@@ -88,14 +88,14 @@ class Google_Service_ShoppingContent_RateGroup extends Google_Collection
     return $this->singleValue;
   }
   /**
-   * @param Google_Service_ShoppingContent_Table
+   * @param Google_Service_ShoppingContent_Table[]
    */
   public function setSubtables($subtables)
   {
     $this->subtables = $subtables;
   }
   /**
-   * @return Google_Service_ShoppingContent_Table
+   * @return Google_Service_ShoppingContent_Table[]
    */
   public function getSubtables()
   {

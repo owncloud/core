@@ -34,14 +34,14 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta3BatchProcessMetadata e
     return $this->createTime;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3BatchProcessMetadataIndividualProcessStatus
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3BatchProcessMetadataIndividualProcessStatus[]
    */
   public function setIndividualProcessStatuses($individualProcessStatuses)
   {
     $this->individualProcessStatuses = $individualProcessStatuses;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3BatchProcessMetadataIndividualProcessStatus
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3BatchProcessMetadataIndividualProcessStatus[]
    */
   public function getIndividualProcessStatuses()
   {

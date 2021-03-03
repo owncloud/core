@@ -18,6 +18,7 @@
 class Google_Service_CloudKMS_AsymmetricSignResponse extends Google_Model
 {
   public $name;
+  public $protectionLevel;
   public $signature;
   public $signatureCrc32c;
   public $verifiedDigestCrc32c;
@@ -29,6 +30,14 @@ class Google_Service_CloudKMS_AsymmetricSignResponse extends Google_Model
   public function getName()
   {
     return $this->name;
+  }
+  public function setProtectionLevel($protectionLevel)
+  {
+    $this->protectionLevel = $protectionLevel;
+  }
+  public function getProtectionLevel()
+  {
+    return $this->protectionLevel;
   }
   public function setSignature($signature)
   {

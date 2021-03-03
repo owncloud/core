@@ -23,14 +23,14 @@ class Google_Service_ServiceDirectory_ListNamespacesResponse extends Google_Coll
   public $nextPageToken;
 
   /**
-   * @param Google_Service_ServiceDirectory_ServicedirectoryNamespace
+   * @param Google_Service_ServiceDirectory_ServicedirectoryNamespace[]
    */
   public function setNamespaces($namespaces)
   {
     $this->namespaces = $namespaces;
   }
   /**
-   * @return Google_Service_ServiceDirectory_ServicedirectoryNamespace
+   * @return Google_Service_ServiceDirectory_ServicedirectoryNamespace[]
    */
   public function getNamespaces()
   {

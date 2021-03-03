@@ -143,17 +143,17 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    * form: `projects/{project}/locations/{location}`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter Optional. The filter to apply to list results.
    * @opt_param string orderBy Optional. Specifies the ordering of results
    * following syntax at
    * https://cloud.google.com/apis/design/design_patterns#sorting_order.
-   * @opt_param string filter Optional. The filter to apply to list results.
-   * @opt_param string pageToken Optional. The next_page_token value returned from
-   * a previous List request, if any.
    * @opt_param int pageSize Optional. The maximum number of items to return. If
    * unspecified, the server will pick an appropriate default. The server may
    * return fewer items than requested. A caller should only rely on response's
    * next_page_token to determine if there are more GameServerDeployments left to
    * be queried.
+   * @opt_param string pageToken Optional. The next_page_token value returned from
+   * a previous List request, if any.
    * @return Google_Service_GameServices_ListGameServerDeploymentsResponse
    */
   public function listProjectsLocationsGameServerDeployments($parent, $optParams = array())
@@ -175,8 +175,8 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    *
    * @opt_param string updateMask Required. Mask of fields to update. At least one
    * path must be supplied in this field. For the `FieldMask` definition, see
-   * https: //developers.google.com/protocol-buffers //
-   * /docs/reference/google.protobuf#fieldmask
+   * https://developers.google.com/protocol-
+   * buffers/docs/reference/google.protobuf#fieldmask
    * @return Google_Service_GameServices_Operation
    */
   public function patch($name, Google_Service_GameServices_GameServerDeployment $postBody, $optParams = array())
@@ -200,8 +200,8 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    * preview. Defaults to the immediately after the proposed rollout completes.
    * @opt_param string updateMask Optional. Mask of fields to update. At least one
    * path must be supplied in this field. For the `FieldMask` definition, see
-   * https: //developers.google.com/protocol-buffers //
-   * /docs/reference/google.protobuf#fieldmask
+   * https://developers.google.com/protocol-
+   * buffers/docs/reference/google.protobuf#fieldmask
    * @return Google_Service_GameServices_PreviewGameServerDeploymentRolloutResponse
    */
   public function previewRollout($name, Google_Service_GameServices_GameServerDeploymentRollout $postBody, $optParams = array())
@@ -266,8 +266,8 @@ class Google_Service_GameServices_Resource_ProjectsLocationsGameServerDeployment
    *
    * @opt_param string updateMask Required. Mask of fields to update. At least one
    * path must be supplied in this field. For the `FieldMask` definition, see
-   * https: //developers.google.com/protocol-buffers //
-   * /docs/reference/google.protobuf#fieldmask
+   * https://developers.google.com/protocol-
+   * buffers/docs/reference/google.protobuf#fieldmask
    * @return Google_Service_GameServices_Operation
    */
   public function updateRollout($name, Google_Service_GameServices_GameServerDeploymentRollout $postBody, $optParams = array())

@@ -31,14 +31,14 @@ class Google_Service_PolicyTroubleshooter_GoogleCloudPolicytroubleshooterV1Troub
     return $this->access;
   }
   /**
-   * @param Google_Service_PolicyTroubleshooter_GoogleCloudPolicytroubleshooterV1ExplainedPolicy
+   * @param Google_Service_PolicyTroubleshooter_GoogleCloudPolicytroubleshooterV1ExplainedPolicy[]
    */
   public function setExplainedPolicies($explainedPolicies)
   {
     $this->explainedPolicies = $explainedPolicies;
   }
   /**
-   * @return Google_Service_PolicyTroubleshooter_GoogleCloudPolicytroubleshooterV1ExplainedPolicy
+   * @return Google_Service_PolicyTroubleshooter_GoogleCloudPolicytroubleshooterV1ExplainedPolicy[]
    */
   public function getExplainedPolicies()
   {

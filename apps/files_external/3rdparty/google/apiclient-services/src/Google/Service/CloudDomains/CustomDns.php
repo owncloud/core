@@ -23,14 +23,14 @@ class Google_Service_CloudDomains_CustomDns extends Google_Collection
   public $nameServers;
 
   /**
-   * @param Google_Service_CloudDomains_DsRecord
+   * @param Google_Service_CloudDomains_DsRecord[]
    */
   public function setDsRecords($dsRecords)
   {
     $this->dsRecords = $dsRecords;
   }
   /**
-   * @return Google_Service_CloudDomains_DsRecord
+   * @return Google_Service_CloudDomains_DsRecord[]
    */
   public function getDsRecords()
   {

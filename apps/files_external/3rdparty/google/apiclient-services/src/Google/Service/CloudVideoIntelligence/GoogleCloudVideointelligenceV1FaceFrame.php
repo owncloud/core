@@ -23,14 +23,14 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1FaceFr
   public $timeOffset;
 
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1NormalizedBoundingBox
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1NormalizedBoundingBox[]
    */
   public function setNormalizedBoundingBoxes($normalizedBoundingBoxes)
   {
     $this->normalizedBoundingBoxes = $normalizedBoundingBoxes;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1NormalizedBoundingBox
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1NormalizedBoundingBox[]
    */
   public function getNormalizedBoundingBoxes()
   {

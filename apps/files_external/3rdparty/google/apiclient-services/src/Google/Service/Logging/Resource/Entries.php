@@ -42,6 +42,20 @@ class Google_Service_Logging_Resource_Entries extends Google_Service_Resource
     return $this->call('list', array($params), "Google_Service_Logging_ListLogEntriesResponse");
   }
   /**
+   * Streaming read of log entries as they are ingested. Until the stream is
+   * terminated, it will continue reading logs. (entries.tail)
+   *
+   * @param Google_Service_Logging_TailLogEntriesRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Logging_TailLogEntriesResponse
+   */
+  public function tail(Google_Service_Logging_TailLogEntriesRequest $postBody, $optParams = array())
+  {
+    $params = array('postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('tail', array($params), "Google_Service_Logging_TailLogEntriesResponse");
+  }
+  /**
    * Writes log entries to Logging. This API method is the only way to send log
    * entries to Logging. This method is used, directly or indirectly, by the
    * Logging agent (fluentd) and all logging libraries configured to use Logging.

@@ -49,14 +49,14 @@ class Google_Service_PolyService_Format extends Google_Collection
     return $this->formatType;
   }
   /**
-   * @param Google_Service_PolyService_PolyFile
+   * @param Google_Service_PolyService_PolyFile[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_PolyService_PolyFile
+   * @return Google_Service_PolyService_PolyFile[]
    */
   public function getResources()
   {

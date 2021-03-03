@@ -34,28 +34,28 @@ class Google_Service_Fitness_ListDataPointChangesResponse extends Google_Collect
     return $this->dataSourceId;
   }
   /**
-   * @param Google_Service_Fitness_DataPoint
+   * @param Google_Service_Fitness_DataPoint[]
    */
   public function setDeletedDataPoint($deletedDataPoint)
   {
     $this->deletedDataPoint = $deletedDataPoint;
   }
   /**
-   * @return Google_Service_Fitness_DataPoint
+   * @return Google_Service_Fitness_DataPoint[]
    */
   public function getDeletedDataPoint()
   {
     return $this->deletedDataPoint;
   }
   /**
-   * @param Google_Service_Fitness_DataPoint
+   * @param Google_Service_Fitness_DataPoint[]
    */
   public function setInsertedDataPoint($insertedDataPoint)
   {
     $this->insertedDataPoint = $insertedDataPoint;
   }
   /**
-   * @return Google_Service_Fitness_DataPoint
+   * @return Google_Service_Fitness_DataPoint[]
    */
   public function getInsertedDataPoint()
   {

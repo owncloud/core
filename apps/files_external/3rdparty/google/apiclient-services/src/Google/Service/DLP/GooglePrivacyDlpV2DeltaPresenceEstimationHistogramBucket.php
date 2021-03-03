@@ -42,14 +42,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2DeltaPresenceEstimationHistogramBucke
     return $this->bucketValueCount;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2DeltaPresenceEstimationQuasiIdValues
+   * @param Google_Service_DLP_GooglePrivacyDlpV2DeltaPresenceEstimationQuasiIdValues[]
    */
   public function setBucketValues($bucketValues)
   {
     $this->bucketValues = $bucketValues;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2DeltaPresenceEstimationQuasiIdValues
+   * @return Google_Service_DLP_GooglePrivacyDlpV2DeltaPresenceEstimationQuasiIdValues[]
    */
   public function getBucketValues()
   {

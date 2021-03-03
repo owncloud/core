@@ -37,14 +37,14 @@ class Google_Service_Compute_NodeTypeAggregatedList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_NodeTypesScopedList
+   * @param Google_Service_Compute_NodeTypesScopedList[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_NodeTypesScopedList
+   * @return Google_Service_Compute_NodeTypesScopedList[]
    */
   public function getItems()
   {

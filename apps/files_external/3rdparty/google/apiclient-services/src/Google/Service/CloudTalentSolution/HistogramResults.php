@@ -26,42 +26,42 @@ class Google_Service_CloudTalentSolution_HistogramResults extends Google_Collect
   protected $simpleHistogramResultsDataType = 'array';
 
   /**
-   * @param Google_Service_CloudTalentSolution_CompensationHistogramResult
+   * @param Google_Service_CloudTalentSolution_CompensationHistogramResult[]
    */
   public function setCompensationHistogramResults($compensationHistogramResults)
   {
     $this->compensationHistogramResults = $compensationHistogramResults;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_CompensationHistogramResult
+   * @return Google_Service_CloudTalentSolution_CompensationHistogramResult[]
    */
   public function getCompensationHistogramResults()
   {
     return $this->compensationHistogramResults;
   }
   /**
-   * @param Google_Service_CloudTalentSolution_CustomAttributeHistogramResult
+   * @param Google_Service_CloudTalentSolution_CustomAttributeHistogramResult[]
    */
   public function setCustomAttributeHistogramResults($customAttributeHistogramResults)
   {
     $this->customAttributeHistogramResults = $customAttributeHistogramResults;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_CustomAttributeHistogramResult
+   * @return Google_Service_CloudTalentSolution_CustomAttributeHistogramResult[]
    */
   public function getCustomAttributeHistogramResults()
   {
     return $this->customAttributeHistogramResults;
   }
   /**
-   * @param Google_Service_CloudTalentSolution_HistogramResult
+   * @param Google_Service_CloudTalentSolution_HistogramResult[]
    */
   public function setSimpleHistogramResults($simpleHistogramResults)
   {
     $this->simpleHistogramResults = $simpleHistogramResults;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_HistogramResult
+   * @return Google_Service_CloudTalentSolution_HistogramResult[]
    */
   public function getSimpleHistogramResults()
   {

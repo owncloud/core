@@ -25,28 +25,28 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2F
   public $thumbnail;
 
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2FaceFrame
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2FaceFrame[]
    */
   public function setFrames($frames)
   {
     $this->frames = $frames;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2FaceFrame
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2FaceFrame[]
    */
   public function getFrames()
   {
     return $this->frames;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2FaceSegment
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2FaceSegment[]
    */
   public function setSegments($segments)
   {
     $this->segments = $segments;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2FaceSegment
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2FaceSegment[]
    */
   public function getSegments()
   {

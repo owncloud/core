@@ -69,14 +69,14 @@ class Google_Service_Books_VolumeSaleInfo extends Google_Collection
     return $this->listPrice;
   }
   /**
-   * @param Google_Service_Books_VolumeSaleInfoOffers
+   * @param Google_Service_Books_VolumeSaleInfoOffers[]
    */
   public function setOffers($offers)
   {
     $this->offers = $offers;
   }
   /**
-   * @return Google_Service_Books_VolumeSaleInfoOffers
+   * @return Google_Service_Books_VolumeSaleInfoOffers[]
    */
   public function getOffers()
   {

@@ -22,14 +22,14 @@ class Google_Service_SASPortalTesting_SasPortalBulkCreateDeviceResponse extends 
   protected $devicesDataType = 'array';
 
   /**
-   * @param Google_Service_SASPortalTesting_SasPortalDevice
+   * @param Google_Service_SASPortalTesting_SasPortalDevice[]
    */
   public function setDevices($devices)
   {
     $this->devices = $devices;
   }
   /**
-   * @return Google_Service_SASPortalTesting_SasPortalDevice
+   * @return Google_Service_SASPortalTesting_SasPortalDevice[]
    */
   public function getDevices()
   {

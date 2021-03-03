@@ -76,9 +76,9 @@ class Google_Service_ServiceManagement_Resource_ServicesConfigs extends Google_S
    * example: `example.googleapis.com`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The token of the page to retrieve.
    * @opt_param int pageSize The max number of items to include in the response
    * list. Page size is 50 if not specified. Maximum value is 100.
+   * @opt_param string pageToken The token of the page to retrieve.
    * @return Google_Service_ServiceManagement_ListServiceConfigsResponse
    */
   public function listServicesConfigs($serviceName, $optParams = array())

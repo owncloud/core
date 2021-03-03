@@ -208,8 +208,6 @@ class Google_Service_Spanner_Resource_ProjectsInstancesDatabasesSessions extends
    * @param string $database Required. The database in which to list sessions.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken If non-empty, `page_token` should contain a
-   * next_page_token from a previous ListSessionsResponse.
    * @opt_param string filter An expression for filtering the results of the
    * request. Filter rules are case insensitive. The fields eligible for filtering
    * are: * `labels.key` where key is the name of a label Some examples of using
@@ -218,6 +216,8 @@ class Google_Service_Spanner_Resource_ProjectsInstancesDatabasesSessions extends
    * label contains the string "dev".
    * @opt_param int pageSize Number of sessions to be returned in the response. If
    * 0 or less, defaults to the server's maximum allowed page size.
+   * @opt_param string pageToken If non-empty, `page_token` should contain a
+   * next_page_token from a previous ListSessionsResponse.
    * @return Google_Service_Spanner_ListSessionsResponse
    */
   public function listProjectsInstancesDatabasesSessions($database, $optParams = array())

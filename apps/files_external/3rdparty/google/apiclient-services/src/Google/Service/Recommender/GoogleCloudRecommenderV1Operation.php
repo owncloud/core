@@ -55,14 +55,14 @@ class Google_Service_Recommender_GoogleCloudRecommenderV1Operation extends Googl
     return $this->pathFilters;
   }
   /**
-   * @param Google_Service_Recommender_GoogleCloudRecommenderV1ValueMatcher
+   * @param Google_Service_Recommender_GoogleCloudRecommenderV1ValueMatcher[]
    */
   public function setPathValueMatchers($pathValueMatchers)
   {
     $this->pathValueMatchers = $pathValueMatchers;
   }
   /**
-   * @return Google_Service_Recommender_GoogleCloudRecommenderV1ValueMatcher
+   * @return Google_Service_Recommender_GoogleCloudRecommenderV1ValueMatcher[]
    */
   public function getPathValueMatchers()
   {

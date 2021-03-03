@@ -48,14 +48,14 @@ class Google_Service_Dns_ManagedZonesListResponse extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dns_ManagedZone
+   * @param Google_Service_Dns_ManagedZone[]
    */
   public function setManagedZones($managedZones)
   {
     $this->managedZones = $managedZones;
   }
   /**
-   * @return Google_Service_Dns_ManagedZone
+   * @return Google_Service_Dns_ManagedZone[]
    */
   public function getManagedZones()
   {

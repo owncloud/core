@@ -39,14 +39,14 @@ class Google_Service_Doubleclicksearch_ReportRequest extends Google_Collection
   public $verifySingleTimeZone;
 
   /**
-   * @param Google_Service_Doubleclicksearch_ReportApiColumnSpec
+   * @param Google_Service_Doubleclicksearch_ReportApiColumnSpec[]
    */
   public function setColumns($columns)
   {
     $this->columns = $columns;
   }
   /**
-   * @return Google_Service_Doubleclicksearch_ReportApiColumnSpec
+   * @return Google_Service_Doubleclicksearch_ReportApiColumnSpec[]
    */
   public function getColumns()
   {
@@ -61,14 +61,14 @@ class Google_Service_Doubleclicksearch_ReportRequest extends Google_Collection
     return $this->downloadFormat;
   }
   /**
-   * @param Google_Service_Doubleclicksearch_ReportRequestFilters
+   * @param Google_Service_Doubleclicksearch_ReportRequestFilters[]
    */
   public function setFilters($filters)
   {
     $this->filters = $filters;
   }
   /**
-   * @return Google_Service_Doubleclicksearch_ReportRequestFilters
+   * @return Google_Service_Doubleclicksearch_ReportRequestFilters[]
    */
   public function getFilters()
   {
@@ -99,14 +99,14 @@ class Google_Service_Doubleclicksearch_ReportRequest extends Google_Collection
     return $this->maxRowsPerFile;
   }
   /**
-   * @param Google_Service_Doubleclicksearch_ReportRequestOrderBy
+   * @param Google_Service_Doubleclicksearch_ReportRequestOrderBy[]
    */
   public function setOrderBy($orderBy)
   {
     $this->orderBy = $orderBy;
   }
   /**
-   * @return Google_Service_Doubleclicksearch_ReportRequestOrderBy
+   * @return Google_Service_Doubleclicksearch_ReportRequestOrderBy[]
    */
   public function getOrderBy()
   {

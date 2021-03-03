@@ -23,14 +23,14 @@ class Google_Service_TagManager_ListFoldersResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_TagManager_Folder
+   * @param Google_Service_TagManager_Folder[]
    */
   public function setFolder($folder)
   {
     $this->folder = $folder;
   }
   /**
-   * @return Google_Service_TagManager_Folder
+   * @return Google_Service_TagManager_Folder[]
    */
   public function getFolder()
   {

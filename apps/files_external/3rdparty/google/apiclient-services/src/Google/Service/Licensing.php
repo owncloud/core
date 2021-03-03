@@ -36,7 +36,7 @@ class Google_Service_Licensing extends Google_Service
       "https://www.googleapis.com/auth/apps.licensing";
 
   public $licenseAssignments;
-  
+
   /**
    * Constructs the internal representation of the Licensing service.
    *
@@ -127,13 +127,13 @@ class Google_Service_Licensing extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'maxResults' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'listForProductAndSku' => array(
@@ -155,13 +155,13 @@ class Google_Service_Licensing extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'maxResults' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'patch' => array(

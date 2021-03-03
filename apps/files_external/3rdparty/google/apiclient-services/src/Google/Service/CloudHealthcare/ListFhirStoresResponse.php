@@ -23,14 +23,14 @@ class Google_Service_CloudHealthcare_ListFhirStoresResponse extends Google_Colle
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudHealthcare_FhirStore
+   * @param Google_Service_CloudHealthcare_FhirStore[]
    */
   public function setFhirStores($fhirStores)
   {
     $this->fhirStores = $fhirStores;
   }
   /**
-   * @return Google_Service_CloudHealthcare_FhirStore
+   * @return Google_Service_CloudHealthcare_FhirStore[]
    */
   public function getFhirStores()
   {
