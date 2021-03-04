@@ -59,6 +59,7 @@ Summary
 * Enhancement - Added additional connection parameters to redis config: [#38386](https://github.com/owncloud/core/pull/38386)
 * Enhancement - Hide federated user suggestions if system users are found: [#38389](https://github.com/owncloud/core/pull/38389)
 * Enhancement - Indicate existing guest-user as a guest in the share tab: [#38440](https://github.com/owncloud/core/pull/38440)
+* Enhancement - Add config parameter 'http.cookie.samesite': [#38458](https://github.com/owncloud/core/pull/38458)
 
 Details
 -------
@@ -454,6 +455,13 @@ Details
 
    https://github.com/owncloud/core/issues/38422
    https://github.com/owncloud/core/pull/38440
+
+* Enhancement - Add config parameter 'http.cookie.samesite': [#38458](https://github.com/owncloud/core/pull/38458)
+
+   Allows to relax ownClouds same site cookie settings. Possible values: Strict, Lax or None
+   Setting the same site cookie to none is necessary in case of OpenID Connect.
+
+   https://github.com/owncloud/core/pull/38458
 
 Changelog for ownCloud Core [10.6.0] (2020-11-25)
 =======================================
