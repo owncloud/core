@@ -1554,6 +1554,9 @@ def sonarAnalysis(ctx, phpVersion = '7.4'):
 			'base': '/drone',
 			'path': 'src'
 		},
+		'clone': {
+			'disable': True, # Sonarcloud does not apply issues on already merged branch
+		},
 		'steps':
 			cacheRestore() +
 			composerInstall(phpVersion) +
