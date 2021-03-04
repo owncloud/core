@@ -5,9 +5,7 @@ Feature: User can open the details panel for any file or folder
   So that the details of the file or folder are visible to me
 
   Background:
-    Given these users have been created with default attributes and large skeleton files:
-      | username |
-      | Alice    |
+    Given user "Alice" has been created with default attributes and without skeleton files
 
   @comments-app-required @files_versions-app-required @files_sharing-app-required
   Scenario: View different areas of the details panel in files page
@@ -76,7 +74,7 @@ Feature: User can open the details panel for any file or folder
 
   @comments-app-required @files_sharing-app-required
   Scenario: the recipient user should be able to view different areas of details panel in Shared with you page
-    Given user "Brian" has been created with default attributes and large skeleton files
+    Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "a-folder"
     And user "Alice" has shared folder "a-folder" with user "Brian"
     And user "Brian" has logged in using the webUI

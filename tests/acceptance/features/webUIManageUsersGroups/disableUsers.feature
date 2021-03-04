@@ -5,7 +5,7 @@ Feature: disable users
   So that I can remove access to unnecessary users
 
   Background:
-    Given these users have been created with default attributes and large skeleton files but not initialized:
+    Given these users have been created without skeleton files and not initialized:
       | username |
       | Alice    |
       | Brian    |
@@ -23,7 +23,7 @@ Feature: disable users
 
   Scenario: subadmin disables a user
     Given group "grp1" has been created
-    And user "subadmin" has been created with default attributes and large skeleton files
+    And user "subadmin" has been created with default attributes and without skeleton files
     And user "Alice" has been added to group "grp1"
     And user "Brian" has been added to group "grp1"
     And user "subadmin" has been made a subadmin of group "grp1"

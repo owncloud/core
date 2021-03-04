@@ -6,10 +6,13 @@ Feature: WebUI share details for shares created using internal users
 
   @skipOnOcV10.3
   Scenario: sharing indicator of items inside a shared folder
-    Given these users have been created with default attributes and large skeleton files:
+    Given these users have been created without skeleton files:
       | username |
       | Alice    |
       | Brian    |
+    And user "Alice" has created folder "simple-folder"
+    And user "Alice" has created folder "simple-folder/simple-empty-folder"
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
     And user "Alice" has shared folder "simple-folder" with user "Brian"
     And user "Alice" has logged in using the webUI
     When the user opens folder "simple-folder" using the webUI
@@ -19,10 +22,12 @@ Feature: WebUI share details for shares created using internal users
 
   @skipOnOcV10.3
   Scenario: sharing indicator of items inside a shared folder two levels down
-    Given these users have been created with default attributes and large skeleton files:
+    Given these users have been created without skeleton files:
       | username |
       | Alice    |
       | Brian    |
+    And user "Alice" has created folder "simple-folder"
+    And user "Alice" has created folder "simple-folder/simple-empty-folder"
     And user "Alice" has created folder "/simple-folder/simple-empty-folder/new-folder"
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/simple-empty-folder/lorem.txt"
     And user "Alice" has shared folder "simple-folder" with user "Brian"
@@ -35,13 +40,14 @@ Feature: WebUI share details for shares created using internal users
 
   @skipOnOcV10.3
   Scenario: sharing indicator of items inside a re-shared folder
-    Given these users have been created with default attributes and large skeleton files:
+    Given these users have been created without skeleton files:
       | username |
       | Alice    |
-    And these users have been created without skeleton files:
-      | username |
       | Brian    |
       | Carol    |
+    And user "Alice" has created folder "simple-folder"
+    And user "Alice" has created folder "simple-folder/simple-empty-folder"
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
     And user "Alice" has shared folder "simple-folder" with user "Brian"
     And user "Brian" has shared folder "simple-folder" with user "Carol"
     And user "Brian" has logged in using the webUI
@@ -52,9 +58,10 @@ Feature: WebUI share details for shares created using internal users
 
   @skipOnOcV10.3
   Scenario: no sharing indicator of items inside a not shared folder
-    Given these users have been created with default attributes and large skeleton files:
-      | username |
-      | Alice    |
+    Given user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "simple-folder"
+    And user "Alice" has created folder "simple-folder/simple-empty-folder"
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
     And user "Alice" has logged in using the webUI
     When the user opens folder "simple-folder" using the webUI
     Then the following resources should not have share indicators on the webUI
@@ -99,10 +106,11 @@ Feature: WebUI share details for shares created using internal users
 
   @skipOnOcV10.3
   Scenario: sharing indicator for file uploaded inside a shared folder
-    Given these users have been created with default attributes and large skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
+    And user "Alice" has created folder "simple-empty-folder"
     And user "Alice" has shared folder "/simple-empty-folder" with user "Brian"
     And user "Alice" has logged in using the webUI
     When the user opens folder "simple-empty-folder" using the webUI
@@ -112,10 +120,11 @@ Feature: WebUI share details for shares created using internal users
 
   @skipOnOcV10.3
   Scenario: sharing indicator for folder created inside a shared folder
-    Given these users have been created with default attributes and large skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
+    And user "Alice" has created folder "simple-empty-folder"
     And user "Alice" has shared folder "/simple-empty-folder" with user "Brian"
     And user "Alice" has logged in using the webUI
     When the user opens folder "simple-empty-folder" using the webUI

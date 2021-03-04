@@ -9,28 +9,30 @@ Feature: Sharing files and folders with internal groups
       | username |
       | Alice    |
       | Brian    |
-    And user "Carol" has been created with default attributes and large skeleton files
+      | Carol    |
     And these groups have been created:
       | groupname |
       | grp1      |
     And user "Alice" has been added to group "grp1"
     And user "Brian" has been added to group "grp1"
+    And user "Carol" has created folder "simple-folder"
+    And user "Carol" has uploaded file with content "some content" to "/lorem.txt"
 
   @smokeTest
   Scenario: share a folder with an internal group
     Given user "Carol" has logged in using the webUI
     When the user shares folder "simple-folder" with group "grp1" using the webUI
-    And the user shares file "testimage.jpg" with group "grp1" using the webUI
+    And the user shares file "lorem.txt" with group "grp1" using the webUI
     And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder" should be listed on the webUI
     And folder "simple-folder" should be marked as shared with "grp1" by "Carol" on the webUI
-    And file "testimage.jpg" should be listed on the webUI
-    And file "testimage.jpg" should be marked as shared with "grp1" by "Carol" on the webUI
+    And file "lorem.txt" should be listed on the webUI
+    And file "lorem.txt" should be marked as shared with "grp1" by "Carol" on the webUI
     When the user re-logs in as "Brian" using the webUI
     Then folder "simple-folder" should be listed on the webUI
     And folder "simple-folder" should be marked as shared with "grp1" by "Carol" on the webUI
-    And file "testimage.jpg" should be listed on the webUI
-    And file "testimage.jpg" should be marked as shared with "grp1" by "Carol" on the webUI
+    And file "lorem.txt" should be listed on the webUI
+    And file "lorem.txt" should be marked as shared with "grp1" by "Carol" on the webUI
 
   @skipOnFIREFOX
   Scenario: share a file with an internal group a member overwrites and unshares the file
@@ -54,7 +56,9 @@ Feature: Sharing files and folders with internal groups
     Then the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
 
   Scenario: share a folder with an internal group and a member uploads, overwrites and deletes files
-    Given user "Carol" has logged in using the webUI
+    Given user "Carol" has uploaded file with content "some content" to "/simple-folder/lorem.txt"
+    And user "Carol" has uploaded file "filesForUpload/data.zip" to "/simple-folder/data.zip"
+    And user "Carol" has logged in using the webUI
     When the user renames folder "simple-folder" to "new-simple-folder" using the webUI
     And the user shares folder "new-simple-folder" with group "grp1" using the webUI
     And the user re-logs in as "Alice" using the webUI
@@ -85,7 +89,8 @@ Feature: Sharing files and folders with internal groups
 
   @smokeTest
   Scenario: share a folder with an internal group and a member unshares the folder
-    Given user "Carol" has logged in using the webUI
+    Given user "Carol" has uploaded file with content "some content" to "/simple-folder/lorem.txt"
+    And user "Carol" has logged in using the webUI
     When the user renames folder "simple-folder" to "new-simple-folder" using the webUI
     And the user shares folder "new-simple-folder" with group "grp1" using the webUI
 		# unshare the received shared folder and check it is gone
@@ -97,13 +102,13 @@ Feature: Sharing files and folders with internal groups
     Then folder "new-simple-folder" should be listed on the webUI
     When the user opens folder "new-simple-folder" using the webUI
     Then file "lorem.txt" should be listed on the webUI
-    And the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
+    And the content of file "new-simple-folder/lorem.txt" for user "Brian" should be "some content"
 		# check that the folder is still visible for the share owner
     When the user re-logs in as "Carol" using the webUI
     Then folder "new-simple-folder" should be listed on the webUI
     When the user opens folder "new-simple-folder" using the webUI
     Then file "lorem.txt" should be listed on the webUI
-    And the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
+    And the content of file "new-simple-folder/lorem.txt" for user "Carol" should be "some content"
 
   Scenario: user tries to share a file in a group which is excluded from receiving share
     Given group "system-group" has been created
@@ -169,7 +174,7 @@ Feature: Sharing files and folders with internal groups
   @mailhog @skipOnLDAP @skipOnOcV10.3
   Scenario: user should not get an email notification if the user is added to the group after the mail notification was sent
     Given parameter "shareapi_allow_mail_notification" of app "core" has been set to "yes"
-    And user "David" has been created with default attributes and large skeleton files
+    And user "David" has been created with default attributes and without skeleton files
     And user "Carol" has logged in using the webUI
     And user "Carol" has shared file "lorem.txt" with group "grp1"
     And the user has opened the share dialog for file "lorem.txt"
@@ -370,7 +375,8 @@ Feature: Sharing files and folders with internal groups
 
   @skipOnOcV10.3
   Scenario: sharing indicator for file uploaded inside a shared folder
-    Given user "Carol" has shared folder "/simple-empty-folder" with group "grp1"
+    Given user "Carol" has created folder "/simple-empty-folder"
+    And user "Carol" has shared folder "/simple-empty-folder" with group "grp1"
     And user "Carol" has logged in using the webUI
     When the user opens folder "simple-empty-folder" using the webUI
     And the user uploads file "new-lorem.txt" using the webUI
@@ -379,7 +385,8 @@ Feature: Sharing files and folders with internal groups
 
   @skipOnOcV10.3
   Scenario: sharing indicator for folder created inside a shared folder
-    Given user "Carol" has shared folder "/simple-empty-folder" with group "grp1"
+    Given user "Carol" has created folder "/simple-empty-folder"
+    And user "Carol" has shared folder "/simple-empty-folder" with group "grp1"
     And user "Carol" has logged in using the webUI
     When the user opens folder "simple-empty-folder" using the webUI
     And the user creates a folder with the name "sub-folder" using the webUI

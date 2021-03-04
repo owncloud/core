@@ -8,8 +8,12 @@ Feature: Share by public link
     Given user "Alice" has been created with default attributes and without skeleton files
 
   Scenario: creating a public link with read & write permissions makes it possible to delete files via the link
-    Given user "Brian" has been created with default attributes and large skeleton files
-    And user "Brian" has logged in using the webUI
+    Given user "Alice" has created folder "simple-folder"
+    And user "Alice" has created folder "simple-folder/simple-empty-folder"
+    And user "Alice" has uploaded file "filesForUpload/strängé filename (duplicate #2 &).txt" to "simple-folder/strängé filename (duplicate #2 &).txt"
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
+    And user "Alice" has uploaded file "filesForUpload/zzzz-must-be-last-file-in-folder.txt" to "simple-folder/zzzz-must-be-last-file-in-folder.txt"
+    And user "Alice" has logged in using the webUI
     When the user creates a new public link for folder "simple-folder" using the webUI with
       | permission | read-write |
     And the public accesses the last created public link using the webUI

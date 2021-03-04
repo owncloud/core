@@ -5,7 +5,7 @@ Feature: add users
   So that I can see various details about users
 
   Background:
-    Given these users have been created with default attributes and large skeleton files but not initialized:
+    Given these users have been created without skeleton files and not initialized:
       | username |
       | Alice    |
       | Brian    |
