@@ -380,7 +380,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has been created with default attributes and (small|large|)\s?skeleton files$/
+	 * @Given /^user "([^"]*)" has been created with default attributes and (small|large)\s?skeleton files$/
 	 *
 	 * @param string $user
 	 * @param string $skeletonType
@@ -1083,7 +1083,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^these users have been created with ?(default attributes and|) (small|large|)\s?skeleton files ?(but not initialized|):$/
+	 * @Given /^these users have been created with ?(default attributes and|) (small|large)\s?skeleton files ?(but not initialized|):$/
 	 *
 	 * expects a table of users with the heading
 	 * "|username|password|displayname|email|"
