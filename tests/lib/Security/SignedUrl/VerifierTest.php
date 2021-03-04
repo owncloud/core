@@ -34,13 +34,15 @@ class VerifierTest extends TestCase {
 	 * @param bool $isUrlValid
 	 * @param string $method
 	 * @param string $url
+	 * @param bool $expired
 	 */
-	public function testSignedUrl(bool $isSignedUrl, bool $isUrlValid, string $method, string $url): void {
+	public function testSignedUrl(bool $isSignedUrl, bool $isUrlValid, string $method, string $url, bool $expired = false): void {
 		$r = new Request($method, $url);
 		$r->setAbsoluteUrl($url);
 		$config = $this->createMock(IConfig::class);
 		$config->method('getUserValue')->willReturn('1234567890');
-		$v = new Verifier($r, $config, new \DateTime('2019-05-14T11:01:58.135Z', null));
+		$now = $expired ? new \DateTime('2020-05-14T11:01:58.135Z', null) : new \DateTime('2019-05-14T11:01:58.135Z', null);
+		$v = new Verifier($r, $config, $now);
 		if ($isSignedUrl) {
 			self::assertTrue($v->isSignedRequest());
 			self::assertEquals('alice', $v->getUrlCredential());
@@ -58,6 +60,7 @@ class VerifierTest extends TestCase {
 			'invalid signature' => [true, false, 'get', 'http://cloud.example.net/?OC-Credential=alice&OC-Date=2019-05-14T11%3A01%3A58.135Z&OC-Expires=1200&OC-Verb=GET&OC-Signature=f9e53a1ee23caef10f72ec392c1b537317491b687bfdd224c782be197d9ca2b'],
 			'different algo' => [true, false, 'post', 'http://cloud.example.net/?OC-Credential=alice&OC-Date=2019-05-14T11%3A01%3A58.135Z&OC-Expires=1200&OC-Verb=GET&OC-Algo=PBKDF2/5-SHA512&OC-Signature=f9e53a1ee23caef10f72ec392c1b537317491b687bfdd224c782be197d9ca2b6'],
 			'unsupported algo' => [true, false, 'post', 'http://cloud.example.net/?OC-Credential=alice&OC-Date=2019-05-14T11%3A01%3A58.135Z&OC-Expires=1200&OC-Verb=GET&OC-Algo=PBKDF2/x-SHA512&OC-Signature=f9e53a1ee23caef10f72ec392c1b537317491b687bfdd224c782be197d9ca2b6'],
+			'expired' => [true, false, 'get', 'http://cloud.example.net/?OC-Credential=alice&OC-Date=2019-05-14T11%3A01%3A58.135Z&OC-Expires=1200&OC-Verb=GET&OC-Signature=f9e53a1ee23caef10f72ec392c1b537317491b687bfdd224c782be197d9ca2b6', true],
 		];
 	}
 }

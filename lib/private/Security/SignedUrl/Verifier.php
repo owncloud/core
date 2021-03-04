@@ -53,13 +53,15 @@ class Verifier {
 	public function signedRequestIsValid(): bool {
 		$params = $this->getQueryParameters();
 		if (!isset($params['OC-Signature'], $params['OC-Credential'], $params['OC-Date'], $params['OC-Expires'], $params['OC-Verb'])) {
+			$q = \json_encode($params);
+			\OC::$server->getLogger()->debug("Query parameters are missing: $q", ['app' => 'signed-url']);
 			return false;
 		}
 		$urlSignature = $params['OC-Signature'];
 		$urlCredential = $params['OC-Credential'];
 		$urlDate = $params['OC-Date'];
 		$urlExpires = $params['OC-Expires'];
-		$urlVerb = $params['OC-Verb'];
+		$urlVerb = \strtoupper($params['OC-Verb']);
 		$algo = $params['OC-Algo'] ?? 'PBKDF2/10000-SHA512';
 
 		unset($params['OC-Signature'], $params['OC-Algo']);
@@ -73,14 +75,21 @@ class Verifier {
 
 		$hash = $this->computeHash($algo, $url, $signingKey);
 		if ($hash !== $urlSignature) {
+			\OC::$server->getLogger()->debug("Hashes do not match: $hash !== $urlSignature (used key: $signingKey url: $url", ['app' => 'signed-url']);
 			return false;
 		}
-		if (\strtoupper($this->getMethod()) !== \strtoupper($urlVerb)) {
+		$verb = \strtoupper($this->getMethod());
+		if ($verb !== $urlVerb) {
+			\OC::$server->getLogger()->debug("OC-Verb does not match: $verb !== $urlVerb", ['app' => 'signed-url']);
 			return false;
 		}
 		$date = new \DateTime($urlDate);
 		$date->add(new \DateInterval("PT${urlExpires}S"));
-		return !($date < $this->now);
+		if (!($date < $this->now)) {
+			return true;
+		}
+		\OC::$server->getLogger()->debug("Signature expired: {$date->format(\DateTime::ATOM)} < {$this->now->format(\DateTime::ATOM)}", ['app' => 'signed-url']);
+		return false;
 	}
 
 	private function getQueryParameters(): array {
