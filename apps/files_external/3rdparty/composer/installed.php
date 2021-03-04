@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '253084d5ac2304c3229f422eecb215192376484b',
+    'reference' => '127c9f6b6e2c9bea73119d49b879c1b7aed68b0c',
     'name' => 'files_external/3rdparty',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '253084d5ac2304c3229f422eecb215192376484b',
+      'reference' => '127c9f6b6e2c9bea73119d49b879c1b7aed68b0c',
     ),
     'firebase/php-jwt' => 
     array (
@@ -94,12 +94,12 @@
     ),
     'icewind/smb' => 
     array (
-      'pretty_version' => 'v3.3.0',
-      'version' => '3.3.0.0',
+      'pretty_version' => 'v3.3.1',
+      'version' => '3.3.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'e7cabee5097dbc6926e4b607c7df968802993467',
+      'reference' => '866f2b19a6e8277bc79c34060e344c9cbbba7023',
     ),
     'icewind/streams' => 
     array (
