@@ -47,19 +47,16 @@ use OCP\Security\ISecureRandom;
  * @package OC\Session
  */
 class CryptoWrapper {
-	const COOKIE_NAME = 'oc_sessionPassphrase';
+	public const COOKIE_NAME = 'oc_sessionPassphrase';
 
 	/** @var ISession */
 	protected $session;
 
-	/** @var \OCP\Security\ICrypto */
+	/** @var ICrypto */
 	protected $crypto;
 
 	/** @var ISecureRandom */
 	protected $random;
-
-	/** @var IConfig  */
-	private $config;
 
 	/** @var string  */
 	private $passphrase;
@@ -75,7 +72,6 @@ class CryptoWrapper {
 								ISecureRandom $random,
 								IRequest $request) {
 		$this->crypto = $crypto;
-		$this->config = $config;
 		$this->random = $random;
 
 		if ($request->getCookie(self::COOKIE_NAME) !== null) {
@@ -93,13 +89,14 @@ class CryptoWrapper {
 				if (\version_compare(PHP_VERSION, '7.3.0') === -1) {
 					\setcookie(self::COOKIE_NAME, $this->passphrase, 0, $webRoot, '', $secureCookie, true);
 				} else {
+					$samesite = $config->getSystemValue('http.cookie.samesite', 'strict');
 					$options = [
 						"expires" => 0,
 						"path" => $webRoot,
 						"domain" => '',
 						"secure" => $secureCookie,
 						"httponly" => true,
-						"samesite" => 'strict'
+						"samesite" => $samesite
 					];
 
 					\setcookie(self::COOKIE_NAME, $this->passphrase, $options);

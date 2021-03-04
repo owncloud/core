@@ -266,6 +266,17 @@ $CONFIG = [
 'csrf.disabled' => false,
 
 /**
+ * Define how to relax same site cookie settings
+ *
+ * Possible values: Strict, Lax or None
+ * Setting the same site cookie to None is necessary in case of OpenID Connect.
+ * For more information about the impact of the values see:
+ * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite#values
+ */
+
+'http.cookie.samesite' => 'strict',
+
+/**
  * Define the directory where the skeleton files are located
  * These files will be copied to the data directory of new users.
  * Leave this directory empty if you do not want to copy any skeleton files.
