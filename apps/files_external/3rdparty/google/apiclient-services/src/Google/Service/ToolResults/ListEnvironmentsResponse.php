@@ -26,14 +26,14 @@ class Google_Service_ToolResults_ListEnvironmentsResponse extends Google_Collect
   public $projectId;
 
   /**
-   * @param Google_Service_ToolResults_Environment
+   * @param Google_Service_ToolResults_Environment[]
    */
   public function setEnvironments($environments)
   {
     $this->environments = $environments;
   }
   /**
-   * @return Google_Service_ToolResults_Environment
+   * @return Google_Service_ToolResults_Environment[]
    */
   public function getEnvironments()
   {

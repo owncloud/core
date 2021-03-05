@@ -37,14 +37,14 @@ class Google_Service_Compute_AcceleratorTypeAggregatedList extends Google_Collec
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_AcceleratorTypesScopedList
+   * @param Google_Service_Compute_AcceleratorTypesScopedList[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_AcceleratorTypesScopedList
+   * @return Google_Service_Compute_AcceleratorTypesScopedList[]
    */
   public function getItems()
   {

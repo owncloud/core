@@ -29,8 +29,9 @@ class Google_Service_AdExchangeBuyerII_Resource_AccountsProposals extends Google
    * Mark the proposal as accepted at the given revision number. If the number
    * does not match the server's revision number an `ABORTED` error message will
    * be returned. This call updates the proposal_state from `PROPOSED` to
-   * `BUYER_ACCEPTED`, or from `SELLER_ACCEPTED` to `FINALIZED`.
-   * (proposals.accept)
+   * `BUYER_ACCEPTED`, or from `SELLER_ACCEPTED` to `FINALIZED`. Upon calling this
+   * endpoint, the buyer implicitly agrees to the terms and conditions optionally
+   * set within the proposal by the publisher. (proposals.accept)
    *
    * @param string $accountId Account ID of the buyer.
    * @param string $proposalId The ID of the proposal to accept.
@@ -139,16 +140,16 @@ class Google_Service_AdExchangeBuyerII_Resource_AccountsProposals extends Google
    * @param string $accountId Account ID of the buyer.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The page token as returned from
-   * ListProposalsResponse.
-   * @opt_param string filterSyntax Syntax the filter is written in. Current
-   * implementation defaults to PQL but in the future it will be LIST_FILTER.
    * @opt_param string filter An optional PQL filter query used to query for
    * proposals. Nested repeated fields, such as proposal.deals.targetingCriterion,
    * cannot be filtered.
+   * @opt_param string filterSyntax Syntax the filter is written in. Current
+   * implementation defaults to PQL but in the future it will be LIST_FILTER.
    * @opt_param int pageSize Requested page size. The server may return fewer
    * results than requested. If unspecified, the server will pick an appropriate
    * default.
+   * @opt_param string pageToken The page token as returned from
+   * ListProposalsResponse.
    * @return Google_Service_AdExchangeBuyerII_ListProposalsResponse
    */
   public function listAccountsProposals($accountId, $optParams = array())

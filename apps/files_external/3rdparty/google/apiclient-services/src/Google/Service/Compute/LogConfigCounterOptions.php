@@ -24,14 +24,14 @@ class Google_Service_Compute_LogConfigCounterOptions extends Google_Collection
   public $metric;
 
   /**
-   * @param Google_Service_Compute_LogConfigCounterOptionsCustomField
+   * @param Google_Service_Compute_LogConfigCounterOptionsCustomField[]
    */
   public function setCustomFields($customFields)
   {
     $this->customFields = $customFields;
   }
   /**
-   * @return Google_Service_Compute_LogConfigCounterOptionsCustomField
+   * @return Google_Service_Compute_LogConfigCounterOptionsCustomField[]
    */
   public function getCustomFields()
   {

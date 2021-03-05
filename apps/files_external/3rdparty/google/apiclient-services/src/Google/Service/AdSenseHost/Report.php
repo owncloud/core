@@ -36,14 +36,14 @@ class Google_Service_AdSenseHost_Report extends Google_Collection
     return $this->averages;
   }
   /**
-   * @param Google_Service_AdSenseHost_ReportHeaders
+   * @param Google_Service_AdSenseHost_ReportHeaders[]
    */
   public function setHeaders($headers)
   {
     $this->headers = $headers;
   }
   /**
-   * @return Google_Service_AdSenseHost_ReportHeaders
+   * @return Google_Service_AdSenseHost_ReportHeaders[]
    */
   public function getHeaders()
   {

@@ -22,14 +22,14 @@ class Google_Service_Dataflow_IntegerList extends Google_Collection
   protected $elementsDataType = 'array';
 
   /**
-   * @param Google_Service_Dataflow_SplitInt64
+   * @param Google_Service_Dataflow_SplitInt64[]
    */
   public function setElements($elements)
   {
     $this->elements = $elements;
   }
   /**
-   * @return Google_Service_Dataflow_SplitInt64
+   * @return Google_Service_Dataflow_SplitInt64[]
    */
   public function getElements()
   {

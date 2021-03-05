@@ -44,14 +44,14 @@ class Google_Service_Dfareporting_LandingPage extends Google_Collection
     return $this->archived;
   }
   /**
-   * @param Google_Service_Dfareporting_DeepLink
+   * @param Google_Service_Dfareporting_DeepLink[]
    */
   public function setDeepLinks($deepLinks)
   {
     $this->deepLinks = $deepLinks;
   }
   /**
-   * @return Google_Service_Dfareporting_DeepLink
+   * @return Google_Service_Dfareporting_DeepLink[]
    */
   public function getDeepLinks()
   {

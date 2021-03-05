@@ -64,14 +64,14 @@ class Google_Service_CloudIot_Device extends Google_Collection
     return $this->config;
   }
   /**
-   * @param Google_Service_CloudIot_DeviceCredential
+   * @param Google_Service_CloudIot_DeviceCredential[]
    */
   public function setCredentials($credentials)
   {
     $this->credentials = $credentials;
   }
   /**
-   * @return Google_Service_CloudIot_DeviceCredential
+   * @return Google_Service_CloudIot_DeviceCredential[]
    */
   public function getCredentials()
   {

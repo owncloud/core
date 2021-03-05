@@ -19,6 +19,7 @@ class Google_Service_CloudTalentSolution_CustomAttribute extends Google_Collecti
 {
   protected $collection_key = 'stringValues';
   public $filterable;
+  public $keywordSearchable;
   public $longValues;
   public $stringValues;
 
@@ -29,6 +30,14 @@ class Google_Service_CloudTalentSolution_CustomAttribute extends Google_Collecti
   public function getFilterable()
   {
     return $this->filterable;
+  }
+  public function setKeywordSearchable($keywordSearchable)
+  {
+    $this->keywordSearchable = $keywordSearchable;
+  }
+  public function getKeywordSearchable()
+  {
+    return $this->keywordSearchable;
   }
   public function setLongValues($longValues)
   {

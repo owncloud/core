@@ -31,14 +31,14 @@ class Google_Service_PostmasterTools_ListTrafficStatsResponse extends Google_Col
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_PostmasterTools_TrafficStats
+   * @param Google_Service_PostmasterTools_TrafficStats[]
    */
   public function setTrafficStats($trafficStats)
   {
     $this->trafficStats = $trafficStats;
   }
   /**
-   * @return Google_Service_PostmasterTools_TrafficStats
+   * @return Google_Service_PostmasterTools_TrafficStats[]
    */
   public function getTrafficStats()
   {

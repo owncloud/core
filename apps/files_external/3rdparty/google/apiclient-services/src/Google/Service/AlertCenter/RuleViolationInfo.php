@@ -40,14 +40,14 @@ class Google_Service_AlertCenter_RuleViolationInfo extends Google_Collection
     return $this->dataSource;
   }
   /**
-   * @param Google_Service_AlertCenter_MatchInfo
+   * @param Google_Service_AlertCenter_MatchInfo[]
    */
   public function setMatchInfo($matchInfo)
   {
     $this->matchInfo = $matchInfo;
   }
   /**
-   * @return Google_Service_AlertCenter_MatchInfo
+   * @return Google_Service_AlertCenter_MatchInfo[]
    */
   public function getMatchInfo()
   {

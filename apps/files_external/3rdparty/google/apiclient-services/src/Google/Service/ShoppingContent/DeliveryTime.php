@@ -62,14 +62,14 @@ class Google_Service_ShoppingContent_DeliveryTime extends Google_Collection
     return $this->handlingBusinessDayConfig;
   }
   /**
-   * @param Google_Service_ShoppingContent_HolidayCutoff
+   * @param Google_Service_ShoppingContent_HolidayCutoff[]
    */
   public function setHolidayCutoffs($holidayCutoffs)
   {
     $this->holidayCutoffs = $holidayCutoffs;
   }
   /**
-   * @return Google_Service_ShoppingContent_HolidayCutoff
+   * @return Google_Service_ShoppingContent_HolidayCutoff[]
    */
   public function getHolidayCutoffs()
   {

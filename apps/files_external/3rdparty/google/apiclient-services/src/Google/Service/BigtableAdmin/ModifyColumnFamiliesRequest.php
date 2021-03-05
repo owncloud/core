@@ -22,14 +22,14 @@ class Google_Service_BigtableAdmin_ModifyColumnFamiliesRequest extends Google_Co
   protected $modificationsDataType = 'array';
 
   /**
-   * @param Google_Service_BigtableAdmin_Modification
+   * @param Google_Service_BigtableAdmin_Modification[]
    */
   public function setModifications($modifications)
   {
     $this->modifications = $modifications;
   }
   /**
-   * @return Google_Service_BigtableAdmin_Modification
+   * @return Google_Service_BigtableAdmin_Modification[]
    */
   public function getModifications()
   {

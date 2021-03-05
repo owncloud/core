@@ -27,6 +27,8 @@ class Google_Service_Sheets_WaterfallChartSpec extends Google_Collection
   protected $seriesType = 'Google_Service_Sheets_WaterfallChartSeries';
   protected $seriesDataType = 'array';
   public $stackedType;
+  protected $totalDataLabelType = 'Google_Service_Sheets_DataLabel';
+  protected $totalDataLabelDataType = '';
 
   /**
    * @param Google_Service_Sheets_LineStyle
@@ -73,14 +75,14 @@ class Google_Service_Sheets_WaterfallChartSpec extends Google_Collection
     return $this->hideConnectorLines;
   }
   /**
-   * @param Google_Service_Sheets_WaterfallChartSeries
+   * @param Google_Service_Sheets_WaterfallChartSeries[]
    */
   public function setSeries($series)
   {
     $this->series = $series;
   }
   /**
-   * @return Google_Service_Sheets_WaterfallChartSeries
+   * @return Google_Service_Sheets_WaterfallChartSeries[]
    */
   public function getSeries()
   {
@@ -93,5 +95,19 @@ class Google_Service_Sheets_WaterfallChartSpec extends Google_Collection
   public function getStackedType()
   {
     return $this->stackedType;
+  }
+  /**
+   * @param Google_Service_Sheets_DataLabel
+   */
+  public function setTotalDataLabel(Google_Service_Sheets_DataLabel $totalDataLabel)
+  {
+    $this->totalDataLabel = $totalDataLabel;
+  }
+  /**
+   * @return Google_Service_Sheets_DataLabel
+   */
+  public function getTotalDataLabel()
+  {
+    return $this->totalDataLabel;
   }
 }

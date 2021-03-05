@@ -23,14 +23,14 @@ class Google_Service_Bigquery_ListModelsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Bigquery_Model
+   * @param Google_Service_Bigquery_Model[]
    */
   public function setModels($models)
   {
     $this->models = $models;
   }
   /**
-   * @return Google_Service_Bigquery_Model
+   * @return Google_Service_Bigquery_Model[]
    */
   public function getModels()
   {

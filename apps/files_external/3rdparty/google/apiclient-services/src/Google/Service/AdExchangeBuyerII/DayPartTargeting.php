@@ -23,14 +23,14 @@ class Google_Service_AdExchangeBuyerII_DayPartTargeting extends Google_Collectio
   public $timeZoneType;
 
   /**
-   * @param Google_Service_AdExchangeBuyerII_DayPart
+   * @param Google_Service_AdExchangeBuyerII_DayPart[]
    */
   public function setDayParts($dayParts)
   {
     $this->dayParts = $dayParts;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_DayPart
+   * @return Google_Service_AdExchangeBuyerII_DayPart[]
    */
   public function getDayParts()
   {

@@ -23,14 +23,14 @@ class Google_Service_CloudBuild_ListBuildsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudBuild_Build
+   * @param Google_Service_CloudBuild_Build[]
    */
   public function setBuilds($builds)
   {
     $this->builds = $builds;
   }
   /**
-   * @return Google_Service_CloudBuild_Build
+   * @return Google_Service_CloudBuild_Build[]
    */
   public function getBuilds()
   {

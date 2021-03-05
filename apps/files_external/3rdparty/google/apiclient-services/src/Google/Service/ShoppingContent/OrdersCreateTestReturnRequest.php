@@ -22,14 +22,14 @@ class Google_Service_ShoppingContent_OrdersCreateTestReturnRequest extends Googl
   protected $itemsDataType = 'array';
 
   /**
-   * @param Google_Service_ShoppingContent_OrdersCustomBatchRequestEntryCreateTestReturnReturnItem
+   * @param Google_Service_ShoppingContent_OrdersCustomBatchRequestEntryCreateTestReturnReturnItem[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrdersCustomBatchRequestEntryCreateTestReturnReturnItem
+   * @return Google_Service_ShoppingContent_OrdersCustomBatchRequestEntryCreateTestReturnReturnItem[]
    */
   public function getItems()
   {

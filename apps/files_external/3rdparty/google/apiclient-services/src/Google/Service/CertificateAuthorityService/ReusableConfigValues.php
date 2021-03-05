@@ -29,14 +29,14 @@ class Google_Service_CertificateAuthorityService_ReusableConfigValues extends Go
   protected $policyIdsDataType = 'array';
 
   /**
-   * @param Google_Service_CertificateAuthorityService_X509Extension
+   * @param Google_Service_CertificateAuthorityService_X509Extension[]
    */
   public function setAdditionalExtensions($additionalExtensions)
   {
     $this->additionalExtensions = $additionalExtensions;
   }
   /**
-   * @return Google_Service_CertificateAuthorityService_X509Extension
+   * @return Google_Service_CertificateAuthorityService_X509Extension[]
    */
   public function getAdditionalExtensions()
   {
@@ -79,14 +79,14 @@ class Google_Service_CertificateAuthorityService_ReusableConfigValues extends Go
     return $this->keyUsage;
   }
   /**
-   * @param Google_Service_CertificateAuthorityService_ObjectId
+   * @param Google_Service_CertificateAuthorityService_ObjectId[]
    */
   public function setPolicyIds($policyIds)
   {
     $this->policyIds = $policyIds;
   }
   /**
-   * @return Google_Service_CertificateAuthorityService_ObjectId
+   * @return Google_Service_CertificateAuthorityService_ObjectId[]
    */
   public function getPolicyIds()
   {

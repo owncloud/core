@@ -24,14 +24,14 @@ class Google_Service_Spanner_ExecuteBatchDmlResponse extends Google_Collection
   protected $statusDataType = '';
 
   /**
-   * @param Google_Service_Spanner_ResultSet
+   * @param Google_Service_Spanner_ResultSet[]
    */
   public function setResultSets($resultSets)
   {
     $this->resultSets = $resultSets;
   }
   /**
-   * @return Google_Service_Spanner_ResultSet
+   * @return Google_Service_Spanner_ResultSet[]
    */
   public function getResultSets()
   {

@@ -33,14 +33,14 @@ class Google_Service_AdSenseHost_AdUnits extends Google_Collection
     return $this->etag;
   }
   /**
-   * @param Google_Service_AdSenseHost_AdUnit
+   * @param Google_Service_AdSenseHost_AdUnit[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_AdSenseHost_AdUnit
+   * @return Google_Service_AdSenseHost_AdUnit[]
    */
   public function getItems()
   {

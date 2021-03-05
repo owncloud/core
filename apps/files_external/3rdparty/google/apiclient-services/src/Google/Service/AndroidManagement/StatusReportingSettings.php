@@ -20,6 +20,7 @@ class Google_Service_AndroidManagement_StatusReportingSettings extends Google_Mo
   protected $applicationReportingSettingsType = 'Google_Service_AndroidManagement_ApplicationReportingSettings';
   protected $applicationReportingSettingsDataType = '';
   public $applicationReportsEnabled;
+  public $commonCriteriaModeEnabled;
   public $deviceSettingsEnabled;
   public $displayInfoEnabled;
   public $hardwareStatusEnabled;
@@ -50,6 +51,14 @@ class Google_Service_AndroidManagement_StatusReportingSettings extends Google_Mo
   public function getApplicationReportsEnabled()
   {
     return $this->applicationReportsEnabled;
+  }
+  public function setCommonCriteriaModeEnabled($commonCriteriaModeEnabled)
+  {
+    $this->commonCriteriaModeEnabled = $commonCriteriaModeEnabled;
+  }
+  public function getCommonCriteriaModeEnabled()
+  {
+    return $this->commonCriteriaModeEnabled;
   }
   public function setDeviceSettingsEnabled($deviceSettingsEnabled)
   {

@@ -22,14 +22,14 @@ class Google_Service_DisplayVideo_CustomListGroup extends Google_Collection
   protected $settingsDataType = 'array';
 
   /**
-   * @param Google_Service_DisplayVideo_CustomListTargetingSetting
+   * @param Google_Service_DisplayVideo_CustomListTargetingSetting[]
    */
   public function setSettings($settings)
   {
     $this->settings = $settings;
   }
   /**
-   * @return Google_Service_DisplayVideo_CustomListTargetingSetting
+   * @return Google_Service_DisplayVideo_CustomListTargetingSetting[]
    */
   public function getSettings()
   {

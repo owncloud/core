@@ -26,14 +26,14 @@ class Google_Service_Books_Volumeannotations extends Google_Collection
   public $version;
 
   /**
-   * @param Google_Service_Books_Volumeannotation
+   * @param Google_Service_Books_Volumeannotation[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Books_Volumeannotation
+   * @return Google_Service_Books_Volumeannotation[]
    */
   public function getItems()
   {

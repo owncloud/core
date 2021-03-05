@@ -31,14 +31,14 @@ class Google_Service_ArtifactRegistry_ListTagsResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ArtifactRegistry_Tag
+   * @param Google_Service_ArtifactRegistry_Tag[]
    */
   public function setTags($tags)
   {
     $this->tags = $tags;
   }
   /**
-   * @return Google_Service_ArtifactRegistry_Tag
+   * @return Google_Service_ArtifactRegistry_Tag[]
    */
   public function getTags()
   {

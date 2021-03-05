@@ -22,9 +22,13 @@ class Google_Service_Compute_ResourcePolicy extends Google_Model
   protected $groupPlacementPolicyType = 'Google_Service_Compute_ResourcePolicyGroupPlacementPolicy';
   protected $groupPlacementPolicyDataType = '';
   public $id;
+  protected $instanceSchedulePolicyType = 'Google_Service_Compute_ResourcePolicyInstanceSchedulePolicy';
+  protected $instanceSchedulePolicyDataType = '';
   public $kind;
   public $name;
   public $region;
+  protected $resourceStatusType = 'Google_Service_Compute_ResourcePolicyResourceStatus';
+  protected $resourceStatusDataType = '';
   public $selfLink;
   protected $snapshotSchedulePolicyType = 'Google_Service_Compute_ResourcePolicySnapshotSchedulePolicy';
   protected $snapshotSchedulePolicyDataType = '';
@@ -68,6 +72,20 @@ class Google_Service_Compute_ResourcePolicy extends Google_Model
   {
     return $this->id;
   }
+  /**
+   * @param Google_Service_Compute_ResourcePolicyInstanceSchedulePolicy
+   */
+  public function setInstanceSchedulePolicy(Google_Service_Compute_ResourcePolicyInstanceSchedulePolicy $instanceSchedulePolicy)
+  {
+    $this->instanceSchedulePolicy = $instanceSchedulePolicy;
+  }
+  /**
+   * @return Google_Service_Compute_ResourcePolicyInstanceSchedulePolicy
+   */
+  public function getInstanceSchedulePolicy()
+  {
+    return $this->instanceSchedulePolicy;
+  }
   public function setKind($kind)
   {
     $this->kind = $kind;
@@ -91,6 +109,20 @@ class Google_Service_Compute_ResourcePolicy extends Google_Model
   public function getRegion()
   {
     return $this->region;
+  }
+  /**
+   * @param Google_Service_Compute_ResourcePolicyResourceStatus
+   */
+  public function setResourceStatus(Google_Service_Compute_ResourcePolicyResourceStatus $resourceStatus)
+  {
+    $this->resourceStatus = $resourceStatus;
+  }
+  /**
+   * @return Google_Service_Compute_ResourcePolicyResourceStatus
+   */
+  public function getResourceStatus()
+  {
+    return $this->resourceStatus;
   }
   public function setSelfLink($selfLink)
   {

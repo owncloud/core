@@ -31,14 +31,14 @@ class Google_Service_Sasportal_SasPortalListNodesResponse extends Google_Collect
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Sasportal_SasPortalNode
+   * @param Google_Service_Sasportal_SasPortalNode[]
    */
   public function setNodes($nodes)
   {
     $this->nodes = $nodes;
   }
   /**
-   * @return Google_Service_Sasportal_SasPortalNode
+   * @return Google_Service_Sasportal_SasPortalNode[]
    */
   public function getNodes()
   {

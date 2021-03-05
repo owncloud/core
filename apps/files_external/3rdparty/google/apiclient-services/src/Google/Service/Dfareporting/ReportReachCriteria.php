@@ -75,28 +75,28 @@ class Google_Service_Dfareporting_ReportReachCriteria extends Google_Collection
     return $this->dateRange;
   }
   /**
-   * @param Google_Service_Dfareporting_DimensionValue
+   * @param Google_Service_Dfareporting_DimensionValue[]
    */
   public function setDimensionFilters($dimensionFilters)
   {
     $this->dimensionFilters = $dimensionFilters;
   }
   /**
-   * @return Google_Service_Dfareporting_DimensionValue
+   * @return Google_Service_Dfareporting_DimensionValue[]
    */
   public function getDimensionFilters()
   {
     return $this->dimensionFilters;
   }
   /**
-   * @param Google_Service_Dfareporting_SortedDimension
+   * @param Google_Service_Dfareporting_SortedDimension[]
    */
   public function setDimensions($dimensions)
   {
     $this->dimensions = $dimensions;
   }
   /**
-   * @return Google_Service_Dfareporting_SortedDimension
+   * @return Google_Service_Dfareporting_SortedDimension[]
    */
   public function getDimensions()
   {

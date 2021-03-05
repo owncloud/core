@@ -40,7 +40,7 @@ class Google_Service_AdMob_Resource_Accounts extends Google_Service_Resource
     return $this->call('get', array($params), "Google_Service_AdMob_PublisherAccount");
   }
   /**
-   * Lists the AdMob publisher account accessible with the client credential.
+   * List the AdMob publisher account accessible with the client credential.
    * Currently, all credentials have access to at most one AdMob account.
    * (accounts.listAccounts)
    *

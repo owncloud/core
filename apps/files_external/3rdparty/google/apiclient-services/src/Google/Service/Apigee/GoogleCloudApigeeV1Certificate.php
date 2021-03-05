@@ -22,14 +22,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1Certificate extends Google_Collec
   protected $certInfoDataType = 'array';
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1CertInfo
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1CertInfo[]
    */
   public function setCertInfo($certInfo)
   {
     $this->certInfo = $certInfo;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1CertInfo
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1CertInfo[]
    */
   public function getCertInfo()
   {

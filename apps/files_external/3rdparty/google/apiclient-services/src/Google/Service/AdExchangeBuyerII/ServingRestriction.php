@@ -27,14 +27,14 @@ class Google_Service_AdExchangeBuyerII_ServingRestriction extends Google_Collect
   public $status;
 
   /**
-   * @param Google_Service_AdExchangeBuyerII_ServingContext
+   * @param Google_Service_AdExchangeBuyerII_ServingContext[]
    */
   public function setContexts($contexts)
   {
     $this->contexts = $contexts;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_ServingContext
+   * @return Google_Service_AdExchangeBuyerII_ServingContext[]
    */
   public function getContexts()
   {
@@ -55,14 +55,14 @@ class Google_Service_AdExchangeBuyerII_ServingRestriction extends Google_Collect
     return $this->disapproval;
   }
   /**
-   * @param Google_Service_AdExchangeBuyerII_Disapproval
+   * @param Google_Service_AdExchangeBuyerII_Disapproval[]
    */
   public function setDisapprovalReasons($disapprovalReasons)
   {
     $this->disapprovalReasons = $disapprovalReasons;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_Disapproval
+   * @return Google_Service_AdExchangeBuyerII_Disapproval[]
    */
   public function getDisapprovalReasons()
   {

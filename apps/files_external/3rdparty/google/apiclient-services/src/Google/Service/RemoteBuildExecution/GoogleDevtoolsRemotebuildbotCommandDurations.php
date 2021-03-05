@@ -17,6 +17,8 @@
 
 class Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildbotCommandDurations extends Google_Model
 {
+  public $casRelease;
+  public $cmWaitForAssignment;
   public $dockerPrep;
   public $dockerPrepStartTime;
   public $download;
@@ -29,6 +31,22 @@ class Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildbotCommandDur
   public $upload;
   public $uploadStartTime;
 
+  public function setCasRelease($casRelease)
+  {
+    $this->casRelease = $casRelease;
+  }
+  public function getCasRelease()
+  {
+    return $this->casRelease;
+  }
+  public function setCmWaitForAssignment($cmWaitForAssignment)
+  {
+    $this->cmWaitForAssignment = $cmWaitForAssignment;
+  }
+  public function getCmWaitForAssignment()
+  {
+    return $this->cmWaitForAssignment;
+  }
   public function setDockerPrep($dockerPrep)
   {
     $this->dockerPrep = $dockerPrep;

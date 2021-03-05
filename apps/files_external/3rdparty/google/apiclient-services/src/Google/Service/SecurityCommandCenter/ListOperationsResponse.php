@@ -31,14 +31,14 @@ class Google_Service_SecurityCommandCenter_ListOperationsResponse extends Google
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_SecurityCommandCenter_Operation
+   * @param Google_Service_SecurityCommandCenter_Operation[]
    */
   public function setOperations($operations)
   {
     $this->operations = $operations;
   }
   /**
-   * @return Google_Service_SecurityCommandCenter_Operation
+   * @return Google_Service_SecurityCommandCenter_Operation[]
    */
   public function getOperations()
   {

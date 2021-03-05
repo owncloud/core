@@ -50,14 +50,14 @@ class Google_Service_Bigquery_TableDataList extends Google_Collection
     return $this->pageToken;
   }
   /**
-   * @param Google_Service_Bigquery_TableRow
+   * @param Google_Service_Bigquery_TableRow[]
    */
   public function setRows($rows)
   {
     $this->rows = $rows;
   }
   /**
-   * @return Google_Service_Bigquery_TableRow
+   * @return Google_Service_Bigquery_TableRow[]
    */
   public function getRows()
   {

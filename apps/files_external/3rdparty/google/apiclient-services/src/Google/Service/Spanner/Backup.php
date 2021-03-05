@@ -20,11 +20,14 @@ class Google_Service_Spanner_Backup extends Google_Collection
   protected $collection_key = 'referencingDatabases';
   public $createTime;
   public $database;
+  protected $encryptionInfoType = 'Google_Service_Spanner_EncryptionInfo';
+  protected $encryptionInfoDataType = '';
   public $expireTime;
   public $name;
   public $referencingDatabases;
   public $sizeBytes;
   public $state;
+  public $versionTime;
 
   public function setCreateTime($createTime)
   {
@@ -41,6 +44,20 @@ class Google_Service_Spanner_Backup extends Google_Collection
   public function getDatabase()
   {
     return $this->database;
+  }
+  /**
+   * @param Google_Service_Spanner_EncryptionInfo
+   */
+  public function setEncryptionInfo(Google_Service_Spanner_EncryptionInfo $encryptionInfo)
+  {
+    $this->encryptionInfo = $encryptionInfo;
+  }
+  /**
+   * @return Google_Service_Spanner_EncryptionInfo
+   */
+  public function getEncryptionInfo()
+  {
+    return $this->encryptionInfo;
   }
   public function setExpireTime($expireTime)
   {
@@ -81,5 +98,13 @@ class Google_Service_Spanner_Backup extends Google_Collection
   public function getState()
   {
     return $this->state;
+  }
+  public function setVersionTime($versionTime)
+  {
+    $this->versionTime = $versionTime;
+  }
+  public function getVersionTime()
+  {
+    return $this->versionTime;
   }
 }

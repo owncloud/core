@@ -23,14 +23,14 @@ class Google_Service_CloudFilestore_ListLocationsResponse extends Google_Collect
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudFilestore_Location
+   * @param Google_Service_CloudFilestore_Location[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_CloudFilestore_Location
+   * @return Google_Service_CloudFilestore_Location[]
    */
   public function getLocations()
   {

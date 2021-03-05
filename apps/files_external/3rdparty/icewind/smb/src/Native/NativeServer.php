@@ -11,7 +11,7 @@ use Icewind\SMB\AbstractServer;
 use Icewind\SMB\IAuth;
 use Icewind\SMB\IOptions;
 use Icewind\SMB\ISystem;
-use Icewind\SMB\TimeZoneProvider;
+use Icewind\SMB\ITimeZoneProvider;
 
 class NativeServer extends AbstractServer {
 	/**
@@ -19,7 +19,7 @@ class NativeServer extends AbstractServer {
 	 */
 	protected $state;
 
-	public function __construct($host, IAuth $auth, ISystem $system, TimeZoneProvider $timeZoneProvider, IOptions $options) {
+	public function __construct($host, IAuth $auth, ISystem $system, ITimeZoneProvider $timeZoneProvider, IOptions $options) {
 		parent::__construct($host, $auth, $system, $timeZoneProvider, $options);
 		$this->state = new NativeState();
 	}

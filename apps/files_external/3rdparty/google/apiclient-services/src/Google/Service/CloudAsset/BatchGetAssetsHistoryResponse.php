@@ -22,14 +22,14 @@ class Google_Service_CloudAsset_BatchGetAssetsHistoryResponse extends Google_Col
   protected $assetsDataType = 'array';
 
   /**
-   * @param Google_Service_CloudAsset_TemporalAsset
+   * @param Google_Service_CloudAsset_TemporalAsset[]
    */
   public function setAssets($assets)
   {
     $this->assets = $assets;
   }
   /**
-   * @return Google_Service_CloudAsset_TemporalAsset
+   * @return Google_Service_CloudAsset_TemporalAsset[]
    */
   public function getAssets()
   {

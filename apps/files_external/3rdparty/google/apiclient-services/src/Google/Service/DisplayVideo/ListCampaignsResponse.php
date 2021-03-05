@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_ListCampaignsResponse extends Google_Collectio
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DisplayVideo_Campaign
+   * @param Google_Service_DisplayVideo_Campaign[]
    */
   public function setCampaigns($campaigns)
   {
     $this->campaigns = $campaigns;
   }
   /**
-   * @return Google_Service_DisplayVideo_Campaign
+   * @return Google_Service_DisplayVideo_Campaign[]
    */
   public function getCampaigns()
   {

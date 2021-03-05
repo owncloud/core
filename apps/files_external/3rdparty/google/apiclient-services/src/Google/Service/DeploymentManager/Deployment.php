@@ -68,14 +68,14 @@ class Google_Service_DeploymentManager_Deployment extends Google_Collection
     return $this->insertTime;
   }
   /**
-   * @param Google_Service_DeploymentManager_DeploymentLabelEntry
+   * @param Google_Service_DeploymentManager_DeploymentLabelEntry[]
    */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
   /**
-   * @return Google_Service_DeploymentManager_DeploymentLabelEntry
+   * @return Google_Service_DeploymentManager_DeploymentLabelEntry[]
    */
   public function getLabels()
   {

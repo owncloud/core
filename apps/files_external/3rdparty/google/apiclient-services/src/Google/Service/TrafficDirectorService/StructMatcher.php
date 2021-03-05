@@ -24,14 +24,14 @@ class Google_Service_TrafficDirectorService_StructMatcher extends Google_Collect
   protected $valueDataType = '';
 
   /**
-   * @param Google_Service_TrafficDirectorService_PathSegment
+   * @param Google_Service_TrafficDirectorService_PathSegment[]
    */
   public function setPath($path)
   {
     $this->path = $path;
   }
   /**
-   * @return Google_Service_TrafficDirectorService_PathSegment
+   * @return Google_Service_TrafficDirectorService_PathSegment[]
    */
   public function getPath()
   {

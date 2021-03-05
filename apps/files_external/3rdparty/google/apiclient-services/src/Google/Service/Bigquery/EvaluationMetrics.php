@@ -23,6 +23,8 @@ class Google_Service_Bigquery_EvaluationMetrics extends Google_Model
   protected $binaryClassificationMetricsDataType = '';
   protected $clusteringMetricsType = 'Google_Service_Bigquery_ClusteringMetrics';
   protected $clusteringMetricsDataType = '';
+  protected $dimensionalityReductionMetricsType = 'Google_Service_Bigquery_DimensionalityReductionMetrics';
+  protected $dimensionalityReductionMetricsDataType = '';
   protected $multiClassClassificationMetricsType = 'Google_Service_Bigquery_MultiClassClassificationMetrics';
   protected $multiClassClassificationMetricsDataType = '';
   protected $rankingMetricsType = 'Google_Service_Bigquery_RankingMetrics';
@@ -71,6 +73,20 @@ class Google_Service_Bigquery_EvaluationMetrics extends Google_Model
   public function getClusteringMetrics()
   {
     return $this->clusteringMetrics;
+  }
+  /**
+   * @param Google_Service_Bigquery_DimensionalityReductionMetrics
+   */
+  public function setDimensionalityReductionMetrics(Google_Service_Bigquery_DimensionalityReductionMetrics $dimensionalityReductionMetrics)
+  {
+    $this->dimensionalityReductionMetrics = $dimensionalityReductionMetrics;
+  }
+  /**
+   * @return Google_Service_Bigquery_DimensionalityReductionMetrics
+   */
+  public function getDimensionalityReductionMetrics()
+  {
+    return $this->dimensionalityReductionMetrics;
   }
   /**
    * @param Google_Service_Bigquery_MultiClassClassificationMetrics

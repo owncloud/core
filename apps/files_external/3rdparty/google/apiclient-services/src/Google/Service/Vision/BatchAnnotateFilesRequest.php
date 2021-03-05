@@ -31,14 +31,14 @@ class Google_Service_Vision_BatchAnnotateFilesRequest extends Google_Collection
     return $this->parent;
   }
   /**
-   * @param Google_Service_Vision_AnnotateFileRequest
+   * @param Google_Service_Vision_AnnotateFileRequest[]
    */
   public function setRequests($requests)
   {
     $this->requests = $requests;
   }
   /**
-   * @return Google_Service_Vision_AnnotateFileRequest
+   * @return Google_Service_Vision_AnnotateFileRequest[]
    */
   public function getRequests()
   {

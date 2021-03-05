@@ -31,14 +31,14 @@ class Google_Service_CloudSearch_CompositeFilter extends Google_Collection
     return $this->logicOperator;
   }
   /**
-   * @param Google_Service_CloudSearch_Filter
+   * @param Google_Service_CloudSearch_Filter[]
    */
   public function setSubFilters($subFilters)
   {
     $this->subFilters = $subFilters;
   }
   /**
-   * @return Google_Service_CloudSearch_Filter
+   * @return Google_Service_CloudSearch_Filter[]
    */
   public function getSubFilters()
   {

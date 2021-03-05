@@ -22,14 +22,14 @@ class Google_Service_Safebrowsing_ThreatEntryMetadata extends Google_Collection
   protected $entriesDataType = 'array';
 
   /**
-   * @param Google_Service_Safebrowsing_MetadataEntry
+   * @param Google_Service_Safebrowsing_MetadataEntry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_Safebrowsing_MetadataEntry
+   * @return Google_Service_Safebrowsing_MetadataEntry[]
    */
   public function getEntries()
   {

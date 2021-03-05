@@ -71,14 +71,14 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Trial extends Goo
     return $this->infeasibleReason;
   }
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Measurement
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Measurement[]
    */
   public function setMeasurements($measurements)
   {
     $this->measurements = $measurements;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Measurement
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Measurement[]
    */
   public function getMeasurements()
   {
@@ -93,14 +93,14 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Trial extends Goo
     return $this->name;
   }
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1TrialParameter
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1TrialParameter[]
    */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1TrialParameter
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1TrialParameter[]
    */
   public function getParameters()
   {

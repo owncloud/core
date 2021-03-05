@@ -65,28 +65,28 @@ class Google_Service_ContainerAnalysis_Link extends Google_Collection
     return $this->environment;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_GrafeasV1beta1IntotoArtifact
+   * @param Google_Service_ContainerAnalysis_GrafeasV1beta1IntotoArtifact[]
    */
   public function setMaterials($materials)
   {
     $this->materials = $materials;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_GrafeasV1beta1IntotoArtifact
+   * @return Google_Service_ContainerAnalysis_GrafeasV1beta1IntotoArtifact[]
    */
   public function getMaterials()
   {
     return $this->materials;
   }
   /**
-   * @param Google_Service_ContainerAnalysis_GrafeasV1beta1IntotoArtifact
+   * @param Google_Service_ContainerAnalysis_GrafeasV1beta1IntotoArtifact[]
    */
   public function setProducts($products)
   {
     $this->products = $products;
   }
   /**
-   * @return Google_Service_ContainerAnalysis_GrafeasV1beta1IntotoArtifact
+   * @return Google_Service_ContainerAnalysis_GrafeasV1beta1IntotoArtifact[]
    */
   public function getProducts()
   {

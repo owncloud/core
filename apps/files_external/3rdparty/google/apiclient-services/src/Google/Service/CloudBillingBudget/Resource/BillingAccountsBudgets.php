@@ -84,11 +84,11 @@ class Google_Service_CloudBillingBudget_Resource_BillingAccountsBudgets extends 
    * under. Values are of the form `billingAccounts/{billingAccountId}`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Optional. The maximum number of budgets to return per
+   * page. The default and maximum value are 100.
    * @opt_param string pageToken Optional. The value returned by the last
    * `ListBudgetsResponse` which indicates that this is a continuation of a prior
    * `ListBudgets` call, and that the system should return the next page of data.
-   * @opt_param int pageSize Optional. The maximum number of budgets to return per
-   * page. The default and maximum value are 100.
    * @return Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1ListBudgetsResponse
    */
   public function listBillingAccountsBudgets($parent, $optParams = array())

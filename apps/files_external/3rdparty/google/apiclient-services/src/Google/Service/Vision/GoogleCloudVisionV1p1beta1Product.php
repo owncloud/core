@@ -58,14 +58,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p1beta1Product extends Google_Col
     return $this->productCategory;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p1beta1ProductKeyValue
+   * @param Google_Service_Vision_GoogleCloudVisionV1p1beta1ProductKeyValue[]
    */
   public function setProductLabels($productLabels)
   {
     $this->productLabels = $productLabels;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p1beta1ProductKeyValue
+   * @return Google_Service_Vision_GoogleCloudVisionV1p1beta1ProductKeyValue[]
    */
   public function getProductLabels()
   {

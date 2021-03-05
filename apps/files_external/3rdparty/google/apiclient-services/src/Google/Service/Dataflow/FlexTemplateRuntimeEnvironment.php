@@ -21,6 +21,7 @@ class Google_Service_Dataflow_FlexTemplateRuntimeEnvironment extends Google_Coll
   public $additionalExperiments;
   public $additionalUserLabels;
   public $enableStreamingEngine;
+  public $flexrsGoal;
   public $ipConfiguration;
   public $kmsKeyName;
   public $machineType;
@@ -57,6 +58,14 @@ class Google_Service_Dataflow_FlexTemplateRuntimeEnvironment extends Google_Coll
   public function getEnableStreamingEngine()
   {
     return $this->enableStreamingEngine;
+  }
+  public function setFlexrsGoal($flexrsGoal)
+  {
+    $this->flexrsGoal = $flexrsGoal;
+  }
+  public function getFlexrsGoal()
+  {
+    return $this->flexrsGoal;
   }
   public function setIpConfiguration($ipConfiguration)
   {

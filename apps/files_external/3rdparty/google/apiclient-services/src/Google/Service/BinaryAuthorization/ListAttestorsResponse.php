@@ -23,14 +23,14 @@ class Google_Service_BinaryAuthorization_ListAttestorsResponse extends Google_Co
   public $nextPageToken;
 
   /**
-   * @param Google_Service_BinaryAuthorization_Attestor
+   * @param Google_Service_BinaryAuthorization_Attestor[]
    */
   public function setAttestors($attestors)
   {
     $this->attestors = $attestors;
   }
   /**
-   * @return Google_Service_BinaryAuthorization_Attestor
+   * @return Google_Service_BinaryAuthorization_Attestor[]
    */
   public function getAttestors()
   {

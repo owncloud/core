@@ -18,6 +18,7 @@
 class Google_Service_Appengine_LocationMetadata extends Google_Model
 {
   public $flexibleEnvironmentAvailable;
+  public $searchApiAvailable;
   public $standardEnvironmentAvailable;
 
   public function setFlexibleEnvironmentAvailable($flexibleEnvironmentAvailable)
@@ -27,6 +28,14 @@ class Google_Service_Appengine_LocationMetadata extends Google_Model
   public function getFlexibleEnvironmentAvailable()
   {
     return $this->flexibleEnvironmentAvailable;
+  }
+  public function setSearchApiAvailable($searchApiAvailable)
+  {
+    $this->searchApiAvailable = $searchApiAvailable;
+  }
+  public function getSearchApiAvailable()
+  {
+    return $this->searchApiAvailable;
   }
   public function setStandardEnvironmentAvailable($standardEnvironmentAvailable)
   {

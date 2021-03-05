@@ -23,14 +23,14 @@ class Google_Service_Books_DownloadAccesses extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_Books_DownloadAccessRestriction
+   * @param Google_Service_Books_DownloadAccessRestriction[]
    */
   public function setDownloadAccessList($downloadAccessList)
   {
     $this->downloadAccessList = $downloadAccessList;
   }
   /**
-   * @return Google_Service_Books_DownloadAccessRestriction
+   * @return Google_Service_Books_DownloadAccessRestriction[]
    */
   public function getDownloadAccessList()
   {

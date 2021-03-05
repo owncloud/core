@@ -23,14 +23,14 @@ class Google_Service_CloudHealthcare_ListDicomStoresResponse extends Google_Coll
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudHealthcare_DicomStore
+   * @param Google_Service_CloudHealthcare_DicomStore[]
    */
   public function setDicomStores($dicomStores)
   {
     $this->dicomStores = $dicomStores;
   }
   /**
-   * @return Google_Service_CloudHealthcare_DicomStore
+   * @return Google_Service_CloudHealthcare_DicomStore[]
    */
   public function getDicomStores()
   {

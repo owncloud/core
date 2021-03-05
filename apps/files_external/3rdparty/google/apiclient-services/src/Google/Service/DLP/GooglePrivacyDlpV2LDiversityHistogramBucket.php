@@ -42,14 +42,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2LDiversityHistogramBucket extends Goo
     return $this->bucketValueCount;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2LDiversityEquivalenceClass
+   * @param Google_Service_DLP_GooglePrivacyDlpV2LDiversityEquivalenceClass[]
    */
   public function setBucketValues($bucketValues)
   {
     $this->bucketValues = $bucketValues;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2LDiversityEquivalenceClass
+   * @return Google_Service_DLP_GooglePrivacyDlpV2LDiversityEquivalenceClass[]
    */
   public function getBucketValues()
   {

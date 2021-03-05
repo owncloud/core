@@ -24,28 +24,28 @@ class Google_Service_ServiceNetworking_Quota extends Google_Collection
   protected $metricRulesDataType = 'array';
 
   /**
-   * @param Google_Service_ServiceNetworking_QuotaLimit
+   * @param Google_Service_ServiceNetworking_QuotaLimit[]
    */
   public function setLimits($limits)
   {
     $this->limits = $limits;
   }
   /**
-   * @return Google_Service_ServiceNetworking_QuotaLimit
+   * @return Google_Service_ServiceNetworking_QuotaLimit[]
    */
   public function getLimits()
   {
     return $this->limits;
   }
   /**
-   * @param Google_Service_ServiceNetworking_MetricRule
+   * @param Google_Service_ServiceNetworking_MetricRule[]
    */
   public function setMetricRules($metricRules)
   {
     $this->metricRules = $metricRules;
   }
   /**
-   * @return Google_Service_ServiceNetworking_MetricRule
+   * @return Google_Service_ServiceNetworking_MetricRule[]
    */
   public function getMetricRules()
   {

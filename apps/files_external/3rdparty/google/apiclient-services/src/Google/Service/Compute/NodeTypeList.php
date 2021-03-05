@@ -36,14 +36,14 @@ class Google_Service_Compute_NodeTypeList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_NodeType
+   * @param Google_Service_Compute_NodeType[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_NodeType
+   * @return Google_Service_Compute_NodeType[]
    */
   public function getItems()
   {

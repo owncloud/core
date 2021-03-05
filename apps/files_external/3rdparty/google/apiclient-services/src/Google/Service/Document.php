@@ -40,7 +40,8 @@ class Google_Service_Document extends Google_Service
   public $projects_locations_operations;
   public $projects_locations_processors;
   public $projects_locations_processors_humanReviewConfig;
-  
+  public $projects_locations_processors_processorVersions;
+
   /**
    * Constructs the internal representation of the Document service.
    *
@@ -81,10 +82,6 @@ class Google_Service_Document extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -92,6 +89,10 @@ class Google_Service_Document extends Google_Service
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -159,6 +160,36 @@ class Google_Service_Document extends Google_Service
               'httpMethod' => 'POST',
               'parameters' => array(
                 'humanReviewConfig' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->projects_locations_processors_processorVersions = new Google_Service_Document_Resource_ProjectsLocationsProcessorsProcessorVersions(
+        $this,
+        $this->serviceName,
+        'processorVersions',
+        array(
+          'methods' => array(
+            'batchProcess' => array(
+              'path' => 'v1beta3/{+name}:batchProcess',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'process' => array(
+              'path' => 'v1beta3/{+name}:process',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'name' => array(
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,

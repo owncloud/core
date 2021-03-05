@@ -24,14 +24,14 @@ class Google_Service_Compute_NetworkEndpointGroupsScopedList extends Google_Coll
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_NetworkEndpointGroup
+   * @param Google_Service_Compute_NetworkEndpointGroup[]
    */
   public function setNetworkEndpointGroups($networkEndpointGroups)
   {
     $this->networkEndpointGroups = $networkEndpointGroups;
   }
   /**
-   * @return Google_Service_Compute_NetworkEndpointGroup
+   * @return Google_Service_Compute_NetworkEndpointGroup[]
    */
   public function getNetworkEndpointGroups()
   {

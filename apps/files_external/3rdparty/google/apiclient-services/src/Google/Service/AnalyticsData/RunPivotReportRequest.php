@@ -61,14 +61,14 @@ class Google_Service_AnalyticsData_RunPivotReportRequest extends Google_Collecti
     return $this->currencyCode;
   }
   /**
-   * @param Google_Service_AnalyticsData_DateRange
+   * @param Google_Service_AnalyticsData_DateRange[]
    */
   public function setDateRanges($dateRanges)
   {
     $this->dateRanges = $dateRanges;
   }
   /**
-   * @return Google_Service_AnalyticsData_DateRange
+   * @return Google_Service_AnalyticsData_DateRange[]
    */
   public function getDateRanges()
   {
@@ -89,14 +89,14 @@ class Google_Service_AnalyticsData_RunPivotReportRequest extends Google_Collecti
     return $this->dimensionFilter;
   }
   /**
-   * @param Google_Service_AnalyticsData_Dimension
+   * @param Google_Service_AnalyticsData_Dimension[]
    */
   public function setDimensions($dimensions)
   {
     $this->dimensions = $dimensions;
   }
   /**
-   * @return Google_Service_AnalyticsData_Dimension
+   * @return Google_Service_AnalyticsData_Dimension[]
    */
   public function getDimensions()
   {
@@ -139,28 +139,28 @@ class Google_Service_AnalyticsData_RunPivotReportRequest extends Google_Collecti
     return $this->metricFilter;
   }
   /**
-   * @param Google_Service_AnalyticsData_Metric
+   * @param Google_Service_AnalyticsData_Metric[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_AnalyticsData_Metric
+   * @return Google_Service_AnalyticsData_Metric[]
    */
   public function getMetrics()
   {
     return $this->metrics;
   }
   /**
-   * @param Google_Service_AnalyticsData_Pivot
+   * @param Google_Service_AnalyticsData_Pivot[]
    */
   public function setPivots($pivots)
   {
     $this->pivots = $pivots;
   }
   /**
-   * @return Google_Service_AnalyticsData_Pivot
+   * @return Google_Service_AnalyticsData_Pivot[]
    */
   public function getPivots()
   {

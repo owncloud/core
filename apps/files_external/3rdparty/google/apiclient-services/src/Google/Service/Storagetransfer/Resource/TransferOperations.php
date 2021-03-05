@@ -71,9 +71,10 @@ class Google_Service_Storagetransfer_Resource_TransferOperations extends Google_
     return $this->call('get', array($params), "Google_Service_Storagetransfer_Operation");
   }
   /**
-   * Lists transfer operations. (transferOperations.listTransferOperations)
+   * Lists transfer operations. Operations are ordered by their creation time in
+   * reverse chronological order. (transferOperations.listTransferOperations)
    *
-   * @param string $name Required. The value `transferOperations`.
+   * @param string $name Not used.
    * @param string $filter Required. A list of query parameters specified as JSON
    * text in the form of: `{"projectId":"my_project_id",
    * "jobNames":["jobid1","jobid2",...], "operationNames":["opid1","opid2",...],

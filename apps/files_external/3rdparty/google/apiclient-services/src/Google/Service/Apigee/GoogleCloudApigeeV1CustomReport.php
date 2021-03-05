@@ -132,14 +132,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1CustomReport extends Google_Colle
     return $this->limit;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1CustomReportMetric
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1CustomReportMetric[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1CustomReportMetric
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1CustomReportMetric[]
    */
   public function getMetrics()
   {
@@ -170,14 +170,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1CustomReport extends Google_Colle
     return $this->organization;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1ReportProperty
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1ReportProperty[]
    */
   public function setProperties($properties)
   {
     $this->properties = $properties;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1ReportProperty
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1ReportProperty[]
    */
   public function getProperties()
   {

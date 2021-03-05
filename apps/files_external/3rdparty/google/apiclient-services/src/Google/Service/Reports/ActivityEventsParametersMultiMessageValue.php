@@ -22,14 +22,14 @@ class Google_Service_Reports_ActivityEventsParametersMultiMessageValue extends G
   protected $parameterDataType = 'array';
 
   /**
-   * @param Google_Service_Reports_NestedParameter
+   * @param Google_Service_Reports_NestedParameter[]
    */
   public function setParameter($parameter)
   {
     $this->parameter = $parameter;
   }
   /**
-   * @return Google_Service_Reports_NestedParameter
+   * @return Google_Service_Reports_NestedParameter[]
    */
   public function getParameter()
   {

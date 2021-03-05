@@ -26,7 +26,7 @@
 class Google_Service_Logging_Resource_BillingAccountsBuckets extends Google_Service_Resource
 {
   /**
-   * Gets a bucket (Beta). (buckets.get)
+   * Gets a bucket. (buckets.get)
    *
    * @param string $name Required. The resource name of the bucket:
    * "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"

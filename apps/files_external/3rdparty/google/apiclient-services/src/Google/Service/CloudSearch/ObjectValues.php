@@ -22,14 +22,14 @@ class Google_Service_CloudSearch_ObjectValues extends Google_Collection
   protected $valuesDataType = 'array';
 
   /**
-   * @param Google_Service_CloudSearch_StructuredDataObject
+   * @param Google_Service_CloudSearch_StructuredDataObject[]
    */
   public function setValues($values)
   {
     $this->values = $values;
   }
   /**
-   * @return Google_Service_CloudSearch_StructuredDataObject
+   * @return Google_Service_CloudSearch_StructuredDataObject[]
    */
   public function getValues()
   {

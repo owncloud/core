@@ -24,14 +24,14 @@ class Google_Service_Bigquery_ClusteringMetrics extends Google_Collection
   public $meanSquaredDistance;
 
   /**
-   * @param Google_Service_Bigquery_Cluster
+   * @param Google_Service_Bigquery_Cluster[]
    */
   public function setClusters($clusters)
   {
     $this->clusters = $clusters;
   }
   /**
-   * @return Google_Service_Bigquery_Cluster
+   * @return Google_Service_Bigquery_Cluster[]
    */
   public function getClusters()
   {

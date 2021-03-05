@@ -23,14 +23,14 @@ class Google_Service_Webfonts_WebfontList extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_Webfonts_Webfont
+   * @param Google_Service_Webfonts_Webfont[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Webfonts_Webfont
+   * @return Google_Service_Webfonts_Webfont[]
    */
   public function getItems()
   {

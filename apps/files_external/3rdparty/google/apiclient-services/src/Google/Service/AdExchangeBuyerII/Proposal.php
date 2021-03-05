@@ -43,6 +43,7 @@ class Google_Service_AdExchangeBuyerII_Proposal extends Google_Collection
   protected $sellerDataType = '';
   protected $sellerContactsType = 'Google_Service_AdExchangeBuyerII_ContactInformation';
   protected $sellerContactsDataType = 'array';
+  public $termsAndConditions;
   public $updateTime;
 
   /**
@@ -74,14 +75,14 @@ class Google_Service_AdExchangeBuyerII_Proposal extends Google_Collection
     return $this->buyer;
   }
   /**
-   * @param Google_Service_AdExchangeBuyerII_ContactInformation
+   * @param Google_Service_AdExchangeBuyerII_ContactInformation[]
    */
   public function setBuyerContacts($buyerContacts)
   {
     $this->buyerContacts = $buyerContacts;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_ContactInformation
+   * @return Google_Service_AdExchangeBuyerII_ContactInformation[]
    */
   public function getBuyerContacts()
   {
@@ -102,14 +103,14 @@ class Google_Service_AdExchangeBuyerII_Proposal extends Google_Collection
     return $this->buyerPrivateData;
   }
   /**
-   * @param Google_Service_AdExchangeBuyerII_Deal
+   * @param Google_Service_AdExchangeBuyerII_Deal[]
    */
   public function setDeals($deals)
   {
     $this->deals = $deals;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_Deal
+   * @return Google_Service_AdExchangeBuyerII_Deal[]
    */
   public function getDeals()
   {
@@ -148,14 +149,14 @@ class Google_Service_AdExchangeBuyerII_Proposal extends Google_Collection
     return $this->lastUpdaterOrCommentorRole;
   }
   /**
-   * @param Google_Service_AdExchangeBuyerII_Note
+   * @param Google_Service_AdExchangeBuyerII_Note[]
    */
   public function setNotes($notes)
   {
     $this->notes = $notes;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_Note
+   * @return Google_Service_AdExchangeBuyerII_Note[]
    */
   public function getNotes()
   {
@@ -216,18 +217,26 @@ class Google_Service_AdExchangeBuyerII_Proposal extends Google_Collection
     return $this->seller;
   }
   /**
-   * @param Google_Service_AdExchangeBuyerII_ContactInformation
+   * @param Google_Service_AdExchangeBuyerII_ContactInformation[]
    */
   public function setSellerContacts($sellerContacts)
   {
     $this->sellerContacts = $sellerContacts;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_ContactInformation
+   * @return Google_Service_AdExchangeBuyerII_ContactInformation[]
    */
   public function getSellerContacts()
   {
     return $this->sellerContacts;
+  }
+  public function setTermsAndConditions($termsAndConditions)
+  {
+    $this->termsAndConditions = $termsAndConditions;
+  }
+  public function getTermsAndConditions()
+  {
+    return $this->termsAndConditions;
   }
   public function setUpdateTime($updateTime)
   {

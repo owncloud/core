@@ -28,42 +28,42 @@ class Google_Service_Books_DictlayerdataDictWords extends Google_Collection
   protected $sourceDataType = '';
 
   /**
-   * @param Google_Service_Books_DictlayerdataDictWordsDerivatives
+   * @param Google_Service_Books_DictlayerdataDictWordsDerivatives[]
    */
   public function setDerivatives($derivatives)
   {
     $this->derivatives = $derivatives;
   }
   /**
-   * @return Google_Service_Books_DictlayerdataDictWordsDerivatives
+   * @return Google_Service_Books_DictlayerdataDictWordsDerivatives[]
    */
   public function getDerivatives()
   {
     return $this->derivatives;
   }
   /**
-   * @param Google_Service_Books_DictlayerdataDictWordsExamples
+   * @param Google_Service_Books_DictlayerdataDictWordsExamples[]
    */
   public function setExamples($examples)
   {
     $this->examples = $examples;
   }
   /**
-   * @return Google_Service_Books_DictlayerdataDictWordsExamples
+   * @return Google_Service_Books_DictlayerdataDictWordsExamples[]
    */
   public function getExamples()
   {
     return $this->examples;
   }
   /**
-   * @param Google_Service_Books_DictlayerdataDictWordsSenses
+   * @param Google_Service_Books_DictlayerdataDictWordsSenses[]
    */
   public function setSenses($senses)
   {
     $this->senses = $senses;
   }
   /**
-   * @return Google_Service_Books_DictlayerdataDictWordsSenses
+   * @return Google_Service_Books_DictlayerdataDictWordsSenses[]
    */
   public function getSenses()
   {

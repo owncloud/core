@@ -22,14 +22,14 @@ class Google_Service_AlertCenter_ListAlertFeedbackResponse extends Google_Collec
   protected $feedbackDataType = 'array';
 
   /**
-   * @param Google_Service_AlertCenter_AlertFeedback
+   * @param Google_Service_AlertCenter_AlertFeedback[]
    */
   public function setFeedback($feedback)
   {
     $this->feedback = $feedback;
   }
   /**
-   * @return Google_Service_AlertCenter_AlertFeedback
+   * @return Google_Service_AlertCenter_AlertFeedback[]
    */
   public function getFeedback()
   {

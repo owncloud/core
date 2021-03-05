@@ -41,14 +41,14 @@ class Google_Service_Fitness_Value extends Google_Collection
     return $this->intVal;
   }
   /**
-   * @param Google_Service_Fitness_ValueMapValEntry
+   * @param Google_Service_Fitness_ValueMapValEntry[]
    */
   public function setMapVal($mapVal)
   {
     $this->mapVal = $mapVal;
   }
   /**
-   * @return Google_Service_Fitness_ValueMapValEntry
+   * @return Google_Service_Fitness_ValueMapValEntry[]
    */
   public function getMapVal()
   {

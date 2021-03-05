@@ -22,14 +22,14 @@ class Google_Service_Sheets_UpdateDeveloperMetadataResponse extends Google_Colle
   protected $developerMetadataDataType = 'array';
 
   /**
-   * @param Google_Service_Sheets_DeveloperMetadata
+   * @param Google_Service_Sheets_DeveloperMetadata[]
    */
   public function setDeveloperMetadata($developerMetadata)
   {
     $this->developerMetadata = $developerMetadata;
   }
   /**
-   * @return Google_Service_Sheets_DeveloperMetadata
+   * @return Google_Service_Sheets_DeveloperMetadata[]
    */
   public function getDeveloperMetadata()
   {

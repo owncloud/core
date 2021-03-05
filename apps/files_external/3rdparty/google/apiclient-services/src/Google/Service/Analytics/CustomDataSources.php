@@ -29,14 +29,14 @@ class Google_Service_Analytics_CustomDataSources extends Google_Collection
   public $username;
 
   /**
-   * @param Google_Service_Analytics_CustomDataSource
+   * @param Google_Service_Analytics_CustomDataSource[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Analytics_CustomDataSource
+   * @return Google_Service_Analytics_CustomDataSource[]
    */
   public function getItems()
   {

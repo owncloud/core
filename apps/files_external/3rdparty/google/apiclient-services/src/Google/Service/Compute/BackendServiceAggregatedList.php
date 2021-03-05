@@ -37,14 +37,14 @@ class Google_Service_Compute_BackendServiceAggregatedList extends Google_Collect
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_BackendServicesScopedList
+   * @param Google_Service_Compute_BackendServicesScopedList[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_BackendServicesScopedList
+   * @return Google_Service_Compute_BackendServicesScopedList[]
    */
   public function getItems()
   {

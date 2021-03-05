@@ -32,14 +32,14 @@ class Google_Service_Compute_InstanceGroupManagersScopedListWarning extends Goog
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_InstanceGroupManagersScopedListWarningData
+   * @param Google_Service_Compute_InstanceGroupManagersScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_InstanceGroupManagersScopedListWarningData
+   * @return Google_Service_Compute_InstanceGroupManagersScopedListWarningData[]
    */
   public function getData()
   {

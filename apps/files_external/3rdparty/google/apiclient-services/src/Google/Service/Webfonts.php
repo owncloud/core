@@ -34,7 +34,7 @@ class Google_Service_Webfonts extends Google_Service
 
 
   public $webfonts;
-  
+
   /**
    * Constructs the internal representation of the Webfonts service.
    *

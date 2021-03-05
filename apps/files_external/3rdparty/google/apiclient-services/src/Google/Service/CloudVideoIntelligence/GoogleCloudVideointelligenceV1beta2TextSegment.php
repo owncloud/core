@@ -33,14 +33,14 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2T
     return $this->confidence;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2TextFrame
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2TextFrame[]
    */
   public function setFrames($frames)
   {
     $this->frames = $frames;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2TextFrame
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2TextFrame[]
    */
   public function getFrames()
   {

@@ -31,14 +31,14 @@ class Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaListWebData
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaWebDataStream
+   * @param Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaWebDataStream[]
    */
   public function setWebDataStreams($webDataStreams)
   {
     $this->webDataStreams = $webDataStreams;
   }
   /**
-   * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaWebDataStream
+   * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaWebDataStream[]
    */
   public function getWebDataStreams()
   {

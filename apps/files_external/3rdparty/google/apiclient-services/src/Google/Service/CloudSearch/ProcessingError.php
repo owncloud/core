@@ -40,14 +40,14 @@ class Google_Service_CloudSearch_ProcessingError extends Google_Collection
     return $this->errorMessage;
   }
   /**
-   * @param Google_Service_CloudSearch_FieldViolation
+   * @param Google_Service_CloudSearch_FieldViolation[]
    */
   public function setFieldViolations($fieldViolations)
   {
     $this->fieldViolations = $fieldViolations;
   }
   /**
-   * @return Google_Service_CloudSearch_FieldViolation
+   * @return Google_Service_CloudSearch_FieldViolation[]
    */
   public function getFieldViolations()
   {

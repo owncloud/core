@@ -21,6 +21,7 @@ class Google_Service_Container_NetworkConfig extends Google_Model
   protected $defaultSnatStatusDataType = '';
   public $enableIntraNodeVisibility;
   public $network;
+  public $privateIpv6GoogleAccess;
   public $subnetwork;
 
   /**
@@ -52,6 +53,14 @@ class Google_Service_Container_NetworkConfig extends Google_Model
   public function getNetwork()
   {
     return $this->network;
+  }
+  public function setPrivateIpv6GoogleAccess($privateIpv6GoogleAccess)
+  {
+    $this->privateIpv6GoogleAccess = $privateIpv6GoogleAccess;
+  }
+  public function getPrivateIpv6GoogleAccess()
+  {
+    return $this->privateIpv6GoogleAccess;
   }
   public function setSubnetwork($subnetwork)
   {

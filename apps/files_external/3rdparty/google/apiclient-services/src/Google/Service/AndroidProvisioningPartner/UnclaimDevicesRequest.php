@@ -22,14 +22,14 @@ class Google_Service_AndroidProvisioningPartner_UnclaimDevicesRequest extends Go
   protected $unclaimsDataType = 'array';
 
   /**
-   * @param Google_Service_AndroidProvisioningPartner_PartnerUnclaim
+   * @param Google_Service_AndroidProvisioningPartner_PartnerUnclaim[]
    */
   public function setUnclaims($unclaims)
   {
     $this->unclaims = $unclaims;
   }
   /**
-   * @return Google_Service_AndroidProvisioningPartner_PartnerUnclaim
+   * @return Google_Service_AndroidProvisioningPartner_PartnerUnclaim[]
    */
   public function getUnclaims()
   {

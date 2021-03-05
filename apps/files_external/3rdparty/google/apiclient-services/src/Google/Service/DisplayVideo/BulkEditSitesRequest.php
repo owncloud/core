@@ -33,14 +33,14 @@ class Google_Service_DisplayVideo_BulkEditSitesRequest extends Google_Collection
     return $this->advertiserId;
   }
   /**
-   * @param Google_Service_DisplayVideo_Site
+   * @param Google_Service_DisplayVideo_Site[]
    */
   public function setCreatedSites($createdSites)
   {
     $this->createdSites = $createdSites;
   }
   /**
-   * @return Google_Service_DisplayVideo_Site
+   * @return Google_Service_DisplayVideo_Site[]
    */
   public function getCreatedSites()
   {

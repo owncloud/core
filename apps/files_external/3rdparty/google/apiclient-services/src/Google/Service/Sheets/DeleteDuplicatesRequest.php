@@ -24,14 +24,14 @@ class Google_Service_Sheets_DeleteDuplicatesRequest extends Google_Collection
   protected $rangeDataType = '';
 
   /**
-   * @param Google_Service_Sheets_DimensionRange
+   * @param Google_Service_Sheets_DimensionRange[]
    */
   public function setComparisonColumns($comparisonColumns)
   {
     $this->comparisonColumns = $comparisonColumns;
   }
   /**
-   * @return Google_Service_Sheets_DimensionRange
+   * @return Google_Service_Sheets_DimensionRange[]
    */
   public function getComparisonColumns()
   {

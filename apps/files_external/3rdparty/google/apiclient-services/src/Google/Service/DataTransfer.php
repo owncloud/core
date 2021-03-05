@@ -41,7 +41,7 @@ class Google_Service_DataTransfer extends Google_Service
 
   public $applications;
   public $transfers;
-  
+
   /**
    * Constructs the internal representation of the DataTransfer service.
    *
@@ -51,9 +51,9 @@ class Google_Service_DataTransfer extends Google_Service
   public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://admin.googleapis.com/';
     $this->servicePath = '';
-    $this->batchPath = 'batch/admin/datatransfer_v1';
+    $this->batchPath = 'batch';
     $this->version = 'datatransfer_v1';
     $this->serviceName = 'admin';
 
@@ -77,7 +77,7 @@ class Google_Service_DataTransfer extends Google_Service
               'path' => 'admin/datatransfer/v1/applications',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageToken' => array(
+                'customerId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -85,7 +85,7 @@ class Google_Service_DataTransfer extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'customerId' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -118,14 +118,6 @@ class Google_Service_DataTransfer extends Google_Service
               'path' => 'admin/datatransfer/v1/transfers',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'newOwnerUserId' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'status' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'customerId' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -134,11 +126,19 @@ class Google_Service_DataTransfer extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
+                'newOwnerUserId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'oldOwnerUserId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'status' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

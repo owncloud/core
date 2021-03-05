@@ -38,7 +38,8 @@ class Google_Service_BinaryAuthorization extends Google_Service
   public $projects;
   public $projects_attestors;
   public $projects_policy;
-  
+  public $systempolicy;
+
   /**
    * Constructs the internal representation of the BinaryAuthorization service.
    *
@@ -235,6 +236,26 @@ class Google_Service_BinaryAuthorization extends Google_Service
               'httpMethod' => 'POST',
               'parameters' => array(
                 'resource' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->systempolicy = new Google_Service_BinaryAuthorization_Resource_Systempolicy(
+        $this,
+        $this->serviceName,
+        'systempolicy',
+        array(
+          'methods' => array(
+            'getPolicy' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,

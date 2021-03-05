@@ -36,23 +36,23 @@ class Google_Service_AdSense_Resource_Reports extends Google_Service_Resource
    * format, inclusive.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int startIndex Index of the first row of report data to return.
-   * @opt_param bool useTimezoneReporting Whether the report should be generated
-   * in the AdSense account's local timezone. If false default PST/PDT timezone
-   * will be used.
-   * @opt_param string filter Filters to be run on the report.
    * @opt_param string accountId Accounts upon which to report.
    * @opt_param string currency Optional currency to use when reporting on
    * monetary metrics. Defaults to the account's currency if not set.
+   * @opt_param string dimension Dimensions to base the report on.
+   * @opt_param string filter Filters to be run on the report.
    * @opt_param string locale Optional locale to use for translating report output
    * to a local language. Defaults to "en_US" if not specified.
-   * @opt_param string dimension Dimensions to base the report on.
    * @opt_param int maxResults The maximum number of rows of report data to
    * return.
    * @opt_param string metric Numeric columns to include in the report.
    * @opt_param string sort The name of a dimension or metric to sort the
    * resulting report on, optionally prefixed with "+" to sort ascending or "-" to
    * sort descending. If no prefix is specified, the column is sorted ascending.
+   * @opt_param int startIndex Index of the first row of report data to return.
+   * @opt_param bool useTimezoneReporting Whether the report should be generated
+   * in the AdSense account's local timezone. If false default PST/PDT timezone
+   * will be used.
    * @return Google_Service_AdSense_AdsenseReportsGenerateResponse
    */
   public function generate($startDate, $endDate, $optParams = array())

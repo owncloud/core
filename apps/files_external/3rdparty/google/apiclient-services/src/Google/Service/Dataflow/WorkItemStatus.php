@@ -51,14 +51,14 @@ class Google_Service_Dataflow_WorkItemStatus extends Google_Collection
     return $this->completed;
   }
   /**
-   * @param Google_Service_Dataflow_CounterUpdate
+   * @param Google_Service_Dataflow_CounterUpdate[]
    */
   public function setCounterUpdates($counterUpdates)
   {
     $this->counterUpdates = $counterUpdates;
   }
   /**
-   * @return Google_Service_Dataflow_CounterUpdate
+   * @return Google_Service_Dataflow_CounterUpdate[]
    */
   public function getCounterUpdates()
   {
@@ -79,28 +79,28 @@ class Google_Service_Dataflow_WorkItemStatus extends Google_Collection
     return $this->dynamicSourceSplit;
   }
   /**
-   * @param Google_Service_Dataflow_Status
+   * @param Google_Service_Dataflow_Status[]
    */
   public function setErrors($errors)
   {
     $this->errors = $errors;
   }
   /**
-   * @return Google_Service_Dataflow_Status
+   * @return Google_Service_Dataflow_Status[]
    */
   public function getErrors()
   {
     return $this->errors;
   }
   /**
-   * @param Google_Service_Dataflow_MetricUpdate
+   * @param Google_Service_Dataflow_MetricUpdate[]
    */
   public function setMetricUpdates($metricUpdates)
   {
     $this->metricUpdates = $metricUpdates;
   }
   /**
-   * @return Google_Service_Dataflow_MetricUpdate
+   * @return Google_Service_Dataflow_MetricUpdate[]
    */
   public function getMetricUpdates()
   {

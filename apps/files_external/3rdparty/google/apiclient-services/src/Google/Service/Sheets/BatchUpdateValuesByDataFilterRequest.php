@@ -26,14 +26,14 @@ class Google_Service_Sheets_BatchUpdateValuesByDataFilterRequest extends Google_
   public $valueInputOption;
 
   /**
-   * @param Google_Service_Sheets_DataFilterValueRange
+   * @param Google_Service_Sheets_DataFilterValueRange[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Sheets_DataFilterValueRange
+   * @return Google_Service_Sheets_DataFilterValueRange[]
    */
   public function getData()
   {

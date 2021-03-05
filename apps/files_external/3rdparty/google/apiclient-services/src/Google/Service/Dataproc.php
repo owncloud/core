@@ -41,7 +41,7 @@ class Google_Service_Dataproc extends Google_Service
   public $projects_regions_jobs;
   public $projects_regions_operations;
   public $projects_regions_workflowTemplates;
-  
+
   /**
    * Constructs the internal representation of the Dataproc service.
    *
@@ -112,13 +112,13 @@ class Google_Service_Dataproc extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'setIamPolicy' => array(
@@ -340,13 +340,13 @@ class Google_Service_Dataproc extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'setIamPolicy' => array(
@@ -427,11 +427,11 @@ class Google_Service_Dataproc extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'requestId' => array(
+                'clusterUuid' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'clusterUuid' => array(
+                'requestId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -486,6 +486,26 @@ class Google_Service_Dataproc extends Google_Service
                   'required' => true,
                 ),
               ),
+            ),'injectCredentials' => array(
+              'path' => 'v1/{+project}/{+region}/{+cluster}:injectCredentials',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'project' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'region' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'cluster' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
             ),'list' => array(
               'path' => 'v1/projects/{projectId}/regions/{region}/clusters',
               'httpMethod' => 'GET',
@@ -500,7 +520,7 @@ class Google_Service_Dataproc extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -508,7 +528,7 @@ class Google_Service_Dataproc extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'filter' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -532,7 +552,7 @@ class Google_Service_Dataproc extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'updateMask' => array(
+                'gracefulDecommissionTimeout' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -540,7 +560,7 @@ class Google_Service_Dataproc extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'gracefulDecommissionTimeout' => array(
+                'updateMask' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -550,6 +570,46 @@ class Google_Service_Dataproc extends Google_Service
               'httpMethod' => 'POST',
               'parameters' => array(
                 'resource' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'start' => array(
+              'path' => 'v1/projects/{projectId}/regions/{region}/clusters/{clusterName}:start',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'projectId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'region' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'clusterName' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'stop' => array(
+              'path' => 'v1/projects/{projectId}/regions/{region}/clusters/{clusterName}:stop',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'projectId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'region' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'clusterName' => array(
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
@@ -659,10 +719,6 @@ class Google_Service_Dataproc extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'jobStateMatcher' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'clusterName' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -671,13 +727,17 @@ class Google_Service_Dataproc extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'jobStateMatcher' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'patch' => array(
@@ -813,7 +873,7 @@ class Google_Service_Dataproc extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -821,7 +881,7 @@ class Google_Service_Dataproc extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'filter' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

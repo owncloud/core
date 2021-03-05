@@ -22,14 +22,14 @@ class Google_Service_Compute_GlobalNetworkEndpointGroupsDetachEndpointsRequest e
   protected $networkEndpointsDataType = 'array';
 
   /**
-   * @param Google_Service_Compute_NetworkEndpoint
+   * @param Google_Service_Compute_NetworkEndpoint[]
    */
   public function setNetworkEndpoints($networkEndpoints)
   {
     $this->networkEndpoints = $networkEndpoints;
   }
   /**
-   * @return Google_Service_Compute_NetworkEndpoint
+   * @return Google_Service_Compute_NetworkEndpoint[]
    */
   public function getNetworkEndpoints()
   {

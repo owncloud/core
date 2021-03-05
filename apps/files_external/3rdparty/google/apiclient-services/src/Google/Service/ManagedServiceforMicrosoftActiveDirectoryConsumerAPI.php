@@ -38,7 +38,7 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI extend
   public $projects_locations;
   public $projects_locations_global_domains;
   public $projects_locations_global_operations;
-  
+
   /**
    * Constructs the internal representation of the
    * ManagedServiceforMicrosoftActiveDirectoryConsumerAPI service.
@@ -80,13 +80,13 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI extend
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
@@ -184,15 +184,15 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI extend
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
                 'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -310,10 +310,6 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI extend
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -321,6 +317,10 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI extend
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),

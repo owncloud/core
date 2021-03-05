@@ -36,7 +36,7 @@ class Google_Service_IAMCredentials extends Google_Service
       "https://www.googleapis.com/auth/cloud-platform";
 
   public $projects_serviceAccounts;
-  
+
   /**
    * Constructs the internal representation of the IAMCredentials service.
    *

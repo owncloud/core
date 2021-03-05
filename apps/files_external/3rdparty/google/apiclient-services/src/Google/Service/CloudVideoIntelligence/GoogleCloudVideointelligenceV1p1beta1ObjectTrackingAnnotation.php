@@ -51,14 +51,14 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta
     return $this->entity;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1ObjectTrackingFrame
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1ObjectTrackingFrame[]
    */
   public function setFrames($frames)
   {
     $this->frames = $frames;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1ObjectTrackingFrame
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1ObjectTrackingFrame[]
    */
   public function getFrames()
   {

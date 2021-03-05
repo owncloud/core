@@ -36,9 +36,9 @@ class Google_Service_AlertCenter_Resource_AlertsFeedback extends Google_Service_
    * @param Google_Service_AlertCenter_AlertFeedback $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string customerId Optional. The unique identifier of the G Suite
-   * organization account of the customer the alert is associated with. Inferred
-   * from the caller identity if not provided.
+   * @opt_param string customerId Optional. The unique identifier of the Google
+   * Workspace organization account of the customer the alert is associated with.
+   * Inferred from the caller identity if not provided.
    * @return Google_Service_AlertCenter_AlertFeedback
    */
   public function create($alertId, Google_Service_AlertCenter_AlertFeedback $postBody, $optParams = array())
@@ -55,9 +55,9 @@ class Google_Service_AlertCenter_Resource_AlertsFeedback extends Google_Service_
    * be used to represent all alerts.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string customerId Optional. The unique identifier of the G Suite
-   * organization account of the customer the alert feedback are associated with.
-   * Inferred from the caller identity if not provided.
+   * @opt_param string customerId Optional. The unique identifier of the Google
+   * Workspace organization account of the customer the alert feedback are
+   * associated with. Inferred from the caller identity if not provided.
    * @opt_param string filter Optional. A query string for filtering alert
    * feedback results. For more details, see [Query filters](/admin-
    * sdk/alertcenter/guides/query-filters) and [Supported query filter fields

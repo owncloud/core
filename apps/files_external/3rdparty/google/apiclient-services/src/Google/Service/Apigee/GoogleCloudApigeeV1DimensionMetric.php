@@ -23,14 +23,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1DimensionMetric extends Google_Co
   public $name;
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Metric
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Metric[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Metric
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Metric[]
    */
   public function getMetrics()
   {

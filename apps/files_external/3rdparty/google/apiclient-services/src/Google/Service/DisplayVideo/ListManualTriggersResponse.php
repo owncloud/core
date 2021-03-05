@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_ListManualTriggersResponse extends Google_Coll
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DisplayVideo_ManualTrigger
+   * @param Google_Service_DisplayVideo_ManualTrigger[]
    */
   public function setManualTriggers($manualTriggers)
   {
     $this->manualTriggers = $manualTriggers;
   }
   /**
-   * @return Google_Service_DisplayVideo_ManualTrigger
+   * @return Google_Service_DisplayVideo_ManualTrigger[]
    */
   public function getManualTriggers()
   {

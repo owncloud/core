@@ -40,14 +40,14 @@ class Google_Service_Docs_NamedRange extends Google_Collection
     return $this->namedRangeId;
   }
   /**
-   * @param Google_Service_Docs_Range
+   * @param Google_Service_Docs_Range[]
    */
   public function setRanges($ranges)
   {
     $this->ranges = $ranges;
   }
   /**
-   * @return Google_Service_Docs_Range
+   * @return Google_Service_Docs_Range[]
    */
   public function getRanges()
   {

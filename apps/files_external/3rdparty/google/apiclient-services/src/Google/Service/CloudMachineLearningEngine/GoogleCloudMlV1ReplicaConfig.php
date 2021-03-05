@@ -22,6 +22,8 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ReplicaConfig ext
   protected $acceleratorConfigDataType = '';
   public $containerArgs;
   public $containerCommand;
+  protected $diskConfigType = 'Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1DiskConfig';
+  protected $diskConfigDataType = '';
   public $imageUri;
   public $tpuTfVersion;
 
@@ -54,6 +56,20 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1ReplicaConfig ext
   public function getContainerCommand()
   {
     return $this->containerCommand;
+  }
+  /**
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1DiskConfig
+   */
+  public function setDiskConfig(Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1DiskConfig $diskConfig)
+  {
+    $this->diskConfig = $diskConfig;
+  }
+  /**
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1DiskConfig
+   */
+  public function getDiskConfig()
+  {
+    return $this->diskConfig;
   }
   public function setImageUri($imageUri)
   {

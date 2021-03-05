@@ -20,6 +20,7 @@ class Google_Service_Storagetransfer_AwsS3Data extends Google_Model
   protected $awsAccessKeyType = 'Google_Service_Storagetransfer_AwsAccessKey';
   protected $awsAccessKeyDataType = '';
   public $bucketName;
+  public $path;
 
   /**
    * @param Google_Service_Storagetransfer_AwsAccessKey
@@ -42,5 +43,13 @@ class Google_Service_Storagetransfer_AwsS3Data extends Google_Model
   public function getBucketName()
   {
     return $this->bucketName;
+  }
+  public function setPath($path)
+  {
+    $this->path = $path;
+  }
+  public function getPath()
+  {
+    return $this->path;
   }
 }

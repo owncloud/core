@@ -23,14 +23,14 @@ class Google_Service_Classroom_ListGuardianInvitationsResponse extends Google_Co
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Classroom_GuardianInvitation
+   * @param Google_Service_Classroom_GuardianInvitation[]
    */
   public function setGuardianInvitations($guardianInvitations)
   {
     $this->guardianInvitations = $guardianInvitations;
   }
   /**
-   * @return Google_Service_Classroom_GuardianInvitation
+   * @return Google_Service_Classroom_GuardianInvitation[]
    */
   public function getGuardianInvitations()
   {

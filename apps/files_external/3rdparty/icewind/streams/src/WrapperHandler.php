@@ -21,8 +21,10 @@
 
 namespace Icewind\Streams;
 
-
 class WrapperHandler {
+	/** @var resource $context */
+	protected $context;
+
 	const NO_SOURCE_DIR = 1;
 
 	/**

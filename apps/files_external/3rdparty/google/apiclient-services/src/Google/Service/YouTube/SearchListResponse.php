@@ -49,14 +49,14 @@ class Google_Service_YouTube_SearchListResponse extends Google_Collection
     return $this->eventId;
   }
   /**
-   * @param Google_Service_YouTube_SearchResult
+   * @param Google_Service_YouTube_SearchResult[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_YouTube_SearchResult
+   * @return Google_Service_YouTube_SearchResult[]
    */
   public function getItems()
   {

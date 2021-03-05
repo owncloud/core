@@ -17,6 +17,8 @@
 
 class Google_Service_SQLAdmin_Operation extends Google_Model
 {
+  protected $backupContextType = 'Google_Service_SQLAdmin_BackupContext';
+  protected $backupContextDataType = '';
   public $endTime;
   protected $errorType = 'Google_Service_SQLAdmin_OperationErrors';
   protected $errorDataType = '';
@@ -36,6 +38,20 @@ class Google_Service_SQLAdmin_Operation extends Google_Model
   public $targetProject;
   public $user;
 
+  /**
+   * @param Google_Service_SQLAdmin_BackupContext
+   */
+  public function setBackupContext(Google_Service_SQLAdmin_BackupContext $backupContext)
+  {
+    $this->backupContext = $backupContext;
+  }
+  /**
+   * @return Google_Service_SQLAdmin_BackupContext
+   */
+  public function getBackupContext()
+  {
+    return $this->backupContext;
+  }
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;

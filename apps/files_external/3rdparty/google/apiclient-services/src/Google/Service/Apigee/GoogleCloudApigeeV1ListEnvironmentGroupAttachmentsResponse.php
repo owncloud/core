@@ -23,14 +23,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ListEnvironmentGroupAttachmentsRe
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentGroupAttachment
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentGroupAttachment[]
    */
   public function setEnvironmentGroupAttachments($environmentGroupAttachments)
   {
     $this->environmentGroupAttachments = $environmentGroupAttachments;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentGroupAttachment
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentGroupAttachment[]
    */
   public function getEnvironmentGroupAttachments()
   {

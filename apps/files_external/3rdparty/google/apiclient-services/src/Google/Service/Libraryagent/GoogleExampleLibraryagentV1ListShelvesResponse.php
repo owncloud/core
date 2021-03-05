@@ -31,14 +31,14 @@ class Google_Service_Libraryagent_GoogleExampleLibraryagentV1ListShelvesResponse
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Libraryagent_GoogleExampleLibraryagentV1Shelf
+   * @param Google_Service_Libraryagent_GoogleExampleLibraryagentV1Shelf[]
    */
   public function setShelves($shelves)
   {
     $this->shelves = $shelves;
   }
   /**
-   * @return Google_Service_Libraryagent_GoogleExampleLibraryagentV1Shelf
+   * @return Google_Service_Libraryagent_GoogleExampleLibraryagentV1Shelf[]
    */
   public function getShelves()
   {

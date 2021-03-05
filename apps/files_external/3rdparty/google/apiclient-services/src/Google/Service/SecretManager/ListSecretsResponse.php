@@ -32,14 +32,14 @@ class Google_Service_SecretManager_ListSecretsResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_SecretManager_Secret
+   * @param Google_Service_SecretManager_Secret[]
    */
   public function setSecrets($secrets)
   {
     $this->secrets = $secrets;
   }
   /**
-   * @return Google_Service_SecretManager_Secret
+   * @return Google_Service_SecretManager_Secret[]
    */
   public function getSecrets()
   {

@@ -22,14 +22,14 @@ class Google_Service_YouTube_ChannelConversionPings extends Google_Collection
   protected $pingsDataType = 'array';
 
   /**
-   * @param Google_Service_YouTube_ChannelConversionPing
+   * @param Google_Service_YouTube_ChannelConversionPing[]
    */
   public function setPings($pings)
   {
     $this->pings = $pings;
   }
   /**
-   * @return Google_Service_YouTube_ChannelConversionPing
+   * @return Google_Service_YouTube_ChannelConversionPing[]
    */
   public function getPings()
   {

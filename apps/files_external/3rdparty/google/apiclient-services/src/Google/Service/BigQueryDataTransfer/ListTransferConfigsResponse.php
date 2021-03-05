@@ -31,14 +31,14 @@ class Google_Service_BigQueryDataTransfer_ListTransferConfigsResponse extends Go
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_BigQueryDataTransfer_TransferConfig
+   * @param Google_Service_BigQueryDataTransfer_TransferConfig[]
    */
   public function setTransferConfigs($transferConfigs)
   {
     $this->transferConfigs = $transferConfigs;
   }
   /**
-   * @return Google_Service_BigQueryDataTransfer_TransferConfig
+   * @return Google_Service_BigQueryDataTransfer_TransferConfig[]
    */
   public function getTransferConfigs()
   {

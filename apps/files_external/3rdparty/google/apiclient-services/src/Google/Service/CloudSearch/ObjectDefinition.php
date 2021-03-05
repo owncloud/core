@@ -47,14 +47,14 @@ class Google_Service_CloudSearch_ObjectDefinition extends Google_Collection
     return $this->options;
   }
   /**
-   * @param Google_Service_CloudSearch_PropertyDefinition
+   * @param Google_Service_CloudSearch_PropertyDefinition[]
    */
   public function setPropertyDefinitions($propertyDefinitions)
   {
     $this->propertyDefinitions = $propertyDefinitions;
   }
   /**
-   * @return Google_Service_CloudSearch_PropertyDefinition
+   * @return Google_Service_CloudSearch_PropertyDefinition[]
    */
   public function getPropertyDefinitions()
   {

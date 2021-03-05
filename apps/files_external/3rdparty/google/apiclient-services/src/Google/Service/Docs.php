@@ -30,7 +30,7 @@
  */
 class Google_Service_Docs extends Google_Service
 {
-  /** View and manage your Google Docs documents. */
+  /** See, create, and edit all Google Docs documents you have access to. */
   const DOCUMENTS =
       "https://www.googleapis.com/auth/documents";
   /** View your Google Docs documents. */
@@ -47,7 +47,7 @@ class Google_Service_Docs extends Google_Service
       "https://www.googleapis.com/auth/drive.readonly";
 
   public $documents;
-  
+
   /**
    * Constructs the internal representation of the Docs service.
    *

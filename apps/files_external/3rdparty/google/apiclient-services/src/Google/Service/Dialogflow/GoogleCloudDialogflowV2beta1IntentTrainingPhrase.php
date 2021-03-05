@@ -33,14 +33,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentTrainingPhrase
     return $this->name;
   }
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentTrainingPhrasePart
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentTrainingPhrasePart[]
    */
   public function setParts($parts)
   {
     $this->parts = $parts;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentTrainingPhrasePart
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentTrainingPhrasePart[]
    */
   public function getParts()
   {

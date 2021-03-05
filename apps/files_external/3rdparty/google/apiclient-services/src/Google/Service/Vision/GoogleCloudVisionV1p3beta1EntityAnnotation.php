@@ -70,14 +70,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p3beta1EntityAnnotation extends G
     return $this->locale;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p3beta1LocationInfo
+   * @param Google_Service_Vision_GoogleCloudVisionV1p3beta1LocationInfo[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p3beta1LocationInfo
+   * @return Google_Service_Vision_GoogleCloudVisionV1p3beta1LocationInfo[]
    */
   public function getLocations()
   {
@@ -92,14 +92,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p3beta1EntityAnnotation extends G
     return $this->mid;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p3beta1Property
+   * @param Google_Service_Vision_GoogleCloudVisionV1p3beta1Property[]
    */
   public function setProperties($properties)
   {
     $this->properties = $properties;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p3beta1Property
+   * @return Google_Service_Vision_GoogleCloudVisionV1p3beta1Property[]
    */
   public function getProperties()
   {

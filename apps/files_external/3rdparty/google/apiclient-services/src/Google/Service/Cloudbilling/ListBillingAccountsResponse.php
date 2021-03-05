@@ -23,14 +23,14 @@ class Google_Service_Cloudbilling_ListBillingAccountsResponse extends Google_Col
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Cloudbilling_BillingAccount
+   * @param Google_Service_Cloudbilling_BillingAccount[]
    */
   public function setBillingAccounts($billingAccounts)
   {
     $this->billingAccounts = $billingAccounts;
   }
   /**
-   * @return Google_Service_Cloudbilling_BillingAccount
+   * @return Google_Service_Cloudbilling_BillingAccount[]
    */
   public function getBillingAccounts()
   {

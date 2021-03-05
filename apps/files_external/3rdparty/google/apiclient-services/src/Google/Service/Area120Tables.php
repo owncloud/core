@@ -23,7 +23,7 @@
  *
  * <p>
  * For more information about this service, see the API
- * <a href="https://tables.area120.google.com" target="_blank">Documentation</a>
+ * <a href="https://support.google.com/area120-tables/answer/10011390" target="_blank">Documentation</a>
  * </p>
  *
  * @author Google, Inc.
@@ -45,10 +45,14 @@ class Google_Service_Area120Tables extends Google_Service
   /** View your Google Spreadsheets. */
   const SPREADSHEETS_READONLY =
       "https://www.googleapis.com/auth/spreadsheets.readonly";
+  /** See, edit, create, and delete your tables in Tables by Area 120. */
+  const TABLES =
+      "https://www.googleapis.com/auth/tables";
 
   public $tables;
   public $tables_rows;
-  
+  public $workspaces;
+
   /**
    * Constructs the internal representation of the Area120Tables service.
    *
@@ -84,13 +88,13 @@ class Google_Service_Area120Tables extends Google_Service
               'path' => 'v1alpha1/tables',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -105,6 +109,16 @@ class Google_Service_Area120Tables extends Google_Service
           'methods' => array(
             'batchCreate' => array(
               'path' => 'v1alpha1/{+parent}/rows:batchCreate',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'batchDelete' => array(
+              'path' => 'v1alpha1/{+parent}/rows:batchDelete',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
@@ -170,7 +184,7 @@ class Google_Service_Area120Tables extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'view' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -179,6 +193,10 @@ class Google_Service_Area120Tables extends Google_Service
                   'type' => 'integer',
                 ),
                 'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'view' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -197,6 +215,39 @@ class Google_Service_Area120Tables extends Google_Service
                   'type' => 'string',
                 ),
                 'view' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->workspaces = new Google_Service_Area120Tables_Resource_Workspaces(
+        $this,
+        $this->serviceName,
+        'workspaces',
+        array(
+          'methods' => array(
+            'get' => array(
+              'path' => 'v1alpha1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'v1alpha1/workspaces',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

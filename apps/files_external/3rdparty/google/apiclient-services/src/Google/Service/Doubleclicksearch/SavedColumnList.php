@@ -23,14 +23,14 @@ class Google_Service_Doubleclicksearch_SavedColumnList extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_Doubleclicksearch_SavedColumn
+   * @param Google_Service_Doubleclicksearch_SavedColumn[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Doubleclicksearch_SavedColumn
+   * @return Google_Service_Doubleclicksearch_SavedColumn[]
    */
   public function getItems()
   {

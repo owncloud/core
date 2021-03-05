@@ -31,14 +31,14 @@ class Google_Service_ShoppingContent_ListRepricingRulesResponse extends Google_C
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ShoppingContent_RepricingRule
+   * @param Google_Service_ShoppingContent_RepricingRule[]
    */
   public function setRepricingRules($repricingRules)
   {
     $this->repricingRules = $repricingRules;
   }
   /**
-   * @return Google_Service_ShoppingContent_RepricingRule
+   * @return Google_Service_ShoppingContent_RepricingRule[]
    */
   public function getRepricingRules()
   {

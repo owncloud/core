@@ -30,28 +30,28 @@ class Google_Service_Apigee_GoogleCloudApigeeV1Credential extends Google_Collect
   public $status;
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1ApiProductRef
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1ApiProductRef[]
    */
   public function setApiProducts($apiProducts)
   {
     $this->apiProducts = $apiProducts;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1ApiProductRef
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1ApiProductRef[]
    */
   public function getApiProducts()
   {
     return $this->apiProducts;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Attribute
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Attribute[]
    */
   public function setAttributes($attributes)
   {
     $this->attributes = $attributes;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Attribute
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Attribute[]
    */
   public function getAttributes()
   {

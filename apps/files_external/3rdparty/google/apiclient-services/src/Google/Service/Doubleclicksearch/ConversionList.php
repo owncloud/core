@@ -23,14 +23,14 @@ class Google_Service_Doubleclicksearch_ConversionList extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_Doubleclicksearch_Conversion
+   * @param Google_Service_Doubleclicksearch_Conversion[]
    */
   public function setConversion($conversion)
   {
     $this->conversion = $conversion;
   }
   /**
-   * @return Google_Service_Doubleclicksearch_Conversion
+   * @return Google_Service_Doubleclicksearch_Conversion[]
    */
   public function getConversion()
   {

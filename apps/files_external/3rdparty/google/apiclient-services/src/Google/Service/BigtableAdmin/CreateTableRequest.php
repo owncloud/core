@@ -25,14 +25,14 @@ class Google_Service_BigtableAdmin_CreateTableRequest extends Google_Collection
   public $tableId;
 
   /**
-   * @param Google_Service_BigtableAdmin_Split
+   * @param Google_Service_BigtableAdmin_Split[]
    */
   public function setInitialSplits($initialSplits)
   {
     $this->initialSplits = $initialSplits;
   }
   /**
-   * @return Google_Service_BigtableAdmin_Split
+   * @return Google_Service_BigtableAdmin_Split[]
    */
   public function getInitialSplits()
   {

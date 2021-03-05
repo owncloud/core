@@ -49,14 +49,14 @@ class Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaAccountSumm
     return $this->name;
   }
   /**
-   * @param Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaPropertySummary
+   * @param Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaPropertySummary[]
    */
   public function setPropertySummaries($propertySummaries)
   {
     $this->propertySummaries = $propertySummaries;
   }
   /**
-   * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaPropertySummary
+   * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaPropertySummary[]
    */
   public function getPropertySummaries()
   {

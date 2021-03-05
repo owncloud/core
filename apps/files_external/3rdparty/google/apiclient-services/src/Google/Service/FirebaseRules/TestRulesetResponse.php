@@ -24,28 +24,28 @@ class Google_Service_FirebaseRules_TestRulesetResponse extends Google_Collection
   protected $testResultsDataType = 'array';
 
   /**
-   * @param Google_Service_FirebaseRules_Issue
+   * @param Google_Service_FirebaseRules_Issue[]
    */
   public function setIssues($issues)
   {
     $this->issues = $issues;
   }
   /**
-   * @return Google_Service_FirebaseRules_Issue
+   * @return Google_Service_FirebaseRules_Issue[]
    */
   public function getIssues()
   {
     return $this->issues;
   }
   /**
-   * @param Google_Service_FirebaseRules_TestResult
+   * @param Google_Service_FirebaseRules_TestResult[]
    */
   public function setTestResults($testResults)
   {
     $this->testResults = $testResults;
   }
   /**
-   * @return Google_Service_FirebaseRules_TestResult
+   * @return Google_Service_FirebaseRules_TestResult[]
    */
   public function getTestResults()
   {

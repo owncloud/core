@@ -24,6 +24,8 @@ class Google_Service_Sasportal_SasPortalDevice extends Google_Collection
   protected $deviceMetadataDataType = '';
   public $displayName;
   public $fccId;
+  protected $grantRangeAllowlistsType = 'Google_Service_Sasportal_SasPortalFrequencyRange';
+  protected $grantRangeAllowlistsDataType = 'array';
   protected $grantsType = 'Google_Service_Sasportal_SasPortalDeviceGrant';
   protected $grantsDataType = 'array';
   public $name;
@@ -77,14 +79,28 @@ class Google_Service_Sasportal_SasPortalDevice extends Google_Collection
     return $this->fccId;
   }
   /**
-   * @param Google_Service_Sasportal_SasPortalDeviceGrant
+   * @param Google_Service_Sasportal_SasPortalFrequencyRange[]
+   */
+  public function setGrantRangeAllowlists($grantRangeAllowlists)
+  {
+    $this->grantRangeAllowlists = $grantRangeAllowlists;
+  }
+  /**
+   * @return Google_Service_Sasportal_SasPortalFrequencyRange[]
+   */
+  public function getGrantRangeAllowlists()
+  {
+    return $this->grantRangeAllowlists;
+  }
+  /**
+   * @param Google_Service_Sasportal_SasPortalDeviceGrant[]
    */
   public function setGrants($grants)
   {
     $this->grants = $grants;
   }
   /**
-   * @return Google_Service_Sasportal_SasPortalDeviceGrant
+   * @return Google_Service_Sasportal_SasPortalDeviceGrant[]
    */
   public function getGrants()
   {

@@ -15,11 +15,14 @@
  * the License.
  */
 
-class Google_Service_AndroidManagement_NetworkInfo extends Google_Model
+class Google_Service_AndroidManagement_NetworkInfo extends Google_Collection
 {
+  protected $collection_key = 'telephonyInfos';
   public $imei;
   public $meid;
   public $networkOperatorName;
+  protected $telephonyInfosType = 'Google_Service_AndroidManagement_TelephonyInfo';
+  protected $telephonyInfosDataType = 'array';
   public $wifiMacAddress;
 
   public function setImei($imei)
@@ -45,6 +48,20 @@ class Google_Service_AndroidManagement_NetworkInfo extends Google_Model
   public function getNetworkOperatorName()
   {
     return $this->networkOperatorName;
+  }
+  /**
+   * @param Google_Service_AndroidManagement_TelephonyInfo[]
+   */
+  public function setTelephonyInfos($telephonyInfos)
+  {
+    $this->telephonyInfos = $telephonyInfos;
+  }
+  /**
+   * @return Google_Service_AndroidManagement_TelephonyInfo[]
+   */
+  public function getTelephonyInfos()
+  {
+    return $this->telephonyInfos;
   }
   public function setWifiMacAddress($wifiMacAddress)
   {

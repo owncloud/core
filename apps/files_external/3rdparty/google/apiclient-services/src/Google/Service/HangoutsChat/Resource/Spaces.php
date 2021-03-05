@@ -44,11 +44,11 @@ class Google_Service_HangoutsChat_Resource_Spaces extends Google_Service_Resourc
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken A token identifying a page of results the server
-   * should return.
    * @opt_param int pageSize Requested page size. The value is capped at 1000.
    * Server may return fewer results than requested. If unspecified, server will
    * default to 100.
+   * @opt_param string pageToken A token identifying a page of results the server
+   * should return.
    * @return Google_Service_HangoutsChat_ListSpacesResponse
    */
   public function listSpaces($optParams = array())
@@ -56,5 +56,30 @@ class Google_Service_HangoutsChat_Resource_Spaces extends Google_Service_Resourc
     $params = array();
     $params = array_merge($params, $optParams);
     return $this->call('list', array($params), "Google_Service_HangoutsChat_ListSpacesResponse");
+  }
+  /**
+   * Legacy path for creating message. Calling these will result in a BadRequest
+   * response. (spaces.webhooks)
+   *
+   * @param string $parent Required. Space resource name, in the form "spaces".
+   * Example: spaces/AAAAMpdlehY
+   * @param Google_Service_HangoutsChat_Message $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string threadKey Opaque thread identifier string that can be
+   * specified to group messages into a single thread. If this is the first
+   * message with a given thread identifier, a new thread is created. Subsequent
+   * messages with the same thread identifier will be posted into the same thread.
+   * This relieves bots and webhooks from having to store the Hangouts Chat thread
+   * ID of a thread (created earlier by them) to post further updates to it. Has
+   * no effect if thread field, corresponding to an existing thread, is set in
+   * message.
+   * @return Google_Service_HangoutsChat_Message
+   */
+  public function webhooks($parent, Google_Service_HangoutsChat_Message $postBody, $optParams = array())
+  {
+    $params = array('parent' => $parent, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('webhooks', array($params), "Google_Service_HangoutsChat_Message");
   }
 }

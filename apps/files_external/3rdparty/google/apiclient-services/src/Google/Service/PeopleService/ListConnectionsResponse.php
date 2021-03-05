@@ -26,14 +26,14 @@ class Google_Service_PeopleService_ListConnectionsResponse extends Google_Collec
   public $totalPeople;
 
   /**
-   * @param Google_Service_PeopleService_Person
+   * @param Google_Service_PeopleService_Person[]
    */
   public function setConnections($connections)
   {
     $this->connections = $connections;
   }
   /**
-   * @return Google_Service_PeopleService_Person
+   * @return Google_Service_PeopleService_Person[]
    */
   public function getConnections()
   {

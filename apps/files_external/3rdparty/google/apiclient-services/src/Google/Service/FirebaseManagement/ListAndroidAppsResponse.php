@@ -23,14 +23,14 @@ class Google_Service_FirebaseManagement_ListAndroidAppsResponse extends Google_C
   public $nextPageToken;
 
   /**
-   * @param Google_Service_FirebaseManagement_AndroidApp
+   * @param Google_Service_FirebaseManagement_AndroidApp[]
    */
   public function setApps($apps)
   {
     $this->apps = $apps;
   }
   /**
-   * @return Google_Service_FirebaseManagement_AndroidApp
+   * @return Google_Service_FirebaseManagement_AndroidApp[]
    */
   public function getApps()
   {

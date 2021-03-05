@@ -38,10 +38,11 @@ class Google_Service_RealTimeBidding extends Google_Service
       "https://www.googleapis.com/auth/realtime-bidding";
 
   public $bidders_creatives;
+  public $bidders_pretargetingConfigs;
   public $buyers;
   public $buyers_creatives;
   public $buyers_userLists;
-  
+
   /**
    * Constructs the internal representation of the RealTimeBidding service.
    *
@@ -72,7 +73,7 @@ class Google_Service_RealTimeBidding extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -80,11 +81,11 @@ class Google_Service_RealTimeBidding extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'view' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'filter' => array(
+                'view' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -94,6 +95,158 @@ class Google_Service_RealTimeBidding extends Google_Service
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->bidders_pretargetingConfigs = new Google_Service_RealTimeBidding_Resource_BiddersPretargetingConfigs(
+        $this,
+        $this->serviceName,
+        'pretargetingConfigs',
+        array(
+          'methods' => array(
+            'activate' => array(
+              'path' => 'v1/{+name}:activate',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'addTargetedApps' => array(
+              'path' => 'v1/{+pretargetingConfig}:addTargetedApps',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'pretargetingConfig' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'addTargetedPublishers' => array(
+              'path' => 'v1/{+pretargetingConfig}:addTargetedPublishers',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'pretargetingConfig' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'addTargetedSites' => array(
+              'path' => 'v1/{+pretargetingConfig}:addTargetedSites',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'pretargetingConfig' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'create' => array(
+              'path' => 'v1/{+parent}/pretargetingConfigs',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'delete' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'get' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'v1/{+parent}/pretargetingConfigs',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),'patch' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'updateMask' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),'removeTargetedApps' => array(
+              'path' => 'v1/{+pretargetingConfig}:removeTargetedApps',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'pretargetingConfig' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'removeTargetedPublishers' => array(
+              'path' => 'v1/{+pretargetingConfig}:removeTargetedPublishers',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'pretargetingConfig' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'removeTargetedSites' => array(
+              'path' => 'v1/{+pretargetingConfig}:removeTargetedSites',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'pretargetingConfig' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'suspend' => array(
+              'path' => 'v1/{+name}:suspend',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'name' => array(
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
@@ -162,19 +315,19 @@ class Google_Service_RealTimeBidding extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
-                ),
-                'view' => array(
-                  'location' => 'query',
-                  'type' => 'string',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'filter' => array(
+                'view' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

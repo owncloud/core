@@ -48,6 +48,9 @@ class Google_Service_PeopleService_Resource_OtherContacts extends Google_Service
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Optional. The number of "Other contacts" to include
+   * in the response. Valid values are between 1 and 1000, inclusive. Defaults to
+   * 100 if not set or set to 0.
    * @opt_param string pageToken Optional. A page token, received from a previous
    * `ListOtherContacts` call. Provide this to retrieve the subsequent page. When
    * paginating, all other parameters provided to `ListOtherContacts` must match
@@ -60,9 +63,6 @@ class Google_Service_PeopleService_Resource_OtherContacts extends Google_Service
    * last request. For subsequent sync requests use the `sync_token` param
    * instead. Initial sync requests that specify `request_sync_token` have an
    * additional rate limit.
-   * @opt_param int pageSize Optional. The number of "Other contacts" to include
-   * in the response. Valid values are between 1 and 1000, inclusive. Defaults to
-   * 100 if not set or set to 0.
    * @opt_param string syncToken Optional. A sync token, received from a previous
    * `ListOtherContacts` call. Provide this to retrieve only the resources changed
    * since the last request. Sync requests that specify `sync_token` have an
@@ -75,5 +75,28 @@ class Google_Service_PeopleService_Resource_OtherContacts extends Google_Service
     $params = array();
     $params = array_merge($params, $optParams);
     return $this->call('list', array($params), "Google_Service_PeopleService_ListOtherContactsResponse");
+  }
+  /**
+   * Provides a list of contacts in the authenticated user's other contacts that
+   * matches the search query. (otherContacts.search)
+   *
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param int pageSize Optional. The number of results to return. Defaults
+   * to 10 if field is not set, or set to 0.
+   * @opt_param string query Required. The plain-text query for the request. The
+   * query is used to match prefix phrases of the fields on a person. For example,
+   * a person with name "foo name" matches queries such as "f", "fo", "foo", "foo
+   * n", "nam", etc., but not "oo n".
+   * @opt_param string readMask Required. A field mask to restrict which fields on
+   * each person are returned. Multiple fields can be specified by separating them
+   * with commas. Valid values are: * emailAddresses * names * phoneNumbers
+   * @return Google_Service_PeopleService_SearchResponse
+   */
+  public function search($optParams = array())
+  {
+    $params = array();
+    $params = array_merge($params, $optParams);
+    return $this->call('search', array($params), "Google_Service_PeopleService_SearchResponse");
   }
 }

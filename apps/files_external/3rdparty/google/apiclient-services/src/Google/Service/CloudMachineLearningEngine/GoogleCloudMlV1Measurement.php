@@ -32,14 +32,14 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Measurement exten
     return $this->elapsedTime;
   }
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1MeasurementMetric
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1MeasurementMetric[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1MeasurementMetric
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1MeasurementMetric[]
    */
   public function getMetrics()
   {

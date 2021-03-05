@@ -77,14 +77,6 @@ class Google_Service_Translate_Resource_ProjectsLocationsGlossaries extends Goog
    * all of the glossaries.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional. A token identifying a page of results
-   * the server should return. Typically, this is the value of
-   * [ListGlossariesResponse.next_page_token] returned from the previous call to
-   * `ListGlossaries` method. The first page is returned if `page_token`is empty
-   * or missing.
-   * @opt_param int pageSize Optional. Requested page size. The server may return
-   * fewer glossaries than requested. If unspecified, the server picks an
-   * appropriate default.
    * @opt_param string filter Optional. Filter specifying constraints of a list
    * operation. Specify the constraint by the format of "key=value", where key
    * must be "src" or "tgt", and the value must be a valid language code. For
@@ -100,6 +92,14 @@ class Google_Service_Translate_Resource_ProjectsLocationsGlossaries extends Goog
    * code "zh-CN", but all equivalent term set glossaries which contain "en-US"
    * and "zh-CN" in their language set will be picked. If missing, no filtering is
    * performed.
+   * @opt_param int pageSize Optional. Requested page size. The server may return
+   * fewer glossaries than requested. If unspecified, the server picks an
+   * appropriate default.
+   * @opt_param string pageToken Optional. A token identifying a page of results
+   * the server should return. Typically, this is the value of
+   * [ListGlossariesResponse.next_page_token] returned from the previous call to
+   * `ListGlossaries` method. The first page is returned if `page_token`is empty
+   * or missing.
    * @return Google_Service_Translate_ListGlossariesResponse
    */
   public function listProjectsLocationsGlossaries($parent, $optParams = array())

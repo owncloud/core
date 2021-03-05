@@ -41,7 +41,7 @@ class Google_Service_CloudProfiler extends Google_Service
       "https://www.googleapis.com/auth/monitoring.write";
 
   public $projects_profiles;
-  
+
   /**
    * Constructs the internal representation of the CloudProfiler service.
    *

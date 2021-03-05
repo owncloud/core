@@ -32,14 +32,14 @@ class Google_Service_Compute_ResourcePolicyAggregatedListWarning extends Google_
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_ResourcePolicyAggregatedListWarningData
+   * @param Google_Service_Compute_ResourcePolicyAggregatedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_ResourcePolicyAggregatedListWarningData
+   * @return Google_Service_Compute_ResourcePolicyAggregatedListWarningData[]
    */
   public function getData()
   {

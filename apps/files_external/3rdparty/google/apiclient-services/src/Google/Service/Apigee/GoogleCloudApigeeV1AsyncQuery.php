@@ -18,6 +18,7 @@
 class Google_Service_Apigee_GoogleCloudApigeeV1AsyncQuery extends Google_Model
 {
   public $created;
+  public $envgroupHostname;
   public $error;
   public $executionTime;
   public $name;
@@ -39,6 +40,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1AsyncQuery extends Google_Model
   public function getCreated()
   {
     return $this->created;
+  }
+  public function setEnvgroupHostname($envgroupHostname)
+  {
+    $this->envgroupHostname = $envgroupHostname;
+  }
+  public function getEnvgroupHostname()
+  {
+    return $this->envgroupHostname;
   }
   public function setError($error)
   {

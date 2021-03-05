@@ -49,15 +49,15 @@ class Google_Service_Blogger_Resource_PostUserInfos extends Google_Service_Resou
    * @param string $blogId
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string startDate
-   * @opt_param string maxResults
-   * @opt_param string labels
-   * @opt_param string status
-   * @opt_param string pageToken
-   * @opt_param string view
-   * @opt_param string orderBy
    * @opt_param string endDate
    * @opt_param bool fetchBodies
+   * @opt_param string labels
+   * @opt_param string maxResults
+   * @opt_param string orderBy
+   * @opt_param string pageToken
+   * @opt_param string startDate
+   * @opt_param string status
+   * @opt_param string view
    * @return Google_Service_Blogger_PostUserInfosList
    */
   public function listPostUserInfos($userId, $blogId, $optParams = array())

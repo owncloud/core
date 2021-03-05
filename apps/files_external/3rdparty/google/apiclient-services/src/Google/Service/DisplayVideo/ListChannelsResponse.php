@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_ListChannelsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DisplayVideo_Channel
+   * @param Google_Service_DisplayVideo_Channel[]
    */
   public function setChannels($channels)
   {
     $this->channels = $channels;
   }
   /**
-   * @return Google_Service_DisplayVideo_Channel
+   * @return Google_Service_DisplayVideo_Channel[]
    */
   public function getChannels()
   {

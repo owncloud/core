@@ -28,6 +28,8 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1WebhookRequest ext
   protected $pageInfoType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1PageInfo';
   protected $pageInfoDataType = '';
   public $payload;
+  protected $sentimentAnalysisResultType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1WebhookRequestSentimentAnalysisResult';
+  protected $sentimentAnalysisResultDataType = '';
   protected $sessionInfoType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1SessionInfo';
   protected $sessionInfoDataType = '';
 
@@ -68,14 +70,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1WebhookRequest ext
     return $this->intentInfo;
   }
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessage
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessage[]
    */
   public function setMessages($messages)
   {
     $this->messages = $messages;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessage
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1ResponseMessage[]
    */
   public function getMessages()
   {
@@ -102,6 +104,20 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1WebhookRequest ext
   public function getPayload()
   {
     return $this->payload;
+  }
+  /**
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1WebhookRequestSentimentAnalysisResult
+   */
+  public function setSentimentAnalysisResult(Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1WebhookRequestSentimentAnalysisResult $sentimentAnalysisResult)
+  {
+    $this->sentimentAnalysisResult = $sentimentAnalysisResult;
+  }
+  /**
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1WebhookRequestSentimentAnalysisResult
+   */
+  public function getSentimentAnalysisResult()
+  {
+    return $this->sentimentAnalysisResult;
   }
   /**
    * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3beta1SessionInfo

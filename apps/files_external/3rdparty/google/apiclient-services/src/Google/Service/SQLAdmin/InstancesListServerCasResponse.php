@@ -32,14 +32,14 @@ class Google_Service_SQLAdmin_InstancesListServerCasResponse extends Google_Coll
     return $this->activeVersion;
   }
   /**
-   * @param Google_Service_SQLAdmin_SslCert
+   * @param Google_Service_SQLAdmin_SslCert[]
    */
   public function setCerts($certs)
   {
     $this->certs = $certs;
   }
   /**
-   * @return Google_Service_SQLAdmin_SslCert
+   * @return Google_Service_SQLAdmin_SslCert[]
    */
   public function getCerts()
   {

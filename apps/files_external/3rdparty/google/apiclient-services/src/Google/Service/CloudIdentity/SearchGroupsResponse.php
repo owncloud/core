@@ -23,14 +23,14 @@ class Google_Service_CloudIdentity_SearchGroupsResponse extends Google_Collectio
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudIdentity_Group
+   * @param Google_Service_CloudIdentity_Group[]
    */
   public function setGroups($groups)
   {
     $this->groups = $groups;
   }
   /**
-   * @return Google_Service_CloudIdentity_Group
+   * @return Google_Service_CloudIdentity_Group[]
    */
   public function getGroups()
   {

@@ -22,14 +22,14 @@ class Google_Service_AnalyticsReporting_GoalSetData extends Google_Collection
   protected $goalsDataType = 'array';
 
   /**
-   * @param Google_Service_AnalyticsReporting_GoalData
+   * @param Google_Service_AnalyticsReporting_GoalData[]
    */
   public function setGoals($goals)
   {
     $this->goals = $goals;
   }
   /**
-   * @return Google_Service_AnalyticsReporting_GoalData
+   * @return Google_Service_AnalyticsReporting_GoalData[]
    */
   public function getGoals()
   {

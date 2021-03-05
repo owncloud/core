@@ -24,28 +24,28 @@ class Google_Service_DriveActivity_PermissionChange extends Google_Collection
   protected $removedPermissionsDataType = 'array';
 
   /**
-   * @param Google_Service_DriveActivity_Permission
+   * @param Google_Service_DriveActivity_Permission[]
    */
   public function setAddedPermissions($addedPermissions)
   {
     $this->addedPermissions = $addedPermissions;
   }
   /**
-   * @return Google_Service_DriveActivity_Permission
+   * @return Google_Service_DriveActivity_Permission[]
    */
   public function getAddedPermissions()
   {
     return $this->addedPermissions;
   }
   /**
-   * @param Google_Service_DriveActivity_Permission
+   * @param Google_Service_DriveActivity_Permission[]
    */
   public function setRemovedPermissions($removedPermissions)
   {
     $this->removedPermissions = $removedPermissions;
   }
   /**
-   * @return Google_Service_DriveActivity_Permission
+   * @return Google_Service_DriveActivity_Permission[]
    */
   public function getRemovedPermissions()
   {

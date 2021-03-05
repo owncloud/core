@@ -23,14 +23,14 @@ class Google_Service_CloudIdentity_ListMembershipsResponse extends Google_Collec
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudIdentity_Membership
+   * @param Google_Service_CloudIdentity_Membership[]
    */
   public function setMemberships($memberships)
   {
     $this->memberships = $memberships;
   }
   /**
-   * @return Google_Service_CloudIdentity_Membership
+   * @return Google_Service_CloudIdentity_Membership[]
    */
   public function getMemberships()
   {

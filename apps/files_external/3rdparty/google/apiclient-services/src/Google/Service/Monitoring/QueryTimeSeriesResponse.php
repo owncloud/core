@@ -35,28 +35,28 @@ class Google_Service_Monitoring_QueryTimeSeriesResponse extends Google_Collectio
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Monitoring_Status
+   * @param Google_Service_Monitoring_Status[]
    */
   public function setPartialErrors($partialErrors)
   {
     $this->partialErrors = $partialErrors;
   }
   /**
-   * @return Google_Service_Monitoring_Status
+   * @return Google_Service_Monitoring_Status[]
    */
   public function getPartialErrors()
   {
     return $this->partialErrors;
   }
   /**
-   * @param Google_Service_Monitoring_TimeSeriesData
+   * @param Google_Service_Monitoring_TimeSeriesData[]
    */
   public function setTimeSeriesData($timeSeriesData)
   {
     $this->timeSeriesData = $timeSeriesData;
   }
   /**
-   * @return Google_Service_Monitoring_TimeSeriesData
+   * @return Google_Service_Monitoring_TimeSeriesData[]
    */
   public function getTimeSeriesData()
   {

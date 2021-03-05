@@ -32,14 +32,14 @@ class Google_Service_Books_Seriesmembership extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_Books_Volume
+   * @param Google_Service_Books_Volume[]
    */
   public function setMember($member)
   {
     $this->member = $member;
   }
   /**
-   * @return Google_Service_Books_Volume
+   * @return Google_Service_Books_Volume[]
    */
   public function getMember()
   {

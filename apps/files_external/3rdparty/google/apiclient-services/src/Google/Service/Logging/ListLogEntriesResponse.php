@@ -23,14 +23,14 @@ class Google_Service_Logging_ListLogEntriesResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Logging_LogEntry
+   * @param Google_Service_Logging_LogEntry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_Logging_LogEntry
+   * @return Google_Service_Logging_LogEntry[]
    */
   public function getEntries()
   {

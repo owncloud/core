@@ -31,14 +31,14 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ListTagsResponse e
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1Tag
+   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1Tag[]
    */
   public function setTags($tags)
   {
     $this->tags = $tags;
   }
   /**
-   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1Tag
+   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1Tag[]
    */
   public function getTags()
   {

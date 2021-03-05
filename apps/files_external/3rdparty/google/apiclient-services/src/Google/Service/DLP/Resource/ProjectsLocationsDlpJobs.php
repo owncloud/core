@@ -90,10 +90,7 @@ class Google_Service_DLP_Resource_ProjectsLocationsDlpJobs extends Google_Servic
   }
   /**
    * Finish a running hybrid DlpJob. Triggers the finalization steps and running
-   * of any enabled actions that have not yet run. Early access feature is in a
-   * pre-release state and might change or have limited support. For more
-   * information, see https://cloud.google.com/products#product-launch-stages.
-   * (dlpJobs.finish)
+   * of any enabled actions that have not yet run. (dlpJobs.finish)
    *
    * @param string $name Required. The name of the DlpJob resource to be
    * cancelled.
@@ -124,10 +121,8 @@ class Google_Service_DLP_Resource_ProjectsLocationsDlpJobs extends Google_Servic
     return $this->call('get', array($params), "Google_Service_DLP_GooglePrivacyDlpV2DlpJob");
   }
   /**
-   * Inspect hybrid content and store findings to a job. To review the findings
-   * inspect the job. Inspection will occur asynchronously. Early access feature
-   * is in a pre-release state and might change or have limited support. For more
-   * information, see https://cloud.google.com/products#product-launch-stages.
+   * Inspect hybrid content and store findings to a job. To review the findings,
+   * inspect the job. Inspection will occur asynchronously.
    * (dlpJobs.hybridInspect)
    *
    * @param string $name Required. Resource name of the job to execute a hybrid
@@ -159,13 +154,6 @@ class Google_Service_DLP_Resource_ProjectsLocationsDlpJobs extends Google_Servic
    * project/locations/europe-west3
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string orderBy Comma separated list of fields to order by,
-   * followed by `asc` or `desc` postfix. This list is case-insensitive, default
-   * sorting order is ascending, redundant space characters are insignificant.
-   * Example: `name asc, end_time asc, create_time desc` Supported fields are: -
-   * `create_time`: corresponds to time the job was created. - `end_time`:
-   * corresponds to time the job ended. - `name`: corresponds to job's name. -
-   * `state`: corresponds to `state`
    * @opt_param string filter Allows filtering. Supported syntax: * Filter
    * expressions are made up of one or more restrictions. * Restrictions can be
    * combined by `AND` or `OR` logical operators. A sequence of restrictions
@@ -183,9 +171,16 @@ class Google_Service_DLP_Resource_ProjectsLocationsDlpJobs extends Google_Servic
    * inspected_storage = cloud_storage AND (state = done OR state = canceled) *
    * end_time > \"2017-12-12T00:00:00+00:00\" The length of this field should be
    * no more than 500 characters.
+   * @opt_param string locationId Deprecated. This field has no effect.
+   * @opt_param string orderBy Comma separated list of fields to order by,
+   * followed by `asc` or `desc` postfix. This list is case-insensitive, default
+   * sorting order is ascending, redundant space characters are insignificant.
+   * Example: `name asc, end_time asc, create_time desc` Supported fields are: -
+   * `create_time`: corresponds to time the job was created. - `end_time`:
+   * corresponds to time the job ended. - `name`: corresponds to job's name. -
+   * `state`: corresponds to `state`
    * @opt_param int pageSize The standard list page size.
    * @opt_param string pageToken The standard list page token.
-   * @opt_param string locationId Deprecated. This field has no effect.
    * @opt_param string type The type of job. Defaults to `DlpJobType.INSPECT`
    * @return Google_Service_DLP_GooglePrivacyDlpV2ListDlpJobsResponse
    */

@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_ListCombinedAudiencesResponse extends Google_C
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DisplayVideo_CombinedAudience
+   * @param Google_Service_DisplayVideo_CombinedAudience[]
    */
   public function setCombinedAudiences($combinedAudiences)
   {
     $this->combinedAudiences = $combinedAudiences;
   }
   /**
-   * @return Google_Service_DisplayVideo_CombinedAudience
+   * @return Google_Service_DisplayVideo_CombinedAudience[]
    */
   public function getCombinedAudiences()
   {

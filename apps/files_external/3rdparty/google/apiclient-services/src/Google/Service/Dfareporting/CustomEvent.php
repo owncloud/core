@@ -61,14 +61,14 @@ class Google_Service_Dfareporting_CustomEvent extends Google_Collection
     return $this->annotateImpressionEvent;
   }
   /**
-   * @param Google_Service_Dfareporting_CustomVariable
+   * @param Google_Service_Dfareporting_CustomVariable[]
    */
   public function setCustomVariables($customVariables)
   {
     $this->customVariables = $customVariables;
   }
   /**
-   * @return Google_Service_Dfareporting_CustomVariable
+   * @return Google_Service_Dfareporting_CustomVariable[]
    */
   public function getCustomVariables()
   {

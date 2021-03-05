@@ -48,14 +48,14 @@ class Google_Service_DataFusion_Instance extends Google_Collection
   public $zone;
 
   /**
-   * @param Google_Service_DataFusion_Accelerator
+   * @param Google_Service_DataFusion_Accelerator[]
    */
   public function setAccelerators($accelerators)
   {
     $this->accelerators = $accelerators;
   }
   /**
-   * @return Google_Service_DataFusion_Accelerator
+   * @return Google_Service_DataFusion_Accelerator[]
    */
   public function getAccelerators()
   {
@@ -70,14 +70,14 @@ class Google_Service_DataFusion_Instance extends Google_Collection
     return $this->apiEndpoint;
   }
   /**
-   * @param Google_Service_DataFusion_Version
+   * @param Google_Service_DataFusion_Version[]
    */
   public function setAvailableVersion($availableVersion)
   {
     $this->availableVersion = $availableVersion;
   }
   /**
-   * @return Google_Service_DataFusion_Version
+   * @return Google_Service_DataFusion_Version[]
    */
   public function getAvailableVersion()
   {

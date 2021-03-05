@@ -47,14 +47,14 @@ class Google_Service_Vision_AsyncBatchAnnotateImagesRequest extends Google_Colle
     return $this->parent;
   }
   /**
-   * @param Google_Service_Vision_AnnotateImageRequest
+   * @param Google_Service_Vision_AnnotateImageRequest[]
    */
   public function setRequests($requests)
   {
     $this->requests = $requests;
   }
   /**
-   * @return Google_Service_Vision_AnnotateImageRequest
+   * @return Google_Service_Vision_AnnotateImageRequest[]
    */
   public function getRequests()
   {

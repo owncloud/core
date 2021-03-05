@@ -65,14 +65,14 @@ class Google_Service_AndroidEnterprise_Policy extends Google_Collection
     return $this->productAvailabilityPolicy;
   }
   /**
-   * @param Google_Service_AndroidEnterprise_ProductPolicy
+   * @param Google_Service_AndroidEnterprise_ProductPolicy[]
    */
   public function setProductPolicy($productPolicy)
   {
     $this->productPolicy = $productPolicy;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_ProductPolicy
+   * @return Google_Service_AndroidEnterprise_ProductPolicy[]
    */
   public function getProductPolicy()
   {

@@ -23,14 +23,14 @@ class Google_Service_FirebaseManagement_SearchFirebaseAppsResponse extends Googl
   public $nextPageToken;
 
   /**
-   * @param Google_Service_FirebaseManagement_FirebaseAppInfo
+   * @param Google_Service_FirebaseManagement_FirebaseAppInfo[]
    */
   public function setApps($apps)
   {
     $this->apps = $apps;
   }
   /**
-   * @return Google_Service_FirebaseManagement_FirebaseAppInfo
+   * @return Google_Service_FirebaseManagement_FirebaseAppInfo[]
    */
   public function getApps()
   {

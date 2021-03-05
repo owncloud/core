@@ -33,14 +33,14 @@ class Google_Service_DisplayVideo_BulkEditAssignedInventorySourcesRequest extend
     return $this->advertiserId;
   }
   /**
-   * @param Google_Service_DisplayVideo_AssignedInventorySource
+   * @param Google_Service_DisplayVideo_AssignedInventorySource[]
    */
   public function setCreatedAssignedInventorySources($createdAssignedInventorySources)
   {
     $this->createdAssignedInventorySources = $createdAssignedInventorySources;
   }
   /**
-   * @return Google_Service_DisplayVideo_AssignedInventorySource
+   * @return Google_Service_DisplayVideo_AssignedInventorySource[]
    */
   public function getCreatedAssignedInventorySources()
   {

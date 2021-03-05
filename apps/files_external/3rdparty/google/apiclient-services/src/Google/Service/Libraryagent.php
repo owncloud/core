@@ -36,7 +36,7 @@ class Google_Service_Libraryagent extends Google_Service
 
   public $shelves;
   public $shelves_books;
-  
+
   /**
    * Constructs the internal representation of the Libraryagent service.
    *

@@ -31,14 +31,14 @@ class Google_Service_Script_ListUserProcessesResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Script_GoogleAppsScriptTypeProcess
+   * @param Google_Service_Script_GoogleAppsScriptTypeProcess[]
    */
   public function setProcesses($processes)
   {
     $this->processes = $processes;
   }
   /**
-   * @return Google_Service_Script_GoogleAppsScriptTypeProcess
+   * @return Google_Service_Script_GoogleAppsScriptTypeProcess[]
    */
   public function getProcesses()
   {

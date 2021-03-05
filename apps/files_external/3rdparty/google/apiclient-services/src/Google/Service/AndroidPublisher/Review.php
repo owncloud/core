@@ -32,14 +32,14 @@ class Google_Service_AndroidPublisher_Review extends Google_Collection
     return $this->authorName;
   }
   /**
-   * @param Google_Service_AndroidPublisher_Comment
+   * @param Google_Service_AndroidPublisher_Comment[]
    */
   public function setComments($comments)
   {
     $this->comments = $comments;
   }
   /**
-   * @return Google_Service_AndroidPublisher_Comment
+   * @return Google_Service_AndroidPublisher_Comment[]
    */
   public function getComments()
   {

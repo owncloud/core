@@ -19,6 +19,7 @@ class Google_Service_PeopleService_CreateContactGroupRequest extends Google_Mode
 {
   protected $contactGroupType = 'Google_Service_PeopleService_ContactGroup';
   protected $contactGroupDataType = '';
+  public $readGroupFields;
 
   /**
    * @param Google_Service_PeopleService_ContactGroup
@@ -33,5 +34,13 @@ class Google_Service_PeopleService_CreateContactGroupRequest extends Google_Mode
   public function getContactGroup()
   {
     return $this->contactGroup;
+  }
+  public function setReadGroupFields($readGroupFields)
+  {
+    $this->readGroupFields = $readGroupFields;
+  }
+  public function getReadGroupFields()
+  {
+    return $this->readGroupFields;
   }
 }

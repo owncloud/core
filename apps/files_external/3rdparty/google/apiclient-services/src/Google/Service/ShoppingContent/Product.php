@@ -242,14 +242,14 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
     return $this->costOfGoodsSold;
   }
   /**
-   * @param Google_Service_ShoppingContent_CustomAttribute
+   * @param Google_Service_ShoppingContent_CustomAttribute[]
    */
   public function setCustomAttributes($customAttributes)
   {
     $this->customAttributes = $customAttributes;
   }
   /**
-   * @return Google_Service_ShoppingContent_CustomAttribute
+   * @return Google_Service_ShoppingContent_CustomAttribute[]
    */
   public function getCustomAttributes()
   {
@@ -578,14 +578,14 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
     return $this->price;
   }
   /**
-   * @param Google_Service_ShoppingContent_ProductProductDetail
+   * @param Google_Service_ShoppingContent_ProductProductDetail[]
    */
   public function setProductDetails($productDetails)
   {
     $this->productDetails = $productDetails;
   }
   /**
-   * @return Google_Service_ShoppingContent_ProductProductDetail
+   * @return Google_Service_ShoppingContent_ProductProductDetail[]
    */
   public function getProductDetails()
   {
@@ -646,14 +646,14 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
     return $this->sellOnGoogleQuantity;
   }
   /**
-   * @param Google_Service_ShoppingContent_ProductShipping
+   * @param Google_Service_ShoppingContent_ProductShipping[]
    */
   public function setShipping($shipping)
   {
     $this->shipping = $shipping;
   }
   /**
-   * @return Google_Service_ShoppingContent_ProductShipping
+   * @return Google_Service_ShoppingContent_ProductShipping[]
    */
   public function getShipping()
   {
@@ -794,14 +794,14 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
     return $this->taxCategory;
   }
   /**
-   * @param Google_Service_ShoppingContent_ProductTax
+   * @param Google_Service_ShoppingContent_ProductTax[]
    */
   public function setTaxes($taxes)
   {
     $this->taxes = $taxes;
   }
   /**
-   * @return Google_Service_ShoppingContent_ProductTax
+   * @return Google_Service_ShoppingContent_ProductTax[]
    */
   public function getTaxes()
   {

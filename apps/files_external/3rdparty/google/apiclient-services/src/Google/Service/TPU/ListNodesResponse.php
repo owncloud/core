@@ -32,14 +32,14 @@ class Google_Service_TPU_ListNodesResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_TPU_Node
+   * @param Google_Service_TPU_Node[]
    */
   public function setNodes($nodes)
   {
     $this->nodes = $nodes;
   }
   /**
-   * @return Google_Service_TPU_Node
+   * @return Google_Service_TPU_Node[]
    */
   public function getNodes()
   {

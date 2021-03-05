@@ -31,14 +31,14 @@ class Google_Service_Compute_RouterStatusBgpPeerStatus extends Google_Collection
   public $uptimeSeconds;
 
   /**
-   * @param Google_Service_Compute_Route
+   * @param Google_Service_Compute_Route[]
    */
   public function setAdvertisedRoutes($advertisedRoutes)
   {
     $this->advertisedRoutes = $advertisedRoutes;
   }
   /**
-   * @return Google_Service_Compute_Route
+   * @return Google_Service_Compute_Route[]
    */
   public function getAdvertisedRoutes()
   {

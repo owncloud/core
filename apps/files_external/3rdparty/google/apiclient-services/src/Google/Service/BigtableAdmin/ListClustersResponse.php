@@ -24,14 +24,14 @@ class Google_Service_BigtableAdmin_ListClustersResponse extends Google_Collectio
   public $nextPageToken;
 
   /**
-   * @param Google_Service_BigtableAdmin_Cluster
+   * @param Google_Service_BigtableAdmin_Cluster[]
    */
   public function setClusters($clusters)
   {
     $this->clusters = $clusters;
   }
   /**
-   * @return Google_Service_BigtableAdmin_Cluster
+   * @return Google_Service_BigtableAdmin_Cluster[]
    */
   public function getClusters()
   {

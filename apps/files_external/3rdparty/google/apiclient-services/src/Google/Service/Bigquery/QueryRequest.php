@@ -39,14 +39,14 @@ class Google_Service_Bigquery_QueryRequest extends Google_Collection
   public $useQueryCache;
 
   /**
-   * @param Google_Service_Bigquery_ConnectionProperty
+   * @param Google_Service_Bigquery_ConnectionProperty[]
    */
   public function setConnectionProperties($connectionProperties)
   {
     $this->connectionProperties = $connectionProperties;
   }
   /**
-   * @return Google_Service_Bigquery_ConnectionProperty
+   * @return Google_Service_Bigquery_ConnectionProperty[]
    */
   public function getConnectionProperties()
   {
@@ -139,14 +139,14 @@ class Google_Service_Bigquery_QueryRequest extends Google_Collection
     return $this->query;
   }
   /**
-   * @param Google_Service_Bigquery_QueryParameter
+   * @param Google_Service_Bigquery_QueryParameter[]
    */
   public function setQueryParameters($queryParameters)
   {
     $this->queryParameters = $queryParameters;
   }
   /**
-   * @return Google_Service_Bigquery_QueryParameter
+   * @return Google_Service_Bigquery_QueryParameter[]
    */
   public function getQueryParameters()
   {

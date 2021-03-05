@@ -23,14 +23,14 @@ class Google_Service_Books_Offers extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_Books_OffersItems
+   * @param Google_Service_Books_OffersItems[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Books_OffersItems
+   * @return Google_Service_Books_OffersItems[]
    */
   public function getItems()
   {

@@ -64,8 +64,11 @@ class Google_Service_RemoteBuildExecution_Resource_Actions extends Google_Servic
    * case of a missing input or command, the server SHOULD additionally send a
    * PreconditionFailure error detail where, for each requested blob not present
    * in the CAS, there is a `Violation` with a `type` of `MISSING` and a `subject`
-   * of `"blobs/{hash}/{size}"` indicating the digest of the missing blob.
-   * (actions.execute)
+   * of `"blobs/{hash}/{size}"` indicating the digest of the missing blob. The
+   * server does not need to guarantee that a call to this method leads to at most
+   * one execution of the action. The server MAY execute the action multiple
+   * times, potentially in parallel. These redundant executions MAY continue to
+   * run, even if the operation is completed. (actions.execute)
    *
    * @param string $instanceName The instance of the execution system to operate
    * against. A server may support multiple instances of the execution system

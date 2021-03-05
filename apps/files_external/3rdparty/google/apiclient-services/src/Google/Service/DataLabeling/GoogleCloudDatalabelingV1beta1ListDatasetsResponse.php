@@ -23,14 +23,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ListDatasetsResp
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Dataset
+   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Dataset[]
    */
   public function setDatasets($datasets)
   {
     $this->datasets = $datasets;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Dataset
+   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Dataset[]
    */
   public function getDatasets()
   {

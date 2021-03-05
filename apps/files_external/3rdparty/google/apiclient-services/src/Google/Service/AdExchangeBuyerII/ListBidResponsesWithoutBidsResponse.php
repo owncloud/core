@@ -23,14 +23,14 @@ class Google_Service_AdExchangeBuyerII_ListBidResponsesWithoutBidsResponse exten
   public $nextPageToken;
 
   /**
-   * @param Google_Service_AdExchangeBuyerII_BidResponseWithoutBidsStatusRow
+   * @param Google_Service_AdExchangeBuyerII_BidResponseWithoutBidsStatusRow[]
    */
   public function setBidResponseWithoutBidsStatusRows($bidResponseWithoutBidsStatusRows)
   {
     $this->bidResponseWithoutBidsStatusRows = $bidResponseWithoutBidsStatusRows;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_BidResponseWithoutBidsStatusRow
+   * @return Google_Service_AdExchangeBuyerII_BidResponseWithoutBidsStatusRow[]
    */
   public function getBidResponseWithoutBidsStatusRows()
   {

@@ -47,6 +47,22 @@ class Google_Service_Games_Resource_Applications extends Google_Service_Resource
     return $this->call('get', array($params), "Google_Service_Games_Application");
   }
   /**
+   * Returns a URL for the requested end point type. (applications.getEndPoint)
+   *
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string applicationId The application ID from the Google Play
+   * developer console.
+   * @opt_param string endPointType Type of endpoint being requested.
+   * @return Google_Service_Games_EndPoint
+   */
+  public function getEndPoint($optParams = array())
+  {
+    $params = array();
+    $params = array_merge($params, $optParams);
+    return $this->call('getEndPoint', array($params), "Google_Service_Games_EndPoint");
+  }
+  /**
    * Indicate that the currently authenticated user is playing your application.
    * (applications.played)
    *

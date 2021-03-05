@@ -24,14 +24,14 @@ class Google_Service_Compute_NodeTemplatesScopedList extends Google_Collection
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_NodeTemplate
+   * @param Google_Service_Compute_NodeTemplate[]
    */
   public function setNodeTemplates($nodeTemplates)
   {
     $this->nodeTemplates = $nodeTemplates;
   }
   /**
-   * @return Google_Service_Compute_NodeTemplate
+   * @return Google_Service_Compute_NodeTemplate[]
    */
   public function getNodeTemplates()
   {

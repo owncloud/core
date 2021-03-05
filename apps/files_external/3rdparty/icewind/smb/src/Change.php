@@ -10,31 +10,18 @@ namespace Icewind\SMB;
 
 class Change {
 	private $code;
-
 	private $path;
 
-	/**
-	 * Change constructor.
-	 *
-	 * @param $code
-	 * @param $path
-	 */
-	public function __construct($code, $path) {
+	public function __construct(int $code, string $path) {
 		$this->code = $code;
 		$this->path = $path;
 	}
 
-	/**
-	 * @return integer
-	 */
-	public function getCode() {
+	public function getCode(): int {
 		return $this->code;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getPath() {
+	public function getPath(): string {
 		return $this->path;
 	}
 }

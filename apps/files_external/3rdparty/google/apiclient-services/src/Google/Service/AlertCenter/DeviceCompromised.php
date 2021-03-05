@@ -31,14 +31,14 @@ class Google_Service_AlertCenter_DeviceCompromised extends Google_Collection
     return $this->email;
   }
   /**
-   * @param Google_Service_AlertCenter_DeviceCompromisedSecurityDetail
+   * @param Google_Service_AlertCenter_DeviceCompromisedSecurityDetail[]
    */
   public function setEvents($events)
   {
     $this->events = $events;
   }
   /**
-   * @return Google_Service_AlertCenter_DeviceCompromisedSecurityDetail
+   * @return Google_Service_AlertCenter_DeviceCompromisedSecurityDetail[]
    */
   public function getEvents()
   {

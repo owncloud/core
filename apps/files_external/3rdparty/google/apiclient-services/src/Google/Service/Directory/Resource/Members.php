@@ -26,10 +26,13 @@
 class Google_Service_Directory_Resource_Members extends Google_Service_Resource
 {
   /**
-   * Remove membership. (members.delete)
+   * Removes a member from a group. (members.delete)
    *
-   * @param string $groupKey Email or immutable ID of the group
-   * @param string $memberKey Email or immutable ID of the member
+   * @param string $groupKey Identifies the group in the API request. The value
+   * can be the group's email address, group alias, or the unique group ID.
+   * @param string $memberKey Identifies the group member in the API request. A
+   * group member can be a user or another group. The value can be the member's
+   * (group or user) primary email address, alias, or unique ID.
    * @param array $optParams Optional parameters.
    */
   public function delete($groupKey, $memberKey, $optParams = array())
@@ -39,10 +42,13 @@ class Google_Service_Directory_Resource_Members extends Google_Service_Resource
     return $this->call('delete', array($params));
   }
   /**
-   * Retrieve Group Member (members.get)
+   * Retrieves a group member's properties. (members.get)
    *
-   * @param string $groupKey Email or immutable ID of the group
-   * @param string $memberKey Email or immutable ID of the member
+   * @param string $groupKey Identifies the group in the API request. The value
+   * can be the group's email address, group alias, or the unique group ID.
+   * @param string $memberKey Identifies the group member in the API request. A
+   * group member can be a user or another group. The value can be the member's
+   * (group or user) primary email address, alias, or unique ID.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_Member
    */
@@ -70,9 +76,10 @@ class Google_Service_Directory_Resource_Members extends Google_Service_Resource
     return $this->call('hasMember', array($params), "Google_Service_Directory_MembersHasMember");
   }
   /**
-   * Add user to the specified group. (members.insert)
+   * Adds a user to the specified group. (members.insert)
    *
-   * @param string $groupKey Email or immutable ID of the group
+   * @param string $groupKey Identifies the group in the API request. The value
+   * can be the group's email address, group alias, or the unique group ID.
    * @param Google_Service_Directory_Member $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_Member
@@ -84,18 +91,19 @@ class Google_Service_Directory_Resource_Members extends Google_Service_Resource
     return $this->call('insert', array($params), "Google_Service_Directory_Member");
   }
   /**
-   * Retrieve all members in a group (paginated) (members.listMembers)
+   * Retrieves a paginated list of all members in a group. (members.listMembers)
    *
-   * @param string $groupKey Email or immutable ID of the group
+   * @param string $groupKey Identifies the group in the API request. The value
+   * can be the group's email address, group alias, or the unique group ID.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int maxResults Maximum number of results to return. Max allowed
-   * value is 200.
-   * @opt_param string roles Comma separated role values to filter list results
-   * on.
-   * @opt_param string pageToken Token to specify next page in the list
    * @opt_param bool includeDerivedMembership Whether to list indirect
    * memberships. Default: false.
+   * @opt_param int maxResults Maximum number of results to return. Max allowed
+   * value is 200.
+   * @opt_param string pageToken Token to specify next page in the list.
+   * @opt_param string roles The `roles` query parameter allows you to retrieve
+   * group members by role. Allowed values are `OWNER`, `MANAGER`, and `MEMBER`.
    * @return Google_Service_Directory_Members
    */
   public function listMembers($groupKey, $optParams = array())
@@ -105,12 +113,15 @@ class Google_Service_Directory_Resource_Members extends Google_Service_Resource
     return $this->call('list', array($params), "Google_Service_Directory_Members");
   }
   /**
-   * Patch Member via Apiary Patch Orchestration (members.patch)
+   * Updates the membership properties of a user in the specified group. This
+   * method supports [patch semantics](/admin-
+   * sdk/directory/v1/guides/performance#patch). (members.patch)
    *
-   * @param string $groupKey Email or immutable ID of the group. If ID, it should
-   * match with id of group object
-   * @param string $memberKey Email or immutable ID of the user. If ID, it should
-   * match with id of member object
+   * @param string $groupKey Identifies the group in the API request. The value
+   * can be the group's email address, group alias, or the unique group ID.
+   * @param string $memberKey Identifies the group member in the API request. A
+   * group member can be a user or another group. The value can be the member's
+   * (group or user) primary email address, alias, or unique ID.
    * @param Google_Service_Directory_Member $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_Member
@@ -122,12 +133,13 @@ class Google_Service_Directory_Resource_Members extends Google_Service_Resource
     return $this->call('patch', array($params), "Google_Service_Directory_Member");
   }
   /**
-   * Update membership of a user in the specified group. (members.update)
+   * Updates the membership of a user in the specified group. (members.update)
    *
-   * @param string $groupKey Email or immutable ID of the group. If ID, it should
-   * match with id of group object
-   * @param string $memberKey Email or immutable ID of the user. If ID, it should
-   * match with id of member object
+   * @param string $groupKey Identifies the group in the API request. The value
+   * can be the group's email address, group alias, or the unique group ID.
+   * @param string $memberKey Identifies the group member in the API request. A
+   * group member can be a user or another group. The value can be the member's
+   * (group or user) primary email address, alias, or unique ID.
    * @param Google_Service_Directory_Member $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_Member

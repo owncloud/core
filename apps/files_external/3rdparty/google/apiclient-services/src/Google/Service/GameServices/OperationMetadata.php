@@ -54,14 +54,14 @@ class Google_Service_GameServices_OperationMetadata extends Google_Collection
     return $this->endTime;
   }
   /**
-   * @param Google_Service_GameServices_OperationStatus
+   * @param Google_Service_GameServices_OperationStatus[]
    */
   public function setOperationStatus($operationStatus)
   {
     $this->operationStatus = $operationStatus;
   }
   /**
-   * @return Google_Service_GameServices_OperationStatus
+   * @return Google_Service_GameServices_OperationStatus[]
    */
   public function getOperationStatus()
   {

@@ -24,28 +24,28 @@ class Google_Service_DLP_GooglePrivacyDlpV2Table extends Google_Collection
   protected $rowsDataType = 'array';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2FieldId
+   * @param Google_Service_DLP_GooglePrivacyDlpV2FieldId[]
    */
   public function setHeaders($headers)
   {
     $this->headers = $headers;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2FieldId
+   * @return Google_Service_DLP_GooglePrivacyDlpV2FieldId[]
    */
   public function getHeaders()
   {
     return $this->headers;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2Row
+   * @param Google_Service_DLP_GooglePrivacyDlpV2Row[]
    */
   public function setRows($rows)
   {
     $this->rows = $rows;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2Row
+   * @return Google_Service_DLP_GooglePrivacyDlpV2Row[]
    */
   public function getRows()
   {

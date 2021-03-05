@@ -9,11 +9,12 @@
 		}
 	],
 	"require": {
-		"php": ">=5.6"
+		"php": ">=7.1"
 	},
 	"require-dev": {
-		"php-coveralls/php-coveralls": "v2.1.0",
-		"phpunit/phpunit": "^5.7"
+		"phpunit/phpunit": "^9",
+		"friendsofphp/php-cs-fixer": "^2",
+		"phpstan/phpstan": "^0.12"
 	},
 	"autoload": {
 		"psr-4": {

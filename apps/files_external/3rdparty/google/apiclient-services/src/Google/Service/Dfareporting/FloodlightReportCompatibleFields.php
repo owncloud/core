@@ -27,28 +27,28 @@ class Google_Service_Dfareporting_FloodlightReportCompatibleFields extends Googl
   protected $metricsDataType = 'array';
 
   /**
-   * @param Google_Service_Dfareporting_Dimension
+   * @param Google_Service_Dfareporting_Dimension[]
    */
   public function setDimensionFilters($dimensionFilters)
   {
     $this->dimensionFilters = $dimensionFilters;
   }
   /**
-   * @return Google_Service_Dfareporting_Dimension
+   * @return Google_Service_Dfareporting_Dimension[]
    */
   public function getDimensionFilters()
   {
     return $this->dimensionFilters;
   }
   /**
-   * @param Google_Service_Dfareporting_Dimension
+   * @param Google_Service_Dfareporting_Dimension[]
    */
   public function setDimensions($dimensions)
   {
     $this->dimensions = $dimensions;
   }
   /**
-   * @return Google_Service_Dfareporting_Dimension
+   * @return Google_Service_Dfareporting_Dimension[]
    */
   public function getDimensions()
   {
@@ -63,14 +63,14 @@ class Google_Service_Dfareporting_FloodlightReportCompatibleFields extends Googl
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dfareporting_Metric
+   * @param Google_Service_Dfareporting_Metric[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_Dfareporting_Metric
+   * @return Google_Service_Dfareporting_Metric[]
    */
   public function getMetrics()
   {

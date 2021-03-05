@@ -28,14 +28,14 @@ class Google_Service_Games_LeaderboardScores extends Google_Collection
   public $prevPageToken;
 
   /**
-   * @param Google_Service_Games_LeaderboardEntry
+   * @param Google_Service_Games_LeaderboardEntry[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Games_LeaderboardEntry
+   * @return Google_Service_Games_LeaderboardEntry[]
    */
   public function getItems()
   {

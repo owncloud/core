@@ -23,14 +23,14 @@ class Google_Service_AccessContextManager_ListAccessLevelsResponse extends Googl
   public $nextPageToken;
 
   /**
-   * @param Google_Service_AccessContextManager_AccessLevel
+   * @param Google_Service_AccessContextManager_AccessLevel[]
    */
   public function setAccessLevels($accessLevels)
   {
     $this->accessLevels = $accessLevels;
   }
   /**
-   * @return Google_Service_AccessContextManager_AccessLevel
+   * @return Google_Service_AccessContextManager_AccessLevel[]
    */
   public function getAccessLevels()
   {

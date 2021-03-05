@@ -17,12 +17,22 @@
 
 class Google_Service_CloudSecurityToken_GoogleIdentityStsV1ExchangeTokenRequest extends Google_Model
 {
+  public $audience;
   public $grantType;
   public $options;
   public $requestedTokenType;
+  public $scope;
   public $subjectToken;
   public $subjectTokenType;
 
+  public function setAudience($audience)
+  {
+    $this->audience = $audience;
+  }
+  public function getAudience()
+  {
+    return $this->audience;
+  }
   public function setGrantType($grantType)
   {
     $this->grantType = $grantType;
@@ -46,6 +56,14 @@ class Google_Service_CloudSecurityToken_GoogleIdentityStsV1ExchangeTokenRequest 
   public function getRequestedTokenType()
   {
     return $this->requestedTokenType;
+  }
+  public function setScope($scope)
+  {
+    $this->scope = $scope;
+  }
+  public function getScope()
+  {
+    return $this->scope;
   }
   public function setSubjectToken($subjectToken)
   {

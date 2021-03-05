@@ -23,14 +23,14 @@ class Google_Service_ShoppingContent_ShippingsettingsGetSupportedHolidaysRespons
   public $kind;
 
   /**
-   * @param Google_Service_ShoppingContent_HolidaysHoliday
+   * @param Google_Service_ShoppingContent_HolidaysHoliday[]
    */
   public function setHolidays($holidays)
   {
     $this->holidays = $holidays;
   }
   /**
-   * @return Google_Service_ShoppingContent_HolidaysHoliday
+   * @return Google_Service_ShoppingContent_HolidaysHoliday[]
    */
   public function getHolidays()
   {

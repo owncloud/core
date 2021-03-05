@@ -32,14 +32,14 @@ class Google_Service_Compute_InterconnectLocationListWarning extends Google_Coll
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_InterconnectLocationListWarningData
+   * @param Google_Service_Compute_InterconnectLocationListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_InterconnectLocationListWarningData
+   * @return Google_Service_Compute_InterconnectLocationListWarningData[]
    */
   public function getData()
   {

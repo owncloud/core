@@ -99,12 +99,6 @@ class Google_Service_DisplayVideo_Resource_AdvertisersChannelsSites extends Goog
    * The operator must be `CONTAINS (:)`. * Supported fields: - `urlOrAppId`
    * Examples: * All sites for which the URL or app ID contains "google":
    * `urlOrAppId : "google"`
-   * @opt_param string pageToken A token identifying a page of results the server
-   * should return. Typically, this is the value of next_page_token returned from
-   * the previous call to `ListSites` method. If not specified, the first page of
-   * results will be returned.
-   * @opt_param string partnerId The ID of the partner that owns the parent
-   * channel.
    * @opt_param string orderBy Field by which to sort the list. Acceptable values
    * are: * `urlOrAppId` (default) The default sorting order is ascending. To
    * specify descending order for a field, a suffix " desc" should be added to the
@@ -112,6 +106,12 @@ class Google_Service_DisplayVideo_Resource_AdvertisersChannelsSites extends Goog
    * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
    * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
    * if an invalid value is specified.
+   * @opt_param string pageToken A token identifying a page of results the server
+   * should return. Typically, this is the value of next_page_token returned from
+   * the previous call to `ListSites` method. If not specified, the first page of
+   * results will be returned.
+   * @opt_param string partnerId The ID of the partner that owns the parent
+   * channel.
    * @return Google_Service_DisplayVideo_ListSitesResponse
    */
   public function listAdvertisersChannelsSites($advertiserId, $channelId, $optParams = array())

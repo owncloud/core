@@ -9,6 +9,7 @@ namespace Icewind\SMB\Wrapped;
 
 use Icewind\SMB\Exception\ConnectException;
 use Icewind\SMB\Exception\ConnectionException;
+use Icewind\SMB\Exception\ConnectionResetException;
 
 class RawConnection {
 	/**
@@ -33,7 +34,7 @@ class RawConnection {
 	private $pipes;
 
 	/**
-	 * @var resource $process
+	 * @var resource|null $process
 	 */
 	private $process;
 
@@ -100,8 +101,9 @@ class RawConnection {
 	 * @param string $input
 	 */
 	public function write($input) {
-		fwrite($this->getInputStream(), $input);
+		$result = @fwrite($this->getInputStream(), $input);
 		fflush($this->getInputStream());
+		return $result;
 	}
 
 	/**

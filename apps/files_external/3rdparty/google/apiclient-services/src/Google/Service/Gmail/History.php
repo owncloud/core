@@ -39,70 +39,70 @@ class Google_Service_Gmail_History extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Gmail_HistoryLabelAdded
+   * @param Google_Service_Gmail_HistoryLabelAdded[]
    */
   public function setLabelsAdded($labelsAdded)
   {
     $this->labelsAdded = $labelsAdded;
   }
   /**
-   * @return Google_Service_Gmail_HistoryLabelAdded
+   * @return Google_Service_Gmail_HistoryLabelAdded[]
    */
   public function getLabelsAdded()
   {
     return $this->labelsAdded;
   }
   /**
-   * @param Google_Service_Gmail_HistoryLabelRemoved
+   * @param Google_Service_Gmail_HistoryLabelRemoved[]
    */
   public function setLabelsRemoved($labelsRemoved)
   {
     $this->labelsRemoved = $labelsRemoved;
   }
   /**
-   * @return Google_Service_Gmail_HistoryLabelRemoved
+   * @return Google_Service_Gmail_HistoryLabelRemoved[]
    */
   public function getLabelsRemoved()
   {
     return $this->labelsRemoved;
   }
   /**
-   * @param Google_Service_Gmail_Message
+   * @param Google_Service_Gmail_Message[]
    */
   public function setMessages($messages)
   {
     $this->messages = $messages;
   }
   /**
-   * @return Google_Service_Gmail_Message
+   * @return Google_Service_Gmail_Message[]
    */
   public function getMessages()
   {
     return $this->messages;
   }
   /**
-   * @param Google_Service_Gmail_HistoryMessageAdded
+   * @param Google_Service_Gmail_HistoryMessageAdded[]
    */
   public function setMessagesAdded($messagesAdded)
   {
     $this->messagesAdded = $messagesAdded;
   }
   /**
-   * @return Google_Service_Gmail_HistoryMessageAdded
+   * @return Google_Service_Gmail_HistoryMessageAdded[]
    */
   public function getMessagesAdded()
   {
     return $this->messagesAdded;
   }
   /**
-   * @param Google_Service_Gmail_HistoryMessageDeleted
+   * @param Google_Service_Gmail_HistoryMessageDeleted[]
    */
   public function setMessagesDeleted($messagesDeleted)
   {
     $this->messagesDeleted = $messagesDeleted;
   }
   /**
-   * @return Google_Service_Gmail_HistoryMessageDeleted
+   * @return Google_Service_Gmail_HistoryMessageDeleted[]
    */
   public function getMessagesDeleted()
   {

@@ -23,14 +23,14 @@ class Google_Service_AdMob_ListPublisherAccountsResponse extends Google_Collecti
   public $nextPageToken;
 
   /**
-   * @param Google_Service_AdMob_PublisherAccount
+   * @param Google_Service_AdMob_PublisherAccount[]
    */
   public function setAccount($account)
   {
     $this->account = $account;
   }
   /**
-   * @return Google_Service_AdMob_PublisherAccount
+   * @return Google_Service_AdMob_PublisherAccount[]
    */
   public function getAccount()
   {

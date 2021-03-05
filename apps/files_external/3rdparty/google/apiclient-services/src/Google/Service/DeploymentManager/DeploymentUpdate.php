@@ -32,14 +32,14 @@ class Google_Service_DeploymentManager_DeploymentUpdate extends Google_Collectio
     return $this->description;
   }
   /**
-   * @param Google_Service_DeploymentManager_DeploymentUpdateLabelEntry
+   * @param Google_Service_DeploymentManager_DeploymentUpdateLabelEntry[]
    */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
   /**
-   * @return Google_Service_DeploymentManager_DeploymentUpdateLabelEntry
+   * @return Google_Service_DeploymentManager_DeploymentUpdateLabelEntry[]
    */
   public function getLabels()
   {

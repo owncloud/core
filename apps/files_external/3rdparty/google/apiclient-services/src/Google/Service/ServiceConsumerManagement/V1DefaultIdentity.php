@@ -19,6 +19,7 @@ class Google_Service_ServiceConsumerManagement_V1DefaultIdentity extends Google_
 {
   public $email;
   public $name;
+  public $tag;
   public $uniqueId;
 
   public function setEmail($email)
@@ -36,6 +37,14 @@ class Google_Service_ServiceConsumerManagement_V1DefaultIdentity extends Google_
   public function getName()
   {
     return $this->name;
+  }
+  public function setTag($tag)
+  {
+    $this->tag = $tag;
+  }
+  public function getTag()
+  {
+    return $this->tag;
   }
   public function setUniqueId($uniqueId)
   {

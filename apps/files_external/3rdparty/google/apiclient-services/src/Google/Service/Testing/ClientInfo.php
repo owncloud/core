@@ -23,14 +23,14 @@ class Google_Service_Testing_ClientInfo extends Google_Collection
   public $name;
 
   /**
-   * @param Google_Service_Testing_ClientInfoDetail
+   * @param Google_Service_Testing_ClientInfoDetail[]
    */
   public function setClientInfoDetails($clientInfoDetails)
   {
     $this->clientInfoDetails = $clientInfoDetails;
   }
   /**
-   * @return Google_Service_Testing_ClientInfoDetail
+   * @return Google_Service_Testing_ClientInfoDetail[]
    */
   public function getClientInfoDetails()
   {

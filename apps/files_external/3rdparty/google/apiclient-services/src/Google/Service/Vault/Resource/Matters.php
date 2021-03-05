@@ -119,13 +119,13 @@ class Google_Service_Vault_Resource_Matters extends Google_Service_Resource
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The number of matters to return in the response.
+   * Default and maximum are 100.
+   * @opt_param string pageToken The pagination token as returned in the response.
    * @opt_param string state If set, list only matters with that specific state.
    * The default is listing matters of all states.
    * @opt_param string view Specifies which parts of the matter to return in
    * response.
-   * @opt_param string pageToken The pagination token as returned in the response.
-   * @opt_param int pageSize The number of matters to return in the response.
-   * Default and maximum are 100.
    * @return Google_Service_Vault_ListMattersResponse
    */
   public function listMatters($optParams = array())

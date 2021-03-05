@@ -40,14 +40,14 @@ class Google_Service_Vision_ListReferenceImagesResponse extends Google_Collectio
     return $this->pageSize;
   }
   /**
-   * @param Google_Service_Vision_ReferenceImage
+   * @param Google_Service_Vision_ReferenceImage[]
    */
   public function setReferenceImages($referenceImages)
   {
     $this->referenceImages = $referenceImages;
   }
   /**
-   * @return Google_Service_Vision_ReferenceImage
+   * @return Google_Service_Vision_ReferenceImage[]
    */
   public function getReferenceImages()
   {

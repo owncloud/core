@@ -33,28 +33,28 @@ class Google_Service_CloudIot_DeviceRegistry extends Google_Collection
   protected $stateNotificationConfigDataType = '';
 
   /**
-   * @param Google_Service_CloudIot_RegistryCredential
+   * @param Google_Service_CloudIot_RegistryCredential[]
    */
   public function setCredentials($credentials)
   {
     $this->credentials = $credentials;
   }
   /**
-   * @return Google_Service_CloudIot_RegistryCredential
+   * @return Google_Service_CloudIot_RegistryCredential[]
    */
   public function getCredentials()
   {
     return $this->credentials;
   }
   /**
-   * @param Google_Service_CloudIot_EventNotificationConfig
+   * @param Google_Service_CloudIot_EventNotificationConfig[]
    */
   public function setEventNotificationConfigs($eventNotificationConfigs)
   {
     $this->eventNotificationConfigs = $eventNotificationConfigs;
   }
   /**
-   * @return Google_Service_CloudIot_EventNotificationConfig
+   * @return Google_Service_CloudIot_EventNotificationConfig[]
    */
   public function getEventNotificationConfigs()
   {

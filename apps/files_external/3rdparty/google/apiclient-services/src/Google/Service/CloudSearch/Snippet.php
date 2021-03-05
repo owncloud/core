@@ -23,14 +23,14 @@ class Google_Service_CloudSearch_Snippet extends Google_Collection
   public $snippet;
 
   /**
-   * @param Google_Service_CloudSearch_MatchRange
+   * @param Google_Service_CloudSearch_MatchRange[]
    */
   public function setMatchRanges($matchRanges)
   {
     $this->matchRanges = $matchRanges;
   }
   /**
-   * @return Google_Service_CloudSearch_MatchRange
+   * @return Google_Service_CloudSearch_MatchRange[]
    */
   public function getMatchRanges()
   {

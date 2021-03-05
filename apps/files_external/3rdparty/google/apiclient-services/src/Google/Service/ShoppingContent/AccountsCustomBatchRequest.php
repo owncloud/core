@@ -22,14 +22,14 @@ class Google_Service_ShoppingContent_AccountsCustomBatchRequest extends Google_C
   protected $entriesDataType = 'array';
 
   /**
-   * @param Google_Service_ShoppingContent_AccountsCustomBatchRequestEntry
+   * @param Google_Service_ShoppingContent_AccountsCustomBatchRequestEntry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_ShoppingContent_AccountsCustomBatchRequestEntry
+   * @return Google_Service_ShoppingContent_AccountsCustomBatchRequestEntry[]
    */
   public function getEntries()
   {

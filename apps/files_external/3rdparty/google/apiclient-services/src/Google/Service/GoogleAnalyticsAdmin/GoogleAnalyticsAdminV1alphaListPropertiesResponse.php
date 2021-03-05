@@ -31,14 +31,14 @@ class Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaListPropert
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaProperty
+   * @param Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaProperty[]
    */
   public function setProperties($properties)
   {
     $this->properties = $properties;
   }
   /**
-   * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaProperty
+   * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaProperty[]
    */
   public function getProperties()
   {

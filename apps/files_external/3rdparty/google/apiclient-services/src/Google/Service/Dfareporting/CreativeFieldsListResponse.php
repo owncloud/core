@@ -24,14 +24,14 @@ class Google_Service_Dfareporting_CreativeFieldsListResponse extends Google_Coll
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Dfareporting_CreativeField
+   * @param Google_Service_Dfareporting_CreativeField[]
    */
   public function setCreativeFields($creativeFields)
   {
     $this->creativeFields = $creativeFields;
   }
   /**
-   * @return Google_Service_Dfareporting_CreativeField
+   * @return Google_Service_Dfareporting_CreativeField[]
    */
   public function getCreativeFields()
   {

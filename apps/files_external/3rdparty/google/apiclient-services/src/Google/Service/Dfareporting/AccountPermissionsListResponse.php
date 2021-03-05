@@ -23,14 +23,14 @@ class Google_Service_Dfareporting_AccountPermissionsListResponse extends Google_
   public $kind;
 
   /**
-   * @param Google_Service_Dfareporting_AccountPermission
+   * @param Google_Service_Dfareporting_AccountPermission[]
    */
   public function setAccountPermissions($accountPermissions)
   {
     $this->accountPermissions = $accountPermissions;
   }
   /**
-   * @return Google_Service_Dfareporting_AccountPermission
+   * @return Google_Service_Dfareporting_AccountPermission[]
    */
   public function getAccountPermissions()
   {

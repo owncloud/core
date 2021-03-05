@@ -113,14 +113,14 @@ class Google_Service_CloudBuild_BuildOptions extends Google_Collection
     return $this->substitutionOption;
   }
   /**
-   * @param Google_Service_CloudBuild_Volume
+   * @param Google_Service_CloudBuild_Volume[]
    */
   public function setVolumes($volumes)
   {
     $this->volumes = $volumes;
   }
   /**
-   * @return Google_Service_CloudBuild_Volume
+   * @return Google_Service_CloudBuild_Volume[]
    */
   public function getVolumes()
   {

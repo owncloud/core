@@ -54,14 +54,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2NumericalStatsResult extends Google_C
     return $this->minValue;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2Value
+   * @param Google_Service_DLP_GooglePrivacyDlpV2Value[]
    */
   public function setQuantileValues($quantileValues)
   {
     $this->quantileValues = $quantileValues;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2Value
+   * @return Google_Service_DLP_GooglePrivacyDlpV2Value[]
    */
   public function getQuantileValues()
   {

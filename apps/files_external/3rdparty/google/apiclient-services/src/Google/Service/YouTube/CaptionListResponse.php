@@ -42,14 +42,14 @@ class Google_Service_YouTube_CaptionListResponse extends Google_Collection
     return $this->eventId;
   }
   /**
-   * @param Google_Service_YouTube_Caption
+   * @param Google_Service_YouTube_Caption[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_YouTube_Caption
+   * @return Google_Service_YouTube_Caption[]
    */
   public function getItems()
   {

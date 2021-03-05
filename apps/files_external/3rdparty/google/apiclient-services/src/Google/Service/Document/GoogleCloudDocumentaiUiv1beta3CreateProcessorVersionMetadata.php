@@ -17,32 +17,21 @@
 
 class Google_Service_Document_GoogleCloudDocumentaiUiv1beta3CreateProcessorVersionMetadata extends Google_Model
 {
-  public $createTime;
-  public $state;
-  public $updateTime;
+  protected $commonMetadataType = 'Google_Service_Document_GoogleCloudDocumentaiUiv1beta3CommonOperationMetadata';
+  protected $commonMetadataDataType = '';
 
-  public function setCreateTime($createTime)
+  /**
+   * @param Google_Service_Document_GoogleCloudDocumentaiUiv1beta3CommonOperationMetadata
+   */
+  public function setCommonMetadata(Google_Service_Document_GoogleCloudDocumentaiUiv1beta3CommonOperationMetadata $commonMetadata)
   {
-    $this->createTime = $createTime;
+    $this->commonMetadata = $commonMetadata;
   }
-  public function getCreateTime()
+  /**
+   * @return Google_Service_Document_GoogleCloudDocumentaiUiv1beta3CommonOperationMetadata
+   */
+  public function getCommonMetadata()
   {
-    return $this->createTime;
-  }
-  public function setState($state)
-  {
-    $this->state = $state;
-  }
-  public function getState()
-  {
-    return $this->state;
-  }
-  public function setUpdateTime($updateTime)
-  {
-    $this->updateTime = $updateTime;
-  }
-  public function getUpdateTime()
-  {
-    return $this->updateTime;
+    return $this->commonMetadata;
   }
 }

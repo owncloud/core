@@ -32,14 +32,14 @@ class Google_Service_Compute_RegionDiskTypeListWarning extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_RegionDiskTypeListWarningData
+   * @param Google_Service_Compute_RegionDiskTypeListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_RegionDiskTypeListWarningData
+   * @return Google_Service_Compute_RegionDiskTypeListWarningData[]
    */
   public function getData()
   {

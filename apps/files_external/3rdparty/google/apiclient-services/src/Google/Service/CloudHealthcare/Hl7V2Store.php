@@ -43,14 +43,14 @@ class Google_Service_CloudHealthcare_Hl7V2Store extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_CloudHealthcare_Hl7V2NotificationConfig
+   * @param Google_Service_CloudHealthcare_Hl7V2NotificationConfig[]
    */
   public function setNotificationConfigs($notificationConfigs)
   {
     $this->notificationConfigs = $notificationConfigs;
   }
   /**
-   * @return Google_Service_CloudHealthcare_Hl7V2NotificationConfig
+   * @return Google_Service_CloudHealthcare_Hl7V2NotificationConfig[]
    */
   public function getNotificationConfigs()
   {

@@ -121,14 +121,14 @@ class Google_Service_TPU_Node extends Google_Collection
     return $this->network;
   }
   /**
-   * @param Google_Service_TPU_NetworkEndpoint
+   * @param Google_Service_TPU_NetworkEndpoint[]
    */
   public function setNetworkEndpoints($networkEndpoints)
   {
     $this->networkEndpoints = $networkEndpoints;
   }
   /**
-   * @return Google_Service_TPU_NetworkEndpoint
+   * @return Google_Service_TPU_NetworkEndpoint[]
    */
   public function getNetworkEndpoints()
   {
@@ -173,14 +173,14 @@ class Google_Service_TPU_Node extends Google_Collection
     return $this->state;
   }
   /**
-   * @param Google_Service_TPU_Symptom
+   * @param Google_Service_TPU_Symptom[]
    */
   public function setSymptoms($symptoms)
   {
     $this->symptoms = $symptoms;
   }
   /**
-   * @return Google_Service_TPU_Symptom
+   * @return Google_Service_TPU_Symptom[]
    */
   public function getSymptoms()
   {

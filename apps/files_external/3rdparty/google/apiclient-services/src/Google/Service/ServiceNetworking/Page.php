@@ -40,14 +40,14 @@ class Google_Service_ServiceNetworking_Page extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_ServiceNetworking_Page
+   * @param Google_Service_ServiceNetworking_Page[]
    */
   public function setSubpages($subpages)
   {
     $this->subpages = $subpages;
   }
   /**
-   * @return Google_Service_ServiceNetworking_Page
+   * @return Google_Service_ServiceNetworking_Page[]
    */
   public function getSubpages()
   {

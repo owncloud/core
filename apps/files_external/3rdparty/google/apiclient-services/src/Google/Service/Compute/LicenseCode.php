@@ -62,14 +62,14 @@ class Google_Service_Compute_LicenseCode extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_Compute_LicenseCodeLicenseAlias
+   * @param Google_Service_Compute_LicenseCodeLicenseAlias[]
    */
   public function setLicenseAlias($licenseAlias)
   {
     $this->licenseAlias = $licenseAlias;
   }
   /**
-   * @return Google_Service_Compute_LicenseCodeLicenseAlias
+   * @return Google_Service_Compute_LicenseCodeLicenseAlias[]
    */
   public function getLicenseAlias()
   {

@@ -45,14 +45,14 @@ class Google_Service_StreetViewPublish_Photo extends Google_Collection
     return $this->captureTime;
   }
   /**
-   * @param Google_Service_StreetViewPublish_Connection
+   * @param Google_Service_StreetViewPublish_Connection[]
    */
   public function setConnections($connections)
   {
     $this->connections = $connections;
   }
   /**
-   * @return Google_Service_StreetViewPublish_Connection
+   * @return Google_Service_StreetViewPublish_Connection[]
    */
   public function getConnections()
   {
@@ -89,14 +89,14 @@ class Google_Service_StreetViewPublish_Photo extends Google_Collection
     return $this->photoId;
   }
   /**
-   * @param Google_Service_StreetViewPublish_Place
+   * @param Google_Service_StreetViewPublish_Place[]
    */
   public function setPlaces($places)
   {
     $this->places = $places;
   }
   /**
-   * @return Google_Service_StreetViewPublish_Place
+   * @return Google_Service_StreetViewPublish_Place[]
    */
   public function getPlaces()
   {

@@ -31,14 +31,14 @@ class Google_Service_Bigquery_ListRowAccessPoliciesResponse extends Google_Colle
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Bigquery_RowAccessPolicy
+   * @param Google_Service_Bigquery_RowAccessPolicy[]
    */
   public function setRowAccessPolicies($rowAccessPolicies)
   {
     $this->rowAccessPolicies = $rowAccessPolicies;
   }
   /**
-   * @return Google_Service_Bigquery_RowAccessPolicy
+   * @return Google_Service_Bigquery_RowAccessPolicy[]
    */
   public function getRowAccessPolicies()
   {

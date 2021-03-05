@@ -21,14 +21,14 @@ class Google_Service_Firestore_MapValue extends Google_Model
   protected $fieldsDataType = 'map';
 
   /**
-   * @param Google_Service_Firestore_Value
+   * @param Google_Service_Firestore_Value[]
    */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
   /**
-   * @return Google_Service_Firestore_Value
+   * @return Google_Service_Firestore_Value[]
    */
   public function getFields()
   {

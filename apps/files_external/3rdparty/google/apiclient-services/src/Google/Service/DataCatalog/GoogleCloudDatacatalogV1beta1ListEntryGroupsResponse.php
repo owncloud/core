@@ -23,14 +23,14 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ListEntryGroupsRes
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1EntryGroup
+   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1EntryGroup[]
    */
   public function setEntryGroups($entryGroups)
   {
     $this->entryGroups = $entryGroups;
   }
   /**
-   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1EntryGroup
+   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1EntryGroup[]
    */
   public function getEntryGroups()
   {

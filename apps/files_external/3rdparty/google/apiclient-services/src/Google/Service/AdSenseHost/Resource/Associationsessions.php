@@ -33,10 +33,10 @@ class Google_Service_AdSenseHost_Resource_Associationsessions extends Google_Ser
    * @param string $websiteUrl The URL of the user's hosted website.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string userLocale The preferred locale of the user.
    * @opt_param string callbackUrl The URL to redirect the user to once
    * association is completed. It receives a token parameter that can then be used
    * to retrieve the associated account.
+   * @opt_param string userLocale The preferred locale of the user.
    * @opt_param string websiteLocale The locale of the user's hosted website.
    * @return Google_Service_AdSenseHost_AssociationSession
    */

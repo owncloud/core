@@ -23,14 +23,14 @@ class Google_Service_Safebrowsing_FetchThreatListUpdatesResponse extends Google_
   public $minimumWaitDuration;
 
   /**
-   * @param Google_Service_Safebrowsing_ListUpdateResponse
+   * @param Google_Service_Safebrowsing_ListUpdateResponse[]
    */
   public function setListUpdateResponses($listUpdateResponses)
   {
     $this->listUpdateResponses = $listUpdateResponses;
   }
   /**
-   * @return Google_Service_Safebrowsing_ListUpdateResponse
+   * @return Google_Service_Safebrowsing_ListUpdateResponse[]
    */
   public function getListUpdateResponses()
   {

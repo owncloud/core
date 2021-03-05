@@ -36,14 +36,14 @@ class Google_Service_Compute_CommitmentList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_Commitment
+   * @param Google_Service_Compute_Commitment[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_Commitment
+   * @return Google_Service_Compute_Commitment[]
    */
   public function getItems()
   {

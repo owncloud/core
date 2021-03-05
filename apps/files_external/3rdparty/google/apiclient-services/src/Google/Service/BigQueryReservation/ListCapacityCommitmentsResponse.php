@@ -23,14 +23,14 @@ class Google_Service_BigQueryReservation_ListCapacityCommitmentsResponse extends
   public $nextPageToken;
 
   /**
-   * @param Google_Service_BigQueryReservation_CapacityCommitment
+   * @param Google_Service_BigQueryReservation_CapacityCommitment[]
    */
   public function setCapacityCommitments($capacityCommitments)
   {
     $this->capacityCommitments = $capacityCommitments;
   }
   /**
-   * @return Google_Service_BigQueryReservation_CapacityCommitment
+   * @return Google_Service_BigQueryReservation_CapacityCommitment[]
    */
   public function getCapacityCommitments()
   {

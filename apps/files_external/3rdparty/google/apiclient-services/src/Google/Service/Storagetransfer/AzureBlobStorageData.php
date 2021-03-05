@@ -20,6 +20,7 @@ class Google_Service_Storagetransfer_AzureBlobStorageData extends Google_Model
   protected $azureCredentialsType = 'Google_Service_Storagetransfer_AzureCredentials';
   protected $azureCredentialsDataType = '';
   public $container;
+  public $path;
   public $storageAccount;
 
   /**
@@ -43,6 +44,14 @@ class Google_Service_Storagetransfer_AzureBlobStorageData extends Google_Model
   public function getContainer()
   {
     return $this->container;
+  }
+  public function setPath($path)
+  {
+    $this->path = $path;
+  }
+  public function getPath()
+  {
+    return $this->path;
   }
   public function setStorageAccount($storageAccount)
   {

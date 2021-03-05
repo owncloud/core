@@ -22,14 +22,14 @@ class Google_Service_AndroidEnterprise_ManagedConfigurationsForUserListResponse 
   protected $managedConfigurationForUserDataType = 'array';
 
   /**
-   * @param Google_Service_AndroidEnterprise_ManagedConfiguration
+   * @param Google_Service_AndroidEnterprise_ManagedConfiguration[]
    */
   public function setManagedConfigurationForUser($managedConfigurationForUser)
   {
     $this->managedConfigurationForUser = $managedConfigurationForUser;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_ManagedConfiguration
+   * @return Google_Service_AndroidEnterprise_ManagedConfiguration[]
    */
   public function getManagedConfigurationForUser()
   {

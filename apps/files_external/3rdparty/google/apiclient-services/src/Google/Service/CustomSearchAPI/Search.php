@@ -42,14 +42,14 @@ class Google_Service_CustomSearchAPI_Search extends Google_Collection
     return $this->context;
   }
   /**
-   * @param Google_Service_CustomSearchAPI_Result
+   * @param Google_Service_CustomSearchAPI_Result[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_CustomSearchAPI_Result
+   * @return Google_Service_CustomSearchAPI_Result[]
    */
   public function getItems()
   {
@@ -64,14 +64,14 @@ class Google_Service_CustomSearchAPI_Search extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_CustomSearchAPI_Promotion
+   * @param Google_Service_CustomSearchAPI_Promotion[]
    */
   public function setPromotions($promotions)
   {
     $this->promotions = $promotions;
   }
   /**
-   * @return Google_Service_CustomSearchAPI_Promotion
+   * @return Google_Service_CustomSearchAPI_Promotion[]
    */
   public function getPromotions()
   {

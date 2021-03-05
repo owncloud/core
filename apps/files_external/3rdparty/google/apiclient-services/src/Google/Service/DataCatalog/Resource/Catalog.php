@@ -30,7 +30,7 @@ class Google_Service_DataCatalog_Resource_Catalog extends Google_Service_Resourc
    * query. This is a custom method
    * (https://cloud.google.com/apis/design/custom_methods) and does not return the
    * complete resource, only the resource identifier and high level fields.
-   * Clients can subsequentally call `Get` methods. Note that Data Catalog search
+   * Clients can subsequently call `Get` methods. Note that Data Catalog search
    * queries do not guarantee full recall. Query results that match your query may
    * not be returned, even in subsequent result pages. Also note that results
    * returned (and not returned) can vary across repeated search queries. See

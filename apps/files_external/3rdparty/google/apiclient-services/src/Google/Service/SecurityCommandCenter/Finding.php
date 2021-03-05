@@ -26,6 +26,7 @@ class Google_Service_SecurityCommandCenter_Finding extends Google_Model
   public $resourceName;
   protected $securityMarksType = 'Google_Service_SecurityCommandCenter_SecurityMarks';
   protected $securityMarksDataType = '';
+  public $severity;
   public $sourceProperties;
   public $state;
 
@@ -98,6 +99,14 @@ class Google_Service_SecurityCommandCenter_Finding extends Google_Model
   public function getSecurityMarks()
   {
     return $this->securityMarks;
+  }
+  public function setSeverity($severity)
+  {
+    $this->severity = $severity;
+  }
+  public function getSeverity()
+  {
+    return $this->severity;
   }
   public function setSourceProperties($sourceProperties)
   {

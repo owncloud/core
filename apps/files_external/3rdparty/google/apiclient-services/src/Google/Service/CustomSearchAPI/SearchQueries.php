@@ -26,42 +26,42 @@ class Google_Service_CustomSearchAPI_SearchQueries extends Google_Collection
   protected $requestDataType = 'array';
 
   /**
-   * @param Google_Service_CustomSearchAPI_SearchQueriesNextPage
+   * @param Google_Service_CustomSearchAPI_SearchQueriesNextPage[]
    */
   public function setNextPage($nextPage)
   {
     $this->nextPage = $nextPage;
   }
   /**
-   * @return Google_Service_CustomSearchAPI_SearchQueriesNextPage
+   * @return Google_Service_CustomSearchAPI_SearchQueriesNextPage[]
    */
   public function getNextPage()
   {
     return $this->nextPage;
   }
   /**
-   * @param Google_Service_CustomSearchAPI_SearchQueriesPreviousPage
+   * @param Google_Service_CustomSearchAPI_SearchQueriesPreviousPage[]
    */
   public function setPreviousPage($previousPage)
   {
     $this->previousPage = $previousPage;
   }
   /**
-   * @return Google_Service_CustomSearchAPI_SearchQueriesPreviousPage
+   * @return Google_Service_CustomSearchAPI_SearchQueriesPreviousPage[]
    */
   public function getPreviousPage()
   {
     return $this->previousPage;
   }
   /**
-   * @param Google_Service_CustomSearchAPI_SearchQueriesRequest
+   * @param Google_Service_CustomSearchAPI_SearchQueriesRequest[]
    */
   public function setRequest($request)
   {
     $this->request = $request;
   }
   /**
-   * @return Google_Service_CustomSearchAPI_SearchQueriesRequest
+   * @return Google_Service_CustomSearchAPI_SearchQueriesRequest[]
    */
   public function getRequest()
   {

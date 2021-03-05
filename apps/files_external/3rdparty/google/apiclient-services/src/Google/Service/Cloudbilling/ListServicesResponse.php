@@ -31,14 +31,14 @@ class Google_Service_Cloudbilling_ListServicesResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Cloudbilling_Service
+   * @param Google_Service_Cloudbilling_Service[]
    */
   public function setServices($services)
   {
     $this->services = $services;
   }
   /**
-   * @return Google_Service_Cloudbilling_Service
+   * @return Google_Service_Cloudbilling_Service[]
    */
   public function getServices()
   {

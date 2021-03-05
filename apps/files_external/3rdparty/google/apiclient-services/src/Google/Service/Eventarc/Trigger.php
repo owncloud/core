@@ -17,17 +17,19 @@
 
 class Google_Service_Eventarc_Trigger extends Google_Collection
 {
-  protected $collection_key = 'matchingCriteria';
+  protected $collection_key = 'eventFilters';
   public $createTime;
   protected $destinationType = 'Google_Service_Eventarc_Destination';
   protected $destinationDataType = '';
   public $etag;
-  protected $matchingCriteriaType = 'Google_Service_Eventarc_MatchingCriteria';
-  protected $matchingCriteriaDataType = 'array';
+  protected $eventFiltersType = 'Google_Service_Eventarc_EventFilter';
+  protected $eventFiltersDataType = 'array';
+  public $labels;
   public $name;
   public $serviceAccount;
   protected $transportType = 'Google_Service_Eventarc_Transport';
   protected $transportDataType = '';
+  public $uid;
   public $updateTime;
 
   public function setCreateTime($createTime)
@@ -61,18 +63,26 @@ class Google_Service_Eventarc_Trigger extends Google_Collection
     return $this->etag;
   }
   /**
-   * @param Google_Service_Eventarc_MatchingCriteria
+   * @param Google_Service_Eventarc_EventFilter[]
    */
-  public function setMatchingCriteria($matchingCriteria)
+  public function setEventFilters($eventFilters)
   {
-    $this->matchingCriteria = $matchingCriteria;
+    $this->eventFilters = $eventFilters;
   }
   /**
-   * @return Google_Service_Eventarc_MatchingCriteria
+   * @return Google_Service_Eventarc_EventFilter[]
    */
-  public function getMatchingCriteria()
+  public function getEventFilters()
   {
-    return $this->matchingCriteria;
+    return $this->eventFilters;
+  }
+  public function setLabels($labels)
+  {
+    $this->labels = $labels;
+  }
+  public function getLabels()
+  {
+    return $this->labels;
   }
   public function setName($name)
   {
@@ -103,6 +113,14 @@ class Google_Service_Eventarc_Trigger extends Google_Collection
   public function getTransport()
   {
     return $this->transport;
+  }
+  public function setUid($uid)
+  {
+    $this->uid = $uid;
+  }
+  public function getUid()
+  {
+    return $this->uid;
   }
   public function setUpdateTime($updateTime)
   {

@@ -19,6 +19,7 @@ class Google_Service_ShoppingContent_TestOrderDeliveryDetails extends Google_Mod
 {
   protected $addressType = 'Google_Service_ShoppingContent_TestOrderAddress';
   protected $addressDataType = '';
+  public $isScheduledDelivery;
   public $phoneNumber;
 
   /**
@@ -34,6 +35,14 @@ class Google_Service_ShoppingContent_TestOrderDeliveryDetails extends Google_Mod
   public function getAddress()
   {
     return $this->address;
+  }
+  public function setIsScheduledDelivery($isScheduledDelivery)
+  {
+    $this->isScheduledDelivery = $isScheduledDelivery;
+  }
+  public function getIsScheduledDelivery()
+  {
+    return $this->isScheduledDelivery;
   }
   public function setPhoneNumber($phoneNumber)
   {

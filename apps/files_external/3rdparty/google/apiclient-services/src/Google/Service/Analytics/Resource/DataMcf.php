@@ -43,15 +43,15 @@ class Google_Service_Analytics_Resource_DataMcf extends Google_Service_Resource
    *
    * @opt_param string dimensions A comma-separated list of Multi-Channel Funnels
    * dimensions. E.g., 'mcf:source,mcf:medium'.
+   * @opt_param string filters A comma-separated list of dimension or metric
+   * filters to be applied to the Analytics data.
    * @opt_param int max-results The maximum number of entries to include in this
    * feed.
    * @opt_param string samplingLevel The desired sampling level.
-   * @opt_param int start-index An index of the first entity to retrieve. Use this
-   * parameter as a pagination mechanism along with the max-results parameter.
    * @opt_param string sort A comma-separated list of dimensions or metrics that
    * determine the sort order for the Analytics data.
-   * @opt_param string filters A comma-separated list of dimension or metric
-   * filters to be applied to the Analytics data.
+   * @opt_param int start-index An index of the first entity to retrieve. Use this
+   * parameter as a pagination mechanism along with the max-results parameter.
    * @return Google_Service_Analytics_McfData
    */
   public function get($ids, $startDate, $endDate, $metrics, $optParams = array())

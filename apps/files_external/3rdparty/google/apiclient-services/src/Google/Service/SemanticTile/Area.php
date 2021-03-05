@@ -18,6 +18,8 @@
 class Google_Service_SemanticTile_Area extends Google_Collection
 {
   protected $collection_key = 'triangleIndices';
+  protected $basemapZOrderType = 'Google_Service_SemanticTile_BasemapZOrder';
+  protected $basemapZOrderDataType = '';
   public $hasExternalEdges;
   public $internalEdges;
   public $loopBreaks;
@@ -27,6 +29,20 @@ class Google_Service_SemanticTile_Area extends Google_Collection
   protected $vertexOffsetsDataType = '';
   public $zOrder;
 
+  /**
+   * @param Google_Service_SemanticTile_BasemapZOrder
+   */
+  public function setBasemapZOrder(Google_Service_SemanticTile_BasemapZOrder $basemapZOrder)
+  {
+    $this->basemapZOrder = $basemapZOrder;
+  }
+  /**
+   * @return Google_Service_SemanticTile_BasemapZOrder
+   */
+  public function getBasemapZOrder()
+  {
+    return $this->basemapZOrder;
+  }
   public function setHasExternalEdges($hasExternalEdges)
   {
     $this->hasExternalEdges = $hasExternalEdges;

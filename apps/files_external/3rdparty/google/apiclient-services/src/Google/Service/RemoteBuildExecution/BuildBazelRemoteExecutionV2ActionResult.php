@@ -61,70 +61,70 @@ class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2ActionResul
     return $this->exitCode;
   }
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputDirectory
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputDirectory[]
    */
   public function setOutputDirectories($outputDirectories)
   {
     $this->outputDirectories = $outputDirectories;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputDirectory
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputDirectory[]
    */
   public function getOutputDirectories()
   {
     return $this->outputDirectories;
   }
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputSymlink
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputSymlink[]
    */
   public function setOutputDirectorySymlinks($outputDirectorySymlinks)
   {
     $this->outputDirectorySymlinks = $outputDirectorySymlinks;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputSymlink
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputSymlink[]
    */
   public function getOutputDirectorySymlinks()
   {
     return $this->outputDirectorySymlinks;
   }
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputSymlink
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputSymlink[]
    */
   public function setOutputFileSymlinks($outputFileSymlinks)
   {
     $this->outputFileSymlinks = $outputFileSymlinks;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputSymlink
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputSymlink[]
    */
   public function getOutputFileSymlinks()
   {
     return $this->outputFileSymlinks;
   }
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputFile
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputFile[]
    */
   public function setOutputFiles($outputFiles)
   {
     $this->outputFiles = $outputFiles;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputFile
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputFile[]
    */
   public function getOutputFiles()
   {
     return $this->outputFiles;
   }
   /**
-   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputSymlink
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputSymlink[]
    */
   public function setOutputSymlinks($outputSymlinks)
   {
     $this->outputSymlinks = $outputSymlinks;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputSymlink
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2OutputSymlink[]
    */
   public function getOutputSymlinks()
   {

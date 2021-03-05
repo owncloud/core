@@ -22,14 +22,14 @@ class Google_Service_DisplayVideo_BulkEditAssignedInventorySourcesResponse exten
   protected $assignedInventorySourcesDataType = 'array';
 
   /**
-   * @param Google_Service_DisplayVideo_AssignedInventorySource
+   * @param Google_Service_DisplayVideo_AssignedInventorySource[]
    */
   public function setAssignedInventorySources($assignedInventorySources)
   {
     $this->assignedInventorySources = $assignedInventorySources;
   }
   /**
-   * @return Google_Service_DisplayVideo_AssignedInventorySource
+   * @return Google_Service_DisplayVideo_AssignedInventorySource[]
    */
   public function getAssignedInventorySources()
   {

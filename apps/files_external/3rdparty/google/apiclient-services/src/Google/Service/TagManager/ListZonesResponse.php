@@ -31,14 +31,14 @@ class Google_Service_TagManager_ListZonesResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_TagManager_Zone
+   * @param Google_Service_TagManager_Zone[]
    */
   public function setZone($zone)
   {
     $this->zone = $zone;
   }
   /**
-   * @return Google_Service_TagManager_Zone
+   * @return Google_Service_TagManager_Zone[]
    */
   public function getZone()
   {

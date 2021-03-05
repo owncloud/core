@@ -28,14 +28,14 @@ class Google_Service_CloudAsset_IamPolicyAnalysisResult extends Google_Collectio
   protected $identityListDataType = '';
 
   /**
-   * @param Google_Service_CloudAsset_GoogleCloudAssetV1AccessControlList
+   * @param Google_Service_CloudAsset_GoogleCloudAssetV1AccessControlList[]
    */
   public function setAccessControlLists($accessControlLists)
   {
     $this->accessControlLists = $accessControlLists;
   }
   /**
-   * @return Google_Service_CloudAsset_GoogleCloudAssetV1AccessControlList
+   * @return Google_Service_CloudAsset_GoogleCloudAssetV1AccessControlList[]
    */
   public function getAccessControlLists()
   {

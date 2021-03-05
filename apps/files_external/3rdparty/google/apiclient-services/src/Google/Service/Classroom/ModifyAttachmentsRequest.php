@@ -22,14 +22,14 @@ class Google_Service_Classroom_ModifyAttachmentsRequest extends Google_Collectio
   protected $addAttachmentsDataType = 'array';
 
   /**
-   * @param Google_Service_Classroom_Attachment
+   * @param Google_Service_Classroom_Attachment[]
    */
   public function setAddAttachments($addAttachments)
   {
     $this->addAttachments = $addAttachments;
   }
   /**
-   * @return Google_Service_Classroom_Attachment
+   * @return Google_Service_Classroom_Attachment[]
    */
   public function getAddAttachments()
   {

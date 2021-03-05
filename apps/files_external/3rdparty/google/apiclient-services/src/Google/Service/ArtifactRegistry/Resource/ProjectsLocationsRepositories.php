@@ -104,7 +104,8 @@ class Google_Service_ArtifactRegistry_Resource_ProjectsLocationsRepositories ext
    * be listed.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize The maximum number of repositories to return.
+   * @opt_param int pageSize The maximum number of repositories to return. Maximum
+   * page size is 10,000.
    * @opt_param string pageToken The next_page_token value returned from a
    * previous list request, if any.
    * @return Google_Service_ArtifactRegistry_ListRepositoriesResponse

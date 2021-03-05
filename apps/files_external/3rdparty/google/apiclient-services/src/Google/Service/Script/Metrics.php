@@ -26,42 +26,42 @@ class Google_Service_Script_Metrics extends Google_Collection
   protected $totalExecutionsDataType = 'array';
 
   /**
-   * @param Google_Service_Script_MetricsValue
+   * @param Google_Service_Script_MetricsValue[]
    */
   public function setActiveUsers($activeUsers)
   {
     $this->activeUsers = $activeUsers;
   }
   /**
-   * @return Google_Service_Script_MetricsValue
+   * @return Google_Service_Script_MetricsValue[]
    */
   public function getActiveUsers()
   {
     return $this->activeUsers;
   }
   /**
-   * @param Google_Service_Script_MetricsValue
+   * @param Google_Service_Script_MetricsValue[]
    */
   public function setFailedExecutions($failedExecutions)
   {
     $this->failedExecutions = $failedExecutions;
   }
   /**
-   * @return Google_Service_Script_MetricsValue
+   * @return Google_Service_Script_MetricsValue[]
    */
   public function getFailedExecutions()
   {
     return $this->failedExecutions;
   }
   /**
-   * @param Google_Service_Script_MetricsValue
+   * @param Google_Service_Script_MetricsValue[]
    */
   public function setTotalExecutions($totalExecutions)
   {
     $this->totalExecutions = $totalExecutions;
   }
   /**
-   * @return Google_Service_Script_MetricsValue
+   * @return Google_Service_Script_MetricsValue[]
    */
   public function getTotalExecutions()
   {

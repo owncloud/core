@@ -24,14 +24,14 @@ class Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorMana
   public $nodeId;
 
   /**
-   * @param Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorManagementProvidersV1SloExclusion
+   * @param Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorManagementProvidersV1SloExclusion[]
    */
   public function setExclusions($exclusions)
   {
     $this->exclusions = $exclusions;
   }
   /**
-   * @return Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorManagementProvidersV1SloExclusion
+   * @return Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorManagementProvidersV1SloExclusion[]
    */
   public function getExclusions()
   {

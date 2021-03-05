@@ -33,14 +33,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ResourceStatus extends Google_Col
     return $this->resource;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1RevisionStatus
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1RevisionStatus[]
    */
   public function setRevisions($revisions)
   {
     $this->revisions = $revisions;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1RevisionStatus
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1RevisionStatus[]
    */
   public function getRevisions()
   {

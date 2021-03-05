@@ -30,14 +30,14 @@ class Google_Service_Docs_TableCell extends Google_Collection
   protected $tableCellStyleDataType = '';
 
   /**
-   * @param Google_Service_Docs_StructuralElement
+   * @param Google_Service_Docs_StructuralElement[]
    */
   public function setContent($content)
   {
     $this->content = $content;
   }
   /**
-   * @return Google_Service_Docs_StructuralElement
+   * @return Google_Service_Docs_StructuralElement[]
    */
   public function getContent()
   {
@@ -76,14 +76,14 @@ class Google_Service_Docs_TableCell extends Google_Collection
     return $this->suggestedInsertionIds;
   }
   /**
-   * @param Google_Service_Docs_SuggestedTableCellStyle
+   * @param Google_Service_Docs_SuggestedTableCellStyle[]
    */
   public function setSuggestedTableCellStyleChanges($suggestedTableCellStyleChanges)
   {
     $this->suggestedTableCellStyleChanges = $suggestedTableCellStyleChanges;
   }
   /**
-   * @return Google_Service_Docs_SuggestedTableCellStyle
+   * @return Google_Service_Docs_SuggestedTableCellStyle[]
    */
   public function getSuggestedTableCellStyleChanges()
   {

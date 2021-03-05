@@ -24,14 +24,14 @@ class Google_Service_Compute_PacketMirroringsScopedList extends Google_Collectio
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_PacketMirroring
+   * @param Google_Service_Compute_PacketMirroring[]
    */
   public function setPacketMirrorings($packetMirrorings)
   {
     $this->packetMirrorings = $packetMirrorings;
   }
   /**
-   * @return Google_Service_Compute_PacketMirroring
+   * @return Google_Service_Compute_PacketMirroring[]
    */
   public function getPacketMirrorings()
   {

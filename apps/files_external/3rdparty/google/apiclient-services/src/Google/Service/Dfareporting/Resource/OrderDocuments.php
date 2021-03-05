@@ -48,7 +48,13 @@ class Google_Service_Dfareporting_Resource_OrderDocuments extends Google_Service
    * @param string $projectId Project ID for order documents.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param bool approved Select only order documents that have been approved
+   * by at least one user.
    * @opt_param string ids Select only order documents with these IDs.
+   * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string orderId Select only order documents for specified orders.
+   * @opt_param string pageToken Value of the nextPageToken from the previous
+   * result page.
    * @opt_param string searchString Allows searching for order documents by name
    * or ID. Wildcards (*) are allowed. For example, "orderdocument*2015" will
    * return order documents with names like "orderdocument June 2015",
@@ -57,15 +63,9 @@ class Google_Service_Dfareporting_Resource_OrderDocuments extends Google_Service
    * string. For example, a search string of "orderdocument" will match order
    * documents with name "my orderdocument", "orderdocument 2015", or simply
    * "orderdocument".
-   * @opt_param bool approved Select only order documents that have been approved
-   * by at least one user.
-   * @opt_param string pageToken Value of the nextPageToken from the previous
-   * result page.
-   * @opt_param int maxResults Maximum number of results to return.
-   * @opt_param string sortField Field by which to sort the list.
-   * @opt_param string orderId Select only order documents for specified orders.
    * @opt_param string siteId Select only order documents that are associated with
    * these sites.
+   * @opt_param string sortField Field by which to sort the list.
    * @opt_param string sortOrder Order of sorted results.
    * @return Google_Service_Dfareporting_OrderDocumentsListResponse
    */

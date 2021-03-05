@@ -29,14 +29,14 @@ class Google_Service_Spanner_PlanNode extends Google_Collection
   protected $shortRepresentationDataType = '';
 
   /**
-   * @param Google_Service_Spanner_ChildLink
+   * @param Google_Service_Spanner_ChildLink[]
    */
   public function setChildLinks($childLinks)
   {
     $this->childLinks = $childLinks;
   }
   /**
-   * @return Google_Service_Spanner_ChildLink
+   * @return Google_Service_Spanner_ChildLink[]
    */
   public function getChildLinks()
   {

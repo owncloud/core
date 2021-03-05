@@ -36,28 +36,28 @@ class Google_Service_ShoppingContent_OrderPromotion extends Google_Collection
   public $type;
 
   /**
-   * @param Google_Service_ShoppingContent_OrderPromotionItem
+   * @param Google_Service_ShoppingContent_OrderPromotionItem[]
    */
   public function setApplicableItems($applicableItems)
   {
     $this->applicableItems = $applicableItems;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderPromotionItem
+   * @return Google_Service_ShoppingContent_OrderPromotionItem[]
    */
   public function getApplicableItems()
   {
     return $this->applicableItems;
   }
   /**
-   * @param Google_Service_ShoppingContent_OrderPromotionItem
+   * @param Google_Service_ShoppingContent_OrderPromotionItem[]
    */
   public function setAppliedItems($appliedItems)
   {
     $this->appliedItems = $appliedItems;
   }
   /**
-   * @return Google_Service_ShoppingContent_OrderPromotionItem
+   * @return Google_Service_ShoppingContent_OrderPromotionItem[]
    */
   public function getAppliedItems()
   {

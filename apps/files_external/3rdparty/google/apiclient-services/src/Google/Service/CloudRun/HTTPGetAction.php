@@ -33,14 +33,14 @@ class Google_Service_CloudRun_HTTPGetAction extends Google_Collection
     return $this->host;
   }
   /**
-   * @param Google_Service_CloudRun_HTTPHeader
+   * @param Google_Service_CloudRun_HTTPHeader[]
    */
   public function setHttpHeaders($httpHeaders)
   {
     $this->httpHeaders = $httpHeaders;
   }
   /**
-   * @return Google_Service_CloudRun_HTTPHeader
+   * @return Google_Service_CloudRun_HTTPHeader[]
    */
   public function getHttpHeaders()
   {

@@ -31,14 +31,14 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentTextAnchor ext
     return $this->content;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentTextAnchorTextSegment
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentTextAnchorTextSegment[]
    */
   public function setTextSegments($textSegments)
   {
     $this->textSegments = $textSegments;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentTextAnchorTextSegment
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentTextAnchorTextSegment[]
    */
   public function getTextSegments()
   {

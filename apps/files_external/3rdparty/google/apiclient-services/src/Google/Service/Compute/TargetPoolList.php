@@ -36,14 +36,14 @@ class Google_Service_Compute_TargetPoolList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_TargetPool
+   * @param Google_Service_Compute_TargetPool[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_TargetPool
+   * @return Google_Service_Compute_TargetPool[]
    */
   public function getItems()
   {

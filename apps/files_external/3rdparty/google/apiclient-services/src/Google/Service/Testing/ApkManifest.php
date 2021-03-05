@@ -17,7 +17,7 @@
 
 class Google_Service_Testing_ApkManifest extends Google_Collection
 {
-  protected $collection_key = 'intentFilters';
+  protected $collection_key = 'usesPermission';
   public $applicationLabel;
   protected $intentFiltersType = 'Google_Service_Testing_IntentFilter';
   protected $intentFiltersDataType = 'array';
@@ -25,6 +25,7 @@ class Google_Service_Testing_ApkManifest extends Google_Collection
   public $minSdkVersion;
   public $packageName;
   public $targetSdkVersion;
+  public $usesPermission;
 
   public function setApplicationLabel($applicationLabel)
   {
@@ -35,14 +36,14 @@ class Google_Service_Testing_ApkManifest extends Google_Collection
     return $this->applicationLabel;
   }
   /**
-   * @param Google_Service_Testing_IntentFilter
+   * @param Google_Service_Testing_IntentFilter[]
    */
   public function setIntentFilters($intentFilters)
   {
     $this->intentFilters = $intentFilters;
   }
   /**
-   * @return Google_Service_Testing_IntentFilter
+   * @return Google_Service_Testing_IntentFilter[]
    */
   public function getIntentFilters()
   {
@@ -79,5 +80,13 @@ class Google_Service_Testing_ApkManifest extends Google_Collection
   public function getTargetSdkVersion()
   {
     return $this->targetSdkVersion;
+  }
+  public function setUsesPermission($usesPermission)
+  {
+    $this->usesPermission = $usesPermission;
+  }
+  public function getUsesPermission()
+  {
+    return $this->usesPermission;
   }
 }

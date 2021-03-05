@@ -23,14 +23,14 @@ class Google_Service_Compute_InstanceGroupManagersListManagedInstancesResponse e
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Compute_ManagedInstance
+   * @param Google_Service_Compute_ManagedInstance[]
    */
   public function setManagedInstances($managedInstances)
   {
     $this->managedInstances = $managedInstances;
   }
   /**
-   * @return Google_Service_Compute_ManagedInstance
+   * @return Google_Service_Compute_ManagedInstance[]
    */
   public function getManagedInstances()
   {

@@ -23,14 +23,14 @@ class Google_Service_AdExchangeBuyerII_ListFilterSetsResponse extends Google_Col
   public $nextPageToken;
 
   /**
-   * @param Google_Service_AdExchangeBuyerII_FilterSet
+   * @param Google_Service_AdExchangeBuyerII_FilterSet[]
    */
   public function setFilterSets($filterSets)
   {
     $this->filterSets = $filterSets;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_FilterSet
+   * @return Google_Service_AdExchangeBuyerII_FilterSet[]
    */
   public function getFilterSets()
   {

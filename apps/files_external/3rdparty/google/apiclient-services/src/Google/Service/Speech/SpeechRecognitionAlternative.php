@@ -40,14 +40,14 @@ class Google_Service_Speech_SpeechRecognitionAlternative extends Google_Collecti
     return $this->transcript;
   }
   /**
-   * @param Google_Service_Speech_WordInfo
+   * @param Google_Service_Speech_WordInfo[]
    */
   public function setWords($words)
   {
     $this->words = $words;
   }
   /**
-   * @return Google_Service_Speech_WordInfo
+   * @return Google_Service_Speech_WordInfo[]
    */
   public function getWords()
   {

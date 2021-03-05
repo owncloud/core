@@ -36,14 +36,14 @@ class Google_Service_Compute_XpnHostList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_Project
+   * @param Google_Service_Compute_Project[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_Project
+   * @return Google_Service_Compute_Project[]
    */
   public function getItems()
   {

@@ -23,14 +23,14 @@ class Google_Service_Dfareporting_EventTagsListResponse extends Google_Collectio
   public $kind;
 
   /**
-   * @param Google_Service_Dfareporting_EventTag
+   * @param Google_Service_Dfareporting_EventTag[]
    */
   public function setEventTags($eventTags)
   {
     $this->eventTags = $eventTags;
   }
   /**
-   * @return Google_Service_Dfareporting_EventTag
+   * @return Google_Service_Dfareporting_EventTag[]
    */
   public function getEventTags()
   {

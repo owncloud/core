@@ -23,14 +23,14 @@ class Google_Service_Vault_ListExportsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Vault_Export
+   * @param Google_Service_Vault_Export[]
    */
   public function setExports($exports)
   {
     $this->exports = $exports;
   }
   /**
-   * @return Google_Service_Vault_Export
+   * @return Google_Service_Vault_Export[]
    */
   public function getExports()
   {

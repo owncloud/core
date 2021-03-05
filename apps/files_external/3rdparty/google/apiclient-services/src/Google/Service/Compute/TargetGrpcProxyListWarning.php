@@ -32,14 +32,14 @@ class Google_Service_Compute_TargetGrpcProxyListWarning extends Google_Collectio
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_TargetGrpcProxyListWarningData
+   * @param Google_Service_Compute_TargetGrpcProxyListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_TargetGrpcProxyListWarningData
+   * @return Google_Service_Compute_TargetGrpcProxyListWarningData[]
    */
   public function getData()
   {

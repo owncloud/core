@@ -23,14 +23,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageMediaCo
   public $mediaType;
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageMediaContentResponseMediaObject
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageMediaContentResponseMediaObject[]
    */
   public function setMediaObjects($mediaObjects)
   {
     $this->mediaObjects = $mediaObjects;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageMediaContentResponseMediaObject
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageMediaContentResponseMediaObject[]
    */
   public function getMediaObjects()
   {

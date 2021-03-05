@@ -22,14 +22,14 @@ class Google_Service_Apigee_GoogleRpcPreconditionFailure extends Google_Collecti
   protected $violationsDataType = 'array';
 
   /**
-   * @param Google_Service_Apigee_GoogleRpcPreconditionFailureViolation
+   * @param Google_Service_Apigee_GoogleRpcPreconditionFailureViolation[]
    */
   public function setViolations($violations)
   {
     $this->violations = $violations;
   }
   /**
-   * @return Google_Service_Apigee_GoogleRpcPreconditionFailureViolation
+   * @return Google_Service_Apigee_GoogleRpcPreconditionFailureViolation[]
    */
   public function getViolations()
   {

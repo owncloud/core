@@ -28,7 +28,7 @@ class Google_Service_Dfareporting_Resource_Reports extends Google_Service_Resour
   /**
    * Deletes a report by its ID. (reports.delete)
    *
-   * @param string $profileId The DFA user profile ID.
+   * @param string $profileId The Campaign Manager 360 user profile ID.
    * @param string $reportId The ID of the report.
    * @param array $optParams Optional parameters.
    */
@@ -41,7 +41,7 @@ class Google_Service_Dfareporting_Resource_Reports extends Google_Service_Resour
   /**
    * Retrieves a report by its ID. (reports.get)
    *
-   * @param string $profileId The DFA user profile ID.
+   * @param string $profileId The Campaign Manager 360 user profile ID.
    * @param string $reportId The ID of the report.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Dfareporting_Report
@@ -55,7 +55,7 @@ class Google_Service_Dfareporting_Resource_Reports extends Google_Service_Resour
   /**
    * Creates a report. (reports.insert)
    *
-   * @param string $profileId The DFA user profile ID.
+   * @param string $profileId The Campaign Manager 360 user profile ID.
    * @param Google_Service_Dfareporting_Report $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Dfareporting_Report
@@ -69,14 +69,14 @@ class Google_Service_Dfareporting_Resource_Reports extends Google_Service_Resour
   /**
    * Retrieves list of reports. (reports.listReports)
    *
-   * @param string $profileId The DFA user profile ID.
+   * @param string $profileId The Campaign Manager 360 user profile ID.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string sortField The field by which to sort the list.
    * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string pageToken The value of the nextToken from the previous
    * result page.
    * @opt_param string scope The scope that defines which results are returned.
+   * @opt_param string sortField The field by which to sort the list.
    * @opt_param string sortOrder Order of sorted results.
    * @return Google_Service_Dfareporting_ReportList
    */
@@ -105,7 +105,7 @@ class Google_Service_Dfareporting_Resource_Reports extends Google_Service_Resour
   /**
    * Runs a report. (reports.run)
    *
-   * @param string $profileId The DFA profile ID.
+   * @param string $profileId The Campaign Manager 360 user profile ID.
    * @param string $reportId The ID of the report.
    * @param array $optParams Optional parameters.
    *
@@ -122,7 +122,7 @@ class Google_Service_Dfareporting_Resource_Reports extends Google_Service_Resour
   /**
    * Updates a report. (reports.update)
    *
-   * @param string $profileId The DFA user profile ID.
+   * @param string $profileId The Campaign Manager 360 user profile ID.
    * @param string $reportId The ID of the report.
    * @param Google_Service_Dfareporting_Report $postBody
    * @param array $optParams Optional parameters.

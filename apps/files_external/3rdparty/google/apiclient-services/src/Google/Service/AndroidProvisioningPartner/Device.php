@@ -29,14 +29,14 @@ class Google_Service_AndroidProvisioningPartner_Device extends Google_Collection
   public $name;
 
   /**
-   * @param Google_Service_AndroidProvisioningPartner_DeviceClaim
+   * @param Google_Service_AndroidProvisioningPartner_DeviceClaim[]
    */
   public function setClaims($claims)
   {
     $this->claims = $claims;
   }
   /**
-   * @return Google_Service_AndroidProvisioningPartner_DeviceClaim
+   * @return Google_Service_AndroidProvisioningPartner_DeviceClaim[]
    */
   public function getClaims()
   {

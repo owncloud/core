@@ -19,8 +19,8 @@
  * Service definition for Reseller (v1).
  *
  * <p>
- * Perform common functions that are available on the Google Apps Reseller
- * Console at scale like placing orders and viewing customer information</p>
+ * Perform common functions that are available on the Channel Services console
+ * at scale, like placing orders and viewing customer information</p>
  *
  * <p>
  * For more information about this service, see the API
@@ -41,7 +41,7 @@ class Google_Service_Reseller extends Google_Service
   public $customers;
   public $resellernotify;
   public $subscriptions;
-  
+
   /**
    * Constructs the internal representation of the Reseller service.
    *
@@ -51,9 +51,9 @@ class Google_Service_Reseller extends Google_Service
   public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://reseller.googleapis.com/';
     $this->servicePath = '';
-    $this->batchPath = 'batch/reseller/v1';
+    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'reseller';
 
@@ -257,11 +257,11 @@ class Google_Service_Reseller extends Google_Service
               'path' => 'apps/reseller/v1/subscriptions',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'maxResults' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'customerAuthToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'customerId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -269,9 +269,9 @@ class Google_Service_Reseller extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'customerId' => array(
+                'maxResults' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'integer',
                 ),
                 'pageToken' => array(
                   'location' => 'query',

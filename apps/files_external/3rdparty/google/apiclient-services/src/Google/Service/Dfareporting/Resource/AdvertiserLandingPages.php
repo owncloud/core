@@ -60,6 +60,16 @@ class Google_Service_Dfareporting_Resource_AdvertiserLandingPages extends Google
    * @param string $profileId User profile ID associated with this request.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string advertiserIds Select only landing pages that belong to
+   * these advertisers.
+   * @opt_param bool archived Select only archived landing pages. Don't set this
+   * field to select both archived and non-archived landing pages.
+   * @opt_param string campaignIds Select only landing pages that are associated
+   * with these campaigns.
+   * @opt_param string ids Select only landing pages with these IDs.
+   * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string pageToken Value of the nextPageToken from the previous
+   * result page.
    * @opt_param string searchString Allows searching for landing pages by name or
    * ID. Wildcards (*) are allowed. For example, "landingpage*2017" will return
    * landing pages with names like "landingpage July 2017", "landingpage March
@@ -67,20 +77,10 @@ class Google_Service_Dfareporting_Resource_AdvertiserLandingPages extends Google
    * implicitly at the start and the end of the search string. For example, a
    * search string of "landingpage" will match campaigns with name "my
    * landingpage", "landingpage 2015", or simply "landingpage".
-   * @opt_param string advertiserIds Select only landing pages that belong to
-   * these advertisers.
    * @opt_param string sortField Field by which to sort the list.
-   * @opt_param string pageToken Value of the nextPageToken from the previous
-   * result page.
+   * @opt_param string sortOrder Order of sorted results.
    * @opt_param string subaccountId Select only landing pages that belong to this
    * subaccount.
-   * @opt_param string sortOrder Order of sorted results.
-   * @opt_param string ids Select only landing pages with these IDs.
-   * @opt_param bool archived Select only archived landing pages. Don't set this
-   * field to select both archived and non-archived landing pages.
-   * @opt_param string campaignIds Select only landing pages that are associated
-   * with these campaigns.
-   * @opt_param int maxResults Maximum number of results to return.
    * @return Google_Service_Dfareporting_AdvertiserLandingPagesListResponse
    */
   public function listAdvertiserLandingPages($profileId, $optParams = array())

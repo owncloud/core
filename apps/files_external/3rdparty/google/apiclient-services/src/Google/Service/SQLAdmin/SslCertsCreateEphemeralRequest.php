@@ -18,10 +18,20 @@
 class Google_Service_SQLAdmin_SslCertsCreateEphemeralRequest extends Google_Model
 {
   protected $internal_gapi_mappings = array(
+        "accessToken" => "access_token",
         "publicKey" => "public_key",
   );
+  public $accessToken;
   public $publicKey;
 
+  public function setAccessToken($accessToken)
+  {
+    $this->accessToken = $accessToken;
+  }
+  public function getAccessToken()
+  {
+    return $this->accessToken;
+  }
   public function setPublicKey($publicKey)
   {
     $this->publicKey = $publicKey;

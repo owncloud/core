@@ -22,14 +22,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p4beta1DominantColorsAnnotation e
   protected $colorsDataType = 'array';
 
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1ColorInfo
+   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1ColorInfo[]
    */
   public function setColors($colors)
   {
     $this->colors = $colors;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1ColorInfo
+   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1ColorInfo[]
    */
   public function getColors()
   {

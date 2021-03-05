@@ -50,14 +50,14 @@ class Google_Service_Sheets_HistogramChartSpec extends Google_Collection
     return $this->outlierPercentile;
   }
   /**
-   * @param Google_Service_Sheets_HistogramSeries
+   * @param Google_Service_Sheets_HistogramSeries[]
    */
   public function setSeries($series)
   {
     $this->series = $series;
   }
   /**
-   * @return Google_Service_Sheets_HistogramSeries
+   * @return Google_Service_Sheets_HistogramSeries[]
    */
   public function getSeries()
   {

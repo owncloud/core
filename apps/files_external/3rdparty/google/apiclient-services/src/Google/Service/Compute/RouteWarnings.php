@@ -32,14 +32,14 @@ class Google_Service_Compute_RouteWarnings extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_RouteWarningsData
+   * @param Google_Service_Compute_RouteWarningsData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_RouteWarningsData
+   * @return Google_Service_Compute_RouteWarningsData[]
    */
   public function getData()
   {

@@ -46,8 +46,7 @@ class Google_Service_SASPortalTesting_Resource_Customers extends Google_Service_
    * @opt_param int pageSize The maximum number of customers to return in the
    * response.
    * @opt_param string pageToken A pagination token returned from a previous call
-   * to ListCustomers method that indicates where this listing should continue
-   * from.
+   * to ListCustomers that indicates where this listing should continue from.
    * @return Google_Service_SASPortalTesting_SasPortalListCustomersResponse
    */
   public function listCustomers($optParams = array())

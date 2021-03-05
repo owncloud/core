@@ -121,11 +121,11 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsEntryGroups extends G
    * projects/{project_id}/locations/{location}
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional. Token that specifies which page is
-   * requested. If empty, the first page is returned.
    * @opt_param int pageSize Optional. The maximum number of items to return.
    * Default is 10. Max limit is 1000. Throws an invalid argument for `page_size >
    * 1000`.
+   * @opt_param string pageToken Optional. Token that specifies which page is
+   * requested. If empty, the first page is returned.
    * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1ListEntryGroupsResponse
    */
   public function listProjectsLocationsEntryGroups($parent, $optParams = array())
@@ -148,8 +148,10 @@ class Google_Service_DataCatalog_Resource_ProjectsLocationsEntryGroups extends G
    * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1EntryGroup $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask The fields to update on the entry group. If
-   * absent or empty, all modifiable fields are updated.
+   * @opt_param string updateMask Names of fields whose values to overwrite on an
+   * entry group. If this parameter is absent or empty, all modifiable fields are
+   * overwritten. If such fields are non-required and omitted in the request body,
+   * their values are emptied.
    * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1EntryGroup
    */
   public function patch($name, Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1EntryGroup $postBody, $optParams = array())

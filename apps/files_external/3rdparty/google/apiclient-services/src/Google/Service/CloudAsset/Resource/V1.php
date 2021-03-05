@@ -41,6 +41,10 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * folders#viewing_or_listing_folders_and_projects).
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string analysisQuery.accessSelector.permissions Optional. The
+   * permissions to appear in result.
+   * @opt_param string analysisQuery.accessSelector.roles Optional. The roles to
+   * appear in result.
    * @opt_param string analysisQuery.identitySelector.identity Required. The
    * identity appear in the form of members in [IAM policy
    * binding](https://cloud.google.com/iam/reference/rest/v1/Binding). The
@@ -48,40 +52,6 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-
    * id@appspot.gserviceaccount.com". Notice that wildcard characters (such as *
    * and ?) are not supported. You must give a specific identity.
-   * @opt_param string analysisQuery.resourceSelector.fullResourceName Required.
-   * The [full resource name] (https://cloud.google.com/asset-inventory/docs
-   * /resource-name-format) of a resource of [supported resource
-   * types](https://cloud.google.com/asset-inventory/docs/supported-asset-
-   * types#analyzable_asset_types).
-   * @opt_param bool analysisQuery.options.expandRoles Optional. If true, the
-   * access section of result will expand any roles appearing in IAM policy
-   * bindings to include their permissions. If
-   * IamPolicyAnalysisQuery.access_selector is specified, the access section of
-   * the result will be determined by the selector, and this flag is not allowed
-   * to set. Default is false.
-   * @opt_param bool analysisQuery.options.outputGroupEdges Optional. If true, the
-   * result will output group identity edges, starting from the binding's group
-   * members, to any expanded identities. Default is false.
-   * @opt_param bool analysisQuery.options.outputResourceEdges Optional. If true,
-   * the result will output resource edges, starting from the policy attached
-   * resource, to any expanded resources. Default is false.
-   * @opt_param string executionTimeout Optional. Amount of time executable has to
-   * complete. See JSON representation of [Duration](https://developers.google.com
-   * /protocol-buffers/docs/proto3#json). If this field is set with a value less
-   * than the RPC deadline, and the execution of your query hasn't finished in the
-   * specified execution timeout, you will get a response with partial result.
-   * Otherwise, your query's execution will continue until the RPC deadline. If
-   * it's not finished until then, you will get a DEADLINE_EXCEEDED error. Default
-   * is empty.
-   * @opt_param string analysisQuery.accessSelector.roles Optional. The roles to
-   * appear in result.
-   * @opt_param bool analysisQuery.options.expandGroups Optional. If true, the
-   * identities section of the result will expand any Google groups appearing in
-   * an IAM policy binding. If IamPolicyAnalysisQuery.identity_selector is
-   * specified, the identity in the result will be determined by the selector, and
-   * this flag is not allowed to set. Default is false.
-   * @opt_param string analysisQuery.accessSelector.permissions Optional. The
-   * permissions to appear in result.
    * @opt_param bool analysisQuery.options.analyzeServiceAccountImpersonation
    * Optional. If true, the response will include access analysis from identities
    * to resources via service account impersonation. This is a very expensive
@@ -101,6 +71,11 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * advanced analysis results will be included in
    * AnalyzeIamPolicyResponse.service_account_impersonation_analysis. Default is
    * false.
+   * @opt_param bool analysisQuery.options.expandGroups Optional. If true, the
+   * identities section of the result will expand any Google groups appearing in
+   * an IAM policy binding. If IamPolicyAnalysisQuery.identity_selector is
+   * specified, the identity in the result will be determined by the selector, and
+   * this flag is not allowed to set. Default is false.
    * @opt_param bool analysisQuery.options.expandResources Optional. If true and
    * IamPolicyAnalysisQuery.resource_selector is not specified, the resource
    * section of the result will expand any resource attached to an IAM policy to
@@ -115,6 +90,31 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * For example, if the request analyzes for which users have permission P on a
    * GCP project with this option enabled, the results will include all users who
    * have permission P on that project or any lower resource. Default is false.
+   * @opt_param bool analysisQuery.options.expandRoles Optional. If true, the
+   * access section of result will expand any roles appearing in IAM policy
+   * bindings to include their permissions. If
+   * IamPolicyAnalysisQuery.access_selector is specified, the access section of
+   * the result will be determined by the selector, and this flag is not allowed
+   * to set. Default is false.
+   * @opt_param bool analysisQuery.options.outputGroupEdges Optional. If true, the
+   * result will output group identity edges, starting from the binding's group
+   * members, to any expanded identities. Default is false.
+   * @opt_param bool analysisQuery.options.outputResourceEdges Optional. If true,
+   * the result will output resource edges, starting from the policy attached
+   * resource, to any expanded resources. Default is false.
+   * @opt_param string analysisQuery.resourceSelector.fullResourceName Required.
+   * The [full resource name] (https://cloud.google.com/asset-inventory/docs
+   * /resource-name-format) of a resource of [supported resource
+   * types](https://cloud.google.com/asset-inventory/docs/supported-asset-
+   * types#analyzable_asset_types).
+   * @opt_param string executionTimeout Optional. Amount of time executable has to
+   * complete. See JSON representation of [Duration](https://developers.google.com
+   * /protocol-buffers/docs/proto3#json). If this field is set with a value less
+   * than the RPC deadline, and the execution of your query hasn't finished in the
+   * specified execution timeout, you will get a response with partial result.
+   * Otherwise, your query's execution will continue until the RPC deadline. If
+   * it's not finished until then, you will get a DEADLINE_EXCEEDED error. Default
+   * is empty.
    * @return Google_Service_CloudAsset_AnalyzeIamPolicyResponse
    */
   public function analyzeIamPolicy($scope, $optParams = array())
@@ -168,16 +168,16 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * "projects/12345").
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string contentType Optional. The content type.
-   * @opt_param string readTimeWindow.startTime Start time of the time window
-   * (exclusive).
-   * @opt_param string readTimeWindow.endTime End time of the time window
-   * (inclusive). If not specified, the current timestamp is used instead.
    * @opt_param string assetNames A list of the full names of the assets. See:
    * https://cloud.google.com/asset-inventory/docs/resource-name-format Example: `
    * //compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instan
    * ce1`. The request becomes a no-op if the asset name list is empty, and the
    * max size of the asset name list is 100 in one request.
+   * @opt_param string contentType Optional. The content type.
+   * @opt_param string readTimeWindow.endTime End time of the time window
+   * (inclusive). If not specified, the current timestamp is used instead.
+   * @opt_param string readTimeWindow.startTime Start time of the time window
+   * (exclusive).
    * @return Google_Service_CloudAsset_BatchGetAssetsHistoryResponse
    */
   public function batchGetAssetsHistory($parent, $optParams = array())
@@ -221,7 +221,7 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * @param string $scope Required. A scope can be a project, a folder, or an
    * organization. The search is limited to the IAM policies within the `scope`.
    * The caller must be granted the
-   * [`cloudasset.assets.searchAllIamPolicies`](http://cloud.google.com/asset-
+   * [`cloudasset.assets.searchAllIamPolicies`](https://cloud.google.com/asset-
    * inventory/docs/access-control#required_permissions) permission on the desired
    * scope. The allowed values are: * projects/{PROJECT_ID} (e.g., "projects/foo-
    * bar") * projects/{PROJECT_NUMBER} (e.g., "projects/12345678") *
@@ -241,22 +241,33 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * @opt_param string query Optional. The query statement. See [how to construct
    * a query](https://cloud.google.com/asset-inventory/docs/searching-iam-
    * policies#how_to_construct_a_query) for more information. If not specified or
-   * empty, it will search all the IAM policies within the specified `scope`.
-   * Examples: * `policy:amy@gmail.com` to find IAM policy bindings that specify
-   * user "amy@gmail.com". * `policy:roles/compute.admin` to find IAM policy
-   * bindings that specify the Compute Admin role. *
+   * empty, it will search all the IAM policies within the specified `scope`. Note
+   * that the query string is compared against each Cloud IAM policy binding,
+   * including its members, roles, and Cloud IAM conditions. The returned Cloud
+   * IAM policies will only contain the bindings that match your query. To learn
+   * more about the IAM policy structure, see [IAM policy
+   * doc](https://cloud.google.com/iam/docs/policies#structure). Examples: *
+   * `policy:amy@gmail.com` to find IAM policy bindings that specify user
+   * "amy@gmail.com". * `policy:roles/compute.admin` to find IAM policy bindings
+   * that specify the Compute Admin role. * `policy:comp*` to find IAM policy
+   * bindings that contain "comp" as a prefix of any word in the binding. *
    * `policy.role.permissions:storage.buckets.update` to find IAM policy bindings
    * that specify a role containing "storage.buckets.update" permission. Note that
    * if callers don't have `iam.roles.get` access to a role's included
    * permissions, policy bindings that specify this role will be dropped from the
-   * search results. * `resource:organizations/123456` to find IAM policy bindings
-   * that are set on "organizations/123456". * `Important` to find IAM policy
-   * bindings that contain "Important" as a word in any of the searchable fields
-   * (except for the included permissions). * `*por*` to find IAM policy bindings
-   * that contain "por" as a substring in any of the searchable fields (except for
-   * the included permissions). * `resource:(instance1 OR instance2) policy:amy`
-   * to find IAM policy bindings that are set on resources "instance1" or
-   * "instance2" and also specify user "amy".
+   * search results. * `policy.role.permissions:upd*` to find IAM policy bindings
+   * that specify a role containing "upd" as a prefix of any word in the role
+   * permission. Note that if callers don't have `iam.roles.get` access to a
+   * role's included permissions, policy bindings that specify this role will be
+   * dropped from the search results. * `resource:organizations/123456` to find
+   * IAM policy bindings that are set on "organizations/123456". *
+   * `resource=//cloudresourcemanager.googleapis.com/projects/myproject` to find
+   * IAM policy bindings that are set on the project named "myproject". *
+   * `Important` to find IAM policy bindings that contain "Important" as a word in
+   * any of the searchable fields (except for the included permissions). *
+   * `resource:(instance1 OR instance2) policy:amy` to find IAM policy bindings
+   * that are set on resources "instance1" or "instance2" and also specify user
+   * "amy".
    * @return Google_Service_CloudAsset_SearchAllIamPoliciesResponse
    */
   public function searchAllIamPolicies($scope, $optParams = array())
@@ -274,7 +285,7 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * @param string $scope Required. A scope can be a project, a folder, or an
    * organization. The search is limited to the resources within the `scope`. The
    * caller must be granted the
-   * [`cloudasset.assets.searchAllResources`](http://cloud.google.com/asset-
+   * [`cloudasset.assets.searchAllResources`](https://cloud.google.com/asset-
    * inventory/docs/access-control#required_permissions) permission on the desired
    * scope. The allowed values are: * projects/{PROJECT_ID} (e.g., "projects/foo-
    * bar") * projects/{PROJECT_NUMBER} (e.g., "projects/12345678") *
@@ -282,39 +293,17 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * organizations/{ORGANIZATION_NUMBER} (e.g., "organizations/123456")
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Optional. If present, then retrieve the next
-   * batch of results from the preceding call to this method. `page_token` must be
-   * the value of `next_page_token` from the previous response. The values of all
-   * other method parameters, must be identical to those in the previous call.
-   * @opt_param string query Optional. The query statement. See [how to construct
-   * a query](http://cloud.google.com/asset-inventory/docs/searching-
-   * resources#how_to_construct_a_query) for more information. If not specified or
-   * empty, it will search all the resources within the specified `scope`. Note
-   * that the query string is compared against each Cloud IAM policy binding,
-   * including its members, roles, and Cloud IAM conditions. The returned Cloud
-   * IAM policies will only contain the bindings that match your query. To learn
-   * more about the IAM policy structure, see [IAM policy
-   * doc](https://cloud.google.com/iam/docs/policies#structure). Examples: *
-   * `name:Important` to find Cloud resources whose name contains "Important" as a
-   * word. * `displayName:Impor*` to find Cloud resources whose display name
-   * contains "Impor" as a prefix. * `description:*por*` to find Cloud resources
-   * whose description contains "por" as a substring. * `location:us-west*` to
-   * find Cloud resources whose location is prefixed with "us-west". *
-   * `labels:prod` to find Cloud resources whose labels contain "prod" as a key or
-   * value. * `labels.env:prod` to find Cloud resources that have a label "env"
-   * and its value is "prod". * `labels.env:*` to find Cloud resources that have a
-   * label "env". * `Important` to find Cloud resources that contain "Important"
-   * as a word in any of the searchable fields. * `Impor*` to find Cloud resources
-   * that contain "Impor" as a prefix in any of the searchable fields. * `*por*`
-   * to find Cloud resources that contain "por" as a substring in any of the
-   * searchable fields. * `Important location:(us-west1 OR global)` to find Cloud
-   * resources that contain "Important" as a word in any of the searchable fields
-   * and are also located in the "us-west1" region or the "global" location.
-   * @opt_param int pageSize Optional. The page size for search result pagination.
-   * Page size is capped at 500 even if a larger value is given. If set to zero,
-   * server will pick an appropriate default. Returned results may be fewer than
-   * requested. When this happens, there could be more results as long as
-   * `next_page_token` is returned.
+   * @opt_param string assetTypes Optional. A list of asset types that this
+   * request searches for. If empty, it will search all the [searchable asset
+   * types](https://cloud.google.com/asset-inventory/docs/supported-asset-
+   * types#searchable_asset_types). Regular expressions are also supported. For
+   * example: * "compute.googleapis.com.*" snapshots resources whose asset type
+   * starts with "compute.googleapis.com". * ".*Instance" snapshots resources
+   * whose asset type ends with "Instance". * ".*Instance.*" snapshots resources
+   * whose asset type contains "Instance". See
+   * [RE2](https://github.com/google/re2/wiki/Syntax) for all supported regular
+   * expression syntax. If the regular expression does not match any supported
+   * asset type, an INVALID_ARGUMENT error will be returned.
    * @opt_param string orderBy Optional. A comma separated list of fields
    * specifying the sorting order of the results. The default order is ascending.
    * Add " DESC" after the field name to indicate descending order. Redundant
@@ -323,10 +312,41 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * `description`, `location`. All the other fields such as repeated fields
    * (e.g., `networkTags`), map fields (e.g., `labels`) and struct fields (e.g.,
    * `additionalAttributes`) are not supported.
-   * @opt_param string assetTypes Optional. A list of asset types that this
-   * request searches for. If empty, it will search all the [searchable asset
-   * types](https://cloud.google.com/asset-inventory/docs/supported-asset-
-   * types#searchable_asset_types).
+   * @opt_param int pageSize Optional. The page size for search result pagination.
+   * Page size is capped at 500 even if a larger value is given. If set to zero,
+   * server will pick an appropriate default. Returned results may be fewer than
+   * requested. When this happens, there could be more results as long as
+   * `next_page_token` is returned.
+   * @opt_param string pageToken Optional. If present, then retrieve the next
+   * batch of results from the preceding call to this method. `page_token` must be
+   * the value of `next_page_token` from the previous response. The values of all
+   * other method parameters, must be identical to those in the previous call.
+   * @opt_param string query Optional. The query statement. See [how to construct
+   * a query](https://cloud.google.com/asset-inventory/docs/searching-
+   * resources#how_to_construct_a_query) for more information. If not specified or
+   * empty, it will search all the resources within the specified `scope`.
+   * Examples: * `name:Important` to find Cloud resources whose name contains
+   * "Important" as a word. * `name=Important` to find the Cloud resource whose
+   * name is exactly "Important". * `displayName:Impor*` to find Cloud resources
+   * whose display name contains "Impor" as a prefix of any word in the field. *
+   * `location:us-west*` to find Cloud resources whose location contains both "us"
+   * and "west" as prefixes. * `labels:prod` to find Cloud resources whose labels
+   * contain "prod" as a key or value. * `labels.env:prod` to find Cloud resources
+   * that have a label "env" and its value is "prod". * `labels.env:*` to find
+   * Cloud resources that have a label "env". * `kmsKey:key` to find Cloud
+   * resources encrypted with a customer-managed encryption key whose name
+   * contains the word "key". * `state:ACTIVE` to find Cloud resources whose state
+   * contains "ACTIVE" as a word. * `createTime<1609459200` to find Cloud
+   * resources that were created before "2021-01-01 00:00:00 UTC". 1609459200 is
+   * the epoch timestamp of "2021-01-01 00:00:00 UTC" in seconds. *
+   * `updateTime>1609459200` to find Cloud resources that were updated after
+   * "2021-01-01 00:00:00 UTC". 1609459200 is the epoch timestamp of "2021-01-01
+   * 00:00:00 UTC" in seconds. * `Important` to find Cloud resources that contain
+   * "Important" as a word in any of the searchable fields. * `Impor*` to find
+   * Cloud resources that contain "Impor" as a prefix of any word in any of the
+   * searchable fields. * `Important location:(us-west1 OR global)` to find Cloud
+   * resources that contain "Important" as a word in any of the searchable fields
+   * and are also located in the "us-west1" region or the "global" location.
    * @return Google_Service_CloudAsset_SearchAllResourcesResponse
    */
   public function searchAllResources($scope, $optParams = array())

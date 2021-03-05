@@ -32,14 +32,14 @@ class Google_Service_AdExchangeBuyerII_CreativeRestrictions extends Google_Colle
     return $this->creativeFormat;
   }
   /**
-   * @param Google_Service_AdExchangeBuyerII_CreativeSpecification
+   * @param Google_Service_AdExchangeBuyerII_CreativeSpecification[]
    */
   public function setCreativeSpecifications($creativeSpecifications)
   {
     $this->creativeSpecifications = $creativeSpecifications;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_CreativeSpecification
+   * @return Google_Service_AdExchangeBuyerII_CreativeSpecification[]
    */
   public function getCreativeSpecifications()
   {

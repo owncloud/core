@@ -34,7 +34,7 @@ class Google_Service_Acceleratedmobilepageurl extends Google_Service
 
 
   public $ampUrls;
-  
+
   /**
    * Constructs the internal representation of the Acceleratedmobilepageurl
    * service.

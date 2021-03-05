@@ -23,14 +23,14 @@ class Google_Service_Firestore_GoogleFirestoreAdminV1ListFieldsResponse extends 
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Firestore_GoogleFirestoreAdminV1Field
+   * @param Google_Service_Firestore_GoogleFirestoreAdminV1Field[]
    */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
   /**
-   * @return Google_Service_Firestore_GoogleFirestoreAdminV1Field
+   * @return Google_Service_Firestore_GoogleFirestoreAdminV1Field[]
    */
   public function getFields()
   {

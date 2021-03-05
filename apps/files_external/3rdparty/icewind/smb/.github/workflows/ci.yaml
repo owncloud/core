@@ -1,0 +1,85 @@
+on: [push, pull_request]
+
+name: CI
+
+jobs:
+  php-cs-fixer:
+    name: PHP-CS-Fixer
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@master
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          extensions: apcu
+      - name: PHP-CS-Fixer
+        uses: OskarStark/php-cs-fixer-ga@2.16.7
+        with:
+          args: --diff --dry-run --allow-risky yes --stop-on-violation --using-cache=no --path-mode=intersection
+
+  phpstan:
+    name: PHPStan Static Analysis
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          extensions: apcu, smbclient
+      - name: Composer
+        run: composer install
+      - env:
+          BACKEND: smbclient
+        run: php ./vendor/bin/phpstan analyse --level 5 src
+
+  phpunit:
+    runs-on: ubuntu-20.04
+    name: Unit tests
+
+    strategy:
+      matrix:
+        backend:
+          - smbclient
+          - libsmbclient
+        php-version:
+          - "7.2"
+          - "7.3"
+          - "7.4"
+          - "8.0"
+
+    services:
+      samba:
+        image: dperson/samba
+        env:
+          USER: "test;test"
+          SHARE: "test;/tmp;yes;no;yes;all;none"
+        ports:
+          - 139:139
+          - 445:445
+
+    steps:
+      - name: Install packages
+        run: |
+          sudo apt-get install smbclient
+      - uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php-version }}"
+          extensions: apcu, smbclient
+          coverage: pcov
+      - name: Composer
+        run: composer install
+      - name: Config
+        run: |
+          echo '{"host": "localhost","user": "test","password": "test","share": "test","root": ""}' > tests/config.json
+      - name: PHPUnit Tests
+        env:
+          BACKEND: ${{ matrix.backend }}
+        run: php ./vendor/bin/phpunit tests -c tests/phpunit.xml --coverage-clover=coverage.xml
+      - uses: codecov/codecov-action@v1
+        with:
+          files: ./coverage.xml

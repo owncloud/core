@@ -31,14 +31,14 @@ class Google_Service_ServiceManagement_ListServicesResponse extends Google_Colle
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ServiceManagement_ManagedService
+   * @param Google_Service_ServiceManagement_ManagedService[]
    */
   public function setServices($services)
   {
     $this->services = $services;
   }
   /**
-   * @return Google_Service_ServiceManagement_ManagedService
+   * @return Google_Service_ServiceManagement_ManagedService[]
    */
   public function getServices()
   {

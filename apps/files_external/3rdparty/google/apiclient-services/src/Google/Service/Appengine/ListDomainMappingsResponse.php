@@ -23,14 +23,14 @@ class Google_Service_Appengine_ListDomainMappingsResponse extends Google_Collect
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Appengine_DomainMapping
+   * @param Google_Service_Appengine_DomainMapping[]
    */
   public function setDomainMappings($domainMappings)
   {
     $this->domainMappings = $domainMappings;
   }
   /**
-   * @return Google_Service_Appengine_DomainMapping
+   * @return Google_Service_Appengine_DomainMapping[]
    */
   public function getDomainMappings()
   {

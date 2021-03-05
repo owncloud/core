@@ -60,14 +60,14 @@ class Google_Service_Monitoring_Distribution extends Google_Collection
     return $this->count;
   }
   /**
-   * @param Google_Service_Monitoring_Exemplar
+   * @param Google_Service_Monitoring_Exemplar[]
    */
   public function setExemplars($exemplars)
   {
     $this->exemplars = $exemplars;
   }
   /**
-   * @return Google_Service_Monitoring_Exemplar
+   * @return Google_Service_Monitoring_Exemplar[]
    */
   public function getExemplars()
   {

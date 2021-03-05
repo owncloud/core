@@ -41,14 +41,14 @@ class Google_Service_Analytics_GaData extends Google_Collection
   public $totalsForAllResults;
 
   /**
-   * @param Google_Service_Analytics_GaDataColumnHeaders
+   * @param Google_Service_Analytics_GaDataColumnHeaders[]
    */
   public function setColumnHeaders($columnHeaders)
   {
     $this->columnHeaders = $columnHeaders;
   }
   /**
-   * @return Google_Service_Analytics_GaDataColumnHeaders
+   * @return Google_Service_Analytics_GaDataColumnHeaders[]
    */
   public function getColumnHeaders()
   {

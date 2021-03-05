@@ -24,14 +24,14 @@ class Google_Service_Compute_AcceleratorTypesScopedList extends Google_Collectio
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_AcceleratorType
+   * @param Google_Service_Compute_AcceleratorType[]
    */
   public function setAcceleratorTypes($acceleratorTypes)
   {
     $this->acceleratorTypes = $acceleratorTypes;
   }
   /**
-   * @return Google_Service_Compute_AcceleratorType
+   * @return Google_Service_Compute_AcceleratorType[]
    */
   public function getAcceleratorTypes()
   {

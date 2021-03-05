@@ -132,14 +132,14 @@ class Google_Service_ShoppingContent_Service extends Google_Collection
     return $this->pickupService;
   }
   /**
-   * @param Google_Service_ShoppingContent_RateGroup
+   * @param Google_Service_ShoppingContent_RateGroup[]
    */
   public function setRateGroups($rateGroups)
   {
     $this->rateGroups = $rateGroups;
   }
   /**
-   * @return Google_Service_ShoppingContent_RateGroup
+   * @return Google_Service_ShoppingContent_RateGroup[]
    */
   public function getRateGroups()
   {

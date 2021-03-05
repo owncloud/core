@@ -39,7 +39,7 @@ class Google_Service_Tasks extends Google_Service
 
   public $tasklists;
   public $tasks;
-  
+
   /**
    * Constructs the internal representation of the Tasks service.
    *
@@ -89,13 +89,13 @@ class Google_Service_Tasks extends Google_Service
               'path' => 'tasks/v1/users/@me/lists',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'maxResults' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'patch' => array(
@@ -195,31 +195,11 @@ class Google_Service_Tasks extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'maxResults' => array(
+                'completedMax' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
                 ),
                 'completedMin' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'showDeleted' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'showHidden' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
-                'dueMin' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'completedMax' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -227,13 +207,33 @@ class Google_Service_Tasks extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'updatedMin' => array(
+                'dueMin' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'maxResults' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
                 'showCompleted' => array(
                   'location' => 'query',
                   'type' => 'boolean',
+                ),
+                'showDeleted' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
+                'showHidden' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
+                'updatedMin' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'move' => array(

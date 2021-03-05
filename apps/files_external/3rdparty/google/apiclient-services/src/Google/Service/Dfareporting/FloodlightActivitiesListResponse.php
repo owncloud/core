@@ -24,14 +24,14 @@ class Google_Service_Dfareporting_FloodlightActivitiesListResponse extends Googl
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Dfareporting_FloodlightActivity
+   * @param Google_Service_Dfareporting_FloodlightActivity[]
    */
   public function setFloodlightActivities($floodlightActivities)
   {
     $this->floodlightActivities = $floodlightActivities;
   }
   /**
-   * @return Google_Service_Dfareporting_FloodlightActivity
+   * @return Google_Service_Dfareporting_FloodlightActivity[]
    */
   public function getFloodlightActivities()
   {

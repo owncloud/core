@@ -42,28 +42,28 @@ class Google_Service_DLP_GooglePrivacyDlpV2LDiversityEquivalenceClass extends Go
     return $this->numDistinctSensitiveValues;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2Value
+   * @param Google_Service_DLP_GooglePrivacyDlpV2Value[]
    */
   public function setQuasiIdsValues($quasiIdsValues)
   {
     $this->quasiIdsValues = $quasiIdsValues;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2Value
+   * @return Google_Service_DLP_GooglePrivacyDlpV2Value[]
    */
   public function getQuasiIdsValues()
   {
     return $this->quasiIdsValues;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2ValueFrequency
+   * @param Google_Service_DLP_GooglePrivacyDlpV2ValueFrequency[]
    */
   public function setTopSensitiveValues($topSensitiveValues)
   {
     $this->topSensitiveValues = $topSensitiveValues;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2ValueFrequency
+   * @return Google_Service_DLP_GooglePrivacyDlpV2ValueFrequency[]
    */
   public function getTopSensitiveValues()
   {

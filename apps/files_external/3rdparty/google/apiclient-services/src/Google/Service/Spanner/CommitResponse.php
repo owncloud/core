@@ -17,8 +17,24 @@
 
 class Google_Service_Spanner_CommitResponse extends Google_Model
 {
+  protected $commitStatsType = 'Google_Service_Spanner_CommitStats';
+  protected $commitStatsDataType = '';
   public $commitTimestamp;
 
+  /**
+   * @param Google_Service_Spanner_CommitStats
+   */
+  public function setCommitStats(Google_Service_Spanner_CommitStats $commitStats)
+  {
+    $this->commitStats = $commitStats;
+  }
+  /**
+   * @return Google_Service_Spanner_CommitStats
+   */
+  public function getCommitStats()
+  {
+    return $this->commitStats;
+  }
   public function setCommitTimestamp($commitTimestamp)
   {
     $this->commitTimestamp = $commitTimestamp;

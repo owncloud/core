@@ -22,14 +22,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageSuggest
   protected $suggestionsDataType = 'array';
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageSuggestion
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageSuggestion[]
    */
   public function setSuggestions($suggestions)
   {
     $this->suggestions = $suggestions;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageSuggestion
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessageSuggestion[]
    */
   public function getSuggestions()
   {

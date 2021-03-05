@@ -22,14 +22,14 @@ class Google_Service_Compute_DistributionPolicy extends Google_Collection
   protected $zonesDataType = 'array';
 
   /**
-   * @param Google_Service_Compute_DistributionPolicyZoneConfiguration
+   * @param Google_Service_Compute_DistributionPolicyZoneConfiguration[]
    */
   public function setZones($zones)
   {
     $this->zones = $zones;
   }
   /**
-   * @return Google_Service_Compute_DistributionPolicyZoneConfiguration
+   * @return Google_Service_Compute_DistributionPolicyZoneConfiguration[]
    */
   public function getZones()
   {

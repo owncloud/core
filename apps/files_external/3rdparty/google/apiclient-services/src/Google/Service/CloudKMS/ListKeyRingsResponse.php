@@ -24,14 +24,14 @@ class Google_Service_CloudKMS_ListKeyRingsResponse extends Google_Collection
   public $totalSize;
 
   /**
-   * @param Google_Service_CloudKMS_KeyRing
+   * @param Google_Service_CloudKMS_KeyRing[]
    */
   public function setKeyRings($keyRings)
   {
     $this->keyRings = $keyRings;
   }
   /**
-   * @return Google_Service_CloudKMS_KeyRing
+   * @return Google_Service_CloudKMS_KeyRing[]
    */
   public function getKeyRings()
   {

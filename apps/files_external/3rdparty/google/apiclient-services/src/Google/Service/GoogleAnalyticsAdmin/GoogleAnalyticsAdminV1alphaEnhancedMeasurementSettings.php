@@ -17,57 +17,19 @@
 
 class Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaEnhancedMeasurementSettings extends Google_Model
 {
-  public $articlesAndBlogsEnabled;
-  public $contentViewsEnabled;
-  public $dataTaggedElementClicksEnabled;
-  public $excludedDomains;
   public $fileDownloadsEnabled;
-  public $formInteractionsEnabled;
   public $name;
   public $outboundClicksEnabled;
   public $pageChangesEnabled;
   public $pageLoadsEnabled;
   public $pageViewsEnabled;
-  public $productsAndEcommerceEnabled;
   public $scrollsEnabled;
   public $searchQueryParameter;
   public $siteSearchEnabled;
   public $streamEnabled;
-  public $urlQueryParameter;
+  public $uriQueryParameter;
   public $videoEngagementEnabled;
 
-  public function setArticlesAndBlogsEnabled($articlesAndBlogsEnabled)
-  {
-    $this->articlesAndBlogsEnabled = $articlesAndBlogsEnabled;
-  }
-  public function getArticlesAndBlogsEnabled()
-  {
-    return $this->articlesAndBlogsEnabled;
-  }
-  public function setContentViewsEnabled($contentViewsEnabled)
-  {
-    $this->contentViewsEnabled = $contentViewsEnabled;
-  }
-  public function getContentViewsEnabled()
-  {
-    return $this->contentViewsEnabled;
-  }
-  public function setDataTaggedElementClicksEnabled($dataTaggedElementClicksEnabled)
-  {
-    $this->dataTaggedElementClicksEnabled = $dataTaggedElementClicksEnabled;
-  }
-  public function getDataTaggedElementClicksEnabled()
-  {
-    return $this->dataTaggedElementClicksEnabled;
-  }
-  public function setExcludedDomains($excludedDomains)
-  {
-    $this->excludedDomains = $excludedDomains;
-  }
-  public function getExcludedDomains()
-  {
-    return $this->excludedDomains;
-  }
   public function setFileDownloadsEnabled($fileDownloadsEnabled)
   {
     $this->fileDownloadsEnabled = $fileDownloadsEnabled;
@@ -75,14 +37,6 @@ class Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaEnhancedMea
   public function getFileDownloadsEnabled()
   {
     return $this->fileDownloadsEnabled;
-  }
-  public function setFormInteractionsEnabled($formInteractionsEnabled)
-  {
-    $this->formInteractionsEnabled = $formInteractionsEnabled;
-  }
-  public function getFormInteractionsEnabled()
-  {
-    return $this->formInteractionsEnabled;
   }
   public function setName($name)
   {
@@ -124,14 +78,6 @@ class Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaEnhancedMea
   {
     return $this->pageViewsEnabled;
   }
-  public function setProductsAndEcommerceEnabled($productsAndEcommerceEnabled)
-  {
-    $this->productsAndEcommerceEnabled = $productsAndEcommerceEnabled;
-  }
-  public function getProductsAndEcommerceEnabled()
-  {
-    return $this->productsAndEcommerceEnabled;
-  }
   public function setScrollsEnabled($scrollsEnabled)
   {
     $this->scrollsEnabled = $scrollsEnabled;
@@ -164,13 +110,13 @@ class Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaEnhancedMea
   {
     return $this->streamEnabled;
   }
-  public function setUrlQueryParameter($urlQueryParameter)
+  public function setUriQueryParameter($uriQueryParameter)
   {
-    $this->urlQueryParameter = $urlQueryParameter;
+    $this->uriQueryParameter = $uriQueryParameter;
   }
-  public function getUrlQueryParameter()
+  public function getUriQueryParameter()
   {
-    return $this->urlQueryParameter;
+    return $this->uriQueryParameter;
   }
   public function setVideoEngagementEnabled($videoEngagementEnabled)
   {

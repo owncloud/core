@@ -60,9 +60,7 @@ class Google_Service_GoogleAnalyticsAdmin_Resource_Properties extends Google_Ser
     return $this->call('delete', array($params), "Google_Service_GoogleAnalyticsAdmin_GoogleProtobufEmpty");
   }
   /**
-   * Lookup for a single "GA4" Property. Throws "Target not found" if no such
-   * property found, if property is not of the type "GA4", or if caller does not
-   * have permissions to access it. (properties.get)
+   * Lookup for a single "GA4" Property. (properties.get)
    *
    * @param string $name Required. The name of the property to lookup. Format:
    * properties/{property_id} Example: "properties/1000"
@@ -84,25 +82,25 @@ class Google_Service_GoogleAnalyticsAdmin_Resource_Properties extends Google_Ser
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter Required. An expression for filtering the results of
+   * the request. Fields eligible for filtering are: `parent:`(The resource name
+   * of the parent account) or `firebase_project:`(The id or number of the linked
+   * firebase project). Some examples of filters: ``` | Filter | Description |
+   * |-----------------------------|-------------------------------------------| |
+   * parent:accounts/123 | The account with account id: 123. | | firebase_project
+   * :project-id | The firebase project with id: project-id. | |
+   * firebase_project:123 | The firebase project with number: 123. | ```
    * @opt_param int pageSize The maximum number of resources to return. The
    * service may return fewer than this value, even if there are additional pages.
    * If unspecified, at most 50 resources will be returned. The maximum value is
    * 200; (higher values will be coerced to the maximum)
-   * @opt_param bool showDeleted Whether to include soft-deleted (ie: "trashed")
-   * Properties in the results. Properties can be inspected to determine whether
-   * they are deleted or not.
-   * @opt_param string filter Required. An expression for filtering the results of
-   * the request. Fields eligible for filtering are: `parent:`(The resource name
-   * of the parent account) or `firebase_project:`(The id or number of the linked
-   * firebase project). Some examples of filters: | Filter | Description |
-   * |-----------------------------|-------------------------------------------| |
-   * parent:accounts/123 | The account with account id: 123. | | firebase_project
-   * :project-id | The firebase project with id: project-id. | |
-   * firebase_project:123 | The firebase project with number: 123. |
    * @opt_param string pageToken A page token, received from a previous
    * `ListProperties` call. Provide this to retrieve the subsequent page. When
    * paginating, all other parameters provided to `ListProperties` must match the
    * call that provided the page token.
+   * @opt_param bool showDeleted Whether to include soft-deleted (ie: "trashed")
+   * Properties in the results. Properties can be inspected to determine whether
+   * they are deleted or not.
    * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaListPropertiesResponse
    */
   public function listProperties($optParams = array())
@@ -119,8 +117,10 @@ class Google_Service_GoogleAnalyticsAdmin_Resource_Properties extends Google_Ser
    * @param Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaProperty $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask The list of fields to be updated. Omitted fields
-   * will not be updated.
+   * @opt_param string updateMask Required. The list of fields to be updated.
+   * Field names must be in snake case (e.g., "field_to_update"). Omitted fields
+   * will not be updated. To replace the entire entity, use one path with the
+   * string "*" to match all fields.
    * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaProperty
    */
   public function patch($name, Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaProperty $postBody, $optParams = array())

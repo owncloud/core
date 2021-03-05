@@ -22,14 +22,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p3beta1CropHintsAnnotation extend
   protected $cropHintsDataType = 'array';
 
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p3beta1CropHint
+   * @param Google_Service_Vision_GoogleCloudVisionV1p3beta1CropHint[]
    */
   public function setCropHints($cropHints)
   {
     $this->cropHints = $cropHints;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p3beta1CropHint
+   * @return Google_Service_Vision_GoogleCloudVisionV1p3beta1CropHint[]
    */
   public function getCropHints()
   {

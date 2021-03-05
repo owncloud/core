@@ -20,6 +20,8 @@ class Google_Service_CloudIdentity_Group extends Google_Model
   public $createTime;
   public $description;
   public $displayName;
+  protected $dynamicGroupMetadataType = 'Google_Service_CloudIdentity_DynamicGroupMetadata';
+  protected $dynamicGroupMetadataDataType = '';
   protected $groupKeyType = 'Google_Service_CloudIdentity_EntityKey';
   protected $groupKeyDataType = '';
   public $labels;
@@ -50,6 +52,20 @@ class Google_Service_CloudIdentity_Group extends Google_Model
   public function getDisplayName()
   {
     return $this->displayName;
+  }
+  /**
+   * @param Google_Service_CloudIdentity_DynamicGroupMetadata
+   */
+  public function setDynamicGroupMetadata(Google_Service_CloudIdentity_DynamicGroupMetadata $dynamicGroupMetadata)
+  {
+    $this->dynamicGroupMetadata = $dynamicGroupMetadata;
+  }
+  /**
+   * @return Google_Service_CloudIdentity_DynamicGroupMetadata
+   */
+  public function getDynamicGroupMetadata()
+  {
+    return $this->dynamicGroupMetadata;
   }
   /**
    * @param Google_Service_CloudIdentity_EntityKey

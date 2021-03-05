@@ -38,14 +38,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1Row extends Goog
     return $this->annotationSpec;
   }
   /**
-   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ConfusionMatrixEntry
+   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ConfusionMatrixEntry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ConfusionMatrixEntry
+   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ConfusionMatrixEntry[]
    */
   public function getEntries()
   {

@@ -38,14 +38,14 @@ class Google_Service_Safebrowsing_FetchThreatListUpdatesRequest extends Google_C
     return $this->client;
   }
   /**
-   * @param Google_Service_Safebrowsing_ListUpdateRequest
+   * @param Google_Service_Safebrowsing_ListUpdateRequest[]
    */
   public function setListUpdateRequests($listUpdateRequests)
   {
     $this->listUpdateRequests = $listUpdateRequests;
   }
   /**
-   * @return Google_Service_Safebrowsing_ListUpdateRequest
+   * @return Google_Service_Safebrowsing_ListUpdateRequest[]
    */
   public function getListUpdateRequests()
   {

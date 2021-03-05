@@ -38,14 +38,14 @@ class Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3SamplePlayab
     return $this->areaFilter;
   }
   /**
-   * @param Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3SampleCriterion
+   * @param Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3SampleCriterion[]
    */
   public function setCriteria($criteria)
   {
     $this->criteria = $criteria;
   }
   /**
-   * @return Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3SampleCriterion
+   * @return Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3SampleCriterion[]
    */
   public function getCriteria()
   {

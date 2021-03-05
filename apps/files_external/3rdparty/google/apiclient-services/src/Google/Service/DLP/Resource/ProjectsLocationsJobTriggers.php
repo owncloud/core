@@ -99,10 +99,7 @@ class Google_Service_DLP_Resource_ProjectsLocationsJobTriggers extends Google_Se
   /**
    * Inspect hybrid content and store findings to a trigger. The inspection will
    * be processed asynchronously. To review the findings monitor the jobs within
-   * the trigger. Early access feature is in a pre-release state and might change
-   * or have limited support. For more information, see
-   * https://cloud.google.com/products#product-launch-stages.
-   * (jobTriggers.hybridInspect)
+   * the trigger. (jobTriggers.hybridInspect)
    *
    * @param string $name Required. Resource name of the trigger to execute a
    * hybrid inspect on, for example `projects/dlp-test-
@@ -136,7 +133,7 @@ class Google_Service_DLP_Resource_ProjectsLocationsJobTriggers extends Google_Se
    * expressions are made up of one or more restrictions. * Restrictions can be
    * combined by `AND` or `OR` logical operators. A sequence of restrictions
    * implicitly uses `AND`. * A restriction has the form of `{field} {operator}
-   * {value}`. * Supported fields/values for inspect jobs: - `status` -
+   * {value}`. * Supported fields/values for inspect triggers: - `status` -
    * HEALTHY|PAUSED|CANCELLED - `inspected_storage` -
    * DATASTORE|CLOUD_STORAGE|BIGQUERY - 'last_run_time` - RFC 3339 formatted
    * timestamp, surrounded by quotation marks. Nanoseconds are ignored. -
@@ -147,11 +144,7 @@ class Google_Service_DLP_Resource_ProjectsLocationsJobTriggers extends Google_Se
    * cloud_storage AND (state = PAUSED OR state = HEALTHY) * last_run_time >
    * \"2017-12-12T00:00:00+00:00\" The length of this field should be no more than
    * 500 characters.
-   * @opt_param int pageSize Size of the page, can be limited by a server.
    * @opt_param string locationId Deprecated. This field has no effect.
-   * @opt_param string pageToken Page token to continue retrieval. Comes from
-   * previous call to ListJobTriggers. `order_by` field must not change for
-   * subsequent calls.
    * @opt_param string orderBy Comma separated list of triggeredJob fields to
    * order by, followed by `asc` or `desc` postfix. This list is case-insensitive,
    * default sorting order is ascending, redundant space characters are
@@ -161,6 +154,10 @@ class Google_Service_DLP_Resource_ProjectsLocationsJobTriggers extends Google_Se
    * `last_run_time`: corresponds to the last time the JobTrigger ran. - `name`:
    * corresponds to JobTrigger's name. - `display_name`: corresponds to
    * JobTrigger's display name. - `status`: corresponds to JobTrigger's status.
+   * @opt_param int pageSize Size of the page, can be limited by a server.
+   * @opt_param string pageToken Page token to continue retrieval. Comes from
+   * previous call to ListJobTriggers. `order_by` field must not change for
+   * subsequent calls.
    * @return Google_Service_DLP_GooglePrivacyDlpV2ListJobTriggersResponse
    */
   public function listProjectsLocationsJobTriggers($parent, $optParams = array())

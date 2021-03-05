@@ -35,14 +35,14 @@ class Google_Service_Compute_LicensesListResponse extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_License
+   * @param Google_Service_Compute_License[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_License
+   * @return Google_Service_Compute_License[]
    */
   public function getItems()
   {

@@ -70,14 +70,14 @@ class Google_Service_YouTube_Playlist extends Google_Model
     return $this->kind;
   }
   /**
-   * @param Google_Service_YouTube_PlaylistLocalization
+   * @param Google_Service_YouTube_PlaylistLocalization[]
    */
   public function setLocalizations($localizations)
   {
     $this->localizations = $localizations;
   }
   /**
-   * @return Google_Service_YouTube_PlaylistLocalization
+   * @return Google_Service_YouTube_PlaylistLocalization[]
    */
   public function getLocalizations()
   {

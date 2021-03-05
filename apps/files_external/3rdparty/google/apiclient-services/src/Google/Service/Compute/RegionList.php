@@ -36,14 +36,14 @@ class Google_Service_Compute_RegionList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_Region
+   * @param Google_Service_Compute_Region[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_Region
+   * @return Google_Service_Compute_Region[]
    */
   public function getItems()
   {

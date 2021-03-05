@@ -31,14 +31,14 @@ class Google_Service_HangoutsChat_FormAction extends Google_Collection
     return $this->actionMethodName;
   }
   /**
-   * @param Google_Service_HangoutsChat_ActionParameter
+   * @param Google_Service_HangoutsChat_ActionParameter[]
    */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
   /**
-   * @return Google_Service_HangoutsChat_ActionParameter
+   * @return Google_Service_HangoutsChat_ActionParameter[]
    */
   public function getParameters()
   {

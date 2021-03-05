@@ -24,14 +24,14 @@ class Google_Service_Sheets_MatchedValueRange extends Google_Collection
   protected $valueRangeDataType = '';
 
   /**
-   * @param Google_Service_Sheets_DataFilter
+   * @param Google_Service_Sheets_DataFilter[]
    */
   public function setDataFilters($dataFilters)
   {
     $this->dataFilters = $dataFilters;
   }
   /**
-   * @return Google_Service_Sheets_DataFilter
+   * @return Google_Service_Sheets_DataFilter[]
    */
   public function getDataFilters()
   {

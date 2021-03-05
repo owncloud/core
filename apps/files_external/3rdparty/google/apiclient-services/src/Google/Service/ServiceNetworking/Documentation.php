@@ -44,28 +44,28 @@ class Google_Service_ServiceNetworking_Documentation extends Google_Collection
     return $this->overview;
   }
   /**
-   * @param Google_Service_ServiceNetworking_Page
+   * @param Google_Service_ServiceNetworking_Page[]
    */
   public function setPages($pages)
   {
     $this->pages = $pages;
   }
   /**
-   * @return Google_Service_ServiceNetworking_Page
+   * @return Google_Service_ServiceNetworking_Page[]
    */
   public function getPages()
   {
     return $this->pages;
   }
   /**
-   * @param Google_Service_ServiceNetworking_DocumentationRule
+   * @param Google_Service_ServiceNetworking_DocumentationRule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_ServiceNetworking_DocumentationRule
+   * @return Google_Service_ServiceNetworking_DocumentationRule[]
    */
   public function getRules()
   {

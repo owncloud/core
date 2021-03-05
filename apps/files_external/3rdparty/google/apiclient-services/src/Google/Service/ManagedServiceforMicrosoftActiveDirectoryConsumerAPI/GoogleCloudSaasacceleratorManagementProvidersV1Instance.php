@@ -71,14 +71,14 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Google
     return $this->maintenancePolicyNames;
   }
   /**
-   * @param Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_GoogleCloudSaasacceleratorManagementProvidersV1MaintenanceSchedule
+   * @param Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_GoogleCloudSaasacceleratorManagementProvidersV1MaintenanceSchedule[]
    */
   public function setMaintenanceSchedules($maintenanceSchedules)
   {
     $this->maintenanceSchedules = $maintenanceSchedules;
   }
   /**
-   * @return Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_GoogleCloudSaasacceleratorManagementProvidersV1MaintenanceSchedule
+   * @return Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_GoogleCloudSaasacceleratorManagementProvidersV1MaintenanceSchedule[]
    */
   public function getMaintenanceSchedules()
   {
@@ -115,14 +115,14 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Google
     return $this->producerMetadata;
   }
   /**
-   * @param Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_GoogleCloudSaasacceleratorManagementProvidersV1ProvisionedResource
+   * @param Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_GoogleCloudSaasacceleratorManagementProvidersV1ProvisionedResource[]
    */
   public function setProvisionedResources($provisionedResources)
   {
     $this->provisionedResources = $provisionedResources;
   }
   /**
-   * @return Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_GoogleCloudSaasacceleratorManagementProvidersV1ProvisionedResource
+   * @return Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_GoogleCloudSaasacceleratorManagementProvidersV1ProvisionedResource[]
    */
   public function getProvisionedResources()
   {

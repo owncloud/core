@@ -31,14 +31,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1ReportProperty extends Google_Col
     return $this->property;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Attribute
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Attribute[]
    */
   public function setValue($value)
   {
     $this->value = $value;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Attribute
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Attribute[]
    */
   public function getValue()
   {

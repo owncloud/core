@@ -95,14 +95,14 @@ class Google_Service_Dfareporting_CreativeAsset extends Google_Collection
     return $this->active;
   }
   /**
-   * @param Google_Service_Dfareporting_Size
+   * @param Google_Service_Dfareporting_Size[]
    */
   public function setAdditionalSizes($additionalSizes)
   {
     $this->additionalSizes = $additionalSizes;
   }
   /**
-   * @return Google_Service_Dfareporting_Size
+   * @return Google_Service_Dfareporting_Size[]
    */
   public function getAdditionalSizes()
   {

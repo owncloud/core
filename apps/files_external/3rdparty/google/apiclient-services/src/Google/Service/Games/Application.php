@@ -48,14 +48,14 @@ class Google_Service_Games_Application extends Google_Collection
     return $this->achievementCount;
   }
   /**
-   * @param Google_Service_Games_ImageAsset
+   * @param Google_Service_Games_ImageAsset[]
    */
   public function setAssets($assets)
   {
     $this->assets = $assets;
   }
   /**
-   * @return Google_Service_Games_ImageAsset
+   * @return Google_Service_Games_ImageAsset[]
    */
   public function getAssets()
   {
@@ -108,14 +108,14 @@ class Google_Service_Games_Application extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Games_Instance
+   * @param Google_Service_Games_Instance[]
    */
   public function setInstances($instances)
   {
     $this->instances = $instances;
   }
   /**
-   * @return Google_Service_Games_Instance
+   * @return Google_Service_Games_Instance[]
    */
   public function getInstances()
   {

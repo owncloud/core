@@ -40,14 +40,14 @@ class Google_Service_ShoppingContent_ReturnaddressListResponse extends Google_Co
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ShoppingContent_ReturnAddress
+   * @param Google_Service_ShoppingContent_ReturnAddress[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_ShoppingContent_ReturnAddress
+   * @return Google_Service_ShoppingContent_ReturnAddress[]
    */
   public function getResources()
   {

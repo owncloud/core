@@ -131,6 +131,8 @@ class Google_Service_Sheets_Request extends Google_Model
   protected $updateDimensionGroupDataType = '';
   protected $updateDimensionPropertiesType = 'Google_Service_Sheets_UpdateDimensionPropertiesRequest';
   protected $updateDimensionPropertiesDataType = '';
+  protected $updateEmbeddedObjectBorderType = 'Google_Service_Sheets_UpdateEmbeddedObjectBorderRequest';
+  protected $updateEmbeddedObjectBorderDataType = '';
   protected $updateEmbeddedObjectPositionType = 'Google_Service_Sheets_UpdateEmbeddedObjectPositionRequest';
   protected $updateEmbeddedObjectPositionDataType = '';
   protected $updateFilterViewType = 'Google_Service_Sheets_UpdateFilterViewRequest';
@@ -943,6 +945,20 @@ class Google_Service_Sheets_Request extends Google_Model
   public function getUpdateDimensionProperties()
   {
     return $this->updateDimensionProperties;
+  }
+  /**
+   * @param Google_Service_Sheets_UpdateEmbeddedObjectBorderRequest
+   */
+  public function setUpdateEmbeddedObjectBorder(Google_Service_Sheets_UpdateEmbeddedObjectBorderRequest $updateEmbeddedObjectBorder)
+  {
+    $this->updateEmbeddedObjectBorder = $updateEmbeddedObjectBorder;
+  }
+  /**
+   * @return Google_Service_Sheets_UpdateEmbeddedObjectBorderRequest
+   */
+  public function getUpdateEmbeddedObjectBorder()
+  {
+    return $this->updateEmbeddedObjectBorder;
   }
   /**
    * @param Google_Service_Sheets_UpdateEmbeddedObjectPositionRequest

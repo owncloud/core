@@ -19,6 +19,8 @@ class Google_Service_Spanner_CreateDatabaseRequest extends Google_Collection
 {
   protected $collection_key = 'extraStatements';
   public $createStatement;
+  protected $encryptionConfigType = 'Google_Service_Spanner_EncryptionConfig';
+  protected $encryptionConfigDataType = '';
   public $extraStatements;
 
   public function setCreateStatement($createStatement)
@@ -28,6 +30,20 @@ class Google_Service_Spanner_CreateDatabaseRequest extends Google_Collection
   public function getCreateStatement()
   {
     return $this->createStatement;
+  }
+  /**
+   * @param Google_Service_Spanner_EncryptionConfig
+   */
+  public function setEncryptionConfig(Google_Service_Spanner_EncryptionConfig $encryptionConfig)
+  {
+    $this->encryptionConfig = $encryptionConfig;
+  }
+  /**
+   * @return Google_Service_Spanner_EncryptionConfig
+   */
+  public function getEncryptionConfig()
+  {
+    return $this->encryptionConfig;
   }
   public function setExtraStatements($extraStatements)
   {

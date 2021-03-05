@@ -56,14 +56,14 @@ class Google_Service_ToolResults_ScreenshotCluster extends Google_Collection
     return $this->keyScreen;
   }
   /**
-   * @param Google_Service_ToolResults_Screen
+   * @param Google_Service_ToolResults_Screen[]
    */
   public function setScreens($screens)
   {
     $this->screens = $screens;
   }
   /**
-   * @return Google_Service_ToolResults_Screen
+   * @return Google_Service_ToolResults_Screen[]
    */
   public function getScreens()
   {

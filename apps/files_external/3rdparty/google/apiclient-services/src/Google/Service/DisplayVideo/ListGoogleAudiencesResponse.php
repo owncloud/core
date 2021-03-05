@@ -23,14 +23,14 @@ class Google_Service_DisplayVideo_ListGoogleAudiencesResponse extends Google_Col
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DisplayVideo_GoogleAudience
+   * @param Google_Service_DisplayVideo_GoogleAudience[]
    */
   public function setGoogleAudiences($googleAudiences)
   {
     $this->googleAudiences = $googleAudiences;
   }
   /**
-   * @return Google_Service_DisplayVideo_GoogleAudience
+   * @return Google_Service_DisplayVideo_GoogleAudience[]
    */
   public function getGoogleAudiences()
   {

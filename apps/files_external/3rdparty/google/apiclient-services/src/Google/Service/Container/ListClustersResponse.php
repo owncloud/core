@@ -23,14 +23,14 @@ class Google_Service_Container_ListClustersResponse extends Google_Collection
   public $missingZones;
 
   /**
-   * @param Google_Service_Container_Cluster
+   * @param Google_Service_Container_Cluster[]
    */
   public function setClusters($clusters)
   {
     $this->clusters = $clusters;
   }
   /**
-   * @return Google_Service_Container_Cluster
+   * @return Google_Service_Container_Cluster[]
    */
   public function getClusters()
   {

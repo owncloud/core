@@ -35,7 +35,7 @@ class Google_Service_AdExperienceReport extends Google_Service
 
   public $sites;
   public $violatingSites;
-  
+
   /**
    * Constructs the internal representation of the AdExperienceReport service.
    *

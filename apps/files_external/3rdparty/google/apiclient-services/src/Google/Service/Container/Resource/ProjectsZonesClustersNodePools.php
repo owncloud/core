@@ -206,7 +206,9 @@ class Google_Service_Container_Resource_ProjectsZonesClustersNodePools extends G
     return $this->call('setManagement', array($params), "Google_Service_Container_Operation");
   }
   /**
-   * Sets the size for a specific node pool. (nodePools.setSize)
+   * Sets the size for a specific node pool. The new size will be used for all
+   * replicas, including future replicas created by modifying NodePool.locations.
+   * (nodePools.setSize)
    *
    * @param string $projectId Deprecated. The Google Developers Console [project
    * ID or project number](https://support.google.com/cloud/answer/6158840). This

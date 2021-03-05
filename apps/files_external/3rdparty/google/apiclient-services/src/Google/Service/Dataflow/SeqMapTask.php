@@ -28,14 +28,14 @@ class Google_Service_Dataflow_SeqMapTask extends Google_Collection
   public $userFn;
 
   /**
-   * @param Google_Service_Dataflow_SideInputInfo
+   * @param Google_Service_Dataflow_SideInputInfo[]
    */
   public function setInputs($inputs)
   {
     $this->inputs = $inputs;
   }
   /**
-   * @return Google_Service_Dataflow_SideInputInfo
+   * @return Google_Service_Dataflow_SideInputInfo[]
    */
   public function getInputs()
   {
@@ -50,14 +50,14 @@ class Google_Service_Dataflow_SeqMapTask extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Dataflow_SeqMapTaskOutputInfo
+   * @param Google_Service_Dataflow_SeqMapTaskOutputInfo[]
    */
   public function setOutputInfos($outputInfos)
   {
     $this->outputInfos = $outputInfos;
   }
   /**
-   * @return Google_Service_Dataflow_SeqMapTaskOutputInfo
+   * @return Google_Service_Dataflow_SeqMapTaskOutputInfo[]
    */
   public function getOutputInfos()
   {

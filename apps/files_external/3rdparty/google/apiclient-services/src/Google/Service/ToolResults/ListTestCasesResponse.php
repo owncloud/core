@@ -31,14 +31,14 @@ class Google_Service_ToolResults_ListTestCasesResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ToolResults_TestCase
+   * @param Google_Service_ToolResults_TestCase[]
    */
   public function setTestCases($testCases)
   {
     $this->testCases = $testCases;
   }
   /**
-   * @return Google_Service_ToolResults_TestCase
+   * @return Google_Service_ToolResults_TestCase[]
    */
   public function getTestCases()
   {

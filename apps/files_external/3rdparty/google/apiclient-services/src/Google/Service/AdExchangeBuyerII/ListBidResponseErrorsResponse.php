@@ -23,14 +23,14 @@ class Google_Service_AdExchangeBuyerII_ListBidResponseErrorsResponse extends Goo
   public $nextPageToken;
 
   /**
-   * @param Google_Service_AdExchangeBuyerII_CalloutStatusRow
+   * @param Google_Service_AdExchangeBuyerII_CalloutStatusRow[]
    */
   public function setCalloutStatusRows($calloutStatusRows)
   {
     $this->calloutStatusRows = $calloutStatusRows;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_CalloutStatusRow
+   * @return Google_Service_AdExchangeBuyerII_CalloutStatusRow[]
    */
   public function getCalloutStatusRows()
   {

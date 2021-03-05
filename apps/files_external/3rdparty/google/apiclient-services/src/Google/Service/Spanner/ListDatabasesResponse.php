@@ -23,14 +23,14 @@ class Google_Service_Spanner_ListDatabasesResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Spanner_Database
+   * @param Google_Service_Spanner_Database[]
    */
   public function setDatabases($databases)
   {
     $this->databases = $databases;
   }
   /**
-   * @return Google_Service_Spanner_Database
+   * @return Google_Service_Spanner_Database[]
    */
   public function getDatabases()
   {

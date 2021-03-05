@@ -55,14 +55,14 @@ class Google_Service_Container_NodePool extends Google_Collection
     return $this->autoscaling;
   }
   /**
-   * @param Google_Service_Container_StatusCondition
+   * @param Google_Service_Container_StatusCondition[]
    */
   public function setConditions($conditions)
   {
     $this->conditions = $conditions;
   }
   /**
-   * @return Google_Service_Container_StatusCondition
+   * @return Google_Service_Container_StatusCondition[]
    */
   public function getConditions()
   {

@@ -43,11 +43,11 @@ class Google_Service_Dataflow_Resource_ProjectsLocationsJobsStages extends Googl
    * @opt_param int pageSize If specified, determines the maximum number of work
    * items to return. If unspecified, the service may choose an appropriate
    * default, or may return an arbitrarily large number of results.
-   * @opt_param string startTime Lower time bound of work items to include, by
-   * start time.
    * @opt_param string pageToken If supplied, this should be the value of
    * next_page_token returned by an earlier call. This will cause the next page of
    * results to be returned.
+   * @opt_param string startTime Lower time bound of work items to include, by
+   * start time.
    * @return Google_Service_Dataflow_StageExecutionDetails
    */
   public function getExecutionDetails($projectId, $location, $jobId, $stageId, $optParams = array())

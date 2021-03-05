@@ -23,14 +23,14 @@ class Google_Service_SQLAdmin_OperationErrors extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_SQLAdmin_OperationError
+   * @param Google_Service_SQLAdmin_OperationError[]
    */
   public function setErrors($errors)
   {
     $this->errors = $errors;
   }
   /**
-   * @return Google_Service_SQLAdmin_OperationError
+   * @return Google_Service_SQLAdmin_OperationError[]
    */
   public function getErrors()
   {

@@ -23,14 +23,14 @@ class Google_Service_AndroidManagement_ListDevicesResponse extends Google_Collec
   public $nextPageToken;
 
   /**
-   * @param Google_Service_AndroidManagement_Device
+   * @param Google_Service_AndroidManagement_Device[]
    */
   public function setDevices($devices)
   {
     $this->devices = $devices;
   }
   /**
-   * @return Google_Service_AndroidManagement_Device
+   * @return Google_Service_AndroidManagement_Device[]
    */
   public function getDevices()
   {

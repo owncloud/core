@@ -31,14 +31,14 @@ class Google_Service_TagManager_ListTemplatesResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_TagManager_CustomTemplate
+   * @param Google_Service_TagManager_CustomTemplate[]
    */
   public function setTemplate($template)
   {
     $this->template = $template;
   }
   /**
-   * @return Google_Service_TagManager_CustomTemplate
+   * @return Google_Service_TagManager_CustomTemplate[]
    */
   public function getTemplate()
   {

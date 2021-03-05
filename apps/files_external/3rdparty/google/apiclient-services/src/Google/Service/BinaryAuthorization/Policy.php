@@ -26,32 +26,38 @@ class Google_Service_BinaryAuthorization_Policy extends Google_Collection
   protected $defaultAdmissionRuleDataType = '';
   public $description;
   public $globalPolicyEvaluationMode;
+  protected $istioServiceIdentityAdmissionRulesType = 'Google_Service_BinaryAuthorization_AdmissionRule';
+  protected $istioServiceIdentityAdmissionRulesDataType = 'map';
+  protected $kubernetesNamespaceAdmissionRulesType = 'Google_Service_BinaryAuthorization_AdmissionRule';
+  protected $kubernetesNamespaceAdmissionRulesDataType = 'map';
+  protected $kubernetesServiceAccountAdmissionRulesType = 'Google_Service_BinaryAuthorization_AdmissionRule';
+  protected $kubernetesServiceAccountAdmissionRulesDataType = 'map';
   public $name;
   public $updateTime;
 
   /**
-   * @param Google_Service_BinaryAuthorization_AdmissionWhitelistPattern
+   * @param Google_Service_BinaryAuthorization_AdmissionWhitelistPattern[]
    */
   public function setAdmissionWhitelistPatterns($admissionWhitelistPatterns)
   {
     $this->admissionWhitelistPatterns = $admissionWhitelistPatterns;
   }
   /**
-   * @return Google_Service_BinaryAuthorization_AdmissionWhitelistPattern
+   * @return Google_Service_BinaryAuthorization_AdmissionWhitelistPattern[]
    */
   public function getAdmissionWhitelistPatterns()
   {
     return $this->admissionWhitelistPatterns;
   }
   /**
-   * @param Google_Service_BinaryAuthorization_AdmissionRule
+   * @param Google_Service_BinaryAuthorization_AdmissionRule[]
    */
   public function setClusterAdmissionRules($clusterAdmissionRules)
   {
     $this->clusterAdmissionRules = $clusterAdmissionRules;
   }
   /**
-   * @return Google_Service_BinaryAuthorization_AdmissionRule
+   * @return Google_Service_BinaryAuthorization_AdmissionRule[]
    */
   public function getClusterAdmissionRules()
   {
@@ -86,6 +92,48 @@ class Google_Service_BinaryAuthorization_Policy extends Google_Collection
   public function getGlobalPolicyEvaluationMode()
   {
     return $this->globalPolicyEvaluationMode;
+  }
+  /**
+   * @param Google_Service_BinaryAuthorization_AdmissionRule[]
+   */
+  public function setIstioServiceIdentityAdmissionRules($istioServiceIdentityAdmissionRules)
+  {
+    $this->istioServiceIdentityAdmissionRules = $istioServiceIdentityAdmissionRules;
+  }
+  /**
+   * @return Google_Service_BinaryAuthorization_AdmissionRule[]
+   */
+  public function getIstioServiceIdentityAdmissionRules()
+  {
+    return $this->istioServiceIdentityAdmissionRules;
+  }
+  /**
+   * @param Google_Service_BinaryAuthorization_AdmissionRule[]
+   */
+  public function setKubernetesNamespaceAdmissionRules($kubernetesNamespaceAdmissionRules)
+  {
+    $this->kubernetesNamespaceAdmissionRules = $kubernetesNamespaceAdmissionRules;
+  }
+  /**
+   * @return Google_Service_BinaryAuthorization_AdmissionRule[]
+   */
+  public function getKubernetesNamespaceAdmissionRules()
+  {
+    return $this->kubernetesNamespaceAdmissionRules;
+  }
+  /**
+   * @param Google_Service_BinaryAuthorization_AdmissionRule[]
+   */
+  public function setKubernetesServiceAccountAdmissionRules($kubernetesServiceAccountAdmissionRules)
+  {
+    $this->kubernetesServiceAccountAdmissionRules = $kubernetesServiceAccountAdmissionRules;
+  }
+  /**
+   * @return Google_Service_BinaryAuthorization_AdmissionRule[]
+   */
+  public function getKubernetesServiceAccountAdmissionRules()
+  {
+    return $this->kubernetesServiceAccountAdmissionRules;
   }
   public function setName($name)
   {

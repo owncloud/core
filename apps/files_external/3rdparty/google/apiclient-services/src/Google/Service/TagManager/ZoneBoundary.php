@@ -23,14 +23,14 @@ class Google_Service_TagManager_ZoneBoundary extends Google_Collection
   public $customEvaluationTriggerId;
 
   /**
-   * @param Google_Service_TagManager_Condition
+   * @param Google_Service_TagManager_Condition[]
    */
   public function setCondition($condition)
   {
     $this->condition = $condition;
   }
   /**
-   * @return Google_Service_TagManager_Condition
+   * @return Google_Service_TagManager_Condition[]
    */
   public function getCondition()
   {

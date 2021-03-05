@@ -25,14 +25,14 @@ class Google_Service_PeopleService_ListContactGroupsResponse extends Google_Coll
   public $totalItems;
 
   /**
-   * @param Google_Service_PeopleService_ContactGroup
+   * @param Google_Service_PeopleService_ContactGroup[]
    */
   public function setContactGroups($contactGroups)
   {
     $this->contactGroups = $contactGroups;
   }
   /**
-   * @return Google_Service_PeopleService_ContactGroup
+   * @return Google_Service_PeopleService_ContactGroup[]
    */
   public function getContactGroups()
   {

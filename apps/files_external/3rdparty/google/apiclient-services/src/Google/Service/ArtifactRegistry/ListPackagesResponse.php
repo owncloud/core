@@ -31,14 +31,14 @@ class Google_Service_ArtifactRegistry_ListPackagesResponse extends Google_Collec
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ArtifactRegistry_Package
+   * @param Google_Service_ArtifactRegistry_Package[]
    */
   public function setPackages($packages)
   {
     $this->packages = $packages;
   }
   /**
-   * @return Google_Service_ArtifactRegistry_Package
+   * @return Google_Service_ArtifactRegistry_Package[]
    */
   public function getPackages()
   {

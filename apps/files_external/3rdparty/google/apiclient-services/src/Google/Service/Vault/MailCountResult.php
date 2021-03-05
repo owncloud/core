@@ -27,28 +27,28 @@ class Google_Service_Vault_MailCountResult extends Google_Collection
   public $queriedAccountsCount;
 
   /**
-   * @param Google_Service_Vault_AccountCountError
+   * @param Google_Service_Vault_AccountCountError[]
    */
   public function setAccountCountErrors($accountCountErrors)
   {
     $this->accountCountErrors = $accountCountErrors;
   }
   /**
-   * @return Google_Service_Vault_AccountCountError
+   * @return Google_Service_Vault_AccountCountError[]
    */
   public function getAccountCountErrors()
   {
     return $this->accountCountErrors;
   }
   /**
-   * @param Google_Service_Vault_AccountCount
+   * @param Google_Service_Vault_AccountCount[]
    */
   public function setAccountCounts($accountCounts)
   {
     $this->accountCounts = $accountCounts;
   }
   /**
-   * @return Google_Service_Vault_AccountCount
+   * @return Google_Service_Vault_AccountCount[]
    */
   public function getAccountCounts()
   {

@@ -71,12 +71,12 @@ class Google_Service_BigQueryDataTransfer_Resource_ProjectsDataSources extends G
    * `projects/{project_id}/locations/{location_id}
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Page size. The default page size is the maximum value
+   * of 1000 results.
    * @opt_param string pageToken Pagination token, which can be used to request a
    * specific page of `ListDataSourcesRequest` list results. For multiple-page
    * results, `ListDataSourcesResponse` outputs a `next_page` token, which can be
    * used as the `page_token` value to request the next page of list results.
-   * @opt_param int pageSize Page size. The default page size is the maximum value
-   * of 1000 results.
    * @return Google_Service_BigQueryDataTransfer_ListDataSourcesResponse
    */
   public function listProjectsDataSources($parent, $optParams = array())

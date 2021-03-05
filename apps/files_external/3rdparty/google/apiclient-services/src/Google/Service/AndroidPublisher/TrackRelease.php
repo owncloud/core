@@ -59,14 +59,14 @@ class Google_Service_AndroidPublisher_TrackRelease extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_AndroidPublisher_LocalizedText
+   * @param Google_Service_AndroidPublisher_LocalizedText[]
    */
   public function setReleaseNotes($releaseNotes)
   {
     $this->releaseNotes = $releaseNotes;
   }
   /**
-   * @return Google_Service_AndroidPublisher_LocalizedText
+   * @return Google_Service_AndroidPublisher_LocalizedText[]
    */
   public function getReleaseNotes()
   {

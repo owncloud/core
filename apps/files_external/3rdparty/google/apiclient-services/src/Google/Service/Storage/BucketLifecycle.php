@@ -22,14 +22,14 @@ class Google_Service_Storage_BucketLifecycle extends Google_Collection
   protected $ruleDataType = 'array';
 
   /**
-   * @param Google_Service_Storage_BucketLifecycleRule
+   * @param Google_Service_Storage_BucketLifecycleRule[]
    */
   public function setRule($rule)
   {
     $this->rule = $rule;
   }
   /**
-   * @return Google_Service_Storage_BucketLifecycleRule
+   * @return Google_Service_Storage_BucketLifecycleRule[]
    */
   public function getRule()
   {

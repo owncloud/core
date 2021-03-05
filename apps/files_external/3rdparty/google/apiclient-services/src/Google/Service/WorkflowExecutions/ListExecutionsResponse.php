@@ -23,14 +23,14 @@ class Google_Service_WorkflowExecutions_ListExecutionsResponse extends Google_Co
   public $nextPageToken;
 
   /**
-   * @param Google_Service_WorkflowExecutions_Execution
+   * @param Google_Service_WorkflowExecutions_Execution[]
    */
   public function setExecutions($executions)
   {
     $this->executions = $executions;
   }
   /**
-   * @return Google_Service_WorkflowExecutions_Execution
+   * @return Google_Service_WorkflowExecutions_Execution[]
    */
   public function getExecutions()
   {

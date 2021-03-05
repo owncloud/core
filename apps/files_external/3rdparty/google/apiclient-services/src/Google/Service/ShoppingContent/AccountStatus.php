@@ -35,14 +35,14 @@ class Google_Service_ShoppingContent_AccountStatus extends Google_Collection
     return $this->accountId;
   }
   /**
-   * @param Google_Service_ShoppingContent_AccountStatusAccountLevelIssue
+   * @param Google_Service_ShoppingContent_AccountStatusAccountLevelIssue[]
    */
   public function setAccountLevelIssues($accountLevelIssues)
   {
     $this->accountLevelIssues = $accountLevelIssues;
   }
   /**
-   * @return Google_Service_ShoppingContent_AccountStatusAccountLevelIssue
+   * @return Google_Service_ShoppingContent_AccountStatusAccountLevelIssue[]
    */
   public function getAccountLevelIssues()
   {
@@ -57,14 +57,14 @@ class Google_Service_ShoppingContent_AccountStatus extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_ShoppingContent_AccountStatusProducts
+   * @param Google_Service_ShoppingContent_AccountStatusProducts[]
    */
   public function setProducts($products)
   {
     $this->products = $products;
   }
   /**
-   * @return Google_Service_ShoppingContent_AccountStatusProducts
+   * @return Google_Service_ShoppingContent_AccountStatusProducts[]
    */
   public function getProducts()
   {

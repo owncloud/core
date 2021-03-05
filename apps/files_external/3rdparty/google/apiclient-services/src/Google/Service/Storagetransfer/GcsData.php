@@ -18,6 +18,7 @@
 class Google_Service_Storagetransfer_GcsData extends Google_Model
 {
   public $bucketName;
+  public $path;
 
   public function setBucketName($bucketName)
   {
@@ -26,5 +27,13 @@ class Google_Service_Storagetransfer_GcsData extends Google_Model
   public function getBucketName()
   {
     return $this->bucketName;
+  }
+  public function setPath($path)
+  {
+    $this->path = $path;
+  }
+  public function getPath()
+  {
+    return $this->path;
   }
 }

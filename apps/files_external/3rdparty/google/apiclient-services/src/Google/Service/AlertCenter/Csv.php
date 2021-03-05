@@ -23,14 +23,14 @@ class Google_Service_AlertCenter_Csv extends Google_Collection
   public $headers;
 
   /**
-   * @param Google_Service_AlertCenter_CsvRow
+   * @param Google_Service_AlertCenter_CsvRow[]
    */
   public function setDataRows($dataRows)
   {
     $this->dataRows = $dataRows;
   }
   /**
-   * @return Google_Service_AlertCenter_CsvRow
+   * @return Google_Service_AlertCenter_CsvRow[]
    */
   public function getDataRows()
   {

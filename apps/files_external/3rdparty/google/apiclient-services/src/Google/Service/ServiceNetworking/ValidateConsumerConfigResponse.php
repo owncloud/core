@@ -15,11 +15,28 @@
  * the License.
  */
 
-class Google_Service_ServiceNetworking_ValidateConsumerConfigResponse extends Google_Model
+class Google_Service_ServiceNetworking_ValidateConsumerConfigResponse extends Google_Collection
 {
+  protected $collection_key = 'existingSubnetworkCandidates';
+  protected $existingSubnetworkCandidatesType = 'Google_Service_ServiceNetworking_Subnetwork';
+  protected $existingSubnetworkCandidatesDataType = 'array';
   public $isValid;
   public $validationError;
 
+  /**
+   * @param Google_Service_ServiceNetworking_Subnetwork[]
+   */
+  public function setExistingSubnetworkCandidates($existingSubnetworkCandidates)
+  {
+    $this->existingSubnetworkCandidates = $existingSubnetworkCandidates;
+  }
+  /**
+   * @return Google_Service_ServiceNetworking_Subnetwork[]
+   */
+  public function getExistingSubnetworkCandidates()
+  {
+    return $this->existingSubnetworkCandidates;
+  }
   public function setIsValid($isValid)
   {
     $this->isValid = $isValid;

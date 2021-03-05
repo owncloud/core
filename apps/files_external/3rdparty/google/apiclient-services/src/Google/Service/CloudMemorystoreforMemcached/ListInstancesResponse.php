@@ -18,11 +18,25 @@
 class Google_Service_CloudMemorystoreforMemcached_ListInstancesResponse extends Google_Collection
 {
   protected $collection_key = 'unreachable';
+  protected $instancesType = 'Google_Service_CloudMemorystoreforMemcached_Instance';
+  protected $instancesDataType = 'array';
   public $nextPageToken;
-  protected $resourcesType = 'Google_Service_CloudMemorystoreforMemcached_Instance';
-  protected $resourcesDataType = 'array';
   public $unreachable;
 
+  /**
+   * @param Google_Service_CloudMemorystoreforMemcached_Instance[]
+   */
+  public function setInstances($instances)
+  {
+    $this->instances = $instances;
+  }
+  /**
+   * @return Google_Service_CloudMemorystoreforMemcached_Instance[]
+   */
+  public function getInstances()
+  {
+    return $this->instances;
+  }
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
@@ -30,20 +44,6 @@ class Google_Service_CloudMemorystoreforMemcached_ListInstancesResponse extends 
   public function getNextPageToken()
   {
     return $this->nextPageToken;
-  }
-  /**
-   * @param Google_Service_CloudMemorystoreforMemcached_Instance
-   */
-  public function setResources($resources)
-  {
-    $this->resources = $resources;
-  }
-  /**
-   * @return Google_Service_CloudMemorystoreforMemcached_Instance
-   */
-  public function getResources()
-  {
-    return $this->resources;
   }
   public function setUnreachable($unreachable)
   {

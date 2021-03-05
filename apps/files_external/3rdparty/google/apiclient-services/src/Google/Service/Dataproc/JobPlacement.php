@@ -17,9 +17,18 @@
 
 class Google_Service_Dataproc_JobPlacement extends Google_Model
 {
+  public $clusterLabels;
   public $clusterName;
   public $clusterUuid;
 
+  public function setClusterLabels($clusterLabels)
+  {
+    $this->clusterLabels = $clusterLabels;
+  }
+  public function getClusterLabels()
+  {
+    return $this->clusterLabels;
+  }
   public function setClusterName($clusterName)
   {
     $this->clusterName = $clusterName;

@@ -38,14 +38,14 @@ class Google_Service_Slides_Table extends Google_Collection
     return $this->columns;
   }
   /**
-   * @param Google_Service_Slides_TableBorderRow
+   * @param Google_Service_Slides_TableBorderRow[]
    */
   public function setHorizontalBorderRows($horizontalBorderRows)
   {
     $this->horizontalBorderRows = $horizontalBorderRows;
   }
   /**
-   * @return Google_Service_Slides_TableBorderRow
+   * @return Google_Service_Slides_TableBorderRow[]
    */
   public function getHorizontalBorderRows()
   {
@@ -60,42 +60,42 @@ class Google_Service_Slides_Table extends Google_Collection
     return $this->rows;
   }
   /**
-   * @param Google_Service_Slides_TableColumnProperties
+   * @param Google_Service_Slides_TableColumnProperties[]
    */
   public function setTableColumns($tableColumns)
   {
     $this->tableColumns = $tableColumns;
   }
   /**
-   * @return Google_Service_Slides_TableColumnProperties
+   * @return Google_Service_Slides_TableColumnProperties[]
    */
   public function getTableColumns()
   {
     return $this->tableColumns;
   }
   /**
-   * @param Google_Service_Slides_TableRow
+   * @param Google_Service_Slides_TableRow[]
    */
   public function setTableRows($tableRows)
   {
     $this->tableRows = $tableRows;
   }
   /**
-   * @return Google_Service_Slides_TableRow
+   * @return Google_Service_Slides_TableRow[]
    */
   public function getTableRows()
   {
     return $this->tableRows;
   }
   /**
-   * @param Google_Service_Slides_TableBorderRow
+   * @param Google_Service_Slides_TableBorderRow[]
    */
   public function setVerticalBorderRows($verticalBorderRows)
   {
     $this->verticalBorderRows = $verticalBorderRows;
   }
   /**
-   * @return Google_Service_Slides_TableBorderRow
+   * @return Google_Service_Slides_TableBorderRow[]
    */
   public function getVerticalBorderRows()
   {

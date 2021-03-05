@@ -177,11 +177,11 @@ class Google_Service_CloudFunctions_Resource_ProjectsLocationsFunctions extends 
    * names of any unreachable locations.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Maximum number of functions to return per call.
    * @opt_param string pageToken The value returned by the last
    * `ListFunctionsResponse`; indicates that this is a continuation of a prior
    * `ListFunctions` call, and that the system should return the next page of
    * data.
-   * @opt_param int pageSize Maximum number of functions to return per call.
    * @return Google_Service_CloudFunctions_ListFunctionsResponse
    */
   public function listProjectsLocationsFunctions($parent, $optParams = array())

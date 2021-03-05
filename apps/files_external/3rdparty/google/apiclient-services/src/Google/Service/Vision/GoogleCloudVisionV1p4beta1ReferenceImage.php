@@ -24,14 +24,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p4beta1ReferenceImage extends Goo
   public $uri;
 
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1BoundingPoly
+   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1BoundingPoly[]
    */
   public function setBoundingPolys($boundingPolys)
   {
     $this->boundingPolys = $boundingPolys;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1BoundingPoly
+   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1BoundingPoly[]
    */
   public function getBoundingPolys()
   {

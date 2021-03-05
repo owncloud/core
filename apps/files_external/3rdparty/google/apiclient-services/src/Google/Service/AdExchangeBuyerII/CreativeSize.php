@@ -36,14 +36,14 @@ class Google_Service_AdExchangeBuyerII_CreativeSize extends Google_Collection
     return $this->allowedFormats;
   }
   /**
-   * @param Google_Service_AdExchangeBuyerII_Size
+   * @param Google_Service_AdExchangeBuyerII_Size[]
    */
   public function setCompanionSizes($companionSizes)
   {
     $this->companionSizes = $companionSizes;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_Size
+   * @return Google_Service_AdExchangeBuyerII_Size[]
    */
   public function getCompanionSizes()
   {

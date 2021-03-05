@@ -40,14 +40,14 @@ class Google_Service_Dfareporting_SubaccountsListResponse extends Google_Collect
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Dfareporting_Subaccount
+   * @param Google_Service_Dfareporting_Subaccount[]
    */
   public function setSubaccounts($subaccounts)
   {
     $this->subaccounts = $subaccounts;
   }
   /**
-   * @return Google_Service_Dfareporting_Subaccount
+   * @return Google_Service_Dfareporting_Subaccount[]
    */
   public function getSubaccounts()
   {

@@ -48,14 +48,14 @@ class Google_Service_Firestore_StructuredQuery extends Google_Collection
     return $this->endAt;
   }
   /**
-   * @param Google_Service_Firestore_CollectionSelector
+   * @param Google_Service_Firestore_CollectionSelector[]
    */
   public function setFrom($from)
   {
     $this->from = $from;
   }
   /**
-   * @return Google_Service_Firestore_CollectionSelector
+   * @return Google_Service_Firestore_CollectionSelector[]
    */
   public function getFrom()
   {
@@ -78,14 +78,14 @@ class Google_Service_Firestore_StructuredQuery extends Google_Collection
     return $this->offset;
   }
   /**
-   * @param Google_Service_Firestore_Order
+   * @param Google_Service_Firestore_Order[]
    */
   public function setOrderBy($orderBy)
   {
     $this->orderBy = $orderBy;
   }
   /**
-   * @return Google_Service_Firestore_Order
+   * @return Google_Service_Firestore_Order[]
    */
   public function getOrderBy()
   {

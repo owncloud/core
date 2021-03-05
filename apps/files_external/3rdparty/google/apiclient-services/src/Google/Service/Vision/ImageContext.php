@@ -25,6 +25,8 @@ class Google_Service_Vision_ImageContext extends Google_Collection
   protected $latLongRectDataType = '';
   protected $productSearchParamsType = 'Google_Service_Vision_ProductSearchParams';
   protected $productSearchParamsDataType = '';
+  protected $textDetectionParamsType = 'Google_Service_Vision_TextDetectionParams';
+  protected $textDetectionParamsDataType = '';
   protected $webDetectionParamsType = 'Google_Service_Vision_WebDetectionParams';
   protected $webDetectionParamsDataType = '';
 
@@ -77,6 +79,20 @@ class Google_Service_Vision_ImageContext extends Google_Collection
   public function getProductSearchParams()
   {
     return $this->productSearchParams;
+  }
+  /**
+   * @param Google_Service_Vision_TextDetectionParams
+   */
+  public function setTextDetectionParams(Google_Service_Vision_TextDetectionParams $textDetectionParams)
+  {
+    $this->textDetectionParams = $textDetectionParams;
+  }
+  /**
+   * @return Google_Service_Vision_TextDetectionParams
+   */
+  public function getTextDetectionParams()
+  {
+    return $this->textDetectionParams;
   }
   /**
    * @param Google_Service_Vision_WebDetectionParams

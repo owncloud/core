@@ -40,14 +40,14 @@ class Google_Service_Drive_TeamDriveList extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Drive_TeamDrive
+   * @param Google_Service_Drive_TeamDrive[]
    */
   public function setTeamDrives($teamDrives)
   {
     $this->teamDrives = $teamDrives;
   }
   /**
-   * @return Google_Service_Drive_TeamDrive
+   * @return Google_Service_Drive_TeamDrive[]
    */
   public function getTeamDrives()
   {

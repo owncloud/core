@@ -22,14 +22,14 @@ class Google_Service_Vault_CloudStorageSink extends Google_Collection
   protected $filesDataType = 'array';
 
   /**
-   * @param Google_Service_Vault_CloudStorageFile
+   * @param Google_Service_Vault_CloudStorageFile[]
    */
   public function setFiles($files)
   {
     $this->files = $files;
   }
   /**
-   * @return Google_Service_Vault_CloudStorageFile
+   * @return Google_Service_Vault_CloudStorageFile[]
    */
   public function getFiles()
   {

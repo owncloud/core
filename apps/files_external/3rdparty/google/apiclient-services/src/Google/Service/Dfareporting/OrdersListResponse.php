@@ -40,14 +40,14 @@ class Google_Service_Dfareporting_OrdersListResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Dfareporting_Order
+   * @param Google_Service_Dfareporting_Order[]
    */
   public function setOrders($orders)
   {
     $this->orders = $orders;
   }
   /**
-   * @return Google_Service_Dfareporting_Order
+   * @return Google_Service_Dfareporting_Order[]
    */
   public function getOrders()
   {

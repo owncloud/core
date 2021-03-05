@@ -22,14 +22,14 @@ class Google_Service_DisplayVideo_FirstAndThirdPartyAudienceGroup extends Google
   protected $settingsDataType = 'array';
 
   /**
-   * @param Google_Service_DisplayVideo_FirstAndThirdPartyAudienceTargetingSetting
+   * @param Google_Service_DisplayVideo_FirstAndThirdPartyAudienceTargetingSetting[]
    */
   public function setSettings($settings)
   {
     $this->settings = $settings;
   }
   /**
-   * @return Google_Service_DisplayVideo_FirstAndThirdPartyAudienceTargetingSetting
+   * @return Google_Service_DisplayVideo_FirstAndThirdPartyAudienceTargetingSetting[]
    */
   public function getSettings()
   {

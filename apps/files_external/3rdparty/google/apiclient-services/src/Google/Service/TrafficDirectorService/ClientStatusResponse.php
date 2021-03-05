@@ -22,14 +22,14 @@ class Google_Service_TrafficDirectorService_ClientStatusResponse extends Google_
   protected $configDataType = 'array';
 
   /**
-   * @param Google_Service_TrafficDirectorService_ClientConfig
+   * @param Google_Service_TrafficDirectorService_ClientConfig[]
    */
   public function setConfig($config)
   {
     $this->config = $config;
   }
   /**
-   * @return Google_Service_TrafficDirectorService_ClientConfig
+   * @return Google_Service_TrafficDirectorService_ClientConfig[]
    */
   public function getConfig()
   {

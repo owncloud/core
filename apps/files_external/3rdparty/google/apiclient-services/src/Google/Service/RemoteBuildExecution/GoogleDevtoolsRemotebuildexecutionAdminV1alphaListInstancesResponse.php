@@ -22,14 +22,14 @@ class Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildexecutionAdmi
   protected $instancesDataType = 'array';
 
   /**
-   * @param Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildexecutionAdminV1alphaInstance
+   * @param Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildexecutionAdminV1alphaInstance[]
    */
   public function setInstances($instances)
   {
     $this->instances = $instances;
   }
   /**
-   * @return Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildexecutionAdminV1alphaInstance
+   * @return Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildexecutionAdminV1alphaInstance[]
    */
   public function getInstances()
   {

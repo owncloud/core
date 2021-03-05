@@ -31,14 +31,14 @@ class Google_Service_ArtifactRegistry_ListVersionsResponse extends Google_Collec
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ArtifactRegistry_Version
+   * @param Google_Service_ArtifactRegistry_Version[]
    */
   public function setVersions($versions)
   {
     $this->versions = $versions;
   }
   /**
-   * @return Google_Service_ArtifactRegistry_Version
+   * @return Google_Service_ArtifactRegistry_Version[]
    */
   public function getVersions()
   {

@@ -87,10 +87,19 @@ class Google_Service_YouTube_Resource_Videos extends Google_Service_Resource
    * @param Google_Service_YouTube_Video $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool stabilize Should stabilize be applied to the upload.
    * @opt_param bool autoLevels Should auto-levels be applied to the upload.
    * @opt_param bool notifySubscribers Notify the channel subscribers about the
    * new video. As default, the notification is enabled.
+   * @opt_param string onBehalfOfContentOwner *Note:* This parameter is intended
+   * exclusively for YouTube content partners. The *onBehalfOfContentOwner*
+   * parameter indicates that the request's authorization credentials identify a
+   * YouTube CMS user who is acting on behalf of the content owner specified in
+   * the parameter value. This parameter is intended for YouTube content partners
+   * that own and manage many different YouTube channels. It allows content owners
+   * to authenticate once and get access to all their video and channel data,
+   * without having to provide authentication credentials for each individual
+   * channel. The CMS account that the user authenticates with must be linked to
+   * the specified YouTube content owner.
    * @opt_param string onBehalfOfContentOwnerChannel This parameter can only be
    * used in a properly authorized request. *Note:* This parameter is intended
    * exclusively for YouTube content partners. The *onBehalfOfContentOwnerChannel*
@@ -107,16 +116,7 @@ class Google_Service_YouTube_Resource_Videos extends Google_Service_Resource
    * perform actions on behalf of the channel specified in the parameter value,
    * without having to provide authentication credentials for each separate
    * channel.
-   * @opt_param string onBehalfOfContentOwner *Note:* This parameter is intended
-   * exclusively for YouTube content partners. The *onBehalfOfContentOwner*
-   * parameter indicates that the request's authorization credentials identify a
-   * YouTube CMS user who is acting on behalf of the content owner specified in
-   * the parameter value. This parameter is intended for YouTube content partners
-   * that own and manage many different YouTube channels. It allows content owners
-   * to authenticate once and get access to all their video and channel data,
-   * without having to provide authentication credentials for each individual
-   * channel. The CMS account that the user authenticates with must be linked to
-   * the specified YouTube content owner.
+   * @opt_param bool stabilize Should stabilize be applied to the upload.
    * @return Google_Service_YouTube_Video
    */
   public function insert($part, Google_Service_YouTube_Video $postBody, $optParams = array())
@@ -137,30 +137,23 @@ class Google_Service_YouTube_Resource_Videos extends Google_Service_Resource
    * *part=snippet*, the API response will contain all of those properties.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The *pageToken* parameter identifies a specific
-   * page in the result set that should be returned. In an API response, the
-   * nextPageToken and prevPageToken properties identify other pages that could be
-   * retrieved. *Note:* This parameter is supported for use in conjunction with
-   * the myRating and chart parameters, but it is not supported for use in
-   * conjunction with the id parameter.
+   * @opt_param string chart Return the videos that are in the specified chart.
    * @opt_param string hl Stands for "host language". Specifies the localization
    * language of the metadata to be filled into snippet.localized. The field is
    * filled with the default metadata if there is no localization in the specified
    * language. The parameter value must be a language code included in the list
    * returned by the i18nLanguages.list method (e.g. en_US, es_MX).
-   * @opt_param int maxWidth Return the player with maximum height specified in
+   * @opt_param string id Return videos with the given ids.
+   * @opt_param string locale
+   * @opt_param int maxHeight
    * @opt_param string maxResults The *maxResults* parameter specifies the maximum
    * number of items that should be returned in the result set. *Note:* This
    * parameter is supported for use in conjunction with the myRating and chart
    * parameters, but it is not supported for use in conjunction with the id
    * parameter.
-   * @opt_param string id Return videos with the given ids.
-   * @opt_param string chart Return the videos that are in the specified chart.
+   * @opt_param int maxWidth Return the player with maximum height specified in
    * @opt_param string myRating Return videos liked/disliked by the authenticated
    * user. Does not support RateType.RATED_TYPE_NONE.
-   * @opt_param string regionCode Use a chart that is specific to the specified
-   * region
-   * @opt_param string locale
    * @opt_param string onBehalfOfContentOwner *Note:* This parameter is intended
    * exclusively for YouTube content partners. The *onBehalfOfContentOwner*
    * parameter indicates that the request's authorization credentials identify a
@@ -171,7 +164,14 @@ class Google_Service_YouTube_Resource_Videos extends Google_Service_Resource
    * without having to provide authentication credentials for each individual
    * channel. The CMS account that the user authenticates with must be linked to
    * the specified YouTube content owner.
-   * @opt_param int maxHeight
+   * @opt_param string pageToken The *pageToken* parameter identifies a specific
+   * page in the result set that should be returned. In an API response, the
+   * nextPageToken and prevPageToken properties identify other pages that could be
+   * retrieved. *Note:* This parameter is supported for use in conjunction with
+   * the myRating and chart parameters, but it is not supported for use in
+   * conjunction with the id parameter.
+   * @opt_param string regionCode Use a chart that is specific to the specified
+   * region
    * @opt_param string videoCategoryId Use chart that is specific to the specified
    * video category
    * @return Google_Service_YouTube_VideoListResponse

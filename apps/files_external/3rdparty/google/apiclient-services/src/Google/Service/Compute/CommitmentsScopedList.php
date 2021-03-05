@@ -24,14 +24,14 @@ class Google_Service_Compute_CommitmentsScopedList extends Google_Collection
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_Commitment
+   * @param Google_Service_Compute_Commitment[]
    */
   public function setCommitments($commitments)
   {
     $this->commitments = $commitments;
   }
   /**
-   * @return Google_Service_Compute_Commitment
+   * @return Google_Service_Compute_Commitment[]
    */
   public function getCommitments()
   {

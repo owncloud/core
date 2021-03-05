@@ -76,9 +76,9 @@ class Google_Service_DataLabeling_Resource_ProjectsInstructions extends Google_S
    * projects/{project_id}
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter Optional. Filter is not supported at this moment.
    * @opt_param int pageSize Optional. Requested page size. Server may return
    * fewer results than requested. Default value is 100.
-   * @opt_param string filter Optional. Filter is not supported at this moment.
    * @opt_param string pageToken Optional. A token identifying a page of results
    * for the server to return. Typically obtained by
    * ListInstructionsResponse.next_page_token of the previous

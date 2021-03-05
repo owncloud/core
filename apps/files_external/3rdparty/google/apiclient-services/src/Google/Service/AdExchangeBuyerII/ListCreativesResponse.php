@@ -23,14 +23,14 @@ class Google_Service_AdExchangeBuyerII_ListCreativesResponse extends Google_Coll
   public $nextPageToken;
 
   /**
-   * @param Google_Service_AdExchangeBuyerII_Creative
+   * @param Google_Service_AdExchangeBuyerII_Creative[]
    */
   public function setCreatives($creatives)
   {
     $this->creatives = $creatives;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_Creative
+   * @return Google_Service_AdExchangeBuyerII_Creative[]
    */
   public function getCreatives()
   {

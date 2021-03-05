@@ -149,14 +149,14 @@ class Google_Service_Sheets_CellData extends Google_Collection
     return $this->pivotTable;
   }
   /**
-   * @param Google_Service_Sheets_TextFormatRun
+   * @param Google_Service_Sheets_TextFormatRun[]
    */
   public function setTextFormatRuns($textFormatRuns)
   {
     $this->textFormatRuns = $textFormatRuns;
   }
   /**
-   * @return Google_Service_Sheets_TextFormatRun
+   * @return Google_Service_Sheets_TextFormatRun[]
    */
   public function getTextFormatRuns()
   {

@@ -24,14 +24,14 @@ class Google_Service_Compute_TargetHttpsProxiesScopedList extends Google_Collect
   protected $warningDataType = '';
 
   /**
-   * @param Google_Service_Compute_TargetHttpsProxy
+   * @param Google_Service_Compute_TargetHttpsProxy[]
    */
   public function setTargetHttpsProxies($targetHttpsProxies)
   {
     $this->targetHttpsProxies = $targetHttpsProxies;
   }
   /**
-   * @return Google_Service_Compute_TargetHttpsProxy
+   * @return Google_Service_Compute_TargetHttpsProxy[]
    */
   public function getTargetHttpsProxies()
   {

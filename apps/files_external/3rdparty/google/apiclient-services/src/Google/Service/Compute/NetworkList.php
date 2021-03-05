@@ -36,14 +36,14 @@ class Google_Service_Compute_NetworkList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_Network
+   * @param Google_Service_Compute_Network[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_Network
+   * @return Google_Service_Compute_Network[]
    */
   public function getItems()
   {

@@ -23,14 +23,14 @@ class Google_Service_DataFusion_ListAvailableVersionsResponse extends Google_Col
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DataFusion_Version
+   * @param Google_Service_DataFusion_Version[]
    */
   public function setAvailableVersions($availableVersions)
   {
     $this->availableVersions = $availableVersions;
   }
   /**
-   * @return Google_Service_DataFusion_Version
+   * @return Google_Service_DataFusion_Version[]
    */
   public function getAvailableVersions()
   {

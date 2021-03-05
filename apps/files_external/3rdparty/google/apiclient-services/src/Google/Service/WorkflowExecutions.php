@@ -16,7 +16,7 @@
  */
 
 /**
- * Service definition for WorkflowExecutions (v1beta).
+ * Service definition for WorkflowExecutions (v1).
  *
  * <p>
  * Execute workflows created with Workflows API.</p>
@@ -35,7 +35,7 @@ class Google_Service_WorkflowExecutions extends Google_Service
       "https://www.googleapis.com/auth/cloud-platform";
 
   public $projects_locations_workflows_executions;
-  
+
   /**
    * Constructs the internal representation of the WorkflowExecutions service.
    *
@@ -48,7 +48,7 @@ class Google_Service_WorkflowExecutions extends Google_Service
     $this->rootUrl = $rootUrl ?: 'https://workflowexecutions.googleapis.com/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
-    $this->version = 'v1beta';
+    $this->version = 'v1';
     $this->serviceName = 'workflowexecutions';
 
     $this->projects_locations_workflows_executions = new Google_Service_WorkflowExecutions_Resource_ProjectsLocationsWorkflowsExecutions(
@@ -58,7 +58,7 @@ class Google_Service_WorkflowExecutions extends Google_Service
         array(
           'methods' => array(
             'cancel' => array(
-              'path' => 'v1beta/{+name}:cancel',
+              'path' => 'v1/{+name}:cancel',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -68,7 +68,7 @@ class Google_Service_WorkflowExecutions extends Google_Service
                 ),
               ),
             ),'create' => array(
-              'path' => 'v1beta/{+parent}/executions',
+              'path' => 'v1/{+parent}/executions',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
@@ -78,7 +78,7 @@ class Google_Service_WorkflowExecutions extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'v1beta/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -92,7 +92,7 @@ class Google_Service_WorkflowExecutions extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1beta/{+parent}/executions',
+              'path' => 'v1/{+parent}/executions',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'parent' => array(
@@ -100,13 +100,13 @@ class Google_Service_WorkflowExecutions extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
                 'view' => array(
                   'location' => 'query',

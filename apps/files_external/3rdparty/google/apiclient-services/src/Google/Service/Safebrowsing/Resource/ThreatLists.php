@@ -30,12 +30,12 @@ class Google_Service_Safebrowsing_Resource_ThreatLists extends Google_Service_Re
    * (threatLists.listThreatLists)
    *
    * @param array $optParams Optional parameters.
-   * @return Google_Service_Safebrowsing_ListThreatListsResponse
+   * @return Google_Service_Safebrowsing_GoogleSecuritySafebrowsingV4ListThreatListsResponse
    */
   public function listThreatLists($optParams = array())
   {
     $params = array();
     $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_Safebrowsing_ListThreatListsResponse");
+    return $this->call('list', array($params), "Google_Service_Safebrowsing_GoogleSecuritySafebrowsingV4ListThreatListsResponse");
   }
 }

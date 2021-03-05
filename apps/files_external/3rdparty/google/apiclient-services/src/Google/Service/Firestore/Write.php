@@ -95,14 +95,14 @@ class Google_Service_Firestore_Write extends Google_Collection
     return $this->updateMask;
   }
   /**
-   * @param Google_Service_Firestore_FieldTransform
+   * @param Google_Service_Firestore_FieldTransform[]
    */
   public function setUpdateTransforms($updateTransforms)
   {
     $this->updateTransforms = $updateTransforms;
   }
   /**
-   * @return Google_Service_Firestore_FieldTransform
+   * @return Google_Service_Firestore_FieldTransform[]
    */
   public function getUpdateTransforms()
   {

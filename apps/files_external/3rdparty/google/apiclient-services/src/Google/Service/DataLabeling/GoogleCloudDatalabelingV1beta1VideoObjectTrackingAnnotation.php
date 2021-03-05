@@ -40,14 +40,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1VideoObjectTrack
     return $this->annotationSpec;
   }
   /**
-   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ObjectTrackingFrame
+   * @param Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ObjectTrackingFrame[]
    */
   public function setObjectTrackingFrames($objectTrackingFrames)
   {
     $this->objectTrackingFrames = $objectTrackingFrames;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ObjectTrackingFrame
+   * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ObjectTrackingFrame[]
    */
   public function getObjectTrackingFrames()
   {

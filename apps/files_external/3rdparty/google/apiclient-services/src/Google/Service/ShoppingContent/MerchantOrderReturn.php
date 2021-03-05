@@ -62,14 +62,14 @@ class Google_Service_ShoppingContent_MerchantOrderReturn extends Google_Collecti
     return $this->orderReturnId;
   }
   /**
-   * @param Google_Service_ShoppingContent_MerchantOrderReturnItem
+   * @param Google_Service_ShoppingContent_MerchantOrderReturnItem[]
    */
   public function setReturnItems($returnItems)
   {
     $this->returnItems = $returnItems;
   }
   /**
-   * @return Google_Service_ShoppingContent_MerchantOrderReturnItem
+   * @return Google_Service_ShoppingContent_MerchantOrderReturnItem[]
    */
   public function getReturnItems()
   {
@@ -90,14 +90,14 @@ class Google_Service_ShoppingContent_MerchantOrderReturn extends Google_Collecti
     return $this->returnPricingInfo;
   }
   /**
-   * @param Google_Service_ShoppingContent_ReturnShipment
+   * @param Google_Service_ShoppingContent_ReturnShipment[]
    */
   public function setReturnShipments($returnShipments)
   {
     $this->returnShipments = $returnShipments;
   }
   /**
-   * @return Google_Service_ShoppingContent_ReturnShipment
+   * @return Google_Service_ShoppingContent_ReturnShipment[]
    */
   public function getReturnShipments()
   {

@@ -97,14 +97,14 @@ class Google_Service_Dataflow_WorkItem extends Google_Collection
     return $this->mapTask;
   }
   /**
-   * @param Google_Service_Dataflow_Package
+   * @param Google_Service_Dataflow_Package[]
    */
   public function setPackages($packages)
   {
     $this->packages = $packages;
   }
   /**
-   * @return Google_Service_Dataflow_Package
+   * @return Google_Service_Dataflow_Package[]
    */
   public function getPackages()
   {

@@ -23,14 +23,14 @@ class Google_Service_Calendar_EventReminders extends Google_Collection
   public $useDefault;
 
   /**
-   * @param Google_Service_Calendar_EventReminder
+   * @param Google_Service_Calendar_EventReminder[]
    */
   public function setOverrides($overrides)
   {
     $this->overrides = $overrides;
   }
   /**
-   * @return Google_Service_Calendar_EventReminder
+   * @return Google_Service_Calendar_EventReminder[]
    */
   public function getOverrides()
   {

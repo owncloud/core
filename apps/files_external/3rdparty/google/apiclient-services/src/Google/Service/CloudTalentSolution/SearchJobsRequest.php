@@ -15,25 +15,41 @@
  * the License.
  */
 
-class Google_Service_CloudTalentSolution_SearchJobsRequest extends Google_Model
+class Google_Service_CloudTalentSolution_SearchJobsRequest extends Google_Collection
 {
+  protected $collection_key = 'histogramQueries';
+  protected $customRankingInfoType = 'Google_Service_CloudTalentSolution_CustomRankingInfo';
+  protected $customRankingInfoDataType = '';
   public $disableKeywordMatch;
   public $diversificationLevel;
   public $enableBroadening;
-  protected $histogramFacetsType = 'Google_Service_CloudTalentSolution_HistogramFacets';
-  protected $histogramFacetsDataType = '';
+  protected $histogramQueriesType = 'Google_Service_CloudTalentSolution_HistogramQuery';
+  protected $histogramQueriesDataType = 'array';
   protected $jobQueryType = 'Google_Service_CloudTalentSolution_JobQuery';
   protected $jobQueryDataType = '';
   public $jobView;
+  public $maxPageSize;
   public $offset;
   public $orderBy;
-  public $pageSize;
   public $pageToken;
   protected $requestMetadataType = 'Google_Service_CloudTalentSolution_RequestMetadata';
   protected $requestMetadataDataType = '';
-  public $requirePreciseResultSize;
   public $searchMode;
 
+  /**
+   * @param Google_Service_CloudTalentSolution_CustomRankingInfo
+   */
+  public function setCustomRankingInfo(Google_Service_CloudTalentSolution_CustomRankingInfo $customRankingInfo)
+  {
+    $this->customRankingInfo = $customRankingInfo;
+  }
+  /**
+   * @return Google_Service_CloudTalentSolution_CustomRankingInfo
+   */
+  public function getCustomRankingInfo()
+  {
+    return $this->customRankingInfo;
+  }
   public function setDisableKeywordMatch($disableKeywordMatch)
   {
     $this->disableKeywordMatch = $disableKeywordMatch;
@@ -59,18 +75,18 @@ class Google_Service_CloudTalentSolution_SearchJobsRequest extends Google_Model
     return $this->enableBroadening;
   }
   /**
-   * @param Google_Service_CloudTalentSolution_HistogramFacets
+   * @param Google_Service_CloudTalentSolution_HistogramQuery[]
    */
-  public function setHistogramFacets(Google_Service_CloudTalentSolution_HistogramFacets $histogramFacets)
+  public function setHistogramQueries($histogramQueries)
   {
-    $this->histogramFacets = $histogramFacets;
+    $this->histogramQueries = $histogramQueries;
   }
   /**
-   * @return Google_Service_CloudTalentSolution_HistogramFacets
+   * @return Google_Service_CloudTalentSolution_HistogramQuery[]
    */
-  public function getHistogramFacets()
+  public function getHistogramQueries()
   {
-    return $this->histogramFacets;
+    return $this->histogramQueries;
   }
   /**
    * @param Google_Service_CloudTalentSolution_JobQuery
@@ -94,6 +110,14 @@ class Google_Service_CloudTalentSolution_SearchJobsRequest extends Google_Model
   {
     return $this->jobView;
   }
+  public function setMaxPageSize($maxPageSize)
+  {
+    $this->maxPageSize = $maxPageSize;
+  }
+  public function getMaxPageSize()
+  {
+    return $this->maxPageSize;
+  }
   public function setOffset($offset)
   {
     $this->offset = $offset;
@@ -109,14 +133,6 @@ class Google_Service_CloudTalentSolution_SearchJobsRequest extends Google_Model
   public function getOrderBy()
   {
     return $this->orderBy;
-  }
-  public function setPageSize($pageSize)
-  {
-    $this->pageSize = $pageSize;
-  }
-  public function getPageSize()
-  {
-    return $this->pageSize;
   }
   public function setPageToken($pageToken)
   {
@@ -139,14 +155,6 @@ class Google_Service_CloudTalentSolution_SearchJobsRequest extends Google_Model
   public function getRequestMetadata()
   {
     return $this->requestMetadata;
-  }
-  public function setRequirePreciseResultSize($requirePreciseResultSize)
-  {
-    $this->requirePreciseResultSize = $requirePreciseResultSize;
-  }
-  public function getRequirePreciseResultSize()
-  {
-    return $this->requirePreciseResultSize;
   }
   public function setSearchMode($searchMode)
   {

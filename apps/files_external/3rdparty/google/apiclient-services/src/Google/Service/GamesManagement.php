@@ -40,7 +40,7 @@ class Google_Service_GamesManagement extends Google_Service
   public $events;
   public $players;
   public $scores;
-  
+
   /**
    * Constructs the internal representation of the GamesManagement service.
    *

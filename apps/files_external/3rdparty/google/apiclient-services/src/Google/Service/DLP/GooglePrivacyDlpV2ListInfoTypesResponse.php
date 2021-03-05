@@ -22,14 +22,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2ListInfoTypesResponse extends Google_
   protected $infoTypesDataType = 'array';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2InfoTypeDescription
+   * @param Google_Service_DLP_GooglePrivacyDlpV2InfoTypeDescription[]
    */
   public function setInfoTypes($infoTypes)
   {
     $this->infoTypes = $infoTypes;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2InfoTypeDescription
+   * @return Google_Service_DLP_GooglePrivacyDlpV2InfoTypeDescription[]
    */
   public function getInfoTypes()
   {

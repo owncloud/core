@@ -46,14 +46,14 @@ class Google_Service_PagespeedInsights_PagespeedApiLoadingExperienceV5 extends G
     return $this->initialUrl;
   }
   /**
-   * @param Google_Service_PagespeedInsights_UserPageLoadMetricV5
+   * @param Google_Service_PagespeedInsights_UserPageLoadMetricV5[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_PagespeedInsights_UserPageLoadMetricV5
+   * @return Google_Service_PagespeedInsights_UserPageLoadMetricV5[]
    */
   public function getMetrics()
   {

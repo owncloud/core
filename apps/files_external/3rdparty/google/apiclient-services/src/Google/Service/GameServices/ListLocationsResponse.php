@@ -23,14 +23,14 @@ class Google_Service_GameServices_ListLocationsResponse extends Google_Collectio
   public $nextPageToken;
 
   /**
-   * @param Google_Service_GameServices_Location
+   * @param Google_Service_GameServices_Location[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_GameServices_Location
+   * @return Google_Service_GameServices_Location[]
    */
   public function getLocations()
   {

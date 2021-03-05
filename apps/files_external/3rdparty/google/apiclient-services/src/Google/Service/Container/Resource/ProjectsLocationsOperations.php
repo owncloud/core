@@ -47,16 +47,16 @@ class Google_Service_Container_Resource_ProjectsLocationsOperations extends Goog
    * operation to get. Specified in the format `projects/locations/operations`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string zone Deprecated. The name of the Google Compute Engine
-   * [zone](https://cloud.google.com/compute/docs/zones#available) in which the
-   * cluster resides. This field has been deprecated and replaced by the name
-   * field.
    * @opt_param string operationId Deprecated. The server-assigned `name` of the
    * operation. This field has been deprecated and replaced by the name field.
    * @opt_param string projectId Deprecated. The Google Developers Console
    * [project ID or project
    * number](https://support.google.com/cloud/answer/6158840). This field has been
    * deprecated and replaced by the name field.
+   * @opt_param string zone Deprecated. The name of the Google Compute Engine
+   * [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+   * cluster resides. This field has been deprecated and replaced by the name
+   * field.
    * @return Google_Service_Container_Operation
    */
   public function get($name, $optParams = array())
@@ -74,14 +74,14 @@ class Google_Service_Container_Resource_ProjectsLocationsOperations extends Goog
    * matches all zones and all regions.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string zone Deprecated. The name of the Google Compute Engine
-   * [zone](https://cloud.google.com/compute/docs/zones#available) to return
-   * operations for, or `-` for all zones. This field has been deprecated and
-   * replaced by the parent field.
    * @opt_param string projectId Deprecated. The Google Developers Console
    * [project ID or project
    * number](https://support.google.com/cloud/answer/6158840). This field has been
    * deprecated and replaced by the parent field.
+   * @opt_param string zone Deprecated. The name of the Google Compute Engine
+   * [zone](https://cloud.google.com/compute/docs/zones#available) to return
+   * operations for, or `-` for all zones. This field has been deprecated and
+   * replaced by the parent field.
    * @return Google_Service_Container_ListOperationsResponse
    */
   public function listProjectsLocationsOperations($parent, $optParams = array())

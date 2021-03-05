@@ -32,14 +32,14 @@ class Google_Service_Compute_NodeTemplateListWarning extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_NodeTemplateListWarningData
+   * @param Google_Service_Compute_NodeTemplateListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_NodeTemplateListWarningData
+   * @return Google_Service_Compute_NodeTemplateListWarningData[]
    */
   public function getData()
   {

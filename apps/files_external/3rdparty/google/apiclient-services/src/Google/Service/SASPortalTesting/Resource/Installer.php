@@ -26,7 +26,7 @@
 class Google_Service_SASPortalTesting_Resource_Installer extends Google_Service_Resource
 {
   /**
-   * Generates a secret to be used with the ValidateInstaller method
+   * Generates a secret to be used with the ValidateInstaller.
    * (installer.generateSecret)
    *
    * @param Google_Service_SASPortalTesting_SasPortalGenerateSecretRequest $postBody

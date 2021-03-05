@@ -23,14 +23,14 @@ class Google_Service_Classroom_ListInvitationsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Classroom_Invitation
+   * @param Google_Service_Classroom_Invitation[]
    */
   public function setInvitations($invitations)
   {
     $this->invitations = $invitations;
   }
   /**
-   * @return Google_Service_Classroom_Invitation
+   * @return Google_Service_Classroom_Invitation[]
    */
   public function getInvitations()
   {

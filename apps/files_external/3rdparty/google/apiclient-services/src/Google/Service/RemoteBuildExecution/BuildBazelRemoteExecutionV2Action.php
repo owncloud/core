@@ -15,15 +15,16 @@
  * the License.
  */
 
-class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Action extends Google_Collection
+class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Action extends Google_Model
 {
-  protected $collection_key = 'outputNodeProperties';
   protected $commandDigestType = 'Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Digest';
   protected $commandDigestDataType = '';
   public $doNotCache;
   protected $inputRootDigestType = 'Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Digest';
   protected $inputRootDigestDataType = '';
-  public $outputNodeProperties;
+  protected $platformType = 'Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Platform';
+  protected $platformDataType = '';
+  public $salt;
   public $timeout;
 
   /**
@@ -62,13 +63,27 @@ class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Action exte
   {
     return $this->inputRootDigest;
   }
-  public function setOutputNodeProperties($outputNodeProperties)
+  /**
+   * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Platform
+   */
+  public function setPlatform(Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Platform $platform)
   {
-    $this->outputNodeProperties = $outputNodeProperties;
+    $this->platform = $platform;
   }
-  public function getOutputNodeProperties()
+  /**
+   * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2Platform
+   */
+  public function getPlatform()
   {
-    return $this->outputNodeProperties;
+    return $this->platform;
+  }
+  public function setSalt($salt)
+  {
+    $this->salt = $salt;
+  }
+  public function getSalt()
+  {
+    return $this->salt;
   }
   public function setTimeout($timeout)
   {

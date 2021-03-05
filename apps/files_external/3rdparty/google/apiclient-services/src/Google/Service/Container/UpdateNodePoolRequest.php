@@ -20,6 +20,10 @@ class Google_Service_Container_UpdateNodePoolRequest extends Google_Collection
   protected $collection_key = 'locations';
   public $clusterId;
   public $imageType;
+  protected $kubeletConfigType = 'Google_Service_Container_NodeKubeletConfig';
+  protected $kubeletConfigDataType = '';
+  protected $linuxNodeConfigType = 'Google_Service_Container_LinuxNodeConfig';
+  protected $linuxNodeConfigDataType = '';
   public $locations;
   public $name;
   public $nodePoolId;
@@ -46,6 +50,34 @@ class Google_Service_Container_UpdateNodePoolRequest extends Google_Collection
   public function getImageType()
   {
     return $this->imageType;
+  }
+  /**
+   * @param Google_Service_Container_NodeKubeletConfig
+   */
+  public function setKubeletConfig(Google_Service_Container_NodeKubeletConfig $kubeletConfig)
+  {
+    $this->kubeletConfig = $kubeletConfig;
+  }
+  /**
+   * @return Google_Service_Container_NodeKubeletConfig
+   */
+  public function getKubeletConfig()
+  {
+    return $this->kubeletConfig;
+  }
+  /**
+   * @param Google_Service_Container_LinuxNodeConfig
+   */
+  public function setLinuxNodeConfig(Google_Service_Container_LinuxNodeConfig $linuxNodeConfig)
+  {
+    $this->linuxNodeConfig = $linuxNodeConfig;
+  }
+  /**
+   * @return Google_Service_Container_LinuxNodeConfig
+   */
+  public function getLinuxNodeConfig()
+  {
+    return $this->linuxNodeConfig;
   }
   public function setLocations($locations)
   {

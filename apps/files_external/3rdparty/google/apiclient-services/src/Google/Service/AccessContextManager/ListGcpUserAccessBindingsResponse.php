@@ -23,14 +23,14 @@ class Google_Service_AccessContextManager_ListGcpUserAccessBindingsResponse exte
   public $nextPageToken;
 
   /**
-   * @param Google_Service_AccessContextManager_GcpUserAccessBinding
+   * @param Google_Service_AccessContextManager_GcpUserAccessBinding[]
    */
   public function setGcpUserAccessBindings($gcpUserAccessBindings)
   {
     $this->gcpUserAccessBindings = $gcpUserAccessBindings;
   }
   /**
-   * @return Google_Service_AccessContextManager_GcpUserAccessBinding
+   * @return Google_Service_AccessContextManager_GcpUserAccessBinding[]
    */
   public function getGcpUserAccessBindings()
   {

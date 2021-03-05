@@ -23,14 +23,14 @@ class Google_Service_Classroom_ListCourseAliasesResponse extends Google_Collecti
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Classroom_CourseAlias
+   * @param Google_Service_Classroom_CourseAlias[]
    */
   public function setAliases($aliases)
   {
     $this->aliases = $aliases;
   }
   /**
-   * @return Google_Service_Classroom_CourseAlias
+   * @return Google_Service_Classroom_CourseAlias[]
    */
   public function getAliases()
   {

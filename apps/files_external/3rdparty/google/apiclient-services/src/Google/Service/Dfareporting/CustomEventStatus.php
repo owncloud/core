@@ -39,14 +39,14 @@ class Google_Service_Dfareporting_CustomEventStatus extends Google_Collection
     return $this->customEvent;
   }
   /**
-   * @param Google_Service_Dfareporting_CustomEventError
+   * @param Google_Service_Dfareporting_CustomEventError[]
    */
   public function setErrors($errors)
   {
     $this->errors = $errors;
   }
   /**
-   * @return Google_Service_Dfareporting_CustomEventError
+   * @return Google_Service_Dfareporting_CustomEventError[]
    */
   public function getErrors()
   {

@@ -28,7 +28,7 @@ class Google_Service_Directory_Resource_Domains extends Google_Service_Resource
   /**
    * Deletes a domain of the customer. (domains.delete)
    *
-   * @param string $customer Immutable ID of the G Suite account.
+   * @param string $customer Immutable ID of the Google Workspace account.
    * @param string $domainName Name of domain to be deleted
    * @param array $optParams Optional parameters.
    */
@@ -41,7 +41,7 @@ class Google_Service_Directory_Resource_Domains extends Google_Service_Resource
   /**
    * Retrieves a domain of the customer. (domains.get)
    *
-   * @param string $customer Immutable ID of the G Suite account.
+   * @param string $customer Immutable ID of the Google Workspace account.
    * @param string $domainName Name of domain to be retrieved
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_Domains
@@ -55,7 +55,7 @@ class Google_Service_Directory_Resource_Domains extends Google_Service_Resource
   /**
    * Inserts a domain of the customer. (domains.insert)
    *
-   * @param string $customer Immutable ID of the G Suite account.
+   * @param string $customer Immutable ID of the Google Workspace account.
    * @param Google_Service_Directory_Domains $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_Domains
@@ -69,7 +69,7 @@ class Google_Service_Directory_Resource_Domains extends Google_Service_Resource
   /**
    * Lists the domains of the customer. (domains.listDomains)
    *
-   * @param string $customer Immutable ID of the G Suite account.
+   * @param string $customer Immutable ID of the Google Workspace account.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Directory_Domains2
    */

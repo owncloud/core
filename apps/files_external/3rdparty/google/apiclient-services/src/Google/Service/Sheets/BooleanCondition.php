@@ -31,14 +31,14 @@ class Google_Service_Sheets_BooleanCondition extends Google_Collection
     return $this->type;
   }
   /**
-   * @param Google_Service_Sheets_ConditionValue
+   * @param Google_Service_Sheets_ConditionValue[]
    */
   public function setValues($values)
   {
     $this->values = $values;
   }
   /**
-   * @return Google_Service_Sheets_ConditionValue
+   * @return Google_Service_Sheets_ConditionValue[]
    */
   public function getValues()
   {

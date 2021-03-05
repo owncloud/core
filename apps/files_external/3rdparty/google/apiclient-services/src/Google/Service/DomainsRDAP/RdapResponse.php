@@ -67,14 +67,14 @@ class Google_Service_DomainsRDAP_RdapResponse extends Google_Collection
     return $this->lang;
   }
   /**
-   * @param Google_Service_DomainsRDAP_Notice
+   * @param Google_Service_DomainsRDAP_Notice[]
    */
   public function setNotices($notices)
   {
     $this->notices = $notices;
   }
   /**
-   * @return Google_Service_DomainsRDAP_Notice
+   * @return Google_Service_DomainsRDAP_Notice[]
    */
   public function getNotices()
   {

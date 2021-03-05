@@ -58,14 +58,14 @@ class Google_Service_Classroom_UserProfile extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Classroom_GlobalPermission
+   * @param Google_Service_Classroom_GlobalPermission[]
    */
   public function setPermissions($permissions)
   {
     $this->permissions = $permissions;
   }
   /**
-   * @return Google_Service_Classroom_GlobalPermission
+   * @return Google_Service_Classroom_GlobalPermission[]
    */
   public function getPermissions()
   {

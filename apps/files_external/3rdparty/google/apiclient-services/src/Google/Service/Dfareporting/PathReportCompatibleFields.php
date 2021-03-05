@@ -29,28 +29,28 @@ class Google_Service_Dfareporting_PathReportCompatibleFields extends Google_Coll
   protected $pathFiltersDataType = 'array';
 
   /**
-   * @param Google_Service_Dfareporting_Dimension
+   * @param Google_Service_Dfareporting_Dimension[]
    */
   public function setChannelGroupings($channelGroupings)
   {
     $this->channelGroupings = $channelGroupings;
   }
   /**
-   * @return Google_Service_Dfareporting_Dimension
+   * @return Google_Service_Dfareporting_Dimension[]
    */
   public function getChannelGroupings()
   {
     return $this->channelGroupings;
   }
   /**
-   * @param Google_Service_Dfareporting_Dimension
+   * @param Google_Service_Dfareporting_Dimension[]
    */
   public function setDimensions($dimensions)
   {
     $this->dimensions = $dimensions;
   }
   /**
-   * @return Google_Service_Dfareporting_Dimension
+   * @return Google_Service_Dfareporting_Dimension[]
    */
   public function getDimensions()
   {
@@ -65,28 +65,28 @@ class Google_Service_Dfareporting_PathReportCompatibleFields extends Google_Coll
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dfareporting_Metric
+   * @param Google_Service_Dfareporting_Metric[]
    */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
   /**
-   * @return Google_Service_Dfareporting_Metric
+   * @return Google_Service_Dfareporting_Metric[]
    */
   public function getMetrics()
   {
     return $this->metrics;
   }
   /**
-   * @param Google_Service_Dfareporting_Dimension
+   * @param Google_Service_Dfareporting_Dimension[]
    */
   public function setPathFilters($pathFilters)
   {
     $this->pathFilters = $pathFilters;
   }
   /**
-   * @return Google_Service_Dfareporting_Dimension
+   * @return Google_Service_Dfareporting_Dimension[]
    */
   public function getPathFilters()
   {

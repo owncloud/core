@@ -23,14 +23,14 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_ListLo
   public $nextPageToken;
 
   /**
-   * @param Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Location
+   * @param Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Location[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Location
+   * @return Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Location[]
    */
   public function getLocations()
   {

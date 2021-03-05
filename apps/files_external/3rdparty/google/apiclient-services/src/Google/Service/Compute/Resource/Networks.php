@@ -96,6 +96,21 @@ class Google_Service_Compute_Resource_Networks extends Google_Service_Resource
     return $this->call('get', array($params), "Google_Service_Compute_Network");
   }
   /**
+   * Returns the effective firewalls on a given network.
+   * (networks.getEffectiveFirewalls)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $network Name of the network for this request.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Compute_NetworksGetEffectiveFirewallsResponse
+   */
+  public function getEffectiveFirewalls($project, $network, $optParams = array())
+  {
+    $params = array('project' => $project, 'network' => $network);
+    $params = array_merge($params, $optParams);
+    return $this->call('getEffectiveFirewalls', array($params), "Google_Service_Compute_NetworksGetEffectiveFirewallsResponse");
+  }
+  /**
    * Creates a network in the specified project using the data included in the
    * request. (networks.insert)
    *
@@ -169,8 +184,8 @@ class Google_Service_Compute_Resource_Networks extends Google_Service_Resource
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
+   * which provides partial results in case of failure. The default value is
+   * false.
    * @return Google_Service_Compute_NetworkList
    */
   public function listNetworks($project, $optParams = array())
@@ -231,8 +246,8 @@ class Google_Service_Compute_Resource_Networks extends Google_Service_Resource
    * @opt_param string region The region of the request. The response will include
    * all subnet routes, static routes and dynamic routes in the region.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
+   * which provides partial results in case of failure. The default value is
+   * false.
    * @return Google_Service_Compute_ExchangedPeeringRoutesList
    */
   public function listPeeringRoutes($project, $network, $optParams = array())

@@ -23,14 +23,14 @@ class Google_Service_Dfareporting_BrowsersListResponse extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_Dfareporting_Browser
+   * @param Google_Service_Dfareporting_Browser[]
    */
   public function setBrowsers($browsers)
   {
     $this->browsers = $browsers;
   }
   /**
-   * @return Google_Service_Dfareporting_Browser
+   * @return Google_Service_Dfareporting_Browser[]
    */
   public function getBrowsers()
   {

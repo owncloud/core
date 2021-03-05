@@ -35,14 +35,14 @@ class Google_Service_CloudRun_RevisionSpec extends Google_Collection
     return $this->containerConcurrency;
   }
   /**
-   * @param Google_Service_CloudRun_Container
+   * @param Google_Service_CloudRun_Container[]
    */
   public function setContainers($containers)
   {
     $this->containers = $containers;
   }
   /**
-   * @return Google_Service_CloudRun_Container
+   * @return Google_Service_CloudRun_Container[]
    */
   public function getContainers()
   {
@@ -65,14 +65,14 @@ class Google_Service_CloudRun_RevisionSpec extends Google_Collection
     return $this->timeoutSeconds;
   }
   /**
-   * @param Google_Service_CloudRun_Volume
+   * @param Google_Service_CloudRun_Volume[]
    */
   public function setVolumes($volumes)
   {
     $this->volumes = $volumes;
   }
   /**
-   * @return Google_Service_CloudRun_Volume
+   * @return Google_Service_CloudRun_Volume[]
    */
   public function getVolumes()
   {

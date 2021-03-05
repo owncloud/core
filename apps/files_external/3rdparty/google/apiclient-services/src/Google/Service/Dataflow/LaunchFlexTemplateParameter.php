@@ -25,6 +25,8 @@ class Google_Service_Dataflow_LaunchFlexTemplateParameter extends Google_Model
   public $jobName;
   public $launchOptions;
   public $parameters;
+  public $transformNameMappings;
+  public $update;
 
   /**
    * @param Google_Service_Dataflow_ContainerSpec
@@ -85,5 +87,21 @@ class Google_Service_Dataflow_LaunchFlexTemplateParameter extends Google_Model
   public function getParameters()
   {
     return $this->parameters;
+  }
+  public function setTransformNameMappings($transformNameMappings)
+  {
+    $this->transformNameMappings = $transformNameMappings;
+  }
+  public function getTransformNameMappings()
+  {
+    return $this->transformNameMappings;
+  }
+  public function setUpdate($update)
+  {
+    $this->update = $update;
+  }
+  public function getUpdate()
+  {
+    return $this->update;
   }
 }

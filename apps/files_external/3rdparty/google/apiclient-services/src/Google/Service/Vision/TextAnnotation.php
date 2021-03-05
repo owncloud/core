@@ -23,14 +23,14 @@ class Google_Service_Vision_TextAnnotation extends Google_Collection
   public $text;
 
   /**
-   * @param Google_Service_Vision_Page
+   * @param Google_Service_Vision_Page[]
    */
   public function setPages($pages)
   {
     $this->pages = $pages;
   }
   /**
-   * @return Google_Service_Vision_Page
+   * @return Google_Service_Vision_Page[]
    */
   public function getPages()
   {

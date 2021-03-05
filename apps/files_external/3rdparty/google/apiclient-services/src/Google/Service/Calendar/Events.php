@@ -41,14 +41,14 @@ class Google_Service_Calendar_Events extends Google_Collection
     return $this->accessRole;
   }
   /**
-   * @param Google_Service_Calendar_EventReminder
+   * @param Google_Service_Calendar_EventReminder[]
    */
   public function setDefaultReminders($defaultReminders)
   {
     $this->defaultReminders = $defaultReminders;
   }
   /**
-   * @return Google_Service_Calendar_EventReminder
+   * @return Google_Service_Calendar_EventReminder[]
    */
   public function getDefaultReminders()
   {
@@ -71,14 +71,14 @@ class Google_Service_Calendar_Events extends Google_Collection
     return $this->etag;
   }
   /**
-   * @param Google_Service_Calendar_Event
+   * @param Google_Service_Calendar_Event[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Calendar_Event
+   * @return Google_Service_Calendar_Event[]
    */
   public function getItems()
   {

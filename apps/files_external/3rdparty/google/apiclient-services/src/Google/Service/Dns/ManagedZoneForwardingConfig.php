@@ -31,14 +31,14 @@ class Google_Service_Dns_ManagedZoneForwardingConfig extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dns_ManagedZoneForwardingConfigNameServerTarget
+   * @param Google_Service_Dns_ManagedZoneForwardingConfigNameServerTarget[]
    */
   public function setTargetNameServers($targetNameServers)
   {
     $this->targetNameServers = $targetNameServers;
   }
   /**
-   * @return Google_Service_Dns_ManagedZoneForwardingConfigNameServerTarget
+   * @return Google_Service_Dns_ManagedZoneForwardingConfigNameServerTarget[]
    */
   public function getTargetNameServers()
   {

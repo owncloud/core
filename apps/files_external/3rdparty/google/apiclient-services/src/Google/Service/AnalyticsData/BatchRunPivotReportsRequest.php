@@ -38,14 +38,14 @@ class Google_Service_AnalyticsData_BatchRunPivotReportsRequest extends Google_Co
     return $this->entity;
   }
   /**
-   * @param Google_Service_AnalyticsData_RunPivotReportRequest
+   * @param Google_Service_AnalyticsData_RunPivotReportRequest[]
    */
   public function setRequests($requests)
   {
     $this->requests = $requests;
   }
   /**
-   * @return Google_Service_AnalyticsData_RunPivotReportRequest
+   * @return Google_Service_AnalyticsData_RunPivotReportRequest[]
    */
   public function getRequests()
   {

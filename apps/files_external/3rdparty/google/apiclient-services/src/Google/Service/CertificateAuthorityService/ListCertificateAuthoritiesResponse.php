@@ -24,14 +24,14 @@ class Google_Service_CertificateAuthorityService_ListCertificateAuthoritiesRespo
   public $unreachable;
 
   /**
-   * @param Google_Service_CertificateAuthorityService_CertificateAuthority
+   * @param Google_Service_CertificateAuthorityService_CertificateAuthority[]
    */
   public function setCertificateAuthorities($certificateAuthorities)
   {
     $this->certificateAuthorities = $certificateAuthorities;
   }
   /**
-   * @return Google_Service_CertificateAuthorityService_CertificateAuthority
+   * @return Google_Service_CertificateAuthorityService_CertificateAuthority[]
    */
   public function getCertificateAuthorities()
   {

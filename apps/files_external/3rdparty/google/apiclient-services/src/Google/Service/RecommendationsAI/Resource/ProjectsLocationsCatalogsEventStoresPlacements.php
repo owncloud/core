@@ -28,7 +28,8 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsEventSt
   /**
    * Makes a recommendation prediction. If using API Key based authentication, the
    * API Key must be registered using the PredictionApiKeyRegistry service. [Learn
-   * more](/recommendations-ai/docs/setting-up#register-key). (placements.predict)
+   * more](https://cloud.google.com/recommendations-ai/docs/setting-up#register-
+   * key). (placements.predict)
    *
    * @param string $name Required. Full resource name of the format: {name=project
    * s/locations/global/catalogs/default_catalog/eventStores/default_event_store/p

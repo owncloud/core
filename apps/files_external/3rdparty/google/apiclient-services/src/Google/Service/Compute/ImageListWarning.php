@@ -32,14 +32,14 @@ class Google_Service_Compute_ImageListWarning extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_ImageListWarningData
+   * @param Google_Service_Compute_ImageListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_ImageListWarningData
+   * @return Google_Service_Compute_ImageListWarningData[]
    */
   public function getData()
   {

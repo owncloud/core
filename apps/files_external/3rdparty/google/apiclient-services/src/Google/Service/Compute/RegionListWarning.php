@@ -32,14 +32,14 @@ class Google_Service_Compute_RegionListWarning extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_RegionListWarningData
+   * @param Google_Service_Compute_RegionListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_RegionListWarningData
+   * @return Google_Service_Compute_RegionListWarningData[]
    */
   public function getData()
   {

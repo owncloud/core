@@ -34,28 +34,28 @@ class Google_Service_AnalyticsData_RunPivotReportResponse extends Google_Collect
   protected $rowsDataType = 'array';
 
   /**
-   * @param Google_Service_AnalyticsData_Row
+   * @param Google_Service_AnalyticsData_Row[]
    */
   public function setAggregates($aggregates)
   {
     $this->aggregates = $aggregates;
   }
   /**
-   * @return Google_Service_AnalyticsData_Row
+   * @return Google_Service_AnalyticsData_Row[]
    */
   public function getAggregates()
   {
     return $this->aggregates;
   }
   /**
-   * @param Google_Service_AnalyticsData_DimensionHeader
+   * @param Google_Service_AnalyticsData_DimensionHeader[]
    */
   public function setDimensionHeaders($dimensionHeaders)
   {
     $this->dimensionHeaders = $dimensionHeaders;
   }
   /**
-   * @return Google_Service_AnalyticsData_DimensionHeader
+   * @return Google_Service_AnalyticsData_DimensionHeader[]
    */
   public function getDimensionHeaders()
   {
@@ -76,28 +76,28 @@ class Google_Service_AnalyticsData_RunPivotReportResponse extends Google_Collect
     return $this->metadata;
   }
   /**
-   * @param Google_Service_AnalyticsData_MetricHeader
+   * @param Google_Service_AnalyticsData_MetricHeader[]
    */
   public function setMetricHeaders($metricHeaders)
   {
     $this->metricHeaders = $metricHeaders;
   }
   /**
-   * @return Google_Service_AnalyticsData_MetricHeader
+   * @return Google_Service_AnalyticsData_MetricHeader[]
    */
   public function getMetricHeaders()
   {
     return $this->metricHeaders;
   }
   /**
-   * @param Google_Service_AnalyticsData_PivotHeader
+   * @param Google_Service_AnalyticsData_PivotHeader[]
    */
   public function setPivotHeaders($pivotHeaders)
   {
     $this->pivotHeaders = $pivotHeaders;
   }
   /**
-   * @return Google_Service_AnalyticsData_PivotHeader
+   * @return Google_Service_AnalyticsData_PivotHeader[]
    */
   public function getPivotHeaders()
   {
@@ -118,14 +118,14 @@ class Google_Service_AnalyticsData_RunPivotReportResponse extends Google_Collect
     return $this->propertyQuota;
   }
   /**
-   * @param Google_Service_AnalyticsData_Row
+   * @param Google_Service_AnalyticsData_Row[]
    */
   public function setRows($rows)
   {
     $this->rows = $rows;
   }
   /**
-   * @return Google_Service_AnalyticsData_Row
+   * @return Google_Service_AnalyticsData_Row[]
    */
   public function getRows()
   {

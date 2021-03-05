@@ -55,14 +55,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p4beta1AnnotateFileResponse exten
     return $this->inputConfig;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1AnnotateImageResponse
+   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1AnnotateImageResponse[]
    */
   public function setResponses($responses)
   {
     $this->responses = $responses;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1AnnotateImageResponse
+   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1AnnotateImageResponse[]
    */
   public function getResponses()
   {

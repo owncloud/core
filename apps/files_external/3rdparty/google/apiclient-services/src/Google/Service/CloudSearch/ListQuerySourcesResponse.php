@@ -31,14 +31,14 @@ class Google_Service_CloudSearch_ListQuerySourcesResponse extends Google_Collect
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_CloudSearch_QuerySource
+   * @param Google_Service_CloudSearch_QuerySource[]
    */
   public function setSources($sources)
   {
     $this->sources = $sources;
   }
   /**
-   * @return Google_Service_CloudSearch_QuerySource
+   * @return Google_Service_CloudSearch_QuerySource[]
    */
   public function getSources()
   {

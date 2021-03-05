@@ -17,9 +17,18 @@
 
 class Google_Service_DisplayVideo_OnScreenPositionAssignedTargetingOptionDetails extends Google_Model
 {
+  public $adType;
   public $onScreenPosition;
   public $targetingOptionId;
 
+  public function setAdType($adType)
+  {
+    $this->adType = $adType;
+  }
+  public function getAdType()
+  {
+    return $this->adType;
+  }
   public function setOnScreenPosition($onScreenPosition)
   {
     $this->onScreenPosition = $onScreenPosition;

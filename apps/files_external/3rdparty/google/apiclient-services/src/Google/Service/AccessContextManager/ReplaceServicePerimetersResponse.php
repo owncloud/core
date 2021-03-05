@@ -22,14 +22,14 @@ class Google_Service_AccessContextManager_ReplaceServicePerimetersResponse exten
   protected $servicePerimetersDataType = 'array';
 
   /**
-   * @param Google_Service_AccessContextManager_ServicePerimeter
+   * @param Google_Service_AccessContextManager_ServicePerimeter[]
    */
   public function setServicePerimeters($servicePerimeters)
   {
     $this->servicePerimeters = $servicePerimeters;
   }
   /**
-   * @return Google_Service_AccessContextManager_ServicePerimeter
+   * @return Google_Service_AccessContextManager_ServicePerimeter[]
    */
   public function getServicePerimeters()
   {

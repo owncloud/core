@@ -32,14 +32,14 @@ class Google_Service_ShoppingContent_LiasettingsGetAccessibleGmbAccountsResponse
     return $this->accountId;
   }
   /**
-   * @param Google_Service_ShoppingContent_GmbAccountsGmbAccount
+   * @param Google_Service_ShoppingContent_GmbAccountsGmbAccount[]
    */
   public function setGmbAccounts($gmbAccounts)
   {
     $this->gmbAccounts = $gmbAccounts;
   }
   /**
-   * @return Google_Service_ShoppingContent_GmbAccountsGmbAccount
+   * @return Google_Service_ShoppingContent_GmbAccountsGmbAccount[]
    */
   public function getGmbAccounts()
   {

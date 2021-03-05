@@ -31,14 +31,14 @@ class Google_Service_CloudComposer_ListOperationsResponse extends Google_Collect
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_CloudComposer_Operation
+   * @param Google_Service_CloudComposer_Operation[]
    */
   public function setOperations($operations)
   {
     $this->operations = $operations;
   }
   /**
-   * @return Google_Service_CloudComposer_Operation
+   * @return Google_Service_CloudComposer_Operation[]
    */
   public function getOperations()
   {

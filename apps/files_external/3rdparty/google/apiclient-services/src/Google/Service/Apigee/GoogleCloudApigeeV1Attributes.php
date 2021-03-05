@@ -22,14 +22,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1Attributes extends Google_Collect
   protected $attributeDataType = 'array';
 
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1Attribute
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1Attribute[]
    */
   public function setAttribute($attribute)
   {
     $this->attribute = $attribute;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1Attribute
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1Attribute[]
    */
   public function getAttribute()
   {

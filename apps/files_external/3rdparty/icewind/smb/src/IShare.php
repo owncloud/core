@@ -100,7 +100,7 @@ interface IShare {
 	/**
 	 * List the content of a remote folder
 	 *
-	 * @param $path
+	 * @param string $path
 	 * @return \Icewind\SMB\IFileInfo[]
 	 *
 	 * @throws \Icewind\SMB\Exception\NotFoundException

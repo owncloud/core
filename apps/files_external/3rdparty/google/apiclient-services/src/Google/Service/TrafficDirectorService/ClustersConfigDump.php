@@ -27,42 +27,42 @@ class Google_Service_TrafficDirectorService_ClustersConfigDump extends Google_Co
   public $versionInfo;
 
   /**
-   * @param Google_Service_TrafficDirectorService_DynamicCluster
+   * @param Google_Service_TrafficDirectorService_DynamicCluster[]
    */
   public function setDynamicActiveClusters($dynamicActiveClusters)
   {
     $this->dynamicActiveClusters = $dynamicActiveClusters;
   }
   /**
-   * @return Google_Service_TrafficDirectorService_DynamicCluster
+   * @return Google_Service_TrafficDirectorService_DynamicCluster[]
    */
   public function getDynamicActiveClusters()
   {
     return $this->dynamicActiveClusters;
   }
   /**
-   * @param Google_Service_TrafficDirectorService_DynamicCluster
+   * @param Google_Service_TrafficDirectorService_DynamicCluster[]
    */
   public function setDynamicWarmingClusters($dynamicWarmingClusters)
   {
     $this->dynamicWarmingClusters = $dynamicWarmingClusters;
   }
   /**
-   * @return Google_Service_TrafficDirectorService_DynamicCluster
+   * @return Google_Service_TrafficDirectorService_DynamicCluster[]
    */
   public function getDynamicWarmingClusters()
   {
     return $this->dynamicWarmingClusters;
   }
   /**
-   * @param Google_Service_TrafficDirectorService_StaticCluster
+   * @param Google_Service_TrafficDirectorService_StaticCluster[]
    */
   public function setStaticClusters($staticClusters)
   {
     $this->staticClusters = $staticClusters;
   }
   /**
-   * @return Google_Service_TrafficDirectorService_StaticCluster
+   * @return Google_Service_TrafficDirectorService_StaticCluster[]
    */
   public function getStaticClusters()
   {

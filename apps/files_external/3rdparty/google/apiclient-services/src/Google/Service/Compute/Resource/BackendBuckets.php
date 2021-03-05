@@ -201,8 +201,8 @@ class Google_Service_Compute_Resource_BackendBuckets extends Google_Service_Reso
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
+   * which provides partial results in case of failure. The default value is
+   * false.
    * @return Google_Service_Compute_BackendBucketList
    */
   public function listBackendBuckets($project, $optParams = array())

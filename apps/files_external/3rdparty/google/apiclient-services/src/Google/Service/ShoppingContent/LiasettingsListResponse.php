@@ -40,14 +40,14 @@ class Google_Service_ShoppingContent_LiasettingsListResponse extends Google_Coll
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ShoppingContent_LiaSettings
+   * @param Google_Service_ShoppingContent_LiaSettings[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_ShoppingContent_LiaSettings
+   * @return Google_Service_ShoppingContent_LiaSettings[]
    */
   public function getResources()
   {

@@ -23,14 +23,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2ListEntityTypesResponse e
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityType
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityType[]
    */
   public function setEntityTypes($entityTypes)
   {
     $this->entityTypes = $entityTypes;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityType
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityType[]
    */
   public function getEntityTypes()
   {

@@ -28,6 +28,8 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3WebhookRequest extends 
   protected $pageInfoType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3PageInfo';
   protected $pageInfoDataType = '';
   public $payload;
+  protected $sentimentAnalysisResultType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3WebhookRequestSentimentAnalysisResult';
+  protected $sentimentAnalysisResultDataType = '';
   protected $sessionInfoType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3SessionInfo';
   protected $sessionInfoDataType = '';
 
@@ -68,14 +70,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3WebhookRequest extends 
     return $this->intentInfo;
   }
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3ResponseMessage
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3ResponseMessage[]
    */
   public function setMessages($messages)
   {
     $this->messages = $messages;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3ResponseMessage
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3ResponseMessage[]
    */
   public function getMessages()
   {
@@ -102,6 +104,20 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3WebhookRequest extends 
   public function getPayload()
   {
     return $this->payload;
+  }
+  /**
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3WebhookRequestSentimentAnalysisResult
+   */
+  public function setSentimentAnalysisResult(Google_Service_Dialogflow_GoogleCloudDialogflowCxV3WebhookRequestSentimentAnalysisResult $sentimentAnalysisResult)
+  {
+    $this->sentimentAnalysisResult = $sentimentAnalysisResult;
+  }
+  /**
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3WebhookRequestSentimentAnalysisResult
+   */
+  public function getSentimentAnalysisResult()
+  {
+    return $this->sentimentAnalysisResult;
   }
   /**
    * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3SessionInfo

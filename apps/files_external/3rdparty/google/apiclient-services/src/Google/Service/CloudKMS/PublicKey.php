@@ -21,6 +21,7 @@ class Google_Service_CloudKMS_PublicKey extends Google_Model
   public $name;
   public $pem;
   public $pemCrc32c;
+  public $protectionLevel;
 
   public function setAlgorithm($algorithm)
   {
@@ -53,5 +54,13 @@ class Google_Service_CloudKMS_PublicKey extends Google_Model
   public function getPemCrc32c()
   {
     return $this->pemCrc32c;
+  }
+  public function setProtectionLevel($protectionLevel)
+  {
+    $this->protectionLevel = $protectionLevel;
+  }
+  public function getProtectionLevel()
+  {
+    return $this->protectionLevel;
   }
 }

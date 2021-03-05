@@ -32,14 +32,14 @@ class Google_Service_Compute_AddressListWarning extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_AddressListWarningData
+   * @param Google_Service_Compute_AddressListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_AddressListWarningData
+   * @return Google_Service_Compute_AddressListWarningData[]
    */
   public function getData()
   {

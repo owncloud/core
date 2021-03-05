@@ -22,14 +22,14 @@ class Google_Service_AnalyticsData_BatchRunPivotReportsResponse extends Google_C
   protected $pivotReportsDataType = 'array';
 
   /**
-   * @param Google_Service_AnalyticsData_RunPivotReportResponse
+   * @param Google_Service_AnalyticsData_RunPivotReportResponse[]
    */
   public function setPivotReports($pivotReports)
   {
     $this->pivotReports = $pivotReports;
   }
   /**
-   * @return Google_Service_AnalyticsData_RunPivotReportResponse
+   * @return Google_Service_AnalyticsData_RunPivotReportResponse[]
    */
   public function getPivotReports()
   {

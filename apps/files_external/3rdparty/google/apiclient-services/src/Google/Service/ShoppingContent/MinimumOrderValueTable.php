@@ -22,14 +22,14 @@ class Google_Service_ShoppingContent_MinimumOrderValueTable extends Google_Colle
   protected $storeCodeSetWithMovsDataType = 'array';
 
   /**
-   * @param Google_Service_ShoppingContent_MinimumOrderValueTableStoreCodeSetWithMov
+   * @param Google_Service_ShoppingContent_MinimumOrderValueTableStoreCodeSetWithMov[]
    */
   public function setStoreCodeSetWithMovs($storeCodeSetWithMovs)
   {
     $this->storeCodeSetWithMovs = $storeCodeSetWithMovs;
   }
   /**
-   * @return Google_Service_ShoppingContent_MinimumOrderValueTableStoreCodeSetWithMov
+   * @return Google_Service_ShoppingContent_MinimumOrderValueTableStoreCodeSetWithMov[]
    */
   public function getStoreCodeSetWithMovs()
   {

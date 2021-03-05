@@ -32,14 +32,14 @@ class Google_Service_Compute_Metadata extends Google_Collection
     return $this->fingerprint;
   }
   /**
-   * @param Google_Service_Compute_MetadataItems
+   * @param Google_Service_Compute_MetadataItems[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_MetadataItems
+   * @return Google_Service_Compute_MetadataItems[]
    */
   public function getItems()
   {

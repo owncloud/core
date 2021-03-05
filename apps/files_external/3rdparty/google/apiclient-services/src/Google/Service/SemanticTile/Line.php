@@ -17,10 +17,26 @@
 
 class Google_Service_SemanticTile_Line extends Google_Model
 {
+  protected $basemapZOrderType = 'Google_Service_SemanticTile_BasemapZOrder';
+  protected $basemapZOrderDataType = '';
   protected $vertexOffsetsType = 'Google_Service_SemanticTile_Vertex2DList';
   protected $vertexOffsetsDataType = '';
   public $zOrder;
 
+  /**
+   * @param Google_Service_SemanticTile_BasemapZOrder
+   */
+  public function setBasemapZOrder(Google_Service_SemanticTile_BasemapZOrder $basemapZOrder)
+  {
+    $this->basemapZOrder = $basemapZOrder;
+  }
+  /**
+   * @return Google_Service_SemanticTile_BasemapZOrder
+   */
+  public function getBasemapZOrder()
+  {
+    return $this->basemapZOrder;
+  }
   /**
    * @param Google_Service_SemanticTile_Vertex2DList
    */

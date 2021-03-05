@@ -35,42 +35,42 @@ class Google_Service_TagManager_FolderEntities extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_TagManager_Tag
+   * @param Google_Service_TagManager_Tag[]
    */
   public function setTag($tag)
   {
     $this->tag = $tag;
   }
   /**
-   * @return Google_Service_TagManager_Tag
+   * @return Google_Service_TagManager_Tag[]
    */
   public function getTag()
   {
     return $this->tag;
   }
   /**
-   * @param Google_Service_TagManager_Trigger
+   * @param Google_Service_TagManager_Trigger[]
    */
   public function setTrigger($trigger)
   {
     $this->trigger = $trigger;
   }
   /**
-   * @return Google_Service_TagManager_Trigger
+   * @return Google_Service_TagManager_Trigger[]
    */
   public function getTrigger()
   {
     return $this->trigger;
   }
   /**
-   * @param Google_Service_TagManager_Variable
+   * @param Google_Service_TagManager_Variable[]
    */
   public function setVariable($variable)
   {
     $this->variable = $variable;
   }
   /**
-   * @return Google_Service_TagManager_Variable
+   * @return Google_Service_TagManager_Variable[]
    */
   public function getVariable()
   {

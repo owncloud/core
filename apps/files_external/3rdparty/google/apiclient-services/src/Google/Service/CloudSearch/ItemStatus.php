@@ -33,28 +33,28 @@ class Google_Service_CloudSearch_ItemStatus extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_CloudSearch_ProcessingError
+   * @param Google_Service_CloudSearch_ProcessingError[]
    */
   public function setProcessingErrors($processingErrors)
   {
     $this->processingErrors = $processingErrors;
   }
   /**
-   * @return Google_Service_CloudSearch_ProcessingError
+   * @return Google_Service_CloudSearch_ProcessingError[]
    */
   public function getProcessingErrors()
   {
     return $this->processingErrors;
   }
   /**
-   * @param Google_Service_CloudSearch_RepositoryError
+   * @param Google_Service_CloudSearch_RepositoryError[]
    */
   public function setRepositoryErrors($repositoryErrors)
   {
     $this->repositoryErrors = $repositoryErrors;
   }
   /**
-   * @return Google_Service_CloudSearch_RepositoryError
+   * @return Google_Service_CloudSearch_RepositoryError[]
    */
   public function getRepositoryErrors()
   {

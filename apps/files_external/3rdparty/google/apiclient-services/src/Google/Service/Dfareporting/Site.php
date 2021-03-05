@@ -122,14 +122,14 @@ class Google_Service_Dfareporting_Site extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Dfareporting_SiteContact
+   * @param Google_Service_Dfareporting_SiteContact[]
    */
   public function setSiteContacts($siteContacts)
   {
     $this->siteContacts = $siteContacts;
   }
   /**
-   * @return Google_Service_Dfareporting_SiteContact
+   * @return Google_Service_Dfareporting_SiteContact[]
    */
   public function getSiteContacts()
   {

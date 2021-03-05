@@ -34,14 +34,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2CustomInfoType extends Google_Collect
   protected $surrogateTypeDataType = '';
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2DetectionRule
+   * @param Google_Service_DLP_GooglePrivacyDlpV2DetectionRule[]
    */
   public function setDetectionRules($detectionRules)
   {
     $this->detectionRules = $detectionRules;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2DetectionRule
+   * @return Google_Service_DLP_GooglePrivacyDlpV2DetectionRule[]
    */
   public function getDetectionRules()
   {

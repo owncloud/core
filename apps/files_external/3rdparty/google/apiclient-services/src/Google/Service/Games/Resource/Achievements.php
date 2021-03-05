@@ -58,10 +58,10 @@ class Google_Service_Games_Resource_Achievements extends Google_Service_Resource
    * return in the response, used for paging. For any response, the actual number
    * of achievement resources returned may be less than the specified
    * `maxResults`.
+   * @opt_param string pageToken The token returned by the previous request.
    * @opt_param string state Tells the server to return only achievements with the
    * specified state. If this parameter isn't specified, all achievements are
    * returned.
-   * @opt_param string pageToken The token returned by the previous request.
    * @return Google_Service_Games_PlayerAchievementListResponse
    */
   public function listAchievements($playerId, $optParams = array())

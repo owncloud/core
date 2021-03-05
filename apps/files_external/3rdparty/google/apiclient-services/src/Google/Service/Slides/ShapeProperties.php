@@ -17,6 +17,8 @@
 
 class Google_Service_Slides_ShapeProperties extends Google_Model
 {
+  protected $autofitType = 'Google_Service_Slides_Autofit';
+  protected $autofitDataType = '';
   public $contentAlignment;
   protected $linkType = 'Google_Service_Slides_Link';
   protected $linkDataType = '';
@@ -27,6 +29,20 @@ class Google_Service_Slides_ShapeProperties extends Google_Model
   protected $shapeBackgroundFillType = 'Google_Service_Slides_ShapeBackgroundFill';
   protected $shapeBackgroundFillDataType = '';
 
+  /**
+   * @param Google_Service_Slides_Autofit
+   */
+  public function setAutofit(Google_Service_Slides_Autofit $autofit)
+  {
+    $this->autofit = $autofit;
+  }
+  /**
+   * @return Google_Service_Slides_Autofit
+   */
+  public function getAutofit()
+  {
+    return $this->autofit;
+  }
   public function setContentAlignment($contentAlignment)
   {
     $this->contentAlignment = $contentAlignment;

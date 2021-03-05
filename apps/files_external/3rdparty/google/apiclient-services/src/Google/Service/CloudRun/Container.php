@@ -60,28 +60,28 @@ class Google_Service_CloudRun_Container extends Google_Collection
     return $this->command;
   }
   /**
-   * @param Google_Service_CloudRun_EnvVar
+   * @param Google_Service_CloudRun_EnvVar[]
    */
   public function setEnv($env)
   {
     $this->env = $env;
   }
   /**
-   * @return Google_Service_CloudRun_EnvVar
+   * @return Google_Service_CloudRun_EnvVar[]
    */
   public function getEnv()
   {
     return $this->env;
   }
   /**
-   * @param Google_Service_CloudRun_EnvFromSource
+   * @param Google_Service_CloudRun_EnvFromSource[]
    */
   public function setEnvFrom($envFrom)
   {
     $this->envFrom = $envFrom;
   }
   /**
-   * @return Google_Service_CloudRun_EnvFromSource
+   * @return Google_Service_CloudRun_EnvFromSource[]
    */
   public function getEnvFrom()
   {
@@ -126,14 +126,14 @@ class Google_Service_CloudRun_Container extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_CloudRun_ContainerPort
+   * @param Google_Service_CloudRun_ContainerPort[]
    */
   public function setPorts($ports)
   {
     $this->ports = $ports;
   }
   /**
-   * @return Google_Service_CloudRun_ContainerPort
+   * @return Google_Service_CloudRun_ContainerPort[]
    */
   public function getPorts()
   {
@@ -198,14 +198,14 @@ class Google_Service_CloudRun_Container extends Google_Collection
     return $this->terminationMessagePolicy;
   }
   /**
-   * @param Google_Service_CloudRun_VolumeMount
+   * @param Google_Service_CloudRun_VolumeMount[]
    */
   public function setVolumeMounts($volumeMounts)
   {
     $this->volumeMounts = $volumeMounts;
   }
   /**
-   * @return Google_Service_CloudRun_VolumeMount
+   * @return Google_Service_CloudRun_VolumeMount[]
    */
   public function getVolumeMounts()
   {

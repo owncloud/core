@@ -23,14 +23,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2ListDlpJobsResponse extends Google_Co
   public $nextPageToken;
 
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2DlpJob
+   * @param Google_Service_DLP_GooglePrivacyDlpV2DlpJob[]
    */
   public function setJobs($jobs)
   {
     $this->jobs = $jobs;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2DlpJob
+   * @return Google_Service_DLP_GooglePrivacyDlpV2DlpJob[]
    */
   public function getJobs()
   {

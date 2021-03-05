@@ -17,12 +17,21 @@
 
 class Google_Service_CloudTalentSolution_RequestMetadata extends Google_Model
 {
+  public $allowMissingIds;
   protected $deviceInfoType = 'Google_Service_CloudTalentSolution_DeviceInfo';
   protected $deviceInfoDataType = '';
   public $domain;
   public $sessionId;
   public $userId;
 
+  public function setAllowMissingIds($allowMissingIds)
+  {
+    $this->allowMissingIds = $allowMissingIds;
+  }
+  public function getAllowMissingIds()
+  {
+    return $this->allowMissingIds;
+  }
   /**
    * @param Google_Service_CloudTalentSolution_DeviceInfo
    */

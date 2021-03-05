@@ -18,7 +18,7 @@
 class Google_Service_ServiceDirectory_Endpoint extends Google_Model
 {
   public $address;
-  public $metadata;
+  public $annotations;
   public $name;
   public $port;
 
@@ -30,13 +30,13 @@ class Google_Service_ServiceDirectory_Endpoint extends Google_Model
   {
     return $this->address;
   }
-  public function setMetadata($metadata)
+  public function setAnnotations($annotations)
   {
-    $this->metadata = $metadata;
+    $this->annotations = $annotations;
   }
-  public function getMetadata()
+  public function getAnnotations()
   {
-    return $this->metadata;
+    return $this->annotations;
   }
   public function setName($name)
   {

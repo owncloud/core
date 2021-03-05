@@ -31,14 +31,14 @@ class Google_Service_Dfareporting_SizesListResponse extends Google_Collection
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dfareporting_Size
+   * @param Google_Service_Dfareporting_Size[]
    */
   public function setSizes($sizes)
   {
     $this->sizes = $sizes;
   }
   /**
-   * @return Google_Service_Dfareporting_Size
+   * @return Google_Service_Dfareporting_Size[]
    */
   public function getSizes()
   {

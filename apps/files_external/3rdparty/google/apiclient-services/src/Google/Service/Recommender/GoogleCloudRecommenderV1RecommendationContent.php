@@ -22,14 +22,14 @@ class Google_Service_Recommender_GoogleCloudRecommenderV1RecommendationContent e
   protected $operationGroupsDataType = 'array';
 
   /**
-   * @param Google_Service_Recommender_GoogleCloudRecommenderV1OperationGroup
+   * @param Google_Service_Recommender_GoogleCloudRecommenderV1OperationGroup[]
    */
   public function setOperationGroups($operationGroups)
   {
     $this->operationGroups = $operationGroups;
   }
   /**
-   * @return Google_Service_Recommender_GoogleCloudRecommenderV1OperationGroup
+   * @return Google_Service_Recommender_GoogleCloudRecommenderV1OperationGroup[]
    */
   public function getOperationGroups()
   {

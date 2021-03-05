@@ -31,14 +31,14 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1GcsFilesetSpec ext
     return $this->filePatterns;
   }
   /**
-   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1GcsFileSpec
+   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1GcsFileSpec[]
    */
   public function setSampleGcsFileSpecs($sampleGcsFileSpecs)
   {
     $this->sampleGcsFileSpecs = $sampleGcsFileSpecs;
   }
   /**
-   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1GcsFileSpec
+   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1GcsFileSpec[]
    */
   public function getSampleGcsFileSpecs()
   {

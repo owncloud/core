@@ -32,14 +32,14 @@ class Google_Service_Compute_InstanceListReferrersWarning extends Google_Collect
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_InstanceListReferrersWarningData
+   * @param Google_Service_Compute_InstanceListReferrersWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_InstanceListReferrersWarningData
+   * @return Google_Service_Compute_InstanceListReferrersWarningData[]
    */
   public function getData()
   {

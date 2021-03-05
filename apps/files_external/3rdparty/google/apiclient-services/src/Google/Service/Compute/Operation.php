@@ -30,6 +30,7 @@ class Google_Service_Compute_Operation extends Google_Collection
   public $insertTime;
   public $kind;
   public $name;
+  public $operationGroupId;
   public $operationType;
   public $progress;
   public $region;
@@ -138,6 +139,14 @@ class Google_Service_Compute_Operation extends Google_Collection
   {
     return $this->name;
   }
+  public function setOperationGroupId($operationGroupId)
+  {
+    $this->operationGroupId = $operationGroupId;
+  }
+  public function getOperationGroupId()
+  {
+    return $this->operationGroupId;
+  }
   public function setOperationType($operationType)
   {
     $this->operationType = $operationType;
@@ -219,14 +228,14 @@ class Google_Service_Compute_Operation extends Google_Collection
     return $this->user;
   }
   /**
-   * @param Google_Service_Compute_OperationWarnings
+   * @param Google_Service_Compute_OperationWarnings[]
    */
   public function setWarnings($warnings)
   {
     $this->warnings = $warnings;
   }
   /**
-   * @return Google_Service_Compute_OperationWarnings
+   * @return Google_Service_Compute_OperationWarnings[]
    */
   public function getWarnings()
   {

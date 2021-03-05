@@ -20,6 +20,7 @@ class Google_Service_CloudLifeSciences_RunPipelineRequest extends Google_Model
   public $labels;
   protected $pipelineType = 'Google_Service_CloudLifeSciences_Pipeline';
   protected $pipelineDataType = '';
+  public $pubSubTopic;
 
   public function setLabels($labels)
   {
@@ -42,5 +43,13 @@ class Google_Service_CloudLifeSciences_RunPipelineRequest extends Google_Model
   public function getPipeline()
   {
     return $this->pipeline;
+  }
+  public function setPubSubTopic($pubSubTopic)
+  {
+    $this->pubSubTopic = $pubSubTopic;
+  }
+  public function getPubSubTopic()
+  {
+    return $this->pubSubTopic;
   }
 }

@@ -19,20 +19,15 @@ class Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1Workload exte
 {
   protected $collection_key = 'resources';
   public $billingAccount;
-  protected $cjisSettingsType = 'Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadCJISSettings';
-  protected $cjisSettingsDataType = '';
   public $complianceRegime;
   public $createTime;
   public $displayName;
   public $etag;
-  protected $fedrampHighSettingsType = 'Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadFedrampHighSettings';
-  protected $fedrampHighSettingsDataType = '';
-  protected $fedrampModerateSettingsType = 'Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadFedrampModerateSettings';
-  protected $fedrampModerateSettingsDataType = '';
-  protected $il4SettingsType = 'Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadIL4Settings';
-  protected $il4SettingsDataType = '';
+  protected $kmsSettingsType = 'Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadKMSSettings';
+  protected $kmsSettingsDataType = '';
   public $labels;
   public $name;
+  public $provisionedResourcesParent;
   protected $resourcesType = 'Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadResourceInfo';
   protected $resourcesDataType = 'array';
 
@@ -43,20 +38,6 @@ class Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1Workload exte
   public function getBillingAccount()
   {
     return $this->billingAccount;
-  }
-  /**
-   * @param Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadCJISSettings
-   */
-  public function setCjisSettings(Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadCJISSettings $cjisSettings)
-  {
-    $this->cjisSettings = $cjisSettings;
-  }
-  /**
-   * @return Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadCJISSettings
-   */
-  public function getCjisSettings()
-  {
-    return $this->cjisSettings;
   }
   public function setComplianceRegime($complianceRegime)
   {
@@ -91,46 +72,18 @@ class Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1Workload exte
     return $this->etag;
   }
   /**
-   * @param Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadFedrampHighSettings
+   * @param Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadKMSSettings
    */
-  public function setFedrampHighSettings(Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadFedrampHighSettings $fedrampHighSettings)
+  public function setKmsSettings(Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadKMSSettings $kmsSettings)
   {
-    $this->fedrampHighSettings = $fedrampHighSettings;
+    $this->kmsSettings = $kmsSettings;
   }
   /**
-   * @return Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadFedrampHighSettings
+   * @return Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadKMSSettings
    */
-  public function getFedrampHighSettings()
+  public function getKmsSettings()
   {
-    return $this->fedrampHighSettings;
-  }
-  /**
-   * @param Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadFedrampModerateSettings
-   */
-  public function setFedrampModerateSettings(Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadFedrampModerateSettings $fedrampModerateSettings)
-  {
-    $this->fedrampModerateSettings = $fedrampModerateSettings;
-  }
-  /**
-   * @return Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadFedrampModerateSettings
-   */
-  public function getFedrampModerateSettings()
-  {
-    return $this->fedrampModerateSettings;
-  }
-  /**
-   * @param Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadIL4Settings
-   */
-  public function setIl4Settings(Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadIL4Settings $il4Settings)
-  {
-    $this->il4Settings = $il4Settings;
-  }
-  /**
-   * @return Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadIL4Settings
-   */
-  public function getIl4Settings()
-  {
-    return $this->il4Settings;
+    return $this->kmsSettings;
   }
   public function setLabels($labels)
   {
@@ -148,15 +101,23 @@ class Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1Workload exte
   {
     return $this->name;
   }
+  public function setProvisionedResourcesParent($provisionedResourcesParent)
+  {
+    $this->provisionedResourcesParent = $provisionedResourcesParent;
+  }
+  public function getProvisionedResourcesParent()
+  {
+    return $this->provisionedResourcesParent;
+  }
   /**
-   * @param Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadResourceInfo
+   * @param Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadResourceInfo[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadResourceInfo
+   * @return Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadResourceInfo[]
    */
   public function getResources()
   {

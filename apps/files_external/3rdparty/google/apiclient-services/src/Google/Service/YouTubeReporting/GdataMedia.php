@@ -98,14 +98,14 @@ class Google_Service_YouTubeReporting_GdataMedia extends Google_Collection
     return $this->blobstore2Info;
   }
   /**
-   * @param Google_Service_YouTubeReporting_GdataCompositeMedia
+   * @param Google_Service_YouTubeReporting_GdataCompositeMedia[]
    */
   public function setCompositeMedia($compositeMedia)
   {
     $this->compositeMedia = $compositeMedia;
   }
   /**
-   * @return Google_Service_YouTubeReporting_GdataCompositeMedia
+   * @return Google_Service_YouTubeReporting_GdataCompositeMedia[]
    */
   public function getCompositeMedia()
   {

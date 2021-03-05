@@ -31,14 +31,14 @@ class Google_Service_YouTube_VideoFileDetails extends Google_Collection
   protected $videoStreamsDataType = 'array';
 
   /**
-   * @param Google_Service_YouTube_VideoFileDetailsAudioStream
+   * @param Google_Service_YouTube_VideoFileDetailsAudioStream[]
    */
   public function setAudioStreams($audioStreams)
   {
     $this->audioStreams = $audioStreams;
   }
   /**
-   * @return Google_Service_YouTube_VideoFileDetailsAudioStream
+   * @return Google_Service_YouTube_VideoFileDetailsAudioStream[]
    */
   public function getAudioStreams()
   {
@@ -101,14 +101,14 @@ class Google_Service_YouTube_VideoFileDetails extends Google_Collection
     return $this->fileType;
   }
   /**
-   * @param Google_Service_YouTube_VideoFileDetailsVideoStream
+   * @param Google_Service_YouTube_VideoFileDetailsVideoStream[]
    */
   public function setVideoStreams($videoStreams)
   {
     $this->videoStreams = $videoStreams;
   }
   /**
-   * @return Google_Service_YouTube_VideoFileDetailsVideoStream
+   * @return Google_Service_YouTube_VideoFileDetailsVideoStream[]
    */
   public function getVideoStreams()
   {

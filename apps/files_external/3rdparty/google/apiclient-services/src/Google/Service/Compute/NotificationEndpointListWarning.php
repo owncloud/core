@@ -32,14 +32,14 @@ class Google_Service_Compute_NotificationEndpointListWarning extends Google_Coll
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_NotificationEndpointListWarningData
+   * @param Google_Service_Compute_NotificationEndpointListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_NotificationEndpointListWarningData
+   * @return Google_Service_Compute_NotificationEndpointListWarningData[]
    */
   public function getData()
   {

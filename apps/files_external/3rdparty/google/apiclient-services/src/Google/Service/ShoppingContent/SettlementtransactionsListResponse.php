@@ -40,14 +40,14 @@ class Google_Service_ShoppingContent_SettlementtransactionsListResponse extends 
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_ShoppingContent_SettlementTransaction
+   * @param Google_Service_ShoppingContent_SettlementTransaction[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_ShoppingContent_SettlementTransaction
+   * @return Google_Service_ShoppingContent_SettlementTransaction[]
    */
   public function getResources()
   {

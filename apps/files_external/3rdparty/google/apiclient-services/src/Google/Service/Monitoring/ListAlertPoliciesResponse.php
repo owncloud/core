@@ -24,14 +24,14 @@ class Google_Service_Monitoring_ListAlertPoliciesResponse extends Google_Collect
   public $totalSize;
 
   /**
-   * @param Google_Service_Monitoring_AlertPolicy
+   * @param Google_Service_Monitoring_AlertPolicy[]
    */
   public function setAlertPolicies($alertPolicies)
   {
     $this->alertPolicies = $alertPolicies;
   }
   /**
-   * @return Google_Service_Monitoring_AlertPolicy
+   * @return Google_Service_Monitoring_AlertPolicy[]
    */
   public function getAlertPolicies()
   {

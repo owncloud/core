@@ -24,28 +24,28 @@ class Google_Service_Vision_GoogleCloudVisionV1p4beta1ImportProductSetsResponse 
   protected $statusesDataType = 'array';
 
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1ReferenceImage
+   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1ReferenceImage[]
    */
   public function setReferenceImages($referenceImages)
   {
     $this->referenceImages = $referenceImages;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1ReferenceImage
+   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1ReferenceImage[]
    */
   public function getReferenceImages()
   {
     return $this->referenceImages;
   }
   /**
-   * @param Google_Service_Vision_Status
+   * @param Google_Service_Vision_Status[]
    */
   public function setStatuses($statuses)
   {
     $this->statuses = $statuses;
   }
   /**
-   * @return Google_Service_Vision_Status
+   * @return Google_Service_Vision_Status[]
    */
   public function getStatuses()
   {

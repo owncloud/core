@@ -49,14 +49,14 @@ class Google_Service_Digitalassetlinks_ListResponse extends Google_Collection
     return $this->maxAge;
   }
   /**
-   * @param Google_Service_Digitalassetlinks_Statement
+   * @param Google_Service_Digitalassetlinks_Statement[]
    */
   public function setStatements($statements)
   {
     $this->statements = $statements;
   }
   /**
-   * @return Google_Service_Digitalassetlinks_Statement
+   * @return Google_Service_Digitalassetlinks_Statement[]
    */
   public function getStatements()
   {

@@ -48,14 +48,14 @@ class Google_Service_YouTube_ChannelListResponse extends Google_Collection
     return $this->eventId;
   }
   /**
-   * @param Google_Service_YouTube_Channel
+   * @param Google_Service_YouTube_Channel[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_YouTube_Channel
+   * @return Google_Service_YouTube_Channel[]
    */
   public function getItems()
   {

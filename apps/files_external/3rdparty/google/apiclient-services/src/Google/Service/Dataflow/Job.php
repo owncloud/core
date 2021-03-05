@@ -39,6 +39,7 @@ class Google_Service_Dataflow_Job extends Google_Collection
   public $replaceJobId;
   public $replacedByJobId;
   public $requestedState;
+  public $satisfiesPzs;
   protected $stageStatesType = 'Google_Service_Dataflow_ExecutionStageState';
   protected $stageStatesDataType = 'array';
   public $startTime;
@@ -209,15 +210,23 @@ class Google_Service_Dataflow_Job extends Google_Collection
   {
     return $this->requestedState;
   }
+  public function setSatisfiesPzs($satisfiesPzs)
+  {
+    $this->satisfiesPzs = $satisfiesPzs;
+  }
+  public function getSatisfiesPzs()
+  {
+    return $this->satisfiesPzs;
+  }
   /**
-   * @param Google_Service_Dataflow_ExecutionStageState
+   * @param Google_Service_Dataflow_ExecutionStageState[]
    */
   public function setStageStates($stageStates)
   {
     $this->stageStates = $stageStates;
   }
   /**
-   * @return Google_Service_Dataflow_ExecutionStageState
+   * @return Google_Service_Dataflow_ExecutionStageState[]
    */
   public function getStageStates()
   {
@@ -232,14 +241,14 @@ class Google_Service_Dataflow_Job extends Google_Collection
     return $this->startTime;
   }
   /**
-   * @param Google_Service_Dataflow_Step
+   * @param Google_Service_Dataflow_Step[]
    */
   public function setSteps($steps)
   {
     $this->steps = $steps;
   }
   /**
-   * @return Google_Service_Dataflow_Step
+   * @return Google_Service_Dataflow_Step[]
    */
   public function getSteps()
   {

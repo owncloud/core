@@ -24,14 +24,14 @@ class Google_Service_Dfareporting_PathFilter extends Google_Collection
   public $pathMatchPosition;
 
   /**
-   * @param Google_Service_Dfareporting_EventFilter
+   * @param Google_Service_Dfareporting_EventFilter[]
    */
   public function setEventFilters($eventFilters)
   {
     $this->eventFilters = $eventFilters;
   }
   /**
-   * @return Google_Service_Dfareporting_EventFilter
+   * @return Google_Service_Dfareporting_EventFilter[]
    */
   public function getEventFilters()
   {

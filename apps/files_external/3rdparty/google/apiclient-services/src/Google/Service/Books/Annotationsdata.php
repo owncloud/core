@@ -25,14 +25,14 @@ class Google_Service_Books_Annotationsdata extends Google_Collection
   public $totalItems;
 
   /**
-   * @param Google_Service_Books_GeoAnnotationdata
+   * @param Google_Service_Books_GeoAnnotationdata[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Books_GeoAnnotationdata
+   * @return Google_Service_Books_GeoAnnotationdata[]
    */
   public function getItems()
   {

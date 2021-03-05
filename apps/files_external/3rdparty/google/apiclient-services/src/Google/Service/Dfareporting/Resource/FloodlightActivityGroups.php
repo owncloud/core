@@ -61,22 +61,18 @@ class Google_Service_Dfareporting_Resource_FloodlightActivityGroups extends Goog
    * @param string $profileId User profile ID associated with this request.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int maxResults Maximum number of results to return.
-   * @opt_param string type Select only floodlight activity groups with the
-   * specified floodlight activity group type.
-   * @opt_param string sortOrder Order of sorted results.
    * @opt_param string advertiserId Select only floodlight activity groups with
    * the specified advertiser ID. Must specify either advertiserId or
    * floodlightConfigurationId for a non-empty result.
    * @opt_param string floodlightConfigurationId Select only floodlight activity
    * groups with the specified floodlight configuration ID. Must specify either
    * advertiserId, or floodlightConfigurationId for a non-empty result.
-   * @opt_param string pageToken Value of the nextPageToken from the previous
-   * result page.
    * @opt_param string ids Select only floodlight activity groups with the
    * specified IDs. Must specify either advertiserId or floodlightConfigurationId
    * for a non-empty result.
-   * @opt_param string sortField Field by which to sort the list.
+   * @opt_param int maxResults Maximum number of results to return.
+   * @opt_param string pageToken Value of the nextPageToken from the previous
+   * result page.
    * @opt_param string searchString Allows searching for objects by name or ID.
    * Wildcards (*) are allowed. For example, "floodlightactivitygroup*2015" will
    * return objects with names like "floodlightactivitygroup June 2015",
@@ -86,6 +82,10 @@ class Google_Service_Dfareporting_Resource_FloodlightActivityGroups extends Goog
    * "floodlightactivitygroup" will match objects with name "my
    * floodlightactivitygroup activity", "floodlightactivitygroup 2015", or simply
    * "floodlightactivitygroup".
+   * @opt_param string sortField Field by which to sort the list.
+   * @opt_param string sortOrder Order of sorted results.
+   * @opt_param string type Select only floodlight activity groups with the
+   * specified floodlight activity group type.
    * @return Google_Service_Dfareporting_FloodlightActivityGroupsListResponse
    */
   public function listFloodlightActivityGroups($profileId, $optParams = array())

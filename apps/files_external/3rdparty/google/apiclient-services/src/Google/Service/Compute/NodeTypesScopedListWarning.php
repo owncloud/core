@@ -32,14 +32,14 @@ class Google_Service_Compute_NodeTypesScopedListWarning extends Google_Collectio
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_NodeTypesScopedListWarningData
+   * @param Google_Service_Compute_NodeTypesScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_NodeTypesScopedListWarningData
+   * @return Google_Service_Compute_NodeTypesScopedListWarningData[]
    */
   public function getData()
   {

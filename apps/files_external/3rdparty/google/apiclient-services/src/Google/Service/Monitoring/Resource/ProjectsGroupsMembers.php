@@ -39,12 +39,12 @@ class Google_Service_Monitoring_Resource_ProjectsGroupsMembers extends Google_Se
    * metadata of monitored resources that comprise the group. For example, to
    * return only resources representing Compute Engine VM instances, use this
    * filter: `resource.type = "gce_instance"`
-   * @opt_param int pageSize A positive number that is the maximum number of
-   * results to return.
    * @opt_param string interval.endTime Required. The end of the time interval.
    * @opt_param string interval.startTime Optional. The beginning of the time
    * interval. The default value for the start time is the end time. The start
    * time must not be later than the end time.
+   * @opt_param int pageSize A positive number that is the maximum number of
+   * results to return.
    * @opt_param string pageToken If this field is not empty then it must contain
    * the next_page_token value returned by a previous call to this method. Using
    * this field causes the method to return additional results from the previous

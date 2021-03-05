@@ -37,14 +37,14 @@ class Google_Service_Compute_TargetInstanceAggregatedList extends Google_Collect
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_TargetInstancesScopedList
+   * @param Google_Service_Compute_TargetInstancesScopedList[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_TargetInstancesScopedList
+   * @return Google_Service_Compute_TargetInstancesScopedList[]
    */
   public function getItems()
   {

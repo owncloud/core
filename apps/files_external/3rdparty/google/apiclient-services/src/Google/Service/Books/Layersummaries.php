@@ -24,14 +24,14 @@ class Google_Service_Books_Layersummaries extends Google_Collection
   public $totalItems;
 
   /**
-   * @param Google_Service_Books_Layersummary
+   * @param Google_Service_Books_Layersummary[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Books_Layersummary
+   * @return Google_Service_Books_Layersummary[]
    */
   public function getItems()
   {

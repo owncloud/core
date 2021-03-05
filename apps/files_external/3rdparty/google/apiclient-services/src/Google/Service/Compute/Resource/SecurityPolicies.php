@@ -174,8 +174,8 @@ class Google_Service_Compute_Resource_SecurityPolicies extends Google_Service_Re
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
+   * which provides partial results in case of failure. The default value is
+   * false.
    * @return Google_Service_Compute_SecurityPolicyList
    */
   public function listSecurityPolicies($project, $optParams = array())
@@ -230,8 +230,8 @@ class Google_Service_Compute_Resource_SecurityPolicies extends Google_Service_Re
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
+   * which provides partial results in case of failure. The default value is
+   * false.
    * @return Google_Service_Compute_SecurityPoliciesListPreconfiguredExpressionSetsResponse
    */
   public function listPreconfiguredExpressionSets($project, $optParams = array())
@@ -241,7 +241,9 @@ class Google_Service_Compute_Resource_SecurityPolicies extends Google_Service_Re
     return $this->call('listPreconfiguredExpressionSets', array($params), "Google_Service_Compute_SecurityPoliciesListPreconfiguredExpressionSetsResponse");
   }
   /**
-   * Patches the specified policy with the data included in the request.
+   * Patches the specified policy with the data included in the request. This
+   * cannot be used to be update the rules in the policy. Please use the per rule
+   * methods like addRule, patchRule, and removeRule instead.
    * (securityPolicies.patch)
    *
    * @param string $project Project ID for this request.

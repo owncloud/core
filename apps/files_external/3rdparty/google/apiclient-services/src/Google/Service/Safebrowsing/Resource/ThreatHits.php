@@ -29,14 +29,14 @@ class Google_Service_Safebrowsing_Resource_ThreatHits extends Google_Service_Res
    * Reports a Safe Browsing threat list hit to Google. Only projects with
    * TRUSTED_REPORTER visibility can use this method. (threatHits.create)
    *
-   * @param Google_Service_Safebrowsing_ThreatHit $postBody
+   * @param Google_Service_Safebrowsing_GoogleSecuritySafebrowsingV4ThreatHit $postBody
    * @param array $optParams Optional parameters.
-   * @return Google_Service_Safebrowsing_SafebrowsingEmpty
+   * @return Google_Service_Safebrowsing_GoogleProtobufEmpty
    */
-  public function create(Google_Service_Safebrowsing_ThreatHit $postBody, $optParams = array())
+  public function create(Google_Service_Safebrowsing_GoogleSecuritySafebrowsingV4ThreatHit $postBody, $optParams = array())
   {
     $params = array('postBody' => $postBody);
     $params = array_merge($params, $optParams);
-    return $this->call('create', array($params), "Google_Service_Safebrowsing_SafebrowsingEmpty");
+    return $this->call('create', array($params), "Google_Service_Safebrowsing_GoogleProtobufEmpty");
   }
 }

@@ -48,14 +48,14 @@ class Google_Service_ServiceUsage_AuthenticationRule extends Google_Collection
     return $this->oauth;
   }
   /**
-   * @param Google_Service_ServiceUsage_AuthRequirement
+   * @param Google_Service_ServiceUsage_AuthRequirement[]
    */
   public function setRequirements($requirements)
   {
     $this->requirements = $requirements;
   }
   /**
-   * @return Google_Service_ServiceUsage_AuthRequirement
+   * @return Google_Service_ServiceUsage_AuthRequirement[]
    */
   public function getRequirements()
   {

@@ -23,14 +23,14 @@ class Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaListAccount
   public $nextPageToken;
 
   /**
-   * @param Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaAccountSummary
+   * @param Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaAccountSummary[]
    */
   public function setAccountSummaries($accountSummaries)
   {
     $this->accountSummaries = $accountSummaries;
   }
   /**
-   * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaAccountSummary
+   * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaAccountSummary[]
    */
   public function getAccountSummaries()
   {

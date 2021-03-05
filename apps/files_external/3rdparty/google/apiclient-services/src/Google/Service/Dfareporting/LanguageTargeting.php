@@ -22,14 +22,14 @@ class Google_Service_Dfareporting_LanguageTargeting extends Google_Collection
   protected $languagesDataType = 'array';
 
   /**
-   * @param Google_Service_Dfareporting_Language
+   * @param Google_Service_Dfareporting_Language[]
    */
   public function setLanguages($languages)
   {
     $this->languages = $languages;
   }
   /**
-   * @return Google_Service_Dfareporting_Language
+   * @return Google_Service_Dfareporting_Language[]
    */
   public function getLanguages()
   {

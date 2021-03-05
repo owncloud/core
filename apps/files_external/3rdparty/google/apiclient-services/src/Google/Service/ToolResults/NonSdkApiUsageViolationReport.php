@@ -25,14 +25,14 @@ class Google_Service_ToolResults_NonSdkApiUsageViolationReport extends Google_Co
   public $uniqueApis;
 
   /**
-   * @param Google_Service_ToolResults_NonSdkApi
+   * @param Google_Service_ToolResults_NonSdkApi[]
    */
   public function setExampleApis($exampleApis)
   {
     $this->exampleApis = $exampleApis;
   }
   /**
-   * @return Google_Service_ToolResults_NonSdkApi
+   * @return Google_Service_ToolResults_NonSdkApi[]
    */
   public function getExampleApis()
   {

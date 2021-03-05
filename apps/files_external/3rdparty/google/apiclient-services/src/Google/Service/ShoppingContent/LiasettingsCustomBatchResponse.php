@@ -23,14 +23,14 @@ class Google_Service_ShoppingContent_LiasettingsCustomBatchResponse extends Goog
   public $kind;
 
   /**
-   * @param Google_Service_ShoppingContent_LiasettingsCustomBatchResponseEntry
+   * @param Google_Service_ShoppingContent_LiasettingsCustomBatchResponseEntry[]
    */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
   /**
-   * @return Google_Service_ShoppingContent_LiasettingsCustomBatchResponseEntry
+   * @return Google_Service_ShoppingContent_LiasettingsCustomBatchResponseEntry[]
    */
   public function getEntries()
   {

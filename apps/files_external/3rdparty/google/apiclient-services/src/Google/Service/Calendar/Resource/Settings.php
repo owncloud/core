@@ -43,6 +43,9 @@ class Google_Service_Calendar_Resource_Settings extends Google_Service_Resource
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int maxResults Maximum number of entries returned on one result
+   * page. By default the value is 100 entries. The page size can never be larger
+   * than 250 entries. Optional.
    * @opt_param string pageToken Token specifying which result page to return.
    * Optional.
    * @opt_param string syncToken Token obtained from the nextSyncToken field
@@ -52,9 +55,6 @@ class Google_Service_Calendar_Resource_Settings extends Google_Service_Resource
    * response code and the client should clear its storage and perform a full
    * synchronization without any syncToken. Learn more about incremental
    * synchronization. Optional. The default is to return all entries.
-   * @opt_param int maxResults Maximum number of entries returned on one result
-   * page. By default the value is 100 entries. The page size can never be larger
-   * than 250 entries. Optional.
    * @return Google_Service_Calendar_Settings
    */
   public function listSettings($optParams = array())
@@ -69,6 +69,11 @@ class Google_Service_Calendar_Resource_Settings extends Google_Service_Resource
    * @param Google_Service_Calendar_Channel $postBody
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int maxResults Maximum number of entries returned on one result
+   * page. By default the value is 100 entries. The page size can never be larger
+   * than 250 entries. Optional.
+   * @opt_param string pageToken Token specifying which result page to return.
+   * Optional.
    * @opt_param string syncToken Token obtained from the nextSyncToken field
    * returned on the last page of results from the previous list request. It makes
    * the result of this list request contain only entries that have changed since
@@ -76,11 +81,6 @@ class Google_Service_Calendar_Resource_Settings extends Google_Service_Resource
    * response code and the client should clear its storage and perform a full
    * synchronization without any syncToken. Learn more about incremental
    * synchronization. Optional. The default is to return all entries.
-   * @opt_param int maxResults Maximum number of entries returned on one result
-   * page. By default the value is 100 entries. The page size can never be larger
-   * than 250 entries. Optional.
-   * @opt_param string pageToken Token specifying which result page to return.
-   * Optional.
    * @return Google_Service_Calendar_Channel
    */
   public function watch(Google_Service_Calendar_Channel $postBody, $optParams = array())

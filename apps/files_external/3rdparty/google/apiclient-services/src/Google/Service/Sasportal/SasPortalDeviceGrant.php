@@ -76,14 +76,14 @@ class Google_Service_Sasportal_SasPortalDeviceGrant extends Google_Collection
     return $this->maxEirp;
   }
   /**
-   * @param Google_Service_Sasportal_SasPortalDpaMoveList
+   * @param Google_Service_Sasportal_SasPortalDpaMoveList[]
    */
   public function setMoveList($moveList)
   {
     $this->moveList = $moveList;
   }
   /**
-   * @return Google_Service_Sasportal_SasPortalDpaMoveList
+   * @return Google_Service_Sasportal_SasPortalDpaMoveList[]
    */
   public function getMoveList()
   {

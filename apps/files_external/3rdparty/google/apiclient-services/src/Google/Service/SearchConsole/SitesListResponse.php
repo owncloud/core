@@ -22,14 +22,14 @@ class Google_Service_SearchConsole_SitesListResponse extends Google_Collection
   protected $siteEntryDataType = 'array';
 
   /**
-   * @param Google_Service_SearchConsole_WmxSite
+   * @param Google_Service_SearchConsole_WmxSite[]
    */
   public function setSiteEntry($siteEntry)
   {
     $this->siteEntry = $siteEntry;
   }
   /**
-   * @return Google_Service_SearchConsole_WmxSite
+   * @return Google_Service_SearchConsole_WmxSite[]
    */
   public function getSiteEntry()
   {

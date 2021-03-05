@@ -24,28 +24,28 @@ class Google_Service_Firestore_BatchWriteResponse extends Google_Collection
   protected $writeResultsDataType = 'array';
 
   /**
-   * @param Google_Service_Firestore_Status
+   * @param Google_Service_Firestore_Status[]
    */
   public function setStatus($status)
   {
     $this->status = $status;
   }
   /**
-   * @return Google_Service_Firestore_Status
+   * @return Google_Service_Firestore_Status[]
    */
   public function getStatus()
   {
     return $this->status;
   }
   /**
-   * @param Google_Service_Firestore_WriteResult
+   * @param Google_Service_Firestore_WriteResult[]
    */
   public function setWriteResults($writeResults)
   {
     $this->writeResults = $writeResults;
   }
   /**
-   * @return Google_Service_Firestore_WriteResult
+   * @return Google_Service_Firestore_WriteResult[]
    */
   public function getWriteResults()
   {

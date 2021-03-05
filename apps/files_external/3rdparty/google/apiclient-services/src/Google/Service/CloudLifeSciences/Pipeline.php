@@ -26,14 +26,14 @@ class Google_Service_CloudLifeSciences_Pipeline extends Google_Collection
   public $timeout;
 
   /**
-   * @param Google_Service_CloudLifeSciences_Action
+   * @param Google_Service_CloudLifeSciences_Action[]
    */
   public function setActions($actions)
   {
     $this->actions = $actions;
   }
   /**
-   * @return Google_Service_CloudLifeSciences_Action
+   * @return Google_Service_CloudLifeSciences_Action[]
    */
   public function getActions()
   {

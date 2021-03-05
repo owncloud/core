@@ -20,22 +20,32 @@ class Google_Service_Area120Tables_Table extends Google_Collection
   protected $collection_key = 'columns';
   protected $columnsType = 'Google_Service_Area120Tables_ColumnDescription';
   protected $columnsDataType = 'array';
+  public $createTime;
   public $displayName;
   public $name;
+  public $updateTime;
 
   /**
-   * @param Google_Service_Area120Tables_ColumnDescription
+   * @param Google_Service_Area120Tables_ColumnDescription[]
    */
   public function setColumns($columns)
   {
     $this->columns = $columns;
   }
   /**
-   * @return Google_Service_Area120Tables_ColumnDescription
+   * @return Google_Service_Area120Tables_ColumnDescription[]
    */
   public function getColumns()
   {
     return $this->columns;
+  }
+  public function setCreateTime($createTime)
+  {
+    $this->createTime = $createTime;
+  }
+  public function getCreateTime()
+  {
+    return $this->createTime;
   }
   public function setDisplayName($displayName)
   {
@@ -52,5 +62,13 @@ class Google_Service_Area120Tables_Table extends Google_Collection
   public function getName()
   {
     return $this->name;
+  }
+  public function setUpdateTime($updateTime)
+  {
+    $this->updateTime = $updateTime;
+  }
+  public function getUpdateTime()
+  {
+    return $this->updateTime;
   }
 }

@@ -22,14 +22,14 @@ class Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3SamplePlayab
   public $ttl;
 
   /**
-   * @param Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3SamplePlayableLocationList
+   * @param Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3SamplePlayableLocationList[]
    */
   public function setLocationsPerGameObjectType($locationsPerGameObjectType)
   {
     $this->locationsPerGameObjectType = $locationsPerGameObjectType;
   }
   /**
-   * @return Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3SamplePlayableLocationList
+   * @return Google_Service_PlayableLocations_GoogleMapsPlayablelocationsV3SamplePlayableLocationList[]
    */
   public function getLocationsPerGameObjectType()
   {

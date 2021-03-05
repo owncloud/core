@@ -22,14 +22,14 @@ class Google_Service_Fitness_AggregateResponse extends Google_Collection
   protected $bucketDataType = 'array';
 
   /**
-   * @param Google_Service_Fitness_AggregateBucket
+   * @param Google_Service_Fitness_AggregateBucket[]
    */
   public function setBucket($bucket)
   {
     $this->bucket = $bucket;
   }
   /**
-   * @return Google_Service_Fitness_AggregateBucket
+   * @return Google_Service_Fitness_AggregateBucket[]
    */
   public function getBucket()
   {

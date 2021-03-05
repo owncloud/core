@@ -31,14 +31,14 @@ class Google_Service_Bigquery_ListRoutinesResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Bigquery_Routine
+   * @param Google_Service_Bigquery_Routine[]
    */
   public function setRoutines($routines)
   {
     $this->routines = $routines;
   }
   /**
-   * @return Google_Service_Bigquery_Routine
+   * @return Google_Service_Bigquery_Routine[]
    */
   public function getRoutines()
   {

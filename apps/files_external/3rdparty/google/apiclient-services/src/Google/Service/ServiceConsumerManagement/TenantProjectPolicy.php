@@ -22,14 +22,14 @@ class Google_Service_ServiceConsumerManagement_TenantProjectPolicy extends Googl
   protected $policyBindingsDataType = 'array';
 
   /**
-   * @param Google_Service_ServiceConsumerManagement_PolicyBinding
+   * @param Google_Service_ServiceConsumerManagement_PolicyBinding[]
    */
   public function setPolicyBindings($policyBindings)
   {
     $this->policyBindings = $policyBindings;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_PolicyBinding
+   * @return Google_Service_ServiceConsumerManagement_PolicyBinding[]
    */
   public function getPolicyBindings()
   {

@@ -31,8 +31,11 @@ class Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1Workload
   protected $fedrampModerateSettingsDataType = '';
   protected $il4SettingsType = 'Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1WorkloadIL4Settings';
   protected $il4SettingsDataType = '';
+  protected $kmsSettingsType = 'Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1WorkloadKMSSettings';
+  protected $kmsSettingsDataType = '';
   public $labels;
   public $name;
+  public $provisionedResourcesParent;
   protected $resourcesType = 'Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1WorkloadResourceInfo';
   protected $resourcesDataType = 'array';
 
@@ -132,6 +135,20 @@ class Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1Workload
   {
     return $this->il4Settings;
   }
+  /**
+   * @param Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1WorkloadKMSSettings
+   */
+  public function setKmsSettings(Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1WorkloadKMSSettings $kmsSettings)
+  {
+    $this->kmsSettings = $kmsSettings;
+  }
+  /**
+   * @return Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1WorkloadKMSSettings
+   */
+  public function getKmsSettings()
+  {
+    return $this->kmsSettings;
+  }
   public function setLabels($labels)
   {
     $this->labels = $labels;
@@ -148,15 +165,23 @@ class Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1Workload
   {
     return $this->name;
   }
+  public function setProvisionedResourcesParent($provisionedResourcesParent)
+  {
+    $this->provisionedResourcesParent = $provisionedResourcesParent;
+  }
+  public function getProvisionedResourcesParent()
+  {
+    return $this->provisionedResourcesParent;
+  }
   /**
-   * @param Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1WorkloadResourceInfo
+   * @param Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1WorkloadResourceInfo[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1WorkloadResourceInfo
+   * @return Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1WorkloadResourceInfo[]
    */
   public function getResources()
   {

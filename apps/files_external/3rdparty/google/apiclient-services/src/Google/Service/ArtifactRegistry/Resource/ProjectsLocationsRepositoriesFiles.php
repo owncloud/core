@@ -45,9 +45,6 @@ class Google_Service_ArtifactRegistry_Resource_ProjectsLocationsRepositoriesFile
    * listed.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The next_page_token value returned from a
-   * previous list request, if any.
-   * @opt_param int pageSize The maximum number of files to return.
    * @opt_param string filter An expression for filtering the results of the
    * request. Filter rules are case insensitive. The fields eligible for filtering
    * are: * `name` * `owner` An example of using a filter: *
@@ -55,6 +52,9 @@ class Google_Service_ArtifactRegistry_Resource_ProjectsLocationsRepositoriesFile
    * Files with an ID starting with "a/b/". * `owner="projects/p1/locations/us-
    * central1/repositories/repo1/packages/pkg1/versions/1.0"` --> Files owned by
    * the version `1.0` in package `pkg1`.
+   * @opt_param int pageSize The maximum number of files to return.
+   * @opt_param string pageToken The next_page_token value returned from a
+   * previous list request, if any.
    * @return Google_Service_ArtifactRegistry_ListFilesResponse
    */
   public function listProjectsLocationsRepositoriesFiles($parent, $optParams = array())

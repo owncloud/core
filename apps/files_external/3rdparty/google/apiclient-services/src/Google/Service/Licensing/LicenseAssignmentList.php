@@ -33,14 +33,14 @@ class Google_Service_Licensing_LicenseAssignmentList extends Google_Collection
     return $this->etag;
   }
   /**
-   * @param Google_Service_Licensing_LicenseAssignment
+   * @param Google_Service_Licensing_LicenseAssignment[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Licensing_LicenseAssignment
+   * @return Google_Service_Licensing_LicenseAssignment[]
    */
   public function getItems()
   {

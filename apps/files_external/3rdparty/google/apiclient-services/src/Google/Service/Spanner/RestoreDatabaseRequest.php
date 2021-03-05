@@ -19,6 +19,8 @@ class Google_Service_Spanner_RestoreDatabaseRequest extends Google_Model
 {
   public $backup;
   public $databaseId;
+  protected $encryptionConfigType = 'Google_Service_Spanner_RestoreDatabaseEncryptionConfig';
+  protected $encryptionConfigDataType = '';
 
   public function setBackup($backup)
   {
@@ -35,5 +37,19 @@ class Google_Service_Spanner_RestoreDatabaseRequest extends Google_Model
   public function getDatabaseId()
   {
     return $this->databaseId;
+  }
+  /**
+   * @param Google_Service_Spanner_RestoreDatabaseEncryptionConfig
+   */
+  public function setEncryptionConfig(Google_Service_Spanner_RestoreDatabaseEncryptionConfig $encryptionConfig)
+  {
+    $this->encryptionConfig = $encryptionConfig;
+  }
+  /**
+   * @return Google_Service_Spanner_RestoreDatabaseEncryptionConfig
+   */
+  public function getEncryptionConfig()
+  {
+    return $this->encryptionConfig;
   }
 }

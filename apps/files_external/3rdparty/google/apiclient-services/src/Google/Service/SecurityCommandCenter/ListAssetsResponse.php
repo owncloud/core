@@ -25,14 +25,14 @@ class Google_Service_SecurityCommandCenter_ListAssetsResponse extends Google_Col
   public $totalSize;
 
   /**
-   * @param Google_Service_SecurityCommandCenter_ListAssetsResult
+   * @param Google_Service_SecurityCommandCenter_ListAssetsResult[]
    */
   public function setListAssetsResults($listAssetsResults)
   {
     $this->listAssetsResults = $listAssetsResults;
   }
   /**
-   * @return Google_Service_SecurityCommandCenter_ListAssetsResult
+   * @return Google_Service_SecurityCommandCenter_ListAssetsResult[]
    */
   public function getListAssetsResults()
   {

@@ -29,7 +29,11 @@ class Google_Service_Document_Resource_ProjectsLocationsProcessors extends Googl
    * LRO endpoint to batch process many documents. The output is written to Cloud
    * Storage as JSON in the [Document] format. (processors.batchProcess)
    *
-   * @param string $name Required. The processor resource name.
+   * @param string $name Required. The resource name of Processor or
+   * ProcessorVersion. Format:
+   * projects/{project}/locations/{location}/processors/{processor}, or projects/{
+   * project}/locations/{location}/processors/{processor}/processorVerions/{proces
+   * sorVersion}
    * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3BatchProcessRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Document_GoogleLongrunningOperation
@@ -43,7 +47,12 @@ class Google_Service_Document_Resource_ProjectsLocationsProcessors extends Googl
   /**
    * Processes a single document. (processors.process)
    *
-   * @param string $name Required. The processor resource name.
+   * @param string $name Required. The resource name of the Processor or
+   * ProcessorVersion to use for processing. If a Processor is specified, the
+   * server will use its default version. Format:
+   * projects/{project}/locations/{location}/processors/{processor}, or projects/{
+   * project}/locations/{location}/processors/{processor}/processorVerions/{proces
+   * sorVersion}
    * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3ProcessRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3ProcessResponse

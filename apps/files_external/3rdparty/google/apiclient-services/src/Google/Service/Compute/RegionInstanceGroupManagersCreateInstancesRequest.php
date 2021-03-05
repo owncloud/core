@@ -22,14 +22,14 @@ class Google_Service_Compute_RegionInstanceGroupManagersCreateInstancesRequest e
   protected $instancesDataType = 'array';
 
   /**
-   * @param Google_Service_Compute_PerInstanceConfig
+   * @param Google_Service_Compute_PerInstanceConfig[]
    */
   public function setInstances($instances)
   {
     $this->instances = $instances;
   }
   /**
-   * @return Google_Service_Compute_PerInstanceConfig
+   * @return Google_Service_Compute_PerInstanceConfig[]
    */
   public function getInstances()
   {

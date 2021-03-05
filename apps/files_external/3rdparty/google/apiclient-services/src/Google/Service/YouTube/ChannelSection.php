@@ -68,14 +68,14 @@ class Google_Service_YouTube_ChannelSection extends Google_Model
     return $this->kind;
   }
   /**
-   * @param Google_Service_YouTube_ChannelSectionLocalization
+   * @param Google_Service_YouTube_ChannelSectionLocalization[]
    */
   public function setLocalizations($localizations)
   {
     $this->localizations = $localizations;
   }
   /**
-   * @return Google_Service_YouTube_ChannelSectionLocalization
+   * @return Google_Service_YouTube_ChannelSectionLocalization[]
    */
   public function getLocalizations()
   {

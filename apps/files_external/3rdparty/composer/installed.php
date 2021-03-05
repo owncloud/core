@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '0376c94a60a0f3f1d77ed205c5ee9f4b3db65460',
+    'reference' => '127c9f6b6e2c9bea73119d49b879c1b7aed68b0c',
     'name' => 'files_external/3rdparty',
   ),
   'versions' => 
@@ -18,16 +18,16 @@
       'aliases' => 
       array (
       ),
-      'reference' => '0376c94a60a0f3f1d77ed205c5ee9f4b3db65460',
+      'reference' => '127c9f6b6e2c9bea73119d49b879c1b7aed68b0c',
     ),
     'firebase/php-jwt' => 
     array (
-      'pretty_version' => 'v5.2.0',
-      'version' => '5.2.0.0',
+      'pretty_version' => 'v5.2.1',
+      'version' => '5.2.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'feb0e820b8436873675fd3aca04f3728eb2185cb',
+      'reference' => 'f42c9110abe98dd6cfe9053c49bc86acc70b2d23',
     ),
     'google/apiclient' => 
     array (
@@ -40,21 +40,21 @@
     ),
     'google/apiclient-services' => 
     array (
-      'pretty_version' => 'v0.153',
-      'version' => '0.153.0.0',
+      'pretty_version' => 'v0.162.0',
+      'version' => '0.162.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'db62bb19f32f81c9551f223c72be0682eb58ebd8',
+      'reference' => '9085ff13f32f5baf8b3d2917ea63e2e029ecedb6',
     ),
     'google/auth' => 
     array (
-      'pretty_version' => 'v1.14.3',
-      'version' => '1.14.3.0',
+      'pretty_version' => 'v1.15.0',
+      'version' => '1.15.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'c1503299c779af0cbc99b43788f75930988852cf',
+      'reference' => 'b346c07de6613e26443d7b4830e5e1933b830dc4',
     ),
     'guzzlehttp/guzzle' => 
     array (
@@ -94,39 +94,39 @@
     ),
     'icewind/smb' => 
     array (
-      'pretty_version' => 'v3.2.7',
-      'version' => '3.2.7.0',
+      'pretty_version' => 'v3.3.1',
+      'version' => '3.3.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '743a7bf35317f1b76cf8e8b804e54a6c5faacad6',
+      'reference' => '866f2b19a6e8277bc79c34060e344c9cbbba7023',
     ),
     'icewind/streams' => 
     array (
-      'pretty_version' => 'v0.7.2',
-      'version' => '0.7.2.0',
+      'pretty_version' => 'v0.7.3',
+      'version' => '0.7.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => '77d750ccc654c0eda4a41fedb2dbd71053755790',
+      'reference' => '22ef9fc5b50d645dbc202206a656cc4dde28f95c',
     ),
     'monolog/monolog' => 
     array (
-      'pretty_version' => '2.1.1',
-      'version' => '2.1.1.0',
+      'pretty_version' => '2.2.0',
+      'version' => '2.2.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'f9eee5cec93dfb313a38b6b288741e84e53f02d5',
+      'reference' => '1cb1cde8e8dd0f70cc0fe51354a59acad9302084',
     ),
     'phpseclib/phpseclib' => 
     array (
-      'pretty_version' => '2.0.29',
-      'version' => '2.0.29.0',
+      'pretty_version' => '2.0.30',
+      'version' => '2.0.30.0',
       'aliases' => 
       array (
       ),
-      'reference' => '497856a8d997f640b4a516062f84228a772a48a8',
+      'reference' => '136b9ca7eebef78be14abf90d65c5e57b6bc5d36',
     ),
     'psr/cache' => 
     array (

@@ -32,14 +32,14 @@ class Google_Service_Compute_SslCertificatesScopedListWarning extends Google_Col
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_SslCertificatesScopedListWarningData
+   * @param Google_Service_Compute_SslCertificatesScopedListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_SslCertificatesScopedListWarningData
+   * @return Google_Service_Compute_SslCertificatesScopedListWarningData[]
    */
   public function getData()
   {

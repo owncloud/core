@@ -77,14 +77,14 @@ class Google_Service_DataLabeling_Resource_ProjectsAnnotationSpecSets extends Go
    * projects/{project_id}
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter Optional. Filter is not supported at this moment.
+   * @opt_param int pageSize Optional. Requested page size. Server may return
+   * fewer results than requested. Default value is 100.
    * @opt_param string pageToken Optional. A token identifying a page of results
    * for the server to return. Typically obtained by
    * ListAnnotationSpecSetsResponse.next_page_token of the previous
    * [DataLabelingService.ListAnnotationSpecSets] call. Return first page if
    * empty.
-   * @opt_param string filter Optional. Filter is not supported at this moment.
-   * @opt_param int pageSize Optional. Requested page size. Server may return
-   * fewer results than requested. Default value is 100.
    * @return Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1ListAnnotationSpecSetsResponse
    */
   public function listProjectsAnnotationSpecSets($parent, $optParams = array())

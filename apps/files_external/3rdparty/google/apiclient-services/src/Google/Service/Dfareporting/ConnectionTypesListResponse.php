@@ -23,14 +23,14 @@ class Google_Service_Dfareporting_ConnectionTypesListResponse extends Google_Col
   public $kind;
 
   /**
-   * @param Google_Service_Dfareporting_ConnectionType
+   * @param Google_Service_Dfareporting_ConnectionType[]
    */
   public function setConnectionTypes($connectionTypes)
   {
     $this->connectionTypes = $connectionTypes;
   }
   /**
-   * @return Google_Service_Dfareporting_ConnectionType
+   * @return Google_Service_Dfareporting_ConnectionType[]
    */
   public function getConnectionTypes()
   {

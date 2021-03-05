@@ -31,14 +31,14 @@ class Google_Service_Dfareporting_PlatformTypesListResponse extends Google_Colle
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dfareporting_PlatformType
+   * @param Google_Service_Dfareporting_PlatformType[]
    */
   public function setPlatformTypes($platformTypes)
   {
     $this->platformTypes = $platformTypes;
   }
   /**
-   * @return Google_Service_Dfareporting_PlatformType
+   * @return Google_Service_Dfareporting_PlatformType[]
    */
   public function getPlatformTypes()
   {

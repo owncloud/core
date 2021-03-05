@@ -17,6 +17,7 @@
 
 class Google_Service_DataFusion_OperationMetadata extends Google_Model
 {
+  public $additionalStatus;
   public $apiVersion;
   public $createTime;
   public $endTime;
@@ -25,6 +26,14 @@ class Google_Service_DataFusion_OperationMetadata extends Google_Model
   public $target;
   public $verb;
 
+  public function setAdditionalStatus($additionalStatus)
+  {
+    $this->additionalStatus = $additionalStatus;
+  }
+  public function getAdditionalStatus()
+  {
+    return $this->additionalStatus;
+  }
   public function setApiVersion($apiVersion)
   {
     $this->apiVersion = $apiVersion;

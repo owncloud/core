@@ -31,14 +31,14 @@ class Google_Service_Firestore_CommitResponse extends Google_Collection
     return $this->commitTime;
   }
   /**
-   * @param Google_Service_Firestore_WriteResult
+   * @param Google_Service_Firestore_WriteResult[]
    */
   public function setWriteResults($writeResults)
   {
     $this->writeResults = $writeResults;
   }
   /**
-   * @return Google_Service_Firestore_WriteResult
+   * @return Google_Service_Firestore_WriteResult[]
    */
   public function getWriteResults()
   {

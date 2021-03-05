@@ -24,6 +24,7 @@ class Google_Service_ShoppingContent_RepricingRuleEligibleOfferMatcher extends G
   public $matcherOption;
   protected $offerIdMatcherType = 'Google_Service_ShoppingContent_RepricingRuleEligibleOfferMatcherStringMatcher';
   protected $offerIdMatcherDataType = '';
+  public $skipWhenOnPromotion;
 
   /**
    * @param Google_Service_ShoppingContent_RepricingRuleEligibleOfferMatcherStringMatcher
@@ -74,5 +75,13 @@ class Google_Service_ShoppingContent_RepricingRuleEligibleOfferMatcher extends G
   public function getOfferIdMatcher()
   {
     return $this->offerIdMatcher;
+  }
+  public function setSkipWhenOnPromotion($skipWhenOnPromotion)
+  {
+    $this->skipWhenOnPromotion = $skipWhenOnPromotion;
+  }
+  public function getSkipWhenOnPromotion()
+  {
+    return $this->skipWhenOnPromotion;
   }
 }

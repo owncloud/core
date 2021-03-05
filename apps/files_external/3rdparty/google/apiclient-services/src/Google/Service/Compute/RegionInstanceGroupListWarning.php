@@ -32,14 +32,14 @@ class Google_Service_Compute_RegionInstanceGroupListWarning extends Google_Colle
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_RegionInstanceGroupListWarningData
+   * @param Google_Service_Compute_RegionInstanceGroupListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_RegionInstanceGroupListWarningData
+   * @return Google_Service_Compute_RegionInstanceGroupListWarningData[]
    */
   public function getData()
   {

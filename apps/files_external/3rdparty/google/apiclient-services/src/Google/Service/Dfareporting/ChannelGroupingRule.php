@@ -24,14 +24,14 @@ class Google_Service_Dfareporting_ChannelGroupingRule extends Google_Collection
   public $name;
 
   /**
-   * @param Google_Service_Dfareporting_DisjunctiveMatchStatement
+   * @param Google_Service_Dfareporting_DisjunctiveMatchStatement[]
    */
   public function setDisjunctiveMatchStatements($disjunctiveMatchStatements)
   {
     $this->disjunctiveMatchStatements = $disjunctiveMatchStatements;
   }
   /**
-   * @return Google_Service_Dfareporting_DisjunctiveMatchStatement
+   * @return Google_Service_Dfareporting_DisjunctiveMatchStatement[]
    */
   public function getDisjunctiveMatchStatements()
   {

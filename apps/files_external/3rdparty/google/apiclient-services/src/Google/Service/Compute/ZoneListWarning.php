@@ -32,14 +32,14 @@ class Google_Service_Compute_ZoneListWarning extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_ZoneListWarningData
+   * @param Google_Service_Compute_ZoneListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_ZoneListWarningData
+   * @return Google_Service_Compute_ZoneListWarningData[]
    */
   public function getData()
   {

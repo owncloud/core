@@ -48,14 +48,14 @@ class Google_Service_ShoppingContent_DatafeedStatus extends Google_Collection
     return $this->datafeedId;
   }
   /**
-   * @param Google_Service_ShoppingContent_DatafeedStatusError
+   * @param Google_Service_ShoppingContent_DatafeedStatusError[]
    */
   public function setErrors($errors)
   {
     $this->errors = $errors;
   }
   /**
-   * @return Google_Service_ShoppingContent_DatafeedStatusError
+   * @return Google_Service_ShoppingContent_DatafeedStatusError[]
    */
   public function getErrors()
   {
@@ -110,14 +110,14 @@ class Google_Service_ShoppingContent_DatafeedStatus extends Google_Collection
     return $this->processingStatus;
   }
   /**
-   * @param Google_Service_ShoppingContent_DatafeedStatusError
+   * @param Google_Service_ShoppingContent_DatafeedStatusError[]
    */
   public function setWarnings($warnings)
   {
     $this->warnings = $warnings;
   }
   /**
-   * @return Google_Service_ShoppingContent_DatafeedStatusError
+   * @return Google_Service_ShoppingContent_DatafeedStatusError[]
    */
   public function getWarnings()
   {

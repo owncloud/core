@@ -22,14 +22,14 @@ class Google_Service_AndroidProvisioningPartner_CustomerListDpcsResponse extends
   protected $dpcsDataType = 'array';
 
   /**
-   * @param Google_Service_AndroidProvisioningPartner_Dpc
+   * @param Google_Service_AndroidProvisioningPartner_Dpc[]
    */
   public function setDpcs($dpcs)
   {
     $this->dpcs = $dpcs;
   }
   /**
-   * @return Google_Service_AndroidProvisioningPartner_Dpc
+   * @return Google_Service_AndroidProvisioningPartner_Dpc[]
    */
   public function getDpcs()
   {

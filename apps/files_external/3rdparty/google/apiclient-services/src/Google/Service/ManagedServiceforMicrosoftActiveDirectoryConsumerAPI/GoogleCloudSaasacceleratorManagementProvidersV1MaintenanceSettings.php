@@ -18,6 +18,9 @@
 class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_GoogleCloudSaasacceleratorManagementProvidersV1MaintenanceSettings extends Google_Model
 {
   public $exclude;
+  public $isRollback;
+  protected $maintenancePoliciesType = 'Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_MaintenancePolicy';
+  protected $maintenancePoliciesDataType = 'map';
 
   public function setExclude($exclude)
   {
@@ -26,5 +29,27 @@ class Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_Google
   public function getExclude()
   {
     return $this->exclude;
+  }
+  public function setIsRollback($isRollback)
+  {
+    $this->isRollback = $isRollback;
+  }
+  public function getIsRollback()
+  {
+    return $this->isRollback;
+  }
+  /**
+   * @param Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_MaintenancePolicy[]
+   */
+  public function setMaintenancePolicies($maintenancePolicies)
+  {
+    $this->maintenancePolicies = $maintenancePolicies;
+  }
+  /**
+   * @return Google_Service_ManagedServiceforMicrosoftActiveDirectoryConsumerAPI_MaintenancePolicy[]
+   */
+  public function getMaintenancePolicies()
+  {
+    return $this->maintenancePolicies;
   }
 }

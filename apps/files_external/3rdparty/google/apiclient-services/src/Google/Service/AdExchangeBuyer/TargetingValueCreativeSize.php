@@ -36,14 +36,14 @@ class Google_Service_AdExchangeBuyer_TargetingValueCreativeSize extends Google_C
     return $this->allowedFormats;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_TargetingValueSize
+   * @param Google_Service_AdExchangeBuyer_TargetingValueSize[]
    */
   public function setCompanionSizes($companionSizes)
   {
     $this->companionSizes = $companionSizes;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_TargetingValueSize
+   * @return Google_Service_AdExchangeBuyer_TargetingValueSize[]
    */
   public function getCompanionSizes()
   {

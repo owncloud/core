@@ -22,14 +22,14 @@ class Google_Service_AndroidEnterprise_DevicesListResponse extends Google_Collec
   protected $deviceDataType = 'array';
 
   /**
-   * @param Google_Service_AndroidEnterprise_Device
+   * @param Google_Service_AndroidEnterprise_Device[]
    */
   public function setDevice($device)
   {
     $this->device = $device;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_Device
+   * @return Google_Service_AndroidEnterprise_Device[]
    */
   public function getDevice()
   {

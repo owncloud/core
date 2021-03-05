@@ -22,14 +22,14 @@ class Google_Service_Dataflow_SendWorkerMessagesResponse extends Google_Collecti
   protected $workerMessageResponsesDataType = 'array';
 
   /**
-   * @param Google_Service_Dataflow_WorkerMessageResponse
+   * @param Google_Service_Dataflow_WorkerMessageResponse[]
    */
   public function setWorkerMessageResponses($workerMessageResponses)
   {
     $this->workerMessageResponses = $workerMessageResponses;
   }
   /**
-   * @return Google_Service_Dataflow_WorkerMessageResponse
+   * @return Google_Service_Dataflow_WorkerMessageResponse[]
    */
   public function getWorkerMessageResponses()
   {

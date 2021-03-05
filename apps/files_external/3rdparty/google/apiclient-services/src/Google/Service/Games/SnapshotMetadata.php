@@ -19,10 +19,9 @@ class Google_Service_Games_SnapshotMetadata extends Google_Model
 {
   public $description;
   public $deviceName;
-  public $duration;
+  public $gameplayDuration;
   public $lastModifyTime;
   public $progressValue;
-  public $title;
 
   public function setDescription($description)
   {
@@ -40,13 +39,13 @@ class Google_Service_Games_SnapshotMetadata extends Google_Model
   {
     return $this->deviceName;
   }
-  public function setDuration($duration)
+  public function setGameplayDuration($gameplayDuration)
   {
-    $this->duration = $duration;
+    $this->gameplayDuration = $gameplayDuration;
   }
-  public function getDuration()
+  public function getGameplayDuration()
   {
-    return $this->duration;
+    return $this->gameplayDuration;
   }
   public function setLastModifyTime($lastModifyTime)
   {
@@ -63,13 +62,5 @@ class Google_Service_Games_SnapshotMetadata extends Google_Model
   public function getProgressValue()
   {
     return $this->progressValue;
-  }
-  public function setTitle($title)
-  {
-    $this->title = $title;
-  }
-  public function getTitle()
-  {
-    return $this->title;
   }
 }

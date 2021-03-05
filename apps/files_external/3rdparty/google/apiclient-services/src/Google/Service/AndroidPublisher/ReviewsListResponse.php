@@ -40,14 +40,14 @@ class Google_Service_AndroidPublisher_ReviewsListResponse extends Google_Collect
     return $this->pageInfo;
   }
   /**
-   * @param Google_Service_AndroidPublisher_Review
+   * @param Google_Service_AndroidPublisher_Review[]
    */
   public function setReviews($reviews)
   {
     $this->reviews = $reviews;
   }
   /**
-   * @return Google_Service_AndroidPublisher_Review
+   * @return Google_Service_AndroidPublisher_Review[]
    */
   public function getReviews()
   {

@@ -26,14 +26,14 @@ class Google_Service_Games_PlayerLeaderboardScoreListResponse extends Google_Col
   protected $playerDataType = '';
 
   /**
-   * @param Google_Service_Games_PlayerLeaderboardScore
+   * @param Google_Service_Games_PlayerLeaderboardScore[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Games_PlayerLeaderboardScore
+   * @return Google_Service_Games_PlayerLeaderboardScore[]
    */
   public function getItems()
   {

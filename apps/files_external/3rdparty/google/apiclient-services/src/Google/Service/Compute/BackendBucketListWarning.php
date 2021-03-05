@@ -32,14 +32,14 @@ class Google_Service_Compute_BackendBucketListWarning extends Google_Collection
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_BackendBucketListWarningData
+   * @param Google_Service_Compute_BackendBucketListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_BackendBucketListWarningData
+   * @return Google_Service_Compute_BackendBucketListWarningData[]
    */
   public function getData()
   {

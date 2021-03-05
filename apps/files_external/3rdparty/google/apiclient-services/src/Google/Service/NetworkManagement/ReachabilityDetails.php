@@ -48,14 +48,14 @@ class Google_Service_NetworkManagement_ReachabilityDetails extends Google_Collec
     return $this->result;
   }
   /**
-   * @param Google_Service_NetworkManagement_Trace
+   * @param Google_Service_NetworkManagement_Trace[]
    */
   public function setTraces($traces)
   {
     $this->traces = $traces;
   }
   /**
-   * @return Google_Service_NetworkManagement_Trace
+   * @return Google_Service_NetworkManagement_Trace[]
    */
   public function getTraces()
   {

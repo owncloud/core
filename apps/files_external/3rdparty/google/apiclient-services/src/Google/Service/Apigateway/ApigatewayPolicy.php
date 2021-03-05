@@ -26,28 +26,28 @@ class Google_Service_Apigateway_ApigatewayPolicy extends Google_Collection
   public $version;
 
   /**
-   * @param Google_Service_Apigateway_ApigatewayAuditConfig
+   * @param Google_Service_Apigateway_ApigatewayAuditConfig[]
    */
   public function setAuditConfigs($auditConfigs)
   {
     $this->auditConfigs = $auditConfigs;
   }
   /**
-   * @return Google_Service_Apigateway_ApigatewayAuditConfig
+   * @return Google_Service_Apigateway_ApigatewayAuditConfig[]
    */
   public function getAuditConfigs()
   {
     return $this->auditConfigs;
   }
   /**
-   * @param Google_Service_Apigateway_ApigatewayBinding
+   * @param Google_Service_Apigateway_ApigatewayBinding[]
    */
   public function setBindings($bindings)
   {
     $this->bindings = $bindings;
   }
   /**
-   * @return Google_Service_Apigateway_ApigatewayBinding
+   * @return Google_Service_Apigateway_ApigatewayBinding[]
    */
   public function getBindings()
   {

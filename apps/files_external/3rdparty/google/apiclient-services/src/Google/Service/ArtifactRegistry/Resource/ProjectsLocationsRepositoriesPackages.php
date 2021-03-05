@@ -59,9 +59,10 @@ class Google_Service_ArtifactRegistry_Resource_ProjectsLocationsRepositoriesPack
    * listed.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize The maximum number of packages to return. Maximum
+   * page size is 10,000.
    * @opt_param string pageToken The next_page_token value returned from a
    * previous list request, if any.
-   * @opt_param int pageSize The maximum number of packages to return.
    * @return Google_Service_ArtifactRegistry_ListPackagesResponse
    */
   public function listProjectsLocationsRepositoriesPackages($parent, $optParams = array())

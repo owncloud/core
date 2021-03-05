@@ -22,14 +22,14 @@ class Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1Cat
   protected $catalogItemsDataType = 'array';
 
   /**
-   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1CatalogItem
+   * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1CatalogItem[]
    */
   public function setCatalogItems($catalogItems)
   {
     $this->catalogItems = $catalogItems;
   }
   /**
-   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1CatalogItem
+   * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1CatalogItem[]
    */
   public function getCatalogItems()
   {

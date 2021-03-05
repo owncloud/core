@@ -38,14 +38,14 @@ class Google_Service_DoubleClickBidManager_PathQueryOptions extends Google_Colle
     return $this->channelGrouping;
   }
   /**
-   * @param Google_Service_DoubleClickBidManager_PathFilter
+   * @param Google_Service_DoubleClickBidManager_PathFilter[]
    */
   public function setPathFilters($pathFilters)
   {
     $this->pathFilters = $pathFilters;
   }
   /**
-   * @return Google_Service_DoubleClickBidManager_PathFilter
+   * @return Google_Service_DoubleClickBidManager_PathFilter[]
    */
   public function getPathFilters()
   {

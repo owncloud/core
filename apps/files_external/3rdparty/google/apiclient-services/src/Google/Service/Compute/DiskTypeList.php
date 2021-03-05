@@ -36,14 +36,14 @@ class Google_Service_Compute_DiskTypeList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_DiskType
+   * @param Google_Service_Compute_DiskType[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_DiskType
+   * @return Google_Service_Compute_DiskType[]
    */
   public function getItems()
   {

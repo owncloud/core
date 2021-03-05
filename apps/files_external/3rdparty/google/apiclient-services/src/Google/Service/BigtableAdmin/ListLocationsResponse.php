@@ -23,14 +23,14 @@ class Google_Service_BigtableAdmin_ListLocationsResponse extends Google_Collecti
   public $nextPageToken;
 
   /**
-   * @param Google_Service_BigtableAdmin_Location
+   * @param Google_Service_BigtableAdmin_Location[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_BigtableAdmin_Location
+   * @return Google_Service_BigtableAdmin_Location[]
    */
   public function getLocations()
   {

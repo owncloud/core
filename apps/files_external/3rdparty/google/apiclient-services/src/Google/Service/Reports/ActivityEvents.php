@@ -32,14 +32,14 @@ class Google_Service_Reports_ActivityEvents extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Reports_ActivityEventsParameters
+   * @param Google_Service_Reports_ActivityEventsParameters[]
    */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
   /**
-   * @return Google_Service_Reports_ActivityEventsParameters
+   * @return Google_Service_Reports_ActivityEventsParameters[]
    */
   public function getParameters()
   {

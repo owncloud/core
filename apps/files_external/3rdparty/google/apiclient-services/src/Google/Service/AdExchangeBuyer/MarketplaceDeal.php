@@ -238,28 +238,28 @@ class Google_Service_AdExchangeBuyer_MarketplaceDeal extends Google_Collection
     return $this->proposalId;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_ContactInformation
+   * @param Google_Service_AdExchangeBuyer_ContactInformation[]
    */
   public function setSellerContacts($sellerContacts)
   {
     $this->sellerContacts = $sellerContacts;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_ContactInformation
+   * @return Google_Service_AdExchangeBuyer_ContactInformation[]
    */
   public function getSellerContacts()
   {
     return $this->sellerContacts;
   }
   /**
-   * @param Google_Service_AdExchangeBuyer_SharedTargeting
+   * @param Google_Service_AdExchangeBuyer_SharedTargeting[]
    */
   public function setSharedTargetings($sharedTargetings)
   {
     $this->sharedTargetings = $sharedTargetings;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_SharedTargeting
+   * @return Google_Service_AdExchangeBuyer_SharedTargeting[]
    */
   public function getSharedTargetings()
   {

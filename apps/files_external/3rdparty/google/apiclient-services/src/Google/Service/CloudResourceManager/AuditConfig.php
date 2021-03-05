@@ -23,14 +23,14 @@ class Google_Service_CloudResourceManager_AuditConfig extends Google_Collection
   public $service;
 
   /**
-   * @param Google_Service_CloudResourceManager_AuditLogConfig
+   * @param Google_Service_CloudResourceManager_AuditLogConfig[]
    */
   public function setAuditLogConfigs($auditLogConfigs)
   {
     $this->auditLogConfigs = $auditLogConfigs;
   }
   /**
-   * @return Google_Service_CloudResourceManager_AuditLogConfig
+   * @return Google_Service_CloudResourceManager_AuditLogConfig[]
    */
   public function getAuditLogConfigs()
   {

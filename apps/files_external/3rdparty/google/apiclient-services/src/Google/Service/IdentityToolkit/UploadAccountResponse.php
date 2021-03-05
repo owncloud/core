@@ -23,14 +23,14 @@ class Google_Service_IdentityToolkit_UploadAccountResponse extends Google_Collec
   public $kind;
 
   /**
-   * @param Google_Service_IdentityToolkit_UploadAccountResponseError
+   * @param Google_Service_IdentityToolkit_UploadAccountResponseError[]
    */
   public function setError($error)
   {
     $this->error = $error;
   }
   /**
-   * @return Google_Service_IdentityToolkit_UploadAccountResponseError
+   * @return Google_Service_IdentityToolkit_UploadAccountResponseError[]
    */
   public function getError()
   {

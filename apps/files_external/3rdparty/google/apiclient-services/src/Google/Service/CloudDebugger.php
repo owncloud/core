@@ -42,7 +42,7 @@ class Google_Service_CloudDebugger extends Google_Service
   public $controller_debuggees_breakpoints;
   public $debugger_debuggees;
   public $debugger_debuggees_breakpoints;
-  
+
   /**
    * Constructs the internal representation of the CloudDebugger service.
    *
@@ -129,15 +129,15 @@ class Google_Service_CloudDebugger extends Google_Service
               'path' => 'v2/debugger/debuggees',
               'httpMethod' => 'GET',
               'parameters' => array(
+                'clientVersion' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'includeInactive' => array(
                   'location' => 'query',
                   'type' => 'boolean',
                 ),
                 'project' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'clientVersion' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -199,10 +199,6 @@ class Google_Service_CloudDebugger extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'includeInactive' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ),
                 'action.value' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -211,6 +207,14 @@ class Google_Service_CloudDebugger extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'includeAllUsers' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
+                'includeInactive' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
                 'stripResults' => array(
                   'location' => 'query',
                   'type' => 'boolean',
@@ -218,10 +222,6 @@ class Google_Service_CloudDebugger extends Google_Service
                 'waitToken' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-                'includeAllUsers' => array(
-                  'location' => 'query',
-                  'type' => 'boolean',
                 ),
               ),
             ),'set' => array(
@@ -233,11 +233,11 @@ class Google_Service_CloudDebugger extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'clientVersion' => array(
+                'canaryOption' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'canaryOption' => array(
+                'clientVersion' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

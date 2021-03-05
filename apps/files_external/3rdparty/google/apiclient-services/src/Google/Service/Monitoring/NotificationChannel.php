@@ -15,17 +15,36 @@
  * the License.
  */
 
-class Google_Service_Monitoring_NotificationChannel extends Google_Model
+class Google_Service_Monitoring_NotificationChannel extends Google_Collection
 {
+  protected $collection_key = 'mutationRecords';
+  protected $creationRecordType = 'Google_Service_Monitoring_MutationRecord';
+  protected $creationRecordDataType = '';
   public $description;
   public $displayName;
   public $enabled;
   public $labels;
+  protected $mutationRecordsType = 'Google_Service_Monitoring_MutationRecord';
+  protected $mutationRecordsDataType = 'array';
   public $name;
   public $type;
   public $userLabels;
   public $verificationStatus;
 
+  /**
+   * @param Google_Service_Monitoring_MutationRecord
+   */
+  public function setCreationRecord(Google_Service_Monitoring_MutationRecord $creationRecord)
+  {
+    $this->creationRecord = $creationRecord;
+  }
+  /**
+   * @return Google_Service_Monitoring_MutationRecord
+   */
+  public function getCreationRecord()
+  {
+    return $this->creationRecord;
+  }
   public function setDescription($description)
   {
     $this->description = $description;
@@ -57,6 +76,20 @@ class Google_Service_Monitoring_NotificationChannel extends Google_Model
   public function getLabels()
   {
     return $this->labels;
+  }
+  /**
+   * @param Google_Service_Monitoring_MutationRecord[]
+   */
+  public function setMutationRecords($mutationRecords)
+  {
+    $this->mutationRecords = $mutationRecords;
+  }
+  /**
+   * @return Google_Service_Monitoring_MutationRecord[]
+   */
+  public function getMutationRecords()
+  {
+    return $this->mutationRecords;
   }
   public function setName($name)
   {

@@ -24,14 +24,14 @@ class Google_Service_Vision_ReferenceImage extends Google_Collection
   public $uri;
 
   /**
-   * @param Google_Service_Vision_BoundingPoly
+   * @param Google_Service_Vision_BoundingPoly[]
    */
   public function setBoundingPolys($boundingPolys)
   {
     $this->boundingPolys = $boundingPolys;
   }
   /**
-   * @return Google_Service_Vision_BoundingPoly
+   * @return Google_Service_Vision_BoundingPoly[]
    */
   public function getBoundingPolys()
   {

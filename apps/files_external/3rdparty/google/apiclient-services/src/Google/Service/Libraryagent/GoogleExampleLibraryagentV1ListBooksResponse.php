@@ -23,14 +23,14 @@ class Google_Service_Libraryagent_GoogleExampleLibraryagentV1ListBooksResponse e
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Libraryagent_GoogleExampleLibraryagentV1Book
+   * @param Google_Service_Libraryagent_GoogleExampleLibraryagentV1Book[]
    */
   public function setBooks($books)
   {
     $this->books = $books;
   }
   /**
-   * @return Google_Service_Libraryagent_GoogleExampleLibraryagentV1Book
+   * @return Google_Service_Libraryagent_GoogleExampleLibraryagentV1Book[]
    */
   public function getBooks()
   {

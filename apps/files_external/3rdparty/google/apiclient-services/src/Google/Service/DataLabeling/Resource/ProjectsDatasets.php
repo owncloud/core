@@ -110,10 +110,10 @@ class Google_Service_DataLabeling_Resource_ProjectsDatasets extends Google_Servi
    * projects/{project_id}
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Optional. Requested page size. Server may return
-   * fewer results than requested. Default value is 100.
    * @opt_param string filter Optional. Filter on dataset is not supported at this
    * moment.
+   * @opt_param int pageSize Optional. Requested page size. Server may return
+   * fewer results than requested. Default value is 100.
    * @opt_param string pageToken Optional. A token identifying a page of results
    * for the server to return. Typically obtained by
    * ListDatasetsResponse.next_page_token of the previous

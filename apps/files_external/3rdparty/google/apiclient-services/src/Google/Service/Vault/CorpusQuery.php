@@ -25,6 +25,8 @@ class Google_Service_Vault_CorpusQuery extends Google_Model
   protected $hangoutsChatQueryDataType = '';
   protected $mailQueryType = 'Google_Service_Vault_HeldMailQuery';
   protected $mailQueryDataType = '';
+  protected $voiceQueryType = 'Google_Service_Vault_HeldVoiceQuery';
+  protected $voiceQueryDataType = '';
 
   /**
    * @param Google_Service_Vault_HeldDriveQuery
@@ -81,5 +83,19 @@ class Google_Service_Vault_CorpusQuery extends Google_Model
   public function getMailQuery()
   {
     return $this->mailQuery;
+  }
+  /**
+   * @param Google_Service_Vault_HeldVoiceQuery
+   */
+  public function setVoiceQuery(Google_Service_Vault_HeldVoiceQuery $voiceQuery)
+  {
+    $this->voiceQuery = $voiceQuery;
+  }
+  /**
+   * @return Google_Service_Vault_HeldVoiceQuery
+   */
+  public function getVoiceQuery()
+  {
+    return $this->voiceQuery;
   }
 }

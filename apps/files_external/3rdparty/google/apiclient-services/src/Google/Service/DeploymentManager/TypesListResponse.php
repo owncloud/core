@@ -31,14 +31,14 @@ class Google_Service_DeploymentManager_TypesListResponse extends Google_Collecti
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_DeploymentManager_Type
+   * @param Google_Service_DeploymentManager_Type[]
    */
   public function setTypes($types)
   {
     $this->types = $types;
   }
   /**
-   * @return Google_Service_DeploymentManager_Type
+   * @return Google_Service_DeploymentManager_Type[]
    */
   public function getTypes()
   {

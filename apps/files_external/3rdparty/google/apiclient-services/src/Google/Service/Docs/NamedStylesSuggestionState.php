@@ -22,14 +22,14 @@ class Google_Service_Docs_NamedStylesSuggestionState extends Google_Collection
   protected $stylesSuggestionStatesDataType = 'array';
 
   /**
-   * @param Google_Service_Docs_NamedStyleSuggestionState
+   * @param Google_Service_Docs_NamedStyleSuggestionState[]
    */
   public function setStylesSuggestionStates($stylesSuggestionStates)
   {
     $this->stylesSuggestionStates = $stylesSuggestionStates;
   }
   /**
-   * @return Google_Service_Docs_NamedStyleSuggestionState
+   * @return Google_Service_Docs_NamedStyleSuggestionState[]
    */
   public function getStylesSuggestionStates()
   {

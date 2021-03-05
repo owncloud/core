@@ -24,14 +24,14 @@ class Google_Service_AdExchangeBuyer_CreativesList extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_AdExchangeBuyer_Creative
+   * @param Google_Service_AdExchangeBuyer_Creative[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_AdExchangeBuyer_Creative
+   * @return Google_Service_AdExchangeBuyer_Creative[]
    */
   public function getItems()
   {

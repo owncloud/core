@@ -31,14 +31,14 @@ class Google_Service_PubsubLite_ListSubscriptionsResponse extends Google_Collect
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_PubsubLite_Subscription
+   * @param Google_Service_PubsubLite_Subscription[]
    */
   public function setSubscriptions($subscriptions)
   {
     $this->subscriptions = $subscriptions;
   }
   /**
-   * @return Google_Service_PubsubLite_Subscription
+   * @return Google_Service_PubsubLite_Subscription[]
    */
   public function getSubscriptions()
   {

@@ -24,28 +24,28 @@ class Google_Service_ServiceUsage_BatchEnableServicesResponse extends Google_Col
   protected $servicesDataType = 'array';
 
   /**
-   * @param Google_Service_ServiceUsage_EnableFailure
+   * @param Google_Service_ServiceUsage_EnableFailure[]
    */
   public function setFailures($failures)
   {
     $this->failures = $failures;
   }
   /**
-   * @return Google_Service_ServiceUsage_EnableFailure
+   * @return Google_Service_ServiceUsage_EnableFailure[]
    */
   public function getFailures()
   {
     return $this->failures;
   }
   /**
-   * @param Google_Service_ServiceUsage_GoogleApiServiceusageV1Service
+   * @param Google_Service_ServiceUsage_GoogleApiServiceusageV1Service[]
    */
   public function setServices($services)
   {
     $this->services = $services;
   }
   /**
-   * @return Google_Service_ServiceUsage_GoogleApiServiceusageV1Service
+   * @return Google_Service_ServiceUsage_GoogleApiServiceusageV1Service[]
    */
   public function getServices()
   {

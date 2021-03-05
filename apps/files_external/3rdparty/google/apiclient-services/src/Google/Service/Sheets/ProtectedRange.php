@@ -91,14 +91,14 @@ class Google_Service_Sheets_ProtectedRange extends Google_Collection
     return $this->requestingUserCanEdit;
   }
   /**
-   * @param Google_Service_Sheets_GridRange
+   * @param Google_Service_Sheets_GridRange[]
    */
   public function setUnprotectedRanges($unprotectedRanges)
   {
     $this->unprotectedRanges = $unprotectedRanges;
   }
   /**
-   * @return Google_Service_Sheets_GridRange
+   * @return Google_Service_Sheets_GridRange[]
    */
   public function getUnprotectedRanges()
   {

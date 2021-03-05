@@ -24,14 +24,14 @@ class Google_Service_Compute_NetworkEndpointWithHealthStatus extends Google_Coll
   protected $networkEndpointDataType = '';
 
   /**
-   * @param Google_Service_Compute_HealthStatusForNetworkEndpoint
+   * @param Google_Service_Compute_HealthStatusForNetworkEndpoint[]
    */
   public function setHealths($healths)
   {
     $this->healths = $healths;
   }
   /**
-   * @return Google_Service_Compute_HealthStatusForNetworkEndpoint
+   * @return Google_Service_Compute_HealthStatusForNetworkEndpoint[]
    */
   public function getHealths()
   {

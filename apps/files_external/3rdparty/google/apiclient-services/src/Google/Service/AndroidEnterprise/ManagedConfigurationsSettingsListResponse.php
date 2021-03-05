@@ -22,14 +22,14 @@ class Google_Service_AndroidEnterprise_ManagedConfigurationsSettingsListResponse
   protected $managedConfigurationsSettingsDataType = 'array';
 
   /**
-   * @param Google_Service_AndroidEnterprise_ManagedConfigurationsSettings
+   * @param Google_Service_AndroidEnterprise_ManagedConfigurationsSettings[]
    */
   public function setManagedConfigurationsSettings($managedConfigurationsSettings)
   {
     $this->managedConfigurationsSettings = $managedConfigurationsSettings;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_ManagedConfigurationsSettings
+   * @return Google_Service_AndroidEnterprise_ManagedConfigurationsSettings[]
    */
   public function getManagedConfigurationsSettings()
   {

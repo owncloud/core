@@ -17,8 +17,17 @@
 
 class Google_Service_Testing_ProvidedSoftwareCatalog extends Google_Model
 {
+  public $androidxOrchestratorVersion;
   public $orchestratorVersion;
 
+  public function setAndroidxOrchestratorVersion($androidxOrchestratorVersion)
+  {
+    $this->androidxOrchestratorVersion = $androidxOrchestratorVersion;
+  }
+  public function getAndroidxOrchestratorVersion()
+  {
+    return $this->androidxOrchestratorVersion;
+  }
   public function setOrchestratorVersion($orchestratorVersion)
   {
     $this->orchestratorVersion = $orchestratorVersion;

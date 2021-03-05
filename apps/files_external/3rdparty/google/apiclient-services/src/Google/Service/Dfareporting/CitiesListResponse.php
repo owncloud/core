@@ -23,14 +23,14 @@ class Google_Service_Dfareporting_CitiesListResponse extends Google_Collection
   public $kind;
 
   /**
-   * @param Google_Service_Dfareporting_City
+   * @param Google_Service_Dfareporting_City[]
    */
   public function setCities($cities)
   {
     $this->cities = $cities;
   }
   /**
-   * @return Google_Service_Dfareporting_City
+   * @return Google_Service_Dfareporting_City[]
    */
   public function getCities()
   {

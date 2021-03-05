@@ -22,14 +22,14 @@ class Google_Service_Compute_SourceInstanceParams extends Google_Collection
   protected $diskConfigsDataType = 'array';
 
   /**
-   * @param Google_Service_Compute_DiskInstantiationConfig
+   * @param Google_Service_Compute_DiskInstantiationConfig[]
    */
   public function setDiskConfigs($diskConfigs)
   {
     $this->diskConfigs = $diskConfigs;
   }
   /**
-   * @return Google_Service_Compute_DiskInstantiationConfig
+   * @return Google_Service_Compute_DiskInstantiationConfig[]
    */
   public function getDiskConfigs()
   {

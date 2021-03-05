@@ -40,14 +40,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2InspectConfig extends Google_Collecti
     return $this->contentOptions;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2CustomInfoType
+   * @param Google_Service_DLP_GooglePrivacyDlpV2CustomInfoType[]
    */
   public function setCustomInfoTypes($customInfoTypes)
   {
     $this->customInfoTypes = $customInfoTypes;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2CustomInfoType
+   * @return Google_Service_DLP_GooglePrivacyDlpV2CustomInfoType[]
    */
   public function getCustomInfoTypes()
   {
@@ -70,14 +70,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2InspectConfig extends Google_Collecti
     return $this->includeQuote;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2InfoType
+   * @param Google_Service_DLP_GooglePrivacyDlpV2InfoType[]
    */
   public function setInfoTypes($infoTypes)
   {
     $this->infoTypes = $infoTypes;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2InfoType
+   * @return Google_Service_DLP_GooglePrivacyDlpV2InfoType[]
    */
   public function getInfoTypes()
   {
@@ -106,14 +106,14 @@ class Google_Service_DLP_GooglePrivacyDlpV2InspectConfig extends Google_Collecti
     return $this->minLikelihood;
   }
   /**
-   * @param Google_Service_DLP_GooglePrivacyDlpV2InspectionRuleSet
+   * @param Google_Service_DLP_GooglePrivacyDlpV2InspectionRuleSet[]
    */
   public function setRuleSet($ruleSet)
   {
     $this->ruleSet = $ruleSet;
   }
   /**
-   * @return Google_Service_DLP_GooglePrivacyDlpV2InspectionRuleSet
+   * @return Google_Service_DLP_GooglePrivacyDlpV2InspectionRuleSet[]
    */
   public function getRuleSet()
   {

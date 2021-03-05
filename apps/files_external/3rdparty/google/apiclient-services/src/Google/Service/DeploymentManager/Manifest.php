@@ -26,6 +26,8 @@ class Google_Service_DeploymentManager_Manifest extends Google_Collection
   protected $importsDataType = 'array';
   public $insertTime;
   public $layout;
+  public $manifestSizeBytes;
+  public $manifestSizeLimitBytes;
   public $name;
   public $selfLink;
 
@@ -60,14 +62,14 @@ class Google_Service_DeploymentManager_Manifest extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_DeploymentManager_ImportFile
+   * @param Google_Service_DeploymentManager_ImportFile[]
    */
   public function setImports($imports)
   {
     $this->imports = $imports;
   }
   /**
-   * @return Google_Service_DeploymentManager_ImportFile
+   * @return Google_Service_DeploymentManager_ImportFile[]
    */
   public function getImports()
   {
@@ -88,6 +90,22 @@ class Google_Service_DeploymentManager_Manifest extends Google_Collection
   public function getLayout()
   {
     return $this->layout;
+  }
+  public function setManifestSizeBytes($manifestSizeBytes)
+  {
+    $this->manifestSizeBytes = $manifestSizeBytes;
+  }
+  public function getManifestSizeBytes()
+  {
+    return $this->manifestSizeBytes;
+  }
+  public function setManifestSizeLimitBytes($manifestSizeLimitBytes)
+  {
+    $this->manifestSizeLimitBytes = $manifestSizeLimitBytes;
+  }
+  public function getManifestSizeLimitBytes()
+  {
+    return $this->manifestSizeLimitBytes;
   }
   public function setName($name)
   {

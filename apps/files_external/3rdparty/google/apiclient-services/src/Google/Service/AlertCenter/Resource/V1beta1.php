@@ -30,9 +30,9 @@ class Google_Service_AlertCenter_Resource_V1beta1 extends Google_Service_Resourc
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string customerId Optional. The unique identifier of the G Suite
-   * organization account of the customer the alert settings are associated with.
-   * Inferred from the caller identity if not provided.
+   * @opt_param string customerId Optional. The unique identifier of the Google
+   * Workspace organization account of the customer the alert settings are
+   * associated with. Inferred from the caller identity if not provided.
    * @return Google_Service_AlertCenter_Settings
    */
   public function getSettings($optParams = array())
@@ -47,9 +47,9 @@ class Google_Service_AlertCenter_Resource_V1beta1 extends Google_Service_Resourc
    * @param Google_Service_AlertCenter_Settings $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string customerId Optional. The unique identifier of the G Suite
-   * organization account of the customer the alert settings are associated with.
-   * Inferred from the caller identity if not provided.
+   * @opt_param string customerId Optional. The unique identifier of the Google
+   * Workspace organization account of the customer the alert settings are
+   * associated with. Inferred from the caller identity if not provided.
    * @return Google_Service_AlertCenter_Settings
    */
   public function updateSettings(Google_Service_AlertCenter_Settings $postBody, $optParams = array())

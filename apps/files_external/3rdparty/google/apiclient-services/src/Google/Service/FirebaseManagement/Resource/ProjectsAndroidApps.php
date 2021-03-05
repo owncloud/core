@@ -98,12 +98,12 @@ class Google_Service_FirebaseManagement_Resource_ProjectsAndroidApps extends Goo
    * PROJECT_IDENTIFIER values.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Token returned from a previous call to
-   * `ListAndroidApps` indicating where in the set of Apps to resume listing.
    * @opt_param int pageSize The maximum number of Apps to return in the response.
    * The server may return fewer than this at its discretion. If no value is
    * specified (or too large a value is specified), then the server will impose
    * its own limit.
+   * @opt_param string pageToken Token returned from a previous call to
+   * `ListAndroidApps` indicating where in the set of Apps to resume listing.
    * @return Google_Service_FirebaseManagement_ListAndroidAppsResponse
    */
   public function listProjectsAndroidApps($parent, $optParams = array())

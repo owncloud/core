@@ -27,28 +27,28 @@ class Google_Service_BigtableAdmin_Table extends Google_Model
   protected $restoreInfoDataType = '';
 
   /**
-   * @param Google_Service_BigtableAdmin_ClusterState
+   * @param Google_Service_BigtableAdmin_ClusterState[]
    */
   public function setClusterStates($clusterStates)
   {
     $this->clusterStates = $clusterStates;
   }
   /**
-   * @return Google_Service_BigtableAdmin_ClusterState
+   * @return Google_Service_BigtableAdmin_ClusterState[]
    */
   public function getClusterStates()
   {
     return $this->clusterStates;
   }
   /**
-   * @param Google_Service_BigtableAdmin_ColumnFamily
+   * @param Google_Service_BigtableAdmin_ColumnFamily[]
    */
   public function setColumnFamilies($columnFamilies)
   {
     $this->columnFamilies = $columnFamilies;
   }
   /**
-   * @return Google_Service_BigtableAdmin_ColumnFamily
+   * @return Google_Service_BigtableAdmin_ColumnFamily[]
    */
   public function getColumnFamilies()
   {

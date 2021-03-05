@@ -23,14 +23,14 @@ class Google_Service_AndroidProvisioningPartner_DevicesLongRunningOperationRespo
   public $successCount;
 
   /**
-   * @param Google_Service_AndroidProvisioningPartner_OperationPerDevice
+   * @param Google_Service_AndroidProvisioningPartner_OperationPerDevice[]
    */
   public function setPerDeviceStatus($perDeviceStatus)
   {
     $this->perDeviceStatus = $perDeviceStatus;
   }
   /**
-   * @return Google_Service_AndroidProvisioningPartner_OperationPerDevice
+   * @return Google_Service_AndroidProvisioningPartner_OperationPerDevice[]
    */
   public function getPerDeviceStatus()
   {

@@ -22,14 +22,14 @@ class Google_Service_AndroidEnterprise_GroupLicenseUsersListResponse extends Goo
   protected $userDataType = 'array';
 
   /**
-   * @param Google_Service_AndroidEnterprise_User
+   * @param Google_Service_AndroidEnterprise_User[]
    */
   public function setUser($user)
   {
     $this->user = $user;
   }
   /**
-   * @return Google_Service_AndroidEnterprise_User
+   * @return Google_Service_AndroidEnterprise_User[]
    */
   public function getUser()
   {

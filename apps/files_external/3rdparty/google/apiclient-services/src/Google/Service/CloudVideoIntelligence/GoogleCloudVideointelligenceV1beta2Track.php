@@ -27,14 +27,14 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2T
   protected $timestampedObjectsDataType = 'array';
 
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2DetectedAttribute
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2DetectedAttribute[]
    */
   public function setAttributes($attributes)
   {
     $this->attributes = $attributes;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2DetectedAttribute
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2DetectedAttribute[]
    */
   public function getAttributes()
   {
@@ -63,14 +63,14 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2T
     return $this->segment;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2TimestampedObject
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2TimestampedObject[]
    */
   public function setTimestampedObjects($timestampedObjects)
   {
     $this->timestampedObjects = $timestampedObjects;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2TimestampedObject
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1beta2TimestampedObject[]
    */
   public function getTimestampedObjects()
   {

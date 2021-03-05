@@ -33,14 +33,14 @@ class Google_Service_Firestore_GoogleFirestoreAdminV1IndexConfig extends Google_
     return $this->ancestorField;
   }
   /**
-   * @param Google_Service_Firestore_GoogleFirestoreAdminV1Index
+   * @param Google_Service_Firestore_GoogleFirestoreAdminV1Index[]
    */
   public function setIndexes($indexes)
   {
     $this->indexes = $indexes;
   }
   /**
-   * @return Google_Service_Firestore_GoogleFirestoreAdminV1Index
+   * @return Google_Service_Firestore_GoogleFirestoreAdminV1Index[]
    */
   public function getIndexes()
   {

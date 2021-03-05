@@ -25,28 +25,28 @@ class Google_Service_Dataflow_ListJobMessagesResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Dataflow_AutoscalingEvent
+   * @param Google_Service_Dataflow_AutoscalingEvent[]
    */
   public function setAutoscalingEvents($autoscalingEvents)
   {
     $this->autoscalingEvents = $autoscalingEvents;
   }
   /**
-   * @return Google_Service_Dataflow_AutoscalingEvent
+   * @return Google_Service_Dataflow_AutoscalingEvent[]
    */
   public function getAutoscalingEvents()
   {
     return $this->autoscalingEvents;
   }
   /**
-   * @param Google_Service_Dataflow_JobMessage
+   * @param Google_Service_Dataflow_JobMessage[]
    */
   public function setJobMessages($jobMessages)
   {
     $this->jobMessages = $jobMessages;
   }
   /**
-   * @return Google_Service_Dataflow_JobMessage
+   * @return Google_Service_Dataflow_JobMessage[]
    */
   public function getJobMessages()
   {

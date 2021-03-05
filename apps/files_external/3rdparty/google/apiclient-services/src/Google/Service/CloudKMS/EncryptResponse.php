@@ -20,6 +20,7 @@ class Google_Service_CloudKMS_EncryptResponse extends Google_Model
   public $ciphertext;
   public $ciphertextCrc32c;
   public $name;
+  public $protectionLevel;
   public $verifiedAdditionalAuthenticatedDataCrc32c;
   public $verifiedPlaintextCrc32c;
 
@@ -46,6 +47,14 @@ class Google_Service_CloudKMS_EncryptResponse extends Google_Model
   public function getName()
   {
     return $this->name;
+  }
+  public function setProtectionLevel($protectionLevel)
+  {
+    $this->protectionLevel = $protectionLevel;
+  }
+  public function getProtectionLevel()
+  {
+    return $this->protectionLevel;
   }
   public function setVerifiedAdditionalAuthenticatedDataCrc32c($verifiedAdditionalAuthenticatedDataCrc32c)
   {

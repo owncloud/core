@@ -24,14 +24,14 @@ class Google_Service_AndroidProvisioningPartner_FindDevicesByOwnerResponse exten
   public $totalSize;
 
   /**
-   * @param Google_Service_AndroidProvisioningPartner_Device
+   * @param Google_Service_AndroidProvisioningPartner_Device[]
    */
   public function setDevices($devices)
   {
     $this->devices = $devices;
   }
   /**
-   * @return Google_Service_AndroidProvisioningPartner_Device
+   * @return Google_Service_AndroidProvisioningPartner_Device[]
    */
   public function getDevices()
   {

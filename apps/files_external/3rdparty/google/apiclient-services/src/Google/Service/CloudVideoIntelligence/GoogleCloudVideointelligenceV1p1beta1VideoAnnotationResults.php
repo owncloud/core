@@ -81,42 +81,42 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta
     return $this->explicitAnnotation;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1FaceAnnotation
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1FaceAnnotation[]
    */
   public function setFaceAnnotations($faceAnnotations)
   {
     $this->faceAnnotations = $faceAnnotations;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1FaceAnnotation
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1FaceAnnotation[]
    */
   public function getFaceAnnotations()
   {
     return $this->faceAnnotations;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1FaceDetectionAnnotation
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1FaceDetectionAnnotation[]
    */
   public function setFaceDetectionAnnotations($faceDetectionAnnotations)
   {
     $this->faceDetectionAnnotations = $faceDetectionAnnotations;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1FaceDetectionAnnotation
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1FaceDetectionAnnotation[]
    */
   public function getFaceDetectionAnnotations()
   {
     return $this->faceDetectionAnnotations;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation[]
    */
   public function setFrameLabelAnnotations($frameLabelAnnotations)
   {
     $this->frameLabelAnnotations = $frameLabelAnnotations;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation[]
    */
   public function getFrameLabelAnnotations()
   {
@@ -131,42 +131,42 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta
     return $this->inputUri;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LogoRecognitionAnnotation
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LogoRecognitionAnnotation[]
    */
   public function setLogoRecognitionAnnotations($logoRecognitionAnnotations)
   {
     $this->logoRecognitionAnnotations = $logoRecognitionAnnotations;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LogoRecognitionAnnotation
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LogoRecognitionAnnotation[]
    */
   public function getLogoRecognitionAnnotations()
   {
     return $this->logoRecognitionAnnotations;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1ObjectTrackingAnnotation
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1ObjectTrackingAnnotation[]
    */
   public function setObjectAnnotations($objectAnnotations)
   {
     $this->objectAnnotations = $objectAnnotations;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1ObjectTrackingAnnotation
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1ObjectTrackingAnnotation[]
    */
   public function getObjectAnnotations()
   {
     return $this->objectAnnotations;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1PersonDetectionAnnotation
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1PersonDetectionAnnotation[]
    */
   public function setPersonDetectionAnnotations($personDetectionAnnotations)
   {
     $this->personDetectionAnnotations = $personDetectionAnnotations;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1PersonDetectionAnnotation
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1PersonDetectionAnnotation[]
    */
   public function getPersonDetectionAnnotations()
   {
@@ -187,98 +187,98 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta
     return $this->segment;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation[]
    */
   public function setSegmentLabelAnnotations($segmentLabelAnnotations)
   {
     $this->segmentLabelAnnotations = $segmentLabelAnnotations;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation[]
    */
   public function getSegmentLabelAnnotations()
   {
     return $this->segmentLabelAnnotations;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation[]
    */
   public function setSegmentPresenceLabelAnnotations($segmentPresenceLabelAnnotations)
   {
     $this->segmentPresenceLabelAnnotations = $segmentPresenceLabelAnnotations;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation[]
    */
   public function getSegmentPresenceLabelAnnotations()
   {
     return $this->segmentPresenceLabelAnnotations;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1VideoSegment
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1VideoSegment[]
    */
   public function setShotAnnotations($shotAnnotations)
   {
     $this->shotAnnotations = $shotAnnotations;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1VideoSegment
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1VideoSegment[]
    */
   public function getShotAnnotations()
   {
     return $this->shotAnnotations;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation[]
    */
   public function setShotLabelAnnotations($shotLabelAnnotations)
   {
     $this->shotLabelAnnotations = $shotLabelAnnotations;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation[]
    */
   public function getShotLabelAnnotations()
   {
     return $this->shotLabelAnnotations;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation[]
    */
   public function setShotPresenceLabelAnnotations($shotPresenceLabelAnnotations)
   {
     $this->shotPresenceLabelAnnotations = $shotPresenceLabelAnnotations;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1LabelAnnotation[]
    */
   public function getShotPresenceLabelAnnotations()
   {
     return $this->shotPresenceLabelAnnotations;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1SpeechTranscription
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1SpeechTranscription[]
    */
   public function setSpeechTranscriptions($speechTranscriptions)
   {
     $this->speechTranscriptions = $speechTranscriptions;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1SpeechTranscription
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1SpeechTranscription[]
    */
   public function getSpeechTranscriptions()
   {
     return $this->speechTranscriptions;
   }
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1TextAnnotation
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1TextAnnotation[]
    */
   public function setTextAnnotations($textAnnotations)
   {
     $this->textAnnotations = $textAnnotations;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1TextAnnotation
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1p1beta1TextAnnotation[]
    */
   public function getTextAnnotations()
   {

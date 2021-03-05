@@ -26,6 +26,69 @@
 class Google_Service_SASPortalTesting_Resource_CustomersDeployments extends Google_Service_Resource
 {
   /**
+   * Creates a new deployment. (deployments.create)
+   *
+   * @param string $parent Required. The parent resource name where the deployment
+   * is to be created.
+   * @param Google_Service_SASPortalTesting_SasPortalDeployment $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_SASPortalTesting_SasPortalDeployment
+   */
+  public function create($parent, Google_Service_SASPortalTesting_SasPortalDeployment $postBody, $optParams = array())
+  {
+    $params = array('parent' => $parent, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('create', array($params), "Google_Service_SASPortalTesting_SasPortalDeployment");
+  }
+  /**
+   * Deletes a deployment. (deployments.delete)
+   *
+   * @param string $name Required. The name of the deployment.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_SASPortalTesting_SasPortalEmpty
+   */
+  public function delete($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('delete', array($params), "Google_Service_SASPortalTesting_SasPortalEmpty");
+  }
+  /**
+   * Returns a requested deployment. (deployments.get)
+   *
+   * @param string $name Required. The name of the deployment.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_SASPortalTesting_SasPortalDeployment
+   */
+  public function get($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('get', array($params), "Google_Service_SASPortalTesting_SasPortalDeployment");
+  }
+  /**
+   * Lists deployments. (deployments.listCustomersDeployments)
+   *
+   * @param string $parent Required. The parent resource name, for example,
+   * "nodes/1", customer/1/nodes/2.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string filter The filter expression. The filter should have the
+   * following format: "DIRECT_CHILDREN" or format: "direct_children". The filter
+   * is case insensitive. If empty, then no deployments are filtered.
+   * @opt_param int pageSize The maximum number of deployments to return in the
+   * response.
+   * @opt_param string pageToken A pagination token returned from a previous call
+   * to ListDeployments that indicates where this listing should continue from.
+   * @return Google_Service_SASPortalTesting_SasPortalListDeploymentsResponse
+   */
+  public function listCustomersDeployments($parent, $optParams = array())
+  {
+    $params = array('parent' => $parent);
+    $params = array_merge($params, $optParams);
+    return $this->call('list', array($params), "Google_Service_SASPortalTesting_SasPortalListDeploymentsResponse");
+  }
+  /**
    * Moves a deployment under another node or customer. (deployments.move)
    *
    * @param string $name Required. The name of the deployment to move.
@@ -38,5 +101,21 @@ class Google_Service_SASPortalTesting_Resource_CustomersDeployments extends Goog
     $params = array('name' => $name, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('move', array($params), "Google_Service_SASPortalTesting_SasPortalOperation");
+  }
+  /**
+   * Updates an existing deployment. (deployments.patch)
+   *
+   * @param string $name Output only. Resource name.
+   * @param Google_Service_SASPortalTesting_SasPortalDeployment $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask Fields to be updated.
+   * @return Google_Service_SASPortalTesting_SasPortalDeployment
+   */
+  public function patch($name, Google_Service_SASPortalTesting_SasPortalDeployment $postBody, $optParams = array())
+  {
+    $params = array('name' => $name, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', array($params), "Google_Service_SASPortalTesting_SasPortalDeployment");
   }
 }

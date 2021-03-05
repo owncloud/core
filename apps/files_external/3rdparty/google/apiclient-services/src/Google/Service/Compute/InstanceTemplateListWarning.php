@@ -32,14 +32,14 @@ class Google_Service_Compute_InstanceTemplateListWarning extends Google_Collecti
     return $this->code;
   }
   /**
-   * @param Google_Service_Compute_InstanceTemplateListWarningData
+   * @param Google_Service_Compute_InstanceTemplateListWarningData[]
    */
   public function setData($data)
   {
     $this->data = $data;
   }
   /**
-   * @return Google_Service_Compute_InstanceTemplateListWarningData
+   * @return Google_Service_Compute_InstanceTemplateListWarningData[]
    */
   public function getData()
   {

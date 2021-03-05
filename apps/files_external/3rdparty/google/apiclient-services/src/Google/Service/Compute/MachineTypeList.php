@@ -36,14 +36,14 @@ class Google_Service_Compute_MachineTypeList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_MachineType
+   * @param Google_Service_Compute_MachineType[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_MachineType
+   * @return Google_Service_Compute_MachineType[]
    */
   public function getItems()
   {

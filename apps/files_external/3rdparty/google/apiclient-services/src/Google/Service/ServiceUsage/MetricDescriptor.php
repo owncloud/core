@@ -49,14 +49,14 @@ class Google_Service_ServiceUsage_MetricDescriptor extends Google_Collection
     return $this->displayName;
   }
   /**
-   * @param Google_Service_ServiceUsage_LabelDescriptor
+   * @param Google_Service_ServiceUsage_LabelDescriptor[]
    */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
   /**
-   * @return Google_Service_ServiceUsage_LabelDescriptor
+   * @return Google_Service_ServiceUsage_LabelDescriptor[]
    */
   public function getLabels()
   {

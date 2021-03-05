@@ -23,14 +23,14 @@ class Google_Service_SearchConsole_ApiDimensionFilterGroup extends Google_Collec
   public $groupType;
 
   /**
-   * @param Google_Service_SearchConsole_ApiDimensionFilter
+   * @param Google_Service_SearchConsole_ApiDimensionFilter[]
    */
   public function setFilters($filters)
   {
     $this->filters = $filters;
   }
   /**
-   * @return Google_Service_SearchConsole_ApiDimensionFilter
+   * @return Google_Service_SearchConsole_ApiDimensionFilter[]
    */
   public function getFilters()
   {

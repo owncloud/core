@@ -48,7 +48,7 @@ class Google_Service_Apigee_Resource_OrganizationsInstances extends Google_Servi
    * (instances.delete)
    *
    * @param string $name Required. Name of the instance. Use the following
-   * structure in your request: `organizations/{org}/instance/{instance}`.
+   * structure in your request: `organizations/{org}/instances/{instance}`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleLongrunningOperation
    */

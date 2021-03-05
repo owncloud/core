@@ -31,14 +31,14 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1TagTemplate extend
     return $this->displayName;
   }
   /**
-   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1TagTemplateField
+   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1TagTemplateField[]
    */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
   /**
-   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1TagTemplateField
+   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1TagTemplateField[]
    */
   public function getFields()
   {

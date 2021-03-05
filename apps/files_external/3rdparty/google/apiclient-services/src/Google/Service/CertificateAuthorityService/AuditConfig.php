@@ -23,14 +23,14 @@ class Google_Service_CertificateAuthorityService_AuditConfig extends Google_Coll
   public $service;
 
   /**
-   * @param Google_Service_CertificateAuthorityService_AuditLogConfig
+   * @param Google_Service_CertificateAuthorityService_AuditLogConfig[]
    */
   public function setAuditLogConfigs($auditLogConfigs)
   {
     $this->auditLogConfigs = $auditLogConfigs;
   }
   /**
-   * @return Google_Service_CertificateAuthorityService_AuditLogConfig
+   * @return Google_Service_CertificateAuthorityService_AuditLogConfig[]
    */
   public function getAuditLogConfigs()
   {

@@ -20,6 +20,8 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta3ProcessResponse extend
   protected $documentType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta3Document';
   protected $documentDataType = '';
   public $humanReviewOperation;
+  protected $humanReviewStatusType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta3HumanReviewStatus';
+  protected $humanReviewStatusDataType = '';
 
   /**
    * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3Document
@@ -42,5 +44,19 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta3ProcessResponse extend
   public function getHumanReviewOperation()
   {
     return $this->humanReviewOperation;
+  }
+  /**
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3HumanReviewStatus
+   */
+  public function setHumanReviewStatus(Google_Service_Document_GoogleCloudDocumentaiV1beta3HumanReviewStatus $humanReviewStatus)
+  {
+    $this->humanReviewStatus = $humanReviewStatus;
+  }
+  /**
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3HumanReviewStatus
+   */
+  public function getHumanReviewStatus()
+  {
+    return $this->humanReviewStatus;
   }
 }

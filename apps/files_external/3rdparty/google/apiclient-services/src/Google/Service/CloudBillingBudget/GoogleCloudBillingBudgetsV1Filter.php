@@ -18,13 +18,24 @@
 class Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1Filter extends Google_Collection
 {
   protected $collection_key = 'subaccounts';
+  public $calendarPeriod;
   public $creditTypes;
   public $creditTypesTreatment;
+  protected $customPeriodType = 'Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1CustomPeriod';
+  protected $customPeriodDataType = '';
   public $labels;
   public $projects;
   public $services;
   public $subaccounts;
 
+  public function setCalendarPeriod($calendarPeriod)
+  {
+    $this->calendarPeriod = $calendarPeriod;
+  }
+  public function getCalendarPeriod()
+  {
+    return $this->calendarPeriod;
+  }
   public function setCreditTypes($creditTypes)
   {
     $this->creditTypes = $creditTypes;
@@ -40,6 +51,20 @@ class Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1Filter extend
   public function getCreditTypesTreatment()
   {
     return $this->creditTypesTreatment;
+  }
+  /**
+   * @param Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1CustomPeriod
+   */
+  public function setCustomPeriod(Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1CustomPeriod $customPeriod)
+  {
+    $this->customPeriod = $customPeriod;
+  }
+  /**
+   * @return Google_Service_CloudBillingBudget_GoogleCloudBillingBudgetsV1CustomPeriod
+   */
+  public function getCustomPeriod()
+  {
+    return $this->customPeriod;
   }
   public function setLabels($labels)
   {

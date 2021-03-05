@@ -27,14 +27,14 @@ class Google_Service_CloudRun_DomainMappingStatus extends Google_Collection
   public $url;
 
   /**
-   * @param Google_Service_CloudRun_GoogleCloudRunV1Condition
+   * @param Google_Service_CloudRun_GoogleCloudRunV1Condition[]
    */
   public function setConditions($conditions)
   {
     $this->conditions = $conditions;
   }
   /**
-   * @return Google_Service_CloudRun_GoogleCloudRunV1Condition
+   * @return Google_Service_CloudRun_GoogleCloudRunV1Condition[]
    */
   public function getConditions()
   {
@@ -57,14 +57,14 @@ class Google_Service_CloudRun_DomainMappingStatus extends Google_Collection
     return $this->observedGeneration;
   }
   /**
-   * @param Google_Service_CloudRun_ResourceRecord
+   * @param Google_Service_CloudRun_ResourceRecord[]
    */
   public function setResourceRecords($resourceRecords)
   {
     $this->resourceRecords = $resourceRecords;
   }
   /**
-   * @return Google_Service_CloudRun_ResourceRecord
+   * @return Google_Service_CloudRun_ResourceRecord[]
    */
   public function getResourceRecords()
   {

@@ -83,84 +83,84 @@ class Google_Service_Docs_Document extends Google_Model
     return $this->documentStyle;
   }
   /**
-   * @param Google_Service_Docs_Footer
+   * @param Google_Service_Docs_Footer[]
    */
   public function setFooters($footers)
   {
     $this->footers = $footers;
   }
   /**
-   * @return Google_Service_Docs_Footer
+   * @return Google_Service_Docs_Footer[]
    */
   public function getFooters()
   {
     return $this->footers;
   }
   /**
-   * @param Google_Service_Docs_Footnote
+   * @param Google_Service_Docs_Footnote[]
    */
   public function setFootnotes($footnotes)
   {
     $this->footnotes = $footnotes;
   }
   /**
-   * @return Google_Service_Docs_Footnote
+   * @return Google_Service_Docs_Footnote[]
    */
   public function getFootnotes()
   {
     return $this->footnotes;
   }
   /**
-   * @param Google_Service_Docs_Header
+   * @param Google_Service_Docs_Header[]
    */
   public function setHeaders($headers)
   {
     $this->headers = $headers;
   }
   /**
-   * @return Google_Service_Docs_Header
+   * @return Google_Service_Docs_Header[]
    */
   public function getHeaders()
   {
     return $this->headers;
   }
   /**
-   * @param Google_Service_Docs_InlineObject
+   * @param Google_Service_Docs_InlineObject[]
    */
   public function setInlineObjects($inlineObjects)
   {
     $this->inlineObjects = $inlineObjects;
   }
   /**
-   * @return Google_Service_Docs_InlineObject
+   * @return Google_Service_Docs_InlineObject[]
    */
   public function getInlineObjects()
   {
     return $this->inlineObjects;
   }
   /**
-   * @param Google_Service_Docs_DocsList
+   * @param Google_Service_Docs_DocsList[]
    */
   public function setLists($lists)
   {
     $this->lists = $lists;
   }
   /**
-   * @return Google_Service_Docs_DocsList
+   * @return Google_Service_Docs_DocsList[]
    */
   public function getLists()
   {
     return $this->lists;
   }
   /**
-   * @param Google_Service_Docs_NamedRanges
+   * @param Google_Service_Docs_NamedRanges[]
    */
   public function setNamedRanges($namedRanges)
   {
     $this->namedRanges = $namedRanges;
   }
   /**
-   * @return Google_Service_Docs_NamedRanges
+   * @return Google_Service_Docs_NamedRanges[]
    */
   public function getNamedRanges()
   {
@@ -181,14 +181,14 @@ class Google_Service_Docs_Document extends Google_Model
     return $this->namedStyles;
   }
   /**
-   * @param Google_Service_Docs_PositionedObject
+   * @param Google_Service_Docs_PositionedObject[]
    */
   public function setPositionedObjects($positionedObjects)
   {
     $this->positionedObjects = $positionedObjects;
   }
   /**
-   * @return Google_Service_Docs_PositionedObject
+   * @return Google_Service_Docs_PositionedObject[]
    */
   public function getPositionedObjects()
   {
@@ -203,28 +203,28 @@ class Google_Service_Docs_Document extends Google_Model
     return $this->revisionId;
   }
   /**
-   * @param Google_Service_Docs_SuggestedDocumentStyle
+   * @param Google_Service_Docs_SuggestedDocumentStyle[]
    */
   public function setSuggestedDocumentStyleChanges($suggestedDocumentStyleChanges)
   {
     $this->suggestedDocumentStyleChanges = $suggestedDocumentStyleChanges;
   }
   /**
-   * @return Google_Service_Docs_SuggestedDocumentStyle
+   * @return Google_Service_Docs_SuggestedDocumentStyle[]
    */
   public function getSuggestedDocumentStyleChanges()
   {
     return $this->suggestedDocumentStyleChanges;
   }
   /**
-   * @param Google_Service_Docs_SuggestedNamedStyles
+   * @param Google_Service_Docs_SuggestedNamedStyles[]
    */
   public function setSuggestedNamedStylesChanges($suggestedNamedStylesChanges)
   {
     $this->suggestedNamedStylesChanges = $suggestedNamedStylesChanges;
   }
   /**
-   * @return Google_Service_Docs_SuggestedNamedStyles
+   * @return Google_Service_Docs_SuggestedNamedStyles[]
    */
   public function getSuggestedNamedStylesChanges()
   {

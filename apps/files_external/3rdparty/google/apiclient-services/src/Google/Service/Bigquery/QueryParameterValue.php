@@ -25,28 +25,28 @@ class Google_Service_Bigquery_QueryParameterValue extends Google_Collection
   public $value;
 
   /**
-   * @param Google_Service_Bigquery_QueryParameterValue
+   * @param Google_Service_Bigquery_QueryParameterValue[]
    */
   public function setArrayValues($arrayValues)
   {
     $this->arrayValues = $arrayValues;
   }
   /**
-   * @return Google_Service_Bigquery_QueryParameterValue
+   * @return Google_Service_Bigquery_QueryParameterValue[]
    */
   public function getArrayValues()
   {
     return $this->arrayValues;
   }
   /**
-   * @param Google_Service_Bigquery_QueryParameterValue
+   * @param Google_Service_Bigquery_QueryParameterValue[]
    */
   public function setStructValues($structValues)
   {
     $this->structValues = $structValues;
   }
   /**
-   * @return Google_Service_Bigquery_QueryParameterValue
+   * @return Google_Service_Bigquery_QueryParameterValue[]
    */
   public function getStructValues()
   {

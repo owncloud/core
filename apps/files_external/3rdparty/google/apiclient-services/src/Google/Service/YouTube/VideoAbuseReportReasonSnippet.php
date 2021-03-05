@@ -31,14 +31,14 @@ class Google_Service_YouTube_VideoAbuseReportReasonSnippet extends Google_Collec
     return $this->label;
   }
   /**
-   * @param Google_Service_YouTube_VideoAbuseReportSecondaryReason
+   * @param Google_Service_YouTube_VideoAbuseReportSecondaryReason[]
    */
   public function setSecondaryReasons($secondaryReasons)
   {
     $this->secondaryReasons = $secondaryReasons;
   }
   /**
-   * @return Google_Service_YouTube_VideoAbuseReportSecondaryReason
+   * @return Google_Service_YouTube_VideoAbuseReportSecondaryReason[]
    */
   public function getSecondaryReasons()
   {

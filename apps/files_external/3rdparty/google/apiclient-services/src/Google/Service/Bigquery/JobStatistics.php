@@ -137,14 +137,14 @@ class Google_Service_Bigquery_JobStatistics extends Google_Collection
     return $this->quotaDeferments;
   }
   /**
-   * @param Google_Service_Bigquery_JobStatisticsReservationUsage
+   * @param Google_Service_Bigquery_JobStatisticsReservationUsage[]
    */
   public function setReservationUsage($reservationUsage)
   {
     $this->reservationUsage = $reservationUsage;
   }
   /**
-   * @return Google_Service_Bigquery_JobStatisticsReservationUsage
+   * @return Google_Service_Bigquery_JobStatisticsReservationUsage[]
    */
   public function getReservationUsage()
   {

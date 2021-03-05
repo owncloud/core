@@ -33,14 +33,14 @@ class Google_Service_Dfareporting_FileList extends Google_Collection
     return $this->etag;
   }
   /**
-   * @param Google_Service_Dfareporting_DfareportingFile
+   * @param Google_Service_Dfareporting_DfareportingFile[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Dfareporting_DfareportingFile
+   * @return Google_Service_Dfareporting_DfareportingFile[]
    */
   public function getItems()
   {

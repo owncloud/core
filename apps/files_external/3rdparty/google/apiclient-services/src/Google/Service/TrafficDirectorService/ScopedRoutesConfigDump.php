@@ -24,28 +24,28 @@ class Google_Service_TrafficDirectorService_ScopedRoutesConfigDump extends Googl
   protected $inlineScopedRouteConfigsDataType = 'array';
 
   /**
-   * @param Google_Service_TrafficDirectorService_DynamicScopedRouteConfigs
+   * @param Google_Service_TrafficDirectorService_DynamicScopedRouteConfigs[]
    */
   public function setDynamicScopedRouteConfigs($dynamicScopedRouteConfigs)
   {
     $this->dynamicScopedRouteConfigs = $dynamicScopedRouteConfigs;
   }
   /**
-   * @return Google_Service_TrafficDirectorService_DynamicScopedRouteConfigs
+   * @return Google_Service_TrafficDirectorService_DynamicScopedRouteConfigs[]
    */
   public function getDynamicScopedRouteConfigs()
   {
     return $this->dynamicScopedRouteConfigs;
   }
   /**
-   * @param Google_Service_TrafficDirectorService_InlineScopedRouteConfigs
+   * @param Google_Service_TrafficDirectorService_InlineScopedRouteConfigs[]
    */
   public function setInlineScopedRouteConfigs($inlineScopedRouteConfigs)
   {
     $this->inlineScopedRouteConfigs = $inlineScopedRouteConfigs;
   }
   /**
-   * @return Google_Service_TrafficDirectorService_InlineScopedRouteConfigs
+   * @return Google_Service_TrafficDirectorService_InlineScopedRouteConfigs[]
    */
   public function getInlineScopedRouteConfigs()
   {

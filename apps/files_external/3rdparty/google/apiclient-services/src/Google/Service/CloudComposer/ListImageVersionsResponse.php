@@ -23,14 +23,14 @@ class Google_Service_CloudComposer_ListImageVersionsResponse extends Google_Coll
   public $nextPageToken;
 
   /**
-   * @param Google_Service_CloudComposer_ImageVersion
+   * @param Google_Service_CloudComposer_ImageVersion[]
    */
   public function setImageVersions($imageVersions)
   {
     $this->imageVersions = $imageVersions;
   }
   /**
-   * @return Google_Service_CloudComposer_ImageVersion
+   * @return Google_Service_CloudComposer_ImageVersion[]
    */
   public function getImageVersions()
   {

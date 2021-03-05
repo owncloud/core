@@ -52,10 +52,10 @@ class Google_Service_Games_Resource_Players extends Google_Service_Resource
    *
    * @opt_param string language The preferred language to use for strings returned
    * by this method.
-   * @opt_param string pageToken The token returned by the previous request.
    * @opt_param int maxResults The maximum number of player resources to return in
    * the response, used for paging. For any response, the actual number of player
    * resources returned may be less than the specified `maxResults`.
+   * @opt_param string pageToken The token returned by the previous request.
    * @return Google_Service_Games_PlayerListResponse
    */
   public function listPlayers($collection, $optParams = array())

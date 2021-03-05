@@ -31,14 +31,14 @@ class Google_Service_AdExchangeBuyerII_NonGuaranteedAuctionTerms extends Google_
     return $this->autoOptimizePrivateAuction;
   }
   /**
-   * @param Google_Service_AdExchangeBuyerII_PricePerBuyer
+   * @param Google_Service_AdExchangeBuyerII_PricePerBuyer[]
    */
   public function setReservePricesPerBuyer($reservePricesPerBuyer)
   {
     $this->reservePricesPerBuyer = $reservePricesPerBuyer;
   }
   /**
-   * @return Google_Service_AdExchangeBuyerII_PricePerBuyer
+   * @return Google_Service_AdExchangeBuyerII_PricePerBuyer[]
    */
   public function getReservePricesPerBuyer()
   {

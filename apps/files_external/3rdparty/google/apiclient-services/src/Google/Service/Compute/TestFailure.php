@@ -15,13 +15,36 @@
  * the License.
  */
 
-class Google_Service_Compute_TestFailure extends Google_Model
+class Google_Service_Compute_TestFailure extends Google_Collection
 {
+  protected $collection_key = 'headers';
+  public $actualOutputUrl;
+  public $actualRedirectResponseCode;
   public $actualService;
+  public $expectedOutputUrl;
+  public $expectedRedirectResponseCode;
   public $expectedService;
+  protected $headersType = 'Google_Service_Compute_UrlMapTestHeader';
+  protected $headersDataType = 'array';
   public $host;
   public $path;
 
+  public function setActualOutputUrl($actualOutputUrl)
+  {
+    $this->actualOutputUrl = $actualOutputUrl;
+  }
+  public function getActualOutputUrl()
+  {
+    return $this->actualOutputUrl;
+  }
+  public function setActualRedirectResponseCode($actualRedirectResponseCode)
+  {
+    $this->actualRedirectResponseCode = $actualRedirectResponseCode;
+  }
+  public function getActualRedirectResponseCode()
+  {
+    return $this->actualRedirectResponseCode;
+  }
   public function setActualService($actualService)
   {
     $this->actualService = $actualService;
@@ -30,6 +53,22 @@ class Google_Service_Compute_TestFailure extends Google_Model
   {
     return $this->actualService;
   }
+  public function setExpectedOutputUrl($expectedOutputUrl)
+  {
+    $this->expectedOutputUrl = $expectedOutputUrl;
+  }
+  public function getExpectedOutputUrl()
+  {
+    return $this->expectedOutputUrl;
+  }
+  public function setExpectedRedirectResponseCode($expectedRedirectResponseCode)
+  {
+    $this->expectedRedirectResponseCode = $expectedRedirectResponseCode;
+  }
+  public function getExpectedRedirectResponseCode()
+  {
+    return $this->expectedRedirectResponseCode;
+  }
   public function setExpectedService($expectedService)
   {
     $this->expectedService = $expectedService;
@@ -37,6 +76,20 @@ class Google_Service_Compute_TestFailure extends Google_Model
   public function getExpectedService()
   {
     return $this->expectedService;
+  }
+  /**
+   * @param Google_Service_Compute_UrlMapTestHeader[]
+   */
+  public function setHeaders($headers)
+  {
+    $this->headers = $headers;
+  }
+  /**
+   * @return Google_Service_Compute_UrlMapTestHeader[]
+   */
+  public function getHeaders()
+  {
+    return $this->headers;
   }
   public function setHost($host)
   {

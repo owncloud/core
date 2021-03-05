@@ -23,14 +23,14 @@ class Google_Service_Appengine_ListAuthorizedCertificatesResponse extends Google
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Appengine_AuthorizedCertificate
+   * @param Google_Service_Appengine_AuthorizedCertificate[]
    */
   public function setCertificates($certificates)
   {
     $this->certificates = $certificates;
   }
   /**
-   * @return Google_Service_Appengine_AuthorizedCertificate
+   * @return Google_Service_Appengine_AuthorizedCertificate[]
    */
   public function getCertificates()
   {

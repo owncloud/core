@@ -22,14 +22,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityTypeBatch extends G
   protected $entityTypesDataType = 'array';
 
   /**
-   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityType
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityType[]
    */
   public function setEntityTypes($entityTypes)
   {
     $this->entityTypes = $entityTypes;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityType
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityType[]
    */
   public function getEntityTypes()
   {

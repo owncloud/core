@@ -31,14 +31,14 @@ class Google_Service_AndroidManagement_ListPoliciesResponse extends Google_Colle
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_AndroidManagement_Policy
+   * @param Google_Service_AndroidManagement_Policy[]
    */
   public function setPolicies($policies)
   {
     $this->policies = $policies;
   }
   /**
-   * @return Google_Service_AndroidManagement_Policy
+   * @return Google_Service_AndroidManagement_Policy[]
    */
   public function getPolicies()
   {

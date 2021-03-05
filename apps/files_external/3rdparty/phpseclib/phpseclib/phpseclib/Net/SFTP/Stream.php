@@ -626,7 +626,6 @@ class Stream
      * $options. What does 8 correspond to?
      *
      * @param string $path
-     * @param int $mode
      * @param int $options
      * @return bool
      * @access public
@@ -768,8 +767,8 @@ class Stream
      * If NET_SFTP_STREAM_LOGGING is defined all calls will be output on the screen and then (regardless of whether or not
      * NET_SFTP_STREAM_LOGGING is enabled) the parameters will be passed through to the appropriate method.
      *
-     * @param string
-     * @param array
+     * @param string $name
+     * @param array $arguments
      * @return mixed
      * @access public
      */

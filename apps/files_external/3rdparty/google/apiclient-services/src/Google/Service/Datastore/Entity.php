@@ -37,14 +37,14 @@ class Google_Service_Datastore_Entity extends Google_Model
     return $this->key;
   }
   /**
-   * @param Google_Service_Datastore_Value
+   * @param Google_Service_Datastore_Value[]
    */
   public function setProperties($properties)
   {
     $this->properties = $properties;
   }
   /**
-   * @return Google_Service_Datastore_Value
+   * @return Google_Service_Datastore_Value[]
    */
   public function getProperties()
   {

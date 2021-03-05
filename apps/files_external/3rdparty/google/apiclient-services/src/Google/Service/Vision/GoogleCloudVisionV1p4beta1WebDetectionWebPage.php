@@ -27,14 +27,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p4beta1WebDetectionWebPage extend
   public $url;
 
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1WebDetectionWebImage
+   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1WebDetectionWebImage[]
    */
   public function setFullMatchingImages($fullMatchingImages)
   {
     $this->fullMatchingImages = $fullMatchingImages;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1WebDetectionWebImage
+   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1WebDetectionWebImage[]
    */
   public function getFullMatchingImages()
   {
@@ -49,14 +49,14 @@ class Google_Service_Vision_GoogleCloudVisionV1p4beta1WebDetectionWebPage extend
     return $this->pageTitle;
   }
   /**
-   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1WebDetectionWebImage
+   * @param Google_Service_Vision_GoogleCloudVisionV1p4beta1WebDetectionWebImage[]
    */
   public function setPartialMatchingImages($partialMatchingImages)
   {
     $this->partialMatchingImages = $partialMatchingImages;
   }
   /**
-   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1WebDetectionWebImage
+   * @return Google_Service_Vision_GoogleCloudVisionV1p4beta1WebDetectionWebImage[]
    */
   public function getPartialMatchingImages()
   {

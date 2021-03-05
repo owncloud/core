@@ -26,37 +26,40 @@
 class Google_Service_Apigee_Resource_OrganizationsEnvironmentsKeystoresAliases extends Google_Service_Resource
 {
   /**
-   * Creates an alias from a key, certificate pair. The structure of the request
-   * is controlled by the `format` query parameter: * `keycertfile` - Separate
-   * PEM-encoded key and certificate files are uploaded. The request must have
-   * `Content-Type: multipart/form-data` and include fields `keyFile` and
-   * `certFile`. If uploading to a truststore, omit `keyFile`. A `password` field
-   * should be provided for encrypted keys. * `pkcs12` - A PKCS12 file is
-   * uploaded. The request must have `Content-Type: multipart/form-data` with the
-   * file provided in the `file` field and a `password` field if the file is
-   * encrypted. * `selfsignedcert` - A new private key and certificate are
-   * generated. The request must have `Content-Type: application/json` and a body
-   * of CertificateGenerationSpec. (aliases.create)
+   * Creates an alias from a key/certificate pair. The structure of the request is
+   * controlled by the `format` query parameter: - `keycertfile` - Separate PEM-
+   * encoded key and certificate files are uploaded. Set `Content-Type: multipart
+   * /form-data` and include the `keyFile`, `certFile`, and `password` (if keys
+   * are encrypted) fields in the request body. If uploading to a truststore, omit
+   * `keyFile`. - `pkcs12` - A PKCS12 file is uploaded. Set `Content-Type:
+   * multipart/form-data`, provide the file in the `file` field, and include the
+   * `password` field if the file is encrypted in the request body. -
+   * `selfsignedcert` - A new private key and certificate are generated. Set
+   * `Content-Type: application/json` and include CertificateGenerationSpec in the
+   * request body. (aliases.create)
    *
-   * @param string $parent Required. The name of the keystore. Must be of the form
-   * `organizations/{organization}/environments/{environment}/keystores/{keystore}
-   * `.
+   * @param string $parent Required. Name of the keystore. Use the following
+   * format in your request:
+   * `organizations/{org}/environments/{env}/keystores/{keystore}`.
    * @param Google_Service_Apigee_GoogleApiHttpBody $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string _password The password for the private key file, if it
-   * exists.
-   * @opt_param bool ignoreNewlineValidation If `true`, do not throw an error when
-   * the file contains a chain with no newline between each certificate. By
-   * default, a newline is needed between each certificate in a chain.
-   * @opt_param string format Required. The format of the data. Must be either
-   * `selfsignedcert`, `keycertfile`, or `pkcs12`.
-   * @opt_param string alias The alias for the key, certificate pair. Values must
-   * match regular expression `[\w\s-.]{1,255}`. This must be provided for all
-   * formats except 'selfsignedcert'; self-signed certs may specify the alias in
+   * @opt_param string _password DEPRECATED: For improved security, specify the
+   * password in the request body instead of using the query parameter. To specify
+   * the password in the request body, set `Content-type: multipart/form-data`
+   * part with name `password`. Password for the private key file, if required.
+   * @opt_param string alias Alias for the key/certificate pair. Values must match
+   * the regular expression `[\w\s-.]{1,255}`. This must be provided for all
+   * formats except `selfsignedcert`; self-signed certs may specify the alias in
    * either this parameter or the JSON body.
-   * @opt_param bool ignoreExpiryValidation If `true`, no expiry validation will
-   * be performed.
+   * @opt_param string format Required. Format of the data. Valid values include:
+   * `selfsignedcert`, `keycertfile`, or `pkcs12`
+   * @opt_param bool ignoreExpiryValidation Flag that specifies whether to ignore
+   * expiry validation. If set to `true`, no expiry validation will be performed.
+   * @opt_param bool ignoreNewlineValidation Flag that specifies whether to ignore
+   * newline validation. If set to `true`, no error is thrown when the file
+   * contains a certificate chain with no newline between each certificate.
+   * Defaults to `false`.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1Alias
    */
   public function create($parent, Google_Service_Apigee_GoogleApiHttpBody $postBody, $optParams = array())
@@ -69,9 +72,9 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsKeystoresAliases e
    * Generates a PKCS #10 Certificate Signing Request for the private key in an
    * alias. (aliases.csr)
    *
-   * @param string $name Required. The name of the alias. Must be of the form `org
-   * anizations/{organization}/environments/{environment}/keystores/{keystore}/ali
-   * ases/{alias}`.
+   * @param string $name Required. Name of the alias. Use the following format in
+   * your request: `organizations/{org}/environments/{env}/keystores/{keystore}/al
+   * iases/{alias}`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleApiHttpBody
    */
@@ -84,9 +87,9 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsKeystoresAliases e
   /**
    * Deletes an alias. (aliases.delete)
    *
-   * @param string $name Required. The name of the alias. Must be of the form `org
-   * anizations/{organization}/environments/{environment}/keystores/{keystore}/ali
-   * ases/{alias}`.
+   * @param string $name Required. Name of the alias. Use the following format in
+   * your request: `organizations/{org}/environments/{env}/keystores/{keystore}/al
+   * iases/{alias}`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1Alias
    */
@@ -99,9 +102,9 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsKeystoresAliases e
   /**
    * Gets an alias. (aliases.get)
    *
-   * @param string $name Required. The name of the alias. Must be of the form `org
-   * anizations/{organization}/environments/{environment}/keystores/{keystore}/ali
-   * ases/{alias}`.
+   * @param string $name Required. Name of the alias. Use the following format in
+   * your request: `organizations/{org}/environments/{env}/keystores/{keystore}/al
+   * iases/{alias}`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1Alias
    */
@@ -115,9 +118,9 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsKeystoresAliases e
    * Gets the certificate from an alias in PEM-encoded form.
    * (aliases.getCertificate)
    *
-   * @param string $name Required. The name of the alias. Must be of the form `org
-   * anizations/{organization}/environments/{environment}/keystores/{keystore}/ali
-   * ases/{alias}`.
+   * @param string $name Required. Name of the alias. Use the following format in
+   * your request: `organizations/{org}/environments/{env}/keystores/{keystore}/al
+   * iases/{alias}`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_Apigee_GoogleApiHttpBody
    */
@@ -130,17 +133,19 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsKeystoresAliases e
   /**
    * Updates the certificate in an alias. (aliases.update)
    *
-   * @param string $name Required. The name of the alias. Must be of the form `org
-   * anizations/{organization}/environments/{environment}/keystores/{keystore}/ali
-   * ases/{alias}`.
+   * @param string $name Required. Name of the alias. Use the following format in
+   * your request:
+   * `organizations/{org}/environments/{env}/keystores/{keystore}/aliases/{alias}`
    * @param Google_Service_Apigee_GoogleApiHttpBody $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool ignoreExpiryValidation Required. If `true`, no expiry
-   * validation will be performed.
-   * @opt_param bool ignoreNewlineValidation If `true`, do not throw an error when
-   * the file contains a chain with no newline between each certificate. By
-   * default, a newline is needed between each certificate in a chain.
+   * @opt_param bool ignoreExpiryValidation Required. Flag that specifies whether
+   * to ignore expiry validation. If set to `true`, no expiry validation will be
+   * performed.
+   * @opt_param bool ignoreNewlineValidation Flag that specifies whether to ignore
+   * newline validation. If set to `true`, no error is thrown when the file
+   * contains a certificate chain with no newline between each certificate.
+   * Defaults to `false`.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1Alias
    */
   public function update($name, Google_Service_Apigee_GoogleApiHttpBody $postBody, $optParams = array())

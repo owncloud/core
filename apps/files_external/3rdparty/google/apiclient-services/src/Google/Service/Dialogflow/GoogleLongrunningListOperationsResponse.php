@@ -31,14 +31,14 @@ class Google_Service_Dialogflow_GoogleLongrunningListOperationsResponse extends 
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Dialogflow_GoogleLongrunningOperation
+   * @param Google_Service_Dialogflow_GoogleLongrunningOperation[]
    */
   public function setOperations($operations)
   {
     $this->operations = $operations;
   }
   /**
-   * @return Google_Service_Dialogflow_GoogleLongrunningOperation
+   * @return Google_Service_Dialogflow_GoogleLongrunningOperation[]
    */
   public function getOperations()
   {

@@ -35,14 +35,14 @@ class Google_Service_PolicyTroubleshooter_GoogleCloudPolicytroubleshooterV1Expla
     return $this->access;
   }
   /**
-   * @param Google_Service_PolicyTroubleshooter_GoogleCloudPolicytroubleshooterV1BindingExplanation
+   * @param Google_Service_PolicyTroubleshooter_GoogleCloudPolicytroubleshooterV1BindingExplanation[]
    */
   public function setBindingExplanations($bindingExplanations)
   {
     $this->bindingExplanations = $bindingExplanations;
   }
   /**
-   * @return Google_Service_PolicyTroubleshooter_GoogleCloudPolicytroubleshooterV1BindingExplanation
+   * @return Google_Service_PolicyTroubleshooter_GoogleCloudPolicytroubleshooterV1BindingExplanation[]
    */
   public function getBindingExplanations()
   {

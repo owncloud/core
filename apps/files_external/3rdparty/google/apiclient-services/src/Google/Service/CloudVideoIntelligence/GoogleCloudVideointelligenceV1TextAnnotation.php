@@ -24,14 +24,14 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1TextAn
   public $version;
 
   /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1TextSegment
+   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1TextSegment[]
    */
   public function setSegments($segments)
   {
     $this->segments = $segments;
   }
   /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1TextSegment
+   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1TextSegment[]
    */
   public function getSegments()
   {

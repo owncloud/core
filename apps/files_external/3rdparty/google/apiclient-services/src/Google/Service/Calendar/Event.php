@@ -35,6 +35,7 @@ class Google_Service_Calendar_Event extends Google_Collection
   protected $endDataType = '';
   public $endTimeUnspecified;
   public $etag;
+  public $eventType;
   protected $extendedPropertiesType = 'Google_Service_Calendar_EventExtendedProperties';
   protected $extendedPropertiesDataType = '';
   protected $gadgetType = 'Google_Service_Calendar_EventGadget';
@@ -78,28 +79,28 @@ class Google_Service_Calendar_Event extends Google_Collection
     return $this->anyoneCanAddSelf;
   }
   /**
-   * @param Google_Service_Calendar_EventAttachment
+   * @param Google_Service_Calendar_EventAttachment[]
    */
   public function setAttachments($attachments)
   {
     $this->attachments = $attachments;
   }
   /**
-   * @return Google_Service_Calendar_EventAttachment
+   * @return Google_Service_Calendar_EventAttachment[]
    */
   public function getAttachments()
   {
     return $this->attachments;
   }
   /**
-   * @param Google_Service_Calendar_EventAttendee
+   * @param Google_Service_Calendar_EventAttendee[]
    */
   public function setAttendees($attendees)
   {
     $this->attendees = $attendees;
   }
   /**
-   * @return Google_Service_Calendar_EventAttendee
+   * @return Google_Service_Calendar_EventAttendee[]
    */
   public function getAttendees()
   {
@@ -194,6 +195,14 @@ class Google_Service_Calendar_Event extends Google_Collection
   public function getEtag()
   {
     return $this->etag;
+  }
+  public function setEventType($eventType)
+  {
+    $this->eventType = $eventType;
+  }
+  public function getEventType()
+  {
+    return $this->eventType;
   }
   /**
    * @param Google_Service_Calendar_EventExtendedProperties

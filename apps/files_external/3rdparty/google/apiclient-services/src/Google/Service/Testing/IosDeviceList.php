@@ -22,14 +22,14 @@ class Google_Service_Testing_IosDeviceList extends Google_Collection
   protected $iosDevicesDataType = 'array';
 
   /**
-   * @param Google_Service_Testing_IosDevice
+   * @param Google_Service_Testing_IosDevice[]
    */
   public function setIosDevices($iosDevices)
   {
     $this->iosDevices = $iosDevices;
   }
   /**
-   * @return Google_Service_Testing_IosDevice
+   * @return Google_Service_Testing_IosDevice[]
    */
   public function getIosDevices()
   {

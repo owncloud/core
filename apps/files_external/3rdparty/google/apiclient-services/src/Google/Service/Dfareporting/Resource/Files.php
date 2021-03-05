@@ -43,15 +43,15 @@ class Google_Service_Dfareporting_Resource_Files extends Google_Service_Resource
   /**
    * Lists files for a user profile. (files.listFiles)
    *
-   * @param string $profileId The DFA profile ID.
+   * @param string $profileId The Campaign Manager 360 user profile ID.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string scope The scope that defines which results are returned.
+   * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string pageToken The value of the nextToken from the previous
    * result page.
+   * @opt_param string scope The scope that defines which results are returned.
    * @opt_param string sortField The field by which to sort the list.
    * @opt_param string sortOrder Order of sorted results.
-   * @opt_param int maxResults Maximum number of results to return.
    * @return Google_Service_Dfareporting_FileList
    */
   public function listFiles($profileId, $optParams = array())

@@ -57,28 +57,28 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageFormField 
     return $this->fieldValue;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageDetectedLanguage
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageDetectedLanguage[]
    */
   public function setNameDetectedLanguages($nameDetectedLanguages)
   {
     $this->nameDetectedLanguages = $nameDetectedLanguages;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageDetectedLanguage
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageDetectedLanguage[]
    */
   public function getNameDetectedLanguages()
   {
     return $this->nameDetectedLanguages;
   }
   /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageDetectedLanguage
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageDetectedLanguage[]
    */
   public function setValueDetectedLanguages($valueDetectedLanguages)
   {
     $this->valueDetectedLanguages = $valueDetectedLanguages;
   }
   /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageDetectedLanguage
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta3DocumentPageDetectedLanguage[]
    */
   public function getValueDetectedLanguages()
   {

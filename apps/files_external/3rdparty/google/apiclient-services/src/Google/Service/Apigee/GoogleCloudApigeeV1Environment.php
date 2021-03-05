@@ -24,6 +24,7 @@ class Google_Service_Apigee_GoogleCloudApigeeV1Environment extends Google_Model
   public $name;
   protected $propertiesType = 'Google_Service_Apigee_GoogleCloudApigeeV1Properties';
   protected $propertiesDataType = '';
+  public $state;
 
   public function setCreatedAt($createdAt)
   {
@@ -78,5 +79,13 @@ class Google_Service_Apigee_GoogleCloudApigeeV1Environment extends Google_Model
   public function getProperties()
   {
     return $this->properties;
+  }
+  public function setState($state)
+  {
+    $this->state = $state;
+  }
+  public function getState()
+  {
+    return $this->state;
   }
 }

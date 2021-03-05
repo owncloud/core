@@ -115,14 +115,14 @@ class Google_Service_Compute_UrlMap extends Google_Collection
     return $this->headerAction;
   }
   /**
-   * @param Google_Service_Compute_HostRule
+   * @param Google_Service_Compute_HostRule[]
    */
   public function setHostRules($hostRules)
   {
     $this->hostRules = $hostRules;
   }
   /**
-   * @return Google_Service_Compute_HostRule
+   * @return Google_Service_Compute_HostRule[]
    */
   public function getHostRules()
   {
@@ -153,14 +153,14 @@ class Google_Service_Compute_UrlMap extends Google_Collection
     return $this->name;
   }
   /**
-   * @param Google_Service_Compute_PathMatcher
+   * @param Google_Service_Compute_PathMatcher[]
    */
   public function setPathMatchers($pathMatchers)
   {
     $this->pathMatchers = $pathMatchers;
   }
   /**
-   * @return Google_Service_Compute_PathMatcher
+   * @return Google_Service_Compute_PathMatcher[]
    */
   public function getPathMatchers()
   {
@@ -183,14 +183,14 @@ class Google_Service_Compute_UrlMap extends Google_Collection
     return $this->selfLink;
   }
   /**
-   * @param Google_Service_Compute_UrlMapTest
+   * @param Google_Service_Compute_UrlMapTest[]
    */
   public function setTests($tests)
   {
     $this->tests = $tests;
   }
   /**
-   * @return Google_Service_Compute_UrlMapTest
+   * @return Google_Service_Compute_UrlMapTest[]
    */
   public function getTests()
   {

@@ -31,14 +31,14 @@ class Google_Service_Dfareporting_OperatingSystemsListResponse extends Google_Co
     return $this->kind;
   }
   /**
-   * @param Google_Service_Dfareporting_OperatingSystem
+   * @param Google_Service_Dfareporting_OperatingSystem[]
    */
   public function setOperatingSystems($operatingSystems)
   {
     $this->operatingSystems = $operatingSystems;
   }
   /**
-   * @return Google_Service_Dfareporting_OperatingSystem
+   * @return Google_Service_Dfareporting_OperatingSystem[]
    */
   public function getOperatingSystems()
   {

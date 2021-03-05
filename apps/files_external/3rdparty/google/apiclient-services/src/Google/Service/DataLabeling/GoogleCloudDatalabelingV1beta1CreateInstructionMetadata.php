@@ -40,14 +40,14 @@ class Google_Service_DataLabeling_GoogleCloudDatalabelingV1beta1CreateInstructio
     return $this->instruction;
   }
   /**
-   * @param Google_Service_DataLabeling_GoogleRpcStatus
+   * @param Google_Service_DataLabeling_GoogleRpcStatus[]
    */
   public function setPartialFailures($partialFailures)
   {
     $this->partialFailures = $partialFailures;
   }
   /**
-   * @return Google_Service_DataLabeling_GoogleRpcStatus
+   * @return Google_Service_DataLabeling_GoogleRpcStatus[]
    */
   public function getPartialFailures()
   {

@@ -210,28 +210,28 @@ class Google_Service_Dfareporting_FloodlightConfiguration extends Google_Collect
     return $this->tagSettings;
   }
   /**
-   * @param Google_Service_Dfareporting_ThirdPartyAuthenticationToken
+   * @param Google_Service_Dfareporting_ThirdPartyAuthenticationToken[]
    */
   public function setThirdPartyAuthenticationTokens($thirdPartyAuthenticationTokens)
   {
     $this->thirdPartyAuthenticationTokens = $thirdPartyAuthenticationTokens;
   }
   /**
-   * @return Google_Service_Dfareporting_ThirdPartyAuthenticationToken
+   * @return Google_Service_Dfareporting_ThirdPartyAuthenticationToken[]
    */
   public function getThirdPartyAuthenticationTokens()
   {
     return $this->thirdPartyAuthenticationTokens;
   }
   /**
-   * @param Google_Service_Dfareporting_UserDefinedVariableConfiguration
+   * @param Google_Service_Dfareporting_UserDefinedVariableConfiguration[]
    */
   public function setUserDefinedVariableConfigurations($userDefinedVariableConfigurations)
   {
     $this->userDefinedVariableConfigurations = $userDefinedVariableConfigurations;
   }
   /**
-   * @return Google_Service_Dfareporting_UserDefinedVariableConfiguration
+   * @return Google_Service_Dfareporting_UserDefinedVariableConfiguration[]
    */
   public function getUserDefinedVariableConfigurations()
   {

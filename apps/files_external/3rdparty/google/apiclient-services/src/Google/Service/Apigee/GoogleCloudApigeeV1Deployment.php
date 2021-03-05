@@ -57,42 +57,42 @@ class Google_Service_Apigee_GoogleCloudApigeeV1Deployment extends Google_Collect
     return $this->environment;
   }
   /**
-   * @param Google_Service_Apigee_GoogleRpcStatus
+   * @param Google_Service_Apigee_GoogleRpcStatus[]
    */
   public function setErrors($errors)
   {
     $this->errors = $errors;
   }
   /**
-   * @return Google_Service_Apigee_GoogleRpcStatus
+   * @return Google_Service_Apigee_GoogleRpcStatus[]
    */
   public function getErrors()
   {
     return $this->errors;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1InstanceDeploymentStatus
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1InstanceDeploymentStatus[]
    */
   public function setInstances($instances)
   {
     $this->instances = $instances;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1InstanceDeploymentStatus
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1InstanceDeploymentStatus[]
    */
   public function getInstances()
   {
     return $this->instances;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1PodStatus
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1PodStatus[]
    */
   public function setPods($pods)
   {
     $this->pods = $pods;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1PodStatus
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1PodStatus[]
    */
   public function getPods()
   {
@@ -107,14 +107,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1Deployment extends Google_Collect
     return $this->revision;
   }
   /**
-   * @param Google_Service_Apigee_GoogleCloudApigeeV1DeploymentChangeReportRoutingConflict
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1DeploymentChangeReportRoutingConflict[]
    */
   public function setRouteConflicts($routeConflicts)
   {
     $this->routeConflicts = $routeConflicts;
   }
   /**
-   * @return Google_Service_Apigee_GoogleCloudApigeeV1DeploymentChangeReportRoutingConflict
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1DeploymentChangeReportRoutingConflict[]
    */
   public function getRouteConflicts()
   {

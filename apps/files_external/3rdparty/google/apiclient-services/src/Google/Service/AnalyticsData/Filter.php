@@ -22,7 +22,6 @@ class Google_Service_AnalyticsData_Filter extends Google_Model
   public $fieldName;
   protected $inListFilterType = 'Google_Service_AnalyticsData_InListFilter';
   protected $inListFilterDataType = '';
-  public $nullFilter;
   protected $numericFilterType = 'Google_Service_AnalyticsData_NumericFilter';
   protected $numericFilterDataType = '';
   protected $stringFilterType = 'Google_Service_AnalyticsData_StringFilter';
@@ -63,14 +62,6 @@ class Google_Service_AnalyticsData_Filter extends Google_Model
   public function getInListFilter()
   {
     return $this->inListFilter;
-  }
-  public function setNullFilter($nullFilter)
-  {
-    $this->nullFilter = $nullFilter;
-  }
-  public function getNullFilter()
-  {
-    return $this->nullFilter;
   }
   /**
    * @param Google_Service_AnalyticsData_NumericFilter

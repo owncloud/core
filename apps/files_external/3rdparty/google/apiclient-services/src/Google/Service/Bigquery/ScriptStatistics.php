@@ -31,14 +31,14 @@ class Google_Service_Bigquery_ScriptStatistics extends Google_Collection
     return $this->evaluationKind;
   }
   /**
-   * @param Google_Service_Bigquery_ScriptStackFrame
+   * @param Google_Service_Bigquery_ScriptStackFrame[]
    */
   public function setStackFrames($stackFrames)
   {
     $this->stackFrames = $stackFrames;
   }
   /**
-   * @return Google_Service_Bigquery_ScriptStackFrame
+   * @return Google_Service_Bigquery_ScriptStackFrame[]
    */
   public function getStackFrames()
   {

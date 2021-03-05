@@ -36,14 +36,14 @@ class Google_Service_Compute_InterconnectList extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Compute_Interconnect
+   * @param Google_Service_Compute_Interconnect[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Compute_Interconnect
+   * @return Google_Service_Compute_Interconnect[]
    */
   public function getItems()
   {

@@ -80,14 +80,18 @@ class Share extends AbstractShare {
 	}
 
 	protected function getConnection() {
+		$maxProtocol = $this->server->getOptions()->getMaxProtocol();
+		$minProtocol = $this->server->getOptions()->getMinProtocol();
 		$command = sprintf(
-			'%s %s%s -t %s %s %s %s',
+			'%s %s%s -t %s %s %s %s %s %s',
 			self::EXEC_CMD,
 			$this->system->getStdBufPath() ? $this->system->getStdBufPath() . ' -o0 ' : '',
 			$this->system->getSmbclientPath(),
 			$this->server->getOptions()->getTimeout(),
 			$this->getAuthFileArgument(),
 			$this->server->getAuth()->getExtraCommandLineArguments(),
+			$maxProtocol ? "--option='client max protocol=" . $maxProtocol . "'" : "",
+			$minProtocol ? "--option='client min protocol=" . $minProtocol . "'" : "",
 			escapeshellarg('//' . $this->server->getHost() . '/' . $this->name)
 		);
 		$connection = new Connection($command, $this->parser);
@@ -139,7 +143,7 @@ class Share extends AbstractShare {
 	/**
 	 * List the content of a remote folder
 	 *
-	 * @param $path
+	 * @param string $path
 	 * @return \Icewind\SMB\IFileInfo[]
 	 *
 	 * @throws \Icewind\SMB\Exception\NotFoundException
@@ -348,7 +352,7 @@ class Share extends AbstractShare {
 
 		// use a close callback to ensure the upload is finished before continuing
 		// this also serves as a way to keep the connection in scope
-		return CallbackWrapper::wrap($fh, null, null, function () use ($connection, $target) {
+		return CallbackWrapper::wrap($fh, null, null, function () use ($connection) {
 			$connection->close(false); // dont terminate, give the upload some time
 		});
 	}

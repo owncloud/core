@@ -41,13 +41,11 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironmentsSharedflowsRevisio
    * aredflow}/revisions/{rev}`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool override Flag that specifies whether to force the deployment
-   * of the new revision over the currently deployed revision by overriding
-   * conflict checks. If an existing shared flow revision is deployed, to ensure
-   * seamless deployment with no downtime, set this parameter to `true`. In this
-   * case, hybrid deploys the new revision fully before undeploying the existing
-   * revision. If set to `false`, you must undeploy the existing revision before
-   * deploying the new revision.
+   * @opt_param bool override Flag that specifies whether the new deployment
+   * replaces other deployed revisions of the shared flow in the environment. Set
+   * `override` to `true` to replace other deployed revisions. By default,
+   * `override` is `false` and the deployment is rejected if other revisions of
+   * the shared flow are deployed in the environment.
    * @return Google_Service_Apigee_GoogleCloudApigeeV1Deployment
    */
   public function deploy($name, $optParams = array())

@@ -23,14 +23,14 @@ class Google_Service_ServiceManagement_ConfigSource extends Google_Collection
   public $id;
 
   /**
-   * @param Google_Service_ServiceManagement_ConfigFile
+   * @param Google_Service_ServiceManagement_ConfigFile[]
    */
   public function setFiles($files)
   {
     $this->files = $files;
   }
   /**
-   * @return Google_Service_ServiceManagement_ConfigFile
+   * @return Google_Service_ServiceManagement_ConfigFile[]
    */
   public function getFiles()
   {

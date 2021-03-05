@@ -104,14 +104,14 @@ class Google_Service_Blogger_Post extends Google_Collection
     return $this->id;
   }
   /**
-   * @param Google_Service_Blogger_PostImages
+   * @param Google_Service_Blogger_PostImages[]
    */
   public function setImages($images)
   {
     $this->images = $images;
   }
   /**
-   * @return Google_Service_Blogger_PostImages
+   * @return Google_Service_Blogger_PostImages[]
    */
   public function getImages()
   {

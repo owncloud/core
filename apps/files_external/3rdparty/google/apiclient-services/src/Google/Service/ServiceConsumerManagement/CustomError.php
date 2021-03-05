@@ -23,14 +23,14 @@ class Google_Service_ServiceConsumerManagement_CustomError extends Google_Collec
   public $types;
 
   /**
-   * @param Google_Service_ServiceConsumerManagement_CustomErrorRule
+   * @param Google_Service_ServiceConsumerManagement_CustomErrorRule[]
    */
   public function setRules($rules)
   {
     $this->rules = $rules;
   }
   /**
-   * @return Google_Service_ServiceConsumerManagement_CustomErrorRule
+   * @return Google_Service_ServiceConsumerManagement_CustomErrorRule[]
    */
   public function getRules()
   {

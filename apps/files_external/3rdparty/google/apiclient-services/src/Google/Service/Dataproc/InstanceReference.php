@@ -19,6 +19,7 @@ class Google_Service_Dataproc_InstanceReference extends Google_Model
 {
   public $instanceId;
   public $instanceName;
+  public $publicKey;
 
   public function setInstanceId($instanceId)
   {
@@ -35,5 +36,13 @@ class Google_Service_Dataproc_InstanceReference extends Google_Model
   public function getInstanceName()
   {
     return $this->instanceName;
+  }
+  public function setPublicKey($publicKey)
+  {
+    $this->publicKey = $publicKey;
+  }
+  public function getPublicKey()
+  {
+    return $this->publicKey;
   }
 }

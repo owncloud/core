@@ -22,14 +22,14 @@ class Google_Service_FirebaseDynamicLinks_DynamicLinkStats extends Google_Collec
   protected $linkEventStatsDataType = 'array';
 
   /**
-   * @param Google_Service_FirebaseDynamicLinks_DynamicLinkEventStat
+   * @param Google_Service_FirebaseDynamicLinks_DynamicLinkEventStat[]
    */
   public function setLinkEventStats($linkEventStats)
   {
     $this->linkEventStats = $linkEventStats;
   }
   /**
-   * @return Google_Service_FirebaseDynamicLinks_DynamicLinkEventStat
+   * @return Google_Service_FirebaseDynamicLinks_DynamicLinkEventStat[]
    */
   public function getLinkEventStats()
   {

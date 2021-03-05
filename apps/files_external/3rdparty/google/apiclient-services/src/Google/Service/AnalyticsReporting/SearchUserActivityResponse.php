@@ -41,14 +41,14 @@ class Google_Service_AnalyticsReporting_SearchUserActivityResponse extends Googl
     return $this->sampleRate;
   }
   /**
-   * @param Google_Service_AnalyticsReporting_UserActivitySession
+   * @param Google_Service_AnalyticsReporting_UserActivitySession[]
    */
   public function setSessions($sessions)
   {
     $this->sessions = $sessions;
   }
   /**
-   * @return Google_Service_AnalyticsReporting_UserActivitySession
+   * @return Google_Service_AnalyticsReporting_UserActivitySession[]
    */
   public function getSessions()
   {

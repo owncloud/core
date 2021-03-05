@@ -31,14 +31,14 @@ class Google_Service_BigQueryDataTransfer_ListTransferLogsResponse extends Googl
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_BigQueryDataTransfer_TransferMessage
+   * @param Google_Service_BigQueryDataTransfer_TransferMessage[]
    */
   public function setTransferMessages($transferMessages)
   {
     $this->transferMessages = $transferMessages;
   }
   /**
-   * @return Google_Service_BigQueryDataTransfer_TransferMessage
+   * @return Google_Service_BigQueryDataTransfer_TransferMessage[]
    */
   public function getTransferMessages()
   {

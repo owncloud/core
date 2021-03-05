@@ -16,7 +16,7 @@
  */
 
 /**
- * Service definition for ServiceDirectory (v1beta1).
+ * Service definition for ServiceDirectory (v1).
  *
  * <p>
  * Service Directory is a platform for discovering, publishing, and connecting
@@ -39,7 +39,7 @@ class Google_Service_ServiceDirectory extends Google_Service
   public $projects_locations_namespaces;
   public $projects_locations_namespaces_services;
   public $projects_locations_namespaces_services_endpoints;
-  
+
   /**
    * Constructs the internal representation of the ServiceDirectory service.
    *
@@ -52,7 +52,7 @@ class Google_Service_ServiceDirectory extends Google_Service
     $this->rootUrl = $rootUrl ?: 'https://servicedirectory.googleapis.com/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
-    $this->version = 'v1beta1';
+    $this->version = 'v1';
     $this->serviceName = 'servicedirectory';
 
     $this->projects_locations = new Google_Service_ServiceDirectory_Resource_ProjectsLocations(
@@ -62,7 +62,7 @@ class Google_Service_ServiceDirectory extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -72,7 +72,7 @@ class Google_Service_ServiceDirectory extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1beta1/{+name}/locations',
+              'path' => 'v1/{+name}/locations',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -80,15 +80,15 @@ class Google_Service_ServiceDirectory extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
                 'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -104,7 +104,7 @@ class Google_Service_ServiceDirectory extends Google_Service
         array(
           'methods' => array(
             'create' => array(
-              'path' => 'v1beta1/{+parent}/namespaces',
+              'path' => 'v1/{+parent}/namespaces',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
@@ -118,7 +118,7 @@ class Google_Service_ServiceDirectory extends Google_Service
                 ),
               ),
             ),'delete' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'name' => array(
@@ -128,7 +128,7 @@ class Google_Service_ServiceDirectory extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -138,7 +138,7 @@ class Google_Service_ServiceDirectory extends Google_Service
                 ),
               ),
             ),'getIamPolicy' => array(
-              'path' => 'v1beta1/{+resource}:getIamPolicy',
+              'path' => 'v1/{+resource}:getIamPolicy',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'resource' => array(
@@ -148,7 +148,7 @@ class Google_Service_ServiceDirectory extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1beta1/{+parent}/namespaces',
+              'path' => 'v1/{+parent}/namespaces',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'parent' => array(
@@ -156,7 +156,7 @@ class Google_Service_ServiceDirectory extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageToken' => array(
+                'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -168,13 +168,13 @@ class Google_Service_ServiceDirectory extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
-                'filter' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
               ),
             ),'patch' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'name' => array(
@@ -188,7 +188,7 @@ class Google_Service_ServiceDirectory extends Google_Service
                 ),
               ),
             ),'setIamPolicy' => array(
-              'path' => 'v1beta1/{+resource}:setIamPolicy',
+              'path' => 'v1/{+resource}:setIamPolicy',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'resource' => array(
@@ -198,7 +198,7 @@ class Google_Service_ServiceDirectory extends Google_Service
                 ),
               ),
             ),'testIamPermissions' => array(
-              'path' => 'v1beta1/{+resource}:testIamPermissions',
+              'path' => 'v1/{+resource}:testIamPermissions',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'resource' => array(
@@ -218,7 +218,7 @@ class Google_Service_ServiceDirectory extends Google_Service
         array(
           'methods' => array(
             'create' => array(
-              'path' => 'v1beta1/{+parent}/services',
+              'path' => 'v1/{+parent}/services',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
@@ -232,7 +232,7 @@ class Google_Service_ServiceDirectory extends Google_Service
                 ),
               ),
             ),'delete' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'name' => array(
@@ -242,7 +242,7 @@ class Google_Service_ServiceDirectory extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -252,7 +252,7 @@ class Google_Service_ServiceDirectory extends Google_Service
                 ),
               ),
             ),'getIamPolicy' => array(
-              'path' => 'v1beta1/{+resource}:getIamPolicy',
+              'path' => 'v1/{+resource}:getIamPolicy',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'resource' => array(
@@ -262,7 +262,7 @@ class Google_Service_ServiceDirectory extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1beta1/{+parent}/services',
+              'path' => 'v1/{+parent}/services',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'parent' => array(
@@ -270,25 +270,25 @@ class Google_Service_ServiceDirectory extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
+                'filter' => array(
                   'location' => 'query',
-                  'type' => 'integer',
+                  'type' => 'string',
                 ),
                 'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'pageSize' => array(
                   'location' => 'query',
-                  'type' => 'string',
+                  'type' => 'integer',
                 ),
-                'filter' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
               ),
             ),'patch' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'name' => array(
@@ -302,7 +302,7 @@ class Google_Service_ServiceDirectory extends Google_Service
                 ),
               ),
             ),'resolve' => array(
-              'path' => 'v1beta1/{+name}:resolve',
+              'path' => 'v1/{+name}:resolve',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -312,7 +312,7 @@ class Google_Service_ServiceDirectory extends Google_Service
                 ),
               ),
             ),'setIamPolicy' => array(
-              'path' => 'v1beta1/{+resource}:setIamPolicy',
+              'path' => 'v1/{+resource}:setIamPolicy',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'resource' => array(
@@ -322,7 +322,7 @@ class Google_Service_ServiceDirectory extends Google_Service
                 ),
               ),
             ),'testIamPermissions' => array(
-              'path' => 'v1beta1/{+resource}:testIamPermissions',
+              'path' => 'v1/{+resource}:testIamPermissions',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'resource' => array(
@@ -342,7 +342,7 @@ class Google_Service_ServiceDirectory extends Google_Service
         array(
           'methods' => array(
             'create' => array(
-              'path' => 'v1beta1/{+parent}/endpoints',
+              'path' => 'v1/{+parent}/endpoints',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
@@ -356,7 +356,7 @@ class Google_Service_ServiceDirectory extends Google_Service
                 ),
               ),
             ),'delete' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'name' => array(
@@ -366,7 +366,7 @@ class Google_Service_ServiceDirectory extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -376,7 +376,7 @@ class Google_Service_ServiceDirectory extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1beta1/{+parent}/endpoints',
+              'path' => 'v1/{+parent}/endpoints',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'parent' => array(
@@ -384,15 +384,7 @@ class Google_Service_ServiceDirectory extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'filter' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -400,9 +392,17 @@ class Google_Service_ServiceDirectory extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
               ),
             ),'patch' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'name' => array(

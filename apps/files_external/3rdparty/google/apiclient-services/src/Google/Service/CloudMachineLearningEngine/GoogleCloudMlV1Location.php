@@ -23,14 +23,14 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Location extends 
   public $name;
 
   /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Capability
+   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Capability[]
    */
   public function setCapabilities($capabilities)
   {
     $this->capabilities = $capabilities;
   }
   /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Capability
+   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Capability[]
    */
   public function getCapabilities()
   {

@@ -23,16 +23,15 @@
 
 namespace Icewind\Streams;
 
-
 abstract class HashWrapper extends Wrapper {
 
 	/**
-	 * @var callable
+	 * @var callable|null
 	 */
 	private $callback;
 
 	/**
-	 * @var resource
+	 * @var resource|\HashContext
 	 */
 	private $hashContext;
 
@@ -48,7 +47,7 @@ abstract class HashWrapper extends Wrapper {
 	 */
 	public static function wrap($source, $hash, $callback) {
 		$context = [
-			'hash' => $hash,
+			'hash'     => $hash,
 			'callback' => $callback,
 		];
 		return self::wrapSource($source, $context);
@@ -76,5 +75,4 @@ abstract class HashWrapper extends Wrapper {
 		}
 		return parent::stream_close();
 	}
-
 }

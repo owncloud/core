@@ -29,7 +29,7 @@ class Google_Service_RemoteBuildExecution_Resource_ActionResults extends Google_
    * Retrieve a cached execution result. Implementations SHOULD ensure that any
    * blobs referenced from the ContentAddressableStorage are available at the time
    * of returning the ActionResult and will be for some period of time afterwards.
-   * The TTLs of the referenced blobs SHOULD be increased if necessary and
+   * The lifetimes of the referenced blobs SHOULD be increased if necessary and
    * applicable. Errors: * `NOT_FOUND`: The requested `ActionResult` is not in the
    * cache. (actionResults.get)
    *
@@ -43,12 +43,13 @@ class Google_Service_RemoteBuildExecution_Resource_ActionResults extends Google_
    * @param string $sizeBytes The size of the blob, in bytes.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool inlineStdout A hint to the server to request inlining stdout
-   * in the ActionResult message.
    * @opt_param string inlineOutputFiles A hint to the server to inline the
    * contents of the listed output files. Each path needs to exactly match one
-   * path in `output_files` in the Command message.
+   * file path in either `output_paths` or `output_files` (DEPRECATED since v2.1)
+   * in the Command message.
    * @opt_param bool inlineStderr A hint to the server to request inlining stderr
+   * in the ActionResult message.
+   * @opt_param bool inlineStdout A hint to the server to request inlining stdout
    * in the ActionResult message.
    * @return Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2ActionResult
    */
@@ -62,11 +63,13 @@ class Google_Service_RemoteBuildExecution_Resource_ActionResults extends Google_
    * Upload a new execution result. In order to allow the server to perform access
    * control based on the type of action, and to assist with client debugging, the
    * client MUST first upload the Action that produced the result, along with its
-   * Command, into the `ContentAddressableStorage`. Errors: * `INVALID_ARGUMENT`:
-   * One or more arguments are invalid. * `FAILED_PRECONDITION`: One or more
-   * errors occurred in updating the action result, such as a missing command or
-   * action. * `RESOURCE_EXHAUSTED`: There is insufficient storage space to add
-   * the entry to the cache. (actionResults.update)
+   * Command, into the `ContentAddressableStorage`. Server implementations MAY
+   * modify the `UpdateActionResultRequest.action_result` and return an equivalent
+   * value. Errors: * `INVALID_ARGUMENT`: One or more arguments are invalid. *
+   * `FAILED_PRECONDITION`: One or more errors occurred in updating the action
+   * result, such as a missing command or action. * `RESOURCE_EXHAUSTED`: There is
+   * insufficient storage space to add the entry to the cache.
+   * (actionResults.update)
    *
    * @param string $instanceName The instance of the execution system to operate
    * against. A server may support multiple instances of the execution system

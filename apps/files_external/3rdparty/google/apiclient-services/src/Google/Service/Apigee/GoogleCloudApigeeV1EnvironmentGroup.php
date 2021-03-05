@@ -22,6 +22,7 @@ class Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentGroup extends Google_C
   public $hostnames;
   public $lastModifiedAt;
   public $name;
+  public $state;
 
   public function setCreatedAt($createdAt)
   {
@@ -54,5 +55,13 @@ class Google_Service_Apigee_GoogleCloudApigeeV1EnvironmentGroup extends Google_C
   public function getName()
   {
     return $this->name;
+  }
+  public function setState($state)
+  {
+    $this->state = $state;
+  }
+  public function getState()
+  {
+    return $this->state;
   }
 }

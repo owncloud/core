@@ -22,14 +22,14 @@ class Google_Service_ShoppingContent_Row extends Google_Collection
   protected $cellsDataType = 'array';
 
   /**
-   * @param Google_Service_ShoppingContent_Value
+   * @param Google_Service_ShoppingContent_Value[]
    */
   public function setCells($cells)
   {
     $this->cells = $cells;
   }
   /**
-   * @return Google_Service_ShoppingContent_Value
+   * @return Google_Service_ShoppingContent_Value[]
    */
   public function getCells()
   {

@@ -78,8 +78,8 @@ class Google_Service_Compute_Resource_SslCertificates extends Google_Service_Res
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
+   * which provides partial results in case of failure. The default value is
+   * false.
    * @return Google_Service_Compute_SslCertificateAggregatedList
    */
   public function aggregatedList($project, $optParams = array())
@@ -204,8 +204,8 @@ class Google_Service_Compute_Resource_SslCertificates extends Google_Service_Res
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
-   * which provides partial results in case of failure. The default value is false
-   * and the logic is the same as today.
+   * which provides partial results in case of failure. The default value is
+   * false.
    * @return Google_Service_Compute_SslCertificateList
    */
   public function listSslCertificates($project, $optParams = array())

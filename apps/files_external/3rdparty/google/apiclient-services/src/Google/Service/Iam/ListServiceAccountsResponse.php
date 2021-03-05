@@ -23,14 +23,14 @@ class Google_Service_Iam_ListServiceAccountsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Iam_ServiceAccount
+   * @param Google_Service_Iam_ServiceAccount[]
    */
   public function setAccounts($accounts)
   {
     $this->accounts = $accounts;
   }
   /**
-   * @return Google_Service_Iam_ServiceAccount
+   * @return Google_Service_Iam_ServiceAccount[]
    */
   public function getAccounts()
   {

@@ -31,14 +31,14 @@ class Google_Service_Apigateway_ApigatewayListOperationsResponse extends Google_
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Apigateway_ApigatewayOperation
+   * @param Google_Service_Apigateway_ApigatewayOperation[]
    */
   public function setOperations($operations)
   {
     $this->operations = $operations;
   }
   /**
-   * @return Google_Service_Apigateway_ApigatewayOperation
+   * @return Google_Service_Apigateway_ApigatewayOperation[]
    */
   public function getOperations()
   {

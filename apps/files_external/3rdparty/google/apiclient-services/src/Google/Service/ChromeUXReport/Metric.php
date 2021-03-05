@@ -24,14 +24,14 @@ class Google_Service_ChromeUXReport_Metric extends Google_Collection
   protected $percentilesDataType = '';
 
   /**
-   * @param Google_Service_ChromeUXReport_Bin
+   * @param Google_Service_ChromeUXReport_Bin[]
    */
   public function setHistogram($histogram)
   {
     $this->histogram = $histogram;
   }
   /**
-   * @return Google_Service_ChromeUXReport_Bin
+   * @return Google_Service_ChromeUXReport_Bin[]
    */
   public function getHistogram()
   {

@@ -26,28 +26,28 @@ class Google_Service_ServiceManagement_GenerateConfigReportResponse extends Goog
   public $serviceName;
 
   /**
-   * @param Google_Service_ServiceManagement_ChangeReport
+   * @param Google_Service_ServiceManagement_ChangeReport[]
    */
   public function setChangeReports($changeReports)
   {
     $this->changeReports = $changeReports;
   }
   /**
-   * @return Google_Service_ServiceManagement_ChangeReport
+   * @return Google_Service_ServiceManagement_ChangeReport[]
    */
   public function getChangeReports()
   {
     return $this->changeReports;
   }
   /**
-   * @param Google_Service_ServiceManagement_Diagnostic
+   * @param Google_Service_ServiceManagement_Diagnostic[]
    */
   public function setDiagnostics($diagnostics)
   {
     $this->diagnostics = $diagnostics;
   }
   /**
-   * @return Google_Service_ServiceManagement_Diagnostic
+   * @return Google_Service_ServiceManagement_Diagnostic[]
    */
   public function getDiagnostics()
   {

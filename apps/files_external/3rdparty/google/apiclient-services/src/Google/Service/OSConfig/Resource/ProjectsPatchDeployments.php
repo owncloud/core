@@ -82,11 +82,11 @@ class Google_Service_OSConfig_Resource_ProjectsPatchDeployments extends Google_S
    * `projects`.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int pageSize Optional. The maximum number of patch deployments to
+   * return. Default is 100.
    * @opt_param string pageToken Optional. A pagination token returned from a
    * previous call to ListPatchDeployments that indicates where this listing
    * should continue from.
-   * @opt_param int pageSize Optional. The maximum number of patch deployments to
-   * return. Default is 100.
    * @return Google_Service_OSConfig_ListPatchDeploymentsResponse
    */
   public function listProjectsPatchDeployments($parent, $optParams = array())

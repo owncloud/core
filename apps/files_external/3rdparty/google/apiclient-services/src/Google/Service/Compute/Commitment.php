@@ -125,28 +125,28 @@ class Google_Service_Compute_Commitment extends Google_Collection
     return $this->region;
   }
   /**
-   * @param Google_Service_Compute_Reservation
+   * @param Google_Service_Compute_Reservation[]
    */
   public function setReservations($reservations)
   {
     $this->reservations = $reservations;
   }
   /**
-   * @return Google_Service_Compute_Reservation
+   * @return Google_Service_Compute_Reservation[]
    */
   public function getReservations()
   {
     return $this->reservations;
   }
   /**
-   * @param Google_Service_Compute_ResourceCommitment
+   * @param Google_Service_Compute_ResourceCommitment[]
    */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
   /**
-   * @return Google_Service_Compute_ResourceCommitment
+   * @return Google_Service_Compute_ResourceCommitment[]
    */
   public function getResources()
   {

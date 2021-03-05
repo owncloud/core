@@ -31,14 +31,14 @@ class Google_Service_Assuredworkloads_GoogleLongrunningListOperationsResponse ex
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_Assuredworkloads_GoogleLongrunningOperation
+   * @param Google_Service_Assuredworkloads_GoogleLongrunningOperation[]
    */
   public function setOperations($operations)
   {
     $this->operations = $operations;
   }
   /**
-   * @return Google_Service_Assuredworkloads_GoogleLongrunningOperation
+   * @return Google_Service_Assuredworkloads_GoogleLongrunningOperation[]
    */
   public function getOperations()
   {

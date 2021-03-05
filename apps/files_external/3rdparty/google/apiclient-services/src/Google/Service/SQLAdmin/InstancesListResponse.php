@@ -26,14 +26,14 @@ class Google_Service_SQLAdmin_InstancesListResponse extends Google_Collection
   protected $warningsDataType = 'array';
 
   /**
-   * @param Google_Service_SQLAdmin_DatabaseInstance
+   * @param Google_Service_SQLAdmin_DatabaseInstance[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_SQLAdmin_DatabaseInstance
+   * @return Google_Service_SQLAdmin_DatabaseInstance[]
    */
   public function getItems()
   {
@@ -56,14 +56,14 @@ class Google_Service_SQLAdmin_InstancesListResponse extends Google_Collection
     return $this->nextPageToken;
   }
   /**
-   * @param Google_Service_SQLAdmin_ApiWarning
+   * @param Google_Service_SQLAdmin_ApiWarning[]
    */
   public function setWarnings($warnings)
   {
     $this->warnings = $warnings;
   }
   /**
-   * @return Google_Service_SQLAdmin_ApiWarning
+   * @return Google_Service_SQLAdmin_ApiWarning[]
    */
   public function getWarnings()
   {

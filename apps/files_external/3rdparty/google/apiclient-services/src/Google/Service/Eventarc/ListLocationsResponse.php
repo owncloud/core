@@ -23,14 +23,14 @@ class Google_Service_Eventarc_ListLocationsResponse extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Eventarc_Location
+   * @param Google_Service_Eventarc_Location[]
    */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
   /**
-   * @return Google_Service_Eventarc_Location
+   * @return Google_Service_Eventarc_Location[]
    */
   public function getLocations()
   {

@@ -22,14 +22,14 @@ class Google_Service_DisplayVideo_BulkEditSitesResponse extends Google_Collectio
   protected $sitesDataType = 'array';
 
   /**
-   * @param Google_Service_DisplayVideo_Site
+   * @param Google_Service_DisplayVideo_Site[]
    */
   public function setSites($sites)
   {
     $this->sites = $sites;
   }
   /**
-   * @return Google_Service_DisplayVideo_Site
+   * @return Google_Service_DisplayVideo_Site[]
    */
   public function getSites()
   {

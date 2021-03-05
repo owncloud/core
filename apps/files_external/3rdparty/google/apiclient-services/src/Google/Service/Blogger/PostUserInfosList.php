@@ -24,14 +24,14 @@ class Google_Service_Blogger_PostUserInfosList extends Google_Collection
   public $nextPageToken;
 
   /**
-   * @param Google_Service_Blogger_PostUserInfo
+   * @param Google_Service_Blogger_PostUserInfo[]
    */
   public function setItems($items)
   {
     $this->items = $items;
   }
   /**
-   * @return Google_Service_Blogger_PostUserInfo
+   * @return Google_Service_Blogger_PostUserInfo[]
    */
   public function getItems()
   {

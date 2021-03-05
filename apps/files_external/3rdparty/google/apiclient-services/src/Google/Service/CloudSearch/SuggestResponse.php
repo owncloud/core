@@ -22,14 +22,14 @@ class Google_Service_CloudSearch_SuggestResponse extends Google_Collection
   protected $suggestResultsDataType = 'array';
 
   /**
-   * @param Google_Service_CloudSearch_SuggestResult
+   * @param Google_Service_CloudSearch_SuggestResult[]
    */
   public function setSuggestResults($suggestResults)
   {
     $this->suggestResults = $suggestResults;
   }
   /**
-   * @return Google_Service_CloudSearch_SuggestResult
+   * @return Google_Service_CloudSearch_SuggestResult[]
    */
   public function getSuggestResults()
   {

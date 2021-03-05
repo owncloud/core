@@ -40,14 +40,14 @@ class Google_Service_CloudDomains_DnsSettings extends Google_Collection
     return $this->customDns;
   }
   /**
-   * @param Google_Service_CloudDomains_GlueRecord
+   * @param Google_Service_CloudDomains_GlueRecord[]
    */
   public function setGlueRecords($glueRecords)
   {
     $this->glueRecords = $glueRecords;
   }
   /**
-   * @return Google_Service_CloudDomains_GlueRecord
+   * @return Google_Service_CloudDomains_GlueRecord[]
    */
   public function getGlueRecords()
   {
