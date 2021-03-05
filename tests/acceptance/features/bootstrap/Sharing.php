@@ -29,6 +29,7 @@ use TestHelpers\OcsApiHelper;
 use TestHelpers\OcisHelper;
 use TestHelpers\SharingHelper;
 use TestHelpers\HttpRequestHelper;
+use TestHelpers\TranslationHelper;
 
 /**
  * Sharing trait
@@ -1631,6 +1632,7 @@ trait Sharing {
 	 */
 	public function userGetsInfoOfLastShareUsingTheSharingApi($user, $language=null) {
 		$share_id = $this->getLastShareIdOf($user);
+		$language = TranslationHelper::getLanguage($language);
 		$this->getShareData($user, $share_id, $language);
 	}
 
