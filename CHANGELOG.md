@@ -41,10 +41,14 @@ Summary
 * Change - Change X-XSS-Protection "1; block" -> "0": [#38236](https://github.com/owncloud/core/issues/38236)
 * Change - Update swiftmailer/swiftmailer (v6.2.4 => v6.2.5): [#38306](https://github.com/owncloud/core/pull/38306)
 * Change - Update pear/archive_tar (1.4.11 => 1.4.13): [#38312](https://github.com/owncloud/core/pull/38312)
-* Change - Update Symfony components to 4.4.19: [#38355](https://github.com/owncloud/core/pull/38355)
+* Change - Update Symfony components to 4.4.20: [#38462](https://github.com/owncloud/core/pull/38462)
 * Change - Update sabre/vobject (4.3.3 => 4.3.5): [#38380](https://github.com/owncloud/core/pull/38380)
 * Change - Update christophwurst/id3parser (v0.1.1 => v0.1.2): [#38387](https://github.com/owncloud/core/pull/38387)
 * Change - Update phpseclib/phpseclib (2.0.30 => 3.0.3): [#38453](https://github.com/owncloud/core/pull/38453)
+* Change - Update icewind/streams from 0.7.2 to 0.7.3: [#38462](https://github.com/owncloud/core/pull/38462)
+* Change - Update dependencies in apps/files_external/3rdparty: [#38462](https://github.com/owncloud/core/pull/38462)
+* Change - Update icewind/streams from 0.7.2 to 0.7.3 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
+* Change - Update icewind/smb from 3.2.7 to 3.3.1 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 * Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
@@ -305,14 +309,16 @@ Details
    https://github.com/owncloud/core/pull/38312
    https://github.com/owncloud/core/pull/38434
 
-* Change - Update Symfony components to 4.4.19: [#38355](https://github.com/owncloud/core/pull/38355)
+* Change - Update Symfony components to 4.4.20: [#38462](https://github.com/owncloud/core/pull/38462)
 
-   The following Symfony components have been updated from 4.4.16 to 4.4.19 - console -
+   The following Symfony components have been updated from 4.4.16 to 4.4.20 - console -
    event-dispatcher - process - routing - translation
 
+   https://github.com/owncloud/core/pull/38462
    https://github.com/owncloud/core/pull/38355
    https://github.com/owncloud/core/pull/38234
    https://github.com/owncloud/core/pull/38163
+   https://symfony.com/blog/symfony-4-4-20-released
    https://symfony.com/blog/symfony-4-4-19-released
    https://symfony.com/blog/symfony-4-4-18-released
    https://symfony.com/blog/symfony-4-4-17-released
@@ -329,6 +335,27 @@ Details
 * Change - Update phpseclib/phpseclib (2.0.30 => 3.0.3): [#38453](https://github.com/owncloud/core/pull/38453)
 
    https://github.com/owncloud/core/pull/38453
+
+* Change - Update icewind/streams from 0.7.2 to 0.7.3: [#38462](https://github.com/owncloud/core/pull/38462)
+
+   https://github.com/owncloud/core/pull/38462
+
+* Change - Update dependencies in apps/files_external/3rdparty: [#38462](https://github.com/owncloud/core/pull/38462)
+
+   The following dependencies were updated: - Upgrading firebase/php-jwt (v5.2.0 => v5.2.1) -
+   Upgrading google/apiclient-services (v0.153 => v0.162.0) - Upgrading google/auth
+   (v1.14.3 => v1.15.0) - Upgrading monolog/monolog (2.1.1 => 2.2.0) - Upgrading
+   phpseclib/phpseclib (2.0.29 => 2.0.30)
+
+   https://github.com/owncloud/core/pull/38462
+
+* Change - Update icewind/streams from 0.7.2 to 0.7.3 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
+
+   https://github.com/owncloud/core/pull/38462
+
+* Change - Update icewind/smb from 3.2.7 to 3.3.1 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
+
+   https://github.com/owncloud/core/pull/38462
 
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 
