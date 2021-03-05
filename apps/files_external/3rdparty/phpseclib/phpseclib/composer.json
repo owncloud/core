@@ -51,11 +51,13 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3"
+        "paragonie/constant_time_encoding": "^1|^2",
+        "paragonie/random_compat": "^1.4|^2.0|^9.99.99",
+        "php": ">=5.6.1"
     },
     "require-dev": {
         "phing/phing": "~2.7",
-        "phpunit/phpunit": "^4.8.35|^5.7|^6.0|^9.4",
+        "phpunit/phpunit": "^5.7|^6.0|^9.4",
         "squizlabs/php_codesniffer": "~2.0"
     },
     "suggest": {
@@ -69,7 +71,7 @@
             "phpseclib/bootstrap.php"
         ],
         "psr-4": {
-            "phpseclib\\": "phpseclib/"
+            "phpseclib3\\": "phpseclib/"
         }
     }
 }

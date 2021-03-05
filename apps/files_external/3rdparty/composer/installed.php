@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '127c9f6b6e2c9bea73119d49b879c1b7aed68b0c',
+    'reference' => '7f411ab5f95f6fce4c542c62cc4033a7e32a6599',
     'name' => 'files_external/3rdparty',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '127c9f6b6e2c9bea73119d49b879c1b7aed68b0c',
+      'reference' => '7f411ab5f95f6fce4c542c62cc4033a7e32a6599',
     ),
     'firebase/php-jwt' => 
     array (
@@ -31,12 +31,12 @@
     ),
     'google/apiclient' => 
     array (
-      'pretty_version' => 'v2.8.3',
-      'version' => '2.8.3.0',
+      'pretty_version' => 'v2.9.1',
+      'version' => '2.9.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '81696e6206322e38c643cfcc96c4494ccfef8a32',
+      'reference' => '2fb6e702aca5d68203fa737f89f6f774022494c6',
     ),
     'google/apiclient-services' => 
     array (
@@ -119,14 +119,32 @@
       ),
       'reference' => '1cb1cde8e8dd0f70cc0fe51354a59acad9302084',
     ),
-    'phpseclib/phpseclib' => 
+    'paragonie/constant_time_encoding' => 
     array (
-      'pretty_version' => '2.0.30',
-      'version' => '2.0.30.0',
+      'pretty_version' => 'v2.4.0',
+      'version' => '2.4.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '136b9ca7eebef78be14abf90d65c5e57b6bc5d36',
+      'reference' => 'f34c2b11eb9d2c9318e13540a1dbc2a3afbd939c',
+    ),
+    'paragonie/random_compat' => 
+    array (
+      'pretty_version' => 'v9.99.100',
+      'version' => '9.99.100.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '996434e5492cb4c3edcb9168db6fbb1359ef965a',
+    ),
+    'phpseclib/phpseclib' => 
+    array (
+      'pretty_version' => '3.0.5',
+      'version' => '3.0.5.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '7c751ea006577e4c2e83326d90c8b1e8c11b8ede',
     ),
     'psr/cache' => 
     array (
