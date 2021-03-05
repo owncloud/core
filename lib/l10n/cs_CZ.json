@@ -164,6 +164,7 @@
     "Check the value of \"datadirectory\" in your configuration" : "Ověřte hodnotu \"datadirectory\" ve své konfiguraci",
     "Your Data directory  is invalid" : "Váš datový adresář není platný",
     "Please check that the data directory contains a file \".ocdata\" in its root." : "Ověřte prosím, že kořenový adresář s daty obsahuje soubor \".ocdata\".",
+    "User unknown" : "Neznámý uživatel",
     "Could not obtain lock type %d on \"%s\"." : "Nelze získat zámek typu %d na \"%s\".",
     "Storage unauthorized. %s" : "Úložiště neověřeno. %s",
     "Storage incomplete configuration. %s" : "Nekompletní konfigurace úložiště. %s",
