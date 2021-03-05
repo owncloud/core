@@ -60,6 +60,7 @@ Summary
 * Enhancement - Display path in the occ app:list command: [#38309](https://github.com/owncloud/core/pull/38309)
 * Enhancement - New config parameter to define the encrypted file format: [#38337](https://github.com/owncloud/core/pull/38337)
 * Enhancement - Display error/success message while changing the log level: [#38340](https://github.com/owncloud/core/pull/38340)
+* Enhancement - Implement pre-signed download urls for public links: [#38376](https://github.com/owncloud/core/pull/38376)
 * Enhancement - Allow force set DB patforms: [#38379](https://github.com/owncloud/core/pull/38379)
 * Enhancement - Added additional connection parameters to redis config: [#38386](https://github.com/owncloud/core/pull/38386)
 * Enhancement - Hide federated user suggestions if system users are found: [#38389](https://github.com/owncloud/core/pull/38389)
@@ -459,6 +460,13 @@ Details
    select box.
 
    https://github.com/owncloud/core/pull/38340
+
+* Enhancement - Implement pre-signed download urls for public links: [#38376](https://github.com/owncloud/core/pull/38376)
+
+   Added pre-signed download urls for password protected public links to support clients which
+   don't use cookies.
+
+   https://github.com/owncloud/core/pull/38376
 
 * Enhancement - Allow force set DB patforms: [#38379](https://github.com/owncloud/core/pull/38379)
 
