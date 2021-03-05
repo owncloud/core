@@ -99,12 +99,13 @@ class TUSContext implements Context {
 	 * @param string $user
 	 * @param string $offset
 	 * @param string $data
+	 * @param string $checksum
 	 *
 	 * @return void
 	 *
 	 * @throws Exception
 	 */
-	public function sendsAChunkToTUSLocationWithOffsetAndData(string $user, string $offset, string $data) {
+	public function sendsAChunkToTUSLocationWithOffsetAndData(string $user, string $offset, string $data, string $checksum = '') {
 		$user = $this->featureContext->getActualUsername($user);
 		$password = $this->featureContext->getUserPassword($user);
 		$this->featureContext->setResponse(
@@ -114,6 +115,7 @@ class TUSContext implements Context {
 				[
 					'Content-Type' => 'application/offset+octet-stream',
 					'Tus-Resumable' => '1.0.0',
+					'Upload-Checksum' => $checksum,
 					'Upload-Offset' => $offset
 				],
 				$data
@@ -317,7 +319,7 @@ class TUSContext implements Context {
 	 * @return void
 	 */
 	public function userUploadsWithCreatesWithUpload(
-		string$user,
+		string $user,
 		string $source,
 		string $content
 	) {
@@ -326,5 +328,45 @@ class TUSContext implements Context {
 			$user, \basename($tmpfname), $source, [], 1, -1
 		);
 		\unlink($tmpfname);
+	}
+
+	/**
+	 * @When user :user uploads file with checksum :checksum to the last created TUS Location with offset :offset and content :content using the TUS protocol on the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $checksum
+	 * @param string $offset
+	 * @param string $content
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userUploadsFileWithChecksum(
+		string $user,
+		string $checksum,
+		string $offset,
+		string $content
+	) {
+		$this->sendsAChunkToTUSLocationWithOffsetAndData($user, $offset, $content, $checksum);
+	}
+	/**
+	 * @Given user :user has uploaded file with checksum :checksum to the last created TUS Location with offset :offset and content :content using the TUS protocol on the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $checksum
+	 * @param string $offset
+	 * @param string $content
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userHasUploadedFileWithChecksum(
+		string $user,
+		string $checksum,
+		string $offset,
+		string $content
+	) {
+		$this->sendsAChunkToTUSLocationWithOffsetAndData($user, $offset, $content, $checksum);
+		$this->featureContext->theHTTPStatusCodeShouldBe(204, "");
 	}
 }

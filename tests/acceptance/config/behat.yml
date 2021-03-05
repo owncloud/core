@@ -600,6 +600,7 @@ default:
         - PublicWebDavContext:
         - TUSContext:
         - FilesVersionsContext:
+        - ChecksumContext:
 
     apiWebdavEtagPropagation1:
       paths:
