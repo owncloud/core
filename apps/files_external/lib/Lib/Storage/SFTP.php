@@ -49,7 +49,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 	private $auth;
 
 	/**
-	* @var SFTP
+	* @var \phpseclib3\Net\SFTP
 	*/
 	protected $client;
 
@@ -115,7 +115,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 	/**
 	 * Returns the connection.
 	 *
-	 * @return \phpseclib\Net\SFTP connected client instance
+	 * @return \phpseclib3\Net\SFTP connected client instance
 	 * @throws \Exception when the connection failed
 	 */
 	public function getConnection() {
