@@ -41,6 +41,7 @@ Summary
 * Change - Change X-XSS-Protection "1; block" -> "0": [#38236](https://github.com/owncloud/core/issues/38236)
 * Change - Update swiftmailer/swiftmailer (v6.2.4 => v6.2.5): [#38306](https://github.com/owncloud/core/pull/38306)
 * Change - Update pear/archive_tar (1.4.11 => 1.4.13): [#38312](https://github.com/owncloud/core/pull/38312)
+* Change - Update google/apiclient from 2.8.3 to 2.9.1 and related dependencies: [#38344](https://github.com/owncloud/core/pull/38344)
 * Change - Update Symfony components to 4.4.20: [#38462](https://github.com/owncloud/core/pull/38462)
 * Change - Update sabre/vobject (4.3.3 => 4.3.5): [#38380](https://github.com/owncloud/core/pull/38380)
 * Change - Update christophwurst/id3parser (v0.1.1 => v0.1.2): [#38387](https://github.com/owncloud/core/pull/38387)
@@ -308,6 +309,13 @@ Details
 
    https://github.com/owncloud/core/pull/38312
    https://github.com/owncloud/core/pull/38434
+
+* Change - Update google/apiclient from 2.8.3 to 2.9.1 and related dependencies: [#38344](https://github.com/owncloud/core/pull/38344)
+
+   This change updates the 3rd-party dependencies of files_external: - google/apiclient
+   (v2.8.3 => v2.9.1) - phpseclib/phpseclib (2.0.30 => 3.0.5)
+
+   https://github.com/owncloud/core/pull/38344
 
 * Change - Update Symfony components to 4.4.20: [#38462](https://github.com/owncloud/core/pull/38462)
 
