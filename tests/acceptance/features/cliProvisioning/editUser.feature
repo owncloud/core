@@ -54,6 +54,7 @@ Feature: edit users
     And the user attributes returned by the API should include
       | quota definition | 12 MB |
 
+  @skipOnEncryptionType:user-keys
   Scenario Outline: Admin resets user password with special characters
     Given user "brand-new-user" has been deleted
     When the administrator creates user "brand-new-user" password "%alt1%" group "brand-new-group" using the occ command
