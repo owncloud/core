@@ -801,7 +801,8 @@ class Encryption extends Wrapper {
 				if ($preserveMtime) {
 					$this->touch($targetInternalPath, $sourceStorage->filemtime($sourceInternalPath));
 				}
-				if (\substr($targetInternalPath, 0, \strlen('files_trashbin/')) !== 'files_trashbin/') {
+				if ($sourceStorage->getOwner($sourceInternalPath) === $this->uid
+					|| \substr($targetInternalPath, 0, \strlen('files_trashbin/')) !== 'files_trashbin/') {
 					// 1. user1 moves file from home storage to admins's shared folder
 					// 2. user2 grabs the file from admin's shared folder to his own home storage
 					// Admin has a broken copy in his trashbin, which is caused by a wrong encrypted
