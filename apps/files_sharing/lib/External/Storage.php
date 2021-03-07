@@ -49,6 +49,8 @@ class Storage extends DAV implements ISharedStorage {
 	private $memcacheFactory;
 	/** @var \OCP\Http\Client\IClientService */
 	private $httpClient;
+	/** @var \OCP\ILogger */
+	private $logger;
 	/** @var \OCP\ICertificateManager */
 	private $certificateManager;
 	/** @var bool */
@@ -62,6 +64,7 @@ class Storage extends DAV implements ISharedStorage {
 	public function __construct($options) {
 		$this->memcacheFactory = \OC::$server->getMemCacheFactory();
 		$this->httpClient = \OC::$server->getHTTPClientService();
+		$this->logger = \OC::$server->getLogger();
 		$this->manager = $options['manager'];
 		$this->certificateManager = $options['certificateManager'];
 		$this->remote = $options['remote'];
@@ -220,12 +223,17 @@ class Storage extends DAV implements ISharedStorage {
 	public function checkStorageAvailability() {
 		// see if we can find out why the share is unavailable
 		try {
-			if (! $this->propfind('')) {
-				// a 404 can either mean that the share no longer exists or there is no ownCloud on the remote
+			// do propfind with strictNotFoundCheck true
+			if (!$this->propfind('', true)) {
+				// not found returned, can either mean that the share no longer exists
+				// or there is no ownCloud on the remote (proxy could return 404 for that path)
 				if ($this->testRemote()) {
 					// valid ownCloud instance means that the public share no longer exists
 					// since this is permanent (re-sharing the file will create a new token)
 					// we remove the invalid storage
+					$this->logger->error(
+						'Storage for external share {shareId} returns not found error. Removing share as testing of remote succeeded.',
+						['shareId' => $this->getId()]);
 					$this->manager->removeShare($this->mountPoint);
 					$this->manager->getMountManager()->removeMount($this->mountPoint);
 					throw new StorageInvalidException();
@@ -235,7 +243,12 @@ class Storage extends DAV implements ISharedStorage {
 				}
 			}
 		} catch (StorageInvalidException $e) {
-			// auth error, remove share for now (provide a dialog in the future)
+			// DAV Propfind returns StorageInvalidException on
+			// auth error (401 Unauthorized)
+			// remove share for now (provide a dialog in the future and remove after timeout?)
+			$this->logger->error(
+				'Storage for external share {shareId} returns auth error and likely has been removed on remote with failure on removal hook to federated sharer.',
+				['shareId' => $this->getId()]);
 			$this->manager->removeShare($this->mountPoint);
 			$this->manager->getMountManager()->removeMount($this->mountPoint);
 			throw $e;

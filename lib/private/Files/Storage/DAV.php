@@ -248,7 +248,7 @@ class DAV extends Common {
 	 *
 	 * @throws ClientHttpException
 	 */
-	protected function propfind($path) {
+	protected function propfind($path, $strictNotFoundCheck=false) {
 		$path = $this->cleanPath($path);
 		$cachedResponse = $this->statCache->get($path);
 		// we either don't know it, or we know it exists but need more details
@@ -284,6 +284,9 @@ class DAV extends Common {
 						'Storage is not available due to the connection timeout to {hostName}',
 						['hostName' => $this->host]
 					);
+					if ($strictNotFoundCheck) {
+						throw new StorageNotAvailableException('Storage is not available due to the connection timeout');
+					}
 				} else {
 					$this->convertException($e, $path);
 				}
