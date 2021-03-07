@@ -1658,7 +1658,8 @@
 			if (status === 500) {
 				// Go home
 				this.changeDirectory('/');
-				OC.Notification.show(t('files', 'This directory is unavailable, please check the logs or contact the administrator'),
+				OC.Notification.show(
+					t('files', 'Directory "{dir}" is unavailable, please contact the administrator', { dir:this.getCurrentDirectory() }),
 					{type: 'error'}
 				);
 				return false;
@@ -1669,7 +1670,8 @@
 				if (this.getCurrentDirectory() !== '/') {
 					this.changeDirectory('/');
 					// TODO: read error message from exception
-					OC.Notification.show(t('files', 'Storage is temporarily not available'),
+					OC.Notification.show(
+						t('files', 'Storage for "{dir}" is temporarily not available', { dir:this.getCurrentDirectory() }),
 						{type: 'error'}
 					);
 				}
@@ -1677,10 +1679,25 @@
 			}
 
 			if (status === 404) {
+				// check if shared file root
+				var currentDir = OC.basename(this.getCurrentDirectory());
+				var currentDirInfo = this.findFileEl(currentDir);
+				if (currentDirInfo.attr('data-mounttype') == 'shared-root') {
+					OC.Notification.show(t('files', 'Shared directory "{dir}" is not available, remove the share or contact it\'s owner to reshare.', { dir:this.getCurrentDirectory() }),
+						{type: 'error'}
+					);
+				} else {
+					OC.Notification.show(
+						t('files', 'Directory "{dir}" not found', { dir:this.getCurrentDirectory() }),
+						{type: 'error'}
+					);
+				}
+
 				// go back home
 				this.changeDirectory('/');
 				return false;
 			}
+
 			// aborted ?
 			if (status === 0){
 				return true;
