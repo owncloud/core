@@ -159,7 +159,9 @@ Details
 
    This issue is now fixed, and the backup copy can be restored normally.
 
+   https://github.com/owncloud/encryption/issues/244
    https://github.com/owncloud/core/pull/38375
+   https://github.com/owncloud/core/pull/38452
 
 * Bugfix - Prevent multiple calls by not registering the same listener twice: [#38385](https://github.com/owncloud/core/pull/38385)
 
