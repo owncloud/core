@@ -274,7 +274,7 @@ $CONFIG = [
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite#values
  */
 
-'http.cookie.samesite' => 'strict',
+'http.cookie.samesite' => 'Strict',
 
 /**
  * Define the directory where the skeleton files are located
