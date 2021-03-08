@@ -76,6 +76,7 @@
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "L'espace de stockage de {owner} est presque plein ({usedSpacePercent}%)",
     "Your storage is almost full ({usedSpacePercent}%)" : "Votre espace de stockage est presque plein ({usedSpacePercent}%)",
     "_matches '{filter}'_::_match '{filter}'_" : ["correspond à '{filter}'","correspondent à '{filter}'"],
+    "Unlock" : "Déverrouiller",
     "Unlock failed with status {status}" : "Le déverrouillage a échoué avec l'état {status}",
     "Locks" : "Verrouiller",
     "Resource is not locked" : "La ressource n'est pas verrouillée",
