@@ -70,10 +70,13 @@ interface IMemcache extends ICache {
 	/**
 	 * Compare and set
 	 *
-	 * @param string $key
-	 * @param mixed $old
-	 * @param mixed $new
-	 * @return bool
+	 * @param string $key the key to check
+	 * @param mixed $old the expected value to compare against what is currently set.
+	 * If the "old" value matches, the "new" value will be set. If it doesn't match,
+	 * the "new" value will be ignored.
+	 * @param mixed $new the "new" value we want to set if the comparison matches
+	 * @return bool true if the "new" value is effectively set by this client. Note that
+	 * if the value is set by other clients, this method will return false.
 	 * @since 8.1.0
 	 */
 	public function cas($key, $old, $new);

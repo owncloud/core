@@ -102,6 +102,9 @@ abstract class AbstractLockingProvider implements ILockingProvider {
 		} elseif ($targetType === self::LOCK_EXCLUSIVE) {
 			$this->acquiredLocks['exclusive'][$path] = true;
 			$this->acquiredLocks['shared'][$path]--;
+			if ($this->acquiredLocks['shared'][$path] === 0) {
+				unset($this->acquiredLocks['shared'][$path]);
+			}
 		}
 	}
 
@@ -110,12 +113,14 @@ abstract class AbstractLockingProvider implements ILockingProvider {
 	 */
 	public function releaseAll() {
 		foreach ($this->acquiredLocks['shared'] as $path => $count) {
+			\OCP\Util::writeLog('core', "cleaning $count stray shared locks for $path", \OCP\Util::INFO);
 			for ($i = 0; $i < $count; $i++) {
 				$this->releaseLock($path, self::LOCK_SHARED);
 			}
 		}
 
 		foreach ($this->acquiredLocks['exclusive'] as $path => $hasLock) {
+			\OCP\Util::writeLog('core', "cleaning stray exclusive locks for $path", \OCP\Util::INFO);
 			$this->releaseLock($path, self::LOCK_EXCLUSIVE);
 		}
 	}

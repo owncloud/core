@@ -76,11 +76,15 @@ class MemcacheLockingProvider extends AbstractLockingProvider {
 			throw new \InvalidArgumentException('Lock key length too long');
 		}
 		if ($type === self::LOCK_SHARED) {
-			if (!$this->memcache->inc($path)) {
+			if ($this->memcache->inc($path) === false) {
+				// "inc" will return false if the key has "exclusive" (or a non-integer) as value
 				throw new LockedException($path);
 			}
 		} else {
 			$this->memcache->add($path, 0);
+			// (wrongly-named) "add" will set a 0 if the key doesn't exists
+			// in case a shared lock is acquired exactly at this time, this exclusive lock will
+			// return a LockedException, which is fine.
 			if (!$this->memcache->cas($path, 0, 'exclusive')) {
 				throw new LockedException($path);
 			}
@@ -94,16 +98,14 @@ class MemcacheLockingProvider extends AbstractLockingProvider {
 	 * @param int $type self::LOCK_SHARED or self::LOCK_EXCLUSIVE
 	 */
 	public function releaseLock($path, $type) {
+		if (!$this->hasAcquiredLock($path, $type)) {
+			\OCP\Util::writeLog('core', "ignoring lock release with type $type for $path. Lock hasn't been acquired before", \OCP\Util::WARN);
+			return;
+		}
+
 		if ($type === self::LOCK_SHARED) {
-			if ($this->getOwnSharedLockCount($path) === 1) {
-				$removed = $this->memcache->cad($path, 1); // if we're the only one having a shared lock we can remove it in one go
-				if (!$removed) { //someone else also has a shared lock, decrease only
-					$this->memcache->dec($path);
-				}
-			} else {
-				// if we own more than one lock ourselves just decrease
-				$this->memcache->dec($path);
-			}
+			$this->memcache->dec($path);
+			$this->memcache->cad($path, 0);  // remove only if there is no more
 		} elseif ($type === self::LOCK_EXCLUSIVE) {
 			$this->memcache->cad($path, 'exclusive');
 		}
@@ -119,10 +121,20 @@ class MemcacheLockingProvider extends AbstractLockingProvider {
 	 */
 	public function changeLock($path, $targetType) {
 		if ($targetType === self::LOCK_SHARED) {
+			if (!$this->hasAcquiredLock($path, self::LOCK_EXCLUSIVE)) {
+				// trying to change a lock that we haven't acquired -> throw exception
+				\OCP\Util::writeLog('core', "trying lock change to type $targetType for $path, but the lock hasn't been acquired before!!", \OCP\Util::WARN);
+				throw new LockedException($path);
+			}
 			if (!$this->memcache->cas($path, 'exclusive', 1)) {
 				throw new LockedException($path);
 			}
 		} elseif ($targetType === self::LOCK_EXCLUSIVE) {
+			if (!$this->hasAcquiredLock($path, self::LOCK_SHARED)) {
+				// trying to change a lock that we haven't acquired -> throw exception
+				\OCP\Util::writeLog('core', "trying lock change to type $targetType for $path, but the lock hasn't been acquired before!!", \OCP\Util::WARN);
+				throw new LockedException($path);
+			}
 			// we can only change a shared lock to an exclusive if there's only a single owner of the shared lock
 			if (!$this->memcache->cas($path, 1, 'exclusive')) {
 				throw new LockedException($path);

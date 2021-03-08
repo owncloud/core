@@ -68,9 +68,9 @@ class LockPluginTest extends TestCase {
 	}
 
 	protected function tearDown(): void {
-		parent::tearDown();
 		$this->restoreService('UserSession');
 		$this->restoreService(LockMapper::class);
+		parent::tearDown();
 	}
 
 	/**
