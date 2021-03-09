@@ -77,3 +77,153 @@ Feature: upload file to shared folder
       | dav_version |
       | old         |
       | new         |
+
+  Scenario Outline: Upload a file to shared folder with checksum should return the checksum in the propfind for sharee
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/FOLDER"
+    And user "Alice" has shared folder "/FOLDER" with user "Brian"
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
+    And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
+      | Upload-Length   | 5                                     |
+      | Upload-Metadata | filename L0ZPTERFUi90ZXh0RmlsZS50eHQ= |
+    And user "Alice" has uploaded file with checksum "SHA1 8cb2237d0679ca88db6464eac60da96345513964" to the last created TUS Location with offset "0" and content "12345" using the TUS protocol on the WebDAV API
+    When user "Brian" requests the checksum of "/Shares/FOLDER/textFile.txt" via propfind
+    Then the webdav checksum should match "SHA1:8cb2237d0679ca88db6464eac60da96345513964 MD5:827ccb0eea8a706c4c34a16891f84e7b ADLER32:02f80100"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Upload a file to shared folder with checksum should return the checksum in the download header for sharee
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/FOLDER"
+    And user "Alice" has shared folder "/FOLDER" with user "Brian"
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
+    And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
+      | Upload-Length   | 5                                     |
+      | Upload-Metadata | filename L0ZPTERFUi90ZXh0RmlsZS50eHQ= |
+    And user "Alice" has uploaded file with checksum "SHA1 8cb2237d069ca88db6464eac60da96345513964" to the last created TUS Location with offset "0" and content "12345" using the TUS protocol on the WebDAV API
+    When user "Brian" downloads file "/Shares/FOLDER/textFile.txt" using the WebDAV API
+    Then the header checksum should match "SHA1:8cb2237d0679ca88db6464eac60da96345513964"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Sharer shares a file with correct checksum should return the checksum in the propfind for sharee
+    Given using <dav_version> DAV path
+    And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
+      | Upload-Length   | 5                         |
+      | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
+    And user "Alice" has uploaded file with checksum "SHA1 8cb2237d0679ca88db6464eac60da96345513964" to the last created TUS Location with offset "0" and content "12345" using the TUS protocol on the WebDAV API
+    And user "Alice" has shared file "/textFile.txt" with user "Brian"
+    And user "Brian" has accepted share "/textFile.txt" offered by user "Alice"
+    When user "Brian" requests the checksum of "/Shares/textFile.txt" via propfind
+    Then the webdav checksum should match "SHA1:8cb2237d0679ca88db6464eac60da96345513964 MD5:827ccb0eea8a706c4c34a16891f84e7b ADLER32:02f80100"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+
+  Scenario Outline: Sharer shares a file with correct checksum should return the checksum in the download header for sharee
+    Given using <dav_version> DAV path
+    And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
+      | Upload-Length   | 5                         |
+      | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
+    And user "Alice" has uploaded file with checksum "SHA1 8cb2237d0679ca88db6464eac60da96345513964" to the last created TUS Location with offset "0" and content "12345" using the TUS protocol on the WebDAV API
+    And user "Alice" has shared file "/textFile.txt" with user "Brian"
+    And user "Brian" has accepted share "/textFile.txt" offered by user "Alice"
+    When user "Brian" downloads file "/Shares/textFile.txt" using the WebDAV API
+    Then the header checksum should match "SHA1:8cb2237d0679ca88db6464eac60da96345513964"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+
+  Scenario Outline: Sharee uploads a file to a received share folder with correct checksum
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/FOLDER"
+    And user "Alice" has shared folder "/FOLDER" with user "Brian"
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
+    When user "Brian" creates a new TUS resource on the WebDAV API with these headers:
+      | Tus-Resumable   | 1.0.0                                         |
+      | Upload-Length   | 16                                            |
+      | Upload-Metadata | filename L1NoYXJlcy9GT0xERVIvdGV4dGZpbGUudHh0 |
+    And user "Brian" uploads file with checksum "MD5 827ccb0eea8a706c4c34a16891f84e7b" to the last created TUS Location with offset "0" and content "uploaded content" using the TUS protocol on the WebDAV API
+    Then as "Alice" file "/FOLDER/textFile.txt" should exist
+    And the content of file "/FOLDER/textFile.txt" for user "Alice" should be "uploaded content"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Sharee uploads a file to a received share folder with wrong checksum should not work
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/FOLDER"
+    And user "Alice" has shared folder "/FOLDER" with user "Brian"
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
+    When user "Brian" creates a new TUS resource on the WebDAV API with these headers:
+      | Tus-Resumable   | 1.0.0                                         |
+      | Upload-Length   | 16                                            |
+      | Upload-Metadata | filename L1NoYXJlcy9GT0xERVIvdGV4dGZpbGUudHh0 |
+    And user "Brian" uploads file with checksum "MD5 827ccb0eea8a706c4c34a16891f84e8c" to the last created TUS Location with offset "0" and content "uploaded content" using the TUS protocol on the WebDAV API
+    Then the HTTP status code should be "406"
+    And as "Alice" file "/FOLDER/textFile.txt" should not exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+
+  Scenario Outline: Sharer uploads a file to shared folder with wrong correct checksum should not work
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/FOLDER"
+    And user "Alice" has shared folder "/FOLDER" with user "Brian"
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
+    And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
+      | Upload-Length   | 5                                     |
+      | Upload-Metadata | filename L0ZPTERFUi90ZXh0RmlsZS50eHQ= |
+    When user "Alice" uploads file with checksum "SHA1 8cb2237d0679ca88db6464eac60da96345513954" to the last created TUS Location with offset "0" and content "uploaded content" using the TUS protocol on the WebDAV API
+    Then the HTTP status code should be "406"
+    And as "Alice" file "/FOLDER/textFile.txt" should not exist
+    And as "Brian" file "/Shares/FOLDER/textFile.txt" should not exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+
+  Scenario Outline: Sharer uploads a chunked file with correct checksum and share it with sharee should work
+    Given using <dav_version> DAV path
+    And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
+      | Upload-Length   | 10                        |
+      | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
+    When user "Alice" sends a chunk to the last created TUS Location with offset "0" and data "01234" with checksum "MD5 4100c4d44da9177247e44a5fc1546778" using the TUS protocol on the WebDAV API
+    And user "Alice" sends a chunk to the last created TUS Location with offset "5" and data "56789" with checksum "MD5 099ebea48ea9666a7da2177267983138" using the TUS protocol on the WebDAV API
+    And user "Alice" shares file "textFile.txt" with user "Brian" using the sharing API
+    And user "Brian" accepts share "/textFile.txt" offered by user "Alice" using the sharing API
+    Then the content of file "/Shares/textFile.txt" for user "Brian" should be "0123456789"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Sharee uploads a chunked file with correct checksum to a received share folder should work
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/FOLDER"
+    And user "Alice" has shared folder "/FOLDER" with user "Brian"
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
+    And user "Brian" creates a new TUS resource on the WebDAV API with these headers:
+      | Tus-Resumable   | 1.0.0                                         |
+      | Upload-Length   | 10                                            |
+      | Upload-Metadata | filename L1NoYXJlcy9GT0xERVIvdGV4dGZpbGUudHh0 |
+    When user "Brian" sends a chunk to the last created TUS Location with offset "0" and data "01234" with checksum "MD5 4100c4d44da9177247e44a5fc1546778" using the TUS protocol on the WebDAV API
+    And user "Brian" sends a chunk to the last created TUS Location with offset "5" and data "56789" with checksum "MD5 099ebea48ea9666a7da2177267983138" using the TUS protocol on the WebDAV API
+    Then as "Alice" file "/FOLDER/textFile.txt" should exist
+    And the content of file "/FOLDER/textFile.txt" for user "Alice" should be "0123456789"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
