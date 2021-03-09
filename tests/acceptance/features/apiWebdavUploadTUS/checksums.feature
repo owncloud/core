@@ -63,9 +63,13 @@ Feature: checksums
 
   Scenario Outline: Uploading a chunked file with correct checksum should work
     Given using <dav_version> DAV path
-    When user "Alice" uploads file with content "0123456789" in 2 chunks to "/myChecksumFile.txt" with checksum "MD5:781e5e245d69b566979b86e28d23f2c7" using the TUS protocol on the WebDAV API
-    Then the HTTP status code should be "200"
-    And the content of file "/myChecksumFile.txt" for user "Alice" should be "0123456789"
+    And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
+      | Upload-Length   | 10                         |
+      | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
+    When user "Alice" sends a chunk to the last created TUS Location with offset "0" and data "01234" with checksum "MD5 4100c4d44da9177247e44a5fc1546778" using the TUS protocol on the WebDAV API
+    And user "Alice" sends a chunk to the last created TUS Location with offset "5" and data "56789" with checksum "MD5 099ebea48ea9666a7da2177267983138" using the TUS protocol on the WebDAV API
+    Then the HTTP status code should be "204"
+    And the content of file "/textFile.txt" for user "Alice" should be "0123456789"
     Examples:
       | dav_version |
       | old         |
@@ -73,8 +77,12 @@ Feature: checksums
 
   Scenario Outline: Uploading a chunked file with correct checksum should return the checksum in the propfind
     Given using <dav_version> DAV path
-    And user "Alice" has uploaded file with content "0123456789" in 2 chunks to "/myChecksumFile.txt" with checksum "MD5:781e5e245d69b566979b86e28d23f2c7" using the TUS protocol on the WebDAV API
-    When user "Alice" requests the checksum of "/myChecksumFile.txt" via propfind
+    And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
+      | Upload-Length   | 10                         |
+      | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
+    And user "Alice" has uploaded a chunk to the last created TUS Location with offset "0" and data "01234" with checksum "MD5 4100c4d44da9177247e44a5fc1546778" using the TUS protocol on the WebDAV API
+    And user "Alice" has uploaded a chunk to the last created TUS Location with offset "5" and data "56789" with checksum "MD5 099ebea48ea9666a7da2177267983138" using the TUS protocol on the WebDAV API
+    When user "Alice" requests the checksum of "/textFile.txt" via propfind
     Then the webdav checksum should match "SHA1:87acec17cd9dcd20a716cc2cf67417b71c8a7016 MD5:781e5e245d69b566979b86e28d23f2c7 ADLER32:0aff020e"
     Examples:
       | dav_version |
@@ -83,9 +91,27 @@ Feature: checksums
 
   Scenario Outline: Uploading a chunked file with checksum should return the checksum in the download header
     Given using <dav_version> DAV path
-    And user "Alice" has uploaded file with content "0123456789" in 2 chunks to "/myChecksumFile.txt" with checksum "MD5:45a72715acdd5019c5be30bdbb75233e" using the TUS protocol on the WebDAV API
-    When user "Alice" downloads file "/myChecksumFile.txt" using the WebDAV API
+    And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
+      | Upload-Length   | 10                         |
+      | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
+    And user "Alice" has uploaded a chunk to the last created TUS Location with offset "0" and data "01234" with checksum "MD5 4100c4d44da9177247e44a5fc1546778" using the TUS protocol on the WebDAV API
+    And user "Alice" has uploaded a chunk to the last created TUS Location with offset "5" and data "56789" with checksum "MD5 099ebea48ea9666a7da2177267983138" using the TUS protocol on the WebDAV API
+    When user "Alice" downloads file "/textFile.txt" using the WebDAV API
     Then the header checksum should match "SHA1:87acec17cd9dcd20a716cc2cf67417b71c8a7016"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+  Scenario Outline: Uploading second chunk of file with incorrect checksum should not work
+    Given using <dav_version> DAV path
+    And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
+      | Upload-Length   | 10                         |
+      | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
+    When user "Alice" sends a chunk to the last created TUS Location with offset "0" and data "01234" with checksum "MD5 4100c4d44da9177247e44a5fc1546799" using the TUS protocol on the WebDAV API
+    And user "Alice" sends a chunk to the last created TUS Location with offset "5" and data "56789" with checksum "MD5 781e5e245d69b566979b86e28d23f2c7" using the TUS protocol on the WebDAV API
+    Then the HTTP status code should be "409"
+    And as "Alice" file "textFile.txt" should not exist
     Examples:
       | dav_version |
       | old         |
