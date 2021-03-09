@@ -1,9 +1,9 @@
-Changelog for ownCloud Core [10.7.0] (2021-03-08)
+Changelog for ownCloud Core [unreleased] (UNRELEASED)
 =======================================
-The following sections list the changes in ownCloud core 10.7.0 relevant to
+The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[10.7.0]: https://github.com/owncloud/core/compare/v10.6.0...v10.7.0
+[unreleased]: https://github.com/owncloud/core/compare/v10.6.0...master
 
 Summary
 -------
