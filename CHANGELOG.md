@@ -507,6 +507,7 @@ Details
    Setting the same site cookie to none is necessary in case of OpenID Connect.
 
    https://github.com/owncloud/core/pull/38458
+   https://github.com/owncloud/core/pull/38477
 
 Changelog for ownCloud Core [10.6.0] (2020-11-25)
 =======================================
