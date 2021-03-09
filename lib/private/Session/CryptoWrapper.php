@@ -89,7 +89,7 @@ class CryptoWrapper {
 				if (\version_compare(PHP_VERSION, '7.3.0') === -1) {
 					\setcookie(self::COOKIE_NAME, $this->passphrase, 0, $webRoot, '', $secureCookie, true);
 				} else {
-					$samesite = $config->getSystemValue('http.cookie.samesite', 'strict');
+					$samesite = $config->getSystemValue('http.cookie.samesite', 'Strict');
 					$options = [
 						"expires" => 0,
 						"path" => $webRoot,

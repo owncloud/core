@@ -173,6 +173,11 @@ class Internal extends Session {
 			//try to set the session lifetime
 			$sessionLifeTime = self::getSessionLifeTime();
 			@\ini_set('session.gc_maxlifetime', (string)$sessionLifeTime);
+
+			if (\version_compare(PHP_VERSION, '7.3.0') !== -1) {
+				$samesite = \OC::$server->getConfig()->getSystemValue('http.cookie.samesite', 'Strict');
+				\ini_set('session.cookie_samesite', $samesite);
+			}
 		}
 		\session_start();
 	}
