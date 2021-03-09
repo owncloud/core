@@ -188,17 +188,22 @@ class SecurityMiddleware extends Middleware {
 	 * @return Response a Response object or null in case that the exception could not be handled
 	 */
 	public function afterException($controller, $methodName, \Exception $exception) {
+		$headers = [];
 		if ($controller instanceof OCSController) {
+			if ($this->request->getHeader('OC-RequestAppPassword') === 'true'
+					&& ($exception instanceof NotLoggedInException || $exception instanceof LoginException)) {
+				$headers['WWW-Authenticate'] = 'Basic realm="ownCloud App Authentication Requested"';
+			}
 			if ($exception instanceof NotLoggedInException) {
-				return $controller->buildResponse(new Result(null, API::RESPOND_UNAUTHORISED, 'Unauthorised'));
+				return $controller->buildResponse(new Result(null, API::RESPOND_UNAUTHORISED, 'Unauthorised', $headers));
 			}
 			if ($exception instanceof LoginException) {
-				return $controller->buildResponse(new Result(null, API::RESPOND_UNAUTHORISED, $exception->getMessage()));
+				return $controller->buildResponse(new Result(null, API::RESPOND_UNAUTHORISED, $exception->getMessage(), $headers));
 			}
 			if ($exception instanceof NotAdminException) {
-				return $controller->buildResponse(new Result(null, $exception->getCode(), $exception->getMessage()));
+				return $controller->buildResponse(new Result(null, $exception->getCode(), $exception->getMessage(), $headers));
 			}
-			return $controller->buildResponse(new Result(null, API::RESPOND_SERVER_ERROR, $exception->getMessage()));
+			return $controller->buildResponse(new Result(null, API::RESPOND_SERVER_ERROR, $exception->getMessage(), $headers));
 		}
 
 		if ($exception instanceof SecurityException) {
