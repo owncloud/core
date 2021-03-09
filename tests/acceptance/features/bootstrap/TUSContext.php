@@ -135,6 +135,7 @@ class TUSContext implements Context {
 	 *                               Don't Base64 encode the value.
 	 * @param int    $noOfChunks
 	 * @param int $bytes
+	 * @param string $checksum
 	 *
 	 * @return void
 	 * @throws ConnectionException
@@ -147,7 +148,8 @@ class TUSContext implements Context {
 		string $destination,
 		array $uploadMetadata = [],
 		int $noOfChunks = 1,
-		int $bytes = null
+		int $bytes = null,
+		string $checksum = ''
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$password = $this->featureContext->getUserPassword($user);
@@ -161,6 +163,13 @@ class TUSContext implements Context {
 			];
 			$headers = \array_merge($headers, $creationWithUploadHeader);
 		}
+		if ($checksum != '') {
+			$checksumHeader = [
+				'Upload-Checksum' => $checksum
+			];
+			$headers = \array_merge($headers, $checksumHeader);
+		}
+
 		$client = new Client(
 			$this->featureContext->getBaseUrl(),
 			['verify' => false,
@@ -349,6 +358,7 @@ class TUSContext implements Context {
 	) {
 		$this->sendsAChunkToTUSLocationWithOffsetAndData($user, $offset, $content, $checksum);
 	}
+
 	/**
 	 * @Given user :user has uploaded file with checksum :checksum to the last created TUS Location with offset :offset and content :content using the TUS protocol on the WebDAV API
 	 *
@@ -367,6 +377,37 @@ class TUSContext implements Context {
 		string $content
 	) {
 		$this->sendsAChunkToTUSLocationWithOffsetAndData($user, $offset, $content, $checksum);
+		$this->featureContext->theHTTPStatusCodeShouldBe(204, "");
+	}
+
+	/**
+	 * @When user :user sends a chunk to the last created TUS Location with offset :offset and data :data with checksum :checksum using the TUS protocol on the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $offset
+	 * @param string $data
+	 * @param string $checksum
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userUploadsChunkFileWithChecksum($user, $offset, $data, $checksum) {
+		$this->sendsAChunkToTUSLocationWithOffsetAndData($user, $offset, $data, $checksum);
+	}
+
+	/**
+	 * @Given user :user has uploaded a chunk to the last created TUS Location with offset :offset and data :data with checksum :checksum using the TUS protocol on the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $offset
+	 * @param string $data
+	 * @param string $checksum
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userHasUploadedChunkFileWithChecksum($user, $offset, $data, $checksum) {
+		$this->sendsAChunkToTUSLocationWithOffsetAndData($user, $offset, $data, $checksum);
 		$this->featureContext->theHTTPStatusCodeShouldBe(204, "");
 	}
 }
