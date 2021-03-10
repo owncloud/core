@@ -78,6 +78,7 @@ Feature: upload file to shared folder
       | old         |
       | new         |
 
+
   Scenario Outline: Upload a file to shared folder with checksum should return the checksum in the propfind for sharee
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/FOLDER"
@@ -94,6 +95,7 @@ Feature: upload file to shared folder
       | old         |
       | new         |
 
+
   Scenario Outline: Upload a file to shared folder with checksum should return the checksum in the download header for sharee
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/FOLDER"
@@ -109,6 +111,7 @@ Feature: upload file to shared folder
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: Sharer shares a file with correct checksum should return the checksum in the propfind for sharee
     Given using <dav_version> DAV path
@@ -158,6 +161,7 @@ Feature: upload file to shared folder
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: Sharee uploads a file to a received share folder with wrong checksum should not work
     Given using <dav_version> DAV path
@@ -209,6 +213,7 @@ Feature: upload file to shared folder
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: Sharee uploads a chunked file with correct checksum to a received share folder should work
     Given using <dav_version> DAV path
