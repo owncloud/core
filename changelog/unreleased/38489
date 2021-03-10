@@ -1,0 +1,5 @@
+Bugfix: Fix behavior for user search at the API level
+
+The 'user.search_min_length' restriction could be circumvented when accessing the API directly.
+
+https://github.com/owncloud/core/pull/38489

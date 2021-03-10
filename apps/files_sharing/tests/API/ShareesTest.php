@@ -526,6 +526,53 @@ class ShareesTest extends TestCase {
 				true,
 				'email'
 			],
+			// Test empty searchTerm should not return users.
+			['', false, true, [], [], [], [], false, false, false, false, 'id', 1],
+			['', true, true, [], [], [], [], false, false, false, false, 'id', 1],
+			[
+				'',
+				false,
+				true,
+				[],
+				[
+					$this->getUserMock('test0', 'Test'),
+					$this->getUserMock('test1', 'Test One'),
+					$this->getUserMock('test2', 'Test Two'),
+				],
+				[
+					[
+						'label' => 'Test',
+						'value' => [
+							'shareType' => Share::SHARE_TYPE_USER,
+							'shareWith' => 'test0',
+							'userType' => User::USER_TYPE_USER,
+						]
+					],
+					[
+						'label' => 'Test One',
+						'value' => [
+							'shareType' => Share::SHARE_TYPE_USER,
+							'shareWith' => 'test1',
+							'userType' => User::USER_TYPE_USER,
+						]
+					],
+					[
+						'label' => 'Test Two',
+						'value' => [
+							'shareType' => Share::SHARE_TYPE_USER,
+							'shareWith' => 'test2',
+							'userType' => User::USER_TYPE_USER,
+						]
+					],
+				],
+				[],
+				false,
+				false,
+				false,
+				false,
+				'id',
+				0
+			],
 		];
 	}
 
@@ -544,6 +591,7 @@ class ShareesTest extends TestCase {
 	 * @param mixed $shareeEnumerationGroupMembers restrict enumeration to group members
 	 * @param mixed $additionalUserInfoField
 	 * @param string $usersAutoCompletePreference
+	 * @param int $searchMinLength the configured min length for user search
 	 */
 	public function testGetUsers(
 		$searchTerm,
@@ -557,7 +605,8 @@ class ShareesTest extends TestCase {
 		$singleUser,
 		$shareeEnumerationGroupMembers = false,
 		$additionalUserInfoField = null,
-		$usersAutoCompletePreference = 'yes'
+		$usersAutoCompletePreference = 'yes',
+		$searchMinLength = 0
 	) {
 		$this->config->expects($this->once())
 			->method('getAppValue')
@@ -570,6 +619,9 @@ class ShareesTest extends TestCase {
 				'allow_share_dialog_user_enumeration',
 				'yes'
 			)->willReturn($usersAutoCompletePreference);
+
+		$this->userSearch->method('getSearchMinLength')
+			->willReturn($searchMinLength);
 
 		$this->sharees = new ShareesController(
 			'files_sharing',
@@ -596,41 +648,43 @@ class ShareesTest extends TestCase {
 			->method('getUser')
 			->willReturn($user);
 
-		if (!$shareWithGroupOnly && !$shareeEnumerationGroupMembers) {
-			$this->userManager->expects($this->once())
-				->method('find')
-				->with($searchTerm, $this->invokePrivate($this->sharees, 'limit'), $this->invokePrivate($this->sharees, 'offset'))
-				->willReturn($userResponse);
-		} else {
-			if ($singleUser !== false && !$shareeEnumerationGroupMembers) {
-				// first call is for the current user's group memberships
-				// second call happens later for an exact match to check whether
-				// that match also is member of the same groups
-				$this->groupManager->expects($this->exactly(2))
-					->method('getUserGroupIds')
-					->withConsecutive(
-						[$user],
-						[$singleUser]
-					)
-					->willReturn($groupResponse);
+		if ($searchTerm !== '' || $searchMinLength === 0) {
+			if (!$shareWithGroupOnly && !$shareeEnumerationGroupMembers) {
+				$this->userManager->expects($this->once())
+					->method('find')
+					->with($searchTerm, $this->invokePrivate($this->sharees, 'limit'), $this->invokePrivate($this->sharees, 'offset'))
+					->willReturn($userResponse);
 			} else {
-				$this->groupManager->expects($this->once())
-					->method('getUserGroupIds')
-					->with($user)
-					->willReturn($groupResponse);
+				if ($singleUser !== false && !$shareeEnumerationGroupMembers) {
+					// first call is for the current user's group memberships
+					// second call happens later for an exact match to check whether
+					// that match also is member of the same groups
+					$this->groupManager->expects($this->exactly(2))
+						->method('getUserGroupIds')
+						->withConsecutive(
+							[$user],
+							[$singleUser]
+						)
+						->willReturn($groupResponse);
+				} else {
+					$this->groupManager->expects($this->once())
+						->method('getUserGroupIds')
+						->with($user)
+						->willReturn($groupResponse);
+				}
+
+				$this->groupManager->expects($this->exactly(\sizeof($groupResponse)))
+					->method('findUsersInGroup')
+					->with($this->anything(), $searchTerm, $this->invokePrivate($this->sharees, 'limit'), $this->invokePrivate($this->sharees, 'offset'))
+					->willReturnMap($userResponse);
 			}
 
-			$this->groupManager->expects($this->exactly(\sizeof($groupResponse)))
-				->method('findUsersInGroup')
-				->with($this->anything(), $searchTerm, $this->invokePrivate($this->sharees, 'limit'), $this->invokePrivate($this->sharees, 'offset'))
-				->willReturnMap($userResponse);
-		}
-
-		if ($singleUser !== false) {
-			$this->userManager->expects($this->once())
-				->method('get')
-				->with($searchTerm)
-				->willReturn($singleUser);
+			if ($singleUser !== false) {
+				$this->userManager->expects($this->once())
+					->method('get')
+					->with($searchTerm)
+					->willReturn($singleUser);
+			}
 		}
 
 		$this->invokePrivate($this->sharees, 'getUsers', [$searchTerm]);
@@ -990,6 +1044,26 @@ class ShareesTest extends TestCase {
 				false,
 				['test', 'test1']
 			],
+			// Test empty $searchTerm should not return any groups.
+			['', false, true, [], [], [], [], false, false, [], 2],
+			['', false, true,
+				[
+					$this->getGroupMock('test'),
+					$this->getGroupMock('test0'),
+					$this->getGroupMock('test1'),
+				],
+				[$this->getGroupMock('test'), $this->getGroupMock('test0'), $this->getGroupMock('test1')],
+				[],
+				[
+					['label' => 'test', 'value' => ['shareType' => Share::SHARE_TYPE_GROUP, 'shareWith' => 'test']],
+					['label' => 'test0', 'value' => ['shareType' => Share::SHARE_TYPE_GROUP, 'shareWith' => 'test0']],
+					['label' => 'test1', 'value' => ['shareType' => Share::SHARE_TYPE_GROUP, 'shareWith' => 'test1']],
+				],
+				false,
+				false,
+				[],
+				0
+			],
 		];
 	}
 
@@ -1006,6 +1080,7 @@ class ShareesTest extends TestCase {
 	 * @param bool $reachedEnd
 	 * @param bool $shareeEnumerationGroupMembers
 	 * @param array $blacklistedGroupNames list with the names of the blacklisted groups
+	 * @param int $searchMinLength the min length of the search term
 	 */
 	public function testGetGroups(
 		$searchTerm,
@@ -1017,45 +1092,50 @@ class ShareesTest extends TestCase {
 		$expected,
 		$reachedEnd,
 		$shareeEnumerationGroupMembers = false,
-		$blacklistedGroupNames = []
+		$blacklistedGroupNames = [],
+		$searchMinLength = 0
 	) {
+		$this->userSearch->method('getSearchMinLength')
+			->willReturn($searchMinLength);
 		$this->invokePrivate($this->sharees, 'limit', [2]);
 		$this->invokePrivate($this->sharees, 'offset', [0]);
 		$this->invokePrivate($this->sharees, 'shareWithMembershipGroupOnly', [$shareWithMembershipGroupOnly]);
 		$this->invokePrivate($this->sharees, 'shareeEnumeration', [$shareeEnumeration]);
 		$this->invokePrivate($this->sharees, 'shareeEnumerationGroupMembers', [$shareeEnumerationGroupMembers]);
 
-		$this->groupManager->expects($this->once())
-			->method('search')
-			->with($searchTerm, $this->invokePrivate($this->sharees, 'limit'), $this->invokePrivate($this->sharees, 'offset'))
-			->willReturn($groupResponse);
+		if ($searchTerm !== '' || $searchMinLength === 0) {
+			$this->groupManager->expects($this->once())
+				->method('search')
+				->with($searchTerm, $this->invokePrivate($this->sharees, 'limit'), $this->invokePrivate($this->sharees, 'offset'))
+				->willReturn($groupResponse);
 
-		$getGroupValueMap = \array_map(function ($group) {
-			return [$group->getGID(), $group];
-		}, $groupResponse);
+			$getGroupValueMap = \array_map(function ($group) {
+				return [$group->getGID(), $group];
+			}, $groupResponse);
 
-		$this->groupManager->method('get')
-			->will($this->returnValueMap($getGroupValueMap));
+			$this->groupManager->method('get')
+				->will($this->returnValueMap($getGroupValueMap));
 
-		if ($shareWithMembershipGroupOnly || $shareeEnumerationGroupMembers) {
-			$user = $this->getUserMock('admin', 'Administrator');
-			$this->session->expects($this->any())
-				->method('getUser')
-				->willReturn($user);
+			if ($shareWithMembershipGroupOnly || $shareeEnumerationGroupMembers) {
+				$user = $this->getUserMock('admin', 'Administrator');
+				$this->session->expects($this->any())
+					->method('getUser')
+					->willReturn($user);
 
-			$numGetUserGroupsCalls = empty($groupResponse) ? 0 : 1;
-			$this->groupManager->expects($this->exactly($numGetUserGroupsCalls))
-				->method('getUserGroups')
-				->with($user)
-				->willReturn($userGroupsResponse);
+				$numGetUserGroupsCalls = empty($groupResponse) ? 0 : 1;
+				$this->groupManager->expects($this->exactly($numGetUserGroupsCalls))
+					->method('getUserGroups')
+					->with($user)
+					->willReturn($userGroupsResponse);
+			}
+
+			// don't care about the particular implementation of the method
+			// just mark the group as blacklisted based on the displayname
+			$this->sharingBlacklist->method('isGroupBlacklisted')
+				->will($this->returnCallback(function (IGroup $group) use ($blacklistedGroupNames) {
+					return \in_array($group->getDisplayName(), $blacklistedGroupNames, true);
+				}));
 		}
-
-		// don't care about the particular implementation of the method
-		// just mark the group as blacklisted based on the displayname
-		$this->sharingBlacklist->method('isGroupBlacklisted')
-			->will($this->returnCallback(function (IGroup $group) use ($blacklistedGroupNames) {
-				return \in_array($group->getDisplayName(), $blacklistedGroupNames, true);
-			}));
 
 		$this->invokePrivate($this->sharees, 'getGroups', [$searchTerm]);
 		$result = $this->invokePrivate($this->sharees, 'result');
