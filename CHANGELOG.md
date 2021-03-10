@@ -50,6 +50,7 @@ Summary
 * Change - Update dependencies in apps/files_external/3rdparty: [#38462](https://github.com/owncloud/core/pull/38462)
 * Change - Update icewind/streams from 0.7.2 to 0.7.3 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
 * Change - Update icewind/smb from 3.2.7 to 3.3.1 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
+* Change - Update PHP dependencies: [#38487](https://github.com/owncloud/core/pull/38487)
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 * Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
@@ -368,6 +369,15 @@ Details
 * Change - Update icewind/smb from 3.2.7 to 3.3.1 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
 
    https://github.com/owncloud/core/pull/38462
+
+* Change - Update PHP dependencies: [#38487](https://github.com/owncloud/core/pull/38487)
+
+   The following have been updated: - egulias/email-validator (2.1.25 => 3.1.0) -
+   psr/container (1.0.0 => 1.1.1) - roave/security-advisories (dev-master 0745f82 =>
+   dev-master ba8a590) - swiftmailer/swiftmailer (v6.2.5 => v6.2.7) - webmozart/assert
+   (1.9.1 => 1.10.0)
+
+   https://github.com/owncloud/core/pull/38487
 
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 
