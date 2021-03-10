@@ -26,8 +26,8 @@ var MOUNT_OPTIONS_DROPDOWN_TEMPLATE =
 	'		<input id="mountOptionsPreviews" name="previews" type="checkbox" value="true" checked="checked"/>' +
 	'		<label for="mountOptionsPreviews">{{t "files_external" "Enable previews"}}</label>' +
 	'	</div>' +
-	'	<div class="optionRow">' +
-	'		<input id="mountOptionsSharing" name="enable_sharing" type="checkbox" value="true"/>' +
+	'	<div class="optionRow" title="{{mountOptionsSharingTitle}}">' +
+	'		<input id="mountOptionsSharing" name="enable_sharing" type="checkbox" value="true" {{#if sharingDisabled}}disabled{{/if}}/>' +
 	'		<label for="mountOptionsSharing">{{t "files_external" "Enable sharing"}}</label>' +
 	'	</div>' +
 	'	<div class="optionRow">' +
@@ -487,8 +487,9 @@ MountOptionsDropdown.prototype = {
 	 * @param {Object} $container container
 	 * @param {Object} mountOptions mount options
 	 * @param {Array} visibleOptions enabled mount options
+	 * @param {GlobalStorageConfig} storageConfig
 	 */
-	show: function($container, mountOptions, visibleOptions) {
+	show: function($container, mountOptions, visibleOptions, storageConfig) {
 		if (MountOptionsDropdown._last) {
 			MountOptionsDropdown._last.hide();
 		}
@@ -499,8 +500,12 @@ MountOptionsDropdown.prototype = {
 			MountOptionsDropdown._template = template;
 		}
 
+		var sharingDisabled = storageConfig.authMechanism === 'password::sessioncredentials';
+
 		var $el = $(template({
 			mountOptionsEncodingLabel: t('files_external', 'Compatibility with Mac NFD encoding (slow)'),
+			mountOptionsSharingTitle: sharingDisabled ? t('files_external', 'Sharing cannot be enabled due to the chosen authentication method') : '',
+			sharingDisabled: sharingDisabled,
 		}));
 		this.$el = $el;
 
@@ -1371,7 +1376,7 @@ MountConfigListView.prototype = _.extend({
 			visibleOptions.push('enable_sharing');
 		}
 
-		dropDown.show($toggle, storage.mountOptions || [], visibleOptions);
+		dropDown.show($toggle, storage.mountOptions || [], visibleOptions, storage);
 		$('body').on('mouseup.mountOptionsDropdown', function(event) {
 			var $target = $(event.target);
 			if ($toggle.has($target).length) {

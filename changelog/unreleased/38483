@@ -1,0 +1,9 @@
+Enhancement: UI improvement external storage
+
+When selecting external storage and set the auth mechanism
+to 'Log-in credentials, save in session', the 'Enable sharing' option in
+the mount options dropdown will be disabled and a tooltip will show up due to
+incompatibility.
+
+https://github.com/owncloud/core/pull/38483
+https://github.com/owncloud/enterprise/issues/4444
