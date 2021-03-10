@@ -431,7 +431,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 
 		# check the destination path, for source see below
 		if (Filesystem::isForbiddenFileOrDir($destinationPath)) {
-			throw new SabreForbidden();
+			throw new SabreForbidden('Destination path contains a blacklisted or excluded name');
 		}
 
 		$targetNodeExists = $this->childExists($targetName);
@@ -460,11 +460,11 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			if ($targetNodeExists || $sameFolder) {
 				// note that renaming a share mount point is always allowed
 				if (!$this->fileView->isUpdatable($destinationDir) && !$isMovableMount) {
-					throw new SabreForbidden();
+					throw new SabreForbidden('Mount is not movable');
 				}
 			} else {
 				if (!$this->fileView->isCreatable($destinationDir)) {
-					throw new SabreForbidden();
+					throw new SabreForbidden('Destination directory is not writable');
 				}
 			}
 
@@ -472,7 +472,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 				// moving to a different folder, source will be gone, like a deletion
 				// note that moving a share mount point is always allowed
 				if (!$this->fileView->isDeletable($sourcePath) && !$isMovableMount) {
-					throw new SabreForbidden();
+					throw new SabreForbidden('Source file or directory cannot be deleted');
 				}
 			}
 
@@ -485,7 +485,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 
 			$renameOkay = $this->fileView->rename($sourcePath, $destinationPath);
 			if (!$renameOkay) {
-				throw new SabreForbidden('');
+				throw new SabreForbidden('There was an error while renaming the file or directory');
 			}
 		} catch (StorageNotAvailableException $e) {
 			throw new SabreServiceUnavailable($e->getMessage());
