@@ -68,6 +68,7 @@ Summary
 * Enhancement - Indicate existing guest-user as a guest in the share tab: [#38440](https://github.com/owncloud/core/pull/38440)
 * Enhancement - Add config parameter 'http.cookie.samesite': [#38458](https://github.com/owncloud/core/pull/38458)
 * Enhancement - Add exception messages whenever a node cannot be moved: [#38481](https://github.com/owncloud/core/pull/38481)
+* Enhancement - UI improvement external storage: [#38483](https://github.com/owncloud/core/pull/38483)
 
 Details
 -------
@@ -524,6 +525,15 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4427
    https://github.com/owncloud/core/pull/38481
+
+* Enhancement - UI improvement external storage: [#38483](https://github.com/owncloud/core/pull/38483)
+
+   When selecting external storage and set the auth mechanism to 'Log-in credentials, save in
+   session', the 'Enable sharing' option in the mount options dropdown will be disabled and a
+   tooltip will show up due to incompatibility.
+
+   https://github.com/owncloud/enterprise/issues/4444
+   https://github.com/owncloud/core/pull/38483
 
 Changelog for ownCloud Core [10.6.0] (2020-11-25)
 =======================================
