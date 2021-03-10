@@ -7,7 +7,7 @@ Feature: Comments
 
   @smokeTest
   Scenario: Getting info of comments using files endpoint
-    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
+    Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And user "Alice" has commented with content "My first comment" on file "/myFileToComment.txt"
     And user "Alice" should have the following comments on file "/myFileToComment.txt"
       | user  | comment          |
@@ -22,7 +22,7 @@ Feature: Comments
     And the single response should contain a property "oc:comments-href" with value "%a_comment_url%"
 
   Scenario: Getting info on comments for a folder using the endpoint
-    And user "Alice" has commented with content "My first comment" on folder "/PARENT"
+    Given user "Alice" has commented with content "My first comment" on folder "/PARENT"
     And user "Alice" should have the following comments on folder "/PARENT"
       | user  | comment          |
       | Alice | My first comment |

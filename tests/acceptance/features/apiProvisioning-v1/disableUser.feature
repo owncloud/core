@@ -16,18 +16,21 @@ Feature: disable user
     And user "Alice" should be disabled
 
   @skipOnOcV10.3
-  Scenario Outline: admin disables an user with special characters in the username
+  Scenario: admin disables an user with special characters in the username
     Given these users have been created with small skeleton files:
-      | username   | email   |
-      | <username> | <email> |
-    When the administrator disables user "<username>" using the provisioning API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
-    And user "<username>" should be disabled
-    Examples:
       | username | email               |
       | a@-+_.b  | a.b@example.com     |
       | a space  | a.space@example.com |
+    When the administrator disables the following users using the provisioning API
+      | username |
+      | a@-+_.b  |
+      | a space  |
+    Then the OCS status code of responses on all endpoints should be "100"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And the following users should be disabled
+      | username |
+      | a@-+_.b  |
+      | a space  |
 
   @smokeTest @notToImplementOnOCIS
   Scenario: Subadmin should be able to disable an user in their group

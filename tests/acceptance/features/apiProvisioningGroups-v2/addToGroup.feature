@@ -8,27 +8,26 @@ Feature: add users to group
     Given using OCS API version "2"
 
   @smokeTest @skipOnLDAP
-  Scenario Outline: adding a user to a group
+  Scenario: adding a user to a group
     Given user "brand-new-user" has been created with default attributes and small skeleton files
-    And group "<group_id>" has been created
-    When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API
-    Then the OCS status code should be "200"
-    And the HTTP status code should be "200"
-    Examples:
-      | group_id    | comment                               |
+    And these groups have been created:
+      | groupname   | comment                               |
       | simplegroup | nothing special here                  |
       | España§àôœ€ | special European and other characters |
-      | नेपाली      | Unicode group name                    |
+      | नेपाली        | Unicode group name                    |
+    When the administrator adds the following users to the following groups using the provisioning API
+      | username       | groupname   |
+      | brand-new-user | simplegroup |
+      | brand-new-user | España§àôœ€ |
+      | brand-new-user | नेपाली        |
+    Then the OCS status code of responses on all endpoints should be "200"
+    And the HTTP status code of responses on all endpoints should be "200"
 
   @skipOnLDAP
-  Scenario Outline: adding a user to a group
+  Scenario: adding a user to a group
     Given user "brand-new-user" has been created with default attributes and small skeleton files
-    And group "<group_id>" has been created
-    When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API
-    Then the OCS status code should be "200"
-    And the HTTP status code should be "200"
-    Examples:
-      | group_id            | comment                                 |
+    And these groups have been created:
+      | groupname           | comment                                 |
       | brand-new-group     | dash                                    |
       | the.group           | dot                                     |
       | left,right          | comma                                   |
@@ -39,17 +38,26 @@ Feature: add users to group
       | $x<=>[y*z^2]!       | Maths symbols                           |
       | 😁 😂               | emoji                                   |
       | admin:Pokhara@Nepal | Colon and @                             |
+    When the administrator adds the following users to the following groups using the provisioning API
+      | username       | groupname           |
+      | brand-new-user | brand-new-group     |
+      | brand-new-user | the.group           |
+      | brand-new-user | left,right          |
+      | brand-new-user | 0                   |
+      | brand-new-user | Finance (NP)        |
+      | brand-new-user | Admin&Finance       |
+      | brand-new-user | maint+eng           |
+      | brand-new-user | $x<=>[y*z^2]!       |
+      | brand-new-user | 😁 😂               |
+      | brand-new-user | admin:Pokhara@Nepal |
+    Then the OCS status code of responses on all endpoints should be "200"
+    And the HTTP status code of responses on all endpoints should be "200"
 
   # once the issue is fixed merge with scenario above
-  @skipOnLDAP @toImplementOnOCIS @issue-product-284
-  Scenario Outline: adding a user to a group
+  Scenario: adding a user to a group
     Given user "brand-new-user" has been created with default attributes and small skeleton files
-    And group "<group_id>" has been created
-    When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API
-    Then the OCS status code should be "200"
-    And the HTTP status code should be "200"
-    Examples:
-      | group_id            | comment                                 |
+    And these groups have been created:
+      | groupname           | comment                                 |
       | maintenance#123     | Hash sign                               |
       | 50%pass             | Percent sign (special escaping happens) |
       | 50%25=0             | %25 literal looks like an escaped "%"   |
@@ -57,38 +65,68 @@ Feature: add users to group
       | 50%2Fix             | %2F literal looks like an escaped slash |
       | Mgmt\Middle         | Backslash                               |
       | staff?group         | Question mark                           |
+    When the administrator adds the following users to the following groups using the provisioning API
+      | username       | groupname           |
+      | brand-new-user | maintenance#123     |
+      | brand-new-user | 50%pass             |
+      | brand-new-user | 50%25=0             |
+      | brand-new-user | 50%2Eagle           |
+      | brand-new-user | 50%2Fix             |
+      | brand-new-user | Mgmt\Middle         |
+      | brand-new-user | staff?group         |
+    Then the OCS status code of responses on all endpoints should be "200"
+    And the HTTP status code of responses on all endpoints should be "200"
 
   @issue-31015 @skipOnOcV10
-  Scenario Outline: adding a user to a group that has a forward-slash in the group name
+  Scenario: adding a user to a group that has a forward-slash in the group name
     Given user "brand-new-user" has been created with default attributes and small skeleton files
-    And group "<group_id>" has been created
-    When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API
-    Then the OCS status code should be "200"
-    And the HTTP status code should be "200"
-    Examples:
-      | group_id         | comment                            |
+    And these groups have been created:
+      | groupname        | comment                            |
       | Mgmt/Sydney      | Slash (special escaping happens)   |
       | Mgmt//NSW/Sydney | Multiple slash                     |
       | priv/subadmins/1 | Subadmins mentioned not at the end |
-
+    When the administrator adds the following users to the following groups using the provisioning API
+      | username       | groupname        |
+      | brand-new-user | Mgmt/Sydney      |
+      | brand-new-user | Mgmt//NSW/Sydney |
+      | brand-new-user | priv/subadmins/1 |
+    Then the OCS status code of responses on all endpoints should be "200"
+    And the HTTP status code of responses on all endpoints should be "200"
 
   @skipOnLDAP @toImplementOnOCIS @issue-product-283
-  Scenario Outline: adding a user to a group using mixes of upper and lower case in user and group names
+  Scenario: adding a user to a group using mixes of upper and lower case in user and group names
     Given user "mixed-case-user" has been created with default attributes and small skeleton files
-    And group "<group_id1>" has been created
-    And group "<group_id2>" has been created
-    And group "<group_id3>" has been created
-    When the administrator adds user "<user_id>" to group "<group_id1>" using the provisioning API
-    Then the OCS status code should be "200"
-    And the HTTP status code should be "200"
-    And user "mixed-case-user" should belong to group "<group_id1>"
-    But user "mixed-case-user" should not belong to group "<group_id2>"
-    And user "mixed-case-user" should not belong to group "<group_id3>"
-    Examples:
-      | user_id         | group_id1            | group_id2            | group_id3            |
-      | Mixed-Case-USER | Case-Sensitive-Group | case-sensitive-group | CASE-SENSITIVE-GROUP |
-      | Mixed-Case-User | case-sensitive-group | CASE-SENSITIVE-GROUP | Case-Sensitive-Group |
-      | mixed-case-user | CASE-SENSITIVE-GROUP | Case-Sensitive-Group | case-sensitive-group |
+    And these groups have been created:
+      | groupname             |
+      | Case-Sensitive-Group1 |
+      | case-sensitive-group1 |
+      | CASE-SENSITIVE-GROUP1 |
+      | Case-Sensitive-Group2 |
+      | case-sensitive-group2 |
+      | CASE-SENSITIVE-GROUP2 |
+      | Case-Sensitive-Group3 |
+      | case-sensitive-group3 |
+      | CASE-SENSITIVE-GROUP3 |
+    When the administrator adds the following users to the following groups using the provisioning API
+      | username        | groupname             |
+      | Mixed-Case-USER | Case-Sensitive-Group1 |
+      | mixed-case-user | case-sensitive-group2 |
+      | MIXED-CASE-USER | CASE-SENSITIVE-GROUP3 |
+    Then the OCS status code of responses on all endpoints should be "200"
+    And the HTTP status code of responses on all endpoints should be "200"
+    And the following users should belong to the following groups
+      | username        | groupname             |
+      | Mixed-Case-USER | Case-Sensitive-Group1 |
+      | Mixed-Case-User | case-sensitive-group2 |
+      | mixed-case-user | CASE-SENSITIVE-GROUP3 |
+    But the following users should not belong to the following groups
+      | username        | groupname             |
+      | Mixed-Case-USER | Case-Sensitive-Group2 |
+      | mixed-case-user | case-sensitive-group1 |
+      | MIXED-CASE-USER | CASE-SENSITIVE-GROUP1 |
+      | Mixed-Case-USER | Case-Sensitive-Group3 |
+      | mixed-case-user | case-sensitive-group3 |
+      | MIXED-CASE-USER | CASE-SENSITIVE-GROUP2 |
 
   @issue-31276 @skipOnLDAP @skipOnOcV10
   Scenario: normal user tries to add himself to a group
