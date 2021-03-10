@@ -19,6 +19,7 @@ Feature: checksums
       | old         | SHA1 8cb2237d0679ca88db6464eac60da96345513964 |
       | new         | SHA1 8cb2237d0679ca88db6464eac60da96345513964 |
 
+
   Scenario Outline: Uploading a file with checksum should return the checksum in the propfind
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
@@ -31,6 +32,7 @@ Feature: checksums
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: Uploading a file with checksum should return the checksum in the download header
     Given using <dav_version> DAV path
@@ -61,6 +63,7 @@ Feature: checksums
       | old         | SHA1 8cb2237d0679ca88db6464eac60da96345513963 |
       | new         | SHA1 8cb2237d0679ca88db6464eac60da96345513963 |
 
+
   Scenario Outline: Uploading a chunked file with correct checksum should work
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
@@ -74,6 +77,7 @@ Feature: checksums
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: Uploading a chunked file with correct checksum should return the checksum in the propfind
     Given using <dav_version> DAV path
@@ -89,6 +93,7 @@ Feature: checksums
       | old         |
       | new         |
 
+
   Scenario Outline: Uploading a chunked file with checksum should return the checksum in the download header
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
@@ -103,6 +108,7 @@ Feature: checksums
       | old         |
       | new         |
 
+    
   Scenario Outline: Uploading second chunk of file with incorrect checksum should not work
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
