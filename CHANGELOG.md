@@ -66,6 +66,7 @@ Summary
 * Enhancement - Hide federated user suggestions if system users are found: [#38389](https://github.com/owncloud/core/pull/38389)
 * Enhancement - Indicate existing guest-user as a guest in the share tab: [#38440](https://github.com/owncloud/core/pull/38440)
 * Enhancement - Add config parameter 'http.cookie.samesite': [#38458](https://github.com/owncloud/core/pull/38458)
+* Enhancement - Add exception messages whenever a node cannot be moved: [#38481](https://github.com/owncloud/core/pull/38481)
 
 Details
 -------
@@ -508,6 +509,11 @@ Details
 
    https://github.com/owncloud/core/pull/38458
    https://github.com/owncloud/core/pull/38477
+
+* Enhancement - Add exception messages whenever a node cannot be moved: [#38481](https://github.com/owncloud/core/pull/38481)
+
+   https://github.com/owncloud/enterprise/issues/4427
+   https://github.com/owncloud/core/pull/38481
 
 Changelog for ownCloud Core [10.6.0] (2020-11-25)
 =======================================
