@@ -54,6 +54,7 @@ Feature: add users to group
     And the HTTP status code of responses on all endpoints should be "200"
 
   # once the issue is fixed merge with scenario above
+  @skipOnLDAP @toImplementOnOCIS @issue-product-284
   Scenario: adding a user to a group
     Given user "brand-new-user" has been created with default attributes and small skeleton files
     And these groups have been created:
