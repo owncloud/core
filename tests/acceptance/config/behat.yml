@@ -220,6 +220,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - ShareesContext:
+        - OccContext:
         - AppConfigurationContext:
 
     apiShareManagementToRoot:
