@@ -47,7 +47,7 @@ Feature: checksums
       | old         |
       | new         |
 
-
+    
   Scenario Outline: Uploading a file with incorrect checksum should not work
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
