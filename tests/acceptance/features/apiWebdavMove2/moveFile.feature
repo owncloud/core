@@ -272,14 +272,16 @@ Feature: move (rename) file
       | old         |
       | new         |
 
-  Scenario Outline: renaming to a file with special characters
-    When user "Alice" moves file "/textfile0.txt" to "/<renamed_file>" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And the content of file "/<renamed_file>" for user "Alice" should be "ownCloud test text file 0" plus end-of-line
-    Examples:
-      | renamed_file  |
-      | *a@b#c$e%f&g* |
-      | 1 2 3##.##    |
+  Scenario: renaming to a file with special characters
+    When user "Alice" moves the following file using the WebDAV API
+      | source         | destination   |
+      | /textfile0.txt | *a@b#c$e%f&g* |
+      | /textfile1.txt | 1 2 3##.##    |
+    Then the HTTP status code of responses on all endpoints should be "201"
+    And the content of the following files for user "Alice" should be the following plus end-of-line
+      | filename       | content                   |
+      | *a@b#c$e%f&g*  | ownCloud test text file 0 |
+      | 1 2 3##.##     | ownCloud test text file 1 |
 
   @issue-ocis-reva-265
   #after fixing the issues merge this Scenario into the one above
