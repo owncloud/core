@@ -165,6 +165,11 @@ class ShareesController extends OCSController {
 	protected function getUsers($search) {
 		$this->result['users'] = $this->result['exact']['users'] = $users = [];
 
+		if (\strlen(\trim($search)) === 0 && $this->userSearch->getSearchMinLength() > 0) {
+			$this->result['users'] = [];
+			return;
+		}
+
 		$userGroups = [];
 		if ($this->shareWithGroupOnly || $this->shareeEnumerationGroupMembers) {
 			// Search in all the groups this user is part of
@@ -295,6 +300,11 @@ class ShareesController extends OCSController {
 	 */
 	protected function getGroups($search) {
 		$this->result['groups'] = $this->result['exact']['groups'] = [];
+
+		if (\strlen(\trim($search)) === 0 && $this->userSearch->getSearchMinLength() > 0) {
+			$this->result['groups'] = [];
+			return;
+		}
 
 		$groups = $this->groupManager->search($search, $this->limit, $this->offset, 'sharing');
 		$groupIds = \array_map(function (IGroup $group) {
