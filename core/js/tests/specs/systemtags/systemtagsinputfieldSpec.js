@@ -271,10 +271,7 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 			});
 			it('deletes model and submits change when clicking delete', function() {
 				var destroyStub = sinon.stub(OC.SystemTags.SystemTagModel.prototype, 'destroy');
-
-				expect($dropdown.find('.delete').length).toEqual(0);
-				$dropdown.find('.rename').mouseup();
-				// delete button appears
+				// delete button appears in tag actions
 				expect($dropdown.find('.delete').length).toEqual(1);
 				$dropdown.find('.delete').mouseup();
 
