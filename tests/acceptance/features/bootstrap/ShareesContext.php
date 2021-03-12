@@ -109,6 +109,29 @@ class ShareesContext implements Context {
 	}
 
 	/**
+	 * @Then /^the "([^"]*)" sharees returned should include$/
+	 *
+	 * @param string $shareeType
+	 * @param TableNode $shareesList
+	 *
+	 * @return void
+	 */
+	public function theShareesReturnedShouldInclude($shareeType, $shareesList) {
+		$this->featureContext->verifyTableNodeColumnsCount($shareesList, 3);
+		$sharees = $shareesList->getRows();
+		$respondedArray = $this->getArrayOfShareesResponded(
+			$this->featureContext->getResponse(), $shareeType
+		);
+		foreach ($sharees as $sharee) {
+			Assert::assertContains(
+				$sharee,
+				$respondedArray,
+				"Returned sharees do not match the expected ones. See the differences below."
+			);
+		}
+	}
+
+	/**
 	 * @Then /^the "([^"]*)" sharees returned should be empty$/
 	 *
 	 * @param string $shareeType

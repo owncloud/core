@@ -559,3 +559,145 @@ Feature: sharees
       | ocs-api-version | ocs-status | http-status |
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
+
+  @skipOnOcV10
+  Scenario Outline: empty search for sharees when search min length is set to 0
+    Given the administrator has updated system config key "user.search_min_length" with value "0"
+    And user "sharee2" has been created with default attributes and small skeleton files
+    And using OCS API version "<ocs-api-version>"
+    When user "sharee1" gets the sharees using the sharing API with parameters
+      | search   |      |
+      | itemType | file |
+    Then the OCS status code should be "<ocs-status>"
+    And the HTTP status code should be "<http-status>"
+    And the "exact users" sharees returned should be empty
+    And the "users" sharees returned should include
+      | Alice Hansen | 0 | Alice   |
+      | Sharee One   | 0 | sharee1 |
+      | Sharee Two   | 0 | sharee2 |
+    And the "exact groups" sharees returned should be empty
+    And the "groups" sharees returned should include
+      | ShareeGroup  | 1 | ShareeGroup  |
+      | ShareeGroup2 | 1 | ShareeGroup2 |
+    And the "exact remotes" sharees returned should be empty
+    And the "remotes" sharees returned should be empty
+    Examples:
+      | ocs-api-version | ocs-status | http-status |
+      | 1               | 100        | 200         |
+      | 2               | 200        | 200         |
+
+
+  Scenario Outline: empty search for sharees when search min length is set to 2
+    Given the administrator has updated system config key "user.search_min_length" with value "2"
+    And user "sharee2" has been created with default attributes and small skeleton files
+    And using OCS API version "<ocs-api-version>"
+    When user "sharee1" gets the sharees using the sharing API with parameters
+      | search   |      |
+      | itemType | file |
+    Then the OCS status code should be "<ocs-status>"
+    And the HTTP status code should be "<http-status>"
+    And the "exact users" sharees returned should be empty
+    And the "users" sharees returned should be empty
+    And the "exact groups" sharees returned should be empty
+    And the "groups" sharees returned should be empty
+    And the "exact remotes" sharees returned should be empty
+    And the "remotes" sharees returned should be empty
+    Examples:
+      | ocs-api-version | ocs-status | http-status |
+      | 1               | 100        | 200         |
+      | 2               | 200        | 200         |
+
+
+  Scenario Outline: search for sharees when search min length is set to 2
+    Given the administrator has updated system config key "user.search_min_length" with value "2"
+    And user "sharee2" has been created with default attributes and small skeleton files
+    And using OCS API version "<ocs-api-version>"
+    When user "sharee1" gets the sharees using the sharing API with parameters
+      | search   | sh   |
+      | itemType | file |
+    Then the OCS status code should be "<ocs-status>"
+    And the HTTP status code should be "<http-status>"
+    And the "exact users" sharees returned should be empty
+    And the "users" sharees returned should include
+      | Sharee One | 0 | sharee1 |
+      | Sharee Two | 0 | sharee2 |
+    And the "exact groups" sharees returned should be empty
+    And the "groups" sharees returned should include
+      | ShareeGroup  | 1 | ShareeGroup  |
+      | ShareeGroup2 | 1 | ShareeGroup2 |
+    And the "exact remotes" sharees returned should be empty
+    And the "remotes" sharees returned should be empty
+    Examples:
+      | ocs-api-version | ocs-status | http-status |
+      | 1               | 100        | 200         |
+      | 2               | 200        | 200         |
+
+
+  Scenario Outline: search for sharees with long name when search min length is set to 2
+    Given the administrator has updated system config key "user.search_min_length" with value "2"
+    And user "sharee2" has been created with default attributes and small skeleton files
+    And using OCS API version "<ocs-api-version>"
+    When user "sharee1" gets the sharees using the sharing API with parameters
+      | search   | sharee |
+      | itemType | file   |
+    Then the OCS status code should be "<ocs-status>"
+    And the HTTP status code should be "<http-status>"
+    And the "exact users" sharees returned should be empty
+    And the "users" sharees returned should include
+      | Sharee One | 0 | sharee1 |
+      | Sharee Two | 0 | sharee2 |
+    And the "exact groups" sharees returned should be empty
+    And the "groups" sharees returned should include
+      | ShareeGroup  | 1 | ShareeGroup  |
+      | ShareeGroup2 | 1 | ShareeGroup2 |
+    And the "exact remotes" sharees returned should be empty
+    And the "remotes" sharees returned should be empty
+    Examples:
+      | ocs-api-version | ocs-status | http-status |
+      | 1               | 100        | 200         |
+      | 2               | 200        | 200         |
+
+  @skipOnOcV10
+  Scenario Outline: search for sharees without search when min length is set to 0
+    Given the administrator has updated system config key "user.search_min_length" with value "0"
+    And user "sharee2" has been created with default attributes and small skeleton files
+    And using OCS API version "<ocs-api-version>"
+    When user "sharee1" gets the sharees using the sharing API with parameters
+      | itemType | file |
+    Then the OCS status code should be "<ocs-status>"
+    And the HTTP status code should be "<http-status>"
+    And the "exact users" sharees returned should be empty
+    And the "users" sharees returned should include
+      | Alice Hansen | 0 | Alice   |
+      | Sharee One   | 0 | sharee1 |
+      | Sharee Two   | 0 | sharee2 |
+    And the "exact groups" sharees returned should be empty
+    And the "groups" sharees returned should include
+      | ShareeGroup  | 1 | ShareeGroup  |
+      | ShareeGroup2 | 1 | ShareeGroup2 |
+    And the "exact remotes" sharees returned should be empty
+    And the "remotes" sharees returned should be empty
+    Examples:
+      | ocs-api-version | ocs-status | http-status |
+      | 1               | 100        | 200         |
+      | 2               | 200        | 200         |
+
+
+  Scenario Outline: search for sharees without search when min length is set to 2
+    Given the administrator has updated system config key "user.search_min_length" with value "2"
+    And user "sharee2" has been created with default attributes and small skeleton files
+    And using OCS API version "<ocs-api-version>"
+    When user "sharee1" gets the sharees using the sharing API with parameters
+      | itemType | file |
+    Then the OCS status code should be "<ocs-status>"
+    And the HTTP status code should be "<http-status>"
+    And the "exact users" sharees returned should be empty
+    And the "users" sharees returned should be empty
+    And the "exact groups" sharees returned should be empty
+    And the "groups" sharees returned should be empty
+    And the "exact remotes" sharees returned should be empty
+    And the "remotes" sharees returned should be empty
+    Examples:
+      | ocs-api-version | ocs-status | http-status |
+      | 1               | 100        | 200         |
+      | 2               | 200        | 200         |
