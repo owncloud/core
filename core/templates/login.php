@@ -126,11 +126,11 @@ script('core', [
 				?>
 					<li><a href="<?php print_unescaped($login['href']); ?>" ><img src="<?php p($login['img']); ?>"/></a></li>
 				<?php
-		} else {
-			?>
-					<li><a class="button" href="<?php print_unescaped($login['href']); ?>" ><?php p($login['name']); ?></a></li>
-				<?php
-		} ?>
+			} else {
+				?>
+						<li><a class="button" href="<?php print_unescaped($login['href']); ?>" ><?php p($login['name']); ?></a></li>
+					<?php
+			} ?>
 			<?php endforeach; ?>
 		</ul>
 </form>
