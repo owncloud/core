@@ -8,6 +8,7 @@ Feature: checksums
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
       | Upload-Length   | 5                         |
+      #    dGV4dEZpbGUudHh0 is the base64 encode of textFile.txt
       | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
     When user "Alice" uploads file with checksum "<checksum>" to the last created TUS Location with offset "0" and content "12345" using the TUS protocol on the WebDAV API
     Then the HTTP status code should be "204"
@@ -24,6 +25,7 @@ Feature: checksums
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
       | Upload-Length   | 5                         |
+      #    dGV4dEZpbGUudHh0 is the base64 encode of textFile.txt
       | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
     When user "Alice" uploads file with checksum "MD5 827ccb0eea8a706c4c34a16891f84e7b" to the last created TUS Location with offset "0" and content "12345" using the TUS protocol on the WebDAV API
     And user "Alice" requests the checksum of "/textFile.txt" via propfind
@@ -38,6 +40,7 @@ Feature: checksums
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
       | Upload-Length   | 5                         |
+      #    dGV4dEZpbGUudHh0 is the base64 encode of textFile.txt
       | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
     And user "Alice" has uploaded file with checksum "MD5 827ccb0eea8a706c4c34a16891f84e7b" to the last created TUS Location with offset "0" and content "12345" using the TUS protocol on the WebDAV API
     When user "Alice" downloads file "/textFile.txt" using the WebDAV API
@@ -47,11 +50,12 @@ Feature: checksums
       | old         |
       | new         |
 
-    
+
   Scenario Outline: Uploading a file with incorrect checksum should not work
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
       | Upload-Length   | 5                         |
+      #    dGV4dEZpbGUudHh0 is the base64 encode of textFile.txt
       | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
     When user "Alice" uploads file with checksum "<incorrect_checksum>" to the last created TUS Location with offset "0" and content "12345" using the TUS protocol on the WebDAV API
     Then the HTTP status code should be "406"
@@ -67,7 +71,8 @@ Feature: checksums
   Scenario Outline: Uploading a chunked file with correct checksum should work
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
-      | Upload-Length   | 10                         |
+      | Upload-Length   | 10                        |
+      #    dGV4dEZpbGUudHh0 is the base64 encode of textFile.txt
       | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
     When user "Alice" sends a chunk to the last created TUS Location with offset "0" and data "01234" with checksum "MD5 4100c4d44da9177247e44a5fc1546778" using the TUS protocol on the WebDAV API
     And user "Alice" sends a chunk to the last created TUS Location with offset "5" and data "56789" with checksum "MD5 099ebea48ea9666a7da2177267983138" using the TUS protocol on the WebDAV API
@@ -82,7 +87,8 @@ Feature: checksums
   Scenario Outline: Uploading a chunked file with correct checksum should return the checksum in the propfind
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
-      | Upload-Length   | 10                         |
+      | Upload-Length   | 10                        |
+      #    dGV4dEZpbGUudHh0 is the base64 encode of textFile.txt
       | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
     And user "Alice" has uploaded a chunk to the last created TUS Location with offset "0" and data "01234" with checksum "MD5 4100c4d44da9177247e44a5fc1546778" using the TUS protocol on the WebDAV API
     And user "Alice" has uploaded a chunk to the last created TUS Location with offset "5" and data "56789" with checksum "MD5 099ebea48ea9666a7da2177267983138" using the TUS protocol on the WebDAV API
@@ -97,7 +103,8 @@ Feature: checksums
   Scenario Outline: Uploading a chunked file with checksum should return the checksum in the download header
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
-      | Upload-Length   | 10                         |
+      | Upload-Length   | 10                        |
+      #    dGV4dEZpbGUudHh0 is the base64 encode of textFile.txt
       | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
     And user "Alice" has uploaded a chunk to the last created TUS Location with offset "0" and data "01234" with checksum "MD5 4100c4d44da9177247e44a5fc1546778" using the TUS protocol on the WebDAV API
     And user "Alice" has uploaded a chunk to the last created TUS Location with offset "5" and data "56789" with checksum "MD5 099ebea48ea9666a7da2177267983138" using the TUS protocol on the WebDAV API
@@ -108,11 +115,12 @@ Feature: checksums
       | old         |
       | new         |
 
-    
+
   Scenario Outline: Uploading second chunk of file with incorrect checksum should not work
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
-      | Upload-Length   | 10                         |
+      | Upload-Length   | 10                        |
+      #    dGV4dEZpbGUudHh0 is the base64 encode of textFile.txt
       | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
     When user "Alice" sends a chunk to the last created TUS Location with offset "0" and data "01234" with checksum "MD5 4100c4d44da9177247e44a5fc1546799" using the TUS protocol on the WebDAV API
     And user "Alice" sends a chunk to the last created TUS Location with offset "5" and data "56789" with checksum "MD5 781e5e245d69b566979b86e28d23f2c7" using the TUS protocol on the WebDAV API

@@ -10,6 +10,7 @@ Feature: upload file to shared folder
       | Alice    |
       | Brian    |
 
+
   Scenario Outline: Uploading file to a received share folder
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/FOLDER"
@@ -22,6 +23,7 @@ Feature: upload file to shared folder
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: Uploading file to a user read/write share folder works
     Given using <dav_version> DAV path
@@ -36,6 +38,7 @@ Feature: upload file to shared folder
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: Uploading a file into a group share as share receiver
     Given using <dav_version> DAV path
@@ -52,6 +55,7 @@ Feature: upload file to shared folder
       | old         |
       | new         |
 
+
   Scenario Outline: Overwrite file to a received share folder
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/FOLDER"
@@ -65,6 +69,7 @@ Feature: upload file to shared folder
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: attempt to upload a file into a folder within correctly received read only share
     Given using <dav_version> DAV path
@@ -86,6 +91,7 @@ Feature: upload file to shared folder
     And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
       | Upload-Length   | 5                                     |
+      #    L0ZPTERFUi90ZXh0RmlsZS50eHQ= is the base64 encode of /FOLDER/textFile.txt
       | Upload-Metadata | filename L0ZPTERFUi90ZXh0RmlsZS50eHQ= |
     And user "Alice" has uploaded file with checksum "SHA1 8cb2237d0679ca88db6464eac60da96345513964" to the last created TUS Location with offset "0" and content "12345" using the TUS protocol on the WebDAV API
     When user "Brian" requests the checksum of "/Shares/FOLDER/textFile.txt" via propfind
@@ -103,6 +109,7 @@ Feature: upload file to shared folder
     And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
       | Upload-Length   | 5                                     |
+      #    L0ZPTERFUi90ZXh0RmlsZS50eHQ= is the base64 encode of /FOLDER/textFile.txt
       | Upload-Metadata | filename L0ZPTERFUi90ZXh0RmlsZS50eHQ= |
     And user "Alice" has uploaded file with checksum "SHA1 8cb2237d069ca88db6464eac60da96345513964" to the last created TUS Location with offset "0" and content "12345" using the TUS protocol on the WebDAV API
     When user "Brian" downloads file "/Shares/FOLDER/textFile.txt" using the WebDAV API
@@ -117,6 +124,7 @@ Feature: upload file to shared folder
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
       | Upload-Length   | 5                         |
+      #    dGV4dEZpbGUudHh0 is the base64 encode of textFile.txt
       | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
     And user "Alice" has uploaded file with checksum "SHA1 8cb2237d0679ca88db6464eac60da96345513964" to the last created TUS Location with offset "0" and content "12345" using the TUS protocol on the WebDAV API
     And user "Alice" has shared file "/textFile.txt" with user "Brian"
@@ -133,6 +141,7 @@ Feature: upload file to shared folder
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
       | Upload-Length   | 5                         |
+      #    dGV4dEZpbGUudHh0 is the base64 encode of textFile.txt
       | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
     And user "Alice" has uploaded file with checksum "SHA1 8cb2237d0679ca88db6464eac60da96345513964" to the last created TUS Location with offset "0" and content "12345" using the TUS protocol on the WebDAV API
     And user "Alice" has shared file "/textFile.txt" with user "Brian"
@@ -153,6 +162,7 @@ Feature: upload file to shared folder
     When user "Brian" creates a new TUS resource on the WebDAV API with these headers:
       | Tus-Resumable   | 1.0.0                                         |
       | Upload-Length   | 16                                            |
+      #    L1NoYXJlcy9GT0xERVIvdGV4dGZpbGUudHh0 is the base64 encode of /Shares/FOLDER/textFile.txt
       | Upload-Metadata | filename L1NoYXJlcy9GT0xERVIvdGV4dGZpbGUudHh0 |
     And user "Brian" uploads file with checksum "MD5 827ccb0eea8a706c4c34a16891f84e7b" to the last created TUS Location with offset "0" and content "uploaded content" using the TUS protocol on the WebDAV API
     Then as "Alice" file "/FOLDER/textFile.txt" should exist
@@ -171,6 +181,7 @@ Feature: upload file to shared folder
     When user "Brian" creates a new TUS resource on the WebDAV API with these headers:
       | Tus-Resumable   | 1.0.0                                         |
       | Upload-Length   | 16                                            |
+      #    L1NoYXJlcy9GT0xERVIvdGV4dGZpbGUudHh0 is the base64 encode of /Shares/FOLDER/textFile.txt
       | Upload-Metadata | filename L1NoYXJlcy9GT0xERVIvdGV4dGZpbGUudHh0 |
     And user "Brian" uploads file with checksum "MD5 827ccb0eea8a706c4c34a16891f84e8c" to the last created TUS Location with offset "0" and content "uploaded content" using the TUS protocol on the WebDAV API
     Then the HTTP status code should be "406"
@@ -188,6 +199,7 @@ Feature: upload file to shared folder
     And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
       | Upload-Length   | 5                                     |
+      #    L0ZPTERFUi90ZXh0RmlsZS50eHQ= is the base64 encode of /FOLDER/textFile.txt
       | Upload-Metadata | filename L0ZPTERFUi90ZXh0RmlsZS50eHQ= |
     When user "Alice" uploads file with checksum "SHA1 8cb2237d0679ca88db6464eac60da96345513954" to the last created TUS Location with offset "0" and content "uploaded content" using the TUS protocol on the WebDAV API
     Then the HTTP status code should be "406"
@@ -203,6 +215,7 @@ Feature: upload file to shared folder
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
       | Upload-Length   | 10                        |
+      #    dGV4dEZpbGUudHh0 is the base64 encode of textFile.txt
       | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
     When user "Alice" sends a chunk to the last created TUS Location with offset "0" and data "01234" with checksum "MD5 4100c4d44da9177247e44a5fc1546778" using the TUS protocol on the WebDAV API
     And user "Alice" sends a chunk to the last created TUS Location with offset "5" and data "56789" with checksum "MD5 099ebea48ea9666a7da2177267983138" using the TUS protocol on the WebDAV API
@@ -223,6 +236,7 @@ Feature: upload file to shared folder
     And user "Brian" creates a new TUS resource on the WebDAV API with these headers:
       | Tus-Resumable   | 1.0.0                                         |
       | Upload-Length   | 10                                            |
+      #    L1NoYXJlcy9GT0xERVIvdGV4dGZpbGUudHh0 is the base64 encode of /Shares/FOLDER/textFile.txt
       | Upload-Metadata | filename L1NoYXJlcy9GT0xERVIvdGV4dGZpbGUudHh0 |
     When user "Brian" sends a chunk to the last created TUS Location with offset "0" and data "01234" with checksum "MD5 4100c4d44da9177247e44a5fc1546778" using the TUS protocol on the WebDAV API
     And user "Brian" sends a chunk to the last created TUS Location with offset "5" and data "56789" with checksum "MD5 099ebea48ea9666a7da2177267983138" using the TUS protocol on the WebDAV API

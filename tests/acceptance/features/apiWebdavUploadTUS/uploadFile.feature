@@ -28,6 +28,7 @@ Feature: upload file
       | new         | /?fi=le&%#2 . txt |
       | new         | /# %ab ab?=ed     |
 
+
   Scenario Outline: upload a file into a folder and check download content
     Given using <dav_version> DAV path
     And user "Alice" has created folder "<folder_name>"
@@ -60,6 +61,7 @@ Feature: upload file
       | old         |
       | new         |
 
+
   Scenario Outline: Upload 1 byte chunks with TUS
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "0123456789" in 10 chunks to "/myChunkedFile.txt" using the TUS protocol on the WebDAV API
@@ -68,6 +70,7 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: Upload to overwriting a file
     Given using <dav_version> DAV path
@@ -79,6 +82,7 @@ Feature: upload file
       | old         |
       | new         |
 
+
   Scenario Outline: upload a file and no version is available
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to "/upload.txt" using the TUS protocol on the WebDAV API
@@ -87,6 +91,7 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: upload a file twice and versions are available
     Given using <dav_version> DAV path
@@ -99,6 +104,7 @@ Feature: upload file
       | old         |
       | new         |
 
+
   Scenario Outline: upload a file in chunks with TUS and no version is available
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "0123456789" in 10 chunks to "/myChunkedFile.txt" using the TUS protocol on the WebDAV API
@@ -107,6 +113,7 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: upload a twice file in chunks with TUS and versions are available
     Given using <dav_version> DAV path
@@ -118,6 +125,7 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: upload a file with invalid-name
     Given using <dav_version> DAV path
@@ -141,11 +149,13 @@ Feature: upload file
       | new         | "folder/file"           | Zm9sZGVyL2ZpbGU=             |
       | new         | "my\\file"              | bXkMaWxl                     |
 
+
   Scenario Outline: upload a file using the resource URL of another user
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
       | Upload-Length   | 10                        |
+      #    dGV4dEZpbGUudHh0 is the base64 encode of textFile.txt
       | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
     When user "Brian" sends a chunk to the last created TUS Location with offset "0" and data "12345" using the WebDAV API
     Then the HTTP status code should be "403"
