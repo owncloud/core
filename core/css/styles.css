@@ -214,10 +214,6 @@ a.two-factor-cancel {
 
 /* LOG IN & INSTALLATION ------------------------------------------------------------ */
 
-/* Some whitespace to the top */
-#body-login #header {
-	padding-top: 100px;
-}
 #body-login {
 	background-attachment: fixed; /* fix background gradient */
 	height: 100%; /* fix sticky footer */
@@ -225,12 +221,18 @@ a.two-factor-cancel {
 
 /* Dark subtle label text */
 #body-login p.info,
-#body-login form fieldset legend,
+#body-login form legend,
 #body-login #datadirContent label,
-#body-login form fieldset .warning-info,
+#body-login form .warning-info,
 #body-login form input[type="checkbox"]+label {
 	text-align: center;
 	color: #fff;
+}
+
+#body-login form label {
+	color: #fff;
+	text-align: left;
+	margin-bottom: .5rem;
 }
 /* overrides another !important statement that sets this to unreadable black */
 #body-login form .warning input[type="checkbox"]:hover+label,
@@ -274,33 +276,9 @@ a.two-factor-cancel {
 	margin: -13px;
 }
 
-/* position log in button as confirm icon in right of password field */
-#body-login #submit.login {
-	position: absolute;
-	right: 0;
-	top: 0;
-	border: none;
-	background-color: transparent;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
-	opacity: .3;
-}
-#body-login #submit.login:hover,
-#body-login #submit.login:focus {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
-	opacity: .7;
-}
-#body-login input[type="password"],
-#body-login input[name="adminpass-clone"] {
-	padding-right: 40px;
-	box-sizing: border-box;
-	min-width: 269px;
-}
-
 #body-login form {
 	position: relative;
-	width: 280px;
 	margin: 32px auto;
-	padding: 0;
 }
 #body-login form fieldset {
 	margin-bottom: 20px;
@@ -357,9 +335,6 @@ a.two-factor-cancel {
 	font-weight: 300;
 }
 
-#alternative-logins ul {
-	text-align: center;
-}
 
 /* Nicely grouping input field sets */
 .grouptop,
@@ -370,38 +345,100 @@ a.two-factor-cancel {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
-}
-#body-login .grouptop input,
-.grouptop input {
-	margin-bottom: 0 !important;
-	border-bottom: 0 !important;
-	border-bottom-left-radius: 0 !important;
-	border-bottom-right-radius: 0 !important;
-}
-#body-login .groupmiddle input,
-.groupmiddle input {
-	margin-top: 0 !important;
-	margin-bottom: 0 !important;
-	border-top: 0 !important;
-	border-bottom: 0 !important;
-	border-radius: 0 !important;
-	box-shadow: 0 1px 0 rgba(0,0,0,.1) inset !important;
-}
-#body-login .groupbottom input,
-.groupbottom input {
-	margin-top: 0 !important;
-	border-top: 0 !important;
-	border-top-right-radius: 0 !important;
-	border-top-left-radius: 0 !important;
-	box-shadow: 0 1px 0 rgba(0,0,0,.1) inset !important;
-}
-#body-login .groupbottom input[type=submit] {
-	box-shadow: none !important;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	margin-bottom: 1.2rem;
 }
 
-/* keep the labels for screen readers but hide them since we use placeholders */
-label.infield {
+#body-login .grouptop input,
+.grouptop input,
+#body-login .groupmiddle input,
+.groupmiddle input,
+#body-login .groupbottom input,
+.groupbottom input {
+	box-shadow: 0 1px 0 rgba(0,0,0,.1) inset !important;
+}
+
+#body-login .submit-wrap {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	margin-top: 32px;
+}
+
+
+
+.loading-spinner {
 	display: none;
+	position: relative;
+	width: 40px;
+	height: 10px;
+	margin: 0 auto;
+}
+
+/* Disable old loading spinner icon */
+.submit-wrap button#submit.icon-loading-small:after,
+.submit-wrap button#submit.icon-loading-small span {
+	display: none !important;
+}
+
+.submit-wrap button#submit.icon-loading-small {
+	background-image: none !important;
+}
+
+.submit-wrap .icon-loading-small .loading-spinner {
+	display: inline-block;
+}
+
+.loading-spinner div {
+	position: absolute;
+	top: 0;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: #fff;
+	animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.loading-spinner div:nth-child(1) {
+	left: 4px;
+	animation: loading-spinner1 0.6s infinite;
+}
+.loading-spinner div:nth-child(2) {
+	left: 4px;
+	animation: loading-spinner2 0.6s infinite;
+}
+.loading-spinner div:nth-child(3) {
+	left: 16px;
+	animation: loading-spinner2 0.6s infinite;
+}
+.loading-spinner div:nth-child(4) {
+	left: 28px;
+	animation: loading-spinner3 0.6s infinite;
+}
+@keyframes loading-spinner1 {
+	0% {
+	  	transform: scale(0);
+	}
+	100% {
+	  	transform: scale(1);
+	}
+}
+@keyframes loading-spinner3 {
+	0% {
+	  	transform: scale(1);
+	}
+	100% {
+	  	transform: scale(0);
+	}
+}
+@keyframes loading-spinner2 {
+	0% {
+		transform: translate(0, 0);
+	}
+	100% {
+	  	transform: translate(12px, 0);
+	}
 }
 
 #body-login form input[type="checkbox"]+label {
@@ -416,7 +453,7 @@ label.infield {
 	user-select: none;
 }
 
-#body-login form .errors { background:#fed7d7; border:1px solid #f00; list-style-indent:inside; margin:0 0 2em; padding:1em; }
+#body-login form .errors { background:#fed7d7; border:1px solid #f00; list-style-position:inside; margin:0 0 2em; padding:1em; }
 #body-login .success { background:#d7fed7; border:1px solid #0f0; width: 35%; margin: 30px auto; padding:1em; text-align: center;}
 
 #body-login #showAdvanced > img {
@@ -500,11 +537,12 @@ label.infield {
 #body-login .error {
 	display: block;
 	padding: 10px;
-	background-color: rgba(0,0,0,.3);
 	color: #fff;
-	text-align: left;
+	text-align: center;
 	border-radius: 3px;
 	cursor: default;
+	border: 1px solid rgba(255,255,255,.5);
+	margin-bottom: 1rem;
 }
 
 #body-login .update {
@@ -517,10 +555,6 @@ label.infield {
 	text-align: left;
 	margin-left: 25px;
 	margin-right: 25px;
-}
-
-#body-login .v-align {
-	width: inherit;
 }
 
 #body-login .update img.float-spinner {
@@ -564,12 +598,9 @@ label.infield {
 }
 
 /* Fixes for log in page, TODO should be removed some time */
-#body-login .update,
-#body-login .error {
-	margin: 35px auto;
-}
+/* 2021/04: lol */
 #body-login .warning {
-	margin: 0 7px 5px 4px;
+	text-align: center;
 }
 #body-login .warning legend {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -587,44 +618,110 @@ label.infield {
 }
 
 /* Alternative Logins */
-#alternative-logins legend { margin-bottom:10px; }
-#alternative-logins li { height:40px; display:inline-block; white-space:nowrap; }
+form#alternative-logins {
+	border-top: 1px solid rgba(255,255,255,0.8);
+	padding-top: 16px;
+}
+#alternative-logins ul {text-align: center;}
+#alternative-logins legend { margin-bottom:16px; }
+#alternative-logins li {
+	height:40px;
+	display:inline-block;
+	white-space:nowrap;
+	width: 100%;
+	margin-top: 1.2em;
+}
+
+#alternative-logins li:first-child {
+	margin-top: 0;
+}
+
+#alternative-logins li a.button,
+html #body-login input[type="submit"],
+html #body-login button[type="submit"] {
+	display: block;
+	color: #ffffff;
+	border-width: 1px;
+	border-color: rgba(0,0,0,0);
+	font-size: 1rem;
+	font-weight: 600;
+	background-color: #4e85c8;
+	transition: all 300ms ease 0ms;
+	padding: 0.65rem;
+	text-align: center;
+	margin: 0;
+	cursor: pointer;
+}
+
+#alternative-logins li a.button span,
+html #body-login input[type="submit"] span,
+html #body-login button[type="submit"] span {
+	cursor: pointer;
+}
+
+#alternative-logins li a.button:hover,
+html #body-login input[type="submit"]:hover,
+html #body-login button[type="submit"]:hover {
+	color: #ffffff;
+	border-color: rgb(66, 116, 176);
+	border-width: 1px;
+	background-image: initial;
+	background-color: rgb(66, 116, 176);
+}
 
 /* Log in and install button */
 #body-login input {
-	font-size: 20px;
-	margin: 5px;
-	padding: 11px 10px 9px;
+	font-size: 1rem;
+	margin: 0px;
+	padding: 0.65rem;
 }
-#body-login input[type="text"],
-#body-login input[type="password"] {
-	width: 249px;
-}
-#body-login input.login {
+
+#body-login input {
 	width: auto;
-	float: right;
 }
-#body-login input[type="submit"] {
-	padding: 11px 10px 9px; /* larger log in and installation buttons */
-	max-width: 269px;
-}
+
 #remember_login {
 	margin: 18px 5px 0 16px !important;
 }
 #body-login .remember-login-container {
-	margin-top: 10px;
+	margin: 16px 0;
 	text-align: center;
 }
 
-/* Sticky footer */
+#body-login .v-align {
+	width: inherit;
+	padding: 2rem;
+	border-radius: 5px;
+	background-color: rgba(4,30,66,0.83);
+}
+
+/* Force constant vertical height for login box over all devices */
 #body-login .wrapper {
-	min-height: 100%;
 	margin: 0 auto -70px;
-	width: 300px;
+	width: calc(300px + 4rem);
+	min-height: 100vh; /* fix IE11 */
+	display: -webkit-box !important;
+	-webkit-box-orient: horizontal !important;
+	-webkit-box-pack: center !important;
+	-webkit-box-align: center !important;
+	display: -webkit-flex !important;
+	-webkit-flex-direction: row !important;
+	-webkit-align-self: center !important;
+	-webkit-align-items: center !important;
+	display: -moz-box !important;
+	-moz-box-orient: horizontal !important;
+	-moz-box-pack: center !important;
+	-moz-box-align: center !important;
+	display: -ms-flexbox !important;
+	-ms-flex-direction: row !important;
+	-ms-flex-pack: center !important;
+	-ms-flex-align: center !important;
+	display: flex !important;
+	flex-direction: row !important;
+	align-self: center !important;
+	align-items: center !important;
 }
-#body-login footer, #body-login .push {
-	height: 70px;
-}
+
 
 /* round profile photos */
 .avatar,
@@ -927,35 +1024,6 @@ div.crumb:active {
 	margin: -13px;
 }
 
-/* Force constant vertical height for login box over all devices */
-#body-login .wrapper {
-	min-height: 100vh; /* fix IE11 */
-	display: -webkit-box !important;
-	-webkit-box-orient: horizontal !important;
-	-webkit-box-pack: center !important;
-	-webkit-box-align: center !important;
-	display: -webkit-flex !important;
-	-webkit-flex-direction: row !important;
-	-webkit-align-self: center !important;
-	-webkit-align-items: center !important;
-	display: -moz-box !important;
-	-moz-box-orient: horizontal !important;
-	-moz-box-pack: center !important;
-	-moz-box-align: center !important;
-	display: -ms-flexbox !important;
-	-ms-flex-direction: row !important;
-	-ms-flex-pack: center !important;
-	-ms-flex-align: center !important;
-	display: flex !important;
-	flex-direction: row !important;
-	align-self: center !important;
-	align-items: center !important;
-}
-
-#body-login .v-align {
-	margin-top: -120px;
-}
-
 /* LEGACY FIX only - do not use fieldsets for settings */
 fieldset.warning legend, fieldset.update legend {
 	top: 18px;
@@ -980,18 +1048,8 @@ fieldset.warning legend + p, fieldset.update legend + p {
 }
 
 @media only screen and (max-width: 1030px) {
-    #body-login .v-align {
-        margin-top: 30px;
-    }
     #body-login p.info {
         margin: 0 auto;
         padding-top: 35px;
     }
-}
-
-/* IE11 fix for centering the credential fields */
-@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-	#body-login .v-align {
-		margin-top: 30px;
-	}
 }

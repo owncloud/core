@@ -479,36 +479,36 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the username field on the login page should have placeholder text :expectedPlaceholderText
+	 * @Then the username field on the login page should have label text :expectedLabelText
 	 *
-	 * @param string $expectedPlaceholderText
+	 * @param string $expectedLabelText
 	 *
 	 * @return void
 	 */
-	public function usernameFieldOnLoginPageShouldHavePlaceholderText(string $expectedPlaceholderText) {
-		$actualPlaceholderText = $this->loginPage->getUserPlaceholderText();
+	public function usernameFieldOnLoginPageShouldHaveLabelText(string $expectedLabelText) {
+		$actualPLabelText = $this->loginPage->getUserLabelText();
 		Assert::assertEquals(
-			$expectedPlaceholderText,
-			$actualPlaceholderText,
+			$expectedLabelText,
+			$actualPLabelText,
 			__METHOD__
-			. " The username placeholder text was expected to be '$expectedPlaceholderText', but got '$actualPlaceholderText' instead."
+			. " The username label text was expected to be '$expectedLabelText', but got '$actualPLabelText' instead."
 		);
 	}
 
 	/**
-	 * @Then the password field on the login page should have placeholder text :expectedPlaceholderText
+	 * @Then the password field on the login page should have label text :expectedPlaceholderText
 	 *
-	 * @param string $expectedPlaceholderText
+	 * @param string $expectedLabelText
 	 *
 	 * @return void
 	 */
-	public function passwordFieldOnLoginPageShouldHavePlaceholderText(string $expectedPlaceholderText) {
-		$actualPlaceholderText = $this->loginPage->getPasswordPlaceholderText();
+	public function passwordFieldOnLoginPageShouldHaveLabelText(string $expectedLabelText) {
+		$actualLabelText = $this->loginPage->getPasswordLabelText();
 		Assert::assertEquals(
-			$expectedPlaceholderText,
-			$actualPlaceholderText,
+			$expectedLabelText,
+			$actualLabelText,
 			__METHOD__
-			. " The password placeholder text was expected to be '$expectedPlaceholderText', but got '$actualPlaceholderText' instead."
+			. " The password label text was expected to be '$expectedLabelText', but got '$actualLabelText' instead."
 		);
 	}
 

@@ -5,6 +5,8 @@
 		},
 
 		onClickSetPassword : function(event){
+			$('#set-password #submit').addClass('icon-loading-small');
+
 			var passwordObj = $('#password');
 			var retypePasswordObj = $('#retypepassword');
 			passwordObj.parent().removeClass('shake');
@@ -19,6 +21,7 @@
 					OCA.UserManagement.SetPassword._onSetPasswordFail(result);
 				});
 			} else {
+				$('#set-password #submit').removeClass('icon-loading-small');
 				//Password mismatch happened
 				passwordObj.val('');
 				retypePasswordObj.val('');

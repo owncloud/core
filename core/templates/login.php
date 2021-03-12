@@ -11,10 +11,16 @@ script('core', [
 
 <!--[if IE 8]><style>input[type="checkbox"]{padding:0;}</style><![endif]-->
 <form method="post" name="login" autocapitalize="none">
-	<fieldset>
-	<?php if (!empty($_['redirect_url'])) {
-	print_unescaped('<input type="hidden" name="redirect_url" value="' . \OCP\Util::sanitizeHTML($_['redirect_url']) . '">');
+<?php if (!empty($_['accessLink'])) {
+	?>
+			<p class="warning">
+				<?php p($l->t("You are trying to access a private link. Please log in first.")) ?>
+			</p>
+		<?php
 } ?>
+	<?php if (!empty($_['redirect_url'])) {
+		print_unescaped('<input type="hidden" name="redirect_url" value="' . \OCP\Util::sanitizeHTML($_['redirect_url']) . '">');
+	} ?>
 		<?php if (isset($_['apacheauthfailed']) && ($_['apacheauthfailed'])): ?>
 			<div class="warning">
 				<?php p($l->t('Server side authentication failed!')); ?><br>
@@ -44,64 +50,68 @@ script('core', [
 				<?php print_unescaped($_['licenseMessage']); ?>
 			</div>
 		<?php endif; ?>
-		<p class="grouptop<?php if (!empty($_['invalidpassword'])) {
-	?> shake<?php
-} ?>">
+		<div class="grouptop<?php if (!empty($_['invalidpassword'])) {
+		echo ' shake';
+	} ?>">
+			<label for="user" class=""><?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?></label>
+			
 			<input type="text" name="user" id="user"
-				placeholder="<?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?>"
 				value="<?php p($_['loginName']); ?>"
+				aria-label="<?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?>"
 				<?php p($_['user_autofocus'] ? 'autofocus' : ''); ?>
 				autocomplete="on" autocorrect="off" required>
-			<label for="user" class="infield"><?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?></label>
-		</p>
+			
+		</div>
 
-		<p class="groupbottom<?php if (!empty($_['invalidpassword'])) {
-		?> shake<?php
+		<div class="groupbottom<?php if (!empty($_['invalidpassword'])) {
+		echo ' shake';
 	} ?>">
+			<label for="password" class=""><?php p($l->t('Password')); ?></label>
+			
 			<input type="password" name="password" id="password" value=""
-				placeholder="<?php p($l->t('Password')); ?>"
 				<?php p($_['user_autofocus'] ? '' : 'autofocus'); ?>
+				aria-label="<?php p($l->t('Password')); ?>"
 				autocomplete="off" autocorrect="off" required>
-			<label for="password" class="infield"><?php p($l->t('Password')); ?></label>
-			<input type="submit" id="submit" class="login primary icon-confirm" title="<?php p($l->t('Login')); ?>" value="" disabled="disabled"/>
-		</p>
-
-		<?php if (!empty($_['csrf_error'])) {
+		</div>
+		
+		<div class="submit-wrap">
+			<?php if (!empty($_['invalidpassword']) && !empty($_['canResetPassword'])) {
 		?>
-		<p class="warning">
-			<?php p($l->t('You took too long to log in, please try again now')); ?>
-		</p>
-		<?php
-	} ?>
-		<?php if (!empty($_['invalidpassword']) && !empty($_['canResetPassword'])) {
-		?>
-		<a id="lost-password" class="warning" href="<?php p($_['resetPasswordLink']); ?>">
-			<?php p($l->t('Wrong password. Reset it?')); ?>
-		</a>
-		<?php
+				<a id="lost-password" class="warning" href="<?php p($_['resetPasswordLink']); ?>">
+					<?php p($l->t('Wrong password. Reset it?')); ?>
+				</a>
+				<?php
 	} elseif (!empty($_['invalidpassword'])) {
 		?>
-			<p class="warning">
-				<?php p($l->t('Wrong password.')); ?>
-			</p>
-		<?php
+					<p class="warning">
+						<?php p($l->t('Wrong password.')); ?>
+					</p>
+				<?php
 	} ?>
-		<?php if (!empty($_['accessLink'])) {
+
+			<?php if (!empty($_['csrf_error'])) {
 		?>
-			<p class="warning">
-				<?php p($l->t("You are trying to access a private link. Please log in first.")) ?>
-			</p>
-		<?php
+					<p class="warning">
+						<?php p($l->t('You took too long to log in, please try again now')); ?>
+					</p>
+					<?php
 	} ?>
+				
+			<button type="submit" id="submit" class="login-button">
+				<span><?php p($l->t('Login')); ?></span>
+				<div class="loading-spinner"><div></div><div></div><div></div><div></div></div>
+			</button>
+		</div>
+
 		<?php if ($_['rememberLoginAllowed'] === true) : ?>
 		<div class="remember-login-container">
 			<?php if ($_['rememberLoginState'] === 0) {
 		?>
-			<input type="checkbox" name="remember_login" value="1" id="remember_login" class="checkbox checkbox--white">
+			<input type="checkbox" name="remember_login" value="1" id="remember_login" class="checkbox checkbox--white" aria-label="<?php p($l->t('Stay logged in')); ?>">
 			<?php
 	} else {
 		?>
-			<input type="checkbox" name="remember_login" value="1" id="remember_login" class="checkbox checkbox--white" checked="checked">
+			<input type="checkbox" name="remember_login" value="1" id="remember_login" class="checkbox checkbox--white" checked="checked" aria-label="<?php p($l->t('Stay logged in')); ?>">
 			<?php
 	} ?>
 			<label for="remember_login"><?php p($l->t('Stay logged in')); ?></label>
@@ -110,12 +120,11 @@ script('core', [
 		<input type="hidden" name="timezone-offset" id="timezone-offset"/>
 		<input type="hidden" name="timezone" id="timezone"/>
 		<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']) ?>">
-	</fieldset>
+
 </form>
 <?php if (!empty($_['alt_login'])) {
 		?>
 <form id="alternative-logins">
-	<fieldset>
 		<legend><?php p($l->t('Alternative Logins')) ?></legend>
 		<ul>
 			<?php foreach ($_['alt_login'] as $login): ?>
@@ -125,12 +134,11 @@ script('core', [
 				<?php
 		} else {
 			?>
-					<li><a class="button" href="<?php print_unescaped($login['href']); ?>" ><?php p($login['name']); ?></a></li>
-				<?php
+						<li><a class="button" href="<?php print_unescaped($login['href']); ?>" ><?php p($login['name']); ?></a></li>
+					<?php
 		} ?>
 			<?php endforeach; ?>
 		</ul>
-	</fieldset>
 </form>
 <?php
 	}
