@@ -16,6 +16,7 @@ OC.L10N.register(
     "All users. Type to select user or group." : "Todos os usuarios. Escriba para seleccionar usuario ou grupo.",
     "(group)" : "(grupo)",
     "Compatibility with Mac NFD encoding (slow)" : "Compatibilidade coa codificación Mac MFD (lenta)",
+    "Sharing cannot be enabled due to the chosen authentication method" : "Non é posíbel activar o uso compartido por mor do método de autenticación escollido",
     "Unknown auth backend \"{b}\"" : "Infraestrutura de autenticación descoñecida «{b}»",
     "Please make sure that the app that provides this backend is installed and enabled" : "Asegúrese de que a aplicación que fornece esta infraestrutura está instalada e activada ",
     "Admin defined" : "Definido polo administrador",
