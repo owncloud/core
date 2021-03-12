@@ -1,0 +1,6 @@
+Change: Add styling to login form
+
+- Add dedicated login button
+- Login form styling
+
+https://github.com/owncloud/core/pull/38506
