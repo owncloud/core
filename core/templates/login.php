@@ -69,7 +69,7 @@ script('core', [
 		<div class="submit-wrap">
 			<button type="submit" class="login-button">Login</button>
 		</div>
-		
+
 		<?php if (!empty($_['csrf_error'])) {
 		?>
 		<p class="warning">
@@ -119,20 +119,20 @@ script('core', [
 <?php if (!empty($_['alt_login'])) {
 		?>
 <form id="alternative-logins">
-	<legend><?php p($l->t('Alternative Logins')) ?></legend>
-	<ul>
-		<?php foreach ($_['alt_login'] as $login): ?>
-			<?php if (isset($login['img'])) {
+		<legend><?php p($l->t('Alternative Logins')) ?></legend>
+		<ul>
+			<?php foreach ($_['alt_login'] as $login): ?>
+				<?php if (isset($login['img'])) {
+				?>
+					<li><a href="<?php print_unescaped($login['href']); ?>" ><img src="<?php p($login['img']); ?>"/></a></li>
+				<?php
+		} else {
 			?>
-				<li><a href="<?php print_unescaped($login['href']); ?>" ><img src="<?php p($login['img']); ?>"/></a></li>
-			<?php
-	} else {
-		?>
-				<li><a class="button" href="<?php print_unescaped($login['href']); ?>" ><?php p($login['name']); ?></a></li>
-			<?php
-	} ?>
-		<?php endforeach; ?>
-	</ul>
+					<li><a class="button" href="<?php print_unescaped($login['href']); ?>" ><?php p($login['name']); ?></a></li>
+				<?php
+		} ?>
+			<?php endforeach; ?>
+		</ul>
 </form>
 <?php
 	}
