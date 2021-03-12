@@ -67,7 +67,7 @@ script('core', [
 		</div>
 
 		<div class="submit-wrap">
-			<button type="submit" class="login-button">Login</button>
+			<button type="submit" class="login-button"><?php p($l->t('Login')); ?></button>
 		</div>
 
 		<?php if (!empty($_['csrf_error'])) {
