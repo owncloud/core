@@ -11,7 +11,7 @@ script('core', [
 
 <!--[if IE 8]><style>input[type="checkbox"]{padding:0;}</style><![endif]-->
 <form method="post" name="login" autocapitalize="none">
-	<fieldset>
+
 	<?php if (!empty($_['redirect_url'])) {
 	print_unescaped('<input type="hidden" name="redirect_url" value="' . \OCP\Util::sanitizeHTML($_['redirect_url']) . '">');
 } ?>
@@ -55,7 +55,7 @@ script('core', [
 			<label for="user" class="infield"><?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?></label>
 		</p>
 
-		<p class="groupbottom<?php if (!empty($_['invalidpassword'])) {
+		<div class="groupbottom<?php if (!empty($_['invalidpassword'])) {
 		?> shake<?php
 	} ?>">
 			<input type="password" name="password" id="password" value=""
@@ -64,7 +64,12 @@ script('core', [
 				autocomplete="off" autocorrect="off" required>
 			<label for="password" class="infield"><?php p($l->t('Password')); ?></label>
 			<input type="submit" id="submit" class="login primary icon-confirm" title="<?php p($l->t('Login')); ?>" value="" disabled="disabled"/>
-		</p>
+		</div>
+
+		<div class="submit-wrap">
+			<button type="submit" class="login-button">Login</button>
+		</div>
+		
 
 		<?php if (!empty($_['csrf_error'])) {
 		?>
@@ -110,27 +115,25 @@ script('core', [
 		<input type="hidden" name="timezone-offset" id="timezone-offset"/>
 		<input type="hidden" name="timezone" id="timezone"/>
 		<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']) ?>">
-	</fieldset>
+
 </form>
 <?php if (!empty($_['alt_login'])) {
 		?>
 <form id="alternative-logins">
-	<fieldset>
-		<legend><?php p($l->t('Alternative Logins')) ?></legend>
-		<ul>
-			<?php foreach ($_['alt_login'] as $login): ?>
-				<?php if (isset($login['img'])) {
-			?>
-					<li><a href="<?php print_unescaped($login['href']); ?>" ><img src="<?php p($login['img']); ?>"/></a></li>
-				<?php
-		} else {
-			?>
-					<li><a class="button" href="<?php print_unescaped($login['href']); ?>" ><?php p($login['name']); ?></a></li>
-				<?php
-		} ?>
-			<?php endforeach; ?>
-		</ul>
-	</fieldset>
+	<legend><?php p($l->t('Alternative Logins')) ?></legend>
+	<ul>
+		<?php foreach ($_['alt_login'] as $login): ?>
+			<?php if (isset($login['img'])) {
+		?>
+				<li><a href="<?php print_unescaped($login['href']); ?>" ><img src="<?php p($login['img']); ?>"/></a></li>
+			<?php
+	} else {
+		?>
+				<li><a class="button" href="<?php print_unescaped($login['href']); ?>" ><?php p($login['name']); ?></a></li>
+			<?php
+	} ?>
+		<?php endforeach; ?>
+	</ul>
 </form>
 <?php
 	}
