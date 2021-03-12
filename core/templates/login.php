@@ -70,7 +70,6 @@ script('core', [
 			<button type="submit" class="login-button">Login</button>
 		</div>
 		
-
 		<?php if (!empty($_['csrf_error'])) {
 		?>
 		<p class="warning">
@@ -124,7 +123,7 @@ script('core', [
 	<ul>
 		<?php foreach ($_['alt_login'] as $login): ?>
 			<?php if (isset($login['img'])) {
-		?>
+			?>
 				<li><a href="<?php print_unescaped($login['href']); ?>" ><img src="<?php p($login['img']); ?>"/></a></li>
 			<?php
 	} else {
