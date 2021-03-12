@@ -52,6 +52,8 @@ class DetailsDialog extends OwncloudPage {
 	];
 	private $tabSwitchBtnXpath = "//li[@data-tabid='%s']";
 	private $tagsContainer = "//div[@class='systemTagsInputFieldContainer']";
+	private $tagList = "//span[@class='system-tag-list-item']";
+	private $tagSearchChoiceXpath = "//li[@class='select2-search-choice']" . "//span[@class='label']";
 
 	private $tagsInputXpath = "//li[@class='select2-search-field']//input";
 
@@ -443,6 +445,24 @@ class DetailsDialog extends OwncloudPage {
 	}
 
 	/**
+	 * Get tag list items from the tag list
+	 *
+	 * @return NodeElement[]
+	 */
+	public function getTagsListItems() {
+		return $this->findAll("xpath", $this->getTagsListXpath());
+	}
+
+	/**
+	 * Get tag items from the tag input field
+	 *
+	 * @return NodeElement[]
+	 */
+	public function getTagsItemsFromTagInputField() {
+		return $this->findAll("xpath", $this->getTagsInputFieldItemsXpath());
+	}
+
+	/**
 	 * Add a tag on the files in the details dialog
 	 *
 	 * @param string $tagName
@@ -551,6 +571,24 @@ class DetailsDialog extends OwncloudPage {
 	 */
 	public function getTagsDropDownResultsXpath() {
 		return $this->tagsDropDownResultXpath;
+	}
+
+	/**
+	 * Returns xpath of the tag list
+	 *
+	 * @return string
+	 */
+	public function getTagsListXpath() {
+		return $this->tagList;
+	}
+
+	/**
+	 * Returns xpath of the tag search choices in the tag input field
+	 *
+	 * @return string
+	 */
+	public function getTagsInputFieldItemsXpath() {
+		return $this->tagSearchChoiceXpath;
 	}
 
 	/**

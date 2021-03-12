@@ -23,6 +23,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Gherkin\Node\TableNode;
 use Page\FilesPage;
 use Page\TagsPage;
 use PHPUnit\Framework\Assert;
@@ -39,6 +40,12 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	 * @var FilesPage
 	 */
 	private $filesPage;
+
+	/**
+	 *
+	 * @var FeatureContext
+	 */
+	private $featureContext;
 
 	/**
 	 *
@@ -66,6 +73,30 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	) {
 		$this->filesPage = $filesPage;
 		$this->tagsPage = $tagsPage;
+	}
+
+	/**
+	 * Checks and asserts that the expected tags are displayed.
+	 *
+	 * @param $results
+	 * @param TableNode $ExpectedTags
+	 *
+	 * @return void
+	 */
+	public function assertTheExpectedTagsAreDisplayed($results, $ExpectedTags) {
+		$displayedTags = [];
+		foreach ($results as $tagResult) {
+			$tag = $tagResult->getText();
+			\array_push($displayedTags, $tag);
+		};
+		foreach ($ExpectedTags as $tag) {
+			$tagName = $tag['name'];
+			Assert::assertContains(
+				$tagName,
+				$displayedTags,
+				"Tagname $tagName was not displayed in the tag list"
+			);
+		}
 	}
 
 	/**
@@ -165,6 +196,34 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then /^the following tags should be displayed in the tag list in the webUI$/
+	 *
+	 * @param TableNode $tags
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theFollowingTagsShouldBeDisplayedOnTheTagListOnWebUI($tags) {
+		$this->featureContext->verifyTableNodeColumns($tags, ['name']);
+		$results = $this->filesPage->getDetailsDialog()->getTagsListItems();
+		$this->assertTheExpectedTagsAreDisplayed($results, $tags);
+	}
+
+	/**
+	 * @Then /^the following tags should be displayed in the tag input field in the webUI$/
+	 *
+	 * @param TableNode $tags
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theFollowingTagsShouldBeDisplayedOnTheTagInputFieldOnWebUI($tags) {
+		$this->featureContext->verifyTableNodeColumns($tags, ['name']);
+		$results = $this->filesPage->getDetailsDialog()->getTagsItemsFromTagInputField();
+		$this->assertTheExpectedTagsAreDisplayed($results, $tags);
+	}
+
+	/**
 	 * @Then tag :tagName should not be listed in the dropdown list on the webUI
 	 *
 	 * @param string $tagName
@@ -207,5 +266,6 @@ class WebUITagsContext extends RawMinkContext implements Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->tagsContext = $environment->getContext('TagsContext');
+		$this->featureContext = $environment->getContext('FeatureContext');
 	}
 }
