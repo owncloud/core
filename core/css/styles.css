@@ -357,10 +357,6 @@ a.two-factor-cancel {
 	font-weight: 300;
 }
 
-#alternative-logins ul {
-	text-align: center;
-}
-
 /* Nicely grouping input field sets */
 .grouptop,
 .groupmiddle,
@@ -587,8 +583,42 @@ label.infield {
 }
 
 /* Alternative Logins */
-#alternative-logins legend { margin-bottom:10px; }
-#alternative-logins li { height:40px; display:inline-block; white-space:nowrap; }
+form#alternative-logins {
+	border-top: 1px solid rgba(255,255,255,0.8);
+	padding-top: 16px;
+}
+#alternative-logins ul {text-align: center;}
+#alternative-logins legend { margin-bottom:16px; }
+#alternative-logins li {
+	height:40px;
+	display:inline-block;
+	white-space:nowrap;
+	width: 100%;
+	margin-top: 1.2em;
+}
+
+#alternative-logins li:first-child {
+	margin-top: 0;
+}
+
+#alternative-logins li a.button {
+	display: block;
+	color: #ffffff !important;
+	border-width: 1px !important;
+	border-color: rgba(0,0,0,0);
+	font-weight: 600 !important;
+	background-color: #4e85c8;
+	transition: all 300ms ease 0ms;
+	padding: .45rem 1.5em;
+}
+
+#alternative-logins li a.button:hover {
+	color: #ffffff !important;
+	border-color: rgba(78,133,200,0.8) !important;
+	border-width: 1px !important;
+	background-image: initial;
+	background-color: rgba(78,133,200,0.8);
+}
 
 /* Log in and install button */
 #body-login input {
