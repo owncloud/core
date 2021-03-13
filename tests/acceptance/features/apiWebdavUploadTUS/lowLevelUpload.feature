@@ -9,6 +9,7 @@ Feature: low level tests for upload of chunks
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
       | Upload-Length   | 10                    |
+      #    ZmlsZS50eHQ= is the base64 encode of file.txt
       | Upload-Metadata | filename ZmlsZS50eHQ= |
     When user "Alice" sends a chunk to the last created TUS Location with offset "0" and data "123" using the WebDAV API
     And user "Alice" sends a chunk to the last created TUS Location with offset "0" and data "000" using the WebDAV API
@@ -24,6 +25,7 @@ Feature: low level tests for upload of chunks
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
       | Upload-Length   | 10                    |
+      #    ZmlsZS50eHQ= is the base64 encode of file.txt
       | Upload-Metadata | filename ZmlsZS50eHQ= |
     When user "Alice" sends a chunk to the last created TUS Location with offset "0" and data "123" using the WebDAV API
     And user "Alice" sends a chunk to the last created TUS Location with offset "0" and data "000" using the WebDAV API
@@ -40,6 +42,7 @@ Feature: low level tests for upload of chunks
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
       | Upload-Length   | 10                    |
+      #    ZmlsZS50eHQ= is the base64 encode of file.txt
       | Upload-Metadata | filename ZmlsZS50eHQ= |
     When user "Alice" sends a chunk to the last created TUS Location with offset "0" and data "123" using the WebDAV API
     And user "Alice" sends a chunk to the last created TUS Location with offset "3" and data "4567890" using the WebDAV API
@@ -56,6 +59,7 @@ Feature: low level tests for upload of chunks
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
       | Upload-Length   | 10                    |
+      #    ZmlsZS50eHQ= is the base64 encode of file.txt
       | Upload-Metadata | filename ZmlsZS50eHQ= |
     When user "Alice" sends a chunk to the last created TUS Location with offset "1" and data "123" using the WebDAV API
     Then the HTTP status code should be "409"

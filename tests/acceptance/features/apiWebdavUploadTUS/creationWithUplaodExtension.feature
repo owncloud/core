@@ -10,6 +10,7 @@ Feature: tests of the creation extension see https://tus.io/protocols/resumable-
       | Upload-Length   | 100                             |
       | Tus-Resumable   | 1.0.0                           |
       | Content-Type    | application/offset+octet-stream |
+      #    dGVzdC50eHQ= is the base64 encode of test.txt
       | Upload-Metadata | filename dGVzdC50eHQ=           |
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions
@@ -20,6 +21,7 @@ Feature: tests of the creation extension see https://tus.io/protocols/resumable-
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: creating a new resource and upload data in multiple bytes using creation with upload extension
     Given using <dav_version> DAV path
