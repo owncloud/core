@@ -35,6 +35,7 @@ class Google_Service_ShoppingContent extends Google_Service
       "https://www.googleapis.com/auth/content";
 
   public $accounts;
+  public $accounts_credentials;
   public $accounts_labels;
   public $accounts_returncarrier;
   public $accountstatuses;
@@ -253,6 +254,26 @@ class Google_Service_ShoppingContent extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'accountId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->accounts_credentials = new Google_Service_ShoppingContent_Resource_AccountsCredentials(
+        $this,
+        $this->serviceName,
+        'credentials',
+        array(
+          'methods' => array(
+            'create' => array(
+              'path' => 'content/v2.1/accounts/{accountId}/credentials',
+              'httpMethod' => 'POST',
+              'parameters' => array(
                 'accountId' => array(
                   'location' => 'path',
                   'type' => 'string',

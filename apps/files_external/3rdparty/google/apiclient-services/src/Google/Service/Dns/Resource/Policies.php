@@ -26,7 +26,7 @@
 class Google_Service_Dns_Resource_Policies extends Google_Service_Resource
 {
   /**
-   * Creates a new Policy (policies.create)
+   * Creates a new Policy. (policies.create)
    *
    * @param string $project Identifies the project addressed by this request.
    * @param Google_Service_Dns_Policy $postBody
@@ -44,7 +44,7 @@ class Google_Service_Dns_Resource_Policies extends Google_Service_Resource
     return $this->call('create', array($params), "Google_Service_Dns_Policy");
   }
   /**
-   * Delete a previously created Policy. Fails if the policy is still being
+   * Deletes a previously created Policy. Fails if the policy is still being
    * referenced by a network. (policies.delete)
    *
    * @param string $project Identifies the project addressed by this request.

@@ -185,7 +185,7 @@ class SSH2
      * @var object
      * @access private
      */
-    protected $fsock;
+    public $fsock;
 
     /**
      * Execution Bitmap

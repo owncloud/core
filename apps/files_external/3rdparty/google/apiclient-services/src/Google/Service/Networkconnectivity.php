@@ -37,9 +37,9 @@ class Google_Service_Networkconnectivity extends Google_Service
 
   public $projects_locations;
   public $projects_locations_global_hubs;
+  public $projects_locations_internalRanges;
   public $projects_locations_operations;
   public $projects_locations_policyBasedRoutes;
-  public $projects_locations_privateRanges;
   public $projects_locations_spokes;
 
   /**
@@ -229,6 +229,50 @@ class Google_Service_Networkconnectivity extends Google_Service
           )
         )
     );
+    $this->projects_locations_internalRanges = new Google_Service_Networkconnectivity_Resource_ProjectsLocationsInternalRanges(
+        $this,
+        $this->serviceName,
+        'internalRanges',
+        array(
+          'methods' => array(
+            'getIamPolicy' => array(
+              'path' => 'v1alpha1/{+resource}:getIamPolicy',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'resource' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'options.requestedPolicyVersion' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+              ),
+            ),'setIamPolicy' => array(
+              'path' => 'v1alpha1/{+resource}:setIamPolicy',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'resource' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'testIamPermissions' => array(
+              'path' => 'v1alpha1/{+resource}:testIamPermissions',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'resource' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
     $this->projects_locations_operations = new Google_Service_Networkconnectivity_Resource_ProjectsLocationsOperations(
         $this,
         $this->serviceName,
@@ -295,50 +339,6 @@ class Google_Service_Networkconnectivity extends Google_Service
         $this,
         $this->serviceName,
         'policyBasedRoutes',
-        array(
-          'methods' => array(
-            'getIamPolicy' => array(
-              'path' => 'v1alpha1/{+resource}:getIamPolicy',
-              'httpMethod' => 'GET',
-              'parameters' => array(
-                'resource' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'options.requestedPolicyVersion' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-              ),
-            ),'setIamPolicy' => array(
-              'path' => 'v1alpha1/{+resource}:setIamPolicy',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'resource' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),'testIamPermissions' => array(
-              'path' => 'v1alpha1/{+resource}:testIamPermissions',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'resource' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),
-          )
-        )
-    );
-    $this->projects_locations_privateRanges = new Google_Service_Networkconnectivity_Resource_ProjectsLocationsPrivateRanges(
-        $this,
-        $this->serviceName,
-        'privateRanges',
         array(
           'methods' => array(
             'getIamPolicy' => array(

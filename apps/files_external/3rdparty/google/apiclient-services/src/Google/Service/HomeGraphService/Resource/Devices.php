@@ -67,6 +67,22 @@ class Google_Service_HomeGraphService_Resource_Devices extends Google_Service_Re
     return $this->call('reportStateAndNotification', array($params), "Google_Service_HomeGraphService_ReportStateAndNotificationResponse");
   }
   /**
+   * Sends an account linking suggestion to users associated with any potential
+   * Cast devices detected by third-party devices. This request must be authorized
+   * using service account credentials from your Actions console project.
+   * (devices.requestLink)
+   *
+   * @param Google_Service_HomeGraphService_RequestLinkRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_HomeGraphService_HomegraphEmpty
+   */
+  public function requestLink(Google_Service_HomeGraphService_RequestLinkRequest $postBody, $optParams = array())
+  {
+    $params = array('postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('requestLink', array($params), "Google_Service_HomeGraphService_HomegraphEmpty");
+  }
+  /**
    * Requests Google to send an `action.devices.SYNC` [intent](https://developers.
    * google.com/assistant/smarthome/reference/intent/sync) to your smart home
    * Action to update device metadata for the given user. The third-party user's

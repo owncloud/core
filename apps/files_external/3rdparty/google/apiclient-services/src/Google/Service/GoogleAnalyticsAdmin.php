@@ -163,6 +163,16 @@ class Google_Service_GoogleAnalyticsAdmin extends Google_Service
               'path' => 'v1alpha/accounts:provisionAccountTicket',
               'httpMethod' => 'POST',
               'parameters' => array(),
+            ),'searchChangeHistoryEvents' => array(
+              'path' => 'v1alpha/{+account}:searchChangeHistoryEvents',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'account' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
             ),
           )
         )

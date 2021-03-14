@@ -26,6 +26,7 @@ class Google_Service_Dataflow_Environment extends Google_Collection
   public $sdkPipelineOptions;
   public $serviceAccountEmail;
   public $serviceKmsKeyName;
+  public $serviceOptions;
   public $shuffleMode;
   public $tempStoragePrefix;
   public $userAgent;
@@ -98,6 +99,14 @@ class Google_Service_Dataflow_Environment extends Google_Collection
   public function getServiceKmsKeyName()
   {
     return $this->serviceKmsKeyName;
+  }
+  public function setServiceOptions($serviceOptions)
+  {
+    $this->serviceOptions = $serviceOptions;
+  }
+  public function getServiceOptions()
+  {
+    return $this->serviceOptions;
   }
   public function setShuffleMode($shuffleMode)
   {

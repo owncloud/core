@@ -17,11 +17,20 @@
 
 class Google_Service_DataprocMetastore_MetadataExport extends Google_Model
 {
+  public $databaseDumpType;
   public $destinationGcsUri;
   public $endTime;
   public $startTime;
   public $state;
 
+  public function setDatabaseDumpType($databaseDumpType)
+  {
+    $this->databaseDumpType = $databaseDumpType;
+  }
+  public function getDatabaseDumpType()
+  {
+    return $this->databaseDumpType;
+  }
   public function setDestinationGcsUri($destinationGcsUri)
   {
     $this->destinationGcsUri = $destinationGcsUri;

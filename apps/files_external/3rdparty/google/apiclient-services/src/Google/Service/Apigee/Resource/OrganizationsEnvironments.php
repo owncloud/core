@@ -133,6 +133,22 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironments extends Google_Se
     return $this->call('getIamPolicy', array($params), "Google_Service_Apigee_GoogleIamV1Policy");
   }
   /**
+   * Get distributed trace configuration in an environment.
+   * (environments.getTraceConfig)
+   *
+   * @param string $name Required. Name of the trace configuration. Use the
+   * following structure in your request:
+   * "organizations/environments/traceConfig".
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1TraceConfig
+   */
+  public function getTraceConfig($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('getTraceConfig', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1TraceConfig");
+  }
+  /**
    * Sets the IAM policy on an environment, if the policy already exists it will
    * be replaced. For more information, see [Manage users, roles, and permissions
    * using the API](https://cloud.google.com/apigee/docs/api-platform/system-
@@ -262,5 +278,26 @@ class Google_Service_Apigee_Resource_OrganizationsEnvironments extends Google_Se
     $params = array('name' => $name, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('updateEnvironment', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1Environment");
+  }
+  /**
+   * Updates the trace configurations in an environment. Note that the repeated
+   * fields have replace semantics when included in the field mask and that they
+   * will be overwritten by the value of the fields in the request body.
+   * (environments.updateTraceConfig)
+   *
+   * @param string $name Required. Name of the trace configuration. Use the
+   * following structure in your request:
+   * "organizations/environments/traceConfig".
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1TraceConfig $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask List of fields to be updated.
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1TraceConfig
+   */
+  public function updateTraceConfig($name, Google_Service_Apigee_GoogleCloudApigeeV1TraceConfig $postBody, $optParams = array())
+  {
+    $params = array('name' => $name, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('updateTraceConfig', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1TraceConfig");
   }
 }

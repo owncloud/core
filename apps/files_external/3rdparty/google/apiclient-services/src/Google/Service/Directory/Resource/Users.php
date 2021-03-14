@@ -94,6 +94,8 @@ class Google_Service_Directory_Resource_Users extends Google_Service_Resource
    * only one domain. To return all domains for a customer account, use the
    * `customer` query parameter instead. Either the `customer` or the `domain`
    * parameter must be provided.
+   * @opt_param string event Event on which subscription is intended (if
+   * subscribing)
    * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string orderBy Property to use for sorting results.
    * @opt_param string pageToken Token to specify next page in the list

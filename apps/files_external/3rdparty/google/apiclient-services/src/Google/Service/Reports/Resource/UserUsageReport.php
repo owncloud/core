@@ -33,7 +33,8 @@ class Google_Service_Reports_Resource_UserUsageReport extends Google_Service_Res
    *
    * @param string $userKey Represents the profile ID or the user email for which
    * the data should be filtered. Can be `all` for all information, or `userKey`
-   * for a user's unique G Suite profile ID or their primary email address.
+   * for a user's unique Google Workspace profile ID or their primary email
+   * address.
    * @param string $date Represents the date the usage occurred. The timestamp is
    * in the ISO 8601 format, yyyy-mm-dd. We recommend you use your account's time
    * zone for this.
