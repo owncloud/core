@@ -104,3 +104,27 @@ Feature: Creation of tags
     Given the administrator has created a "static" tag with name "StaticTag"
     When the administrator creates a "static" tag with name "StaticTag" using the WebDAV API
     Then the HTTP status code should be "409"
+
+  Scenario: Creating tags in lowercase and uppercase should work
+    When the administrator creates a "normal" tag with name "UppercaseTag" using the WebDAV API
+    Then the HTTP status code should be "201"
+    When the administrator creates a "normal" tag with name "lowercasetag" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the following tags should exist for the administrator
+      | name         | type   |
+      | UppercaseTag | normal |
+      | lowercasetag | normal |
+
+  Scenario: Creating tags with the same name in lowercase and uppercase should work
+    When the administrator creates a "normal" tag with name "testtag" using the WebDAV API
+    Then the HTTP status code should be "201"
+    When the administrator creates a "normal" tag with name "Testtag" using the WebDAV API
+    Then the HTTP status code should be "201"
+    When the administrator creates a "normal" tag with name "TESTTAG" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the following tags should exist for the administrator
+      | name    | type   |
+      | testtag | normal |
+      | Testtag | normal |
+      | TESTTAG | normal |
+
