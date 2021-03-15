@@ -246,3 +246,40 @@ Feature: upload file to shared folder
       | dav_version |
       | old         |
       | new         |
+
+
+  Scenario Outline: Sharer uploads a file with checksum and as a sharee overwrites the shared file with new data and correct checksum
+    Given using <dav_version> DAV path
+    And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
+      | Upload-Length   | 16                                     |
+      | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
+    And user "Alice" has uploaded file with checksum "SHA1 c1dab0c0864b6ac9bdd3743a1408d679f1acd823" to the last created TUS Location with offset "0" and content "original content" using the TUS protocol on the WebDAV API
+    And user "Alice" has shared file "/textFile.txt" with user "Brian"
+    And user "Brian" has accepted share "/textFile.txt" offered by user "Alice"
+   When user "Brian" overwrites recently shared file with offset "0" and data "overwritten content" with checksum "SHA1 fe990d2686a0fc86004efc31f5bf2475a45d4905" using the TUS protocol on the WebDAV API with these headers:
+      | Upload-Length   | 19                         |
+      | Upload-Metadata | filename L1NoYXJlcy90ZXh0RmlsZS50eHQ= |
+    Then the content of file "/textFile.txt" for user "Alice" should be "overwritten content"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+
+  Scenario Outline: Sharer uploads a file with checksum and as a sharee overwrites the shared file with new data and invalid checksum
+    Given using <dav_version> DAV path
+    And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
+      | Upload-Length   | 16                                     |
+      | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
+    And user "Alice" has uploaded file with checksum "SHA1 c1dab0c0864b6ac9bdd3743a1408d679f1acd823" to the last created TUS Location with offset "0" and content "original content" using the TUS protocol on the WebDAV API
+    And user "Alice" has shared file "/textFile.txt" with user "Brian"
+    And user "Brian" has accepted share "/textFile.txt" offered by user "Alice"
+    When user "Brian" overwrites recently shared file with offset "0" and data "overwritten content" with checksum "SHA1 fe990d2686a0fc86004efc31f5bf2475a45d4906" using the TUS protocol on the WebDAV API with these headers:
+      | Upload-Length   | 19                         |
+      | Upload-Metadata | filename L1NoYXJlcy90ZXh0RmlsZS50eHQ= |
+    Then the HTTP status code should be "406"
+    And the content of file "/textFile.txt" for user "Alice" should be "original content"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |

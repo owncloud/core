@@ -410,4 +410,23 @@ class TUSContext implements Context {
 		$this->sendsAChunkToTUSLocationWithOffsetAndData($user, $offset, $data, $checksum);
 		$this->featureContext->theHTTPStatusCodeShouldBe(204, "");
 	}
+
+	/**
+	 * @When user :user overwrites recently shared file with offset :offset and data :data with checksum :checksum using the TUS protocol on the WebDAV API with these headers:
+	 * @When user :user overwrites existing file with offset :offset and data :data with checksum :checksum using the TUS protocol on the WebDAV API with these headers:
+	 *
+	 * @param string $user
+	 * @param string $offset
+	 * @param string $data
+	 * @param string $checksum
+	 * @param TableNode $headers Tus-Resumable: 1.0.0 header is added automatically
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 */
+	public function userOverwritesFileWithChecksum($user, $offset, $data, $checksum, TableNode $headers) {
+		$this->createNewTUSresource($user, $headers);
+		$this->userHasUploadedChunkFileWithChecksum($user, $offset, $data, $checksum);
+	}
 }
