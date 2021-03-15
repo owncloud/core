@@ -586,7 +586,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
-
+  @skipOnOcV10.5 @skipOnOcV10.6.0
   Scenario Outline: empty search for sharees when search min length is set to 2
     Given the administrator has updated system config key "user.search_min_length" with value "2"
     And user "sharee2" has been created with default attributes and small skeleton files
@@ -682,7 +682,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
-
+  @skipOnOcV10.5 @skipOnOcV10.6.0
   Scenario Outline: search for sharees without search when min length is set to 2
     Given the administrator has updated system config key "user.search_min_length" with value "2"
     And user "sharee2" has been created with default attributes and small skeleton files
