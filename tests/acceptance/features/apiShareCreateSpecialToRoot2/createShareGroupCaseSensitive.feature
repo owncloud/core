@@ -2,7 +2,10 @@
 Feature: share with groups, group names are case-sensitive
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "ownCloud test text file 1" to "/textfile1.txt"
+    And user "Alice" has uploaded file with content "ownCloud test text file 2" to "/textfile2.txt"
+    And user "Alice" has uploaded file with content "ownCloud test text file 3" to "/textfile3.txt"
 
   @skipOnLDAP @issue-ldap-250
   Scenario Outline: group names are case-sensitive, sharing with groups with different upper and lower case names
@@ -21,15 +24,15 @@ Feature: share with groups, group names are case-sensitive
     When user "Alice" shares file "textfile1.txt" with group "<group_id1>" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the content of file "textfile1.txt" for user "Brian" should be "ownCloud test text file 1" plus end-of-line
+    And the content of file "textfile1.txt" for user "Brian" should be "ownCloud test text file 1"
     When user "Alice" shares folder "textfile2.txt" with group "<group_id2>" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the content of file "textfile2.txt" for user "Carol" should be "ownCloud test text file 2" plus end-of-line
+    And the content of file "textfile2.txt" for user "Carol" should be "ownCloud test text file 2"
     When user "Alice" shares folder "textfile3.txt" with group "<group_id3>" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the content of file "textfile3.txt" for user "David" should be "ownCloud test text file 3" plus end-of-line
+    And the content of file "textfile3.txt" for user "David" should be "ownCloud test text file 3"
     Examples:
       | ocs_api_version | group_id1            | group_id2            | group_id3            | ocs_status_code |
       | 1               | case-sensitive-group | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | 100             |
@@ -56,7 +59,7 @@ Feature: share with groups, group names are case-sensitive
       | path        | /textfile1.txt    |
       | permissions | share,read,update |
       | uid_owner   | %username%        |
-    And the content of file "textfile1.txt" for user "Brian" should be "ownCloud test text file 1" plus end-of-line
+    And the content of file "textfile1.txt" for user "Brian" should be "ownCloud test text file 1"
     When user "Alice" shares file "textfile2.txt" with group "<group_id2>" using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"

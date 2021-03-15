@@ -2,22 +2,23 @@
 Feature: share resources where the sharee receives the share in multiple ways
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
 
   Scenario Outline: Creating a new share with user who already received a share through their group
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
-    And user "Alice" has shared file "welcome.txt" with group "grp1"
-    When user "Alice" shares file "/welcome.txt" with user "Brian" using the sharing API
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
+    And user "Alice" has shared file "textfile0.txt" with group "grp1"
+    When user "Alice" shares file "/textfile0.txt" with user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | share_with             | %username%        |
       | share_with_displayname | %displayname%     |
-      | file_target            | /welcome.txt      |
-      | path                   | /welcome.txt      |
+      | file_target            | /textfile0.txt      |
+      | path                   | /textfile0.txt      |
       | permissions            | share,read,update |
       | uid_owner              | %username%        |
       | displayname_owner      | %displayname%     |
@@ -33,17 +34,18 @@ Feature: share resources where the sharee receives the share in multiple ways
   @issue-ocis-reva-243
   Scenario Outline: Share of folder and sub-folder to same user - core#20645
     Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp4" has been created
     And user "Brian" has been added to group "grp4"
+    And user "ALice" has created folder "PARENT"
+    And user "Alice" has created folder "PARENT/CHILD"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/parent.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/CHILD/child.txt"
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
     And user "Alice" shares folder "/PARENT/CHILD" with group "grp4" using the sharing API
     Then user "Brian" should see the following elements
-      | /FOLDER/                 |
       | /PARENT/                 |
       | /PARENT/parent.txt       |
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
       | /CHILD/                  |
       | /CHILD/child.txt         |
     And the OCS status code should be "<ocs_status_code>"

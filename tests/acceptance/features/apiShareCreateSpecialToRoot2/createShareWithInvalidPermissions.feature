@@ -2,36 +2,52 @@
 Feature: cannot share resources with invalid permissions
 
   Background:
-    Given user "Alice" has been created with default attributes and without skeleton files
-    And user "Alice" has uploaded file with content "some data" to "/textfile0.txt"
-    And user "Alice" has created folder "/PARENT"
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
 
-  Scenario Outline: Cannot create a share of a file or folder with invalid permissions
+  Scenario Outline: Cannot create a share of a file with invalid permissions
     Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" creates a share using the sharing API with settings
-      | path        | <item>        |
+      | path        | textfile0.txt |
       | shareWith   | Brian         |
       | shareType   | user          |
       | permissions | <permissions> |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
-    And as "Brian" entry "<item>" should not exist
+    And as "Brian" entry "/textfile0.txt" should not exist
     Examples:
-      | ocs_api_version | ocs_status_code | http_status_code | item          | permissions |
-      | 1               | 400             | 200              | textfile0.txt | 0           |
-      | 2               | 400             | 400              | textfile0.txt | 0           |
-      | 1               | 400             | 200              | PARENT        | 0           |
-      | 2               | 400             | 400              | PARENT        | 0           |
-      | 1               | 404             | 200              | textfile0.txt | 32          |
-      | 2               | 404             | 404              | textfile0.txt | 32          |
-      | 1               | 404             | 200              | PARENT        | 32          |
-      | 2               | 404             | 404              | PARENT        | 32          |
+      | ocs_api_version | ocs_status_code | http_status_code | permissions |
+      | 1               | 400             | 200              | 0           |
+      | 2               | 400             | 400              | 0           |
+      | 1               | 404             | 200              | 32          |
+      | 2               | 404             | 404              | 32          |
+
+
+  Scenario Outline: Cannot create a share of a folder with invalid permissions
+    Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "PARENT"
+    When user "Alice" creates a share using the sharing API with settings
+      | path        | PARENT        |
+      | shareWith   | Brian         |
+      | shareType   | user          |
+      | permissions | <permissions> |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And as "Brian" entry "PARENT" should not exist
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code | permissions |
+      | 1               | 400             | 200              | 0           |
+      | 2               | 400             | 400              | 0           |
+      | 1               | 404             | 200              | 32          |
+      | 2               | 404             | 404              | 32          |
 
   @issue-ocis-reva-45 @issue-ocis-reva-243
   Scenario Outline: Cannot create a share of a file with a user with only create permission
     Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareWith   | Brian         |
@@ -48,7 +64,7 @@ Feature: cannot share resources with invalid permissions
   @issue-ocis-reva-45 @issue-ocis-reva-243
   Scenario Outline: Cannot create a share of a file with a user with only (create,delete) permission
     Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareWith   | Brian         |
@@ -67,9 +83,9 @@ Feature: cannot share resources with invalid permissions
   @issue-ocis-reva-34
   Scenario Outline: Cannot create a share of a file with a group with only create permission
     Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareWith   | grp1          |
@@ -86,9 +102,9 @@ Feature: cannot share resources with invalid permissions
   @issue-ocis-reva-34
   Scenario Outline: Cannot create a share of a file with a group with only (create,delete) permission
     Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareWith   | grp1          |

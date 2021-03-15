@@ -2,7 +2,7 @@
 Feature: share resources with a disabled user
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
 
   Scenario Outline: Creating a new share with a disabled user
     Given using OCS API version "<ocs_api_version>"
