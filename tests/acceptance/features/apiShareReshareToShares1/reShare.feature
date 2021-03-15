@@ -238,3 +238,54 @@ Feature: sharing
       | 2               | 404              | 19                   | 11                  |
       | 1               | 200              | 23                   | 15                  |
       | 2               | 404              | 23                   | 15                  |
+
+
+  Scenario Outline: Reshare a file with same name as a deleted file
+    Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
+    And user "Alice" has deleted file "textfile0.txt"
+    And user "Alice" has uploaded file with content "ownCloud new test text file 0" to "/textfile0.txt"
+    When user "Alice" shares file "textfile0.txt" with user "Brian" using the sharing API
+    And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud new test text file 0"
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+
+  Scenario Outline: Reshare a folder with same name as a deleted folder
+    Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has shared folder "PARENT" with user "Brian"
+    And user "Brian" has accepted share "/PARENT" offered by user "Alice"
+    And user "Alice" has deleted folder "PARENT"
+    And user "Alice" has created folder "/PARENT"
+    When user "Alice" shares folder "PARENT" with user "Brian" using the sharing API
+    And user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And as "Brian" folder "/Shares/PARENT" should exist
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+
+  Scenario Outline: Reshare a folder with same name as a deleted file
+    Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
+    And user "Alice" has deleted file "/textfile0.txt"
+    And user "Alice" has created folder "/textfile0.txt"
+    When user "Alice" shares folder "textfile0.txt" with user "Brian" using the sharing API
+    And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And as "Brian" folder "/Shares/textfile0.txt" should exist
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
