@@ -634,10 +634,10 @@ form#alternative-logins {
 #alternative-logins li a.button:hover,
 .login-button:hover {
 	color: #ffffff !important;
-	border-color: rgba(78,133,200,0.8) !important;
+	border-color: rgb(66, 116, 176) !important;
 	border-width: 1px !important;
 	background-image: initial;
-	background-color: rgba(78,133,200,0.8);
+	background-color: rgb(66, 116, 176) !important;
 }
 
 /* Log in and install button */
