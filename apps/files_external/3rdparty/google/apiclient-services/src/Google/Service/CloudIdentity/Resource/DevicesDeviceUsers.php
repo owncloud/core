@@ -92,7 +92,7 @@ class Google_Service_CloudIdentity_Resource_DevicesDeviceUsers extends Google_Se
    * assigned to the User.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string customer Required. [Resource
+   * @opt_param string customer Optional. [Resource
    * name](https://cloud.google.com/apis/design/resource_names) of the customer.
    * If you're using this API for your own organization, use
    * `customers/my_customer` If you're using this API to manage another
@@ -116,7 +116,7 @@ class Google_Service_CloudIdentity_Resource_DevicesDeviceUsers extends Google_Se
    * assigned to the User.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string customer Required. [Resource
+   * @opt_param string customer Optional. [Resource
    * name](https://cloud.google.com/apis/design/resource_names) of the customer.
    * If you're using this API for your own organization, use
    * `customers/my_customer` If you're using this API to manage another
@@ -138,7 +138,7 @@ class Google_Service_CloudIdentity_Resource_DevicesDeviceUsers extends Google_Se
    * resource name of the device. Format: devices/{device}
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string customer Required. [Resource
+   * @opt_param string customer Optional. [Resource
    * name](https://cloud.google.com/apis/design/resource_names) of the customer.
    * If you're using this API for your own organization, use
    * `customers/my_customer` If you're using this API to manage another

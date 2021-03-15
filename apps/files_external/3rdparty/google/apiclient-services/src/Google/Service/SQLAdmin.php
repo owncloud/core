@@ -30,7 +30,7 @@
  */
 class Google_Service_SQLAdmin extends Google_Service
 {
-  /** See, edit, configure, and delete your Google Cloud Platform data. */
+  /** View and manage your data across Google Cloud Platform services. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
   /** Manage your Google SQL Service instances. */

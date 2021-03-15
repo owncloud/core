@@ -24,6 +24,7 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1WebhookResponse exte
   protected $fulfillmentMessagesType = 'Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessage';
   protected $fulfillmentMessagesDataType = 'array';
   public $fulfillmentText;
+  public $liveAgentHandoff;
   protected $outputContextsType = 'Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1Context';
   protected $outputContextsDataType = 'array';
   public $payload;
@@ -74,6 +75,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1WebhookResponse exte
   public function getFulfillmentText()
   {
     return $this->fulfillmentText;
+  }
+  public function setLiveAgentHandoff($liveAgentHandoff)
+  {
+    $this->liveAgentHandoff = $liveAgentHandoff;
+  }
+  public function getLiveAgentHandoff()
+  {
+    return $this->liveAgentHandoff;
   }
   /**
    * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1Context[]

@@ -34,7 +34,7 @@ class Options implements IOptions {
 		return $this->timeout;
 	}
 
-	public function setTimeout(int $timeout) {
+	public function setTimeout(int $timeout): void {
 		$this->timeout = $timeout;
 	}
 

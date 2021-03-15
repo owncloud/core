@@ -31,7 +31,7 @@
  */
 class Google_Service_GroupsMigration extends Google_Service
 {
-  /** Manage messages in groups on your domain. */
+  /** Upload messages to any Google group in your domain. */
   const APPS_GROUPS_MIGRATION =
       "https://www.googleapis.com/auth/apps.groups.migration";
 

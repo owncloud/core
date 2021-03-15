@@ -33,7 +33,7 @@ jobs:
         run: composer install
       - env:
           BACKEND: smbclient
-        run: php ./vendor/bin/phpstan analyse --level 5 src
+        run: php ./vendor/bin/phpstan analyse --level 6 src
 
   phpunit:
     runs-on: ubuntu-20.04
@@ -83,3 +83,30 @@ jobs:
       - uses: codecov/codecov-action@v1
         with:
           files: ./coverage.xml
+
+  static-psalm-analysis:
+    runs-on: ubuntu-latest
+    name: Psalm static analysis
+
+    strategy:
+      matrix:
+        php-version:
+          - "7.2"
+          - "7.3"
+          - "7.4"
+          - "8.0"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Set up php
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: "${{ matrix.php-version }}"
+          tools: composer:v1
+          coverage: none
+          extensions: apcu, smbclient
+      - name: Install dependencies
+        run: composer i
+      - name: Run coding standards check
+        run: composer run psalm

@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '03a2e6d1bba3331d3c2b0bac832f1766240166d3',
+    'reference' => '7df82a47525b9672e2d3802216453738088c097b',
     'name' => 'files_external/3rdparty',
   ),
   'versions' => 
@@ -42,7 +42,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '03a2e6d1bba3331d3c2b0bac832f1766240166d3',
+      'reference' => '7df82a47525b9672e2d3802216453738088c097b',
     ),
     'firebase/php-jwt' => 
     array (
@@ -64,12 +64,12 @@ private static $installed = array (
     ),
     'google/apiclient-services' => 
     array (
-      'pretty_version' => 'v0.163.0',
-      'version' => '0.163.0.0',
+      'pretty_version' => 'v0.164.0',
+      'version' => '0.164.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '8e326f378a1f505064912fddd19fd93bbdcc80fb',
+      'reference' => '266557af3f595681eb9199853641f334a913d1bf',
     ),
     'google/auth' => 
     array (
@@ -118,21 +118,21 @@ private static $installed = array (
     ),
     'icewind/smb' => 
     array (
-      'pretty_version' => 'v3.3.1',
-      'version' => '3.3.1.0',
+      'pretty_version' => 'v3.4.0',
+      'version' => '3.4.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '866f2b19a6e8277bc79c34060e344c9cbbba7023',
+      'reference' => 'b5c6921f2e91229c9f71556a4713b4fac91fd394',
     ),
     'icewind/streams' => 
     array (
-      'pretty_version' => 'v0.7.3',
-      'version' => '0.7.3.0',
+      'pretty_version' => 'v0.7.4',
+      'version' => '0.7.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => '22ef9fc5b50d645dbc202206a656cc4dde28f95c',
+      'reference' => '93bce472202d36d9808c30eaa52a1dc72b39e04c',
     ),
     'monolog/monolog' => 
     array (

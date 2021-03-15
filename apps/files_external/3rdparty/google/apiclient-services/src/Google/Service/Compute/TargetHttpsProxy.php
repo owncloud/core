@@ -21,6 +21,7 @@ class Google_Service_Compute_TargetHttpsProxy extends Google_Collection
   public $authorizationPolicy;
   public $creationTimestamp;
   public $description;
+  public $fingerprint;
   public $id;
   public $kind;
   public $name;
@@ -56,6 +57,14 @@ class Google_Service_Compute_TargetHttpsProxy extends Google_Collection
   public function getDescription()
   {
     return $this->description;
+  }
+  public function setFingerprint($fingerprint)
+  {
+    $this->fingerprint = $fingerprint;
+  }
+  public function getFingerprint()
+  {
+    return $this->fingerprint;
   }
   public function setId($id)
   {

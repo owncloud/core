@@ -17,10 +17,12 @@
 
 class Google_Service_SQLAdmin_SqlInstancesVerifyExternalSyncSettingsResponse extends Google_Collection
 {
-  protected $collection_key = 'errors';
+  protected $collection_key = 'warnings';
   protected $errorsType = 'Google_Service_SQLAdmin_SqlExternalSyncSettingError';
   protected $errorsDataType = 'array';
   public $kind;
+  protected $warningsType = 'Google_Service_SQLAdmin_SqlExternalSyncSettingError';
+  protected $warningsDataType = 'array';
 
   /**
    * @param Google_Service_SQLAdmin_SqlExternalSyncSettingError[]
@@ -43,5 +45,19 @@ class Google_Service_SQLAdmin_SqlInstancesVerifyExternalSyncSettingsResponse ext
   public function getKind()
   {
     return $this->kind;
+  }
+  /**
+   * @param Google_Service_SQLAdmin_SqlExternalSyncSettingError[]
+   */
+  public function setWarnings($warnings)
+  {
+    $this->warnings = $warnings;
+  }
+  /**
+   * @return Google_Service_SQLAdmin_SqlExternalSyncSettingError[]
+   */
+  public function getWarnings()
+  {
+    return $this->warnings;
   }
 }

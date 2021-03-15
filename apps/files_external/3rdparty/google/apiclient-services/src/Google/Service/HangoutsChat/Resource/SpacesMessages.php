@@ -82,8 +82,7 @@ class Google_Service_HangoutsChat_Resource_SpacesMessages extends Google_Service
   /**
    * Updates a message. (messages.update)
    *
-   * @param string $name Resource name, in the form "spaces/messages". Example:
-   * spaces/AAAAMpdlehY/messages/UMxbHmzDlr4.UMxbHmzDlr4
+   * @param string $name
    * @param Google_Service_HangoutsChat_Message $postBody
    * @param array $optParams Optional parameters.
    *

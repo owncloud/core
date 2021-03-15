@@ -38,6 +38,7 @@ class Google_Service_CloudTalentSolution extends Google_Service
   const JOBS =
       "https://www.googleapis.com/auth/jobs";
 
+  public $projects_operations;
   public $projects_tenants;
   public $projects_tenants_clientEvents;
   public $projects_tenants_companies;
@@ -58,6 +59,26 @@ class Google_Service_CloudTalentSolution extends Google_Service
     $this->version = 'v4';
     $this->serviceName = 'jobs';
 
+    $this->projects_operations = new Google_Service_CloudTalentSolution_Resource_ProjectsOperations(
+        $this,
+        $this->serviceName,
+        'operations',
+        array(
+          'methods' => array(
+            'get' => array(
+              'path' => 'v4/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
     $this->projects_tenants = new Google_Service_CloudTalentSolution_Resource_ProjectsTenants(
         $this,
         $this->serviceName,

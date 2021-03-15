@@ -21,11 +21,13 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2Intent extends Google_Col
   public $action;
   public $defaultResponsePlatforms;
   public $displayName;
+  public $endInteraction;
   public $events;
   protected $followupIntentInfoType = 'Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentFollowupIntentInfo';
   protected $followupIntentInfoDataType = 'array';
   public $inputContextNames;
   public $isFallback;
+  public $liveAgentHandoff;
   protected $messagesType = 'Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessage';
   protected $messagesDataType = 'array';
   public $mlDisabled;
@@ -66,6 +68,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2Intent extends Google_Col
   {
     return $this->displayName;
   }
+  public function setEndInteraction($endInteraction)
+  {
+    $this->endInteraction = $endInteraction;
+  }
+  public function getEndInteraction()
+  {
+    return $this->endInteraction;
+  }
   public function setEvents($events)
   {
     $this->events = $events;
@@ -103,6 +113,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2Intent extends Google_Col
   public function getIsFallback()
   {
     return $this->isFallback;
+  }
+  public function setLiveAgentHandoff($liveAgentHandoff)
+  {
+    $this->liveAgentHandoff = $liveAgentHandoff;
+  }
+  public function getLiveAgentHandoff()
+  {
+    return $this->liveAgentHandoff;
   }
   /**
    * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessage[]

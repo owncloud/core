@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "690a29b548d889105d05f51e27c9e076",
+    "content-hash": "39ec561550d2ac500739c5e9d895b472",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -131,16 +131,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.163.0",
+            "version": "v0.164.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "8e326f378a1f505064912fddd19fd93bbdcc80fb"
+                "reference": "266557af3f595681eb9199853641f334a913d1bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/8e326f378a1f505064912fddd19fd93bbdcc80fb",
-                "reference": "8e326f378a1f505064912fddd19fd93bbdcc80fb",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/266557af3f595681eb9199853641f334a913d1bf",
+                "reference": "266557af3f595681eb9199853641f334a913d1bf",
                 "shasum": ""
             },
             "require": {
@@ -166,9 +166,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client-services/issues",
-                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.163.0"
+                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.164.0"
             },
-            "time": "2021-03-06T12:20:02+00:00"
+            "time": "2021-03-13T12:20:04+00:00"
         },
         {
             "name": "google/auth",
@@ -472,16 +472,16 @@
         },
         {
             "name": "icewind/smb",
-            "version": "v3.3.1",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/icewind1991/SMB.git",
-                "reference": "866f2b19a6e8277bc79c34060e344c9cbbba7023"
+                "reference": "b5c6921f2e91229c9f71556a4713b4fac91fd394"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/icewind1991/SMB/zipball/866f2b19a6e8277bc79c34060e344c9cbbba7023",
-                "reference": "866f2b19a6e8277bc79c34060e344c9cbbba7023",
+                "url": "https://api.github.com/repos/icewind1991/SMB/zipball/b5c6921f2e91229c9f71556a4713b4fac91fd394",
+                "reference": "b5c6921f2e91229c9f71556a4713b4fac91fd394",
                 "shasum": ""
             },
             "require": {
@@ -491,7 +491,8 @@
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.16",
                 "phpstan/phpstan": "^0.12.57",
-                "phpunit/phpunit": "^8.5|^9.3.8"
+                "phpunit/phpunit": "^8.5|^9.3.8",
+                "psalm/phar": "^4.3"
             },
             "type": "library",
             "autoload": {
@@ -512,22 +513,22 @@
             "description": "php wrapper for smbclient and libsmbclient-php",
             "support": {
                 "issues": "https://github.com/icewind1991/SMB/issues",
-                "source": "https://github.com/icewind1991/SMB/tree/v3.3.1"
+                "source": "https://github.com/icewind1991/SMB/tree/v3.4.0"
             },
-            "time": "2021-03-03T20:58:11+00:00"
+            "time": "2021-03-10T14:00:37+00:00"
         },
         {
             "name": "icewind/streams",
-            "version": "v0.7.3",
+            "version": "v0.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/icewind1991/Streams.git",
-                "reference": "22ef9fc5b50d645dbc202206a656cc4dde28f95c"
+                "reference": "93bce472202d36d9808c30eaa52a1dc72b39e04c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/icewind1991/Streams/zipball/22ef9fc5b50d645dbc202206a656cc4dde28f95c",
-                "reference": "22ef9fc5b50d645dbc202206a656cc4dde28f95c",
+                "url": "https://api.github.com/repos/icewind1991/Streams/zipball/93bce472202d36d9808c30eaa52a1dc72b39e04c",
+                "reference": "93bce472202d36d9808c30eaa52a1dc72b39e04c",
                 "shasum": ""
             },
             "require": {
@@ -557,9 +558,9 @@
             "description": "A set of generic stream wrappers",
             "support": {
                 "issues": "https://github.com/icewind1991/Streams/issues",
-                "source": "https://github.com/icewind1991/Streams/tree/v0.7.3"
+                "source": "https://github.com/icewind1991/Streams/tree/v0.7.4"
             },
-            "time": "2021-03-02T19:33:35+00:00"
+            "time": "2021-03-12T15:48:22+00:00"
         },
         {
             "name": "monolog/monolog",

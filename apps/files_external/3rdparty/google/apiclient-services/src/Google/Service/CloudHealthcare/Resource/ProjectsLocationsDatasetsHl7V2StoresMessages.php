@@ -131,15 +131,17 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsHl7V2Stor
    * dataset's time_zone, from the MSH-7 segment. For example, `send_date <
    * "2017-01-02"`. * `send_time`, the timestamp when the message was sent, using
    * the RFC3339 time format for comparisons, from the MSH-7 segment. For example,
-   * `send_time < "2017-01-02T00:00:00-05:00"`. * `send_facility`, the care center
-   * that the message came from, from the MSH-4 segment. For example,
-   * `send_facility = "ABC"`. * `PatientId(value, type)`, which matches if the
-   * message lists a patient having an ID of the given value and type in the
-   * PID-2, PID-3, or PID-4 segments. For example, `PatientId("123456", "MRN")`. *
-   * `labels.x`, a string value of the label with key `x` as set using the
-   * Message.labels map. For example, `labels."priority"="high"`. The operator
-   * `:*` can be used to assert the existence of a label. For example,
-   * `labels."priority":*`.
+   * `send_time < "2017-01-02T00:00:00-05:00"`. * `create_time`, the timestamp
+   * when the message was created in the HL7v2 store. Use the RFC3339 time format
+   * for comparisons. For example, `create_time < "2017-01-02T00:00:00-05:00"`. *
+   * `send_facility`, the care center that the message came from, from the MSH-4
+   * segment. For example, `send_facility = "ABC"`. * `PatientId(value, type)`,
+   * which matches if the message lists a patient having an ID of the given value
+   * and type in the PID-2, PID-3, or PID-4 segments. For example,
+   * `PatientId("123456", "MRN")`. * `labels.x`, a string value of the label with
+   * key `x` as set using the Message.labels map. For example,
+   * `labels."priority"="high"`. The operator `:*` can be used to assert the
+   * existence of a label. For example, `labels."priority":*`.
    * @opt_param string orderBy Orders messages returned by the specified order_by
    * clause. Syntax:
    * https://cloud.google.com/apis/design/design_patterns#sorting_order Fields

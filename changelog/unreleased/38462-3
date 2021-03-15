@@ -1,3 +1,4 @@
-Change: Update icewind/streams from 0.7.2 to 0.7.3 in files_external
+Change: Update icewind/streams from 0.7.2 to 0.7.4 in files_external
 
 https://github.com/owncloud/core/pull/38462
+https://github.com/owncloud/core/pull/38524

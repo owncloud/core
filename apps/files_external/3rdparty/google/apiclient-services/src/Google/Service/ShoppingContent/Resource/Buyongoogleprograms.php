@@ -45,7 +45,10 @@ class Google_Service_ShoppingContent_Resource_Buyongoogleprograms extends Google
   /**
    * Onboards BoG in your Merchant Center account. By using this method, you agree
    * to the [Terms of Service](https://merchants.google.com/mc/termsofservice/tran
-   * sactions/US/latest). (buyongoogleprograms.onboard)
+   * sactions/US/latest). Calling this method is only possible if the
+   * authenticated account is the same as the merchant id in the request. Calling
+   * this method multiple times will only accept Terms of Service if the latest
+   * version is not currently signed. (buyongoogleprograms.onboard)
    *
    * @param string $merchantId Required. The ID of the account.
    * @param string $regionCode The program region code [ISO 3166-1

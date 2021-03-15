@@ -77,13 +77,13 @@ class Google_Service_Firestore_Resource_ProjectsDatabasesCollectionGroupsFields 
    * `projects/{project_id}/databases/{database_id}/collectionGroups/__default__/f
    * ields`. (fields.patch)
    *
-   * @param string $name A field name of the form `projects/{project_id}/databases
-   * /{database_id}/collectionGroups/{collection_id}/fields/{field_path}` A field
-   * path may be a simple field name, e.g. `address` or a path to fields within
-   * map_value , e.g. `address.city`, or a special field path. The only valid
-   * special field is `*`, which represents any field. Field paths may be quoted
-   * using ` (backtick). The only character that needs to be escaped within a
-   * quoted field path is the backtick character itself, escaped using a
+   * @param string $name Required. A field name of the form `projects/{project_id}
+   * /databases/{database_id}/collectionGroups/{collection_id}/fields/{field_path}
+   * ` A field path may be a simple field name, e.g. `address` or a path to fields
+   * within map_value , e.g. `address.city`, or a special field path. The only
+   * valid special field is `*`, which represents any field. Field paths may be
+   * quoted using ` (backtick). The only character that needs to be escaped within
+   * a quoted field path is the backtick character itself, escaped using a
    * backslash. Special characters in field paths that must be quoted include:
    * `*`, `.`, ``` (backtick), `[`, `]`, as well as any ascii symbolic characters.
    * Examples: (Note: Comments here are written in markdown syntax, so there is an

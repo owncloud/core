@@ -18,6 +18,8 @@
 class Google_Service_RealTimeBidding_CreativeServingDecision extends Google_Collection
 {
   protected $collection_key = 'detectedVendorIds';
+  protected $adTechnologyProvidersType = 'Google_Service_RealTimeBidding_AdTechnologyProviders';
+  protected $adTechnologyProvidersDataType = '';
   protected $chinaPolicyComplianceType = 'Google_Service_RealTimeBidding_PolicyCompliance';
   protected $chinaPolicyComplianceDataType = '';
   protected $dealsPolicyComplianceType = 'Google_Service_RealTimeBidding_PolicyCompliance';
@@ -39,6 +41,20 @@ class Google_Service_RealTimeBidding_CreativeServingDecision extends Google_Coll
   protected $russiaPolicyComplianceType = 'Google_Service_RealTimeBidding_PolicyCompliance';
   protected $russiaPolicyComplianceDataType = '';
 
+  /**
+   * @param Google_Service_RealTimeBidding_AdTechnologyProviders
+   */
+  public function setAdTechnologyProviders(Google_Service_RealTimeBidding_AdTechnologyProviders $adTechnologyProviders)
+  {
+    $this->adTechnologyProviders = $adTechnologyProviders;
+  }
+  /**
+   * @return Google_Service_RealTimeBidding_AdTechnologyProviders
+   */
+  public function getAdTechnologyProviders()
+  {
+    return $this->adTechnologyProviders;
+  }
   /**
    * @param Google_Service_RealTimeBidding_PolicyCompliance
    */

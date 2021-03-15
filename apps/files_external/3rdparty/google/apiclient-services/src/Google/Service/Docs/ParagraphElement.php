@@ -32,6 +32,8 @@ class Google_Service_Docs_ParagraphElement extends Google_Model
   protected $inlineObjectElementDataType = '';
   protected $pageBreakType = 'Google_Service_Docs_PageBreak';
   protected $pageBreakDataType = '';
+  protected $personType = 'Google_Service_Docs_Person';
+  protected $personDataType = '';
   public $startIndex;
   protected $textRunType = 'Google_Service_Docs_TextRun';
   protected $textRunDataType = '';
@@ -141,6 +143,20 @@ class Google_Service_Docs_ParagraphElement extends Google_Model
   public function getPageBreak()
   {
     return $this->pageBreak;
+  }
+  /**
+   * @param Google_Service_Docs_Person
+   */
+  public function setPerson(Google_Service_Docs_Person $person)
+  {
+    $this->person = $person;
+  }
+  /**
+   * @return Google_Service_Docs_Person
+   */
+  public function getPerson()
+  {
+    return $this->person;
   }
   public function setStartIndex($startIndex)
   {

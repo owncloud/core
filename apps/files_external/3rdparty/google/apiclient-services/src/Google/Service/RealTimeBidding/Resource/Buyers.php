@@ -26,6 +26,20 @@
 class Google_Service_RealTimeBidding_Resource_Buyers extends Google_Service_Resource
 {
   /**
+   * Gets a buyer account by its name. (buyers.get)
+   *
+   * @param string $name Required. Name of the buyer to get. Format:
+   * `buyers/{buyerId}`
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_RealTimeBidding_Buyer
+   */
+  public function get($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('get', array($params), "Google_Service_RealTimeBidding_Buyer");
+  }
+  /**
    * Gets remarketing tag for a buyer. A remarketing tag is a piece of JavaScript
    * code that can be placed on a web page. When a user visits a page containing a
    * remarketing tag, Google adds the user to a user list.
@@ -46,5 +60,25 @@ class Google_Service_RealTimeBidding_Resource_Buyers extends Google_Service_Reso
     $params = array('name' => $name);
     $params = array_merge($params, $optParams);
     return $this->call('getRemarketingTag', array($params), "Google_Service_RealTimeBidding_GetRemarketingTagResponse");
+  }
+  /**
+   * Lists all buyer account information the calling buyer user or service account
+   * is permissioned to manage. (buyers.listBuyers)
+   *
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param int pageSize The maximum number of buyers to return. If
+   * unspecified, at most 100 buyers will be returned. The maximum value is 500;
+   * values above 500 will be coerced to 500.
+   * @opt_param string pageToken A token identifying a page of results the server
+   * should return. This value is received from a previous `ListBuyers` call in
+   * ListBuyersResponse.nextPageToken.
+   * @return Google_Service_RealTimeBidding_ListBuyersResponse
+   */
+  public function listBuyers($optParams = array())
+  {
+    $params = array();
+    $params = array_merge($params, $optParams);
+    return $this->call('list', array($params), "Google_Service_RealTimeBidding_ListBuyersResponse");
   }
 }
