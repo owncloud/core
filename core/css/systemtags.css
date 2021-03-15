@@ -37,9 +37,11 @@
 .systemtags-select2-dropdown .select2-result-label .icon {
 	display: inline-block;
 	opacity: .5;
-}
-.systemtags-select2-dropdown .select2-result-label .icon.rename {
 	padding: 4px;
+}
+
+.systemtags-select2-dropdown .select2-result-label .icon:hover {
+	opacity: 1;
 }
 
 .systemtags-select2-dropdown .systemtags-actions {
@@ -73,6 +75,7 @@
 .systemtags-select2-container .select2-choices .select2-search-choice {
 	line-height: 20px;
 	padding-left: 5px;
+	text-transform: none;
 }
 
 .systemtags-select2-container .select2-choices .select2-search-choice.select2-locked .label {

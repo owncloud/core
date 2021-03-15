@@ -59,7 +59,7 @@ class DetailsDialog extends OwncloudPage {
 
 	private $tagsResultFromDropdownXpath = "//li[contains(@class, 'select2-result')]";
 	private $tagEditButtonInTagXpath = "//span[@class='systemtags-actions']//a[contains(@class, 'rename')]";
-	private $tagDeleteButtonInTagXpath = "//form[@class='systemtags-rename-form']//a";
+	private $tagDeleteButtonInTagXpath = "//span[@class='systemtags-actions']//a[contains(@class, 'delete')]";
 	private $tagsDropDownResultXpath = "//div[contains(@class, 'systemtags-select2-dropdown')]" .
 	"//ul[@class='select2-results']" .
 	"//span[@class='label']";
@@ -478,19 +478,7 @@ class DetailsDialog extends OwncloudPage {
 		foreach ($suggestions as $tag) {
 			if ($tag->getText() === $tagName) {
 				$tagContainer = $tag->getParent();
-				$editBtn = $tagContainer->find("xpath", $this->tagEditButtonInTagXpath);
-				$this->assertElementNotNull(
-					$editBtn,
-					__METHOD__ .
-					" xpath: $this->tagEditButtonInTagXpath" .
-					"could not find tag edit button"
-				);
-				$editBtn->focus();
-				$editBtn->click();
-
-				$deleteBtn = $this->find(
-					"xpath", $this->tagDeleteButtonInTagXpath
-				);
+				$deleteBtn = $tagContainer->find("xpath", $this->tagDeleteButtonInTagXpath);
 				$this->assertElementNotNull(
 					$deleteBtn,
 					__METHOD__ .
