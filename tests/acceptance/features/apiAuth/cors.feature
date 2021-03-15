@@ -2,7 +2,7 @@
 Feature: CORS headers
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
 
   @files_sharing-app-required
   Scenario Outline: CORS headers should be returned when setting CORS domain sending Origin header
