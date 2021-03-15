@@ -52,6 +52,7 @@ Summary
 * Change - Update icewind/streams from 0.7.2 to 0.7.3 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
 * Change - Update icewind/smb from 3.2.7 to 3.3.1 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
 * Change - Update PHP dependencies: [#38487](https://github.com/owncloud/core/pull/38487)
+* Change - Update phpseclib/phpseclib (3.0.5 => 3.0.6): [#38508](https://github.com/owncloud/core/pull/38508)
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 * Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
@@ -387,6 +388,15 @@ Details
    (1.9.1 => 1.10.0)
 
    https://github.com/owncloud/core/pull/38487
+
+* Change - Update phpseclib/phpseclib (3.0.5 => 3.0.6): [#38508](https://github.com/owncloud/core/pull/38508)
+
+   - update phpseclib/phpseclib (3.0.5 => 3.0.6) in core root
+
+   This change also updates the 3rd-party dependencies of files_external: -
+   phpseclib/phpseclib (3.0.5 => 3.0.6) - google/apiclient-services (v0.162.0 => v0.163.0)
+
+   https://github.com/owncloud/core/pull/38508
 
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 
