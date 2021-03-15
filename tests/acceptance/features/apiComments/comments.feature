@@ -3,7 +3,7 @@ Feature: Comments
 
   Background:
     Given using new DAV path
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
 
   @smokeTest
   Scenario: Getting info of comments using files endpoint
@@ -22,7 +22,8 @@ Feature: Comments
     And the single response should contain a property "oc:comments-href" with value "%a_comment_url%"
 
   Scenario: Getting info on comments for a folder using the endpoint
-    Given user "Alice" has commented with content "My first comment" on folder "/PARENT"
+    Given user "Alice" has created folder "/PARENT"
+    And user "Alice" has commented with content "My first comment" on folder "/PARENT"
     And user "Alice" should have the following comments on folder "/PARENT"
       | user  | comment          |
       | Alice | My first comment |
@@ -36,8 +37,8 @@ Feature: Comments
     And the single response should contain a property "oc:comments-href" with value "%a_comment_url%"
 
   Scenario: Getting more info about comments using REPORT method
-    Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "myFileToComment.txt"
-    And user "Alice" has commented with content "My first comment" on file "myFileToComment.txt"
+    Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
+    And user "Alice" has commented with content "My first comment" on file "/myFileToComment.txt"
     When user "Alice" gets all information about the comments on file "myFileToComment.txt" using the WebDAV REPORT API
     Then the following comment properties should be listed about user "Alice"
       | propertyName     | propertyValue    |
@@ -50,7 +51,7 @@ Feature: Comments
       | message          | My first comment |
 
   Scenario: Getting more info about comments using PROPFIND method
-    Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "myFileToComment.txt"
+    Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And user "Alice" has commented with content "My first comment" on file "myFileToComment.txt"
     When user "Alice" gets the following comment properties of file "myFileToComment.txt" using the WebDAV PROPFIND API
       | propertyName        |
