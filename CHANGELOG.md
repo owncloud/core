@@ -71,6 +71,7 @@ Summary
 * Enhancement - Add config parameter 'http.cookie.samesite': [#38458](https://github.com/owncloud/core/pull/38458)
 * Enhancement - Add exception messages whenever a node cannot be moved: [#38481](https://github.com/owncloud/core/pull/38481)
 * Enhancement - UI improvement external storage: [#38483](https://github.com/owncloud/core/pull/38483)
+* Enhancement - Improve systemtags UI for delete and fix case sensitivity problem: [#38498](https://github.com/owncloud/core/pull/38498)
 
 Details
 -------
@@ -552,6 +553,17 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4444
    https://github.com/owncloud/core/pull/38483
+
+* Enhancement - Improve systemtags UI for delete and fix case sensitivity problem: [#38498](https://github.com/owncloud/core/pull/38498)
+
+   Previously, a system tag could be deleted within the rename step. Now, users can delete tags
+   directly from the system tags tab view dropdown menu. Also, inconsistency on tag name casing
+   has been fixed.
+
+   https://github.com/owncloud/core/issues/38494
+   https://github.com/owncloud/core/issues/38495
+   https://github.com/owncloud/core/issues/38496
+   https://github.com/owncloud/core/pull/38498
 
 Changelog for ownCloud Core [10.6.0] (2020-11-25)
 =======================================
