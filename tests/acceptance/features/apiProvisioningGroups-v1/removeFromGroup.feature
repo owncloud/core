@@ -9,7 +9,7 @@ Feature: remove a user from a group
 
   @smokeTest
   Scenario: admin removes a user from a group
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     And these groups have been created:
       | groupname       | comment                               |
       | brand-new-group | nothing special here                  |
@@ -34,7 +34,7 @@ Feature: remove a user from a group
       | brand-new-user | नेपाली                |
 
   Scenario: admin removes a user from a group with special characters
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     And these groups have been created:
       | groupname           | comment                                 |
       | brand-new-group     | dash                                    |
@@ -92,7 +92,7 @@ Feature: remove a user from a group
 
   @toImplementOnOCIS
   Scenario: admin removes a user from a group with % and # in their names
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     And these groups have been created:
       | groupname           | comment                                 |
       | maintenance#123     | Hash sign                               |
@@ -130,7 +130,7 @@ Feature: remove a user from a group
 
   @issue-31015 @skipOnOcV10
   Scenario: admin removes a user from a group that has a forward-slash in the group name
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     And these groups have been created:
       | groupname        | comment                            |
       | Mgmt/Sydney      | Slash (special escaping happens)   |
@@ -156,7 +156,7 @@ Feature: remove a user from a group
 
   @toImplementOnOCIS
   Scenario Outline: remove a user from a group using mixes of upper and lower case in user and group names
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "<group_id1>" has been created
     And group "<group_id2>" has been created
     And group "<group_id3>" has been created
@@ -176,7 +176,7 @@ Feature: remove a user from a group
       | brand-new-user | MIXED-GROUP | Mixed-Group | mixed-group |
 
   Scenario: admin tries to remove a user from a group which does not exist
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "nonexistentgroup" has been deleted
     When the administrator removes user "brand-new-user" from group "nonexistentgroup" using the provisioning API
     Then the OCS status code should be "102"
@@ -185,7 +185,7 @@ Feature: remove a user from a group
 
   @smokeTest
   Scenario: a subadmin can remove users from groups the subadmin is responsible for
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username       |
       | brand-new-user |
       | subadmin       |
@@ -198,7 +198,7 @@ Feature: remove a user from a group
     And user "brand-new-user" should not belong to group "brand-new-group"
 
   Scenario: a subadmin cannot remove users from groups the subadmin is not responsible for
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username         |
       | brand-new-user   |
       | another-subadmin |
@@ -212,7 +212,7 @@ Feature: remove a user from a group
     And user "brand-new-user" should belong to group "brand-new-group"
 
   Scenario: normal user tries to remove a user in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username         |
       | brand-new-user   |
       | another-new-user |
@@ -227,7 +227,7 @@ Feature: remove a user from a group
   # merge this with scenario on line 62 once the issue is fixed
   @issue-31015 @skipOnOcV10 @toImplementOnOCIS
   Scenario Outline: admin removes a user from a group that has a forward-slash and dot in the group name
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "<group_id>" has been created
     And user "brand-new-user" has been added to group "<group_id>"
     When the administrator removes user "brand-new-user" from group "<group_id>" using the provisioning API

@@ -9,7 +9,7 @@ Feature: remove a user from a group
 
   @issue-31015
   Scenario: admin removes a user from a group that has a forward-slash in the group name
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
       # After fixing issue-31015, change the following step to "has been created"
     And the administrator sends a group creation request for the following groups using the provisioning API
       | groupname        | comment                            |

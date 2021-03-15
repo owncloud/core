@@ -9,7 +9,7 @@ Feature: access user provisioning API using app password
 
   @smokeTest @notToImplementOnOCIS
   Scenario: admin deletes the user
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created
     And a new client token for the administrator has been generated
     And a new browser session for the administrator has been started
@@ -20,7 +20,7 @@ Feature: access user provisioning API using app password
 
   @notToImplementOnOCIS
   Scenario: subadmin gets users in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username         |
       | brand-new-user   |
       | another-new-user |
@@ -37,7 +37,7 @@ Feature: access user provisioning API using app password
 
   @smokeTest
   Scenario: normal user gets their own information using the app password
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username       | displayname |
       | brand-new-user | New User    |
     And a new client token for "brand-new-user" has been generated
@@ -49,7 +49,7 @@ Feature: access user provisioning API using app password
 
   @notToImplementOnOCIS
   Scenario: subadmin tries to get users of other group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username         |
       | brand-new-user   |
       | another-new-user |
@@ -65,7 +65,7 @@ Feature: access user provisioning API using app password
     And the HTTP status code should be "200"
 
   Scenario: normal user tries to get other user information using the app password
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username         |
       | brand-new-user   |
       | another-new-user |
