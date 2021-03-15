@@ -2466,7 +2466,7 @@ trait Provisioning {
 	 */
 	public function theseGroupsShouldNotExist($shouldOrNot, TableNode $table) {
 		$should = ($shouldOrNot !== "not");
-		$groups = SetupHelper::getGroups();
+		$groups = $this->getArrayOfGroupsResponded($this->getAllGroups());
 		$this->verifyTableNodeColumns($table, ['groupname']);
 		foreach ($table as $row) {
 			if (\in_array($row['groupname'], $groups, true) !== $should) {
@@ -2566,15 +2566,24 @@ trait Provisioning {
 	}
 
 	/**
+	 * get all the existing groups
+	 *
+	 * @return ResponseInterface
+	 */
+	public function getAllGroups() {
+		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/groups";
+		return HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
+	}
+
+	/**
 	 * @When the administrator gets all the groups using the provisioning API
 	 *
 	 * @return void
 	 */
 	public function theAdministratorGetsAllTheGroupsUsingTheProvisioningApi() {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/groups";
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
-		);
+		$this->response = $this->getAllGroups();
 	}
 
 	/**
