@@ -136,6 +136,7 @@ Feature: checksums
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
       | Upload-Length   | 10                        |
+      #    dGV4dEZpbGUudHh0 is the base64 encode of textFile.txt
       | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
     And user "Alice" has uploaded a chunk to the last created TUS Location with offset "0" and data "01234" with checksum "MD5 4100c4d44da9177247e44a5fc1546778" using the TUS protocol on the WebDAV API
     And user "Alice" has uploaded a chunk to the last created TUS Location with offset "5" and data "56789" with checksum "MD5 099ebea48ea9666a7da2177267983138" using the TUS protocol on the WebDAV API
@@ -157,6 +158,7 @@ Feature: checksums
     Given using <dav_version> DAV path
     And user "Alice" has created a new TUS resource on the WebDAV API with these headers:
       | Upload-Length   | 10                        |
+      #    dGV4dEZpbGUudHh0 is the base64 encode of textFile.txt
       | Upload-Metadata | filename dGV4dEZpbGUudHh0 |
     And user "Alice" has uploaded a chunk to the last created TUS Location with offset "0" and data "01234" with checksum "MD5 4100c4d44da9177247e44a5fc1546778" using the TUS protocol on the WebDAV API
     And user "Alice" has uploaded a chunk to the last created TUS Location with offset "5" and data "56789" with checksum "MD5 099ebea48ea9666a7da2177267983138" using the TUS protocol on the WebDAV API
