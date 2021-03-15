@@ -1,0 +1,9 @@
+Change: Update phpseclib/phpseclib (3.0.5 => 3.0.6)
+
+- update phpseclib/phpseclib (3.0.5 => 3.0.6) in core root
+
+This change also updates the 3rd-party dependencies of files_external:
+  - phpseclib/phpseclib (3.0.5 => 3.0.6)
+  - google/apiclient-services (v0.162.0 => v0.163.0)
+
+https://github.com/owncloud/core/pull/38508

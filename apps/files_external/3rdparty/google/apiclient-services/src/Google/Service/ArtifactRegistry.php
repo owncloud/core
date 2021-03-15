@@ -39,6 +39,7 @@ class Google_Service_ArtifactRegistry extends Google_Service
       "https://www.googleapis.com/auth/cloud-platform.read-only";
 
   public $operations;
+  public $projects_locations_repositories_dockerImages;
 
   /**
    * Constructs the internal representation of the ArtifactRegistry service.
@@ -102,6 +103,34 @@ class Google_Service_ArtifactRegistry extends Google_Service
                 'name' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->projects_locations_repositories_dockerImages = new Google_Service_ArtifactRegistry_Resource_ProjectsLocationsRepositoriesDockerImages(
+        $this,
+        $this->serviceName,
+        'dockerImages',
+        array(
+          'methods' => array(
+            'list' => array(
+              'path' => 'v1/{+parent}/dockerImages',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ),
                 'pageSize' => array(
                   'location' => 'query',

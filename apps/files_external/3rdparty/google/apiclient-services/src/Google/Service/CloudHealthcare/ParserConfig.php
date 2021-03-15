@@ -18,6 +18,8 @@
 class Google_Service_CloudHealthcare_ParserConfig extends Google_Model
 {
   public $allowNullHeader;
+  protected $schemaType = 'Google_Service_CloudHealthcare_SchemaPackage';
+  protected $schemaDataType = '';
   public $segmentTerminator;
 
   public function setAllowNullHeader($allowNullHeader)
@@ -27,6 +29,20 @@ class Google_Service_CloudHealthcare_ParserConfig extends Google_Model
   public function getAllowNullHeader()
   {
     return $this->allowNullHeader;
+  }
+  /**
+   * @param Google_Service_CloudHealthcare_SchemaPackage
+   */
+  public function setSchema(Google_Service_CloudHealthcare_SchemaPackage $schema)
+  {
+    $this->schema = $schema;
+  }
+  /**
+   * @return Google_Service_CloudHealthcare_SchemaPackage
+   */
+  public function getSchema()
+  {
+    return $this->schema;
   }
   public function setSegmentTerminator($segmentTerminator)
   {

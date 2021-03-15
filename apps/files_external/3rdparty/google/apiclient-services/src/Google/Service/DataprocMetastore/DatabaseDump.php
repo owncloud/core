@@ -20,6 +20,7 @@ class Google_Service_DataprocMetastore_DatabaseDump extends Google_Model
   public $databaseType;
   public $gcsUri;
   public $sourceDatabase;
+  public $type;
 
   public function setDatabaseType($databaseType)
   {
@@ -44,5 +45,13 @@ class Google_Service_DataprocMetastore_DatabaseDump extends Google_Model
   public function getSourceDatabase()
   {
     return $this->sourceDatabase;
+  }
+  public function setType($type)
+  {
+    $this->type = $type;
+  }
+  public function getType()
+  {
+    return $this->type;
   }
 }

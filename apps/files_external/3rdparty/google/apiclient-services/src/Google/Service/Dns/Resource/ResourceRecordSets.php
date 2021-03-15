@@ -26,7 +26,7 @@
 class Google_Service_Dns_Resource_ResourceRecordSets extends Google_Service_Resource
 {
   /**
-   * Enumerate ResourceRecordSets that you have created but not yet deleted.
+   * Enumerates ResourceRecordSets that you have created but not yet deleted.
    * (resourceRecordSets.listResourceRecordSets)
    *
    * @param string $project Identifies the project addressed by this request.
