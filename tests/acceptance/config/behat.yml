@@ -36,6 +36,14 @@ default:
         - CorsContext:
         - AuthContext:
 
+    aaTimeCheck:
+      paths:
+        - '%paths.base%/../features/aaTimeCheck'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - AuthContext:
+
     apiAuthOcs:
       paths:
         - '%paths.base%/../features/apiAuthOcs'

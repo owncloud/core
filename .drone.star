@@ -78,6 +78,7 @@ config = {
 	'acceptance': {
 		'api': {
 			'suites': [
+				'aaTimeCheck',
 				'apiAuth',
 				'apiAuthOcs',
 				'apiAuthWebDav',
