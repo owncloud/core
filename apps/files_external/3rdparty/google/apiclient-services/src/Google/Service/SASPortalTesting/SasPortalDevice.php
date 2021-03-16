@@ -20,6 +20,8 @@ class Google_Service_SASPortalTesting_SasPortalDevice extends Google_Collection
   protected $collection_key = 'grants';
   protected $activeConfigType = 'Google_Service_SASPortalTesting_SasPortalDeviceConfig';
   protected $activeConfigDataType = '';
+  protected $currentChannelsType = 'Google_Service_SASPortalTesting_SasPortalChannelWithScore';
+  protected $currentChannelsDataType = 'array';
   protected $deviceMetadataType = 'Google_Service_SASPortalTesting_SasPortalDeviceMetadata';
   protected $deviceMetadataDataType = '';
   public $displayName;
@@ -47,6 +49,20 @@ class Google_Service_SASPortalTesting_SasPortalDevice extends Google_Collection
   public function getActiveConfig()
   {
     return $this->activeConfig;
+  }
+  /**
+   * @param Google_Service_SASPortalTesting_SasPortalChannelWithScore[]
+   */
+  public function setCurrentChannels($currentChannels)
+  {
+    $this->currentChannels = $currentChannels;
+  }
+  /**
+   * @return Google_Service_SASPortalTesting_SasPortalChannelWithScore[]
+   */
+  public function getCurrentChannels()
+  {
+    return $this->currentChannels;
   }
   /**
    * @param Google_Service_SASPortalTesting_SasPortalDeviceMetadata

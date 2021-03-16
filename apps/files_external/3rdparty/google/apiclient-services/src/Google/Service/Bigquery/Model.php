@@ -18,6 +18,7 @@
 class Google_Service_Bigquery_Model extends Google_Collection
 {
   protected $collection_key = 'trainingRuns';
+  public $bestTrialId;
   public $creationTime;
   public $description;
   protected $encryptionConfigurationType = 'Google_Service_Bigquery_EncryptionConfiguration';
@@ -38,6 +39,14 @@ class Google_Service_Bigquery_Model extends Google_Collection
   protected $trainingRunsType = 'Google_Service_Bigquery_TrainingRun';
   protected $trainingRunsDataType = 'array';
 
+  public function setBestTrialId($bestTrialId)
+  {
+    $this->bestTrialId = $bestTrialId;
+  }
+  public function getBestTrialId()
+  {
+    return $this->bestTrialId;
+  }
   public function setCreationTime($creationTime)
   {
     $this->creationTime = $creationTime;

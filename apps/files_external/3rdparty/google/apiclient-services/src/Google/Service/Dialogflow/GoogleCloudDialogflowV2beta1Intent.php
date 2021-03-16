@@ -27,6 +27,7 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1Intent extends Googl
   protected $followupIntentInfoDataType = 'array';
   public $inputContextNames;
   public $isFallback;
+  public $liveAgentHandoff;
   protected $messagesType = 'Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessage';
   protected $messagesDataType = 'array';
   public $mlDisabled;
@@ -113,6 +114,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1Intent extends Googl
   public function getIsFallback()
   {
     return $this->isFallback;
+  }
+  public function setLiveAgentHandoff($liveAgentHandoff)
+  {
+    $this->liveAgentHandoff = $liveAgentHandoff;
+  }
+  public function getLiveAgentHandoff()
+  {
+    return $this->liveAgentHandoff;
   }
   /**
    * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1IntentMessage[]

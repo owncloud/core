@@ -17,26 +17,24 @@
 
 class Google_Service_WorkflowExecutions_StackTraceElement extends Google_Model
 {
-  public $column;
-  public $line;
+  protected $positionType = 'Google_Service_WorkflowExecutions_Position';
+  protected $positionDataType = '';
   public $routine;
   public $step;
 
-  public function setColumn($column)
+  /**
+   * @param Google_Service_WorkflowExecutions_Position
+   */
+  public function setPosition(Google_Service_WorkflowExecutions_Position $position)
   {
-    $this->column = $column;
+    $this->position = $position;
   }
-  public function getColumn()
+  /**
+   * @return Google_Service_WorkflowExecutions_Position
+   */
+  public function getPosition()
   {
-    return $this->column;
-  }
-  public function setLine($line)
-  {
-    $this->line = $line;
-  }
-  public function getLine()
-  {
-    return $this->line;
+    return $this->position;
   }
   public function setRoutine($routine)
   {

@@ -42,9 +42,13 @@ class Google_Service_Apigee_Resource_OrganizationsSharedflowsRevisions extends G
     return $this->call('delete', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1SharedFlowRevision");
   }
   /**
-   * Gets a revision of a shared flow. If `format=bundle` is passed, it instead
-   * outputs a shared flow revision as a ZIP-formatted bundle of code and config
-   * files. (revisions.get)
+   * Gets a revision of a shared flow. To download the shared flow configuration
+   * bundle for the specified revision as a zip file, set the `format` query
+   * parameter to `bundle`. If you are using curl, specify `-o filename.zip` to
+   * save the output to a file; otherwise, it displays to `stdout`. Then, develop
+   * the shared flow configuration locally and upload the updated sharedFlow
+   * configuration revision, as described in
+   * [updateSharedFlowRevision](updateSharedFlowRevision). (revisions.get)
    *
    * @param string $name Required. The name of the shared flow revision to get.
    * Must be of the form: `organizations/{organization_id}/sharedflows/{shared_flo

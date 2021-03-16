@@ -73,7 +73,7 @@ class ServerFactory {
 	 * @return IServer
 	 * @throws DependencyException
 	 */
-	public function createServer(string $host, IAuth $credentials) {
+	public function createServer(string $host, IAuth $credentials): IServer {
 		foreach (self::BACKENDS as $backend) {
 			if (call_user_func("$backend::available", $this->system)) {
 				return new $backend($host, $credentials, $this->system, $this->timeZoneProvider, $this->options);

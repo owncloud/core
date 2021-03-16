@@ -1,3 +1,4 @@
-Change: Update icewind/smb from 3.2.7 to 3.3.1 in files_external
+Change: Update icewind/smb from 3.2.7 to 3.4.0 in files_external
 
 https://github.com/owncloud/core/pull/38462
+https://github.com/owncloud/core/pull/38524

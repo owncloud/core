@@ -17,4 +17,21 @@
 
 class Google_Service_DataprocMetastore_MetadataIntegration extends Google_Model
 {
+  protected $dataCatalogConfigType = 'Google_Service_DataprocMetastore_DataCatalogConfig';
+  protected $dataCatalogConfigDataType = '';
+
+  /**
+   * @param Google_Service_DataprocMetastore_DataCatalogConfig
+   */
+  public function setDataCatalogConfig(Google_Service_DataprocMetastore_DataCatalogConfig $dataCatalogConfig)
+  {
+    $this->dataCatalogConfig = $dataCatalogConfig;
+  }
+  /**
+   * @return Google_Service_DataprocMetastore_DataCatalogConfig
+   */
+  public function getDataCatalogConfig()
+  {
+    return $this->dataCatalogConfig;
+  }
 }

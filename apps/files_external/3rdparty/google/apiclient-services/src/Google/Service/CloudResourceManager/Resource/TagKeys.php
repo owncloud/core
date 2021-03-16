@@ -106,11 +106,11 @@ class Google_Service_CloudResourceManager_Resource_TagKeys extends Google_Servic
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Optional. The maximum number of TagKeys to return in
-   * the response. This is currently not used by the server and will return the
-   * full page even if a size is specified currently.
+   * the response. The server allows a maximum of 300 TagKeys to return. If
+   * unspecified, the server will use 100 as the default.
    * @opt_param string pageToken Optional. A pagination token returned from a
    * previous call to `ListTagKey` that indicates where this listing should
-   * continue from. This is currently not used by the server.
+   * continue from.
    * @opt_param string parent Required. The resource name of the new TagKey's
    * parent. Must be of the form `folders/{folder_id}` or
    * `organizations/{org_id}`.

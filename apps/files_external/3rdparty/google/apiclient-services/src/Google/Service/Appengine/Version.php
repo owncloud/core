@@ -65,6 +65,7 @@ class Google_Service_Appengine_Version extends Google_Collection
   public $runtimeApiVersion;
   public $runtimeChannel;
   public $runtimeMainExecutablePath;
+  public $serviceAccount;
   public $servingStatus;
   public $threadsafe;
   public $versionUrl;
@@ -418,6 +419,14 @@ class Google_Service_Appengine_Version extends Google_Collection
   public function getRuntimeMainExecutablePath()
   {
     return $this->runtimeMainExecutablePath;
+  }
+  public function setServiceAccount($serviceAccount)
+  {
+    $this->serviceAccount = $serviceAccount;
+  }
+  public function getServiceAccount()
+  {
+    return $this->serviceAccount;
   }
   public function setServingStatus($servingStatus)
   {

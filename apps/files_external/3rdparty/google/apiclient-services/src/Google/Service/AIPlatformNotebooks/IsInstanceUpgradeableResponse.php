@@ -17,10 +17,19 @@
 
 class Google_Service_AIPlatformNotebooks_IsInstanceUpgradeableResponse extends Google_Model
 {
+  public $upgradeImage;
   public $upgradeInfo;
   public $upgradeVersion;
   public $upgradeable;
 
+  public function setUpgradeImage($upgradeImage)
+  {
+    $this->upgradeImage = $upgradeImage;
+  }
+  public function getUpgradeImage()
+  {
+    return $this->upgradeImage;
+  }
   public function setUpgradeInfo($upgradeInfo)
   {
     $this->upgradeInfo = $upgradeInfo;
