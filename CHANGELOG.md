@@ -47,12 +47,15 @@ Summary
 * Change - Update sabre/vobject (4.3.3 => 4.3.5): [#38380](https://github.com/owncloud/core/pull/38380)
 * Change - Update christophwurst/id3parser (v0.1.1 => v0.1.2): [#38387](https://github.com/owncloud/core/pull/38387)
 * Change - Update phpseclib/phpseclib (2.0.30 => 3.0.3): [#38453](https://github.com/owncloud/core/pull/38453)
-* Change - Update icewind/streams from 0.7.2 to 0.7.4: [#38462](https://github.com/owncloud/core/pull/38462)
+* Change - Update icewind/streams from 0.7.2 to 0.7.3: [#38462](https://github.com/owncloud/core/pull/38462)
 * Change - Update dependencies in apps/files_external/3rdparty: [#38462](https://github.com/owncloud/core/pull/38462)
-* Change - Update icewind/streams from 0.7.2 to 0.7.4 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
-* Change - Update icewind/smb from 3.2.7 to 3.4.0 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
+* Change - Update icewind/streams from 0.7.2 to 0.7.3 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
+* Change - Update icewind/smb from 3.2.7 to 3.3.1 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
 * Change - Update PHP dependencies: [#38487](https://github.com/owncloud/core/pull/38487)
 * Change - Update phpseclib/phpseclib (3.0.5 => 3.0.6): [#38508](https://github.com/owncloud/core/pull/38508)
+* Change - Update icewind/streams from 0.7.3 to 0.7.4: [#38524](https://github.com/owncloud/core/pull/38524)
+* Change - Update icewind/streams from 0.7.3 to 0.7.4 in files_external: [#38524](https://github.com/owncloud/core/pull/38524)
+* Change - Update icewind/smb from 3.3.1 to 3.4.0 in files_external: [#38524](https://github.com/owncloud/core/pull/38524)
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 * Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
@@ -360,10 +363,9 @@ Details
 
    https://github.com/owncloud/core/pull/38453
 
-* Change - Update icewind/streams from 0.7.2 to 0.7.4: [#38462](https://github.com/owncloud/core/pull/38462)
+* Change - Update icewind/streams from 0.7.2 to 0.7.3: [#38462](https://github.com/owncloud/core/pull/38462)
 
    https://github.com/owncloud/core/pull/38462
-   https://github.com/owncloud/core/pull/38524
 
 * Change - Update dependencies in apps/files_external/3rdparty: [#38462](https://github.com/owncloud/core/pull/38462)
 
@@ -374,15 +376,13 @@ Details
 
    https://github.com/owncloud/core/pull/38462
 
-* Change - Update icewind/streams from 0.7.2 to 0.7.4 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
+* Change - Update icewind/streams from 0.7.2 to 0.7.3 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
 
    https://github.com/owncloud/core/pull/38462
-   https://github.com/owncloud/core/pull/38524
 
-* Change - Update icewind/smb from 3.2.7 to 3.4.0 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
+* Change - Update icewind/smb from 3.2.7 to 3.3.1 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
 
    https://github.com/owncloud/core/pull/38462
-   https://github.com/owncloud/core/pull/38524
 
 * Change - Update PHP dependencies: [#38487](https://github.com/owncloud/core/pull/38487)
 
@@ -401,6 +401,18 @@ Details
    phpseclib/phpseclib (3.0.5 => 3.0.6) - google/apiclient-services (v0.162.0 => v0.163.0)
 
    https://github.com/owncloud/core/pull/38508
+
+* Change - Update icewind/streams from 0.7.3 to 0.7.4: [#38524](https://github.com/owncloud/core/pull/38524)
+
+   https://github.com/owncloud/core/pull/38524
+
+* Change - Update icewind/streams from 0.7.3 to 0.7.4 in files_external: [#38524](https://github.com/owncloud/core/pull/38524)
+
+   https://github.com/owncloud/core/pull/38524
+
+* Change - Update icewind/smb from 3.3.1 to 3.4.0 in files_external: [#38524](https://github.com/owncloud/core/pull/38524)
+
+   https://github.com/owncloud/core/pull/38524
 
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 
