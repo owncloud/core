@@ -9,7 +9,7 @@ Feature: Display notifications when receiving a share
     And app "notifications" has been enabled
     And using OCS API version "1"
     And using new DAV path
-    And these users have been created with default attributes and small skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -19,10 +19,12 @@ Feature: Display notifications when receiving a share
       | grp1      |
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"
+    And user "Alice" has created folder "PARENT"
 
   @smokeTest
   Scenario: share to user sends notification
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
     And user "Alice" shares file "/textfile0.txt" with user "Brian" using the sharing API
     Then user "Brian" should have 2 notifications
@@ -36,6 +38,7 @@ Feature: Display notifications when receiving a share
 
   Scenario: share to group sends notification to every member
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
     And user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API
     Then user "Brian" should have 2 notifications
