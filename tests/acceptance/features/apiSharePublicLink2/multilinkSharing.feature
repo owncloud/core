@@ -2,11 +2,12 @@
 Feature: multilinksharing
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
 
   @smokeTest
   Scenario Outline: Creating three public shares of a folder
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
@@ -44,6 +45,7 @@ Feature: multilinksharing
 
   Scenario Outline: Creating three public shares of a file
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
@@ -78,6 +80,7 @@ Feature: multilinksharing
 
   Scenario Outline: Check that updating password doesn't remove name of links
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
@@ -107,6 +110,7 @@ Feature: multilinksharing
 
   Scenario: Deleting a file deletes also its public links
     Given using OCS API version "1"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
@@ -127,6 +131,7 @@ Feature: multilinksharing
 
   Scenario Outline: Deleting one public link share of a file doesn't affect the rest
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
@@ -159,6 +164,7 @@ Feature: multilinksharing
 
   Scenario: Overwriting a file doesn't remove its public shares
     Given using OCS API version "1"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has created a public link share with settings
       | path        | textfile0.txt |
       | password    | %public%      |
@@ -180,6 +186,7 @@ Feature: multilinksharing
   @issue-ocis-reva-335
   Scenario: Renaming a folder doesn't remove its public shares
     Given using OCS API version "1"
+    And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a public link share with settings
       | path         | FOLDER      |
       | password     | %public%    |
