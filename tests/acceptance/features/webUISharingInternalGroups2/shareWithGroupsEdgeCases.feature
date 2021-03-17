@@ -347,3 +347,84 @@ Feature: Sharing files and folders with internal groups
       | uid_owner   | Carol          |
       | share_with  | grp2           |
       | permissions | 7              |
+
+  @skipOnOcV10.3
+  Scenario: Check share permissions and expiration date of a group and the member of the same group
+    Given these groups have been created:
+      | groupname |
+      | grp1      |
+    And user "Alice" has been added to group "grp1"
+    And user "Brian" has been added to group "grp1"
+    And user "Carol" has shared folder "/simple-folder" with user "Alice"
+    And user "Carol" has shared folder "/simple-folder" with group "grp1"
+    And user "Carol" has logged in using the webUI
+    When the user sets the sharing permissions of group "grp1" for "simple-folder" using the webUI to
+      | edit   | no |
+      | create | no |
+    And the user changes expiration date for share of group "grp1" to "+5 days" in the share dialog
+    Then the information for user "Brian" about the received share of folder "simple-folder" shared with a group should include
+      | share_type  | group          |
+      | file_target | /simple-folder |
+      | uid_owner   | Carol          |
+      | share_with  | grp1           |
+      | expiration  | +5 days        |
+      | permissions | 17             |
+    And the information for user "Alice" about the received share of folder "simple-folder" shared with a user should include
+      | share_type  | user           |
+      | file_target | /simple-folder |
+      | uid_owner   | Carol          |
+      | share_with  | Alice          |
+      | expiration  |                |
+      | permissions | 31             |
+
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5 @skipOnOcV10.6
+  Scenario: mount for reshare with group should contain correct sharing permissions
+    Given these groups have been created:
+      | groupname |
+      | grp1      |
+      | grp2      |
+    And user "Alice" has been added to group "grp1"
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has been added to group "grp2"
+    And user "Brian" has been added to group "grp2"
+    And user "Carol" has shared folder "/simple-folder" with group "grp1"
+    And user "Alice" has logged in using the webUI
+    And the user shares file "simple-folder" with group "grp2" using the webUI without closing the share dialog
+    And the user sets the sharing permissions of group "grp2" for "simple-folder" using the webUI to
+      | edit   | no |
+      | create | no |
+    When the user opens folder "simple-folder" using the webUI
+    And the user shares file "simple-empty-folder" with group "grp2" using the webUI without closing the share dialog
+    And the user sets the sharing permissions of group "grp2" for "simple-empty-folder" using the webUI to
+      | edit   | no |
+      | create | no |
+    Then user "Alice" should be able to upload file "filesForUpload/textfile.txt" to "simple-folder/textfile.txt"
+    And user "Alice" should not be able to upload file "filesForUpload/textfile.txt" to "simple-empty-folder/textfile.txt"
+    And user "Brian" should not be able to upload file "filesForUpload/textfile.txt" to "simple-folder/textfile.txt"
+    And user "Brian" should not be able to upload file "filesForUpload/textfile.txt" to "simple-empty-folder/textfile.txt"
+
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5 @skipOnOcV10.6
+  Scenario: reshare with group should allow for downgrading and upgrading permissions
+    Given these groups have been created:
+      | groupname |
+      | grp1      |
+      | grp2      |
+    And user "Alice" has been added to group "grp1"
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has been added to group "grp2"
+    And user "Brian" has been added to group "grp2"
+    And user "Carol" has shared folder "/simple-folder" with group "grp1"
+    And user "Alice" has logged in using the webUI
+    And the user shares file "simple-folder" with group "grp2" using the webUI without closing the share dialog
+    And the user sets the sharing permissions of group "grp2" for "simple-folder" using the webUI to
+      | edit   | no |
+      | create | no |
+    When the user opens folder "simple-folder" using the webUI
+    And the user shares file "simple-empty-folder" with group "grp2" using the webUI without closing the share dialog
+    And the user sets the sharing permissions of group "grp2" for "simple-empty-folder" using the webUI to
+      | edit   | no |
+      | create | no |
+    And the user sets the sharing permissions of group "grp2" for "simple-empty-folder" using the webUI to
+      | edit   | yes |
+      | create | yes |
+    Then user "Alice" should be able to upload file "filesForUpload/textfile.txt" to "simple-empty-folder/textfile.txt"

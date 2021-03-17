@@ -30,8 +30,9 @@ use OCP\Files\Storage\IStorageFactory;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IUser;
-use OCP\Share\IAttributes;
 use OCP\Share\IManager;
+use OCP\IGroupManager;
+use OCP\IUserManager;
 
 class MountProvider implements IMountProvider {
 	/**
@@ -45,6 +46,16 @@ class MountProvider implements IMountProvider {
 	protected $shareManager;
 
 	/**
+	 * @var IUserManager
+	 */
+	private $userManager;
+
+	/**
+	 * @var IGroupManager
+	 */
+	private $groupManager;
+
+	/**
 	 * @var ILogger
 	 */
 	protected $logger;
@@ -52,11 +63,20 @@ class MountProvider implements IMountProvider {
 	/**
 	 * @param \OCP\IConfig $config
 	 * @param IManager $shareManager
+	 * @param IUserManager $userManager
+	 * @param IGroupManager $groupManager
 	 * @param ILogger $logger
 	 */
-	public function __construct(IConfig $config, IManager $shareManager, ILogger $logger) {
+	public function __construct(
+			IConfig $config,
+			IManager $shareManager,
+			IUserManager $userManager,
+			IGroupManager $groupManager,
+			ILogger $logger) {
 		$this->config = $config;
 		$this->shareManager = $shareManager;
+		$this->userManager = $userManager;
+		$this->groupManager = $groupManager;
 		$this->logger = $logger;
 	}
 
@@ -171,6 +191,12 @@ class MountProvider implements IMountProvider {
 			$superPermissions = 0;
 			$superAttributes = $this->shareManager->newShare()->newAttributes();
 			foreach ($shares as $share) {
+				if ($this->isSelfGroupReshare($share, $user) && ((string)$share->getId()) !== ((string)$shares[0]->getId())) {
+					// when share mount build from received share and reshare for himself, received share already is most permissive
+					// reshare can only have lower permission, and for attributes we would falsely force share attributes
+					continue;
+				}
+
 				// update permissions
 				$superPermissions |= $share->getPermissions();
 
@@ -215,5 +241,26 @@ class MountProvider implements IMountProvider {
 		}
 
 		return $result;
+	}
+
+	/*
+	 * @param \OCP\Share\IShare $share
+	 * @param \OCP\IUser $user user
+	 *
+	 * Check whether this share is share that this user is not owner and
+	 * that user reshared with group that is memberof (reshared with himself)
+	 *
+	 * @return boolean
+	 */
+	private function isSelfGroupReshare(\OCP\Share\IShare $share, \OCP\IUser $user) {
+		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP
+				&& $share->getShareOwner() !== $user->getUID()
+				&& $share->getSharedBy() === $user->getUID()) {
+			$sharedWithGroup = $this->groupManager->get($share->getSharedWith());
+			if ($sharedWithGroup !== null && $sharedWithGroup->inGroup($user)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

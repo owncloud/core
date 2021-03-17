@@ -158,6 +158,8 @@ class Application extends App {
 			return new MountProvider(
 				$server->getConfig(),
 				$server->getShareManager(),
+				$server->getUserManager(),
+				$server->getGroupManager(),
 				$server->getLogger()
 			);
 		});

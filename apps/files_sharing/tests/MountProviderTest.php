@@ -27,9 +27,13 @@ use OCP\Files\Storage\IStorageFactory;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IUser;
+use OCP\IGroup;
 use OCP\Share\IAttributes as IShareAttributes;
 use OCP\Share\IManager;
+use OCP\IUserManager;
+use OCP\IGroupManager;
 use OCP\Share\IShare;
+use OCP\Files\IRootFolder;
 
 /**
  * @group DB
@@ -51,6 +55,12 @@ class MountProviderTest extends \Test\TestCase {
 	/** @var IManager|\PHPUnit\Framework\MockObject\MockObject */
 	private $shareManager;
 
+	/** @var IUserManager|\PHPUnit\Framework\MockObject\MockObject */
+	private $userManager;
+
+	/** @var IGroupManager|\PHPUnit\Framework\MockObject\MockObject */
+	private $groupManager;
+
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */
 	private $logger;
 
@@ -61,9 +71,14 @@ class MountProviderTest extends \Test\TestCase {
 		$this->user = $this->createMock('OCP\IUser');
 		$this->loader = $this->createMock('OCP\Files\Storage\IStorageFactory');
 		$this->shareManager = $this->createMock('\OCP\Share\IManager');
+		$this->userManager = $this->createMock(IUserManager::class);
+		$this->groupManager = $this->createMock(IGroupManager::class);
 		$this->logger = $this->createMock('\OCP\ILogger');
 
-		$this->provider = new MountProvider($this->config, $this->shareManager, $this->logger);
+		$this->provider = new MountProvider(
+			$this->config, $this->shareManager,
+			$this->userManager, $this->groupManager, $this->logger
+		);
 	}
 
 	private function makeMockShareAttributes($attrs) {
@@ -131,8 +146,7 @@ class MountProviderTest extends \Test\TestCase {
 	 * - pending shares
 	 */
 	public function testExcludeShares() {
-		$rootFolder = $this->createMock('\OCP\Files\IRootFolder');
-		$userManager = $this->createMock('\OCP\IUserManager');
+		$rootFolder = $this->createMock(IRootFolder::class);
 
 		$attr1 = [];
 		$attr2 = [["scope" => "permission", "key" => "download", "enabled" => true]];
@@ -164,8 +178,8 @@ class MountProviderTest extends \Test\TestCase {
 			->method('getSharedWith');
 		$this->shareManager->expects($this->any())
 			->method('newShare')
-			->will($this->returnCallback(function () use ($rootFolder, $userManager) {
-				return new \OC\Share20\Share($rootFolder, $userManager);
+			->will($this->returnCallback(function () use ($rootFolder) {
+				return new \OC\Share20\Share($rootFolder, $this->userManager);
 			}));
 
 		$mounts = $this->provider->getMountsForUser($this->user, $this->loader);
@@ -338,8 +352,7 @@ class MountProviderTest extends \Test\TestCase {
 	 * @param array $expectedShares array of expected supershare specs
 	 */
 	public function testMergeShares($userShares, $groupShares, $expectedShares, $moveFails = false) {
-		$rootFolder = $this->createMock('\OCP\Files\IRootFolder');
-		$userManager = $this->createMock('\OCP\IUserManager');
+		$rootFolder = $this->createMock(IRootFolder::class);
 
 		$userShares = \array_map(function ($shareSpec) {
 			return $this->makeMockShare($shareSpec[0], $shareSpec[1], $shareSpec[2], $shareSpec[3], $shareSpec[4], $shareSpec[5]);
@@ -364,8 +377,8 @@ class MountProviderTest extends \Test\TestCase {
 
 		$this->shareManager->expects($this->any())
 			->method('newShare')
-			->will($this->returnCallback(function () use ($rootFolder, $userManager) {
-				return new \OC\Share20\Share($rootFolder, $userManager);
+			->will($this->returnCallback(function () use ($rootFolder) {
+				return new \OC\Share20\Share($rootFolder, $this->userManager);
 			}));
 
 		if ($moveFails) {
@@ -396,5 +409,227 @@ class MountProviderTest extends \Test\TestCase {
 				$this->assertEquals($expectedShare[5], $share->getAttributes()->toArray());
 			}
 		}
+	}
+
+	public function testGroupReShares() {
+		$group = $this->createMock(IGroup::class);
+		$rootFolder = $this->createMock(IRootFolder::class);
+
+		// base share user1 -> user2
+		$attr = [];
+		$share1 = $this->makeMockShare(4, 101, 'user1', '/share4', 31, $attr);
+		$share1->expects($this->any())
+			->method('getSharedBy')
+			->will($this->returnValue('user1'));
+		$share1->expects($this->any())
+			->method('getSharedWith')
+			->will($this->returnValue('user3'));
+		$share1->expects($this->any())
+			->method('getShareType')
+			->will($this->returnValue(\OCP\Share::SHARE_TYPE_USER));
+
+		// base share user1 -> user3
+		$attr = [["scope" => "permission", "key" => "download", "enabled" => true]];
+		$share2= $this->makeMockShare(5, 101, 'user1', '/share4', 15, $attr);
+		$share2->expects($this->any())
+			->method('getSharedBy')
+			->will($this->returnValue('user1'));
+		$share2->expects($this->any())
+			->method('getSharedWith')
+			->will($this->returnValue('user3'));
+		$share2->expects($this->any())
+			->method('getShareType')
+			->will($this->returnValue(\OCP\Share::SHARE_TYPE_USER));
+
+		// group reshare user2 -> group
+		$attr = [["scope" => "permission", "key" => "download", "enabled" => false]];
+		$groupReshare = $this->makeMockShare(6, 101, 'user1', '/share4', 1, $attr);
+		$groupReshare->expects($this->any())
+			->method('getSharedBy')
+			->will($this->returnValue('user2'));
+		$groupReshare->expects($this->any())
+			->method('getSharedWith')
+			->will($this->returnValue('group'));
+		$groupReshare->expects($this->any())
+			->method('getShareType')
+			->will($this->returnValue(\OCP\Share::SHARE_TYPE_GROUP));
+
+		$this->user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user3'));
+		
+		$this->shareManager->expects($this->any())
+			->method('newShare')
+			->will($this->returnCallback(function () use ($rootFolder) {
+				return new \OC\Share20\Share($rootFolder, $this->userManager);
+			}));
+
+		$this->groupManager->expects($this->any())
+			->method('get')
+			->will($this->returnValue($group));
+		$group->expects($this->any())
+			->method('inGroup')
+			->will($this->returnValue(true));
+
+		$userGroupUserShares = [$share2, $groupReshare];
+		$requiredShareTypes = [\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_GROUP];
+		$this->shareManager->expects($this->once())
+			->method('getAllSharedWith')
+			->with('user3', $requiredShareTypes, null)
+			->will($this->returnValue($userGroupUserShares));
+
+		$mounts = $this->provider->getMountsForUser($this->user, $this->loader);
+
+		$this->assertCount(1, $mounts);
+
+		$superShare = $mounts[0]->getShare();
+		$this->assertEquals(5, $superShare->getId());
+		$this->assertEquals('user1', $superShare->getShareOwner());
+		$this->assertEquals(101, $superShare->getNodeId());
+		$this->assertEquals('/share4', $superShare->getTarget());
+		$this->assertEquals(15, $superShare->getPermissions());
+		$this->assertEquals(true, $superShare->getAttributes()->getAttribute('permission', 'download'));
+	}
+
+	public function testSelfGroupReSharesOnSameFolder() {
+		$group = $this->createMock(IGroup::class);
+		$rootFolder = $this->createMock(IRootFolder::class);
+
+		// base share user1 -> user2
+		$attr = [];
+		$share = $this->makeMockShare(4, 101, 'user1', '/share4', 31, $attr);
+		$share->expects($this->any())
+			->method('getSharedBy')
+			->will($this->returnValue('user1'));
+		$share->expects($this->any())
+			->method('getSharedWith')
+			->will($this->returnValue('user2'));
+		$share->expects($this->any())
+			->method('getShareType')
+			->will($this->returnValue(\OCP\Share::SHARE_TYPE_USER));
+
+		// group reshare user2 -> group
+		$attr = [["scope" => "permission", "key" => "download", "enabled" => true]];
+		$groupReshare = $this->makeMockShare(5, 101, 'user1', '/share4', 1, $attr);
+		$groupReshare->expects($this->any())
+			->method('getSharedBy')
+			->will($this->returnValue('user2'));
+		$groupReshare->expects($this->any())
+			->method('getSharedWith')
+			->will($this->returnValue('group'));
+		$groupReshare->expects($this->any())
+			->method('getShareType')
+			->will($this->returnValue(\OCP\Share::SHARE_TYPE_GROUP));
+
+		$this->user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user2'));
+		
+		$this->shareManager->expects($this->any())
+			->method('newShare')
+			->will($this->returnCallback(function () use ($rootFolder) {
+				return new \OC\Share20\Share($rootFolder, $this->userManager);
+			}));
+		
+		$this->groupManager->expects($this->any())
+			->method('get')
+			->will($this->returnValue($group));
+		$group->expects($this->any())
+			->method('inGroup')
+			->will($this->returnValue(true));
+
+		$userGroupUserShares = [$share, $groupReshare];
+		$requiredShareTypes = [\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_GROUP];
+		$this->shareManager->expects($this->once())
+			->method('getAllSharedWith')
+			->with('user2', $requiredShareTypes, null)
+			->will($this->returnValue($userGroupUserShares));
+
+		$mounts = $this->provider->getMountsForUser($this->user, $this->loader);
+
+		$this->assertCount(1, $mounts);
+
+		$superShare = $mounts[0]->getShare();
+		$this->assertEquals(4, $superShare->getId());
+		$this->assertEquals('user1', $superShare->getShareOwner());
+		$this->assertEquals(101, $superShare->getNodeId());
+		$this->assertEquals('/share4', $superShare->getTarget());
+		$this->assertEquals(31, $superShare->getPermissions());
+		$this->assertEmpty($superShare->getAttributes()->toArray());
+	}
+
+	public function testSelfGroupReSharesOnSubFolder() {
+		$group = $this->createMock(IGroup::class);
+		$rootFolder = $this->createMock(IRootFolder::class);
+
+		// base share user1 -> user2
+		$attr = [];
+		$share = $this->makeMockShare(4, 101, 'user1', '/share4', 31, $attr);
+		$share->expects($this->any())
+			->method('getSharedBy')
+			->will($this->returnValue('user1'));
+		$share->expects($this->any())
+			->method('getSharedWith')
+			->will($this->returnValue('user2'));
+		$share->expects($this->any())
+			->method('getShareType')
+			->will($this->returnValue(\OCP\Share::SHARE_TYPE_USER));
+
+		// group reshare user2 -> group
+		$attr = [["scope" => "permission", "key" => "download", "enabled" => true]];
+		$groupReshare = $this->makeMockShare(5, 102, 'user1', '/share4subfolder', 1, $attr);
+		$groupReshare->expects($this->any())
+			->method('getSharedBy')
+			->will($this->returnValue('user2'));
+		$groupReshare->expects($this->any())
+			->method('getSharedWith')
+			->will($this->returnValue('group'));
+		$groupReshare->expects($this->any())
+			->method('getShareType')
+			->will($this->returnValue(\OCP\Share::SHARE_TYPE_GROUP));
+
+		$this->user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user2'));
+		
+		$this->shareManager->expects($this->any())
+			->method('newShare')
+			->will($this->returnCallback(function () use ($rootFolder) {
+				return new \OC\Share20\Share($rootFolder, $this->userManager);
+			}));
+		
+		$this->groupManager->expects($this->any())
+			->method('get')
+			->will($this->returnValue($group));
+		$group->expects($this->any())
+			->method('inGroup')
+			->will($this->returnValue(true));
+
+		$userGroupUserShares = [$share, $groupReshare];
+		$requiredShareTypes = [\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_GROUP];
+		$this->shareManager->expects($this->once())
+			->method('getAllSharedWith')
+			->with('user2', $requiredShareTypes, null)
+			->will($this->returnValue($userGroupUserShares));
+
+		$mounts = $this->provider->getMountsForUser($this->user, $this->loader);
+
+		$this->assertCount(2, $mounts);
+
+		$superShare = $mounts[0]->getShare();
+		$this->assertEquals(4, $superShare->getId());
+		$this->assertEquals('user1', $superShare->getShareOwner());
+		$this->assertEquals(101, $superShare->getNodeId());
+		$this->assertEquals('/share4', $superShare->getTarget());
+		$this->assertEquals(31, $superShare->getPermissions());
+		$this->assertEquals([], $superShare->getAttributes()->toArray());
+
+		$superShare = $mounts[1]->getShare();
+		$this->assertEquals(5, $superShare->getId());
+		$this->assertEquals('user1', $superShare->getShareOwner());
+		$this->assertEquals(102, $superShare->getNodeId());
+		$this->assertEquals('/share4subfolder', $superShare->getTarget());
+		$this->assertEquals(1, $superShare->getPermissions());
+		$this->assertEquals([["scope" => "permission", "key" => "download", "enabled" => true]], $superShare->getAttributes()->toArray());
 	}
 }

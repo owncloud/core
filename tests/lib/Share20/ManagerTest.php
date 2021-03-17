@@ -992,6 +992,25 @@ class ManagerTest extends \Test\TestCase {
 	}
 
 	/**
+	 * Supershare permissions should not be validated when user is share owner or shared by
+	 */
+	public function testValidatePermissionsOfShareOwnerOrShareBy() {
+		$file = $this->createMock(File::class);
+		$file->method('getPermissions')->willReturn(1);
+		$this->rootFolder->expects($this->never())->method('getUserFolder');
+		$share = $this->createShare(null, \OCP\Share::SHARE_TYPE_GROUP, $file, 'user2', 'user1', 'user0', 11, null, null);
+
+		try {
+			$this->invokePrivate($this->manager, 'validatePermissions', [$share]);
+			$thrown = false;
+		} catch (\Exception $e) {
+			$thrown = true;
+		}
+
+		$this->assertSame(false, $thrown);
+	}
+
+	/**
 	 */
 	public function testValidateExpirationDateInPast() {
 		$this->expectException(\OCP\Share\Exceptions\GenericShareException::class);

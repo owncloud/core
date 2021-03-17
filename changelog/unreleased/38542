@@ -1,0 +1,9 @@
+Bugfix: Handle group reshare mount permissions and attributes correctly
+
+In a scenario where resharing with group that user belongs to, 
+permissions and attributes for the share mount now are restricted only to received shares.
+Outgoing self-share with group are ignored as this could lead to incorrect permissions/attributes
+
+
+https://github.com/owncloud/core/pull/38542
+https://github.com/owncloud/enterprise/issues/4382

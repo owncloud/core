@@ -351,26 +351,33 @@ class Manager implements IManager {
 
 		/*
 		 * If share node is also share ($share is reshare),
-		 * get $maxPermissions based on supershare permissions
+		 * get $maxPermissions and $requiredAttributes based on supershare permissions and attributes
+		 * (attributes can only be retrieved using supershare of share mount)
 		 */
 		if ($this->userSession !== null && $this->userSession->getUser() !== null &&
 			$share->getShareOwner() !== $this->userSession->getUser()->getUID()) {
-			// retrieve received share node $shareFileNode being reshared with $share
-			$userFolder = $this->rootFolder->getUserFolder($share->getSharedBy());
-			$shareFileNodes = $userFolder->getById($shareNode->getId(), true);
-			$shareFileNode = $shareFileNodes[0] ?? null;
-			if ($shareFileNode) {
-				$shareFileStorage = $shareFileNode->getStorage();
-				if ($shareFileStorage->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
-					// if $shareFileNode is an incoming federated share, use share node permission directly
-					$maxPermissions = $shareNode->getPermissions();
-				} elseif ($shareFileStorage->instanceOfStorage('OCA\Files_Sharing\SharedStorage')) {
-					// if $shareFileNode is user/group share, use supershare permissions
-					/** @var \OCA\Files_Sharing\SharedStorage $shareFileStorage */
-					'@phan-var \OCA\Files_Sharing\SharedStorage $shareFileStorage';
-					$parentShare = $shareFileStorage->getShare();
-					$maxPermissions = $parentShare->getPermissions();
-					$requiredAttributes = $parentShare->getAttributes();
+			/*
+			* if it is an incoming federated share, use node permission
+			*/
+			if ($shareNode->getStorage()->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
+				$maxPermissions = $shareNode->getPermissions();
+			} elseif ($shareNode->getStorage()->instanceOfStorage('OCA\Files_Sharing\SharedStorage')) {
+				$incomingShares = $this->getReshareNodeIncomingShares($share);
+				foreach ($incomingShares as $incomingShare) {
+					// supershare logic of permissions and attributes
+					// takes into account incoming shares of the share for which validation is performed,
+					// not only supershare of that share, e.g. includes reshare with group that user is member of itself
+					$maxPermissions |= $incomingShare->getPermissions();
+					if ($share->getAttributes() !== null) {
+						foreach ($share->getAttributes()->toArray() as $attribute) {
+							if ($requiredAttributes->getAttribute($attribute['scope'], $attribute['key']) === true) {
+								// if required share attribute is already enabled, it is most permissive
+								continue;
+							}
+							// update required attributes with subshare attribute
+							$requiredAttributes->setAttribute($attribute['scope'], $attribute['key'], $attribute['enabled']);
+						}
+					}
 				}
 			}
 		}
@@ -379,7 +386,9 @@ class Manager implements IManager {
 		 * Check that we do not share with more permissions than we have
 		 */
 		if (!$this->strictSubsetOfPermissions($maxPermissions, $share->getPermissions())) {
-			$message_t = $this->l->t('Cannot set the requested share permissions for %s', [$share->getNode()->getName()]);
+			$message_t = $this->l->t('Cannot set the requested share permissions for %s 
+				due to changed parent share permissions or an attempt to share with increased permissions. 
+				Please recreate share or contact share owner.', [$share->getNode()->getName()]);
 			throw new GenericShareException($message_t, $message_t, 404);
 		}
 
@@ -388,9 +397,49 @@ class Manager implements IManager {
 		 * will be respected when e.g. reshared.
 		 */
 		if (!$this->strictSubsetOfAttributes($requiredAttributes, $currentAttributes)) {
-			$message_t = $this->l->t('Cannot set the requested share attributes for %s', [$share->getNode()->getName()]);
+			$message_t = $this->l->t('Cannot set the requested share attributes for %s
+				due to changed parent share attributes or an attempt to share with invalid attributes. 
+				Please recreate share or contact share owner.', [$share->getNode()->getName()]);
 			throw new GenericShareException($message_t, $message_t, 404);
 		}
+	}
+
+	/**
+	 * Get reshare incoming shares based on all share mount points
+	 * that mounted to UserFolder of sharer user
+	 *
+	 * @param \OCP\Share\IShare $share The share to validate its permission
+	 * @return \OCP\Share\IShare[]
+	 */
+	protected function getReshareNodeIncomingShares(IShare $share) {
+		$maxPermissions = 0;
+		$incomingShares = [];
+		$shareTypes = [
+			\OCP\Share::SHARE_TYPE_USER,
+			\OCP\Share::SHARE_TYPE_GROUP
+		];
+		$userFolder = $this->rootFolder->getUserFolder($share->getSharedBy());
+		/**
+		 * The node can be shared multiple times, get all share nodes
+		 */
+		$incomingShareNodes = $userFolder->getById($share->getNode()->getId());
+		foreach ($incomingShareNodes as $incomingShareNode) {
+			/**
+			 * find mountpoint of the share node,
+			 * check incoming share permissions based on mountpoint node
+			 */
+			$mount = $incomingShareNode->getMountPoint();
+			$shareMountPointNodes = $userFolder->getById($mount->getStorageRootId());
+			foreach ($shareMountPointNodes as $shareMountPointNode) {
+				$incomingShares = \array_merge($incomingShares, $this->getAllSharedWith(
+					$share->getSharedBy(),
+					$shareTypes,
+					$shareMountPointNode
+				));
+			}
+		}
+
+		return $incomingShares;
 	}
 
 	/**
