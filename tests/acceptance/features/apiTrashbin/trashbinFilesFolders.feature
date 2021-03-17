@@ -141,7 +141,8 @@ Feature: files and folders exist in the trashbin after being deleted
   @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
   Scenario Outline: Listing other user's trashbin is prohibited
     Given using <dav-path> DAV path
-    And user "testtrashbin100" has been created with default attributes and small skeleton files
+    And user "testtrashbin100" has been created with default attributes and without skeleton files
+    And user "testtrashbin100" has uploaded file "filesForUpload/textfile.txt" to "/textfile1.txt"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "testtrashbin100" has deleted file "/textfile1.txt"
     When user "Brian" tries to list the trashbin content for user "testtrashbin100"
@@ -157,7 +158,9 @@ Feature: files and folders exist in the trashbin after being deleted
   @smokeTest @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
   Scenario Outline: Listing other user's trashbin is prohibited
     Given using <dav-path> DAV path
-    And user "testtrashbin101" has been created with default attributes and small skeleton files
+    And user "testtrashbin101" has been created with default attributes and without skeleton files
+    And user "testtrashbin101" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
+    And user "testtrashbin101" has uploaded file "filesForUpload/textfile.txt" to "/textfile1.txt"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "testtrashbin101" has deleted file "/textfile0.txt"
     And user "testtrashbin101" has deleted file "/textfile2.txt"
@@ -175,7 +178,9 @@ Feature: files and folders exist in the trashbin after being deleted
   @skipOnLDAP @skip_on_objectstore @skipOnOcV10.3
   Scenario Outline: Listing other user's trashbin is prohibited
     Given using <dav-path> DAV path
-    And user "testtrashbin102" has been created with default attributes and small skeleton files
+    And user "testtrashbin102" has been created with default attributes and without skeleton files
+    And user "testtrashbin102" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
+    And user "testtrashbin102" has uploaded file "filesForUpload/textfile.txt" to "/textfile1.txt"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "testtrashbin102" has deleted file "/textfile0.txt"
     And user "testtrashbin102" has deleted file "/textfile2.txt"
@@ -199,6 +204,7 @@ Feature: files and folders exist in the trashbin after being deleted
   @smokeTest
   Scenario Outline: Get trashbin content with wrong password
     Given using <dav-path> DAV path
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has deleted file "/textfile0.txt"
     When user "Alice" tries to list the trashbin content for user "Alice" using password "invalid"
     Then the HTTP status code should be "401"
@@ -213,6 +219,7 @@ Feature: files and folders exist in the trashbin after being deleted
   @smokeTest
   Scenario Outline: Get trashbin content without password
     Given using <dav-path> DAV path
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has deleted file "/textfile0.txt"
     When user "Alice" tries to list the trashbin content for user "Alice" using password ""
     Then the HTTP status code should be "401"
@@ -261,7 +268,7 @@ Feature: files and folders exist in the trashbin after being deleted
   Scenario Outline: deleting a folder moves all its content to the trashbin
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/new-folder"
-    And user "Alice" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/new-folder/new-file.txt"
     When user "Alice" deletes folder "/new-folder/" using the WebDAV API
     Then as "Alice" the file with original path "/new-folder/new-file.txt" should exist in the trashbin
     Then as "Alice" the folder with original path "/new-folder/" should exist in the trashbin
