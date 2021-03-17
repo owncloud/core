@@ -2,10 +2,12 @@
 Feature: sharing
 
   Background:
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
+    And user "Alice" has uploaded file with content "some data" to "/textfile0.txt"
+    And user "Brian" has uploaded file with content "some data" to "/textfile0.txt"
 
   @smokeTest
   Scenario Outline: Sharee can see the share
@@ -23,6 +25,8 @@ Feature: sharing
   @smokeTest
   Scenario Outline: Sharee can see the filtered share
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file with content "some data" to "/textfile1.txt"
+    And user "Brian" has uploaded file with content "some data" to "/textfile1.txt"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     And user "Alice" has shared file "textfile1.txt" with user "Brian"
     When user "Brian" gets all the shares shared with him that are received as file "textfile1 (2).txt" using the provisioning API
@@ -37,6 +41,8 @@ Feature: sharing
   @smokeTest
   Scenario Outline: Sharee can't see the share that is filtered out
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file with content "some data" to "/textfile1.txt"
+    And user "Brian" has uploaded file with content "some data" to "/textfile1.txt"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     And user "Alice" has shared file "textfile1.txt" with user "Brian"
     When user "Brian" gets all the shares shared with him that are received as file "textfile0 (2).txt" using the provisioning API

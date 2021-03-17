@@ -4,7 +4,7 @@ Feature: sharing
   Background:
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And these users have been created with default attributes and small skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -12,7 +12,7 @@ Feature: sharing
   @smokeTest @issue-ocis-reva-262
   Scenario Outline: getting all shares of a user using that user
     Given using OCS API version "<ocs_api_version>"
-    And user "Alice" has moved file "/textfile0.txt" to "/file_to_share.txt"
+    And user "Alice" has uploaded file with content "some data" to "/file_to_share.txt"
     And user "Alice" has shared file "file_to_share.txt" with user "Brian"
     And user "Brian" has accepted share "/file_to_share.txt" offered by user "Alice"
     When user "Alice" gets all shares shared by him using the sharing API
@@ -27,6 +27,7 @@ Feature: sharing
   @issue-ocis-reva-65
   Scenario Outline: getting all shares of a user using another user
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file with content "some data" to "/textfile0.txt"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When the administrator gets all shares shared by him using the sharing API
@@ -41,10 +42,11 @@ Feature: sharing
   @smokeTest
   Scenario Outline: getting all shares of a file
     Given using OCS API version "<ocs_api_version>"
-    And these users have been created with default attributes and small skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | Carol    |
       | David    |
+    And user "Alice" has uploaded file with content "some data" to "/textfile0.txt"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     And user "Alice" has shared file "textfile0.txt" with user "Carol"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
@@ -63,10 +65,11 @@ Feature: sharing
   @smokeTest @issue-ocis-reva-243
   Scenario Outline: getting all shares of a file with reshares
     Given using OCS API version "<ocs_api_version>"
-    And these users have been created with default attributes and small skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | Carol    |
       | David    |
+    And user "Alice" has uploaded file with content "some data" to "/textfile0.txt"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     And user "Brian" has shared file "/Shares/textfile0.txt" with user "Carol"
@@ -86,10 +89,10 @@ Feature: sharing
   Scenario Outline: User's own shares reshared to him don't appear when getting "shared with me" shares
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    And user "Carol" has been created with default attributes and small skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
     And user "Carol" has been added to group "grp1"
     And user "Carol" has created folder "/shared"
-    And user "Carol" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
+    And user "Carol" has uploaded file with content "some data" to "/shared/shared_file.txt"
     And user "Carol" has shared folder "/shared" with user "Brian"
     And user "Brian" has accepted share "/shared" offered by user "Carol"
     And user "Brian" has shared folder "/Shares/shared" with group "grp1"
@@ -107,7 +110,7 @@ Feature: sharing
   #after fixing all the issues merge this scenario with the one below
   Scenario Outline: getting share info of a share
     Given using OCS API version "<ocs_api_version>"
-    And user "Alice" has moved file "/textfile0.txt" to "/file_to_share.txt"
+    And user "Alice" has uploaded file with content "some data" to "/file_to_share.txt"
     And user "Alice" has shared file "file_to_share.txt" with user "Brian"
     And user "Brian" has accepted share "/file_to_share.txt" offered by user "Alice"
     When user "Alice" gets the info of the last share using the sharing API
@@ -139,7 +142,7 @@ Feature: sharing
   #after fixing all the issues merge this scenario with the one above
   Scenario Outline: getting share info of a share
     Given using OCS API version "<ocs_api_version>"
-    And user "Alice" has moved file "/textfile0.txt" to "/file_to_share.txt"
+    And user "Alice" has uploaded file with content "some data" to "/file_to_share.txt"
     And user "Alice" has shared file "file_to_share.txt" with user "Brian"
     And user "Brian" has accepted share "/file_to_share.txt" offered by user "Alice"
     When user "Alice" gets the info of the last share using the sharing API
@@ -171,6 +174,7 @@ Feature: sharing
   Scenario Outline: Get a share with a user that didn't receive the share
     Given using OCS API version "<ocs_api_version>"
     And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "some data" to "/textfile0.txt"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     When user "Carol" gets the info of the last share using the sharing API
     Then the OCS status code should be "404"
@@ -183,24 +187,19 @@ Feature: sharing
   @skipOnLDAP @issue-ocis-reva-194
   Scenario: Share of folder to a group, remove user from that group
     Given using OCS API version "1"
-    And user "Carol" has been created with default attributes and small skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
     And group "group0" has been created
     And user "Brian" has been added to group "group0"
     And user "Carol" has been added to group "group0"
+    And user "Alice" has created folder "/PARENT"
+    And user "Alice" has uploaded file with content "some data" to "/PARENT/parent.txt"
     And user "Alice" has shared folder "/PARENT" with group "group0"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
     And user "Carol" has accepted share "/PARENT" offered by user "Alice"
     When the administrator removes user "Carol" from group "group0" using the provisioning API
     Then user "Brian" should see the following elements
-      | /FOLDER/                  |
-      | /PARENT/                  |
-      | /PARENT/parent.txt        |
       | /Shares/PARENT/           |
       | /Shares/PARENT/parent.txt |
-    And user "Carol" should see the following elements
-      | /FOLDER/           |
-      | /PARENT/           |
-      | /PARENT/parent.txt |
     But user "Carol" should not see the following elements
       | /Shares/PARENT/           |
       | /Shares/PARENT/parent.txt |
@@ -208,6 +207,8 @@ Feature: sharing
   @issue-ocis-reva-372
   Scenario Outline: getting all the shares inside the folder
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "/PARENT"
+    And user "Alice" has uploaded file with content "some data" to "/PARENT/parent.txt"
     And user "Alice" has shared file "PARENT/parent.txt" with user "Brian"
     And user "Brian" has accepted share "/PARENT/parent.txt" offered by user "Alice"
     When user "Alice" gets all the shares inside the folder "PARENT" using the sharing API
