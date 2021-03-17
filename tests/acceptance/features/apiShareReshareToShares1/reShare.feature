@@ -4,13 +4,16 @@ Feature: sharing
   Background:
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And user "Alice" has been created with default attributes and small skeleton files
-    And user "Brian" has been created with default attributes and without skeleton files
-    And user "Carol" has been created with default attributes and without skeleton files
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+      | Carol    |
 
   @smokeTest
   Scenario Outline: User is not allowed to reshare file when reshare permission is not given
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" shares file "/Shares/textfile0.txt" with user "Carol" with permissions "read,update" using the sharing API
@@ -26,6 +29,7 @@ Feature: sharing
 
   Scenario Outline: User is not allowed to reshare folder when reshare permission is not given
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "/FOLDER"
     And user "Alice" has shared folder "/FOLDER" with user "Brian" with permissions "read,update"
     And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     When user "Brian" shares folder "/Shares/FOLDER" with user "Carol" with permissions "read,update" using the sharing API
@@ -42,6 +46,7 @@ Feature: sharing
   @smokeTest
   Scenario Outline: User is allowed to reshare file with the same permissions
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "share,read"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" shares file "/Shares/textfile0.txt" with user "Carol" with permissions "share,read" using the sharing API
@@ -58,6 +63,7 @@ Feature: sharing
 
   Scenario Outline: User is allowed to reshare folder with the same permissions
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "/FOLDER"
     And user "Alice" has shared folder "/FOLDER" with user "Brian" with permissions "share,read"
     And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     When user "Brian" shares folder "/Shares/FOLDER" with user "Carol" with permissions "share,read" using the sharing API
@@ -74,6 +80,7 @@ Feature: sharing
 
   Scenario Outline: User is allowed to reshare file with less permissions
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "share,update,read"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" shares file "/Shares/textfile0.txt" with user "Carol" with permissions "share,read" using the sharing API
@@ -90,6 +97,7 @@ Feature: sharing
 
   Scenario Outline: User is allowed to reshare folder with less permissions
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "/FOLDER"
     And user "Alice" has shared folder "/FOLDER" with user "Brian" with permissions "share,update,read"
     And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     When user "Brian" shares folder "/Shares/FOLDER" with user "Carol" with permissions "share,read" using the sharing API
@@ -106,6 +114,7 @@ Feature: sharing
 
   Scenario Outline: User is not allowed to reshare file and set more permissions bits
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions <received_permissions>
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" shares file "/Shares/textfile0.txt" with user "Carol" with permissions <reshare_permissions> using the sharing API
@@ -134,6 +143,7 @@ Feature: sharing
   @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario Outline: User is allowed to reshare file and set create (4) or delete (8) permissions bits, which get ignored
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions <received_permissions>
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" shares file "/Shares/textfile0.txt" with user "Carol" with permissions <reshare_permissions> using the sharing API
@@ -175,6 +185,7 @@ Feature: sharing
 
   Scenario Outline: User is not allowed to reshare folder and set more permissions bits
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "/PARENT"
     And user "Alice" has shared folder "/PARENT" with user "Brian" with permissions <received_permissions>
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
     When user "Brian" shares folder "/Shares/PARENT" with user "Carol" with permissions <reshare_permissions> using the sharing API
@@ -214,6 +225,7 @@ Feature: sharing
 
   Scenario Outline: User is not allowed to reshare folder and add delete permission bit (8)
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "/PARENT"
     And user "Alice" has shared folder "/PARENT" with user "Brian" with permissions <received_permissions>
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
     When user "Brian" shares folder "/Shares/PARENT" with user "Carol" with permissions <reshare_permissions> using the sharing API
@@ -242,6 +254,7 @@ Feature: sharing
 
   Scenario Outline: Reshare a file with same name as a deleted file
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     And user "Alice" has deleted file "textfile0.txt"
@@ -259,6 +272,7 @@ Feature: sharing
 
   Scenario Outline: Reshare a folder with same name as a deleted folder
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "/PARENT"
     And user "Alice" has shared folder "PARENT" with user "Brian"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
     And user "Alice" has deleted folder "PARENT"
@@ -276,6 +290,7 @@ Feature: sharing
 
   Scenario Outline: Reshare a folder with same name as a deleted file
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     And user "Alice" has deleted file "/textfile0.txt"

@@ -4,8 +4,11 @@ Feature: resharing a resource with an expiration date
   Background:
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And user "Alice" has been created with default attributes and small skeleton files
-    And user "Brian" has been created with default attributes and without skeleton files
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
 
   @skipOnOcV10.3 @issue-37013
   Scenario Outline: reshare extends the received expiry date up to the default by default
