@@ -258,6 +258,7 @@
 			}
 			$('#app-navigation').toggleClass('hidden', state);
 			$('.app-files').toggleClass('viewer-mode no-sidebar', state);
+			$(document).resize();
 		},
 
 		/**
