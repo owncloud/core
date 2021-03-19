@@ -1,7 +1,0 @@
-Change: Update google/apiclient from 2.8.3 to 2.9.1 and related dependencies
-
-This change updates the 3rd-party dependencies of files_external:
-  - google/apiclient (v2.8.3 => v2.9.1)
-  - phpseclib/phpseclib (2.0.30 => 3.0.5)
-
-https://github.com/owncloud/core/pull/38344
