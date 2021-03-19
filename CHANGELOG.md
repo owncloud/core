@@ -26,6 +26,7 @@ Summary
 * Bugfix - Fix command maintenance:mimetype:update-db --repair-filecache: [#38425](https://github.com/owncloud/core/issues/38425)
 * Bugfix - Fix storage lookup in versions when storing a new version: [#38430](https://github.com/owncloud/core/pull/38430)
 * Bugfix - Fix behavior for user search at the API level: [#38489](https://github.com/owncloud/core/pull/38489)
+* Bugfix - Fix mispositioned ui elements after leaving viewerMode: [#38547](https://github.com/owncloud/core/issues/38547)
 * Change - Use OcsController and routes instead of API::register: [#37272](https://github.com/owncloud/core/pull/37272)
 * Change - API changes to remove shares pointing to missing files: [#38152](https://github.com/owncloud/core/pull/38152)
 * Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.2): [#38306](https://github.com/owncloud/core/pull/38306)
@@ -230,6 +231,15 @@ Details
    directly.
 
    https://github.com/owncloud/core/pull/38489
+
+* Bugfix - Fix mispositioned ui elements after leaving viewerMode: [#38547](https://github.com/owncloud/core/issues/38547)
+
+   Until today, after leaving the viewer mode (e.G Pdf viewer) the action header table in the files
+   list was mispositioned while checking an item. The download action and following items went
+   out of sight.
+
+   https://github.com/owncloud/core/issues/38547
+   https://github.com/owncloud/core/pull/38552
 
 * Change - Use OcsController and routes instead of API::register: [#37272](https://github.com/owncloud/core/pull/37272)
 
