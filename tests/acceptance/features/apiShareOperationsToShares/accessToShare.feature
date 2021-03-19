@@ -4,10 +4,11 @@ Feature: sharing
   Background:
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And these users have been created with default attributes and small skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
+    And user "Alice" has uploaded file with content "some data" to "/textfile0.txt"
 
   @smokeTest
   Scenario Outline: Sharee can see the share
@@ -26,6 +27,7 @@ Feature: sharing
   @smokeTest
   Scenario Outline: Sharee can see the filtered share
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file with content "some data" to "/textfile1.txt"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     And user "Alice" has shared file "textfile1.txt" with user "Brian"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
@@ -42,6 +44,7 @@ Feature: sharing
   @smokeTest @issue-ocis-reva-260
   Scenario Outline: Sharee can't see the share that is filtered out
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file with content "some data" to "/textfile1.txt"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     And user "Alice" has shared file "textfile1.txt" with user "Brian"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"

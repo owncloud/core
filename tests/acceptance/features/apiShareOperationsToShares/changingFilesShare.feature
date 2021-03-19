@@ -4,7 +4,7 @@ Feature: sharing
   Background:
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And these users have been created with default attributes and small skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -15,6 +15,7 @@ Feature: sharing
     And user "Alice" has created folder "/shared"
     And user "Alice" has shared folder "/shared" with user "Brian"
     And user "Brian" has accepted share "/shared" offered by user "Alice"
+    And user "Brian" has uploaded file with content "some data" to "/textfile0.txt"
     When user "Brian" moves file "textfile0.txt" to "/Shares/shared/shared_file.txt" using the WebDAV API
     Then as "Brian" file "/Shares/shared/shared_file.txt" should exist
     And as "Alice" file "/shared/shared_file.txt" should exist
@@ -27,6 +28,7 @@ Feature: sharing
   Scenario Outline: moving a file out of a share as recipient creates a backup for the owner
     Given using <dav-path-version> DAV path
     And user "Alice" has created folder "/shared"
+    And user "Alice" has uploaded file with content "some data" to "/textfile0.txt"
     And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "Alice" has shared file "/shared" with user "Brian"
     And user "Brian" has accepted share "/shared" offered by user "Alice"
@@ -45,6 +47,7 @@ Feature: sharing
     Given using <dav-path-version> DAV path
     And user "Alice" has created folder "/shared"
     And user "Alice" has created folder "/shared/sub"
+    And user "Alice" has uploaded file with content "some data" to "/textfile0.txt"
     And user "Alice" has moved file "/textfile0.txt" to "/shared/sub/shared_file.txt"
     And user "Alice" has shared file "/shared" with user "Brian"
     And user "Brian" has accepted share "/shared" offered by user "Alice"
@@ -64,27 +67,29 @@ Feature: sharing
     Given the administrator has enabled DAV tech_preview
     And user "Alice" has created folder "share1"
     And user "Alice" has created folder "share2"
-    And user "Alice" has moved file "welcome.txt" to "share1/welcome.txt"
+    And user "Alice" has uploaded file with content "some data" to "/textfile0.txt"
+    And user "Alice" has moved file "textfile0.txt" to "share1/textfile0.txt"
     And user "Alice" has shared folder "/share1" with user "Brian"
     And user "Alice" has shared folder "/share2" with user "Brian"
     And user "Brian" has accepted share "/share1" offered by user "Alice"
     And user "Brian" has accepted share "/share2" offered by user "Alice"
-    When user "Brian" moves file "/Shares/share1/welcome.txt" to "/Shares/share2/welcome.txt" using the WebDAV API
-    Then as "Brian" file "/Shares/share1/welcome.txt" should not exist
-    But as "Brian" file "/Shares/share2/welcome.txt" should exist
-    And as "Alice" file "share1/welcome.txt" should not exist
-    But as "Alice" file "share2/welcome.txt" should exist
+    When user "Brian" moves file "/Shares/share1/textfile0.txt" to "/Shares/share2/textfile0.txt" using the WebDAV API
+    Then as "Brian" file "/Shares/share1/textfile0.txt" should not exist
+    But as "Brian" file "/Shares/share2/textfile0.txt" should exist
+    And as "Alice" file "share1/textfile0.txt" should not exist
+    But as "Alice" file "share2/textfile0.txt" should exist
 
 
   Scenario: Move files between shares by same user added by sharee
     Given the administrator has enabled DAV tech_preview
     And user "Alice" has created folder "share1"
     And user "Alice" has created folder "share2"
+    And user "Brian" has uploaded file with content "some data" to "/textfile0.txt"
     And user "Alice" has shared folder "/share1" with user "Brian"
     And user "Alice" has shared folder "/share2" with user "Brian"
     And user "Brian" has accepted share "/share1" offered by user "Alice"
     And user "Brian" has accepted share "/share2" offered by user "Alice"
-    When user "Brian" moves file "welcome.txt" to "/Shares/share1/welcome.txt" using the WebDAV API
+    When user "Brian" moves file "textfile0.txt" to "/Shares/share1/welcome.txt" using the WebDAV API
     Then as "Brian" file "/Shares/share1/welcome.txt" should exist
     And as "Alice" file "share1/welcome.txt" should exist
     When user "Brian" moves file "/Shares/share1/welcome.txt" to "/Shares/share2/welcome.txt" using the WebDAV API
@@ -94,8 +99,11 @@ Feature: sharing
 
   Scenario: Move files between shares by different users
     Given the administrator has enabled DAV tech_preview
-    And user "Carol" has been created with default attributes and small skeleton files
-    And user "Alice" has moved file "welcome.txt" to "PARENT/welcome.txt"
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "some data" to "/textfile0.txt"
+    And user "Alice" has created folder "/PARENT"
+    And user "Brian" has created folder "/PARENT"
+    And user "Alice" has moved file "textfile0.txt" to "PARENT/welcome.txt"
     And user "Alice" has shared folder "/PARENT" with user "Carol"
     And user "Brian" has shared folder "/PARENT" with user "Carol"
     And user "Carol" has accepted share "/PARENT" offered by user "Alice"

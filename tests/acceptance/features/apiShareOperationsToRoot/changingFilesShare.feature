@@ -2,10 +2,12 @@
 Feature: sharing
 
   Background:
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
 
   @smokeTest
   Scenario Outline: moving a file into a share as recipient
@@ -58,7 +60,7 @@ Feature: sharing
     Given the administrator has enabled DAV tech_preview
     And user "Alice" has created folder "share1"
     And user "Alice" has created folder "share2"
-    And user "Alice" has moved file "welcome.txt" to "share1/welcome.txt"
+    And user "Alice" has moved file "textfile0.txt" to "share1/welcome.txt"
     And user "Alice" has shared folder "/share1" with user "Brian"
     And user "Alice" has shared folder "/share2" with user "Brian"
     When user "Brian" moves file "share1/welcome.txt" to "share2/welcome.txt" using the WebDAV API
@@ -73,7 +75,7 @@ Feature: sharing
     And user "Alice" has created folder "share2"
     And user "Alice" has shared folder "/share1" with user "Brian"
     And user "Alice" has shared folder "/share2" with user "Brian"
-    When user "Brian" moves file "welcome.txt" to "share1/welcome.txt" using the WebDAV API
+    When user "Brian" moves file "textfile0.txt" to "share1/welcome.txt" using the WebDAV API
     Then as "Brian" file "share1/welcome.txt" should exist
     And as "Alice" file "share1/welcome.txt" should exist
     When user "Brian" moves file "share1/welcome.txt" to "share2/welcome.txt" using the WebDAV API
@@ -82,8 +84,11 @@ Feature: sharing
 
   Scenario: Move files between shares by different users
     Given the administrator has enabled DAV tech_preview
-    And user "Carol" has been created with default attributes and small skeleton files
-    And user "Alice" has moved file "welcome.txt" to "PARENT/welcome.txt"
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/PARENT"
+    And user "Brian" has created folder "/PARENT"
+    And user "Carol" has created folder "/PARENT"
+    And user "Alice" has moved file "textfile0.txt" to "PARENT/welcome.txt"
     And user "Alice" has shared folder "/PARENT" with user "Carol"
     And user "Brian" has shared folder "/PARENT" with user "Carol"
     When user "Carol" moves file "PARENT (2)/welcome.txt" to "PARENT (3)/welcome.txt" using the WebDAV API
