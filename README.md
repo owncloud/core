@@ -8,6 +8,8 @@
 **[ownCloud](http://ownCloud.org) gives you freedom and control over your own data.
 A personal cloud which runs on your own server.**
 
+Trigger CI for release-10.7.0
+
 ![](https://github.com/owncloud/screenshots/blob/master/files/sidebar_1.png)
 
 ## Why is this so awesome?
