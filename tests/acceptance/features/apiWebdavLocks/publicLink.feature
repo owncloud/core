@@ -3,11 +3,16 @@ Feature: persistent-locking in case of a public link
 
   Background:
     Given the administrator has enabled DAV tech_preview
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "PARENT"
+    And user "Alice" has created folder "PARENT/CHILD"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "PARENT/parent.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "PARENT/CHILD/child.txt"
 
   @skipOnOcV10 @smokeTest @issue-36064
   Scenario Outline: Uploading a file into a locked public folder
     Given using <dav-path> DAV path
+    And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a public link share of folder "FOLDER" with change permission
     When user "Alice" locks folder "FOLDER" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |

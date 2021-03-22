@@ -2,7 +2,10 @@
 Feature: LOCKDISCOVERY for public links
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "PARENT"
+    And user "Alice" has created folder "PARENT/CHILD"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "PARENT/CHILD/child.txt"
 
   Scenario Outline: lockdiscovery root of public link when root is locked
     Given user "Alice" has created a public link share of folder "PARENT" with change permission

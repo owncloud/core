@@ -3,12 +3,15 @@ Feature: lock should propagate correctly if a share is reshared
 
   @issue-36064
   Scenario Outline: public uploads to a reshared share that was locked by original owner
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
       | Carol    |
     And the administrator has enabled DAV tech_preview
+    And user "Alice" has created folder "PARENT"
+    And user "Brian" has created folder "PARENT"
+    And user "Carol" has created folder "PARENT"
     And user "Alice" has shared folder "PARENT" with user "Brian"
     And user "Brian" has shared folder "PARENT (2)" with user "Carol"
     And user "Carol" has created a public link share of folder "PARENT (2)" with change permission

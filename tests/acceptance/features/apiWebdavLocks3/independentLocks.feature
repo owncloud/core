@@ -3,7 +3,7 @@ Feature: independent locks
   Make sure all locks are independent and don't interact with other items that have the same name
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
 
 
   Scenario Outline: locking a folder does not lock other items with the same name in other parts of the file system
