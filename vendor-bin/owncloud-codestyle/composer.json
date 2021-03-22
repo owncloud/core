@@ -1,5 +1,6 @@
 {
     "require": {
+      "friendsofphp/php-cs-fixer": "2.18.3",
       "owncloud/coding-standard": "^2.0"
     }
   }
