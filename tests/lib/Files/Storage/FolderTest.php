@@ -30,7 +30,8 @@ use OCP\Files\Storage\IStorage;
  *
  * @package Test\Files\Storage
  */
-class FolderTest extends NodeTest {
+class FolderTest extends NodeTest
+{
 
 	/**
 	 * @param $path

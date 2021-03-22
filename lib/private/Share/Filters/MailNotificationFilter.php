@@ -33,7 +33,8 @@ use Laminas\InputFilter\Factory as InputFilterFactory;
  * @package OC\Share
  * @see https://hackerone.com/reports/297535
  */
-class MailNotificationFilter {
+class MailNotificationFilter
+{
 
 	/**
 	 * @var \Laminas\InputFilter\InputFilterInterface

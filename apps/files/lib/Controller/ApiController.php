@@ -45,7 +45,8 @@ use OCP\Share\IManager;
  *
  * @package OCA\Files\Controller
  */
-class ApiController extends Controller {
+class ApiController extends Controller
+{
 	/** @var TagService */
 	private $tagService;
 	/** @var IManager **/

@@ -34,7 +34,8 @@ use Test\Traits\UserTrait;
  * @package OCA\DAV\Tests\Unit\Command
  * @group DB
  */
-class CleanupChunksTest extends TestCase {
+class CleanupChunksTest extends TestCase
+{
 	use UserTrait;
 
 	/** @var CommandTester */

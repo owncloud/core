@@ -16,7 +16,8 @@ use OC\Settings\Panels\Helper;
 /**
  * @package Tests\Settings\Panels\Admin
  */
-class LegacyTest extends \Test\TestCase {
+class LegacyTest extends \Test\TestCase
+{
 
 	/** @var Legacy */
 	private $panel;

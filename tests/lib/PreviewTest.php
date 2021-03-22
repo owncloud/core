@@ -39,7 +39,8 @@ use Test\Traits\UserTrait;
  * @package Test
  * @requires extension imagick
  */
-class PreviewTest extends TestCase {
+class PreviewTest extends TestCase
+{
 	use UserTrait;
 	use MountProviderTrait;
 

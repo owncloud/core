@@ -29,7 +29,8 @@ use OCP\Files\External\Auth\AuthMechanism;
  *
  * @since 10.0
  */
-interface IStorageConfig extends \JsonSerializable {
+interface IStorageConfig extends \JsonSerializable
+{
 	const MOUNT_TYPE_ADMIN = 1;
 	const MOUNT_TYPE_PERSONAl = 2;
 

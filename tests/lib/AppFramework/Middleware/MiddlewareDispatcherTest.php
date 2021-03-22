@@ -29,7 +29,8 @@ use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Middleware;
 
 // needed to test ordering
-class TestMiddleware extends Middleware {
+class TestMiddleware extends Middleware
+{
 	public static $beforeControllerCalled = 0;
 	public static $afterControllerCalled = 0;
 	public static $afterExceptionCalled = 0;
@@ -97,7 +98,8 @@ class TestMiddleware extends Middleware {
 	}
 }
 
-class MiddlewareDispatcherTest extends \Test\TestCase {
+class MiddlewareDispatcherTest extends \Test\TestCase
+{
 	public $exception;
 	public $response;
 	private $out;

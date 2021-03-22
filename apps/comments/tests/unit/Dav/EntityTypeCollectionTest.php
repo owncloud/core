@@ -31,7 +31,8 @@ use OCP\IUserSession;
 use OCP\IUserManager;
 use OCP\Comments\ICommentsManager;
 
-class EntityTypeCollectionTest extends \Test\TestCase {
+class EntityTypeCollectionTest extends \Test\TestCase
+{
 
 	/** @var \OCP\Comments\ICommentsManager|\PHPUnit\Framework\MockObject\MockObject */
 	protected $commentsManager;

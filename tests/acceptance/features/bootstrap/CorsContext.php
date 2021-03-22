@@ -29,7 +29,8 @@ require_once 'bootstrap.php';
 /**
  * Steps that relate to CORS tests
  */
-class CorsContext implements Context {
+class CorsContext implements Context
+{
 	/**
 	 *
 	 * @var FeatureContext

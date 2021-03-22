@@ -37,7 +37,8 @@ use Sabre\Xml\XmlSerializable;
  * @author Evert Pot (http://evertpot.com/)
  * @license http://sabre.io/license/ Modified BSD License
  */
-class Invite implements XmlSerializable {
+class Invite implements XmlSerializable
+{
 
 	/**
 	 * The list of users a calendar has been shared to.

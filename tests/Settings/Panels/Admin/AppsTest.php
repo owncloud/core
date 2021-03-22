@@ -16,7 +16,8 @@ use OCP\IConfig;
 /**
  * @package Tests\Settings\Panels\Admin
  */
-class AppsTest extends \Test\TestCase {
+class AppsTest extends \Test\TestCase
+{
 
 	/** @var Apps */
 	private $panel;

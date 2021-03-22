@@ -25,7 +25,8 @@ namespace OC\Security;
 
 use OCP\ICertificate;
 
-class Certificate implements ICertificate {
+class Certificate implements ICertificate
+{
 	protected $name;
 
 	protected $commonName;

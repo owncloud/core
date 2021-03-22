@@ -31,7 +31,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Backends extends Base {
+class Backends extends Base
+{
 	/** @var IStoragesBackendService */
 	private $backendService;
 

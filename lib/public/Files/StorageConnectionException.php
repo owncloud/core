@@ -24,7 +24,8 @@ namespace OCP\Files;
  * Storage authentication exception
  * @since 9.0.0
  */
-class StorageConnectionException extends StorageNotAvailableException {
+class StorageConnectionException extends StorageNotAvailableException
+{
 
 	/**
 	 * StorageConnectionException constructor.

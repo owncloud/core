@@ -31,7 +31,8 @@ use Test\Traits\UserTrait;
  *
  * @group DB
  */
-class TagsTest extends TestCase {
+class TagsTest extends TestCase
+{
 	use UserTrait;
 
 	protected $objectType;

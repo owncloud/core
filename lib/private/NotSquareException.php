@@ -22,5 +22,6 @@
 
 namespace OC;
 
-class NotSquareException extends \Exception {
+class NotSquareException extends \Exception
+{
 }

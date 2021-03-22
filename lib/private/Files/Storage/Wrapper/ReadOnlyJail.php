@@ -24,7 +24,8 @@ namespace OC\Files\Storage\Wrapper;
 use OC\Files\Cache\Wrapper\ReadOnlyCachePermissionsMask;
 use OCP\Constants;
 
-class ReadOnlyJail extends DirMask {
+class ReadOnlyJail extends DirMask
+{
 
 	/**
 	 * @param $path

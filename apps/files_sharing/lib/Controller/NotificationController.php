@@ -35,7 +35,8 @@ use OCP\IUserSession;
 use OCP\Share;
 use OCP\Share\Exceptions\GenericShareException;
 
-class NotificationController extends OCSController {
+class NotificationController extends OCSController
+{
 	/** @var MailNotifications */
 	private $mailNotifications;
 	/** @var IUserSession */

@@ -28,7 +28,8 @@ use OCP\Files\External\DefinitionParameter;
 /**
  * Basic password authentication mechanism
  */
-class Password extends AuthMechanism {
+class Password extends AuthMechanism
+{
 	public function __construct() {
 		$l = \OC::$server->getL10N('lib');
 		$this

@@ -32,7 +32,8 @@ use OCP\SystemTag\MapperEvent;
 use OCP\SystemTag\TagNotFoundException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class SystemTagObjectMapper implements ISystemTagObjectMapper {
+class SystemTagObjectMapper implements ISystemTagObjectMapper
+{
 	const RELATION_TABLE = 'systemtag_object_mapping';
 	const CHUNK_SIZE = 200;
 

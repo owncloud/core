@@ -33,7 +33,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @package OC\Migration
  */
-class ConsoleOutput implements IOutput {
+class ConsoleOutput implements IOutput
+{
 
 	/** @var OutputInterface */
 	private $output;

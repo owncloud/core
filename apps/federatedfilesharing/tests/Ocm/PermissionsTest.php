@@ -31,7 +31,8 @@ use OCP\Constants;
  * @package OCA\FederatedFileSharing\Tests\Ocm
  * @group DB
  */
-class PermissionsTest extends TestCase {
+class PermissionsTest extends TestCase
+{
 	/**
 	 * @var Permissions
 	 */

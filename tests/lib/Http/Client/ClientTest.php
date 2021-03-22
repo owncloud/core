@@ -15,7 +15,8 @@ use OCP\IConfig;
 /**
  * Class ClientTest
  */
-class ClientTest extends \Test\TestCase {
+class ClientTest extends \Test\TestCase
+{
 	/** @var \GuzzleHttp\Client */
 	private $guzzleClient;
 	/** @var Client */

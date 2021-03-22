@@ -32,7 +32,8 @@ use OCP\Notification\Exceptions\NotifierIdInUseException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Test\TestCase;
 
-class ManagerTest extends TestCase {
+class ManagerTest extends TestCase
+{
 	/** @var IManager */
 	protected $manager;
 	/** @var EventDispatcherInterface */

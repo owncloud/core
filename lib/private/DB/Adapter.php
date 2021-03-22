@@ -34,7 +34,8 @@ use Doctrine\DBAL\Platforms\OraclePlatform;
  * This handles the way we use to write queries, into something that can be
  * handled by the database abstraction layer.
  */
-class Adapter {
+class Adapter
+{
 
 	/**
 	 * @var \OC\DB\Connection $conn

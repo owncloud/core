@@ -28,7 +28,8 @@ namespace OCP\Search;
  * The generic result of a search
  * @since 7.0.0
  */
-class Result {
+class Result
+{
 
 	/**
 	 * A unique identifier for the result, usually given as the item ID in its

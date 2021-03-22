@@ -41,7 +41,8 @@ use OCA\Files_Sharing\SharingBlacklist;
  *
  * @group DB
  */
-class ApiTest extends TestCase {
+class ApiTest extends TestCase
+{
 	const TEST_FOLDER_NAME = '/folder_share_api_test';
 
 	private static $tempStorage;

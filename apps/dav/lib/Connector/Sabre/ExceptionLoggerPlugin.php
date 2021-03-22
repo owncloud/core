@@ -31,7 +31,8 @@ use OCP\ILogger;
 use Sabre\DAV\Exception;
 use Sabre\HTTP\Response;
 
-class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
+class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin
+{
 	protected $nonFatalExceptions = [
 		'Sabre\DAV\Exception\NotAuthenticated' => true,
 		// the sync client uses this to find out whether files exist,

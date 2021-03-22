@@ -34,7 +34,8 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 /**
  * Repairs file cache entry which path do not match the parent-child relationship
  */
-class RepairMismatchFileCachePath implements IRepairStep {
+class RepairMismatchFileCachePath implements IRepairStep
+{
 	const CHUNK_SIZE = 10000;
 
 	/** @var IDBConnection */

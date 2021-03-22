@@ -25,7 +25,8 @@ use Sabre\DAV\INode;
  * This interface represents a dav resource that can be shared with other users.
  *
  */
-interface IShareable extends INode {
+interface IShareable extends INode
+{
 
 	/**
 	 * Updates the list of shares.

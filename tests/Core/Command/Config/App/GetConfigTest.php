@@ -27,7 +27,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Test\TestCase;
 
-class GetConfigTest extends TestCase {
+class GetConfigTest extends TestCase
+{
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 	/** @var \PHPUnit\Framework\MockObject\MockObject */

@@ -32,7 +32,8 @@ use OCP\ILogger;
 use OCP\IConfig;
 use OCP\ITempManager;
 
-class TempManager implements ITempManager {
+class TempManager implements ITempManager
+{
 	/** @var string[] Current temporary files and folders, used for cleanup */
 	protected $current = [];
 	/** @var string i.e. /tmp on linux systems */

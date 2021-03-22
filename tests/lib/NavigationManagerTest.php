@@ -22,7 +22,8 @@ use OCP\IUser;
 use OCP\IUserSession;
 use OCP\L10N\IFactory;
 
-class NavigationManagerTest extends TestCase {
+class NavigationManagerTest extends TestCase
+{
 	/** @var \OC\NavigationManager */
 	protected $navigationManager;
 

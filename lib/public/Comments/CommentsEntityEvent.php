@@ -29,7 +29,8 @@ use Symfony\Component\EventDispatcher\Event;
  * @package OCP\Comments
  * @since 9.1.0
  */
-class CommentsEntityEvent extends Event {
+class CommentsEntityEvent extends Event
+{
 	const EVENT_ENTITY = 'OCP\Comments\ICommentsManager::registerEntity';
 
 	/** @var string */

@@ -35,7 +35,8 @@ use OCP\Authentication\Exceptions\AccountCheckException;
  * Class OC_JSON
  * @deprecated Use a AppFramework JSONResponse instead
  */
-class OC_JSON {
+class OC_JSON
+{
 	protected static $send_content_type_header = false;
 	/**
 	 * set Content-Type header to jsonrequest

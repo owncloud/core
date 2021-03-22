@@ -31,7 +31,8 @@ use OCP\Share\IManager;
  *
  * @package OCA\Files_Sharing
  */
-class Capabilities implements ICapability {
+class Capabilities implements ICapability
+{
 
 	/** @var IManager */
 	private $shareManager;

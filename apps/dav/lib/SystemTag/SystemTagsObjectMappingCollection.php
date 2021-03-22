@@ -35,7 +35,8 @@ use Sabre\DAV\ICollection;
 /**
  * Collection containing tags by object id
  */
-class SystemTagsObjectMappingCollection implements ICollection {
+class SystemTagsObjectMappingCollection implements ICollection
+{
 
 	/**
 	 * @var string

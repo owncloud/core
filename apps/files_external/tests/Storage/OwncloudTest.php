@@ -34,7 +34,8 @@ use OCA\Files_External\Lib\Storage\OwnCloud;
  *
  * @package OCA\Files_External\Tests\Storage
  */
-class OwncloudTest extends \Test\Files\Storage\Storage {
+class OwncloudTest extends \Test\Files\Storage\Storage
+{
 	private $config;
 
 	protected function setUp(): void {

@@ -27,7 +27,8 @@ namespace OC\Memcache;
 
 use OCP\IMemcacheTTL;
 
-class Redis extends Cache implements IMemcacheTTL {
+class Redis extends Cache implements IMemcacheTTL
+{
 	/** @var \Redis | \RedisCluster $cache */
 	private static $cache = null;
 

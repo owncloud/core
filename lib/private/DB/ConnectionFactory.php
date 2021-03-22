@@ -34,7 +34,8 @@ use OC\SystemConfig;
 /**
 * Takes care of creating and configuring Doctrine connections.
 */
-class ConnectionFactory {
+class ConnectionFactory
+{
 	/**
 	* @var array
 	*

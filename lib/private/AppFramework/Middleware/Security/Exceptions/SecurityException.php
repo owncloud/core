@@ -29,5 +29,6 @@ namespace OC\AppFramework\Middleware\Security\Exceptions;
  *
  * @package OC\AppFramework\Middleware\Security\Exceptions
  */
-class SecurityException extends \Exception {
+class SecurityException extends \Exception
+{
 }

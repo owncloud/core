@@ -28,7 +28,8 @@ use OCP\IConfig;
 use OCP\ILogger;
 use OCP\Security\ISecureRandom;
 
-abstract class AbstractDatabase {
+abstract class AbstractDatabase
+{
 
 	/** @var \OCP\IL10N */
 	protected $trans;

@@ -25,7 +25,8 @@ namespace Page;
 /**
  * Disabled page.
  */
-class DisabledUserPage extends GeneralErrorPage {
+class DisabledUserPage extends GeneralErrorPage
+{
 
 	/**
 	 * @var string $path

@@ -28,7 +28,8 @@ use OCP\IUser;
 /**
  * Mount provider for regular posix home folders
  */
-class LocalHomeMountProvider implements IHomeMountProvider {
+class LocalHomeMountProvider implements IHomeMountProvider
+{
 	/**
 	 * Get the cache mount for a user
 	 *

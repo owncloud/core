@@ -30,7 +30,8 @@ use Test\TestCase;
  *
  * @group DB
  */
-class ListUsersTest extends TestCase {
+class ListUsersTest extends TestCase
+{
 	/** @var CommandTester */
 	private $commandTester;
 

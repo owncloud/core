@@ -33,7 +33,8 @@ use OCP\IDBConnection;
  * @package OCA\Files_Sharing
  * @group DB
  */
-class Migration {
+class Migration
+{
 
 	/** @var IDBConnection */
 	private $connection;

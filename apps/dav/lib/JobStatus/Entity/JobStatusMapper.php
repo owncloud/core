@@ -24,7 +24,8 @@ namespace OCA\DAV\JobStatus\Entity;
 use OCP\AppFramework\Db\Mapper;
 use OCP\IDBConnection;
 
-class JobStatusMapper extends Mapper {
+class JobStatusMapper extends Mapper
+{
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'dav_job_status');
 	}

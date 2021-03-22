@@ -29,7 +29,8 @@ namespace OCP\Lock;
  * @package OCP\Lock
  * @since 8.1.0
  */
-class LockedException extends \Exception {
+class LockedException extends \Exception
+{
 
 	/**
 	 * Locked path

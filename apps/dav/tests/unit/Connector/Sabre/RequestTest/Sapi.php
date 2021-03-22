@@ -25,7 +25,8 @@ namespace OCA\DAV\Tests\unit\Connector\Sabre\RequestTest;
 use Sabre\HTTP\Request;
 use Sabre\HTTP\Response;
 
-class Sapi {
+class Sapi
+{
 	/**
 	 * @var \Sabre\HTTP\Request
 	 */

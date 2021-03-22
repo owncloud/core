@@ -27,7 +27,8 @@ namespace OC\Route;
 
 use OCP\ILogger;
 
-class CachingRouter extends Router {
+class CachingRouter extends Router
+{
 	/**
 	 * @var \OCP\ICache
 	 */

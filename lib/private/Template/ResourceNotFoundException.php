@@ -22,7 +22,8 @@
 
 namespace OC\Template;
 
-class ResourceNotFoundException extends \LogicException {
+class ResourceNotFoundException extends \LogicException
+{
 	protected $resource;
 	protected $webPath;
 

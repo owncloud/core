@@ -32,7 +32,8 @@ use RecursiveIteratorIterator;
 use RegexIterator;
 use SplFileInfo;
 
-class CodeChecker extends BasicEmitter {
+class CodeChecker extends BasicEmitter
+{
 	const CLASS_EXTENDS_NOT_ALLOWED = 1000;
 	const CLASS_IMPLEMENTS_NOT_ALLOWED = 1001;
 	const STATIC_CALL_NOT_ALLOWED = 1002;

@@ -26,7 +26,8 @@ use OC\Files\Storage\Wrapper\Checksum;
 /**
  * @group DB
  */
-class ChecksumTest extends \Test\TestCase {
+class ChecksumTest extends \Test\TestCase
+{
 	/**
 	 * @var \OC\Files\Storage\Temporary
 	 */

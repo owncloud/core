@@ -28,7 +28,8 @@ use OCP\AppFramework\Http\EmptyContentSecurityPolicy;
  * @package OCP\Security
  * @since 9.0.0
  */
-interface IContentSecurityPolicyManager {
+interface IContentSecurityPolicyManager
+{
 	/**
 	 * Allows to inject something into the default content policy. This is for
 	 * example useful when you're injecting Javascript code into a view belonging

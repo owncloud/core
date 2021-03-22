@@ -27,7 +27,8 @@ namespace Test;
  *
  * @group DB
  */
-class StreamWrappersTest extends \Test\TestCase {
+class StreamWrappersTest extends \Test\TestCase
+{
 	private static $trashBinStatus;
 
 	public static function setUpBeforeClass(): void {

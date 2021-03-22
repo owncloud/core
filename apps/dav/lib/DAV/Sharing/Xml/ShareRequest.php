@@ -24,7 +24,8 @@ use OCA\DAV\DAV\Sharing\Plugin;
 use Sabre\Xml\Reader;
 use Sabre\Xml\XmlDeserializable;
 
-class ShareRequest implements XmlDeserializable {
+class ShareRequest implements XmlDeserializable
+{
 	public $set = [];
 
 	public $remove = [];

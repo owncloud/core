@@ -8,7 +8,8 @@
 
 namespace Test\Files\Stream;
 
-class QuotaTest extends \Test\TestCase {
+class QuotaTest extends \Test\TestCase
+{
 	protected function tearDown(): void {
 		\OC\Files\Stream\Quota::clear();
 		parent::tearDown();

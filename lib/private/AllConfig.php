@@ -38,7 +38,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * Class to combine all the configuration options ownCloud offers
  */
-class AllConfig implements IConfig {
+class AllConfig implements IConfig
+{
 	/** @var SystemConfig */
 	private $systemConfig;
 

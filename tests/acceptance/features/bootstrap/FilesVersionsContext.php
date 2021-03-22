@@ -31,7 +31,8 @@ require_once 'bootstrap.php';
 /**
  * Steps that relate to files_versions app
  */
-class FilesVersionsContext implements Context {
+class FilesVersionsContext implements Context
+{
 
 	/**
 	 *

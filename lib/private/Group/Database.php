@@ -42,7 +42,8 @@ namespace OC\Group;
 /**
  * Class for group management in a SQL Database (e.g. MySQL, SQLite)
  */
-class Database extends \OC\Group\Backend {
+class Database extends \OC\Group\Backend
+{
 
 	/** @var string[] */
 	private $groupCache = [];

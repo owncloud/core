@@ -14,7 +14,8 @@ use OCP\IConfig;
 /**
  * Class TrustedDomainHelperTest
  */
-class TrustedDomainHelperTest extends \Test\TestCase {
+class TrustedDomainHelperTest extends \Test\TestCase
+{
 	/** @var IConfig */
 	protected $config;
 

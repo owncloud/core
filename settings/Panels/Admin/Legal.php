@@ -25,7 +25,8 @@ use OCP\IConfig;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-class Legal implements ISettings {
+class Legal implements ISettings
+{
 
 	/**
 	 * @var IConfig

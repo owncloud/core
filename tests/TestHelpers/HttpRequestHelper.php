@@ -38,7 +38,8 @@ use GuzzleHttp\Pool;
 /**
  * Helper for HTTP requests
  */
-class HttpRequestHelper {
+class HttpRequestHelper
+{
 	/**
 	 *
 	 * @param string $url

@@ -26,7 +26,8 @@ use OCP\Notification\IManager;
 use OCP\Notification\INotification;
 use OCP\Notification\INotifier;
 
-class Notifier implements INotifier {
+class Notifier implements INotifier
+{
 
 	/** @var IManager */
 	protected $notificationManager;

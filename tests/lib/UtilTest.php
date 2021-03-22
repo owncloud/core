@@ -16,7 +16,8 @@ use OCP\License\ILicenseManager;
 /**
  * @group DB
  */
-class UtilTest extends \Test\TestCase {
+class UtilTest extends \Test\TestCase
+{
 	public $skeletonDirectoryWasSet = false;
 
 	public function testGetVersion() {
@@ -633,7 +634,8 @@ class UtilTest extends \Test\TestCase {
 /**
  * Dummy OC Util class to make it possible to override the app manager
  */
-class Dummy_OC_Util extends OC_Util {
+class Dummy_OC_Util extends OC_Util
+{
 	/**
 	 * @var \OCP\App\IAppManager
 	 */

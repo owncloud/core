@@ -33,7 +33,8 @@ use OCP\IConfig;
 use OCP\IUser;
 use OCP\IUserManager;
 
-class ExpireTrash extends TimedJob {
+class ExpireTrash extends TimedJob
+{
 
 	/**
 	 * @var IConfig

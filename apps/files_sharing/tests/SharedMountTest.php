@@ -34,7 +34,8 @@ use OCP\Files\NotPermittedException;
  *
  * @group DB
  */
-class SharedMountTest extends TestCase {
+class SharedMountTest extends TestCase
+{
 	protected function setUp(): void {
 		parent::setUp();
 
@@ -446,7 +447,8 @@ class SharedMountTest extends TestCase {
 	}
 }
 
-class DummyTestClassSharedMount extends \OCA\Files_Sharing\SharedMount {
+class DummyTestClassSharedMount extends \OCA\Files_Sharing\SharedMount
+{
 	public function __construct($storage, $mountpoint, $arguments = null, $loader = null) {
 		// noop
 	}

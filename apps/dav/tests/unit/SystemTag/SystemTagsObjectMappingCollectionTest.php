@@ -26,7 +26,8 @@ namespace OCA\DAV\Tests\unit\SystemTag;
 use OC\SystemTag\SystemTag;
 use OCP\SystemTag\TagNotFoundException;
 
-class SystemTagsObjectMappingCollectionTest extends \Test\TestCase {
+class SystemTagsObjectMappingCollectionTest extends \Test\TestCase
+{
 
 	/**
 	 * @var \OCP\SystemTag\ISystemTagManager

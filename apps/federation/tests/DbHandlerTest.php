@@ -32,7 +32,8 @@ use Test\TestCase;
 /**
  * @group DB
  */
-class DbHandlerTest extends TestCase {
+class DbHandlerTest extends TestCase
+{
 
 	/** @var  DbHandler */
 	private $dbHandler;

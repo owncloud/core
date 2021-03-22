@@ -30,5 +30,6 @@ namespace OCP\Authentication;
  * @package OCP\Authentication
  * @since 10.0.9
  */
-interface IAccountModuleController {
+interface IAccountModuleController
+{
 }

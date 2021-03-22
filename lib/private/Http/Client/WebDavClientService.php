@@ -30,7 +30,8 @@ use OCP\ICertificateManager;
  *
  * @package OC\Http
  */
-class WebDavClientService implements IWebDavClientService {
+class WebDavClientService implements IWebDavClientService
+{
 	/** @var IConfig */
 	private $config;
 	/** @var ICertificateManager */

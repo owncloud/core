@@ -33,7 +33,8 @@ namespace OCP\Security;
  * @package OCP\Security
  * @since 8.0.0
  */
-interface ICrypto {
+interface ICrypto
+{
 
 	/**
 	 * @param string $message The message to authenticate

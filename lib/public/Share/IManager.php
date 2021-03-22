@@ -35,7 +35,8 @@ use OCP\Share\Exceptions\TransferSharesException;
  * @package OCP\Share
  * @since 9.0.0
  */
-interface IManager {
+interface IManager
+{
 
 	/**
 	 * Create a Share

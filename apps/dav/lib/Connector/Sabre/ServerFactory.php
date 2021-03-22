@@ -43,7 +43,8 @@ use OCP\IUserSession;
 use Sabre\DAV\Auth\Backend\BackendInterface;
 use OCP\AppFramework\Utility\ITimeFactory;
 
-class ServerFactory {
+class ServerFactory
+{
 	/** @var IConfig */
 	private $config;
 	/** @var ILogger */

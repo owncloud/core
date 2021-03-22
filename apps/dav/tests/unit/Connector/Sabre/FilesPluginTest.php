@@ -50,7 +50,8 @@ use Test\TestCase;
  * later.
  * See the COPYING-README file.
  */
-class FilesPluginTest extends TestCase {
+class FilesPluginTest extends TestCase
+{
 	const GETETAG_PROPERTYNAME = FilesPlugin::GETETAG_PROPERTYNAME;
 	const FILEID_PROPERTYNAME = FilesPlugin::FILEID_PROPERTYNAME;
 	const INTERNAL_FILEID_PROPERTYNAME = FilesPlugin::INTERNAL_FILEID_PROPERTYNAME;

@@ -22,7 +22,8 @@ use Test\Traits\UserTrait;
  *
  * @package Test\Files\Node
  */
-class IntegrationTest extends TestCase {
+class IntegrationTest extends TestCase
+{
 	use UserTrait;
 
 	/**

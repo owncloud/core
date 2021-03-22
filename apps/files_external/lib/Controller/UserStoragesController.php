@@ -40,7 +40,8 @@ use OCP\IUserSession;
 /**
  * User storages controller
  */
-class UserStoragesController extends StoragesController {
+class UserStoragesController extends StoragesController
+{
 	/**
 	 * @var IUserSession
 	 */

@@ -28,7 +28,8 @@ namespace OCP;
  * @package OCP
  * @since 8.0.0
  */
-interface ICertificate {
+interface ICertificate
+{
 	/**
 	 * @return string
 	 * @since 8.0.0

@@ -31,7 +31,8 @@ use Test\TestCase;
  *
  * @see http://php.net/manual/en/class.iterator.php for the order of calls on an iterator
  */
-class BackendUsersIteratorTest extends TestCase {
+class BackendUsersIteratorTest extends TestCase
+{
 
 	/**
 	 * @var UserInterface|\PHPUnit\Framework\MockObject\MockObject

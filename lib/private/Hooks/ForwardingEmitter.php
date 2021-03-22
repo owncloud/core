@@ -30,7 +30,8 @@ namespace OC\Hooks;
  *
  * @package OC\Hooks
  */
-abstract class ForwardingEmitter extends BasicEmitter {
+abstract class ForwardingEmitter extends BasicEmitter
+{
 	/**
 	 * @var \OC\Hooks\Emitter[] array
 	 */

@@ -34,7 +34,8 @@ use Test\TestCase;
  *
  * @package OCA\Files_Trashbin\Tests\Command
  */
-class ExpireTrashTest extends TestCase {
+class ExpireTrashTest extends TestCase
+{
 
 	/** @var CommandTester */
 	private $commandTester;

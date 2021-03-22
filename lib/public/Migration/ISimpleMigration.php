@@ -24,7 +24,8 @@ namespace OCP\Migration;
 /**
  * @since 10.0
  */
-interface ISimpleMigration {
+interface ISimpleMigration
+{
 
 	/**
 	 * Do what ever you need to do as a migration step

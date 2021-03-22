@@ -25,7 +25,8 @@ use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
 
-class ChunkingPlugin extends ServerPlugin {
+class ChunkingPlugin extends ServerPlugin
+{
 
 	/** @var Server */
 	private $server;

@@ -29,7 +29,8 @@ use Sabre\DAV\INode;
  *
  * @package OCA\DAV\TrashBin
  */
-interface ITrashBinNode extends INode {
+interface ITrashBinNode extends INode
+{
 	/**
 	 * @return string
 	 */

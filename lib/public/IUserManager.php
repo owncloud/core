@@ -40,7 +40,8 @@ namespace OCP;
  * @package OC\User
  * @since 8.0.0
  */
-interface IUserManager {
+interface IUserManager
+{
 	/**
 	 * register a user backend
 	 *

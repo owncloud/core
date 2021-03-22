@@ -32,7 +32,8 @@ require_once 'bootstrap.php';
 /**
  * WebUI Login context.
  */
-class WebUILoginContext extends RawMinkContext implements Context {
+class WebUILoginContext extends RawMinkContext implements Context
+{
 	private $loginPage;
 	private $filesPage;
 	private $expectedPage;

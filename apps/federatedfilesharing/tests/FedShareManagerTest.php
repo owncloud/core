@@ -43,7 +43,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @package OCA\FederatedFileSharing\Tests
  * @group DB
  */
-class FedShareManagerTest extends TestCase {
+class FedShareManagerTest extends TestCase
+{
 	/** @var FederatedShareProvider | \PHPUnit\Framework\MockObject\MockObject */
 	private $federatedShareProvider;
 

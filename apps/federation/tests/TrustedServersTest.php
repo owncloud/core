@@ -36,7 +36,8 @@ use OCP\Security\ISecureRandom;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Test\TestCase;
 
-class TrustedServersTest extends TestCase {
+class TrustedServersTest extends TestCase
+{
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | TrustedServers */
 	private $trustedServers;

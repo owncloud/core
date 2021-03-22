@@ -36,7 +36,8 @@ namespace OC\Log;
  * Log is saved at data/owncloud.log (on default)
  */
 
-class Owncloud {
+class Owncloud
+{
 	protected static $logFile;
 
 	/**

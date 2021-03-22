@@ -29,7 +29,8 @@ use OCP\IUserManager;
 use Sabre\DAV\PropPatch;
 use Test\TestCase;
 
-class PrincipalTest extends TestCase {
+class PrincipalTest extends TestCase
+{
 	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $userManager;
 	/** @var \OCA\DAV\Connector\Sabre\Principal */

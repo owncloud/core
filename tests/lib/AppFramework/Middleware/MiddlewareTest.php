@@ -27,10 +27,12 @@ use OC\AppFramework\Http\Request;
 use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Middleware;
 
-class ChildMiddleware extends Middleware {
+class ChildMiddleware extends Middleware
+{
 };
 
-class MiddlewareTest extends \Test\TestCase {
+class MiddlewareTest extends \Test\TestCase
+{
 
 	/**
 	 * @var Middleware

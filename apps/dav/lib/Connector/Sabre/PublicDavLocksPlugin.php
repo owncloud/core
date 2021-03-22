@@ -31,7 +31,8 @@ use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 use Sabre\DAV\Xml\Property\LockDiscovery;
 
-class PublicDavLocksPlugin extends \Sabre\DAV\Locks\Plugin {
+class PublicDavLocksPlugin extends \Sabre\DAV\Locks\Plugin
+{
 	protected $publicRequestMatcher;
 
 	/**

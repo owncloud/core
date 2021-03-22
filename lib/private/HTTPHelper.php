@@ -32,7 +32,8 @@ use OCP\IConfig;
  * @package OC
  * @deprecated Use \OCP\Http\Client\IClientService
  */
-class HTTPHelper {
+class HTTPHelper
+{
 	const USER_AGENT = 'ownCloud Server Crawler';
 
 	/** @var \OCP\IConfig */

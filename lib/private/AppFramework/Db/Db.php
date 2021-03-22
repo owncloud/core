@@ -36,7 +36,8 @@ use OCP\IDBConnection;
  * @deprecated use IDBConnection directly, will be removed in ownCloud 10
  * Small Facade for being able to inject the database connection for tests
  */
-class Db implements IDb {
+class Db implements IDb
+{
 	/**
 	 * @var IDBConnection
 	 */

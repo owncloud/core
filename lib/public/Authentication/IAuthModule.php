@@ -11,7 +11,8 @@ use OCP\IUser;
  * @package OCP\Authentication
  * @since 10.0.0
  */
-interface IAuthModule {
+interface IAuthModule
+{
 
 	/**
 	 * Authenticates a request.

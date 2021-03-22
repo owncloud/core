@@ -21,7 +21,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class LoggerTest extends TestCase {
+class LoggerTest extends TestCase
+{
 	/** @var \OCP\ILogger */
 	private $logger;
 	private static $logs = [];

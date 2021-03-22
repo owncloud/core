@@ -29,7 +29,8 @@ use Sabre\HTTP\Client;
  * @package OCP\Http
  * @since 10.0.4
  */
-interface IWebDavClientService {
+interface IWebDavClientService
+{
 	/**
 	 * Settings are provided through the 'settings' argument. The following
 	 * settings are supported:

@@ -60,7 +60,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @package OC\User
  */
-class Manager extends PublicEmitter implements IUserManager {
+class Manager extends PublicEmitter implements IUserManager
+{
 	use EventEmitterTrait;
 	/** @var UserInterface[] $backends */
 	private $backends = [];

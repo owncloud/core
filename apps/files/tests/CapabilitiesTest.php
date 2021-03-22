@@ -26,7 +26,8 @@ use Test\TestCase;
  *
  */
 
-class CapabilitiesTest extends TestCase {
+class CapabilitiesTest extends TestCase
+{
 
 	/** @var IConfig| MockObject */
 	protected $config;

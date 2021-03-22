@@ -24,13 +24,15 @@ use Test\TestMoveableMountPoint;
 use Test\HookHelper;
 use OCP\Files\Config\IMountProvider;
 
-class TemporaryNoTouch extends Temporary {
+class TemporaryNoTouch extends Temporary
+{
 	public function touch($path, $mtime = null) {
 		return false;
 	}
 }
 
-class TemporaryNoCross extends Temporary {
+class TemporaryNoCross extends Temporary
+{
 	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false) {
 		return Common::copyFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime);
 	}
@@ -40,7 +42,8 @@ class TemporaryNoCross extends Temporary {
 	}
 }
 
-class TemporaryNoLocal extends Temporary {
+class TemporaryNoLocal extends Temporary
+{
 	public function instanceOfStorage($className) {
 		if ($className === '\OC\Files\Storage\Local') {
 			return false;
@@ -57,7 +60,8 @@ class TemporaryNoLocal extends Temporary {
  *
  * @package Test\Files
  */
-class ViewTest extends TestCase {
+class ViewTest extends TestCase
+{
 	/**
 	 * @var \OC\Files\Storage\Storage[] $storages
 	 */

@@ -33,7 +33,8 @@ use OCP\IUserSession;
 use Test\TestCase;
 use OC\Core\Controller\TwoFactorChallengeController;
 
-class AccountModuleMiddlewareTest extends TestCase {
+class AccountModuleMiddlewareTest extends TestCase
+{
 
 	/** @var ILogger|\PHPUnit\Framework\MockObject\MockObject */
 	private $logger;

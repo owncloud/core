@@ -36,7 +36,8 @@ namespace OCP;
  * This interface defines method for accessing the file based user cache.
  * @since 6.0.0
  */
-interface ICache {
+interface ICache
+{
 
 	/**
 	 * Get a value from the user cache

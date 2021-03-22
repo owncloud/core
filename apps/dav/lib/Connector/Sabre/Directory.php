@@ -55,7 +55,8 @@ use Sabre\DAV\IMoveTarget;
 use Sabre\DAV\INode;
 use Sabre\DAV\IQuota;
 
-class Directory extends Node implements ICollection, IQuota, IMoveTarget {
+class Directory extends Node implements ICollection, IQuota, IMoveTarget
+{
 
 	/**
 	 * Cached directory content

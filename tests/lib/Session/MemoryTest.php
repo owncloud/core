@@ -9,7 +9,8 @@
 
 namespace Test\Session;
 
-class MemoryTest extends Session {
+class MemoryTest extends Session
+{
 	protected function setUp(): void {
 		parent::setUp();
 		$this->instance = new \OC\Session\Memory($this->getUniqueID());

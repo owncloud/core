@@ -26,7 +26,8 @@ use OCP\IAvatar;
 use OCP\IImage;
 use Test\TestCase;
 
-class AvatarNodeTest extends TestCase {
+class AvatarNodeTest extends TestCase
+{
 	public function testGetName() {
 		/** @var IAvatar | \PHPUnit\Framework\MockObject\MockObject $a */
 		$a = $this->createMock(IAvatar::class);

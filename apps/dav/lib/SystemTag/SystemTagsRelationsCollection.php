@@ -31,7 +31,8 @@ use OCP\SystemTag\ISystemTagObjectMapper;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\SimpleCollection;
 
-class SystemTagsRelationsCollection extends SimpleCollection {
+class SystemTagsRelationsCollection extends SimpleCollection
+{
 
 	/**
 	 * SystemTagsRelationsCollection constructor.

@@ -23,7 +23,8 @@ namespace OC\DB\QueryBuilder;
 
 use OCP\DB\QueryBuilder\IQueryFunction;
 
-class QueryFunction implements IQueryFunction {
+class QueryFunction implements IQueryFunction
+{
 	/** @var string */
 	protected $function;
 

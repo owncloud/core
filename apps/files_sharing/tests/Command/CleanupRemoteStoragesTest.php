@@ -32,7 +32,8 @@ use Test\TestCase;
  *
  * @package OCA\Files_Sharing\Tests\Command
  */
-class CleanupRemoteStoragesTest extends TestCase {
+class CleanupRemoteStoragesTest extends TestCase
+{
 
 	/**
 	 * @var CleanupRemoteStorages

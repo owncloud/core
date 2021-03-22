@@ -10,7 +10,8 @@ namespace Test;
 
 use OC;
 
-class ImageTest extends \Test\TestCase {
+class ImageTest extends \Test\TestCase
+{
 	public static function tearDownAfterClass(): void {
 		@\unlink(OC::$SERVERROOT.'/tests/data/testimage2.png');
 		@\unlink(OC::$SERVERROOT.'/tests/data/testimage2.jpg');

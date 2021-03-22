@@ -30,7 +30,8 @@ use OCP\Capabilities\ICapability;
  *
  * @package OCA\Files_Trashbin
  */
-class Capabilities implements ICapability {
+class Capabilities implements ICapability
+{
 
 	/**
 	 * Return this classes capabilities

@@ -34,7 +34,8 @@ use OCP\IUser;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class Group implements IGroup {
+class Group implements IGroup
+{
 	/**
 	 * @var string $id
 	 */

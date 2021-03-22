@@ -28,7 +28,8 @@ use Sabre\DAV\Server;
 use Sabre\DAV\Xml\Property\GetLastModified;
 use Test\TestCase;
 
-class TrashBinPluginTest extends TestCase {
+class TrashBinPluginTest extends TestCase
+{
 	public function testInit() {
 		$server = $this->createMock(Server::class);
 		$server->expects($this->once())->method('on')->with('propFind');

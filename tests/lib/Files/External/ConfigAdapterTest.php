@@ -34,7 +34,8 @@ use OCP\IUser;
 use OCP\ISession;
 use OC\Files\External\StorageConfig;
 
-class ConfigAdapterTest extends \Test\TestCase {
+class ConfigAdapterTest extends \Test\TestCase
+{
 
 	/** @var \OCP\IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;

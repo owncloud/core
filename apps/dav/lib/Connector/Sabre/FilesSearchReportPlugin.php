@@ -30,7 +30,8 @@ use OCA\DAV\Files\Xml\SearchRequest;
 use OCP\ISearch;
 use OC\Search\Result\File as FileResult;
 
-class FilesSearchReportPlugin extends ServerPlugin {
+class FilesSearchReportPlugin extends ServerPlugin
+{
 	// namespace
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';
 	const REPORT_NAME = '{http://owncloud.org/ns}search-files';

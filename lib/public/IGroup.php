@@ -29,7 +29,8 @@ namespace OCP;
  * @package OCP
  * @since 8.0.0
  */
-interface IGroup {
+interface IGroup
+{
 	/**
 	 * @return string
 	 * @since 8.0.0

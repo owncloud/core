@@ -26,7 +26,8 @@ namespace Test\Files\Storage;
  *
  * @group DB
  */
-class HomeStorageQuotaTest extends \Test\TestCase {
+class HomeStorageQuotaTest extends \Test\TestCase
+{
 	/**
 	 * Tests that the home storage is not wrapped when no quota exists.
 	 */

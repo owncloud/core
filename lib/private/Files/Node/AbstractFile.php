@@ -24,7 +24,8 @@ namespace OC\Files\Node;
 use OCP\Files\FileInfo;
 use OCP\Files\NotPermittedException;
 
-class AbstractFile extends AbstractNode implements \OCP\Files\File {
+class AbstractFile extends AbstractNode implements \OCP\Files\File
+{
 
 	/**
 	 * @inheritdoc

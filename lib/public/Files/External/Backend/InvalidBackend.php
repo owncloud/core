@@ -27,7 +27,8 @@ namespace OCP\Files\External\Backend;
  *
  * @since 10.0.5
  */
-class InvalidBackend extends Backend {
+class InvalidBackend extends Backend
+{
 
 	/** @var string Invalid backend id */
 	private $invalidId;

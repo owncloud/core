@@ -28,7 +28,8 @@ namespace OCP;
  * @package OCP
  * @since 8.0.0
  */
-interface IDateTimeZone {
+interface IDateTimeZone
+{
 	/**
 	 * @param bool|int $timestamp
 	 * @return \DateTimeZone

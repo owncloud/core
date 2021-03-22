@@ -32,7 +32,8 @@ use Test\TestCase;
  *
  * @package Test\Repair
  */
-class RemoveGetETagEntriesTest extends TestCase {
+class RemoveGetETagEntriesTest extends TestCase
+{
 	/** @var \OCP\IDBConnection */
 	protected $connection;
 

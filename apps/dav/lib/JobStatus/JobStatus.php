@@ -24,7 +24,8 @@ use OCA\DAV\JobStatus\Entity\JobStatus as JobStatusEntity;
 use OCA\DAV\JobStatus\Entity\JobStatusMapper;
 use Sabre\DAV\File;
 
-class JobStatus extends File {
+class JobStatus extends File
+{
 
 	/** @var string */
 	private $jobId;

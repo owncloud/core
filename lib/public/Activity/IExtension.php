@@ -37,7 +37,8 @@ namespace OCP\Activity;
  * @package OCP\Activity
  * @since 8.0.0
  */
-interface IExtension {
+interface IExtension
+{
 	const METHOD_STREAM = 'stream';
 	const METHOD_MAIL = 'email';
 

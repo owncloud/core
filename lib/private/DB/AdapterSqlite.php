@@ -25,7 +25,8 @@
 
 namespace OC\DB;
 
-class AdapterSqlite extends Adapter {
+class AdapterSqlite extends Adapter
+{
 
 	/**
 	 * @param string $tableName

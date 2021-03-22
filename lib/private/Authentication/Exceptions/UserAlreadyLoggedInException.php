@@ -23,5 +23,6 @@ namespace OC\Authentication\Exceptions;
 
 use Exception;
 
-class UserAlreadyLoggedInException extends Exception {
+class UserAlreadyLoggedInException extends Exception
+{
 }

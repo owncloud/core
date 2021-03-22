@@ -55,7 +55,8 @@ use OC\Repair;
  * ownCloud ecosystem. Furthermore, this class is responsible for installing,
  * upgrading and removing apps.
  */
-class OC_App {
+class OC_App
+{
 	private static $adminForms = [];
 	private static $personalForms = [];
 	private static $appTypes = [];

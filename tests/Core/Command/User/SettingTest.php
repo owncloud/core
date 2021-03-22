@@ -24,7 +24,8 @@ namespace Tests\Core\Command\User;
 use OC\Core\Command\User\Setting;
 use Test\TestCase;
 
-class SettingTest extends TestCase {
+class SettingTest extends TestCase
+{
 	/** @var \OCP\IUserManager|\PHPUnit\Framework\MockObject\MockObject */
 	protected $userManager;
 	/** @var \OCP\IConfig|\PHPUnit\Framework\MockObject\MockObject */

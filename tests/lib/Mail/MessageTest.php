@@ -12,7 +12,8 @@ use OC\Mail\Message;
 use Swift_Message;
 use Test\TestCase;
 
-class MessageTest extends TestCase {
+class MessageTest extends TestCase
+{
 	/** @var Swift_Message */
 	private $swiftMessage;
 	/** @var Message */

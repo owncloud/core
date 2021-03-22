@@ -24,7 +24,8 @@
 
 namespace OCA\Files;
 
-class App {
+class App
+{
 	/**
 	 * @var \OCP\INavigationManager
 	 */

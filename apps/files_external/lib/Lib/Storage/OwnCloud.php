@@ -31,7 +31,8 @@ use Sabre\DAV\Client;
  * http://%host/%context/remote.php/webdav/%root
  *
  */
-class OwnCloud extends \OC\Files\Storage\DAV {
+class OwnCloud extends \OC\Files\Storage\DAV
+{
 	const OC_URL_SUFFIX = 'remote.php/webdav';
 
 	public function __construct($params) {

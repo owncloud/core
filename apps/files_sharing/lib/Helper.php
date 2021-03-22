@@ -35,7 +35,8 @@ use OC\Files\View;
 use OCP\Files\NotFoundException;
 use OCP\User;
 
-class Helper {
+class Helper
+{
 	public static function registerHooks() {
 		\OCP\Util::connectHook('OC_Filesystem', 'post_rename', '\OCA\Files_Sharing\Updater', 'renameHook');
 		\OCP\Util::connectHook('OC_Filesystem', 'post_delete', '\OCA\Files_Sharing\Hooks', 'unshareChildren');

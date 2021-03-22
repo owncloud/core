@@ -42,7 +42,8 @@ use OCP\IUserSession;
 /**
  * User global storages controller
  */
-class UserGlobalStoragesController extends StoragesController {
+class UserGlobalStoragesController extends StoragesController
+{
 	/**
 	 * @var IUserSession
 	 */

@@ -27,7 +27,8 @@ namespace OCP\Security;
  * @package OCP\Security
  * @since 8.2.0
  */
-interface ICredentialsManager {
+interface ICredentialsManager
+{
 
 	/**
 	 * Store a set of credentials

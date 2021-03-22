@@ -34,7 +34,8 @@ use Test\TestCase;
 use Sabre\HTTP\RequestInterface;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 
-class ViewOnlyPluginTest extends TestCase {
+class ViewOnlyPluginTest extends TestCase
+{
 
 	/** @var ViewOnlyPlugin */
 	private $plugin;

@@ -8,7 +8,8 @@
 
 namespace Test\Files\Cache;
 
-class DummyUser extends \OC\User\User {
+class DummyUser extends \OC\User\User
+{
 	/**
 	 * @var string $home
 	 */
@@ -50,7 +51,8 @@ class DummyUser extends \OC\User\User {
  *
  * @package Test\Files\Cache
  */
-class HomeCacheTest extends \Test\TestCase {
+class HomeCacheTest extends \Test\TestCase
+{
 	/**
 	 * @var \OC\Files\Storage\Home $storage
 	 */

@@ -24,7 +24,8 @@ namespace Tests\Core\Command\Encryption;
 use OC\Core\Command\Encryption\SetDefaultModule;
 use Test\TestCase;
 
-class SetDefaultModuleTest extends TestCase {
+class SetDefaultModuleTest extends TestCase
+{
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $manager;
 	/** @var \PHPUnit\Framework\MockObject\MockObject */

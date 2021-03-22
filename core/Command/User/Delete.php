@@ -33,7 +33,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class Delete extends Command {
+class Delete extends Command
+{
 	/** @var IUserManager */
 	private $userManager;
 

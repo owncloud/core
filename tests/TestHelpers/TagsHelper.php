@@ -31,7 +31,8 @@ use SimpleXMLElement;
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
-class TagsHelper extends \PHPUnit\Framework\Assert {
+class TagsHelper extends \PHPUnit\Framework\Assert
+{
 	/**
 	 * tags a file
 	 *

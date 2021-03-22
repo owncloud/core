@@ -28,7 +28,8 @@ use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use OCP\Share;
 
-class OldGroupMembershipShares implements IRepairStep {
+class OldGroupMembershipShares implements IRepairStep
+{
 
 	/** @var \OCP\IDBConnection */
 	protected $connection;

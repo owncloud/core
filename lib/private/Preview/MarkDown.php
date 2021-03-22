@@ -20,7 +20,8 @@
  */
 namespace OC\Preview;
 
-class MarkDown extends TXT {
+class MarkDown extends TXT
+{
 	/**
 	 * {@inheritDoc}
 	 */

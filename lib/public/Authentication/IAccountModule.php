@@ -30,7 +30,8 @@ use OCP\IUser;
  * @package OCP\Authentication
  * @since 10.0.9
  */
-interface IAccountModule {
+interface IAccountModule
+{
 
 	/**
 	 * The check is called on every request, so it should be cheap, eg an

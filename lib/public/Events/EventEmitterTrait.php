@@ -31,7 +31,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @package OCP\Events
  */
-trait EventEmitterTrait {
+trait EventEmitterTrait
+{
 	/**
 	 * The function with accepts functions which needs before and/or after
 	 * events to be triggered using Symfony dispatcher

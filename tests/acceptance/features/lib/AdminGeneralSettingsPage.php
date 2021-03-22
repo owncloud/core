@@ -30,7 +30,8 @@ use TestHelpers\EmailHelper;
 /**
  * Admin General Settings page.
  */
-class AdminGeneralSettingsPage extends OwncloudPage {
+class AdminGeneralSettingsPage extends OwncloudPage
+{
 
 	/**
 	 *

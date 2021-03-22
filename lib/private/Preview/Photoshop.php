@@ -23,7 +23,8 @@
 namespace OC\Preview;
 
 //.psd
-class Photoshop extends Bitmap {
+class Photoshop extends Bitmap
+{
 	/**
 	 * {@inheritDoc}
 	 */

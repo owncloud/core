@@ -29,7 +29,8 @@ namespace Test\Files\Storage;
  *
  * @package Test\Files\Storage
  */
-class CommonTest extends Storage {
+class CommonTest extends Storage
+{
 	/**
 	 * @var string tmpDir
 	 */

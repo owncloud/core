@@ -56,7 +56,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use OC\Repair\MoveAvatarOutsideHome;
 
-class Repair implements IOutput {
+class Repair implements IOutput
+{
 	/* @var IRepairStep[] */
 	private $repairSteps;
 	/** @var EventDispatcherInterface */

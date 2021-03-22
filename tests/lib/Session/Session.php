@@ -9,7 +9,8 @@
 
 namespace Test\Session;
 
-abstract class Session extends \Test\TestCase {
+abstract class Session extends \Test\TestCase
+{
 	/**
 	 * @var \OC\Session\Session
 	 */

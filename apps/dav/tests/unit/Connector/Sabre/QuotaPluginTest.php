@@ -37,7 +37,8 @@ use OC\Files\View;
  * later.
  * See the COPYING-README file.
  */
-class QuotaPluginTest extends TestCase {
+class QuotaPluginTest extends TestCase
+{
 
 	/** @var \Sabre\DAV\Server | \PHPUnit\Framework\MockObject\MockObject */
 	private $server;

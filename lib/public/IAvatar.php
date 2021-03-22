@@ -32,7 +32,8 @@ use OCP\Files\NotFoundException;
  * This class provides avatar functionality
  * @since 6.0.0
  */
-interface IAvatar {
+interface IAvatar
+{
 
 	/**
 	 * get the users avatar

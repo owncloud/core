@@ -15,7 +15,8 @@ use OC\Settings\Panels\Admin\Encryption;
 /**
  * @package Tests\Settings\Panels\Admin
  */
-class EncryptionTest extends \Test\TestCase {
+class EncryptionTest extends \Test\TestCase
+{
 
 	/** @var Encryption */
 	private $panel;

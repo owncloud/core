@@ -46,7 +46,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @package OCA\Files\Tests\Controller
  */
-class ViewControllerTest extends TestCase {
+class ViewControllerTest extends TestCase
+{
 	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
 	/** @var IURLGenerator | \PHPUnit\Framework\MockObject\MockObject */

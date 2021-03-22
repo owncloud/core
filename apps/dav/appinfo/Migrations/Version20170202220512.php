@@ -30,7 +30,8 @@ use OCP\Migration\ISchemaMigration;
  * Add NOT NULL constraint to fileid column
  */
 
-class Version20170202220512 implements ISchemaMigration {
+class Version20170202220512 implements ISchemaMigration
+{
 
 	/**
 	 * @param Schema $schema

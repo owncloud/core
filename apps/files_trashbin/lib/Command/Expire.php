@@ -31,7 +31,8 @@ use OCA\Files_Trashbin\Quota;
 use OCA\Files_Trashbin\TrashExpiryManager;
 use OCP\Command\ICommand;
 
-class Expire implements ICommand {
+class Expire implements ICommand
+{
 	use FileAccess;
 
 	/**

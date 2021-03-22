@@ -53,7 +53,8 @@ use OCP\Files\Storage\StorageAdapter;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Util;
 
-class SMB extends StorageAdapter {
+class SMB extends StorageAdapter
+{
 	/**
 	 * @var IServer
 	 */

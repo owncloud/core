@@ -34,7 +34,8 @@ use OC\Notification\Manager;
  * Note that each notification manager is expected to thrown custom implementations of this event
  * while hiding the implementation details.
  */
-class RegisterConsumerEventImpl extends RegisterConsumerEvent {
+class RegisterConsumerEventImpl extends RegisterConsumerEvent
+{
 	/** @var Manager */
 	private $manager;
 

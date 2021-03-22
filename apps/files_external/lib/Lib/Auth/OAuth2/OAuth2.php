@@ -29,7 +29,8 @@ use OCP\IL10N;
 /**
  * OAuth2 authentication
  */
-class OAuth2 extends AuthMechanism {
+class OAuth2 extends AuthMechanism
+{
 	public function __construct(IL10N $l) {
 		$this
 			->setIdentifier('oauth2::oauth2')

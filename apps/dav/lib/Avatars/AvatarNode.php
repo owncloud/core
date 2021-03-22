@@ -24,7 +24,8 @@ namespace OCA\DAV\Avatars;
 use OCP\IAvatar;
 use Sabre\DAV\File;
 
-class AvatarNode extends File {
+class AvatarNode extends File
+{
 	private $ext;
 	private $size;
 	private $avatar;

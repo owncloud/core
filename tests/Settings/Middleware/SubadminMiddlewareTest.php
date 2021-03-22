@@ -22,7 +22,8 @@ use OCP\AppFramework\Http\TemplateResponse;
  *
  * @package Tests\Settings\Middleware
  */
-class SubadminMiddlewareTest extends \Test\TestCase {
+class SubadminMiddlewareTest extends \Test\TestCase
+{
 	/** @var SubadminMiddleware */
 	private $subadminMiddlewareAsSubAdmin;
 	/** @var SubadminMiddleware */

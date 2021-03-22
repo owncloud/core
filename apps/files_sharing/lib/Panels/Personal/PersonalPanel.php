@@ -28,7 +28,8 @@ use OCP\IUserSession;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-class PersonalPanel implements ISettings {
+class PersonalPanel implements ISettings
+{
 	const USER_CONFIGS = [
 		[
 			'key' => 'auto_accept_share',

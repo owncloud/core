@@ -18,7 +18,8 @@ use OCP\IConfig;
 use OCP\IRequest;
 use Test\TestCase;
 
-class ManagerTest extends TestCase {
+class ManagerTest extends TestCase
+{
 
 	/** @var \OC\Activity\Manager */
 	private $activityManager;
@@ -410,7 +411,8 @@ class ManagerTest extends TestCase {
 	}
 }
 
-class SimpleExtension implements IExtension {
+class SimpleExtension implements IExtension
+{
 	public function getNotificationTypes($languageCode) {
 		return ['NT1', 'NT2'];
 	}
@@ -481,7 +483,8 @@ class SimpleExtension implements IExtension {
 	}
 }
 
-class NoOpExtension implements IExtension {
+class NoOpExtension implements IExtension
+{
 	public function getNotificationTypes($languageCode) {
 		return false;
 	}
@@ -523,7 +526,8 @@ class NoOpExtension implements IExtension {
 	}
 }
 
-class NoOpConsumer implements IConsumer {
+class NoOpConsumer implements IConsumer
+{
 	public function receive(IEvent $event) {
 	}
 }

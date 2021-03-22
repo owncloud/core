@@ -28,7 +28,8 @@ use OCP\Files\External\DefinitionParameter;
 use OCP\Files\External\IStoragesBackendService;
 use OCP\IL10N;
 
-class Local extends ExternalBackend {
+class Local extends ExternalBackend
+{
 	public function __construct(IL10N $l) {
 		$this
 			->setIdentifier('local')

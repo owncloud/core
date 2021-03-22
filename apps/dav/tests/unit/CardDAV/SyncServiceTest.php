@@ -29,7 +29,8 @@ use OCP\IUser;
 use OCP\IUserManager;
 use Test\TestCase;
 
-class SyncServiceTest extends TestCase {
+class SyncServiceTest extends TestCase
+{
 	public function testEmptySync() {
 		$backend = $this->getBackendMock(0, 0, 0);
 

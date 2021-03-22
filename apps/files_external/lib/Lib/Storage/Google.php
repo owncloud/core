@@ -39,7 +39,8 @@ use GuzzleHttp\Exception\RequestException;
 use Icewind\Streams\IteratorDirectory;
 use Icewind\Streams\RetryWrapper;
 
-class Google extends \OCP\Files\Storage\StorageAdapter {
+class Google extends \OCP\Files\Storage\StorageAdapter
+{
 	private $client;
 	private $id;
 	private $root;

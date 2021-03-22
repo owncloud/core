@@ -26,7 +26,8 @@ namespace OC\Repair;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
-class SearchLuceneTables implements IRepairStep {
+class SearchLuceneTables implements IRepairStep
+{
 	public function getName() {
 		return 'Repair duplicate entries in oc_lucene_status';
 	}

@@ -32,7 +32,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Test\TestCase;
 
-class DisableTest extends TestCase {
+class DisableTest extends TestCase
+{
 	/** @var MockObject */
 	protected $db;
 	/** @var MockObject */

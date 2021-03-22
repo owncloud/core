@@ -25,7 +25,8 @@ use OC\Core\Command\Config\ListConfigs;
 use OCP\IConfig;
 use Test\TestCase;
 
-class ListConfigsTest extends TestCase {
+class ListConfigsTest extends TestCase
+{
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $appConfig;
 	/** @var \PHPUnit\Framework\MockObject\MockObject */

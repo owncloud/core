@@ -25,7 +25,8 @@ use OCP\IGroup;
 use OCP\GroupInterface;
 use OCA\Files_Sharing\SharingBlacklist;
 
-class SharingBlacklistTest extends \Test\TestCase {
+class SharingBlacklistTest extends \Test\TestCase
+{
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 

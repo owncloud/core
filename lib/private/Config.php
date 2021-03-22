@@ -40,7 +40,8 @@ use OCP\Events\EventEmitterTrait;
  * This class is responsible for reading and writing config.php, the very basic
  * configuration file of ownCloud.
  */
-class Config {
+class Config
+{
 	use EventEmitterTrait;
 	const ENV_PREFIX = 'OC_';
 

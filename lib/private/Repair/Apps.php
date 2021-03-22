@@ -38,7 +38,8 @@ use OCP\Util;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class Apps implements IRepairStep {
+class Apps implements IRepairStep
+{
 	const KEY_COMPATIBLE = 'compatible';
 	const KEY_INCOMPATIBLE = 'incompatible';
 	const KEY_MISSING = 'missing';

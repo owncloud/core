@@ -27,7 +27,8 @@ namespace OCP;
  * @package OCP
  * @since 10.0.10
  */
-class UserTokenMismatchException extends UserTokenException {
+class UserTokenMismatchException extends UserTokenException
+{
 	/**
 	 * UserTokenMismatchException constructor.
 	 *

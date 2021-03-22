@@ -29,7 +29,8 @@
 
 namespace OC\OCS;
 
-class Result {
+class Result
+{
 
 	/** @var array  */
 	protected $data;

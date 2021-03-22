@@ -24,6 +24,7 @@ namespace OCP\Files\Storage\PolyFill;
 /**
  * @since 10.0
  */
-trait CopyDirectory {
+trait CopyDirectory
+{
 	use \OC\Files\Storage\PolyFill\CopyDirectory;
 }

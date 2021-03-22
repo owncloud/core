@@ -129,7 +129,8 @@ use OC\AllConfig;
  *
  * @package Test
  */
-class ServerTest extends TestCase {
+class ServerTest extends TestCase
+{
 	/** @var Server */
 	protected $server;
 

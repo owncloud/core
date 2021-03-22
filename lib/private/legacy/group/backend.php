@@ -51,5 +51,6 @@
  * Abstract base class for user management
  * @deprecated Since 9.1.0 use \OC\Group\Backend
  */
-abstract class OC_Group_Backend extends \OC\Group\Backend {
+abstract class OC_Group_Backend extends \OC\Group\Backend
+{
 }

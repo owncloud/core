@@ -8,7 +8,8 @@ use OCP\Migration\ISchemaMigration;
 /**
  * Updates column type from integer to bigint
  */
-class Version20170711193427 implements ISchemaMigration {
+class Version20170711193427 implements ISchemaMigration
+{
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 

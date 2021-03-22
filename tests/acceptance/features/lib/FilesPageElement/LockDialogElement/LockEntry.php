@@ -31,7 +31,8 @@ use Page\OwncloudPage;
  * A single Lock Entry
  *
  */
-class LockEntry extends OwncloudPage {
+class LockEntry extends OwncloudPage
+{
 
 	/**
 	 *

@@ -22,5 +22,6 @@
 
 namespace OC;
 
-class ServiceUnavailableException extends \Exception {
+class ServiceUnavailableException extends \Exception
+{
 }

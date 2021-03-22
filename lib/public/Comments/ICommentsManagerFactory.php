@@ -33,7 +33,8 @@ use OCP\IServerContainer;
  * @package OCP\Comments
  * @since 9.0.0
  */
-interface ICommentsManagerFactory {
+interface ICommentsManagerFactory
+{
 
 	/**
 	 * Constructor for the comments manager factory

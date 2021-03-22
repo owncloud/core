@@ -62,7 +62,8 @@ use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\DAV\IFile;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class File extends Node implements IFile, IFileNode {
+class File extends Node implements IFile, IFileNode
+{
 	use EventEmitterTrait;
 	protected $request;
 

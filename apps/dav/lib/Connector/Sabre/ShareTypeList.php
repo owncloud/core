@@ -30,7 +30,8 @@ use Sabre\Xml\Writer;
  *
  * This property contains multiple "share-type" elements, each containing a share type.
  */
-class ShareTypeList implements Element {
+class ShareTypeList implements Element
+{
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';
 
 	/**

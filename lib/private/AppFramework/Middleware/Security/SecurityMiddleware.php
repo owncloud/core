@@ -59,7 +59,8 @@ use OC\AppFramework\Middleware\Security\Exceptions\SecurityException;
  * security things should be checked and also handles errors in case a security
  * check fails
  */
-class SecurityMiddleware extends Middleware {
+class SecurityMiddleware extends Middleware
+{
 	/** @var INavigationManager */
 	private $navigationManager;
 	/** @var IRequest */

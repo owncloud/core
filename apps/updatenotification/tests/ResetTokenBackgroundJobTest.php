@@ -27,7 +27,8 @@ use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
 use Test\TestCase;
 
-class ResetTokenBackgroundJobTest extends TestCase {
+class ResetTokenBackgroundJobTest extends TestCase
+{
 	/** @var IConfig */
 	private $config;
 	/** @var ResetTokenBackgroundJob */

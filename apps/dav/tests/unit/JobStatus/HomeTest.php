@@ -33,7 +33,8 @@ use Test\TestCase;
  *
  * @package OCA\DAV\Tests\Unit\JobStatus
  */
-class HomeTest extends TestCase {
+class HomeTest extends TestCase
+{
 	public function testGetName() {
 		/** @var JobStatusMapper | \PHPUnit\Framework\MockObject\MockObject $mapper */
 		$mapper = $this->createMock(JobStatusMapper::class);

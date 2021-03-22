@@ -23,7 +23,8 @@ namespace OCA\DAV\Files;
 
 use OCP\Files\Node;
 
-interface IFileNode {
+interface IFileNode
+{
 
 	/**
 	 * @return Node

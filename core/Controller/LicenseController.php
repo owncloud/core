@@ -25,7 +25,8 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
 use OCP\License\ILicenseManager;
 
-class LicenseController extends Controller {
+class LicenseController extends Controller
+{
 	/** @var ILicenseManager */
 	private $licenseManager;
 

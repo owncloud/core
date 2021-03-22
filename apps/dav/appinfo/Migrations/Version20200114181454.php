@@ -26,7 +26,8 @@ use OCP\Migration\ISchemaMigration;
 /**
  * Add index to oc_cards_properties to assist with searching with large numbers of rows
  */
-class Version20200114181454 implements ISchemaMigration {
+class Version20200114181454 implements ISchemaMigration
+{
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 		$table = $schema->getTable("${prefix}cards_properties");

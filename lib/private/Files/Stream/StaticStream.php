@@ -23,7 +23,8 @@
 
 namespace OC\Files\Stream;
 
-class StaticStream {
+class StaticStream
+{
 	const MODE_FILE = 0100000;
 
 	public $context;

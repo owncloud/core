@@ -35,7 +35,8 @@ use OCP\IRequest;
  * Base class to inherit your controllers from that are used for RESTful APIs
  * @since 7.0.0
  */
-abstract class ApiController extends Controller {
+abstract class ApiController extends Controller
+{
 	private $corsMethods;
 	private $corsAllowedHeaders;
 	private $corsMaxAge;

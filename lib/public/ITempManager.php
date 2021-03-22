@@ -29,7 +29,8 @@ namespace OCP;
  * @package OCP
  * @since 8.0.0
  */
-interface ITempManager {
+interface ITempManager
+{
 	/**
 	 * Create a temporary file and return the path
 	 *

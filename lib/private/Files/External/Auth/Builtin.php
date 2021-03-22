@@ -27,7 +27,8 @@ use \OCP\Files\External\Auth\AuthMechanism;
 /**
  * Builtin authentication mechanism, for legacy backends
  */
-class Builtin extends AuthMechanism {
+class Builtin extends AuthMechanism
+{
 	public function __construct() {
 		$l = \OC::$server->getL10N('lib');
 		$this

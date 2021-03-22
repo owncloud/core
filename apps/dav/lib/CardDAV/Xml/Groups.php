@@ -23,7 +23,8 @@ namespace OCA\DAV\CardDAV\Xml;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
-class Groups implements XmlSerializable {
+class Groups implements XmlSerializable
+{
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';
 
 	/** @var string[] of TYPE:CHECKSUM */

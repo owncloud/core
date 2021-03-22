@@ -16,7 +16,8 @@ use Test\TestCase;
  *
  * @package OC\AppFramework\Http
  */
-class ContentSecurityPolicyTest extends TestCase {
+class ContentSecurityPolicyTest extends TestCase
+{
 
 	/** @var ContentSecurityPolicy */
 	private $contentSecurityPolicy;

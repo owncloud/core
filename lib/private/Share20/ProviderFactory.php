@@ -33,7 +33,8 @@ use OCP\IServerContainer;
  *
  * @package OC\Share20
  */
-class ProviderFactory implements IProviderFactory {
+class ProviderFactory implements IProviderFactory
+{
 
 	/** @var IServerContainer */
 	private $serverContainer;

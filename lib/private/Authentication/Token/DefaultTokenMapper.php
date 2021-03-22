@@ -27,7 +27,8 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\IUser;
 
-class DefaultTokenMapper extends Mapper {
+class DefaultTokenMapper extends Mapper
+{
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'authtoken');
 	}

@@ -66,7 +66,8 @@ use OCP\Authentication\Exceptions\AccountCheckException;
  *
  */
 
-class OC_API {
+class OC_API
+{
 
 	/**
 	 * API authentication levels

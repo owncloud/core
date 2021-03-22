@@ -26,7 +26,8 @@ namespace OCP\Files\External\Service;
  *
  * @since 10.0
  */
-interface IGlobalStoragesService extends IStoragesService {
+interface IGlobalStoragesService extends IStoragesService
+{
 	/**
 	 * Get all configured admin and personal mounts
 	 *

@@ -34,7 +34,8 @@ use OCP\IUserSession;
 use OCP\L10N\IFactory;
 use OCP\Settings\ISettingsManager;
 
-class SettingsPageControllerTest extends TestCase {
+class SettingsPageControllerTest extends TestCase
+{
 	protected $settingsManager;
 	protected $userSession;
 	protected $groupManager;

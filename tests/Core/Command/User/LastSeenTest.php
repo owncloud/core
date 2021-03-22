@@ -24,7 +24,8 @@ namespace Tests\Core\Command\User;
 use OC\Core\Command\User\LastSeen;
 use Test\TestCase;
 
-class LastSeenTest extends TestCase {
+class LastSeenTest extends TestCase
+{
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $userManager;
 	/** @var \PHPUnit\Framework\MockObject\MockObject */

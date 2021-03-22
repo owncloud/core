@@ -29,7 +29,8 @@ use OCP\Migration\ISqlMigration;
  * this is required to identify editable tag. It is only
  * set to "1" for visible and editable tags.
  */
-class Version20181017120818 implements ISqlMigration {
+class Version20181017120818 implements ISqlMigration
+{
 	public function sql(IDBConnection $connection) {
 		$valueToUpdate = 1;
 		$qb = $connection->getQueryBuilder();

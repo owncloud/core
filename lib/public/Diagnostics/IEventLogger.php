@@ -29,7 +29,8 @@ namespace OCP\Diagnostics;
  * @package OCP\Diagnostics
  * @since 8.0.0
  */
-interface IEventLogger {
+interface IEventLogger
+{
 	/**
 	 * Mark the start of an event setting its ID $id and providing event description $description.
 	 *

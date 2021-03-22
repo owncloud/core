@@ -23,7 +23,8 @@
 
 namespace OC;
 
-class DateTimeFormatter implements \OCP\IDateTimeFormatter {
+class DateTimeFormatter implements \OCP\IDateTimeFormatter
+{
 	/** @var \DateTimeZone */
 	protected $defaultTimeZone;
 

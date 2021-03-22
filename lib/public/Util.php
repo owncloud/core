@@ -55,7 +55,8 @@ use DateTimeZone;
  * This class provides different helper functions to make the life of a developer easier
  * @since 4.0.0
  */
-class Util {
+class Util
+{
 	// consts for Logging
 	const DEBUG=0;
 	const INFO=1;

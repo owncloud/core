@@ -27,5 +27,6 @@ namespace OCP\Files;
  * FileContentNotAllowed to suppress logging.
  * @since 10.0.8
  */
-class FileContentNotAllowedException extends ForbiddenException {
+class FileContentNotAllowedException extends ForbiddenException
+{
 }

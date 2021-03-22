@@ -34,7 +34,8 @@ use OCP\IGroup;
 use OCP\IGroupManager;
 use OCP\IDBConnection;
 
-class SubAdmin extends PublicEmitter {
+class SubAdmin extends PublicEmitter
+{
 	use EventEmitterTrait;
 	/** @var IUserManager */
 	private $userManager;

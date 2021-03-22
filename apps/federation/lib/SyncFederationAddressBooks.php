@@ -25,7 +25,8 @@ namespace OCA\Federation;
 use OCA\DAV\CardDAV\SyncService;
 use OCP\AppFramework\Http;
 
-class SyncFederationAddressBooks {
+class SyncFederationAddressBooks
+{
 
 	/** @var DbHandler */
 	protected $dbHandler;

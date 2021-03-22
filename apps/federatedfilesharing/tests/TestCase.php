@@ -33,7 +33,8 @@ use Test\Traits\UserTrait;
  *
  * Base class for sharing tests.
  */
-abstract class TestCase extends \Test\TestCase {
+abstract class TestCase extends \Test\TestCase
+{
 	use UserTrait;
 
 	const TEST_FILES_SHARING_API_USER1 = "test-share-user1";

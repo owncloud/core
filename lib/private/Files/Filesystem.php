@@ -67,7 +67,8 @@ use OCP\Files\Config\IMountProvider;
 use OCP\Files\NotFoundException;
 use OCP\IUserManager;
 
-class Filesystem {
+class Filesystem
+{
 
 	/**
 	 * @var Mount\Manager $mounts

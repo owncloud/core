@@ -32,7 +32,8 @@ use OC\SystemConfig;
  *
  * @package Test
  */
-class SystemConfigTest extends TestCase {
+class SystemConfigTest extends TestCase
+{
 	/** @var \OC\Config */
 	private $config;
 	/** @var SystemConfig */

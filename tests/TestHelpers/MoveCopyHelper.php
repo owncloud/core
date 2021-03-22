@@ -29,7 +29,8 @@ use Psr\Http\Message\ResponseInterface;
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
-class MoveCopyHelper {
+class MoveCopyHelper
+{
 
 	/**
 	 *

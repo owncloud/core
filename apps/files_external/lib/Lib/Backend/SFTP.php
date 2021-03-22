@@ -27,7 +27,8 @@ use OCP\Files\External\Backend\Backend as ExternalBackend;
 use OCP\Files\External\DefinitionParameter;
 use OCP\IL10N;
 
-class SFTP extends ExternalBackend {
+class SFTP extends ExternalBackend
+{
 	public function __construct(IL10N $l) {
 		$this
 			->setIdentifier('sftp')

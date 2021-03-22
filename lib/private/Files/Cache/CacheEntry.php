@@ -26,7 +26,8 @@ use OCP\Files\Cache\ICacheEntry;
 /**
  * meta data for a file or folder
  */
-class CacheEntry implements ICacheEntry, \ArrayAccess {
+class CacheEntry implements ICacheEntry, \ArrayAccess
+{
 	/**
 	 * @var array
 	 */

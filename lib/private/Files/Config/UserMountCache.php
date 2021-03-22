@@ -37,7 +37,8 @@ use OC\Cache\CappedMemoryCache;
 /**
  * Cache mounts points per user in the cache so we can easilly look them up
  */
-class UserMountCache implements IUserMountCache {
+class UserMountCache implements IUserMountCache
+{
 	/**
 	 * @var IDBConnection
 	 */

@@ -29,7 +29,8 @@ namespace OCP\Http\Client;
  * @package OCP\Http
  * @since 8.1.0
  */
-interface IResponse {
+interface IResponse
+{
 	/**
 	 * @return string|resource
 	 * @since 8.1.0

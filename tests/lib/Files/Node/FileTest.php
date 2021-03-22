@@ -22,7 +22,8 @@ use OCP\IImage;
  *
  * @package Test\Files\Node
  */
-class FileTest extends NodeTest {
+class FileTest extends NodeTest
+{
 	public $viewDeleteMethod = 'unlink';
 	public $nodeClass = File::class;
 	public $nonExistingNodeClass = NonExistingFile::class;

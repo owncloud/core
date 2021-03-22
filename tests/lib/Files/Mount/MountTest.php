@@ -11,7 +11,8 @@ namespace Test\Files\Mount;
 use OC\Files\Storage\StorageFactory;
 use OC\Files\Storage\Wrapper\Wrapper;
 
-class MountTest extends \Test\TestCase {
+class MountTest extends \Test\TestCase
+{
 	public function testFromStorageObject() {
 		$storage = $this->getMockBuilder('\OC\Files\Storage\Temporary')
 			->disableOriginalConstructor()

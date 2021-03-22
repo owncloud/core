@@ -28,7 +28,8 @@ namespace OC\Group;
 
 use OCP\IUserSession;
 
-class MetaData {
+class MetaData
+{
 	const SORT_NONE = 0;
 	const SORT_USERCOUNT = 1; // May have performance issues on LDAP backends
 	const SORT_GROUPNAME = 2;

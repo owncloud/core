@@ -27,7 +27,8 @@ namespace OCP\Search;
  * Provides a template for search functionality throughout ownCloud;
  * @since 8.0.0
  */
-abstract class PagedProvider extends Provider {
+abstract class PagedProvider extends Provider
+{
 
 	/**
 	 * show all results

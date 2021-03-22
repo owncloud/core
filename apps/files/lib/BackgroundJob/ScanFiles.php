@@ -34,7 +34,8 @@ use OCP\IUserManager;
  *
  * @package OCA\Files\BackgroundJob
  */
-class ScanFiles extends \OC\BackgroundJob\TimedJob {
+class ScanFiles extends \OC\BackgroundJob\TimedJob
+{
 	/** @var IConfig */
 	private $config;
 	/** @var IUserManager */

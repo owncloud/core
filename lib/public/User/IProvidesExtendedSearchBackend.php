@@ -30,7 +30,8 @@ namespace OCP\User;
  * @package OCP\User
  * @since 10.0.1
  */
-interface IProvidesExtendedSearchBackend {
+interface IProvidesExtendedSearchBackend
+{
 
 	/**
 	 * Get search terms for a users account for core powered user search

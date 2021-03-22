@@ -27,7 +27,8 @@ namespace OCP\AppFramework\Http;
  * @package OCP\AppFramework\Http
  * @since 8.0.0
  */
-class DataDownloadResponse extends DownloadResponse {
+class DataDownloadResponse extends DownloadResponse
+{
 	/**
 	 * @var string
 	 */

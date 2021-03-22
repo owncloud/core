@@ -34,7 +34,8 @@ use OC\Files\Meta\MetaFileVersionNode;
  *
  * @package Test\Files
  */
-class MetaVersionCollectionTest extends TestCase {
+class MetaVersionCollectionTest extends TestCase
+{
 
 	/**
 	 * @var Node

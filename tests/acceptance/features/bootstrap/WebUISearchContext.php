@@ -31,7 +31,8 @@ require_once 'bootstrap.php';
 /**
  * WebUI Search context.
  */
-class WebUISearchContext extends RawMinkContext implements Context {
+class WebUISearchContext extends RawMinkContext implements Context
+{
 	/**
 	 *
 	 * @var SearchResultInOtherFoldersPage

@@ -18,7 +18,8 @@ use OCP\Files\Cache\ICache;
 use OC\ForbiddenException;
 use OC\Files\Storage\Storage;
 
-class TestScanner extends \OC\Files\Utils\Scanner {
+class TestScanner extends \OC\Files\Utils\Scanner
+{
 	/**
 	 * @var \OC\Files\Mount\MountPoint[] $mounts
 	 */
@@ -43,7 +44,8 @@ class TestScanner extends \OC\Files\Utils\Scanner {
  *
  * @package Test\Files\Utils
  */
-class ScannerTest extends \Test\TestCase {
+class ScannerTest extends \Test\TestCase
+{
 	use UserTrait;
 
 	protected function setUp(): void {

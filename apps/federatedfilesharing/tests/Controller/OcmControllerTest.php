@@ -45,7 +45,8 @@ use OCP\Share\IShare;
  * @package OCA\FederatedFileSharing\Tests
  * @group DB
  */
-class OcmControllerTest extends TestCase {
+class OcmControllerTest extends TestCase
+{
 	/**
 	 * @var IRequest | \PHPUnit\Framework\MockObject\MockObject
 	 */

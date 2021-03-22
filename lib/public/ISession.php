@@ -41,7 +41,8 @@ use OCP\Session\Exceptions\SessionNotAvailableException;
  * wrap PHP's internal session handling into the ISession interface
  * @since 6.0.0
  */
-interface ISession {
+interface ISession
+{
 
 	/**
 	 * Set a value in the session

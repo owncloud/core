@@ -33,7 +33,8 @@ use OCA\Files_Sharing\Activity;
  *
  * @package OCA\Files_Sharing\Tests
  */
-class ActivityTest extends TestCase {
+class ActivityTest extends TestCase
+{
 
 	/**
 	 * @var Activity

@@ -27,7 +27,8 @@ use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use Test\TestCase;
 
-class DataResponseTest extends TestCase {
+class DataResponseTest extends TestCase
+{
 
 	/**
 	 * @var DataResponse

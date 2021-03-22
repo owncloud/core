@@ -29,7 +29,8 @@ namespace OCP\User;
  * @package OCP\User
  * @since 10.0
  */
-interface IProvidesDisplayNameBackend {
+interface IProvidesDisplayNameBackend
+{
 
 	/**
 	 * get display name of the user

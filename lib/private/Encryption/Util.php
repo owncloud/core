@@ -35,7 +35,8 @@ use OCP\Files\Storage;
 use OCP\IConfig;
 use OCP\IUser;
 
-class Util {
+class Util
+{
 	const HEADER_START = 'HBEGIN';
 	const HEADER_END = 'HEND';
 	const HEADER_PADDING_CHAR = '-';

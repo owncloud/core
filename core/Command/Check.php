@@ -26,7 +26,8 @@ use OCP\IConfig;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Check extends Base {
+class Check extends Base
+{
 	/**
 	 * @var IConfig
 	 */

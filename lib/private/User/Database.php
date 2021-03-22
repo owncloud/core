@@ -61,7 +61,8 @@ use OCP\Util;
 /**
  * Class for user management in a SQL Database (e.g. MySQL, SQLite)
  */
-class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IProvidesDisplayNameBackend {
+class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IProvidesDisplayNameBackend
+{
 	/** @var CappedMemoryCache */
 	private $cache;
 

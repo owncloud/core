@@ -29,7 +29,8 @@ use OCP\Migration\ISchemaMigration;
 /*
  * Adds a new property type column to properties and dav_properties tables
  */
-class Version20200427142541 implements ISchemaMigration {
+class Version20200427142541 implements ISchemaMigration
+{
 
 	/**
 	 * @param Schema $schema

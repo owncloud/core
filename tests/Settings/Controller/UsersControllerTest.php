@@ -40,7 +40,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  *
  * @package Tests\Settings\Controller
  */
-class UsersControllerTest extends \Test\TestCase {
+class UsersControllerTest extends \Test\TestCase
+{
 
 	/** @var \OCP\AppFramework\IAppContainer */
 	private $container;

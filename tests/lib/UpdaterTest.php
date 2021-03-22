@@ -27,7 +27,8 @@ use OC\Updater;
 use OCP\IConfig;
 use OCP\ILogger;
 
-class UpdaterTest extends TestCase {
+class UpdaterTest extends TestCase
+{
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 	/** @var ILogger | \PHPUnit\Framework\MockObject\MockObject */

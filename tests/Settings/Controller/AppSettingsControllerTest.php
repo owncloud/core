@@ -33,7 +33,8 @@ use Test\TestCase;
  *
  * @package Tests\Settings\Controller
  */
-class AppSettingsControllerTest extends TestCase {
+class AppSettingsControllerTest extends TestCase
+{
 	/** @var AppSettingsController */
 	private $appSettingsController;
 	/** @var IRequest */

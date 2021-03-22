@@ -9,7 +9,8 @@ use OCP\Migration\ISchemaMigration;
 /**
  * Add new table for persistent locks
  */
-class Version20180607072706 implements ISchemaMigration {
+class Version20180607072706 implements ISchemaMigration
+{
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 		$table = $schema->createTable("{$prefix}persistent_locks");

@@ -33,7 +33,8 @@ namespace OCP\Files\Cache;
  *
  * @since 9.0.0
  */
-interface ICache {
+interface ICache
+{
 	const NOT_FOUND = 0;
 	const PARTIAL = 1; //only partial data available, file not cached in the database
 	const SHALLOW = 2; //folder in cache, but not all child files are completely scanned

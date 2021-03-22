@@ -37,7 +37,8 @@ use OCP\AppFramework\Http;
  * A renderer for JSON calls
  * @since 6.0.0
  */
-class JSONResponse extends Response {
+class JSONResponse extends Response
+{
 
 	/**
 	 * response data

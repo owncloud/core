@@ -21,7 +21,8 @@
 
 namespace OC\App\CodeChecker;
 
-abstract class AbstractCheck implements ICheck {
+abstract class AbstractCheck implements ICheck
+{
 	/** @var ICheck */
 	protected $check;
 

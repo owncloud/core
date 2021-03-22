@@ -24,7 +24,8 @@ namespace Tests\Core\Command\Encryption;
 use OC\Core\Command\Encryption\DecryptAll;
 use Test\TestCase;
 
-class DecryptAllTest extends TestCase {
+class DecryptAllTest extends TestCase
+{
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | \OCP\IConfig */
 	protected $config;

@@ -31,7 +31,8 @@ use OC\Encryption\Exceptions\ModuleAlreadyExistsException;
  *
  * @since 8.1.0
  */
-interface IManager {
+interface IManager
+{
 
 	/**
 	 * Check if encryption is available (at least one encryption module needs to be enabled)

@@ -28,7 +28,8 @@ namespace OCP\AppFramework\Http;
  * Very thin wrapper class to make output testable
  * @since 8.1.0
  */
-interface IOutput {
+interface IOutput
+{
 
 	/**
 	 * @param string $out

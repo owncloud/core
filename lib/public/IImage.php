@@ -27,7 +27,8 @@ namespace OCP;
  * Class for basic image manipulation
  * @since 8.1.0
  */
-interface IImage {
+interface IImage
+{
 	/**
 	 * Determine whether the object contains an image resource.
 	 *

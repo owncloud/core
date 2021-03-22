@@ -36,7 +36,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @package OCA\Federation\Tests
  */
-class PanelTest extends \Test\TestCase {
+class PanelTest extends \Test\TestCase
+{
 
 	/** @var Admin */
 	private $panel;

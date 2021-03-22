@@ -32,7 +32,8 @@ require_once 'bootstrap.php';
 /**
  * Comments functions
  */
-class CommentsContext implements Context {
+class CommentsContext implements Context
+{
 
 	/**
 	 *

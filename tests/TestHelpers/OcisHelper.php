@@ -29,7 +29,8 @@ namespace TestHelpers;
  *
  * @package TestHelpers
  */
-class OcisHelper {
+class OcisHelper
+{
 	/**
 	 * @return bool
 	 */

@@ -29,7 +29,8 @@ namespace OCP\Files;
  * @package OCP\Files
  * @since 9.0.0
  */
-class ForbiddenException extends \Exception {
+class ForbiddenException extends \Exception
+{
 
 	/** @var bool */
 	private $retry;

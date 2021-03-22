@@ -27,7 +27,8 @@ use TestHelpers\HttpRequestHelper;
 /**
  * CalDav functions
  */
-class CalDavContext implements \Behat\Behat\Context\Context {
+class CalDavContext implements \Behat\Behat\Context\Context
+{
 	/**
 	 * @var ResponseInterface
 	 */

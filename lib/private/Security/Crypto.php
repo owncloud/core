@@ -40,7 +40,8 @@ use OCP\IConfig;
  *
  * @package OC\Security
  */
-class Crypto implements ICrypto {
+class Crypto implements ICrypto
+{
 	const CRYPT_MODE = 'cbc';
 	const CRYPT_METHOD = 'pbkdf2';
 	const CRYPT_HASH = 'sha1';

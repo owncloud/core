@@ -36,7 +36,8 @@ use OCP\Files\StorageInvalidException;
 use OCP\Files\StorageNotAvailableException;
 use Sabre\DAV\Client;
 
-class Storage extends DAV implements ISharedStorage {
+class Storage extends DAV implements ISharedStorage
+{
 	/** @var string */
 	private $remoteUser;
 	/** @var string */

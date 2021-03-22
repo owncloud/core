@@ -51,7 +51,8 @@ use OCP\App\AppAlreadyInstalledException;
 /**
  * This class provides the functionality needed to install, update and remove plugins/apps
  */
-class Installer {
+class Installer
+{
 
 	/**
 	 *

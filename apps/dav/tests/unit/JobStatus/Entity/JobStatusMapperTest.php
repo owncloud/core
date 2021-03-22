@@ -34,7 +34,8 @@ use Test\TestCase;
  * @package OCA\DAV\Tests\Unit\JobStatus\Entity
  * @group DB
  */
-class JobStatusMapperTest extends TestCase {
+class JobStatusMapperTest extends TestCase
+{
 	/** @var JobStatusMapper */
 	private $mapper;
 	/** @var IDBConnection */

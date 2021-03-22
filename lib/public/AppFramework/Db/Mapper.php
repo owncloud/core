@@ -34,7 +34,8 @@ use OCP\IDb;
  * may be subject to change in the future
  * @since 7.0.0
  */
-abstract class Mapper {
+abstract class Mapper
+{
 	protected $tableName;
 	protected $entityClass;
 	protected $db;

@@ -16,7 +16,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @group DB
  * @package Test
  */
-class ConfigTest extends TestCase {
+class ConfigTest extends TestCase
+{
 	const TESTCONTENT = '<?php $CONFIG=array("foo"=>"bar", "beers" => array("Appenzeller", "Guinness", "Kölsch"), "alcohol_free" => false);';
 
 	/** @var array */

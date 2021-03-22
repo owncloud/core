@@ -31,7 +31,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 /**
  * Files page.
  */
-class FilesPage extends FilesPageBasic {
+class FilesPage extends FilesPageBasic
+{
 	protected $path = '/index.php/apps/files/';
 	protected $fileNamesXpath = "//span[@class='nametext']";
 	protected $fileNameMatchXpath = "//span[@class='nametext' and .=%s]";

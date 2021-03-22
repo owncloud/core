@@ -32,7 +32,8 @@ use OCP\AppFramework\Http;
  *
  * @package OCA\FederatedFileSharing\Exception
  */
-class NotImplementedException extends OcmException {
+class NotImplementedException extends OcmException
+{
 	/**
 	 * @return int
 	 */

@@ -12,7 +12,8 @@ namespace Test\Activity;
 
 use Test\TestCase;
 
-class ManagerTest extends TestCase {
+class ManagerTest extends TestCase
+{
 
 	/** @var \OC\Activity\Manager */
 	private $activityManager;
@@ -456,7 +457,8 @@ class ManagerTest extends TestCase {
 	}
 }
 
-class SimpleExtension implements \OCP\Activity\IExtension {
+class SimpleExtension implements \OCP\Activity\IExtension
+{
 	public function getNotificationTypes($languageCode) {
 		return ['NT1', 'NT2'];
 	}
@@ -527,7 +529,8 @@ class SimpleExtension implements \OCP\Activity\IExtension {
 	}
 }
 
-class NoOpExtension implements \OCP\Activity\IExtension {
+class NoOpExtension implements \OCP\Activity\IExtension
+{
 	public function getNotificationTypes($languageCode) {
 		return false;
 	}
@@ -569,7 +572,8 @@ class NoOpExtension implements \OCP\Activity\IExtension {
 	}
 }
 
-class NoOpConsumer implements \OCP\Activity\IConsumer {
+class NoOpConsumer implements \OCP\Activity\IConsumer
+{
 	public function receive(\OCP\Activity\IEvent $event) {
 	}
 }

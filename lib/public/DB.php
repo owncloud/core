@@ -43,7 +43,8 @@ namespace OCP;
  * @deprecated 8.1.0 use methods of \OCP\IDBConnection - \OC::$server->getDatabaseConnection()
  * @since 4.5.0
  */
-class DB {
+class DB
+{
 	/**
 	 * Prepare a SQL query
 	 * @param string $query Query string

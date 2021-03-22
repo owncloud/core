@@ -34,7 +34,8 @@ use Test\TestCase;
  * @group DB
  * @package Test\Files\External\Service
  */
-class GlobalStoragesServiceDeleteUserTest extends TestCase {
+class GlobalStoragesServiceDeleteUserTest extends TestCase
+{
 	public function setUp(): void {
 		parent::setUp();
 	}

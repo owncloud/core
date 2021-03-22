@@ -23,7 +23,8 @@ namespace OCP\L10N;
 /**
  * @since 8.2.0
  */
-interface IFactory {
+interface IFactory
+{
 	/**
 	 * Get a language instance
 	 *

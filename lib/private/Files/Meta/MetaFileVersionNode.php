@@ -39,7 +39,8 @@ use OCP\IImage;
  *
  * @package OC\Files\Meta
  */
-class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvidesAdditionalHeaders {
+class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvidesAdditionalHeaders
+{
 
 	/** @var string */
 	private $versionId;

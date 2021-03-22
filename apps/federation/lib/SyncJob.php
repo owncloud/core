@@ -24,7 +24,8 @@ namespace OCA\Federation;
 use OC\BackgroundJob\TimedJob;
 use OCA\Federation\AppInfo\Application;
 
-class SyncJob extends TimedJob {
+class SyncJob extends TimedJob
+{
 	public function __construct() {
 		// Run once a day
 		$this->setInterval(24 * 60 * 60);

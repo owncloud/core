@@ -26,7 +26,8 @@ namespace OCA\Files_External\Tests\Command;
 use OCA\Files_External\Command\Config;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-class ConfigCommandTest extends CommandTest {
+class ConfigCommandTest extends CommandTest
+{
 	private function getInstance($storageService) {
 		return new Config($storageService);
 	}

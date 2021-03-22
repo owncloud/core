@@ -28,7 +28,8 @@ namespace OCA\DAV\Files;
  *
  * @package OCA\DAV\Files
  */
-interface ICopySource {
+interface ICopySource
+{
 
 	/**
 	 * Copies the source to the given destination.

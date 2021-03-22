@@ -25,7 +25,8 @@ namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
 use OCA\DAV\Connector\Sabre\CommentPropertiesPlugin as CommentPropertiesPluginImplementation;
 
-class CommentsPropertiesPluginTest extends \Test\TestCase {
+class CommentsPropertiesPluginTest extends \Test\TestCase
+{
 
 	/** @var  CommentPropertiesPluginImplementation */
 	protected $plugin;

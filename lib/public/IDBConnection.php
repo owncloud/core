@@ -43,7 +43,8 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
  * @package OCP
  * @since 6.0.0
  */
-interface IDBConnection {
+interface IDBConnection
+{
 	/**
 	 * Gets the QueryBuilder for the connection.
 	 *

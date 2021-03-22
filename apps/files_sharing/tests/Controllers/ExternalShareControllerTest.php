@@ -38,7 +38,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @package OCA\Files_Sharing\Controllers
  */
-class ExternalShareControllerTest extends \Test\TestCase {
+class ExternalShareControllerTest extends \Test\TestCase
+{
 	/** @var IRequest */
 	private $request;
 	/** @var \OCA\Files_Sharing\External\Manager */

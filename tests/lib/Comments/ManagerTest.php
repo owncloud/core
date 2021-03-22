@@ -13,7 +13,8 @@ use Test\Traits\UserTrait;
  *
  * @group DB
  */
-class ManagerTest extends TestCase {
+class ManagerTest extends TestCase
+{
 	use UserTrait;
 
 	/** @var IDBConnection */

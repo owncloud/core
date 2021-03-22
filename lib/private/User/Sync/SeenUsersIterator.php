@@ -22,7 +22,8 @@ namespace OC\User\Sync;
 
 use OC\User\AccountMapper;
 
-class SeenUsersIterator extends UsersIterator {
+class SeenUsersIterator extends UsersIterator
+{
 	/**
 	 * @var AccountMapper
 	 */

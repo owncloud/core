@@ -29,7 +29,8 @@ use Behat\Mink\Session;
  * PageObject for the personal encryption settings page
  *
  */
-class PersonalEncryptionSettingsPage extends OwncloudPage {
+class PersonalEncryptionSettingsPage extends OwncloudPage
+{
 
 	/**
 	 *

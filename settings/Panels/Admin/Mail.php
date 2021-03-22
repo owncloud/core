@@ -26,7 +26,8 @@ use OCP\Settings\ISettings;
 use OCP\Template;
 use OCP\IConfig;
 
-class Mail implements ISettings {
+class Mail implements ISettings
+{
 
 	/** @var IConfig  */
 	protected $config;

@@ -18,7 +18,8 @@ use Test\TestCase;
  * @package Test\L10N
  * @group DB
  */
-class FactoryTest extends TestCase {
+class FactoryTest extends TestCase
+{
 
 	/** @var \OCP\IConfig|\PHPUnit\Framework\MockObject\MockObject */
 	protected $config;

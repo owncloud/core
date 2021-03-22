@@ -27,7 +27,8 @@ use OC\DB\QueryBuilder\QuoteHelper;
 use OCP\DB\QueryBuilder\ILiteral;
 use OCP\DB\QueryBuilder\IParameter;
 
-class QuoteHelperTest extends \Test\TestCase {
+class QuoteHelperTest extends \Test\TestCase
+{
 	/** @var QuoteHelper */
 	protected $helper;
 

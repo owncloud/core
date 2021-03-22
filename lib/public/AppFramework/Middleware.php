@@ -38,7 +38,8 @@ use OCP\AppFramework\Http\Response;
  * https://docs.djangoproject.com/en/dev/topics/http/middleware/
  * @since 6.0.0
  */
-abstract class Middleware {
+abstract class Middleware
+{
 
 	/**
 	 * This is being run in normal order before the controller is being

@@ -7,7 +7,8 @@ use Sabre\Xml\Element\KeyValue;
 use Sabre\Xml\Reader;
 use Sabre\Xml\XmlDeserializable;
 
-class FilterRequest implements XmlDeserializable {
+class FilterRequest implements XmlDeserializable
+{
 
 	/**
 	 * An array with requested properties.

@@ -23,7 +23,8 @@ namespace OCA\Files_Sharing\Panels\Personal;
 use OCP\IL10N;
 use OCP\Settings\ISection;
 
-class Section implements ISection {
+class Section implements ISection
+{
 	/** @var IL10N  $l*/
 	protected $l;
 

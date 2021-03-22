@@ -31,7 +31,8 @@ use GuzzleHttp\Psr7\Request;
 /**
  * Unit tests for TestHelpers\DeleteHelper;
  */
-class DeleteHelperTest extends PHPUnit\Framework\TestCase {
+class DeleteHelperTest extends PHPUnit\Framework\TestCase
+{
 	private $container = [];
 
 	/**

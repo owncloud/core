@@ -33,7 +33,8 @@ require_once 'bootstrap.php';
 /**
  * WebUI HelpAndTips context.
  */
-class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
+class WebUIHelpAndTipsContext extends RawMinkContext implements Context
+{
 	private $helpAndTipsPage;
 
 	/**

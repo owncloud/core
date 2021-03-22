@@ -32,7 +32,8 @@ use OC\Cache\CappedMemoryCache;
  *
  * @package OC\Files\Stream
  */
-class Checksum extends Wrapper {
+class Checksum extends Wrapper
+{
 
 	/**
 	 * To stepwise compute a hash on a continuous stream

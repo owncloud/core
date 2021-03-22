@@ -15,7 +15,8 @@ use OCP\ILogger;
 use Test\TestCase;
 use OC\Mail\Message;
 
-class MailerTest extends TestCase {
+class MailerTest extends TestCase
+{
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 	/** @var OC_Defaults */

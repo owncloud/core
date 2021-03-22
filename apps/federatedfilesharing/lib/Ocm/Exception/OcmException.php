@@ -24,7 +24,8 @@ namespace OCA\FederatedFileSharing\Ocm\Exception;
 /**
  * Base Ocm Exception class
  */
-abstract class OcmException extends \Exception {
+abstract class OcmException extends \Exception
+{
 	/**
 	 * @return int
 	 */

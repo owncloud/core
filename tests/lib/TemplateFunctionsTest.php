@@ -22,7 +22,8 @@
 
 namespace Test;
 
-class TemplateFunctionsTest extends \Test\TestCase {
+class TemplateFunctionsTest extends \Test\TestCase
+{
 	protected function setUp(): void {
 		parent::setUp();
 

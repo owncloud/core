@@ -32,7 +32,8 @@ use Sabre\DAV\ServerPlugin;
  * @see https://github.com/owncloud/core/issues/28200
  * @package OCA\DAV\Connector\Sabre
  */
-class ValidateRequestPlugin extends ServerPlugin {
+class ValidateRequestPlugin extends ServerPlugin
+{
 
 	/**
 	 * Reference to main server object

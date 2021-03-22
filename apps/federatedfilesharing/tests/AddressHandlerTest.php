@@ -27,7 +27,8 @@ use OCA\FederatedFileSharing\AddressHandler;
 use OCP\IL10N;
 use OCP\IURLGenerator;
 
-class AddressHandlerTest extends \Test\TestCase {
+class AddressHandlerTest extends \Test\TestCase
+{
 
 	/** @var  AddressHandler */
 	private $addressHandler;

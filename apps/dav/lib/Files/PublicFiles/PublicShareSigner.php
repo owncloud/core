@@ -21,7 +21,8 @@
 
 namespace OCA\DAV\Files\PublicFiles;
 
-class PublicShareSigner {
+class PublicShareSigner
+{
 	private $token;
 	private $fileName;
 	private $validUntil;

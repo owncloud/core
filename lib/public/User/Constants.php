@@ -28,7 +28,8 @@ namespace OCP\User;
  * @since 10.7.0
  */
 
-class Constants {
+class Constants
+{
 	const USER_TYPE_USER = 0;
 	const USER_TYPE_GUEST = 1;
 

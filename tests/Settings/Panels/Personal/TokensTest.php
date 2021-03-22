@@ -15,7 +15,8 @@ use OC\Settings\Panels\Personal\Tokens;
 /**
  * @package Tests\Settings\Panels\Personal
  */
-class TokensTest extends \Test\TestCase {
+class TokensTest extends \Test\TestCase
+{
 
 	/** @var Tokens */
 	private $panel;

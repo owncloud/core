@@ -27,7 +27,8 @@ use OC\SystemTag\SystemTag;
 use OCP\SystemTag\ISystemTag;
 use OCP\SystemTag\TagNotFoundException;
 
-class SystemTagMappingNodeTest extends \Test\TestCase {
+class SystemTagMappingNodeTest extends \Test\TestCase
+{
 
 	/**
 	 * @var \OCP\SystemTag\ISystemTagManager

@@ -23,7 +23,8 @@ namespace OC\Command;
 
 use OCP\IUser;
 
-trait FileAccess {
+trait FileAccess
+{
 	protected function setupFS(IUser $user) {
 		\OC_Util::setupFS($user->getUID());
 	}

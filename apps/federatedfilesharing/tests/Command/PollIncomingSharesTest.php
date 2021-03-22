@@ -45,7 +45,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @group DB
  * @package OCA\FederatedFileSharing\Tests\Command
  */
-class PollIncomingSharesTest extends TestCase {
+class PollIncomingSharesTest extends TestCase
+{
 	/** @var CommandTester */
 	private $commandTester;
 

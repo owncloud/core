@@ -46,7 +46,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @package OCA\FederatedFileSharing
  */
-class FederatedShareProvider implements IShareProvider {
+class FederatedShareProvider implements IShareProvider
+{
 	const SHARE_TYPE_REMOTE = 6;
 
 	/** @var IDBConnection */

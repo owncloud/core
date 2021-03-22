@@ -38,7 +38,8 @@ use Test\Traits\UserTrait;
 /**
  * @group DB
  */
-class UserStoragesServiceTest extends StoragesServiceTest {
+class UserStoragesServiceTest extends StoragesServiceTest
+{
 	use UserTrait;
 
 	private $user;

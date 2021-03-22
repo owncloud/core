@@ -45,7 +45,8 @@ use OC\SystemTag\SystemTag;
  *
  * @group DB
  */
-class ActivityListenerTest extends \Test\TestCase {
+class ActivityListenerTest extends \Test\TestCase
+{
 	use UserTrait;
 
 	/**

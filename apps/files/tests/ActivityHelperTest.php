@@ -29,7 +29,8 @@ use Test\Traits\UserTrait;
  *
  * @group DB
  */
-class ActivityHelperTest extends \Test\TestCase {
+class ActivityHelperTest extends \Test\TestCase
+{
 	use UserTrait;
 
 	/**

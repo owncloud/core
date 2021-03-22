@@ -36,7 +36,8 @@ use OCP\Files\Mount\IMountPoint;
 use OCP\Files\Storage\IStorageFactory;
 use OCP\IUser;
 
-class MountProviderCollection implements IMountProviderCollection, Emitter {
+class MountProviderCollection implements IMountProviderCollection, Emitter
+{
 	use EmitterTrait;
 
 	const DEFAULT_MOVE_ATTEMPTS_PER_MOUNTPOINT = 10;

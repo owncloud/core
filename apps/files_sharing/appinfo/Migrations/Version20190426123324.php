@@ -26,7 +26,8 @@ use Doctrine\DBAL\Types\Type;
 use OCP\Migration\ISchemaMigration;
 
 /** Updates remote_id to be string if required */
-class Version20190426123324 implements ISchemaMigration {
+class Version20190426123324 implements ISchemaMigration
+{
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 		if ($schema->hasTable("${prefix}share_external")) {

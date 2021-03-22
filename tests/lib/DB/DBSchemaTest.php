@@ -18,7 +18,8 @@ use Test\TestCase;
  *
  * @group DB
  */
-class DBSchemaTest extends TestCase {
+class DBSchemaTest extends TestCase
+{
 	protected $schema_file = 'static://test_db_scheme';
 	protected $schema_file2 = 'static://test_db_scheme2';
 	protected $table1;

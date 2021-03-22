@@ -65,7 +65,8 @@ use OC\Settings\Panels\Admin\Status;
 /*
  * @since 10.0
  */
-class SettingsManager implements ISettingsManager {
+class SettingsManager implements ISettingsManager
+{
 
 	/** @var IL10N */
 	protected $l;

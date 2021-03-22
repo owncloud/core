@@ -25,7 +25,8 @@
 
 namespace OC\DB;
 
-class OracleConnection extends Connection {
+class OracleConnection extends Connection
+{
 	/**
 	 * Quote the keys of the array
 	 */

@@ -24,7 +24,8 @@ namespace Test;
 use OC\Settings\SettingsManager;
 use OCP\License\ILicenseManager;
 
-class SettingsManagerTest extends TestCase {
+class SettingsManagerTest extends TestCase
+{
 
 	/** @var \OC\Settings\SettingsManager */
 	protected $settingsManager;

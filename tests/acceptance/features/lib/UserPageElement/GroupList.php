@@ -31,7 +31,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  * The list of groups
  *
  */
-class GroupList extends OwncloudPage {
+class GroupList extends OwncloudPage
+{
 
 	/**
 	 * @var NodeElement of this element

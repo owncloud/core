@@ -25,7 +25,8 @@ use OCP\App\IAppManager;
 use OCP\IConfig;
 use OCP\User;
 
-class UserTypeHelper {
+class UserTypeHelper
+{
 	/** @var IAppManager */
 	private $appManager;
 

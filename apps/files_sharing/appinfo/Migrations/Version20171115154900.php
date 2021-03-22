@@ -25,7 +25,8 @@ use Doctrine\DBAL\Schema\Schema;
 use OCP\Migration\ISchemaMigration;
 
 /** add another index for listing shares */
-class Version20171115154900 implements ISchemaMigration {
+class Version20171115154900 implements ISchemaMigration
+{
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 

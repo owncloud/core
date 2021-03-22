@@ -29,7 +29,8 @@ namespace OCP\User;
  * @package OCP\User
  * @since 10.0
  */
-interface IProvidesHomeBackend {
+interface IProvidesHomeBackend
+{
 
 	/**
 	 * Get a users absolute home folder path

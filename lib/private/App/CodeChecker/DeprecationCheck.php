@@ -21,7 +21,8 @@
 
 namespace OC\App\CodeChecker;
 
-class DeprecationCheck extends AbstractCheck implements ICheck {
+class DeprecationCheck extends AbstractCheck implements ICheck
+{
 	/**
 	 * @return string
 	 */

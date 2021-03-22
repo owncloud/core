@@ -29,7 +29,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ListConfigs extends Base {
+class ListConfigs extends Base
+{
 	protected $defaultOutputFormat = self::OUTPUT_FORMAT_JSON_PRETTY;
 
 	/** * @var SystemConfig */

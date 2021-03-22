@@ -17,7 +17,8 @@ use OCP\IConfig;
 /**
  * @package Tests\Settings\Panels\Admin
  */
-class MailTest extends \Test\TestCase {
+class MailTest extends \Test\TestCase
+{
 
 	/** @var Mail */
 	private $panel;

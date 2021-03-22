@@ -29,7 +29,8 @@ use Psr\Http\Message\ResponseInterface;
  * @author Phil Davis <phil@jankaritech.com>
  *
  */
-class DownloadHelper {
+class DownloadHelper
+{
 	/**
 	 *
 	 * @param string $baseUrl URL of owncloud

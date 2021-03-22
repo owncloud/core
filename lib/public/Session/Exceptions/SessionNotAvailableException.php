@@ -26,5 +26,6 @@ use Exception;
 /**
  * @since 9.1.0
  */
-class SessionNotAvailableException extends Exception {
+class SessionNotAvailableException extends Exception
+{
 }

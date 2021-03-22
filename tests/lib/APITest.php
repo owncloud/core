@@ -10,7 +10,8 @@ namespace Test;
 
 use OC\OCS\Result;
 
-class APITest extends \Test\TestCase {
+class APITest extends \Test\TestCase
+{
 
 	// Helps build a response variable
 

@@ -33,7 +33,8 @@ use OCP\Security\ISecureRandom;
  * \OC::$server->getSecureRandom()->generate(10);
  * @package OC\Security
  */
-class SecureRandom implements ISecureRandom {
+class SecureRandom implements ISecureRandom
+{
 	/**
 	 * Convenience method to get a low strength random number generator.
 	 *

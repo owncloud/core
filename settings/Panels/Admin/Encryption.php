@@ -24,7 +24,8 @@ namespace OC\Settings\Panels\Admin;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-class Encryption implements ISettings {
+class Encryption implements ISettings
+{
 	public function getPriority() {
 		return 30;
 	}

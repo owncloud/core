@@ -35,5 +35,6 @@ namespace OCP\Files;
  * @package OCP\Files
  * @since 8.1.0
  */
-class FileNameTooLongException extends InvalidPathException {
+class FileNameTooLongException extends InvalidPathException
+{
 }

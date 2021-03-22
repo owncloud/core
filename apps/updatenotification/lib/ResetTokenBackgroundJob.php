@@ -32,7 +32,8 @@ use OCP\IConfig;
  *
  * @package OCA\UpdateNotification
  */
-class ResetTokenBackgroundJob extends TimedJob {
+class ResetTokenBackgroundJob extends TimedJob
+{
 	/** @var IConfig */
 	private $config;
 	/** @var ITimeFactory */

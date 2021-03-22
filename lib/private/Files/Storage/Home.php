@@ -29,7 +29,8 @@ use OC\Files\Cache\HomePropagator;
 /**
  * Specialized version of Local storage for home directory usage
  */
-class Home extends Local implements \OCP\Files\IHomeStorage {
+class Home extends Local implements \OCP\Files\IHomeStorage
+{
 	/**
 	 * @var string
 	 */

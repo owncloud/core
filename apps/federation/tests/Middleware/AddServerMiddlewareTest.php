@@ -29,7 +29,8 @@ use OCP\AppFramework\Http;
 use OCP\ILogger;
 use Test\TestCase;
 
-class AddServerMiddlewareTest extends TestCase {
+class AddServerMiddlewareTest extends TestCase
+{
 
 	/** @var  \PHPUnit\Framework\MockObject\MockObject | ILogger */
 	private $logger;

@@ -30,7 +30,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use UnexpectedValueException;
 
-class CreateJs extends Command {
+class CreateJs extends Command
+{
 	protected function configure() {
 		$this
 			->setName('l10n:createjs')

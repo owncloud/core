@@ -37,7 +37,8 @@ use OC\Files\View;
  *
  * @package OCA\Files_Sharing\Tests
  */
-class EtagPropagationTest extends PropagationTestCase {
+class EtagPropagationTest extends PropagationTestCase
+{
 
 	/**
 	 * "user1" is the admin who shares a folder "sub1/sub2/folder" with "user2" and "user3"

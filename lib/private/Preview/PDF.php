@@ -23,7 +23,8 @@
 namespace OC\Preview;
 
 //.pdf
-class PDF extends Bitmap {
+class PDF extends Bitmap
+{
 	/**
 	 * {@inheritDoc}
 	 */

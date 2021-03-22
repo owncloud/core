@@ -38,7 +38,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class Repair extends Command {
+class Repair extends Command
+{
 	/** @var \OC\Repair $repair */
 	protected $repair;
 	/** @var IConfig $config */

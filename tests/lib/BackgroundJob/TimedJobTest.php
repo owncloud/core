@@ -8,7 +8,8 @@
 
 namespace Test\BackgroundJob;
 
-class TestTimedJob extends \OC\BackgroundJob\TimedJob {
+class TestTimedJob extends \OC\BackgroundJob\TimedJob
+{
 	private $testCase;
 
 	/**
@@ -24,7 +25,8 @@ class TestTimedJob extends \OC\BackgroundJob\TimedJob {
 	}
 }
 
-class TimedJobTest extends \Test\TestCase {
+class TimedJobTest extends \Test\TestCase
+{
 	/**
 	 * @var DummyJobList $jobList
 	 */

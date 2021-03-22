@@ -24,7 +24,8 @@ namespace Tests\Core\Command\Group;
 use OC\Core\Command\Group\Delete;
 use Test\TestCase;
 
-class DeleteTest extends TestCase {
+class DeleteTest extends TestCase
+{
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $groupManager;
 	/** @var \PHPUnit\Framework\MockObject\MockObject */

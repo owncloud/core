@@ -10,13 +10,15 @@ namespace Test\Files\Mount;
 
 use OC\Files\Storage\Temporary;
 
-class LongId extends Temporary {
+class LongId extends Temporary
+{
 	public function getId() {
 		return 'long:' . \str_repeat('foo', 50) . parent::getId();
 	}
 }
 
-class ManagerTest extends \Test\TestCase {
+class ManagerTest extends \Test\TestCase
+{
 	/**
 	 * @var \OC\Files\Mount\Manager
 	 */

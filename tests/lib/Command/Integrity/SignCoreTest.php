@@ -25,7 +25,8 @@ use OC\IntegrityCheck\Checker;
 use OC\IntegrityCheck\Helpers\FileAccessHelper;
 use Test\TestCase;
 
-class SignCoreTest extends TestCase {
+class SignCoreTest extends TestCase
+{
 	/** @var Checker */
 	private $checker;
 	/** @var SignCore */

@@ -8,7 +8,8 @@ use OCP\Migration\ISchemaMigration;
 /**
  * Updates column type in the share table from integer to bigint
  */
-class Version20170711191432 implements ISchemaMigration {
+class Version20170711191432 implements ISchemaMigration
+{
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 

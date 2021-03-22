@@ -35,7 +35,8 @@ use OCP\Files\Storage\IStorage;
  * Update the cache and propagate changes
  *
  */
-class Updater implements IUpdater {
+class Updater implements IUpdater
+{
 	/**
 	 * @var bool
 	 */

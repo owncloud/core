@@ -13,7 +13,8 @@ use OC\App\CodeChecker\EmptyCheck;
 use OC\App\CodeChecker\StrongComparisonCheck;
 use Test\TestCase;
 
-class StrongComparisonCheckTest extends TestCase {
+class StrongComparisonCheckTest extends TestCase
+{
 
 	/**
 	 * @dataProvider providesFilesToCheck

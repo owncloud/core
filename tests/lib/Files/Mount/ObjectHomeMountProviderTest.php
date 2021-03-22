@@ -7,7 +7,8 @@ use OCP\Files\Storage\IStorageFactory;
 use OCP\IConfig;
 use OCP\IUser;
 
-class ObjectHomeMountProviderTest extends \Test\TestCase {
+class ObjectHomeMountProviderTest extends \Test\TestCase
+{
 
 	/** @var ObjectHomeMountProvider */
 	protected $provider;
@@ -231,7 +232,8 @@ class ObjectHomeMountProviderTest extends \Test\TestCase {
 	}
 }
 
-class FakeObjectStore {
+class FakeObjectStore
+{
 	private $arguments;
 
 	public function __construct(array $arguments) {

@@ -34,7 +34,8 @@ use OCA\Files_External\Lib\Storage\SFTP_Key;
  *
  * @package OCA\Files_External\Tests\Storage
  */
-class SFTP_KeyTest extends \Test\Files\Storage\Storage {
+class SFTP_KeyTest extends \Test\Files\Storage\Storage
+{
 	private $config;
 
 	protected function setUp(): void {

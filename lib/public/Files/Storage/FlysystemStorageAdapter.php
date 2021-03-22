@@ -27,7 +27,8 @@ namespace OCP\Files\Storage;
  *
  * @since 10.0
  */
-abstract class FlysystemStorageAdapter extends \OC\Files\Storage\Flysystem {
+abstract class FlysystemStorageAdapter extends \OC\Files\Storage\Flysystem
+{
 
 	/**
 	 * Get the identifier for the storage,

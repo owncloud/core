@@ -49,7 +49,8 @@ use OCP\Share\IShare;
  * @package OCA\FederatedFileSharing\Tests
  * @group DB
  */
-class RequestHandlerTest extends TestCase {
+class RequestHandlerTest extends TestCase
+{
 	const DEFAULT_TOKEN = 'abc';
 
 	/**

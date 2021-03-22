@@ -38,7 +38,8 @@ namespace OC;
 
 use OC\Tagging\TagMapper;
 
-class TagManager implements \OCP\ITagManager {
+class TagManager implements \OCP\ITagManager
+{
 
 	/**
 	 * User session

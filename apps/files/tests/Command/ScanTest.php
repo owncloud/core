@@ -41,7 +41,8 @@ use OCP\ILogger;
  * @group DB
  * @package OCA\Files\Tests\Command
  */
-class ScanTest extends TestCase {
+class ScanTest extends TestCase
+{
 	use UserTrait;
 
 	/**

@@ -6,7 +6,8 @@ use OC\Theme\ThemeService;
 use OC\Helper\EnvironmentHelper;
 use OCP\App\IAppManager;
 
-class ThemeServiceTest extends \PHPUnit\Framework\TestCase {
+class ThemeServiceTest extends \PHPUnit\Framework\TestCase
+{
 	/**
 	 * @var IAppManager | \PHPUnit\Framework\MockObject\MockObject
 	 */

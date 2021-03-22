@@ -36,7 +36,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @package OCA\FederatedFileSharing
  */
-class FedShareManager {
+class FedShareManager
+{
 	const ACTION_URL = 'ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending/';
 
 	/**

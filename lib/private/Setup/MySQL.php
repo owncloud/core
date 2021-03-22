@@ -31,7 +31,8 @@ use OC\DB\ConnectionFactory;
 use OC\DB\MySqlTools;
 use OCP\IDBConnection;
 
-class MySQL extends AbstractDatabase {
+class MySQL extends AbstractDatabase
+{
 	public $dbprettyname = 'MySQL/MariaDB';
 
 	public function setupDatabase($username) {

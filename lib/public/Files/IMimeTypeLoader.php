@@ -28,7 +28,8 @@ namespace OCP\Files;
  *
  * Interface to load mimetypes
  **/
-interface IMimeTypeLoader {
+interface IMimeTypeLoader
+{
 
 	/**
 	 * Get a mimetype from its ID

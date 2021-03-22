@@ -28,7 +28,8 @@ use OCA\DAV\CardDAV\ContactsManager;
 use OCP\Contacts\IManager;
 use Test\TestCase;
 
-class ContactsManagerTest extends TestCase {
+class ContactsManagerTest extends TestCase
+{
 	public function test() {
 		/** @var IManager | \PHPUnit\Framework\MockObject\MockObject $cm */
 		$cm = $this->getMockBuilder('OCP\Contacts\IManager')->disableOriginalConstructor()->getMock();

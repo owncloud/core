@@ -28,7 +28,8 @@ namespace OCP\Files;
  * @package OCP\Files
  * @since 10.0.9
  */
-interface IProvidesAdditionalHeaders {
+interface IProvidesAdditionalHeaders
+{
 
 	/**
 	 * Returns an array of headers.

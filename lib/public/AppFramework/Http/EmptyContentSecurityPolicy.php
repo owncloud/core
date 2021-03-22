@@ -33,7 +33,8 @@ namespace OCP\AppFramework\Http;
  * @package OCP\AppFramework\Http
  * @since 9.0.0
  */
-class EmptyContentSecurityPolicy {
+class EmptyContentSecurityPolicy
+{
 	/** @var bool Whether inline JS snippets are allowed */
 	protected $inlineScriptAllowed = null;
 	/**

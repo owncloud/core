@@ -32,7 +32,8 @@ use OC\User\Backend;
 /**
  * dummy user backend, does not keep state, only for testing use
  */
-class Dummy extends Backend implements \OCP\IUserBackend {
+class Dummy extends Backend implements \OCP\IUserBackend
+{
 	private $users = [];
 	private $displayNames = [];
 

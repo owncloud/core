@@ -29,7 +29,8 @@ use OCA\Files_Versions\Storage;
 use OCP\IUser;
 use OCP\IUserManager;
 
-class ExpireVersions extends \OC\BackgroundJob\TimedJob {
+class ExpireVersions extends \OC\BackgroundJob\TimedJob
+{
 	const ITEMS_PER_SESSION = 1000;
 
 	/**

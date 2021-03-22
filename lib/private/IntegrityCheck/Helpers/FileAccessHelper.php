@@ -28,7 +28,8 @@ namespace OC\IntegrityCheck\Helpers;
  *
  * @package OC\IntegrityCheck\Helpers
  */
-class FileAccessHelper {
+class FileAccessHelper
+{
 	/**
 	 * Wrapper around file_get_contents($filename, $data)
 	 *

@@ -21,7 +21,8 @@ namespace OC\Theme;
 
 use OCP\Theme\ITheme;
 
-class Theme implements ITheme {
+class Theme implements ITheme
+{
 
 	/**
 	 * @var string

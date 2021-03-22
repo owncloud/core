@@ -31,7 +31,8 @@ use Test\TestCase;
  *
  * @package Test\Helper
  */
-class LocaleHelperTest extends TestCase {
+class LocaleHelperTest extends TestCase
+{
 	/**
 	 * @var LocaleHelper
 	 */

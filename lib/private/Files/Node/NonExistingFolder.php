@@ -25,7 +25,8 @@ namespace OC\Files\Node;
 
 use OCP\Files\NotFoundException;
 
-class NonExistingFolder extends Folder {
+class NonExistingFolder extends Folder
+{
 	/**
 	 * @param string $newPath
 	 * @throws \OCP\Files\NotFoundException

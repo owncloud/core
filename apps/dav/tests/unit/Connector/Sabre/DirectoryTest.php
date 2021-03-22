@@ -33,7 +33,8 @@ use OCP\Files\ForbiddenException;
 use OCP\Constants;
 use OCP\Files\StorageNotAvailableException;
 
-class TestDoubleFileView extends \OC\Files\View {
+class TestDoubleFileView extends \OC\Files\View
+{
 	private $updatables;
 	private $deletables;
 	private $canRename;
@@ -68,7 +69,8 @@ class TestDoubleFileView extends \OC\Files\View {
 /**
  * @group DB
  */
-class DirectoryTest extends \Test\TestCase {
+class DirectoryTest extends \Test\TestCase
+{
 
 	/** @var \OC\Files\View | \PHPUnit\Framework\MockObject\MockObject */
 	private $view;

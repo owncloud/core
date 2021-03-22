@@ -22,7 +22,8 @@
 namespace OC\Preview;
 
 //.psd
-class Heic extends Bitmap {
+class Heic extends Bitmap
+{
 	/**
 	 * {@inheritDoc}
 	 */

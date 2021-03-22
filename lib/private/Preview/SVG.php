@@ -27,7 +27,8 @@ use OCP\Files\File;
 use OCP\Files\FileInfo;
 use OCP\Preview\IProvider2;
 
-class SVG implements IProvider2 {
+class SVG implements IProvider2
+{
 	/**
 	 * {@inheritDoc}
 	 */

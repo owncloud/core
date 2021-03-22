@@ -8,7 +8,8 @@
 
 namespace Test;
 
-class HTTPHelperTest extends \Test\TestCase {
+class HTTPHelperTest extends \Test\TestCase
+{
 
 	/** @var \OCP\IConfig*/
 	private $config;

@@ -37,7 +37,8 @@ use OCP\Migration\ISqlMigration;
  * This migration converts the permissions=0 entries of sub-shares to
  * accepted=1 (rejected)
  */
-class Version20180302155233 implements ISqlMigration {
+class Version20180302155233 implements ISqlMigration
+{
 	public function sql(IDBConnection $connection) {
 		$qb = $connection->getQueryBuilder();
 

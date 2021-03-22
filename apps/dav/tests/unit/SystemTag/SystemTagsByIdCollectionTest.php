@@ -27,7 +27,8 @@ use OC\SystemTag\SystemTag;
 use OCP\IUser;
 use OCP\SystemTag\TagNotFoundException;
 
-class SystemTagsByIdCollectionTest extends \Test\TestCase {
+class SystemTagsByIdCollectionTest extends \Test\TestCase
+{
 
 	/**
 	 * @var \OCP\SystemTag\ISystemTagManager

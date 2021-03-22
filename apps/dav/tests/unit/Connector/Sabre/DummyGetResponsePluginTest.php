@@ -31,7 +31,8 @@ use Test\TestCase;
  *
  * @package OCA\DAV\Tests\unit\Connector\Sabre
  */
-class DummyGetResponsePluginTest extends TestCase {
+class DummyGetResponsePluginTest extends TestCase
+{
 	/** @var DummyGetResponsePlugin */
 	private $dummyGetResponsePlugin;
 

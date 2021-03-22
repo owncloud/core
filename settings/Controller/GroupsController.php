@@ -36,7 +36,8 @@ use OCP\IUserSession;
 /**
  * @package OC\Settings\Controller
  */
-class GroupsController extends Controller {
+class GroupsController extends Controller
+{
 	/** @var IGroupManager */
 	private $groupManager;
 	/** @var IL10N */

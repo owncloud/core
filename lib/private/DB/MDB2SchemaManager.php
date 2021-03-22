@@ -35,7 +35,8 @@ use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use OCP\IDBConnection;
 
-class MDB2SchemaManager {
+class MDB2SchemaManager
+{
 	/** @var \OC\DB\Connection $conn */
 	protected $conn;
 

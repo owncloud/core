@@ -32,7 +32,8 @@ use OCP\Migration\IOutput;
  *
  * @package OC\Migration
  */
-class SimpleOutput implements IOutput {
+class SimpleOutput implements IOutput
+{
 
 	/** @var ILogger */
 	private $logger;

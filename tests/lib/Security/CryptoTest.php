@@ -10,7 +10,8 @@ namespace Test\Security;
 
 use OC\Security\Crypto;
 
-class CryptoTest extends \Test\TestCase {
+class CryptoTest extends \Test\TestCase
+{
 	public function defaultEncryptionProvider() {
 		return [
 			['Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt.'],

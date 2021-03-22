@@ -28,7 +28,8 @@ use Doctrine\DBAL\Connection;
  * This class provides a wrapper around Doctrine's QueryBuilder
  * @since 8.2.0
  */
-interface IQueryBuilder {
+interface IQueryBuilder
+{
 
 	/**
 	 * @since 9.0.0

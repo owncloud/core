@@ -32,7 +32,8 @@ use OCP\IConfig;
  *
  * @package OC\App
  */
-class Platform {
+class Platform
+{
 	/** @var IConfig */
 	private $config;
 

@@ -35,7 +35,8 @@ use OCP\Route\IRouter;
  * Class RouteConfig
  * @package OC\AppFramework\routing
  */
-class RouteConfig {
+class RouteConfig
+{
 	/** @var DIContainer */
 	private $container;
 	/** @var IRouter */

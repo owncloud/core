@@ -61,7 +61,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * @package OC\Settings\Controller
  */
-class UsersController extends Controller {
+class UsersController extends Controller
+{
 	/** @var IL10N */
 	private $l10n;
 	/** @var Session */

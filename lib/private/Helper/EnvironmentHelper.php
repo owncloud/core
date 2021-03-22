@@ -24,7 +24,8 @@ namespace OC\Helper;
 /**
  * This class provides non-static wrappers for the static OC class members
  */
-class EnvironmentHelper {
+class EnvironmentHelper
+{
 	/**
 	 * Get the ownCloud root path for http requests (e.g. owncloud/)
 	 *

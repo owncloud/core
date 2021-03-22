@@ -30,7 +30,8 @@ namespace OC\Hooks;
  *
  * @package OC\Hooks
  */
-interface Emitter {
+interface Emitter
+{
 	/**
 	 * @param string $scope
 	 * @param string $method

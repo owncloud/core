@@ -44,7 +44,8 @@ use OCP\UserInterface;
  *
  * @package OC\User
  */
-class Account extends Entity {
+class Account extends Entity
+{
 	const STATE_INITIAL = 0;
 	const STATE_ENABLED = 1;
 	const STATE_DISABLED = 2;

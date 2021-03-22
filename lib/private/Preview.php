@@ -42,7 +42,8 @@ use OCP\Preview\IProvider2;
 use OCP\Response;
 use OCP\Util;
 
-class Preview {
+class Preview
+{
 	//the thumbnail folder
 	const THUMBNAILS_FOLDER = 'thumbnails';
 

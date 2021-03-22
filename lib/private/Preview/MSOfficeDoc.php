@@ -21,7 +21,8 @@
 namespace OC\Preview;
 
 //.doc, .dot
-class MSOfficeDoc extends Office {
+class MSOfficeDoc extends Office
+{
 	/**
 	 * {@inheritDoc}
 	 */

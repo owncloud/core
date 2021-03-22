@@ -24,7 +24,8 @@ namespace OC\Diagnostics;
 
 use OCP\Diagnostics\IEvent;
 
-class Event implements IEvent {
+class Event implements IEvent
+{
 	/**
 	 * @var string
 	 */

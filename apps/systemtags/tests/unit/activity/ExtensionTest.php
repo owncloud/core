@@ -32,7 +32,8 @@ use Test\TestCase;
  * @package OCA\SystemTags\Tests
  * @group DB
  */
-class ExtensionTest extends TestCase {
+class ExtensionTest extends TestCase
+{
 	/** @var IFactory */
 	private $languageFactory;
 

@@ -30,7 +30,8 @@ use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Reader;
 use Test\TestCase;
 
-class BirthdayServiceTest extends TestCase {
+class BirthdayServiceTest extends TestCase
+{
 
 	/** @var BirthdayService */
 	private $service;

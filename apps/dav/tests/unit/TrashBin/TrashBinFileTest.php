@@ -33,7 +33,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Sabre\DAV\Exception\ServiceUnavailable;
 use Test\TestCase;
 
-class TrashBinFileTest extends TestCase {
+class TrashBinFileTest extends TestCase
+{
 	/**
 	 * @var TrashBinFile
 	 */

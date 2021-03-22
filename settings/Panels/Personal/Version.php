@@ -26,7 +26,8 @@ namespace OC\Settings\Panels\Personal;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-class Version implements ISettings {
+class Version implements ISettings
+{
 	public function getPriority() {
 		return 0;
 	}

@@ -24,7 +24,8 @@ namespace OC\BackgroundJob\Legacy;
 
 use OCP\AutoloadNotAllowedException;
 
-class RegularJob extends \OC\BackgroundJob\Job {
+class RegularJob extends \OC\BackgroundJob\Job
+{
 	public function run($argument) {
 		try {
 			if (\is_callable($argument)) {

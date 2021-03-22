@@ -30,7 +30,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  * PageObject that has everything the general OwncloudPage does
  * plus what the notifications App adds to it
  */
-class NotificationsEnabledOwncloudPage extends OwncloudPage {
+class NotificationsEnabledOwncloudPage extends OwncloudPage
+{
 	private $notificationsButtonXpath = "//div[contains(@class,'notifications-button')]";
 
 	/**

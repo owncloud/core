@@ -28,7 +28,8 @@ use OCA\FederatedFileSharing\Address;
  *
  * @package OCA\FederatedFileSharing\Tests
  */
-class AddressTest extends \Test\TestCase {
+class AddressTest extends \Test\TestCase
+{
 	/**
 	 * @dataProvider dataTestGetUserId
 	 *

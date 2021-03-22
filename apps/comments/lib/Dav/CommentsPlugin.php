@@ -41,7 +41,8 @@ use Sabre\Xml\Writer;
 /**
  * Sabre plugin to handle comments:
  */
-class CommentsPlugin extends ServerPlugin {
+class CommentsPlugin extends ServerPlugin
+{
 	// namespace
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';
 

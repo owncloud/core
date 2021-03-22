@@ -24,7 +24,8 @@ namespace OCP\Files;
  * Storage has bad or missing config params
  * @since 9.0.0
  */
-class StorageBadConfigException extends StorageNotAvailableException {
+class StorageBadConfigException extends StorageNotAvailableException
+{
 
 	/**
 	 * ExtStorageBadConfigException constructor.

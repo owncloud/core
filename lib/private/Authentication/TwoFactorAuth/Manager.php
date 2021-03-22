@@ -34,7 +34,8 @@ use OCP\ILogger;
 use OCP\ISession;
 use OCP\IUser;
 
-class Manager {
+class Manager
+{
 	const SESSION_UID_KEY = 'two_factor_auth_uid';
 
 	/** @var AppManager */

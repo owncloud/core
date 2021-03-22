@@ -55,7 +55,8 @@
  *   post_login(uid)
  *   logout()
  */
-class OC_User {
+class OC_User
+{
 
 	/**
 	 * @return \OC\User\Session

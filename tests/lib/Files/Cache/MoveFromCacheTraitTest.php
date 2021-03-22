@@ -10,7 +10,8 @@ namespace Test\Files\Cache;
 
 use OC\Files\Cache\MoveFromCacheTrait;
 
-class FallBackCrossCacheMoveCache extends \OC\Files\Cache\Cache {
+class FallBackCrossCacheMoveCache extends \OC\Files\Cache\Cache
+{
 	use MoveFromCacheTrait;
 }
 
@@ -19,7 +20,8 @@ class FallBackCrossCacheMoveCache extends \OC\Files\Cache\Cache {
  *
  * @group DB
  */
-class MoveFromCacheTraitTest extends CacheTest {
+class MoveFromCacheTraitTest extends CacheTest
+{
 	protected function setUp(): void {
 		parent::setUp();
 

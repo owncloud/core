@@ -30,7 +30,8 @@ use OCP\ILogger;
  *
  * @package OC\BackgroundJob
  */
-abstract class QueuedJob extends Job {
+abstract class QueuedJob extends Job
+{
 	/**
 	 * run the job, then remove it from the joblist
 	 *

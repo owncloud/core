@@ -28,7 +28,8 @@ use OC\Comments\Comment;
 use OCA\Comments\Dav\CommentsPlugin as CommentsPluginImplementation;
 use OCP\Comments\IComment;
 
-class CommentsPluginTest extends \Test\TestCase {
+class CommentsPluginTest extends \Test\TestCase
+{
 	/** @var \Sabre\DAV\Server */
 	private $server;
 

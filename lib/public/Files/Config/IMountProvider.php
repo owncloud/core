@@ -29,7 +29,8 @@ use OCP\IUser;
  * Provides
  * @since 8.0.0
  */
-interface IMountProvider {
+interface IMountProvider
+{
 	/**
 	 * Get all mountpoints applicable for the user
 	 *

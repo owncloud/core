@@ -29,7 +29,8 @@ use Behat\Mink\Session;
 /**
  * Admin Sharing Settings page.
  */
-class AdminSharingSettingsPage extends SharingSettingsPage {
+class AdminSharingSettingsPage extends SharingSettingsPage
+{
 
 	/**
 	 *

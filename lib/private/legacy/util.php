@@ -65,7 +65,8 @@ use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\License\ILicenseManager;
 
-class OC_Util {
+class OC_Util
+{
 	public static $scripts = [];
 	public static $styles = [];
 	public static $headers = [];

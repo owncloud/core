@@ -32,7 +32,8 @@ use OCP\Session\Exceptions\SessionNotAvailableException;
  *
  * @package OC\Session
  */
-class CryptoSessionData implements \ArrayAccess, ISession {
+class CryptoSessionData implements \ArrayAccess, ISession
+{
 	/** @var ISession */
 	protected $session;
 	/** @var \OCP\Security\ICrypto */

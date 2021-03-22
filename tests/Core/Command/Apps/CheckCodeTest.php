@@ -31,7 +31,8 @@ use Test\TestCase;
  *
  * @group DB
  */
-class CheckCodeTest extends TestCase {
+class CheckCodeTest extends TestCase
+{
 	/** @var CommandTester */
 	private $commandTester;
 

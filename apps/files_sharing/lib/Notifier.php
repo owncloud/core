@@ -31,7 +31,8 @@ use OCP\IUserManager;
 use OCP\IConfig;
 use OC\L10N\L10N;
 
-class Notifier implements INotifier {
+class Notifier implements INotifier
+{
 	/** @var \OCP\L10N\IFactory */
 	protected $factory;
 

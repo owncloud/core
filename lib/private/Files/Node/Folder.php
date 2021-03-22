@@ -31,7 +31,8 @@ use OCP\Files\FileInfo;
 use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
 
-class Folder extends Node implements \OCP\Files\Folder {
+class Folder extends Node implements \OCP\Files\Folder
+{
 	/**
 	 * Creates a Folder that represents a non-existing path
 	 *

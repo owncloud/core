@@ -40,7 +40,8 @@ use Test\TestCase;
  *
  * @package OCA\DAV\Tests\Unit\Connector\Sabre
  */
-class ObjectTreeTest extends TestCase {
+class ObjectTreeTest extends TestCase
+{
 	public function copyDataProvider() {
 		return [
 			// copy into same dir

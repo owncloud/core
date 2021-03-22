@@ -29,7 +29,8 @@ namespace OCP\User;
  * @package OCP\User
  * @since 10.0
  */
-interface IProvidesQuotaBackend {
+interface IProvidesQuotaBackend
+{
 
 	/**
 	 * Get a users quota

@@ -32,7 +32,8 @@ use OCP\App\IAppManager;
 use OCP\ILogger;
 use OCP\Theme\ITheme;
 
-abstract class ResourceLocator {
+abstract class ResourceLocator
+{
 	/**
 	 * @var ITheme
 	 */

@@ -26,7 +26,8 @@ use OC\Files\External\PersonalMount;
 use OC\Files\Mount\Manager;
 use Test\TestCase;
 
-class PersonalMountTest extends TestCase {
+class PersonalMountTest extends TestCase
+{
 	public function testFindByStorageId() {
 		/** @var \OCP\Files\External\Service\IUserStoragesService $storageService */
 		$storageService = $this->createMock('\OCP\Files\External\Service\IUserStoragesService');

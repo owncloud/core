@@ -42,7 +42,8 @@ use OCP\Security\ISecureRandom;
  *
  * @package OCA\Federation\Controller
  */
-class OCSAuthAPIController extends OCSController {
+class OCSAuthAPIController extends OCSController
+{
 
 	/** @var ISecureRandom  */
 	private $secureRandom;

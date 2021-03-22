@@ -33,7 +33,8 @@ use Sabre\DAV\Server;
  *
  * @package OCA\DAV\DAV
  */
-class FileCustomPropertiesPlugin extends Plugin {
+class FileCustomPropertiesPlugin extends Plugin
+{
 	/**
 	 * @param Server $server
 	 *

@@ -27,7 +27,8 @@ use OCP\Files\Config\ICachedMountInfo;
 use OCP\Files\Node;
 use OCP\IUser;
 
-class CachedMountInfo implements ICachedMountInfo {
+class CachedMountInfo implements ICachedMountInfo
+{
 	/**
 	 * @var IUser
 	 */

@@ -31,7 +31,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Test\TestCase;
 
-class ChangeKeyStorageRootTest extends TestCase {
+class ChangeKeyStorageRootTest extends TestCase
+{
 
 	/** @var ChangeKeyStorageRoot */
 	protected $changeKeyStorageRoot;

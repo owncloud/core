@@ -32,7 +32,8 @@ use Sabre\DAV\Tree;
 use Sabre\DAV\Server;
 use Sabre\DAV\PropFind;
 
-class FilesSearchReportPluginTest extends \Test\TestCase {
+class FilesSearchReportPluginTest extends \Test\TestCase
+{
 	/** @var Server|\PHPUnit\Framework\MockObject\MockObject */
 	private $server;
 

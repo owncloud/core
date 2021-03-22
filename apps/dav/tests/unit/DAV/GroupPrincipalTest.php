@@ -28,7 +28,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Sabre\DAV\PropPatch;
 use OC\Group\Group;
 
-class GroupPrincipalTest extends \Test\TestCase {
+class GroupPrincipalTest extends \Test\TestCase
+{
 
 	/** @var IGroupManager | PHPUnit\Framework\MockObject\MockObject */
 	private $groupManager;

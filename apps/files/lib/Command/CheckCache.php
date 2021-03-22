@@ -31,7 +31,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CheckCache extends Command {
+class CheckCache extends Command
+{
 	const ERROR_MISSING_FILE = 1;
 	const ERROR_NOT_A_FILE = 2;
 	const ERROR_CANNOT_OPEN = 3;

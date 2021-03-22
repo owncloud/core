@@ -26,7 +26,8 @@ use OC\Security\CSP\ContentSecurityPolicyManager;
 use OCP\AppFramework\Http\EmptyContentSecurityPolicy;
 use Test\TestCase;
 
-class ContentSecurityPolicyManagerTest extends TestCase {
+class ContentSecurityPolicyManagerTest extends TestCase
+{
 	/** @var ContentSecurityPolicyManager */
 	private $contentSecurityPolicyManager;
 

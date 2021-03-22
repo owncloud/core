@@ -46,7 +46,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Laminas\Validator\EmailAddress;
 
-class ResetPassword extends Command {
+class ResetPassword extends Command
+{
 
 	/** @var IUserManager */
 	protected $userManager;

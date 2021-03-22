@@ -28,7 +28,8 @@ namespace OCP\Preview;
  * @since 8.1.0
  * @deprecated 10.0.8
  */
-interface IProvider {
+interface IProvider
+{
 	/**
 	 * @return string Regex with the mimetypes that are supported by this provider
 	 * @since 8.1.0

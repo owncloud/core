@@ -39,7 +39,8 @@ use OCP\AppFramework\Http;
  * It handles headers, HTTP status code, last modified and ETag.
  * @since 6.0.0
  */
-class Response {
+class Response
+{
 
 	/**
 	 * Headers - defaults to ['Cache-Control' => 'no-cache, no-store, must-revalidate']

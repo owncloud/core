@@ -25,7 +25,8 @@
  *
  */
 
-class OC_L10N_String implements JsonSerializable {
+class OC_L10N_String implements JsonSerializable
+{
 	/** @var \OC\L10N\L10N */
 	protected $l10n;
 

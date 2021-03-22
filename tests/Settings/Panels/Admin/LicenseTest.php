@@ -27,7 +27,8 @@ use OCP\License\ILicenseManager;
 /**
  * @package Tests\Settings\Panels\Admin
  */
-class LicenseTest extends \Test\TestCase {
+class LicenseTest extends \Test\TestCase
+{
 	/** @var License */
 	private $panel;
 	/** @var ILicenseManager */

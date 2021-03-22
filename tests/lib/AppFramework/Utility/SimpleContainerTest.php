@@ -24,20 +24,24 @@ namespace Test\AppFramework\Utility;
 
 use OC\AppFramework\Utility\SimpleContainer;
 
-interface TestInterface {
+interface TestInterface
+{
 }
 
-class ClassEmptyConstructor implements IInterfaceConstructor {
+class ClassEmptyConstructor implements IInterfaceConstructor
+{
 }
 
-class ClassSimpleConstructor implements IInterfaceConstructor {
+class ClassSimpleConstructor implements IInterfaceConstructor
+{
 	public $test;
 	public function __construct($test) {
 		$this->test = $test;
 	}
 }
 
-class ClassComplexConstructor {
+class ClassComplexConstructor
+{
 	public $class;
 	public $test;
 	public function __construct(ClassSimpleConstructor $class, $test) {
@@ -46,9 +50,11 @@ class ClassComplexConstructor {
 	}
 }
 
-interface IInterfaceConstructor {
+interface IInterfaceConstructor
+{
 }
-class ClassInterfaceConstructor {
+class ClassInterfaceConstructor
+{
 	public $class;
 	public $test;
 	public function __construct(IInterfaceConstructor $class, $test) {
@@ -57,7 +63,8 @@ class ClassInterfaceConstructor {
 	}
 }
 
-class SimpleContainerTest extends \Test\TestCase {
+class SimpleContainerTest extends \Test\TestCase
+{
 
 	/** @var SimpleContainer */
 	private $container;

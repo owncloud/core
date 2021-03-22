@@ -27,7 +27,8 @@ use OCP\Migration\IOutput;
  * If files_external app was disable before, set flag in app config to disable it in core.
  * This is necessary because starting with 10.0 the files_external app will always be enabled.
  */
-class Version20170221121536 implements ISimpleMigration {
+class Version20170221121536 implements ISimpleMigration
+{
 	public function run(IOutput $out) {
 		$config = \OC::$server->getConfig();
 		$filesExternalEnabled = $config->getAppValue('files_external', 'enabled', 'no') === 'yes';

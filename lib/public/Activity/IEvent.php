@@ -34,7 +34,8 @@ namespace OCP\Activity;
  * @package OCP\Activity
  * @since 8.2.0
  */
-interface IEvent {
+interface IEvent
+{
 	/**
 	 * Set the app of the activity
 	 *

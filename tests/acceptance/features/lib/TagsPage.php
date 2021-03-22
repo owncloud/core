@@ -30,7 +30,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
 /**
  * Tags page.
  */
-class TagsPage extends FilesPageBasic {
+class TagsPage extends FilesPageBasic
+{
 	protected $path = '/index.php/apps/files/?view=systemtagsfilter';
 	protected $fileNamesXpath = "//div[@id='app-content-systemtagsfilter']//span[contains(@class,'nametext') and not(contains(@class,'innernametext'))]";
 	protected $fileNameMatchXpath = "//span[contains(@class,'nametext') and not(contains(@class,'innernametext')) and .=%s]";

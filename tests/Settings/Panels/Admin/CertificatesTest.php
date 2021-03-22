@@ -19,7 +19,8 @@ use OCP\IURLGenerator;
 /**
  * @package Tests\Settings\Panels\Admin
  */
-class CertificatesTest extends \Test\TestCase {
+class CertificatesTest extends \Test\TestCase
+{
 
 	/** @var Certificates */
 	private $panel;

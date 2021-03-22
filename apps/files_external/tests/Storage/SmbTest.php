@@ -36,7 +36,8 @@ use OCA\Files_External\Lib\Storage\SMB;
  *
  * @package OCA\Files_External\Tests\Storage
  */
-class SmbTest extends \Test\Files\Storage\Storage {
+class SmbTest extends \Test\Files\Storage\Storage
+{
 	protected function setUp(): void {
 		parent::setUp();
 		$id = $this->getUniqueID();

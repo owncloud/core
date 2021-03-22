@@ -9,7 +9,8 @@
 
 namespace Test\Memcache;
 
-abstract class Cache extends \Test\Cache\TestCache {
+abstract class Cache extends \Test\Cache\TestCache
+{
 	/**
 	 * @var \OCP\IMemcache cache;
 	 */

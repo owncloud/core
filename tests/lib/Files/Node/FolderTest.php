@@ -28,7 +28,8 @@ use OC\Files\Storage\Storage;
  *
  * @package Test\Files\Node
  */
-class FolderTest extends NodeTest {
+class FolderTest extends NodeTest
+{
 	public $viewDeleteMethod = 'rmdir';
 	public $nodeClass = '\OC\Files\Node\Folder';
 	public $nonExistingNodeClass = '\OC\Files\Node\NonExistingFolder';

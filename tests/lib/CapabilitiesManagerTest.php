@@ -21,7 +21,8 @@
 
 namespace Test;
 
-class CapabilitiesManagerTest extends TestCase {
+class CapabilitiesManagerTest extends TestCase
+{
 
 	/**
 	 * Test no capabilities
@@ -117,7 +118,8 @@ class CapabilitiesManagerTest extends TestCase {
 	}
 }
 
-class SimpleCapability implements \OCP\Capabilities\ICapability {
+class SimpleCapability implements \OCP\Capabilities\ICapability
+{
 	public function getCapabilities() {
 		return [
 			'foo' => 1
@@ -125,7 +127,8 @@ class SimpleCapability implements \OCP\Capabilities\ICapability {
 	}
 }
 
-class SimpleCapability2 implements \OCP\Capabilities\ICapability {
+class SimpleCapability2 implements \OCP\Capabilities\ICapability
+{
 	public function getCapabilities() {
 		return [
 			'bar' => ['x' => 1]
@@ -133,7 +136,8 @@ class SimpleCapability2 implements \OCP\Capabilities\ICapability {
 	}
 }
 
-class SimpleCapability3 implements \OCP\Capabilities\ICapability {
+class SimpleCapability3 implements \OCP\Capabilities\ICapability
+{
 	public function getCapabilities() {
 		return [
 			'bar' => ['y' => 2]
@@ -141,7 +145,8 @@ class SimpleCapability3 implements \OCP\Capabilities\ICapability {
 	}
 }
 
-class NoCapability {
+class NoCapability
+{
 	public function getCapabilities() {
 		return [
 			'baz' => 'z'
@@ -149,7 +154,8 @@ class NoCapability {
 	}
 }
 
-class DeepCapability implements \OCP\Capabilities\ICapability {
+class DeepCapability implements \OCP\Capabilities\ICapability
+{
 	public function getCapabilities() {
 		return [
 			'foo' => [

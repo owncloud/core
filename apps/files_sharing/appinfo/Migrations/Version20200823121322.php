@@ -26,7 +26,8 @@ use OCP\Migration\ISchemaMigration;
 /**
  * Extend name column length to 255
  */
-class Version20200823121322 implements ISchemaMigration {
+class Version20200823121322 implements ISchemaMigration
+{
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 		if ($schema->hasTable("${prefix}share_external")) {

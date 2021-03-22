@@ -57,7 +57,8 @@ use OCP\License\ILicenseManager;
  *
  * @package OC\Core
  */
-class Application extends App {
+class Application extends App
+{
 
 	/**
 	 * @param array $urlParams

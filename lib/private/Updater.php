@@ -47,7 +47,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *  - dbUpgrade()
  *  - failure(string $message)
  */
-class Updater extends BasicEmitter {
+class Updater extends BasicEmitter
+{
 
 	/** @var ILogger $log */
 	private $log;

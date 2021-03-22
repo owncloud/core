@@ -26,7 +26,8 @@ use Sabre\Xml\Element\KeyValue;
 use Sabre\Xml\Reader;
 use Sabre\Xml\XmlDeserializable;
 
-class SearchRequest implements XmlDeserializable {
+class SearchRequest implements XmlDeserializable
+{
 	/**
 	 * An array with requested properties.
 	 *

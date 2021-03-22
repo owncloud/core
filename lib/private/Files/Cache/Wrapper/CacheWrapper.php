@@ -32,7 +32,8 @@ use OC\Files\Cache\Cache;
 use OCP\Files\Cache\ICacheEntry;
 use OCP\Files\Cache\ICache;
 
-class CacheWrapper extends Cache {
+class CacheWrapper extends Cache
+{
 	/**
 	 * @var \OCP\Files\Cache\ICache
 	 */

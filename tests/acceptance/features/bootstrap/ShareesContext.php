@@ -33,7 +33,8 @@ require_once 'bootstrap.php';
 /**
  * Sharees context.
  */
-class ShareesContext implements Context {
+class ShareesContext implements Context
+{
 
 	/**
 	 *

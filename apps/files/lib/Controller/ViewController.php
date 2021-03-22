@@ -49,7 +49,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @package OCA\Files\Controller
  */
-class ViewController extends Controller {
+class ViewController extends Controller
+{
 	/** @var string */
 	protected $appName;
 	/** @var IRequest */

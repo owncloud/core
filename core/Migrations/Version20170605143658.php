@@ -7,7 +7,8 @@ use OCP\Migration\ISchemaMigration;
 /**
  * Updates the column lengths for the migrations table to reflect changes in its schema
  */
-class Version20170605143658 implements ISchemaMigration {
+class Version20170605143658 implements ISchemaMigration
+{
 	public function changeSchema(Schema $schema, array $options) {
 		// Get the table
 		$prefix = $options['tablePrefix'];

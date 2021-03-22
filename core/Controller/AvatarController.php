@@ -49,7 +49,8 @@ use OCP\IUserSession;
  *
  * @package OC\Core\Controller
  */
-class AvatarController extends Controller {
+class AvatarController extends Controller
+{
 
 	/** @var IAvatarManager */
 	protected $avatarManager;

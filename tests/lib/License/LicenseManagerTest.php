@@ -31,7 +31,8 @@ use OC\License\MessageService;
 use OCP\License\ILicenseManager;
 use Test\TestCase;
 
-class LicenseManagerTest extends TestCase {
+class LicenseManagerTest extends TestCase
+{
 	/** @var LicenseFetcher */
 	private $licenseFetcher;
 	/**@var MessageService */

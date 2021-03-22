@@ -28,7 +28,8 @@ namespace OCP\Http\Client;
  * @package OCP\Http
  * @since 8.1.0
  */
-interface IClientService {
+interface IClientService
+{
 	/**
 	 * @return IClient
 	 * @since 8.1.0

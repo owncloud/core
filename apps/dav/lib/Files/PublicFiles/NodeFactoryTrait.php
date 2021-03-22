@@ -31,7 +31,8 @@ use OCP\Share\IShare;
  *
  * @package OCA\DAV\Files\PublicFiles
  */
-trait NodeFactoryTrait {
+trait NodeFactoryTrait
+{
 	private function nodeFactory(Node $node, IShare $share) {
 		if ($node instanceof Folder) {
 			return new SharedFolder($node, $share);

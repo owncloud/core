@@ -21,7 +21,8 @@
 
 namespace OC\Preview;
 
-class BMP extends Image {
+class BMP extends Image
+{
 	/**
 	 * {@inheritDoc}
 	 */

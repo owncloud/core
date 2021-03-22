@@ -29,7 +29,8 @@ use OC_OCS_Result;
 use OCP\IGroup;
 use OCP\IUser;
 
-class Groups {
+class Groups
+{
 
 	/** @var \OCP\IGroupManager */
 	private $groupManager;

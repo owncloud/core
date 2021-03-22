@@ -29,7 +29,8 @@ namespace OC\AppFramework;
 
 use OCP\AppFramework\Http as BaseHttp;
 
-class Http extends BaseHttp {
+class Http extends BaseHttp
+{
 	private $server;
 	private $protocolVersion;
 	protected $headers;

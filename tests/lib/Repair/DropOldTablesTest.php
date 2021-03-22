@@ -16,7 +16,8 @@ use OCP\Migration\IOutput;
  *
  * @see \OC\Repair\DropOldTables
  */
-class DropOldTablesTest extends \Test\TestCase {
+class DropOldTablesTest extends \Test\TestCase
+{
 	/** @var \OCP\IDBConnection */
 	protected $connection;
 

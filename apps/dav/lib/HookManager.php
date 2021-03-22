@@ -30,7 +30,8 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Util;
 
-class HookManager {
+class HookManager
+{
 
 	/** @var IUserManager */
 	private $userManager;

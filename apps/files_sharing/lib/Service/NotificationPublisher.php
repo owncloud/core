@@ -25,7 +25,8 @@ use OCP\IUserManager;
 use OCP\IGroupManager;
 use OCP\Share\IShare;
 
-class NotificationPublisher {
+class NotificationPublisher
+{
 
 	/** @var \OCP\Notification\IManager */
 	private $notificationManager;

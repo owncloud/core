@@ -34,7 +34,8 @@ use Sabre\DAV\Exception\NotFound;
 /**
  * Mapping node for system tag to object id
  */
-class SystemTagMappingNode implements \Sabre\DAV\INode {
+class SystemTagMappingNode implements \Sabre\DAV\INode
+{
 	/**
 	 * @var ISystemTag
 	 */

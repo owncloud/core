@@ -10,7 +10,8 @@ use OCA\FederatedFileSharing\Migrations\Version20190410160725;
 use Test\TestCase;
 use Doctrine\DBAL\Schema\Schema;
 
-class Version20190410160725Test extends TestCase {
+class Version20190410160725Test extends TestCase
+{
 	public function testExecute() {
 		$tablePrefix = 'pr_';
 		$migration = new Version20190410160725();

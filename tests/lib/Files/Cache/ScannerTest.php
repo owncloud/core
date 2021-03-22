@@ -21,7 +21,8 @@ use OCP\Files\Storage\ILockingStorage;
  *
  * @package Test\Files\Cache
  */
-class ScannerTest extends \Test\TestCase {
+class ScannerTest extends \Test\TestCase
+{
 	/**
 	 * @var Storage $storage
 	 */

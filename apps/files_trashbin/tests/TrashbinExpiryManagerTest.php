@@ -35,7 +35,8 @@ use OCP\ILogger;
  *
  * @group DB
  */
-class TrashbinExpiryManagerTest extends TestCase {
+class TrashbinExpiryManagerTest extends TestCase
+{
 
 	/**
 	 * @var Expiration| \PHPUnit\Framework\MockObject\MockObject

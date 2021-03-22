@@ -33,7 +33,8 @@ require_once 'bootstrap.php';
 /**
  * WebUI AdminStorageSettings context.
  */
-class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context {
+class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
+{
 	private $adminStorageSettingsPage;
 
 	/**

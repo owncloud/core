@@ -26,7 +26,8 @@ use Sabre\DAV\Exception\NotAuthenticated;
 use Sabre\DAVACL\AbstractPrincipalCollection;
 use Sabre\DAVACL\PrincipalBackend\BackendInterface;
 
-class RootCollection extends AbstractPrincipalCollection {
+class RootCollection extends AbstractPrincipalCollection
+{
 	/**
 	 * @var IUserSession
 	 */

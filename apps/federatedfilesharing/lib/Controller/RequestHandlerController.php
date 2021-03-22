@@ -47,7 +47,8 @@ use OCP\IUserManager;
  *
  * @package OCA\FederatedFileSharing\API
  */
-class RequestHandlerController extends OCSController {
+class RequestHandlerController extends OCSController
+{
 
 	/** @var OcmMiddleware */
 	private $ocmMiddleware;

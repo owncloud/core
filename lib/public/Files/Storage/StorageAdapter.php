@@ -28,7 +28,8 @@ use OCP\Files\StorageNotAvailableException;
  *
  * @since 10.0
  */
-abstract class StorageAdapter extends \OC\Files\Storage\Common {
+abstract class StorageAdapter extends \OC\Files\Storage\Common
+{
 
 	/**
 	 * Get the identifier for the storage,

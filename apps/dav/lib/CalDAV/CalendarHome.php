@@ -30,7 +30,8 @@ use Sabre\CalDAV\Schedule\Outbox;
 use Sabre\CalDAV\Subscriptions\Subscription;
 use Sabre\DAV\Exception\NotFound;
 
-class CalendarHome extends \Sabre\CalDAV\CalendarHome {
+class CalendarHome extends \Sabre\CalDAV\CalendarHome
+{
 
 	/** @var \OCP\IL10N */
 	private $l10n;

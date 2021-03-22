@@ -42,7 +42,8 @@ use OC\Core\Controller\TwoFactorChallengeController;
  *
  * @package OC\Core\Middleware
  */
-class AccountModuleMiddleware extends Middleware {
+class AccountModuleMiddleware extends Middleware
+{
 
 	/** @var ILogger */
 	private $logger;

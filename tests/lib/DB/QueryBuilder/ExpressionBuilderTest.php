@@ -33,7 +33,8 @@ use Test\TestCase;
  *
  * @package Test\DB\QueryBuilder
  */
-class ExpressionBuilderTest extends TestCase {
+class ExpressionBuilderTest extends TestCase
+{
 	/** @var ExpressionBuilder */
 	protected $expressionBuilder;
 

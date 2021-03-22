@@ -33,7 +33,8 @@ use Test\Traits\PasswordTrait;
  *
  * @package Test\User
  */
-class UserTest extends TestCase {
+class UserTest extends TestCase
+{
 	/** @var AccountMapper | \PHPUnit\Framework\MockObject\MockObject */
 	private $accountMapper;
 	/** @var Account */

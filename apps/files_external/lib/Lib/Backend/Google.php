@@ -29,7 +29,8 @@ use OCP\Files\External\Auth\AuthMechanism;
 use OCP\Files\External\Backend\Backend as ExternalBackend;
 use OCA\Files_External\Lib\LegacyDependencyCheckPolyfill;
 
-class Google extends ExternalBackend {
+class Google extends ExternalBackend
+{
 	use LegacyDependencyCheckPolyfill;
 
 	public function __construct(IL10N $l) {

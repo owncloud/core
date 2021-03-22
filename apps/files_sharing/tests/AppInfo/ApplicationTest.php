@@ -28,7 +28,8 @@ use OCA\Files_Sharing\Tests\TestCase;
  * Class ApplicationTest
  * @group DB
  */
-class ApplicationTest extends TestCase {
+class ApplicationTest extends TestCase
+{
 	public function testConstructor() {
 		$app = new Application();
 		$this->assertNotNull(

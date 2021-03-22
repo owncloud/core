@@ -44,7 +44,8 @@ use Test\TestCase;
  *
  * @package OCA\DAV\Tests\unit\CardDAV
  */
-class CardDavBackendTest extends TestCase {
+class CardDavBackendTest extends TestCase
+{
 
 	/** @var CardDavBackend */
 	private $backend;

@@ -32,7 +32,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @package OCP\Encryption
  * @since 8.1.0
  */
-interface IEncryptionModule {
+interface IEncryptionModule
+{
 
 	/**
 	 * @return string defining the technical unique id

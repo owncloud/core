@@ -26,7 +26,8 @@ use OCP\Encryption\IManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Status extends Base {
+class Status extends Base
+{
 	/** @var IManager */
 	protected $encryptionManager;
 

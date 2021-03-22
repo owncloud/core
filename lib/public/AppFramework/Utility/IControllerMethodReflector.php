@@ -31,7 +31,8 @@ namespace OCP\AppFramework\Utility;
  * @package OCP\AppFramework\Utility
  * @since 8.0.0
  */
-interface IControllerMethodReflector {
+interface IControllerMethodReflector
+{
 
 	/**
 	 * @param object $object an object or classname

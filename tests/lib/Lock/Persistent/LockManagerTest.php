@@ -37,7 +37,8 @@ use Test\TestCase;
  * @package Test\Lock\Persistent
  * @group DB
  */
-class LockManagerTest extends TestCase {
+class LockManagerTest extends TestCase
+{
 	/** @var LockMapper | \PHPUnit\Framework\MockObject\MockObject */
 	private $lockMapper;
 	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */

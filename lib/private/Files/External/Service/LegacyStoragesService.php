@@ -28,7 +28,8 @@ use OCP\Util;
 /**
  * Read mount config from legacy mount.json
  */
-class LegacyStoragesService {
+class LegacyStoragesService
+{
 	/**
 	 * @var IStoragesBackendService
 	 */

@@ -34,7 +34,8 @@ use OCP\IConfig;
  * @since 10.0.8
  */
 
-class UserSearch {
+class UserSearch
+{
 	protected $config;
 
 	/**

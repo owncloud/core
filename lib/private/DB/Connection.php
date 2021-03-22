@@ -41,7 +41,8 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\PreConditionNotMetException;
 
-class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
+class Connection extends \Doctrine\DBAL\Connection implements IDBConnection
+{
 	/**
 	 * @var string $tablePrefix
 	 */

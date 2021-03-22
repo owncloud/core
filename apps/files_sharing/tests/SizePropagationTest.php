@@ -35,7 +35,8 @@ use Test\Traits\UserTrait;
  *
  * @package OCA\Files_Sharing\Tests
  */
-class SizePropagationTest extends TestCase {
+class SizePropagationTest extends TestCase
+{
 	use UserTrait;
 	use MountProviderTrait;
 

@@ -35,7 +35,8 @@ use OCP\AppFramework\Db\Entity;
  *
  * @package OCA\DAV\JobStatus\Entity
  */
-class JobStatus extends Entity {
+class JobStatus extends Entity
+{
 	protected $uuid;
 	protected $userId;
 	protected $statusInfo;

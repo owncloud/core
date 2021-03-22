@@ -28,7 +28,8 @@ use Symfony\Component\EventDispatcher\Event;
  * @since 10.3
  * @package OCP\Roles
  */
-class AddRolesEvent extends Event {
+class AddRolesEvent extends Event
+{
 	private $roles;
 
 	/**

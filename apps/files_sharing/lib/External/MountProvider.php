@@ -26,7 +26,8 @@ use OCP\Files\Storage\IStorageFactory;
 use OCP\IDBConnection;
 use OCP\IUser;
 
-class MountProvider implements IMountProvider {
+class MountProvider implements IMountProvider
+{
 	const STORAGE = '\OCA\Files_Sharing\External\Storage';
 
 	/**

@@ -28,7 +28,8 @@ namespace Test\Preview;
  *
  * @package Test\Preview
  */
-class TXTTest extends Provider {
+class TXTTest extends Provider
+{
 	public function setUp(): void {
 		parent::setUp();
 

@@ -38,7 +38,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class PollIncomingShares extends Command {
+class PollIncomingShares extends Command
+{
 	/** @var IDBConnection */
 	private $dbConnection;
 

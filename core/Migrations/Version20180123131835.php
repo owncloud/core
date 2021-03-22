@@ -8,7 +8,8 @@ use OCP\Migration\IOutput;
  * Split shareapi_enforce_links_password config key into 3 different keys for read-only,
  * read & write and write-only links
  */
-class Version20180123131835 implements ISimpleMigration {
+class Version20180123131835 implements ISimpleMigration
+{
 
 	/**
 	 * @param IOutput $out

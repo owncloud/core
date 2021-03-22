@@ -24,5 +24,6 @@
  * Class OC_Group_Database
  * @deprecated Since 9.1.0 use \OC\Group\Database
  */
-class OC_Group_Database extends \OC\Group\Database {
+class OC_Group_Database extends \OC\Group\Database
+{
 }

@@ -25,7 +25,8 @@ namespace OC\Encryption;
 
 use OC\Cache\CappedMemoryCache;
 
-class File implements \OCP\Encryption\IFile {
+class File implements \OCP\Encryption\IFile
+{
 
 	/** @var Util */
 	protected $util;

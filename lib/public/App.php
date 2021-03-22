@@ -40,7 +40,8 @@ namespace OCP;
  * This class provides functions to manage apps in ownCloud
  * @since 4.0.0
  */
-class App {
+class App
+{
 
 	/**
 	 * Adds an entry to the navigation

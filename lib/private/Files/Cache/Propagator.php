@@ -28,7 +28,8 @@ use OCP\IDBConnection;
 /**
  * Propagate etags and mtimes within the storage
  */
-class Propagator implements IPropagator {
+class Propagator implements IPropagator
+{
 	private $inBatch = false;
 
 	private $batch = [];

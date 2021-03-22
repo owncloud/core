@@ -37,7 +37,8 @@ use Test\TestCase;
  *
  * @package OCA\DAV\Tests\unit\CalDAV
  */
-class PublicCalendarRootTest extends TestCase {
+class PublicCalendarRootTest extends TestCase
+{
 	const UNIT_TEST_USER = 'principals/users/caldav-unit-test';
 
 	/** @var CalDavBackend */

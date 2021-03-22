@@ -33,7 +33,8 @@ use Test\TestCase;
  *
  * @package OCA\Files_Trashbin\Tests\Command
  */
-class ExpireTest extends TestCase {
+class ExpireTest extends TestCase
+{
 	public function testExpireNonExistingUser() {
 		$command = new Expire('test');
 		$command->handle();

@@ -21,7 +21,8 @@
 
 namespace Test\Files\External\Auth;
 
-class AuthMechanismTest extends \Test\TestCase {
+class AuthMechanismTest extends \Test\TestCase
+{
 	public function testJsonSerialization() {
 		$mechanism = $this->getMockBuilder('\OCP\Files\External\Auth\AuthMechanism')
 			->setMethods(['jsonSerializeDefinition'])

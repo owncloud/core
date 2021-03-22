@@ -37,7 +37,8 @@ use Test\Traits\UserTrait;
  *
  * @package OCA\Files_Sharing\Tests
  */
-class LockingTest extends TestCase {
+class LockingTest extends TestCase
+{
 	use UserTrait;
 
 	private $ownerUid;

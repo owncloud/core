@@ -25,7 +25,8 @@ namespace OCA\FederatedFileSharing;
 use OCP\Notification\INotification;
 use OCP\Notification\INotifier;
 
-class Notifier implements INotifier {
+class Notifier implements INotifier
+{
 	/** @var \OCP\L10N\IFactory */
 	protected $factory;
 

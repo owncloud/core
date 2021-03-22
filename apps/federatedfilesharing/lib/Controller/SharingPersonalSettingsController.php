@@ -29,7 +29,8 @@ use OCP\IUserSession;
  *
  */
 
-class SharingPersonalSettingsController extends Controller {
+class SharingPersonalSettingsController extends Controller
+{
 	const USERCONFIGS = [
 		'auto_accept_share_trusted'
 	];

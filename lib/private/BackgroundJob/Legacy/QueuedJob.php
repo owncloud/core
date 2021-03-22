@@ -23,7 +23,8 @@
 
 namespace OC\BackgroundJob\Legacy;
 
-class QueuedJob extends \OC\BackgroundJob\QueuedJob {
+class QueuedJob extends \OC\BackgroundJob\QueuedJob
+{
 	public function run($argument) {
 		$class = $argument['klass'];
 		$method = $argument['method'];

@@ -22,6 +22,7 @@
 
 namespace OC\Hooks;
 
-abstract class BasicEmitter implements Emitter {
+abstract class BasicEmitter implements Emitter
+{
 	use EmitterTrait;
 }

@@ -38,7 +38,8 @@ use OCP\Files\External\Config\IBackendProvider;
 /**
  * @package OCA\Files_External\AppInfo
  */
-class Application extends App implements IBackendProvider, IAuthMechanismProvider {
+class Application extends App implements IBackendProvider, IAuthMechanismProvider
+{
 	public function __construct(array $urlParams = []) {
 		parent::__construct('files_external', $urlParams);
 

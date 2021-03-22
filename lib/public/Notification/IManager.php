@@ -27,7 +27,8 @@ namespace OCP\Notification;
  * @package OCP\Notification
  * @since 9.0.0
  */
-interface IManager extends IApp, INotifier {
+interface IManager extends IApp, INotifier
+{
 	/**
 	 * @param \Closure $service The service must implement IApp, otherwise a
 	 *                          \InvalidArgumentException is thrown later

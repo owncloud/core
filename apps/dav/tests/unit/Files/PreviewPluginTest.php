@@ -44,7 +44,8 @@ use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
 use OCP\Files\FileInfo;
 
-class PreviewPluginTest extends TestCase {
+class PreviewPluginTest extends TestCase
+{
 
 	/** @var RequestInterface | MockObject */
 	private $request;

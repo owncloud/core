@@ -28,7 +28,8 @@ use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IUser;
 
-class Manager {
+class Manager
+{
 
 	/** @var IConfig */
 	private $config;

@@ -24,7 +24,8 @@ namespace Test\Files\Storage;
 
 use OC\Files\Cache\Watcher;
 
-abstract class Storage extends \Test\TestCase {
+abstract class Storage extends \Test\TestCase
+{
 	/**
 	 * @var \OC\Files\Storage\Storage instance
 	 */

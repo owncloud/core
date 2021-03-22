@@ -26,7 +26,8 @@ namespace OCA\Files_Versions;
 
 use OCP\Capabilities\ICapability;
 
-class Capabilities implements ICapability {
+class Capabilities implements ICapability
+{
 	
 	/**
 	 * Return this classes capabilities

@@ -31,7 +31,8 @@ use OC\Files\Cache\Cache;
 /**
  * Jail to a subdirectory of the wrapped cache
  */
-class CacheJail extends CacheWrapper {
+class CacheJail extends CacheWrapper
+{
 	/**
 	 * @var string
 	 */

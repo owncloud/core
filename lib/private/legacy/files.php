@@ -44,7 +44,8 @@ use OCP\Lock\ILockingProvider;
  * Class for file server access
  *
  */
-class OC_Files {
+class OC_Files
+{
 	const FILE = 1;
 	const ZIP_FILES = 2;
 	const ZIP_DIR = 3;

@@ -22,5 +22,6 @@
 
 namespace OC;
 
-class DatabaseSetupException extends HintException {
+class DatabaseSetupException extends HintException
+{
 }

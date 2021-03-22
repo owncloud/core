@@ -32,7 +32,8 @@ use OCP\IUser;
 use OCP\Notification\IManager;
 use Test\TestCase;
 
-class BackgroundJobTest extends TestCase {
+class BackgroundJobTest extends TestCase
+{
 
 	/** @var IConfig|\PHPUnit\Framework\MockObject\MockObject */
 	protected $config;

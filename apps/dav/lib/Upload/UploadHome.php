@@ -28,7 +28,8 @@ use OCA\DAV\Connector\Sabre\Directory;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\ICollection;
 
-class UploadHome implements ICollection {
+class UploadHome implements ICollection
+{
 	private $principalInfo;
 
 	/**

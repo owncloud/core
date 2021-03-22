@@ -29,7 +29,8 @@ namespace OCA\Provisioning_API;
 use OC_App;
 use OC_OCS_Result;
 
-class Apps {
+class Apps
+{
 	/** @var \OCP\App\IAppManager */
 	private $appManager;
 

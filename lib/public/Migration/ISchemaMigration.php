@@ -26,7 +26,8 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * @since 10.0
  */
-interface ISchemaMigration {
+interface ISchemaMigration
+{
 
 	/**
 	 * Apply changes to the schema

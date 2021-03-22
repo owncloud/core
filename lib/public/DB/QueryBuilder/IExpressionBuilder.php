@@ -29,7 +29,8 @@ use Doctrine\DBAL\Query\Expression\ExpressionBuilder;
  * This class provides a wrapper around Doctrine's ExpressionBuilder
  * @since 8.2.0
  */
-interface IExpressionBuilder {
+interface IExpressionBuilder
+{
 	/**
 	 * @since 9.0.0
 	 */

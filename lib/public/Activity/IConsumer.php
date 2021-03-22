@@ -36,7 +36,8 @@ namespace OCP\Activity;
  * @package OCP\Activity
  * @since 6.0.0
  */
-interface IConsumer {
+interface IConsumer
+{
 	/**
 	 * @param IEvent $event
 	 * @return void

@@ -33,7 +33,8 @@ use Test\TestCase;
  *
  * @group DB
  */
-class ConvertTypeTest extends TestCase {
+class ConvertTypeTest extends TestCase
+{
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 	/** @var ConnectionFactory | \PHPUnit\Framework\MockObject\MockObject */

@@ -34,7 +34,8 @@ use OCP\IL10N;
 use OCP\Security\ISecureRandom;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
-abstract class TestCase extends BaseTestCase {
+abstract class TestCase extends BaseTestCase
+{
 	/** @var \OC\Command\QueueBus */
 	private $commandBus;
 

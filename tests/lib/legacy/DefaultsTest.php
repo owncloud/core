@@ -22,7 +22,8 @@ namespace Test\legacy;
 use OC_Defaults;
 use Test\TestCase;
 
-class DefaultsTest extends TestCase {
+class DefaultsTest extends TestCase
+{
 	/**
 	 * @var OC_Defaults | \PHPUnit\Framework\MockObject\MockObject
 	 */

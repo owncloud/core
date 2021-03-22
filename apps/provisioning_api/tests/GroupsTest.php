@@ -33,7 +33,8 @@ use OCP\IRequest;
 use OCP\IUser;
 use OCP\IUserSession;
 
-class GroupsTest extends \Test\TestCase {
+class GroupsTest extends \Test\TestCase
+{
 	/** @var IGroupManager|\PHPUnit\Framework\MockObject\MockObject */
 	protected $groupManager;
 	/** @var IUserSession|\PHPUnit\Framework\MockObject\MockObject */

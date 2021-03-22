@@ -37,7 +37,8 @@ use OCP\Files\External\Backend\Backend;
 /**
  * @group DB
  */
-abstract class StoragesServiceTest extends TestCase {
+abstract class StoragesServiceTest extends TestCase
+{
 
 	/**
 	 * @var StoragesService

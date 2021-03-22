@@ -24,7 +24,8 @@ namespace OC\DB\QueryBuilder;
 
 use OCP\DB\QueryBuilder\ICompositeExpression;
 
-class CompositeExpression implements ICompositeExpression, \Countable {
+class CompositeExpression implements ICompositeExpression, \Countable
+{
 	/** @var \Doctrine\DBAL\Query\Expression\CompositeExpression */
 	protected $compositeExpression;
 

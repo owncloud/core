@@ -18,7 +18,8 @@ use Test\Files\Cache\CacheTest;
  *
  * @package Test\Files\Cache\Wrapper
  */
-class CachePermissionsMaskTest extends CacheTest {
+class CachePermissionsMaskTest extends CacheTest
+{
 	/**
 	 * @var \OC\Files\Cache\Cache $sourceCache
 	 */

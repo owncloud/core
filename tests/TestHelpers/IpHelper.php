@@ -30,7 +30,8 @@ use InvalidArgumentException;
  * @author Phillip Davis <phil@jankaritech.com>
  *
  */
-class IpHelper {
+class IpHelper
+{
 	const IPV6_LOOPBACK_ADDRESS = '::1';
 	const IPV6_LOOPBACK_ADDRESS_SUBNET = '::0';
 	const IPV4_LOOPBACK_ADDRESS_TOP = '127.';

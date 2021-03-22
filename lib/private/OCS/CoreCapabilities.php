@@ -31,7 +31,8 @@ use OCP\Util;
  *
  * @package OC\OCS
  */
-class CoreCapabilities implements ICapability {
+class CoreCapabilities implements ICapability
+{
 
 	/** @var IConfig */
 	private $config;

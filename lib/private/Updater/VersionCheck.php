@@ -26,7 +26,8 @@ use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\Util;
 
-class VersionCheck {
+class VersionCheck
+{
 
 	/** @var IClientService */
 	private $clientService;

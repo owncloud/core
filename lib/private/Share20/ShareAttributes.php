@@ -22,7 +22,8 @@ namespace OC\Share20;
 
 use OCP\Share\IAttributes;
 
-class ShareAttributes implements IAttributes {
+class ShareAttributes implements IAttributes
+{
 
 	/** @var array */
 	private $attributes;

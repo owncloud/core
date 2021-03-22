@@ -35,7 +35,8 @@ use Test\Traits\UserTrait;
  * @see RepairOrphanedSubshare
  * @package Test\Repair
  */
-class RepairOrphanedSubshareTest extends TestCase {
+class RepairOrphanedSubshareTest extends TestCase
+{
 	use UserTrait;
 
 	/** @var  IDBConnection */

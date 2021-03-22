@@ -27,7 +27,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class Delete extends Command {
+class Delete extends Command
+{
 	/** @var IGroupManager */
 	protected $groupManager;
 

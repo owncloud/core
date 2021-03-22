@@ -42,7 +42,8 @@ use OCP\IURLGenerator;
  *
  * @package OCA\Federation\Backgroundjob
  */
-class RequestSharedSecret extends Job {
+class RequestSharedSecret extends Job
+{
 
 	/** @var IClient */
 	private $httpClient;

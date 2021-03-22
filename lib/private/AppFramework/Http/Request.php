@@ -52,7 +52,8 @@ use OCP\Security\ISecureRandom;
  * @property mixed[] parameters
  * @property mixed[] server
  */
-class Request implements \ArrayAccess, \Countable, IRequest {
+class Request implements \ArrayAccess, \Countable, IRequest
+{
 	const USER_AGENT_IE = '/(MSIE)|(Trident)/';
 	const USER_AGENT_IE_8 = '/MSIE 8.0/';
 	// Microsoft Edge User Agent from https://msdn.microsoft.com/en-us/library/hh869301(v=vs.85).aspx

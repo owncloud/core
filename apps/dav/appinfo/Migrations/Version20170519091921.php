@@ -7,7 +7,8 @@ use OCP\Migration\ISchemaMigration;
 /**
  * Add index to oc_cards to assist with searching with large numbers of rows
  */
-class Version20170519091921 implements ISchemaMigration {
+class Version20170519091921 implements ISchemaMigration
+{
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 		$table = $schema->getTable("${prefix}cards");

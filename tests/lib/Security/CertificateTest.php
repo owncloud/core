@@ -23,7 +23,8 @@ namespace Test\Security;
 
 use OC\Security\Certificate;
 
-class CertificateTest extends \Test\TestCase {
+class CertificateTest extends \Test\TestCase
+{
 
 	/** @var Certificate That contains a valid certificate */
 	protected $goodCertificate;

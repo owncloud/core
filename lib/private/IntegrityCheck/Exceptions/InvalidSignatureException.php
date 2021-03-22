@@ -27,5 +27,6 @@ namespace OC\IntegrityCheck\Exceptions;
  *
  * @package OC\IntegrityCheck\Exceptions
  */
-class InvalidSignatureException extends \Exception {
+class InvalidSignatureException extends \Exception
+{
 }

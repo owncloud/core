@@ -22,7 +22,8 @@
 
 namespace OC\DB;
 
-class MigrationException extends \Exception {
+class MigrationException extends \Exception
+{
 	private $table;
 
 	public function __construct($table, $message) {

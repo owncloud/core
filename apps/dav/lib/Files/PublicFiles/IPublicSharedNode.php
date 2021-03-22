@@ -30,7 +30,8 @@ use OCP\Share\IShare;
  *
  * @package OCA\DAV\Files\PublicFiles
  */
-interface IPublicSharedNode {
+interface IPublicSharedNode
+{
 	/**
 	 * @return IShare
 	 */

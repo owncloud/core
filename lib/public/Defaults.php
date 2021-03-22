@@ -36,7 +36,8 @@ namespace OCP;
  * public api to access default strings and urls for your templates
  * @since 6.0.0
  */
-class Defaults {
+class Defaults
+{
 
 	/**
 	 * \OC_Defaults instance to retrieve the defaults

@@ -15,13 +15,15 @@ namespace Test\Hooks;
  *
  * @package Test\Hooks
  */
-class DummyLegacyEmitter extends \OC\Hooks\LegacyEmitter {
+class DummyLegacyEmitter extends \OC\Hooks\LegacyEmitter
+{
 	public function emitEvent($scope, $method, $arguments = []) {
 		$this->emit($scope, $method, $arguments);
 	}
 }
 
-class LegacyEmitterTest extends BasicEmitterTest {
+class LegacyEmitterTest extends BasicEmitterTest
+{
 
 	//we can't use exceptions here since OC_Hooks catches all exceptions
 	private static $emitted = false;

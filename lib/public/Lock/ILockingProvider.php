@@ -28,7 +28,8 @@ namespace OCP\Lock;
  * @package OCP\Lock
  * @since 8.1.0
  */
-interface ILockingProvider {
+interface ILockingProvider
+{
 	/**
 	 * @since 8.1.0
 	 */

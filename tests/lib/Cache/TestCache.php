@@ -8,7 +8,8 @@
 
 namespace Test\Cache;
 
-abstract class TestCache extends \Test\TestCase {
+abstract class TestCache extends \Test\TestCase
+{
 	/**
 	 * @var \OCP\ICache cache;
 	 */

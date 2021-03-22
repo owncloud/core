@@ -27,7 +27,8 @@ use PhpParser\Node;
 use PhpParser\Node\Name;
 use PhpParser\NodeVisitorAbstract;
 
-class NodeVisitor extends NodeVisitorAbstract {
+class NodeVisitor extends NodeVisitorAbstract
+{
 	/** @var ICheck */
 	protected $list;
 

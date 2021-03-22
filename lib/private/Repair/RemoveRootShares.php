@@ -33,7 +33,8 @@ use OCP\Migration\IRepairStep;
  *
  * @package OC\Repair
  */
-class RemoveRootShares implements IRepairStep {
+class RemoveRootShares implements IRepairStep
+{
 
 	/** @var IDBConnection */
 	protected $connection;

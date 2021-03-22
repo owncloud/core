@@ -10,7 +10,8 @@ namespace Test\Security;
 
 use OC\Security\SecureRandom;
 
-class SecureRandomTest extends \Test\TestCase {
+class SecureRandomTest extends \Test\TestCase
+{
 	public function stringGenerationProvider() {
 		return [
 			[0, 0],

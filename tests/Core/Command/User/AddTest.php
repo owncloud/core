@@ -33,7 +33,8 @@ use Test\Traits\UserTrait;
  *
  * @group DB
  */
-class AddTest extends TestCase {
+class AddTest extends TestCase
+{
 	use UserTrait;
 
 	/** @var CommandTester */

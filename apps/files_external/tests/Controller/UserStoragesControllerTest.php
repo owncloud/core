@@ -29,7 +29,8 @@ use OCA\Files_External\Controller\UserStoragesController;
 use OCP\AppFramework\Http;
 use OCP\Files\External\IStoragesBackendService;
 
-class UserStoragesControllerTest extends StoragesControllerTest {
+class UserStoragesControllerTest extends StoragesControllerTest
+{
 
 	/**
 	 * @var array

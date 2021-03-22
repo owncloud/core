@@ -32,7 +32,8 @@ use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\Persistent\ILock;
 
-class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage, IPersistentLockingStorage {
+class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage, IPersistentLockingStorage
+{
 	/**
 	 * @var \OC\Files\Storage\Storage $storage
 	 */

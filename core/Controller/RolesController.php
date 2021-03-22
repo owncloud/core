@@ -27,7 +27,8 @@ use OCP\IRequest;
 use OCP\Roles\AddRolesEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class RolesController extends OCSController {
+class RolesController extends OCSController
+{
 	/**
 	 * @var IL10N
 	 */

@@ -25,7 +25,8 @@ use OC\Notification\Action;
 use OCP\Notification\IAction;
 use Test\TestCase;
 
-class ActionTest extends TestCase {
+class ActionTest extends TestCase
+{
 	/** @var IAction */
 	protected $action;
 

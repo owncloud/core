@@ -44,7 +44,8 @@ use OCA\Files_Sharing\Hooks;
 use OCA\Files_Sharing\Service\NotificationPublisher;
 use OCP\Notification\Events\RegisterNotifierEvent;
 
-class Application extends App {
+class Application extends App
+{
 	private $isProviderRegistered = false;
 
 	public function __construct(array $urlParams = []) {

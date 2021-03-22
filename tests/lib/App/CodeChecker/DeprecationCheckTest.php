@@ -13,7 +13,8 @@ use OC\App\CodeChecker\DeprecationCheck;
 use OC\App\CodeChecker\EmptyCheck;
 use Test\TestCase;
 
-class DeprecationCheckTest extends TestCase {
+class DeprecationCheckTest extends TestCase
+{
 
 	/**
 	 * @dataProvider providesFilesToCheck

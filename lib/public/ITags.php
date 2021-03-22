@@ -47,7 +47,8 @@ namespace OCP;
  * @since 6.0.0
  */
 
-interface ITags {
+interface ITags
+{
 
 	/**
 	 * Check if any tags are saved for this type and user.

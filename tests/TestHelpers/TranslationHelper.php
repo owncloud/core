@@ -28,7 +28,8 @@ namespace TestHelpers;
  *
  * @package TestHelpers
  */
-class TranslationHelper {
+class TranslationHelper
+{
 	/**
 	 * @param $language
 	 *

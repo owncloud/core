@@ -31,7 +31,8 @@ use Test\TestCase;
  *
  * @package OCA\DAV\Tests\unit\Connector\Sabre
  */
-class MaintenancePluginTest extends TestCase {
+class MaintenancePluginTest extends TestCase
+{
 	/** @var IConfig */
 	private $config;
 	/** @var MaintenancePlugin */

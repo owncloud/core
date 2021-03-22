@@ -40,7 +40,8 @@ use OCP\Notification\IApp;
  *
  * @since 10.0.8
  */
-abstract class RegisterConsumerEvent extends Event {
+abstract class RegisterConsumerEvent extends Event
+{
 	/**
 	 * Implementations should use this name
 	 */

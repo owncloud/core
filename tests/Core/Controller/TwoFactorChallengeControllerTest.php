@@ -36,7 +36,8 @@ use OCP\Authentication\TwoFactorAuth\IProvider;
 use OCP\IUser;
 use OCP\Template;
 
-class TwoFactorChallengeControllerTest extends TestCase {
+class TwoFactorChallengeControllerTest extends TestCase
+{
 
 	/** @var IRequest | MockObject */
 	private $request;

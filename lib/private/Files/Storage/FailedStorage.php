@@ -30,7 +30,8 @@ use \OCP\Files\StorageNotAvailableException;
 /**
  * Storage placeholder to represent a missing precondition, storage unavailable
  */
-class FailedStorage extends Common {
+class FailedStorage extends Common
+{
 
 	/** @var \Exception */
 	protected $e;

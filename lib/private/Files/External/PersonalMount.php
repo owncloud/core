@@ -31,7 +31,8 @@ use OCP\Files\External\Service\IUserStoragesService;
 /**
  * Person mount points can be moved by the user
  */
-class PersonalMount extends MountPoint implements MoveableMount {
+class PersonalMount extends MountPoint implements MoveableMount
+{
 	/** @var IUserStoragesService */
 	protected $storagesService;
 

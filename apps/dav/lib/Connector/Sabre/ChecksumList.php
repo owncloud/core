@@ -29,7 +29,8 @@ use Sabre\Xml\XmlSerializable;
  * This property contains multiple "checksum" elements, each containing a
  * checksum name.
  */
-class ChecksumList implements XmlSerializable {
+class ChecksumList implements XmlSerializable
+{
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';
 
 	/** @var string[] of TYPE:CHECKSUM */

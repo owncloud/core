@@ -5,7 +5,8 @@ namespace Test\Comments;
 use OCP\Comments\IComment;
 use Test\TestCase;
 
-class CommentTest extends TestCase {
+class CommentTest extends TestCase
+{
 	public function testSettersValidInput() {
 		$comment = new \OC\Comments\Comment();
 

@@ -28,7 +28,8 @@ namespace Test\Preview;
  *
  * @package Test\Preview
  */
-class MP3Test extends Provider {
+class MP3Test extends Provider
+{
 	public function setUp(): void {
 		parent::setUp();
 

@@ -36,7 +36,8 @@ use OCP\L10N\IFactory;
 /**
  * Manages the ownCloud navigation
  */
-class NavigationManager implements INavigationManager {
+class NavigationManager implements INavigationManager
+{
 	protected $entries = [];
 	protected $closureEntries = [];
 	protected $activeEntry;

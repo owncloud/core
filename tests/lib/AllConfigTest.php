@@ -17,7 +17,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @package Test
  */
-class AllConfigTest extends \Test\TestCase {
+class AllConfigTest extends \Test\TestCase
+{
 
 	/** @var  \OCP\IDBConnection */
 	protected $connection;

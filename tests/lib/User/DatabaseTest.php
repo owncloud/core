@@ -29,7 +29,8 @@ use Test\Traits\PasswordTrait;
  *
  * @group DB
  */
-class DatabaseTest extends BackendTestCase {
+class DatabaseTest extends BackendTestCase
+{
 	/** @var array */
 	private $users;
 

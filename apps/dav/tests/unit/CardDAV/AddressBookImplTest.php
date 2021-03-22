@@ -32,7 +32,8 @@ use Sabre\VObject\Component\VCard;
 use Sabre\VObject\Property\Text;
 use Test\TestCase;
 
-class AddressBookImplTest extends TestCase {
+class AddressBookImplTest extends TestCase
+{
 
 	/** @var AddressBookImpl  */
 	private $addressBookImpl;

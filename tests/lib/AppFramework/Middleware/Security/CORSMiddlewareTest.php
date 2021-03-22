@@ -26,7 +26,8 @@ use OC\User\Session;
 /**
  * Class CORSMiddlewareTest
  */
-class CORSMiddlewareTest extends \Test\TestCase {
+class CORSMiddlewareTest extends \Test\TestCase
+{
 	/** @var ControllerMethodReflector */
 	private $reflector;
 	/** @var Session */

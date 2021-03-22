@@ -27,7 +27,8 @@ use OCP\IUser;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Test\TestCase;
 
-class InactiveTest extends TestCase {
+class InactiveTest extends TestCase
+{
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $userManager;

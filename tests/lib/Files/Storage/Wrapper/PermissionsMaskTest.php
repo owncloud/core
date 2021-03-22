@@ -10,7 +10,8 @@ namespace Test\Files\Storage\Wrapper;
 
 use OCP\Constants;
 
-class PermissionsMaskTest extends \Test\Files\Storage\Storage {
+class PermissionsMaskTest extends \Test\Files\Storage\Storage
+{
 
 	/**
 	 * @var \OC\Files\Storage\Temporary

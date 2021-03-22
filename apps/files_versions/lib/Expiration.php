@@ -24,7 +24,8 @@ namespace OCA\Files_Versions;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
 
-class Expiration {
+class Expiration
+{
 
 	// how long do we keep files a version if no other value is defined in the config file (unit: days)
 	const NO_OBLIGATION = -1;

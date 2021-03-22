@@ -27,7 +27,8 @@ use OC\License\ILicense;
 use OC\License\LicenseFetcher;
 use Test\TestCase;
 
-class LicenseFetcherTest extends TestCase {
+class LicenseFetcherTest extends TestCase
+{
 	/** @var IConfig */
 	private $config;
 	/** @var ITimeFactory */

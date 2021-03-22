@@ -32,7 +32,8 @@ namespace OCP\AppFramework;
  * Base class which contains constants for HTTP status codes
  * @since 6.0.0
  */
-class Http {
+class Http
+{
 	const STATUS_CONTINUE = 100;
 	const STATUS_SWITCHING_PROTOCOLS = 101;
 	const STATUS_PROCESSING = 102;

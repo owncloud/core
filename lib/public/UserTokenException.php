@@ -27,7 +27,8 @@ namespace OCP;
  * @package OCP
  * @since 10.0.10
  */
-class UserTokenException extends \Exception {
+class UserTokenException extends \Exception
+{
 	/**
 	 * UserTokenException constructor.
 	 *

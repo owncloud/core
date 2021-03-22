@@ -36,7 +36,8 @@ require_once 'bootstrap.php';
 /**
  * WebUI Users context.
  */
-class WebUIUsersContext extends RawMinkContext implements Context {
+class WebUIUsersContext extends RawMinkContext implements Context
+{
 	private $usersPage;
 
 	/**

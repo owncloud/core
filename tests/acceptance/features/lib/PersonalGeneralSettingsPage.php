@@ -31,7 +31,8 @@ use TestHelpers\UploadHelper;
 /**
  * Personal General Settings page.
  */
-class PersonalGeneralSettingsPage extends OwncloudPage {
+class PersonalGeneralSettingsPage extends OwncloudPage
+{
 
 	/**
 	 *

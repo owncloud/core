@@ -24,7 +24,8 @@ namespace OC\Activity;
 
 use OCP\Activity\IEvent;
 
-class Event implements IEvent {
+class Event implements IEvent
+{
 	/** @var array */
 	protected $data = [
 		'app' => null,

@@ -28,7 +28,8 @@ use Psr\Http\Message\ResponseInterface;
  *
  *
  */
-class EmailHelper {
+class EmailHelper
+{
 	/**
 	 * retrieving emails sent from mailhog
 	 *

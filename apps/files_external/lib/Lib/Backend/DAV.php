@@ -28,7 +28,8 @@ use OCP\Files\External\Backend\Backend as ExternalBackend;
 use OCP\Files\External\DefinitionParameter;
 use OCP\IL10N;
 
-class DAV extends ExternalBackend {
+class DAV extends ExternalBackend
+{
 	use LegacyDependencyCheckPolyfill;
 
 	public function __construct(IL10N $l) {

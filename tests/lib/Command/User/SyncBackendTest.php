@@ -34,7 +34,8 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Test\TestCase;
 
-class SyncBackendTest extends TestCase {
+class SyncBackendTest extends TestCase
+{
 
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;

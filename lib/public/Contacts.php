@@ -49,7 +49,8 @@ namespace OCP {
 	 * @deprecated 8.1.0 use methods of \OCP\Contacts\IManager - \OC::$server->getContactsManager();
 	 * @since 5.0.0
 	 */
-	class Contacts {
+	class Contacts
+{
 
 		/**
 		 * This function is used to search and find contacts within the users address books.

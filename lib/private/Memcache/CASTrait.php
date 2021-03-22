@@ -21,7 +21,8 @@
 
 namespace OC\Memcache;
 
-trait CASTrait {
+trait CASTrait
+{
 	abstract public function get($key);
 
 	abstract public function set($key, $value, $ttl = 0);

@@ -60,7 +60,8 @@ namespace OCP;
  * @property-read string[] $urlParams
  * @since 6.0.0
  */
-interface IRequest {
+interface IRequest
+{
 
 	/**
 	 * @param string $name

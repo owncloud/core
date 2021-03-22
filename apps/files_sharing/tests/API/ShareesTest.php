@@ -51,7 +51,8 @@ use OCP\Util\UserSearch;
  *
  * @package OCA\Files_Sharing\Tests\API
  */
-class ShareesTest extends TestCase {
+class ShareesTest extends TestCase
+{
 	/** @var ShareesController */
 	protected $sharees;
 

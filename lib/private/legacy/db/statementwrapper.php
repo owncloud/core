@@ -34,7 +34,8 @@
  * @method integer rowCount();
  * @method array fetchAll(integer $fetchMode = null);
  */
-class OC_DB_StatementWrapper {
+class OC_DB_StatementWrapper
+{
 	/**
 	 * @var \Doctrine\DBAL\Driver\Statement
 	 */

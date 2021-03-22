@@ -24,7 +24,8 @@ namespace OCP\Theme;
  * @package OCP\Theme
  * @since 10.0.3
  */
-interface ITheme {
+interface ITheme
+{
 
 	/**
 	 * @return string

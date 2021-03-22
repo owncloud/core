@@ -29,7 +29,8 @@ use Test\TestCase;
 /**
  * @group DB
  */
-class UserMountCacheTest extends TestCase {
+class UserMountCacheTest extends TestCase
+{
 	/**
 	 * @var IDBConnection
 	 */

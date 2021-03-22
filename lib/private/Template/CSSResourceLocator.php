@@ -26,7 +26,8 @@
 
 namespace OC\Template;
 
-class CSSResourceLocator extends ResourceLocator {
+class CSSResourceLocator extends ResourceLocator
+{
 	/**
 	 * @param string $style
 	 */

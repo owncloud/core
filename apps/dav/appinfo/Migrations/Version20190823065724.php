@@ -29,7 +29,8 @@ use OCP\Migration\ISchemaMigration;
  * Add NULL constraint to fileid column for properties table.
  * The fileid column should not accept null values in the properties table.
  */
-class Version20190823065724 implements ISchemaMigration {
+class Version20190823065724 implements ISchemaMigration
+{
 	/** @var IDBConnection  */
 	private $dbConnection;
 

@@ -24,7 +24,8 @@ namespace OC\Settings\Panels\Admin;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-class Status implements ISettings {
+class Status implements ISettings
+{
 	public function getPriority() {
 		return 0;
 	}

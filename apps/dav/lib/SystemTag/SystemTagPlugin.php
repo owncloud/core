@@ -43,7 +43,8 @@ use Sabre\HTTP\ResponseInterface;
  * - get/set Webdav properties for tags
  *
  */
-class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
+class SystemTagPlugin extends \Sabre\DAV\ServerPlugin
+{
 
 	// namespace
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';

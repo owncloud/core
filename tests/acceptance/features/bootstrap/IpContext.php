@@ -27,7 +27,8 @@ use TestHelpers\IpHelper;
 /**
  * Ip trait
  */
-class IpContext implements Context {
+class IpContext implements Context
+{
 
 	/**
 	 *

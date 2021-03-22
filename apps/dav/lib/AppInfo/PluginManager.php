@@ -28,7 +28,8 @@ use OCP\AppFramework\QueryException;
  * Manager for DAV plugins from apps, used to register them
  * to the Sabre server.
  */
-class PluginManager {
+class PluginManager
+{
 
 	/**
 	 * @var ServerContainer

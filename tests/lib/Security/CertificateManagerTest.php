@@ -15,7 +15,8 @@ use OC\Security\CertificateManager;
  *
  * @group DB
  */
-class CertificateManagerTest extends \Test\TestCase {
+class CertificateManagerTest extends \Test\TestCase
+{
 	use \Test\Traits\UserTrait;
 	use \Test\Traits\MountProviderTrait;
 

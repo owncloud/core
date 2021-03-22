@@ -24,7 +24,8 @@ namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
 use OCP\Share\IShare;
 
-class SharesPluginTest extends \Test\TestCase {
+class SharesPluginTest extends \Test\TestCase
+{
 	const SHARETYPES_PROPERTYNAME = \OCA\DAV\Connector\Sabre\SharesPlugin::SHARETYPES_PROPERTYNAME;
 
 	/**

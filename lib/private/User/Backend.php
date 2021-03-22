@@ -29,7 +29,8 @@ use \OCP\UserInterface;
  * Abstract base class for user management. Provides methods for querying backend
  * capabilities.
  */
-abstract class Backend implements UserInterface {
+abstract class Backend implements UserInterface
+{
 	/**
 	 * error code for functions not provided by the user backend
 	 */

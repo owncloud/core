@@ -34,7 +34,8 @@ use OCP\Security\ISecureRandom;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class TrustedServers {
+class TrustedServers
+{
 
 	/** after a user list was exchanged at least once successfully */
 	const STATUS_OK = 1;

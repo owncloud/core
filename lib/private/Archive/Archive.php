@@ -31,7 +31,8 @@
 
 namespace OC\Archive;
 
-abstract class Archive {
+abstract class Archive
+{
 	/**
 	 * Open any of the supported archive types
 	 *

@@ -30,7 +30,8 @@ use OCP\AppFramework\Http;
  * Redirects to a different URL
  * @since 7.0.0
  */
-class RedirectResponse extends Response {
+class RedirectResponse extends Response
+{
 	private $redirectURL;
 
 	/**

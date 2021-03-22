@@ -27,7 +27,8 @@ use Sabre\DAV\Exception;
 use Sabre\DAV\PropPatch;
 use Sabre\DAVACL\PrincipalBackend\BackendInterface;
 
-class GroupPrincipalBackend implements BackendInterface {
+class GroupPrincipalBackend implements BackendInterface
+{
 	const PRINCIPAL_PREFIX = 'principals/groups';
 
 	/** @var IGroupManager */

@@ -28,7 +28,8 @@ use OCP\IUserSession;
 use Sabre\DAVACL\PrincipalBackend\BackendInterface;
 use Test\TestCase;
 
-class RootCollectionTest extends TestCase {
+class RootCollectionTest extends TestCase
+{
 	public function testGetName() {
 		$backEnd = $this->createMock(BackendInterface::class);
 		$userSession = $this->createMock(IUserSession::class);

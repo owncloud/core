@@ -10,7 +10,8 @@ namespace Test;
 
 use OCP\IConfig;
 
-class SetupTest extends \Test\TestCase {
+class SetupTest extends \Test\TestCase
+{
 
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;

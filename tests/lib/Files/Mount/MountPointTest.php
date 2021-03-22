@@ -8,7 +8,8 @@
 
 namespace Test\Files\Mount;
 
-class MountPointTest extends \Test\TestCase {
+class MountPointTest extends \Test\TestCase
+{
 	public function testGetStorage() {
 		$cache = $this->createMock('\OC\Files\Cache\Cache');
 		$cache->expects($this->once())

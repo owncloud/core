@@ -28,7 +28,8 @@ use OCP\IUserSession;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-class GeneralPersonalPanel implements ISettings {
+class GeneralPersonalPanel implements ISettings
+{
 
 	/** @var IL10N */
 	protected $l;

@@ -32,7 +32,8 @@ use Sabre\DAV\Collection;
  *
  * @package OCA\DAV\Meta
  */
-class MetaFolder extends Collection {
+class MetaFolder extends Collection
+{
 
 	/** @var Folder */
 	private $folder;

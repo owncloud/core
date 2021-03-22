@@ -27,7 +27,8 @@ use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\ServerPlugin;
 
-class MetaPlugin extends ServerPlugin {
+class MetaPlugin extends ServerPlugin
+{
 
 	// namespace
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';

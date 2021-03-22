@@ -21,7 +21,8 @@
 
 namespace OC\Preview;
 
-class XBitmap extends Image {
+class XBitmap extends Image
+{
 	/**
 	 * {@inheritDoc}
 	 */

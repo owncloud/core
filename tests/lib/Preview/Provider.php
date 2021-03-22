@@ -26,7 +26,8 @@ use OCP\Files\Node;
 use OCP\Preview\IProvider2;
 use Test\Traits\UserTrait;
 
-abstract class Provider extends \Test\TestCase {
+abstract class Provider extends \Test\TestCase
+{
 	use UserTrait;
 
 	/** @var File */

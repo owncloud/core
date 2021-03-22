@@ -43,7 +43,8 @@ use OCP\Files\Storage;
 use OCP\ILogger;
 use OCP\Files\Cache\ICacheEntry;
 
-class Encryption extends Wrapper {
+class Encryption extends Wrapper
+{
 	use LocalTempFileTrait;
 
 	/** @var string */

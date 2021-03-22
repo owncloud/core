@@ -26,7 +26,8 @@ use DOMElement;
 use Sabre\DAV\Exception\NotAuthenticated;
 use Sabre\DAV\Server;
 
-class PasswordLoginForbidden extends NotAuthenticated {
+class PasswordLoginForbidden extends NotAuthenticated
+{
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';
 
 	public function getHTTPCode() {

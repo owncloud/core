@@ -58,7 +58,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * It provides the following hooks:
  *  - post_shared
  */
-class Share extends Constants {
+class Share extends Constants
+{
 
 	/** CRUDS permissions (Create, Read, Update, Delete, Share) using a bitmask
 	 * Construct permissions for share() and setPermissions with Or (|) e.g.

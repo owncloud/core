@@ -28,7 +28,8 @@ use OCP\Migration\ISchemaMigration;
  * Create initial tables for the dav app
  */
 
-class Version20170116150538 implements ISchemaMigration {
+class Version20170116150538 implements ISchemaMigration
+{
 
 	/** @var  string */
 	private $prefix;

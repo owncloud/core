@@ -30,7 +30,8 @@
  * This class manages the access to the database. It basically is a wrapper for
  * Doctrine with some adaptions.
  */
-class OC_DB {
+class OC_DB
+{
 
 	/**
 	 * get MDB2 schema manager

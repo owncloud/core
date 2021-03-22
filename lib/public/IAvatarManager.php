@@ -30,7 +30,8 @@ namespace OCP;
  * @since 6.0.0
  */
 
-interface IAvatarManager {
+interface IAvatarManager
+{
 
 	/**
 	 * return a user specific instance of \OCP\IAvatar

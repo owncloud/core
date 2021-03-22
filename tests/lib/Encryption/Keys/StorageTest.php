@@ -38,7 +38,8 @@ use Test\Traits\UserTrait;
  *
  * @package Test\Encryption\Keys
  */
-class StorageTest extends TestCase {
+class StorageTest extends TestCase
+{
 	use UserTrait;
 
 	/** @var Storage */

@@ -27,7 +27,8 @@ use OCP\IConfig;
 /**
  * @package Tests\Settings\Panels\Admin
  */
-class PersistentLockingTest extends \Test\TestCase {
+class PersistentLockingTest extends \Test\TestCase
+{
 	/** @var IConfig */
 	private $config;
 

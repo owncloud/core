@@ -39,7 +39,8 @@ use OCP\Share\IShare;
  *
  * @package OCA\FederatedFileSharing\Controller\Middleware
  */
-class OcmMiddleware {
+class OcmMiddleware
+{
 	/**
 	 * @var FederatedShareProvider
 	 */

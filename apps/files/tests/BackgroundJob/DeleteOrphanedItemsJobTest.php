@@ -32,7 +32,8 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
  *
  * @package Test\BackgroundJob
  */
-class DeleteOrphanedItemsJobTest extends \Test\TestCase {
+class DeleteOrphanedItemsJobTest extends \Test\TestCase
+{
 
 	/** @var \OCP\IDBConnection */
 	protected $connection;

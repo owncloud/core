@@ -37,7 +37,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ListCommand extends Base {
+class ListCommand extends Base
+{
 	/**
 	 * @var IGlobalStoragesService
 	 */

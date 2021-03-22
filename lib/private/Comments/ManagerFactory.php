@@ -27,7 +27,8 @@ use OCP\Comments\ICommentsManager;
 use OCP\Comments\ICommentsManagerFactory;
 use OCP\IServerContainer;
 
-class ManagerFactory implements ICommentsManagerFactory {
+class ManagerFactory implements ICommentsManagerFactory
+{
 
 	/**
 	 * Server container

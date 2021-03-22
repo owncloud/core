@@ -27,7 +27,8 @@ namespace OCP;
  * Manage trusted certificates for users
  * @since 8.0.0
  */
-interface ICertificateManager {
+interface ICertificateManager
+{
 	/**
 	 * Returns all certificates trusted by the user
 	 *

@@ -24,7 +24,8 @@ namespace OCA\Files_Versions;
 use OC\Files\Filesystem;
 use OC\Files\View;
 
-class FileHelper {
+class FileHelper
+{
 	const VERSIONS_RELATIVE_PATH = '/files_versions';
 
 	/**

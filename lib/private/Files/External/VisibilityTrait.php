@@ -34,7 +34,8 @@ use OCP\Files\External\IStoragesBackendService;
  * while the allowed visibility is set directly by the object and cannot be
  * modified by the administrator.
  */
-trait VisibilityTrait {
+trait VisibilityTrait
+{
 
 	/** @var int visibility */
 	protected $visibility = IStoragesBackendService::VISIBILITY_DEFAULT;

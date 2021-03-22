@@ -25,7 +25,8 @@ namespace OCA\DAV\CardDAV;
 use OCP\Contacts\IManager;
 use OCP\IURLGenerator;
 
-class ContactsManager {
+class ContactsManager
+{
 
 	/** @var CardDavBackend  */
 	private $backend;

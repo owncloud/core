@@ -25,7 +25,8 @@ namespace OC\Notification;
 use OCP\Notification\IAction;
 use OCP\Notification\INotification;
 
-class Notification implements INotification {
+class Notification implements INotification
+{
 	/** @var string */
 	protected $app;
 

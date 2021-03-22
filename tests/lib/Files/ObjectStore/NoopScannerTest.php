@@ -11,7 +11,8 @@
  */
 namespace Test\Files\ObjectStore;
 
-class NoopScannerTest extends \Test\TestCase {
+class NoopScannerTest extends \Test\TestCase
+{
 	/** @var \OC\Files\Storage\Storage $storage */
 	private $storage;
 

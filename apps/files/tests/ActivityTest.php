@@ -32,7 +32,8 @@ use Test\TestCase;
  * @group DB
  * @package OCA\Files\Tests
  */
-class ActivityTest extends TestCase {
+class ActivityTest extends TestCase
+{
 
 	/** @var \OCP\Activity\IManager */
 	private $activityManager;

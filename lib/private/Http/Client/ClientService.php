@@ -31,7 +31,8 @@ use OCP\IConfig;
  *
  * @package OC\Http
  */
-class ClientService implements IClientService {
+class ClientService implements IClientService
+{
 	/** @var IConfig */
 	private $config;
 	/** @var ICertificateManager */

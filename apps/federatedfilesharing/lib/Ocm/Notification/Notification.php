@@ -26,7 +26,8 @@ namespace OCA\FederatedFileSharing\Ocm\Notification;
  *
  * @package OCA\FederatedFileSharing\Ocm\Notification
  */
-abstract class Notification {
+abstract class Notification
+{
 
 	/**
 	 * @var string Specifies to which shared resource the notification belong to

@@ -41,7 +41,8 @@ use Sabre\DAV\Exception\NotFound;
  *
  * @package OCA\DAV\Tests\unit\CalDAV
  */
-class CalDavBackendTest extends AbstractCalDavBackendTest {
+class CalDavBackendTest extends AbstractCalDavBackendTest
+{
 
 	/**
 	 * @throws \Sabre\DAV\Exception

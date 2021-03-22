@@ -29,7 +29,8 @@ use OCP\IUser;
 /**
  * Mount provider for custom preview storages
  */
-class PreviewsMountProvider implements IMountProvider {
+class PreviewsMountProvider implements IMountProvider
+{
 	/**
 	 * @var IConfig
 	 */

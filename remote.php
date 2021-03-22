@@ -37,7 +37,8 @@ use Sabre\DAV\Server;
  * Dummy exception class to be use locally to identify certain conditions
  * Will not be logged to avoid DoS
  */
-class RemoteException extends Exception {
+class RemoteException extends Exception
+{
 }
 
 /**

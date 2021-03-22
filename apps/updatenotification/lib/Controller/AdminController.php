@@ -37,7 +37,8 @@ use OCP\IRequest;
 use OCP\Security\ISecureRandom;
 use OCP\Settings\ISettings;
 
-class AdminController extends Controller implements ISettings {
+class AdminController extends Controller implements ISettings
+{
 	/** @var IJobList */
 	private $jobList;
 	/** @var ISecureRandom */

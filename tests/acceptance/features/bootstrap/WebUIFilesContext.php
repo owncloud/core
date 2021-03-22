@@ -47,7 +47,8 @@ require_once 'bootstrap.php';
 /**
  * WebUI Files context.
  */
-class WebUIFilesContext extends RawMinkContext implements Context {
+class WebUIFilesContext extends RawMinkContext implements Context
+{
 
 	/**
 	 *

@@ -28,7 +28,8 @@ namespace OCP;
  * @package OCP
  * @since 8.0.0
  */
-interface IDateTimeFormatter {
+interface IDateTimeFormatter
+{
 	/**
 	 * Formats the date of the given timestamp
 	 *

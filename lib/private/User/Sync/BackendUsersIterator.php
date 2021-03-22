@@ -22,7 +22,8 @@ namespace OC\User\Sync;
 
 use OCP\UserInterface;
 
-class BackendUsersIterator extends UsersIterator {
+class BackendUsersIterator extends UsersIterator
+{
 	/**
 	 * @var UserInterface
 	 */

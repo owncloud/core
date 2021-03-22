@@ -33,7 +33,8 @@ require_once 'bootstrap.php';
 /**
  * WebUI AdminSharingSettings context.
  */
-class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context {
+class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
+{
 	private $adminSharingSettingsPage;
 
 	/**

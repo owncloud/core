@@ -28,7 +28,8 @@ namespace OC\IntegrityCheck\Iterator;
  *
  * @package OC\Integritycheck\Iterator
  */
-class ExcludeFileByNameFilterIterator extends \RecursiveFilterIterator {
+class ExcludeFileByNameFilterIterator extends \RecursiveFilterIterator
+{
 	/**
 	 * Array of excluded file names. Those are not scanned by the integrity checker.
 	 * This is used to exclude files which administrators could upload by mistakes

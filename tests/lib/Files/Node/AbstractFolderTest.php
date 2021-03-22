@@ -25,7 +25,8 @@ use OC\Files\Node\AbstractFolder;
 use OCP\Files\FileInfo;
 use Test\TestCase;
 
-class AbstractFolderTest extends TestCase {
+class AbstractFolderTest extends TestCase
+{
 	public function testMimeAndGetType() {
 		/** @var AbstractFolder | \PHPUnit\Framework\MockObject\MockObject $node */
 		$node = $this->getMockForAbstractClass(AbstractFolder::class);

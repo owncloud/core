@@ -25,7 +25,8 @@ namespace OC\Share;
 
 use OCP\ILogger;
 
-class SearchResultSorter {
+class SearchResultSorter
+{
 	private $search;
 	private $encoding;
 	private $key;

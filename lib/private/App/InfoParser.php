@@ -28,7 +28,8 @@ namespace OC\App;
 use InvalidArgumentException;
 use OCP\App\AppNotFoundException;
 
-class InfoParser {
+class InfoParser
+{
 
 	/**
 	 * @param string $file the xml file to be loaded

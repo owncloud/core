@@ -29,7 +29,8 @@ use OC\Cache\CappedMemoryCache;
  * When applied and a UTF-8 path name was given, the wrapper will first attempt to access
  * the actual given name and then try its NFD form.
  */
-class Encoding extends Wrapper {
+class Encoding extends Wrapper
+{
 
 	/**
 	 * @var CappedMemoryCache

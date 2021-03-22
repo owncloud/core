@@ -31,7 +31,8 @@ use OCP\IL10N;
 use OCP\IURLGenerator;
 use OCP\L10N\IFactory;
 
-class Activity implements IExtension {
+class Activity implements IExtension
+{
 	const APP_FILES = 'files';
 	const FILTER_FILES = 'files';
 	const FILTER_FAVORITES = 'files_favorites';

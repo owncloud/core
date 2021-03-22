@@ -37,7 +37,8 @@ use OC\Notification\Manager;
  * register always the same instance (per request) or make sure the behaviour won't change if
  * several instances are used.
  */
-class RegisterNotifierEventImpl extends RegisterNotifierEvent {
+class RegisterNotifierEventImpl extends RegisterNotifierEvent
+{
 	/** @var Manager */
 	private $manager;
 

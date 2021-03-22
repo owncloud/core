@@ -34,7 +34,8 @@ use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\ICollection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class RootCollection implements ICollection {
+class RootCollection implements ICollection
+{
 
 	/** @var EntityTypeCollection[]|null */
 	private $entityTypeCollections;

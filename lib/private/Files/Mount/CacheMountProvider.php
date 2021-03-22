@@ -29,7 +29,8 @@ use OCP\IUser;
 /**
  * Mount provider for custom cache storages
  */
-class CacheMountProvider implements IMountProvider {
+class CacheMountProvider implements IMountProvider
+{
 	/**
 	 * @var IConfig
 	 */

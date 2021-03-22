@@ -37,7 +37,8 @@ use OCP\Files\Cache\ICacheEntry;
  *
  * @package OCA\Files_External\Lib\Cache
  */
-class SmbCacheWrapper extends CacheWrapper {
+class SmbCacheWrapper extends CacheWrapper
+{
 	/**
 	 * @var SMB
 	 */

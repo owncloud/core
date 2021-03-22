@@ -33,7 +33,8 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\Response;
 
-class TestController extends Controller {
+class TestController extends Controller
+{
 	/**
 	 * @param string $appName
 	 * @param \OCP\IRequest $request
@@ -70,7 +71,8 @@ class TestController extends Controller {
 	}
 }
 
-class DispatcherTest extends \Test\TestCase {
+class DispatcherTest extends \Test\TestCase
+{
 	/** @var MiddlewareDispatcher | \PHPUnit\Framework\MockObject\MockObject */
 	private $middlewareDispatcher;
 	/** @var Dispatcher | \PHPUnit\Framework\MockObject\MockObject */

@@ -26,7 +26,8 @@ use OCP\Files\File;
 use OCP\Share\IShare;
 use Test\TestCase;
 
-class PublicFileTest extends TestCase {
+class PublicFileTest extends TestCase
+{
 	public function testETag() {
 		$file = $this->createMock(File::class);
 		$file->method('getETag')->willReturn('123456');

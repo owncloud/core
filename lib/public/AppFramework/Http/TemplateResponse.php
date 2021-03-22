@@ -33,7 +33,8 @@ namespace OCP\AppFramework\Http;
  * Response for a normal template
  * @since 6.0.0
  */
-class TemplateResponse extends Response {
+class TemplateResponse extends Response
+{
 
 	/**
 	 * name of the template

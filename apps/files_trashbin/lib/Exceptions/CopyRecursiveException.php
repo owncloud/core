@@ -22,5 +22,6 @@
 
 namespace OCA\Files_Trashbin\Exceptions;
 
-class CopyRecursiveException extends \Exception {
+class CopyRecursiveException extends \Exception
+{
 }

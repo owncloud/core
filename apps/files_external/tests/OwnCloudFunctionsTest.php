@@ -32,7 +32,8 @@ namespace OCA\Files_External\Tests;
  *
  * @package OCA\Files_External\Tests
  */
-class OwnCloudFunctionsTest extends \Test\TestCase {
+class OwnCloudFunctionsTest extends \Test\TestCase
+{
 	public function configUrlProvider() {
 		return [
 			[

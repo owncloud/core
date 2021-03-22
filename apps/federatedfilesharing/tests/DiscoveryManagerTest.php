@@ -30,7 +30,8 @@ use OCP\Http\Client\IClientService;
 use OCP\ICache;
 use OCP\ICacheFactory;
 
-class DiscoveryManagerTest extends \Test\TestCase {
+class DiscoveryManagerTest extends \Test\TestCase
+{
 	/** @var ICache */
 	private $cache;
 	/** @var IClient */

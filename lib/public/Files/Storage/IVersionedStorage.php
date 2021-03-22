@@ -27,7 +27,8 @@ namespace OCP\Files\Storage;
  * @package OCP\Files\Storage
  * @since 10.0.9
  */
-interface IVersionedStorage {
+interface IVersionedStorage
+{
 
 	/**
 	 * List all versions for the given file

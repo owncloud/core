@@ -27,7 +27,8 @@ use OCP\Lock\ILockingProvider;
  * Base locking provider that keeps track of locks acquired during the current request
  * to release any left over locks at the end of the request
  */
-abstract class AbstractLockingProvider implements ILockingProvider {
+abstract class AbstractLockingProvider implements ILockingProvider
+{
 	protected $ttl; // how long until we clear stray locks in seconds
 
 	protected $acquiredLocks = [

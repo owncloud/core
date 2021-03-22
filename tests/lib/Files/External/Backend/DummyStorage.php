@@ -23,7 +23,8 @@ namespace Test\Files\External\Backend;
 
 use OC\Files\Storage\Temporary;
 
-class DummyStorage extends Temporary {
+class DummyStorage extends Temporary
+{
 	private $args;
 
 	public function __construct($arguments = null) {

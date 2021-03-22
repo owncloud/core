@@ -44,7 +44,8 @@ use OCP\ILogger;
  * This class gets and sets users avatars.
  */
 
-class Avatar implements IAvatar {
+class Avatar implements IAvatar
+{
 	/** @var IStorage */
 	private $storage;
 	/** @var IL10N */

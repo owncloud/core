@@ -28,7 +28,8 @@ namespace OC\Memcache;
 
 use OCP\IMemcache;
 
-class APCu extends Cache implements IMemcache {
+class APCu extends Cache implements IMemcache
+{
 	use CASTrait {
 		cas as casEmulated;
 	}

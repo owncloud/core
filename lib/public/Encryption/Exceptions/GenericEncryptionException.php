@@ -32,7 +32,8 @@ use OC\HintException;
  * @package OCP\Encryption\Exceptions
  * @since 8.1.0
  */
-class GenericEncryptionException extends HintException {
+class GenericEncryptionException extends HintException
+{
 
 	/**
 	 * @param string $message

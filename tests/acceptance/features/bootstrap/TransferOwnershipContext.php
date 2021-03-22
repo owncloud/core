@@ -28,7 +28,8 @@ require_once 'bootstrap.php';
 /**
  * Steps that relate to transferring ownership
  */
-class TransferOwnershipContext implements Context {
+class TransferOwnershipContext implements Context
+{
 	/**
 	 *
 	 * @var FeatureContext

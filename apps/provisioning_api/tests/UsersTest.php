@@ -42,7 +42,8 @@ use OC\SubAdmin;
 use OCP\IGroup;
 use OC\Authentication\TwoFactorAuth\Manager;
 
-class UsersTest extends OriginalTest {
+class UsersTest extends OriginalTest
+{
 
 	/** @var IUserManager | PHPUnit\Framework\MockObject\MockObject */
 	protected $userManager;

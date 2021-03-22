@@ -35,7 +35,8 @@ use OCP\AppFramework\IApi;
  * class and add your methods
  * @deprecated
  */
-class API implements IApi {
+class API implements IApi
+{
 	private $appName;
 
 	/**

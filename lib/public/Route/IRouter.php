@@ -34,7 +34,8 @@ namespace OCP\Route;
  * @since 7.0.0
  * @deprecated 9.0.0
  */
-interface IRouter {
+interface IRouter
+{
 
 	/**
 	 * Get the files to load the routes from

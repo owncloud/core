@@ -30,7 +30,8 @@ namespace OCP\BackgroundJob;
  * @package OCP\BackgroundJob
  * @since 7.0.0
  */
-interface IJobList {
+interface IJobList
+{
 	/**
 	 * Add a job to the list
 	 *

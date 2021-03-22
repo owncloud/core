@@ -2,7 +2,8 @@
 
 namespace Test;
 
-class ContactsManagerTest extends \Test\TestCase {
+class ContactsManagerTest extends \Test\TestCase
+{
 
 	/** @var \OC\ContactsManager */
 	private $cm;

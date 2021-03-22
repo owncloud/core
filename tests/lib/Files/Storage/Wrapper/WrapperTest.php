@@ -18,7 +18,8 @@ use OC\Files\Storage\Local;
  *
  * @package Test\Files\Storage\Wrapper
  */
-class WrapperTest extends Storage {
+class WrapperTest extends Storage
+{
 	/**
 	 * @var string $tmpDir
 	 */

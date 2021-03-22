@@ -34,7 +34,8 @@ use OC\Group\Backend;
 /**
  * dummy group backend, does not keep state, only for testing use
  */
-class Dummy extends Backend {
+class Dummy extends Backend
+{
 	private $groups= [];
 	/**
 	 * Try to create a new group

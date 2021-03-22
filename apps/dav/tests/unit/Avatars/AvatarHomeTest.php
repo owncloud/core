@@ -29,7 +29,8 @@ use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\Exception\NotFound;
 use Test\TestCase;
 
-class AvatarHomeTest extends TestCase {
+class AvatarHomeTest extends TestCase
+{
 
 	/** @var AvatarHome */
 	private $home;

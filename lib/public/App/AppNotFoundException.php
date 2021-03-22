@@ -25,5 +25,6 @@ namespace OCP\App;
  *
  * @since 10.0.0
  */
-class AppNotFoundException extends AppManagerException {
+class AppNotFoundException extends AppManagerException
+{
 }

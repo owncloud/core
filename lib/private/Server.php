@@ -126,7 +126,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * TODO: hookup all manager classes
  */
-class Server extends ServerContainer implements IServerContainer, IServiceLoader {
+class Server extends ServerContainer implements IServerContainer, IServiceLoader
+{
 	use EventEmitterTrait;
 	/** @var string */
 	private $webRoot;

@@ -28,7 +28,8 @@ namespace OCP\Diagnostics;
  * @package OCP\Diagnostics
  * @since 8.0.0
  */
-interface IEvent {
+interface IEvent
+{
 	/**
 	 * @return string
 	 * @since 8.0.0

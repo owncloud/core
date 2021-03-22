@@ -42,7 +42,8 @@ use Test\Traits\UserTrait;
  *
  * @package OCA\Files_Sharing\Tests\External
  */
-class ManagerTest extends TestCase {
+class ManagerTest extends TestCase
+{
 	use UserTrait;
 
 	/** @var Manager **/

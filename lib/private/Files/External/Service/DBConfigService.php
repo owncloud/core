@@ -32,7 +32,8 @@ use OCP\Security\ICrypto;
 /**
  * Stores the mount config in the database
  */
-class DBConfigService {
+class DBConfigService
+{
 	const MOUNT_TYPE_ADMIN = 1;
 	const MOUNT_TYPE_PERSONAl = 2;
 

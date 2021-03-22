@@ -37,7 +37,8 @@ use Test\TestCase;
  *
  * @package OC\Core\Controller
  */
-class OcsControllerTest extends TestCase {
+class OcsControllerTest extends TestCase
+{
 	/** @var Request | MockObject */
 	private $request;
 

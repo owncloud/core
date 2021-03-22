@@ -25,7 +25,8 @@ use OCA\DAV\Meta\MetaFile;
 use OCP\Files\File;
 use Test\TestCase;
 
-class MetaFileTest extends TestCase {
+class MetaFileTest extends TestCase
+{
 	public function testETag() {
 		$file = $this->createMock(File::class);
 		$file->method('getETag')->willReturn('123456');

@@ -17,7 +17,8 @@ use OCP\Files\StorageNotAvailableException;
 use OCP\IL10N;
 use OCP\ILogger;
 
-class AvatarTest extends \Test\TestCase {
+class AvatarTest extends \Test\TestCase
+{
 	/** @var IStorage | \PHPUnit\Framework\MockObject\MockObject */
 	private $storage;
 

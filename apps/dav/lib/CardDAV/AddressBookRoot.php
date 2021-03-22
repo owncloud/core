@@ -20,7 +20,8 @@
  */
 namespace OCA\DAV\CardDAV;
 
-class AddressBookRoot extends \Sabre\CardDAV\AddressBookRoot {
+class AddressBookRoot extends \Sabre\CardDAV\AddressBookRoot
+{
 
 	/**
 	 * This method returns a node for a principal.

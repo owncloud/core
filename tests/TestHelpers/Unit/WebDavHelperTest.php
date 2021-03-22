@@ -31,7 +31,8 @@ use GuzzleHttp\Psr7\Request;
 /**
  * Test for WebDavHelper
  */
-class WebDavHelperTest extends PHPUnit\Framework\TestCase {
+class WebDavHelperTest extends PHPUnit\Framework\TestCase
+{
 	private $container = [];
 	/**
 	 * @var Client

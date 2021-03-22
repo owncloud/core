@@ -28,7 +28,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
 /**
  * GeneralExceptionPage page.
  */
-class GeneralExceptionPage extends OwncloudPage {
+class GeneralExceptionPage extends OwncloudPage
+{
 	protected $exceptionTitleXpath = ".//span[@class='error error-wide']//h2[1]";
 	protected $exceptionMessageXpath = ".//span[@class='error error-wide']//p[@class='hint']";
 

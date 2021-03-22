@@ -29,7 +29,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use OCA\DAV\Files\Sharing\PublicLinkEventsPlugin;
 use Test\TestCase;
 
-class PublicLinkEventsPluginTest extends TestCase {
+class PublicLinkEventsPluginTest extends TestCase
+{
 	/** @var EventDispatcherInterface */
 	private $dispatcher;
 	/** @var Server */

@@ -23,7 +23,8 @@ namespace OC\Helper;
 
 use OCP\L10N\IFactory;
 
-class LocaleHelper {
+class LocaleHelper
+{
 	/**
 	 * @var string[]
 	 */

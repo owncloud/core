@@ -31,7 +31,8 @@ use OCP\Util\UserSearch;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class ManagerTest extends \Test\TestCase {
+class ManagerTest extends \Test\TestCase
+{
 
 	/**
 	 * @var \OC\User\Manager

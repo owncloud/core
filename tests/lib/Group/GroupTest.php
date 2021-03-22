@@ -14,7 +14,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use OC\Group\Group;
 
-class GroupTest extends \Test\TestCase {
+class GroupTest extends \Test\TestCase
+{
 	/**
 	 * @return \OC\User\Manager | \OC\User\Manager
 	 */

@@ -26,7 +26,8 @@ namespace OC\BackgroundJob;
 use OCP\BackgroundJob\IJob;
 use OCP\ILogger;
 
-abstract class Job implements IJob {
+abstract class Job implements IJob
+{
 	/**
 	 * @var int $id
 	 */

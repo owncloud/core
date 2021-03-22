@@ -86,7 +86,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @package OC\User
  */
-class Session implements IUserSession, Emitter {
+class Session implements IUserSession, Emitter
+{
 	use EventEmitterTrait;
 	/** @var IUserManager | PublicEmitter $manager */
 	private $manager;

@@ -39,7 +39,8 @@ $eventSource = \OC::$server->createEventSource();
 // message
 $eventSource->send('success', (string)$l->t('Preparing update'));
 
-class FeedBackHandler {
+class FeedBackHandler
+{
 	/** @var integer */
 	private $progressStateMax = 100;
 	/** @var integer */

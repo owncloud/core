@@ -29,7 +29,8 @@ use Test\TestCase;
 /**
  * @group DB
  */
-class DBConfigServiceTest extends TestCase {
+class DBConfigServiceTest extends TestCase
+{
 	/**
 	 * @var DBConfigService
 	 */

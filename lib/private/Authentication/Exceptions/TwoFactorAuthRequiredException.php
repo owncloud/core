@@ -23,5 +23,6 @@ namespace OC\Authentication\Exceptions;
 
 use Exception;
 
-class TwoFactorAuthRequiredException extends Exception {
+class TwoFactorAuthRequiredException extends Exception
+{
 }

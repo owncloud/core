@@ -12,7 +12,8 @@ namespace Test;
 * Tests whether LargeFileHelper is able to determine file size at all.
 * Large files are not considered yet.
 */
-class LargeFileHelperGetFileSizeTest extends TestCase {
+class LargeFileHelperGetFileSizeTest extends TestCase
+{
 	/** @var string */
 	protected $filename;
 	/** @var int */

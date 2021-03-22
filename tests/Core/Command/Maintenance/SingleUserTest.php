@@ -24,7 +24,8 @@ namespace Tests\Core\Command\Maintenance;
 use OC\Core\Command\Maintenance\SingleUser;
 use Test\TestCase;
 
-class SingleUserTest extends TestCase {
+class SingleUserTest extends TestCase
+{
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 	/** @var \PHPUnit\Framework\MockObject\MockObject */

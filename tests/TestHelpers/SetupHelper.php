@@ -33,7 +33,8 @@ use SimpleXMLElement;
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
-class SetupHelper extends \PHPUnit\Framework\Assert {
+class SetupHelper extends \PHPUnit\Framework\Assert
+{
 
 	/**
 	 * @var string

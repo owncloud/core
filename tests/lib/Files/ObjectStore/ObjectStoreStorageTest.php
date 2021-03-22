@@ -28,7 +28,8 @@ namespace Test\Files\ObjectStore;
  *
  * @package Test\Files\Cache\ObjectStore
  */
-abstract class ObjectStoreStorageTest extends \Test\Files\Storage\Storage {
+abstract class ObjectStoreStorageTest extends \Test\Files\Storage\Storage
+{
 	public function testStat() {
 		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
 		$ctimeStart = \time();

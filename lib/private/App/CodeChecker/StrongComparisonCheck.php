@@ -21,7 +21,8 @@
 
 namespace OC\App\CodeChecker;
 
-class StrongComparisonCheck implements ICheck {
+class StrongComparisonCheck implements ICheck
+{
 	/** @var ICheck */
 	protected $check;
 

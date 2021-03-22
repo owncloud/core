@@ -33,7 +33,8 @@ namespace OCP\Security;
  * @package OCP\Security
  * @since 8.0.0
  */
-interface ISecureRandom {
+interface ISecureRandom
+{
 
 	/**
 	 * Flags for characters that can be used for <code>generate($length, $characters)</code>

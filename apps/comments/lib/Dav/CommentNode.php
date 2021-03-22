@@ -33,7 +33,8 @@ use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\PropPatch;
 
-class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
+class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties
+{
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';
 
 	const PROPERTY_NAME_UNREAD = '{http://owncloud.org/ns}isUnread';

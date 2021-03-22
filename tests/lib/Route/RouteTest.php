@@ -24,7 +24,8 @@ namespace Test\Route;
 use OC\Route\Route;
 use Test\TestCase;
 
-class RouteTest extends TestCase {
+class RouteTest extends TestCase
+{
 	const code = <<<EOL
 <?php
 namespace Test\Route;

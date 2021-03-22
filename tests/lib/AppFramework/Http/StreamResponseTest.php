@@ -27,7 +27,8 @@ use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\IOutput;
 use OCP\AppFramework\Http\StreamResponse;
 
-class StreamResponseTest extends \Test\TestCase {
+class StreamResponseTest extends \Test\TestCase
+{
 
 	/** @var IOutput */
 	private $output;

@@ -28,7 +28,8 @@ namespace OC\IntegrityCheck\Helpers;
  *
  * @package OC\IntegrityCheck\Helpers
  */
-class AppLocator {
+class AppLocator
+{
 	/**
 	 * Provides \OC_App::getAppPath($appId)
 	 *

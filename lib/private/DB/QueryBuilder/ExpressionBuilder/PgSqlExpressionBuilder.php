@@ -25,7 +25,8 @@ namespace OC\DB\QueryBuilder\ExpressionBuilder;
 use OC\DB\QueryBuilder\QueryFunction;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 
-class PgSqlExpressionBuilder extends ExpressionBuilder {
+class PgSqlExpressionBuilder extends ExpressionBuilder
+{
 
 	/**
 	 * Returns a IQueryFunction that casts the column to the given type

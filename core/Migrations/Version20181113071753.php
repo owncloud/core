@@ -27,7 +27,8 @@ use OCP\Migration\ISchemaMigration;
 /**
  * Add assignable column to unique index in oc_systemtags table
  */
-class Version20181113071753 implements ISchemaMigration {
+class Version20181113071753 implements ISchemaMigration
+{
 	/** @var string */
 	private $prefix;
 

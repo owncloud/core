@@ -31,7 +31,8 @@ use Test\Traits\UserTrait;
  *
  * @group DB
  */
-class ListUserGroupsTest extends TestCase {
+class ListUserGroupsTest extends TestCase
+{
 	use UserTrait;
 
 	/** @var CommandTester */

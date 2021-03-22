@@ -29,7 +29,8 @@ use OCP\Lock\ILockingProvider;
  *
  * All paths passed to the storage are relative to the storage and should NOT have a leading slash.
  */
-interface Storage extends \OCP\Files\Storage {
+interface Storage extends \OCP\Files\Storage
+{
 
 	/**
 	 * get a cache instance for the storage

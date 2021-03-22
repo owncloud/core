@@ -28,7 +28,8 @@ use Sabre\HTTP\ResponseInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class PublicLinkEventsPlugin extends ServerPlugin {
+class PublicLinkEventsPlugin extends ServerPlugin
+{
 	/** @var EventDispatcherInterface */
 	private $dispatcher;
 	/** @var Server */

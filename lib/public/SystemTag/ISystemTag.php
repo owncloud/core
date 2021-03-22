@@ -26,7 +26,8 @@ namespace OCP\SystemTag;
  *
  * @since 9.0.0
  */
-interface ISystemTag {
+interface ISystemTag
+{
 
 	/**
 	 * Returns the tag id

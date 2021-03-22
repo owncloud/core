@@ -13,7 +13,8 @@ use OC\App\CodeChecker\EmptyCheck;
 use Test\App\CodeChecker\Mock\TestList;
 use Test\TestCase;
 
-class NodeVisitorTest extends TestCase {
+class NodeVisitorTest extends TestCase
+{
 	public function providesFilesToCheck() {
 		return [
 			[[['OCP\AppFramework\IApi', 1006]], 'test-deprecated-use.php'],

@@ -37,7 +37,8 @@ use Sabre\HTTP\ResponseInterface;
  *
  * @package OCA\DAV\Connector\Sabre
  */
-class DummyGetResponsePlugin extends \Sabre\DAV\ServerPlugin {
+class DummyGetResponsePlugin extends \Sabre\DAV\ServerPlugin
+{
 	/** @var \Sabre\DAV\Server */
 	protected $server;
 

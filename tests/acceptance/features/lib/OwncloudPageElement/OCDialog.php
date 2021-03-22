@@ -32,7 +32,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  * The oc-dialog
  *
  */
-class OCDialog extends OwncloudPage {
+class OCDialog extends OwncloudPage
+{
 
 	/**
 	 * @var NodeElement of this element

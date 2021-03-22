@@ -20,7 +20,8 @@
  */
 namespace OC\Share20;
 
-class Hooks {
+class Hooks
+{
 	public static function post_deleteUser($arguments) {
 		\OC::$server->getShareManager()->userDeleted($arguments['uid']);
 	}

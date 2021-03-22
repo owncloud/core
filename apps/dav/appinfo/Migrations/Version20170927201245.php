@@ -30,7 +30,8 @@ use OCP\Migration\ISchemaMigration;
  * of non-fs items (calendar/contacts) by path
  */
 
-class Version20170927201245 implements ISchemaMigration {
+class Version20170927201245 implements ISchemaMigration
+{
 
 	/**
 	 * @param Schema $schema

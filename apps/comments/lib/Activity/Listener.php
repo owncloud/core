@@ -31,7 +31,8 @@ use OCP\IUser;
 use OCP\IUserSession;
 use OCP\Share;
 
-class Listener {
+class Listener
+{
 	/** @var IManager */
 	protected $activityManager;
 	/** @var IUserSession */

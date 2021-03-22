@@ -24,7 +24,8 @@ namespace OCA\Files;
 use OCP\Files\Folder;
 use OCP\ITagManager;
 
-class ActivityHelper {
+class ActivityHelper
+{
 	/** If a user has a lot of favorites the query might get too slow and long */
 	const FAVORITE_LIMIT = 50;
 

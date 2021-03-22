@@ -30,7 +30,8 @@ use Sabre\HTTP\ResponseInterface;
 /**
  * Verify that the public link share is valid
  */
-class PublicLinkCheckPlugin extends ServerPlugin {
+class PublicLinkCheckPlugin extends ServerPlugin
+{
 	/**
 	 * @var FileInfo
 	 */

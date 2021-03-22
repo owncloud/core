@@ -21,7 +21,8 @@
 
 namespace Test\Share;
 
-class SearchResultSorterTest extends \Test\TestCase {
+class SearchResultSorterTest extends \Test\TestCase
+{
 	public function testSort() {
 		$search = 'lin';
 		$sorter = new \OC\Share\SearchResultSorter($search, 'foobar');

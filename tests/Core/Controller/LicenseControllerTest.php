@@ -25,7 +25,8 @@ use OCP\License\ILicenseManager;
 use OC\Core\Controller\LicenseController;
 use Test\TestCase;
 
-class LicenseControllerTest extends TestCase {
+class LicenseControllerTest extends TestCase
+{
 	/** @var IRequest */
 	private $request;
 	/** @var ILicenseManager */

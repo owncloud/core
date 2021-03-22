@@ -13,7 +13,8 @@ namespace Test\BackgroundJob;
  *
  * in memory job list for testing purposes
  */
-class DummyJobList extends \OC\BackgroundJob\JobList {
+class DummyJobList extends \OC\BackgroundJob\JobList
+{
 	/**
 	 * @var \OC\BackgroundJob\Job[]
 	 */

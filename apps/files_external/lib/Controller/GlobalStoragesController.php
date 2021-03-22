@@ -36,7 +36,8 @@ use OCP\IRequest;
 /**
  * Global storages controller
  */
-class GlobalStoragesController extends StoragesController {
+class GlobalStoragesController extends StoragesController
+{
 	/**
 	 * Creates a new global storages controller.
 	 *

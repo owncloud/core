@@ -30,7 +30,8 @@ use OC\Hooks\Emitter;
  * @package OCP\Files
  * @since 8.0.0
  */
-interface IRootFolder extends Folder, Emitter {
+interface IRootFolder extends Folder, Emitter
+{
 
 	/**
 	 * Returns a view to user's files folder

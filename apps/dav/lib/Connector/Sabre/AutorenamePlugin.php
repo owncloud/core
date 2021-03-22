@@ -31,7 +31,8 @@ use Sabre\HTTP\ResponseInterface;
  * Automatically renames a file if the target already exists,
  * if the OC-Autorename header is set.
  */
-class AutorenamePlugin extends ServerPlugin {
+class AutorenamePlugin extends ServerPlugin
+{
 
 	/**
 	 * Reference to main server object

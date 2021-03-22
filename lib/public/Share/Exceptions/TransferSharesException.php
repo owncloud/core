@@ -26,7 +26,8 @@ namespace OCP\Share\Exceptions;
  * @package OCP\Share\Exceptions
  * @since 10.0.9
  */
-class TransferSharesException extends GenericShareException {
+class TransferSharesException extends GenericShareException
+{
 
 	/**
 	 * TransferSharesException constructor.

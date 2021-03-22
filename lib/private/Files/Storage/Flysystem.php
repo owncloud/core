@@ -33,7 +33,8 @@ use League\Flysystem\Plugin\GetWithMetadata;
  *
  * To use: subclass and call $this->buildFlysystem with the flysystem adapter of choice
  */
-abstract class Flysystem extends Common {
+abstract class Flysystem extends Common
+{
 	/**
 	 * @var Filesystem
 	 */

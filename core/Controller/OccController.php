@@ -30,7 +30,8 @@ use OCP\ILogger;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-class OccController extends Controller {
+class OccController extends Controller
+{
 	
 	/** @var array  */
 	private $allowedCommands = [

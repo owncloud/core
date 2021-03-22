@@ -37,7 +37,8 @@ use Test\TestCase;
  * @group DB
  * @package Test\Authentication
  */
-class DefaultTokenMapperTest extends TestCase {
+class DefaultTokenMapperTest extends TestCase
+{
 
 	/** @var DefaultTokenMapper */
 	private $mapper;

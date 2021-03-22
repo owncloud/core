@@ -34,7 +34,8 @@ require_once 'bootstrap.php';
 /**
  * Acceptance test steps related to testing tags features
  */
-class TagsContext implements Context {
+class TagsContext implements Context
+{
 
 	/**
 	 *

@@ -28,7 +28,8 @@ use OCA\DAV\Connector\Sabre\Principal;
 use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCP\IDBConnection;
 
-class Backend {
+class Backend
+{
 
 	/** @var IDBConnection */
 	private $db;

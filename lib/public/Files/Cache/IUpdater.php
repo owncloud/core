@@ -28,7 +28,8 @@ use OCP\Files\Storage\IStorage;
  *
  * @since 9.0.0
  */
-interface IUpdater {
+interface IUpdater
+{
 	/**
 	 * Get the propagator for etags and mtime for the view the updater works on
 	 *

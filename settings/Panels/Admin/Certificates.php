@@ -27,7 +27,8 @@ use OCP\Template;
 use OCP\IConfig;
 use OCP\IURLGenerator;
 
-class Certificates implements ISettings {
+class Certificates implements ISettings
+{
 
 	/** @var IConfig */
 	protected $config;

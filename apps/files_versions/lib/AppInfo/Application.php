@@ -27,7 +27,8 @@ use OCA\Files_Versions\Expiration;
 use OCA\Files_Versions\FileHelper;
 use OCP\AppFramework\App;
 
-class Application extends App {
+class Application extends App
+{
 	public function __construct(array $urlParams = []) {
 		parent::__construct('files_versions', $urlParams);
 

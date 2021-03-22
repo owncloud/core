@@ -39,7 +39,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class Application {
+class Application
+{
 	/** @var IConfig */
 	private $config;
 	/** @var EventDispatcherInterface */

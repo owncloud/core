@@ -31,7 +31,8 @@
 
 namespace OC\Archive;
 
-class TAR extends Archive {
+class TAR extends Archive
+{
 	const PLAIN = 0;
 	const GZIP = 1;
 	const BZIP = 2;

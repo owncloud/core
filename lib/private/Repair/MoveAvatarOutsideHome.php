@@ -44,7 +44,8 @@ use OCP\Files\NotFoundException;
  *
  * @package OC\Repair
  */
-class MoveAvatarOutsideHome implements IRepairStep {
+class MoveAvatarOutsideHome implements IRepairStep
+{
 	/** @var \OCP\IConfig */
 	protected $config;
 

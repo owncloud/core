@@ -24,7 +24,8 @@ use OCP\IConfig;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-class Cors implements ISettings {
+class Cors implements ISettings
+{
 
 	/**
 	 * @var IUserSession

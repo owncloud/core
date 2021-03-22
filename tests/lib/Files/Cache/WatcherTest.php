@@ -15,7 +15,8 @@ namespace Test\Files\Cache;
  *
  * @package Test\Files\Cache
  */
-class WatcherTest extends \Test\TestCase {
+class WatcherTest extends \Test\TestCase
+{
 
 	/**
 	 * @var \OC\Files\Storage\Storage[] $storages

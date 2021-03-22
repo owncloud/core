@@ -23,7 +23,8 @@
 
 namespace OC;
 
-class NaturalSort_DefaultCollator {
+class NaturalSort_DefaultCollator
+{
 	public function compare($a, $b) {
 		$result = \strcasecmp($a, $b);
 		if ($result === 0) {

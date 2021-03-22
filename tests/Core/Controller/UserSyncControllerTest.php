@@ -36,7 +36,8 @@ use Test\TestCase;
  *
  * @package OC\Core\Controller
  */
-class UserSyncControllerTest extends TestCase {
+class UserSyncControllerTest extends TestCase
+{
 	/**
 	 * @var UserSyncController
 	 */

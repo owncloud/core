@@ -31,7 +31,8 @@ use Test\TestCase;
  *
  * @group DB
  */
-class RepairTest extends TestCase {
+class RepairTest extends TestCase
+{
 
 	/** @var CommandTester */
 	private $commandTester;

@@ -30,7 +30,8 @@ use \OCP\Files\StorageNotAvailableException;
  *
  * @since 10.0
  */
-class InsufficientDataForMeaningfulAnswerException extends StorageNotAvailableException {
+class InsufficientDataForMeaningfulAnswerException extends StorageNotAvailableException
+{
 	/**
 	 * StorageNotAvailableException constructor.
 	 *

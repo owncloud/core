@@ -21,7 +21,8 @@ use OC\Files\Storage\Local;
  *
  * @package Test\Files\Storage\Wrapper
  */
-class QuotaTest extends \Test\Files\Storage\Storage {
+class QuotaTest extends \Test\Files\Storage\Storage
+{
 	/**
 	 * @var string tmpDir
 	 */

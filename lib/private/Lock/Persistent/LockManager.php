@@ -24,7 +24,8 @@ use OCP\IUserSession;
 use OCP\Lock\Persistent\ILock;
 use OCP\IConfig;
 
-class LockManager {
+class LockManager
+{
 	const LOCK_TIMEOUT_DEFAULT = 30 * 60;  // default 30 minutes
 	const LOCK_TIMEOUT_MAX = 24 * 60 * 60;  // max 1 day
 	/** @var LockMapper */

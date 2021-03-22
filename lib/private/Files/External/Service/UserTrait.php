@@ -28,7 +28,8 @@ use \OCP\IUser;
 /**
  * Trait for getting user information in a service
  */
-trait UserTrait {
+trait UserTrait
+{
 
 	/** @var IUserSession */
 	protected $userSession;

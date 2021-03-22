@@ -33,7 +33,8 @@ use OCP\L10N\IFactory;
  *
  * @package OCA\SystemTags\Activity
  */
-class Extension implements IExtension {
+class Extension implements IExtension
+{
 	const APP_NAME = 'systemtags';
 
 	const CREATE_TAG = 'create_tag';

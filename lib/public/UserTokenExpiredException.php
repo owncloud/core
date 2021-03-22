@@ -27,7 +27,8 @@ namespace OCP;
  * @package OCP
  * @since 10.0.10
  */
-class UserTokenExpiredException extends UserTokenException {
+class UserTokenExpiredException extends UserTokenException
+{
 	/** @var UserTokenExpiredException */
 	private $previousException;
 

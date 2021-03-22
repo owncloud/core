@@ -33,7 +33,8 @@ use OCP\IUser;
 use OCP\IUserManager;
 use Test\TestCase;
 
-class HookManagerTest extends TestCase {
+class HookManagerTest extends TestCase
+{
 
 	/** @var L10N */
 	private $l10n;

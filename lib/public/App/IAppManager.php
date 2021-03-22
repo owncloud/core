@@ -33,7 +33,8 @@ use OCP\IUser;
  * @package OCP\App
  * @since 8.0.0
  */
-interface IAppManager {
+interface IAppManager
+{
 	/**
 	 * Check if an app is enabled for user
 	 *

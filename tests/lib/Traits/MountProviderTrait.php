@@ -15,7 +15,8 @@ use OCP\IUser;
 /**
  * Allow setting mounts for users
  */
-trait MountProviderTrait {
+trait MountProviderTrait
+{
 	/**
 	 * @var \OCP\Files\Config\IMountProvider
 	 */

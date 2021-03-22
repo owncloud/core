@@ -23,7 +23,8 @@
 
 namespace OCA\Files_Sharing\External;
 
-class Cache extends \OC\Files\Cache\Cache {
+class Cache extends \OC\Files\Cache\Cache
+{
 	private $remote;
 	private $remoteUser;
 	private $storage;

@@ -29,7 +29,8 @@ use OCP\IUserSession;
  *
  */
 
-class PersonalSettingsController extends Controller {
+class PersonalSettingsController extends Controller
+{
 	const USER_CONFIGS = [
 		'auto_accept_share',
 		'allow_share_dialog_user_enumeration'

@@ -30,7 +30,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  * Object for the conflict dialog that appears when uploading a file that
  * already exists.
  */
-class ConflictDialog extends OCDialog {
+class ConflictDialog extends OCDialog
+{
 	private $keepNewFilesCheckXpath = "//label[@for='checkbox-allnewfiles']";
 	private $keepExistingFilesCheckXpath = "//label[@for='checkbox-allexistingfiles']";
 

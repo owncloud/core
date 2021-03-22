@@ -23,7 +23,8 @@ namespace Test\Files\External;
 use Test\TestCase;
 use OC\Files\External\InvalidStorage;
 
-class InvalidStorageTest extends TestCase {
+class InvalidStorageTest extends TestCase
+{
 
 	/**
 	 */

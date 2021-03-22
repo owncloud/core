@@ -29,7 +29,8 @@ use SimpleXMLElement;
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
-class LoggingHelper {
+class LoggingHelper
+{
 	/**
 	 * @var array
 	 */

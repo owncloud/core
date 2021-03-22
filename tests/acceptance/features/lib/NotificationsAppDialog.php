@@ -27,7 +27,8 @@ use Behat\Mink\Session;
 /**
  * PageObject for the Notifications area
  */
-class NotificationsAppDialog extends OwncloudPage {
+class NotificationsAppDialog extends OwncloudPage
+{
 	private $notificationContainerXpath = "//div[@class='notification']";
 	private $notificationTitleXpath = "//h3[@class='notification-title']";
 	private $notificationLinkXpath = "//a[@class='notification-link']";

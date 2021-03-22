@@ -14,7 +14,8 @@ use OC\Http\Client\Response;
 /**
  * Class ResponseTest
  */
-class ResponseTest extends \Test\TestCase {
+class ResponseTest extends \Test\TestCase
+{
 	/** @var Response */
 	private $response;
 	/** @var GuzzleResponse */

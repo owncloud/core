@@ -30,7 +30,8 @@ use OC\Files\Storage\Wrapper\Wrapper;
 use OC\Files\View;
 use OCP\IUserManager;
 
-class Storage extends Wrapper {
+class Storage extends Wrapper
+{
 	private $mountPoint;
 	// remember already deleted files to avoid infinite loops if the trash bin
 	// move files across storages

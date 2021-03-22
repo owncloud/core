@@ -29,7 +29,8 @@ namespace OC\Security\CSRF;
  *
  * @package OC\Security\CSRF
  */
-class CsrfToken {
+class CsrfToken
+{
 	/** @var string */
 	private $value;
 

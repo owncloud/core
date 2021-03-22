@@ -35,7 +35,8 @@ use WebDriver\Key;
  * The Details Dialog
  *
  */
-class DetailsDialog extends OwncloudPage {
+class DetailsDialog extends OwncloudPage
+{
 	/**
 	 *
 	 * @var string $path

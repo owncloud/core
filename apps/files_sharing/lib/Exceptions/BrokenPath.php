@@ -28,5 +28,6 @@ namespace OCA\Files_Sharing\Exceptions;
  * 10 - Path not relative to data/ and point to the users file directory
 
  */
-class BrokenPath extends \Exception {
+class BrokenPath extends \Exception
+{
 }

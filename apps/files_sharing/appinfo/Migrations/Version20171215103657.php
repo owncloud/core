@@ -28,7 +28,8 @@ use OCP\Migration\ISchemaMigration;
 /**
  * Another index to optimise share loading
  */
-class Version20171215103657 implements ISchemaMigration {
+class Version20171215103657 implements ISchemaMigration
+{
 	public function changeSchema(Schema $schema, array $options) {
 		$indexName = 'item_source_type_index';
 		$columns = ['item_source', 'share_type', 'item_type'];

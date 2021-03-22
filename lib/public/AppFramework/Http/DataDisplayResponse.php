@@ -30,7 +30,8 @@ use OCP\AppFramework\Http;
  * @package OCP\AppFramework\Http
  * @since 8.1.0
  */
-class DataDisplayResponse extends Response {
+class DataDisplayResponse extends Response
+{
 
 	/**
 	 * response data

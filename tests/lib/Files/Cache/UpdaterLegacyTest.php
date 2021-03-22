@@ -18,7 +18,8 @@ use OC\Files\View;
  *
  * @package Test\Files\Cache
  */
-class UpdaterLegacyTest extends \Test\TestCase {
+class UpdaterLegacyTest extends \Test\TestCase
+{
 	/**
 	 * @var \OC\Files\Storage\Storage $storage
 	 */

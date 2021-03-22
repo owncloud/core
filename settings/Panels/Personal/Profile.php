@@ -32,7 +32,8 @@ use OCP\IUserSession;
 use OCP\IConfig;
 use OCP\L10N\IFactory;
 
-class Profile implements ISettings {
+class Profile implements ISettings
+{
 
 	/* @var IConfig */
 	protected $config;

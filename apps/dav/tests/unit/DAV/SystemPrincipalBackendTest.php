@@ -26,7 +26,8 @@ namespace OCA\DAV\Tests\unit\DAV;
 use OCA\DAV\DAV\SystemPrincipalBackend;
 use Test\TestCase;
 
-class SystemPrincipalBackendTest extends TestCase {
+class SystemPrincipalBackendTest extends TestCase
+{
 
 	/**
 	 * @dataProvider providesPrefix

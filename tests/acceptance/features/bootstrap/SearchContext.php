@@ -31,7 +31,8 @@ require_once 'bootstrap.php';
 /**
  * context containing search related API steps
  */
-class SearchContext implements Context {
+class SearchContext implements Context
+{
 
 	/**
 	 *

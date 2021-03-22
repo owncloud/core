@@ -58,7 +58,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @package OCA\Files_Sharing\Controller
  */
-class Share20OcsController extends OCSController {
+class Share20OcsController extends OCSController
+{
 	/** @var IManager */
 	private $shareManager;
 	/** @var IGroupManager */

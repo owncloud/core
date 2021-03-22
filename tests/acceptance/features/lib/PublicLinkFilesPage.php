@@ -31,7 +31,8 @@ use WebDriver\Exception\StaleElementReference;
 /**
  * Files page of a public link
  */
-class PublicLinkFilesPage extends FilesPageBasic {
+class PublicLinkFilesPage extends FilesPageBasic
+{
 	protected $path = '';
 	protected $fileNamesXpath = "//span[@class='nametext']";
 	protected $fileNameMatchXpath = "//span[@class='nametext' and .=%s]";

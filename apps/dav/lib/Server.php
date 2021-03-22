@@ -74,7 +74,8 @@ use Sabre\CardDAV\VCFExportPlugin;
 use Sabre\DAV\Auth\Plugin;
 use Sabre\DAV\Exception;
 
-class Server {
+class Server
+{
 
 	/** @var Connector\Sabre\Server  */
 	public $server;

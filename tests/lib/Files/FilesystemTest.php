@@ -33,7 +33,8 @@ use OCP\IUser;
 use Test\TestCase;
 use Test\Traits\UserTrait;
 
-class DummyMountProvider implements IMountProvider {
+class DummyMountProvider implements IMountProvider
+{
 	private $mounts = [];
 
 	/**
@@ -62,7 +63,8 @@ class DummyMountProvider implements IMountProvider {
  *
  * @package Test\Files
  */
-class FilesystemTest extends TestCase {
+class FilesystemTest extends TestCase
+{
 	use UserTrait;
 
 	const TEST_FILESYSTEM_USER1 = "test-filesystem-user1";

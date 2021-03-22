@@ -37,7 +37,8 @@ use OC\Files\Storage\Folder as StorageFolder;
  *
  * @package OC\Files\Storage
  */
-abstract class Node implements FilesNode {
+abstract class Node implements FilesNode
+{
 
 	/** @var IStorage */
 	protected $storage;

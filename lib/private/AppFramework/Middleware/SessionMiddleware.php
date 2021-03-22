@@ -29,7 +29,8 @@ use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Middleware;
 use OCP\ISession;
 
-class SessionMiddleware extends Middleware {
+class SessionMiddleware extends Middleware
+{
 
 	/** @var IRequest */
 	private $request;

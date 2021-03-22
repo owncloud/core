@@ -35,7 +35,8 @@ use OCP\IUser;
 /**
  * Service class to manage global external storages
  */
-class GlobalStoragesService extends StoragesService implements IGlobalStoragesService {
+class GlobalStoragesService extends StoragesService implements IGlobalStoragesService
+{
 	/**
 	 * Triggers $signal for all applicable users of the given
 	 * storage

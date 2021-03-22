@@ -24,7 +24,8 @@
 
 namespace OC\Share;
 
-class Constants {
+class Constants
+{
 	const SHARE_TYPE_USER = 0;
 	const SHARE_TYPE_GROUP = 1;
 	const SHARE_TYPE_LINK = 3;

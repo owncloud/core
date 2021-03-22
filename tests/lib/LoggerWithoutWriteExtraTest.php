@@ -12,7 +12,8 @@ use OC\Log;
 use OCP\IConfig;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class LoggerWithoutWriteExtraTest extends TestCase {
+class LoggerWithoutWriteExtraTest extends TestCase
+{
 	/** @var \OCP\ILogger */
 	private $logger;
 	private static $logs = [];

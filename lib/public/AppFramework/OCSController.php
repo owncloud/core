@@ -43,7 +43,8 @@ use OCP\IRequest;
  * Base class to inherit your controllers from that are used for RESTful APIs
  * @since 8.1.0
  */
-abstract class OCSController extends ApiController {
+abstract class OCSController extends ApiController
+{
 
 	/**
 	 * constructor of the controller

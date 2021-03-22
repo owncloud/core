@@ -25,7 +25,8 @@ namespace Test\Authentication\Token;
 use OC\Authentication\Token\DefaultTokenCleanupJob;
 use Test\TestCase;
 
-class DefaultTokenCleanupJobTest extends TestCase {
+class DefaultTokenCleanupJobTest extends TestCase
+{
 
 	/** @var DefaultTokenCleanupJob */
 	private $job;

@@ -32,7 +32,8 @@ require_once 'bootstrap.php';
 /**
  * Capabilities context.
  */
-class CapabilitiesContext implements Context {
+class CapabilitiesContext implements Context
+{
 
 	/**
 	 *

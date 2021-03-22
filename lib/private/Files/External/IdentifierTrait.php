@@ -26,7 +26,8 @@ namespace OC\Files\External;
  * Trait for objects requiring an identifier (and/or identifier aliases)
  * Also supports deprecation to a different object, linking the objects
  */
-trait IdentifierTrait {
+trait IdentifierTrait
+{
 
 	/** @var string */
 	protected $identifier;

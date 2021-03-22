@@ -28,7 +28,8 @@ use OCP\Template;
 use OCP\IConfig;
 use OCP\IURLGenerator;
 
-class Logging implements ISettings {
+class Logging implements ISettings
+{
 
 	/** @var IConfig  */
 	protected $config;

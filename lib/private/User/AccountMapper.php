@@ -29,7 +29,8 @@ use OCP\AppFramework\Db\Mapper;
 use OCP\IConfig;
 use OCP\IDBConnection;
 
-class AccountMapper extends Mapper {
+class AccountMapper extends Mapper
+{
 
 	/* @var IConfig */
 	protected $config;

@@ -34,7 +34,8 @@ use OCP\Files\Storage;
  *
  * @package OC\Files\Meta
  */
-class MetaVersionCollection extends AbstractFolder {
+class MetaVersionCollection extends AbstractFolder
+{
 
 	/** @var IRootFolder */
 	private $root;

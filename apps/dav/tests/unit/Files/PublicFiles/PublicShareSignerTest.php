@@ -24,7 +24,8 @@ namespace OCA\DAV\Tests\Unit\Files\PublicFiles;
 use OCA\DAV\Files\PublicFiles\PublicShareSigner;
 use Test\TestCase;
 
-class PublicShareSignerTest extends TestCase {
+class PublicShareSignerTest extends TestCase
+{
 	public function testGet() {
 		$s = new PublicShareSigner('someToken', 'someFileName', new \DateTime(), 'somekey');
 		$hash = $s->getSignature();

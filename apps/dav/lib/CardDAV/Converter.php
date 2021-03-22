@@ -27,7 +27,8 @@ use OCP\IUser;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\Property\Text;
 
-class Converter {
+class Converter
+{
 
 	/**
 	 * @param IUser $user

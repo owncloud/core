@@ -25,7 +25,8 @@ use OCP\Files\External\Auth\AuthMechanism;
 use OCP\Files\External\Backend\Backend;
 use OCP\Files\External\DefinitionParameter;
 
-class DummyBackend extends Backend {
+class DummyBackend extends Backend
+{
 	public function __construct() {
 		$this
 			->setIdentifier('dummy')

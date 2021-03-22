@@ -32,7 +32,8 @@ require_once 'bootstrap.php';
 /**
  * TUS related test steps
  */
-class TUSContext implements Context {
+class TUSContext implements Context
+{
 
 	/**
 	 *

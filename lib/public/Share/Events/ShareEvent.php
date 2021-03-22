@@ -29,7 +29,8 @@ use Symfony\Component\EventDispatcher\Event;
  * @package OCP\Share\Events
  * @since 10.0.2
  */
-class ShareEvent extends Event {
+class ShareEvent extends Event
+{
 
 	// TODO when the sharing code uses a Share entity use that instead of an array
 	/** @var array */

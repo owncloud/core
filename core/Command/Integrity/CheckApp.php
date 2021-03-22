@@ -33,7 +33,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @package OC\Core\Command\Integrity
  */
-class CheckApp extends Base {
+class CheckApp extends Base
+{
 
 	/**
 	 * @var Checker

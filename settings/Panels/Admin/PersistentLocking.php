@@ -26,7 +26,8 @@ use OCP\Settings\ISettings;
 use OCP\Template;
 use OCP\IConfig;
 
-class PersistentLocking implements ISettings {
+class PersistentLocking implements ISettings
+{
 	/** @var IConfig */
 	private $config;
 

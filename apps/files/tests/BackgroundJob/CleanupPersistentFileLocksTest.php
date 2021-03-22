@@ -25,7 +25,8 @@ use OC\Lock\Persistent\LockMapper;
 use OCA\Files\BackgroundJob\CleanupPersistentFileLocks;
 use Test\TestCase;
 
-class CleanupPersistentFileLocksTest extends TestCase {
+class CleanupPersistentFileLocksTest extends TestCase
+{
 	public function testJob() {
 		/** @var LockMapper | \PHPUnit\Framework\MockObject\MockObject $lockMapper */
 		$lockMapper = $this->createMock(LockMapper::class);

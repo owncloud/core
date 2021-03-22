@@ -39,7 +39,8 @@ namespace OCP;
  * Access to all the configuration options ownCloud offers
  * @since 6.0.0
  */
-interface IConfig {
+interface IConfig
+{
 	/**
 	 * @since 8.2.0
 	 */

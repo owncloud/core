@@ -29,7 +29,8 @@ use Symfony\Component\EventDispatcher\Event;
  * @package OCP\Comments
  * @since 9.0.0
  */
-class CommentsEvent extends Event {
+class CommentsEvent extends Event
+{
 	const EVENT_ADD = 'OCP\Comments\ICommentsManager::addComment';
 	const EVENT_UPDATE = 'OCP\Comments\ICommentsManager::updateComment';
 	const EVENT_DELETE = 'OCP\Comments\ICommentsManager::deleteComment';

@@ -24,7 +24,8 @@ namespace Test\Files\Type;
 use OC\Files\Type\Detection;
 use org\bovigo\vfs\vfsStream;
 
-class DetectionTest extends \Test\TestCase {
+class DetectionTest extends \Test\TestCase
+{
 	/** @var Detection */
 	private $detection;
 

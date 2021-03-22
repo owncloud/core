@@ -26,7 +26,8 @@ use OCP\IConfig;
 use Sabre\HTTP\Request;
 use Test\TestCase;
 
-class VerifierTest extends TestCase {
+class VerifierTest extends TestCase
+{
 
 	/**
 	 * @dataProvider providesUrls

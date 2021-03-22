@@ -38,7 +38,8 @@ use OCP\IRequest;
 use OCP\Security\ISecureRandom;
 use Test\TestCase;
 
-class AdminControllerTest extends TestCase {
+class AdminControllerTest extends TestCase
+{
 	/** @var IRequest */
 	private $request;
 	/** @var IJobList */

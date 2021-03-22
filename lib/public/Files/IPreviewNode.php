@@ -30,7 +30,8 @@ use OCP\IImage;
  * @package OCP\Files
  * @since 10.0.9
  */
-interface IPreviewNode {
+interface IPreviewNode
+{
 
 	/**
 	 * Generates a preview image of the node

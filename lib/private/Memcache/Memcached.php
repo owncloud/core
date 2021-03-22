@@ -32,7 +32,8 @@ namespace OC\Memcache;
 use OC\HintException;
 use OCP\IMemcache;
 
-class Memcached extends Cache implements IMemcache {
+class Memcached extends Cache implements IMemcache
+{
 	use CASTrait;
 
 	/**

@@ -24,7 +24,8 @@ namespace OCA\UpdateNotification;
 
 use OC\Updater\VersionCheck;
 
-class UpdateChecker {
+class UpdateChecker
+{
 	/** @var VersionCheck */
 	private $updater;
 

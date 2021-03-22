@@ -27,7 +27,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-class OC_Hook {
+class OC_Hook
+{
 	private static $registered = [];
 
 	/**

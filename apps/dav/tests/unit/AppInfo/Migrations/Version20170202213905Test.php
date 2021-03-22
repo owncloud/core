@@ -28,7 +28,8 @@ use Test\TestCase;
 
 require_once(\str_replace('/dav/tests/unit/AppInfo/', '/dav/appinfo/', __DIR__) . '/Version20170202213905.php');
 
-class Version20170202213905Test extends TestCase {
+class Version20170202213905Test extends TestCase
+{
 	public function testGetRepairQuery() {
 		$expressionBuilder = $this->createMock(IExpressionBuilder::class);
 		$expressionBuilder->expects($this->any())->method('eq')->will($this->returnArgument(1));

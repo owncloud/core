@@ -21,7 +21,8 @@
 
 namespace OC\Memcache;
 
-trait CADTrait {
+trait CADTrait
+{
 	abstract public function get($key);
 
 	abstract public function remove($key);

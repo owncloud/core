@@ -44,7 +44,8 @@ namespace OCP;
  *
  * @since 8.0.0
  */
-class Template extends \OC_Template {
+class Template extends \OC_Template
+{
 	/**
 	 * Make OC_Helper::imagePath available as a simple function
 	 *

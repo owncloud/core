@@ -24,7 +24,8 @@
  */
 namespace OCA\DAV\Tests\unit\Upload;
 
-class AssemblyStreamTest extends \Test\TestCase {
+class AssemblyStreamTest extends \Test\TestCase
+{
 
 	/**
 	 * @dataProvider providesNodes()

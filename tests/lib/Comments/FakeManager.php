@@ -5,7 +5,8 @@ namespace Test\Comments;
 /**
  * Class FakeManager
  */
-class FakeManager implements \OCP\Comments\ICommentsManager {
+class FakeManager implements \OCP\Comments\ICommentsManager
+{
 	public function get($id) {
 	}
 

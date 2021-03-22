@@ -24,7 +24,8 @@ use Test\Traits\UserTrait;
  *
  * @package Test\Files\Node
  */
-class HookConnectorTest extends TestCase {
+class HookConnectorTest extends TestCase
+{
 	use UserTrait;
 	use MountProviderTrait;
 

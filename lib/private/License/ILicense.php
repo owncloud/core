@@ -19,7 +19,8 @@
  */
 namespace OC\License;
 
-interface ILicense {
+interface ILicense
+{
 	public const LICENSE_TYPE_NORMAL = 0;
 	public const LICENSE_TYPE_DEMO = 1;
 

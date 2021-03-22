@@ -28,7 +28,8 @@ namespace OCP\AppFramework\Db;
  * @method void setId(integer $id)
  * @since 7.0.0
  */
-abstract class Entity {
+abstract class Entity
+{
 	public $id;
 
 	private $_updatedFields = [];

@@ -30,7 +30,8 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
 
-class AjaxController extends Controller {
+class AjaxController extends Controller
+{
 	/** @var RSA */
 	private $rsaMechanism;
 

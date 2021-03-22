@@ -15,7 +15,8 @@ namespace Test\Hooks;
  *
  * @package Test\Hooks
  */
-class DummyEmitter extends \OC\Hooks\BasicEmitter {
+class DummyEmitter extends \OC\Hooks\BasicEmitter
+{
 	public function emitEvent($scope, $method, $arguments = []) {
 		$this->emit($scope, $method, $arguments);
 	}
@@ -28,10 +29,12 @@ class DummyEmitter extends \OC\Hooks\BasicEmitter {
  *
  * @package Test\Hooks
  */
-class EmittedException extends \Exception {
+class EmittedException extends \Exception
+{
 }
 
-class BasicEmitterTest extends \Test\TestCase {
+class BasicEmitterTest extends \Test\TestCase
+{
 	/**
 	 * @var \OC\Hooks\Emitter $emitter
 	 */

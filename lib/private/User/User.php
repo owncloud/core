@@ -47,7 +47,8 @@ use OCP\User\IChangePasswordBackend;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class User implements IUser {
+class User implements IUser
+{
 	use EventEmitterTrait;
 
 	/** @var Account */

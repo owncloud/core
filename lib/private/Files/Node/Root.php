@@ -57,7 +57,8 @@ use OCP\Files\IRootFolder;
  *
  * @package OC\Files\Node
  */
-class Root extends Folder implements IRootFolder {
+class Root extends Folder implements IRootFolder
+{
 
 	/**
 	 * @var \OC\Files\Mount\Manager $mountManager

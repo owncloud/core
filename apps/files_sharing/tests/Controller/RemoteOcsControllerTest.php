@@ -29,7 +29,8 @@ use OCP\IRequest;
 use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase;
 
-class RemoteOcsControllerTest extends TestCase {
+class RemoteOcsControllerTest extends TestCase
+{
 	/** @var string */
 	protected $appName = 'files_sharing';
 

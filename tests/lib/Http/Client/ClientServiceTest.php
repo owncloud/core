@@ -15,7 +15,8 @@ use OC\Http\Client\ClientService;
 /**
  * Class ClientServiceTest
  */
-class ClientServiceTest extends \Test\TestCase {
+class ClientServiceTest extends \Test\TestCase
+{
 	public function testNewClient() {
 		$config = $this->createMock('\OCP\IConfig');
 		$certificateManager = $this->createMock('\OCP\ICertificateManager');

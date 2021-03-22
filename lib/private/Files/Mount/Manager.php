@@ -29,7 +29,8 @@ use \OC\Files\Filesystem;
 use OCP\Files\Mount\IMountManager;
 use OCP\Files\Mount\IMountPoint;
 
-class Manager implements IMountManager {
+class Manager implements IMountManager
+{
 	/**
 	 * @var MountPoint[]
 	 */

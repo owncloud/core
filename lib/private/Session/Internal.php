@@ -37,7 +37,8 @@ use OCP\Session\Exceptions\SessionNotAvailableException;
  *
  * @package OC\Session
  */
-class Internal extends Session {
+class Internal extends Session
+{
 	/**
 	 * @param string $name
 	 * @throws \Exception

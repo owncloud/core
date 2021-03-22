@@ -32,7 +32,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  * The Popup Dialog to set the public link preferences
  *
  */
-class EditPublicLinkPopup extends OwncloudPage {
+class EditPublicLinkPopup extends OwncloudPage
+{
 	/**
 	 * @var NodeElement of this popup
 	 */

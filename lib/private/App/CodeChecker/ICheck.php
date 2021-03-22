@@ -20,7 +20,8 @@
  */
 namespace OC\App\CodeChecker;
 
-interface ICheck {
+interface ICheck
+{
 	/**
 	 * @param int $errorCode
 	 * @param string $errorObject

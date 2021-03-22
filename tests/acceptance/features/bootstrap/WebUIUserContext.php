@@ -31,7 +31,8 @@ require_once 'bootstrap.php';
  * WebUIUser context.
  * Context for steps associated with the user logged in to the WebUI
  */
-class WebUIUserContext extends RawMinkContext implements Context {
+class WebUIUserContext extends RawMinkContext implements Context
+{
 
 	/**
 	 *

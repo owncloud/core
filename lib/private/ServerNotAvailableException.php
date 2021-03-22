@@ -21,5 +21,6 @@
 
 namespace OC;
 
-class ServerNotAvailableException extends \Exception {
+class ServerNotAvailableException extends \Exception
+{
 }

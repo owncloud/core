@@ -35,7 +35,8 @@ use Sabre\DAV\Locks\LockInfo;
 use Sabre\DAV\ServerPlugin;
 use Sabre\HTTP\RequestInterface;
 
-class LockPlugin extends ServerPlugin {
+class LockPlugin extends ServerPlugin
+{
 	/**
 	 * Reference to main server object
 	 *

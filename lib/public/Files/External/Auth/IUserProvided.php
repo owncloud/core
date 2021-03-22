@@ -29,7 +29,8 @@ use OCP\IUser;
  *
  * @since 10.0
  */
-interface IUserProvided {
+interface IUserProvided
+{
 	/**
 	 * @param IUser $user the user for which to save the user provided options
 	 * @param int $mountId the mount id to save the options for

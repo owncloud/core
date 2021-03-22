@@ -26,10 +26,12 @@ namespace Test\AppFramework\Controller;
 use OC\AppFramework\Http\Request;
 use OCP\AppFramework\ApiController;
 
-class ChildApiController extends ApiController {
+class ChildApiController extends ApiController
+{
 };
 
-class ApiControllerTest extends \Test\TestCase {
+class ApiControllerTest extends \Test\TestCase
+{
 	/** @var ChildApiController */
 	protected $controller;
 

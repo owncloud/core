@@ -22,7 +22,8 @@
 namespace OC\Preview;
 
 // .otf, .ttf and .pfb
-class Font extends Bitmap {
+class Font extends Bitmap
+{
 	/**
 	 * {@inheritDoc}
 	 */

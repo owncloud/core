@@ -31,7 +31,8 @@ namespace Test\Group;
  *
  * @group DB
  */
-abstract class Backend extends \Test\TestCase {
+abstract class Backend extends \Test\TestCase
+{
 	/**
 	 * @var \OC\Group\Backend $backend
 	 */

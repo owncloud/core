@@ -33,7 +33,8 @@ namespace OC;
 
 use \OCP\AutoloadNotAllowedException;
 
-class Autoloader {
+class Autoloader
+{
 	/** @var array */
 	private $validRoots = [];
 

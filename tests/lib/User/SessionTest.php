@@ -42,7 +42,8 @@ use OCP\UserInterface;
  * @group DB
  * @package Test\User
  */
-class SessionTest extends TestCase {
+class SessionTest extends TestCase
+{
 
 	/** @var ITimeFactory | \PHPUnit\Framework\MockObject\MockObject */
 	private $timeFactory;

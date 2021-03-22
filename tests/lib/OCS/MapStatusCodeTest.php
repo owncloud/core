@@ -23,7 +23,8 @@ namespace Test\OCS;
 
 use OCP\AppFramework\Http;
 
-class MapStatusCodeTest extends \Test\TestCase {
+class MapStatusCodeTest extends \Test\TestCase
+{
 
 	/**
 	 * @dataProvider providesStatusCodes

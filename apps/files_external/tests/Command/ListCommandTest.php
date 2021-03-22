@@ -32,7 +32,8 @@ use OCA\Files_External\Lib\Backend\Local;
 use OCP\Files\External\Backend\InvalidBackend;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-class ListCommandTest extends CommandTest {
+class ListCommandTest extends CommandTest
+{
 	/**
 	 * @return \OCA\Files_External\Command\ListCommand|\PHPUnit\Framework\MockObject\MockObject
 	 */

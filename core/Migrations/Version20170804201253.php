@@ -9,7 +9,8 @@ use OCP\Migration\ISchemaMigration;
 /**
  * Updates some fields to bigint if required
  */
-class Version20170804201253 implements ISchemaMigration {
+class Version20170804201253 implements ISchemaMigration
+{
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 		$this->updateToBigint($schema, "${prefix}mounts", "root_id");

@@ -35,7 +35,8 @@ use OCP\IRequest;
 /**
  * @package OC\Settings\Controller
  */
-class CertificateController extends Controller {
+class CertificateController extends Controller
+{
 	/** @var ICertificateManager */
 	private $userCertificateManager;
 	/** @var ICertificateManager  */

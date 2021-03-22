@@ -29,7 +29,8 @@ use OCP\AppFramework\Http;
 use OCP\Files\External\NotFoundException;
 use OCP\Files\External\Service\IGlobalStoragesService;
 
-abstract class StoragesControllerTest extends \Test\TestCase {
+abstract class StoragesControllerTest extends \Test\TestCase
+{
 
 	/**
 	 * @var GlobalStoragesController

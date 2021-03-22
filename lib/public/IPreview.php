@@ -36,7 +36,8 @@ namespace OCP;
  * This class provides functions to render and show thumbnails and previews of files
  * @since 6.0.0
  */
-interface IPreview {
+interface IPreview
+{
 	/**
 	 * In order to improve lazy loading a closure can be registered which will be
 	 * called in case preview providers are actually requested

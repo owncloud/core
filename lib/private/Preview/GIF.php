@@ -21,7 +21,8 @@
 
 namespace OC\Preview;
 
-class GIF extends Image {
+class GIF extends Image
+{
 	/**
 	 * {@inheritDoc}
 	 */

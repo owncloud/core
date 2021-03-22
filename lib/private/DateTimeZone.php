@@ -26,7 +26,8 @@ use OCP\IConfig;
 use OCP\IDateTimeZone;
 use OCP\ISession;
 
-class DateTimeZone implements IDateTimeZone {
+class DateTimeZone implements IDateTimeZone
+{
 	/** @var IConfig */
 	protected $config;
 

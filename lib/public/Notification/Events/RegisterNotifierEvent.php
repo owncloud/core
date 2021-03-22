@@ -44,7 +44,8 @@ use OCP\Notification\INotifier;
 
  * @since 10.0.8
  */
-abstract class RegisterNotifierEvent extends Event {
+abstract class RegisterNotifierEvent extends Event
+{
 	/**
 	 * Implementations should use this name
 	 */

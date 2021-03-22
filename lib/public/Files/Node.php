@@ -38,7 +38,8 @@ namespace OCP\Files;
  * @package OCP\Files
  * @since 6.0.0 - extends FileInfo was added in 8.0.0
  */
-interface Node extends FileInfo {
+interface Node extends FileInfo
+{
 	/**
 	 * Move the file or folder to a new location
 	 *

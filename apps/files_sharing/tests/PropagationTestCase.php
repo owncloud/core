@@ -22,7 +22,8 @@
 
 namespace OCA\Files_Sharing\Tests;
 
-abstract class PropagationTestCase extends TestCase {
+abstract class PropagationTestCase extends TestCase
+{
 	/**
 	 * @var \OC\Files\View
 	 */

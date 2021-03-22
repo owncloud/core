@@ -35,7 +35,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use OCA\Files_Sharing\Service\NotificationPublisher;
 use OCP\Activity\IManager as ActivityManager;
 
-class Hooks {
+class Hooks
+{
 	/**
 	 * @var IURLGenerator
 	 */

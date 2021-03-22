@@ -35,7 +35,8 @@ use OCP\Files\External\Backend\Backend;
 /**
  * Class to configure mount.json globally and for users
  */
-class OC_Mount_Config extends \OC\Files\External\LegacyUtil {
+class OC_Mount_Config extends \OC\Files\External\LegacyUtil
+{
 	/** @var Application */
 	public static $app;
 

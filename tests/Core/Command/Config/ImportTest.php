@@ -24,7 +24,8 @@ namespace Tests\Core\Command\Config;
 use OC\Core\Command\Config\Import;
 use Test\TestCase;
 
-class ImportTest extends TestCase {
+class ImportTest extends TestCase
+{
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 

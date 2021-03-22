@@ -26,7 +26,8 @@ use OCA\Federation\Controller\SettingsController;
 use OCP\AppFramework\Http\DataResponse;
 use Test\TestCase;
 
-class SettingsControllerTest extends TestCase {
+class SettingsControllerTest extends TestCase
+{
 
 	/** @var SettingsController  */
 	private $controller;

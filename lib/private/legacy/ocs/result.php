@@ -23,5 +23,6 @@
 /**
  * @deprecated Since 9.1.0 use \OC\OCS\Result
  */
-class OC_OCS_Result extends \OC\OCS\Result {
+class OC_OCS_Result extends \OC\OCS\Result
+{
 }

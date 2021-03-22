@@ -32,7 +32,8 @@ namespace OC\Repair;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
-class RepairMimeTypes implements IRepairStep {
+class RepairMimeTypes implements IRepairStep
+{
 	/**
 	 * @var \OCP\IConfig
 	 */

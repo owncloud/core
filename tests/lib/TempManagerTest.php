@@ -11,7 +11,8 @@ namespace Test;
 
 use OC\Log;
 
-class NullLogger extends Log {
+class NullLogger extends Log
+{
 	public function __construct($logger = null) {
 		//disable original constructor
 	}
@@ -21,7 +22,8 @@ class NullLogger extends Log {
 	}
 }
 
-class TempManagerTest extends \Test\TestCase {
+class TempManagerTest extends \Test\TestCase
+{
 	protected $baseDir = null;
 
 	protected function setUp(): void {

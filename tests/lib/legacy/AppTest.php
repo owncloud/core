@@ -25,7 +25,8 @@ use OCP\App\AppNotFoundException;
 use function Test\AppFramework\rrmdir;
 use Test\TestCase;
 
-class AppTest extends TestCase {
+class AppTest extends TestCase
+{
 	private $appPath;
 
 	protected function setUp(): void {

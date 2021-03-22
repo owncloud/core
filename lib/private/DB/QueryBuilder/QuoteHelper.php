@@ -25,7 +25,8 @@ use OCP\DB\QueryBuilder\ILiteral;
 use OCP\DB\QueryBuilder\IParameter;
 use OCP\DB\QueryBuilder\IQueryFunction;
 
-class QuoteHelper {
+class QuoteHelper
+{
 	/**
 	 * @param array|string|ILiteral|IParameter|IQueryFunction $strings string, Literal or Parameter
 	 * @return array|string

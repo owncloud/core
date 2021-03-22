@@ -32,7 +32,8 @@ use Sabre\VObject\Parameter;
 use Sabre\VObject\Property\Binary;
 use Sabre\VObject\Reader;
 
-class ImageExportPlugin extends ServerPlugin {
+class ImageExportPlugin extends ServerPlugin
+{
 
 	/** @var Server */
 	protected $server;

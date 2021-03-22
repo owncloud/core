@@ -27,7 +27,8 @@ use OCP\Files\Cache\ICache;
 /**
  * Storage placeholder to represent a missing precondition, storage unavailable
  */
-class FailedCache implements ICache {
+class FailedCache implements ICache
+{
 	/** @var bool whether to show the failed storage in the ui */
 	private $visible;
 

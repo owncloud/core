@@ -30,7 +30,8 @@ namespace Test\Group;
  *
  * @group DB
  */
-class DatabaseTest extends Backend {
+class DatabaseTest extends Backend
+{
 	private $groups = [];
 
 	/**

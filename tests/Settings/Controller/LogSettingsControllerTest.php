@@ -16,7 +16,8 @@ use OC\Settings\Controller\LogSettingsController;
 /**
  * @package Tests\Settings\Controller
  */
-class LogSettingsControllerTest extends \Test\TestCase {
+class LogSettingsControllerTest extends \Test\TestCase
+{
 
 	/** @var \OCP\AppFramework\IAppContainer */
 	private $container;

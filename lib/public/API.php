@@ -37,7 +37,8 @@ namespace OCP;
  * This class provides functions to manage apps in ownCloud
  * @since 5.0.0
  */
-class API {
+class API
+{
 
 	/**
 	 * API authentication levels

@@ -9,7 +9,8 @@ use OCP\Migration\ISchemaMigration;
 /**
  * Update term column length to ensure index creation works on all db setups
  */
-class Version20170526104128 implements ISchemaMigration {
+class Version20170526104128 implements ISchemaMigration
+{
 	public function changeSchema(Schema $schema, array $options) {
 		// Get the table
 		$prefix = $options['tablePrefix'];

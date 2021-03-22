@@ -28,7 +28,8 @@ use OCP\IUser;
 use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase;
 
-class ConverterTest extends TestCase {
+class ConverterTest extends TestCase
+{
 
 	/**
 	 * @dataProvider providesNewUsers

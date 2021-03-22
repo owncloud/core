@@ -34,7 +34,8 @@ use Sabre\VObject\Property\VCard\DateAndOrTime;
 use Sabre\VObject\Reader;
 use Sabre\VObject\UUIDUtil;
 
-class BirthdayService {
+class BirthdayService
+{
 	const BIRTHDAY_CALENDAR_URI = 'contact_birthdays';
 
 	/** @var GroupPrincipalBackend */

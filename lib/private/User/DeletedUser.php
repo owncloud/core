@@ -33,7 +33,8 @@ use OCP\Files\NotFoundException;
  * Class representing a deleted user.
  * This class is intended to be used internally.
  */
-class DeletedUser implements IUser {
+class DeletedUser implements IUser
+{
 	/** @var Emitter */
 	private $emitter;
 	/** @var IConfig */

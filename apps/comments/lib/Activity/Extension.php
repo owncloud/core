@@ -35,7 +35,8 @@ use OCP\L10N\IFactory;
  *
  * @package OCA\Comments\Activity
  */
-class Extension implements IExtension {
+class Extension implements IExtension
+{
 	const APP_NAME = 'comments';
 
 	const ADD_COMMENT_SUBJECT = 'add_comment_subject';

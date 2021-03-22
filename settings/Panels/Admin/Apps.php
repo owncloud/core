@@ -25,7 +25,8 @@ use OCP\IConfig;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-class Apps implements ISettings {
+class Apps implements ISettings
+{
 
 	/** @var IConfig */
 	protected $config;

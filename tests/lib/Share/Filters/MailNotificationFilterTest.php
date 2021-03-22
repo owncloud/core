@@ -5,7 +5,8 @@ namespace Test\Share;
 use OC\Share\Filters\MailNotificationFilter;
 use Test\TestCase;
 
-class MailNotificationFilterTest extends TestCase {
+class MailNotificationFilterTest extends TestCase
+{
 
 	/**
 	 * @dataProvider mailNotificationData

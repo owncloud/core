@@ -26,7 +26,8 @@ use Sabre\DAV\INode;
 use Sabre\DAV\SimpleCollection;
 use Sabre\DAVACL\AbstractPrincipalCollection;
 
-class RootCollection extends AbstractPrincipalCollection {
+class RootCollection extends AbstractPrincipalCollection
+{
 	/** @var INode[] [uid => INode]*/
 	private $cachedPrincipalRootNodes = [];
 

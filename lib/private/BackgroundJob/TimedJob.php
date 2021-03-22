@@ -30,7 +30,8 @@ use OCP\ILogger;
  *
  * @package OC\BackgroundJob
  */
-abstract class TimedJob extends Job {
+abstract class TimedJob extends Job
+{
 	protected $interval = 0;
 
 	/**

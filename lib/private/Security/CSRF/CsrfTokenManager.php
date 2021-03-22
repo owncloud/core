@@ -28,7 +28,8 @@ use OC\Security\CSRF\TokenStorage\SessionStorage;
  *
  * @package OC\Security\CSRF
  */
-class CsrfTokenManager {
+class CsrfTokenManager
+{
 	/** @var CsrfTokenGenerator */
 	private $tokenGenerator;
 	/** @var SessionStorage */

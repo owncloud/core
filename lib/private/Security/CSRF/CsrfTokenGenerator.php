@@ -29,7 +29,8 @@ use OCP\Security\ISecureRandom;
  *
  * @package OC\Security\CSRF
  */
-class CsrfTokenGenerator {
+class CsrfTokenGenerator
+{
 	/** @var ISecureRandom  */
 	private $random;
 

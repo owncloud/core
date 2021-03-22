@@ -34,7 +34,8 @@ use Sabre\CalDAV\Calendar;
  *
  * @package OCA\DAV\Tests\unit\DAV
  */
-class MiscCustomPropertiesBackendTest extends \Test\TestCase {
+class MiscCustomPropertiesBackendTest extends \Test\TestCase
+{
 
 	/**
 	 * @var \Sabre\DAV\Server

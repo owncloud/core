@@ -33,7 +33,8 @@ namespace OCP\Capabilities;
  *
  * @since 8.2.0
  */
-interface ICapability {
+interface ICapability
+{
 
 	/**
 	 * Function an app uses to return the capabilities

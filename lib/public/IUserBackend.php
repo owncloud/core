@@ -35,7 +35,8 @@ namespace OCP;
  * @package OCP
  * @since 8.0.0
  */
-interface IUserBackend {
+interface IUserBackend
+{
 
 	/**
 	 * Backend name to be shown in user management

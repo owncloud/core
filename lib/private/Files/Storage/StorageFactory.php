@@ -27,7 +27,8 @@ namespace OC\Files\Storage;
 use OCP\Files\Mount\IMountPoint;
 use OCP\Files\Storage\IStorageFactory;
 
-class StorageFactory implements IStorageFactory {
+class StorageFactory implements IStorageFactory
+{
 	/**
 	 * @var array[] [$name=>['priority'=>$priority, 'wrapper'=>$callable] $storageWrappers
 	 */

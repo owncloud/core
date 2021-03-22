@@ -35,7 +35,8 @@ use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
 
-class PublicSharingAuthTest extends TestCase {
+class PublicSharingAuthTest extends TestCase
+{
 	/**
 	 * @dataProvider providesCheckData
 	 */

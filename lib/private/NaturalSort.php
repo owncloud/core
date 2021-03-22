@@ -26,7 +26,8 @@
 
 namespace OC;
 
-class NaturalSort {
+class NaturalSort
+{
 	private static $instance;
 	private $collator;
 	private $cache = [];

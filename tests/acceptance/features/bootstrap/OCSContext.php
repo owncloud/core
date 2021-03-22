@@ -34,7 +34,8 @@ require_once 'bootstrap.php';
 /**
  * steps needed to send requests to the OCS API
  */
-class OCSContext implements Context {
+class OCSContext implements Context
+{
 
 	/**
 	 *

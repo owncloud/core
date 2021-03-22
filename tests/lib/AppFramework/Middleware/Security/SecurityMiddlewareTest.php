@@ -50,7 +50,8 @@ use OCP\IURLGenerator;
 use OCP\INavigationManager;
 use OCP\ILogger;
 
-class SecurityMiddlewareTest extends TestCase {
+class SecurityMiddlewareTest extends TestCase
+{
 
 	/** @var SecurityMiddleware */
 	private $middleware;

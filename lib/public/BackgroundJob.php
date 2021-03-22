@@ -48,7 +48,8 @@ namespace OCP;
  * $this->setInterval($interval) with $interval in seconds.
  * @since 4.5.0
  */
-class BackgroundJob {
+class BackgroundJob
+{
 	/**
 	 * get the execution type of background jobs
 	 *

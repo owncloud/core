@@ -32,7 +32,8 @@ use Sabre\HTTP\RequestInterface;
  *
  * @package OCA\DAV\Connector\Sabre
  */
-class BlockLegacyClientPlugin extends ServerPlugin {
+class BlockLegacyClientPlugin extends ServerPlugin
+{
 	/** @var \Sabre\DAV\Server */
 	protected $server;
 	/** @var IConfig */

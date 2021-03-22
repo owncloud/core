@@ -32,7 +32,8 @@ require_once 'bootstrap.php';
 /**
  * WebUI PersonalSecuritySettings context.
  */
-class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Context {
+class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Context
+{
 	private $personalSecuritySettingsPage;
 	private $appName;
 	private $strForAppName = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

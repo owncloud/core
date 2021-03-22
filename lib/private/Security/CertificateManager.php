@@ -34,7 +34,8 @@ use OCP\IConfig;
 /**
  * Manage trusted certificates for users
  */
-class CertificateManager implements ICertificateManager {
+class CertificateManager implements ICertificateManager
+{
 	/**
 	 * @var string
 	 */

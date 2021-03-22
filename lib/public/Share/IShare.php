@@ -33,7 +33,8 @@ use OCP\Share\Exceptions\IllegalIDChangeException;
  * @package OCP\Share
  * @since 9.0.0
  */
-interface IShare {
+interface IShare
+{
 
 	/**
 	 * Set the internal id of the share

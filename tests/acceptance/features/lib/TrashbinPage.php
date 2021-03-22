@@ -31,7 +31,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
 /**
  * Trashbin page.
  */
-class TrashbinPage extends FilesPageBasic {
+class TrashbinPage extends FilesPageBasic
+{
 
 	/**
 	 *

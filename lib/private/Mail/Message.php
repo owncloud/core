@@ -29,7 +29,8 @@ use Swift_Message;
  *
  * @package OC\Mail
  */
-class Message {
+class Message
+{
 	/** @var Swift_Message */
 	private $swiftMessage;
 

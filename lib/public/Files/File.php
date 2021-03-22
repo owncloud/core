@@ -37,7 +37,8 @@ namespace OCP\Files;
  * @package OCP\Files
  * @since 6.0.0
  */
-interface File extends Node {
+interface File extends Node
+{
 	/**
 	 * Get the content of the file as string
 	 *

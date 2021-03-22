@@ -33,7 +33,8 @@ use OCP\Notification\Events\RegisterNotifierEvent;
 use OC\Notification\Events\RegisterConsumerEventImpl;
 use OC\Notification\Events\RegisterNotifierEventImpl;
 
-class Manager implements IManager {
+class Manager implements IManager
+{
 	/** @var EventDispatcherInterface */
 	protected $dispatcher;
 

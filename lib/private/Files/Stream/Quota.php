@@ -31,7 +31,8 @@ namespace OC\Files\Stream;
  * usage: void \OC\Files\Stream\Quota::register($id, $stream, $limit)
  * or:    resource \OC\Files\Stream\Quota::wrap($stream, $limit)
  */
-class Quota {
+class Quota
+{
 	private static $streams = [];
 
 	/**

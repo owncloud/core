@@ -34,7 +34,8 @@ use Sabre\DAVACL\Plugin;
  * @see https://github.com/owncloud/core/issues/22578
  * @package OCA\DAV\Connector\Sabre
  */
-class DavAclPlugin extends Plugin {
+class DavAclPlugin extends Plugin
+{
 	public function __construct() {
 		$this->hideNodesFromListings = true;
 		$this->allowUnauthenticatedAccess = false;

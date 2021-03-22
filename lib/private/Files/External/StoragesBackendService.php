@@ -34,7 +34,8 @@ use OCP\Files\External\IStoragesBackendService;
 /**
  * Service class to manage backend definitions
  */
-class StoragesBackendService implements IStoragesBackendService {
+class StoragesBackendService implements IStoragesBackendService
+{
 
 	/** @var IConfig */
 	protected $config;

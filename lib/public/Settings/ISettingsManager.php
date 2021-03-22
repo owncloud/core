@@ -26,7 +26,8 @@ namespace OCP\Settings;
  * ISettings objects, primarily for the settings UI.
  * @since 10.0
  */
-interface ISettingsManager {
+interface ISettingsManager
+{
 
 	/**
 	 * Retrieves sections for a personal

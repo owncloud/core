@@ -48,7 +48,8 @@ use Symfony\Component\Process\ExecutableFinder;
 /**
  * Collection of useful functions
  */
-class OC_Helper {
+class OC_Helper
+{
 	private static $templateManager;
 
 	/**

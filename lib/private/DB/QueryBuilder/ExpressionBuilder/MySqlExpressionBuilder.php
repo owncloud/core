@@ -23,7 +23,8 @@ namespace OC\DB\QueryBuilder\ExpressionBuilder;
 
 use OC\DB\QueryBuilder\QueryFunction;
 
-class MySqlExpressionBuilder extends ExpressionBuilder {
+class MySqlExpressionBuilder extends ExpressionBuilder
+{
 
 	/**
 	 * @inheritdoc

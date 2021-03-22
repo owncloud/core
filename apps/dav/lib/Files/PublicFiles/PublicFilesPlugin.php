@@ -41,7 +41,8 @@ use Sabre\HTTP\ResponseInterface;
  *
  * @package OCA\DAV\Files\PublicFiles
  */
-class PublicFilesPlugin extends ServerPlugin {
+class PublicFilesPlugin extends ServerPlugin
+{
 	const PUBLIC_LINK_ITEM_TYPE = '{http://owncloud.org/ns}public-link-item-type';
 	const PUBLIC_LINK_PERMISSION = '{http://owncloud.org/ns}public-link-permission';
 	const PUBLIC_LINK_EXPIRATION = '{http://owncloud.org/ns}public-link-expiration';

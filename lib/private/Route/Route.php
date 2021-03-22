@@ -31,7 +31,8 @@ namespace OC\Route;
 use OCP\Route\IRoute;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 
-class Route extends SymfonyRoute implements IRoute {
+class Route extends SymfonyRoute implements IRoute
+{
 	/**
 	 * Specify the method when this route is to be used
 	 *

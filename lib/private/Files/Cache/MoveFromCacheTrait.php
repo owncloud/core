@@ -27,7 +27,8 @@ use OCP\Files\Cache\ICacheEntry;
 /**
  * Fallback implementation for moveFromCache
  */
-trait MoveFromCacheTrait {
+trait MoveFromCacheTrait
+{
 	/**
 	 * store meta data for a file or folder
 	 *

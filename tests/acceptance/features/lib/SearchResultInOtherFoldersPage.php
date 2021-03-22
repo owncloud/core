@@ -25,7 +25,8 @@ namespace Page;
 /**
  * Page that shows the search results.
  */
-class SearchResultInOtherFoldersPage extends FilesPageBasic {
+class SearchResultInOtherFoldersPage extends FilesPageBasic
+{
 	protected $emptyContentXpath = ".//div[@id='searchresults']//div[@class='emptycontent']";
 	protected $fileListXpath = ".//div[@id='searchresults']//tbody";
 	protected $fileNameMatchXpath = "//div[@class='name' and .=%s]";

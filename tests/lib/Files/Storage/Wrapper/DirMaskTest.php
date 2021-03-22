@@ -26,7 +26,8 @@ use OC\Files\Storage\Wrapper\DirMask;
 use OCP\Constants;
 use PHPUnit\Framework\TestCase;
 
-class DirMaskTest extends TestCase {
+class DirMaskTest extends TestCase
+{
 
 	/** @var  Temporary */
 	private $sourceStorage;

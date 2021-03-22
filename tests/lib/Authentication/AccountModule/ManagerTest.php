@@ -29,7 +29,8 @@ use OCP\ILogger;
 use OCP\IUser;
 use Test\TestCase;
 
-class ManagerTest extends TestCase {
+class ManagerTest extends TestCase
+{
 
 	/** @var IUser|\PHPUnit\Framework\MockObject\MockObject */
 	private $user;

@@ -26,7 +26,8 @@ namespace OCP;
  * Small Facade for being able to inject the database connection for tests
  * @since 7.0.0 - extends IDBConnection was added in 8.1.0
  */
-interface IDb extends IDBConnection {
+interface IDb extends IDBConnection
+{
 
 	/**
 	 * Used to abstract the owncloud database access away

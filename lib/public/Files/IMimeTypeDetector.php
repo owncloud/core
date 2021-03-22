@@ -30,7 +30,8 @@ namespace OCP\Files;
  *
  * Interface to handle mimetypes (detection and icon retrieval)
  **/
-interface IMimeTypeDetector {
+interface IMimeTypeDetector
+{
 
 	/**
 	 * detect mimetype only based on filename, content of file is not used

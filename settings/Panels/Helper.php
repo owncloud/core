@@ -21,7 +21,8 @@
 
 namespace OC\Settings\Panels;
 
-class Helper {
+class Helper
+{
 	public function getStorageInfo($path) {
 		return \OC_Helper::getStorageInfo($path);
 	}

@@ -30,7 +30,8 @@ use OCP\Lock\ILockingProvider;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-class SecurityWarning implements ISettings {
+class SecurityWarning implements ISettings
+{
 
 	/** @var IL10N */
 	protected $l;

@@ -30,7 +30,8 @@ use OCP\IServerContainer;
  * @package OC\Share20
  * @since 9.0.0
  */
-interface IProviderFactory {
+interface IProviderFactory
+{
 
 	/**
 	 * IProviderFactory constructor.

@@ -31,7 +31,8 @@
 
 namespace OC\Files\Storage;
 
-class CommonTest extends \OC\Files\Storage\Common {
+class CommonTest extends \OC\Files\Storage\Common
+{
 	/**
 	 * underlying local storage used for missing functions
 	 * @var \OC\Files\Storage\Local

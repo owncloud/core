@@ -41,7 +41,8 @@ use OCP\IURLGenerator;
  *
  * @package OC\Files\Type
  */
-class Detection implements IMimeTypeDetector {
+class Detection implements IMimeTypeDetector
+{
 	protected $mimetypes = [];
 	protected $secureMimeTypes = [];
 

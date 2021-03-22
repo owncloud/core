@@ -23,7 +23,8 @@ namespace OC\DB;
 
 use Doctrine\DBAL\Schema\Schema;
 
-class PostgreSqlMigrator extends Migrator {
+class PostgreSqlMigrator extends Migrator
+{
 	/**
 	 * @param Schema $targetSchema
 	 * @param \Doctrine\DBAL\Connection $connection

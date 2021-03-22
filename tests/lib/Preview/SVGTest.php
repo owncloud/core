@@ -28,7 +28,8 @@ namespace Test\Preview;
  *
  * @package Test\Preview
  */
-class SVGTest extends Provider {
+class SVGTest extends Provider
+{
 	public function setUp(): void {
 		$checkImagick = new \Imagick();
 		if (\count($checkImagick->queryFormats('SVG')) === 1) {

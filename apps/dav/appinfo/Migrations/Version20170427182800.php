@@ -28,7 +28,8 @@ use OCP\Migration\ISchemaMigration;
  * Fixes missed  `publicuri` field on update from 9.1.x
  */
 
-class Version20170427182800 implements ISchemaMigration {
+class Version20170427182800 implements ISchemaMigration
+{
 
 	/** @var  string */
 	private $prefix;

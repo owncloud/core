@@ -25,7 +25,8 @@ use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 use Test\TestCase;
 
-abstract class LockingProvider extends TestCase {
+abstract class LockingProvider extends TestCase
+{
 	/**
 	 * @var \OCP\Lock\ILockingProvider
 	 */

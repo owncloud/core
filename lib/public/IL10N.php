@@ -41,7 +41,8 @@ namespace OCP;
  * @package OCP
  * @since 6.0.0
  */
-interface IL10N {
+interface IL10N
+{
 	/**
 	 * Translating
 	 * @param string $text The text we need a translation for

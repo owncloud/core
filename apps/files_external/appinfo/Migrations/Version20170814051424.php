@@ -30,7 +30,8 @@ use OCP\Migration\ISimpleMigration;
 /**
  * migrate mount.json mounts into the database
  */
-class Version20170814051424 implements ISimpleMigration {
+class Version20170814051424 implements ISimpleMigration
+{
 
 	/**
 	 * @param IOutput $out

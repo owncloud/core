@@ -29,7 +29,8 @@ use Behat\Mink\Session;
  * common things for sharing settings pages (global and personal)
  *
  */
-class SharingSettingsPage extends OwncloudPage {
+class SharingSettingsPage extends OwncloudPage
+{
 	/**
 	 * toggle checkbox
 	 *

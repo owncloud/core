@@ -31,7 +31,8 @@ require_once 'bootstrap.php';
 /**
  * context file for steps that execute actions as "the public".
  */
-class PublicWebDavContext implements Context {
+class PublicWebDavContext implements Context
+{
 	/**
 	 *
 	 * @var FeatureContext

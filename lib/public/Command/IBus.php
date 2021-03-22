@@ -28,7 +28,8 @@ namespace OCP\Command;
  * @package OCP\Command
  * @since 8.1.0
  */
-interface IBus {
+interface IBus
+{
 	/**
 	 * Schedule a command to be fired
 	 *

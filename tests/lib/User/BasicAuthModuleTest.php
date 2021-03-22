@@ -32,7 +32,8 @@ use OCP\IUser;
 use OCP\IUserManager;
 use Test\TestCase;
 
-class BasicAuthModuleTest extends TestCase {
+class BasicAuthModuleTest extends TestCase
+{
 
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;

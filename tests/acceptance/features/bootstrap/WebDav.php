@@ -36,7 +36,8 @@ use TestHelpers\Asserts\WebDav as WebDavAssert;
 /**
  * WebDav functions
  */
-trait WebDav {
+trait WebDav
+{
 
 	/**
 	 * @var string

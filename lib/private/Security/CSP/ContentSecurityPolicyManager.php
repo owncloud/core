@@ -25,7 +25,8 @@ use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\EmptyContentSecurityPolicy;
 use OCP\Security\IContentSecurityPolicyManager;
 
-class ContentSecurityPolicyManager implements IContentSecurityPolicyManager {
+class ContentSecurityPolicyManager implements IContentSecurityPolicyManager
+{
 	/** @var ContentSecurityPolicy[] */
 	private $policies = [];
 

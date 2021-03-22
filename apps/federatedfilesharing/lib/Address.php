@@ -26,7 +26,8 @@ namespace OCA\FederatedFileSharing;
  *
  * @package OCA\FederatedFileSharing
  */
-class Address {
+class Address
+{
 	/**
 	 * @var string
 	 */

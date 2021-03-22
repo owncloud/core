@@ -27,7 +27,8 @@ namespace OCP\Notification;
  * @package OCP\Notification
  * @since 9.0.0
  */
-interface INotification {
+interface INotification
+{
 	/**
 	 * @param string $app
 	 * @return $this

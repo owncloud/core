@@ -29,7 +29,8 @@ use OCP\Files\External\Auth\AuthMechanism;
  *
  * @since 10.0
  */
-interface IAuthMechanismProvider {
+interface IAuthMechanismProvider
+{
 
 	/**
 	 * @since 9.1.0

@@ -30,7 +30,8 @@ use OCP\IUser;
 /**
  * Mount provider for object store home storages
  */
-class ObjectHomeMountProvider implements IHomeMountProvider {
+class ObjectHomeMountProvider implements IHomeMountProvider
+{
 	/**
 	 * @var IConfig
 	 */

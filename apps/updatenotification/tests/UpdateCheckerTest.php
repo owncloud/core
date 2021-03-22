@@ -26,7 +26,8 @@ use OC\Updater;
 use OCA\UpdateNotification\UpdateChecker;
 use Test\TestCase;
 
-class UpdateCheckerTest extends TestCase {
+class UpdateCheckerTest extends TestCase
+{
 	/** @var Updater */
 	private $updater;
 	/** @var UpdateChecker */

@@ -36,7 +36,8 @@ namespace OCP;
  * Class to generate URLs
  * @since 6.0.0
  */
-interface IURLGenerator {
+interface IURLGenerator
+{
 	/**
 	 * Returns the URL for a route
 	 * @param string $routeName the name of the route

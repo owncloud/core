@@ -21,7 +21,8 @@
 
 namespace OCA\Federation;
 
-class Hooks {
+class Hooks
+{
 
 	/** @var TrustedServers */
 	private $trustedServers;

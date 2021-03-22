@@ -9,7 +9,8 @@ use OC\User\SyncService;
 use OCP\Migration\ISimpleMigration;
 use OCP\Migration\IOutput;
 
-class Version20170221114437 implements ISimpleMigration {
+class Version20170221114437 implements ISimpleMigration
+{
 
 	/**
 	 * @param IOutput $out

@@ -14,7 +14,8 @@ use OC\Theme\Theme;
 use OCP\ILogger;
 use Test\TestCase;
 
-class CSSResourceLocatorTest extends TestCase {
+class CSSResourceLocatorTest extends TestCase
+{
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $logger;
 	/** @var \PHPUnit\Framework\MockObject\MockObject */

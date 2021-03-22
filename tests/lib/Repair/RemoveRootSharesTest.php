@@ -33,7 +33,8 @@ use Test\Traits\UserTrait;
  * @package Test\Repair
  * @group DB
  */
-class RemoveRootSharesTest extends \Test\TestCase {
+class RemoveRootSharesTest extends \Test\TestCase
+{
 	use UserTrait;
 
 	/** @var RemoveRootShares */

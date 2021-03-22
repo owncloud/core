@@ -23,5 +23,6 @@ namespace OC\Authentication\Exceptions;
 
 use Exception;
 
-class InvalidTokenException extends Exception {
+class InvalidTokenException extends Exception
+{
 }

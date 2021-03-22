@@ -24,7 +24,8 @@ namespace Test\Encryption;
 use OC\Encryption\EncryptionWrapper;
 use Test\TestCase;
 
-class EncryptionWrapperTest extends TestCase {
+class EncryptionWrapperTest extends TestCase
+{
 
 	/** @var  EncryptionWrapper */
 	private $instance;

@@ -43,7 +43,8 @@ use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
 
-abstract class Node implements \Sabre\DAV\INode {
+abstract class Node implements \Sabre\DAV\INode
+{
 
 	/**
 	 * @var \OC\Files\View

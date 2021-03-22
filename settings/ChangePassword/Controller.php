@@ -32,7 +32,8 @@
  */
 namespace OC\Settings\ChangePassword;
 
-class Controller {
+class Controller
+{
 	public static function changePersonalPassword($args) {
 		// Check if we are an user
 		\OC_JSON::callCheck();

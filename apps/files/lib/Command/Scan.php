@@ -49,7 +49,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Scan extends Base {
+class Scan extends Base
+{
 
 	/** @var IUserManager $userManager */
 	private $userManager;

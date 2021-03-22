@@ -35,7 +35,8 @@ use OCP\Migration\IRepairStep;
  *
  * @package OC\Repair
  */
-class UpdateCertificateStore implements IRepairStep {
+class UpdateCertificateStore implements IRepairStep
+{
 	/**
 	 * FIXME: The certificate manager does only allow specifying the user
 	 *        within the constructor. This makes DI impossible.

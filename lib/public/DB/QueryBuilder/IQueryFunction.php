@@ -24,7 +24,8 @@ namespace OCP\DB\QueryBuilder;
 /**
  * @since 8.2.0
  */
-interface IQueryFunction {
+interface IQueryFunction
+{
 	/**
 	 * @return string
 	 * @since 8.2.0

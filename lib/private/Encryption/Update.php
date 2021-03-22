@@ -30,7 +30,8 @@ use \OC\Files\View;
 /**
  * update encrypted files, e.g. because a file was shared
  */
-class Update {
+class Update
+{
 
 	/** @var \OC\Files\View */
 	protected $view;

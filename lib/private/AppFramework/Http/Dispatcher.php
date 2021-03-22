@@ -38,7 +38,8 @@ use OCP\IRequest;
 /**
  * Class to dispatch the request to the middleware dispatcher
  */
-class Dispatcher {
+class Dispatcher
+{
 	private $middlewareDispatcher;
 	private $protocol;
 	private $reflector;

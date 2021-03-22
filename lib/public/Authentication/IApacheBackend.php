@@ -35,7 +35,8 @@ namespace OCP\Authentication;
  * @package OCP\Authentication
  * @since 6.0.0
  */
-interface IApacheBackend {
+interface IApacheBackend
+{
 
 	/**
 	 * In case the user has been authenticated by Apache true is returned.

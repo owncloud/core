@@ -29,7 +29,8 @@ use OCP\Migration\ISchemaMigration;
 /**
  * Add account_terms table for account searching
  */
-class Version20170516100103 implements ISchemaMigration {
+class Version20170516100103 implements ISchemaMigration
+{
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 		if (!$schema->hasTable("${prefix}account_terms")) {

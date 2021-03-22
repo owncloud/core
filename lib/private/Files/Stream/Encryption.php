@@ -29,7 +29,8 @@ namespace OC\Files\Stream;
 use Icewind\Streams\Wrapper;
 use OC\Encryption\Exceptions\EncryptionHeaderKeyExistsException;
 
-class Encryption extends Wrapper {
+class Encryption extends Wrapper
+{
 
 	/** @var \OC\Encryption\Util */
 	protected $util;

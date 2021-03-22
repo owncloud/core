@@ -27,7 +27,8 @@ namespace OC\Security\CSP;
  *
  * @package OC\Security\CSP
  */
-class ContentSecurityPolicy extends \OCP\AppFramework\Http\ContentSecurityPolicy {
+class ContentSecurityPolicy extends \OCP\AppFramework\Http\ContentSecurityPolicy
+{
 	/**
 	 * @return boolean
 	 */

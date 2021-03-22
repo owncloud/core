@@ -23,7 +23,8 @@ namespace OCA\DAV\JobStatus;
 use OCA\DAV\JobStatus\Entity\JobStatusMapper;
 use Sabre\DAVACL\AbstractPrincipalCollection;
 
-class RootCollection extends AbstractPrincipalCollection {
+class RootCollection extends AbstractPrincipalCollection
+{
 
 	/**
 	 * @inheritdoc

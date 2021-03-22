@@ -58,7 +58,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * This class is the communication hub for all sharing related operations.
  */
-class Manager implements IManager {
+class Manager implements IManager
+{
 
 	/** @var IProviderFactory */
 	private $factory;

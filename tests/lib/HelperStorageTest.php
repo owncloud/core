@@ -16,7 +16,8 @@ use OCP\IUser;
  *
  * @group DB
  */
-class HelperStorageTest extends TestCase {
+class HelperStorageTest extends TestCase
+{
 	/** @var string */
 	private $user;
 	/** @var \OC\Files\Storage\Storage */

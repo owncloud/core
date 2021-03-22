@@ -39,7 +39,8 @@ use OCP\Security\ISecureRandom;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class Migrator {
+class Migrator
+{
 
 	/** @var \Doctrine\DBAL\Connection $connection */
 	protected $connection;

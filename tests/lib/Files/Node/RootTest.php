@@ -17,7 +17,8 @@ use Test\Traits\UserTrait;
 /**
  * @group DB
  */
-class RootTest extends TestCase {
+class RootTest extends TestCase
+{
 	use UserTrait;
 
 	private $user;

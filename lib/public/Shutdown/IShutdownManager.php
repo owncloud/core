@@ -27,7 +27,8 @@ namespace OCP\Shutdown;
  * @package OCP\Shutdown
  * @since 10.0.10
  */
-interface IShutdownManager {
+interface IShutdownManager
+{
 	const HIGH = 10;
 	const LOW = 1000;
 

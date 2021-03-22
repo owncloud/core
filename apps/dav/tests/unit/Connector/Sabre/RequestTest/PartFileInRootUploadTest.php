@@ -30,7 +30,8 @@ namespace OCA\DAV\Tests\unit\Connector\Sabre\RequestTest;
  *
  * @package OCA\DAV\Tests\unit\Connector\Sabre\RequestTest
  */
-class PartFileInRootUploadTest extends UploadTest {
+class PartFileInRootUploadTest extends UploadTest
+{
 	protected $original;
 
 	protected function setUp(): void {

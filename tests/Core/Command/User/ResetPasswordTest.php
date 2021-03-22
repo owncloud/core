@@ -38,7 +38,8 @@ use Test\TestCase;
  * @group DB
  * @package Tests\Core\Command\User
  */
-class ResetPasswordTest extends TestCase {
+class ResetPasswordTest extends TestCase
+{
 	/** @var  IUserManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $userManager;
 	/** @var  IConfig | \PHPUnit\Framework\MockObject\MockObject */

@@ -35,7 +35,8 @@ use Test\Traits\UserTrait;
  * @see \OC\Repair\RepairSubShares
  * @package Test\Repair
  */
-class RepairSubSharesTest extends TestCase {
+class RepairSubSharesTest extends TestCase
+{
 	use UserTrait;
 
 	/** @var  \OCP\IDBConnection */

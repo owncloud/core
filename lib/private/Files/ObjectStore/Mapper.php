@@ -29,7 +29,8 @@ use OCP\IUser;
  *
  * Map a user to a bucket.
  */
-class Mapper {
+class Mapper
+{
 	/** @var IUser */
 	private $user;
 

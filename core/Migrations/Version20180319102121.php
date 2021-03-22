@@ -8,7 +8,8 @@ use OCP\Migration\ISqlMigration;
  * Sets empty authtoken names to '(none)'
  * https://github.com/owncloud/core/issues/30792
  */
-class Version20180319102121 implements ISqlMigration {
+class Version20180319102121 implements ISqlMigration
+{
 	public function sql(IDBConnection $connection) {
 		$q = $connection->getQueryBuilder();
 		$q->update('authtoken')

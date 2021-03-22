@@ -38,7 +38,8 @@ namespace OCP;
  * This class provides convenient functions to generate and send JSON data. Useful for Ajax calls
  * @deprecated 8.1.0 Use a AppFramework JSONResponse instead
  */
-class JSON {
+class JSON
+{
 	/**
 	 * Encode and print $data in JSON format
 	 * @param array $data The data to use

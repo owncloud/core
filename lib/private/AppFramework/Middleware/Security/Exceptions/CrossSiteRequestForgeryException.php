@@ -32,7 +32,8 @@ use OCP\AppFramework\Http;
  *
  * @package OC\AppFramework\Middleware\Security\Exceptions
  */
-class CrossSiteRequestForgeryException extends SecurityException {
+class CrossSiteRequestForgeryException extends SecurityException
+{
 	public function __construct() {
 		parent::__construct('CSRF check failed', Http::STATUS_PRECONDITION_FAILED);
 	}

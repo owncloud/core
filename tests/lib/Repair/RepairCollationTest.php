@@ -16,7 +16,8 @@ use Test\TestCase;
  * See the COPYING-README file.
  */
 
-class TestCollationRepair extends Collation {
+class TestCollationRepair extends Collation
+{
 	/**
 	 * @param IDBConnection $connection
 	 * @return string[]
@@ -33,7 +34,8 @@ class TestCollationRepair extends Collation {
  *
  * @see \OC\Repair\RepairMimeTypes
  */
-class RepairCollationTest extends TestCase {
+class RepairCollationTest extends TestCase
+{
 
 	/**
 	 * @var TestCollationRepair

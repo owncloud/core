@@ -32,7 +32,8 @@ use OCP\IConfig;
  * Internal class for bootstrap only.
  * fixes cyclic DI: AllConfig needs AppConfig needs Database needs AllConfig
  */
-class SystemConfig {
+class SystemConfig
+{
 
 	/** @var array */
 	protected $sensitiveValues = [

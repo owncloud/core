@@ -32,7 +32,8 @@
 
 namespace OCA\Files_Versions;
 
-class Hooks {
+class Hooks
+{
 	public static function connectHooks() {
 		// Listen to write signals
 		\OCP\Util::connectHook('OC_Filesystem', 'write', 'OCA\Files_Versions\Hooks', 'write_hook');

@@ -28,7 +28,8 @@ namespace OC;
 /**
  * Helper class for large files on 32-bit platforms.
  */
-class LargeFileHelper {
+class LargeFileHelper
+{
 	/**
 	* pow(2, 53) as a base-10 string.
 	* @var string

@@ -36,7 +36,8 @@ use OCA\Files_External\Lib\Storage\SFTP;
  *
  * @package OCA\Files_External\Tests\Storage
  */
-class SftpTest extends \Test\Files\Storage\Storage {
+class SftpTest extends \Test\Files\Storage\Storage
+{
 	/**
 	 * @var SFTP instance
 	 */

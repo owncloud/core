@@ -46,7 +46,8 @@ use OCP\Files\StorageNotAvailableException;
  *
  * @package OCA\Files_Sharing\External\BackgroundJob
  */
-class ScanExternalSharesJob extends TimedJob {
+class ScanExternalSharesJob extends TimedJob
+{
 	/** @var IDBConnection */
 	private $connection;
 	/** @var Manager */

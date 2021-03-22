@@ -21,7 +21,8 @@
 
 namespace OC\Preview;
 
-class PNG extends Image {
+class PNG extends Image
+{
 	/**
 	 * {@inheritDoc}
 	 */

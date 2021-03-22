@@ -29,7 +29,8 @@ use OC\Files\FileInfo;
 use OCP\Constants;
 use OCP\Files\Cache\ICacheEntry;
 
-class Helper {
+class Helper
+{
 	/**
 	 * Retrieves the contents of a trash bin directory.
 	 *

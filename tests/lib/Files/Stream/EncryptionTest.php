@@ -6,7 +6,8 @@ use OC\Files\View;
 use OC\User\Manager;
 use Test\TestCase;
 
-class EncryptionTest extends TestCase {
+class EncryptionTest extends TestCase
+{
 
 	/** @var  \OCP\Encryption\IEncryptionModule | \PHPUnit\Framework\MockObject\MockObject  */
 	private $encryptionModule;

@@ -31,7 +31,8 @@ use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Test\TestCase;
 
-abstract class CommandTest extends TestCase {
+abstract class CommandTest extends TestCase
+{
 	/**
 	 * @param IStorageConfig[] $mounts
 	 * @return \OCP\Files\External\Service\IGlobalStoragesService|\PHPUnit\Framework\MockObject\MockObject

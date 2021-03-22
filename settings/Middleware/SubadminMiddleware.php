@@ -36,7 +36,8 @@ use OCP\AppFramework\Middleware;
  *
  * @package OC\Settings\Middleware
  */
-class SubadminMiddleware extends Middleware {
+class SubadminMiddleware extends Middleware
+{
 	/** @var bool */
 	protected $isSubAdmin;
 	/** @var ControllerMethodReflector */

@@ -23,7 +23,8 @@
 
 namespace OCA\DAV\Tests\unit\SystemTag;
 
-class SystemTagsObjectTypeCollectionTest extends \Test\TestCase {
+class SystemTagsObjectTypeCollectionTest extends \Test\TestCase
+{
 
 	/**
 	 * @var \OCA\DAV\SystemTag\SystemTagsObjectTypeCollection

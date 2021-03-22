@@ -26,7 +26,8 @@ use OC\IntegrityCheck\Helpers\FileAccessHelper;
 use OCP\IURLGenerator;
 use Test\TestCase;
 
-class SignAppTest extends TestCase {
+class SignAppTest extends TestCase
+{
 	/** @var Checker */
 	private $checker;
 	/** @var SignApp */

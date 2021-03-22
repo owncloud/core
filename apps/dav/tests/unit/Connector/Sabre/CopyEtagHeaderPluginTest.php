@@ -34,7 +34,8 @@ use Sabre\DAV\Tree;
  * later.
  * See the COPYING-README file.
  */
-class CopyEtagHeaderPluginTest extends TestCase {
+class CopyEtagHeaderPluginTest extends TestCase
+{
 
 	/** @var CopyEtagHeaderPlugin */
 	private $plugin;

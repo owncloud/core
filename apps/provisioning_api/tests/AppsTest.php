@@ -37,7 +37,8 @@ use OCP\IUserSession;
  *
  * @package OCA\Provisioning_API\Tests
  */
-class AppsTest extends TestCase {
+class AppsTest extends TestCase
+{
 	/** @var IAppManager */
 	private $appManager;
 	/** @var Apps */

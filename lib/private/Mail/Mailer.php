@@ -45,7 +45,8 @@ use OCP\ILogger;
  *
  * @package OC\Mail
  */
-class Mailer implements IMailer {
+class Mailer implements IMailer
+{
 	/** @var \Swift_SmtpTransport|\Swift_SendmailTransport Cached transport */
 	private $instance = null;
 	/** @var IConfig */

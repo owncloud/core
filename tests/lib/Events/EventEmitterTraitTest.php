@@ -18,7 +18,8 @@ use Test\TestCase;
  *
  * @package Test\Events
  */
-class EventEmitterTraitTest extends TestCase {
+class EventEmitterTraitTest extends TestCase
+{
 	use EventEmitterTrait;
 	protected function setUp(): void {
 		parent::setUp();

@@ -25,7 +25,8 @@ use OCA\DAV\Connector\Sabre\Directory;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\ICollection;
 
-class UploadFolder implements ICollection {
+class UploadFolder implements ICollection
+{
 	private $node;
 
 	public function __construct(Directory $node) {

@@ -52,7 +52,8 @@ use OCP\IDBConnection;
  * - Updater: listens to changes made to the filesystem inside of the ownCloud instance and updates the cache where needed
  * - ChangePropagator: updates the mtime and etags of parent folders whenever a change to the cache is made to the cache by the updater
  */
-class Cache implements ICache {
+class Cache implements ICache
+{
 	use MoveFromCacheTrait {
 		MoveFromCacheTrait::moveFromCache as moveFromCacheFallback;
 	}

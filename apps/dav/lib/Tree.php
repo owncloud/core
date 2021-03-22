@@ -33,7 +33,8 @@ use Sabre\DAV\ICollection;
  * Provides a shortcut when accessing the "files/" subtree to avoid
  * having to walk through every node and trigger unnecessary extra queries.
  */
-class Tree extends \Sabre\DAV\Tree {
+class Tree extends \Sabre\DAV\Tree
+{
 	/**
 	 * Returns the INode object for the requested path
 	 *

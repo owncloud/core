@@ -54,7 +54,8 @@ use OCP\Lock\ILockingProvider;
  *
  * @package OC\Files\Cache
  */
-class Scanner extends BasicEmitter implements IScanner {
+class Scanner extends BasicEmitter implements IScanner
+{
 	/**
 	 * @var \OC\Files\Storage\Storage $storage
 	 */

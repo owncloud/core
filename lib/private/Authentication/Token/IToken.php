@@ -23,7 +23,8 @@ namespace OC\Authentication\Token;
 
 use JsonSerializable;
 
-interface IToken extends JsonSerializable {
+interface IToken extends JsonSerializable
+{
 	const TEMPORARY_TOKEN = 0;
 	const PERMANENT_TOKEN = 1;
 

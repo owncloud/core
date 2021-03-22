@@ -27,7 +27,8 @@ namespace OCP\DB\QueryBuilder;
  * This class provides a wrapper around Doctrine's CompositeExpression
  * @since 8.2.0
  */
-interface ICompositeExpression {
+interface ICompositeExpression
+{
 	/**
 	 * Adds multiple parts to composite expression.
 	 *

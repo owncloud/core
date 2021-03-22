@@ -26,7 +26,8 @@ namespace Test\AppFramework\Db;
 /**
  * Simple utility class for testing mappers
  */
-abstract class MapperTestUtility extends \Test\TestCase {
+abstract class MapperTestUtility extends \Test\TestCase
+{
 	protected $db;
 	private $query;
 	private $queryAt;
@@ -180,7 +181,8 @@ abstract class MapperTestUtility extends \Test\TestCase {
 	}
 }
 
-class ArgumentIterator {
+class ArgumentIterator
+{
 	private $arguments;
 
 	public function __construct($arguments) {

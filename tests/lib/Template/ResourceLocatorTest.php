@@ -13,7 +13,8 @@ use OC\Template\ResourceNotFoundException;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamWrapper;
 
-class ResourceLocatorTest extends \Test\TestCase {
+class ResourceLocatorTest extends \Test\TestCase
+{
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $logger;
 	protected $root;

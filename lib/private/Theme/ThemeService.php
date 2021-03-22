@@ -28,7 +28,8 @@ use OC\Helper\EnvironmentHelper;
  *
  * @package OC\Theme
  */
-class ThemeService implements IThemeService {
+class ThemeService implements IThemeService
+{
 	const DEFAULT_THEME_PATH = '/themes/default';
 
 	/**

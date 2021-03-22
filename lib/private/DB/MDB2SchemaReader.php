@@ -32,7 +32,8 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use OCP\IConfig;
 
-class MDB2SchemaReader {
+class MDB2SchemaReader
+{
 
 	/** @var string $DBTABLEPREFIX */
 	protected $DBTABLEPREFIX;

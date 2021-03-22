@@ -34,7 +34,8 @@ use DateTime;
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
-class WebDavHelper {
+class WebDavHelper
+{
 	/**
 	 * returns the id of a file
 	 *

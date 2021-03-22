@@ -30,7 +30,8 @@
 
 namespace OC\Archive;
 
-class ZIP extends Archive {
+class ZIP extends Archive
+{
 	/**
 	 * @var \ZipArchive zip
 	 */

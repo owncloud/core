@@ -5,7 +5,8 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
 use OCP\Migration\ISchemaMigration;
 
-class Version20180622095921 implements ISchemaMigration {
+class Version20180622095921 implements ISchemaMigration
+{
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 		if ($schema->hasTable("${prefix}dav_job_status")) {

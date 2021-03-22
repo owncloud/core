@@ -31,10 +31,12 @@ use OCP\IConfig;
 use OCP\Security\ISecureRandom;
 use Test\TestCase;
 
-class ChildOCSController extends OCSController {
+class ChildOCSController extends OCSController
+{
 }
 
-class OCSControllerTest extends TestCase {
+class OCSControllerTest extends TestCase
+{
 	public function testCors() {
 		$request = new Request(
 			[

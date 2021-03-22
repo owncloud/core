@@ -26,7 +26,8 @@ namespace Test\Files\External;
 
 use OC\Files\External\StorageConfig;
 
-class StorageConfigTest extends \Test\TestCase {
+class StorageConfigTest extends \Test\TestCase
+{
 	public function testJsonSerialization() {
 		$backend = $this->getMockBuilder('\OCP\Files\External\Backend\Backend')
 			->disableOriginalConstructor()

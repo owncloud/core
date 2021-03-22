@@ -37,7 +37,8 @@ use Sabre\DAV\INode;
  * @copyright Copyright (C) 2012 entreCables S.L. All rights reserved.
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
-class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
+class QuotaPlugin extends \Sabre\DAV\ServerPlugin
+{
 
 	/**
 	 * @var \OC\Files\View

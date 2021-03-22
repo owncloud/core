@@ -30,7 +30,8 @@ use OCP\Files\IPreviewNode;
 use OCP\Files\NotPermittedException;
 use OCP\IImage;
 
-class File extends Node implements \OCP\Files\File, IPreviewNode {
+class File extends Node implements \OCP\Files\File, IPreviewNode
+{
 	/**
 	 * Creates a Folder that represents a non-existing path
 	 *

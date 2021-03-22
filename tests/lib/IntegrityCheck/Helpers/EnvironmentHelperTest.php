@@ -24,7 +24,8 @@ namespace Test\IntegrityCheck\Helpers;
 use OC\IntegrityCheck\Helpers\EnvironmentHelper;
 use Test\TestCase;
 
-class EnvironmentHelperTest extends TestCase {
+class EnvironmentHelperTest extends TestCase
+{
 	/** @var EnvironmentHelper */
 	private $environmentHelper;
 

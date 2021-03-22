@@ -31,7 +31,8 @@ require_once 'bootstrap.php';
 /**
  * context file for email related steps.
  */
-class EmailContext implements Context {
+class EmailContext implements Context
+{
 	private $localMailhogUrl = null;
 
 	/**

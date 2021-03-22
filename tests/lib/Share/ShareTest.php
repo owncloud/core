@@ -30,7 +30,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @group DB
  */
-class ShareTest extends \Test\TestCase {
+class ShareTest extends \Test\TestCase
+{
 	use UserTrait;
 
 	protected $itemType;
@@ -1516,13 +1517,15 @@ class ShareTest extends \Test\TestCase {
 	}
 }
 
-class DummyShareClass extends \OC\Share\Share {
+class DummyShareClass extends \OC\Share\Share
+{
 	public static function groupItemsTest($items) {
 		return parent::groupItems($items, 'test');
 	}
 }
 
-class DummyHookListener {
+class DummyHookListener
+{
 	public static $shareType = null;
 
 	public static function listen($params) {

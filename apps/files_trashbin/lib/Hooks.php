@@ -28,7 +28,8 @@
 
 namespace OCA\Files_Trashbin;
 
-class Hooks {
+class Hooks
+{
 
 	/**
 	 * clean up user specific settings if user gets deleted

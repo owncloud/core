@@ -27,7 +27,8 @@ use OCP\Files\Config\IUserMountCache;
 /**
  * Listen to hooks and update the mount cache as needed
  */
-class UserMountCacheListener {
+class UserMountCacheListener
+{
 	/**
 	 * @var IUserMountCache
 	 */

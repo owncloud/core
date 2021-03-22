@@ -50,7 +50,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * MonoLog is an example implementing this interface.
  */
 
-class Log implements ILogger {
+class Log implements ILogger
+{
 
 	/** @var string */
 	private $logger;

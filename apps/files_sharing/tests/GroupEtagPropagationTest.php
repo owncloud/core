@@ -32,7 +32,8 @@ use OC\Files\View;
  *
  * @package OCA\Files_Sharing\Tests
  */
-class GroupEtagPropagationTest extends PropagationTestCase {
+class GroupEtagPropagationTest extends PropagationTestCase
+{
 	/**
 	 * "user1" creates /test, /test/sub and shares with group1
 	 * "user2" (in group1) reshares /test with group2 and reshared /test/sub with group3

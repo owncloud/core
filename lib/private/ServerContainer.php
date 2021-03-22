@@ -30,7 +30,8 @@ use OCP\AppFramework\QueryException;
  *
  * @package OC
  */
-class ServerContainer extends SimpleContainer {
+class ServerContainer extends SimpleContainer
+{
 	/** @var DIContainer[] */
 	protected $appContainers;
 

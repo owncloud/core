@@ -27,7 +27,8 @@ use OCP\IUserSession;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-class SharingPersonalPanel implements ISettings {
+class SharingPersonalPanel implements ISettings
+{
 
 	/** @var IConfig $config */
 	private $config;

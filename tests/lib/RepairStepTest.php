@@ -11,7 +11,8 @@ namespace Test;
 use OCP\Migration\IRepairStep;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class RepairStepTest implements IRepairStep {
+class RepairStepTest implements IRepairStep
+{
 	private $warning;
 
 	public function __construct($warning = false) {
@@ -31,7 +32,8 @@ class RepairStepTest implements IRepairStep {
 	}
 }
 
-class RepairTest extends TestCase {
+class RepairTest extends TestCase
+{
 	/** @var \OC\Repair */
 	private $repair;
 

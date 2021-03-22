@@ -36,7 +36,8 @@ use Test\Traits\UserTrait;
  * @group DB
  * @package Tests\Core\Command\User
  */
-class ModifyTest extends TestCase {
+class ModifyTest extends TestCase
+{
 	use UserTrait;
 
 	/** @var  IUserManager | \PHPUnit\Framework\MockObject\MockObject */

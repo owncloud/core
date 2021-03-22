@@ -26,7 +26,8 @@
  */
 namespace OC\Setup;
 
-class PostgreSQL extends AbstractDatabase {
+class PostgreSQL extends AbstractDatabase
+{
 	public $dbprettyname = 'PostgreSQL';
 
 	public function setupDatabase($username) {

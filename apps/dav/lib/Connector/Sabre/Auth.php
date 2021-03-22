@@ -47,7 +47,8 @@ use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 
-class Auth extends AbstractBasic {
+class Auth extends AbstractBasic
+{
 	public const DAV_AUTHENTICATED = 'AUTHENTICATED_TO_DAV_BACKEND';
 
 	/** @var ISession */

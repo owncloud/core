@@ -25,7 +25,8 @@ namespace Test\AppFramework\Http;
 
 use OCP\AppFramework\Http\OCSResponse;
 
-class OCSResponseTest extends \Test\TestCase {
+class OCSResponseTest extends \Test\TestCase
+{
 	public function testHeadersJSON() {
 		$response = new OCSResponse('json', 1, 2, 3);
 		$type = $response->getHeaders()['Content-Type'];

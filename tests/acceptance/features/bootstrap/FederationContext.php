@@ -32,7 +32,8 @@ require_once 'bootstrap.php';
 /**
  * Federation context.
  */
-class FederationContext implements Context {
+class FederationContext implements Context
+{
 
 	/**
 	 *

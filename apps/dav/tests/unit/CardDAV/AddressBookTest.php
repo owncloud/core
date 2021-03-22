@@ -27,7 +27,8 @@ use OCA\DAV\CardDAV\CardDavBackend;
 use Sabre\DAV\PropPatch;
 use Test\TestCase;
 
-class AddressBookTest extends TestCase {
+class AddressBookTest extends TestCase
+{
 	public function testDelete() {
 		/** @var \PHPUnit\Framework\MockObject\MockObject | CardDavBackend $backend */
 		$backend = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')->disableOriginalConstructor()->getMock();

@@ -61,7 +61,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @package OCA\Files_Sharing\Controllers
  */
-class ShareController extends Controller {
+class ShareController extends Controller
+{
 
 	/** @var IConfig */
 	protected $config;

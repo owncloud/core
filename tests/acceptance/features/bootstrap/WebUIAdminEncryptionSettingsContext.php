@@ -31,7 +31,8 @@ require_once 'bootstrap.php';
 /**
  * Context for admin encryption settings specific webUI steps
  */
-class WebUIAdminEncryptionSettingsContext extends RawMinkContext implements Context {
+class WebUIAdminEncryptionSettingsContext extends RawMinkContext implements Context
+{
 
 	/**
 	 * @var FeatureContext

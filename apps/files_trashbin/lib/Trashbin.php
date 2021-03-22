@@ -52,7 +52,8 @@ use OCP\Files\IRootFolder;
 use OCP\IURLGenerator;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class Trashbin {
+class Trashbin
+{
 
 	/**
 	 * @var IURLGenerator

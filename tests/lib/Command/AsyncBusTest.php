@@ -15,13 +15,15 @@ use OCP\Command\ICommand;
 use Test\BackgroundJob\DummyJobList;
 use Test\TestCase;
 
-class SimpleCommand implements ICommand {
+class SimpleCommand implements ICommand
+{
 	public function handle() {
 		AsyncBusTest::$lastCommand = 'SimpleCommand';
 	}
 }
 
-class StateFullCommand implements ICommand {
+class StateFullCommand implements ICommand
+{
 	private $state;
 
 	public function __construct($state) {
@@ -33,7 +35,8 @@ class StateFullCommand implements ICommand {
 	}
 }
 
-class FilesystemCommand implements ICommand {
+class FilesystemCommand implements ICommand
+{
 	use FileAccess;
 
 	public function handle() {
@@ -46,7 +49,8 @@ function basicFunction() {
 }
 
 // clean class to prevent phpunit putting closure in $this
-class ThisClosureTest {
+class ThisClosureTest
+{
 	private function privateMethod() {
 		AsyncBusTest::$lastCommand = 'closure-this';
 	}
@@ -58,7 +62,8 @@ class ThisClosureTest {
 	}
 }
 
-class AsyncBusTest extends TestCase {
+class AsyncBusTest extends TestCase
+{
 	/**
 	 * Basic way to check output from a command
 	 *

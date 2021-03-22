@@ -29,7 +29,8 @@ use OCP\IConfig;
 use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\DAV\ServerPlugin;
 
-class MaintenancePlugin extends ServerPlugin {
+class MaintenancePlugin extends ServerPlugin
+{
 
 	/** @var IConfig */
 	private $config;

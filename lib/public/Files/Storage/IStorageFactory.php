@@ -28,7 +28,8 @@ use OCP\Files\Mount\IMountPoint;
  * Creates storage instances and manages and applies storage wrappers
  * @since 8.0.0
  */
-interface IStorageFactory {
+interface IStorageFactory
+{
 	/**
 	 * allow modifier storage behaviour by adding wrappers around storages
 	 *

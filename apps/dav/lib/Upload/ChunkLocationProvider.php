@@ -39,7 +39,8 @@ use OCP\IUser;
  *
  * @package OCA\DAV\Upload
  */
-class ChunkLocationProvider implements IMountProvider {
+class ChunkLocationProvider implements IMountProvider
+{
 
 	/** @var IConfig */
 	private $config;

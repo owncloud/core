@@ -28,7 +28,8 @@ use OCP\Migration\ISchemaMigration;
  * Create initial properties table
  * Add fileid field to this table if needed
  */
-class Version20170116170538 implements ISchemaMigration {
+class Version20170116170538 implements ISchemaMigration
+{
 
 	/**
 	 * @param Schema $schema

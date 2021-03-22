@@ -33,7 +33,8 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
 use OCP\Security\ISecureRandom;
 
-class TokenController extends Controller {
+class TokenController extends Controller
+{
 
 	/** @var UserManager */
 	private $userManager;

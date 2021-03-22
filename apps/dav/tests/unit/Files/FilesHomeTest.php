@@ -28,7 +28,8 @@ use OCA\DAV\Files\FilesHome;
 use OCP\Files\Mount\IMountManager;
 use Test\TestCase;
 
-class FilesHomeTest extends TestCase {
+class FilesHomeTest extends TestCase
+{
 
 	/** @var FilesHome */
 	private $filesHome;

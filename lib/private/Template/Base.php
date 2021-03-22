@@ -32,7 +32,8 @@ namespace OC\Template;
 
 use OCP\Theme\ITheme;
 
-class Base {
+class Base
+{
 	/**
 	 * @var string
 	 */

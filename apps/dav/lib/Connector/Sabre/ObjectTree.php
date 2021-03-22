@@ -36,7 +36,8 @@ use OCP\Files\StorageInvalidException;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Lock\LockedException;
 
-class ObjectTree extends \Sabre\DAV\Tree {
+class ObjectTree extends \Sabre\DAV\Tree
+{
 
 	/**
 	 * @var \OC\Files\View

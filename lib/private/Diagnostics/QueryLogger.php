@@ -26,7 +26,8 @@ namespace OC\Diagnostics;
 
 use OCP\Diagnostics\IQueryLogger;
 
-class QueryLogger implements IQueryLogger {
+class QueryLogger implements IQueryLogger
+{
 	/**
 	 * @var \OC\Diagnostics\Query
 	 */

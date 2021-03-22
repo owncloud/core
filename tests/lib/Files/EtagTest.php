@@ -19,7 +19,8 @@ use Test\Traits\UserTrait;
  *
  * @package Test\Files
  */
-class EtagTest extends \Test\TestCase {
+class EtagTest extends \Test\TestCase
+{
 	use UserTrait;
 
 	private $datadir;

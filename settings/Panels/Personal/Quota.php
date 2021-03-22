@@ -25,7 +25,8 @@ use OC\Settings\Panels\Helper;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-class Quota implements ISettings {
+class Quota implements ISettings
+{
 
 	/** @var Helper  */
 	protected $helper;

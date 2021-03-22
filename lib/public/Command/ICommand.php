@@ -28,7 +28,8 @@ namespace OCP\Command;
  * @package OCP\Command
  * @since 8.1.0
  */
-interface ICommand {
+interface ICommand
+{
 	/**
 	 * Run the command
 	 * @since 8.1.0

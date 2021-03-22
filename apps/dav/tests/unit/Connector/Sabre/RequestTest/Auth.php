@@ -27,7 +27,8 @@ use Sabre\DAV\Auth\Backend\BackendInterface;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 
-class Auth implements BackendInterface {
+class Auth implements BackendInterface
+{
 	/**
 	 * @var string
 	 */

@@ -32,7 +32,8 @@ use OCP\IConfig;
  *
  * @package OCA\Files
  */
-class Capabilities implements ICapability {
+class Capabilities implements ICapability
+{
 	/** @var IConfig */
 	protected $config;
 

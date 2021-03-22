@@ -36,7 +36,8 @@ use Test\Traits\UserTrait;
  *
  * @group DB
  */
-class CronTest extends TestCase {
+class CronTest extends TestCase
+{
 	use UserTrait;
 
 	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */

@@ -39,7 +39,8 @@ namespace OC;
 
 use OCP\License\ILicenseManager;
 
-class TemplateLayout extends \OC_Template {
+class TemplateLayout extends \OC_Template
+{
 	private static $versionHash = '';
 
 	/**

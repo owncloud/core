@@ -7,7 +7,8 @@ use OC\Files\Storage\Wrapper\ReadOnlyJail;
 use OCP\Constants;
 use PHPUnit\Framework\TestCase;
 
-class ReadOnlyJailTest extends TestCase {
+class ReadOnlyJailTest extends TestCase
+{
 
 	/** @var  ReadOnlyJail */
 	private $sut;

@@ -27,7 +27,8 @@ use OCP\Command\ICommand;
 /**
  * Wrap a command in the background job interface
  */
-class CommandJob extends QueuedJob {
+class CommandJob extends QueuedJob
+{
 	protected function run($serializedCommand) {
 		$command = \unserialize($serializedCommand);
 		if ($command instanceof ICommand) {

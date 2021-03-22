@@ -24,7 +24,8 @@ namespace OCA\DAV\DAV;
 
 use Sabre\DAVACL\PrincipalBackend\AbstractBackend;
 
-class SystemPrincipalBackend extends AbstractBackend {
+class SystemPrincipalBackend extends AbstractBackend
+{
 
 	/**
 	 * Returns a list of principals based on a prefix.

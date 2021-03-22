@@ -30,7 +30,8 @@ use OCP\IUser;
 use OCP\IUserSession;
 use Test\TestCase;
 
-class PersonalSettingsControllerTest extends TestCase {
+class PersonalSettingsControllerTest extends TestCase
+{
 
 	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;

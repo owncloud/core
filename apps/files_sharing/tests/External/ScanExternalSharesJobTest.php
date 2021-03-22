@@ -43,7 +43,8 @@ use Test\TestCase;
  *
  * @package OCA\Files_Sharing\Tests\External
  */
-class ScanExternalSharesJobTest extends TestCase {
+class ScanExternalSharesJobTest extends TestCase
+{
 
 	/** @var Manager */
 	private $externalManager;

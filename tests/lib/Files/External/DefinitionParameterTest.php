@@ -24,7 +24,8 @@ namespace Test\Files\External;
 
 use OCP\Files\External\DefinitionParameter as Param;
 
-class DefinitionParameterTest extends \Test\TestCase {
+class DefinitionParameterTest extends \Test\TestCase
+{
 	public function testJsonSerialization() {
 		$param = new Param('foo', 'bar');
 		$this->assertEquals([

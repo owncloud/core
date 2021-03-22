@@ -26,7 +26,8 @@ namespace OCP\Files\Cache;
  *
  * @since 9.0.0
  */
-interface ICacheEntry {
+interface ICacheEntry
+{
 	const DIRECTORY_MIMETYPE = 'httpd/unix-directory';
 
 	/**

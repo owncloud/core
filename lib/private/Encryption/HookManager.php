@@ -25,7 +25,8 @@ namespace OC\Encryption;
 use OC\Files\Filesystem;
 use OC\Files\View;
 
-class HookManager {
+class HookManager
+{
 	/**
 	 * @var Update
 	 */

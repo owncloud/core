@@ -58,7 +58,8 @@ use Test\Traits\UserTrait;
  *
  * @package Test\Encryption
  */
-class DecryptAllTest extends TestCase {
+class DecryptAllTest extends TestCase
+{
 	use UserTrait;
 	/** @var \PHPUnit\Framework\MockObject\MockObject | IUserManager */
 	protected $userManager;

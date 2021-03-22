@@ -44,7 +44,8 @@ use OC\Mail\Message;
  * @package OCP\Mail
  * @since 8.1.0
  */
-interface IMailer {
+interface IMailer
+{
 	/**
 	 * Creates a new message object that can be passed to send()
 	 *

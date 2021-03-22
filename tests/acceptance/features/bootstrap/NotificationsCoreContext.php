@@ -31,7 +31,8 @@ require_once 'bootstrap.php';
 /**
  * Defines application features from the specific context.
  */
-class NotificationsCoreContext implements Context {
+class NotificationsCoreContext implements Context
+{
 
 	/**
 	 * @var array[]

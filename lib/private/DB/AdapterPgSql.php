@@ -22,7 +22,8 @@
 
 namespace OC\DB;
 
-class AdapterPgSql extends Adapter {
+class AdapterPgSql extends Adapter
+{
 	public function lastInsertId($table) {
 		return $this->conn->fetchColumn('SELECT lastval()');
 	}

@@ -23,7 +23,8 @@
 
 namespace OC\Files\Storage\PolyFill;
 
-trait CopyDirectory {
+trait CopyDirectory
+{
 	/**
 	 * Check if a path is a directory
 	 *

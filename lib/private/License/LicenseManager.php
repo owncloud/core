@@ -25,7 +25,8 @@ use OCP\App\IAppManager;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\ILogger;
 
-class LicenseManager implements ILicenseManager {
+class LicenseManager implements ILicenseManager
+{
 	public const GRACE_PERIOD = 60 * 60 * 24;  // 24h
 
 	/** @var LicenseFetcher */

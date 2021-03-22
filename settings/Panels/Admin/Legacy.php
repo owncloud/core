@@ -27,7 +27,8 @@ use OC\Settings\Panels\Helper;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-class Legacy implements ISettings {
+class Legacy implements ISettings
+{
 
 	/** @var Helper  */
 	protected $helper;

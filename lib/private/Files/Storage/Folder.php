@@ -24,7 +24,8 @@ namespace OC\Files\Storage;
 use OCP\Files\Folder as FilesFolder;
 use OCP\Files\NotPermittedException;
 
-class Folder extends Node implements FilesFolder {
+class Folder extends Node implements FilesFolder
+{
 	/**
 	 * Get the full path of an item in the folder within owncloud's filesystem
 	 *

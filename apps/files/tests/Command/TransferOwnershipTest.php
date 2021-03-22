@@ -51,7 +51,8 @@ use Test\Traits\UserTrait;
  *
  * @package OCA\Files\Tests\Command
  */
-class TransferOwnershipTest extends TestCase {
+class TransferOwnershipTest extends TestCase
+{
 	use UserTrait;
 
 	/**

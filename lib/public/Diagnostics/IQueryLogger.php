@@ -31,7 +31,8 @@ use Doctrine\DBAL\Logging\SQLLogger;
  * @package OCP\Diagnostics
  * @since 8.0.0
  */
-interface IQueryLogger extends SQLLogger {
+interface IQueryLogger extends SQLLogger
+{
 	/**
 	 * Mark the start of a query providing query SQL statement, its parameters and types.
 	 * This method should be called as close to the DB as possible and after

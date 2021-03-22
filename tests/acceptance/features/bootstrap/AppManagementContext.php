@@ -28,7 +28,8 @@ use TestHelpers\SetupHelper;
 /**
  * Context for steps that test apps_paths.
  */
-class AppManagementContext implements Context {
+class AppManagementContext implements Context
+{
 	/**
 	 *
 	 * @var FeatureContext

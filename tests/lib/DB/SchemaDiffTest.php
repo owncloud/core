@@ -35,7 +35,8 @@ use Test\TestCase;
  *
  * @package Test\DB
  */
-class SchemaDiffTest extends TestCase {
+class SchemaDiffTest extends TestCase
+{
 	/** @var \Doctrine\DBAL\Connection $connection */
 	private $connection;
 

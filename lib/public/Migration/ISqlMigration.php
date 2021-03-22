@@ -26,7 +26,8 @@ use OCP\IDBConnection;
 /**
  * @since 10.0
  */
-interface ISqlMigration {
+interface ISqlMigration
+{
 
 	/**
 	 * Generate an array of sql statements

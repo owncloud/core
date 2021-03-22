@@ -34,7 +34,8 @@ use OCP\IUser;
  * @package OCA\Files_Sharing\Tests\Service
  * @group DB
  */
-class NotificationPublisherTest extends TestCase {
+class NotificationPublisherTest extends TestCase
+{
 
 	/** @var IGroupManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $groupManager;

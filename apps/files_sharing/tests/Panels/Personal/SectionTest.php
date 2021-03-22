@@ -23,7 +23,8 @@ namespace OCA\Files_Sharing\Tests\Panels\Personal;
 use OCA\Files_Sharing\Panels\Personal\Section;
 use OCP\IL10N;
 
-class SectionTest extends \Test\TestCase {
+class SectionTest extends \Test\TestCase
+{
 
 	/** @var IL10N | \PHPUnit\Framework\MockObject\MockObject $l */
 	private $l;

@@ -31,7 +31,8 @@ namespace OCA\DAV\Tests\unit\Connector\Sabre;
  * @group DB
  * @package OCA\DAV\Tests\unit\Connector\Sabre
  */
-class NodeTest extends \Test\TestCase {
+class NodeTest extends \Test\TestCase
+{
 	public function davPermissionsProvider() {
 		return [
 			[\OCP\Constants::PERMISSION_ALL, 'file', false, false, 'RDNVW'],

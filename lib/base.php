@@ -64,7 +64,8 @@ require_once 'public/Constants.php';
  * No, we can not put this class in its own file because it is used by
  * OC_autoload!
  */
-class OC {
+class OC
+{
 	/**
 	 * Associative array for autoloading. classname => filename
 	 */

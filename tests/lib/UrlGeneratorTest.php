@@ -17,7 +17,8 @@ use OCP\Route\IRouter;
 /**
  * Class UrlGeneratorTest
  */
-class UrlGeneratorTest extends TestCase {
+class UrlGeneratorTest extends TestCase
+{
 
 	/** @var IURLGenerator */
 	private $urlGenerator;

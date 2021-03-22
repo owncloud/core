@@ -40,7 +40,8 @@ require_once 'bootstrap.php';
 /**
  * WebUI General context.
  */
-class WebUIGeneralContext extends RawMinkContext implements Context {
+class WebUIGeneralContext extends RawMinkContext implements Context
+{
 	private $owncloudPage;
 
 	/**

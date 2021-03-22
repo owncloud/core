@@ -26,7 +26,8 @@ use OC\Session\CryptoSessionData;
 use OCP\Session\Exceptions\SessionNotAvailableException;
 use OC\Session\Memory;
 
-class CryptoSessionDataTest extends Session {
+class CryptoSessionDataTest extends Session
+{
 	/** @var \PHPUnit\Framework\MockObject\MockObject|\OCP\Security\ICrypto */
 	protected $crypto;
 

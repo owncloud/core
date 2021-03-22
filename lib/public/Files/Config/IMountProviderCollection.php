@@ -28,7 +28,8 @@ use OCP\IUser;
  * Manages the different mount providers
  * @since 8.0.0
  */
-interface IMountProviderCollection {
+interface IMountProviderCollection
+{
 	/**
 	 * Get all configured mount points for the user
 	 *

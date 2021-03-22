@@ -40,7 +40,8 @@ use Sabre\VObject\ITip;
  * @author Evert Pot (http://evertpot.com/)
  * @license http://sabre.io/license/ Modified BSD License
  */
-class IMipPlugin extends SabreIMipPlugin {
+class IMipPlugin extends SabreIMipPlugin
+{
 
 	/** @var IMailer */
 	private $mailer;

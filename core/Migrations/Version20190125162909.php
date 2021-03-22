@@ -27,7 +27,8 @@ use OCP\Migration\ISchemaMigration;
 /**
  * Increase login-name size from 64 to 255.
  */
-class Version20190125162909 implements ISchemaMigration {
+class Version20190125162909 implements ISchemaMigration
+{
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 

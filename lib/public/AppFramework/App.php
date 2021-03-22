@@ -40,7 +40,8 @@ use OC\AppFramework\Routing\RouteConfig;
  * to be registered using IContainer::registerService
  * @since 6.0.0
  */
-class App {
+class App
+{
 
 	/**
 	 * Turns an app id into a namespace by convetion. The id is split at the

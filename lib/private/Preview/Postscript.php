@@ -23,7 +23,8 @@
 namespace OC\Preview;
 
 //.eps
-class Postscript extends Bitmap {
+class Postscript extends Bitmap
+{
 	/**
 	 * {@inheritDoc}
 	 */

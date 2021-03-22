@@ -16,7 +16,8 @@ use Test\Traits\UserTrait;
  *
  * @group DB
  */
-class AppTest extends \Test\TestCase {
+class AppTest extends \Test\TestCase
+{
 	use UserTrait;
 
 	const TEST_USER1 = 'user1';

@@ -24,7 +24,8 @@
 
 namespace OC\DB;
 
-class AdapterOCI8 extends Adapter {
+class AdapterOCI8 extends Adapter
+{
 	public function lastInsertId($table) {
 		if ($table === null) {
 			throw new \InvalidArgumentException('Oracle requires a table name to be passed into lastInsertId()');

@@ -30,7 +30,8 @@ use OCP\ILogger;
  * @package OCP\BackgroundJob
  * @since 7.0.0
  */
-interface IJob {
+interface IJob
+{
 	/**
 	 * Run the background job with the registered argument
 	 *

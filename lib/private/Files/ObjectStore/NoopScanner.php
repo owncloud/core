@@ -27,7 +27,8 @@ namespace OC\Files\ObjectStore;
 use \OC\Files\Cache\Scanner;
 use \OC\Files\Storage\Storage;
 
-class NoopScanner extends Scanner {
+class NoopScanner extends Scanner
+{
 	public function __construct(Storage $storage) {
 		$this->storage = $storage;
 		//we don't need the storage, so do nothing here

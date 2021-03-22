@@ -28,7 +28,8 @@ use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
 
-class ChunkingPluginTest extends TestCase {
+class ChunkingPluginTest extends TestCase
+{
 
 	/**
 	 * @var \Sabre\DAV\Server | \PHPUnit\Framework\MockObject\MockObject

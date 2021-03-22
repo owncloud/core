@@ -46,7 +46,8 @@ use Test\Traits\UserTrait;
  *
  * @package OC\Core\Controller
  */
-class AvatarControllerTest extends TestCase {
+class AvatarControllerTest extends TestCase
+{
 	use UserTrait;
 
 	/** @var \OC\Core\Controller\AvatarController */

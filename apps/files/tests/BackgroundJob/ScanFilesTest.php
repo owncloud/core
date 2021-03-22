@@ -31,7 +31,8 @@ use Test\TestCase;
  *
  * @package OCA\Files\Tests\BackgroundJob
  */
-class ScanFilesTest extends TestCase {
+class ScanFilesTest extends TestCase
+{
 	/** @var IConfig */
 	private $config;
 	/** @var IUserManager */

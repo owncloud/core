@@ -27,7 +27,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class ListGroups extends Base {
+class ListGroups extends Base
+{
 	/** @var \OCP\IGroupManager */
 	protected $groupManager;
 

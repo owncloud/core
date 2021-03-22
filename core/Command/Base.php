@@ -27,7 +27,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Base extends Command {
+class Base extends Command
+{
 	const OUTPUT_FORMAT_PLAIN = 'plain';
 	const OUTPUT_FORMAT_JSON = 'json';
 	const OUTPUT_FORMAT_JSON_PRETTY = 'json_pretty';

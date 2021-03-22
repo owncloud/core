@@ -35,7 +35,8 @@ use Test\TestCase;
  *
  * @package OC\Core\Controller
  */
-class CronControllerTest extends TestCase {
+class CronControllerTest extends TestCase
+{
 
 	/** @var CronController */
 	private $controller;

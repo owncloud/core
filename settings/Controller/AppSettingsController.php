@@ -36,7 +36,8 @@ use OCP\IConfig;
 /**
  * @package OC\Settings\Controller
  */
-class AppSettingsController extends Controller {
+class AppSettingsController extends Controller
+{
 	const CAT_ENABLED = 0;
 	const CAT_DISABLED = 1;
 

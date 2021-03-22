@@ -20,7 +20,8 @@
  */
 namespace OC\App\CodeChecker;
 
-class EmptyCheck implements ICheck {
+class EmptyCheck implements ICheck
+{
 	/**
 	 * @param int $errorCode
 	 * @param string $errorObject

@@ -23,7 +23,8 @@
 
 namespace OC\Hooks;
 
-class PublicEmitter extends BasicEmitter {
+class PublicEmitter extends BasicEmitter
+{
 	/**
 	 * @param string $scope
 	 * @param string $method

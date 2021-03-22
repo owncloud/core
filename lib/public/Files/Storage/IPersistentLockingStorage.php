@@ -28,7 +28,8 @@ use OCP\Lock\Persistent\ILock;
  * @package OCP\Files\Storage
  * @since 10.1.0
  */
-interface IPersistentLockingStorage {
+interface IPersistentLockingStorage
+{
 	/**
 	 * Acquire or refresh a persistent lock on the given internal path.
 	 *

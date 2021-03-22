@@ -29,7 +29,8 @@ use Test\TestCase;
  *
  * @package OCA\DAV\Tests\unit\Connector\Sabre
  */
-class ValidateRequestPluginTest extends TestCase {
+class ValidateRequestPluginTest extends TestCase
+{
 	/** @var \Sabre\DAV\Server */
 	private $server;
 

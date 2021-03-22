@@ -33,7 +33,8 @@ use phpseclib3\Crypt\RSA as RSACrypt;
 /**
  * RSA public key authentication
  */
-class RSA extends AuthMechanism {
+class RSA extends AuthMechanism
+{
 	const CREATE_KEY_BITS = 1024;
 
 	/** @var IConfig */

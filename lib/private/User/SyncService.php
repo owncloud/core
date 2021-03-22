@@ -43,7 +43,8 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
  *
  * @package OC\User
  */
-class SyncService {
+class SyncService
+{
 
 	/** @var IConfig */
 	private $config;

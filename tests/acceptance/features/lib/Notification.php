@@ -29,7 +29,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
 /**
  * PageObject for a single notification
  */
-class Notification extends OwncloudPage {
+class Notification extends OwncloudPage
+{
 
 	/**
 	 *

@@ -28,7 +28,8 @@ namespace OCP\Security;
  * @package OCP\Security
  * @since 8.0.0
  */
-class StringUtils {
+class StringUtils
+{
 	/**
 	 * Compares whether two strings are equal. To prevent guessing of the string
 	 * length this is done by comparing two hashes against each other and afterwards

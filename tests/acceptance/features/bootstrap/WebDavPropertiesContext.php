@@ -33,7 +33,8 @@ require_once 'bootstrap.php';
 /**
  * Steps that relate to managing file/folder properties via WebDav
  */
-class WebDavPropertiesContext implements Context {
+class WebDavPropertiesContext implements Context
+{
 
 	/**
 	 *

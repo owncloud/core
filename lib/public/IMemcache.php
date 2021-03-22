@@ -35,7 +35,8 @@ namespace OCP;
  *
  * @since 8.1.0
  */
-interface IMemcache extends ICache {
+interface IMemcache extends ICache
+{
 	/**
 	 * Set a value in the cache if it's not already stored
 	 *

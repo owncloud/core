@@ -39,7 +39,8 @@ use OCP\IL10N;
 /**
  * This class implements methods to access Avatar functionality
  */
-class AvatarManager implements IAvatarManager {
+class AvatarManager implements IAvatarManager
+{
 
 	/** @var  IUserManager */
 	private $userManager;

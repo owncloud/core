@@ -29,7 +29,8 @@ use OCP\IUser;
  *
  * @since 9.0.0
  */
-interface ISystemTagManager {
+interface ISystemTagManager
+{
 
 	/**
 	 * Returns the tag objects matching the given tag ids.

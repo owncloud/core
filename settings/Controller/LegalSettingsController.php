@@ -29,7 +29,8 @@ use OCP\IConfig;
 /**
  * @package OC\Settings\Controller
  */
-class LegalSettingsController extends Controller {
+class LegalSettingsController extends Controller
+{
 	/**
 	 * @var \OCP\IL10N
 	 */

@@ -30,7 +30,8 @@ use OCP\Share;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Files\StorageInvalidException;
 
-class RemoteOcsController extends OCSController {
+class RemoteOcsController extends OCSController
+{
 	/** @var IRequest */
 	protected $request;
 

@@ -43,7 +43,8 @@ use Test\Traits\UserTrait;
  *
  * @package OCA\Files_Trashbin\Tests
  */
-class StorageTest extends TestCase {
+class StorageTest extends TestCase
+{
 	use UserTrait;
 
 	/**

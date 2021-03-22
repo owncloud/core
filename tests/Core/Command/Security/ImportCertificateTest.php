@@ -33,7 +33,8 @@ use Test\TestCase;
  *
  * @group DB
  */
-class ImportCertificateTest extends TestCase {
+class ImportCertificateTest extends TestCase
+{
 
 	/** @var CommandTester */
 	private $commandTester;

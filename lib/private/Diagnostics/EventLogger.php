@@ -26,7 +26,8 @@ namespace OC\Diagnostics;
 
 use OCP\Diagnostics\IEventLogger;
 
-class EventLogger implements IEventLogger {
+class EventLogger implements IEventLogger
+{
 	/**
 	 * @var \OC\Diagnostics\Event[]
 	 */

@@ -47,7 +47,8 @@ use Test\TestCase;
  *
  * @group DB
  */
-class MailNotificationsTest extends TestCase {
+class MailNotificationsTest extends TestCase
+{
 	/** @var IManager | MockObject */
 	private $shareManager;
 	/** @var IL10N | MockObject */

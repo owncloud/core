@@ -23,7 +23,8 @@ namespace OC\Command;
 
 use OC\BackgroundJob\QueuedJob;
 
-class CallableJob extends QueuedJob {
+class CallableJob extends QueuedJob
+{
 	protected function run($serializedCallable) {
 		$callable = \unserialize($serializedCallable);
 		if (\is_callable($callable)) {

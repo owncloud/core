@@ -27,7 +27,8 @@ use OCP\Encryption\IManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ListModules extends Base {
+class ListModules extends Base
+{
 	/** @var IManager */
 	protected $encryptionManager;
 

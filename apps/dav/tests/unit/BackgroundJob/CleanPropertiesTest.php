@@ -33,7 +33,8 @@ use Test\Traits\UserTrait;
  * @group DB
  * @package OCA\DAV\Tests\Unit\BackgroundJob
  */
-class CleanPropertiesTest extends TestCase {
+class CleanPropertiesTest extends TestCase
+{
 	use UserTrait;
 	/** @var IDBConnection | \PHPUnit\Framework\MockObject\MockObject */
 	private $connection;

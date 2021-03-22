@@ -5,7 +5,8 @@ namespace Test\Image;
 use OC\Image\BmpToResource;
 use Test\TestCase;
 
-class BmpToResourceTest extends TestCase {
+class BmpToResourceTest extends TestCase
+{
 	public function test24bitBitmap() {
 		$instance = new BmpToResource(__DIR__ . '/../../data/image/24bit2x2.bmp');
 

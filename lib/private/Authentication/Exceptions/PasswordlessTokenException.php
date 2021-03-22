@@ -23,5 +23,6 @@ namespace OC\Authentication\Exceptions;
 
 use Exception;
 
-class PasswordlessTokenException extends Exception {
+class PasswordlessTokenException extends Exception
+{
 }

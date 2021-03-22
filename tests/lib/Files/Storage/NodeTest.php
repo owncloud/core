@@ -31,7 +31,8 @@ use Test\TestCase;
  *
  * @package Test\Files\Storage
  */
-abstract class NodeTest extends TestCase {
+abstract class NodeTest extends TestCase
+{
 	protected $viewDeleteMethod = 'unlink';
 	protected $user;
 	/**

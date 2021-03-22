@@ -38,7 +38,8 @@ function rrmdir($directory) {
 	return \rmdir($directory);
 }
 
-class AppTest extends \Test\TestCase {
+class AppTest extends \Test\TestCase
+{
 	private $container;
 	private $io;
 	private $api;

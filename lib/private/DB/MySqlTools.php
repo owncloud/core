@@ -30,7 +30,8 @@ use OC\DB\Connection;
 /**
 * Various MySQL specific helper functions.
 */
-class MySqlTools {
+class MySqlTools
+{
 	private function detectBarracuda(IDBConnection $connection) {
 		foreach (['innodb_file_format' => 'Barracuda', 'innodb_large_prefix' => 'ON', 'innodb_file_per_table' => 'ON'] as $var => $val) {
 			$result = $connection->executeQuery("SHOW VARIABLES LIKE '$var'");

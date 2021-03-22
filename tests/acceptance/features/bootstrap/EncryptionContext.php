@@ -31,7 +31,8 @@ require_once 'bootstrap.php';
 /**
  * Context for encryption specific steps
  */
-class EncryptionContext implements Context {
+class EncryptionContext implements Context
+{
 
 	/**
 	 * @var FeatureContext

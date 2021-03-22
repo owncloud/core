@@ -25,7 +25,8 @@ use OC\Files\Node\AbstractFile;
 use OCP\Files\FileInfo;
 use Test\TestCase;
 
-class AbstractFileTest extends TestCase {
+class AbstractFileTest extends TestCase
+{
 	public function testMime() {
 		/** @var AbstractFile | \PHPUnit\Framework\MockObject\MockObject $node */
 		$node = new AbstractFile();

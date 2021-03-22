@@ -41,7 +41,8 @@ use OC\Image\BmpToResource;
 /**
  * Class for basic image manipulation
  */
-class OC_Image implements \OCP\IImage {
+class OC_Image implements \OCP\IImage
+{
 	/** @var false|resource */
 	protected $resource = false; // tmp resource.
 	/** @var int */

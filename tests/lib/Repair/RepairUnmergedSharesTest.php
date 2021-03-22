@@ -38,7 +38,8 @@ use Test\TestCase;
  *
  * @see \OC\Repair\RepairUnmergedShares
  */
-class RepairUnmergedSharesTest extends TestCase {
+class RepairUnmergedSharesTest extends TestCase
+{
 
 	/** @var IRepairStep */
 	private $repair;

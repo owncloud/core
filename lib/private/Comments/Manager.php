@@ -35,7 +35,8 @@ use OCP\ILogger;
 use OCP\IUser;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class Manager implements ICommentsManager {
+class Manager implements ICommentsManager
+{
 	use EventEmitterTrait;
 	/** @var  IDBConnection */
 	protected $dbConn;

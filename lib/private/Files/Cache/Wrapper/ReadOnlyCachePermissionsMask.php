@@ -31,7 +31,8 @@ use OCP\Constants;
  *
  * @package OC\Files\Cache\Wrapper
  */
-class ReadOnlyCachePermissionsMask extends CacheWrapper {
+class ReadOnlyCachePermissionsMask extends CacheWrapper
+{
 	/**
 	 * @var int
 	 */

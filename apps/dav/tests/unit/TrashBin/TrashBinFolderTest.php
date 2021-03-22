@@ -28,7 +28,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Sabre\DAV\Exception\NotFound;
 use Test\TestCase;
 
-class TrashBinFolderTest extends TestCase {
+class TrashBinFolderTest extends TestCase
+{
 	/**
 	 * @var TrashBinFolder
 	 */

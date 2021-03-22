@@ -45,7 +45,8 @@ use OCP\Lock\ILockingProvider;
  * @since 6.0.0
  * @deprecated 9.0.0 use \OCP\Files\Storage\IStorage instead
  */
-interface Storage extends IStorage {
+interface Storage extends IStorage
+{
 	/**
 	 * $parameters is a free form array with the configuration options needed to construct the storage
 	 *

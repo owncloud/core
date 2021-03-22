@@ -31,7 +31,8 @@ use OCP\ILogger;
 use OCP\IUser;
 use OCP\Security\ICrypto;
 
-class DefaultTokenProvider implements IProvider {
+class DefaultTokenProvider implements IProvider
+{
 
 	/** @var DefaultTokenMapper */
 	private $mapper;

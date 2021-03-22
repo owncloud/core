@@ -33,7 +33,8 @@ use Sabre\DAV\Xml\Service;
 use Sabre\HTTP\ClientHttpException;
 use Sabre\VObject\Reader;
 
-class SyncService {
+class SyncService
+{
 
 	/** @var CardDavBackend */
 	private $backend;

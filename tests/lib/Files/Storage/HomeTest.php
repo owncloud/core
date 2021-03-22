@@ -24,7 +24,8 @@ namespace Test\Files\Storage;
 
 use OC\User\User;
 
-class DummyUser extends User {
+class DummyUser extends User
+{
 	private $home;
 
 	private $uid;
@@ -54,7 +55,8 @@ class DummyUser extends User {
  *
  * @package Test\Files\Storage
  */
-class HomeTest extends Storage {
+class HomeTest extends Storage
+{
 	/**
 	 * @var string tmpDir
 	 */

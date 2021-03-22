@@ -9,7 +9,8 @@
 namespace Test\Hooks;
 use OC\Hooks\PublicEmitter;
 
-class DummyForwardingEmitter extends \OC\Hooks\ForwardingEmitter {
+class DummyForwardingEmitter extends \OC\Hooks\ForwardingEmitter
+{
 	public function emitEvent($scope, $method, $arguments = []) {
 		$this->emit($scope, $method, $arguments);
 	}
@@ -29,7 +30,8 @@ class DummyForwardingEmitter extends \OC\Hooks\ForwardingEmitter {
  *
  * @package OC\Hooks
  */
-class ForwardingEmitterTest extends BasicEmitterTest {
+class ForwardingEmitterTest extends BasicEmitterTest
+{
 	public function testSingleForward() {
 		$baseEmitter = new PublicEmitter();
 		$forwardingEmitter = new DummyForwardingEmitter();

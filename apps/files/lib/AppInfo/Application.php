@@ -30,7 +30,8 @@ use OCA\Files\Service\TagService;
 use OCP\AppFramework\App;
 use OCP\IContainer;
 
-class Application extends App {
+class Application extends App
+{
 	public function __construct(array $urlParams= []) {
 		parent::__construct('files', $urlParams);
 		$container = $this->getContainer();

@@ -28,7 +28,8 @@ namespace OC\DB;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Index;
 
-class MDB2SchemaWriter {
+class MDB2SchemaWriter
+{
 
 	/**
 	 * @param string $file

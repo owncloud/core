@@ -15,7 +15,8 @@ use OC\Settings\Application;
 /**
  * @package Tests\Settings\Controller
  */
-class MailSettingsControllerTest extends \Test\TestCase {
+class MailSettingsControllerTest extends \Test\TestCase
+{
 	private $container;
 
 	protected function setUp(): void {

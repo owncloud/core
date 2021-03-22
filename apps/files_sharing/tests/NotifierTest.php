@@ -33,7 +33,8 @@ use OCP\IUserManager;
 use OCP\IConfig;
 use OCP\IUser;
 
-class NotifierTest extends \Test\TestCase {
+class NotifierTest extends \Test\TestCase
+{
 
 	/**
 	 * @var Notifier

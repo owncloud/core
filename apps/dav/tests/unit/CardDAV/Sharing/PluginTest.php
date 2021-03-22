@@ -32,7 +32,8 @@ use Sabre\HTTP\Request;
 use Sabre\HTTP\Response;
 use Test\TestCase;
 
-class PluginTest extends TestCase {
+class PluginTest extends TestCase
+{
 
 	/** @var Plugin */
 	private $plugin;

@@ -29,7 +29,8 @@ namespace OCP\Route;
  * @package OCP\Route
  * @since 7.0.0
  */
-interface IRoute {
+interface IRoute
+{
 	/**
 	 * Specify PATCH as the method to use with this route
 	 * @return \OCP\Route\IRoute

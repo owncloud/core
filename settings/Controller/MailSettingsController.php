@@ -35,7 +35,8 @@ use OCP\Mail\IMailer;
 /**
  * @package OC\Settings\Controller
  */
-class MailSettingsController extends Controller {
+class MailSettingsController extends Controller
+{
 
 	/** @var \OCP\IL10N */
 	private $l10n;

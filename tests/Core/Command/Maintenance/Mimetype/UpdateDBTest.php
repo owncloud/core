@@ -26,7 +26,8 @@ use OCP\Files\IMimeTypeDetector;
 use OCP\Files\IMimeTypeLoader;
 use Test\TestCase;
 
-class UpdateDBTest extends TestCase {
+class UpdateDBTest extends TestCase
+{
 	/** @var IMimeTypeDetector */
 	protected $detector;
 	/** @var IMimeTypeLoader */

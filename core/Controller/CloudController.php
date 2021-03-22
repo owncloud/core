@@ -27,7 +27,8 @@ namespace OC\Core\Controller;
 use OCP\AppFramework\OCSController;
 use OCP\IRequest;
 
-class CloudController extends OCSController {
+class CloudController extends OCSController
+{
 	public function __construct($appName, IRequest $request) {
 		parent::__construct($appName, $request);
 	}

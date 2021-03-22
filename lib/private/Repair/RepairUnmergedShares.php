@@ -42,7 +42,8 @@ use OC\Share20\DefaultShareProvider;
  * one for every share. This repair step rearranges them so they only appear as a single
  * folder.
  */
-class RepairUnmergedShares implements IRepairStep {
+class RepairUnmergedShares implements IRepairStep
+{
 
 	/** @var \OCP\IConfig */
 	protected $config;

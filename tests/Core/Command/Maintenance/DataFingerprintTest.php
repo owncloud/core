@@ -29,7 +29,8 @@ use OCP\ILogger;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 
-class DataFingerprintTest extends TestCase {
+class DataFingerprintTest extends TestCase
+{
 
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;

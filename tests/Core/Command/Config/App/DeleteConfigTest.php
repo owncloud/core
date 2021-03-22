@@ -24,7 +24,8 @@ namespace Tests\Core\Command\Config\App;
 use OC\Core\Command\Config\App\DeleteConfig;
 use Test\TestCase;
 
-class DeleteConfigTest extends TestCase {
+class DeleteConfigTest extends TestCase
+{
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 

@@ -26,7 +26,8 @@ namespace Page\FilesPageElement;
 /**
  * Object of a row on the Shared with others page
  */
-class SharedWithOthersFileRow extends FileRow {
+class SharedWithOthersFileRow extends FileRow
+{
 	/**
 	 * @param string $xpath
 	 *

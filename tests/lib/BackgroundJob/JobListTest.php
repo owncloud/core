@@ -19,7 +19,8 @@ use Test\TestCase;
  * @group DB
  * @package Test\BackgroundJob
  */
-class JobListTest extends TestCase {
+class JobListTest extends TestCase
+{
 	/** @var \OC\BackgroundJob\JobList */
 	protected $instance;
 

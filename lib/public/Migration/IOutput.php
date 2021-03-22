@@ -27,7 +27,8 @@ namespace OCP\Migration;
  * @package OCP\Migration
  * @since 9.1.0
  */
-interface IOutput {
+interface IOutput
+{
 
 	/**
 	 * @param string $message

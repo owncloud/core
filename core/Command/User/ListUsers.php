@@ -29,7 +29,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class ListUsers extends Base {
+class ListUsers extends Base
+{
 	/** @var \OCP\IUserManager */
 	protected $userManager;
 

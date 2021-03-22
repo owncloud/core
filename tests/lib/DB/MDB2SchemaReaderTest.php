@@ -22,7 +22,8 @@ use Test\TestCase;
  *
  * @package Test\DB
  */
-class MDB2SchemaReaderTest extends TestCase {
+class MDB2SchemaReaderTest extends TestCase
+{
 	/**
 	 * @var MDB2SchemaReader $reader
 	 */

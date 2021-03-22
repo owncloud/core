@@ -24,7 +24,8 @@ namespace OCA\DAV\CalDAV;
 use Sabre\DAV;
 use Sabre\DAV\Xml\Property\ShareAccess;
 
-class Plugin extends \Sabre\CalDAV\Plugin {
+class Plugin extends \Sabre\CalDAV\Plugin
+{
 	public function initialize(DAV\Server $server) {
 		parent::initialize($server);
 	}

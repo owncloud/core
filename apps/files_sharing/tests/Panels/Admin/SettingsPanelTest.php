@@ -24,7 +24,8 @@ use OCP\GroupInterface;
 use OCA\Files_Sharing\SharingBlacklist;
 use OCA\Files_Sharing\Panels\Admin\SettingsPanel;
 
-class SettingsPanelTest extends \Test\TestCase {
+class SettingsPanelTest extends \Test\TestCase
+{
 	/** @var SharingBlacklist | \PHPUnit\Framework\MockObject\MockObject */
 	private $sharingBlacklist;
 

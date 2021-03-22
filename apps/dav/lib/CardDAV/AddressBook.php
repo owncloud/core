@@ -26,7 +26,8 @@ use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\PropPatch;
 
-class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
+class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable
+{
 
 	/**
 	 * Updates the list of shares.

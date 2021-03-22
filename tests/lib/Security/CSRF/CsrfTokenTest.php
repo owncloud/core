@@ -21,7 +21,8 @@
 
 namespace Test\Security\CSRF;
 
-class CsrfTokenTest extends \Test\TestCase {
+class CsrfTokenTest extends \Test\TestCase
+{
 	public function testGetEncryptedValue() {
 		$csrfToken = new \OC\Security\CSRF\CsrfToken('MyCsrfToken');
 		$this->assertSame(33, \strlen($csrfToken->getEncryptedValue()));

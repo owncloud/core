@@ -28,7 +28,8 @@ use OC\Command\FileAccess;
 use OCA\Files_Versions\Storage;
 use OCP\Command\ICommand;
 
-class Expire implements ICommand {
+class Expire implements ICommand
+{
 	use FileAccess;
 
 	/**

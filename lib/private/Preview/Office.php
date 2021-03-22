@@ -28,7 +28,8 @@ use OCP\Files\File;
 use OCP\Files\FileInfo;
 use OCP\Preview\IProvider2;
 
-abstract class Office implements IProvider2 {
+abstract class Office implements IProvider2
+{
 	private $cmd;
 
 	/**

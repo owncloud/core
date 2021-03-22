@@ -27,7 +27,8 @@ use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\TemplateResponse;
 use Test\TestCase;
 
-class TemplateResponseTest extends TestCase {
+class TemplateResponseTest extends TestCase
+{
 
 	/** @var \OCP\AppFramework\Http\TemplateResponse */
 	private $tpl;

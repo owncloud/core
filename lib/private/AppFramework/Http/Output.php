@@ -28,7 +28,8 @@ use OCP\AppFramework\Http\IOutput;
 /**
  * Very thin wrapper class to make output testable
  */
-class Output implements IOutput {
+class Output implements IOutput
+{
 	/** @var string */
 	private $webRoot;
 

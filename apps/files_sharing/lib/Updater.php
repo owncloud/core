@@ -24,7 +24,8 @@
 
 namespace OCA\Files_Sharing;
 
-class Updater {
+class Updater
+{
 
 	/**
 	 * @param array $params

@@ -45,7 +45,8 @@ use OCP\IL10N;
 use OCP\ILogger;
 use OCP\Security\ISecureRandom;
 
-class Setup {
+class Setup
+{
 	/** @var \OCP\IConfig */
 	protected $config;
 	/** @var IniGetWrapper */

@@ -28,7 +28,8 @@ use OC\BackgroundJob\TimedJob;
 /**
  * Delete all share entries that have no matching entries in the file cache table.
  */
-class DeleteOrphanedSharesJob extends TimedJob {
+class DeleteOrphanedSharesJob extends TimedJob
+{
 
 	/**
 	 * Default interval in minutes

@@ -24,7 +24,8 @@ namespace Test\IntegrityCheck\Helpers;
 use OC\IntegrityCheck\Helpers\AppLocator;
 use Test\TestCase;
 
-class AppLocatorTest extends TestCase {
+class AppLocatorTest extends TestCase
+{
 	/** @var AppLocator */
 	private $locator;
 

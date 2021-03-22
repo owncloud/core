@@ -26,7 +26,8 @@ use Sabre\DAV\Exception;
 /**
  * @since 8.2.0
  */
-class SabrePluginException extends Exception {
+class SabrePluginException extends Exception
+{
 
 	/**
 	 * Returns the HTTP statuscode for this exception

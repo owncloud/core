@@ -28,7 +28,8 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Status extends Command {
+class Status extends Command
+{
 
 	/** @var \OCP\BackgroundJob\IJobList */
 	private $jobList;

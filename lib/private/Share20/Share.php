@@ -31,7 +31,8 @@ use OC\Share\Constants;
 use OCP\Share\IAttributes;
 use OCP\Share\IShare;
 
-class Share implements IShare {
+class Share implements IShare
+{
 
 	/** @var string */
 	private $id;

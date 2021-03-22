@@ -31,7 +31,8 @@ use OCP\Lock\ILockingProvider;
  *
  * @since 9.0.0
  */
-interface ILockingStorage {
+interface ILockingStorage
+{
 	/**
 	 * @param string $path The path of the file to acquire the lock for
 	 * @param int $type \OCP\Lock\ILockingProvider::LOCK_SHARED or \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE

@@ -34,7 +34,8 @@ use Sabre\DAV\PropPatch;
 use Sabre\DAV\Tree;
 use Sabre\DAV\Xml\Property\Complex;
 
-abstract class AbstractCustomPropertiesBackend implements BackendInterface {
+abstract class AbstractCustomPropertiesBackend implements BackendInterface
+{
 	/**
 	 * Value is stored as string.
 	 */

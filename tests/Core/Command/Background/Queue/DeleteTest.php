@@ -31,7 +31,8 @@ use Test\TestCase;
  *
  * @group DB
  */
-class DeleteTest extends TestCase {
+class DeleteTest extends TestCase
+{
 
 	/** @var CommandTester */
 	private $commandTester;

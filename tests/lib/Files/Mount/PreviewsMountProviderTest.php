@@ -27,7 +27,8 @@ use OCP\IConfig;
 use OCP\IUser;
 use OC\Files\Mount\MountPoint;
 
-class PreviewsMountProviderTest extends \Test\TestCase {
+class PreviewsMountProviderTest extends \Test\TestCase
+{
 
 	/** @var PreviewsMountPorivder */
 	protected $provider;

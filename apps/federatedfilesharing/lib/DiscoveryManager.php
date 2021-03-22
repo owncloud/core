@@ -37,7 +37,8 @@ use OCP\ICacheFactory;
  *
  * @package OCA\FederatedFileSharing
  */
-class DiscoveryManager {
+class DiscoveryManager
+{
 	/** @var ICache */
 	private $cache;
 	/** @var IClient */

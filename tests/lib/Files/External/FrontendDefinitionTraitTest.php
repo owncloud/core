@@ -22,7 +22,8 @@
 
 namespace Test\Files\External;
 
-class FrontendDefinitionTraitTest extends \Test\TestCase {
+class FrontendDefinitionTraitTest extends \Test\TestCase
+{
 	public function testJsonSerialization() {
 		$param = $this->getMockBuilder('\OCP\Files\External\DefinitionParameter')
 			->disableOriginalConstructor()

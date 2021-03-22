@@ -28,7 +28,8 @@
  *
  */
 
-class OC_Response {
+class OC_Response
+{
 	const STATUS_FOUND = 304;
 	const STATUS_NOT_MODIFIED = 304;
 	const STATUS_TEMPORARY_REDIRECT = 307;

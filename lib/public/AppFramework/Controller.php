@@ -41,7 +41,8 @@ use OCP\IRequest;
  * Base class to inherit your controllers from
  * @since 6.0.0
  */
-abstract class Controller {
+abstract class Controller
+{
 
 	/**
 	 * app name

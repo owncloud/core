@@ -21,7 +21,8 @@
 namespace OC\Preview;
 
 //.docx, .dotx, .xlsx, .xltx, .pptx, .potx, .ppsx
-class MSOffice2007 extends Office {
+class MSOffice2007 extends Office
+{
 	/**
 	 * {@inheritDoc}
 	 */

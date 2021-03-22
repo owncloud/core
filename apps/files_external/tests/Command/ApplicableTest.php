@@ -24,7 +24,8 @@ namespace OCA\Files_External\Tests\Command;
 
 use OCA\Files_External\Command\Applicable;
 
-class ApplicableTest extends CommandTest {
+class ApplicableTest extends CommandTest
+{
 	private function getInstance($storageService) {
 		/** @var \OCP\IUserManager|\PHPUnit\Framework\MockObject\MockObject $userManager */
 		$userManager = $this->createMock('\OCP\IUserManager');

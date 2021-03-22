@@ -28,7 +28,8 @@ use Opis\Closure\SerializableClosure;
 /**
  * Asynchronous command bus that uses the background job system as backend
  */
-class AsyncBus implements IBus {
+class AsyncBus implements IBus
+{
 	/**
 	 * @var \OCP\BackgroundJob\IJobList
 	 */

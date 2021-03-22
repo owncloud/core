@@ -32,7 +32,8 @@ require_once 'bootstrap.php';
 /**
  * Trashbin context
  */
-class TrashbinContext implements Context {
+class TrashbinContext implements Context
+{
 
 	/**
 	 *

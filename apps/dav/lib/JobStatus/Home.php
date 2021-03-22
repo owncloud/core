@@ -26,7 +26,8 @@ use Sabre\DAV\Collection;
 use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\Exception\NotFound;
 
-class Home extends Collection {
+class Home extends Collection
+{
 	/** @var array */
 	private $principalInfo;
 	/** @var JobStatusMapper */

@@ -28,7 +28,8 @@ use OCP\Files\Storage\IStorage;
  *
  * @package Test\Files\Storage
  */
-class FileTest extends NodeTest {
+class FileTest extends NodeTest
+{
 	/**
 	 * @param $path
 	 * @param IStorage|\PHPUnit\Framework\MockObject\MockObject|null $storage

@@ -28,7 +28,8 @@ use OCA\Comments\Dav\EntityTypeCollection as EntityTypeCollectionImplementation;
 use OCP\Comments\CommentsEntityEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class RootCollectionTest extends \Test\TestCase {
+class RootCollectionTest extends \Test\TestCase
+{
 
 	/** @var \OCP\Comments\ICommentsManager|\PHPUnit\Framework\MockObject\MockObject */
 	protected $commentsManager;

@@ -23,7 +23,8 @@ namespace OC\Files\Cache;
 
 use OCP\IDBConnection;
 
-class HomePropagator extends Propagator {
+class HomePropagator extends Propagator
+{
 	private $ignoredBaseFolders;
 
 	/**

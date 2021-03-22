@@ -26,7 +26,8 @@ namespace OC\Memcache;
 
 use OCP\IMemcache;
 
-class ArrayCache extends Cache implements IMemcache {
+class ArrayCache extends Cache implements IMemcache
+{
 	/** @var array Array with the cached data */
 	protected $cachedData = [];
 

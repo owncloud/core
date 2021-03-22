@@ -13,7 +13,8 @@ use OC\App\CodeChecker\EmptyCheck;
 use OC\App\CodeChecker\PrivateCheck;
 use Test\TestCase;
 
-class CodeCheckerTest extends TestCase {
+class CodeCheckerTest extends TestCase
+{
 
 	/**
 	 * @dataProvider providesFilesToCheck

@@ -27,7 +27,8 @@ use TestHelpers\HttpRequestHelper;
 /**
  * CardDav functions
  */
-class CardDavContext implements \Behat\Behat\Context\Context {
+class CardDavContext implements \Behat\Behat\Context\Context
+{
 	/**
 	 * @var ResponseInterface
 	 */

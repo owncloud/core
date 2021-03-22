@@ -29,7 +29,8 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * @since 8.2.0
  */
-class SabrePluginEvent extends Event {
+class SabrePluginEvent extends Event
+{
 
 	/** @var int */
 	protected $statusCode;

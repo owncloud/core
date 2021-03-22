@@ -31,7 +31,8 @@ use OCP\ISession;
 use OCP\IUser;
 use OCP\IUserManager;
 
-class BasicAuthModule implements IAuthModule {
+class BasicAuthModule implements IAuthModule
+{
 
 	/** @var IConfig */
 	private $config;

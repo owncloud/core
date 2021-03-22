@@ -29,7 +29,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @group DB
  */
-class ApplicationTest extends TestCase {
+class ApplicationTest extends TestCase
+{
 	public function publicPageDataProvider() {
 		return [
 			[true, true],

@@ -37,7 +37,8 @@ namespace OCP;
  * @package OCP
  * @since 4.5.0
  */
-interface UserInterface {
+interface UserInterface
+{
 
 	/**
 	 * Check if backend implements actions

@@ -33,7 +33,8 @@ namespace OCP\AppFramework;
  * A few very basic and frequently used API functions are combined in here
  * @deprecated 8.0.0
  */
-interface IApi {
+interface IApi
+{
 
 	/**
 	 * Gets the userid of the current user

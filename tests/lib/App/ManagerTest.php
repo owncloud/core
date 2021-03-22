@@ -29,7 +29,8 @@ use org\bovigo\vfs\vfsStream;
  * @package Test\App
  * @group DB
  */
-class ManagerTest extends TestCase {
+class ManagerTest extends TestCase
+{
 
 	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
 	protected $userSession;

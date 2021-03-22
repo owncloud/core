@@ -24,7 +24,8 @@ namespace Test\Session;
 use OC\Session\CryptoSessionData;
 use Test\TestCase;
 
-class CryptoWrappingTest extends TestCase {
+class CryptoWrappingTest extends TestCase
+{
 	/** @var \PHPUnit\Framework\MockObject\MockObject|\OCP\Security\ICrypto */
 	protected $crypto;
 

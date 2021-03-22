@@ -23,7 +23,8 @@ namespace Test\Files\Storage;
 
 use OC\Files\Storage\Temporary;
 
-class StorageNoRecursiveCopy extends Temporary {
+class StorageNoRecursiveCopy extends Temporary
+{
 	public function copy($path1, $path2) {
 		if ($this->is_dir($path1)) {
 			return false;
@@ -32,7 +33,8 @@ class StorageNoRecursiveCopy extends Temporary {
 	}
 }
 
-class CopyDirectoryStorage extends StorageNoRecursiveCopy {
+class CopyDirectoryStorage extends StorageNoRecursiveCopy
+{
 	use \OC\Files\Storage\PolyFill\CopyDirectory;
 }
 
@@ -43,7 +45,8 @@ class CopyDirectoryStorage extends StorageNoRecursiveCopy {
  *
  * @package Test\Files\Storage
  */
-class CopyDirectoryTest extends Storage {
+class CopyDirectoryTest extends Storage
+{
 	protected function setUp(): void {
 		parent::setUp();
 		$this->instance = new CopyDirectoryStorage([]);

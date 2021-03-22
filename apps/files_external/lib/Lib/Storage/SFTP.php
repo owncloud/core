@@ -40,7 +40,8 @@ use phpseclib3\Net\SFTP\Stream;
 * Uses phpseclib's Net\SFTP class and the Net\SFTP\Stream stream wrapper to
 * provide access to SFTP servers.
 */
-class SFTP extends \OCP\Files\Storage\StorageAdapter {
+class SFTP extends \OCP\Files\Storage\StorageAdapter
+{
 	private $host;
 	private $user;
 	private $root;

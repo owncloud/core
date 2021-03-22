@@ -31,7 +31,8 @@ use OCP\IGroup;
  * Note that this class will only handle the configuration and perform the checks against the configuration.
  * This class won't prevent the sharing action by itself.
  */
-class SharingBlacklist {
+class SharingBlacklist
+{
 	/** @var IConfig */
 	private $config;
 

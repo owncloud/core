@@ -24,7 +24,8 @@ namespace OCA\Files_Trashbin;
 
 use OCP\ILogger;
 
-class TrashExpiryManager {
+class TrashExpiryManager
+{
 
 	/* @var Expiration */
 	private $expiration;

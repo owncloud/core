@@ -27,7 +27,8 @@ use Test\TestCase;
  * @group DB
  * @package Test\SystemTag
  */
-class SystemTagObjectMapperTest extends TestCase {
+class SystemTagObjectMapperTest extends TestCase
+{
 
 	/**
 	 * @var ISystemTagManager

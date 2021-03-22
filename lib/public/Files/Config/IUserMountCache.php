@@ -29,7 +29,8 @@ use OCP\IUser;
  *
  * @since 9.0.0
  */
-interface IUserMountCache {
+interface IUserMountCache
+{
 	/**
 	 * Register mounts for a user to the cache
 	 *

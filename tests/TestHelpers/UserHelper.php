@@ -30,7 +30,8 @@ use Psr\Http\Message\ResponseInterface;
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
-class UserHelper {
+class UserHelper
+{
 	/**
 	 *
 	 * @param string $baseUrl

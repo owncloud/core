@@ -29,7 +29,8 @@ use Icewind\Streams\IteratorDirectory;
  *
  * To use: subclass and call $this->buildFlysystem with the flysystem adapter of choice
  */
-abstract class CacheableFlysystem extends \OCP\Files\Storage\FlysystemStorageAdapter {
+abstract class CacheableFlysystem extends \OCP\Files\Storage\FlysystemStorageAdapter
+{
 	/**
 	 * Stores the results in cache for the current request to prevent multiple requests to the API
 	 *

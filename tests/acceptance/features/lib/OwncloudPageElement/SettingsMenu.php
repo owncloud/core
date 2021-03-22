@@ -30,7 +30,8 @@ use Page\OwncloudPage;
  * The Settings Menu
  *
  */
-class SettingsMenu extends OwncloudPage {
+class SettingsMenu extends OwncloudPage
+{
 	private $logoutButtonXpath = "//*[@id='logout']";
 
 	/**

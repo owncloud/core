@@ -33,7 +33,8 @@ use PHPUnit\Framework\Assert;
  * Context for Notifications App
  *
  */
-class WebUINotificationsContext extends RawMinkContext implements Context {
+class WebUINotificationsContext extends RawMinkContext implements Context
+{
 	/**
 	 *
 	 * @var NotificationsEnabledOwncloudPage

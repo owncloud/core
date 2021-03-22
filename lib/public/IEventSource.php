@@ -31,7 +31,8 @@ namespace OCP;
  * The event source will initialize the connection to the client when the first data is sent
  * @since 8.0.0
  */
-interface IEventSource {
+interface IEventSource
+{
 	/**
 	 * send a message to the client
 	 *

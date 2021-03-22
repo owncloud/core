@@ -14,7 +14,8 @@ use OCP\Migration\IOutput;
  *
  * @group DB
  */
-class RepairSqliteAutoincrementTest extends \Test\TestCase {
+class RepairSqliteAutoincrementTest extends \Test\TestCase
+{
 
 	/**
 	 * @var \OC\Repair\SqliteAutoincrement

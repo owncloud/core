@@ -34,7 +34,8 @@ use Test\Traits\UserTrait;
 /**
  * @group DB
  */
-class UserGlobalStoragesServiceTest extends GlobalStoragesServiceTest {
+class UserGlobalStoragesServiceTest extends GlobalStoragesServiceTest
+{
 	use UserTrait;
 
 	/** @var \OCP\IGroupManager|\PHPUnit\Framework\MockObject\MockObject groupManager */

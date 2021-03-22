@@ -46,7 +46,8 @@ namespace OCA\DAV\Connector\Sabre;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\PropPatch;
 
-class TagsPlugin extends \Sabre\DAV\ServerPlugin {
+class TagsPlugin extends \Sabre\DAV\ServerPlugin
+{
 
 	// namespace
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';

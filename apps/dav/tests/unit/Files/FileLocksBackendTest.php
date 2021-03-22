@@ -41,10 +41,12 @@ use OC\Files\View;
 // ToDo: phpunit9 createMock will no longer allow an array of interface names.
 //       A dummy interface has been created here for the tests.
 //       Find a better solution.
-interface IPersistentLockingStorageTest extends IPersistentLockingStorage, IStorage {
+interface IPersistentLockingStorageTest extends IPersistentLockingStorage, IStorage
+{
 }
 
-class FileLocksBackendTest extends TestCase {
+class FileLocksBackendTest extends TestCase
+{
 	const CREATION_TIME = 164419200;
 	const CURRENT_TIME = 164419800;
 

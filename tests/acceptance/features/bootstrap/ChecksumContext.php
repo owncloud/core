@@ -30,7 +30,8 @@ require_once 'bootstrap.php';
 /**
  * Checksum functions
  */
-class ChecksumContext implements Context {
+class ChecksumContext implements Context
+{
 
 	/**
 	 *

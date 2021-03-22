@@ -20,7 +20,8 @@
  */
 namespace Test;
 
-class FileChunkingTest extends \Test\TestCase {
+class FileChunkingTest extends \Test\TestCase
+{
 	public function dataIsComplete() {
 		return [
 			[1, [], false],

@@ -26,7 +26,8 @@ use OCP\AppFramework\Http;
 /**
  * Used when a trusted service is not authorized to create shares or notifications
  */
-class ForbiddenException extends OcmException {
+class ForbiddenException extends OcmException
+{
 	/**
 	 * @return int
 	 */

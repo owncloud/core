@@ -20,7 +20,8 @@
  */
 namespace OC\Preview;
 
-class SGI extends Bitmap {
+class SGI extends Bitmap
+{
 	/**
 	 * {@inheritDoc}
 	 */

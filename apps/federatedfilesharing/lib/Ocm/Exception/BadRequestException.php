@@ -26,7 +26,8 @@ use OCP\AppFramework\Http;
 /**
  * Used when a request has missing or invalid parameters
  */
-class BadRequestException extends OcmException {
+class BadRequestException extends OcmException
+{
 	/**
 	 * @return int
 	 */

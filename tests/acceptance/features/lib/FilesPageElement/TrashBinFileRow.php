@@ -26,7 +26,8 @@ namespace Page\FilesPageElement;
 /**
  * Object of a row on the FilesPage
  */
-class TrashBinFileRow extends FileRow {
+class TrashBinFileRow extends FileRow
+{
 	/**
 	 * @param string $xpath
 	 *

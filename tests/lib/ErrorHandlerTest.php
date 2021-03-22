@@ -22,7 +22,8 @@
 
 namespace Test;
 
-class ErrorHandlerTest extends \Test\TestCase {
+class ErrorHandlerTest extends \Test\TestCase
+{
 
 	/**
 	 * provide username, password combinations for testRemovePassword
@@ -55,7 +56,8 @@ class ErrorHandlerTest extends \Test\TestCase {
 /**
  * dummy class to access protected methods of \OC\Log\ErrorHandler
  */
-class TestableErrorHandler extends \OC\Log\ErrorHandler {
+class TestableErrorHandler extends \OC\Log\ErrorHandler
+{
 
 	/**
 	 * @param string $msg

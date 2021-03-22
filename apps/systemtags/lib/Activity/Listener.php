@@ -38,7 +38,8 @@ use OCP\SystemTag\ManagerEvent;
 use OCP\SystemTag\MapperEvent;
 use OCP\SystemTag\TagNotFoundException;
 
-class Listener {
+class Listener
+{
 	/** @var IGroupManager */
 	protected $groupManager;
 	/** @var IManager */

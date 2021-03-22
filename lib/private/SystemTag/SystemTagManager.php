@@ -37,7 +37,8 @@ use OCP\IUser;
 /**
  * Manager class for system tags
  */
-class SystemTagManager implements ISystemTagManager {
+class SystemTagManager implements ISystemTagManager
+{
 	const TAG_TABLE = 'systemtag';
 	const TAG_GROUP_TABLE = 'systemtag_group';
 

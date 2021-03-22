@@ -33,7 +33,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Cleanup 'shared::' storage entries that have no matching entries in the
  * shares_external table.
  */
-class CleanupRemoteStorages extends Command {
+class CleanupRemoteStorages extends Command
+{
 
 	/**
 	 * @var IDBConnection

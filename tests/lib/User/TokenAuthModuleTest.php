@@ -32,7 +32,8 @@ use OCP\IUserManager;
 use OCP\Session\Exceptions\SessionNotAvailableException;
 use Test\TestCase;
 
-class TokenAuthModuleTest extends TestCase {
+class TokenAuthModuleTest extends TestCase
+{
 
 	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject */
 	private $manager;

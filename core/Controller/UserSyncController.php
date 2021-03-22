@@ -44,7 +44,8 @@ use OCP\IUserManager;
  *
  * @package OC\Core\Controller
  */
-class UserSyncController extends OCSController {
+class UserSyncController extends OCSController
+{
 
 	/**
 	 * @var SyncService

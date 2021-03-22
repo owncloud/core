@@ -31,7 +31,8 @@ use \OCP\IDBConnection;
 /**
  * Mapper for Tag entity
  */
-class TagMapper extends Mapper {
+class TagMapper extends Mapper
+{
 
 	/**
 	* Constructor.

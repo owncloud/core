@@ -36,7 +36,8 @@ use PHPUnit\Framework\MockObject\MockObject;
  *
  * @package OCA\Files_Sharing\Tests
  */
-class ExpireSharesJobTest extends \Test\TestCase {
+class ExpireSharesJobTest extends \Test\TestCase
+{
 
 	/**
 	 * @var ExpireSharesJob

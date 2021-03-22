@@ -32,7 +32,8 @@ use Test\TestCase;
  *
  * @package Test\User
  */
-class DeletedUserTest extends TestCase {
+class DeletedUserTest extends TestCase
+{
 	/** @var Manager */
 	private $manager;
 	/** @var IConfig */

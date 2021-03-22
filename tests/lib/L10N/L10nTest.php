@@ -20,7 +20,8 @@ use Test\TestCase;
  *
  * @package Test\L10N
  */
-class L10nTest extends TestCase {
+class L10nTest extends TestCase
+{
 	/**
 	 * @return Factory
 	 */

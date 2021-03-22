@@ -49,7 +49,8 @@ use Sabre\DAV\Server;
  * @package OCA\DAV\Tests\unit\Connector\Sabre
  * @group DB
  */
-class AuthTest extends TestCase {
+class AuthTest extends TestCase
+{
 	/** @var ISession | MockObject */
 	private $session;
 	/** @var Auth */

@@ -27,7 +27,8 @@ use OCA\Files_Trashbin\Quota;
 use OCP\AppFramework\App;
 use OCA\Files_Trashbin\Trashbin;
 
-class Application extends App {
+class Application extends App
+{
 	public function __construct(array $urlParams = []) {
 		parent::__construct('files_trashbin', $urlParams);
 

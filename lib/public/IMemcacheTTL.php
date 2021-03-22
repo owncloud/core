@@ -27,7 +27,8 @@ namespace OCP;
  *
  * @since 8.2.2
  */
-interface IMemcacheTTL extends IMemcache {
+interface IMemcacheTTL extends IMemcache
+{
 	/**
 	 * Set the ttl for an existing value
 	 *

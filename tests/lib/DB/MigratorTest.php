@@ -22,7 +22,8 @@ use OCP\IConfig;
  *
  * @package Test\DB
  */
-class MigratorTest extends \Test\TestCase {
+class MigratorTest extends \Test\TestCase
+{
 	/**
 	 * @var \Doctrine\DBAL\Connection $connection
 	 */

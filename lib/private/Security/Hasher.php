@@ -45,7 +45,8 @@ use OCP\Security\IHasher;
  *
  * @package OC\Security
  */
-class Hasher implements IHasher {
+class Hasher implements IHasher
+{
 	/** @var IConfig */
 	private $config;
 	/** @var array Options passed to password_hash and password_needs_rehash */

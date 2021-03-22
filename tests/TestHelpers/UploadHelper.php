@@ -29,7 +29,8 @@ use Psr\Http\Message\ResponseInterface;
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
-class UploadHelper extends \PHPUnit\Framework\Assert {
+class UploadHelper extends \PHPUnit\Framework\Assert
+{
 	/**
 	 *
 	 * @param string $baseUrl             URL of owncloud

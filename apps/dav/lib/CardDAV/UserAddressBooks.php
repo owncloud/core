@@ -20,7 +20,8 @@
  */
 namespace OCA\DAV\CardDAV;
 
-class UserAddressBooks extends \Sabre\CardDAV\AddressBookHome {
+class UserAddressBooks extends \Sabre\CardDAV\AddressBookHome
+{
 
 	/**
 	 * Returns a list of addressbooks

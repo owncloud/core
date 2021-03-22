@@ -23,7 +23,8 @@
 namespace OC\Preview;
 
 //.ai
-class Illustrator extends Bitmap {
+class Illustrator extends Bitmap
+{
 	/**
 	 * {@inheritDoc}
 	 */

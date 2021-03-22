@@ -30,7 +30,8 @@ namespace OCP\Encryption\Keys;
  * @package OCP\Encryption\Keys
  * @since 8.1.0
  */
-interface IStorage {
+interface IStorage
+{
 
 	/**
 	 * get user specific key

@@ -43,7 +43,8 @@ use OCP\AppFramework\QueryException;
  * @package OCP
  * @since 6.0.0
  */
-interface IContainer {
+interface IContainer
+{
 
 	/**
 	 * If a parameter is not registered in the container try to instantiate it

@@ -21,7 +21,8 @@
 
 namespace Test\Files\Storage\Wrapper;
 
-class AvailabilityTest extends \Test\TestCase {
+class AvailabilityTest extends \Test\TestCase
+{
 	protected function getWrapperInstance() {
 		$storage = $this->getMockBuilder('\OC\Files\Storage\Temporary')
 			->disableOriginalConstructor()

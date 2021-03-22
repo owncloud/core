@@ -26,7 +26,8 @@ use OCP\IDBConnection;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Lock\Persistent\ILock;
 
-class LockMapper extends Mapper {
+class LockMapper extends Mapper
+{
 	/** @var ITimeFactory */
 	private $timeFactory;
 

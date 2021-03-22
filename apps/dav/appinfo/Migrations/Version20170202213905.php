@@ -33,7 +33,8 @@ use OCP\Migration\ISqlMigration;
  * Update all entries with actual fileid if possible
  * Drop all entries that can't be resolved
  */
-class Version20170202213905 implements ISqlMigration {
+class Version20170202213905 implements ISqlMigration
+{
 
 	/** @var IUserManager */
 	private $userManager;

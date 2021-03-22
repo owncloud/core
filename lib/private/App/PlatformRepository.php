@@ -28,7 +28,8 @@ namespace OC\App;
  *
  * @package OC\App
  */
-class PlatformRepository {
+class PlatformRepository
+{
 	private $packages;
 
 	public function __construct() {

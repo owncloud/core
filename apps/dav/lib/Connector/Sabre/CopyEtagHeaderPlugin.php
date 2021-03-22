@@ -31,7 +31,8 @@ use Sabre\HTTP\ResponseInterface;
  * This is a workaround for setups that automatically strip
  * or mangle Etag headers.
  */
-class CopyEtagHeaderPlugin extends \Sabre\DAV\ServerPlugin {
+class CopyEtagHeaderPlugin extends \Sabre\DAV\ServerPlugin
+{
 
 	/** @var \Sabre\DAV\Server */
 	private $server;

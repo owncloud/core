@@ -30,7 +30,8 @@ use Sabre\DAV\Client;
 /**
  * Class WebDavClientServiceTest
  */
-class WebDavClientServiceTest extends \Test\TestCase {
+class WebDavClientServiceTest extends \Test\TestCase
+{
 	/**
 	 * @var ITempManager
 	 */

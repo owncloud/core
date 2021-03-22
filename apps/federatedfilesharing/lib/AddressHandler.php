@@ -30,7 +30,8 @@ use OCP\IURLGenerator;
  *
  * @package OCA\FederatedFileSharing
  */
-class AddressHandler {
+class AddressHandler
+{
 
 	/** @var IL10N */
 	private $l;

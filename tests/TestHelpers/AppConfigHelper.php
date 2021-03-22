@@ -28,7 +28,8 @@ use Psr\Http\Message\ResponseInterface;
  *
  * @author Artur Neumann <artur@jankaritech.com>
  */
-class AppConfigHelper extends \PHPUnit\Framework\Assert {
+class AppConfigHelper extends \PHPUnit\Framework\Assert
+{
 	/**
 	 * @param string $baseUrl
 	 * @param string $user

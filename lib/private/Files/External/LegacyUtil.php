@@ -33,7 +33,8 @@ use \OCP\Files\StorageNotAvailableException;
  * Can be removed once all consumers of this private APIs are moved
  * to the public ones.
  */
-class LegacyUtil {
+class LegacyUtil
+{
 	const MOUNT_TYPE_GLOBAL = 'global';
 	const MOUNT_TYPE_GROUP = 'group';
 	const MOUNT_TYPE_USER = 'user';

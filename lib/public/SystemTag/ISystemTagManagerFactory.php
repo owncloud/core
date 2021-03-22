@@ -30,7 +30,8 @@ use OCP\IServerContainer;
  * @package OCP\SystemTag
  * @since 9.0.0
  */
-interface ISystemTagManagerFactory {
+interface ISystemTagManagerFactory
+{
 
 	/**
 	 * Constructor for the system tag manager factory

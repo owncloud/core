@@ -27,7 +27,8 @@ use OCP\IConfig;
 /**
  * @package Tests\Settings\Panels\Admin
  */
-class LegalTest extends \Test\TestCase {
+class LegalTest extends \Test\TestCase
+{
 	/** @var Legal */
 	private $panel;
 	/** @var IConfig */

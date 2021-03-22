@@ -42,7 +42,8 @@ use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Util;
 
-class Users {
+class Users
+{
 
 	/** @var IUserManager */
 	private $userManager;

@@ -34,7 +34,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  *
  * @package OC\Migration
  */
-class BackgroundRepair extends TimedJob {
+class BackgroundRepair extends TimedJob
+{
 
 	/** @var IJobList */
 	private $jobList;

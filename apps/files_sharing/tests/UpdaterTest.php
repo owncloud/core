@@ -34,7 +34,8 @@ use OCP\Share\Exceptions\ShareNotFound;
  *
  * @group DB
  */
-class UpdaterTest extends TestCase {
+class UpdaterTest extends TestCase
+{
 	const TEST_FOLDER_NAME = '/folder_share_updater_test';
 
 	public static function setUpBeforeClass(): void {

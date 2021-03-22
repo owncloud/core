@@ -28,7 +28,8 @@ use Sabre\DAV\Collection;
 use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\Exception\NotFound;
 
-class RootCollection extends Collection {
+class RootCollection extends Collection
+{
 
 	/** @var IRootFolder */
 	private $rootFolder;

@@ -33,7 +33,8 @@ use OCP\IUserSession;
 use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase;
 
-class NotificationControllerTest extends TestCase {
+class NotificationControllerTest extends TestCase
+{
 	/** @var IRequest | MockObject */
 	private $request;
 	/** @var MailNotifications | MockObject */

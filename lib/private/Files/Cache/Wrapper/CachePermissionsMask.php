@@ -22,7 +22,8 @@
 
 namespace OC\Files\Cache\Wrapper;
 
-class CachePermissionsMask extends CacheWrapper {
+class CachePermissionsMask extends CacheWrapper
+{
 	/**
 	 * @var int
 	 */

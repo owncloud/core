@@ -32,7 +32,8 @@ use OCP\IUserSession;
 use OCP\SystemTag\ISystemTag;
 use OCP\SystemTag\TagAlreadyExistsException;
 
-class SystemTagPluginTest extends \Test\TestCase {
+class SystemTagPluginTest extends \Test\TestCase
+{
 	const ID_PROPERTYNAME = \OCA\DAV\SystemTag\SystemTagPlugin::ID_PROPERTYNAME;
 	const DISPLAYNAME_PROPERTYNAME = \OCA\DAV\SystemTag\SystemTagPlugin::DISPLAYNAME_PROPERTYNAME;
 	const USERVISIBLE_PROPERTYNAME = \OCA\DAV\SystemTag\SystemTagPlugin::USERVISIBLE_PROPERTYNAME;

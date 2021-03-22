@@ -39,7 +39,8 @@ use OCP\AppFramework\Http\DataResponse;
  *
  * @package OC\Settings\Controller
  */
-class LogSettingsController extends Controller {
+class LogSettingsController extends Controller
+{
 	/**
 	 * @var \OCP\IConfig
 	 */

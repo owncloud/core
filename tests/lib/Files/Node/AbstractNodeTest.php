@@ -24,7 +24,8 @@ namespace Test\Files\Node;
 use OC\Files\Node\AbstractNode;
 use Test\TestCase;
 
-class AbstractNodeTest extends TestCase {
+class AbstractNodeTest extends TestCase
+{
 	public function testMime() {
 		/** @var AbstractNode | \PHPUnit\Framework\MockObject\MockObject $node */
 		$node = $this->getMockForAbstractClass(AbstractNode::class);

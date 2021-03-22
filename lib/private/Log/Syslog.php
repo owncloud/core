@@ -24,7 +24,8 @@
 
 namespace OC\Log;
 
-class Syslog {
+class Syslog
+{
 	protected static $levels = [
 		\OCP\Util::DEBUG => LOG_DEBUG,
 		\OCP\Util::INFO => LOG_INFO,

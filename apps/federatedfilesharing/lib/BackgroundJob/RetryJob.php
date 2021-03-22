@@ -38,7 +38,8 @@ use OCP\ILogger;
  *
  * @package OCA\FederatedFileSharing\BackgroundJob
  */
-class RetryJob extends Job {
+class RetryJob extends Job
+{
 
 	/** @var  bool */
 	private $retainJob = true;

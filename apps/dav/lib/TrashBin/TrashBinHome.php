@@ -24,7 +24,8 @@ namespace OCA\DAV\TrashBin;
 use Sabre\DAV\Collection;
 use Sabre\DAV\Exception\Forbidden;
 
-class TrashBinHome extends Collection {
+class TrashBinHome extends Collection
+{
 
 	/** @var TrashBinManager */
 	private $trashBinManager;

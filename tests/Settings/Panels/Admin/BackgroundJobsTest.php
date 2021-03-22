@@ -17,7 +17,8 @@ use OCP\IConfig;
  * @package Tests\Settings\Panels\Admin
  * @group DB
  */
-class BackgroundJobsTest extends \Test\TestCase {
+class BackgroundJobsTest extends \Test\TestCase
+{
 
 	/** @var BackgroundJobs */
 	private $panel;

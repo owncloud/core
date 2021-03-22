@@ -41,7 +41,8 @@ use OCP\Files\StorageNotAvailableException;
  * constructed, while others are retrieved directly from the storage
  * implementation and so need a wrapper to be modified.
  */
-trait StorageModifierTrait {
+trait StorageModifierTrait
+{
 
 	/**
 	 * Modify a IStorageConfig parameters

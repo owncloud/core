@@ -81,7 +81,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * Filesystem functions are not called directly; they are passed to the correct
  * \OC\Files\Storage\Storage object
  */
-class View {
+class View
+{
 	use EventEmitterTrait;
 	/** @var string */
 	private $fakeRoot = '';

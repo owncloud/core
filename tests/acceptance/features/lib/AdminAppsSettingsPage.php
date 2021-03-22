@@ -28,7 +28,8 @@ use Behat\Mink\Session;
 /**
  * Admin Apps Settings page.
  */
-class AdminAppsSettingsPage extends OwncloudPage {
+class AdminAppsSettingsPage extends OwncloudPage
+{
 
 	/**
 	 *

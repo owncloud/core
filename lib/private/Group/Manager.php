@@ -58,7 +58,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @package OC\Group
  */
-class Manager extends PublicEmitter implements IGroupManager {
+class Manager extends PublicEmitter implements IGroupManager
+{
 	/**
 	 * @var GroupInterface[] $backends
 	 */

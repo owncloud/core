@@ -56,7 +56,8 @@ use OCA\DAV\Connector\Sabre\Exception\Forbidden;
  *
  * @package OC\Files\Storage
  */
-class DAV extends Common {
+class DAV extends Common
+{
 	/** @var string */
 	protected $password;
 	/** @var string */

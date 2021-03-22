@@ -16,7 +16,8 @@ use OCP\Migration\IRepairStep;
  *
  * @see \OC\Repair\RepairMimeTypes
  */
-class RepairInnoDBTest extends \Test\TestCase {
+class RepairInnoDBTest extends \Test\TestCase
+{
 
 	/** @var IRepairStep */
 	private $repair;

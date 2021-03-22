@@ -45,7 +45,8 @@ use OCP\Files\NotFoundException;
  *
  * @package OC\Repair
  */
-class MoveAvatarIntoSubFolder implements IRepairStep {
+class MoveAvatarIntoSubFolder implements IRepairStep
+{
 	/** @var \OCP\IConfig */
 	protected $config;
 

@@ -30,7 +30,8 @@ use GuzzleHttp\Message\Response as GuzzleResponse;
  *
  * @package OC\Http
  */
-class Response implements IResponse {
+class Response implements IResponse
+{
 	/** @var GuzzleResponse */
 	private $response;
 

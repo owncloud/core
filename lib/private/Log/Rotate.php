@@ -29,7 +29,8 @@ namespace OC\Log;
  * For more professional log management set the 'logfile' config to a different
  * location and manage that with your own tools.
  */
-class Rotate extends \OC\BackgroundJob\Job {
+class Rotate extends \OC\BackgroundJob\Job
+{
 	private $max_log_size;
 	public function run($logFile) {
 		$this->max_log_size = \OC::$server->getConfig()->getSystemValue('log_rotate_size', false);

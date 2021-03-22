@@ -33,7 +33,8 @@ use Test\TestCase;
  * @package OCA\DAV\Tests\Unit\Repair
  * @group DB
  */
-class RemoveInvalidSharesTest extends TestCase {
+class RemoveInvalidSharesTest extends TestCase
+{
 	public function setUp(): void {
 		parent::setUp();
 		$db = \OC::$server->getDatabaseConnection();

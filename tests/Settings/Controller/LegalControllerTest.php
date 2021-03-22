@@ -28,7 +28,8 @@ use OCP\IConfig;
 /**
  * @package Tests\Settings\Controller
  */
-class LegalSettingsControllerTest extends \Test\TestCase {
+class LegalSettingsControllerTest extends \Test\TestCase
+{
 	/**
 	 * @var \OCP\AppFramework\IAppContainer
 	 */

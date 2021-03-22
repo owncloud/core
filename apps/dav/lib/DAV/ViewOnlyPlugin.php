@@ -35,7 +35,8 @@ use Sabre\DAV\Exception\NotFound;
 /**
  * Sabre plugin for restricting file share receiver download:
  */
-class ViewOnlyPlugin extends ServerPlugin {
+class ViewOnlyPlugin extends ServerPlugin
+{
 
 	/** @var Server $server */
 	private $server;

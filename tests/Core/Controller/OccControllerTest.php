@@ -32,7 +32,8 @@ use Test\TestCase;
  *
  * @package OC\Core\Controller
  */
-class OccControllerTest extends TestCase {
+class OccControllerTest extends TestCase
+{
 	const TEMP_SECRET = 'test';
 
 	/** @var \OC\AppFramework\Http\Request | \PHPUnit\Framework\MockObject\MockObject */

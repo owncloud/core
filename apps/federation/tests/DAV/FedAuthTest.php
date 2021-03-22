@@ -25,7 +25,8 @@ use OCA\Federation\DAV\FedAuth;
 use OCA\Federation\DbHandler;
 use Test\TestCase;
 
-class FedAuthTest extends TestCase {
+class FedAuthTest extends TestCase
+{
 
 	/**
 	 * @dataProvider providesUser

@@ -9,7 +9,8 @@
 
 namespace Test\Memcache;
 
-class APCuTest extends Cache {
+class APCuTest extends Cache
+{
 	protected function setUp(): void {
 		parent::setUp();
 

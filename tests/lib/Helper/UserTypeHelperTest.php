@@ -26,7 +26,8 @@ use OCP\App\IAppManager;
 use OCP\IConfig;
 use Test\TestCase;
 
-class UserTypeHelperTest extends TestCase {
+class UserTypeHelperTest extends TestCase
+{
 
 	/** @var IAppManager | \PHPUnit\Framework\MockObject\MockObject */
 	protected $appManager;

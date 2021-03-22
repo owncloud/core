@@ -12,7 +12,8 @@ use OC\Files\Cache\Cache;
 use OC\Files\Storage\Temporary;
 use Test\TestCase;
 
-class LongId extends Temporary {
+class LongId extends Temporary
+{
 	public function getId() {
 		return 'long:' . \str_repeat('foo', 50) . parent::getId();
 	}
@@ -25,7 +26,8 @@ class LongId extends Temporary {
  *
  * @package Test\Files\Cache
  */
-class CacheTest extends TestCase {
+class CacheTest extends TestCase
+{
 	/**
 	 * @var Temporary $storage ;
 	 */

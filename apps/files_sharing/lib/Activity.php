@@ -30,7 +30,8 @@ use OCP\IL10N;
 use OCP\IURLGenerator;
 use OCP\L10N\IFactory;
 
-class Activity implements IExtension {
+class Activity implements IExtension
+{
 	const FILES_SHARING_APP = 'files_sharing';
 	/**
 	 * Filter with all sharing related activities

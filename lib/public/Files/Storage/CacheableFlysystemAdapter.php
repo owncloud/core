@@ -27,7 +27,8 @@ namespace OCP\Files\Storage;
  *
  * @since 10.0.4
  */
-abstract class CacheableFlysystemAdapter extends \OC\Files\Storage\CacheableFlysystem {
+abstract class CacheableFlysystemAdapter extends \OC\Files\Storage\CacheableFlysystem
+{
 	/**
 	 * Check that if storage is case insensitive or not
 	 * @var boolean

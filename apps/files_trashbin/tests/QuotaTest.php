@@ -23,7 +23,8 @@ use OCA\Files_Trashbin\Quota;
 use OCP\IConfig;
 use OCP\IUserManager;
 
-class QuotaTest extends \Test\TestCase {
+class QuotaTest extends \Test\TestCase
+{
 
 	/** @var IUserManager | \PHPUnit\Framework\MockObject\MockObject  */
 	private $userManager;

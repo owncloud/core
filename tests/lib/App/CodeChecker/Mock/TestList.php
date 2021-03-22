@@ -23,7 +23,8 @@ namespace Test\App\CodeChecker\Mock;
 
 use OC\App\CodeChecker\ICheck;
 
-class TestList implements ICheck {
+class TestList implements ICheck
+{
 	/** @var ICheck */
 	protected $check;
 

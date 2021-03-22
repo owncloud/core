@@ -31,7 +31,8 @@ use Sabre\VObject\Reader;
 use Test\TestCase;
 use Sabre\DAV\Exception\Forbidden;
 
-class CalendarTest extends TestCase {
+class CalendarTest extends TestCase
+{
 
 	/** @var IL10N */
 	private $l10n;

@@ -32,7 +32,8 @@ use OC\Diagnostics\Query;
 use OCP\DB\QueryBuilder\IExpressionBuilder;
 use OCP\IDBConnection;
 
-class ExpressionBuilder implements IExpressionBuilder {
+class ExpressionBuilder implements IExpressionBuilder
+{
 	/** @var \Doctrine\DBAL\Query\Expression\ExpressionBuilder */
 	protected $expressionBuilder;
 

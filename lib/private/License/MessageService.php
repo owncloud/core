@@ -27,7 +27,8 @@ use OCP\AppFramework\Utility\ITimeFactory;
 /**
  * This class will provide translated messages based on the current license status
  */
-class MessageService {
+class MessageService
+{
 	/** @var IFactory */
 	private $l10nFactory;
 

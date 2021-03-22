@@ -35,7 +35,8 @@ use OC\Files\Storage\DAV;
  *
  * @package OCA\Files_External\Tests\Storage
  */
-class WebdavTest extends \Test\Files\Storage\Storage {
+class WebdavTest extends \Test\Files\Storage\Storage
+{
 	protected function setUp(): void {
 		parent::setUp();
 

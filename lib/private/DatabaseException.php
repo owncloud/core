@@ -22,7 +22,8 @@
 
 namespace OC;
 
-class DatabaseException extends \Exception {
+class DatabaseException extends \Exception
+{
 	private $query;
 
 	//FIXME getQuery seems to be unused, maybe use parent constructor with $message, $code and $previous

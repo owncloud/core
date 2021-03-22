@@ -37,7 +37,8 @@ use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUserSession;
 
-class TwoFactorMiddleware extends Middleware {
+class TwoFactorMiddleware extends Middleware
+{
 
 	/** @var Manager */
 	private $twoFactorManager;

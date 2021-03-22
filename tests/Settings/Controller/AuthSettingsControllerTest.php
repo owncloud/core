@@ -31,7 +31,8 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\Session\Exceptions\SessionNotAvailableException;
 use Test\TestCase;
 
-class AuthSettingsControllerTest extends TestCase {
+class AuthSettingsControllerTest extends TestCase
+{
 
 	/** @var AuthSettingsController */
 	private $controller;

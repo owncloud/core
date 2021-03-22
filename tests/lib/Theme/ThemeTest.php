@@ -4,7 +4,8 @@ namespace Test\Theme;
 
 use OC\Theme\Theme;
 
-class ThemeTest extends \PHPUnit\Framework\TestCase {
+class ThemeTest extends \PHPUnit\Framework\TestCase
+{
 
 	/**
 	 * @var Theme

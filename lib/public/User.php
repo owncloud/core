@@ -44,7 +44,8 @@ namespace OCP;
  * about the currently logged in user and the permissions for example
  * @since 5.0.0
  */
-class User extends \OCP\User\Constants {
+class User extends \OCP\User\Constants
+{
 	/**
 	 * Get the user id of the user currently logged in.
 	 * @return string uid or false

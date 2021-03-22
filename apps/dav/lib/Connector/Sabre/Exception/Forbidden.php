@@ -21,7 +21,8 @@
 
 namespace OCA\DAV\Connector\Sabre\Exception;
 
-class Forbidden extends \Sabre\DAV\Exception\Forbidden {
+class Forbidden extends \Sabre\DAV\Exception\Forbidden
+{
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';
 
 	/**

@@ -36,7 +36,8 @@ use Test\Traits\MountProviderTrait;
 /**
  * Class AvatarManagerTest
  */
-class AvatarManagerTest extends TestCase {
+class AvatarManagerTest extends TestCase
+{
 	use MountProviderTrait;
 
 	/** @var AvatarManager | \PHPUnit\Framework\MockObject\MockObject */

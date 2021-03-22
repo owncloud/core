@@ -26,7 +26,8 @@ use OCP\Files\External\IStorageConfig;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Option extends Config {
+class Option extends Config
+{
 	protected function configure() {
 		$this
 			->setName('files_external:option')

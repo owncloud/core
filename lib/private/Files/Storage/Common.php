@@ -69,7 +69,8 @@ use OCP\Lock\Persistent\ILock;
  * Some \OC\Files\Storage\Common methods call functions which are first defined
  * in classes which extend it, e.g. $this->stat() .
  */
-abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IPersistentLockingStorage {
+abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IPersistentLockingStorage
+{
 	use LocalTempFileTrait;
 
 	protected $cache;

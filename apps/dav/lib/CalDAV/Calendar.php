@@ -30,7 +30,8 @@ use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\PropPatch;
 
-class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
+class Calendar extends \Sabre\CalDAV\Calendar implements IShareable
+{
 	public function __construct(BackendInterface $caldavBackend, $calendarInfo, IL10N $l10n) {
 		parent::__construct($caldavBackend, $calendarInfo);
 

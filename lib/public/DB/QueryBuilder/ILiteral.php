@@ -24,7 +24,8 @@ namespace OCP\DB\QueryBuilder;
 /**
  * @since 8.2.0
  */
-interface ILiteral {
+interface ILiteral
+{
 	/**
 	 * @return string
 	 * @since 8.2.0

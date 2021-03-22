@@ -28,7 +28,8 @@ use OCP\Settings\ISection;
 /**
  * @since 10.0
  */
-class Section implements ISection {
+class Section implements ISection
+{
 	protected $id;
 	protected $name;
 	/** @var int */

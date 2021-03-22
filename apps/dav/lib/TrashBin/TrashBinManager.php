@@ -37,7 +37,8 @@ use Sabre\DAV\Exception\NotFound;
  * @package OCA\DAV\TrashBin
  * @codeCoverageIgnore
  */
-class TrashBinManager {
+class TrashBinManager
+{
 	public function getChild(string $user, string $id) {
 		try {
 			$view = new View('/' . $user . '/files_trashbin/files');

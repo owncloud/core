@@ -27,7 +27,8 @@ use OC\Lock\Persistent\LockMapper;
 /**
  * Clean up persistent file locks that are expired
  */
-class CleanupPersistentFileLocks extends TimedJob {
+class CleanupPersistentFileLocks extends TimedJob
+{
 
 	/**
 	 * Default interval in minutes

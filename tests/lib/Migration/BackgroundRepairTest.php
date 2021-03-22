@@ -30,7 +30,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
 
-class TestRepairStep implements IRepairStep {
+class TestRepairStep implements IRepairStep
+{
 
 	/**
 	 * Returns the step's name
@@ -54,7 +55,8 @@ class TestRepairStep implements IRepairStep {
 	}
 }
 
-class BackgroundRepairTest extends TestCase {
+class BackgroundRepairTest extends TestCase
+{
 
 	/** @var \OC\BackgroundJob\JobList | \PHPUnit\Framework\MockObject\MockObject */
 	private $jobList;

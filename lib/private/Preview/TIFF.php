@@ -23,7 +23,8 @@
 namespace OC\Preview;
 
 //.tiff
-class TIFF extends Bitmap {
+class TIFF extends Bitmap
+{
 	/**
 	 * {@inheritDoc}
 	 */

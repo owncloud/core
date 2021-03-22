@@ -37,7 +37,8 @@ namespace OCP;
  * Manages the ownCloud navigation
  * @since 6.0.0
  */
-interface INavigationManager {
+interface INavigationManager
+{
 	/**
 	 * Creates a new navigation entry
 	 *

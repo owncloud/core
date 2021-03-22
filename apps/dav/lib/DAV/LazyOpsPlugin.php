@@ -40,7 +40,8 @@ use Sabre\HTTP\ResponseInterface;
  *
  * @package OCA\DAV\DAV
  */
-class LazyOpsPlugin extends ServerPlugin {
+class LazyOpsPlugin extends ServerPlugin
+{
 
 	/** @var Server */
 	private $server;

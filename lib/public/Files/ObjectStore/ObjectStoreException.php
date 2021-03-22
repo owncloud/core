@@ -28,5 +28,6 @@ namespace OCP\Files\ObjectStore;
  * @package OCP\Files\ObjectStore
  * @since 10.3.0
  */
-class ObjectStoreException extends \Exception {
+class ObjectStoreException extends \Exception
+{
 }

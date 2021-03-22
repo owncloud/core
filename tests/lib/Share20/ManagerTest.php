@@ -58,7 +58,8 @@ use Test\Traits\UserTrait;
  * @package Test\Share20
  * @group DB
  */
-class ManagerTest extends \Test\TestCase {
+class ManagerTest extends \Test\TestCase
+{
 	use UserTrait;
 
 	/** @var Manager */
@@ -3803,14 +3804,16 @@ class ManagerTest extends \Test\TestCase {
 	}
 }
 
-class DummyPassword {
+class DummyPassword
+{
 	public function listner($array) {
 		$array['accepted'] = false;
 		$array['message'] = 'password not accepted';
 	}
 }
 
-class DummyFactory implements IProviderFactory {
+class DummyFactory implements IProviderFactory
+{
 
 	/** @var IShareProvider */
 	private $provider;

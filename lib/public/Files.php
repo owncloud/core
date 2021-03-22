@@ -43,7 +43,8 @@ namespace OCP;
  * this class exlusively if you want to access files
  * @since 5.0.0
  */
-class Files {
+class Files
+{
 	/**
 	 * Recusive deletion of folders
 	 * @return bool

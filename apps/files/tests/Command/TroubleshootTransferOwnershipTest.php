@@ -35,7 +35,8 @@ use Test\TestCase;
  *
  * @package OCA\Files\Tests\Command
  */
-class TroubleshootTransferOwnershipTest extends TestCase {
+class TroubleshootTransferOwnershipTest extends TestCase
+{
 
 	/**
 	 * @var CommandTester

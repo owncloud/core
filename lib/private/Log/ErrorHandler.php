@@ -26,7 +26,8 @@ namespace OC\Log;
 
 use OCP\ILogger;
 
-class ErrorHandler {
+class ErrorHandler
+{
 	/** @var ILogger */
 	private static $logger;
 

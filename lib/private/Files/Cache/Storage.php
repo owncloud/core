@@ -40,7 +40,8 @@ use OCP\ICache;
  *
  * @package OC\Files\Cache
  */
-class Storage {
+class Storage
+{
 	private $storageId;
 	private $numericId;
 

@@ -33,7 +33,8 @@ use OCP\IDBConnection;
 use OCP\Notification\IManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class ManagerTest extends TestCase {
+class ManagerTest extends TestCase
+{
 	/** @var Manager */
 	private $manager;
 

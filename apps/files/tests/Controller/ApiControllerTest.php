@@ -41,7 +41,8 @@ use Test\TestCase;
  *
  * @package OCA\Files\Controller
  */
-class ApiControllerTest extends TestCase {
+class ApiControllerTest extends TestCase
+{
 	/** @var string */
 	private $appName = 'files';
 	/** @var \OCP\IUser */

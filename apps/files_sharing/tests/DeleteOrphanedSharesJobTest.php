@@ -32,7 +32,8 @@ use OCA\Files_Sharing\DeleteOrphanedSharesJob;
  *
  * @package OCA\Files_Sharing\Tests
  */
-class DeleteOrphanedSharesJobTest extends \Test\TestCase {
+class DeleteOrphanedSharesJobTest extends \Test\TestCase
+{
 
 	/**
 	 * @var bool

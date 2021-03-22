@@ -30,7 +30,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class Setting extends Base {
+class Setting extends Base
+{
 	/** @var IUserManager */
 	protected $userManager;
 

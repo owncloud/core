@@ -24,7 +24,8 @@ namespace OC\Diagnostics;
 
 use OCP\Diagnostics\IQuery;
 
-class Query implements IQuery {
+class Query implements IQuery
+{
 	private $sql;
 
 	private $params;

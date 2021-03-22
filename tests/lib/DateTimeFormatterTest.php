@@ -8,7 +8,8 @@
 
 namespace Test;
 
-class DateTimeFormatterTest extends TestCase {
+class DateTimeFormatterTest extends TestCase
+{
 	/** @var \OC\DateTimeFormatter */
 	protected $formatter;
 	protected static $oneMinute = 60;

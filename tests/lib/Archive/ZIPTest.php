@@ -10,7 +10,8 @@ namespace Test\Archive;
 
 use OC\Archive\ZIP;
 
-class ZIPTest extends TestBase {
+class ZIPTest extends TestBase
+{
 	protected function setUp(): void {
 		parent::setUp();
 	}

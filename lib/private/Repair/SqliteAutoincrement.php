@@ -34,7 +34,8 @@ use OCP\Migration\IRepairStep;
  * Fixes Sqlite autoincrement by forcing the SQLite table schemas to be
  * altered in order to retrigger SQL schema generation through OCSqlitePlatform.
  */
-class SqliteAutoincrement implements IRepairStep {
+class SqliteAutoincrement implements IRepairStep
+{
 	/**
 	 * @var \OC\DB\Connection
 	 */

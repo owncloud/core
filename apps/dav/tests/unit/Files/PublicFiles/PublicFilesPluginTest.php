@@ -32,7 +32,8 @@ use Sabre\DAV\Server;
 use Sabre\DAV\Xml\Property\GetLastModified;
 use Test\TestCase;
 
-class PublicFilesPluginTest extends TestCase {
+class PublicFilesPluginTest extends TestCase
+{
 	public function testInit() {
 		$plugin = new PublicFilesPlugin();
 

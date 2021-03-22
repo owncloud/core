@@ -44,7 +44,8 @@ use OCP\ILogger;
  *
  * @package OC\Files\Utils
  */
-class Scanner extends PublicEmitter {
+class Scanner extends PublicEmitter
+{
 	const MAX_ENTRIES_TO_COMMIT = 10000;
 
 	/**

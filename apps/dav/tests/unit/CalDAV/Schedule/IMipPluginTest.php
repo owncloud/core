@@ -31,7 +31,8 @@ use Sabre\VObject\ITip\Message;
 use Test\TestCase;
 use OC\Log;
 
-class IMipPluginTest extends TestCase {
+class IMipPluginTest extends TestCase
+{
 	public function testDelivery() {
 		$mailMessage = new \OC\Mail\Message(new \Swift_Message());
 		/** @var Mailer | \PHPUnit\Framework\MockObject\MockObject $mailer */

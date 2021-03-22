@@ -28,7 +28,8 @@ use TestHelpers\SetupHelper;
 /**
  * Authentication functions
  */
-class AuthContext implements Context {
+class AuthContext implements Context
+{
 	/**
 	 * @var string
 	 */

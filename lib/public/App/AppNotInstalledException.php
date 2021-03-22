@@ -25,5 +25,6 @@ namespace OCP\App;
  *
  * @since 10.0.0
  */
-class AppNotInstalledException extends AppManagerException {
+class AppNotInstalledException extends AppManagerException
+{
 }

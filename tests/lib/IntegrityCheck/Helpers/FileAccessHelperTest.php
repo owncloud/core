@@ -23,7 +23,8 @@ namespace Test\IntegrityCheck\Helpers;
 use OC\IntegrityCheck\Helpers\FileAccessHelper;
 use Test\TestCase;
 
-class FileAccessHelperTest extends TestCase {
+class FileAccessHelperTest extends TestCase
+{
 	/** @var FileAccessHelper */
 	private $fileAccessHelper;
 

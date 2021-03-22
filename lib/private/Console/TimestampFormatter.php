@@ -25,7 +25,8 @@ use OCP\IConfig;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyleInterface;
 
-class TimestampFormatter implements OutputFormatterInterface {
+class TimestampFormatter implements OutputFormatterInterface
+{
 	/** @var IConfig */
 	protected $config;
 

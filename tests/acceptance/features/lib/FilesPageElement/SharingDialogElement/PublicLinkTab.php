@@ -33,7 +33,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  * The Public link tab of the Sharing Dialog
  *
  */
-class PublicLinkTab extends OwncloudPage {
+class PublicLinkTab extends OwncloudPage
+{
 	/**
 	 * @var NodeElement of this tab
 	 */

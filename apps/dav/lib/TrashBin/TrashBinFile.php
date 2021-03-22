@@ -24,7 +24,8 @@ namespace OCA\DAV\TrashBin;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\IFile;
 
-class TrashBinFile extends AbstractTrashBinNode implements IFile {
+class TrashBinFile extends AbstractTrashBinNode implements IFile
+{
 	public function put($data) {
 		throw new Forbidden('Permission denied to write this file');
 	}

@@ -29,7 +29,8 @@ use OCP\IConfig;
  *
  * @package OC\Security
  */
-class TrustedDomainHelper {
+class TrustedDomainHelper
+{
 	/** @var IConfig */
 	private $config;
 

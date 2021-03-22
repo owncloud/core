@@ -28,7 +28,8 @@ namespace OCP\Files\External;
  *
  * @since 10.0
  */
-class DefinitionParameter implements \JsonSerializable {
+class DefinitionParameter implements \JsonSerializable
+{
 
 	/** Value constants */
 	const VALUE_TEXT = 0;

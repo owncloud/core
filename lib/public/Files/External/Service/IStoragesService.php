@@ -29,7 +29,8 @@ use OCP\Files\External\NotFoundException;
  *
  * @since 10.0
  */
-interface IStoragesService {
+interface IStoragesService
+{
 	/**
 	 * Get a storage with status
 	 *

@@ -36,7 +36,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 * from the command line interface.
 * Subclasses will override the getMode() function to specify the mode to configure.
 */
-abstract class Base extends Command {
+abstract class Base extends Command
+{
 	abstract protected function getMode();
 
 	/**

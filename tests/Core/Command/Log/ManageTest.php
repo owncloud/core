@@ -24,7 +24,8 @@ namespace Tests\Core\Command\Log;
 use OC\Core\Command\Log\Manage;
 use Test\TestCase;
 
-class ManageTest extends TestCase {
+class ManageTest extends TestCase
+{
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 	/** @var \PHPUnit\Framework\MockObject\MockObject */

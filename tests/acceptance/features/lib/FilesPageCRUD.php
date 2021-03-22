@@ -34,7 +34,8 @@ use WebDriver\Exception\StaleElementReference;
  * PageObject with CRUD actions that are shared among some file pages, but not all
  *
  */
-class FilesPageCRUD extends FilesPageBasic {
+class FilesPageCRUD extends FilesPageBasic
+{
 	protected $fileNamesXpath = null;
 	protected $fileNameMatchXpath = null;
 	protected $fileListXpath = null;

@@ -23,7 +23,8 @@ use OCP\ILogger;
  *
  * @see \OC\Repair\RepairMismatchFileCachePath
  */
-class RepairMismatchFileCachePathTest extends TestCase {
+class RepairMismatchFileCachePathTest extends TestCase
+{
 
 	/** @var IRepairStep */
 	private $repair;

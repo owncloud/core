@@ -27,7 +27,8 @@ namespace Test\AppFramework\DependencyInjection;
 
 use OC\AppFramework\Http\Request;
 
-class DIContainerTest extends \Test\TestCase {
+class DIContainerTest extends \Test\TestCase
+{
 	private $container;
 	private $api;
 

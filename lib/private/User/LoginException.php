@@ -22,5 +22,6 @@
 
 namespace OC\User;
 
-class LoginException extends \Exception {
+class LoginException extends \Exception
+{
 }

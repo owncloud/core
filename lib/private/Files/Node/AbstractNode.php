@@ -23,7 +23,8 @@ namespace OC\Files\Node;
 
 use OCP\Files\NotPermittedException;
 
-abstract class AbstractNode implements \OCP\Files\Node {
+abstract class AbstractNode implements \OCP\Files\Node
+{
 
 	/**
 	 * @inheritdoc

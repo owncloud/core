@@ -20,7 +20,8 @@
  */
 namespace OC\User\Sync;
 
-abstract class UsersIterator implements \Iterator {
+abstract class UsersIterator implements \Iterator
+{
 	protected $position = 0;
 	protected $page;
 	protected $data;

@@ -34,7 +34,8 @@ use OCP\IDBConnection;
  *
  * @package Test\DB\QueryBuilder
  */
-class QueryBuilderTest extends \Test\TestCase {
+class QueryBuilderTest extends \Test\TestCase
+{
 	/** @var QueryBuilder */
 	protected $queryBuilder;
 

@@ -39,7 +39,8 @@ use OCP\IConfig;
 use OCA\FederatedFileSharing\BackgroundJob\RetryJob;
 use OCP\Share\Events\DeclineShare;
 
-class NotificationsTest extends \Test\TestCase {
+class NotificationsTest extends \Test\TestCase
+{
 
 	/** @var  AddressHandler | \PHPUnit\Framework\MockObject\MockObject */
 	private $addressHandler;

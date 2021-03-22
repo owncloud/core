@@ -14,7 +14,8 @@ use OCP\Files\Mount\IMountPoint;
 use OCP\Files\Storage as IStorage;
 use Test\TestCase;
 
-class DummyWrapper extends Wrapper {
+class DummyWrapper extends Wrapper
+{
 	public $data;
 
 	public function __construct($arguments) {
@@ -25,7 +26,8 @@ class DummyWrapper extends Wrapper {
 	}
 }
 
-class StorageFactoryTest extends TestCase {
+class StorageFactoryTest extends TestCase
+{
 	public function testSimpleWrapper() {
 		$instance = new \OC\Files\Storage\StorageFactory();
 		$mount = new MountPoint('\OC\Files\Storage\Temporary', '/foo', [[]], $instance);

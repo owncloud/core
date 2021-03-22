@@ -42,7 +42,8 @@ use OCP\IUserManager;
  *
  * @package OCA\FederatedFileSharing\Controller
  */
-class OcmController extends Controller {
+class OcmController extends Controller
+{
 	const API_VERSION = '1.0-proposal1';
 
 	/**

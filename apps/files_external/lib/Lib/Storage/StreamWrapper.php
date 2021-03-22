@@ -27,7 +27,8 @@
 
 namespace OCA\Files_External\Lib\Storage;
 
-abstract class StreamWrapper extends \OCP\Files\Storage\StorageAdapter {
+abstract class StreamWrapper extends \OCP\Files\Storage\StorageAdapter
+{
 
 	/**
 	 * @param string $path

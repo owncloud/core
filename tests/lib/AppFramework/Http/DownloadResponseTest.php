@@ -25,10 +25,12 @@ namespace Test\AppFramework\Http;
 
 use OCP\AppFramework\Http\DownloadResponse;
 
-class ChildDownloadResponse extends DownloadResponse {
+class ChildDownloadResponse extends DownloadResponse
+{
 };
 
-class DownloadResponseTest extends \Test\TestCase {
+class DownloadResponseTest extends \Test\TestCase
+{
 
 	/**
 	 * @var ChildDownloadResponse

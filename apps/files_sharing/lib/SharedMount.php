@@ -34,7 +34,8 @@ use OC\Files\View;
 /**
  * Shared mount points can be moved by the user
  */
-class SharedMount extends MountPoint implements MoveableMount {
+class SharedMount extends MountPoint implements MoveableMount
+{
 	/**
 	 * @var \OCA\Files_Sharing\SharedStorage $storage
 	 */

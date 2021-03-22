@@ -34,7 +34,8 @@ use OCP\IRequest;
  *
  * @package Tests\Settings\Controller
  */
-class CertificateControllerTest extends \Test\TestCase {
+class CertificateControllerTest extends \Test\TestCase
+{
 	/** @var CertificateController */
 	private $certificateController;
 	/** @var IRequest */

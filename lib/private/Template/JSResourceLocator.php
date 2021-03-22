@@ -26,7 +26,8 @@
 
 namespace OC\Template;
 
-class JSResourceLocator extends ResourceLocator {
+class JSResourceLocator extends ResourceLocator
+{
 	/**
 	 * @param string $script
 	 */

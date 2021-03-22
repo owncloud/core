@@ -36,7 +36,8 @@ use OCP\Files\Storage\IStorage;
  *
  * don't use this class directly if you need to get metadata, use \OC\Files\Filesystem::getFileInfo instead
  */
-class Cache extends CacheJail {
+class Cache extends CacheJail
+{
 	/**
 	 * @var \OCA\Files_Sharing\SharedStorage
 	 */

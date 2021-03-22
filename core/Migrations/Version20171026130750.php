@@ -9,7 +9,8 @@ use OCP\Migration\IOutput;
  * The behaviour will be similar as well as the values, so we'll copy the value from one key to
  * another to keep the same behaviour between versions
  */
-class Version20171026130750 implements ISimpleMigration {
+class Version20171026130750 implements ISimpleMigration
+{
 
 	/**
 	 * @param IOutput $out

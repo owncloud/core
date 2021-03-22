@@ -28,7 +28,8 @@ use OCP\IRequest;
 use OCP\Share\IShare;
 use Test\TestCase;
 
-class PublicSharedRootNodeTest extends TestCase {
+class PublicSharedRootNodeTest extends TestCase
+{
 	/**
 	 */
 	public function testNoLongerExistingResource() {

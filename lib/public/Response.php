@@ -42,7 +42,8 @@ namespace OCP;
  * @since 4.0.0
  * @deprecated 8.1.0 - Use AppFramework controllers instead and modify the response object
  */
-class Response {
+class Response
+{
 	/**
 	 * Enable response caching by sending correct HTTP headers
 	 * @param int $cache_time time to cache the response

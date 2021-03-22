@@ -33,7 +33,8 @@ use WebDriver\Exception\StaleElementReference;
 /**
  * Users page.
  */
-class UsersPage extends OwncloudPage {
+class UsersPage extends OwncloudPage
+{
 
 	/**
 	 *

@@ -26,7 +26,8 @@ use OCP\IMemcacheTTL;
 use OCP\Lock\LockedException;
 use OCP\IMemcache;
 
-class MemcacheLockingProvider extends AbstractLockingProvider {
+class MemcacheLockingProvider extends AbstractLockingProvider
+{
 	/**
 	 * @var \OCP\IMemcache
 	 */

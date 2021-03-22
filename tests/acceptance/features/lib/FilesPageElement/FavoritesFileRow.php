@@ -26,7 +26,8 @@ namespace Page\FilesPageElement;
 /**
  * Object of a row on the FilesPage
  */
-class FavoritesFileRow extends FileRow {
+class FavoritesFileRow extends FileRow
+{
 	/**
 	 * @param string $xpath
 	 *

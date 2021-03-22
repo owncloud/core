@@ -25,7 +25,8 @@ namespace OCA\Files_Sharing;
 
 use OC\Files\Cache\Propagator;
 
-class SharedPropagator extends Propagator {
+class SharedPropagator extends Propagator
+{
 	/**
 	 * @var \OCA\Files_Sharing\SharedStorage
 	 */

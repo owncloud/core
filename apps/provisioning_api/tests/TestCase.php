@@ -28,7 +28,8 @@ use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserManager;
 
-abstract class TestCase extends \Test\TestCase {
+abstract class TestCase extends \Test\TestCase
+{
 
 	/** @var IUser[] */
 	protected $users = [];

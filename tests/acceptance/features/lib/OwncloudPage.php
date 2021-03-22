@@ -35,7 +35,8 @@ use WebDriver\Key;
 /**
  * Owncloud page.
  */
-class OwncloudPage extends Page {
+class OwncloudPage extends Page
+{
 	protected $userNameDisplayId = "expandDisplayName";
 	protected $notificationId = "notification";
 	protected $ocDialogXpath = ".//*[@class='oc-dialog']";

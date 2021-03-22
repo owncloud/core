@@ -28,7 +28,8 @@ use OCP\L10N\IFactory;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-class FileSharing implements ISettings {
+class FileSharing implements ISettings
+{
 
 	/** @var IConfig */
 	protected $config;

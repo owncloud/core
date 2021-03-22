@@ -40,7 +40,8 @@ use Sabre\DAVACL\IACL;
  *
  * @package OCA\DAV\Files\PublicFiles
  */
-class PublicSharedRootNode extends Collection implements IACL {
+class PublicSharedRootNode extends Collection implements IACL
+{
 	use NodeFactoryTrait, ACLTrait;
 
 	/** @var IShare */

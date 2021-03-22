@@ -19,7 +19,8 @@
  */
 namespace OC\License;
 
-class BasicLicense implements ILicense {
+class BasicLicense implements ILicense
+{
 	private $rawLicense;
 	private $org;
 	private $date = 0;  // to ensure an integer as expiration value

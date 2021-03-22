@@ -24,7 +24,8 @@
 
 namespace OC\Template;
 
-class TemplateFileLocator {
+class TemplateFileLocator
+{
 	protected $dirs;
 	private $path;
 

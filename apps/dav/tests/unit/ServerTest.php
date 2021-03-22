@@ -33,7 +33,8 @@ use OCP\IRequest;
  *
  * @package OCA\DAV\Tests\Unit
  */
-class ServerTest extends \Test\TestCase {
+class ServerTest extends \Test\TestCase
+{
 
 	/**
 	 * @dataProvider providesUris

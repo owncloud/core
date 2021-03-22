@@ -22,7 +22,8 @@ namespace Test\Files\External\Service;
 
 use OC\Files\External\Service\DBConfigService;
 
-class CleaningDBConfig extends DBConfigService {
+class CleaningDBConfig extends DBConfigService
+{
 	private $mountIds = [];
 
 	public function addMount($mountPoint, $storageBackend, $authBackend, $priority, $type) {

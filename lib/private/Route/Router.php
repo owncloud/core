@@ -42,7 +42,8 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
-class Router implements IRouter {
+class Router implements IRouter
+{
 	/** @var RouteCollection[] */
 	protected $collections = [];
 	/** @var null|RouteCollection */

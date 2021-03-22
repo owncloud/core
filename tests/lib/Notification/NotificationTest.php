@@ -25,7 +25,8 @@ use OC\Notification\Notification;
 use OCP\Notification\INotification;
 use Test\TestCase;
 
-class NotificationTest extends TestCase {
+class NotificationTest extends TestCase
+{
 	/** @var INotification */
 	protected $notification;
 

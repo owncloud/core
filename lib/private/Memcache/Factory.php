@@ -32,7 +32,8 @@ namespace OC\Memcache;
 use \OCP\ICacheFactory;
 use \OCP\ILogger;
 
-class Factory implements ICacheFactory {
+class Factory implements ICacheFactory
+{
 	const NULL_CACHE = '\\OC\\Memcache\\NullCache';
 
 	/**

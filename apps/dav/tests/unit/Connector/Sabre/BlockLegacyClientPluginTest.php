@@ -33,7 +33,8 @@ use Test\TestCase;
  *
  * @package OCA\DAV\Tests\unit\Connector\Sabre
  */
-class BlockLegacyClientPluginTest extends TestCase {
+class BlockLegacyClientPluginTest extends TestCase
+{
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 	/** @var BlockLegacyClientPlugin */

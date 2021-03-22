@@ -34,7 +34,8 @@ use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Server;
 use Test\TestCase;
 
-class TestLogger extends Log {
+class TestLogger extends Log
+{
 	public $message;
 	public $level;
 
@@ -48,7 +49,8 @@ class TestLogger extends Log {
 	}
 }
 
-class ExceptionLoggerPluginTest extends TestCase {
+class ExceptionLoggerPluginTest extends TestCase
+{
 
 	/** @var Server */
 	private $server;

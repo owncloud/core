@@ -43,7 +43,8 @@ use OCP\Share\IShare;
  * @package Test\Share20
  * @group DB
  */
-class DefaultShareProviderTest extends TestCase {
+class DefaultShareProviderTest extends TestCase
+{
 
 	/** @var IDBConnection */
 	protected $dbConn;

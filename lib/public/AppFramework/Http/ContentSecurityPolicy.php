@@ -38,7 +38,8 @@ use OCP\AppFramework\Http;
  * @package OCP\AppFramework\Http
  * @since 8.1.0
  */
-class ContentSecurityPolicy extends EmptyContentSecurityPolicy {
+class ContentSecurityPolicy extends EmptyContentSecurityPolicy
+{
 	/** @var bool Whether inline JS snippets are allowed */
 	protected $inlineScriptAllowed = false;
 	/**

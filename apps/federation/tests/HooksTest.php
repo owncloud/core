@@ -26,7 +26,8 @@ use OCA\Federation\Hooks;
 use OCA\Federation\TrustedServers;
 use Test\TestCase;
 
-class HooksTest extends TestCase {
+class HooksTest extends TestCase
+{
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | TrustedServers */
 	private $trustedServers;

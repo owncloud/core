@@ -43,7 +43,8 @@ use Test\TestCase;
  * - occ integrity:sign-app --path apps/SomeApp/ --privateKey tests/data/integritycheck/SomeApp.key --certificate tests/data/integritycheck/SomeApp.crt
  * - Then grab the signature file from "apps/SomeApp/appinfo/signature.json" and copy it into the hard-coded strings.
  */
-class CheckerTest extends TestCase {
+class CheckerTest extends TestCase
+{
 	/** @var EnvironmentHelper | \PHPUnit\Framework\MockObject\MockObject */
 	private $environmentHelper;
 	/** @var AppLocator | \PHPUnit\Framework\MockObject\MockObject */

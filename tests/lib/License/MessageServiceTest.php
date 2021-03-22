@@ -27,7 +27,8 @@ use OC\License\MessageService;
 use OCP\License\ILicenseManager;
 use Test\TestCase;
 
-class MessageServiceTest extends TestCase {
+class MessageServiceTest extends TestCase
+{
 	/** @var IFactory */
 	private $l10Factory;
 	/** @var MessageService */

@@ -25,7 +25,8 @@ namespace OC\Files\External;
 /**
  * Trait for objects that have dependencies for use
  */
-trait DependencyTrait {
+trait DependencyTrait
+{
 
 	/**
 	 * Check if object is valid for use

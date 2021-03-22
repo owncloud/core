@@ -30,7 +30,8 @@ use Test\TestCase;
  *
  * @group DB
  */
-class AppsGetPathTest extends TestCase {
+class AppsGetPathTest extends TestCase
+{
 
 	/** @var CommandTester */
 	private $commandTester;

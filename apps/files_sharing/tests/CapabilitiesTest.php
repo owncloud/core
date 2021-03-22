@@ -31,7 +31,8 @@ use OCP\Share\IManager;
  *
  * @group DB
  */
-class CapabilitiesTest extends \Test\TestCase {
+class CapabilitiesTest extends \Test\TestCase
+{
 
 	/**
 	 * @var \OCP\Util\UserSearch

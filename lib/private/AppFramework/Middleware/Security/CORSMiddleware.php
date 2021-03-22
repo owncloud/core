@@ -43,7 +43,8 @@ use OCP\IConfig;
  * to access an API and don't run on the same domain, see
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
  */
-class CORSMiddleware extends Middleware {
+class CORSMiddleware extends Middleware
+{
 
 	/**
 	 * @var IRequest

@@ -31,7 +31,8 @@ use OC\Files\Storage\Local;
  *
  * @package Test\Files\Storage
  */
-class LocalTest extends Storage {
+class LocalTest extends Storage
+{
 	/**
 	 * @var string tmpDir
 	 */

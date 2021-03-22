@@ -21,7 +21,8 @@ use OCP\Migration\ISqlMigration;
  *
  * @package Test\DB
  */
-class MigrationsTest extends \Test\TestCase {
+class MigrationsTest extends \Test\TestCase
+{
 
 	/** @var MigrationService | \PHPUnit\Framework\MockObject\MockObject */
 	private $migrationService;

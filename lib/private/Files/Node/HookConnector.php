@@ -26,7 +26,8 @@ use OC\Files\Filesystem;
 use OC\Files\View;
 use OCP\Util;
 
-class HookConnector {
+class HookConnector
+{
 	/**
 	 * @var Root
 	 */

@@ -27,7 +27,8 @@ namespace OCP\Files\ObjectStore;
  * @package OCP\Files\ObjectStore
  * @since 7.0.0
  */
-interface IObjectStore {
+interface IObjectStore
+{
 
 	/**
 	 * @return string the container or bucket name where objects are stored

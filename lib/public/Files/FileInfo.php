@@ -31,7 +31,8 @@ namespace OCP\Files;
  * @package OCP\Files
  * @since 7.0.0
  */
-interface FileInfo {
+interface FileInfo
+{
 	/**
 	 * @since 7.0.0
 	 */

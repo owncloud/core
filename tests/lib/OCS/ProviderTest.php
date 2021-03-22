@@ -23,7 +23,8 @@ namespace Test\OCS;
 
 use OC\OCS\Provider;
 
-class ProviderTest extends \Test\TestCase {
+class ProviderTest extends \Test\TestCase
+{
 	/** @var \OCP\IRequest */
 	private $request;
 	/** @var \OCP\App\IAppManager */

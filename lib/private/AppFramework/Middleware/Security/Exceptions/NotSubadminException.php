@@ -29,7 +29,8 @@ use OCP\AppFramework\Http;
  *
  * @package OC\AppFramework\Middleware\Security\Exceptions
  */
-class NotSubadminException extends SecurityException {
+class NotSubadminException extends SecurityException
+{
 	public function __construct() {
 		parent::__construct('Logged in user must be a subadmin', Http::STATUS_FORBIDDEN);
 	}

@@ -33,7 +33,8 @@ use OCP\Http\Client\IResponse;
 use OCP\IURLGenerator;
 use Test\TestCase;
 
-class RequestSharedSecretTest extends TestCase {
+class RequestSharedSecretTest extends TestCase
+{
 
 	/** @var \PHPUnit\Framework\MockObject\MockObject | IClient */
 	private $httpClient;

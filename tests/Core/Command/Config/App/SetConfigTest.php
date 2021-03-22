@@ -24,7 +24,8 @@ namespace Tests\Core\Command\Config\App;
 use OC\Core\Command\Config\App\SetConfig;
 use Test\TestCase;
 
-class SetConfigTest extends TestCase {
+class SetConfigTest extends TestCase
+{
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 

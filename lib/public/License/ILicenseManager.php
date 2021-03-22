@@ -32,7 +32,8 @@ namespace OCP\License;
  * @package OCP\License
  * @since 10.5.0
  */
-interface ILicenseManager {
+interface ILicenseManager
+{
 	/** The license is valid and hasn't expired yet */
 	public const LICENSE_STATE_VALID = 0;
 	/** No license found */

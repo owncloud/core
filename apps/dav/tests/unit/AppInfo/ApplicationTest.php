@@ -35,7 +35,8 @@ use Test\TestCase;
  *
  * @package OCA\DAV\Tests\Unit\AppInfo
  */
-class ApplicationTest extends TestCase {
+class ApplicationTest extends TestCase
+{
 	public function test() {
 		$app = new Application();
 		$c = $app->getContainer();

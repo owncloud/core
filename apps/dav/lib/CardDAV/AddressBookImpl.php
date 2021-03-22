@@ -30,7 +30,8 @@ use Sabre\VObject\Component\VCard;
 use Sabre\VObject\Reader;
 use Sabre\VObject\UUIDUtil;
 
-class AddressBookImpl implements IAddressBook {
+class AddressBookImpl implements IAddressBook
+{
 
 	/** @var CardDavBackend */
 	private $backend;

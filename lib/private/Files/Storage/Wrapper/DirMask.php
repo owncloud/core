@@ -27,7 +27,8 @@ namespace OC\Files\Storage\Wrapper;
  *
  * @package OC\Files\Storage\Wrapper
  */
-class DirMask extends PermissionsMask {
+class DirMask extends PermissionsMask
+{
 
 	/**
 	 * @var string the dir that should be masked

@@ -31,7 +31,8 @@ use Test\Traits\UserTrait;
  *
  * @package Test\Cache
  */
-class FileCacheTest extends TestCache {
+class FileCacheTest extends TestCache
+{
 	use UserTrait;
 
 	/**

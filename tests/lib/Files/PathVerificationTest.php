@@ -18,7 +18,8 @@ use OCP\Files\InvalidPathException;
  *
  * @package Test\Files
  */
-class PathVerificationTest extends \Test\TestCase {
+class PathVerificationTest extends \Test\TestCase
+{
 
 	/**
 	 * @var \OC\Files\View

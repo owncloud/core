@@ -24,7 +24,8 @@ namespace Tests\Core\Command\Log;
 use OC\Core\Command\Log\OwnCloud;
 use Test\TestCase;
 
-class OwnCloudTest extends TestCase {
+class OwnCloudTest extends TestCase
+{
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 	/** @var \PHPUnit\Framework\MockObject\MockObject */

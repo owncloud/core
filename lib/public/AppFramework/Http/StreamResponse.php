@@ -31,7 +31,8 @@ use OCP\AppFramework\Http;
  * @package OCP\AppFramework\Http
  * @since 8.1.0
  */
-class StreamResponse extends Response implements ICallbackResponse {
+class StreamResponse extends Response implements ICallbackResponse
+{
 	/** @var string */
 	private $filePath;
 

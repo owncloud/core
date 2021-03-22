@@ -11,7 +11,8 @@ use OC\User\Manager;
 use PHPUnit\Framework\MockObject\MockObject;
 use Test\Files\Storage\Storage;
 
-class EncryptionTest extends Storage {
+class EncryptionTest extends Storage
+{
 
 	/**
 	 * block size will always be 8192 for a PHP stream

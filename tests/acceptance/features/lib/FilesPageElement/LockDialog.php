@@ -32,7 +32,8 @@ use Page\FilesPageElement\LockDialogElement\LockEntry;
  * The Lock Dialog, lists all the locks and gives a possibility to delete them
  *
  */
-class LockDialog extends OwncloudPage {
+class LockDialog extends OwncloudPage
+{
 
 	/**
 	 *

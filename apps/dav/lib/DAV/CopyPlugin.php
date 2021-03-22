@@ -44,7 +44,8 @@ use Sabre\HTTP\ResponseInterface;
  *
  * @package OCA\DAV\DAV
  */
-class CopyPlugin extends ServerPlugin {
+class CopyPlugin extends ServerPlugin
+{
 
 	/** @var Server */
 	private $server;

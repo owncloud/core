@@ -20,7 +20,8 @@
  */
 namespace Test\Memcache;
 
-class Test_Factory_Available_Cache1 {
+class Test_Factory_Available_Cache1
+{
 	public function __construct($prefix = '') {
 	}
 
@@ -29,7 +30,8 @@ class Test_Factory_Available_Cache1 {
 	}
 }
 
-class Test_Factory_Available_Cache2 {
+class Test_Factory_Available_Cache2
+{
 	public function __construct($prefix = '') {
 	}
 
@@ -38,7 +40,8 @@ class Test_Factory_Available_Cache2 {
 	}
 }
 
-class Test_Factory_Unavailable_Cache1 {
+class Test_Factory_Unavailable_Cache1
+{
 	public function __construct($prefix = '') {
 	}
 
@@ -47,7 +50,8 @@ class Test_Factory_Unavailable_Cache1 {
 	}
 }
 
-class Test_Factory_Unavailable_Cache2 {
+class Test_Factory_Unavailable_Cache2
+{
 	public function __construct($prefix = '') {
 	}
 
@@ -56,7 +60,8 @@ class Test_Factory_Unavailable_Cache2 {
 	}
 }
 
-class FactoryTest extends \Test\TestCase {
+class FactoryTest extends \Test\TestCase
+{
 	const AVAILABLE1 = '\\Test\\Memcache\\Test_Factory_Available_Cache1';
 	const AVAILABLE2 = '\\Test\\Memcache\\Test_Factory_Available_Cache2';
 	const UNAVAILABLE1 = '\\Test\\Memcache\\Test_Factory_Unavailable_Cache1';

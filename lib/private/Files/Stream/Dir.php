@@ -24,7 +24,8 @@
 
 namespace OC\Files\Stream;
 
-class Dir {
+class Dir
+{
 	private static $dirs = [];
 	private $name;
 	private $index;

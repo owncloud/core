@@ -36,7 +36,8 @@ use Doctrine\DBAL\Platforms\SqlitePlatform;
  * @package Test\Lock\Persistent
  * @group DB
  */
-class LockMapperTest extends TestCase {
+class LockMapperTest extends TestCase
+{
 	/** @var IDBConnection */
 	private $db;
 	/** @var Account */

@@ -42,7 +42,8 @@ use OCP\IURLGenerator;
 /**
  * @package OC\Settings\Controller
  */
-class CheckSetupController extends Controller {
+class CheckSetupController extends Controller
+{
 	/** @var IConfig */
 	private $config;
 	/** @var IClientService */

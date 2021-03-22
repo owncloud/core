@@ -28,7 +28,8 @@ use TestHelpers\SetupHelper;
 /**
  * WebDAV related asserts
  */
-class WebDav extends \PHPUnit\Framework\Assert {
+class WebDav extends \PHPUnit\Framework\Assert
+{
 	/**
 	 *
 	 * @param string $element exception|message|reason

@@ -40,7 +40,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class SyncBackend extends Command {
+class SyncBackend extends Command
+{
 	const VALID_ACTIONS = ['disable', 'remove'];
 
 	/** @var AccountMapper */

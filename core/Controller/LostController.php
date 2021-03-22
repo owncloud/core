@@ -50,7 +50,8 @@ use OC\User\Session;
  *
  * @package OC\Core\Controller
  */
-class LostController extends Controller {
+class LostController extends Controller
+{
 
 	/** @var IURLGenerator */
 	protected $urlGenerator;

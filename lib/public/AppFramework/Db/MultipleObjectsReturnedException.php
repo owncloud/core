@@ -27,7 +27,8 @@ namespace OCP\AppFramework\Db;
  * row
  * @since 7.0.0
  */
-class MultipleObjectsReturnedException extends \Exception {
+class MultipleObjectsReturnedException extends \Exception
+{
 
 	/**
 	 * Constructor

@@ -34,7 +34,8 @@ use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
 
 // FIXME: this class really should be abstract
-class Node implements \OCP\Files\Node {
+class Node implements \OCP\Files\Node
+{
 	/**
 	 * @var \OC\Files\View $view
 	 */

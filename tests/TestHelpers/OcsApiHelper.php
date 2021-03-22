@@ -30,7 +30,8 @@ use Psr\Http\Message\ResponseInterface;
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
-class OcsApiHelper {
+class OcsApiHelper
+{
 	/**
 	 * @param string $baseUrl
 	 * @param string $user if set to null no authentication header will be sent

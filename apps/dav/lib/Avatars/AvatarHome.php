@@ -27,7 +27,8 @@ use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\ICollection;
 
-class AvatarHome implements ICollection {
+class AvatarHome implements ICollection
+{
 
 	/** @var array */
 	private $principalInfo;

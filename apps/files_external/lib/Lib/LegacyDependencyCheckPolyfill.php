@@ -27,7 +27,8 @@ use OC\Files\External\MissingDependency;
 /**
  * Polyfill for checking dependencies using legacy Storage::checkDependencies()
  */
-trait LegacyDependencyCheckPolyfill {
+trait LegacyDependencyCheckPolyfill
+{
 
 	/**
 	 * @return string

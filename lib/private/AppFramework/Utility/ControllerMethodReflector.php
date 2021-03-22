@@ -30,7 +30,8 @@ use \OCP\AppFramework\Utility\IControllerMethodReflector;
 /**
  * Reads and parses annotations from doc comments
  */
-class ControllerMethodReflector implements IControllerMethodReflector {
+class ControllerMethodReflector implements IControllerMethodReflector
+{
 	private $annotations;
 	private $types;
 	private $parameters;

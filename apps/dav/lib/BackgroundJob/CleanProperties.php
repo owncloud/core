@@ -31,7 +31,8 @@ use OCP\ILogger;
  *
  * @package OCA\DAV\BackgroundJob
  */
-class CleanProperties extends TimedJob {
+class CleanProperties extends TimedJob
+{
 	const CHUNK_SIZE = 200;
 
 	/** @var IDBConnection  */

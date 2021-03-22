@@ -23,7 +23,8 @@ namespace OC\Shutdown;
 
 use OCP\Shutdown\IShutdownManager;
 
-class ShutDownManager implements IShutdownManager {
+class ShutDownManager implements IShutdownManager
+{
 
 	/** @var array[] */
 	private $callbacks = [];

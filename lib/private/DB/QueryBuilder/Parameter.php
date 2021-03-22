@@ -23,7 +23,8 @@ namespace OC\DB\QueryBuilder;
 
 use OCP\DB\QueryBuilder\IParameter;
 
-class Parameter implements IParameter {
+class Parameter implements IParameter
+{
 	/** @var mixed */
 	protected $name;
 

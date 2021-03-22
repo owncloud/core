@@ -43,7 +43,8 @@ namespace OCP;
  * tries to add a tag named 'Family' it will be silently ignored.
  * @since 6.0.0
  */
-interface ITagManager {
+interface ITagManager
+{
 
 	/**
 	 * Create a new \OCP\ITags instance and load tags from db for the current user.

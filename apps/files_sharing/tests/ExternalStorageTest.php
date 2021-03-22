@@ -30,7 +30,8 @@ namespace OCA\Files_Sharing\Tests;
  *
  * @group DB
  */
-class ExternalStorageTest extends \Test\TestCase {
+class ExternalStorageTest extends \Test\TestCase
+{
 	public function optionsProvider() {
 		return [
 			[
@@ -101,7 +102,8 @@ class ExternalStorageTest extends \Test\TestCase {
 /**
  * Dummy subclass to make it possible to access private members
  */
-class TestSharingExternalStorage extends \OCA\Files_Sharing\External\Storage {
+class TestSharingExternalStorage extends \OCA\Files_Sharing\External\Storage
+{
 	public function getBaseUri() {
 		return $this->createBaseUri();
 	}

@@ -30,7 +30,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Manage extends Command {
+class Manage extends Command
+{
 	const DEFAULT_BACKEND = 'owncloud';
 	const DEFAULT_LOG_LEVEL = 2;
 	const DEFAULT_TIMEZONE = 'UTC';

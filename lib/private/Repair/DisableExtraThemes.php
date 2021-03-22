@@ -30,7 +30,8 @@ use OCP\Migration\IRepairStep;
 /**
  * Leave only one app-theme active to prevent the mess
  */
-class DisableExtraThemes implements IRepairStep {
+class DisableExtraThemes implements IRepairStep
+{
 
 	/** @var IAppManager */
 	protected $appManager;

@@ -26,7 +26,8 @@ namespace Test\AppFramework\Http;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\RedirectResponse;
 
-class RedirectResponseTest extends \Test\TestCase {
+class RedirectResponseTest extends \Test\TestCase
+{
 
 	/**
 	 * @var RedirectResponse

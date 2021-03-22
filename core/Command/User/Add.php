@@ -35,7 +35,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Question\Question;
 
-class Add extends Command {
+class Add extends Command
+{
 	/** @var \OCP\IUserManager */
 	protected $userManager;
 

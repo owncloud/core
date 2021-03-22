@@ -26,7 +26,8 @@ namespace OC;
 use ownCloud\TarStreamer\TarStreamer;
 use ZipStreamer\ZipStreamer;
 
-class Streamer {
+class Streamer
+{
 	// array of regexp. Matching user agents will get tar instead of zip
 	private $preferTarFor = [ '/macintosh|mac os x/i' ];
 

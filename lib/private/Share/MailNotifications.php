@@ -54,7 +54,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @package OC\Share
  */
-class MailNotifications {
+class MailNotifications
+{
 	/** @var IManager */
 	private $shareManager;
 	/** @var IL10N */

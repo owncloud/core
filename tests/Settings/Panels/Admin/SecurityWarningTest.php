@@ -20,7 +20,8 @@ use OCP\Lock\ILockingProvider;
 /**
  * @package Tests\Settings\Panels\Admin
  */
-class SecurityWarningTest extends \Test\TestCase {
+class SecurityWarningTest extends \Test\TestCase
+{
 
 	/** @var SecurityWarning */
 	private $panel;

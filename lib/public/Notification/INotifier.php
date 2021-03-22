@@ -27,7 +27,8 @@ namespace OCP\Notification;
  * @package OCP\Notification
  * @since 9.0.0
  */
-interface INotifier {
+interface INotifier
+{
 	/**
 	 * @param INotification $notification
 	 * @param string $languageCode The code of the language that should be used to prepare the notification

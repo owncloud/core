@@ -40,7 +40,8 @@ use Test\Traits\UserTrait;
  * @package Test\Files
  * @group DB
  */
-class MetaFilesTest extends TestCase {
+class MetaFilesTest extends TestCase
+{
 	use UserTrait;
 
 	/**

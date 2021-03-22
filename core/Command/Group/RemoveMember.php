@@ -29,7 +29,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class RemoveMember extends Command {
+class RemoveMember extends Command
+{
 	/** @var \OCP\IGroupManager */
 	protected $groupManager;
 

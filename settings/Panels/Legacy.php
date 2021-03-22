@@ -26,7 +26,8 @@ namespace OC\Settings\Panels;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-class Legacy implements ISettings {
+class Legacy implements ISettings
+{
 	protected $type;
 
 	public function __construct($type) {

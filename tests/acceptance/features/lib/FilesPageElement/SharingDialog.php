@@ -36,7 +36,8 @@ use PHPUnit\Framework\Assert;
  * The Sharing Dialog
  *
  */
-class SharingDialog extends OwncloudPage {
+class SharingDialog extends OwncloudPage
+{
 
 	/**
 	 *

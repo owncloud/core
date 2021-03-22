@@ -35,7 +35,8 @@ use OCP\Util;
  *
  * @package OC\Preview
  */
-abstract class Bitmap implements IProvider2 {
+abstract class Bitmap implements IProvider2
+{
 
 	/**
 	 * {@inheritDoc}

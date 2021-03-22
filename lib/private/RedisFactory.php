@@ -22,7 +22,8 @@
 
 namespace OC;
 
-class RedisFactory {
+class RedisFactory
+{
 	/** @var \Redis | \RedisCluster */
 	private $instance;
 

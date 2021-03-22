@@ -24,7 +24,8 @@ namespace Tests\Core\Command\Encryption;
 use OC\Core\Command\Encryption\Enable;
 use Test\TestCase;
 
-class EnableTest extends TestCase {
+class EnableTest extends TestCase
+{
 	/** @var \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 	/** @var \PHPUnit\Framework\MockObject\MockObject */

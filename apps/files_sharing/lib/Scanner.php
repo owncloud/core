@@ -30,7 +30,8 @@ use OC\Files\ObjectStore\NoopScanner;
 /**
  * Scanner for SharedStorage
  */
-class Scanner extends \OC\Files\Cache\Scanner {
+class Scanner extends \OC\Files\Cache\Scanner
+{
 	private $sourceScanner;
 
 	/**

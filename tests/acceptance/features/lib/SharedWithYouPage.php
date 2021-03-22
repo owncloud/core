@@ -27,7 +27,8 @@ use Behat\Mink\Session;
 /**
  * Shared with you page.
  */
-class SharedWithYouPage extends FilesPageBasic {
+class SharedWithYouPage extends FilesPageBasic
+{
 
 	/**
 	 *

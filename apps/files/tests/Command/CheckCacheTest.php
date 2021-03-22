@@ -34,7 +34,8 @@ use Test\TestCase;
  *
  * @package OCA\Files\Tests\Command
  */
-class CheckCacheTest extends TestCase {
+class CheckCacheTest extends TestCase
+{
 	/** @var IRootFolder */
 	private $rootFolder;
 	/** @var CheckCache */

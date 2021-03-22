@@ -40,7 +40,8 @@ use Sabre\DAV\Xml\Property\Complex;
  *
  * @package OCA\DAV\DAV
  */
-class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
+class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend
+{
 	public const SELECT_BY_ID_STMT = 'SELECT * FROM `*PREFIX*properties` WHERE `fileid` = ?';
 	public const INSERT_BY_ID_STMT = 'INSERT INTO `*PREFIX*properties`'
 	. ' (`fileid`,`propertyname`,`propertyvalue`, `propertytype`) VALUES(?,?,?,?)';

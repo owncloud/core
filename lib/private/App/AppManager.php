@@ -47,7 +47,8 @@ use OCP\IUser;
 use OCP\IUserSession;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class AppManager implements IAppManager {
+class AppManager implements IAppManager
+{
 
 	/**
 	 * Apps with these types can not be enabled for certain groups only

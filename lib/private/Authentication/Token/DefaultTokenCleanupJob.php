@@ -24,7 +24,8 @@ namespace OC\Authentication\Token;
 use OC;
 use OC\BackgroundJob\Job;
 
-class DefaultTokenCleanupJob extends Job {
+class DefaultTokenCleanupJob extends Job
+{
 	protected function run($argument) {
 		/* @var $provider DefaultTokenProvider */
 		// TODO: add OC\Authentication\Token\IProvider::invalidateOldTokens and query interface

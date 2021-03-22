@@ -29,7 +29,8 @@ use OCP\Files\NotFoundException;
 /**
  * Handles restricting for download of files
  */
-class ViewOnly {
+class ViewOnly
+{
 
 	/** @var Folder */
 	private $userFolder;

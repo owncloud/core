@@ -22,5 +22,6 @@
 
 namespace OC;
 
-class NeedsUpdateException extends ServiceUnavailableException {
+class NeedsUpdateException extends ServiceUnavailableException
+{
 }

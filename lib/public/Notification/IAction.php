@@ -27,7 +27,8 @@ namespace OCP\Notification;
  * @package OCP\Notification
  * @since 9.0.0
  */
-interface IAction {
+interface IAction
+{
 	/**
 	 * @param string $label
 	 * @return $this

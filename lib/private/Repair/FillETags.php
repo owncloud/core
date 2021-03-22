@@ -26,7 +26,8 @@ namespace OC\Repair;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
-class FillETags implements IRepairStep {
+class FillETags implements IRepairStep
+{
 
 	/** @var \OCP\IDBConnection */
 	protected $connection;

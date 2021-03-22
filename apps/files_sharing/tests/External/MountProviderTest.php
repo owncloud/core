@@ -36,7 +36,8 @@ use Test\TestCase;
  *
  * @package OCA\Files_Sharing\Tests\External
  */
-class MountProviderTest extends TestCase {
+class MountProviderTest extends TestCase
+{
 	/** @var IDBConnection */
 	private $dbConnection;
 

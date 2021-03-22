@@ -35,7 +35,8 @@ use OCP\AppFramework\Http;
  * for responders to transform
  * @since 8.0.0
  */
-class DataResponse extends Response {
+class DataResponse extends Response
+{
 
 	/**
 	 * response data

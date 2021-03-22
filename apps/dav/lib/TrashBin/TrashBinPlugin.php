@@ -27,7 +27,8 @@ use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
 use Sabre\DAV\Xml\Property\GetLastModified;
 
-class TrashBinPlugin extends ServerPlugin {
+class TrashBinPlugin extends ServerPlugin
+{
 	const TRASHBIN_ORIGINAL_FILENAME = '{http://owncloud.org/ns}trashbin-original-filename';
 	const TRASHBIN_ORIGINAL_LOCATION = '{http://owncloud.org/ns}trashbin-original-location';
 	const TRASHBIN_DELETE_TIMESTAMP = '{http://owncloud.org/ns}trashbin-delete-timestamp';

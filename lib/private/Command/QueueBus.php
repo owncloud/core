@@ -24,7 +24,8 @@ namespace OC\Command;
 use OCP\Command\IBus;
 use OCP\Command\ICommand;
 
-class QueueBus implements IBus {
+class QueueBus implements IBus
+{
 	/**
 	 * @var (ICommand|callable)[]
 	 */

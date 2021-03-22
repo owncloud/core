@@ -30,7 +30,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Config extends Base {
+class Config extends Base
+{
 	/**
 	 * @var IGlobalStoragesService
 	 */

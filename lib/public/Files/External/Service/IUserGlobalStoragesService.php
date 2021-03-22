@@ -31,7 +31,8 @@ use OCP\Files\External\IStorageConfig;
  *
  * @since 10.0
  */
-interface IUserGlobalStoragesService extends IGlobalStoragesService {
+interface IUserGlobalStoragesService extends IGlobalStoragesService
+{
 	/**
 	 * Get unique storages, in case two are defined with the same mountpoint
 	 * Higher priority storages take precedence

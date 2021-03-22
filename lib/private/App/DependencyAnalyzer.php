@@ -28,7 +28,8 @@ namespace OC\App;
 
 use OCP\IL10N;
 
-class DependencyAnalyzer {
+class DependencyAnalyzer
+{
 
 	/** @var Platform */
 	private $platform;

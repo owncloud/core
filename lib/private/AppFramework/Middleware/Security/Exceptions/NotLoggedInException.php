@@ -32,7 +32,8 @@ use OCP\AppFramework\Http;
  *
  * @package OC\AppFramework\Middleware\Security\Exceptions
  */
-class NotLoggedInException extends SecurityException {
+class NotLoggedInException extends SecurityException
+{
 	public function __construct() {
 		parent::__construct('Current user is not logged in', Http::STATUS_UNAUTHORIZED);
 	}

@@ -31,7 +31,8 @@ use Test\Traits\UserTrait;
  *
  * @group DB
  */
-class RemoveMemberTest extends TestCase {
+class RemoveMemberTest extends TestCase
+{
 	use UserTrait;
 
 	/** @var CommandTester */

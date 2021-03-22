@@ -18,7 +18,8 @@ use Test\TestCase;
 /**
  * Tests for leaving only one theme active
  */
-class DisableExtraThemesTest extends TestCase {
+class DisableExtraThemesTest extends TestCase
+{
 
 	/** @var IAppManager|\PHPUnit\Framework\MockObject\MockObject */
 	protected $appManager;

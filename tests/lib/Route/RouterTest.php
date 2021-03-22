@@ -26,7 +26,8 @@ use OC\Route\Router;
 use OCP\ILogger;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
-class LoadableRouter extends Router {
+class LoadableRouter extends Router
+{
 	/**
 	 * @param bool $loaded
 	 */
@@ -35,7 +36,8 @@ class LoadableRouter extends Router {
 	}
 }
 
-class RouterTest extends \Test\TestCase {
+class RouterTest extends \Test\TestCase
+{
 
 	/** @var ILogger */
 	private $l;

@@ -36,7 +36,8 @@ use OCP\Constants;
  *
  * Note that the read permissions can't be masked
  */
-class PermissionsMask extends Wrapper {
+class PermissionsMask extends Wrapper
+{
 	/**
 	 * @var int the permissions bits we want to keep
 	 */

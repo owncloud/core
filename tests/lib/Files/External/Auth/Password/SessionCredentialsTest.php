@@ -27,7 +27,8 @@ use OCP\Security\ICrypto;
 use OCP\Files\External\IStorageConfig;
 use OCP\IUser;
 
-class SessionCredentialsTest extends \Test\TestCase {
+class SessionCredentialsTest extends \Test\TestCase
+{
 
 	/** @var SessionCredentials | \PHPUnit\Framework\MockObject\MockObject */
 	private $authMech;

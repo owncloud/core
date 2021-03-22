@@ -45,7 +45,8 @@ require_once __DIR__.'/template/functions.php';
 /**
  * This class provides the templates for ownCloud.
  */
-class OC_Template extends \OC\Template\Base {
+class OC_Template extends \OC\Template\Base
+{
 
 	/**
 	 * @var string

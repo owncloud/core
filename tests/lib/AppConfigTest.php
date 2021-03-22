@@ -17,7 +17,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @package Test
  */
-class AppConfigTest extends TestCase {
+class AppConfigTest extends TestCase
+{
 	/** @var \OCP\IAppConfig */
 	protected $appConfig;
 

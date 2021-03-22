@@ -33,7 +33,8 @@ use OCP\IUserSession;
  *
  * @package OC\Settings\Controller
  */
-class CorsController extends Controller {
+class CorsController extends Controller
+{
 
 	/** @var ILogger */
 	private $logger;

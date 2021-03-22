@@ -32,7 +32,8 @@ use OCP\ISearch;
 /**
  * Provide an interface to all search providers
  */
-class Search implements ISearch {
+class Search implements ISearch
+{
 	private $providers = [];
 	private $registeredProviders = [];
 

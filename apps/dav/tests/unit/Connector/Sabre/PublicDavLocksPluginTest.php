@@ -27,7 +27,8 @@ use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
 
-class PublicDavLocksPluginTest extends TestCase {
+class PublicDavLocksPluginTest extends TestCase
+{
 	/** @var BackendInterface */
 	private $backendInterface;
 	/** @var callable */

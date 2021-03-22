@@ -35,7 +35,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-class ChangeKeyStorageRoot extends Command {
+class ChangeKeyStorageRoot extends Command
+{
 
 	/** @var View  */
 	protected $rootView;

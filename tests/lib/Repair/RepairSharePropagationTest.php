@@ -11,7 +11,8 @@ namespace Test\Repair;
 use OC\Repair\SharePropagation;
 use OCP\Migration\IOutput;
 
-class RepairSharePropagationTest extends \Test\TestCase {
+class RepairSharePropagationTest extends \Test\TestCase
+{
 	public function keyProvider() {
 		return [
 			[['1', '2'], ['1', '2']],

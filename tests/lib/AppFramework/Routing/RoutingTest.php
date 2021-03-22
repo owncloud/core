@@ -6,7 +6,8 @@ use OC\AppFramework\DependencyInjection\DIContainer;
 use OC\AppFramework\Routing\RouteActionHandler;
 use OC\AppFramework\Routing\RouteConfig;
 
-class RoutingTest extends \Test\TestCase {
+class RoutingTest extends \Test\TestCase
+{
 	public function testSimpleRoute() {
 		$routes = ['routes' => [
 			['name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'GET']

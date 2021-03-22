@@ -23,7 +23,8 @@ namespace OC;
 
 use OCP\Capabilities\ICapability;
 
-class CapabilitiesManager {
+class CapabilitiesManager
+{
 
 	/**
 	 * @var \Closure[]

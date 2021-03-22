@@ -28,7 +28,8 @@ namespace OCP\Http\Client;
  * @package OCP\Http
  * @since 8.1.0
  */
-interface IClient {
+interface IClient
+{
 
 	/**
 	 * Sends a GET request

@@ -28,7 +28,8 @@ use OCP\IConfig;
 use OCP\IRequest;
 use OCP\ILogger;
 
-class CronController extends Controller {
+class CronController extends Controller
+{
 	
 	/** @var IConfig */
 	private $config;

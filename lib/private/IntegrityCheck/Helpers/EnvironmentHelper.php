@@ -27,7 +27,8 @@ namespace OC\IntegrityCheck\Helpers;
  *
  * @package OC\IntegrityCheck\Helpers
  */
-class EnvironmentHelper {
+class EnvironmentHelper
+{
 	/**
 	 * Provides \OC::$SERVERROOT
 	 *

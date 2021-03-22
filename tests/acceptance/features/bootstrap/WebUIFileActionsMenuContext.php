@@ -29,7 +29,8 @@ use Page\FilesPage;
 /**
  * Context for file actions menu
  */
-class WebUIFileActionsMenuContext extends RawMinkContext implements Context {
+class WebUIFileActionsMenuContext extends RawMinkContext implements Context
+{
 	/**
 	 *
 	 * @var FilesPage

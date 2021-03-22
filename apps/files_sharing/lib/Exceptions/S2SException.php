@@ -26,5 +26,6 @@ namespace OCA\Files_Sharing\Exceptions;
 /**
  * S2S sharing not allowed
  */
-class S2SException extends \Exception {
+class S2SException extends \Exception
+{
 }

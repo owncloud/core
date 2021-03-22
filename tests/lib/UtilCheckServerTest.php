@@ -13,7 +13,8 @@ namespace Test;
  *
  * @group DB
  */
-class UtilCheckServerTest extends TestCase {
+class UtilCheckServerTest extends TestCase
+{
 	private $datadir;
 
 	/**

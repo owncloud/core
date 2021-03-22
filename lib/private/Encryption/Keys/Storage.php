@@ -31,7 +31,8 @@ use OCP\Encryption\Keys\IStorage;
 use OCP\IUserSession;
 use OC\User\NoUserException;
 
-class Storage implements IStorage {
+class Storage implements IStorage
+{
 
 	// hidden file which indicate that the folder is a valid key storage
 	const KEY_STORAGE_MARKER = '.oc_key_storage';

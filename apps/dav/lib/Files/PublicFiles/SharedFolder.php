@@ -36,7 +36,8 @@ use Sabre\DAVACL\IACL;
  *
  * @package OCA\DAV\Files\PublicFiles
  */
-class SharedFolder extends Collection implements IACL, IPublicSharedNode {
+class SharedFolder extends Collection implements IACL, IPublicSharedNode
+{
 	use SharedNodeTrait, NodeFactoryTrait;
 
 	/** @var Folder */

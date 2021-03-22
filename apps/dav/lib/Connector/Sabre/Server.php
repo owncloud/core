@@ -33,7 +33,8 @@ use OCA\DAV\DAV\CopyPlugin;
  *
  * @see \Sabre\DAV\Server
  */
-class Server extends \Sabre\DAV\Server {
+class Server extends \Sabre\DAV\Server
+{
 
 	/**
 	 * @see \Sabre\DAV\Server

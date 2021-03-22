@@ -31,7 +31,8 @@ use \OCP\IUser;
  * @package OCP\Comments
  * @since 9.0.0
  */
-interface ICommentsManager {
+interface ICommentsManager
+{
 
 	/**
 	 * @const DELETED_USER type and id for a user that has been deleted

@@ -23,7 +23,8 @@ namespace OCA\Files_Sharing\External;
 
 use OCP\Files\StorageNotAvailableException;
 
-class Watcher extends \OC\Files\Cache\Watcher {
+class Watcher extends \OC\Files\Cache\Watcher
+{
 	/**
 	 * remove deleted files in $path from the cache
 	 *

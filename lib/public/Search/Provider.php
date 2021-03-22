@@ -30,7 +30,8 @@ namespace OCP\Search;
  * Provides a template for search functionality throughout ownCloud;
  * @since 7.0.0
  */
-abstract class Provider {
+abstract class Provider
+{
 
 	/**
 	 * @since 8.0.0

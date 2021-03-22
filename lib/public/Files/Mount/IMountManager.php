@@ -28,7 +28,8 @@ namespace OCP\Files\Mount;
  * Manages all mounted storages in the system
  * @since 8.2.0
  */
-interface IMountManager {
+interface IMountManager
+{
 
 	/**
 	 * Add a new mount

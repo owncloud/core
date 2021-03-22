@@ -33,7 +33,8 @@ use Test\TestCase;
  *
  * @package OC\Core\Controller
  */
-class RolesControllerTest extends TestCase {
+class RolesControllerTest extends TestCase
+{
 	public function testGetAvatarNoAvatar() {
 		$request = $this->createMock(IRequest::class);
 		$l10n = $this->createMock(IL10N::class);

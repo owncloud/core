@@ -26,7 +26,8 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SyncSystemAddressBook extends Command {
+class SyncSystemAddressBook extends Command
+{
 
 	/** @var SyncService */
 	private $syncService;

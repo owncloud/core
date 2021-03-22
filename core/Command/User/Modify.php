@@ -28,7 +28,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Modify extends Base {
+class Modify extends Base
+{
 
 	/** @var IUserManager  */
 	private $userManager;

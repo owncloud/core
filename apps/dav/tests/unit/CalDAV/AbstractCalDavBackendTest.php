@@ -38,7 +38,8 @@ use Test\TestCase;
  *
  * @package OCA\DAV\Tests\unit\CalDAV
  */
-abstract class AbstractCalDavBackendTest extends TestCase {
+abstract class AbstractCalDavBackendTest extends TestCase
+{
 
 	/** @var CalDavBackend */
 	protected $backend;

@@ -34,7 +34,8 @@ use WebDriver\Exception\StaleElementReference;
 /**
  * Common elements/methods for all Files Pages
  */
-abstract class FilesPageBasic extends OwncloudPage {
+abstract class FilesPageBasic extends OwncloudPage
+{
 	protected $fileActionMenuBtnXpathByNo = ".//*[@id='fileList']/tr[%d]//a[@data-action='menu']";
 	protected $fileActionMenuBtnXpath = "//a[@data-action='menu']";
 	protected $fileActionMenuXpath = "//div[contains(@class,'fileActionsMenu')]";

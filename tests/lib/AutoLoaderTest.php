@@ -10,7 +10,8 @@ namespace Test;
 
 use OC\AutoLoader;
 
-class AutoLoaderTest extends TestCase {
+class AutoLoaderTest extends TestCase
+{
 	/**
 	 * @var Autoloader $loader
 	 */

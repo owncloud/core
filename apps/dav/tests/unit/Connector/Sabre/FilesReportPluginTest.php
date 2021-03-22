@@ -35,7 +35,8 @@ use OCP\ITags;
 use OCP\SystemTag\ISystemTagManager;
 use OCP\SystemTag\ISystemTagObjectMapper;
 
-class FilesReportPluginTest extends \Test\TestCase {
+class FilesReportPluginTest extends \Test\TestCase
+{
 	/** @var \Sabre\DAV\Server|\PHPUnit\Framework\MockObject\MockObject */
 	private $server;
 

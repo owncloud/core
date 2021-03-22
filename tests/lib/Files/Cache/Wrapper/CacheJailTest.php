@@ -17,7 +17,8 @@ use Test\Files\Cache\CacheTest;
  *
  * @package Test\Files\Cache\Wrapper
  */
-class CacheJailTest extends CacheTest {
+class CacheJailTest extends CacheTest
+{
 	/**
 	 * @var \OC\Files\Cache\Cache $sourceCache
 	 */

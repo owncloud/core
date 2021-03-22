@@ -25,7 +25,8 @@ use Doctrine\DBAL\Schema\Schema;
 use OCP\Migration\ISchemaMigration;
 
 /** add index to costly query */
-class Version20170830112305 implements ISchemaMigration {
+class Version20170830112305 implements ISchemaMigration
+{
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 

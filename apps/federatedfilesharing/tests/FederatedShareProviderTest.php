@@ -54,7 +54,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package OCA\FederatedFileSharing\Tests
  * @group DB
  */
-class FederatedShareProviderTest extends \Test\TestCase {
+class FederatedShareProviderTest extends \Test\TestCase
+{
 	protected const OCS_GENERIC_SUCCESS = ['ocs' => ['meta' => [ 'status' => 'success']]];
 
 	/** @var IDBConnection */

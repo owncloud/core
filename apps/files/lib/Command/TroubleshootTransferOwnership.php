@@ -37,7 +37,8 @@ use Symfony\Component\Console\Helper\TableCell;
 
 /**
  */
-class TroubleshootTransferOwnership extends Command {
+class TroubleshootTransferOwnership extends Command
+{
 
 	/**
 	 * @var ProviderFactory

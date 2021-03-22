@@ -35,12 +35,14 @@ use OCP\IDBConnection;
  * @method string getPreName()
  * @method void setPreName(string $preName)
  */
-class Example extends Entity {
+class Example extends Entity
+{
 	protected $preName;
 	protected $email;
 };
 
-class ExampleMapper extends Mapper {
+class ExampleMapper extends Mapper
+{
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'table');
 	}
@@ -61,7 +63,8 @@ class ExampleMapper extends Mapper {
 	}
 }
 
-class MapperTest extends MapperTestUtility {
+class MapperTest extends MapperTestUtility
+{
 
 	/**
 	 * @var Mapper

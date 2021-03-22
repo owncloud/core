@@ -30,7 +30,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Disable extends Command {
+class Disable extends Command
+{
 
 	/** @var IAppManager */
 	protected $manager;

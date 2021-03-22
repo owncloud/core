@@ -32,7 +32,8 @@ use Test\TestCase;
  *
  * @see \OC\Repair\AppsTest
  */
-class AppsTest extends TestCase {
+class AppsTest extends TestCase
+{
 
 	/** @var Apps | \PHPUnit\Framework\MockObject\MockObject */
 	protected $repair;

@@ -35,7 +35,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Verify extends Base {
+class Verify extends Base
+{
 	/**
 	 * @var IGlobalStoragesService
 	 */

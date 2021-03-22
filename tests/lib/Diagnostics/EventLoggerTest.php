@@ -24,7 +24,8 @@ namespace Test\Diagnostics;
 use OC\Diagnostics\EventLogger;
 use Test\TestCase;
 
-class EventLoggerTest extends TestCase {
+class EventLoggerTest extends TestCase
+{
 
 	/** @var \OC\Diagnostics\EventLogger */
 	private $logger;

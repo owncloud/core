@@ -26,7 +26,8 @@ use OC\App\InfoParser;
 use OC\Hooks\BasicEmitter;
 use OCP\App\IAppManager;
 
-class InfoChecker extends BasicEmitter {
+class InfoChecker extends BasicEmitter
+{
 
 	/** @var InfoParser */
 	private $infoParser;

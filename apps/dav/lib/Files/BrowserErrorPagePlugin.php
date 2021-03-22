@@ -29,7 +29,8 @@ use Sabre\DAV\Exception;
 use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
 
-class BrowserErrorPagePlugin extends ServerPlugin {
+class BrowserErrorPagePlugin extends ServerPlugin
+{
 
 	/** @var Server */
 	private $server;

@@ -32,7 +32,8 @@ namespace OC\Files;
 use OCP\Files\Cache\ICacheEntry;
 use OCP\IUser;
 
-class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
+class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess
+{
 	/**
 	 * @var array $data
 	 */

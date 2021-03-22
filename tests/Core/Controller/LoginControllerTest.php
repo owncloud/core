@@ -36,7 +36,8 @@ use OCP\IUser;
 use OCP\IUserManager;
 use Test\TestCase;
 
-class LoginControllerTest extends TestCase {
+class LoginControllerTest extends TestCase
+{
 	/** @var LoginController */
 	private $loginController;
 	/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject */

@@ -23,7 +23,8 @@ use Test\TestCase;
  *
  * @package OC\AppFramework\Http
  */
-class RequestTest extends TestCase {
+class RequestTest extends TestCase
+{
 	/** @var string */
 	protected $stream = 'fakeinput://data';
 	/** @var ISecureRandom | \PHPUnit\Framework\MockObject\MockObject */

@@ -26,7 +26,8 @@ use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\ICollection;
 
-class TrashBinFolder extends AbstractTrashBinNode implements ICollection {
+class TrashBinFolder extends AbstractTrashBinNode implements ICollection
+{
 	public function getChild($name) {
 		return $this->trashBinManager->getChild($this->user, $name);
 	}

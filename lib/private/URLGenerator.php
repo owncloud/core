@@ -43,7 +43,8 @@ use RuntimeException;
 /**
  * Class to generate URLs
  */
-class URLGenerator implements IURLGenerator {
+class URLGenerator implements IURLGenerator
+{
 	/** @var IConfig */
 	private $config;
 	/** @var ICacheFactory */

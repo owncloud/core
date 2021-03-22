@@ -40,7 +40,8 @@ use OCP\Share\Events\DeclineShare;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class Manager {
+class Manager
+{
 	const STORAGE = '\OCA\Files_Sharing\External\Storage';
 
 	/**

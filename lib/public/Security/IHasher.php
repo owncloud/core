@@ -42,7 +42,8 @@ namespace OCP\Security;
  * @package OCP\Security
  * @since 8.0.0
  */
-interface IHasher {
+interface IHasher
+{
 	/**
 	 * Hashes a message using PHP's `password_hash` functionality.
 	 * Please note that the size of the returned string is not guaranteed

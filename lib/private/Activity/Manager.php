@@ -31,7 +31,8 @@ use OCP\IRequest;
 use OCP\IUser;
 use OCP\IUserSession;
 
-class Manager implements IManager {
+class Manager implements IManager
+{
 	/** @var IRequest */
 	protected $request;
 

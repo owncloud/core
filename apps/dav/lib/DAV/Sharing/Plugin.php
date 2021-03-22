@@ -32,7 +32,8 @@ use Sabre\DAV\ServerPlugin;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 
-class Plugin extends ServerPlugin {
+class Plugin extends ServerPlugin
+{
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';
 
 	/** @var Auth */

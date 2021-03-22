@@ -33,7 +33,8 @@ use OCP\Files\External\Backend\Backend;
 /**
  * External storage configuration
  */
-class StorageConfig implements IStorageConfig {
+class StorageConfig implements IStorageConfig
+{
 	/**
 	 * Storage config id
 	 *

@@ -30,7 +30,8 @@ use OCP\IConfig;
 /**
  * @package OCA\Files_External\Tests
  */
-class AdminTest extends \Test\TestCase {
+class AdminTest extends \Test\TestCase
+{
 
 	/** @var Admin */
 	private $panel;

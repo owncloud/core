@@ -31,7 +31,8 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
  *
  * @package OC\Files\Type
  */
-class Loader implements IMimeTypeLoader {
+class Loader implements IMimeTypeLoader
+{
 
 	/** @var IDBConnection */
 	private $dbConnection;

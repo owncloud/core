@@ -8,7 +8,8 @@ use OCP\Migration\ISchemaMigration;
 /**
  * Adds lastscan column
  */
-class Version20200504211654 implements ISchemaMigration {
+class Version20200504211654 implements ISchemaMigration
+{
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 

@@ -30,7 +30,8 @@ use Sabre\HTTP\Request;
 use Sabre\HTTP\Response;
 use Test\TestCase;
 
-class CorsPluginTest extends TestCase {
+class CorsPluginTest extends TestCase
+{
 
 	/**
 	 * @var Server

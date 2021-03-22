@@ -18,7 +18,8 @@ use OC\Files\Storage\Temporary;
  *
  * @package Test\Files\Cache
  */
-class UpdaterTest extends \Test\TestCase {
+class UpdaterTest extends \Test\TestCase
+{
 	/**
 	 * @var \OC\Files\Storage\Storage
 	 */

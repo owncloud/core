@@ -25,7 +25,8 @@ use Test\TestCase;
  *
  * @group DB
  */
-class OwncloudTest extends TestCase {
+class OwncloudTest extends TestCase
+{
 	private $restore_logfile;
 	private $restore_logdateformat;
 

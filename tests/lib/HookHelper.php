@@ -13,7 +13,8 @@ use OC\Files\Filesystem;
 /**
  * Helper class to register hooks on
  */
-class HookHelper {
+class HookHelper
+{
 	public static $hookCalls;
 
 	public static function setUpHooks() {

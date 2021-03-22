@@ -35,7 +35,8 @@ use OC\Files\View;
  *
  * @group DB
  */
-class PermissionsTest extends TestCase {
+class PermissionsTest extends TestCase
+{
 
 	/** @var Storage */
 	private $sharedStorageRestrictedShare;

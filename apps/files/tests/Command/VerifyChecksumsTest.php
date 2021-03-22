@@ -15,7 +15,8 @@ use Test\TestCase;
  * @group DB
  * @package OCA\Files\Tests\Command
  */
-class VerifyChecksumsTest extends TestCase {
+class VerifyChecksumsTest extends TestCase
+{
 	use \Test\Traits\UserTrait;
 
 	const BROKEN_CHECKSUM_STRING = '_BROKEN_';

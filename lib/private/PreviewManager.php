@@ -35,7 +35,8 @@ use OCP\IUserSession;
 use OCP\Preview\IProvider;
 use OCP\Preview\IProvider2;
 
-class PreviewManager implements IPreview {
+class PreviewManager implements IPreview
+{
 	/** @var IConfig */
 	protected $config;
 

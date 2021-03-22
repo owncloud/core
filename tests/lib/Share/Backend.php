@@ -21,7 +21,8 @@
 
 namespace Test\Share;
 
-class Backend implements \OCP\Share_Backend {
+class Backend implements \OCP\Share_Backend
+{
 	const FORMAT_SOURCE = 0;
 	const FORMAT_TARGET = 1;
 	const FORMAT_PERMISSIONS = 2;

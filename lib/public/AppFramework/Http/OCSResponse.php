@@ -35,7 +35,8 @@ use OC\OCS\Result;
  * A renderer for OCS responses
  * @since 8.1.0
  */
-class OCSResponse extends Response {
+class OCSResponse extends Response
+{
 	private $data;
 	private $format;
 	private $statuscode;

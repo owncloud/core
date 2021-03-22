@@ -26,7 +26,8 @@ use OCA\DAV\TrashBin\TrashBinManager;
 use Sabre\DAV\Exception\NotFound;
 use Test\TestCase;
 
-class TrashBinHomeTest extends TestCase {
+class TrashBinHomeTest extends TestCase
+{
 	/**
 	 * @var TrashBinHome
 	 */

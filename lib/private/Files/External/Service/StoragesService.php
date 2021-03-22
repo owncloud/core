@@ -43,7 +43,8 @@ use OCP\Files\External\Auth\InvalidAuth;
 /**
  * Service class to manage external storages
  */
-abstract class StoragesService implements IStoragesService {
+abstract class StoragesService implements IStoragesService
+{
 
 	/** @var IStoragesBackendService */
 	protected $backendService;

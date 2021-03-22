@@ -56,5 +56,6 @@
  * Abstract base class for user management. Provides methods for querying backend
  * capabilities.
  */
-abstract class OC_User_Backend extends \OC\User\Backend implements \OCP\UserInterface {
+abstract class OC_User_Backend extends \OC\User\Backend implements \OCP\UserInterface
+{
 }

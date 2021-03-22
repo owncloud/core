@@ -27,7 +27,8 @@ use \OCP\AppFramework\Controller;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\IRequest;
 
-class UserController extends Controller {
+class UserController extends Controller
+{
 	/**
 	 * @var \OCP\IUserManager
 	 */

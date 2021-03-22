@@ -25,7 +25,8 @@ namespace OCP\Settings;
  * Interface to register 'categories' for OCP\Settings\ISection objects within the UI.
  * @since 10.0
  */
-interface ISection {
+interface ISection
+{
 
 	/**
 	 * A string used for section identification, eg: in HTML

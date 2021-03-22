@@ -23,5 +23,6 @@ namespace OC\Authentication\Exceptions;
 
 use Exception;
 
-class LoginRequiredException extends Exception {
+class LoginRequiredException extends Exception
+{
 }

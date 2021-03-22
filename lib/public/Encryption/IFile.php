@@ -29,7 +29,8 @@ namespace OCP\Encryption;
  * @package OCP\Encryption
  * @since 8.1.0
  */
-interface IFile {
+interface IFile
+{
 
 	/**
 	 * get list of users with access to the file

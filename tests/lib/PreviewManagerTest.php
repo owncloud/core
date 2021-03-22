@@ -42,7 +42,8 @@ use OCP\Files\Mount\IMountPoint;
  *
  * @package Test
  */
-class PreviewManagerTest extends TestCase {
+class PreviewManagerTest extends TestCase
+{
 	use UserTrait;
 	use MountProviderTrait;
 

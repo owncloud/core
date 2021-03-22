@@ -24,7 +24,8 @@ use OC\Group\Group;
 use OC\User\User;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class SubAdminTest extends TestCase {
+class SubAdminTest extends TestCase
+{
 
 	/** @var \OCP\IUserManager */
 	private $userManager;

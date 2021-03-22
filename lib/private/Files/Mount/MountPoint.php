@@ -33,7 +33,8 @@ use OC\Files\Storage\StorageFactory;
 use OC\Files\Storage\Storage;
 use OCP\Files\Mount\IMountPoint;
 
-class MountPoint implements IMountPoint {
+class MountPoint implements IMountPoint
+{
 	/**
 	 * @var \OC\Files\Storage\Storage $storage
 	 */

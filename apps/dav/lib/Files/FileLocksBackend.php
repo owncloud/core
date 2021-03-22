@@ -32,7 +32,8 @@ use OCP\AppFramework\Utility\ITimeFactory;
 use OCA\DAV\Connector\Sabre\ObjectTree;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 
-class FileLocksBackend implements BackendInterface {
+class FileLocksBackend implements BackendInterface
+{
 
 	/** @var Tree */
 	private $tree;

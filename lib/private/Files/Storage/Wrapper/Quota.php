@@ -27,7 +27,8 @@ namespace OC\Files\Storage\Wrapper;
 
 use OCP\Files\Cache\ICacheEntry;
 
-class Quota extends Wrapper {
+class Quota extends Wrapper
+{
 
 	/**
 	 * @var int $quota

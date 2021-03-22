@@ -25,7 +25,8 @@
 
 namespace OC\Image;
 
-class BmpToResource {
+class BmpToResource
+{
 	const MAGIC = 19778; // ASCII BM
 	const BITMAP_HEADER_SIZE_BYTES = 14;
 

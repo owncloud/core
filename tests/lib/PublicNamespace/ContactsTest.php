@@ -21,7 +21,8 @@
 
 namespace Test\PublicNamespace;
 
-class ContactsTest extends \Test\TestCase {
+class ContactsTest extends \Test\TestCase
+{
 	protected function setUp(): void {
 		parent::setUp();
 		\OCP\Contacts::clear();

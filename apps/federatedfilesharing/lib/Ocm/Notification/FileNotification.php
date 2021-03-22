@@ -26,7 +26,8 @@ namespace OCA\FederatedFileSharing\Ocm\Notification;
  *
  * @package OCA\FederatedFileSharing\Ocm
  */
-class FileNotification extends Notification {
+class FileNotification extends Notification
+{
 	const NOTIFICATION_TYPE_SHARE_ACCEPTED = 'SHARE_ACCEPTED';
 	const NOTIFICATION_TYPE_SHARE_DECLINED = 'SHARE_DECLINED';
 	const NOTIFICATION_TYPE_SHARE_UNSHARED = 'SHARE_UNSHARED';

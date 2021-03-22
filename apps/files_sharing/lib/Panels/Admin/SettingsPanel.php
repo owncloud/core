@@ -23,7 +23,8 @@ use OCP\Settings\ISettings;
 use OCP\Template;
 use OCA\Files_Sharing\SharingBlacklist;
 
-class SettingsPanel implements ISettings {
+class SettingsPanel implements ISettings
+{
 	/** @var SharingBlacklist */
 	private $sharingBlacklist;
 

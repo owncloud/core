@@ -33,7 +33,8 @@ use OCP\IConfig;
 use OCP\Security\ISecureRandom;
 use Test\TestCase;
 
-class ChildController extends Controller {
+class ChildController extends Controller
+{
 	public function __construct($appName, $request) {
 		parent::__construct($appName, $request);
 		$this->registerResponder('tom', function ($response) {
@@ -60,7 +61,8 @@ class ChildController extends Controller {
 	}
 };
 
-class ControllerTest extends TestCase {
+class ControllerTest extends TestCase
+{
 
 	/** @var ChildController */
 	private $controller;

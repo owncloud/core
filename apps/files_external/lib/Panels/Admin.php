@@ -27,7 +27,8 @@ use OCP\IConfig;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-class Admin implements ISettings {
+class Admin implements ISettings
+{
 
 	/** @var IGlobalStoragesService */
 	protected $globalStoragesService;

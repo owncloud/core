@@ -27,7 +27,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class Disable extends Command {
+class Disable extends Command
+{
 	/** @var IUserManager */
 	protected $userManager;
 

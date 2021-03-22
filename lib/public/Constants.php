@@ -35,7 +35,8 @@ namespace OCP;
  * @package OCP
  * @since 8.0.0
  */
-class Constants {
+class Constants
+{
 	/**
 	 * CRUDS permissions.
 	 * @since 8.0.0

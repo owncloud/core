@@ -40,7 +40,8 @@ use OCP\Share\IShare;
  * @package OCA\FederatedFileSharing\Tests\Middleware
  * @group DB
  */
-class OcmMiddlewareTest extends TestCase {
+class OcmMiddlewareTest extends TestCase
+{
 	/**
 	 * @var OcmMiddleware
 	 */

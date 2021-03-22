@@ -27,7 +27,8 @@
 /**
  * Class Helper
  */
-class HelperTest extends \Test\TestCase {
+class HelperTest extends \Test\TestCase
+{
 	private function makeFileInfo($name, $size, $mtime, $isDir = false) {
 		return new \OC\Files\FileInfo(
 			'/' . $name,

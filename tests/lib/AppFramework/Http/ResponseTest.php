@@ -30,7 +30,8 @@ use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\Response;
 use Test\TestCase;
 
-class ResponseTest extends TestCase {
+class ResponseTest extends TestCase
+{
 
 	/**
 	 * @var \OCP\AppFramework\Http\Response

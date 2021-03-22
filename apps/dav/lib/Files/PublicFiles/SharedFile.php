@@ -33,7 +33,8 @@ use Sabre\DAVACL\IACL;
  *
  * @package OCA\DAV\Files\PublicFiles
  */
-class SharedFile extends File implements IACL, IFileNode, IPublicSharedNode {
+class SharedFile extends File implements IACL, IFileNode, IPublicSharedNode
+{
 	use SharedNodeTrait;
 
 	/** @var \OCP\Files\File */

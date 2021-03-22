@@ -30,7 +30,8 @@ use OCP\Files\Node;
  * @package OCP\Share
  * @since 9.0.0
  */
-interface IShareProvider {
+interface IShareProvider
+{
 	/**
 	 * The capabilities below refer mainly to storing capabilities allowed
 	 * by the implementing share provider. Validation or enforcement rules

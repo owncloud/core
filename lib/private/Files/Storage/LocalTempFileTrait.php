@@ -34,7 +34,8 @@ namespace OC\Files\Storage;
  * Some \OC\Files\Storage\Common methods call functions which are first defined
  * in classes which extend it, e.g. $this->stat() .
  */
-trait LocalTempFileTrait {
+trait LocalTempFileTrait
+{
 
 	/** @var string[] */
 	protected $cachedFiles = [];

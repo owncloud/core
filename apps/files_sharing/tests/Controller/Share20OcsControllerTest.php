@@ -60,7 +60,8 @@ use OCP\Share\IManager;
  * @package OCA\Files_Sharing\Tests\Controller
  * @group DB
  */
-class Share20OcsControllerTest extends TestCase {
+class Share20OcsControllerTest extends TestCase
+{
 
 	/** @var Manager | MockObject */
 	private $shareManager;

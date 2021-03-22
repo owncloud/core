@@ -28,7 +28,8 @@ use OCA\FederatedFileSharing\Ocm\Notification\FileNotification;
  *
  * @package OCA\FederatedFileSharing\Ocm
  */
-class NotificationManager {
+class NotificationManager
+{
 	/**
 	 * @var Permissions
 	 */

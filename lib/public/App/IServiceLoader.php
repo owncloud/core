@@ -32,7 +32,8 @@ use OCP\IUser;
  * @package OCP\App
  * @since 10.0.4
  */
-interface IServiceLoader {
+interface IServiceLoader
+{
 
 	/**
 	 * Looks in info.xml of all enabled apps for the given xml path and returns

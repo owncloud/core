@@ -37,7 +37,8 @@ use OCP\AppFramework\Db\Entity;
  * @method string getPreName()
  * @method void setPreName(string $preName)
  */
-class TestEntity extends Entity {
+class TestEntity extends Entity
+{
 	protected $name;
 	protected $email;
 	protected $testId;
@@ -49,7 +50,8 @@ class TestEntity extends Entity {
 	}
 };
 
-class EntityTest extends \Test\TestCase {
+class EntityTest extends \Test\TestCase
+{
 	private $entity;
 
 	protected function setUp(): void {

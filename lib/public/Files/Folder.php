@@ -33,7 +33,8 @@ namespace OCP\Files;
 /**
  * @since 6.0.0
  */
-interface Folder extends Node {
+interface Folder extends Node
+{
 	/**
 	 * Get the full path of an item in the folder within owncloud's filesystem
 	 *

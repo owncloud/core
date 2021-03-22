@@ -32,7 +32,8 @@ require_once 'bootstrap.php';
 /**
  * Context to make the Logging steps available
  */
-class LoggingContext implements Context {
+class LoggingContext implements Context
+{
 	/**
 	 * @var FeatureContext
 	 */

@@ -30,7 +30,8 @@ use OCP\Files\FileInfo;
  * @package OCP\Preview
  * @since 10.0.9
  */
-interface IProvider2 {
+interface IProvider2
+{
 	/**
 	 * @return string Regex with the mimetypes that are supported by this provider
 	 * @since 10.0.9

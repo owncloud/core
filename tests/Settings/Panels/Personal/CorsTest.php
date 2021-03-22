@@ -27,7 +27,8 @@ use OCP\IUser;
 use OCP\IUserSession;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class CorsTest extends \Test\TestCase {
+class CorsTest extends \Test\TestCase
+{
 	/** @var Cors */
 	protected $panel;
 

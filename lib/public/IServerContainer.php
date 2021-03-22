@@ -53,7 +53,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * This container holds all ownCloud services
  * @since 6.0.0
  */
-interface IServerContainer extends IContainer {
+interface IServerContainer extends IContainer
+{
 
 	/**
 	 * The contacts manager will act as a broker between consumers for contacts information and

@@ -27,7 +27,8 @@ use OCP\IConfig;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-class Personal implements ISettings {
+class Personal implements ISettings
+{
 
 	/** @var IStoragesBackendService */
 	protected $backendService;

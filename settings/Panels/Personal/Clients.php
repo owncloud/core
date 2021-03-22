@@ -26,7 +26,8 @@ use OCP\Template;
 use OCP\IConfig;
 use OCP\Defaults;
 
-class Clients implements ISettings {
+class Clients implements ISettings
+{
 
 	/** @var IConfig */
 	protected $config;

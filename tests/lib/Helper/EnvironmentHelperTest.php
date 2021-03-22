@@ -24,7 +24,8 @@ namespace Test\Helper;
 use OC\Helper\EnvironmentHelper;
 use Test\TestCase;
 
-class EnvironmentHelperTest extends TestCase {
+class EnvironmentHelperTest extends TestCase
+{
 	private $environmentHelper;
 
 	public function setUp(): void {

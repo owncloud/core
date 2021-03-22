@@ -19,7 +19,8 @@ use OCP\Migration\IOutput;
  *
  * @package Test\Repair
  */
-class OldGroupMembershipSharesTest extends \Test\TestCase {
+class OldGroupMembershipSharesTest extends \Test\TestCase
+{
 
 	/** @var OldGroupMembershipShares */
 	protected $repair;

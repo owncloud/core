@@ -24,7 +24,8 @@ use OC\Files\View;
 use OCA\Files_Versions\FileHelper;
 use OCP\Files\FileInfo;
 
-class FileHelperTest extends \Test\TestCase {
+class FileHelperTest extends \Test\TestCase
+{
 	public function testCreateMissingDirectories() {
 		$viewMock = $this->getMockBuilder(View::class)
 			->disableOriginalConstructor()

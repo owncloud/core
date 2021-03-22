@@ -36,7 +36,8 @@ namespace OCP;
  * @since 6.0.0
  * @deprecated 8.1.0
  */
-interface IHelper {
+interface IHelper
+{
 	/**
 	 * Gets the content of an URL by using CURL or a fallback if it is not
 	 * installed

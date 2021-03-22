@@ -32,7 +32,8 @@ use OCP\IConfig;
  *
  * @package OC\Http
  */
-class Client implements IClient {
+class Client implements IClient
+{
 	/** @var GuzzleClient */
 	private $client;
 	/** @var IConfig */

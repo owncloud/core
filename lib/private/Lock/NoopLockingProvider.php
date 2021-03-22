@@ -29,7 +29,8 @@ use OCP\Lock\ILockingProvider;
  *
  * To be used when locking is disabled.
  */
-class NoopLockingProvider implements ILockingProvider {
+class NoopLockingProvider implements ILockingProvider
+{
 
 	/**
 	 * {@inheritdoc}

@@ -29,7 +29,8 @@ use Psr\Http\Message\ResponseInterface;
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
-class SharingHelper {
+class SharingHelper
+{
 	const PERMISSION_TYPES = [
 			'read' => 1,
 			'update' => 2,

@@ -43,7 +43,8 @@ use Sabre\VObject\Reader;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class CardDavBackend implements BackendInterface, SyncSupport {
+class CardDavBackend implements BackendInterface, SyncSupport
+{
 
 	/** @var Principal */
 	private $principalBackend;

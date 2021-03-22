@@ -29,7 +29,8 @@ use OCP\IUser;
 use org\bovigo\vfs\vfsStream;
 use Test\TestCase;
 
-class ChunkLocationProviderTest extends TestCase {
+class ChunkLocationProviderTest extends TestCase
+{
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 	/** @var ChunkLocationProvider | \PHPUnit\Framework\MockObject\MockObject */

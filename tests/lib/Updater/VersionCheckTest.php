@@ -27,7 +27,8 @@ use OCP\IConfig;
 use OCP\Util;
 use Test\TestCase;
 
-class VersionCheckTest extends TestCase {
+class VersionCheckTest extends TestCase
+{
 	/** @var IConfig| \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 	/** @var VersionCheck | \PHPUnit\Framework\MockObject\MockObject*/

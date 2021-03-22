@@ -28,7 +28,8 @@ use OC\HintException;
  * @package OCP\Share\Exceptions
  * @since 9.0.0
  */
-class GenericShareException extends HintException {
+class GenericShareException extends HintException
+{
 
 	/**
 	 * @param string $message

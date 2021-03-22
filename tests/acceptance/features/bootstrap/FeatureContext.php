@@ -42,7 +42,8 @@ require_once 'bootstrap.php';
 /**
  * Features context.
  */
-class FeatureContext extends BehatVariablesContext {
+class FeatureContext extends BehatVariablesContext
+{
 	use Provisioning;
 	use Sharing;
 	use WebDav;

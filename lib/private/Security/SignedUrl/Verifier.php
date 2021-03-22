@@ -24,7 +24,8 @@ namespace OC\Security\SignedUrl;
 use OCP\IConfig;
 use Sabre\HTTP\RequestInterface;
 
-class Verifier {
+class Verifier
+{
 
 	/**
 	 * @var RequestInterface

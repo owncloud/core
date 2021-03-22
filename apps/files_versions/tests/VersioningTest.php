@@ -46,7 +46,8 @@ use Test\TestCase;
  *
  * @group DB
  */
-class VersioningTest extends TestCase {
+class VersioningTest extends TestCase
+{
 	const USERS_VERSIONS_ROOT = '/test-versions-user/files_versions';
 
 	/** @var string */
@@ -890,7 +891,8 @@ class VersioningTest extends TestCase {
 }
 
 // extend the original class to make it possible to test protected methods
-class VersionStorageToTest extends \OCA\Files_Versions\Storage {
+class VersionStorageToTest extends \OCA\Files_Versions\Storage
+{
 
 	/**
 	 * @param integer $time

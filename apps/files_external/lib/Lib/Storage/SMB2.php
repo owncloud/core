@@ -43,7 +43,8 @@ use OCP\Files\Storage\StorageAdapter;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Util;
 
-class SMB2 extends SMB {
+class SMB2 extends SMB
+{
 	/**
 	 * @var SMB
 	 */

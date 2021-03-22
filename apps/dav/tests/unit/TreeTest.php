@@ -29,7 +29,8 @@ use Sabre\DAV\ICollection;
 use Sabre\DAV\IFile;
 use Test\TestCase;
 
-class TreeTest1 extends TestCase {
+class TreeTest1 extends TestCase
+{
 
 	/** @var ICollection | \PHPUnit\Framework\MockObject\MockObject */
 	private $rootNode;

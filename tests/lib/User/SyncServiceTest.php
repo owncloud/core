@@ -41,12 +41,15 @@ use Test\TestCase;
 // ToDo: phpunit9 createMock will no longer allow an array of interface names.
 //       Dummy interfaces have been created here for the tests.
 //       Find a better solution.
-interface IUserInterfaceWithQuotaBackendTest extends UserInterface, IProvidesQuotaBackend {
+interface IUserInterfaceWithQuotaBackendTest extends UserInterface, IProvidesQuotaBackend
+{
 }
-interface IUserInterfaceWithUserNameBackendTest extends UserInterface, IProvidesUserNameBackend {
+interface IUserInterfaceWithUserNameBackendTest extends UserInterface, IProvidesUserNameBackend
+{
 }
 
-class SyncServiceTest extends TestCase {
+class SyncServiceTest extends TestCase
+{
 
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;

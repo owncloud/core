@@ -26,7 +26,8 @@ use OCP\Comments\IComment;
 use OCP\Comments\IllegalIDChangeException;
 use OCP\Comments\MessageTooLongException;
 
-class Comment implements IComment {
+class Comment implements IComment
+{
 	protected $data = [
 		'id'              => '',
 		'parentId'        => '0',

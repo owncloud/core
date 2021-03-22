@@ -47,7 +47,8 @@ use Test\TestCase;
  *
  * @package Test\Files\Storage
  */
-class DavTest extends TestCase {
+class DavTest extends TestCase
+{
 
 	/**
 	 * @var DAV | \PHPUnit\Framework\MockObject\MockObject

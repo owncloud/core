@@ -28,7 +28,8 @@ use Behat\Mink\Session;
 /**
  * page to set personal sharing settings
  */
-class PersonalSharingSettingsPage extends SharingSettingsPage {
+class PersonalSharingSettingsPage extends SharingSettingsPage
+{
 	/**
 	 *
 	 * @var string $path

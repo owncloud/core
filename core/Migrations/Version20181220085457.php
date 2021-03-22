@@ -28,7 +28,8 @@ use OCP\Migration\ISchemaMigration;
 /**
  * Auto-generated migration step: Please modify to your needs!
  */
-class Version20181220085457 implements ISchemaMigration {
+class Version20181220085457 implements ISchemaMigration
+{
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 

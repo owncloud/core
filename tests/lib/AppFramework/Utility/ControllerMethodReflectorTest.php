@@ -25,7 +25,8 @@ namespace Test\AppFramework\Utility;
 
 use OC\AppFramework\Utility\ControllerMethodReflector;
 
-class BaseController {
+class BaseController
+{
 
 	/**
 	 * @Annotation
@@ -46,7 +47,8 @@ class BaseController {
 	}
 }
 
-class MiddleController extends BaseController {
+class MiddleController extends BaseController
+{
 
 	/**
 	 * @NoAnnotation
@@ -58,10 +60,12 @@ class MiddleController extends BaseController {
 	}
 }
 
-class EndController extends MiddleController {
+class EndController extends MiddleController
+{
 }
 
-class ControllerMethodReflectorTest extends \Test\TestCase {
+class ControllerMethodReflectorTest extends \Test\TestCase
+{
 
 	/**
 	 * @Annotation

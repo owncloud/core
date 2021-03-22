@@ -32,7 +32,8 @@ use OCP\Migration\ISchemaMigration;
  * but some update paths did not trigger them properly, so this
  * migration here exists to align all update paths.
  */
-class Version20181115210344 implements ISchemaMigration {
+class Version20181115210344 implements ISchemaMigration
+{
 
 	/**
 	 * @param Schema $schema

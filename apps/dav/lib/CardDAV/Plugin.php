@@ -26,7 +26,8 @@ use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\Server;
 
-class Plugin extends \Sabre\CardDAV\Plugin {
+class Plugin extends \Sabre\CardDAV\Plugin
+{
 	public function initialize(Server $server) {
 		$server->on('propFind', [$this, 'propFind']);
 		parent::initialize($server);

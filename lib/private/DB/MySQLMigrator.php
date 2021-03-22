@@ -27,7 +27,8 @@ namespace OC\DB;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 
-class MySQLMigrator extends Migrator {
+class MySQLMigrator extends Migrator
+{
 	/**
 	 * @return Schema
 	 */

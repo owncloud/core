@@ -8,7 +8,8 @@
 
 namespace Test\Files\Stream;
 
-class StaticStreamTest extends \Test\TestCase {
+class StaticStreamTest extends \Test\TestCase
+{
 	private $sourceFile;
 	private $sourceText;
 

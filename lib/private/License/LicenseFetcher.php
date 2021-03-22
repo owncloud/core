@@ -29,7 +29,8 @@ use OCP\AppFramework\Utility\ITimeFactory;
  * well as different licenses (in case that we need to handle multiple kind of licenses at some point)
  * and also per-app licenses (not planned for now)
  */
-class LicenseFetcher {
+class LicenseFetcher
+{
 	/** @var IConfig */
 	private $config;
 	/** @var ITimeFactory */

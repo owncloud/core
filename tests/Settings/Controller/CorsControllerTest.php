@@ -38,7 +38,8 @@ use Test\TestCase;
  *
  * @package Tests\Settings\Controller
  */
-class CorsControllerTest extends TestCase {
+class CorsControllerTest extends TestCase
+{
 	/** @var CorsController */
 	private $corsController;
 

@@ -25,7 +25,8 @@ use OCP\License\ILicenseManager;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-class License implements ISettings {
+class License implements ISettings
+{
 	/** @var ILicenseManager */
 	private $licenseManager;
 

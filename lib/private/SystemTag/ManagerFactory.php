@@ -32,7 +32,8 @@ use OCP\SystemTag\ISystemTagObjectMapper;
  * @package OCP\SystemTag
  * @since 9.0.0
  */
-class ManagerFactory implements ISystemTagManagerFactory {
+class ManagerFactory implements ISystemTagManagerFactory
+{
 
 	/**
 	 * Server container

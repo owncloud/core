@@ -34,7 +34,8 @@ use Test\Traits\UserTrait;
 use OC\Files\Storage\Local;
 use OCP\IRequest;
 
-abstract class RequestTest extends TestCase {
+abstract class RequestTest extends TestCase
+{
 	use UserTrait;
 	use MountProviderTrait;
 

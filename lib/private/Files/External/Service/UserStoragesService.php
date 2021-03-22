@@ -39,7 +39,8 @@ use OCP\Files\External\Service\IUserStoragesService;
  * Service class to manage user external storages
  * (aka personal storages)
  */
-class UserStoragesService extends StoragesService implements IUserStoragesService {
+class UserStoragesService extends StoragesService implements IUserStoragesService
+{
 	use UserTrait;
 
 	/**

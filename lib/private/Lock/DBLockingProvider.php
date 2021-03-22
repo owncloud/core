@@ -36,7 +36,8 @@ use OCP\Lock\LockedException;
 /**
  * Locking provider that stores the locks in the database
  */
-class DBLockingProvider extends AbstractLockingProvider {
+class DBLockingProvider extends AbstractLockingProvider
+{
 	/**
 	 * @var \OCP\IDBConnection
 	 */

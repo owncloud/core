@@ -33,7 +33,8 @@ use OCP\IUserSession;
 use OCP\Security\ISecureRandom;
 use Test\TestCase;
 
-class TwoFactorMiddlewareTest extends TestCase {
+class TwoFactorMiddlewareTest extends TestCase
+{
 
 	/** @var Manager|\PHPUnit\Framework\MockObject\MockObject */
 	private $twoFactorManager;

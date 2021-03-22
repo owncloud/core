@@ -26,7 +26,8 @@ namespace OC\Files\Mount;
 /**
  * Defines the mount point to be (re)moved by the user
  */
-interface MoveableMount {
+interface MoveableMount
+{
 	/**
 	 * Move the mount point to $target
 	 *

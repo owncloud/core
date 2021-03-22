@@ -9,7 +9,8 @@
 /**
  * Starts a new session before each test execution
  */
-class StartSessionListener implements PHPUnit\Framework\TestListener {
+class StartSessionListener implements PHPUnit\Framework\TestListener
+{
 	public function addError(PHPUnit\Framework\Test $test, \Throwable $t, float $time): void {
 	}
 

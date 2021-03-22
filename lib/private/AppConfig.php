@@ -37,7 +37,8 @@ use OCP\IDBConnection;
  * This class provides an easy way for apps to store config values in the
  * database.
  */
-class AppConfig implements IAppConfig {
+class AppConfig implements IAppConfig
+{
 	use EventEmitterTrait;
 	/** @var \OCP\IDBConnection $conn */
 	protected $conn;

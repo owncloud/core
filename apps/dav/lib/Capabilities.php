@@ -24,7 +24,8 @@ namespace OCA\DAV;
 use OCP\Capabilities\ICapability;
 use OCP\IConfig;
 
-class Capabilities implements ICapability {
+class Capabilities implements ICapability
+{
 	/** @var IConfig */
 	private $config;
 

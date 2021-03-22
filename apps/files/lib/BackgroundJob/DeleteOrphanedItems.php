@@ -29,7 +29,8 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 /**
  * Delete all share entries that have no matching entries in the file cache table.
  */
-class DeleteOrphanedItems extends TimedJob {
+class DeleteOrphanedItems extends TimedJob
+{
 	const CHUNK_SIZE = 200;
 
 	/** @var \OCP\IDBConnection */

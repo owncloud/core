@@ -26,7 +26,8 @@ namespace OCP\Files\Mount;
  * A storage mounted to folder on the filesystem
  * @since 8.0.0
  */
-interface IMountPoint {
+interface IMountPoint
+{
 
 	/**
 	 * get complete path to the mount point
