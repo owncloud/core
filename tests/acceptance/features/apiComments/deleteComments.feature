@@ -3,10 +3,9 @@ Feature: Comments
 
   Background:
     Given using new DAV path
-    And these users have been created with default attributes and small skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
-      | Brian    |
 
   @smokeTest
   Scenario Outline: Deleting my own comments on a file belonging to myself
@@ -33,7 +32,8 @@ Feature: Comments
 
   @files_sharing-app-required
   Scenario: Deleting my own comments on a file shared by somebody else
-    Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And user "Alice" has shared file "/myFileToComment.txt" with user "Brian"
     And user "Alice" has commented with content "File owner comment" on file "/myFileToComment.txt"
     And user "Brian" has commented with content "Sharee comment" on file "/myFileToComment.txt"
@@ -64,14 +64,11 @@ Feature: Comments
 
   @files_sharing-app-required
   Scenario: Deleting my own comments on a file shared by somebody else
-    Given user "Alice" has created folder "/FOLDER_TO_COMMENT"
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/FOLDER_TO_COMMENT"
     And user "Alice" has shared folder "/FOLDER_TO_COMMENT" with user "Brian"
     And user "Alice" has commented with content "Folder owner comment" on folder "/FOLDER_TO_COMMENT"
     And user "Brian" has commented with content "Sharee comment" on folder "/FOLDER_TO_COMMENT"
-    And user "Brian" should have the following comments on folder "/FOLDER_TO_COMMENT"
-      | user  | comment              |
-      | Alice | Folder owner comment |
-      | Brian | Sharee comment       |
     When user "Brian" deletes the last created comment using the WebDAV API
     Then the HTTP status code should be "204"
     And user "Brian" should have 1 comments on folder "/FOLDER_TO_COMMENT"
@@ -86,6 +83,7 @@ Feature: Comments
   @files_sharing-app-required
   Scenario: deleting a user does not remove the comment
     Given user "Alice" has created folder "/FOLDER_TO_COMMENT"
+    And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has shared folder "/FOLDER_TO_COMMENT" with user "Brian"
     And user "Brian" has commented with content "Comment from sharee" on folder "/FOLDER_TO_COMMENT"
     When the administrator deletes user "Brian" using the provisioning API
@@ -98,6 +96,6 @@ Feature: Comments
     Given user "Alice" has created folder "/FOLDER_TO_COMMENT"
     And user "Alice" has commented with content "Comment from owner" on folder "/FOLDER_TO_COMMENT"
     And user "Alice" has been deleted
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
     When user "Alice" creates folder "/FOLDER_TO_COMMENT" using the WebDAV API
     Then user "Alice" should have 0 comments on folder "/FOLDER_TO_COMMENT"

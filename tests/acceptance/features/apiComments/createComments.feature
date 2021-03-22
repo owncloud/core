@@ -3,7 +3,7 @@ Feature: Comments
 
   Background:
     Given using new DAV path
-    And these users have been created with default attributes and small skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -68,6 +68,7 @@ Feature: Comments
     And user "Alice" should have 0 comments on file "/FOLDER_TO_SHARE"
 
   Scenario: Creating a comment on a folder belonging to myself
+    Given user "Alice" has created folder "/FOLDER"
     When user "Alice" comments with content "My first comment" on folder "/FOLDER" using the WebDAV API
     Then user "Alice" should have the following comments on folder "/FOLDER"
       | user  | comment          |
