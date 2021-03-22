@@ -480,9 +480,11 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 				}
 			} else {
 				// Change file parent
+				$parentFolder1 = $this->getDriveFile(\dirname($path1));
 				$parentFolder2 = $this->getDriveFile(\dirname($path2));
 				if ($parentFolder2) {
-					$toUpdate->setParents([$parentFolder2->getId()]);
+					$removedParent = $parentFolder1->getId();
+					$addedParent = $parentFolder2->getId();
 				} else {
 					return false;
 				}
@@ -496,7 +498,11 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 				$this->rmdir($path2);
 				$oldfile = false;
 			}
-			$result = $this->service->files->update($file->getId(), $toUpdate, ['fields' => $this->getDefaultFieldsForFile()]);
+			$result = $this->service->files->update($file->getId(), $toUpdate, [
+				'fields' => $this->getDefaultFieldsForFile(),
+				'addParents' => $addedParent,
+				'removeParents' => $removedParent
+			]);
 			if ($result) {
 				$this->setDriveFile($path1, false);
 				$this->setDriveFile($path2, $result);
@@ -710,7 +716,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 			if ($parentFolder) {
 				$toUpdate->setName(\basename($path));
 				$toUpdate->setParents([$parentFolder->getId()]);
-				$result = $this->service->files->insert(
+				$result = $this->service->files->create(
 					$toUpdate,
 					['fields' => $this->getDefaultFieldsForFile()]
 				);
