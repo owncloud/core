@@ -26,6 +26,7 @@
 
 namespace OC\Files\Storage\Wrapper;
 
+use OC\Encryption\Exceptions\DecryptionFailedException;
 use OC\Encryption\Exceptions\ModuleDoesNotExistsException;
 use OC\Encryption\Update;
 use OC\Encryption\Util;
@@ -631,12 +632,33 @@ class Encryption extends Wrapper {
 		if (!$this->encryptionManager->isEnabled()) {
 			return $this->storage->moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime);
 		}
+
+		// keep the current encryptedVersion value to revert it in case of failure
+		$encryptedVersion = $sourceStorage->getCache()->get($sourceInternalPath)['encryptedVersion'];
 		$result = $this->copyBetweenStorage($sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime, true);
 		if ($result) {
 			if ($sourceStorage->is_dir($sourceInternalPath)) {
 				$result &= $sourceStorage->rmdir($sourceInternalPath);
 			} else {
-				$result &= $sourceStorage->unlink($sourceInternalPath);
+				try {
+					// Check if the target file is decryptable to prevent a data loss
+					$size = $this->filesize($targetInternalPath);
+					$newContent = $this->file_get_contents($targetInternalPath);
+					$result &= $sourceStorage->unlink($sourceInternalPath);
+				} catch (DecryptionFailedException $e) {
+					// target file is broken - remove it
+					$this->unlink($targetInternalPath);
+					$result = false;
+					// revert the source encryptedVersion value
+					$isEncrypted = $this->encryptionManager->isEnabled() && $this->mount->getOption('encrypt', true) ? 1 : 0;
+					if ($isEncrypted === 1) {
+						$cacheInformation = [
+							'encrypted' => (bool)$isEncrypted,
+							'encryptedVersion' => $encryptedVersion,
+						];
+						$sourceStorage->getCache()->put($sourceInternalPath, $cacheInformation);
+					}
+				}
 			}
 		}
 		return $result;
