@@ -6,7 +6,7 @@ Feature: users cannot upload a file to a blacklisted name
 
   Background:
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
 
   @issue-ocis-reva-15
   Scenario Outline: upload a file to a filename that is banned by default
@@ -35,6 +35,7 @@ Feature: users cannot upload a file to a blacklisted name
   @issue-ocis-reva-54
   Scenario Outline: upload a file to a filename that matches (or not) blacklisted_files_regex
     Given using <dav_version> DAV path
+    And user "Alice" has created folder "FOLDER"
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being .*\.ext$ and ^bannedfilename\..+
     And the administrator has updated system config key "blacklisted_files_regex" with value '[".*\\.ext$","^bannedfilename\\..+","containsbannedstring"]' and type "json"

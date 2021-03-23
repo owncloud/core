@@ -6,7 +6,7 @@ Feature: users cannot upload a file to or into an excluded directory
 
   Background:
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
 
   @issue-ocis-reva-54
   Scenario Outline: upload a file to an excluded directory name
@@ -23,6 +23,7 @@ Feature: users cannot upload a file to or into an excluded directory
   @issue-ocis-reva-54
   Scenario Outline: upload a file to an excluded directory name inside a parent directory
     Given using <dav_version> DAV path
+    And user "Alice" has created folder "FOLDER"
     When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
     And user "Alice" uploads file with content "uploaded content" to "/FOLDER/.github" using the WebDAV API
     Then the HTTP status code should be "403"
@@ -37,6 +38,7 @@ Feature: users cannot upload a file to or into an excluded directory
   @issue-ocis-reva-54
   Scenario Outline: upload a file to a filename that matches (or not) excluded_directories_regex
     Given using <dav_version> DAV path
+    And user "Alice" has created folder "FOLDER"
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being endswith\.bad$ and ^\.git
     And the administrator has updated system config key "excluded_directories_regex" with value '["endswith\\.bad$","^\\.git","containsvirusinthename"]' and type "json"

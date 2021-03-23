@@ -7,7 +7,7 @@ Feature: upload file using new chunking
   Background:
     Given using OCS API version "1"
     And using new DAV path
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
 
 
   Scenario: Upload chunked file asc with new chunking
@@ -59,7 +59,8 @@ Feature: upload file using new chunking
 
 
   Scenario: Checking file id after a move overwrite using new chunking endpoint
-    Given the owncloud log level has been set to debug
+    Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And the owncloud log level has been set to debug
     And the owncloud log has been cleared
     And user "Alice" has copied file "/textfile0.txt" to "/existingFile.txt"
     And user "Alice" has stored id of file "/existingFile.txt"

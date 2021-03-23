@@ -7,7 +7,7 @@ Feature: upload file using old chunking
   Background:
     Given using OCS API version "1"
     And using old DAV path
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
 
   @skipOnOcV10 @issue-36115
   Scenario: Upload chunked file asc
@@ -41,7 +41,8 @@ Feature: upload file using old chunking
     And the content of file "/myChunkedFile.txt" for user "Alice" should be "AAAAABBBBBCCCCC"
 
   Scenario: Checking file id after a move overwrite using old chunking endpoint
-    Given the owncloud log level has been set to debug
+    Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And the owncloud log level has been set to debug
     And the owncloud log has been cleared
     And user "Alice" has copied file "/textfile0.txt" to "/existingFile.txt"
     And user "Alice" has stored id of file "/existingFile.txt"
