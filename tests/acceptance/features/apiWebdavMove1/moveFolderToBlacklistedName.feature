@@ -38,8 +38,9 @@ Feature: users cannot move (rename) a folder to a blacklisted name
   @skipOnOcV10.3
   Scenario Outline: rename a folder to a folder name that matches (or not) blacklisted_files_regex
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And user "Brian" has created folder "/testshare"
+    And user "Brian" has created folder "/FOLDER"
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being .*\.ext$ and ^bannedfilename\..+
     And the administrator has updated system config key "blacklisted_files_regex" with value '[".*\\.ext$","^bannedfilename\\..+","containsbannedstring"]' and type "json"

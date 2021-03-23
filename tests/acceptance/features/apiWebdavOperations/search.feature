@@ -5,7 +5,7 @@ Feature: Search
   So that I can find needed files quickly
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/just-a-folder"
     And user "Alice" has created folder "/फनी näme"
     And user "Alice" has created folder "/upload folder"
@@ -44,6 +44,7 @@ Feature: Search
 
   Scenario Outline: search for entries by only some letters from the middle of the entry name
     Given using <dav_version> DAV path
+    And user "Alice" has created folder "FOLDER"
     When user "Alice" searches for "ol" using the WebDAV API
     Then the HTTP status code should be "207"
     And the search result should contain "4" entries
