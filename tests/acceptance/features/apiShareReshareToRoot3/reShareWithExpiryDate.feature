@@ -2,8 +2,11 @@
 Feature: resharing a resource with an expiration date
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
-    And user "Brian" has been created with default attributes and without skeleton files
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
 
   @skipOnOcV10.3
   Scenario Outline: User should be able to set expiration while resharing a file with user

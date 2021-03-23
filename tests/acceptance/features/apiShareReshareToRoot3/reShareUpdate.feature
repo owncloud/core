@@ -2,9 +2,11 @@
 Feature: sharing
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
-    And user "Brian" has been created with default attributes and without skeleton files
-    And user "Carol" has been created with default attributes and without skeleton files
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+      | Carol    |
 
   Scenario Outline: Update of reshare can reduce permissions
     Given using OCS API version "<ocs_api_version>"

@@ -2,13 +2,16 @@
 Feature: sharing
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
-    And user "Brian" has been created with default attributes and without skeleton files
-    And user "Carol" has been created with default attributes and without skeleton files
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+      | Carol    |
 
   @smokeTest
   Scenario Outline: User is not allowed to reshare file when reshare permission is not given
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "read,update"
     When user "Brian" shares file "/textfile0.txt" with user "Carol" with permissions "read,update" using the sharing API
     Then the OCS status code should be "404"
@@ -22,6 +25,7 @@ Feature: sharing
 
   Scenario Outline: User is not allowed to reshare folder when reshare permission is not given
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "/FOLDER"
     And user "Alice" has shared folder "/FOLDER" with user "Brian" with permissions "read,update"
     When user "Brian" shares folder "/FOLDER" with user "Carol" with permissions "read,update" using the sharing API
     Then the OCS status code should be "404"
@@ -36,6 +40,7 @@ Feature: sharing
   @smokeTest
   Scenario Outline: User is allowed to reshare file with the same permissions
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "share,read"
     When user "Brian" shares file "/textfile0.txt" with user "Carol" with permissions "share,read" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -48,6 +53,7 @@ Feature: sharing
 
   Scenario Outline: User is allowed to reshare folder with the same permissions
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "/FOLDER"
     And user "Alice" has shared folder "/FOLDER" with user "Brian" with permissions "share,read"
     When user "Brian" shares folder "/FOLDER" with user "Carol" with permissions "share,read" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -60,6 +66,7 @@ Feature: sharing
 
   Scenario Outline: User is allowed to reshare file with less permissions
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "share,update,read"
     When user "Brian" shares file "/textfile0.txt" with user "Carol" with permissions "share,read" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -72,6 +79,7 @@ Feature: sharing
 
   Scenario Outline: User is allowed to reshare folder with less permissions
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "/FOLDER"
     And user "Alice" has shared folder "/FOLDER" with user "Brian" with permissions "share,update,read"
     When user "Brian" shares folder "/FOLDER" with user "Carol" with permissions "share,read" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -84,6 +92,7 @@ Feature: sharing
 
   Scenario Outline: User is not allowed to reshare file and set more permissions bits
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions <received_permissions>
     When user "Brian" shares file "/textfile0.txt" with user "Carol" with permissions <reshare_permissions> using the sharing API
     Then the OCS status code should be "404"
@@ -109,6 +118,7 @@ Feature: sharing
 
   Scenario Outline: User is allowed to reshare file and set create (4) or delete (8) permissions bits, which get ignored
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions <received_permissions>
     When user "Brian" shares file "/textfile0.txt" with user "Carol" with permissions <reshare_permissions> using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -146,6 +156,7 @@ Feature: sharing
 
   Scenario Outline: User is not allowed to reshare folder and set more permissions bits
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "/PARENT"
     And user "Alice" has shared folder "/PARENT" with user "Brian" with permissions <received_permissions>
     When user "Brian" shares folder "/PARENT" with user "Carol" with permissions <reshare_permissions> using the sharing API
     Then the OCS status code should be "404"
@@ -183,6 +194,7 @@ Feature: sharing
 
   Scenario Outline: User is not allowed to reshare folder and add delete permission bit (8)
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "/PARENT"
     And user "Alice" has shared folder "/PARENT" with user "Brian" with permissions <received_permissions>
     When user "Brian" shares folder "/PARENT" with user "Carol" with permissions <reshare_permissions> using the sharing API
     Then the OCS status code should be "404"
@@ -209,6 +221,7 @@ Feature: sharing
 
   Scenario Outline: Reshare a file with same name as a deleted file
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     And user "Alice" has deleted file "textfile0.txt"
     And user "Alice" has uploaded file with content "ownCloud new test text file 0" to "/textfile0.txt"
@@ -225,6 +238,7 @@ Feature: sharing
 
   Scenario Outline: Reshare a folder with same name as a deleted folder
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "/PARENT"
     And user "Alice" has shared folder "PARENT" with user "Brian"
     And user "Alice" has deleted folder "PARENT"
     And user "Alice" has created folder "/PARENT"
@@ -240,6 +254,7 @@ Feature: sharing
 
   Scenario Outline: Reshare a folder with same name as a deleted file
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     And user "Alice" has deleted file "textfile0.txt"
     And user "Alice" has created folder "/textfile0.txt"

@@ -4,8 +4,10 @@ Feature: a subfolder of a received share can be reshared
   Background:
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And user "Alice" has been created with default attributes and small skeleton files
-    And user "Brian" has been created with default attributes and without skeleton files
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
 
   @smokeTest
   Scenario Outline: User is allowed to reshare a sub-folder with the same permissions
