@@ -4,7 +4,7 @@ Feature: Editing the tags
   I want to be able to change the tags I have created
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
 
   @smokeTest
   Scenario Outline: Renaming a normal tag as regular user should work

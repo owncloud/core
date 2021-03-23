@@ -39,9 +39,9 @@ Feature: using trashbin together with sharing
 
   Scenario Outline: deleting a file in a received folder when restored it comes back to the original path
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/shared"
-    And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
+    And user "Alice" has uploaded file with content "to delete" to "/shared/shared_file.txt"
     And user "Alice" has shared folder "/shared" with user "Brian"
     And user "Brian" has moved file "/shared" to "/renamed_shared"
     And user "Brian" has deleted file "/renamed_shared/shared_file.txt"
@@ -66,6 +66,7 @@ Feature: using trashbin together with sharing
     And user "Brian" has created folder "shareFolderParent"
     And user "Brian" has shared folder "shareFolderParent" with user "Alice" with permissions "read"
     And as "Alice" folder "/shareFolderParent" should exist
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has deleted file "/textfile0.txt"
     When user "Alice" restores the file with original path "/textfile0.txt" to "/shareFolderParent/textfile0.txt" using the trashbin API
     Then the HTTP status code should be "403"
@@ -84,6 +85,7 @@ Feature: using trashbin together with sharing
     And user "Brian" has created folder "shareFolderParent"
     And user "Brian" has created folder "shareFolderParent/shareFolderChild"
     And user "Brian" has shared folder "shareFolderParent" with user "Alice" with permissions "read"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And as "Alice" folder "/shareFolderParent/shareFolderChild" should exist
     And user "Alice" has deleted file "/textfile0.txt"
     When user "Alice" restores the file with original path "/textfile0.txt" to "/shareFolderParent/shareFolderChild/textfile0.txt" using the trashbin API
