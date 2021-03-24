@@ -33,7 +33,7 @@ Feature: admin general settings
     Then the imprint url on the login page should link to "imprinturl.html"
 
   @smokeTest
-  Scenario: administrator sets legal URLs
+  Scenario: administrator sets legal URLs containing underscore
     When the administrator sets the value of privacy policy url to "privacy_policy.html" using the webUI
     And the administrator logs out of the webUI
     Then the privacy policy url on the login page should link to "privacy_policy.html"

@@ -58,8 +58,3 @@ Feature: files and folders can be deleted from the trashbin
     When the user marks all files for batch action using the webUI
     And the user batch deletes the marked files using the webUI
     Then the folder should be empty on the webUI
-
-  Scenario: Select all files and delete from trashbin in a batch
-    When the user marks all files for batch action using the webUI
-    And the user batch deletes the marked files using the webUI
-    Then the folder should be empty on the webUI

@@ -184,7 +184,7 @@ Feature: sharing
       | /shared                 | 2               | 404              | /Shares/shared          |
 
   @issue-ocis-720
-  Scenario Outline: delete a share
+  Scenario Outline: request PROPFIND after sharer deletes the collaborator
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"

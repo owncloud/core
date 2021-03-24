@@ -237,7 +237,7 @@ Feature: move (rename) file
   #this does not work if firewall app is enabled
   #and it also does not work with the php-dev server
   @skipOnFirewall
-  Scenario: Moving and overwriting a file
+  Scenario: Moving and overwriting a file with lazyops
     #need to slowdown the request for longer than the timeout
     #when doing LazyOps the server does not close the connection
     #so we timout the request and chech the job-status

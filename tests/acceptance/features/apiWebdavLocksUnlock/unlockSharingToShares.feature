@@ -69,25 +69,6 @@ Feature: UNLOCK locked items (sharing)
       | new      | exclusive  |
 
 
-  Scenario Outline: as share receiver unlocking a shared file locked by the file owner is not possible. To unlock use the owners locktoken
-    Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and small skeleton files
-    And user "Alice" has locked file "PARENT/parent.txt" setting the following properties
-      | lockscope | <lock-scope> |
-    And user "Alice" has shared file "PARENT/parent.txt" with user "Brian"
-    And user "Brian" has accepted share "/PARENT/parent.txt" offered by user "Alice"
-    When user "Brian" unlocks file "Shares/parent.txt" with the last created lock of file "PARENT/parent.txt" of user "Alice" using the WebDAV API
-    Then the HTTP status code should be "403"
-    And 1 locks should be reported for file "PARENT/parent.txt" of user "Alice" by the WebDAV API
-    And 1 locks should be reported for file "Shares/parent.txt" of user "Brian" by the WebDAV API
-    Examples:
-      | dav-path | lock-scope |
-      | old      | shared     |
-      | old      | exclusive  |
-      | new      | shared     |
-      | new      | exclusive  |
-
-
   Scenario Outline: as share receiver unlock a shared file
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and small skeleton files

@@ -24,7 +24,7 @@ Feature: add users to group
     And the HTTP status code of responses on all endpoints should be "200"
 
   @skipOnLDAP
-  Scenario: adding a user to a group
+  Scenario: adding a user to a group with special character in its name
     Given user "brand-new-user" has been created with default attributes and small skeleton files
     And these groups have been created:
       | groupname           | comment                                 |
@@ -55,7 +55,7 @@ Feature: add users to group
 
   # once the issue is fixed merge with scenario above
   @skipOnLDAP @toImplementOnOCIS @issue-product-284
-  Scenario: adding a user to a group
+  Scenario: adding a user to a group with % and # in its name
     Given user "brand-new-user" has been created with default attributes and small skeleton files
     And these groups have been created:
       | groupname           | comment                                 |
@@ -201,7 +201,7 @@ Feature: add users to group
 
   # merge this with scenario on line 62 once the issue is fixed
   @issue-31015 @skipOnLDAP @toImplementOnOCIS @issue-product-284
-  Scenario Outline: adding a user to a group that has a forward-slash in the group name
+  Scenario Outline: adding a user to a group that has a forward-slash and dot in the group name
     Given user "brand-new-user" has been created with default attributes and small skeleton files
     And the administrator sends a group creation request for group "<group_id>" using the provisioning API
     When the administrator adds user "brand-new-user" to group "<group_id>" using the provisioning API

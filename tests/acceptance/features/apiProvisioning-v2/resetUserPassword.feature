@@ -92,7 +92,7 @@ Feature: reset user password
       | 🚴🏿‍♀️ 🚴‍♂️ | cycling |
 
   @skipOnOcV10 @issue-37992
-  Scenario: admin tries to reset the password of a user that does not exist
+  Scenario: admin tries to reset the password of a user that does not exist on OCIS
     When the administrator resets the password of user "nonexistentuser" to "%alt1%" using the provisioning API
     Then the OCS status code should be "998"
     And the HTTP status code should be "404"
