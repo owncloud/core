@@ -8,7 +8,7 @@ Feature: get groups
     Given using OCS API version "2"
 
   @smokeTest @skipOnLdap @issue-ldap-500 @notToImplementOnOCIS
-  Scenario: admin gets all the groups
+  Scenario: admin gets all the groups where admin group exists
     Given group "0" has been created
     And group "brand-new-group" has been created
     And group "España" has been created
@@ -32,7 +32,7 @@ Feature: get groups
       | CASE-SENSITIVE-GROUP |
 
   @smokeTest @skipOnOcV10
-  Scenario: admin gets all the groups
+  Scenario: admin gets all the groups on ocis
     Given group "0" has been created
     And group "brand-new-group" has been created
     And group "España" has been created
@@ -52,7 +52,7 @@ Feature: get groups
       | sailing-lovers    |
 
   @smokeTest @skipOnOcV10 @toImplementOnOCIS @issue-product-283
-  Scenario: admin gets all the groups, including groups with mixed case
+  Scenario: admin gets all the groups, including groups with mixed case on ocis
     Given group "case-sensitive-group" has been created
     And group "Case-Sensitive-Group" has been created
     And group "CASE-SENSITIVE-GROUP" has been created

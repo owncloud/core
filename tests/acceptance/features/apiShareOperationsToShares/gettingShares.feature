@@ -140,7 +140,7 @@ Feature: sharing
 
   @smokeTest @toFixOnOCIS @issue-ocis-reva-357 @issue-ocis-reva-301 @issue-ocis-reva-302
   #after fixing all the issues merge this scenario with the one above
-  Scenario Outline: getting share info of a share
+  Scenario Outline: getting share info of a share (Bug demonstration for ocis)
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "some data" to "/file_to_share.txt"
     And user "Alice" has shared file "file_to_share.txt" with user "Brian"

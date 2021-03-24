@@ -432,7 +432,7 @@ Feature: create a public link share
       | 2               | 200             | 200              |
 
   @issue-36442 @skipOnOcV10
-  Scenario Outline: Creating a public link share with read+create permissions defaults to read permissions when public upload disabled globally
+  Scenario Outline: Updating a public link share with read+create permissions defaults to read permissions when public upload disabled globally
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/afolder"
     And user "Alice" has created a public link share with settings

@@ -285,7 +285,7 @@ Feature: move (rename) file
 
   @issue-ocis-reva-265
   #after fixing the issues merge this Scenario into the one above
-  Scenario Outline: renaming to a file with special characters
+  Scenario Outline: renaming to a file with question mark in its name
     When user "Alice" moves file "/textfile0.txt" to "/<renamed_file>" using the WebDAV API
     Then the HTTP status code should be "201"
     And the content of file "/<renamed_file>" for user "Alice" should be "ownCloud test text file 0" plus end-of-line

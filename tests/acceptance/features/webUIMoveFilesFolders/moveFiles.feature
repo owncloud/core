@@ -36,7 +36,7 @@ Feature: move files
     And file "data.zip" should be listed on the webUI
 
   @skipOnFIREFOX
-  Scenario: move a file into a folder where a file with the same name already exists
+  Scenario: move a file into a folder where a file with the same name already exists where filename contains special characters
     When the user moves file "strängé filename (duplicate #2 &).txt" into folder "strängé नेपाली folder" using the webUI
     Then notifications should be displayed on the webUI with the text
       | Could not move "strängé filename (duplicate #2 &).txt", target exists |

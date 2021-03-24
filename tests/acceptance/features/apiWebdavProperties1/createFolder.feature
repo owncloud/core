@@ -28,8 +28,8 @@ Feature: create folder
       | new         | /नेपाली         |
       | new         | /folder #2      |
       | new         | /folder ?2      |
-      | new         | /folder ?2      |
       | new         | /😀 🤖          |
+
 
   @smokeTest
   Scenario Outline: Creating a folder

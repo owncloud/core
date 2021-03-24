@@ -77,7 +77,7 @@ Feature: capabilities
 
   @smokeTest @skipOnOcV10.3
   # These are new capabilities in 10.4
-  Scenario: getting default capabilities with admin user
+  Scenario: getting default capabilities with admin user with new values
     When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability    | path_to_element                                          | value             |

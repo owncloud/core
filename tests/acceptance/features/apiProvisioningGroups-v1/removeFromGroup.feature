@@ -33,7 +33,7 @@ Feature: remove a user from a group
       | brand-new-user | España§àôœ€         |
       | brand-new-user | नेपाली                |
 
-  Scenario: admin removes a user from a group
+  Scenario: admin removes a user from a group with special characters
     Given user "brand-new-user" has been created with default attributes and small skeleton files
     And these groups have been created:
       | groupname           | comment                                 |
@@ -91,7 +91,7 @@ Feature: remove a user from a group
       | brand-new-user | 😁 😂               |
 
   @toImplementOnOCIS
-  Scenario: admin removes a user from a group
+  Scenario: admin removes a user from a group with % and # in their names
     Given user "brand-new-user" has been created with default attributes and small skeleton files
     And these groups have been created:
       | groupname           | comment                                 |
@@ -226,7 +226,7 @@ Feature: remove a user from a group
 
   # merge this with scenario on line 62 once the issue is fixed
   @issue-31015 @skipOnOcV10 @toImplementOnOCIS
-  Scenario Outline: admin removes a user from a group that has a forward-slash in the group name
+  Scenario Outline: admin removes a user from a group that has a forward-slash and dot in the group name
     Given user "brand-new-user" has been created with default attributes and small skeleton files
     And group "<group_id>" has been created
     And user "brand-new-user" has been added to group "<group_id>"

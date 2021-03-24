@@ -451,7 +451,7 @@ Feature: sharees
       | 2               | 200        | 200         |
 
   @skipOnLDAP
-  Scenario Outline: Enumerate only group members - only show partial results from member groups
+  Scenario Outline: Enumerate only group members - only show partial results from member of groups
     Given using OCS API version "<ocs-api-version>"
     Given these users have been created with default attributes and small skeleton files:
       | username | displayname |

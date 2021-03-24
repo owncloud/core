@@ -22,7 +22,7 @@ Feature: add groups
       | España§àôœ€ |
       | नेपाली        |
 
-  Scenario: admin creates a group
+  Scenario: admin creates a group with special characters
     When the administrator sends a group creation request for the following groups using the provisioning API
       | groupname           | comment                                 |
       | brand-new-group     | dash                                    |
@@ -53,7 +53,7 @@ Feature: add groups
       | 😅 😆               |
 
   @toImplementOnOCIS @issue-product-284
-  Scenario: admin creates a group
+  Scenario: admin creates a group with % in name
     When the administrator sends a group creation request for the following groups using the provisioning API
       | groupname           | comment                                 |
       | maintenance#123     | Hash sign                               |

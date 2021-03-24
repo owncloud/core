@@ -52,7 +52,7 @@ Feature: Comments
     Then the HTTP status code should be "204"
     And user "Alice" should have 0 comments on folder "/FOLDER_TO_COMMENT_AND_DELETE"
 
-  Scenario: Deleting a comment on a file belonging to myself having several comments
+  Scenario: Deleting a comment on a folder belonging to myself having several comments
     Given user "Alice" has created folder "/FOLDER_TO_COMMENT"
     And user "Alice" has commented with content "My first comment" on folder "/FOLDER_TO_COMMENT"
     And user "Alice" has commented with content "My second comment" on folder "/FOLDER_TO_COMMENT"
@@ -63,7 +63,7 @@ Feature: Comments
     And user "Alice" should have 3 comments on folder "/FOLDER_TO_COMMENT"
 
   @files_sharing-app-required
-  Scenario: Deleting my own comments on a file shared by somebody else
+  Scenario: Deleting my own comments on a folder shared by somebody else
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/FOLDER_TO_COMMENT"
     And user "Alice" has shared folder "/FOLDER_TO_COMMENT" with user "Brian"

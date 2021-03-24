@@ -47,7 +47,7 @@ Feature: transfer-ownership
     And the downloaded content when downloading file "/somefile.txt" for user "Carol" with range "bytes=0-6" should be "This is"
 
   @skipOnEncryptionType:user-keys @files_sharing-app-required @skipOnFilesClassifier @issue-files-classifier-292
-  Scenario: transferring ownership of folder shared with third user
+  Scenario: transferring ownership when a folder is shared with third user
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and small skeleton files
     And user "Carol" has been created with default attributes and small skeleton files
@@ -59,7 +59,7 @@ Feature: transfer-ownership
     And the downloaded content when downloading file "/test/somefile.txt" for user "Carol" with range "bytes=0-6" should be "This is"
 
   @skipOnEncryptionType:user-keys @files_sharing-app-required
-  Scenario: transferring ownership of folder shared with transfer recipient
+  Scenario: transferring ownership when a folder is shared with transfer recipient
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" has created folder "/test"
@@ -71,7 +71,7 @@ Feature: transfer-ownership
     And the downloaded content when downloading file "/test/somefile.txt" for user "Brian" with range "bytes=0-6" from the last received transfer folder should be "This is"
 
   @skipOnEncryptionType:user-keys @files_sharing-app-required @skipOnFilesClassifier @issue-files-classifier-292
-  Scenario: transferring ownership of folder doubly shared with third user
+  Scenario: transferring ownership when a folder is doubly shared with third user
     Given group "group1" has been created
     And user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and small skeleton files
@@ -179,7 +179,7 @@ Feature: transfer-ownership
     And as "Brian" folder "/test" should exist in the last received transfer folder
 
   @skipOnEncryptionType:user-keys @files_sharing-app-required @skipOnFilesClassifier @issue-files-classifier-292
-  Scenario: transferring ownership of file shares
+  Scenario: transferring ownership of file shares for file inside a folder
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and small skeleton files
     And user "Carol" has been created with default attributes and small skeleton files
@@ -243,7 +243,7 @@ Feature: transfer-ownership
     And the downloaded content when downloading file "/test/somefile.txt" for user "Carol" with range "bytes=0-6" should be "This is"
 
   @files_sharing-app-required
-  Scenario: transferring ownership does not transfer received shares
+  Scenario: transferring ownership of a folder does not transfer received shares
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and small skeleton files
     And user "Carol" has been created with default attributes and small skeleton files
@@ -272,7 +272,7 @@ Feature: transfer-ownership
     And as "Alice" folder "/test" should not exist
 
   @local_storage
-  Scenario: transferring ownership does not transfer external storage
+  Scenario: transferring ownership of a folder does not transfer external storage
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" has created folder "/sub"
@@ -280,14 +280,14 @@ Feature: transfer-ownership
     Then the command should have been successful
     And as "Brian" folder "/local_storage" should not exist in the last received transfer folder
 
-  Scenario: transferring ownership fails with invalid source user
+  Scenario: transferring ownership of a folder fails with invalid source user
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has created folder "/sub"
     When the administrator transfers ownership of path "sub" from "invalid_user" to "Alice" using the occ command
     Then the command output should contain the text "Unknown source user"
     And the command should have failed with exit code 1
 
-  Scenario: transferring ownership fails with invalid destination user
+  Scenario: transferring ownership of a folder fails with invalid destination user
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has created folder "/sub"
     When the administrator transfers ownership of path "sub" from "Alice" to "invalid_user" using the occ command
