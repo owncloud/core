@@ -4,9 +4,11 @@ Feature: propagation of etags between federated and local server
   Background:
     Given using OCS API version "1"
     And using server "REMOTE"
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "PARENT"
     And using server "LOCAL"
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has created folder "PARENT"
 
   Scenario: Overwrite a federated shared folder as sharer propagates etag for recipient
     Given user "Brian" from server "LOCAL" has shared "/PARENT" with user "Alice" from server "REMOTE"

@@ -3,13 +3,16 @@ Feature: federated
 
   Background:
     Given using server "REMOTE"
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
     And using server "LOCAL"
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
 
   @issue-35839 @skipOnOcV10
   Scenario: "Auto accept from trusted servers" enabled with remote server
-    Given the trusted server list is cleared
+    Given using server "REMOTE"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
+    And using server "LOCAL"
+    And the trusted server list is cleared
     And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "yes"
     When the administrator adds url "%remote_server%" as trusted server using the testing API
     And user "Alice" from server "REMOTE" shares "/textfile1.txt" with user "Brian" from server "LOCAL" using the sharing API
@@ -19,36 +22,47 @@ Feature: federated
 
   @issue-35839 @skipOnOcV10
   Scenario: "Auto accept from trusted servers" disabled with remote server
-    Given the trusted server list is cleared
+    Given using server "REMOTE"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
+    And using server "LOCAL"
+    And the trusted server list is cleared
     And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "no"
     When the administrator adds url "%remote_server%" as trusted server using the testing API
     And user "Alice" from server "REMOTE" shares "/textfile1.txt" with user "Brian" from server "LOCAL" using the sharing API
     And using server "LOCAL"
-    Then as "Brian" file "textfile1 (2).txt" should not exist
+    Then as "Brian" file "textfile1.txt" should not exist
     And url "%remote_server%" should be a trusted server
 
   Scenario: Federated share with "Auto add server" enabled
-    Given the trusted server list is cleared
+    Given using server "REMOTE"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
     And using server "LOCAL"
+    And the trusted server list is cleared
     And parameter "autoAddServers" of app "federation" has been set to "1"
     When user "Alice" from server "REMOTE" shares "/textfile1.txt" with user "Brian" from server "LOCAL" using the sharing API
     And user "Brian" from server "LOCAL" has accepted the last pending share
     And using server "LOCAL"
-    Then as "Brian" file "textfile1 (2).txt" should exist
+    Then as "Brian" file "textfile1.txt" should exist
     And url "%remote_server%" should be a trusted server
 
   Scenario: Federated share with "Auto add server" disabled
-    Given the trusted server list is cleared
+    Given using server "REMOTE"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
+    And using server "LOCAL"
+    And the trusted server list is cleared
     And parameter "autoAddServers" of app "federation" has been set to "0"
     When user "Alice" from server "REMOTE" shares "/textfile1.txt" with user "Brian" from server "LOCAL" using the sharing API
     And user "Brian" from server "LOCAL" has accepted the last pending share
     And using server "LOCAL"
-    Then as "Brian" file "textfile1 (2).txt" should exist
+    Then as "Brian" file "textfile1.txt" should exist
     And url "%remote_server%" should not be a trusted server
 
   @issue-35839 @skipOnOcV10
   Scenario: enable "Add server automatically" once a federated share was created successfully
-    Given using server "LOCAL"
+    Given using server "REMOTE"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
+    And using server "LOCAL"
     And parameter "autoAddServers" of app "federation" has been set to "1"
     And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "yes"
     When user "Alice" from server "REMOTE" shares "/textfile0.txt" with user "Brian" from server "LOCAL" using the sharing API
@@ -56,11 +70,14 @@ Feature: federated
     And using server "LOCAL"
     Then url "%remote_server%" should be a trusted server
     When user "Alice" from server "REMOTE" shares "/textfile1.txt" with user "Brian" from server "LOCAL" using the sharing API
-    Then as "Brian" file "textfile1 (2).txt" should exist
+    Then as "Brian" file "textfile1.txt" should exist
 
   @issue-35839 @skipOnOcV10
   Scenario: disable "Add server automatically" once a federated share was created successfully
-    Given using server "LOCAL"
+    Given using server "REMOTE"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
+    And using server "LOCAL"
     And the trusted server list is cleared
     And parameter "autoAddServers" of app "federation" has been set to "0"
     And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "yes"
@@ -69,7 +86,7 @@ Feature: federated
     And using server "LOCAL"
     Then url "%remote_server%" should not be a trusted server
     When user "Alice" from server "REMOTE" shares "/textfile1.txt" with user "Brian" from server "LOCAL" using the sharing API
-    And as "Brian" file "textfile1 (2).txt" should not exist
+    And as "Brian" file "textfile1.txt" should not exist
 
   Scenario Outline: federated share receiver sees the original content of a received file
     Given using server "REMOTE"
@@ -86,6 +103,7 @@ Feature: federated
 
   Scenario Outline: federated share receiver sees the original content of a received file in multiple levels of folders
     Given using server "REMOTE"
+    And user "Alice" has created folder "/PARENT"
     And user "Alice" has created folder "/PARENT/RandomFolder"
     And user "Alice" has uploaded file with content "thisContentIsVisible" to "/PARENT/RandomFolder/file-to-share"
     And user "Alice" from server "REMOTE" has shared "/PARENT/RandomFolder/file-to-share" with user "Brian" from server "LOCAL"
@@ -99,7 +117,8 @@ Feature: federated
       | 2               |
 
   Scenario Outline: remote federated share receiver adds files/folders in the federated share
-    Given user "Brian" has created folder "/PARENT/RandomFolder"
+    Given user "Brian" has created folder "/PARENT"
+    And user "Brian" has created folder "/PARENT/RandomFolder"
     And user "Brian" has uploaded file with content "thisContentShouldBeVisible" to "/PARENT/RandomFolder/file-to-share"
     And user "Brian" from server "LOCAL" has shared "/PARENT/RandomFolder" with user "Alice" from server "REMOTE"
     And user "Alice" from server "REMOTE" has accepted the last pending share
@@ -119,6 +138,7 @@ Feature: federated
 
   Scenario Outline: local federated share receiver adds files/folders in the federated share
     Given using server "REMOTE"
+    And user "Alice" has created folder "/PARENT"
     And user "Alice" has created folder "/PARENT/RandomFolder"
     And user "Alice" has uploaded file with content "thisContentShouldBeVisible" to "/PARENT/RandomFolder/file-to-share"
     And user "Alice" from server "REMOTE" has shared "/PARENT/RandomFolder" with user "Brian" from server "LOCAL"
@@ -139,6 +159,7 @@ Feature: federated
 
   Scenario Outline: local federated share receiver deletes files/folders of the received share
     Given using server "REMOTE"
+    And user "Alice" has created folder "/PARENT"
     And user "Alice" has created folder "/PARENT/RandomFolder"
     And user "Alice" has created folder "/PARENT/RandomFolder/sub-folder"
     And user "Alice" has uploaded file with content "thisContentShouldBeVisible" to "/PARENT/RandomFolder/file-to-share"
@@ -158,7 +179,8 @@ Feature: federated
       | 2               |
 
   Scenario Outline: remote federated share receiver deletes files/folders of the received share
-    Given user "Brian" has created folder "/PARENT/RandomFolder"
+    Given user "Brian" has created folder "/PARENT"
+    And user "Brian" has created folder "/PARENT/RandomFolder"
     And user "Brian" has created folder "/PARENT/RandomFolder/sub-folder"
     And user "Brian" has uploaded file with content "thisContentShouldBeVisible" to "/PARENT/RandomFolder/file-to-share"
     And user "Brian" from server "LOCAL" has shared "/PARENT/RandomFolder" with user "Alice" from server "REMOTE"
@@ -178,6 +200,7 @@ Feature: federated
 
   Scenario Outline: local federated share receiver renames files/folders of the received share
     Given using server "REMOTE"
+    And user "Alice" has created folder "/PARENT"
     And user "Alice" has created folder "/PARENT/RandomFolder"
     And user "Alice" has created folder "/PARENT/RandomFolder/sub-folder"
     And user "Alice" has uploaded file with content "thisContentShouldBeVisible" to "/PARENT/RandomFolder/file-to-share"
@@ -199,7 +222,8 @@ Feature: federated
       | 2               |
 
   Scenario Outline: remote federated share receiver renames files/folders of the received share
-    Given user "Brian" has created folder "/PARENT/RandomFolder"
+    Given user "Brian" has created folder "/PARENT"
+    And user "Brian" has created folder "/PARENT/RandomFolder"
     And user "Brian" has created folder "/PARENT/RandomFolder/sub-folder"
     And user "Brian" has uploaded file with content "thisContentShouldBeVisible" to "/PARENT/RandomFolder/file-to-share"
     And user "Brian" from server "LOCAL" has shared "/PARENT/RandomFolder" with user "Alice" from server "REMOTE"
@@ -221,6 +245,7 @@ Feature: federated
 
   Scenario Outline: sharer modifies the share which was shared to the federated share receiver
     Given using server "REMOTE"
+    And user "Alice" has created folder "/PARENT"
     And user "Alice" has created folder "/PARENT/RandomFolder"
     And user "Alice" has uploaded file with content "thisContentShouldBeChanged" to "/PARENT/RandomFolder/file-to-share"
     And user "Alice" from server "REMOTE" has shared "/PARENT/RandomFolder/file-to-share" with user "Brian" from server "LOCAL"
@@ -236,6 +261,7 @@ Feature: federated
 
   Scenario Outline: sharer adds files/folders in the share which was shared to the federated share receiver
     Given using server "REMOTE"
+    And user "Alice" has created folder "/PARENT"
     And user "Alice" has created folder "/PARENT/RandomFolder"
     And user "Alice" has uploaded file with content "thisContentShouldBeVisible" to "/PARENT/RandomFolder/file-to-share"
     And user "Alice" from server "REMOTE" has shared "/PARENT/RandomFolder" with user "Brian" from server "LOCAL"
@@ -255,6 +281,7 @@ Feature: federated
 
   Scenario Outline: sharer deletes files/folders of the share which was shared to the federated share receiver
     Given using server "REMOTE"
+    And user "Alice" has created folder "/PARENT"
     And user "Alice" has created folder "/PARENT/RandomFolder"
     And user "Alice" has created folder "/PARENT/RandomFolder/sub-folder"
     And user "Alice" has uploaded file with content "thisContentShouldBeVisible" to "/PARENT/RandomFolder/file-to-share"
@@ -274,6 +301,7 @@ Feature: federated
 
   Scenario Outline: sharer renames files/folders of the share which was shared to the federated share receiver
     Given using server "REMOTE"
+    And user "Alice" has created folder "/PARENT"
     And user "Alice" has created folder "/PARENT/RandomFolder"
     And user "Alice" has created folder "/PARENT/RandomFolder/sub-folder"
     And user "Alice" has uploaded file with content "thisContentShouldBeVisible" to "/PARENT/RandomFolder/file-to-share"
@@ -294,7 +322,8 @@ Feature: federated
       | 2               |
 
   Scenario Outline: sharer unshares the federated share and the receiver no longer sees the files/folders
-    Given user "Brian" has created folder "/PARENT/RandomFolder"
+    Given user "Brian" has created folder "/PARENT"
+    And user "Brian" has created folder "/PARENT/RandomFolder"
     And user "Brian" has uploaded file with content "thisContentShouldBeVisible" to "/PARENT/RandomFolder/file-to-share"
     And user "Brian" from server "LOCAL" has shared "/PARENT/RandomFolder" with user "Alice" from server "REMOTE"
     And user "Alice" from server "REMOTE" has accepted the last pending share
@@ -309,7 +338,8 @@ Feature: federated
       | 2               |
 
   Scenario Outline: federated share receiver can move the location of the received share and changes are correctly seen at both ends
-    Given user "Brian" has created folder "/PARENT/RandomFolder"
+    Given user "Brian" has created folder "/PARENT"
+    And user "Brian" has created folder "/PARENT/RandomFolder"
     And user "Brian" has uploaded file with content "thisContentIsVisible" to "PARENT/RandomFolder/file-to-share"
     And user "Brian" from server "LOCAL" has shared "/PARENT/RandomFolder" with user "Alice" from server "REMOTE"
     And user "Alice" from server "REMOTE" has accepted the last pending share
@@ -332,7 +362,8 @@ Feature: federated
       | 2               |
 
   Scenario Outline: federated sharer can move the location of the received share and changes are correctly seen at both ends
-    Given user "Brian" has created folder "/PARENT/RandomFolder"
+    Given user "Brian" has created folder "/PARENT"
+    And user "Brian" has created folder "/PARENT/RandomFolder"
     And user "Brian" has uploaded file with content "thisContentIsVisible" to "PARENT/RandomFolder/file-to-share"
     And user "Brian" from server "LOCAL" has shared "/PARENT/RandomFolder" with user "Alice" from server "REMOTE"
     And user "Alice" from server "REMOTE" has accepted the last pending share
@@ -483,7 +514,8 @@ Feature: federated
     And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_remote_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_remote_share" of app "core" has been set to "7"
-    When user "Brian" from server "LOCAL" shares "/textfile0.txt" with user "Alice" from server "REMOTE" using the sharing API
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
+    When user "Brian" from server "LOCAL" shares "/textfile1.txt" with user "Alice" from server "REMOTE" using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Brian" sharing with user "Alice" should include
@@ -492,7 +524,7 @@ Feature: federated
       | item_source            | A_NUMBER          |
       | share_type             | federated         |
       | file_source            | A_NUMBER          |
-      | path                   | /textfile0.txt    |
+      | path                   | /textfile1.txt    |
       | permissions            | share,read,update |
       | stime                  | A_NUMBER          |
       | storage                | A_NUMBER          |
@@ -512,6 +544,7 @@ Feature: federated
   Scenario Outline: Federated sharing with default expiration date enabled but not enforced, user shares without specifying expireDate
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     When user "Brian" from server "LOCAL" shares "/textfile0.txt" with user "Alice" from server "REMOTE" using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
@@ -527,6 +560,7 @@ Feature: federated
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_remote_share" of app "core" has been set to "yes"
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     When user "Brian" from server "LOCAL" shares "/textfile0.txt" with user "Alice" from server "REMOTE" using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
@@ -541,6 +575,7 @@ Feature: federated
   Scenario Outline: Federated sharing with default expiration date disabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "no"
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     When user "Brian" from server "LOCAL" shares "/textfile0.txt" with user "Alice" from server "REMOTE" using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
@@ -557,6 +592,7 @@ Feature: federated
     And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_remote_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_remote_share" of app "core" has been set to "7"
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     When user "Brian" from server "LOCAL" shares "/textfile0.txt" with user "Alice" from server "REMOTE" using the sharing API
     And user "Brian" updates the last share using the sharing API with
       | expireDate | +3 days |
@@ -575,6 +611,7 @@ Feature: federated
     And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_remote_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_remote_share" of app "core" has been set to "7"
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     When user "Brian" from server "LOCAL" shares "/textfile0.txt" with user "Alice" from server "REMOTE" using the sharing API
     And user "Brian" updates the last share using the sharing API with
       | expireDate | +10 days |
@@ -594,6 +631,7 @@ Feature: federated
     And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_remote_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_remote_share" of app "core" has been set to "7"
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     And user "Brian" has shared file "/textfile0.txt" with user "Carol" with permissions "read,update,share"
     When user "Carol" from server "LOCAL" shares "/textfile0.txt" with user "Alice" from server "REMOTE" using the sharing API
     And user "Carol" updates the last share using the sharing API with
@@ -616,6 +654,7 @@ Feature: federated
     And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_remote_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_remote_share" of app "core" has been set to "7"
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     And user "Brian" has shared file "/textfile0.txt" with user "Carol" with permissions "read,update,share"
     When user "Carol" from server "LOCAL" shares "/textfile0.txt" with user "Alice" from server "REMOTE" using the sharing API
     And user "Carol" updates the last share using the sharing API with

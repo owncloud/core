@@ -6,11 +6,12 @@ Feature: propagation of etags between federated and local server
     And using server "REMOTE"
     And the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
     And using server "LOCAL"
     And the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has created folder "PARENT"
 
   Scenario: Overwrite a federated shared folder as sharer propagates etag for recipient
     Given user "Brian" from server "LOCAL" has shared "/PARENT" with user "Alice" from server "REMOTE"
