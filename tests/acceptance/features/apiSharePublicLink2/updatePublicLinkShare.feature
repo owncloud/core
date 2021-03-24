@@ -379,7 +379,7 @@ Feature: update a public link share
       | 2               | 200             |
 
 
-  Scenario Outline: Adding public link with all permisssions to a read only shared folder as recipient is not allowed using the old public API
+  Scenario Outline: Adding public link with all permissions to a read only shared folder as recipient is not allowed using the old public API
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/test"
@@ -398,7 +398,7 @@ Feature: update a public link share
       | 2               | 404              |
 
   @issue-ocis-reva-11
-  Scenario Outline: Adding public link with all permisssions to a read only shared folder as recipient is not allowed using the new public API
+  Scenario Outline: Adding public link with all permissions to a read only shared folder as recipient is not allowed using the new public API
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/test"
@@ -417,7 +417,7 @@ Feature: update a public link share
       | 2               | 404              |
 
 
-  Scenario Outline: Adding public link with all permisssions to a read only to a shared folder as recipient is allowed with permissions using the old public API
+  Scenario Outline: Adding public link with all permissions to a read only shared folder as recipient is allowed with permissions using the old public API
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/test"
@@ -436,7 +436,7 @@ Feature: update a public link share
       | 2               | 200             |
 
   @issue-ocis-reva-11
-  Scenario Outline:  Adding public link with all permisssions to a read only folder as recipient is allowed with permissions using the new public API
+  Scenario Outline:  Adding public link with all permissions to a read only folder as recipient is allowed with permissions using the new public API
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/test"
@@ -546,4 +546,3 @@ Feature: update a public link share
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
-

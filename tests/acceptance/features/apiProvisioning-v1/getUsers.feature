@@ -8,7 +8,7 @@ Feature: get users
     Given using OCS API version "1"
 
   @smokeTest @notToImplementOnOCIS
-  Scenario: admin gets all users where admin user exists
+  Scenario: admin gets all users and checks for all the users including the admin user
     Given user "brand-new-user" has been created with default attributes and small skeleton files
     When the administrator gets the list of all users using the provisioning API
     Then the OCS status code should be "100"
