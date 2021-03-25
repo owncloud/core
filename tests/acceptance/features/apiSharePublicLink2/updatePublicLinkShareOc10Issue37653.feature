@@ -3,11 +3,12 @@ Feature: update a public link share
 
   Background:
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
 
   @issue-37653
   Scenario Outline: API responds with a full set of parameters when owner changes the expireDate of a public share
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "FOLDER"
     When user "Alice" creates a public link share using the sharing API with settings
       | path | FOLDER |
     And user "Alice" updates the last share using the sharing API with

@@ -3,7 +3,8 @@
 Feature: upload to a public link share
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "FOLDER"
 
   @smokeTest
   Scenario: Uploading same file to a public upload-only share multiple times via old API

@@ -3,11 +3,12 @@ Feature: update a public link share
 
   Background:
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
 
   @issue-37653 @skipOnOcV10
   Scenario Outline: API responds with a full set of parameters when owner changes the expireDate of a public share
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "FOLDER"
     When user "Alice" creates a public link share using the sharing API with settings
       | path | FOLDER |
     And user "Alice" updates the last share using the sharing API with
@@ -47,6 +48,7 @@ Feature: update a public link share
   @smokeTest @issue-ocis-reva-336
   Scenario Outline: Creating a new public link share, updating its expiration date and getting its info
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "FOLDER"
     When user "Alice" creates a public link share using the sharing API with settings
       | path | FOLDER |
     And user "Alice" updates the last share using the sharing API with
@@ -79,6 +81,7 @@ Feature: update a public link share
   @issue-product-295 @skipOnOcV10
   Scenario Outline: API responds with a full set of parameters when owner renames the file with a public link
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "FOLDER"
     When user "Alice" creates a public link share using the sharing API with settings
       | path | FOLDER |
     And user "Alice" has moved folder "/FOLDER" to "/RENAMED_FOLDER"
@@ -149,6 +152,7 @@ Feature: update a public link share
   @issue-ocis-reva-336
   Scenario Outline: Creating a new public link share, updating its expiration date and getting its info (ocis Bug demonstration)
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "FOLDER"
     When user "Alice" creates a public link share using the sharing API with settings
       | path | FOLDER |
     And user "Alice" updates the last share using the sharing API with
@@ -181,6 +185,7 @@ Feature: update a public link share
   @issue-ocis-reva-336
   Scenario Outline: Creating a new public link share, updating its password and getting its info
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "FOLDER"
     When user "Alice" creates a public link share using the sharing API with settings
       | path | FOLDER |
     And user "Alice" updates the last share using the sharing API with
@@ -212,6 +217,7 @@ Feature: update a public link share
   @issue-ocis-reva-336
   Scenario Outline: Creating a new public link share, updating its permissions and getting its info
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "FOLDER"
     When user "Alice" creates a public link share using the sharing API with settings
       | path | FOLDER |
     And user "Alice" updates the last share using the sharing API with
@@ -243,6 +249,7 @@ Feature: update a public link share
   @issue-ocis-reva-336
   Scenario Outline: Creating a new public link share, updating its permissions to view download and upload and getting its info
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "FOLDER"
     When user "Alice" creates a public link share using the sharing API with settings
       | path | FOLDER |
     And user "Alice" updates the last share using the sharing API with
@@ -274,6 +281,7 @@ Feature: update a public link share
   @issue-ocis-reva-336
   Scenario Outline: Creating a new public link share, updating publicUpload option and getting its info
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "FOLDER"
     When user "Alice" creates a public link share using the sharing API with settings
       | path | FOLDER |
     And user "Alice" updates the last share using the sharing API with
@@ -458,6 +466,9 @@ Feature: update a public link share
   Scenario Outline: Updating share permissions from change to read restricts public from deleting files using the old public API
     Given the administrator has enabled DAV tech_preview
     And using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "PARENT"
+    And user "Alice" has created folder "PARENT/CHILD"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/CHILD/child.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT                   |
       | permissions | read,update,create,delete |
@@ -480,6 +491,9 @@ Feature: update a public link share
   Scenario Outline: Updating share permissions from change to read restricts public from deleting files using the new public API
     Given the administrator has enabled DAV tech_preview
     And using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "PARENT"
+    And user "Alice" has created folder "PARENT/CHILD"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/CHILD/child.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT                   |
       | permissions | read,update,create,delete |
@@ -502,6 +516,10 @@ Feature: update a public link share
   Scenario Outline: Updating share permissions from read to change allows public to delete files using the old public API
     Given the administrator has enabled DAV tech_preview
     And using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "PARENT"
+    And user "Alice" has created folder "PARENT/CHILD"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/parent.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/CHILD/child.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT |
       | permissions | read    |
@@ -526,6 +544,10 @@ Feature: update a public link share
   Scenario Outline: Updating share permissions from read to change allows public to delete files using the new public API
     Given the administrator has enabled DAV tech_preview
     And using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "PARENT"
+    And user "Alice" has created folder "PARENT/CHILD"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/parent.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/CHILD/child.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT |
       | permissions | read    |

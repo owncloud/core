@@ -6,8 +6,10 @@ Feature: reshare as public link
   So that I can give controlled access to others
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
-    And user "Brian" has been created with default attributes and without skeleton files
+    Given these users have been created with default attributes and without skeleton files:
+      | username  |
+      | Alice     |
+      | Brian     |
 
   Scenario Outline: creating a public link from a share with read permission only is not allowed
     Given using OCS API version "<ocs_api_version>"
