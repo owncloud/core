@@ -16,6 +16,7 @@ OC.L10N.register(
     "All users. Type to select user or group." : "Все пользователи. Для выбора введите имя пользователя или группы.",
     "(group)" : "(группа)",
     "Compatibility with Mac NFD encoding (slow)" : "Совместимость с кодировкой Mac NFD (медленно)",
+    "Sharing cannot be enabled due to the chosen authentication method" : "Общий доступ не может быть включен из-за выбранного метода аутентификации.",
     "Unknown auth backend \"{b}\"" : "Неизвестный механизм аутентификации «{b}»",
     "Please make sure that the app that provides this backend is installed and enabled" : "Пожалуйста, удостоверьтесь что приложение, которое предоставляет этот механизм, установлено и включено",
     "Admin defined" : "Определено админом",
