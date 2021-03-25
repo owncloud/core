@@ -9,7 +9,7 @@ Feature: current oC10 behavior for issue-31276
 
   @issue-31276
   Scenario: Subadmin should not be able to disable an user not in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | subadmin |
@@ -26,7 +26,7 @@ Feature: current oC10 behavior for issue-31276
 
   @issue-31276
   Scenario: Subadmins should not be able to disable users that have admin permissions in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username      |
       | subadmin      |
       | another-admin |
@@ -43,7 +43,7 @@ Feature: current oC10 behavior for issue-31276
 
   @issue-31276
   Scenario: disable an user with a regular user
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |

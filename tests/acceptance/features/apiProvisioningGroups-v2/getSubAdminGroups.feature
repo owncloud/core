@@ -9,7 +9,7 @@ Feature: get subadmin groups
 
   @smokeTest
   Scenario: admin gets subadmin groups of a user
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created
     And group "😅 😆" has been created
     And user "brand-new-user" has been made a subadmin of group "brand-new-group"
@@ -32,7 +32,7 @@ Feature: get subadmin groups
 
   @issue-owncloud-sdk-658 @skipOnOcV10.5 @skipOnOcV10.6.0
   Scenario: subadmin gets groups where he/she is subadmin
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created
     And group "😅 😆" has been created
     And user "Alice" has been made a subadmin of group "brand-new-group"
@@ -45,7 +45,7 @@ Feature: get subadmin groups
       | 😅 😆          |
 
   Scenario: subadmin of a group should not be able to get subadmin groups of another subadmin user
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -60,7 +60,7 @@ Feature: get subadmin groups
 
 
   Scenario: normal user should not be able to get subadmin groups of a subadmin user
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |

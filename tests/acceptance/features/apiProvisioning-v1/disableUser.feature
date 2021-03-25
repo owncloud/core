@@ -9,7 +9,7 @@ Feature: disable user
 
   @smokeTest
   Scenario: admin disables an user
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     When the administrator disables user "Alice" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -17,7 +17,7 @@ Feature: disable user
 
   @skipOnOcV10.3
   Scenario: admin disables an user with special characters in the username
-    Given these users have been created with small skeleton files:
+    Given these users have been created without skeleton files:
       | username | email               |
       | a@-+_.b  | a.b@example.com     |
       | a space  | a.space@example.com |
@@ -34,7 +34,7 @@ Feature: disable user
 
   @smokeTest @notToImplementOnOCIS
   Scenario: Subadmin should be able to disable an user in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | subadmin |
@@ -49,7 +49,7 @@ Feature: disable user
 
   @notToImplementOnOCIS
   Scenario: Subadmin should not be able to disable an user not in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | subadmin |
@@ -65,7 +65,7 @@ Feature: disable user
 
   @notToImplementOnOCIS
   Scenario: Subadmins should not be able to disable users that have admin permissions in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username      |
       | subadmin      |
       | another-admin |
@@ -80,7 +80,7 @@ Feature: disable user
     And user "another-admin" should be enabled
 
   Scenario: Admin can disable another admin user
-    Given user "another-admin" has been created with default attributes and small skeleton files
+    Given user "another-admin" has been created with default attributes and without skeleton files
     And user "another-admin" has been added to group "admin"
     When the administrator disables user "another-admin" using the provisioning API
     Then the OCS status code should be "100"
@@ -89,7 +89,7 @@ Feature: disable user
 
   @notToImplementOnOCIS
   Scenario: Admin can disable subadmins in the same group
-    Given user "subadmin" has been created with default attributes and small skeleton files
+    Given user "subadmin" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created
     And user "subadmin" has been added to group "brand-new-group"
     And the administrator has been added to group "brand-new-group"
@@ -100,7 +100,7 @@ Feature: disable user
     And user "subadmin" should be disabled
 
   Scenario: Admin user cannot disable himself
-    Given user "another-admin" has been created with default attributes and small skeleton files
+    Given user "another-admin" has been created with default attributes and without skeleton files
     And user "another-admin" has been added to group "admin"
     When user "another-admin" disables user "another-admin" using the provisioning API
     Then the OCS status code should be "101"
@@ -119,7 +119,7 @@ Feature: disable user
 
   @notToImplementOnOCIS
   Scenario: Subadmin should not be able to disable himself
-    Given user "subadmin" has been created with default attributes and small skeleton files
+    Given user "subadmin" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created
     And user "subadmin" has been added to group "brand-new-group"
     And user "subadmin" has been made a subadmin of group "brand-new-group"
@@ -130,7 +130,7 @@ Feature: disable user
 
   @smokeTest
   Scenario: Making a web request with a disabled user
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has been disabled
     When user "Alice" sends HTTP method "GET" to URL "/index.php/apps/files"
     Then the HTTP status code should be "403"
@@ -142,7 +142,7 @@ Feature: disable user
     Then the HTTP status code should be "401"
 
   Scenario: Disabled user tries to upload file
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has been disabled
     When user "Alice" uploads file with content "uploaded content" to "newTextFile.txt" using the WebDAV API
     Then the HTTP status code should be "401"
@@ -223,7 +223,7 @@ Feature: disable user
       | new         |
 
   Scenario: Subadmin should be able to disable user with subadmin permissions in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username         |
       | subadmin         |
       | another-subadmin |
@@ -237,7 +237,7 @@ Feature: disable user
     And user "another-subadmin" should be disabled
 
   Scenario: Subadmin should not be able to disable another subadmin of same group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username         |
       | subadmin         |
       | another-subadmin |
@@ -250,7 +250,7 @@ Feature: disable user
     And user "another-subadmin" should be enabled
 
   Scenario: normal user cannot disable himself
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
     When user "Alice" disables user "Alice" using the provisioning API

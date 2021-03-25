@@ -9,7 +9,7 @@ Feature: get users
 
   @smokeTest @notToImplementOnOCIS
   Scenario: admin gets all users where default admin user exists
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     When the administrator gets the list of all users using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
@@ -18,7 +18,7 @@ Feature: get users
       | admin          |
 
   Scenario: admin gets all users
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     When the administrator gets the list of all users using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
@@ -27,7 +27,7 @@ Feature: get users
 
   @smokeTest @notToImplementOnOCIS
   Scenario: subadmin gets the users in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username         |
       | brand-new-user   |
       | another-new-user |
@@ -42,7 +42,7 @@ Feature: get users
 
   @issue-31276 @skipOnOcV10
   Scenario: normal user tries to get other users
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username         |
       | brand-new-user   |
       | another-new-user |
