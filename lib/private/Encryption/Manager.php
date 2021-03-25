@@ -253,7 +253,7 @@ class Manager implements IManager {
 	 */
 	public function setupStorage() {
 		$encryptionWrapper = new EncryptionWrapper($this->arrayCache, $this, $this->logger);
-		Filesystem::addStorageWrapper('oc_encryption', [$encryptionWrapper, 'wrapStorage'], 2);
+		Filesystem::addStorageWrapper('oc_encryption', [$encryptionWrapper, 'wrapStorage'], 55);
 	}
 
 	/**
