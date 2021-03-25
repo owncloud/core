@@ -6,24 +6,29 @@ Feature: Sharing files and folders with internal users
 
   @smokeTest
   Scenario: share a file & folder with another internal user
-    Given these users have been created with default attributes and large skeleton files:
-      | username |
-      | Alice    |
-      | Brian    |
+    Given user "Alice" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has created folder "simple-folder"
+    And user "Brian" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
+    And user "Brian" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"
     And user "Brian" has shared folder "simple-folder" with user "Alice"
     And user "Brian" has shared file "testimage.jpg" with user "Alice"
     When user "Alice" logs in using the webUI
-    Then folder "simple-folder (2)" should be listed on the webUI
-    And folder "simple-folder (2)" should be marked as shared by "Brian" on the webUI
-    And file "testimage (2).jpg" should be listed on the webUI
-    And file "testimage (2).jpg" should be marked as shared by "Brian" on the webUI
-    When the user opens folder "simple-folder (2)" using the webUI
+    Then folder "simple-folder" should be listed on the webUI
+    And folder "simple-folder" should be marked as shared by "Brian" on the webUI
+    And file "testimage.jpg" should be listed on the webUI
+    And file "testimage.jpg" should be marked as shared by "Brian" on the webUI
+    When the user opens folder "simple-folder" using the webUI
     Then file "lorem.txt" should be listed on the webUI
-    But folder "simple-folder (2)" should not be listed on the webUI
+    But folder "simple-folder" should not be listed on the webUI
 
   Scenario: share a folder with other user and then it should be listed on Shared with Others page
-    Given user "Alice" has been created with default attributes and without skeleton files
-    And user "Brian" has been created with default attributes and large skeleton files
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
+    And user "Brian" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
+    And user "Brian" has created folder "simple-folder"
     And user "Brian" has shared file "lorem.txt" with user "Alice"
     And user "Brian" has shared file "simple-folder" with user "Alice"
     And user "Brian" has logged in using the webUI
@@ -33,7 +38,10 @@ Feature: Sharing files and folders with internal users
 
   Scenario: share two file with same name but different paths
     Given user "Alice" has been created with default attributes and without skeleton files
-    And user "Brian" has been created with default attributes and large skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has created folder "simple-folder"
+    And user "Brian" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
+    And user "Brian" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And user "Brian" has shared file "lorem.txt" with user "Alice"
     And user "Brian" has logged in using the webUI
     When the user opens folder "simple-folder" using the webUI
@@ -43,24 +51,26 @@ Feature: Sharing files and folders with internal users
     And file "lorem.txt" with path "/simple-folder" should be listed in the shared with others page on the webUI
 
   Scenario: user shares the file/folder with another internal user and delete the share with user
-    Given these users have been created with default attributes and large skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And user "Alice" has logged in using the webUI
     And user "Alice" has shared file "lorem.txt" with user "Brian"
     When the user opens the share dialog for file "lorem.txt"
     And the user deletes share with user "Brian" for the current file
     Then the user "Brian" should not be in share with user list
     And file "lorem.txt" should not be listed in shared-with-others page on the webUI
-    And as "Brian" file "lorem (2).txt" should not exist
+    And as "Brian" file "lorem.txt" should not exist
 
   @skipOnOcV10.3 @skipOnOcV10.4
   Scenario Outline: user shares a file with another user with unusual usernames
-    Given user "Alice" has been created with default attributes and large skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And these users have been created without skeleton files:
       | username   |
       | <username> |
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And user "Alice" has logged in using the webUI
     When the user shares file "lorem.txt" with user "<username>" using the webUI
     And the user re-logs in as "<username>" using the webUI
@@ -306,20 +316,23 @@ Feature: Sharing files and folders with internal users
     Then 2 public link shares with name "Public link" should be visible on the webUI
 
   Scenario Outline: user with unusual username shares a file & folder with another internal user
-    Given these users have been created with default attributes and large skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username   |
       | Alice      |
       | <username> |
+    And user "<username>" has created folder "simple-folder"
+    And user "<username>" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
+    And user "<username>" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"
     And user "<username>" has shared folder "simple-folder" with user "Alice"
     And user "<username>" has shared file "testimage.jpg" with user "Alice"
     When user "Alice" logs in using the webUI
-    Then folder "simple-folder (2)" should be listed on the webUI
-    And folder "simple-folder (2)" should be marked as shared by "<username>" on the webUI
-    And file "testimage (2).jpg" should be listed on the webUI
-    And file "testimage (2).jpg" should be marked as shared by "<username>" on the webUI
-    When the user opens folder "simple-folder (2)" using the webUI
+    Then folder "simple-folder" should be listed on the webUI
+    And folder "simple-folder" should be marked as shared by "<username>" on the webUI
+    And file "testimage.jpg" should be listed on the webUI
+    And file "testimage.jpg" should be marked as shared by "<username>" on the webUI
+    When the user opens folder "simple-folder" using the webUI
     Then file "lorem.txt" should be listed on the webUI
-    But folder "simple-folder (2)" should not be listed on the webUI
+    But folder "simple-folder" should not be listed on the webUI
     Examples:
       | username |
       | user-1   |

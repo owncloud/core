@@ -444,21 +444,22 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given these users have been created without skeleton files:
+	 * @Given /^these users have been created without skeleton files ?(and not initialized|):$/
 	 * expects a table of users with the heading
 	 * "|username|password|displayname|email|"
 	 * password, displayname & email are optional
 	 *
 	 * @param TableNode $table
+	 * @param string $doNotInitialize
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theseUsersHaveBeenCreatedWithoutSkeletonFiles(TableNode $table) {
+	public function theseUsersHaveBeenCreatedWithoutSkeletonFiles(TableNode $table, string $doNotInitialize) {
 		$baseUrl = $this->getBaseUrl();
 		$path = $this->popSkeletonDirectoryConfig($baseUrl);
 		try {
-			$this->theseUsersHaveBeenCreated("", "", "", $table);
+			$this->theseUsersHaveBeenCreated("", "", $doNotInitialize, $table);
 		} finally {
 			// restore skeletondirectory even if user creation failed
 			$this->setSkeletonDir($path);

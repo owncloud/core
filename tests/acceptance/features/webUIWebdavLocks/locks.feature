@@ -25,23 +25,23 @@ Feature: Locks
     But file "data.tar.gz" should not be marked as locked on the webUI
 
   Scenario: setting a lock shows the display name of a user in the locking details
-    Given these users have been created with large skeleton files:
-      | username               | displayname   |
-      | user-with-display-name | My fancy name |
-    Given user "user-with-display-name" has locked folder "simple-folder" setting the following properties
+    Given the administrator has changed the display name of user "brand-new-user" to "My fancy name"
+    And user "brand-new-user" has locked folder "simple-folder" setting the following properties
       | lockscope | shared |
-    And user "user-with-display-name" has locked file "data.zip" setting the following properties
+    And user "brand-new-user" has locked file "data.zip" setting the following properties
       | lockscope | exclusive |
-    When the user re-logs in with username "user-with-display-name" and password "%regular%" using the webUI
+    When the user re-logs in with username "brand-new-user" and password "%regular%" using the webUI
     And folder "simple-folder" should be marked as locked by user "My fancy name" in the locks tab of the details panel on the webUI
     And file "data.zip" should be marked as locked by user "My fancy name" in the locks tab of the details panel on the webUI
 
   @skipOnOcV10 @issue-34315
   Scenario: setting a lock shows the current display name of a user in the locking details
-    Given these users have been created with large skeleton files:
+    Given these users have been created without skeleton files:
       | username               | displayname   |
       | user-with-display-name | My fancy name |
-    Given user "user-with-display-name" has locked folder "simple-folder" setting the following properties
+    And user "user-with-display-name" has created folder "simple-folder"
+    And user "user-with-display-name" has uploaded file "filesForUpload/data.zip" to "/data.zip"
+    And user "user-with-display-name" has locked folder "simple-folder" setting the following properties
       | lockscope | shared |
     And user "user-with-display-name" has locked file "data.zip" setting the following properties
       | lockscope | exclusive |
@@ -51,10 +51,12 @@ Feature: Locks
     And file "data.zip" should be marked as locked by user "An ordinary name" in the locks tab of the details panel on the webUI
 
   Scenario: setting a lock shows the display name of a user in the locking details (user has set email address)
-    Given these users have been created with large skeleton files:
+    Given these users have been created without skeleton files:
       | username               | displayname   | email       |
       | user-with-display-name | My fancy name | mail@oc.org |
-    Given user "user-with-display-name" has locked folder "simple-folder" setting the following properties
+    And user "user-with-display-name" has uploaded file "filesForUpload/data.zip" to "/data.zip"
+    And user "user-with-display-name" has created folder "simple-folder"
+    And user "user-with-display-name" has locked folder "simple-folder" setting the following properties
       | lockscope | shared |
     And user "user-with-display-name" has locked file "data.zip" setting the following properties
       | lockscope | exclusive |
@@ -63,10 +65,12 @@ Feature: Locks
     And file "data.zip" should be marked as locked by user "My fancy name (mail@oc.org)" in the locks tab of the details panel on the webUI
 
   Scenario: setting a lock shows the user name of a user in the locking details (user has set email address)
-    Given these users have been created with large skeleton files:
+    Given these users have been created without skeleton files:
       | username        | email       |
       | user-with-email | mail@oc.org |
-    Given user "user-with-email" has locked folder "simple-folder" setting the following properties
+    And user "user-with-email" has uploaded file "filesForUpload/data.zip" to "/data.zip"
+    And user "user-with-email" has created folder "simple-folder"
+    And user "user-with-email" has locked folder "simple-folder" setting the following properties
       | lockscope | shared |
     And user "user-with-email" has locked file "data.zip" setting the following properties
       | lockscope | exclusive |
@@ -93,9 +97,7 @@ Feature: Locks
 
   @skipOnOcV10 @issue-33867 @files_sharing-app-required
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-with-others page
-    Given these users have been created with large skeleton files:
-      | username |
-      | receiver |
+    Given user "receiver" has been created with default attributes and without skeleton files
     And user "brand-new-user" has locked folder "simple-folder" setting the following properties
       | lockscope | shared |
     And user "brand-new-user" has locked file "data.zip" setting the following properties
@@ -136,9 +138,7 @@ Feature: Locks
 
   @skipOnOcV10 @issue-33867 @files_sharing-app-required
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-with-you page
-    Given these users have been created with large skeleton files:
-      | username |
-      | sharer   |
+    Given user "sharer" has been created with default attributes and without skeleton files
     And user "sharer" has locked folder "simple-folder" setting the following properties
       | lockscope | shared |
     And user "sharer" has locked file "data.zip" setting the following properties
@@ -162,19 +162,22 @@ Feature: Locks
 
   @files_sharing-app-required
   Scenario: lock set on a shared file shows the lock information for all involved users
-    Given these users have been created with large skeleton files:
+    Given these users have been created without skeleton files:
       | username  |
       | sharer    |
       | receiver  |
       | receiver2 |
+    And user "sharer" has uploaded file "filesForUpload/data.zip" to "/data.zip"
+    And user "sharer" has uploaded file "filesForUpload/data.tar.gz" to "/data.tar.gz"
+    And user "receiver2" has uploaded file "filesForUpload/data.tar.gz" to "/data.tar.gz"
     And group "receiver-group" has been created
     And user "receiver2" has been added to group "receiver-group"
     And user "sharer" has shared file "data.zip" with user "receiver"
     And user "sharer" has shared file "data.tar.gz" with group "receiver-group"
-    And user "receiver" has shared file "data (2).zip" with user "brand-new-user"
+    And user "receiver" has shared file "data.zip" with user "brand-new-user"
     And user "sharer" has locked file "data.zip" setting the following properties
       | lockscope | shared |
-    And user "receiver" has locked file "data (2).zip" setting the following properties
+    And user "receiver" has locked file "data.zip" setting the following properties
       | lockscope | shared |
     And user "brand-new-user" has locked file "data (2).zip" setting the following properties
       | lockscope | shared |
@@ -217,9 +220,7 @@ Feature: Locks
 
   @files_sharing-app-required
   Scenario Outline: decline locked folder
-    Given these users have been created with large skeleton files:
-      | username |
-      | sharer   |
+    Given user "sharer" has been created with default attributes and without skeleton files
     And user "sharer" has created folder "/to-share-folder"
     And user "sharer" has locked folder "to-share-folder" setting the following properties
       | lockscope | <lockscope> |
@@ -236,7 +237,7 @@ Feature: Locks
 
   @files_sharing-app-required
   Scenario Outline: accept previously declined locked folder
-    Given these users have been created with large skeleton files:
+    Given these users have been created without skeleton files:
       | username |
       | sharer   |
     And user "sharer" has created folder "/to-share-folder"
@@ -257,7 +258,7 @@ Feature: Locks
 
   @files_sharing-app-required
   Scenario Outline: accept previously declined locked folder but create a folder with same name in between
-    Given these users have been created with large skeleton files:
+    Given these users have been created without skeleton files:
       | username |
       | sharer   |
     And user "sharer" has created folder "/to-share-folder"
@@ -280,9 +281,7 @@ Feature: Locks
 
   @files_sharing-app-required
   Scenario Outline: creating a subfolder structure that is the same as the structure of a declined & locked share
-    Given these users have been created with large skeleton files:
-      | username |
-      | sharer   |
+    Given user "sharer" has been created with default attributes and without skeleton files
     And user "sharer" has created folder "/parent"
     And user "sharer" has created folder "/parent/subfolder"
     And user "sharer" has locked folder "parent" setting the following properties
@@ -304,9 +303,10 @@ Feature: Locks
 
   @files_sharing-app-required
   Scenario Outline: unsharing a locked file/folder
-    Given these users have been created with large skeleton files:
-      | username |
-      | sharer   |
+    Given user "sharer" has been created with default attributes and without skeleton files
+    And user "sharer" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
+    And user "sharer" has created folder "simple-folder"
+    And user "sharer" has uploaded file "filesForUpload/lorem.txt" to "/simple-folder/lorem.txt"
     And user "sharer" has locked file "lorem.txt" setting the following properties
       | lockscope | <lockscope> |
     And user "sharer" has locked folder "simple-folder" setting the following properties

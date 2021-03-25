@@ -9,12 +9,14 @@ Feature: Sharing files and folders with internal groups
       | username |
       | Alice    |
       | Brian    |
-    And user "Carol" has been created with default attributes and large skeleton files
+      | Carol    |
+    And user "Carol" has created folder "simple-folder"
 
   Scenario Outline: sharing  files and folder with an internal problematic group name
     Given these groups have been created:
       | groupname |
       | <group>   |
+    And user "Carol" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"
     And user "Alice" has been added to group "<group>"
     And user "Brian" has been added to group "<group>"
     And user "Carol" has logged in using the webUI

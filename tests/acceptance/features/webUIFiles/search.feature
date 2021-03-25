@@ -78,7 +78,8 @@ Feature: Search
 
   @files_sharing-app-required
   Scenario: Search for a shared file
-    Given user "Carol" has been created with default attributes and large skeleton files
+    Given user "Carol" has been created with default attributes and without skeleton files
+    And user "Carol" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     When user "Carol" shares file "/lorem.txt" with user "Alice" using the sharing API
     And the user reloads the current page of the webUI
     And the user searches for "lorem" using the webUI
@@ -86,17 +87,21 @@ Feature: Search
 
   @files_sharing-app-required
   Scenario: Search for a re-shared file
-    Given user "Brian" has been created with default attributes and large skeleton files
-    And user "Carol" has been created with default attributes and large skeleton files
+    Given these users have been created without skeleton files:
+      | username |
+      | Brian    |
+      | Carol    |
+    And user "Brian" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     When user "Brian" shares file "/lorem.txt" with user "Carol" using the sharing API
-    And user "Carol" shares file "/lorem (2).txt" with user "Alice" using the sharing API
+    And user "Carol" shares file "/lorem.txt" with user "Alice" using the sharing API
     And the user reloads the current page of the webUI
     And the user searches for "lorem" using the webUI
     Then file "lorem (2).txt" should be listed on the webUI
 
   @files_sharing-app-required
   Scenario: Search for a shared folder
-    Given user "Carol" has been created with default attributes and large skeleton files
+    Given user "Carol" has been created with default attributes and without skeleton files
+    And user "Carol" has created folder "simple-folder"
     When user "Carol" shares folder "simple-folder" with user "Alice" using the sharing API
     And the user reloads the current page of the webUI
     And the user searches for "simple" using the webUI

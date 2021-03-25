@@ -5,7 +5,9 @@ Feature: move folders
   So that I can organise my data structure
 
   Background:
-    Given user "Alice" has been created with default attributes and large skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "simple-folder"
+    And user "Alice" has created folder "simple-empty-folder"
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
 
@@ -15,6 +17,8 @@ Feature: move folders
 
   @skipOnFIREFOX
   Scenario: move a folder into another folder
+    Given user "Alice" has created folder "strängé नेपाली folder"
+    And user "Alice" has created folder "strängé नेपाली folder empty"
     When the user moves folder "simple-folder" into folder "simple-empty-folder" using the webUI
     Then folder "simple-folder" should not be listed on the webUI
     But folder "simple-folder" should be listed in folder "simple-empty-folder" on the webUI
@@ -25,6 +29,7 @@ Feature: move folders
 
   @skipOnFIREFOX
   Scenario: move a folder into another folder where a folder with the same name already exists
+    Given user "Alice" has created folder "simple-folder/simple-empty-folder"
     When the user moves folder "simple-empty-folder" into folder "simple-folder" using the webUI
     Then notifications should be displayed on the webUI with the text
       | Could not move "simple-empty-folder", target exists |
@@ -32,10 +37,12 @@ Feature: move folders
 
   @skipOnFIREFOX
   Scenario: Move multiple folders at once
+    Given user "Alice" has created folder "strängé नेपाली folder"
+    And the user reloads the current page of the webUI
     When the user batch moves these folders into folder "simple-empty-folder" using the webUI
       | name                  |
       | simple-folder         |
-      | strängé नेपाली folder |
+      | strängé नेपाली folder   |
     Then the moved elements should not be listed on the webUI
     And the moved elements should not be listed on the webUI after a page reload
     But the moved elements should be listed in folder "simple-empty-folder" on the webUI

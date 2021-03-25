@@ -8,7 +8,7 @@ Feature: edit users
     Given user admin has logged in using the webUI
 
   Scenario: Admin changes the display name of the user
-    Given user "Alice" has been created with default attributes and large skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And the administrator has browsed to the users page
     When the administrator changes the display name of user "Alice" to "New User" using the webUI
     And the administrator logs out of the webUI
@@ -20,15 +20,16 @@ Feature: edit users
 
   @skipOnEncryptionType:user-keys
   Scenario: Admin changes the password of the user
-    Given user "Alice" has been created with default attributes and large skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
     And the administrator has browsed to the users page
     When the administrator changes the password of user "Alice" to "new_password" using the webUI
     Then user "Alice" should exist
-    And the content of file "textfile0.txt" for user "Alice" using password "new_password" should be "ownCloud test text file 0" plus end-of-line
-    But user "Brian" using password "%regular%" should not be able to download file "textfile0.txt"
+    And the content of file "randomfile.txt" for user "Alice" using password "new_password" should be "some content"
+    But user "Brian" using password "%regular%" should not be able to download file "randomfile.txt"
 
   Scenario: Admin adds a user to a group
-    Given user "Alice" has been created with default attributes and large skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And the administrator has browsed to the users page
     When the administrator adds user "Alice" to group "grp1" using the webUI
@@ -36,7 +37,7 @@ Feature: edit users
     And user "Alice" should belong to group "grp1"
 
   Scenario: Admin adds a user to a group when multiple groups are created
-    Given user "Alice" has been created with default attributes and large skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And group "grp2" has been created
     And group "grp3" has been created
@@ -48,7 +49,7 @@ Feature: edit users
     And user "Alice" should not belong to group "grp3"
 
   Scenario: Admin adds a user to multiple groups
-    Given user "Alice" has been created with default attributes and large skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And group "grp2" has been created
     And group "grp3" has been created
@@ -61,7 +62,7 @@ Feature: edit users
     And user "Alice" should not belong to group "grp1"
 
   Scenario: Admin removes a user from a group
-    Given user "Alice" has been created with default attributes and large skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Alice" has been added to group "grp1"
     And the administrator has browsed to the users page
@@ -70,7 +71,7 @@ Feature: edit users
     And user "Alice" should not belong to group "grp1"
 
   Scenario: Admin removes user from multiple groups
-    Given user "Alice" has been created with default attributes and large skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And group "grp2" has been created
     And group "grp3" has been created
@@ -86,7 +87,7 @@ Feature: edit users
     And user "Alice" should belong to group "grp3"
 
   Scenario: Admin changes the email of the user
-    Given user "Alice" has been created with default attributes and large skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And the administrator has browsed to the users page
     When the administrator changes the email of user "Alice" to "new_email@oc.com" using the webUI
     Then user "Alice" should exist
