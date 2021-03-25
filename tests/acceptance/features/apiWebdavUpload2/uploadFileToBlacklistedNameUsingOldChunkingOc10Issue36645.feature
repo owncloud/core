@@ -7,7 +7,7 @@ Feature: users cannot upload a file to a blacklisted name using old chunking
   Background:
     Given using OCS API version "1"
     And using old DAV path
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
 
   @issue-36645
   Scenario: Upload a file to a filename that is banned by default using old chunking

@@ -6,7 +6,7 @@ Feature: upload file using new chunking
 
   Background:
     Given using new DAV path
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
     And the owncloud log level has been set to debug
     And the owncloud log has been cleared
     And the administrator has enabled async operations
@@ -63,7 +63,8 @@ Feature: upload file using new chunking
       | dav |
 
   Scenario: Upload chunked file overwriting existing file using async MOVE
-    Given user "Alice" has copied file "/textfile0.txt" to "/existingFile.txt"
+    Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Alice" has copied file "/textfile0.txt" to "/existingFile.txt"
     When user "Alice" uploads the following chunks asynchronously to "/existingFile.txt" with new chunking and using the WebDAV API
       | number | content |
       | 1      | AAAAA   |
