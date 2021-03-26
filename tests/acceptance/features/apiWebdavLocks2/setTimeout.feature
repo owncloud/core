@@ -2,7 +2,10 @@
 Feature: set timeouts of LOCKS
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "PARENT"
+    And user "Alice" has created folder "PARENT/CHILD"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "PARENT/parent.txt"
 
   @skipOnOcV10.3 @skipOnOcV10.4
   Scenario Outline: do not set timeout on folder and check the default timeout

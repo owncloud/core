@@ -5,11 +5,14 @@ Feature: lock should propagate correctly if a share is reshared
     Given the administrator has enabled DAV tech_preview
     And the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And these users have been created with default attributes and small skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
       | Carol    |
+    And user "Alice" has created folder "PARENT"
+    And user "Brian" has created folder "PARENT"
+    And user "Carol" has created folder "PARENT"
 
   Scenario Outline: upload to a share that was locked by owner
     Given using <dav-path> DAV path
@@ -35,6 +38,9 @@ Feature: lock should propagate correctly if a share is reshared
 
   Scenario Outline: upload overwriting to a share that was locked by owner
     Given using <dav-path> DAV path
+    And user "Alice" has uploaded file with content "ownCloud test text file parent" to "PARENT/parent.txt"
+    And user "Brian" has uploaded file with content "ownCloud test text file parent" to "PARENT/parent.txt"
+    And user "Carol" has uploaded file with content "ownCloud test text file parent" to "PARENT/parent.txt"
     And user "Alice" has shared folder "PARENT" with user "Brian"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
     And user "Brian" has shared folder "Shares/PARENT" with user "Carol"
@@ -47,7 +53,7 @@ Feature: lock should propagate correctly if a share is reshared
     Then the HTTP status code should be "423"
     When user "Alice" uploads file "filesForUpload/textfile.txt" to "/PARENT/parent.txt" using the WebDAV API
     Then the HTTP status code should be "423"
-    And the content of file "/PARENT/parent.txt" for user "Alice" should be "ownCloud test text file parent" plus end-of-line
+    And the content of file "/PARENT/parent.txt" for user "Alice" should be "ownCloud test text file parent"
     Examples:
       | dav-path | lock-scope |
       | old      | shared     |
