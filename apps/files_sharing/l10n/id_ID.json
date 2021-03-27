@@ -1,5 +1,5 @@
 { "translations": {
-    "Delete" : "Hapus",
-    "Files" : "Berkas"
+    "Cancel" : "Batal",
+    "Password" : "Kata Sandi"
 },"pluralForm" :"nplurals=1; plural=0;"
 }
