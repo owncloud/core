@@ -1,0 +1,7 @@
+Bugfix: Fix problems moving files inside Gdrive storages
+
+Moving files inside a Gdrive storage broke, likely due to changes
+in the Gdrive server. This PR ensures it works again
+Moving files from local storage into the Gdrive storage is also fixed.
+
+https://github.com/owncloud/core/pull/38553
