@@ -6,16 +6,18 @@ Feature: move (rename) file
 
   Background:
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
 
   @smokeTest
   Scenario Outline: Moving a file
     Given using <dav_version> DAV path
+    And user "Alice" has created folder "FOLDER"
+    And user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt"
     When user "Alice" moves file "/textfile0.txt" to "/FOLDER/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions for user "Alice"
       | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
-    And the content of file "/FOLDER/textfile0.txt" for user "Alice" should be "ownCloud test text file 0" plus end-of-line
+    And the content of file "/FOLDER/textfile0.txt" for user "Alice" should be "ownCloud test text file 0"
     Examples:
       | dav_version |
       | old         |
@@ -24,11 +26,13 @@ Feature: move (rename) file
   @smokeTest
   Scenario Outline: Moving and overwriting a file
     Given using <dav_version> DAV path
+    And user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt"
+    And user "Alice" has uploaded file with content "ownCloud test text file 1" to "textfile1.txt"
     When user "Alice" moves file "/textfile0.txt" to "/textfile1.txt" using the WebDAV API
     Then the HTTP status code should be "204"
     And the following headers should match these regular expressions for user "Alice"
       | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
-    And the content of file "/textfile1.txt" for user "Alice" should be "ownCloud test text file 0" plus end-of-line
+    And the content of file "/textfile1.txt" for user "Alice" should be "ownCloud test text file 0"
     Examples:
       | dav_version |
       | old         |
@@ -36,10 +40,11 @@ Feature: move (rename) file
 
   Scenario Outline: Moving (renaming) a file to be only different case
     Given using <dav_version> DAV path
+    And user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt"
     When user "Alice" moves file "/textfile0.txt" to "/TextFile0.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Alice" file "/textfile0.txt" should not exist
-    And the content of file "/TextFile0.txt" for user "Alice" should be "ownCloud test text file 0" plus end-of-line
+    And the content of file "/TextFile0.txt" for user "Alice" should be "ownCloud test text file 0"
     Examples:
       | dav_version |
       | old         |
@@ -48,10 +53,12 @@ Feature: move (rename) file
   @smokeTest
   Scenario Outline: Moving (renaming) a file to a file with only different case to an existing file
     Given using <dav_version> DAV path
+    And user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt"
+    And user "Alice" has uploaded file with content "ownCloud test text file 1" to "textfile1.txt"
     When user "Alice" moves file "/textfile1.txt" to "/TextFile0.txt" using the WebDAV API
     Then the HTTP status code should be "201"
-    And the content of file "/textfile0.txt" for user "Alice" should be "ownCloud test text file 0" plus end-of-line
-    And the content of file "/TextFile0.txt" for user "Alice" should be "ownCloud test text file 1" plus end-of-line
+    And the content of file "/textfile0.txt" for user "Alice" should be "ownCloud test text file 0"
+    And the content of file "/TextFile0.txt" for user "Alice" should be "ownCloud test text file 1"
     Examples:
       | dav_version |
       | old         |
@@ -59,10 +66,13 @@ Feature: move (rename) file
 
   Scenario Outline: Moving (renaming) a file to a file in a folder with only different case to an existing file
     Given using <dav_version> DAV path
+    And user "Alice" has created folder "PARENT"
+    And user "Alice" has uploaded file with content "ownCloud test text file parent" to "PARENT/parent.txt"
+    And user "Alice" has uploaded file with content "ownCloud test text file 1" to "textfile1.txt"
     When user "Alice" moves file "/textfile1.txt" to "/PARENT/Parent.txt" using the WebDAV API
     Then the HTTP status code should be "201"
-    And the content of file "/PARENT/parent.txt" for user "Alice" should be "ownCloud test text file parent" plus end-of-line
-    And the content of file "/PARENT/Parent.txt" for user "Alice" should be "ownCloud test text file 1" plus end-of-line
+    And the content of file "/PARENT/parent.txt" for user "Alice" should be "ownCloud test text file parent"
+    And the content of file "/PARENT/Parent.txt" for user "Alice" should be "ownCloud test text file 1"
     Examples:
       | dav_version |
       | old         |
@@ -165,7 +175,8 @@ Feature: move (rename) file
   @files_sharing-app-required
   Scenario Outline: Moving a file to a shared folder with no permissions
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Brian" has been created with default attributes and without skeleton files
     And user "Brian" has created folder "/testshare"
     And user "Brian" has created a share with settings
       | path        | testshare |
@@ -184,14 +195,16 @@ Feature: move (rename) file
   @files_sharing-app-required
   Scenario Outline: Moving a file to overwrite a file in a shared folder with no permissions
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt"
+    And user "Brian" has been created with default attributes and without skeleton files
     And user "Brian" has created folder "/testshare"
+    And user "Brian" has uploaded file with content "Welcome to ownCloud" to "fileToCopy.txt"
     And user "Brian" has created a share with settings
       | path        | testshare |
       | shareType   | user      |
       | permissions | read      |
       | shareWith   | Alice     |
-    And user "Brian" has copied file "/welcome.txt" to "/testshare/overwritethis.txt"
+    And user "Brian" has copied file "/fileToCopy.txt" to "/testshare/overwritethis.txt"
     When user "Alice" moves file "/textfile0.txt" to "/testshare/overwritethis.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     And the downloaded content when downloading file "/testshare/overwritethis.txt" for user "Alice" with range "bytes=0-6" should be "Welcome"
@@ -202,7 +215,8 @@ Feature: move (rename) file
 
   Scenario Outline: move file into a not-existing folder
     Given using <dav_version> DAV path
-    When user "Alice" moves file "/welcome.txt" to "/not-existing/welcome.txt" using the WebDAV API
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToMove.txt"
+    When user "Alice" moves file "/fileToMove.txt" to "/not-existing/welcome.txt" using the WebDAV API
     Then the HTTP status code should be "409"
     Examples:
       | dav_version |
@@ -212,7 +226,8 @@ Feature: move (rename) file
   @issue-ocis-reva-211
   Scenario Outline: rename a file into an invalid filename
     Given using <dav_version> DAV path
-    When user "Alice" moves file "/welcome.txt" to "/a\\a" using the WebDAV API
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToRename.txt"
+    When user "Alice" moves file "/fileToRename.txt" to "/a\\a" using the WebDAV API
     Then the HTTP status code should be "400"
     Examples:
       | dav_version |
@@ -221,6 +236,8 @@ Feature: move (rename) file
 
   Scenario Outline: Checking file id after a move
     Given using <dav_version> DAV path
+    And user "Alice" has created folder "FOLDER"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     And user "Alice" has stored id of file "/textfile0.txt"
     When user "Alice" moves file "/textfile0.txt" to "/FOLDER/textfile0.txt" using the WebDAV API
     Then user "Alice" file "/FOLDER/textfile0.txt" should have the previously stored id
@@ -234,7 +251,7 @@ Feature: move (rename) file
   @files_sharing-app-required
   Scenario Outline: Checking file id after a move between received shares
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/folderA"
     And user "Alice" has created folder "/folderB"
     And user "Alice" has shared folder "/folderA" with user "Brian"
@@ -258,37 +275,39 @@ Feature: move (rename) file
   @issue-ocis-reva-211
   Scenario Outline: Renaming a file to a path with extension .part should not be possible
     Given using <dav_version> DAV path
-    When user "Alice" moves file "/welcome.txt" to "/welcome.part" using the WebDAV API
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToRename.txt"
+    When user "Alice" moves file "/fileToRename.txt" to "/welcome.part" using the WebDAV API
     Then the HTTP status code should be "400"
     And the DAV exception should be "OCA\DAV\Connector\Sabre\Exception\InvalidPath"
     And the DAV message should be "Can`t upload files with extension .part because these extensions are reserved for internal use."
     And the DAV reason should be "Can`t upload files with extension .part because these extensions are reserved for internal use."
     And user "Alice" should see the following elements
-      | /welcome.txt |
+      | /fileToRename.txt |
     But user "Alice" should not see the following elements
-      | /welcome.part |
+      | /fileToRename.part |
     Examples:
       | dav_version |
       | old         |
       | new         |
 
   Scenario: renaming to a file with special characters
+    Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt"
+    And user "Alice" has uploaded file with content "ownCloud test text file 1" to "textfile1.txt"
     When user "Alice" moves the following file using the WebDAV API
       | source         | destination   |
       | /textfile0.txt | *a@b#c$e%f&g* |
       | /textfile1.txt | 1 2 3##.##    |
     Then the HTTP status code of responses on all endpoints should be "201"
-    And the content of the following files for user "Alice" should be the following plus end-of-line
-      | filename       | content                   |
-      | *a@b#c$e%f&g*  | ownCloud test text file 0 |
-      | 1 2 3##.##     | ownCloud test text file 1 |
+    And the content of file "*a@b#c$e%f&g*" for user "Alice" should be "ownCloud test text file 0"
+    And the content of file "1 2 3##.##" for user "Alice" should be "ownCloud test text file 1"
 
   @issue-ocis-reva-265
   #after fixing the issues merge this Scenario into the one above
   Scenario Outline: renaming to a file with question mark in its name
+    Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt"
     When user "Alice" moves file "/textfile0.txt" to "/<renamed_file>" using the WebDAV API
     Then the HTTP status code should be "201"
-    And the content of file "/<renamed_file>" for user "Alice" should be "ownCloud test text file 0" plus end-of-line
+    And the content of file "/<renamed_file>" for user "Alice" should be "ownCloud test text file 0"
     Examples:
       | renamed_file  |
       | #oc ab?cd=ef# |
@@ -318,6 +337,7 @@ Feature: move (rename) file
   @smokeTest
   Scenario Outline: user tries to move a file that doesnt exist into a folder
     Given using <dav_version> DAV path
+    And user "Alice" has created folder "FOLDER"
     When user "Alice" moves file "/doesNotExist.txt" to "/FOLDER/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "404"
     And as "Alice" file "/FOLDER/textfile0.txt" should not exist
@@ -339,6 +359,7 @@ Feature: move (rename) file
 
   Scenario Outline: Moving a hidden file
     Given using <dav_version> DAV path
+    And user "Alice" has created folder "FOLDER"
     And user "Alice" has uploaded the following files with content "hidden file"
       | path                    |
       | .hidden_file101         |
