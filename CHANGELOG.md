@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - Fix mispositioned ui elements after leaving viewerMode: [#38547](https://github.com/owncloud/core/issues/38547)
+* Bugfix - Creating self group-reshare should not not share to self: [#38581](https://github.com/owncloud/core/pull/38581)
 * Change - Update icewind/streams from 0.7.3 to 0.7.4: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Update icewind/streams from 0.7.3 to 0.7.4 in files_external: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Update icewind/smb from 3.3.1 to 3.4.0 in files_external: [#38524](https://github.com/owncloud/core/pull/38524)
@@ -26,6 +27,16 @@ Details
 
    https://github.com/owncloud/core/issues/38547
    https://github.com/owncloud/core/pull/38552
+
+* Bugfix - Creating self group-reshare should not not share to self: [#38581](https://github.com/owncloud/core/pull/38581)
+
+   In a scenario where resharing with group that user belongs to, permissions and attributes were
+   incorrectly handled in share mount logic when permissions for that share got adjusted, or that
+   share got again reshared to another user that again reshared with prior user. This bugfix
+   prevents creation of self share mount in root folder of the user
+
+   https://github.com/owncloud/enterprise/issues/4382
+   https://github.com/owncloud/core/pull/38581
 
 * Change - Update icewind/streams from 0.7.3 to 0.7.4: [#38524](https://github.com/owncloud/core/pull/38524)
 
