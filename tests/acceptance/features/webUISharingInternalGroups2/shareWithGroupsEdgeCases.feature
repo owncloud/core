@@ -11,6 +11,7 @@ Feature: Sharing files and folders with internal groups
       | Brian    |
       | Carol    |
     And user "Carol" has created folder "simple-folder"
+    And user "Carol" has created folder "simple-folder/simple-empty-folder"
 
   Scenario Outline: sharing  files and folder with an internal problematic group name
     Given these groups have been created:
@@ -349,3 +350,54 @@ Feature: Sharing files and folders with internal groups
       | uid_owner   | Carol          |
       | share_with  | grp2           |
       | permissions | 7              |
+
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5 @skipOnOcV10.6 @skipOnOcV10.7.0
+  Scenario: Reshare with group that user is member of should not create mount in the root folder of resharer
+    Given these groups have been created:
+      | groupname |
+      | grp1      |
+      | grp2      |
+    And user "Alice" has been added to group "grp1"
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has been added to group "grp2"
+    And user "Brian" has been added to group "grp2"
+    And user "Carol" has shared folder "/simple-folder" with group "grp1"
+    And user "Alice" has logged in using the webUI
+    When the user shares folder "simple-folder" with group "grp2" using the webUI
+    And the user opens folder "simple-folder" using the webUI
+    And the user shares folder "simple-empty-folder" with group "grp2" using the webUI
+    Then as "Alice" folder "/simple-folder" should exist
+    And user "Alice" should be able to upload file "filesForUpload/textfile.txt" to "simple-folder/textfile.txt"
+    And as "Alice" folder "/simple-empty-folder" should not exist
+    And user "Alice" should be able to create folder "/simple-empty-folder"
+
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5 @skipOnOcV10.6 @skipOnOcV10.7.0
+  Scenario: Reshare with group that user is member of should allow for downgrading and upgrading permissions
+    Given these groups have been created:
+      | groupname |
+      | grp1      |
+      | grp2      |
+    And user "Alice" has been added to group "grp1"
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has been added to group "grp2"
+    And user "Brian" has been added to group "grp2"
+    And user "Carol" has shared folder "/simple-folder" with group "grp1"
+    And user "Alice" has logged in using the webUI
+    When the user shares folder "simple-folder" with group "grp2" using the webUI
+    And the user sets the sharing permissions of group "grp2" for "simple-folder" using the webUI to
+      | edit   | no |
+      | create | no |
+    And the user opens folder "simple-folder" using the webUI
+    And the user shares folder "simple-empty-folder" with group "grp2" using the webUI
+    And the user sets the sharing permissions of group "grp2" for "simple-empty-folder" using the webUI to
+      | edit   | no |
+      | create | no |
+    And the user sets the sharing permissions of group "grp2" for "simple-empty-folder" using the webUI to
+      | edit   | yes |
+      | create | yes |
+    Then user "Alice" should be able to upload file "filesForUpload/textfile.txt" to "simple-folder/textfile.txt"
+    And as "Alice" folder "/simple-empty-folder" should not exist
+    And as "Brian" folder "/simple-folder" should exist
+    And as "Brian" folder "/simple-empty-folder" should exist
+    And user "Brian" should not be able to upload file "filesForUpload/textfile.txt" to "simple-folder/textfile.txt"
+    And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "simple-empty-folder/textfile.txt"

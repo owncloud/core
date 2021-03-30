@@ -755,6 +755,9 @@ class Manager implements IManager {
 		$target = \OC\Files\Filesystem::normalizePath($target);
 		$share->setTarget($target);
 
+		// Check if is self group-reshare
+		$isSelfGroupReshare = $this->isSelfGroupReshare($share);
+
 		// Pre share hook
 		$run = true;
 		$error = '';
@@ -784,6 +787,13 @@ class Manager implements IManager {
 
 		$provider = $this->factory->getProviderForType($share->getShareType());
 		$share = $provider->create($share);
+
+		// if this is self group-reshare, delete from self to avoid shared mount issues.
+		// otherwise this user will receive shared item with possibly reduced permissions to himself
+		// for this specific target (e.g. reshared subfolder mounted in root with reduced permissions)
+		if ($isSelfGroupReshare) {
+			$provider->deleteFromSelf($share, $share->getSharedBy());
+		}
 
 		// Post share hook
 		$postHookData = [
@@ -1925,5 +1935,25 @@ class Manager implements IManager {
 		}
 
 		return true;
+	}
+
+	/*
+	 * @param \OCP\Share\IShare $share
+	 *
+	 * Check whether this share is share that the user is not owner and
+	 * that user reshared with group that is memberof (reshared with himself)
+	 *
+	 * @return boolean
+	 */
+	private function isSelfGroupReshare(\OCP\Share\IShare $share) {
+		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP
+				&& $share->getShareOwner() !== $share->getSharedBy()) {
+			$sharedByUser = $this->userManager->get($share->getSharedBy());
+			$sharedWithGroup = $this->groupManager->get($share->getSharedWith());
+			if ($sharedWithGroup !== null && $sharedByUser !== null && $sharedWithGroup->inGroup($sharedByUser)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
