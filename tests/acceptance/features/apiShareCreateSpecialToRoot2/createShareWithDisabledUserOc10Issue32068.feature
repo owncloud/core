@@ -2,7 +2,7 @@
 Feature: share resources with a disabled user - current oC10 behavior for issue-32068
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
 
   @issue-32068
   Scenario: Creating a new share with a disabled user

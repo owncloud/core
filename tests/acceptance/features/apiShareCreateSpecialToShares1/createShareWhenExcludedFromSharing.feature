@@ -4,16 +4,16 @@ Feature: cannot share resources when in a group that is excluded from sharing
   Background:
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "Brian" has been added to group "grp1"
 
   Scenario Outline: user who is excluded from sharing tries to share a file with another user
     Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and small skeleton files
-    And group "grp1" has been created
-    And user "Brian" has been added to group "grp1"
     And parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
     And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["grp1"]'
-    And user "Brian" has moved file "welcome.txt" to "fileToShare.txt"
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "/fileToShare.txt"
     When user "Brian" shares file "fileToShare.txt" with user "Alice" using the sharing API
     Then the OCS status code should be "403"
     And the HTTP status code should be "<http_status_code>"
@@ -27,15 +27,12 @@ Feature: cannot share resources when in a group that is excluded from sharing
 
   Scenario Outline: user who is excluded from sharing tries to share a file with a group
     Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and small skeleton files
     And user "Carol" has been created with default attributes and without skeleton files
-    And group "grp1" has been created
     And group "grp2" has been created
-    And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp2"
     And parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
     And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["grp1"]'
-    And user "Brian" has moved file "welcome.txt" to "fileToShare.txt"
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "/fileToShare.txt"
     When user "Brian" shares file "fileToShare.txt" with group "grp2" using the sharing API
     Then the OCS status code should be "403"
     And the HTTP status code should be "<http_status_code>"
@@ -49,9 +46,6 @@ Feature: cannot share resources when in a group that is excluded from sharing
 
   Scenario Outline: user who is excluded from sharing tries to share a folder with another user
     Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
-    And group "grp1" has been created
-    And user "Brian" has been added to group "grp1"
     And parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
     And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["grp1"]'
     And user "Brian" has created folder "folderToShare"
@@ -68,11 +62,8 @@ Feature: cannot share resources when in a group that is excluded from sharing
 
   Scenario Outline: user who is excluded from sharing tries to share a folder with a group
     Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp0" has been created
-    And group "grp1" has been created
     And user "Alice" has been added to group "grp0"
-    And user "Brian" has been added to group "grp1"
     And parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
     And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["grp0"]'
     And user "Alice" has created folder "folderToShare"
