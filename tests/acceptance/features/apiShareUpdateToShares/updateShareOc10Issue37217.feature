@@ -6,12 +6,13 @@ Feature: sharing
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
     And using OCS API version "1"
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
     And using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
     And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has created a share with settings
       | path        | textfile0.txt |
       | shareType   | user          |

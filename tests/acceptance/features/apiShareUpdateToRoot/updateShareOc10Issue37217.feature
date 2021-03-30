@@ -4,7 +4,8 @@ Feature: sharing
   @issue-37217
   Scenario Outline: user cannot concurrently update the role and date in an existing share after the system maximum expiry date has been reduced
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"

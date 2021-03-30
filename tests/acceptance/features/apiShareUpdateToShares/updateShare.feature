@@ -5,7 +5,7 @@ Feature: sharing
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
     And using OCS API version "1"
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
 
   @smokeTest
   Scenario Outline: Allow modification of reshare
@@ -32,11 +32,13 @@ Feature: sharing
   @issue-ocis-reva-194 @issue-ocis-reva-243
   Scenario Outline: keep group permissions in sync
     Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "textfile0.txt" with group "grp1"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
+    And user "Brian" has created folder "/FOLDER"
     And user "Brian" has moved file "/Shares/textfile0.txt" to "/FOLDER/textfile0.txt"
     When user "Alice" updates the last share using the sharing API with
       | permissions | read |
@@ -65,6 +67,7 @@ Feature: sharing
   Scenario Outline: Cannot set permissions to zero
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
+    And user "Alice" has created folder "/FOLDER"
     And user "Alice" has shared folder "/FOLDER" with group "grp1"
     When user "Alice" updates the last share using the sharing API with
       | permissions | 0 |
@@ -79,6 +82,7 @@ Feature: sharing
   Scenario Outline: Cannot update a share of a file with a user to have only create and/or delete permission
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "textfile0.txt" with user "Brian"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Alice" updates the last share using the sharing API with
@@ -102,6 +106,7 @@ Feature: sharing
     And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "textfile0.txt" with group "grp1"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Alice" updates the last share using the sharing API with
@@ -234,10 +239,11 @@ Feature: sharing
   Scenario Outline: Increasing permissions is allowed for owner
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
-    And user "Carol" has been created with default attributes and small skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"
+    And user "Carol" has created folder "/FOLDER"
     And user "Carol" has shared folder "/FOLDER" with group "grp1"
     And user "Brian" has accepted share "/FOLDER" offered by user "Carol"
     And user "Carol" has updated the last share with
@@ -257,7 +263,8 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
     And parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
-    When user "Alice" shares file "/welcome.txt" with group "grp1" using the sharing API
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
+    When user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     Examples:
@@ -269,6 +276,7 @@ Feature: sharing
   Scenario Outline: Editing share permission of existing share is forbidden when sharing with groups is forbidden
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "textfile0.txt" with group "grp1"
     And parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
     When user "Alice" updates the last share using the sharing API with
@@ -294,6 +302,7 @@ Feature: sharing
   Scenario Outline: Deleting group share is allowed when sharing with groups is forbidden
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "textfile0.txt" with group "grp1"
     And parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
     When user "Alice" deletes the last share using the sharing API
@@ -313,6 +322,7 @@ Feature: sharing
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
     And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | user          |
@@ -341,6 +351,7 @@ Feature: sharing
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
     And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has created a share with settings
       | path        | textfile0.txt |
       | shareType   | user          |
@@ -368,6 +379,7 @@ Feature: sharing
   Scenario Outline: Sharer deletes file uploaded with upload-only permission by sharee to a shared folder
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/FOLDER"
     And user "Alice" has created a share with settings
       | path        | FOLDER |
       | shareType   | user   |
