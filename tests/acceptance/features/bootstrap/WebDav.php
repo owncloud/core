@@ -2992,6 +2992,23 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then user :user should be able to create folder :destination
+	 *
+	 * @param string $user
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function userShouldBeAbleToCreateFolder($user, $destination) {
+		$this->userHasCreatedFolder($user, $destination);
+		$this->asFileOrFolderShouldExist(
+			$user,
+			"folder",
+			$destination
+		);
+	}
+
+	/**
 	 * Old style chunking upload
 	 *
 	 * @When user :user uploads the following :total chunks to :file with old chunking and using the WebDAV API

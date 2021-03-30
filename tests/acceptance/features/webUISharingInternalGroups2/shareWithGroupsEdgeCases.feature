@@ -369,8 +369,7 @@ Feature: Sharing files and folders with internal groups
     Then as "Alice" folder "/simple-folder" should exist
     And user "Alice" should be able to upload file "filesForUpload/textfile.txt" to "simple-folder/textfile.txt"
     And as "Alice" folder "/simple-empty-folder" should not exist
-    When user "Alice" has created folder "/simple-empty-folder"
-    Then as "Alice" folder "/simple-empty-folder" should exist
+    And user "Alice" should be able to create folder "/simple-empty-folder"
 
   @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5 @skipOnOcV10.6 @skipOnOcV10.7.0
   Scenario: Reshare with group that user is member of should allow for downgrading and upgrading permissions
