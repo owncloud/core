@@ -2425,6 +2425,9 @@ trait WebDav {
 		$this->response = $this->makeDavRequest(
 			$user, "PUT", $destination, [], $content
 		);
+		$this->setResponseXml(
+			HttpRequestHelper::parseResponseAsXml($this->response)
+		);
 		$this->lastUploadDeleteTime = \time();
 		return $this->response->getHeader('oc-fileid');
 	}
