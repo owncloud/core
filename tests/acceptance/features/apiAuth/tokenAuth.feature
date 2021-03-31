@@ -3,7 +3,7 @@ Feature: tokenAuth
 
   Background:
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
     And token auth has been enforced
 
   Scenario: creating a user with basic auth should be blocked when token auth is enforced

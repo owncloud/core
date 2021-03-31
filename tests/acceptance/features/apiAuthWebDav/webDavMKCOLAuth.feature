@@ -7,7 +7,6 @@ Feature: create folder using MKCOL
     And user "Alice" has created folder "/PARENT"
     And user "Alice" has created folder "/FOLDER"
     And user "Alice" has uploaded file with content "some data" to "/PARENT/parent.txt"
-    And user "Brian" has been created with default attributes and without skeleton files
 
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
@@ -35,6 +34,7 @@ Feature: create folder using MKCOL
 
   @issue-ocis-reva-9 @issue-ocis-reva-197
   Scenario: send MKCOL requests to another user's webDav endpoints as normal user
+    Given user "Brian" has been created with default attributes and without skeleton files
     When user "Brian" requests these endpoints with "MKCOL" including body "" about user "Alice"
       | endpoint                                        |
       | /remote.php/dav/files/%username%/textfile0.txt  |
@@ -57,6 +57,7 @@ Feature: create folder using MKCOL
     Then the HTTP status code of responses on all endpoints should be "401"
 
   Scenario: send MKCOL requests to webDav endpoints using valid password and username of different user
+    Given user "Brian" has been created with default attributes and without skeleton files
     When user "Brian" requests these endpoints with "MKCOL" including body "doesnotmatter" using the password of user "Alice"
       | endpoint                                           |
       | /remote.php/webdav/textfile0.txt                   |

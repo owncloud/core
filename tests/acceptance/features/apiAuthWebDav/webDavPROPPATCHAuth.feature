@@ -2,13 +2,15 @@
 Feature: PROPPATCH file/folder
 
   Background:
-    Given user "Alice" has been created with default attributes and without skeleton files
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
     And user "Alice" has uploaded file with content "some data" to "/textfile0.txt"
     And user "Alice" has uploaded file with content "some data" to "/textfile1.txt"
     And user "Alice" has created folder "/PARENT"
     And user "Alice" has created folder "/FOLDER"
     And user "Alice" has uploaded file with content "some data" to "/PARENT/parent.txt"
-    And user "Brian" has been created with default attributes and without skeleton files
 
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
