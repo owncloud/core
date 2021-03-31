@@ -30,13 +30,13 @@ namespace OCP\Activity;
  */
 
 class DataProvider {
-	/** @var string */
+	/** @var bool */
 	private static $triggeredByAutomation = false;
 
 	/**
 	 * Get $triggeredByAutomation
 	 *
-	 * @return  string
+	 * @return bool
 	 * @since 10.8.0
 	 */
 	public static function getTriggeredByAutomation() {
