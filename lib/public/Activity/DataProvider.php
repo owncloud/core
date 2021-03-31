@@ -23,7 +23,7 @@
 namespace OCP\Activity;
 
 /**
- * Class Constants
+ * Class DataProvider
  *
  * @package OCP
  * @since 10.8.0
