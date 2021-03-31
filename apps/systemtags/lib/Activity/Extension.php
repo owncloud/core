@@ -41,6 +41,7 @@ class Extension implements IExtension {
 	const DELETE_TAG = 'delete_tag';
 
 	const ASSIGN_TAG = 'assign_tag';
+	const ASSIGN_TAG_BY_AUTOMATION = 'assign_tag_by_automation';
 	const UNASSIGN_TAG = 'unassign_tag';
 
 	/** @var IFactory */
@@ -147,6 +148,9 @@ class Extension implements IExtension {
 					return (string) $l->t('You assigned system tag %3$s', $params);
 				}
 				return (string) $l->t('%1$s assigned system tag %3$s', $params);
+			case self::ASSIGN_TAG_BY_AUTOMATION:
+				$params[2] = $this->convertParameterToTag($params[2], $l);
+				return (string) $l->t('System tag %3$s was assigned to %2$s due to automation rule', $params);
 			case self::UNASSIGN_TAG:
 				$params[2] = $this->convertParameterToTag($params[2], $l);
 				if ($this->actorIsCurrentUser($params[0])) {
@@ -191,6 +195,9 @@ class Extension implements IExtension {
 					return (string) $l->t('You assigned system tag %3$s to %2$s', $params);
 				}
 				return (string) $l->t('%1$s assigned system tag %3$s to %2$s', $params);
+			case self::ASSIGN_TAG_BY_AUTOMATION:
+				$params[2] = $this->convertParameterToTag($params[2], $l);
+				return (string) $l->t('System tag %3$s was assigned to %2$s due to automation rule', $params);
 			case self::UNASSIGN_TAG:
 				$params[2] = $this->convertParameterToTag($params[2], $l);
 				if ($this->actorIsCurrentUser($params[0])) {
@@ -244,6 +251,7 @@ class Extension implements IExtension {
 					];
 
 				case self::ASSIGN_TAG:
+				case self::ASSIGN_TAG_BY_AUTOMATION:
 				case self::UNASSIGN_TAG:
 					return [
 						0 => 'username',

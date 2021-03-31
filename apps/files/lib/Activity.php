@@ -185,6 +185,8 @@ class Activity implements IExtension {
 				return (string) $l->t('You deleted %1$s', $params);
 			case 'deleted_by':
 				return (string) $l->t('%2$s deleted %1$s', $params);
+			case 'deleted_by_automation':
+				return (string) $l->t('%1$s was deleted due to automation rule', $params);
 			case 'restored_self':
 				return (string) $l->t('You restored %1$s', $params);
 			case 'restored_by':
@@ -207,6 +209,8 @@ class Activity implements IExtension {
 				return (string) $l->t('Changed by %2$s', $params);
 			case 'deleted_by':
 				return (string) $l->t('Deleted by %2$s', $params);
+			case 'deleted_by_automation':
+				return (string) $l->t('%1$s was deleted due to automation rule', $params);
 			case 'restored_by':
 				return (string) $l->t('Restored by %2$s', $params);
 
@@ -236,6 +240,7 @@ class Activity implements IExtension {
 				case 'changed_by':
 				case 'deleted_self':
 				case 'deleted_by':
+				case 'deleted_by_automation':
 				case 'restored_self':
 				case 'restored_by':
 					return [
@@ -285,6 +290,7 @@ class Activity implements IExtension {
 				case 'changed_by':
 				case 'deleted_self':
 				case 'deleted_by':
+				case 'deleted_by_automation':
 				case 'restored_self':
 				case 'restored_by':
 					return 0;
