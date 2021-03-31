@@ -3,9 +3,13 @@ Feature: current oC10 behavior for issue-35839
 
   Background:
     Given using server "REMOTE"
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
     And using server "LOCAL"
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
 
   @issue-35839
   Scenario: "Auto accept from trusted servers" enabled with remote server
