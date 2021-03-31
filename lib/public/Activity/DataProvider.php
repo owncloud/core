@@ -31,26 +31,26 @@ namespace OCP\Activity;
 
 class DataProvider {
 	/** @var string */
-	private static $issuerApp = '';
+	private static $triggeredByAutomation = false;
 
 	/**
-	 * Get the issuer app
+	 * Get $triggeredByAutomation
 	 *
 	 * @return  string
 	 * @since 10.8.0
 	 */
-	public static function getIssuerApp() {
-		return self::$issuerApp;
+	public static function getTriggeredByAutomation() {
+		return self::$triggeredByAutomation;
 	}
 
 	/**
-	 * Set the issuer app
+	 * Set $triggeredByAutomation
 	 *
-	 * @param $issuerApp string
+	 * @param $triggeredByAutomation bool
 	 * @since 10.8.0
 	 */
-	public static function setIssuerApp(string $issuerApp) {
-		self::$issuerApp = $issuerApp;
+	public static function setTriggeredByAutomation(bool $triggeredByAutomation) {
+		self::$triggeredByAutomation = $triggeredByAutomation;
 	}
 
 	/**
@@ -58,6 +58,6 @@ class DataProvider {
 	 * @since 10.8.0
 	 */
 	public static function expunge() {
-		self::$issuerApp = '';
+		self::$triggeredByAutomation = false;
 	}
 }
