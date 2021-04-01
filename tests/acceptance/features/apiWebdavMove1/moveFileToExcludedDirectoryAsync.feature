@@ -15,7 +15,7 @@ Feature: users cannot move (rename) a file to or into an excluded directory
     And user "Alice" moves file "/textfile0.txt" asynchronously to "/.github" using the WebDAV API
     Then the HTTP status code should be "403"
     And user "Alice" should see the following elements
-      | /welcome.txt |
+      | /textfile0.txt |
 
   Scenario: rename a file to an excluded directory name inside a parent directory
     Given user "Alice" has created folder "FOLDER"
@@ -31,7 +31,7 @@ Feature: users cannot move (rename) a file to or into an excluded directory
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being endswith\.bad$ and ^\.git
     And the administrator has updated system config key "excluded_directories_regex" with value '["endswith\\.bad$","^\\.git","containsvirusinthename"]' and type "json"
-    When user "Alice" moves file "/welcome.txt" asynchronously to these filenames using the webDAV API then the results should be as listed
+    When user "Alice" moves file "/textfile0.txt" asynchronously to these filenames using the webDAV API then the results should be as listed
       | filename                                   | http-code | exists |
       | endswith.bad                               | 403       | no     |
       | thisendswith.bad                           | 403       | no     |
