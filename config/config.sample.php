@@ -4,20 +4,16 @@
  * This configuration file is only provided to document the different
  * configuration options and their usage for the core system.
  *
- * DO NOT COMPLETELY BASE YOUR CONFIGURATION FILE ON THIS SAMPLE. THIS MAY BREAK
+ * DO NOT COMPLETELY BASE YOUR CONFIGURATION FILE ON THESE SAMPLES. THIS MAY BREAK
  * YOUR INSTANCE. Instead, manually copy configuration switches that you
  * consider important for your instance to your working `config.php`, and
  * apply configuration options that are pertinent for your instance.
  *
- * This file is used to generate the configuration documentation.
- * Please consider following requirements of the current parser:
- *  * all comments need to start with `/**` and end with ` *\/` - each on their
- *    own line
- *  * add a `@see CONFIG_INDEX` to copy a previously described config option
- *    also to this line
- *  * everything between the `*\/` and the next `/**` will be treated as the
- *    config option
- *  * use RST syntax
+ * All keys are only valid if the corresponding app is installed and enabled.
+ * You MUST copy the keys needed to the active config.php file.
+ *
+ * This file is also used to generate the configuration documentation using `config-to-docs`.
+ * Any changes to this file must follow the rules documented in the readme of the `config-to-docs` repository.
  */
 
 $CONFIG = [
@@ -1406,7 +1402,6 @@ $CONFIG = [
  * With binary, only new files are written in the binary format, existing encrypted files
  * in the old format stay readable. This guarantees a smooth transition.
  */
-
 'encryption.use_legacy_encoding' => false,
 
 /**
