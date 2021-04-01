@@ -9,24 +9,28 @@ Feature: accept/decline shares coming from internal users to the Shares folder
     And parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And using OCS API version "1"
     And using new DAV path
-    And these users have been created with default attributes and small skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
 
   Scenario: When accepting a share of a file, the received file is accessible
-    Given user "Alice" has shared file "/textfile0.txt" with user "Brian"
+    Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt"
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian"
     When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
-    Then the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud test text file 0" plus end-of-line
+    Then the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud test text file 0"
 
   Scenario: When accepting a share of a folder, the received folder is accessible
-    Given user "Alice" has shared file "/PARENT" with user "Brian"
+    Given user "Alice" has created folder "/PARENT"
+    And user "Alice" has uploaded file with content "ownCloud test text file parent" to "PARENT/parent.txt"
+    And user "Alice" has shared file "/PARENT" with user "Brian"
     When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
-    Then the content of file "/Shares/PARENT/parent.txt" for user "Brian" should be "ownCloud test text file parent" plus end-of-line
+    Then the content of file "/Shares/PARENT/parent.txt" for user "Brian" should be "ownCloud test text file parent"
 
   @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario: When accepting a share of a file, the response is valid
-    Given user "Alice" has shared file "/textfile0.txt" with user "Brian"
+    Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt"
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian"
     When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -42,11 +46,13 @@ Feature: accept/decline shares coming from internal users to the Shares folder
       | mimetype               | text/plain            |
       | storage_id             | ANY_VALUE             |
       | share_type             | user                  |
-    And the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud test text file 0" plus end-of-line
+    And the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud test text file 0"
 
   @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario: When accepting a share of a folder, the response is valid
-    Given user "Alice" has shared file "/PARENT" with user "Brian"
+    Given user "Alice" has created folder "/PARENT"
+    And user "Alice" has uploaded file with content "ownCloud test text file parent" to "PARENT/parent.txt"
+    And user "Alice" has shared file "/PARENT" with user "Brian"
     When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -62,4 +68,4 @@ Feature: accept/decline shares coming from internal users to the Shares folder
       | mimetype               | httpd/unix-directory |
       | storage_id             | ANY_VALUE            |
       | share_type             | user                 |
-    And the content of file "/Shares/PARENT/parent.txt" for user "Brian" should be "ownCloud test text file parent" plus end-of-line
+    And the content of file "/Shares/PARENT/parent.txt" for user "Brian" should be "ownCloud test text file parent"

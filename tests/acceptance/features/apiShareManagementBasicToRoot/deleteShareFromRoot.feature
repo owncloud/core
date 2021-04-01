@@ -1,16 +1,18 @@
 @api @files_sharing-app-required @notToImplementOnOCIS
 Feature: sharing
 
-  Scenario Outline: Delete all group shares
-    Given these users have been created with default attributes and small skeleton files:
+  Background:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
-    And using OCS API version "<ocs_api_version>"
+
+  Scenario Outline: Delete all group shares
+    Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
-    And user "Alice" has shared file "textfile0.txt" with group "grp1"
-    And user "Brian" has moved file "/textfile0 (2).txt" to "/FOLDER/textfile0.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToShare.txt"
+    And user "Alice" has shared file "fileToShare.txt" with group "grp1"
     When user "Alice" deletes the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
@@ -22,10 +24,9 @@ Feature: sharing
 
   @smokeTest
   Scenario Outline: delete a share
-    Given user "Alice" has been created with default attributes and small skeleton files
-    And user "Brian" has been created with default attributes and without skeleton files
-    And using OCS API version "<ocs_api_version>"
-    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToShare.txt"
+    And user "Alice" has shared file "fileToShare.txt" with user "Brian"
     When user "Alice" deletes the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
@@ -37,10 +38,6 @@ Feature: sharing
 
   Scenario: orphaned shares
     Given using OCS API version "1"
-    And these users have been created with default attributes and without skeleton files:
-      | username |
-      | Alice    |
-      | Brian    |
     And user "Alice" has created folder "/common"
     And user "Alice" has created folder "/common/sub"
     And user "Alice" has shared folder "/common/sub" with user "Brian"
@@ -51,10 +48,9 @@ Feature: sharing
   @smokeTest @files_trashbin-app-required
   Scenario: deleting a file out of a share as recipient creates a backup for the owner
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and small skeleton files
-    And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/shared"
-    And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToShare.txt"
+    And user "Alice" has moved file "/fileToShare.txt" to "/shared/shared_file.txt"
     And user "Alice" has shared folder "/shared" with user "Brian"
     When user "Brian" deletes file "/shared/shared_file.txt" using the WebDAV API
     Then the HTTP status code should be "204"
@@ -66,11 +62,9 @@ Feature: sharing
   @files_trashbin-app-required
   Scenario: deleting a folder out of a share as recipient creates a backup for the owner
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and small skeleton files
-    And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/shared"
     And user "Alice" has created folder "/shared/sub"
-    And user "Alice" has moved file "/textfile0.txt" to "/shared/sub/shared_file.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "shared/sub/shared_file.txt"
     And user "Alice" has shared folder "/shared" with user "Brian"
     When user "Brian" deletes folder "/shared/sub" using the WebDAV API
     Then the HTTP status code should be "204"
@@ -86,11 +80,11 @@ Feature: sharing
     And group "grp1" has been created
     And these users have been created with default attributes and without skeleton files:
       | username |
-      | Alice    |
-      | Brian    |
-    And user "Carol" has been created with default attributes and small skeleton files
+      | Carol    |
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"
+    And user "Carol" has created folder "/PARENT"
+    And user "Carol" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/parent.txt"
     And user "Carol" has shared file "/PARENT/parent.txt" with group "grp1"
     And user "Carol" has stored etag of element "/PARENT"
     And user "Brian" has stored etag of element "/"
@@ -101,10 +95,8 @@ Feature: sharing
 
   Scenario: sharee of a read-only share folder tries to delete the shared folder
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and small skeleton files
-    And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/shared"
-    And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "shared/shared_file.txt"
     And user "Alice" has shared folder "shared" with user "Brian" with permissions "read"
     When user "Brian" deletes file "/shared/shared_file.txt" using the WebDAV API
     Then the HTTP status code should be "403"
@@ -112,10 +104,8 @@ Feature: sharing
 
   Scenario: sharee of a upload-only shared folder tries to delete a file in the shared folder
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and small skeleton files
-    And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/shared"
-    And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "shared/shared_file.txt"
     And user "Alice" has shared folder "shared" with user "Brian" with permissions "create"
     When user "Brian" deletes file "/shared/shared_file.txt" using the WebDAV API
     Then the HTTP status code should be "403"
@@ -123,10 +113,6 @@ Feature: sharing
 
   Scenario: sharee of an upload-only shared folder tries to delete their file in the folder
     Given using OCS API version "1"
-    And these users have been created with default attributes and without skeleton files:
-      | username |
-      | Alice    |
-      | Brian    |
     And user "Alice" has created folder "/shared"
     And user "Alice" has shared folder "shared" with user "Brian" with permissions "create"
     When user "Brian" uploads file "filesForUpload/textfile.txt" to "shared/textfile.txt" using the WebDAV API
@@ -137,13 +123,13 @@ Feature: sharing
   Scenario Outline: A Group share recipient tries to delete the share
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
-    And user "Alice" has been created with default attributes and small skeleton files
     And these users have been created with default attributes and without skeleton files:
       | username |
-      | Brian    |
       | Carol    |
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"
+    And user "Alice" has created folder "PARENT"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/parent.txt"
     And user "Alice" has shared entry "<entry_to_share>" with group "grp1"
     When user "Brian" deletes the last share using the sharing API
     Then the OCS status code should be "404"
@@ -160,8 +146,8 @@ Feature: sharing
 
   Scenario Outline: An individual share recipient tries to delete the share
     Given using OCS API version "<ocs_api_version>"
-    And user "Alice" has been created with default attributes and small skeleton files
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "PARENT"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/parent.txt"
     And user "Alice" has shared entry "<entry_to_share>" with user "Brian"
     When user "Brian" deletes the last share using the sharing API
     Then the OCS status code should be "404"
@@ -176,13 +162,9 @@ Feature: sharing
       | /PARENT            | 2               | 404              | PARENT         |
 
   Scenario Outline: delete a share with wrong authentication
-    Given these users have been created with default attributes and without skeleton files:
-      | username |
-      | Alice    |
-      | Brian    |
-    And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"
-    And using OCS API version "<ocs_api_version>"
-    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToShare.txt"
+    And user "Alice" has shared file "fileToShare.txt" with user "Brian"
     When user "Brian" tries to delete the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"

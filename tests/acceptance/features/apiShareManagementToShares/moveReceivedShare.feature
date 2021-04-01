@@ -5,7 +5,7 @@ Feature: sharing
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
     And using OCS API version "1"
-    And these users have been created with default attributes and small skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -100,7 +100,8 @@ Feature: sharing
     But as "Brian" file "/myFolder/fileInside" should exist
 
   Scenario: receiver renames a received folder share to a different name on the same folder
-    Given user "Alice" has shared folder "PARENT" with user "Brian"
+    Given user "Alice" has created folder "PARENT"
+    And user "Alice" has shared folder "PARENT" with user "Brian"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
     When user "Brian" moves folder "/Shares/PARENT" to "/Shares/myFolder" using the WebDAV API
     Then the HTTP status code should be "201"
@@ -108,9 +109,10 @@ Feature: sharing
     But as "Alice" folder "myFolder" should not exist
 
   Scenario: receiver renames a received file share to different name on the same folder
-    Given user "Alice" has shared file "textfile0.txt" with user "Brian"
-    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
-    When user "Brian" moves file "/Shares/textfile0.txt" to "/Shares/newFile.txt" using the WebDAV API
+    Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToShare.txt"
+    And user "Alice" has shared file "fileToShare.txt" with user "Brian"
+    And user "Brian" has accepted share "/fileToShare.txt" offered by user "Alice"
+    When user "Brian" moves file "/Shares/fileToShare.txt" to "/Shares/newFile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Brian" file "/Shares/newFile.txt" should exist
     But as "Alice" file "newFile.txt" should not exist
@@ -118,15 +120,17 @@ Feature: sharing
   Scenario: receiver renames a received file share to different name on the same folder for group sharing
     Given group "grp1" has been created
     And user "Brian" has been added to group "grp1"
-    And user "Alice" has shared file "textfile0.txt" with group "grp1"
-    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
-    When user "Brian" moves file "/Shares/textfile0.txt" to "/Shares/newFile.txt" using the WebDAV API
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToShare.txt"
+    And user "Alice" has shared file "fileToShare.txt" with group "grp1"
+    And user "Brian" has accepted share "/fileToShare.txt" offered by user "Alice"
+    When user "Brian" moves file "/Shares/fileToShare.txt" to "/Shares/newFile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Brian" file "/Shares/newFile.txt" should exist
     But as "Alice" file "newFile.txt" should not exist
 
   Scenario: receiver renames a received folder share to different name on the same folder for group sharing
     Given group "grp1" has been created
+    And user "Alice" has created folder "PARENT"
     And user "Brian" has been added to group "grp1"
     And user "Alice" has shared folder "PARENT" with group "grp1"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
@@ -138,15 +142,17 @@ Feature: sharing
   Scenario: receiver renames a received file share with read,update,share permissions in group sharing
     Given group "grp1" has been created
     And user "Brian" has been added to group "grp1"
-    And user "Alice" has shared file "textfile0.txt" with group "grp1" with permissions "read,update,share"
-    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
-    When user "Brian" moves folder "/Shares/textfile0.txt" to "newFile.txt" using the WebDAV API
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToShare.txt"
+    And user "Alice" has shared file "fileToShare.txt" with group "grp1" with permissions "read,update,share"
+    And user "Brian" has accepted share "/fileToShare.txt" offered by user "Alice"
+    When user "Brian" moves folder "/Shares/fileToShare.txt" to "newFile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Brian" file "newFile.txt" should exist
     But as "Alice" file "newFile.txt" should not exist
 
   Scenario: receiver renames a received folder share with share, read, change permissions in group sharing
     Given group "grp1" has been created
+    And user "Alice" has created folder "PARENT"
     And user "Brian" has been added to group "grp1"
     And user "Alice" has shared folder "PARENT" with group "grp1" with permissions "share,read,change"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
@@ -158,15 +164,17 @@ Feature: sharing
   Scenario: receiver tries to rename a received file share with share, read permissions in group sharing
     Given group "grp1" has been created
     And user "Brian" has been added to group "grp1"
-    And user "Alice" has shared file "textfile0.txt" with group "grp1" with permissions "share,read"
-    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
-    When user "Brian" moves file "/Shares/textfile0.txt" to "/newFile.txt" using the WebDAV API
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToShare.txt"
+    And user "Alice" has shared file "fileToShare.txt" with group "grp1" with permissions "share,read"
+    And user "Brian" has accepted share "/fileToShare.txt" offered by user "Alice"
+    When user "Brian" moves file "/Shares/fileToShare.txt" to "/newFile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Brian" file "newFile.txt" should exist
     But as "Alice" file "newFile.txt" should not exist
 
   Scenario: receiver tries to rename a received folder share with share, read permissions in group sharing
     Given group "grp1" has been created
+    And user "Alice" has created folder "PARENT"
     And user "Brian" has been added to group "grp1"
     And user "Alice" has shared folder "PARENT" with group "grp1" with permissions "share,read"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
@@ -223,6 +231,7 @@ Feature: sharing
 
   Scenario: receiver moves file within a received folder to new folder
     Given user "Alice" has created folder "folderToShare"
+    And user "Brian" has created folder "FOLDER"
     And user "Alice" has uploaded file with content "thisIsAFileInsideTheSharedFolder" to "/folderToShare/fileToShare1.txt"
     And user "Alice" has uploaded file with content "thisIsAnotherFileInsideTheSharedFolder" to "/folderToShare/fileToShare2.txt"
     And user "Alice" has shared folder "folderToShare" with user "Brian" with permissions "share,read,change"

@@ -9,7 +9,7 @@ Feature: accept/decline shares coming from internal users
     And auto-accept shares has been disabled
     And using OCS API version "1"
     And using new DAV path
-    And these users have been created with default attributes and small skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -17,9 +17,20 @@ Feature: accept/decline shares coming from internal users
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"
+    And user "Alice" has created folder "PARENT"
+    And user "Alice" has created folder "FOLDER"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "PARENT/parent.txt"
+    And user "Brian" has created folder "PARENT"
+    And user "Brian" has created folder "FOLDER"
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "PARENT/parent.txt"
 
   @smokeTest
   Scenario: share a file & folder with another internal group when auto accept is disabled
+    Given user "Carol" has created folder "FOLDER"
+    And user "Carol" has created folder "PARENT"
+    And user "Carol" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
     And user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "100"
@@ -296,8 +307,10 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/Shares/testfile (2) (2).txt" for user "Carol" should be "First file"
 
   Scenario: user accepts shares received from multiple users with the same name when auto-accept share is disabled
-    Given user "David" has been created with default attributes and small skeleton files
+    Given user "David" has been created with default attributes and without skeleton files
+    And user "David" has created folder "PARENT"
     And user "Brian" has shared folder "/PARENT" with user "Alice"
+    And user "Carol" has created folder "PARENT"
     And user "Carol" has shared folder "/PARENT" with user "Alice"
     And user "Alice" has created folder "Shares"
     And user "Alice" has created folder "Shares/PARENT"
@@ -342,6 +355,8 @@ Feature: accept/decline shares coming from internal users
   Scenario: user shares folder in a group with matching folder-name for every users involved
     Given user "Alice" uploads file with content "uploaded content" to "/PARENT/abc.txt" using the WebDAV API
     And user "Alice" uploads file with content "uploaded content" to "/FOLDER/abc.txt" using the WebDAV API
+    And user "Carol" has created folder "PARENT"
+    And user "Carol" has created folder "FOLDER"
     When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
     And user "Alice" shares folder "/FOLDER" with group "grp1" using the sharing API
     Then the OCS status code should be "100"
@@ -376,6 +391,10 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/Shares/FOLDER/abc.txt" for user "Carol" should be "uploaded content"
 
   Scenario: user shares files in a group with matching file-names for every users involved in sharing
+    Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
+    And user "Carol" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Carol" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
     When user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API
     And user "Alice" shares file "/textfile1.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "100"
@@ -415,6 +434,7 @@ Feature: accept/decline shares coming from internal users
       | /Shares/textfile0.txt |
 
   Scenario: user shares file in a group with matching filename when auto accept is disabled
+    Given user "Carol" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     When user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
