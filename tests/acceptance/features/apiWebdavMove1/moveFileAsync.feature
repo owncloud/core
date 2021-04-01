@@ -143,7 +143,7 @@ Feature: move (rename) file
     When user "Alice" moves file "/textfile0.txt" asynchronously to "/a\\a" using the WebDAV API
     Then the HTTP status code should be "400"
     And user "Alice" should see the following elements
-      | /welcome.txt |
+      | /textfile0.txt |
 
   Scenario: Renaming a file to a path with extension .part should not be possible
     When user "Alice" moves file "/textfile0.txt" asynchronously to "/textfile0.part" using the WebDAV API
