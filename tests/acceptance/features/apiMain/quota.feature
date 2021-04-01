@@ -103,16 +103,14 @@ Feature: quota
 
 
   Scenario: User with zero quota cannot upload a file
-    Given user "Brian" has been created with default attributes and without skeleton files
-    And the quota of user "Alice" has been set to "0 B"
+    Given the quota of user "Alice" has been set to "0 B"
     When user "Alice" uploads file with content "uploaded content" to "testquota.txt" using the WebDAV API
     Then the HTTP status code should be "507"
     And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
 
 
   Scenario: User with zero quota can create a folder
-    Given user "Brian" has been created with default attributes and without skeleton files
-    And the quota of user "Alice" has been set to "0 B"
+    Given the quota of user "Alice" has been set to "0 B"
     When user "Alice" creates folder "testQuota" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Alice" folder "testQuota" should exist
@@ -142,7 +140,7 @@ Feature: quota
     And user "Alice" has uploaded file with content "test" to "/testquota.txt"
     And user "Alice" has shared file "/testquota.txt" with user "Brian"
     And user "Brian" has accepted share "/testquota.txt" offered by user "Alice"
-    When user "Brian" moves file "/Shares/testquota.txt" to "/testquota" using the WebDAV API
+    When user "Brian" moves file "/Shares/testquota.txt" to "/testquota.txt" using the WebDAV API
     Then the HTTP status code should be "507"
     And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
 
@@ -178,13 +176,13 @@ Feature: quota
 
 
   Scenario: User should retain their old files even if their quota is set to 0
-    And user "Alice" has uploaded file with content "test" to "/testquota.txt"
+    Given user "Alice" has uploaded file with content "test" to "/testquota.txt"
     And the quota of user "Alice" has been set to "0 B"
-    And the content of file "/testquota.txt" for user "Alice" should be "test"
+    Then the content of file "/testquota.txt" for user "Alice" should be "test"
 
 
   Scenario: User should be able to restore their deleted file when their quota is set to zero
-    And user "Alice" has uploaded file with content "test" to "/testquota.txt"
+    Given user "Alice" has uploaded file with content "test" to "/testquota.txt"
     And user "Alice" has deleted file "/testquota.txt"
     And the quota of user "Alice" has been set to "0 B"
     When user "Alice" restores the file with original path "/testquota.txt" to "/testquota.txt" using the trashbin API
