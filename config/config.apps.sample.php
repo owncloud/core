@@ -117,15 +117,14 @@ $CONFIG = [
 'collabora_group' => '',
 
 /**
- * App: OpenID Connect(OIDC)
+ * App: OpenID Connect (OIDC)
  *
  * Possible keys: `openid-connect` ARRAY
- */
-
-/**
- * Configure OpenID Connect - all possible sub-keys
  *
- * You have to use the main key together with sub keys below, see example setups.
+ *
+ * **Configure OpenID Connect - all possible sub-keys**
+ *
+ * _You have to use the main key together with sub keys listed below, see code samples._
  *
  * allowed-user-backends::
  * Limit the users which are allowed to login to a specific user backend - e.g. LDAP
@@ -138,15 +137,15 @@ $CONFIG = [
  * Connect Provider, as when the button is pressed. The default is `false`.
  *
  * insecure::
- * Boolean value (true/false), no SSL verification will take place when talking to the
- * IdP - DON'T use in production!
+ * Boolean value (`true`/`false`), no SSL verification will take place when talking to the
+ * IdP - **DO NOT use in production!**
  *
  * loginButtonName::
  * The name as displayed on the login screen which is used to redirect to the IdP.
  *
  * mode::
  * This is the attribute in the owncloud accounts table to search for users.
- * The default value is `email`. An alternative value: `userid`.
+ * The default value is `email`. The alternative value is: `userid`.
  *
  * post_logout_redirect_uri::
  * A given URL where the IdP should redirect to after logout.
@@ -182,9 +181,9 @@ $CONFIG = [
  * If set to `false` the userinfo endpoint is used (starting app version 1.1.0).
  *
  * use-token-introspection-endpoint::
- * If set to true, the token introspection endpoint is used to verify a given access
+ * If set to `true`, the token introspection endpoint is used to verify a given access
  * token - only needed if the access token is not a JWT.
- * Tokens which are not JSON WebToken(JWT) may not have information like the
+ * Tokens which are not JSON WebToken (JWT) may not have information like the
  * expiry. In these cases, the OpenID Connect Provider needs to call on the token
  * introspection endpoint to get this information. The default value is `false`. See
  * https://tools.ietf.org/html/rfc7662 for more information on token introspection.
