@@ -22,6 +22,7 @@
 
 namespace OCA\SystemTags\Activity;
 
+use OC\Activity\Event;
 use OCP\Activity\IManager;
 use OCP\App\IAppManager;
 use OCP\Files\Config\IMountProviderCollection;
@@ -172,10 +173,15 @@ class Listener {
 		}
 
 		$actor = $this->session->getUser();
+
 		if ($actor instanceof IUser) {
 			$actor = $actor->getUID();
 		} else {
 			$actor = '';
+		}
+
+		if ($this->activityManager->getOverwriteAuthor()) {
+			$actor = $this->activityManager->getOverwriteAuthor();
 		}
 
 		$activity = $this->activityManager->generateEvent();

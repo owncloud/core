@@ -223,4 +223,20 @@ interface IManager {
 	 * @since 8.1.0
 	 */
 	public function getCurrentUserId();
+
+	/**
+	 * Get the author which will be used to override an existing author.
+	 *
+	 * @return string
+	 * @since 10.8.0
+	 */
+	public function getOverwriteAuthor();
+
+	/**
+	 * Set the author which will be used to override an existing author.
+	 *
+	 * @param string
+	 * @since 10.8.0
+	 */
+	public function setOverwriteAuthor($overwriteAuthor);
 }

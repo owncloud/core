@@ -32,8 +32,6 @@ use OCP\IUser;
 use OCP\IUserSession;
 
 class Manager implements IManager {
-	/** @var string|null */
-	public static $defaultAuthor = null;
 
 	/** @var IRequest */
 	protected $request;
@@ -52,6 +50,9 @@ class Manager implements IManager {
 
 	/** @var string */
 	protected $currentUserId;
+
+	/** @var string */
+	protected $overwriteAuthor;
 
 	/**
 	 * constructor of the controller
@@ -176,13 +177,6 @@ class Manager implements IManager {
 		}
 		if ($event->getSubject() === null || $event->getSubjectParameters() === null) {
 			throw new \BadMethodCallException('Subject not set', 13);
-		}
-
-		if (self::$defaultAuthor) {
-			$subjectParams = $event->getSubjectParameters();
-			$subjectParams[0] = self::$defaultAuthor;
-			$event->setAuthor(self::$defaultAuthor);
-			$event->setSubject($event->getSubject(), $subjectParams);
 		}
 
 		if ($event->getAuthor() === null) {
@@ -540,7 +534,17 @@ class Manager implements IManager {
 		return \array_shift($users);
 	}
 
-	public static function setDefaultAuthor($defaultAuthor) {
-		self::$defaultAuthor = $defaultAuthor;
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getOverwriteAuthor() {
+		return $this->overwriteAuthor;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function setOverwriteAuthor($overwriteAuthor) {
+		$this->overwriteAuthor = $overwriteAuthor;
 	}
 }
