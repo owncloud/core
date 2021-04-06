@@ -144,7 +144,7 @@ class Extension implements IExtension {
 		switch ($text) {
 			case self::ASSIGN_TAG:
 				$params[2] = $this->convertParameterToTag($params[2], $l);
-				if($this->actorIsAutomation($params[0])){
+				if ($this->actorIsAutomation($params[0])) {
 					return (string) $l->t('System tag %3$s was assigned to %2$s due to automation rule', $params);
 				}
 				if ($this->actorIsCurrentUser($params[0])) {
@@ -191,7 +191,7 @@ class Extension implements IExtension {
 				return (string) $l->t('%1$s updated system tag %3$s to %2$s', $params);
 			case self::ASSIGN_TAG:
 				$params[2] = $this->convertParameterToTag($params[2], $l);
-				if($this->actorIsAutomation($params[0])){
+				if ($this->actorIsAutomation($params[0])) {
 					return (string) $l->t('System tag %3$s was assigned to %2$s due to automation rule', $params);
 				}
 				if ($this->actorIsCurrentUser($params[0])) {
@@ -236,7 +236,6 @@ class Extension implements IExtension {
 			return false;
 		}
 	}
-
 
 	/**
 	 * The extension can define the type of parameters for translation

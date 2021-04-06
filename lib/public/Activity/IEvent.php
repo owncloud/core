@@ -35,7 +35,6 @@ namespace OCP\Activity;
  * @since 8.2.0
  */
 interface IEvent {
-
 	public const AUTOMATION_AUTHOR = 'automation:author';
 	/**
 	 * Set the app of the activity

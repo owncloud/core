@@ -178,7 +178,7 @@ class Manager implements IManager {
 			throw new \BadMethodCallException('Subject not set', 13);
 		}
 
-		if(self::$defaultAuthor){
+		if (self::$defaultAuthor) {
 			$subjectParams = $event->getSubjectParameters();
 			$subjectParams[0] = self::$defaultAuthor;
 			$event->setAuthor(self::$defaultAuthor);
@@ -186,7 +186,7 @@ class Manager implements IManager {
 		}
 
 		if ($event->getAuthor() === null) {
-			if($this->session !== null && $this->session->getUser() instanceof IUser) {
+			if ($this->session !== null && $this->session->getUser() instanceof IUser) {
 				$event->setAuthor($this->session->getUser()->getUID());
 			}
 		}
@@ -540,7 +540,7 @@ class Manager implements IManager {
 		return \array_shift($users);
 	}
 
-	public static function setDefaultAuthor($defaultAuthor){
+	public static function setDefaultAuthor($defaultAuthor) {
 		self::$defaultAuthor = $defaultAuthor;
 	}
 }
