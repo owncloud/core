@@ -33,7 +33,7 @@ use OCP\IUserSession;
 
 class Manager implements IManager {
 	/** @var string|null */
-	private static $defaultAuthor = null;
+	public static $defaultAuthor = null;
 
 	/** @var IRequest */
 	protected $request;
