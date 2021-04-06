@@ -10,6 +10,7 @@ Summary
 
 * Bugfix - Fix mispositioned ui elements after leaving viewerMode: [#38547](https://github.com/owncloud/core/issues/38547)
 * Bugfix - Creating self group-reshare should not not share to self: [#38581](https://github.com/owncloud/core/pull/38581)
+* Bugfix - Check quota on the necessary move operations: [#38591](https://github.com/owncloud/core/pull/38591)
 * Change - Update icewind/streams from 0.7.3 to 0.7.4: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Update icewind/streams from 0.7.3 to 0.7.4 in files_external: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Update icewind/smb from 3.3.1 to 3.4.0 in files_external: [#38524](https://github.com/owncloud/core/pull/38524)
@@ -37,6 +38,14 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4382
    https://github.com/owncloud/core/pull/38581
+
+* Bugfix - Check quota on the necessary move operations: [#38591](https://github.com/owncloud/core/pull/38591)
+
+   When encryption is active, a move operation between two different storages was leading to a
+   broken copy on target storage if the target has not enough quota. This data loss problem has been
+   resolved.
+
+   https://github.com/owncloud/core/pull/38591
 
 * Change - Update icewind/streams from 0.7.3 to 0.7.4: [#38524](https://github.com/owncloud/core/pull/38524)
 
