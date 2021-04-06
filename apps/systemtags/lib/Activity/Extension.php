@@ -23,6 +23,7 @@
 
 namespace OCA\SystemTags\Activity;
 
+use OC\Activity\Event;
 use OCP\Activity\IExtension;
 use OCP\Activity\IManager;
 use OCP\IL10N;
@@ -41,7 +42,6 @@ class Extension implements IExtension {
 	const DELETE_TAG = 'delete_tag';
 
 	const ASSIGN_TAG = 'assign_tag';
-	const ASSIGN_TAG_BY_AUTOMATION = 'assign_tag_by_automation';
 	const UNASSIGN_TAG = 'unassign_tag';
 
 	/** @var IFactory */
@@ -144,13 +144,13 @@ class Extension implements IExtension {
 		switch ($text) {
 			case self::ASSIGN_TAG:
 				$params[2] = $this->convertParameterToTag($params[2], $l);
+				if($this->actorIsAutomation($params[0])){
+					return (string) $l->t('System tag %3$s was assigned to %2$s due to automation rule', $params);
+				}
 				if ($this->actorIsCurrentUser($params[0])) {
 					return (string) $l->t('You assigned system tag %3$s', $params);
 				}
 				return (string) $l->t('%1$s assigned system tag %3$s', $params);
-			case self::ASSIGN_TAG_BY_AUTOMATION:
-				$params[2] = $this->convertParameterToTag($params[2], $l);
-				return (string) $l->t('System tag %3$s was assigned to %2$s due to automation rule', $params);
 			case self::UNASSIGN_TAG:
 				$params[2] = $this->convertParameterToTag($params[2], $l);
 				if ($this->actorIsCurrentUser($params[0])) {
@@ -191,13 +191,13 @@ class Extension implements IExtension {
 				return (string) $l->t('%1$s updated system tag %3$s to %2$s', $params);
 			case self::ASSIGN_TAG:
 				$params[2] = $this->convertParameterToTag($params[2], $l);
+				if($this->actorIsAutomation($params[0])){
+					return (string) $l->t('System tag %3$s was assigned to %2$s due to automation rule', $params);
+				}
 				if ($this->actorIsCurrentUser($params[0])) {
 					return (string) $l->t('You assigned system tag %3$s to %2$s', $params);
 				}
 				return (string) $l->t('%1$s assigned system tag %3$s to %2$s', $params);
-			case self::ASSIGN_TAG_BY_AUTOMATION:
-				$params[2] = $this->convertParameterToTag($params[2], $l);
-				return (string) $l->t('System tag %3$s was assigned to %2$s due to automation rule', $params);
 			case self::UNASSIGN_TAG:
 				$params[2] = $this->convertParameterToTag($params[2], $l);
 				if ($this->actorIsCurrentUser($params[0])) {
@@ -222,6 +222,21 @@ class Extension implements IExtension {
 			return false;
 		}
 	}
+
+	/**
+	 * Check if the author is automation user
+	 *
+	 * @param string $user Parameter e.g. `<user display-name="admin">admin</user>`
+	 * @return bool
+	 */
+	protected function actorIsAutomation($user) {
+		try {
+			return \strip_tags($user) === Event::AUTOMATION_USER;
+		} catch (\UnexpectedValueException $e) {
+			return false;
+		}
+	}
+
 
 	/**
 	 * The extension can define the type of parameters for translation
@@ -251,7 +266,6 @@ class Extension implements IExtension {
 					];
 
 				case self::ASSIGN_TAG:
-				case self::ASSIGN_TAG_BY_AUTOMATION:
 				case self::UNASSIGN_TAG:
 					return [
 						0 => 'username',

@@ -35,6 +35,8 @@ namespace OCP\Activity;
  * @since 8.2.0
  */
 interface IEvent {
+
+	public const AUTOMATION_USER = 'automation_user';
 	/**
 	 * Set the app of the activity
 	 *

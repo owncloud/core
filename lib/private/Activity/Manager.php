@@ -32,6 +32,9 @@ use OCP\IUser;
 use OCP\IUserSession;
 
 class Manager implements IManager {
+	/** @var string|null */
+	private static $defaultAuthor = null;
+
 	/** @var IRequest */
 	protected $request;
 
@@ -175,8 +178,15 @@ class Manager implements IManager {
 			throw new \BadMethodCallException('Subject not set', 13);
 		}
 
+		if(self::$defaultAuthor){
+			$subjectParams = $event->getSubjectParameters();
+			$subjectParams[0] = self::$defaultAuthor;
+			$event->setAuthor(self::$defaultAuthor);
+			$event->setSubject($event->getSubject(), $subjectParams);
+		}
+
 		if ($event->getAuthor() === null) {
-			if ($this->session !== null && $this->session->getUser() instanceof IUser) {
+			if($this->session !== null && $this->session->getUser() instanceof IUser) {
 				$event->setAuthor($this->session->getUser()->getUID());
 			}
 		}
@@ -528,5 +538,9 @@ class Manager implements IManager {
 
 		// Token found login as that user
 		return \array_shift($users);
+	}
+
+	public static function setDefaultAuthor($defaultAuthor){
+		self::$defaultAuthor = $defaultAuthor;
 	}
 }
