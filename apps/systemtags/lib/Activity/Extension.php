@@ -231,7 +231,7 @@ class Extension implements IExtension {
 	 */
 	protected function actorIsAutomation($user) {
 		try {
-			return \strip_tags($user) === Event::AUTOMATION_USER;
+			return \strip_tags($user) === Event::AUTOMATION_AUTHOR;
 		} catch (\UnexpectedValueException $e) {
 			return false;
 		}
