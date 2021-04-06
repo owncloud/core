@@ -2259,6 +2259,10 @@
 							OC.Notification.show(t('files', 'Could not move "{file}" because either the file or the target are locked.',
 								{file: fileName, message: result.message}), {type: 'error'}
 							);
+						} else if (status === 507) {
+							OC.Notification.show(t('files', 'Not enough free space',
+								{file: fileName, message: result.message}), {type: 'error'}
+							);
 						} else if (result != null && typeof result.message !== "undefined") {
 							OC.Notification.show(t('files', 'Could not move "{file}": {message}',
 								{file: fileName, message: result.message}), {type: 'error'}

@@ -80,27 +80,38 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 	/**
 	 * Check if we're moving a Futurefile in which case we need to check
 	 * the quota on the target destination.
+	 * If target and source storages are different, quota plugin should check
+	 * free space in target storage.
 	 *
 	 * @param string $source source path
 	 * @param string $destination destination path
 	 */
 	public function handleBeforeMove($source, $destination) {
 		$sourceNode = $this->server->tree->getNodeForPath($source);
-		if (!$sourceNode instanceof FutureFile) {
-			return;
-		}
 
 		// get target node for proper path conversion
 		if ($this->server->tree->nodeExists($destination)) {
-			$destinationNode = $this->server->tree->getNodeForPath($destination);
-			'@phan-var Node $destinationNode';
-			$path = $destinationNode->getPath();
+			$targetNode = $this->server->tree->getNodeForPath($destination);
 		} else {
-			$parentNode = $this->server->tree->getNodeForPath(\dirname($destination));
-			'@phan-var Node $parentNode';
-			$path = $parentNode->getPath();
+			$dirname = \dirname($destination);
+			$dirname = $dirname === '.' ? '/' : $dirname;
+			$targetNode = $this->server->tree->getNodeForPath($dirname);
 		}
 
+		// Check quota for only FutureFile or
+		// target storage different than source storage
+		if (!$sourceNode instanceof FutureFile) {
+			if (!$sourceNode instanceof Node || !$targetNode instanceof Node) {
+				return;
+			}
+
+			$sourceStorage = $sourceNode->getFileInfo()->getStorage()->getId();
+			$targetStorage = $targetNode->getFileInfo()->getStorage()->getId();
+			if ($sourceStorage === $targetStorage) {
+				return;
+			}
+		}
+		$path = $targetNode->getPath();
 		return $this->checkQuota($path, $sourceNode->getSize());
 	}
 
