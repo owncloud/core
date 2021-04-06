@@ -88,11 +88,13 @@ Feature: sharing
   @smokeTest
   Scenario: unshare from self
     And group "grp1" has been created
-    And these users have been created with default attributes and small skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | Carol    |
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"
+    And user "Carol" has created folder "PARENT"
+    And user "Carol" has uploaded file "filesForUpload/textfile.txt" to "PARENT/parent.txt"
     And user "Carol" has shared file "/PARENT/parent.txt" with group "grp1"
     And user "Brian" has accepted share "/PARENT/parent.txt" offered by user "Carol"
     And user "Carol" has stored etag of element "/PARENT"

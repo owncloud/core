@@ -5,20 +5,22 @@ Feature: Test for issue owncloud/core 38501
   apiSharees/sharees.feature:519
 
   Background:
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | sharee1  |
-    Given these users have been created with small skeleton files:
+      | sharee2  |
+    And these users have been created without skeleton files:
       | username | password  | displayname  | email |
       | sharee3  | %regular% | Sharee Three |       |
-    And group "ShareeGroup" has been created
-    And group "ShareeGroup2" has been created
+    And these groups have been created:
+      | groupname    |
+      | ShareeGroup  |
+      | ShareeGroup2 |
     And user "Alice" has been added to group "ShareeGroup2"
 
   Scenario Outline: empty search for sharees when search min length is set to 0
     Given the administrator has updated system config key "user.search_min_length" with value "0"
-    And user "sharee2" has been created with default attributes and small skeleton files
     And using OCS API version "<ocs-api-version>"
     When user "sharee1" gets the sharees using the sharing API with parameters
       | search   |      |
@@ -44,7 +46,6 @@ Feature: Test for issue owncloud/core 38501
 
   Scenario Outline: search for sharees without search when min length is set to 0
     Given the administrator has updated system config key "user.search_min_length" with value "0"
-    And user "sharee2" has been created with default attributes and small skeleton files
     And using OCS API version "<ocs-api-version>"
     When user "sharee1" gets the sharees using the sharing API with parameters
       | itemType | file |
