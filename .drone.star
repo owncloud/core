@@ -525,6 +525,7 @@ def changelog(ctx):
 					'pull': 'always',
 					'commands': [
 						'calens >| CHANGELOG.md',
+						'calens -t changelog/CHANGELOG-html.tmpl >| CHANGELOG.html',
 					],
 				},
 				{
