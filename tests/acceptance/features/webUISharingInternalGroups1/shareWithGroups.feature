@@ -94,7 +94,7 @@ Feature: Sharing files and folders with internal groups
     When the user renames folder "simple-folder" to "new-simple-folder" using the webUI
     And the user shares folder "new-simple-folder" with group "grp1" using the webUI
 		# unshare the received shared folder and check it is gone
-    When the user re-logs in as "Alice" using the webUI
+    And the user re-logs in as "Alice" using the webUI
     And the user unshares folder "new-simple-folder" using the webUI
     Then folder "new-simple-folder" should not be listed on the webUI
 		# check that the folder is still visible to another group member

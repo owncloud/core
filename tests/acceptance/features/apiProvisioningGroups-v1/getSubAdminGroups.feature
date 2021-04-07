@@ -40,7 +40,7 @@ Feature: get subadmin groups
     When user "Alice" gets all the groups where user "Alice" is subadmin using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    Then the subadmin groups returned by the API should be
+    And the subadmin groups returned by the API should be
       | brand-new-group |
       | 😅 😆          |
 

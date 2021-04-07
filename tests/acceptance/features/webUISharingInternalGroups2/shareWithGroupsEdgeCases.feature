@@ -48,7 +48,7 @@ Feature: Sharing files and folders with internal groups
     And user "Carol" has logged in using the webUI
     When the user shares folder "simple-folder" with user "Alice" using the webUI
     And the user shares folder "simple-folder" with group "Alice" using the webUI
-    When the user re-logs in as "Alice" using the webUI
+    And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder" should be marked as shared by "Carol" on the webUI
     When the user re-logs in as "Brian" using the webUI
     Then folder "simple-folder" should be marked as shared with "Alice" by "Carol" on the webUI
@@ -63,7 +63,7 @@ Feature: Sharing files and folders with internal groups
     And user "Carol" has logged in using the webUI
     When the user shares folder "simple-folder" with group "Alice" using the webUI
     And the user shares folder "simple-folder" with user "Alice" using the webUI
-    When the user re-logs in as "Alice" using the webUI
+    And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder" should be marked as shared by "Carol" on the webUI
     When the user re-logs in as "Brian" using the webUI
     Then folder "simple-folder" should be marked as shared with "Alice" by "Carol" on the webUI
@@ -76,7 +76,7 @@ Feature: Sharing files and folders with internal groups
     And user "Carol" has logged in using the webUI
     When the user shares folder "simple-folder" with user "Alice" using the webUI
     And the user shares folder "simple-folder" with group "Alice" using the webUI
-    When the user re-logs in as "Alice" using the webUI
+    And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder" should be marked as shared by "Carol" on the webUI
     When the user re-logs in as "Brian" using the webUI
     Then folder "simple-folder" should be marked as shared with "Alice" by "Carol" on the webUI
@@ -89,7 +89,7 @@ Feature: Sharing files and folders with internal groups
     And user "Carol" has logged in using the webUI
     When the user shares folder "simple-folder" with group "Alice" using the webUI
     And the user shares folder "simple-folder" with user "Alice" using the webUI
-    When the user re-logs in as "Alice" using the webUI
+    And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder" should be marked as shared by "Carol" on the webUI
     When the user re-logs in as "Brian" using the webUI
     Then folder "simple-folder" should be marked as shared with "Alice" by "Carol" on the webUI

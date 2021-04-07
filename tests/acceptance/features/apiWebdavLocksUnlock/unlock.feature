@@ -78,11 +78,11 @@ Feature: UNLOCK locked items
     And user "Alice" has created folder "notlocked/PARENT"
     And user "Alice" has created folder "alsonotlocked"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/alsonotlocked/PARENT"
-    Given user "Alice" has locked folder "locked/PARENT" setting the following properties
+    And user "Alice" has locked folder "locked/PARENT" setting the following properties
       | lockscope | <lock-scope> |
-    Given user "Alice" has locked folder "notlocked/PARENT" setting the following properties
+    And user "Alice" has locked folder "notlocked/PARENT" setting the following properties
       | lockscope | <lock-scope> |
-    Given user "Alice" has locked file "alsonotlocked/PARENT" setting the following properties
+    And user "Alice" has locked file "alsonotlocked/PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When user "Alice" unlocks the last created lock of folder "notlocked/PARENT" using the WebDAV API
     And user "Alice" unlocks the last created lock of file "alsonotlocked/PARENT" using the WebDAV API
@@ -103,7 +103,7 @@ Feature: UNLOCK locked items
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/locked/textfile0.txt"
     And user "Alice" has created folder "notlocked"
     And user "Alice" has created folder "notlocked/textfile0.txt"
-    Given user "Alice" has locked file "locked/textfile0.txt" setting the following properties
+    And user "Alice" has locked file "locked/textfile0.txt" setting the following properties
       | lockscope | <lock-scope> |
     And user "Alice" has locked file "notlocked/textfile0.txt" setting the following properties
       | lockscope | <lock-scope> |

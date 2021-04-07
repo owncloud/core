@@ -200,7 +200,7 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the OCS status message should be ""
     And the HTTP status code should be "200"
-    Then the fields of the last response to user "Alice" sharing with user "Brian" should include
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | id                         | A_STRING             |
       | share_type                 | user                 |
       | uid_owner                  | %username%           |

@@ -319,7 +319,7 @@ Feature: Locks
     Then notifications should be displayed on the webUI with the text
       | The file "lorem (2).txt" is locked and cannot be deleted.     |
       | The file "simple-folder (2)" is locked and cannot be deleted. |
-    Then as "brand-new-user" file "lorem (2).txt" should exist
+    And as "brand-new-user" file "lorem (2).txt" should exist
     And as "brand-new-user" folder "simple-folder (2)" should exist
     And file "lorem (2).txt" should be listed on the webUI
     And folder "simple-folder (2)" should be listed on the webUI

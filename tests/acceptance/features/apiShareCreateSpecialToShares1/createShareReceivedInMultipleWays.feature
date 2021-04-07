@@ -56,7 +56,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And user "Brian" accepts share "/PARENT/CHILD" offered by user "Alice" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
+    And the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And user "Brian" should see the following elements
       | /Shares/PARENT/           |

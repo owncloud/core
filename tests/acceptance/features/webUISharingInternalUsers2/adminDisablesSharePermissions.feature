@@ -24,7 +24,7 @@ Feature: Sharing files and folders with internal users where admin disables diff
       | share  | yes |
     And the user re-logs in as "Alice" using the webUI
     And the user opens folder "simple-folder" using the webUI
-    Then the option to rename file "lorem.txt" should be available on the webUI
+    And the option to rename file "lorem.txt" should be available on the webUI
     And the option to delete file "lorem.txt" should not be available on the webUI
     And the option to upload file should be available on the webUI
     When the user shares file "lorem.txt" with user "Carol" using the webUI
@@ -50,7 +50,7 @@ Feature: Sharing files and folders with internal users where admin disables diff
       | share  | yes |
     And the user re-logs in as "Alice" using the webUI
     And the user opens folder "simple-folder" using the webUI
-    Then the option to rename file "lorem.txt" should not be available on the webUI
+    And the option to rename file "lorem.txt" should not be available on the webUI
     And the option to upload file should be available on the webUI
     When the user shares file "lorem.txt" with user "Carol" using the webUI
     Then as "Carol" file "lorem.txt" should exist
@@ -76,7 +76,7 @@ Feature: Sharing files and folders with internal users where admin disables diff
       | share  | no  |
     And the user re-logs in as "Alice" using the webUI
     And the user opens folder "simple-folder" using the webUI
-    Then it should not be possible to share file "lorem.txt" using the webUI
+    And it should not be possible to share file "lorem.txt" using the webUI
     And the option to upload file should not be available on the webUI
     And the option to rename file "lorem.txt" should be available on the webUI
     And it should be possible to delete file "lorem.txt" using the webUI

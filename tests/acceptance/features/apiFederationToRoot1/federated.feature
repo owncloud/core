@@ -413,7 +413,7 @@ Feature: federated
     Given using OCS API version "<ocs-api-version>"
     When user "UNAUTHORIZED_USER" requests shared secret using the federation API
     Then the HTTP status code should be "<http-status>"
-    Then the OCS status code should be "403"
+    And the OCS status code should be "403"
     Examples:
       | ocs-api-version | http-status |
       | 1               | 200         |
@@ -461,7 +461,7 @@ Feature: federated
     When user "Alice" from server "REMOTE" shares "zzzfolder" with user "Brian" from server "LOCAL" using the sharing API
     And user "Brian" from server "LOCAL" has accepted the last pending share
     And using OCS API version "<ocs-api-version>"
-    When user "Brian" retrieves the information of the last federated cloud share using the sharing API
+    And user "Brian" retrieves the information of the last federated cloud share using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response about user "Alice" sharing with user "Brian" should include
@@ -488,7 +488,7 @@ Feature: federated
     When user "Alice" from server "REMOTE" shares "/randomfile.txt" with user "Brian" from server "LOCAL" using the sharing API
     And user "Brian" from server "LOCAL" has accepted the last pending share
     And using OCS API version "<ocs-api-version>"
-    When user "Brian" retrieves the information of the last federated cloud share using the sharing API
+    And user "Brian" retrieves the information of the last federated cloud share using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response about user "Alice" sharing with user "Brian" should include

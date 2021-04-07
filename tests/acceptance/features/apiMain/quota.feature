@@ -17,7 +17,7 @@ Feature: quota
     Given the quota of user "Alice" has been set to "20 B"
     When user "Alice" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
-    Then as "Alice" the files uploaded to "/testquota.txt" with all mechanisms should not exist
+    And as "Alice" the files uploaded to "/testquota.txt" with all mechanisms should not exist
 
   Scenario: Overwriting a file as owner having enough quota
     Given user "Alice" has uploaded file with content "test" to "/testquota.txt"
@@ -53,7 +53,7 @@ Feature: quota
     And the quota of user "Alice" has been set to "20 B"
     When user "Brian" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
-    Then as "Brian" the files uploaded to "/testquota.txt" with all mechanisms should not exist
+    And as "Brian" the files uploaded to "/testquota.txt" with all mechanisms should not exist
 
   @files_sharing-app-required
   Scenario: Overwriting a file in received folder having enough quota

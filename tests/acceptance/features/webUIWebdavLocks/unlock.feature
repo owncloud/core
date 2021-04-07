@@ -27,7 +27,7 @@ Feature: Unlock locked files and folders
       | user-with-display-name | My fancy name |
     And user "user-with-display-name" has uploaded file with content "some content" to "/lorem.txt"
     And user "user-with-display-name" has created folder "simple-folder"
-    Given user "user-with-display-name" has locked folder "simple-folder" setting the following properties
+    And user "user-with-display-name" has locked folder "simple-folder" setting the following properties
       | lockscope | shared |
     And user "user-with-display-name" has locked file "lorem.txt" setting the following properties
       | lockscope | exclusive |

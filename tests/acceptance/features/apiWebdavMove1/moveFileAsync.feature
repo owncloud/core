@@ -105,7 +105,7 @@ Feature: move (rename) file
       | status    | /^error$/ |
       | errorCode | /^403$/   |
     And user "Alice" downloads file "/testshare/textfile0.txt" using the WebDAV API
-    Then the HTTP status code should be "404"
+    And the HTTP status code should be "404"
     And user "Alice" should see the following elements
       | /textfile0.txt |
 

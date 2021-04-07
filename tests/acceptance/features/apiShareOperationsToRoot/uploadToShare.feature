@@ -18,7 +18,7 @@ Feature: sharing
 
   Scenario Outline: Uploading file to a group read-only share folder does not work
     Given using <dav-path> DAV path
-    Given user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
     And user "Alice" has created a share with settings

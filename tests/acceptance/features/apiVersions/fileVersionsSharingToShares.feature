@@ -261,7 +261,7 @@ Feature: dav-versions
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When user "Brian" tries to get versions of file "textfile1.txt" from "Alice"
     Then the HTTP status code should be "404"
-    Then the value of the item "//s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
+    And the value of the item "//s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
 
   @skipOnStorage:ceph @files_primary_s3-issue-161 @files_sharing-app-required
   Scenario: Receiver tries get file versions of shared file from the sharer
