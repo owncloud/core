@@ -434,10 +434,6 @@ class Activity implements IExtension {
 	 * @return bool
 	 */
 	protected function actorIsAutomation($user) {
-		try {
-			return \strip_tags($user) === IEvent::AUTOMATION_AUTHOR;
-		} catch (\UnexpectedValueException $e) {
-			return false;
-		}
+		return \strip_tags($user) === IEvent::AUTOMATION_AUTHOR;
 	}
 }
