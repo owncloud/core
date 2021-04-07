@@ -155,7 +155,7 @@ Feature: Exclude groups from receiving shares
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And user "Brian" shares folder "PARENT" with user "Carol" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
+    And the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     When user "Carol" accepts share "/fileToShare.txt" offered by user "Brian" using the sharing API
     And user "Carol" accepts share "/PARENT" offered by user "Brian" using the sharing API

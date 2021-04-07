@@ -89,7 +89,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     When the user shares file "lorem.txt" with user "Brian" using the webUI without closing the share dialog
     Then the expiration date input field should be visible for the user "Brian" in the share dialog
     And the expiration date input field should be "+3 days" for the user "Brian" in the share dialog
-    Then the information of the last share of user "Alice" should include
+    And the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
       | expiration  | +3 days    |
@@ -104,7 +104,7 @@ Feature: Sharing files and folders with internal users with expiration date set/
     When the user shares file "lorem.txt" with user "Brian" using the webUI without closing the share dialog
     Then the expiration date input field should be visible for the user "Brian" in the share dialog
     And the expiration date input field should be "+7 days" for the user "Brian" in the share dialog
-    Then the information of the last share of user "Alice" should include
+    And the information of the last share of user "Alice" should include
       | share_type  | user       |
       | file_target | /lorem.txt |
       | expiration  | +7 days    |

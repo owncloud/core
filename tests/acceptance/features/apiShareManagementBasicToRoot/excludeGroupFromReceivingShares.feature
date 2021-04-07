@@ -107,7 +107,7 @@ Feature: Exclude groups from receiving shares
     When user "Alice" shares folder "PARENT" with user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    Then as "Brian" file "/fileToShare.txt" should exist
+    And as "Brian" file "/fileToShare.txt" should exist
     And as "Brian" folder "/PARENT" should exist
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -127,7 +127,7 @@ Feature: Exclude groups from receiving shares
     When user "Alice" shares folder "PARENT" with group "grp3" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    Then as "Brian" file "/welcome.txt" should exist
+    And as "Brian" file "/welcome.txt" should exist
     And as "Brian" folder "/PARENT" should exist
     Examples:
       | ocs_api_version | ocs_status_code |

@@ -453,7 +453,7 @@ Feature: sharees
   @skipOnLDAP
   Scenario Outline: Enumerate only group members - only show partial results from member of groups
     Given using OCS API version "<ocs-api-version>"
-    Given these users have been created with default attributes and without skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username | displayname |
       | another  | Another     |
     And user "Another" has been added to group "ShareeGroup2"

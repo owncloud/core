@@ -79,7 +79,7 @@ Feature: set file properties
   @issue-ocis-reva-276
   Scenario: Setting custom DAV property using an old endpoint and reading it using a new endpoint
     Given using old DAV path
-    Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/testoldnew.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/testoldnew.txt"
     And user "Alice" has set property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/testoldnew.txt" to "constant"
     And using new DAV path
     When user "Alice" gets a custom property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/testoldnew.txt"

@@ -54,7 +54,7 @@ Feature: deleting files and folders
       | "double" quotes |
       | question?       |
       | &and#hash       |
-    Then the following file should not be listed on the webUI
+    And the following file should not be listed on the webUI
       | name-parts      |
       | 'single'        |
       | "double" quotes |

@@ -401,7 +401,7 @@ Feature: federated
     When user "Alice" uploads file with content "thisFileIsShared" to "/newFile" using the WebDAV API
     And user "Alice" from server "REMOTE" shares "/newFile" with user "Brian" from server "LOCAL" using the sharing API
     And using server "LOCAL"
-    When user "Brian" from server "LOCAL" accepts the last pending share using the sharing API
+    And user "Brian" from server "LOCAL" accepts the last pending share using the sharing API
     Then as "Brian" file "/Shares/newFile" should exist
     And the content of file "/Shares/newFile" for user "Brian" should be "thisFileIsShared"
     Examples:
@@ -421,7 +421,7 @@ Feature: federated
     When user "Alice" uploads file with content "thisFileIsShared" to "/newFile" using the WebDAV API
     And user "Alice" from server "REMOTE" shares "/newFile" with user "Brian" from server "LOCAL" using the sharing API
     And using server "LOCAL"
-    When user "Brian" from server "LOCAL" accepts the last pending share using the sharing API
+    And user "Brian" from server "LOCAL" accepts the last pending share using the sharing API
     Then as "Brian" file "/Shares/newFile" should exist
     Examples:
       | ocs-api-version |

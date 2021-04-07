@@ -125,7 +125,7 @@ Feature: get user groups
     When the administrator gets all the groups of user "brand-new-user" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    Then the groups returned by the API should be
+    And the groups returned by the API should be
       | users |
 
 

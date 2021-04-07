@@ -55,7 +55,7 @@ Feature: edit users
     And group "grp3" has been created
     And the administrator has browsed to the users page
     When the administrator adds user "Alice" to group "grp2" using the webUI
-    When the administrator adds user "Alice" to group "grp3" using the webUI
+    And the administrator adds user "Alice" to group "grp3" using the webUI
     Then user "Alice" should exist
     And user "Alice" should belong to group "grp2"
     And user "Alice" should belong to group "grp3"

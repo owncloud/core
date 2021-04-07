@@ -391,7 +391,7 @@ Feature: sharing
     #Then user "brian" should see the following elements
     #  | /Shares/randomfile.txt |
     #And the content of file "randomfile.txt" for user "brian" should be "Random data"
-    Then user "brian" should not see the following elements
+    And user "brian" should not see the following elements
       | /Shares/randomfile.txt |
 
   @skipOnLDAP
@@ -428,10 +428,10 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
+    And the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And user "Carol" accepts share "/PARENT" offered by user "Alice" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
+    And the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And user "Brian" should see the following elements
       | /Shares/PARENT/           |
@@ -595,7 +595,7 @@ Feature: sharing
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"
     When user "Alice" moves file "textfile0.txt" to "renamed.txt" using the WebDAV API
-    When user "Alice" shares file "renamed.txt" with user "Brian" using the sharing API
+    And user "Alice" shares file "renamed.txt" with user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with user "Brian" should include

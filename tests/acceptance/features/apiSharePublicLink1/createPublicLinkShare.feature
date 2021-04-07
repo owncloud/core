@@ -428,7 +428,7 @@ Feature: create a public link share
       | id          | A_STRING    |
       | share_type  | public_link |
       | permissions | read        |
-    Then the OCS status code should be "<ocs_status_code>"
+    And the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
     And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
@@ -451,7 +451,7 @@ Feature: create a public link share
       | id          | A_STRING    |
       | share_type  | public_link |
       | permissions | read        |
-    Then the OCS status code should be "<ocs_status_code>"
+    And the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
     And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
@@ -474,7 +474,7 @@ Feature: create a public link share
       | id          | A_STRING    |
       | share_type  | public_link |
       | permissions | read        |
-    Then the OCS status code should be "<ocs_status_code>"
+    And the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
     And the public upload to the last publicly shared folder using the old public WebDAV API should fail with HTTP status code "403"
     And the public upload to the last publicly shared folder using the new public WebDAV API should fail with HTTP status code "403"
@@ -749,7 +749,7 @@ Feature: create a public link share
   @issue-ocis-reva-292
   Scenario: try to download from a public share that has upload only permissions
     Given the administrator has enabled DAV tech_preview
-    Given user "Alice" has created folder "PARENT"
+    And user "Alice" has created folder "PARENT"
     And user "Alice" has uploaded file with content "Random data" to "/PARENT/parent.txt"
     And user "Alice" has created a public link share with settings
       | path        | PARENT          |

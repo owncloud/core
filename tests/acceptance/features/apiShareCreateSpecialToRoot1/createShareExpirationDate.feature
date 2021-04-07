@@ -603,7 +603,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | expireDateAsString | <date>        |
     Then the HTTP status code should be "200"
     And the OCS status code should be "200"
-    Then the fields of the last response to user "Alice" should include
+    And the fields of the last response to user "Alice" should include
       | expiration | 2050-12-11 |
     And the response when user "Brian" gets the info of the last share should include
       | expiration | 2050-12-11 |
