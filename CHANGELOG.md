@@ -16,6 +16,7 @@ Summary
 * Change - Update icewind/smb from 3.3.1 to 3.4.0 in files_external: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Update Symfony components to 4.4.21: [#38598](https://github.com/owncloud/core/pull/38598)
 * Change - Update PHP dependencies: [#38598](https://github.com/owncloud/core/pull/38598)
+* Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
 
 Details
 -------
@@ -72,6 +73,13 @@ Details
    The following have been updated: - pear/pear_exception (v1.0.1 => v1.0.2)
 
    https://github.com/owncloud/core/pull/38598
+
+* Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
+
+   Added an html template to render the changelog also in html format. This will give us better
+   control over the rendering on the website.
+
+   https://github.com/owncloud/core/pull/38616
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================
