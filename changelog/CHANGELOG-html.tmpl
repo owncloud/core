@@ -22,7 +22,7 @@
     </p>
     <h3 id="{{ .Version }}-summary">Summary</h3>
     <ul class="summary">{{ range $entry := .Entries }}{{ with $entry }}
-        <li class="type-{{ .Type }} changelog-item">{{ .Type }} - {{ .Title }}: <a href="{{ .PrimaryURL }}">#{{ .PrimaryID }}</a></li>
+        <li class="type-{{ .Type | lower }} changelog-item">{{ .Type }} - {{ .Title }}: <a href="{{ .PrimaryURL }}">#{{ .PrimaryID }}</a></li>
     {{- end }}{{ end }}
     </ul>
     <h3 id="{{ .Version }}-details">Details</h3>
