@@ -23,7 +23,7 @@
 
 namespace OCA\SystemTags\Activity;
 
-use OC\Activity\Event;
+use OCP\Activity\IEvent;
 use OCP\Activity\IExtension;
 use OCP\Activity\IManager;
 use OCP\IL10N;
@@ -230,11 +230,7 @@ class Extension implements IExtension {
 	 * @return bool
 	 */
 	protected function actorIsAutomation($user) {
-		try {
-			return \strip_tags($user) === Event::AUTOMATION_AUTHOR;
-		} catch (\UnexpectedValueException $e) {
-			return false;
-		}
+		return \strip_tags($user) === IEvent::AUTOMATION_AUTHOR;
 	}
 
 	/**

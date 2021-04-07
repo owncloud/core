@@ -23,7 +23,7 @@
 
 namespace OCA\Files;
 
-use OC\Activity\Event;
+use OCP\Activity\IEvent;
 use OCP\Activity\IExtension;
 use OCP\Activity\IManager;
 use OCP\IConfig;
@@ -435,7 +435,7 @@ class Activity implements IExtension {
 	 */
 	protected function actorIsAutomation($user) {
 		try {
-			return \strip_tags($user) === Event::AUTOMATION_AUTHOR;
+			return \strip_tags($user) === IEvent::AUTOMATION_AUTHOR;
 		} catch (\UnexpectedValueException $e) {
 			return false;
 		}

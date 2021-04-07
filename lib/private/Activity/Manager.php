@@ -52,7 +52,7 @@ class Manager implements IManager {
 	protected $currentUserId;
 
 	/** @var string */
-	protected $overwriteAuthor;
+	protected $agentAuthor;
 
 	/**
 	 * constructor of the controller
@@ -537,14 +537,14 @@ class Manager implements IManager {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getOverwriteAuthor() {
-		return $this->overwriteAuthor;
+	public function getAgentAuthor() {
+		return $this->agentAuthor;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setOverwriteAuthor($overwriteAuthor) {
-		$this->overwriteAuthor = $overwriteAuthor;
+	public function setAgentAuthor($agentAuthor) {
+		$this->agentAuthor = $agentAuthor;
 	}
 }

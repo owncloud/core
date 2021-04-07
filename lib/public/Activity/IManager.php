@@ -225,18 +225,30 @@ interface IManager {
 	public function getCurrentUserId();
 
 	/**
-	 * Get the author which will be used to override an existing author.
+	 * Get a user which can be used to overwrite an existing one in an event.
+	 *
+	 * When publishing an event, you can check if an agent author was set and then
+	 * adjust the "real" author according to it. This might be
+	 * the case if your activity was created via automation.
 	 *
 	 * @return string
 	 * @since 10.8.0
 	 */
-	public function getOverwriteAuthor();
+	public function getAgentAuthor();
 
 	/**
-	 * Set the author which will be used to override an existing author.
+	 * Set an (additional) user which can be used to overwrite an existing one in an event.
+	 *
+	 * You could set any string here, though usually you want to set IEvent::AUTOMATION_AUTHOR
+	 * if your activity was created via automation, e.g. by the workflow app.
+	 *
+	 * When publishing an event, you can then get the author via getAgentAuthor()
+	 * and properly set the actor if needed.
+	 *
+	 * This should to be set to null again once the activity has been published.
 	 *
 	 * @param string
 	 * @since 10.8.0
 	 */
-	public function setOverwriteAuthor($overwriteAuthor);
+	public function setAgentAuthor($agentAuthor);
 }

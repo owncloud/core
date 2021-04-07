@@ -180,8 +180,9 @@ class Listener {
 			$actor = '';
 		}
 
-		if ($this->activityManager->getOverwriteAuthor()) {
-			$actor = $this->activityManager->getOverwriteAuthor();
+		$agentAuthor = $this->activityManager->getAgentAuthor();
+		if ($agentAuthor) {
+			$actor = $agentAuthor;
 		}
 
 		$activity = $this->activityManager->generateEvent();
