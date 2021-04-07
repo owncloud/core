@@ -1,0 +1,6 @@
+Bugfix: Expire shares not before the end of the day
+
+Shares will expire now at the end of the day. This was a bit undeterministic before, depending on the background job execution time. Now it will not expire during the day but at the first possible moment in time after the end of the day. The exact expiration time will still depend on the scheduling of the background job.
+
+
+https://github.com/owncloud/core/pull/38540

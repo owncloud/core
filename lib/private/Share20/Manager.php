@@ -430,11 +430,11 @@ class Manager implements IManager {
 
 		if ($expirationDate !== null) {
 			// Set the expiration date to just the date at "zero" time in the day
-			$expirationDate->setTime(0, 0, 0, 0);
+			$expirationDate->setTime(23, 59, 0, 0);
 
 			// Get the current date in the same timezone, and at "zero" time in the day
 			$date = new \DateTime('now', new DateTimeZone($expirationDate->getTimezone()->getName()));
-			$date->setTime(0, 0, 0, 0);
+			$date->setTime(23, 59, 0, 0);
 
 			if ($date > $expirationDate) {
 				$message = $this->l->t('Expiration date is in the past');
@@ -473,7 +473,7 @@ class Manager implements IManager {
 			// If expiredate is empty and it is a new share, set a default one if there is a default
 			if ($this->isNewShare($share) && $expirationDate === null && $thereIsDefault) {
 				$expirationDate = new \DateTime();
-				$expirationDate->setTime(0, 0, 0);
+				$expirationDate->setTime(23, 59, 0);
 				$expirationDate->add(new \DateInterval('P'.$defaultDays.'D'));
 			}
 
@@ -482,7 +482,7 @@ class Manager implements IManager {
 			}
 
 			$date = new \DateTime();
-			$date->setTime(0, 0, 0);
+			$date->setTime(23, 59, 0);
 			$date->add(new \DateInterval('P' . $defaultDays . 'D'));
 			if ($date < $expirationDate) {
 				$message = $this->l->t('Cannot set expiration date more than %s days in the future', [$defaultDays]);

@@ -1029,7 +1029,7 @@ class ManagerTest extends \Test\TestCase {
 	 */
 	public function testValidateExpirationDateToday() {
 		$today = new \DateTime();
-		$today->setTime(0, 0, 0);
+		$today->setTime(23, 59, 0);
 		$share = $this->manager->newShare();
 		$share->setExpirationDate($today);
 
@@ -1083,7 +1083,7 @@ class ManagerTest extends \Test\TestCase {
 			]));
 
 		$expected = new \DateTime();
-		$expected->setTime(0, 0, 0);
+		$expected->setTime(23, 59, 0);
 		$expected->add(new \DateInterval('P3D'));
 		$this->invokePrivate($this->manager, 'validateExpirationDate', [$share]);
 		$this->assertNotNull($share->getExpirationDate());
@@ -1120,10 +1120,10 @@ class ManagerTest extends \Test\TestCase {
 		// Expire date in the past
 		$future = new \DateTime();
 		$future->add(new \DateInterval('P2D'));
-		$future->setTime(0, 0, 0);
+		$future->setTime(23, 59, 0);
 
 		$expected = clone $future;
-		$future->setTime(1, 2, 3);
+		$future->setTime(23, 59, 3);
 
 		$share = $this->manager->newShare();
 		$share->setExpirationDate($future);
@@ -1150,7 +1150,7 @@ class ManagerTest extends \Test\TestCase {
 		$date->add(new \DateInterval('P5D'));
 
 		$expected = clone $date;
-		$expected->setTime(0, 0, 0);
+		$expected->setTime(23, 59, 0);
 
 		$share = $this->manager->newShare();
 		$share->setExpirationDate($date);
@@ -1184,7 +1184,7 @@ class ManagerTest extends \Test\TestCase {
 	public function testvalidateExpirationDateNoDateDefault() {
 		$future = new \DateTime();
 		$future->add(new \DateInterval('P3D'));
-		$future->setTime(0, 0, 0);
+		$future->setTime(23, 59, 0);
 
 		$expected = clone $future;
 
@@ -1211,7 +1211,7 @@ class ManagerTest extends \Test\TestCase {
 	public function testValidateExpirationDateHookModification() {
 		$nextWeek = new \DateTime();
 		$nextWeek->add(new \DateInterval('P7D'));
-		$nextWeek->setTime(0, 0, 0);
+		$nextWeek->setTime(23, 59, 0);
 
 		$save = clone $nextWeek;
 
@@ -1238,7 +1238,7 @@ class ManagerTest extends \Test\TestCase {
 
 		$nextWeek = new \DateTime();
 		$nextWeek->add(new \DateInterval('P7D'));
-		$nextWeek->setTime(0, 0, 0);
+		$nextWeek->setTime(23, 59, 0);
 
 		$share = $this->manager->newShare();
 		$share->setExpirationDate($nextWeek);

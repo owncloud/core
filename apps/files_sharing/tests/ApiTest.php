@@ -1153,10 +1153,10 @@ class ApiTest extends TestCase {
 		$config->setAppValue('core', 'shareapi_enforce_expire_date', 'yes');
 
 		$dateWithinRange = new \DateTime();
-		$dateWithinRange->setTime(0, 0, 0);
+		$dateWithinRange->setTime(23, 59, 0);
 		$dateWithinRange->add(new \DateInterval('P5D'));
 		$dateOutOfRange = new \DateTime();
-		$dateOutOfRange->setTime(0, 0, 0);
+		$dateOutOfRange->setTime(23, 59, 0);
 		$dateOutOfRange->add(new \DateInterval('P8D'));
 
 		// update expire date to a valid value
@@ -1533,7 +1533,7 @@ class ApiTest extends TestCase {
 		$this->assertEquals($url, $data['url']);
 
 		$share = $this->shareManager->getShareById('ocinternal:'.$data['id']);
-		$date->setTime(0, 0, 0);
+		$date->setTime(23, 59, 0);
 		$this->assertEquals($date, $share->getExpirationDate());
 
 		$this->shareManager->deleteShare($share);
