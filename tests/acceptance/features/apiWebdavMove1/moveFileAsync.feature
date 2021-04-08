@@ -130,7 +130,7 @@ Feature: move (rename) file
       | /textfile0.txt |
 
   Scenario: move file into a not-existing folder
-    When user "Alice" moves file "/textfile0.txt" asynchronously to "/not-existing/welcome.txt" using the WebDAV API
+    When user "Alice" moves file "/textfile0.txt" asynchronously to "/not-existing/not-existing-file.txt" using the WebDAV API
     Then the HTTP status code should be "202"
     And the oc job status values of last request for user "Alice" should match these regular expressions
       | status       | /^error$/                             |
@@ -164,20 +164,20 @@ Feature: move (rename) file
   Scenario: disabled async operations leads to original behavior
     Given the administrator has disabled async operations
     And user "Alice" has created folder "FOLDER"
-    When user "Alice" moves file "/textfile0.txt" asynchronously to "/FOLDER/welcome.txt" using the WebDAV API
+    When user "Alice" moves file "/textfile0.txt" asynchronously to "/FOLDER/fileToMove.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And the following headers should not be set
       | header                |
       | OC-JobStatus-Location |
-    And the downloaded content when downloading file "/FOLDER/welcome.txt" for user "Alice" with range "bytes=0-7" should be "ownCloud"
+    And the downloaded content when downloading file "/FOLDER/fileToMove.txt" for user "Alice" with range "bytes=0-7" should be "ownCloud"
 
   Scenario Outline: enabling async operations does no difference to normal MOVE - Moving a file
     Given the administrator has enabled async operations
     And user "Alice" has created folder "FOLDER"
     And using <dav_version> DAV path
-    When user "Alice" moves file "/textfile0.txt" to "/FOLDER/welcome.txt" using the WebDAV API
+    When user "Alice" moves file "/textfile0.txt" to "/FOLDER/fileToMove.txt" using the WebDAV API
     Then the HTTP status code should be "201"
-    And the downloaded content when downloading file "/FOLDER/welcome.txt" for user "Alice" with range "bytes=0-7" should be "ownCloud"
+    And the downloaded content when downloading file "/FOLDER/fileToMove.txt" for user "Alice" with range "bytes=0-7" should be "ownCloud"
     Examples:
       | dav_version |
       | old         |
@@ -218,7 +218,7 @@ Feature: move (rename) file
   Scenario Outline: enabling async operations does no difference to normal MOVE - move file into a not-existing folder
     Given the administrator has enabled async operations
     And using <dav_version> DAV path
-    When user "Alice" moves file "/textfile0.txt" to "/not-existing/welcome.txt" using the WebDAV API
+    When user "Alice" moves file "/textfile0.txt" to "/not-existing/fileToMove.txt" using the WebDAV API
     Then the HTTP status code should be "409"
     Examples:
       | dav_version |
