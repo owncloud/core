@@ -26,24 +26,23 @@
 class Google_Service_Cloudchannel_Resource_AccountsChannelPartnerLinks extends Google_Service_Resource
 {
   /**
-   * Initiates a channel partner link between a distributor and a reseller or
-   * between resellers in an n-tier reseller channel. To accept the invite, the
-   * invited partner should follow the invite_link_uri provided in the response.
-   * If the link creation is accepted, a valid link is set up between the two
-   * involved parties. To call this method, you must be a distributor. Possible
-   * Error Codes: * PERMISSION_DENIED: If the reseller account making the request
-   * and the reseller account being queried for are different. * INVALID_ARGUMENT:
-   * Missing or invalid required parameters in the request. * ALREADY_EXISTS: If
-   * the ChannelPartnerLink sent in the request already exists. * NOT_FOUND: If no
-   * Cloud Identity customer exists for domain provided. * INTERNAL: Any non-user
-   * error related to a technical issue in the backend. In this case, contact
-   * Cloud Channel support. * UNKNOWN: Any non-user error related to a technical
-   * issue in the backend. In this case, contact Cloud Channel support. Return
-   * Value: Newly created ChannelPartnerLink resource if successful, otherwise
-   * error is returned. (channelPartnerLinks.create)
+   * Initiates a channel partner link between a distributor and a reseller, or
+   * between resellers in an n-tier reseller channel. Invited partners need to
+   * follow the invite_link_uri provided in the response to accept. After
+   * accepting the invitation, a link is set up between the two parties. You must
+   * be a distributor to call this method. Possible error codes: *
+   * PERMISSION_DENIED: The reseller account making the request is different from
+   * the reseller account in the API request. * INVALID_ARGUMENT: Required request
+   * parameters are missing or invalid. * ALREADY_EXISTS: The ChannelPartnerLink
+   * sent in the request already exists. * NOT_FOUND: No Cloud Identity customer
+   * exists for provided domain. * INTERNAL: Any non-user error related to a
+   * technical issue in the backend. Contact Cloud Channel support. * UNKNOWN: Any
+   * non-user error related to a technical issue in the backend. Contact Cloud
+   * Channel support. Return value: The new ChannelPartnerLink resource.
+   * (channelPartnerLinks.create)
    *
-   * @param string $parent Required. The resource name of reseller's account for
-   * which to create a channel partner link. The parent takes the format:
+   * @param string $parent Required. Create a channel partner link for the
+   * provided reseller account's resource name. Parent uses the format:
    * accounts/{account_id}
    * @param Google_Service_Cloudchannel_GoogleCloudChannelV1ChannelPartnerLink $postBody
    * @param array $optParams Optional parameters.
@@ -56,16 +55,16 @@ class Google_Service_Cloudchannel_Resource_AccountsChannelPartnerLinks extends G
     return $this->call('create', array($params), "Google_Service_Cloudchannel_GoogleCloudChannelV1ChannelPartnerLink");
   }
   /**
-   * Returns a requested ChannelPartnerLink resource. To call this method, you
-   * must be a distributor. Possible Error Codes: * PERMISSION_DENIED: If the
-   * reseller account making the request and the reseller account being queried
-   * for are different. * INVALID_ARGUMENT: Missing or invalid required parameters
-   * in the request. * NOT_FOUND: ChannelPartnerLink resource not found. Results
-   * due invalid channel partner link name. Return Value: ChannelPartnerLink
-   * resource if found, otherwise returns an error. (channelPartnerLinks.get)
+   * Returns a requested ChannelPartnerLink resource. You must be a distributor to
+   * call this method. Possible error codes: * PERMISSION_DENIED: The reseller
+   * account making the request is different from the reseller account in the API
+   * request. * INVALID_ARGUMENT: Required request parameters are missing or
+   * invalid. * NOT_FOUND: ChannelPartnerLink resource not found because of an
+   * invalid channel partner link name. Return value: The ChannelPartnerLink
+   * resource. (channelPartnerLinks.get)
    *
    * @param string $name Required. The resource name of the channel partner link
-   * to retrieve. The name takes the format:
+   * to retrieve. Name uses the format:
    * accounts/{account_id}/channelPartnerLinks/{id} where {id} is the Cloud
    * Identity ID of the partner.
    * @param array $optParams Optional parameters.
@@ -81,24 +80,23 @@ class Google_Service_Cloudchannel_Resource_AccountsChannelPartnerLinks extends G
     return $this->call('get', array($params), "Google_Service_Cloudchannel_GoogleCloudChannelV1ChannelPartnerLink");
   }
   /**
-   * List ChannelPartnerLinks belonging to a distributor. To call this method, you
-   * must be a distributor. Possible Error Codes: * PERMISSION_DENIED: If the
-   * reseller account making the request and the reseller account being queried
-   * for are different. * INVALID_ARGUMENT: Missing or invalid required parameters
-   * in the request. Return Value: If successful, returns the list of
-   * ChannelPartnerLink resources for the distributor account, otherwise returns
-   * an error. (channelPartnerLinks.listAccountsChannelPartnerLinks)
+   * List ChannelPartnerLinks belonging to a distributor. You must be a
+   * distributor to call this method. Possible error codes: * PERMISSION_DENIED:
+   * The reseller account making the request is different from the reseller
+   * account in the API request. * INVALID_ARGUMENT: Required request parameters
+   * are missing or invalid. Return value: The list of the distributor account's
+   * ChannelPartnerLink resources.
+   * (channelPartnerLinks.listAccountsChannelPartnerLinks)
    *
    * @param string $parent Required. The resource name of the reseller account for
-   * listing channel partner links. The parent takes the format:
-   * accounts/{account_id}
+   * listing channel partner links. Parent uses the format: accounts/{account_id}
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Optional. Requested page size. Server might return
    * fewer results than requested. If unspecified, server will pick a default size
-   * (25). The maximum value is 200, values above 200 will be coerced to 200.
-   * @opt_param string pageToken Optional. A token identifying a page of results,
-   * if other than the first one. Typically obtained via
+   * (25). The maximum value is 200; the server will coerce values above 200.
+   * @opt_param string pageToken Optional. A token for a page of results other
+   * than the first page. Obtained using
    * ListChannelPartnerLinksResponse.next_page_token of the previous
    * CloudChannelService.ListChannelPartnerLinks call.
    * @opt_param string view Optional. The level of granularity the
@@ -112,23 +110,21 @@ class Google_Service_Cloudchannel_Resource_AccountsChannelPartnerLinks extends G
     return $this->call('list', array($params), "Google_Service_Cloudchannel_GoogleCloudChannelV1ListChannelPartnerLinksResponse");
   }
   /**
-   * Updates a channel partner link. A distributor calls this method to change a
-   * link's status. For example, suspend a partner link. To call this method, you
-   * must be a distributor. Possible Error Codes: * PERMISSION_DENIED: If the
-   * reseller account making the request and the reseller account being queried
-   * for are different. * INVALID_ARGUMENT: It can happen in following scenarios -
-   * * Missing or invalid required parameters in the request. * Updating link
-   * state from invited to active or suspended. * Sending
-   * reseller_cloud_identity_id, invite_url or name in update mask. * NOT_FOUND:
-   * ChannelPartnerLink resource not found. * INTERNAL: Any non-user error related
-   * to a technical issue in the backend. In this case, contact Cloud Channel
-   * support. * UNKNOWN: Any non-user error related to a technical issue in the
-   * backend. In this case, contact Cloud Channel support. Return Value: If
-   * successful, the updated ChannelPartnerLink resource, otherwise returns an
-   * error. (channelPartnerLinks.patch)
+   * Updates a channel partner link. Distributors call this method to change a
+   * link's status. For example, to suspend a partner link. You must be a
+   * distributor to call this method. Possible error codes: * PERMISSION_DENIED:
+   * The reseller account making the request is different from the reseller
+   * account in the API request. * INVALID_ARGUMENT: * Required request parameters
+   * are missing or invalid. * Link state cannot change from invited to active or
+   * suspended. * Cannot send reseller_cloud_identity_id, invite_url, or name in
+   * update mask. * NOT_FOUND: ChannelPartnerLink resource not found. * INTERNAL:
+   * Any non-user error related to a technical issue in the backend. Contact Cloud
+   * Channel support. * UNKNOWN: Any non-user error related to a technical issue
+   * in the backend. Contact Cloud Channel support. Return value: The updated
+   * ChannelPartnerLink resource. (channelPartnerLinks.patch)
    *
    * @param string $name Required. The resource name of the channel partner link
-   * to cancel. The name takes the format:
+   * to cancel. Name uses the format:
    * accounts/{account_id}/channelPartnerLinks/{id} where {id} is the Cloud
    * Identity ID of the partner.
    * @param Google_Service_Cloudchannel_GoogleCloudChannelV1UpdateChannelPartnerLinkRequest $postBody

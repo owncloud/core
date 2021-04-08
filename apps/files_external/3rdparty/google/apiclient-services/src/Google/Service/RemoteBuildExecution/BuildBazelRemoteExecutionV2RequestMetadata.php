@@ -18,7 +18,10 @@
 class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2RequestMetadata extends Google_Model
 {
   public $actionId;
+  public $actionMnemonic;
+  public $configurationId;
   public $correlatedInvocationsId;
+  public $targetId;
   protected $toolDetailsType = 'Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2ToolDetails';
   protected $toolDetailsDataType = '';
   public $toolInvocationId;
@@ -31,6 +34,22 @@ class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2RequestMeta
   {
     return $this->actionId;
   }
+  public function setActionMnemonic($actionMnemonic)
+  {
+    $this->actionMnemonic = $actionMnemonic;
+  }
+  public function getActionMnemonic()
+  {
+    return $this->actionMnemonic;
+  }
+  public function setConfigurationId($configurationId)
+  {
+    $this->configurationId = $configurationId;
+  }
+  public function getConfigurationId()
+  {
+    return $this->configurationId;
+  }
   public function setCorrelatedInvocationsId($correlatedInvocationsId)
   {
     $this->correlatedInvocationsId = $correlatedInvocationsId;
@@ -38,6 +57,14 @@ class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2RequestMeta
   public function getCorrelatedInvocationsId()
   {
     return $this->correlatedInvocationsId;
+  }
+  public function setTargetId($targetId)
+  {
+    $this->targetId = $targetId;
+  }
+  public function getTargetId()
+  {
+    return $this->targetId;
   }
   /**
    * @param Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2ToolDetails

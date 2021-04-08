@@ -26,7 +26,7 @@
 class Google_Service_Dns_Resource_ProjectsManagedZonesRrsets extends Google_Service_Resource
 {
   /**
-   * Create a new ResourceRecordSet. (rrsets.create)
+   * Creates a new ResourceRecordSet. (rrsets.create)
    *
    * @param string $project Identifies the project addressed by this request.
    * @param string $managedZone Identifies the managed zone addressed by this
@@ -46,7 +46,7 @@ class Google_Service_Dns_Resource_ProjectsManagedZonesRrsets extends Google_Serv
     return $this->call('create', array($params), "Google_Service_Dns_ResourceRecordSet");
   }
   /**
-   * Delete a previously created ResourceRecordSet. (rrsets.delete)
+   * Deletes a previously created ResourceRecordSet. (rrsets.delete)
    *
    * @param string $project Identifies the project addressed by this request.
    * @param string $managedZone Identifies the managed zone addressed by this
@@ -67,7 +67,7 @@ class Google_Service_Dns_Resource_ProjectsManagedZonesRrsets extends Google_Serv
     return $this->call('delete', array($params), "Google_Service_Dns_ResourceRecordSetsDeleteResponse");
   }
   /**
-   * Fetch the representation of an existing ResourceRecordSet. (rrsets.get)
+   * Fetches the representation of an existing ResourceRecordSet. (rrsets.get)
    *
    * @param string $project Identifies the project addressed by this request.
    * @param string $managedZone Identifies the managed zone addressed by this
@@ -88,7 +88,7 @@ class Google_Service_Dns_Resource_ProjectsManagedZonesRrsets extends Google_Serv
     return $this->call('get', array($params), "Google_Service_Dns_ResourceRecordSet");
   }
   /**
-   * Apply a partial update to an existing ResourceRecordSet. (rrsets.patch)
+   * Applies a partial update to an existing ResourceRecordSet. (rrsets.patch)
    *
    * @param string $project Identifies the project addressed by this request.
    * @param string $managedZone Identifies the managed zone addressed by this

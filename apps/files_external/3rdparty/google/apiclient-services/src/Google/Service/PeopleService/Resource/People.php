@@ -26,6 +26,48 @@
 class Google_Service_PeopleService_Resource_People extends Google_Service_Resource
 {
   /**
+   * Create a batch of new contacts and return the PersonResponses for the newly
+   * created contacts. (people.batchCreateContacts)
+   *
+   * @param Google_Service_PeopleService_BatchCreateContactsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_PeopleService_BatchCreateContactsResponse
+   */
+  public function batchCreateContacts(Google_Service_PeopleService_BatchCreateContactsRequest $postBody, $optParams = array())
+  {
+    $params = array('postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('batchCreateContacts', array($params), "Google_Service_PeopleService_BatchCreateContactsResponse");
+  }
+  /**
+   * Delete a batch of contacts. Any non-contact data will not be deleted.
+   * (people.batchDeleteContacts)
+   *
+   * @param Google_Service_PeopleService_BatchDeleteContactsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_PeopleService_PeopleEmpty
+   */
+  public function batchDeleteContacts(Google_Service_PeopleService_BatchDeleteContactsRequest $postBody, $optParams = array())
+  {
+    $params = array('postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('batchDeleteContacts', array($params), "Google_Service_PeopleService_PeopleEmpty");
+  }
+  /**
+   * Update a batch of contacts and return a map of resource names to
+   * PersonResponses for the updated contacts. (people.batchUpdateContacts)
+   *
+   * @param Google_Service_PeopleService_BatchUpdateContactsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_PeopleService_BatchUpdateContactsResponse
+   */
+  public function batchUpdateContacts(Google_Service_PeopleService_BatchUpdateContactsRequest $postBody, $optParams = array())
+  {
+    $params = array('postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('batchUpdateContacts', array($params), "Google_Service_PeopleService_BatchUpdateContactsResponse");
+  }
+  /**
    * Create a new contact and return the person resource for that contact. The
    * request returns a 400 error if more than one field is specified on a field
    * that is a singleton for contact sources: * biographies * birthdays * genders

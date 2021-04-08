@@ -22,6 +22,7 @@ class Google_Service_Compute_NetworksGetEffectiveFirewallsResponseEffectiveFirew
   public $name;
   protected $rulesType = 'Google_Service_Compute_FirewallPolicyRule';
   protected $rulesDataType = 'array';
+  public $shortName;
   public $type;
 
   public function setDisplayName($displayName)
@@ -53,6 +54,14 @@ class Google_Service_Compute_NetworksGetEffectiveFirewallsResponseEffectiveFirew
   public function getRules()
   {
     return $this->rules;
+  }
+  public function setShortName($shortName)
+  {
+    $this->shortName = $shortName;
+  }
+  public function getShortName()
+  {
+    return $this->shortName;
   }
   public function setType($type)
   {

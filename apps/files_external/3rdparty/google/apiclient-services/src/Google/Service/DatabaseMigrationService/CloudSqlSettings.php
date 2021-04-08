@@ -19,6 +19,7 @@ class Google_Service_DatabaseMigrationService_CloudSqlSettings extends Google_Mo
 {
   public $activationPolicy;
   public $autoStorageIncrease;
+  public $collation;
   public $dataDiskSizeGb;
   public $dataDiskType;
   public $databaseFlags;
@@ -48,6 +49,14 @@ class Google_Service_DatabaseMigrationService_CloudSqlSettings extends Google_Mo
   public function getAutoStorageIncrease()
   {
     return $this->autoStorageIncrease;
+  }
+  public function setCollation($collation)
+  {
+    $this->collation = $collation;
+  }
+  public function getCollation()
+  {
+    return $this->collation;
   }
   public function setDataDiskSizeGb($dataDiskSizeGb)
   {

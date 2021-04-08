@@ -20,6 +20,7 @@ class Google_Service_AnalyticsData_RunRealtimeReportResponse extends Google_Coll
   protected $collection_key = 'totals';
   protected $dimensionHeadersType = 'Google_Service_AnalyticsData_DimensionHeader';
   protected $dimensionHeadersDataType = 'array';
+  public $kind;
   protected $maximumsType = 'Google_Service_AnalyticsData_Row';
   protected $maximumsDataType = 'array';
   protected $metricHeadersType = 'Google_Service_AnalyticsData_MetricHeader';
@@ -47,6 +48,14 @@ class Google_Service_AnalyticsData_RunRealtimeReportResponse extends Google_Coll
   public function getDimensionHeaders()
   {
     return $this->dimensionHeaders;
+  }
+  public function setKind($kind)
+  {
+    $this->kind = $kind;
+  }
+  public function getKind()
+  {
+    return $this->kind;
   }
   /**
    * @param Google_Service_AnalyticsData_Row[]

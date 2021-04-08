@@ -271,7 +271,19 @@ class Google_Service_PeopleService extends Google_Service
         'people',
         array(
           'methods' => array(
-            'createContact' => array(
+            'batchCreateContacts' => array(
+              'path' => 'v1/people:batchCreateContacts',
+              'httpMethod' => 'POST',
+              'parameters' => array(),
+            ),'batchDeleteContacts' => array(
+              'path' => 'v1/people:batchDeleteContacts',
+              'httpMethod' => 'POST',
+              'parameters' => array(),
+            ),'batchUpdateContacts' => array(
+              'path' => 'v1/people:batchUpdateContacts',
+              'httpMethod' => 'POST',
+              'parameters' => array(),
+            ),'createContact' => array(
               'path' => 'v1/people:createContact',
               'httpMethod' => 'POST',
               'parameters' => array(

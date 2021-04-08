@@ -32,6 +32,7 @@ class Google_Service_DataprocMetastore_Service extends Google_Model
   public $name;
   public $network;
   public $port;
+  public $releaseChannel;
   public $state;
   public $stateMessage;
   public $tier;
@@ -149,6 +150,14 @@ class Google_Service_DataprocMetastore_Service extends Google_Model
   public function getPort()
   {
     return $this->port;
+  }
+  public function setReleaseChannel($releaseChannel)
+  {
+    $this->releaseChannel = $releaseChannel;
+  }
+  public function getReleaseChannel()
+  {
+    return $this->releaseChannel;
   }
   public function setState($state)
   {

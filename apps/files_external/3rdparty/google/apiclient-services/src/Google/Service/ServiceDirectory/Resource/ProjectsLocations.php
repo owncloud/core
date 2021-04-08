@@ -46,9 +46,13 @@ class Google_Service_ServiceDirectory_Resource_ProjectsLocations extends Google_
    * applicable.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter The standard list filter.
-   * @opt_param int pageSize The standard list page size.
-   * @opt_param string pageToken The standard list page token.
+   * @opt_param string filter A filter to narrow down results to a preferred
+   * subset. The filtering language accepts strings like "displayName=tokyo", and
+   * is documented in more detail in [AIP-160](https://google.aip.dev/160).
+   * @opt_param int pageSize The maximum number of results to return. If not set,
+   * the service will select a default.
+   * @opt_param string pageToken A page token received from the `next_page_token`
+   * field in the response. Send that page token to receive the subsequent page.
    * @return Google_Service_ServiceDirectory_ListLocationsResponse
    */
   public function listProjectsLocations($name, $optParams = array())

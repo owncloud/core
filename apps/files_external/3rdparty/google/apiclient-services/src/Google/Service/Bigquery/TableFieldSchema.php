@@ -23,10 +23,13 @@ class Google_Service_Bigquery_TableFieldSchema extends Google_Collection
   public $description;
   protected $fieldsType = 'Google_Service_Bigquery_TableFieldSchema';
   protected $fieldsDataType = 'array';
+  public $maxLength;
   public $mode;
   public $name;
   protected $policyTagsType = 'Google_Service_Bigquery_TableFieldSchemaPolicyTags';
   protected $policyTagsDataType = '';
+  public $precision;
+  public $scale;
   public $type;
 
   /**
@@ -65,6 +68,14 @@ class Google_Service_Bigquery_TableFieldSchema extends Google_Collection
   {
     return $this->fields;
   }
+  public function setMaxLength($maxLength)
+  {
+    $this->maxLength = $maxLength;
+  }
+  public function getMaxLength()
+  {
+    return $this->maxLength;
+  }
   public function setMode($mode)
   {
     $this->mode = $mode;
@@ -94,6 +105,22 @@ class Google_Service_Bigquery_TableFieldSchema extends Google_Collection
   public function getPolicyTags()
   {
     return $this->policyTags;
+  }
+  public function setPrecision($precision)
+  {
+    $this->precision = $precision;
+  }
+  public function getPrecision()
+  {
+    return $this->precision;
+  }
+  public function setScale($scale)
+  {
+    $this->scale = $scale;
+  }
+  public function getScale()
+  {
+    return $this->scale;
   }
   public function setType($type)
   {

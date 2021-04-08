@@ -22,6 +22,8 @@ class Google_Service_Compute_HttpRouteAction extends Google_Collection
   protected $corsPolicyDataType = '';
   protected $faultInjectionPolicyType = 'Google_Service_Compute_HttpFaultInjection';
   protected $faultInjectionPolicyDataType = '';
+  protected $maxStreamDurationType = 'Google_Service_Compute_Duration';
+  protected $maxStreamDurationDataType = '';
   protected $requestMirrorPolicyType = 'Google_Service_Compute_RequestMirrorPolicy';
   protected $requestMirrorPolicyDataType = '';
   protected $retryPolicyType = 'Google_Service_Compute_HttpRetryPolicy';
@@ -60,6 +62,20 @@ class Google_Service_Compute_HttpRouteAction extends Google_Collection
   public function getFaultInjectionPolicy()
   {
     return $this->faultInjectionPolicy;
+  }
+  /**
+   * @param Google_Service_Compute_Duration
+   */
+  public function setMaxStreamDuration(Google_Service_Compute_Duration $maxStreamDuration)
+  {
+    $this->maxStreamDuration = $maxStreamDuration;
+  }
+  /**
+   * @return Google_Service_Compute_Duration
+   */
+  public function getMaxStreamDuration()
+  {
+    return $this->maxStreamDuration;
   }
   /**
    * @param Google_Service_Compute_RequestMirrorPolicy

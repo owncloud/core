@@ -17,13 +17,14 @@
 
 class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2CacheCapabilities extends Google_Collection
 {
-  protected $collection_key = 'digestFunction';
+  protected $collection_key = 'supportedCompressor';
   protected $actionCacheUpdateCapabilitiesType = 'Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2ActionCacheUpdateCapabilities';
   protected $actionCacheUpdateCapabilitiesDataType = '';
   protected $cachePriorityCapabilitiesType = 'Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2PriorityCapabilities';
   protected $cachePriorityCapabilitiesDataType = '';
   public $digestFunction;
   public $maxBatchTotalSizeBytes;
+  public $supportedCompressor;
   public $symlinkAbsolutePathStrategy;
 
   /**
@@ -69,6 +70,14 @@ class Google_Service_RemoteBuildExecution_BuildBazelRemoteExecutionV2CacheCapabi
   public function getMaxBatchTotalSizeBytes()
   {
     return $this->maxBatchTotalSizeBytes;
+  }
+  public function setSupportedCompressor($supportedCompressor)
+  {
+    $this->supportedCompressor = $supportedCompressor;
+  }
+  public function getSupportedCompressor()
+  {
+    return $this->supportedCompressor;
   }
   public function setSymlinkAbsolutePathStrategy($symlinkAbsolutePathStrategy)
   {

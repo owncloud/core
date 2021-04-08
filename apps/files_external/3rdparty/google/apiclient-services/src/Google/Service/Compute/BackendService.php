@@ -46,6 +46,8 @@ class Google_Service_Compute_BackendService extends Google_Collection
   public $localityLbPolicy;
   protected $logConfigType = 'Google_Service_Compute_BackendServiceLogConfig';
   protected $logConfigDataType = '';
+  protected $maxStreamDurationType = 'Google_Service_Compute_Duration';
+  protected $maxStreamDurationDataType = '';
   public $name;
   public $network;
   protected $outlierDetectionType = 'Google_Service_Compute_OutlierDetection';
@@ -268,6 +270,20 @@ class Google_Service_Compute_BackendService extends Google_Collection
   public function getLogConfig()
   {
     return $this->logConfig;
+  }
+  /**
+   * @param Google_Service_Compute_Duration
+   */
+  public function setMaxStreamDuration(Google_Service_Compute_Duration $maxStreamDuration)
+  {
+    $this->maxStreamDuration = $maxStreamDuration;
+  }
+  /**
+   * @return Google_Service_Compute_Duration
+   */
+  public function getMaxStreamDuration()
+  {
+    return $this->maxStreamDuration;
   }
   public function setName($name)
   {

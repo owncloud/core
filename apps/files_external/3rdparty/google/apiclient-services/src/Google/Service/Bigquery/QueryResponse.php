@@ -31,6 +31,8 @@ class Google_Service_Bigquery_QueryResponse extends Google_Collection
   protected $rowsDataType = 'array';
   protected $schemaType = 'Google_Service_Bigquery_TableSchema';
   protected $schemaDataType = '';
+  protected $sessionInfoTemplateType = 'Google_Service_Bigquery_SessionInfo';
+  protected $sessionInfoTemplateDataType = '';
   public $totalBytesProcessed;
   public $totalRows;
 
@@ -129,6 +131,20 @@ class Google_Service_Bigquery_QueryResponse extends Google_Collection
   public function getSchema()
   {
     return $this->schema;
+  }
+  /**
+   * @param Google_Service_Bigquery_SessionInfo
+   */
+  public function setSessionInfoTemplate(Google_Service_Bigquery_SessionInfo $sessionInfoTemplate)
+  {
+    $this->sessionInfoTemplate = $sessionInfoTemplate;
+  }
+  /**
+   * @return Google_Service_Bigquery_SessionInfo
+   */
+  public function getSessionInfoTemplate()
+  {
+    return $this->sessionInfoTemplate;
   }
   public function setTotalBytesProcessed($totalBytesProcessed)
   {

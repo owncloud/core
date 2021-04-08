@@ -33,6 +33,7 @@ class Google_Service_Compute_FirewallPolicy extends Google_Collection
   protected $rulesDataType = 'array';
   public $selfLink;
   public $selfLinkWithId;
+  public $shortName;
 
   /**
    * @param Google_Service_Compute_FirewallPolicyAssociation[]
@@ -149,5 +150,13 @@ class Google_Service_Compute_FirewallPolicy extends Google_Collection
   public function getSelfLinkWithId()
   {
     return $this->selfLinkWithId;
+  }
+  public function setShortName($shortName)
+  {
+    $this->shortName = $shortName;
+  }
+  public function getShortName()
+  {
+    return $this->shortName;
   }
 }

@@ -32,6 +32,12 @@
  */
 class Google_Service_Directory extends Google_Service
 {
+  /** See, add, edit, and permanently delete the printers that your organization can use with Chrome. */
+  const ADMIN_CHROME_PRINTERS =
+      "https://www.googleapis.com/auth/admin.chrome.printers";
+  /** See the printers that your organization can use with Chrome. */
+  const ADMIN_CHROME_PRINTERS_READONLY =
+      "https://www.googleapis.com/auth/admin.chrome.printers.readonly";
   /** View and manage customer related information. */
   const ADMIN_DIRECTORY_CUSTOMER =
       "https://www.googleapis.com/auth/admin.directory.customer";

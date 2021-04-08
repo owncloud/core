@@ -18,15 +18,35 @@
 class Google_Service_Compute_BackendServiceCdnPolicy extends Google_Collection
 {
   protected $collection_key = 'signedUrlKeyNames';
+  protected $bypassCacheOnRequestHeadersType = 'Google_Service_Compute_BackendServiceCdnPolicyBypassCacheOnRequestHeader';
+  protected $bypassCacheOnRequestHeadersDataType = 'array';
   protected $cacheKeyPolicyType = 'Google_Service_Compute_CacheKeyPolicy';
   protected $cacheKeyPolicyDataType = '';
   public $cacheMode;
   public $clientTtl;
   public $defaultTtl;
   public $maxTtl;
+  public $negativeCaching;
+  protected $negativeCachingPolicyType = 'Google_Service_Compute_BackendServiceCdnPolicyNegativeCachingPolicy';
+  protected $negativeCachingPolicyDataType = 'array';
+  public $serveWhileStale;
   public $signedUrlCacheMaxAgeSec;
   public $signedUrlKeyNames;
 
+  /**
+   * @param Google_Service_Compute_BackendServiceCdnPolicyBypassCacheOnRequestHeader[]
+   */
+  public function setBypassCacheOnRequestHeaders($bypassCacheOnRequestHeaders)
+  {
+    $this->bypassCacheOnRequestHeaders = $bypassCacheOnRequestHeaders;
+  }
+  /**
+   * @return Google_Service_Compute_BackendServiceCdnPolicyBypassCacheOnRequestHeader[]
+   */
+  public function getBypassCacheOnRequestHeaders()
+  {
+    return $this->bypassCacheOnRequestHeaders;
+  }
   /**
    * @param Google_Service_Compute_CacheKeyPolicy
    */
@@ -72,6 +92,36 @@ class Google_Service_Compute_BackendServiceCdnPolicy extends Google_Collection
   public function getMaxTtl()
   {
     return $this->maxTtl;
+  }
+  public function setNegativeCaching($negativeCaching)
+  {
+    $this->negativeCaching = $negativeCaching;
+  }
+  public function getNegativeCaching()
+  {
+    return $this->negativeCaching;
+  }
+  /**
+   * @param Google_Service_Compute_BackendServiceCdnPolicyNegativeCachingPolicy[]
+   */
+  public function setNegativeCachingPolicy($negativeCachingPolicy)
+  {
+    $this->negativeCachingPolicy = $negativeCachingPolicy;
+  }
+  /**
+   * @return Google_Service_Compute_BackendServiceCdnPolicyNegativeCachingPolicy[]
+   */
+  public function getNegativeCachingPolicy()
+  {
+    return $this->negativeCachingPolicy;
+  }
+  public function setServeWhileStale($serveWhileStale)
+  {
+    $this->serveWhileStale = $serveWhileStale;
+  }
+  public function getServeWhileStale()
+  {
+    return $this->serveWhileStale;
   }
   public function setSignedUrlCacheMaxAgeSec($signedUrlCacheMaxAgeSec)
   {

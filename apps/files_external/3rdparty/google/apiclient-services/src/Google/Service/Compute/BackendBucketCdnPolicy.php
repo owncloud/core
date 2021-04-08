@@ -18,13 +18,33 @@
 class Google_Service_Compute_BackendBucketCdnPolicy extends Google_Collection
 {
   protected $collection_key = 'signedUrlKeyNames';
+  protected $bypassCacheOnRequestHeadersType = 'Google_Service_Compute_BackendBucketCdnPolicyBypassCacheOnRequestHeader';
+  protected $bypassCacheOnRequestHeadersDataType = 'array';
   public $cacheMode;
   public $clientTtl;
   public $defaultTtl;
   public $maxTtl;
+  public $negativeCaching;
+  protected $negativeCachingPolicyType = 'Google_Service_Compute_BackendBucketCdnPolicyNegativeCachingPolicy';
+  protected $negativeCachingPolicyDataType = 'array';
+  public $serveWhileStale;
   public $signedUrlCacheMaxAgeSec;
   public $signedUrlKeyNames;
 
+  /**
+   * @param Google_Service_Compute_BackendBucketCdnPolicyBypassCacheOnRequestHeader[]
+   */
+  public function setBypassCacheOnRequestHeaders($bypassCacheOnRequestHeaders)
+  {
+    $this->bypassCacheOnRequestHeaders = $bypassCacheOnRequestHeaders;
+  }
+  /**
+   * @return Google_Service_Compute_BackendBucketCdnPolicyBypassCacheOnRequestHeader[]
+   */
+  public function getBypassCacheOnRequestHeaders()
+  {
+    return $this->bypassCacheOnRequestHeaders;
+  }
   public function setCacheMode($cacheMode)
   {
     $this->cacheMode = $cacheMode;
@@ -56,6 +76,36 @@ class Google_Service_Compute_BackendBucketCdnPolicy extends Google_Collection
   public function getMaxTtl()
   {
     return $this->maxTtl;
+  }
+  public function setNegativeCaching($negativeCaching)
+  {
+    $this->negativeCaching = $negativeCaching;
+  }
+  public function getNegativeCaching()
+  {
+    return $this->negativeCaching;
+  }
+  /**
+   * @param Google_Service_Compute_BackendBucketCdnPolicyNegativeCachingPolicy[]
+   */
+  public function setNegativeCachingPolicy($negativeCachingPolicy)
+  {
+    $this->negativeCachingPolicy = $negativeCachingPolicy;
+  }
+  /**
+   * @return Google_Service_Compute_BackendBucketCdnPolicyNegativeCachingPolicy[]
+   */
+  public function getNegativeCachingPolicy()
+  {
+    return $this->negativeCachingPolicy;
+  }
+  public function setServeWhileStale($serveWhileStale)
+  {
+    $this->serveWhileStale = $serveWhileStale;
+  }
+  public function getServeWhileStale()
+  {
+    return $this->serveWhileStale;
   }
   public function setSignedUrlCacheMaxAgeSec($signedUrlCacheMaxAgeSec)
   {
