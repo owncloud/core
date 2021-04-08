@@ -11,11 +11,8 @@ Summary
 * Bugfix - Fix mispositioned ui elements after leaving viewerMode: [#38547](https://github.com/owncloud/core/issues/38547)
 * Bugfix - Creating self group-reshare should not not share to self: [#38581](https://github.com/owncloud/core/pull/38581)
 * Bugfix - Check quota on the necessary move operations: [#38591](https://github.com/owncloud/core/pull/38591)
-* Change - Update icewind/streams from 0.7.3 to 0.7.4: [#38524](https://github.com/owncloud/core/pull/38524)
-* Change - Update icewind/streams from 0.7.3 to 0.7.4 in files_external: [#38524](https://github.com/owncloud/core/pull/38524)
-* Change - Update icewind/smb from 3.3.1 to 3.4.0 in files_external: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Update Symfony components to 4.4.21: [#38598](https://github.com/owncloud/core/pull/38598)
-* Change - Update PHP dependencies: [#38598](https://github.com/owncloud/core/pull/38598)
+* Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
 
 Details
@@ -48,18 +45,6 @@ Details
 
    https://github.com/owncloud/core/pull/38591
 
-* Change - Update icewind/streams from 0.7.3 to 0.7.4: [#38524](https://github.com/owncloud/core/pull/38524)
-
-   https://github.com/owncloud/core/pull/38524
-
-* Change - Update icewind/streams from 0.7.3 to 0.7.4 in files_external: [#38524](https://github.com/owncloud/core/pull/38524)
-
-   https://github.com/owncloud/core/pull/38524
-
-* Change - Update icewind/smb from 3.3.1 to 3.4.0 in files_external: [#38524](https://github.com/owncloud/core/pull/38524)
-
-   https://github.com/owncloud/core/pull/38524
-
 * Change - Update Symfony components to 4.4.21: [#38598](https://github.com/owncloud/core/pull/38598)
 
    The following Symfony components have been updated from 4.4.20 to 4.4.21 - console -
@@ -68,11 +53,19 @@ Details
    https://github.com/owncloud/core/pull/38598
    https://symfony.com/blog/symfony-4-4-21-released
 
-* Change - Update PHP dependencies: [#38598](https://github.com/owncloud/core/pull/38598)
+* Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 
-   The following have been updated: - pear/pear_exception (v1.0.1 => v1.0.2)
+   The following have been updated: - egulias/email-validator (3.1.0 to 3.1.1) -
+   icewind/streams (0.7.3 to 0.7.4) - pear/pear_exception (v1.0.1 to v1.0.2) -
+   phpseclib/phpseclib (3.0.6 to 3.0.7)
 
+   The following have been updated in files_external/3rdparty: - google/apiclient-services
+   (v0.164.0 => v0.167.0) - guzzlehttp/psr7 (1.7.0 => 1.8.1) - icewind/smb (3.3.1 to 3.4.0) -
+   icewind/streams (0.7.3 to 0.7.4) - phpseclib/phpseclib (3.0.6 to 3.0.7)
+
+   https://github.com/owncloud/core/pull/38524
    https://github.com/owncloud/core/pull/38598
+   https://github.com/owncloud/core/pull/38620
 
 * Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
 
