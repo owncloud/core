@@ -178,6 +178,11 @@ class Listener {
 			$actor = '';
 		}
 
+		$agentAuthor = $this->activityManager->getAgentAuthor();
+		if ($agentAuthor) {
+			$actor = $agentAuthor;
+		}
+
 		$activity = $this->activityManager->generateEvent();
 		$activity->setApp(Extension::APP_NAME)
 			->setType(Extension::APP_NAME)

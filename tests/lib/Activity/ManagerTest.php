@@ -10,6 +10,7 @@
 
 namespace Test\Activity;
 
+use OCP\Activity\IEvent;
 use Test\TestCase;
 
 class ManagerTest extends TestCase {
@@ -453,6 +454,23 @@ class ManagerTest extends TestCase {
 			$event->getType(),
 			\OCP\Activity\IExtension::PRIORITY_MEDIUM
 		);
+	}
+
+	public function testAgentStack() {
+		$event = new \OC\Activity\Event();
+		$test_author = 'test_author';
+		$event->setAuthor($test_author);
+		$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
+
+		$agentAuthor = $this->activityManager->getAgentAuthor();
+		if ($agentAuthor === IEvent::AUTOMATION_AUTHOR) {
+			$event->setAuthor($agentAuthor);
+		}
+
+		$this->assertEquals($event->getAuthor(), $agentAuthor);
+
+		$this->activityManager->restoreAgentAuthor();
+		$this->assertNull($this->activityManager->getAgentAuthor());
 	}
 }
 

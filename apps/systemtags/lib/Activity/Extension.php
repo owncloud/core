@@ -23,6 +23,7 @@
 
 namespace OCA\SystemTags\Activity;
 
+use OCP\Activity\IEvent;
 use OCP\Activity\IExtension;
 use OCP\Activity\IManager;
 use OCP\IL10N;
@@ -143,6 +144,9 @@ class Extension implements IExtension {
 		switch ($text) {
 			case self::ASSIGN_TAG:
 				$params[2] = $this->convertParameterToTag($params[2], $l);
+				if ($this->actorIsAutomation($params[0])) {
+					return (string) $l->t('System tag %3$s was assigned to %2$s due to automation rule', $params);
+				}
 				if ($this->actorIsCurrentUser($params[0])) {
 					return (string) $l->t('You assigned system tag %3$s', $params);
 				}
@@ -187,6 +191,9 @@ class Extension implements IExtension {
 				return (string) $l->t('%1$s updated system tag %3$s to %2$s', $params);
 			case self::ASSIGN_TAG:
 				$params[2] = $this->convertParameterToTag($params[2], $l);
+				if ($this->actorIsAutomation($params[0])) {
+					return (string) $l->t('System tag %3$s was assigned to %2$s due to automation rule', $params);
+				}
 				if ($this->actorIsCurrentUser($params[0])) {
 					return (string) $l->t('You assigned system tag %3$s to %2$s', $params);
 				}
@@ -214,6 +221,16 @@ class Extension implements IExtension {
 		} catch (\UnexpectedValueException $e) {
 			return false;
 		}
+	}
+
+	/**
+	 * Check if the author is automation user
+	 *
+	 * @param string $user Parameter e.g. `<user display-name="admin">admin</user>`
+	 * @return bool
+	 */
+	protected function actorIsAutomation($user) {
+		return \strip_tags($user) === IEvent::AUTOMATION_AUTHOR;
 	}
 
 	/**
