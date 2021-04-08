@@ -26,7 +26,7 @@
 class Google_Service_Dns_Resource_Projects extends Google_Service_Resource
 {
   /**
-   * Fetch the representation of an existing Project. (projects.get)
+   * Fetches the representation of an existing Project. (projects.get)
    *
    * @param string $project Identifies the project addressed by this request.
    * @param array $optParams Optional parameters.

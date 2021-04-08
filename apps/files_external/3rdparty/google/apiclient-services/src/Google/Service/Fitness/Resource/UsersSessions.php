@@ -32,9 +32,6 @@ class Google_Service_Fitness_Resource_UsersSessions extends Google_Service_Resou
    * indicate the authenticated user. Only me is supported at this time.
    * @param string $sessionId The ID of the session to be deleted.
    * @param array $optParams Optional parameters.
-   *
-   * @opt_param string currentTimeMillis The client's current time in milliseconds
-   * since epoch.
    */
   public function delete($userId, $sessionId, $optParams = array())
   {
@@ -83,9 +80,6 @@ class Google_Service_Fitness_Resource_UsersSessions extends Google_Service_Resou
    * @param string $sessionId The ID of the session to be created.
    * @param Google_Service_Fitness_Session $postBody
    * @param array $optParams Optional parameters.
-   *
-   * @opt_param string currentTimeMillis The client's current time in milliseconds
-   * since epoch.
    * @return Google_Service_Fitness_Session
    */
   public function update($userId, $sessionId, Google_Service_Fitness_Session $postBody, $optParams = array())

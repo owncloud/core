@@ -101,7 +101,7 @@ class Google_Service_Dns_Resource_Policies extends Google_Service_Resource
     return $this->call('list', array($params), "Google_Service_Dns_PoliciesListResponse");
   }
   /**
-   * Apply a partial update to an existing Policy. (policies.patch)
+   * Applies a partial update to an existing Policy. (policies.patch)
    *
    * @param string $project Identifies the project addressed by this request.
    * @param string $policy User given friendly name of the policy addressed by
@@ -121,7 +121,7 @@ class Google_Service_Dns_Resource_Policies extends Google_Service_Resource
     return $this->call('patch', array($params), "Google_Service_Dns_PoliciesPatchResponse");
   }
   /**
-   * Update an existing Policy. (policies.update)
+   * Updates an existing Policy. (policies.update)
    *
    * @param string $project Identifies the project addressed by this request.
    * @param string $policy User given friendly name of the policy addressed by

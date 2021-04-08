@@ -21,7 +21,9 @@ class Google_Service_NetworkManagement_FirewallInfo extends Google_Collection
   public $action;
   public $direction;
   public $displayName;
+  public $firewallRuleType;
   public $networkUri;
+  public $policy;
   public $priority;
   public $targetServiceAccounts;
   public $targetTags;
@@ -51,6 +53,14 @@ class Google_Service_NetworkManagement_FirewallInfo extends Google_Collection
   {
     return $this->displayName;
   }
+  public function setFirewallRuleType($firewallRuleType)
+  {
+    $this->firewallRuleType = $firewallRuleType;
+  }
+  public function getFirewallRuleType()
+  {
+    return $this->firewallRuleType;
+  }
   public function setNetworkUri($networkUri)
   {
     $this->networkUri = $networkUri;
@@ -58,6 +68,14 @@ class Google_Service_NetworkManagement_FirewallInfo extends Google_Collection
   public function getNetworkUri()
   {
     return $this->networkUri;
+  }
+  public function setPolicy($policy)
+  {
+    $this->policy = $policy;
+  }
+  public function getPolicy()
+  {
+    return $this->policy;
   }
   public function setPriority($priority)
   {

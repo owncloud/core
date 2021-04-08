@@ -619,6 +619,66 @@ abstract class RSA extends AsymmetricKey
     }
 
     /**
+     * EMSA-PKCS1-V1_5-ENCODE (without NULL)
+     *
+     * Quoting https://tools.ietf.org/html/rfc8017#page-65,
+     *
+     * "The parameters field associated with id-sha1, id-sha224, id-sha256,
+     *  id-sha384, id-sha512, id-sha512/224, and id-sha512/256 should
+     *  generally be omitted, but if present, it shall have a value of type
+     *  NULL"
+     *
+     * @access private
+     * @param string $m
+     * @param int $emLen
+     * @return string
+     */
+    protected function emsa_pkcs1_v1_5_encode_without_null($m, $emLen)
+    {
+        $h = $this->hash->hash($m);
+
+        // see http://tools.ietf.org/html/rfc3447#page-43
+        switch ($this->hash->getHash()) {
+            case 'sha1':
+                $t = "\x30\x1f\x30\x07\x06\x05\x2b\x0e\x03\x02\x1a\x04\x14";
+                break;
+            case 'sha256':
+                $t = "\x30\x2f\x30\x0b\x06\x09\x60\x86\x48\x01\x65\x03\x04\x02\x01\x04\x20";
+                break;
+            case 'sha384':
+                $t = "\x30\x3f\x30\x0b\x06\x09\x60\x86\x48\x01\x65\x03\x04\x02\x02\x04\x30";
+                break;
+            case 'sha512':
+                $t = "\x30\x4f\x30\x0b\x06\x09\x60\x86\x48\x01\x65\x03\x04\x02\x03\x04\x40";
+                break;
+            // from https://www.emc.com/collateral/white-papers/h11300-pkcs-1v2-2-rsa-cryptography-standard-wp.pdf#page=40
+            case 'sha224':
+                $t = "\x30\x2b\x30\x0b\x06\x09\x60\x86\x48\x01\x65\x03\x04\x02\x04\x04\x1c";
+                break;
+            case 'sha512/224':
+                $t = "\x30\x2b\x30\x0b\x06\x09\x60\x86\x48\x01\x65\x03\x04\x02\x05\x04\x1c";
+                break;
+            case 'sha512/256':
+                $t = "\x30\x2f\x30\x0b\x06\x09\x60\x86\x48\x01\x65\x03\x04\x02\x06\x04\x20";
+                break;
+            default:
+                throw new UnsupportedAlgorithmException('md2 and md5 require NULLs');
+        }
+        $t.= $h;
+        $tLen = strlen($t);
+
+        if ($emLen < $tLen + 11) {
+            throw new \LengthException('Intended encoded message length too short');
+        }
+
+        $ps = str_repeat(chr(0xFF), $emLen - $tLen - 3);
+
+        $em = "\0\1$ps\0$t";
+
+        return $em;
+    }
+
+    /**
      * MGF1
      *
      * See {@link http://tools.ietf.org/html/rfc3447#appendix-B.2.1 RFC3447#appendix-B.2.1}.

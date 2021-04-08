@@ -31,7 +31,7 @@
  */
 class Google_Service_CloudRun extends Google_Service
 {
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 
@@ -166,6 +166,10 @@ class Google_Service_CloudRun extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'dryRun' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
               ),
             ),'delete' => array(
               'path' => 'apis/domains.cloudrun.com/v1/{+name}',
@@ -177,6 +181,10 @@ class Google_Service_CloudRun extends Google_Service
                   'required' => true,
                 ),
                 'apiVersion' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'dryRun' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -257,6 +265,10 @@ class Google_Service_CloudRun extends Google_Service
                   'required' => true,
                 ),
                 'apiVersion' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'dryRun' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -394,6 +406,10 @@ class Google_Service_CloudRun extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'dryRun' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
               ),
             ),'delete' => array(
               'path' => 'apis/serving.knative.dev/v1/{+name}',
@@ -405,6 +421,10 @@ class Google_Service_CloudRun extends Google_Service
                   'required' => true,
                 ),
                 'apiVersion' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'dryRun' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -473,6 +493,10 @@ class Google_Service_CloudRun extends Google_Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ),
+                'dryRun' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -640,6 +664,10 @@ class Google_Service_CloudRun extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'dryRun' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
               ),
             ),'delete' => array(
               'path' => 'v1/{+name}',
@@ -651,6 +679,10 @@ class Google_Service_CloudRun extends Google_Service
                   'required' => true,
                 ),
                 'apiVersion' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'dryRun' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -731,6 +763,10 @@ class Google_Service_CloudRun extends Google_Service
                   'required' => true,
                 ),
                 'apiVersion' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'dryRun' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -868,6 +904,10 @@ class Google_Service_CloudRun extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'dryRun' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
               ),
             ),'delete' => array(
               'path' => 'v1/{+name}',
@@ -879,6 +919,10 @@ class Google_Service_CloudRun extends Google_Service
                   'required' => true,
                 ),
                 'apiVersion' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'dryRun' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -961,6 +1005,10 @@ class Google_Service_CloudRun extends Google_Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ),
+                'dryRun' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'setIamPolicy' => array(

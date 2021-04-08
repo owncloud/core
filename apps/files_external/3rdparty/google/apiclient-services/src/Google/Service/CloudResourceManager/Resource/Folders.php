@@ -46,10 +46,6 @@ class Google_Service_CloudResourceManager_Resource_Folders extends Google_Servic
    *
    * @param Google_Service_CloudResourceManager_Folder $postBody
    * @param array $optParams Optional parameters.
-   *
-   * @opt_param string parent Required. The resource name of the new Folder's
-   * parent. Must be of the form `folders/{folder_id}` or
-   * `organizations/{org_id}`.
    * @return Google_Service_CloudResourceManager_Operation
    */
   public function create(Google_Service_CloudResourceManager_Folder $postBody, $optParams = array())
@@ -61,21 +57,22 @@ class Google_Service_CloudResourceManager_Resource_Folders extends Google_Servic
   /**
    * Requests deletion of a Folder. The Folder is moved into the DELETE_REQUESTED
    * state immediately, and is deleted approximately 30 days later. This method
-   * may only be called on an empty Folder in the ACTIVE state, where a Folder is
-   * empty if it doesn't contain any Folders or Projects in the ACTIVE state. The
-   * caller must have `resourcemanager.folders.delete` permission on the
-   * identified folder. (folders.delete)
+   * may only be called on an empty Folder, where a Folder is empty if it doesn't
+   * contain any Folders or Projects in the ACTIVE state. If called on a folder in
+   * DELETE_REQUESTED state the result will be a no-op success. The caller must
+   * have `resourcemanager.folders.delete` permission on the identified folder.
+   * (folders.delete)
    *
-   * @param string $name Required. the resource name of the Folder to be deleted.
+   * @param string $name Required. The resource name of the Folder to be deleted.
    * Must be of the form `folders/{folder_id}`.
    * @param array $optParams Optional parameters.
-   * @return Google_Service_CloudResourceManager_Folder
+   * @return Google_Service_CloudResourceManager_Operation
    */
   public function delete($name, $optParams = array())
   {
     $params = array('name' => $name);
     $params = array_merge($params, $optParams);
-    return $this->call('delete', array($params), "Google_Service_CloudResourceManager_Folder");
+    return $this->call('delete', array($params), "Google_Service_CloudResourceManager_Operation");
   }
   /**
    * Retrieves a Folder identified by the supplied resource name. Valid Folder
@@ -125,7 +122,7 @@ class Google_Service_CloudResourceManager_Resource_Folders extends Google_Servic
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Optional. The maximum number of Folders to return in
-   * the response.
+   * the response. If unspecified, server picks an appropriate default.
    * @opt_param string pageToken Optional. A pagination token returned from a
    * previous call to `ListFolders` that indicates where this listing should
    * continue from.
@@ -175,7 +172,7 @@ class Google_Service_CloudResourceManager_Resource_Folders extends Google_Servic
    * Updates a Folder, changing its display_name. Changes to the folder
    * display_name will be rejected if they violate either the display_name
    * formatting rules or naming constraints described in the CreateFolder
-   * documentation. The Folder's display name must start and end with a letter or
+   * documentation. The Folder's display_name must start and end with a letter or
    * digit, may contain letters, digits, spaces, hyphens and underscores and can
    * be between 3 and 30 characters. This is captured by the regular expression:
    * `\p{L}\p{N}{1,28}[\p{L}\p{N}]`. The caller must have
@@ -191,13 +188,13 @@ class Google_Service_CloudResourceManager_Resource_Folders extends Google_Servic
    *
    * @opt_param string updateMask Required. Fields to be updated. Only the
    * `display_name` can be updated.
-   * @return Google_Service_CloudResourceManager_Folder
+   * @return Google_Service_CloudResourceManager_Operation
    */
   public function patch($name, Google_Service_CloudResourceManager_Folder $postBody, $optParams = array())
   {
     $params = array('name' => $name, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
-    return $this->call('patch', array($params), "Google_Service_CloudResourceManager_Folder");
+    return $this->call('patch', array($params), "Google_Service_CloudResourceManager_Operation");
   }
   /**
    * Search for folders that match specific filter criteria. Search provides an
@@ -205,13 +202,36 @@ class Google_Service_CloudResourceManager_Resource_Folders extends Google_Servic
    * specified filter criteria. This will only return folders on which the caller
    * has the permission `resourcemanager.folders.get`. (folders.search)
    *
-   * @param Google_Service_CloudResourceManager_SearchFoldersRequest $postBody
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param int pageSize Optional. The maximum number of folders to return in
+   * the response. If unspecified, server picks an appropriate default.
+   * @opt_param string pageToken Optional. A pagination token returned from a
+   * previous call to `SearchFolders` that indicates from where search should
+   * continue.
+   * @opt_param string query Optional. Search criteria used to select the Folders
+   * to return. If no search criteria is specified then all accessible folders
+   * will be returned. Query expressions can be used to restrict results based
+   * upon displayName, state and parent, where the operators `=` (`:`) `NOT`,
+   * `AND` and `OR` can be used along with the suffix wildcard symbol `*`. The
+   * displayName field in a query expression should use escaped quotes for values
+   * that include whitespace to prevent unexpected behavior. | Field | Description
+   * | |-------------------------|----------------------------------------| |
+   * displayName | Filters by displayName. | | parent | Filters by parent (e.g.
+   * folders/123). | | state, lifecycleState | Filters by state. | Some example
+   * queries are: * Query `displayName=Test*` returns Folder resources whose
+   * display name starts with "Test". * Query `state=ACTIVE` returns Folder
+   * resources with `state` set to `ACTIVE`. * Query `parent=folders/123` returns
+   * Folder resources that have `folders/123` as a parent resource. * Query
+   * `parent=folders/123 AND state=ACTIVE` returns active Folder resources that
+   * have `folders/123` as a parent resource. * Query `displayName=\\"Test
+   * String\\"` returns Folder resources with display names that include both
+   * "Test" and "String".
    * @return Google_Service_CloudResourceManager_SearchFoldersResponse
    */
-  public function search(Google_Service_CloudResourceManager_SearchFoldersRequest $postBody, $optParams = array())
+  public function search($optParams = array())
   {
-    $params = array('postBody' => $postBody);
+    $params = array();
     $params = array_merge($params, $optParams);
     return $this->call('search', array($params), "Google_Service_CloudResourceManager_SearchFoldersResponse");
   }
@@ -253,24 +273,24 @@ class Google_Service_CloudResourceManager_Resource_Folders extends Google_Servic
     return $this->call('testIamPermissions', array($params), "Google_Service_CloudResourceManager_TestIamPermissionsResponse");
   }
   /**
-   * Cancels the deletion request for a Folder. This method may only be called on
-   * a Folder in the DELETE_REQUESTED state. In order to succeed, the Folder's
-   * parent must be in the ACTIVE state. In addition, reintroducing the folder
-   * into the tree must not violate folder naming, height and fanout constraints
-   * described in the CreateFolder documentation. The caller must have
-   * `resourcemanager.folders.undelete` permission on the identified folder.
-   * (folders.undelete)
+   * Cancels the deletion request for a Folder. This method may be called on a
+   * Folder in any state. If Folder is in ACTIVE state the result will be a no-op
+   * success. In order to succeed, the Folder's parent must be in the ACTIVE
+   * state. In addition, reintroducing the folder into the tree must not violate
+   * folder naming, height and fanout constraints described in the CreateFolder
+   * documentation. The caller must have `resourcemanager.folders.undelete`
+   * permission on the identified folder. (folders.undelete)
    *
    * @param string $name Required. The resource name of the Folder to undelete.
    * Must be of the form `folders/{folder_id}`.
    * @param Google_Service_CloudResourceManager_UndeleteFolderRequest $postBody
    * @param array $optParams Optional parameters.
-   * @return Google_Service_CloudResourceManager_Folder
+   * @return Google_Service_CloudResourceManager_Operation
    */
   public function undelete($name, Google_Service_CloudResourceManager_UndeleteFolderRequest $postBody, $optParams = array())
   {
     $params = array('name' => $name, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
-    return $this->call('undelete', array($params), "Google_Service_CloudResourceManager_Folder");
+    return $this->call('undelete', array($params), "Google_Service_CloudResourceManager_Operation");
   }
 }

@@ -24,6 +24,7 @@ class Google_Service_Compute_Router extends Google_Collection
   protected $bgpPeersDataType = 'array';
   public $creationTimestamp;
   public $description;
+  public $encryptedInterconnectRouter;
   public $id;
   protected $interfacesType = 'Google_Service_Compute_RouterInterface';
   protected $interfacesDataType = 'array';
@@ -78,6 +79,14 @@ class Google_Service_Compute_Router extends Google_Collection
   public function getDescription()
   {
     return $this->description;
+  }
+  public function setEncryptedInterconnectRouter($encryptedInterconnectRouter)
+  {
+    $this->encryptedInterconnectRouter = $encryptedInterconnectRouter;
+  }
+  public function getEncryptedInterconnectRouter()
+  {
+    return $this->encryptedInterconnectRouter;
   }
   public function setId($id)
   {

@@ -20,6 +20,7 @@ class Google_Service_AnalyticsData_RunReportResponse extends Google_Collection
   protected $collection_key = 'totals';
   protected $dimensionHeadersType = 'Google_Service_AnalyticsData_DimensionHeader';
   protected $dimensionHeadersDataType = 'array';
+  public $kind;
   protected $maximumsType = 'Google_Service_AnalyticsData_Row';
   protected $maximumsDataType = 'array';
   protected $metadataType = 'Google_Service_AnalyticsData_ResponseMetaData';
@@ -49,6 +50,14 @@ class Google_Service_AnalyticsData_RunReportResponse extends Google_Collection
   public function getDimensionHeaders()
   {
     return $this->dimensionHeaders;
+  }
+  public function setKind($kind)
+  {
+    $this->kind = $kind;
+  }
+  public function getKind()
+  {
+    return $this->kind;
   }
   /**
    * @param Google_Service_AnalyticsData_Row[]

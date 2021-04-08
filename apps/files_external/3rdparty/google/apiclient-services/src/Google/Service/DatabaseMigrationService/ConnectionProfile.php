@@ -27,6 +27,8 @@ class Google_Service_DatabaseMigrationService_ConnectionProfile extends Google_M
   protected $mysqlType = 'Google_Service_DatabaseMigrationService_MySqlConnectionProfile';
   protected $mysqlDataType = '';
   public $name;
+  protected $postgresqlType = 'Google_Service_DatabaseMigrationService_PostgreSqlConnectionProfile';
+  protected $postgresqlDataType = '';
   public $provider;
   public $state;
   public $updateTime;
@@ -104,6 +106,20 @@ class Google_Service_DatabaseMigrationService_ConnectionProfile extends Google_M
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param Google_Service_DatabaseMigrationService_PostgreSqlConnectionProfile
+   */
+  public function setPostgresql(Google_Service_DatabaseMigrationService_PostgreSqlConnectionProfile $postgresql)
+  {
+    $this->postgresql = $postgresql;
+  }
+  /**
+   * @return Google_Service_DatabaseMigrationService_PostgreSqlConnectionProfile
+   */
+  public function getPostgresql()
+  {
+    return $this->postgresql;
   }
   public function setProvider($provider)
   {

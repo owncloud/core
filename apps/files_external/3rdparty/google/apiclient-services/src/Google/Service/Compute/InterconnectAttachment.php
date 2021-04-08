@@ -17,7 +17,7 @@
 
 class Google_Service_Compute_InterconnectAttachment extends Google_Collection
 {
-  protected $collection_key = 'candidateSubnets';
+  protected $collection_key = 'ipsecInternalAddresses';
   public $adminEnabled;
   public $bandwidth;
   public $candidateSubnets;
@@ -27,9 +27,11 @@ class Google_Service_Compute_InterconnectAttachment extends Google_Collection
   public $dataplaneVersion;
   public $description;
   public $edgeAvailabilityDomain;
+  public $encryption;
   public $googleReferenceId;
   public $id;
   public $interconnect;
+  public $ipsecInternalAddresses;
   public $kind;
   public $mtu;
   public $name;
@@ -119,6 +121,14 @@ class Google_Service_Compute_InterconnectAttachment extends Google_Collection
   {
     return $this->edgeAvailabilityDomain;
   }
+  public function setEncryption($encryption)
+  {
+    $this->encryption = $encryption;
+  }
+  public function getEncryption()
+  {
+    return $this->encryption;
+  }
   public function setGoogleReferenceId($googleReferenceId)
   {
     $this->googleReferenceId = $googleReferenceId;
@@ -142,6 +152,14 @@ class Google_Service_Compute_InterconnectAttachment extends Google_Collection
   public function getInterconnect()
   {
     return $this->interconnect;
+  }
+  public function setIpsecInternalAddresses($ipsecInternalAddresses)
+  {
+    $this->ipsecInternalAddresses = $ipsecInternalAddresses;
+  }
+  public function getIpsecInternalAddresses()
+  {
+    return $this->ipsecInternalAddresses;
   }
   public function setKind($kind)
   {

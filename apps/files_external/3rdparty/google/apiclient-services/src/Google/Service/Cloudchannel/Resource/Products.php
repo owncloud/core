@@ -26,23 +26,22 @@
 class Google_Service_Cloudchannel_Resource_Products extends Google_Service_Resource
 {
   /**
-   * Lists the Products the reseller is authorized to sell. Possible Error Codes:
-   * * INVALID_ARGUMENT: Missing or invalid required parameters in the request.
+   * Lists the Products the reseller is authorized to sell. Possible error codes:
+   * * INVALID_ARGUMENT: Required request parameters are missing or invalid.
    * (products.listProducts)
    *
    * @param array $optParams Optional parameters.
    *
    * @opt_param string account Required. The resource name of the reseller
    * account. Format: accounts/{account_id}.
-   * @opt_param string languageCode Optional. The BCP-47 language code, such as
-   * "en-US". If specified, the response will be localized to the corresponding
-   * language code. Default is "en-US".
+   * @opt_param string languageCode Optional. The BCP-47 language code. For
+   * example, "en-US". The response will localize in the corresponding language
+   * code, if specified. The default value is "en-US".
    * @opt_param int pageSize Optional. Requested page size. Server might return
-   * fewer results than requested. If unspecified, at most 100 Products will be
-   * returned. The maximum value is 1000; values above 1000 will be coerced to
-   * 1000.
-   * @opt_param string pageToken Optional. A token identifying a page of results,
-   * if other than the first one.
+   * fewer results than requested. If unspecified, returns at most 100 Products.
+   * The maximum value is 1000; the server will coerce values above 1000.
+   * @opt_param string pageToken Optional. A token for a page of results other
+   * than the first page.
    * @return Google_Service_Cloudchannel_GoogleCloudChannelV1ListProductsResponse
    */
   public function listProducts($optParams = array())

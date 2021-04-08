@@ -1307,7 +1307,17 @@ class Google_Service_Dialogflow extends Google_Service
         'results',
         array(
           'methods' => array(
-            'list' => array(
+            'get' => array(
+              'path' => 'v3/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
               'path' => 'v3/{+parent}/results',
               'httpMethod' => 'GET',
               'parameters' => array(

@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '7df82a47525b9672e2d3802216453738088c097b',
+    'reference' => '53a2bb253d9120574a33694abc71e7c8e8a088df',
     'name' => 'files_external/3rdparty',
   ),
   'versions' => 
@@ -42,7 +42,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '7df82a47525b9672e2d3802216453738088c097b',
+      'reference' => '53a2bb253d9120574a33694abc71e7c8e8a088df',
     ),
     'firebase/php-jwt' => 
     array (
@@ -64,12 +64,12 @@ private static $installed = array (
     ),
     'google/apiclient-services' => 
     array (
-      'pretty_version' => 'v0.164.0',
-      'version' => '0.164.0.0',
+      'pretty_version' => 'v0.167.0',
+      'version' => '0.167.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '266557af3f595681eb9199853641f334a913d1bf',
+      'reference' => '46b71684a100f3d976e0321cf24f487b314add68',
     ),
     'google/auth' => 
     array (
@@ -91,12 +91,12 @@ private static $installed = array (
     ),
     'guzzlehttp/psr7' => 
     array (
-      'pretty_version' => '1.7.0',
-      'version' => '1.7.0.0',
+      'pretty_version' => '1.8.1',
+      'version' => '1.8.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '53330f47520498c0ae1f61f7e2c90f55690c06a3',
+      'reference' => '35ea11d335fd638b5882ff1725228b3d35496ab1',
     ),
     'guzzlehttp/ringphp' => 
     array (
@@ -163,12 +163,12 @@ private static $installed = array (
     ),
     'phpseclib/phpseclib' => 
     array (
-      'pretty_version' => '3.0.6',
-      'version' => '3.0.6.0',
+      'pretty_version' => '3.0.7',
+      'version' => '3.0.7.0',
       'aliases' => 
       array (
       ),
-      'reference' => '906a5fafabe5e6ba51ef3dc65b2722a677908837',
+      'reference' => 'd369510df0ebd5e1a5d0fe3d4d23c55fa87a403d',
     ),
     'psr/cache' => 
     array (

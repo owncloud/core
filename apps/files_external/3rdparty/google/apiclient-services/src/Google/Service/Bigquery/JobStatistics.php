@@ -40,6 +40,8 @@ class Google_Service_Bigquery_JobStatistics extends Google_Collection
   protected $rowLevelSecurityStatisticsDataType = '';
   protected $scriptStatisticsType = 'Google_Service_Bigquery_ScriptStatistics';
   protected $scriptStatisticsDataType = '';
+  protected $sessionInfoTemplateType = 'Google_Service_Bigquery_SessionInfo';
+  protected $sessionInfoTemplateDataType = '';
   public $startTime;
   public $totalBytesProcessed;
   public $totalSlotMs;
@@ -185,6 +187,20 @@ class Google_Service_Bigquery_JobStatistics extends Google_Collection
   public function getScriptStatistics()
   {
     return $this->scriptStatistics;
+  }
+  /**
+   * @param Google_Service_Bigquery_SessionInfo
+   */
+  public function setSessionInfoTemplate(Google_Service_Bigquery_SessionInfo $sessionInfoTemplate)
+  {
+    $this->sessionInfoTemplate = $sessionInfoTemplate;
+  }
+  /**
+   * @return Google_Service_Bigquery_SessionInfo
+   */
+  public function getSessionInfoTemplate()
+  {
+    return $this->sessionInfoTemplate;
   }
   public function setStartTime($startTime)
   {

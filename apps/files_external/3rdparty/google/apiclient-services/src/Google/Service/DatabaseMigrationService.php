@@ -16,7 +16,7 @@
  */
 
 /**
- * Service definition for DatabaseMigrationService (v1beta1).
+ * Service definition for DatabaseMigrationService (v1).
  *
  * <p>
  * Manage Cloud Database Migration Service resources on Google Cloud Platform.</p>
@@ -30,7 +30,7 @@
  */
 class Google_Service_DatabaseMigrationService extends Google_Service
 {
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 
@@ -52,7 +52,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
     $this->rootUrl = $rootUrl ?: 'https://datamigration.googleapis.com/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
-    $this->version = 'v1beta1';
+    $this->version = 'v1';
     $this->serviceName = 'datamigration';
 
     $this->projects_locations = new Google_Service_DatabaseMigrationService_Resource_ProjectsLocations(
@@ -62,7 +62,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -72,7 +72,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1beta1/{+name}/locations',
+              'path' => 'v1/{+name}/locations',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -104,7 +104,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
         array(
           'methods' => array(
             'create' => array(
-              'path' => 'v1beta1/{+parent}/connectionProfiles',
+              'path' => 'v1/{+parent}/connectionProfiles',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
@@ -122,7 +122,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'delete' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'name' => array(
@@ -140,7 +140,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -150,7 +150,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'getIamPolicy' => array(
-              'path' => 'v1beta1/{+resource}:getIamPolicy',
+              'path' => 'v1/{+resource}:getIamPolicy',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'resource' => array(
@@ -164,7 +164,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1beta1/{+parent}/connectionProfiles',
+              'path' => 'v1/{+parent}/connectionProfiles',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'parent' => array(
@@ -190,7 +190,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'name' => array(
@@ -208,7 +208,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'setIamPolicy' => array(
-              'path' => 'v1beta1/{+resource}:setIamPolicy',
+              'path' => 'v1/{+resource}:setIamPolicy',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'resource' => array(
@@ -218,7 +218,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'testIamPermissions' => array(
-              'path' => 'v1beta1/{+resource}:testIamPermissions',
+              'path' => 'v1/{+resource}:testIamPermissions',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'resource' => array(
@@ -238,7 +238,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
         array(
           'methods' => array(
             'create' => array(
-              'path' => 'v1beta1/{+parent}/migrationJobs',
+              'path' => 'v1/{+parent}/migrationJobs',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
@@ -256,7 +256,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'delete' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'name' => array(
@@ -274,7 +274,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'generateSshScript' => array(
-              'path' => 'v1beta1/{+migrationJob}:generateSshScript',
+              'path' => 'v1/{+migrationJob}:generateSshScript',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'migrationJob' => array(
@@ -284,7 +284,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -294,7 +294,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'getIamPolicy' => array(
-              'path' => 'v1beta1/{+resource}:getIamPolicy',
+              'path' => 'v1/{+resource}:getIamPolicy',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'resource' => array(
@@ -308,7 +308,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1beta1/{+parent}/migrationJobs',
+              'path' => 'v1/{+parent}/migrationJobs',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'parent' => array(
@@ -334,7 +334,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'name' => array(
@@ -352,7 +352,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'promote' => array(
-              'path' => 'v1beta1/{+name}:promote',
+              'path' => 'v1/{+name}:promote',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -362,7 +362,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'restart' => array(
-              'path' => 'v1beta1/{+name}:restart',
+              'path' => 'v1/{+name}:restart',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -372,7 +372,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'resume' => array(
-              'path' => 'v1beta1/{+name}:resume',
+              'path' => 'v1/{+name}:resume',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -382,7 +382,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'setIamPolicy' => array(
-              'path' => 'v1beta1/{+resource}:setIamPolicy',
+              'path' => 'v1/{+resource}:setIamPolicy',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'resource' => array(
@@ -392,7 +392,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'start' => array(
-              'path' => 'v1beta1/{+name}:start',
+              'path' => 'v1/{+name}:start',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -402,7 +402,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'stop' => array(
-              'path' => 'v1beta1/{+name}:stop',
+              'path' => 'v1/{+name}:stop',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -412,7 +412,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'testIamPermissions' => array(
-              'path' => 'v1beta1/{+resource}:testIamPermissions',
+              'path' => 'v1/{+resource}:testIamPermissions',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'resource' => array(
@@ -422,7 +422,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'verify' => array(
-              'path' => 'v1beta1/{+name}:verify',
+              'path' => 'v1/{+name}:verify',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -442,7 +442,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
         array(
           'methods' => array(
             'cancel' => array(
-              'path' => 'v1beta1/{+name}:cancel',
+              'path' => 'v1/{+name}:cancel',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -452,7 +452,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'delete' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'name' => array(
@@ -462,7 +462,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -472,7 +472,7 @@ class Google_Service_DatabaseMigrationService extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1beta1/{+name}/operations',
+              'path' => 'v1/{+name}/operations',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(

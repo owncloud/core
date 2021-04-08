@@ -256,14 +256,6 @@ class Google_Service_Fitness extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'currentTimeMillis' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'modifiedTimeMillis' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
               ),
             ),'get' => array(
               'path' => '{userId}/dataSources/{dataSourceId}/datasets/{datasetId}',
@@ -312,10 +304,6 @@ class Google_Service_Fitness extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'currentTimeMillis' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
               ),
             ),
           )
@@ -360,10 +348,6 @@ class Google_Service_Fitness extends Google_Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
-                ),
-                'currentTimeMillis' => array(
-                  'location' => 'query',
-                  'type' => 'string',
                 ),
               ),
             ),'list' => array(
@@ -410,10 +394,6 @@ class Google_Service_Fitness extends Google_Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
-                ),
-                'currentTimeMillis' => array(
-                  'location' => 'query',
-                  'type' => 'string',
                 ),
               ),
             ),

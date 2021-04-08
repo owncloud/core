@@ -18,6 +18,7 @@
 class Google_Service_Compute_VpnGatewayVpnGatewayInterface extends Google_Model
 {
   public $id;
+  public $interconnectAttachment;
   public $ipAddress;
 
   public function setId($id)
@@ -27,6 +28,14 @@ class Google_Service_Compute_VpnGatewayVpnGatewayInterface extends Google_Model
   public function getId()
   {
     return $this->id;
+  }
+  public function setInterconnectAttachment($interconnectAttachment)
+  {
+    $this->interconnectAttachment = $interconnectAttachment;
+  }
+  public function getInterconnectAttachment()
+  {
+    return $this->interconnectAttachment;
   }
   public function setIpAddress($ipAddress)
   {

@@ -2974,7 +2974,6 @@ class SFTP extends SSH2
         $tempLength = $length;
         $tempLength-= strlen($this->packet_buffer);
 
-
         // 256 * 1024 is what SFTP_MAX_MSG_LENGTH is set to in OpenSSH's sftp-common.h
         if ($tempLength > 256 * 1024) {
             throw new \RuntimeException('Invalid Size');
