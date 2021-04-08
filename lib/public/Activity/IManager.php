@@ -258,8 +258,8 @@ interface IManager {
 	public function setAgentAuthor($agentAuthor);
 
 	/**
-	 * Restore the latest agent user and return it. Returns null if the
-	 * $agentStack array is empty.
+	 * Pops the latest agent from the $agentStack array. Returns null if the
+	 * array is empty.
 	 *
 	 * @return string|null
 	 * @since 10.8.0
