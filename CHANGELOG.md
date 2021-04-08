@@ -13,6 +13,7 @@ Summary
 * Bugfix - Check quota on the necessary move operations: [#38591](https://github.com/owncloud/core/pull/38591)
 * Change - Update Symfony components to 4.4.21: [#38598](https://github.com/owncloud/core/pull/38598)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
+* Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
 * Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
 
 Details
@@ -66,6 +67,14 @@ Details
    https://github.com/owncloud/core/pull/38524
    https://github.com/owncloud/core/pull/38598
    https://github.com/owncloud/core/pull/38620
+
+* Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
+
+   This adjustment provides a way to handle the activity stream for actions that were triggered by
+   an automation (like the workflow app e.g.).
+
+   https://github.com/owncloud/enterprise/issues/4222
+   https://github.com/owncloud/core/pull/38605
 
 * Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
 
