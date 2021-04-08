@@ -12,6 +12,7 @@ Feature: Sharing files and folders with internal groups
       | Carol    |
     And user "Carol" has created folder "simple-folder"
     And user "Carol" has created folder "simple-folder/simple-empty-folder"
+    And user "Carol" has created folder "simple-folder/simple-inner-folder"
 
   Scenario Outline: sharing  files and folder with an internal problematic group name
     Given these groups have been created:
@@ -401,3 +402,30 @@ Feature: Sharing files and folders with internal groups
     And as "Brian" folder "/simple-empty-folder" should exist
     And user "Brian" should not be able to upload file "filesForUpload/textfile.txt" to "simple-folder/textfile.txt"
     And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "simple-empty-folder/textfile.txt"
+
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5 @skipOnOcV10.6 @skipOnOcV10.7.0
+  Scenario: Reshare mount received from multiple group reshare by different users and different subfolders 
+    Given these groups have been created:
+      | groupname |
+      | grp1      |
+      | grp2      |
+      | grp3      |
+    And user "Alice" has been added to group "grp1"
+    And user "Alice" has been added to group "grp2"
+    And user "Brian" has been added to group "grp1"
+    And user "Brian" has been added to group "grp2"
+    And user "Carol" has shared folder "/simple-folder" with user "Alice" with permissions "all"
+    And user "Alice" has shared folder "/simple-folder" with group "grp1" with permissions "all"
+    And user "Brian" has shared file "/simple-folder/simple-inner-folder" with group "grp2" with permissions "read"
+    And user "Alice" has uploaded file with content "some data" to "/simple-folder/simple-inner-folder/textfile.txt"
+    And user "Alice" has shared file "/simple-folder/simple-inner-folder/textfile.txt" with group "grp3" with permissions "read"
+    And user "Alice" has logged in using the webUI
+    When the user opens folder "simple-folder" using the webUI
+    And the user opens folder "simple-inner-folder" using the webUI
+    And the user sets the sharing permissions of group "grp3" for "textfile.txt" using the webUI to
+      | edit  | yes |
+      | share | yes |
+    Then the following permissions are seen for "textfile.txt" in the sharing dialog for group "grp3"
+      | edit  | yes |
+      | share | yes |
+
