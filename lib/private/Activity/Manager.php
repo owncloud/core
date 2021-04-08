@@ -51,8 +51,8 @@ class Manager implements IManager {
 	/** @var string */
 	protected $currentUserId;
 
-	/** @var string */
-	protected $agentAuthor;
+	/** @var string[] */
+	protected $agentStack = [];
 
 	/**
 	 * constructor of the controller
@@ -538,13 +538,20 @@ class Manager implements IManager {
 	 * {@inheritdoc}
 	 */
 	public function getAgentAuthor() {
-		return $this->agentAuthor;
+		return $this->agentStack[\count($this->agentStack) - 1] ?? null;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function setAgentAuthor($agentAuthor) {
-		$this->agentAuthor = $agentAuthor;
+		$this->agentStack[] = $agentAuthor;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function restoreAgentAuthor() {
+		return \array_pop($this->agentStack);
 	}
 }

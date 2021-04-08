@@ -225,19 +225,23 @@ interface IManager {
 	public function getCurrentUserId();
 
 	/**
-	 * Get a user which can be used to overwrite an existing one in an event.
+	 * Get the last user from the $agentStack array. An agent user is
+	 * basically a user which can be used to overwrite an existing one in an event.
 	 *
-	 * When publishing an event, you can check if an agent author was set and then
+	 * When publishing an event, you can check if an agent author exists and then
 	 * adjust the "real" author according to it. This might be
 	 * the case if your activity was created via automation.
 	 *
-	 * @return string
+	 * Returns null if the $agentStack array is empty.
+	 *
+	 * @return string|null
 	 * @since 10.8.0
 	 */
 	public function getAgentAuthor();
 
 	/**
-	 * Set an (additional) user which can be used to overwrite an existing one in an event.
+	 * Add an (additional) user to the $agentStack array which can be used
+	 * to overwrite an existing user in an event.
 	 *
 	 * You could set any string here, though usually you want to set IEvent::AUTOMATION_AUTHOR
 	 * if your activity was created via automation, e.g. by the workflow app.
@@ -245,10 +249,20 @@ interface IManager {
 	 * When publishing an event, you can then get the author via getAgentAuthor()
 	 * and properly set the actor if needed.
 	 *
-	 * This should to be set to null again once the activity has been published.
+	 * Note: In most cases you want to restore the agent author once it was
+	 * used via restoreAgentAuthor().
 	 *
 	 * @param string
 	 * @since 10.8.0
 	 */
 	public function setAgentAuthor($agentAuthor);
+
+	/**
+	 * Restore the latest agent user and return it. Returns null if the
+	 * $agentStack array is empty.
+	 *
+	 * @return string|null
+	 * @since 10.8.0
+	 */
+	public function restoreAgentAuthor();
 }
