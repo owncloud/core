@@ -367,6 +367,7 @@ class OC_Response {
 			'OC-Checksum',
 			'OC-FileId',
 			'OC-JobStatus-Location',
+			'OC-RequestAppPassword',
 			'Vary',
 			'Webdav-Location',
 			'X-Sabre-Status',
@@ -390,6 +391,7 @@ class OC_Response {
 			'OC-Total-Length',
 			'OCS-APIREQUEST',
 			'X-OC-Mtime',
+			'OC-RequestAppPassword',
 			// as used in sabre
 			'Accept',
 			'Authorization',
