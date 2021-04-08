@@ -216,7 +216,7 @@ Feature: move (rename) file
   Scenario Outline: move file into a not-existing folder
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToMove.txt"
-    When user "Alice" moves file "/fileToMove.txt" to "/not-existing/welcome.txt" using the WebDAV API
+    When user "Alice" moves file "/fileToMove.txt" to "/not-existing/fileToMove.txt" using the WebDAV API
     Then the HTTP status code should be "409"
     Examples:
       | dav_version |

@@ -13,8 +13,9 @@ Feature: sharing
   @smokeTest
   Scenario Outline: user tries to share a file with another user when the sharing api has been disabled
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToShare.txt"
     When parameter "shareapi_enabled" of app "core" has been set to "no"
-    Then user "Alice" should not be able to share file "welcome.txt" with user "Brian" using the sharing API
+    Then user "Alice" should not be able to share file "fileToShare.txt" with user "Brian" using the sharing API
     And the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     Examples:
@@ -36,10 +37,11 @@ Feature: sharing
 
   Scenario Outline: user tries to share a file with group when the sharing api has been disabled
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToShare.txt"
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
     When parameter "shareapi_enabled" of app "core" has been set to "no"
-    Then user "Alice" should not be able to share file "welcome.txt" with group "grp1" using the sharing API
+    Then user "Alice" should not be able to share file "fileToShare.txt" with group "grp1" using the sharing API
     And the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     Examples:
@@ -63,8 +65,9 @@ Feature: sharing
 
   Scenario Outline: user tries to create public link share of a file when the sharing api has been disabled
     Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToShare.txt"
     When parameter "shareapi_enabled" of app "core" has been set to "no"
-    Then user "Alice" should not be able to create a public link share of file "welcome.txt" using the sharing API
+    Then user "Alice" should not be able to create a public link share of file "fileToShare.txt" using the sharing API
     And the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     Examples:
@@ -90,8 +93,9 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "fileToShare.txt"
     When parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
-    Then user "Brian" should not be able to share file "welcome.txt" with user "Alice" using the sharing API
+    Then user "Brian" should not be able to share file "fileToShare.txt" with user "Alice" using the sharing API
     And the OCS status code should be "403"
     And the HTTP status code should be "<http_status_code>"
     Examples:
@@ -105,8 +109,9 @@ Feature: sharing
     And user "Carol" has been created with default attributes and without skeleton files
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"
+    And user "Carol" has uploaded file "filesForUpload/textfile.txt" to "fileToShare.txt"
     When parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
-    Then user "Carol" should be able to share file "welcome.txt" with user "Brian" using the sharing API
+    Then user "Carol" should be able to share file "fileToShare.txt" with user "Brian" using the sharing API
     And the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     Examples:
@@ -121,8 +126,9 @@ Feature: sharing
     And user "Carol" has been created with default attributes and without skeleton files
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp2"
+    And user "Carol" has uploaded file "filesForUpload/textfile.txt" to "fileToShare.txt"
     When parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
-    Then user "Carol" should be able to share file "welcome.txt" with group "grp1" using the sharing API
+    Then user "Carol" should be able to share file "fileToShare.txt" with group "grp1" using the sharing API
     And the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     Examples:
@@ -135,8 +141,9 @@ Feature: sharing
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToShare.txt"
     When parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
-    Then user "Alice" should not be able to share file "welcome.txt" with group "grp1" using the sharing API
+    Then user "Alice" should not be able to share file "fileToShare.txt" with group "grp1" using the sharing API
     And the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     Examples:
@@ -150,8 +157,9 @@ Feature: sharing
     And user "Carol" has been created with default attributes and without skeleton files
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"
+    And user "Carol" has uploaded file "filesForUpload/textfile.txt" to "fileToShare.txt"
     When parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
-    Then user "Carol" should not be able to share file "welcome.txt" with group "grp1" using the sharing API
+    Then user "Carol" should not be able to share file "fileToShare.txt" with group "grp1" using the sharing API
     And the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     Examples:

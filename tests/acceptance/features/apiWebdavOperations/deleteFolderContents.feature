@@ -14,7 +14,7 @@ Feature: delete folder contents
     And user "Alice" has created folder "/FOLDER/SUBFOLDER"
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/textfile0.txt"
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/textfile1.txt"
-    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/FOLDER/welcome.txt"
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/FOLDER/fileToDelete.txt"
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/FOLDER/SUBFOLDER/textfile0.txt"
     When user "Alice" deletes everything from folder "/FOLDER/" using the WebDAV API
     Then user "Alice" should see the following elements
@@ -24,7 +24,7 @@ Feature: delete folder contents
       | /textfile1.txt |
     And user "Alice" should not see the following elements
       | /FOLDER/SUBFOLDER/              |
-      | /FOLDER/welcome.txt             |
+      | /FOLDER/fileToDelete.txt             |
       | /FOLDER/SUBFOLDER/testfile0.txt |
     Examples:
       | dav_version |
