@@ -3,6 +3,7 @@ Change: Update PHP dependencies
 The following have been updated:
 - pear/pear_exception (v1.0.1 to v1.0.2)
 - icewind/streams (0.7.3 to 0.7.4)
+- phpseclib/phpseclib (3.0.6 to 3.0.7)
 
 The following have been updated in files_external/3rdparty:
 - icewind/smb (3.3.1 to 3.4.0)
@@ -10,3 +11,4 @@ The following have been updated in files_external/3rdparty:
 
 https://github.com/owncloud/core/pull/38524
 https://github.com/owncloud/core/pull/38598
+https://github.com/owncloud/core/pull/38620
