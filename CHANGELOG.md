@@ -75,6 +75,7 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4222
    https://github.com/owncloud/core/pull/38605
+   https://github.com/owncloud/core/pull/38630
 
 * Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
 
