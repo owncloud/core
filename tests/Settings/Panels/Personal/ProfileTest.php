@@ -72,4 +72,21 @@ class ProfileTest extends \Test\TestCase {
 		$this->assertStringContainsString('group2', $templateHtml);
 		$this->assertStringContainsString('<select id="languageinput" name="lang"', $templateHtml);
 	}
+
+	public function testGetPanelHandlesCanChangeAvatarException() {
+		$user = $this->createMock(IUser::class);
+		$user->method('getEMailAddress')->will($this->returnValue('test@example.com'));
+		$this->userSession->method('getUser')->will($this->returnValue($user));
+		$this->groupManager->method('getUserGroupIds')->will($this->returnValue(['group1', 'group2']));
+		$this->lfactory->method('findAvailableLanguages')->will($this->returnValue([]));
+		$this->config->method('getSystemValue')->with('enable_avatars', true)->willReturn(true);
+
+		$user->method("canChangeAvatar")->willReturn(true);
+		$templateHtml = $this->panel->getPanel()->fetchPage();
+		$this->assertStringContainsString('uploadavatarbutton', $templateHtml);
+
+		$user->method("canChangeAvatar")->willThrowException(new \Exception());
+		$templateHtml = $this->panel->getPanel()->fetchPage();
+		$this->assertStringNotContainsString('uploadavatarbutton', $templateHtml);
+	}
 }

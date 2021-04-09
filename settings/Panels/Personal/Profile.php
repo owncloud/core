@@ -98,7 +98,7 @@ class Profile implements ISettings {
 		$tmpl->assign('email', $this->userSession->getUser()->getEMailAddress());
 		$tmpl->assign('displayName', $this->userSession->getUser()->getDisplayName());
 		$tmpl->assign('enableAvatars', $this->config->getSystemValue('enable_avatars', true) === true);
-		$tmpl->assign('avatarChangeSupported', $this->userSession->getUser()->canChangeAvatar());
+		$tmpl->assign('avatarChangeSupported', $this->canChangeAvatar());
 		$tmpl->assign('displayNameChangeSupported', $this->userSession->getUser()->canChangeDisplayName());
 		$tmpl->assign('passwordChangeSupported', $this->userSession->getUser()->canChangePassword());
 		$groups = $this->groupManager->getUserGroupIds($this->userSession->getUser());
@@ -110,5 +110,13 @@ class Profile implements ISettings {
 
 	public function getSectionID() {
 		return 'general';
+	}
+
+	private function canChangeAvatar() {
+		try {
+			return $this->userSession->getUser()->canChangeAvatar();
+		} catch (\Exception $ex) {
+			return false;
+		}
 	}
 }

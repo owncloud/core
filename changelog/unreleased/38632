@@ -1,0 +1,11 @@
+Bugfix: Catch potential error which renders the settings page inaccessible
+
+canChangeAvatar may throw an exception when LDAP is used. This makes the
+profile page inaccessible causing the settings link in the main view to break.
+The exception itself might be caused by some kind of misconfiguration which
+we are investigating.
+
+https://github.com/owncloud/user_ldap/blob/master/lib/User_Proxy.php
+
+https://github.com/owncloud/user_ldap/issues/484
+https://github.com/owncloud/core/pull/38632
