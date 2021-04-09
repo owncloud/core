@@ -75,8 +75,9 @@ class Profile implements ISettings {
 	}
 
 	public function getPanel() {
+		$user = $this->userSession->getUser();
 		$activeLangCode = $this->config->getUserValue(
-			$this->userSession->getUser()->getUID(),
+			$user->getUID(),
 			'core',
 			'lang',
 			$this->lfactory->findLanguage()
@@ -95,13 +96,13 @@ class Profile implements ISettings {
 		$selector->assign('languages', $languages);
 
 		$tmpl = new Template('settings', 'panels/personal/profile');
-		$tmpl->assign('email', $this->userSession->getUser()->getEMailAddress());
-		$tmpl->assign('displayName', $this->userSession->getUser()->getDisplayName());
+		$tmpl->assign('email', $user->getEMailAddress());
+		$tmpl->assign('displayName', $user->getDisplayName());
 		$tmpl->assign('enableAvatars', $this->config->getSystemValue('enable_avatars', true) === true);
-		$tmpl->assign('avatarChangeSupported', $this->canChangeAvatar());
-		$tmpl->assign('displayNameChangeSupported', $this->userSession->getUser()->canChangeDisplayName());
-		$tmpl->assign('passwordChangeSupported', $this->userSession->getUser()->canChangePassword());
-		$groups = $this->groupManager->getUserGroupIds($this->userSession->getUser());
+		$tmpl->assign('avatarChangeSupported', $this->canChangeAvatar($user));
+		$tmpl->assign('displayNameChangeSupported', $user->canChangeDisplayName());
+		$tmpl->assign('passwordChangeSupported', $user->canChangePassword());
+		$groups = $this->groupManager->getUserGroupIds($user);
 		\sort($groups);
 		$tmpl->assign('groups', $groups);
 		$tmpl->assign('languageSelector', $selector->fetchPage());
@@ -112,9 +113,9 @@ class Profile implements ISettings {
 		return 'general';
 	}
 
-	private function canChangeAvatar() {
+	private function canChangeAvatar($user) {
 		try {
-			return $this->userSession->getUser()->canChangeAvatar();
+			return $user->canChangeAvatar();
 		} catch (\Exception $ex) {
 			return false;
 		}
