@@ -4,7 +4,7 @@ Feature: CORS headers
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @files_sharing-app-required
+  @files_sharing-app-required @skipOnOcV10.5 @skipOnOcV10.6 @skipOnOcV10.7.0
   Scenario Outline: CORS headers should be returned when setting CORS domain sending Origin header
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has added "https://aphno.badal" to the list of personal CORS domains
@@ -37,12 +37,10 @@ Feature: CORS headers
       | 2               | /cloud/groups                                    | 997      | 401       |
       | 1               | /cloud/users                                     | 997      | 401       |
       | 2               | /cloud/users                                     | 997      | 401       |
-    @skipOnOcV10.5 @skipOnOcV10.6.0
-    Examples:
-      | ocs_api_version | endpoint                                         | ocs-code | http-code |
       | 1               | /config                                          | 100      | 200       |
       | 2               | /config                                          | 200      | 200       |
 
+  @skipOnOcV10.5 @skipOnOcV10.6 @skipOnOcV10.7.0
   Scenario Outline: CORS headers should be returned when setting CORS domain sending Origin header (admin only endpoints)
     Given using OCS API version "<ocs_api_version>"
     And the administrator has added "https://aphno.badal" to the list of personal CORS domains
@@ -101,6 +99,7 @@ Feature: CORS headers
       | 2               | /cloud/groups                                    | 997      | 401       |
       | 1               | /cloud/users                                     | 997      | 401       |
       | 2               | /cloud/users                                     | 997      | 401       |
+
 
   Scenario Outline: no CORS headers should be returned when CORS domain does not match Origin header (admin only endpoints)
     Given using OCS API version "<ocs_api_version>"
