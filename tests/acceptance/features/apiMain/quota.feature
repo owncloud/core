@@ -130,7 +130,7 @@ Feature: quota
     And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
     And as "Brian" file "/shareFolder/newTextFile.txt" should not exist
 
-
+  @skipOnOcV10.5 @skipOnOcV10.6 @skipOnOcV10.7.0
   Scenario: share receiver with 0 quota should not be able to move file from shared folder to home folder
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
