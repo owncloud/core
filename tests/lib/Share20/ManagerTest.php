@@ -23,6 +23,7 @@ namespace Test\Share20;
 use OC\Files\View;
 use OC\Share20\Manager;
 use OC\Share20\ShareAttributes;
+use OCP\Activity\IManager;
 use OCP\Files\File;
 use OC\Share20\Share;
 use OCP\DB\QueryBuilder\IExpressionBuilder;
@@ -94,6 +95,8 @@ class ManagerTest extends \Test\TestCase {
 	protected $connection;
 	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
 	protected $userSession;
+	/** @var IManager | \PHPUnit\Framework\MockObject\MockObject */
+	protected $activityManager;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -110,6 +113,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->view = $this->createMock(View::class);
 		$this->connection = $this->createMock(IDBConnection::class);
 		$this->userSession = $this->createMock(IUserSession::class);
+		$this->activityManager = $this->createMock(IManager::class);
 
 		$this->l = $this->createMock('\OCP\IL10N');
 		$this->l->method('t')
@@ -133,6 +137,7 @@ class ManagerTest extends \Test\TestCase {
 			$this->eventDispatcher,
 			$this->view,
 			$this->connection,
+			$this->activityManager,
 			$this->userSession
 		);
 
@@ -167,7 +172,8 @@ class ManagerTest extends \Test\TestCase {
 				$this->rootFolder,
 				$this->eventDispatcher,
 				$this->view,
-				$this->connection
+				$this->connection,
+				$this->activityManager
 			]);
 	}
 
@@ -3050,7 +3056,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->rootFolder,
 			$this->eventDispatcher,
 			$this->view,
-			$this->connection
+			$this->connection,
+			$this->activityManager
 		);
 
 		$share = $this->createMock('\OCP\Share\IShare');
@@ -3085,7 +3092,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->rootFolder,
 			$this->eventDispatcher,
 			$this->view,
-			$this->connection
+			$this->connection,
+			$this->activityManager
 		);
 
 		$share = $this->createMock('\OCP\Share\IShare');
@@ -3190,7 +3198,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->rootFolder,
 			$this->eventDispatcher,
 			$this->view,
-			$this->connection
+			$this->connection,
+			$this->activityManager
 		);
 
 		$provider1 = $this->getMockBuilder('\OC\Share20\DefaultShareProvider')
@@ -3692,7 +3701,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->rootFolder,
 			$this->eventDispatcher,
 			$this->view,
-			$this->connection
+			$this->connection,
+			$this->activityManager
 		);
 
 		$share = $this->createMock(IShare::class);
