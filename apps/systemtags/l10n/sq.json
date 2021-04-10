@@ -5,6 +5,7 @@
     "Please select tags to filter by" : "Ju lutemi, përzgjidhni etiketa sipas të cilat të bëhet filtrimi",
     "No files found for the selected tags" : "S’u gjetën kartela për etiketat e përzgjedhura",
     "<strong>System tags</strong> for a file have been modified" : "U ndryshuan <strong>etiketa sistemi</strong>për një kartelë",
+    "System tag %3$s was assigned to %2$s due to automation rule" : "Etiketa e sistemit %3$s iu caktua %2$s sipas rregulli automatizimi",
     "You assigned system tag %3$s" : "Caktuat etiketën e sistemit %3$s",
     "%1$s assigned system tag %3$s" : "%1$s caktoi etiketën e sistemit %3$s",
     "You unassigned system tag %3$s" : "I hoqët etiketën e sistemit %3$s",

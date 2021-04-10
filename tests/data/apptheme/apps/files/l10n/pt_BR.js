@@ -112,6 +112,7 @@ OC.L10N.register(
     "You changed %1$s" : "Você modificou %1$s",
     "%2$s changed %1$s" : "%2$s modificou %1$s",
     "You deleted %1$s" : "Você excluiu %1$s ",
+    "%1$s was deleted due to automation rule" : "%1$s foi excluído devido à regra de automação",
     "%2$s deleted %1$s" : "%2$s eliminou %1$s",
     "You restored %1$s" : "Você restaurou %1$s",
     "%2$s restored %1$s" : "%2$s restaurou %1$s",

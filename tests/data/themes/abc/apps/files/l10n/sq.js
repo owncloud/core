@@ -112,6 +112,7 @@ OC.L10N.register(
     "You changed %1$s" : "Ndryshuat %1$s",
     "%2$s changed %1$s" : "%2$s ndryshoi %1$s",
     "You deleted %1$s" : "Fshitë %1$s",
+    "%1$s was deleted due to automation rule" : "%1$s u fshi sipas rregulli të automatizuar",
     "%2$s deleted %1$s" : "%2$s fshiu %1$s",
     "You restored %1$s" : "Rikthyet %1$s",
     "%2$s restored %1$s" : "%2$s riktheu %1$s",
