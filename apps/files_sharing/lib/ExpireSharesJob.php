@@ -70,7 +70,7 @@ class ExpireSharesJob extends TimedJob {
 		ActivityIManager $activityManager
 	) {
 		// Run once a day
-		$this->setInterval(5);
+		$this->setInterval(24 * 60 * 60);
 		$this->shareManager = $shareManager;
 		$this->connection = $connection;
 		$this->defaultShareProvider = $defaultShareProvider;
