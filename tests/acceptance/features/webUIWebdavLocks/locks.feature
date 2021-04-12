@@ -6,13 +6,17 @@ Feature: Locks
 
   Background:
     #do not set email, see bugs in https://github.com/owncloud/core/pull/32250#issuecomment-434615887
-    Given these users have been created with large skeleton files:
+    Given these users have been created without skeleton files:
       | username       |
       | brand-new-user |
     And user "brand-new-user" has logged in using the webUI
 
   Scenario: setting a lock shows the lock symbols at the correct files/folders
-    Given user "brand-new-user" has locked folder "simple-folder" setting the following properties
+    Given user "brand-new-user" has created folder "simple-folder"
+    And user "brand-new-user" has created folder "simple-empty-folder"
+    And user "brand-new-user" has uploaded file "filesForUpload/data.zip" to "data.zip"
+    And user "brand-new-user" has uploaded file "filesForUpload/data.tar.gz" to "data.tar.gz"
+    And user "brand-new-user" has locked folder "simple-folder" setting the following properties
       | lockscope | shared |
     And user "brand-new-user" has locked file "data.zip" setting the following properties
       | lockscope | exclusive |
@@ -25,7 +29,9 @@ Feature: Locks
     But file "data.tar.gz" should not be marked as locked on the webUI
 
   Scenario: setting a lock shows the display name of a user in the locking details
-    Given the administrator has changed the display name of user "brand-new-user" to "My fancy name"
+    Given user "brand-new-user" has created folder "simple-folder"
+    And user "brand-new-user" has uploaded file "filesForUpload/data.zip" to "data.zip"
+    And the administrator has changed the display name of user "brand-new-user" to "My fancy name"
     And user "brand-new-user" has locked folder "simple-folder" setting the following properties
       | lockscope | shared |
     And user "brand-new-user" has locked file "data.zip" setting the following properties
@@ -79,10 +85,15 @@ Feature: Locks
     And file "data.zip" should be marked as locked by user "user-with-email (mail@oc.org)" in the locks tab of the details panel on the webUI
 
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the favorites page
-    Given user "brand-new-user" has locked folder "simple-folder" setting the following properties
+    Given user "brand-new-user" has created folder "simple-folder"
+    And user "brand-new-user" has created folder "simple-empty-folder"
+    And user "brand-new-user" has uploaded file "filesForUpload/data.zip" to "data.zip"
+    And user "brand-new-user" has uploaded file "filesForUpload/data.tar.gz" to "data.tar.gz"
+    And user "brand-new-user" has locked folder "simple-folder" setting the following properties
       | lockscope | shared |
     And user "brand-new-user" has locked file "data.zip" setting the following properties
       | lockscope | exclusive |
+    And the user has browsed to the files page
     When the user marks folder "simple-folder" as favorite using the webUI
     And the user marks folder "simple-empty-folder" as favorite using the webUI
     And the user marks file "data.zip" as favorite using the webUI
@@ -98,6 +109,10 @@ Feature: Locks
   @skipOnOcV10 @issue-33867 @files_sharing-app-required
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-with-others page
     Given user "receiver" has been created with default attributes and without skeleton files
+    And user "brand-new-user" has created folder "simple-folder"
+    And user "brand-new-user" has created folder "simple-empty-folder"
+    And user "brand-new-user" has uploaded file "filesForUpload/data.zip" to "data.zip"
+    And user "brand-new-user" has uploaded file "filesForUpload/data.tar.gz" to "data.tar.gz"
     And user "brand-new-user" has locked folder "simple-folder" setting the following properties
       | lockscope | shared |
     And user "brand-new-user" has locked file "data.zip" setting the following properties
@@ -116,7 +131,11 @@ Feature: Locks
 
   @skipOnOcV10 @issue-33867 @files_sharing-app-required
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-by-link page
-    Given user "brand-new-user" has locked folder "simple-folder" setting the following properties
+    Given user "brand-new-user" has created folder "simple-folder"
+    And user "brand-new-user" has created folder "simple-empty-folder"
+    And user "brand-new-user" has uploaded file "filesForUpload/data.zip" to "data.zip"
+    And user "brand-new-user" has uploaded file "filesForUpload/data.tar.gz" to "data.tar.gz"
+    And user "brand-new-user" has locked folder "simple-folder" setting the following properties
       | lockscope | shared |
     And user "brand-new-user" has locked file "data.zip" setting the following properties
       | lockscope | exclusive |
@@ -139,6 +158,10 @@ Feature: Locks
   @skipOnOcV10 @issue-33867 @files_sharing-app-required
   Scenario: setting a lock shows the lock symbols at the correct files/folders on the shared-with-you page
     Given user "sharer" has been created with default attributes and without skeleton files
+    And user "sharer" has created folder "simple-folder"
+    And user "sharer" has created folder "simple-empty-folder"
+    And user "sharer" has uploaded file "filesForUpload/data.zip" to "data.zip"
+    And user "sharer" has uploaded file "filesForUpload/data.tar.gz" to "data.tar.gz"
     And user "sharer" has locked folder "simple-folder" setting the following properties
       | lockscope | shared |
     And user "sharer" has locked file "data.zip" setting the following properties
@@ -148,15 +171,17 @@ Feature: Locks
     And user "sharer" has shared folder "simple-folder" with user "brand-new-user"
     And user "sharer" has shared folder "simple-empty-folder" with user "brand-new-user"
     When the user browses to the shared-with-you page
-    Then folder "simple-folder (2)" should be marked as locked on the webUI
-    And folder "simple-folder (2)" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
-    But folder "simple-empty-folder (2)" should not be marked as locked on the webUI
-    And file "data (2).zip" should be marked as locked on the webUI
-    And file "data (2).zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
-    But file "data.tar (2).gz" should not be marked as locked on the webUI
+    Then folder "simple-folder" should be marked as locked on the webUI
+    And folder "simple-folder" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    But folder "simple-empty-folder" should not be marked as locked on the webUI
+    And file "data.zip" should be marked as locked on the webUI
+    And file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
+    But file "data.tar.gz" should not be marked as locked on the webUI
 
   @files_sharing-app-required
   Scenario: clicking other tabs does not change the lock symbol
+    Given user "brand-new-user" has created folder "simple-folder"
+    And the user has browsed to the files page
     When the user opens the share dialog for folder "simple-folder"
     Then folder "simple-folder" should not be marked as locked on the webUI
 
@@ -179,16 +204,15 @@ Feature: Locks
       | lockscope | shared |
     And user "receiver" has locked file "data.zip" setting the following properties
       | lockscope | shared |
-    And user "brand-new-user" has locked file "data (2).zip" setting the following properties
+    And user "brand-new-user" has locked file "data.zip" setting the following properties
       | lockscope | shared |
     And user "receiver2" has locked file "data.tar (2).gz" setting the following properties
       | lockscope | shared |
     When the user browses to the files page
-    Then file "data (2).zip" should be marked as locked on the webUI
-    And file "data (2).zip" should be marked as locked by user "sharer" in the locks tab of the details panel on the webUI
-    And file "data (2).zip" should be marked as locked by user "receiver" in the locks tab of the details panel on the webUI
-    And file "data (2).zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
-    But file "data.zip" should not be marked as locked on the webUI
+    Then file "data.zip" should be marked as locked on the webUI
+    And file "data.zip" should be marked as locked by user "sharer" in the locks tab of the details panel on the webUI
+    And file "data.zip" should be marked as locked by user "receiver" in the locks tab of the details panel on the webUI
+    And file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
     When the user re-logs in as "sharer" using the webUI
     Then file "data.zip" should be marked as locked on the webUI
     And file "data.zip" should be marked as locked by user "sharer" in the locks tab of the details panel on the webUI
@@ -201,8 +225,12 @@ Feature: Locks
     And file "data.tar (2).gz" should be marked as locked by user "receiver2" in the locks tab of the details panel on the webUI
 
   Scenario: setting a lock on a folder shows the symbols at the sub-elements
-    Given user "brand-new-user" has locked folder "simple-folder" setting the following properties
+    Given user "brand-new-user" has created folder "simple-folder"
+    And user "brand-new-user" has created folder "simple-folder/simple-empty-folder"
+    And user "brand-new-user" has uploaded file "filesForUpload/data.zip" to "simple-folder/data.zip"
+    And user "brand-new-user" has locked folder "simple-folder" setting the following properties
       | lockscope | shared |
+    And the user has browsed to the files page
     When the user opens folder "simple-folder" using the webUI
     Then folder "simple-empty-folder" should be marked as locked on the webUI
     And folder "simple-empty-folder" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
@@ -210,7 +238,10 @@ Feature: Locks
     And file "data.zip" should be marked as locked by user "brand-new-user" in the locks tab of the details panel on the webUI
 
   Scenario: setting a depth:0 lock on a folder does not shows the symbols at the sub-elements
-    Given user "brand-new-user" has locked folder "simple-folder" setting the following properties
+    Given user "brand-new-user" has created folder "simple-folder"
+    And user "brand-new-user" has created folder "simple-folder/simple-empty-folder"
+    And user "brand-new-user" has uploaded file "filesForUpload/data.zip" to "simple-folder/data.zip"
+    And user "brand-new-user" has locked folder "simple-folder" setting the following properties
       | depth | 0 |
     When the user browses to the files page
     Then folder "simple-folder" should be marked as locked on the webUI
@@ -314,15 +345,15 @@ Feature: Locks
     And user "sharer" has shared file "lorem.txt" with user "brand-new-user"
     And user "sharer" has shared folder "simple-folder" with user "brand-new-user"
     And the user has browsed to the files page
-    When the user unshares file "lorem (2).txt" using the webUI
-    And the user unshares folder "simple-folder (2)" using the webUI
+    When the user unshares file "lorem.txt" using the webUI
+    And the user unshares folder "simple-folder" using the webUI
     Then notifications should be displayed on the webUI with the text
-      | The file "lorem (2).txt" is locked and cannot be deleted.     |
-      | The file "simple-folder (2)" is locked and cannot be deleted. |
-    And as "brand-new-user" file "lorem (2).txt" should exist
-    And as "brand-new-user" folder "simple-folder (2)" should exist
-    And file "lorem (2).txt" should be listed on the webUI
-    And folder "simple-folder (2)" should be listed on the webUI
+      | The file "lorem.txt" is locked and cannot be deleted.     |
+      | The file "simple-folder" is locked and cannot be deleted. |
+    And as "brand-new-user" file "lorem.txt" should exist
+    And as "brand-new-user" folder "simple-folder" should exist
+    And file "lorem.txt" should be listed on the webUI
+    And folder "simple-folder" should be listed on the webUI
     And 1 locks should be reported for file "lorem.txt" of user "sharer" by the WebDAV API
     And 1 locks should be reported for file "simple-folder/lorem.txt" of user "sharer" by the WebDAV API
     Examples:
