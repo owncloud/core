@@ -248,7 +248,7 @@ class Activity implements IExtension {
 			case self::SUBJECT_SHARED_WITH_BY:
 				return (string) $l->t('%2$s shared %1$s with you', $params);
 			case self::SUBJECT_UNSHARED_BY:
-				if ($this->actorIsShareExpiry($params[1])) {
+				if ($this->actorIsAutomation($params[1]) && $this->shareIsExpired($params[2])) {
 					return (string) $l->t('The share for %1$s expired', $params);
 				}
 				return (string) $l->t('%2$s removed the share for %1$s', $params);
@@ -491,12 +491,22 @@ class Activity implements IExtension {
 	}
 
 	/**
-	 * Check if the actor is "share expiry" which means the share expired automatically.
+	 * Check if the actor is an automation.
 	 *
 	 * @param string $user Parameter e.g. `<user display-name="admin">admin</user>`
 	 * @return bool
 	 */
-	protected function actorIsShareExpiry($user) {
-		return \strip_tags($user) === IEvent::SHARE_EXPIRY_AUTHOR;
+	protected function actorIsAutomation($user) {
+		return \strip_tags($user) === IEvent::AUTOMATION_AUTHOR;
+	}
+
+	/**
+	 * Check if the share is expired.
+	 *
+	 * @param string $param Parameter e.g. `<user display-name="admin">admin</user>`
+	 * @return bool
+	 */
+	protected function shareIsExpired($param) {
+		return \strip_tags($param) === 'shareExpired';
 	}
 }

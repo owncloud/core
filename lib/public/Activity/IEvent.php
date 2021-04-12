@@ -36,7 +36,6 @@ namespace OCP\Activity;
  */
 interface IEvent {
 	public const AUTOMATION_AUTHOR = 'auto:automation';
-	public const SHARE_EXPIRY_AUTHOR = 'auto:share-expiry';
 
 	/**
 	 * Set the app of the activity

@@ -243,6 +243,7 @@ class ManagerTest extends \Test\TestCase {
 			'uidOwner' => 'sharedBy',
 			'fileSource' => 1,
 			'fileTarget' => 'myTarget',
+			'shareExpired' => false,
 		];
 
 		$hookListnerExpectsPost = [
@@ -255,6 +256,7 @@ class ManagerTest extends \Test\TestCase {
 			'uidOwner' => 'sharedBy',
 			'fileSource' => 1,
 			'fileTarget' => 'myTarget',
+			'shareExpired' => false,
 			'deletedShares' => [
 				[
 					'id' => 42,
@@ -266,6 +268,7 @@ class ManagerTest extends \Test\TestCase {
 					'uidOwner' => 'sharedBy',
 					'fileSource' => 1,
 					'fileTarget' => 'myTarget',
+					'shareExpired' => false,
 				],
 			],
 		];
@@ -341,6 +344,7 @@ class ManagerTest extends \Test\TestCase {
 			'uidOwner' => 'sharedBy',
 			'fileSource' => 1,
 			'fileTarget' => 'myTarget',
+			'shareExpired' => false,
 		];
 
 		$hookListnerExpectsPost = [
@@ -353,6 +357,7 @@ class ManagerTest extends \Test\TestCase {
 			'uidOwner' => 'sharedBy',
 			'fileSource' => 1,
 			'fileTarget' => 'myTarget',
+			'shareExpired' => false,
 			'deletedShares' => [
 				[
 					'id' => 42,
@@ -364,6 +369,7 @@ class ManagerTest extends \Test\TestCase {
 					'uidOwner' => 'sharedBy',
 					'fileSource' => 1,
 					'fileTarget' => 'myTarget',
+					'shareExpired' => false,
 				],
 			],
 		];
@@ -462,6 +468,7 @@ class ManagerTest extends \Test\TestCase {
 			'uidOwner' => 'sharedBy1',
 			'fileSource' => 1,
 			'fileTarget' => 'myTarget1',
+			'shareExpired' => false,
 		];
 
 		$hookListnerExpectsPost = [
@@ -474,6 +481,7 @@ class ManagerTest extends \Test\TestCase {
 			'uidOwner' => 'sharedBy1',
 			'fileSource' => 1,
 			'fileTarget' => 'myTarget1',
+			'shareExpired' => false,
 			'deletedShares' => [
 				[
 					'id' => 44,
@@ -485,6 +493,7 @@ class ManagerTest extends \Test\TestCase {
 					'uidOwner' => 'sharedBy3',
 					'fileSource' => 1,
 					'fileTarget' => 'myTarget3',
+					'shareExpired' => false,
 				],
 				[
 					'id' => 43,
@@ -496,6 +505,7 @@ class ManagerTest extends \Test\TestCase {
 					'uidOwner' => 'sharedBy2',
 					'fileSource' => 1,
 					'fileTarget' => 'myTarget2',
+					'shareExpired' => false,
 				],
 				[
 					'id' => 42,
@@ -507,6 +517,7 @@ class ManagerTest extends \Test\TestCase {
 					'uidOwner' => 'sharedBy1',
 					'fileSource' => 1,
 					'fileTarget' => 'myTarget1',
+					'shareExpired' => false,
 				],
 			],
 		];
@@ -2090,7 +2101,8 @@ class ManagerTest extends \Test\TestCase {
 				'itemparent' => null,
 				'uidOwner' => 'user1',
 				'fileSource' => $share->getNodeId(),
-				'fileTarget' => '/test_share'
+				'fileTarget' => '/test_share',
+				'shareExpired' => false,
 			];
 			$hookListnerUnshareExpectsPost = [
 				'id' => '22',
@@ -2102,6 +2114,7 @@ class ManagerTest extends \Test\TestCase {
 				'uidOwner' => 'user1',
 				'fileSource' => $share->getNodeId(),
 				'fileTarget' => '/test_share',
+				'shareExpired' => false,
 				'deletedShares' => [
 					[
 						'id' => 22,
@@ -2113,6 +2126,7 @@ class ManagerTest extends \Test\TestCase {
 						'uidOwner' => 'user1',
 						'fileSource' => $share->getNodeId(),
 						'fileTarget' => '/test_share',
+						'shareExpired' => false,
 					]
 				],
 			];
