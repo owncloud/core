@@ -31,6 +31,7 @@ use OC\Cache\CappedMemoryCache;
 use OC\Files\Mount\MoveableMount;
 use OC\Files\View;
 use OC\Helper\UserTypeHelper;
+use OCP\Activity\IEvent;
 use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
@@ -54,6 +55,7 @@ use OCP\Share\IProviderFactory;
 use OCP\Share\IShare;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use OCP\Activity\IManager as ActivityIManager;
 
 /**
  * This class is the communication hub for all sharing related operations.
@@ -90,6 +92,8 @@ class Manager implements IManager {
 	private $connection;
 	/** @var IUserSession  */
 	private $userSession;
+	/** @var ActivityIManager */
+	private $activityManager;
 
 	/**
 	 * Manager constructor.
@@ -107,6 +111,7 @@ class Manager implements IManager {
 	 * @param EventDispatcher $eventDispatcher
 	 * @param View $view
 	 * @param IDBConnection $connection
+	 * @param ActivityIManager $activityManager
 	 * @param IUserSession $userSession
 	 */
 	public function __construct(
@@ -123,6 +128,7 @@ class Manager implements IManager {
 			EventDispatcher $eventDispatcher,
 			View $view,
 			IDBConnection $connection,
+			ActivityIManager $activityManager,
 			IUserSession $userSession = null
 	) {
 		$this->logger = $logger;
@@ -139,6 +145,7 @@ class Manager implements IManager {
 		$this->eventDispatcher = $eventDispatcher;
 		$this->view = $view;
 		$this->connection = $connection;
+		$this->activityManager = $activityManager;
 		$this->userSession = $userSession;
 	}
 
@@ -175,7 +182,7 @@ class Manager implements IManager {
 	 * @param \OCP\Share\IShare $share
 	 * @return bool
 	 */
-	private function shareHasExpired($share) {
+	private static function shareHasExpired($share) {
 		$expirationDate = $share->getExpirationDate();
 		return ($expirationDate !== null) && ($expirationDate < new \DateTime("today"));
 	}
@@ -1117,7 +1124,8 @@ class Manager implements IManager {
 			'itemparent' => \method_exists($share, 'getParent') ? $share->getParent() : '',
 			'uidOwner'   => $share->getSharedBy(),
 			'fileSource' => $share->getNodeId(),
-			'fileTarget' => $share->getTarget()
+			'fileTarget' => $share->getTarget(),
+			'shareExpired' => self::shareHasExpired($share)
 		];
 		return $hookParams;
 	}
@@ -1232,9 +1240,11 @@ class Manager implements IManager {
 
 			$queriedShares = $provider->getAllSharesBy($userId, $shareTypeArray, $nodeIDs, $reshares);
 			foreach ($queriedShares as $queriedShare) {
-				if ($this->shareHasExpired($queriedShare)) {
+				if (self::shareHasExpired($queriedShare)) {
 					try {
+						$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 						$this->deleteShare($queriedShare);
+						$this->activityManager->restoreAgentAuthor();
 					} catch (NotFoundException $e) {
 						//Ignore since this basically means the share is deleted
 					}
@@ -1271,9 +1281,11 @@ class Manager implements IManager {
 			$added = 0;
 			foreach ($shares as $share) {
 				// Check if the share is expired and if so delete it
-				if ($this->shareHasExpired($share)) {
+				if (self::shareHasExpired($share)) {
 					try {
+						$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 						$this->deleteShare($share);
+						$this->activityManager->restoreAgentAuthor();
 					} catch (NotFoundException $e) {
 						//Ignore since this basically means the share is deleted
 					}
@@ -1330,9 +1342,11 @@ class Manager implements IManager {
 			$added = 0;
 			foreach ($shares as $share) {
 				// Check if the share is expired and if so delete it
-				if ($this->shareHasExpired($share)) {
+				if (self::shareHasExpired($share)) {
 					try {
+						$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 						$this->deleteShare($share);
+						$this->activityManager->restoreAgentAuthor();
 					} catch (NotFoundException $e) {
 						//Ignore since this basically means the share is deleted
 					}
@@ -1387,9 +1401,11 @@ class Manager implements IManager {
 			// Obtain all shares for all the supported provider types
 			$queriedShares = $provider->getAllSharedWith($userId, $node);
 			foreach ($queriedShares as $queriedShare) {
-				if ($this->shareHasExpired($queriedShare)) {
+				if (self::shareHasExpired($queriedShare)) {
 					try {
+						$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 						$this->deleteShare($queriedShare);
+						$this->activityManager->restoreAgentAuthor();
 					} catch (NotFoundException $e) {
 						//Ignore since this basically means the share is deleted
 					}
@@ -1416,8 +1432,10 @@ class Manager implements IManager {
 		$share = $provider->getShareById($id, $recipient);
 
 		// Validate shares expiration date
-		if ($this->shareHasExpired($share)) {
+		if (self::shareHasExpired($share)) {
+			$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 			$this->deleteShare($share);
+			$this->activityManager->restoreAgentAuthor();
 			throw new ShareNotFound();
 		}
 
@@ -1472,8 +1490,10 @@ class Manager implements IManager {
 			$share = $provider->getShareByToken($token);
 		}
 
-		if ($this->shareHasExpired($share)) {
+		if (self::shareHasExpired($share)) {
+			$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 			$this->deleteShare($share);
+			$this->activityManager->restoreAgentAuthor();
 			throw new ShareNotFound();
 		}
 

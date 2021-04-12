@@ -891,6 +891,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$c->getEventDispatcher(),
 				new View('/'),
 				$c->getDatabaseConnection(),
+				$c->getActivityManager(),
 				$c->getUserSession()
 			);
 

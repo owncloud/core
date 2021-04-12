@@ -1,0 +1,7 @@
+Enhancement: Expired shares in activity stream
+
+Add a proper message in the activity stream for shares which expired automatically.
+Previous to this, the expiry was authored by a user, which is technically not true.
+
+https://github.com/owncloud/core/pull/38631
+https://github.com/owncloud/enterprise/issues/4455
