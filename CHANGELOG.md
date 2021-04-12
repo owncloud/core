@@ -15,6 +15,7 @@ Summary
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
 * Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
+* Enhancement - Expired shares in activity stream: [#38631](https://github.com/owncloud/core/pull/38631)
 
 Details
 -------
@@ -83,6 +84,14 @@ Details
    control over the rendering on the website.
 
    https://github.com/owncloud/core/pull/38616
+
+* Enhancement - Expired shares in activity stream: [#38631](https://github.com/owncloud/core/pull/38631)
+
+   Add a proper message in the activity stream for shares which expired automatically. Previous
+   to this, the expiry was authored by a user, which is technically not true.
+
+   https://github.com/owncloud/enterprise/issues/4455
+   https://github.com/owncloud/core/pull/38631
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================
