@@ -1104,7 +1104,13 @@ trait Provisioning {
 		try {
 			$this->createTheseUsers($setDefaultAttributes, $initialize, true, $table);
 		} finally {
-			$this->setSkeletonDir($originalSkeletonPath);
+			// The effective skeleton directory is the one when the user is initialized
+			// If we did not initialize the user on creation, then we need to leave
+			// the skeleton directory in effect so that it applies when some action
+			// happens later in the scenario that causes the user to be initialized.
+			if ($initialize) {
+				$this->setSkeletonDir($originalSkeletonPath);
+			}
 		}
 	}
 
