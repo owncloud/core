@@ -128,20 +128,32 @@ $CONFIG = [
  *
  * allowed-user-backends::
  * Limit the users which are allowed to login to a specific user backend - e.g. LDAP
+ * (`'allowed-user-backends' ⇒ ['LDAP']`)
  *
  * auth-params::
  * Additional parameters which are sent to the IdP during the auth requests
  *
  * autoRedirectOnLoginPage::
- * If `true`, the login page will automatically be redirected to the OpenID
- * Connect Provider, as when the button is pressed. The default is `false`.
+ * If `true`, the ownCloud login page will redirect directly to the Identity Provider
+ * login without requiring the user to click a button. The default is `false`.
  *
+ * auto-provision::
+ * If auto-provision is setup, an owncloud user will be created after successful login
+ * using openid connect. The config parameters 'mode' and 'search-attribute' will be used
+ * to create a unique user so that the lookup mechanism can find the user again.
+ * If auto-provision is not setup, it is expected that the user exists.
+ * This is where an LDAP setup is usually required. `auto-provision` holds several sub keys,
+ * see the example setup with the explanations below.
+*
  * insecure::
  * Boolean value (`true`/`false`), no SSL verification will take place when talking to the
  * IdP - **DO NOT use in production!**
  *
  * loginButtonName::
  * The name as displayed on the login screen which is used to redirect to the IdP.
+ * By default, the OpenID Connect App will add a button on the login page that will
+ * redirect the user to the Identity Provider and allow authentication via OIDC.
+ * This parameter allows the button text to be modified.
  *
  * mode::
  * This is the attribute in the owncloud accounts table to search for users.
@@ -173,8 +185,11 @@ $CONFIG = [
  * more information about the claim, see
  * https://openid.net/specs/openid-connect-core-1_0.html#Claims.
  *
- * token-introspection-endpoint-client-id & token-introspection-endpoint-client-secret::
- * Client ID and secret to be used with the token introspection endpoint.
+ * token-introspection-endpoint-client-id::
+ * Client ID to be used with the token introspection endpoint.
+ *
+ * token-introspection-endpoint-client-secret::
+ * Client secret to be used with the token introspection endpoint.
  *
  * use-access-token-payload-for-user-info::
  * If set to `true` any user information will be read from the access token.
@@ -182,7 +197,8 @@ $CONFIG = [
  *
  * use-token-introspection-endpoint::
  * If set to `true`, the token introspection endpoint is used to verify a given access
- * token - only needed if the access token is not a JWT.
+ * token - only needed if the access token is not a JWT. If set to `false`, the userinfo
+ * endpoint is used (requires version >= 1.1.0)
  * Tokens which are not JSON WebToken (JWT) may not have information like the
  * expiry. In these cases, the OpenID Connect Provider needs to call on the token
  * introspection endpoint to get this information. The default value is `false`. See
