@@ -65,7 +65,7 @@ class NotificationPublisherTest extends TestCase {
 		);
 
 		$this->urlGenerator->expects($this->any())
-			->method('linkToRouteAbsolute')
+			->method('linkToRoute')
 			->with('files.viewcontroller.showFile', ['fileId' => 4000])
 			->willReturn('/owncloud/f/4000');
 
