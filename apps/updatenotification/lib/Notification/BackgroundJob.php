@@ -94,7 +94,7 @@ class BackgroundJob extends TimedJob {
 
 		$status = $updater->check();
 		if (isset($status['version'])) {
-			$url = $this->urlGenerator->linkToRouteAbsolute('settings.SettingsPage.getAdmin') . '#updater';
+			$url = $this->urlGenerator->linkToRoute('settings.SettingsPage.getAdmin') . '#updater';
 			$this->createNotifications('core', $status['version'], $url);
 		}
 	}

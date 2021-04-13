@@ -81,10 +81,8 @@ class NotificationPublisher {
 			return;
 		}
 
-		$fileLink = $this->urlGenerator->linkToRouteAbsolute('files.viewcontroller.showFile', ['fileId' => $share->getNode()->getId()]);
-		$endpointUrl = $this->urlGenerator->getAbsoluteURL(
-			$this->urlGenerator->linkTo('', 'ocs/v1.php/apps/files_sharing/api/v1/shares/pending/' . $share->getId())
-		);
+		$fileLink = $this->urlGenerator->linkToRoute('files.viewcontroller.showFile', ['fileId' => $share->getNode()->getId()]);
+		$endpointUrl = $this->urlGenerator->linkTo('', 'ocs/v1.php/apps/files_sharing/api/v1/shares/pending/' . $share->getId());
 
 		foreach ($this->getAffectedUsers($share) as $userId) {
 			$notification = $this->notificationManager->createNotification();
