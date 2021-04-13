@@ -400,10 +400,7 @@ class FedShareManager {
 	 */
 	protected function getActionLink($shareId) {
 		$urlGenerator = \OC::$server->getURLGenerator();
-		$link = $urlGenerator->getAbsoluteURL(
-			$urlGenerator->linkTo('', self::ACTION_URL . $shareId)
-		);
-		return $link;
+		return $urlGenerator->linkTo('', self::ACTION_URL . $shareId);
 	}
 
 	/**
