@@ -298,7 +298,6 @@ a.two-factor-cancel {
 
 #body-login form {
 	position: relative;
-	width: 280px;
 	margin: 32px auto;
 	padding: 0;
 }
@@ -506,11 +505,11 @@ label.infield {
 #body-login .error {
 	display: block;
 	padding: 10px;
-	background-color: rgba(0,0,0,.7);
 	color: #fff;
-	text-align: left;
+	text-align: center;
 	border-radius: 3px;
 	cursor: default;
+	border: 1px solid rgba(255,255,255,.5);
 }
 
 #body-login .update {
@@ -575,7 +574,7 @@ label.infield {
 	margin: 35px auto;
 }
 #body-login .warning {
-	margin: 16px 0;
+	margin: 0 0 16px 0;
 	text-align: center;
 }
 #body-login .warning legend {
