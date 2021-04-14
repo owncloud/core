@@ -45,7 +45,7 @@ script('core', [
 			</div>
 		<?php endif; ?>
 		<div class="grouptop<?php if (!empty($_['invalidpassword'])) {
-	?> shake<?php
+	echo ' shake';
 } ?>">
 			<input type="text" name="user" id="user"
 				placeholder="<?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?>"
@@ -56,8 +56,8 @@ script('core', [
 		</div>
 
 		<div class="groupbottom<?php if (!empty($_['invalidpassword'])) {
-		?> shake<?php
-	} ?>">
+	echo ' shake';
+} ?>">
 			<input type="password" name="password" id="password" value=""
 				placeholder="<?php p($l->t('Password')); ?>"
 				<?php p($_['user_autofocus'] ? '' : 'autofocus'); ?>
@@ -71,12 +71,12 @@ script('core', [
 		</div>
 
 		<?php if (!empty($_['csrf_error'])) {
-		?>
+	?>
 		<p class="warning">
 			<?php p($l->t('You took too long to log in, please try again now')); ?>
 		</p>
 		<?php
-	} ?>
+} ?>
 		<?php if (!empty($_['invalidpassword']) && !empty($_['canResetPassword'])) {
 		?>
 		<a id="lost-password" class="warning" href="<?php p($_['resetPasswordLink']); ?>">

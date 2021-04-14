@@ -23,7 +23,9 @@ script('settings', 'setpassword');
 ?>
 
 <form action="<?php print_unescaped($_['link']) ?>" id="set-password" method="post" autocapitalize="none">
-	<div class="grouptop<?php if (!empty($_['invalidpassword'])) { echo ' shake'; } ?>">
+	<div class="grouptop<?php if (!empty($_['invalidpassword'])) {
+	echo ' shake';
+} ?>">
 		<label for="password" class="infield"><?php p($l->t('New password')); ?></label>
 		<input type="password" name="password" id="password" value=""
 				placeholder="<?php p($l->t('New Password')); ?>"
