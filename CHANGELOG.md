@@ -16,6 +16,7 @@ Summary
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
 * Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
 * Enhancement - Expired shares in activity stream: [#38631](https://github.com/owncloud/core/pull/38631)
+* Enhancement - Use relative notification URLs: [#38639](https://github.com/owncloud/core/pull/38639)
 
 Details
 -------
@@ -92,6 +93,14 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4455
    https://github.com/owncloud/core/pull/38631
+
+* Enhancement - Use relative notification URLs: [#38639](https://github.com/owncloud/core/pull/38639)
+
+   Previous to this fix, absolute URLs were passed to the notification app. This could cause some
+   CORS issues, hence we now use relative ones.
+
+   https://github.com/owncloud/enterprise/issues/4250
+   https://github.com/owncloud/core/pull/38639
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================
