@@ -6,6 +6,7 @@
     </p>
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - Handle exceptions with inaccesible federated share: <a href="https://github.com/owncloud/core/pull/38474">#38474</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix mispositioned ui elements after leaving viewerMode: <a href="https://github.com/owncloud/core/issues/38547">#38547</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Creating self group-reshare should not not share to self: <a href="https://github.com/owncloud/core/pull/38581">#38581</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Check quota on the necessary move operations: <a href="https://github.com/owncloud/core/pull/38591">#38591</a></li>
@@ -18,6 +19,16 @@
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Handle exceptions with inaccesible federated share: <a href="https://github.com/owncloud/core/pull/38474">#38474</a></p>
+            <p>In a scenario federation share storage is inaccessible and returns connection timeouts,
+   federated share storage now does not return not found but storage not available. Additionaly
+   logging and notifications handling has been improved.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/4311<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/38474<br></p>
+        </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Fix mispositioned ui elements after leaving viewerMode: <a href="https://github.com/owncloud/core/issues/38547">#38547</a></p>
             <p>Until today, after leaving the viewer mode (e.G Pdf viewer) the action header table in the files

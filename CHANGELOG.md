@@ -8,6 +8,7 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Handle exceptions with inaccesible federated share: [#38474](https://github.com/owncloud/core/pull/38474)
 * Bugfix - Fix mispositioned ui elements after leaving viewerMode: [#38547](https://github.com/owncloud/core/issues/38547)
 * Bugfix - Creating self group-reshare should not not share to self: [#38581](https://github.com/owncloud/core/pull/38581)
 * Bugfix - Check quota on the necessary move operations: [#38591](https://github.com/owncloud/core/pull/38591)
@@ -20,6 +21,15 @@ Summary
 
 Details
 -------
+
+* Bugfix - Handle exceptions with inaccesible federated share: [#38474](https://github.com/owncloud/core/pull/38474)
+
+   In a scenario federation share storage is inaccessible and returns connection timeouts,
+   federated share storage now does not return not found but storage not available. Additionaly
+   logging and notifications handling has been improved.
+
+   https://github.com/owncloud/enterprise/issues/4311
+   https://github.com/owncloud/core/pull/38474
 
 * Bugfix - Fix mispositioned ui elements after leaving viewerMode: [#38547](https://github.com/owncloud/core/issues/38547)
 
