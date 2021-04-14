@@ -44,7 +44,7 @@ script('core', [
 				<?php print_unescaped($_['licenseMessage']); ?>
 			</div>
 		<?php endif; ?>
-		<p class="grouptop<?php if (!empty($_['invalidpassword'])) {
+		<div class="grouptop<?php if (!empty($_['invalidpassword'])) {
 	?> shake<?php
 } ?>">
 			<input type="text" name="user" id="user"
@@ -53,7 +53,7 @@ script('core', [
 				<?php p($_['user_autofocus'] ? 'autofocus' : ''); ?>
 				autocomplete="on" autocorrect="off" required>
 			<label for="user" class="infield"><?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?></label>
-		</p>
+		</div>
 
 		<div class="groupbottom<?php if (!empty($_['invalidpassword'])) {
 		?> shake<?php
