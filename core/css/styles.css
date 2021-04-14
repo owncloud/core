@@ -398,17 +398,11 @@ a.two-factor-cancel {
 	box-shadow: none !important;
 }
 
-.submit-wrap {
+#body-login .submit-wrap {
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
 	margin-top: 32px;
-}
-
-.submit-wrap button {
-	margin: 0 !important;
-	padding: 11px;
-	font-size: 16px;
 }
 
 /* keep the labels for screen readers but hide them since we use placeholders */
@@ -619,32 +613,36 @@ form#alternative-logins {
 }
 
 #alternative-logins li a.button,
-.login-button {
+html #body-login input[type="submit"],
+html #body-login button[type="submit"] {
 	display: block;
-	color: #ffffff !important;
-	border-width: 1px !important;
+	color: #ffffff;
+	border-width: 1px;
 	border-color: rgba(0,0,0,0);
-	font-weight: 600 !important;
+	font-size: 1rem;
+	font-weight: 600;
 	background-color: #4e85c8;
 	transition: all 300ms ease 0ms;
-	padding: .45rem 1.5em;
+	padding: 0.65rem;
 	text-align: center;
+	margin: 0 !important;	
 }
 
 #alternative-logins li a.button:hover,
-.login-button:hover {
-	color: #ffffff !important;
-	border-color: rgb(66, 116, 176) !important;
-	border-width: 1px !important;
+html #body-login input[type="submit"]:hover,
+html #body-login button[type="submit"]:hover {
+	color: #ffffff;
+	border-color: rgb(66, 116, 176);
+	border-width: 1px;
 	background-image: initial;
-	background-color: rgb(66, 116, 176) !important;
+	background-color: rgb(66, 116, 176);
 }
 
 /* Log in and install button */
 #body-login input {
-	font-size: 20px;
+	font-size: 1rem;
 	margin: 0px;
-	padding: 11px 10px 9px;
+	padding: 0.65rem;
 }
 #body-login input[type="text"],
 #body-login input[type="password"] {
@@ -654,10 +652,7 @@ form#alternative-logins {
 	width: auto;
 	float: right;
 }
-#body-login input[type="submit"] {
-	padding: 11px 10px 9px; /* larger log in and installation buttons */
-	max-width: 269px;
-}
+
 #remember_login {
 	margin: 18px 5px 0 16px !important;
 }
@@ -1030,18 +1025,8 @@ fieldset.warning legend + p, fieldset.update legend + p {
 }
 
 @media only screen and (max-width: 1030px) {
-    #body-login .v-align {
-        margin-top: 30px;
-    }
     #body-login p.info {
         margin: 0 auto;
         padding-top: 35px;
     }
-}
-
-/* IE11 fix for centering the credential fields */
-@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-	#body-login .v-align {
-		margin-top: 30px;
-	}
 }
