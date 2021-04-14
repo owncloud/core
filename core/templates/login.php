@@ -11,10 +11,16 @@ script('core', [
 
 <!--[if IE 8]><style>input[type="checkbox"]{padding:0;}</style><![endif]-->
 <form method="post" name="login" autocapitalize="none">
-
-	<?php if (!empty($_['redirect_url'])) {
-	print_unescaped('<input type="hidden" name="redirect_url" value="' . \OCP\Util::sanitizeHTML($_['redirect_url']) . '">');
+<?php if (!empty($_['accessLink'])) {
+	?>
+			<p class="warning">
+				<?php p($l->t("You are trying to access a private link. Please log in first.")) ?>
+			</p>
+		<?php
 } ?>
+	<?php if (!empty($_['redirect_url'])) {
+		print_unescaped('<input type="hidden" name="redirect_url" value="' . \OCP\Util::sanitizeHTML($_['redirect_url']) . '">');
+	} ?>
 		<?php if (isset($_['apacheauthfailed']) && ($_['apacheauthfailed'])): ?>
 			<div class="warning">
 				<?php p($l->t('Server side authentication failed!')); ?><br>
@@ -45,8 +51,8 @@ script('core', [
 			</div>
 		<?php endif; ?>
 		<div class="grouptop<?php if (!empty($_['invalidpassword'])) {
-	echo ' shake';
-} ?>">
+		echo ' shake';
+	} ?>">
 			<input type="text" name="user" id="user"
 				placeholder="<?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?>"
 				value="<?php p($_['loginName']); ?>"
@@ -56,8 +62,8 @@ script('core', [
 		</div>
 
 		<div class="groupbottom<?php if (!empty($_['invalidpassword'])) {
-	echo ' shake';
-} ?>">
+		echo ' shake';
+	} ?>">
 			<input type="password" name="password" id="password" value=""
 				placeholder="<?php p($l->t('Password')); ?>"
 				<?php p($_['user_autofocus'] ? '' : 'autofocus'); ?>
@@ -65,38 +71,33 @@ script('core', [
 			<label for="password" class="infield"><?php p($l->t('Password')); ?></label>
 			<input type="submit" id="submit" class="login primary icon-confirm" title="<?php p($l->t('Login')); ?>" value="" disabled="disabled"/>
 		</div>
-
+		
 		<div class="submit-wrap">
+			<?php if (!empty($_['invalidpassword']) && !empty($_['canResetPassword'])) {
+		?>
+				<a id="lost-password" class="warning" href="<?php p($_['resetPasswordLink']); ?>">
+					<?php p($l->t('Wrong password. Reset it?')); ?>
+				</a>
+				<?php
+	} elseif (!empty($_['invalidpassword'])) {
+		?>
+					<p class="warning">
+						<?php p($l->t('Wrong password.')); ?>
+					</p>
+				<?php
+	} ?>
+
+			<?php if (!empty($_['csrf_error'])) {
+		?>
+					<p class="warning">
+						<?php p($l->t('You took too long to log in, please try again now')); ?>
+					</p>
+					<?php
+	} ?>
+				
 			<button type="submit" class="login-button"><?php p($l->t('Login')); ?></button>
 		</div>
 
-		<?php if (!empty($_['csrf_error'])) {
-	?>
-		<p class="warning">
-			<?php p($l->t('You took too long to log in, please try again now')); ?>
-		</p>
-		<?php
-} ?>
-		<?php if (!empty($_['invalidpassword']) && !empty($_['canResetPassword'])) {
-		?>
-		<a id="lost-password" class="warning" href="<?php p($_['resetPasswordLink']); ?>">
-			<?php p($l->t('Wrong password. Reset it?')); ?>
-		</a>
-		<?php
-	} elseif (!empty($_['invalidpassword'])) {
-		?>
-			<p class="warning">
-				<?php p($l->t('Wrong password.')); ?>
-			</p>
-		<?php
-	} ?>
-		<?php if (!empty($_['accessLink'])) {
-		?>
-			<p class="warning">
-				<?php p($l->t("You are trying to access a private link. Please log in first.")) ?>
-			</p>
-		<?php
-	} ?>
 		<?php if ($_['rememberLoginAllowed'] === true) : ?>
 		<div class="remember-login-container">
 			<?php if ($_['rememberLoginState'] === 0) {
