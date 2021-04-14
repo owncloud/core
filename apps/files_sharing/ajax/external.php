@@ -26,6 +26,10 @@
  *
  */
 
+/*
+ * sharing_external_add ajax call handler
+ */
+
 OCP\JSON::callCheck();
 OCP\JSON::checkLoggedIn();
 OCP\JSON::checkAppEnabled('files_sharing');
@@ -71,6 +75,7 @@ $externalManager = new \OCA\Files_Sharing\External\Manager(
 		\OC::$server->getUserSession()->getUser()->getUID()
 );
 
+// add federated share
 $mount = $externalManager->addShare($remote, $token, $password, $name, $ownerDisplayName, true);
 
 /**
@@ -79,31 +84,44 @@ $mount = $externalManager->addShare($remote, $token, $password, $name, $ownerDis
 $storage = $mount->getStorage();
 '@phan-var \OCA\Files_Sharing\External\Storage $storage';
 try {
-	// check if storage exists
+	// check if storage exists after adding
 	$storage->checkStorageAvailability();
 } catch (\OCP\Files\StorageInvalidException $e) {
 	// note: checkStorageAvailability will already remove the invalid share
 	\OCP\Util::writeLog(
 		'files_sharing',
-		'Invalid remote storage: ' . \get_class($e) . ': ' . $e->getMessage(),
+		'Failure adding external share. Invalid remote storage thrown while checking storage availability',
+		\OCP\Util::ERROR
+	);
+	\OCP\Util::writeLog(
+		'files_sharing',
+		'Invalid remote storage exception:' . \get_class($e) . ': ' . $e->getMessage(),
 		\OCP\Util::DEBUG
 	);
+	$externalManager->removeShare($mount->getMountPoint());
+
+	// return JSON response with error
 	\OCP\JSON::error(
-		[
-			'data' => [
-				'message' => $l->t('Could not authenticate to remote share, password might be wrong')
-			]
-		]
+		['data' => ['message' => $l->t('Could not authenticate to remote share, password might be wrong')]]
 	);
 	exit();
 } catch (\Exception $e) {
+	\OCP\Util::writeLog(
+		'files_sharing',
+		'Failure adding external share. Unhandled exception thrown while checking storage availability',
+		\OCP\Util::ERROR
+	);
 	\OCP\Util::writeLog(
 		'files_sharing',
 		'Invalid remote storage: ' . \get_class($e) . ': ' . $e->getMessage(),
 		\OCP\Util::DEBUG
 	);
 	$externalManager->removeShare($mount->getMountPoint());
-	\OCP\JSON::error(['data' => ['message' => $l->t('Storage not valid')]]);
+
+	// return JSON response with error
+	\OCP\JSON::error(
+		['data' => ['message' => $l->t('Storage not valid')]]
+	);
 	exit();
 }
 
