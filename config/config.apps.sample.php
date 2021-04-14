@@ -49,9 +49,32 @@ $CONFIG = [
 ],
 
 /**
- * Filter the groups that messages are logged for.
+ * Filter the groups that messages are logged for
  */
 'admin_audit.groups' => ['group1', 'group2'],
+
+/**
+ * App: Firstrunwizard
+ *
+ * Possible keys: `customclient_desktop` URL
+ *
+ * Possible keys: `customclient_android` URL
+ *
+ * Possible keys: `customclient_ios` URL
+ */
+
+/**
+ * Define the download links for ownCloud clients
+ * Configuring the download links for ownCloud clients,
+ * as seen in the first-run wizard and on Personal pages
+ */
+
+'customclient_desktop' =>
+	'https://owncloud.org/install/#install-clients',
+'customclient_android' =>
+	'https://play.google.com/store/apps/details?id=com.owncloud.android',
+'customclient_ios' =>
+	'https://apps.apple.com/app/id1359583808',
 
 /**
  * App: LDAP
@@ -81,40 +104,78 @@ $CONFIG = [
 'appstoreurl' => 'https://marketplace.owncloud.com',
 
 /**
- * App: Firstrunwizard
+ * App: Metrics
  *
- * Possible keys: `customclient_desktop` URL
+ * Note: This app is for Enterprise Customers only.
  *
- * Possible keys: `customclient_android` URL
- *
- * Possible keys: `customclient_ios` URL
+ * Possible keys: `metrics_shared_secret` STRING
  */
 
 /**
- * Define the download links for ownCloud clients
- * Configuring the download links for ownCloud clients,
- * as seen in the first-run wizard and on Personal pages
+ * Secret to use the Metrics dashboard
+ * You have to set a Metrics secret to use the dashboard. You cannot use the dashboard
+ * without defining a secret. You can use any secret you like. In case you want to generate
+ * a random secret, use the following example command:
+ * `echo $(tr -dc 'a-z0-9' < /dev/urandom | head -c 20)`
+ * It is also possible to set this secret via an occ command which writes key and data to the
+ * config.php file. Please see the occ command documentation for more information.
  */
-
-'customclient_desktop' =>
-	'https://owncloud.org/install/#install-clients',
-'customclient_android' =>
-	'https://play.google.com/store/apps/details?id=com.owncloud.android',
-'customclient_ios' =>
-	'https://apps.apple.com/app/id1359583808',
+'metrics_shared_secret' => 'replace-with-your-own-random-string',
 
 /**
- * App: Richdocuments
+ * App: Microsoft Office Online (WOPI)
  *
- * Possible keys: `collabora_group` STRING
+ * Note: This app is for Enterprise Customers only.
+ *
+ * Possible keys: `wopi.token.key` STRING
+ *
+ * Possible keys: `wopi.office-online.server` URL
+ *
+ * Possible keys: `wopi_group` STRING
  */
 
 /**
- * Define the group name for users allowed to use Collabora
- * Please note, only one group can be defined. Default = empty = no restriction.
+ * Random key created by the ownCloud admin
+ * This is a random key created by the ownCloud admin. This key is used by ownCloud
+ * to create encrypted JWT tokens for the communication with your Microsoft Office Online instance.
+ * You can use the following example command to generate a random key:
+ * `echo $(tr -dc 'a-z0-9' < /dev/urandom | head -c 20)`
+ */
+'wopi.token.key' => 'replace-with-your-own-random-string',
+
+/**
+ * Microsoft Office Online instance URL
+ * This is the URL of the Microsoft Office Online instance ownCloud communicates with. Keep
+ * in mind that you need to grant communication access at your Microsoft Office
+ * Online instance with this ownCloud instance. For further information, read the
+ * ownCloud documentation.
+ */
+'wopi.office-online.server' => 'https://your.office.online.server.tld',
+
+/**
+ * Define the group name for users allowed to use Microsoft Office Online
+ * Restrict access to Microsoft Office Online to a defined group. Please note, only one group can be defined. Default = empty = no restriction.
+ */
+'wopi_group' => '',
+
+/**
+ * App: Microsoft Teams Bridge
+ *
+ * Possible keys: `msteamsbridge` ARRAY
+ *
+ * Sub key: `loginButtonName` STRING
  */
 
-'collabora_group' => '',
+/**
+ * Login Button Label
+ * This key is necessary for security reasons. Users will be asked to click a login
+ * button each time when accessing the ownCloud app after a fresh start of their
+ * Microsoft Teams app or after idle time. This behavior is by design. The button
+ * name can be freely set based on your requirements.
+ */
+'msteamsbridge' => [
+   "loginButtonName" => "Login to ownCloud with Azure AD",
+],
 
 /**
  * App: OpenID Connect (OIDC)
@@ -275,6 +336,19 @@ $CONFIG = [
 ],
   
 /**
+ * App: Richdocuments
+ *
+ * Possible keys: `collabora_group` STRING
+ */
+
+/**
+ * Define the group name for users allowed to use Collabora
+ * Please note, only one group can be defined. Default = empty = no restriction.
+ */
+
+'collabora_group' => '',
+
+/**
  * App: Windows Network Drive (WND)
  *
  * Note: This app is for Enterprise Customers only.
@@ -310,7 +384,7 @@ $CONFIG = [
 'wnd.logging.enable' => false,
 
 /**
- * Check for visible target mount folders when connecting.
+ * Check for visible target mount folders when connecting
  * Ensure that the connectivity check verifies the mount point is visible.
  * This means the target folder is NOT hidden.
  * Setting this option to false can speed up the connectivity check by skipping
@@ -320,7 +394,7 @@ $CONFIG = [
 'wnd.storage.testForHiddenMount' => true,
 
 /**
- * Enable or disable the WND in-memory notifier for password changes.
+ * Enable or disable the WND in-memory notifier for password changes
  * Having this feature enabled implies that whenever a WND process detects a
  * wrong password in the storage - maybe the password has changed in the
  * backend - all WND storages that are in-memory will be notified in order to reset
@@ -334,7 +408,7 @@ $CONFIG = [
 'wnd.in_memory_notifier.enable' => true,
 
 /**
- * Maximum number of items for the cache used by the WND permission managers.
+ * Maximum number of items for the cache used by the WND permission managers
  * A higher number implies that more items are allowed, increasing the memory usage.
  * Real memory usage per item varies because it depends on the path being cached.
  * Note that this is an in-memory cache used per request.
@@ -375,60 +449,5 @@ $CONFIG = [
  * be ignored. This flag depends on the `wnd.activity.registerExtension` and has the same restrictions.
  */
 'wnd.activity.sendToSharees' => false,
-
-/**
- * App: Microsoft Office Online (WOPI)
- *
- * Note: This app is for Enterprise Customers only.
- *
- * Possible keys: `wopi.token.key` STRING
- *
- * Possible keys: `wopi.office-online.server` URL
- *
- * Possible keys: `wopi_group` STRING
- */
-
-/**
- * Random key created by the ownCloud admin.
- * This is a random key created by the ownCloud admin. This key is used by ownCloud
- * to create encrypted JWT tokens for the communication with your Microsoft Office Online instance.
- * You can use the following example command to generate a random key:
- * `echo $(tr -dc 'a-z0-9' < /dev/urandom | head -c 20)`
- */
-'wopi.token.key' => 'replace-with-your-own-random-string',
-
-/**
- * Microsoft Office Online instance URL
- * This is the URL of the Microsoft Office Online instance ownCloud communicates with. Keep
- * in mind that you need to grant communication access at your Microsoft Office
- * Online instance with this ownCloud instance. For further information, read the
- * ownCloud documentation.
- */
-'wopi.office-online.server' => 'https://your.office.online.server.tld',
-
-/**
- * Define the group name for users allowed to use Microsoft Office Online
- * Restrict access to Microsoft Office Online to a defined group. Please note, only one group can be defined. Default = empty = no restriction.
- */
-'wopi_group' => '',
-
-/**
- * App: Metrics
- *
- * Note: This app is for Enterprise Customers only.
- *
- * Possible keys: `metrics_shared_secret` STRING
- */
-
-/**
- * Secret to use the Metrics dashboard.
- * You have to set a Metrics secret to use the dashboard. You cannot use the dashboard
- * without defining a secret. You can use any secret you like. In case you want to generate
- * a random secret, use the following example command:
- * `echo $(tr -dc 'a-z0-9' < /dev/urandom | head -c 20)`
- * It is also possible to set this secret via an occ command which writes key and data to the
- * config.php file. Please see the occ command documentation for more information.
- */
-'metrics_shared_secret' => 'replace-with-your-own-random-string',
 
 ];
