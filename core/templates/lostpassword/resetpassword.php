@@ -27,18 +27,24 @@ script('core', 'lostpassword');
 ?>
 
 <form action="<?php print_unescaped($_['link']) ?>" id="reset-password" method="post">
-	<fieldset>
-		<p class="groupbottom<?php if (!empty($_['invalidpassword'])) {
-	?> shake<?php
-} ?>">
+		<div class="grouptop<?php if (!empty($_['invalidpassword'])) {
+			?> shake<?php
+		} ?>">
 			<label for="password" class="infield"><?php p($l->t('New password')); ?></label>
 			<input type="password" name="password" id="password" value="" placeholder="<?php p($l->t('New Password')); ?>" autocomplete="off" required autofocus />
+		</div>
+
+		<div class="groupbottom<?php if (!empty($_['invalidpassword'])) {
+			?> shake<?php
+		} ?>">
 			<input type="password" name="retypepassword" id="retypepassword" value="" placeholder="<?php p($l->t('Confirm Password')); ?>"/>
 			<span id='message'></span>
-		</p>
-		<input type="submit" id="submit" value="<?php p($l->t('Reset password')); ?>" />
+		</div>
+		<div class="submit-wrap">
+			<input type="submit" id="submit" value="<?php p($l->t('Reset password')); ?>" />
+		</div>
+
 		<p class="text-center">
 			<img class="hidden" id="float-spinner" src="<?php p(image_path('core', 'loading-dark.gif'));?>"/>
 		</p>
-	</fieldset>
 </form>
