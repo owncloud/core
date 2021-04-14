@@ -152,13 +152,13 @@ class BackgroundJobTest extends TestCase {
 
 		if ($notification === null) {
 			$this->urlGenerator->expects($this->never())
-				->method('linkToRouteAbsolute');
+				->method('linkToRoute');
 
 			$job->expects($this->never())
 				->method('createNotifications');
 		} else {
 			$this->urlGenerator->expects($this->once())
-				->method('linkToRouteAbsolute')
+				->method('linkToRoute')
 				->with('settings.SettingsPage.getAdmin')
 				->willReturn('admin-url');
 
