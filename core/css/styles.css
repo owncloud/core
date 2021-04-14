@@ -495,6 +495,7 @@ label.infield {
 	border-radius: 3px;
 	cursor: default;
 	border: 1px solid rgba(255,255,255,.5);
+	background-color: rgba(4,30,66,0.3);
 }
 
 #body-login .update {
