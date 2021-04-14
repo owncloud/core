@@ -38,9 +38,9 @@ script('core', 'lostpassword');
 	echo ' shake';
 } ?>">
 			<input type="password" name="retypepassword" id="retypepassword" value="" placeholder="<?php p($l->t('Confirm Password')); ?>"/>
-			<span id='message'></span>
 		</div>
 		<div class="submit-wrap">
+			<span id="message"></span>
 			<input type="submit" id="submit" value="<?php p($l->t('Reset password')); ?>" />
 		</div>
 

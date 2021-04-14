@@ -36,9 +36,9 @@ script('settings', 'setpassword');
 		<input type="password" name="retypepassword" id="retypepassword" value=""
 				autocomplete="new-password" autocorrect="off"
 				placeholder="<?php p($l->t('Confirm Password')); ?>"/>
-		<span id='message'></span>
 	</div>
 	<div class="submit-wrap">
+		<span id="message"></span>
 		<label id="error-message" class="warning" style="display:none"></label>
 		<input type="submit" id="submit" value="<?php p($l->t('Please set your password')); ?>" />
 	</div>
