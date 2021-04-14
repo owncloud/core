@@ -69,7 +69,6 @@ script('core', [
 				<?php p($_['user_autofocus'] ? '' : 'autofocus'); ?>
 				autocomplete="off" autocorrect="off" required>
 			<label for="password" class="infield"><?php p($l->t('Password')); ?></label>
-			<input type="submit" id="submit" class="login primary icon-confirm" title="<?php p($l->t('Login')); ?>" value="" disabled="disabled"/>
 		</div>
 		
 		<div class="submit-wrap">

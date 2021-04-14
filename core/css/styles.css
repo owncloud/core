@@ -274,21 +274,6 @@ a.two-factor-cancel {
 	margin: -13px;
 }
 
-/* position log in button as confirm icon in right of password field */
-#body-login #submit.login {
-	position: absolute;
-	right: 0;
-	top: 0;
-	border: none;
-	background-color: transparent;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
-	opacity: .3;
-}
-#body-login #submit.login:hover,
-#body-login #submit.login:focus {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
-	opacity: .7;
-}
 #body-login input[type="password"],
 #body-login input[name="adminpass-clone"] {
 	padding-right: 40px;
