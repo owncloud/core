@@ -94,7 +94,7 @@ script('core', [
 					<?php
 	} ?>
 				
-			<button type="submit" class="login-button"><?php p($l->t('Login')); ?></button>
+			<button type="submit" id="submit" class="login-button"><?php p($l->t('Login')); ?></button>
 		</div>
 
 		<?php if ($_['rememberLoginAllowed'] === true) : ?>
