@@ -406,7 +406,7 @@ label.infield {
 	user-select: none;
 }
 
-#body-login form .errors { background:#fed7d7; border:1px solid #f00; list-style-indent:inside; margin:0 0 2em; padding:1em; }
+#body-login form .errors { background:#fed7d7; border:1px solid #f00; list-style-position:inside; margin:0 0 2em; padding:1em; }
 #body-login .success { background:#d7fed7; border:1px solid #0f0; width: 35%; margin: 30px auto; padding:1em; text-align: center;}
 
 #body-login #showAdvanced > img {
