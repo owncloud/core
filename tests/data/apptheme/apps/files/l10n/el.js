@@ -41,7 +41,6 @@ OC.L10N.register(
     "Unable to determine date" : "Αδυναμία προσδιορισμού ημερομηνίας",
     "Invalid path" : "Μη έγκυρη διαδρομή",
     "This operation is forbidden" : "Αυτή η ενέργεια δεν επιτρέπεται",
-    "This directory is unavailable, please check the logs or contact the administrator" : "Ο κατάλογος δεν είναι διαθέσιμος, παρακαλώ ελέγξτε τα αρχεία καταγραφής ή επικοινωνήστε με το διαχειριστή",
     "group" : "ομάδα",
     "Remote share" : "Απομακρυσμένος κοινόχρηστος φάκελος",
     "via" : "μέσω",

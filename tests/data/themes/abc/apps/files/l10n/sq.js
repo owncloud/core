@@ -42,7 +42,6 @@ OC.L10N.register(
     "Unable to determine date" : "S’arrihet të përcaktohet data",
     "Invalid path" : "Shteg i pavlefshëm",
     "This operation is forbidden" : "Ky veprim është i ndaluar",
-    "This directory is unavailable, please check the logs or contact the administrator" : "Kjo drejtori nuk kapet, ju lutemi, kontrolloni regjistrat ose lidhuni me përgjegjësin",
     "group" : "grup",
     "Remote share" : "Ndarje e largët",
     "via" : "përmes",

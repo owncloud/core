@@ -34,7 +34,6 @@ OC.L10N.register(
     "Unable to determine date" : "Impossible de determinar la data",
     "Invalid path" : "Camin invalid",
     "This operation is forbidden" : "L'operacion es interdicha",
-    "This directory is unavailable, please check the logs or contact the administrator" : "Aqueste repertòri es pas disponible. Consultatz los logs o contactatz vòstre administrator",
     "group" : "grop",
     "Remote share" : "Partiment distant",
     "Could not move \"{file}\", target exists" : "Impossible de desplaçar \"{file}\", la cibla existís",

@@ -31,7 +31,6 @@ OC.L10N.register(
     "Unable to determine date" : "Nemožno určiť dátum",
     "Invalid path" : "Neplatná cesta",
     "This operation is forbidden" : "Táto operácia je zakázaná",
-    "This directory is unavailable, please check the logs or contact the administrator" : "Priečinok je nedostupný, skontrolujte prosím logy, alebo kontaktujte správcu",
     "group" : "skupina",
     "Remote share" : "Vzdialené úložisko",
     "Could not move \"{file}\", target exists" : "Nie je možné presunúť „{file}“, cieľ už existuje",

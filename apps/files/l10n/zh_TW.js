@@ -42,7 +42,6 @@ OC.L10N.register(
     "Unable to determine date" : "無法確定日期",
     "Invalid path" : "無效的路徑",
     "This operation is forbidden" : "此動作被禁止",
-    "This directory is unavailable, please check the logs or contact the administrator" : "這個目錄無法存取，請檢查伺服器記錄檔或聯絡管理員",
     "group" : "群組",
     "Remote share" : "遠端分享",
     "via" : "經由",

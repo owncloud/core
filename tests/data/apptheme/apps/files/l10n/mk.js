@@ -41,7 +41,6 @@ OC.L10N.register(
     "Unable to determine date" : "Не може да се одреди датум",
     "Invalid path" : "Грешна патека",
     "This operation is forbidden" : "Операцијата не е дозволена",
-    "This directory is unavailable, please check the logs or contact the administrator" : "Овој директориум е недостапен, ве молиме проверете ги логовите или контактирајте со администраторот",
     "group" : "група",
     "Remote share" : "Оддалечено споделување",
     "Could not move \"{file}\", target exists" : "Не може да се премести \"{file}\", веќе постои",

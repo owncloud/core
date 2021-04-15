@@ -41,7 +41,6 @@ OC.L10N.register(
     "Unable to determine date" : "تعذّر تحديد التاريخ",
     "Invalid path" : "مسار غير صالح",
     "This operation is forbidden" : "هذه العملية محظورة",
-    "This directory is unavailable, please check the logs or contact the administrator" : "هذا الدليل غير متوفر، يُرجى فحص السجلات أو الاتصال بالمسؤول",
     "group" : "مجموعة",
     "Remote share" : "مشاركة عن بُعد",
     "via" : "عبر",

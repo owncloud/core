@@ -41,7 +41,6 @@ OC.L10N.register(
     "Unable to determine date" : "Unable to determine date",
     "Invalid path" : "Invalid path",
     "This operation is forbidden" : "This operation is forbidden",
-    "This directory is unavailable, please check the logs or contact the administrator" : "This directory is unavailable, please check the logs or contact the administrator",
     "group" : "group",
     "Remote share" : "Remote share",
     "via" : "via",

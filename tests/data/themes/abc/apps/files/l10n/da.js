@@ -36,7 +36,6 @@ OC.L10N.register(
     "Unable to determine date" : "Kan ikke fastslå datoen",
     "Invalid path" : "Ugyldig sti",
     "This operation is forbidden" : "Denne operation er forbudt",
-    "This directory is unavailable, please check the logs or contact the administrator" : "Denne mappe er utilgængelig, tjek venligst loggene eller kontakt administratoren",
     "group" : "gruppe",
     "Remote share" : "Ekstern deling",
     "Could not move \"{file}\", target exists" : "Kunne ikke flytte \"{file}\" - der findes allerede en fil med dette navn",

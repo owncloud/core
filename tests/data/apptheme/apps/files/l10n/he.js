@@ -42,7 +42,6 @@ OC.L10N.register(
     "Unable to determine date" : "לא ניתן לקבוע תאריך",
     "Invalid path" : "נתיב לא חוקי",
     "This operation is forbidden" : "פעולה זו אסורה",
-    "This directory is unavailable, please check the logs or contact the administrator" : "תיקייה זו לא קיימת, יש לבדוק את הלוגים או ליצור קשר עם המנהל",
     "group" : "קבוצה",
     "Remote share" : "שיתוף חיצוני",
     "via" : "באמצעות",
