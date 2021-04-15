@@ -5,7 +5,14 @@ Feature: browse directly to details tab
   So that I can see the details immediately without needing to click in the UI
 
   Background:
-    Given user "Alice" has been created with default attributes and large skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "simple-folder"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "simple-folder/block-aligned.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "simple-folder/lorem.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "simple-folder/zzzz-must-be-last-file-in-folder.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "block-aligned.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "lorem.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "zzzz-must-be-last-file-in-folder.txt"
     And user "Alice" has logged in using the webUI
 
   @smokeTest
