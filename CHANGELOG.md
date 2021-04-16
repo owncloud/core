@@ -18,6 +18,7 @@ Summary
 * Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
 * Enhancement - Expired shares in activity stream: [#38631](https://github.com/owncloud/core/pull/38631)
 * Enhancement - Use relative notification URLs: [#38639](https://github.com/owncloud/core/pull/38639)
+* Enhancement - Add excludeActions parameter to registerDefaultActions function: [#38643](https://github.com/owncloud/core/pull/38643)
 
 Details
 -------
@@ -111,6 +112,13 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4250
    https://github.com/owncloud/core/pull/38639
+
+* Enhancement - Add excludeActions parameter to registerDefaultActions function: [#38643](https://github.com/owncloud/core/pull/38643)
+
+   With this change we can pass now excludeActions to the registerDefaultActions function in
+   fileactions.js, this allows us technically to omit specific file actions.
+
+   https://github.com/owncloud/core/pull/38643
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================
