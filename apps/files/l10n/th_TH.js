@@ -111,6 +111,7 @@ OC.L10N.register(
     "You changed %1$s" : "คุณทำการเปลี่ยนแปลง %1$s",
     "%2$s changed %1$s" : "%2$s ได้เปลี่ยนแปลง %1$s",
     "You deleted %1$s" : "คุณลบ %1$s ออก",
+    "%1$s was deleted due to automation rule" : "%1$s ถูกลบเนื่องจากกฎอัตโนมัติ",
     "%2$s deleted %1$s" : "%2$s ลบ %1$s ออก",
     "You restored %1$s" : "คุณได้กู้คืน %1$s แล้ว",
     "%2$s restored %1$s" : "%2$s ได้กู้คืน %1$s",

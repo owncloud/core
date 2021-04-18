@@ -61,6 +61,7 @@
     "Your public link for %1$s expired" : "ลิงก์สาธารณะของคุณสำหรับ %1$s หมดอายุ",
     "The public link of %2$s for %1$s expired" : "ลิงก์สาธารณะของ  %2$s สำหรับ %1$s หมดอายุ",
     "%2$s shared %1$s with you" : "%2$s ถูกแชร์ %1$s กับคุณ",
+    "The share for %1$s expired" : "แชร์สำหรับ %1$s หมดอายุ",
     "%2$s removed the share for %1$s" : "%2$s ได้ลบแชร์สำหรับ %1$s",
     "Downloaded via public link" : "ดาวน์โหลดผ่านลิงก์สาธารณะ",
     "Shared with %2$s" : "แชร์กับ %2$s",
