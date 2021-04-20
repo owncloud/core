@@ -274,13 +274,6 @@ a.two-factor-cancel {
 	margin: -13px;
 }
 
-#body-login input[type="password"],
-#body-login input[name="adminpass-clone"] {
-	padding-right: 40px;
-	box-sizing: border-box;
-	min-width: 269px;
-}
-
 #body-login form {
 	position: relative;
 	margin: 32px auto;
