@@ -74,12 +74,13 @@ Details
    (v1.0.1 to v1.0.2) - phpseclib/phpseclib (3.0.6 to 3.0.7)
 
    The following have been updated in files_external/3rdparty: - google/apiclient-services
-   (v0.164.0 => v0.167.0) - guzzlehttp/psr7 (1.7.0 => 1.8.1) - icewind/smb (3.3.1 to 3.4.0) -
+   (v0.164.0 => v0.167.0) - guzzlehttp/psr7 (1.7.0 => 1.8.1) - icewind/smb (3.3.1 to 3.4.1) -
    icewind/streams (0.7.3 to 0.7.4) - phpseclib/phpseclib (3.0.6 to 3.0.7)
 
    https://github.com/owncloud/core/pull/38524
    https://github.com/owncloud/core/pull/38598
    https://github.com/owncloud/core/pull/38620
+   https://github.com/owncloud/core/pull/38646
 
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
 
