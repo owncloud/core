@@ -670,14 +670,26 @@ class X509
      */
     private function mapOutExtensions(&$root, $path)
     {
-        foreach ($this->extensionValues as $id => $value) {
-            $root['tbsCertificate']['extensions'][] = [
+        $extensions = &$this->subArray($root, $path);
+
+        foreach ($this->extensionValues as $id => $data) {
+            extract($data);
+            $newext = [
                 'extnId' => $id,
                 'extnValue' => $value,
+                'critical' => $critical
             ];
+            if (!$replace) {
+                $extensions[] = $newext;
+                continue;
+            }
+            foreach ($extensions as $key => $value) {
+                if ($value['extnId'] == $id) {
+                    $extensions[$key] = $newext;
+                    break;
+               }
+            }
         }
-
-        $extensions = &$this->subArray($root, $path);
 
         if (is_array($extensions)) {
             $size = count($extensions);
@@ -2751,7 +2763,7 @@ class X509
 
             $this->setExtension(
                 'id-ce-basicConstraints',
-                array_unique(array_merge(['cA' => true], $basicConstraints)),
+                array_merge(['cA' => true], $basicConstraints),
                 true
             );
 
@@ -4079,9 +4091,11 @@ class X509
      *
      * @param string $id
      * @param mixed $value
+     * @param bool $critical
+     * @param bool $replace
      */
-    public function setExtensionValue($id, $value)
+    public function setExtensionValue($id, $value, $critical = false, $replace = false)
     {
-        $this->extensionValues[$id] = $value;
+        $this->extensionValues[$id] = compact('critical', 'replace', 'value');
     }
 }

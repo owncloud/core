@@ -475,7 +475,7 @@ abstract class SymmetricKey
      * @var string
      * @access private
      */
-    protected static $cipher_name_openssl_ecb;
+    protected $cipher_name_openssl_ecb;
 
     /**
      * The default salt used by setPassword()
@@ -1915,7 +1915,7 @@ abstract class SymmetricKey
                 for ($i = 0; $i < strlen($plaintext); $i+=$block_size) {
                     $block = substr($plaintext, $i, $block_size);
                     if (strlen($block) > strlen($buffer['ciphertext'])) {
-                        $buffer['ciphertext'].= openssl_encrypt($xor, static::$cipher_name_openssl_ecb, $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING);
+                        $buffer['ciphertext'].= openssl_encrypt($xor, $this->cipher_name_openssl_ecb, $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING);
                     }
                     Strings::increment_str($xor);
                     $otp = Strings::shift($buffer['ciphertext'], $block_size);
@@ -1924,7 +1924,7 @@ abstract class SymmetricKey
             } else {
                 for ($i = 0; $i < strlen($plaintext); $i+=$block_size) {
                     $block = substr($plaintext, $i, $block_size);
-                    $otp = openssl_encrypt($xor, static::$cipher_name_openssl_ecb, $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING);
+                    $otp = openssl_encrypt($xor, $this->cipher_name_openssl_ecb, $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING);
                     Strings::increment_str($xor);
                     $ciphertext.= $block ^ $otp;
                 }
@@ -1966,7 +1966,7 @@ abstract class SymmetricKey
             }
         }
         if ($this->continuousBuffer) {
-            $encryptIV = openssl_decrypt($encryptIV, static::$cipher_name_openssl_ecb, $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING);
+            $encryptIV = openssl_decrypt($encryptIV, $this->cipher_name_openssl_ecb, $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING);
             if ($overflow) {
                 Strings::increment_str($encryptIV);
             }
@@ -2191,7 +2191,7 @@ abstract class SymmetricKey
                 // that don't we'll emulate it
                 switch ($this->mode) {
                     case self::MODE_CTR:
-                        if (in_array(static::$cipher_name_openssl_ecb, $methods)) {
+                        if (in_array($this->cipher_name_openssl_ecb, $methods)) {
                             $this->openssl_emulate_ctr = true;
                             return true;
                         }

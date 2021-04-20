@@ -308,7 +308,7 @@ class Rijndael extends BlockCipher
                 if ($this->block_size != 16) {
                     return false;
                 }
-                self::$cipher_name_openssl_ecb = 'aes-' . ($this->key_length << 3) . '-ecb';
+                $this->cipher_name_openssl_ecb = 'aes-' . ($this->key_length << 3) . '-ecb';
                 $this->cipher_name_openssl = 'aes-' . ($this->key_length << 3) . '-' . $this->openssl_translate_mode();
                 break;
             case self::ENGINE_MCRYPT:
