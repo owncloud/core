@@ -76,8 +76,10 @@ OC.Lostpassword = {
 
 	resetPassword : function(event){
 		$('#password').parent().removeClass('shake');
+
 		event.preventDefault();
 		if ($('#password').val() === $('#retypepassword').val()){
+			$('#reset-password #submit').addClass('icon-loading-small');
 			$.post(
 					$('#password').parents('form').attr('action'),
 					{
@@ -114,6 +116,8 @@ OC.Lostpassword = {
 					OC.Lostpassword.redirect
 			);
 		} else {
+			$('#reset-password #submit').removeClass('icon-loading-small');
+
 			if (result && result.msg){
 				resetErrorMsg = result.msg;
 			} else if (result && result.encryption) {

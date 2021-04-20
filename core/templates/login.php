@@ -53,22 +53,25 @@ script('core', [
 		<div class="grouptop<?php if (!empty($_['invalidpassword'])) {
 		echo ' shake';
 	} ?>">
+			<label for="user" class=""><?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?></label>
+			
 			<input type="text" name="user" id="user"
-				placeholder="<?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?>"
 				value="<?php p($_['loginName']); ?>"
+				aria-label="<?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?>"
 				<?php p($_['user_autofocus'] ? 'autofocus' : ''); ?>
 				autocomplete="on" autocorrect="off" required>
-			<label for="user" class="infield"><?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?></label>
+			
 		</div>
 
 		<div class="groupbottom<?php if (!empty($_['invalidpassword'])) {
 		echo ' shake';
 	} ?>">
+			<label for="password" class=""><?php p($l->t('Password')); ?></label>
+			
 			<input type="password" name="password" id="password" value=""
-				placeholder="<?php p($l->t('Password')); ?>"
 				<?php p($_['user_autofocus'] ? '' : 'autofocus'); ?>
+				aria-label="<?php p($l->t('Password')); ?>"
 				autocomplete="off" autocorrect="off" required>
-			<label for="password" class="infield"><?php p($l->t('Password')); ?></label>
 		</div>
 		
 		<div class="submit-wrap">
@@ -94,18 +97,21 @@ script('core', [
 					<?php
 	} ?>
 				
-			<button type="submit" id="submit" class="login-button"><?php p($l->t('Login')); ?></button>
+			<button type="submit" id="submit" class="login-button">
+				<span><?php p($l->t('Login')); ?></span>
+				<div class="loading-spinner"><div></div><div></div><div></div><div></div></div>
+			</button>
 		</div>
 
 		<?php if ($_['rememberLoginAllowed'] === true) : ?>
 		<div class="remember-login-container">
 			<?php if ($_['rememberLoginState'] === 0) {
 		?>
-			<input type="checkbox" name="remember_login" value="1" id="remember_login" class="checkbox checkbox--white">
+			<input type="checkbox" name="remember_login" value="1" id="remember_login" class="checkbox checkbox--white" aria-label="<?php p($l->t('Stay logged in')); ?>">
 			<?php
 	} else {
 		?>
-			<input type="checkbox" name="remember_login" value="1" id="remember_login" class="checkbox checkbox--white" checked="checked">
+			<input type="checkbox" name="remember_login" value="1" id="remember_login" class="checkbox checkbox--white" checked="checked" aria-label="<?php p($l->t('Stay logged in')); ?>">
 			<?php
 	} ?>
 			<label for="remember_login"><?php p($l->t('Stay logged in')); ?></label>

@@ -214,10 +214,6 @@ a.two-factor-cancel {
 
 /* LOG IN & INSTALLATION ------------------------------------------------------------ */
 
-/* Some whitespace to the top */
-#body-login #header {
-	padding-top: 100px;
-}
 #body-login {
 	background-attachment: fixed; /* fix background gradient */
 	height: 100%; /* fix sticky footer */
@@ -231,6 +227,12 @@ a.two-factor-cancel {
 #body-login form input[type="checkbox"]+label {
 	text-align: center;
 	color: #fff;
+}
+
+#body-login form label {
+	color: #fff;
+	text-align: left;
+	margin-bottom: .5rem;
 }
 /* overrides another !important statement that sets this to unreadable black */
 #body-login form .warning input[type="checkbox"]:hover+label,
@@ -277,7 +279,6 @@ a.two-factor-cancel {
 #body-login form {
 	position: relative;
 	margin: 32px auto;
-	padding: 0;
 }
 #body-login form fieldset {
 	margin-bottom: 20px;
@@ -334,6 +335,7 @@ a.two-factor-cancel {
 	font-weight: 300;
 }
 
+
 /* Nicely grouping input field sets */
 .grouptop,
 .groupmiddle,
@@ -346,33 +348,16 @@ a.two-factor-cancel {
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
+	margin-bottom: 1.2rem;
 }
+
 #body-login .grouptop input,
-.grouptop input {
-	margin-bottom: 0 !important;
-	border-bottom: 0 !important;
-	border-bottom-left-radius: 0 !important;
-	border-bottom-right-radius: 0 !important;
-}
+.grouptop input,
 #body-login .groupmiddle input,
-.groupmiddle input {
-	margin-top: 0 !important;
-	margin-bottom: 0 !important;
-	border-top: 0 !important;
-	border-bottom: 0 !important;
-	border-radius: 0 !important;
-	box-shadow: 0 1px 0 rgba(0,0,0,.1) inset !important;
-}
+.groupmiddle input,
 #body-login .groupbottom input,
 .groupbottom input {
-	margin-top: 0 !important;
-	border-top: 0 !important;
-	border-top-right-radius: 0 !important;
-	border-top-left-radius: 0 !important;
 	box-shadow: 0 1px 0 rgba(0,0,0,.1) inset !important;
-}
-#body-login .groupbottom input[type=submit] {
-	box-shadow: none !important;
 }
 
 #body-login .submit-wrap {
@@ -382,9 +367,78 @@ a.two-factor-cancel {
 	margin-top: 32px;
 }
 
-/* keep the labels for screen readers but hide them since we use placeholders */
-label.infield {
+
+
+.loading-spinner {
 	display: none;
+	position: relative;
+	width: 40px;
+	height: 10px;
+	margin: 0 auto;
+}
+
+/* Disable old loading spinner icon */
+.submit-wrap button#submit.icon-loading-small:after,
+.submit-wrap button#submit.icon-loading-small span {
+	display: none !important;
+}
+
+.submit-wrap button#submit.icon-loading-small {
+	background-image: none !important;
+}
+
+.submit-wrap .icon-loading-small .loading-spinner {
+	display: inline-block;
+}
+
+.loading-spinner div {
+	position: absolute;
+	top: 0;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: #fff;
+	animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.loading-spinner div:nth-child(1) {
+	left: 4px;
+	animation: loading-spinner1 0.6s infinite;
+}
+.loading-spinner div:nth-child(2) {
+	left: 4px;
+	animation: loading-spinner2 0.6s infinite;
+}
+.loading-spinner div:nth-child(3) {
+	left: 16px;
+	animation: loading-spinner2 0.6s infinite;
+}
+.loading-spinner div:nth-child(4) {
+	left: 28px;
+	animation: loading-spinner3 0.6s infinite;
+}
+@keyframes loading-spinner1 {
+	0% {
+	  	transform: scale(0);
+	}
+	100% {
+	  	transform: scale(1);
+	}
+}
+@keyframes loading-spinner3 {
+	0% {
+	  	transform: scale(1);
+	}
+	100% {
+	  	transform: scale(0);
+	}
+}
+@keyframes loading-spinner2 {
+	0% {
+		transform: translate(0, 0);
+	}
+	100% {
+	  	transform: translate(12px, 0);
+	}
 }
 
 #body-login form input[type="checkbox"]+label {
@@ -488,7 +542,7 @@ label.infield {
 	border-radius: 3px;
 	cursor: default;
 	border: 1px solid rgba(255,255,255,.5);
-	background-color: rgba(4,30,66,0.3);
+	margin-bottom: 1rem;
 }
 
 #body-login .update {
@@ -501,10 +555,6 @@ label.infield {
 	text-align: left;
 	margin-left: 25px;
 	margin-right: 25px;
-}
-
-#body-login .v-align {
-	width: inherit;
 }
 
 #body-login .update img.float-spinner {
@@ -548,12 +598,8 @@ label.infield {
 }
 
 /* Fixes for log in page, TODO should be removed some time */
-#body-login .update,
-#body-login .error {
-	margin: 35px auto;
-}
+/* 2021/04: lol */
 #body-login .warning {
-	margin: 0 0 16px 0;
 	text-align: center;
 }
 #body-login .warning legend {
@@ -603,7 +649,14 @@ html #body-login button[type="submit"] {
 	transition: all 300ms ease 0ms;
 	padding: 0.65rem;
 	text-align: center;
-	margin: 0 !important;	
+	margin: 0;
+	cursor: pointer;
+}
+
+#alternative-logins li a.button span,
+html #body-login input[type="submit"] span,
+html #body-login button[type="submit"] span {
+	cursor: pointer;
 }
 
 #alternative-logins li a.button:hover,
@@ -622,13 +675,9 @@ html #body-login button[type="submit"]:hover {
 	margin: 0px;
 	padding: 0.65rem;
 }
-#body-login input[type="text"],
-#body-login input[type="password"] {
+
+#body-login input {
 	width: auto;
-}
-#body-login input.login {
-	width: auto;
-	float: right;
 }
 
 #remember_login {
@@ -639,15 +688,40 @@ html #body-login button[type="submit"]:hover {
 	text-align: center;
 }
 
-/* Sticky footer */
+#body-login .v-align {
+	width: inherit;
+	padding: 2rem;
+	border-radius: 5px;
+	background-color: rgba(4,30,66,0.83);
+}
+
+/* Force constant vertical height for login box over all devices */
 #body-login .wrapper {
-	min-height: 100%;
 	margin: 0 auto -70px;
-	width: 300px;
+	width: calc(300px + 4rem);
+	min-height: 100vh; /* fix IE11 */
+	display: -webkit-box !important;
+	-webkit-box-orient: horizontal !important;
+	-webkit-box-pack: center !important;
+	-webkit-box-align: center !important;
+	display: -webkit-flex !important;
+	-webkit-flex-direction: row !important;
+	-webkit-align-self: center !important;
+	-webkit-align-items: center !important;
+	display: -moz-box !important;
+	-moz-box-orient: horizontal !important;
+	-moz-box-pack: center !important;
+	-moz-box-align: center !important;
+	display: -ms-flexbox !important;
+	-ms-flex-direction: row !important;
+	-ms-flex-pack: center !important;
+	-ms-flex-align: center !important;
+	display: flex !important;
+	flex-direction: row !important;
+	align-self: center !important;
+	align-items: center !important;
 }
-#body-login footer, #body-login .push {
-	height: 70px;
-}
+
 
 /* round profile photos */
 .avatar,
@@ -948,35 +1022,6 @@ div.crumb:active {
 	font-weight: 600;
 	padding: 13px;
 	margin: -13px;
-}
-
-/* Force constant vertical height for login box over all devices */
-#body-login .wrapper {
-	min-height: 100vh; /* fix IE11 */
-	display: -webkit-box !important;
-	-webkit-box-orient: horizontal !important;
-	-webkit-box-pack: center !important;
-	-webkit-box-align: center !important;
-	display: -webkit-flex !important;
-	-webkit-flex-direction: row !important;
-	-webkit-align-self: center !important;
-	-webkit-align-items: center !important;
-	display: -moz-box !important;
-	-moz-box-orient: horizontal !important;
-	-moz-box-pack: center !important;
-	-moz-box-align: center !important;
-	display: -ms-flexbox !important;
-	-ms-flex-direction: row !important;
-	-ms-flex-pack: center !important;
-	-ms-flex-align: center !important;
-	display: flex !important;
-	flex-direction: row !important;
-	align-self: center !important;
-	align-items: center !important;
-}
-
-#body-login .v-align {
-	margin-top: -120px;
 }
 
 /* LEGACY FIX only - do not use fieldsets for settings */
