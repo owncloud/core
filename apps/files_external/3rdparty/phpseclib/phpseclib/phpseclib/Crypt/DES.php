@@ -613,7 +613,7 @@ class DES extends BlockCipher
     {
         if ($this->key_length_max == 8) {
             if ($engine == self::ENGINE_OPENSSL) {
-                self::$cipher_name_openssl_ecb = 'des-ecb';
+                $this->cipher_name_openssl_ecb = 'des-ecb';
                 $this->cipher_name_openssl = 'des-' . $this->openssl_translate_mode();
             }
         }

@@ -640,7 +640,7 @@ class SSH2
      * @see self::exec()
      * @access private
      */
-    var $window_resize = 0x40000000;
+    private $window_resize = 0x40000000;
 
     /**
      * Window size, server to client
@@ -729,7 +729,7 @@ class SSH2
      * @see self::setKeepAlive()
      * @access private
      */
-    var $keepAlive;
+    private $keepAlive;
 
     /**
      * Real-time log file pointer
@@ -4520,7 +4520,7 @@ class SSH2
         foreach ($engines as $engine) {
             foreach ($algos as $algo) {
                 $obj = self::encryption_algorithm_to_crypt_instance($algo);
-                if ($obj instanceof Rijndael ) {
+                if ($obj instanceof Rijndael) {
                     $obj->setKeyLength(preg_replace('#[^\d]#', '', $algo));
                 }
                 switch ($algo) {

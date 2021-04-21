@@ -298,7 +298,7 @@ class RC2 extends BlockCipher
                 if ($this->current_key_length != 128 || strlen($this->orig_key) < 16) {
                     return false;
                 }
-                self::$cipher_name_openssl_ecb = 'rc2-ecb';
+                $this->cipher_name_openssl_ecb = 'rc2-ecb';
                 $this->cipher_name_openssl = 'rc2-' . $this->openssl_translate_mode();
         }
 

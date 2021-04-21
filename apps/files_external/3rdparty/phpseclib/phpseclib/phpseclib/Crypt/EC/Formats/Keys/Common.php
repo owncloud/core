@@ -449,7 +449,7 @@ trait Common
              *   - neither the curve or the base point are generated verifiably randomly.
              * ecdpVer2:
              *   - curve and base point are generated verifiably at random and curve.seed is present
-             * ecdpVer3: 
+             * ecdpVer3:
              *   - base point is generated verifiably at random but curve is not. curve.seed is present
              */
             // other (optional) parameters can be calculated using the methods discused at

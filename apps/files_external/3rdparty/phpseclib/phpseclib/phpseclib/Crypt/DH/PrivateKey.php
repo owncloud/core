@@ -47,7 +47,7 @@ class PrivateKey extends DH
      * Returns the public key
      *
      * @access public
-     * @return DH
+     * @return DH\PublicKey
      */
     public function getPublicKey()
     {

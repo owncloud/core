@@ -272,7 +272,7 @@ class SFTP extends SSH2
      * @var array
      * @access private
      */
-    var $requestBuffer = array();
+    private $requestBuffer = array();
 
     /**
      * Preserve timestamps on file downloads / uploads
@@ -282,7 +282,7 @@ class SFTP extends SSH2
      * @var bool
      * @access private
      */
-    var $preserveTime = false;
+    private $preserveTime = false;
 
     /**
      * Default Constructor.
