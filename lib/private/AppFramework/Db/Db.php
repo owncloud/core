@@ -208,6 +208,13 @@ class Db implements IDb {
 	/**
 	 * @inheritdoc
 	 */
+	public function getDatabaseVersionString() {
+		return $this->connection->getDatabaseVersionString();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	public function dropTable($table) {
 		$this->connection->dropTable($table);
 	}
