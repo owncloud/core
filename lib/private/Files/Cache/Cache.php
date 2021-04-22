@@ -598,30 +598,48 @@ class Cache implements ICache {
 
 		$sourcePath .= '/';
 		$targetPath .= '/';
+
+		$sql = null;
+		$sqlParams = [
+			'sourceStorageId' => $sourceStorageId,
+			'sourcePath' => $sourcePath,
+			'targetStorageId' => $targetStorageId,
+			'targetPath' => $targetPath,
+			'sourcePathLike' => $this->connection->escapeLikeParameter($sourcePath) . '%'
+		];
 		switch ($platformName) {
 			case 'oracle':
 				if (\intval($versionArray[0]) < 12) {
-					$sql = 'UPDATE `*PREFIX*filecache` SET `storage` = ?, `path` = REPLACE(`path`, ?, ?), `path_hash` = LOWER(dbms_obfuscation_toolkit.md5(input => UTL_RAW.cast_to_raw(REPLACE(`path`, ?, ?)))) WHERE `storage` = ? AND `path` LIKE ?';
+					$sql = 'UPDATE `*PREFIX*filecache`
+						SET `storage` = :targetStorageId,
+							`path` = REPLACE(`path`, :sourcePath, :targetPath),
+							`path_hash` = LOWER(dbms_obfuscation_toolkit.md5(input => UTL_RAW.cast_to_raw(REPLACE(`path`, :sourcePath, :targetPath))))
+						WHERE `storage` = :sourceStorageId
+						AND `path` LIKE :sourcePathLike';
 				} else {
-					$sql = 'UPDATE `*PREFIX*filecache` SET `storage` = ?, `path` = REPLACE(`path`, ?, ?), `path_hash` = LOWER(standard_hash(REPLACE(`path`, ?, ?), \'MD5\')) WHERE `storage` = ? AND `path` LIKE ?';
+					$sql = 'UPDATE `*PREFIX*filecache`
+						SET `storage` = :targetStorageId,
+							`path` = REPLACE(`path`, :sourcePath, :targetPath),
+							`path_hash` = LOWER(standard_hash(REPLACE(`path`, :sourcePath, :targetPath), \'MD5\'))
+						WHERE `storage` = :sourceStorageId
+						AND `path` LIKE :sourcePathLike';
 				}
 				break;
 			case 'mysql':
 			case 'postgresql':
-				$sql = 'UPDATE `*PREFIX*filecache` SET `storage` = ?, `path` = REPLACE(`path`, ?, ?), `path_hash` = MD5(REPLACE(`path`, ?, ?)) WHERE `storage` = ? AND `path` LIKE ?';
+				$sql = 'UPDATE `*PREFIX*filecache`
+					SET `storage` = :targetStorageId,
+						`path` = REPLACE(`path`, :sourcePath, :targetPath),
+						`path_hash` = MD5(REPLACE(`path`, :sourcePath, :targetPath))
+					WHERE `storage` = :sourceStorageId
+					AND `path` LIKE :sourcePathLike';
+				break;
 		}
 
 		// MariaDB should be included as mysql
-		if (\in_array($platformName, ['oracle', 'mysql', 'postgresql'], true)) {
-			$this->connection->executeQuery($sql, [
-				$targetStorageId,
-				$sourcePath,
-				$targetPath,
-				$sourcePath,
-				$targetPath,
-				$sourceStorageId,
-				$this->connection->escapeLikeParameter($sourcePath) . '%'
-			]);
+		// if there is an (optimized) sql query with the parameters, run it
+		if (isset($sql, $sqlParams)) {
+			$this->connection->executeQuery($sql, $sqlParams);
 			return;
 		}
 

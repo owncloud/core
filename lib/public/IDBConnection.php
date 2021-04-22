@@ -245,6 +245,19 @@ interface IDBConnection {
 	public function getDatabasePlatform();
 
 	/**
+	 * Get the database version as string
+	 *
+	 * This method depends on the database drive and might not return accurate information.
+	 * An explicit server version could have been configured in the database driver, or the
+	 * driver might not be able to determine the version
+	 *
+	 * @return string|null the database version or null if the database driver can't
+	 * determine the version
+	 * @since 10.7.1
+	 */
+	public function getDatabaseVersionString();
+
+	/**
 	 * Drop a table from the database if it exists
 	 *
 	 * @param string $table table name without the prefix
