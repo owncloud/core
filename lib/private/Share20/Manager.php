@@ -362,20 +362,36 @@ class Manager implements IManager {
 		 */
 		if ($this->userSession !== null && $this->userSession->getUser() !== null &&
 			$share->getShareOwner() !== $this->userSession->getUser()->getUID()) {
-			// retrieve received share node $shareFileNode being reshared with $share
+			// retrieve received share node mounts $shareFileNodes being reshared with $share
+			// originating from <<exactly>> the same file/folder node, by using getById($node, $first=false)
 			$userFolder = $this->rootFolder->getUserFolder($share->getSharedBy());
-			$shareFileNodes = $userFolder->getById($shareNode->getId(), true);
-			$shareFileNode = $shareFileNodes[0] ?? null;
-			if ($shareFileNode) {
-				$shareFileStorage = $shareFileNode->getStorage();
-				if ($shareFileStorage->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
-					// if $shareFileNode is an incoming federated share, use share node permission directly
+			$shareFileNodes = $userFolder->getById($shareNode->getId(), false);
+
+			// if there are many mount points for exact same file/folder, e.g. due to multiple group reshares
+			// coming from different users or subfolders, take:
+			// - in case of exact match, first (reshare from different users should use first found node)
+			// - longest file node path indicates reshare originates
+			//   from parent folder, and is not reshared subfolder that would contain lower or equal permission by design
+			\usort($shareFileNodes, function (\OCP\Files\Node $first, \OCP\Files\Node $second) {
+				if (\strcmp($first->getPath(), $second->getPath()) < 0) {
+					// first is shorther, take second
+					return -1;
+				}
+				// take first that is exact or longer
+				return 1;
+			});
+
+			$parentShareNode = $shareFileNodes[0] ?? null;
+			if ($parentShareNode) {
+				$parentShareFileStorage = $parentShareNode->getStorage();
+				if ($parentShareFileStorage->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
+					// if $parentShareNode is an incoming federated share, use share node permission directly
 					$maxPermissions = $shareNode->getPermissions();
-				} elseif ($shareFileStorage->instanceOfStorage('OCA\Files_Sharing\SharedStorage')) {
-					// if $shareFileNode is user/group share, use supershare permissions
-					/** @var \OCA\Files_Sharing\SharedStorage $shareFileStorage */
-					'@phan-var \OCA\Files_Sharing\SharedStorage $shareFileStorage';
-					$parentShare = $shareFileStorage->getShare();
+				} elseif ($parentShareFileStorage->instanceOfStorage('OCA\Files_Sharing\SharedStorage')) {
+					// if $parentShareNode is user/group share, use supershare permissions
+					/** @var \OCA\Files_Sharing\SharedStorage $parentShareFileStorage */
+					'@phan-var \OCA\Files_Sharing\SharedStorage $parentShareFileStorage';
+					$parentShare = $parentShareFileStorage->getShare();
 					$maxPermissions = $parentShare->getPermissions();
 					$requiredAttributes = $parentShare->getAttributes();
 				}
