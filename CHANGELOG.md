@@ -12,6 +12,7 @@ Summary
 * Bugfix - Fix mispositioned ui elements after leaving viewerMode: [#38547](https://github.com/owncloud/core/issues/38547)
 * Bugfix - Creating self group-reshare should not not share to self: [#38581](https://github.com/owncloud/core/pull/38581)
 * Bugfix - Check quota on the necessary move operations: [#38591](https://github.com/owncloud/core/pull/38591)
+* Bugfix - When validating rereshare permission make sure to check parent mountpoint: [#4497](https://github.com/owncloud/enterprise/issues/4497)
 * Change - Update Symfony components to 4.4.21: [#38598](https://github.com/owncloud/core/pull/38598)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
@@ -58,6 +59,17 @@ Details
    resolved.
 
    https://github.com/owncloud/core/pull/38591
+
+* Bugfix - When validating rereshare permission make sure to check parent mountpoint: [#4497](https://github.com/owncloud/enterprise/issues/4497)
+
+   When receiving reshare for a group from parent folder and subfolder of that folder with lower
+   permission, further reshares were subject to subfolder reshare permissions due to issue with
+   resolving parent mountpoint. With this change we now ensure to take parent mountpoint out of
+   received mountpoints
+
+   https://github.com/owncloud/enterprise/issues/4497
+   https://github.com/owncloud/enterprise/issues/4382
+   https://github.com/owncloud/core/pull/38625
 
 * Change - Update Symfony components to 4.4.21: [#38598](https://github.com/owncloud/core/pull/38598)
 
