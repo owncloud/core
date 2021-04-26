@@ -596,16 +596,13 @@ class Cache implements ICache {
 		$versionString = $this->connection->getDatabaseVersionString();
 		$versionArray = \explode('.', $versionString);
 
-		$sourcePath .= '/';
-		$targetPath .= '/';
-
 		$sql = null;
 		$sqlParams = [
 			'sourceStorageId' => $sourceStorageId,
-			'sourcePath' => $sourcePath,
+			'sourcePath' => "$sourcePath/",
 			'targetStorageId' => $targetStorageId,
-			'targetPath' => $targetPath,
-			'sourcePathLike' => $this->connection->escapeLikeParameter($sourcePath) . '%'
+			'targetPath' => "$targetPath/",
+			'sourcePathLike' => $this->connection->escapeLikeParameter("$sourcePath/") . '%'
 		];
 		switch ($platformName) {
 			case 'oracle':
@@ -648,7 +645,6 @@ class Cache implements ICache {
 		$result = $this->connection->executeQuery($sql, [$sourceStorageId, $this->connection->escapeLikeParameter($sourcePath) . '/%']);
 		$childEntries = $result->fetchAll();
 		$sourceLength = \strlen($sourcePath);
-		$this->connection->beginTransaction();
 		$query = $this->connection->prepare('UPDATE `*PREFIX*filecache` SET `storage` = ?, `path` = ?, `path_hash` = ? WHERE `fileid` = ?');
 
 		foreach ($childEntries as $child) {
