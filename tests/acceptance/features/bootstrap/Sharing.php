@@ -1643,7 +1643,7 @@ trait Sharing {
 	 * @When /^user "([^"]*)" gets the info of the last share in language "([^"]*)" using the sharing API$/
 	 * @When /^user "([^"]*)" gets the info of the last share using the sharing API$/
 	 *
-	 * @param string $user
+	 * @param string $user username that requests the information (might not be the user that has initiated the share)
 	 * @param string $language
 	 *
 	 * @return void
@@ -1652,7 +1652,7 @@ trait Sharing {
 	public function userGetsInfoOfLastShareUsingTheSharingApi($user, $language=null) {
 		$share_id = $this->getLastShareIdOf($user);
 		$language = TranslationHelper::getLanguage($language);
-		$this->getShareData($user, $share_id, $language);
+		$this->getShareData($user, $this->lastShareData->data[0]->id, $language);
 	}
 
 	/**
