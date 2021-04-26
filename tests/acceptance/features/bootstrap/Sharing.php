@@ -1650,7 +1650,6 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function userGetsInfoOfLastShareUsingTheSharingApi($user, $language=null) {
-		$share_id = $this->getLastShareIdOf($user);
 		$language = TranslationHelper::getLanguage($language);
 		$this->getShareData($user, $this->lastShareData->data[0]->id, $language);
 	}
@@ -1944,7 +1943,7 @@ trait Sharing {
 	) {
 		$user = $this->getActualUsername($user);
 		$this->verifyTableNodeRows($body, [], $this->shareResponseFields);
-		$this->userGetsInfoOfLastShareUsingTheSharingApi($user);
+		$this->getShareData($user, $this->lastShareData->data[0]->id);
 		$this->theHTTPStatusCodeShouldBe(
 			200,
 			"Error getting info of last share for user $user"
