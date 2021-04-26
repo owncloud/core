@@ -814,13 +814,18 @@ trait Sharing {
 	/**
 	 * @param string $user
 	 * @param TableNode|null $body
+	 * @param string|null $shareOwner
 	 *
 	 * @return void
 	 */
-	public function updateLastShareWithSettings($user, $body) {
+	public function updateLastShareWithSettings($user, $body, $shareOwner = null) {
 		$user = $this->getActualUsername($user);
 
-		$share_id = $this->lastShareData->data[0]->id;
+		if ($shareOwner === null) {
+			$share_id = $this->lastShareData->data[0]->id;
+		} else {
+			$share_id = $this->getLastShareIdOf($shareOwner);
+		}
 
 		$this->verifyTableNodeRows(
 			$body,
@@ -877,6 +882,20 @@ trait Sharing {
 	 */
 	public function userHasUpdatedTheLastShareWith($user, $body) {
 		$this->updateLastShareWithSettings($user, $body);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has updated the last share of "([^"]*)" with$/
+	 *
+	 * @param string $user
+	 * @param string $shareOwner
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function userHasUpdatedTheLastShareOfWith($user, $shareOwner, $body) {
+		$this->updateLastShareWithSettings($user, $body, $shareOwner);
 		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
