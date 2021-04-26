@@ -1649,9 +1649,6 @@ trait Sharing {
 	 */
 	public function getLastShareIdOf($user) {
 		$user = $this->getActualUsername($user);
-		if (isset($this->lastShareData->data[0]->id)) {
-			return $this->lastShareData->data[0]->id;
-		}
 
 		$this->getListOfShares($user);
 		$id = $this->extractLastSharedIdFromLastResponse();
