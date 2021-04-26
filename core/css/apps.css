@@ -634,10 +634,10 @@ em {
 .tabHeaders .tabHeader.selected {
 	font-weight: 600;
 }
-.tabHeaders .tabHeader.selected,
-.tabHeaders .tabHeader:hover {
-	border-bottom: 1px solid #333;
+.tabHeaders .tabHeader.selected{
+	background-color: rgba(240, 240, 240, .9);
 }
+
 .tabHeaders .tabHeader.selected,
 .tabHeaders .tabHeader.selected a,
 .tabHeaders .tabHeader:hover,
