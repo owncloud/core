@@ -200,22 +200,32 @@ class SharedMount extends MountPoint implements MoveableMount {
 		}
 
 		$shareManager = \OC::$server->getShareManager();
-		// FIXME: make it stop earlier in '/$userId/files'
-		while ($targetNode !== null && $targetNode->getPath() !== '/') {
-			$shares = $shareManager->getSharesByPath($targetNode);
-
-			foreach ($shares as $share) {
-				if ($this->user === $share->getShareOwner()) {
-					\OCP\Util::writeLog('files_sharing',
-						'It is not allowed to move one mount point into a shared folder',
-						\OCP\Util::DEBUG);
-					return false;
-				}
-			}
-
-			$targetNode = $targetNode->getParent();
+		$targetNodePath = $targetNode->getPath();
+		$userRootPath = "/{$this->user}/files";
+		if (\substr($targetNodePath, 0, \strlen($userRootPath)) === $userRootPath) {
+			$targetNodePath = \substr($targetNodePath, \strlen($userRootPath));
 		}
 
+		$shareTypes = [\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_GROUP];
+		foreach ($shareTypes as $shareType) {
+			$offset = 0;
+			$limit = 50;
+			do {
+				// check the shares instead of checking parent folders to prevent triggering a file scan
+				$shares = $shareManager->getSharesBy($this->user, $shareType, null, true, $limit, $offset);
+				foreach ($shares as $share) {
+					$shareTarget = $share->getTarget();
+					if ($shareTarget === $targetNodePath ||
+							\substr($targetNodePath, 0, \strlen("$shareTarget/")) === "$shareTarget/") {
+						\OCP\Util::writeLog('files_sharing',
+							'It is not allowed to move one mount point into a shared folder',
+							\OCP\Util::DEBUG);
+						return false;
+					}
+				}
+				$offset += $limit;
+			} while (\count($shares) >= $limit);
+		}
 		return true;
 	}
 
