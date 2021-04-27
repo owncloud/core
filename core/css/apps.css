@@ -632,7 +632,12 @@ em {
 	display: block;
 	flex: 1 1 80px;
 	text-align: center;
-	border-bottom: 1px solid #eee;
+	border-bottom: 2px solid #eee;
+	transition: all .2s;
+}
+
+.tabHeader a {
+	display: block;
 	padding-bottom: 5px;
 	padding-top: 5px;
 }
