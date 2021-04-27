@@ -640,15 +640,24 @@ em {
 	display: block;
 	padding-bottom: 5px;
 	padding-top: 5px;
+	opacity: .57;
+	cursor: pointer;
 }
 
 .tabHeader:hover{
 	border-bottom: 2px solid #999;
+	color: #000;
 }
 
 .tabHeader.selected{
 	border-bottom: 2px solid #1b223d;
 	font-weight: 600;
+	color: #000;
+}
+
+.tabHeader.selected,
+.tabHeader:hover{
+	opacity: 1;
 }
 
 /* So called subtabs */
