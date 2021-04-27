@@ -621,28 +621,27 @@ em {
 
 /* generic tab styles */
 .tabHeaders {
+	display: flex;
+	justify-content: stretch;
 	margin: 15px;
 }
-.tabHeaders .tabHeader {
-	float: left;
-	padding: 5px;
-	cursor: pointer;
+
+.tabHeader{
+	display: block;
+	flex: 1 1;
+	min-width: 0;
+	text-align: center;
 }
-.tabHeaders .tabHeader, .tabHeaders .tabHeader a {
-	color: #888;
+
+.tabHeader:hover{
+	border-bottom: 2px solid #999;
+
 }
-.tabHeaders .tabHeader.selected {
+
+.tabHeader.selected{
+	border-bottom: 2px solid #1b223d;
 	font-weight: 600;
-}
-.tabHeaders .tabHeader.selected,
-.tabHeaders .tabHeader:hover {
-	border-bottom: 1px solid #333;
-}
-.tabHeaders .tabHeader.selected,
-.tabHeaders .tabHeader.selected a,
-.tabHeaders .tabHeader:hover,
-.tabHeaders .tabHeader:hover a {
-	color: #000;
+
 }
 
 /* So called subtabs */
