@@ -185,9 +185,18 @@ class SharedMount extends MountPoint implements MoveableMount {
 	 * @return bool true if allowed, false otherwise
 	 */
 	public function isTargetAllowed($target) {
+		$currentMount = $this->getMountPoint();
+		// note: $currentMount has a trailing slash. It doesn't matter for the check below
+		$isRename = \dirname($currentMount) === \dirname($target);
+
 		list($targetStorage, $targetInternalPath) = \OC\Files\Filesystem::resolvePath($target);
 		// note: cannot use the view because the target is already locked
 		$fileId = (int)$targetStorage->getCache()->getId($targetInternalPath);
+		if ($isRename) {
+			// if it's a rename, it's allowed if the target doesn't exists
+			return $fileId === -1;
+		}
+
 		if ($fileId === -1) {
 			// target might not exist, need to check parent instead
 			$fileId = (int)$targetStorage->getCache()->getId(\dirname($targetInternalPath));
