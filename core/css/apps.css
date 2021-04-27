@@ -634,6 +634,7 @@ em {
 	text-align: center;
 	border-bottom: 1px solid #eee;
 	padding-bottom: 5px;
+	padding-top: 5px;
 }
 
 .tabHeader:hover{
