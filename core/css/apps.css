@@ -624,15 +624,16 @@ em {
 	display: flex;
 	justify-content: stretch;
 	margin: 15px;
+	flex-wrap: wrap;
+	flex-direction: row;
 }
 
 .tabHeader{
 	display: block;
-	flex: 1 1;
-	min-width: 0;
+	flex: 1 1 80px;
 	text-align: center;
 	border-bottom: 1px solid #eee;
-	padding: 5px;
+	padding-bottom: 5px;
 }
 
 .tabHeader:hover{
@@ -642,7 +643,6 @@ em {
 .tabHeader.selected{
 	border-bottom: 2px solid #1b223d;
 	font-weight: 600;
-
 }
 
 /* So called subtabs */
