@@ -160,7 +160,7 @@ Feature: files and folders exist in the trashbin after being deleted
     Given using <dav-path> DAV path
     And user "testtrashbin101" has been created with default attributes and without skeleton files
     And user "testtrashbin101" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
-    And user "testtrashbin101" has uploaded file "filesForUpload/textfile.txt" to "/textfile1.txt"
+    And user "testtrashbin101" has uploaded file "filesForUpload/textfile.txt" to "/textfile2.txt"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "testtrashbin101" has deleted file "/textfile0.txt"
     And user "testtrashbin101" has deleted file "/textfile2.txt"
@@ -180,7 +180,7 @@ Feature: files and folders exist in the trashbin after being deleted
     Given using <dav-path> DAV path
     And user "testtrashbin102" has been created with default attributes and without skeleton files
     And user "testtrashbin102" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
-    And user "testtrashbin102" has uploaded file "filesForUpload/textfile.txt" to "/textfile1.txt"
+    And user "testtrashbin102" has uploaded file "filesForUpload/textfile.txt" to "/textfile2.txt"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "testtrashbin102" has deleted file "/textfile0.txt"
     And user "testtrashbin102" has deleted file "/textfile2.txt"
