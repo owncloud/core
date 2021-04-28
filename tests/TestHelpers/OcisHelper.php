@@ -78,6 +78,7 @@ class OcisHelper {
 		if ($storageDriver === false) {
 			return "OWNCLOUD";
 		}
+		$storageDriver = \strtoupper($storageDriver);
 		if ($storageDriver !== "OCIS" && $storageDriver !== "EOS" && $storageDriver !== "OWNCLOUD" && $storageDriver !== "S3NG") {
 			throw new \Exception(
 				"Invalid storage driver. " .
@@ -95,6 +96,9 @@ class OcisHelper {
 	public static function deleteRevaUserData($user = "") {
 		$deleteCmd = self::getDeleteUserDataCommand();
 		if ($deleteCmd === false) {
+			if (self::getStorageDriver() === "OWNCLOUD") {
+				self::recurseRmdir(self::getOcisRevaDataRoot() . $user);
+			}
 			return;
 		}
 		if (self::getStorageDriver() === "EOS") {
