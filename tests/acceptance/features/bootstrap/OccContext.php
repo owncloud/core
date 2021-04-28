@@ -2402,7 +2402,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator deletes last background job :job using the occ command
+	 * @When the administrator deletes the last background job :job using the occ command
 	 *
 	 * @param string $job
 	 *

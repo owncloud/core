@@ -25,6 +25,6 @@ Feature: get status, delete and execute jobs in background queue
   Scenario: delete one of the job in background queue
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has deleted file "/textfile0.txt"
-    When the administrator deletes last background job "OC\Command\CommandJob" using the occ command
+    When the administrator deletes the last background job "OC\Command\CommandJob" using the occ command
     Then the command should have been successful
     And the last deleted background job "OC\Command\CommandJob" should not be listed in the background jobs queue
