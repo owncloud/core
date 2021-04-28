@@ -95,7 +95,6 @@ class OcisHelper {
 	public static function deleteRevaUserData($user = "") {
 		$deleteCmd = self::getDeleteUserDataCommand();
 		if ($deleteCmd === false) {
-			self::recurseRmdir(self::getOcisRevaDataRoot() . $user);
 			return;
 		}
 		if (self::getStorageDriver() === "EOS") {
