@@ -242,7 +242,6 @@ Feature: checksums
   @local_storage @notToImplementOnOCIS @skipOnEncryptionType:user-keys @encryption-issue-42
   Scenario Outline: Uploaded file to external storage should have the same checksum when downloaded
     Given using <dav_version> DAV path
-    And file "/local_storage/chksumtst.txt" has been deleted for user "Alice"
     And user "Alice" has uploaded file with checksum "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399" and content "Some Text" to "/local_storage/chksumtst.txt"
     When user "Alice" downloads file "/local_storage/chksumtst.txt" using the WebDAV API
     Then the following headers should be set
