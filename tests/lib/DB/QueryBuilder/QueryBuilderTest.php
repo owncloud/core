@@ -113,12 +113,12 @@ class QueryBuilderTest extends \Test\TestCase {
 			// FIXME Remove this once Doctrine/DBAL is >2.5.1:
 			// FIXME See https://github.com/doctrine/dbal/pull/782
 			$this->queryBuilder->setMaxResults(100);
-		}
 
-		$this->assertSame(
-			$firstResult,
-			$this->queryBuilder->getFirstResult()
-		);
+			$this->assertSame(
+				$firstResult,
+				$this->queryBuilder->getFirstResult()
+			);
+		}
 
 		$rows = $this->getTestingRows($this->queryBuilder);
 
@@ -370,8 +370,8 @@ class QueryBuilderTest extends \Test\TestCase {
 
 	public function dataDelete() {
 		return [
-			['data', null, ['table' => '`*PREFIX*data`', 'alias' => null], '`oc_data`'],
-			['data', 't', ['table' => '`*PREFIX*data`', 'alias' => 't'], '`oc_data` t'],
+			['data', null, ['table' => '`oc_data`', 'alias' => null], '`oc_data`'],
+			['data', 't', ['table' => '`oc_data`', 'alias' => 't'], '`oc_data` t'],
 		];
 	}
 
@@ -399,8 +399,8 @@ class QueryBuilderTest extends \Test\TestCase {
 
 	public function dataUpdate() {
 		return [
-			['data', null, ['table' => '`*PREFIX*data`', 'alias' => null], '`oc_data`'],
-			['data', 't', ['table' => '`*PREFIX*data`', 'alias' => 't'], '`oc_data` t'],
+			['data', null, ['table' => '`oc_data`', 'alias' => null], '`oc_data`'],
+			['data', 't', ['table' => '`oc_data`', 'alias' => 't'], '`oc_data` t'],
 		];
 	}
 
@@ -428,7 +428,7 @@ class QueryBuilderTest extends \Test\TestCase {
 
 	public function dataInsert() {
 		return [
-			['data', ['table' => '`*PREFIX*data`'], '`oc_data`'],
+			['data', ['table' => '`oc_data`'], '`oc_data`'],
 		];
 	}
 
@@ -455,15 +455,15 @@ class QueryBuilderTest extends \Test\TestCase {
 
 	public function dataFrom() {
 		return [
-			['data', null, null, null, [['table' => '`*PREFIX*data`', 'alias' => null]], '`oc_data`'],
-			['data', 't', null, null, [['table' => '`*PREFIX*data`', 'alias' => 't']], '`oc_data` t'],
+			['data', null, null, null, [['table' => '`oc_data`', 'alias' => null]], '`oc_data`'],
+			['data', 't', null, null, [['table' => '`oc_data`', 'alias' => 't']], '`oc_data` t'],
 			['data1', null, 'data2', null, [
-				['table' => '`*PREFIX*data1`', 'alias' => null],
-				['table' => '`*PREFIX*data2`', 'alias' => null]
+				['table' => '`oc_data1`', 'alias' => null],
+				['table' => '`oc_data2`', 'alias' => null]
 			], '`oc_data1`, `oc_data2`'],
 			['data', 't1', 'data', 't2', [
-				['table' => '`*PREFIX*data`', 'alias' => 't1'],
-				['table' => '`*PREFIX*data`', 'alias' => 't2']
+				['table' => '`oc_data`', 'alias' => 't1'],
+				['table' => '`oc_data`', 'alias' => 't2']
 			], '`oc_data` t1, `oc_data` t2'],
 		];
 	}
@@ -499,17 +499,17 @@ class QueryBuilderTest extends \Test\TestCase {
 		return [
 			[
 				'd1', 'data2', null, null,
-				['d1' => [['joinType' => 'inner', 'joinTable' => '`*PREFIX*data2`', 'joinAlias' => null, 'joinCondition' => null]]],
+				['d1' => [['joinType' => 'inner', 'joinTable' => '`oc_data2`', 'joinAlias' => null, 'joinCondition' => null]]],
 				'`oc_data1` d1 INNER JOIN `oc_data2` '
 			],
 			[
 				'd1', 'data2', 'd2', null,
-				['d1' => [['joinType' => 'inner', 'joinTable' => '`*PREFIX*data2`', 'joinAlias' => 'd2', 'joinCondition' => null]]],
+				['d1' => [['joinType' => 'inner', 'joinTable' => '`oc_data2`', 'joinAlias' => 'd2', 'joinCondition' => null]]],
 				'`oc_data1` d1 INNER JOIN `oc_data2` d2'
 			],
 			[
 				'd1', 'data2', 'd2', 'd1.`field1` = d2.`field2`',
-				['d1' => [['joinType' => 'inner', 'joinTable' => '`*PREFIX*data2`', 'joinAlias' => 'd2', 'joinCondition' => 'd1.`field1` = d2.`field2`']]],
+				['d1' => [['joinType' => 'inner', 'joinTable' => '`oc_data2`', 'joinAlias' => 'd2', 'joinCondition' => 'd1.`field1` = d2.`field2`']]],
 				'`oc_data1` d1 INNER JOIN `oc_data2` d2 ON d1.`field1` = d2.`field2`'
 			],
 
@@ -580,17 +580,17 @@ class QueryBuilderTest extends \Test\TestCase {
 		return [
 			[
 				'd1', 'data2', null, null,
-				['d1' => [['joinType' => 'left', 'joinTable' => '`*PREFIX*data2`', 'joinAlias' => null, 'joinCondition' => null]]],
+				['d1' => [['joinType' => 'left', 'joinTable' => '`oc_data2`', 'joinAlias' => null, 'joinCondition' => null]]],
 				'`oc_data1` d1 LEFT JOIN `oc_data2` '
 			],
 			[
 				'd1', 'data2', 'd2', null,
-				['d1' => [['joinType' => 'left', 'joinTable' => '`*PREFIX*data2`', 'joinAlias' => 'd2', 'joinCondition' => null]]],
+				['d1' => [['joinType' => 'left', 'joinTable' => '`oc_data2`', 'joinAlias' => 'd2', 'joinCondition' => null]]],
 				'`oc_data1` d1 LEFT JOIN `oc_data2` d2'
 			],
 			[
 				'd1', 'data2', 'd2', 'd1.`field1` = d2.`field2`',
-				['d1' => [['joinType' => 'left', 'joinTable' => '`*PREFIX*data2`', 'joinAlias' => 'd2', 'joinCondition' => 'd1.`field1` = d2.`field2`']]],
+				['d1' => [['joinType' => 'left', 'joinTable' => '`oc_data2`', 'joinAlias' => 'd2', 'joinCondition' => 'd1.`field1` = d2.`field2`']]],
 				'`oc_data1` d1 LEFT JOIN `oc_data2` d2 ON d1.`field1` = d2.`field2`'
 			],
 		];
@@ -630,17 +630,17 @@ class QueryBuilderTest extends \Test\TestCase {
 		return [
 			[
 				'd1', 'data2', null, null,
-				['d1' => [['joinType' => 'right', 'joinTable' => '`*PREFIX*data2`', 'joinAlias' => null, 'joinCondition' => null]]],
+				['d1' => [['joinType' => 'right', 'joinTable' => '`oc_data2`', 'joinAlias' => null, 'joinCondition' => null]]],
 				'`oc_data1` d1 RIGHT JOIN `oc_data2` '
 			],
 			[
 				'd1', 'data2', 'd2', null,
-				['d1' => [['joinType' => 'right', 'joinTable' => '`*PREFIX*data2`', 'joinAlias' => 'd2', 'joinCondition' => null]]],
+				['d1' => [['joinType' => 'right', 'joinTable' => '`oc_data2`', 'joinAlias' => 'd2', 'joinCondition' => null]]],
 				'`oc_data1` d1 RIGHT JOIN `oc_data2` d2'
 			],
 			[
 				'd1', 'data2', 'd2', 'd1.`field1` = d2.`field2`',
-				['d1' => [['joinType' => 'right', 'joinTable' => '`*PREFIX*data2`', 'joinAlias' => 'd2', 'joinCondition' => 'd1.`field1` = d2.`field2`']]],
+				['d1' => [['joinType' => 'right', 'joinTable' => '`oc_data2`', 'joinAlias' => 'd2', 'joinCondition' => 'd1.`field1` = d2.`field2`']]],
 				'`oc_data1` d1 RIGHT JOIN `oc_data2` d2 ON d1.`field1` = d2.`field2`'
 			],
 		];
@@ -1152,12 +1152,12 @@ class QueryBuilderTest extends \Test\TestCase {
 
 	public function dataGetTableName() {
 		return [
-			['*PREFIX*table', null, '`*PREFIX*table`'],
-			['*PREFIX*table', true, '`*PREFIX*table`'],
+			['*PREFIX*table', null, '`oc_table`'],
+			['*PREFIX*table', true, '`oc_table`'],
 			['*PREFIX*table', false, '`*PREFIX*table`'],
 
-			['table', null, '`*PREFIX*table`'],
-			['table', true, '`*PREFIX*table`'],
+			['table', null, '`oc_table`'],
+			['table', true, '`oc_table`'],
 			['table', false, '`table`'],
 		];
 	}
