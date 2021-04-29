@@ -40,7 +40,7 @@
     "handlebars": "^4.7.2",
     "jasmine-core": "^2.99.1",
     "jasmine-sinon": "^0.4.0",
-    "jsdoc": "~3.6.2",
+    "jsdoc": "~3.6.6",
     "karma": "^4.1.0",
     "karma-coverage": "*",
     "karma-jasmine": "^1.1.2",
