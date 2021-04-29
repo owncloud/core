@@ -116,3 +116,19 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
+
+  Scenario Outline: After losing share permissions user can still delete a previously reshared share
+    Given using OCS API version "<ocs_api_version>"
+    And user "Alice" has created folder "/TMP"
+    And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,create,update,read"
+    And user "Brian" has shared folder "/TMP" with user "Carol" with permissions "share,create,update,read"
+    And user "Alice" has updated the last share of "Alice" with
+      | permissions | create,update,read |
+    When user "Brian" deletes the last share using the sharing API
+    And the OCS status code should be "<ocs_status_code>"
+    And user "Carol" should not have any received shares
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |

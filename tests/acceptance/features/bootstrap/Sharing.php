@@ -814,13 +814,18 @@ trait Sharing {
 	/**
 	 * @param string $user
 	 * @param TableNode|null $body
+	 * @param string|null $shareOwner
 	 *
 	 * @return void
 	 */
-	public function updateLastShareWithSettings($user, $body) {
+	public function updateLastShareWithSettings($user, $body, $shareOwner = null) {
 		$user = $this->getActualUsername($user);
 
-		$share_id = $this->lastShareData->data[0]->id;
+		if ($shareOwner === null) {
+			$share_id = $this->lastShareData->data[0]->id;
+		} else {
+			$share_id = $this->getLastShareIdOf($shareOwner);
+		}
 
 		$this->verifyTableNodeRows(
 			$body,
@@ -877,6 +882,20 @@ trait Sharing {
 	 */
 	public function userHasUpdatedTheLastShareWith($user, $body) {
 		$this->updateLastShareWithSettings($user, $body);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has updated the last share of "([^"]*)" with$/
+	 *
+	 * @param string $user
+	 * @param string $shareOwner
+	 * @param TableNode|null $body
+	 *
+	 * @return void
+	 */
+	public function userHasUpdatedTheLastShareOfWith($user, $shareOwner, $body) {
+		$this->updateLastShareWithSettings($user, $body, $shareOwner);
 		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
@@ -1624,14 +1643,18 @@ trait Sharing {
 	 * @When /^user "([^"]*)" gets the info of the last share in language "([^"]*)" using the sharing API$/
 	 * @When /^user "([^"]*)" gets the info of the last share using the sharing API$/
 	 *
-	 * @param string $user
+	 * @param string $user username that requests the information (might not be the user that has initiated the share)
 	 * @param string $language
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function userGetsInfoOfLastShareUsingTheSharingApi($user, $language=null) {
-		$share_id = $this->getLastShareIdOf($user);
+		if (isset($this->lastShareData->data[0]->id)) {
+			$share_id = $this->lastShareData->data[0]->id;
+		} else {
+			$share_id = $this->getLastShareIdOf($user);
+		}
 		$language = TranslationHelper::getLanguage($language);
 		$this->getShareData($user, $share_id, $language);
 	}
@@ -1649,9 +1672,6 @@ trait Sharing {
 	 */
 	public function getLastShareIdOf($user) {
 		$user = $this->getActualUsername($user);
-		if (isset($this->lastShareData->data[0]->id)) {
-			return $this->lastShareData->data[0]->id;
-		}
 
 		$this->getListOfShares($user);
 		$id = $this->extractLastSharedIdFromLastResponse();
@@ -1928,7 +1948,7 @@ trait Sharing {
 	) {
 		$user = $this->getActualUsername($user);
 		$this->verifyTableNodeRows($body, [], $this->shareResponseFields);
-		$this->userGetsInfoOfLastShareUsingTheSharingApi($user);
+		$this->getShareData($user, $this->lastShareData->data[0]->id);
 		$this->theHTTPStatusCodeShouldBe(
 			200,
 			"Error getting info of last share for user $user"
