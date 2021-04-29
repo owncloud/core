@@ -1,0 +1,75 @@
+version: 2
+updates:
+- package-ecosystem: composer
+  directory: "/"
+  schedule:
+    interval: weekly
+    time: "22:00"
+  open-pull-requests-limit: 10
+  reviewers:
+  - phil-davis
+  assignees:
+  - phil-davis
+  ignore:
+  - dependency-name: guzzlehttp/guzzle
+    versions:
+    - "< 7, >= 6.a"
+  - dependency-name: league/flysystem
+    versions:
+    - ">= 2.a, < 3"
+  - dependency-name: doctrine/dbal
+    versions:
+    - 2.13.0
+  - dependency-name: symfony/translation
+    versions:
+    - 4.4.21
+  - dependency-name: swiftmailer/swiftmailer
+    versions:
+    - 6.2.6
+  - dependency-name: phpseclib/phpseclib
+    versions:
+    - 3.0.2
+    - 3.0.5
+- package-ecosystem: npm
+  directory: "/build"
+  schedule:
+    interval: weekly
+    time: "22:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: jasmine-core
+    versions:
+    - ">= 3.a, < 4"
+  - dependency-name: karma-jasmine
+    versions:
+    - ">= 2.a, < 3"
+  - dependency-name: karma
+    versions:
+    - 6.0.2
+    - 6.0.4
+    - 6.1.0
+    - 6.1.1
+    - 6.2.0
+    - 6.3.1
+  - dependency-name: y18n
+    versions:
+    - 4.0.1
+  - dependency-name: sinon
+    versions:
+    - 9.2.4
+- package-ecosystem: composer
+  directory: "/apps/files_external/3rdparty"
+  schedule:
+    interval: weekly
+    time: "22:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: phpseclib/phpseclib
+    versions:
+    - 3.0.7
+  - dependency-name: icewind/smb
+    versions:
+    - 3.4.0
+  - dependency-name: icewind/streams
+    versions:
+    - 0.7.4
