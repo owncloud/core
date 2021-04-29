@@ -1098,11 +1098,18 @@ class QueryBuilder implements IQueryBuilder {
 	 * @return string
 	 */
 	protected function prefixTableName($table) {
-		if ($this->automaticTablePrefix === false || \strpos($table, '*PREFIX*') === 0) {
+		if ($this->automaticTablePrefix === false) {
 			return $table;
 		}
 
-		return 'oc_' . $table;
+		// ToDo: get the system value of dbtableprefix
+		$dbTablePrefix = 'oc_';
+
+		if (\strpos($table, '*PREFIX*') === 0) {
+			return \str_replace('*PREFIX*', $dbTablePrefix, $table);
+		}
+
+		return $dbTablePrefix . $table;
 	}
 
 	/**
