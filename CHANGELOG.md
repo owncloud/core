@@ -12,6 +12,7 @@ Summary
 * Bugfix - Fix mispositioned ui elements after leaving viewerMode: [#38547](https://github.com/owncloud/core/issues/38547)
 * Bugfix - Creating self group-reshare should not not share to self: [#38581](https://github.com/owncloud/core/pull/38581)
 * Bugfix - Check quota on the necessary move operations: [#38591](https://github.com/owncloud/core/pull/38591)
+* Bugfix - Normalize web.baseUrl before using it: [#38600](https://github.com/owncloud/core/issues/38600)
 * Bugfix - When validating rereshare permission make sure to check parent mountpoint: [#4497](https://github.com/owncloud/enterprise/issues/4497)
 * Change - Update Symfony components to 4.4.21: [#38598](https://github.com/owncloud/core/pull/38598)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
@@ -60,6 +61,14 @@ Details
    resolved.
 
    https://github.com/owncloud/core/pull/38591
+
+* Bugfix - Normalize web.baseUrl before using it: [#38600](https://github.com/owncloud/core/issues/38600)
+
+   `web.baseUrl` was used for rewriting private and public links to the new web UI without
+   normalizing it. This leads to broken authentication if the `web.baseUrl` was configured with
+   a trailing slash.
+
+   https://github.com/owncloud/core/issues/38600
 
 * Bugfix - When validating rereshare permission make sure to check parent mountpoint: [#4497](https://github.com/owncloud/enterprise/issues/4497)
 
