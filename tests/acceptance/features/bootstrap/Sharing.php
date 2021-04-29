@@ -1650,8 +1650,13 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function userGetsInfoOfLastShareUsingTheSharingApi($user, $language=null) {
+		if (isset($this->lastShareData->data[0]->id)) {
+			$share_id = $this->lastShareData->data[0]->id;
+		} else {
+			$share_id = $this->getLastShareIdOf($user);
+		}
 		$language = TranslationHelper::getLanguage($language);
-		$this->getShareData($user, $this->lastShareData->data[0]->id, $language);
+		$this->getShareData($user, $share_id, $language);
 	}
 
 	/**
