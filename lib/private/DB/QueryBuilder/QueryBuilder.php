@@ -1102,7 +1102,7 @@ class QueryBuilder implements IQueryBuilder {
 			return $table;
 		}
 
-		return '*PREFIX*' . $table;
+		return 'oc_' . $table;
 	}
 
 	/**
