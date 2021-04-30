@@ -148,5 +148,5 @@ Feature: sharing
     And user "Carol" should not have any received shares
     Examples:
       | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
       | 2               | 200             |
+      | 1               | 100             |
