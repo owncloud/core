@@ -727,7 +727,6 @@ then
 	# we know the TEST_SERVER_URL already
 	TESTING_APP_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/"
 	OCC_URL="${TESTING_APP_URL}occ"
-	DIR_URL="${TESTING_APP_URL}dir"
 	# test that server is up and running, and testing app is enabled.
 	assert_server_up ${TEST_SERVER_URL}
 	if [ "${TEST_OCIS}" != "true" ] && [ "${TEST_REVA}" != "true" ]
@@ -792,7 +791,6 @@ else
 	# The endpoint to use to do occ commands via the testing app
 	TESTING_APP_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/"
 	OCC_URL="${TESTING_APP_URL}occ"
-	DIR_URL="${TESTING_APP_URL}dir"
 
 	# Give time for the PHP dev server to become available
 	# because we want to use it to get and change settings with the testing app
