@@ -4967,7 +4967,6 @@ trait Provisioning {
 
 		if (OcisHelper::isTestingOnOcisOrReva() && $this->someUsersHaveBeenCreated()) {
 			foreach ($this->getCreatedUsers() as $user) {
-				$this->deleteAllSharesForUser($user["actualUsername"]);
 				OcisHelper::deleteRevaUserData($user["actualUsername"]);
 			}
 		} elseif (OcisHelper::isTestingOnOc10()) {
