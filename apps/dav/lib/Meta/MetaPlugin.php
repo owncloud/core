@@ -32,6 +32,7 @@ class MetaPlugin extends ServerPlugin {
 	// namespace
 	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
 	public const PATH_FOR_FILEID_PROPERTYNAME = '{http://owncloud.org/ns}meta-path-for-user';
+	const VERSION_EDITED_BY_PROPERTYNAME = '{http://owncloud.org/ns}metaversioneditedby';
 
 	/**
 	 * Reference to main server object
@@ -96,6 +97,11 @@ class MetaPlugin extends ServerPlugin {
 				}
 				$file = \current($files);
 				return $baseFolder->getRelativePath($file->getPath());
+			});
+		} elseif ($node instanceof MetaFile){
+			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME, function () use ($node) {
+				// FIXME: get from storage of the $node required data
+				return "test1@owncloud.com";
 			});
 		}
 	}
