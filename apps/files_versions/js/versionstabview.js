@@ -39,6 +39,7 @@
 		'{{#hasDetails}}' +
 		'<div class="version-details">' +
 		'<span class="size has-tooltip" title="{{altSize}}">{{humanReadableSize}}</span>' +
+		'<span class="size has-tooltip" title="{{editedBy}}">{{editedBy}}</span>' +
 		'</div>' +
 		'{{/hasDetails}}' +
 		'</div>' +
@@ -213,7 +214,8 @@
 				revertIconUrl: OC.imagePath('core', 'actions/history'),
 				previewUrl: getPreviewUrl(version),
 				revertLabel: t('files_versions', 'Restore'),
-				canRevert: (this.collection.getFileInfo().get('permissions') & OC.PERMISSION_UPDATE) !== 0
+				canRevert: (this.collection.getFileInfo().get('permissions') & OC.PERMISSION_UPDATE) !== 0,
+				editedBy: version.has('editedBy'),
 			}, version.attributes);
 		},
 

@@ -11,11 +11,26 @@
 /* global moment */
 
 (function() {
+
+	_.extend(OC.Files.Client, {
+		PROPERTY_FILEID:	'{' + OC.Files.Client.NS_OWNCLOUD + '}id',
+		PROPERTY_VERSION_EDITED_BY:	'{' + OC.Files.Client.NS_OWNCLOUD + '}metaversioneditedby',
+	});
+
 	/**
 	 * @memberof OCA.Versions
 	 */
 	var VersionCollection = OC.Backbone.Collection.extend({
 		sync: OC.Backbone.davSync,
+
+		davProperties: {
+			'metaversioneditedby':	OC.Files.Client.PROPERTY_VERSION_EDITED_BY,
+			'id':	OC.Files.Client.PROPERTY_FILEID,
+			'getlastmodified': OC.Files.Client.PROPERTY_GETLASTMODIFIED,
+			'getcontentlength': OC.Files.Client.PROPERTY_GETCONTENTLENGTH,
+			'resourcetype': OC.Files.Client.PROPERTY_RESOURCETYPE,
+			'getcontenttype': OC.Files.Client.PROPERTY_GETCONTENTTYPE,
+		},
 
 		model: OCA.Versions.VersionModel,
 
@@ -46,9 +61,10 @@
 					id: revision,
 					name: revision,
 					fullPath: fullPath,
-					timestamp: moment(new Date(version['{DAV:}getlastmodified'])).format('X'),
-					size: version['{DAV:}getcontentlength'],
-					mimetype: version['{DAV:}getcontenttype'],
+					timestamp: moment(new Date(version.getlastmodified)).format('X'),
+					size: version.getcontentlength,
+					mimetype: version.getcontenttype,
+					editedBy: version.metaversioneditedby,
 					fileId: fileId
 				};
 			});
