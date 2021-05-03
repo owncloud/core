@@ -188,6 +188,9 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	}
 
 	/**
+	 * NOTE: Use executeStatement() instead as the underlying Doctrine
+	 * class deprecated the usage of executeUpdate().
+	 *
 	 * Executes an SQL INSERT/UPDATE/DELETE query with the given parameters
 	 * and returns the number of affected rows.
 	 *
@@ -200,11 +203,35 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @return integer The number of affected rows.
 	 *
 	 * @throws \Doctrine\DBAL\DBALException
+	 *
+	 * @deprecated since 10.8.0
 	 */
 	public function executeUpdate($query, array $params = [], array $types = []) {
 		$query = $this->replaceTablePrefix($query);
 		$query = $this->adapter->fixupStatement($query);
 		return parent::executeUpdate($query, $params, $types);
+	}
+
+	/**
+	 * Executes an SQL INSERT/UPDATE/DELETE query with the given parameters
+	 * and returns the number of affected rows.
+	 *
+	 * This method supports PDO binding types as well as DBAL mapping types.
+	 *
+	 * @param string $query  The SQL query.
+	 * @param array  $params The query parameters.
+	 * @param array  $types  The parameter types.
+	 *
+	 * @return integer The number of affected rows.
+	 *
+	 * @throws \Doctrine\DBAL\DBALException
+	 *
+	 * @since 10.8.0
+	 */
+	public function executeStatement($query, array $params = [], array $types = []) {
+		$query = $this->replaceTablePrefix($query);
+		$query = $this->adapter->fixupStatement($query);
+		return parent::executeStatement($query, $params, $types);
 	}
 
 	/**
