@@ -25,13 +25,13 @@ config = {
 	'phpunit': {
 		'allDatabases' : {
 			'phpVersions': [
-				'7.2',
+				'7.4',
 			]
 		},
 		'reducedDatabases' : {
 			'phpVersions': [
 				'7.3',
-				'7.4',
+				'7.2',
 			],
 			'databases': [
 				'sqlite',
@@ -1323,7 +1323,7 @@ def acceptance(ctx):
 		'federatedServerVersions': [''],
 		'browsers': ['chrome'],
 		'phpVersions': ['7.4'],
-		'databases': ['mariadb:10.2'],
+		'databases': ['postgres:9.4'],
 		'federatedPhpVersion': '7.2',
 		'federatedServerNeeded': False,
 		'federatedDb': '',
