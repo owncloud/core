@@ -1,8 +1,12 @@
-Change: Update Symfony components to 4.4.21
+Change: Update Symfony components to 4.4.22
 
-The following Symfony components have been updated from 4.4.20 to 4.4.21
+The following Symfony components have been updated from 4.4.20 to 4.4.22
 - console
+- process
+- routing
 - translation
 
+https://symfony.com/blog/symfony-4-4-22-released
+https://github.com/owncloud/core/pull/38680
 https://symfony.com/blog/symfony-4-4-21-released
 https://github.com/owncloud/core/pull/38598
