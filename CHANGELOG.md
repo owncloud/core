@@ -14,7 +14,7 @@ Summary
 * Bugfix - Check quota on the necessary move operations: [#38591](https://github.com/owncloud/core/pull/38591)
 * Bugfix - Normalize web.baseUrl before using it: [#38600](https://github.com/owncloud/core/issues/38600)
 * Bugfix - When validating rereshare permission make sure to check parent mountpoint: [#4497](https://github.com/owncloud/enterprise/issues/4497)
-* Change - Update Symfony components to 4.4.21: [#38598](https://github.com/owncloud/core/pull/38598)
+* Change - Update Symfony components to 4.4.22: [#38680](https://github.com/owncloud/core/pull/38680)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
 * Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
@@ -81,12 +81,14 @@ Details
    https://github.com/owncloud/enterprise/issues/4382
    https://github.com/owncloud/core/pull/38625
 
-* Change - Update Symfony components to 4.4.21: [#38598](https://github.com/owncloud/core/pull/38598)
+* Change - Update Symfony components to 4.4.22: [#38680](https://github.com/owncloud/core/pull/38680)
 
-   The following Symfony components have been updated from 4.4.20 to 4.4.21 - console -
-   translation
+   The following Symfony components have been updated from 4.4.20 to 4.4.22 - console - process -
+   routing - translation
 
+   https://github.com/owncloud/core/pull/38680
    https://github.com/owncloud/core/pull/38598
+   https://symfony.com/blog/symfony-4-4-22-released
    https://symfony.com/blog/symfony-4-4-21-released
 
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
