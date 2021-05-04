@@ -1,0 +1,10 @@
+Bugfix: objectids for comments and tags are strings
+
+We were using integers when asking for some information related to comments
+and tag. This was working fine, but PHP 7.4.18 made some changes in the
+postgresql driver making things more strict. As result, some queries were
+failing because that information was stored as string, not integer.
+
+This problem is now fixed, and the queries can run without problems.
+
+https://github.com/owncloud/core/pull/38682
