@@ -1099,7 +1099,7 @@ def phpTests(ctx, testType):
 			'mysql:5.5',
 			'mysql:5.7',
 			'mysql:8.0',
-			'postgres:9.4',
+			'postgres:9.6',
 			'postgres:10.3',
 			'oracle'
 		],
@@ -1323,7 +1323,7 @@ def acceptance(ctx):
 		'federatedServerVersions': [''],
 		'browsers': ['chrome'],
 		'phpVersions': ['7.4'],
-		'databases': ['postgres:9.4'],
+		'databases': ['postgres:9.6'],
 		'federatedPhpVersion': '7.2',
 		'federatedServerNeeded': False,
 		'federatedDb': '',
