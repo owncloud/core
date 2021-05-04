@@ -77,6 +77,9 @@ interface IDBConnection {
 	public function executeQuery($query, array $params = [], $types = []);
 
 	/**
+	 * NOTE: Use executeStatement() instead as the underlying Doctrine
+	 * class deprecated the usage of executeUpdate().
+	 *
 	 * Executes an SQL INSERT/UPDATE/DELETE query with the given parameters
 	 * and returns the number of affected rows.
 	 *
@@ -87,8 +90,23 @@ interface IDBConnection {
 	 * @param array $types The parameter types.
 	 * @return integer The number of affected rows.
 	 * @since 8.0.0
+	 * @deprecated since 10.8.0
 	 */
 	public function executeUpdate($query, array $params = [], array $types = []);
+
+	/**
+	 * Executes an SQL INSERT/UPDATE/DELETE query with the given parameters
+	 * and returns the number of affected rows.
+	 *
+	 * This method supports PDO binding types as well as DBAL mapping types.
+	 *
+	 * @param string $query  The SQL query.
+	 * @param array  $params The query parameters.
+	 * @param array  $types  The parameter types.
+	 * @return integer The number of affected rows.
+	 * @since 10.8.0
+	 */
+	public function executeStatement($query, array $params = [], array $types = []);
 
 	/**
 	 * Used to get the id of the just inserted element
