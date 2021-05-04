@@ -17,6 +17,7 @@ Summary
 * Bugfix - Hide sensible information on share download: [#38689](https://github.com/owncloud/core/pull/38689)
 * Change - Update Symfony components to 4.4.22: [#38680](https://github.com/owncloud/core/pull/38680)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
+* Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
 * Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
 * Enhancement - Expired shares in activity stream: [#38631](https://github.com/owncloud/core/pull/38631)
@@ -119,6 +120,14 @@ Details
    https://github.com/owncloud/core/pull/38648
    https://github.com/owncloud/core/pull/38659
    https://github.com/owncloud/core/pull/38688
+
+* Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
+
+   Implemented the new method executeStatement in our DB Connection class as Doctrine calls this
+   method now instead of the deprecated executeUpdate.
+
+   https://github.com/owncloud/core/issues/38681
+   https://github.com/owncloud/core/pull/38647
 
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
 
