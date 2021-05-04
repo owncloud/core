@@ -400,6 +400,7 @@ class ShareController extends Controller {
 	 * @param string $path
 	 * @param string $downloadStartSecret
 	 * @return NotFoundResponse|RedirectResponse|void
+	 * @throws \Exception
 	 */
 	public function downloadShare($token, $files = null, $path = '', $downloadStartSecret = '') {
 		\OC_User::setIncognitoMode(true);
@@ -530,16 +531,21 @@ class ShareController extends Controller {
 		}
 
 		// download selected files
-		if ($files !== null && $files !== '') {
-			// FIXME: The exit is required here because otherwise the AppFramework is trying to add headers as well
-			// after dispatching the request which results in a "Cannot modify header information" notice.
-			OC_Files::get($originalSharePath, $files_list, $server_params);
-			exit();
-		} else {
-			// FIXME: The exit is required here because otherwise the AppFramework is trying to add headers as well
-			// after dispatching the request which results in a "Cannot modify header information" notice.
-			OC_Files::get(\dirname($originalSharePath), \basename($originalSharePath), $server_params);
-			exit();
+
+		try {
+			if ($files !== null && $files !== '') {
+				// FIXME: The exit is required here because otherwise the AppFramework is trying to add headers as well
+				// after dispatching the request which results in a "Cannot modify header information" notice.
+				OC_Files::get($originalSharePath, $files_list, $server_params);
+				exit();
+			} else {
+				// FIXME: The exit is required here because otherwise the AppFramework is trying to add headers as well
+				// after dispatching the request which results in a "Cannot modify header information" notice.
+				OC_Files::get(\dirname($originalSharePath), \basename($originalSharePath), $server_params);
+				exit();
+			}
+		} catch (\Exception $e) {
+			throw new \Exception();
 		}
 	}
 }
