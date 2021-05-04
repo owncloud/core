@@ -14,6 +14,7 @@ Summary
 * Bugfix - Check quota on the necessary move operations: [#38591](https://github.com/owncloud/core/pull/38591)
 * Bugfix - Normalize web.baseUrl before using it: [#38600](https://github.com/owncloud/core/issues/38600)
 * Bugfix - When validating rereshare permission make sure to check parent mountpoint: [#4497](https://github.com/owncloud/enterprise/issues/4497)
+* Bugfix - Hide sensible information on share download: [#38689](https://github.com/owncloud/core/pull/38689)
 * Change - Update Symfony components to 4.4.22: [#38680](https://github.com/owncloud/core/pull/38680)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
@@ -80,6 +81,15 @@ Details
    https://github.com/owncloud/enterprise/issues/4497
    https://github.com/owncloud/enterprise/issues/4382
    https://github.com/owncloud/core/pull/38625
+
+* Bugfix - Hide sensible information on share download: [#38689](https://github.com/owncloud/core/pull/38689)
+
+   Sensible information could be exposed when downloading a share via public link. We now throw a
+   generic exception that overwrites the original exception message. Also fixed an error which
+   caused such behavior when appending a null byte to the download URL.
+
+   https://github.com/owncloud/enterprise/issues/4536
+   https://github.com/owncloud/core/pull/38689
 
 * Change - Update Symfony components to 4.4.22: [#38680](https://github.com/owncloud/core/pull/38680)
 
