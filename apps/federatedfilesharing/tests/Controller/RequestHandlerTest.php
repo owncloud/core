@@ -430,7 +430,6 @@ class RequestHandlerTest extends TestCase {
 		);
 	}
 
-
 	protected function getValidShareMock($token) {
 		$share = $this->getMockBuilder(IShare::class)
 			->disableOriginalConstructor()->getMock();
