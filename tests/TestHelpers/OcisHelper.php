@@ -97,7 +97,7 @@ class OcisHelper {
 		$deleteCmd = self::getDeleteUserDataCommand();
 		if ($deleteCmd === false) {
 			if (self::getStorageDriver() === "OWNCLOUD") {
-				self::recurseRmdir("/var/tmp/ocis/owncloud/" . $user);
+				self::recurseRmdir(self::getOcisRevaDataRoot() . $user);
 			}
 			return;
 		}
@@ -234,6 +234,20 @@ class OcisHelper {
 	public static function getBindDN() {
 		$dn = \getenv("REVA_LDAP_BIND_DN");
 		return $dn ? $dn : "cn=admin,dc=owncloud,dc=com";
+	}
+
+	/**
+	 * @return string
+	 */
+	private static function getOcisRevaDataRoot() {
+		$root = \getenv("OCIS_REVA_DATA_ROOT");
+		if (($root === false || $root === "") && self::isTestingOnOcisOrReva()) {
+			$root = "/var/tmp/ocis/owncloud/";
+		}
+		if (!\file_exists($root)) {
+			echo "WARNING: reva data root folder ($root) does not exist\n";
+		}
+		return $root;
 	}
 
 	/**
