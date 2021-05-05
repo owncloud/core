@@ -367,34 +367,4 @@ class RequestHandlerController extends OCSController {
 
 		return new Result();
 	}
-
-	/**
-	 * @NoCSRFRequired
-	 * @PublicPage
-	 *
-	 * update share information to keep federated re-shares in sync
-	 *
-	 * @param int $id
-	 *
-	 * @return Result
-	 */
-	public function updatePermissions($id) {
-		try {
-			$permissions = $this->request->getParam('permissions', null);
-			$token = $this->request->getParam('token', null);
-			$share = $this->ocmMiddleware->getValidShare($id, $token);
-			$validPermission = \ctype_digit((string)$permissions);
-			if (!$validPermission) {
-				throw new \Exception();
-			}
-			$permissions = $this->ocmMiddleware->normalizePermissions(
-				(int) $permissions
-			);
-			$this->fedShareManager->updatePermissions($share, $permissions);
-		} catch (\Exception $e) {
-			return new Result(null, Http::STATUS_BAD_REQUEST);
-		}
-
-		return new Result();
-	}
 }

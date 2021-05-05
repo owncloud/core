@@ -430,25 +430,6 @@ class RequestHandlerTest extends TestCase {
 		);
 	}
 
-	public function testUpdatePermissions() {
-		$requestMap = [
-			['token', null, self::DEFAULT_TOKEN],
-			['permissions', null, Constants::PERMISSION_READ | Constants::PERMISSION_UPDATE]
-		];
-		$this->request->expects($this->any())
-			->method('getParam')
-			->will(
-				$this->returnValueMap($requestMap)
-			);
-		$share = $this->getValidShareMock(self::DEFAULT_TOKEN);
-		$share->expects($this->any())
-			->method('getPermissions')
-			->willReturn(Constants::PERMISSION_SHARE);
-		$this->ocmMiddleware->expects($this->once())
-			->method('getValidShare')
-			->willReturn($share);
-		$this->requestHandlerController->updatePermissions(5);
-	}
 
 	protected function getValidShareMock($token) {
 		$share = $this->getMockBuilder(IShare::class)
