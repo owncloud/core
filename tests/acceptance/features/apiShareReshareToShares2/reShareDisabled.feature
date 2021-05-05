@@ -33,7 +33,7 @@ Feature: resharing can be disabled
     When user "Alice" shares file "/textfile0.txt" with user "Brian" with permissions "share,update,read" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    When user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
+    When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "Brian" file "/Shares/textfile0.txt" should exist

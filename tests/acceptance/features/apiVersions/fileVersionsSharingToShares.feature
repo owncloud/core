@@ -35,7 +35,7 @@ Feature: dav-versions
     And user "Alice" has uploaded file with content "First content" to "sharefile.txt"
     And user "Alice" has shared file "sharefile.txt" with user "Brian"
     And user "Brian" has accepted share "/sharefile.txt" offered by user "Alice"
-    When user "Brian" has uploaded file with content "Second content" to "/Shares/sharefile.txt"
+    When user "Brian" uploads file with content "Second content" to "/Shares/sharefile.txt" using the WebDAV API
     Then the HTTP status code should be "204"
     And the version folder of file "/Shares/sharefile.txt" for user "Brian" should contain "1" element
     And the version folder of file "/sharefile.txt" for user "Alice" should contain "1" element

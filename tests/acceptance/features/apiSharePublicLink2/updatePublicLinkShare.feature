@@ -84,7 +84,7 @@ Feature: update a public link share
     And user "Alice" has created folder "FOLDER"
     When user "Alice" creates a public link share using the sharing API with settings
       | path | FOLDER |
-    And user "Alice" has moved folder "/FOLDER" to "/RENAMED_FOLDER"
+    And user "Alice" moves folder "/FOLDER" to "/RENAMED_FOLDER" using the WebDAV API
     And user "Alice" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
