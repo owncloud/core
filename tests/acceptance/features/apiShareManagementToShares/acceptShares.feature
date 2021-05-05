@@ -331,8 +331,8 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT (2) (2) (2)/ | Brian     |
 
   Scenario: user shares folder with matching folder-name for both user involved in sharing
-    Given user "Alice" uploads file with content "uploaded content" to "/PARENT/abc.txt" using the WebDAV API
-    And user "Alice" uploads file with content "uploaded content" to "/FOLDER/abc.txt" using the WebDAV API
+    Given user "Alice" has uploaded file with content "uploaded content" to "/PARENT/abc.txt"
+    And user "Alice" has uploaded file with content "uploaded content" to "/FOLDER/abc.txt"
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
     And user "Alice" shares folder "/FOLDER" with user "Brian" using the sharing API
     Then the OCS status code should be "100"
@@ -353,8 +353,8 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/Shares/FOLDER/abc.txt" for user "Brian" should be "uploaded content"
 
   Scenario: user shares folder in a group with matching folder-name for every users involved
-    Given user "Alice" uploads file with content "uploaded content" to "/PARENT/abc.txt" using the WebDAV API
-    And user "Alice" uploads file with content "uploaded content" to "/FOLDER/abc.txt" using the WebDAV API
+    Given user "Alice" has uploaded file with content "uploaded content" to "/PARENT/abc.txt"
+    And user "Alice" has uploaded file with content "uploaded content" to "/FOLDER/abc.txt"
     And user "Carol" has created folder "PARENT"
     And user "Carol" has created folder "FOLDER"
     When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
@@ -415,7 +415,7 @@ Feature: accept/decline shares coming from internal users
       | /Shares/textfile1.txt |
 
   Scenario: user shares resource with matching resource-name with another user when auto accept is disabled
-    Given user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
+    When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
     And user "Alice" shares file "/textfile0.txt" with user "Brian" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -460,7 +460,7 @@ Feature: accept/decline shares coming from internal users
     Given these users have been created with small skeleton files but not initialized:
       | username |
       | David    |
-    And user "Alice" uploads file with content "uploaded content" to "/PARENT/abc.txt" using the WebDAV API
+    And user "Alice" has uploaded file with content "uploaded content" to "/PARENT/abc.txt"
     When user "Alice" shares folder "/PARENT" with user "David" using the sharing API
     And user "David" accepts share "/PARENT" offered by user "Alice" using the sharing API
     Then user "David" should see the following elements

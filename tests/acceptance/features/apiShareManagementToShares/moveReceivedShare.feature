@@ -29,8 +29,8 @@ Feature: sharing
     Given user "Alice" has uploaded file with content "foo" to "/sharefile.txt"
     And user "Alice" has shared file "/sharefile.txt" with user "Brian"
     And user "Alice" has shared file "/sharefile.txt" with user "Carol"
-    And user "Brian" accepts share "/sharefile.txt" offered by user "Alice" using the sharing API
-    And user "Carol" accepts share "/sharefile.txt" offered by user "Alice" using the sharing API
+    And user "Brian" has accepted share "/sharefile.txt" offered by user "Alice"
+    And user "Carol" has accepted share "/sharefile.txt" offered by user "Alice"
     When user "Carol" moves file "/Shares/sharefile.txt" to "/renamedsharefile.txt" using the WebDAV API
     Then as "Carol" file "/renamedsharefile.txt" should exist
     And as "Alice" file "/sharefile.txt" should exist
@@ -40,8 +40,8 @@ Feature: sharing
     Given user "Alice" has uploaded file with content "foo" to "/sharefile.txt"
     And user "Alice" has shared file "/sharefile.txt" with user "Brian"
     And user "Alice" has shared file "/sharefile.txt" with user "Carol"
-    And user "Brian" accepts share "/sharefile.txt" offered by user "Alice" using the sharing API
-    And user "Carol" accepts share "/sharefile.txt" offered by user "Alice" using the sharing API
+    And user "Brian" has accepted share "/sharefile.txt" offered by user "Alice"
+    And user "Carol" has accepted share "/sharefile.txt" offered by user "Alice"
     And user "Carol" has created folder "newfolder"
     When user "Carol" moves file "/Shares/sharefile.txt" to "/newfolder/sharefile.txt" using the WebDAV API
     Then as "Carol" file "/newfolder/sharefile.txt" should exist

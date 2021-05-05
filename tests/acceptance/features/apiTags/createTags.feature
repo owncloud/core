@@ -86,7 +86,7 @@ Feature: Creation of tags
     Then the HTTP status code should be "409"
 
   Scenario: Overwriting existing normal tags should fail
-    And user "Alice" has created a "normal" tag with name "MyFirstTag"
+    Given user "Alice" has created a "normal" tag with name "MyFirstTag"
     When user "Alice" creates a "normal" tag with name "MyFirstTag" using the WebDAV API
     Then the HTTP status code should be "409"
 

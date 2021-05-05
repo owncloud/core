@@ -22,7 +22,7 @@ Feature: delete folder
   @issue-ocis-reva-269
   Scenario Outline: delete a folder when 2 folder exist with different case
     Given using <dav_version> DAV path
-    And user "Alice" creates folder "/parent" using the WebDAV API
+    And user "Alice" has created folder "/parent"
     When user "Alice" deletes folder "/PARENT" using the WebDAV API
     Then the HTTP status code should be "204"
     And as "Alice" folder "/PARENT" should not exist
@@ -35,7 +35,7 @@ Feature: delete folder
   @issue-ocis-reva-269
   Scenario Outline: delete a sub-folder
     Given using <dav_version> DAV path
-    And user "Alice" creates folder "/PARENT/CHILD" using the WebDAV API
+    And user "Alice" has created folder "/PARENT/CHILD"
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/PARENT/parent.txt"
     When user "Alice" deletes folder "/PARENT/CHILD" using the WebDAV API
     Then the HTTP status code should be "204"

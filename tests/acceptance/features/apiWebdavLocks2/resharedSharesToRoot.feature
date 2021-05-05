@@ -78,7 +78,7 @@ Feature: lock should propagate correctly if a share is reshared
     And user "Alice" has shared folder "PARENT" with user "Brian"
     And user "Brian" has shared folder "PARENT (2)" with user "Carol"
     When user "Brian" moves folder "/PARENT (2)" to "/PARENT-renamed" using the WebDAV API
-    And user "Alice" has locked folder "PARENT" setting the following properties
+    And user "Alice" locks folder "PARENT" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
     And user "Carol" uploads file "filesForUpload/textfile.txt" to "/PARENT (2)/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "423"

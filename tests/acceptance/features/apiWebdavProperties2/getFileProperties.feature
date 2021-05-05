@@ -234,7 +234,7 @@ Feature: get file properties
 
   @issue-ocis-reva-163
   Scenario Outline: Do a PROPFIND to a non-existing URL
-    And user "Alice" requests "<url>" with "PROPFIND" using basic auth
+    When user "Alice" requests "<url>" with "PROPFIND" using basic auth
     Then the value of the item "/d:error/s:message" in the response about user "Alice" should be "<message>"
     And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
     Examples:
