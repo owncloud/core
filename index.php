@@ -27,10 +27,10 @@
  *
  */
 
-// Show warning if a PHP version below 7.2.0 is used, this has to happen here
+// Show warning if a PHP version below 7.3.0 is used, this has to happen here
 // because base.php will already use 7.2 syntax.
-if (\version_compare(PHP_VERSION, '7.2.0') === -1) {
-	echo 'This version of ownCloud requires at least PHP 7.2.0<br/>';
+if (\version_compare(PHP_VERSION, '7.3.0') === -1) {
+	echo 'This version of ownCloud requires at least PHP 7.3.0<br/>';
 	echo 'You are currently running PHP ' . PHP_VERSION . '. Please update your PHP version.';
 	return;
 }
