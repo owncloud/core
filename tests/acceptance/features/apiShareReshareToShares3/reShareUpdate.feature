@@ -144,7 +144,7 @@ Feature: sharing
     And user "Alice" has updated the last share of "Alice" with
       | permissions | create,update,read |
     When user "Brian" deletes the last share using the sharing API
-    And the OCS status code should be "<ocs_status_code>"
+    Then the OCS status code should be "<ocs_status_code>"
     And user "Carol" should not have any received shares
     Examples:
       | ocs_api_version | ocs_status_code |
