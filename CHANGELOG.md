@@ -15,6 +15,7 @@ Summary
 * Bugfix - Normalize web.baseUrl before using it: [#38600](https://github.com/owncloud/core/issues/38600)
 * Bugfix - When validating rereshare permission make sure to check parent mountpoint: [#4497](https://github.com/owncloud/enterprise/issues/4497)
 * Bugfix - Hide sensible information on share download: [#38689](https://github.com/owncloud/core/pull/38689)
+* Bugfix - Hide file drop content: [#38691](https://github.com/owncloud/core/pull/38691)
 * Change - Update Symfony components to 4.4.22: [#38680](https://github.com/owncloud/core/pull/38680)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
@@ -91,6 +92,14 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4536
    https://github.com/owncloud/core/pull/38689
+
+* Bugfix - Hide file drop content: [#38691](https://github.com/owncloud/core/pull/38691)
+
+   Requesting file drop share with the deprecated shareinfo API, exposed information about the
+   content of the file drop share. We will now deliver empty content on the children entry.
+
+   https://github.com/owncloud/enterprise/issues/4540
+   https://github.com/owncloud/core/pull/38691
 
 * Change - Update Symfony components to 4.4.22: [#38680](https://github.com/owncloud/core/pull/38680)
 
