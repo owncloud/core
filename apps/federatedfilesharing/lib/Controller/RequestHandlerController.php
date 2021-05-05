@@ -383,6 +383,12 @@ class RequestHandlerController extends OCSController {
 			$permissions = $this->request->getParam('permissions', null);
 			$token = $this->request->getParam('token', null);
 			$share = $this->ocmMiddleware->getValidShare($id, $token);
+
+			// we need to prohibit the permission update if it's not a re-share
+			if (!$this->fedShareManager->isFederatedReShare($share)) {
+				throw new \Exception();
+			}
+
 			$validPermission = \ctype_digit((string)$permissions);
 			if (!$validPermission) {
 				throw new \Exception();

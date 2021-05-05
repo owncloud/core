@@ -329,6 +329,28 @@ class FedShareManager {
 	}
 
 	/**
+	 * Check if a federated share was re-shared with another federated server.
+	 *
+	 * @param IShare $share
+	 * @return bool
+	 * @throws NotFoundException
+	 */
+	public function isFederatedReShare(IShare $share) {
+		// get all federated shares on this file
+		$shares = $this->federatedShareProvider->getSharesByPath($share->getNode());
+
+		foreach ($shares as $matchingShare) {
+			// if the share initiator (sharedBy) received a share for this file
+			// in the past, this is a re-share
+			if ($share->getSharedBy() === $matchingShare->getSharedWith()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * @param IShare $share
 	 * @param callable $callback
 	 *
