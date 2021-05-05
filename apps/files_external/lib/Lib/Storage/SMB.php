@@ -222,8 +222,9 @@ class SMB extends StorageAdapter {
 			$path = $this->buildPath($path);
 			$result = [];
 			$children = $this->share->dir($path);
+			$trimmedPath = \rtrim($path, '/');
 			foreach ($children as $fileInfo) {
-				$fullPath = "{$path}/{$fileInfo->getName()}";
+				$fullPath = "{$trimmedPath}/{$fileInfo->getName()}";
 				if (isset($this->statCache[$fullPath])) {
 					// reference in the cache might have its fileinfo's mode
 					// already resolved, so use that
@@ -286,19 +287,21 @@ class SMB extends StorageAdapter {
 			return $this->leave(__FUNCTION__, false);
 		}
 
+		$buildSource = $this->buildPath($source);
+		$buildTarget = $this->buildPath($target);
 		try {
-			$result = $this->share->rename($this->root . $source, $this->root . $target);
+			$result = $this->share->rename($buildSource, $buildTarget);
 			if ($result) {
-				$this->removeFromCache($this->root . $source);
-				$this->removeFromCache($this->root . $target);
+				$this->removeFromCache($buildSource);
+				$this->removeFromCache($buildTarget);
 			}
 		} catch (AlreadyExistsException $e) {
 			$this->swallow(__FUNCTION__, $e);
 			if ($this->unlink($target)) {
-				$result = $this->share->rename($this->root . $source, $this->root . $target);
+				$result = $this->share->rename($buildSource, $buildTarget);
 				if ($result) {
-					$this->removeFromCache($this->root . $source);
-					$this->removeFromCache($this->root . $target);
+					$this->removeFromCache($buildSource);
+					$this->removeFromCache($buildTarget);
 				}
 			} else {
 				$result = false;
@@ -313,10 +316,10 @@ class SMB extends StorageAdapter {
 			if ($e->getCode() === 22) {
 				// some servers seem to return an error code 22 instead of the expected AlreadyExistException
 				if ($this->unlink($target)) {
-					$result = $this->share->rename($this->root . $source, $this->root . $target);
+					$result = $this->share->rename($buildSource, $buildTarget);
 					if ($result) {
-						$this->removeFromCache($this->root . $source);
-						$this->removeFromCache($this->root . $target);
+						$this->removeFromCache($buildSource);
+						$this->removeFromCache($buildTarget);
 					}
 				} else {
 					$result = false;
@@ -332,10 +335,10 @@ class SMB extends StorageAdapter {
 	}
 
 	private function removeFromCache($path) {
-		$path = \trim($path, '/');
 		// TODO The CappedCache does not really clear by prefix. It just clears all.
 		'@phan-var \OC\Cache\CappedMemoryCache $this->statCache';
-		$this->statCache->clear($path);
+		$this->statCache->clear("$path/");
+		unset($this->statCache[$path]);
 	}
 	/**
 	 * @param string $path
@@ -413,9 +416,9 @@ class SMB extends StorageAdapter {
 			if ($this->is_dir($path)) {
 				$result = $this->rmdir($path);
 			} else {
-				$path = $this->buildPath($path);
-				$this->share->del($path);
-				unset($this->statCache[$path]);
+				$buildPath = $this->buildPath($path);
+				$this->share->del($buildPath);
+				unset($this->statCache[$buildPath]);
 				$result = true;
 			}
 		} catch (ConnectException $e) {
@@ -522,8 +525,8 @@ class SMB extends StorageAdapter {
 
 		$result = false;
 		try {
-			$this->removeFromCache($path);
-			$content = $this->share->dir($this->buildPath($path));
+			$buildPath = $this->buildPath($path);
+			$content = $this->share->dir($buildPath);
 			foreach ($content as $file) {
 				if ($file->isDirectory()) {
 					$this->rmdir($path . '/' . $file->getName());
@@ -531,7 +534,8 @@ class SMB extends StorageAdapter {
 					$this->share->del($file->getPath());
 				}
 			}
-			$this->share->rmdir($this->buildPath($path));
+			$this->share->rmdir($buildPath);
+			$this->removeFromCache($buildPath);
 			$result = true;
 		} catch (ConnectException $e) {
 			$ex = new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
