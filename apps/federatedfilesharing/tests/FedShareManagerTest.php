@@ -272,4 +272,35 @@ class FedShareManagerTest extends TestCase {
 			->with($share);
 		$this->fedShareManager->undoReshare($share);
 	}
+
+	public function testIsFederatedReShare() {
+		$shareInitiator = 'user';
+		$share = $this->getMockBuilder(IShare::class)
+			->disableOriginalConstructor()->getMock();
+		$share->expects($this->any())
+			->method('getSharedBy')
+			->willReturn($shareInitiator);
+
+		$nodeMock = $this->getMockBuilder('OCP\Files\Node')
+			->disableOriginalConstructor()->getMock();
+		$share->expects($this->once())
+			->method('getNode')
+			->willReturn($nodeMock);
+
+		$otherShare = $this->getMockBuilder(IShare::class)
+			->disableOriginalConstructor()->getMock();
+		$otherShare->expects($this->any())
+			->method('getSharedWith')
+			->willReturn($shareInitiator);
+
+		$this->federatedShareProvider->expects($this->once())
+			->method('getSharesByPath')
+			->willReturn([$share, $otherShare]);
+
+		$isFederatedShared = $this->fedShareManager->isFederatedReShare($share);
+		$this->assertEquals(
+			true,
+			$isFederatedShared
+		);
+	}
 }
