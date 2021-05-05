@@ -82,8 +82,13 @@ $sharePermissions= (int)$share->getPermissions();
  * @return array
  */
 function getChildInfo($dir, $view, $sharePermissions) {
+	// Prevent user to see directory content if share is a file drop
+	if ($sharePermissions === \OCP\Constants::PERMISSION_CREATE) {
+		return [];
+	}
 	$children = $view->getDirectoryContent($dir->getPath());
 	$result = [];
+
 	foreach ($children as $child) {
 		$formatted = \OCA\Files\Helper::formatFileInfo($child);
 		if ($child->getType() === 'dir') {
