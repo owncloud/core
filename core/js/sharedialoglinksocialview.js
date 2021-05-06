@@ -23,9 +23,6 @@
 			'<button class="icon icon-social-diaspora pop-up hasTooltip"' +
 			'	title="{{shareToolTipDiaspora}}"' +
 			'	data-url="https://sharetodiaspora.github.io/?url={{reference}}"></button>' +
-			'<button class="icon icon-social-googleplus pop-up hasTooltip"' +
-			'	title="{{shareToolTipGoogle}}"' +
-			'	data-url="https://plus.google.com/share?url={{reference}}"></button>' +
 			'<button class="icon icon-mail-grey pop-up hasTooltip"' +
 			'	title="{{shareToolTipMail}}"' +
 			'	data-url="mailto:?body={{reference}}"></button>'
@@ -85,7 +82,6 @@
 				shareToolTipTwitter: t('core', 'Share to Twitter. Opens in a new window.'),
 				shareToolTipFacebook: t('core', 'Share to Facebook. Opens in a new window.'),
 				shareToolTipDiaspora: t('core', 'Share to Diaspora. Opens in a new window.'),
-				shareToolTipGoogle: t('core', 'Share to Google+. Opens in a new window.'),
 				shareToolTipMail: t('core', 'Share via email. Opens your mail client.')
 			}));
 
