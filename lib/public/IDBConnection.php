@@ -247,13 +247,13 @@ interface IDBConnection {
 	/**
 	 * Get the database version as string
 	 *
-	 * This method depends on the database drive and might not return accurate information.
+	 * This method depends on the database driver and might not return accurate information.
 	 * An explicit server version could have been configured in the database driver, or the
 	 * driver might not be able to determine the version
 	 *
 	 * @return string|null the database version or null if the database driver can't
 	 * determine the version
-	 * @since 10.7.1
+	 * @since 10.8.0
 	 */
 	public function getDatabaseVersionString();
 
