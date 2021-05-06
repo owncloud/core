@@ -25,6 +25,7 @@ Summary
 * Enhancement - Use relative notification URLs: [#38639](https://github.com/owncloud/core/pull/38639)
 * Enhancement - Add excludeActions parameter to registerDefaultActions function: [#38643](https://github.com/owncloud/core/pull/38643)
 * Enhancement - Improve tab headers UI: [#38653](https://github.com/owncloud/core/pull/38653)
+* Enhancement - Remove google+ share button from personal settings: [#38705](https://github.com/owncloud/core/pull/38705)
 
 Details
 -------
@@ -184,6 +185,12 @@ Details
    left-aligned.
 
    https://github.com/owncloud/core/pull/38653
+
+* Enhancement - Remove google+ share button from personal settings: [#38705](https://github.com/owncloud/core/pull/38705)
+
+   Due to the google+ service has been declined, we won't show the google+ share button anymore.
+
+   https://github.com/owncloud/core/pull/38705
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================
