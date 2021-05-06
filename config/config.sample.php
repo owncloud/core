@@ -579,6 +579,44 @@ $CONFIG = [
 'trashbin_purge_limit' => 50,
 
 /**
+ * Define trashbin directory skip list
+ * Define a list of directories that will skip the trashbin and therefore be deleted immediately.
+ * Only defined directories and only in the root of a mount will skip the trashbin.
+ * Consider not to use reserved directory names when using snapshot capable storage systems.
+ * The setting expects folder names with or without trailing slash.
+ * All the content of such directories including their subdirectories will also skip the trashbin.
+ *
+*/
+'trashbin_skip_directories' => [
+	'temp',
+],
+
+/**
+ * Define trashbin file extension skip list
+ * Define a list of file extensions to determine files that will skip the trashbin and therefore be deleted immediately.
+ * Extension names are valid for all mount points, take care when selecting the names.
+ *
+ * Values must not have a leading ".", otherwise corresponding files wont be detected.
+ *
+ */
+'trashbin_skip_extensions' => [
+	'iso',
+	'mkv',
+],
+
+/**
+ * Define trashbin threshold size
+ * Define a threshold for files to skip the trashbin and delete immediately
+ * Once the size of a resource is greater than or equal the given value, the trashbin will be skipped.
+ * File sizes are valid for all mount points, take care when defining the threshold.
+ *
+ * All positive numbers and zero is allowed. Append one of the following options directly and without space:
+ * B, K, KB, MB, M, GB, G, TB, T, PB, P
+ *
+ */
+'trashbin_skip_size_threshold' => "1GB",
+
+/**
  * File versions
  *
  * These parameters control the Versions app.
