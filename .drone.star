@@ -998,7 +998,8 @@ def javascript(ctx):
 	default = {
 		'coverage': True,
 		'logLevel': '2',
-		'phpVersion': '7.2'
+		'phpVersion': '7.2',
+		'skip': False
 	}
 
 	if 'defaults' in config:
@@ -1018,6 +1019,9 @@ def javascript(ctx):
 	params = {}
 	for item in default:
 		params[item] = matrix[item] if item in matrix else default[item]
+
+	if params['skip']:
+		return pipelines
 
 	result = {
 		'kind': 'pipeline',
@@ -1114,6 +1118,7 @@ def phpTests(ctx, testType):
 		'extraEnvironment': {},
 		'extraCommandsBeforeTestRun': [],
 		'extraApps': {},
+		'skip': False
 	}
 
 	if 'defaults' in config:
@@ -1138,6 +1143,9 @@ def phpTests(ctx, testType):
 		params = {}
 		for item in default:
 			params[item] = matrix[item] if item in matrix else default[item]
+		
+		if params['skip']:
+			continue
 
 		for phpVersion in params['phpVersions']:
 
@@ -1346,6 +1354,7 @@ def acceptance(ctx):
 		'includeKeyInMatrixName': False,
 		'runAllSuites': False,
 		'numberOfParts': 1,
+		'skip': False
 	}
 
 	if 'defaults' in config:
@@ -1372,6 +1381,9 @@ def acceptance(ctx):
 			params = {}
 			for item in default:
 				params[item] = matrix[item] if item in matrix else default[item]
+
+			if params['skip']:
+				continue
 
 			if isAPI or isCLI:
 				params['browsers'] = ['']
