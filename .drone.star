@@ -22,59 +22,6 @@ config = {
 
 	'dav': True,
 
-	'phpunit': {
-		'allDatabases' : {
-			'phpVersions': [
-				'7.2',
-			]
-		},
-		'reducedDatabases' : {
-			'phpVersions': [
-				'7.3',
-				'7.4',
-			],
-			'databases': [
-				'sqlite',
-				'mariadb:10.2',
-			]
-		},
-		'external-samba-windows' : {
-			'phpVersions': [
-				'7.2',
-				'7.4',
-			],
-			'databases': [
-				'sqlite',
-			],
-			'externalTypes': [
-				'samba',
-				'windows',
-			],
-			'coverage': True,
-			'extraCommandsBeforeTestRun': [
-				'ls -l /var/cache',
-				'mkdir /var/cache/samba',
-				'ls -l /var/cache',
-				'ls -l /var/cache/samba',
-			]
-		},
-		'external-other' : {
-			'phpVersions': [
-				'7.2',
-				'7.4',
-			],
-			'databases': [
-				'sqlite',
-			],
-			'externalTypes': [
-				'webdav',
-				'sftp',
-				'scality'
-			],
-			'coverage': True
-		},
-	},
-
 	'acceptance': {
 		'webUI': {
 			'suites': {
