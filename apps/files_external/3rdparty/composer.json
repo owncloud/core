@@ -7,7 +7,7 @@
 		"optimize-autoloader": true,
 		"classmap-authoritative": true,
 		"platform": {
-			"php": "7.2"
+			"php": "7.2.5"
 		}
 	},
 	"require": {
@@ -15,7 +15,7 @@
 		"icewind/smb": "3.4.1",
 		"icewind/streams": "0.7.4",
 		"google/apiclient": "2.9.1",
-		"guzzlehttp/guzzle": "^6.5"
+		"guzzlehttp/guzzle": "^7.3"
 	},
 	"autoload": {
 		"files": ["../lib/config.php"]
