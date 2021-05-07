@@ -631,6 +631,10 @@ class SMB extends StorageAdapter {
 
 	public function isReadable($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
+		if ($this->isRootDir($path)) {
+			return $this->leave(__FUNCTION__, true);
+		}
+
 		$result = false;
 		try {
 			$info = $this->getFileInfo($path);
@@ -647,6 +651,11 @@ class SMB extends StorageAdapter {
 
 	public function isUpdatable($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
+		if ($this->isRootDir($path)) {
+			// root path mustn't be changed
+			return $this->leave(__FUNCTION__, false);
+		}
+
 		$result = false;
 		try {
 			$info = $this->getFileInfo($path);
@@ -665,6 +674,11 @@ class SMB extends StorageAdapter {
 
 	public function isDeletable($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
+		if ($this->isRootDir($path)) {
+			// root path mustn't be deleted
+			return $this->leave(__FUNCTION__, false);
+		}
+
 		$result = false;
 		try {
 			$info = $this->getFileInfo($path);
