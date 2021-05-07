@@ -649,6 +649,14 @@ class SMB extends StorageAdapter {
 		return $this->leave(__FUNCTION__, $result);
 	}
 
+	public function isCreatable($path) {
+		$this->log('enter: '.__FUNCTION__."($path)");
+		if ($this->isRootDir($path)) {
+			return $this->leave(__FUNCTION__, true);
+		}
+		return $this->leave(__FUNCTION__, parent::isCreatable($path));
+	}
+
 	public function isUpdatable($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
 		if ($this->isRootDir($path)) {
