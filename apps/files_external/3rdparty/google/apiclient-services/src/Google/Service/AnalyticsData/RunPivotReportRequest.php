@@ -27,8 +27,6 @@ class Google_Service_AnalyticsData_RunPivotReportRequest extends Google_Collecti
   protected $dimensionFilterDataType = '';
   protected $dimensionsType = 'Google_Service_AnalyticsData_Dimension';
   protected $dimensionsDataType = 'array';
-  protected $entityType = 'Google_Service_AnalyticsData_Entity';
-  protected $entityDataType = '';
   public $keepEmptyRows;
   protected $metricFilterType = 'Google_Service_AnalyticsData_FilterExpression';
   protected $metricFilterDataType = '';
@@ -36,6 +34,7 @@ class Google_Service_AnalyticsData_RunPivotReportRequest extends Google_Collecti
   protected $metricsDataType = 'array';
   protected $pivotsType = 'Google_Service_AnalyticsData_Pivot';
   protected $pivotsDataType = 'array';
+  public $property;
   public $returnPropertyQuota;
 
   /**
@@ -102,20 +101,6 @@ class Google_Service_AnalyticsData_RunPivotReportRequest extends Google_Collecti
   {
     return $this->dimensions;
   }
-  /**
-   * @param Google_Service_AnalyticsData_Entity
-   */
-  public function setEntity(Google_Service_AnalyticsData_Entity $entity)
-  {
-    $this->entity = $entity;
-  }
-  /**
-   * @return Google_Service_AnalyticsData_Entity
-   */
-  public function getEntity()
-  {
-    return $this->entity;
-  }
   public function setKeepEmptyRows($keepEmptyRows)
   {
     $this->keepEmptyRows = $keepEmptyRows;
@@ -165,6 +150,14 @@ class Google_Service_AnalyticsData_RunPivotReportRequest extends Google_Collecti
   public function getPivots()
   {
     return $this->pivots;
+  }
+  public function setProperty($property)
+  {
+    $this->property = $property;
+  }
+  public function getProperty()
+  {
+    return $this->property;
   }
   public function setReturnPropertyQuota($returnPropertyQuota)
   {

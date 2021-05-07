@@ -31,15 +31,15 @@
  */
 class Google_Service_Networkconnectivity extends Google_Service
 {
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 
   public $projects_locations;
   public $projects_locations_global_hubs;
+  public $projects_locations_global_policyBasedRoutes;
   public $projects_locations_internalRanges;
   public $projects_locations_operations;
-  public $projects_locations_policyBasedRoutes;
   public $projects_locations_spokes;
 
   /**
@@ -229,6 +229,50 @@ class Google_Service_Networkconnectivity extends Google_Service
           )
         )
     );
+    $this->projects_locations_global_policyBasedRoutes = new Google_Service_Networkconnectivity_Resource_ProjectsLocationsNetworkconnectivityGlobalPolicyBasedRoutes(
+        $this,
+        $this->serviceName,
+        'policyBasedRoutes',
+        array(
+          'methods' => array(
+            'getIamPolicy' => array(
+              'path' => 'v1alpha1/{+resource}:getIamPolicy',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'resource' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'options.requestedPolicyVersion' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+              ),
+            ),'setIamPolicy' => array(
+              'path' => 'v1alpha1/{+resource}:setIamPolicy',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'resource' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'testIamPermissions' => array(
+              'path' => 'v1alpha1/{+resource}:testIamPermissions',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'resource' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
     $this->projects_locations_internalRanges = new Google_Service_Networkconnectivity_Resource_ProjectsLocationsInternalRanges(
         $this,
         $this->serviceName,
@@ -329,50 +373,6 @@ class Google_Service_Networkconnectivity extends Google_Service
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-              ),
-            ),
-          )
-        )
-    );
-    $this->projects_locations_policyBasedRoutes = new Google_Service_Networkconnectivity_Resource_ProjectsLocationsPolicyBasedRoutes(
-        $this,
-        $this->serviceName,
-        'policyBasedRoutes',
-        array(
-          'methods' => array(
-            'getIamPolicy' => array(
-              'path' => 'v1alpha1/{+resource}:getIamPolicy',
-              'httpMethod' => 'GET',
-              'parameters' => array(
-                'resource' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-                'options.requestedPolicyVersion' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-              ),
-            ),'setIamPolicy' => array(
-              'path' => 'v1alpha1/{+resource}:setIamPolicy',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'resource' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),'testIamPermissions' => array(
-              'path' => 'v1alpha1/{+resource}:testIamPermissions',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'resource' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
                 ),
               ),
             ),

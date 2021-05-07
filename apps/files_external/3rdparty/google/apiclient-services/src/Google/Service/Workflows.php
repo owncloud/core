@@ -19,8 +19,8 @@
  * Service definition for Workflows (v1).
  *
  * <p>
- * Orchestrate Workflows consisting of Google Cloud APIs, SaaS APIs or private
- * API endpoints.</p>
+ * Manage workflow definitions. To execute workflows and manage executions, see
+ * the Workflows Executions API.</p>
  *
  * <p>
  * For more information about this service, see the API

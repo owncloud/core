@@ -17,9 +17,25 @@
 
 class Google_Service_Dataproc_SecurityConfig extends Google_Model
 {
+  protected $identityConfigType = 'Google_Service_Dataproc_IdentityConfig';
+  protected $identityConfigDataType = '';
   protected $kerberosConfigType = 'Google_Service_Dataproc_KerberosConfig';
   protected $kerberosConfigDataType = '';
 
+  /**
+   * @param Google_Service_Dataproc_IdentityConfig
+   */
+  public function setIdentityConfig(Google_Service_Dataproc_IdentityConfig $identityConfig)
+  {
+    $this->identityConfig = $identityConfig;
+  }
+  /**
+   * @return Google_Service_Dataproc_IdentityConfig
+   */
+  public function getIdentityConfig()
+  {
+    return $this->identityConfig;
+  }
   /**
    * @param Google_Service_Dataproc_KerberosConfig
    */

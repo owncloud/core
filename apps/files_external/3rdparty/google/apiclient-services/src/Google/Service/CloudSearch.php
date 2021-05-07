@@ -70,6 +70,7 @@ class Google_Service_CloudSearch extends Google_Service
   public $operations_lro;
   public $query;
   public $query_sources;
+  public $settings;
   public $settings_datasources;
   public $settings_searchapplications;
   public $stats;
@@ -544,6 +545,29 @@ class Google_Service_CloudSearch extends Google_Service
                   'type' => 'string',
                 ),
                 'requestOptions.timeZone' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->settings = new Google_Service_CloudSearch_Resource_Settings(
+        $this,
+        $this->serviceName,
+        'settings',
+        array(
+          'methods' => array(
+            'getCustomer' => array(
+              'path' => 'v1/settings/customer',
+              'httpMethod' => 'GET',
+              'parameters' => array(),
+            ),'updateCustomer' => array(
+              'path' => 'v1/settings/customer',
+              'httpMethod' => 'PATCH',
+              'parameters' => array(
+                'updateMask' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

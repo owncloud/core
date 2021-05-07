@@ -34,10 +34,7 @@ class Google_Service_BigQueryDataTransfer extends Google_Service
   /** View and manage your data in Google BigQuery. */
   const BIGQUERY =
       "https://www.googleapis.com/auth/bigquery";
-  /** View your data in Google BigQuery. */
-  const BIGQUERY_READONLY =
-      "https://www.googleapis.com/auth/bigquery.readonly";
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
   /** View your data across Google Cloud Platform services. */

@@ -130,6 +130,8 @@ class Google_Service_Area120Tables_Resource_TablesRows extends Google_Service_Re
    * @opt_param string filter Optional. Filter to only include resources matching
    * the requirements. For more information, see [Filtering list
    * results](https://support.google.com/area120-tables/answer/10503371).
+   * @opt_param string orderBy Optional. Sorting order for the list of rows on
+   * createTime/updateTime.
    * @opt_param int pageSize The maximum number of rows to return. The service may
    * return fewer than this value. If unspecified, at most 50 rows are returned.
    * The maximum value is 1,000; values above 1,000 are coerced to 1,000.

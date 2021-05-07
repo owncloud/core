@@ -29,6 +29,7 @@ class Google_Service_Dataflow_FlexTemplateRuntimeEnvironment extends Google_Coll
   public $network;
   public $numWorkers;
   public $serviceAccountEmail;
+  public $stagingLocation;
   public $subnetwork;
   public $tempLocation;
   public $workerRegion;
@@ -122,6 +123,14 @@ class Google_Service_Dataflow_FlexTemplateRuntimeEnvironment extends Google_Coll
   public function getServiceAccountEmail()
   {
     return $this->serviceAccountEmail;
+  }
+  public function setStagingLocation($stagingLocation)
+  {
+    $this->stagingLocation = $stagingLocation;
+  }
+  public function getStagingLocation()
+  {
+    return $this->stagingLocation;
   }
   public function setSubnetwork($subnetwork)
   {

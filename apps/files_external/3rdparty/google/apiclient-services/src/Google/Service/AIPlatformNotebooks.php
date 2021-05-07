@@ -31,7 +31,7 @@
  */
 class Google_Service_AIPlatformNotebooks extends Google_Service
 {
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 
@@ -40,6 +40,7 @@ class Google_Service_AIPlatformNotebooks extends Google_Service
   public $projects_locations_executions;
   public $projects_locations_instances;
   public $projects_locations_operations;
+  public $projects_locations_runtimes;
   public $projects_locations_schedules;
 
   /**
@@ -353,6 +354,16 @@ class Google_Service_AIPlatformNotebooks extends Google_Service
                   'required' => true,
                 ),
               ),
+            ),'rollback' => array(
+              'path' => 'v1/{+name}:rollback',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
             ),'setAccelerator' => array(
               'path' => 'v1/{+name}:setAccelerator',
               'httpMethod' => 'PATCH',
@@ -418,6 +429,16 @@ class Google_Service_AIPlatformNotebooks extends Google_Service
               'httpMethod' => 'POST',
               'parameters' => array(
                 'resource' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'updateShieldedInstanceConfig' => array(
+              'path' => 'v1/{+name}:updateShieldedInstanceConfig',
+              'httpMethod' => 'PATCH',
+              'parameters' => array(
+                'name' => array(
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
@@ -503,6 +524,108 @@ class Google_Service_AIPlatformNotebooks extends Google_Service
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->projects_locations_runtimes = new Google_Service_AIPlatformNotebooks_Resource_ProjectsLocationsRuntimes(
+        $this,
+        $this->serviceName,
+        'runtimes',
+        array(
+          'methods' => array(
+            'create' => array(
+              'path' => 'v1/{+parent}/runtimes',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'runtimeId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),'delete' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'get' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'v1/{+parent}/runtimes',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),'reset' => array(
+              'path' => 'v1/{+name}:reset',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'start' => array(
+              'path' => 'v1/{+name}:start',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'stop' => array(
+              'path' => 'v1/{+name}:stop',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'switch' => array(
+              'path' => 'v1/{+name}:switch',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ),
               ),
             ),

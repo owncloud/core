@@ -28,8 +28,9 @@ class Google_Service_Monitoring_Resource_ProjectsUptimeCheckConfigs extends Goog
   /**
    * Creates a new Uptime check configuration. (uptimeCheckConfigs.create)
    *
-   * @param string $parent Required. The project in which to create the Uptime
-   * check. The format is: projects/[PROJECT_ID_OR_NUMBER]
+   * @param string $parent Required. The project
+   * (https://cloud.google.com/monitoring/api/v3#project_name) in which to create
+   * the Uptime check. The format is: projects/[PROJECT_ID_OR_NUMBER]
    * @param Google_Service_Monitoring_UptimeCheckConfig $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Monitoring_UptimeCheckConfig
@@ -78,8 +79,9 @@ class Google_Service_Monitoring_Resource_ProjectsUptimeCheckConfigs extends Goog
    * out any invalid configurations).
    * (uptimeCheckConfigs.listProjectsUptimeCheckConfigs)
    *
-   * @param string $parent Required. The project whose Uptime check configurations
-   * are listed. The format is: projects/[PROJECT_ID_OR_NUMBER]
+   * @param string $parent Required. The project
+   * (https://cloud.google.com/monitoring/api/v3#project_name) whose Uptime check
+   * configurations are listed. The format is: projects/[PROJECT_ID_OR_NUMBER]
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize The maximum number of results to return in a single

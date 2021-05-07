@@ -27,6 +27,7 @@ class Google_Service_CloudFilestore_Instance extends Google_Collection
   public $name;
   protected $networksType = 'Google_Service_CloudFilestore_NetworkConfig';
   protected $networksDataType = 'array';
+  public $satisfiesPzs;
   public $state;
   public $statusMessage;
   public $tier;
@@ -98,6 +99,14 @@ class Google_Service_CloudFilestore_Instance extends Google_Collection
   public function getNetworks()
   {
     return $this->networks;
+  }
+  public function setSatisfiesPzs($satisfiesPzs)
+  {
+    $this->satisfiesPzs = $satisfiesPzs;
+  }
+  public function getSatisfiesPzs()
+  {
+    return $this->satisfiesPzs;
   }
   public function setState($state)
   {

@@ -43,12 +43,12 @@ class Google_Service_PolicySimulator_Resource_FoldersLocationsReplaysResults ext
    * page of results. When paginating, all other parameters provided to
    * [Simulator.ListReplayResults[] must match the call that provided the page
    * token.
-   * @return Google_Service_PolicySimulator_GoogleCloudPolicysimulatorV1beta1ListReplayResultsResponse
+   * @return Google_Service_PolicySimulator_GoogleCloudPolicysimulatorV1ListReplayResultsResponse
    */
   public function listFoldersLocationsReplaysResults($parent, $optParams = array())
   {
     $params = array('parent' => $parent);
     $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_PolicySimulator_GoogleCloudPolicysimulatorV1beta1ListReplayResultsResponse");
+    return $this->call('list', array($params), "Google_Service_PolicySimulator_GoogleCloudPolicysimulatorV1ListReplayResultsResponse");
   }
 }

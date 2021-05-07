@@ -35,7 +35,7 @@ class Google_Service_CloudNaturalLanguage extends Google_Service
   /** Apply machine learning models to reveal the structure and meaning of text. */
   const CLOUD_LANGUAGE =
       "https://www.googleapis.com/auth/cloud-language";
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 

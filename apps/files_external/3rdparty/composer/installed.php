@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '2ceed1f45ff42a5b43e7bd9c7a187b2df8b45ed7',
+    'reference' => '5eee5f80d0d6fbbf65308aebffbcb823a6230859',
     'name' => 'files_external/3rdparty',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '2ceed1f45ff42a5b43e7bd9c7a187b2df8b45ed7',
+      'reference' => '5eee5f80d0d6fbbf65308aebffbcb823a6230859',
     ),
     'firebase/php-jwt' => 
     array (
@@ -40,21 +40,21 @@
     ),
     'google/apiclient-services' => 
     array (
-      'pretty_version' => 'v0.167.0',
-      'version' => '0.167.0.0',
+      'pretty_version' => 'v0.173.0',
+      'version' => '0.173.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '46b71684a100f3d976e0321cf24f487b314add68',
+      'reference' => '9034b5ba3e25c9ad8e49b6457b9cad21fd9d9847',
     ),
     'google/auth' => 
     array (
-      'pretty_version' => 'v1.15.0',
-      'version' => '1.15.0.0',
+      'pretty_version' => 'v1.15.1',
+      'version' => '1.15.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'b346c07de6613e26443d7b4830e5e1933b830dc4',
+      'reference' => '4e0c9367719df9703e96f5ad613041b87742471c',
     ),
     'guzzlehttp/guzzle' => 
     array (
@@ -67,12 +67,12 @@
     ),
     'guzzlehttp/psr7' => 
     array (
-      'pretty_version' => '1.8.1',
-      'version' => '1.8.1.0',
+      'pretty_version' => '1.8.2',
+      'version' => '1.8.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => '35ea11d335fd638b5882ff1725228b3d35496ab1',
+      'reference' => 'dc960a912984efb74d0a90222870c72c87f10c91',
     ),
     'guzzlehttp/ringphp' => 
     array (
@@ -173,12 +173,12 @@
     ),
     'psr/log' => 
     array (
-      'pretty_version' => '1.1.3',
-      'version' => '1.1.3.0',
+      'pretty_version' => '1.1.4',
+      'version' => '1.1.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => '0f73288fd15629204f9d42b7055f72dacbe811fc',
+      'reference' => 'd49695b909c3b7628b6289db5479a1c204601f11',
     ),
     'psr/log-implementation' => 
     array (

@@ -30,12 +30,13 @@ class Google_Service_Monitoring_Resource_ProjectsNotificationChannels extends Go
    * endpoint such as an email address, SMS number, or PagerDuty service.
    * (notificationChannels.create)
    *
-   * @param string $name Required. The project on which to execute the request.
-   * The format is: projects/[PROJECT_ID_OR_NUMBER] This names the container into
-   * which the channel will be written, this does not name the newly created
-   * channel. The resulting channel's name will have a normalized version of this
-   * field as a prefix, but will add /notificationChannels/[CHANNEL_ID] to
-   * identify the channel.
+   * @param string $name Required. The project
+   * (https://cloud.google.com/monitoring/api/v3#project_name) on which to execute
+   * the request. The format is: projects/[PROJECT_ID_OR_NUMBER] This names the
+   * container into which the channel will be written, this does not name the
+   * newly created channel. The resulting channel's name will have a normalized
+   * version of this field as a prefix, but will add
+   * /notificationChannels/[CHANNEL_ID] to identify the channel.
    * @param Google_Service_Monitoring_NotificationChannel $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Monitoring_NotificationChannel
@@ -125,10 +126,11 @@ class Google_Service_Monitoring_Resource_ProjectsNotificationChannels extends Go
    * Lists the notification channels that have been created for the project.
    * (notificationChannels.listProjectsNotificationChannels)
    *
-   * @param string $name Required. The project on which to execute the request.
-   * The format is: projects/[PROJECT_ID_OR_NUMBER] This names the container in
-   * which to look for the notification channels; it does not name a specific
-   * channel. To query a specific channel by REST resource name, use the
+   * @param string $name Required. The project
+   * (https://cloud.google.com/monitoring/api/v3#project_name) on which to execute
+   * the request. The format is: projects/[PROJECT_ID_OR_NUMBER] This names the
+   * container in which to look for the notification channels; it does not name a
+   * specific channel. To query a specific channel by REST resource name, use the
    * GetNotificationChannel operation.
    * @param array $optParams Optional parameters.
    *

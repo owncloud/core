@@ -137,6 +137,22 @@ class Google_Service_Apigee_Resource_Organizations extends Google_Service_Resour
     return $this->call('list', array($params), "Google_Service_Apigee_GoogleCloudApigeeV1ListOrganizationsResponse");
   }
   /**
+   * Configures the add-ons for the Apigee organization. The existing add-on
+   * configuration will be fully replaced. (organizations.setAddons)
+   *
+   * @param string $org Required. Name of the organization. Use the following
+   * structure in your request: `organizations/{org}`
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1SetAddonsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Apigee_GoogleLongrunningOperation
+   */
+  public function setAddons($org, Google_Service_Apigee_GoogleCloudApigeeV1SetAddonsRequest $postBody, $optParams = array())
+  {
+    $params = array('org' => $org, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('setAddons', array($params), "Google_Service_Apigee_GoogleLongrunningOperation");
+  }
+  /**
    * Sets the permissions required to allow the Synchronizer to download
    * environment data from the control plane. You must call this API to enable
    * proper functioning of hybrid. Pass the ETag when calling

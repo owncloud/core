@@ -23,6 +23,7 @@ class Google_Service_CloudFilestore_Backup extends Google_Model
   public $downloadBytes;
   public $labels;
   public $name;
+  public $satisfiesPzs;
   public $sourceFileShare;
   public $sourceInstance;
   public $sourceInstanceTier;
@@ -76,6 +77,14 @@ class Google_Service_CloudFilestore_Backup extends Google_Model
   public function getName()
   {
     return $this->name;
+  }
+  public function setSatisfiesPzs($satisfiesPzs)
+  {
+    $this->satisfiesPzs = $satisfiesPzs;
+  }
+  public function getSatisfiesPzs()
+  {
+    return $this->satisfiesPzs;
   }
   public function setSourceFileShare($sourceFileShare)
   {

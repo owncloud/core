@@ -89,10 +89,10 @@ class Google_Service_Dialogflow_Resource_ProjectsLocationsAgentsFlowsVersions ex
     return $this->call('list', array($params), "Google_Service_Dialogflow_GoogleCloudDialogflowCxV3ListVersionsResponse");
   }
   /**
-   * Loads a specified version to draft version. (versions.load)
+   * Loads resources in the specified version to the draft flow. (versions.load)
    *
-   * @param string $name Required. The Version to be loaded to draft version.
-   * Format: `projects//locations//agents//flows//versions/`.
+   * @param string $name Required. The Version to be loaded to draft flow. Format:
+   * `projects//locations//agents//flows//versions/`.
    * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3LoadVersionRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Dialogflow_GoogleLongrunningOperation

@@ -19,6 +19,7 @@ class Google_Service_TPU_Node extends Google_Collection
 {
   protected $collection_key = 'symptoms';
   public $acceleratorType;
+  public $apiVersion;
   public $cidrBlock;
   public $createTime;
   public $description;
@@ -47,6 +48,14 @@ class Google_Service_TPU_Node extends Google_Collection
   public function getAcceleratorType()
   {
     return $this->acceleratorType;
+  }
+  public function setApiVersion($apiVersion)
+  {
+    $this->apiVersion = $apiVersion;
+  }
+  public function getApiVersion()
+  {
+    return $this->apiVersion;
   }
   public function setCidrBlock($cidrBlock)
   {

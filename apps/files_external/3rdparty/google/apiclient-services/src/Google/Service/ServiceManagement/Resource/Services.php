@@ -61,23 +61,6 @@ class Google_Service_ServiceManagement_Resource_Services extends Google_Service_
     return $this->call('delete', array($params), "Google_Service_ServiceManagement_Operation");
   }
   /**
-   * Enables a service for a project, so it can be used for the project. See
-   * [Cloud Auth Guide](https://cloud.google.com/docs/authentication) for more
-   * information. Operation (services.enable)
-   *
-   * @param string $serviceName Required. Name of the service to enable.
-   * Specifying an unknown service name will cause the request to fail.
-   * @param Google_Service_ServiceManagement_EnableServiceRequest $postBody
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_ServiceManagement_Operation
-   */
-  public function enable($serviceName, Google_Service_ServiceManagement_EnableServiceRequest $postBody, $optParams = array())
-  {
-    $params = array('serviceName' => $serviceName, 'postBody' => $postBody);
-    $params = array_merge($params, $optParams);
-    return $this->call('enable', array($params), "Google_Service_ServiceManagement_Operation");
-  }
-  /**
    * Generates and returns a report (errors, warnings and changes from existing
    * configurations) associated with GenerateConfigReportRequest.new_value If
    * GenerateConfigReportRequest.old_value is specified,
@@ -156,10 +139,7 @@ class Google_Service_ServiceManagement_Resource_Services extends Google_Service_
   /**
    * Lists managed services. Returns all public services. For authenticated users,
    * also returns all services the calling user has
-   * "servicemanagement.services.get" permission for. **BETA:** If the caller
-   * specifies the `consumer_id`, it returns only the services enabled on the
-   * consumer. The `consumer_id` must have the format of "project:{PROJECT-ID}".
-   * (services.listServices)
+   * "servicemanagement.services.get" permission for. (services.listServices)
    *
    * @param array $optParams Optional parameters.
    *

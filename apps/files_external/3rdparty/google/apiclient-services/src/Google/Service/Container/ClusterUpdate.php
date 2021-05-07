@@ -20,6 +20,8 @@ class Google_Service_Container_ClusterUpdate extends Google_Collection
   protected $collection_key = 'desiredLocations';
   protected $desiredAddonsConfigType = 'Google_Service_Container_AddonsConfig';
   protected $desiredAddonsConfigDataType = '';
+  protected $desiredAutopilotType = 'Google_Service_Container_Autopilot';
+  protected $desiredAutopilotDataType = '';
   protected $desiredBinaryAuthorizationType = 'Google_Service_Container_BinaryAuthorization';
   protected $desiredBinaryAuthorizationDataType = '';
   protected $desiredClusterAutoscalingType = 'Google_Service_Container_ClusterAutoscaling';
@@ -70,6 +72,20 @@ class Google_Service_Container_ClusterUpdate extends Google_Collection
   public function getDesiredAddonsConfig()
   {
     return $this->desiredAddonsConfig;
+  }
+  /**
+   * @param Google_Service_Container_Autopilot
+   */
+  public function setDesiredAutopilot(Google_Service_Container_Autopilot $desiredAutopilot)
+  {
+    $this->desiredAutopilot = $desiredAutopilot;
+  }
+  /**
+   * @return Google_Service_Container_Autopilot
+   */
+  public function getDesiredAutopilot()
+  {
+    return $this->desiredAutopilot;
   }
   /**
    * @param Google_Service_Container_BinaryAuthorization

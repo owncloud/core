@@ -28,28 +28,28 @@ class Google_Service_AlertCenter_Resource_Alerts extends Google_Service_Resource
   /**
    * Performs batch delete operation on alerts. (alerts.batchDelete)
    *
-   * @param Google_Service_AlertCenter_BatchDeleteAlertsRequest $postBody
+   * @param Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1BatchDeleteAlertsRequest $postBody
    * @param array $optParams Optional parameters.
-   * @return Google_Service_AlertCenter_BatchDeleteAlertsResponse
+   * @return Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1BatchDeleteAlertsResponse
    */
-  public function batchDelete(Google_Service_AlertCenter_BatchDeleteAlertsRequest $postBody, $optParams = array())
+  public function batchDelete(Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1BatchDeleteAlertsRequest $postBody, $optParams = array())
   {
     $params = array('postBody' => $postBody);
     $params = array_merge($params, $optParams);
-    return $this->call('batchDelete', array($params), "Google_Service_AlertCenter_BatchDeleteAlertsResponse");
+    return $this->call('batchDelete', array($params), "Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1BatchDeleteAlertsResponse");
   }
   /**
    * Performs batch undelete operation on alerts. (alerts.batchUndelete)
    *
-   * @param Google_Service_AlertCenter_BatchUndeleteAlertsRequest $postBody
+   * @param Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1BatchUndeleteAlertsRequest $postBody
    * @param array $optParams Optional parameters.
-   * @return Google_Service_AlertCenter_BatchUndeleteAlertsResponse
+   * @return Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1BatchUndeleteAlertsResponse
    */
-  public function batchUndelete(Google_Service_AlertCenter_BatchUndeleteAlertsRequest $postBody, $optParams = array())
+  public function batchUndelete(Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1BatchUndeleteAlertsRequest $postBody, $optParams = array())
   {
     $params = array('postBody' => $postBody);
     $params = array_merge($params, $optParams);
-    return $this->call('batchUndelete', array($params), "Google_Service_AlertCenter_BatchUndeleteAlertsResponse");
+    return $this->call('batchUndelete', array($params), "Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1BatchUndeleteAlertsResponse");
   }
   /**
    * Marks the specified alert for deletion. An alert that has been marked for
@@ -64,13 +64,13 @@ class Google_Service_AlertCenter_Resource_Alerts extends Google_Service_Resource
    * @opt_param string customerId Optional. The unique identifier of the Google
    * Workspace organization account of the customer the alert is associated with.
    * Inferred from the caller identity if not provided.
-   * @return Google_Service_AlertCenter_AlertcenterEmpty
+   * @return Google_Service_AlertCenter_GoogleProtobufEmpty
    */
   public function delete($alertId, $optParams = array())
   {
     $params = array('alertId' => $alertId);
     $params = array_merge($params, $optParams);
-    return $this->call('delete', array($params), "Google_Service_AlertCenter_AlertcenterEmpty");
+    return $this->call('delete', array($params), "Google_Service_AlertCenter_GoogleProtobufEmpty");
   }
   /**
    * Gets the specified alert. Attempting to get a nonexistent alert returns
@@ -82,13 +82,13 @@ class Google_Service_AlertCenter_Resource_Alerts extends Google_Service_Resource
    * @opt_param string customerId Optional. The unique identifier of the Google
    * Workspace organization account of the customer the alert is associated with.
    * Inferred from the caller identity if not provided.
-   * @return Google_Service_AlertCenter_Alert
+   * @return Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1Alert
    */
   public function get($alertId, $optParams = array())
   {
     $params = array('alertId' => $alertId);
     $params = array_merge($params, $optParams);
-    return $this->call('get', array($params), "Google_Service_AlertCenter_Alert");
+    return $this->call('get', array($params), "Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1Alert");
   }
   /**
    * Returns the metadata of an alert. Attempting to get metadata for a non-
@@ -101,13 +101,13 @@ class Google_Service_AlertCenter_Resource_Alerts extends Google_Service_Resource
    * @opt_param string customerId Optional. The unique identifier of the Google
    * Workspace organization account of the customer the alert metadata is
    * associated with. Inferred from the caller identity if not provided.
-   * @return Google_Service_AlertCenter_AlertMetadata
+   * @return Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1AlertMetadata
    */
   public function getMetadata($alertId, $optParams = array())
   {
     $params = array('alertId' => $alertId);
     $params = array_merge($params, $optParams);
-    return $this->call('getMetadata', array($params), "Google_Service_AlertCenter_AlertMetadata");
+    return $this->call('getMetadata', array($params), "Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1AlertMetadata");
   }
   /**
    * Lists the alerts. (alerts.listAlerts)
@@ -133,13 +133,13 @@ class Google_Service_AlertCenter_Resource_Alerts extends Google_Service_Resource
    * the server should return. If empty, a new iteration is started. To continue
    * an iteration, pass in the value from the previous ListAlertsResponse's
    * next_page_token field.
-   * @return Google_Service_AlertCenter_ListAlertsResponse
+   * @return Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1ListAlertsResponse
    */
   public function listAlerts($optParams = array())
   {
     $params = array();
     $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_AlertCenter_ListAlertsResponse");
+    return $this->call('list', array($params), "Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1ListAlertsResponse");
   }
   /**
    * Restores, or "undeletes", an alert that was marked for deletion within the
@@ -149,14 +149,14 @@ class Google_Service_AlertCenter_Resource_Alerts extends Google_Service_Resource
    * alert which has not been marked for deletion has no effect. (alerts.undelete)
    *
    * @param string $alertId Required. The identifier of the alert to undelete.
-   * @param Google_Service_AlertCenter_UndeleteAlertRequest $postBody
+   * @param Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1UndeleteAlertRequest $postBody
    * @param array $optParams Optional parameters.
-   * @return Google_Service_AlertCenter_Alert
+   * @return Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1Alert
    */
-  public function undelete($alertId, Google_Service_AlertCenter_UndeleteAlertRequest $postBody, $optParams = array())
+  public function undelete($alertId, Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1UndeleteAlertRequest $postBody, $optParams = array())
   {
     $params = array('alertId' => $alertId, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
-    return $this->call('undelete', array($params), "Google_Service_AlertCenter_Alert");
+    return $this->call('undelete', array($params), "Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1Alert");
   }
 }

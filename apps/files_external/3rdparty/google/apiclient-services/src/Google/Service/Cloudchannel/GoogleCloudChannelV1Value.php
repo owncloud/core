@@ -17,11 +17,20 @@
 
 class Google_Service_Cloudchannel_GoogleCloudChannelV1Value extends Google_Model
 {
+  public $boolValue;
   public $doubleValue;
   public $int64Value;
   public $protoValue;
   public $stringValue;
 
+  public function setBoolValue($boolValue)
+  {
+    $this->boolValue = $boolValue;
+  }
+  public function getBoolValue()
+  {
+    return $this->boolValue;
+  }
   public function setDoubleValue($doubleValue)
   {
     $this->doubleValue = $doubleValue;

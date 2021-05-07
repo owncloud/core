@@ -48,7 +48,6 @@ class Google_Service_Games extends Google_Service
   public $revisions;
   public $scores;
   public $snapshots;
-  public $snapshotsExtended;
   public $stats;
 
   /**
@@ -633,26 +632,6 @@ class Google_Service_Games extends Google_Service
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-              ),
-            ),
-          )
-        )
-    );
-    $this->snapshotsExtended = new Google_Service_Games_Resource_SnapshotsExtended(
-        $this,
-        $this->serviceName,
-        'snapshotsExtended',
-        array(
-          'methods' => array(
-            'resolveSnapshotHead' => array(
-              'path' => 'games/v1/snapshotsExtended/{snapshotName}:resolveHead',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'snapshotName' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
                 ),
               ),
             ),

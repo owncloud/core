@@ -25,6 +25,7 @@ class Google_Service_CloudSearch_SearchApplication extends Google_Collection
   protected $defaultSortOptionsType = 'Google_Service_CloudSearch_SortOptions';
   protected $defaultSortOptionsDataType = '';
   public $displayName;
+  public $enableAuditLog;
   public $name;
   public $operationIds;
   protected $scoringConfigType = 'Google_Service_CloudSearch_ScoringConfig';
@@ -81,6 +82,14 @@ class Google_Service_CloudSearch_SearchApplication extends Google_Collection
   public function getDisplayName()
   {
     return $this->displayName;
+  }
+  public function setEnableAuditLog($enableAuditLog)
+  {
+    $this->enableAuditLog = $enableAuditLog;
+  }
+  public function getEnableAuditLog()
+  {
+    return $this->enableAuditLog;
   }
   public function setName($name)
   {
