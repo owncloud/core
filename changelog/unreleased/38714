@@ -1,0 +1,5 @@
+Enhancement: Adjust the return type of the querybuilder's execute method
+
+The return type changed with the recent update of doctrine/dbal to version 2.13.
+
+https://github.com/owncloud/core/pull/38714
