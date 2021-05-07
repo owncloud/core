@@ -149,8 +149,7 @@ OCA.Sharing.PublicApp = {
 			img.attr('src', OC.Util.replaceSVGIcon(mimetypeIcon));
 			img.attr('width', 128);
 			img.appendTo('#imgframe');
-		}
-		else if (previewSupported === 'true') {
+		} else if (previewSupported === 'true') {
 			$('#imgframe > video').attr('poster', OC.filePath('files_sharing', 'ajax', 'publicpreview.php') + '?' + OC.buildQueryString(params));
 		}
 
@@ -162,7 +161,7 @@ OCA.Sharing.PublicApp = {
 
 				var filesPart = '';
 				if (_.isArray(filename)) {
-					_.each(filename, function(name) {
+					_.each(filename, function (name) {
 						filesPart += '&files[]=' + encodeURIComponent(name);
 					});
 				} else {
@@ -171,7 +170,7 @@ OCA.Sharing.PublicApp = {
 				return base + filesPart;
 			};
 
-			this.fileList.getUploadUrl = function(fileName, dir) {
+			this.fileList.getUploadUrl = function (fileName, dir) {
 				if (_.isUndefined(dir)) {
 					dir = this.getCurrentDirectory();
 				}
@@ -181,7 +180,7 @@ OCA.Sharing.PublicApp = {
 					pathSections.push(fileName);
 				}
 				var encodedPath = '';
-				_.each(pathSections, function(section) {
+				_.each(pathSections, function (section) {
 					if (section !== '') {
 						encodedPath += '/' + encodeURIComponent(section);
 					}
@@ -221,14 +220,14 @@ OCA.Sharing.PublicApp = {
 				return OC.generateUrl('/apps/files_sharing/ajax/publicpreview.php?') + $.param(urlSpec);
 			};
 
-			this.fileList.updateEmptyContent = function() {
+			this.fileList.updateEmptyContent = function () {
 				this.$el.find('#emptycontent .uploadmessage').text(
 					t('files_sharing', 'You can upload into this folder')
 				);
 				OCA.Files.FileList.prototype.updateEmptyContent.apply(this, arguments);
 			};
 
-			this.fileList._uploader.on('fileuploadadd', function(e, data) {
+			this.fileList._uploader.on('fileuploadadd', function (e, data) {
 				if (!data.headers) {
 					data.headers = {};
 				}
@@ -256,34 +255,94 @@ OCA.Sharing.PublicApp = {
 			$(this).select();
 		});
 
-		$('.save-form').submit(function (event) {
-			event.preventDefault();
 
-			var remote = $(this).find('input[type="text"]').val();
-			var token = $('#sharingToken').val();
-			var owner = $('#header').data('owner');
-			var ownerDisplayName = $('#header').data('owner-display-name');
-			var name = $('#header').data('name');
-			var isProtected = $('#header').data('protected') ? 1 : 0;
-			OCA.Sharing.PublicApp._saveToOwnCloud(remote, token, owner, ownerDisplayName, name, isProtected);
-		});
+		// Server selection
+		this.$saveToOcButton = $("#header").find("#save #save-to-oc-button");
+		this.$saveToOcButtonText = $("#header").find("#save #save-to-oc-button-text");
+		this.$saveToOcButtonExpand = $("#header").find("#save-to-oc-button-expand");
+		this.$saveToOcServerMenu = $("#header").find("#save #expanddiv");
+		OC.registerMenu(this.$saveToOcButtonExpand, this.$saveToOcServerMenu);
 
-		$('#remote_address').on("keyup paste", function() {
-			if ($(this).val() === '') {
-				$('#save-button-confirm').prop('disabled', true);
-			} else {
-				$('#save-button-confirm').prop('disabled', false);
-			}
-		});
-
-		$('#save #save-button').click(function () {
-			$(this).hide();
-			$('.save-form').css('display', 'inline');
-			$('#remote_address').focus();
-		});
+		$(this.$saveToOcServerMenu).on('click', '#current-server', this._onSaveToOcMenuCurrentServerClicked.bind(this));
+		$(this.$saveToOcServerMenu).on('click', '#change-server', this._onChangeServerClicked.bind(this));
+		this.$saveToOcButton.on('click', this._onSaveToOcButtonClicked.bind(this));
 
 		// legacy
 		window.FileList = this.fileList;
+	},
+
+	_onSaveToOcMenuCurrentServerClicked: function (event) {
+		event.preventDefault();
+		this.$saveToOcServerMenu.css('display', 'none');
+	},
+
+	_onChangeServerClicked: function (event) {
+		event.preventDefault();
+		this.$saveToOcServerMenu.css('display', 'none');
+
+		OC.dialogs.prompt('', t('files_sharing', 'Add to another cloud'),
+			function (proceed, url) {
+				if (!url || !proceed) {
+					return;
+				}
+
+				var token = $('#sharingToken').val();
+				var owner = $('#header').data('owner');
+				var ownerDisplayName = $('#header').data('owner-display-name');
+				var name = $('#header').data('name');
+				var isProtected = $('#header').data('protected') ? 1 : 0;
+
+				OCA.Sharing.PublicApp._saveToOwnCloud(
+					url,
+					token,
+					owner,
+					ownerDisplayName,
+					name,
+					isProtected
+				);
+
+			}, true,
+			t('files_sharing', 'Enter the server address to add the content to'),
+			false,
+			t('core', 'Cancel'),
+			t('core', 'Add')
+		).then(function () {
+			var $dialog = $('.oc-dialog:visible');
+			var $input = $dialog.find('input[type=text]');
+			var $confirmButton = $dialog.find('button.primary');
+
+			$confirmButton.prop('disabled', true);
+			$confirmButton.prop('id', 'save-to-oc-button-confirm');
+			$dialog.find('.ui-icon').remove();
+			$input.css('width', '95%');
+			$input.attr('placeholder', 'example.com/cloud');
+
+			$input.on("keyup paste", function () {
+				if ($(this).val() === '') {
+					$confirmButton.prop('disabled', true);
+				} else {
+					$confirmButton.prop('disabled', false);
+				}
+			});
+		});
+	},
+
+	_onSaveToOcButtonClicked: function () {
+		var token = $('#sharingToken').val();
+		var owner = $('#header').data('owner');
+		var ownerDisplayName = $('#header').data('owner-display-name');
+		var name = $('#header').data('name');
+		var isProtected = $('#header').data('protected') ? 1 : 0;
+		console.log(OC.getRootPath());
+
+		OCA.Sharing.PublicApp._saveToOwnCloud(
+			OC.getProtocol() + '://' + OC.getHost() + OC.getRootPath(),
+			token,
+			owner,
+			ownerDisplayName,
+			name,
+			isProtected
+		);
 	},
 
 	_showTextPreview: function (data, previewHeight) {
@@ -313,47 +372,49 @@ OCA.Sharing.PublicApp = {
 	},
 
 	_saveToOwnCloud: function (remote, token, owner, ownerDisplayName, name, isProtected) {
-		var toggleLoading = function() {
-			var iconClass = $('#save-button-confirm').attr('class');
-			var loading = iconClass.indexOf('icon-loading-small') !== -1;
-			if(loading) {
-				$('#save-button-confirm')
-				.removeClass("icon-loading-small")
-				.addClass("icon-confirm");
-				
-			}
-			else {
-				$('#save-button-confirm')
-				.removeClass("icon-confirm")
-				.addClass("icon-loading-small");
+		var that = this;
 
+		var toggleLoading = function () {
+			var isLoading = !that.$saveToOcButton.find('#save-to-oc-button-loading').hasClass('hidden');
+
+			if (!isLoading) {
+				$("#save-to-oc-button-loading").removeClass('hidden');
+				that.$saveToOcButtonText.addClass('hidden');
+				that.$saveToOcButton.prop('disabled', true);
+			} else {
+				$("#save-to-oc-button-loading").addClass('hidden');
+				that.$saveToOcButtonText.removeClass('hidden');
+				that.$saveToOcButton.prop('disabled', false);
 			}
 		};
 
 		toggleLoading();
+
 		var location = window.location.protocol + '//' + window.location.host + OC.webroot;
-		
-		if(remote.substr(-1) !== '/') {
-			remote += '/'
+
+		if (remote.substr(-1) !== '/') {
+			remote += '/';
 		}
 
 		var url = remote + 'index.php/apps/files#' + 'remote=' + encodeURIComponent(location) // our location is the remote for the other server
-			+ "&token=" + encodeURIComponent(token) + "&owner=" + encodeURIComponent(owner) +"&ownerDisplayName=" + encodeURIComponent(ownerDisplayName) + "&name=" + encodeURIComponent(name) + "&protected=" + isProtected;
+			+ "&token=" + encodeURIComponent(token) + "&owner=" + encodeURIComponent(owner) + "&ownerDisplayName=" + encodeURIComponent(ownerDisplayName) + "&name=" + encodeURIComponent(name) + "&protected=" + isProtected;
 
 
 		if (remote.indexOf('://') > 0) {
+			toggleLoading();
 			OC.redirect(url);
 		} else {
 			// if no protocol is specified, we automatically detect it by testing https and http
 			// this check needs to happen on the server due to the Content Security Policy directive
 			$.get(OC.generateUrl('apps/files_sharing/testremote'), {remote: remote}).then(function (protocol) {
 				if (protocol !== 'http' && protocol !== 'https') {
-					toggleLoading();
 					OC.dialogs.alert(t('files_sharing', 'No ownCloud installation (7 or higher) found at {remote}', {remote: remote}),
 						t('files_sharing', 'Invalid ownCloud url'));
 				} else {
-					OC.redirect(protocol + '://' + url);
+					OC.redirect(protocol + "://" + url);
 				}
+
+				toggleLoading();
 			});
 		}
 	}

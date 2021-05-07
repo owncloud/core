@@ -85,8 +85,10 @@ var OCdialogs = {
 	 * @param modal make the dialog modal
 	 * @param name name of the input field
 	 * @param password whether the input should be a password input
+	 * @param buttonDeclineText overwrite button decline text
+	 * @param buttonConfirmText overwrite button confirm text
 	 */
-	prompt: function (text, title, callback, modal, name, password) {
+	prompt: function (text, title, callback, modal, name, password, buttonDeclineText, buttonConfirmText) {
 		return $.when(this._getMessageTemplate()).then(function ($tmpl) {
 			var dialogName = 'oc-dialog-' + OCdialogs.dialogsCounter + '-content';
 			var dialogId = '#' + dialogName;
@@ -106,7 +108,7 @@ var OCdialogs = {
 			}
 			$('body').append($dlg);
 			var buttonlist = [{
-					text : t('core', 'No'),
+					text : buttonDeclineText ? buttonDeclineText : t('core', 'No'),
 					click: function () {
 						if (callback !== undefined) {
 							callback(false, input.val());
@@ -114,7 +116,7 @@ var OCdialogs = {
 						$(dialogId).ocdialog('close');
 					}
 				}, {
-					text         : t('core', 'Yes'),
+					text         : buttonConfirmText ? buttonConfirmText : t('core', 'Yes'),
 					click        : function () {
 						if (callback !== undefined) {
 							callback(true, input.val());

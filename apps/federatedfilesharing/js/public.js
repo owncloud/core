@@ -1,10 +1,28 @@
-$(document).ready(function() {
+$(document).ready(function () {
 	$('#header #details').prepend(
 		'<span id="save">' +
-		'	<button id="save-button">'+t('federatedfilesharing', 'Add to your ownCloud')+'</button>' +
-		'	<form class="save-form hidden" action="#">' +
-		'		<input type="text" id="remote_address" placeholder="example.com/owncloud"/>' +
-		'		<button id="save-button-confirm" class="icon-confirm svg" disabled></button>' +
-		'	</form>' +
+		'<a href="#" class="button" id="save-to-oc-button">' +
+		'<span id="save-to-oc-button-text">' +
+		t('federatedfilesharing', 'Add to') + ' ' + OC.getHostName() +
+		'<span></span>' +
+		'</span>' +
+		'<span id="save-to-oc-button-loading" class="hidden">' +
+		t('federatedfilesharing', 'Loading...') +
+		'<img src="' + OC.imagePath('core', 'loading-small.gif') + '"' +
+		'</span>' +
+		'</a>' +
+		'<div id="save-to-oc-expand-container">' +
+		'<a href="#" class="button" id="save-to-oc-button-expand">' +
+		'		<img class="svg" alt="" src="'+ OC.imagePath('core', 'actions/triangle-s') +'">' +
+		'</a>' +
+		'<div id="expanddiv">' +
+		'<ul>' +
+		'<li><a id="current-server" href="#"><img src="' + OC.imagePath('core', 'actions/checkmark-white') + '">' + OC.getHostName() + '</a></li>' +
+		'<li><a id="change-server" href="#"><img src="' + OC.imagePath('core', 'actions/more-white') + '">' +
+		t('federatedfilesharing', 'Change server...') +
+		'	</a></li>' +
+		'</ul>' +
+		'</div>' +
+		'</div>' +
 		'</span>');
 });
