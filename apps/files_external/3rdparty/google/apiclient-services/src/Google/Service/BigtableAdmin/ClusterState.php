@@ -15,10 +15,27 @@
  * the License.
  */
 
-class Google_Service_BigtableAdmin_ClusterState extends Google_Model
+class Google_Service_BigtableAdmin_ClusterState extends Google_Collection
 {
+  protected $collection_key = 'encryptionInfo';
+  protected $encryptionInfoType = 'Google_Service_BigtableAdmin_EncryptionInfo';
+  protected $encryptionInfoDataType = 'array';
   public $replicationState;
 
+  /**
+   * @param Google_Service_BigtableAdmin_EncryptionInfo[]
+   */
+  public function setEncryptionInfo($encryptionInfo)
+  {
+    $this->encryptionInfo = $encryptionInfo;
+  }
+  /**
+   * @return Google_Service_BigtableAdmin_EncryptionInfo[]
+   */
+  public function getEncryptionInfo()
+  {
+    return $this->encryptionInfo;
+  }
   public function setReplicationState($replicationState)
   {
     $this->replicationState = $replicationState;

@@ -26,18 +26,21 @@
 class Google_Service_Apigee_Resource_OrganizationsEnvironmentsAnalyticsAdmin extends Google_Service_Resource
 {
   /**
-   * Get a list of metrics and dimensions which can be used for creating analytics
-   * queries and reports. Each schema element contains the name of the field with
-   * its associated type and if it is either custom field or standard field.
-   * (admin.getSchemav2)
+   * Gets a list of metrics and dimensions that can be used to create analytics
+   * queries and reports. Each schema element contains the name of the field, its
+   * associated type, and a flag indicating whether it is a standard or custom
+   * field. (admin.getSchemav2)
    *
-   * @param string $name Required. The parent organization and environment names.
-   * Must be of the form
+   * @param string $name Required. Path to the schema. Use the following structure
+   * in your request:
    * `organizations/{org}/environments/{env}/analytics/admin/schemav2`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string type Required. Type refers to the dataset name whose schema
-   * needs to be retrieved E.g. type=fact or type=agg_cus1
+   * @opt_param bool disableCache Flag that specifies whether the schema is be
+   * read from the database or cache. Set to `true` to read the schema from the
+   * database. Defaults to cache.
+   * @opt_param string type Required. Name of the dataset for which you want to
+   * retrieve the schema. For example: `fact` or `agg_cus1`
    * @return Google_Service_Apigee_GoogleCloudApigeeV1Schema
    */
   public function getSchemav2($name, $optParams = array())

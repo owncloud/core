@@ -17,9 +17,18 @@
 
 class Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1SecurityMarks extends Google_Model
 {
+  public $canonicalName;
   public $marks;
   public $name;
 
+  public function setCanonicalName($canonicalName)
+  {
+    $this->canonicalName = $canonicalName;
+  }
+  public function getCanonicalName()
+  {
+    return $this->canonicalName;
+  }
   public function setMarks($marks)
   {
     $this->marks = $marks;

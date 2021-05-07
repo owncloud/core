@@ -31,6 +31,11 @@ class Google_Service_AndroidPublisher_Resource_Edits extends Google_Service_Reso
    * @param string $packageName Package name of the app.
    * @param string $editId Identifier of the edit.
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param bool changesNotSentForReview Indicates that the changes in this
+   * edit will not be reviewed until they are explicitly sent for review from the
+   * Google Play Console UI. These changes will be added to any other changes that
+   * are not yet sent for review.
    * @return Google_Service_AndroidPublisher_AppEdit
    */
   public function commit($packageName, $editId, $optParams = array())

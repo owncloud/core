@@ -537,7 +537,22 @@ class Google_Service_ShoppingContent extends Google_Service
         'buyongoogleprograms',
         array(
           'methods' => array(
-            'get' => array(
+            'activate' => array(
+              'path' => '{merchantId}/buyongoogleprograms/{regionCode}/activate',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'merchantId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'regionCode' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'get' => array(
               'path' => '{merchantId}/buyongoogleprograms/{regionCode}',
               'httpMethod' => 'GET',
               'parameters' => array(
@@ -554,6 +569,36 @@ class Google_Service_ShoppingContent extends Google_Service
               ),
             ),'onboard' => array(
               'path' => '{merchantId}/buyongoogleprograms/{regionCode}/onboard',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'merchantId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'regionCode' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'pause' => array(
+              'path' => '{merchantId}/buyongoogleprograms/{regionCode}/pause',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'merchantId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'regionCode' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'requestreview' => array(
+              'path' => '{merchantId}/buyongoogleprograms/{regionCode}/requestreview',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'merchantId' => array(

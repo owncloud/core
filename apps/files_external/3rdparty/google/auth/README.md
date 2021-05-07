@@ -172,6 +172,48 @@ For invoking Cloud Identity-Aware Proxy, you will need to pass the Client ID
 used when you set up your protected resource as the target audience. See how to
 [secure your IAP app with signed headers](https://cloud.google.com/iap/docs/signed-headers-howto).
 
+#### Call using a specific JSON key
+If you want to use a specific JSON key instead of using `GOOGLE_APPLICATION_CREDENTIALS` environment variable, you can
+ do this:
+ 
+```php
+use Google\Auth\CredentialsLoader;
+use Google\Auth\Middleware\AuthTokenMiddleware;
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+
+// Define the Google Application Credentials array
+$jsonKey = ['key' => 'value'];
+
+// define the scopes for your API call
+$scopes = ['https://www.googleapis.com/auth/drive.readonly'];
+
+// Load credentials
+$creds = CredentialsLoader::makeCredentials($scopes, $jsonKey);
+
+// optional caching
+// $creds = new FetchAuthTokenCache($creds, $cacheConfig, $cache);
+
+// create middleware
+$middleware = new AuthTokenMiddleware($creds);
+$stack = HandlerStack::create();
+$stack->push($middleware);
+
+// create the HTTP client
+$client = new Client([
+  'handler' => $stack,
+  'base_uri' => 'https://www.googleapis.com',
+  'auth' => 'google_auth'  // authorize all requests
+]);
+
+// make the request
+$response = $client->get('drive/v2/files');
+
+// show the result!
+print_r((string) $response->getBody());
+
+```
+
 #### Verifying JWTs
 
 If you are [using Google ID tokens to authenticate users][google-id-tokens], use

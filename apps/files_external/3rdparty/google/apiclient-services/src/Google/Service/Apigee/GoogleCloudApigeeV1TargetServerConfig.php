@@ -20,6 +20,7 @@ class Google_Service_Apigee_GoogleCloudApigeeV1TargetServerConfig extends Google
   public $host;
   public $name;
   public $port;
+  public $protocol;
   protected $tlsInfoType = 'Google_Service_Apigee_GoogleCloudApigeeV1TlsInfoConfig';
   protected $tlsInfoDataType = '';
 
@@ -46,6 +47,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1TargetServerConfig extends Google
   public function getPort()
   {
     return $this->port;
+  }
+  public function setProtocol($protocol)
+  {
+    $this->protocol = $protocol;
+  }
+  public function getProtocol()
+  {
+    return $this->protocol;
   }
   /**
    * @param Google_Service_Apigee_GoogleCloudApigeeV1TlsInfoConfig

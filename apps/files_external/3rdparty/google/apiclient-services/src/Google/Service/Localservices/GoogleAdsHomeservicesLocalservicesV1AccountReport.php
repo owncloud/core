@@ -28,6 +28,7 @@ class Google_Service_Localservices_GoogleAdsHomeservicesLocalservicesV1AccountRe
   public $currentPeriodConnectedPhoneCalls;
   public $currentPeriodPhoneCalls;
   public $currentPeriodTotalCost;
+  public $impressionsLastTwoDays;
   public $phoneLeadResponsiveness;
   public $previousPeriodChargedLeads;
   public $previousPeriodConnectedPhoneCalls;
@@ -120,6 +121,14 @@ class Google_Service_Localservices_GoogleAdsHomeservicesLocalservicesV1AccountRe
   public function getCurrentPeriodTotalCost()
   {
     return $this->currentPeriodTotalCost;
+  }
+  public function setImpressionsLastTwoDays($impressionsLastTwoDays)
+  {
+    $this->impressionsLastTwoDays = $impressionsLastTwoDays;
+  }
+  public function getImpressionsLastTwoDays()
+  {
+    return $this->impressionsLastTwoDays;
   }
   public function setPhoneLeadResponsiveness($phoneLeadResponsiveness)
   {

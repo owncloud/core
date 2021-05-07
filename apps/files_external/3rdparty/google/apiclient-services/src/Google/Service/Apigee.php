@@ -34,7 +34,7 @@
  */
 class Google_Service_Apigee extends Google_Service
 {
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 
@@ -43,6 +43,7 @@ class Google_Service_Apigee extends Google_Service
   public $organizations_analytics_datastores;
   public $organizations_apiproducts;
   public $organizations_apiproducts_attributes;
+  public $organizations_apiproducts_rateplans;
   public $organizations_apis;
   public $organizations_apis_deployments;
   public $organizations_apis_keyvaluemaps;
@@ -58,6 +59,7 @@ class Google_Service_Apigee extends Google_Service
   public $organizations_developers_apps_keys_apiproducts;
   public $organizations_developers_apps_keys_create;
   public $organizations_developers_attributes;
+  public $organizations_developers_subscriptions;
   public $organizations_envgroups;
   public $organizations_envgroups_attachments;
   public $organizations_environments;
@@ -199,6 +201,16 @@ class Google_Service_Apigee extends Google_Service
               'httpMethod' => 'GET',
               'parameters' => array(
                 'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'setAddons' => array(
+              'path' => 'v1/{+org}:setAddons',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'org' => array(
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
@@ -431,6 +443,86 @@ class Google_Service_Apigee extends Google_Service
             ),'updateApiProductAttribute' => array(
               'path' => 'v1/{+name}',
               'httpMethod' => 'POST',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->organizations_apiproducts_rateplans = new Google_Service_Apigee_Resource_OrganizationsApiproductsRateplans(
+        $this,
+        $this->serviceName,
+        'rateplans',
+        array(
+          'methods' => array(
+            'create' => array(
+              'path' => 'v1/{+parent}/rateplans',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'delete' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'get' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'v1/{+parent}/rateplans',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'count' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'expand' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
+                'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'startKey' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'state' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),'update' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'PUT',
               'parameters' => array(
                 'name' => array(
                   'location' => 'path',
@@ -1234,6 +1326,64 @@ class Google_Service_Apigee extends Google_Service
           )
         )
     );
+    $this->organizations_developers_subscriptions = new Google_Service_Apigee_Resource_OrganizationsDevelopersSubscriptions(
+        $this,
+        $this->serviceName,
+        'subscriptions',
+        array(
+          'methods' => array(
+            'create' => array(
+              'path' => 'v1/{+parent}/subscriptions',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'expire' => array(
+              'path' => 'v1/{+name}:expire',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'get' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'v1/{+parent}/subscriptions',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'count' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'startKey' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
     $this->organizations_envgroups = new Google_Service_Apigee_Resource_OrganizationsEnvgroups(
         $this,
         $this->serviceName,
@@ -1562,6 +1712,10 @@ class Google_Service_Apigee extends Google_Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ),
+                'disableCache' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
                 ),
                 'type' => array(
                   'location' => 'query',

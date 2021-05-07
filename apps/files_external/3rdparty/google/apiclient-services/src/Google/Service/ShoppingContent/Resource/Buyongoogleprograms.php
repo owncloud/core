@@ -26,7 +26,26 @@
 class Google_Service_ShoppingContent_Resource_Buyongoogleprograms extends Google_Service_Resource
 {
   /**
-   * Retrieves a status of BoG program for your Merchant Center account.
+   * Reactivates the BoG program in your Merchant Center account. Moves the
+   * program to the active state when allowed, e.g. when paused. Important: This
+   * method is only whitelisted for selected merchants.
+   * (buyongoogleprograms.activate)
+   *
+   * @param string $merchantId Required. The ID of the account.
+   * @param string $regionCode The program region code [ISO 3166-1
+   * alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). Currently only US
+   * is available.
+   * @param Google_Service_ShoppingContent_ActivateBuyOnGoogleProgramRequest $postBody
+   * @param array $optParams Optional parameters.
+   */
+  public function activate($merchantId, $regionCode, Google_Service_ShoppingContent_ActivateBuyOnGoogleProgramRequest $postBody, $optParams = array())
+  {
+    $params = array('merchantId' => $merchantId, 'regionCode' => $regionCode, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('activate', array($params));
+  }
+  /**
+   * Retrieves a status of the BoG program for your Merchant Center account.
    * (buyongoogleprograms.get)
    *
    * @param string $merchantId Required. The ID of the account.
@@ -43,12 +62,12 @@ class Google_Service_ShoppingContent_Resource_Buyongoogleprograms extends Google
     return $this->call('get', array($params), "Google_Service_ShoppingContent_BuyOnGoogleProgramStatus");
   }
   /**
-   * Onboards BoG in your Merchant Center account. By using this method, you agree
-   * to the [Terms of Service](https://merchants.google.com/mc/termsofservice/tran
-   * sactions/US/latest). Calling this method is only possible if the
-   * authenticated account is the same as the merchant id in the request. Calling
-   * this method multiple times will only accept Terms of Service if the latest
-   * version is not currently signed. (buyongoogleprograms.onboard)
+   * Onboards the BoG program in your Merchant Center account. By using this
+   * method, you agree to the [Terms of Service](https://merchants.google.com/mc/t
+   * ermsofservice/transactions/US/latest). Calling this method is only possible
+   * if the authenticated account is the same as the merchant id in the request.
+   * Calling this method multiple times will only accept Terms of Service if the
+   * latest version is not currently signed. (buyongoogleprograms.onboard)
    *
    * @param string $merchantId Required. The ID of the account.
    * @param string $regionCode The program region code [ISO 3166-1
@@ -62,5 +81,42 @@ class Google_Service_ShoppingContent_Resource_Buyongoogleprograms extends Google
     $params = array('merchantId' => $merchantId, 'regionCode' => $regionCode, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('onboard', array($params));
+  }
+  /**
+   * Pauses the BoG program in your Merchant Center account. Important: This
+   * method is only whitelisted for selected merchants.
+   * (buyongoogleprograms.pause)
+   *
+   * @param string $merchantId Required. The ID of the account.
+   * @param string $regionCode The program region code [ISO 3166-1
+   * alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). Currently only US
+   * is available.
+   * @param Google_Service_ShoppingContent_PauseBuyOnGoogleProgramRequest $postBody
+   * @param array $optParams Optional parameters.
+   */
+  public function pause($merchantId, $regionCode, Google_Service_ShoppingContent_PauseBuyOnGoogleProgramRequest $postBody, $optParams = array())
+  {
+    $params = array('merchantId' => $merchantId, 'regionCode' => $regionCode, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('pause', array($params));
+  }
+  /**
+   * Requests review and then activates the BoG program in your Merchant Center
+   * account for the first time. Moves the program to the REVIEW_PENDING state.
+   * Important: This method is only whitelisted for selected merchants.
+   * (buyongoogleprograms.requestreview)
+   *
+   * @param string $merchantId Required. The ID of the account.
+   * @param string $regionCode The program region code [ISO 3166-1
+   * alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). Currently only US
+   * is available.
+   * @param Google_Service_ShoppingContent_RequestReviewBuyOnGoogleProgramRequest $postBody
+   * @param array $optParams Optional parameters.
+   */
+  public function requestreview($merchantId, $regionCode, Google_Service_ShoppingContent_RequestReviewBuyOnGoogleProgramRequest $postBody, $optParams = array())
+  {
+    $params = array('merchantId' => $merchantId, 'regionCode' => $regionCode, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('requestreview', array($params));
   }
 }

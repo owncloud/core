@@ -114,6 +114,10 @@ class Google_Service_GKEHub extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'requestId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
               ),
             ),'delete' => array(
               'path' => 'v1/{+name}',
@@ -123,6 +127,10 @@ class Google_Service_GKEHub extends Google_Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ),
+                'requestId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'generateConnectManifest' => array(
@@ -217,6 +225,10 @@ class Google_Service_GKEHub extends Google_Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ),
+                'requestId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
                 'updateMask' => array(
                   'location' => 'query',

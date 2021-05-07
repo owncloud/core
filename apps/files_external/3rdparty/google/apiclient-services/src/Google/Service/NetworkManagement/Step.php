@@ -20,6 +20,8 @@ class Google_Service_NetworkManagement_Step extends Google_Model
   protected $abortType = 'Google_Service_NetworkManagement_AbortInfo';
   protected $abortDataType = '';
   public $causesDrop;
+  protected $cloudSqlInstanceType = 'Google_Service_NetworkManagement_CloudSQLInstanceInfo';
+  protected $cloudSqlInstanceDataType = '';
   protected $deliverType = 'Google_Service_NetworkManagement_DeliverInfo';
   protected $deliverDataType = '';
   public $description;
@@ -33,6 +35,8 @@ class Google_Service_NetworkManagement_Step extends Google_Model
   protected $forwardDataType = '';
   protected $forwardingRuleType = 'Google_Service_NetworkManagement_ForwardingRuleInfo';
   protected $forwardingRuleDataType = '';
+  protected $gkeMasterType = 'Google_Service_NetworkManagement_GKEMasterInfo';
+  protected $gkeMasterDataType = '';
   protected $instanceType = 'Google_Service_NetworkManagement_InstanceInfo';
   protected $instanceDataType = '';
   protected $loadBalancerType = 'Google_Service_NetworkManagement_LoadBalancerInfo';
@@ -69,6 +73,20 @@ class Google_Service_NetworkManagement_Step extends Google_Model
   public function getCausesDrop()
   {
     return $this->causesDrop;
+  }
+  /**
+   * @param Google_Service_NetworkManagement_CloudSQLInstanceInfo
+   */
+  public function setCloudSqlInstance(Google_Service_NetworkManagement_CloudSQLInstanceInfo $cloudSqlInstance)
+  {
+    $this->cloudSqlInstance = $cloudSqlInstance;
+  }
+  /**
+   * @return Google_Service_NetworkManagement_CloudSQLInstanceInfo
+   */
+  public function getCloudSqlInstance()
+  {
+    return $this->cloudSqlInstance;
   }
   /**
    * @param Google_Service_NetworkManagement_DeliverInfo
@@ -161,6 +179,20 @@ class Google_Service_NetworkManagement_Step extends Google_Model
   public function getForwardingRule()
   {
     return $this->forwardingRule;
+  }
+  /**
+   * @param Google_Service_NetworkManagement_GKEMasterInfo
+   */
+  public function setGkeMaster(Google_Service_NetworkManagement_GKEMasterInfo $gkeMaster)
+  {
+    $this->gkeMaster = $gkeMaster;
+  }
+  /**
+   * @return Google_Service_NetworkManagement_GKEMasterInfo
+   */
+  public function getGkeMaster()
+  {
+    return $this->gkeMaster;
   }
   /**
    * @param Google_Service_NetworkManagement_InstanceInfo

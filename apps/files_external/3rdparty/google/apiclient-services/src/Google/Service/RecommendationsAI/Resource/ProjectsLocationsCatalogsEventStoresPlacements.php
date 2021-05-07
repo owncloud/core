@@ -31,10 +31,10 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsEventSt
    * more](https://cloud.google.com/recommendations-ai/docs/setting-up#register-
    * key). (placements.predict)
    *
-   * @param string $name Required. Full resource name of the format: {name=project
-   * s/locations/global/catalogs/default_catalog/eventStores/default_event_store/p
-   * lacements} The id of the recommendation engine placement. This id is used to
-   * identify the set of models that will be used to make the prediction. We
+   * @param string $name Required. Full resource name of the format: `{name=projec
+   * ts/locations/global/catalogs/default_catalog/eventStores/default_event_store/
+   * placements}` The id of the recommendation engine placement. This id is used
+   * to identify the set of models that will be used to make the prediction. We
    * currently support three placements with the following IDs by default: *
    * `shopping_cart`: Predicts items frequently bought together with one or more
    * catalog items in the same shopping session. Commonly displayed after `add-to-

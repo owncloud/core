@@ -19,7 +19,9 @@
  * Service definition for HangoutsChat (v1).
  *
  * <p>
- * Enables bots to fetch information and perform actions in Google Chat.</p>
+ * Enables bots to fetch information and perform actions in Google Chat.
+ * Authentication using a service account is a prerequisite for using the Google
+ * Chat REST API.</p>
  *
  * <p>
  * For more information about this service, see the API
