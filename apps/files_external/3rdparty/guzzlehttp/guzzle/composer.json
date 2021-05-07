@@ -1,8 +1,16 @@
 {
     "name": "guzzlehttp/guzzle",
     "type": "library",
-    "description": "Guzzle is a PHP HTTP client library and framework for building RESTful web service clients",
-    "keywords": ["framework", "http", "rest", "web service", "curl", "client", "HTTP client"],
+    "description": "Guzzle is a PHP HTTP client library",
+    "keywords": [
+        "framework",
+        "http",
+        "rest",
+        "web service",
+        "curl",
+        "client",
+        "HTTP client"
+    ],
     "homepage": "http://guzzlephp.org/",
     "license": "MIT",
     "authors": [
@@ -13,26 +21,39 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
-        "guzzlehttp/ringphp": "^1.1",
-        "react/promise": "^2.2"
+        "php": ">=5.5",
+        "ext-json": "*",
+        "symfony/polyfill-intl-idn": "^1.17.0",
+        "guzzlehttp/promises": "^1.0",
+        "guzzlehttp/psr7": "^1.6.1"
     },
     "require-dev": {
         "ext-curl": "*",
-        "phpunit/phpunit": "^4.0"
+        "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.4 || ^7.0",
+        "psr/log": "^1.1"
+    },
+    "suggest": {
+        "psr/log": "Required for using the Log middleware"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "6.5-dev"
+        }
     },
     "autoload": {
         "psr-4": {
             "GuzzleHttp\\": "src/"
-        }
+        },
+        "files": [
+            "src/functions_include.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
             "GuzzleHttp\\Tests\\": "tests/"
         }
-    },
-    "scripts": {
-        "test": "make test",
-        "test-ci": "make coverage"
     }
 }
