@@ -151,7 +151,6 @@ OC.L10N.register(
     "Share to Twitter. Opens in a new window." : "Compartir a Twitter. Se aperi in un nove fenestra.",
     "Share to Facebook. Opens in a new window." : "Compartir a Facebook. Se aperi in un nove fenestra.",
     "Share to Diaspora. Opens in a new window." : "Compartir a Diaspora. Se aperi in un nove fenestra.",
-    "Share to Google+. Opens in a new window." : "Compartir a Google+. Se aperi in un nove fenestra.",
     "Share via email. Opens your mail client." : "Compartir per e-mail. Se aperi in un nove fenestra.",
     "Email link to person" : "Ligamine de e-posta a persona",
     "Send link via email" : "Inviar ligamine in e-mail",

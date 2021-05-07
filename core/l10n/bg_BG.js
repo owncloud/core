@@ -183,7 +183,6 @@ OC.L10N.register(
     "Share to Twitter. Opens in a new window." : "Споделете в Twitter. Отваря се в нов прозорец.",
     "Share to Facebook. Opens in a new window." : "Споделете във Facebook. Отваря се в нов прозорец.",
     "Share to Diaspora. Opens in a new window." : "Споделете в Diaspora. Отваря се в нов прозорец.",
-    "Share to Google+. Opens in a new window." : "Споделете в Google+. Отваря се в нов прозорец.",
     "Share via email. Opens your mail client." : "Споделете чрез имейл. Отваря се във Вашето имейл приложение.",
     "Email link to person" : "Имейл връзка към човек",
     "Send copy to self" : "Изпратете копие до себе си",

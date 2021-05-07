@@ -180,7 +180,6 @@ OC.L10N.register(
     "Share to Twitter. Opens in a new window." : "Del på Twitter. Åpner et nytt vindu.",
     "Share to Facebook. Opens in a new window." : "Del på Facebook. Åpner et nytt vindu.",
     "Share to Diaspora. Opens in a new window." : "Del på Diaspora. Åpner et nytt vindu.",
-    "Share to Google+. Opens in a new window." : "Del på Google+. Åpner et nytt vindu.",
     "Share via email. Opens your mail client." : "Del via e-post. Åpner epost-klienten din.",
     "Email link to person" : "Email lenke til person",
     "Send copy to self" : "Send kopi til deg selv",

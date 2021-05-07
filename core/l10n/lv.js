@@ -132,7 +132,6 @@ OC.L10N.register(
     "Share to Twitter. Opens in a new window." : "Koplietot Tviterī. Tiks atvērts jaunā pārlūka logā.",
     "Share to Facebook. Opens in a new window." : "Koplietot Facebook. Tiks atvērts jaunā pārlūka logā.",
     "Share to Diaspora. Opens in a new window." : "Koplietot Diaspora. Tiks atvērts jaunā pārlūka logā.",
-    "Share to Google+. Opens in a new window." : "Koplietot Google+. Tiks atvērts jaunā pārlūka logā.",
     "Share via email. Opens your mail client." : "Koplietot ar e-pasta ziņu. Tiks atvērts jūsu e-pasta lietotnē.",
     "Email link to person" : "Sūtīt saiti personai pa e-pastu",
     "Send copy to self" : "Nosūtīt sev kopiju",

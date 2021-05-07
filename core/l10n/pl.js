@@ -188,7 +188,6 @@ OC.L10N.register(
     "Share to Twitter. Opens in a new window." : "Udostępnij na Twitter. Otwórz w nowym oknie.",
     "Share to Facebook. Opens in a new window." : "Udostępnij na Facebook. Otwórz w nowym oknie.",
     "Share to Diaspora. Opens in a new window." : "Udostępnij na Diaspora.  Otwórz w nowym oknie.",
-    "Share to Google+. Opens in a new window." : "Udostępnij na Google+. Otwórz w nowym oknie.",
     "Share via email. Opens your mail client." : "Udostępnij poprzez e-mail. Otwórz Twojego klienta poczty e-mail.",
     "An error occurred while sending email" : "Wystąpił błąd przy wysyłaniu wiadomości email",
     "Email link to person" : "Wyślij osobie odnośnik poprzez e-mail",

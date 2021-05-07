@@ -183,7 +183,6 @@ OC.L10N.register(
     "Share to Twitter. Opens in a new window." : "Share to Twitter. Opens in a new window.",
     "Share to Facebook. Opens in a new window." : "Share to Facebook. Opens in a new window.",
     "Share to Diaspora. Opens in a new window." : "Share to Diaspora. Opens in a new window.",
-    "Share to Google+. Opens in a new window." : "Share to Google+. Opens in a new window.",
     "Share via email. Opens your mail client." : "Share via email. Opens your mail client.",
     "Email link to person" : "Email link to person",
     "Send copy to self" : "Send copy to self",

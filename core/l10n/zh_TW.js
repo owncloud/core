@@ -192,7 +192,6 @@ OC.L10N.register(
     "Share to Twitter. Opens in a new window." : "分享到 Twitter。開啟新視窗。",
     "Share to Facebook. Opens in a new window." : "分享到 Facebook。開啟新視窗。",
     "Share to Diaspora. Opens in a new window." : "分享到 Diaspora。開啟新視窗。",
-    "Share to Google+. Opens in a new window." : "分享到 Google+。開啟新視窗。",
     "Share via email. Opens your mail client." : "分享到電子郵件。開啟郵件客戶端。",
     "An error occurred while sending email" : "發送電子郵件時發生錯誤",
     "Email link to person" : "將連結 email 給別人",

@@ -183,7 +183,6 @@ OC.L10N.register(
     "Share to Twitter. Opens in a new window." : "Deila á Twitter. Opnast í nýjum glugga.",
     "Share to Facebook. Opens in a new window." : "Deila á Facebook. Opnast í nýjum glugga.",
     "Share to Diaspora. Opens in a new window." : "Deila á Diaspora. Opnast í nýjum glugga.",
-    "Share to Google+. Opens in a new window." : "Deila á Google+. Opnast í nýjum glugga.",
     "Share via email. Opens your mail client." : "Deila með tölvupósti. Opnar póstforritið þitt.",
     "Email link to person" : "Senda veftengil í tölvupósti til notanda",
     "Send copy to self" : "Senda afrit til sjálfs þín",

@@ -172,7 +172,6 @@ OC.L10N.register(
     "Share to Twitter. Opens in a new window." : "Objavi povezavo na Twitter (odpre v novem oknu).",
     "Share to Facebook. Opens in a new window." : "Objavi povezavo na Facebook (odpre se v novem oknu).",
     "Share to Diaspora. Opens in a new window." : "Objavi povezavo na Diasporo (odpre v novem oknu).",
-    "Share to Google+. Opens in a new window." : "Objavi povezavo na Google+ (odpre v novem oknu).",
     "Share via email. Opens your mail client." : "Objavi povezavo prek elektronske pošte (odpre v oknu odjemalca).",
     "Email link to person" : "Posreduj povezavo po elektronski pošti",
     "Send link via email" : "Pošlji povezavo prek elektronske pošte",

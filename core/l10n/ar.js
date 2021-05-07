@@ -192,7 +192,6 @@ OC.L10N.register(
     "Share to Twitter. Opens in a new window." : "شارك على Twitter. يفتح في نافذة جديدة.",
     "Share to Facebook. Opens in a new window." : "شارك على Facebook. يفتح في نافذة جديدة.",
     "Share to Diaspora. Opens in a new window." : "شارك على Diaspora. يفتح في نافذة جديدة.",
-    "Share to Google+. Opens in a new window." : "شارك علىGoogle+. يفتح في نافذة جديدة.",
     "Share via email. Opens your mail client." : "شارك عبر البريد الإلكتروني. يفتح في عميل البريد الإلكتروني.",
     "An error occurred while sending email" : "حدث خطأ أثناء إرسال البريد الإلكتروني",
     "Email link to person" : "إرسال الرابط بالبريد الإلكتروني إلى صديق",

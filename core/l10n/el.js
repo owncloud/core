@@ -183,7 +183,6 @@ OC.L10N.register(
     "Share to Twitter. Opens in a new window." : "Διαμοιρασμός στο Twitter. Άνοιγμα σε νέο παράθυρο.",
     "Share to Facebook. Opens in a new window." : "Διαμοιρασμός στο Facebook. Άνοιγμα σε νέο παράθυρο.",
     "Share to Diaspora. Opens in a new window." : "Διαμοιρασμός στο Diaspora. Άνοιγμα σε νέο παράθυρο.",
-    "Share to Google+. Opens in a new window." : "Διαμοιρασμό στο Google+. Άνοιγμα σε νέο παράθυρο.",
     "Share via email. Opens your mail client." : "Διαμοιρασμός μέσω ηλεκτρονικής αλληλογραφία. Άνοιγμα σε πελάτη αλληλογραφίας.",
     "An error occurred while sending email" : "Παρουσιάστηκε σφάλμα κατά την αποστολή ηλεκτρονικού μηνύματος",
     "Email link to person" : "Αποστολή συνδέσμου με ηλεκτρονική αλληλογραφία",

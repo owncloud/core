@@ -180,7 +180,6 @@ OC.L10N.register(
     "Share to Twitter. Opens in a new window." : "Megosztás Twitter-en. Új ablakban jelenik meg.",
     "Share to Facebook. Opens in a new window." : "Megosztás Facebook-on. Új ablakban jelenik meg.",
     "Share to Diaspora. Opens in a new window." : "Megosztás a Diaspora-n. Új ablakban jelenik meg.",
-    "Share to Google+. Opens in a new window." : "Megosztás Google+ -on. Új ablakban jelenik meg.",
     "Share via email. Opens your mail client." : "Megosztás E-mailben. A levelező kliensedben jelenik meg.",
     "Email link to person" : "Hivatkozás elküldése e-mail címre",
     "Send copy to self" : "Másolatküldés önmagának",

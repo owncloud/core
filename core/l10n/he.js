@@ -192,7 +192,6 @@ OC.L10N.register(
     "Share to Twitter. Opens in a new window." : "שיתוף בטוויטר. פתיחה בחלון חדש.",
     "Share to Facebook. Opens in a new window." : "שיתוף בפייסבוק. פתיחה בחלון חדש.",
     "Share to Diaspora. Opens in a new window." : "שיתוף ב- Diaspora. פתיחה בחלון חדש.",
-    "Share to Google+. Opens in a new window." : "שיתוף בגוגל פלוס. פתיחה בחלון חדש.",
     "Share via email. Opens your mail client." : "שיתוף על בסיס דואר אלקטרוני. פותח את אפקליקציית הדואר האלקטרוני שלך.",
     "An error occurred while sending email" : "אירעה שגיאה בזמן שליחת הדואר האלקטרוני",
     "Email link to person" : "שליחת קישור בדוא״ל למשתמש",

@@ -174,7 +174,6 @@ OC.L10N.register(
     "Share to Twitter. Opens in a new window." : "트위터로 공유합니다. 새 창에서 엽니다.",
     "Share to Facebook. Opens in a new window." : "Facebook으로 공유합니다. 새 창에서 엽니다.",
     "Share to Diaspora. Opens in a new window." : "Diaspora로 공유합니다. 새 창에서 엽니다.",
-    "Share to Google+. Opens in a new window." : "Google+로 공유합니다. 새 창에서 엽니다.",
     "Share via email. Opens your mail client." : "이메일로 공유합니다. 메일 클라이언트를 엽니다.",
     "Email link to person" : "이메일 주소",
     "Send link via email" : "이메일로 링크 보내기",
