@@ -26,6 +26,7 @@ Summary
 * Enhancement - Add excludeActions parameter to registerDefaultActions function: [#38643](https://github.com/owncloud/core/pull/38643)
 * Enhancement - Improve tab headers UI: [#38653](https://github.com/owncloud/core/pull/38653)
 * Enhancement - Remove google+ share button from personal settings: [#38705](https://github.com/owncloud/core/pull/38705)
+* Enhancement - Adjust the return type of the querybuilder's execute method: [#38714](https://github.com/owncloud/core/pull/38714)
 
 Details
 -------
@@ -191,6 +192,12 @@ Details
    Due to the google+ service has been declined, we won't show the google+ share button anymore.
 
    https://github.com/owncloud/core/pull/38705
+
+* Enhancement - Adjust the return type of the querybuilder's execute method: [#38714](https://github.com/owncloud/core/pull/38714)
+
+   The return type changed with the recent update of doctrine/dbal to version 2.13.
+
+   https://github.com/owncloud/core/pull/38714
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================
