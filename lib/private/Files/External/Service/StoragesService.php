@@ -114,7 +114,7 @@ abstract class StoragesService implements IStoragesService {
 
 			$backend = $config->getBackend();
 			foreach ($config->getBackendOptions() as $key => $value) {
-				$newValue = $this->decryptIfPassword($backend, $key, $value);
+				$newValue = $this->decryptIfPassword($backend, $config->getAuthMechanism(), $key, $value);
 				if ($newValue !== $value) {
 					$config->setBackendOption($key, $newValue);
 				}
@@ -283,7 +283,7 @@ abstract class StoragesService implements IStoragesService {
 		}
 		$backend = $newStorage->getBackend();
 		foreach ($newStorage->getBackendOptions() as $key => $value) {
-			$value = $this->encryptIfPassword($backend, $key, $value);
+			$value = $this->encryptIfPassword($backend, $newStorage->getAuthMechanism(), $key, $value);
 			$this->dbConfig->setConfig($configId, $key, $value);
 		}
 		foreach ($newStorage->getMountOptions() as $key => $value) {
@@ -457,7 +457,7 @@ abstract class StoragesService implements IStoragesService {
 
 		$backend = $updatedStorage->getBackend();
 		foreach ($changedConfig as $key => $value) {
-			$value = $this->encryptIfPassword($backend, $key, $value);
+			$value = $this->encryptIfPassword($backend, $updatedStorage->getAuthMechanism(), $key, $value);
 			$this->dbConfig->setConfig($id, $key, $value);
 		}
 		foreach ($changedOptions as $key => $value) {
@@ -570,17 +570,27 @@ abstract class StoragesService implements IStoragesService {
 		}
 	}
 
-	private function encryptIfPassword(Backend $backend, $key, $value) {
+	private function encryptIfPassword(Backend $backend, AuthMechanism $auth, $key, $value) {
 		$backendParameters = $backend->getParameters();
+		$authParameters = $auth->getParameters();
 		if (isset($backendParameters[$key]) && $backendParameters[$key]->getType() === \OCP\Files\External\DefinitionParameter::VALUE_PASSWORD) {
+			$value = \base64_encode($this->crypto->encrypt($value));
+		} elseif (isset($authParameters[$key]) && $authParameters[$key]->getType() === \OCP\Files\External\DefinitionParameter::VALUE_PASSWORD) {
 			$value = \base64_encode($this->crypto->encrypt($value));
 		}
 		return $value;
 	}
 
-	private function decryptIfPassword(Backend $backend, $key, $value) {
+	private function decryptIfPassword(Backend $backend, AuthMechanism $auth, $key, $value) {
 		$backendParameters = $backend->getParameters();
+		$authParameters = $auth->getParameters();
 		if (isset($backendParameters[$key]) && $backendParameters[$key]->getType() === \OCP\Files\External\DefinitionParameter::VALUE_PASSWORD) {
+			try {
+				$value = $this->crypto->decrypt(\base64_decode($value));
+			} catch (\Exception $e) {
+				// assume the value isn't encrypted
+			}
+		} elseif (isset($authParameters[$key]) && $authParameters[$key]->getType() === \OCP\Files\External\DefinitionParameter::VALUE_PASSWORD) {
 			try {
 				$value = $this->crypto->decrypt(\base64_decode($value));
 			} catch (\Exception $e) {
