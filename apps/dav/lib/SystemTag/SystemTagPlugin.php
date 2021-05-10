@@ -177,15 +177,15 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 		$userEditable = false;
 
 		if (isset($data['userVisible'])) {
-			$userVisible = filter_var($data['userVisible'], FILTER_VALIDATE_BOOLEAN);
+			$userVisible = \filter_var($data['userVisible'], FILTER_VALIDATE_BOOLEAN);
 		}
 
 		if (isset($data['userAssignable'])) {
-			$userAssignable = filter_var($data['userAssignable'], FILTER_VALIDATE_BOOLEAN);
+			$userAssignable = \filter_var($data['userAssignable'], FILTER_VALIDATE_BOOLEAN);
 		}
 
 		if (isset($data['userEditable'])) {
-			$userEditable = filter_var($data['userEditable'], FILTER_VALIDATE_BOOLEAN);
+			$userEditable = \filter_var($data['userEditable'], FILTER_VALIDATE_BOOLEAN);
 		}
 
 		$groups = [];
