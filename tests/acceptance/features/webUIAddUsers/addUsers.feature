@@ -214,7 +214,7 @@ Feature: add users
   Scenario: admin creates a user without setting password and user sets empty spaces as password
     When the administrator creates a user with the name "brand-new-user" and the email "bnu@owncloud" without a password using the webUI
     And the administrator logs out of the webUI
-    And the user follows the password set link received by "b@owncloud" using the webUI
+    And the user follows the password set link received by "bnu@owncloud" using the webUI
     And the user sets the password to " " and confirms with the same password using the webUI
     Then the user should be redirected to a webUI page with the title "%productname%"
 
