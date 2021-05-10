@@ -8,10 +8,12 @@
     <ul class="summary">
         <li class="type-bugfix changelog-item">Bugfix - Handle exceptions with inaccesible federated share: <a href="https://github.com/owncloud/core/pull/38474">#38474</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix mispositioned ui elements after leaving viewerMode: <a href="https://github.com/owncloud/core/issues/38547">#38547</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Fix move operation from encrypted storage to unencrypted storage: <a href="https://github.com/owncloud/core/pull/38567">#38567</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Creating self group-reshare should not not share to self: <a href="https://github.com/owncloud/core/pull/38581">#38581</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Check quota on the necessary move operations: <a href="https://github.com/owncloud/core/pull/38591">#38591</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Normalize web.baseUrl before using it: <a href="https://github.com/owncloud/core/issues/38600">#38600</a></li>
         <li class="type-bugfix changelog-item">Bugfix - When validating rereshare permission make sure to check parent mountpoint: <a href="https://github.com/owncloud/enterprise/issues/4497">#4497</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Objectids for comments and tags are strings: <a href="https://github.com/owncloud/core/pull/38682">#38682</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Hide sensible information on share download: <a href="https://github.com/owncloud/core/pull/38689">#38689</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Hide file drop content: <a href="https://github.com/owncloud/core/pull/38691">#38691</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Regenerate session after authenticate a password protected public share: <a href="https://github.com/owncloud/core/pull/38693">#38693</a></li>
@@ -48,6 +50,15 @@
             <p>https://github.com/owncloud/core/issues/38547<br>
             </p>
             <p>https://github.com/owncloud/core/pull/38552<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Fix move operation from encrypted storage to unencrypted storage: <a href="https://github.com/owncloud/core/pull/38567">#38567</a></p>
+            <p>On a move operation from encrypted storage to unencrypted storage, the moved file was
+   remaining encrypted. This problem has been fixed.
+            </p>
+            <p>https://github.com/owncloud/encryption/issues/256<br>https://github.com/owncloud/encryption/issues/257<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/38567<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Creating self group-reshare should not not share to self: <a href="https://github.com/owncloud/core/pull/38581">#38581</a></p>
@@ -87,6 +98,15 @@
             <p>https://github.com/owncloud/enterprise/issues/4497<br>https://github.com/owncloud/enterprise/issues/4382<br>
             </p>
             <p>https://github.com/owncloud/core/pull/38625<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Objectids for comments and tags are strings: <a href="https://github.com/owncloud/core/pull/38682">#38682</a></p>
+            <p>We were using integers when asking for some information related to comments and tag. This was
+   working fine, but PHP 7.4.18 made some changes in the postgresql driver making things more
+   strict. As result, some queries were failing because that information was stored as string,
+   not integer.This problem is now fixed, and the queries can run without problems.
+            </p>
+            <p>https://github.com/owncloud/core/pull/38682<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Hide sensible information on share download: <a href="https://github.com/owncloud/core/pull/38689">#38689</a></p>

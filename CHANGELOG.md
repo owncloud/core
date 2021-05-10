@@ -10,10 +10,12 @@ Summary
 
 * Bugfix - Handle exceptions with inaccesible federated share: [#38474](https://github.com/owncloud/core/pull/38474)
 * Bugfix - Fix mispositioned ui elements after leaving viewerMode: [#38547](https://github.com/owncloud/core/issues/38547)
+* Bugfix - Fix move operation from encrypted storage to unencrypted storage: [#38567](https://github.com/owncloud/core/pull/38567)
 * Bugfix - Creating self group-reshare should not not share to self: [#38581](https://github.com/owncloud/core/pull/38581)
 * Bugfix - Check quota on the necessary move operations: [#38591](https://github.com/owncloud/core/pull/38591)
 * Bugfix - Normalize web.baseUrl before using it: [#38600](https://github.com/owncloud/core/issues/38600)
 * Bugfix - When validating rereshare permission make sure to check parent mountpoint: [#4497](https://github.com/owncloud/enterprise/issues/4497)
+* Bugfix - Objectids for comments and tags are strings: [#38682](https://github.com/owncloud/core/pull/38682)
 * Bugfix - Hide sensible information on share download: [#38689](https://github.com/owncloud/core/pull/38689)
 * Bugfix - Hide file drop content: [#38691](https://github.com/owncloud/core/pull/38691)
 * Bugfix - Regenerate session after authenticate a password protected public share: [#38693](https://github.com/owncloud/core/pull/38693)
@@ -49,6 +51,15 @@ Details
 
    https://github.com/owncloud/core/issues/38547
    https://github.com/owncloud/core/pull/38552
+
+* Bugfix - Fix move operation from encrypted storage to unencrypted storage: [#38567](https://github.com/owncloud/core/pull/38567)
+
+   On a move operation from encrypted storage to unencrypted storage, the moved file was
+   remaining encrypted. This problem has been fixed.
+
+   https://github.com/owncloud/encryption/issues/256
+   https://github.com/owncloud/encryption/issues/257
+   https://github.com/owncloud/core/pull/38567
 
 * Bugfix - Creating self group-reshare should not not share to self: [#38581](https://github.com/owncloud/core/pull/38581)
 
@@ -86,6 +97,17 @@ Details
    https://github.com/owncloud/enterprise/issues/4497
    https://github.com/owncloud/enterprise/issues/4382
    https://github.com/owncloud/core/pull/38625
+
+* Bugfix - Objectids for comments and tags are strings: [#38682](https://github.com/owncloud/core/pull/38682)
+
+   We were using integers when asking for some information related to comments and tag. This was
+   working fine, but PHP 7.4.18 made some changes in the postgresql driver making things more
+   strict. As result, some queries were failing because that information was stored as string,
+   not integer.
+
+   This problem is now fixed, and the queries can run without problems.
+
+   https://github.com/owncloud/core/pull/38682
 
 * Bugfix - Hide sensible information on share download: [#38689](https://github.com/owncloud/core/pull/38689)
 
