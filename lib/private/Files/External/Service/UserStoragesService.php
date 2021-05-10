@@ -34,6 +34,7 @@ use OCP\Files\External\IStorageConfig;
 use OCP\Files\External\NotFoundException;
 use OCP\Files\External\IStoragesBackendService;
 use OCP\Files\External\Service\IUserStoragesService;
+use OCP\Security\ICrypto;
 
 /**
  * Service class to manage user external storages
@@ -54,11 +55,12 @@ class UserStoragesService extends StoragesService implements IUserStoragesServic
 		IStoragesBackendService $backendService,
 		DBConfigService $dbConfig,
 		IUserSession $userSession,
-		IUserMountCache $userMountCache
+		IUserMountCache $userMountCache,
+		ICrypto $crypto
 	) {
 		$this->userSession = $userSession;
 		$this->userMountCache = $userMountCache;
-		parent::__construct($backendService, $dbConfig, $userMountCache);
+		parent::__construct($backendService, $dbConfig, $userMountCache, $crypto);
 	}
 
 	protected function readDBConfig() {

@@ -29,6 +29,7 @@ use OCP\IGroupManager;
 use OCP\Files\External\IStorageConfig;
 use OCP\Files\External\IStoragesBackendService;
 use OCP\Files\External\Service\IUserGlobalStoragesService;
+use OCP\Security\ICrypto;
 
 /**
  * Service class to read global storages applicable to the user
@@ -52,9 +53,10 @@ class UserGlobalStoragesService extends GlobalStoragesService implements IUserGl
 		DBConfigService $dbConfig,
 		IUserSession $userSession,
 		IGroupManager $groupManager,
-		IUserMountCache $userMountCache
+		IUserMountCache $userMountCache,
+		ICrypto $crypto
 	) {
-		parent::__construct($backendService, $dbConfig, $userMountCache);
+		parent::__construct($backendService, $dbConfig, $userMountCache, $crypto);
 		$this->userSession = $userSession;
 		$this->groupManager = $groupManager;
 	}

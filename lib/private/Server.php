@@ -848,7 +848,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			return new GlobalStoragesService(
 				$c->query('StoragesBackendService'),
 				$c->query('StoragesDBConfigService'),
-				$c->query('UserMountCache')
+				$c->query('UserMountCache'),
+				$c->query('Crypto')
 			);
 		});
 		$this->registerAlias('OCP\Files\External\Service\IGlobalStoragesService', 'GlobalStoragesService');
@@ -858,7 +859,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$c->query('StoragesDBConfigService'),
 				$c->query('UserSession'),
 				$c->query('GroupManager'),
-				$c->query('UserMountCache')
+				$c->query('UserMountCache'),
+				$c->query('Crypto')
 			);
 		});
 		$this->registerAlias('OCP\Files\External\Service\IUserGlobalStoragesService', 'UserGlobalStoragesService');
@@ -867,7 +869,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$c->query('StoragesBackendService'),
 				$c->query('StoragesDBConfigService'),
 				$c->query('UserSession'),
-				$c->query('UserMountCache')
+				$c->query('UserMountCache'),
+				$c->query('Crypto')
 			);
 		});
 		$this->registerAlias('OCP\Files\External\Service\IUserStoragesService', 'UserStoragesService');

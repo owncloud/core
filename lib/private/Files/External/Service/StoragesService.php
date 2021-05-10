@@ -39,6 +39,7 @@ use OCP\Files\External\NotFoundException;
 use OCP\Files\External\Service\IStoragesService;
 use OCP\Files\External\Backend\InvalidBackend;
 use OCP\Files\External\Auth\InvalidAuth;
+use OCP\Security\ICrypto;
 
 /**
  * Service class to manage external storages
@@ -58,15 +59,24 @@ abstract class StoragesService implements IStoragesService {
 	 */
 	protected $userMountCache;
 
+	/** @var ICrypto */
+	protected $crypto;
+
 	/**
 	 * @param IStoragesBackendService $backendService
 	 * @param DBConfigService $dbConfigService
 	 * @param IUserMountCache $userMountCache
 	 */
-	public function __construct(IStoragesBackendService $backendService, DBConfigService $dbConfigService, IUserMountCache $userMountCache) {
+	public function __construct(
+		IStoragesBackendService $backendService,
+		DBConfigService $dbConfigService,
+		IUserMountCache $userMountCache,
+		ICrypto $crypto
+	) {
 		$this->backendService = $backendService;
 		$this->dbConfig = $dbConfigService;
 		$this->userMountCache = $userMountCache;
+		$this->crypto = $crypto;
 	}
 
 	protected function readDBConfig() {
@@ -101,6 +111,14 @@ abstract class StoragesService implements IStoragesService {
 			);
 			$config->setType($mount['type']);
 			$config->setId((int)$mount['mount_id']);
+
+			$backend = $config->getBackend();
+			foreach ($config->getBackendOptions() as $key => $value) {
+				$newValue = $this->decryptIfPassword($backend, $key, $value);
+				if ($newValue !== $value) {
+					$config->setBackendOption($key, $newValue);
+				}
+			}
 			return $config;
 		} catch (\UnexpectedValueException $e) {
 			// don't die if a storage backend doesn't exist
@@ -263,7 +281,9 @@ abstract class StoragesService implements IStoragesService {
 		foreach ($newStorage->getApplicableGroups() as $group) {
 			$this->dbConfig->addApplicable($configId, DBConfigService::APPLICABLE_TYPE_GROUP, $group);
 		}
+		$backend = $newStorage->getBackend();
 		foreach ($newStorage->getBackendOptions() as $key => $value) {
+			$value = $this->encryptIfPassword($backend, $key, $value);
 			$this->dbConfig->setConfig($configId, $key, $value);
 		}
 		foreach ($newStorage->getMountOptions() as $key => $value) {
@@ -435,7 +455,9 @@ abstract class StoragesService implements IStoragesService {
 		$changedConfig = \array_diff_assoc($updatedStorage->getBackendOptions(), $oldStorage->getBackendOptions());
 		$changedOptions = \array_diff_assoc($updatedStorage->getMountOptions(), $oldStorage->getMountOptions());
 
+		$backend = $updatedStorage->getBackend();
 		foreach ($changedConfig as $key => $value) {
+			$value = $this->encryptIfPassword($backend, $key, $value);
 			$this->dbConfig->setConfig($id, $key, $value);
 		}
 		foreach ($changedOptions as $key => $value) {
@@ -546,5 +568,25 @@ abstract class StoragesService implements IStoragesService {
 		} catch (\Exception $e) {
 			return -1;
 		}
+	}
+
+	private function encryptIfPassword(Backend $backend, $key, $value) {
+		$backendParameters = $backend->getParameters();
+		if (isset($backendParameters[$key]) && $backendParameters[$key]->getType() === \OCP\Files\External\DefinitionParameter::VALUE_PASSWORD) {
+			$value = \base64_encode($this->crypto->encrypt($value));
+		}
+		return $value;
+	}
+
+	private function decryptIfPassword(Backend $backend, $key, $value) {
+		$backendParameters = $backend->getParameters();
+		if (isset($backendParameters[$key]) && $backendParameters[$key]->getType() === \OCP\Files\External\DefinitionParameter::VALUE_PASSWORD) {
+			try {
+				$value = $this->crypto->decrypt(\base64_decode($value));
+			} catch (\Exception $e) {
+				// assume the value isn't encrypted
+			}
+		}
+		return $value;
 	}
 }
