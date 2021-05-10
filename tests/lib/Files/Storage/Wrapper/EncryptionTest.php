@@ -802,6 +802,7 @@ class EncryptionTest extends Storage {
 
 		$expectedCachePut = [
 			'encrypted' => $expectedEncrypted,
+			'encryptedVersion' => 0
 		];
 		if ($expectedEncrypted === true) {
 			$expectedCachePut['encryptedVersion'] = 12345;

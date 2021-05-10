@@ -701,6 +701,8 @@ class Encryption extends Wrapper {
 			}
 
 			$cacheInformation['encryptedVersion'] = $encryptedVersion;
+		} else {
+			$cacheInformation['encryptedVersion'] = 0;
 		}
 
 		// in case of a rename we need to manipulate the source cache because
@@ -711,7 +713,7 @@ class Encryption extends Wrapper {
 			 * incremented version of source file, for the destination file.
 			 */
 			$encryptedVersion = $sourceStorage->getCache()->get($sourceInternalPath)['encryptedVersion'];
-			if ($this->encryptionManager->isEnabled()) {
+			if ($this->encryptionManager->isEnabled() && $isEncrypted) {
 				$cacheInformation['encryptedVersion'] = $encryptedVersion + 1;
 			}
 			$sourceStorage->getCache()->put($sourceInternalPath, $cacheInformation);
