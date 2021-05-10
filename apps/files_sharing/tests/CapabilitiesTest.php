@@ -112,6 +112,7 @@ class CapabilitiesTest extends \Test\TestCase {
 		$this->assertFalse($result['can_share']);
 		$this->assertFalse($result['public']['enabled']);
 		$this->assertFalse($result['user']['send_mail']);
+		$this->assertTrue($result['user']['profile_picture']);
 		$this->assertFalse($result['resharing']);
 	}
 
@@ -311,6 +312,14 @@ class CapabilitiesTest extends \Test\TestCase {
 		];
 		$result = $this->getResults($map);
 		$this->assertFalse($result['user']['send_mail']);
+	}
+
+	public function testProfilePictureCapability() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes']
+		];
+		$result = $this->getResults($map);
+		$this->assertTrue($result['user']['profile_picture']);
 	}
 
 	public function testResharing() {
