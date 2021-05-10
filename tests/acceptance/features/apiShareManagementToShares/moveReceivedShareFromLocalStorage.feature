@@ -9,7 +9,7 @@ Feature: local-storage
       | Alice    |
       | Brian    |
 
-
+  @skipOnEncryptionType:user-keys @encryption-issue-181
   Scenario Outline: receiver renames a received file share from local storage
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/local_storage/filetoshare.txt"
@@ -43,7 +43,7 @@ Feature: local-storage
       | 1               |
       | 2               |
 
-
+  @skipOnEncryptionType:user-keys @encryption-issue-181
   Scenario Outline: sub-folders,file inside a renamed received folder shared from local storage are accessible
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/local_storage/foo"
@@ -68,7 +68,7 @@ Feature: local-storage
       | 1               |
       | 2               |
 
-
+  @skipOnEncryptionType:user-keys @encryption-issue-181
   Scenario Outline: receiver renames a received file share from local storage in group sharing
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created

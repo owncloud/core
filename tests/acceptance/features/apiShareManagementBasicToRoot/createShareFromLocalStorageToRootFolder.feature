@@ -1,4 +1,4 @@
-@api @local_storage @notToImplementOnOCIS
+@api @local_storage @files_sharing-app-required @notToImplementOnOCIS
 Feature: local-storage
 
   Background:
@@ -8,7 +8,7 @@ Feature: local-storage
       | Brian    |
 
 
-  @public_link_share-feature-required @files_sharing-app-required
+  @skipOnEncryptionType:user-keys @encryption-issue-181
   Scenario Outline: Share a file inside a local external storage
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/local_storage/filetoshare.txt"
@@ -57,7 +57,7 @@ Feature: local-storage
       | 1               | 100             |
       | 2               | 200             |
 
-
+  @skipOnEncryptionType:user-keys @encryption-issue-181
   Scenario Outline: Share a file inside a local external storage to a group
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
