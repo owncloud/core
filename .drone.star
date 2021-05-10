@@ -22,156 +22,7 @@ config = {
 
 	'dav': True,
 
-	'phpunit': {
-		'allDatabases' : {
-			'phpVersions': [
-				'7.2',
-			]
-		},
-		'reducedDatabases' : {
-			'phpVersions': [
-				'7.3',
-				'7.4',
-			],
-			'databases': [
-				'sqlite',
-				'mariadb:10.2',
-			]
-		},
-		'external-samba-windows' : {
-			'phpVersions': [
-				'7.2',
-				'7.4',
-			],
-			'databases': [
-				'sqlite',
-			],
-			'externalTypes': [
-				'samba',
-				'windows',
-			],
-			'coverage': True,
-			'extraCommandsBeforeTestRun': [
-				'ls -l /var/cache',
-				'mkdir /var/cache/samba',
-				'ls -l /var/cache',
-				'ls -l /var/cache/samba',
-			]
-		},
-		'external-other' : {
-			'phpVersions': [
-				'7.2',
-				'7.4',
-			],
-			'databases': [
-				'sqlite',
-			],
-			'externalTypes': [
-				'webdav',
-				'sftp',
-				'scality'
-			],
-			'coverage': True
-		},
-	},
-
 	'acceptance': {
-		'api': {
-			'suites': [
-				'apiAuth',
-				'apiAuthOcs',
-				'apiAuthWebDav',
-				'apiCapabilities',
-				'apiComments',
-				'apiFavorites',
-				'apiMain',
-				'apiProvisioning-v1',
-				'apiProvisioning-v2',
-				'apiProvisioningGroups-v1',
-				'apiProvisioningGroups-v2',
-				'apiShareCreateSpecialToRoot1',
-				'apiShareCreateSpecialToShares1',
-				'apiShareCreateSpecialToRoot2',
-				'apiShareCreateSpecialToShares2',
-				'apiSharees',
-				'apiShareManagementToRoot',
-				'apiShareManagementToShares',
-				'apiShareManagementBasicToRoot',
-				'apiShareManagementBasicToShares',
-				'apiShareOperationsToRoot',
-				'apiShareOperationsToShares',
-				'apiSharePublicLink1',
-				'apiSharePublicLink2',
-				'apiShareReshareToRoot1',
-				'apiShareReshareToShares1',
-				'apiShareReshareToRoot2',
-				'apiShareReshareToShares2',
-				'apiShareReshareToRoot3',
-				'apiShareReshareToShares3',
-				'apiShareUpdateToRoot',
-				'apiShareUpdateToShares',
-				'apiTags',
-				'apiTranslation',
-				'apiTrashbin',
-				'apiVersions',
-				'apiWebdavEtagPropagation1',
-				'apiWebdavEtagPropagation2',
-				'apiWebdavLocks',
-				'apiWebdavLocks2',
-				'apiWebdavLocks3',
-				'apiWebdavLocksUnlock',
-				'apiWebdavMove1',
-				'apiWebdavMove2',
-				'apiWebdavOperations',
-				'apiWebdavPreviews',
-				'apiWebdavProperties1',
-				'apiWebdavProperties2',
-				'apiWebdavUpload1',
-				'apiWebdavUpload2',
-			],
-		},
-		'apiNotifications': {
-			'suites': [
-				'apiSharingNotificationsToRoot',
-				'apiSharingNotificationsToShares',
-			],
-			'extraApps': {
-				'notifications': 'composer install'
-			},
-		},
-		'apiFederation': {
-			'suites': [
-				'apiFederationToRoot1',
-				'apiFederationToRoot2',
-				'apiFederationToShares1',
-				'apiFederationToShares2',
-			],
-			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.5.0']
-		},
-		'cli': {
-			'suites': [
-				'cliBackground',
-				'cliLocalStorage',
-				'cliMain',
-				'cliProvisioning',
-				'cliTrashbin',
-			],
-			'emailNeeded': True,
-		},
-		'cliAppManagement': {
-			'suites': [
-				'cliAppManagement',
-			],
-			'testingRemoteSystem': False
-		},
-		'cliExternalStorage': {
-			'suites': [
-				'cliExternalStorage',
-			],
-			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.5.0']
-		},
 		'webUI': {
 			'suites': {
 				'webUIAddUsers': '',
@@ -261,16 +112,6 @@ config = {
 			'filterTags': '@smokeTest&&~@notifications-app-required',
 			'runAllSuites': True,
 			'numberOfParts': 3,
-		},
-		'apiProxy': {
-			'suites': {
-				'apiProxySmoketest': 'apiProxySmoke',
-			},
-			'proxyNeeded': True,
-			'useHttps': False,
-			'filterTags': '@smokeTest&&~@notifications-app-required',
-			'runAllSuites': True,
-			'numberOfParts': 8,
 		},
 	}
 }
@@ -1143,7 +984,7 @@ def phpTests(ctx, testType):
 		params = {}
 		for item in default:
 			params[item] = matrix[item] if item in matrix else default[item]
-		
+
 		if params['skip']:
 			continue
 
