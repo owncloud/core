@@ -266,7 +266,7 @@ class SystemTagManagerTest extends TestCase {
 	public function testGetExistingTag($name, $userVisible, $userAssignable, $userEditable) {
 		$tag1 = $this->tagManager->createTag($name, $userVisible, $userAssignable, $userEditable);
 		if ($userEditable === false) {
-			$userEditable = true;
+			$userAssignable = true;
 		}
 		$tag2 = $this->tagManager->getTag($name, $userVisible, $userAssignable, $userEditable);
 

@@ -183,8 +183,8 @@ class SystemTagManager implements ISystemTagManager {
 		$result = $this->selectTagQuery
 			->setParameter('name', $tagName)
 			->setParameter('visibility', $userVisible)
-			->setParameter('editable', $userAssignable)
-			->setParameter('assignable', $userEditable)
+			->setParameter('editable', $userEditable)
+			->setParameter('assignable', $userAssignable)
 			->execute();
 
 		$row = $result->fetch();

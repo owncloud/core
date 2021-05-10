@@ -1,0 +1,6 @@
+Bugfix: Database query filter when getting a tag
+
+The filter values for userAssignable and userEditable were swapped, causing
+a wrong result in certain cases.
+
+https://github.com/owncloud/core/pull/38725
