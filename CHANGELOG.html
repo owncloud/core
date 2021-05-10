@@ -17,6 +17,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Hide sensible information on share download: <a href="https://github.com/owncloud/core/pull/38689">#38689</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Hide file drop content: <a href="https://github.com/owncloud/core/pull/38691">#38691</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Regenerate session after authenticate a password protected public share: <a href="https://github.com/owncloud/core/pull/38693">#38693</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Database query filter when getting a tag: <a href="https://github.com/owncloud/core/pull/38725">#38725</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components to 4.4.22: <a href="https://github.com/owncloud/core/pull/38680">#38680</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/38524">#38524</a></li>
         <li class="type-change changelog-item">Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: <a href="https://github.com/owncloud/core/pull/38647">#38647</a></li>
@@ -135,6 +136,13 @@
             <p>https://github.com/owncloud/enterprise/issues/4535<br>
             </p>
             <p>https://github.com/owncloud/core/pull/38693<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Database query filter when getting a tag: <a href="https://github.com/owncloud/core/pull/38725">#38725</a></p>
+            <p>The filter values for userAssignable and userEditable were swapped, causing a wrong result in
+   certain cases.
+            </p>
+            <p>https://github.com/owncloud/core/pull/38725<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update Symfony components to 4.4.22: <a href="https://github.com/owncloud/core/pull/38680">#38680</a></p>
