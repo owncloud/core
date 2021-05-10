@@ -9,6 +9,29 @@ Feature: local-storage
 
 
   @public_link_share-feature-required @files_sharing-app-required
+  Scenario: Share a file inside a local external storage
+    Given using OCS API version "1"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/local_storage/filetoshare.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/local_storage/filetoshare.txt"
+    When user "Alice" shares file "/local_storage/filetoshare.txt" with user "Brian" using the sharing API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
+      | share_with             | %username%                     |
+      | share_with_displayname | %displayname%                  |
+      | file_target            | /filetoshare.txt               |
+      | path                   | /local_storage/filetoshare.txt |
+      | permissions            | share,read,update              |
+      | uid_owner              | %username%                     |
+      | displayname_owner      | %displayname%                  |
+      | item_type              | file                           |
+      | mimetype               | text/plain                     |
+      | storage_id             | ANY_VALUE                      |
+      | share_type             | user                           |
+    And as "Brian" file "/filetoshare.txt" should exist
+
+
+  @public_link_share-feature-required @files_sharing-app-required
   Scenario Outline: Share a file inside a local external storage
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/local_storage/filetoshare.txt"
