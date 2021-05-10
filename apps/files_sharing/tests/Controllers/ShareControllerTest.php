@@ -98,6 +98,7 @@ class ShareControllerTest extends \Test\TestCase {
 			$this->session,
 			$this->previewManager,
 			$this->createMock('\OCP\Files\IRootFolder'),
+			$this->createMock('\OCP\IUserSession'),
 			$this->eventDispatcher
 		);
 

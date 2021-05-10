@@ -1,0 +1,9 @@
+Bugfix: Regenerate session after authenticate a password protected public share
+
+Session has been has not been regenerated after authenticate a password
+protected public share. Now we regenerate the session and delete the old one for
+anonymous users.
+
+
+https://github.com/owncloud/core/pull/38693
+https://github.com/owncloud/enterprise/issues/4535

@@ -50,6 +50,7 @@ use OCP\IRequest;
 use OCP\ISession;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
+use OCP\IUserSession;
 use OCP\Share;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Template;
@@ -81,6 +82,8 @@ class ShareController extends Controller {
 	protected $previewManager;
 	/** @var IRootFolder */
 	protected $rootFolder;
+	/** @var IUserSession */
+	protected $userSession;
 	/** @var EventDispatcher */
 	protected $eventDispatcher;
 
@@ -98,6 +101,7 @@ class ShareController extends Controller {
 	 * @param ISession $session
 	 * @param IPreview $previewManager
 	 * @param IRootFolder $rootFolder
+	 * @param IUserSession $userSession
 	 * @param EventDispatcher $eventDispatcher
 	 */
 	public function __construct($appName,
@@ -111,6 +115,7 @@ class ShareController extends Controller {
 								ISession $session,
 								IPreview $previewManager,
 								IRootFolder $rootFolder,
+								IUserSession $userSession,
 								EventDispatcher $eventDispatcher) {
 		parent::__construct($appName, $request);
 
@@ -124,6 +129,7 @@ class ShareController extends Controller {
 		$this->previewManager = $previewManager;
 		$this->rootFolder = $rootFolder;
 		$this->eventDispatcher = $eventDispatcher;
+		$this->userSession = $userSession;
 	}
 
 	/**
@@ -164,6 +170,9 @@ class ShareController extends Controller {
 		$authenticate = $this->linkShareAuth($share, $password);
 
 		if ($authenticate === true) {
+			if (!$this->userSession->isLoggedIn()) {
+				$this->session->regenerateId();
+			}
 			return new RedirectResponse($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.showShare', ['token' => $token]));
 		}
 
