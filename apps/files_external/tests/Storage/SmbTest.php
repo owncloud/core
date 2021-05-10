@@ -87,6 +87,19 @@ class SmbTest extends \Test\Files\Storage\Storage {
 		$this->instance = null;
 	}
 
+	public function testRoot() {
+		$this->assertTrue($this->instance->file_exists('/'), 'Root folder does not exist');
+		$this->assertTrue($this->instance->isReadable('/'), 'Root folder is not readable');
+		$this->assertFalse($this->instance->isDeletable('/'), 'Root folder is deletable');
+		$this->assertTrue($this->instance->is_dir('/'), 'Root folder is not a directory');
+		$this->assertFalse($this->instance->is_file('/'), 'Root folder is a file');
+		$this->assertEquals('dir', $this->instance->filetype('/'));
+
+		//without this, any further testing would be useless, not an actual requirement for filestorage though
+		$this->assertFalse($this->instance->isUpdatable('/'), 'Root folder is updatable');
+		$this->assertTrue($this->instance->isCreatable('/'), 'Root folder is not writable');
+	}
+
 	public function testRenameRoot() {
 		// root can't be renamed
 		$this->assertFalse($this->instance->rename('', 'foo1'));
