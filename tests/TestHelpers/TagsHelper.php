@@ -178,9 +178,9 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $user
 	 * @param string $password
 	 * @param string $name
-	 * @param bool $userVisible
-	 * @param bool $userAssignable
-	 * @param bool $userEditable
+	 * @param string $userVisible "true" or "false"
+	 * @param string $userAssignable "true" or "false"
+	 * @param string $userEditable "true" or "false"
 	 * @param string $groups separated by "|"
 	 * @param int $davPathVersionToUse (1|2)
 	 *
@@ -192,9 +192,9 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 		$user,
 		$password,
 		$name,
-		$userVisible = true,
-		$userAssignable = true,
-		$userEditable = false,
+		$userVisible = "true",
+		$userAssignable = "true",
+		$userEditable = "false",
 		$groups = null,
 		$davPathVersionToUse = 2
 	) {
@@ -256,20 +256,20 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 	 * @return boolean[]
 	 */
 	public static function validateTypeOfTag($type) {
-		$userVisible = "1";
-		$userAssignable = "1";
-		$userEditable = "1";
+		$userVisible = "true";
+		$userAssignable = "true";
+		$userEditable = "true";
 		switch ($type) {
 			case 'normal':
 				break;
 			case 'not user-assignable':
-				$userAssignable = "0";
+				$userAssignable = "false";
 				break;
 			case 'not user-visible':
-				$userVisible = "0";
+				$userVisible = "false";
 				break;
 			case 'static':
-				$userEditable = "0";
+				$userEditable = "false";
 				break;
 			default:
 				throw new \Exception('Unsupported type');

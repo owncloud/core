@@ -49,9 +49,9 @@ class TagsContext implements Context {
 
 	/**
 	 * @param string $user
-	 * @param bool $userVisible
-	 * @param bool $userAssignable
-	 * @param bool $userEditable
+	 * @param string $userVisible "true" or "false"
+	 * @param string $userAssignable "true" or "false"
+	 * @param string $userEditable "true" or "false"
 	 * @param string $name
 	 * @param string $groups
 	 *
@@ -73,9 +73,7 @@ class TagsContext implements Context {
 			$tagUrl = $responseHeaders['Content-Location'][0];
 			$lastTagId = \substr($tagUrl, \strrpos($tagUrl, '/') + 1);
 			$this->createdTags[$lastTagId]['name'] = $name;
-			if ($userAssignable) {
-				$this->createdTags[$lastTagId]['userAssignable'] = true;
-			}
+			$this->createdTags[$lastTagId]['userAssignable'] = ($userAssignable === 'true');
 		}
 	}
 
@@ -110,8 +108,8 @@ class TagsContext implements Context {
 	 */
 	private function assertTypeOfTag($tagData, $type) {
 		$userAttributes = TagsHelper::validateTypeOfTag($type);
-		$userVisible = ($userAttributes[0]) ? 'true' : 'false';
-		$userAssignable = ($userAttributes[1]) ? 'true' : 'false';
+		$userVisible = $userAttributes[0];
+		$userAssignable = $userAttributes[1];
 
 		$tagDisplayName = $tagData->xpath(".//oc:display-name");
 		Assert::assertArrayHasKey(
