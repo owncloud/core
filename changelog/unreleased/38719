@@ -1,0 +1,7 @@
+Bugfix: String to bool conversion in systemtags API
+
+String values like "true" and "false" were always converted to true
+when creating a tag via API. We now use filter_var() to fix this
+behavior.
+
+https://github.com/owncloud/core/pull/38719
