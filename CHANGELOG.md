@@ -32,6 +32,7 @@ Summary
 * Enhancement - Improve tab headers UI: [#38653](https://github.com/owncloud/core/pull/38653)
 * Enhancement - Remove google+ share button from personal settings: [#38705](https://github.com/owncloud/core/pull/38705)
 * Enhancement - Adjust the return type of the querybuilder's execute method: [#38714](https://github.com/owncloud/core/pull/38714)
+* Enhancement - Communicate user profile picture capability: [#38722](https://github.com/owncloud/core/pull/38722)
 
 Details
 -------
@@ -245,6 +246,13 @@ Details
    The return type changed with the recent update of doctrine/dbal to version 2.13.
 
    https://github.com/owncloud/core/pull/38714
+
+* Enhancement - Communicate user profile picture capability: [#38722](https://github.com/owncloud/core/pull/38722)
+
+   A new capability "profile_picture" has been added so that clients can know whether to fetch and
+   render avatar images of users.
+
+   https://github.com/owncloud/core/pull/38722
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================
