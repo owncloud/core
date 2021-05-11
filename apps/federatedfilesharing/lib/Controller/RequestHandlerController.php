@@ -386,12 +386,12 @@ class RequestHandlerController extends OCSController {
 
 			// we need to prohibit the permission update if it's not a re-share
 			if (!$this->fedShareManager->isFederatedReShare($share)) {
-				throw new \Exception();
+				throw new \Exception("Updating the permissions is only possible on a federated re-share");
 			}
 
 			$validPermission = \ctype_digit((string)$permissions);
 			if (!$validPermission) {
-				throw new \Exception();
+				throw new \Exception("Not allowed to update the permissions");
 			}
 			$permissions = $this->ocmMiddleware->normalizePermissions(
 				(int) $permissions
