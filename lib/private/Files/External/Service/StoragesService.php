@@ -574,9 +574,9 @@ abstract class StoragesService implements IStoragesService {
 		$backendParameters = $backend->getParameters();
 		$authParameters = $auth->getParameters();
 		if (isset($backendParameters[$key]) && $backendParameters[$key]->getType() === \OCP\Files\External\DefinitionParameter::VALUE_PASSWORD) {
-			$value = \base64_encode($this->crypto->encrypt($value));
+			$value = $this->crypto->encrypt($value);
 		} elseif (isset($authParameters[$key]) && $authParameters[$key]->getType() === \OCP\Files\External\DefinitionParameter::VALUE_PASSWORD) {
-			$value = \base64_encode($this->crypto->encrypt($value));
+			$value = $this->crypto->encrypt($value);
 		}
 		return $value;
 	}
@@ -586,13 +586,13 @@ abstract class StoragesService implements IStoragesService {
 		$authParameters = $auth->getParameters();
 		if (isset($backendParameters[$key]) && $backendParameters[$key]->getType() === \OCP\Files\External\DefinitionParameter::VALUE_PASSWORD) {
 			try {
-				$value = $this->crypto->decrypt(\base64_decode($value));
+				$value = $this->crypto->decrypt($value);
 			} catch (\Exception $e) {
 				// assume the value isn't encrypted
 			}
 		} elseif (isset($authParameters[$key]) && $authParameters[$key]->getType() === \OCP\Files\External\DefinitionParameter::VALUE_PASSWORD) {
 			try {
-				$value = $this->crypto->decrypt(\base64_decode($value));
+				$value = $this->crypto->decrypt($value);
 			} catch (\Exception $e) {
 				// assume the value isn't encrypted
 			}
