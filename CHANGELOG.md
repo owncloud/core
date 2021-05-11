@@ -19,6 +19,7 @@ Summary
 * Bugfix - Hide sensible information on share download: [#38689](https://github.com/owncloud/core/pull/38689)
 * Bugfix - Hide file drop content: [#38691](https://github.com/owncloud/core/pull/38691)
 * Bugfix - Regenerate session after authenticate a password protected public share: [#38693](https://github.com/owncloud/core/pull/38693)
+* Bugfix - Add check when updating the permissions of a federated share: [#38698](https://github.com/owncloud/core/pull/38698)
 * Bugfix - String to bool conversion in systemtags API: [#38719](https://github.com/owncloud/core/pull/38719)
 * Bugfix - Database query filter when getting a tag: [#38725](https://github.com/owncloud/core/pull/38725)
 * Change - Update Symfony components to 4.4.22: [#38680](https://github.com/owncloud/core/pull/38680)
@@ -136,6 +137,14 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4535
    https://github.com/owncloud/core/pull/38693
+
+* Bugfix - Add check when updating the permissions of a federated share: [#38698](https://github.com/owncloud/core/pull/38698)
+
+   This fixes a security issue where a federated share recipient could increase permissions on
+   his share. We now limit the permission updates to federated re-shares only.
+
+   https://github.com/owncloud/enterprise/issues/4537
+   https://github.com/owncloud/core/pull/38698
 
 * Bugfix - String to bool conversion in systemtags API: [#38719](https://github.com/owncloud/core/pull/38719)
 
