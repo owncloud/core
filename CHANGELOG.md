@@ -19,6 +19,7 @@ Summary
 * Bugfix - Hide sensible information on share download: [#38689](https://github.com/owncloud/core/pull/38689)
 * Bugfix - Hide file drop content: [#38691](https://github.com/owncloud/core/pull/38691)
 * Bugfix - Regenerate session after authenticate a password protected public share: [#38693](https://github.com/owncloud/core/pull/38693)
+* Bugfix - String to bool conversion in systemtags API: [#38719](https://github.com/owncloud/core/pull/38719)
 * Bugfix - Database query filter when getting a tag: [#38725](https://github.com/owncloud/core/pull/38725)
 * Change - Update Symfony components to 4.4.22: [#38680](https://github.com/owncloud/core/pull/38680)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
@@ -134,6 +135,13 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4535
    https://github.com/owncloud/core/pull/38693
+
+* Bugfix - String to bool conversion in systemtags API: [#38719](https://github.com/owncloud/core/pull/38719)
+
+   String values like "true" and "false" were always converted to true when creating a tag via API.
+   We now use filter_var() to fix this behavior.
+
+   https://github.com/owncloud/core/pull/38719
 
 * Bugfix - Database query filter when getting a tag: [#38725](https://github.com/owncloud/core/pull/38725)
 
