@@ -70,7 +70,7 @@ class Capabilities implements ICapability {
 		if ($this->config->getAppValue('core', 'shareapi_enabled', 'yes') !== 'yes') {
 			$res['api_enabled'] = false;
 			$res['public'] = ['enabled' => false];
-			$res['user'] = ['send_mail' => false];
+			$res['user'] = ['send_mail' => false, 'profile_picture' => true];
 			$res['resharing'] = false;
 			$res['can_share'] = false;
 			$res['providers_capabilities'] = false;
@@ -111,6 +111,7 @@ class Capabilities implements ICapability {
 			$res["public"] = $public;
 
 			$res['user']['send_mail'] = $this->config->getAppValue('core', 'shareapi_allow_mail_notification', 'no') === 'yes';
+			$res['user']['profile_picture'] = true;
 			$res['user']['expire_date'] = [];
 			$res['user']['expire_date']['enabled'] = $this->config->getAppValue('core', 'shareapi_default_expire_date_user_share', 'no') === 'yes';
 			if ($res['user']['expire_date']['enabled']) {

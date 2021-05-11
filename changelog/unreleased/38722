@@ -1,0 +1,6 @@
+Enhancement: Communicate user profile picture capability
+
+A new capability "profile_picture" has been added so that clients can know
+whether to fetch and render avatar images of users.
+
+https://github.com/owncloud/core/pull/38722

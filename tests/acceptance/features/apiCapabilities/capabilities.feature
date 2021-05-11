@@ -121,6 +121,14 @@ Feature: capabilities
       | files      | file_locking_support            | 1     |
       | files      | file_locking_enable_file_action | 1     |
 
+  @smokeTest @skipOnOcV10.6 @skipOnOcV10.7.0
+  # These are new capabilities after 10.7.0
+  Scenario: getting default capabilities with admin user
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element        | value |
+      | files_sharing | user@@@profile_picture | 1     |
+
   @files_trashbin-app-required
   Scenario: getting trashbin app capability with admin user
     When the administrator retrieves the capabilities using the capabilities API
