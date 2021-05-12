@@ -1,6 +1,7 @@
 <?php
 namespace OCA\files_external\Migrations;
 
+use OC\NeedsUpdateException;
 use OCP\Migration\ISimpleMigration;
 use OCP\Migration\IOutput;
 use OCP\Files\External\Service\IGlobalStoragesService;
@@ -22,6 +23,8 @@ class Version20210511082903 implements ISimpleMigration {
 	}
 
 	public function run(IOutput $out) {
+		$this->loadFSApps();
+		\OC_Util::setupFS();  // this should load additional backends and auth mechanisms
 		$storageConfigs = $this->storageService->getStorageForAllUsers();
 		foreach ($storageConfigs as $storageConfig) {
 			$backendOptions = $storageConfig->getBackendOptions();
@@ -72,5 +75,23 @@ class Version20210511082903 implements ISimpleMigration {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Load the FS apps. This is required because the FS apps might not be loaded during the
+	 * migration.
+	 */
+	private function loadFSApps() {
+		$enabledApps = \OC_App::getEnabledApps();
+		foreach ($enabledApps as $enabledApp) {
+			if ($enabledApp !== 'files_external' && \OC_App::isType($enabledApp, ['filesystem'])) {
+				try {
+					\OC_App::loadApp($enabledApp);
+				} catch (NeedsUpdateException $ex) {
+					\OC_App::updateApp($enabledApp);
+					\OC_App::loadApp($enabledApp);
+				}
+			}
+		}
 	}
 }
