@@ -53,7 +53,7 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->globalStoragesService = new GlobalStoragesService($this->backendService, $this->dbConfig, $this->mountCache);
+		$this->globalStoragesService = new GlobalStoragesService($this->backendService, $this->dbConfig, $this->mountCache, $this->crypto);
 
 		$this->userId = $this->getUniqueID('user_');
 		$this->user = $this->createUser($this->userId, $this->userId);
@@ -65,7 +65,7 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 			->method('getUser')
 			->will($this->returnValue($this->user));
 
-		$this->service = new UserStoragesService($this->backendService, $this->dbConfig, $userSession, $this->mountCache);
+		$this->service = new UserStoragesService($this->backendService, $this->dbConfig, $userSession, $this->mountCache, $this->crypto);
 	}
 
 	private function makeTestStorageData() {
@@ -258,7 +258,7 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 
 		$backendService = \OC::$server->getStoragesBackendService();
 		$userSession = \OC::$server->getUserSession();
-		$this->service = new UserStoragesService($backendService, $this->dbConfig, $userSession, $userMountCache);
+		$this->service = new UserStoragesService($backendService, $this->dbConfig, $userSession, $userMountCache, $this->crypto);
 
 		$dbConfigService = new DBConfigService(\OC::$server->getDatabaseConnection(), \OC::$server->getCrypto());
 		$id = $dbConfigService->addMount('/directtest', 'foo', 'bar', 100, DBConfigService::MOUNT_TYPE_PERSONAl);

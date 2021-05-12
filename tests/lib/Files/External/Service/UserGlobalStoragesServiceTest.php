@@ -95,7 +95,8 @@ class UserGlobalStoragesServiceTest extends GlobalStoragesServiceTest {
 			$this->dbConfig,
 			$userSession,
 			$this->groupManager,
-			$this->mountCache
+			$this->mountCache,
+			$this->crypto
 		);
 	}
 
