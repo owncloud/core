@@ -7,6 +7,7 @@ use OCP\Migration\IOutput;
 use OCP\Files\External\Service\IGlobalStoragesService;
 use OCP\Files\External\DefinitionParameter;
 use OCP\Security\ICrypto;
+use OCP\IConfig;
 
 /**
  * Auto-generated migration step: Please modify to your needs!
@@ -16,13 +17,25 @@ class Version20210511082903 implements ISimpleMigration {
 	private $storageService;
 	/** @var ICrypto */
 	private $crypto;
+	/** @var IConfig */
+	private $config;
 
-	public function __construct(IGlobalStoragesService $storageService, ICrypto $crypto) {
+	public function __construct(
+		IGlobalStoragesService $storageService,
+		ICrypto $crypto,
+		IConfig $config
+	) {
 		$this->storageService = $storageService;
 		$this->crypto = $crypto;
+		$this->config = $config;
 	}
 
 	public function run(IOutput $out) {
+		if (!$this->config->getSystemValue('installed', false)) {
+			// Skip the migration for new installations -> nothing to migrate
+			return;
+		}
+
 		$this->loadFSApps();
 		\OC_Util::setupFS();  // this should load additional backends and auth mechanisms
 		$storageConfigs = $this->storageService->getStorageForAllUsers();
