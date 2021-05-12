@@ -1354,7 +1354,9 @@ def acceptance(ctx):
 		'includeKeyInMatrixName': False,
 		'runAllSuites': False,
 		'numberOfParts': 1,
-		'skip': False
+		'skip': False,
+		'debugSuites': [],
+		'skipExceptParts': []
 	}
 
 	if 'defaults' in config:
@@ -1369,6 +1371,14 @@ def acceptance(ctx):
 				suites[suite] = suite
 		else:
 			suites = matrix['suites']
+
+		if 'debugSuites' in matrix and len(matrix['debugSuites']) != 0:
+			if type(matrix['debugSuites']) == "list":
+				suites = {}
+				for suite in matrix['debugSuites']:
+					suites[suite] = suite
+			else:
+				suites = matrix['debugSuites']
 
 		for suite, alternateSuiteName in suites.items():
 			isWebUI = suite.startswith('webUI')
@@ -1406,6 +1416,10 @@ def acceptance(ctx):
 					for phpVersion in params['phpVersions']:
 						for db in params['databases']:
 							for runPart in range(1, params['numberOfParts'] + 1):
+								debugPartsEnabled = (len(params['skipExceptParts']) != 0)
+								if debugPartsEnabled and runPart not in params['skipExceptParts']:
+									continue
+
 								name = 'unknown'
 								federatedDb = db if params['federatedDb'] == '' else params['federatedDb']
 
