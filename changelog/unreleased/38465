@@ -1,0 +1,7 @@
+Bugfix: Use trusted domains to compute the signature of signed urls
+
+All configured trusted domains are used when computing the signature of a
+signed url. The server has no real true understanding for which domain the
+request is sent. Especially in proxy scenarios this is a must have.
+
+https://github.com/owncloud/core/pull/38465
