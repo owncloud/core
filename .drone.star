@@ -28,251 +28,9 @@ config = {
 				'7.2',
 			]
 		},
-		'reducedDatabases' : {
-			'phpVersions': [
-				'7.3',
-				'7.4',
-			],
-			'databases': [
-				'sqlite',
-				'mariadb:10.2',
-			]
-		},
-		'external-samba-windows' : {
-			'phpVersions': [
-				'7.2',
-				'7.4',
-			],
-			'databases': [
-				'sqlite',
-			],
-			'externalTypes': [
-				'samba',
-				'windows',
-			],
-			'coverage': True,
-			'extraCommandsBeforeTestRun': [
-				'ls -l /var/cache',
-				'mkdir /var/cache/samba',
-				'ls -l /var/cache',
-				'ls -l /var/cache/samba',
-			]
-		},
-		'external-other' : {
-			'phpVersions': [
-				'7.2',
-				'7.4',
-			],
-			'databases': [
-				'sqlite',
-			],
-			'externalTypes': [
-				'webdav',
-				'sftp',
-				'scality',
-				'owncloud',
-			],
-			'coverage': True,
-		}
 	},
 
 	'acceptance': {
-		'api': {
-			'suites': [
-				'apiAuth',
-				'apiAuthOcs',
-				'apiAuthWebDav',
-				'apiCapabilities',
-				'apiComments',
-				'apiFavorites',
-				'apiMain',
-				'apiProvisioning-v1',
-				'apiProvisioning-v2',
-				'apiProvisioningGroups-v1',
-				'apiProvisioningGroups-v2',
-				'apiShareCreateSpecialToRoot1',
-				'apiShareCreateSpecialToShares1',
-				'apiShareCreateSpecialToRoot2',
-				'apiShareCreateSpecialToShares2',
-				'apiSharees',
-				'apiShareManagementToRoot',
-				'apiShareManagementToShares',
-				'apiShareManagementBasicToRoot',
-				'apiShareManagementBasicToShares',
-				'apiShareOperationsToRoot',
-				'apiShareOperationsToShares',
-				'apiSharePublicLink1',
-				'apiSharePublicLink2',
-				'apiShareReshareToRoot1',
-				'apiShareReshareToShares1',
-				'apiShareReshareToRoot2',
-				'apiShareReshareToShares2',
-				'apiShareReshareToRoot3',
-				'apiShareReshareToShares3',
-				'apiShareUpdateToRoot',
-				'apiShareUpdateToShares',
-				'apiTags',
-				'apiTranslation',
-				'apiTrashbin',
-				'apiVersions',
-				'apiWebdavEtagPropagation1',
-				'apiWebdavEtagPropagation2',
-				'apiWebdavLocks',
-				'apiWebdavLocks2',
-				'apiWebdavLocks3',
-				'apiWebdavLocksUnlock',
-				'apiWebdavMove1',
-				'apiWebdavMove2',
-				'apiWebdavOperations',
-				'apiWebdavPreviews',
-				'apiWebdavProperties1',
-				'apiWebdavProperties2',
-				'apiWebdavUpload1',
-				'apiWebdavUpload2',
-			],
-		},
-		'apiNotifications': {
-			'suites': [
-				'apiSharingNotificationsToRoot',
-				'apiSharingNotificationsToShares',
-			],
-			'extraApps': {
-				'notifications': 'if [ -f "composer.json" ]; then composer install; fi',
-			},
-		},
-		'apiFederation': {
-			'suites': [
-				'apiFederationToRoot1',
-				'apiFederationToRoot2',
-				'apiFederationToShares1',
-				'apiFederationToShares2',
-			],
-			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.5.0'],
-		},
-		'cli': {
-			'suites': [
-				'cliBackground',
-				'cliLocalStorage',
-				'cliMain',
-				'cliProvisioning',
-				'cliTrashbin',
-			],
-			'emailNeeded': True,
-		},
-		'cliAppManagement': {
-			'suites': [
-				'cliAppManagement',
-			],
-			'testingRemoteSystem': False,
-		},
-		'cliExternalStorage': {
-			'suites': [
-				'cliExternalStorage',
-			],
-			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.5.0'],
-		},
-		'webUI': {
-			'suites': {
-				'webUIAddUsers': '',
-				'webUIAdminSettings': '',
-				'webUIComments': '',
-				'webUICreateDelete': '',
-				'webUIFavorites': '',
-				'webUIFiles': '',
-				'webUILogin': '',
-				'webUIManageQuota': '',
-				'webUIManageUsersGroups': 'webUIManageUsersGrps',
-				'webUIMoveFilesFolders': 'webUIMoveFilesFolder',
-				'webUIPersonalSettings': 'webUIPersonalSetting',
-				'webUIRenameFiles': '',
-				'webUIRenameFolders': '',
-				'webUIRestrictSharing': '',
-				'webUISettingsMenu': '',
-				'webUISharingAcceptShares': 'webUISharingAcceptSh',
-				'webUISharingAutocompletion1': 'webUISharingAutocomp1',
-				'webUISharingAutocompletion2': 'webUISharingAutocomp2',
-				'webUISharingInternalGroups1': 'webUISharingIntGroup1',
-				'webUISharingInternalGroups2': 'webUISharingIntGroup2',
-				'webUISharingInternalUsers1': 'webUISharingIntUsers1',
-				'webUISharingInternalUsers2': 'webUISharingIntUsers2',
-				'webUISharingPublic1': '',
-				'webUISharingPublic2': '',
-				'webUITags': '',
-				'webUITrashbin': '',
-				'webUIUpload': '',
-				'webUIWebdavLockProtection': 'webUIWebdavLockProt',
-				'webUIWebdavLocks': '',
-			},
-			'emailNeeded': True,
-			'useHttps': False,
-		},
-		'webUINotifications': {
-			'suites': {
-				'webUISharingNotifications': 'webUISharingNotify',
-			},
-			'emailNeeded': True,
-			'useHttps': False,
-			'extraApps': {
-				'notifications': 'composer install',
-			},
-		},
-		'webUIFileActionsMenu': {
-			'suites': {
-				'webUIFileActionsMenu': '',
-			},
-			'useHttps': False,
-			'extraApps': {
-				'files_texteditor': 'make vendor',
-				'richdocuments': 'make vendor',
-			},
-		},
-		'webUIFederation': {
-			'suites': {
-				'webUISharingExternal1': 'webUISharingExt1',
-				'webUISharingExternal2': 'webUISharingExt2',
-			},
-			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.5.0'],
-		},
-		'webUIFirefox': {
-			'suites': {
-				'webUIFirefoxSmoketest': 'webUIFfSmoke',
-			},
-			'browsers': [
-				'firefox',
-			],
-			'emailNeeded': True,
-			'useHttps': False,
-			'filterTags': '@smokeTest&&~@notifications-app-required',
-			'runAllSuites': True,
-			'numberOfParts': 3,
-		},
-		'webUIProxy': {
-			'suites': {
-				'webUIProxySmoketest': 'webUIProxySmoke',
-			},
-			'browsers': [
-				'chrome',
-			],
-			'emailNeeded': True,
-			'proxyNeeded': True,
-			'useHttps': False,
-			'filterTags': '@smokeTest&&~@notifications-app-required',
-			'runAllSuites': True,
-			'numberOfParts': 3,
-		},
-		'apiProxy': {
-			'suites': {
-				'apiProxySmoketest': 'apiProxySmoke',
-			},
-			'proxyNeeded': True,
-			'useHttps': False,
-			'filterTags': '@smokeTest&&~@notifications-app-required',
-			'runAllSuites': True,
-			'numberOfParts': 8,
-		},
 	}
 }
 
@@ -1789,8 +1547,27 @@ def databaseService(db):
 				'ORACLE_USER': getDbUsername(db),
 				'ORACLE_PASSWORD': getDbPassword(db),
 				'ORACLE_DB': getDbDatabase(db),
-				'ORACLE_DISABLE_ASYNCH_IO': 'true',
-			}
+				# 'ORACLE_DISABLE_ASYNCH_IO': 'true',
+			},
+		}, {
+			'name': dbName + '-fix-db',
+			'image': 'owncloudci/oracle-xe:latest',
+			'pull': 'always',
+			'environment': {
+				'ORACLE_USER': getDbUsername(db),
+				'ORACLE_PASSWORD': getDbPassword(db),
+				'ORACLE_DB': getDbDatabase(db),
+				# 'ORACLE_DISABLE_ASYNCH_IO': 'true',
+			},
+			'commands': [
+				'ls',
+				'echo "running sql command"',
+				'wait-for-it -t 600 oracle:1521',
+				'bash -c \'sqlplus system/oracle@//oracle:1521/xe <<< "SELECT * FROM DBA_USERS;"\'',
+				'bash -c \'sqlplus system/oracle@//oracle:1521/xe <<< "ALTER SYSTEM SET disk_asynch_io = FALSE SCOPE = SPFILE;"\'',
+				'bash -c \'sqlplus system/oracle@//oracle:1521/xe <<< "ALTER SESSION SET CONTAINER = ORCLPDB1;"\''
+				# 'echo "ALTER SESSION SET CONTAINER = ORCLPDB1;" | sqlplus -s system/oracle@oracle:1521/owncloud '
+			]
 		}]
 
 	return []
