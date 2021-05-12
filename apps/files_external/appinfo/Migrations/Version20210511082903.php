@@ -36,7 +36,7 @@ class Version20210511082903 implements ISimpleMigration {
 					try {
 						$realValue = $this->crypto->decrypt($value);
 					} catch (\Exception $ex) {
-						$out->warning("Failed to migrate storage configuration with id = {$configId}: Cannot decrypt value {$value}");
+						$out->warning("Storage configuration with id = {$configId}: Cannot decrypt value for key {$key}, assuming unencrypted value");
 					}
 				}
 
