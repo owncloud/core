@@ -8,6 +8,7 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Use trusted domains to compute the signature of signed urls: [#38465](https://github.com/owncloud/core/pull/38465)
 * Bugfix - Handle exceptions with inaccesible federated share: [#38474](https://github.com/owncloud/core/pull/38474)
 * Bugfix - Fix mispositioned ui elements after leaving viewerMode: [#38547](https://github.com/owncloud/core/issues/38547)
 * Bugfix - Fix move operation from encrypted storage to unencrypted storage: [#38567](https://github.com/owncloud/core/pull/38567)
@@ -37,6 +38,14 @@ Summary
 
 Details
 -------
+
+* Bugfix - Use trusted domains to compute the signature of signed urls: [#38465](https://github.com/owncloud/core/pull/38465)
+
+   All configured trusted domains are used when computing the signature of a signed url. The
+   server has no real true understanding for which domain the request is sent. Especially in proxy
+   scenarios this is a must have.
+
+   https://github.com/owncloud/core/pull/38465
 
 * Bugfix - Handle exceptions with inaccesible federated share: [#38474](https://github.com/owncloud/core/pull/38474)
 

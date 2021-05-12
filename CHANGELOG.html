@@ -6,6 +6,7 @@
     </p>
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - Use trusted domains to compute the signature of signed urls: <a href="https://github.com/owncloud/core/pull/38465">#38465</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Handle exceptions with inaccesible federated share: <a href="https://github.com/owncloud/core/pull/38474">#38474</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix mispositioned ui elements after leaving viewerMode: <a href="https://github.com/owncloud/core/issues/38547">#38547</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix move operation from encrypted storage to unencrypted storage: <a href="https://github.com/owncloud/core/pull/38567">#38567</a></li>
@@ -35,6 +36,14 @@
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Use trusted domains to compute the signature of signed urls: <a href="https://github.com/owncloud/core/pull/38465">#38465</a></p>
+            <p>All configured trusted domains are used when computing the signature of a signed url. The
+   server has no real true understanding for which domain the request is sent. Especially in proxy
+   scenarios this is a must have.
+            </p>
+            <p>https://github.com/owncloud/core/pull/38465<br></p>
+        </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Handle exceptions with inaccesible federated share: <a href="https://github.com/owncloud/core/pull/38474">#38474</a></p>
             <p>In a scenario federation share storage is inaccessible and returns connection timeouts,
