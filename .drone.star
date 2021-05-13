@@ -69,28 +69,10 @@ config = {
 			'externalTypes': [
 				'webdav',
 				'sftp',
-				'scality'
-			],
-			'coverage': True
-		},
-		'external-oc-storage' : {
-			'phpVersions': [
-				'7.2',
-				'7.4',
-			],
-			'databases': [
-				'mariadb',
-			],
-			'externalTypes': [
+				'scality',
 				'owncloud'
 			],
-			'coverage': True,
-			'extraCommandsBeforeTestRun': [
-				'wait-for-it -t 1200 oc-server:8080 -- echo "OC server is up."',
-				'cp tests/drone/configs/config.files_external_owncloud.php apps/files_external/tests/config.php',
-				'cat apps/files_external/tests/config.php',
-				'curl -u admin:admin http://oc-server:8080/ocs/v1.php/cloud/users -d userid="test" -d password="test"',
-			]
+			'coverage': True
 		}
 	},
 
@@ -1219,7 +1201,6 @@ def phpTests(ctx, testType):
 
 					if (externalType == 'owncloud'):
 						needRedis = True
-						command = 'make test-php-unit TEST_PHP_SUITE=apps/files_external/tests/Storage/OwncloudTest.php'
 					else:
 						needRedis = False
 
