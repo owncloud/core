@@ -69,10 +69,11 @@ config = {
 			'externalTypes': [
 				'webdav',
 				'sftp',
-				'scality'
+				'scality',
+				'owncloud'
 			],
 			'coverage': True
-		},
+		}
 	},
 
 	'acceptance': {
@@ -1143,7 +1144,7 @@ def phpTests(ctx, testType):
 		params = {}
 		for item in default:
 			params[item] = matrix[item] if item in matrix else default[item]
-		
+
 		if params['skip']:
 			continue
 
@@ -1198,6 +1199,11 @@ def phpTests(ctx, testType):
 					else:
 						extraAppsDict = {}
 
+					if (externalType == 'owncloud'):
+						needRedis = True
+					else:
+						needRedis = False
+
 					for app, command in params['extraApps'].items():
 						extraAppsDict[app] = command
 
@@ -1242,6 +1248,8 @@ def phpTests(ctx, testType):
 							webdavService(externalType == 'webdav') +
 							sambaService(externalType == 'samba') +
 							sftpService(externalType == 'sftp') +
+							redisService(needRedis) +
+							owncloudDockerService(externalType == 'owncloud') +
 							params['extraServices'],
 						'depends_on': [],
 						'trigger': {
@@ -2444,6 +2452,39 @@ def owncloudLog(server, folder):
 		'commands': [
 			'tail -f /drone/%s/data/owncloud.log' % folder
 		]
+	}]
+
+def owncloudDockerService(ocDockerService):
+	if not ocDockerService:
+		return []
+
+	return [{
+		'name': 'oc-server',
+		'image': 'owncloud/server',
+		'pull': 'always',
+		'environment': {
+			'OWNCLOUD_VERSION': '10.7',
+			'OWNCLOUD_DOMAIN': 'oc-server',
+			'OWNCLOUD_ADMIN_USERNAME': 'admin',
+			'OWNCLOUD_ADMIN_PASSWORD': 'admin',
+			'HTTP_PORT': '8080',
+			'OWNCLOUD_REDIS_ENABLED': 'true',
+			'OWNCLOUD_REDIS_HOST': 'redis'
+		},
+	}]
+
+
+def redisService(redisService):
+	if not redisService:
+		return []
+
+	return [{
+		'name': 'redis',
+		'image': 'webhippie/redis:latest',
+		'pull': 'always',
+		'environment': {
+			'REDIS_DATABASES': 1
+		}
 	}]
 
 def dependsOn(earlierStages, nextStages):
