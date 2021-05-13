@@ -23,7 +23,7 @@ Summary
 * Bugfix - Add check when updating the permissions of a federated share: [#38698](https://github.com/owncloud/core/pull/38698)
 * Bugfix - String to bool conversion in systemtags API: [#38719](https://github.com/owncloud/core/pull/38719)
 * Bugfix - Database query filter when getting a tag: [#38725](https://github.com/owncloud/core/pull/38725)
-* Change - Update Symfony components to 4.4.22: [#38680](https://github.com/owncloud/core/pull/38680)
+* Change - Update Symfony components: [#38730](https://github.com/owncloud/core/pull/38730)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
@@ -169,13 +169,15 @@ Details
 
    https://github.com/owncloud/core/pull/38725
 
-* Change - Update Symfony components to 4.4.22: [#38680](https://github.com/owncloud/core/pull/38680)
+* Change - Update Symfony components: [#38730](https://github.com/owncloud/core/pull/38730)
 
-   The following Symfony components have been updated from 4.4.20 to 4.4.22 - console - process -
-   routing - translation
+   The following Symfony components have been updated from 4.4.20 to: - console 4.4.23 - process
+   4.4.22 - routing 4.4.22 - translation 4.4.23
 
+   https://github.com/owncloud/core/pull/38730
    https://github.com/owncloud/core/pull/38680
    https://github.com/owncloud/core/pull/38598
+   https://symfony.com/blog/symfony-4-4-23-released
    https://symfony.com/blog/symfony-4-4-22-released
    https://symfony.com/blog/symfony-4-4-21-released
 
