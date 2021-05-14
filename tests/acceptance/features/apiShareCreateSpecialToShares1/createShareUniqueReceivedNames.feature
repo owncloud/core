@@ -21,4 +21,4 @@ Feature: resources shared with the same name are received with unique names
     And user "Carol" accepts share "/foo" offered by user "Brian" using the sharing API
     Then user "Carol" should see the following elements
       | /Shares/foo/       |
-      | /Shares/foo%20(2)/ |
+      | /Shares/foo (2)/ |

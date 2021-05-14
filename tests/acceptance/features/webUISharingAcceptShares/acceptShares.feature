@@ -45,7 +45,7 @@ Feature: accept/decline shares coming from internal users
     And folder "simple-folder (2)" shared by "Brian" should be in state "" in the shared-with-you page on the webUI
     And user "Carol" should see the following elements
       | /simple-folder/from_alice/       |
-      | /simple-folder%20(2)/from_brian/ |
+      | /simple-folder (2)/from_brian/ |
 
   Scenario: receive shares with same name from different users
     Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
