@@ -28,7 +28,7 @@ namespace OC\Files\External\Service;
 
 use OC\Files\Filesystem;
 use OC\Files\External\StorageConfig;
-
+use OCP\Files\External\DefinitionParameter;
 use OCP\Files\External\IStorageConfig;
 use OCP\Files\External\Backend\Backend;
 use OCP\Files\External\Auth\AuthMechanism;
@@ -573,9 +573,15 @@ abstract class StoragesService implements IStoragesService {
 	private function encryptIfPassword(Backend $backend, AuthMechanism $auth, $key, $value) {
 		$backendParameters = $backend->getParameters();
 		$authParameters = $auth->getParameters();
-		if (isset($backendParameters[$key]) && $backendParameters[$key]->getType() === \OCP\Files\External\DefinitionParameter::VALUE_PASSWORD) {
-			$value = $this->crypto->encrypt($value);
-		} elseif (isset($authParameters[$key]) && $authParameters[$key]->getType() === \OCP\Files\External\DefinitionParameter::VALUE_PASSWORD) {
+		if (
+			(
+				isset($backendParameters[$key]) &&
+				$backendParameters[$key]->getType() === DefinitionParameter::VALUE_PASSWORD
+			) || (
+				isset($authParameters[$key]) &&
+				$authParameters[$key]->getType() === DefinitionParameter::VALUE_PASSWORD
+			)
+		) {
 			$value = $this->crypto->encrypt($value);
 		}
 		return $value;
@@ -584,13 +590,15 @@ abstract class StoragesService implements IStoragesService {
 	private function decryptIfPassword(Backend $backend, AuthMechanism $auth, $key, $value) {
 		$backendParameters = $backend->getParameters();
 		$authParameters = $auth->getParameters();
-		if (isset($backendParameters[$key]) && $backendParameters[$key]->getType() === \OCP\Files\External\DefinitionParameter::VALUE_PASSWORD) {
-			try {
-				$value = $this->crypto->decrypt($value);
-			} catch (\Exception $e) {
-				// assume the value isn't encrypted
-			}
-		} elseif (isset($authParameters[$key]) && $authParameters[$key]->getType() === \OCP\Files\External\DefinitionParameter::VALUE_PASSWORD) {
+		if (
+			(
+				isset($backendParameters[$key]) &&
+				$backendParameters[$key]->getType() === DefinitionParameter::VALUE_PASSWORD
+			) || (
+				isset($authParameters[$key]) &&
+				$authParameters[$key]->getType() === DefinitionParameter::VALUE_PASSWORD
+			)
+		) {
 			try {
 				$value = $this->crypto->decrypt($value);
 			} catch (\Exception $e) {

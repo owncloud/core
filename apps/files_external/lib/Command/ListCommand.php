@@ -335,9 +335,15 @@ class ListCommand extends Base {
 
 		$auth = $mount->getAuthMechanism();
 		$authParameters = $auth->getParameters();
-		if (isset($backendParameters[$key]) && $backendParameters[$key]->getType() === DefinitionParameter::VALUE_PASSWORD) {
-			return true;
-		} elseif (isset($authParameters[$key]) && $authParameters[$key]->getType() === DefinitionParameter::VALUE_PASSWORD) {
+		if (
+			(
+				isset($backendParameters[$key]) &&
+				$backendParameters[$key]->getType() === DefinitionParameter::VALUE_PASSWORD
+			) || (
+				isset($authParameters[$key]) &&
+				$authParameters[$key]->getType() === DefinitionParameter::VALUE_PASSWORD
+			)
+		) {
 			return true;
 		}
 		return false;

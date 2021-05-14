@@ -5,6 +5,7 @@ use OC\NeedsUpdateException;
 use OCP\Migration\ISimpleMigration;
 use OCP\Migration\IOutput;
 use OCP\Files\External\Service\IGlobalStoragesService;
+use OCP\Files\External\IStorageConfig;
 use OCP\Files\External\DefinitionParameter;
 use OCP\Security\ICrypto;
 use OCP\IConfig;
@@ -44,32 +45,28 @@ class Version20210511082903 implements ISimpleMigration {
 			$configId = $storageConfig->getId();
 			$changedOptions = [];
 			foreach ($backendOptions as $key => $value) {
-				$realValue = $value;
-				if ($key === 'password') {
-					try {
-						$realValue = $this->crypto->decrypt($value);
-					} catch (\Exception $ex) {
-						$out->warning("Storage configuration with id = {$configId}: Cannot decrypt value for key {$key}, assuming unencrypted value");
-					}
-				}
-
+				$realValue = $this->conditionalDecrypt($key, $value, $out, $configId);
 				if ($this->shouldBeEncrypted($storageConfig, $key)) {
 					$changedOptions[$key] = $realValue;
 				}
 			}
 			if ($changedOptions) {
-				// need to force a fake password change to update the password later
-				foreach ($changedOptions as $key => $value) {
-					$storageConfig->setBackendOption($key, "{$value}0");
-				}
-				$this->storageService->updateStorage($storageConfig);
-				// re-insert the old password so it will be encrypted now
-				foreach ($changedOptions as $key => $value) {
-					$storageConfig->setBackendOption($key, $value);
-				}
-				$this->storageService->updateStorage($storageConfig);
+				$this->updateConfig($storageConfig, $changedOptions);
 				$out->info("Storage configuration with id = {$configId} updated correctly");
 			}
+		}
+	}
+
+	private function conditionalDecrypt($key, $value, IOutput $out, $configId) {
+		// only attempt to decrypt the "password" key
+		if ($key === 'password') {
+			try {
+				return $this->crypto->decrypt($value);
+			} catch (\Exception $ex) {
+				$out->warning("Storage configuration with id = {$configId}: Cannot decrypt value for key {$key}, assuming unencrypted value");
+			}
+		} else {
+			return $value;
 		}
 	}
 
@@ -80,14 +77,31 @@ class Version20210511082903 implements ISimpleMigration {
 		$auth = $storageConfig->getAuthMechanism();
 		$authParameters = $auth->getParameters();
 
-		if (isset($backendParameters[$key]) && $backendParameters[$key]->getType() === DefinitionParameter::VALUE_PASSWORD) {
-			return true;
-		}
-
-		if (isset($authParameters[$key]) && $authParameters[$key]->getType() === DefinitionParameter::VALUE_PASSWORD) {
+		if (
+			(
+				isset($backendParameters[$key]) &&
+				$backendParameters[$key]->getType() === DefinitionParameter::VALUE_PASSWORD
+			) || (
+				isset($authParameters[$key]) &&
+				$authParameters[$key]->getType() === DefinitionParameter::VALUE_PASSWORD
+			)
+		) {
 			return true;
 		}
 		return false;
+	}
+
+	private function updateConfig(IStorageConfig $storageConfig, $changedOptions) {
+		// need to force a fake password change to update the password later
+		foreach ($changedOptions as $key => $value) {
+			$storageConfig->setBackendOption($key, "{$value}0");
+		}
+		$this->storageService->updateStorage($storageConfig);
+		// re-insert the old password so it will be encrypted now
+		foreach ($changedOptions as $key => $value) {
+			$storageConfig->setBackendOption($key, $value);
+		}
+		$this->storageService->updateStorage($storageConfig);
 	}
 
 	/**
