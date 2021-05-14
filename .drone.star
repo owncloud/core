@@ -139,7 +139,7 @@ config = {
 				'apiSharingNotificationsToShares',
 			],
 			'extraApps': {
-				'notifications': 'composer install'
+				'notifications': ''
 			},
 		},
 		'apiFederation': {
