@@ -1357,8 +1357,8 @@ def acceptance(ctx):
 		'skip': False,
 		'debugSuites': [],
 		'skipExceptParts': [],
-		'testAgainstCoreTarball': False,
-		'coreTarball': 'daily-master-qa',
+		'testAgainstCoreTarball': True,
+		'coreTarball': '10.7.0',
 	}
 
 	if 'defaults' in config:
