@@ -78,6 +78,8 @@ config = {
 
 	'acceptance': {
 		'api': {
+			'testAgainstCoreTarball': True,
+			'coreTarball': '10.7.0',
 			'suites': [
 				'apiAuth',
 				'apiAuthOcs',
@@ -132,6 +134,7 @@ config = {
 			],
 		},
 		'apiNotifications': {
+			'testAgainstCoreTarball': True,
 			'suites': [
 				'apiSharingNotificationsToRoot',
 				'apiSharingNotificationsToShares',
@@ -174,6 +177,8 @@ config = {
 			'federatedServerVersions': ['git', 'latest', '10.5.0']
 		},
 		'webUI': {
+			'testAgainstCoreTarball': True,
+			'coreTarball': '10.6.0',
 			'suites': {
 				'webUIAddUsers': '',
 				'webUIAdminSettings': '',
@@ -237,6 +242,7 @@ config = {
 			'federatedServerVersions': ['git', 'latest', '10.5.0']
 		},
 		'webUIFirefox': {
+			'testAgainstCoreTarball': True,
 			'suites': {
 				'webUIFirefoxSmoketest': 'webUIFfSmoke',
 			},
