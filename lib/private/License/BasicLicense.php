@@ -19,7 +19,9 @@
  */
 namespace OC\License;
 
-class BasicLicense implements ILicense {
+use OCP\License\AbstractLicense;
+
+class BasicLicense extends AbstractLicense {
 	private $rawLicense;
 	private $org;
 	private $date = 0;  // to ensure an integer as expiration value
