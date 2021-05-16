@@ -357,14 +357,7 @@ class DAV extends Common {
 							->newClient()
 							->get($this->createBaseUri() . $this->encodePath($path), [
 									'auth' => [$this->user, $this->password],
-									'stream' => true,
-									'config' => [
-										'stream_context' => [
-											'http' => [
-												'request_fulluri' => true
-											]
-										],
-									],
+									'stream' => true
 							]);
 				} catch (RequestException $e) {
 					if ($e->getResponse() instanceof ResponseInterface
