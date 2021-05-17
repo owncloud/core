@@ -23,6 +23,7 @@ Summary
 * Bugfix - Add check when updating the permissions of a federated share: [#38698](https://github.com/owncloud/core/pull/38698)
 * Bugfix - String to bool conversion in systemtags API: [#38719](https://github.com/owncloud/core/pull/38719)
 * Bugfix - Database query filter when getting a tag: [#38725](https://github.com/owncloud/core/pull/38725)
+* Bugfix - Fix federated share download bug happens on some providers: [#38738](https://github.com/owncloud/core/pull/38738)
 * Change - Update Symfony components: [#38730](https://github.com/owncloud/core/pull/38730)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
@@ -168,6 +169,14 @@ Details
    certain cases.
 
    https://github.com/owncloud/core/pull/38725
+
+* Bugfix - Fix federated share download bug happens on some providers: [#38738](https://github.com/owncloud/core/pull/38738)
+
+   Some WebDAV service providers are not able to respond properly when the HTTP client
+   request_fulluri option set without proxy. Now, the HTTP client request_fulluri option set
+   only if a proxy configured.
+
+   https://github.com/owncloud/core/pull/38738
 
 * Change - Update Symfony components: [#38730](https://github.com/owncloud/core/pull/38730)
 

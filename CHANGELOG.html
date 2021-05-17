@@ -21,6 +21,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Add check when updating the permissions of a federated share: <a href="https://github.com/owncloud/core/pull/38698">#38698</a></li>
         <li class="type-bugfix changelog-item">Bugfix - String to bool conversion in systemtags API: <a href="https://github.com/owncloud/core/pull/38719">#38719</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Database query filter when getting a tag: <a href="https://github.com/owncloud/core/pull/38725">#38725</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Fix federated share download bug happens on some providers: <a href="https://github.com/owncloud/core/pull/38738">#38738</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/38730">#38730</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/38524">#38524</a></li>
         <li class="type-change changelog-item">Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: <a href="https://github.com/owncloud/core/pull/38647">#38647</a></li>
@@ -171,6 +172,14 @@
    certain cases.
             </p>
             <p>https://github.com/owncloud/core/pull/38725<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Fix federated share download bug happens on some providers: <a href="https://github.com/owncloud/core/pull/38738">#38738</a></p>
+            <p>Some WebDAV service providers are not able to respond properly when the HTTP client
+   request_fulluri option set without proxy. Now, the HTTP client request_fulluri option set
+   only if a proxy configured.
+            </p>
+            <p>https://github.com/owncloud/core/pull/38738<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/38730">#38730</a></p>
