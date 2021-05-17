@@ -27,6 +27,7 @@ Summary
 * Change - Update Symfony components: [#38730](https://github.com/owncloud/core/pull/38730)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
+* Change - Optimize share rename: [#38656](https://github.com/owncloud/core/pull/38656)
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
 * Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
 * Enhancement - Expired shares in activity stream: [#38631](https://github.com/owncloud/core/pull/38631)
@@ -216,6 +217,15 @@ Details
 
    https://github.com/owncloud/core/issues/38681
    https://github.com/owncloud/core/pull/38647
+
+* Change - Optimize share rename: [#38656](https://github.com/owncloud/core/pull/38656)
+
+   Renaming a received share could cause a file scan to be triggered. This could potentially be a
+   performance problem if the file scan took a while.
+
+   Now, renaming a received share won't trigger that file scan, so the performance will be faster.
+
+   https://github.com/owncloud/core/pull/38656
 
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
 

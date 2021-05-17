@@ -25,6 +25,7 @@
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/38730">#38730</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/38524">#38524</a></li>
         <li class="type-change changelog-item">Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: <a href="https://github.com/owncloud/core/pull/38647">#38647</a></li>
+        <li class="type-change changelog-item">Change - Optimize share rename: <a href="https://github.com/owncloud/core/pull/38656">#38656</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Automations in activity stream: <a href="https://github.com/owncloud/core/pull/38605">#38605</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add html template for calens: <a href="https://github.com/owncloud/core/pull/38616">#38616</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Expired shares in activity stream: <a href="https://github.com/owncloud/core/pull/38631">#38631</a></li>
@@ -208,6 +209,13 @@
             <p>https://github.com/owncloud/core/issues/38681<br>
             </p>
             <p>https://github.com/owncloud/core/pull/38647<br></p>
+        </li>
+        <li class="type-change changelog-item">
+            <p>Change - Optimize share rename: <a href="https://github.com/owncloud/core/pull/38656">#38656</a></p>
+            <p>Renaming a received share could cause a file scan to be triggered. This could potentially be a
+   performance problem if the file scan took a while.Now, renaming a received share won't trigger that file scan, so the performance will be faster.
+            </p>
+            <p>https://github.com/owncloud/core/pull/38656<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Automations in activity stream: <a href="https://github.com/owncloud/core/pull/38605">#38605</a></p>
