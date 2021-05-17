@@ -93,7 +93,6 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 *                                 ['testingApp'] the "app" name as understood by "testing"
 	 *                                 ['testingParameter'] the parameter name as understood by "testing"
 	 *                                 ['testingState'] boolean|string that the parameter must be set to for the test
-	 * @param string $savedCapabilitiesXml the original capabilities in XML format
 	 * @param int $ocsApiVersion (1|2)
 	 *
 	 * @return array of the original state of each capability set
@@ -103,20 +102,12 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 		$user,
 		$password,
 		$capabilitiesArray,
-		$savedCapabilitiesXml,
 		$ocsApiVersion = 1
 	) {
 		$appParameterValues = [];
-		$originalCapabilities = [];
 
 		if (\is_array($capabilitiesArray)) {
 			foreach ($capabilitiesArray as $capabilityToSet) {
-				$originalState = self::wasCapabilitySet(
-					$capabilityToSet['capabilitiesApp'],
-					$capabilityToSet['capabilitiesParameter'],
-					$savedCapabilitiesXml
-				);
-
 				if (\is_bool($capabilityToSet['testingState'])) {
 					$testingState = $capabilityToSet['testingState'] ? 'yes' : 'no';
 				} else {
@@ -132,17 +123,6 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 					'configkey' => $capabilityToSet['testingParameter'],
 					'value' => $testingState
 				];
-
-				// Remember the original state of all capabilities touched
-				// because tests might change the state, even if the state
-				// was already as desired in this setup phase.
-				// So we will need to reset all to their original state at the
-				// end of the scenario, just to be sure.
-				$originalCapabilities[] = [
-					'appid' => $capabilityToSet['testingApp'],
-					'configkey' => $capabilityToSet['testingParameter'],
-					'value' => $originalState ? 'yes' : 'no'
-				];
 			}
 		}
 
@@ -153,8 +133,6 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			$appParameterValues,
 			$ocsApiVersion
 		);
-
-		return $originalCapabilities;
 	}
 
 	/**

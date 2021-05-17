@@ -242,17 +242,6 @@ class FeatureContext extends BehatVariablesContext {
 	public $appConfigurationContext;
 
 	/**
-	 * @var array the changes made to capabilities for the test scenario
-	 */
-	private $savedCapabilitiesChanges = [];
-
-	/**
-	 * @var array with keys for each baseURL (e.g. of local and remote server)
-	 *            that contain the original capabilities in XML format
-	 */
-	private $savedCapabilitiesXml;
-
-	/**
 	 * @var array saved configuration of the system before test runs as reported
 	 *            by occ config:list
 	 */
@@ -3364,9 +3353,6 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function resetAppConfigs() {
-		// Remember the current capabilities
-		$this->appConfigurationContext->theAdministratorGetsCapabilitiesCheckResponse();
-		$this->savedCapabilitiesXml[$this->getBaseUrl()] = $this->appConfigurationContext->getCapabilitiesXml(__METHOD__);
 		// Set the required starting values for testing
 		$this->setCapabilities($this->getCommonSharingConfigs());
 	}
@@ -3407,35 +3393,11 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function setCapabilities($capabilitiesArray) {
-		$savedCapabilitiesChanges = AppConfigHelper::setCapabilities(
+		AppConfigHelper::setCapabilities(
 			$this->getBaseUrl(),
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
-			$capabilitiesArray,
-			$this->savedCapabilitiesXml[$this->getBaseUrl()]
-		);
-
-		if (!isset($this->savedCapabilitiesChanges[$this->getBaseUrl()])) {
-			$this->savedCapabilitiesChanges[$this->getBaseUrl()] = [];
-		}
-		$this->savedCapabilitiesChanges[$this->getBaseUrl()] = \array_merge(
-			$this->savedCapabilitiesChanges[$this->getBaseUrl()],
-			$savedCapabilitiesChanges
-		);
-	}
-
-	/**
-	 * @param string $capabilitiesApp the "app" name in the capabilities response
-	 * @param string $capabilitiesParameter the parameter name in the
-	 *                                      capabilities response
-	 *
-	 * @return boolean
-	 */
-	public function wasCapabilitySet($capabilitiesApp, $capabilitiesParameter) {
-		return (bool) $this->getParameterValueFromXml(
-			$this->savedCapabilitiesXml[$this->getBaseUrl()],
-			$capabilitiesApp,
-			$capabilitiesParameter
+			$capabilitiesArray
 		);
 	}
 
@@ -3757,9 +3719,6 @@ class FeatureContext extends BehatVariablesContext {
 		$commands = [];
 		if ($this->isTestingWithLdap()) {
 			$this->resetOldLdapConfig();
-		}
-		if (\key_exists($this->getBaseUrl(), $this->savedCapabilitiesChanges)) {
-			$this->appConfigurationContext->modifyAppConfigs($this->savedCapabilitiesChanges[$this->getBaseUrl()]);
 		}
 		$result = SetupHelper::runOcc(
 			['config:list'], $this->getAdminUsername(),
