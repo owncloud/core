@@ -533,14 +533,7 @@ class DavTest extends TestCase {
 			->with(
 				'https://davhost/davroot/some%25dir/file%25.txt', [
 					'auth' => ['davuser', 'davpassword'],
-					'stream' => true,
-					'config' => [
-						'stream_context' => [
-							'http' => [
-								'request_fulluri' => true
-							]
-						],
-					],
+					'stream' => true
 				]
 			)
 			->willReturn($response);
@@ -558,14 +551,7 @@ class DavTest extends TestCase {
 			->with(
 				'https://davhost/davroot/some%25dir/file%25.txt', [
 					'auth' => ['davuser', 'davpassword'],
-					'stream' => true,
-					'config' => [
-						'stream_context' => [
-							'http' => [
-								'request_fulluri' => true
-							]
-						],
-					],
+					'stream' => true
 				]
 			)
 			->willThrowException($this->createGuzzleClientException(Http::STATUS_NOT_FOUND));
@@ -583,14 +569,7 @@ class DavTest extends TestCase {
 			->with(
 				'https://davhost/davroot/some%25dir/file%25.txt', [
 					'auth' => ['davuser', 'davpassword'],
-					'stream' => true,
-					'config' => [
-						'stream_context' => [
-							'http' => [
-								'request_fulluri' => true
-							]
-						],
-					],
+					'stream' => true
 				]
 			)
 			->willThrowException($this->createGuzzleClientException(Http::STATUS_FORBIDDEN));
@@ -612,14 +591,7 @@ class DavTest extends TestCase {
 			->with(
 				'https://davhost/davroot/some%25dir/file%25.txt', [
 					'auth' => ['davuser', 'davpassword'],
-					'stream' => true,
-					'config' => [
-						'stream_context' => [
-							'http' => [
-								'request_fulluri' => true
-							]
-						],
-					],
+					'stream' => true
 				]
 			)
 			->willReturn($response);
@@ -905,7 +877,7 @@ class DavTest extends TestCase {
 
 		$this->assertFalse($this->instance->touch('/some%dir', 1508496363));
 	}
-	
+
 	public function testTouchNoServerSupport() {
 		// file_exists
 		$this->davClient->expects($this->at(0))
