@@ -1,0 +1,11 @@
+Change: All mount configuration items marked as passwords will be encrypted
+
+Previously, only some known configuration items were encrypted. This was a
+problem for new items that required protection because this required
+changes in the core product.
+
+Now, all the items marked as passwords will be encrypted. This will be done
+automatically without 3rd party apps needing to do anything. A migration
+is also provided to update the items if needed.
+
+https://github.com/owncloud/core/pull/38728
