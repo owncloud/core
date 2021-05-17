@@ -1,0 +1,9 @@
+Change: Optimize share rename
+
+Renaming a received share could cause a file scan to be triggered. This could
+potentially be a performance problem if the file scan took a while.
+
+Now, renaming a received share won't trigger that file scan, so the
+performance will be faster.
+
+https://github.com/owncloud/core/pull/38656
