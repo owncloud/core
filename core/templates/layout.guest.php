@@ -28,7 +28,7 @@
 		<?php endforeach; ?>
 		<?php print_unescaped($_['headers']); ?>
 	</head>
-	<body id="<?php p($_['bodyid']);?>">
+	<body id="<?php p($_['bodyid']);?>" class="theme-<?php p($theme->getName())?>">
 		<?php include('layout.noscript.warning.php'); ?>
 		<div class="wrapper">
 			<div class="v-align">

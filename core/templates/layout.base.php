@@ -23,7 +23,7 @@
 		<?php endforeach; ?>
 		<?php print_unescaped($_['headers']); ?>
 	</head>
-	<body id="body-public">
+	<body id="body-public" class="theme-<?php p($theme->getName())?>">
 		<?php include('layout.noscript.warning.php'); ?>
 		<?php print_unescaped($_['content']); ?>
 	</body>
