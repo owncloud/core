@@ -669,10 +669,11 @@ html #body-login button[type="submit"]:hover {
 	font-size: 1rem;
 	margin: 0px;
 	padding: 0.65rem;
+	width: calc(100% - 1.3rem);
 }
 
-#body-login input {
-	width: 16rem;
+#body-login form {
+	min-width: 300px;
 }
 
 #remember_login {
