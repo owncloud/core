@@ -1,0 +1,7 @@
+Change: Bump doctrine/dbal from 2.10.4 to 2.13.1
+
+Implemented the new method executeStatement in our DB Connection class
+as Doctrine calls this method now instead of the deprecated executeUpdate.
+
+https://github.com/owncloud/core/pull/38647
+https://github.com/owncloud/core/issues/38681

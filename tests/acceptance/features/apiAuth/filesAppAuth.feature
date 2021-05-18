@@ -2,7 +2,7 @@
 Feature: auth
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
 
   @smokeTest
   Scenario: access files app anonymously

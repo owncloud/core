@@ -26,8 +26,7 @@
 class Google_Service_Dialogflow_Resource_ProjectsLocationsAgentsEnvironmentsSessionsEntityTypes extends Google_Service_Resource
 {
   /**
-   * Creates a session entity type. If the specified session entity type already
-   * exists, overrides the session entity type. (entityTypes.create)
+   * Creates a session entity type. (entityTypes.create)
    *
    * @param string $parent Required. The session to create a session entity type
    * for. Format: `projects//locations//agents//sessions/` or

@@ -43,7 +43,7 @@ Feature: using trashbin together with sharing
 
   Scenario Outline: deleting a file in a received folder when restored it comes back to the original path
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/shared"
     And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "Alice" has shared folder "/shared" with user "Brian"

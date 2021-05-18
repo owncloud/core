@@ -25,6 +25,7 @@
 		'{{#allowActions}}' +
 		'    <span class="systemtags-actions">' +
 		'        <a href="#" class="rename icon icon-rename" title="{{renameTooltip}}"></a>' +
+		'        <a href="#" class="delete icon icon-delete" title="{{deleteTooltip}}"></a>' +
 		'    </span>' +
 		'{{/allowActions}}' +
 		'</span>';
@@ -40,7 +41,6 @@
 		'<form class="systemtags-rename-form">' +
 		'    <label class="hidden-visually" for="{{cid}}-rename-input">{{renameLabel}}</label>' +
 		'    <input id="{{cid}}-rename-input" type="text" value="{{name}}">' +
-		'    <a href="#" class="delete icon icon-delete" title="{{deleteTooltip}}"></a>' +
 		'</form>';
 
 	/**
@@ -132,7 +132,6 @@
 			var $renameForm = $(this._renameFormTemplate({
 				cid: this.cid,
 				name: oldName,
-				deleteTooltip: t('core', 'Delete'),
 				renameLabel: t('core', 'Rename')
 			}));
 			$item.find('.label').after($renameForm);
@@ -151,7 +150,7 @@
 		/**
 		 * Event handler whenever the rename form has been submitted after
 		 * the user entered a new tag name.
-		 * This will submit the change to the server. 
+		 * This will submit the change to the server.
 		 *
 		 * @param {Object} ev event
 		 */
@@ -321,6 +320,7 @@
 
 			return this._resultTemplate(_.extend({
 				renameTooltip: t('core', 'Rename'),
+				deleteTooltip: t('core', 'Delete'),
 				allowActions: this._allowActions,
 				tagMarkup: this._isAdmin ? OC.SystemTags.getDescriptiveTag(data)[0].innerHTML : null,
 				isAdmin: this._isAdmin

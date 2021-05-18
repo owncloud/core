@@ -7,7 +7,7 @@ Feature: accept/decline shares coming from internal users
   Background:
     Given using OCS API version "1"
     And using new DAV path
-    And these users have been created with default attributes and small skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -15,10 +15,26 @@ Feature: accept/decline shares coming from internal users
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"
+    And user "Alice" has created folder "PARENT"
+    And user "Alice" has created folder "FOLDER"
+    And user "Brian" has created folder "PARENT"
+    And user "Brian" has created folder "FOLDER"
+    And user "Carol" has created folder "PARENT"
+    And user "Carol" has created folder "FOLDER"
+    And user "Alice" has uploaded file with content "ownCloud text file 0" to "/textfile0.txt"
+    And user "Brian" has uploaded file with content "ownCloud text file 0" to "/textfile0.txt"
+    And user "Carol" has uploaded file with content "ownCloud text file 0" to "/textfile0.txt"
+    And user "Alice" has uploaded file with content "ownCloud test text file parent" to "/PARENT/parent.txt"
+    And user "Brian" has uploaded file with content "ownCloud test text file parent" to "/PARENT/parent.txt"
+    And user "Carol" has uploaded file with content "ownCloud test text file parent" to "/PARENT/parent.txt"
 
   @smokeTest
   Scenario Outline: share a file & folder with another internal user with different permissions when auto accept is enabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
+    And user "Alice" has created folder "PARENT/CHILD"
+    And user "Brian" has created folder "PARENT/CHILD"
+    And user "Alice" has uploaded file with content "ownCloud test text file child" to "/PARENT/CHILD/child.txt"
+    And user "Brian" has uploaded file with content "ownCloud test text file child" to "/PARENT/CHILD/child.txt"
     When user "Alice" creates a share using the sharing API with settings
       | path        | PARENT        |
       | shareType   | user          |
@@ -39,7 +55,7 @@ Feature: accept/decline shares coming from internal users
       | /PARENT (2)/       |
       | /textfile0 (2).txt |
     And  the downloaded content when downloading file "/PARENT (2)/CHILD/child.txt" for user "Brian" with range "bytes=19-28" should be "file child"
-    And  the downloaded content when downloading file "/textfile0 (2).txt" for user "Brian" with range "bytes=14-24" should be "text file 0"
+    And  the downloaded content when downloading file "/textfile0 (2).txt" for user "Brian" with range "bytes=14-24" should be "file 0"
     Examples:
       | permissions |
       | read        |
@@ -74,6 +90,12 @@ Feature: accept/decline shares coming from internal users
 
   Scenario Outline: share a file & folder with internal group with different permissions when auto accept is enabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
+    And user "Alice" has created folder "PARENT/CHILD"
+    And user "Brian" has created folder "PARENT/CHILD"
+    And user "Carol" has created folder "PARENT/CHILD"
+    And user "Alice" has uploaded file with content "ownCloud test text file child" to "/PARENT/CHILD/child.txt"
+    And user "Brian" has uploaded file with content "ownCloud test text file child" to "/PARENT/CHILD/child.txt"
+    And user "Carol" has uploaded file with content "ownCloud test text file child" to "/PARENT/CHILD/child.txt"
     When user "Alice" creates a share using the sharing API with settings
       | path        | PARENT        |
       | shareType   | group         |
@@ -105,7 +127,7 @@ Feature: accept/decline shares coming from internal users
       | /PARENT (2)/       |
       | /textfile0 (2).txt |
     And  the downloaded content when downloading file "/PARENT (2)/CHILD/child.txt" for user "Carol" with range "bytes=19-28" should be "file child"
-    And  the downloaded content when downloading file "/textfile0 (2).txt" for user "Carol" with range "bytes=14-24" should be "text file 0"
+    And  the downloaded content when downloading file "/textfile0 (2).txt" for user "Carol" with range "bytes=14-24" should be "file 0"
     Examples:
       | permissions |
       | read        |
@@ -549,7 +571,8 @@ Feature: accept/decline shares coming from internal users
 
   Scenario: user accepts shares received from multiple users with the same name when auto-accept share is disabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
-    And user "David" has been created with default attributes and small skeleton files
+    And user "David" has been created with default attributes and without skeleton files
+    And user "David" has created folder "/PARENT"
     And user "Brian" has shared folder "/PARENT" with user "Alice"
     And user "Carol" has shared folder "/PARENT" with user "Alice"
     When user "Alice" accepts share "/PARENT" offered by user "Brian" using the sharing API
@@ -569,8 +592,8 @@ Feature: accept/decline shares coming from internal users
       | /PARENT (2) (2) (2)/ | Brian     |
 
   Scenario: user shares folder with matching folder-name for both user involved in sharing
-    Given user "Alice" uploads file with content "uploaded content" to "/PARENT/abc.txt" using the WebDAV API
-    And user "Alice" uploads file with content "uploaded content" to "/FOLDER/abc.txt" using the WebDAV API
+    Given user "Alice" has uploaded file with content "uploaded content" to "/PARENT/abc.txt"
+    And user "Alice" has uploaded file with content "uploaded content" to "/FOLDER/abc.txt"
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
     And user "Alice" shares folder "/FOLDER" with user "Brian" using the sharing API
     Then the OCS status code should be "100"
@@ -589,8 +612,8 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/FOLDER (2)/abc.txt" for user "Brian" should be "uploaded content"
 
   Scenario: user shares folder in a group with matching folder-name for every users involved
-    Given user "Alice" uploads file with content "uploaded content" to "/PARENT/abc.txt" using the WebDAV API
-    And user "Alice" uploads file with content "uploaded content" to "/FOLDER/abc.txt" using the WebDAV API
+    Given user "Alice" has uploaded file with content "uploaded content" to "/PARENT/abc.txt"
+    And user "Alice" has uploaded file with content "uploaded content" to "/FOLDER/abc.txt"
     When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
     And user "Alice" shares folder "/FOLDER" with group "grp1" using the sharing API
     Then the OCS status code should be "100"
@@ -621,6 +644,9 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/FOLDER (2)/abc.txt" for user "Carol" should be "uploaded content"
 
   Scenario: user shares files in a group with matching file-names for every users involved in sharing
+    Given user "Alice" has uploaded file with content "ownCloud text file 1" to "/textfile1.txt"
+    And user "Brian" has uploaded file with content "ownCloud text file 1" to "/textfile1.txt"
+    And user "Carol" has uploaded file with content "ownCloud text file 1" to "/textfile1.txt"
     When user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API
     And user "Alice" shares file "/textfile1.txt" with group "grp1" using the sharing API
     Then the OCS status code should be "100"
@@ -683,7 +709,7 @@ Feature: accept/decline shares coming from internal users
     Given these users have been created with small skeleton files but not initialized:
       | username |
       | David    |
-    And user "Alice" uploads file with content "uploaded content" to "/PARENT/abc.txt" using the WebDAV API
+    And user "Alice" has uploaded file with content "uploaded content" to "/PARENT/abc.txt"
     When user "Alice" shares folder "/PARENT" with user "David" using the sharing API
     Then user "David" should see the following elements
       | /PARENT/        |
@@ -699,7 +725,7 @@ Feature: accept/decline shares coming from internal users
 
   @issue-ocis-765
   Scenario: shares exist after restoring already shared file to a previous version
-    And user "Alice" has uploaded file with content "Test Content." to "/toShareFile.txt"
+    Given user "Alice" has uploaded file with content "Test Content." to "/toShareFile.txt"
     And user "Alice" has uploaded file with content "Content Test Updated." to "/toShareFile.txt"
     And user "Alice" has shared file "/toShareFile.txt" with user "Brian"
     When user "Alice" restores version index "1" of file "/toShareFile.txt" using the WebDAV API

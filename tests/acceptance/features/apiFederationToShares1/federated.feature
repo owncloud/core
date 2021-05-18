@@ -5,15 +5,16 @@ Feature: federated
     Given using server "REMOTE"
     And the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
     And using server "LOCAL"
     And the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
 
   @smokeTest
   Scenario Outline: Federate share a file with another server
     Given using OCS API version "<ocs-api-version>"
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     When user "Brian" from server "LOCAL" shares "/textfile0.txt" with user "Alice" from server "REMOTE" using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
@@ -40,6 +41,8 @@ Feature: federated
   @smokeTest
   Scenario Outline: Federate share a file with local server
     Given using OCS API version "<ocs-api-version>"
+    And using server "REMOTE"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     When user "Alice" from server "REMOTE" shares "/textfile0.txt" with user "Brian" from server "LOCAL" using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
@@ -64,7 +67,10 @@ Feature: federated
       | 2               | 200        |
 
   Scenario Outline: Remote sharee can see the pending share
-    Given user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
+    Given using server "REMOTE"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
+    And using server "LOCAL"
     And using OCS API version "<ocs-api-version>"
     When user "Brian" gets the list of pending federated cloud shares using the sharing API
     Then the OCS status code should be "<ocs-status>"
@@ -85,8 +91,11 @@ Feature: federated
       | 2               | 200        |
 
   Scenario Outline: Remote sharee requests information of only one share
-    Given user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
+    Given using server "REMOTE"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
     And user "Brian" from server "LOCAL" has accepted the last pending share
+    And using server "LOCAL"
     And using OCS API version "<ocs-api-version>"
     When user "Brian" retrieves the information of the last federated cloud share using the sharing API
     Then the OCS status code should be "<ocs-status>"
@@ -110,7 +119,10 @@ Feature: federated
 
   @skipOnOcV10.3 @skipOnOcV10.4.0 @skipOnOcV10.4.1
   Scenario Outline: Remote sharee requests information of only one share before accepting it
-    Given user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
+    Given using server "REMOTE"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
+    And using server "LOCAL"
     And using OCS API version "<ocs-api-version>"
     When user "Brian" retrieves the information of the last pending federated cloud share using the sharing API
     Then the HTTP status code should be "200"
@@ -151,7 +163,9 @@ Feature: federated
       | 2               | 404        | 404         |
 
   Scenario Outline: accept a pending remote share
-    Given user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
+    Given using server "REMOTE"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
     And using OCS API version "<ocs-api-version>"
     When user "Brian" from server "LOCAL" accepts the last pending share using the sharing API
     Then the OCS status code should be "<ocs-status>"
@@ -162,7 +176,9 @@ Feature: federated
       | 2               | 200        |
 
   Scenario Outline: Reshare a federated shared file
-    Given user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
+    Given using server "REMOTE"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
     And user "Brian" from server "LOCAL" has accepted the last pending share
     And using server "LOCAL"
     And user "Carol" has been created with default attributes and small skeleton files
@@ -195,7 +211,8 @@ Feature: federated
       | 2               | 200        |
 
   Scenario Outline: Overwrite a federated shared file as recipient - local server shares - remote server receives
-    Given user "Brian" from server "LOCAL" has shared "/textfile0.txt" with user "Alice" from server "REMOTE"
+    Given user "Brian" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Brian" from server "LOCAL" has shared "/textfile0.txt" with user "Alice" from server "REMOTE"
     And user "Alice" from server "REMOTE" has accepted the last pending share
     And using server "REMOTE"
     And using OCS API version "<ocs-api-version>"
@@ -208,8 +225,11 @@ Feature: federated
       | 2               | 200        |
 
   Scenario Outline: Overwrite a federated shared file as recipient - remote server shares - local server receives
-    Given user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
+    Given using server "REMOTE"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
     And user "Brian" from server "LOCAL" has accepted the last pending share
+    And using server "LOCAL"
     And using OCS API version "<ocs-api-version>"
     When user "Brian" uploads file "filesForUpload/file_to_overwrite.txt" to "/Shares/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "204"
@@ -220,7 +240,8 @@ Feature: federated
       | 2               | 200        |
 
   Scenario Outline: Overwrite a file in a federated shared folder as recipient - local server shares - remote server receives
-    Given user "Brian" from server "LOCAL" has shared "/PARENT" with user "Alice" from server "REMOTE"
+    Given user "Brian" has created folder "PARENT"
+    And user "Brian" from server "LOCAL" has shared "/PARENT" with user "Alice" from server "REMOTE"
     And user "Alice" from server "REMOTE" has accepted the last pending share
     And using server "REMOTE"
     And using OCS API version "<ocs-api-version>"
@@ -233,8 +254,11 @@ Feature: federated
       | 2               | 200        |
 
   Scenario Outline: Overwrite a file in a federated shared folder as recipient - remote server shares - local server receives
-    Given user "Alice" from server "REMOTE" has shared "/PARENT" with user "Brian" from server "LOCAL"
+    Given using server "REMOTE"
+    And user "Alice" has created folder "PARENT"
+    And user "Alice" from server "REMOTE" has shared "/PARENT" with user "Brian" from server "LOCAL"
     And user "Brian" from server "LOCAL" has accepted the last pending share
+    And using server "LOCAL"
     And using OCS API version "<ocs-api-version>"
     When user "Brian" uploads file "filesForUpload/file_to_overwrite.txt" to "/Shares/PARENT/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "201"
@@ -245,8 +269,11 @@ Feature: federated
       | 2               | 200        |
 
   Scenario Outline: Overwrite a federated shared file as recipient using old chunking
-    Given user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
+    Given using server "REMOTE"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
     And user "Brian" from server "LOCAL" has accepted the last pending share
+    And using server "LOCAL"
     And using OCS API version "<ocs-api-version>"
     When user "Brian" uploads the following "3" chunks to "/Shares/textfile0.txt" with old chunking and using the WebDAV API
       | number | content |
@@ -262,8 +289,11 @@ Feature: federated
       | 2               | 200        |
 
   Scenario Outline: Overwrite a file in a federated shared folder as recipient using old chunking
-    Given user "Alice" from server "REMOTE" has shared "/PARENT" with user "Brian" from server "LOCAL"
+    Given using server "REMOTE"
+    And user "Alice" has created folder "PARENT"
+    And user "Alice" from server "REMOTE" has shared "/PARENT" with user "Brian" from server "LOCAL"
     And user "Brian" from server "LOCAL" has accepted the last pending share
+    And using server "LOCAL"
     And using OCS API version "<ocs-api-version>"
     When user "Brian" uploads the following "3" chunks to "/Shares/PARENT/textfile0.txt" with old chunking and using the WebDAV API
       | number | content |
@@ -279,8 +309,11 @@ Feature: federated
       | 2               | 200        |
 
   Scenario Outline: Remote sharee deletes an accepted federated share
-    Given user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
+    Given using server "REMOTE"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
     And user "Brian" from server "LOCAL" has accepted the last pending share
+    And using server "LOCAL"
     And using OCS API version "<ocs-api-version>"
     When user "Brian" deletes the last federated cloud share using the sharing API
     Then the OCS status code should be "<ocs-status>"
@@ -298,8 +331,11 @@ Feature: federated
 
   @issue-31276 @skipOnOcV10
   Scenario Outline: Remote sharee tries to delete an accepted federated share sending wrong password
-    Given user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
+    Given using server "REMOTE"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
     And user "Brian" from server "LOCAL" has accepted the last pending share
+    And using server "LOCAL"
     And using OCS API version "<ocs-api-version>"
     When user "Brian" deletes the last federated cloud share with password "invalid" using the sharing API
     Then the OCS status code should be "401"
@@ -327,7 +363,10 @@ Feature: federated
       | 2               |
 
   Scenario Outline: Remote sharee deletes a pending federated share
-    Given user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
+    Given using server "REMOTE"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
+    And using server "LOCAL"
     And using OCS API version "<ocs-api-version>"
     When user "Brian" deletes the last pending federated cloud share using the sharing API
     Then the OCS status code should be "<ocs-status>"
@@ -345,7 +384,10 @@ Feature: federated
 
   @issue-31276 @skipOnOcV10
   Scenario Outline: Remote sharee tries to delete a pending federated share sending wrong password
-    Given user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
+    Given using server "REMOTE"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
+    And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
+    And using server "LOCAL"
     And using OCS API version "<ocs-api-version>"
     When user "Brian" deletes the last pending federated cloud share with password "invalid" using the sharing API
     Then the OCS status code should be "401"
@@ -375,7 +417,7 @@ Feature: federated
     And using OCS API version "<ocs-api-version>"
     When user "UNAUTHORIZED_USER" requests shared secret using the federation API
     Then the HTTP status code should be "<http-status>"
-    Then the OCS status code should be "403"
+    And the OCS status code should be "403"
     Examples:
       | ocs-api-version | http-status |
       | 1               | 200         |
@@ -383,7 +425,9 @@ Feature: federated
 
   @skipOnLDAP
   Scenario: Upload file to received federated share while quota is set on home storage
-    Given user "Alice" from server "REMOTE" has shared "/PARENT" with user "Brian" from server "LOCAL"
+    Given using server "REMOTE"
+    And user "Alice" has created folder "PARENT"
+    And user "Alice" from server "REMOTE" has shared "/PARENT" with user "Brian" from server "LOCAL"
     And user "Brian" from server "LOCAL" has accepted the last pending share
     And using server "LOCAL"
     When user "Brian" uploads file "filesForUpload/textfile.txt" to filenames based on "/Shares/PARENT/testquota.txt" with all mechanisms using the WebDAV API
@@ -394,6 +438,7 @@ Feature: federated
   Scenario: Upload file to received federated share while quota is set on remote storage - local server shares - remote server receives
     Given using server "LOCAL"
     And the quota of user "Brian" has been set to "20 B"
+    And user "Brian" has created folder "PARENT"
     And user "Brian" from server "LOCAL" has shared "/PARENT" with user "Alice" from server "REMOTE"
     And user "Alice" from server "REMOTE" has accepted the last pending share
     And using server "REMOTE"
@@ -404,6 +449,7 @@ Feature: federated
   Scenario: Upload file to received federated share while quota is set on remote storage - remote server shares - local server receives
     Given using server "REMOTE"
     And the quota of user "Alice" has been set to "20 B"
+    And user "Alice" has created folder "PARENT"
     And user "Alice" from server "REMOTE" has shared "/PARENT" with user "Brian" from server "LOCAL"
     And user "Brian" from server "LOCAL" has accepted the last pending share
     And using server "LOCAL"
@@ -420,7 +466,7 @@ Feature: federated
     When user "Alice" from server "REMOTE" shares "zzzfolder" with user "Brian" from server "LOCAL" using the sharing API
     And user "Brian" from server "LOCAL" has accepted the last pending share
     And using OCS API version "<ocs-api-version>"
-    When user "Brian" retrieves the information of the last federated cloud share using the sharing API
+    And user "Brian" retrieves the information of the last federated cloud share using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response about user "Alice" sharing with user "Brian" should include
@@ -447,7 +493,7 @@ Feature: federated
     When user "Alice" from server "REMOTE" shares "/randomfile.txt" with user "Brian" from server "LOCAL" using the sharing API
     And user "Brian" from server "LOCAL" has accepted the last pending share
     And using OCS API version "<ocs-api-version>"
-    When user "Brian" retrieves the information of the last federated cloud share using the sharing API
+    And user "Brian" retrieves the information of the last federated cloud share using the sharing API
     Then the OCS status code should be "<ocs-status>"
     And the HTTP status code should be "200"
     And the fields of the last response about user "Alice" sharing with user "Brian" should include

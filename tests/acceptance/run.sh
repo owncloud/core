@@ -204,6 +204,34 @@ function remote_occ() {
 }
 
 # @param $1 admin authentication string username:password
+# @param $2 occ url (without /bulk appendix)
+# @param $3 commands
+# exists with 1 and sets $REMOTE_OCC_STDERR if any of the occ commands returned a non-zero code
+function remote_bulk_occ() {
+	if [ "${TEST_OCIS}" == "true" ] || [ "${TEST_REVA}" == "true" ]
+	then
+		return 0
+	fi
+	CURL_OCC_RESULT=`curl -k -s -u $1 $2/bulk -d "${3}"`
+	COUNT_RESULTS=`echo ${CURL_OCC_RESULT} | xmllint --xpath "ocs/data/element/code" - | wc -l`
+
+	RETURN=0
+	REMOTE_OCC_STDERR=""
+	for ((n=1;n<=${COUNT_RESULTS};n++))
+	do
+		EXIT_CODE=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string((ocs/data/element/code)[${n}])" -`
+		if [ ${EXIT_CODE} -ne 0 ]
+		then
+			REMOTE_OCC_STDERR+=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string((ocs/data/element/stdErr)[${n}])" - | xargs`
+			REMOTE_OCC_STDERR+="\n"
+			RETURN=1
+		fi
+
+	done
+	return ${RETURN}
+}
+
+# @param $1 admin authentication string username:password
 # @param $2 occ url
 # @param $3 directory to create, relative to the server's root
 # sets $REMOTE_OCC_STDOUT and $REMOTE_OCC_STDERR from returned xml data
@@ -699,7 +727,6 @@ then
 	# we know the TEST_SERVER_URL already
 	TESTING_APP_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/"
 	OCC_URL="${TESTING_APP_URL}occ"
-	DIR_URL="${TESTING_APP_URL}dir"
 	# test that server is up and running, and testing app is enabled.
 	assert_server_up ${TEST_SERVER_URL}
 	if [ "${TEST_OCIS}" != "true" ] && [ "${TEST_REVA}" != "true" ]
@@ -764,7 +791,6 @@ else
 	# The endpoint to use to do occ commands via the testing app
 	TESTING_APP_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/"
 	OCC_URL="${TESTING_APP_URL}occ"
-	DIR_URL="${TESTING_APP_URL}dir"
 
 	# Give time for the PHP dev server to become available
 	# because we want to use it to get and change settings with the testing app
@@ -951,6 +977,7 @@ SETTINGS+=("system;;skeletondirectory;;")
 # Set various settings
 for URL in ${OCC_URL} ${OCC_FED_URL}
 do
+  declare SETTINGS_CMDS='['
 	for i in "${!SETTINGS[@]}"
 	do
 		PREVIOUS_IFS=${IFS}
@@ -967,14 +994,17 @@ do
 			TYPE_STRING=" --type ${SETTING[4]}"
 		fi
 
-		remote_occ ${ADMIN_AUTH} ${URL} "config:${SETTING[0]}:set ${SETTING[1]} ${SETTING[2]} --value=${SETTING[3]}${TYPE_STRING}"
-		if [ $? -ne 0 ]
+		SETTINGS_CMDS+="{\"command\": \"config:${SETTING[0]}:set ${SETTING[1]} ${SETTING[2]} --value=${SETTING[3]}${TYPE_STRING}\"},"
+	done
+	SETTINGS_CMDS=${SETTINGS_CMDS%?} # removes the last comma
+	SETTINGS_CMDS+="]"
+	remote_bulk_occ ${ADMIN_AUTH} ${URL} "${SETTINGS_CMDS}"
+	if [ $? -ne 0 ]
 		then
-			echo -e "Could not set ${SETTING[2]} on ${URL}. Result:\n'${REMOTE_OCC_STDERR}'"
+			echo -e "Could not set some settings on ${URL}. Result:\n${REMOTE_OCC_STDERR}"
 			teardown
 			exit 1
 		fi
-	done
 done
 
 #set the skeleton folder

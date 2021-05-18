@@ -5,7 +5,7 @@ Feature: Creation of tags
   So that I could categorize my files
 
   Background:
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -86,7 +86,7 @@ Feature: Creation of tags
     Then the HTTP status code should be "409"
 
   Scenario: Overwriting existing normal tags should fail
-    And user "Alice" has created a "normal" tag with name "MyFirstTag"
+    Given user "Alice" has created a "normal" tag with name "MyFirstTag"
     When user "Alice" creates a "normal" tag with name "MyFirstTag" using the WebDAV API
     Then the HTTP status code should be "409"
 
@@ -104,3 +104,27 @@ Feature: Creation of tags
     Given the administrator has created a "static" tag with name "StaticTag"
     When the administrator creates a "static" tag with name "StaticTag" using the WebDAV API
     Then the HTTP status code should be "409"
+
+  Scenario: Creating tags in lowercase and uppercase should work
+    When the administrator creates a "normal" tag with name "UppercaseTag" using the WebDAV API
+    Then the HTTP status code should be "201"
+    When the administrator creates a "normal" tag with name "lowercasetag" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the following tags should exist for the administrator
+      | name         | type   |
+      | UppercaseTag | normal |
+      | lowercasetag | normal |
+
+  Scenario: Creating tags with the same name in lowercase and uppercase should work
+    When the administrator creates a "normal" tag with name "testtag" using the WebDAV API
+    Then the HTTP status code should be "201"
+    When the administrator creates a "normal" tag with name "Testtag" using the WebDAV API
+    Then the HTTP status code should be "201"
+    When the administrator creates a "normal" tag with name "TESTTAG" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the following tags should exist for the administrator
+      | name    | type   |
+      | testtag | normal |
+      | Testtag | normal |
+      | TESTTAG | normal |
+

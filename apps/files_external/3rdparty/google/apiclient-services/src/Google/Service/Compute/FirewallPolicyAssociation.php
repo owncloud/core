@@ -21,6 +21,7 @@ class Google_Service_Compute_FirewallPolicyAssociation extends Google_Model
   public $displayName;
   public $firewallPolicyId;
   public $name;
+  public $shortName;
 
   public function setAttachmentTarget($attachmentTarget)
   {
@@ -53,5 +54,13 @@ class Google_Service_Compute_FirewallPolicyAssociation extends Google_Model
   public function getName()
   {
     return $this->name;
+  }
+  public function setShortName($shortName)
+  {
+    $this->shortName = $shortName;
+  }
+  public function getShortName()
+  {
+    return $this->shortName;
   }
 }

@@ -45,8 +45,12 @@ class Google_Service_Recommender_Resource_ProjectsLocationsRecommendersRecommend
    * (recommendations.listProjectsLocationsRecommendersRecommendations)
    *
    * @param string $parent Required. The container resource on which to execute
-   * the request. Acceptable formats: 1. "projects/[PROJECT_NUMBER]/locations/[LOC
-   * ATION]/recommenders/[RECOMMENDER_ID]", LOCATION here refers to GCP Locations:
+   * the request. Acceptable formats: 1. `projects/[PROJECT_NUMBER]/locations/[LOC
+   * ATION]/recommenders/[RECOMMENDER_ID]` 2. `billingAccounts/[BILLING_ACCOUNT_ID
+   * ]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]` 3.
+   * `folders/[FOLDER_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]` 4. `
+   * organizations/[ORGANIZATION_ID]/locations/[LOCATION]/recommenders/[RECOMMENDE
+   * R_ID]` LOCATION here refers to GCP Locations:
    * https://cloud.google.com/about/locations/ RECOMMENDER_ID refers to supported
    * recommenders: https://cloud.google.com/recommender/docs/recommenders.
    * @param array $optParams Optional parameters.

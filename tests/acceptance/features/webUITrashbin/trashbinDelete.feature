@@ -5,7 +5,13 @@ Feature: files and folders can be deleted from the trashbin
   So that I can control my trashbin space and which files are kept in that space
 
   Background:
-    Given user "Alice" has been created with default attributes and large skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/data.zip" to "data.zip"
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
+    And user "Alice" has uploaded file "filesForUpload/lorem-big.txt" to "lorem-big.txt"
+    And user "Alice" has created folder "simple-folder"
+    And user "Alice" has uploaded file "filesForUpload/lorem-big.txt" to "simple-folder/lorem.txt"
+    And user "Alice" has uploaded file "filesForUpload/lorem-big.txt" to "simple-folder/lorem-big.txt"
     And user "Alice" has logged in using the webUI
     And the following files have been deleted
       | name          |
@@ -53,11 +59,6 @@ Feature: files and folders can be deleted from the trashbin
     And file "lorem-big.txt" should be listed on the webUI
     But file "data.zip" should not be listed on the webUI
     And folder "simple-folder" should not be listed on the webUI
-
-  Scenario: Select all files and delete from trashbin in a batch
-    When the user marks all files for batch action using the webUI
-    And the user batch deletes the marked files using the webUI
-    Then the folder should be empty on the webUI
 
   Scenario: Select all files and delete from trashbin in a batch
     When the user marks all files for batch action using the webUI

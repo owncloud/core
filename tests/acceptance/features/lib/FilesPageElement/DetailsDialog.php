@@ -52,6 +52,8 @@ class DetailsDialog extends OwncloudPage {
 	];
 	private $tabSwitchBtnXpath = "//li[@data-tabid='%s']";
 	private $tagsContainer = "//div[@class='systemTagsInputFieldContainer']";
+	private $tagList = "//span[@class='system-tag-list-item']";
+	private $tagSearchChoiceXpath = "//li[@class='select2-search-choice']" . "//span[@class='label']";
 
 	private $tagsInputXpath = "//li[@class='select2-search-field']//input";
 
@@ -59,7 +61,7 @@ class DetailsDialog extends OwncloudPage {
 
 	private $tagsResultFromDropdownXpath = "//li[contains(@class, 'select2-result')]";
 	private $tagEditButtonInTagXpath = "//span[@class='systemtags-actions']//a[contains(@class, 'rename')]";
-	private $tagDeleteButtonInTagXpath = "//form[@class='systemtags-rename-form']//a";
+	private $tagDeleteButtonInTagXpath = "//span[@class='systemtags-actions']//a[contains(@class, 'delete')]";
 	private $tagsDropDownResultXpath = "//div[contains(@class, 'systemtags-select2-dropdown')]" .
 	"//ul[@class='select2-results']" .
 	"//span[@class='label']";
@@ -443,6 +445,24 @@ class DetailsDialog extends OwncloudPage {
 	}
 
 	/**
+	 * Get tag list items from the tag list
+	 *
+	 * @return NodeElement[]
+	 */
+	public function getTagsListItems() {
+		return $this->findAll("xpath", $this->getTagsListXpath());
+	}
+
+	/**
+	 * Get tag items from the tag input field
+	 *
+	 * @return NodeElement[]
+	 */
+	public function getTagsItemsFromTagInputField() {
+		return $this->findAll("xpath", $this->getTagsInputFieldItemsXpath());
+	}
+
+	/**
 	 * Add a tag on the files in the details dialog
 	 *
 	 * @param string $tagName
@@ -478,19 +498,7 @@ class DetailsDialog extends OwncloudPage {
 		foreach ($suggestions as $tag) {
 			if ($tag->getText() === $tagName) {
 				$tagContainer = $tag->getParent();
-				$editBtn = $tagContainer->find("xpath", $this->tagEditButtonInTagXpath);
-				$this->assertElementNotNull(
-					$editBtn,
-					__METHOD__ .
-					" xpath: $this->tagEditButtonInTagXpath" .
-					"could not find tag edit button"
-				);
-				$editBtn->focus();
-				$editBtn->click();
-
-				$deleteBtn = $this->find(
-					"xpath", $this->tagDeleteButtonInTagXpath
-				);
+				$deleteBtn = $tagContainer->find("xpath", $this->tagDeleteButtonInTagXpath);
 				$this->assertElementNotNull(
 					$deleteBtn,
 					__METHOD__ .
@@ -563,6 +571,24 @@ class DetailsDialog extends OwncloudPage {
 	 */
 	public function getTagsDropDownResultsXpath() {
 		return $this->tagsDropDownResultXpath;
+	}
+
+	/**
+	 * Returns xpath of the tag list
+	 *
+	 * @return string
+	 */
+	public function getTagsListXpath() {
+		return $this->tagList;
+	}
+
+	/**
+	 * Returns xpath of the tag search choices in the tag input field
+	 *
+	 * @return string
+	 */
+	public function getTagsInputFieldItemsXpath() {
+		return $this->tagSearchChoiceXpath;
 	}
 
 	/**

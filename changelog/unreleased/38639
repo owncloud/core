@@ -1,0 +1,7 @@
+Enhancement: Use relative notification URLs
+
+Previous to this fix, absolute URLs were passed to the notification app.
+This could cause some CORS issues, hence we now use relative ones.
+
+https://github.com/owncloud/core/pull/38639
+https://github.com/owncloud/enterprise/issues/4250

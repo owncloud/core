@@ -61,6 +61,7 @@
     "Your public link for %1$s expired" : "O seu link público para %1$s expirou",
     "The public link of %2$s for %1$s expired" : "O link público de %2$s para %1$s expirou",
     "%2$s shared %1$s with you" : "%2$s compartilhou %1$s com você",
+    "The share for %1$s expired" : "O compartilhamento para %1$s expirou",
     "%2$s removed the share for %1$s" : "%2$s removeu o compartilhamento para %1$s",
     "Downloaded via public link" : "Baixar via link público",
     "Shared with %2$s" : "Compartilhado com %2$s",

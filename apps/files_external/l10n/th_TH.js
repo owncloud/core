@@ -16,6 +16,7 @@ OC.L10N.register(
     "All users. Type to select user or group." : "ผู้ใช้ทุกคน พิมพ์เพื่อเลือกผู้ใช้หรือกลุ่ม",
     "(group)" : "(กลุ่ม)",
     "Compatibility with Mac NFD encoding (slow)" : "ความเข้ากันได้กับการเข้ารหัส Mac NFS (ช้า)",
+    "Sharing cannot be enabled due to the chosen authentication method" : "สำหรับวิธีการตรวจสอบสิทธิ์ที่เลือกจะไม่สามารถเปิดใช้งานการแชร์ได้",
     "Unknown auth backend \"{b}\"" : "พบใบรับรองแบ็กเอนด์ ที่ไม่รู้จัก \"{b}\"",
     "Please make sure that the app that provides this backend is installed and enabled" : "โปรดตรวจสอบว่ามีการติดตั้งและเปิดใช้แอปฯสำหรับแบ็กเอนด์นี้แล้ว",
     "Admin defined" : "ถูกกำหนดโดยผู้ดูแลระบบ",

@@ -111,7 +111,7 @@ Feature: dav-versions
 
   @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-156
   @skipOnOcV10 @issue-ocis-reva-196 @skip @issue-37026
-  Scenario: Restore a file and check, if the content and correct checksum is now in the current file
+  Scenario: Restore a file and check, if the content and correct checksum is now in the current file (Bug demonstration)
     Given user "Alice" has uploaded file with content "AAAAABBBBBCCCCC" and checksum "MD5:45a72715acdd5019c5be30bdbb75233e" to "/davtest.txt"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/davtest.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
     And the version folder of file "/davtest.txt" for user "Alice" should contain "1" element
@@ -383,18 +383,19 @@ Feature: dav-versions
 
   Scenario: User cannot access meta folder of a file which does not exists
     Given user "Brian" has been created with default attributes and without skeleton files
-    When user "Brian" sends HTTP method "PROPFIND" to URL "/remote.php/dav/meta/MTI4NGQyMzgtYWE5Mi00MmNlLWJkxzQtMGIwMDAwMDA5MTU2OjhjY2QyNzUxLTkwYTQtNDBmMi1iOWYzLTYxZWRmODQ0MjFmNA==/v"
+    When user "Brian" sends HTTP method "PROPFIND" to URL "/remote.php/dav/meta/MTI4NGQyMzgtYWE5Mi00MmNlLWJkYzQtMGIwMDAwMDA5MTU2OjhjY2QyNzUxLTkwYTQtNDBmMi1iOWYzLTYxZWRmODQ0MjFmNA=="
     Then the HTTP status code should be "404"
 
- Scenario Outline: User cannot access meta folder of a file with invalid fileid
+  Scenario Outline: User cannot access meta folder of a file with invalid fileid
     Given user "Brian" has been created with default attributes and without skeleton files
     When user "Brian" sends HTTP method "PROPFIND" to URL "/remote.php/dav/meta/<file-id>/v"
     Then the HTTP status code should be "404"
     Examples:
-     | file-id                                                                                              | decoded-value                                                                      | comment            |
-     | MTI4NGQyMzgtYWE5Mi00MmNlLWJkYzQtMGIwMDAwMDA5MTU3PThjY2QyNzUxLTkwYTQtNDBmMi1iOWYzLTYxZWRmODQ0MjFmNA== | 1284d238-aa92-42ce-bdc4-0b0000009157=8ccd2751-90a4-40f2-b9f3-61edf84421f4          | with = sign        |
-     | MTI4NGQyMzgtYWE5Mi00MmNlLWJkYzQtMGIwMDAwMDA5MTU3OGNjZDI3NTEtOTBhNC00MGYyLWI5ZjMtNjFlZGY4NDQyMWY0     |  1284d238-aa92-42ce-bdc4-0b00000091578ccd2751-90a4-40f2-b9f3-61edf84421f4          | no = sign          |
-     | c29tZS1yYW5kb20tZmlsZUlkPWFub3RoZXItcmFuZG9tLWZpbGVJZA==                                             | some-random-fileId=another-random-fileId                                           | some random string |
+      | file-id                                                                                              | decoded-value                                                             | comment            |
+      | MTI4NGQyMzgtYWE5Mi00MmNlLWJkYzQtMGIwMDAwMDA5MTU3PThjY2QyNzUxLTkwYTQtNDBmMi1iOWYzLTYxZWRmODQ0MjFmNA== | 1284d238-aa92-42ce-bdc4-0b0000009157=8ccd2751-90a4-40f2-b9f3-61edf84421f4 | with = sign        |
+      | MTI4NGQyMzgtYWE5Mi00MmNlLWJkYzQtMGIwMDAwMDA5MTU3OGNjZDI3NTEtOTBhNC00MGYyLWI5ZjMtNjFlZGY4NDQyMWY0     | 1284d238-aa92-42ce-bdc4-0b00000091578ccd2751-90a4-40f2-b9f3-61edf84421f4  | no = sign          |
+      | c29tZS1yYW5kb20tZmlsZUlkPWFub3RoZXItcmFuZG9tLWZpbGVJZA==                                             | some-random-fileId=another-random-fileId                                  | some random string |
+      | MTI4NGQyMzgtYWE5Mi00MmNlLWJkxzQtMGIwMDAwMDA5MTU2OjhjY2QyNzUxLTkwYTQtNDBmMi1iOWYzLTYxZWRmODQ0MjFmNA== | 1284d238-aa92-42ce-bd�4-0b0000009156:8ccd2751-90a4-40f2-b9f3-61edf84421f4 | with : and  � sign |
 
   Scenario: the version history is preserved when a file is renamed
     Given user "Alice" has uploaded file with content "old content" to "/textfile.txt"
@@ -403,7 +404,7 @@ Feature: dav-versions
     When user "Alice" restores version index "1" of file "/renamedfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And the content of file "/renamedfile.txt" for user "Alice" should be "old content"
-    
+
   @issue-ocis-1238
   Scenario: User can access version number after moving a file
     Given user "Alice" has created folder "testFolder"

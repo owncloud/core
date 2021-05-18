@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '7f411ab5f95f6fce4c542c62cc4033a7e32a6599',
+    'reference' => '2ceed1f45ff42a5b43e7bd9c7a187b2df8b45ed7',
     'name' => 'files_external/3rdparty',
   ),
   'versions' => 
@@ -42,7 +42,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '7f411ab5f95f6fce4c542c62cc4033a7e32a6599',
+      'reference' => '2ceed1f45ff42a5b43e7bd9c7a187b2df8b45ed7',
     ),
     'firebase/php-jwt' => 
     array (
@@ -64,12 +64,12 @@ private static $installed = array (
     ),
     'google/apiclient-services' => 
     array (
-      'pretty_version' => 'v0.162.0',
-      'version' => '0.162.0.0',
+      'pretty_version' => 'v0.167.0',
+      'version' => '0.167.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '9085ff13f32f5baf8b3d2917ea63e2e029ecedb6',
+      'reference' => '46b71684a100f3d976e0321cf24f487b314add68',
     ),
     'google/auth' => 
     array (
@@ -91,12 +91,12 @@ private static $installed = array (
     ),
     'guzzlehttp/psr7' => 
     array (
-      'pretty_version' => '1.7.0',
-      'version' => '1.7.0.0',
+      'pretty_version' => '1.8.1',
+      'version' => '1.8.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '53330f47520498c0ae1f61f7e2c90f55690c06a3',
+      'reference' => '35ea11d335fd638b5882ff1725228b3d35496ab1',
     ),
     'guzzlehttp/ringphp' => 
     array (
@@ -118,21 +118,21 @@ private static $installed = array (
     ),
     'icewind/smb' => 
     array (
-      'pretty_version' => 'v3.3.1',
-      'version' => '3.3.1.0',
+      'pretty_version' => 'v3.4.1',
+      'version' => '3.4.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '866f2b19a6e8277bc79c34060e344c9cbbba7023',
+      'reference' => '9dba42ab2a3990de29e18cc62b0a8270aceb74e3',
     ),
     'icewind/streams' => 
     array (
-      'pretty_version' => 'v0.7.3',
-      'version' => '0.7.3.0',
+      'pretty_version' => 'v0.7.4',
+      'version' => '0.7.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => '22ef9fc5b50d645dbc202206a656cc4dde28f95c',
+      'reference' => '93bce472202d36d9808c30eaa52a1dc72b39e04c',
     ),
     'monolog/monolog' => 
     array (
@@ -163,12 +163,12 @@ private static $installed = array (
     ),
     'phpseclib/phpseclib' => 
     array (
-      'pretty_version' => '3.0.5',
-      'version' => '3.0.5.0',
+      'pretty_version' => '3.0.8',
+      'version' => '3.0.8.0',
       'aliases' => 
       array (
       ),
-      'reference' => '7c751ea006577e4c2e83326d90c8b1e8c11b8ede',
+      'reference' => 'd9615a6fb970d9933866ca8b4036ec3407b020b6',
     ),
     'psr/cache' => 
     array (

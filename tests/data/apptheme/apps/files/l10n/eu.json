@@ -27,7 +27,6 @@
     "Unable to determine date" : "Ezin izan da data zehaztu",
     "Invalid path" : "Baliogabeko bidea",
     "This operation is forbidden" : "Eragiketa hau debekatuta dago",
-    "This directory is unavailable, please check the logs or contact the administrator" : "Direktoria ez dago eskuragarri; mesedez, log-ak begiratu edo harremanetan jarri administratzailearekin",
     "group" : "taldea",
     "Remote share" : "Urrutiko parte hartzea",
     "Could not move \"{file}\"" : "Ezin da mugitu \"{file}\"",

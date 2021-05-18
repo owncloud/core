@@ -116,6 +116,14 @@ abstract class AsymmetricKey
     protected static $engines = [];
 
     /**
+     * Key Comment
+     *
+     * @var null|string
+     * @access private
+     */
+    private $comment;
+
+    /**
      * The constructor
      */
     protected function __construct()
@@ -173,8 +181,10 @@ abstract class AsymmetricKey
         }
 
         $components['format'] = $format;
+        $comment = isset($components['comment']) ? $components['comment'] : null;
         $new = static::onLoad($components);
         $new->format = $format;
+        $new->comment = $comment;
         return $new instanceof PrivateKey ?
             $new->withPassword($password) :
             $new;
@@ -351,6 +361,9 @@ abstract class AsymmetricKey
                     continue;
                 }
                 $name = $file->getBasename('.php');
+                if ($name[0] == '.') {
+                    continue;
+                }
                 $type = 'phpseclib3\Crypt\\' . static::ALGORITHM . '\\Formats\\' . $format . '\\' . $name;
                 $reflect = new \ReflectionClass($type);
                 if ($reflect->isTrait()) {
@@ -420,6 +433,19 @@ abstract class AsymmetricKey
 
         $meta = new \ReflectionClass($this->format);
         return $meta->getShortName();
+    }
+
+    /**
+     * Returns the key's comment
+     *
+     * Not all key formats support comments. If you want to set a comment use toString()
+     *
+     * @access public
+     * @return null|string
+     */
+    public function getComment()
+    {
+        return $this->comment;
     }
 
     /**

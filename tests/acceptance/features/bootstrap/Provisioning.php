@@ -380,7 +380,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has been created with default attributes and (small|large)\s?skeleton files$/
+	 * @Given /^user "([^"]*)" has been created with default attributes and (tiny|small|large)\s?skeleton files$/
 	 *
 	 * @param string $user
 	 * @param string $skeletonType
@@ -390,9 +390,14 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function userHasBeenCreatedWithDefaultAttributes(
-		string $user, string $skeletonType, $skeleton = true
+		string $user, string $skeletonType = "", $skeleton = true
 	) {
+		if ($skeletonType === "") {
+			$skeletonType = $this->getSmallestSkeletonDirName();
+		}
+
 		$originalSkeletonPath = $this->setSkeletonDirByType($skeletonType);
+
 		try {
 			$this->createUser(
 				$user, null, null, null, true, null, true, $skeleton
@@ -412,14 +417,7 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function userHasBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles($user) {
-		$baseUrl = $this->getBaseUrl();
-		$path = $this->popSkeletonDirectoryConfig($baseUrl);
-		try {
-			$this->userHasBeenCreatedWithDefaultAttributes($user, "", false);
-		} finally {
-			// restore skeletondirectory even if user creation failed
-			$this->setSkeletonDir($path);
-		}
+		$this->userHasBeenCreatedWithDefaultAttributes($user);
 	}
 
 	/**
@@ -433,36 +431,29 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function theseUsersHaveBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles(TableNode $table) {
-		$baseUrl = $this->getBaseUrl();
-		$path = $this->popSkeletonDirectoryConfig($baseUrl);
+		$originalSkeletonPath = $this->setSkeletonDirByType($this->getSmallestSkeletonDirName());
 		try {
-			$this->createTheseUsers(true, true, false, $table);
+			$this->createTheseUsers(true, true, true, $table);
 		} finally {
 			// restore skeletondirectory even if user creation failed
-			$this->setSkeletonDir($path);
+			$this->setSkeletonDir($originalSkeletonPath);
 		}
 	}
 
 	/**
-	 * @Given these users have been created without skeleton files:
+	 * @Given /^these users have been created without skeleton files ?(and not initialized|):$/
 	 * expects a table of users with the heading
 	 * "|username|password|displayname|email|"
 	 * password, displayname & email are optional
 	 *
 	 * @param TableNode $table
+	 * @param string $doNotInitialize
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theseUsersHaveBeenCreatedWithoutSkeletonFiles(TableNode $table) {
-		$baseUrl = $this->getBaseUrl();
-		$path = $this->popSkeletonDirectoryConfig($baseUrl);
-		try {
-			$this->theseUsersHaveBeenCreated("", "", "", $table);
-		} finally {
-			// restore skeletondirectory even if user creation failed
-			$this->setSkeletonDir($path);
-		}
+	public function theseUsersHaveBeenCreatedWithoutSkeletonFiles(TableNode $table, string $doNotInitialize) {
+		$this->theseUsersHaveBeenCreated("", "", $doNotInitialize, $table);
 	}
 
 	/**
@@ -1083,7 +1074,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^these users have been created with ?(default attributes and|) (small|large)\s?skeleton files ?(but not initialized|):$/
+	 * @Given /^these users have been created with ?(default attributes and|) (tiny|small|large)\s?skeleton files ?(but not initialized|):$/
 	 *
 	 * expects a table of users with the heading
 	 * "|username|password|displayname|email|"
@@ -1103,14 +1094,23 @@ trait Provisioning {
 		string $doNotInitialize,
 		TableNode $table
 	) {
-		$originalSkeletonPath = $this->setSkeletonDirByType($skeletonType);
+		if ($skeletonType === "") {
+			$skeletonType = $this->getSmallestSkeletonDirName();
+		}
 
+		$originalSkeletonPath = $this->setSkeletonDirByType($skeletonType);
 		$setDefaultAttributes = $defaultAttributesText !== "";
 		$initialize = $doNotInitialize === "";
 		try {
 			$this->createTheseUsers($setDefaultAttributes, $initialize, true, $table);
 		} finally {
-			$this->setSkeletonDir($originalSkeletonPath);
+			// The effective skeleton directory is the one when the user is initialized
+			// If we did not initialize the user on creation, then we need to leave
+			// the skeleton directory in effect so that it applies when some action
+			// happens later in the scenario that causes the user to be initialized.
+			if ($initialize) {
+				$this->setSkeletonDir($originalSkeletonPath);
+			}
 		}
 	}
 
@@ -2466,7 +2466,7 @@ trait Provisioning {
 	 */
 	public function theseGroupsShouldNotExist($shouldOrNot, TableNode $table) {
 		$should = ($shouldOrNot !== "not");
-		$groups = SetupHelper::getGroups();
+		$groups = $this->getArrayOfGroupsResponded($this->getAllGroups());
 		$this->verifyTableNodeColumns($table, ['groupname']);
 		foreach ($table as $row) {
 			if (\in_array($row['groupname'], $groups, true) !== $should) {
@@ -2566,15 +2566,24 @@ trait Provisioning {
 	}
 
 	/**
+	 * get all the existing groups
+	 *
+	 * @return ResponseInterface
+	 */
+	public function getAllGroups() {
+		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/groups";
+		return HttpRequestHelper::get(
+			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
+		);
+	}
+
+	/**
 	 * @When the administrator gets all the groups using the provisioning API
 	 *
 	 * @return void
 	 */
 	public function theAdministratorGetsAllTheGroupsUsingTheProvisioningApi() {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/groups";
-		$this->response = HttpRequestHelper::get(
-			$fullUrl, $this->getAdminUsername(), $this->getAdminPassword()
-		);
+		$this->response = $this->getAllGroups();
 	}
 
 	/**
@@ -4958,7 +4967,6 @@ trait Provisioning {
 
 		if (OcisHelper::isTestingOnOcisOrReva() && $this->someUsersHaveBeenCreated()) {
 			foreach ($this->getCreatedUsers() as $user) {
-				$this->deleteAllSharesForUser($user["actualUsername"]);
 				OcisHelper::deleteRevaUserData($user["actualUsername"]);
 			}
 		} elseif (OcisHelper::isTestingOnOc10()) {
@@ -5170,9 +5178,24 @@ trait Provisioning {
 	}
 
 	/**
+	 * Get the name of the smallest available skeleton, to "simulate" without skeleton.
+	 *
+	 * In ownCloud 10 there is always a skeleton directory. If none is specified
+	 * then whatever is in core/skeleton is used. That contains different files
+	 * and folders depending on the build that is being tested. So for testing
+	 * we have "tiny" skeleton that contains just one file. That provides a
+	 * consistent skeleton for test scenarios that specify "without skeleton files"
+	 *
+	 * @return string name of the smallest skeleton folder
+	 */
+	private function getSmallestSkeletonDirName(): string {
+		return "tiny";
+	}
+
+	/**
 	 * sets the skeletondirectory according to the type
 	 *
-	 * @param string $skeletonType can be "small" OR "large" OR empty.
+	 * @param string $skeletonType can be "tiny", "small", "large" OR empty.
 	 *                             If an empty string is given, the current
 	 *                             setting will not be changed
 	 *

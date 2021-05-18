@@ -17,7 +17,7 @@
 
 class Google_Service_Document_GoogleCloudDocumentaiV1beta2Document extends Google_Collection
 {
-  protected $collection_key = 'translations';
+  protected $collection_key = 'textStyles';
   public $content;
   protected $entitiesType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentEntity';
   protected $entitiesDataType = 'array';
@@ -39,8 +39,6 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta2Document extends Googl
   protected $textChangesDataType = 'array';
   protected $textStylesType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentStyle';
   protected $textStylesDataType = 'array';
-  protected $translationsType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentTranslation';
-  protected $translationsDataType = 'array';
   public $uri;
 
   public function setContent($content)
@@ -192,20 +190,6 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta2Document extends Googl
   public function getTextStyles()
   {
     return $this->textStyles;
-  }
-  /**
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentTranslation[]
-   */
-  public function setTranslations($translations)
-  {
-    $this->translations = $translations;
-  }
-  /**
-   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentTranslation[]
-   */
-  public function getTranslations()
-  {
-    return $this->translations;
   }
   public function setUri($uri)
   {

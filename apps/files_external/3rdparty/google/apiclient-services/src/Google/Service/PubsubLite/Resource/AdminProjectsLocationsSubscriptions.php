@@ -34,6 +34,10 @@ class Google_Service_PubsubLite_Resource_AdminProjectsLocationsSubscriptions ext
    * @param Google_Service_PubsubLite_Subscription $postBody
    * @param array $optParams Optional parameters.
    *
+   * @opt_param bool skipBacklog If true, the newly created subscription will only
+   * receive messages published after the subscription was created. Otherwise, the
+   * entire message backlog will be received on the subscription. Defaults to
+   * false.
    * @opt_param string subscriptionId Required. The ID to use for the
    * subscription, which will become the final component of the subscription's
    * name. This value is structured like: `my-sub-name`.

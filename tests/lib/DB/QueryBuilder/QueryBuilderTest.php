@@ -90,7 +90,6 @@ class QueryBuilderTest extends \Test\TestCase {
 
 	public function dataFirstResult() {
 		return [
-			[null, [99, 98, 97, 96, 95, 94, 93, 92, 91]],
 			[0, [99, 98, 97, 96, 95, 94, 93, 92, 91]],
 			[1, [98, 97, 96, 95, 94, 93, 92, 91]],
 			[5, [94, 93, 92, 91]],

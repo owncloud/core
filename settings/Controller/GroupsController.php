@@ -160,6 +160,8 @@ class GroupsController extends Controller {
 	/**
 	 * Get available groups for assigning and removing via WebUI.
 	 *
+	 * @NoAdminRequired
+	 *
 	 * @return DataResponse
 	 */
 	public function getAssignableAndRemovableGroups() {

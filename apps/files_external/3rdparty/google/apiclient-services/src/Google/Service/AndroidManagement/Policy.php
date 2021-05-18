@@ -71,6 +71,8 @@ class Google_Service_AndroidManagement_Policy extends Google_Collection
   public $name;
   public $networkEscapeHatchEnabled;
   public $networkResetDisabled;
+  protected $oncCertificateProvidersType = 'Google_Service_AndroidManagement_OncCertificateProvider';
+  protected $oncCertificateProvidersDataType = 'array';
   public $openNetworkConfiguration;
   public $outgoingBeamDisabled;
   public $outgoingCallsDisabled;
@@ -529,6 +531,20 @@ class Google_Service_AndroidManagement_Policy extends Google_Collection
   public function getNetworkResetDisabled()
   {
     return $this->networkResetDisabled;
+  }
+  /**
+   * @param Google_Service_AndroidManagement_OncCertificateProvider[]
+   */
+  public function setOncCertificateProviders($oncCertificateProviders)
+  {
+    $this->oncCertificateProviders = $oncCertificateProviders;
+  }
+  /**
+   * @return Google_Service_AndroidManagement_OncCertificateProvider[]
+   */
+  public function getOncCertificateProviders()
+  {
+    return $this->oncCertificateProviders;
   }
   public function setOpenNetworkConfiguration($openNetworkConfiguration)
   {

@@ -19,6 +19,7 @@ Feature: upload file
       | old         |
       | new         |
 
+
   Scenario Outline: attempt to upload a file into a non-existent folder
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to "/nonExistentFolder/textfile.txt" using the TUS protocol on the WebDAV API
@@ -28,6 +29,7 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: attempt to upload a file into a non-existent folder within correctly received share
     Given using <dav_version> DAV path
@@ -42,6 +44,7 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario Outline: attempt to upload a file into a non-existent folder within correctly received read only share
     Given using <dav_version> DAV path

@@ -1,0 +1,8 @@
+Bugfix: Hide file drop content
+
+Requesting file drop share with the deprecated shareinfo API, exposed
+information about the content of the file drop share.
+We will now deliver empty content on the children entry.
+
+https://github.com/owncloud/core/pull/38691
+https://github.com/owncloud/enterprise/issues/4540

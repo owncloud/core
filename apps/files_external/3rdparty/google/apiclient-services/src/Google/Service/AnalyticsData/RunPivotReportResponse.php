@@ -22,6 +22,7 @@ class Google_Service_AnalyticsData_RunPivotReportResponse extends Google_Collect
   protected $aggregatesDataType = 'array';
   protected $dimensionHeadersType = 'Google_Service_AnalyticsData_DimensionHeader';
   protected $dimensionHeadersDataType = 'array';
+  public $kind;
   protected $metadataType = 'Google_Service_AnalyticsData_ResponseMetaData';
   protected $metadataDataType = '';
   protected $metricHeadersType = 'Google_Service_AnalyticsData_MetricHeader';
@@ -60,6 +61,14 @@ class Google_Service_AnalyticsData_RunPivotReportResponse extends Google_Collect
   public function getDimensionHeaders()
   {
     return $this->dimensionHeaders;
+  }
+  public function setKind($kind)
+  {
+    $this->kind = $kind;
+  }
+  public function getKind()
+  {
+    return $this->kind;
   }
   /**
    * @param Google_Service_AnalyticsData_ResponseMetaData

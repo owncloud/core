@@ -3,20 +3,21 @@
 Feature: changing a public link share
 
   Background:
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
+    And user "Alice" has created folder "PARENT"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "PARENT/parent.txt"
 
 
   Scenario Outline: Public can or can-not delete file through publicly shared link depending on having delete permissions using the old public WebDAV API
     Given the administrator has enabled DAV tech_preview
-    And user "Alice" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT       |
       | permissions | <permissions> |
-    When the public deletes file "welcome.txt" from the last public share using the old public WebDAV API
+    When the public deletes file "parent.txt" from the last public share using the old public WebDAV API
     Then the HTTP status code should be "<http-status-code>"
-    And as "Alice" file "PARENT/welcome.txt" <should-or-not> exist
+    And as "Alice" file "PARENT/parent.txt" <should-or-not> exist
     Examples:
       | permissions               | http-status-code | should-or-not |
       | read,update,create        | 403              | should        |
@@ -25,13 +26,12 @@ Feature: changing a public link share
   @issue-ocis-reva-292
   Scenario Outline: Public can or can-not delete file through publicly shared link depending on having delete permissions using the new public WebDAV API
     Given the administrator has enabled DAV tech_preview
-    And user "Alice" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT       |
       | permissions | <permissions> |
-    When the public deletes file "welcome.txt" from the last public share using the new public WebDAV API
+    When the public deletes file "parent.txt" from the last public share using the new public WebDAV API
     Then the HTTP status code should be "<http-status-code>"
-    And as "Alice" file "PARENT/welcome.txt" <should-or-not> exist
+    And as "Alice" file "PARENT/parent.txt" <should-or-not> exist
     Examples:
       | permissions               | http-status-code | should-or-not |
       | read,update,create        | 403              | should        |
@@ -84,7 +84,6 @@ Feature: changing a public link share
 
   Scenario: Public link share permissions work correctly for upload with share permissions read,update,create with the old public WebDAV API
     Given the administrator has enabled DAV tech_preview
-    And user "Alice" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT            |
       | permissions | read,update,create |
@@ -95,7 +94,6 @@ Feature: changing a public link share
   @issue-ocis-reva-292
   Scenario: Public link share permissions work correctly for upload with share permissions read,update,create with the new public WebDAV API
     Given the administrator has enabled DAV tech_preview
-    And user "Alice" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT            |
       | permissions | read,update,create |
@@ -106,7 +104,6 @@ Feature: changing a public link share
 
   Scenario: Public link share permissions work correctly for upload with share permissions read,update,create,delete with the old public WebDAV API
     Given the administrator has enabled DAV tech_preview
-    And user "Alice" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT                   |
       | permissions | read,update,create,delete |
@@ -116,7 +113,6 @@ Feature: changing a public link share
 
   Scenario: Public link share permissions work correctly for upload with share permissions read,update,create,delete with the new public WebDAV API
     Given the administrator has enabled DAV tech_preview
-    And user "Alice" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT                   |
       | permissions | read,update,create,delete |
@@ -127,48 +123,44 @@ Feature: changing a public link share
 
   Scenario: Public cannot delete file through publicly shared link with password using an invalid password with the old public WebDAV API
     Given the administrator has enabled DAV tech_preview
-    And user "Alice" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT   |
       | permissions | change    |
       | password    | newpasswd |
-    When the public deletes file "welcome.txt" from the last public share using the password "invalid" and old public WebDAV API
+    When the public deletes file "parent.txt" from the last public share using the password "invalid" and old public WebDAV API
     Then the HTTP status code should be "401"
-    And as "Alice" file "PARENT/welcome.txt" should exist
+    And as "Alice" file "PARENT/parent.txt" should exist
 
   Scenario: Public cannot delete file through publicly shared link with password using an invalid password with the new public WebDAV API
     Given the administrator has enabled DAV tech_preview
-    And user "Alice" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT   |
       | permissions | change    |
       | password    | newpasswd |
-    When the public deletes file "welcome.txt" from the last public share using the password "invalid" and new public WebDAV API
+    When the public deletes file "parent.txt" from the last public share using the password "invalid" and new public WebDAV API
     Then the HTTP status code should be "401"
-    And as "Alice" file "PARENT/welcome.txt" should exist
+    And as "Alice" file "PARENT/parent.txt" should exist
 
 
   Scenario: Public can delete file through publicly shared link with password using the valid password with the old public WebDAV API
     Given the administrator has enabled DAV tech_preview
-    And user "Alice" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT   |
       | permissions | change    |
       | password    | newpasswd |
-    When the public deletes file "welcome.txt" from the last public share using the password "newpasswd" and old public WebDAV API
+    When the public deletes file "parent.txt" from the last public share using the password "newpasswd" and old public WebDAV API
     Then the HTTP status code should be "204"
-    And as "Alice" file "PARENT/welcome.txt" should not exist
+    And as "Alice" file "PARENT/parent.txt" should not exist
 
   Scenario: Public can delete file through publicly shared link with password using the valid password with the new public WebDAV API
     Given the administrator has enabled DAV tech_preview
-    And user "Alice" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT   |
       | permissions | change    |
       | password    | newpasswd |
-    When the public deletes file "welcome.txt" from the last public share using the password "newpasswd" and new public WebDAV API
+    When the public deletes file "parent.txt" from the last public share using the password "newpasswd" and new public WebDAV API
     Then the HTTP status code should be "204"
-    And as "Alice" file "PARENT/welcome.txt" should not exist
+    And as "Alice" file "PARENT/parent.txt" should not exist
 
 
   Scenario: Public tries to rename a file in a password protected share using an invalid password with the old public WebDAV API
@@ -220,7 +212,6 @@ Feature: changing a public link share
 
   Scenario: Public tries to upload to a password protected public share using an invalid password with the old public WebDAV API
     Given the administrator has enabled DAV tech_preview
-    And user "Alice" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT   |
       | permissions | change    |
@@ -231,7 +222,6 @@ Feature: changing a public link share
 
   Scenario: Public tries to upload to a password protected public share using an invalid password with the new public WebDAV API
     Given the administrator has enabled DAV tech_preview
-    And user "Alice" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT   |
       | permissions | change    |
@@ -243,7 +233,6 @@ Feature: changing a public link share
 
   Scenario: Public tries to upload to a password protected public share using the valid password with the old public WebDAV API
     Given the administrator has enabled DAV tech_preview
-    And user "Alice" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT   |
       | permissions | change    |
@@ -254,7 +243,6 @@ Feature: changing a public link share
 
   Scenario: Public tries to upload to a password protected public share using the valid password with the new public WebDAV API
     Given the administrator has enabled DAV tech_preview
-    And user "Alice" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT   |
       | permissions | change    |
@@ -288,21 +276,19 @@ Feature: changing a public link share
 
   Scenario: Public cannot delete a file in uploadwriteonly public link share with the old public WebDAV API
     Given the administrator has enabled DAV tech_preview
-    And user "Alice" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT         |
       | permissions | uploadwriteonly |
-    When the public deletes file "welcome.txt" from the last public share using the old public WebDAV API
+    When the public deletes file "parent.txt" from the last public share using the old public WebDAV API
     Then the HTTP status code should be "403"
-    And as "Alice" file "PARENT/welcome.txt" should exist
+    And as "Alice" file "PARENT/parent.txt" should exist
 
   @issue-ocis-reva-292
   Scenario: Public cannot delete a file in uploadwriteonly public link share with the new public WebDAV API
     Given the administrator has enabled DAV tech_preview
-    And user "Alice" has moved file "welcome.txt" to "PARENT/welcome.txt"
     And user "Alice" has created a public link share with settings
       | path        | /PARENT         |
       | permissions | uploadwriteonly |
-    When the public deletes file "welcome.txt" from the last public share using the new public WebDAV API
+    When the public deletes file "parent.txt" from the last public share using the new public WebDAV API
     Then the HTTP status code should be "403"
-    And as "Alice" file "PARENT/welcome.txt" should exist
+    And as "Alice" file "PARENT/parent.txt" should exist

@@ -24,9 +24,10 @@ Feature: refuse access
 
   Scenario Outline: A disabled user cannot use webdav
     Given using <dav_version> DAV path
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     And user "Alice" has been disabled
-    When user "Alice" downloads file "/welcome.txt" using the WebDAV API
+    When user "Alice" downloads file "/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "401"
     Examples:
       | dav_version |

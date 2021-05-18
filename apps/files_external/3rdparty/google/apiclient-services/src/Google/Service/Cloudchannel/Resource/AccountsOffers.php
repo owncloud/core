@@ -26,28 +26,26 @@
 class Google_Service_Cloudchannel_Resource_AccountsOffers extends Google_Service_Resource
 {
   /**
-   * Lists the Offers the reseller can sell. Possible Error Codes: *
-   * INVALID_ARGUMENT: Missing or invalid required parameters in the request.
+   * Lists the Offers the reseller can sell. Possible error codes: *
+   * INVALID_ARGUMENT: Required request parameters are missing or invalid.
    * (offers.listAccountsOffers)
    *
    * @param string $parent Required. The resource name of the reseller account
-   * from which to list Offers. The parent takes the format:
-   * accounts/{account_id}.
+   * from which to list Offers. Parent uses the format: accounts/{account_id}.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Optional. The expression to filter results by name
-   * (name of the Offer), sku.name (name of the SKU) or sku.product.name (name of
+   * (name of the Offer), sku.name (name of the SKU), or sku.product.name (name of
    * the Product). Example 1: sku.product.name=products/p1 AND
    * sku.name!=products/p1/skus/s1 Example 2: name=accounts/a1/offers/o1
-   * @opt_param string languageCode Optional. The BCP-47 language code, such as
-   * "en-US". If specified, the response will be localized to the corresponding
-   * language code. Default is "en-US".
+   * @opt_param string languageCode Optional. The BCP-47 language code. For
+   * example, "en-US". The response will localize in the corresponding language
+   * code, if specified. The default value is "en-US".
    * @opt_param int pageSize Optional. Requested page size. Server might return
-   * fewer results than requested. If unspecified, at most 500 Offers will be
-   * returned. The maximum value is 1000; values above 1000 will be coerced to
-   * 1000.
-   * @opt_param string pageToken Optional. A token identifying a page of results,
-   * if other than the first one.
+   * fewer results than requested. If unspecified, returns at most 500 Offers. The
+   * maximum value is 1000; the server will coerce values above 1000.
+   * @opt_param string pageToken Optional. A token for a page of results other
+   * than the first page.
    * @return Google_Service_Cloudchannel_GoogleCloudChannelV1ListOffersResponse
    */
   public function listAccountsOffers($parent, $optParams = array())

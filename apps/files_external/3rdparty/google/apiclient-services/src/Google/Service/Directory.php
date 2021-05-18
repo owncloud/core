@@ -32,6 +32,12 @@
  */
 class Google_Service_Directory extends Google_Service
 {
+  /** See, add, edit, and permanently delete the printers that your organization can use with Chrome. */
+  const ADMIN_CHROME_PRINTERS =
+      "https://www.googleapis.com/auth/admin.chrome.printers";
+  /** See the printers that your organization can use with Chrome. */
+  const ADMIN_CHROME_PRINTERS_READONLY =
+      "https://www.googleapis.com/auth/admin.chrome.printers.readonly";
   /** View and manage customer related information. */
   const ADMIN_DIRECTORY_CUSTOMER =
       "https://www.googleapis.com/auth/admin.directory.customer";
@@ -110,7 +116,7 @@ class Google_Service_Directory extends Google_Service
   /** View user schemas on your domain. */
   const ADMIN_DIRECTORY_USERSCHEMA_READONLY =
       "https://www.googleapis.com/auth/admin.directory.userschema.readonly";
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 
@@ -120,6 +126,7 @@ class Google_Service_Directory extends Google_Service
   public $customer_devices_chromeos;
   public $customer_devices_chromeos_commands;
   public $customers;
+  public $customers_chrome_printers;
   public $domainAliases;
   public $domains;
   public $groups;
@@ -444,6 +451,132 @@ class Google_Service_Directory extends Google_Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->customers_chrome_printers = new Google_Service_Directory_Resource_CustomersChromePrinters(
+        $this,
+        $this->serviceName,
+        'printers',
+        array(
+          'methods' => array(
+            'batchCreatePrinters' => array(
+              'path' => 'admin/directory/v1/{+parent}/chrome/printers:batchCreatePrinters',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'batchDeletePrinters' => array(
+              'path' => 'admin/directory/v1/{+parent}/chrome/printers:batchDeletePrinters',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'create' => array(
+              'path' => 'admin/directory/v1/{+parent}/chrome/printers',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'delete' => array(
+              'path' => 'admin/directory/v1/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'get' => array(
+              'path' => 'admin/directory/v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'admin/directory/v1/{+parent}/chrome/printers',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'orgUnitId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),'listPrinterModels' => array(
+              'path' => 'admin/directory/v1/{+parent}/chrome/printers:listPrinterModels',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),'patch' => array(
+              'path' => 'admin/directory/v1/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'clearMask' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'updateMask' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -1776,6 +1909,10 @@ class Google_Service_Directory extends Google_Service
                   'type' => 'string',
                 ),
                 'domain' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'event' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

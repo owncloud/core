@@ -20,6 +20,7 @@ class Google_Service_Bigquery_QueryRequest extends Google_Collection
   protected $collection_key = 'queryParameters';
   protected $connectionPropertiesType = 'Google_Service_Bigquery_ConnectionProperty';
   protected $connectionPropertiesDataType = 'array';
+  public $createSession;
   protected $defaultDatasetType = 'Google_Service_Bigquery_DatasetReference';
   protected $defaultDatasetDataType = '';
   public $dryRun;
@@ -51,6 +52,14 @@ class Google_Service_Bigquery_QueryRequest extends Google_Collection
   public function getConnectionProperties()
   {
     return $this->connectionProperties;
+  }
+  public function setCreateSession($createSession)
+  {
+    $this->createSession = $createSession;
+  }
+  public function getCreateSession()
+  {
+    return $this->createSession;
   }
   /**
    * @param Google_Service_Bigquery_DatasetReference

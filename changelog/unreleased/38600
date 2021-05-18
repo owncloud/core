@@ -1,0 +1,5 @@
+Bugfix: Normalize web.baseUrl before using it
+
+`web.baseUrl` was used for rewriting private and public links to the new web UI without normalizing it. This leads to broken authentication if the `web.baseUrl` was configured with a trailing slash.
+
+https://github.com/owncloud/core/issues/38600

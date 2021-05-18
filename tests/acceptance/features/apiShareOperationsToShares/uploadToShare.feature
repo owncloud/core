@@ -4,11 +4,12 @@ Feature: sharing
   Background:
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
 
 
   Scenario: Uploading file to a user read-only share folder does not work
-    Given user "Brian" has been created with default attributes and small skeleton files
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a share with settings
       | path        | FOLDER |
       | shareType   | user   |
@@ -22,9 +23,10 @@ Feature: sharing
 
   Scenario Outline: Uploading file to a group read-only share folder does not work
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a share with settings
       | path        | FOLDER |
       | shareType   | group  |
@@ -42,7 +44,8 @@ Feature: sharing
 
   Scenario Outline: Uploading file to a user upload-only share folder works
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a share with settings
       | path        | FOLDER |
       | shareType   | user   |
@@ -67,9 +70,10 @@ Feature: sharing
 
   Scenario Outline: Uploading file to a group upload-only share folder works
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a share with settings
       | path        | FOLDER |
       | shareType   | group  |
@@ -94,7 +98,8 @@ Feature: sharing
   @smokeTest
   Scenario Outline: Uploading file to a user read/write share folder works
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a share with settings
       | path        | FOLDER |
       | shareType   | user   |
@@ -117,9 +122,10 @@ Feature: sharing
 
   Scenario Outline: Uploading file to a group read/write share folder works
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a share with settings
       | path        | FOLDER |
       | shareType   | group  |
@@ -142,9 +148,9 @@ Feature: sharing
   @smokeTest
   Scenario Outline: Check quota of owners parent directory of a shared file
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And the quota of user "Brian" has been set to "0"
-    And user "Alice" has moved file "/welcome.txt" to "/myfile.txt"
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/myfile.txt"
     And user "Alice" has shared file "myfile.txt" with user "Brian"
     And user "Brian" has accepted share "/myfile.txt" offered by user "Alice"
     When user "Brian" uploads file "filesForUpload/textfile.txt" to "/Shares/myfile.txt" using the WebDAV API
@@ -166,6 +172,7 @@ Feature: sharing
   Scenario Outline: Uploading to a user shared folder with read/write permission when the sharer has unsufficient quota does not work
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and small skeleton files
+    And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a share with settings
       | path        | FOLDER |
       | shareType   | user   |
@@ -184,9 +191,10 @@ Feature: sharing
 
   Scenario Outline: Uploading to a group shared folder with read/write permission when the sharer has unsufficient quota does not work
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a share with settings
       | path        | FOLDER |
       | shareType   | group  |
@@ -205,7 +213,8 @@ Feature: sharing
 
   Scenario Outline: Uploading to a user shared folder with upload-only permission when the sharer has insufficient quota does not work
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a share with settings
       | path        | FOLDER |
       | shareType   | user   |
@@ -224,9 +233,10 @@ Feature: sharing
 
   Scenario Outline: Uploading to a group shared folder with upload-only permission when the sharer has insufficient quota does not work
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a share with settings
       | path        | FOLDER |
       | shareType   | group  |
@@ -245,8 +255,8 @@ Feature: sharing
 
   Scenario: Uploading a file in to a shared folder without edit permissions
     Given using new DAV path
-    And user "Brian" has been created with default attributes and small skeleton files
-    And user "Alice" creates folder "/READ_ONLY" using the WebDAV API
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/READ_ONLY"
     And user "Alice" has created a share with settings
       | path        | /READ_ONLY |
       | shareType   | user       |
@@ -263,7 +273,8 @@ Feature: sharing
 
   Scenario Outline: Sharer can download file uploaded with different permission by sharee to a shared folder
     Given using <dav-path> DAV path
-    And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a share with settings
       | path        | FOLDER        |
       | shareType   | user          |

@@ -7,6 +7,8 @@ use Psr\Http\Message\StreamInterface;
 /**
  * Stream decorator that can cache previously read bytes from a sequentially
  * read stream.
+ *
+ * @final
  */
 class CachingStream implements StreamInterface
 {
@@ -21,7 +23,7 @@ class CachingStream implements StreamInterface
     /**
      * We will treat the buffer object as the body of the stream
      *
-     * @param StreamInterface $stream Stream to cache
+     * @param StreamInterface $stream Stream to cache. The cursor is assumed to be at the beginning of the stream.
      * @param StreamInterface $target Optionally specify where data is cached
      */
     public function __construct(
@@ -29,7 +31,7 @@ class CachingStream implements StreamInterface
         StreamInterface $target = null
     ) {
         $this->remoteStream = $stream;
-        $this->stream = $target ?: new Stream(fopen('php://temp', 'r+'));
+        $this->stream = $target ?: new Stream(Utils::tryFopen('php://temp', 'r+'));
     }
 
     public function getSize()

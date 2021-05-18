@@ -17,9 +17,18 @@
 
 class Google_Service_DataprocMetastore_ExportMetadataRequest extends Google_Model
 {
+  public $databaseDumpType;
   public $destinationGcsFolder;
   public $requestId;
 
+  public function setDatabaseDumpType($databaseDumpType)
+  {
+    $this->databaseDumpType = $databaseDumpType;
+  }
+  public function getDatabaseDumpType()
+  {
+    return $this->databaseDumpType;
+  }
   public function setDestinationGcsFolder($destinationGcsFolder)
   {
     $this->destinationGcsFolder = $destinationGcsFolder;

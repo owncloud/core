@@ -26,7 +26,7 @@
 class Google_Service_Dns_Resource_DnsKeys extends Google_Service_Resource
 {
   /**
-   * Fetch the representation of an existing DnsKey. (dnsKeys.get)
+   * Fetches the representation of an existing DnsKey. (dnsKeys.get)
    *
    * @param string $project Identifies the project addressed by this request.
    * @param string $managedZone Identifies the managed zone addressed by this
@@ -49,7 +49,7 @@ class Google_Service_Dns_Resource_DnsKeys extends Google_Service_Resource
     return $this->call('get', array($params), "Google_Service_Dns_DnsKey");
   }
   /**
-   * Enumerate DnsKeys to a ResourceRecordSet collection. (dnsKeys.listDnsKeys)
+   * Enumerates DnsKeys to a ResourceRecordSet collection. (dnsKeys.listDnsKeys)
    *
    * @param string $project Identifies the project addressed by this request.
    * @param string $managedZone Identifies the managed zone addressed by this

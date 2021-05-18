@@ -20,12 +20,15 @@ class Google_Service_Dataflow_Environment extends Google_Collection
   protected $collection_key = 'workerPools';
   public $clusterManagerApiService;
   public $dataset;
+  protected $debugOptionsType = 'Google_Service_Dataflow_DebugOptions';
+  protected $debugOptionsDataType = '';
   public $experiments;
   public $flexResourceSchedulingGoal;
   public $internalExperiments;
   public $sdkPipelineOptions;
   public $serviceAccountEmail;
   public $serviceKmsKeyName;
+  public $serviceOptions;
   public $shuffleMode;
   public $tempStoragePrefix;
   public $userAgent;
@@ -50,6 +53,20 @@ class Google_Service_Dataflow_Environment extends Google_Collection
   public function getDataset()
   {
     return $this->dataset;
+  }
+  /**
+   * @param Google_Service_Dataflow_DebugOptions
+   */
+  public function setDebugOptions(Google_Service_Dataflow_DebugOptions $debugOptions)
+  {
+    $this->debugOptions = $debugOptions;
+  }
+  /**
+   * @return Google_Service_Dataflow_DebugOptions
+   */
+  public function getDebugOptions()
+  {
+    return $this->debugOptions;
   }
   public function setExperiments($experiments)
   {
@@ -98,6 +115,14 @@ class Google_Service_Dataflow_Environment extends Google_Collection
   public function getServiceKmsKeyName()
   {
     return $this->serviceKmsKeyName;
+  }
+  public function setServiceOptions($serviceOptions)
+  {
+    $this->serviceOptions = $serviceOptions;
+  }
+  public function getServiceOptions()
+  {
+    return $this->serviceOptions;
   }
   public function setShuffleMode($shuffleMode)
   {

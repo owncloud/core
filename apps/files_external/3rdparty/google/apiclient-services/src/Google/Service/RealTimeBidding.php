@@ -37,7 +37,9 @@ class Google_Service_RealTimeBidding extends Google_Service
   const REALTIME_BIDDING =
       "https://www.googleapis.com/auth/realtime-bidding";
 
+  public $bidders;
   public $bidders_creatives;
+  public $bidders_endpoints;
   public $bidders_pretargetingConfigs;
   public $buyers;
   public $buyers_creatives;
@@ -58,6 +60,39 @@ class Google_Service_RealTimeBidding extends Google_Service
     $this->version = 'v1';
     $this->serviceName = 'realtimebidding';
 
+    $this->bidders = new Google_Service_RealTimeBidding_Resource_Bidders(
+        $this,
+        $this->serviceName,
+        'bidders',
+        array(
+          'methods' => array(
+            'get' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'v1/bidders',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
     $this->bidders_creatives = new Google_Service_RealTimeBidding_Resource_BiddersCreatives(
         $this,
         $this->serviceName,
@@ -98,6 +133,44 @@ class Google_Service_RealTimeBidding extends Google_Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->bidders_endpoints = new Google_Service_RealTimeBidding_Resource_BiddersEndpoints(
+        $this,
+        $this->serviceName,
+        'endpoints',
+        array(
+          'methods' => array(
+            'get' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'v1/{+parent}/endpoints',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -262,7 +335,17 @@ class Google_Service_RealTimeBidding extends Google_Service
         'buyers',
         array(
           'methods' => array(
-            'getRemarketingTag' => array(
+            'get' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'getRemarketingTag' => array(
               'path' => 'v1/{+name}:getRemarketingTag',
               'httpMethod' => 'GET',
               'parameters' => array(
@@ -270,6 +353,19 @@ class Google_Service_RealTimeBidding extends Google_Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'v1/buyers',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),

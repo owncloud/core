@@ -2,7 +2,7 @@
 Feature: sharees
 
   Background:
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | sharee1  |
@@ -451,9 +451,9 @@ Feature: sharees
       | 2               | 200        | 200         |
 
   @skipOnLDAP
-  Scenario Outline: Enumerate only group members - only show partial results from member groups
+  Scenario Outline: Enumerate only group members - only show partial results from member of groups
     Given using OCS API version "<ocs-api-version>"
-    Given these users have been created with default attributes and small skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username | displayname |
       | another  | Another     |
     And user "Another" has been added to group "ShareeGroup2"
@@ -538,7 +538,7 @@ Feature: sharees
       | 2               | 200        | 200         |
 
   Scenario Outline: Search without exact match such that the search string matches the user getting the sharees
-    Given user "sharee2" has been created with default attributes and small skeleton files
+    Given user "sharee2" has been created with default attributes and without skeleton files
     And using OCS API version "<ocs-api-version>"
     When user "sharee1" gets the sharees using the sharing API with parameters
       | search   | sharee |
@@ -563,7 +563,7 @@ Feature: sharees
   @skipOnOcV10
   Scenario Outline: empty search for sharees when search min length is set to 0
     Given the administrator has updated system config key "user.search_min_length" with value "0"
-    And user "sharee2" has been created with default attributes and small skeleton files
+    And user "sharee2" has been created with default attributes and without skeleton files
     And using OCS API version "<ocs-api-version>"
     When user "sharee1" gets the sharees using the sharing API with parameters
       | search   |      |
@@ -586,10 +586,10 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
-
+  @skipOnOcV10.5 @skipOnOcV10.6.0
   Scenario Outline: empty search for sharees when search min length is set to 2
     Given the administrator has updated system config key "user.search_min_length" with value "2"
-    And user "sharee2" has been created with default attributes and small skeleton files
+    And user "sharee2" has been created with default attributes and without skeleton files
     And using OCS API version "<ocs-api-version>"
     When user "sharee1" gets the sharees using the sharing API with parameters
       | search   |      |
@@ -610,7 +610,7 @@ Feature: sharees
 
   Scenario Outline: search for sharees when search min length is set to 2
     Given the administrator has updated system config key "user.search_min_length" with value "2"
-    And user "sharee2" has been created with default attributes and small skeleton files
+    And user "sharee2" has been created with default attributes and without skeleton files
     And using OCS API version "<ocs-api-version>"
     When user "sharee1" gets the sharees using the sharing API with parameters
       | search   | sh   |
@@ -635,7 +635,7 @@ Feature: sharees
 
   Scenario Outline: search for sharees with long name when search min length is set to 2
     Given the administrator has updated system config key "user.search_min_length" with value "2"
-    And user "sharee2" has been created with default attributes and small skeleton files
+    And user "sharee2" has been created with default attributes and without skeleton files
     And using OCS API version "<ocs-api-version>"
     When user "sharee1" gets the sharees using the sharing API with parameters
       | search   | sharee |
@@ -660,7 +660,7 @@ Feature: sharees
   @skipOnOcV10
   Scenario Outline: search for sharees without search when min length is set to 0
     Given the administrator has updated system config key "user.search_min_length" with value "0"
-    And user "sharee2" has been created with default attributes and small skeleton files
+    And user "sharee2" has been created with default attributes and without skeleton files
     And using OCS API version "<ocs-api-version>"
     When user "sharee1" gets the sharees using the sharing API with parameters
       | itemType | file |
@@ -682,10 +682,10 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
-
+  @skipOnOcV10.5 @skipOnOcV10.6.0
   Scenario Outline: search for sharees without search when min length is set to 2
     Given the administrator has updated system config key "user.search_min_length" with value "2"
-    And user "sharee2" has been created with default attributes and small skeleton files
+    And user "sharee2" has been created with default attributes and without skeleton files
     And using OCS API version "<ocs-api-version>"
     When user "sharee1" gets the sharees using the sharing API with parameters
       | itemType | file |

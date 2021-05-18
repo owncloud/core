@@ -19,6 +19,8 @@ class Google_Service_WorkflowExecutions_Error extends Google_Model
 {
   public $context;
   public $payload;
+  protected $stackTraceType = 'Google_Service_WorkflowExecutions_StackTrace';
+  protected $stackTraceDataType = '';
 
   public function setContext($context)
   {
@@ -35,5 +37,19 @@ class Google_Service_WorkflowExecutions_Error extends Google_Model
   public function getPayload()
   {
     return $this->payload;
+  }
+  /**
+   * @param Google_Service_WorkflowExecutions_StackTrace
+   */
+  public function setStackTrace(Google_Service_WorkflowExecutions_StackTrace $stackTrace)
+  {
+    $this->stackTrace = $stackTrace;
+  }
+  /**
+   * @return Google_Service_WorkflowExecutions_StackTrace
+   */
+  public function getStackTrace()
+  {
+    return $this->stackTrace;
   }
 }

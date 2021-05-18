@@ -32,6 +32,7 @@ use OCP\IUser;
 use OCP\IUserSession;
 
 class Manager implements IManager {
+
 	/** @var IRequest */
 	protected $request;
 
@@ -49,6 +50,9 @@ class Manager implements IManager {
 
 	/** @var string */
 	protected $currentUserId;
+
+	/** @var string[] */
+	protected $agentStack = [];
 
 	/**
 	 * constructor of the controller
@@ -528,5 +532,26 @@ class Manager implements IManager {
 
 		// Token found login as that user
 		return \array_shift($users);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getAgentAuthor() {
+		return $this->agentStack[\count($this->agentStack) - 1] ?? null;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function setAgentAuthor($agentAuthor) {
+		$this->agentStack[] = $agentAuthor;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function restoreAgentAuthor() {
+		return \array_pop($this->agentStack);
 	}
 }

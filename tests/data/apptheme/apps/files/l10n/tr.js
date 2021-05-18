@@ -41,7 +41,6 @@ OC.L10N.register(
     "Unable to determine date" : "Tarih tespit edilemedi",
     "Invalid path" : "Geçersiz yol",
     "This operation is forbidden" : "Bu işlem yasak",
-    "This directory is unavailable, please check the logs or contact the administrator" : "Bu dizine yazılamıyor, lütfen günlüğü kontrol edin veya yönetici ile iletişime geçin",
     "group" : "grup",
     "Remote share" : "Uzak paylaşım",
     "via" : "ile",

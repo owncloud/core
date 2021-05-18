@@ -31,7 +31,6 @@ OC.L10N.register(
     "Unable to determine date" : "Неможливо визначити дату",
     "Invalid path" : "Невірний шлях",
     "This operation is forbidden" : "Ця операція заборонена",
-    "This directory is unavailable, please check the logs or contact the administrator" : "Директорія недоступна, будь ласка, перевірте файл журналу або зверніться до адміністратора  ",
     "group" : "група",
     "Remote share" : "Віддалена загальна тека",
     "Could not move \"{file}\", target exists" : "Не вдалося перемістити \"{file}\", такий файл вже існує",

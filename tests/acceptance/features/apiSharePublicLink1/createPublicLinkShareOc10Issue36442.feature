@@ -3,7 +3,7 @@
 Feature: create a public link share
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
 
   @issue-36442
   Scenario Outline: Creating a public link share with read+create permissions defaults to read permissions when public upload disabled globally

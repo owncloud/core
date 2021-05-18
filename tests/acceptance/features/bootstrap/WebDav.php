@@ -2425,6 +2425,9 @@ trait WebDav {
 		$this->response = $this->makeDavRequest(
 			$user, "PUT", $destination, [], $content
 		);
+		$this->setResponseXml(
+			HttpRequestHelper::parseResponseAsXml($this->response)
+		);
 		$this->lastUploadDeleteTime = \time();
 		return $this->response->getHeader('oc-fileid');
 	}
@@ -2764,8 +2767,11 @@ trait WebDav {
 		$user = $this->getActualUsername($user);
 		$this->userDeletesFile($user, $entry);
 		// If the file or folder was there and got deleted then we get a 204
-		// If the file or folder was already not there then then get a 404
-		// Either way, the outcome of the "given" step is OK
+		// That is good and the expected status
+		// If the file or folder was already not there then then we get a 404
+		// That is not expected. Scenarios that use "Given user has deleted..."
+		// should only be using such steps when it is a file that exists and needs
+		// to be deleted.
 		if ($deletedOrUnshared === "deleted") {
 			$deleteText = "delete";
 		} else {
@@ -2773,8 +2779,8 @@ trait WebDav {
 		}
 
 		$this->theHTTPStatusCodeShouldBe(
-			["204", "404"],
-			"HTTP status code was not 204 or 404 while trying to $deleteText $fileOrFolder '$entry' for user '$user'"
+			["204"],
+			"HTTP status code was not 204 while trying to $deleteText $fileOrFolder '$entry' for user '$user'"
 		);
 	}
 
@@ -2988,6 +2994,23 @@ trait WebDav {
 		$this->theHTTPStatusCodeShouldBe(
 			["201", "204"],
 			"HTTP status code was not 201 or 204 while trying to create folder '$destination'"
+		);
+	}
+
+	/**
+	 * @Then user :user should be able to create folder :destination
+	 *
+	 * @param string $user
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function userShouldBeAbleToCreateFolder($user, $destination) {
+		$this->userHasCreatedFolder($user, $destination);
+		$this->asFileOrFolderShouldExist(
+			$user,
+			"folder",
+			$destination
 		);
 	}
 

@@ -23,6 +23,7 @@ class Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildbotCommandEve
   public $inputCacheMiss;
   public $numErrors;
   public $numWarnings;
+  public $outputLocation;
   public $usedAsyncContainer;
 
   public function setCmUsage($cmUsage)
@@ -72,6 +73,14 @@ class Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildbotCommandEve
   public function getNumWarnings()
   {
     return $this->numWarnings;
+  }
+  public function setOutputLocation($outputLocation)
+  {
+    $this->outputLocation = $outputLocation;
+  }
+  public function getOutputLocation()
+  {
+    return $this->outputLocation;
   }
   public function setUsedAsyncContainer($usedAsyncContainer)
   {

@@ -4,13 +4,16 @@ Feature: a default expiration date can be specified for shares with users or gro
   Background:
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And user "Alice" has been created with default attributes and small skeleton files
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
 
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date enabled but not enforced for users, user shares without specifying expireDate
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/FOLDER"
     When user "Alice" shares folder "/FOLDER" with user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
@@ -30,7 +33,7 @@ Feature: a default expiration date can be specified for shares with users or gro
   Scenario Outline: sharing with default expiration date enabled but not enforced for users, user shares with expiration date
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/FOLDER"
     When user "Alice" creates a share using the sharing API with settings
       | path        | /FOLDER    |
       | shareType   | user       |
@@ -58,7 +61,7 @@ Feature: a default expiration date can be specified for shares with users or gro
   @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario Outline: sharing with default expiration date not enabled, user shares with expiration date set
     Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/FOLDER"
     When user "Alice" creates a share using the sharing API with settings
       | path        | /FOLDER    |
       | shareType   | user       |
@@ -87,7 +90,7 @@ Feature: a default expiration date can be specified for shares with users or gro
   Scenario Outline: sharing with default expiration date enabled but not enforced for users, user shares with expiration date and then disables
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/FOLDER"
     When user "Alice" creates a share using the sharing API with settings
       | path        | /FOLDER    |
       | shareType   | user       |
@@ -115,7 +118,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/FOLDER"
     When user "Alice" creates a share using the sharing API with settings
       | path        | /FOLDER    |
       | shareType   | user       |
@@ -141,9 +144,9 @@ Feature: a default expiration date can be specified for shares with users or gro
   Scenario Outline: sharing with default expiration date enabled but not enforced for groups, user shares without specifying expireDate
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has created folder "/FOLDER"
     When user "Alice" shares folder "/FOLDER" with group "grp1" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "<http_status_code>"
@@ -163,9 +166,9 @@ Feature: a default expiration date can be specified for shares with users or gro
   Scenario Outline: sharing with default expiration date enabled but not enforced for groups, user shares with expiration date
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has created folder "/FOLDER"
     When user "Alice" creates a share using the sharing API with settings
       | path        | /FOLDER    |
       | shareType   | group      |
@@ -193,9 +196,9 @@ Feature: a default expiration date can be specified for shares with users or gro
   @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario Outline: sharing with default expiration date not enabled for groups, user shares with expiration date set
     Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has created folder "/FOLDER"
     When user "Alice" creates a share using the sharing API with settings
       | path        | /FOLDER    |
       | shareType   | group      |
@@ -224,9 +227,9 @@ Feature: a default expiration date can be specified for shares with users or gro
   Scenario Outline: sharing with default expiration date enabled but not enforced for groups, user shares with expiration date and then disables
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has created folder "/FOLDER"
     When user "Alice" creates a share using the sharing API with settings
       | path        | /FOLDER    |
       | shareType   | group      |
@@ -254,9 +257,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has created folder "/FOLDER"
     When user "Alice" creates a share using the sharing API with settings
       | path        | /FOLDER    |
       | shareType   | group      |
@@ -284,7 +287,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" shares file "textfile0.txt" with user "Brian" using the sharing API
     And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the fields of the last response to user "Alice" sharing with user "Brian" should include
@@ -305,7 +308,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | user          |
@@ -328,7 +331,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" shares file "textfile0.txt" with user "Brian" using the sharing API
     And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the fields of the last response to user "Alice" sharing with user "Brian" should include
@@ -350,7 +353,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | user          |
@@ -373,7 +376,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" shares file "textfile0.txt" with user "Brian" with permissions "read,share" using the sharing API
     And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     And the administrator sets parameter "shareapi_expire_after_n_days_user_share" of app "core" to "40"
@@ -391,7 +394,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" shares file "textfile0.txt" with user "Brian" with permissions "read,share" using the sharing API
     And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     And the administrator sets parameter "shareapi_expire_after_n_days_user_share" of app "core" to "15"
@@ -408,9 +411,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" shares file "textfile0.txt" with group "grp1" using the sharing API
     And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the fields of the last response to user "Alice" sharing with group "grp1" should include
@@ -431,9 +434,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | group         |
@@ -456,9 +459,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_group_share" of app "core" has been set to "30"
-    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" shares file "textfile0.txt" with group "grp1" using the sharing API
     And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the fields of the last response to user "Alice" sharing with group "grp1" should include
@@ -480,9 +483,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_group_share" of app "core" has been set to "30"
-    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | group         |
@@ -505,9 +508,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_group_share" of app "core" has been set to "30"
-    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" shares file "textfile0.txt" with group "grp1" with permissions "read,share" using the sharing API
     And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     And the administrator sets parameter "shareapi_expire_after_n_days_group_share" of app "core" to "40"
@@ -527,9 +530,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_group_share" of app "core" has been set to "30"
-    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" shares file "textfile0.txt" with group "grp1" with permissions "read,share" using the sharing API
     And user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     And the administrator sets parameter "shareapi_expire_after_n_days_group_share" of app "core" to "15"
@@ -548,9 +551,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
+    And user "Alice" has created folder "FOLDER"
     When user "Alice" shares file "FOLDER" with group "grp1" with permissions "read,share" using the sharing API
     And user "Brian" accepts share "/FOLDER" offered by user "Alice" using the sharing API
     And user "Alice" gets the info of the last share using the sharing API
@@ -568,8 +571,8 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and without skeleton files
-    When user "Alice" shares file "/FOLDER" with user "Brian" with permissions "read,share" using the sharing API
+    And user "Alice" has created folder "FOLDER"
+    When user "Alice" shares folder "/FOLDER" with user "Brian" with permissions "read,share" using the sharing API
     And user "Brian" accepts share "/FOLDER" offered by user "Alice" using the sharing API
     And user "Alice" gets the info of the last share using the sharing API
     Then the fields of the last response to user "Alice" should include
@@ -586,7 +589,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" creates a share using the sharing API with settings
       | path               | textfile0.txt |
       | shareType          | user          |
@@ -607,7 +610,7 @@ Feature: a default expiration date can be specified for shares with users or gro
   Scenario Outline: sharing with default expiration date enforced for users, user shares with different time format
     Given using OCS API version "2"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" creates a share using the sharing API with settings
       | path               | textfile0.txt |
       | shareType          | user          |
@@ -619,7 +622,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the HTTP status code should be "200"
     And the OCS status code should be "200"
-    Then the fields of the last response to user "Alice" should include
+    And the fields of the last response to user "Alice" should include
       | expiration | 2050-12-11 |
     And the response when user "Brian" gets the info of the last share should include
       | expiration | 2050-12-11 |
@@ -636,7 +639,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce>"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" creates a share using the sharing API with settings
       | path               | textfile0.txt     |
       | shareType          | user              |
@@ -668,7 +671,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce>"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" creates a share using the sharing API with settings
       | path               | textfile0.txt |
       | shareType          | user          |
@@ -694,7 +697,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "<default>"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "<enforce>"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" creates a share using the sharing API with settings
       | path               | textfile0.txt |
       | shareType          | user          |
@@ -720,7 +723,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" creates a share using the sharing API with settings
       | path               | textfile0.txt |
       | shareType          | user          |
@@ -743,7 +746,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "0"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | user          |
@@ -765,7 +768,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "1"
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" creates a share using the sharing API with settings
       | path        | textfile0.txt |
       | shareType   | user          |

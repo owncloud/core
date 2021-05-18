@@ -33,6 +33,8 @@ class Google_Service_CloudRun_Resource_ProjectsLocationsRevisions extends Google
    * @param array $optParams Optional parameters.
    *
    * @opt_param string apiVersion Cloud Run currently ignores this parameter.
+   * @opt_param string dryRun DryRun is a query string parameter which indicates
+   * that the server should run validation without persisting the request.
    * @opt_param string kind Cloud Run currently ignores this parameter.
    * @opt_param string propagationPolicy Specifies the propagation policy of
    * delete. Cloud Run currently ignores this setting, and deletes in the

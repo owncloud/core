@@ -70,6 +70,7 @@ use phpseclib3\Exception\ConnectionClosedException;
 use phpseclib3\Exception\UnableToConnectException;
 use phpseclib3\Exception\InsufficientSetupException;
 use phpseclib3\Common\Functions\Strings;
+use phpseclib3\Crypt\Common\AsymmetricKey;
 
 /**
  * Pure-PHP implementation of SSHv2.
@@ -185,7 +186,7 @@ class SSH2
      * @var object
      * @access private
      */
-    protected $fsock;
+    public $fsock;
 
     /**
      * Execution Bitmap
@@ -639,7 +640,7 @@ class SSH2
      * @see self::exec()
      * @access private
      */
-    var $window_resize = 0x40000000;
+    private $window_resize = 0x40000000;
 
     /**
      * Window size, server to client
@@ -728,7 +729,7 @@ class SSH2
      * @see self::setKeepAlive()
      * @access private
      */
-    var $keepAlive;
+    private $keepAlive;
 
     /**
      * Real-time log file pointer
@@ -1012,6 +1013,14 @@ class SSH2
      * @access private
      */
     protected $auth = [];
+
+    /**
+     * Terminal
+     *
+     * @var string
+     * @access private
+     */
+    private $term = 'vt100';
 
     /**
      * Default Constructor.
@@ -2050,10 +2059,10 @@ class SSH2
     /**
      * Login
      *
-     * The $password parameter can be a plaintext password, a \phpseclib3\Crypt\RSA object or an array
+     * The $password parameter can be a plaintext password, a \phpseclib3\Crypt\RSA|EC|DSA object, a \phpseclib3\System\SSH\Agent object or an array
      *
      * @param string $username
-     * @param string[] ...$args
+     * @param string|AsymmetricKey|array[]|Agent|null ...$args
      * @return bool
      * @see self::_login()
      * @access public
@@ -2111,7 +2120,7 @@ class SSH2
      *           by sending dummy SSH_MSG_IGNORE messages.}
      *
      * @param string $username
-     * @param string $password
+     * @param string|AsymmetricKey|array[]|Agent|null ...$args
      * @return bool
      * @throws \UnexpectedValueException on receipt of unexpected packets
      * @throws \RuntimeException on other errors
@@ -2592,7 +2601,7 @@ class SSH2
      * In all likelihood, this is not a feature you want to be taking advantage of.
      *
      * @param string $command
-     * @param Callback $callback
+     * @param callback $callback
      * @return string
      * @throws \RuntimeException on connection error
      * @access public
@@ -2645,7 +2654,7 @@ class SSH2
                 $this->server_channels[self::CHANNEL_EXEC],
                 'pty-req',
                 1,
-                'vt100',
+                $this->term,
                 $this->windowColumns,
                 $this->windowRows,
                 0,
@@ -2765,12 +2774,12 @@ class SSH2
 
         $terminal_modes = pack('C', NET_SSH2_TTY_OP_END);
         $packet = Strings::packSSH2(
-            'CNsCsN4s',
+            'CNsbsN4s',
             NET_SSH2_MSG_CHANNEL_REQUEST,
             $this->server_channels[self::CHANNEL_SHELL],
             'pty-req',
-            1,
-            'vt100',
+            true, // want reply
+            $this->term,
             $this->windowColumns,
             $this->windowRows,
             0,
@@ -2779,24 +2788,6 @@ class SSH2
         );
 
         $this->send_binary_packet($packet);
-
-        $response = $this->get_binary_packet();
-        if ($response === false) {
-            $this->disconnect_helper(NET_SSH2_DISCONNECT_CONNECTION_LOST);
-            throw new ConnectionClosedException('Connection closed by server');
-        }
-
-        list($type) = Strings::unpackSSH2('C', $response);
-
-        switch ($type) {
-            case NET_SSH2_MSG_CHANNEL_SUCCESS:
-            // if a pty can't be opened maybe commands can still be executed
-            case NET_SSH2_MSG_CHANNEL_FAILURE:
-                break;
-            default:
-                $this->disconnect_helper(NET_SSH2_DISCONNECT_BY_APPLICATION);
-                throw new \UnexpectedValueException('Unable to request pseudo-terminal');
-        }
 
         $packet = Strings::packSSH2(
             'CNsb',
@@ -2807,14 +2798,7 @@ class SSH2
         );
         $this->send_binary_packet($packet);
 
-        $this->channel_status[self::CHANNEL_SHELL] = NET_SSH2_MSG_CHANNEL_REQUEST;
-
-        $response = $this->get_channel_packet(self::CHANNEL_SHELL);
-        if ($response === false) {
-            return false;
-        }
-
-        $this->channel_status[self::CHANNEL_SHELL] = NET_SSH2_MSG_CHANNEL_DATA;
+        $this->channel_status[self::CHANNEL_SHELL] = NET_SSH2_MSG_IGNORE;
 
         $this->bitmap |= self::MASK_SHELL;
 
@@ -3821,6 +3805,16 @@ class SSH2
                                 throw new \RuntimeException('Unable to open channel');
                         }
                         break;
+                    case NET_SSH2_MSG_IGNORE:
+                        switch ($type) {
+                            case NET_SSH2_MSG_CHANNEL_SUCCESS:
+                                //$this->channel_status[$channel] = NET_SSH2_MSG_CHANNEL_DATA;
+                                continue 3;
+                            case NET_SSH2_MSG_CHANNEL_FAILURE:
+                                $this->_disconnect(NET_SSH2_DISCONNECT_BY_APPLICATION);
+                                throw new \RuntimeException('Error opening channel');
+                        }
+                        break;
                     case NET_SSH2_MSG_CHANNEL_REQUEST:
                         switch ($type) {
                             case NET_SSH2_MSG_CHANNEL_SUCCESS:
@@ -3840,6 +3834,10 @@ class SSH2
 
             switch ($type) {
                 case NET_SSH2_MSG_CHANNEL_DATA:
+                    //if ($this->channel_status[$channel] == NET_SSH2_MSG_IGNORE) {
+                    //    $this->channel_status[$channel] = NET_SSH2_MSG_CHANNEL_DATA;
+                    //}
+
                     /*
                     if ($channel == self::CHANNEL_EXEC) {
                         // SCP requires null packets, such as this, be sent.  further, in the case of the ssh.com SSH server
@@ -4522,7 +4520,7 @@ class SSH2
         foreach ($engines as $engine) {
             foreach ($algos as $algo) {
                 $obj = self::encryption_algorithm_to_crypt_instance($algo);
-                if ($obj instanceof Rijndael ) {
+                if ($obj instanceof Rijndael) {
                     $obj->setKeyLength(preg_replace('#[^\d]#', '', $algo));
                 }
                 switch ($algo) {
@@ -4621,6 +4619,17 @@ class SSH2
                 'comp' => 'none',
             ]
         ];
+    }
+
+    /**
+     * Allows you to set the terminal
+     *
+     * @param string $term
+     * @access public
+     */
+    public function setTerminal($term)
+    {
+        $this->term = $term;
     }
 
     /**

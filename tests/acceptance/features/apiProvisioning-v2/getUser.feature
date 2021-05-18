@@ -9,7 +9,7 @@ Feature: get user
 
   @smokeTest
   Scenario: admin gets an existing user
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username       | displayname    |
       | brand-new-user | Brand New User |
     When the administrator retrieves the information of user "brand-new-user" using the provisioning API
@@ -20,7 +20,7 @@ Feature: get user
 
   @skipOnOcV10.3
   Scenario Outline: admin gets an existing user with special characters in the username
-    Given these users have been created with small skeleton files:
+    Given these users have been created without skeleton files:
       | username   | displayname   | email   |
       | <username> | <displayname> | <email> |
     When the administrator retrieves the information of user "<username>" using the provisioning API
@@ -35,7 +35,7 @@ Feature: get user
       | a space  | A Space Name | a.space@example.com |
 
   Scenario: admin gets an existing user, providing uppercase username in the URL
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username       | displayname    |
       | brand-new-user | Brand New User |
     When the administrator retrieves the information of user "BRAND-NEW-USER" using the provisioning API
@@ -52,7 +52,7 @@ Feature: get user
 
   @smokeTest @notToImplementOnOCIS
   Scenario: a subadmin gets information of a user in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username       | displayname |
       | subadmin       | Sub Admin   |
       | brand-new-user | New User    |
@@ -67,7 +67,7 @@ Feature: get user
 
   @notToImplementOnOCIS
   Scenario: a subadmin tries to get information of a user not in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username       |
       | subadmin       |
       | brand-new-user |
@@ -80,7 +80,7 @@ Feature: get user
 
   @issue-31276 @skipOnOcV10
   Scenario: a normal user tries to get information of another user
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username         |
       | brand-new-user   |
       | another-new-user |
@@ -91,7 +91,7 @@ Feature: get user
 
   @smokeTest
   Scenario: a normal user gets their own information
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username       | displayname |
       | brand-new-user | New User    |
     When user "brand-new-user" retrieves the information of user "brand-new-user" using the provisioning API
@@ -101,7 +101,7 @@ Feature: get user
     And the quota definition returned by the API should be "default"
 
   Scenario: a normal user gets their own information, providing uppercase username as authentication
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username       | displayname |
       | brand-new-user | New User    |
     When user "BRAND-NEW-USER" retrieves the information of user "brand-new-user" using the provisioning API
@@ -112,7 +112,7 @@ Feature: get user
 
   @skipOnOcV10.3
   Scenario: a normal user gets their own information, providing uppercase username in the URL
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username       | displayname |
       | brand-new-user | New User    |
     When user "brand-new-user" retrieves the information of user "BRAND-NEW-USER" using the provisioning API
@@ -123,7 +123,7 @@ Feature: get user
 
   @skipOnOcV10.3
   Scenario: a mixed-case normal user gets their own information, providing lowercase username in the URL
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username       | displayname |
       | Brand-New-User | New User    |
     When user "Brand-New-User" retrieves the information of user "brand-new-user" using the provisioning API
@@ -133,7 +133,7 @@ Feature: get user
     And the quota definition returned by the API should be "default"
 
   Scenario: a mixed-case normal user gets their own information, providing the mixed-case username in the URL
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username       | displayname |
       | Brand-New-User | New User    |
     When user "brand-new-user" retrieves the information of user "Brand-New-User" using the provisioning API
@@ -143,7 +143,7 @@ Feature: get user
     And the quota definition returned by the API should be "default"
 
   Scenario: admin gets information of a user with admin permissions
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username       | displayname    |
       | Alice          | Admin Alice    |
     And user "Alice" has been added to group "admin"
@@ -154,7 +154,7 @@ Feature: get user
     And the quota definition returned by the API should be "default"
 
   Scenario: a subadmin should be able to get information of a user with subadmin permissions in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username         |
       | subadmin         |
       | another-subadmin |
@@ -169,7 +169,7 @@ Feature: get user
     And the quota definition returned by the API should be "default"
 
   Scenario: a subadmin should not be able to get information of another subadmin of same group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username         |
       | subadmin         |
       | another-subadmin |

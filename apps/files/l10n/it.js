@@ -41,7 +41,6 @@ OC.L10N.register(
     "Unable to determine date" : "Impossibile determinare la data",
     "Invalid path" : "Percorso non valido",
     "This operation is forbidden" : "Questa operazione è vietata",
-    "This directory is unavailable, please check the logs or contact the administrator" : "Questa cartella non è disponibile, controlla i log o contatta l'amministratore",
     "group" : "gruppo",
     "Remote share" : "Condivisione remota",
     "via" : "via",

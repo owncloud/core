@@ -101,7 +101,7 @@ class Google_Service_DisplayVideo_Resource_PartnersChannelsSites extends Google_
    * are: * `urlOrAppId` (default) The default sorting order is ascending. To
    * specify descending order for a field, a suffix " desc" should be added to the
    * field name. Example: `urlOrAppId desc`.
-   * @opt_param int pageSize Requested page size. Must be between `1` and `100`.
+   * @opt_param int pageSize Requested page size. Must be between `1` and `10000`.
    * If unspecified will default to `100`. Returns error code `INVALID_ARGUMENT`
    * if an invalid value is specified.
    * @opt_param string pageToken A token identifying a page of results the server

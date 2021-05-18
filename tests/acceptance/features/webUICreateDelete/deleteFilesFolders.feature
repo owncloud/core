@@ -5,16 +5,19 @@ Feature: deleting files and folders
   So that I can keep my filing system clean and tidy
 
   Background:
-    Given these users have been created with default attributes and large skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
-    And user "Alice" has logged in using the webUI
-    And the user has browsed to the files page
 
   @smokeTest @skipOnLDAP
   Scenario: Delete files & folders one by one and check its existence after page reload
-    Given user "Alice" has uploaded file with content "file with comma" to "s,a,m,p,l,e.txt"
+    Given user "Alice" has created folder "simple-folder"
+    And user "Alice" has created folder "strängé नेपाली folder"
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "strängé filename (duplicate #2 &).txt"
+    And user "Alice" has uploaded file with content "file with comma" to "s,a,m,p,l,e.txt"
     And user "Alice" has created folder "folder,with,comma"
+    And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
     When the user deletes the following elements using the webUI
       | name                                  |
@@ -35,6 +38,9 @@ Feature: deleting files and folders
 
   @skipOnFIREFOX
   Scenario: Delete a file with problematic characters
+    Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
+    And user "Alice" has logged in using the webUI
+    And the user has browsed to the files page
     When the user renames the following file using the webUI
       | from-name-parts | to-name-parts   |
       | lorem.txt       | 'single'        |
@@ -54,7 +60,7 @@ Feature: deleting files and folders
       | "double" quotes |
       | question?       |
       | &and#hash       |
-    Then the following file should not be listed on the webUI
+    And the following file should not be listed on the webUI
       | name-parts      |
       | 'single'        |
       | "double" quotes |
@@ -71,6 +77,11 @@ Feature: deleting files and folders
   @smokeTest @skipOnLDAP
   @skipOnEncryption @encryption-issue-74
   Scenario: Delete multiple files at once
+    Given user "Alice" has created folder "simple-folder"
+    And user "Alice" has uploaded file "filesForUpload/data.zip" to "data.zip"
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
+    And user "Alice" has logged in using the webUI
+    And the user has browsed to the files page
     When the user batch deletes these files using the webUI
       | name          |
       | data.zip      |
@@ -84,6 +95,11 @@ Feature: deleting files and folders
 
   @skipOnEncryption @encryption-issue-74
   Scenario: Delete all files at once
+    Given user "Alice" has created folder "simple-folder"
+    And user "Alice" has uploaded file "filesForUpload/data.zip" to "data.zip"
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
+    And user "Alice" has logged in using the webUI
+    And the user has browsed to the files page
     When the user marks all files for batch action using the webUI
     And the user batch deletes the marked files using the webUI
     # Check just some example files/folders that should not exist any more
@@ -95,6 +111,11 @@ Feature: deleting files and folders
 
   @skipOnEncryption @encryption-issue-74
   Scenario: Delete all except for a few files at once
+    Given user "Alice" has created folder "simple-folder"
+    And user "Alice" has uploaded file "filesForUpload/data.zip" to "data.zip"
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
+    And user "Alice" has logged in using the webUI
+    And the user has browsed to the files page
     When the user marks all files for batch action using the webUI
     And the user unmarks these files for batch action using the webUI
       | name          |
@@ -110,6 +131,8 @@ Feature: deleting files and folders
     And file "data.zip" should not be listed on the webUI
 
   Scenario: Delete an empty folder
+    Given user "Alice" has logged in using the webUI
+    And the user has browsed to the files page
     When the user creates a folder with the name "my-empty-folder" using the webUI
     And the user creates a folder with the name "my-other-empty-folder" using the webUI
     And the user deletes folder "my-empty-folder" using the webUI
@@ -119,15 +142,21 @@ Feature: deleting files and folders
     And folder "my-empty-folder" should not be listed on the webUI
 
   Scenario: Delete the last file in a folder
+    Given user "Alice" has uploaded file "filesForUpload/zzzz-must-be-last-file-in-folder.txt" to "zzzz-must-be-last-file-in-folder.txt"
+    And user "Alice" has logged in using the webUI
+    And the user has browsed to the files page
     When the user deletes file "zzzz-must-be-last-file-in-folder.txt" using the webUI
     Then as "Alice" file "zzzz-must-be-last-file-in-folder.txt" should not exist
     And file "zzzz-must-be-last-file-in-folder.txt" should not be listed on the webUI
 
   @files_sharing-app-required
   Scenario: delete files from shared with others page
-    Given user "Brian" has been created with default attributes and without skeleton files
-    And the user has shared file "lorem.txt" with user "Brian"
-    And the user has shared folder "simple-folder" with user "Brian"
+    Given user "Alice" has created folder "simple-folder"
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has shared file "lorem.txt" with user "Brian"
+    And user "Alice" has shared folder "simple-folder" with user "Brian"
+    And user "Alice" has logged in using the webUI
     And the user has browsed to the shared-with-others page
     When the user deletes file "lorem.txt" using the webUI
     And the user deletes folder "simple-folder" using the webUI
@@ -141,7 +170,9 @@ Feature: deleting files and folders
 
   @public_link_share-feature-required @files_sharing-app-required
   Scenario: delete files from shared by link page
-    Given the user has created a public link share of file "lorem.txt"
+    Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
+    And user "Alice" has logged in using the webUI
+    And the user has created a public link share of file "lorem.txt"
     And the user has browsed to the shared-by-link page
     Then file "lorem.txt" should be listed on the webUI
     When the user deletes file "lorem.txt" using the webUI
@@ -152,8 +183,10 @@ Feature: deleting files and folders
 
   @systemtags-app-required
   Scenario: delete files from tags page
-    Given user "Alice" has created a "normal" tag with name "lorem"
+    Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
+    And user "Alice" has created a "normal" tag with name "lorem"
     And user "Alice" has added tag "lorem" to file "/lorem.txt"
+    And user "Alice" has logged in using the webUI
     When the user browses to the tags page
     And the user searches for tag "lorem" using the webUI
     Then file "lorem.txt" should be listed on the webUI
@@ -165,6 +198,11 @@ Feature: deleting files and folders
 
   @files_sharing-app-required
   Scenario: delete a file on a public share
+    Given user "Alice" has created folder "simple-folder"
+    And user "Alice" has created folder "simple-folder/simple-empty-folder"
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
+    And user "Alice" has uploaded file "filesForUpload/strängé filename (duplicate #2 &).txt" to "simple-folder/strängé filename (duplicate #2 &).txt"
+    And user "Alice" has logged in using the webUI
     Given user "Alice" has created a public link share with settings
       | path        | /simple-folder            |
       | permissions | read,update,create,delete |
@@ -182,7 +220,9 @@ Feature: deleting files and folders
 
   @skipOnFIREFOX @files_sharing-app-required
   Scenario: delete a file on a public share with problematic characters
-    Given user "Alice" has created a public link share with settings
+    Given user "Alice" has created folder "simple-folder"
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
+    And user "Alice" has created a public link share with settings
       | path        | /simple-folder |
       | permissions | read,change    |
     And the public accesses the last created public link using the webUI
@@ -214,7 +254,11 @@ Feature: deleting files and folders
 
   @skipOnEncryption @encryption-issue-74 @files_sharing-app-required
   Scenario: Delete multiple files at once on a public share
-    Given user "Alice" has created a public link share with settings
+    Given user "Alice" has created folder "simple-folder"
+    And user "Alice" has created folder "simple-folder/simple-empty-folder"
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
+    And user "Alice" has uploaded file "filesForUpload/data.zip" to "simple-folder/data.zip"
+    And user "Alice" has created a public link share with settings
       | path        | /simple-folder            |
       | permissions | read,update,create,delete |
     And the public accesses the last created public link using the webUI
@@ -238,7 +282,7 @@ Feature: deleting files and folders
     And user "Alice" has created folder "<top_folder2>"
     And user "Alice" has created folder "<top_folder2>/<other_folder2>"
     And user "Brian" has shared folder "/ShareThis" with user "Alice"
-    And the user reloads the current page of the webUI
+    And user "Alice" has logged in using the webUI
     When the user deletes folder "<other_folder1>" using the webUI
     Then as "Alice" folder "<other_folder1>" should not exist
     When the user opens folder "<top_folder2>" using the webUI

@@ -22,7 +22,7 @@ Feature: add groups
       | España§àôœ€ |
       | नेपाली        |
 
-  Scenario: admin creates a group
+  Scenario: admin creates a group with special characters
     When the administrator sends a group creation request for the following groups using the provisioning API
       | groupname           | comment                                 |
       | brand-new-group     | dash                                    |
@@ -53,7 +53,7 @@ Feature: add groups
       | 😅 😆               |
 
   @toImplementOnOCIS @issue-product-284
-  Scenario: admin creates a group
+  Scenario: admin creates a group with % and # in name
     When the administrator sends a group creation request for the following groups using the provisioning API
       | groupname           | comment                                 |
       | maintenance#123     | Hash sign                               |
@@ -134,14 +134,14 @@ Feature: add groups
     And group "brand-new-group" should exist
 
   Scenario: normal user tries to create a group
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     When user "brand-new-user" tries to send a group creation request for group "brand-new-group" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And group "brand-new-group" should not exist
 
   Scenario: subadmin tries to create a group
-    Given user "subadmin" has been created with default attributes and small skeleton files
+    Given user "subadmin" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created
     And user "subadmin" has been made a subadmin of group "brand-new-group"
     When user "subadmin" tries to send a group creation request for group "another-new-group" using the provisioning API

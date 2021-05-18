@@ -9,7 +9,7 @@ Feature: enable user
 
   @smokeTest
   Scenario: admin enables an user
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has been disabled
     When the administrator enables user "Alice" using the provisioning API
     Then the OCS status code should be "200"
@@ -18,7 +18,7 @@ Feature: enable user
 
   @skipOnOcV10.3
   Scenario: admin enables an user with special characters in the username
-    Given these users have been created with small skeleton files:
+    Given these users have been created without skeleton files:
       | username | email               |
       | a@-+_.b  | a.b@example.com     |
       | a space  | a.space@example.com |
@@ -38,7 +38,7 @@ Feature: enable user
       | a space  |
 
   Scenario: admin enables another admin user
-    Given user "another-admin" has been created with default attributes and small skeleton files
+    Given user "another-admin" has been created with default attributes and without skeleton files
     And user "another-admin" has been added to group "admin"
     And user "another-admin" has been disabled
     When the administrator enables user "another-admin" using the provisioning API
@@ -48,7 +48,7 @@ Feature: enable user
 
   @notToImplementOnOCIS
   Scenario: admin enables subadmins in the same group
-    Given user "subadmin" has been created with default attributes and small skeleton files
+    Given user "subadmin" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created
     And user "subadmin" has been added to group "brand-new-group"
     And the administrator has been added to group "brand-new-group"
@@ -60,7 +60,7 @@ Feature: enable user
     And user "subadmin" should be enabled
 
   Scenario: admin tries to enable himself
-    Given user "another-admin" has been created with default attributes and small skeleton files
+    Given user "another-admin" has been created with default attributes and without skeleton files
     And user "another-admin" has been added to group "admin"
     And user "another-admin" has been disabled
     When user "another-admin" tries to enable user "another-admin" using the provisioning API
@@ -68,7 +68,7 @@ Feature: enable user
 
   @issue-31276 @skipOnOcV10
   Scenario: normal user tries to enable other user
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -80,7 +80,7 @@ Feature: enable user
 
   @notToImplementOnOCIS
   Scenario: subadmin tries to enable himself
-    Given user "subadmin" has been created with default attributes and small skeleton files
+    Given user "subadmin" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created
     And user "subadmin" has been added to group "brand-new-group"
     And user "subadmin" has been made a subadmin of group "brand-new-group"
@@ -92,13 +92,13 @@ Feature: enable user
 
   @notToImplementOnOCIS
   Scenario: Making a web request with an enabled user
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     When user "Alice" sends HTTP method "GET" to URL "/index.php/apps/files"
     Then the HTTP status code should be "200"
 
   @notToImplementOnOCIS
   Scenario: normal user should not be able to enable himself
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
     And user "Alice" has been disabled
@@ -108,7 +108,7 @@ Feature: enable user
     And user "Alice" should be disabled
 
   Scenario: subadmin should be able to enable user in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username    |
       | Alice       |
       | subadmin    |
@@ -122,7 +122,7 @@ Feature: enable user
     And user "Alice" should be enabled
 
   Scenario: subadmin should not be able to enable user not in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username    |
       | Alice       |
       | subadmin    |
@@ -135,7 +135,7 @@ Feature: enable user
     And user "Alice" should be disabled
 
   Scenario: subadmin should be able to enable user with subadmin permissions in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username    |
       | Alice       |
       | subadmin    |
@@ -150,7 +150,7 @@ Feature: enable user
     And user "Alice" should be enabled
 
   Scenario: subadmin should not be able to enable another subadmin of same group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username            |
       | subadmin            |
       | another-subadmin    |

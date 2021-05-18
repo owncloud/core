@@ -135,4 +135,20 @@ class Google_Service_GoogleAnalyticsAdmin_Resource_Accounts extends Google_Servi
     $params = array_merge($params, $optParams);
     return $this->call('provisionAccountTicket', array($params), "Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaProvisionAccountTicketResponse");
   }
+  /**
+   * Searches through all changes to an account or its children given the
+   * specified set of filters. (accounts.searchChangeHistoryEvents)
+   *
+   * @param string $account Required. The account resource for which to return
+   * change history resources.
+   * @param Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaSearchChangeHistoryEventsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaSearchChangeHistoryEventsResponse
+   */
+  public function searchChangeHistoryEvents($account, Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaSearchChangeHistoryEventsRequest $postBody, $optParams = array())
+  {
+    $params = array('account' => $account, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('searchChangeHistoryEvents', array($params), "Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaSearchChangeHistoryEventsResponse");
+  }
 }

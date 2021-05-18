@@ -18,10 +18,13 @@
 class Google_Service_CloudResourceManager_Folder extends Google_Model
 {
   public $createTime;
+  public $deleteTime;
   public $displayName;
-  public $lifecycleState;
+  public $etag;
   public $name;
   public $parent;
+  public $state;
+  public $updateTime;
 
   public function setCreateTime($createTime)
   {
@@ -31,6 +34,14 @@ class Google_Service_CloudResourceManager_Folder extends Google_Model
   {
     return $this->createTime;
   }
+  public function setDeleteTime($deleteTime)
+  {
+    $this->deleteTime = $deleteTime;
+  }
+  public function getDeleteTime()
+  {
+    return $this->deleteTime;
+  }
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
@@ -39,13 +50,13 @@ class Google_Service_CloudResourceManager_Folder extends Google_Model
   {
     return $this->displayName;
   }
-  public function setLifecycleState($lifecycleState)
+  public function setEtag($etag)
   {
-    $this->lifecycleState = $lifecycleState;
+    $this->etag = $etag;
   }
-  public function getLifecycleState()
+  public function getEtag()
   {
-    return $this->lifecycleState;
+    return $this->etag;
   }
   public function setName($name)
   {
@@ -62,5 +73,21 @@ class Google_Service_CloudResourceManager_Folder extends Google_Model
   public function getParent()
   {
     return $this->parent;
+  }
+  public function setState($state)
+  {
+    $this->state = $state;
+  }
+  public function getState()
+  {
+    return $this->state;
+  }
+  public function setUpdateTime($updateTime)
+  {
+    $this->updateTime = $updateTime;
+  }
+  public function getUpdateTime()
+  {
+    return $this->updateTime;
   }
 }

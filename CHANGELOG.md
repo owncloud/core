@@ -3,7 +3,217 @@ Changelog for ownCloud Core [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.6.0...master
+[unreleased]: https://github.com/owncloud/core/compare/v10.7.0...master
+
+Summary
+-------
+
+* Bugfix - Handle exceptions with inaccesible federated share: [#38474](https://github.com/owncloud/core/pull/38474)
+* Bugfix - Fix mispositioned ui elements after leaving viewerMode: [#38547](https://github.com/owncloud/core/issues/38547)
+* Bugfix - Creating self group-reshare should not not share to self: [#38581](https://github.com/owncloud/core/pull/38581)
+* Bugfix - Check quota on the necessary move operations: [#38591](https://github.com/owncloud/core/pull/38591)
+* Bugfix - Normalize web.baseUrl before using it: [#38600](https://github.com/owncloud/core/issues/38600)
+* Bugfix - When validating rereshare permission make sure to check parent mountpoint: [#4497](https://github.com/owncloud/enterprise/issues/4497)
+* Bugfix - Hide sensible information on share download: [#38689](https://github.com/owncloud/core/pull/38689)
+* Bugfix - Hide file drop content: [#38691](https://github.com/owncloud/core/pull/38691)
+* Bugfix - Regenerate session after authenticate a password protected public share: [#38693](https://github.com/owncloud/core/pull/38693)
+* Change - Update Symfony components to 4.4.22: [#38680](https://github.com/owncloud/core/pull/38680)
+* Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
+* Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
+* Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
+* Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
+* Enhancement - Expired shares in activity stream: [#38631](https://github.com/owncloud/core/pull/38631)
+* Enhancement - Use relative notification URLs: [#38639](https://github.com/owncloud/core/pull/38639)
+* Enhancement - Add excludeActions parameter to registerDefaultActions function: [#38643](https://github.com/owncloud/core/pull/38643)
+* Enhancement - Improve tab headers UI: [#38653](https://github.com/owncloud/core/pull/38653)
+* Enhancement - Remove google+ share button from personal settings: [#38705](https://github.com/owncloud/core/pull/38705)
+* Enhancement - Adjust the return type of the querybuilder's execute method: [#38714](https://github.com/owncloud/core/pull/38714)
+
+Details
+-------
+
+* Bugfix - Handle exceptions with inaccesible federated share: [#38474](https://github.com/owncloud/core/pull/38474)
+
+   In a scenario federation share storage is inaccessible and returns connection timeouts,
+   federated share storage now does not return not found but storage not available. Additionaly
+   logging and notifications handling has been improved.
+
+   https://github.com/owncloud/enterprise/issues/4311
+   https://github.com/owncloud/core/pull/38474
+
+* Bugfix - Fix mispositioned ui elements after leaving viewerMode: [#38547](https://github.com/owncloud/core/issues/38547)
+
+   Until today, after leaving the viewer mode (e.G Pdf viewer) the action header table in the files
+   list was mispositioned while checking an item. The download action and following items went
+   out of sight.
+
+   https://github.com/owncloud/core/issues/38547
+   https://github.com/owncloud/core/pull/38552
+
+* Bugfix - Creating self group-reshare should not not share to self: [#38581](https://github.com/owncloud/core/pull/38581)
+
+   In a scenario where resharing with group that user belongs to, permissions and attributes were
+   incorrectly handled in share mount logic when permissions for that share got adjusted, or that
+   share got again reshared to another user that again reshared with prior user. This bugfix
+   prevents creation of self share mount in root folder of the user
+
+   https://github.com/owncloud/enterprise/issues/4382
+   https://github.com/owncloud/core/pull/38581
+
+* Bugfix - Check quota on the necessary move operations: [#38591](https://github.com/owncloud/core/pull/38591)
+
+   When encryption is active, a move operation between two different storages was leading to a
+   broken copy on target storage if the target has not enough quota. This data loss problem has been
+   resolved.
+
+   https://github.com/owncloud/core/pull/38591
+
+* Bugfix - Normalize web.baseUrl before using it: [#38600](https://github.com/owncloud/core/issues/38600)
+
+   `web.baseUrl` was used for rewriting private and public links to the new web UI without
+   normalizing it. This leads to broken authentication if the `web.baseUrl` was configured with
+   a trailing slash.
+
+   https://github.com/owncloud/core/issues/38600
+
+* Bugfix - When validating rereshare permission make sure to check parent mountpoint: [#4497](https://github.com/owncloud/enterprise/issues/4497)
+
+   When receiving reshare for a group from parent folder and subfolder of that folder with lower
+   permission, further reshares were subject to subfolder reshare permissions due to issue with
+   resolving parent mountpoint. With this change we now ensure to take parent mountpoint out of
+   received mountpoints
+
+   https://github.com/owncloud/enterprise/issues/4497
+   https://github.com/owncloud/enterprise/issues/4382
+   https://github.com/owncloud/core/pull/38625
+
+* Bugfix - Hide sensible information on share download: [#38689](https://github.com/owncloud/core/pull/38689)
+
+   Sensible information could be exposed when downloading a share via public link. We now throw a
+   generic exception that overwrites the original exception message. Also fixed an error which
+   caused such behavior when appending a null byte to the download URL.
+
+   https://github.com/owncloud/enterprise/issues/4536
+   https://github.com/owncloud/core/pull/38689
+
+* Bugfix - Hide file drop content: [#38691](https://github.com/owncloud/core/pull/38691)
+
+   Requesting file drop share with the deprecated shareinfo API, exposed information about the
+   content of the file drop share. We will now deliver empty content on the children entry.
+
+   https://github.com/owncloud/enterprise/issues/4540
+   https://github.com/owncloud/core/pull/38691
+
+* Bugfix - Regenerate session after authenticate a password protected public share: [#38693](https://github.com/owncloud/core/pull/38693)
+
+   Session has been has not been regenerated after authenticate a password protected public
+   share. Now we regenerate the session and delete the old one for anonymous users.
+
+   https://github.com/owncloud/enterprise/issues/4535
+   https://github.com/owncloud/core/pull/38693
+
+* Change - Update Symfony components to 4.4.22: [#38680](https://github.com/owncloud/core/pull/38680)
+
+   The following Symfony components have been updated from 4.4.20 to 4.4.22 - console - process -
+   routing - translation
+
+   https://github.com/owncloud/core/pull/38680
+   https://github.com/owncloud/core/pull/38598
+   https://symfony.com/blog/symfony-4-4-22-released
+   https://symfony.com/blog/symfony-4-4-21-released
+
+* Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
+
+   The following have been updated: - doctrine/cache (1.10.2 to 1.11.0) -
+   egulias/email-validator (3.1.0 to 3.1.1) - icewind/streams (0.7.3 to 0.7.4) - opis/closure
+   (3.6.1 => 3.6.2) - pear/pear_exception (v1.0.1 to v1.0.2) - phpseclib/phpseclib (3.0.6 to
+   3.0.8) - psr/log (1.1.3 to 1.1.4)
+
+   The following have been updated in files_external/3rdparty: - google/apiclient-services
+   (v0.164.0 => v0.167.0) - guzzlehttp/psr7 (1.7.0 => 1.8.1) - icewind/smb (3.3.1 to 3.4.1) -
+   icewind/streams (0.7.3 to 0.7.4) - phpseclib/phpseclib (3.0.6 to 3.0.8)
+
+   https://github.com/owncloud/core/pull/38524
+   https://github.com/owncloud/core/pull/38598
+   https://github.com/owncloud/core/pull/38620
+   https://github.com/owncloud/core/pull/38646
+   https://github.com/owncloud/core/pull/38648
+   https://github.com/owncloud/core/pull/38659
+   https://github.com/owncloud/core/pull/38688
+
+* Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
+
+   Implemented the new method executeStatement in our DB Connection class as Doctrine calls this
+   method now instead of the deprecated executeUpdate.
+
+   https://github.com/owncloud/core/issues/38681
+   https://github.com/owncloud/core/pull/38647
+
+* Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
+
+   This adjustment provides a way to handle the activity stream for actions that were triggered by
+   an automation (like the workflow app e.g.).
+
+   https://github.com/owncloud/enterprise/issues/4222
+   https://github.com/owncloud/core/pull/38605
+   https://github.com/owncloud/core/pull/38630
+
+* Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
+
+   Added an html template to render the changelog also in html format. This will give us better
+   control over the rendering on the website.
+
+   https://github.com/owncloud/core/pull/38616
+
+* Enhancement - Expired shares in activity stream: [#38631](https://github.com/owncloud/core/pull/38631)
+
+   Add a proper message in the activity stream for shares which expired automatically. Previous
+   to this, the expiry was authored by a user, which is technically not true.
+
+   https://github.com/owncloud/enterprise/issues/4455
+   https://github.com/owncloud/core/pull/38631
+
+* Enhancement - Use relative notification URLs: [#38639](https://github.com/owncloud/core/pull/38639)
+
+   Previous to this fix, absolute URLs were passed to the notification app. This could cause some
+   CORS issues, hence we now use relative ones.
+
+   https://github.com/owncloud/enterprise/issues/4250
+   https://github.com/owncloud/core/pull/38639
+
+* Enhancement - Add excludeActions parameter to registerDefaultActions function: [#38643](https://github.com/owncloud/core/pull/38643)
+
+   With this change we can pass now excludeActions to the registerDefaultActions function in
+   fileactions.js, this allows us technically to omit specific file actions.
+
+   https://github.com/owncloud/core/pull/38643
+
+* Enhancement - Improve tab headers UI: [#38653](https://github.com/owncloud/core/pull/38653)
+
+   With this change, tab headers will have a similar style to other nav elements, like the side nav.
+   Also improved the UI on small display ratio, where elements in the second row were not properly
+   left-aligned.
+
+   https://github.com/owncloud/core/pull/38653
+
+* Enhancement - Remove google+ share button from personal settings: [#38705](https://github.com/owncloud/core/pull/38705)
+
+   Due to the google+ service has been declined, we won't show the google+ share button anymore.
+
+   https://github.com/owncloud/core/pull/38705
+
+* Enhancement - Adjust the return type of the querybuilder's execute method: [#38714](https://github.com/owncloud/core/pull/38714)
+
+   The return type changed with the recent update of doctrine/dbal to version 2.13.
+
+   https://github.com/owncloud/core/pull/38714
+
+Changelog for ownCloud Core [10.7.0] (2021-03-26)
+=======================================
+The following sections list the changes in ownCloud core 10.7.0 relevant to
+ownCloud admins and users.
+
+[10.7.0]: https://github.com/owncloud/core/compare/v10.6.0...v10.7.0
 
 Summary
 -------
@@ -26,32 +236,17 @@ Summary
 * Bugfix - Fix command maintenance:mimetype:update-db --repair-filecache: [#38425](https://github.com/owncloud/core/issues/38425)
 * Bugfix - Fix storage lookup in versions when storing a new version: [#38430](https://github.com/owncloud/core/pull/38430)
 * Bugfix - Fix behavior for user search at the API level: [#38489](https://github.com/owncloud/core/pull/38489)
+* Bugfix - Fix mispositioned ui elements after leaving viewerMode: [#38547](https://github.com/owncloud/core/issues/38547)
+* Bugfix - Fix problems moving files inside Gdrive storages: [#38553](https://github.com/owncloud/core/pull/38553)
 * Change - Use OcsController and routes instead of API::register: [#37272](https://github.com/owncloud/core/pull/37272)
 * Change - API changes to remove shares pointing to missing files: [#38152](https://github.com/owncloud/core/pull/38152)
-* Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.2): [#38306](https://github.com/owncloud/core/pull/38306)
-* Change - Update nikic/php-parser (4.10.2 => 4.10.4): [#38191](https://github.com/owncloud/core/pull/38191)
-* Change - Update swiftmailer/swiftmailer (v6.2.3 => v6.2.4): [#38198](https://github.com/owncloud/core/pull/38198)
 * Change - Rename phoenix to web: [#38199](https://github.com/owncloud/core/pull/38199)
-* Change - Update phpseclib/phpseclib (2.0.29 => 2.0.30): [#38244](https://github.com/owncloud/core/pull/38244)
-* Change - Update egulias/email-validator (2.1.24 => 2.1.25): [#38255](https://github.com/owncloud/core/pull/38255)
-* Change - Update laminas/laminas-validator (2.13.4 => 2.13.5): [#38275](https://github.com/owncloud/core/pull/38275)
-* Change - Update patchwork/utf8 (v1.3.2 => v1.3.3): [#38275](https://github.com/owncloud/core/pull/38275)
 * Change - Update symfony/polyfill (1.20.0 => 1.22.1): [#38275](https://github.com/owncloud/core/pull/38275)
-* Change - Update sabre/dav (4.1.3 => 4.1.5): [#38285](https://github.com/owncloud/core/pull/38285)
 * Change - Remove package patchwork/utf8: [#38286](https://github.com/owncloud/core/pull/38286)
 * Change - Change X-XSS-Protection "1; block" -> "0": [#38236](https://github.com/owncloud/core/issues/38236)
-* Change - Update swiftmailer/swiftmailer (v6.2.4 => v6.2.5): [#38306](https://github.com/owncloud/core/pull/38306)
-* Change - Update pear/archive_tar (1.4.11 => 1.4.13): [#38312](https://github.com/owncloud/core/pull/38312)
-* Change - Update google/apiclient from 2.8.3 to 2.9.1 and related dependencies: [#38344](https://github.com/owncloud/core/pull/38344)
 * Change - Update Symfony components to 4.4.20: [#38462](https://github.com/owncloud/core/pull/38462)
-* Change - Update sabre/vobject (4.3.3 => 4.3.5): [#38380](https://github.com/owncloud/core/pull/38380)
-* Change - Update christophwurst/id3parser (v0.1.1 => v0.1.2): [#38387](https://github.com/owncloud/core/pull/38387)
-* Change - Update phpseclib/phpseclib (2.0.30 => 3.0.3): [#38453](https://github.com/owncloud/core/pull/38453)
-* Change - Update icewind/streams from 0.7.2 to 0.7.3: [#38462](https://github.com/owncloud/core/pull/38462)
-* Change - Update dependencies in apps/files_external/3rdparty: [#38462](https://github.com/owncloud/core/pull/38462)
-* Change - Update icewind/streams from 0.7.2 to 0.7.3 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
 * Change - Update icewind/smb from 3.2.7 to 3.3.1 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
-* Change - Update PHP dependencies: [#38487](https://github.com/owncloud/core/pull/38487)
+* Change - Update PHP dependencies: [#38188](https://github.com/owncloud/core/pull/38188)
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 * Enhancement - New external storage: SMB Collaborative (shared file IDs)): [#38151](https://github.com/owncloud/core/pull/38151)
 * Enhancement - Allow mounting a subfolder from Google Drive: [#38161](https://github.com/owncloud/core/pull/38161)
@@ -70,6 +265,7 @@ Summary
 * Enhancement - Add config parameter 'http.cookie.samesite': [#38458](https://github.com/owncloud/core/pull/38458)
 * Enhancement - Add exception messages whenever a node cannot be moved: [#38481](https://github.com/owncloud/core/pull/38481)
 * Enhancement - UI improvement external storage: [#38483](https://github.com/owncloud/core/pull/38483)
+* Enhancement - Improve systemtags UI for delete and fix case sensitivity problem: [#38498](https://github.com/owncloud/core/pull/38498)
 
 Details
 -------
@@ -226,6 +422,22 @@ Details
 
    https://github.com/owncloud/core/pull/38489
 
+* Bugfix - Fix mispositioned ui elements after leaving viewerMode: [#38547](https://github.com/owncloud/core/issues/38547)
+
+   Until today, after leaving the viewer mode (e.G Pdf viewer) the action header table in the files
+   list was mispositioned while checking an item. The download action and following items went
+   out of sight.
+
+   https://github.com/owncloud/core/issues/38547
+   https://github.com/owncloud/core/pull/38552
+
+* Bugfix - Fix problems moving files inside Gdrive storages: [#38553](https://github.com/owncloud/core/pull/38553)
+
+   Moving files inside a Gdrive storage broke, likely due to changes in the Gdrive server. This PR
+   ensures it works again Moving files from local storage into the Gdrive storage is also fixed.
+
+   https://github.com/owncloud/core/pull/38553
+
 * Change - Use OcsController and routes instead of API::register: [#37272](https://github.com/owncloud/core/pull/37272)
 
    Implemented OcsController and removed a separate file to register ocs routes. Also some
@@ -242,20 +454,6 @@ Details
 
    https://github.com/owncloud/core/pull/38152
 
-* Change - Update laminas/laminas-servicemanager (3.4.1 => 3.5.2): [#38306](https://github.com/owncloud/core/pull/38306)
-
-   https://github.com/owncloud/core/pull/38306
-   https://github.com/owncloud/core/pull/38188
-
-* Change - Update nikic/php-parser (4.10.2 => 4.10.4): [#38191](https://github.com/owncloud/core/pull/38191)
-
-   https://github.com/owncloud/core/pull/38191
-   https://github.com/owncloud/core/pull/38238
-
-* Change - Update swiftmailer/swiftmailer (v6.2.3 => v6.2.4): [#38198](https://github.com/owncloud/core/pull/38198)
-
-   https://github.com/owncloud/core/pull/38198
-
 * Change - Rename phoenix to web: [#38199](https://github.com/owncloud/core/pull/38199)
 
    Phoenix has been renamed to Web. You can now set these keys in config.php to control Web:
@@ -265,22 +463,6 @@ Details
    https://github.com/owncloud/core/pull/38199
    https://github.com/owncloud/core/pull/38201
    https://github.com/owncloud/core/pull/38212
-
-* Change - Update phpseclib/phpseclib (2.0.29 => 2.0.30): [#38244](https://github.com/owncloud/core/pull/38244)
-
-   https://github.com/owncloud/core/pull/38244
-
-* Change - Update egulias/email-validator (2.1.24 => 2.1.25): [#38255](https://github.com/owncloud/core/pull/38255)
-
-   https://github.com/owncloud/core/pull/38255
-
-* Change - Update laminas/laminas-validator (2.13.4 => 2.13.5): [#38275](https://github.com/owncloud/core/pull/38275)
-
-   https://github.com/owncloud/core/pull/38275
-
-* Change - Update patchwork/utf8 (v1.3.2 => v1.3.3): [#38275](https://github.com/owncloud/core/pull/38275)
-
-   https://github.com/owncloud/core/pull/38275
 
 * Change - Update symfony/polyfill (1.20.0 => 1.22.1): [#38275](https://github.com/owncloud/core/pull/38275)
 
@@ -292,11 +474,6 @@ Details
 
    https://github.com/owncloud/core/pull/38275
    https://github.com/owncloud/core/pull/38419
-
-* Change - Update sabre/dav (4.1.3 => 4.1.5): [#38285](https://github.com/owncloud/core/pull/38285)
-
-   https://github.com/owncloud/core/pull/38285
-   https://github.com/owncloud/core/pull/38399
 
 * Change - Remove package patchwork/utf8: [#38286](https://github.com/owncloud/core/pull/38286)
 
@@ -315,22 +492,6 @@ Details
    https://github.com/owncloud/core/issues/38236
    https://github.com/owncloud/core/pull/38305
 
-* Change - Update swiftmailer/swiftmailer (v6.2.4 => v6.2.5): [#38306](https://github.com/owncloud/core/pull/38306)
-
-   https://github.com/owncloud/core/pull/38306
-
-* Change - Update pear/archive_tar (1.4.11 => 1.4.13): [#38312](https://github.com/owncloud/core/pull/38312)
-
-   https://github.com/owncloud/core/pull/38312
-   https://github.com/owncloud/core/pull/38434
-
-* Change - Update google/apiclient from 2.8.3 to 2.9.1 and related dependencies: [#38344](https://github.com/owncloud/core/pull/38344)
-
-   This change updates the 3rd-party dependencies of files_external: - google/apiclient
-   (v2.8.3 => v2.9.1) - phpseclib/phpseclib (2.0.30 => 3.0.5)
-
-   https://github.com/owncloud/core/pull/38344
-
 * Change - Update Symfony components to 4.4.20: [#38462](https://github.com/owncloud/core/pull/38462)
 
    The following Symfony components have been updated from 4.4.16 to 4.4.20 - console -
@@ -345,48 +506,45 @@ Details
    https://symfony.com/blog/symfony-4-4-18-released
    https://symfony.com/blog/symfony-4-4-17-released
 
-* Change - Update sabre/vobject (4.3.3 => 4.3.5): [#38380](https://github.com/owncloud/core/pull/38380)
-
-   https://github.com/owncloud/core/pull/38380
-   https://github.com/owncloud/core/pull/38399
-
-* Change - Update christophwurst/id3parser (v0.1.1 => v0.1.2): [#38387](https://github.com/owncloud/core/pull/38387)
-
-   https://github.com/owncloud/core/pull/38387
-
-* Change - Update phpseclib/phpseclib (2.0.30 => 3.0.3): [#38453](https://github.com/owncloud/core/pull/38453)
-
-   https://github.com/owncloud/core/pull/38453
-
-* Change - Update icewind/streams from 0.7.2 to 0.7.3: [#38462](https://github.com/owncloud/core/pull/38462)
-
-   https://github.com/owncloud/core/pull/38462
-
-* Change - Update dependencies in apps/files_external/3rdparty: [#38462](https://github.com/owncloud/core/pull/38462)
-
-   The following dependencies were updated: - Upgrading firebase/php-jwt (v5.2.0 => v5.2.1) -
-   Upgrading google/apiclient-services (v0.153 => v0.162.0) - Upgrading google/auth
-   (v1.14.3 => v1.15.0) - Upgrading monolog/monolog (2.1.1 => 2.2.0) - Upgrading
-   phpseclib/phpseclib (2.0.29 => 2.0.30)
-
-   https://github.com/owncloud/core/pull/38462
-
-* Change - Update icewind/streams from 0.7.2 to 0.7.3 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
-
-   https://github.com/owncloud/core/pull/38462
-
 * Change - Update icewind/smb from 3.2.7 to 3.3.1 in files_external: [#38462](https://github.com/owncloud/core/pull/38462)
 
    https://github.com/owncloud/core/pull/38462
 
-* Change - Update PHP dependencies: [#38487](https://github.com/owncloud/core/pull/38487)
+* Change - Update PHP dependencies: [#38188](https://github.com/owncloud/core/pull/38188)
 
-   The following have been updated: - egulias/email-validator (2.1.25 => 3.1.0) -
-   psr/container (1.0.0 => 1.1.1) - roave/security-advisories (dev-master 0745f82 =>
-   dev-master ba8a590) - swiftmailer/swiftmailer (v6.2.5 => v6.2.7) - webmozart/assert
-   (1.9.1 => 1.10.0)
+   The following have been updated: - christophwurst/id3parser (v0.1.1 to v0.1.2) -
+   egulias/email-validator (2.1.24 to 3.1.0) - icewind/streams from (0.7.2 to 0.7.3) -
+   laminas/laminas-validator (2.13.4 to 2.13.5) - laminas/laminas-servicemanager (3.4.1 to
+   3.5.2) - nikic/php-parser (4.10.2 to 4.10.4) - pear/archive_tar (1.4.11 to 1.4.13) -
+   phpseclib/phpseclib (2.0.29 to 3.0.6) - psr/container (1.0.0 to 1.1.1) - sabre/dav (4.1.3 to
+   4.1.5) - sabre/vobject (4.3.3 to 4.3.5) - swiftmailer/swiftmailer (v6.2.3 to v6.2.7) -
+   webmozart/assert (1.9.1 to 1.10.0)
 
+   The following have been updated in files_external/3rdparty: - google/apiclient (v2.8.3 to
+   v2.9.1) - firebase/php-jwt (v5.2.0 to v5.2.1) - google/apiclient-services (v0.153 to
+   v0.163.0) - google/auth (v1.14.3 to v1.15.0) - icewind/smb (3.2.7 to 3.3.1) -
+   icewind/streams (0.7.2 to 0.7.3) - monolog/monolog (2.1.1 to 2.2.0) - phpseclib/phpseclib
+   (2.0.29 to 3.0.6)
+
+   https://github.com/owncloud/core/pull/38188
+   https://github.com/owncloud/core/pull/38191
+   https://github.com/owncloud/core/pull/38198
+   https://github.com/owncloud/core/pull/38238
+   https://github.com/owncloud/core/pull/38244
+   https://github.com/owncloud/core/pull/38255
+   https://github.com/owncloud/core/pull/38275
+   https://github.com/owncloud/core/pull/38285
+   https://github.com/owncloud/core/pull/38306
+   https://github.com/owncloud/core/pull/38312
+   https://github.com/owncloud/core/pull/38344
+   https://github.com/owncloud/core/pull/38380
+   https://github.com/owncloud/core/pull/38387
+   https://github.com/owncloud/core/pull/38399
+   https://github.com/owncloud/core/pull/38434
+   https://github.com/owncloud/core/pull/38453
+   https://github.com/owncloud/core/pull/38462
    https://github.com/owncloud/core/pull/38487
+   https://github.com/owncloud/core/pull/38508
 
 * Enhancement - Context menu for files in case multiple actions apply: [#38132](https://github.com/owncloud/core/pull/38132)
 
@@ -458,6 +616,7 @@ Details
    menus.
 
    https://github.com/owncloud/guests/issues/431
+   https://github.com/owncloud/core/issues/38580
    https://github.com/owncloud/core/pull/38298
 
 * Enhancement - Display path in the occ app:list command: [#38309](https://github.com/owncloud/core/pull/38309)
@@ -489,6 +648,7 @@ Details
    don't use cookies.
 
    https://github.com/owncloud/core/pull/38376
+   https://github.com/owncloud/core/pull/38532
 
 * Enhancement - Allow force set DB patforms: [#38379](https://github.com/owncloud/core/pull/38379)
 
@@ -542,6 +702,17 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4444
    https://github.com/owncloud/core/pull/38483
+
+* Enhancement - Improve systemtags UI for delete and fix case sensitivity problem: [#38498](https://github.com/owncloud/core/pull/38498)
+
+   Previously, a system tag could be deleted within the rename step. Now, users can delete tags
+   directly from the system tags tab view dropdown menu. Also, inconsistency on tag name casing
+   has been fixed.
+
+   https://github.com/owncloud/core/issues/38494
+   https://github.com/owncloud/core/issues/38495
+   https://github.com/owncloud/core/issues/38496
+   https://github.com/owncloud/core/pull/38498
 
 Changelog for ownCloud Core [10.6.0] (2020-11-25)
 =======================================

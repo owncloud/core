@@ -30,7 +30,7 @@
  */
 class Google_Service_HomeGraphService extends Google_Service
 {
-  /** New Service: https://www.googleapis.com/auth/homegraph. */
+  /** Private Service: https://www.googleapis.com/auth/homegraph. */
   const HOMEGRAPH =
       "https://www.googleapis.com/auth/homegraph";
 
@@ -88,6 +88,10 @@ class Google_Service_HomeGraphService extends Google_Service
               'parameters' => array(),
             ),'reportStateAndNotification' => array(
               'path' => 'v1/devices:reportStateAndNotification',
+              'httpMethod' => 'POST',
+              'parameters' => array(),
+            ),'requestLink' => array(
+              'path' => 'v1/devices:requestLink',
               'httpMethod' => 'POST',
               'parameters' => array(),
             ),'requestSync' => array(

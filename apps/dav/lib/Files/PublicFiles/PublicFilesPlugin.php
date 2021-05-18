@@ -21,6 +21,7 @@
 
 namespace OCA\DAV\Files\PublicFiles;
 
+use OC;
 use OC\Files\Node\Folder;
 use OCA\DAV\Connector\Sabre\FilesPlugin;
 use OCP\Files\FileInfo;
@@ -168,8 +169,7 @@ class PublicFilesPlugin extends ServerPlugin {
 					} else {
 						$sharedResourcePath = '/' . $shareNode->getName();
 					}
-
-					$path = $server->getBaseUri() . $server->getRequestUri();
+					$path = \OC::$server->getURLGenerator()->getAbsoluteURL('/remote.php/dav/' . $server->getRequestUri());
 					// Let's assume we have this share
 					// - <shared folder>/
 					//   - subfolder/

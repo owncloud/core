@@ -31,6 +31,7 @@ use OC\Cache\CappedMemoryCache;
 use OC\Files\Mount\MoveableMount;
 use OC\Files\View;
 use OC\Helper\UserTypeHelper;
+use OCP\Activity\IEvent;
 use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
@@ -54,6 +55,7 @@ use OCP\Share\IProviderFactory;
 use OCP\Share\IShare;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use OCP\Activity\IManager as ActivityIManager;
 
 /**
  * This class is the communication hub for all sharing related operations.
@@ -90,6 +92,8 @@ class Manager implements IManager {
 	private $connection;
 	/** @var IUserSession  */
 	private $userSession;
+	/** @var ActivityIManager */
+	private $activityManager;
 
 	/**
 	 * Manager constructor.
@@ -107,6 +111,7 @@ class Manager implements IManager {
 	 * @param EventDispatcher $eventDispatcher
 	 * @param View $view
 	 * @param IDBConnection $connection
+	 * @param ActivityIManager $activityManager
 	 * @param IUserSession $userSession
 	 */
 	public function __construct(
@@ -123,6 +128,7 @@ class Manager implements IManager {
 			EventDispatcher $eventDispatcher,
 			View $view,
 			IDBConnection $connection,
+			ActivityIManager $activityManager,
 			IUserSession $userSession = null
 	) {
 		$this->logger = $logger;
@@ -139,6 +145,7 @@ class Manager implements IManager {
 		$this->eventDispatcher = $eventDispatcher;
 		$this->view = $view;
 		$this->connection = $connection;
+		$this->activityManager = $activityManager;
 		$this->userSession = $userSession;
 	}
 
@@ -175,7 +182,7 @@ class Manager implements IManager {
 	 * @param \OCP\Share\IShare $share
 	 * @return bool
 	 */
-	private function shareHasExpired($share) {
+	private static function shareHasExpired($share) {
 		$expirationDate = $share->getExpirationDate();
 		return ($expirationDate !== null) && ($expirationDate < new \DateTime("today"));
 	}
@@ -355,20 +362,36 @@ class Manager implements IManager {
 		 */
 		if ($this->userSession !== null && $this->userSession->getUser() !== null &&
 			$share->getShareOwner() !== $this->userSession->getUser()->getUID()) {
-			// retrieve received share node $shareFileNode being reshared with $share
+			// retrieve received share node mounts $shareFileNodes being reshared with $share
+			// originating from <<exactly>> the same file/folder node, by using getById($node, $first=false)
 			$userFolder = $this->rootFolder->getUserFolder($share->getSharedBy());
-			$shareFileNodes = $userFolder->getById($shareNode->getId(), true);
-			$shareFileNode = $shareFileNodes[0] ?? null;
-			if ($shareFileNode) {
-				$shareFileStorage = $shareFileNode->getStorage();
-				if ($shareFileStorage->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
-					// if $shareFileNode is an incoming federated share, use share node permission directly
+			$shareFileNodes = $userFolder->getById($shareNode->getId(), false);
+
+			// if there are many mount points for exact same file/folder, e.g. due to multiple group reshares
+			// coming from different users or subfolders, take:
+			// - in case of exact match, first (reshare from different users should use first found node)
+			// - longest file node path indicates reshare originates
+			//   from parent folder, and is not reshared subfolder that would contain lower or equal permission by design
+			\usort($shareFileNodes, function (\OCP\Files\Node $first, \OCP\Files\Node $second) {
+				if (\strcmp($first->getPath(), $second->getPath()) < 0) {
+					// first is shorther, take second
+					return -1;
+				}
+				// take first that is exact or longer
+				return 1;
+			});
+
+			$parentShareNode = $shareFileNodes[0] ?? null;
+			if ($parentShareNode) {
+				$parentShareFileStorage = $parentShareNode->getStorage();
+				if ($parentShareFileStorage->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
+					// if $parentShareNode is an incoming federated share, use share node permission directly
 					$maxPermissions = $shareNode->getPermissions();
-				} elseif ($shareFileStorage->instanceOfStorage('OCA\Files_Sharing\SharedStorage')) {
-					// if $shareFileNode is user/group share, use supershare permissions
-					/** @var \OCA\Files_Sharing\SharedStorage $shareFileStorage */
-					'@phan-var \OCA\Files_Sharing\SharedStorage $shareFileStorage';
-					$parentShare = $shareFileStorage->getShare();
+				} elseif ($parentShareFileStorage->instanceOfStorage('OCA\Files_Sharing\SharedStorage')) {
+					// if $parentShareNode is user/group share, use supershare permissions
+					/** @var \OCA\Files_Sharing\SharedStorage $parentShareFileStorage */
+					'@phan-var \OCA\Files_Sharing\SharedStorage $parentShareFileStorage';
+					$parentShare = $parentShareFileStorage->getShare();
 					$maxPermissions = $parentShare->getPermissions();
 					$requiredAttributes = $parentShare->getAttributes();
 				}
@@ -755,6 +778,9 @@ class Manager implements IManager {
 		$target = \OC\Files\Filesystem::normalizePath($target);
 		$share->setTarget($target);
 
+		// Check if is self group-reshare
+		$isSelfGroupReshare = $this->isSelfGroupReshare($share);
+
 		// Pre share hook
 		$run = true;
 		$error = '';
@@ -784,6 +810,13 @@ class Manager implements IManager {
 
 		$provider = $this->factory->getProviderForType($share->getShareType());
 		$share = $provider->create($share);
+
+		// if this is self group-reshare, delete from self to avoid shared mount issues.
+		// otherwise this user will receive shared item with possibly reduced permissions to himself
+		// for this specific target (e.g. reshared subfolder mounted in root with reduced permissions)
+		if ($isSelfGroupReshare) {
+			$provider->deleteFromSelf($share, $share->getSharedBy());
+		}
 
 		// Post share hook
 		$postHookData = [
@@ -1107,7 +1140,8 @@ class Manager implements IManager {
 			'itemparent' => \method_exists($share, 'getParent') ? $share->getParent() : '',
 			'uidOwner'   => $share->getSharedBy(),
 			'fileSource' => $share->getNodeId(),
-			'fileTarget' => $share->getTarget()
+			'fileTarget' => $share->getTarget(),
+			'shareExpired' => self::shareHasExpired($share)
 		];
 		return $hookParams;
 	}
@@ -1222,9 +1256,11 @@ class Manager implements IManager {
 
 			$queriedShares = $provider->getAllSharesBy($userId, $shareTypeArray, $nodeIDs, $reshares);
 			foreach ($queriedShares as $queriedShare) {
-				if ($this->shareHasExpired($queriedShare)) {
+				if (self::shareHasExpired($queriedShare)) {
 					try {
+						$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 						$this->deleteShare($queriedShare);
+						$this->activityManager->restoreAgentAuthor();
 					} catch (NotFoundException $e) {
 						//Ignore since this basically means the share is deleted
 					}
@@ -1261,9 +1297,11 @@ class Manager implements IManager {
 			$added = 0;
 			foreach ($shares as $share) {
 				// Check if the share is expired and if so delete it
-				if ($this->shareHasExpired($share)) {
+				if (self::shareHasExpired($share)) {
 					try {
+						$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 						$this->deleteShare($share);
+						$this->activityManager->restoreAgentAuthor();
 					} catch (NotFoundException $e) {
 						//Ignore since this basically means the share is deleted
 					}
@@ -1320,9 +1358,11 @@ class Manager implements IManager {
 			$added = 0;
 			foreach ($shares as $share) {
 				// Check if the share is expired and if so delete it
-				if ($this->shareHasExpired($share)) {
+				if (self::shareHasExpired($share)) {
 					try {
+						$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 						$this->deleteShare($share);
+						$this->activityManager->restoreAgentAuthor();
 					} catch (NotFoundException $e) {
 						//Ignore since this basically means the share is deleted
 					}
@@ -1377,9 +1417,11 @@ class Manager implements IManager {
 			// Obtain all shares for all the supported provider types
 			$queriedShares = $provider->getAllSharedWith($userId, $node);
 			foreach ($queriedShares as $queriedShare) {
-				if ($this->shareHasExpired($queriedShare)) {
+				if (self::shareHasExpired($queriedShare)) {
 					try {
+						$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 						$this->deleteShare($queriedShare);
+						$this->activityManager->restoreAgentAuthor();
 					} catch (NotFoundException $e) {
 						//Ignore since this basically means the share is deleted
 					}
@@ -1406,8 +1448,10 @@ class Manager implements IManager {
 		$share = $provider->getShareById($id, $recipient);
 
 		// Validate shares expiration date
-		if ($this->shareHasExpired($share)) {
+		if (self::shareHasExpired($share)) {
+			$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 			$this->deleteShare($share);
+			$this->activityManager->restoreAgentAuthor();
 			throw new ShareNotFound();
 		}
 
@@ -1462,8 +1506,10 @@ class Manager implements IManager {
 			$share = $provider->getShareByToken($token);
 		}
 
-		if ($this->shareHasExpired($share)) {
+		if (self::shareHasExpired($share)) {
+			$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 			$this->deleteShare($share);
+			$this->activityManager->restoreAgentAuthor();
 			throw new ShareNotFound();
 		}
 
@@ -1925,5 +1971,25 @@ class Manager implements IManager {
 		}
 
 		return true;
+	}
+
+	/*
+	 * @param \OCP\Share\IShare $share
+	 *
+	 * Check whether this share is share that the user is not owner and
+	 * that user reshared with group that is memberof (reshared with himself)
+	 *
+	 * @return boolean
+	 */
+	private function isSelfGroupReshare(\OCP\Share\IShare $share) {
+		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP
+				&& $share->getShareOwner() !== $share->getSharedBy()) {
+			$sharedByUser = $this->userManager->get($share->getSharedBy());
+			$sharedWithGroup = $this->groupManager->get($share->getSharedWith());
+			if ($sharedWithGroup !== null && $sharedByUser !== null && $sharedWithGroup->inGroup($sharedByUser)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

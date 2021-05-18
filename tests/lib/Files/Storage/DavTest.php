@@ -1361,4 +1361,25 @@ class DavTest extends TestCase {
 
 		$this->instance->hasUpdated('some%dir', 1508496363);
 	}
+
+	public function testPropfindNotFoundOnCurlException() {
+		$exception = new \Exception("", \CURLE_COULDNT_CONNECT);
+		$this->davClient->expects($this->once())
+			->method('propfind')
+			->willThrowException($exception);
+
+		$response = $this->invokePrivate($this->instance, 'propfind', ['']);
+		$this->assertEquals(false, $response);
+	}
+
+	public function testPropfindStorageNotAvailableExceptionOnCurlExceptionWithStrictCheck() {
+		$this->expectException(\OCP\Files\StorageNotAvailableException::class);
+
+		$exception = new \Exception("", \CURLE_COULDNT_CONNECT);
+		$this->davClient->expects($this->once())
+			->method('propfind')
+			->willThrowException($exception);
+
+		$this->invokePrivate($this->instance, 'propfind', ['', true]);
+	}
 }

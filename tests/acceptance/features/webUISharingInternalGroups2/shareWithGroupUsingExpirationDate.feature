@@ -13,7 +13,8 @@ Feature: Sharing files and folders with internal groups with expiration date set
       | username |
       | Alice    |
       | Brian    |
-    And user "Carol" has been created with default attributes and large skeleton files
+      | Carol    |
+    And user "Carol" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And these groups have been created:
       | groupname |
       | grp1      |
@@ -252,6 +253,8 @@ Feature: Sharing files and folders with internal groups with expiration date set
     Given parameter "shareapi_default_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_group_share" of app "core" has been set to "yes"
     And parameter "shareapi_expire_after_n_days_group_share" of app "core" has been set to "30"
+    And user "Carol" has created folder "simple-folder"
+    And user "Carol" has created folder "simple-folder/simple-empty-folder"
     And group "grp2" has been created
     And user "Alice" has been added to group "grp2"
     And user "Carol" has created a share with settings

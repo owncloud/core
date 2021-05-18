@@ -384,7 +384,7 @@ class Local extends Common {
 		}
 		$pathToResolve = $fullPath;
 		$realPath = \realpath($pathToResolve);
-		while ($realPath === false) { // for non existing files check the parent directory
+		while (!\is_string($realPath)) { // for non existing files check the parent directory
 			$pathToResolve = \dirname($pathToResolve);
 			$realPath = \realpath($pathToResolve);
 		}

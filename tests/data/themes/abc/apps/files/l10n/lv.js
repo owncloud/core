@@ -39,7 +39,6 @@ OC.L10N.register(
     "Unable to determine date" : "Neizdevās noteikt datumu",
     "Invalid path" : "Nederīgs ceļš",
     "This operation is forbidden" : "Šī darbība ir aizliegta",
-    "This directory is unavailable, please check the logs or contact the administrator" : "Šis direktorijs nav pieejams, lūdzu pārbaudiet žurnālus vai sazinieties ar administratoru",
     "group" : "grupa",
     "Remote share" : "Attālinātā koplietotne",
     "Could not move \"{file}\", target exists" : "\"{file}\" nevarēja pārvietot, fails jau eksistē",

@@ -8,6 +8,7 @@ Feature: low level tests of the creation extension see https://tus.io/protocols/
     Given using <dav_version> DAV path
     When user "Alice" creates a new TUS resource on the WebDAV API with these headers:
       | Upload-Length   | 100                                           |
+      #    d29ybGRfZG9taW5hdGlvbl9wbGFuLnBkZg== is the base64 encode of world_domination_plan.pdf
       | Upload-Metadata | filename d29ybGRfZG9taW5hdGlvbl9wbGFuLnBkZg== |
       | Tus-Resumable   | 1.0.0                                         |
     Then the HTTP status code should be "201"
@@ -19,10 +20,12 @@ Feature: low level tests of the creation extension see https://tus.io/protocols/
       | old         |
       | new         |
 
+
   Scenario Outline: creating a new upload resource without upload length
     Given using <dav_version> DAV path
     When user "Alice" creates a new TUS resource on the WebDAV API with these headers:
       | Tus-Resumable   | 1.0.0                                         |
+      #    d29ybGRfZG9taW5hdGlvbl9wbGFuLnBkZg== is the base64 encode of world_domination_plan.pdf
       | Upload-Metadata | filename d29ybGRfZG9taW5hdGlvbl9wbGFuLnBkZg== |
     Then the HTTP status code should be "412"
     And the following headers should not be set

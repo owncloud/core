@@ -49,6 +49,7 @@ use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\INavigationManager;
 use OCP\ILogger;
+use OC\OCS\Result;
 
 class SecurityMiddlewareTest extends TestCase {
 
@@ -575,6 +576,27 @@ class SecurityMiddlewareTest extends TestCase {
 		$controller->expects($this->once())
 			->method('buildResponse')
 			->willReturn($expectedResponse);
+		$response = $this->middleware->afterException($controller, 'test', $nonAdminException);
+		$this->assertSame($expectedResponse, $response);
+	}
+
+	public function testAfterExceptionForNotLoggedInExceptionWithRequestAppPassword() {
+		$nonAdminException = new NotLoggedInException();
+		$expectedResponse = $this->createMock(Response::class);
+		$controller = $this->createMock(OCSController::class);
+		$controller->expects($this->once())
+			->method('buildResponse')
+			->with($this->callback(
+				function (Result $result) {
+					$headers = $result->getHeaders();
+					$this->assertTrue(\array_key_exists('WWW-Authenticate', $headers));
+					$this->assertEquals($headers['WWW-Authenticate'], 'Basic realm="ownCloud App Authentication Requested"');
+					return true;
+				}))
+			->willReturn($expectedResponse);
+		$this->request->expects($this->once())
+			->method('getHeader')
+			->will($this->returnValue('true'));
 		$response = $this->middleware->afterException($controller, 'test', $nonAdminException);
 		$this->assertSame($expectedResponse, $response);
 	}

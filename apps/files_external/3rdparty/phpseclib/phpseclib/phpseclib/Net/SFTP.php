@@ -37,9 +37,10 @@
 
 namespace phpseclib3\Net;
 
-use ParagonIE\ConstantTime\Hex;
 use phpseclib3\Exception\FileNotFoundException;
 use phpseclib3\Common\Functions\Strings;
+use phpseclib3\Crypt\Common\AsymmetricKey;
+use phpseclib3\System\SSH\Agent;
 
 /**
  * Pure-PHP implementations of SFTP.
@@ -271,7 +272,7 @@ class SFTP extends SSH2
      * @var array
      * @access private
      */
-    var $requestBuffer = array();
+    private $requestBuffer = array();
 
     /**
      * Preserve timestamps on file downloads / uploads
@@ -281,7 +282,7 @@ class SFTP extends SSH2
      * @var bool
      * @access private
      */
-    var $preserveTime = false;
+    private $preserveTime = false;
 
     /**
      * Default Constructor.
@@ -430,7 +431,7 @@ class SFTP extends SSH2
      * Login
      *
      * @param string $username
-     * @param string[] ...$args
+     * @param string|AsymmetricKey|array[]|Agent|null ...$args
      * @throws \UnexpectedValueException on receipt of unexpected packets
      * @return bool
      * @access public
@@ -980,7 +981,7 @@ class SFTP extends SSH2
             uasort($contents, [&$this, 'comparator']);
         }
 
-        return $raw ? $contents : array_keys($contents);
+        return $raw ? $contents : array_map('strval', array_keys($contents));
     }
 
     /**
@@ -2096,7 +2097,7 @@ class SFTP extends SSH2
      * $offset and $length can be used to download files in chunks.
      *
      * @param string $remote_file
-     * @param string|bool|resource $local_file
+     * @param string|bool|resource|callable $local_file
      * @param int $offset
      * @param int $length
      * @param callable|null $progressCallback
@@ -2972,7 +2973,6 @@ class SFTP extends SSH2
 
         $tempLength = $length;
         $tempLength-= strlen($this->packet_buffer);
-
 
         // 256 * 1024 is what SFTP_MAX_MSG_LENGTH is set to in OpenSSH's sftp-common.h
         if ($tempLength > 256 * 1024) {

@@ -14,6 +14,7 @@
     "All users. Type to select user or group." : "Todos os usuários. Digite para selecionar usuário ou grupo.",
     "(group)" : "(grupo)",
     "Compatibility with Mac NFD encoding (slow)" : "Compatibilidade com a codificação Mac NFD (lento)",
+    "Sharing cannot be enabled due to the chosen authentication method" : "O compartilhamento não pode ser ativado devido ao método de autenticação escolhido",
     "Unknown auth backend \"{b}\"" : "Backend de autenticação desconhecido \"{b}\"",
     "Please make sure that the app that provides this backend is installed and enabled" : "Certifique-se de que o aplicativo que fornece este backend está instalado e habilitado",
     "Admin defined" : "Definido pelo administrador",

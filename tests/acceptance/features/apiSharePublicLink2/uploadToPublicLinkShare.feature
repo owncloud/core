@@ -3,7 +3,8 @@
 Feature: upload to a public link share
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "FOLDER"
 
   @smokeTest
   Scenario: Uploading same file to a public upload-only share multiple times via old API
@@ -27,7 +28,7 @@ Feature: upload to a public link share
       | path        | FOLDER |
       | permissions | create |
     When the public uploads file "test.txt" with content "test" using the new public WebDAV API
-    When the public uploads file "test.txt" with content "test2" using the new public WebDAV API
+    And the public uploads file "test.txt" with content "test2" using the new public WebDAV API
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions
       | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
@@ -140,7 +141,7 @@ Feature: upload to a public link share
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | FOLDER |
       | permissions | change |
-    When the quota of user "Alice" has been set to "0"
+    And the quota of user "Alice" has been set to "0"
     Then uploading a file should not work using the old public WebDAV API
     And the HTTP status code should be "507"
 
@@ -150,7 +151,7 @@ Feature: upload to a public link share
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | FOLDER |
       | permissions | change |
-    When the quota of user "Alice" has been set to "0"
+    And the quota of user "Alice" has been set to "0"
     And uploading a file should not work using the new public WebDAV API
     And the HTTP status code should be "507"
 
@@ -159,7 +160,7 @@ Feature: upload to a public link share
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | FOLDER |
       | permissions | create |
-    When the quota of user "Alice" has been set to "0"
+    And the quota of user "Alice" has been set to "0"
     Then uploading a file should not work using the old public WebDAV API
     And the HTTP status code should be "507"
 
@@ -169,7 +170,7 @@ Feature: upload to a public link share
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | FOLDER |
       | permissions | create |
-    When the quota of user "Alice" has been set to "0"
+    And the quota of user "Alice" has been set to "0"
     And uploading a file should not work using the new public WebDAV API
     And the HTTP status code should be "507"
 

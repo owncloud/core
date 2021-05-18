@@ -7,7 +7,7 @@ Feature: users cannot upload a file to or into an excluded directory using old c
   Background:
     Given using OCS API version "1"
     And using old DAV path
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
 
   @issue-36645
   Scenario: Upload a file to an excluded directory name using old chunking
@@ -19,6 +19,7 @@ Feature: users cannot upload a file to or into an excluded directory using old c
 
   @issue-36645
   Scenario: Upload a file to an excluded directory name inside a parent directory using old chunking
+    Given user "Alice" has created folder "FOLDER"
     When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
     And user "Alice" uploads file "filesForUpload/textfile.txt" to "/FOLDER/.github" in 3 chunks using the WebDAV API
     Then the HTTP status code should be "507"

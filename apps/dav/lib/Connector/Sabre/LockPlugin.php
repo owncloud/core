@@ -43,6 +43,8 @@ class LockPlugin extends ServerPlugin {
 	 */
 	private $server;
 
+	private $missedLocks = [];
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -59,9 +61,15 @@ class LockPlugin extends ServerPlugin {
 		if ($request->getMethod() !== 'PUT' || \OC_FileChunking::isWebdavChunk()) {
 			return;
 		}
+
+		$requestedPath = $request->getPath();
 		try {
-			$node = $this->server->tree->getNodeForPath($request->getPath());
+			$node = $this->server->tree->getNodeForPath($requestedPath);
 		} catch (NotFound $e) {
+			if (!isset($this->missedLocks[$requestedPath])) {
+				$this->missedLocks[$requestedPath] = 0;
+			}
+			$this->missedLocks[$requestedPath]++;
 			return;
 		}
 		if ($node instanceof Node) {
@@ -77,8 +85,19 @@ class LockPlugin extends ServerPlugin {
 		if ($request->getMethod() !== 'PUT' || \OC_FileChunking::isWebdavChunk()) {
 			return;
 		}
+
+		$requestedPath = $request->getPath();
+		if (isset($this->missedLocks[$requestedPath])) {
+			// don't bother to unlock if we couldn't lock
+			$this->missedLocks[$requestedPath]--;
+			if ($this->missedLocks[$requestedPath] === 0) {
+				unset($this->missedLocks[$requestedPath]);
+			}
+			return;
+		}
+
 		try {
-			$node = $this->server->tree->getNodeForPath($request->getPath());
+			$node = $this->server->tree->getNodeForPath($requestedPath);
 		} catch (NotFound $e) {
 			return;
 		}

@@ -43,11 +43,6 @@ class Google_Service_Fitness_Resource_UsersDataSourcesDatasets extends Google_Se
    * nanoseconds from the epoch. The ID is formatted like: "startTime-endTime"
    * where startTime and endTime are 64 bit integers.
    * @param array $optParams Optional parameters.
-   *
-   * @opt_param string currentTimeMillis The client's current time in milliseconds
-   * since epoch.
-   * @opt_param string modifiedTimeMillis When the operation was performed on the
-   * client.
    */
   public function delete($userId, $dataSourceId, $datasetId, $optParams = array())
   {
@@ -104,10 +99,6 @@ class Google_Service_Fitness_Resource_UsersDataSourcesDatasets extends Google_Se
    * @param string $datasetId This field is not used, and can be safely omitted.
    * @param Google_Service_Fitness_Dataset $postBody
    * @param array $optParams Optional parameters.
-   *
-   * @opt_param string currentTimeMillis The client's current time in milliseconds
-   * since epoch. Note that the minStartTimeNs and maxEndTimeNs properties in the
-   * request body are in nanoseconds instead of milliseconds.
    * @return Google_Service_Fitness_Dataset
    */
   public function patch($userId, $dataSourceId, $datasetId, Google_Service_Fitness_Dataset $postBody, $optParams = array())

@@ -9,7 +9,7 @@ Feature: get subadmins - current oC10 behavior for issue-31276
 
   @issue-31276
   Scenario: subadmin tries to get other subadmins of the same group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username         |
       | subadmin         |
       | another-subadmin |
@@ -24,7 +24,7 @@ Feature: get subadmins - current oC10 behavior for issue-31276
 
   @issue-31276
   Scenario: normal user tries to get the subadmins of the group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username       |
       | subadmin       |
       | brand-new-user |

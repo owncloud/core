@@ -5,7 +5,7 @@ OC.L10N.register(
     "Name" : "नाव",
     "Share" : "वाटा",
     "can edit" : "बदलू शकतो",
-    "Delete" : "का",
-    "Rename" : "नाव बदला"
+    "Rename" : "नाव बदला",
+    "Delete" : "का"
 },
 "nplurals=2; plural=(n != 1);");

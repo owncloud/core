@@ -339,7 +339,7 @@ class Blowfish extends BlockCipher
             if ($this->key_length < 16) {
                 return false;
             }
-            self::$cipher_name_openssl_ecb = 'bf-ecb';
+            $this->cipher_name_openssl_ecb = 'bf-ecb';
             $this->cipher_name_openssl = 'bf-' . $this->openssl_translate_mode();
         }
 

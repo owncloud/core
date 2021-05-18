@@ -4,7 +4,7 @@ Feature: sharing works when a username and group name are the same
   Background:
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
 
   @skipOnLDAP @skipOnOcV10.3.0 @skipOnOcV10.3.1
   Scenario: creating a new share with user and a group having same name

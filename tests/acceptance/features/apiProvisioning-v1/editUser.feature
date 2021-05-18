@@ -9,7 +9,7 @@ Feature: edit users
 
   @smokeTest
   Scenario: the administrator can edit a user email
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     When the administrator changes the email of user "brand-new-user" to "brand-new-user@example.com" using the provisioning API
     Then the HTTP status code should be "200"
     And the OCS status code should be "100"
@@ -17,7 +17,7 @@ Feature: edit users
 
   @skipOnOcV10.3
   Scenario Outline: the administrator can edit a user email of an user with special characters in the username
-    Given these users have been created with small skeleton files:
+    Given these users have been created without skeleton files:
       | username   | email   |
       | <username> | <email> |
     When the administrator changes the email of user "<username>" to "a-different-email@example.com" using the provisioning API
@@ -31,21 +31,21 @@ Feature: edit users
 
   @smokeTest
   Scenario: the administrator can edit a user display (the API allows editing the "display name" by using the key word "display")
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     When the administrator changes the display of user "brand-new-user" to "A New User" using the provisioning API
     Then the HTTP status code should be "200"
     And the OCS status code should be "100"
     And the display name of user "brand-new-user" should be "A New User"
 
   Scenario: the administrator can edit a user display name
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     When the administrator changes the display name of user "brand-new-user" to "A New User" using the provisioning API
     Then the HTTP status code should be "200"
     And the OCS status code should be "100"
     And the display name of user "brand-new-user" should be "A New User"
 
   Scenario: the administrator can clear a user display name and then it defaults to the username
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     And the administrator has changed the display name of user "brand-new-user" to "A New User"
     When the administrator changes the display name of user "brand-new-user" to "" using the provisioning API
     Then the HTTP status code should be "200"
@@ -54,14 +54,14 @@ Feature: edit users
 
   @smokeTest
   Scenario: the administrator can edit a user quota
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     When the administrator changes the quota of user "brand-new-user" to "12MB" using the provisioning API
     Then the HTTP status code should be "200"
     And the OCS status code should be "100"
     And the quota definition of user "brand-new-user" should be "12 MB"
 
   Scenario: the administrator can override an existing user email
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     And the administrator has changed the email of user "brand-new-user" to "brand-new-user@gmail.com"
     And the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -72,7 +72,7 @@ Feature: edit users
 
   @skipOnOcV10.3 @skipOnOcV10.4
   Scenario: the administrator can clear an existing user email
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     And the administrator has changed the email of user "brand-new-user" to "brand-new-user@gmail.com"
     And the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -83,7 +83,7 @@ Feature: edit users
 
   @smokeTest @notToImplementOnOCIS
   Scenario: a subadmin should be able to edit the user information in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username       |
       | subadmin       |
       | brand-new-user |
@@ -98,7 +98,7 @@ Feature: edit users
     And the quota definition of user "brand-new-user" should be "12 MB"
 
   Scenario: a normal user should be able to change their email address
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     When user "brand-new-user" changes the email of user "brand-new-user" to "brand-new-user@example.com" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -107,7 +107,7 @@ Feature: edit users
     And the email address of user "brand-new-user" should be "brand-new-user@example.com"
 
   Scenario Outline: a normal user should be able to change their display name
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     When user "brand-new-user" changes the display name of user "brand-new-user" to "<display-name>" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -120,7 +120,7 @@ Feature: edit users
       | Phil Cyclist 🚴 |
 
   Scenario: a normal user should not be able to change their quota
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     When user "brand-new-user" changes the quota of user "brand-new-user" to "12MB" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
@@ -129,7 +129,7 @@ Feature: edit users
     And the quota definition of user "brand-new-user" should be "default"
 
   Scenario: the administrator can edit user information with admin permissions
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username            |
       | another-admin       |
     And user "another-admin" has been added to group "admin"
@@ -141,7 +141,7 @@ Feature: edit users
     And the quota definition of user "another-admin" should be "12 MB"
 
   Scenario: a subadmin should be able to edit user information with subadmin permissions in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username         |
       | subadmin         |
       | another-subadmin |
@@ -157,7 +157,7 @@ Feature: edit users
     And the quota definition of user "another-subadmin" should be "12 MB"
 
     Scenario: a subadmin should not be able to edit user information of another subadmin of same group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username         |
       | subadmin         |
       | another-subadmin |

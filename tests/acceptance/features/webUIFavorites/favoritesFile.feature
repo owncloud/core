@@ -5,10 +5,12 @@ Feature: Mark file as favorite
   I would like to mark any file/folder as favorite
   So that I can find my favorite file/folder easily
 
+  Background:
+    Given user "Alice" has been created with default attributes and without skeleton files
+
   @smokeTest @skipOnLDAP
   Scenario: mark a file as favorite and list it in favorites page
-    Given user "Alice" has been created with default attributes and without skeleton files
-    And user "Alice" has uploaded file "filesForUpload/data.zip" to "/data.zip"
+    Given user "Alice" has uploaded file "filesForUpload/data.zip" to "/data.zip"
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And user "Alice" has uploaded file with content "file with comma" to "s,a,m,p,l,e.txt"
     And user "Alice" has logged in using the webUI
@@ -24,9 +26,10 @@ Feature: Mark file as favorite
     And file "lorem.txt" should not be listed in the favorites page on the webUI
 
   Scenario: mark a folder as favorite and list it in favorites page
-    Given user "Alice" has been created with default attributes and without skeleton files
-    And user "Alice" has created folder "/simple-folder"
-    And user "Alice" has created folder "/simple-folder/simple-empty-folder"
+    Given user "Alice" has created the following folders
+      | path                              |
+      | simple-folder                     |
+      | simple-folder/simple-empty-folder |
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
     When the user marks folder "simple-folder" as favorite using the webUI
@@ -37,7 +40,15 @@ Feature: Mark file as favorite
     And folder "simple-empty-folder" should not be listed in the favorites page on the webUI
 
   Scenario: mark files with same name and different path as favorites and list them in favourites page
-    Given user "Alice" has been created with default attributes and large skeleton files
+    Given user "Alice" has created the following folders
+      | path                              |
+      | simple-folder                     |
+      | simple-empty-folder               |
+      | strängé नेपाली folder               |
+      | simple-folder/simple-empty-folder |
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "strängé नेपाली folder/lorem.txt"
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
     When the user marks file "lorem.txt" as favorite using the webUI

@@ -2,13 +2,16 @@
 Feature: resharing can be disabled
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
-    And user "Brian" has been created with default attributes and without skeleton files
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
 
   @smokeTest
   Scenario Outline: resharing a file is not allowed when allow resharing has been disabled
     Given using OCS API version "<ocs_api_version>"
     And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian" with permissions "share,update,read"
     And parameter "shareapi_allow_resharing" of app "core" has been set to "no"
     When user "Brian" shares file "/textfile0.txt" with user "Carol" with permissions "share,update,read" using the sharing API
@@ -23,6 +26,7 @@ Feature: resharing can be disabled
   Scenario Outline: ordinary sharing is allowed when allow resharing has been disabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_resharing" of app "core" has been set to "no"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" shares file "/textfile0.txt" with user "Brian" with permissions "share,update,read" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"

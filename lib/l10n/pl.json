@@ -72,7 +72,7 @@
     "Set an admin password." : "Ustaw hasło administratora.",
     "Can't create or write into the data directory %s" : "Nie można tworzyć ani zapisywać w katalogu %s",
     "Invalid Federated Cloud ID" : "Niewłaściwe ID stowarzyszonej chmury",
-    "%s shared »%s« with you" : "%s Współdzielone »%s« z tobą",
+    "%s shared »%s« with you" : "%s shared »%s« with you",
     "%s via %s" : "%s przez %s",
     "Sharing %s failed, because the file does not exist" : "Wspóldzielenie %s nie powiodło się. ponieważ plik nie istnieje",
     "You are not allowed to share %s" : "Nie masz uprawnień aby udostępnić %s",

@@ -27,16 +27,14 @@ class Google_Service_Cloudchannel_Resource_AccountsCustomers extends Google_Serv
 {
   /**
    * Creates a new Customer resource under the reseller or distributor account.
-   * Possible Error Codes: * PERMISSION_DENIED: If the reseller account making the
-   * request and the reseller account being queried for are different. *
-   * INVALID_ARGUMENT: It can happen in following scenarios - * Missing or invalid
-   * required parameters in the request. * Domain field value doesn't match the
-   * domain specified in primary email. Return Value: If successful, the newly
-   * created Customer resource, otherwise returns an error. (customers.create)
+   * Possible error codes: * PERMISSION_DENIED: The reseller account making the
+   * request is different from the reseller account in the API request. *
+   * INVALID_ARGUMENT: * Required request parameters are missing or invalid. *
+   * Domain field value doesn't match the primary email domain. Return value: The
+   * newly created Customer resource. (customers.create)
    *
    * @param string $parent Required. The resource name of reseller account in
-   * which to create the customer. The parent takes the format:
-   * accounts/{account_id}
+   * which to create the customer. Parent uses the format: accounts/{account_id}
    * @param Google_Service_Cloudchannel_GoogleCloudChannelV1Customer $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Cloudchannel_GoogleCloudChannelV1Customer
@@ -48,12 +46,12 @@ class Google_Service_Cloudchannel_Resource_AccountsCustomers extends Google_Serv
     return $this->call('create', array($params), "Google_Service_Cloudchannel_GoogleCloudChannelV1Customer");
   }
   /**
-   * Deletes the given Customer permanently and irreversibly. Possible Error
-   * Codes: * PERMISSION_DENIED: If the account making the request does not own
-   * this customer. * INVALID_ARGUMENT: Missing or invalid required parameters in
-   * the request. * FAILED_PRECONDITION: If the customer has existing
-   * entitlements. * NOT_FOUND: No Customer resource found for the name specified
-   * in the request. (customers.delete)
+   * Deletes the given Customer permanently and irreversibly. Possible error
+   * codes: * PERMISSION_DENIED: The account making the request does not own this
+   * customer. * INVALID_ARGUMENT: Required request parameters are missing or
+   * invalid. * FAILED_PRECONDITION: The customer has existing entitlements. *
+   * NOT_FOUND: No Customer resource found for the name in the request.
+   * (customers.delete)
    *
    * @param string $name Required. The resource name of the customer to delete.
    * @param array $optParams Optional parameters.
@@ -66,15 +64,15 @@ class Google_Service_Cloudchannel_Resource_AccountsCustomers extends Google_Serv
     return $this->call('delete', array($params), "Google_Service_Cloudchannel_GoogleProtobufEmpty");
   }
   /**
-   * Returns a requested Customer resource. Possible Error Codes: *
-   * PERMISSION_DENIED: If the reseller account making the request and the
-   * reseller account being queried for are different. * INVALID_ARGUMENT: Missing
-   * or invalid required parameters in the request. * NOT_FOUND: If the customer
-   * resource doesn't exist. Usually the result of an invalid name parameter.
-   * Return Value: Customer resource if found, error otherwise. (customers.get)
+   * Returns a requested Customer resource. Possible error codes: *
+   * PERMISSION_DENIED: The reseller account making the request is different from
+   * the reseller account in the API request. * INVALID_ARGUMENT: Required request
+   * parameters are missing or invalid. * NOT_FOUND: The customer resource doesn't
+   * exist. Usually the result of an invalid name parameter. Return value: The
+   * Customer resource. (customers.get)
    *
    * @param string $name Required. The resource name of the customer to retrieve.
-   * The name takes the format: accounts/{account_id}/customers/{customer_id}
+   * Name uses the format: accounts/{account_id}/customers/{customer_id}
    * @param array $optParams Optional parameters.
    * @return Google_Service_Cloudchannel_GoogleCloudChannelV1Customer
    */
@@ -85,23 +83,21 @@ class Google_Service_Cloudchannel_Resource_AccountsCustomers extends Google_Serv
     return $this->call('get', array($params), "Google_Service_Cloudchannel_GoogleCloudChannelV1Customer");
   }
   /**
-   * List downstream Customers. Possible Error Codes: * PERMISSION_DENIED: If the
-   * reseller account making the request and the reseller account being queried
-   * for are different. * INVALID_ARGUMENT: Missing or invalid required parameters
-   * in the request. Return Value: List of Customers pertaining to the reseller or
-   * empty list if there are none. (customers.listAccountsCustomers)
+   * List Customers. Possible error codes: * PERMISSION_DENIED: The reseller
+   * account making the request is different from the reseller account in the API
+   * request. * INVALID_ARGUMENT: Required request parameters are missing or
+   * invalid. Return value: List of Customers, or an empty list if there are no
+   * customers. (customers.listAccountsCustomers)
    *
-   * @param string $parent Required. The resource name of the reseller account
-   * from which to list customers. The parent takes the format:
-   * accounts/{account_id}.
+   * @param string $parent Required. The resource name of the reseller account to
+   * list customers from. Parent uses the format: accounts/{account_id}.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Optional. The maximum number of customers to return.
-   * The service may return fewer than this value. If unspecified, at most 10
-   * customers will be returned. The maximum value is 50; values about 50 will be
-   * coerced to 50.
-   * @opt_param string pageToken Optional. A token identifying a page of results,
-   * if other than the first one. Typically obtained via
+   * The service may return fewer than this value. If unspecified, returns at most
+   * 10 customers. The maximum value is 50.
+   * @opt_param string pageToken Optional. A token identifying a page of results
+   * other than the first page. Obtained through
    * ListCustomersResponse.next_page_token of the previous
    * CloudChannelService.ListCustomers call.
    * @return Google_Service_Cloudchannel_GoogleCloudChannelV1ListCustomersResponse
@@ -113,33 +109,32 @@ class Google_Service_Cloudchannel_Resource_AccountsCustomers extends Google_Serv
     return $this->call('list', array($params), "Google_Service_Cloudchannel_GoogleCloudChannelV1ListCustomersResponse");
   }
   /**
-   * Lists the Purchasable Offers for the following cases: * Offers that can be
-   * newly purchased for a customer * Offers that can be changed to, for an
-   * entitlement. Possible Error Codes: * PERMISSION_DENIED: If the customer
-   * doesn't belong to the reseller * INVALID_ARGUMENT: Missing or invalid
-   * required parameters in the request. (customers.listPurchasableOffers)
+   * Lists the following: * Offers that you can purchase for a customer. * Offers
+   * that you can change for an entitlement. Possible error codes: *
+   * PERMISSION_DENIED: The customer doesn't belong to the reseller *
+   * INVALID_ARGUMENT: Required request parameters are missing or invalid.
+   * (customers.listPurchasableOffers)
    *
-   * @param string $customer Required. The resource name of the customer for which
-   * to list Offers. Format: accounts/{account_id}/customers/{customer_id}.
+   * @param string $customer Required. The resource name of the customer to list
+   * Offers for. Format: accounts/{account_id}/customers/{customer_id}.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string changeOfferPurchase.entitlement Required. Resource name of
    * the entitlement. Format:
    * accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
    * @opt_param string changeOfferPurchase.newSku Optional. Resource name of the
-   * SKU that is being changed to. Should be provided if upgrading or downgrading
-   * an entitlement. Format: products/{product_id}/skus/{sku_id}
+   * new target SKU. Provide this SKU when upgrading or downgrading an
+   * entitlement. Format: products/{product_id}/skus/{sku_id}
    * @opt_param string createEntitlementPurchase.sku Required. SKU that the result
    * should be restricted to. Format: products/{product_id}/skus/{sku_id}.
-   * @opt_param string languageCode Optional. The BCP-47 language code, such as
-   * "en-US". If specified, the response will be localized to the corresponding
-   * language code. Default is "en-US".
+   * @opt_param string languageCode Optional. The BCP-47 language code. For
+   * example, "en-US". The response will localize in the corresponding language
+   * code, if specified. The default value is "en-US".
    * @opt_param int pageSize Optional. Requested page size. Server might return
-   * fewer results than requested. If unspecified, at most 100 Offers will be
-   * returned. The maximum value is 1000; values above 1000 will be coerced to
-   * 1000.
-   * @opt_param string pageToken Optional. A token identifying a page of results,
-   * if other than the first one.
+   * fewer results than requested. If unspecified, returns at most 100 Offers. The
+   * maximum value is 1000; the server will coerce values above 1000.
+   * @opt_param string pageToken Optional. A token for a page of results other
+   * than the first page.
    * @return Google_Service_Cloudchannel_GoogleCloudChannelV1ListPurchasableOffersResponse
    */
   public function listPurchasableOffers($customer, $optParams = array())
@@ -149,14 +144,14 @@ class Google_Service_Cloudchannel_Resource_AccountsCustomers extends Google_Serv
     return $this->call('listPurchasableOffers', array($params), "Google_Service_Cloudchannel_GoogleCloudChannelV1ListPurchasableOffersResponse");
   }
   /**
-   * Lists the Purchasable SKUs for following cases: * SKUs that can be newly
-   * purchased for a customer * SKUs that can be upgraded/downgraded to, for an
-   * entitlement. Possible Error Codes: * PERMISSION_DENIED: If the customer
-   * doesn't belong to the reseller * INVALID_ARGUMENT: Missing or invalid
-   * required parameters in the request. (customers.listPurchasableSkus)
+   * Lists the following: * SKUs that you can purchase for a customer * SKUs that
+   * you can upgrade or downgrade for an entitlement. Possible error codes: *
+   * PERMISSION_DENIED: The customer doesn't belong to the reseller. *
+   * INVALID_ARGUMENT: Required request parameters are missing or invalid.
+   * (customers.listPurchasableSkus)
    *
-   * @param string $customer Required. The resource name of the customer for which
-   * to list SKUs. Format: accounts/{account_id}/customers/{customer_id}.
+   * @param string $customer Required. The resource name of the customer to list
+   * SKUs for. Format: accounts/{account_id}/customers/{customer_id}.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string changeOfferPurchase.changeType Required. Change Type for
@@ -167,15 +162,14 @@ class Google_Service_Cloudchannel_Resource_AccountsCustomers extends Google_Serv
    * @opt_param string createEntitlementPurchase.product Required. List SKUs
    * belonging to this Product. Format: products/{product_id}. Supports products/-
    * to retrieve SKUs for all products.
-   * @opt_param string languageCode Optional. The BCP-47 language code, such as
-   * "en-US". If specified, the response will be localized to the corresponding
-   * language code. Default is "en-US".
+   * @opt_param string languageCode Optional. The BCP-47 language code. For
+   * example, "en-US". The response will localize in the corresponding language
+   * code, if specified. The default value is "en-US".
    * @opt_param int pageSize Optional. Requested page size. Server might return
-   * fewer results than requested. If unspecified, at most 100 SKUs will be
-   * returned. The maximum value is 1000; values above 1000 will be coerced to
-   * 1000.
-   * @opt_param string pageToken Optional. A token identifying a page of results,
-   * if other than the first one.
+   * fewer results than requested. If unspecified, returns at most 100 SKUs. The
+   * maximum value is 1000; the server will coerce values above 1000.
+   * @opt_param string pageToken Optional. A token for a page of results other
+   * than the first page.
    * @return Google_Service_Cloudchannel_GoogleCloudChannelV1ListPurchasableSkusResponse
    */
   public function listPurchasableSkus($customer, $optParams = array())
@@ -185,13 +179,12 @@ class Google_Service_Cloudchannel_Resource_AccountsCustomers extends Google_Serv
     return $this->call('listPurchasableSkus', array($params), "Google_Service_Cloudchannel_GoogleCloudChannelV1ListPurchasableSkusResponse");
   }
   /**
-   * Updates an existing Customer resource belonging to the reseller or
-   * distributor. Possible Error Codes: * PERMISSION_DENIED: If the reseller
-   * account making the request and the reseller account being queried for are
-   * different. * INVALID_ARGUMENT: Missing or invalid required parameters in the
-   * request. * NOT_FOUND: No Customer resource found for the name specified in
-   * the request. Return Value: If successful, the updated Customer resource,
-   * otherwise returns an error. (customers.patch)
+   * Updates an existing Customer resource for the reseller or distributor.
+   * Possible error codes: * PERMISSION_DENIED: The reseller account making the
+   * request is different from the reseller account in the API request. *
+   * INVALID_ARGUMENT: Required request parameters are missing or invalid. *
+   * NOT_FOUND: No Customer resource found for the name in the request. Return
+   * value: The updated Customer resource. (customers.patch)
    *
    * @param string $name Output only. Resource name of the customer. Format:
    * accounts/{account_id}/customers/{customer_id}
@@ -210,18 +203,17 @@ class Google_Service_Cloudchannel_Resource_AccountsCustomers extends Google_Serv
   }
   /**
    * Creates a Cloud Identity for the given customer using the customer's
-   * information or the information provided here, if present. Possible Error
-   * Codes: * PERMISSION_DENIED: If the customer doesn't belong to the reseller. *
-   * INVALID_ARGUMENT: Missing or invalid required parameters in the request. *
-   * NOT_FOUND: If the customer is not found for the reseller. * ALREADY_EXISTS:
-   * If the customer's primary email already exists. In this case, retry after
-   * changing the customer's primary contact email. * INTERNAL: Any non-user error
-   * related to a technical issue in the backend. Contact Cloud Channel support in
-   * this case. * UNKNOWN: Any non-user error related to a technical issue in the
-   * backend. Contact Cloud Channel support in this case. Return Value: Long
-   * Running Operation ID. To get the results of the operation, call the
-   * GetOperation method of CloudChannelOperationsService. The Operation metadata
-   * will contain an instance of OperationMetadata.
+   * information, or the information provided here. Possible error codes: *
+   * PERMISSION_DENIED: The customer doesn't belong to the reseller. *
+   * INVALID_ARGUMENT: Required request parameters are missing or invalid. *
+   * NOT_FOUND: The customer was not found. * ALREADY_EXISTS: The customer's
+   * primary email already exists. Retry after changing the customer's primary
+   * contact email. * INTERNAL: Any non-user error related to a technical issue in
+   * the backend. Contact Cloud Channel support. * UNKNOWN: Any non-user error
+   * related to a technical issue in the backend. Contact Cloud Channel support.
+   * Return value: The ID of a long-running operation. To get the results of the
+   * operation, call the GetOperation method of CloudChannelOperationsService. The
+   * Operation metadata contains an instance of OperationMetadata.
    * (customers.provisionCloudIdentity)
    *
    * @param string $customer Required. Resource name of the customer. Format:
@@ -237,29 +229,27 @@ class Google_Service_Cloudchannel_Resource_AccountsCustomers extends Google_Serv
     return $this->call('provisionCloudIdentity', array($params), "Google_Service_Cloudchannel_GoogleLongrunningOperation");
   }
   /**
-   * Transfers customer entitlements to new reseller. Possible Error Codes: *
-   * PERMISSION_DENIED: If the customer doesn't belong to the reseller. *
-   * INVALID_ARGUMENT: Missing or invalid required parameters in the request. *
-   * NOT_FOUND: If the customer or offer resource is not found for the reseller. *
-   * ALREADY_EXISTS: If the SKU has been already transferred for the customer. *
-   * CONDITION_NOT_MET or FAILED_PRECONDITION: This failure can happen in the
-   * following cases: * Transferring a SKU that requires domain verification and
-   * the domain has not been verified. * Transferring an Add-On SKU like Vault or
-   * Drive without transferring the pre-requisite SKU, such as G Suite Basic. *
-   * Applicable only for developer accounts: reseller and resold domain must
-   * follow the domain naming convention as follows: * Domain names must start
-   * with goog-test. * Resold domain names must include the reseller domain. * All
-   * transferring entitlements must be specified. * INTERNAL: Any non-user error
-   * related to a technical issue in the backend. Please contact Cloud Channel
-   * Support in this case. * UNKNOWN: Any non-user error related to a technical
-   * issue in the backend. Please contact Cloud Channel Support in this case.
-   * Return Value: Long Running Operation ID. To get the results of the operation,
-   * call the GetOperation method of CloudChannelOperationsService. The Operation
-   * metadata will contain an instance of OperationMetadata.
+   * Transfers customer entitlements to new reseller. Possible error codes: *
+   * PERMISSION_DENIED: The customer doesn't belong to the reseller. *
+   * INVALID_ARGUMENT: Required request parameters are missing or invalid. *
+   * NOT_FOUND: The customer or offer resource was not found. * ALREADY_EXISTS:
+   * The SKU was already transferred for the customer. * CONDITION_NOT_MET or
+   * FAILED_PRECONDITION: * The SKU requires domain verification to transfer, but
+   * the domain is not verified. * An Add-On SKU (example, Vault or Drive) is
+   * missing the pre-requisite SKU (example, G Suite Basic). * (Developer accounts
+   * only) Reseller and resold domain must meet the following naming requirements:
+   * * Domain names must start with goog-test. * Domain names must include the
+   * reseller domain. * Specify all transferring entitlements. * INTERNAL: Any
+   * non-user error related to a technical issue in the backend. Contact Cloud
+   * Channel support. * UNKNOWN: Any non-user error related to a technical issue
+   * in the backend. Contact Cloud Channel support. Return value: The ID of a
+   * long-running operation. To get the results of the operation, call the
+   * GetOperation method of CloudChannelOperationsService. The Operation metadata
+   * will contain an instance of OperationMetadata.
    * (customers.transferEntitlements)
    *
-   * @param string $parent Required. The resource name of reseller's customer
-   * account where the entitlements transfer to. The parent takes the format:
+   * @param string $parent Required. The resource name of the reseller's customer
+   * account that will receive transferred entitlements. Parent uses the format:
    * accounts/{account_id}/customers/{customer_id}
    * @param Google_Service_Cloudchannel_GoogleCloudChannelV1TransferEntitlementsRequest $postBody
    * @param array $optParams Optional parameters.
@@ -272,29 +262,27 @@ class Google_Service_Cloudchannel_Resource_AccountsCustomers extends Google_Serv
     return $this->call('transferEntitlements', array($params), "Google_Service_Cloudchannel_GoogleLongrunningOperation");
   }
   /**
-   * Transfers customer entitlements from current reseller to Google. Possible
-   * Error Codes: * PERMISSION_DENIED: If the customer doesn't belong to the
-   * reseller. * INVALID_ARGUMENT: Missing or invalid required parameters in the
-   * request. * NOT_FOUND: If the customer or offer resource is not found for the
-   * reseller. * ALREADY_EXISTS: If the SKU has been already transferred for the
-   * customer. * CONDITION_NOT_MET or FAILED_PRECONDITION: This failure can happen
-   * in the following cases: * Transferring a SKU that requires domain
-   * verification and the domain has not been verified. * Transferring an Add-On
-   * SKU like Vault or Drive without purchasing the pre-requisite SKU, such as G
-   * Suite Basic. * Applicable only for developer accounts: reseller and resold
-   * domain must follow the domain naming convention as follows: * Domain names
-   * must start with goog-test. * Resold domain names must include the reseller
-   * domain. * INTERNAL: Any non-user error related to a technical issue in the
-   * backend. Please contact Cloud Channel Support in this case. * UNKNOWN: Any
-   * non-user error related to a technical issue in the backend. Please contact
-   * Cloud Channel Support in this case. Return Value: Long Running Operation ID.
-   * To get the results of the operation, call the GetOperation method of
-   * CloudChannelOperationsService. The response will contain
+   * Transfers customer entitlements from their current reseller to Google.
+   * Possible error codes: * PERMISSION_DENIED: The customer doesn't belong to the
+   * reseller. * INVALID_ARGUMENT: Required request parameters are missing or
+   * invalid. * NOT_FOUND: The customer or offer resource was not found. *
+   * ALREADY_EXISTS: The SKU was already transferred for the customer. *
+   * CONDITION_NOT_MET or FAILED_PRECONDITION: * The SKU requires domain
+   * verification to transfer, but the domain is not verified. * An Add-On SKU
+   * (example, Vault or Drive) is missing the pre-requisite SKU (example, G Suite
+   * Basic). * (Developer accounts only) Reseller and resold domain must meet the
+   * following naming requirements: * Domain names must start with goog-test. *
+   * Domain names must include the reseller domain. * INTERNAL: Any non-user error
+   * related to a technical issue in the backend. Contact Cloud Channel support. *
+   * UNKNOWN: Any non-user error related to a technical issue in the backend.
+   * Contact Cloud Channel support. Return value: The ID of a long-running
+   * operation. To get the results of the operation, call the GetOperation method
+   * of CloudChannelOperationsService. The response will contain
    * google.protobuf.Empty on success. The Operation metadata will contain an
    * instance of OperationMetadata. (customers.transferEntitlementsToGoogle)
    *
-   * @param string $parent Required. The resource name of reseller's customer
-   * account where the entitlements transfer from. The parent takes the format:
+   * @param string $parent Required. The resource name of the reseller's customer
+   * account where the entitlements transfer from. Parent uses the format:
    * accounts/{account_id}/customers/{customer_id}
    * @param Google_Service_Cloudchannel_GoogleCloudChannelV1TransferEntitlementsToGoogleRequest $postBody
    * @param array $optParams Optional parameters.

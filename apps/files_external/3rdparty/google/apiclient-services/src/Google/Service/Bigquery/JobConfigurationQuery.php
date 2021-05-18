@@ -24,6 +24,7 @@ class Google_Service_Bigquery_JobConfigurationQuery extends Google_Collection
   protected $connectionPropertiesType = 'Google_Service_Bigquery_ConnectionProperty';
   protected $connectionPropertiesDataType = 'array';
   public $createDisposition;
+  public $createSession;
   protected $defaultDatasetType = 'Google_Service_Bigquery_DatasetReference';
   protected $defaultDatasetDataType = '';
   protected $destinationEncryptionConfigurationType = 'Google_Service_Bigquery_EncryptionConfiguration';
@@ -95,6 +96,14 @@ class Google_Service_Bigquery_JobConfigurationQuery extends Google_Collection
   public function getCreateDisposition()
   {
     return $this->createDisposition;
+  }
+  public function setCreateSession($createSession)
+  {
+    $this->createSession = $createSession;
+  }
+  public function getCreateSession()
+  {
+    return $this->createSession;
   }
   /**
    * @param Google_Service_Bigquery_DatasetReference

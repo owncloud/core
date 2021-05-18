@@ -4,11 +4,16 @@ Feature: persistent-locking in case of a public link
 
   Background:
     Given the administrator has enabled DAV tech_preview
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "PARENT"
+    And user "Alice" has created folder "PARENT/CHILD"
+    And user "Alice" has uploaded file with content "ownCloud test text file parent" to "PARENT/parent.txt"
+    And user "Alice" has uploaded file with content "ownCloud test text file child" to "PARENT/CHILD/child.txt"
 
   @smokeTest @issue-36064
   Scenario Outline: Uploading a file into a locked public folder
     Given using <dav-path> DAV path
+    And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a public link share of folder "FOLDER" with change permission
     When user "Alice" locks folder "FOLDER" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
@@ -60,7 +65,7 @@ Feature: persistent-locking in case of a public link
       | lockscope | <lock-scope> |
     When the public uploads file "parent.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "423"
-    And the content of file "/PARENT/parent.txt" for user "Alice" should be "ownCloud test text file parent" plus end-of-line
+    And the content of file "/PARENT/parent.txt" for user "Alice" should be "ownCloud test text file parent"
     Examples:
       | public-webdav-api-version | lock-scope |
       | old                       | shared     |
@@ -89,7 +94,7 @@ Feature: persistent-locking in case of a public link
     And the public uploads file "CHILD/child.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "423"
     And the content of file "/PARENT/parent.txt" for user "Alice" should be "changed text"
-    But the content of file "/PARENT/CHILD/child.txt" for user "Alice" should be "ownCloud test text file child" plus end-of-line
+    But the content of file "/PARENT/CHILD/child.txt" for user "Alice" should be "ownCloud test text file child"
     Examples:
       | public-webdav-api-version | lock-scope |
       | old                       | shared     |

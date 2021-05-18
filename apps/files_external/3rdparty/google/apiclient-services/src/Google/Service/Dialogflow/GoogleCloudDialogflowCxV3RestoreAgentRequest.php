@@ -19,6 +19,7 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3RestoreAgentRequest ext
 {
   public $agentContent;
   public $agentUri;
+  public $restoreOption;
 
   public function setAgentContent($agentContent)
   {
@@ -35,5 +36,13 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3RestoreAgentRequest ext
   public function getAgentUri()
   {
     return $this->agentUri;
+  }
+  public function setRestoreOption($restoreOption)
+  {
+    $this->restoreOption = $restoreOption;
+  }
+  public function getRestoreOption()
+  {
+    return $this->restoreOption;
   }
 }

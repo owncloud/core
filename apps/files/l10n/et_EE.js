@@ -31,7 +31,6 @@ OC.L10N.register(
     "Unable to determine date" : "Kuupäeva tuvastamine ei õnnestunud",
     "Invalid path" : "Vigane tee",
     "This operation is forbidden" : "See toiming on keelatud",
-    "This directory is unavailable, please check the logs or contact the administrator" : "See kaust pole saadaval. Palun kontrolli logifaile või võta ühendust administraatoriga",
     "group" : "grupp",
     "Remote share" : "Kaugjagamine",
     "via" : "läbi",

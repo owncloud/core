@@ -6,7 +6,7 @@ Feature: users cannot move (rename) a folder to or into an excluded directory
 
   Background:
     Given using OCS API version "1"
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
 
   Scenario Outline: Rename a folder to an excluded directory name
     Given using <dav_version> DAV path
@@ -24,6 +24,7 @@ Feature: users cannot move (rename) a folder to or into an excluded directory
   Scenario Outline: Rename a folder to an excluded directory name inside a parent directory
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
+    And user "Alice" has created folder "/FOLDER"
     When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
     And user "Alice" moves folder "/testshare" to "/FOLDER/.github" using the WebDAV API
     Then the HTTP status code should be "403"
@@ -38,6 +39,7 @@ Feature: users cannot move (rename) a folder to or into an excluded directory
   Scenario Outline: rename a folder to a folder name that matches (or not) excluded_directories_regex
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
+    And user "Alice" has created folder "/FOLDER"
     # Note: we have to write JSON for the value, and to get a backslash in the double-quotes we have to escape it
     # The actual regular expressions end up being endswith\.bad$ and ^\.git
     And the administrator has updated system config key "excluded_directories_regex" with value '["endswith\\.bad$","^\\.git","containsvirusinthename"]' and type "json"

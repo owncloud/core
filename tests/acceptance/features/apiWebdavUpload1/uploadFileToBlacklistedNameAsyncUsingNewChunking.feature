@@ -6,7 +6,7 @@ Feature: users cannot upload a file to a blacklisted name using new chunking
 
   Background:
     Given using new DAV path
-    And user "Alice" has been created with default attributes and small skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files
     And the owncloud log level has been set to debug
     And the owncloud log has been cleared
     And the administrator has enabled async operations

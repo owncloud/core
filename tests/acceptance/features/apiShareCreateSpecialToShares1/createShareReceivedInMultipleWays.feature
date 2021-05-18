@@ -4,26 +4,29 @@ Feature: share resources where the sharee receives the share in multiple ways
   Background:
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And user "Alice" has been created with default attributes and small skeleton files
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
 
   Scenario Outline: Creating a new share with user who already received a share through their group
     Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
-    And user "Alice" has shared file "welcome.txt" with group "grp1"
-    And user "Brian" has accepted share "/welcome.txt" offered by user "Alice"
-    When user "Alice" shares file "/welcome.txt" with user "Brian" using the sharing API
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
+    And user "Alice" has shared file "textfile0.txt" with group "grp1"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
+    When user "Alice" shares file "/textfile0.txt" with user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    When user "Brian" accepts share "/welcome.txt" offered by user "Alice" using the sharing API
+    When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | share_with             | %username%              |
       | share_with_displayname | %displayname%           |
-      | file_target            | /Shares/welcome (2).txt |
-      | path                   | /Shares/welcome (2).txt |
+      | file_target            | /Shares/textfile0 (2).txt |
+      | path                   | /Shares/textfile0 (2).txt |
       | permissions            | share,read,update       |
       | uid_owner              | %username%              |
       | displayname_owner      | %displayname%           |
@@ -39,9 +42,12 @@ Feature: share resources where the sharee receives the share in multiple ways
   @issue-ocis-reva-243
   Scenario Outline: Share of folder and sub-folder to same user - core#20645
     Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and small skeleton files
     And group "grp4" has been created
     And user "Brian" has been added to group "grp4"
+    And user "Alice" has created folder "/PARENT"
+    And user "Alice" has created folder "/PARENT/CHILD"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/parent.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/CHILD/child.txt"
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
     And user "Alice" shares folder "/PARENT/CHILD" with group "grp4" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
@@ -50,14 +56,11 @@ Feature: share resources where the sharee receives the share in multiple ways
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And user "Brian" accepts share "/PARENT/CHILD" offered by user "Alice" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
+    And the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And user "Brian" should see the following elements
-      | /FOLDER/                  |
       | /Shares/PARENT/           |
       | /Shares/PARENT/parent.txt |
-      | /PARENT/                  |
-      | /PARENT/parent.txt        |
       | /Shares/CHILD/            |
       | /Shares/CHILD/child.txt   |
     Examples:
@@ -68,7 +71,6 @@ Feature: share resources where the sharee receives the share in multiple ways
   @issue-ocis-reva-243
   Scenario Outline: sharing subfolder when parent already shared
     Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
     And user "Alice" has created folder "/test"
     And user "Alice" has created folder "/test/sub"
@@ -88,7 +90,6 @@ Feature: share resources where the sharee receives the share in multiple ways
   @issue-ocis-reva-243
   Scenario Outline: sharing subfolder when parent already shared with group of sharer
     Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
     And group "grp0" has been created
     And user "Alice" has been added to group "grp0"
     And user "Alice" has created folder "/test"
@@ -109,10 +110,7 @@ Feature: share resources where the sharee receives the share in multiple ways
   @issue-ocis-reva-243
   Scenario Outline: multiple users share a file with the same name but different permissions to a user
     Given using OCS API version "<ocs_api_version>"
-    And these users have been created with default attributes and without skeleton files:
-      | username |
-      | Brian    |
-      | Carol    |
+    And user "Carol" has been created with default attributes and without skeleton files
     And user "Brian" has uploaded file with content "First data" to "/randomfile.txt"
     And user "Carol" has uploaded file with content "Second data" to "/randomfile.txt"
     When user "Brian" shares file "randomfile.txt" with user "Alice" with permissions "read" using the sharing API
@@ -143,10 +141,7 @@ Feature: share resources where the sharee receives the share in multiple ways
   @issue-ocis-reva-243
   Scenario Outline: multiple users share a folder with the same name to a user
     Given using OCS API version "<ocs_api_version>"
-    And these users have been created with default attributes and without skeleton files:
-      | username |
-      | Brian    |
-      | Carol    |
+    And user "Carol" has been created with default attributes and without skeleton files
     And user "Brian" has created folder "/zzzfolder"
     And user "Brian" has created folder "zzzfolder/Brian"
     And user "Carol" has created folder "/zzzfolder"
@@ -179,10 +174,7 @@ Feature: share resources where the sharee receives the share in multiple ways
   @skipOnEncryptionType:user-keys @encryption-issue-132 @skipOnLDAP
   Scenario Outline: share with a group and then add a user to that group that already has a file with the shared name
     Given using OCS API version "<ocs_api_version>"
-    And these users have been created with default attributes and without skeleton files:
-      | username |
-      | Brian    |
-      | Carol    |
+    And user "Carol" has been created with default attributes and without skeleton files
     And these groups have been created:
       | groupname |
       | grp1      |

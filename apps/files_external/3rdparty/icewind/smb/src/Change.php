@@ -9,7 +9,9 @@
 namespace Icewind\SMB;
 
 class Change {
+	/** @var int */
 	private $code;
+	/** @var string */
 	private $path;
 
 	public function __construct(int $code, string $path) {

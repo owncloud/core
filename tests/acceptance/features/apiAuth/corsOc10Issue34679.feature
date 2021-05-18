@@ -2,7 +2,7 @@
 Feature: CORS headers current oC10 behavior for issue-34679
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
 
   @issue-34679 @files_sharing-app-required
   Scenario Outline: CORS headers should be returned when invalid password is used
@@ -13,7 +13,7 @@ Feature: CORS headers current oC10 behavior for issue-34679
       | Origin | https://aphno.badal |
     Then the OCS status code should be "<ocs-code>"
     And the HTTP status code should be "<http-code>"
-    Then the following headers should not be set
+    And the following headers should not be set
       | header                        |
       | Access-Control-Allow-Headers  |
       | Access-Control-Expose-Headers |
@@ -55,7 +55,7 @@ Feature: CORS headers current oC10 behavior for issue-34679
       | Origin | https://aphno.badal |
     Then the OCS status code should be "<ocs-code>"
     And the HTTP status code should be "<http-code>"
-    Then the following headers should not be set
+    And the following headers should not be set
       | header                        |
       | Access-Control-Allow-Headers  |
       | Access-Control-Expose-Headers |

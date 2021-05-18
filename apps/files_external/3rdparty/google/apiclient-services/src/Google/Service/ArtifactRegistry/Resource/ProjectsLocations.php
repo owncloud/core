@@ -25,36 +25,4 @@
  */
 class Google_Service_ArtifactRegistry_Resource_ProjectsLocations extends Google_Service_Resource
 {
-  /**
-   * Gets information about a location. (locations.get)
-   *
-   * @param string $name Resource name for the location.
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_ArtifactRegistry_Location
-   */
-  public function get($name, $optParams = array())
-  {
-    $params = array('name' => $name);
-    $params = array_merge($params, $optParams);
-    return $this->call('get', array($params), "Google_Service_ArtifactRegistry_Location");
-  }
-  /**
-   * Lists information about the supported locations for this service.
-   * (locations.listProjectsLocations)
-   *
-   * @param string $name The resource that owns the locations collection, if
-   * applicable.
-   * @param array $optParams Optional parameters.
-   *
-   * @opt_param string filter The standard list filter.
-   * @opt_param int pageSize The standard list page size.
-   * @opt_param string pageToken The standard list page token.
-   * @return Google_Service_ArtifactRegistry_ListLocationsResponse
-   */
-  public function listProjectsLocations($name, $optParams = array())
-  {
-    $params = array('name' => $name);
-    $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_ArtifactRegistry_ListLocationsResponse");
-  }
 }

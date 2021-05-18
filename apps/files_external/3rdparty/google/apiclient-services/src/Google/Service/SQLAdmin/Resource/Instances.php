@@ -351,7 +351,8 @@ class Google_Service_SQLAdmin_Resource_Instances extends Google_Service_Resource
     return $this->call('stopReplica', array($params), "Google_Service_SQLAdmin_Operation");
   }
   /**
-   * Truncate MySQL general and slow query log tables (instances.truncateLog)
+   * Truncate MySQL general and slow query log tables MySQL only.
+   * (instances.truncateLog)
    *
    * @param string $project Project ID of the Cloud SQL project.
    * @param string $instance Cloud SQL instance ID. This does not include the

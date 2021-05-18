@@ -7,6 +7,7 @@ OC.L10N.register(
     "Please select tags to filter by" : "กรุณาเลือกแท็กเพื่อกรองโดย",
     "No files found for the selected tags" : "ไม่พบไฟล์แท็กที่เลือก",
     "<strong>System tags</strong> for a file have been modified" : "เมื่อ <strong>แท็กระบบ</strong> ของไฟล์ถูกแก้ไข",
+    "System tag %3$s was assigned to %2$s due to automation rule" : "แท็กระบบ %3$s ได้รับมอบหมายให้ %2$s เนื่องจากกฎอัตโนมัติ",
     "You assigned system tag %3$s" : "คุณได้กำหนดแท็กระบบ %3$s แล้ว",
     "%1$s assigned system tag %3$s" : "%1$s ได้ถูกกำหนดแท็กระบบ %3$s",
     "You unassigned system tag %3$s" : "คุณไม่ได้กำหนดแท็กระบบ %3$s แล้ว",

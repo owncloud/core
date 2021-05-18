@@ -23,6 +23,7 @@ namespace Test\Share20;
 use OC\Files\View;
 use OC\Share20\Manager;
 use OC\Share20\ShareAttributes;
+use OCP\Activity\IManager;
 use OCP\Files\File;
 use OC\Share20\Share;
 use OCP\DB\QueryBuilder\IExpressionBuilder;
@@ -36,6 +37,7 @@ use OCP\Files\Storage;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IGroupManager;
+use OCP\IGroup;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IUser;
@@ -93,6 +95,8 @@ class ManagerTest extends \Test\TestCase {
 	protected $connection;
 	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
 	protected $userSession;
+	/** @var IManager | \PHPUnit\Framework\MockObject\MockObject */
+	protected $activityManager;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -109,6 +113,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->view = $this->createMock(View::class);
 		$this->connection = $this->createMock(IDBConnection::class);
 		$this->userSession = $this->createMock(IUserSession::class);
+		$this->activityManager = $this->createMock(IManager::class);
 
 		$this->l = $this->createMock('\OCP\IL10N');
 		$this->l->method('t')
@@ -132,6 +137,7 @@ class ManagerTest extends \Test\TestCase {
 			$this->eventDispatcher,
 			$this->view,
 			$this->connection,
+			$this->activityManager,
 			$this->userSession
 		);
 
@@ -166,7 +172,8 @@ class ManagerTest extends \Test\TestCase {
 				$this->rootFolder,
 				$this->eventDispatcher,
 				$this->view,
-				$this->connection
+				$this->connection,
+				$this->activityManager
 			]);
 	}
 
@@ -236,6 +243,7 @@ class ManagerTest extends \Test\TestCase {
 			'uidOwner' => 'sharedBy',
 			'fileSource' => 1,
 			'fileTarget' => 'myTarget',
+			'shareExpired' => false,
 		];
 
 		$hookListnerExpectsPost = [
@@ -248,6 +256,7 @@ class ManagerTest extends \Test\TestCase {
 			'uidOwner' => 'sharedBy',
 			'fileSource' => 1,
 			'fileTarget' => 'myTarget',
+			'shareExpired' => false,
 			'deletedShares' => [
 				[
 					'id' => 42,
@@ -259,6 +268,7 @@ class ManagerTest extends \Test\TestCase {
 					'uidOwner' => 'sharedBy',
 					'fileSource' => 1,
 					'fileTarget' => 'myTarget',
+					'shareExpired' => false,
 				],
 			],
 		];
@@ -334,6 +344,7 @@ class ManagerTest extends \Test\TestCase {
 			'uidOwner' => 'sharedBy',
 			'fileSource' => 1,
 			'fileTarget' => 'myTarget',
+			'shareExpired' => false,
 		];
 
 		$hookListnerExpectsPost = [
@@ -346,6 +357,7 @@ class ManagerTest extends \Test\TestCase {
 			'uidOwner' => 'sharedBy',
 			'fileSource' => 1,
 			'fileTarget' => 'myTarget',
+			'shareExpired' => false,
 			'deletedShares' => [
 				[
 					'id' => 42,
@@ -357,6 +369,7 @@ class ManagerTest extends \Test\TestCase {
 					'uidOwner' => 'sharedBy',
 					'fileSource' => 1,
 					'fileTarget' => 'myTarget',
+					'shareExpired' => false,
 				],
 			],
 		];
@@ -455,6 +468,7 @@ class ManagerTest extends \Test\TestCase {
 			'uidOwner' => 'sharedBy1',
 			'fileSource' => 1,
 			'fileTarget' => 'myTarget1',
+			'shareExpired' => false,
 		];
 
 		$hookListnerExpectsPost = [
@@ -467,6 +481,7 @@ class ManagerTest extends \Test\TestCase {
 			'uidOwner' => 'sharedBy1',
 			'fileSource' => 1,
 			'fileTarget' => 'myTarget1',
+			'shareExpired' => false,
 			'deletedShares' => [
 				[
 					'id' => 44,
@@ -478,6 +493,7 @@ class ManagerTest extends \Test\TestCase {
 					'uidOwner' => 'sharedBy3',
 					'fileSource' => 1,
 					'fileTarget' => 'myTarget3',
+					'shareExpired' => false,
 				],
 				[
 					'id' => 43,
@@ -489,6 +505,7 @@ class ManagerTest extends \Test\TestCase {
 					'uidOwner' => 'sharedBy2',
 					'fileSource' => 1,
 					'fileTarget' => 'myTarget2',
+					'shareExpired' => false,
 				],
 				[
 					'id' => 42,
@@ -500,6 +517,7 @@ class ManagerTest extends \Test\TestCase {
 					'uidOwner' => 'sharedBy1',
 					'fileSource' => 1,
 					'fileTarget' => 'myTarget1',
+					'shareExpired' => false,
 				],
 			],
 		];
@@ -2083,7 +2101,8 @@ class ManagerTest extends \Test\TestCase {
 				'itemparent' => null,
 				'uidOwner' => 'user1',
 				'fileSource' => $share->getNodeId(),
-				'fileTarget' => '/test_share'
+				'fileTarget' => '/test_share',
+				'shareExpired' => false,
 			];
 			$hookListnerUnshareExpectsPost = [
 				'id' => '22',
@@ -2095,6 +2114,7 @@ class ManagerTest extends \Test\TestCase {
 				'uidOwner' => 'user1',
 				'fileSource' => $share->getNodeId(),
 				'fileTarget' => '/test_share',
+				'shareExpired' => false,
 				'deletedShares' => [
 					[
 						'id' => 22,
@@ -2106,6 +2126,7 @@ class ManagerTest extends \Test\TestCase {
 						'uidOwner' => 'user1',
 						'fileSource' => $share->getNodeId(),
 						'fileTarget' => '/test_share',
+						'shareExpired' => false,
 					]
 				],
 			];
@@ -2381,6 +2402,108 @@ class ManagerTest extends \Test\TestCase {
 				$calledAfterShareCreate[] = $event;
 			});
 
+		$manager->createShare($share);
+
+		$this->assertEquals('share.beforeCreate', $calledBeforeShareCreate[0]);
+		$this->assertEquals('share.afterCreate', $calledAfterShareCreate[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeShareCreate[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterShareCreate[1]);
+		$this->assertArrayHasKey('shareData', $calledAfterShareCreate[1]);
+		$this->assertArrayHasKey('shareObject', $calledAfterShareCreate[1]);
+		$this->assertArrayHasKey('shareData', $calledBeforeShareCreate[1]);
+		$this->assertArrayHasKey('shareObject', $calledBeforeShareCreate[1]);
+	}
+
+	public function testCreateReShareGroupToSelf() {
+		$manager = $this->createManagerMock()
+			->setMethods(['canShare', 'generalChecks', 'groupCreateChecks', 'pathCreateChecks'])
+			->getMock();
+
+		$user0 = $this->createMock(IUser::class);
+		$user0->method('getUID')->willReturn('user0');
+
+		$storage = $this->createMock('\OCP\Files\Storage');
+		$path = $this->createMock('\OCP\Files\File');
+		$path->method('getOwner')->willReturn($user0);
+		$path->method('getName')->willReturn('target');
+		$path->method('getStorage')->willReturn($storage);
+
+		$share = $this->createShare(
+			null,
+			\OCP\Share::SHARE_TYPE_GROUP,
+			$path,
+			'group1',
+			'user1',
+			'user0',
+			\OCP\Constants::PERMISSION_ALL);
+
+		$manager->expects($this->once())
+			->method('canShare')
+			->with($share)
+			->willReturn(true);
+		$manager->expects($this->once())
+			->method('generalChecks')
+			->with($share);
+		;
+		$manager->expects($this->once())
+			->method('groupCreateChecks')
+			->with($share);
+		;
+		$manager->expects($this->once())
+			->method('pathCreateChecks')
+			->with($path);
+
+		$this->defaultProvider
+			->expects($this->once())
+			->method('create')
+			->with($share)
+			->will($this->returnArgument(0));
+
+		$share->expects($this->once())
+			->method('setShareOwner')
+			->with('user0');
+		$share->expects($this->once())
+			->method('setTarget')
+			->with('/target');
+
+		$calledBeforeShareCreate = [];
+		$this->eventDispatcher->addListener('share.beforeCreate',
+			function (GenericEvent $event) use (&$calledBeforeShareCreate) {
+				$calledBeforeShareCreate[] = 'share.beforeCreate';
+				$calledBeforeShareCreate[] = $event;
+			});
+		$calledAfterShareCreate = [];
+		$this->eventDispatcher->addListener('share.afterCreate',
+			function (GenericEvent $event) use (&$calledAfterShareCreate) {
+				$calledAfterShareCreate[] = 'share.afterCreate';
+				$calledAfterShareCreate[] = $event;
+			});
+
+		$user1 = $this->createMock(IUser::class);
+		$this->userManager
+			->expects($this->once())
+			->method('get')
+			->with('user1')
+			->willReturn($user1);
+
+		$group1 = $this->createMock(IGroup::class);
+		$group1
+			->expects($this->once())
+			->method('inGroup')
+			->with($user1)
+			->willReturn(true);
+		$this->groupManager
+			->expects($this->once())
+			->method('get')
+			->with('group1')
+			->willReturn($group1);
+
+		$this->defaultProvider
+			->expects($this->once())
+			->method('deleteFromSelf')
+			->with($share, 'user1');
+
+		// call actual createShare function under test
 		$manager->createShare($share);
 
 		$this->assertEquals('share.beforeCreate', $calledBeforeShareCreate[0]);
@@ -2947,7 +3070,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->rootFolder,
 			$this->eventDispatcher,
 			$this->view,
-			$this->connection
+			$this->connection,
+			$this->activityManager
 		);
 
 		$share = $this->createMock('\OCP\Share\IShare');
@@ -2982,7 +3106,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->rootFolder,
 			$this->eventDispatcher,
 			$this->view,
-			$this->connection
+			$this->connection,
+			$this->activityManager
 		);
 
 		$share = $this->createMock('\OCP\Share\IShare');
@@ -3087,7 +3212,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->rootFolder,
 			$this->eventDispatcher,
 			$this->view,
-			$this->connection
+			$this->connection,
+			$this->activityManager
 		);
 
 		$provider1 = $this->getMockBuilder('\OC\Share20\DefaultShareProvider')
@@ -3589,7 +3715,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->rootFolder,
 			$this->eventDispatcher,
 			$this->view,
-			$this->connection
+			$this->connection,
+			$this->activityManager
 		);
 
 		$share = $this->createMock(IShare::class);

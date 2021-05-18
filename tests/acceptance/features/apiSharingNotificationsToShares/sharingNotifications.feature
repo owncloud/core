@@ -9,7 +9,7 @@ Feature: Display notifications when receiving a share
     And app "notifications" has been enabled
     And using OCS API version "1"
     And using new DAV path
-    And these users have been created with default attributes and small skeleton files:
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -19,10 +19,12 @@ Feature: Display notifications when receiving a share
       | grp1      |
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"
+    And user "Alice" has created folder "PARENT"
 
   @smokeTest
   Scenario: share to user sends notification
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
     And user "Alice" shares file "/textfile0.txt" with user "Brian" using the sharing API
     Then user "Brian" should have 2 notifications
@@ -31,11 +33,12 @@ Feature: Display notifications when receiving a share
       | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/          |
+      | link        | /^(\/index\.php)?\/f\/(\d+)$/                    |
       | object_type | /^local_share$/                                  |
 
   Scenario: share to group sends notification to every member
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
     And user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API
     Then user "Brian" should have 2 notifications
@@ -44,7 +47,7 @@ Feature: Display notifications when receiving a share
       | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/          |
+      | link        | /^(\/index\.php)?\/f\/(\d+)$/                    |
       | object_type | /^local_share$/                                  |
     And user "Carol" should have 2 notifications
     And the last notification of user "Carol" should match these regular expressions about user "Alice"
@@ -52,7 +55,7 @@ Feature: Display notifications when receiving a share
       | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/          |
+      | link        | /^(\/index\.php)?\/f\/(\d+)$/                    |
       | object_type | /^local_share$/                                  |
 
 	# This scenario documents behavior discussed in core issue 31870
@@ -69,7 +72,7 @@ Feature: Display notifications when receiving a share
       | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/          |
+      | link        | /^(\/index\.php)?\/f\/(\d+)$/                    |
       | object_type | /^local_share$/                                  |
     And user "Carol" should have 1 notification
     And the last notification of user "Carol" should match these regular expressions about user "Alice"
@@ -77,7 +80,7 @@ Feature: Display notifications when receiving a share
       | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/          |
+      | link        | /^(\/index\.php)?\/f\/(\d+)$/                    |
       | object_type | /^local_share$/                                  |
     And user "David" should have 0 notifications
 
@@ -97,7 +100,7 @@ Feature: Display notifications when receiving a share
       | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/          |
+      | link        | /^(\/index\.php)?\/f\/(\d+)$/                    |
       | object_type | /^local_share$/                                  |
     And user "Carol" should have 1 notification
     And the last notification of user "Carol" should match these regular expressions about user "Alice"
@@ -105,7 +108,7 @@ Feature: Display notifications when receiving a share
       | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/          |
+      | link        | /^(\/index\.php)?\/f\/(\d+)$/                    |
       | object_type | /^local_share$/                                  |
     And user "David" should have 0 notifications
 
@@ -131,11 +134,11 @@ Feature: Display notifications when receiving a share
     When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
     And the administrator removes user "Brian" from group "grp1" using the provisioning API
     Then user "Brian" should have 0 notifications
-    Then user "Carol" should have 1 notification
+    And user "Carol" should have 1 notification
 
   Scenario: discard notification if group is deleted
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
     And the administrator deletes group "grp1" from the default user backend
     Then user "Brian" should have 0 notifications
-    Then user "Carol" should have 0 notifications
+    And user "Carol" should have 0 notifications

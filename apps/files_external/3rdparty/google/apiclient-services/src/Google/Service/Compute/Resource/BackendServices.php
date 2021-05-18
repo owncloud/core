@@ -328,7 +328,8 @@ class Google_Service_Compute_Resource_BackendServices extends Google_Service_Res
     return $this->call('patch', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Sets the security policy for the specified backend service.
+   * Sets the Google Cloud Armor security policy for the specified backend
+   * service. For more information, see Google Cloud Armor Overview
    * (backendServices.setSecurityPolicy)
    *
    * @param string $project Project ID for this request.

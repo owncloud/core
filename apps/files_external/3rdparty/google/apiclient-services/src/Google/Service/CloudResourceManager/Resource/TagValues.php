@@ -108,11 +108,11 @@ class Google_Service_CloudResourceManager_Resource_TagValues extends Google_Serv
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Optional. The maximum number of TagValues to return
-   * in the response. This is currently not used by the server and will return the
-   * full page even if a size is specified currently.
+   * in the response. The server allows a maximum of 300 TagValues to return. If
+   * unspecified, the server will use 100 as the default.
    * @opt_param string pageToken Optional. A pagination token returned from a
    * previous call to `ListTagValues` that indicates where this listing should
-   * continue from. This is currently not used by the server.
+   * continue from.
    * @opt_param string parent Required. Resource name for TagKey, parent of the
    * TagValues to be listed, in the format `tagKeys/123`.
    * @return Google_Service_CloudResourceManager_ListTagValuesResponse

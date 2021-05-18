@@ -26,6 +26,91 @@
 class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsConsentStores extends Google_Service_Resource
 {
   /**
+   * Checks if a particular data_id of a User data mapping in the specified
+   * consent store is consented for the specified use.
+   * (consentStores.checkDataAccess)
+   *
+   * @param string $consentStore Required. Name of the consent store where the
+   * requested data_id is stored, of the form `projects/{project_id}/locations/{lo
+   * cation_id}/datasets/{dataset_id}/consentStores/{consent_store_id}`.
+   * @param Google_Service_CloudHealthcare_CheckDataAccessRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_CloudHealthcare_CheckDataAccessResponse
+   */
+  public function checkDataAccess($consentStore, Google_Service_CloudHealthcare_CheckDataAccessRequest $postBody, $optParams = array())
+  {
+    $params = array('consentStore' => $consentStore, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('checkDataAccess', array($params), "Google_Service_CloudHealthcare_CheckDataAccessResponse");
+  }
+  /**
+   * Creates a new consent store in the parent dataset. Attempting to create a
+   * consent store with the same ID as an existing store fails with an
+   * ALREADY_EXISTS error. (consentStores.create)
+   *
+   * @param string $parent Required. The name of the dataset this consent store
+   * belongs to.
+   * @param Google_Service_CloudHealthcare_ConsentStore $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string consentStoreId Required. The ID of the consent store to
+   * create. The string must match the following regex:
+   * `[\p{L}\p{N}_\-\.]{1,256}`. Cannot be changed after creation.
+   * @return Google_Service_CloudHealthcare_ConsentStore
+   */
+  public function create($parent, Google_Service_CloudHealthcare_ConsentStore $postBody, $optParams = array())
+  {
+    $params = array('parent' => $parent, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('create', array($params), "Google_Service_CloudHealthcare_ConsentStore");
+  }
+  /**
+   * Deletes the specified consent store and removes all the consent store's data.
+   * (consentStores.delete)
+   *
+   * @param string $name Required. The resource name of the consent store to
+   * delete.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_CloudHealthcare_HealthcareEmpty
+   */
+  public function delete($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('delete', array($params), "Google_Service_CloudHealthcare_HealthcareEmpty");
+  }
+  /**
+   * Evaluates the user's Consents for all matching User data mappings. Note: User
+   * data mappings are indexed asynchronously, which can cause a slight delay
+   * between the time mappings are created or updated and when they are included
+   * in EvaluateUserConsents results. (consentStores.evaluateUserConsents)
+   *
+   * @param string $consentStore Required. Name of the consent store to retrieve
+   * User data mappings from.
+   * @param Google_Service_CloudHealthcare_EvaluateUserConsentsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_CloudHealthcare_EvaluateUserConsentsResponse
+   */
+  public function evaluateUserConsents($consentStore, Google_Service_CloudHealthcare_EvaluateUserConsentsRequest $postBody, $optParams = array())
+  {
+    $params = array('consentStore' => $consentStore, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('evaluateUserConsents', array($params), "Google_Service_CloudHealthcare_EvaluateUserConsentsResponse");
+  }
+  /**
+   * Gets the specified consent store. (consentStores.get)
+   *
+   * @param string $name Required. The resource name of the consent store to get.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_CloudHealthcare_ConsentStore
+   */
+  public function get($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('get', array($params), "Google_Service_CloudHealthcare_ConsentStore");
+  }
+  /**
    * Gets the access control policy for a resource. Returns an empty policy if the
    * resource exists and does not have a policy set. (consentStores.getIamPolicy)
    *
@@ -49,6 +134,85 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsConsentSt
     $params = array('resource' => $resource);
     $params = array_merge($params, $optParams);
     return $this->call('getIamPolicy', array($params), "Google_Service_CloudHealthcare_Policy");
+  }
+  /**
+   * Lists the consent stores in the specified dataset.
+   * (consentStores.listProjectsLocationsDatasetsConsentStores)
+   *
+   * @param string $parent Required. Name of the dataset.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string filter Optional. Restricts the stores returned to those
+   * matching a filter. Only filtering on labels is supported. For example,
+   * `filter=labels.key=value`.
+   * @opt_param int pageSize Optional. Limit on the number of consent stores to
+   * return in a single response. If not specified, 100 is used. May not be larger
+   * than 1000.
+   * @opt_param string pageToken Optional. Token to retrieve the next page of
+   * results, or empty to get the first page.
+   * @return Google_Service_CloudHealthcare_ListConsentStoresResponse
+   */
+  public function listProjectsLocationsDatasetsConsentStores($parent, $optParams = array())
+  {
+    $params = array('parent' => $parent);
+    $params = array_merge($params, $optParams);
+    return $this->call('list', array($params), "Google_Service_CloudHealthcare_ListConsentStoresResponse");
+  }
+  /**
+   * Updates the specified consent store. (consentStores.patch)
+   *
+   * @param string $name Resource name of the consent store, of the form `projects
+   * /{project_id}/locations/{location_id}/datasets/{dataset_id}/consentStores/{co
+   * nsent_store_id}`. Cannot be changed after creation.
+   * @param Google_Service_CloudHealthcare_ConsentStore $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask Required. The update mask that applies to the
+   * resource. For the `FieldMask` definition, see https://developers.google.com
+   * /protocol-buffers/docs/reference/google.protobuf#fieldmask. Only the
+   * `labels`, `default_consent_ttl`, and `enable_consent_create_on_update` fields
+   * are allowed to be updated.
+   * @return Google_Service_CloudHealthcare_ConsentStore
+   */
+  public function patch($name, Google_Service_CloudHealthcare_ConsentStore $postBody, $optParams = array())
+  {
+    $params = array('name' => $name, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', array($params), "Google_Service_CloudHealthcare_ConsentStore");
+  }
+  /**
+   * Queries all data_ids that are consented for a specified use in the given
+   * consent store and writes them to a specified destination. The returned
+   * Operation includes a progress counter for the number of User data mappings
+   * processed. Errors are logged to Cloud Logging (see [Viewing logs]
+   * (cloud.google.com/healthcare/docs/how-tos/logging)). For example, the
+   * following sample log entry shows a `failed to evaluate consent policy` error
+   * that occurred during a QueryAccessibleData call to consent store `projects/{p
+   * roject_id}/locations/{location_id}/datasets/{dataset_id}/consentStores/{conse
+   * nt_store_id}`. ```json jsonPayload: { @type: "type.googleapis.com/google.clou
+   * d.healthcare.logging.QueryAccessibleDataLogEntry" error: { code: 9 message:
+   * "failed to evaluate consent policy" } resourceName: "projects/{project_id}/lo
+   * cations/{location_id}/datasets/{dataset_id}/consentStores/{consent_store_id}/
+   * consents/{consent_id}" } logName: "projects/{project_id}/logs/healthcare.goog
+   * leapis.com%2Fquery_accessible_data" operation: { id: "projects/{project_id}/l
+   * ocations/{location_id}/datasets/{dataset_id}/operations/{operation_id}"
+   * producer: "healthcare.googleapis.com/QueryAccessibleData" } receiveTimestamp:
+   * "TIMESTAMP" resource: { labels: { consent_store_id: "{consent_store_id}"
+   * dataset_id: "{dataset_id}" location: "{location_id}" project_id:
+   * "{project_id}" } type: "healthcare_consent_store" } severity: "ERROR"
+   * timestamp: "TIMESTAMP" ``` (consentStores.queryAccessibleData)
+   *
+   * @param string $consentStore Required. Name of the consent store to retrieve
+   * User data mappings from.
+   * @param Google_Service_CloudHealthcare_QueryAccessibleDataRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_CloudHealthcare_Operation
+   */
+  public function queryAccessibleData($consentStore, Google_Service_CloudHealthcare_QueryAccessibleDataRequest $postBody, $optParams = array())
+  {
+    $params = array('consentStore' => $consentStore, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('queryAccessibleData', array($params), "Google_Service_CloudHealthcare_Operation");
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any

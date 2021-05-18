@@ -23,6 +23,7 @@
 
 namespace OCA\Files;
 
+use OCP\Activity\IEvent;
 use OCP\Activity\IExtension;
 use OCP\Activity\IManager;
 use OCP\IConfig;
@@ -184,6 +185,9 @@ class Activity implements IExtension {
 			case 'deleted_self':
 				return (string) $l->t('You deleted %1$s', $params);
 			case 'deleted_by':
+				if ($this->actorIsAutomation($params[1])) {
+					return (string) $l->t('%1$s was deleted due to automation rule', $params);
+				}
 				return (string) $l->t('%2$s deleted %1$s', $params);
 			case 'restored_self':
 				return (string) $l->t('You restored %1$s', $params);
@@ -421,5 +425,15 @@ class Activity implements IExtension {
 	 */
 	protected function userSettingFavoritesOnly($user) {
 		return (bool) $this->config->getUserValue($user, 'activity', 'notify_' . self::METHOD_STREAM . '_' . self::TYPE_FAVORITES, false);
+	}
+
+	/**
+	 * Check if the author is automation user
+	 *
+	 * @param string $user Parameter e.g. `<user display-name="admin">admin</user>`
+	 * @return bool
+	 */
+	protected function actorIsAutomation($user) {
+		return \strip_tags($user) === IEvent::AUTOMATION_AUTHOR;
 	}
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "690a29b548d889105d05f51e27c9e076",
+    "content-hash": "5f26bbafab3200e8ff373dd6add0c742",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -131,16 +131,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.162.0",
+            "version": "v0.167.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "9085ff13f32f5baf8b3d2917ea63e2e029ecedb6"
+                "reference": "46b71684a100f3d976e0321cf24f487b314add68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/9085ff13f32f5baf8b3d2917ea63e2e029ecedb6",
-                "reference": "9085ff13f32f5baf8b3d2917ea63e2e029ecedb6",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/46b71684a100f3d976e0321cf24f487b314add68",
+                "reference": "46b71684a100f3d976e0321cf24f487b314add68",
                 "shasum": ""
             },
             "require": {
@@ -166,9 +166,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client-services/issues",
-                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.162.0"
+                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.167.0"
             },
-            "time": "2021-02-28T12:20:02+00:00"
+            "time": "2021-03-22T11:26:04+00:00"
         },
         {
             "name": "google/auth",
@@ -286,16 +286,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.7.0",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "53330f47520498c0ae1f61f7e2c90f55690c06a3"
+                "reference": "35ea11d335fd638b5882ff1725228b3d35496ab1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/53330f47520498c0ae1f61f7e2c90f55690c06a3",
-                "reference": "53330f47520498c0ae1f61f7e2c90f55690c06a3",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/35ea11d335fd638b5882ff1725228b3d35496ab1",
+                "reference": "35ea11d335fd638b5882ff1725228b3d35496ab1",
                 "shasum": ""
             },
             "require": {
@@ -355,9 +355,9 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/1.7.0"
+                "source": "https://github.com/guzzle/psr7/tree/1.8.1"
             },
-            "time": "2020-09-30T07:37:11+00:00"
+            "time": "2021-03-21T16:25:00+00:00"
         },
         {
             "name": "guzzlehttp/ringphp",
@@ -472,16 +472,16 @@
         },
         {
             "name": "icewind/smb",
-            "version": "v3.3.1",
+            "version": "v3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/icewind1991/SMB.git",
-                "reference": "866f2b19a6e8277bc79c34060e344c9cbbba7023"
+                "reference": "9dba42ab2a3990de29e18cc62b0a8270aceb74e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/icewind1991/SMB/zipball/866f2b19a6e8277bc79c34060e344c9cbbba7023",
-                "reference": "866f2b19a6e8277bc79c34060e344c9cbbba7023",
+                "url": "https://api.github.com/repos/icewind1991/SMB/zipball/9dba42ab2a3990de29e18cc62b0a8270aceb74e3",
+                "reference": "9dba42ab2a3990de29e18cc62b0a8270aceb74e3",
                 "shasum": ""
             },
             "require": {
@@ -491,7 +491,8 @@
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.16",
                 "phpstan/phpstan": "^0.12.57",
-                "phpunit/phpunit": "^8.5|^9.3.8"
+                "phpunit/phpunit": "^8.5|^9.3.8",
+                "psalm/phar": "^4.3"
             },
             "type": "library",
             "autoload": {
@@ -512,22 +513,22 @@
             "description": "php wrapper for smbclient and libsmbclient-php",
             "support": {
                 "issues": "https://github.com/icewind1991/SMB/issues",
-                "source": "https://github.com/icewind1991/SMB/tree/v3.3.1"
+                "source": "https://github.com/icewind1991/SMB/tree/v3.4.1"
             },
-            "time": "2021-03-03T20:58:11+00:00"
+            "time": "2021-04-19T13:53:08+00:00"
         },
         {
             "name": "icewind/streams",
-            "version": "v0.7.3",
+            "version": "v0.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/icewind1991/Streams.git",
-                "reference": "22ef9fc5b50d645dbc202206a656cc4dde28f95c"
+                "reference": "93bce472202d36d9808c30eaa52a1dc72b39e04c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/icewind1991/Streams/zipball/22ef9fc5b50d645dbc202206a656cc4dde28f95c",
-                "reference": "22ef9fc5b50d645dbc202206a656cc4dde28f95c",
+                "url": "https://api.github.com/repos/icewind1991/Streams/zipball/93bce472202d36d9808c30eaa52a1dc72b39e04c",
+                "reference": "93bce472202d36d9808c30eaa52a1dc72b39e04c",
                 "shasum": ""
             },
             "require": {
@@ -557,9 +558,9 @@
             "description": "A set of generic stream wrappers",
             "support": {
                 "issues": "https://github.com/icewind1991/Streams/issues",
-                "source": "https://github.com/icewind1991/Streams/tree/v0.7.3"
+                "source": "https://github.com/icewind1991/Streams/tree/v0.7.4"
             },
-            "time": "2021-03-02T19:33:35+00:00"
+            "time": "2021-03-12T15:48:22+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -776,16 +777,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.5",
+            "version": "3.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "7c751ea006577e4c2e83326d90c8b1e8c11b8ede"
+                "reference": "d9615a6fb970d9933866ca8b4036ec3407b020b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/7c751ea006577e4c2e83326d90c8b1e8c11b8ede",
-                "reference": "7c751ea006577e4c2e83326d90c8b1e8c11b8ede",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/d9615a6fb970d9933866ca8b4036ec3407b020b6",
+                "reference": "d9615a6fb970d9933866ca8b4036ec3407b020b6",
                 "shasum": ""
             },
             "require": {
@@ -867,7 +868,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.5"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.8"
             },
             "funding": [
                 {
@@ -883,7 +884,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-12T16:18:16+00:00"
+            "time": "2021-04-19T03:20:48+00:00"
         },
         {
             "name": "psr/cache",

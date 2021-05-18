@@ -615,47 +615,85 @@
 
 		/**
 		 * Register the actions that are used by default for the files app.
+		 * @param {['Download', 'Rename', 'Delete']|null} [excludeActions] exclude actions
 		 */
-		registerDefaultActions: function() {
-			this.registerAction({
-				name: 'Download',
-				displayName: t('files', 'Download'),
-				order: -20,
-				mime: 'all',
-				permissions: OC.PERMISSION_READ,
-				iconClass: 'icon-download',
-				actionHandler: function (filename, context) {
-					var dir = context.dir || context.fileList.getCurrentDirectory();
-					var isDir = context.$file.attr('data-type') === 'dir';
-					var url = context.fileList.getDownloadUrl(filename, dir, isDir);
+		registerDefaultActions: function (excludeActions) {
+			excludeActions = excludeActions || [];
 
-					var downloadFileaction = $(context.$file).find('.fileactions .action-download');
+			var self = this;
+			var defaultActions = [
+				{
+					name: 'Download',
+					displayName: t('files', 'Download'),
+					order: -20,
+					mime: 'all',
+					permissions: OC.PERMISSION_READ,
+					iconClass: 'icon-download',
+					actionHandler: function (filename, context) {
+						var dir = context.dir || context.fileList.getCurrentDirectory();
+						var isDir = context.$file.attr('data-type') === 'dir';
+						var url = context.fileList.getDownloadUrl(filename, dir, isDir);
 
-					// don't allow a second click on the download action
-					if(downloadFileaction.hasClass('disabled')) {
-						return;
+						var downloadFileaction = $(context.$file).find('.fileactions .action-download');
+
+						// don't allow a second click on the download action
+						if (downloadFileaction.hasClass('disabled')) {
+							return;
+						}
+
+						if (url) {
+							var disableLoadingState = function () {
+								context.fileList.showFileBusyState(filename, false);
+							};
+
+							context.fileList.showFileBusyState(filename, true);
+							OCA.Files.Files.handleDownload(url, disableLoadingState);
+						}
 					}
-
-					if (url) {
-						var disableLoadingState = function() {
-							context.fileList.showFileBusyState(filename, false);
-						};
-
-						context.fileList.showFileBusyState(filename, true);
-						OCA.Files.Files.handleDownload(url, disableLoadingState);
+				},
+				{
+					name: 'Rename',
+					displayName: t('files', 'Rename'),
+					mime: 'all',
+					order: -30,
+					permissions: OC.PERMISSION_UPDATE,
+					iconClass: 'icon-rename',
+					actionHandler: function (filename, context) {
+						context.fileList.rename(filename);
+					}
+				},
+				{
+					name: 'Delete',
+					displayName: function (context) {
+						var mountType = context.$file.attr('data-mounttype');
+						var deleteTitle = t('files', 'Delete');
+						if (mountType === 'external-root') {
+							deleteTitle = t('files', 'Disconnect storage');
+						} else if (mountType === 'shared-root') {
+							deleteTitle = t('files', 'Unshare');
+						}
+						return deleteTitle;
+					},
+					mime: 'all',
+					order: 1000,
+					// permission is READ because we show a hint instead if there is no permission
+					permissions: OC.PERMISSION_DELETE,
+					iconClass: 'icon-delete',
+					actionHandler: function (fileName, context) {
+						// if there is no permission to delete do nothing
+						if ((context.$file.data('permissions') & OC.PERMISSION_DELETE) === 0) {
+							return;
+						}
+						context.fileList.do_delete(fileName, context.dir);
+						$('.tipsy').remove();
 					}
 				}
-			});
+			];
 
-			this.registerAction({
-				name: 'Rename',
-				displayName: t('files', 'Rename'),
-				mime: 'all',
-				order: -30,
-				permissions: OC.PERMISSION_UPDATE,
-				iconClass: 'icon-rename',
-				actionHandler: function (filename, context) {
-					context.fileList.rename(filename);
+
+			defaultActions.forEach(function (action) {
+				if (excludeActions.indexOf(action.name) === -1) {
+					self.registerAction(action);
 				}
 			});
 
@@ -664,32 +702,6 @@
 				context.fileList.changeDirectory(OC.joinPaths(dir, filename), true, false, parseInt(context.$file.attr('data-id'), 10));
 			});
 
-			this.registerAction({
-				name: 'Delete',
-				displayName: function(context) {
-					var mountType = context.$file.attr('data-mounttype');
-					var deleteTitle = t('files', 'Delete');
-					if (mountType === 'external-root') {
-						deleteTitle = t('files', 'Disconnect storage');
-					} else if (mountType === 'shared-root') {
-						deleteTitle = t('files', 'Unshare');
-					}
-					return deleteTitle;
-				},
-				mime: 'all',
-				order: 1000,
-				// permission is READ because we show a hint instead if there is no permission
-				permissions: OC.PERMISSION_DELETE,
-				iconClass: 'icon-delete',
-				actionHandler: function(fileName, context) {
-					// if there is no permission to delete do nothing
-					if((context.$file.data('permissions') & OC.PERMISSION_DELETE) === 0) {
-						return;
-					}
-					context.fileList.do_delete(fileName, context.dir);
-					$('.tipsy').remove();
-				}
-			});
 
 			this.setDefault('dir', 'Open');
 		},

@@ -9,7 +9,7 @@ Feature: delete users
 
   @smokeTest
   Scenario: Delete a user
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     When the administrator deletes user "brand-new-user" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -17,7 +17,7 @@ Feature: delete users
 
   @skipOnOcV10.3
   Scenario: Delete a user with special characters in the username
-    Given these users have been created with small skeleton files:
+    Given these users have been created without skeleton files:
       | username | email               |
       | a@-+_.b  | a.b@example.com     |
       | a space  | a.space@example.com |
@@ -33,7 +33,7 @@ Feature: delete users
       | a space  |
 
   Scenario: Delete a user, and specify the user name in different case
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     When the administrator deletes user "Brand-New-User" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -41,7 +41,7 @@ Feature: delete users
 
   @smokeTest @notToImplementOnOCIS
   Scenario: subadmin deletes a user in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username       |
       | subadmin       |
       | brand-new-user |
@@ -54,7 +54,7 @@ Feature: delete users
     And user "brand-new-user" should not exist
 
   Scenario: normal user tries to delete a user
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
       | Brian    |
@@ -64,7 +64,7 @@ Feature: delete users
     And user "Brian" should exist
 
   Scenario: administrator deletes another admin user
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username       |
       | another-admin  |
     And user "another-admin" has been added to group "admin"
@@ -74,7 +74,7 @@ Feature: delete users
     And user "another-admin" should not exist
 
   Scenario: subadmin deletes a user with subadmin permissions in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username         |
       | subadmin         |
       | another-subadmin |
@@ -88,7 +88,7 @@ Feature: delete users
     And user "another-subadmin" should not exist
 
   Scenario: subadmin should not be able to delete another subadmin of same group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username         |
       | subadmin         |
       | another-subadmin |
@@ -101,7 +101,7 @@ Feature: delete users
     And user "another-subadmin" should exist
 
   Scenario: subadmin should not be able to delete a user with admin permissions in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username       |
       | subadmin       |
       | another-admin  |
@@ -115,7 +115,7 @@ Feature: delete users
     And user "another-admin" should exist
 
   Scenario: subadmin should not be able to delete a user not in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username       |
       | subadmin       |
       | brand-new-user |

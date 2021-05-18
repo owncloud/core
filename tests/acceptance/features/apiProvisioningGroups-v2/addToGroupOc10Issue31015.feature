@@ -9,7 +9,7 @@ Feature: add users to group
 
   @issue-31015 @skipOnLDAP
   Scenario: adding a user to a group that has a forward-slash in the group name
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     # After fixing issue-31015, change the following step to "has been created"
     When the administrator sends a group creation request for the following groups using the provisioning API
       | groupname        | comment                            |

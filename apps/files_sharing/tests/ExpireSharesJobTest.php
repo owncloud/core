@@ -59,6 +59,11 @@ class ExpireSharesJobTest extends \Test\TestCase {
 	private $defaultShareProvider;
 
 	/**
+	 * @var \OCP\Activity\IManager | MockObject
+	 */
+	private $activityManager;
+
+	/**
 	 * @var string
 	 */
 	private $user1;
@@ -76,11 +81,13 @@ class ExpireSharesJobTest extends \Test\TestCase {
 		// clear occasional leftover shares from other tests
 		$this->connection->executeUpdate('DELETE FROM `*PREFIX*share`');
 		$this->defaultShareProvider = $this->createMock(DefaultShareProvider::class);
+		$this->activityManager = $this->createMock(\OCP\Activity\IManager::class);
 
 		$this->job = new ExpireSharesJob(
 			$this->shareManager,
 			$this->connection,
-			$this->defaultShareProvider
+			$this->defaultShareProvider,
+			$this->activityManager
 		);
 
 		$this->user1 = $this->getUniqueID('user1_');

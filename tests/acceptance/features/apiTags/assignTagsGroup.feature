@@ -3,7 +3,7 @@ Feature: Title of your feature
   I want to use this template for my feature file
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
 
   Scenario: User can assign tags when in the tag's groups
     Given group "grp1" has been created

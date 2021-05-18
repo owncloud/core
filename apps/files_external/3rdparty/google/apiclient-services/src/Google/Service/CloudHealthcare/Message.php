@@ -27,6 +27,8 @@ class Google_Service_CloudHealthcare_Message extends Google_Collection
   protected $parsedDataDataType = '';
   protected $patientIdsType = 'Google_Service_CloudHealthcare_PatientId';
   protected $patientIdsDataType = 'array';
+  protected $schematizedDataType = 'Google_Service_CloudHealthcare_SchematizedData';
+  protected $schematizedDataDataType = '';
   public $sendFacility;
   public $sendTime;
 
@@ -97,6 +99,20 @@ class Google_Service_CloudHealthcare_Message extends Google_Collection
   public function getPatientIds()
   {
     return $this->patientIds;
+  }
+  /**
+   * @param Google_Service_CloudHealthcare_SchematizedData
+   */
+  public function setSchematizedData(Google_Service_CloudHealthcare_SchematizedData $schematizedData)
+  {
+    $this->schematizedData = $schematizedData;
+  }
+  /**
+   * @return Google_Service_CloudHealthcare_SchematizedData
+   */
+  public function getSchematizedData()
+  {
+    return $this->schematizedData;
   }
   public function setSendFacility($sendFacility)
   {

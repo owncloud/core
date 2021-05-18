@@ -35,7 +35,8 @@ class Google_Service_Reports_Resource_Activities extends Google_Service_Resource
    *
    * @param string $userKey Represents the profile ID or the user email for which
    * the data should be filtered. Can be `all` for all information, or `userKey`
-   * for a user's unique G Suite profile ID or their primary email address.
+   * for a user's unique Google Workspace profile ID or their primary email
+   * address.
    * @param string $applicationName Application name for which the events are to
    * be retrieved.
    * @param array $optParams Optional parameters.
@@ -64,14 +65,15 @@ class Google_Service_Reports_Resource_Activities extends Google_Service_Resource
    * the most recent 180 days if the `startTime` is more than 180 days in the
    * past.
    * @opt_param string eventName The name of the event being queried by the API.
-   * Each `eventName` is related to a specific G Suite service or feature which
-   * the API organizes into types of events. An example is the Google Calendar
-   * events in the Admin console application's reports. The Calendar Settings
-   * `type` structure has all of the Calendar `eventName` activities reported by
-   * the API. When an administrator changes a Calendar setting, the API reports
-   * this activity in the Calendar Settings `type` and `eventName` parameters. For
-   * more information about `eventName` query strings and parameters, see the list
-   * of event names for various applications above in `applicationName`.
+   * Each `eventName` is related to a specific Google Workspace service or feature
+   * which the API organizes into types of events. An example is the Google
+   * Calendar events in the Admin console application's reports. The Calendar
+   * Settings `type` structure has all of the Calendar `eventName` activities
+   * reported by the API. When an administrator changes a Calendar setting, the
+   * API reports this activity in the Calendar Settings `type` and `eventName`
+   * parameters. For more information about `eventName` query strings and
+   * parameters, see the list of event names for various applications above in
+   * `applicationName`.
    * @opt_param string filters The `filters` query string is a comma-separated
    * list. The list is composed of event parameters that are manipulated by
    * relational operators. Event parameters are in the form `parameter1
@@ -137,7 +139,8 @@ class Google_Service_Reports_Resource_Activities extends Google_Service_Resource
    *
    * @param string $userKey Represents the profile ID or the user email for which
    * the data should be filtered. Can be `all` for all information, or `userKey`
-   * for a user's unique G Suite profile ID or their primary email address.
+   * for a user's unique Google Workspace profile ID or their primary email
+   * address.
    * @param string $applicationName Application name for which the events are to
    * be retrieved.
    * @param Google_Service_Reports_Channel $postBody
@@ -167,14 +170,15 @@ class Google_Service_Reports_Resource_Activities extends Google_Service_Resource
    * the most recent 180 days if the `startTime` is more than 180 days in the
    * past.
    * @opt_param string eventName The name of the event being queried by the API.
-   * Each `eventName` is related to a specific G Suite service or feature which
-   * the API organizes into types of events. An example is the Google Calendar
-   * events in the Admin console application's reports. The Calendar Settings
-   * `type` structure has all of the Calendar `eventName` activities reported by
-   * the API. When an administrator changes a Calendar setting, the API reports
-   * this activity in the Calendar Settings `type` and `eventName` parameters. For
-   * more information about `eventName` query strings and parameters, see the list
-   * of event names for various applications above in `applicationName`.
+   * Each `eventName` is related to a specific Google Workspace service or feature
+   * which the API organizes into types of events. An example is the Google
+   * Calendar events in the Admin console application's reports. The Calendar
+   * Settings `type` structure has all of the Calendar `eventName` activities
+   * reported by the API. When an administrator changes a Calendar setting, the
+   * API reports this activity in the Calendar Settings `type` and `eventName`
+   * parameters. For more information about `eventName` query strings and
+   * parameters, see the list of event names for various applications above in
+   * `applicationName`.
    * @opt_param string filters The `filters` query string is a comma-separated
    * list. The list is composed of event parameters that are manipulated by
    * relational operators. Event parameters are in the form `parameter1

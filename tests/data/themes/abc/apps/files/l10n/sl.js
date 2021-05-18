@@ -35,7 +35,6 @@ OC.L10N.register(
     "Unable to determine date" : "Ni mogoče določiti datuma",
     "Invalid path" : "Neveljavna pot",
     "This operation is forbidden" : "To dejanje ni dovoljeno!",
-    "This directory is unavailable, please check the logs or contact the administrator" : "Mapa ni na voljo. Preverite dnevnik in stopite v stik s skrbnikom sistema.",
     "group" : "skupina",
     "Remote share" : "Oddaljeno mesto za souporabo",
     "Could not move \"{file}\", target exists" : "Datoteke \"{file}\" ni mogoče premakniti, ker cilj že obstaja",

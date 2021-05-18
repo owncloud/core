@@ -26,6 +26,20 @@
 class Google_Service_Dialogflow_Resource_ProjectsLocationsAgentsTestCasesResults extends Google_Service_Resource
 {
   /**
+   * Gets a test case result. (results.get)
+   *
+   * @param string $name Required. The name of the testcase. Format:
+   * `projects//locations//agents//testCases//results/`.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3TestCaseResult
+   */
+  public function get($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('get', array($params), "Google_Service_Dialogflow_GoogleCloudDialogflowCxV3TestCaseResult");
+  }
+  /**
    * Fetches a list of results for a given test case.
    * (results.listProjectsLocationsAgentsTestCasesResults)
    *

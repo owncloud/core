@@ -35,6 +35,7 @@ class Google_Service_OSConfig extends Google_Service
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 
+  public $operations;
   public $projects_patchDeployments;
   public $projects_patchJobs;
   public $projects_patchJobs_instanceDetails;
@@ -54,6 +55,48 @@ class Google_Service_OSConfig extends Google_Service
     $this->version = 'v1';
     $this->serviceName = 'osconfig';
 
+    $this->operations = new Google_Service_OSConfig_Resource_Operations(
+        $this,
+        $this->serviceName,
+        'operations',
+        array(
+          'methods' => array(
+            'delete' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
     $this->projects_patchDeployments = new Google_Service_OSConfig_Resource_ProjectsPatchDeployments(
         $this,
         $this->serviceName,

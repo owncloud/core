@@ -9,7 +9,7 @@ Feature: get user groups
 
   @smokeTest @notToImplementOnOCIS
   Scenario: admin gets groups of an user
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "unused-group" has been created
     And group "brand-new-group" has been created
     And group "0" has been created
@@ -36,7 +36,7 @@ Feature: get user groups
 
   @issue-31015 @skipOnOcV10
   Scenario: admin gets groups of an user, including groups containing a slash
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "unused-group" has been created
     And group "Mgmt/Sydney" has been created
     And group "var/../etc" has been created
@@ -54,7 +54,7 @@ Feature: get user groups
 
   @smokeTest
   Scenario: subadmin tries to get other groups of a user in their group
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username       |
       | brand-new-user |
       | subadmin       |
@@ -71,7 +71,7 @@ Feature: get user groups
 
   @issue-31276 @skipOnOcV10
   Scenario: normal user tries to get the groups of another user
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username         |
       | brand-new-user   |
       | another-new-user |
@@ -84,7 +84,7 @@ Feature: get user groups
 
   @notToImplementOnOCIS
   Scenario: admin gets groups of an user who is not in any groups
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "unused-group" has been created
     When the administrator gets all the groups of user "brand-new-user" using the provisioning API
     Then the OCS status code should be "200"
@@ -92,8 +92,8 @@ Feature: get user groups
     And the list of groups returned by the API should be empty
 
   @smokeTest @skipOnOcV10
-  Scenario: admin gets groups of an user
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+  Scenario: admin gets groups of an user on ocis
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "unused-group" has been created
     And group "brand-new-group" has been created
     And group "0" has been created
@@ -120,18 +120,18 @@ Feature: get user groups
     And the HTTP status code should be "200"
 
   @skipOnOcV10
-  Scenario: admin gets groups of an user who is not in any groups
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+  Scenario: admin gets groups of an user who is not in any groups on ocis
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     And group "unused-group" has been created
     When the administrator gets all the groups of user "brand-new-user" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
-    Then the groups returned by the API should be
+    And the groups returned by the API should be
       | users |
 
 
   Scenario: normal user gets his/her groups
-    Given these users have been created with default attributes and small skeleton files:
+    Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
     And group "group1" has been created

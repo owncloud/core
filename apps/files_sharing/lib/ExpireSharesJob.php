@@ -24,9 +24,11 @@ namespace OCA\Files_Sharing;
 
 use OC\BackgroundJob\TimedJob;
 use OC\Share20\DefaultShareProvider;
+use OCP\Activity\IEvent;
 use OCP\IDBConnection;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
+use OCP\Activity\IManager as ActivityIManager;
 
 /**
  * Delete all shares that are expired
@@ -49,22 +51,30 @@ class ExpireSharesJob extends TimedJob {
 	private $defaultShareProvider;
 
 	/**
+	 * @var ActivityIManager $activityManager
+	 */
+	private $activityManager;
+
+	/**
 	 * sets the correct interval for this timed job
 	 *
 	 * @param IManager $shareManager
 	 * @param IDBConnection $connection
 	 * @param DefaultShareProvider $defaultShareProvider
+	 * @param ActivityIManager $activityManager
 	 */
 	public function __construct(
 		IManager $shareManager,
 		IDBConnection $connection,
-		DefaultShareProvider $defaultShareProvider
+		DefaultShareProvider $defaultShareProvider,
+		ActivityIManager $activityManager
 	) {
 		// Run once a day
 		$this->setInterval(24 * 60 * 60);
 		$this->shareManager = $shareManager;
 		$this->connection = $connection;
 		$this->defaultShareProvider = $defaultShareProvider;
+		$this->activityManager = $activityManager;
 	}
 
 	/**
@@ -102,7 +112,9 @@ class ExpireSharesJob extends TimedJob {
 				 * $share['id'] has been casted to string to ensure consistency.
 				 */
 				$shareObject = $this->defaultShareProvider->getShareById((string)$share['id']);
+				$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 				$this->shareManager->deleteShare($shareObject);
+				$this->activityManager->restoreAgentAuthor();
 			} catch (ShareNotFound $ex) {
 				//already deleted
 			}

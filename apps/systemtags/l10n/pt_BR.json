@@ -5,6 +5,7 @@
     "Please select tags to filter by" : "Por favor selecione etiquetas para filtrar por",
     "No files found for the selected tags" : "Não há arquivos encontrados para as etiquetas selecionadas",
     "<strong>System tags</strong> for a file have been modified" : "<strong>As etiquetas do sistema</strong> para um arquivo foram modificadas",
+    "System tag %3$s was assigned to %2$s due to automation rule" : "A etiqueta do sistema %3$s foi atribuída a %2$s devido à regra de automação",
     "You assigned system tag %3$s" : "Você atribuiu uma etiqueta ao sistema %3$s",
     "%1$s assigned system tag %3$s" : "%1$s etiqueta de sistema atribuída %3$s",
     "You unassigned system tag %3$s" : "Você dasatribuiu uma etiqueta ao sistema %3$s",

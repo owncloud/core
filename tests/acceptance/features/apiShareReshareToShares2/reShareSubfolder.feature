@@ -4,8 +4,10 @@ Feature: a subfolder of a received share can be reshared
   Background:
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And user "Alice" has been created with default attributes and small skeleton files
-    And user "Brian" has been created with default attributes and without skeleton files
+    And these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
 
   @smokeTest
   Scenario Outline: User is allowed to reshare a sub-folder with the same permissions
@@ -18,7 +20,7 @@ Feature: a subfolder of a received share can be reshared
     When user "Brian" shares folder "/Shares/TMP/SUB" with user "Carol" with permissions "share,read" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    When user "Carol" has accepted share "/TMP/SUB" offered by user "Brian"
+    When user "Carol" accepts share "/TMP/SUB" offered by user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "Carol" folder "/Shares/SUB" should exist

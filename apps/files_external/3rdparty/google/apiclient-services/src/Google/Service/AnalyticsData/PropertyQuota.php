@@ -19,6 +19,8 @@ class Google_Service_AnalyticsData_PropertyQuota extends Google_Model
 {
   protected $concurrentRequestsType = 'Google_Service_AnalyticsData_QuotaStatus';
   protected $concurrentRequestsDataType = '';
+  protected $potentiallyThresholdedRequestsPerHourType = 'Google_Service_AnalyticsData_QuotaStatus';
+  protected $potentiallyThresholdedRequestsPerHourDataType = '';
   protected $serverErrorsPerProjectPerHourType = 'Google_Service_AnalyticsData_QuotaStatus';
   protected $serverErrorsPerProjectPerHourDataType = '';
   protected $tokensPerDayType = 'Google_Service_AnalyticsData_QuotaStatus';
@@ -39,6 +41,20 @@ class Google_Service_AnalyticsData_PropertyQuota extends Google_Model
   public function getConcurrentRequests()
   {
     return $this->concurrentRequests;
+  }
+  /**
+   * @param Google_Service_AnalyticsData_QuotaStatus
+   */
+  public function setPotentiallyThresholdedRequestsPerHour(Google_Service_AnalyticsData_QuotaStatus $potentiallyThresholdedRequestsPerHour)
+  {
+    $this->potentiallyThresholdedRequestsPerHour = $potentiallyThresholdedRequestsPerHour;
+  }
+  /**
+   * @return Google_Service_AnalyticsData_QuotaStatus
+   */
+  public function getPotentiallyThresholdedRequestsPerHour()
+  {
+    return $this->potentiallyThresholdedRequestsPerHour;
   }
   /**
    * @param Google_Service_AnalyticsData_QuotaStatus

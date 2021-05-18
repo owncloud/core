@@ -9,7 +9,7 @@ Feature: current oC10 behavior for issue-31276
 
   @issue-31276
   Scenario: subadmin tries to disable an app
-    Given user "subadmin" has been created with default attributes and small skeleton files
+    Given user "subadmin" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created
     And user "subadmin" has been made a subadmin of group "brand-new-group"
     And app "comments" has been enabled
@@ -21,7 +21,7 @@ Feature: current oC10 behavior for issue-31276
 
   @issue-31276
   Scenario: normal user tries to disable an app
-    Given user "brand-new-user" has been created with default attributes and small skeleton files
+    Given user "brand-new-user" has been created with default attributes and without skeleton files
     And app "comments" has been enabled
     When user "brand-new-user" disables app "comments"
     Then the OCS status code should be "997"

@@ -9,12 +9,16 @@ Feature: Sharing files and folders with internal groups
       | username |
       | Alice    |
       | Brian    |
-    And user "Carol" has been created with default attributes and large skeleton files
+      | Carol    |
+    And user "Carol" has created folder "simple-folder"
+    And user "Carol" has created folder "simple-folder/simple-empty-folder"
+    And user "Carol" has created folder "simple-folder/simple-inner-folder"
 
   Scenario Outline: sharing  files and folder with an internal problematic group name
     Given these groups have been created:
       | groupname |
       | <group>   |
+    And user "Carol" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"
     And user "Alice" has been added to group "<group>"
     And user "Brian" has been added to group "<group>"
     And user "Carol" has logged in using the webUI
@@ -45,7 +49,7 @@ Feature: Sharing files and folders with internal groups
     And user "Carol" has logged in using the webUI
     When the user shares folder "simple-folder" with user "Alice" using the webUI
     And the user shares folder "simple-folder" with group "Alice" using the webUI
-    When the user re-logs in as "Alice" using the webUI
+    And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder" should be marked as shared by "Carol" on the webUI
     When the user re-logs in as "Brian" using the webUI
     Then folder "simple-folder" should be marked as shared with "Alice" by "Carol" on the webUI
@@ -60,7 +64,7 @@ Feature: Sharing files and folders with internal groups
     And user "Carol" has logged in using the webUI
     When the user shares folder "simple-folder" with group "Alice" using the webUI
     And the user shares folder "simple-folder" with user "Alice" using the webUI
-    When the user re-logs in as "Alice" using the webUI
+    And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder" should be marked as shared by "Carol" on the webUI
     When the user re-logs in as "Brian" using the webUI
     Then folder "simple-folder" should be marked as shared with "Alice" by "Carol" on the webUI
@@ -73,7 +77,7 @@ Feature: Sharing files and folders with internal groups
     And user "Carol" has logged in using the webUI
     When the user shares folder "simple-folder" with user "Alice" using the webUI
     And the user shares folder "simple-folder" with group "Alice" using the webUI
-    When the user re-logs in as "Alice" using the webUI
+    And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder" should be marked as shared by "Carol" on the webUI
     When the user re-logs in as "Brian" using the webUI
     Then folder "simple-folder" should be marked as shared with "Alice" by "Carol" on the webUI
@@ -86,7 +90,7 @@ Feature: Sharing files and folders with internal groups
     And user "Carol" has logged in using the webUI
     When the user shares folder "simple-folder" with group "Alice" using the webUI
     And the user shares folder "simple-folder" with user "Alice" using the webUI
-    When the user re-logs in as "Alice" using the webUI
+    And the user re-logs in as "Alice" using the webUI
     Then folder "simple-folder" should be marked as shared by "Carol" on the webUI
     When the user re-logs in as "Brian" using the webUI
     Then folder "simple-folder" should be marked as shared with "Alice" by "Carol" on the webUI
@@ -347,3 +351,81 @@ Feature: Sharing files and folders with internal groups
       | uid_owner   | Carol          |
       | share_with  | grp2           |
       | permissions | 7              |
+
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5 @skipOnOcV10.6 @skipOnOcV10.7.0
+  Scenario: Reshare with group that user is member of should not create mount in the root folder of resharer
+    Given these groups have been created:
+      | groupname |
+      | grp1      |
+      | grp2      |
+    And user "Alice" has been added to group "grp1"
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has been added to group "grp2"
+    And user "Brian" has been added to group "grp2"
+    And user "Carol" has shared folder "/simple-folder" with group "grp1"
+    And user "Alice" has logged in using the webUI
+    When the user shares folder "simple-folder" with group "grp2" using the webUI
+    And the user opens folder "simple-folder" using the webUI
+    And the user shares folder "simple-empty-folder" with group "grp2" using the webUI
+    Then as "Alice" folder "/simple-folder" should exist
+    And user "Alice" should be able to upload file "filesForUpload/textfile.txt" to "simple-folder/textfile.txt"
+    And as "Alice" folder "/simple-empty-folder" should not exist
+    And user "Alice" should be able to create folder "/simple-empty-folder"
+
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5 @skipOnOcV10.6 @skipOnOcV10.7.0
+  Scenario: Reshare with group that user is member of should allow for downgrading and upgrading permissions
+    Given these groups have been created:
+      | groupname |
+      | grp1      |
+      | grp2      |
+    And user "Alice" has been added to group "grp1"
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has been added to group "grp2"
+    And user "Brian" has been added to group "grp2"
+    And user "Carol" has shared folder "/simple-folder" with group "grp1"
+    And user "Alice" has logged in using the webUI
+    When the user shares folder "simple-folder" with group "grp2" using the webUI
+    And the user sets the sharing permissions of group "grp2" for "simple-folder" using the webUI to
+      | edit   | no |
+      | create | no |
+    And the user opens folder "simple-folder" using the webUI
+    And the user shares folder "simple-empty-folder" with group "grp2" using the webUI
+    And the user sets the sharing permissions of group "grp2" for "simple-empty-folder" using the webUI to
+      | edit   | no |
+      | create | no |
+    And the user sets the sharing permissions of group "grp2" for "simple-empty-folder" using the webUI to
+      | edit   | yes |
+      | create | yes |
+    Then user "Alice" should be able to upload file "filesForUpload/textfile.txt" to "simple-folder/textfile.txt"
+    And as "Alice" folder "/simple-empty-folder" should not exist
+    And as "Brian" folder "/simple-folder" should exist
+    And as "Brian" folder "/simple-empty-folder" should exist
+    And user "Brian" should not be able to upload file "filesForUpload/textfile.txt" to "simple-folder/textfile.txt"
+    And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "simple-empty-folder/textfile.txt"
+
+  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5 @skipOnOcV10.6 @skipOnOcV10.7.0
+  Scenario: Reshare mount received from multiple group reshare by different users and different subfolders 
+    Given these groups have been created:
+      | groupname |
+      | grp1      |
+      | grp2      |
+      | grp3      |
+    And user "Alice" has been added to group "grp1"
+    And user "Alice" has been added to group "grp2"
+    And user "Brian" has been added to group "grp1"
+    And user "Brian" has been added to group "grp2"
+    And user "Carol" has shared folder "/simple-folder" with user "Alice" with permissions "all"
+    And user "Alice" has shared folder "/simple-folder" with group "grp1" with permissions "all"
+    And user "Brian" has shared file "/simple-folder/simple-inner-folder" with group "grp2" with permissions "read"
+    And user "Alice" has uploaded file with content "some data" to "/simple-folder/simple-inner-folder/textfile.txt"
+    And user "Alice" has shared file "/simple-folder/simple-inner-folder/textfile.txt" with group "grp3" with permissions "read"
+    And user "Alice" has logged in using the webUI
+    When the user opens folder "simple-folder" using the webUI
+    And the user opens folder "simple-inner-folder" using the webUI
+    And the user sets the sharing permissions of group "grp3" for "textfile.txt" using the webUI to
+      | edit  | yes |
+      | share | yes |
+    Then the following permissions are seen for "textfile.txt" in the sharing dialog for group "grp3"
+      | edit  | yes |
+      | share | yes |
+

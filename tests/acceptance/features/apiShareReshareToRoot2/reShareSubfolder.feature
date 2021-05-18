@@ -2,8 +2,10 @@
 Feature: a subfolder of a received share can be reshared
 
   Background:
-    Given user "Alice" has been created with default attributes and small skeleton files
-    And user "Brian" has been created with default attributes and without skeleton files
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
 
   @smokeTest
   Scenario Outline: User is allowed to reshare a sub-folder with the same permissions

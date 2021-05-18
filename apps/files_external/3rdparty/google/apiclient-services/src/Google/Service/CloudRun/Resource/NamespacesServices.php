@@ -33,6 +33,9 @@ class Google_Service_CloudRun_Resource_NamespacesServices extends Google_Service
    * number.
    * @param Google_Service_CloudRun_Service $postBody
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string dryRun DryRun is a query string parameter which indicates
+   * that the server should run validation without persisting the request.
    * @return Google_Service_CloudRun_Service
    */
   public function create($parent, Google_Service_CloudRun_Service $postBody, $optParams = array())
@@ -51,6 +54,8 @@ class Google_Service_CloudRun_Resource_NamespacesServices extends Google_Service
    * @param array $optParams Optional parameters.
    *
    * @opt_param string apiVersion Cloud Run currently ignores this parameter.
+   * @opt_param string dryRun DryRun is a query string parameter which indicates
+   * that the server should run validation without persisting the request.
    * @opt_param string kind Cloud Run currently ignores this parameter.
    * @opt_param string propagationPolicy Specifies the propagation policy of
    * delete. Cloud Run currently ignores this setting, and deletes in the
@@ -117,6 +122,9 @@ class Google_Service_CloudRun_Resource_NamespacesServices extends Google_Service
    * (fully managed), replace {namespace_id} with the project ID or number.
    * @param Google_Service_CloudRun_Service $postBody
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string dryRun DryRun is a query string parameter which indicates
+   * that the server should run validation without persisting the request.
    * @return Google_Service_CloudRun_Service
    */
   public function replaceService($name, Google_Service_CloudRun_Service $postBody, $optParams = array())
