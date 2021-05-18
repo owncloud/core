@@ -4,6 +4,7 @@
 		<meta charset="utf-8">
 		<title>
 			<?php
+				/** @var OC_Theme $theme */
 				p(!empty($_['application'])?$_['application'].' - ':'');
 				p($theme->getTitle());
 			?>
@@ -36,7 +37,7 @@
 		<?php endforeach; ?>
 		<?php print_unescaped($_['headers']); ?>
 	</head>
-	<body id="<?php p($_['bodyid']);?>">
+	<body id="<?php p($_['bodyid']);?>" class="theme-<?php p($theme->getName())?>">
 		<?php include('layout.noscript.warning.php'); ?>
 		<div id="notification-container">
 			<div id="notification"></div>
