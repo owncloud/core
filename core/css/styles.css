@@ -584,11 +584,6 @@ a.two-factor-cancel {
 	text-align: left;
 }
 
-.error-wide {
-	width: 700px;
-	margin-left: -200px !important;
-}
-
 .error-wide .button {
 	color: black !important;
 }
@@ -677,7 +672,7 @@ html #body-login button[type="submit"]:hover {
 }
 
 #body-login input {
-	width: auto;
+	width: 16rem;
 }
 
 #remember_login {
@@ -689,16 +684,16 @@ html #body-login button[type="submit"]:hover {
 }
 
 #body-login .v-align {
-	width: inherit;
 	padding: 2rem;
 	border-radius: 5px;
 	background-color: rgba(4,30,66,0.83);
+	margin: 0 auto;
 }
 
 /* Force constant vertical height for login box over all devices */
 #body-login .wrapper {
 	margin: 0 auto -70px;
-	width: calc(300px + 4rem);
+	width: 100%;
 	min-height: 100vh; /* fix IE11 */
 	display: -webkit-box !important;
 	-webkit-box-orient: horizontal !important;
@@ -720,6 +715,13 @@ html #body-login button[type="submit"]:hover {
 	flex-direction: row !important;
 	align-self: center !important;
 	align-items: center !important;
+}
+
+@media all and (min-width: 600px) {
+	#body-login .wrapper {
+		min-width: calc(700px + 4rem);
+		max-width: calc(700px + 4rem);
+	}
 }
 
 
