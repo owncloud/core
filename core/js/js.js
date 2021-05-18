@@ -1451,7 +1451,7 @@ function initCore() {
 	} else {
 		var color = $('body').css('color');
 	}
-
+	
 	$('#body-login form label').css({
 		color: $('p.info').css('color')
 	})
