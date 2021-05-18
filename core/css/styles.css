@@ -686,8 +686,12 @@ html #body-login button[type="submit"]:hover {
 #body-login .v-align {
 	padding: 2rem;
 	border-radius: 5px;
-	background-color: rgba(4,30,66,0.83);
 	margin: 0 auto;
+	background-color: rgba(4,30,66,0.83);
+}
+
+#body-login.has-theme .v-align {
+	background-color: unset;
 }
 
 /* Force constant vertical height for login box over all devices */
