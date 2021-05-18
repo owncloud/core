@@ -453,7 +453,7 @@ class Util {
 	/**
 	 * Make a computer file size (2 kB to 2048)
 	 * @param string $str file size in a fancy format
-	 * @return int a file size in bytes
+	 * @return float|false a file size in bytes
 	 *
 	 * Inspired by: http://www.php.net/manual/en/function.filesize.php#92418
 	 * @since 4.0.0
