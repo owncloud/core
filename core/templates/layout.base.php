@@ -23,7 +23,10 @@
 		<?php endforeach; ?>
 		<?php print_unescaped($_['headers']); ?>
 	</head>
-	<body id="body-public" class="theme-<?php p($theme->getName())?>">
+	<body id="body-public" <?php
+	if ($theme->getName() !== 'ownCloud') {
+		print_unescaped('class="theme-' . $theme->getName() . ' has-theme"');
+	} ?> >
 		<?php include('layout.noscript.warning.php'); ?>
 		<?php print_unescaped($_['content']); ?>
 	</body>

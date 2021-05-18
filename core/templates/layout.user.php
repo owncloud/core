@@ -37,7 +37,10 @@
 		<?php endforeach; ?>
 		<?php print_unescaped($_['headers']); ?>
 	</head>
-	<body id="<?php p($_['bodyid']);?>" class="theme-<?php p($theme->getName())?>">
+	<body id="<?php p($_['bodyid']);?>" <?php
+	if ($theme->getName() !== 'ownCloud') {
+		print_unescaped('class="theme-' . $theme->getName() . ' has-theme"');
+	} ?> >
 		<?php include('layout.noscript.warning.php'); ?>
 		<div id="notification-container">
 			<div id="notification"></div>
