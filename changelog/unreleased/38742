@@ -1,0 +1,7 @@
+Enhancement: Command occ user:report shows additional row for guests
+
+With this improvement, a new row will be rendered for guest user count on the
+occ user:report command.
+
+https://github.com/owncloud/enterprise/issues/3467
+https://github.com/owncloud/core/pull/38742

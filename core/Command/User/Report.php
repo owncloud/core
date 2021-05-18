@@ -25,6 +25,8 @@
 
 namespace OC\Core\Command\User;
 
+use OC\Helper\UserTypeHelper;
+use OCP\IUser;
 use OCP\IUserManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,11 +37,16 @@ class Report extends Command {
 	/** @var IUserManager */
 	protected $userManager;
 
+	/** @var UserTypeHelper */
+	protected $userTypeHelper;
+
 	/**
 	 * @param IUserManager $userManager
+	 * @param UserTypeHelper $userTypeHelper
 	 */
-	public function __construct(IUserManager $userManager) {
+	public function __construct(IUserManager $userManager, UserTypeHelper $userTypeHelper) {
 		$this->userManager = $userManager;
+		$this->userTypeHelper = $userTypeHelper;
 		parent::__construct();
 	}
 
@@ -53,6 +60,8 @@ class Report extends Command {
 		$table = new Table($output);
 		$table->setHeaders(['User Report', '']);
 		$userCountArray = $this->countUsers();
+		$guests = 0;
+
 		if (!empty($userCountArray)) {
 			$total = 0;
 			$rows = [];
@@ -61,6 +70,14 @@ class Report extends Command {
 				$rows[] = [$classname, $users];
 			}
 
+			$this->userManager->callForAllUsers(function (IUser $user) use (&$guests) {
+				if ($this->userTypeHelper->isGuestUser($user->getUID()) === true) {
+					$guests++;
+				}
+			});
+
+			$rows[] = [' '];
+			$rows[] = ['guest users', $guests];
 			$rows[] = [' '];
 			$rows[] = ['total users', $total];
 		} else {

@@ -21,22 +21,15 @@
 
 namespace OC\Helper;
 
-use OCP\App\IAppManager;
 use OCP\IConfig;
 use OCP\User;
 
 class UserTypeHelper {
-	/** @var IAppManager */
-	private $appManager;
 
 	/** @var IConfig */
 	private $config;
 
-	public function __construct(IAppManager $appManager = null, IConfig $config = null) {
-		$this->appManager = $appManager;
-		if ($appManager === null) {
-			$this->appManager = \OC::$server->getAppManager();
-		}
+	public function __construct(IConfig $config = null) {
 		$this->config = $config;
 		if ($config === null) {
 			$this->config = \OC::$server->getConfig();
@@ -44,21 +37,22 @@ class UserTypeHelper {
 	}
 
 	/**
-	 * Checks whether given uid belongs to the user created by the guests app
+	 * Checks whether given uid belongs to the user created for example by
+	 * guests app
 	 *
 	 * @param string $uid
 	 * @return bool
 	 */
 	public function isGuestUser($uid) {
-		$guestsAppEnabled = $this->appManager->isEnabledForUser('guests');
-		if ($guestsAppEnabled) {
-			return (bool) $this->config->getUserValue(
-				$uid, 'owncloud', 'isGuest', false
-			);
-		}
-		return false;
+		return (bool) $this->config->getUserValue($uid, 'owncloud', 'isGuest', false);
 	}
 
+	/**
+	 * Returns the user type based on user id
+	 *
+	 * @param string $uid
+	 * @return integer
+	 */
 	public function getUserType($uid) {
 		if ($this->isGuestUser($uid)) {
 			return User::USER_TYPE_GUEST;

@@ -28,9 +28,6 @@ use Test\TestCase;
 
 class UserTypeHelperTest extends TestCase {
 
-	/** @var IAppManager | \PHPUnit\Framework\MockObject\MockObject */
-	protected $appManager;
-
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	protected $config;
 
@@ -39,9 +36,8 @@ class UserTypeHelperTest extends TestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->appManager = $this->createMock(IAppManager::class);
 		$this->config = $this->createMock(IConfig::class);
-		$this->userTypeHelper = new UserTypeHelper($this->appManager, $this->config);
+		$this->userTypeHelper = new UserTypeHelper($this->config);
 	}
 
 	/**
@@ -52,7 +48,6 @@ class UserTypeHelperTest extends TestCase {
 	 * @param bool $expected
 	 */
 	public function testIsGuestUser($isGuestsAppEnabled, $isUserGuest, $expected) {
-		$this->appManager->method('isEnabledForUser')->willReturn($isGuestsAppEnabled);
 		$this->config->method('getUserValue')->willReturn($isUserGuest);
 		$this->assertEquals($expected, $this->userTypeHelper->isGuestUser('foobar'));
 	}
