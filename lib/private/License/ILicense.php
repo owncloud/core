@@ -26,6 +26,8 @@ interface ILicense {
 	/**
 	 * Get the methods the license implementation doesn't want anyone to access.
 	 * This mainly applies to the ILicenseManager.
+	 * Note that the ILicenseManager can still access to these methods, in particular,
+	 * the "getLicenseString", but it won't expose them.
 	 * @return array[string] the list of methods that shouldn't be accessed
 	 */
 	public function getProtectedMethods(): array;
@@ -41,7 +43,6 @@ interface ILicense {
 	 * Note that if the license fails to be parsed, it must return false, not throw an
 	 * exception
 	 * @return bool
-	 * @throws \OCP\License\Exceptions\LicenseException;
 	 */
 	public function isValid(): bool;
 
@@ -49,14 +50,12 @@ interface ILicense {
 	 * Get the timestamp when this license expires. No matter if the license is
 	 * valid or not.
 	 * @return int the timestamp
-	 * @throws \OCP\License\Exceptions\LicenseException;
 	 */
 	public function getExpirationTime(): int;
 
 	/**
 	 * Get the type of the license, one of the LICENSE_TYPE_* constants
 	 * @return int
-	 * @throws \OCP\License\Exceptions\LicenseException;
 	 */
 	public function getType(): int;
 }
