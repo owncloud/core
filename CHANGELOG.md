@@ -34,6 +34,7 @@ Summary
 * Enhancement - Use relative notification URLs: [#38639](https://github.com/owncloud/core/pull/38639)
 * Enhancement - Add excludeActions parameter to registerDefaultActions function: [#38643](https://github.com/owncloud/core/pull/38643)
 * Enhancement - Improve tab headers UI: [#38653](https://github.com/owncloud/core/pull/38653)
+* Enhancement - Add trashbin skip list to config: [#38704](https://github.com/owncloud/core/pull/38704)
 * Enhancement - Remove google+ share button from personal settings: [#38705](https://github.com/owncloud/core/pull/38705)
 * Enhancement - Adjust the return type of the querybuilder's execute method: [#38714](https://github.com/owncloud/core/pull/38714)
 * Enhancement - Communicate user profile picture capability: [#38722](https://github.com/owncloud/core/pull/38722)
@@ -274,6 +275,14 @@ Details
    left-aligned.
 
    https://github.com/owncloud/core/pull/38653
+
+* Enhancement - Add trashbin skip list to config: [#38704](https://github.com/owncloud/core/pull/38704)
+
+   With this change new config parameters has been introduced. Admins can now decide, based on
+   file extensions, directory names and size, if a resource should not be observed by the trashbin
+   and deleted immediately.
+
+   https://github.com/owncloud/core/pull/38704
 
 * Enhancement - Remove google+ share button from personal settings: [#38705](https://github.com/owncloud/core/pull/38705)
 
