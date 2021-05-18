@@ -19,6 +19,7 @@
 					OCA.UserManagement.SetPassword._resetDone(result);
 				}).fail(function (result) {
 					OCA.UserManagement.SetPassword._onSetPasswordFail(result);
+					$('#set-password #submit').removeClass('icon-loading-small');
 				});
 			} else {
 				$('#set-password #submit').removeClass('icon-loading-small');
