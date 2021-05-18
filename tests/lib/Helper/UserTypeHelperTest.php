@@ -47,17 +47,15 @@ class UserTypeHelperTest extends TestCase {
 	 * @param bool $isUserGuest
 	 * @param bool $expected
 	 */
-	public function testIsGuestUser($isGuestsAppEnabled, $isUserGuest, $expected) {
+	public function testIsGuestUser($isUserGuest, $expected) {
 		$this->config->method('getUserValue')->willReturn($isUserGuest);
 		$this->assertEquals($expected, $this->userTypeHelper->isGuestUser('foobar'));
 	}
 
 	public function isGuestUserDataProvider() {
 		return [
-			[false, false, false],
-			[false, true, false],
-			[true, false, false],
-			[true, true, true],
+			[false, false],
+			[true, true],
 		];
 	}
 }
