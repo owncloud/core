@@ -19,7 +19,7 @@ Feature: current oC10 behavior for issue-31276
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And user "Brian" should see the following elements
-      | /textfile0%20(2).txt |
+      | /textfile0 (2).txt |
     When user "Brian" gets the list of federated cloud shares using the sharing API
     Then the fields of the last response about user "Alice" sharing with user "Brian" should include
       | id          | A_STRING                 |
@@ -49,7 +49,7 @@ Feature: current oC10 behavior for issue-31276
     #Then the OCS status code should be "401"
     And the HTTP status code should be "401"
     And user "Brian" should not see the following elements
-      | /textfile0%20(2).txt |
+      | /textfile0 (2).txt |
     When user "Brian" gets the list of pending federated cloud shares using the sharing API
     Then the fields of the last response about user "Alice" sharing with user "Brian" should include
       | id          | A_STRING                                   |

@@ -17,4 +17,4 @@ Feature: resources shared with the same name are received with unique names
     And user "Brian" shares folder "/foo" with user "Carol" using the sharing API
     Then user "Carol" should see the following elements
       | /foo/       |
-      | /foo%20(2)/ |
+      | /foo (2)/ |

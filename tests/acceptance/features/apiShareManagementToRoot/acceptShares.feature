@@ -46,10 +46,10 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" should see the following elements
       | /FOLDER/                 |
       | /PARENT/                 |
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
+      | /PARENT (2)/           |
+      | /PARENT (2)/parent.txt |
       | /textfile0.txt           |
-      | /textfile0%20(2).txt     |
+      | /textfile0 (2).txt     |
     And the sharing API should report to user "Brian" that these shares are in the accepted state
       | path               |
       | /PARENT (2)/       |
@@ -70,23 +70,23 @@ Feature: accept/decline shares coming from internal users
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Brian" should see the following elements
-      | /FOLDER/                               |
-      | /PARENT/                               |
-      | <top_folder>/PARENT<suffix>/           |
-      | <top_folder>/PARENT<suffix>/parent.txt |
-      | /textfile0.txt                         |
-      | <top_folder>/textfile0<suffix>.txt     |
+      | /FOLDER/                                       |
+      | /PARENT/                                       |
+      | <top_folder>/<received_parent_name>/           |
+      | <top_folder>/<received_parent_name>/parent.txt |
+      | /textfile0.txt                                 |
+      | <top_folder>/<received_textfile_name>          |
     And the sharing API should report to user "Brian" that these shares are in the accepted state
       | path                                  |
       | <top_folder>/<received_parent_name>/  |
       | <top_folder>/<received_textfile_name> |
     Examples:
-      | share_folder        | top_folder          | suffix | received_parent_name | received_textfile_name |
-      |                     |                     | %20(2) | PARENT (2)           | textfile0 (2).txt      |
-      | /                   |                     | %20(2) | PARENT (2)           | textfile0 (2).txt      |
-      | /ReceivedShares     | /ReceivedShares     |        | PARENT               | textfile0.txt          |
-      | ReceivedShares      | /ReceivedShares     |        | PARENT               | textfile0.txt          |
-      | /My/Received/Shares | /My/Received/Shares |        | PARENT               | textfile0.txt          |
+      | share_folder        | top_folder          | received_parent_name | received_textfile_name |
+      |                     |                     | PARENT (2)           | textfile0 (2).txt      |
+      | /                   |                     | PARENT (2)           | textfile0 (2).txt      |
+      | /ReceivedShares     | /ReceivedShares     | PARENT               | textfile0.txt          |
+      | ReceivedShares      | /ReceivedShares     | PARENT               | textfile0.txt          |
+      | /My/Received/Shares | /My/Received/Shares | PARENT               | textfile0.txt          |
 
   Scenario Outline: share a file & folder with internal group with different permissions when auto accept is enabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
@@ -107,10 +107,10 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" should see the following elements
       | /FOLDER/                 |
       | /PARENT/                 |
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
+      | /PARENT (2)/           |
+      | /PARENT (2)/parent.txt |
       | /textfile0.txt           |
-      | /textfile0%20(2).txt     |
+      | /textfile0 (2).txt     |
     And the sharing API should report to user "Brian" that these shares are in the accepted state
       | path               |
       | /PARENT (2)/       |
@@ -118,10 +118,10 @@ Feature: accept/decline shares coming from internal users
     And user "Carol" should see the following elements
       | /FOLDER/                 |
       | /PARENT/                 |
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
+      | /PARENT (2)/           |
+      | /PARENT (2)/parent.txt |
       | /textfile0.txt           |
-      | /textfile0%20(2).txt     |
+      | /textfile0 (2).txt     |
     And the sharing API should report to user "Carol" that these shares are in the accepted state
       | path               |
       | /PARENT (2)/       |
@@ -144,9 +144,9 @@ Feature: accept/decline shares coming from internal users
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Brian" should not see the following elements
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
-      | /textfile0%20(2).txt     |
+      | /PARENT (2)/           |
+      | /PARENT (2)/parent.txt |
+      | /textfile0 (2).txt     |
     And the sharing API should report to user "Brian" that these shares are in the declined state
       | path           |
       | /PARENT/       |
@@ -163,9 +163,9 @@ Feature: accept/decline shares coming from internal users
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Brian" should see the following elements
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
-      | /textfile0%20(2).txt     |
+      | /PARENT (2)/           |
+      | /PARENT (2)/parent.txt |
+      | /textfile0 (2).txt     |
     And the sharing API should report to user "Brian" that these shares are in the accepted state
       | path               |
       | /PARENT (2)/       |
@@ -178,9 +178,9 @@ Feature: accept/decline shares coming from internal users
     When user "Brian" unshares folder "/PARENT (2)" using the WebDAV API
     And user "Brian" unshares file "/textfile0 (2).txt" using the WebDAV API
     Then user "Brian" should not see the following elements
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
-      | /textfile0%20(2).txt     |
+      | /PARENT (2)/           |
+      | /PARENT (2)/parent.txt |
+      | /textfile0 (2).txt     |
     And the sharing API should report to user "Brian" that these shares are in the declined state
       | path           |
       | /PARENT/       |
@@ -193,17 +193,17 @@ Feature: accept/decline shares coming from internal users
     When user "Brian" unshares folder "/PARENT (2)" using the WebDAV API
     And user "Brian" unshares file "/textfile0 (2).txt" using the WebDAV API
     Then user "Brian" should not see the following elements
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
-      | /textfile0%20(2).txt     |
+      | /PARENT (2)/           |
+      | /PARENT (2)/parent.txt |
+      | /textfile0 (2).txt     |
     And the sharing API should report to user "Brian" that these shares are in the declined state
       | path           |
       | /PARENT/       |
       | /textfile0.txt |
     But user "Carol" should see the following elements
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
-      | /textfile0%20(2).txt     |
+      | /PARENT (2)/           |
+      | /PARENT (2)/parent.txt |
+      | /textfile0 (2).txt     |
     And the sharing API should report to user "Carol" that these shares are in the accepted state
       | path               |
       | /PARENT (2)/       |
@@ -217,7 +217,7 @@ Feature: accept/decline shares coming from internal users
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Brian" should not see the following elements
-      | /PARENT%20(2)/   |
+      | /PARENT (2)/   |
       | /PARENT-renamed/ |
     And the sharing API should report to user "Brian" that these shares are in the declined state
       | path     |
@@ -285,7 +285,7 @@ Feature: accept/decline shares coming from internal users
     And the HTTP status code should be "200"
     And user "Carol" should see the following elements
       | /shared/Alice/       |
-      | /shared%20(2)/Brian/ |
+      | /shared (2)/Brian/ |
     And the sharing API should report to user "Carol" that these shares are in the accepted state
       | path         |
       | /shared/     |
@@ -303,9 +303,9 @@ Feature: accept/decline shares coming from internal users
       | /PARENT/       |
       | /textfile0.txt |
     But user "Brian" should not see the following elements
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
-      | /textfile0%20(2).txt     |
+      | /PARENT (2)/           |
+      | /PARENT (2)/parent.txt |
+      | /textfile0 (2).txt     |
     And the sharing API should report to user "Brian" that these shares are in the pending state
       | path           |
       | /PARENT/       |
@@ -315,9 +315,9 @@ Feature: accept/decline shares coming from internal users
       | /PARENT/       |
       | /textfile0.txt |
     But user "Carol" should not see the following elements
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
-      | /textfile0%20(2).txt     |
+      | /PARENT (2)/           |
+      | /PARENT (2)/parent.txt |
+      | /textfile0 (2).txt     |
     And the sharing API should report to user "Carol" that these shares are in the pending state
       | path           |
       | /PARENT/       |
@@ -334,9 +334,9 @@ Feature: accept/decline shares coming from internal users
       | /PARENT/       |
       | /textfile0.txt |
     But user "Brian" should not see the following elements
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
-      | /textfile0%20(2).txt     |
+      | /PARENT (2)/           |
+      | /PARENT (2)/parent.txt |
+      | /textfile0 (2).txt     |
     And the sharing API should report to user "Brian" that these shares are in the pending state
       | path           |
       | /PARENT/       |
@@ -375,9 +375,9 @@ Feature: accept/decline shares coming from internal users
       | /FOLDER/                 |
       | /PARENT/                 |
       | /textfile0.txt           |
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
-      | /textfile0%20(2).txt     |
+      | /PARENT (2)/           |
+      | /PARENT (2)/parent.txt |
+      | /textfile0 (2).txt     |
     And the sharing API should report to user "Brian" that these shares are in the accepted state
       | path               |
       | /PARENT (2)/       |
@@ -413,23 +413,23 @@ Feature: accept/decline shares coming from internal users
       | share_with_displayname | %displayname%                                 |
       | mail_send              | 0                                             |
     And user "Brian" should see the following elements
-      | /FOLDER/                               |
-      | /PARENT/                               |
-      | <top_folder>/PARENT<suffix>/           |
-      | <top_folder>/PARENT<suffix>/parent.txt |
-      | /textfile0.txt                         |
-      | <top_folder>/textfile0<suffix>.txt     |
+      | /FOLDER/                                       |
+      | /PARENT/                                       |
+      | <top_folder>/<received_parent_name>/           |
+      | <top_folder>/<received_parent_name>/parent.txt |
+      | /textfile0.txt                                 |
+      | <top_folder>/<received_textfile_name>          |
     And the sharing API should report to user "Brian" that these shares are in the accepted state
       | path                                  |
       | <top_folder>/<received_parent_name>/  |
       | <top_folder>/<received_textfile_name> |
     Examples:
-      | share_folder        | top_folder          | suffix | received_parent_name | received_textfile_name |
-      |                     |                     | %20(2) | PARENT (2)           | textfile0 (2).txt      |
-      | /                   |                     | %20(2) | PARENT (2)           | textfile0 (2).txt      |
-      | /ReceivedShares     | /ReceivedShares     |        | PARENT               | textfile0.txt          |
-      | ReceivedShares      | /ReceivedShares     |        | PARENT               | textfile0.txt          |
-      | /My/Received/Shares | /My/Received/Shares |        | PARENT               | textfile0.txt          |
+      | share_folder        | top_folder          | received_parent_name | received_textfile_name |
+      |                     |                     | PARENT (2)           | textfile0 (2).txt      |
+      | /                   |                     | PARENT (2)           | textfile0 (2).txt      |
+      | /ReceivedShares     | /ReceivedShares     | PARENT               | textfile0.txt          |
+      | ReceivedShares      | /ReceivedShares     | PARENT               | textfile0.txt          |
+      | /My/Received/Shares | /My/Received/Shares | PARENT               | textfile0.txt          |
 
   Scenario: accept an accepted share
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
@@ -459,9 +459,9 @@ Feature: accept/decline shares coming from internal users
       | /PARENT/       |
       | /textfile0.txt |
     But user "Brian" should not see the following elements
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
-      | /textfile0%20(2).txt     |
+      | /PARENT (2)/           |
+      | /PARENT (2)/parent.txt |
+      | /textfile0 (2).txt     |
     And the sharing API should report to user "Brian" that these shares are in the declined state
       | path           |
       | /PARENT/       |
@@ -479,9 +479,9 @@ Feature: accept/decline shares coming from internal users
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Brian" should not see the following elements
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
-      | /textfile0%20(2).txt     |
+      | /PARENT (2)/           |
+      | /PARENT (2)/parent.txt |
+      | /textfile0 (2).txt     |
     And the sharing API should report to user "Brian" that these shares are in the declined state
       | path           |
       | /PARENT/       |
@@ -504,17 +504,17 @@ Feature: accept/decline shares coming from internal users
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Carol" should not see the following elements
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
-      | /textfile0%20(2).txt     |
+      | /PARENT (2)/           |
+      | /PARENT (2)/parent.txt |
+      | /textfile0 (2).txt     |
     And the sharing API should report to user "Carol" that these shares are in the pending state
       | path           |
       | /PARENT/       |
       | /textfile0.txt |
     But user "Brian" should see the following elements
-      | /PARENT%20(2)/           |
-      | /PARENT%20(2)/parent.txt |
-      | /textfile0%20(2).txt     |
+      | /PARENT (2)/           |
+      | /PARENT (2)/parent.txt |
+      | /textfile0 (2).txt     |
     And the sharing API should report to user "Brian" that these shares are in the accepted state
       | path               |
       | /PARENT (2)/       |
@@ -534,7 +534,7 @@ Feature: accept/decline shares coming from internal users
     And the HTTP status code should be "200"
     And user "Carol" should see the following elements
       | /shared/Brian/       |
-      | /shared%20(2)/Alice/ |
+      | /shared (2)/Alice/ |
     And the sharing API should report to user "Carol" that these shares are in the accepted state
       | path         |
       | /shared/     |
@@ -601,10 +601,10 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" should see the following elements
       | /FOLDER/              |
       | /PARENT/              |
-      | /PARENT%20(2)/        |
-      | /PARENT%20(2)/abc.txt |
-      | /FOLDER%20(2)/        |
-      | /FOLDER%20(2)/abc.txt |
+      | /PARENT (2)/        |
+      | /PARENT (2)/abc.txt |
+      | /FOLDER (2)/        |
+      | /FOLDER (2)/abc.txt |
     And user "Brian" should not see the following elements
       | /FOLDER/abc.txt |
       | /PARENT/abc.txt |
@@ -621,20 +621,20 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" should see the following elements
       | /FOLDER/              |
       | /PARENT/              |
-      | /PARENT%20(2)/        |
-      | /FOLDER%20(2)/        |
-      | /PARENT%20(2)/abc.txt |
-      | /FOLDER%20(2)/abc.txt |
+      | /PARENT (2)/        |
+      | /FOLDER (2)/        |
+      | /PARENT (2)/abc.txt |
+      | /FOLDER (2)/abc.txt |
     And user "Brian" should not see the following elements
       | /FOLDER/abc.txt |
       | /PARENT/abc.txt |
     And user "Carol" should see the following elements
       | /FOLDER/              |
       | /PARENT/              |
-      | /PARENT%20(2)/        |
-      | /FOLDER%20(2)/        |
-      | /PARENT%20(2)/abc.txt |
-      | /FOLDER%20(2)/abc.txt |
+      | /PARENT (2)/        |
+      | /FOLDER (2)/        |
+      | /PARENT (2)/abc.txt |
+      | /FOLDER (2)/abc.txt |
     And user "Carol" should not see the following elements
       | /FOLDER/abc.txt |
       | /PARENT/abc.txt |
@@ -654,13 +654,13 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" should see the following elements
       | /textfile0.txt       |
       | /textfile1.txt       |
-      | /textfile0%20(2).txt |
-      | /textfile1%20(2).txt |
+      | /textfile0 (2).txt |
+      | /textfile1 (2).txt |
     And user "Carol" should see the following elements
       | /textfile0.txt       |
       | /textfile1.txt       |
-      | /textfile0%20(2).txt |
-      | /textfile1%20(2).txt |
+      | /textfile0 (2).txt |
+      | /textfile1 (2).txt |
 
   Scenario: user shares resource with matching resource-name with another user when auto accept is disabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
@@ -672,15 +672,15 @@ Feature: accept/decline shares coming from internal users
       | /PARENT/       |
       | /textfile0.txt |
     But user "Brian" should not see the following elements
-      | /textfile0%20(2).txt |
-      | /PARENT%20(2)/       |
+      | /textfile0 (2).txt |
+      | /PARENT (2)/       |
     When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     And user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
     Then user "Brian" should see the following elements
       | /PARENT/             |
       | /textfile0.txt       |
-      | /PARENT%20(2)/       |
-      | /textfile0%20(2).txt |
+      | /PARENT (2)/       |
+      | /textfile0 (2).txt |
 
   Scenario: user shares file in a group with matching filename when auto accept is disabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
@@ -690,19 +690,19 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" should see the following elements
       | /textfile0.txt |
     But user "Brian" should not see the following elements
-      | /textfile0%20(2).txt |
+      | /textfile0 (2).txt |
     And user "Carol" should see the following elements
       | /textfile0.txt |
     But user "Carol" should not see the following elements
-      | /textfile0%20(2).txt |
+      | /textfile0 (2).txt |
     When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then user "Brian" should see the following elements
       | /textfile0.txt       |
-      | /textfile0%20(2).txt |
+      | /textfile0 (2).txt |
     When user "Carol" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then user "Carol" should see the following elements
       | /textfile0.txt       |
-      | /textfile0%20(2).txt |
+      | /textfile0 (2).txt |
 
   @skipOnLDAP @skipOnOcV10.5 @skipOnOcV10.6.0
   Scenario: user shares folder with matching folder name a user before that user has logged in
@@ -720,7 +720,7 @@ Feature: accept/decline shares coming from internal users
       | /textfile2.txt  |
       | /textfile3.txt  |
     And user "David" should not see the following elements
-      | /PARENT%20(2)/ |
+      | /PARENT (2)/ |
     And the content of file "/PARENT/abc.txt" for user "David" should be "uploaded content"
 
   @issue-ocis-765

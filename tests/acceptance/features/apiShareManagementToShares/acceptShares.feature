@@ -152,23 +152,23 @@ Feature: accept/decline shares coming from internal users
       | share_with_displayname | %displayname%                                 |
       | mail_send              | 0                                             |
     And user "Brian" should see the following elements
-      | /FOLDER/                               |
-      | /PARENT/                               |
-      | <top_folder>/PARENT<suffix>/           |
-      | <top_folder>/PARENT<suffix>/parent.txt |
-      | /textfile0.txt                         |
-      | <top_folder>/textfile0<suffix>.txt     |
+      | /FOLDER/                                       |
+      | /PARENT/                                       |
+      | <top_folder>/<received_parent_name>/           |
+      | <top_folder>/<received_parent_name>/parent.txt |
+      | /textfile0.txt                                 |
+      | <top_folder>/<received_textfile_name>          |
     And the sharing API should report to user "Brian" that these shares are in the accepted state
       | path                                  |
       | <top_folder>/<received_parent_name>/  |
       | <top_folder>/<received_textfile_name> |
     Examples:
-      | share_folder        | top_folder          | suffix | received_parent_name | received_textfile_name |
-      |                     |                     | %20(2) | PARENT (2)           | textfile0 (2).txt      |
-      | /                   |                     | %20(2) | PARENT (2)           | textfile0 (2).txt      |
-      | /ReceivedShares     | /ReceivedShares     |        | PARENT               | textfile0.txt          |
-      | ReceivedShares      | /ReceivedShares     |        | PARENT               | textfile0.txt          |
-      | /My/Received/Shares | /My/Received/Shares |        | PARENT               | textfile0.txt          |
+      | share_folder        | top_folder          | received_parent_name | received_textfile_name |
+      |                     |                     | PARENT (2)           | textfile0 (2).txt      |
+      | /                   |                     | PARENT (2)           | textfile0 (2).txt      |
+      | /ReceivedShares     | /ReceivedShares     | PARENT               | textfile0.txt          |
+      | ReceivedShares      | /ReceivedShares     | PARENT               | textfile0.txt          |
+      | /My/Received/Shares | /My/Received/Shares | PARENT               | textfile0.txt          |
 
   Scenario: accept an accepted share
     Given user "Alice" has created folder "/shared"
@@ -272,7 +272,7 @@ Feature: accept/decline shares coming from internal users
     And the HTTP status code should be "200"
     And user "Carol" should see the following elements
       | /Shares/shared/Brian/       |
-      | /Shares/shared%20(2)/Alice/ |
+      | /Shares/shared (2)/Alice/ |
     And the sharing API should report to user "Carol" that these shares are in the accepted state
       | path                |
       | /Shares/shared/     |
@@ -472,7 +472,7 @@ Feature: accept/decline shares coming from internal users
       | /textfile2.txt         |
       | /textfile3.txt         |
     And user "David" should not see the following elements
-      | /PARENT%20(2)/ |
+      | /PARENT (2)/ |
     And the content of file "/Shares/PARENT/abc.txt" for user "David" should be "uploaded content"
 
   @issue-ocis-1123

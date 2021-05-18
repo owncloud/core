@@ -29,4 +29,4 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the user enables automatically accepting remote shares from trusted servers
     And user "Alice" from server "REMOTE" shares "/lorem.txt" with user "Alice" from server "LOCAL" using the sharing API
     Then user "Alice" should not see the following elements
-      | /lorem%20(2).txt |
+      | /lorem (2).txt |

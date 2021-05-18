@@ -49,7 +49,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user disables automatically accepting remote shares from trusted servers
     And user "Alice" from server "REMOTE" shares "/lorem.txt" with user "Alice" from server "LOCAL" using the sharing API
     Then user "Alice" should not see the following elements
-      | /lorem%20(2).txt |
+      | /lorem (2).txt |
 
   Scenario: one user disabling user-based auto accepting while global is enabled has no effect on other users
     Given user "Brian" has been created with default attributes and without skeleton files
@@ -64,7 +64,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user disables automatically accepting remote shares from trusted servers
     And user "Alice" from server "REMOTE" shares "/lorem.txt" with user "Brian" from server "LOCAL" using the sharing API
     Then user "Brian" should see the following elements
-      | /lorem%20(2).txt |
+      | /lorem (2).txt |
 
   Scenario: User-based accepting from trusted server checkbox is not visible while global is disabled
     Given parameter "autoAddServers" of app "federation" has been set to "1"
@@ -85,7 +85,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the user enables automatically accepting remote shares from trusted servers
     And user "Alice" from server "REMOTE" shares "/lorem.txt" with user "Alice" from server "LOCAL" using the sharing API
     Then user "Alice" should see the following elements
-      | /lorem%20(2).txt |
+      | /lorem (2).txt |
 
   @skipOnOcV10.3 @skipOnOcV10.4.0
   Scenario: Local user accepts a pending federated share on the webUI

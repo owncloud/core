@@ -1766,6 +1766,7 @@ trait WebDav {
 			// Allow the table of expected elements to have entries that do
 			// not have to specify the "implied" leading slash, or have multiple
 			// leading slashes, to make scenario outlines more flexible
+			$expectedElement = $this->encodePath($expectedElement);
 			$expectedElement = "/" . \ltrim($expectedElement, "/");
 			$webdavPath = "/" . $this->getFullDavFilesPath($user) . $expectedElement;
 			$element = $responseXmlObject->xpath(
@@ -3556,7 +3557,11 @@ trait WebDav {
 	 */
 	public function encodePath($path) {
 		// slashes need to stay
-		return \str_replace('%2F', '/', \rawurlencode($path));
+		$encodedPath = \str_replace('%2F', '/', \rawurlencode($path));
+		// do not encode '(' and ')'
+		$encodedPath = \str_replace('%28', '(', $encodedPath);
+		$encodedPath = \str_replace('%29', ')', $encodedPath);
+		return $encodedPath;
 	}
 
 	/**
