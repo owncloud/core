@@ -233,6 +233,7 @@ a.two-factor-cancel {
 	color: #fff;
 	text-align: left;
 	margin-bottom: .5rem;
+	font-weight: bold;
 }
 /* overrides another !important statement that sets this to unreadable black */
 #body-login form .warning input[type="checkbox"]:hover+label,
