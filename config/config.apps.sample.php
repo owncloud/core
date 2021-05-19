@@ -54,6 +54,15 @@ $CONFIG = [
 'admin_audit.groups' => ['group1', 'group2'],
 
 /**
+ * App: Anti-Virus
+ *
+ * Possible keys: `files_antivirus.av_path` string
+ * Possible keys: `files_antivirus.av_cmd_options` string
+ */
+'files_antivirus.av_path' => '/usr/bin/clamav',
+'files_antivirus.av_cmd_options' => '',
+
+/**
  * App: Firstrunwizard
  *
  * Possible keys: `customclient_desktop` URL
