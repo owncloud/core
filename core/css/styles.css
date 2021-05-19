@@ -313,6 +313,19 @@ a.two-factor-cancel {
 	padding: 10px;
 }
 
+#body-login footer {
+	overflow: hidden;
+}
+
+#body-login footer * {
+	transform: translate(0, 150%);
+	transition: all .5s;
+}
+
+#body-login footer *.show {
+	transform: translate(0, 0);
+}
+
 /* strengthify wrapper */
 #body-login .strengthify-wrapper {
 	display: inline-block;
@@ -690,6 +703,7 @@ html #body-login button[type="submit"]:hover {
 	border-radius: 5px;
 	margin: 0 auto;
 	background-color: rgba(4,30,66,0.83);
+	display: none;
 }
 
 #body-login.has-theme .v-align {

@@ -32,4 +32,10 @@ $(document).ready(function() {
 	$('form[name=login]').submit(OC.Login.onLogin);
 
 	$('#remember_login').click(OC.Login.rememberLogin);
+
+	$('#body-login .v-align').fadeIn(600);
+	setTimeout(() => {
+		$('#body-login footer *').addClass('show');
+	}, 250);
+	
 });
