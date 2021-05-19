@@ -69,7 +69,7 @@
             "bin-links": false
         },
         "cleaner-ignore": {
-            "phpunit/phpunit": ["phpunit.xsd"]
+            "phpunit/phpunit": true
         }
     }
 }
