@@ -141,22 +141,26 @@ class DiscoveryManager {
 		$decodedService = $this->makeRequest($remote . '/ocm-provider/');
 		if (!empty($decodedService) && $decodedService['enabled'] === true) {
 			$discoveredServices['ocm'] = $decodedService['endPoint'];
-			$shareTypes = $decodedService['shareTypes'];
-			foreach ($shareTypes as $type) {
+			$types = [];
+			if (isset($decodedService['shareTypes'])) {
+				$types = $decodedService['shareTypes'];
+			} elseif (isset($decodedService['resourceTypes'])) {
+				$types = $decodedService['resourceTypes'];
+			}
+			foreach ($types as $type) {
 				if ($type['name'] == 'file') {
 					$discoveredServices['webdav'] = $type['protocols']['webdav'];
 				}
 			}
-		} else {
-			return [
-				'webdav' => false,
-				'ocm' => false,
-			];
-		}
 
-		// Write into cache
-		$this->cache->set('OCM' . $remote, \json_encode($discoveredServices));
-		return $discoveredServices;
+			// Write into cache
+			$this->cache->set('OCM' . $remote, \json_encode($discoveredServices));
+			return $discoveredServices;
+		}
+		return [
+			'webdav' => false,
+			'ocm' => false,
+		];
 	}
 
 	/**
