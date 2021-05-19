@@ -498,8 +498,8 @@ table td.filename .nametext .innernametext {
 /* for smaller resolutions - see mobile.css */
 
 table td.filename .uploadtext {
+	position: absolute;
 	font-weight: normal;
-	margin-left: 55px;
 	margin-top: 5px;
 	height: 20px;
 	padding: 10px 0;
