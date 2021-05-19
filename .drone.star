@@ -77,6 +77,7 @@ config = {
 
 	'acceptance': {
 		'api': {
+			'skip': True,
 			'suites': [
 				'apiAuth',
 				'apiAuthOcs',
@@ -131,6 +132,7 @@ config = {
 			],
 		},
 		'apiNotifications': {
+			'skip': True,
 			'suites': [
 				'apiSharingNotificationsToRoot',
 				'apiSharingNotificationsToShares',
@@ -140,6 +142,7 @@ config = {
 			},
 		},
 		'apiFederation': {
+			'skip': True,
 			'suites': [
 				'apiFederationToRoot1',
 				'apiFederationToRoot2',
@@ -173,6 +176,7 @@ config = {
 			'federatedServerVersions': ['git', 'latest', '10.5.0']
 		},
 		'webUI': {
+			'skip': True,
 			'suites': {
 				'webUIAddUsers': '',
 				'webUIAdminSettings': '',
@@ -208,6 +212,7 @@ config = {
 			'useHttps': False,
 		},
 		'webUINotifications': {
+			'skip': True,
 			'suites': {
 				'webUISharingNotifications': 'webUISharingNotify',
 			},
@@ -218,6 +223,7 @@ config = {
 			},
 		},
 		'webUIFileActionsMenu': {
+			'skip': True,
 			'suites': {
 				'webUIFileActionsMenu': '',
 			},
@@ -228,6 +234,7 @@ config = {
 			},
 		},
 		'webUIFederation': {
+			'skip': True,
 			'suites': {
 				'webUISharingExternal1': 'webUISharingExt1',
 				'webUISharingExternal2': 'webUISharingExt2',
@@ -236,6 +243,7 @@ config = {
 			'federatedServerVersions': ['git', 'latest', '10.5.0']
 		},
 		'webUIFirefox': {
+			'skip': True,
 			'suites': {
 				'webUIFirefoxSmoketest': 'webUIFfSmoke',
 			},
@@ -249,6 +257,7 @@ config = {
 			'numberOfParts': 3,
 		},
 		'webUIProxy': {
+			'skip': True,
 			'suites': {
 				'webUIProxySmoketest': 'webUIProxySmoke',
 			},
@@ -263,6 +272,7 @@ config = {
 			'numberOfParts': 3,
 		},
 		'apiProxy': {
+			'skip': True,
 			'suites': {
 				'apiProxySmoketest': 'apiProxySmoke',
 			},
