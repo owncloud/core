@@ -1176,6 +1176,21 @@ default:
     jarnaiz\JUnitFormatter\JUnitFormatterExtension:
       filename: report.xml
       outputDir: '%paths.base%/../output/'
+    Behat\MinkExtension:
+      browser_name: 'chrome'
+      base_url: 'http://server'
+      selenium2:
+        capabilities:
+          marionette: null
+          browser: 'chrome'
+          platform: 'Linux'
+          name: 'owncloud/core - '
+          extra_capabilities:
+            maxDuration: '3600'
+            goog:chromeOptions:
+              args: ['--headless', '--disable-gpu']
+        wd_host: 'http://selenium:4444/wd/hub'
+    SensioLabs\Behat\PageObjectExtension: ~
 
     rdx\behatvars\BehatVariablesExtension: ~
 
