@@ -54,10 +54,11 @@ script('core', [
 		echo ' shake';
 	} ?>">
 	<?php
-	if ($_['strictLoginEnforced'] === true)
+	if ($_['strictLoginEnforced'] === true) {
 		$label = $l->t('Login');
-	else
+	} else {
 		$label = $l->t('Username or email');
+	}
 	?>
 			<label for="user" class=""><?php p($label); ?></label>
 			
