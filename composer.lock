@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "73b9ee4929250007a6a6e4969a619bb9",
+    "content-hash": "0b1b3ff082f6264c84ff2123ff436223",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -366,16 +366,16 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "1.11.0",
+            "version": "1.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "a9c1b59eba5a08ca2770a76eddb88922f504e8e0"
+                "reference": "163074496dc7c3c7b8ccbf3d4376c0187424ed81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/a9c1b59eba5a08ca2770a76eddb88922f504e8e0",
-                "reference": "a9c1b59eba5a08ca2770a76eddb88922f504e8e0",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/163074496dc7c3c7b8ccbf3d4376c0187424ed81",
+                "reference": "163074496dc7c3c7b8ccbf3d4376c0187424ed81",
                 "shasum": ""
             },
             "require": {
@@ -445,7 +445,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/cache/issues",
-                "source": "https://github.com/doctrine/cache/tree/1.11.0"
+                "source": "https://github.com/doctrine/cache/tree/1.11.1"
             },
             "funding": [
                 {
@@ -461,7 +461,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-04-13T14:46:17+00:00"
+            "time": "2021-05-18T16:45:32+00:00"
         },
         {
             "name": "doctrine/dbal",
@@ -5375,12 +5375,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "630d41ce85b7af3598a7d2c07952739da298ecc6"
+                "reference": "42840dcc436945146d79a985240a99ddd3bc5dc7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/630d41ce85b7af3598a7d2c07952739da298ecc6",
-                "reference": "630d41ce85b7af3598a7d2c07952739da298ecc6",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/42840dcc436945146d79a985240a99ddd3bc5dc7",
+                "reference": "42840dcc436945146d79a985240a99ddd3bc5dc7",
                 "shasum": ""
             },
             "conflict": {
@@ -5488,7 +5488,7 @@
                 "laravel/framework": "<6.20.26|>=7,<8.40",
                 "laravel/socialite": ">=1,<1.0.99|>=2,<2.0.10",
                 "league/commonmark": "<0.18.3",
-                "lexik/jwt-authentication-bundle": ">=2,<2.10.7|>=2.11,<2.11.3",
+                "lexik/jwt-authentication-bundle": "<2.10.7|>=2.11,<2.11.3",
                 "librenms/librenms": "<21.1",
                 "livewire/livewire": ">2.2.4,<2.2.6",
                 "magento/community-edition": ">=2,<2.2.10|>=2.3,<2.3.3",
@@ -5609,7 +5609,7 @@
                 "symfony/http-foundation": ">=2,<2.8.52|>=3,<3.4.35|>=4,<4.2.12|>=4.3,<4.3.8|>=4.4,<4.4.7|>=5,<5.0.7",
                 "symfony/http-kernel": ">=2,<2.8.52|>=3,<3.4.35|>=4,<4.2.12|>=4.3,<4.4.13|>=5,<5.1.5",
                 "symfony/intl": ">=2.7,<2.7.38|>=2.8,<2.8.31|>=3,<3.2.14|>=3.3,<3.3.13",
-                "symfony/maker-bundle": ">=1.27,<1.31.1",
+                "symfony/maker-bundle": ">=1.27,<1.29.2|>=1.30,<1.31.1",
                 "symfony/mime": ">=4.3,<4.3.8",
                 "symfony/phpunit-bridge": ">=2.8,<2.8.50|>=3,<3.4.26|>=4,<4.1.12|>=4.2,<4.2.7",
                 "symfony/polyfill": ">=1,<1.10",
@@ -5621,7 +5621,7 @@
                 "symfony/security-core": ">=2.4,<2.6.13|>=2.7,<2.7.9|>=2.7.30,<2.7.32|>=2.8,<3.4.48|>=4,<4.4.23|>=5,<5.2.8",
                 "symfony/security-csrf": ">=2.4,<2.7.48|>=2.8,<2.8.41|>=3,<3.3.17|>=3.4,<3.4.11|>=4,<4.0.11",
                 "symfony/security-guard": ">=2.8,<3.4.48|>=4,<4.4.23|>=5,<5.2.8",
-                "symfony/security-http": ">=2.3,<2.3.41|>=2.4,<2.7.51|>=2.8,<2.8.50|>=3,<3.4.26|>=4,<4.2.12|>=4.3,<4.3.8|>=4.4,<4.4.7|>=5,<5.0.7|>=5.1,<5.2.8",
+                "symfony/security-http": ">=2.3,<2.3.41|>=2.4,<2.7.51|>=2.8,<3.4.48|>=4,<4.4.23|>=5,<5.2.8",
                 "symfony/serializer": ">=2,<2.0.11",
                 "symfony/symfony": ">=2,<3.4.48|>=4,<4.4.23|>=5,<5.2.8",
                 "symfony/translation": ">=2,<2.0.17",
@@ -5723,7 +5723,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-12T16:13:16+00:00"
+            "time": "2021-05-18T18:23:15+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
