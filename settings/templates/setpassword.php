@@ -30,12 +30,14 @@ script('settings', 'setpassword');
 		<input type="password" name="password" id="password" value=""
 				autocomplete="new-password" autocorrect="off"
 				aria-label="<?php p($l->t('New password')); ?>"
+				placeholder="<?php p($l->t('New password')); ?>"
 				required autofocus />
 	</div>
 	<div class="groupbottom<?php if (!empty($_['invalidpassword'])) {?> shake<?php } ?>">
 		<label for="retypepassword"><?php p($l->t('Confirm Password')); ?></label>
 		<input type="password" name="retypepassword" id="retypepassword" value=""
 				aria-label="<?php p($l->t('Confirm Password')); ?>"
+				placeholder="<?php p($l->t('Confirm Password')); ?>"
 				autocomplete="new-password" autocorrect="off"/>
 	</div>
 	<div class="submit-wrap">

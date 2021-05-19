@@ -31,14 +31,14 @@ script('core', 'lostpassword');
 	echo ' shake';
 } ?>">
 			<label for="password"><?php p($l->t('New password')); ?></label>
-			<input type="password" name="password" id="password" value="" autocomplete="off" required autofocus aria-label="<?php p($l->t('New password')); ?>" />
+			<input type="password" name="password" id="password" value="" autocomplete="off" required autofocus aria-label="<?php p($l->t('New password')); ?>" placeholder="<?php p($l->t('New password')); ?>" />
 		</div>
 
 		<div class="groupbottom<?php if (!empty($_['invalidpassword'])) {
 	echo ' shake';
 } ?>">	
 			<label for="password"><?php p($l->t('Confirm Password')); ?></label>
-			<input type="password" name="retypepassword" id="retypepassword" value="" aria-label="<?php p($l->t('Confirm password')); ?>" />
+			<input type="password" name="retypepassword" id="retypepassword" value="" aria-label="<?php p($l->t('Confirm password')); ?>" placeholder="<?php p($l->t('Confirm Password')); ?>" />
 		</div>
 		<div class="submit-wrap">
 			<span id="message"></span>

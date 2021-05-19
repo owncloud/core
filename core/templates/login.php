@@ -53,12 +53,19 @@ script('core', [
 		<div class="grouptop<?php if (!empty($_['invalidpassword'])) {
 		echo ' shake';
 	} ?>">
-			<label for="user" class=""><?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?></label>
+	<?php
+	if ($_['strictLoginEnforced'] === true)
+		$label = $l->t('Login');
+	else
+		$label = $l->t('Username or email');
+	?>
+			<label for="user" class=""><?php p($label); ?></label>
 			
 			<input type="text" name="user" id="user"
 				value="<?php p($_['loginName']); ?>"
 				aria-label="<?php $_['strictLoginEnforced'] === true ? p($l->t('Login')) : p($l->t('Username or email')); ?>"
 				<?php p($_['user_autofocus'] ? 'autofocus' : ''); ?>
+				placeholder="<?php p($label); ?>"
 				autocomplete="on" autocorrect="off" required>
 			
 		</div>
@@ -71,6 +78,7 @@ script('core', [
 			<input type="password" name="password" id="password" value=""
 				<?php p($_['user_autofocus'] ? '' : 'autofocus'); ?>
 				aria-label="<?php p($l->t('Password')); ?>"
+				placeholder="<?php p($l->t('Password')); ?>"
 				autocomplete="off" autocorrect="off" required>
 		</div>
 		
