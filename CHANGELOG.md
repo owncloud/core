@@ -196,7 +196,7 @@ Details
 
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 
-   The following have been updated: - doctrine/cache (1.10.2 to 1.11.0) -
+   The following have been updated: - doctrine/cache (1.10.2 to 1.11.1) -
    egulias/email-validator (3.1.0 to 3.1.1) - icewind/streams (0.7.3 to 0.7.4) - opis/closure
    (3.6.1 => 3.6.2) - pear/pear_exception (v1.0.1 to v1.0.2) - phpseclib/phpseclib (3.0.6 to
    3.0.8) - psr/log (1.1.3 to 1.1.4)
@@ -212,6 +212,7 @@ Details
    https://github.com/owncloud/core/pull/38648
    https://github.com/owncloud/core/pull/38659
    https://github.com/owncloud/core/pull/38688
+   https://github.com/owncloud/core/pull/38749
 
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
 
