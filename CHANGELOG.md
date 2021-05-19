@@ -28,6 +28,7 @@ Summary
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
 * Change - Optimize share rename: [#38656](https://github.com/owncloud/core/pull/38656)
+* Enhancement - Improve public share federation user interface: [#4393](https://github.com/owncloud/enterprise/issues/4393)
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
 * Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
 * Enhancement - Expired shares in activity stream: [#38631](https://github.com/owncloud/core/pull/38631)
@@ -228,6 +229,17 @@ Details
    Now, renaming a received share won't trigger that file scan, so the performance will be faster.
 
    https://github.com/owncloud/core/pull/38656
+
+* Enhancement - Improve public share federation user interface: [#4393](https://github.com/owncloud/enterprise/issues/4393)
+
+   This adjustment provides a new way to add a public share to ownCloud. A new button will be
+   displayed where you can easily add the share to the current server without entering the string,
+   this requires less user input. Next to this button, a dropdown menu will be displayed, where you
+   can see the current server or change the server. Hitting change a server will now display a
+   prompt with a detailed explanation and more space to enter another server address.
+
+   https://github.com/owncloud/enterprise/issues/4393
+   https://github.com/owncloud/core/pull/38712
 
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
 
