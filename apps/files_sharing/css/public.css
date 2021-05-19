@@ -1,160 +1,144 @@
 #content {
-	height: initial;
-	min-height: calc(100vh - 140px);
+    height: initial;
+    min-height: calc(100vh - 140px);
 }
 
 /* force layout to make sure the content element's height matches its contents' height */
 .ie #content {
-	display: inline-block;
+    display: inline-block;
 }
 
 #preview {
-	background: #fff;
-	text-align: center;
+    background: #fff;
+    text-align: center;
 }
 
 #preview .notCreatable {
-	display: none;
+    display: none;
 }
 
 #noPreview {
-	display:none;
-	padding-top:80px;
+    display: none;
+    padding-top: 80px;
 }
 
 #imgframe {
-	height:75%;
-	padding-bottom:32px;
-	padding-top:32px;
-	width:80%;
-	margin:0 auto;
+    height: 75%;
+    padding-bottom: 32px;
+    padding-top: 32px;
+    width: 80%;
+    margin: 0 auto;
 }
 
 #imgframe img,
 #imgframe video {
-	max-height:100%;
-	max-width:100%;
+    max-height: 100%;
+    max-width: 100%;
 }
 
 #imgframe .text-preview {
-	display: inline-block;
-	position: relative;
-	text-align: left;
-	white-space: pre-wrap;
-	overflow-y: hidden;
-	height: auto;
-	min-height: 200px;
-	max-height: 800px;
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+    display: inline-block;
+    position: relative;
+    text-align: left;
+    white-space: pre-wrap;
+    overflow-y: hidden;
+    height: auto;
+    min-height: 200px;
+    max-height: 800px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 #imgframe .ellipsis {
-	font-size: 1.2em;
+    font-size: 1.2em;
 }
 
 /* fix multiselect bar offset on shared page */
 thead {
-	left: 0 !important;
+    left: 0 !important;
 }
 
 #data-upload-form {
-	position: relative;
-	right: 0;
-	height: 32px;
-	overflow: hidden;
-	padding: 0;
-	float: right;
-	display: inline;
-	margin: 0;
+    position: relative;
+    right: 0;
+    height: 32px;
+    overflow: hidden;
+    padding: 0;
+    float: right;
+    display: inline;
+    margin: 0;
 }
 
 
 .directDownload,
 .directLink {
-	margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 /* keep long file names in one line to not overflow download button on mobile */
 .directDownload #downloadFile {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	max-width: 90%;
-	display: inline-block;
-	margin-left: auto;
-	margin-right: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .directLink label {
-	font-weight: normal;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-	filter: alpha(opacity=50);
-	opacity: .5;
+    font-weight: normal;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    filter: alpha(opacity=50);
+    opacity: .5;
 }
+
 .directLink input {
-	margin-left: 5px;
-	width: 500px;
-	max-width: 90%;
+    margin-left: 5px;
+    width: 500px;
+    max-width: 90%;
 }
 
 /* within #save */
-#save .save-form {
-	position: relative;
+
+#save {
+    margin: 0 5px;
 }
 
-#remote_address {
-	margin: 0;
-	width: 130px;
-	height: 14px;
-	padding: 6px;
-	padding-right: 24px;
+#save #save-to-oc-button {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    border-right: 1px solid;
 }
 
-.ie8 #remote_address {
-	padding-right: 30px;
+#save #save-to-oc-button-expand {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
 }
 
-#save #save-button,
-#save #save-button-confirm {
-	margin: 0 5px;
-	height: 28px;
-	padding-bottom: 4px;
-	line-height: 14px;
+
+#save #save-to-oc-button {
+    margin-right: 0;
 }
 
-#save-button-confirm {
-	position: absolute;
-	background-color: transparent;
-	border: none;
-	margin: 2px 4px !important;
-	right: 0;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-	filter: alpha(opacity=50);
-	opacity: .5;
+#save #save-to-oc-button-text span {
+    margin-left: 3px;
 }
 
-.ie8 #save-button-confirm {
-	margin: 2px 0 !important;
+#save #save-to-oc-button img {
+    margin-left: 5px;
 }
 
-#save-button-confirm:disabled,
-#save-button-confirm:disabled:hover,
-#save-button-confirm:disabled:focus {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
-	filter: alpha(opacity=20);
-	opacity: .2;
-	cursor: default;
+#save #expanddiv {
+    right: -14px;
+    top: 36px;
 }
 
-#save-button-confirm:hover,
-#save-button-confirm:focus {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-	filter: alpha(opacity=100);
-	opacity: 1;
-	cursor: pointer;
+#save #save-to-oc-expand-container {
+    position: relative;
+    display: inline-block;
 }
