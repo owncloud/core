@@ -436,7 +436,7 @@ class TrashbinContext implements Context {
 
 		foreach ($paths as $path) {
 			$this->deleteFileFromTrashbin($user, $path["path"]);
-			
+
 			$this->featureContext->pushToLastStatusCodesArrays();
 		}
 	}
@@ -649,7 +649,7 @@ class TrashbinContext implements Context {
 
 		foreach ($paths as $originalPath) {
 			$this->elementInTrashIsRestored($user, $originalPath["path"]);
-			
+
 			$this->featureContext->pushToLastStatusCodesArrays();
 		}
 	}
@@ -809,11 +809,11 @@ class TrashbinContext implements Context {
 		$files = $this->getTrashbinContentFromResponseXml(
 			$this->featureContext->getResponseXmlObject()
 		);
-		
+
 		$found = false;
 		$expectedMtime = $this->featureContext->getLastUploadDeleteTime();
 		$responseMtime = '';
-			
+
 		foreach ($files as $file) {
 			if (\ltrim($resource, "/") === \ltrim($file['original-location'], "/")) {
 				$responseMtime = $file['mtime'];
@@ -828,5 +828,44 @@ class TrashbinContext implements Context {
 		Assert::assertTrue(
 			$found, "$resource expected to be listed in response with mtime '$expectedMtime' but found '$responseMtime'"
 		);
+	}
+
+	/**
+	 * @Given the administrator has set the following file extensions to be skipped from the trashbin
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasSetFollowingFileExtensionsToBeSkippedFromTrashbin(TableNode $table) {
+		$this->featureContext->verifyTableNodeColumns($table, ['extension']);
+		foreach ($table->getHash() as $idx => $row) {
+			$this->featureContext->runOcc(['config:system:set', 'trashbin_skip_extensions', $idx, '--value=' . $row['extension']]);
+		}
+	}
+
+	/**
+	 * @Given the administrator has set the following directories to be skipped from the trashbin
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasSetFollowingDirectoriesToBeSkippedFromTrashbin(TableNode $table) {
+		$this->featureContext->verifyTableNodeColumns($table, ['directory']);
+		foreach ($table->getHash() as $idx => $row) {
+			$this->featureContext->runOcc(['config:system:set', 'trashbin_skip_directories', $idx, '--value=' . $row['directory']]);
+		}
+	}
+
+	/**
+	 * @Given the administrator has set the trashbin skip size threshhold to :threshhold
+	 *
+	 * @param string $threshhold
+	 *
+	 * @return void
+	 */
+	public function theAdministratorHasSetTrashbinSkipSizeThreshHold($threshhold) {
+		$this->featureContext->runOcc(['config:system:set', 'trashbin_skip_size_threshold', '--value=' . $threshhold]);
 	}
 }

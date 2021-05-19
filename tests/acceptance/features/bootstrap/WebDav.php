@@ -26,6 +26,7 @@ use GuzzleHttp\Ring\Exception\ConnectException;
 use GuzzleHttp\Stream\StreamInterface;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
+use TestHelpers\DeleteHelper;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
@@ -3997,6 +3998,56 @@ trait WebDav {
 		$resultEntries = $this->findEntryFromPropfindResponse(null, $user);
 		foreach ($resultEntries as $resultEntry) {
 			Assert::assertContains($resultEntry, $expectedEntries);
+		}
+	}
+
+	/**
+	 * @Given user :user has deleted following files/folders
+	 *
+	 * @param string $user
+	 * @param TableNode $filesTable table headings: must be: |name|
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theFollowingFilesFoldersHaveBeenDeleted($user, TableNode $filesTable) {
+		$this->verifyTableNodeColumns($filesTable, ['name']);
+		foreach ($filesTable as $file) {
+			$username = $this->getActualUsername($user);
+			$currentTime = \microtime(true);
+			$end = $currentTime + (LONG_UI_WAIT_TIMEOUT_MILLISEC / 1000);
+			//retry deleting in case the file is locked (code 403)
+			while ($currentTime <= $end) {
+				$response = DeleteHelper::delete(
+					$this->getBaseUrl(),
+					$username,
+					$this->getUserPassword($username),
+					$file['name']
+				);
+
+				if ($response->getStatusCode() >= 200
+					&& $response->getStatusCode() <= 399
+				) {
+					break;
+				} elseif ($response->getStatusCode() === 423) {
+					$message = "INFORMATION: file '" . $file['name'] .
+						"' is locked";
+					\error_log($message);
+				} elseif ($checkStatus) {
+					throw new \Exception(
+						"could not delete file. Response code: " .
+						$response->getStatusCode()
+					);
+				}
+				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
+				$currentTime = \microtime(true);
+			}
+
+			if ($currentTime > $end) {
+				throw new \Exception(
+					__METHOD__ . " timeout deleting files by WebDAV"
+				);
+			}
 		}
 	}
 

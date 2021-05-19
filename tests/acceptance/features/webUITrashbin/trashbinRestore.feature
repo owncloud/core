@@ -32,7 +32,7 @@ Feature: Restore deleted files/folders
 
   @smokeTest @skipOnLDAP
   Scenario: Select some trashbin files and restore them in a batch
-    Given the following files have been deleted
+    Given user "Alice" has deleted following files
       | name          |
       | data.zip      |
       | lorem.txt     |
@@ -54,7 +54,7 @@ Feature: Restore deleted files/folders
     And folder "simple-folder" should not be listed in the files page on the webUI
 
   Scenario: Select all except for some trashbin files and restore them in a batch
-    Given the following files have been deleted
+    Given user "Alice" has deleted following files
       | name          |
       | data.zip      |
       | lorem.txt     |
@@ -77,7 +77,7 @@ Feature: Restore deleted files/folders
     And file "lorem-big.txt" should not be listed in the files page on the webUI
 
   Scenario: Select all trashbin files and restore them in a batch
-    Given the following files have been deleted
+    Given user "Alice" has deleted following files
       | name          |
       | data.zip      |
       | lorem.txt     |
