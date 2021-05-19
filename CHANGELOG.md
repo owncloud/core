@@ -24,6 +24,7 @@ Summary
 * Bugfix - String to bool conversion in systemtags API: [#38719](https://github.com/owncloud/core/pull/38719)
 * Bugfix - Database query filter when getting a tag: [#38725](https://github.com/owncloud/core/pull/38725)
 * Bugfix - Fix federated share download bug happens on some providers: [#38738](https://github.com/owncloud/core/pull/38738)
+* Bugfix - Correctly parse different ocm-provider api responses: [#38751](https://github.com/owncloud/core/pull/38751)
 * Change - Update Symfony components: [#38730](https://github.com/owncloud/core/pull/38730)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
@@ -181,6 +182,13 @@ Details
    only if a proxy configured.
 
    https://github.com/owncloud/core/pull/38738
+
+* Bugfix - Correctly parse different ocm-provider api responses: [#38751](https://github.com/owncloud/core/pull/38751)
+
+   Some WebDAV service providers returns different responses for ocm-provider API and we were
+   not able to parse these responses. This problem has been fixed.
+
+   https://github.com/owncloud/core/pull/38751
 
 * Change - Update Symfony components: [#38730](https://github.com/owncloud/core/pull/38730)
 
