@@ -114,18 +114,18 @@ script('core', [
 
 		<?php if ($_['rememberLoginAllowed'] === true) : ?>
 		<div class="remember-login-container">
-			<?php 
+			<?php
 			$stayLoggedInText = $l->t('Stay logged in');
 
 			if ($_['rememberLoginState'] === 0) {
-		?>
+				?>
 			<input type="checkbox" name="remember_login" value="1" id="remember_login" class="checkbox checkbox--white" aria-label="<?php p($stayLoggedInText); ?>">
 			<?php
-	} else {
-		?>
+			} else {
+				?>
 			<input type="checkbox" name="remember_login" value="1" id="remember_login" class="checkbox checkbox--white" checked="checked" aria-label="<?php p($stayLoggedInText); ?>">
 			<?php
-	} ?>
+			} ?>
 			<label for="remember_login"><?php p($stayLoggedInText); ?></label>
 		</div>
 		<?php endif; ?>
@@ -135,22 +135,22 @@ script('core', [
 
 </form>
 <?php if (!empty($_['alt_login'])) {
-		?>
+				?>
 <form id="alternative-logins">
 		<legend><?php p($l->t('Alternative Logins')) ?></legend>
 		<ul>
 			<?php foreach ($_['alt_login'] as $login): ?>
 				<?php if (isset($login['img'])) {
-			?>
+					?>
 					<li><a href="<?php print_unescaped($login['href']); ?>" ><img src="<?php p($login['img']); ?>"/></a></li>
 				<?php
-		} else {
-			?>
+				} else {
+					?>
 						<li><a class="button" href="<?php print_unescaped($login['href']); ?>" ><?php p($login['name']); ?></a></li>
 					<?php
-		} ?>
+				} ?>
 			<?php endforeach; ?>
 		</ul>
 </form>
 <?php
-	}
+			}
