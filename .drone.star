@@ -1563,9 +1563,9 @@ def databaseService(db):
 				'ls',
 				'echo "running sql command"',
 				'wait-for-it -t 600 oracle:1521',
-				'bash -c \'sqlplus system/oracle@//oracle:1521/xe <<< "SELECT * FROM DBA_USERS;"\'',
-				'bash -c \'sqlplus system/oracle@//oracle:1521/xe <<< "ALTER SYSTEM SET disk_asynch_io = FALSE SCOPE = SPFILE;"\'',
-				'bash -c \'sqlplus system/oracle@//oracle:1521/xe <<< "ALTER SESSION SET CONTAINER = ORCLPDB1;"\''
+				'bash -c \'sqlplus autotest/owncloud@oracle:1521/XE <<< "SELECT * FROM DBA_USERS;"\'',
+				'bash -c \'sqlplus autotest/owncloud@oracle:1521/XE <<< "ALTER SYSTEM SET disk_asynch_io = FALSE SCOPE = SPFILE;"\'',
+				'bash -c \'sqlplus autotest/owncloud@oracle:1521/XE <<< "ALTER SESSION SET CONTAINER = ORCLPDB1;"\''
 				# 'echo "ALTER SESSION SET CONTAINER = ORCLPDB1;" | sqlplus -s system/oracle@oracle:1521/owncloud '
 			]
 		}]
