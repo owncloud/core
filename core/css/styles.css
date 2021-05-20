@@ -364,7 +364,8 @@ a.two-factor-cancel {
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
-	margin-bottom: 1.2rem;
+	max-width: 300px;
+	margin: 0 auto 1.2rem;
 }
 
 #body-login .grouptop input,
@@ -381,6 +382,8 @@ a.two-factor-cancel {
 	justify-content: center;
 	flex-direction: column;
 	margin-top: 32px;
+	max-width: 300px;
+	margin: 32px auto 1.2rem;
 }
 
 
