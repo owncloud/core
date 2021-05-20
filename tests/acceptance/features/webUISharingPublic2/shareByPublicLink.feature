@@ -11,7 +11,7 @@ Feature: Share by public link
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392
+  @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392 @skipOnOcV10.6 @skipOnOcV10.7
   Scenario: mount public link of a folder
     Given using server "REMOTE"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -33,7 +33,7 @@ Feature: Share by public link
     And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "/file-in-my-own-storage.txt"
     But user "Brian" should not be able to upload file "filesForUpload/textfile.txt" to "/simple-folder/new-file-in-read-only-public-link.txt"
 
-  @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392
+  @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392 @skipOnOcV10.6 @skipOnOcV10.7
   Scenario: mount public link of a file
     Given using server "REMOTE"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -51,7 +51,7 @@ Feature: Share by public link
     And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "/file-in-my-own-storage.txt"
     But user "Brian" should not be able to upload file "filesForUpload/textfile.txt" to "/file-shared-by-public-link.txt"
 
-  @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392
+  @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392 @skipOnOcV10.6 @skipOnOcV10.7
   Scenario: mount public link and overwrite file
     Given using server "REMOTE"
     And user "Brian" has been created with default attributes and without skeleton files
