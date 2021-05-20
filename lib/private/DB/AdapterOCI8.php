@@ -40,7 +40,9 @@ class AdapterOCI8 extends Adapter {
 
 	public function fixupStatement($statement) {
 		$statement = \preg_replace('( LIKE \?)', '$0 ESCAPE \'\\\'', $statement);
+		$statement = \preg_replace('( LIKE :\w+)', '$0 ESCAPE \'\\\'', $statement);
 		$statement = \preg_replace('/`(\w+)` ILIKE \?/', "LOWER(`$1`) LIKE LOWER(?) ESCAPE '\\' -- \\'' \n", $statement);  // FIXME workaround for singletick matching with regexes in SQLParserUtils::getUnquotedStatementFragments
+		$statement = \preg_replace('/`(\w+)` ILIKE (:\w+)/', "LOWER(`$1`) LIKE LOWER(`$2`) ESCAPE '\\' -- \\'' \n", $statement);  // FIXME workaround for singletick matching with regexes in SQLParserUtils::getUnquotedStatementFragments
 		$statement = \str_replace('`', '"', $statement);
 		$statement = \str_ireplace('NOW()', 'CURRENT_TIMESTAMP', $statement);
 		$statement = \str_ireplace('UNIX_TIMESTAMP()', self::UNIX_TIMESTAMP_REPLACEMENT, $statement);

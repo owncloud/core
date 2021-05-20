@@ -579,17 +579,8 @@ class Cache implements ICache {
 
 			if ($sourceData['mimetype'] === 'httpd/unix-directory') {
 				//find all child entries
-				$sql = 'SELECT `path`, `fileid` FROM `*PREFIX*filecache` WHERE `storage` = ? AND `path` LIKE ?';
-				$result = $this->connection->executeQuery($sql, [$sourceStorageId, $this->connection->escapeLikeParameter($sourcePath) . '/%']);
-				$childEntries = $result->fetchAll();
-				$sourceLength = \strlen($sourcePath);
 				$this->connection->beginTransaction();
-				$query = $this->connection->prepare('UPDATE `*PREFIX*filecache` SET `storage` = ?, `path` = ?, `path_hash` = ? WHERE `fileid` = ?');
-
-				foreach ($childEntries as $child) {
-					$newTargetPath = $targetPath . \substr($child['path'], $sourceLength);
-					$query->execute([$targetStorageId, $newTargetPath, \md5($newTargetPath), $child['fileid']]);
-				}
+				$this->handleChildrenMove($sourceStorageId, $sourcePath, $targetStorageId, $targetPath);
 				$this->connection->executeQuery($moveSql, [$targetStorageId, $targetPath, \md5($targetPath), \basename($targetPath), $newParentId, $sourceId]);
 				$this->connection->commit();
 			} else {
@@ -597,6 +588,68 @@ class Cache implements ICache {
 			}
 		} else {
 			$this->moveFromCacheFallback($sourceCache, $sourcePath, $targetPath);
+		}
+	}
+
+	private function handleChildrenMove($sourceStorageId, $sourcePath, $targetStorageId, $targetPath) {
+		$platformName = $this->connection->getDatabasePlatform()->getName();
+		$versionString = $this->connection->getDatabaseVersionString();
+		$versionArray = \explode('.', $versionString);
+
+		$sql = null;
+		$sqlParams = [
+			'sourceStorageId' => $sourceStorageId,
+			'sourcePath' => "$sourcePath/",
+			'targetStorageId' => $targetStorageId,
+			'targetPath' => "$targetPath/",
+			'sourcePathLike' => $this->connection->escapeLikeParameter("$sourcePath/") . '%'
+		];
+		switch ($platformName) {
+			case 'oracle':
+				if (\intval($versionArray[0]) < 12) {
+					$sql = 'UPDATE `*PREFIX*filecache`
+						SET `storage` = :targetStorageId,
+							`path` = REPLACE(`path`, :sourcePath, :targetPath),
+							`path_hash` = LOWER(dbms_obfuscation_toolkit.md5(input => UTL_RAW.cast_to_raw(REPLACE(`path`, :sourcePath, :targetPath))))
+						WHERE `storage` = :sourceStorageId
+						AND `path` LIKE :sourcePathLike';
+				} else {
+					$sql = 'UPDATE `*PREFIX*filecache`
+						SET `storage` = :targetStorageId,
+							`path` = REPLACE(`path`, :sourcePath, :targetPath),
+							`path_hash` = LOWER(standard_hash(REPLACE(`path`, :sourcePath, :targetPath), \'MD5\'))
+						WHERE `storage` = :sourceStorageId
+						AND `path` LIKE :sourcePathLike';
+				}
+				break;
+			case 'mysql':
+			case 'postgresql':
+				$sql = 'UPDATE `*PREFIX*filecache`
+					SET `storage` = :targetStorageId,
+						`path` = REPLACE(`path`, :sourcePath, :targetPath),
+						`path_hash` = MD5(REPLACE(`path`, :sourcePath, :targetPath))
+					WHERE `storage` = :sourceStorageId
+					AND `path` LIKE :sourcePathLike';
+				break;
+		}
+
+		// MariaDB should be included as mysql
+		// if there is an (optimized) sql query with the parameters, run it
+		if (isset($sql, $sqlParams)) {
+			$this->connection->executeQuery($sql, $sqlParams);
+			return;
+		}
+
+		// for other DBs (sqlite), we keep the old behaviour -> get the list and update one by one
+		$sql = 'SELECT `path`, `fileid` FROM `*PREFIX*filecache` WHERE `storage` = ? AND `path` LIKE ?';
+		$result = $this->connection->executeQuery($sql, [$sourceStorageId, $this->connection->escapeLikeParameter($sourcePath) . '/%']);
+		$childEntries = $result->fetchAll();
+		$sourceLength = \strlen($sourcePath);
+		$query = $this->connection->prepare('UPDATE `*PREFIX*filecache` SET `storage` = ?, `path` = ?, `path_hash` = ? WHERE `fileid` = ?');
+
+		foreach ($childEntries as $child) {
+			$newTargetPath = $targetPath . \substr($child['path'], $sourceLength);
+			$query->execute([$targetStorageId, $newTargetPath, \md5($newTargetPath), $child['fileid']]);
 		}
 	}
 
