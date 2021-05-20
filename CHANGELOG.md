@@ -25,7 +25,7 @@ Summary
 * Bugfix - Database query filter when getting a tag: [#38725](https://github.com/owncloud/core/pull/38725)
 * Bugfix - Fix federated share download bug happens on some providers: [#38738](https://github.com/owncloud/core/pull/38738)
 * Bugfix - Correctly parse different ocm-provider api responses: [#38751](https://github.com/owncloud/core/pull/38751)
-* Change - Update Symfony components: [#38730](https://github.com/owncloud/core/pull/38730)
+* Change - Update Symfony components: [#38755](https://github.com/owncloud/core/pull/38755)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
 * Change - Optimize share rename: [#38656](https://github.com/owncloud/core/pull/38656)
@@ -190,14 +190,16 @@ Details
 
    https://github.com/owncloud/core/pull/38751
 
-* Change - Update Symfony components: [#38730](https://github.com/owncloud/core/pull/38730)
+* Change - Update Symfony components: [#38755](https://github.com/owncloud/core/pull/38755)
 
-   The following Symfony components have been updated from 4.4.20 to: - console 4.4.23 - process
-   4.4.22 - routing 4.4.22 - translation 4.4.23
+   The following Symfony components have been updated from 4.4.20 to: - console 4.4.24 - process
+   4.4.22 - routing 4.4.24 - translation 4.4.24
 
+   https://github.com/owncloud/core/pull/38755
    https://github.com/owncloud/core/pull/38730
    https://github.com/owncloud/core/pull/38680
    https://github.com/owncloud/core/pull/38598
+   https://symfony.com/blog/symfony-4-4-24-released
    https://symfony.com/blog/symfony-4-4-23-released
    https://symfony.com/blog/symfony-4-4-22-released
    https://symfony.com/blog/symfony-4-4-21-released
