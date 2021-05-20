@@ -25,6 +25,7 @@ OC.L10N.register(
     "Cancel" : "Loobu",
     "Add remote share" : "Lisa kaugjagamine",
     "You can upload into this folder" : "Sa saad sellesse kausta faile üles laadida",
+    "Add" : "Lisa",
     "No ownCloud installation (7 or higher) found at {remote}" : "Saidilt {remote} ei leitud ownCloudi (7 või uuem) ",
     "Invalid ownCloud url" : "Vigane ownCloud url",
     "Share" : "Jaga",

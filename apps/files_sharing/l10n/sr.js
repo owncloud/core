@@ -22,6 +22,7 @@ OC.L10N.register(
     "Cancel" : "Одустани",
     "Add remote share" : "Додај удаљено дељење",
     "You can upload into this folder" : "Можете да отпремате у ову фасциклу",
+    "Add" : "Додај",
     "No ownCloud installation (7 or higher) found at {remote}" : "Нема оунКлауд инсталације верзије 7 или више на {remote}",
     "Invalid ownCloud url" : "Неисправан оунКлауд УРЛ",
     "Share" : "Дељење",

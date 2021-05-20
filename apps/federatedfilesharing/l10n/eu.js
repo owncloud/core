@@ -2,7 +2,7 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Partekatze federatua",
-    "Add to your ownCloud" : "Gehitu zure ownCloud-era",
+    "Loading..." : "Kargatzen...",
     "Invalid Federated Cloud ID" : "Hodei Federatu ID baliogabea",
     "Sharing %s failed, because this item is already shared with %s" : "%s elkarbanatzeak huts egin du, dagoeneko %s erabiltzailearekin elkarbanatuta dagoelako",
     "Not allowed to create a federated share with the same user" : "Ez da onartzen partekatze federatu bat sortzea erabiltzaile berdinarekin",

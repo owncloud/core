@@ -22,6 +22,7 @@ OC.L10N.register(
     "Cancel" : "Zrušiť",
     "Add remote share" : "Pridať vzdialené úložisko",
     "You can upload into this folder" : "Môžete nahrávať do tohto priečinka",
+    "Add" : "Pridať",
     "No ownCloud installation (7 or higher) found at {remote}" : "Nebola nájdená inštalácia ownCloudu (7 alebo vyššia) {remote}",
     "Invalid ownCloud url" : "Chybná ownCloud url",
     "Share" : "Zdieľať",

@@ -29,6 +29,7 @@ OC.L10N.register(
     "Cancel" : "Cancelar",
     "Add remote share" : "Añadir recurso compartido remoto",
     "You can upload into this folder" : "Usted puede cargar en esta carpeta",
+    "Add" : "Añadir",
     "No ownCloud installation (7 or higher) found at {remote}" : "No se encontró una instalación de ownCloud (7 o mayor) en {remote}",
     "Invalid ownCloud url" : "URL de ownCloud inválida",
     "Share" : "Compartir",

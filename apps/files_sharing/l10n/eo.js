@@ -21,6 +21,7 @@ OC.L10N.register(
     "Cancel" : "Nuligi",
     "Add remote share" : "Aldoni foran kunhavon",
     "You can upload into this folder" : "Vi povas alŝuti en ĉi tiun dosierujon",
+    "Add" : "Aldoni",
     "No ownCloud installation (7 or higher) found at {remote}" : "Ne troviĝis instalo de ownCloud (7 aŭ pli alta) ĉe {remote}",
     "Invalid ownCloud url" : "Nevalidas URL de ownCloud",
     "Share" : "Kunhavigi",

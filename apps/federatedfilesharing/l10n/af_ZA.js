@@ -1,7 +1,7 @@
 OC.L10N.register(
     "federatedfilesharing",
     {
-    "Add to your ownCloud" : "Voeg tot u ownCloud toe",
+    "Loading..." : "Laai tans…",
     "File is already shared with %s" : "Lêer is reeds met %s gedeel",
     "Accept" : "Aanvaar",
     "Decline" : "Verwerp",

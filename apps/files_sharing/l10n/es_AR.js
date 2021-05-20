@@ -12,6 +12,7 @@ OC.L10N.register(
     "Remote share password" : "Contrasña de recurso compartido remoto.",
     "Cancel" : "Cancelar",
     "Add remote share" : "Agregar recurso compartido remoto",
+    "Add" : "Agregar",
     "Invalid ownCloud url" : "La url de OwnCloud es inválida",
     "Share" : "Compartir",
     "Declined" : "Denegado",

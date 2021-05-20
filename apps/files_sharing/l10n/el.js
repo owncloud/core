@@ -29,6 +29,7 @@ OC.L10N.register(
     "Cancel" : "Aκύρωση",
     "Add remote share" : "Προσθήκη απομακρυσμένου κοινόχρηστου φακέλου",
     "You can upload into this folder" : "Μπορείτε να μεταφορτώσετε σε αυτόν τον φάκελο",
+    "Add" : "Προσθήκη",
     "No ownCloud installation (7 or higher) found at {remote}" : "Δεν βρέθηκε εγκατάσταση ownCloud (7 ή νεώτερη) στο {remote}",
     "Invalid ownCloud url" : "Μη έγκυρη url ownCloud",
     "Share" : "Διαμοιρασμός",

@@ -27,6 +27,7 @@
     "Cancel" : "Avbryt",
     "Add remote share" : "Legg til ekstern deling",
     "You can upload into this folder" : "Du kan laste opp til denne mappen",
+    "Add" : "Legg til",
     "No ownCloud installation (7 or higher) found at {remote}" : "Ingen ownCloud-installasjon (7 eller høyere) funnet på {remote}",
     "Invalid ownCloud url" : "Ugyldig ownCloud url",
     "Share" : "Delt ressurs",

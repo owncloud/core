@@ -24,6 +24,7 @@ OC.L10N.register(
     "Cancel" : "Ezeztatu",
     "Add remote share" : "Gehitu urrutiko parte hartzea",
     "You can upload into this folder" : "Karpeta honetan kargatu dezakezu",
+    "Add" : "Gehitu",
     "No ownCloud installation (7 or higher) found at {remote}" : "Ez da ownClouden instalaziorik (7 edo haundiago) aurkitu {remote}n",
     "Invalid ownCloud url" : "ownCloud url baliogabea",
     "Share" : "Partekatu",

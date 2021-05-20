@@ -1,4 +1,5 @@
 { "translations": {
+    "Loading..." : "Cargando...",
     "Accept" : "Aceptar",
     "Decline" : "Declinar",
     "Open documentation" : "Abrir documentación",

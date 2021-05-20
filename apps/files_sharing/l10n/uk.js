@@ -22,6 +22,7 @@ OC.L10N.register(
     "Cancel" : "Відмінити",
     "Add remote share" : "Додати віддалену загальну теку",
     "You can upload into this folder" : "Ви можете завантажити до цієї теки",
+    "Add" : "Додати",
     "No ownCloud installation (7 or higher) found at {remote}" : "Немає установленого OwnCloud (7 або вище), можна знайти на {remote}",
     "Invalid ownCloud url" : "Невірний ownCloud URL",
     "Share" : "Поділитися",

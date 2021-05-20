@@ -2,6 +2,7 @@ OC.L10N.register(
     "files_sharing",
     {
     "Cancel" : "Batal",
+    "Add" : "Tambah",
     "Share" : "Kongsi",
     "Pending" : "Dalam proses",
     "Shared by" : "Dikongsi dengan",

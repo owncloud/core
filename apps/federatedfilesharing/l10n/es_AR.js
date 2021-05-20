@@ -1,6 +1,7 @@
 OC.L10N.register(
     "federatedfilesharing",
     {
+    "Loading..." : "Cargando...",
     "Accept" : "Aceptar",
     "Decline" : "Declinar",
     "Open documentation" : "Abrir documentación",

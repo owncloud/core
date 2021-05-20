@@ -26,6 +26,7 @@ OC.L10N.register(
     "Cancel" : "Avbryt",
     "Add remote share" : "Lägg till fjärrdelning",
     "You can upload into this folder" : "Du kan ladda upp i denna map",
+    "Add" : "Lägg till",
     "No ownCloud installation (7 or higher) found at {remote}" : "Ingen OwnCloud Installation (7 eller senare) funnen på {remote}",
     "Invalid ownCloud url" : "Felaktig ownCloud url",
     "Share" : "Dela",

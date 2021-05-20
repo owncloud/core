@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Shared by link" : "लिंक द्वारा साझा किया गया",
     "Cancel" : "रद्द करें ",
+    "Add" : "डाले",
     "Share" : "साझा करें",
     "Declined" : "अस्वीकार कर दिया गया ",
     "Shared by" : "द्वारा साझा",

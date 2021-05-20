@@ -2,6 +2,7 @@ OC.L10N.register(
     "files_sharing",
     {
     "Cancel" : "﻿ರದ್ದು",
+    "Add" : "﻿ಸೇರಿಸಿ",
     "Share" : "﻿ಹಂಚಿಕೊಳ್ಳಿ",
     "Pending" : "﻿ಬಾಕಿ ಇದೆ",
     "Sharing" : "﻿ಹಂಚಿಕೆ",

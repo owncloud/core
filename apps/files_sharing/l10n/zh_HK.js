@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Shared by link" : "通過連結分享<br>",
     "Cancel" : "取消",
+    "Add" : "新增",
     "Share" : "分享",
     "Sharing" : "分享",
     "A file or folder has been <strong>shared</strong>" : "檔案或資料夾已被<strong>分享</strong>",

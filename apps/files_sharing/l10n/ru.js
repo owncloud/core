@@ -29,6 +29,7 @@ OC.L10N.register(
     "Cancel" : "Отменить",
     "Add remote share" : "Добавить удалённый общий ресурс",
     "You can upload into this folder" : "Вы можете загружать в эту папку",
+    "Add" : "Добавить",
     "No ownCloud installation (7 or higher) found at {remote}" : "На удаленном ресурсе {remote} не установлен ownCloud версии 7 или выше",
     "Invalid ownCloud url" : "Неверный адрес ownCloud",
     "Share" : "Общий доступ",

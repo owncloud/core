@@ -20,6 +20,7 @@
     "Cancel" : "Batal",
     "Add remote share" : "Tambah berbagi remote",
     "You can upload into this folder" : "Anda dapat mengunggah kedalam folder ini",
+    "Add" : "Tambah",
     "No ownCloud installation (7 or higher) found at {remote}" : "Tidak ditemukan instalasi ownCloud (7 atau lebih tinggi) pada {remote}",
     "Invalid ownCloud url" : "URL ownCloud tidak sah",
     "Share" : "Bagikan",

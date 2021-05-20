@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Uploading..." : "Laai tans op…",
     "Cancel" : "Kanseleer",
+    "Add" : "Voeg Toe",
     "Share" : "Deel",
     "Pending" : "Hangend",
     "Sharing" : "Deling",

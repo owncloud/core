@@ -27,6 +27,7 @@
     "Cancel" : "Откажи",
     "Add remote share" : "Додади оддалечно споделување",
     "You can upload into this folder" : "Можете да прикачите во оваа папка",
+    "Add" : "Додади",
     "No ownCloud installation (7 or higher) found at {remote}" : "Не е пронајдена ownCloud инсталација (верзија 7 или поголема) на {remote}",
     "Invalid ownCloud url" : "Неисправен ownCloud url",
     "Share" : "Сподели",

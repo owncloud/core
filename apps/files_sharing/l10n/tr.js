@@ -29,6 +29,7 @@ OC.L10N.register(
     "Cancel" : "İptal",
     "Add remote share" : "Uzak paylaşım ekle",
     "You can upload into this folder" : "Bu dizine yükleme yapabilirsiniz",
+    "Add" : "Ekle",
     "No ownCloud installation (7 or higher) found at {remote}" : "{remote} üzerinde ownCloud (7 veya daha üstü) kurulumu bulunamadı",
     "Invalid ownCloud url" : "Geçersiz ownCloud adresi",
     "Share" : "Paylaş",

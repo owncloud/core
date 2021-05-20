@@ -8,6 +8,7 @@ OC.L10N.register(
     "Uploading..." : "আপলোড করা হচ্ছে..........",
     "Remote share" : "দুরবর্তী ভাগাভাগি",
     "Cancel" : "বাতিল",
+    "Add" : "যোগ কর",
     "Invalid ownCloud url" : "অবৈধ ওউনক্লাউড url",
     "Share" : "ভাগাভাগি কর",
     "Pending" : "মুলতুবি",

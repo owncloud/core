@@ -23,6 +23,7 @@ OC.L10N.register(
     "Cancel" : "منصرف شدن",
     "Add remote share" : "افزودن اشتراک از راه دور",
     "You can upload into this folder" : "می‌توانید در این پوشه آپلود کنید",
+    "Add" : "افزودن",
     "No ownCloud installation (7 or higher) found at {remote}" : "هیچ نصبinstallation (7 or higher) در  {remote} پیدا نشد.",
     "Invalid ownCloud url" : "آدرس نمونه ownCloud  غیر معتبر است",
     "Share" : "اشتراک گذاری",

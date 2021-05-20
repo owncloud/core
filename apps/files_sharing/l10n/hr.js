@@ -11,6 +11,7 @@ OC.L10N.register(
     "Remote share password" : "Lozinka za udaljeni zajednički resurs",
     "Cancel" : "Odustanite",
     "Add remote share" : "Dodajte udaljeni zajednički resurs",
+    "Add" : "Dodaj",
     "Invalid ownCloud url" : "Neispravan ownCloud URL",
     "Share" : "Dijeljenje",
     "Pending" : "Na čekanju",

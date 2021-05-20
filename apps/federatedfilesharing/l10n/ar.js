@@ -2,7 +2,7 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "مشاركة موحدة",
-    "Add to your ownCloud" : "إضافة إلى ownCloud",
+    "Loading..." : "جاري التحميل ...",
     "Invalid Federated Cloud ID" : "معرف سحابة موحدة غير صالح",
     "Sharing %s failed, because this item is already shared with %s" : "فشلت مشاركة %s بسبب مشاركة هذا العنصر مع %s بالفعل",
     "Not allowed to create a federated share with the same user" : "غير مسموح بإنشاء مشاركة موحدة مع المستخدم نفسه",

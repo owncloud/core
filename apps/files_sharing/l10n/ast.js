@@ -23,6 +23,7 @@ OC.L10N.register(
     "Cancel" : "Encaboxar",
     "Add remote share" : "Amestar compartición remota",
     "You can upload into this folder" : "Puedes xubir dientro esta carpeta",
+    "Add" : "Amestar",
     "No ownCloud installation (7 or higher) found at {remote}" : "Nun s'atopó nenguna instalación ownCloud (7 o cimera) en { } remotu",
     "Invalid ownCloud url" : "Url ownCloud inválida",
     "Share" : "Compartir",

@@ -22,6 +22,7 @@ OC.L10N.register(
     "Cancel" : "Anullar",
     "Add remote share" : "Apondre un partiment distant",
     "You can upload into this folder" : "Podètz mandar dins aqueste dorsièr",
+    "Add" : "Apondre",
     "No ownCloud installation (7 or higher) found at {remote}" : "Cap d'installacion ownCloud (7 o superior) pas trobada sus {remote}",
     "Invalid ownCloud url" : "URL ownCloud invalida",
     "Share" : "Partejar",

@@ -23,6 +23,7 @@ OC.L10N.register(
     "Cancel" : "Atcelt",
     "Add remote share" : "Pievienot attālināto koplietotni",
     "You can upload into this folder" : "Jūs variet augšuplādēt šajā mapē",
+    "Add" : "Pievienot",
     "No ownCloud installation (7 or higher) found at {remote}" : "Nav atrasta neviena ownCloud (7. vai augstāka) instalācija {remote}",
     "Invalid ownCloud url" : "Nederīga ownCloud saite",
     "Share" : "Dalīties",

@@ -22,6 +22,7 @@ OC.L10N.register(
     "Cancel" : "Anulare",
     "Add remote share" : "Adaugă element partajat la distanță",
     "You can upload into this folder" : "Poți încărca în acest director",
+    "Add" : "Adaugă",
     "No ownCloud installation (7 or higher) found at {remote}" : "Nu s-a găsit nicio instanță ownCloud (versiunea 7 sau mai mare) la {remote}",
     "Invalid ownCloud url" : "URL ownCloud invalid",
     "Share" : "Partajează",

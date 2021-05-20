@@ -2,6 +2,7 @@ OC.L10N.register(
     "files_sharing",
     {
     "Cancel" : "Abbrechen",
+    "Add" : "Hinzufügen",
     "Share" : "Teilen",
     "A file or folder has been <strong>shared</strong>" : "Eine Datei oder ein Ordner wurde <strong>geteilt</strong>",
     "You shared %1$s with %2$s" : "du teilst %1$s mit %2$s",

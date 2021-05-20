@@ -19,6 +19,7 @@ OC.L10N.register(
     "Remote share password" : "Lozinka za udaljeni deljeni resurs",
     "Cancel" : "Otkaži",
     "Add remote share" : "Dodaj udaljeni deljeni resurs",
+    "Add" : "Dodaj",
     "No ownCloud installation (7 or higher) found at {remote}" : "Nije pronađena ownCloud instalacija (7 ili noviji) na {remote}",
     "Invalid ownCloud url" : "Neispravan ownCloud url",
     "Share" : "Deljenje",

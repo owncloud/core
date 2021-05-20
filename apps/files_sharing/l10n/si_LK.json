@@ -1,6 +1,7 @@
 { "translations": {
     "Uploading..." : "උඩුගත කෙරේ...",
     "Cancel" : "එපා",
+    "Add" : "එකතු කරන්න",
     "Share" : "බෙදා හදා ගන්න",
     "Sharing" : "හුවමාරු කිරීම",
     "A file or folder has been <strong>shared</strong>" : "ගොනුවක් හෝ ෆෝල්ඩරයක් <strong>හවුල්</strong> වී ඇත",

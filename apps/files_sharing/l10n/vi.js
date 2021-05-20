@@ -12,6 +12,7 @@ OC.L10N.register(
     "Files and folders you share will show up here" : "Tập tin và thư mục bạn chia sẻ sẽ được hiển thị tại đây.",
     "No shared links" : "Chưa có liên kết chia sẻ",
     "Cancel" : "Hủy",
+    "Add" : "Thêm",
     "Share" : "Chia sẻ",
     "Declined" : "Từ chối",
     "Pending" : "Đang chờ",

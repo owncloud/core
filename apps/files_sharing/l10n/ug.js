@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Uploading..." : "يۈكلەۋاتىدۇ…",
     "Cancel" : "ۋاز كەچ",
+    "Add" : "قوش",
     "Share" : "ھەمبەھىر",
     "Pending" : "كۈتۈۋاتىدۇ",
     "Shared by" : "ھەمبەھىرلىگۈچى",

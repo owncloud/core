@@ -1,7 +1,7 @@
 OC.L10N.register(
     "federatedfilesharing",
     {
-    "Add to your ownCloud" : "Pievienot savam ownCloud",
+    "Loading..." : "Ielāde...",
     "Sharing %s failed, because this item is already shared with %s" : "%s kopīgošana neizdevās, jo fails ir jau kopīgots ar %s",
     "\"%1$s\" shared \"%3$s\" with you" : "%1$s kopīgojis %3$s ar jums",
     "Accept" : "Akceptēt",

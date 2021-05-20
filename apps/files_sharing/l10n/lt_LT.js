@@ -23,6 +23,7 @@ OC.L10N.register(
     "Cancel" : "Atšaukti",
     "Add remote share" : "Pridėti nutolusi dalijimąsi",
     "You can upload into this folder" : "Gali įkelti į šį aplanką",
+    "Add" : "Pridėti",
     "No ownCloud installation (7 or higher) found at {remote}" : "Nerastas ownCloud (7 ar aukštesnė versiją) {remote} serveryje.",
     "Invalid ownCloud url" : "Neteisinga ownCloud nuoroda",
     "Share" : "Dalintis",

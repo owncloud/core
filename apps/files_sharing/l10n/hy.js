@@ -5,6 +5,7 @@ OC.L10N.register(
     "Shared with others" : "Կիսված այլոց հետ",
     "Shared by link" : "Կիսված հղմամբ",
     "Cancel" : "Չեղարկել",
+    "Add" : "Ավելացնել",
     "Share" : "Կիսվել",
     "%2$s shared %1$s via link" : "%2$s կիսվել է %1$sով հղման միջոցով",
     "You shared %1$s via link" : "Դու կիսվեցիր %1$sով հղման միջոցով",

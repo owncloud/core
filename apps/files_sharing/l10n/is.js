@@ -28,6 +28,7 @@ OC.L10N.register(
     "Cancel" : "Hætta við",
     "Add remote share" : "Bæta við fjartengdri sameign",
     "You can upload into this folder" : "Þú getur sent inn skrár í þessa möppu",
+    "Add" : "Bæta við",
     "No ownCloud installation (7 or higher) found at {remote}" : "Engin ownCloud uppsetning (útgáfa 7 eða nýrri) fannst á {remote}",
     "Invalid ownCloud url" : "Ógild ownCloud-slóð",
     "Share" : "Deila",

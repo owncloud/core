@@ -5,6 +5,7 @@ OC.L10N.register(
     "Nothing shared yet" : "Nach näischt gedeelt",
     "No shared links" : "Keng gedeelte Linken",
     "Cancel" : "Ofbriechen",
+    "Add" : "Dobäisetzen",
     "Share" : "Deelen",
     "Shared by" : "Gedeelt vun",
     "Sharing" : "Gedeelt",
