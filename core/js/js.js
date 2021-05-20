@@ -1446,10 +1446,12 @@ function initCore() {
 	/**
 	 * Set label colors on login forms to themed values
 	 */
+	var color;
+
 	if ($('p.info').length > 0) {
-		var color = $('p.info').css('color');
+		color = $('p.info').css('color');
 	} else {
-		var color = $('body').css('color');
+		color = $('body').css('color');
 	}
 	
 	$('#body-login form label').css({

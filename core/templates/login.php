@@ -114,16 +114,19 @@ script('core', [
 
 		<?php if ($_['rememberLoginAllowed'] === true) : ?>
 		<div class="remember-login-container">
-			<?php if ($_['rememberLoginState'] === 0) {
+			<?php 
+			$stayLoggedInText = $l->t('Stay logged in');
+
+			if ($_['rememberLoginState'] === 0) {
 		?>
-			<input type="checkbox" name="remember_login" value="1" id="remember_login" class="checkbox checkbox--white" aria-label="<?php p($l->t('Stay logged in')); ?>">
+			<input type="checkbox" name="remember_login" value="1" id="remember_login" class="checkbox checkbox--white" aria-label="<?php p($stayLoggedInText); ?>">
 			<?php
 	} else {
 		?>
-			<input type="checkbox" name="remember_login" value="1" id="remember_login" class="checkbox checkbox--white" checked="checked" aria-label="<?php p($l->t('Stay logged in')); ?>">
+			<input type="checkbox" name="remember_login" value="1" id="remember_login" class="checkbox checkbox--white" checked="checked" aria-label="<?php p($stayLoggedInText); ?>">
 			<?php
 	} ?>
-			<label for="remember_login"><?php p($l->t('Stay logged in')); ?></label>
+			<label for="remember_login"><?php p($stayLoggedInText); ?></label>
 		</div>
 		<?php endif; ?>
 		<input type="hidden" name="timezone-offset" id="timezone-offset"/>

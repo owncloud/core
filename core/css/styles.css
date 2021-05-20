@@ -280,7 +280,9 @@ a.two-factor-cancel {
 #body-login form {
 	position: relative;
 	margin: 32px auto;
+	min-width: 300px;
 }
+
 #body-login form fieldset {
 	margin-bottom: 20px;
 	text-align: left;
@@ -684,10 +686,6 @@ html #body-login button[type="submit"]:hover {
 	margin: 0px;
 	padding: 0.65rem;
 	width: calc(100% - 1.3rem);
-}
-
-#body-login form {
-	min-width: 300px;
 }
 
 #remember_login {
