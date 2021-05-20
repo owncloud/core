@@ -25,6 +25,7 @@ Summary
 * Bugfix - Database query filter when getting a tag: [#38725](https://github.com/owncloud/core/pull/38725)
 * Bugfix - Fix federated share download bug happens on some providers: [#38738](https://github.com/owncloud/core/pull/38738)
 * Bugfix - Correctly parse different ocm-provider api responses: [#38751](https://github.com/owncloud/core/pull/38751)
+* Bugfix - Move files_antivirus executable mode config options into config.php: [#38753](https://github.com/owncloud/core/pull/38753)
 * Change - Update Symfony components: [#38755](https://github.com/owncloud/core/pull/38755)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
@@ -189,6 +190,13 @@ Details
    not able to parse these responses. This problem has been fixed.
 
    https://github.com/owncloud/core/pull/38751
+
+* Bugfix - Move files_antivirus executable mode config options into config.php: [#38753](https://github.com/owncloud/core/pull/38753)
+
+   Executable mode of the files_antivirus app is now configured in the core config.php file.
+
+   https://github.com/owncloud/core/pull/38753
+   https://github.com/owncloud/files_antivirus/pull/442
 
 * Change - Update Symfony components: [#38755](https://github.com/owncloud/core/pull/38755)
 
