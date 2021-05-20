@@ -54,6 +54,28 @@ $CONFIG = [
 'admin_audit.groups' => ['group1', 'group2'],
 
 /**
+ * App: Files Antivirus
+ *
+ * Possible keys: `files_antivirus.av_path` STRING
+ *
+ * Possible keys: `files_antivirus.av_cmd_options` STRING
+ */
+
+/**
+ * Default path to the _clamscan_ command line anti-virus scanner.
+ * This setting only applies when the operating mode of the `files_antivirus` app is set to executable mode.
+ * See the documentation for more details.
+ */
+'files_antivirus.av_path' => '/usr/bin/clamscan',
+
+/**
+ * Command line options for the _clamscan_ command line anti-virus scanner.
+ * This setting only applies when the operating mode of the `files_antivirus` app is set to executable mode.
+ * See the documentation for more details.
+ */
+'files_antivirus.av_cmd_options' => '',
+
+/**
  * App: Firstrunwizard
  *
  * Possible keys: `customclient_desktop` URL
