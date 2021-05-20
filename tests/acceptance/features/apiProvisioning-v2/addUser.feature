@@ -197,3 +197,16 @@ Feature: add user
     Then the OCS status code should be "400"
     And the HTTP status code should be "400"
     And user "brand-new-user" should not exist
+
+  @sqliteDB
+  Scenario: admin tries to create user with brackets in the username
+    When the administrator sends a user creation request for the following users with password using the provisioning API
+      | username  | password |
+      | [user1]   | %alt1%   |
+      | [ user2 ] | %alt1%   |
+    Then the OCS status code of responses on all endpoints should be "400"
+    And the HTTP status code of responses on all endpoints should be "400"
+    And the following users should not exist
+      | username  |
+      | [user1]   |
+      | [ user2 ] |

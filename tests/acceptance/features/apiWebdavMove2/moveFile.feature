@@ -290,16 +290,23 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+  @sqliteDB
   Scenario: renaming to a file with special characters
     Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt"
     And user "Alice" has uploaded file with content "ownCloud test text file 1" to "textfile1.txt"
+    And user "Alice" has uploaded file with content "ownCloud test text file 2" to "textfile2.txt"
+    And user "Alice" has uploaded file with content "ownCloud test text file 3" to "textfile3.txt"
     When user "Alice" moves the following file using the WebDAV API
       | source         | destination   |
       | /textfile0.txt | *a@b#c$e%f&g* |
       | /textfile1.txt | 1 2 3##.##    |
+      | /textfile2.txt | file[2]       |
+      | /textfile3.txt | file [ 3 ]    |
     Then the HTTP status code of responses on all endpoints should be "201"
     And the content of file "*a@b#c$e%f&g*" for user "Alice" should be "ownCloud test text file 0"
     And the content of file "1 2 3##.##" for user "Alice" should be "ownCloud test text file 1"
+    And the content of file "file[2]" for user "Alice" should be "ownCloud test text file 2"
+    And the content of file "file [ 3 ]" for user "Alice" should be "ownCloud test text file 3"
 
   @issue-ocis-reva-265
   #after fixing the issues merge this Scenario into the one above
