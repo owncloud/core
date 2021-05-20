@@ -19,6 +19,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Hide file drop content: <a href="https://github.com/owncloud/core/pull/38691">#38691</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Regenerate session after authenticate a password protected public share: <a href="https://github.com/owncloud/core/pull/38693">#38693</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Add check when updating the permissions of a federated share: <a href="https://github.com/owncloud/core/pull/38698">#38698</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Prevent renaming or deleting a SMB mount point: <a href="https://github.com/owncloud/core/pull/38709">#38709</a></li>
         <li class="type-bugfix changelog-item">Bugfix - String to bool conversion in systemtags API: <a href="https://github.com/owncloud/core/pull/38719">#38719</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Database query filter when getting a tag: <a href="https://github.com/owncloud/core/pull/38725">#38725</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix federated share download bug happens on some providers: <a href="https://github.com/owncloud/core/pull/38738">#38738</a></li>
@@ -27,7 +28,9 @@
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/38755">#38755</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/38524">#38524</a></li>
         <li class="type-change changelog-item">Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: <a href="https://github.com/owncloud/core/pull/38647">#38647</a></li>
+        <li class="type-change changelog-item">Change - Improve performance for the MOVE operation: <a href="https://github.com/owncloud/core/pull/38649">#38649</a></li>
         <li class="type-change changelog-item">Change - Optimize share rename: <a href="https://github.com/owncloud/core/pull/38656">#38656</a></li>
+        <li class="type-change changelog-item">Change - All mount configuration items marked as passwords will be encrypted: <a href="https://github.com/owncloud/core/pull/38728">#38728</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Improve public share federation user interface: <a href="https://github.com/owncloud/enterprise/issues/4393">#4393</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Automations in activity stream: <a href="https://github.com/owncloud/core/pull/38605">#38605</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add html template for calens: <a href="https://github.com/owncloud/core/pull/38616">#38616</a></li>
@@ -165,6 +168,12 @@
             <p>https://github.com/owncloud/core/pull/38698<br></p>
         </li>
         <li class="type-bugfix changelog-item">
+            <p>Bugfix - Prevent renaming or deleting a SMB mount point: <a href="https://github.com/owncloud/core/pull/38709">#38709</a></p>
+            <p>Renaming or deleting a SMB mount point will throw a 403 error code
+            </p>
+            <p>https://github.com/owncloud/core/pull/38709<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
             <p>Bugfix - String to bool conversion in systemtags API: <a href="https://github.com/owncloud/core/pull/38719">#38719</a></p>
             <p>String values like "true" and "false" were always converted to true when creating a tag via API.
    We now use filter_var() to fix this behavior.
@@ -228,11 +237,30 @@
             <p>https://github.com/owncloud/core/pull/38647<br></p>
         </li>
         <li class="type-change changelog-item">
+            <p>Change - Improve performance for the MOVE operation: <a href="https://github.com/owncloud/core/pull/38649">#38649</a></p>
+            <p>Previously, in order to move a folder, we needed to get all the content and replace the path of
+   each one one by one. Now we replace the path of all the content in one DB query, which reduces the
+   network traffic and allows better optimization in the DB. This change affects MySQL, MariaDB,
+   Postgresql, and Oracle. Sqlite is excluded from this optimization and will use the previous
+   behaviour.
+            </p>
+            <p>https://github.com/owncloud/core/pull/38649<br></p>
+        </li>
+        <li class="type-change changelog-item">
             <p>Change - Optimize share rename: <a href="https://github.com/owncloud/core/pull/38656">#38656</a></p>
             <p>Renaming a received share could cause a file scan to be triggered. This could potentially be a
    performance problem if the file scan took a while.Now, renaming a received share won't trigger that file scan, so the performance will be faster.
             </p>
             <p>https://github.com/owncloud/core/pull/38656<br></p>
+        </li>
+        <li class="type-change changelog-item">
+            <p>Change - All mount configuration items marked as passwords will be encrypted: <a href="https://github.com/owncloud/core/pull/38728">#38728</a></p>
+            <p>Previously, only some known configuration items were encrypted. This was a problem for new
+   items that required protection because this required changes in the core product.Now, all the items marked as passwords will be encrypted. This will be done automatically
+   without 3rd party apps needing to do anything. A migration is also provided to update the items
+   if needed.
+            </p>
+            <p>https://github.com/owncloud/core/pull/38728<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Improve public share federation user interface: <a href="https://github.com/owncloud/enterprise/issues/4393">#4393</a></p>

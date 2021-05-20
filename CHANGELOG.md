@@ -21,6 +21,7 @@ Summary
 * Bugfix - Hide file drop content: [#38691](https://github.com/owncloud/core/pull/38691)
 * Bugfix - Regenerate session after authenticate a password protected public share: [#38693](https://github.com/owncloud/core/pull/38693)
 * Bugfix - Add check when updating the permissions of a federated share: [#38698](https://github.com/owncloud/core/pull/38698)
+* Bugfix - Prevent renaming or deleting a SMB mount point: [#38709](https://github.com/owncloud/core/pull/38709)
 * Bugfix - String to bool conversion in systemtags API: [#38719](https://github.com/owncloud/core/pull/38719)
 * Bugfix - Database query filter when getting a tag: [#38725](https://github.com/owncloud/core/pull/38725)
 * Bugfix - Fix federated share download bug happens on some providers: [#38738](https://github.com/owncloud/core/pull/38738)
@@ -29,7 +30,9 @@ Summary
 * Change - Update Symfony components: [#38755](https://github.com/owncloud/core/pull/38755)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
+* Change - Improve performance for the MOVE operation: [#38649](https://github.com/owncloud/core/pull/38649)
 * Change - Optimize share rename: [#38656](https://github.com/owncloud/core/pull/38656)
+* Change - All mount configuration items marked as passwords will be encrypted: [#38728](https://github.com/owncloud/core/pull/38728)
 * Enhancement - Improve public share federation user interface: [#4393](https://github.com/owncloud/enterprise/issues/4393)
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
 * Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
@@ -162,6 +165,12 @@ Details
    https://github.com/owncloud/enterprise/issues/4537
    https://github.com/owncloud/core/pull/38698
 
+* Bugfix - Prevent renaming or deleting a SMB mount point: [#38709](https://github.com/owncloud/core/pull/38709)
+
+   Renaming or deleting a SMB mount point will throw a 403 error code
+
+   https://github.com/owncloud/core/pull/38709
+
 * Bugfix - String to bool conversion in systemtags API: [#38719](https://github.com/owncloud/core/pull/38719)
 
    String values like "true" and "false" were always converted to true when creating a tag via API.
@@ -240,6 +249,16 @@ Details
    https://github.com/owncloud/core/issues/38681
    https://github.com/owncloud/core/pull/38647
 
+* Change - Improve performance for the MOVE operation: [#38649](https://github.com/owncloud/core/pull/38649)
+
+   Previously, in order to move a folder, we needed to get all the content and replace the path of
+   each one one by one. Now we replace the path of all the content in one DB query, which reduces the
+   network traffic and allows better optimization in the DB. This change affects MySQL, MariaDB,
+   Postgresql, and Oracle. Sqlite is excluded from this optimization and will use the previous
+   behaviour.
+
+   https://github.com/owncloud/core/pull/38649
+
 * Change - Optimize share rename: [#38656](https://github.com/owncloud/core/pull/38656)
 
    Renaming a received share could cause a file scan to be triggered. This could potentially be a
@@ -248,6 +267,17 @@ Details
    Now, renaming a received share won't trigger that file scan, so the performance will be faster.
 
    https://github.com/owncloud/core/pull/38656
+
+* Change - All mount configuration items marked as passwords will be encrypted: [#38728](https://github.com/owncloud/core/pull/38728)
+
+   Previously, only some known configuration items were encrypted. This was a problem for new
+   items that required protection because this required changes in the core product.
+
+   Now, all the items marked as passwords will be encrypted. This will be done automatically
+   without 3rd party apps needing to do anything. A migration is also provided to update the items
+   if needed.
+
+   https://github.com/owncloud/core/pull/38728
 
 * Enhancement - Improve public share federation user interface: [#4393](https://github.com/owncloud/enterprise/issues/4393)
 
