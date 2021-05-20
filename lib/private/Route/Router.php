@@ -282,7 +282,7 @@ class Router implements IRouter {
 
 		$matcher = new UrlMatcher($this->root, $this->context);
 
-		if (\OC::$server->getRequest()->getMethod() === "OPTIONS") {
+		if (\OC::$server->getRequest()->getMethod() === "OPTIONS" && \OC::$server->getRequest()->getHeader('Access-Control-Request-Method')) {
 			try {
 				// Checking whether the actual request (one which OPTIONS is pre-flight for)
 				// Is actually valid
