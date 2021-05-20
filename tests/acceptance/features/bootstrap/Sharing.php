@@ -1683,6 +1683,19 @@ trait Sharing {
 	}
 
 	/**
+	 * Retrieves the id of the last shared file
+	 *
+	 * @return string|null
+	 */
+	public function getLastShareId() {
+		if ($this->lastShareData) {
+			return $this->lastShareData->data[0]->id;
+		} else {
+			return null;
+		}
+	}
+
+	/**
 	 * Retrieves all the shares of the respective user
 	 *
 	 * @param string $user
@@ -2635,6 +2648,34 @@ trait Sharing {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" (declines|accepts) share with ID "([^"]*)" using the sharing API$/
+	 *
+	 * @param string $user
+	 * @param string $action
+	 * @param string $share_id
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userReactsToShareWithShareIDOfferedBy($user, $action, $share_id) {
+		$user = $this->getActualUsername($user);
+
+		$shareId = $this->substituteInLineCodes($share_id, $user);
+
+		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}" .
+			"/shares/pending/$shareId";
+		if (\substr($action, 0, 7) === "decline") {
+			$httpRequestMethod = "DELETE";
+		} elseif (\substr($action, 0, 6) === "accept") {
+			$httpRequestMethod = "POST";
+		}
+
+		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+			$user, $httpRequestMethod, $url, null
+		);
+	}
+
+	/**
 	 * @Given /^user "([^"]*)" has (declined|accepted) share "([^"]*)" offered by user "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -2785,6 +2826,31 @@ trait Sharing {
 				$this->getStdErrOfOccCommand()
 			);
 		}
+	}
+
+	/**
+	 * @When user :user gets share with id :share using the sharing API
+	 *
+	 * @param $user
+	 * @param $share_id
+	 *
+	 * @return void
+	 */
+	public function userGetsTheLastShareWithTheShareIdUsingTheSharingApi($user, $share_id) {
+		$user = $this->getActualUsername($user);
+		$share_id = $this->substituteInLineCodes($share_id, $user);
+		$url = $this->getSharesEndpointPath("/$share_id");
+
+		$this->response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			"GET",
+			$url,
+			[],
+			$this->ocsApiVersion
+		);
+		return $this->response;
 	}
 
 	/**

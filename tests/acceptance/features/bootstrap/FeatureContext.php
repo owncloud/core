@@ -2687,6 +2687,14 @@ class FeatureContext extends BehatVariablesContext {
 					"getCommentUrlRegExp"
 				],
 				"parameter" => []
+			],
+			[
+				"code" => "%last_share_id%",
+				"function" => [
+					$this,
+					"getLastShareId"
+				],
+				"parameter" => []
 			]
 		];
 		if ($user !== null) {
