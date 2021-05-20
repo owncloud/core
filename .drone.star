@@ -1,11 +1,11 @@
 config = {
 	'rocketchat': {
 		'channel': 'server',
-		'from_secret': 'public_rocketchat'
+		'from_secret': 'public_rocketchat',
 	},
 
 	'branches': [
-		'master'
+		'master',
 	],
 
 	'dependencies': True,
@@ -70,9 +70,9 @@ config = {
 				'webdav',
 				'sftp',
 				'scality',
-				'owncloud'
+				'owncloud',
 			],
-			'coverage': True
+			'coverage': True,
 		}
 	},
 
@@ -137,7 +137,7 @@ config = {
 				'apiSharingNotificationsToShares',
 			],
 			'extraApps': {
-				'notifications': 'if [ -f "composer.json" ]; then composer install; fi'
+				'notifications': 'if [ -f "composer.json" ]; then composer install; fi',
 			},
 		},
 		'apiFederation': {
@@ -148,7 +148,7 @@ config = {
 				'apiFederationToShares2',
 			],
 			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.5.0']
+			'federatedServerVersions': ['git', 'latest', '10.5.0'],
 		},
 		'cli': {
 			'suites': [
@@ -164,14 +164,14 @@ config = {
 			'suites': [
 				'cliAppManagement',
 			],
-			'testingRemoteSystem': False
+			'testingRemoteSystem': False,
 		},
 		'cliExternalStorage': {
 			'suites': [
 				'cliExternalStorage',
 			],
 			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.5.0']
+			'federatedServerVersions': ['git', 'latest', '10.5.0'],
 		},
 		'webUI': {
 			'suites': {
@@ -215,7 +215,7 @@ config = {
 			'emailNeeded': True,
 			'useHttps': False,
 			'extraApps': {
-				'notifications': 'composer install'
+				'notifications': 'composer install',
 			},
 		},
 		'webUIFileActionsMenu': {
@@ -234,14 +234,14 @@ config = {
 				'webUISharingExternal2': 'webUISharingExt2',
 			},
 			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.5.0']
+			'federatedServerVersions': ['git', 'latest', '10.5.0'],
 		},
 		'webUIFirefox': {
 			'suites': {
 				'webUIFirefoxSmoketest': 'webUIFfSmoke',
 			},
 			'browsers': [
-				'firefox'
+				'firefox',
 			],
 			'emailNeeded': True,
 			'useHttps': False,
@@ -254,7 +254,7 @@ config = {
 				'webUIProxySmoketest': 'webUIProxySmoke',
 			},
 			'browsers': [
-				'chrome'
+				'chrome',
 			],
 			'emailNeeded': True,
 			'proxyNeeded': True,
