@@ -5,8 +5,7 @@ Feature: files and folders exist in the trashbin after being deleted
   So that I can recover data easily
 
   Background:
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has been created with default attributes and without skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "to delete" to "/textfile0.txt"
 
   # This scenario deletes many files as close together in time as the test can run.

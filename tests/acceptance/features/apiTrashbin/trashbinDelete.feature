@@ -5,8 +5,7 @@ Feature: files and folders can be deleted from the trashbin
   So that I can control my trashbin space and which files are kept in that space
 
   Background:
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has been created with default attributes and without skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "to delete" to "/textfile0.txt"
     And user "Alice" has uploaded file with content "to delete" to "/textfile1.txt"
     And user "Alice" has created folder "PARENT"

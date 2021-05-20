@@ -6,8 +6,7 @@ Feature: Restore deleted files/folders
 
   @issue-35974
   Scenario Outline: restoring a file to an already existing path overrides the file
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has been created with default attributes and without skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "file to delete" to "/textfile0.txt"
     And user "Alice" has uploaded file with content "file to delete" to "/.hiddenfile0.txt"
     And using <dav-path> DAV path

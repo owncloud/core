@@ -5,7 +5,6 @@ Feature: dav-versions
   Background:
     Given using OCS API version "2"
     And using new DAV path
-    And the administrator has enabled DAV tech_preview
     And the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
     And user "Alice" has been created with default attributes and without skeleton files

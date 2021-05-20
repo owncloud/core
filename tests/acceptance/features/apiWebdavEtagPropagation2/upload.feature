@@ -142,8 +142,7 @@ Feature: propagation of etags when uploading data
 
   @skipOnOcis-OC-Storage @issue-product-280
   Scenario: uploading a file into a publicly shared folder changes its etag for the sharer
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has created a public link share with settings
+    Given user "Alice" has created a public link share with settings
       | path        | upload |
       | permissions | create |
     And user "Alice" has stored etag of element "/"

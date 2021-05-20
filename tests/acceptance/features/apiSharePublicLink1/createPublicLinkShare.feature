@@ -8,7 +8,6 @@ Feature: create a public link share
   @smokeTest
   Scenario Outline: Creating a new public link share of a file, the default permissions are read (1) using the old public WebDAV API
     Given using OCS API version "<ocs_api_version>"
-    And the administrator has enabled DAV tech_preview
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
     When user "Alice" creates a public link share using the sharing API with settings
       | path | randomfile.txt |
@@ -37,7 +36,6 @@ Feature: create a public link share
   @issue-ocis-reva-12
   Scenario Outline: Creating a new public link share of a file, the default permissions are read (1) using the new public WebDAV API
     Given using OCS API version "<ocs_api_version>"
-    And the administrator has enabled DAV tech_preview
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
     When user "Alice" creates a public link share using the sharing API with settings
       | path | randomfile.txt |
@@ -186,7 +184,6 @@ Feature: create a public link share
 
   Scenario Outline: Creating a new public link share of a folder, the default permissions are read (1) and can be accessed with no password or any password using the old public WebDAV API
     Given using OCS API version "<ocs_api_version>"
-    And the administrator has enabled DAV tech_preview
     And user "Alice" has created folder "/PARENT"
     And user "Alice" has uploaded file with content "Random data" to "/PARENT/randomfile.txt"
     When user "Alice" creates a public link share using the sharing API with settings
@@ -218,7 +215,6 @@ Feature: create a public link share
   @issue-ocis-reva-12
   Scenario Outline: Creating a new public link share of a folder, the default permissions are read (1) and can be accessed with no password or any password using the new public WebDAV API
     Given using OCS API version "<ocs_api_version>"
-    And the administrator has enabled DAV tech_preview
     And user "Alice" has created folder "/PARENT"
     And user "Alice" has uploaded file with content "Random data" to "/PARENT/randomfile.txt"
     When user "Alice" creates a public link share using the sharing API with settings
@@ -748,8 +744,7 @@ Feature: create a public link share
 
   @issue-ocis-reva-292
   Scenario: try to download from a public share that has upload only permissions
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has created folder "PARENT"
+    Given user "Alice" has created folder "PARENT"
     And user "Alice" has uploaded file with content "Random data" to "/PARENT/parent.txt"
     And user "Alice" has created a public link share with settings
       | path        | PARENT          |
@@ -763,8 +758,7 @@ Feature: create a public link share
 
   @skipOnOcV10.3
   Scenario: Get the size of a file shared by public link
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has uploaded file with content "This is a test file" to "test-file.txt"
+    Given user "Alice" has uploaded file with content "This is a test file" to "test-file.txt"
     And user "Alice" has created a public link share with settings
       | path        | test-file.txt |
       | permissions | read          |

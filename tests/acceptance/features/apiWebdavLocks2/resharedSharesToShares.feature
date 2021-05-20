@@ -2,8 +2,7 @@
 Feature: lock should propagate correctly if a share is reshared
 
   Background:
-    Given the administrator has enabled DAV tech_preview
-    And the administrator has set the default folder for received shares to "Shares"
+    Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
     And these users have been created with default attributes and without skeleton files:
       | username |
@@ -63,8 +62,7 @@ Feature: lock should propagate correctly if a share is reshared
 
   @skipOnOcV10 @issue-36064
   Scenario Outline: public uploads to a reshared share that was locked by original owner
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has shared folder "PARENT" with user "Brian"
+    Given user "Alice" has shared folder "PARENT" with user "Brian"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
     And user "Brian" has shared folder "Shares/PARENT" with user "Carol"
     And user "Carol" has accepted share "/PARENT" offered by user "Brian"

@@ -64,8 +64,7 @@ Feature: sharing
 
 
   Scenario: Move files between shares by same user
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has created folder "share1"
+    Given user "Alice" has created folder "share1"
     And user "Alice" has created folder "share2"
     And user "Alice" has uploaded file with content "some data" to "/textfile0.txt"
     And user "Alice" has moved file "textfile0.txt" to "share1/textfile0.txt"
@@ -81,8 +80,7 @@ Feature: sharing
 
 
   Scenario: Move files between shares by same user added by sharee
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has created folder "share1"
+    Given user "Alice" has created folder "share1"
     And user "Alice" has created folder "share2"
     And user "Brian" has uploaded file with content "some data" to "/textfile0.txt"
     And user "Alice" has shared folder "/share1" with user "Brian"
@@ -98,8 +96,7 @@ Feature: sharing
 
 
   Scenario: Move files between shares by different users
-    Given the administrator has enabled DAV tech_preview
-    And user "Carol" has been created with default attributes and without skeleton files
+    Given user "Carol" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "some data" to "/textfile0.txt"
     And user "Alice" has created folder "/PARENT"
     And user "Brian" has created folder "/PARENT"

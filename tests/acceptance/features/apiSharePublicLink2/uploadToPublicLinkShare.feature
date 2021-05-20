@@ -23,8 +23,7 @@ Feature: upload to a public link share
   @smokeTest @issue-ocis-reva-286
   Scenario: Uploading same file to a public upload-only share multiple times via new API
     # The new API does the autorename automatically in upload-only folders
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has created a public link share with settings
+    Given user "Alice" has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
     When the public uploads file "test.txt" with content "test" using the new public WebDAV API
@@ -73,7 +72,6 @@ Feature: upload to a public link share
 
   @issue-ocis-reva-292
   Scenario: Uploading file to a public read-only share folder with new public API does not work
-    Given the administrator has enabled DAV tech_preview
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | FOLDER |
       | permissions | read   |
@@ -91,8 +89,7 @@ Feature: upload to a public link share
       | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
 
   Scenario: Uploading to a public upload-only share with new public API
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has created a public link share with settings
+    Given user "Alice" has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
     When the public uploads file "test-new.txt" with content "test-new" using the new public WebDAV API
@@ -110,8 +107,7 @@ Feature: upload to a public link share
     Then the content of file "/FOLDER/test-old.txt" for user "Alice" should be "test-old"
 
   Scenario: Uploading to a public upload-only share with password with new public API
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has created a public link share with settings
+    Given user "Alice" has created a public link share with settings
       | path        | FOLDER   |
       | password    | %public% |
       | permissions | create   |
@@ -128,8 +124,7 @@ Feature: upload to a public link share
     Then the content of file "/FOLDER/test-old.txt" for user "Alice" should be "test-old"
 
   Scenario: Uploading to a public read/write share with password with new public API
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has created a public link share with settings
+    Given user "Alice" has created a public link share with settings
       | path        | FOLDER   |
       | password    | %public% |
       | permissions | change   |
@@ -147,7 +142,6 @@ Feature: upload to a public link share
 
   @issue-ocis-reva-195
   Scenario: Uploading file to a public shared folder with read/write permission when the sharer has insufficient quota does not work with new public API
-    Given the administrator has enabled DAV tech_preview
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | FOLDER |
       | permissions | change |
@@ -166,7 +160,6 @@ Feature: upload to a public link share
 
   @issue-ocis-reva-195
   Scenario: Uploading file to a public shared folder with upload-only permission when the sharer has insufficient quota does not work with new public API
-    Given the administrator has enabled DAV tech_preview
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | FOLDER |
       | permissions | create |
@@ -185,8 +178,7 @@ Feature: upload to a public link share
 
   @issue-ocis-reva-41
   Scenario: Uploading file to a public shared folder does not work when allow public uploads has been disabled after sharing the folder with new public API
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has created a public link share with settings
+    Given user "Alice" has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
     When the administrator sets parameter "shareapi_allow_public_upload" of app "core" to "no"
@@ -205,8 +197,7 @@ Feature: upload to a public link share
 
   @issue-ocis-reva-41
   Scenario: Uploading file to a public shared folder does not work when allow public uploads has been disabled before sharing and again enabled after sharing the folder with new public API
-    Given the administrator has enabled DAV tech_preview
-    And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
+    Given parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
     And user "Alice" has created a public link share with settings
       | path        | FOLDER |
       | permissions | all    |
@@ -226,8 +217,7 @@ Feature: upload to a public link share
 
   @issue-ocis-reva-41
   Scenario: Uploading file to a public shared folder works when allow public uploads has been disabled and again enabled after sharing the folder with new public API
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has created a public link share with settings
+    Given user "Alice" has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
@@ -245,8 +235,7 @@ Feature: upload to a public link share
 
   @smokeTest
   Scenario: Uploading to a public upload-write and no edit and no overwrite share with new public API
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has created a public link share with settings
+    Given user "Alice" has created a public link share with settings
       | path        | FOLDER          |
       | permissions | uploadwriteonly |
     When the public uploads file "test-new.txt" with content "test-new" using the new public WebDAV API
@@ -254,8 +243,7 @@ Feature: upload to a public link share
 
   @smokeTest
   Scenario: Uploading same file to a public upload-write and no edit and no overwrite share multiple times with old public API
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has created a public link share with settings
+    Given user "Alice" has created a public link share with settings
       | path        | FOLDER          |
       | permissions | uploadwriteonly |
     When the public uploads file "test.txt" with content "test" using the old public WebDAV API
@@ -272,8 +260,7 @@ Feature: upload to a public link share
 
   @smokeTest @issue-ocis-reva-286
   Scenario: Uploading same file to a public upload-write and no edit and no overwrite share multiple times with new public API
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has created a public link share with settings
+    Given user "Alice" has created a public link share with settings
       | path        | FOLDER          |
       | permissions | uploadwriteonly |
     When the public uploads file "test.txt" with content "test" using the new public WebDAV API

@@ -4,7 +4,6 @@ Feature: copying from public link share
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/PARENT"
-    And the administrator has enabled DAV tech_preview
 
   Scenario: Copy file within a public link folder new public WebDAV API
     Given user "Alice" has uploaded file with content "some data" to "/PARENT/testfile.txt"

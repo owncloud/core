@@ -9,7 +9,6 @@ Feature: create a public link share when share_folder is set to Shares
   @skipOnOcV10.5 @skipOnOcV10.6.0
   Scenario Outline: Creating a new public link share of a file gives the correct response
     Given using OCS API version "<ocs_api_version>"
-    And the administrator has enabled DAV tech_preview
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
     When user "Alice" creates a public link share using the sharing API with settings
       | path | randomfile.txt |
