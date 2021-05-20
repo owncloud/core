@@ -270,9 +270,6 @@ class DBConfigService {
 	 * @param string $value
 	 */
 	public function setConfig($mountId, $key, $value) {
-		if ($key === 'password') {
-			$value = $this->encryptValue($value);
-		}
 		$count = $this->connection->insertIfNotExist('*PREFIX*external_config', [
 			'mount_id' => $mountId,
 			'key' => $key,
@@ -434,31 +431,13 @@ class DBConfigService {
 	 * @return array ['key1' => $value1, ...]
 	 */
 	private function createKeyValueMap(array $keyValuePairs) {
-		$decryptedPairts = \array_map(function ($pair) {
-			if ($pair['key'] === 'password') {
-				$pair['value'] = $this->decryptValue($pair['value']);
-			}
-			return $pair;
-		}, $keyValuePairs);
 		$keys = \array_map(function ($pair) {
 			return $pair['key'];
-		}, $decryptedPairts);
+		}, $keyValuePairs);
 		$values = \array_map(function ($pair) {
 			return $pair['value'];
-		}, $decryptedPairts);
+		}, $keyValuePairs);
 
 		return \array_combine($keys, $values);
-	}
-
-	private function encryptValue($value) {
-		return $this->crypto->encrypt($value);
-	}
-
-	private function decryptValue($value) {
-		try {
-			return $this->crypto->decrypt($value);
-		} catch (\Exception $e) {
-			return $value;
-		}
 	}
 }

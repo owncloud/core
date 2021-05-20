@@ -129,7 +129,7 @@ class GlobalStoragesServiceDeleteUserTest extends TestCase {
 		$dbConfigService = new DBConfigService(\OC::$server->getDatabaseConnection(), \OC::$server->getCrypto());
 		$userManager = \OC::$server->getUserManager();
 		$userMountCache = new UserMountCache(\OC::$server->getDatabaseConnection(), $userManager, \OC::$server->getLogger());
-		$service = new GlobalStoragesService($backendService, $dbConfigService, $userMountCache);
+		$service = new GlobalStoragesService($backendService, $dbConfigService, $userMountCache, \OC::$server->getCrypto());
 
 		$storageIds = [];
 		foreach ($storageParams as $storageParam) {
