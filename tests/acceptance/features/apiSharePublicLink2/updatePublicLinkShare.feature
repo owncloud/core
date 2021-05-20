@@ -464,8 +464,7 @@ Feature: update a public link share
 
 
   Scenario Outline: Updating share permissions from change to read restricts public from deleting files using the old public API
-    Given the administrator has enabled DAV tech_preview
-    And using OCS API version "<ocs_api_version>"
+    Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "PARENT"
     And user "Alice" has created folder "PARENT/CHILD"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/CHILD/child.txt"
@@ -489,8 +488,7 @@ Feature: update a public link share
 
   @issue-ocis-reva-292
   Scenario Outline: Updating share permissions from change to read restricts public from deleting files using the new public API
-    Given the administrator has enabled DAV tech_preview
-    And using OCS API version "<ocs_api_version>"
+    Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "PARENT"
     And user "Alice" has created folder "PARENT/CHILD"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/CHILD/child.txt"
@@ -514,8 +512,7 @@ Feature: update a public link share
 
 
   Scenario Outline: Updating share permissions from read to change allows public to delete files using the old public API
-    Given the administrator has enabled DAV tech_preview
-    And using OCS API version "<ocs_api_version>"
+    Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "PARENT"
     And user "Alice" has created folder "PARENT/CHILD"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/parent.txt"
@@ -542,8 +539,7 @@ Feature: update a public link share
       | 2               | 200             |
 
   Scenario Outline: Updating share permissions from read to change allows public to delete files using the new public API
-    Given the administrator has enabled DAV tech_preview
-    And using OCS API version "<ocs_api_version>"
+    Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "PARENT"
     And user "Alice" has created folder "PARENT/CHILD"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/parent.txt"

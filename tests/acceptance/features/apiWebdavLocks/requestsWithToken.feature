@@ -85,8 +85,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
 
   @files_sharing-app-required
   Scenario Outline: public cannot overwrite a file in a folder locked by the owner even when sending the locktoken
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has created folder "PARENT"
+    Given user "Alice" has created folder "PARENT"
     And user "Alice" has uploaded file with content "ownCloud test text file parent" to "PARENT/parent.txt"
     And user "Alice" has created a public link share of folder "PARENT" with change permission
     And user "Alice" has locked folder "PARENT" setting the following properties

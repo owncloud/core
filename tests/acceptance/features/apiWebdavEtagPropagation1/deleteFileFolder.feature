@@ -191,8 +191,7 @@ Feature: propagation of etags when deleting a file or folder
 
   @skipOnOcis-OC-Storage @issue-product-280
   Scenario: deleting a file in a publicly shared folder changes its etag for the sharer
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has uploaded file with content "uploaded content" to "/upload/file.txt"
+    Given user "Alice" has uploaded file with content "uploaded content" to "/upload/file.txt"
     And user "Alice" has created a public link share with settings
       | path        | upload |
       | permissions | change |
@@ -206,8 +205,7 @@ Feature: propagation of etags when deleting a file or folder
 
   @skipOnOcis-OC-Storage @issue-product-280
   Scenario: deleting a folder in a publicly shared folder changes its etag for the sharer
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has created folder "/upload/sub"
+    Given user "Alice" has created folder "/upload/sub"
     And user "Alice" has created a public link share with settings
       | path        | upload |
       | permissions | change |

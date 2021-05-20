@@ -3,8 +3,7 @@
 Feature: persistent-locking in case of a public link
 
   Background:
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has been created with default attributes and without skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "PARENT"
     And user "Alice" has created folder "PARENT/CHILD"
     And user "Alice" has uploaded file with content "ownCloud test text file parent" to "PARENT/parent.txt"

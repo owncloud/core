@@ -4,7 +4,6 @@ Feature: copying from public link share
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/PARENT"
-    And the administrator has enabled DAV tech_preview
 
   @issue-ocis-reva-373 @issue-37683
   Scenario: Copy folder within a public link folder to the same folder name as an already existing file

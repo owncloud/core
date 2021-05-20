@@ -95,8 +95,7 @@ Feature: propagation of etags when copying files or folders
 
   @skipOnOcis-OC-Storage @issue-product-280
   Scenario Outline: copying a file inside a publicly shared folder by public changes etag for the sharer
-    Given the administrator has enabled DAV tech_preview
-    And using <dav_version> DAV path
+    Given using <dav_version> DAV path
     And user "Alice" has created folder "/upload"
     And user "Alice" has uploaded file with content "uploaded content" to "/upload/file.txt"
     And user "Alice" has created a public link share with settings

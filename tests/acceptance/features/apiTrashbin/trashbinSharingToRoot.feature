@@ -2,8 +2,7 @@
 Feature: using trashbin together with sharing
 
   Background:
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has been created with default attributes and without skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "to delete" to "/textfile0.txt"
 
   @smokeTest

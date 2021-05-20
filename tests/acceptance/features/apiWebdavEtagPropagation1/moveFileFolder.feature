@@ -316,8 +316,7 @@ Feature: propagation of etags when moving files or folders
 
 
   Scenario: renaming a file in a publicly shared folder changes its etag for the sharer
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has created folder "/upload"
+    Given user "Alice" has created folder "/upload"
     And user "Alice" has uploaded file with content "uploaded content" to "/upload/file.txt"
     And user "Alice" has created a public link share with settings
       | path        | upload |
@@ -332,8 +331,7 @@ Feature: propagation of etags when moving files or folders
 
 
   Scenario: renaming a folder in a publicly shared folder changes its etag for the sharer
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has created folder "/upload"
+    Given user "Alice" has created folder "/upload"
     And user "Alice" has created folder "/upload/sub"
     And user "Alice" has created a public link share with settings
       | path        | upload |

@@ -5,8 +5,7 @@ Feature: Restore deleted files/folders
   So that I can recover accidentally deleted files/folders in ownCloud
 
   Background:
-    Given the administrator has enabled DAV tech_preview
-    And user "Alice" has been created with default attributes and without skeleton files
+    Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "file to delete" to "/textfile0.txt"
 
   @issue-35900 @files_sharing-app-required

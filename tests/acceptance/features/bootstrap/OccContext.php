@@ -59,8 +59,10 @@ class OccContext implements Context {
 	private $lastDeletedJobId;
 
 	/**
-	 * ToDo: remove all the tech_preview test code after official release of
-	 *       10.4 and we no longer need to test against 10.3.* as "latest"
+	 * The code to manage dav.enable.tech_preview was used in 10.4/10.3
+	 * The use of the steps to enable/disable it has been removed from the
+	 * feature files. But the infrastructure has been left here, as a similar
+	 * thing might likely happen in the future.
 	 *
 	 * @var boolean
 	 */
