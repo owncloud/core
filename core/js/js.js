@@ -1460,7 +1460,7 @@ function initCore() {
 
 	if ($('#body-login .v-align').length > 0 ) {
 		$('#body-login .v-align').fadeIn(600);
-		setTimeout(() => {
+		setTimeout(function () {
 			$('#body-login footer *').addClass('show');
 		}, 250);
 	}
