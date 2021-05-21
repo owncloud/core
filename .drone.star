@@ -273,6 +273,15 @@ config = {
 			'runAllSuites': True,
 			'numberOfParts': 8,
 		},
+		'apiOnSqlite': {
+			'suites': {
+				'apiOnSqlite': 'apiOnSqlite',
+			},
+			'databases': ['sqlite'],
+			'useHttps': False,
+			'filterTags': '@sqliteDB',
+			'runAllSuites': True,
+		}
 	}
 }
 
