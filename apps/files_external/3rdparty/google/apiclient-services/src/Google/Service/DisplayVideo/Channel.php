@@ -21,7 +21,9 @@ class Google_Service_DisplayVideo_Channel extends Google_Model
   public $channelId;
   public $displayName;
   public $name;
+  public $negativelyTargetedLineItemCount;
   public $partnerId;
+  public $positivelyTargetedLineItemCount;
 
   public function setAdvertiserId($advertiserId)
   {
@@ -55,6 +57,14 @@ class Google_Service_DisplayVideo_Channel extends Google_Model
   {
     return $this->name;
   }
+  public function setNegativelyTargetedLineItemCount($negativelyTargetedLineItemCount)
+  {
+    $this->negativelyTargetedLineItemCount = $negativelyTargetedLineItemCount;
+  }
+  public function getNegativelyTargetedLineItemCount()
+  {
+    return $this->negativelyTargetedLineItemCount;
+  }
   public function setPartnerId($partnerId)
   {
     $this->partnerId = $partnerId;
@@ -62,5 +72,13 @@ class Google_Service_DisplayVideo_Channel extends Google_Model
   public function getPartnerId()
   {
     return $this->partnerId;
+  }
+  public function setPositivelyTargetedLineItemCount($positivelyTargetedLineItemCount)
+  {
+    $this->positivelyTargetedLineItemCount = $positivelyTargetedLineItemCount;
+  }
+  public function getPositivelyTargetedLineItemCount()
+  {
+    return $this->positivelyTargetedLineItemCount;
   }
 }

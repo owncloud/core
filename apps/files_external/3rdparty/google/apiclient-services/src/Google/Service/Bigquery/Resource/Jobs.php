@@ -46,6 +46,26 @@ class Google_Service_Bigquery_Resource_Jobs extends Google_Service_Resource
     return $this->call('cancel', array($params), "Google_Service_Bigquery_JobCancelResponse");
   }
   /**
+   * Requests that a job is deleted. This call will return when the job is
+   * deleted. This method is available in limited preview. (jobs.delete)
+   *
+   * @param string $projectId Required. Project ID of the job to be deleted.
+   * @param string $jobId Required. Job ID of the job to be deleted. If this is a
+   * parent job which has child jobs, all child jobs will be deleted as well.
+   * Deletion of child jobs directly is not allowed.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string location The geographic location of the job. Required. See
+   * details at:
+   * https://cloud.google.com/bigquery/docs/locations#specifying_your_location.
+   */
+  public function delete($projectId, $jobId, $optParams = array())
+  {
+    $params = array('projectId' => $projectId, 'jobId' => $jobId);
+    $params = array_merge($params, $optParams);
+    return $this->call('delete', array($params));
+  }
+  /**
    * Returns information about a specific job. Job information is available for a
    * six month period after creation. Requires that you're the person who ran the
    * job, or have the Is Owner project role. (jobs.get)

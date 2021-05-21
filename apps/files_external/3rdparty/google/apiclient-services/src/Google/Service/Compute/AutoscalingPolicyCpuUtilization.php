@@ -17,8 +17,17 @@
 
 class Google_Service_Compute_AutoscalingPolicyCpuUtilization extends Google_Model
 {
+  public $predictiveMethod;
   public $utilizationTarget;
 
+  public function setPredictiveMethod($predictiveMethod)
+  {
+    $this->predictiveMethod = $predictiveMethod;
+  }
+  public function getPredictiveMethod()
+  {
+    return $this->predictiveMethod;
+  }
   public function setUtilizationTarget($utilizationTarget)
   {
     $this->utilizationTarget = $utilizationTarget;

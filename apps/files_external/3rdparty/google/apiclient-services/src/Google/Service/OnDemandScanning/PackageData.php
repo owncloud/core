@@ -21,6 +21,7 @@ class Google_Service_OnDemandScanning_PackageData extends Google_Model
   public $os;
   public $osVersion;
   public $package;
+  public $unused;
   public $version;
 
   public function setCpeUri($cpeUri)
@@ -54,6 +55,14 @@ class Google_Service_OnDemandScanning_PackageData extends Google_Model
   public function getPackage()
   {
     return $this->package;
+  }
+  public function setUnused($unused)
+  {
+    $this->unused = $unused;
+  }
+  public function getUnused()
+  {
+    return $this->unused;
   }
   public function setVersion($version)
   {

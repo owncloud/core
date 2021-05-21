@@ -19,6 +19,7 @@ class Google_Service_ShoppingContent_CarriersCarrier extends Google_Collection
 {
   protected $collection_key = 'services';
   public $country;
+  public $eddServices;
   public $name;
   public $services;
 
@@ -29,6 +30,14 @@ class Google_Service_ShoppingContent_CarriersCarrier extends Google_Collection
   public function getCountry()
   {
     return $this->country;
+  }
+  public function setEddServices($eddServices)
+  {
+    $this->eddServices = $eddServices;
+  }
+  public function getEddServices()
+  {
+    return $this->eddServices;
   }
   public function setName($name)
   {

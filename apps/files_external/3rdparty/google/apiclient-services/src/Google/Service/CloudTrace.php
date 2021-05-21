@@ -34,7 +34,7 @@
  */
 class Google_Service_CloudTrace extends Google_Service
 {
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
   /** Write Trace data for a project or application. */

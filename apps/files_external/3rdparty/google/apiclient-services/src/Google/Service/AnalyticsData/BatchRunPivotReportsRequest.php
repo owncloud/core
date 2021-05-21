@@ -18,25 +18,9 @@
 class Google_Service_AnalyticsData_BatchRunPivotReportsRequest extends Google_Collection
 {
   protected $collection_key = 'requests';
-  protected $entityType = 'Google_Service_AnalyticsData_Entity';
-  protected $entityDataType = '';
   protected $requestsType = 'Google_Service_AnalyticsData_RunPivotReportRequest';
   protected $requestsDataType = 'array';
 
-  /**
-   * @param Google_Service_AnalyticsData_Entity
-   */
-  public function setEntity(Google_Service_AnalyticsData_Entity $entity)
-  {
-    $this->entity = $entity;
-  }
-  /**
-   * @return Google_Service_AnalyticsData_Entity
-   */
-  public function getEntity()
-  {
-    return $this->entity;
-  }
   /**
    * @param Google_Service_AnalyticsData_RunPivotReportRequest[]
    */

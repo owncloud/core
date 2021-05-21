@@ -26,6 +26,47 @@
 class Google_Service_DisplayVideo_Resource_AdvertisersCampaigns extends Google_Service_Resource
 {
   /**
+   * Lists assigned targeting options of a campaign across targeting types.
+   * (campaigns.bulkListCampaignAssignedTargetingOptions)
+   *
+   * @param string $advertiserId Required. The ID of the advertiser the campaign
+   * belongs to.
+   * @param string $campaignId Required. The ID of the campaign to list assigned
+   * targeting options for.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string filter Allows filtering by assigned targeting option
+   * properties. Supported syntax: * Filter expressions are made up of one or more
+   * restrictions. * Restrictions can be combined by the logical operator `OR` on
+   * the same field. * A restriction has the form of `{field} {operator} {value}`.
+   * * The operator must be `EQUALS (=)`. * Supported fields: - `targetingType` -
+   * `inheritance` Examples: * AssignedTargetingOptions of targeting type
+   * TARGETING_TYPE_LANGUAGE or TARGETING_TYPE_GENDER
+   * `targetingType="TARGETING_TYPE_LANGUAGE" OR
+   * targetingType="TARGETING_TYPE_GENDER"` * AssignedTargetingOptions with
+   * inheritance status of NOT_INHERITED or INHERITED_FROM_PARTNER
+   * `inheritance="NOT_INHERITED" OR inheritance="INHERITED_FROM_PARTNER"` The
+   * length of this field should be no more than 500 characters.
+   * @opt_param string orderBy Field by which to sort the list. Acceptable values
+   * are: * `targetingType` (default) The default sorting order is ascending. To
+   * specify descending order for a field, a suffix "desc" should be added to the
+   * field name. Example: `targetingType desc`.
+   * @opt_param int pageSize Requested page size. The size must be an integer
+   * between `1` and `5000`. If unspecified, the default is `5000`. Returns error
+   * code `INVALID_ARGUMENT` if an invalid value is specified.
+   * @opt_param string pageToken A token that lets the client fetch the next page
+   * of results. Typically, this is the value of next_page_token returned from the
+   * previous call to `BulkListCampaignAssignedTargetingOptions` method. If not
+   * specified, the first page of results will be returned.
+   * @return Google_Service_DisplayVideo_BulkListCampaignAssignedTargetingOptionsResponse
+   */
+  public function bulkListCampaignAssignedTargetingOptions($advertiserId, $campaignId, $optParams = array())
+  {
+    $params = array('advertiserId' => $advertiserId, 'campaignId' => $campaignId);
+    $params = array_merge($params, $optParams);
+    return $this->call('bulkListCampaignAssignedTargetingOptions', array($params), "Google_Service_DisplayVideo_BulkListCampaignAssignedTargetingOptionsResponse");
+  }
+  /**
    * Creates a new campaign. Returns the newly created campaign if successful.
    * (campaigns.create)
    *

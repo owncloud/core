@@ -27,6 +27,8 @@ class Google_Service_Dataproc_ClusterConfig extends Google_Collection
   protected $endpointConfigDataType = '';
   protected $gceClusterConfigType = 'Google_Service_Dataproc_GceClusterConfig';
   protected $gceClusterConfigDataType = '';
+  protected $gkeClusterConfigType = 'Google_Service_Dataproc_GkeClusterConfig';
+  protected $gkeClusterConfigDataType = '';
   protected $initializationActionsType = 'Google_Service_Dataproc_NodeInitializationAction';
   protected $initializationActionsDataType = 'array';
   protected $lifecycleConfigType = 'Google_Service_Dataproc_LifecycleConfig';
@@ -108,6 +110,20 @@ class Google_Service_Dataproc_ClusterConfig extends Google_Collection
   public function getGceClusterConfig()
   {
     return $this->gceClusterConfig;
+  }
+  /**
+   * @param Google_Service_Dataproc_GkeClusterConfig
+   */
+  public function setGkeClusterConfig(Google_Service_Dataproc_GkeClusterConfig $gkeClusterConfig)
+  {
+    $this->gkeClusterConfig = $gkeClusterConfig;
+  }
+  /**
+   * @return Google_Service_Dataproc_GkeClusterConfig
+   */
+  public function getGkeClusterConfig()
+  {
+    return $this->gkeClusterConfig;
   }
   /**
    * @param Google_Service_Dataproc_NodeInitializationAction[]

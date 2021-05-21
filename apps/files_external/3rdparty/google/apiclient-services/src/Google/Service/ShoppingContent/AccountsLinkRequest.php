@@ -21,6 +21,8 @@ class Google_Service_ShoppingContent_AccountsLinkRequest extends Google_Collecti
   public $action;
   public $linkType;
   public $linkedAccountId;
+  protected $paymentServiceProviderLinkInfoType = 'Google_Service_ShoppingContent_PaymentServiceProviderLinkInfo';
+  protected $paymentServiceProviderLinkInfoDataType = '';
   public $services;
 
   public function setAction($action)
@@ -46,6 +48,20 @@ class Google_Service_ShoppingContent_AccountsLinkRequest extends Google_Collecti
   public function getLinkedAccountId()
   {
     return $this->linkedAccountId;
+  }
+  /**
+   * @param Google_Service_ShoppingContent_PaymentServiceProviderLinkInfo
+   */
+  public function setPaymentServiceProviderLinkInfo(Google_Service_ShoppingContent_PaymentServiceProviderLinkInfo $paymentServiceProviderLinkInfo)
+  {
+    $this->paymentServiceProviderLinkInfo = $paymentServiceProviderLinkInfo;
+  }
+  /**
+   * @return Google_Service_ShoppingContent_PaymentServiceProviderLinkInfo
+   */
+  public function getPaymentServiceProviderLinkInfo()
+  {
+    return $this->paymentServiceProviderLinkInfo;
   }
   public function setServices($services)
   {

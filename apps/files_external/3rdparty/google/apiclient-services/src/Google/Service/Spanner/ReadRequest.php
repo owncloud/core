@@ -24,6 +24,8 @@ class Google_Service_Spanner_ReadRequest extends Google_Collection
   protected $keySetDataType = '';
   public $limit;
   public $partitionToken;
+  protected $requestOptionsType = 'Google_Service_Spanner_RequestOptions';
+  protected $requestOptionsDataType = '';
   public $resumeToken;
   public $table;
   protected $transactionType = 'Google_Service_Spanner_TransactionSelector';
@@ -74,6 +76,20 @@ class Google_Service_Spanner_ReadRequest extends Google_Collection
   public function getPartitionToken()
   {
     return $this->partitionToken;
+  }
+  /**
+   * @param Google_Service_Spanner_RequestOptions
+   */
+  public function setRequestOptions(Google_Service_Spanner_RequestOptions $requestOptions)
+  {
+    $this->requestOptions = $requestOptions;
+  }
+  /**
+   * @return Google_Service_Spanner_RequestOptions
+   */
+  public function getRequestOptions()
+  {
+    return $this->requestOptions;
   }
   public function setResumeToken($resumeToken)
   {

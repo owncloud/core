@@ -31,9 +31,9 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsEventSt
    * only by the Recommendations AI JavaScript pixel. Users should not call this
    * method directly. (userEvents.collect)
    *
-   * @param string $parent Required. The parent eventStore name, such as "projects
+   * @param string $parent Required. The parent eventStore name, such as `projects
    * /1234/locations/global/catalogs/default_catalog/eventStores/default_event_sto
-   * re".
+   * re`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string ets Optional. The event timestamp in milliseconds. This
@@ -60,8 +60,8 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsEventSt
    * possible for a subset of the items to be successfully inserted.
    * Operation.metadata is of type ImportMetadata. (userEvents.import)
    *
-   * @param string $parent Required. "projects/1234/locations/global/catalogs/defa
-   * ult_catalog/eventStores/default_event_store"
+   * @param string $parent Required. `projects/1234/locations/global/catalogs/defa
+   * ult_catalog/eventStores/default_event_store`
    * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1ImportUserEventsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_RecommendationsAI_GoogleLongrunningOperation
@@ -82,7 +82,7 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsEventSt
    * event. (userEvents.listProjectsLocationsCatalogsEventStoresUserEvents)
    *
    * @param string $parent Required. The parent eventStore resource name, such as
-   * "projects/locations/catalogs/default_catalog/eventStores/default_event_store"
+   * `projects/locations/catalogs/default_catalog/eventStores/default_event_store`
    * .
    * @param array $optParams Optional parameters.
    *
@@ -126,8 +126,8 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsEventSt
    * first. (userEvents.purge)
    *
    * @param string $parent Required. The resource name of the event_store under
-   * which the events are created. The format is "projects/${projectId}/locations/
-   * global/catalogs/${catalogId}/eventStores/${eventStoreId}"
+   * which the events are created. The format is `projects/${projectId}/locations/
+   * global/catalogs/${catalogId}/eventStores/${eventStoreId}`
    * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1PurgeUserEventsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_RecommendationsAI_GoogleLongrunningOperation
@@ -147,8 +147,8 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsEventSt
    * catalog items. It can also be used to correct events joined with wrong
    * catalog items. (userEvents.rejoin)
    *
-   * @param string $parent Required. Full resource name of user event, such as "pr
-   * ojects/locations/catalogs/default_catalog/eventStores/default_event_store".
+   * @param string $parent Required. Full resource name of user event, such as `pr
+   * ojects/locations/catalogs/default_catalog/eventStores/default_event_store`.
    * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1RejoinUserEventsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_RecommendationsAI_GoogleLongrunningOperation

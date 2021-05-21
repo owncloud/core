@@ -27,6 +27,7 @@ class Google_Service_AIPlatformNotebooks_ExecutionTemplate extends Google_Model
   public $parameters;
   public $paramsYamlFile;
   public $scaleTier;
+  public $serviceAccount;
 
   /**
    * @param Google_Service_AIPlatformNotebooks_SchedulerAcceleratorConfig
@@ -105,5 +106,13 @@ class Google_Service_AIPlatformNotebooks_ExecutionTemplate extends Google_Model
   public function getScaleTier()
   {
     return $this->scaleTier;
+  }
+  public function setServiceAccount($serviceAccount)
+  {
+    $this->serviceAccount = $serviceAccount;
+  }
+  public function getServiceAccount()
+  {
+    return $this->serviceAccount;
   }
 }

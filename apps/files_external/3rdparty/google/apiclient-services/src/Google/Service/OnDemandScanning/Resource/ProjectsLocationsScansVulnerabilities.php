@@ -37,12 +37,12 @@ class Google_Service_OnDemandScanning_Resource_ProjectsLocationsScansVulnerabili
    * @opt_param int pageSize The number of vulnerabilities to retrieve.
    * @opt_param string pageToken The page token, resulting from a previous call to
    * ListVulnerabilities.
-   * @return Google_Service_OnDemandScanning_ListVulnerabilitiesResponse
+   * @return Google_Service_OnDemandScanning_ListVulnerabilitiesResponseV1
    */
   public function listProjectsLocationsScansVulnerabilities($parent, $optParams = array())
   {
     $params = array('parent' => $parent);
     $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_OnDemandScanning_ListVulnerabilitiesResponse");
+    return $this->call('list', array($params), "Google_Service_OnDemandScanning_ListVulnerabilitiesResponseV1");
   }
 }

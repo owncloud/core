@@ -35,10 +35,8 @@ class Google_Service_DoubleClickBidManager extends Google_Service
   const DOUBLECLICKBIDMANAGER =
       "https://www.googleapis.com/auth/doubleclickbidmanager";
 
-  public $lineitems;
   public $queries;
   public $reports;
-  public $sdf;
 
   /**
    * Constructs the internal representation of the DoubleClickBidManager
@@ -56,24 +54,6 @@ class Google_Service_DoubleClickBidManager extends Google_Service
     $this->version = 'v1.1';
     $this->serviceName = 'doubleclickbidmanager';
 
-    $this->lineitems = new Google_Service_DoubleClickBidManager_Resource_Lineitems(
-        $this,
-        $this->serviceName,
-        'lineitems',
-        array(
-          'methods' => array(
-            'downloadlineitems' => array(
-              'path' => 'lineitems/downloadlineitems',
-              'httpMethod' => 'POST',
-              'parameters' => array(),
-            ),'uploadlineitems' => array(
-              'path' => 'lineitems/uploadlineitems',
-              'httpMethod' => 'POST',
-              'parameters' => array(),
-            ),
-          )
-        )
-    );
     $this->queries = new Google_Service_DoubleClickBidManager_Resource_Queries(
         $this,
         $this->serviceName,
@@ -164,20 +144,6 @@ class Google_Service_DoubleClickBidManager extends Google_Service
                   'type' => 'string',
                 ),
               ),
-            ),
-          )
-        )
-    );
-    $this->sdf = new Google_Service_DoubleClickBidManager_Resource_Sdf(
-        $this,
-        $this->serviceName,
-        'sdf',
-        array(
-          'methods' => array(
-            'download' => array(
-              'path' => 'sdf/download',
-              'httpMethod' => 'POST',
-              'parameters' => array(),
             ),
           )
         )

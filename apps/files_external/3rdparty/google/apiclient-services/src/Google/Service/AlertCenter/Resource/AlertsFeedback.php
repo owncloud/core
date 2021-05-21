@@ -33,19 +33,19 @@ class Google_Service_AlertCenter_Resource_AlertsFeedback extends Google_Service_
    *
    * @param string $alertId Required. The identifier of the alert this feedback
    * belongs to.
-   * @param Google_Service_AlertCenter_AlertFeedback $postBody
+   * @param Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1AlertFeedback $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string customerId Optional. The unique identifier of the Google
    * Workspace organization account of the customer the alert is associated with.
    * Inferred from the caller identity if not provided.
-   * @return Google_Service_AlertCenter_AlertFeedback
+   * @return Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1AlertFeedback
    */
-  public function create($alertId, Google_Service_AlertCenter_AlertFeedback $postBody, $optParams = array())
+  public function create($alertId, Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1AlertFeedback $postBody, $optParams = array())
   {
     $params = array('alertId' => $alertId, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
-    return $this->call('create', array($params), "Google_Service_AlertCenter_AlertFeedback");
+    return $this->call('create', array($params), "Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1AlertFeedback");
   }
   /**
    * Lists all the feedback for an alert. Attempting to list feedbacks for a non-
@@ -62,12 +62,12 @@ class Google_Service_AlertCenter_Resource_AlertsFeedback extends Google_Service_
    * feedback results. For more details, see [Query filters](/admin-
    * sdk/alertcenter/guides/query-filters) and [Supported query filter fields
    * ](/admin-sdk/alertcenter/reference/filter-fields#alerts.feedback.list).
-   * @return Google_Service_AlertCenter_ListAlertFeedbackResponse
+   * @return Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1ListAlertFeedbackResponse
    */
   public function listAlertsFeedback($alertId, $optParams = array())
   {
     $params = array('alertId' => $alertId);
     $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_AlertCenter_ListAlertFeedbackResponse");
+    return $this->call('list', array($params), "Google_Service_AlertCenter_GoogleAppsAlertcenterV1beta1ListAlertFeedbackResponse");
   }
 }

@@ -33,7 +33,7 @@ class Google_Service_Slides extends Google_Service
   /** See, edit, create, and delete all of your Google Drive files. */
   const DRIVE =
       "https://www.googleapis.com/auth/drive";
-  /** View and manage Google Drive files and folders that you have opened or created with this app. */
+  /** See, edit, create, and delete only the specific Google Drive files you use with this app. */
   const DRIVE_FILE =
       "https://www.googleapis.com/auth/drive.file";
   /** See and download all your Google Drive files. */

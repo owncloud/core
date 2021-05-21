@@ -26,11 +26,11 @@
 class Google_Service_CloudResourceManager_Resource_Projects extends Google_Service_Resource
 {
   /**
-   * Request that a new Project be created. The result is an Operation which can
+   * Request that a new project be created. The result is an `Operation` which can
    * be used to track the creation process. This process usually takes a few
-   * seconds, but can sometimes take much longer. The tracking Operation is
+   * seconds, but can sometimes take much longer. The tracking `Operation` is
    * automatically deleted after a few hours, so there is no need to call
-   * DeleteOperation. (projects.create)
+   * `DeleteOperation`. (projects.create)
    *
    * @param Google_Service_CloudResourceManager_Project $postBody
    * @param array $optParams Optional parameters.
@@ -43,18 +43,19 @@ class Google_Service_CloudResourceManager_Resource_Projects extends Google_Servi
     return $this->call('create', array($params), "Google_Service_CloudResourceManager_Operation");
   }
   /**
-   * Marks the Project identified by the specified `name` (for example,
+   * Marks the project identified by the specified `name` (for example,
    * `projects/415104041262`) for deletion. This method will only affect the
-   * Project if it has a lifecycle state of ACTIVE. This method changes the
+   * project if it has a lifecycle state of ACTIVE. This method changes the
    * Project's lifecycle state from ACTIVE to DELETE_REQUESTED. The deletion
    * starts at an unspecified time, at which point the Project is no longer
    * accessible. Until the deletion completes, you can check the lifecycle state
-   * checked by retrieving the Project with GetProject, and the Project remains
+   * checked by retrieving the project with GetProject, and the project remains
    * visible to ListProjects. However, you cannot update the project. After the
-   * deletion completes, the Project is not retrievable by the GetProject,
-   * ListProjects, and SearchProjects methods. This method behaves idempotently
-   * (eg., deleting a `DELETE_REQUESTED` project will not be an error, but also
-   * won't do anything). The caller must have delete permissions for this Project.
+   * deletion completes, the project is not retrievable by the GetProject,
+   * ListProjects, and SearchProjects methods. This method behaves idempotently,
+   * such that deleting a `DELETE_REQUESTED` project will not cause an error, but
+   * also won't do anything. The caller must have
+   * `resourcemanager.projects.delete` permissions for this project.
    * (projects.delete)
    *
    * @param string $name Required. The name of the Project (for example,
@@ -69,9 +70,9 @@ class Google_Service_CloudResourceManager_Resource_Projects extends Google_Servi
     return $this->call('delete', array($params), "Google_Service_CloudResourceManager_Operation");
   }
   /**
-   * Retrieves the Project identified by the specified `name` (for example,
-   * `projects/415104041262`). The caller must have read permissions for this
-   * Project. (projects.get)
+   * Retrieves the project identified by the specified `name` (for example,
+   * `projects/415104041262`). The caller must have `resourcemanager.projects.get`
+   * permission for this project. (projects.get)
    *
    * @param string $name Required. The name of the project (for example,
    * `projects/415104041262`).
@@ -85,9 +86,8 @@ class Google_Service_CloudResourceManager_Resource_Projects extends Google_Servi
     return $this->call('get', array($params), "Google_Service_CloudResourceManager_Project");
   }
   /**
-   * Returns the IAM access control policy for the specified Project. Permission
-   * is denied if the policy or the resource does not exist.
-   * (projects.getIamPolicy)
+   * Returns the IAM access control policy for the specified project. Permission
+   * is denied if the policy or the resource do not exist. (projects.getIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * requested. See the operation documentation for the appropriate value for this
@@ -103,17 +103,17 @@ class Google_Service_CloudResourceManager_Resource_Projects extends Google_Servi
     return $this->call('getIamPolicy', array($params), "Google_Service_CloudResourceManager_Policy");
   }
   /**
-   * Lists Projects that are direct children of the specified folder or
-   * organization resource. List provides a strongly consistent view of the
-   * Projects underneath the specified parent resource. List returns Projects
+   * Lists projects that are direct children of the specified folder or
+   * organization resource. `list()` provides a strongly consistent view of the
+   * projects underneath the specified parent resource. `list()` returns projects
    * sorted based upon the (ascending) lexical ordering of their `display_name`.
    * The caller must have `resourcemanager.projects.list` permission on the
    * identified parent. (projects.listProjects)
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Optional. The maximum number of Projects to return in
-   * the response. The server can return fewer Projects than requested. If
+   * @opt_param int pageSize Optional. The maximum number of projects to return in
+   * the response. The server can return fewer projects than requested. If
    * unspecified, server picks an appropriate default.
    * @opt_param string pageToken Optional. A pagination token returned from a
    * previous call to ListProjects that indicates from where listing should
@@ -121,7 +121,7 @@ class Google_Service_CloudResourceManager_Resource_Projects extends Google_Servi
    * @opt_param string parent Required. The name of the parent resource to list
    * projects under. For example, setting this field to 'folders/1234' would list
    * all projects directly under that folder.
-   * @opt_param bool showDeleted Optional. Indicate that Projects in the
+   * @opt_param bool showDeleted Optional. Indicate that projects in the
    * `DELETE_REQUESTED` state should also be returned. Normally only `ACTIVE`
    * projects are returned.
    * @return Google_Service_CloudResourceManager_ListProjectsResponse
@@ -133,12 +133,16 @@ class Google_Service_CloudResourceManager_Resource_Projects extends Google_Servi
     return $this->call('list', array($params), "Google_Service_CloudResourceManager_ListProjectsResponse");
   }
   /**
-   * Move a Project under a new resource parent. Returns an operation which can be
-   * used to track the process of the Project move workflow. Upon success, the
-   * Operation.response field will be populated with the moved Project. The caller
-   * must have `resourcemanager.projects.update` permission on the Project and
-   * have `resourcemanager.projects.move` permission on the Project's current and
-   * proposed new parent.  (projects.move)
+   * Move a project to another place in your resource hierarchy, under a new
+   * resource parent. Returns an operation which can be used to track the process
+   * of the project move workflow. Upon success, the `Operation.response` field
+   * will be populated with the moved project. The caller must have
+   * `resourcemanager.projects.update` permission on the project and have
+   * `resourcemanager.projects.move` permission on the project's current and
+   * proposed new parent. If project has no current parent, or it currently does
+   * not have an associated organization resource, you will also need the
+   * `resourcemanager.projects.setIamPolicy` permission in the project.
+   * (projects.move)
    *
    * @param string $name Required. The name of the project to move.
    * @param Google_Service_CloudResourceManager_MoveProjectRequest $postBody
@@ -152,13 +156,13 @@ class Google_Service_CloudResourceManager_Resource_Projects extends Google_Servi
     return $this->call('move', array($params), "Google_Service_CloudResourceManager_Operation");
   }
   /**
-   * Updates the attributes of the Project identified by the specified `name` (for
-   * example, `projects/415104041262`). At present this is only useful for
-   * updating the display_name and labels. Deleting all labels requires an update
-   * mask for labels field. The caller must have modify permissions for this
-   * Project. (projects.patch)
+   * Updates the `display_name` and labels of the project identified by the
+   * specified `name` (for example, `projects/415104041262`). Deleting all labels
+   * requires an update mask for labels field. The caller must have
+   * `resourcemanager.projects.update` permission for this project.
+   * (projects.patch)
    *
-   * @param string $name Output only. The unique resource name of the Project. It
+   * @param string $name Output only. The unique resource name of the project. It
    * is an int64 generated number prefixed by "projects/". Example:
    * `projects/415104041262`
    * @param Google_Service_CloudResourceManager_Project $postBody
@@ -175,18 +179,18 @@ class Google_Service_CloudResourceManager_Resource_Projects extends Google_Servi
     return $this->call('patch', array($params), "Google_Service_CloudResourceManager_Operation");
   }
   /**
-   * Search for Projects that the caller has the `resourcemanager.projects.get`
-   * permission on and satisfy the specified query. This method returns Projects
-   * in an unspecified order. This method is eventually consistent with project
-   * mutations; this means that a newly created project may not appear in the
-   * results or recent updates to an existing project may not be reflected in the
-   * results. To retrieve the latest state of a project, use the GetProject
+   * Search for projects that the caller has both `resourcemanager.projects.get`
+   * permission on, and also satisfy the specified query. This method returns
+   * projects in an unspecified order. This method is eventually consistent with
+   * project mutations; this means that a newly created project may not appear in
+   * the results or recent updates to an existing project may not be reflected in
+   * the results. To retrieve the latest state of a project, use the GetProject
    * method. (projects.search)
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Optional. The maximum number of Projects to return in
-   * the response. The server can return fewer Projects than requested. If
+   * @opt_param int pageSize Optional. The maximum number of projects to return in
+   * the response. The server can return fewer projects than requested. If
    * unspecified, server picks an appropriate default.
    * @opt_param string pageToken Optional. A pagination token returned from a
    * previous call to ListProjects that indicates from where listing should
@@ -196,21 +200,21 @@ class Google_Service_CloudResourceManager_Resource_Projects extends Google_Servi
    * fields are included in the query, the it will return results that match any
    * of the fields. Some eligible fields are: | Field | Description |
    * |-------------------------|----------------------------------------------| |
-   * displayName, name | Filters by displayName. | | parent.type | Parent's type:
-   * `folder` or `organization`. | | parent.id | Parent's id number (e.g. 123) | |
-   * parent | Project's parent. (e.g. folders/123, organizations) Prefer parent
-   * field over parent.id and parent.type. | | id, projectId | Filters by
-   * projectId. | | state, lifecycleState | Filters by state. | | labels | Filters
-   * by label name or value. | | labels. (where *key* is the name of a label) |
-   * Filters by label name. | Search expressions are case insensitive. Some
-   * examples queries: | Query | Description |
+   * displayName, name | Filters by displayName. | | parent | Project's parent
+   * (for example: folders/123, organizations). Prefer parent field over
+   * parent.type and parent.id.| | parent.type | Parent's type: `folder` or
+   * `organization`. | | parent.id | Parent's id number (for example: 123) | | id,
+   * projectId | Filters by projectId. | | state, lifecycleState | Filters by
+   * state. | | labels | Filters by label name or value. | | labels.\ (where *key*
+   * is the name of a label) | Filters by label name.| Search expressions are case
+   * insensitive. Some examples queries: | Query | Description |
    * |------------------|-----------------------------------------------------| |
    * name:how* | The project's name starts with "how". | | name:Howl | The
    * project's name is `Howl` or `howl`. | | name:HOWL | Equivalent to above. | |
    * NAME:howl | Equivalent to above. | | labels.color:* | The project has the
    * label `color`. | | labels.color:red | The project's label `color` has the
    * value `red`. | | labels.color:red labels.size:big | The project's label
-   * `color` has the value `red` and its label `size` has the value `big`. | If no
+   * `color` has the value `red` and its label `size` has the value `big`.| If no
    * query is specified, the call will return projects for which the user has the
    * `resourcemanager.projects.get` permission.
    * @return Google_Service_CloudResourceManager_SearchProjectsResponse
@@ -222,9 +226,9 @@ class Google_Service_CloudResourceManager_Resource_Projects extends Google_Servi
     return $this->call('search', array($params), "Google_Service_CloudResourceManager_SearchProjectsResponse");
   }
   /**
-   * Sets the IAM access control policy for the specified Project. CAUTION: This
+   * Sets the IAM access control policy for the specified project. CAUTION: This
    * method will replace the existing policy, and cannot be used to append
-   * additional IAM settings. NOTE: Removing service accounts from policies or
+   * additional IAM settings. Note: Removing service accounts from policies or
    * changing their roles can render services completely inoperable. It is
    * important to understand how the service account is being used before removing
    * or updating its roles. The following constraints apply when using
@@ -235,7 +239,7 @@ class Google_Service_CloudResourceManager_Resource_Projects extends Google_Servi
    * added as an owner to a project in the myownpersonaldomain.com organization,
    * but not the examplepetstore.com organization. + Service accounts can be made
    * owners of a project directly without any restrictions. However, to be added
-   * as an owner, a user must be invited via Cloud Platform console and must
+   * as an owner, a user must be invited using the Cloud Platform console and must
    * accept the invitation. + A user cannot be granted the owner role using
    * `setIamPolicy()`. The user must be granted the owner role using the Cloud
    * Platform Console and must explicitly accept the invitation. + Invitations to
@@ -265,7 +269,7 @@ class Google_Service_CloudResourceManager_Resource_Projects extends Google_Servi
     return $this->call('setIamPolicy', array($params), "Google_Service_CloudResourceManager_Policy");
   }
   /**
-   * Returns permissions that a caller has on the specified Project.
+   * Returns permissions that a caller has on the specified project.
    * (projects.testIamPermissions)
    *
    * @param string $resource REQUIRED: The resource for which the policy detail is
@@ -282,13 +286,13 @@ class Google_Service_CloudResourceManager_Resource_Projects extends Google_Servi
     return $this->call('testIamPermissions', array($params), "Google_Service_CloudResourceManager_TestIamPermissionsResponse");
   }
   /**
-   * Restores the Project identified by the specified `name` (for example,
-   * `projects/415104041262`). You can only use this method for a Project that has
-   * a lifecycle state of DELETE_REQUESTED. After deletion starts, the Project
-   * cannot be restored. The caller must have undelete permissions for this
-   * Project. (projects.undelete)
+   * Restores the project identified by the specified `name` (for example,
+   * `projects/415104041262`). You can only use this method for a project that has
+   * a lifecycle state of DELETE_REQUESTED. After deletion starts, the project
+   * cannot be restored. The caller must have `resourcemanager.projects.undelete`
+   * permission for this project. (projects.undelete)
    *
-   * @param string $name Required. The name of the Project (for example,
+   * @param string $name Required. The name of the project (for example,
    * `projects/415104041262`). Required.
    * @param Google_Service_CloudResourceManager_UndeleteProjectRequest $postBody
    * @param array $optParams Optional parameters.

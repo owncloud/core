@@ -36,6 +36,7 @@ class Google_Service_Cloudchannel extends Google_Service
 
   public $accounts;
   public $accounts_channelPartnerLinks;
+  public $accounts_channelPartnerLinks_customers;
   public $accounts_customers;
   public $accounts_customers_entitlements;
   public $accounts_offers;
@@ -196,6 +197,78 @@ class Google_Service_Cloudchannel extends Google_Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->accounts_channelPartnerLinks_customers = new Google_Service_Cloudchannel_Resource_AccountsChannelPartnerLinksCustomers(
+        $this,
+        $this->serviceName,
+        'customers',
+        array(
+          'methods' => array(
+            'create' => array(
+              'path' => 'v1/{+parent}/customers',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'delete' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'get' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'v1/{+parent}/customers',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),'patch' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'updateMask' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),
@@ -464,6 +537,16 @@ class Google_Service_Cloudchannel extends Google_Service
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+              ),
+            ),'lookupOffer' => array(
+              'path' => 'v1/{+entitlement}:lookupOffer',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'entitlement' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ),
               ),
             ),'startPaidService' => array(

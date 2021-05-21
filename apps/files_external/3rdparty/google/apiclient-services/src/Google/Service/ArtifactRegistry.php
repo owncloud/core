@@ -31,7 +31,7 @@
  */
 class Google_Service_ArtifactRegistry extends Google_Service
 {
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
   /** View your data across Google Cloud Platform services. */
@@ -39,6 +39,7 @@ class Google_Service_ArtifactRegistry extends Google_Service
       "https://www.googleapis.com/auth/cloud-platform.read-only";
 
   public $operations;
+  public $projects_locations_repositories;
   public $projects_locations_repositories_dockerImages;
 
   /**
@@ -103,6 +104,44 @@ class Google_Service_ArtifactRegistry extends Google_Service
                 'name' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->projects_locations_repositories = new Google_Service_ArtifactRegistry_Resource_ProjectsLocationsRepositories(
+        $this,
+        $this->serviceName,
+        'repositories',
+        array(
+          'methods' => array(
+            'get' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'v1/{+parent}/repositories',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ),
                 'pageSize' => array(
                   'location' => 'query',

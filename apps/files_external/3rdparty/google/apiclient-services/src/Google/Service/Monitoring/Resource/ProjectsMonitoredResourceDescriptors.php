@@ -47,8 +47,9 @@ class Google_Service_Monitoring_Resource_ProjectsMonitoredResourceDescriptors ex
    * not require a Workspace.
    * (monitoredResourceDescriptors.listProjectsMonitoredResourceDescriptors)
    *
-   * @param string $name Required. The project on which to execute the request.
-   * The format is: projects/[PROJECT_ID_OR_NUMBER]
+   * @param string $name Required. The project
+   * (https://cloud.google.com/monitoring/api/v3#project_name) on which to execute
+   * the request. The format is: projects/[PROJECT_ID_OR_NUMBER]
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter An optional filter

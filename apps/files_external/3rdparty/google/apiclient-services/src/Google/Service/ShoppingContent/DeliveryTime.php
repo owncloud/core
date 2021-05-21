@@ -17,7 +17,7 @@
 
 class Google_Service_ShoppingContent_DeliveryTime extends Google_Collection
 {
-  protected $collection_key = 'holidayCutoffs';
+  protected $collection_key = 'warehouseBasedDeliveryTimes';
   protected $cutoffTimeType = 'Google_Service_ShoppingContent_CutoffTime';
   protected $cutoffTimeDataType = '';
   protected $handlingBusinessDayConfigType = 'Google_Service_ShoppingContent_BusinessDayConfig';
@@ -32,6 +32,8 @@ class Google_Service_ShoppingContent_DeliveryTime extends Google_Collection
   protected $transitBusinessDayConfigDataType = '';
   protected $transitTimeTableType = 'Google_Service_ShoppingContent_TransitTable';
   protected $transitTimeTableDataType = '';
+  protected $warehouseBasedDeliveryTimesType = 'Google_Service_ShoppingContent_WarehouseBasedDeliveryTime';
+  protected $warehouseBasedDeliveryTimesDataType = 'array';
 
   /**
    * @param Google_Service_ShoppingContent_CutoffTime
@@ -134,5 +136,19 @@ class Google_Service_ShoppingContent_DeliveryTime extends Google_Collection
   public function getTransitTimeTable()
   {
     return $this->transitTimeTable;
+  }
+  /**
+   * @param Google_Service_ShoppingContent_WarehouseBasedDeliveryTime[]
+   */
+  public function setWarehouseBasedDeliveryTimes($warehouseBasedDeliveryTimes)
+  {
+    $this->warehouseBasedDeliveryTimes = $warehouseBasedDeliveryTimes;
+  }
+  /**
+   * @return Google_Service_ShoppingContent_WarehouseBasedDeliveryTime[]
+   */
+  public function getWarehouseBasedDeliveryTimes()
+  {
+    return $this->warehouseBasedDeliveryTimes;
   }
 }

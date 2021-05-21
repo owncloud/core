@@ -18,6 +18,8 @@
 class Google_Service_Apigee_GoogleCloudApigeeV1OperationMetadata extends Google_Model
 {
   public $operationType;
+  protected $progressType = 'Google_Service_Apigee_GoogleCloudApigeeV1OperationMetadataProgress';
+  protected $progressDataType = '';
   public $state;
   public $targetResourceName;
 
@@ -28,6 +30,20 @@ class Google_Service_Apigee_GoogleCloudApigeeV1OperationMetadata extends Google_
   public function getOperationType()
   {
     return $this->operationType;
+  }
+  /**
+   * @param Google_Service_Apigee_GoogleCloudApigeeV1OperationMetadataProgress
+   */
+  public function setProgress(Google_Service_Apigee_GoogleCloudApigeeV1OperationMetadataProgress $progress)
+  {
+    $this->progress = $progress;
+  }
+  /**
+   * @return Google_Service_Apigee_GoogleCloudApigeeV1OperationMetadataProgress
+   */
+  public function getProgress()
+  {
+    return $this->progress;
   }
   public function setState($state)
   {

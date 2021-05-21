@@ -25,6 +25,8 @@ class Google_Service_Sheets_TextFormat extends Google_Model
   protected $foregroundColorStyleType = 'Google_Service_Sheets_ColorStyle';
   protected $foregroundColorStyleDataType = '';
   public $italic;
+  protected $linkType = 'Google_Service_Sheets_Link';
+  protected $linkDataType = '';
   public $strikethrough;
   public $underline;
 
@@ -87,6 +89,20 @@ class Google_Service_Sheets_TextFormat extends Google_Model
   public function getItalic()
   {
     return $this->italic;
+  }
+  /**
+   * @param Google_Service_Sheets_Link
+   */
+  public function setLink(Google_Service_Sheets_Link $link)
+  {
+    $this->link = $link;
+  }
+  /**
+   * @return Google_Service_Sheets_Link
+   */
+  public function getLink()
+  {
+    return $this->link;
   }
   public function setStrikethrough($strikethrough)
   {

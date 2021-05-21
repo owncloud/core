@@ -17,14 +17,18 @@
 
 class Google_Service_Bigquery_ArimaSingleModelForecastingMetrics extends Google_Collection
 {
-  protected $collection_key = 'seasonalPeriods';
+  protected $collection_key = 'timeSeriesIds';
   protected $arimaFittingMetricsType = 'Google_Service_Bigquery_ArimaFittingMetrics';
   protected $arimaFittingMetricsDataType = '';
   public $hasDrift;
+  public $hasHolidayEffect;
+  public $hasSpikesAndDips;
+  public $hasStepChanges;
   protected $nonSeasonalOrderType = 'Google_Service_Bigquery_ArimaOrder';
   protected $nonSeasonalOrderDataType = '';
   public $seasonalPeriods;
   public $timeSeriesId;
+  public $timeSeriesIds;
 
   /**
    * @param Google_Service_Bigquery_ArimaFittingMetrics
@@ -47,6 +51,30 @@ class Google_Service_Bigquery_ArimaSingleModelForecastingMetrics extends Google_
   public function getHasDrift()
   {
     return $this->hasDrift;
+  }
+  public function setHasHolidayEffect($hasHolidayEffect)
+  {
+    $this->hasHolidayEffect = $hasHolidayEffect;
+  }
+  public function getHasHolidayEffect()
+  {
+    return $this->hasHolidayEffect;
+  }
+  public function setHasSpikesAndDips($hasSpikesAndDips)
+  {
+    $this->hasSpikesAndDips = $hasSpikesAndDips;
+  }
+  public function getHasSpikesAndDips()
+  {
+    return $this->hasSpikesAndDips;
+  }
+  public function setHasStepChanges($hasStepChanges)
+  {
+    $this->hasStepChanges = $hasStepChanges;
+  }
+  public function getHasStepChanges()
+  {
+    return $this->hasStepChanges;
   }
   /**
    * @param Google_Service_Bigquery_ArimaOrder
@@ -77,5 +105,13 @@ class Google_Service_Bigquery_ArimaSingleModelForecastingMetrics extends Google_
   public function getTimeSeriesId()
   {
     return $this->timeSeriesId;
+  }
+  public function setTimeSeriesIds($timeSeriesIds)
+  {
+    $this->timeSeriesIds = $timeSeriesIds;
+  }
+  public function getTimeSeriesIds()
+  {
+    return $this->timeSeriesIds;
   }
 }

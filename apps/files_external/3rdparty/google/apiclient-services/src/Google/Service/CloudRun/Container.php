@@ -37,6 +37,8 @@ class Google_Service_CloudRun_Container extends Google_Collection
   protected $resourcesDataType = '';
   protected $securityContextType = 'Google_Service_CloudRun_SecurityContext';
   protected $securityContextDataType = '';
+  protected $startupProbeType = 'Google_Service_CloudRun_Probe';
+  protected $startupProbeDataType = '';
   public $terminationMessagePath;
   public $terminationMessagePolicy;
   protected $volumeMountsType = 'Google_Service_CloudRun_VolumeMount';
@@ -180,6 +182,20 @@ class Google_Service_CloudRun_Container extends Google_Collection
   public function getSecurityContext()
   {
     return $this->securityContext;
+  }
+  /**
+   * @param Google_Service_CloudRun_Probe
+   */
+  public function setStartupProbe(Google_Service_CloudRun_Probe $startupProbe)
+  {
+    $this->startupProbe = $startupProbe;
+  }
+  /**
+   * @return Google_Service_CloudRun_Probe
+   */
+  public function getStartupProbe()
+  {
+    return $this->startupProbe;
   }
   public function setTerminationMessagePath($terminationMessagePath)
   {

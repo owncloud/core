@@ -33,6 +33,11 @@ class Google_Service_BigQueryReservation_Resource_ProjectsLocationsCapacityCommi
    * @param Google_Service_BigQueryReservation_CapacityCommitment $postBody
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string capacityCommitmentId The optional capacity commitment ID.
+   * Capacity commitment name will be generated automatically if this field is
+   * empty. This field must only contain lower case alphanumeric characters or
+   * dash. Max length is 64 characters. NOTE: this ID won't be kept if the
+   * capacity commitment is split or merged.
    * @opt_param bool enforceSingleAdminProjectPerOrg If true, fail the request if
    * another project in the organization has a capacity commitment.
    * @return Google_Service_BigQueryReservation_CapacityCommitment

@@ -18,6 +18,8 @@
 class Google_Service_Dataproc_GceClusterConfig extends Google_Collection
 {
   protected $collection_key = 'tags';
+  protected $confidentialInstanceConfigType = 'Google_Service_Dataproc_ConfidentialInstanceConfig';
+  protected $confidentialInstanceConfigDataType = '';
   public $internalIpOnly;
   public $metadata;
   public $networkUri;
@@ -34,6 +36,20 @@ class Google_Service_Dataproc_GceClusterConfig extends Google_Collection
   public $tags;
   public $zoneUri;
 
+  /**
+   * @param Google_Service_Dataproc_ConfidentialInstanceConfig
+   */
+  public function setConfidentialInstanceConfig(Google_Service_Dataproc_ConfidentialInstanceConfig $confidentialInstanceConfig)
+  {
+    $this->confidentialInstanceConfig = $confidentialInstanceConfig;
+  }
+  /**
+   * @return Google_Service_Dataproc_ConfidentialInstanceConfig
+   */
+  public function getConfidentialInstanceConfig()
+  {
+    return $this->confidentialInstanceConfig;
+  }
   public function setInternalIpOnly($internalIpOnly)
   {
     $this->internalIpOnly = $internalIpOnly;

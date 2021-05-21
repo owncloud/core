@@ -30,11 +30,11 @@ class Google_Service_OnDemandScanning_Resource_ProjectsLocationsScans extends Go
    *
    * @param string $parent Required. The parent of the resource for which analysis
    * is requested. Format: projects/[project_name]/locations/[location]
-   * @param Google_Service_OnDemandScanning_AnalyzePackagesRequest $postBody
+   * @param Google_Service_OnDemandScanning_AnalyzePackagesRequestV1 $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_OnDemandScanning_Operation
    */
-  public function analyzePackages($parent, Google_Service_OnDemandScanning_AnalyzePackagesRequest $postBody, $optParams = array())
+  public function analyzePackages($parent, Google_Service_OnDemandScanning_AnalyzePackagesRequestV1 $postBody, $optParams = array())
   {
     $params = array('parent' => $parent, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);

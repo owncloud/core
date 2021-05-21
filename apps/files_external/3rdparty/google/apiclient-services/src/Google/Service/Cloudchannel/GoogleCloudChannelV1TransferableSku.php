@@ -17,11 +17,27 @@
 
 class Google_Service_Cloudchannel_GoogleCloudChannelV1TransferableSku extends Google_Model
 {
+  protected $legacySkuType = 'Google_Service_Cloudchannel_GoogleCloudChannelV1Sku';
+  protected $legacySkuDataType = '';
   protected $skuType = 'Google_Service_Cloudchannel_GoogleCloudChannelV1Sku';
   protected $skuDataType = '';
   protected $transferEligibilityType = 'Google_Service_Cloudchannel_GoogleCloudChannelV1TransferEligibility';
   protected $transferEligibilityDataType = '';
 
+  /**
+   * @param Google_Service_Cloudchannel_GoogleCloudChannelV1Sku
+   */
+  public function setLegacySku(Google_Service_Cloudchannel_GoogleCloudChannelV1Sku $legacySku)
+  {
+    $this->legacySku = $legacySku;
+  }
+  /**
+   * @return Google_Service_Cloudchannel_GoogleCloudChannelV1Sku
+   */
+  public function getLegacySku()
+  {
+    return $this->legacySku;
+  }
   /**
    * @param Google_Service_Cloudchannel_GoogleCloudChannelV1Sku
    */

@@ -30,7 +30,7 @@
  */
 class Google_Service_CloudAsset extends Google_Service
 {
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 
@@ -157,6 +157,10 @@ class Google_Service_CloudAsset extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,
+                ),
+                'analysisQuery.conditionContext.accessTime' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
                 'analysisQuery.identitySelector.identity' => array(
                   'location' => 'query',

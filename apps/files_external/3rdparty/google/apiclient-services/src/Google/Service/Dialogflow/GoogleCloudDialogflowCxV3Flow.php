@@ -25,6 +25,7 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3Flow extends Google_Col
   public $name;
   protected $nluSettingsType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3NluSettings';
   protected $nluSettingsDataType = '';
+  public $transitionRouteGroups;
   protected $transitionRoutesType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3TransitionRoute';
   protected $transitionRoutesDataType = 'array';
 
@@ -79,6 +80,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3Flow extends Google_Col
   public function getNluSettings()
   {
     return $this->nluSettings;
+  }
+  public function setTransitionRouteGroups($transitionRouteGroups)
+  {
+    $this->transitionRouteGroups = $transitionRouteGroups;
+  }
+  public function getTransitionRouteGroups()
+  {
+    return $this->transitionRouteGroups;
   }
   /**
    * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3TransitionRoute[]

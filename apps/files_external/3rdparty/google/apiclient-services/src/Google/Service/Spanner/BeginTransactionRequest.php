@@ -19,6 +19,8 @@ class Google_Service_Spanner_BeginTransactionRequest extends Google_Model
 {
   protected $optionsType = 'Google_Service_Spanner_TransactionOptions';
   protected $optionsDataType = '';
+  protected $requestOptionsType = 'Google_Service_Spanner_RequestOptions';
+  protected $requestOptionsDataType = '';
 
   /**
    * @param Google_Service_Spanner_TransactionOptions
@@ -33,5 +35,19 @@ class Google_Service_Spanner_BeginTransactionRequest extends Google_Model
   public function getOptions()
   {
     return $this->options;
+  }
+  /**
+   * @param Google_Service_Spanner_RequestOptions
+   */
+  public function setRequestOptions(Google_Service_Spanner_RequestOptions $requestOptions)
+  {
+    $this->requestOptions = $requestOptions;
+  }
+  /**
+   * @return Google_Service_Spanner_RequestOptions
+   */
+  public function getRequestOptions()
+  {
+    return $this->requestOptions;
   }
 }

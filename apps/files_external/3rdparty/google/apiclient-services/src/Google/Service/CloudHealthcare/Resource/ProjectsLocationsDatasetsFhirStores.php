@@ -47,7 +47,9 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
    * store. The metadata field type is OperationMetadata. If the request is
    * successful, the response field type is DeidentifyFhirStoreSummary. If errors
    * occur, error is set. Error details are also logged to Cloud Logging (see
-   * [Viewing logs](/healthcare/docs/how-tos/logging)). (fhirStores.deidentify)
+   * [Viewing error logs in Cloud
+   * Logging](https://cloud.google.com/healthcare/docs/how-tos/logging)).
+   * (fhirStores.deidentify)
    *
    * @param string $sourceStore Source FHIR store resource name. For example, `pro
    * jects/{project_id}/locations/{location_id}/datasets/{dataset_id}/fhirStores/{
@@ -80,11 +82,11 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
    * Export resources from the FHIR store to the specified destination. This
    * method returns an Operation that can be used to track the status of the
    * export by calling GetOperation. Immediate fatal errors appear in the error
-   * field, errors are also logged to Cloud Logging (see [Viewing
-   * logs](/healthcare/docs/how-tos/logging)). Otherwise, when the operation
-   * finishes, a detailed response of type ExportResourcesResponse is returned in
-   * the response field. The metadata field type for this operation is
-   * OperationMetadata. (fhirStores.export)
+   * field, errors are also logged to Cloud Logging (see [Viewing error logs in
+   * Cloud Logging](https://cloud.google.com/healthcare/docs/how-tos/logging)).
+   * Otherwise, when the operation finishes, a detailed response of type
+   * ExportResourcesResponse is returned in the response field. The metadata field
+   * type for this operation is OperationMetadata. (fhirStores.export)
    *
    * @param string $name The name of the FHIR store to export resource from, in
    * the format of `projects/{project_id}/locations/{location_id}/datasets/{datase
@@ -148,7 +150,7 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
    * stored using the supplied ID regardless of the enable_update_create setting
    * on the FHIR store. It is strongly advised not to include or encode any
    * sensitive data such as patient identifiers in client-specified resource IDs.
-   * Those IDs are part of the FHIR resource path recorded in Cloud audit logs and
+   * Those IDs are part of the FHIR resource path recorded in Cloud Audit Logs and
    * Cloud Pub/Sub notifications. Those IDs can also be contained in reference
    * fields within other resources. The import process does not enforce
    * referential integrity, regardless of the disable_referential_integrity
@@ -187,7 +189,8 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
    * search or Patient-everything operation. This method returns an Operation that
    * can be used to track the status of the import by calling GetOperation.
    * Immediate fatal errors appear in the error field, errors are also logged to
-   * Cloud Logging (see [Viewing logs](/healthcare/docs/how-tos/logging)).
+   * Cloud Logging (see [Viewing error logs in Cloud
+   * Logging](https://cloud.google.com/healthcare/docs/how-tos/logging)).
    * Otherwise, when the operation finishes, a detailed response of type
    * ImportResourcesResponse is returned in the response field. The metadata field
    * type for this operation is OperationMetadata. (fhirStores.import)

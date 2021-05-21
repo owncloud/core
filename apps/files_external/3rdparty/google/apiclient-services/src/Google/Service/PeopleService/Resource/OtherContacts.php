@@ -78,12 +78,15 @@ class Google_Service_PeopleService_Resource_OtherContacts extends Google_Service
   }
   /**
    * Provides a list of contacts in the authenticated user's other contacts that
-   * matches the search query. (otherContacts.search)
+   * matches the search query. The query matches on a contact's `names`,
+   * `emailAddresses`, and `phoneNumbers` fields that are from the OTHER_CONTACT
+   * source. (otherContacts.search)
    *
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Optional. The number of results to return. Defaults
-   * to 10 if field is not set, or set to 0.
+   * to 10 if field is not set, or set to 0. Values greater than 10 will be capped
+   * to 10.
    * @opt_param string query Required. The plain-text query for the request. The
    * query is used to match prefix phrases of the fields on a person. For example,
    * a person with name "foo name" matches queries such as "f", "fo", "foo", "foo

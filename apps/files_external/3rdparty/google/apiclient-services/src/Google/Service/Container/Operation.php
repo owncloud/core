@@ -22,6 +22,8 @@ class Google_Service_Container_Operation extends Google_Collection
   protected $clusterConditionsDataType = 'array';
   public $detail;
   public $endTime;
+  protected $errorType = 'Google_Service_Container_Status';
+  protected $errorDataType = '';
   public $location;
   public $name;
   protected $nodepoolConditionsType = 'Google_Service_Container_StatusCondition';
@@ -65,6 +67,20 @@ class Google_Service_Container_Operation extends Google_Collection
   public function getEndTime()
   {
     return $this->endTime;
+  }
+  /**
+   * @param Google_Service_Container_Status
+   */
+  public function setError(Google_Service_Container_Status $error)
+  {
+    $this->error = $error;
+  }
+  /**
+   * @return Google_Service_Container_Status
+   */
+  public function getError()
+  {
+    return $this->error;
   }
   public function setLocation($location)
   {

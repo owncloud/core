@@ -51,7 +51,7 @@ class Google_Service_Appengine_Resource_AppsLocations extends Google_Service_Res
    * subset. The filtering language accepts strings like "displayName=tokyo", and
    * is documented in more detail in AIP-160 (https://google.aip.dev/160).
    * @opt_param int pageSize The maximum number of results to return. If not set,
-   * the service will select a default.
+   * the service selects a default.
    * @opt_param string pageToken A page token received from the next_page_token
    * field in the response. Send that page token to receive the subsequent page.
    * @return Google_Service_Appengine_ListLocationsResponse

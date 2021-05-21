@@ -24,6 +24,8 @@ class Google_Service_SecretManager_Secret extends Google_Collection
   public $name;
   protected $replicationType = 'Google_Service_SecretManager_Replication';
   protected $replicationDataType = '';
+  protected $rotationType = 'Google_Service_SecretManager_Rotation';
+  protected $rotationDataType = '';
   protected $topicsType = 'Google_Service_SecretManager_Topic';
   protected $topicsDataType = 'array';
   public $ttl;
@@ -73,6 +75,20 @@ class Google_Service_SecretManager_Secret extends Google_Collection
   public function getReplication()
   {
     return $this->replication;
+  }
+  /**
+   * @param Google_Service_SecretManager_Rotation
+   */
+  public function setRotation(Google_Service_SecretManager_Rotation $rotation)
+  {
+    $this->rotation = $rotation;
+  }
+  /**
+   * @return Google_Service_SecretManager_Rotation
+   */
+  public function getRotation()
+  {
+    return $this->rotation;
   }
   /**
    * @param Google_Service_SecretManager_Topic[]

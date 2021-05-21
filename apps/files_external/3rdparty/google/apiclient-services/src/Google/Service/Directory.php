@@ -2096,6 +2096,10 @@ class Google_Service_Directory extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'event' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
               ),
             ),'watch' => array(
               'path' => 'admin/directory/v1/users/{userKey}/aliases/watch',

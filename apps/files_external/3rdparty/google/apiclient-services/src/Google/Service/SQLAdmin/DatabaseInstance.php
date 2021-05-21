@@ -40,6 +40,8 @@ class Google_Service_SQLAdmin_DatabaseInstance extends Google_Collection
   public $name;
   protected $onPremisesConfigurationType = 'Google_Service_SQLAdmin_OnPremisesConfiguration';
   protected $onPremisesConfigurationDataType = '';
+  protected $outOfDiskReportType = 'Google_Service_SQLAdmin_SqlOutOfDiskReport';
+  protected $outOfDiskReportDataType = '';
   public $project;
   public $region;
   protected $replicaConfigurationType = 'Google_Service_SQLAdmin_ReplicaConfiguration';
@@ -224,6 +226,20 @@ class Google_Service_SQLAdmin_DatabaseInstance extends Google_Collection
   public function getOnPremisesConfiguration()
   {
     return $this->onPremisesConfiguration;
+  }
+  /**
+   * @param Google_Service_SQLAdmin_SqlOutOfDiskReport
+   */
+  public function setOutOfDiskReport(Google_Service_SQLAdmin_SqlOutOfDiskReport $outOfDiskReport)
+  {
+    $this->outOfDiskReport = $outOfDiskReport;
+  }
+  /**
+   * @return Google_Service_SQLAdmin_SqlOutOfDiskReport
+   */
+  public function getOutOfDiskReport()
+  {
+    return $this->outOfDiskReport;
   }
   public function setProject($project)
   {

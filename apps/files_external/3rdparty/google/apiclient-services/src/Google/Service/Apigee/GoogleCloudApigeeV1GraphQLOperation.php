@@ -17,9 +17,9 @@
 
 class Google_Service_Apigee_GoogleCloudApigeeV1GraphQLOperation extends Google_Collection
 {
-  protected $collection_key = 'operationType';
+  protected $collection_key = 'operationTypes';
   public $operation;
-  public $operationType;
+  public $operationTypes;
 
   public function setOperation($operation)
   {
@@ -29,12 +29,12 @@ class Google_Service_Apigee_GoogleCloudApigeeV1GraphQLOperation extends Google_C
   {
     return $this->operation;
   }
-  public function setOperationType($operationType)
+  public function setOperationTypes($operationTypes)
   {
-    $this->operationType = $operationType;
+    $this->operationTypes = $operationTypes;
   }
-  public function getOperationType()
+  public function getOperationTypes()
   {
-    return $this->operationType;
+    return $this->operationTypes;
   }
 }
