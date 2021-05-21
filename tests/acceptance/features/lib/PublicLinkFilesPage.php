@@ -55,6 +55,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	protected $deleteAllSelectedBtnXpath = "//a[@class='delete-selected']";
 	protected $uploadedElementsCss = '.public-upload-view--completed';
 	protected $uploadedElementsXpath = "//div[@class='public-upload-view--completed']//li";
+	protected $saveToOcButtonId = "save-to-oc-button";
 
 	/**
 	 *
@@ -552,5 +553,23 @@ class PublicLinkFilesPage extends FilesPageBasic {
 			\array_push($uploadedElements, $element->getText());
 		}
 		return $uploadedElements;
+	}
+
+	/**
+	 * adding public link share to same server instance
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function saveToSameSever() {
+		$saveToElement = $this->findById($this->saveToOcButtonId);
+
+		$this->assertElementNotNull(
+			$saveToElement,
+			__METHOD__ .
+			" id $this->saveToOcButtonId could not find 'Add To' button"
+		);
+
+		$saveToElement->click();
 	}
 }
