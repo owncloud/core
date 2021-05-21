@@ -30,7 +30,7 @@ declare -x DB_PASSWORD
 declare -x DB_NAME
 [[ -z "${DB_NAME}" ]] && DB_NAME="owncloud"
 
-PLUGIN_DB_TIMEOUT=45
+PLUGIN_DB_TIMEOUT=600
 plugin_wait_for_oracle() {
     local sqlplus=/usr/lib/oracle/12.2/client64/bin/sqlplus
     local result
