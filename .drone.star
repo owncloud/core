@@ -1966,8 +1966,6 @@ def owncloudService(phpVersion, name = 'server', pathOfServerUnderTest = '/drone
 		'environment': environment,
 		'command': [
 			'/usr/local/bin/apachectl',
-			'-e',
-			'debug',
 			'-D',
 			'FOREGROUND'
 		]
