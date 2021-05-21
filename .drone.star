@@ -1549,24 +1549,18 @@ def databaseService(db):
 				'ORACLE_DB': getDbDatabase(db),
 				# 'ORACLE_DISABLE_ASYNCH_IO': 'true',
 			},
-		}, {
-			'name': dbName + '-fix-db',
-			'image': 'owncloudci/oracle-xe:latest',
-			'pull': 'always',
-			'environment': {
-				'ORACLE_USER': getDbUsername(db),
-				'ORACLE_PASSWORD': getDbPassword(db),
-				'ORACLE_DB': getDbDatabase(db),
-				# 'ORACLE_DISABLE_ASYNCH_IO': 'true',
-			},
 			'commands': [
-				'ls',
-				'echo "running sql command"',
-				'wait-for-it -t 600 oracle:1521',
-				'bash -c \'sqlplus autotest/owncloud@oracle:1521/XE <<< "SELECT * FROM DBA_USERS;"\'',
-				'bash -c \'sqlplus autotest/owncloud@oracle:1521/XE <<< "ALTER SYSTEM SET disk_asynch_io = FALSE SCOPE = SPFILE;"\'',
-				'bash -c \'sqlplus autotest/owncloud@oracle:1521/XE <<< "ALTER SESSION SET CONTAINER = ORCLPDB1;"\''
-				# 'echo "ALTER SESSION SET CONTAINER = ORCLPDB1;" | sqlplus -s system/oracle@oracle:1521/owncloud '
+				'sed -i -E "s/HOST = [^)]+/HOST = $HOSTNAME/g" /u01/app/oracle/product/11.2.0/xe/network/admin/listener.ora',
+				'service oracle-xe start',
+				'sqlplus -s -l system/oracle @owncloud',
+				'/usr/sbin/sshd -D',
+				'sqlplus system/oracle <<< "SHOW PARAMETER FILESYSTEMIO_OPTIONS;"',
+				'sqlplus system/oracle <<< "SHOW PARAMETER DISK_ASYNCH_IO;"',
+				'sqlplus system/oracle <<< "ALTER SYSTEM SET FILESYSTEMIO_OPTIONS=DIRECTIO SCOPE=SPFILE;"',
+				'sqlplus system/oracle <<< "ALTER SYSTEM SET DISK_ASYNCH_IO=FALSE SCOPE=SPFILE"',
+				'service oracle-xe restart',
+				'sqlplus system/oracle <<< "SHOW PARAMETER FILESYSTEMIO_OPTIONS;"',
+				'sqlplus system/oracle <<< "SHOW PARAMETER DISK_ASYNCH_IO;"',
 			]
 		}]
 
