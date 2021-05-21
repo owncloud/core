@@ -130,11 +130,12 @@ class Node implements \OCP\Files\Node {
 			$this->sendHooks(['preTouch']);
 			$this->view->touch($this->path, $mtime);
 			$this->sendHooks(['postTouch']);
-			if ($this->fileInfo) {
+			$fileInfo = $this->getFileInfo();
+			if ($fileInfo) {
 				if ($mtime === null) {
 					$mtime = \time();
 				}
-				$this->fileInfo['mtime'] = $mtime;
+				$fileInfo['mtime'] = $mtime;
 			}
 		} else {
 			throw new NotPermittedException();
