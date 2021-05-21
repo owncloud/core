@@ -1560,6 +1560,7 @@ def databaseService(db):
 				'service oracle-xe restart',
 				'sqlplus system/oracle <<< "SHOW PARAMETER FILESYSTEMIO_OPTIONS;"',
 				'sqlplus system/oracle <<< "SHOW PARAMETER DISK_ASYNCH_IO;"',
+				'/usr/sbin/sshd -D',
 			]
 		}]
 
