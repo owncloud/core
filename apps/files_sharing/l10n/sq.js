@@ -29,6 +29,8 @@ OC.L10N.register(
     "Cancel" : "Anuloje",
     "Add remote share" : "Shtoni ndarje të largët",
     "You can upload into this folder" : "Mund të ngarkoni te kjo dosje",
+    "Add to another cloud" : "Shtojeni në një re tjetër",
+    "Enter the server address to add the content to" : "Jepni adresën e shërbyesit ku të shtohet lënda",
     "Add" : "Shtoni",
     "No ownCloud installation (7 or higher) found at {remote}" : "Te {remote} s’u gjet instalim ownCloud (7 ose më sipër)",
     "Invalid ownCloud url" : "URL ownCloud e pavlefshme",
