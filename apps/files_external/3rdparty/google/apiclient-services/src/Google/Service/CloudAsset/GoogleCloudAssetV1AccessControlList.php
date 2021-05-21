@@ -20,6 +20,8 @@ class Google_Service_CloudAsset_GoogleCloudAssetV1AccessControlList extends Goog
   protected $collection_key = 'resources';
   protected $accessesType = 'Google_Service_CloudAsset_GoogleCloudAssetV1Access';
   protected $accessesDataType = 'array';
+  protected $conditionEvaluationType = 'Google_Service_CloudAsset_ConditionEvaluation';
+  protected $conditionEvaluationDataType = '';
   protected $resourceEdgesType = 'Google_Service_CloudAsset_GoogleCloudAssetV1Edge';
   protected $resourceEdgesDataType = 'array';
   protected $resourcesType = 'Google_Service_CloudAsset_GoogleCloudAssetV1Resource';
@@ -38,6 +40,20 @@ class Google_Service_CloudAsset_GoogleCloudAssetV1AccessControlList extends Goog
   public function getAccesses()
   {
     return $this->accesses;
+  }
+  /**
+   * @param Google_Service_CloudAsset_ConditionEvaluation
+   */
+  public function setConditionEvaluation(Google_Service_CloudAsset_ConditionEvaluation $conditionEvaluation)
+  {
+    $this->conditionEvaluation = $conditionEvaluation;
+  }
+  /**
+   * @return Google_Service_CloudAsset_ConditionEvaluation
+   */
+  public function getConditionEvaluation()
+  {
+    return $this->conditionEvaluation;
   }
   /**
    * @param Google_Service_CloudAsset_GoogleCloudAssetV1Edge[]

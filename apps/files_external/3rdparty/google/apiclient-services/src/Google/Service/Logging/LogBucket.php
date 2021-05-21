@@ -15,13 +15,15 @@
  * the License.
  */
 
-class Google_Service_Logging_LogBucket extends Google_Model
+class Google_Service_Logging_LogBucket extends Google_Collection
 {
+  protected $collection_key = 'restrictedFields';
   public $createTime;
   public $description;
   public $lifecycleState;
   public $locked;
   public $name;
+  public $restrictedFields;
   public $retentionDays;
   public $updateTime;
 
@@ -64,6 +66,14 @@ class Google_Service_Logging_LogBucket extends Google_Model
   public function getName()
   {
     return $this->name;
+  }
+  public function setRestrictedFields($restrictedFields)
+  {
+    $this->restrictedFields = $restrictedFields;
+  }
+  public function getRestrictedFields()
+  {
+    return $this->restrictedFields;
   }
   public function setRetentionDays($retentionDays)
   {

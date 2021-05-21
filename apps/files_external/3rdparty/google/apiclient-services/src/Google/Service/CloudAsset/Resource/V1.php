@@ -45,6 +45,10 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * permissions to appear in result.
    * @opt_param string analysisQuery.accessSelector.roles Optional. The roles to
    * appear in result.
+   * @opt_param string analysisQuery.conditionContext.accessTime The hypothetical
+   * access timestamp to evaluate IAM conditions. Note that this value must not be
+   * earlier than the current time; otherwise, an INVALID_ARGUMENT error will be
+   * returned.
    * @opt_param string analysisQuery.identitySelector.identity Required. The
    * identity appear in the form of members in [IAM policy
    * binding](https://cloud.google.com/iam/reference/rest/v1/Binding). The
@@ -336,17 +340,19 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * Cloud resources that have a label "env". * `kmsKey:key` to find Cloud
    * resources encrypted with a customer-managed encryption key whose name
    * contains the word "key". * `state:ACTIVE` to find Cloud resources whose state
-   * contains "ACTIVE" as a word. * `createTime<1609459200` to find Cloud
-   * resources that were created before "2021-01-01 00:00:00 UTC". 1609459200 is
-   * the epoch timestamp of "2021-01-01 00:00:00 UTC" in seconds. *
-   * `updateTime>1609459200` to find Cloud resources that were updated after
+   * contains "ACTIVE" as a word. * `NOT state:ACTIVE` to find {{gcp_name}}
+   * resources whose state doesn't contain "ACTIVE" as a word. *
+   * `createTime<1609459200` to find Cloud resources that were created before
    * "2021-01-01 00:00:00 UTC". 1609459200 is the epoch timestamp of "2021-01-01
-   * 00:00:00 UTC" in seconds. * `Important` to find Cloud resources that contain
-   * "Important" as a word in any of the searchable fields. * `Impor*` to find
-   * Cloud resources that contain "Impor" as a prefix of any word in any of the
-   * searchable fields. * `Important location:(us-west1 OR global)` to find Cloud
-   * resources that contain "Important" as a word in any of the searchable fields
-   * and are also located in the "us-west1" region or the "global" location.
+   * 00:00:00 UTC" in seconds. * `updateTime>1609459200` to find Cloud resources
+   * that were updated after "2021-01-01 00:00:00 UTC". 1609459200 is the epoch
+   * timestamp of "2021-01-01 00:00:00 UTC" in seconds. * `Important` to find
+   * Cloud resources that contain "Important" as a word in any of the searchable
+   * fields. * `Impor*` to find Cloud resources that contain "Impor" as a prefix
+   * of any word in any of the searchable fields. * `Important location:(us-west1
+   * OR global)` to find Cloud resources that contain "Important" as a word in any
+   * of the searchable fields and are also located in the "us-west1" region or the
+   * "global" location.
    * @return Google_Service_CloudAsset_SearchAllResourcesResponse
    */
   public function searchAllResources($scope, $optParams = array())

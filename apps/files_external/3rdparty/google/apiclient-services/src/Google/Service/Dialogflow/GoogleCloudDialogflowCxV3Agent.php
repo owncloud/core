@@ -15,8 +15,9 @@
  * the License.
  */
 
-class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3Agent extends Google_Model
+class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3Agent extends Google_Collection
 {
+  protected $collection_key = 'supportedLanguageCodes';
   public $avatarUri;
   public $defaultLanguageCode;
   public $description;
@@ -28,6 +29,7 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3Agent extends Google_Mo
   protected $speechToTextSettingsType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3SpeechToTextSettings';
   protected $speechToTextSettingsDataType = '';
   public $startFlow;
+  public $supportedLanguageCodes;
   public $timeZone;
 
   public function setAvatarUri($avatarUri)
@@ -115,6 +117,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3Agent extends Google_Mo
   public function getStartFlow()
   {
     return $this->startFlow;
+  }
+  public function setSupportedLanguageCodes($supportedLanguageCodes)
+  {
+    $this->supportedLanguageCodes = $supportedLanguageCodes;
+  }
+  public function getSupportedLanguageCodes()
+  {
+    return $this->supportedLanguageCodes;
   }
   public function setTimeZone($timeZone)
   {

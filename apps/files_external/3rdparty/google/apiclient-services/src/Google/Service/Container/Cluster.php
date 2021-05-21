@@ -31,6 +31,8 @@ class Google_Service_Container_Cluster extends Google_Collection
   public $clusterIpv4Cidr;
   protected $conditionsType = 'Google_Service_Container_StatusCondition';
   protected $conditionsDataType = 'array';
+  protected $confidentialNodesType = 'Google_Service_Container_ConfidentialNodes';
+  protected $confidentialNodesDataType = '';
   public $createTime;
   public $currentMasterVersion;
   public $currentNodeCount;
@@ -44,6 +46,7 @@ class Google_Service_Container_Cluster extends Google_Collection
   public $enableTpu;
   public $endpoint;
   public $expireTime;
+  public $id;
   public $initialClusterVersion;
   public $initialNodeCount;
   public $instanceGroupUrls;
@@ -188,6 +191,20 @@ class Google_Service_Container_Cluster extends Google_Collection
   {
     return $this->conditions;
   }
+  /**
+   * @param Google_Service_Container_ConfidentialNodes
+   */
+  public function setConfidentialNodes(Google_Service_Container_ConfidentialNodes $confidentialNodes)
+  {
+    $this->confidentialNodes = $confidentialNodes;
+  }
+  /**
+   * @return Google_Service_Container_ConfidentialNodes
+   */
+  public function getConfidentialNodes()
+  {
+    return $this->confidentialNodes;
+  }
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
@@ -287,6 +304,14 @@ class Google_Service_Container_Cluster extends Google_Collection
   public function getExpireTime()
   {
     return $this->expireTime;
+  }
+  public function setId($id)
+  {
+    $this->id = $id;
+  }
+  public function getId()
+  {
+    return $this->id;
   }
   public function setInitialClusterVersion($initialClusterVersion)
   {

@@ -17,9 +17,18 @@
 
 class Google_Service_Reseller_SubscriptionTransferInfo extends Google_Model
 {
+  public $currentLegacySkuId;
   public $minimumTransferableSeats;
   public $transferabilityExpirationTime;
 
+  public function setCurrentLegacySkuId($currentLegacySkuId)
+  {
+    $this->currentLegacySkuId = $currentLegacySkuId;
+  }
+  public function getCurrentLegacySkuId()
+  {
+    return $this->currentLegacySkuId;
+  }
   public function setMinimumTransferableSeats($minimumTransferableSeats)
   {
     $this->minimumTransferableSeats = $minimumTransferableSeats;

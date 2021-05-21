@@ -19,6 +19,7 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
 {
   protected $collection_key = 'taxes';
   public $additionalImageLinks;
+  public $additionalSizeType;
   public $adsGrouping;
   public $adsLabels;
   public $adsRedirect;
@@ -122,6 +123,14 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
   public function getAdditionalImageLinks()
   {
     return $this->additionalImageLinks;
+  }
+  public function setAdditionalSizeType($additionalSizeType)
+  {
+    $this->additionalSizeType = $additionalSizeType;
+  }
+  public function getAdditionalSizeType()
+  {
+    return $this->additionalSizeType;
   }
   public function setAdsGrouping($adsGrouping)
   {

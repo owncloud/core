@@ -32,7 +32,9 @@ class Google_Service_Firestore_Resource_ProjectsDatabases extends Google_Service
    * background and its progress can be monitored and managed via the Operation
    * resource that is created. The output of an export may only be used once the
    * associated operation is done. If an export operation is cancelled before
-   * completion it may leave partial data behind in Google Cloud Storage.
+   * completion it may leave partial data behind in Google Cloud Storage. For more
+   * details on export behavior and output format, refer to:
+   * https://cloud.google.com/firestore/docs/manage-data/export-import
    * (databases.exportDocuments)
    *
    * @param string $name Required. Database to export. Should be of the form:

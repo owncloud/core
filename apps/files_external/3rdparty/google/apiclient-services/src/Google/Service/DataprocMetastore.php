@@ -38,6 +38,7 @@ class Google_Service_DataprocMetastore extends Google_Service
   public $projects_locations;
   public $projects_locations_operations;
   public $projects_locations_services;
+  public $projects_locations_services_backups;
   public $projects_locations_services_metadataImports;
 
   /**
@@ -265,6 +266,16 @@ class Google_Service_DataprocMetastore extends Google_Service
                   'type' => 'string',
                 ),
               ),
+            ),'restore' => array(
+              'path' => 'v1beta/{+service}:restore',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'service' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
             ),'setIamPolicy' => array(
               'path' => 'v1beta/{+resource}:setIamPolicy',
               'httpMethod' => 'POST',
@@ -283,6 +294,84 @@ class Google_Service_DataprocMetastore extends Google_Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->projects_locations_services_backups = new Google_Service_DataprocMetastore_Resource_ProjectsLocationsServicesBackups(
+        $this,
+        $this->serviceName,
+        'backups',
+        array(
+          'methods' => array(
+            'create' => array(
+              'path' => 'v1beta/{+parent}/backups',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'backupId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'requestId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),'delete' => array(
+              'path' => 'v1beta/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'requestId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),'get' => array(
+              'path' => 'v1beta/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'v1beta/{+parent}/backups',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),

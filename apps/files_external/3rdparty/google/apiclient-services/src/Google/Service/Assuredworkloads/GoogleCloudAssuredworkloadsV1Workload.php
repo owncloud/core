@@ -28,6 +28,8 @@ class Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1Workload exte
   public $labels;
   public $name;
   public $provisionedResourcesParent;
+  protected $resourceSettingsType = 'Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadResourceSettings';
+  protected $resourceSettingsDataType = 'array';
   protected $resourcesType = 'Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadResourceInfo';
   protected $resourcesDataType = 'array';
 
@@ -108,6 +110,20 @@ class Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1Workload exte
   public function getProvisionedResourcesParent()
   {
     return $this->provisionedResourcesParent;
+  }
+  /**
+   * @param Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadResourceSettings[]
+   */
+  public function setResourceSettings($resourceSettings)
+  {
+    $this->resourceSettings = $resourceSettings;
+  }
+  /**
+   * @return Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadResourceSettings[]
+   */
+  public function getResourceSettings()
+  {
+    return $this->resourceSettings;
   }
   /**
    * @param Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1WorkloadResourceInfo[]

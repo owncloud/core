@@ -184,23 +184,23 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsConsentSt
    * Queries all data_ids that are consented for a specified use in the given
    * consent store and writes them to a specified destination. The returned
    * Operation includes a progress counter for the number of User data mappings
-   * processed. Errors are logged to Cloud Logging (see [Viewing logs]
-   * (cloud.google.com/healthcare/docs/how-tos/logging)). For example, the
-   * following sample log entry shows a `failed to evaluate consent policy` error
-   * that occurred during a QueryAccessibleData call to consent store `projects/{p
-   * roject_id}/locations/{location_id}/datasets/{dataset_id}/consentStores/{conse
-   * nt_store_id}`. ```json jsonPayload: { @type: "type.googleapis.com/google.clou
-   * d.healthcare.logging.QueryAccessibleDataLogEntry" error: { code: 9 message:
-   * "failed to evaluate consent policy" } resourceName: "projects/{project_id}/lo
-   * cations/{location_id}/datasets/{dataset_id}/consentStores/{consent_store_id}/
-   * consents/{consent_id}" } logName: "projects/{project_id}/logs/healthcare.goog
-   * leapis.com%2Fquery_accessible_data" operation: { id: "projects/{project_id}/l
-   * ocations/{location_id}/datasets/{dataset_id}/operations/{operation_id}"
-   * producer: "healthcare.googleapis.com/QueryAccessibleData" } receiveTimestamp:
-   * "TIMESTAMP" resource: { labels: { consent_store_id: "{consent_store_id}"
-   * dataset_id: "{dataset_id}" location: "{location_id}" project_id:
-   * "{project_id}" } type: "healthcare_consent_store" } severity: "ERROR"
-   * timestamp: "TIMESTAMP" ``` (consentStores.queryAccessibleData)
+   * processed. Errors are logged to Cloud Logging (see [Viewing error logs in
+   * Cloud Logging](https://cloud.google.com/healthcare/docs/how-tos/logging)).
+   * For example, the following sample log entry shows a `failed to evaluate
+   * consent policy` error that occurred during a QueryAccessibleData call to
+   * consent store `projects/{project_id}/locations/{location_id}/datasets/{datase
+   * t_id}/consentStores/{consent_store_id}`. ```json jsonPayload: { @type: "type.
+   * googleapis.com/google.cloud.healthcare.logging.QueryAccessibleDataLogEntry"
+   * error: { code: 9 message: "failed to evaluate consent policy" } resourceName:
+   * "projects/{project_id}/locations/{location_id}/datasets/{dataset_id}/consentS
+   * tores/{consent_store_id}/consents/{consent_id}" } logName: "projects/{project
+   * _id}/logs/healthcare.googleapis.com%2Fquery_accessible_data" operation: { id:
+   * "projects/{project_id}/locations/{location_id}/datasets/{dataset_id}/operatio
+   * ns/{operation_id}" producer: "healthcare.googleapis.com/QueryAccessibleData"
+   * } receiveTimestamp: "TIMESTAMP" resource: { labels: { consent_store_id:
+   * "{consent_store_id}" dataset_id: "{dataset_id}" location: "{location_id}"
+   * project_id: "{project_id}" } type: "healthcare_consent_store" } severity:
+   * "ERROR" timestamp: "TIMESTAMP" ``` (consentStores.queryAccessibleData)
    *
    * @param string $consentStore Required. Name of the consent store to retrieve
    * User data mappings from.

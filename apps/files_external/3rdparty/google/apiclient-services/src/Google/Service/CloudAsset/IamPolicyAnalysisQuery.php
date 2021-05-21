@@ -19,6 +19,8 @@ class Google_Service_CloudAsset_IamPolicyAnalysisQuery extends Google_Model
 {
   protected $accessSelectorType = 'Google_Service_CloudAsset_AccessSelector';
   protected $accessSelectorDataType = '';
+  protected $conditionContextType = 'Google_Service_CloudAsset_ConditionContext';
+  protected $conditionContextDataType = '';
   protected $identitySelectorType = 'Google_Service_CloudAsset_IdentitySelector';
   protected $identitySelectorDataType = '';
   protected $optionsType = 'Google_Service_CloudAsset_Options';
@@ -40,6 +42,20 @@ class Google_Service_CloudAsset_IamPolicyAnalysisQuery extends Google_Model
   public function getAccessSelector()
   {
     return $this->accessSelector;
+  }
+  /**
+   * @param Google_Service_CloudAsset_ConditionContext
+   */
+  public function setConditionContext(Google_Service_CloudAsset_ConditionContext $conditionContext)
+  {
+    $this->conditionContext = $conditionContext;
+  }
+  /**
+   * @return Google_Service_CloudAsset_ConditionContext
+   */
+  public function getConditionContext()
+  {
+    return $this->conditionContext;
   }
   /**
    * @param Google_Service_CloudAsset_IdentitySelector

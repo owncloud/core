@@ -21,6 +21,7 @@ class Google_Service_Dataflow_WorkerHealthReport extends Google_Collection
   public $msg;
   public $pods;
   public $reportInterval;
+  public $vmBrokenCode;
   public $vmIsBroken;
   public $vmIsHealthy;
   public $vmStartupTime;
@@ -48,6 +49,14 @@ class Google_Service_Dataflow_WorkerHealthReport extends Google_Collection
   public function getReportInterval()
   {
     return $this->reportInterval;
+  }
+  public function setVmBrokenCode($vmBrokenCode)
+  {
+    $this->vmBrokenCode = $vmBrokenCode;
+  }
+  public function getVmBrokenCode()
+  {
+    return $this->vmBrokenCode;
   }
   public function setVmIsBroken($vmIsBroken)
   {

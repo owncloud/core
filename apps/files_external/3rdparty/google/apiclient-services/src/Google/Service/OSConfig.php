@@ -24,14 +24,14 @@
  *
  * <p>
  * For more information about this service, see the API
- * <a href="https://cloud.google.com/compute/docs/manage-os" target="_blank">Documentation</a>
+ * <a href="https://cloud.google.com/compute/docs/osconfig/rest" target="_blank">Documentation</a>
  * </p>
  *
  * @author Google, Inc.
  */
 class Google_Service_OSConfig extends Google_Service
 {
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 

@@ -28,8 +28,9 @@ class Google_Service_Monitoring_Resource_ProjectsGroups extends Google_Service_R
   /**
    * Creates a new group. (groups.create)
    *
-   * @param string $name Required. The project in which to create the group. The
-   * format is: projects/[PROJECT_ID_OR_NUMBER]
+   * @param string $name Required. The project
+   * (https://cloud.google.com/monitoring/api/v3#project_name) in which to create
+   * the group. The format is: projects/[PROJECT_ID_OR_NUMBER]
    * @param Google_Service_Monitoring_Group $postBody
    * @param array $optParams Optional parameters.
    *
@@ -78,8 +79,9 @@ class Google_Service_Monitoring_Resource_ProjectsGroups extends Google_Service_R
   /**
    * Lists the existing groups. (groups.listProjectsGroups)
    *
-   * @param string $name Required. The project whose groups are to be listed. The
-   * format is: projects/[PROJECT_ID_OR_NUMBER]
+   * @param string $name Required. The project
+   * (https://cloud.google.com/monitoring/api/v3#project_name) whose groups are to
+   * be listed. The format is: projects/[PROJECT_ID_OR_NUMBER]
    * @param array $optParams Optional parameters.
    *
    * @opt_param string ancestorsOfGroup A group name. The format is:

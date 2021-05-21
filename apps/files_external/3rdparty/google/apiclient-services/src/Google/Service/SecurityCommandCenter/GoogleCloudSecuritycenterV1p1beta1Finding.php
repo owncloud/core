@@ -17,6 +17,7 @@
 
 class Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1Finding extends Google_Model
 {
+  public $canonicalName;
   public $category;
   public $createTime;
   public $eventTime;
@@ -30,6 +31,14 @@ class Google_Service_SecurityCommandCenter_GoogleCloudSecuritycenterV1p1beta1Fin
   public $sourceProperties;
   public $state;
 
+  public function setCanonicalName($canonicalName)
+  {
+    $this->canonicalName = $canonicalName;
+  }
+  public function getCanonicalName()
+  {
+    return $this->canonicalName;
+  }
   public function setCategory($category)
   {
     $this->category = $category;

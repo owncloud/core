@@ -34,9 +34,11 @@ class Google_Service_Dialogflow_Resource_ProjectsLocationsAgentsFlowsTransitionR
    * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3TransitionRouteGroup $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string languageCode The language to list transition route groups
-   * for. The field `messages` in TransitionRoute is language dependent. If not
-   * specified, the agent's default language is used. [Many
+   * @opt_param string languageCode The language of the following fields in
+   * `TransitionRouteGroup`: *
+   * `TransitionRouteGroup.transition_routes.trigger_fulfillment.messages` * `Tran
+   * sitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases` If
+   * not specified, the agent's default language is used. [Many
    * languages](https://cloud.google.com/dialogflow/cx/docs/reference/language)
    * are supported. Note: languages must be enabled in the agent before they can
    * be used.
@@ -76,9 +78,11 @@ class Google_Service_Dialogflow_Resource_ProjectsLocationsAgentsFlowsTransitionR
    * `projects//locations//agents//flows//transitionRouteGroups/`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string languageCode The language to list transition route groups
-   * for. The field `messages` in TransitionRoute is language dependent. If not
-   * specified, the agent's default language is used. [Many
+   * @opt_param string languageCode The language to retrieve the transition route
+   * group for. The following fields are language dependent: *
+   * `TransitionRouteGroup.transition_routes.trigger_fulfillment.messages` * `Tran
+   * sitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases` If
+   * not specified, the agent's default language is used. [Many
    * languages](https://cloud.google.com/dialogflow/cx/docs/reference/language)
    * are supported. Note: languages must be enabled in the agent before they can
    * be used.
@@ -99,8 +103,10 @@ class Google_Service_Dialogflow_Resource_ProjectsLocationsAgentsFlowsTransitionR
    * @param array $optParams Optional parameters.
    *
    * @opt_param string languageCode The language to list transition route groups
-   * for. The field `messages` in TransitionRoute is language dependent. If not
-   * specified, the agent's default language is used. [Many
+   * for. The following fields are language dependent: *
+   * `TransitionRouteGroup.transition_routes.trigger_fulfillment.messages` * `Tran
+   * sitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases` If
+   * not specified, the agent's default language is used. [Many
    * languages](https://cloud.google.com/dialogflow/cx/docs/reference/language)
    * are supported. Note: languages must be enabled in the agent before they can
    * be used.
@@ -126,9 +132,11 @@ class Google_Service_Dialogflow_Resource_ProjectsLocationsAgentsFlowsTransitionR
    * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3TransitionRouteGroup $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string languageCode The language to list transition route groups
-   * for. The field `messages` in TransitionRoute is language dependent. If not
-   * specified, the agent's default language is used. [Many
+   * @opt_param string languageCode The language of the following fields in
+   * `TransitionRouteGroup`: *
+   * `TransitionRouteGroup.transition_routes.trigger_fulfillment.messages` * `Tran
+   * sitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases` If
+   * not specified, the agent's default language is used. [Many
    * languages](https://cloud.google.com/dialogflow/cx/docs/reference/language)
    * are supported. Note: languages must be enabled in the agent before they can
    * be used.

@@ -109,7 +109,7 @@ class Uri implements UriInterface
             $url
         );
 
-        $result = parse_url($prefix.$encodedUrl);
+        $result = parse_url($prefix . $encodedUrl);
 
         if ($result === false) {
             return false;

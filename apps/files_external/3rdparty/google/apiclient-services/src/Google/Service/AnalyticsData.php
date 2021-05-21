@@ -16,7 +16,7 @@
  */
 
 /**
- * Service definition for AnalyticsData (v1alpha).
+ * Service definition for AnalyticsData (v1beta).
  *
  * <p>
  * Accesses report data in Google Analytics.</p>
@@ -38,7 +38,6 @@ class Google_Service_AnalyticsData extends Google_Service
       "https://www.googleapis.com/auth/analytics.readonly";
 
   public $properties;
-  public $v1alpha;
 
   /**
    * Constructs the internal representation of the AnalyticsData service.
@@ -52,7 +51,7 @@ class Google_Service_AnalyticsData extends Google_Service
     $this->rootUrl = $rootUrl ?: 'https://analyticsdata.googleapis.com/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
-    $this->version = 'v1alpha';
+    $this->version = 'v1beta';
     $this->serviceName = 'analyticsdata';
 
     $this->properties = new Google_Service_AnalyticsData_Resource_Properties(
@@ -61,18 +60,8 @@ class Google_Service_AnalyticsData extends Google_Service
         'properties',
         array(
           'methods' => array(
-            'getMetadata' => array(
-              'path' => 'v1alpha/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => array(
-                'name' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),'runRealtimeReport' => array(
-              'path' => 'v1alpha/{+property}:runRealtimeReport',
+            'batchRunPivotReports' => array(
+              'path' => 'v1beta/{+property}:batchRunPivotReports',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'property' => array(
@@ -81,32 +70,56 @@ class Google_Service_AnalyticsData extends Google_Service
                   'required' => true,
                 ),
               ),
-            ),
-          )
-        )
-    );
-    $this->v1alpha = new Google_Service_AnalyticsData_Resource_V1alpha(
-        $this,
-        $this->serviceName,
-        'v1alpha',
-        array(
-          'methods' => array(
-            'batchRunPivotReports' => array(
-              'path' => 'v1alpha:batchRunPivotReports',
-              'httpMethod' => 'POST',
-              'parameters' => array(),
             ),'batchRunReports' => array(
-              'path' => 'v1alpha:batchRunReports',
+              'path' => 'v1beta/{+property}:batchRunReports',
               'httpMethod' => 'POST',
-              'parameters' => array(),
+              'parameters' => array(
+                'property' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'getMetadata' => array(
+              'path' => 'v1beta/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
             ),'runPivotReport' => array(
-              'path' => 'v1alpha:runPivotReport',
+              'path' => 'v1beta/{+property}:runPivotReport',
               'httpMethod' => 'POST',
-              'parameters' => array(),
+              'parameters' => array(
+                'property' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'runRealtimeReport' => array(
+              'path' => 'v1beta/{+property}:runRealtimeReport',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'property' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
             ),'runReport' => array(
-              'path' => 'v1alpha:runReport',
+              'path' => 'v1beta/{+property}:runReport',
               'httpMethod' => 'POST',
-              'parameters' => array(),
+              'parameters' => array(
+                'property' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
             ),
           )
         )

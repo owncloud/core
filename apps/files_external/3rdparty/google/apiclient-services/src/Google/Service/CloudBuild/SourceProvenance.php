@@ -23,6 +23,8 @@ class Google_Service_CloudBuild_SourceProvenance extends Google_Model
   protected $resolvedRepoSourceDataType = '';
   protected $resolvedStorageSourceType = 'Google_Service_CloudBuild_StorageSource';
   protected $resolvedStorageSourceDataType = '';
+  protected $resolvedStorageSourceManifestType = 'Google_Service_CloudBuild_StorageSourceManifest';
+  protected $resolvedStorageSourceManifestDataType = '';
 
   /**
    * @param Google_Service_CloudBuild_FileHashes[]
@@ -65,5 +67,19 @@ class Google_Service_CloudBuild_SourceProvenance extends Google_Model
   public function getResolvedStorageSource()
   {
     return $this->resolvedStorageSource;
+  }
+  /**
+   * @param Google_Service_CloudBuild_StorageSourceManifest
+   */
+  public function setResolvedStorageSourceManifest(Google_Service_CloudBuild_StorageSourceManifest $resolvedStorageSourceManifest)
+  {
+    $this->resolvedStorageSourceManifest = $resolvedStorageSourceManifest;
+  }
+  /**
+   * @return Google_Service_CloudBuild_StorageSourceManifest
+   */
+  public function getResolvedStorageSourceManifest()
+  {
+    return $this->resolvedStorageSourceManifest;
   }
 }

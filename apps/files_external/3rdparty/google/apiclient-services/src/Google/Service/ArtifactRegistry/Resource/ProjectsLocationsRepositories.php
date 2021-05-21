@@ -25,4 +25,35 @@
  */
 class Google_Service_ArtifactRegistry_Resource_ProjectsLocationsRepositories extends Google_Service_Resource
 {
+  /**
+   * Gets a repository. (repositories.get)
+   *
+   * @param string $name Required. The name of the repository to retrieve.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_ArtifactRegistry_Repository
+   */
+  public function get($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('get', array($params), "Google_Service_ArtifactRegistry_Repository");
+  }
+  /**
+   * Lists repositories. (repositories.listProjectsLocationsRepositories)
+   *
+   * @param string $parent Required. The name of the parent resource whose
+   * repositories will be listed.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param int pageSize The maximum number of repositories to return.
+   * @opt_param string pageToken The next_page_token value returned from a
+   * previous list request, if any.
+   * @return Google_Service_ArtifactRegistry_ListRepositoriesResponse
+   */
+  public function listProjectsLocationsRepositories($parent, $optParams = array())
+  {
+    $params = array('parent' => $parent);
+    $params = array_merge($params, $optParams);
+    return $this->call('list', array($params), "Google_Service_ArtifactRegistry_ListRepositoriesResponse");
+  }
 }

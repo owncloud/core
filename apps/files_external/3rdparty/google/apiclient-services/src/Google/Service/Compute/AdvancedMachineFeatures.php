@@ -18,6 +18,7 @@
 class Google_Service_Compute_AdvancedMachineFeatures extends Google_Model
 {
   public $enableNestedVirtualization;
+  public $threadsPerCore;
 
   public function setEnableNestedVirtualization($enableNestedVirtualization)
   {
@@ -26,5 +27,13 @@ class Google_Service_Compute_AdvancedMachineFeatures extends Google_Model
   public function getEnableNestedVirtualization()
   {
     return $this->enableNestedVirtualization;
+  }
+  public function setThreadsPerCore($threadsPerCore)
+  {
+    $this->threadsPerCore = $threadsPerCore;
+  }
+  public function getThreadsPerCore()
+  {
+    return $this->threadsPerCore;
   }
 }

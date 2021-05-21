@@ -80,7 +80,9 @@ class Google_Service_AIPlatformNotebooks_Resource_ProjectsLocationsExecutions ex
    * `parent=projects/{project_id}/locations/{location}`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Filter applied to resulting executions.
+   * @opt_param string filter Filter applied to resulting executions. Currently
+   * only supports filtering executions by a specified schedule_id. Format:
+   * "schedule_id="
    * @opt_param string orderBy Sort by field.
    * @opt_param int pageSize Maximum return size of the list call.
    * @opt_param string pageToken A previous returned page token that can be used

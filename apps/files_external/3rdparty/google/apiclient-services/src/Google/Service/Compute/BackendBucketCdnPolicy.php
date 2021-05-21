@@ -27,6 +27,7 @@ class Google_Service_Compute_BackendBucketCdnPolicy extends Google_Collection
   public $negativeCaching;
   protected $negativeCachingPolicyType = 'Google_Service_Compute_BackendBucketCdnPolicyNegativeCachingPolicy';
   protected $negativeCachingPolicyDataType = 'array';
+  public $requestCoalescing;
   public $serveWhileStale;
   public $signedUrlCacheMaxAgeSec;
   public $signedUrlKeyNames;
@@ -98,6 +99,14 @@ class Google_Service_Compute_BackendBucketCdnPolicy extends Google_Collection
   public function getNegativeCachingPolicy()
   {
     return $this->negativeCachingPolicy;
+  }
+  public function setRequestCoalescing($requestCoalescing)
+  {
+    $this->requestCoalescing = $requestCoalescing;
+  }
+  public function getRequestCoalescing()
+  {
+    return $this->requestCoalescing;
   }
   public function setServeWhileStale($serveWhileStale)
   {

@@ -17,6 +17,7 @@
 
 class Google_Service_SecurityCommandCenter_Asset extends Google_Model
 {
+  public $canonicalName;
   public $createTime;
   protected $iamPolicyType = 'Google_Service_SecurityCommandCenter_IamPolicy';
   protected $iamPolicyDataType = '';
@@ -28,6 +29,14 @@ class Google_Service_SecurityCommandCenter_Asset extends Google_Model
   protected $securityMarksDataType = '';
   public $updateTime;
 
+  public function setCanonicalName($canonicalName)
+  {
+    $this->canonicalName = $canonicalName;
+  }
+  public function getCanonicalName()
+  {
+    return $this->canonicalName;
+  }
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;

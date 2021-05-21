@@ -216,8 +216,8 @@ class Google_Service_Compute_Resource_Instances extends Google_Service_Resource
     return $this->call('bulkInsert', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Deletes the specified Instance resource. For more information, see Stopping
-   * or Deleting an Instance. (instances.delete)
+   * Deletes the specified Instance resource. For more information, see Deleting
+   * an instance. (instances.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.

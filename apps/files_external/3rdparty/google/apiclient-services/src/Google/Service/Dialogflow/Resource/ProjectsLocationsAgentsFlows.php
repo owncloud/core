@@ -35,8 +35,10 @@ class Google_Service_Dialogflow_Resource_ProjectsLocationsAgentsFlows extends Go
    *
    * @opt_param string languageCode The language of the following fields in
    * `flow`: * `Flow.event_handlers.trigger_fulfillment.messages` *
-   * `Flow.transition_routes.trigger_fulfillment.messages` If not specified, the
-   * agent's default language is used. [Many
+   * `Flow.event_handlers.trigger_fulfillment.conditional_cases` *
+   * `Flow.transition_routes.trigger_fulfillment.messages` *
+   * `Flow.transition_routes.trigger_fulfillment.conditional_cases` If not
+   * specified, the agent's default language is used. [Many
    * languages](https://cloud.google.com/dialogflow/cx/docs/reference/language)
    * are supported. Note: languages must be enabled in the agent before they can
    * be used.
@@ -70,6 +72,23 @@ class Google_Service_Dialogflow_Resource_ProjectsLocationsAgentsFlows extends Go
     return $this->call('delete', array($params), "Google_Service_Dialogflow_GoogleProtobufEmpty");
   }
   /**
+   * Exports the specified flow to a binary file. Note that resources (e.g.
+   * intents, entities, webhooks) that the flow references will also be exported.
+   * (flows.export)
+   *
+   * @param string $name Required. The name of the flow to export. Format:
+   * `projects//locations//agents//flows/`.
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3ExportFlowRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Dialogflow_GoogleLongrunningOperation
+   */
+  public function export($name, Google_Service_Dialogflow_GoogleCloudDialogflowCxV3ExportFlowRequest $postBody, $optParams = array())
+  {
+    $params = array('name' => $name, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('export', array($params), "Google_Service_Dialogflow_GoogleLongrunningOperation");
+  }
+  /**
    * Retrieves the specified flow. (flows.get)
    *
    * @param string $name Required. The name of the flow to get. Format:
@@ -79,8 +98,10 @@ class Google_Service_Dialogflow_Resource_ProjectsLocationsAgentsFlows extends Go
    * @opt_param string languageCode The language to retrieve the flow for. The
    * following fields are language dependent: *
    * `Flow.event_handlers.trigger_fulfillment.messages` *
-   * `Flow.transition_routes.trigger_fulfillment.messages` If not specified, the
-   * agent's default language is used. [Many
+   * `Flow.event_handlers.trigger_fulfillment.conditional_cases` *
+   * `Flow.transition_routes.trigger_fulfillment.messages` *
+   * `Flow.transition_routes.trigger_fulfillment.conditional_cases` If not
+   * specified, the agent's default language is used. [Many
    * languages](https://cloud.google.com/dialogflow/cx/docs/reference/language)
    * are supported. Note: languages must be enabled in the agent before they can
    * be used.
@@ -111,6 +132,22 @@ class Google_Service_Dialogflow_Resource_ProjectsLocationsAgentsFlows extends Go
     return $this->call('getValidationResult', array($params), "Google_Service_Dialogflow_GoogleCloudDialogflowCxV3FlowValidationResult");
   }
   /**
+   * Imports the specified flow to the specified agent from a binary file.
+   * (flows.import)
+   *
+   * @param string $parent Required. The agent to import the flow into. Format:
+   * `projects//locations//agents/`.
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3ImportFlowRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Dialogflow_GoogleLongrunningOperation
+   */
+  public function import($parent, Google_Service_Dialogflow_GoogleCloudDialogflowCxV3ImportFlowRequest $postBody, $optParams = array())
+  {
+    $params = array('parent' => $parent, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('import', array($params), "Google_Service_Dialogflow_GoogleLongrunningOperation");
+  }
+  /**
    * Returns the list of all flows in the specified agent.
    * (flows.listProjectsLocationsAgentsFlows)
    *
@@ -121,8 +158,10 @@ class Google_Service_Dialogflow_Resource_ProjectsLocationsAgentsFlows extends Go
    * @opt_param string languageCode The language to list flows for. The following
    * fields are language dependent: *
    * `Flow.event_handlers.trigger_fulfillment.messages` *
-   * `Flow.transition_routes.trigger_fulfillment.messages` If not specified, the
-   * agent's default language is used. [Many
+   * `Flow.event_handlers.trigger_fulfillment.conditional_cases` *
+   * `Flow.transition_routes.trigger_fulfillment.messages` *
+   * `Flow.transition_routes.trigger_fulfillment.conditional_cases` If not
+   * specified, the agent's default language is used. [Many
    * languages](https://cloud.google.com/dialogflow/cx/docs/reference/language)
    * are supported. Note: languages must be enabled in the agent before they can
    * be used.
@@ -148,8 +187,10 @@ class Google_Service_Dialogflow_Resource_ProjectsLocationsAgentsFlows extends Go
    *
    * @opt_param string languageCode The language of the following fields in
    * `flow`: * `Flow.event_handlers.trigger_fulfillment.messages` *
-   * `Flow.transition_routes.trigger_fulfillment.messages` If not specified, the
-   * agent's default language is used. [Many
+   * `Flow.event_handlers.trigger_fulfillment.conditional_cases` *
+   * `Flow.transition_routes.trigger_fulfillment.messages` *
+   * `Flow.transition_routes.trigger_fulfillment.conditional_cases` If not
+   * specified, the agent's default language is used. [Many
    * languages](https://cloud.google.com/dialogflow/cx/docs/reference/language)
    * are supported. Note: languages must be enabled in the agent before they can
    * be used.

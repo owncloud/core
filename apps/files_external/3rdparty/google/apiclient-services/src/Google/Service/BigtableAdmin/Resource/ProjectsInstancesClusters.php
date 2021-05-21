@@ -96,7 +96,27 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstancesClusters extends Go
     return $this->call('list', array($params), "Google_Service_BigtableAdmin_ListClustersResponse");
   }
   /**
-   * Updates a cluster within an instance. (clusters.update)
+   * Partially updates a cluster within a project. This method is the preferred
+   * way to update a Cluster.  (clusters.partialUpdateCluster)
+   *
+   * @param string $name The unique name of the cluster. Values are of the form
+   * `projects/{project}/instances/{instance}/clusters/a-z*`.
+   * @param Google_Service_BigtableAdmin_Cluster $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask Required. The subset of Cluster fields which
+   * should be replaced. Must be explicitly set.
+   * @return Google_Service_BigtableAdmin_Operation
+   */
+  public function partialUpdateCluster($name, Google_Service_BigtableAdmin_Cluster $postBody, $optParams = array())
+  {
+    $params = array('name' => $name, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('partialUpdateCluster', array($params), "Google_Service_BigtableAdmin_Operation");
+  }
+  /**
+   * Updates a cluster within an instance. UpdateCluster is deprecated. Please use
+   * PartialUpdateCluster instead. (clusters.update)
    *
    * @param string $name The unique name of the cluster. Values are of the form
    * `projects/{project}/instances/{instance}/clusters/a-z*`.

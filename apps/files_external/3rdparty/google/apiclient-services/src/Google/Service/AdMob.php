@@ -39,6 +39,8 @@ class Google_Service_AdMob extends Google_Service
       "https://www.googleapis.com/auth/admob.report";
 
   public $accounts;
+  public $accounts_adUnits;
+  public $accounts_apps;
   public $accounts_mediationReport;
   public $accounts_networkReport;
 
@@ -77,6 +79,62 @@ class Google_Service_AdMob extends Google_Service
               'path' => 'v1/accounts',
               'httpMethod' => 'GET',
               'parameters' => array(
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->accounts_adUnits = new Google_Service_AdMob_Resource_AccountsAdUnits(
+        $this,
+        $this->serviceName,
+        'adUnits',
+        array(
+          'methods' => array(
+            'list' => array(
+              'path' => 'v1/{+parent}/adUnits',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->accounts_apps = new Google_Service_AdMob_Resource_AccountsApps(
+        $this,
+        $this->serviceName,
+        'apps',
+        array(
+          'methods' => array(
+            'list' => array(
+              'path' => 'v1/{+parent}/apps',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',

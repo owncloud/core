@@ -51,13 +51,13 @@ class Google_Service_GoogleAnalyticsAdmin_Resource_Properties extends Google_Ser
    * @param string $name Required. The name of the Property to soft-delete.
    * Format: properties/{property_id} Example: "properties/1000"
    * @param array $optParams Optional parameters.
-   * @return Google_Service_GoogleAnalyticsAdmin_GoogleProtobufEmpty
+   * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaProperty
    */
   public function delete($name, $optParams = array())
   {
     $params = array('name' => $name);
     $params = array_merge($params, $optParams);
-    return $this->call('delete', array($params), "Google_Service_GoogleAnalyticsAdmin_GoogleProtobufEmpty");
+    return $this->call('delete', array($params), "Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaProperty");
   }
   /**
    * Lookup for a single "GA4" Property. (properties.get)

@@ -30,7 +30,7 @@
  */
 class Google_Service_SASPortalTesting extends Google_Service
 {
-  /** View your email address. */
+  /** See your primary Google Account email address. */
   const USERINFO_EMAIL =
       "https://www.googleapis.com/auth/userinfo.email";
 

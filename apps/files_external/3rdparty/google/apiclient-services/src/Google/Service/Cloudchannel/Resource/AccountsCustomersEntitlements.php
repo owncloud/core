@@ -254,6 +254,25 @@ class Google_Service_Cloudchannel_Resource_AccountsCustomersEntitlements extends
     return $this->call('list', array($params), "Google_Service_Cloudchannel_GoogleCloudChannelV1ListEntitlementsResponse");
   }
   /**
+   * Returns the requested Offer resource. Possible error codes: *
+   * PERMISSION_DENIED: The entitlement doesn't belong to the reseller. *
+   * INVALID_ARGUMENT: Required request parameters are missing or invalid. *
+   * NOT_FOUND: Entitlement or offer was not found. Return value: The Offer
+   * resource. (entitlements.lookupOffer)
+   *
+   * @param string $entitlement Required. The resource name of the entitlement to
+   * retrieve the Offer. Entitlement uses the format:
+   * accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Cloudchannel_GoogleCloudChannelV1Offer
+   */
+  public function lookupOffer($entitlement, $optParams = array())
+  {
+    $params = array('entitlement' => $entitlement);
+    $params = array_merge($params, $optParams);
+    return $this->call('lookupOffer', array($params), "Google_Service_Cloudchannel_GoogleCloudChannelV1Offer");
+  }
+  /**
    * Starts paid service for a trial entitlement. Starts paid service for a trial
    * entitlement immediately. This method is only applicable if a plan is set up
    * for a trial entitlement but has some trial days remaining. Possible error

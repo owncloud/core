@@ -18,6 +18,8 @@
 class Google_Service_BigtableAdmin_Cluster extends Google_Model
 {
   public $defaultStorageType;
+  protected $encryptionConfigType = 'Google_Service_BigtableAdmin_EncryptionConfig';
+  protected $encryptionConfigDataType = '';
   public $location;
   public $name;
   public $serveNodes;
@@ -30,6 +32,20 @@ class Google_Service_BigtableAdmin_Cluster extends Google_Model
   public function getDefaultStorageType()
   {
     return $this->defaultStorageType;
+  }
+  /**
+   * @param Google_Service_BigtableAdmin_EncryptionConfig
+   */
+  public function setEncryptionConfig(Google_Service_BigtableAdmin_EncryptionConfig $encryptionConfig)
+  {
+    $this->encryptionConfig = $encryptionConfig;
+  }
+  /**
+   * @return Google_Service_BigtableAdmin_EncryptionConfig
+   */
+  public function getEncryptionConfig()
+  {
+    return $this->encryptionConfig;
   }
   public function setLocation($location)
   {

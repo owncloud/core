@@ -29,7 +29,7 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsCatalog
    * Creates a catalog item. (catalogItems.create)
    *
    * @param string $parent Required. The parent catalog resource name, such as
-   * "projects/locations/global/catalogs/default_catalog".
+   * `projects/locations/global/catalogs/default_catalog`.
    * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1CatalogItem $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1CatalogItem
@@ -43,9 +43,9 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsCatalog
   /**
    * Deletes a catalog item. (catalogItems.delete)
    *
-   * @param string $name Required. Full resource name of catalog item, such as "pr
+   * @param string $name Required. Full resource name of catalog item, such as `pr
    * ojects/locations/global/catalogs/default_catalog/catalogItems/some_catalog_it
-   * em_id".
+   * em_id`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_RecommendationsAI_GoogleProtobufEmpty
    */
@@ -58,9 +58,9 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsCatalog
   /**
    * Gets a specific catalog item. (catalogItems.get)
    *
-   * @param string $name Required. Full resource name of catalog item, such as "pr
+   * @param string $name Required. Full resource name of catalog item, such as `pr
    * ojects/locations/global/catalogs/default_catalog/catalogitems/some_catalog_it
-   * em_id".
+   * em_id`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1CatalogItem
    */
@@ -77,7 +77,7 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsCatalog
    * subset of the items to be successfully updated. (catalogItems.import)
    *
    * @param string $parent Required.
-   * "projects/1234/locations/global/catalogs/default_catalog" If no updateMask is
+   * `projects/1234/locations/global/catalogs/default_catalog` If no updateMask is
    * specified, requires catalogItems.create permission. If updateMask is
    * specified, requires catalogItems.update permission.
    * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1ImportCatalogItemsRequest $postBody
@@ -95,7 +95,7 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsCatalog
    * (catalogItems.listProjectsLocationsCatalogsCatalogItems)
    *
    * @param string $parent Required. The parent catalog resource name, such as
-   * "projects/locations/global/catalogs/default_catalog".
+   * `projects/locations/global/catalogs/default_catalog`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Optional. A filter to apply on the list results.
@@ -115,9 +115,9 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsCatalog
    * Updates a catalog item. Partial updating is supported. Non-existing items
    * will be created. (catalogItems.patch)
    *
-   * @param string $name Required. Full resource name of catalog item, such as "pr
+   * @param string $name Required. Full resource name of catalog item, such as `pr
    * ojects/locations/global/catalogs/default_catalog/catalogItems/some_catalog_it
-   * em_id".
+   * em_id`.
    * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1CatalogItem $postBody
    * @param array $optParams Optional parameters.
    *

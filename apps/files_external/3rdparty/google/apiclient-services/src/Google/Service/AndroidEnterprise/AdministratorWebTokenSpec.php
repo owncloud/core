@@ -30,6 +30,8 @@ class Google_Service_AndroidEnterprise_AdministratorWebTokenSpec extends Google_
   protected $storeBuilderDataType = '';
   protected $webAppsType = 'Google_Service_AndroidEnterprise_AdministratorWebTokenSpecWebApps';
   protected $webAppsDataType = '';
+  protected $zeroTouchType = 'Google_Service_AndroidEnterprise_AdministratorWebTokenSpecZeroTouch';
+  protected $zeroTouchDataType = '';
 
   /**
    * @param Google_Service_AndroidEnterprise_AdministratorWebTokenSpecManagedConfigurations
@@ -116,5 +118,19 @@ class Google_Service_AndroidEnterprise_AdministratorWebTokenSpec extends Google_
   public function getWebApps()
   {
     return $this->webApps;
+  }
+  /**
+   * @param Google_Service_AndroidEnterprise_AdministratorWebTokenSpecZeroTouch
+   */
+  public function setZeroTouch(Google_Service_AndroidEnterprise_AdministratorWebTokenSpecZeroTouch $zeroTouch)
+  {
+    $this->zeroTouch = $zeroTouch;
+  }
+  /**
+   * @return Google_Service_AndroidEnterprise_AdministratorWebTokenSpecZeroTouch
+   */
+  public function getZeroTouch()
+  {
+    return $this->zeroTouch;
   }
 }

@@ -22,6 +22,7 @@ class Google_Service_Apigee_GoogleCloudApigeeV1TargetServer extends Google_Model
   public $isEnabled;
   public $name;
   public $port;
+  public $protocol;
   protected $sSLInfoType = 'Google_Service_Apigee_GoogleCloudApigeeV1TlsInfo';
   protected $sSLInfoDataType = '';
 
@@ -64,6 +65,14 @@ class Google_Service_Apigee_GoogleCloudApigeeV1TargetServer extends Google_Model
   public function getPort()
   {
     return $this->port;
+  }
+  public function setProtocol($protocol)
+  {
+    $this->protocol = $protocol;
+  }
+  public function getProtocol()
+  {
+    return $this->protocol;
   }
   /**
    * @param Google_Service_Apigee_GoogleCloudApigeeV1TlsInfo

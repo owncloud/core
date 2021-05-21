@@ -27,11 +27,12 @@ class Google_Service_SecretManager_Resource_ProjectsSecretsVersions extends Goog
 {
   /**
    * Accesses a SecretVersion. This call returns the secret data.
-   * `projects/secrets/versions/latest` is an alias to the `latest` SecretVersion.
-   * (versions.access)
+   * `projects/secrets/versions/latest` is an alias to the most recently created
+   * SecretVersion. (versions.access)
    *
    * @param string $name Required. The resource name of the SecretVersion in the
-   * format `projects/secrets/versions`.
+   * format `projects/secrets/versions`. `projects/secrets/versions/latest` is an
+   * alias to the most recently created SecretVersion.
    * @param array $optParams Optional parameters.
    * @return Google_Service_SecretManager_AccessSecretVersionResponse
    */
@@ -91,11 +92,11 @@ class Google_Service_SecretManager_Resource_ProjectsSecretsVersions extends Goog
   }
   /**
    * Gets metadata for a SecretVersion. `projects/secrets/versions/latest` is an
-   * alias to the `latest` SecretVersion. (versions.get)
+   * alias to the most recently created SecretVersion. (versions.get)
    *
    * @param string $name Required. The resource name of the SecretVersion in the
    * format `projects/secrets/versions`. `projects/secrets/versions/latest` is an
-   * alias to the `latest` SecretVersion.
+   * alias to the most recently created SecretVersion.
    * @param array $optParams Optional parameters.
    * @return Google_Service_SecretManager_SecretVersion
    */

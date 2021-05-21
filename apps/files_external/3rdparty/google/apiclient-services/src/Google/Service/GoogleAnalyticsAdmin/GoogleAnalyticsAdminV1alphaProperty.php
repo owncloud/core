@@ -19,8 +19,9 @@ class Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaProperty ex
 {
   public $createTime;
   public $currencyCode;
-  public $deleted;
+  public $deleteTime;
   public $displayName;
+  public $expireTime;
   public $industryCategory;
   public $name;
   public $parent;
@@ -43,13 +44,13 @@ class Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaProperty ex
   {
     return $this->currencyCode;
   }
-  public function setDeleted($deleted)
+  public function setDeleteTime($deleteTime)
   {
-    $this->deleted = $deleted;
+    $this->deleteTime = $deleteTime;
   }
-  public function getDeleted()
+  public function getDeleteTime()
   {
-    return $this->deleted;
+    return $this->deleteTime;
   }
   public function setDisplayName($displayName)
   {
@@ -58,6 +59,14 @@ class Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaProperty ex
   public function getDisplayName()
   {
     return $this->displayName;
+  }
+  public function setExpireTime($expireTime)
+  {
+    $this->expireTime = $expireTime;
+  }
+  public function getExpireTime()
+  {
+    return $this->expireTime;
   }
   public function setIndustryCategory($industryCategory)
   {

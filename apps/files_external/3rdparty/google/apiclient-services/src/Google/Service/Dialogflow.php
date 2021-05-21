@@ -31,7 +31,7 @@
  */
 class Google_Service_Dialogflow extends Google_Service
 {
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
   /** View, manage and query your Dialogflow agents. */
@@ -609,6 +609,16 @@ class Google_Service_Dialogflow extends Google_Service
                   'type' => 'boolean',
                 ),
               ),
+            ),'export' => array(
+              'path' => 'v3/{+name}:export',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
             ),'get' => array(
               'path' => 'v3/{+name}',
               'httpMethod' => 'GET',
@@ -635,6 +645,16 @@ class Google_Service_Dialogflow extends Google_Service
                 'languageCode' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+              ),
+            ),'import' => array(
+              'path' => 'v3/{+parent}/flows:import',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ),
               ),
             ),'list' => array(

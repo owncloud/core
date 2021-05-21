@@ -18,6 +18,8 @@
 class Google_Service_Compute_HealthStatus extends Google_Model
 {
   public $annotations;
+  public $forwardingRule;
+  public $forwardingRuleIp;
   public $healthState;
   public $instance;
   public $ipAddress;
@@ -32,6 +34,22 @@ class Google_Service_Compute_HealthStatus extends Google_Model
   public function getAnnotations()
   {
     return $this->annotations;
+  }
+  public function setForwardingRule($forwardingRule)
+  {
+    $this->forwardingRule = $forwardingRule;
+  }
+  public function getForwardingRule()
+  {
+    return $this->forwardingRule;
+  }
+  public function setForwardingRuleIp($forwardingRuleIp)
+  {
+    $this->forwardingRuleIp = $forwardingRuleIp;
+  }
+  public function getForwardingRuleIp()
+  {
+    return $this->forwardingRuleIp;
   }
   public function setHealthState($healthState)
   {

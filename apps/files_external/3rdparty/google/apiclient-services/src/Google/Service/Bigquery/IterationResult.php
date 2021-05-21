@@ -17,7 +17,7 @@
 
 class Google_Service_Bigquery_IterationResult extends Google_Collection
 {
-  protected $collection_key = 'principalComponentInfos';
+  protected $collection_key = 'clusterInfos';
   protected $arimaResultType = 'Google_Service_Bigquery_ArimaResult';
   protected $arimaResultDataType = '';
   protected $clusterInfosType = 'Google_Service_Bigquery_ClusterInfo';
@@ -26,8 +26,6 @@ class Google_Service_Bigquery_IterationResult extends Google_Collection
   public $evalLoss;
   public $index;
   public $learnRate;
-  protected $principalComponentInfosType = 'Google_Service_Bigquery_PrincipalComponentInfo';
-  protected $principalComponentInfosDataType = 'array';
   public $trainingLoss;
 
   /**
@@ -89,20 +87,6 @@ class Google_Service_Bigquery_IterationResult extends Google_Collection
   public function getLearnRate()
   {
     return $this->learnRate;
-  }
-  /**
-   * @param Google_Service_Bigquery_PrincipalComponentInfo[]
-   */
-  public function setPrincipalComponentInfos($principalComponentInfos)
-  {
-    $this->principalComponentInfos = $principalComponentInfos;
-  }
-  /**
-   * @return Google_Service_Bigquery_PrincipalComponentInfo[]
-   */
-  public function getPrincipalComponentInfos()
-  {
-    return $this->principalComponentInfos;
   }
   public function setTrainingLoss($trainingLoss)
   {

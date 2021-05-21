@@ -18,11 +18,21 @@
 class Google_Service_Document_GoogleCloudDocumentaiUiv1beta3TrainProcessorVersionMetadataDatasetValidation extends Google_Collection
 {
   protected $collection_key = 'documentErrors';
+  public $datasetErrorCount;
   protected $datasetErrorsType = 'Google_Service_Document_GoogleRpcStatus';
   protected $datasetErrorsDataType = 'array';
+  public $documentErrorCount;
   protected $documentErrorsType = 'Google_Service_Document_GoogleRpcStatus';
   protected $documentErrorsDataType = 'array';
 
+  public function setDatasetErrorCount($datasetErrorCount)
+  {
+    $this->datasetErrorCount = $datasetErrorCount;
+  }
+  public function getDatasetErrorCount()
+  {
+    return $this->datasetErrorCount;
+  }
   /**
    * @param Google_Service_Document_GoogleRpcStatus[]
    */
@@ -36,6 +46,14 @@ class Google_Service_Document_GoogleCloudDocumentaiUiv1beta3TrainProcessorVersio
   public function getDatasetErrors()
   {
     return $this->datasetErrors;
+  }
+  public function setDocumentErrorCount($documentErrorCount)
+  {
+    $this->documentErrorCount = $documentErrorCount;
+  }
+  public function getDocumentErrorCount()
+  {
+    return $this->documentErrorCount;
   }
   /**
    * @param Google_Service_Document_GoogleRpcStatus[]

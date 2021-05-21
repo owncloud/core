@@ -1,4 +1,0 @@
-vendor
-build/artifacts/
-composer.lock
-docs/_build/

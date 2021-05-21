@@ -30,8 +30,9 @@ class Google_Service_Monitoring_Resource_ProjectsCollectdTimeSeries extends Goog
    * only for use by the Stackdriver Monitoring Agent. Use
    * projects.timeSeries.create instead. (collectdTimeSeries.create)
    *
-   * @param string $name The project in which to create the time series. The
-   * format is: projects/[PROJECT_ID_OR_NUMBER]
+   * @param string $name The project
+   * (https://cloud.google.com/monitoring/api/v3#project_name) in which to create
+   * the time series. The format is: projects/[PROJECT_ID_OR_NUMBER]
    * @param Google_Service_Monitoring_CreateCollectdTimeSeriesRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Monitoring_CreateCollectdTimeSeriesResponse

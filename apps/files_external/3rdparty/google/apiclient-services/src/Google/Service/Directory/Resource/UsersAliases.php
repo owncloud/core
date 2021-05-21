@@ -60,6 +60,8 @@ class Google_Service_Directory_Resource_UsersAliases extends Google_Service_Reso
    * @param string $userKey Identifies the user in the API request. The value can
    * be the user's primary email address, alias email address, or unique user ID.
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string event Events to watch for.
    * @return Google_Service_Directory_Aliases
    */
   public function listUsersAliases($userKey, $optParams = array())

@@ -198,6 +198,22 @@ class Google_Service_DataprocMetastore_Resource_ProjectsLocationsServices extend
     return $this->call('patch', array($params), "Google_Service_DataprocMetastore_Operation");
   }
   /**
+   * Restores a service from a backup. (services.restore)
+   *
+   * @param string $service Required. The relative resource name of the metastore
+   * service to run restore, in the following
+   * form:projects/{project_id}/locations/{location_id}/services/{service_id}.
+   * @param Google_Service_DataprocMetastore_RestoreServiceRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_DataprocMetastore_Operation
+   */
+  public function restore($service, Google_Service_DataprocMetastore_RestoreServiceRequest $postBody, $optParams = array())
+  {
+    $params = array('service' => $service, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('restore', array($params), "Google_Service_DataprocMetastore_Operation");
+  }
+  /**
    * Sets the access control policy on the specified resource. Replaces any
    * existing policy.Can return NOT_FOUND, INVALID_ARGUMENT, and PERMISSION_DENIED
    * errors. (services.setIamPolicy)

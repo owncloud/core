@@ -27,8 +27,6 @@ class Google_Service_AnalyticsData_RunReportRequest extends Google_Collection
   protected $dimensionFilterDataType = '';
   protected $dimensionsType = 'Google_Service_AnalyticsData_Dimension';
   protected $dimensionsDataType = 'array';
-  protected $entityType = 'Google_Service_AnalyticsData_Entity';
-  protected $entityDataType = '';
   public $keepEmptyRows;
   public $limit;
   public $metricAggregations;
@@ -39,6 +37,7 @@ class Google_Service_AnalyticsData_RunReportRequest extends Google_Collection
   public $offset;
   protected $orderBysType = 'Google_Service_AnalyticsData_OrderBy';
   protected $orderBysDataType = 'array';
+  public $property;
   public $returnPropertyQuota;
 
   /**
@@ -104,20 +103,6 @@ class Google_Service_AnalyticsData_RunReportRequest extends Google_Collection
   public function getDimensions()
   {
     return $this->dimensions;
-  }
-  /**
-   * @param Google_Service_AnalyticsData_Entity
-   */
-  public function setEntity(Google_Service_AnalyticsData_Entity $entity)
-  {
-    $this->entity = $entity;
-  }
-  /**
-   * @return Google_Service_AnalyticsData_Entity
-   */
-  public function getEntity()
-  {
-    return $this->entity;
   }
   public function setKeepEmptyRows($keepEmptyRows)
   {
@@ -192,6 +177,14 @@ class Google_Service_AnalyticsData_RunReportRequest extends Google_Collection
   public function getOrderBys()
   {
     return $this->orderBys;
+  }
+  public function setProperty($property)
+  {
+    $this->property = $property;
+  }
+  public function getProperty()
+  {
+    return $this->property;
   }
   public function setReturnPropertyQuota($returnPropertyQuota)
   {
