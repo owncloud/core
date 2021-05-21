@@ -153,7 +153,8 @@
 				iconClass: action.iconClass,
 				permissions: action.permissions,
 				type: action.type || FileActions.TYPE_DROPDOWN,
-				altText: action.altText || ''
+				altText: action.altText || '',
+				excludeFromApplicationSelectMenu: action.excludeFromApplicationSelectMenu || false
 			};
 			if (_.isUndefined(action.displayName)) {
 				actionSpec.displayName = t('files', name);
@@ -233,6 +234,30 @@
 		 */
 		getActionsWithoutAll: function (mime, type, permissions) {
 			return this._getActions(mime, type, permissions, true);
+		},
+
+		/**
+		 * Returns an array of file actions matching the given conditions while
+		 * omitting the actions which apply to all mime types ("Rename", "Download" etc.)
+		 * also omitting the actions which has the excludeFromApplicationSelectMenu flag
+		 *
+		 * @param {string} mime mime type
+		 * @param {string} type "dir" or "file"
+		 * @param {int} permissions permissions
+		 *
+		 * @return {Object.<OCA.Files.FileAction>} array of action specs
+		 */
+		getActionsApplicationSelectMenu: function (mime, type, permissions) {
+			var filteredActions = {};
+			var actionsWithoutAll =  this._getActions(mime, type, permissions, true);
+
+			$.each(actionsWithoutAll, function (name, action) {
+				if (action.excludeFromApplicationSelectMenu !== true) {
+					filteredActions[name] = action;
+				}
+			});
+
+			return filteredActions;
 		},
 
 		/**
@@ -768,6 +793,7 @@
 	 * @property {(Function|String)} iconClass class name of the icon (recommended for theming)
 	 * @property {OCA.Files.FileActions~renderActionFunction} [render] optional rendering function
 	 * @property {OCA.Files.FileActions~actionHandler} actionHandler action handler function
+	 * @property {Boolean} excludeFromApplicationSelectMenu exclude from application select menu
 	 */
 
 	/**
