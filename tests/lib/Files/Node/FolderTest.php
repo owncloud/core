@@ -575,10 +575,8 @@ class FolderTest extends NodeTest {
 		$mount = new MountPoint($storage, '/bar');
 		$cache = $this->createMock(Cache::class);
 
-		// called twice because of Folder::nodeExists and Folder::get
-		$view->expects(self::exactly(2))
-			->method('getFileInfo')
-			->willReturn(new FileInfo('/bar/foo/qwerty', null, 'qwerty', ['mimetype' => 'text/plain'], null));
+		$view->method('file_exists')
+			->willReturn(true);
 
 		$storage->expects(self::once())
 			->method('getCache')
@@ -664,9 +662,8 @@ class FolderTest extends NodeTest {
 		$mount2 = new MountPoint($storage, '/bar/foo/asd');
 		$cache = $this->createMock(Cache::class);
 
-		$view->expects($this->any())
-			->method('getFileInfo')
-			->will($this->returnValue(new FileInfo('/bar/foo/qwerty', null, 'qwerty', ['mimetype' => 'plain'], null)));
+		$view->method('file_exists')
+			->willReturn(true);
 
 		$storage->expects($this->any())
 			->method('getCache')
