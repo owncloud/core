@@ -33,6 +33,9 @@
  */
 
 /** @var Symfony\Component\Console\Application $application */
+
+use OC\Helper\UserTypeHelper;
+
 '@phan-var \Symfony\Component\Console\Application $application';
 $application->add(new OC\Core\Command\Status);
 $application->add(new OC\Core\Command\Check(\OC::$server->getConfig()));
@@ -155,7 +158,7 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\User\LastSeen(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\ListUsers(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\ListUserGroups(\OC::$server->getUserManager(), \OC::$server->getGroupManager()));
-	$application->add(new OC\Core\Command\User\Report(\OC::$server->getUserManager()));
+	$application->add(new OC\Core\Command\User\Report(\OC::$server->getUserManager(), new UserTypeHelper()));
 	$application->add(new OC\Core\Command\User\ResetPassword(\OC::$server->getUserManager(), \OC::$server->getConfig(), \OC::$server->getTimeFactory(),
 		new \OC\Helper\EnvironmentHelper(), new \OC\Core\Controller\LostController('settings',
 			\OC::$server->getRequest(), \OC::$server->getURLGenerator(), \OC::$server->getUserManager(), new \OC_Defaults(),
