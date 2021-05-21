@@ -10,10 +10,10 @@ Feature: sharing - current oC10 behavior for issue-30325
       | Carol    |
 
   @issue-30325
-  Scenario: receiver tries to rename a received share with share, read permissions
+  Scenario Outline: receiver tries to rename a received share with limited permissions
     Given user "Alice" has created folder "folderToShare"
     And user "Alice" has uploaded file with content "thisIsAFileInsideTheSharedFolder" to "/folderToShare/fileInside"
-    And user "Alice" has shared folder "folderToShare" with user "Brian" with permissions "share,read"
+    And user "Alice" has shared folder "folderToShare" with user "Brian" with permissions "<permissions>"
     When user "Brian" moves folder "folderToShare" to "myFolder" using the WebDAV API
     Then the HTTP status code should be "403"
 #    Then the HTTP status code should be "201"
@@ -27,3 +27,9 @@ Feature: sharing - current oC10 behavior for issue-30325
 #    And as "Brian" file "/myFolder/renamedFile" should not exist
     But as "Brian" file "/folderToShare/fileInside" should exist
 #    But as "Brian" file "/myFolder/fileInside" should exist
+    Examples:
+      | permissions        |
+      | share,read         |
+      | read               |
+      | read,create,delete |
+    # Note: if change permission is given, only then can the share receiver rename the received folder
