@@ -44,6 +44,7 @@ Summary
 * Enhancement - Remove google+ share button from personal settings: [#38705](https://github.com/owncloud/core/pull/38705)
 * Enhancement - Adjust the return type of the querybuilder's execute method: [#38714](https://github.com/owncloud/core/pull/38714)
 * Enhancement - Communicate user profile picture capability: [#38722](https://github.com/owncloud/core/pull/38722)
+* Enhancement - Command occ user:report shows additional row for guests: [#3467](https://github.com/owncloud/enterprise/issues/3467)
 
 Details
 -------
@@ -363,6 +364,14 @@ Details
    render avatar images of users.
 
    https://github.com/owncloud/core/pull/38722
+
+* Enhancement - Command occ user:report shows additional row for guests: [#3467](https://github.com/owncloud/enterprise/issues/3467)
+
+   With this improvement, a new row will be rendered for guest user count on the occ user:report
+   command.
+
+   https://github.com/owncloud/enterprise/issues/3467
+   https://github.com/owncloud/core/pull/38742
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================
