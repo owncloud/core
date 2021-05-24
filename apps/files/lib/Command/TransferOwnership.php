@@ -334,7 +334,20 @@ class TransferOwnership extends Command {
 				// files owned by the user - in case of reshares source
 				// user is not file owner
 				$filteredShares = \array_filter($filteredShares, function (IShare $share) {
-					return $share->getShareOwner() === $this->sourceUser;
+					if ($share->getShareOwner() === $this->sourceUser) {
+						// due to lazy loading of the file info the information wouldn't be
+						// available for the share transfer because the file has been moved before.
+						// Transfer steps are:
+						// 1. Get shares (with the info)
+						// 2. Transfer files
+						// 3. Transfer shares (requires info from step1)
+						// ShareManager's generalChecks checks for the node to be shareable during
+						// share update. This info could be lost in step3 because the file has been
+						// transferred already
+						$share->getNode()->getId();  // force loading the fileinfo
+						return true;
+					}
+					return false;
 				});
 
 				$progress->advance(\count($filteredShares));
