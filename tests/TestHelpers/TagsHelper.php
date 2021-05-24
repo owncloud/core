@@ -178,9 +178,9 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $user
 	 * @param string $password
 	 * @param string $name
-	 * @param string $userVisible "true" or "false"
-	 * @param string $userAssignable "true" or "false"
-	 * @param string $userEditable "true" or "false"
+	 * @param string $userVisible "true", "1" or "false", "0"
+	 * @param string $userAssignable "true", "1" or "false", "0"
+	 * @param string $userEditable "true", "1" or "false", "0"
 	 * @param string $groups separated by "|"
 	 * @param int $davPathVersionToUse (1|2)
 	 *
@@ -249,27 +249,42 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 	}
 
 	/**
+	 * Validate the keyword(s) used for the type of tag
+	 * Tags can be "normal", "not user-assignable", "not user-visible" or "static"
+	 * That determines the tag attributes which are set when creating the tag.
+	 *
+	 * When creating the tag, the attributes can be enabled/disabled by specifying
+	 * either "true"/"false" or "1"/"0" in the request. Choose this "request style"
+	 * by passing the $useTrueFalseStrings parameter.
 	 *
 	 * @param string $type
+	 * @param boolean $useTrueFalseStrings use the strings "true"/"false" else "1"/"0"
 	 *
 	 * @throws \Exception
-	 * @return boolean[]
+	 * @return string[]
 	 */
-	public static function validateTypeOfTag($type) {
-		$userVisible = "true";
-		$userAssignable = "true";
-		$userEditable = "true";
+	public static function validateTypeOfTag($type, $useTrueFalseStrings = true) {
+		if ($useTrueFalseStrings) {
+			$trueValue = "true";
+			$falseValue = "false";
+		} else {
+			$trueValue = "1";
+			$falseValue = "0";
+		}
+		$userVisible = $trueValue;
+		$userAssignable = $trueValue;
+		$userEditable = $trueValue;
 		switch ($type) {
 			case 'normal':
 				break;
 			case 'not user-assignable':
-				$userAssignable = "false";
+				$userAssignable = $falseValue;
 				break;
 			case 'not user-visible':
-				$userVisible = "false";
+				$userVisible = $falseValue;
 				break;
 			case 'static':
-				$userEditable = "false";
+				$userEditable = $falseValue;
 				break;
 			default:
 				throw new \Exception('Unsupported type');
