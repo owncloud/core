@@ -1,0 +1,8 @@
+Enhancement: Improve mobile user interface on files list
+
+This improvement solves the problem that files and folders with a longer name
+than 10 chars will cut off to 7 chars by hiding non-essential meta data.
+As well the uploading indicator text on a folders table row will now be
+displayed at the beginning to avoid UI glitches.
+
+https://github.com/owncloud/core/pull/38748

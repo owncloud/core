@@ -19,11 +19,6 @@ table.multiselect thead {
 	padding-left: 0;
 }
 
-/* restrict length of displayed filename to prevent overflow */
-table td.filename .nametext {
-	width: 130px;
-}
-
 #fileList a.action.action-menu img {
 	padding-left: 0;
 }
@@ -46,7 +41,7 @@ table td.filename .nametext {
 
 /* ellipsis on file names */
 table td.filename .nametext .innernametext {
-	max-width: 80%;
+	max-width: 90%;
 }
 
 /* proper notification area for multi line messages */
@@ -68,6 +63,15 @@ table td.filename .nametext .innernametext {
 }
 #uploadprogressbar .mobile {
 	display: block !important;
+}
+
+/* hide mobile table content*/
+table #headerSize, #headerDate, .filesize, .modified, .date {
+	display: none;
+}
+
+#fileList a.action.action-menu.permanent {
+	padding-right: 14px;
 }
 
 }
