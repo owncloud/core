@@ -45,6 +45,7 @@ Summary
 * Enhancement - Adjust the return type of the querybuilder's execute method: [#38714](https://github.com/owncloud/core/pull/38714)
 * Enhancement - Communicate user profile picture capability: [#38722](https://github.com/owncloud/core/pull/38722)
 * Enhancement - Command occ user:report shows additional row for guests: [#3467](https://github.com/owncloud/enterprise/issues/3467)
+* Enhancement - Improve mobile user interface on files list: [#38748](https://github.com/owncloud/core/pull/38748)
 
 Details
 -------
@@ -372,6 +373,14 @@ Details
 
    https://github.com/owncloud/enterprise/issues/3467
    https://github.com/owncloud/core/pull/38742
+
+* Enhancement - Improve mobile user interface on files list: [#38748](https://github.com/owncloud/core/pull/38748)
+
+   This improvement solves the problem that files and folders with a longer name than 10 chars will
+   cut off to 7 chars by hiding non-essential meta data. As well the uploading indicator text on a
+   folders table row will now be displayed at the beginning to avoid UI glitches.
+
+   https://github.com/owncloud/core/pull/38748
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================
