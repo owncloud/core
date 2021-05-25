@@ -39,6 +39,7 @@ config = {
 			]
 		},
 		'external-samba-windows' : {
+			'skip': true,
 			'phpVersions': [
 				'7.2',
 				'7.4',
@@ -59,6 +60,7 @@ config = {
 			]
 		},
 		'external-other' : {
+			'skip': true,
 			'phpVersions': [
 				'7.2',
 				'7.4',
@@ -78,6 +80,7 @@ config = {
 
 	'acceptance': {
 		'api': {
+			'skip': true,
 			'suites': [
 				'apiAuth',
 				'apiAuthOcs',
@@ -132,6 +135,7 @@ config = {
 			],
 		},
 		'apiNotifications': {
+			'skip': true,
 			'suites': [
 				'apiSharingNotificationsToRoot',
 				'apiSharingNotificationsToShares',
@@ -141,6 +145,7 @@ config = {
 			},
 		},
 		'apiFederation': {
+			'skip': true,
 			'suites': [
 				'apiFederationToRoot1',
 				'apiFederationToRoot2',
@@ -161,12 +166,14 @@ config = {
 			'emailNeeded': True,
 		},
 		'cliAppManagement': {
+			'skip': true,
 			'suites': [
 				'cliAppManagement',
 			],
 			'testingRemoteSystem': False,
 		},
 		'cliExternalStorage': {
+			'skip': true,
 			'suites': [
 				'cliExternalStorage',
 			],
@@ -174,6 +181,7 @@ config = {
 			'federatedServerVersions': ['git', 'latest', '10.5.0'],
 		},
 		'webUI': {
+			'skip': true,
 			'suites': {
 				'webUIAddUsers': '',
 				'webUIAdminSettings': '',
@@ -209,6 +217,7 @@ config = {
 			'useHttps': False,
 		},
 		'webUINotifications': {
+			'skip': true,
 			'suites': {
 				'webUISharingNotifications': 'webUISharingNotify',
 			},
@@ -219,6 +228,7 @@ config = {
 			},
 		},
 		'webUIFileActionsMenu': {
+			'skip': true,
 			'suites': {
 				'webUIFileActionsMenu': '',
 			},
@@ -229,6 +239,7 @@ config = {
 			},
 		},
 		'webUIFederation': {
+			'skip': true,
 			'suites': {
 				'webUISharingExternal1': 'webUISharingExt1',
 				'webUISharingExternal2': 'webUISharingExt2',
@@ -237,6 +248,7 @@ config = {
 			'federatedServerVersions': ['git', 'latest', '10.5.0'],
 		},
 		'webUIFirefox': {
+			'skip': true,
 			'suites': {
 				'webUIFirefoxSmoketest': 'webUIFfSmoke',
 			},
@@ -250,6 +262,7 @@ config = {
 			'numberOfParts': 3,
 		},
 		'webUIProxy': {
+			'skip': true,
 			'suites': {
 				'webUIProxySmoketest': 'webUIProxySmoke',
 			},
@@ -264,6 +277,7 @@ config = {
 			'numberOfParts': 3,
 		},
 		'apiProxy': {
+			'skip': true,
 			'suites': {
 				'apiProxySmoketest': 'apiProxySmoke',
 			},
@@ -274,6 +288,7 @@ config = {
 			'numberOfParts': 8,
 		},
 		'apiOnSqlite': {
+			'skip': true,
 			'suites': {
 				'apiOnSqlite': 'apiOnSqlite',
 			},
