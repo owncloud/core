@@ -9,10 +9,8 @@ use OCP\Files\External\IStorageConfig;
 use OCP\Files\External\DefinitionParameter;
 use OCP\Security\ICrypto;
 use OCP\IConfig;
+use OCP\ILogger;
 
-/**
- * Auto-generated migration step: Please modify to your needs!
- */
 class Version20210511082903 implements ISimpleMigration {
 	/** @var IGlobalStoragesService */
 	private $storageService;
@@ -20,15 +18,19 @@ class Version20210511082903 implements ISimpleMigration {
 	private $crypto;
 	/** @var IConfig */
 	private $config;
+	/** @var ILogger */
+	private $logger;
 
 	public function __construct(
 		IGlobalStoragesService $storageService,
 		ICrypto $crypto,
-		IConfig $config
+		IConfig $config,
+		ILogger $logger
 	) {
 		$this->storageService = $storageService;
 		$this->crypto = $crypto;
 		$this->config = $config;
+		$this->logger = $logger;
 	}
 
 	public function run(IOutput $out) {
@@ -115,8 +117,15 @@ class Version20210511082903 implements ISimpleMigration {
 				try {
 					\OC_App::loadApp($enabledApp);
 				} catch (NeedsUpdateException $ex) {
-					\OC_App::updateApp($enabledApp);
-					\OC_App::loadApp($enabledApp);
+					if (\OC_App::updateApp($enabledApp)) {
+						// update successful.
+						// We can load the app without checking if the should upgrade or not.
+						\OC_App::loadApp($enabledApp, false);
+					} else {
+						$this->logger->error("Error during files_external migration. $enabledApp couldn't be loaded nor updated.", ['app' => 'files_external']);
+						$this->logger->logException($ex, ['app' => 'files_external']);
+						$this->logger->error("Mount points using $enabledApp might not be migrated properly. You might need to re-enter the passwords for those mount points", ['app' => 'files_external']);
+					}
 				}
 			}
 		}
