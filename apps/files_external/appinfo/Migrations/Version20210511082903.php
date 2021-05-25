@@ -67,9 +67,8 @@ class Version20210511082903 implements ISimpleMigration {
 			} catch (\Exception $ex) {
 				$out->warning("Storage configuration with id = {$configId}: Cannot decrypt value for key {$key}, assuming unencrypted value");
 			}
-		} else {
-			return $value;
 		}
+		return $value;
 	}
 
 	private function shouldBeEncrypted($storageConfig, $key) {
