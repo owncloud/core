@@ -2140,7 +2140,10 @@ def composerInstall(phpVersion):
 			'COMPOSER_HOME': '/drone/src/.cache/composer'
 		},
 		'commands': [
-			'make install-composer-deps'
+			'make install-composer-deps',
+			'pwd',
+			'ls -l',
+			'ls -l .cache',
 		]
 	}]
 
