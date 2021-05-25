@@ -137,6 +137,7 @@ class ExpireSharesJobTest extends \Test\TestCase {
 		return [
 			[false,   '', false, false],
 			[false,   '',  true, false],
+			[true, 'P0D',  true, false],
 			[true, 'P1D', false,  true],
 			[true, 'P1D',  true, false],
 			[true, 'P1W', false,  true],
@@ -204,7 +205,7 @@ class ExpireSharesJobTest extends \Test\TestCase {
 			}
 			$expire = $expire->format('Y-m-d 00:00:00');
 
-			// Set expiration date to yesterday
+			// Set expiration to the calculated date
 			$qb = $this->connection->getQueryBuilder();
 			$qb->update('share')
 				->set('expiration', $qb->createParameter('expiration'))
@@ -261,7 +262,7 @@ class ExpireSharesJobTest extends \Test\TestCase {
 			->with($linkShare->getId())
 			->willThrowException(new ShareNotFound());
 		$this->logout();
-		
+
 		$this->job->run([]);
 	}
 }

@@ -84,8 +84,8 @@ class ExpireSharesJob extends TimedJob {
 	 */
 	public function run($argument) {
 		//Current time
-		$now = new \DateTime();
-		$now = $now->format('Y-m-d H:i:s');
+		$today = new \DateTime("today");
+		$today = $today->format('Y-m-d H:i:s');
 
 		/*
 		 * Expire file shares only (for now)
@@ -95,7 +95,7 @@ class ExpireSharesJob extends TimedJob {
 			->from('share')
 			->where(
 				$qb->expr()->andX(
-					$qb->expr()->lte('expiration', $qb->expr()->literal($now)),
+					$qb->expr()->lt('expiration', $qb->expr()->literal($today)),
 					$qb->expr()->orX(
 						$qb->expr()->eq('item_type', $qb->expr()->literal('file')),
 						$qb->expr()->eq('item_type', $qb->expr()->literal('folder'))
