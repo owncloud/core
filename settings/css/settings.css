@@ -747,3 +747,7 @@ li > a.icon-settings {
 div.app-settings .section {
 	margin-bottom: 0;
 }
+
+.action.resendInvitationEmail img {
+	vertical-align: text-bottom;
+}

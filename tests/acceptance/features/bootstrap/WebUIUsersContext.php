@@ -25,6 +25,7 @@ use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Page\GeneralErrorPage;
 use Page\LoginPage;
 use Page\UsersPage;
 use Page\OwncloudPage;
@@ -53,6 +54,12 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 
 	/**
 	 *
+	 * @var GeneralErrorPage
+	 */
+	private $generalErrorPage;
+
+	/**
+	 *
 	 * @var WebUIGeneralContext
 	 */
 	private $webUIGeneralContext;
@@ -71,11 +78,14 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param UsersPage $usersPage
 	 * @param LoginPage $loginPage
 	 * @param OwncloudPage $owncloudPage
+	 * @param GeneralErrorPage $generalErrorPage
+
 	 */
-	public function __construct(UsersPage $usersPage, LoginPage $loginPage, OwncloudPage $owncloudPage) {
+	public function __construct(UsersPage $usersPage, LoginPage $loginPage, OwncloudPage $owncloudPage, GeneralErrorPage $generalErrorPage) {
 		$this->usersPage = $usersPage;
 		$this->loginPage = $loginPage;
 		$this->owncloudPage = $owncloudPage;
+		$this->generalErrorPage = $generalErrorPage;
 	}
 
 	/**
@@ -202,6 +212,32 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		$this->theAdminCreatesAUserUsingTheWebUI(
 			$attemptTo, $username, null, $email, $groupsTable
 		);
+	}
+
+	/**
+	 * @When the administrator resends invitation email for user with the name :username using the webUI
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function theAdminResendsInvitationEmailUsingTheWebUI(
+		string $username
+	) {
+		$this->usersPage->resendInvitationEmail($username, $this->getSession());
+	}
+
+	/**
+	 * @Then the user should see an error message saying :message
+	 *
+	 * @param string $message
+	 *
+	 * @return void
+	 */
+	public function theUserShouldSeeAnErrorWithMessage(
+		string $message
+	) {
+		Assert::assertEquals($message, $this->generalErrorPage->getErrorMessage());
 	}
 
 	/**
