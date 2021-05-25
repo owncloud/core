@@ -39,7 +39,7 @@ config = {
 			]
 		},
 		'external-samba-windows' : {
-			'skip': true,
+			'skip': True,
 			'phpVersions': [
 				'7.2',
 				'7.4',
@@ -60,7 +60,7 @@ config = {
 			]
 		},
 		'external-other' : {
-			'skip': true,
+			'skip': True,
 			'phpVersions': [
 				'7.2',
 				'7.4',
@@ -80,7 +80,7 @@ config = {
 
 	'acceptance': {
 		'api': {
-			'skip': true,
+			'skip': True,
 			'suites': [
 				'apiAuth',
 				'apiAuthOcs',
@@ -135,7 +135,7 @@ config = {
 			],
 		},
 		'apiNotifications': {
-			'skip': true,
+			'skip': True,
 			'suites': [
 				'apiSharingNotificationsToRoot',
 				'apiSharingNotificationsToShares',
@@ -145,7 +145,7 @@ config = {
 			},
 		},
 		'apiFederation': {
-			'skip': true,
+			'skip': True,
 			'suites': [
 				'apiFederationToRoot1',
 				'apiFederationToRoot2',
@@ -166,14 +166,14 @@ config = {
 			'emailNeeded': True,
 		},
 		'cliAppManagement': {
-			'skip': true,
+			'skip': True,
 			'suites': [
 				'cliAppManagement',
 			],
 			'testingRemoteSystem': False,
 		},
 		'cliExternalStorage': {
-			'skip': true,
+			'skip': True,
 			'suites': [
 				'cliExternalStorage',
 			],
@@ -181,7 +181,7 @@ config = {
 			'federatedServerVersions': ['git', 'latest', '10.5.0'],
 		},
 		'webUI': {
-			'skip': true,
+			'skip': True,
 			'suites': {
 				'webUIAddUsers': '',
 				'webUIAdminSettings': '',
@@ -217,7 +217,7 @@ config = {
 			'useHttps': False,
 		},
 		'webUINotifications': {
-			'skip': true,
+			'skip': True,
 			'suites': {
 				'webUISharingNotifications': 'webUISharingNotify',
 			},
@@ -228,7 +228,7 @@ config = {
 			},
 		},
 		'webUIFileActionsMenu': {
-			'skip': true,
+			'skip': True,
 			'suites': {
 				'webUIFileActionsMenu': '',
 			},
@@ -239,7 +239,7 @@ config = {
 			},
 		},
 		'webUIFederation': {
-			'skip': true,
+			'skip': True,
 			'suites': {
 				'webUISharingExternal1': 'webUISharingExt1',
 				'webUISharingExternal2': 'webUISharingExt2',
@@ -248,7 +248,7 @@ config = {
 			'federatedServerVersions': ['git', 'latest', '10.5.0'],
 		},
 		'webUIFirefox': {
-			'skip': true,
+			'skip': True,
 			'suites': {
 				'webUIFirefoxSmoketest': 'webUIFfSmoke',
 			},
@@ -262,7 +262,7 @@ config = {
 			'numberOfParts': 3,
 		},
 		'webUIProxy': {
-			'skip': true,
+			'skip': True,
 			'suites': {
 				'webUIProxySmoketest': 'webUIProxySmoke',
 			},
@@ -277,7 +277,7 @@ config = {
 			'numberOfParts': 3,
 		},
 		'apiProxy': {
-			'skip': true,
+			'skip': True,
 			'suites': {
 				'apiProxySmoketest': 'apiProxySmoke',
 			},
@@ -288,7 +288,7 @@ config = {
 			'numberOfParts': 8,
 		},
 		'apiOnSqlite': {
-			'skip': true,
+			'skip': True,
 			'suites': {
 				'apiOnSqlite': 'apiOnSqlite',
 			},
