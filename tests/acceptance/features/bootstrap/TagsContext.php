@@ -49,9 +49,9 @@ class TagsContext implements Context {
 
 	/**
 	 * @param string $user
-	 * @param bool $userVisible
-	 * @param bool $userAssignable
-	 * @param bool $userEditable
+	 * @param string $userVisible "true", "1" or "false", "0"
+	 * @param string $userAssignable "true", "1" or "false", "0"
+	 * @param string $userEditable "true", "1" or "false", "0"
 	 * @param string $name
 	 * @param string $groups
 	 *
@@ -73,9 +73,8 @@ class TagsContext implements Context {
 			$tagUrl = $responseHeaders['Content-Location'][0];
 			$lastTagId = \substr($tagUrl, \strrpos($tagUrl, '/') + 1);
 			$this->createdTags[$lastTagId]['name'] = $name;
-			if ($userAssignable) {
-				$this->createdTags[$lastTagId]['userAssignable'] = true;
-			}
+			$this->createdTags[$lastTagId]['userAssignable']
+				= (($userAssignable === 'true') || ($userAssignable === '1'));
 		}
 	}
 
@@ -110,8 +109,8 @@ class TagsContext implements Context {
 	 */
 	private function assertTypeOfTag($tagData, $type) {
 		$userAttributes = TagsHelper::validateTypeOfTag($type);
-		$userVisible = ($userAttributes[0]) ? 'true' : 'false';
-		$userAssignable = ($userAttributes[1]) ? 'true' : 'false';
+		$userVisible = $userAttributes[0];
+		$userAssignable = $userAttributes[1];
 
 		$tagDisplayName = $tagData->xpath(".//oc:display-name");
 		Assert::assertArrayHasKey(
@@ -142,15 +141,17 @@ class TagsContext implements Context {
 	/**
 	 * @param string $type
 	 * @param string $name
+	 * @param boolean $useTrueFalseStrings use the strings "true"/"false" else "1"/"0"
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function createTagWithNameAsAdmin($type, $name) {
+	public function createTagWithNameAsAdmin($type, $name, $useTrueFalseStrings = true) {
 		$this->createTagWithName(
 			$this->featureContext->getAdminUsername(),
 			$type,
-			$name
+			$name,
+			$useTrueFalseStrings
 		);
 	}
 
@@ -167,6 +168,30 @@ class TagsContext implements Context {
 		$this->createTagWithNameAsAdmin(
 			$type,
 			$name
+		);
+	}
+
+	/**
+	 * @When /^the administrator creates a "([^"]*)" tag with name "([^"]*)" sending (true-false-strings|numbers) in the request using the WebDAV API$/
+	 *
+	 * @param string $type
+	 * @param string $name
+	 * @param string $stringsOrNumbers
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function theAdministratorCreatesATagWithNameSending($type, $name, $stringsOrNumbers) {
+		if ($stringsOrNumbers === "true-false-strings") {
+			$useTrueFalseStrings = true;
+		} else {
+			$useTrueFalseStrings = true;
+		}
+
+		$this->createTagWithNameAsAdmin(
+			$type,
+			$name,
+			$useTrueFalseStrings
 		);
 	}
 
@@ -190,15 +215,17 @@ class TagsContext implements Context {
 	/**
 	 * @param string $type
 	 * @param string $name
+	 * @param boolean $useTrueFalseStrings use the strings "true"/"false" else "1"/"0"
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function createTagWithNameAsCurrentUser($type, $name) {
+	public function createTagWithNameAsCurrentUser($type, $name, $useTrueFalseStrings = true) {
 		$this->createTagWithName(
 			$this->featureContext->getCurrentUser(),
 			$type,
-			$name
+			$name,
+			$useTrueFalseStrings
 		);
 	}
 
@@ -239,20 +266,22 @@ class TagsContext implements Context {
 	 * @param string $user
 	 * @param string $type
 	 * @param string $name
+	 * @param boolean $useTrueFalseStrings use the strings "true"/"false" else "1"/"0"
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function createTagWithName($user, $type, $name) {
+	public function createTagWithName($user, $type, $name, $useTrueFalseStrings = true) {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->createTag(
 			$user,
-			TagsHelper::validateTypeOfTag($type)[0],
-			TagsHelper::validateTypeOfTag($type)[1],
-			TagsHelper::validateTypeOfTag($type)[2],
+			TagsHelper::validateTypeOfTag($type, $useTrueFalseStrings)[0],
+			TagsHelper::validateTypeOfTag($type, $useTrueFalseStrings)[1],
+			TagsHelper::validateTypeOfTag($type, $useTrueFalseStrings)[2],
 			$name
 		);
 	}
+
 	/**
 	 * @When user :user creates a :type tag with name :name using the WebDAV API
 	 *
@@ -268,6 +297,34 @@ class TagsContext implements Context {
 			$user,
 			$type,
 			$name
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" creates a "([^"]*)" tag with name "([^"]*)" sending (true-false-strings|numbers) in the request using the WebDAV API$/
+	 *
+	 * @param string $user
+	 * @param string $type
+	 * @param string $name
+	 * @param string $stringsOrNumbers
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userCreatesATagWithNameSendingInTheRequest(
+		$user, $type, $name, $stringsOrNumbers
+	) {
+		if ($stringsOrNumbers === "true-false-strings") {
+			$useTrueFalseStrings = true;
+		} else {
+			$useTrueFalseStrings = true;
+		}
+
+		$this->createTagWithName(
+			$user,
+			$type,
+			$name,
+			$useTrueFalseStrings
 		);
 	}
 
@@ -400,16 +457,17 @@ class TagsContext implements Context {
 	 * @param string $type
 	 * @param string $name
 	 * @param string $groups
+	 * @param boolean $useTrueFalseStrings use the strings "true"/"false" else "1"/"0"
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function createTagWithNameAndGroups($user, $type, $name, $groups) {
+	public function createTagWithNameAndGroups($user, $type, $name, $groups, $useTrueFalseStrings = true) {
 		$this->createTag(
 			$user,
-			TagsHelper::validateTypeOfTag($type)[0],
-			TagsHelper::validateTypeOfTag($type)[1],
-			TagsHelper::validateTypeOfTag($type)[2],
+			TagsHelper::validateTypeOfTag($type, $useTrueFalseStrings)[0],
+			TagsHelper::validateTypeOfTag($type, $useTrueFalseStrings)[1],
+			TagsHelper::validateTypeOfTag($type, $useTrueFalseStrings)[2],
 			$name,
 			$groups
 		);

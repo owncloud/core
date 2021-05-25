@@ -26,6 +26,16 @@ Feature: Creation of tags
       | 😀                  |
       | सिमप्ले             |
 
+  Scenario: Creating a normal tag as a regular user should work (sending the string "1" to turn on the tag attributes)
+    When user "Alice" creates a "normal" tag with name "RegularTag" sending numbers in the request using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the following tags should exist for the administrator
+      | name       | type   |
+      | RegularTag | normal |
+    And the following tags should exist for user "Alice"
+      | name       | type   |
+      | RegularTag | normal |
+
   Scenario: Creating a not user-assignable tag as regular user should fail
     When user "Alice" creates a "not user-assignable" tag with name "JustARegularTagName" using the WebDAV API
     Then the HTTP status code should be "400"
@@ -41,33 +51,22 @@ Feature: Creation of tags
     Then the HTTP status code should be "400"
     And tag "JustARegularTagName" should not exist for the administrator
 
-  Scenario: Creating a normal tag as administrator should work
-    When the administrator creates a "normal" tag with name "JustARegularTagName" using the WebDAV API
+  Scenario Outline: Creating a tag as administrator should work
+    When the administrator creates a "<tag_type>" tag with name "JustARegularTagName" sending <sending_style> in the request using the WebDAV API
     Then the HTTP status code should be "201"
     And the following tags should exist for the administrator
-      | name                | type   |
-      | JustARegularTagName | normal |
-
-  Scenario: Creating a not user-assignable tag as administrator should work
-    When the administrator creates a "not user-assignable" tag with name "JustARegularTagName" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And the following tags should exist for the administrator
-      | name                | type                |
-      | JustARegularTagName | not user-assignable |
-
-  Scenario: Creating a not user-visible tag as administrator should work
-    When the administrator creates a "not user-visible" tag with name "JustARegularTagName" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And the following tags should exist for the administrator
-      | name                | type             |
-      | JustARegularTagName | not user-visible |
-
-  Scenario: Creating a static tag as administrator should work
-    When the administrator creates a "static" tag with name "StaticTagName" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And the following tags should exist for the administrator
-      | name          | type   |
-      | StaticTagName | static |
+      | name                | type       |
+      | JustARegularTagName | <tag_type> |
+    Examples:
+      | tag_type            | sending_style      |
+      | normal              | true-false-strings |
+      | normal              | numbers            |
+      | not user-assignable | true-false-strings |
+      | not user-assignable | numbers            |
+      | not user-visible    | true-false-strings |
+      | not user-visible    | numbers            |
+      | static              | true-false-strings |
+      | static              | numbers            |
 
   @smokeTest
   Scenario: Creating a not user-assignable tag with groups as admin should work
