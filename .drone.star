@@ -2144,6 +2144,12 @@ def composerInstall(phpVersion):
 			'pwd',
 			'ls -l',
 			'ls -l .cache',
+			'ls -l .cache/build-data',
+			'ls -l .cache/composer',
+			'ls -l .cache/yarn',
+			'du -hs .cache/build-data',
+			'du -hs .cache/composer',
+			'du -hs .cache/yarn',
 		]
 	}]
 
