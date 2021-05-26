@@ -45,9 +45,8 @@ abstract class Image implements IProvider2 {
 
 		$image = new \OC_Image();
 
-		$internalPath = $file->getInternalPath();
-		$localPath = $file->getStorage()->getLocalFile($internalPath);
-		$image->loadFromFile($localPath);
+		$fileContent = $file->getContent();
+		$image->load($fileContent);
 		$image->fixOrientation();
 
 		if ($image->valid()) {
