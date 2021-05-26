@@ -201,7 +201,7 @@ class NavigationManager implements INavigationManager {
 			$webIconKey = 'phoenix.icon';
 			$webIconLabel = 'phoenix.label';
 		}
-		if ($webBaseUrl) {
+		if ($webBaseUrl && !$this->suppressWebNavItem()) {
 			$iconPath = $this->config->getSystemValue($webIconKey, $this->urlGenerator->imagePath('core', 'apps/web.svg'));
 			$l = $this->l10nFac->get("core");
 			$label = $this->config->getSystemValue($webIconLabel, $l->t('New Design'));
@@ -213,6 +213,23 @@ class NavigationManager implements INavigationManager {
 				'order' => 99
 			]);
 		}
+	}
+
+	/**
+	 * Decides if the `Web` nav item should be hidden.
+	 *
+	 * Since we have two different deployment modes - external or as oc10 app -
+	 * we can't just decide based on whether or not the app is enabled. If it's
+	 * not installed at all we skip the `enabled` check and just rely on the
+	 * webBaseUrl being configured or not.
+	 *
+	 * @return bool
+	 */
+	private function suppressWebNavItem(): bool {
+		if (!$this->appManager->isInstalled('web')) {
+			return false;
+		}
+		return !$this->appManager->isEnabledForUser('web');
 	}
 
 	private function isAdmin() {

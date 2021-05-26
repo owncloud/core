@@ -1,0 +1,6 @@
+Bugfix: Don't rewrite private/public links when web app disabled
+
+When oc10 app is installed but disabled, we still showed the nav item and rewrote the URLs for private and public links.
+
+https://github.com/owncloud/core/issues/38602
+https://github.com/owncloud/core/pull/38603

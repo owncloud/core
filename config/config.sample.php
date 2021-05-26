@@ -480,14 +480,22 @@ $CONFIG = [
 
 /**
  * Define the Web base URL
- * If web.baseUrl is set, public and private links will be redirected to this url.
- * Web will handle these links accordingly.
+ *
+ * It's needed for the navigation item to the new ownCloud Web UI and for redirecting
+ * public and private links.
+ */
+'web.baseUrl' => '',
+
+/**
+ * Rewrite private and public links to the new ownCloud Web UI (if available).
+ * If web.rewriteLinks is set to 'true', public and private links will be redirected to this url.
+ * The Web UI will handle these links accordingly.
  *
  * As an example, in case 'web.baseUrl' is set to 'http://web.example.com',
  * the shared link 'http://ocx.example.com/index.php/s/THoQjwYYMJvXMdW' will be redirected
  * by ownCloud to 'http://web.example.com/index.html#/s/THoQjwYYMJvXMdW'.
  */
-'web.baseUrl' => '',
+'web.rewriteLinks' => false,
 
 /**
  * Define clean URLs without `/index.php`
