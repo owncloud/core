@@ -91,6 +91,27 @@ Feature: add users
       | guiusr1  | simple user-name      |
       | a@-+_.'b | complicated user-name |
 
+  @smokeTest @skipOnLDAP @skipOnOcV10.6 @skipOnOcV10.7
+  Scenario Outline: user sets his own password after being created with an Email address only and invitation link resend
+    When the administrator creates a user with the name "<username>" and the email "guiusr1@owncloud" without a password using the webUI
+    And the administrator resends invitation email for user with the name "<username>" using the webUI
+    And the administrator logs out of the webUI
+    And the user follows the password set link received by "guiusr1@owncloud" in Email number 2 using the webUI
+    Then the user should see an error message saying "The token provided is invalid."
+    And the user follows the password set link received by "guiusr1@owncloud" in Email number 1 using the webUI
+    And the user sets the password to "%regular%" and confirms with the same password using the webUI
+    Then the user should be redirected to the login page
+    And the email address "guiusr1@owncloud" should have received an email with the body containing
+      """
+      Password changed successfully
+      """
+    When the user logs in with username "<username>" and password "%regular%" using the webUI
+    Then the user should be redirected to a webUI page with the title "Files - %productname%"
+    Examples:
+      | username | comment               |
+      | guiusr1  | simple user-name      |
+      | a@-+_.'b | complicated user-name |
+
   @skipOnOcV10.3
   Scenario Outline: user sets his own password but retypes it wrongly after being created with an Email address only
     When the administrator creates a user with the name "<username>" and the email "guiusr1@owncloud" without a password using the webUI

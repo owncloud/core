@@ -81,6 +81,8 @@ class UsersPage extends OwncloudPage {
 	protected $disableUserCheckboxXpath = "//input[@type='checkbox']";
 	protected $deleteUserBtnXpath
 		= ".//td[@class='remove']/a[@class='action delete']";
+	protected $resendInvitationEmailBtnXpath
+		= ".//td[@class='resendInvitationEmail']/a[@class='action resendInvitationEmail']";
 	protected $deleteConfirmBtnXpath
 		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style, 'display: none')])]//button[text()='Yes']";
 	protected $deleteNotConfirmBtnXpath
@@ -897,5 +899,27 @@ class UsersPage extends OwncloudPage {
 			return null;
 		}
 		return (int) $groupUserCount;
+	}
+
+	/**
+	 * @param string $username
+	 * @param Session $session
+	 *
+	 * @return void
+	 * @throws ElementNotFoundException
+	 */
+	public function resendInvitationEmail($username, $session) {
+		$userTr = $this->findUserInTable($username);
+		$resendInvitationEmailBtn = $userTr->find('xpath', $this->resendInvitationEmailBtnXpath);
+
+		$this->assertElementNotNull(
+			$resendInvitationEmailBtn,
+			__METHOD__ .
+			" xpath $this->resendInvitationEmailBtnXpath " .
+			"could not find resend invitation email button for user $username"
+		);
+
+		$resendInvitationEmailBtn->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 }

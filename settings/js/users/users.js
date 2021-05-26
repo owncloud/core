@@ -113,6 +113,19 @@ var UserList = {
 		}
 
 		/**
+		 * resend invitation email action
+		 */
+		if (user.lastLogin === 0) {
+			var resendImage = $('<img class="action">').attr({
+				src: OC.imagePath('core', 'actions/mail')
+			});
+			var resendLink = $('<a class="action resendInvitationEmail">')
+				.attr({ href: '#', 'title': t('settings', 'Resend invitation email')})
+				.append(resendImage);
+			$tr.find('td.resendInvitationEmail').append(resendLink);
+		}
+
+		/**
 		 * remove action
 		 */
 		if ($tr.find('td.remove img').length === 0 && OC.currentUser !== user.name) {
@@ -120,7 +133,7 @@ var UserList = {
 				src: OC.imagePath('core', 'actions/delete')
 			});
 			var deleteLink = $('<a class="action delete">')
-				.attr({ href: '#', 'original-title': t('settings', 'Delete')})
+				.attr({ href: '#', 'title': t('settings', 'Delete')})
 				.append(deleteImage);
 			$tr.find('td.remove').append(deleteLink);
 		} else if (OC.currentUser === user.name) {
@@ -381,6 +394,22 @@ var UserList = {
 					if (confirmation) {
 						UserDeleteHandler.mark(uid);
 						UserDeleteHandler.deleteEntry();
+					}
+				}
+			);
+		});
+	},
+	initResendInvitationEmailHandling: function() {
+		$userListBody.on('click', '.action.resendInvitationEmail', function () {
+			var uid = UserList.getUID(this);
+			$.post(
+				OC.generateUrl('/resend/token/{id}', {id: uid}),
+				{},
+				function (result, status) {
+					if (status === 'success'){
+						OC.Notification.showTemporary(t('settings', 'The invitation email for this user has been resent'));
+					} else {
+						OC.Notification.showTemporary(t('settings', 'The invitation email for this user could not be resent'));
 					}
 				}
 			);
@@ -733,6 +762,7 @@ $(document).ready(function () {
 	$userListBody = $userList.find('tbody');
 
 	UserList.initDeleteHandling();
+	UserList.initResendInvitationEmailHandling();
 
 	// Implements User Search
 	OCA.Search.users= new UserManagementFilter(UserList, GroupList);
