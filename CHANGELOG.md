@@ -48,6 +48,7 @@ Summary
 * Enhancement - Communicate user profile picture capability: [#38722](https://github.com/owncloud/core/pull/38722)
 * Enhancement - Command occ user:report shows additional row for guests: [#3467](https://github.com/owncloud/enterprise/issues/3467)
 * Enhancement - Improve mobile user interface on files list: [#38748](https://github.com/owncloud/core/pull/38748)
+* Enhancement - Resend invitation email: [#38774](https://github.com/owncloud/core/pull/38774)
 
 Details
 -------
@@ -400,6 +401,14 @@ Details
    folders table row will now be displayed at the beginning to avoid UI glitches.
 
    https://github.com/owncloud/core/pull/38748
+
+* Enhancement - Resend invitation email: [#38774](https://github.com/owncloud/core/pull/38774)
+
+   Implemented an action to resend the invitation email for a user that has never been logged in
+   yet.
+
+   https://github.com/owncloud/enterprise/issues/4577
+   https://github.com/owncloud/core/pull/38774
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================
