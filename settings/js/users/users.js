@@ -120,7 +120,7 @@ var UserList = {
 				src: OC.imagePath('core', 'actions/mail')
 			});
 			var resendLink = $('<a class="action resendInvitationEmail">')
-				.attr({ href: '#', 'original-title': t('settings', 'Resend invitation email')})
+				.attr({ href: '#', 'title': t('settings', 'Resend invitation email')})
 				.append(resendImage);
 			$tr.find('td.resendInvitationEmail').append(resendLink);
 		}
@@ -133,7 +133,7 @@ var UserList = {
 				src: OC.imagePath('core', 'actions/delete')
 			});
 			var deleteLink = $('<a class="action delete">')
-				.attr({ href: '#', 'original-title': t('settings', 'Delete')})
+				.attr({ href: '#', 'title': t('settings', 'Delete')})
 				.append(deleteImage);
 			$tr.find('td.remove').append(deleteLink);
 		} else if (OC.currentUser === user.name) {
