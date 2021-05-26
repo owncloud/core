@@ -2,7 +2,9 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Compartido federado",
+    "Add to" : "Añadir a ",
     "Loading..." : "Cargando...",
+    "Change server..." : "Cambie el servidor...",
     "Invalid Federated Cloud ID" : "ID Nube federada inválida",
     "Sharing %s failed, because this item is already shared with %s" : "Se falló al compartir %s, ya que este elemento ya está compartido con %s",
     "Not allowed to create a federated share with the same user" : "No se permite crear un recurso compartido federado con el mismo usuario",
@@ -19,6 +21,7 @@ OC.L10N.register(
     "Share with me through my #ownCloud Federated Cloud ID" : "Compartirlo conmigo a través de mi ID Nube Federada #ownCloud",
     "Federated Cloud Sharing" : "Compartido en Cloud Federado",
     "Open documentation" : "Documentación abierta",
+    "Periodically synchronize outdated federated shares for active users" : "Sincronice periódicamente los recursos compartidos federados obsoletos para los usuarios activos",
     "Allow users on this server to send shares to other servers" : "Permitir a usuarios de este servidor compartir con usuarios de otros servidores",
     "Allow users on this server to receive shares from other servers" : "Permitir a usuarios de este servidor recibir archivos de usuarios de otros servidores",
     "Automatically accept remote shares from trusted servers" : "Aceptar automáticamente compartidos remotos desde servidores confiables",
