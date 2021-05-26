@@ -29,6 +29,7 @@ Summary
 * Bugfix - Correctly parse different ocm-provider api responses: [#38751](https://github.com/owncloud/core/pull/38751)
 * Bugfix - Move files_antivirus executable mode config options into config.php: [#38753](https://github.com/owncloud/core/pull/38753)
 * Bugfix - Expire shares at end of day: [#4324](https://github.com/owncloud/enterprise/issues/4324)
+* Bugfix - Image preview for file versions: [#38778](https://github.com/owncloud/core/pull/38778)
 * Change - Update Symfony components: [#38755](https://github.com/owncloud/core/pull/38755)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
@@ -228,6 +229,14 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4324
    https://github.com/owncloud/core/pull/38775
+
+* Bugfix - Image preview for file versions: [#38778](https://github.com/owncloud/core/pull/38778)
+
+   Changed the way how preview thumbnails are being rendered so they will be rendered properly for
+   file versions.
+
+   https://github.com/owncloud/core/issues/38766
+   https://github.com/owncloud/core/pull/38778
 
 * Change - Update Symfony components: [#38755](https://github.com/owncloud/core/pull/38755)
 
