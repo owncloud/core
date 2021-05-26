@@ -15,6 +15,7 @@ Summary
 * Bugfix - Creating self group-reshare should not not share to self: [#38581](https://github.com/owncloud/core/pull/38581)
 * Bugfix - Check quota on the necessary move operations: [#38591](https://github.com/owncloud/core/pull/38591)
 * Bugfix - Normalize web.baseUrl before using it: [#38600](https://github.com/owncloud/core/issues/38600)
+* Bugfix - Don't rewrite private/public links when web app disabled: [#38602](https://github.com/owncloud/core/issues/38602)
 * Bugfix - When validating rereshare permission make sure to check parent mountpoint: [#4497](https://github.com/owncloud/enterprise/issues/4497)
 * Bugfix - Objectids for comments and tags are strings: [#38682](https://github.com/owncloud/core/pull/38682)
 * Bugfix - Hide sensible information on share download: [#38689](https://github.com/owncloud/core/pull/38689)
@@ -111,6 +112,14 @@ Details
    a trailing slash.
 
    https://github.com/owncloud/core/issues/38600
+
+* Bugfix - Don't rewrite private/public links when web app disabled: [#38602](https://github.com/owncloud/core/issues/38602)
+
+   When oc10 app is installed but disabled, we still showed the nav item and rewrote the URLs for
+   private and public links.
+
+   https://github.com/owncloud/core/issues/38602
+   https://github.com/owncloud/core/pull/38603
 
 * Bugfix - When validating rereshare permission make sure to check parent mountpoint: [#4497](https://github.com/owncloud/enterprise/issues/4497)
 

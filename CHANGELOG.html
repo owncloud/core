@@ -13,6 +13,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Creating self group-reshare should not not share to self: <a href="https://github.com/owncloud/core/pull/38581">#38581</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Check quota on the necessary move operations: <a href="https://github.com/owncloud/core/pull/38591">#38591</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Normalize web.baseUrl before using it: <a href="https://github.com/owncloud/core/issues/38600">#38600</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Don't rewrite private/public links when web app disabled: <a href="https://github.com/owncloud/core/issues/38602">#38602</a></li>
         <li class="type-bugfix changelog-item">Bugfix - When validating rereshare permission make sure to check parent mountpoint: <a href="https://github.com/owncloud/enterprise/issues/4497">#4497</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Objectids for comments and tags are strings: <a href="https://github.com/owncloud/core/pull/38682">#38682</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Hide sensible information on share download: <a href="https://github.com/owncloud/core/pull/38689">#38689</a></li>
@@ -112,6 +113,15 @@
             </p>
             <p>https://github.com/owncloud/core/issues/38600<br>
             </p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Don't rewrite private/public links when web app disabled: <a href="https://github.com/owncloud/core/issues/38602">#38602</a></p>
+            <p>When oc10 app is installed but disabled, we still showed the nav item and rewrote the URLs for
+   private and public links.
+            </p>
+            <p>https://github.com/owncloud/core/issues/38602<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/38603<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - When validating rereshare permission make sure to check parent mountpoint: <a href="https://github.com/owncloud/enterprise/issues/4497">#4497</a></p>
