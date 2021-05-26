@@ -481,7 +481,7 @@ $CONFIG = [
 /**
  * Define the Web base URL
  *
- * It's needed for the navigation item to the new ownCloud Web UI and for redirecting 
+ * It's needed for the navigation item to the new ownCloud Web UI and for redirecting
  * public and private links.
  */
 'web.baseUrl' => '',
