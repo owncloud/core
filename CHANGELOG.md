@@ -252,10 +252,18 @@ Details
    The following Symfony components have been updated from 4.4.20 to: - console 4.4.24 - process
    4.4.22 - routing 4.4.24 - translation 4.4.24
 
+   The following Symfony polyfill components have been updated : - symfony/polyfill-ctype
+   (v1.22.1 to v1.23.0) - symfony/polyfill-iconv (v1.22.1 to v1.23.0) -
+   symfony/polyfill-intl-idn (v1.22.1 to v1.23.0) - symfony/polyfill-intl-normalizer
+   (v1.22.1 to v1.23.0) - symfony/polyfill-mbstring (v1.22.1 to v1.23.0) -
+   symfony/polyfill-php72 (v1.22.1 to v1.23.0) - symfony/polyfill-php73 (v1.22.1 to
+   v1.23.0) - symfony/polyfill-php80 (v1.22.1 to v1.23.0)
+
    https://github.com/owncloud/core/pull/38755
    https://github.com/owncloud/core/pull/38730
    https://github.com/owncloud/core/pull/38680
    https://github.com/owncloud/core/pull/38598
+   https://github.com/owncloud/core/pull/38786
    https://symfony.com/blog/symfony-4-4-24-released
    https://symfony.com/blog/symfony-4-4-23-released
    https://symfony.com/blog/symfony-4-4-22-released
@@ -263,7 +271,7 @@ Details
 
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 
-   The following have been updated: - doctrine/cache (1.10.2 to 1.11.1) -
+   The following have been updated: - doctrine/cache (1.10.2 to 1.11.3) -
    egulias/email-validator (3.1.0 to 3.1.1) - icewind/streams (0.7.3 to 0.7.4) - opis/closure
    (3.6.1 => 3.6.2) - pear/pear_exception (v1.0.1 to v1.0.2) - phpseclib/phpseclib (3.0.6 to
    3.0.8) - psr/log (1.1.3 to 1.1.4)
@@ -280,6 +288,7 @@ Details
    https://github.com/owncloud/core/pull/38659
    https://github.com/owncloud/core/pull/38688
    https://github.com/owncloud/core/pull/38749
+   https://github.com/owncloud/core/pull/38786
 
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
 
