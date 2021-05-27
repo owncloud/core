@@ -1039,14 +1039,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$server = $this->featureContext->substituteInLineCodes($server);
 			$this->publicLinkFilesPage->addToServer($server);
 		} elseif ($server === '%local_server%') {
-			$this->publicLinkFilesPage->saveToSameSever();
+			$this->publicLinkFilesPage->saveToSameServer();
 		} else {
 			throw new Exception(
 				"Invalid server provided '" . $server . "'. " .
 				"Either should be '%remote_server%' or '%local_server%'"
 			);
 		}
-		// addToServer and saveToSameSever takes us from the public link page to the login page
+		// addToServer and saveToSameServer takes us from the public link page to the login page
 		// of the remote and local server respectively, waiting for us to login.
 		$actualUsername = $this->featureContext->getActualUsername($username);
 		$password = $this->featureContext->getUserPassword($actualUsername);

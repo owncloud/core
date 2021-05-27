@@ -561,7 +561,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function saveToSameSever() {
+	public function saveToSameServer() {
 		$saveToElement = $this->findById($this->saveToOcButtonId);
 
 		$this->assertElementNotNull(
