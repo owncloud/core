@@ -609,15 +609,15 @@ class Cache implements ICache {
 				if (\intval($versionArray[0]) < 12) {
 					$sql = 'UPDATE `*PREFIX*filecache`
 						SET `storage` = :targetStorageId,
-							`path` = REPLACE(`path`, :sourcePath, :targetPath),
-							`path_hash` = LOWER(dbms_obfuscation_toolkit.md5(input => UTL_RAW.cast_to_raw(REPLACE(`path`, :sourcePath, :targetPath))))
+							`path_hash` = LOWER(dbms_obfuscation_toolkit.md5(input => UTL_RAW.cast_to_raw(REPLACE(`path`, :sourcePath, :targetPath)))),
+							`path` = REPLACE(`path`, :sourcePath, :targetPath)
 						WHERE `storage` = :sourceStorageId
 						AND `path` LIKE :sourcePathLike';
 				} else {
 					$sql = 'UPDATE `*PREFIX*filecache`
 						SET `storage` = :targetStorageId,
-							`path` = REPLACE(`path`, :sourcePath, :targetPath),
-							`path_hash` = LOWER(standard_hash(REPLACE(`path`, :sourcePath, :targetPath), \'MD5\'))
+							`path_hash` = LOWER(standard_hash(REPLACE(`path`, :sourcePath, :targetPath), \'MD5\')),
+							`path` = REPLACE(`path`, :sourcePath, :targetPath)
 						WHERE `storage` = :sourceStorageId
 						AND `path` LIKE :sourcePathLike';
 				}
@@ -626,8 +626,8 @@ class Cache implements ICache {
 			case 'postgresql':
 				$sql = 'UPDATE `*PREFIX*filecache`
 					SET `storage` = :targetStorageId,
-						`path` = REPLACE(`path`, :sourcePath, :targetPath),
-						`path_hash` = MD5(REPLACE(`path`, :sourcePath, :targetPath))
+						`path_hash` = MD5(REPLACE(`path`, :sourcePath, :targetPath)),
+						`path` = REPLACE(`path`, :sourcePath, :targetPath)
 					WHERE `storage` = :sourceStorageId
 					AND `path` LIKE :sourcePathLike';
 				break;
