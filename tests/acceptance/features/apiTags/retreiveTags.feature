@@ -7,6 +7,7 @@ Feature: tags
       | Alice    |
       | Brian    |
 
+
   Scenario: Getting tags only works with access to the file
     Given the administrator has created a "normal" tag with name "MyFirstTag"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/myFileToTag.txt"

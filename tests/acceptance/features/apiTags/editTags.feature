@@ -19,6 +19,7 @@ Feature: Editing the tags
       | 😀                  |
       | सिमप्ले             |
 
+  @skipOnOcV10.6 @skipOnOcV10.7
   Scenario: Renaming a not user-assignable tag as regular user should fail
     Given the administrator has created a "not user-assignable" tag with name "JustARegularTagName"
     When user "Alice" edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the WebDAV API
@@ -26,6 +27,7 @@ Feature: Editing the tags
       | name                | type                |
       | JustARegularTagName | not user-assignable |
 
+  @skipOnOcV10.6 @skipOnOcV10.7
   Scenario: Renaming a static tag as regular user should fail
     Given the administrator has created a "static" tag with name "StaticTagName"
     When user "Alice" edits the tag with name "StaticTagName" and sets its name to "AnotherTagName" using the WebDAV API
@@ -33,6 +35,7 @@ Feature: Editing the tags
       | name          | type   |
       | StaticTagName | static |
 
+  @skipOnOcV10.6 @skipOnOcV10.7
   Scenario: Renaming a not user-visible tag as regular user should fail
     Given the administrator has created a "not user-visible" tag with name "JustARegularTagName"
     When user "Alice" edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the WebDAV API
@@ -40,6 +43,7 @@ Feature: Editing the tags
       | name                | type             |
       | JustARegularTagName | not user-visible |
 
+  @skipOnOcV10.6 @skipOnOcV10.7
   Scenario: Renaming a not user-assignable tag as administrator should work
     Given the administrator has created a "not user-assignable" tag with name "JustARegularTagName"
     When the administrator edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the WebDAV API
@@ -48,6 +52,7 @@ Feature: Editing the tags
       | AnotherTagName | not user-assignable |
     And tag "JustARegularTagName" should not exist for the administrator
 
+  @skipOnOcV10.6 @skipOnOcV10.7
   Scenario: Renaming a not user-visible tag as administrator should work
     Given the administrator has created a "not user-visible" tag with name "JustARegularTagName"
     When the administrator edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the WebDAV API
@@ -55,6 +60,7 @@ Feature: Editing the tags
       | name           | type             |
       | AnotherTagName | not user-visible |
     And tag "JustARegularTagName" should not exist for the administrator
+
 
   Scenario: Renaming a static tag as administrator should work
     Given the administrator has created a "static" tag with name "StaticTagName"
@@ -64,16 +70,19 @@ Feature: Editing the tags
       | AnotherTagName | static |
     And tag "StaticTagName" should not exist for the administrator
 
+  @skipOnOcV10.6 @skipOnOcV10.7
   Scenario: Editing tag groups as admin should work
     Given the administrator has created a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2"
     When the administrator edits the tag with name "TagWithGroups" and sets its groups to "group1|group3" using the WebDAV API
     Then the "not user-assignable" tag with name "TagWithGroups" should have the groups "group1|group3"
 
+  @skipOnOcV10.6 @skipOnOcV10.7
   Scenario: Editing static tag groups as admin should work
     Given the administrator has created a "static" tag with name "StaticTagWithGroups" and groups "group1|group2"
     When the administrator edits the tag with name "StaticTagWithGroups" and sets its groups to "group1|group3" using the WebDAV API
     Then the "static" tag with name "StaticTagWithGroups" should have the groups "group1|group3"
 
+  @skipOnOcV10.6 @skipOnOcV10.7
   Scenario: Editing tag groups as regular user should fail
     Given the administrator has created a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2"
     When user "Alice" edits the tag with name "TagWithGroups" and sets its groups to "group1|group3" using the WebDAV API

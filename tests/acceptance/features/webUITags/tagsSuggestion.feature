@@ -20,6 +20,7 @@ Feature: Suggestion for matching tag names
     And the administrator has created a "not user-assignable" tag with name "sponsored"
     And user "Alice" has logged in using the webUI
 
+  @skipOnOcV10.6 @skipOnOcV10.7
   Scenario: User should get suggestion from already existing tags
     Given user "Alice" has created folder "a-folder"
     And user "Alice" has uploaded file with content "some content" to "/a-folder/randomfile.txt"
@@ -31,6 +32,7 @@ Feature: Suggestion for matching tag names
     But tag "notspam" should not be listed in the dropdown list on the webUI
     And tag "Violates T&C" should not be listed in the dropdown list on the webUI
     And tag "sponsored" should not be listed in the dropdown list on the webUI
+
 
   Scenario: User of static tags group should get suggestion for static tags
     Given user "Alice" has created folder "a-folder"
