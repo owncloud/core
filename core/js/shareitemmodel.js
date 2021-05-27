@@ -559,7 +559,8 @@
 		 * @returns {boolean}
 		 */
 		sharePermissionPossible: function() {
-			return (this.get('permissions') & OC.PERMISSION_SHARE) === OC.PERMISSION_SHARE;
+			var permissions = this.get('permissions');
+			return (permissions & OC.PERMISSION_SHARE) === OC.PERMISSION_SHARE;
 		},
 
 		/**
@@ -778,9 +779,15 @@
 				return {};
 			}
 
+			// if this file has share received for this file/folder
 			var permissions = this.get('possiblePermissions');
 			if(!_.isUndefined(data.reshare) && !_.isUndefined(data.reshare.permissions) && data.reshare.uid_owner !== OC.currentUser) {
-				permissions = permissions & data.reshare.permissions;
+				if (this.fileInfoModel.get('mountType') === 'shared' ) {
+					// take share permission of this file share and received reshare
+					permissions = permissions & (this.fileInfoModel.get('sharePermissions') | data.reshare.permissions);
+				} else {
+					permissions = permissions & data.reshare.permissions;
+				}
 			}
 
 			/** @type {OC.Share.Types.ShareInfo[]} **/
