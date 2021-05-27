@@ -482,3 +482,34 @@ Feature: Sharing files and folders with internal groups
       | uid_owner   | Brian           |
       | share_with  | grp3            |
       | permissions | 19              |
+
+  @skipOnOcV10.6 @skipOnOcV10.7
+  Scenario: Reshares with groups of subfolder with lower permissions
+    Given these groups have been created:
+      | groupname |
+      | grp1      |
+      | grp2      |
+      | grp3      |
+    And user "Alice" has been added to group "grp1"
+    And user "Brian" has been added to group "grp1"
+    And user "Alice" has been added to group "grp2"
+    And user "Brian" has been added to group "grp2"
+    And user "Alice" has been added to group "grp3"
+    And user "Brian" has been added to group "grp3"
+    And user "Carol" has uploaded file with content "some data" to "/simple-folder/simple-inner-folder/simple-inner-inner-folder/textfile-2.txt"
+    And user "Carol" has shared folder "/simple-folder" with user "Alice" with permissions "all"
+    And user "Alice" has shared file "/simple-folder" with group "grp2" with permissions "all"
+    And user "Alice" has shared file "/simple-folder/simple-inner-folder" with group "grp1" with permissions "read"
+    And user "Alice" has logged in using the webUI
+    And the user opens folder "/simple-folder" using the webUI
+    When the user shares folder "simple-inner-folder" with group "grp3" using the webUI
+    Then the following permissions are seen for "simple-inner-folder" in the sharing dialog for group "grp3"
+      | edit   | yes |
+      | change | yes |
+      | share  | yes |
+    And the information for user "Brian" about the received share of folder "simple-inner-folder" shared with a group should include
+      | share_type  | group                |
+      | file_target | /simple-inner-folder |
+      | uid_owner   | Alice                |
+      | share_with  | grp3                 |
+      | permissions | 31                   |
