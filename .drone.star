@@ -395,6 +395,7 @@ def dependencies(ctx):
 				},
 				'steps':
 					cacheRestore() +
+					cacheClearOnEventPush(phpVersion) +
 					composerInstall(phpVersion) +
 					vendorbinCodestyle(phpVersion) +
 					vendorbinCodesniffer(phpVersion) +
@@ -2049,6 +2050,26 @@ def cacheRestore():
 			}
 		},
 		'when': {
+			'instance': [
+				'drone.owncloud.services',
+				'drone.owncloud.com'
+			],
+		}
+	}]
+
+def cacheClearOnEventPush(phpVersion):
+	return [{
+		'name': 'cache-clear',
+		'image': 'owncloudci/php:%s' % phpVersion,
+		'pull': 'always',
+		'commands': [
+			'rm -Rf /drone/src/.cache/composer',
+			'rm -Rf /drone/src/.cache/yarn',
+		],
+		'when': {
+			'event': [
+				'push',
+			],
 			'instance': [
 				'drone.owncloud.services',
 				'drone.owncloud.com'
