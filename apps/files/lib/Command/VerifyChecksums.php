@@ -207,6 +207,7 @@ class VerifyChecksums extends Command {
 				$nodes = $currentFolder->getDirectoryListing();
 			} catch (NotFoundException $e) {
 				$nodes = [];
+				$output->writeln("Skipping $currentFolderPath => Directory could not be found");
 			} catch (StorageNotAvailableException $e) {
 				$nodes = [];
 				$output->writeln("Skipping $currentFolderPath => Storage is not available");
