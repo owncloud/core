@@ -28,6 +28,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Move files_antivirus executable mode config options into config.php: <a href="https://github.com/owncloud/core/pull/38753">#38753</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Expire shares at end of day: <a href="https://github.com/owncloud/enterprise/issues/4324">#4324</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Image preview for file versions: <a href="https://github.com/owncloud/core/pull/38778">#38778</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Prevent files:checksum:verify from crashing on exception: <a href="https://github.com/owncloud/core/pull/38785">#38785</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/38755">#38755</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/38524">#38524</a></li>
         <li class="type-change changelog-item">Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: <a href="https://github.com/owncloud/core/pull/38647">#38647</a></li>
@@ -241,6 +242,15 @@
             <p>https://github.com/owncloud/core/issues/38766<br>
             </p>
             <p>https://github.com/owncloud/core/pull/38778<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Prevent files:checksum:verify from crashing on exception: <a href="https://github.com/owncloud/core/pull/38785">#38785</a></p>
+            <p>The command now skips files with exceptions instead of crashing. A proper message will be
+   displayed to the user who fires the command.
+            </p>
+            <p>https://github.com/owncloud/core/issues/38782<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/38785<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/38755">#38755</a></p>

@@ -30,6 +30,7 @@ Summary
 * Bugfix - Move files_antivirus executable mode config options into config.php: [#38753](https://github.com/owncloud/core/pull/38753)
 * Bugfix - Expire shares at end of day: [#4324](https://github.com/owncloud/enterprise/issues/4324)
 * Bugfix - Image preview for file versions: [#38778](https://github.com/owncloud/core/pull/38778)
+* Bugfix - Prevent files:checksum:verify from crashing on exception: [#38785](https://github.com/owncloud/core/pull/38785)
 * Change - Update Symfony components: [#38755](https://github.com/owncloud/core/pull/38755)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
@@ -237,6 +238,14 @@ Details
 
    https://github.com/owncloud/core/issues/38766
    https://github.com/owncloud/core/pull/38778
+
+* Bugfix - Prevent files:checksum:verify from crashing on exception: [#38785](https://github.com/owncloud/core/pull/38785)
+
+   The command now skips files with exceptions instead of crashing. A proper message will be
+   displayed to the user who fires the command.
+
+   https://github.com/owncloud/core/issues/38782
+   https://github.com/owncloud/core/pull/38785
 
 * Change - Update Symfony components: [#38755](https://github.com/owncloud/core/pull/38755)
 
