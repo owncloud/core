@@ -688,3 +688,55 @@ Feature: sharing
       | ocs-api-version | http-status |
       | 1               | 200         |
       | 2               | 403         |
+
+
+  Scenario Outline: Sharing the shares folder to users is not possible
+    Given using OCS API version "<ocs-api-version>"
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"
+    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
+    When user "Brian" shares folder "Shares" with user "Carol" using the sharing API
+    Then the HTTP status code should be "<http-status>"
+    And the OCS status code should be "403"
+    And the OCS status message should be "Path contains files shared with you"
+    Examples:
+      | ocs-api-version | http-status |
+      | 1               | 200         |
+      | 2               | 403         |
+
+
+  Scenario Outline: Sharing the shares folder to groups is not possible
+    Given using OCS API version "<ocs-api-version>"
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
+    And group "share_group" has been created
+    And user "Carol" has been added to group "share_group"
+    And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"
+    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
+    When user "Brian" shares folder "Shares" with group "share_group" using the sharing API
+    Then the HTTP status code should be "<http-status>"
+    And the OCS status code should be "403"
+    And the OCS status message should be "Path contains files shared with you"
+    Examples:
+      | ocs-api-version | http-status |
+      | 1               | 200         |
+      | 2               | 403         |
+
+
+  Scenario Outline: Sharing the shares folder as public link is not possible
+    Given using OCS API version "<ocs-api-version>"
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"
+    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
+    When user "Brian" creates a public link share of folder "Shares" using the sharing API
+    Then the HTTP status code should be "<http-status>"
+    And the OCS status code should be "403"
+    And the OCS status message should be "Path contains files shared with you"
+    Examples:
+      | ocs-api-version | http-status |
+      | 1               | 200         |
+      | 2               | 403         |
