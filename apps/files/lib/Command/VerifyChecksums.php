@@ -29,6 +29,7 @@ use OCP\Files\IRootFolder;
 use OCP\Files\Node;
 use OCP\Files\NotFoundException;
 use OCP\Files\Storage\IStorage;
+use OCP\Files\StorageNotAvailableException;
 use OCP\IUser;
 use OCP\IUserManager;
 use Symfony\Component\Console\Command\Command;
@@ -200,11 +201,18 @@ class VerifyChecksums extends Command {
 	private function verifyChecksumsForFolder($folder, InputInterface $input, OutputInterface $output) {
 		$folderQueue = [$folder];
 		while ($currentFolder = \array_pop($folderQueue)) {
+			'@phan-var \OCP\Files\Folder $currentFolder';
+			$currentFolderPath = $currentFolder->getPath();
 			try {
-				'@phan-var \OCP\Files\Folder $currentFolder';
 				$nodes = $currentFolder->getDirectoryListing();
 			} catch (NotFoundException $e) {
 				$nodes = [];
+			} catch (StorageNotAvailableException $e) {
+				$nodes = [];
+				$output->writeln("Skipping $currentFolderPath => Storage is not available");
+			} catch (\Exception $e) {
+				$nodes = [];
+				$output->writeln("Skipping $currentFolderPath => " . $e->getMessage());
 			}
 			foreach ($nodes as $node) {
 				if ($node->getType() === FileInfo::TYPE_FOLDER) {
