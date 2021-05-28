@@ -4002,7 +4002,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given user :user has deleted following files/folders
+	 * @Given user :user has deleted the following files/folders
 	 *
 	 * @param string $user
 	 * @param TableNode $filesTable table headings: must be: |name|

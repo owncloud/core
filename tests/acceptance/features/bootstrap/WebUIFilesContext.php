@@ -37,7 +37,6 @@ use Page\FilesPageElement\FileActionsMenu;
 use Page\GeneralExceptionPage;
 use PHPUnit\Framework\Assert;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
-use TestHelpers\DeleteHelper;
 use TestHelpers\Asserts\WebDav as WebDavAssert;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\UploadHelper;

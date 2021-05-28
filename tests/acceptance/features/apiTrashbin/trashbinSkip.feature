@@ -107,8 +107,8 @@ Feature: files and folders can be deleted completely skipping the trashbin
       | old      |
       | new      |
 
-  Scenario Outline: Skip file from trashbin base on size threshhold
-    Given the administrator has set the trashbin skip size threshhold to "10"
+  Scenario Outline: Skip file from trashbin based on size threshold
+    Given the administrator has set the trashbin skip size threshold to "10"
     And using <dav-path> DAV path
     And user "Alice" has uploaded file with content "sample" to "lorem.txt"
     And user "Alice" has uploaded file with content "sample delete file" to "lorem.dat"
@@ -128,25 +128,40 @@ Feature: files and folders can be deleted completely skipping the trashbin
     And the administrator has set the following file extensions to be skipped from the trashbin
       | extension |
       | dat       |
-    And the administrator has set the trashbin skip size threshhold to "10"
+    And the administrator has set the trashbin skip size threshold to "20"
     And using <dav-path> DAV path
+    # files that match none of the skip trashbin rules
     And user "Alice" has uploaded file with content "sample" to "sample.txt"
-    And user "Alice" has uploaded file with content "sample delete file 2" to "PARENT/sample.dat"
-    And user "Alice" has uploaded file with content "sample delete file 3" to "simple-folder/sample.php"
     And user "Alice" has uploaded file with content "sample" to "lorem-folder/sample.go"
-    And user "Alice" has uploaded file with content "sample delete file 5" to "lorem-folder/sample.py"
+    # files that match just the "extension" skip trashbin rule
+    And user "Alice" has uploaded file with content "sample delete 1" to "sample.dat"
+    And user "Alice" has uploaded file with content "sample delete 3" to "lorem-folder/sample.dat"
+    # files that match just the "directory" skip trashbin rule
+    And user "Alice" has uploaded file with content "sample delete 2" to "PARENT/sample.txt"
+    # files that match just the "size threshold" skip trashbin rule
+    And user "Alice" has uploaded file with content "sample delete file long 2" to "simple-folder/sample.php"
+    # files that match 2 skip trashbin rules
+    And user "Alice" has uploaded file with content "sample delete file long 1" to "PARENT/sample.lis"
+    # files that match all 3 skip trashbin rules
+    And user "Alice" has uploaded file with content "sample delete file long 1" to "PARENT/sample.dat"
     When user "Alice" deletes the following files
       | path                     |
       | sample.txt               |
-      | PARENT/sample.dat        |
-      | simple-folder/sample.php |
       | lorem-folder/sample.go   |
-      | lorem-folder/sample.py   |
+      | sample.dat               |
+      | lorem-folder/sample.dat  |
+      | PARENT/sample.txt        |
+      | simple-folder/sample.php |
+      | PARENT/sample.lis        |
+      | PARENT/sample.dat        |
     Then as "Alice" the file with original path "sample.txt" should exist in the trashbin
     And as "Alice" the file with original path "lorem-folder/sample.go" should exist in the trashbin
-    But as "Alice" the file with original path "lorem-folder/sample.py" should not exist in the trashbin
-    And as "Alice" the file with original path "PARENT/sample.dat" should not exist in the trashbin
+    But as "Alice" the file with original path "sample.dat" should not exist in the trashbin
+    And as "Alice" the file with original path "lorem-folder/sample.dat" should not exist in the trashbin
+    And as "Alice" the file with original path "PARENT/sample.txt" should not exist in the trashbin
     And as "Alice" the file with original path "simple-folder/sample.php" should not exist in the trashbin
+    And as "Alice" the file with original path "PARENT/sample.lis" should not exist in the trashbin
+    And as "Alice" the file with original path "PARENT/sample.dat" should not exist in the trashbin
     Examples:
       | dav-path |
       | old      |

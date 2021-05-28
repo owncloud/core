@@ -859,13 +859,13 @@ class TrashbinContext implements Context {
 	}
 
 	/**
-	 * @Given the administrator has set the trashbin skip size threshhold to :threshhold
+	 * @Given the administrator has set the trashbin skip size threshold to :threshold
 	 *
-	 * @param string $threshhold
+	 * @param string $threshold
 	 *
 	 * @return void
 	 */
-	public function theAdministratorHasSetTrashbinSkipSizeThreshHold($threshhold) {
-		$this->featureContext->runOcc(['config:system:set', 'trashbin_skip_size_threshold', '--value=' . $threshhold]);
+	public function theAdministratorHasSetTrashbinSkipSizethreshold($threshold) {
+		$this->featureContext->runOcc(['config:system:set', 'trashbin_skip_size_threshold', '--value=' . $threshold]);
 	}
 }
