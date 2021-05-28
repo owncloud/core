@@ -19,17 +19,17 @@ Feature: share access by ID
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with user "Brian" should include
-      | share_with             | %username%        |
-      | share_with_displayname | %displayname%     |
-      | file_target            | /Shares/textfile0.txt    |
-      | path                   | /textfile0.txt    |
-      | permissions            | share,read,update |
-      | uid_owner              | %username%        |
-      | displayname_owner      | %displayname%     |
-      | item_type              | file              |
-      | mimetype               | text/plain        |
-      | storage_id             | ANY_VALUE         |
-      | share_type             | user              |
+      | share_with             | %username%            |
+      | share_with_displayname | %displayname%         |
+      | file_target            | /Shares/textfile0.txt |
+      | path                   | /textfile0.txt        |
+      | permissions            | share,read,update     |
+      | uid_owner              | %username%            |
+      | displayname_owner      | %displayname%         |
+      | item_type              | file                  |
+      | mimetype               | text/plain            |
+      | storage_id             | ANY_VALUE             |
+      | share_type             | user                  |
     And the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud test text file 0"
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -39,18 +39,20 @@ Feature: share access by ID
 
   Scenario Outline: Get a share with an invalid share id
     Given using OCS API version "<ocs_api_version>"
-    And user "Alice" gets share with id "<share_id>" using the sharing API
+    When user "Alice" gets share with id "<share_id>" using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And the API should not return any data
     Examples:
       | ocs_api_version | share_id   | http_status_code |
-      | 1               | 2333311    | 200             |
-      | 2               | 2333311    | 404             |
-      | 1               | helloshare | 200             |
-      | 2               | helloshare | 404             |
-      | 1               | $#@r3      | 200             |
-      | 2               | $#@r3      | 404             |
+      | 1               | 2333311    | 200              |
+      | 2               | 2333311    | 404              |
+      | 1               | helloshare | 200              |
+      | 2               | helloshare | 404              |
+      | 1               | $#@r3      | 200              |
+      | 2               | $#@r3      | 404              |
+      | 1               | 0          | 200              |
+      | 2               | 0          | 404              |
 
 
   Scenario Outline: accept a share using the share Id
@@ -61,9 +63,9 @@ Feature: share access by ID
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And user "Brian" should see the following elements
-      | /Shares/textfile0.txt     |
+      | /Shares/textfile0.txt |
     And the sharing API should report to user "Brian" that these shares are in the accepted state
-      | path           |
+      | path                  |
       | /Shares/textfile0.txt |
     Examples:
       | ocs_api_version | ocs_status_code |
@@ -80,14 +82,14 @@ Feature: share access by ID
     And the API should not return any data
     Examples:
       | ocs_api_version | share_id   | http_status_code |
-      | 1               | 2333311    | 200             |
-      | 2               | 2333311    | 404             |
-      | 1               | helloshare | 200             |
-      | 2               | helloshare | 404             |
-      | 1               | $#@r3      | 200             |
-      | 2               | $#@r3      | 404             |
-      | 1               | 0          | 200             |
-      | 2               | 0          | 404             |
+      | 1               | 2333311    | 200              |
+      | 2               | 2333311    | 404              |
+      | 1               | helloshare | 200              |
+      | 2               | helloshare | 404              |
+      | 1               | $#@r3      | 200              |
+      | 2               | $#@r3      | 404              |
+      | 1               | 0          | 200              |
+      | 2               | 0          | 404              |
 
 
   Scenario Outline: accept a share using empty share Id
@@ -103,7 +105,6 @@ Feature: share access by ID
       | 2               | 500              | 500             |
 
 
-
   Scenario Outline: decline a share using the share Id
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"
@@ -113,7 +114,7 @@ Feature: share access by ID
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And user "Brian" should not see the following elements
-      | /Shares/textfile0.txt     |
+      | /Shares/textfile0.txt |
     And the sharing API should report to user "Brian" that these shares are in the declined state
       | path           |
       | /textfile0.txt |
@@ -132,14 +133,14 @@ Feature: share access by ID
     And the API should not return any data
     Examples:
       | ocs_api_version | share_id   | http_status_code |
-      | 1               | 2333311    | 200             |
-      | 2               | 2333311    | 404             |
-      | 1               | helloshare | 200             |
-      | 2               | helloshare | 404             |
-      | 1               | $#@r3      | 200             |
-      | 2               | $#@r3      | 404             |
-      | 1               | 0          | 200             |
-      | 2               | 0          | 404             |
+      | 1               | 2333311    | 200              |
+      | 2               | 2333311    | 404              |
+      | 1               | helloshare | 200              |
+      | 2               | helloshare | 404              |
+      | 1               | $#@r3      | 200              |
+      | 2               | $#@r3      | 404              |
+      | 1               | 0          | 200              |
+      | 2               | 0          | 404              |
 
 
   Scenario Outline: decline a share using empty share Id
