@@ -1377,6 +1377,7 @@ def acceptance(ctx):
 		'skipExceptParts': [],
 		'testAgainstCoreTarball': False,
 		'coreTarball': 'daily-master-qa',
+		'earlyFail': True,
 	}
 
 	if 'defaults' in config:
@@ -1543,6 +1544,7 @@ def acceptance(ctx):
 										composerInstall(phpVersion) +
 										vendorbinBehat() +
 										yarnInstall(phpVersion) +
+										stopBuild() +
 										((
 											installCoreFromTarball(params['coreTarball'], db, params['logLevel'], params['useHttps'], params['federatedServerNeeded'], params['proxyNeeded'], pathOfServerUnderTest)
 										) if params['testAgainstCoreTarball'] else (
@@ -1759,6 +1761,30 @@ def notify():
 		result['trigger']['ref'].append('refs/heads/%s' % branch)
 
 	return result
+
+def stopBuild():
+    return [{
+        "name": "stop-build",
+        "image": "drone/cli:alpine",
+        "pull": "always",
+        "environment": {
+            "DRONE_SERVER": "https://drone.owncloud.com",
+            "DRONE_TOKEN": {
+                "from_secret": "drone_token",
+            },
+        },
+        "commands": [
+            "drone build stop owncloud/core ${DRONE_BUILD_NUMBER}",
+        ],
+        "when": {
+            "status": [
+                "failure",
+            ],
+            "event": [
+                "pull_request",
+            ],
+        },
+    }]
 
 def databaseService(db):
 	dbName = getDbName(db)
