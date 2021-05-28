@@ -26,6 +26,7 @@ use GuzzleHttp\Ring\Exception\ConnectException;
 use GuzzleHttp\Stream\StreamInterface;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
+use TestHelpers\DeleteHelper;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;

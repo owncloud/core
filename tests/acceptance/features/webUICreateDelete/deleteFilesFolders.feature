@@ -203,7 +203,7 @@ Feature: deleting files and folders
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "simple-folder/lorem.txt"
     And user "Alice" has uploaded file "filesForUpload/strängé filename (duplicate #2 &).txt" to "simple-folder/strängé filename (duplicate #2 &).txt"
     And user "Alice" has logged in using the webUI
-    Given user "Alice" has created a public link share with settings
+    And user "Alice" has created a public link share with settings
       | path        | /simple-folder            |
       | permissions | read,update,create,delete |
     And the public accesses the last created public link using the webUI

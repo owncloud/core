@@ -8,7 +8,7 @@ Feature: Suggestion for matching tag names
     Given these users have been created with default attributes and without skeleton files:
       | username |
       | Alice    |
-    Given user "Alice" has created a "normal" tag with name "spam"
+    And user "Alice" has created a "normal" tag with name "spam"
     And group "group1" has been created
     And user "Alice" has been added to group "group1"
     And user "Alice" has created a "normal" tag with name "ham"

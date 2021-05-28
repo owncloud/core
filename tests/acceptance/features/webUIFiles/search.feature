@@ -89,7 +89,7 @@ Feature: Search
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
-    Given user "Alice" has created a "normal" tag with name "ipsum"
+    And user "Alice" has created a "normal" tag with name "ipsum"
     And user "Alice" has added tag "ipsum" to file "/lorem.txt"
     When the user browses to the tags page
     And the user searches for tag "ipsum" using the webUI
