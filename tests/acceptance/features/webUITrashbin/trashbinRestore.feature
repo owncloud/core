@@ -33,7 +33,7 @@ Feature: Restore deleted files/folders
   @smokeTest @skipOnLDAP
   Scenario: Select some trashbin files and restore them in a batch
     Given user "Alice" has deleted the following files
-      | name          |
+      | path          |
       | data.zip      |
       | lorem.txt     |
       | lorem-big.txt |
@@ -55,7 +55,7 @@ Feature: Restore deleted files/folders
 
   Scenario: Select all except for some trashbin files and restore them in a batch
     Given user "Alice" has deleted the following files
-      | name          |
+      | path          |
       | data.zip      |
       | lorem.txt     |
       | lorem-big.txt |
@@ -78,7 +78,7 @@ Feature: Restore deleted files/folders
 
   Scenario: Select all trashbin files and restore them in a batch
     Given user "Alice" has deleted the following files
-      | name          |
+      | path          |
       | data.zip      |
       | lorem.txt     |
       | lorem-big.txt |

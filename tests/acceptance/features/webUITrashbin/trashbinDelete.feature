@@ -14,7 +14,7 @@ Feature: files and folders can be deleted from the trashbin
     And user "Alice" has uploaded file "filesForUpload/lorem-big.txt" to "simple-folder/lorem-big.txt"
     And user "Alice" has logged in using the webUI
     And user "Alice" has deleted the following files
-      | name          |
+      | path          |
       | data.zip      |
       | lorem.txt     |
       | lorem-big.txt |
