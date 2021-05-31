@@ -333,7 +333,7 @@ class TransferOwnership extends Command {
 				// filter out the reshares as transfer ownership only transfers
 				// files owned by the user - in case of reshares source
 				// user is not file owner
-				$filteredShares = \array_filter($filteredShares, function (IShare $share) {
+				$filteredShares = \array_filter($filteredShares, function (IShare $share) use ($output) {
 					if ($share->getShareOwner() === $this->sourceUser) {
 						// due to lazy loading of the file info the information wouldn't be
 						// available for the share transfer because the file has been moved before.
@@ -344,7 +344,12 @@ class TransferOwnership extends Command {
 						// ShareManager's generalChecks checks for the node to be shareable during
 						// share update. This info could be lost in step3 because the file has been
 						// transferred already
-						$share->getNode()->getId();  // force loading the fileinfo
+						try {
+							$share->getNode()->getId();  // force loading the fileinfo
+						} catch (NotFoundException | NoUserException $e) {
+							$output->writeln('<error>Share with id ' . $share->getId() . ' and type ' . $share->getShareType() . ' points at deleted file or share that is no longer accessible, skipping</error>');
+							return false;
+						}
 						return true;
 					}
 					return false;
