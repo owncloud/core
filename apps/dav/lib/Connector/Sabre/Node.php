@@ -38,6 +38,7 @@ use OC\Files\Mount\MoveableMount;
 use OC\Lock\Persistent\Lock;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
+use OCA\Files_Sharing\SharedMount;
 use OCP\Files\ForbiddenException;
 use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\Share\Exceptions\ShareNotFound;
@@ -123,6 +124,10 @@ abstract class Node implements \Sabre\DAV\INode {
 	 * @throws InvalidPath
 	 */
 	public function setName($name) {
+		$mountPoint = $this->info->getMountPoint();
+		if (!($mountPoint instanceof SharedMount) && !$this->info->isUpdateable()) {
+			throw new \Sabre\DAV\Exception\Forbidden();
+		}
 
 		// verify path of the source
 		$this->verifyPath();
