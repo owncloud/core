@@ -420,12 +420,13 @@ class Manager implements IManager {
 	 * Validate if the expiration date fits the system settings
 	 *
 	 * @param \OCP\Share\IShare $share The share to validate the expiration date of
+	 * @param Boolean $skip if true, lets expiration to be a past date
 	 * @return \OCP\Share\IShare The modified share object
 	 * @throws GenericShareException
 	 * @throws \InvalidArgumentException
 	 * @throws \Exception
 	 */
-	protected function validateExpirationDate(\OCP\Share\IShare $share) {
+	protected function validateExpirationDate(\OCP\Share\IShare $share, $skip = false) {
 		$expirationDate = $share->getExpirationDate();
 
 		if ($expirationDate !== null) {
@@ -436,7 +437,7 @@ class Manager implements IManager {
 			$date = new \DateTime('now', new DateTimeZone($expirationDate->getTimezone()->getName()));
 			$date->setTime(0, 0, 0, 0);
 
-			if ($date > $expirationDate) {
+			if ($date > $expirationDate && !$skip) {
 				$message = $this->l->t('Expiration date is in the past');
 				throw new GenericShareException($message, $message, 404);
 			}
@@ -954,11 +955,12 @@ class Manager implements IManager {
 	 * Update a share
 	 *
 	 * @param \OCP\Share\IShare $share
+	 * @param Boolean $skipExpirationValidation defaults to false
 	 * @return \OCP\Share\IShare The share object
 	 * @throws \InvalidArgumentException
 	 * @throws GenericShareException
 	 */
-	public function updateShare(\OCP\Share\IShare $share) {
+	public function updateShare(\OCP\Share\IShare $share, $skipExpirationValidation = false) {
 		$expirationDateUpdated = false;
 
 		$this->canShare($share);
@@ -990,7 +992,7 @@ class Manager implements IManager {
 
 		if ($share->getExpirationDate() != $originalShare->getExpirationDate()) {
 			//Verify the expiration date
-			$this->validateExpirationDate($share);
+			$this->validateExpirationDate($share, $skipExpirationValidation);
 			$expirationDateUpdated = true;
 		}
 
