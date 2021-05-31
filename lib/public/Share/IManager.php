@@ -53,13 +53,13 @@ interface IManager {
 	 * The share can't be removed this way (permission 0): use deleteShare
 	 *
 	 * @param IShare $share
-	 * @param Boolean $skipExpirationCheck
+	 * @param Boolean $skipExpirationValidation
 	 * @return IShare The share object
 	 * @throws \InvalidArgumentException If $share is a link share or the $recipient does not match
 	 * @throws GenericShareException If $share requirements do not match
 	 * @since 9.0.0
 	 */
-	public function updateShare(IShare $share, $skipExpirationCheck = false);
+	public function updateShare(IShare $share, $skipExpirationValidation = false);
 
 	/**
 	 * Delete a share
