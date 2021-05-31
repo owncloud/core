@@ -113,3 +113,32 @@ td.mountPoint, td.backend { width:160px; }
 #externalStorage tr.invalid {
 	background-color: #F2DEDE;
 }
+
+.selectAllApplicableUsers {
+	background-color: #F2DEDE;
+}
+
+.selectAllApplicableUsers .avatardiv{
+	display: inline-block;
+}
+
+.selectAllApplicableUsers span{
+	vertical-align: top;
+	top: 6px;
+	position: absolute;
+	max-width: 80%;
+	left: 30px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	margin-left: 10px;
+}
+
+.select2-controls{
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+.select2-controls li{
+	padding: 3px;
+}
