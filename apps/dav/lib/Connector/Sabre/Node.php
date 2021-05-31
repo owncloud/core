@@ -124,11 +124,6 @@ abstract class Node implements \Sabre\DAV\INode {
 	 */
 	public function setName($name) {
 
-		// rename is only allowed if the update privilege is granted
-		if (!$this->info->isUpdateable()) {
-			throw new \Sabre\DAV\Exception\Forbidden();
-		}
-
 		// verify path of the source
 		$this->verifyPath();
 
