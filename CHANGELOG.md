@@ -38,6 +38,7 @@ Summary
 * Change - Improve performance for the MOVE operation: [#38649](https://github.com/owncloud/core/pull/38649)
 * Change - Optimize share rename: [#38656](https://github.com/owncloud/core/pull/38656)
 * Change - All mount configuration items marked as passwords will be encrypted: [#38728](https://github.com/owncloud/core/pull/38728)
+* Change - Change favicon and color references to match the new CI: [#38750](https://github.com/owncloud/core/pull/38750)
 * Enhancement - Improve public share federation user interface: [#4393](https://github.com/owncloud/enterprise/issues/4393)
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
 * Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
@@ -337,6 +338,13 @@ Details
    if needed.
 
    https://github.com/owncloud/core/pull/38728
+
+* Change - Change favicon and color references to match the new CI: [#38750](https://github.com/owncloud/core/pull/38750)
+
+   We changed some color references to match the new CI-color of ownCloud. Also a new header image
+   for the mail templates and the ownCloud logo without the "X" reference was added.
+
+   https://github.com/owncloud/core/pull/38750
 
 * Enhancement - Improve public share federation user interface: [#4393](https://github.com/owncloud/enterprise/issues/4393)
 
