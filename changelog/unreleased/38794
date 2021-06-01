@@ -1,0 +1,8 @@
+Bugfix: Always allow renaming shared mounts
+
+We now skip the initial permission check when renaming a shared mount as
+this should always be possible.
+
+https://github.com/owncloud/core/pull/38794
+https://github.com/owncloud/enterprise/issues/4582
+https://github.com/owncloud/core/issues/30325

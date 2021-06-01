@@ -121,7 +121,7 @@ Feature: rename folders
     When the user renames folder "a-folder" to "a.part" using the webUI
     Then near folder "a-folder" a tooltip with the text '"a.part" has a forbidden file type/extension.' should be displayed on the webUI
 
-  @issue-30325 @skipOnOcV10
+
   Scenario: Rename a folder which is received as a share (without change permission)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Brian" has created folder "RandomFolder"

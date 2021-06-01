@@ -38,6 +38,7 @@ use OC\Files\Mount\MoveableMount;
 use OC\Lock\Persistent\Lock;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
+use OCA\Files_Sharing\SharedMount;
 use OCP\Files\ForbiddenException;
 use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\Share\Exceptions\ShareNotFound;
@@ -123,9 +124,9 @@ abstract class Node implements \Sabre\DAV\INode {
 	 * @throws InvalidPath
 	 */
 	public function setName($name) {
-
-		// rename is only allowed if the update privilege is granted
-		if (!$this->info->isUpdateable()) {
+		$mountPoint = $this->info->getMountPoint();
+		// rename of a shared mount should always be possible
+		if (!($mountPoint instanceof SharedMount) && !$this->info->isUpdateable()) {
 			throw new \Sabre\DAV\Exception\Forbidden();
 		}
 
