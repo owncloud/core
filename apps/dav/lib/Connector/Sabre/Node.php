@@ -125,7 +125,7 @@ abstract class Node implements \Sabre\DAV\INode {
 	 */
 	public function setName($name) {
 		$mountPoint = $this->info->getMountPoint();
-		// rename of a shared mount should always be possible, skipping permission check
+		// rename of a shared mount should always be possible
 		if (!($mountPoint instanceof SharedMount) && !$this->info->isUpdateable()) {
 			throw new \Sabre\DAV\Exception\Forbidden();
 		}
