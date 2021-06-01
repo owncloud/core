@@ -1688,7 +1688,7 @@ trait Sharing {
 	 * @return string|null
 	 */
 	public function getLastShareId() {
-		if ($this->lastShareData) {
+		if ($this->lastShareData && $this->lastShareData->data) {
 			return $this->lastShareData->data[0]->id;
 		} else {
 			return null;
