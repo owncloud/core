@@ -74,6 +74,7 @@ Feature: sharing
     And as "Alice" file "/folderToShare/renamedFile" should exist
     But as "Alice" file "/folderToShare/fileInside" should not exist
 
+
   Scenario: receiver tries to rename a received share with share, read permissions
     Given user "Alice" has created folder "folderToShare"
     And user "Alice" has uploaded file with content "thisIsAFileInsideTheSharedFolder" to "/folderToShare/fileInside"
