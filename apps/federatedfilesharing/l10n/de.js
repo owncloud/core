@@ -2,7 +2,9 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Federated-Sharing",
+    "Add to" : "Hinzufügen",
     "Loading..." : "Laden…",
+    "Change server..." : "Server wechseln...",
     "Invalid Federated Cloud ID" : "Ungültige Federated-Cloud-ID",
     "Sharing %s failed, because this item is already shared with %s" : "Freigabe von %s fehlgeschlagen, da dieses Objekt schon mit %s geteilt wird",
     "Not allowed to create a federated share with the same user" : "Das Erstellen einer Freigabe zu einer Federated-Cloud mit dem gleichen Benutzer ist nicht erlaubt",
