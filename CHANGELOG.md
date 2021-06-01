@@ -31,6 +31,7 @@ Summary
 * Bugfix - Expire shares at end of day: [#4324](https://github.com/owncloud/enterprise/issues/4324)
 * Bugfix - Image preview for file versions: [#38778](https://github.com/owncloud/core/pull/38778)
 * Bugfix - Prevent files:checksum:verify from crashing on exception: [#38785](https://github.com/owncloud/core/pull/38785)
+* Bugfix - Always allow renaming shared mounts: [#38794](https://github.com/owncloud/core/pull/38794)
 * Change - Update Symfony components: [#38755](https://github.com/owncloud/core/pull/38755)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
@@ -246,6 +247,15 @@ Details
 
    https://github.com/owncloud/core/issues/38782
    https://github.com/owncloud/core/pull/38785
+
+* Bugfix - Always allow renaming shared mounts: [#38794](https://github.com/owncloud/core/pull/38794)
+
+   We now skip the initial permission check when renaming a shared mount as this should always be
+   possible.
+
+   https://github.com/owncloud/enterprise/issues/4582
+   https://github.com/owncloud/core/issues/30325
+   https://github.com/owncloud/core/pull/38794
 
 * Change - Update Symfony components: [#38755](https://github.com/owncloud/core/pull/38755)
 
