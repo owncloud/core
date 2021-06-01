@@ -296,7 +296,7 @@ input:disabled+label, input:disabled:hover+label, input:disabled:focus+label {
 
 /* Primary action button, use sparingly */
 .primary, input[type="submit"].primary, input[type="button"].primary, button.primary, .button.primary {
-	border: 1px solid #1B223D;
+	border: 1px solid #041e42;
 	background-color: #35537a;
 	color: #ddd;
 }
@@ -309,7 +309,7 @@ input:disabled+label, input:disabled:hover+label, input:disabled:focus+label {
 .primary:disabled, input[type="submit"].primary:disabled, input[type="button"].primary:disabled, button.primary:disabled, .button.primary:disabled,
 .primary:disabled:hover, input[type="submit"].primary:disabled:hover, input[type="button"].primary:disabled:hover, button.primary:disabled:hover, .button.primary:disabled:hover,
 .primary:disabled:focus, input[type="submit"].primary:disabled:focus, input[type="button"].primary:disabled:focus, button.primary:disabled:focus, .button.primary:disabled:focus {
-	background-color: #1B223D;
+	background-color: #041e42;
 	color: #bbb;
 }
 

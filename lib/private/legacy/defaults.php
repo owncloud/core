@@ -72,7 +72,7 @@ class OC_Defaults {
 		$this->defaultDocVersion = $version[0] . '.' . $version[1]; // used to generate doc links
 		$this->defaultSlogan = $this->l->t('A safe home for all your data');
 		$this->defaultLogoClaim = '';
-		$this->defaultMailHeaderColor = '#1B223D'; /* header color of mail notifications */
+		$this->defaultMailHeaderColor = '#041e42'; /* header color of mail notifications */
 
 		$themePath = OC_Util::getTheme()->getDirectory();
 

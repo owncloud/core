@@ -51,7 +51,7 @@ if ($_['showShareIT']) {
 		<div class="hidden" id="oca-files-sharing-add-to-your-website-expanded">
 		<p style="margin: 10px 0">
 			<a target="_blank" rel="noreferrer" href="<?php p($_['reference']); ?>"
-				style="padding:10px;background-color:#1B223D;color:#fff;border-radius:3px;padding-left:4px;">
+				style="padding:10px;background-color:#041e42;color:#fff;border-radius:3px;padding-left:4px;">
 				<img src="<?php p($_['owncloud_logo_path']); ?>"
 					style="width:50px;position:relative;top:8px;">
 				<?php p($l->t('Share with me via ownCloud')); ?>
@@ -61,7 +61,7 @@ if ($_['showShareIT']) {
 		<p>
 			<?php p($l->t('HTML Code:')); ?>
 			<xmp><a target="_blank" rel="noreferrer" href="<?php p($_['reference']); ?>"
-	style="padding:10px;background-color:#1B223D;color:#fff;border-radius:3px;padding-left:4px;">
+	style="padding:10px;background-color:#041e42;color:#fff;border-radius:3px;padding-left:4px;">
 	<img src="<?php  p($_['urlGenerator']->getAbsoluteURL($_['owncloud_logo_path'])); ?>"
 		style="width:50px;position:relative;top:8px;">
 	<?php p($l->t('Share with me via ownCloud')); ?>

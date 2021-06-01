@@ -1,0 +1,6 @@
+Change: Change favicon and color references to match the new CI
+
+We changed some color references to match the new CI-color of ownCloud.
+Also a new header image for the mail templates and the ownCloud logo without the "X" reference was added.
+
+https://github.com/owncloud/core/pull/38750

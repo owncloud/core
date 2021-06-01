@@ -16,8 +16,8 @@
 	color: #333333;
 }
 .ui-widget-header {
-	border: 1px solid #1B223D;
-	background: #1B223D url('images/ui-bg_flat_35_1d2d44_40x100.png') 50% 50% repeat-x;
+	border: 1px solid #041e42;
+	background: #041e42 url('images/ui-bg_flat_35_1d2d44_40x100.png') 50% 50% repeat-x;
 	color: #ffffff;
 }
 .ui-widget-header a {
@@ -59,15 +59,15 @@
 .ui-state-active,
 .ui-widget-content .ui-state-active,
 .ui-widget-header .ui-state-active {
-	border: 1px solid #1B223D;
+	border: 1px solid #041e42;
 	background: #f8f8f8 url('images/ui-bg_glass_100_f8f8f8_1x400.png') 50% 50% repeat-x;
 	font-weight: bold;
-	color: #1B223D;
+	color: #041e42;
 }
 .ui-state-active a,
 .ui-state-active a:link,
 .ui-state-active a:visited {
-	color: #1B223D;
+	color: #041e42;
 }
 
 /* Interaction Cues

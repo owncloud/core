@@ -650,7 +650,7 @@ em {
 }
 
 .tabHeader.selected{
-	border-bottom: 2px solid #1b223d;
+	border-bottom: 2px solid #041e42;
 	font-weight: 600;
 	color: #000;
 }

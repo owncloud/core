@@ -38,7 +38,7 @@
 	z-index: 2000;
 	height: 45px;
 	line-height: 2.5em;
-	background-color: #1B223D;
+	background-color: #041e42;
 	box-sizing: border-box;
 }
 
@@ -81,7 +81,7 @@
 #header .logo {
 	background-image: url('../img/logo.svg');
 	background-repeat: no-repeat;
-	background-size: 175px;
+	background-size: 220px;
 	background-position: center center;
 	width: 252px;
 	height: 120px;
