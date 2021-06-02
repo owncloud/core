@@ -1804,7 +1804,7 @@ def buildGithubCommentForBuildStopped(alternateSuiteName, earlyFail):
 def githubComment(earlyFail):
    return [{
        "name": "github-comment",
-       "image": "jmccann/drone-github-comment",
+       "image": "jmccann/drone-github-comment:1",
        "pull": "always",
        "settings": {
            "message_file": "/drone/src/comments.file",
