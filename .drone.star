@@ -1780,9 +1780,6 @@ def stopBuild(earlyFail):
             "drone build stop owncloud/core ${DRONE_BUILD_NUMBER}",
         ],
         "when": {
-            "status": [
-                "failure",
-            ],
             "event": [
                 "pull_request",
             ],
@@ -1798,9 +1795,6 @@ def buildGithubCommentForBuildStopped(alternateSuiteName, earlyFail):
             'echo "<details><summary>:boom: Acceptance tests <strong>%s</strong> failed. The build is cancelled...</summary>\\n\\n" >> /drone/src/comments.file' % alternateSuiteName,
         ],
         "when": {
-             "status": [
-                 "failure",
-             ],
             "event": [
                 "pull_request",
             ],
@@ -1821,9 +1815,6 @@ def githubComment(earlyFail):
        #    },
        #},
        "when": {
-           "status": [
-               "failure",
-           ],
            "event": [
                "pull_request",
            ],
