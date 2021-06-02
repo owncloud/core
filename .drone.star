@@ -1377,6 +1377,7 @@ def acceptance(ctx):
 		'skipExceptParts': [],
 		'testAgainstCoreTarball': False,
 		'coreTarball': 'daily-master-qa',
+    'earlyFail': True,
 	}
 
 	if 'defaults' in config:
