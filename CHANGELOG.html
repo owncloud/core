@@ -48,6 +48,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Remove google+ share button from personal settings: <a href="https://github.com/owncloud/core/pull/38705">#38705</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Adjust the return type of the querybuilder's execute method: <a href="https://github.com/owncloud/core/pull/38714">#38714</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Communicate user profile picture capability: <a href="https://github.com/owncloud/core/pull/38722">#38722</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Allow apps to implement their own license: <a href="https://github.com/owncloud/core/pull/38737">#38737</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Command occ user:report shows additional row for guests: <a href="https://github.com/owncloud/enterprise/issues/3467">#3467</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Improve mobile user interface on files list: <a href="https://github.com/owncloud/core/pull/38748">#38748</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Resend invitation email: <a href="https://github.com/owncloud/core/pull/38774">#38774</a></li>
@@ -416,6 +417,14 @@
    render avatar images of users.
             </p>
             <p>https://github.com/owncloud/core/pull/38722<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Allow apps to implement their own license: <a href="https://github.com/owncloud/core/pull/38737">#38737</a></p>
+            <p>Apps can implement their own license parser by extending the \OCP\License\AbstractLicense
+   class. Note that storing the license will still be performed by ownCloud. This custom license
+   can provide additional information that can be queried through the ILicenseManager.
+            </p>
+            <p>https://github.com/owncloud/core/pull/38737<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Command occ user:report shows additional row for guests: <a href="https://github.com/owncloud/enterprise/issues/3467">#3467</a></p>

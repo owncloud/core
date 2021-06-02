@@ -50,6 +50,7 @@ Summary
 * Enhancement - Remove google+ share button from personal settings: [#38705](https://github.com/owncloud/core/pull/38705)
 * Enhancement - Adjust the return type of the querybuilder's execute method: [#38714](https://github.com/owncloud/core/pull/38714)
 * Enhancement - Communicate user profile picture capability: [#38722](https://github.com/owncloud/core/pull/38722)
+* Enhancement - Allow apps to implement their own license: [#38737](https://github.com/owncloud/core/pull/38737)
 * Enhancement - Command occ user:report shows additional row for guests: [#3467](https://github.com/owncloud/enterprise/issues/3467)
 * Enhancement - Improve mobile user interface on files list: [#38748](https://github.com/owncloud/core/pull/38748)
 * Enhancement - Resend invitation email: [#38774](https://github.com/owncloud/core/pull/38774)
@@ -432,6 +433,14 @@ Details
    render avatar images of users.
 
    https://github.com/owncloud/core/pull/38722
+
+* Enhancement - Allow apps to implement their own license: [#38737](https://github.com/owncloud/core/pull/38737)
+
+   Apps can implement their own license parser by extending the \OCP\License\AbstractLicense
+   class. Note that storing the license will still be performed by ownCloud. This custom license
+   can provide additional information that can be queried through the ILicenseManager.
+
+   https://github.com/owncloud/core/pull/38737
 
 * Enhancement - Command occ user:report shows additional row for guests: [#3467](https://github.com/owncloud/enterprise/issues/3467)
 
