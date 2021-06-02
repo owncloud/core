@@ -1766,72 +1766,69 @@ def notify():
 	return result
 
 def stopBuild(earlyFail):
-    if (True):
-        return [{
-            "name": "stop-build",
-            "image": "drone/cli:alpine",
-            "pull": "always",
-            "environment": {
-                "DRONE_SERVER": "https://drone.owncloud.com",
-                "DRONE_TOKEN": {
-                    "from_secret": "drone_token",
-                },
+    return [{
+        "name": "stop-build",
+        "image": "drone/cli:alpine",
+        "pull": "always",
+        "environment": {
+            "DRONE_SERVER": "https://drone.owncloud.com",
+            "DRONE_TOKEN": {
+                "from_secret": "drone_token",
             },
-            "commands": [
-                "drone build stop owncloud/core ${DRONE_BUILD_NUMBER}",
+        },
+        "commands": [
+            "drone build stop owncloud/core ${DRONE_BUILD_NUMBER}",
+        ],
+        "when": {
+            "status": [
+                "failure",
             ],
-            "when": {
-                "status": [
-                    "failure",
-                ],
-                "event": [
-                    "pull_request",
-                ],
-            },
-        }]
+            "event": [
+                "pull_request",
+            ],
+        },
+    }]
 
 def buildGithubCommentForBuildStopped(alternateSuiteName, earlyFail):
-    if (True):
-        return [{
-            "name": "build-github-comment-buildStop",
-            "image": "owncloud/ubuntu:16.04",
-            "pull": "always",
-            "commands": [
-                'echo "<details><summary>:boom: Acceptance tests <strong>%s</strong> failed. The build is cancelled...</summary>\\n\\n" >> /drone/src/comments.file' % alternateSuiteName,
+    return [{
+        "name": "build-github-comment-buildStop",
+        "image": "owncloud/ubuntu:16.04",
+        "pull": "always",
+        "commands": [
+            'echo "<details><summary>:boom: Acceptance tests <strong>%s</strong> failed. The build is cancelled...</summary>\\n\\n" >> /drone/src/comments.file' % alternateSuiteName,
+        ],
+        "when": {
+             "status": [
+                 "failure",
+             ],
+            "event": [
+                "pull_request",
             ],
-            "when": {
-                 "status": [
-                     "failure",
-                 ],
-                "event": [
-                    "pull_request",
-                ],
-            },
-        }]
+        },
+    }]
 
 def githubComment(earlyFail):
-    if (True):
-        return [{
-            "name": "github-comment",
-            "image": "jmccann/drone-github-comment:1",
-            "pull": "if-not-exists",
-            "settings": {
-                "message_file": "/drone/src/comments.file",
-            },
-            #"environment": {
-            #    "PLUGIN_API_KEY": {
-            #        "from_secret": "plugin_api_key",
-            #    },
-            #},
-            "when": {
-                "status": [
-                    "failure",
-                ],
-                "event": [
-                    "pull_request",
-                ],
-            },
-        }]
+   return [{
+       "name": "github-comment",
+       "image": "jmccann/drone-github-comment:1",
+       "pull": "if-not-exists",
+       "settings": {
+           "message_file": "/drone/src/comments.file",
+       },
+       #"environment": {
+       #    "PLUGIN_API_KEY": {
+       #        "from_secret": "plugin_api_key",
+       #    },
+       #},
+       "when": {
+           "status": [
+               "failure",
+           ],
+           "event": [
+               "pull_request",
+           ],
+       },
+   }]
 
 
 def databaseService(db):
