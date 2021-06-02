@@ -7,6 +7,7 @@ OC.L10N.register(
     "Please select tags to filter by" : "Выберите метки для фильтра",
     "No files found for the selected tags" : "Для выбранных меток файлов не найдено",
     "<strong>System tags</strong> for a file have been modified" : "<strong>Системные метки</strong> файла были изменены",
+    "System tag %3$s was assigned to %2$s due to automation rule" : "Системная метка %3$s была назначена для %2$s автоматическим правилом",
     "You assigned system tag %3$s" : "Вы назначили системную метку %3$s",
     "%1$s assigned system tag %3$s" : "%1$s назначил системную метку %3$s",
     "You unassigned system tag %3$s" : "Вы убрали системную метку %3$s",
