@@ -76,6 +76,30 @@ $CONFIG = [
 'files_antivirus.av_cmd_options' => '',
 
 /**
+ * App: Files Versions
+ *
+ * Possible keys: `versions_retention_obligation` STRING
+ *
+ * Use following values to configure the retention behaviour. Replace `D` with the number of days.
+ *
+ * auto::
+ * Default value if nothing is set
+ * D, auto::
+ * Keep versions at least for D days, apply expiration rules to all versions that are older than D days
+ * auto, D::
+ * Delete all versions that are older than D days automatically, delete other versions according to expiration rules
+ * D1, D2::
+ * Keep versions for at least D1 days and delete when they exceed D2 days
+ * disabled::
+ * Disable Versions; no files will be deleted.
+ */
+
+/**
+ * Pattern to define the expiration date for each backup version created.
+ */
+'versions_retention_obligation' => 'auto',
+
+/**
  * App: Firstrunwizard
  *
  * Possible keys: `customclient_desktop` URL
@@ -227,7 +251,7 @@ $CONFIG = [
  * If auto-provision is not setup, it is expected that the user exists.
  * This is where an LDAP setup is usually required. `auto-provision` holds several sub keys,
  * see the example setup with the explanations below.
-*
+ *
  * insecure::
  * Boolean value (`true`/`false`), no SSL verification will take place when talking to the
  * IdP - **DO NOT use in production!**
