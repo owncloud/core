@@ -385,7 +385,6 @@ def dependencies(ctx):
 		for phpVersion in params['phpVersions']:
 			name = 'install-dependencies-php%s' % phpVersion
 
-
 			result = {
 				'kind': 'pipeline',
 				'type': 'docker',
