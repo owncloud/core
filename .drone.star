@@ -394,6 +394,9 @@ def dependencies(ctx):
 					'path': 'src'
 				},
 				'steps':
+          buildGithubCommentForBuildStopped(name, params["earlyFail"]) +
+          githubComment(params["earlyFail"]) +
+          stopBuild(params["earlyFail"]) +
 					cacheRestore() +
 					cacheClearOnEventPush(phpVersion) +
 					composerInstall(phpVersion) +
