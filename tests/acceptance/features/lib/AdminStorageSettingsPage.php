@@ -46,7 +46,7 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	protected $newBackendTypeXpath = "//tr[@id='addMountPoint']//select[@id='selectBackend']";
 	protected $newLocationXpath = "//tr[@id='addMountPoint']/preceding-sibling::tr[1]//input[@placeholder='Location']";
 	protected $statusSymbolXpath = "//tr[@id='addMountPoint']/preceding-sibling::tr[1]//td[@class='status']/span";
-	protected $selectAllListElementXpath  = "//li[@class='selectAllApplicableUsers']";
+	protected $selectAllListElementXpath  = "//div[@id='select2-drop']//li[@class='selectAllApplicableUsers']";
 
 	protected $lastMountApplicableXpath = "//tr[@id='addMountPoint']/preceding-sibling::tr[1]//td[@class='applicable']//li/input";
 	protected $userOrGroupListXpath = "//div[@id='select2-drop']//li[contains(@class, 'select2-result')]";
