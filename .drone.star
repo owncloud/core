@@ -1766,7 +1766,7 @@ def notify():
 	return result
 
 def stopBuild(earlyFail):
-    if (earlyFail):
+    if (True):
         return [{
             "name": "stop-build",
             "image": "drone/cli:alpine",
@@ -1791,7 +1791,7 @@ def stopBuild(earlyFail):
         }]
 
 def buildGithubCommentForBuildStopped(alternateSuiteName, earlyFail):
-    if (earlyFail):
+    if (True):
         return [{
             "name": "build-github-comment-buildStop",
             "image": "owncloud/ubuntu:16.04",
@@ -1810,7 +1810,7 @@ def buildGithubCommentForBuildStopped(alternateSuiteName, earlyFail):
         }]
 
 def githubComment(earlyFail):
-    if (earlyFail):
+    if (True):
         return [{
             "name": "github-comment",
             "image": "jmccann/drone-github-comment:1",
