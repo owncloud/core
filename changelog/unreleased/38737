@@ -1,0 +1,9 @@
+Enhancement: Allow apps to implement their own license
+
+Apps can implement their own license parser by extending the
+\OCP\License\AbstractLicense class. Note that storing the license
+will still be performed by ownCloud.
+This custom license can provide additional information that can be
+queried through the ILicenseManager.
+
+https://github.com/owncloud/core/pull/38737

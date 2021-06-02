@@ -20,6 +20,8 @@
 namespace OC\License;
 
 use OCP\License\ILicenseManager;
+use OCP\License\Exceptions\LicenseException;
+use OCP\License\Exceptions\LicenseManagerException;
 use OCP\IConfig;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Utility\ITimeFactory;
@@ -220,6 +222,33 @@ class LicenseManager implements ILicenseManager {
 			$messageData['type'] = $info[0]->getType();
 		}
 		return $messageData;
+	}
+
+	public function askLicenseFor(string $appid, string $method, array $params = []) {
+		$info = $this->getLicenseWithState($appid);
+		$licenseObj = $info[0];
+		if ($licenseObj === null) {
+			throw new LicenseManagerException("No license available for app $appid", 1);
+		}
+
+		if (!\is_callable([$licenseObj, $method])) {
+			throw new LicenseManagerException("Method $method can't be called", 2);
+		}
+
+		// function names are case-insensitive...
+		$lowerCaseMethods = \array_map(function ($value) {
+			return \strtolower($value);
+		}, $licenseObj->getProtectedMethods());
+
+		if (\in_array(\strtolower($method), $lowerCaseMethods, true)) {
+			throw new LicenseManagerException("License doesn't allow method $method to be called", 3);
+		}
+
+		try {
+			return $licenseObj->$method(...$params);
+		} catch (LicenseException $ex) {
+			throw new LicenseManagerException("Method $method failed", 99, $ex);
+		}
 	}
 
 	/**

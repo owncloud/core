@@ -24,13 +24,24 @@ interface ILicense {
 	public const LICENSE_TYPE_DEMO = 1;
 
 	/**
+	 * Get the methods the license implementation doesn't want anyone to access.
+	 * This mainly applies to the ILicenseManager.
+	 * Note that the ILicenseManager can still access to these methods, in particular,
+	 * the "getLicenseString", but it won't expose them.
+	 * @return array[string] the list of methods that shouldn't be accessed
+	 */
+	public function getProtectedMethods(): array;
+
+	/**
 	 * get the raw license string, such as "owncloud_28731_df987_234sf"
 	 * @return string
 	 */
 	public function getLicenseString(): string;
 
 	/**
-	 * Check if this license is valid. The license might be expired but valid
+	 * Check if this license is valid. The license might be expired but valid.
+	 * Note that if the license fails to be parsed, it must return false, not throw an
+	 * exception
 	 * @return bool
 	 */
 	public function isValid(): bool;
