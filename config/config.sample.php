@@ -488,7 +488,7 @@ $CONFIG = [
 
 /**
  * Define rewrite private and public links
- * 
+ *
  * Rewrite private and public links to the new ownCloud Web UI (if available).
  * If web.rewriteLinks is set to 'true', public and private links will be redirected to this url.
  * The Web UI will handle these links accordingly.
