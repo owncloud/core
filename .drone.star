@@ -1813,11 +1813,11 @@ def githubComment(earlyFail):
             "settings": {
                 "message_file": "/drone/src/comments.file",
             },
-            "environment": {
-                "PLUGIN_API_KEY": {
-                    "from_secret": "plugin_api_key",
-                },
-            },
+            #"environment": {
+            #    "PLUGIN_API_KEY": {
+            #        "from_secret": "plugin_api_key",
+            #    },
+            #},
             "when": {
                 "status": [
                     "failure",
