@@ -118,7 +118,9 @@ class ScannerTest extends \Test\TestCase {
 		$cachedDataFolder = $this->cache->get('');
 		$cachedDataFolder2 = $this->cache->get('folder');
 
-		$this->assertEquals(-1, $cachedDataFolder['size']);
+		// -2 = IScanner::SIZE_SHALLOW_SCANNED
+		// -1 = IScanner::SIZE_NEEDS_SCAN
+		$this->assertEquals(-2, $cachedDataFolder['size']);
 		$this->assertEquals(-1, $cachedDataFolder2['size']);
 
 		$this->scanner->scan('folder', \OC\Files\Cache\Scanner::SCAN_SHALLOW);
@@ -142,7 +144,8 @@ class ScannerTest extends \Test\TestCase {
 		$this->assertFalse($this->cache->inCache('folder/bar.txt'));
 		$this->assertFalse($this->cache->inCache('folder/2bar.txt'));
 		$cachedData = $this->cache->get('');
-		$this->assertEquals(-1, $cachedData['size']);
+		// -2 = IScanner::SIZE_SHALLOW_SCANNED
+		$this->assertEquals(-2, $cachedData['size']);
 
 		$this->scanner->backgroundScan();
 
@@ -150,7 +153,10 @@ class ScannerTest extends \Test\TestCase {
 		$this->assertTrue($this->cache->inCache('folder/bar.txt'));
 
 		$cachedData = $this->cache->get('');
-		$this->assertnotEquals(-1, $cachedData['size']);
+		// -2 = IScanner::SIZE_SHALLOW_SCANNED
+		// -1 = IScanner::SIZE_NEEDS_SCAN
+		$this->assertNotEquals(-1, $cachedData['size']);
+		$this->assertNotEquals(-2, $cachedData['size']);
 
 		$this->assertFalse($this->cache->getIncomplete());
 	}
@@ -167,7 +173,8 @@ class ScannerTest extends \Test\TestCase {
 		$this->cache->put('folder2', ['size' => 1]); // mark as complete
 
 		$cachedData = $this->cache->get('');
-		$this->assertEquals(-1, $cachedData['size']);
+		// -2 = IScanner::SIZE_SHALLOW_SCANNED
+		$this->assertEquals(-2, $cachedData['size']);
 
 		$this->scanner->scan('', \OC\Files\Cache\Scanner::SCAN_RECURSIVE_INCOMPLETE, \OC\Files\Cache\Scanner::REUSE_ETAG | \OC\Files\Cache\Scanner::REUSE_SIZE);
 
@@ -177,6 +184,7 @@ class ScannerTest extends \Test\TestCase {
 
 		$cachedData = $this->cache->get('');
 		$this->assertNotEquals(-1, $cachedData['size']);
+		$this->assertNotEquals(-2, $cachedData['size']);
 
 		$this->assertFalse($this->cache->getIncomplete());
 	}
@@ -199,11 +207,12 @@ class ScannerTest extends \Test\TestCase {
 		$this->scanner->scan('', \OC\Files\Cache\Scanner::SCAN_SHALLOW, \OC\Files\Cache\Scanner::REUSE_ETAG);
 		$newData = $this->cache->get('');
 		$this->assertSame($oldData['etag'], $newData['etag']);
-		$this->assertEquals(-1, $newData['size']);
+		$this->assertEquals(-2, $newData['size']);
 
 		$this->scanner->scan('', \OC\Files\Cache\Scanner::SCAN_RECURSIVE);
 		$oldData = $this->cache->get('');
 		$this->assertNotEquals(-1, $oldData['size']);
+		$this->assertNotEquals(-2, $oldData['size']);
 		$this->scanner->scanFile('', \OC\Files\Cache\Scanner::REUSE_ETAG + \OC\Files\Cache\Scanner::REUSE_SIZE);
 		$newData = $this->cache->get('');
 		$this->assertSame($oldData['etag'], $newData['etag']);

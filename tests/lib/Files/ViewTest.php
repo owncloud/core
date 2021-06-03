@@ -347,7 +347,8 @@ class ViewTest extends TestCase {
 
 		$cachedData = $rootView->getFileInfo('/');
 		$this->assertEquals('httpd/unix-directory', $cachedData['mimetype']);
-		$this->assertEquals(-1, $cachedData['size']);
+		// -2 = IScanner::SIZE_SHALLOW_SCANNED
+		$this->assertEquals(-2, $cachedData['size']);
 
 		$folderData = $rootView->getDirectoryContent('/substorage/folder');
 		$this->assertEquals('text/plain', $folderData[0]['mimetype']);
