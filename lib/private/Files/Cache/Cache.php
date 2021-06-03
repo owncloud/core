@@ -858,9 +858,11 @@ class Cache implements ICache {
 			if ($row = $result->fetch()) {
 				$result->closeCursor();
 				list($sum, $min) = \array_values($row);
-				if ($min === null) {
+				if ($min === null && $entry['size'] < 0) {
 					// could happen if the folder hasn't been scanned.
 					// we don't have any data, so return the SIZE_NEEDS_SCAN
+					// if the size of the entry is positive it means that the entry has been scanned,
+					// so the folder is empty (no need to be scanned)
 					return IScanner::SIZE_NEEDS_SCAN;
 				}
 				$sum = 0 + $sum;
