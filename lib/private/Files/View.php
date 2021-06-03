@@ -1416,6 +1416,8 @@ class View {
 				$storage->getPropagator()->propagateChange($internalPath, \time());
 				$data = $cache->get($internalPath);
 				$this->unlockFile($relativePath, ILockingProvider::LOCK_SHARED);
+			} elseif ($data['size'] === IScanner::SIZE_SHALLOW_SCANNED) {
+				$cache->correctFolderSize($internalPath, $data);
 			}
 		} catch (LockedException $e) {
 			// if the file is locked we just use the old cache info
