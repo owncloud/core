@@ -38,6 +38,7 @@ namespace OC\Files\Cache;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Cache\ICache;
+use OCP\Files\Cache\IScanner;
 use OCP\Files\Cache\ICacheEntry;
 use \OCP\Files\IMimeTypeLoader;
 use OCP\IDBConnection;
@@ -681,10 +682,11 @@ class Cache implements ICache {
 	 * - Cache::PARTIAL: File is not stored in the cache but some incomplete data is known
 	 * - Cache::SHALLOW: The folder and it's direct children are in the cache but not all sub folders are fully scanned
 	 * - Cache::COMPLETE: The file or folder, with all it's children) are fully scanned
+	 * - Cache::NOT_SCANNED: Only the folder is in the cache. The contents are unknown, so the folder needs a scan
 	 *
 	 * @param string $file
 	 *
-	 * @return int Cache::NOT_FOUND, Cache::PARTIAL, Cache::SHALLOW or Cache::COMPLETE
+	 * @return int Cache::NOT_FOUND, Cache::PARTIAL, Cache::SHALLOW, Cache::COMPLETE or Cache::NOT_SCANNED
 	 */
 	public function getStatus($file) {
 		// normalize file
@@ -694,7 +696,10 @@ class Cache implements ICache {
 		$sql = 'SELECT `size` FROM `*PREFIX*filecache` WHERE `storage` = ? AND `path_hash` = ?';
 		$result = $this->connection->executeQuery($sql, [$this->getNumericStorageId(), $pathHash]);
 		if ($row = $result->fetch()) {
-			if ((int)$row['size'] === -1) {
+			$size = (int)$row['size'];
+			if ($size === IScanner::SIZE_NEEDS_SCAN) {
+				return self::NOT_SCANNED;
+			} elseif ($size === IScanner::SIZE_SHALLOW_SCANNED) {
 				return self::SHALLOW;
 			} else {
 				return self::COMPLETE;
@@ -853,10 +858,16 @@ class Cache implements ICache {
 			if ($row = $result->fetch()) {
 				$result->closeCursor();
 				list($sum, $min) = \array_values($row);
+				if ($min === null) {
+					// could happen if the folder hasn't been scanned.
+					// we don't have any data, so return the SIZE_NEEDS_SCAN
+					return IScanner::SIZE_NEEDS_SCAN;
+				}
 				$sum = 0 + $sum;
 				$min = 0 + $min;
-				if ($min === -1) {
-					$totalSize = $min;
+				if ($min === IScanner::SIZE_NEEDS_SCAN || $min === IScanner::SIZE_SHALLOW_SCANNED) {
+					// current folder is shallow scanned
+					$totalSize = IScanner::SIZE_SHALLOW_SCANNED;
 				} else {
 					$totalSize = $sum;
 				}
@@ -900,8 +911,8 @@ class Cache implements ICache {
 	 */
 	public function getIncomplete() {
 		$query = $this->connection->prepare('SELECT `path` FROM `*PREFIX*filecache`'
-			. ' WHERE `storage` = ? AND `size` = -1 ORDER BY `fileid` DESC', 1);
-		$query->execute([$this->getNumericStorageId()]);
+			. ' WHERE `storage` = ? AND `size` = ? ORDER BY `fileid` DESC', 1);
+		$query->execute([$this->getNumericStorageId(), IScanner::SIZE_NEEDS_SCAN]);
 		if ($row = $query->fetch()) {
 			return $row['path'];
 		} else {

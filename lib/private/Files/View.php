@@ -53,6 +53,7 @@ use OC\User\RemoteUser;
 use OCP\Constants;
 use OCP\Events\EventEmitterTrait;
 use OCP\Files\Cache\ICacheEntry;
+use OCP\Files\Cache\IScanner;
 use OCP\Files\FileNameTooLongException;
 use OCP\Files\InvalidCharacterInPathException;
 use OCP\Files\InvalidPathException;
@@ -1399,7 +1400,7 @@ class View {
 
 		try {
 			// if the file is not in the cache or needs to be updated, trigger the scanner and reload the data
-			if (!$data || (isset($data['size']) && ($data['size'] === -1))) {
+			if (!$data || (isset($data['size']) && ($data['size'] === IScanner::SIZE_NEEDS_SCAN))) {
 				$this->lockFile($relativePath, ILockingProvider::LOCK_SHARED);
 				if (!$storage->file_exists($internalPath)) {
 					$this->unlockFile($relativePath, ILockingProvider::LOCK_SHARED);

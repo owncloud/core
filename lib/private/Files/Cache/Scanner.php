@@ -190,7 +190,7 @@ class Scanner extends BasicEmitter implements IScanner {
 						// only reuse data if the file hasn't explicitly changed
 						if (isset($data['storage_mtime'], $cacheData['storage_mtime']) && $data['storage_mtime'] === $cacheData['storage_mtime']) {
 							$data['mtime'] = $cacheData['mtime'];
-							if (($reuseExisting & self::REUSE_SIZE) && ($data['size'] === -1)) {
+							if (($reuseExisting & self::REUSE_SIZE) && ($data['size'] === IScanner::SIZE_NEEDS_SCAN)) {
 								$data['size'] = $cacheData['size'];
 							}
 							if ($reuseExisting & self::REUSE_ETAG) {
@@ -399,12 +399,19 @@ class Scanner extends BasicEmitter implements IScanner {
 
 		foreach ($childQueue as $child => $childId) {
 			$childSize = $this->scanChildren($child, $recursive, $reuse, $childId, $lock);
-			if ($childSize === -1) {
-				$size = -1;
-			} elseif ($size !== -1) {
+			if ($childSize === IScanner::SIZE_NEEDS_SCAN) {
+				$size = IScanner::SIZE_NEEDS_SCAN;
+			} elseif ($size !== IScanner::SIZE_NEEDS_SCAN) {
 				$size += $childSize;
 			}
 		}
+
+		if ($size === IScanner::SIZE_NEEDS_SCAN) {
+			// Mark this folder as shallow scanned to avoid hitting the storage.
+			// The shallow contents are known, but not the whole.
+			$size = IScanner::SIZE_SHALLOW_SCANNED;
+		}
+
 		if ($this->cacheActive) {
 			$this->cache->update($folderId, ['size' => $size]);
 		}
@@ -431,12 +438,12 @@ class Scanner extends BasicEmitter implements IScanner {
 				if ($data) {
 					if ($data['mimetype'] === 'httpd/unix-directory' and $recursive === self::SCAN_RECURSIVE) {
 						$childQueue[$child] = $data['fileid'];
-					} elseif ($data['mimetype'] === 'httpd/unix-directory' and $recursive === self::SCAN_RECURSIVE_INCOMPLETE and $data['size'] === -1) {
+					} elseif ($data['mimetype'] === 'httpd/unix-directory' and $recursive === self::SCAN_RECURSIVE_INCOMPLETE and $data['size'] === IScanner::SIZE_NEEDS_SCAN) {
 						// only recurse into folders which aren't fully scanned
 						$childQueue[$child] = $data['fileid'];
-					} elseif (!isset($data['size']) || $data['size'] === -1) {
-						$size = -1;
-					} elseif ($size !== -1) {
+					} elseif (!isset($data['size']) || $data['size'] === IScanner::SIZE_NEEDS_SCAN) {
+						$size = IScanner::SIZE_NEEDS_SCAN;
+					} elseif ($size !== IScanner::SIZE_NEEDS_SCAN) {
 						$size += $data['size'];
 					}
 				}

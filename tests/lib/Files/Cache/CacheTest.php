@@ -264,6 +264,8 @@ class CacheTest extends TestCase {
 		$this->cache->put('foo', ['size' => -1]);
 		$this->assertEquals(Cache::PARTIAL, $this->cache->getStatus('foo'));
 		$this->cache->put('foo', ['size' => -1, 'mtime' => 20, 'mimetype' => 'foo/file']);
+		$this->assertEquals(Cache::NOT_SCANNED, $this->cache->getStatus('foo'));
+		$this->cache->put('foo', ['size' => -2, 'mtime' => 20, 'mimetype' => 'foo/file']);
 		$this->assertEquals(Cache::SHALLOW, $this->cache->getStatus('foo'));
 		$this->cache->put('foo', ['size' => 10]);
 		$this->assertEquals(Cache::COMPLETE, $this->cache->getStatus('foo'));
