@@ -1010,11 +1010,11 @@ trait Sharing {
 		if ($data === null) {
 			$data = $this->getResponseXml(null, __METHOD__)->data[0];
 		}
-
 		Assert::assertIsObject($data, __METHOD__ . " data not found in response XML");
 
+		$dateFieldsArrayToConvert = ['expiration', 'original_date', 'new_date'];
 		//do not try to convert empty date
-		if ((string) $field === 'expiration' && !empty($contentExpected)) {
+		if ((string) \in_array($field, \array_merge($dateFieldsArrayToConvert)) && !empty($contentExpected)) {
 			$timestamp = \strtotime($contentExpected, $this->getServerShareTimeFromLastResponse());
 			// strtotime returns false if it failed to parse, just leave it as it is in that condition
 			if ($timestamp !== false) {
