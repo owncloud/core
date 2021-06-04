@@ -668,3 +668,20 @@ Feature: federated
       | ocs_api_version | http_status_code |
       | 1               | 200              |
       | 2               | 404              |
+
+
+  Scenario: set a federated user share to expire yesterday and verify that it is not accessible
+    Given using OCS API version "2"
+    And using server "REMOTE"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
+    And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL" with expiry "+5 days"
+    And the administrator has expired the last created share using the testing API
+    And using server "LOCAL"
+    When user "Brian" gets the info of the last share using the sharing API
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "404"
+    And user "Brian" should not see the share id of the last share
+    And as "Brian" file "/textfile0.txt" should not exist
+    And using server "REMOTE"
+    And user "Alice" should not see the share id of the last share
+    And as "Alice" file "/textfile0.txt" should exist
