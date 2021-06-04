@@ -46,6 +46,7 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	protected $newBackendTypeXpath = "//tr[@id='addMountPoint']//select[@id='selectBackend']";
 	protected $newLocationXpath = "//tr[@id='addMountPoint']/preceding-sibling::tr[1]//input[@placeholder='Location']";
 	protected $statusSymbolXpath = "//tr[@id='addMountPoint']/preceding-sibling::tr[1]//td[@class='status']/span";
+	protected $selectAllListElementXpath  = "//div[@id='select2-drop']//li[@class='selectAllApplicableUsers']";
 
 	protected $lastMountApplicableXpath = "//tr[@id='addMountPoint']/preceding-sibling::tr[1]//td[@class='applicable']//li/input";
 	protected $userOrGroupListXpath = "//div[@id='select2-drop']//li[contains(@class, 'select2-result')]";
@@ -131,6 +132,18 @@ class AdminStorageSettingsPage extends OwncloudPage {
 			"could not find select field for backend type"
 		);
 		$newBackendType->selectOption("Local");
+
+		$this->waitForAjaxCallsToStartAndFinish($session);
+
+		$selectAllListElement = $this->find("xpath", $this->selectAllListElementXpath);
+		$this->assertElementNotNull(
+			$selectAllListElement,
+			__METHOD__ .
+			" xpath $this->selectAllListElementXpath " .
+			"could not find select all for available for"
+		);
+		$selectAllListElement->click();
+
 		$newLocation = $this->find("xpath", $this->newLocationXpath);
 		$this->assertElementNotNull(
 			$newLocation,

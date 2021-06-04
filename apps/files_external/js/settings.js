@@ -191,6 +191,19 @@ function addSelect2 ($elements, userListLimit) {
 			}
 		});
 	});
+
+	var $selectAll = $elements.closest('tr').find('.select2-drop').
+	prepend(
+		'<ul class="select2-controls">' +
+		'	<li class="selectAllApplicableUsers">' +
+		'		<div class="avatardiv"><img width="32" height="32" src="'+OC.imagePath('core','places/contacts-dark')+'"></div>' +
+		'		<span>'+t('files_external', 'All users')+'</span>' +
+		'	</li>' +
+		'</ul>');
+
+	$selectAll.on('click', function (){
+		$($elements).val(null).trigger('change');
+	});
 }
 
 /**
@@ -769,7 +782,7 @@ MountConfigListView.prototype = _.extend({
 		$tr = this.newStorage(storageConfig, onCompletion);
 		onCompletion.resolve();
 
-		$tr.find('td.configuration').children().not('[type=hidden]').first().focus();
+		$tr.find('td.applicable').children().first().select2('open');
 		this.saveStorageConfig($tr);
 	},
 
@@ -1271,6 +1284,7 @@ MountConfigListView.prototype = _.extend({
 	recheckStorageConfig: function($tr) {
 		var self = this;
 		var storage = this.getStorageConfig($tr);
+
 		if (!storage.validate()) {
 			return false;
 		}
@@ -1279,11 +1293,36 @@ MountConfigListView.prototype = _.extend({
 		storage.recheck({
 			success: function(result) {
 				self.updateStatus($tr, result.status, result.statusMessage);
+				self.onRecheckStorageConfig($tr, result.status);
 			},
 			error: function() {
 				self.updateStatus($tr, StorageConfig.Status.ERROR);
+				self.onRecheckStorageConfig($tr, StorageConfig.Status.ERROR);
 			}
 		});
+	},
+
+	/**
+	 * On recheck storage config handler
+	 *
+	 * @param {jQuery} $tr storage row
+	 * @param {number} status storage status
+	 */
+	onRecheckStorageConfig: function($tr, status){
+		if(status !== StorageConfig.Status.ERROR){
+			return;
+		}
+
+		var $mountPointName = $tr.find('input[name="mountPoint"]').val();
+
+		OC.Notification.show(
+			t('files_external', 'An error occurred while loading external mount point: {name}',
+				{name: $mountPointName}),
+			{
+				type: 'error',
+				timeout: 10,
+			}
+		);
 	},
 
 	/**

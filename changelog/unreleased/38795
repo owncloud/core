@@ -1,0 +1,16 @@
+Enhancement: Improve admin external storage settings UI
+
+Before this PR no error notification was shown while an external mount point
+configuration was not able to load. This was only indicated with a red square
+with a long list of external mount points, this was not handy.
+Therefore an error notification will be shown with the dedicated external
+mount point which fails to load.
+
+As well improved the add external mount point functionality with opening
+the available for select while adding an external mount point.
+The select will have now a 'select all' item.
+These changes prevents the admin to expose the mount point
+unwanted to all users immediately.
+
+https://github.com/owncloud/core/pull/38795
+https://github.com/owncloud/enterprise/issues/4585
