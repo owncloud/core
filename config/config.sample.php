@@ -1010,7 +1010,7 @@ $CONFIG = [
  *
  * `sudo apt install -y ffmpeg`
  *
- * To get a list of file extensions linked to the image provider, change into the owncloud
+ * To get a list of file extensions linked to the image provider, change into the `owncloud`
  * directory and run the following example command. Use a different filter for other provider types.
  *
  * `cat resources/config/mimetypemapping.dist.json | grep image`
