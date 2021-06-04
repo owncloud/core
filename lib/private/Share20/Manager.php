@@ -368,16 +368,14 @@ class Manager implements IManager {
 			$shareFileNodes = $userFolder->getById($shareNode->getId(), false);
 
 			// if there are many mount points for exact same file/folder, e.g. due to multiple group reshares
-			// coming from different users or subfolders, take:
-			// - in case of exact match, first (reshare from different users should use first found node)
-			// - longest file node path indicates reshare originates
-			//   from parent folder, and is not reshared subfolder that would contain lower or equal permission by design
+			// coming from different users or subfolders, take the most permissive that would be parent folder. By 
+			// design in ownCloud subfolder reshares cannot contain higher permissions than its parent
 			\usort($shareFileNodes, function (\OCP\Files\Node $first, \OCP\Files\Node $second) {
-				if (\strcmp($first->getPath(), $second->getPath()) < 0) {
-					// first is shorther, take second
+				if (\strcmp($first->getPermissions(), $second->getPermissions()) < 0) {
+					// first has lower permission, take second
 					return -1;
 				}
-				// take first that is exact or longer
+				// take first that has exact or higher permission (shareFileNodes are already sorted by mountpoints)
 				return 1;
 			});
 

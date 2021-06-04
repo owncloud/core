@@ -783,8 +783,9 @@
 			var permissions = this.get('possiblePermissions');
 			if(!_.isUndefined(data.reshare) && !_.isUndefined(data.reshare.permissions) && data.reshare.uid_owner !== OC.currentUser) {
 				if (this.fileInfoModel.get('mountType') === 'shared' ) {
-					// take share permission of this file share and received reshare
-					permissions = permissions & (this.fileInfoModel.get('sharePermissions') | data.reshare.permissions);
+					// if this file is mount-type shared (not shared-root) it is subfolder reshare of this node,
+					// take permission of parent node
+					permissions = permissions & this.fileInfoModel.get('sharePermissions');
 				} else {
 					permissions = permissions & data.reshare.permissions;
 				}
