@@ -82,9 +82,9 @@
 		'			</span>' +
 		'			{{/if}}' +
 		'			{{#if updatePermissionPossible}}' +
-		'			<span class="shareOption">' +
-		'				<input id="canUpdate-{{cid}}-{{shareWith}}-{{shareType}}" type="checkbox" name="update" class="permissions checkbox" {{#if hasUpdatePermission}}checked="checked"{{/if}} data-permissions="{{updatePermission}}"/>' +
-		'				<label for="canUpdate-{{cid}}-{{shareWith}}-{{shareType}}">{{updatePermissionLabel}}</label>' +
+		'			<span class="shareOption" >' +
+		'				<input id="canUpdate-{{cid}}-{{shareWith}}-{{shareType}}" {{#if isFolder}}type="checkbox"{{else}}type="hidden"{{/if}} name="update" class="permissions checkbox" {{#if hasUpdatePermission}}checked="checked"{{/if}} data-permissions="{{updatePermission}}"/>' +
+		'				{{#if isFolder}}<label for="canUpdate-{{cid}}-{{shareWith}}-{{shareType}}">{{updatePermissionLabel}}</label>{{/if}}' +
 		'			</span>' +
 		'			{{/if}}' +
 		'			{{#if deletePermissionPossible}}' +
@@ -256,6 +256,7 @@
 				crudsLabel: t('core', 'access control'),
 				triangleSImage: OC.imagePath('core', 'actions/triangle-s'),
 				isResharingAllowed: this.configModel.get('isResharingAllowed'),
+				isFolder: this.model.isFolder(),
 				sharePermissionPossible: this.model.sharePermissionPossible(),
 				editPermissionPossible: this.model.editPermissionPossible(),
 				createPermissionPossible: this.model.createPermissionPossible(),
