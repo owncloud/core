@@ -1787,22 +1787,7 @@ def stopBuild(earlyFail):
         }]
 
     else:
-        return [{
-            "name": "stop-build",
-            "image": "drone/cli:alpine",
-            "pull": "always",
-           "commands": [
-                'echo "The build is not cancelled because earlyFail is set to False"',
-            ],
-            "when": {
-                "status": [
-                    "failure",
-                ],
-                "event": [
-                    "pull_request",
-                ],
-            },
-        }]
+        return []
 
 def buildGithubCommentForBuildStopped(alternateSuiteName, earlyFail):
     if (earlyFail):
@@ -1824,22 +1809,7 @@ def buildGithubCommentForBuildStopped(alternateSuiteName, earlyFail):
         }]
 
     else:
-        return [{
-            "name": "build-github-comment-buildStop",
-            "image": "owncloud/ubuntu:16.04",
-            "pull": "always",
-            "commands": [
-                'echo "No comment is generated because the earlyFail is set to False"',
-            ],
-            "when": {
-                 "status": [
-                     "failure",
-                 ],
-                "event": [
-                    "pull_request",
-                ],
-            },
-        }]
+        return []
 
 
 def githubComment(earlyFail):
@@ -1867,22 +1837,7 @@ def githubComment(earlyFail):
         }]
 
     else:
-        return [{
-            "name": "github-comment",
-            "image": "jmccann/drone-github-comment:1",
-            "pull": "if-not-exists",
-            "commands": [
-                'echo "No comment is generated because the earlyFail is set to False"',
-            ],
-            "when": {
-                "status": [
-                    "failure",
-                ],
-                "event": [
-                    "pull_request",
-                ],
-            },
-        }]
+        return []
 
 def databaseService(db):
 	dbName = getDbName(db)
