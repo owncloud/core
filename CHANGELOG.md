@@ -54,6 +54,7 @@ Summary
 * Enhancement - Command occ user:report shows additional row for guests: [#3467](https://github.com/owncloud/enterprise/issues/3467)
 * Enhancement - Improve mobile user interface on files list: [#38748](https://github.com/owncloud/core/pull/38748)
 * Enhancement - Resend invitation email: [#38774](https://github.com/owncloud/core/pull/38774)
+* Enhancement - Improve admin external storage settings UI: [#38795](https://github.com/owncloud/core/pull/38795)
 
 Details
 -------
@@ -465,6 +466,20 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4577
    https://github.com/owncloud/core/pull/38774
+
+* Enhancement - Improve admin external storage settings UI: [#38795](https://github.com/owncloud/core/pull/38795)
+
+   Before this PR no error notification was shown while an external mount point configuration was
+   not able to load. This was only indicated with a red square with a long list of external mount
+   points, this was not handy. Therefore an error notification will be shown with the dedicated
+   external mount point which fails to load.
+
+   As well improved the add external mount point functionality with opening the available for
+   select while adding an external mount point. The select will have now a 'select all' item. These
+   changes prevents the admin to expose the mount point unwanted to all users immediately.
+
+   https://github.com/owncloud/enterprise/issues/4585
+   https://github.com/owncloud/core/pull/38795
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================

@@ -52,6 +52,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Command occ user:report shows additional row for guests: <a href="https://github.com/owncloud/enterprise/issues/3467">#3467</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Improve mobile user interface on files list: <a href="https://github.com/owncloud/core/pull/38748">#38748</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Resend invitation email: <a href="https://github.com/owncloud/core/pull/38774">#38774</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Improve admin external storage settings UI: <a href="https://github.com/owncloud/core/pull/38795">#38795</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
@@ -451,6 +452,19 @@
             <p>https://github.com/owncloud/enterprise/issues/4577<br>
             </p>
             <p>https://github.com/owncloud/core/pull/38774<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Improve admin external storage settings UI: <a href="https://github.com/owncloud/core/pull/38795">#38795</a></p>
+            <p>Before this PR no error notification was shown while an external mount point configuration was
+   not able to load. This was only indicated with a red square with a long list of external mount
+   points, this was not handy. Therefore an error notification will be shown with the dedicated
+   external mount point which fails to load.As well improved the add external mount point functionality with opening the available for
+   select while adding an external mount point. The select will have now a 'select all' item. These
+   changes prevents the admin to expose the mount point unwanted to all users immediately.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/4585<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/38795<br></p>
         </li>
     </ul>
     <h2 id="10.7.0" class="version"> Changelog for ownCloud Core [10.7.0] (2021-03-26)</h2>
