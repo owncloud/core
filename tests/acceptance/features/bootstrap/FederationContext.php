@@ -55,6 +55,7 @@ class FederationContext implements Context {
 	 * @param string $shareeUser
 	 * @param string $shareeServer "LOCAL" or "REMOTE"
 	 * @param string|null $expireDate
+	 *
 	 * @return void
 	 */
 	public function userFromServerSharesWithUserFromServerUsingTheSharingAPI(
@@ -75,6 +76,7 @@ class FederationContext implements Context {
 	 * @param string $shareeServer "LOCAL" or "REMOTE"
 	 * @param int|null $permissions
 	 * @param string|null $expireDate
+	 *
 	 * @return void
 	 */
 	public function userFromServerSharesWithUserFromServerUsingTheSharingAPIWithPermissions(
@@ -120,7 +122,6 @@ class FederationContext implements Context {
 			) . '"'
 		);
 	}
-
 
 	/**
 	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has shared "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)" with expiry "([^"]*)"$/

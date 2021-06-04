@@ -765,7 +765,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | 1               |
       | 2               |
 
-  Scenario: set a user share to expire yesterday and verify that it is not accessible
+  Scenario: accessing a user share that is expired should not be possible
     Given these users have been created with default attributes and without skeleton files:
       | username |
       | Brian    |
@@ -784,7 +784,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     And as "Brian" file "/textfile0.txt" should not exist
     And as "Alice" file "/textfile0.txt" should exist
 
-  Scenario: set a group share to expire yesterday and verify that it is not accessible
+  Scenario: accessing a group share that is expired should not be possible
     Given these users have been created with default attributes and without skeleton files:
       | username |
       | Brian    |
@@ -805,7 +805,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     And as "Brian" file "/textfile0.txt" should not exist
     And as "Alice" file "/textfile0.txt" should exist
 
-  Scenario: set a link share to expire yesterday and verify that it is not accessible
+  Scenario: accessing a link share that is expired should not be possible
     Given these users have been created with default attributes and without skeleton files:
       | username |
       | Brian    |
@@ -814,11 +814,10 @@ Feature: a default expiration date can be specified for shares with users or gro
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has created a public link share with settings
       | path        | /textfile0.txt  |
-      | shareType   | group           |
       | shareWith   | brand-new-group |
       | expireDate  | +15 days        |
     And the administrator has expired the last created share using the testing API
     When the public accesses the preview of file "textfile0.txt" from the last shared public link using the sharing API
-    And the HTTP status code should be "404"
+    Then the HTTP status code should be "404"
     And user "Alice" should not see the share id of the last share
     And as "Alice" file "/textfile0.txt" should exist
