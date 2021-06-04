@@ -506,14 +506,10 @@ class Scanner extends BasicEmitter implements IScanner {
 				$this->scan('', self::SCAN_RECURSIVE, self::REUSE_ETAG);
 			}, '');
 		} else {
-			$lastPath = null;
-			while (($path = $this->cache->getIncomplete()) !== false && $path !== $lastPath) {
+			while (($path = $this->cache->getIncomplete()) !== false) {
 				$this->runBackgroundScanJob(function () use ($path) {
 					$this->scan($path, self::SCAN_RECURSIVE_INCOMPLETE, self::REUSE_ETAG | self::REUSE_SIZE);
 				}, $path);
-				// FIXME: this won't proceed with the next item, needs revamping of getIncomplete()
-				// to make this possible
-				$lastPath = $path;
 			}
 		}
 	}
