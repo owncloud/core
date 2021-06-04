@@ -248,10 +248,10 @@ class PreviewManager implements IPreview {
 	 *  - OC\Preview\MSOffice2003
 	 *  - OC\Preview\MSOffice2007
 	 *  - OC\Preview\OpenDocument
+	 *  - OC\Preview\StarOffice
 	 *  - OC\Preview\PDF
 	 *  - OC\Preview\Photoshop
 	 *  - OC\Preview\Postscript
-	 *  - OC\Preview\StarOffice
 	 *  - OC\Preview\SVG
 	 *  - OC\Preview\TIFF
 	 *
@@ -318,6 +318,9 @@ class PreviewManager implements IPreview {
 		$this->registerCoreProvider('OC\Preview\MP3', '/audio\/mpeg/');
 
 		// SVG, Office and Bitmap require imagick
+		// Install `libmagickcore-6.q16-3-extra` additional to the imagick library when using SVG.
+		// This library adds imagick support for SVG, WMF, OpenEXR, DjVu and Graphviz:
+		
 		if (\extension_loaded('imagick')) {
 			$checkImagick = new \Imagick();
 
@@ -345,7 +348,7 @@ class PreviewManager implements IPreview {
 			}
 
 			if (\count($checkImagick->queryFormats('PDF')) === 1) {
-				// Office previews are currently not supported on Windows
+				// Office previews are only supported if either LibreOffice or OpenOffice is installed on the server
 				if (\OC_Helper::is_function_enabled('shell_exec')) {
 					$officeFound = \is_string($this->config->getSystemValue('preview_libreoffice_path', null));
 
@@ -370,10 +373,8 @@ class PreviewManager implements IPreview {
 			}
 		}
 
-		// Video requires avconv or ffmpeg and is therefor
-		// currently not supported on Windows.
+		// Video requires avconv or ffmpeg to be installed on the server
 		if (\in_array('OC\Preview\Movie', $this->getEnabledDefaultProvider())) {
-			// AtomicParsley would actually work under Windows.
 			$avconvBinary = \OC_Helper::findBinaryPath('avconv');
 			$ffmpegBinary = ($avconvBinary) ? null : \OC_Helper::findBinaryPath('ffmpeg');
 			$atomicParsleyBinary = \OC_Helper::findBinaryPath('AtomicParsley');
