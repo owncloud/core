@@ -1,0 +1,9 @@
+Bugfix: Report share expiration at end of day
+
+If shares have an expiration date set then they are valid until the end of the
+specified date. But shares report the expiration like 2021-06-15 00:00:00.
+This has caused some confusion about when the share actually stops working.
+The expiration time is now reported as 23:59:59.
+
+https://github.com/owncloud/core/pull/38813
+https://github.com/owncloud/enterprise/issues/4454
