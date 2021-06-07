@@ -764,3 +764,63 @@ Feature: a default expiration date can be specified for shares with users or gro
       | ocs_api_version |
       | 1               |
       | 2               |
+
+  @skipOnOcV10.6 @skipOnOcV10.7
+  Scenario: accessing a user share that is expired should not be possible
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Brian    |
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
+    And user "Alice" has created a share with settings
+      | path        | /textfile0.txt |
+      | shareType   | user           |
+      | shareWith   | Brian          |
+      | expireDate  | +15 days       |
+    And the administrator has expired the last created share using the testing API
+    When user "Alice" gets the info of the last share using the sharing API
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "200"
+    And user "Alice" should not see the share id of the last share
+    And user "Brian" should not see the share id of the last share
+    And as "Brian" file "/textfile0.txt" should not exist
+    And as "Alice" file "/textfile0.txt" should exist
+
+  @skipOnOcV10.6 @skipOnOcV10.7
+  Scenario: accessing a group share that is expired should not be possible
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Brian    |
+    And group "brand-new-group" has been created
+    And user "Brian" has been added to group "brand-new-group"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
+    And user "Alice" has created a share with settings
+      | path        | /textfile0.txt  |
+      | shareType   | group           |
+      | shareWith   | brand-new-group |
+      | expireDate  | +15 days        |
+    And the administrator has expired the last created share using the testing API
+    When user "Alice" gets the info of the last share using the sharing API
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "200"
+    And user "Alice" should not see the share id of the last share
+    And user "Brian" should not see the share id of the last share
+    And as "Brian" file "/textfile0.txt" should not exist
+    And as "Alice" file "/textfile0.txt" should exist
+
+  @skipOnOcV10.6 @skipOnOcV10.7
+  Scenario: accessing a link share that is expired should not be possible
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Brian    |
+    And group "brand-new-group" has been created
+    And user "Brian" has been added to group "brand-new-group"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
+    And user "Alice" has created a public link share with settings
+      | path        | /textfile0.txt  |
+      | shareWith   | brand-new-group |
+      | expireDate  | +15 days        |
+    And the administrator has expired the last created share using the testing API
+    When the public accesses the preview of file "textfile0.txt" from the last shared public link using the sharing API
+    Then the HTTP status code should be "404"
+    And user "Alice" should not see the share id of the last share
+    And as "Alice" file "/textfile0.txt" should exist
