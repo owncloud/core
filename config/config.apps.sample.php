@@ -344,7 +344,7 @@ $CONFIG = [
 		  // defines a list of groups to which the newly created user will be added automatically
 		'groups' => ['admin', 'guests', 'employees']
 	],
-	  // `mode` and `search-attribute` will be used to create a unique use in ownCloud
+	  // `mode` and `search-attribute` will be used to create a unique user in ownCloud
 	'mode' => 'email',
 	'search-attribute' => 'email',
 ],
