@@ -669,7 +669,7 @@ Feature: federated
       | 1               | 200              |
       | 2               | 404              |
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnFedOcV10.7 @skipOnFedOcV10.6
   Scenario: set a federated user share to expire yesterday and verify that it is not accessible
     Given using OCS API version "2"
     And using server "REMOTE"
