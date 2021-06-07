@@ -124,7 +124,7 @@ class FederationContext implements Context {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has shared "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)" with expiry "([^"]*)"$/
+	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has shared "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)" with expiry date of "([^"]*)"$/
 	 *
 	 * @param string $sharerUser
 	 * @param string $sharerServer "LOCAL" or "REMOTE"

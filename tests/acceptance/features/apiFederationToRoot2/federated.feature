@@ -669,12 +669,12 @@ Feature: federated
       | 1               | 200              |
       | 2               | 404              |
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7
   Scenario: set a federated user share to expire yesterday and verify that it is not accessible
     Given using OCS API version "2"
     And using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
-    And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL" with expiry "+5 days"
+    And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL" with expiry date of "+5 days"
     And the administrator has expired the last created share using the testing API
     And using server "LOCAL"
     When user "Brian" gets the info of the last share using the sharing API

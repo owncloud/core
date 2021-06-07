@@ -765,6 +765,7 @@ Feature: a default expiration date can be specified for shares with users or gro
       | 1               |
       | 2               |
 
+  @skipOnOcV10.6 @skipOnOcV10.7
   Scenario: accessing a user share that is expired should not be possible
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -784,6 +785,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     And as "Brian" file "/textfile0.txt" should not exist
     And as "Alice" file "/textfile0.txt" should exist
 
+  @skipOnOcV10.6 @skipOnOcV10.7
   Scenario: accessing a group share that is expired should not be possible
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -805,6 +807,7 @@ Feature: a default expiration date can be specified for shares with users or gro
     And as "Brian" file "/textfile0.txt" should not exist
     And as "Alice" file "/textfile0.txt" should exist
 
+  @skipOnOcV10.6 @skipOnOcV10.7
   Scenario: accessing a link share that is expired should not be possible
     Given these users have been created with default attributes and without skeleton files:
       | username |
