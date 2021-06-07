@@ -245,12 +245,13 @@ $CONFIG = [
  * login without requiring the user to click a button. The default is `false`.
  *
  * auto-provision::
- * If auto-provision is setup, an owncloud user will be created after successful login
- * using openid connect. The config parameters 'mode' and 'search-attribute' will be used
- * to create a unique user so that the lookup mechanism can find the user again.
- * If auto-provision is not setup, it is expected that the user exists.
- * This is where an LDAP setup is usually required. `auto-provision` holds several sub keys,
- * see the example setup with the explanations below.
+ * If auto-provision is setup, an ownCloud user will be created if not exists, after successful
+ * login using openid connect. The config parameters `mode` and `search-attribute` will be used
+ * to create a unique user so that the lookup mechanism can find the user again. This is where
+ * an LDAP setup is usually required.
+ * If auto-provision is not setup or required, it is expected that the user exists and you
+ * MUST declare this with `['enabled' => false]` like shown in the Easy Setup example.
+ * `auto-provision` holds several sub keys, see the example setup with the explanations below.
  *
  * insecure::
  * Boolean value (`true`/`false`), no SSL verification will take place when talking to the
@@ -316,6 +317,8 @@ $CONFIG = [
  * Easy setup
  */
 'openid-connect' => [
+	  // it is expected that the user already exists in ownCloud
+	'auto-provision' => ['enabled' => false],
 	'provider-url' => 'https://idp.example.net',
 	'client-id' => 'fc9b5c78-ec73-47bf-befc-59d4fe780f6f',
 	'client-secret' => 'e3e5b04a-3c3c-4f4d-b16c-2a6e9fdd3cd1',
@@ -326,8 +329,9 @@ $CONFIG = [
  * Setup auto provisioning mode
  */
 'openid-connect' => [
-	  'auto-provision' => [
-		  // explicit enable the auto provisioning mode
+	  // explicit enable the auto provisioning mode,
+	  // if not exists, the user will be created in ownCloud
+	'auto-provision' => [
 		'enabled' => true,
 		  // documentation about standard claims:
 		  // https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
@@ -339,19 +343,26 @@ $CONFIG = [
 		'picture-claim' => 'picture',
 		  // defines a list of groups to which the newly created user will be added automatically
 		'groups' => ['admin', 'guests', 'employees']
-	  ],
+	],
+	  // `mode` and `search-attribute` will be used to create a unique use in ownCloud
+	'mode' => 'email',
+	'search-attribute' => 'email',
 ],
 
 /**
  * Manual setup
  */
 'openid-connect' => [
+	  // it is expected that the user already exists in ownCloud
+	'auto-provision' => ['enabled' => false],
 	'autoRedirectOnLoginPage' => false,
 	'client-id' => 'fc9b5c78-ec73-47bf-befc-59d4fe780f6f',
 	'client-secret' => 'e3e5b04a-3c3c-4f4d-b16c-2a6e9fdd3cd1',
 	'loginButtonName' => 'OpenId Connect',
 	'mode' => 'userid',
-	  // Only required if the OpenID Connect Provider does not support service discovery
+	'search-attribute' => 'sub',
+	  // only required if the OpenID Connect Provider does not support service discovery
+	  // replace the dots with your values
 	'provider-params' => [
 		'authorization_endpoint' => '...',
 		'end_session_endpoint' => '...',
@@ -362,7 +373,6 @@ $CONFIG = [
 		'userinfo_endpoint' => '...'
 	],
 	'provider-url' => '...',
-	'search-attribute' => 'sub',
 	'use-token-introspection-endpoint' => true
 ],
 
@@ -370,15 +380,17 @@ $CONFIG = [
  * Test setup
  */
 'openid-connect' => [
-	  'provider-url' => 'http://localhost:3000',
-	  'client-id' => 'ownCloud',
-	  'client-secret' => 'ownCloud',
-	  'loginButtonName' => 'node-oidc-provider',
-	  'mode' => 'userid',
-	  'search-attribute' => 'sub',
-	  'use-token-introspection-endpoint' => true,
-		// do not verify tls host or peer
-	  'insecure' => true
+	  // it is expected that the user already exists in ownCloud
+	'auto-provision' => ['enabled' => false],
+	'provider-url' => 'http://localhost:3000',
+	'client-id' => 'ownCloud',
+	'client-secret' => 'ownCloud',
+	'loginButtonName' => 'node-oidc-provider',
+	'mode' => 'userid',
+	'search-attribute' => 'sub',
+	'use-token-introspection-endpoint' => true,
+	  // do not verify tls host or peer
+	'insecure' => true
 ],
   
 /**
