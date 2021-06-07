@@ -1007,6 +1007,7 @@ $CONFIG = [
  * `sudo apt-get install -y libmagickcore-6.q16-3-extra`
  *
  * Change the following imagick security policy when using PDF.
+ * Use the editor of your choice, the example uses `vi`.
  *
  * `sudo vi /etc/ImageMagick-6/policy.xml`
  *
