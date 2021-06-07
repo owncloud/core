@@ -1006,7 +1006,16 @@ $CONFIG = [
  *
  * `sudo apt-get install -y libmagickcore-6.q16-3-extra`
  *
- * Install the `ffmpeg` when using `OC\Preview\Movie` provider.
+ * Change the following imagick security policy when using PDF.
+ * Use the editor of your choice, the example uses `vi`.
+ *
+ * `sudo vi /etc/ImageMagick-6/policy.xml`
+ *
+ * `<policy domain="coder" rights="none" pattern="PDF" />`
+ *
+ * `rights="none"` -> `rights="read|write"`
+ *
+ * Install `ffmpeg` when using the `OC\Preview\Movie` provider.
  *
  * `sudo apt install -y ffmpeg`
  *
