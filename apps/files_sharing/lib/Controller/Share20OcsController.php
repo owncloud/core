@@ -222,7 +222,7 @@ class Share20OcsController extends OCSController {
 
 		$expiration = $share->getExpirationDate();
 		if ($expiration !== null) {
-			$result['expiration'] = $expiration->format('Y-m-d 00:00:00');
+			$result['expiration'] = $expiration->format('Y-m-d');
 		}
 
 		if ($share->getShareType() === Share::SHARE_TYPE_USER) {

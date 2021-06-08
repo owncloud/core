@@ -1022,7 +1022,7 @@ trait Sharing {
 					= \date(
 						'Y-m-d',
 						$timestamp
-					) . " 00:00:00";
+					);
 			}
 		}
 		$contentExpected = (string) $contentExpected;

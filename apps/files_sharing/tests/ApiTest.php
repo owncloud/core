@@ -1526,7 +1526,7 @@ class ApiTest extends TestCase {
 
 		$data = $result->getData();
 		$this->assertIsString($data['token']);
-		$this->assertEquals($date->format('Y-m-d') . ' 00:00:00', $data['expiration']);
+		$this->assertEquals($date->format('Y-m-d'), $data['expiration']);
 
 		// check for correct link
 		$url = \OC::$server->getURLGenerator()->getAbsoluteURL('/index.php/s/' . $data['token']);
