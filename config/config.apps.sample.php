@@ -403,7 +403,6 @@ $CONFIG = [
  * Define the group name for users allowed to use Collabora
  * Please note, only one group can be defined. Default = empty = no restriction.
  */
-
 'collabora_group' => '',
 
 /**
@@ -507,5 +506,21 @@ $CONFIG = [
  * be ignored. This flag depends on the `wnd.activity.registerExtension` and has the same restrictions.
  */
 'wnd.activity.sendToSharees' => false,
+
+/**
+ * App: Workflow / Tagging
+ *
+ * Note: This app is for Enterprise Customers only.
+ *
+ * Possible keys: `workflow.retention_engine` STRING
+ */
+
+/**
+ * Provide advanced management of file tagging
+ * Enables admins to specify rules and conditions (file size, file mimetype, group membership and more)
+ * to automatically assign tags to uploaded files. Values: `tagbased` (default) or `userbased`.
+ */
+
+'workflow.retention_engine' => 'tagbased',
 
 ];
