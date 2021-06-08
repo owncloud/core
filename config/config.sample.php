@@ -159,6 +159,18 @@ $CONFIG = [
 'dbtableprefix' => '',
 
 /**
+ * Defines the sslmode for postgres connections
+ * Possible values are: prefer (default), disable, allow, require, verify-ca, verify-full
+ * Also see https://www.postgresql.org/docs/9.4/libpq-connect.html#LIBPQ-CONNECT-SSLMODE
+ */
+'pgsslmode' => 'prefer',
+
+/**
+ * Defines if a postgres connection is permanent
+ */
+'pgpermanentconnection' => false,
+
+/**
  * Indicate whether the ownCloud instance was installed successfully
  * `true` indicates a successful installation,
  * `false` indicates an unsuccessful installation.
