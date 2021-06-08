@@ -1962,11 +1962,13 @@ def owncloudService(phpVersion, name = 'server', pathOfServerUnderTest = '/drone
 			'APACHE_CONFIG_TEMPLATE': 'ssl',
 			'APACHE_SSL_CERT_CN': name,
 			'APACHE_SSL_CERT': '/drone/%s.crt' % name,
-			'APACHE_SSL_KEY': '/drone/%s.key' % name
+			'APACHE_SSL_KEY': '/drone/%s.key' % name,
+			'APACHE_LOGGING_PATH': '/dev/null',
 		}
 	else:
 		environment = {
-			'APACHE_WEBROOT': pathOfServerUnderTest
+			'APACHE_WEBROOT': pathOfServerUnderTest,
+			'APACHE_LOGGING_PATH': '/dev/null',
 		}
 
 	return [{
