@@ -54,6 +54,9 @@ use OCP\Files\StorageNotAvailableException;
 use OCP\Util;
 
 class SMB extends StorageAdapter {
+	/** @var bool */
+	protected $logActive;
+
 	/**
 	 * @var IServer
 	 */
@@ -75,6 +78,11 @@ class SMB extends StorageAdapter {
 	protected $statCache;
 
 	public function __construct($params) {
+		// log switch might be set already (from a subclass), so don't change it.
+		if (!isset($this->logActive)) {
+			$this->logActive = \OC::$server->getConfig()->getSystemValue('smb.logging.enable', false) === true;
+		}
+
 		$loggedParams = $params;
 		// remove password from log if it is set
 		if (!empty($loggedParams['password'])) {
@@ -737,7 +745,7 @@ class SMB extends StorageAdapter {
 	 * @param string $from
 	 */
 	private function log($message, $level = Util::DEBUG, $from = 'smb') {
-		if (\OC::$server->getConfig()->getSystemValue('smb.logging.enable', false) === true) {
+		if ($this->logActive) {
 			Util::writeLog($from, $message, $level);
 		}
 	}
@@ -751,7 +759,7 @@ class SMB extends StorageAdapter {
 	 * @return mixed
 	 */
 	private function leave($function, $result) {
-		if (\OC::$server->getConfig()->getSystemValue('smb.logging.enable', false) === false) {
+		if (!$this->logActive) {
 			//don't bother building log strings
 			return $result;
 		} elseif ($result === true) {
@@ -774,7 +782,7 @@ class SMB extends StorageAdapter {
 	}
 
 	private function swallow($function, \Exception $exception) {
-		if (\OC::$server->getConfig()->getSystemValue('smb.logging.enable', false) === true) {
+		if ($this->logActive) {
 			Util::writeLog('smb', "$function swallowing ".\get_class($exception)
 				.' - code: '.$exception->getCode()
 				.' message: '.$exception->getMessage()
