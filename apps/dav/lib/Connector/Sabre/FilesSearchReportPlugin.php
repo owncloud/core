@@ -182,10 +182,10 @@ class FilesSearchReportPlugin extends ServerPlugin {
 			);
 			$this->server->getPropertiesByNode($propFind, $node);
 			// assuming we only have one entry in the highlights array
-			if (isset($paths[$path]->highlights[0])) {
+			if (isset($paths[$path]->highlights[0]) && \in_array(self::REPORT_HIGHLIGHTS, $requestedProps)) {
 				$propFind->set(self::REPORT_HIGHLIGHTS, \str_replace(["\r\n", "\r", "\n"], '<br/>', $paths[$path]->highlights[0]));
 			}
-			if (isset($paths[$path]->score)) {
+			if (isset($paths[$path]->score) && \in_array(self::REPORT_SCORE, $requestedProps)) {
 				$propFind->set(self::REPORT_SCORE, $paths[$path]->score);
 			}
 			$result = $propFind->getResultForMultiStatus();
