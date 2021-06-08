@@ -25,8 +25,9 @@ config = {
 	'phpunit': {
 		'allDatabases' : {
 			'phpVersions': [
-				'7.2',
-			]
+				'7.4-ubuntu20.04',
+			],
+			'skip': False,
 		},
 		'reducedDatabases' : {
 			'phpVersions': [
@@ -1129,7 +1130,7 @@ def phpTests(ctx, testType):
 		'extraEnvironment': {},
 		'extraCommandsBeforeTestRun': [],
 		'extraApps': {},
-		'skip': False
+		'skip': True
 	}
 
 	if 'defaults' in config:
@@ -1372,7 +1373,7 @@ def acceptance(ctx):
 		'includeKeyInMatrixName': False,
 		'runAllSuites': False,
 		'numberOfParts': 1,
-		'skip': False,
+		'skip': True,
 		'debugSuites': [],
 		'skipExceptParts': [],
 		'testAgainstCoreTarball': False,
