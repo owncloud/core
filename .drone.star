@@ -1377,6 +1377,7 @@ def acceptance(ctx):
 		'skipExceptParts': [],
 		'testAgainstCoreTarball': False,
 		'coreTarball': 'daily-master-qa',
+		'earlyFail': True,
 	}
 
 	if 'defaults' in config:
@@ -1571,7 +1572,7 @@ def acceptance(ctx):
 												'%smake %s' % (suExecCommand, makeParameter)
 											]
 										}),
-									],
+									] + buildGithubCommentForBuildStopped(name, params['earlyFail']) + githubComment(params['earlyFail']) + stopBuild(params['earlyFail']) ,
 									'services':
 										databaseService(db) +
 										browserService(browser) +
@@ -1759,6 +1760,84 @@ def notify():
 		result['trigger']['ref'].append('refs/heads/%s' % branch)
 
 	return result
+
+def stopBuild(earlyFail):
+    if (earlyFail):
+        return [{
+            "name": "stop-build",
+            "image": "drone/cli:alpine",
+            "pull": "always",
+            "environment": {
+                "DRONE_SERVER": "https://drone.owncloud.com",
+                "DRONE_TOKEN": {
+                    "from_secret": "drone_token",
+                },
+            },
+            "commands": [
+                "drone build stop owncloud/core ${DRONE_BUILD_NUMBER}",
+            ],
+            "when": {
+                "status": [
+                    "failure",
+                ],
+                "event": [
+                    "pull_request",
+                ],
+            },
+        }]
+
+    else:
+        return []
+
+def buildGithubCommentForBuildStopped(alternateSuiteName, earlyFail):
+    if (earlyFail):
+        return [{
+            "name": "build-github-comment-buildStop",
+            "image": "owncloud/ubuntu:16.04",
+            "pull": "always",
+            "commands": [
+                'echo "<details><summary>:boom: Acceptance tests <strong>%s</strong> failed. The build is cancelled...</summary>\\n\\n" >> /drone/src/comments.file' % alternateSuiteName,
+            ],
+            "when": {
+                 "status": [
+                     "failure",
+                 ],
+                "event": [
+                    "pull_request",
+                ],
+            },
+        }]
+
+    else:
+        return []
+
+
+def githubComment(earlyFail):
+    if (earlyFail):
+        return [{
+            "name": "github-comment",
+            "image": "jmccann/drone-github-comment:1",
+            "pull": "if-not-exists",
+            "settings": {
+                "message_file": "/drone/src/comments.file",
+            },
+            "environment": {
+                "GITHUB_TOKEN": {
+                    "from_secret": "github_token",
+                },
+            },
+            "when": {
+                "status": [
+                    "failure",
+                ],
+                "event": [
+                    "pull_request",
+                ],
+            },
+        }]
+
+    else:
+        return []
 
 def databaseService(db):
 	dbName = getDbName(db)
