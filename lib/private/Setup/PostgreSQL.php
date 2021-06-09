@@ -41,18 +41,22 @@ class PostgreSQL extends AbstractDatabase {
 			$port=false;
 		}
 
+		$systemConfig = \OC::$server->getSystemConfig();
+		$sslMode = $systemConfig->getValue('pgsslmode', 'prefer');
+
 		//check if the database user has admin rights
-		$connection_string = "host='$e_host' dbname=postgres user='$e_user' port='$port' password='$e_password'";
-		$connection = @\pg_connect($connection_string);
+		$connection_string = "host='$e_host' dbname=postgres user='$e_user' port='$port' password='$e_password' sslmode='$sslMode'";
+		$connection = \pg_connect($connection_string);
+
 		if (!$connection) {
 			// Try if we can connect to the DB with the specified name
 			$e_dbname = \addslashes($this->dbName);
-			$connection_string = "host='$e_host' dbname='$e_dbname' user='$e_user' port='$port' password='$e_password'";
+			$connection_string = "host='$e_host' dbname='$e_dbname' user='$e_user' port='$port' password='$e_password' sslmode='$sslMode'";
 			$connection = @\pg_connect($connection_string);
 
 			if (!$connection) {
-				throw new \OC\DatabaseSetupException($this->trans->t('PostgreSQL username and/or password not valid'),
-						$this->trans->t('You need to enter either an existing account or the administrator.'));
+				throw new \OC\DatabaseSetupException($this->trans->t('Unable to connect to PostgreSQL.'),
+						$this->trans->t('Please check your configuration.'));
 			}
 		}
 		$e_user = \pg_escape_string($this->dbUser);
@@ -70,7 +74,6 @@ class PostgreSQL extends AbstractDatabase {
 			$this->createDBUser($connection);
 		}
 
-		$systemConfig = \OC::$server->getSystemConfig();
 		$systemConfig->setValues([
 			'dbuser'		=> $this->dbUser,
 			'dbpassword'	=> $this->dbPassword,
@@ -98,11 +101,11 @@ class PostgreSQL extends AbstractDatabase {
 			$port=false;
 		}
 
-		$connection_string = "host='$e_host' dbname='$e_dbname' user='$e_user' port='$port' password='$e_password'";
+		$connection_string = "host='$e_host' dbname='$e_dbname' user='$e_user' port='$port' password='$e_password' sslmode='$sslMode'";
 		$connection = @\pg_connect($connection_string);
 		if (!$connection) {
-			throw new \OC\DatabaseSetupException($this->trans->t('PostgreSQL username and/or password not valid'),
-					$this->trans->t('You need to enter either an existing account or the administrator.'));
+			throw new \OC\DatabaseSetupException($this->trans->t('Unable to connect to PostgreSQL.'),
+				$this->trans->t('Please check your configuration.'));
 		}
 		$query = "select count(*) FROM pg_class WHERE relname='".$this->tablePrefix."users' limit 1";
 		$result = \pg_query($connection, $query);

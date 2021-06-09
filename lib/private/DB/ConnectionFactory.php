@@ -132,6 +132,14 @@ class ConnectionFactory {
 				$journalMode = $additionalConnectionParams['sqlite.journal_mode'];
 				$eventManager->addEventSubscriber(new SQLiteSessionInit(true, $journalMode));
 				break;
+			case 'pgsql':
+				$sslMode = $this->config->getValue('pgsslmode', 'prefer');
+				$additionalConnectionParams['sslmode'] = $sslMode;
+
+				$persistentConnection = $this->config->getValue('pgpersistentconnection', false);
+				$additionalConnectionParams['persistent'] = $persistentConnection;
+
+				break;
 		}
 		/** @var Connection $connection */
 		$connection = DriverManager::getConnection(
