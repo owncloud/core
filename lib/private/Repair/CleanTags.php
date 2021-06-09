@@ -100,7 +100,7 @@ class CleanTags implements IRepairStep {
 				$users[] = $row['uid'];
 			}
 		}
-		$result->closeCursor();
+		$result->free();
 
 		if (!$hadResults) {
 			// No more tags, stop looping

@@ -248,7 +248,7 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 			$props[$row['propertyname']] = $this->decodeValue($row['propertyvalue'], (int) $row['propertytype']);
 		}
 
-		$result->closeCursor();
+		$result->free();
 		return $props;
 	}
 

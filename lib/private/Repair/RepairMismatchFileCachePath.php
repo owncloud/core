@@ -211,8 +211,8 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		$qb->select($qb->createFunction('COUNT(*)'));
 		$this->addQueryConditionsParentIdWrongPath($qb);
 		$results = $qb->execute();
-		$count = $results->fetchColumn(0);
-		$results->closeCursor();
+		$count = $results->fetchOne();
+		$results->free();
 		return $count;
 	}
 
@@ -221,8 +221,8 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		$qb->select($qb->createFunction('COUNT(*)'));
 		$this->addQueryConditionsNonExistingParentIdEntry($qb, $storageNumericId);
 		$results = $qb->execute();
-		$count = $results->fetchColumn(0);
-		$results->closeCursor();
+		$count = $results->fetchOne();
+		$results->free();
 		return $count;
 	}
 
@@ -239,7 +239,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 
 		$results = $qb->execute();
 		$rows = $results->fetchAll();
-		$results->closeCursor();
+		$results->free();
 
 		$storageIds = [];
 		foreach ($rows as $row) {
@@ -268,7 +268,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 
 		$results = $qb->execute();
 		$rows = $results->fetchAll();
-		$results->closeCursor();
+		$results->free();
 
 		$storageIds = [];
 		foreach ($rows as $row) {
@@ -311,7 +311,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			// since we're going to operate on fetched entry, better cache them
 			// to avoid DB lock ups
 			$rows = $results->fetchAll();
-			$results->closeCursor();
+			$results->free();
 
 			$this->connection->beginTransaction();
 			$lastResultsCount = 0;
@@ -389,7 +389,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		}
 		$results = $qb->execute();
 		$rows = $results->fetchAll();
-		$results->closeCursor();
+		$results->free();
 
 		if (!empty($rows)) {
 			return $rows[0]['fileid'];
@@ -509,7 +509,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			// since we're going to operate on fetched entry, better cache them
 			// to avoid DB lock ups
 			$rows = $results->fetchAll();
-			$results->closeCursor();
+			$results->free();
 
 			$lastResultsCount = 0;
 			foreach ($rows as $row) {

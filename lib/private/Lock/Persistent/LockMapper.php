@@ -143,7 +143,7 @@ class LockMapper extends Mapper {
 		while ($row = $stmt->fetch()) {
 			$entities[] = $this->mapRowToEntity($row);
 		}
-		$stmt->closeCursor();
+		$stmt->free();
 
 		return $entities;
 	}

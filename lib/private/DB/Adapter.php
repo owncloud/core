@@ -90,7 +90,7 @@ class Adapter {
 	 *				If this is null or an empty array, all keys of $input will be compared
 	 *				Please note: text fields (clob) must not be used in the compare array
 	 * @return int number of inserted rows
-	 * @throws \Doctrine\DBAL\DBALException
+	 * @throws \Doctrine\DBAL\Exception
 	 */
 	public function insertIfNotExist($table, $input, array $compare = null) {
 		if (empty($compare)) {
@@ -187,7 +187,7 @@ class Adapter {
 					throw $e;
 				}
 			}
-			if ($rows > 0) {
+			if ($rows->rowCount() > 0) {
 				// We altered some rows, return
 				$done = true;
 			} else {
@@ -196,7 +196,7 @@ class Adapter {
 				try {
 					// Execute the insert query
 					$rows = $qbi->execute();
-					$done = $rows > 0;
+					$done = $rows->rowCount() > 0;
 				} catch (UniqueConstraintViolationException $e) {
 					// Catch the unique violation and try the loop again
 					$count++;

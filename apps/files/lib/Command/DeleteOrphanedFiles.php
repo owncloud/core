@@ -72,7 +72,7 @@ class DeleteOrphanedFiles extends Command {
 				$deletedEntries += $deleteQuery->setParameter('objectid', (int) $row['fileid'])
 					->execute();
 			}
-			$result->closeCursor();
+			$result->free();
 		}
 
 		$output->writeln("$deletedEntries orphaned file cache entries deleted");

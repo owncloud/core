@@ -26,7 +26,7 @@
 
 namespace OC\Core\Command\Db;
 
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
 use OC\DB\MDB2SchemaManager;
@@ -372,8 +372,8 @@ class ConvertType extends Command {
 		$query->selectAlias($query->createFunction('COUNT(*)'), 'num_entries')
 			->from($tableName);
 		$result = $query->execute();
-		$count = $result->fetchColumn();
-		$result->closeCursor();
+		$count = $result->fetchOne();
+		$result->free();
 
 		$numChunks = \ceil($count/$chunkSize);
 		if ($numChunks > 1) {
@@ -393,7 +393,7 @@ class ConvertType extends Command {
 		try {
 			// Primary key is faster
 			$orderColumns = $table->getPrimaryKeyColumns();
-		} catch (DBALException $e) {
+		} catch (Exception $e) {
 			// But the table can have no primary key in this case we fallback to the column order
 			$orderColumns = [];
 			foreach ($table->getColumns() as $column) {
@@ -429,7 +429,7 @@ class ConvertType extends Command {
 				}
 				$insertQuery->execute();
 			}
-			$result->closeCursor();
+			$result->free();
 		}
 		$progress->finish();
 		$output->writeln("");

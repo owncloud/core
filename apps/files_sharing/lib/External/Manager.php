@@ -359,7 +359,7 @@ class Manager {
 		$result = $getShare->execute([$hash, $this->uid]);
 
 		if ($result) {
-			$share = $getShare->fetch();
+			$share = $result->fetch();
 			if ($share !== false) {
 				$this->eventDispatcher->dispatch(
 					DeclineShare::class,
@@ -367,7 +367,7 @@ class Manager {
 				);
 			}
 		}
-		$getShare->closeCursor();
+		$result->free();
 
 		$query = $this->connection->prepare('
 			DELETE FROM `*PREFIX*share_external`

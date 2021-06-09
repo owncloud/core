@@ -217,7 +217,7 @@ class Setting extends Base {
 		while ($row = $result->fetch()) {
 			$settings[$row['appid']][$row['configkey']] = $row['configvalue'];
 		}
-		$result->closeCursor();
+		$result->free();
 
 		return $settings;
 	}

@@ -137,7 +137,7 @@ class SubAdmin extends PublicEmitter {
 				$groups[] = $group;
 			}
 		}
-		$result->closeCursor();
+		$result->free();
 
 		return $groups;
 	}
@@ -162,7 +162,7 @@ class SubAdmin extends PublicEmitter {
 				$users[] = $user;
 			}
 		}
-		$result->closeCursor();
+		$result->free();
 
 		return $users;
 	}
@@ -189,7 +189,7 @@ class SubAdmin extends PublicEmitter {
 				];
 			}
 		}
-		$result->closeCursor();
+		$result->free();
 
 		return $subadmins;
 	}
@@ -213,7 +213,7 @@ class SubAdmin extends PublicEmitter {
 			->execute();
 
 		$fetch =  $result->fetch();
-		$result->closeCursor();
+		$result->free();
 		$result = !empty($fetch) ? true : false;
 
 		return $result;
@@ -239,7 +239,7 @@ class SubAdmin extends PublicEmitter {
 			->execute();
 
 		$isSubAdmin = $result->fetch();
-		$result->closeCursor();
+		$result->free();
 
 		$result = $isSubAdmin === false ? false : true;
 

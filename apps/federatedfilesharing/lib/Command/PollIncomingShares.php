@@ -135,7 +135,7 @@ class PollIncomingShares extends Command {
 				}
 			}
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 	}
 
 	/**
@@ -155,7 +155,7 @@ class PollIncomingShares extends Command {
 	}
 
 	/**
-	 * @return \Doctrine\DBAL\Driver\Statement
+	 * @return \Doctrine\DBAL\Result
 	 */
 	protected function getCursor() {
 		$qb = $this->dbConnection->getQueryBuilder();

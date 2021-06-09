@@ -89,7 +89,7 @@ class OldGroupMembershipShares implements IRepairStep {
 					->execute();
 			}
 		}
-		$result->closeCursor();
+		$result->free();
 
 		if ($deletedEntries) {
 			$output->info('Removed ' . $deletedEntries . ' shares where user is not a member of the group anymore');

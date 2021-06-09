@@ -64,7 +64,7 @@ class ConvertTypeTest extends TestCase {
 	/**
 	 */
 	public function testWrongConnectionParams() {
-		$this->expectException(\Doctrine\DBAL\DBALException::class);
+		$this->expectException(\Doctrine\DBAL\Exception::class);
 
 		if (!$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\SqlitePlatform) {
 			$this->markTestSkipped("Test only relevant on Sqlite");

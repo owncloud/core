@@ -64,9 +64,9 @@ class MountProvider implements IMountProvider {
 				FROM `*PREFIX*share_external`
 				WHERE `user` = ? AND `accepted` = ?
 			');
-		$query->execute([$user->getUID(), 1]);
+		$result = $query->execute([$user->getUID(), 1]);
 		$mounts = [];
-		while ($row = $query->fetch()) {
+		while ($row = $result->fetch()) {
 			$row['manager'] = $this;
 			$row['token'] = $row['share_token'];
 			/// FIXME: Use \OCA\FederatedFileSharing\Address in external Storage and Cache

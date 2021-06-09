@@ -508,7 +508,7 @@ class FederatedShareProvider implements IShareProvider {
 		while ($data = $cursor->fetch()) {
 			$children[] = $this->createShareObject($data);
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $children;
 	}
@@ -655,7 +655,7 @@ class FederatedShareProvider implements IShareProvider {
 			while ($data = $cursor->fetch()) {
 				$shares[] = $this->createShareObject($data);
 			}
-			$cursor->closeCursor();
+			$cursor->free();
 		}
 
 		return $shares;
@@ -712,7 +712,7 @@ class FederatedShareProvider implements IShareProvider {
 		while ($data = $cursor->fetch()) {
 			$shares[] = $this->createShareObject($data);
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $shares;
 	}
@@ -730,7 +730,7 @@ class FederatedShareProvider implements IShareProvider {
 
 		$cursor = $qb->execute();
 		$data = $cursor->fetch();
-		$cursor->closeCursor();
+		$cursor->free();
 
 		if ($data === false) {
 			throw new ShareNotFound();
@@ -764,7 +764,7 @@ class FederatedShareProvider implements IShareProvider {
 		while ($data = $cursor->fetch()) {
 			$shares[] = $this->createShareObject($data);
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $shares;
 	}
@@ -810,7 +810,7 @@ class FederatedShareProvider implements IShareProvider {
 		while ($data = $cursor->fetch()) {
 			$shares[] = $this->createShareObject($data);
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $shares;
 	}
@@ -879,7 +879,7 @@ class FederatedShareProvider implements IShareProvider {
 		while ($data = $cursor->fetch()) {
 			$shares[] = $this->createShareObject($data);
 		}
-		$cursor->closeCursor();
+		$cursor->free();
 
 		return $shares;
 	}
@@ -901,7 +901,7 @@ class FederatedShareProvider implements IShareProvider {
 
 		$cursor = $qb->execute();
 		$data = $cursor->fetch();
-		$cursor->closeCursor();
+		$cursor->free();
 
 		if ($data === false) {
 			throw new ShareNotFound;

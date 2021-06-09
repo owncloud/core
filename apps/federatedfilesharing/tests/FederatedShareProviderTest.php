@@ -172,7 +172,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->execute();
 
 		$fetchedData = $stmt->fetch();
-		$stmt->closeCursor();
+		$stmt->free();
 
 		$expectedSubset = [
 			'share_type' => Share::SHARE_TYPE_REMOTE,
@@ -248,7 +248,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->execute();
 
 		$fetchedData = $stmt->fetch();
-		$stmt->closeCursor();
+		$stmt->free();
 
 		$this->assertEquals($fetchedData['id'], $share->getId());
 		$this->assertEquals(\OCP\Share::SHARE_TYPE_REMOTE, $share->getShareType());
@@ -314,7 +314,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->execute();
 
 		$fetchedData = $stmt->fetch();
-		$stmt->closeCursor();
+		$stmt->free();
 
 		$expectedSubset = [
 			'share_type' => Share::SHARE_TYPE_REMOTE,
@@ -393,7 +393,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->execute();
 
 		$data = $stmt->fetch();
-		$stmt->closeCursor();
+		$stmt->free();
 
 		$this->assertFalse($data);
 	}
@@ -432,7 +432,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->execute();
 
 		$data = $stmt->fetch();
-		$stmt->closeCursor();
+		$stmt->free();
 
 		$this->assertFalse($data);
 	}
@@ -464,7 +464,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->execute();
 
 		$data = $stmt->fetch();
-		$stmt->closeCursor();
+		$stmt->free();
 
 		$this->assertFalse($data);
 	}
@@ -876,7 +876,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			);
 		$cursor = $qb->execute();
 		$data = $cursor->fetchAll();
-		$cursor->closeCursor();
+		$cursor->free();
 
 		$this->assertCount($rowDeleted ? 0 : 1, $data);
 	}

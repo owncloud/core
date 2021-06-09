@@ -63,7 +63,7 @@ class OC_DB {
 		// return the result
 		try {
 			$result =$connection->prepare($query, $limit, $offset);
-		} catch (\Doctrine\DBAL\DBALException $e) {
+		} catch (\Doctrine\DBAL\Exception $e) {
 			throw new \OC\DatabaseException($e->getMessage(), $query);
 		}
 		// differentiate between query and manipulation
@@ -200,7 +200,7 @@ class OC_DB {
 	}
 
 	/**
-	 * check if a result is an error and throws an exception, works with \Doctrine\DBAL\DBALException
+	 * check if a result is an error and throws an exception, works with \Doctrine\DBAL\Exception
 	 * @param mixed $result
 	 * @param string $message
 	 * @return void

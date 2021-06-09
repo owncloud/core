@@ -76,7 +76,7 @@ abstract class Mapper {
 	public function delete(Entity $entity) {
 		$sql = 'DELETE FROM `' . $this->tableName . '` WHERE `id` = ?';
 		$stmt = $this->execute($sql, [$entity->getId()]);
-		$stmt->closeCursor();
+		$stmt->free();
 		return $entity;
 	}
 
@@ -120,7 +120,7 @@ abstract class Mapper {
 
 		$entity->setId((int) $this->db->lastInsertId($this->tableName));
 
-		$stmt->closeCursor();
+		$stmt->free();
 
 		return $entity;
 	}
@@ -176,7 +176,7 @@ abstract class Mapper {
 		$params[] = $id;
 
 		$stmt = $this->execute($sql, $params);
-		$stmt->closeCursor();
+		$stmt->free();
 
 		return $entity;
 	}
@@ -214,7 +214,7 @@ abstract class Mapper {
 	 * @param array $params the params which should replace the ? in the sql query
 	 * @param int $limit the maximum number of rows
 	 * @param int $offset from which row we want to start
-	 * @return \PDOStatement the database query result
+	 * @return \Doctrine\DBAL\Result the database query result
 	 * @since 7.0.0
 	 */
 	protected function execute($sql, array $params=[], $limit=null, $offset=null) {
@@ -245,11 +245,12 @@ abstract class Mapper {
 		// Doctrine and IDbConnection don't so this needs to be done in order
 		// to stay backwards compatible for the things that rely on the
 		// StatementWrapper being returned
-		if ($result instanceof \OC_DB_StatementWrapper) {
+		// @TODO Remove this???
+		/*if ($result instanceof \OC_DB_StatementWrapper) {
 			return $result;
-		}
+		}*/
 
-		return $query;
+		return $result;
 	}
 
 	/**
@@ -274,14 +275,14 @@ abstract class Mapper {
 		$row = $stmt->fetch();
 
 		if ($row === false || $row === null) {
-			$stmt->closeCursor();
+			$stmt->free();
 			$msg = $this->buildDebugMessage(
 				'Did expect one result but found none when executing', $sql, $params, $limit, $offset
 			);
 			throw new DoesNotExistException($msg);
 		}
 		$row2 = $stmt->fetch();
-		$stmt->closeCursor();
+		$stmt->free();
 		//MDB2 returns null, PDO and doctrine false when no row is available
 		if (! ($row2 === false || $row2 === null)) {
 			$msg = $this->buildDebugMessage(
@@ -342,7 +343,7 @@ abstract class Mapper {
 			$entities[] = $this->mapRowToEntity($row);
 		}
 
-		$stmt->closeCursor();
+		$stmt->free();
 
 		return $entities;
 	}

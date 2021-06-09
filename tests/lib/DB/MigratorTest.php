@@ -9,7 +9,7 @@
 
 namespace Test\DB;
 
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaConfig;
@@ -62,12 +62,12 @@ class MigratorTest extends \Test\TestCase {
 		// Try to delete if exists (IF EXISTS NOT SUPPORTED IN ORACLE)
 		try {
 			$this->connection->exec('DROP TABLE ' . $this->connection->quoteIdentifier($this->tableNameTmp));
-		} catch (\Doctrine\DBAL\DBALException $e) {
+		} catch (\Doctrine\DBAL\Exception $e) {
 		}
 
 		try {
 			$this->connection->exec('DROP TABLE ' . $this->connection->quoteIdentifier($this->tableName));
-		} catch (\Doctrine\DBAL\DBALException $e) {
+		} catch (\Doctrine\DBAL\Exception $e) {
 		}
 		parent::tearDown();
 	}
@@ -107,7 +107,7 @@ class MigratorTest extends \Test\TestCase {
 	}
 
 	private function isSQLite() {
-		return $this->connection->getDriver() instanceof \Doctrine\DBAL\Driver\PDOSqlite\Driver;
+		return $this->connection->getDriver() instanceof \Doctrine\DBAL\Driver\PDO\SQLite\Driver;
 	}
 
 	private function isOracle() {
@@ -186,7 +186,7 @@ class MigratorTest extends \Test\TestCase {
 		try {
 			$this->connection->insert($this->tableName, ['id' => 2, 'name' => 'qwerty']);
 			$this->fail('Expected duplicate key insert to fail');
-		} catch (DBALException $e) {
+		} catch (Exception $e) {
 			$this->assertTrue(true);
 		}
 	}

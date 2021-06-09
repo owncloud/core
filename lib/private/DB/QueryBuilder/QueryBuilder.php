@@ -24,7 +24,8 @@
 namespace OC\DB\QueryBuilder;
 
 use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQL94Platform;
+use Doctrine\DBAL\Platforms\PostgreSQL100Platform;
 use OC\DB\OracleConnection;
 use OC\DB\QueryBuilder\ExpressionBuilder\ExpressionBuilder;
 use OC\DB\QueryBuilder\ExpressionBuilder\MySqlExpressionBuilder;
@@ -93,7 +94,9 @@ class QueryBuilder implements IQueryBuilder {
 	public function expr() {
 		if ($this->connection instanceof OracleConnection) {
 			return new OCIExpressionBuilder($this->connection);
-		} elseif ($this->connection->getDatabasePlatform() instanceof PostgreSqlPlatform) {
+		} elseif ($this->connection->getDatabasePlatform() instanceof PostgreSQL94Platform) {
+			return new PgSqlExpressionBuilder($this->connection);
+		} elseif ($this->connection->getDatabasePlatform() instanceof PostgreSQL100Platform) {
 			return new PgSqlExpressionBuilder($this->connection);
 		} elseif ($this->connection->getDatabasePlatform() instanceof MySqlPlatform) {
 			return new MySqlExpressionBuilder($this->connection);
@@ -135,10 +138,10 @@ class QueryBuilder implements IQueryBuilder {
 	 * Uses {@see Connection::executeQuery} for select statements and {@see Connection::executeUpdate}
 	 * for insert, update and delete statements.
 	 *
-	 * @return \Doctrine\DBAL\Driver\Statement|int
+	 * @return \Doctrine\DBAL\Result
 	 */
 	public function execute() {
-		return $this->queryBuilder->execute();
+		return $this->queryBuilder->executeQuery();
 	}
 
 	/**

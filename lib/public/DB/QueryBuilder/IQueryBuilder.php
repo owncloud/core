@@ -124,7 +124,7 @@ interface IQueryBuilder {
 	 * Uses {@see Connection::executeQuery} for select statements and {@see Connection::executeUpdate}
 	 * for insert, update and delete statements.
 	 *
-	 * @return \Doctrine\DBAL\Statement
+	 * @return \Doctrine\DBAL\Result
 	 * @since 8.2.0
 	 */
 	public function execute();

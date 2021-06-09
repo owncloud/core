@@ -36,7 +36,7 @@
  */
 class OC_DB_StatementWrapper {
 	/**
-	 * @var \Doctrine\DBAL\Driver\Statement
+	 * @var \Doctrine\DBAL\Statement
 	 */
 	private $statement = null;
 	private $isManipulation = false;
@@ -61,21 +61,21 @@ class OC_DB_StatementWrapper {
 	 * make execute return the result instead of a bool
 	 *
 	 * @param array $input
-	 * @return \OC_DB_StatementWrapper|int|boolean
+	 * @return \OC_DB_StatementWrapper|int|boolean|\Doctrine\DBAL\Result
 	 */
 	public function execute(array $input= []) {
 		$this->lastArguments = $input;
 		if (\count($input) > 0) {
-			$result = $this->statement->execute($input);
+			$result = $this->statement->executeQuery($input);
 		} else {
-			$result = $this->statement->execute();
+			$result = $this->statement->executeQuery();
 		}
 
 		if ($result === false) {
 			return false;
 		}
 		if ($this->isManipulation) {
-			$count = $this->statement->rowCount();
+			$count = $result->rowCount();
 			return $count;
 		} else {
 			return $this;
@@ -88,7 +88,7 @@ class OC_DB_StatementWrapper {
 	 * @return mixed
 	 */
 	public function fetchRow() {
-		return $this->statement->fetch();
+		return $this->statement->executeQuery()->fetchAssociative();
 	}
 
 	/**
@@ -99,7 +99,8 @@ class OC_DB_StatementWrapper {
 	 * @return string
 	 */
 	public function fetchOne($column = 0) {
-		return $this->statement->fetchColumn($column);
+		// @TODO use column
+		return $this->statement->executeQuery()->fetchOne();
 	}
 
 	/**

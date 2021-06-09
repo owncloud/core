@@ -21,7 +21,7 @@
  */
 
 namespace Test\DB;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Driver\AbstractDriverException;
 use Doctrine\DBAL\Driver\DriverException;
 use OC\DB\Adapter;
@@ -132,7 +132,7 @@ class AdapterTest extends \Test\TestCase {
 		$qb->expects($this->exactly(3))->method('set')->willReturn($qb);
 		$qb->expects($this->exactly(3))->method('setValue')->willReturn($qb);
 		// Make a deadlock driver exception
-		$ex = $this->createMock(AbstractDriverException::class);
+		$ex = $this->createMock(\Doctrine\DBAL\Driver\AbstractDriverException::class);
 		$ex->expects($this->exactly(5))->method('getErrorCode')->willReturn(1213);
 		// Wrap the exception in a doctrine exception
 		$e = new \Doctrine\DBAL\Exception\DriverException('1213', $ex);
@@ -153,12 +153,12 @@ class AdapterTest extends \Test\TestCase {
 		$qb->expects($this->exactly(3))->method('set')->willReturn($qb);
 		$qb->expects($this->exactly(3))->method('setValue')->willReturn($qb);
 		// Make random dbal exception which should be throw immediately, not retried
-		$e = new DBALException();
+		$e = new Exception();
 		// Should be called 5 times for maxTry then kick out the exception
 		$qb->expects($this->exactly(1))->method('execute')->willThrowException($e);
 		$mockConn->expects($this->exactly(2))->method('getQueryBuilder')->willReturn($qb);
 		// expect the dbal exception straight away
-		$this->expectException(DBALException::class);
+		$this->expectException(Exception::class);
 		// Run
 		$adapter = new Adapter($mockConn);
 		$rows = $adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test4-updated', 'configkey' => 'test4-updated'], ['appid', 'configkey']);
@@ -171,7 +171,7 @@ class AdapterTest extends \Test\TestCase {
 		$qb->expects($this->exactly(3))->method('set')->willReturn($qb);
 		$qb->expects($this->exactly(3))->method('setValue')->willReturn($qb);
 		// Make a deadlock driver exception
-		$ex = $this->createMock(AbstractDriverException::class);
+		$ex = $this->createMock(\Doctrine\DBAL\Driver\AbstractDriverException::class);
 		$ex->expects($this->exactly(1))->method('getErrorCode')->willReturn(1214);
 		// Wrap the exception in a doctrine exception
 		/** @var  DriverException|\PHPUnit\Framework\MockObject\MockObject $ex */

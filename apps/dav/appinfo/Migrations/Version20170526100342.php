@@ -37,7 +37,7 @@ class Version20170526100342 implements ISimpleMigration {
 				'uri',
 				$query->createNamedParameter('contact_birthdays')))
 			->execute();
-
-		$out->info("$updated birthday calendars updated.");
+		$count = $updated->rowCount();
+		$out->info("$count birthday calendars updated.");
 	}
 }

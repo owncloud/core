@@ -23,7 +23,7 @@
 namespace OC\DB;
 
 use OCP\IDBConnection;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\MySQL80Platform;
 use OC\DB\Connection;
 
@@ -35,7 +35,7 @@ class MySqlTools {
 		foreach (['innodb_file_format' => 'Barracuda', 'innodb_large_prefix' => 'ON', 'innodb_file_per_table' => 'ON'] as $var => $val) {
 			$result = $connection->executeQuery("SHOW VARIABLES LIKE '$var'");
 			$rows = $result->fetch();
-			$result->closeCursor();
+			$result->free();
 			if ($rows === false) {
 				return false;
 			}
@@ -53,11 +53,11 @@ class MySqlTools {
 	 *
 	 * @param string $versionString Version string as returned by mariadb server, i.e. '5.5.5-Mariadb-10.0.8-xenial'
 	 * @return string
-	 * @throws DBALException
+	 * @throws Exception
 	 */
 	private function getMariaDbMysqlVersionNumber($versionString) {
 		if (!\preg_match('/^(?:5\.5\.5-)?(mariadb-)?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)/i', $versionString, $versionParts)) {
-			throw DBALException::invalidPlatformVersionSpecified(
+			throw Exception::invalidPlatformVersionSpecified(
 				$versionString,
 				'^(?:5\.5\.5-)?(mariadb-)?<major_version>.<minor_version>.<patch_version>'
 			);

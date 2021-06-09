@@ -119,6 +119,6 @@ class ExpireSharesJob extends TimedJob {
 				//already deleted
 			}
 		}
-		$shares->closeCursor();
+		$shares->free();
 	}
 }

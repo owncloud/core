@@ -94,7 +94,7 @@ class RemoveInvalidShares implements IRepairStep {
 			}
 		}
 
-		$result->closeCursor();
+		$result->free();
 	}
 
 	/**

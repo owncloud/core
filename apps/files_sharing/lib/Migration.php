@@ -74,7 +74,7 @@ class Migration {
 			}
 		}
 
-		$stmt->closeCursor();
+		$stmt->free();
 
 		if (\count($owners)) {
 			$this->updateOwners($owners);
@@ -129,7 +129,7 @@ class Migration {
 	 * Get $n re-shares from the database
 	 *
 	 * @param int $n The max number of shares to fetch
-	 * @return \Doctrine\DBAL\Driver\Statement
+	 * @return \Doctrine\DBAL\Result
 	 */
 	private function getReShares() {
 		$query = $this->connection->getQueryBuilder();
@@ -193,7 +193,7 @@ class Migration {
 			->setMaxResults($n);
 		$result = $query->execute();
 		$shares = $result->fetchAll();
-		$result->closeCursor();
+		$result->free();
 
 		$ordered = [];
 		foreach ($shares as $share) {
@@ -216,7 +216,7 @@ class Migration {
 			->where($query->expr()->eq('id', $query->createNamedParameter($id)));
 		$result = $query->execute();
 		$share = $result->fetchAll();
-		$result->closeCursor();
+		$result->free();
 
 		return $share[0];
 	}

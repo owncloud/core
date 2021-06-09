@@ -67,7 +67,7 @@ class DB {
 	 * @param array|null $compare List of values that should be checked for "if not exists"
 	 *				If this is null or an empty array, all keys of $input will be compared
 	 * @return int number of inserted rows
-	 * @throws \Doctrine\DBAL\DBALException
+	 * @throws \Doctrine\DBAL\Exception
 	 * @deprecated 8.1.0 use insertIfNotExist() of \OCP\IDBConnection - \OC::$server->getDatabaseConnection()
 	 * @since 5.0.0 - parameter $compare was added in 8.1.0
 	 *

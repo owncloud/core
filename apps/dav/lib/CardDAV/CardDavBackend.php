@@ -133,7 +133,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 				'{http://sabredav.org/ns}sync-token' => $row['synctoken'] ?: '0',
 			];
 		}
-		$result->closeCursor();
+		$result->free();
 		return \array_values($addressBooks);
 	}
 
@@ -197,7 +197,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 				];
 			}
 		}
-		$result->closeCursor();
+		$result->free();
 
 		return \array_values($addressBooks);
 	}
@@ -213,7 +213,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			->execute();
 
 		$row = $result->fetch();
-		$result->closeCursor();
+		$result->free();
 		if ($row === false) {
 			return null;
 		}
@@ -243,7 +243,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			->execute();
 
 		$row = $result->fetch();
-		$result->closeCursor();
+		$result->free();
 		if ($row === false) {
 			return null;
 		}
@@ -424,7 +424,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			$row['carddata'] = $this->readBlob($row['carddata']);
 			$cards[] = $row;
 		}
-		$result->closeCursor();
+		$result->free();
 
 		return $cards;
 	}
@@ -490,7 +490,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 				$row['carddata'] = $this->readBlob($row['carddata']);
 				$cards[] = $row;
 			}
-			$result->closeCursor();
+			$result->free();
 
 			return $cards;
 		}
@@ -872,7 +872,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		$result = $query->execute();
 		$cards = $result->fetchAll();
 
-		$result->closeCursor();
+		$result->free();
 
 		return \array_map(function ($array) {
 			$array['carddata'] = $this->readBlob($array['carddata']);
@@ -894,7 +894,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			->execute();
 
 		$all = $result->fetchAll(PDO::FETCH_COLUMN);
-		$result->closeCursor();
+		$result->free();
 
 		return $all;
 	}
@@ -914,7 +914,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 
 		$result = $query->execute();
 		$uri = $result->fetch();
-		$result->closeCursor();
+		$result->free();
 
 		if (!isset($uri['uri'])) {
 			throw new \InvalidArgumentException('Card does not exists: ' . $id);
@@ -938,7 +938,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 				->andWhere($query->expr()->eq('addressbookid', $query->createNamedParameter($addressBookId)));
 		$queryResult = $query->execute();
 		$contact = $queryResult->fetch();
-		$queryResult->closeCursor();
+		$queryResult->free();
 
 		if (\is_array($contact)) {
 			$result = $contact;
@@ -1051,7 +1051,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 
 		$result = $query->execute();
 		$cardIds = $result->fetch();
-		$result->closeCursor();
+		$result->free();
 
 		if (!isset($cardIds['id'])) {
 			throw new \InvalidArgumentException('Card does not exists: ' . $uri);

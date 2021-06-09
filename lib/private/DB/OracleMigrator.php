@@ -119,10 +119,10 @@ class OracleMigrator extends Migrator {
 				\array_map(function (Index $index) {
 					return $this->quoteIndex($index);
 				}, $table->getIndexes()),
+				[],
 				\array_map(function (ForeignKeyConstraint $fck) {
 					return $this->quoteForeignKeyConstraint($fck);
 				}, $table->getForeignKeys()),
-				0,
 				$table->getOptions()
 			);
 		}, $schemaDiff->newTables);
@@ -132,8 +132,8 @@ class OracleMigrator extends Migrator {
 				$this->connection->quoteIdentifier($table->getName()),
 				$table->getColumns(),
 				$table->getIndexes(),
+				[],
 				$table->getForeignKeys(),
-				0,
 				$table->getOptions()
 			);
 		}, $schemaDiff->removedTables);
