@@ -50,6 +50,10 @@ $(document).ready(function() {
 		$('#databaseField').slideToggle(250);
 	});
 	$("form").submit(function(){
+		$('button#submit')
+			.addClass('icon-loading-small')
+			.css('opacity', '1');
+
 		// Save form parameters
 		var post = $(this).serializeArray();
 
@@ -57,7 +61,7 @@ $(document).ready(function() {
 		$('.float-spinner').show(250);
 
 		// Disable inputs
-		$(':submit', this).attr('disabled','disabled').val($(':submit', this).data('finishing'));
+		$(':submit', this).attr('disabled','disabled');
 		$('input', this).addClass('ui-state-disabled').attr('disabled','disabled');
 		// only disable buttons if they are present
 		if($('#selectDbType').find('.ui-button').length > 0) {
@@ -113,18 +117,4 @@ $(document).ready(function() {
 		],
 		drawTitles: true
 	});
-
-	// centers the database chooser if it is too wide
-	if($('#databaseBackend').width() > 300) {
-		// this somehow needs to wait 250 milliseconds
-		// otherwise it gets overwritten
-		setTimeout(function(){
-			// calculate negative left margin
-			// half of the difference of width and default bix width of 300
-			// add 10 to clear left side padding of button group
-			var leftMargin = (($('#databaseBackend').width() - 300) / 2 + 10 ) * -1;
-
-			$('#databaseBackend').css('margin-left', Math.floor(leftMargin) + 'px');
-		}, 250);
-	}
 });

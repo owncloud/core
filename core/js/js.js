@@ -1443,6 +1443,17 @@ function initCore() {
 		}
 	});
 
+	$('#body-login form label').css({
+		color: $('p.info').css('color')
+	});
+
+	if ($('#body-login .v-align').length > 0 ) {
+		$('#body-login .v-align').fadeIn(600);
+		setTimeout(function () {
+			$('#body-login footer *').addClass('show');
+		}, 250);
+	}
+
 	/**
 	 * Set users locale to moment.js as soon as possible
 	 */
@@ -2381,3 +2392,4 @@ jQuery.fn.tipsy = function (argument) {
 	}
 	return this;
 }
+

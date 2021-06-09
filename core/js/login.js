@@ -32,4 +32,5 @@ $(document).ready(function() {
 	$('form[name=login]').submit(OC.Login.onLogin);
 
 	$('#remember_login').click(OC.Login.rememberLogin);
+	
 });
