@@ -4,6 +4,7 @@ namespace OC\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use OCP\Migration\ISchemaMigration;
 
 /**
@@ -28,8 +29,8 @@ class Version20170804201253 implements ISchemaMigration {
 			$table = $schema->getTable($tableName);
 
 			$column = $table->getColumn($columnName);
-			if ($column && $column->getType()->getName() !== Type::BIGINT) {
-				$column->setType(Type::getType(Type::BIGINT));
+			if ($column && $column->getType()->getName() !== Types::BIGINT) {
+				$column->setType(Type::getType(Types::BIGINT));
 				$column->setOptions(['length' => 20]);
 			}
 		}

@@ -3,6 +3,7 @@ namespace OC\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use OCP\Migration\ISchemaMigration;
 
 /**
@@ -17,7 +18,7 @@ class Version20170711191432 implements ISchemaMigration {
 
 			$fileSourceColumn = $table->getColumn('file_source');
 			if ($fileSourceColumn) {
-				$fileSourceColumn->setType(Type::getType(Type::BIGINT));
+				$fileSourceColumn->setType(Type::getType(Types::BIGINT));
 				$fileSourceColumn->setOptions(['length' => 20]);
 			}
 		}

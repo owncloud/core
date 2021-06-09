@@ -22,7 +22,7 @@
 namespace OC\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use OCP\Migration\ISchemaMigration;
 
 /**
@@ -38,7 +38,7 @@ class Version20181220085457 implements ISchemaMigration {
 			if (!$shareTable->hasColumn('attributes')) {
 				$shareTable->addColumn(
 					'attributes',
-					Type::TEXT,
+					Types::TEXT,
 					[
 						'default' => null,
 						'notnull' => false
