@@ -166,9 +166,9 @@ $CONFIG = [
 'pgsslmode' => 'prefer',
 
 /**
- * Defines if a postgres connection is permanent
+ * Defines if a postgres connection is persistent
  */
-'pgpermanentconnection' => false,
+'pgpersistentconnection' => false,
 
 /**
  * Indicate whether the ownCloud instance was installed successfully

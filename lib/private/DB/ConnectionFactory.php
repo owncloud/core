@@ -134,22 +134,10 @@ class ConnectionFactory {
 				break;
 			case 'pgsql':
 				$sslMode = $this->config->getValue('pgsslmode', 'prefer');
-				$permanentConnection = $this->config->getValue('pgpermanentconnection', false);
 				$additionalConnectionParams['sslmode'] = $sslMode;
 
-				$host = $additionalConnectionParams['host'];
-				$user = $additionalConnectionParams['user'];
-				$password = $additionalConnectionParams['password'];
-				$dbname = $additionalConnectionParams['dbname'];
-				$port = $additionalConnectionParams['port'];
-
-				if ($permanentConnection) {
-					$dbh = new \PDO("pgsql:host=$host;dbname=$dbname;port=$port", $user, $password, [
-						\PDO::ATTR_PERSISTENT => true
-					]);
-
-					$additionalConnectionParams['pdo'] = $dbh;
-				}
+				$persistentConnection = $this->config->getValue('pgpersistentconnection', false);
+				$additionalConnectionParams['persistent'] = $persistentConnection;
 
 				break;
 		}
