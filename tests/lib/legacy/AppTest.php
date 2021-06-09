@@ -33,20 +33,20 @@ class AppTest extends TestCase {
 
 		$this->appPath = __DIR__ . '/../../../apps/appinfotestapp';
 		$infoXmlPath = "{$this->appPath}/appinfo/info.xml";
-		\mkdir("{$this->appPath}/appinfo", 0777, true);
+		mkdir("{$this->appPath}/appinfo", 0777, true);
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>' .
 		'<info>' .
 			'<id>appinfotestapp</id>' .
 			'<namespace>AppInfoTestApp</namespace>' .
 		'</info>';
-		\file_put_contents($infoXmlPath, $xml);
+		file_put_contents($infoXmlPath, $xml);
 	}
 
 	protected function tearDown(): void {
 		$this->restoreService('NavigationManager');
 		\OC::$server->getAppManager()->clearAppsCache();
-		if (\is_dir($this->appPath)) {
+		if (is_dir($this->appPath)) {
 			rrmdir($this->appPath);
 		}
 		parent::tearDown();
@@ -94,7 +94,8 @@ class AppTest extends TestCase {
 	}
 
 	private function assertEqualsAppInfo($info, array $changed = []) {
-		self::assertEquals(\array_replace(
+		self::assertEquals(
+			array_replace(
 			[
 				'id' => 'appinfotestapp',
 				'namespace' => 'AppInfoTestApp',
@@ -113,7 +114,9 @@ class AppTest extends TestCase {
 				'two-factor-providers' => [],
 				'commands' => [],
 				'_cached' => true,
-			], $changed),
+			],
+			$changed
+		),
 			$info
 		);
 	}
@@ -158,7 +161,7 @@ class AppTest extends TestCase {
 			'<id>appinfotestapp</id>' .
 			'<namespace>AppInfoTestApp2</namespace>' .
 			'</info>';
-		\file_put_contents($infoXmlPath, $xml);
+		file_put_contents($infoXmlPath, $xml);
 
 		// should return new namespace
 		$info2 = \OC_App::getAppInfo('appinfotestapp');
@@ -177,13 +180,13 @@ class AppTest extends TestCase {
 			'<id>appinfotestapp</id>' .
 			'<namespace>AppInfoTestApp</namespace>' .
 			'</info>';
-		\file_put_contents($infoXmlPath, $xml);
+		file_put_contents($infoXmlPath, $xml);
 
 		// fill cache with 'old' path
 		$info = \OC_App::getAppInfo($infoXmlPath, true);
 		$this->assertEqualsAppInfo($info, ['_cached' => false]);
 
-		\unlink($infoXmlPath);
+		unlink($infoXmlPath);
 
 		// check info can be found under new path by using the appid
 		$info2 = \OC_App::getAppInfo('appinfotestapp');
@@ -202,7 +205,7 @@ class AppTest extends TestCase {
 
 	public function testGetAppInfoEmpty() {
 		$infoXmlPath = $this->appPath . '/appinfo/info.xml';
-		\file_put_contents($infoXmlPath, '');
+		file_put_contents($infoXmlPath, '');
 		self::assertNull(\OC_App::getAppInfo('appinfotestapp'));
 	}
 

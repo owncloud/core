@@ -45,8 +45,13 @@ class OCSControllerTest extends TestCase {
 			$this->createMock(ISecureRandom::class),
 			$this->createMock(IConfig::class)
 		);
-		$controller = new ChildOCSController('app', $request, 'verbs',
-			'headers', 100);
+		$controller = new ChildOCSController(
+			'app',
+			$request,
+			'verbs',
+			'headers',
+			100
+		);
 
 		$response = $controller->preflightedCors();
 

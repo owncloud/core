@@ -217,7 +217,7 @@ class DecryptAll {
 		$directories = [];
 		$directories[] = '/' . $uid . '/files';
 
-		while ($root = \array_pop($directories)) {
+		while ($root = array_pop($directories)) {
 			$content = $this->rootView->getDirectoryContent($root);
 			foreach ($content as $file) {
 				// only decrypt files owned by the user, exclude incoming local shares, and incoming federated shares
@@ -293,7 +293,7 @@ class DecryptAll {
 	 * @return int
 	 */
 	protected function getTimestamp() {
-		return \time();
+		return time();
 	}
 
 	/**

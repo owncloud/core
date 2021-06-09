@@ -36,10 +36,10 @@ use OCP\L10N\IFactory;
  * @package OCA\Comments\Activity
  */
 class Extension implements IExtension {
-	const APP_NAME = 'comments';
+	public const APP_NAME = 'comments';
 
-	const ADD_COMMENT_SUBJECT = 'add_comment_subject';
-	const ADD_COMMENT_MESSAGE = 'add_comment_message';
+	public const ADD_COMMENT_SUBJECT = 'add_comment_subject';
+	public const ADD_COMMENT_MESSAGE = 'add_comment_message';
 
 	/** @var IFactory */
 	protected $languageFactory;
@@ -192,7 +192,7 @@ class Extension implements IExtension {
 	 */
 	protected function authorIsCurrentUser($user) {
 		try {
-			return \strip_tags($user) === $this->activityManager->getCurrentUserId();
+			return strip_tags($user) === $this->activityManager->getCurrentUserId();
 		} catch (\UnexpectedValueException $e) {
 			return false;
 		}
@@ -302,11 +302,11 @@ class Extension implements IExtension {
 	 * @return string
 	 */
 	protected function convertParameterToComment($parameter) {
-		if (\preg_match('/^\<parameter\>(\d*)\<\/parameter\>$/', $parameter, $matches)) {
+		if (preg_match('/^\<parameter\>(\d*)\<\/parameter\>$/', $parameter, $matches)) {
 			try {
 				$comment = $this->commentsManager->get((int) $matches[1]);
 				$message = $comment->getMessage();
-				$message = \str_replace("\n", '<br />', \str_replace(['<', '>'], ['&lt;', '&gt;'], $message));
+				$message = str_replace("\n", '<br />', str_replace(['<', '>'], ['&lt;', '&gt;'], $message));
 				return $message;
 			} catch (NotFoundException $e) {
 				return '';

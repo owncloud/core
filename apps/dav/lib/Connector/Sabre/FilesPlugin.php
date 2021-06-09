@@ -50,20 +50,20 @@ use Sabre\HTTP\ResponseInterface;
 class FilesPlugin extends ServerPlugin {
 
 	// namespace
-	const NS_OWNCLOUD = 'http://owncloud.org/ns';
-	const FILEID_PROPERTYNAME = '{http://owncloud.org/ns}id';
-	const INTERNAL_FILEID_PROPERTYNAME = '{http://owncloud.org/ns}fileid';
-	const PERMISSIONS_PROPERTYNAME = '{http://owncloud.org/ns}permissions';
-	const SHARE_PERMISSIONS_PROPERTYNAME = '{http://open-collaboration-services.org/ns}share-permissions';
-	const DOWNLOADURL_PROPERTYNAME = '{http://owncloud.org/ns}downloadURL';
-	const SIZE_PROPERTYNAME = '{http://owncloud.org/ns}size';
-	const GETETAG_PROPERTYNAME = '{DAV:}getetag';
-	const LASTMODIFIED_PROPERTYNAME = '{DAV:}lastmodified';
-	const OWNER_ID_PROPERTYNAME = '{http://owncloud.org/ns}owner-id';
-	const OWNER_DISPLAY_NAME_PROPERTYNAME = '{http://owncloud.org/ns}owner-display-name';
-	const CHECKSUMS_PROPERTYNAME = '{http://owncloud.org/ns}checksums';
-	const DATA_FINGERPRINT_PROPERTYNAME = '{http://owncloud.org/ns}data-fingerprint';
-	const PRIVATE_LINK_PROPERTYNAME = '{http://owncloud.org/ns}privatelink';
+	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
+	public const FILEID_PROPERTYNAME = '{http://owncloud.org/ns}id';
+	public const INTERNAL_FILEID_PROPERTYNAME = '{http://owncloud.org/ns}fileid';
+	public const PERMISSIONS_PROPERTYNAME = '{http://owncloud.org/ns}permissions';
+	public const SHARE_PERMISSIONS_PROPERTYNAME = '{http://open-collaboration-services.org/ns}share-permissions';
+	public const DOWNLOADURL_PROPERTYNAME = '{http://owncloud.org/ns}downloadURL';
+	public const SIZE_PROPERTYNAME = '{http://owncloud.org/ns}size';
+	public const GETETAG_PROPERTYNAME = '{DAV:}getetag';
+	public const LASTMODIFIED_PROPERTYNAME = '{DAV:}lastmodified';
+	public const OWNER_ID_PROPERTYNAME = '{http://owncloud.org/ns}owner-id';
+	public const OWNER_DISPLAY_NAME_PROPERTYNAME = '{http://owncloud.org/ns}owner-display-name';
+	public const CHECKSUMS_PROPERTYNAME = '{http://owncloud.org/ns}checksums';
+	public const DATA_FINGERPRINT_PROPERTYNAME = '{http://owncloud.org/ns}data-fingerprint';
+	public const PRIVATE_LINK_PROPERTYNAME = '{http://owncloud.org/ns}privatelink';
 
 	/**
 	 * Reference to main server object
@@ -107,11 +107,13 @@ class FilesPlugin extends ServerPlugin {
 	 * @param bool $isPublic
 	 * @param bool $downloadAttachment
 	 */
-	public function __construct(Tree $tree,
-								IConfig $config,
-								IRequest $request,
-								$isPublic = false,
-								$downloadAttachment = true) {
+	public function __construct(
+		Tree $tree,
+		IConfig $config,
+		IRequest $request,
+		$isPublic = false,
+		$downloadAttachment = true
+	) {
 		$this->tree = $tree;
 		$this->config = $config;
 		$this->request = $request;
@@ -146,7 +148,7 @@ class FilesPlugin extends ServerPlugin {
 
 		// normally these cannot be changed (RFC4918), but we want them modifiable through PROPPATCH
 		$allowedProperties = ['{DAV:}getetag'];
-		$server->protectedProperties = \array_diff($server->protectedProperties, $allowedProperties);
+		$server->protectedProperties = array_diff($server->protectedProperties, $allowedProperties);
 
 		$this->server = $server;
 		$this->server->on('propFind', [$this, 'handleGetProperties']);
@@ -159,7 +161,7 @@ class FilesPlugin extends ServerPlugin {
 		$this->server->on('afterResponse', function ($request, ResponseInterface $response) {
 			$body = $response->getBody();
 			if (\is_resource($body)) {
-				\fclose($body);
+				fclose($body);
 			}
 		});
 		$this->server->on('beforeMove', [$this, 'checkMove']);
@@ -244,11 +246,12 @@ class FilesPlugin extends ServerPlugin {
 					Request::USER_AGENT_IE,
 					Request::USER_AGENT_ANDROID_MOBILE_CHROME,
 					Request::USER_AGENT_FREEBOX,
-				])) {
-				$response->setHeader('Content-Disposition', 'attachment; filename="' . \rawurlencode($filename) . '"');
+				]
+			)) {
+				$response->setHeader('Content-Disposition', 'attachment; filename="' . rawurlencode($filename) . '"');
 			} else {
-				$response->setHeader('Content-Disposition', 'attachment; filename*=UTF-8\'\'' . \rawurlencode($filename)
-													 . '; filename="' . \rawurlencode($filename) . '"');
+				$response->setHeader('Content-Disposition', 'attachment; filename*=UTF-8\'\'' . rawurlencode($filename)
+													 . '; filename="' . rawurlencode($filename) . '"');
 			}
 		}
 
@@ -300,7 +303,7 @@ class FilesPlugin extends ServerPlugin {
 				$perms = $node->getDavPermissions();
 				if ($this->isPublic) {
 					// remove mount information
-					$perms = \str_replace(['S', 'M'], '', $perms);
+					$perms = str_replace(['S', 'M'], '', $perms);
 				}
 				return $perms;
 			});
@@ -446,9 +449,9 @@ class FilesPlugin extends ServerPlugin {
 	 */
 	private function setSecretCookie($secretName, $secretToken) {
 		if ($secretToken === '-1' || (!isset($secretToken[32])
-			&& \preg_match('!^[a-zA-Z0-9]+$!', $secretToken) === 1)) {
+			&& preg_match('!^[a-zA-Z0-9]+$!', $secretToken) === 1)) {
 			// FIXME: use $response->setHeader() instead
-			\setcookie($secretName, $secretToken, \time() + 20, '/');
+			setcookie($secretName, $secretToken, time() + 20, '/');
 		}
 	}
 }

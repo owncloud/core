@@ -1098,7 +1098,7 @@ class QueryBuilder implements IQueryBuilder {
 	 * @return string
 	 */
 	protected function prefixTableName($table) {
-		if ($this->automaticTablePrefix === false || \strpos($table, '*PREFIX*') === 0) {
+		if ($this->automaticTablePrefix === false || strpos($table, '*PREFIX*') === 0) {
 			return $table;
 		}
 

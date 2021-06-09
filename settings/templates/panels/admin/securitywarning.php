@@ -124,7 +124,7 @@ script('settings', 'panels/setupchecks');
 				<?php p($l->t('It was not possible to execute the cronjob via CLI. The following technical errors have appeared:')); ?>
 				<br>
 				<ol>
-					<?php foreach (\json_decode($_['cronErrors']) as $error) {
+					<?php foreach (json_decode($_['cronErrors']) as $error) {
 			if (isset($error->error)) {
 				?>
 						<li><?php p($error->error) ?> <?php p($error->hint) ?></li>

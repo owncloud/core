@@ -107,7 +107,8 @@ class Manager extends PublicEmitter implements IUserManager {
 		$this->userSearch = $userSearch;
 		$cachedUsers = &$this->cachedUsers;
 		$this->listen(
-			'\OC\User', 'postDelete',
+			'\OC\User',
+			'postDelete',
 			function ($user) use (&$cachedUsers) {
 				/** @var \OC\User\User $user */
 				unset($cachedUsers[$user->getUID()]);
@@ -138,7 +139,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @return \OCP\UserInterface[]
 	 */
 	public function getBackends() {
-		return \array_values($this->backends);
+		return array_values($this->backends);
 	}
 
 	/**
@@ -177,7 +178,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 */
 	public function get($uid, $evenMissing = false) {
 		// fix numeric uid that was cast by storing it in an array key
-		if (\is_numeric($uid)) {
+		if (is_numeric($uid)) {
 			$uid = (string)$uid;
 		}
 		if (!\is_string($uid)) {
@@ -250,8 +251,8 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @return mixed the User object on success, false otherwise
 	 */
 	public function checkPassword($loginName, $password) {
-		$loginName = \str_replace("\0", '', $loginName);
-		$password = \str_replace("\0", '', $password);
+		$loginName = str_replace("\0", '', $loginName);
+		$password = str_replace("\0", '', $password);
 
 		if (empty($this->backends)) {
 			$this->registerBackend(new Database());
@@ -324,7 +325,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	public function searchDisplayName($pattern, $limit = null, $offset = null) {
 		if ($this->userSearch->isSearchable($pattern)) {
 			$accounts = $this->accountMapper->search('display_name', $pattern, $limit, $offset);
-			return \array_map(function (Account $account) {
+			return array_map(function (Account $account) {
 				return $this->getUserObject($account);
 			}, $accounts);
 		}
@@ -343,16 +344,16 @@ class Manager extends PublicEmitter implements IUserManager {
 
 			// Check the name for bad characters
 			// Allowed are: "a-z", "A-Z", "0-9" and "+_.@-'"
-			if (\preg_match('/[^a-zA-Z0-9 \+_\.@\-\']/', $uid)) {
+			if (preg_match('/[^a-zA-Z0-9 \+_\.@\-\']/', $uid)) {
 				throw new \Exception($l->t('Only the following characters are allowed in a username:'
 					. ' "a-z", "A-Z", "0-9", and "+_.@-\'"'));
 			}
 			// No empty username
-			if (\trim($uid) == '') {
+			if (trim($uid) == '') {
 				throw new \Exception($l->t('A valid username must be provided'));
 			}
 			// No whitespace at the beginning or at the end
-			if (\strlen(\trim($uid, "\t\n\r\0\x0B\xe2\x80\x8b")) !== \strlen(\trim($uid))) {
+			if (\strlen(trim($uid, "\t\n\r\0\x0B\xe2\x80\x8b")) !== \strlen(trim($uid))) {
 				throw new \Exception($l->t('Username contains whitespace at the beginning or at the end'));
 			}
 
@@ -377,12 +378,12 @@ class Manager extends PublicEmitter implements IUserManager {
 				'owncloud.log'
 			];
 
-			if (\in_array(\strtolower($uid), $invalidUids)) {
+			if (\in_array(strtolower($uid), $invalidUids)) {
 				throw new \Exception($l->t("The special username $uid is not allowed"));
 			}
 
 			// No empty password
-			if (\trim($password) == '') {
+			if (trim($password) == '') {
 				throw new \Exception($l->t('A valid password must be provided'));
 			}
 
@@ -502,11 +503,11 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @since 9.1.0
 	 */
 	public function getByEmail($email) {
-		if ($email === null || \trim($email) === '') {
+		if ($email === null || trim($email) === '') {
 			throw new \InvalidArgumentException('$email cannot be empty');
 		}
 		$accounts = $this->accountMapper->getByEmail($email);
-		return \array_map(function (Account $account) {
+		return array_map(function (Account $account) {
 			return $this->getUserObject($account);
 		}, $accounts);
 	}

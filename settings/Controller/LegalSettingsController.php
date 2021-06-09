@@ -46,10 +46,11 @@ class LegalSettingsController extends Controller {
 	 * @param IL10N $l10n
 	 * @param IConfig $config
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IL10N $l10n,
-								IConfig $config
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IL10N $l10n,
+		IConfig $config
 	) {
 		parent::__construct($appName, $request);
 		$this->l10n = $l10n;

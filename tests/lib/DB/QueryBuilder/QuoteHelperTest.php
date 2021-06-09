@@ -135,8 +135,8 @@ class QuoteHelperTest extends \Test\TestCase {
 			throw new \InvalidArgumentException('Only strings, Literals and Parameters are allowed');
 		}
 
-		if (\substr_count($string, '.')) {
-			list($alias, $columnName) = \explode('.', $string);
+		if (substr_count($string, '.')) {
+			list($alias, $columnName) = explode('.', $string);
 			return '`' . $alias . '`.`' . $columnName . '`';
 		}
 

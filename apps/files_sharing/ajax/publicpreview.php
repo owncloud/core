@@ -97,7 +97,7 @@ if ($linkedItem->getNodeType() === 'file') {
 	$sharedFile = $node;
 }
 
-$path = \ltrim(\OC\Files\Filesystem::normalizePath($path, false), '/');
+$path = ltrim(\OC\Files\Filesystem::normalizePath($path, false), '/');
 
 if ($maxX === 0 || $maxY === 0) {
 	\OC_Response::setStatus(\OC_Response::STATUS_BAD_REQUEST);
@@ -107,7 +107,7 @@ if ($maxX === 0 || $maxY === 0) {
 
 // $path is relative to the data directory but Preview expects it to be relative to the user's
 // so strip the first component
-$root = \substr($path, \strpos($path, '/') + 1);
+$root = substr($path, strpos($path, '/') + 1);
 
 try {
 	$preview = new \OC\Preview($userId, $root);

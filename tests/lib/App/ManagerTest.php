@@ -103,9 +103,14 @@ class ManagerTest extends TestCase {
 			->method('create')
 			->with('settings')
 			->willReturn($this->cache);
-		$this->manager = new AppManager($this->userSession, $this->appConfig,
-			$this->groupManager, $this->cacheFactory, $this->eventDispatcher,
-			$this->config);
+		$this->manager = new AppManager(
+			$this->userSession,
+			$this->appConfig,
+			$this->groupManager,
+			$this->cacheFactory,
+			$this->eventDispatcher,
+			$this->config
+		);
 	}
 
 	protected function expectClearCache() {
@@ -200,7 +205,9 @@ class ManagerTest extends TestCase {
 
 		$this->manager->enableApp('some_random_name_which_i_hope_is_not_an_app');
 		$this->assertEquals('no', $this->appConfig->getValue(
-			'some_random_name_which_i_hope_is_not_an_app', 'enabled', 'no'
+			'some_random_name_which_i_hope_is_not_an_app',
+			'enabled',
+			'no'
 		));
 	}
 
@@ -433,7 +440,7 @@ class ManagerTest extends TestCase {
 				function ($appId) use ($appInfos) {
 					return $appInfos[$appId];
 				}
-		));
+			));
 
 		$this->appConfig->setValue('test1', 'enabled', 'yes');
 		$this->appConfig->setValue('test1', 'installed_version', '1.0.0');
@@ -475,7 +482,7 @@ class ManagerTest extends TestCase {
 				function ($appId) use ($appInfos) {
 					return $appInfos[$appId];
 				}
-		));
+			));
 
 		$this->appConfig->setValue('test1', 'enabled', 'yes');
 		$this->appConfig->setValue('test2', 'enabled', 'yes');
@@ -580,8 +587,11 @@ class ManagerTest extends TestCase {
 	 * @param string[] $appData
 	 * @param string $expectedAppWebPath
 	 */
-	public function testAppWebRootAboveOcWebRoot($ocWebRoot, $appData,
-		$expectedAppWebPath) {
+	public function testAppWebRootAboveOcWebRoot(
+		$ocWebRoot,
+		$appData,
+		$expectedAppWebPath
+	) {
 		$appId = 'notexistingapp';
 
 		$appManager = $this->getMockBuilder(AppManager::class)

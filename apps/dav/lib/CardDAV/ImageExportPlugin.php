@@ -116,10 +116,10 @@ class ImageExportPlugin extends ServerPlugin {
 				if ($parsed['scheme'] !== 'data') {
 					return false;
 				}
-				if (\substr_count($parsed['path'], ';') === 1) {
-					list($type, ) = \explode(';', $parsed['path']);
+				if (substr_count($parsed['path'], ';') === 1) {
+					list($type, ) = explode(';', $parsed['path']);
 				}
-				$val = \file_get_contents($val);
+				$val = file_get_contents($val);
 			}
 
 			if (!\in_array($type, ['image/png', 'image/jpeg', 'image/gif'])) {
@@ -151,10 +151,10 @@ class ImageExportPlugin extends ServerPlugin {
 			$typeParam = isset($params['TYPE']) ? $params['TYPE'] : $params['MEDIATYPE'];
 			$type = $typeParam->getValue();
 
-			if (\strpos($type, 'image/') === 0) {
+			if (strpos($type, 'image/') === 0) {
 				return $type;
 			} else {
-				return 'image/' . \strtolower($type);
+				return 'image/' . strtolower($type);
 			}
 		}
 		return 'application/octet-stream';

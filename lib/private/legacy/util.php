@@ -72,8 +72,8 @@ class OC_Util {
 	private static $rootMounted = false;
 	private static $fsSetup = false;
 	private static $version;
-	const EDITION_COMMUNITY = 'Community';
-	const EDITION_ENTERPRISE = 'Enterprise';
+	public const EDITION_COMMUNITY = 'Community';
+	public const EDITION_ENTERPRISE = 'Enterprise';
 
 	protected static function getAppManager() {
 		return \OC::$server->getAppManager();
@@ -108,9 +108,9 @@ class OC_Util {
 
 		// instantiate object store implementation
 		$name = $config['class'];
-		if (\strpos($name, 'OCA\\') === 0 && \substr_count($name, '\\') >= 2) {
-			$segments = \explode('\\', $name);
-			OC_App::loadApp(\strtolower($segments[1]));
+		if (strpos($name, 'OCA\\') === 0 && substr_count($name, '\\') >= 2) {
+			$segments = explode('\\', $name);
+			OC_App::loadApp(strtolower($segments[1]));
 		}
 		$config['arguments']['objectstore'] = new $config['class']($config['arguments']);
 		// mount with plain / root object store implementation
@@ -248,7 +248,7 @@ class OC_Util {
 		);
 
 		if (!$isGuest) {
-			$readOnlyGroups = \json_decode(\OC::$server->getConfig()->getAppValue(
+			$readOnlyGroups = json_decode(\OC::$server->getConfig()->getAppValue(
 				'core',
 				'read_only_groups',
 				'[]'
@@ -259,11 +259,11 @@ class OC_Util {
 			}
 			$readOnlyGroupMemberships = [];
 			if ($readOnlyGroups) {
-				$userGroups = \array_keys(
+				$userGroups = array_keys(
 					\OC::$server->getGroupManager()->getUserIdGroups($user)
 				);
 
-				$readOnlyGroupMemberships = \array_intersect(
+				$readOnlyGroupMemberships = array_intersect(
 					$readOnlyGroups,
 					$userGroups
 				);
@@ -382,7 +382,7 @@ class OC_Util {
 	public static function copySkeleton($userId, \OCP\Files\Folder $userDirectory) {
 		$skeletonDirectory = \OC::$server->getConfig()->getSystemValue('skeletondirectory', \OC::$SERVERROOT . '/core/skeleton');
 
-		if (!\is_dir($skeletonDirectory)) {
+		if (!is_dir($skeletonDirectory)) {
 			throw new \OC\HintException('The skeleton folder '.$skeletonDirectory.' is not accessible');
 		}
 
@@ -407,25 +407,25 @@ class OC_Util {
 	 * @throws NoReadAccessException
 	 */
 	public static function copyr($source, \OCP\Files\Folder $target) {
-		$dir = @\opendir($source);
+		$dir = @opendir($source);
 		if ($dir === false) {
 			throw new NoReadAccessException('No read permission for folder ' . $source);
 		}
-		while (($file = \readdir($dir)) !== false) {
+		while (($file = readdir($dir)) !== false) {
 			if (!\OC\Files\Filesystem::isIgnoredDir($file)) {
-				if (\is_dir($source . '/' . $file)) {
+				if (is_dir($source . '/' . $file)) {
 					$child = $target->newFolder($file);
 					self::copyr($source . '/' . $file, $child);
 				} else {
-					$sourceFileHandle = @\fopen($source . '/' . $file, 'r');
+					$sourceFileHandle = @fopen($source . '/' . $file, 'r');
 					if ($sourceFileHandle === false) {
 						throw new NoReadAccessException('No read permission for file ' . $file);
 					}
 					$child = $target->newFile($file);
 					$targetFileHandle = $child->fopen('w');
-					\stream_copy_to_stream($sourceFileHandle, $targetFileHandle);
-					\fclose($targetFileHandle);
-					\fclose($sourceFileHandle);
+					stream_copy_to_stream($sourceFileHandle, $targetFileHandle);
+					fclose($targetFileHandle);
+					fclose($sourceFileHandle);
 
 					// update cache sizes
 					$cache = $target->getStorage()->getCache();
@@ -435,7 +435,7 @@ class OC_Util {
 				}
 			}
 		}
-		\closedir($dir);
+		closedir($dir);
 	}
 
 	/**
@@ -648,7 +648,7 @@ class OC_Util {
 		if ($type === "style") {
 			if (!\in_array($path, self::$styles)) {
 				if ($prepend === true) {
-					\array_unshift(self::$styles, $path);
+					array_unshift(self::$styles, $path);
 				} else {
 					self::$styles[] = $path;
 				}
@@ -656,7 +656,7 @@ class OC_Util {
 		} elseif ($type === "script") {
 			if (!\in_array($path, self::$scripts)) {
 				if ($prepend === true) {
-					\array_unshift(self::$scripts, $path);
+					array_unshift(self::$scripts, $path);
 				} else {
 					self::$scripts [] = $path;
 				}
@@ -725,8 +725,14 @@ class OC_Util {
 		}
 
 		$webServerRestart = false;
-		$setup = new \OC\Setup($config, \OC::$server->getIniWrapper(), \OC::$server->getL10N('lib'),
-			new \OC_Defaults(), \OC::$server->getLogger(), \OC::$server->getSecureRandom());
+		$setup = new \OC\Setup(
+			$config,
+			\OC::$server->getIniWrapper(),
+			\OC::$server->getL10N('lib'),
+			new \OC_Defaults(),
+			\OC::$server->getLogger(),
+			\OC::$server->getSecureRandom()
+		);
 
 		$urlGenerator = \OC::$server->getURLGenerator();
 
@@ -741,49 +747,57 @@ class OC_Util {
 
 		// Check if config folder is writable.
 		if (!\OC::$server->getConfig()->isSystemConfigReadOnly()) {
-			if (!\is_writable(OC::$configDir) or !\is_readable(OC::$configDir)) {
+			if (!is_writable(OC::$configDir) or !is_readable(OC::$configDir)) {
 				$errors[] = [
 					'error' => $l->t('Cannot write into "config" directory'),
-					'hint' => $l->t('This can usually be fixed by '
+					'hint' => $l->t(
+						'This can usually be fixed by '
 						. '%sgiving the webserver write access to the config directory%s.',
-						['<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>'])
+						['<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>']
+					)
 				];
 			}
 		}
 
 		// Create root dir.
 		if ($config->getSystemValue('installed', false)) {
-			if (!\is_dir($CONFIG_DATADIRECTORY)) {
-				$success = @\mkdir($CONFIG_DATADIRECTORY);
+			if (!is_dir($CONFIG_DATADIRECTORY)) {
+				$success = @mkdir($CONFIG_DATADIRECTORY);
 				if ($success) {
-					$errors = \array_merge($errors, self::checkDataDirectoryPermissions($CONFIG_DATADIRECTORY));
+					$errors = array_merge($errors, self::checkDataDirectoryPermissions($CONFIG_DATADIRECTORY));
 				} else {
 					$errors[] = [
 						'error' => $l->t('Cannot create "data" directory'),
-						'hint' => $l->t('This can usually be fixed by '
+						'hint' => $l->t(
+							'This can usually be fixed by '
 							. '<a href="%s" target="_blank" rel="noreferrer">giving the webserver write access to the root directory</a>.',
-							[$urlGenerator->linkToDocs('admin-dir_permissions')])
+							[$urlGenerator->linkToDocs('admin-dir_permissions')]
+						)
 					];
 				}
-			} elseif (!\is_writable($CONFIG_DATADIRECTORY) or !\is_readable($CONFIG_DATADIRECTORY)) {
+			} elseif (!is_writable($CONFIG_DATADIRECTORY) or !is_readable($CONFIG_DATADIRECTORY)) {
 				//common hint for all file permissions error messages
-				$permissionsHint = $l->t('Permissions can usually be fixed by '
+				$permissionsHint = $l->t(
+					'Permissions can usually be fixed by '
 					. '%sgiving the webserver write access to the root directory%s.',
-					['<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>']);
+					['<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>']
+				);
 				$errors[] = [
 					'error' => 'Your Data directory is not writable by ownCloud',
 					'hint' => $permissionsHint
 				];
 			} else {
-				$errors = \array_merge($errors, self::checkDataDirectoryPermissions($CONFIG_DATADIRECTORY));
+				$errors = array_merge($errors, self::checkDataDirectoryPermissions($CONFIG_DATADIRECTORY));
 			}
 		}
 
 		if (!OC_Util::isSetLocaleWorking()) {
 			$errors[] = [
-				'error' => $l->t('Setting locale to %s failed',
+				'error' => $l->t(
+					'Setting locale to %s failed',
 					['en_US.UTF-8/fr_FR.UTF-8/es_ES.UTF-8/de_DE.UTF-8/ru_RU.UTF-8/'
-						. 'pt_BR.UTF-8/it_IT.UTF-8/ja_JP.UTF-8/zh_CN.UTF-8']),
+						. 'pt_BR.UTF-8/it_IT.UTF-8/ja_JP.UTF-8/zh_CN.UTF-8']
+				),
 				'hint' => $l->t('Please install one of these locales on your system and restart your webserver.')
 			];
 		}
@@ -836,7 +850,7 @@ class OC_Util {
 		$iniWrapper = \OC::$server->getIniWrapper();
 		if (!self::runningOnHhvm()) {
 			foreach ($dependencies['classes'] as $class => $module) {
-				if (!\class_exists($class)) {
+				if (!class_exists($class)) {
 					$missingDependencies[] = $module;
 				}
 			}
@@ -862,7 +876,7 @@ class OC_Util {
 					}
 				}
 				if (\is_string($expected)) {
-					if (\strtolower($iniWrapper->getString($setting)) !== \strtolower($expected)) {
+					if (strtolower($iniWrapper->getString($setting)) !== strtolower($expected)) {
 						$invalidIniSettings[] = [$setting, $expected];
 					}
 				}
@@ -881,7 +895,7 @@ class OC_Util {
 				$setting[1] = ($setting[1]) ? 'on' : 'off';
 			}
 			$errors[] = [
-				'error' => $l->t('PHP setting "%s" is not set to "%s".', [$setting[0], \var_export($setting[1], true)]),
+				'error' => $l->t('PHP setting "%s" is not set to "%s".', [$setting[0], var_export($setting[1], true)]),
 				'hint' =>  $l->t('Adjusting this setting in php.ini will make ownCloud run again')
 			];
 			$webServerRestart = true;
@@ -904,7 +918,7 @@ class OC_Util {
 		}
 
 		if (\function_exists('xml_parser_create') &&
-			\version_compare('2.7.0', LIBXML_DOTTED_VERSION) === 1) {
+			version_compare('2.7.0', LIBXML_DOTTED_VERSION) === 1) {
 			$errors[] = [
 				'error' => $l->t('libxml2 2.7.0 is at least required. Currently %s is installed.', [LIBXML_DOTTED_VERSION]),
 				'hint' => $l->t('To fix this issue update your libxml2 version and restart your web server.')
@@ -925,7 +939,7 @@ class OC_Util {
 			];
 		}
 
-		$errors = \array_merge($errors, self::checkDatabaseVersion());
+		$errors = array_merge($errors, self::checkDatabaseVersion());
 
 		// Cache the result of this function
 		\OC::$server->getSession()->set('checkServer_succeeded', \count($errors) == 0);
@@ -949,7 +963,7 @@ class OC_Util {
 				$data = $result->fetchRow();
 				if (isset($data['server_version'])) {
 					$version = $data['server_version'];
-					if (\version_compare($version, '9.0.0', '<')) {
+					if (version_compare($version, '9.0.0', '<')) {
 						$errors[] = [
 							'error' => $l->t('PostgreSQL >= 9 required'),
 							'hint' => $l->t('Please upgrade your database version')
@@ -976,12 +990,12 @@ class OC_Util {
 		$errors = [];
 		$permissionsModHint = $l->t('Please change the permissions to 0770 so that the directory'
 			. ' cannot be listed by other users.');
-		$perms = \substr(\decoct(@\fileperms($dataDirectory)), -3);
-		if (\substr($perms, -1) != '0') {
-			\chmod($dataDirectory, 0770);
-			\clearstatcache();
-			$perms = \substr(\decoct(@\fileperms($dataDirectory)), -3);
-			if (\substr($perms, 2, 1) != '0') {
+		$perms = substr(decoct(@fileperms($dataDirectory)), -3);
+		if (substr($perms, -1) != '0') {
+			chmod($dataDirectory, 0770);
+			clearstatcache();
+			$perms = substr(decoct(@fileperms($dataDirectory)), -3);
+			if (substr($perms, 2, 1) != '0') {
 				$errors[] = [
 					'error' => $l->t('Your Data directory is readable by other users'),
 					'hint' => $permissionsModHint
@@ -1007,7 +1021,7 @@ class OC_Util {
 				'hint' => $l->t('Check the value of "datadirectory" in your configuration')
 			];
 		}
-		if (!\file_exists($dataDirectory . '/.ocdata')) {
+		if (!file_exists($dataDirectory . '/.ocdata')) {
 			$errors[] = [
 				'error' => $l->t('Your Data directory  is invalid'),
 				'hint' => $l->t('Please check that the data directory contains a file' .
@@ -1062,25 +1076,26 @@ class OC_Util {
 		// Check if we are a user
 		$userSession = \OC::$server->getUserSession();
 		if ($userSession && !$userSession->isLoggedIn()) {
-			\header('Location: ' . \OC::$server->getURLGenerator()->linkToRoute(
-						'core.login.showLoginForm',
-						[
-							'redirect_url' => \urlencode(\OC::$server->getRequest()->getRequestUri()),
+			header(
+				'Location: ' . \OC::$server->getURLGenerator()->linkToRoute(
+				'core.login.showLoginForm',
+				[
+							'redirect_url' => urlencode(\OC::$server->getRequest()->getRequestUri()),
 						]
-					)
+			)
 			);
 			exit();
 		}
 		// Redirect to index page if 2FA challenge was not solved yet
 		if (\OC::$server->getTwoFactorAuthManager()->needsSecondFactor()) {
-			\header('Location: ' . \OCP\Util::linkToAbsolute('', 'index.php'));
+			header('Location: ' . \OCP\Util::linkToAbsolute('', 'index.php'));
 			exit();
 		}
 		// Redirect to index page if any IAuthModule check fails
 		try {
 			\OC::$server->getAccountModuleManager()->check($userSession->getUser());
 		} catch (AccountCheckException $ex) {
-			\header('Location: ' . \OCP\Util::linkToAbsolute('', 'index.php'));
+			header('Location: ' . \OCP\Util::linkToAbsolute('', 'index.php'));
 			exit();
 		}
 	}
@@ -1093,7 +1108,7 @@ class OC_Util {
 	public static function checkAdminUser() {
 		OC_Util::checkLoggedIn();
 		if (!OC_User::isAdminUser(OC_User::getUser())) {
-			\header('Location: ' . \OCP\Util::linkToAbsolute('', 'index.php'));
+			header('Location: ' . \OCP\Util::linkToAbsolute('', 'index.php'));
 			exit();
 		}
 	}
@@ -1131,7 +1146,7 @@ class OC_Util {
 		}
 
 		if (!$isSubAdmin) {
-			\header('Location: ' . \OCP\Util::linkToAbsolute('', 'index.php'));
+			header('Location: ' . \OCP\Util::linkToAbsolute('', 'index.php'));
 			exit();
 		}
 		return true;
@@ -1148,25 +1163,25 @@ class OC_Util {
 		$urlGenerator = \OC::$server->getURLGenerator();
 		// Deny the redirect if the URL contains a @
 		// This prevents unvalidated redirects like ?redirect_url=:user@domain.com
-		if (isset($_REQUEST['redirect_url']) && \strpos($_REQUEST['redirect_url'], '@') === false) {
-			$location = $urlGenerator->getAbsoluteURL(\urldecode($_REQUEST['redirect_url']));
+		if (isset($_REQUEST['redirect_url']) && strpos($_REQUEST['redirect_url'], '@') === false) {
+			$location = $urlGenerator->getAbsoluteURL(urldecode($_REQUEST['redirect_url']));
 		} else {
 			$defaultPage = \OC::$server->getAppConfig()->getValue('core', 'defaultpage');
 			if ($defaultPage) {
 				$location = $urlGenerator->getAbsoluteURL($defaultPage);
 			} else {
 				$appId = 'files';
-				$defaultApps = \explode(',', \OC::$server->getConfig()->getSystemValue('defaultapp', 'files'));
+				$defaultApps = explode(',', \OC::$server->getConfig()->getSystemValue('defaultapp', 'files'));
 				// find the first app that is enabled for the current user
 				foreach ($defaultApps as $defaultApp) {
-					$defaultApp = OC_App::cleanAppId(\strip_tags($defaultApp));
+					$defaultApp = OC_App::cleanAppId(strip_tags($defaultApp));
 					if (static::getAppManager()->isEnabledForUser($defaultApp)) {
 						$appId = $defaultApp;
 						break;
 					}
 				}
 
-				if (\getenv('front_controller_active') === 'true') {
+				if (getenv('front_controller_active') === 'true') {
 					$location = $urlGenerator->getAbsoluteURL('/apps/' . $appId . '/');
 				} else {
 					$location = $urlGenerator->getAbsoluteURL('/index.php/apps/' . $appId . '/');
@@ -1183,7 +1198,7 @@ class OC_Util {
 	 */
 	public static function redirectToDefaultPage() {
 		$location = self::getDefaultPageUrl();
-		\header('Location: ' . $location);
+		header('Location: ' . $location);
 		exit();
 	}
 
@@ -1213,12 +1228,12 @@ class OC_Util {
 	 */
 	public static function sanitizeHTML($value) {
 		if (\is_array($value)) {
-			$value = \array_map(function ($value) {
+			$value = array_map(function ($value) {
 				return self::sanitizeHTML($value);
 			}, $value);
 		} else {
 			// Specify encoding for PHP<5.4
-			$value = \htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+			$value = htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
 		}
 		return $value;
 	}
@@ -1234,14 +1249,14 @@ class OC_Util {
 	 * @return string
 	 */
 	public static function encodePath($component) {
-		$encoded = \rawurlencode($component);
-		$encoded = \str_replace('%2F', '/', $encoded);
+		$encoded = rawurlencode($component);
+		$encoded = str_replace('%2F', '/', $encoded);
 		return $encoded;
 	}
 
 	public function createHtaccessTestFile(\OCP\IConfig $config) {
 		// php dev server does not support htaccess
-		if (\php_sapi_name() === 'cli-server') {
+		if (php_sapi_name() === 'cli-server') {
 			return false;
 		}
 		if (\OC::$CLI) {
@@ -1256,17 +1271,19 @@ class OC_Util {
 		// creating a test file
 		$testFile = $config->getSystemValue('datadirectory', OC::$SERVERROOT . '/data') . '/' . $fileName;
 
-		if (\file_exists($testFile)) {// already running this test, possible recursive call
+		if (file_exists($testFile)) {// already running this test, possible recursive call
 			return false;
 		}
 
-		$fp = @\fopen($testFile, 'w');
+		$fp = @fopen($testFile, 'w');
 		if (!$fp) {
-			throw new OC\HintException('Can\'t create test file to check for working .htaccess file.',
-				'Make sure it is possible for the webserver to write to ' . $testFile);
+			throw new OC\HintException(
+				'Can\'t create test file to check for working .htaccess file.',
+				'Make sure it is possible for the webserver to write to ' . $testFile
+			);
 		}
-		\fwrite($fp, $testContent);
-		\fclose($fp);
+		fwrite($fp, $testContent);
+		fclose($fp);
 	}
 
 	/**
@@ -1276,14 +1293,14 @@ class OC_Util {
 	 * @return bool
 	 */
 	public static function isSetLocaleWorking() {
-		if (\basename('§') === '§') {
+		if (basename('§') === '§') {
 			return true;
 		}
 
-		\setlocale(LC_ALL, 'C.UTF-8', 'C');
-		\setlocale(LC_CTYPE, 'en_US.UTF-8', 'fr_FR.UTF-8', 'es_ES.UTF-8', 'de_DE.UTF-8', 'ru_RU.UTF-8', 'pt_BR.UTF-8', 'it_IT.UTF-8', 'ja_JP.UTF-8', 'zh_CN.UTF-8', '0');
+		setlocale(LC_ALL, 'C.UTF-8', 'C');
+		setlocale(LC_CTYPE, 'en_US.UTF-8', 'fr_FR.UTF-8', 'es_ES.UTF-8', 'de_DE.UTF-8', 'ru_RU.UTF-8', 'pt_BR.UTF-8', 'it_IT.UTF-8', 'ja_JP.UTF-8', 'zh_CN.UTF-8', '0');
 
-		return \basename('§') === '§';
+		return basename('§') === '§';
 	}
 
 	/**
@@ -1313,8 +1330,8 @@ class OC_Util {
 	 * @return void
 	 */
 	public static function obEnd() {
-		while (\ob_get_level()) {
-			\ob_end_clean();
+		while (ob_get_level()) {
+			ob_end_clean();
 		}
 	}
 
@@ -1325,12 +1342,12 @@ class OC_Util {
 	 * @return bool true if running on that OS type, false otherwise
 	 */
 	public static function runningOn($osType) {
-		$osType = \strtolower($osType) === 'mac' ? 'darwin' : \strtolower($osType);
+		$osType = strtolower($osType) === 'mac' ? 'darwin' : strtolower($osType);
 
 		if ($osType === 'bsd') {
-			return (\strpos(\strtolower(PHP_OS), $osType) !== false);
+			return (strpos(strtolower(PHP_OS), $osType) !== false);
 		} else {
-			return (\strtolower(\substr(PHP_OS, 0, \strlen($osType))) === $osType);
+			return (strtolower(substr(PHP_OS, 0, \strlen($osType))) === $osType);
 		}
 	}
 
@@ -1375,7 +1392,7 @@ class OC_Util {
 			}
 			// Zend OpCache >= 7.0.0, PHP >= 5.5.0
 			if (\function_exists('opcache_invalidate')) {
-				$ret = \opcache_invalidate($path);
+				$ret = opcache_invalidate($path);
 			}
 		}
 		return $ret;
@@ -1391,7 +1408,7 @@ class OC_Util {
 	public static function clearOpcodeCache() {
 		// APC
 		if (\function_exists('apc_clear_cache')) {
-			\apc_clear_cache();
+			apc_clear_cache();
 		}
 		// Zend Opcache
 		if (\function_exists('accelerator_reset')) {
@@ -1399,7 +1416,7 @@ class OC_Util {
 		}
 		// Opcache (PHP >= 5.5)
 		if (\function_exists('opcache_reset')) {
-			\opcache_reset();
+			opcache_reset();
 		}
 	}
 
@@ -1428,9 +1445,9 @@ class OC_Util {
 	 * @return string
 	 */
 	public static function basename($file) {
-		$file = \rtrim($file, '/');
-		$t = \explode('/', $file);
-		return \array_pop($t);
+		$file = rtrim($file, '/');
+		$t = explode('/', $file);
+		return array_pop($t);
 	}
 
 	/**
@@ -1455,7 +1472,7 @@ class OC_Util {
 	 * @deprecated use \OC\Files\View::verifyPath()
 	 */
 	public static function isValidFileName($file) {
-		$trimmed = \trim($file);
+		$trimmed = trim($file);
 		if ($trimmed === '') {
 			return false;
 		}
@@ -1464,12 +1481,12 @@ class OC_Util {
 		}
 
 		// detect part files
-		if (\preg_match('/' . \OCP\Files\FileInfo::BLACKLIST_FILES_REGEX . '/', $trimmed) !== 0) {
+		if (preg_match('/' . \OCP\Files\FileInfo::BLACKLIST_FILES_REGEX . '/', $trimmed) !== 0) {
 			return false;
 		}
 
-		foreach (\str_split($trimmed) as $char) {
-			if (\strpos(\OCP\Constants::FILENAME_INVALID_CHARS, $char) !== false) {
+		foreach (str_split($trimmed) as $char) {
+			if (strpos(\OCP\Constants::FILENAME_INVALID_CHARS, $char) !== false) {
 				return false;
 			}
 		}
@@ -1488,15 +1505,15 @@ class OC_Util {
 	public static function needUpgrade(\OCP\IConfig $config) {
 		if ($config->getSystemValue('installed', false)) {
 			$installedVersion = $config->getSystemValue('version', '0.0.0');
-			$currentVersion = \implode('.', \OCP\Util::getVersion());
-			$versionDiff = \version_compare($currentVersion, $installedVersion);
+			$currentVersion = implode('.', \OCP\Util::getVersion());
+			$versionDiff = version_compare($currentVersion, $installedVersion);
 			if ($versionDiff > 0) {
 				return true;
 			} elseif ($config->getSystemValue('debug', false) && $versionDiff < 0) {
 				// downgrade with debug
-				$installedMajor = \explode('.', $installedVersion);
+				$installedMajor = explode('.', $installedVersion);
 				$installedMajor = $installedMajor[0] . '.' . $installedMajor[1];
-				$currentMajor = \explode('.', $currentVersion);
+				$currentMajor = explode('.', $currentVersion);
 				$currentMajor = $currentMajor[0] . '.' . $currentMajor[1];
 				if ($installedMajor === $currentMajor) {
 					// Same major, allow downgrade for developers

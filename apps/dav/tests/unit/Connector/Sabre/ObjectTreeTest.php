@@ -259,7 +259,7 @@ class ObjectTreeTest extends TestCase {
 		$view->expects($this->once())
 			->method('resolvePath')
 			->will($this->returnCallback(function ($path) use ($storage) {
-				return [$storage, \ltrim($path, '/')];
+				return [$storage, ltrim($path, '/')];
 			}));
 
 		$rootNode = $this->getMockBuilder(Directory::class)
@@ -282,7 +282,7 @@ class ObjectTreeTest extends TestCase {
 		$view->expects($this->any())
 			->method('resolvePath')
 			->will($this->returnCallback(function ($path) use ($storage) {
-				return [$storage, \ltrim($path, '/')];
+				return [$storage, ltrim($path, '/')];
 			}));
 
 		$rootNode = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Directory')

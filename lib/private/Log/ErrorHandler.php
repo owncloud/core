@@ -36,21 +36,21 @@ class ErrorHandler {
 	 * @return string
 	 */
 	protected static function removePassword($msg) {
-		return \preg_replace('/\/\/(.*):(.*)@/', '//xxx:xxx@', $msg);
+		return preg_replace('/\/\/(.*):(.*)@/', '//xxx:xxx@', $msg);
 	}
 
 	public static function register($debug=false) {
 		$handler = new ErrorHandler();
 
 		if ($debug) {
-			\set_error_handler([$handler, 'onAll'], E_ALL);
+			set_error_handler([$handler, 'onAll'], E_ALL);
 			if (\OC::$CLI) {
-				\set_exception_handler(['OC_Template', 'printExceptionErrorPage']);
+				set_exception_handler(['OC_Template', 'printExceptionErrorPage']);
 			}
 		} else {
-			\set_error_handler([$handler, 'onError']);
+			set_error_handler([$handler, 'onError']);
 		}
-		\set_exception_handler([$handler, 'onException']);
+		set_exception_handler([$handler, 'onException']);
 	}
 
 	public static function setLogger(ILogger $logger) {
@@ -71,7 +71,7 @@ class ErrorHandler {
 
 	//Recoverable errors handler
 	public static function onError($number, $message, $file, $line) {
-		if (\error_reporting() === 0) {
+		if (error_reporting() === 0) {
 			return;
 		}
 		$msg = $message . ' at ' . $file . '#' . $line;

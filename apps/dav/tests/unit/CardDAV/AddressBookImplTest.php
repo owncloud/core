@@ -75,13 +75,17 @@ class AddressBookImplTest extends TestCase {
 	}
 
 	public function testGetKey() {
-		$this->assertSame($this->addressBookInfo['id'],
-			$this->addressBookImpl->getKey());
+		$this->assertSame(
+			$this->addressBookInfo['id'],
+			$this->addressBookImpl->getKey()
+		);
 	}
 
 	public function testGetDisplayName() {
-		$this->assertSame($this->addressBookInfo['{DAV:}displayname'],
-			$this->addressBookImpl->getDisplayName());
+		$this->assertSame(
+			$this->addressBookInfo['{DAV:}displayname'],
+			$this->addressBookImpl->getDisplayName()
+		);
 	}
 
 	public function testSearch() {
@@ -212,7 +216,8 @@ class AddressBookImplTest extends TestCase {
 		$this->addressBook->expects($this->once())->method('getACL')
 			->willReturn($permissions);
 
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->addressBookImpl->getPermissions()
 		);
 	}
@@ -279,7 +284,8 @@ class AddressBookImplTest extends TestCase {
 				}
 			);
 
-		$this->assertSame('uid1',
+		$this->assertSame(
+			'uid1',
 			$this->invokePrivate($addressBookImpl, 'createUid', [])
 		);
 	}

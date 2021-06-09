@@ -109,7 +109,9 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @param array $parameters
 	 */
 	public function __construct(
-		Session $session, Factory $factory, array $parameters = []
+		Session $session,
+		Factory $factory,
+		array $parameters = []
 	) {
 		parent::__construct($session, $factory, $parameters);
 		$this->filesPageCRUDFunctions = $this->getPage("FilesPageCRUD");
@@ -205,11 +207,14 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @throws ElementNotFoundException|\Exception
 	 */
 	public function createFolder(
-		Session $session, $name = null,
+		Session $session,
+		$name = null,
 		$timeoutMsec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		return $this->filesPageCRUDFunctions->createFolder(
-			$session, $name, $timeoutMsec
+			$session,
+			$name,
+			$timeoutMsec
 		);
 	}
 
@@ -230,7 +235,10 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		$this->filesPageCRUDFunctions->renameFile(
-			$fromFileName, $toFileName, $session, $maxRetries
+			$fromFileName,
+			$toFileName,
+			$session,
+			$maxRetries
 		);
 	}
 
@@ -245,10 +253,16 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @return void
 	 */
 	public function moveFileTo(
-		$name, $destination, Session $session, $maxRetries = STANDARD_RETRY_COUNT
+		$name,
+		$destination,
+		Session $session,
+		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		$this->filesPageCRUDFunctions->moveFileTo(
-			$name, $destination, $session, $maxRetries
+			$name,
+			$destination,
+			$session,
+			$maxRetries
 		);
 	}
 
@@ -354,8 +368,8 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @return void
 	 */
 	public function openPublicShareAuthenticateUrl($createdPublicLinks, $baseUrl) {
-		$lastCreatedLink = \end($createdPublicLinks);
-		$path = \str_replace(
+		$lastCreatedLink = end($createdPublicLinks);
+		$path = str_replace(
 			$baseUrl,
 			"",
 			$lastCreatedLink['url']
@@ -409,15 +423,17 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		$timeout_msec = LONG_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$this->initAjaxCounters($session);
-		$currentTime = \microtime(true);
+		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			$fileList = $this->find('xpath', $this->getFileListXpath());
 			$downloadButton = $this->find(
-				"xpath", $this->DownloadBtnXpath
+				"xpath",
+				$this->DownloadBtnXpath
 			);
 			$uploadForm = $this->find(
-				"xpath", $this->uploadFormXpath
+				"xpath",
+				$this->uploadFormXpath
 			);
 			if ($fileList !== null) {
 				try {
@@ -426,7 +442,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 					// Somehow on Edge this can throw NoSuchElement even though
 					// we just found the file list.
 					// TODO: Edge - if it keeps happening then find out why.
-					\error_log(
+					error_log(
 						__METHOD__
 						. " NoSuchElement while doing fileList->isVisible()"
 						. "\n-------------------------\n"
@@ -438,7 +454,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 					// Somehow on Edge this can throw StaleElementReference
 					// even though we just found the file list.
 					// TODO: Edge - if it keeps happening then find out why.
-					\error_log(
+					error_log(
 						__METHOD__
 						. " StaleElementReference while doing fileList->isVisible()"
 						. "\n-------------------------\n"
@@ -470,8 +486,8 @@ class PublicLinkFilesPage extends FilesPageBasic {
 				break;
 			}
 
-			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
-			$currentTime = \microtime(true);
+			usleep(STANDARD_SLEEP_TIME_MICROSEC);
+			$currentTime = microtime(true);
 		}
 
 		if ($currentTime > $end) {
@@ -499,7 +515,10 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		$this->filesPageCRUDFunctions->deleteFile(
-			$name, $session, $expectToDeleteFile, $maxRetries
+			$name,
+			$session,
+			$expectToDeleteFile,
+			$maxRetries
 		);
 	}
 
@@ -550,7 +569,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		$elements = $this->findAll("xpath", $this->uploadedElementsXpath);
 		$uploadedElements = [];
 		foreach ($elements as $element) {
-			\array_push($uploadedElements, $element->getText());
+			array_push($uploadedElements, $element->getText());
 		}
 		return $uploadedElements;
 	}

@@ -87,7 +87,7 @@ class Helper extends \OC\Share\Constants {
 		$changeParent = [];
 		$parents = [$parent];
 		while (!empty($parents)) {
-			$parents = "'".\implode("','", $parents)."'";
+			$parents = "'".implode("','", $parents)."'";
 			// Check the owner on the first search of reshares, useful for
 			// finding and deleting the reshares by a single user of a group share
 			$params = [];
@@ -139,13 +139,13 @@ class Helper extends \OC\Share\Constants {
 		}
 
 		if (!empty($changeParent)) {
-			$idList = "'".\implode("','", $changeParent)."'";
+			$idList = "'".implode("','", $changeParent)."'";
 			$query = \OC_DB::prepare('UPDATE `*PREFIX*share` SET `parent` = ? WHERE `id` IN ('.$idList.')');
 			$query->execute([$newParent]);
 		}
 
 		if (!empty($ids)) {
-			$idList = "'".\implode("','", $ids)."'";
+			$idList = "'".implode("','", $ids)."'";
 			$query = \OC_DB::prepare('DELETE FROM `*PREFIX*share` WHERE `id` IN ('.$idList.')');
 			$query->execute();
 		}
@@ -176,7 +176,7 @@ class Helper extends \OC\Share\Constants {
 
 	public static function calcExpireDate() {
 		$expireAfter = \OC\Share\Share::getExpireInterval() * 24 * 60 * 60;
-		$expireAt = \time() + $expireAfter;
+		$expireAt = time() + $expireAfter;
 		$date = new \DateTime();
 		$date->setTimestamp($expireAt);
 		$date->setTime(0, 0, 0);
@@ -204,7 +204,7 @@ class Helper extends \OC\Share\Constants {
 			// if the admin decided to enforce the default expire date then we only take
 			// the user defined expire date of it is before the default expire date
 			if ($defaultExpires && !empty($defaultExpireSettings['enforceExpireDate'])) {
-				$expires = \min($userExpireDate, $defaultExpires);
+				$expires = min($userExpireDate, $defaultExpires);
 			} else {
 				$expires = $userExpireDate;
 			}
@@ -228,11 +228,11 @@ class Helper extends \OC\Share\Constants {
 	 * @return string
 	 */
 	protected static function fixRemoteURL($remote) {
-		$remote = \str_replace('\\', '/', $remote);
-		if ($fileNamePosition = \strpos($remote, '/index.php')) {
-			$remote = \substr($remote, 0, $fileNamePosition);
+		$remote = str_replace('\\', '/', $remote);
+		if ($fileNamePosition = strpos($remote, '/index.php')) {
+			$remote = substr($remote, 0, $fileNamePosition);
 		}
-		$remote = \rtrim($remote, '/');
+		$remote = rtrim($remote, '/');
 
 		return $remote;
 	}
@@ -245,16 +245,16 @@ class Helper extends \OC\Share\Constants {
 	 * @throws HintException
 	 */
 	public static function splitUserRemote($id) {
-		if (\strpos($id, '@') === false) {
+		if (strpos($id, '@') === false) {
 			$l = \OC::$server->getL10N('lib');
 			$hint = $l->t('Invalid Federated Cloud ID');
 			throw new HintException('Invalid Federated Cloud ID', $hint);
 		}
 
 		// Find the first character that is not allowed in user names
-		$id = \str_replace('\\', '/', $id);
-		$posSlash = \strpos($id, '/');
-		$posColon = \strpos($id, ':');
+		$id = str_replace('\\', '/', $id);
+		$posSlash = strpos($id, '/');
+		$posColon = strpos($id, ':');
 
 		if ($posSlash === false && $posColon === false) {
 			$invalidPos = \strlen($id);
@@ -263,19 +263,19 @@ class Helper extends \OC\Share\Constants {
 		} elseif ($posColon === false) {
 			$invalidPos = $posSlash;
 		} else {
-			$invalidPos = \min($posSlash, $posColon);
+			$invalidPos = min($posSlash, $posColon);
 		}
 
 		// Find the last @ before $invalidPos
 		$pos = $lastAtPos = 0;
 		while ($lastAtPos !== false && $lastAtPos <= $invalidPos) {
 			$pos = $lastAtPos;
-			$lastAtPos = \strpos($id, '@', $pos + 1);
+			$lastAtPos = strpos($id, '@', $pos + 1);
 		}
 
 		if ($pos !== false) {
-			$user = \substr($id, 0, $pos);
-			$remote = \substr($id, $pos + 1);
+			$user = substr($id, 0, $pos);
+			$remote = substr($id, $pos + 1);
 			$remote = self::fixRemoteURL($remote);
 			if (!empty($user) && !empty($remote)) {
 				return [$user, $remote];
@@ -297,20 +297,20 @@ class Helper extends \OC\Share\Constants {
 	 * @return bool true if both users and servers are the same
 	 */
 	public static function isSameUserOnSameServer($user1, $server1, $user2, $server2) {
-		$normalizedServer1 = \strtolower(\OC\Share\Share::removeProtocolFromUrl($server1));
-		$normalizedServer2 = \strtolower(\OC\Share\Share::removeProtocolFromUrl($server2));
+		$normalizedServer1 = strtolower(\OC\Share\Share::removeProtocolFromUrl($server1));
+		$normalizedServer2 = strtolower(\OC\Share\Share::removeProtocolFromUrl($server2));
 
-		if (\rtrim($normalizedServer1, '/') === \rtrim($normalizedServer2, '/')) {
+		if (rtrim($normalizedServer1, '/') === rtrim($normalizedServer2, '/')) {
 			// FIXME this should be a method in the user management instead
 			\OCP\Util::emitHook(
-					'\OCA\Files_Sharing\API\Server2Server',
-					'preLoginNameUsedAsUserName',
-					['uid' => &$user1]
+				'\OCA\Files_Sharing\API\Server2Server',
+				'preLoginNameUsedAsUserName',
+				['uid' => &$user1]
 			);
 			\OCP\Util::emitHook(
-					'\OCA\Files_Sharing\API\Server2Server',
-					'preLoginNameUsedAsUserName',
-					['uid' => &$user2]
+				'\OCA\Files_Sharing\API\Server2Server',
+				'preLoginNameUsedAsUserName',
+				['uid' => &$user2]
 			);
 
 			if ($user1 === $user2) {

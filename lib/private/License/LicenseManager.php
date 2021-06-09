@@ -209,7 +209,7 @@ class LicenseManager implements ILicenseManager {
 				'licenseState' => $info[1],
 				'licenseType' => $info[0]->getType(),
 				// daysLeft won't be accurate if the license isn't valid, but it's ok.
-				'daysLeft' => \ceil(($info[0]->getExpirationTime() - $this->timeFactory->getTime()) / 86400),
+				'daysLeft' => ceil(($info[0]->getExpirationTime() - $this->timeFactory->getTime()) / 86400),
 			];
 		}
 
@@ -236,11 +236,11 @@ class LicenseManager implements ILicenseManager {
 		}
 
 		// function names are case-insensitive...
-		$lowerCaseMethods = \array_map(function ($value) {
-			return \strtolower($value);
+		$lowerCaseMethods = array_map(function ($value) {
+			return strtolower($value);
 		}, $licenseObj->getProtectedMethods());
 
-		if (\in_array(\strtolower($method), $lowerCaseMethods, true)) {
+		if (\in_array(strtolower($method), $lowerCaseMethods, true)) {
 			throw new LicenseManagerException("License doesn't allow method $method to be called", 3);
 		}
 

@@ -150,7 +150,7 @@ class MoveAvatarOutsideHome implements IRepairStep {
 		$ocVersionFromBeforeUpdate = $this->config->getSystemValue('version', '0.0.0');
 		$avatarMigrationStatus = $this->config->getAppValue('core', 'avatar_migration_completed', 'false');
 		if (($avatarMigrationStatus === 'false') &&
-			\version_compare($ocVersionFromBeforeUpdate, '9.2.0.2', '<')) {
+			version_compare($ocVersionFromBeforeUpdate, '9.2.0.2', '<')) {
 			$function = function (IUser $user) use ($output) {
 				$this->moveAvatars($output, $user);
 				$output->advance();

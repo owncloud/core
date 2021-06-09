@@ -110,7 +110,7 @@ abstract class StoragesServiceTest extends TestCase {
 			}));
 		$this->backendService->method('getAuthMechanismsByScheme')
 			->will($this->returnCallback(function ($schemes) use ($authMechanisms) {
-				return \array_filter($authMechanisms, function ($authMech) use ($schemes) {
+				return array_filter($authMechanisms, function ($authMech) use ($schemes) {
 					return \in_array($authMech->getScheme(), $schemes, true);
 				});
 			}));
@@ -141,11 +141,15 @@ abstract class StoragesServiceTest extends TestCase {
 		\OCP\Util::connectHook(
 			Filesystem::CLASSNAME,
 			Filesystem::signal_create_mount,
-			\get_class($this), 'createHookCallback');
+			\get_class($this),
+			'createHookCallback'
+		);
 		\OCP\Util::connectHook(
 			Filesystem::CLASSNAME,
 			Filesystem::signal_delete_mount,
-			\get_class($this), 'deleteHookCallback');
+			\get_class($this),
+			'deleteHookCallback'
+		);
 
 		$containerMock = $this->createMock('\OCP\AppFramework\IAppContainer');
 		$containerMock->method('query')
@@ -162,7 +166,7 @@ abstract class StoragesServiceTest extends TestCase {
 			}));
 		$this->crypto->method('decrypt')
 			->will($this->returnCallback(function ($value) {
-				$expectedDecrypt = \trim($value, '-');
+				$expectedDecrypt = trim($value, '-');
 				if ($value === "-$expectedDecrypt-") {
 					return $expectedDecrypt;
 				} else {

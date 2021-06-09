@@ -33,7 +33,7 @@ use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 
 class Plugin extends ServerPlugin {
-	const NS_OWNCLOUD = 'http://owncloud.org/ns';
+	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
 
 	/** @var Auth */
 	private $auth;
@@ -115,7 +115,7 @@ class Plugin extends ServerPlugin {
 
 		// Only handling xml
 		$contentType = $request->getHeader('Content-Type');
-		if (\strpos($contentType, 'application/xml') === false && \strpos($contentType, 'text/xml') === false) {
+		if (strpos($contentType, 'application/xml') === false && strpos($contentType, 'text/xml') === false) {
 			return;
 		}
 

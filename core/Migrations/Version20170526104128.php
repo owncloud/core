@@ -52,6 +52,6 @@ class Version20170526104128 implements ISchemaMigration {
 	 * @return string the shortened string ready for the new db column
 	 */
 	public function trimTerm($longTerm) {
-		return (string) \substr($longTerm, 0, 191);
+		return (string) substr($longTerm, 0, 191);
 	}
 }

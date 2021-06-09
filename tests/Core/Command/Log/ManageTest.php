@@ -115,7 +115,8 @@ class ManageTest extends TestCase {
 	 * @dataProvider convertLevelStringProvider
 	 */
 	public function testConvertLevelString($levelString, $expectedInt) {
-		$this->assertEquals($expectedInt,
+		$this->assertEquals(
+			$expectedInt,
 			self::invokePrivate($this->command, 'convertLevelString', [$levelString])
 		);
 	}
@@ -141,7 +142,8 @@ class ManageTest extends TestCase {
 	 * @dataProvider convertLevelNumberProvider
 	 */
 	public function testConvertLevelNumber($levelNum, $expectedString) {
-		$this->assertEquals($expectedString,
+		$this->assertEquals(
+			$expectedString,
 			self::invokePrivate($this->command, 'convertLevelNumber', [$levelNum])
 		);
 	}

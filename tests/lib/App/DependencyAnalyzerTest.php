@@ -64,7 +64,7 @@ class DependencyAnalyzerTest extends TestCase {
 		$this->l10nMock->expects($this->any())
 			->method('t')
 			->will($this->returnCallback(function ($text, $parameters = []) {
-				return \vsprintf($text, $parameters);
+				return vsprintf($text, $parameters);
 			}));
 
 		$this->analyser = new DependencyAnalyzer($this->platformMock, $this->l10nMock);

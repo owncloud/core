@@ -88,14 +88,14 @@ class MetaFileIdNode extends AbstractFolder {
 	 * @inheritdoc
 	 */
 	public function get($path) {
-		$pieces = \explode('/', $path);
+		$pieces = explode('/', $path);
 		if ($pieces[0] === 'v') {
-			\array_shift($pieces);
+			array_shift($pieces);
 			$node = new MetaVersionCollection($this->root, $this->node);
 			if (empty($pieces)) {
 				return $node;
 			}
-			return $node->get(\implode('/', $pieces));
+			return $node->get(implode('/', $pieces));
 		}
 		throw new NotFoundException();
 	}

@@ -178,7 +178,7 @@ class NavigationManagerTest extends TestCase {
 		$systemConfig = $this->createMock(IConfig::class);
 		$l = $this->createMock(IL10N::class);
 		$l->method('t')->willReturnCallback(static function ($text, $parameters = []) {
-			return \vsprintf($text, $parameters);
+			return vsprintf($text, $parameters);
 		});
 
 		$appManager->expects($this->once())->method('getInstalledApps')->willReturn(['test']);

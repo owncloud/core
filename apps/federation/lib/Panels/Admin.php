@@ -50,14 +50,16 @@ class Admin implements ISettings {
 	/** @var EventDispatcherInterface */
 	protected $eventDispatcher;
 
-	public function __construct(IDBConnection $connection,
-								IL10N $l,
-								IClientService $clientService,
-								ILogger $logger,
-								IJobList $jobList,
-								ISecureRandom $secureRandom,
-								IConfig $config,
-								EventDispatcherInterface $eventDispatcher) {
+	public function __construct(
+		IDBConnection $connection,
+		IL10N $l,
+		IClientService $clientService,
+		ILogger $logger,
+		IJobList $jobList,
+		ISecureRandom $secureRandom,
+		IConfig $config,
+		EventDispatcherInterface $eventDispatcher
+	) {
 		$this->connection = $connection;
 		$this->l = $l;
 		$this->clientService = $clientService;

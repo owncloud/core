@@ -55,9 +55,10 @@ class EncryptionWrapper {
 	 * @param Manager $manager
 	 * @param ILogger $logger
 	 */
-	public function __construct(ArrayCache $arrayCache,
-								Manager $manager,
-								ILogger $logger
+	public function __construct(
+		ArrayCache $arrayCache,
+		Manager $manager,
+		ILogger $logger
 	) {
 		$this->arrayCache = $arrayCache;
 		$this->manager = $manager;

@@ -181,7 +181,8 @@ class ManagerTest extends TestCase {
 			[
 				' and ((`app` = ? and `message` like ?) or (`app` = ? and `message` like ?))',
 				['mail', 'ownCloud%', 'mail', 'ownCloud%']
-			], $result
+			],
+			$result
 		);
 
 		$result = $this->activityManager->getQueryForFilter('InvalidFilter');
@@ -353,8 +354,8 @@ class ManagerTest extends TestCase {
 			->method('receive')
 			->with($event)
 			->willReturnCallback(function (\OCP\Activity\IEvent $event) use ($author) {
-				$this->assertLessThanOrEqual(\time() + 2, $event->getTimestamp(), 'Timestamp not set correctly');
-				$this->assertGreaterThanOrEqual(\time() - 2, $event->getTimestamp(), 'Timestamp not set correctly');
+				$this->assertLessThanOrEqual(time() + 2, $event->getTimestamp(), 'Timestamp not set correctly');
+				$this->assertGreaterThanOrEqual(time() - 2, $event->getTimestamp(), 'Timestamp not set correctly');
 				$this->assertSame($author, $event->getAuthor(), 'Author name not set correctly');
 			});
 		$this->activityManager->registerConsumer(function () use ($consumer) {
@@ -434,8 +435,8 @@ class ManagerTest extends TestCase {
 				$this->assertSame('test_link', $event->getLink(), 'Link not set correctly');
 
 				// The following values can not be used via publishActivity()
-				$this->assertLessThanOrEqual(\time() + 2, $event->getTimestamp(), 'Timestamp not set correctly');
-				$this->assertGreaterThanOrEqual(\time() - 2, $event->getTimestamp(), 'Timestamp not set correctly');
+				$this->assertLessThanOrEqual(time() + 2, $event->getTimestamp(), 'Timestamp not set correctly');
+				$this->assertGreaterThanOrEqual(time() - 2, $event->getTimestamp(), 'Timestamp not set correctly');
 				$this->assertNull($event->getAuthor(), 'Author not set correctly');
 				$this->assertSame('', $event->getObjectType(), 'Object type should not be set');
 				$this->assertSame(0, $event->getObjectId(), 'Object ID should not be set');
@@ -446,8 +447,10 @@ class ManagerTest extends TestCase {
 
 		$this->activityManager->publishActivity(
 			$event->getApp(),
-			$event->getSubject(), $event->getSubjectParameters(),
-			$event->getMessage(), $event->getMessageParameters(),
+			$event->getSubject(),
+			$event->getSubjectParameters(),
+			$event->getMessage(),
+			$event->getMessageParameters(),
 			$event->getObjectName(),
 			$event->getLink(),
 			$event->getAffectedUser(),

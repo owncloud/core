@@ -45,11 +45,11 @@ use OCP\Lock\ILockingProvider;
  *
  */
 class OC_Files {
-	const FILE = 1;
-	const ZIP_FILES = 2;
-	const ZIP_DIR = 3;
+	public const FILE = 1;
+	public const ZIP_FILES = 2;
+	public const ZIP_DIR = 3;
 
-	const UPLOAD_MIN_LIMIT_BYTES = 1048576; // 1 MiB
+	public const UPLOAD_MIN_LIMIT_BYTES = 1048576; // 1 MiB
 
 	private static $multipartBoundary = '';
 
@@ -58,7 +58,7 @@ class OC_Files {
 	 */
 	private static function getBoundary() {
 		if (empty(self::$multipartBoundary)) {
-			self::$multipartBoundary = \md5(\mt_rand());
+			self::$multipartBoundary = md5(mt_rand());
 		}
 		return self::$multipartBoundary;
 	}
@@ -70,26 +70,26 @@ class OC_Files {
 	 */
 	private static function sendHeaders($filename, $name, array $rangeArray) {
 		OC_Response::setContentDispositionHeader($name, 'attachment');
-		\header('Content-Transfer-Encoding: binary', true);
+		header('Content-Transfer-Encoding: binary', true);
 		OC_Response::disableCaching();
 		$fileSize = \OC\Files\Filesystem::filesize($filename);
 		$type = \OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename));
 		if ($fileSize > -1) {
 			if (!empty($rangeArray)) {
-				\http_response_code(206);
-				\header('Accept-Ranges: bytes', true);
+				http_response_code(206);
+				header('Accept-Ranges: bytes', true);
 				if (\count($rangeArray) > 1) {
 					$type = 'multipart/byteranges; boundary='.self::getBoundary();
 				// no Content-Length header here
 				} else {
-					\header(\sprintf('Content-Range: bytes %d-%d/%d', $rangeArray[0]['from'], $rangeArray[0]['to'], $fileSize), true);
+					header(sprintf('Content-Range: bytes %d-%d/%d', $rangeArray[0]['from'], $rangeArray[0]['to'], $fileSize), true);
 					OC_Response::setContentLengthHeader($rangeArray[0]['to'] - $rangeArray[0]['from'] + 1);
 				}
 			} else {
 				OC_Response::setContentLengthHeader($fileSize);
 			}
 		}
-		\header('Content-Type: '.$type, true);
+		header('Content-Type: '.$type, true);
 	}
 
 	/**
@@ -141,10 +141,10 @@ class OC_Files {
 				$filename = 'download';
 				// default filename. Could happen downloading the root folder
 			}
-			$streamer->sendHeaders(\basename($filename));
+			$streamer->sendHeaders(basename($filename));
 			$executionTime = \intval(OC::$server->getIniWrapper()->getNumeric('max_execution_time'));
-			\set_time_limit(0);
-			\ignore_user_abort(true);
+			set_time_limit(0);
+			ignore_user_abort(true);
 			if ($getType === self::ZIP_FILES) {
 				foreach ($listOfFiles as $file) {
 					$file = "{$dir}/{$file}";
@@ -154,8 +154,8 @@ class OC_Files {
 							'timestamp' => \OC\Files\Filesystem::filemtime($file),
 						];
 						$fh = \OC\Files\Filesystem::fopen($file, 'r');
-						$streamer->addFileFromStream($fh, \basename($file), $fileSize, $fileOpts);
-						\fclose($fh);
+						$streamer->addFileFromStream($fh, basename($file), $fileSize, $fileOpts);
+						fclose($fh);
 					} elseif (\OC\Files\Filesystem::is_dir($file)) {
 						$streamer->addDirRecursive($file);
 					}
@@ -165,7 +165,7 @@ class OC_Files {
 				$streamer->addDirRecursive($file);
 			}
 			$streamer->finalize();
-			\set_time_limit($executionTime);
+			set_time_limit($executionTime);
 			self::unlockFiles($view, $dir, $listOfFiles);
 			$event = new \Symfony\Component\EventDispatcher\GenericEvent(null, ['result' => 'success', 'dir' => $dir, 'files' => $files]);
 			OC::$server->getEventDispatcher()->dispatch($event, 'file.afterCreateZip');
@@ -174,7 +174,7 @@ class OC_Files {
 			OC::$server->getLogger()->logException($ex);
 			$l = \OC::$server->getL10N('lib');
 			/* @phan-suppress-next-line PhanUndeclaredMethod */
-			$hint = \method_exists($ex, 'getHint') ? $ex->getHint() : '';
+			$hint = method_exists($ex, 'getHint') ? $ex->getHint() : '';
 			\OC_Template::printErrorPage($l->t('File is currently busy, please try again later'), $hint);
 		} catch (\OCP\Files\ForbiddenException $ex) {
 			self::unlockFiles($view, $dir, $listOfFiles);
@@ -186,14 +186,14 @@ class OC_Files {
 			\OC_Template::printErrorPage('Access denied', $ex->getMessage(), 403);
 		} catch (\Exception $ex) {
 			self::unlockFiles($view, $dir, $listOfFiles);
-			if (\connection_status() !== 0) {
+			if (connection_status() !== 0) {
 				// assume the client closed the connection
 				OC::$server->getLogger()->debug($ex->getMessage());
 			} else {
 				OC::$server->getLogger()->logException($ex);
 				$l = \OC::$server->getL10N('lib');
 				/* @phan-suppress-next-line PhanUndeclaredMethod */
-				$hint = \method_exists($ex, 'getHint') ? $ex->getHint() : '';
+				$hint = method_exists($ex, 'getHint') ? $ex->getHint() : '';
 				\OC_Template::printErrorPage($l->t('File cannot be downloaded'), $hint);
 			}
 		}
@@ -205,15 +205,15 @@ class OC_Files {
 	 * @return array $rangeArray ('from'=>int,'to'=>int), ...
 	 */
 	private static function parseHttpRangeHeader($rangeHeaderPos, $fileSize) {
-		$rArray=\explode(',', $rangeHeaderPos);
+		$rArray=explode(',', $rangeHeaderPos);
 		$minOffset = 0;
 		$ind = 0;
 
 		$rangeArray = [];
 
 		foreach ($rArray as $value) {
-			$ranges = \explode('-', $value);
-			if (\is_numeric($ranges[0])) {
+			$ranges = explode('-', $value);
+			if (is_numeric($ranges[0])) {
 				if ($ranges[0] < $minOffset) { // case: bytes=500-700,601-999
 					$ranges[0] = $minOffset;
 				}
@@ -223,7 +223,7 @@ class OC_Files {
 				}
 			}
 
-			if (\is_numeric($ranges[0]) && \is_numeric($ranges[1]) && $ranges[0] < $fileSize && $ranges[0] <= $ranges[1]) {
+			if (is_numeric($ranges[0]) && is_numeric($ranges[1]) && $ranges[0] < $fileSize && $ranges[0] <= $ranges[1]) {
 				// case: x-x
 				if ($ranges[1] >= $fileSize) {
 					$ranges[1] = $fileSize-1;
@@ -233,11 +233,11 @@ class OC_Files {
 				if ($minOffset >= $fileSize) {
 					break;
 				}
-			} elseif (\is_numeric($ranges[0]) && $ranges[0] < $fileSize) {
+			} elseif (is_numeric($ranges[0]) && $ranges[0] < $fileSize) {
 				// case: x-
 				$rangeArray[$ind++] = ['from' => $ranges[0], 'to' => $fileSize-1, 'size' => $fileSize];
 				break;
-			} elseif (\is_numeric($ranges[1])) {
+			} elseif (is_numeric($ranges[1])) {
 				// case: -x
 				if ($ranges[1] > $fileSize) {
 					$ranges[1] = $fileSize;
@@ -262,9 +262,11 @@ class OC_Files {
 
 		$rangeArray = [];
 
-		if (isset($params['range']) && \substr($params['range'], 0, 6) === 'bytes=') {
-			$rangeArray = self::parseHttpRangeHeader(\substr($params['range'], 6),
-								 \OC\Files\Filesystem::filesize($filename));
+		if (isset($params['range']) && substr($params['range'], 0, 6) === 'bytes=') {
+			$rangeArray = self::parseHttpRangeHeader(
+				substr($params['range'], 6),
+				\OC\Files\Filesystem::filesize($filename)
+			);
 		}
 
 		$event = new \Symfony\Component\EventDispatcher\GenericEvent(null, ['path' => $filename]);
@@ -279,7 +281,7 @@ class OC_Files {
 			}
 		} elseif (!\OC\Files\Filesystem::file_exists($filename)) {
 			$view->unlockFile($filename, ILockingProvider::LOCK_SHARED);
-			\http_response_code(404);
+			http_response_code(404);
 			$tmpl = new OC_Template('', '404', 'guest');
 			$tmpl->printPage();
 			exit();
@@ -315,9 +317,9 @@ class OC_Files {
 				}
 			} catch (\OCP\Files\UnseekableException $ex) {
 				// file is unseekable
-				\header_remove('Accept-Ranges');
-				\header_remove('Content-Range');
-				\http_response_code(200);
+				header_remove('Accept-Ranges');
+				header_remove('Content-Range');
+				http_response_code(200);
 				self::sendHeaders($filename, $name, []);
 				$view->readfile($filename);
 			}
@@ -338,7 +340,7 @@ class OC_Files {
 			$view->lockFile($filePath, ILockingProvider::LOCK_SHARED);
 			if ($view->is_dir($filePath)) {
 				$contents = $view->getDirectoryContent($filePath);
-				$contents = \array_map(function ($fileInfo) use ($file) {
+				$contents = array_map(function ($fileInfo) use ($file) {
 					/** @var \OCP\Files\FileInfo $fileInfo */
 					return "{$file}/" . $fileInfo->getName();
 				}, $contents);
@@ -360,7 +362,7 @@ class OC_Files {
 			$view->unlockFile($filePath, ILockingProvider::LOCK_SHARED);
 			if ($view->is_dir($filePath)) {
 				$contents = $view->getDirectoryContent($filePath);
-				$contents = \array_map(function ($fileInfo) use ($file) {
+				$contents = array_map(function ($fileInfo) use ($file) {
 					/** @var \OCP\Files\FileInfo $fileInfo */
 					return "{$file}/" . $fileInfo->getName();
 				}, $contents);

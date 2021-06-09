@@ -127,7 +127,7 @@ class SettingsManagerTest extends TestCase {
 		$this->appManager->expects($this->exactly(2))->method('getAppInfo')->with('encryption')->willReturn($settingsInfo);
 		$panels = $this->invokePrivate($this->settingsManager, 'findRegisteredPanels', ['personal']);
 		$this->assertCount(1, $panels);
-		$this->assertEquals('OCA\Encryption\TestPanel', \array_shift($panels));
+		$this->assertEquals('OCA\Encryption\TestPanel', array_shift($panels));
 	}
 
 	public function testFindRegisteredPanelsPersonalMultiple() {

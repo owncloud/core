@@ -63,7 +63,7 @@ class ZIP extends Archive {
 	 * @return bool
 	 */
 	public function addFile($path, $source='') {
-		if ($source and $source[0]=='/' and \file_exists($source)) {
+		if ($source and $source[0]=='/' and file_exists($source)) {
 			$result=$this->zip->addFile($source, $path);
 		} else {
 			$result=$this->zip->addFromString($path, $source);
@@ -100,7 +100,7 @@ class ZIP extends Archive {
 	 * @return int
 	 */
 	public function mtime($path) {
-		return \filemtime($this->path);
+		return filemtime($this->path);
 	}
 	/**
 	 * get the files in a folder
@@ -112,9 +112,9 @@ class ZIP extends Archive {
 		$folderContent= [];
 		$pathLength=\strlen($path);
 		foreach ($files as $file) {
-			if (\substr($file, 0, $pathLength)==$path and $file!=$path) {
-				if (\strrpos(\substr($file, 0, -1), '/')<=$pathLength) {
-					$folderContent[]=\substr($file, $pathLength);
+			if (substr($file, 0, $pathLength)==$path and $file!=$path) {
+				if (strrpos(substr($file, 0, -1), '/')<=$pathLength) {
+					$folderContent[]=substr($file, $pathLength);
 				}
 			}
 		}
@@ -151,7 +151,7 @@ class ZIP extends Archive {
 	 */
 	public function extractFile($path, $dest) {
 		$fp = $this->zip->getStream($path);
-		\file_put_contents($dest, $fp);
+		file_put_contents($dest, $fp);
 	}
 	/**
 	 * extract the archive
@@ -194,8 +194,8 @@ class ZIP extends Archive {
 			//since we can't directly get a writable stream,
 			//make a temp copy of the file and put it back
 			//in the archive when the stream is closed
-			if (\strrpos($path, '.')!==false) {
-				$ext=\substr($path, \strrpos($path, '.'));
+			if (strrpos($path, '.')!==false) {
+				$ext=substr($path, strrpos($path, '.'));
 			} else {
 				$ext='';
 			}
@@ -205,7 +205,7 @@ class ZIP extends Archive {
 				$this->extractFile($path, $tmpFile);
 			}
 			self::$tempFiles[$tmpFile]=$path;
-			return \fopen('close://'.$tmpFile, $mode);
+			return fopen('close://'.$tmpFile, $mode);
 		}
 	}
 
@@ -216,7 +216,7 @@ class ZIP extends Archive {
 	public function writeBack($tmpFile) {
 		if (isset(self::$tempFiles[$tmpFile])) {
 			$this->addFile(self::$tempFiles[$tmpFile], $tmpFile);
-			\unlink($tmpFile);
+			unlink($tmpFile);
 		}
 	}
 
@@ -226,7 +226,7 @@ class ZIP extends Archive {
 	 */
 	private function stripPath($path) {
 		if (!$path || $path[0]=='/') {
-			return \substr($path, 1);
+			return substr($path, 1);
 		} else {
 			return $path;
 		}

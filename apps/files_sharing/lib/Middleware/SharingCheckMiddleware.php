@@ -54,11 +54,12 @@ class SharingCheckMiddleware extends Middleware {
 	 * @param IConfig $config
 	 * @param IAppManager $appManager
 	 */
-	public function __construct($appName,
-								IConfig $config,
-								IAppManager $appManager,
-								IControllerMethodReflector $reflector
-								) {
+	public function __construct(
+		$appName,
+		IConfig $config,
+		IAppManager $appManager,
+		IControllerMethodReflector $reflector
+	) {
 		$this->appName = $appName;
 		$this->config = $config;
 		$this->appManager = $appManager;
@@ -96,11 +97,11 @@ class SharingCheckMiddleware extends Middleware {
 	 * @throws \Exception
 	 */
 	public function afterException($controller, $methodName, \Exception $exception) {
-		if (\is_a($exception, '\OCP\Files\NotFoundException')) {
+		if (is_a($exception, '\OCP\Files\NotFoundException')) {
 			return new NotFoundResponse();
 		}
 
-		if (\is_a($exception, '\OCA\Files_Sharing\Exceptions\S2SException')) {
+		if (is_a($exception, '\OCA\Files_Sharing\Exceptions\S2SException')) {
 			return new JSONResponse($exception->getMessage(), 405);
 		}
 

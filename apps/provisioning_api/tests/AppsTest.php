@@ -97,7 +97,7 @@ class AppsTest extends TestCase {
 		foreach ($apps as $app) {
 			$list[] = $app['id'];
 		}
-		$disabled = \array_diff($list, \OC_App::getEnabledApps());
+		$disabled = array_diff($list, \OC_App::getEnabledApps());
 		$this->assertCount(\count($disabled), $data['apps']);
 	}
 

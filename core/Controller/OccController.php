@@ -62,8 +62,13 @@ class OccController extends Controller {
 	 * @param Application $console
 	 * @param ILogger $logger
 	 */
-	public function __construct($appName, IRequest $request,
-								IConfig $config, Application $console, ILogger $logger) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IConfig $config,
+		Application $console,
+		ILogger $logger
+	) {
 		parent::__construct($appName, $request);
 		$this->config = $config;
 		$this->console = $console;
@@ -102,7 +107,7 @@ class OccController extends Controller {
 			$this->console->setAutoExit(false);
 			$this->console->loadCommands(new ArrayInput([]), $output);
 
-			$inputArray = \array_merge(['command' => $command], $params);
+			$inputArray = array_merge(['command' => $command], $params);
 			$input = new ArrayInput($inputArray);
 
 			$exitCode = $this->console->run($input, $output);
@@ -137,7 +142,7 @@ class OccController extends Controller {
 	protected function validateRequest($command, $token) {
 		$allowedHosts = ['::1', '127.0.0.1', 'localhost'];
 		if (isset($this->request->server['SERVER_ADDR'])) {
-			\array_push($allowedHosts, $this->request->server['SERVER_ADDR']);
+			array_push($allowedHosts, $this->request->server['SERVER_ADDR']);
 		}
 
 		if (!\in_array($this->request->getRemoteAddress(), $allowedHosts)) {
@@ -145,7 +150,7 @@ class OccController extends Controller {
 		}
 
 		if (!\in_array($command, $this->allowedCommands)) {
-			throw new \UnexpectedValueException(\sprintf('Command "%s" is not allowed to run via web request', $command));
+			throw new \UnexpectedValueException(sprintf('Command "%s" is not allowed to run via web request', $command));
 		}
 
 		$coreToken = $this->config->getSystemValue('updater.secret', '');
@@ -155,7 +160,7 @@ class OccController extends Controller {
 			);
 		}
 
-		if (!\password_verify($token, $coreToken)) {
+		if (!password_verify($token, $coreToken)) {
 			throw new \UnexpectedValueException(
 				'updater.secret does not match the provided token'
 			);

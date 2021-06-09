@@ -105,7 +105,7 @@ class CalDavBackendTest extends AbstractCalDavBackendTest {
 			->expects($this->any())
 			->method('t')
 			->will($this->returnCallback(function ($text, $parameters = []) {
-				return \vsprintf($text, $parameters);
+				return vsprintf($text, $parameters);
 			}));
 
 		$calendarId = $this->createTestCalendar();
@@ -382,7 +382,7 @@ EOD;
 			'comp-filters' => $compFilter
 		]);
 
-		$expectedEventsInResult = \array_map(function ($index) use ($events) {
+		$expectedEventsInResult = array_map(function ($index) use ($events) {
 			return $events[$index];
 		}, $expectedEventsInResult);
 		$this->assertEqualsCanonicalizing($expectedEventsInResult, $result);
@@ -456,7 +456,7 @@ EOD;
 		$calendar->setPublishStatus(false);
 		$this->assertFalse($calendar->getPublishStatus());
 
-		$publicCalendarURI = \md5($this->config->getSystemValue('secret', '') . $calendar->getResourceId());
+		$publicCalendarURI = md5($this->config->getSystemValue('secret', '') . $calendar->getResourceId());
 		$this->expectException(NotFound::class);
 		$this->backend->getPublicCalendar($publicCalendarURI);
 	}
@@ -612,9 +612,9 @@ EOS;
 	 */
 	public function testHugeMultiGet() {
 		$calendarId = $this->createTestCalendar();
-		$urls = \array_map(function ($number) {
+		$urls = array_map(function ($number) {
 			return "url-$number";
-		}, \range(0, 2000));
+		}, range(0, 2000));
 		$calendarObjects = $this->backend->getMultipleCalendarObjects($calendarId, $urls);
 		$this->assertEquals([], $calendarObjects);
 	}

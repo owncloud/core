@@ -83,12 +83,12 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 			"could not find create new app password button (2)"
 		);
 
-		while (\strpos(
+		while (strpos(
 			$createNewAppPasswordButton->getAttribute("class"),
 			$this->createNewAppPasswordLoadingIndicatorClass
 		) !== false
 		) {
-			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
+			usleep(STANDARD_SLEEP_TIME_MICROSEC);
 		}
 	}
 
@@ -152,7 +152,8 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	) {
 		$this->waitForOutstandingAjaxCalls($session);
 		$this->waitTillXpathIsVisible(
-			$this->corsInputFieldXpath, $timeout_msec
+			$this->corsInputFieldXpath,
+			$timeout_msec
 		);
 	}
 }

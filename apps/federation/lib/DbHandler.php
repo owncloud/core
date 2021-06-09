@@ -67,7 +67,7 @@ class DbHandler {
 	 */
 	public function addServer($url) {
 		$hash = $this->hash($url);
-		$url = \rtrim($url, '/');
+		$url = rtrim($url, '/');
 		$query = $this->connection->getQueryBuilder();
 		$query->insert($this->dbTable)
 			->values(
@@ -272,7 +272,7 @@ class DbHandler {
 	 */
 	protected function hash($url) {
 		$normalized = $this->normalizeUrl($url);
-		return \sha1($normalized);
+		return sha1($normalized);
 	}
 
 	/**
@@ -284,14 +284,14 @@ class DbHandler {
 	protected function normalizeUrl($url) {
 		$normalized = $url;
 
-		if (\strpos($url, 'https://') === 0) {
-			$normalized = \substr($url, \strlen('https://'));
-		} elseif (\strpos($url, 'http://') === 0) {
-			$normalized = \substr($url, \strlen('http://'));
+		if (strpos($url, 'https://') === 0) {
+			$normalized = substr($url, \strlen('https://'));
+		} elseif (strpos($url, 'http://') === 0) {
+			$normalized = substr($url, \strlen('http://'));
 		}
 
 		$normalized = Filesystem::normalizePath($normalized);
-		$normalized = \trim($normalized, '/');
+		$normalized = trim($normalized, '/');
 
 		return $normalized;
 	}

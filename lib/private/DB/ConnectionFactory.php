@@ -119,13 +119,14 @@ class ConnectionFactory {
 		switch ($normalizedType) {
 			case 'mysql':
 				$eventManager->addEventSubscriber(
-					new SQLSessionInit('SET SESSION AUTOCOMMIT=1'));
+					new SQLSessionInit('SET SESSION AUTOCOMMIT=1')
+				);
 				break;
 			case 'oci':
 				$eventManager->addEventSubscriber(new OracleSessionInit);
 				// the driverOptions are unused in dbal and need to be mapped to the parameters
 				if (isset($additionalConnectionParams['driverOptions'])) {
-					$additionalConnectionParams = \array_merge($additionalConnectionParams, $additionalConnectionParams['driverOptions']);
+					$additionalConnectionParams = array_merge($additionalConnectionParams, $additionalConnectionParams['driverOptions']);
 				}
 				break;
 			case 'sqlite3':
@@ -135,7 +136,7 @@ class ConnectionFactory {
 		}
 		/** @var Connection $connection */
 		$connection = DriverManager::getConnection(
-			\array_merge($this->getDefaultConnectionParams($type), $additionalConnectionParams),
+			array_merge($this->getDefaultConnectionParams($type), $additionalConnectionParams),
 			new Configuration(),
 			$eventManager
 		);
@@ -185,10 +186,10 @@ class ConnectionFactory {
 			$connectionParams['dbname'] = $name;
 		} else {
 			$host = $this->config->getValue('dbhost', '');
-			if (\strpos($host, ':')) {
+			if (strpos($host, ':')) {
 				// Host variable may carry a port or socket.
-				list($host, $portOrSocket) = \explode(':', $host, 2);
-				if (\ctype_digit($portOrSocket)) {
+				list($host, $portOrSocket) = explode(':', $host, 2);
+				if (ctype_digit($portOrSocket)) {
 					$connectionParams['port'] = $portOrSocket;
 				} else {
 					$connectionParams['unix_socket'] = $portOrSocket;

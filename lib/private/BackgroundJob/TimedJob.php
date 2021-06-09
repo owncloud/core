@@ -49,7 +49,7 @@ abstract class TimedJob extends Job {
 	 * @param ILogger $logger
 	 */
 	public function execute($jobList, ILogger $logger = null) {
-		if ((\time() - $this->lastRun) > $this->interval) {
+		if ((time() - $this->lastRun) > $this->interval) {
 			if ($logger !== null) {
 				$id = $this->getId();
 				$class = \get_class($this);
@@ -67,7 +67,7 @@ abstract class TimedJob extends Job {
 				$class = \get_class($this);
 				$lastRun = $this->getLastRun();
 				$interval = $this->interval;
-				$diff = $this->interval - (\time() - $this->lastRun);
+				$diff = $this->interval - (time() - $this->lastRun);
 				$logger->debug(
 					"Job with id $id and class $class not running due to interval. Last run $lastRun and interval $interval. Wait $diff seconds.",
 					['app' => 'cron']

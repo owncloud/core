@@ -124,7 +124,7 @@ class DateTimeFormatter implements \OCP\IDateTimeFormatter {
 	 * @return string Formatted relative date string
 	 */
 	public function formatDateRelativeDay($timestamp, $format = 'long', \DateTimeZone $timeZone = null, \OCP\IL10N $l = null) {
-		if (\substr($format, -1) !== '*') {
+		if (substr($format, -1) !== '*') {
 			$format .= '^';
 		}
 
@@ -149,7 +149,7 @@ class DateTimeFormatter implements \OCP\IDateTimeFormatter {
 		$timestamp = $this->getDateTime($timestamp);
 		$timestamp->setTime(0, 0, 0);
 		if ($baseTimestamp === null) {
-			$baseTimestamp = \time();
+			$baseTimestamp = time();
 		}
 		$baseTimestamp = $this->getDateTime($baseTimestamp);
 		$baseTimestamp->setTime(0, 0, 0);
@@ -208,7 +208,7 @@ class DateTimeFormatter implements \OCP\IDateTimeFormatter {
 		$l = $this->getLocale($l);
 		$timestamp = $this->getDateTime($timestamp);
 		if ($baseTimestamp === null) {
-			$baseTimestamp = \time();
+			$baseTimestamp = time();
 		}
 		$baseTimestamp = $this->getDateTime($baseTimestamp);
 
@@ -251,7 +251,7 @@ class DateTimeFormatter implements \OCP\IDateTimeFormatter {
 	 * @return string Formatted relative date and time string
 	 */
 	public function formatDateTimeRelativeDay($timestamp, $formatDate = 'long', $formatTime = 'medium', \DateTimeZone $timeZone = null, \OCP\IL10N $l = null) {
-		if (\substr($formatDate, -1) !== '^' && \substr($formatDate, -1) !== '*') {
+		if (substr($formatDate, -1) !== '^' && substr($formatDate, -1) !== '*') {
 			$formatDate .= '^';
 		}
 

@@ -118,7 +118,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->l = $this->createMock('\OCP\IL10N');
 		$this->l->method('t')
 			->will($this->returnCallback(function ($text, $parameters = []) {
-				return \vsprintf($text, $parameters);
+				return vsprintf($text, $parameters);
 			}));
 
 		$this->factory = new DummyFactory(\OC::$server);
@@ -283,17 +283,21 @@ class ManagerTest extends \Test\TestCase {
 			->with($hookListnerExpectsPost);
 
 		$calledBeforeEvent = [];
-		$this->eventDispatcher->addListener('share.beforeDelete',
+		$this->eventDispatcher->addListener(
+			'share.beforeDelete',
 			function (GenericEvent $event) use (&$calledBeforeEvent) {
 				$calledBeforeEvent[] = 'share.beforeDelete';
 				$calledBeforeEvent[] = $event;
-			});
+			}
+		);
 		$calledAfterEvent = [];
-		$this->eventDispatcher->addListener('share.afterDelete',
+		$this->eventDispatcher->addListener(
+			'share.afterDelete',
 			function (GenericEvent $event) use (&$calledAfterEvent) {
 				$calledAfterEvent[] = 'share.afterDelete';
 				$calledAfterEvent[] = $event;
-			});
+			}
+		);
 		$manager->deleteShare($share);
 		$this->assertEquals('share.beforeDelete', $calledBeforeEvent[0]);
 		$this->assertEquals('share.afterDelete', $calledAfterEvent[0]);
@@ -384,17 +388,21 @@ class ManagerTest extends \Test\TestCase {
 			->with($hookListnerExpectsPost);
 
 		$calledBeforeEvent = [];
-		$this->eventDispatcher->addListener('share.beforeDelete',
+		$this->eventDispatcher->addListener(
+			'share.beforeDelete',
 			function (GenericEvent $event) use (&$calledBeforeEvent) {
 				$calledBeforeEvent[] = 'share.beforeDelete';
 				$calledBeforeEvent[] = $event;
-			});
+			}
+		);
 		$calledAfterEvent = [];
-		$this->eventDispatcher->addListener('share.afterDelete',
+		$this->eventDispatcher->addListener(
+			'share.afterDelete',
 			function (GenericEvent $event) use (&$calledAfterEvent) {
 				$calledAfterEvent[] = 'share.afterDelete';
 				$calledAfterEvent[] = $event;
-			});
+			}
+		);
 		$manager->deleteShare($share);
 		$this->assertEquals('share.beforeDelete', $calledBeforeEvent[0]);
 		$this->assertEquals('share.afterDelete', $calledAfterEvent[0]);
@@ -532,17 +540,21 @@ class ManagerTest extends \Test\TestCase {
 			->with($hookListnerExpectsPost);
 
 		$calledBeforeEvent = [];
-		$this->eventDispatcher->addListener('share.beforeDelete',
+		$this->eventDispatcher->addListener(
+			'share.beforeDelete',
 			function (GenericEvent $event) use (&$calledBeforeEvent) {
 				$calledBeforeEvent[] = 'share.beforeDelete';
 				$calledBeforeEvent[] = $event;
-			});
+			}
+		);
 		$calledAfterEvent = [];
-		$this->eventDispatcher->addListener('share.afterDelete',
+		$this->eventDispatcher->addListener(
+			'share.afterDelete',
 			function (GenericEvent $event) use (&$calledAfterEvent) {
 				$calledAfterEvent[] = 'share.afterDelete';
 				$calledAfterEvent[] = $event;
-			});
+			}
+		);
 		$manager->deleteShare($share1);
 		$this->assertEquals('share.beforeDelete', $calledBeforeEvent[0]);
 		$this->assertEquals('share.afterDelete', $calledAfterEvent[0]);
@@ -663,8 +675,11 @@ class ManagerTest extends \Test\TestCase {
 			['core', 'shareapi_enforce_links_password_write_only', 'no', 'yes'],
 		]));
 
-		$this->assertTrue($this->invokePrivate($this->manager, 'passwordMustBeEnforced',
-			[\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_DELETE]));
+		$this->assertTrue($this->invokePrivate(
+			$this->manager,
+			'passwordMustBeEnforced',
+			[\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_DELETE]
+		));
 	}
 
 	public function testPasswordMustBeEnforcedForWriteOnly() {
@@ -708,8 +723,11 @@ class ManagerTest extends \Test\TestCase {
 			['core', 'shareapi_enforce_links_password_write_only', 'no', 'yes'],
 		]));
 
-		$this->assertFalse($this->invokePrivate($this->manager, 'passwordMustBeEnforced',
-			[\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_DELETE]));
+		$this->assertFalse($this->invokePrivate(
+			$this->manager,
+			'passwordMustBeEnforced',
+			[\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_DELETE]
+		));
 	}
 
 	public function testPasswordMustBeEnforcedForWriteOnlyNotEnforced() {
@@ -760,8 +778,18 @@ class ManagerTest extends \Test\TestCase {
 		$this->invokePrivate($this->manager, 'verifyPassword', ['password']);
 	}
 
-	public function createShare($id, $type, $node, $sharedWith, $sharedBy, $shareOwner,
-		$permissions, $expireDate = null, $password = null, $attributes = null) {
+	public function createShare(
+		$id,
+		$type,
+		$node,
+		$sharedWith,
+		$sharedBy,
+		$shareOwner,
+		$permissions,
+		$expireDate = null,
+		$password = null,
+		$attributes = null
+	) {
 		$share = $this->createMock(IShare::class);
 
 		$share->method('getShareType')->willReturn($type);
@@ -784,10 +812,12 @@ class ManagerTest extends \Test\TestCase {
 		]));
 
 		$event = null;
-		$this->eventDispatcher->addListener('OCP\Share::validatePassword',
+		$this->eventDispatcher->addListener(
+			'OCP\Share::validatePassword',
 			function (GenericEvent $receivedEvent) use (&$event) {
 				$event = $receivedEvent;
-			});
+			}
+		);
 
 		$result = $this->invokePrivate($this->manager, 'verifyPassword', ['somepw']);
 		$this->assertNull($result);
@@ -1783,35 +1813,35 @@ class ManagerTest extends \Test\TestCase {
 		$data[] = ['no', null, null, null, false];
 
 		// empty exclude list, user no groups
-		$data[] = ['yes', '', \json_encode(['']), [], false];
+		$data[] = ['yes', '', json_encode(['']), [], false];
 
 		// empty exclude list, user groups
-		$data[] = ['yes', '', \json_encode(['']), ['group1', 'group2'], false];
+		$data[] = ['yes', '', json_encode(['']), ['group1', 'group2'], false];
 
 		// Convert old list to json
-		$data[] = ['yes', 'group1,group2', \json_encode(['group1', 'group2']), [], false];
+		$data[] = ['yes', 'group1,group2', json_encode(['group1', 'group2']), [], false];
 
 		// Old list partly groups in common
 
-		$data[] = ['yes', 'group1,group2', \json_encode(['group1', 'group2']), ['group1', 'group3'], true];
+		$data[] = ['yes', 'group1,group2', json_encode(['group1', 'group2']), ['group1', 'group3'], true];
 
 		// Old list only groups in common
-		$data[] = ['yes', 'group1,group2', \json_encode(['group1', 'group2']), ['group1'], true];
+		$data[] = ['yes', 'group1,group2', json_encode(['group1', 'group2']), ['group1'], true];
 
 		// New list partly in common
-		$data[] = ['yes', \json_encode(['group1', 'group2']), null, ['group1', 'group3'], true];
+		$data[] = ['yes', json_encode(['group1', 'group2']), null, ['group1', 'group3'], true];
 
 		// New list only groups in common
-		$data[] = ['yes', \json_encode(['group1', 'group2']), null, ['group2'], true];
+		$data[] = ['yes', json_encode(['group1', 'group2']), null, ['group2'], true];
 
 		// New list partly in common, group names containing comma
-		$data[] = ['yes', \json_encode(['group1,a', 'group2']), null, ['group1,a', 'group3'], true];
-		$data[] = ['yes', \json_encode(['group1,a', 'group2,b']), null, ['group1,a', 'group3'], true];
-		$data[] = ['yes', \json_encode(['group1,a', 'group2']), null, ['group1,a', 'group3,c'], true];
+		$data[] = ['yes', json_encode(['group1,a', 'group2']), null, ['group1,a', 'group3'], true];
+		$data[] = ['yes', json_encode(['group1,a', 'group2,b']), null, ['group1,a', 'group3'], true];
+		$data[] = ['yes', json_encode(['group1,a', 'group2']), null, ['group1,a', 'group3,c'], true];
 
 		// New list only groups in common, group names containing comma
-		$data[] = ['yes', \json_encode(['group1', 'group2,a']), null, ['group2,a'], true];
-		$data[] = ['yes', \json_encode(['group1,a', 'group2,a']), null, ['group2,a'], true];
+		$data[] = ['yes', json_encode(['group1', 'group2,a']), null, ['group2,a'], true];
+		$data[] = ['yes', json_encode(['group1,a', 'group2,a']), null, ['group2,a'], true];
 
 		return $data;
 	}
@@ -2140,7 +2170,7 @@ class ManagerTest extends \Test\TestCase {
 				->with($hookListnerUnshareExpectsPost);
 		}
 
-		$manager->transferShare($share, 'user1', 'user2', \ltrim($user2Folder->getPath() . '/user1_transferred', '/'));
+		$manager->transferShare($share, 'user1', 'user2', ltrim($user2Folder->getPath() . '/user1_transferred', '/'));
 
 		if ($sharetype === 'link') {
 			$this->assertEquals($share->getShareOwner(), 'user2');
@@ -2189,9 +2219,15 @@ class ManagerTest extends \Test\TestCase {
 			->method('get')
 			->with('user1')
 			->willReturn(null);
-		$share = $this->createShare('23', \OCP\Share::SHARE_TYPE_USER,
-			'/foo', 'user2', 'user1', 'user1',
-			15);
+		$share = $this->createShare(
+			'23',
+			\OCP\Share::SHARE_TYPE_USER,
+			'/foo',
+			'user2',
+			'user1',
+			'user1',
+			15
+		);
 		$manager->transferShare($share, 'user1', 'user2', 'user1/files/transferred');
 	}
 
@@ -2210,9 +2246,15 @@ class ManagerTest extends \Test\TestCase {
 				['user1', false, $this->createMock(IUser::class)],
 				['user2', false, null]
 			]));
-		$share = $this->createShare('23', \OCP\Share::SHARE_TYPE_USER,
-			'/foo', 'user2', 'user1', 'user1',
-			15);
+		$share = $this->createShare(
+			'23',
+			\OCP\Share::SHARE_TYPE_USER,
+			'/foo',
+			'user2',
+			'user1',
+			'user1',
+			15
+		);
 		$manager->transferShare($share, 'user1', 'user2', 'user1/files/transferred');
 	}
 
@@ -2230,9 +2272,15 @@ class ManagerTest extends \Test\TestCase {
 			->will($this->returnValueMap([
 				['user1', false, $this->createMock(IUser::class)],
 			]));
-		$share = $this->createShare('23', \OCP\Share::SHARE_TYPE_USER,
-			'/foo', 'user2', 'user1', 'user1',
-			15);
+		$share = $this->createShare(
+			'23',
+			\OCP\Share::SHARE_TYPE_USER,
+			'/foo',
+			'user2',
+			'user1',
+			'user1',
+			15
+		);
 		$manager->transferShare($share, 'user1', 'user1', 'user1/files/transferred');
 	}
 
@@ -2254,9 +2302,15 @@ class ManagerTest extends \Test\TestCase {
 		$this->view->expects($this->once())
 			->method('file_exists')
 			->willReturn(false);
-		$share = $this->createShare('23', \OCP\Share::SHARE_TYPE_USER,
-			'/foo', 'user2', 'user1', 'user1',
-			15);
+		$share = $this->createShare(
+			'23',
+			\OCP\Share::SHARE_TYPE_USER,
+			'/foo',
+			'user2',
+			'user1',
+			'user1',
+			15
+		);
 		$manager->transferShare($share, 'user1', 'user2', 'user1/files/transferred');
 	}
 
@@ -2281,7 +2335,8 @@ class ManagerTest extends \Test\TestCase {
 			'sharedWith',
 			'sharedBy',
 			null,
-			\OCP\Constants::PERMISSION_ALL);
+			\OCP\Constants::PERMISSION_ALL
+		);
 
 		$manager->expects($this->once())
 			->method('canShare')
@@ -2313,17 +2368,21 @@ class ManagerTest extends \Test\TestCase {
 			->with('/target');
 
 		$calledBeforeShareCreate = [];
-		$this->eventDispatcher->addListener('share.beforeCreate',
+		$this->eventDispatcher->addListener(
+			'share.beforeCreate',
 			function (GenericEvent $event) use (&$calledBeforeShareCreate) {
 				$calledBeforeShareCreate[] = 'share.beforeCreate';
 				$calledBeforeShareCreate[] = $event;
-			});
+			}
+		);
 		$calledAfterShareCreate = [];
-		$this->eventDispatcher->addListener('share.afterCreate',
+		$this->eventDispatcher->addListener(
+			'share.afterCreate',
 			function (GenericEvent $event) use (&$calledAfterShareCreate) {
 				$calledAfterShareCreate[] = 'share.afterCreate';
 				$calledAfterShareCreate[] = $event;
-			});
+			}
+		);
 
 		$manager->createShare($share);
 
@@ -2358,7 +2417,8 @@ class ManagerTest extends \Test\TestCase {
 			'sharedWith',
 			'sharedBy',
 			null,
-			\OCP\Constants::PERMISSION_ALL);
+			\OCP\Constants::PERMISSION_ALL
+		);
 
 		$manager->expects($this->once())
 			->method('canShare')
@@ -2390,17 +2450,21 @@ class ManagerTest extends \Test\TestCase {
 			->with('/target');
 
 		$calledBeforeShareCreate = [];
-		$this->eventDispatcher->addListener('share.beforeCreate',
+		$this->eventDispatcher->addListener(
+			'share.beforeCreate',
 			function (GenericEvent $event) use (&$calledBeforeShareCreate) {
 				$calledBeforeShareCreate[] = 'share.beforeCreate';
 				$calledBeforeShareCreate[] = $event;
-			});
+			}
+		);
 		$calledAfterShareCreate = [];
-		$this->eventDispatcher->addListener('share.afterCreate',
+		$this->eventDispatcher->addListener(
+			'share.afterCreate',
 			function (GenericEvent $event) use (&$calledAfterShareCreate) {
 				$calledAfterShareCreate[] = 'share.afterCreate';
 				$calledAfterShareCreate[] = $event;
-			});
+			}
+		);
 
 		$manager->createShare($share);
 
@@ -2435,7 +2499,8 @@ class ManagerTest extends \Test\TestCase {
 			'group1',
 			'user1',
 			'user0',
-			\OCP\Constants::PERMISSION_ALL);
+			\OCP\Constants::PERMISSION_ALL
+		);
 
 		$manager->expects($this->once())
 			->method('canShare')
@@ -2467,17 +2532,21 @@ class ManagerTest extends \Test\TestCase {
 			->with('/target');
 
 		$calledBeforeShareCreate = [];
-		$this->eventDispatcher->addListener('share.beforeCreate',
+		$this->eventDispatcher->addListener(
+			'share.beforeCreate',
 			function (GenericEvent $event) use (&$calledBeforeShareCreate) {
 				$calledBeforeShareCreate[] = 'share.beforeCreate';
 				$calledBeforeShareCreate[] = $event;
-			});
+			}
+		);
 		$calledAfterShareCreate = [];
-		$this->eventDispatcher->addListener('share.afterCreate',
+		$this->eventDispatcher->addListener(
+			'share.afterCreate',
 			function (GenericEvent $event) use (&$calledAfterShareCreate) {
 				$calledAfterShareCreate[] = 'share.afterCreate';
 				$calledAfterShareCreate[] = $event;
-			});
+			}
+		);
 
 		$user1 = $this->createMock(IUser::class);
 		$this->userManager
@@ -2653,17 +2722,21 @@ class ManagerTest extends \Test\TestCase {
 			->with($this->equalTo($hookListnerExpectsPost));
 
 		$calledBeforeShareCreate = [];
-		$this->eventDispatcher->addListener('share.beforeCreate',
+		$this->eventDispatcher->addListener(
+			'share.beforeCreate',
 			function (GenericEvent $event) use (&$calledBeforeShareCreate) {
 				$calledBeforeShareCreate[] = 'share.beforeCreate';
 				$calledBeforeShareCreate[] = $event;
-			});
+			}
+		);
 		$calledAfterShareCreate = [];
-		$this->eventDispatcher->addListener('share.afterCreate',
+		$this->eventDispatcher->addListener(
+			'share.afterCreate',
 			function (GenericEvent $event) use (&$calledAfterShareCreate) {
 				$calledAfterShareCreate[] = 'share.afterCreate';
 				$calledAfterShareCreate[] = $event;
-			});
+			}
+		);
 
 		/** @var IShare $share */
 		$share = $manager->createShare($share);
@@ -2719,7 +2792,8 @@ class ManagerTest extends \Test\TestCase {
 			'sharedWith',
 			'sharedBy',
 			null,
-			\OCP\Constants::PERMISSION_ALL);
+			\OCP\Constants::PERMISSION_ALL
+		);
 
 		$manager->expects($this->once())
 			->method('canShare')
@@ -2796,7 +2870,8 @@ class ManagerTest extends \Test\TestCase {
 			'sharedWith',
 			'sharedBy',
 			null,
-			\OCP\Constants::PERMISSION_ALL);
+			\OCP\Constants::PERMISSION_ALL
+		);
 
 		$manager->expects($this->once())
 			->method('canShare')
@@ -2828,17 +2903,21 @@ class ManagerTest extends \Test\TestCase {
 			->with('/target');
 
 		$calledBeforeShareCreate = [];
-		$this->eventDispatcher->addListener('share.beforeCreate',
+		$this->eventDispatcher->addListener(
+			'share.beforeCreate',
 			function (GenericEvent $event) use (&$calledBeforeShareCreate) {
 				$calledBeforeShareCreate[] = 'share.beforeCreate';
 				$calledBeforeShareCreate[] = $event;
-			});
+			}
+		);
 		$calledAfterShareCreate = [];
-		$this->eventDispatcher->addListener('share.afterCreate',
+		$this->eventDispatcher->addListener(
+			'share.afterCreate',
 			function (GenericEvent $event) use (&$calledAfterShareCreate) {
 				$calledAfterShareCreate[] = 'share.afterCreate';
 				$calledAfterShareCreate[] = $event;
-			});
+			}
+		);
 
 		$manager->createShare($share);
 
@@ -2867,7 +2946,7 @@ class ManagerTest extends \Test\TestCase {
 			$node->expects($this->any())
 				->method('getId')
 				->will($this->returnValue($i));
-			\array_push($nodes, $node->getId());
+			array_push($nodes, $node->getId());
 		}
 
 		// Test chunking here
@@ -2878,7 +2957,7 @@ class ManagerTest extends \Test\TestCase {
 				$this->anything(),
 				$this->anything(),
 				$this->equalTo(true)
-			)->willReturn(\array_fill(0, 201, $share));
+			)->willReturn(array_fill(0, 201, $share));
 
 		$shares = $this->manager->getAllSharesBy('user', [\OCP\Share::SHARE_TYPE_USER], $nodes, true);
 
@@ -2913,11 +2992,11 @@ class ManagerTest extends \Test\TestCase {
 			$node->expects($this->any())
 				->method('getId')
 				->will($this->returnValue($i));
-			\array_push($nodes, $node->getId());
+			array_push($nodes, $node->getId());
 		}
 
 		// Add 201 shares, including expired
-		$fillShares = \array_fill(0, 200, $share);
+		$fillShares = array_fill(0, 200, $share);
 		$fillShares[] = $shareExpired;
 
 		// Test chunking here
@@ -3033,7 +3112,7 @@ class ManagerTest extends \Test\TestCase {
 			->will($this->returnCallback(function ($share) use (&$shares2) {
 				for ($i = 0; $i < \count($shares2); $i++) {
 					if ($shares2[$i]->getId() === $share->getId()) {
-						\array_splice($shares2, $i, 1);
+						array_splice($shares2, $i, 1);
 						break;
 					}
 				}
@@ -3278,17 +3357,21 @@ class ManagerTest extends \Test\TestCase {
 		$this->hasher->method('verify')->with('invalidpassword', 'password', '')->willReturn(false);
 
 		$calledBeforeEvent = [];
-		$this->eventDispatcher->addListener('share.beforepasswordcheck',
+		$this->eventDispatcher->addListener(
+			'share.beforepasswordcheck',
 			function (GenericEvent $event) use (&$calledBeforeEvent) {
 				$calledBeforeEvent[] = 'share.beforepasswordcheck';
 				$calledBeforeEvent[] = $event;
-			});
+			}
+		);
 		$calledFailEvent = [];
-		$this->eventDispatcher->addListener('share.failedpasswordcheck',
+		$this->eventDispatcher->addListener(
+			'share.failedpasswordcheck',
 			function (GenericEvent $event) use (&$calledFailEvent) {
 				$calledFailEvent[] = 'share.failedpasswordcheck';
 				$calledFailEvent[] = $event;
-			});
+			}
+		);
 		$this->assertFalse($this->manager->checkPassword($share, 'invalidpassword'));
 		$this->assertEquals('share.beforepasswordcheck', $calledBeforeEvent[0]);
 		$this->assertEquals('share.failedpasswordcheck', $calledFailEvent[0]);
@@ -3302,17 +3385,21 @@ class ManagerTest extends \Test\TestCase {
 		$share->method('getPassword')->willReturn('passwordHash');
 
 		$calledBeforeEvent = [];
-		$this->eventDispatcher->addListener('share.beforepasswordcheck',
+		$this->eventDispatcher->addListener(
+			'share.beforepasswordcheck',
 			function (GenericEvent $event) use (&$calledBeforeEvent) {
 				$calledBeforeEvent[] = 'share.beforepasswordcheck';
 				$calledBeforeEvent[] = $event;
-			});
+			}
+		);
 		$calledAfterEvent = [];
-		$this->eventDispatcher->addListener('share.afterpasswordcheck',
+		$this->eventDispatcher->addListener(
+			'share.afterpasswordcheck',
 			function (GenericEvent $event) use (&$calledAfterEvent) {
 				$calledAfterEvent[] = 'share.afterpasswordcheck';
 				$calledAfterEvent[] = $event;
-			});
+			}
+		);
 
 		$this->hasher->method('verify')->with('password', 'passwordHash', '')->willReturn(true);
 
@@ -3493,11 +3580,13 @@ class ManagerTest extends \Test\TestCase {
 		]);
 
 		$calledAfterUpdate = [];
-		$this->eventDispatcher->addListener('share.afterupdate',
+		$this->eventDispatcher->addListener(
+			'share.afterupdate',
 			function (GenericEvent $event) use (&$calledAfterUpdate) {
 				$calledAfterUpdate[] = 'share.afterupdate';
 				$calledAfterUpdate[] = $event;
-			});
+			}
+		);
 
 		$manager->updateShare($share);
 		$this->assertInstanceOf(GenericEvent::class, $calledAfterUpdate[1]);
@@ -3629,11 +3718,13 @@ class ManagerTest extends \Test\TestCase {
 		$hookListner2->expects($this->never())->method('post');
 
 		$calledAfterUpdate = [];
-		$this->eventDispatcher->addListener('share.afterupdate',
+		$this->eventDispatcher->addListener(
+			'share.afterupdate',
 			function (GenericEvent $event) use (&$calledAfterUpdate) {
 				$calledAfterUpdate[] = 'share.afterupdate';
 				$calledAfterUpdate[] = $event;
-			});
+			}
+		);
 		$manager->updateShare($share);
 
 		$this->assertInstanceOf(GenericEvent::class, $calledAfterUpdate[1]);
@@ -3922,10 +4013,10 @@ class ManagerTest extends \Test\TestCase {
 
 	public function strictSubsetOfPermissionsDataProvider() {
 		return [
-			[\bindec('11111'), \bindec('0111'), true],
-			[\bindec('01101'), \bindec('01001'), true],
-			[\bindec('01111'), \bindec('11111'), false],
-			[\bindec('10001'), \bindec('01111'), false],
+			[bindec('11111'), bindec('0111'), true],
+			[bindec('01101'), bindec('01001'), true],
+			[bindec('01111'), bindec('11111'), false],
+			[bindec('10001'), bindec('01111'), false],
 		];
 	}
 }

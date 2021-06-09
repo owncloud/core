@@ -69,10 +69,10 @@ class JSONResponse extends Response {
 		) {
 			$response = null;
 		} else {
-			$response = \json_encode($this->data, JSON_HEX_TAG);
+			$response = json_encode($this->data, JSON_HEX_TAG);
 			if ($response === false) {
-				throw new \Exception(\sprintf('Could not json_encode due to invalid ' .
-					'non UTF-8 characters in the array: %s', \var_export($this->data, true)));
+				throw new \Exception(sprintf('Could not json_encode due to invalid ' .
+					'non UTF-8 characters in the array: %s', var_export($this->data, true)));
 			}
 		}
 

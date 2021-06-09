@@ -160,7 +160,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	public function userReLogsInWithUsernameAndPassword($username, $password) {
 		$this->webUIGeneralContext->theUserLogsOutOfTheWebUI();
 		$this->logInWithUsernameAndPasswordUsingTheWebUI(
-			$username, $password
+			$username,
+			$password
 		);
 	}
 
@@ -177,7 +178,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		$actualUsername = $this->featureContext->getActualUsername($username);
 		$password = $this->featureContext->getUserPassword($actualUsername);
 		$this->logInWithUsernameAndPasswordUsingTheWebUI(
-			$username, $password
+			$username,
+			$password
 		);
 	}
 
@@ -191,10 +193,12 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserHasReloggedInWithUsernameAndPasswordUsingTheWebUI(
-		$username, $password
+		$username,
+		$password
 	) {
 		$this->userReLogsInWithUsernameAndPassword(
-			$username, $password
+			$username,
+			$password
 		);
 		$this->webUILoginShouldHaveBeenSuccessful();
 	}
@@ -239,7 +243,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function logInWithUsernameAndPasswordUsingTheWebUI(
-		$username, $password
+		$username,
+		$password
 	) {
 		$this->filesPage = $this->webUIGeneralContext->loginAs($username, $password);
 		$this->webUIGeneralContext->setCurrentPageObject($this->filesPage);
@@ -255,7 +260,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserHasLoggedInWithUsernameAndPasswordUsingTheWebUIi(
-		$username, $password
+		$username,
+		$password
 	) {
 		$this->logInWithUsernameAndPasswordUsingTheWebUI($username, $password);
 		$this->webUILoginShouldHaveBeenSuccessful();
@@ -299,7 +305,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function userLogsInWithEmailAndInvalidPasswordUsingTheWebui(
-		$user, $password
+		$user,
+		$password
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$email = $this->featureContext->getEmailAddressForUser($user);
@@ -320,7 +327,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function userLogInWithUsernameAndInvalidPasswordUsingTheWebUI(
-		$username, $password
+		$username,
+		$password
 	) {
 		$username = $this->featureContext->getActualUsername($username);
 		$password = $this->featureContext->getActualPassword($password);
@@ -340,7 +348,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserHasLoggedInWithUsernameAndInvalidPasswordUsingTheWebUI(
-		$username, $password
+		$username,
+		$password
 	) {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->userLogInWithUsernameAndInvalidPasswordUsingTheWebUI(
@@ -451,7 +460,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		$this->expectedPage = $this->webUIGeneralContext->loginAs(
 			$username,
 			$password,
-			\str_replace(' ', '', \ucwords($page)) . 'Page'
+			str_replace(' ', '', ucwords($page)) . 'Page'
 		);
 	}
 
@@ -528,22 +537,24 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
 		if ($username !== "") {
-			$username = \trim($username, $username[0]);
+			$username = trim($username, $username[0]);
 		}
 		if ($password !== "") {
-			$password = \trim($password, $password[0]);
+			$password = trim($password, $password[0]);
 		}
 		$this->theUserBrowsesToTheLoginPage();
 		if ($should) {
 			$this->logInWithUsernameAndPasswordUsingTheWebUI(
-				$username, $password
+				$username,
+				$password
 			);
 			$this->webUIGeneralContext->theUserShouldBeRedirectedToAWebUIPageWithTheTitle(
 				$this->getExpectedLoginSuccessPageTitle()
 			);
 		} else {
 			$this->userLogInWithUsernameAndInvalidPasswordUsingTheWebUI(
-				$username, $password
+				$username,
+				$password
 			);
 			$this->webUIGeneralContext->theUserShouldBeRedirectedToAWebUIPageWithTheTitle(
 				$this->getExpectedLoginFailedPageTitle()
@@ -683,7 +694,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserFollowsThePasswordResetLinkFromTheirEmailUsingInvalidUsername(
-		$user, $username
+		$user,
+		$username
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$emailAddress = $this->featureContext->getEmailAddressForUser($user);
@@ -695,10 +707,10 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		// The link has a form like:
 		// http://172.17.0.1:8080/index.php/lostpassword/reset/form/ossdSL1Q95s4e0seCwsTb/Brian
 		// pop off the last part and replace it with the invalid username
-		$linkParts = \explode('/', $link);
-		\array_pop($linkParts);
-		\array_push($linkParts, $username);
-		$adjustedLink = \implode('/', $linkParts);
+		$linkParts = explode('/', $link);
+		array_pop($linkParts);
+		array_push($linkParts, $username);
+		$adjustedLink = implode('/', $linkParts);
 		$this->visitPath($adjustedLink);
 	}
 
@@ -721,14 +733,14 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		);
 		// The link has a form like:
 		// http://172.17.0.1:8080/index.php/lostpassword/reset/form/ossdSL1Q95s4e0seCwsTb/Brian
-		$linkParts = \explode('/', $link);
-		$username = \array_pop($linkParts);
-		$goodToken = \array_pop($linkParts);
+		$linkParts = explode('/', $link);
+		$username = array_pop($linkParts);
+		$goodToken = array_pop($linkParts);
 		// reverse the token string, an easy way to make the token invalid
-		$invalidToken = \strrev($goodToken);
-		\array_push($linkParts, $invalidToken);
-		\array_push($linkParts, $username);
-		$adjustedLink = \implode('/', $linkParts);
+		$invalidToken = strrev($goodToken);
+		array_push($linkParts, $invalidToken);
+		array_push($linkParts, $username);
+		$adjustedLink = implode('/', $linkParts);
 		$this->visitPath($adjustedLink);
 	}
 

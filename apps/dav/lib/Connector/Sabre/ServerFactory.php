@@ -99,11 +99,13 @@ class ServerFactory {
 	 * @param bool $isPublicAccess whether DAV is accessed through a public link
 	 * @return Server
 	 */
-	public function createServer($baseUri,
-								 $requestUri,
-								 BackendInterface $authBackend,
-								 callable $viewCallBack,
-								 $isPublicAccess = false) {
+	public function createServer(
+		$baseUri,
+		$requestUri,
+		BackendInterface $authBackend,
+		callable $viewCallBack,
+		$isPublicAccess = false
+	) {
 		// Fire up server
 		$objectTree = new \OCA\DAV\Connector\Sabre\ObjectTree();
 		$server = new \OCA\DAV\Connector\Sabre\Server($objectTree);

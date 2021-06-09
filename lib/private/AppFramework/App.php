@@ -49,11 +49,11 @@ class App {
 		// first try to parse the app's appinfo/info.xml <namespace> tag
 		$appInfo = \OC_App::getAppInfo($appId);
 		if (isset($appInfo['namespace'])) {
-			return $topNamespace . \trim($appInfo['namespace']);
+			return $topNamespace . trim($appInfo['namespace']);
 		}
 
 		// if the tag is not found, fall back to uppercasing the first letter
-		return $topNamespace . \ucfirst($appId);
+		return $topNamespace . ucfirst($appId);
 	}
 
 	/**
@@ -145,8 +145,12 @@ class App {
 	 * @param array $urlParams an array with variables extracted from the routes
 	 * @param DIContainer $container an instance of a pimple container.
 	 */
-	public static function part($controllerName, $methodName, array $urlParams,
-								DIContainer $container) {
+	public static function part(
+		$controllerName,
+		$methodName,
+		array $urlParams,
+		DIContainer $container
+	) {
 		$container['urlParams'] = $urlParams;
 		$controller = $container[$controllerName];
 

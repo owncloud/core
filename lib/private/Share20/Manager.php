@@ -115,21 +115,21 @@ class Manager implements IManager {
 	 * @param IUserSession $userSession
 	 */
 	public function __construct(
-			ILogger $logger,
-			IConfig $config,
-			ISecureRandom $secureRandom,
-			IHasher $hasher,
-			IMountManager $mountManager,
-			IGroupManager $groupManager,
-			IL10N $l,
-			IProviderFactory $factory,
-			IUserManager $userManager,
-			IRootFolder $rootFolder,
-			EventDispatcher $eventDispatcher,
-			View $view,
-			IDBConnection $connection,
-			ActivityIManager $activityManager,
-			IUserSession $userSession = null
+		ILogger $logger,
+		IConfig $config,
+		ISecureRandom $secureRandom,
+		IHasher $hasher,
+		IMountManager $mountManager,
+		IGroupManager $groupManager,
+		IL10N $l,
+		IProviderFactory $factory,
+		IUserManager $userManager,
+		IRootFolder $rootFolder,
+		EventDispatcher $eventDispatcher,
+		View $view,
+		IDBConnection $connection,
+		ActivityIManager $activityManager,
+		IUserSession $userSession = null
 	) {
 		$this->logger = $logger;
 		$this->config = $config;
@@ -173,7 +173,7 @@ class Manager implements IManager {
 	 * @return string[]
 	 */
 	private function splitFullId($id) {
-		return \explode(':', $id, 2);
+		return explode(':', $id, 2);
 	}
 
 	/**
@@ -372,8 +372,8 @@ class Manager implements IManager {
 			// - in case of exact match, first (reshare from different users should use first found node)
 			// - longest file node path indicates reshare originates
 			//   from parent folder, and is not reshared subfolder that would contain lower or equal permission by design
-			\usort($shareFileNodes, function (\OCP\Files\Node $first, \OCP\Files\Node $second) {
-				if (\strcmp($first->getPath(), $second->getPath()) < 0) {
+			usort($shareFileNodes, function (\OCP\Files\Node $first, \OCP\Files\Node $second) {
+				if (strcmp($first->getPath(), $second->getPath()) < 0) {
 					// first is shorther, take second
 					return -1;
 				}
@@ -525,9 +525,9 @@ class Manager implements IManager {
 			$sharedBy = $this->userManager->get($share->getSharedBy());
 			$sharedWith = $this->userManager->get($share->getSharedWith());
 			// Verify we can share with this user
-			$groups = \array_intersect(
-					$this->groupManager->getUserGroupIds($sharedBy),
-					$this->groupManager->getUserGroupIds($sharedWith)
+			$groups = array_intersect(
+				$this->groupManager->getUserGroupIds($sharedBy),
+				$this->groupManager->getUserGroupIds($sharedWith)
 			);
 
 			if (empty($groups)) {
@@ -649,7 +649,7 @@ class Manager implements IManager {
 	protected function setLinkParent(\OCP\Share\IShare $share) {
 
 		// No sense in checking if the method is not there.
-		if (\method_exists($share, 'setParent')) {
+		if (method_exists($share, 'setParent')) {
 			$storage = $share->getNode()->getStorage();
 			if ($storage->instanceOfStorage('\OCA\Files_Sharing\ISharedStorage')) {
 				// ISharedStorage does not mention getShareId
@@ -913,7 +913,7 @@ class Manager implements IManager {
 		} else {
 			$sharedWith = $share->getSharedWith();
 
-			$targetFile = '/' . \rtrim(\basename($finalTarget), '/') . '/' . \ltrim(\basename($share->getTarget()), '/');
+			$targetFile = '/' . rtrim(basename($finalTarget), '/') . '/' . ltrim(basename($share->getTarget()), '/');
 			/**
 			 * Scenario where share is made by old owner to a user different
 			 * from new owner
@@ -1111,7 +1111,7 @@ class Manager implements IManager {
 		/* @phan-suppress-next-line PhanUndeclaredMethod */
 		foreach ($provider->getChildren($share) as $child) {
 			$deletedChildren = $this->deleteChildren($child);
-			$deletedShares = \array_merge($deletedShares, $deletedChildren);
+			$deletedShares = array_merge($deletedShares, $deletedChildren);
 
 			$provider->delete($child);
 			$deletedShares[] = $child;
@@ -1139,7 +1139,7 @@ class Manager implements IManager {
 			'shareType'  => $shareType,
 			'shareWith'  => $sharedWith,
 			/* @phan-suppress-next-line PhanUndeclaredMethod */
-			'itemparent' => \method_exists($share, 'getParent') ? $share->getParent() : '',
+			'itemparent' => method_exists($share, 'getParent') ? $share->getParent() : '',
 			'uidOwner'   => $share->getSharedBy(),
 			'fileSource' => $share->getNodeId(),
 			'fileTarget' => $share->getTarget(),
@@ -1180,7 +1180,7 @@ class Manager implements IManager {
 		$deletedShares[] = $share;
 
 		//Format hook info
-		$formattedDeletedShares = \array_map('self::formatUnshareHookParams', $deletedShares);
+		$formattedDeletedShares = array_map('self::formatUnshareHookParams', $deletedShares);
 
 		$hookParams['deletedShares'] = $formattedDeletedShares;
 
@@ -1268,7 +1268,7 @@ class Manager implements IManager {
 					}
 					continue;
 				}
-				\array_push($shares, $queriedShare);
+				array_push($shares, $queriedShare);
 			}
 		}
 
@@ -1479,7 +1479,7 @@ class Manager implements IManager {
 		}
 
 		foreach ($providers as $provider) {
-			$results = \array_merge($results, $provider->getSharesByPath($path));
+			$results = array_merge($results, $provider->getSharesByPath($path));
 		}
 
 		return $results;
@@ -1892,15 +1892,15 @@ class Manager implements IManager {
 
 		if ($this->config->getAppValue('core', 'shareapi_exclude_groups', 'no') === 'yes') {
 			$groupsList = $this->config->getAppValue('core', 'shareapi_exclude_groups_list', '');
-			$excludedGroups = \json_decode($groupsList);
+			$excludedGroups = json_decode($groupsList);
 			if ($excludedGroups === null) {
-				$excludedGroups = \explode(',', $groupsList);
-				$newValue = \json_encode($excludedGroups);
+				$excludedGroups = explode(',', $groupsList);
+				$newValue = json_encode($excludedGroups);
 				$this->config->setAppValue('core', 'shareapi_exclude_groups_list', $newValue);
 			}
 			$user = $this->userManager->get($userId);
 			$usersGroups = $this->groupManager->getUserGroupIds($user);
-			$matchingGroups = \array_intersect($usersGroups, $excludedGroups);
+			$matchingGroups = array_intersect($usersGroups, $excludedGroups);
 			if (!empty($matchingGroups)) {
 				// If the user is a member of any of the excluded groups they cannot use sharing
 				$this->sharingDisabledForUsersCache[$userId] = true;
@@ -1928,7 +1928,7 @@ class Manager implements IManager {
 			return "";
 		}
 
-		return \md5(\json_encode($perms->toArray()));
+		return md5(json_encode($perms->toArray()));
 	}
 
 	/**

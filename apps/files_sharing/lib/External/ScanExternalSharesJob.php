@@ -58,16 +58,18 @@ class ScanExternalSharesJob extends TimedJob {
 	/** @var ILogger */
 	private $logger;
 
-	const DEFAULT_MIN_LAST_SCAN = 3*60*60;
-	const DEFAULT_MIN_LOGIN = 24*60*60;
-	const DEFAULT_SHARES_PER_SESSION = 100;
-	const BATCH_SIZE = 10;
+	public const DEFAULT_MIN_LAST_SCAN = 3*60*60;
+	public const DEFAULT_MIN_LOGIN = 24*60*60;
+	public const DEFAULT_SHARES_PER_SESSION = 100;
+	public const BATCH_SIZE = 10;
 
-	public function __construct(IDBConnection $connection = null,
-								IConfig $config = null,
-								IUserManager $userManager = null,
-								ILogger $logger = null,
-								Manager $externalManager = null) {
+	public function __construct(
+		IDBConnection $connection = null,
+		IConfig $config = null,
+		IUserManager $userManager = null,
+		ILogger $logger = null,
+		Manager $externalManager = null
+	) {
 		// Run once per 10 minutes
 		$this->setInterval(60 * 10);
 
@@ -113,7 +115,7 @@ class ScanExternalSharesJob extends TimedJob {
 		$lastLoginThreshold = $this->config->getAppValue('files_sharing', 'cronjob_scan_external_min_login', self::DEFAULT_MIN_LOGIN);
 		$lastScanThreshold = $this->config->getAppValue('files_sharing', 'cronjob_scan_external_min_scan', self::DEFAULT_MIN_LAST_SCAN);
 		$maxSharesPerSession = $this->config->getAppValue('files_sharing', 'cronjob_scan_external_batch', self::DEFAULT_SHARES_PER_SESSION);
-		$batchPerSession = \min($maxSharesPerSession, self::BATCH_SIZE);
+		$batchPerSession = min($maxSharesPerSession, self::BATCH_SIZE);
 
 		$scannedShares = 0;
 
@@ -125,7 +127,7 @@ class ScanExternalSharesJob extends TimedJob {
 			foreach ($shares as $share) {
 				if ($this->shouldScan($share, $lastLoginThreshold, $lastScanThreshold)) {
 					// make sure not to scan this share again within [cronjob_scan_external_min_scan]
-					$this->updateLastScanned($share['id'], \time());
+					$this->updateLastScanned($share['id'], time());
 
 					// do scan share
 					$this->scan($share);
@@ -151,7 +153,7 @@ class ScanExternalSharesJob extends TimedJob {
 	}
 
 	protected function shouldScan($share, $lastLoginThreshold, $lastScanThreshold) {
-		$now = \time();
+		$now = time();
 
 		// check last login
 		$user = $this->userManager->get($share['user']);

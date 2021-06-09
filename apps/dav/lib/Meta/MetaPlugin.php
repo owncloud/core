@@ -30,8 +30,8 @@ use Sabre\DAV\ServerPlugin;
 class MetaPlugin extends ServerPlugin {
 
 	// namespace
-	const NS_OWNCLOUD = 'http://owncloud.org/ns';
-	const PATH_FOR_FILEID_PROPERTYNAME = '{http://owncloud.org/ns}meta-path-for-user';
+	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
+	public const PATH_FOR_FILEID_PROPERTYNAME = '{http://owncloud.org/ns}meta-path-for-user';
 
 	/**
 	 * Reference to main server object
@@ -48,8 +48,9 @@ class MetaPlugin extends ServerPlugin {
 	 */
 	private $rootFolder;
 
-	public function __construct(IUserSession $userSession,
-								IRootFolder $rootFolder
+	public function __construct(
+		IUserSession $userSession,
+		IRootFolder $rootFolder
 	) {
 		$this->userSession = $userSession;
 		$this->rootFolder = $rootFolder;
@@ -93,7 +94,7 @@ class MetaPlugin extends ServerPlugin {
 				if (!$files) {
 					return null;
 				}
-				$file = \current($files);
+				$file = current($files);
 				return $baseFolder->getRelativePath($file->getPath());
 			});
 		}

@@ -39,8 +39,13 @@ class ApiControllerTest extends \Test\TestCase {
 			$this->createMock('\OCP\Security\ISecureRandom'),
 			$this->createMock('\OCP\IConfig')
 		);
-		$this->controller = new ChildApiController('app', $request, 'verbs',
-			'headers', 100);
+		$this->controller = new ChildApiController(
+			'app',
+			$request,
+			'verbs',
+			'headers',
+			100
+		);
 
 		$response = $this->controller->preflightedCors();
 

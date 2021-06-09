@@ -42,7 +42,8 @@ abstract class MapperTestUtility extends \Test\TestCase {
 		parent::setUp();
 
 		$this->db = $this->getMockBuilder(
-			'\OCP\IDBConnection')
+			'\OCP\IDBConnection'
+		)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -59,7 +60,7 @@ abstract class MapperTestUtility extends \Test\TestCase {
 	 * @return bool true if associative
 	 */
 	private function isAssocArray(array $array) {
-		return \array_values($array) !== $array;
+		return array_values($array) !== $array;
 	}
 
 	/**
@@ -87,8 +88,14 @@ abstract class MapperTestUtility extends \Test\TestCase {
 	 * of the database query. If not provided, it wont be assumed that fetch
 	 * will be called on the result
 	 */
-	protected function setMapperResult($sql, $arguments= [], $returnRows= [],
-									   $limit=null, $offset=null, $expectClose=false) {
+	protected function setMapperResult(
+		$sql,
+		$arguments= [],
+		$returnRows= [],
+		$limit=null,
+		$offset=null,
+		$expectClose=false
+	) {
 		if ($limit === null && $offset === null) {
 			$this->db->expects($this->at($this->prepareAt))
 				->method('prepare')
@@ -102,16 +109,20 @@ abstract class MapperTestUtility extends \Test\TestCase {
 		} elseif ($limit === null && $offset !== null) {
 			$this->db->expects($this->at($this->prepareAt))
 				->method('prepare')
-				->with($this->equalTo($sql),
+				->with(
+					$this->equalTo($sql),
 					$this->equalTo(null),
-					$this->equalTo($offset))
+					$this->equalTo($offset)
+				)
 				->will(($this->returnValue($this->query)));
 		} else {
 			$this->db->expects($this->at($this->prepareAt))
 				->method('prepare')
-				->with($this->equalTo($sql),
+				->with(
+					$this->equalTo($sql),
 					$this->equalTo($limit),
-					$this->equalTo($offset))
+					$this->equalTo($offset)
+				)
 				->will(($this->returnValue($this->query)));
 		}
 
@@ -142,9 +153,11 @@ abstract class MapperTestUtility extends \Test\TestCase {
 				$pdoConstant = $this->getPDOType($argument);
 				$this->query->expects($this->at($this->queryAt))
 					->method('bindValue')
-					->with($this->equalTo($key),
+					->with(
+						$this->equalTo($key),
 						$this->equalTo($argument),
-						$this->equalTo($pdoConstant));
+						$this->equalTo($pdoConstant)
+					);
 				$this->queryAt++;
 			}
 		} else {
@@ -153,9 +166,11 @@ abstract class MapperTestUtility extends \Test\TestCase {
 				$pdoConstant = $this->getPDOType($argument);
 				$this->query->expects($this->at($this->queryAt))
 					->method('bindValue')
-					->with($this->equalTo($index),
+					->with(
+						$this->equalTo($index),
 						$this->equalTo($argument),
-						$this->equalTo($pdoConstant));
+						$this->equalTo($pdoConstant)
+					);
 				$index++;
 				$this->queryAt++;
 			}
@@ -188,7 +203,7 @@ class ArgumentIterator {
 	}
 
 	public function next() {
-		$result = \array_shift($this->arguments);
+		$result = array_shift($this->arguments);
 		if ($result === null) {
 			return false;
 		} else {

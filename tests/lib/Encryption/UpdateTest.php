@@ -74,7 +74,8 @@ class UpdateTest extends TestCase {
 			$this->mountManager,
 			$this->encryptionManager,
 			$this->fileHelper,
-			$this->uid);
+			$this->uid
+		);
 	}
 
 	/**
@@ -147,7 +148,8 @@ class UpdateTest extends TestCase {
 					$this->assertSame(
 						$target,
 						$path,
-						'update needs to be executed for the target destination');
+						'update needs to be executed for the target destination'
+					);
 					return ['owner', $path];
 				});
 			$updateMock->expects($this->once())->method('update');

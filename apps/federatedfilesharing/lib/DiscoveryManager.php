@@ -49,8 +49,10 @@ class DiscoveryManager {
 	 * @param ICacheFactory $cacheFactory
 	 * @param IClientService $clientService
 	 */
-	public function __construct(ICacheFactory $cacheFactory,
-								IClientService $clientService) {
+	public function __construct(
+		ICacheFactory $cacheFactory,
+		IClientService $clientService
+	) {
 		$this->cache = $cacheFactory->create('ocs-discovery');
 		$this->client = $clientService->newClient();
 	}
@@ -63,7 +65,7 @@ class DiscoveryManager {
 	 * @return bool
 	 */
 	private function isSafeUrl($url) {
-		return (bool)\preg_match('/^[\/\.A-Za-z0-9]+$/', $url);
+		return (bool)preg_match('/^[\/\.A-Za-z0-9]+$/', $url);
 	}
 
 	/**
@@ -78,7 +80,7 @@ class DiscoveryManager {
 	private function discover($remote) {
 		// Check if something is in the cache
 		if ($cacheData = $this->cache->get($remote)) {
-			return \json_decode($cacheData, true);
+			return json_decode($cacheData, true);
 		}
 
 		// Default response body
@@ -109,7 +111,7 @@ class DiscoveryManager {
 		}
 
 		// Write into cache
-		$this->cache->set($remote, \json_encode($discoveredServices));
+		$this->cache->set($remote, json_encode($discoveredServices));
 		return $discoveredServices;
 	}
 
@@ -125,7 +127,7 @@ class DiscoveryManager {
 	private function ocmDiscover($remote) {
 		// Check if something is in the cache
 		if ($cacheData = $this->cache->get('OCM' . $remote)) {
-			return \json_decode($cacheData, true);
+			return json_decode($cacheData, true);
 		}
 
 		// Default response body
@@ -154,7 +156,7 @@ class DiscoveryManager {
 			}
 
 			// Write into cache
-			$this->cache->set('OCM' . $remote, \json_encode($discoveredServices));
+			$this->cache->set('OCM' . $remote, json_encode($discoveredServices));
 			return $discoveredServices;
 		}
 		return [
@@ -182,7 +184,7 @@ class DiscoveryManager {
 				]
 			);
 			if ($response->getStatusCode() === 200) {
-				$decodedService = \json_decode($response->getBody(), true);
+				$decodedService = json_decode($response->getBody(), true);
 			}
 			if (\is_array($decodedService) === false) {
 				$decodedService = [];

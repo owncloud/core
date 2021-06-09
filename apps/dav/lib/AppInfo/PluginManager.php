@@ -144,7 +144,7 @@ class PluginManager {
 			try {
 				$this->plugins[] = $this->container->query($plugin);
 			} catch (QueryException $e) {
-				if (\class_exists($plugin)) {
+				if (class_exists($plugin)) {
 					$this->plugins[] = new $plugin();
 				} else {
 					throw new \Exception("Sabre plugin class '$plugin' is unknown and could not be loaded");
@@ -158,7 +158,7 @@ class PluginManager {
 			try {
 				$this->collections[] = $this->container->query($collection);
 			} catch (QueryException $e) {
-				if (\class_exists($collection)) {
+				if (class_exists($collection)) {
 					$this->collections[] = new $collection();
 				} else {
 					throw new \Exception("Sabre collection class '$collection' is unknown and could not be loaded");

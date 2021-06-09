@@ -113,8 +113,8 @@ class MoveAvatarIntoSubFolder implements IRepairStep {
 		try {
 			\OC\Files\Filesystem::initMountPoints($userId);
 
-			$brokenPath = \substr_replace(
-				\substr_replace(\md5($userId), '/', 4, 0),
+			$brokenPath = substr_replace(
+				substr_replace(md5($userId), '/', 4, 0),
 				'/',
 				2,
 				0
@@ -183,7 +183,7 @@ class MoveAvatarIntoSubFolder implements IRepairStep {
 	 */
 	public function run(IOutput $output) {
 		$ocVersionFromBeforeUpdate = $this->config->getSystemValue('version', '0.0.0');
-		if (\version_compare($ocVersionFromBeforeUpdate, '10.2.0.5', '=')) {
+		if (version_compare($ocVersionFromBeforeUpdate, '10.2.0.5', '=')) {
 			$function = function (IUser $user) use ($output) {
 				$this->moveAvatars($output, $user);
 				$output->advance();

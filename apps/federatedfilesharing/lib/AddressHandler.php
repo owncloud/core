@@ -60,15 +60,15 @@ class AddressHandler {
 	 * @throws HintException
 	 */
 	public function splitUserRemote($address) {
-		if (\strpos($address, '@') === false) {
+		if (strpos($address, '@') === false) {
 			$hint = $this->l->t('Invalid Federated Cloud ID');
 			throw new HintException('Invalid Federated Cloud ID', $hint);
 		}
 
 		// Find the first character that is not allowed in user names
-		$id = \str_replace('\\', '/', $address);
-		$posSlash = \strpos($id, '/');
-		$posColon = \strpos($id, ':');
+		$id = str_replace('\\', '/', $address);
+		$posSlash = strpos($id, '/');
+		$posColon = strpos($id, ':');
 
 		if ($posSlash === false && $posColon === false) {
 			$invalidPos = \strlen($id);
@@ -77,19 +77,19 @@ class AddressHandler {
 		} elseif ($posColon === false) {
 			$invalidPos = $posSlash;
 		} else {
-			$invalidPos = \min($posSlash, $posColon);
+			$invalidPos = min($posSlash, $posColon);
 		}
 
 		// Find the last @ before $invalidPos
 		$pos = $lastAtPos = 0;
 		while ($lastAtPos !== false && $lastAtPos <= $invalidPos) {
 			$pos = $lastAtPos;
-			$lastAtPos = \strpos($id, '@', $pos + 1);
+			$lastAtPos = strpos($id, '@', $pos + 1);
 		}
 
 		if ($pos !== false) {
-			$user = \substr($id, 0, $pos);
-			$remote = \substr($id, $pos + 1);
+			$user = substr($id, 0, $pos);
+			$remote = substr($id, $pos + 1);
 			$remote = $this->fixRemoteURL($remote);
 			if (!empty($user) && !empty($remote)) {
 				return [$user, $remote];
@@ -128,7 +128,7 @@ class AddressHandler {
 	 */
 	public function removeProtocolFromUrl($url) {
 		// replace all characters before :// and :// itself
-		return \preg_replace('|^(.*?://)|', '', $url);
+		return preg_replace('|^(.*?://)|', '', $url);
 	}
 
 	/**
@@ -144,11 +144,11 @@ class AddressHandler {
 	 * @return string
 	 */
 	protected function fixRemoteURL($remote) {
-		$remote = \str_replace('\\', '/', $remote);
-		if ($fileNamePosition = \strpos($remote, '/index.php')) {
-			$remote = \substr($remote, 0, $fileNamePosition);
+		$remote = str_replace('\\', '/', $remote);
+		if ($fileNamePosition = strpos($remote, '/index.php')) {
+			$remote = substr($remote, 0, $fileNamePosition);
 		}
-		$remote = \rtrim($remote, '/');
+		$remote = rtrim($remote, '/');
 
 		return $remote;
 	}

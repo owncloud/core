@@ -25,9 +25,9 @@ use OC\Files\ObjectStore\Mapper;
 class MapperTest extends \Test\TestCase {
 	public function dataGetBucket() {
 		return [
-			['user', \substr(\md5('user'), 0, 3)],
-			['USER', \substr(\md5('USER'), 0, 3)],
-			['bc0e8b52-a66c-1035-90c6-d9663bda9e3f', \substr(\md5('bc0e8b52-a66c-1035-90c6-d9663bda9e3f'), 0, 3)],
+			['user', substr(md5('user'), 0, 3)],
+			['USER', substr(md5('USER'), 0, 3)],
+			['bc0e8b52-a66c-1035-90c6-d9663bda9e3f', substr(md5('bc0e8b52-a66c-1035-90c6-d9663bda9e3f'), 0, 3)],
 		];
 	}
 

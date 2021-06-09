@@ -107,7 +107,8 @@ class Hooks {
 			\OC\Files\Filesystem::getLoader(),
 			\OC::$server->getNotificationManager(),
 			\OC::$server->getEventDispatcher(),
-			$params['uid']);
+			$params['uid']
+		);
 
 		$manager->removeUserShares($params['uid']);
 	}
@@ -234,7 +235,7 @@ class Hooks {
 	}
 
 	private function filterSharesByFileId($shares, $fileId) {
-		return \array_filter($shares, function (IShare $share) use ($fileId) {
+		return array_filter($shares, function (IShare $share) use ($fileId) {
 			return \strval($share->getNodeId()) === \strval($fileId);
 		});
 	}

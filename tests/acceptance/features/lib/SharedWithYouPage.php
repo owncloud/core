@@ -107,7 +107,7 @@ class SharedWithYouPage extends FilesPageBasic {
 				//did not work and we retry
 				if ($countXHRRequests === 0) {
 					if ($expectToDeleteFile) {
-						\error_log("Error while decline file");
+						error_log("Error while decline file");
 					}
 				} else {
 					break;
@@ -115,23 +115,23 @@ class SharedWithYouPage extends FilesPageBasic {
 			} catch (\Exception $e) {
 				$this->closeFileActionsMenu();
 				if ($expectToDeleteFile) {
-					\error_log(
+					error_log(
 						"Error while decline file"
 						. "\n-------------------------\n"
 						. $e->getMessage()
 						. "\n-------------------------\n"
 					);
 				}
-				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
+				usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			}
 		}
 		if ($expectToDeleteFile && ($counter > 0)) {
 			if (\is_array($name)) {
-				$name = \implode('', $name);
+				$name = implode('', $name);
 			}
 			$message = "INFORMATION: retried to decline file '$name' $counter times";
 			echo $message;
-			\error_log($message);
+			error_log($message);
 		}
 	}
 

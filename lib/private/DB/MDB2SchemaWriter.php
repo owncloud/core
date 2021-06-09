@@ -50,16 +50,16 @@ class MDB2SchemaWriter {
 
 		// FIX ME: bloody work around
 		if ($config->getSystemValue('dbtype', 'sqlite') === 'oci') {
-			$filterExpression = '/^"' . \preg_quote($conn->getPrefix()) . '/';
+			$filterExpression = '/^"' . preg_quote($conn->getPrefix()) . '/';
 		} else {
-			$filterExpression = '/^' . \preg_quote($conn->getPrefix()) . '/';
+			$filterExpression = '/^' . preg_quote($conn->getPrefix()) . '/';
 		}
 		$conn->getConfiguration()->setFilterSchemaAssetsExpression($filterExpression);
 
 		foreach ($conn->getSchemaManager()->listTables() as $table) {
 			self::saveTable($table, $xml->addChild('table'));
 		}
-		\file_put_contents($file, $xml->asXML());
+		file_put_contents($file, $xml->asXML());
 		return true;
 	}
 
@@ -122,7 +122,7 @@ class MDB2SchemaWriter {
 				break;
 			case 'String':
 				$xml->addChild('type', 'text');
-				$default = \trim($column->getDefault());
+				$default = trim($column->getDefault());
 				if ($default === '') {
 					$default = false;
 				}

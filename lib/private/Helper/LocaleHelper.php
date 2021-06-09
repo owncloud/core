@@ -110,8 +110,9 @@ class LocaleHelper {
 			$endonym = (string)$l->t('__language_name__');
 			// Check if the language name is in the translation file
 			// Fallback to hardcoded language name if it isn't
-			$languageName = ($l->getLanguageCode() === $languageCode
-				&& \substr($endonym, 0, 1) !== '_'
+			$languageName = (
+				$l->getLanguageCode() === $languageCode
+				&& substr($endonym, 0, 1) !== '_'
 			) ? $endonym
 				: $this->getLanguageNameByCode($languageCode);
 
@@ -138,8 +139,8 @@ class LocaleHelper {
 			];
 		}
 
-		\ksort($commonLanguages);
-		\usort($languages, [$this, 'compareLanguagesByName']);
+		ksort($commonLanguages);
+		usort($languages, [$this, 'compareLanguagesByName']);
 
 		return [$userLang, $commonLanguages, $languages];
 	}
@@ -152,7 +153,7 @@ class LocaleHelper {
 	 * @return false|int
 	 */
 	public function getCommonLanguageWeight($languageCode) {
-		return \array_search($languageCode, $this->commonLanguages);
+		return array_search($languageCode, $this->commonLanguages);
 	}
 
 	/**
@@ -187,6 +188,6 @@ class LocaleHelper {
 			return -1;
 		}
 		// Otherwise compare the names
-		return \strcmp($a['name'], $b['name']);
+		return strcmp($a['name'], $b['name']);
 	}
 }

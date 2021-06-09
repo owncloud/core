@@ -34,7 +34,7 @@ use OC\User\NoUserException;
 class Storage implements IStorage {
 
 	// hidden file which indicate that the folder is a valid key storage
-	const KEY_STORAGE_MARKER = '.oc_key_storage';
+	public const KEY_STORAGE_MARKER = '.oc_key_storage';
 
 	/** @var View */
 	private $view;
@@ -354,7 +354,7 @@ class Storage implements IStorage {
 	protected function keySetPreparation($path) {
 		// If the file resides within a subdirectory, create it
 		if (!$this->view->file_exists($path)) {
-			$sub_dirs = \explode('/', \ltrim($path, '/'));
+			$sub_dirs = explode('/', ltrim($path, '/'));
 			$dir = '';
 			foreach ($sub_dirs as $sub_dir) {
 				$dir .= '/' . $sub_dir;

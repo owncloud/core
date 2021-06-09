@@ -93,7 +93,7 @@ class AdminStorageSettingsPage extends OwncloudPage {
 			$this->externalStorageCheckboxId
 		);
 		$ocDialogs = $this->getOcDialogs();
-		$ocDialog = \end($ocDialogs);
+		$ocDialog = end($ocDialogs);
 		$ocDialog->clickButton($session, "Yes");
 	}
 
@@ -179,7 +179,7 @@ class AdminStorageSettingsPage extends OwncloudPage {
 		$userOrGroupList = $this->findAll("xpath", $this->userOrGroupListXpath);
 		$i = 1;
 		foreach ($userOrGroupList as $groupOrUser) {
-			$userOrGroupName = $this->find("xpath", \sprintf($this->userOrGroupNameXpath, $i));
+			$userOrGroupName = $this->find("xpath", sprintf($this->userOrGroupNameXpath, $i));
 			if ($this->getTrimmedText($userOrGroupName) === $user) {
 				$groupOrUser->click();
 				$lastMountApplicable->blur();
@@ -206,11 +206,13 @@ class AdminStorageSettingsPage extends OwncloudPage {
 		$applicableUsersList = $this->findAll("xpath", $this->applicableUsersListXpath);
 		for ($i = 1; $i <= \count($applicableUsersList); $i++) {
 			$applicableUser = $this->find(
-				"xpath", \sprintf($this->applicableUserXpath, $i)
+				"xpath",
+				sprintf($this->applicableUserXpath, $i)
 			);
-			if ($this->getTrimmedText($applicableUser) === \strtolower($user)) {
+			if ($this->getTrimmedText($applicableUser) === strtolower($user)) {
 				$applicableUserDelete = $this->find(
-					"xpath", \sprintf($this->applicableUserDeleteXpath, $i)
+					"xpath",
+					sprintf($this->applicableUserDeleteXpath, $i)
 				);
 				$applicableUserDelete->click();
 				$this->waitUntilSuccessOrFailureSymbolAppears();
@@ -231,7 +233,8 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	 */
 	public function deleteLastCreatedLocalMount($session) {
 		$lastCreatedMountDeleteButton = $this->find(
-			"xpath", $this->lastCreatedMountDeleteButtonXpath
+			"xpath",
+			$this->lastCreatedMountDeleteButtonXpath
 		);
 		$this->assertElementNotNull(
 			$lastCreatedMountDeleteButton,
@@ -252,12 +255,14 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	 */
 	public function checkIfLastCreatedMountIsPresent($lastCreatedMountName) {
 		$lastCreatedMountList = $this->findAll(
-			"xpath", $this->lastCreatedMountListXpath
+			"xpath",
+			$this->lastCreatedMountListXpath
 		);
 		$i = 1;
 		foreach ($lastCreatedMountList as $mount) {
 			$mountPointName = $this->find(
-				"xpath", \sprintf($this->mountPointNameXpath, $i)
+				"xpath",
+				sprintf($this->mountPointNameXpath, $i)
 			);
 			if ($mountPointName->getValue() === $lastCreatedMountName) {
 				return true;
@@ -284,14 +289,14 @@ class AdminStorageSettingsPage extends OwncloudPage {
 			" xpath $this->statusSymbolXpath " .
 			"could not find status symbol"
 		);
-		$start = \time();
+		$start = time();
 		while (true) {
 			if ($statusSymbol->getAttribute("class") === "error"
 				|| $statusSymbol->getAttribute("class") === "success"
 			) {
 				break;
 			}
-			$now = \time();
+			$now = time();
 			if (($now - $start) * 1000 >= $timeout) {
 				break;
 			}
@@ -307,7 +312,8 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	 */
 	public function openMountOptions($session) {
 		$lastCreatedMountOptionsButton = $this->find(
-			"xpath", $this->lastCreatedMountOptionsButtonXpath
+			"xpath",
+			$this->lastCreatedMountOptionsButtonXpath
 		);
 		$this->assertElementNotNull(
 			$lastCreatedMountOptionsButton,
@@ -413,7 +419,8 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	) {
 		$this->waitForAjaxCallsToStartAndFinish($session);
 		$this->waitTillXpathIsVisible(
-			$this->filesExternalFormXpath, $timeout_msec
+			$this->filesExternalFormXpath,
+			$timeout_msec
 		);
 	}
 }

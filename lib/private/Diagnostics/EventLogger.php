@@ -42,7 +42,7 @@ class EventLogger implements IEventLogger {
 	 */
 	public function start($id, $description) {
 		if ($this->activated) {
-			$this->events[$id] = new Event($id, $description, \microtime(true));
+			$this->events[$id] = new Event($id, $description, microtime(true));
 		}
 	}
 
@@ -52,7 +52,7 @@ class EventLogger implements IEventLogger {
 	public function end($id) {
 		if ($this->activated && isset($this->events[$id])) {
 			$timing = $this->events[$id];
-			$timing->end(\microtime(true));
+			$timing->end(microtime(true));
 		}
 	}
 

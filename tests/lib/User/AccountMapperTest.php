@@ -105,7 +105,7 @@ class AccountMapperTest extends TestCase {
 	public function testFindByUserId() {
 		$result = $this->mapper->find("testfind1");
 		$this->assertCount(1, $result);
-		$this->assertEquals("TestFind1", \array_shift($result)->getUserId());
+		$this->assertEquals("TestFind1", array_shift($result)->getUserId());
 	}
 
 	/**
@@ -114,7 +114,7 @@ class AccountMapperTest extends TestCase {
 	public function testFindByDisplayName() {
 		$result = $this->mapper->find('test find 2');
 		$this->assertCount(1, $result);
-		$this->assertEquals("TestFind2", \array_shift($result)->getUserId());
+		$this->assertEquals("TestFind2", array_shift($result)->getUserId());
 	}
 
 	public function findByEmailDataProvider() {
@@ -133,7 +133,7 @@ class AccountMapperTest extends TestCase {
 	public function testFindByEmail($email) {
 		$result = $this->mapper->find($email);
 		$this->assertCount(1, $result);
-		$this->assertEquals("TestFind3", \array_shift($result)->getUserId());
+		$this->assertEquals("TestFind3", array_shift($result)->getUserId());
 	}
 
 	/**
@@ -144,7 +144,7 @@ class AccountMapperTest extends TestCase {
 	public function testGetByEmail($email) {
 		$result = $this->mapper->getByEmail($email);
 		$this->assertCount(1, $result);
-		$this->assertEquals("TestFind3", \array_shift($result)->getUserId());
+		$this->assertEquals("TestFind3", array_shift($result)->getUserId());
 	}
 
 	/**
@@ -153,7 +153,7 @@ class AccountMapperTest extends TestCase {
 	public function testFindBySearchTerm() {
 		$result = $this->mapper->find('term 4 b');
 		$this->assertCount(1, $result);
-		$this->assertEquals("TestFind4", \array_shift($result)->getUserId());
+		$this->assertEquals("TestFind4", array_shift($result)->getUserId());
 	}
 
 	/**
@@ -163,8 +163,8 @@ class AccountMapperTest extends TestCase {
 		$result = $this->mapper->find('Term', 2, 2);
 		$this->assertCount(2, $result);
 		//results are ordered by display name
-		$this->assertEquals("TestFind3", \array_shift($result)->getUserId());
-		$this->assertEquals("TestFind4", \array_shift($result)->getUserId());
+		$this->assertEquals("TestFind3", array_shift($result)->getUserId());
+		$this->assertEquals("TestFind4", array_shift($result)->getUserId());
 	}
 
 	public function findUserIdsDataProvider() {
@@ -203,10 +203,10 @@ class AccountMapperTest extends TestCase {
 	 */
 	public function testFindUserIdsLoggedIn($backend, $limit, $offset, $expected) {
 		$accounts = $this->mapper->find("TestFind2");
-		$accounts[0]->setLastLogin(\time());
+		$accounts[0]->setLastLogin(time());
 		$this->mapper->update($accounts[0]);
 		$accounts = $this->mapper->find("TestFind4");
-		$accounts[0]->setLastLogin(\time());
+		$accounts[0]->setLastLogin(time());
 		$this->mapper->update($accounts[0]);
 
 		$result = $this->mapper->findUserIds($backend, true, $limit, $offset);
@@ -229,7 +229,7 @@ class AccountMapperTest extends TestCase {
 		$this->mapper->callForAllUsers(function (Account $account) use (&$accounts) {
 			$accounts[] = $account->getUserId();
 		}, 'TestFind', false);
-		\sort($accounts);
+		sort($accounts);
 		$this->assertSame($expectedAccounts, $accounts);
 	}
 

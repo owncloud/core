@@ -60,20 +60,22 @@ class OwncloudPage extends Page {
 		Session $session,
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
-		$currentTime = \microtime(true);
+		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			$loadingIndicator = $this->find("css", '.loading');
 			if ($loadingIndicator !== null) {
 				$visibility = $this->elementHasCSSValue(
-					$loadingIndicator, 'visibility', 'visible'
+					$loadingIndicator,
+					'visibility',
+					'visible'
 				);
 				if ($visibility === false) {
 					break;
 				}
 			}
-			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
-			$currentTime = \microtime(true);
+			usleep(STANDARD_SLEEP_TIME_MICROSEC);
+			$currentTime = microtime(true);
 		}
 
 		if ($currentTime > $end) {
@@ -96,7 +98,7 @@ class OwncloudPage extends Page {
 		$xpath,
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
-		$currentTime = \microtime(true);
+		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			try {
@@ -107,8 +109,8 @@ class OwncloudPage extends Page {
 			if ($element === null) {
 				break;
 			}
-			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
-			$currentTime = \microtime(true);
+			usleep(STANDARD_SLEEP_TIME_MICROSEC);
+			$currentTime = microtime(true);
 		}
 	}
 
@@ -120,9 +122,10 @@ class OwncloudPage extends Page {
 	 * @return NodeElement|null
 	 */
 	public function waitTillElementIsNotNull(
-		$xpath, $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+		$xpath,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
-		$currentTime = \microtime(true);
+		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			try {
@@ -131,14 +134,14 @@ class OwncloudPage extends Page {
 				 */
 				$element = $this->find("xpath", $xpath);
 				if ($element === null || !$element->isValid()) {
-					\usleep(STANDARD_SLEEP_TIME_MICROSEC);
+					usleep(STANDARD_SLEEP_TIME_MICROSEC);
 				} else {
 					return $element;
 				}
 			} catch (WebDriverException $e) {
-				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
+				usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			}
-			$currentTime = \microtime(true);
+			$currentTime = microtime(true);
 		}
 
 		return null;
@@ -214,22 +217,22 @@ class OwncloudPage extends Page {
 		// Notifications might take some time to be displayed.
 		// Check until there are at least the expected number of notifications
 		// or the standard wait time has expired.
-		$currentTime = \microtime(true);
+		$currentTime = microtime(true);
 		$end = $currentTime + (STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000);
 		$firstLoop = true;
 		$actualCount = 0;
 		do {
 			if (!$firstLoop) {
-				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
+				usleep(STANDARD_SLEEP_TIME_MICROSEC);
 				echo "Notice: " . __METHOD__ . " expecting $expectedCount notifications but found only $actualCount - checking again\n";
 			}
 			$allNotifications = $notifications->findAll("xpath", "div");
 			$actualCount = \count($allNotifications);
-			$currentTime = \microtime(true);
+			$currentTime = microtime(true);
 			$firstLoop = false;
 		} while ($currentTime <= $end && ($actualCount < $expectedCount));
 		foreach ($notifications->findAll("xpath", "div") as $notification) {
-			\array_push($notificationsText, $this->getTrimmedText($notification));
+			array_push($notificationsText, $this->getTrimmedText($notification));
 		}
 		return $notificationsText;
 	}
@@ -245,7 +248,7 @@ class OwncloudPage extends Page {
 			$title,
 			__METHOD__ . " could not find title element"
 		);
-		return \trim($title->getHtml());
+		return trim($title->getHtml());
 	}
 
 	/**
@@ -430,7 +433,7 @@ class OwncloudPage extends Page {
 	 * @return array
 	 */
 	public function getCoordinatesOfElement($session, $element) {
-		$elementXpath = \str_replace('"', '\"', $element->getXpath());
+		$elementXpath = str_replace('"', '\"', $element->getXpath());
 
 		return $session->evaluateScript(
 			'return document.evaluate( "' .
@@ -485,7 +488,7 @@ class OwncloudPage extends Page {
 		if ($timeout_msec <= 0) {
 			throw new \InvalidArgumentException("negative or zero timeout");
 		}
-		$currentTime = \microtime(true);
+		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			try {
@@ -511,14 +514,14 @@ class OwncloudPage extends Page {
 				//show Exception message, but do not throw it
 				echo $e->getMessage() . "\n";
 			} finally {
-				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
-				$currentTime = \microtime(true);
+				usleep(STANDARD_SLEEP_TIME_MICROSEC);
+				$currentTime = microtime(true);
 			}
 		}
 		if ($currentTime > $end) {
 			$message = "INFORMATION: timed out waiting for outstanding ajax calls";
 			echo $message;
-			\error_log($message);
+			error_log($message);
 		}
 	}
 
@@ -531,13 +534,14 @@ class OwncloudPage extends Page {
 	 * @return void
 	 */
 	public function waitForAjaxCallsToStart(
-		Session $session, $timeout_msec = 1000
+		Session $session,
+		$timeout_msec = 1000
 	) {
 		$timeout_msec = (int) $timeout_msec;
 		if ($timeout_msec <= 0) {
 			throw new \InvalidArgumentException("negative or zero timeout");
 		}
-		$currentTime = \microtime(true);
+		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			$activeAjax = $session->evaluateScript(
@@ -557,13 +561,13 @@ class OwncloudPage extends Page {
 			if ((int) $activeAjax > 0) {
 				break;
 			}
-			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
-			$currentTime = \microtime(true);
+			usleep(STANDARD_SLEEP_TIME_MICROSEC);
+			$currentTime = microtime(true);
 		}
 		if ($currentTime > $end) {
 			$message = "INFORMATION: timed out waiting for ajax calls to start";
 			echo $message;
-			\error_log($message);
+			error_log($message);
 		}
 	}
 
@@ -580,11 +584,11 @@ class OwncloudPage extends Page {
 		Session $session,
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
-		$start = \microtime(true);
+		$start = microtime(true);
 		$this->waitForAjaxCallsToStart($session);
-		$end = \microtime(true);
+		$end = microtime(true);
 		$timeout_msec = $timeout_msec - (($end - $start) * 1000);
-		$timeout_msec = \max($timeout_msec, MINIMUM_UI_WAIT_TIMEOUT_MILLISEC);
+		$timeout_msec = max($timeout_msec, MINIMUM_UI_WAIT_TIMEOUT_MILLISEC);
 		$this->waitForOutstandingAjaxCalls($session, $timeout_msec);
 	}
 
@@ -700,12 +704,13 @@ class OwncloudPage extends Page {
 		$exists = false;
 		$style = $element->getAttribute('style');
 		if ($style) {
-			if (\preg_match(
+			if (preg_match(
 				"/(^{$property}:|; {$property}:) ([a-z0-9]+);/i",
-				$style, $matches
+				$style,
+				$matches
 			)
 			) {
-				$found = \array_pop($matches);
+				$found = array_pop($matches);
 				if ($found == $value) {
 					$exists = $element;
 				}
@@ -724,7 +729,8 @@ class OwncloudPage extends Page {
 	 * @return void
 	 */
 	public function waitForScrollingToFinish(
-		Session $session, $scrolledElement,
+		Session $session,
+		$scrolledElement,
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		// Wait so that, if scrolling is going to happen, it will have started.
@@ -732,7 +738,7 @@ class OwncloudPage extends Page {
 		// The downside here is that if scrolling is not needed at all then we
 		// wasted time waiting.
 		// TODO: find a way to avoid this sleep
-		\usleep(MINIMUM_UI_WAIT_TIMEOUT_MICROSEC);
+		usleep(MINIMUM_UI_WAIT_TIMEOUT_MICROSEC);
 		$session->executeScript(
 			'
 			jQuery.scrolling = 0;
@@ -747,17 +753,17 @@ class OwncloudPage extends Page {
 		);
 		$result = 1;
 		$timeout_msec = (int) $timeout_msec;
-		$currentTime = \microtime(true);
+		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end && $result !== 0) {
-			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
+			usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			$result = (int) $session->evaluateScript("jQuery.scrolling");
-			$currentTime = \microtime(true);
+			$currentTime = microtime(true);
 		}
 		if ($currentTime > $end) {
 			$message = "INFORMATION: timed out waiting for scrolling to finish";
 			echo $message;
-			\error_log($message);
+			error_log($message);
 		}
 	}
 
@@ -781,7 +787,7 @@ class OwncloudPage extends Page {
 	public function fillFieldAndKeepFocus(NodeElement $element, $value, $session) {
 		$driver = $session->getDriver();
 		$element = $driver->getWebDriverSession()->element('xpath', $element->getXpath());
-		$value = \str_repeat(Key::BACKSPACE . Key::DELETE, \strlen($element->attribute('value'))) . $value;
+		$value = str_repeat(Key::BACKSPACE . Key::DELETE, \strlen($element->attribute('value'))) . $value;
 		$element->postValue(['value' => [$value]]);
 	}
 
@@ -801,7 +807,9 @@ class OwncloudPage extends Page {
 	 * @return void
 	 */
 	public function fillFieldWithCharacters(
-		Session $session, $xpath, $string
+		Session $session,
+		$xpath,
+		$string
 	) {
 		$session->executeScript(
 			"document.evaluate(`" . $xpath . "`, document).iterateNext().value = \"" . $string . "\";"
@@ -819,7 +827,7 @@ class OwncloudPage extends Page {
 	 * @throws \Exception
 	 */
 	public function getTrimmedText(NodeElement $element) {
-		return \trim($element->getText());
+		return trim($element->getText());
 	}
 
 	/**
@@ -838,13 +846,13 @@ class OwncloudPage extends Page {
 	 * @throws \InvalidArgumentException
 	 */
 	public function quotedText($text) {
-		if (\strstr($text, "'") === false) {
+		if (strstr($text, "'") === false) {
 			return "'$text'";
-		} elseif (\strstr($text, '"') === false) {
+		} elseif (strstr($text, '"') === false) {
 			return '"' . $text . '"';
 		} else {
 			// The text contains both single and double quotes.
-			return "concat('" . \str_replace("'", "',\"'\",'", $text) . "')";
+			return "concat('" . str_replace("'", "',\"'\",'", $text) . "')";
 		}
 	}
 
@@ -857,8 +865,8 @@ class OwncloudPage extends Page {
 		try {
 			parent::open($urlParameters);
 		} catch (UnexpectedPageException $e) {
-			$expected = \parse_url($this->getUrl($urlParameters));
-			$actual = \parse_url($this->getDriver()->getCurrentUrl());
+			$expected = parse_url($this->getUrl($urlParameters));
+			$actual = parse_url($this->getDriver()->getCurrentUrl());
 			foreach (['scheme', 'host', 'path'] as $part) {
 				if (\array_key_exists($part, $expected)) {
 					if (!\array_key_exists($part, $actual)
@@ -873,9 +881,9 @@ class OwncloudPage extends Page {
 				if (!\array_key_exists('query', $actual)) {
 					throw $e;
 				}
-				$expectedQuery = \explode("&", $expected['query']);
-				$actualQuery = \explode("&", $actual['query']);
-				if (\count(\array_diff($expectedQuery, $actualQuery)) > 0) {
+				$expectedQuery = explode("&", $expected['query']);
+				$actualQuery = explode("&", $actual['query']);
+				if (\count(array_diff($expectedQuery, $actualQuery)) > 0) {
 					throw $e;
 				}
 			}

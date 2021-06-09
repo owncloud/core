@@ -33,12 +33,12 @@ use OCP\Security\ICrypto;
  * Stores the mount config in the database
  */
 class DBConfigService {
-	const MOUNT_TYPE_ADMIN = 1;
-	const MOUNT_TYPE_PERSONAl = 2;
+	public const MOUNT_TYPE_ADMIN = 1;
+	public const MOUNT_TYPE_PERSONAl = 2;
 
-	const APPLICABLE_TYPE_GLOBAL = 1;
-	const APPLICABLE_TYPE_GROUP = 2;
-	const APPLICABLE_TYPE_USER = 3;
+	public const APPLICABLE_TYPE_GLOBAL = 1;
+	public const APPLICABLE_TYPE_GROUP = 2;
+	public const APPLICABLE_TYPE_USER = 3;
 
 	/**
 	 * @var IDBConnection
@@ -156,7 +156,7 @@ class DBConfigService {
 	 */
 	public function getAdminMountsForMultiple($type, array $values) {
 		$builder = $this->connection->getQueryBuilder();
-		$params = \array_map(function ($value) use ($builder) {
+		$params = array_map(function ($value) use ($builder) {
 			return $builder->createNamedParameter($value, IQueryBuilder::PARAM_STR);
 		}, $values);
 
@@ -294,12 +294,12 @@ class DBConfigService {
 		$count = $this->connection->insertIfNotExist('*PREFIX*external_options', [
 			'mount_id' => $mountId,
 			'key' => $key,
-			'value' => \json_encode($value)
+			'value' => json_encode($value)
 		], ['mount_id', 'key']);
 		if ($count === 0) {
 			$builder = $this->connection->getQueryBuilder();
 			$query = $builder->update('external_options')
-				->set('value', $builder->createNamedParameter(\json_encode($value), IQueryBuilder::PARAM_STR))
+				->set('value', $builder->createNamedParameter(json_encode($value), IQueryBuilder::PARAM_STR))
 				->where($builder->expr()->eq('mount_id', $builder->createNamedParameter($mountId, IQueryBuilder::PARAM_INT)))
 				->andWhere($builder->expr()->eq('key', $builder->createNamedParameter($key, IQueryBuilder::PARAM_STR)));
 			$query->execute();
@@ -339,18 +339,18 @@ class DBConfigService {
 				$uniqueMounts[$id] = $mount;
 			}
 		}
-		$uniqueMounts = \array_values($uniqueMounts);
+		$uniqueMounts = array_values($uniqueMounts);
 
-		$mountIds = \array_map(function ($mount) {
+		$mountIds = array_map(function ($mount) {
 			return $mount['mount_id'];
 		}, $uniqueMounts);
-		$mountIds = \array_values(\array_unique($mountIds));
+		$mountIds = array_values(array_unique($mountIds));
 
 		$applicable = $this->getApplicableForMounts($mountIds);
 		$config = $this->getConfigForMounts($mountIds);
 		$options = $this->getOptionsForMounts($mountIds);
 
-		return \array_map(function ($mount, $applicable, $config, $options) {
+		return array_map(function ($mount, $applicable, $config, $options) {
 			$mount['type'] = (int)$mount['type'];
 			$mount['priority'] = (int)$mount['priority'];
 			$mount['applicable'] = $applicable;
@@ -374,7 +374,7 @@ class DBConfigService {
 		}
 		$builder = $this->connection->getQueryBuilder();
 		$fields[] = 'mount_id';
-		$placeHolders = \array_map(function ($id) use ($builder) {
+		$placeHolders = array_map(function ($id) use ($builder) {
 			return $builder->createPositionalParameter($id, IQueryBuilder::PARAM_INT);
 		}, $mountIds);
 		$query = $builder->select($fields)
@@ -409,7 +409,7 @@ class DBConfigService {
 	 */
 	public function getConfigForMounts($mountIds) {
 		$mountConfigs = $this->selectForMounts('external_config', ['key', 'value'], $mountIds);
-		return \array_map([$this, 'createKeyValueMap'], $mountConfigs);
+		return array_map([$this, 'createKeyValueMap'], $mountConfigs);
 	}
 
 	/**
@@ -418,10 +418,10 @@ class DBConfigService {
 	 */
 	public function getOptionsForMounts($mountIds) {
 		$mountOptions = $this->selectForMounts('external_options', ['key', 'value'], $mountIds);
-		$optionsMap = \array_map([$this, 'createKeyValueMap'], $mountOptions);
-		return \array_map(function (array $options) {
-			return \array_map(function ($option) {
-				return \json_decode($option);
+		$optionsMap = array_map([$this, 'createKeyValueMap'], $mountOptions);
+		return array_map(function (array $options) {
+			return array_map(function ($option) {
+				return json_decode($option);
 			}, $options);
 		}, $optionsMap);
 	}
@@ -431,13 +431,13 @@ class DBConfigService {
 	 * @return array ['key1' => $value1, ...]
 	 */
 	private function createKeyValueMap(array $keyValuePairs) {
-		$keys = \array_map(function ($pair) {
+		$keys = array_map(function ($pair) {
 			return $pair['key'];
 		}, $keyValuePairs);
-		$values = \array_map(function ($pair) {
+		$values = array_map(function ($pair) {
 			return $pair['value'];
 		}, $keyValuePairs);
 
-		return \array_combine($keys, $values);
+		return array_combine($keys, $values);
 	}
 }

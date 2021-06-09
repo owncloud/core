@@ -78,7 +78,7 @@ class Owncloud {
 		} catch (\Exception $e) {
 			$timezone = new \DateTimeZone('UTC');
 		}
-		$time = \DateTime::createFromFormat("U.u", \number_format(\microtime(true), 4, ".", ""));
+		$time = \DateTime::createFromFormat("U.u", number_format(microtime(true), 4, ".", ""));
 		if ($time === false) {
 			$time = new \DateTime(null, $timezone);
 		} else {
@@ -97,7 +97,7 @@ class Owncloud {
 		} else {
 			$user = '--';
 		}
-		$entry = \compact(
+		$entry = compact(
 			'reqId',
 			'level',
 			'time',
@@ -111,29 +111,29 @@ class Owncloud {
 
 		if (!empty($extraFields)) {
 			// augment with additional fields
-			$entry = \array_merge($entry, $extraFields);
+			$entry = array_merge($entry, $extraFields);
 		}
 
-		$entry = \json_encode($entry);
+		$entry = json_encode($entry);
 		if ($conditionalLogFile !== null) {
 			if ($conditionalLogFile[0] !== '/') {
 				$conditionalLogFile = \OC::$server->getConfig()->getSystemValue('datadirectory') . "/" . $conditionalLogFile;
 			}
 			self::createLogFile($conditionalLogFile);
-			$handle = @\fopen($conditionalLogFile, 'a');
+			$handle = @fopen($conditionalLogFile, 'a');
 		} else {
 			self::createLogFile(self::$logFile);
-			$handle = @\fopen(self::$logFile, 'a');
+			$handle = @fopen(self::$logFile, 'a');
 		}
 		if ($handle) {
-			\fwrite($handle, $entry."\n");
-			\fclose($handle);
+			fwrite($handle, $entry."\n");
+			fclose($handle);
 		} else {
 			// Fall back to error_log
-			\error_log($entry);
+			error_log($entry);
 		}
-		if (\php_sapi_name() === 'cli-server') {
-			\error_log($message, 4);
+		if (php_sapi_name() === 'cli-server') {
+			error_log($message, 4);
 		}
 	}
 
@@ -143,11 +143,11 @@ class Owncloud {
 	 * @return boolean
 	 */
 	public static function createLogFile($logFile) {
-		if (\file_exists($logFile)) {
+		if (file_exists($logFile)) {
 			return true;
 		}
-		if (\is_writable(\dirname($logFile)) && \touch($logFile)) {
-			@\chmod($logFile, 0640);
+		if (is_writable(\dirname($logFile)) && touch($logFile)) {
+			@chmod($logFile, 0640);
 			return true;
 		}
 		return false;

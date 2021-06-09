@@ -328,11 +328,11 @@ class Manager implements ICommentsManager {
 	 * @since 9.0.0
 	 */
 	public function getForObject(
-			$objectType,
-			$objectId,
-			$limit = 0,
-			$offset = 0,
-			\DateTime $notOlderThan = null
+		$objectType,
+		$objectId,
+		$limit = 0,
+		$offset = 0,
+		\DateTime $notOlderThan = null
 	) {
 		$comments = [];
 
@@ -382,7 +382,7 @@ class Manager implements ICommentsManager {
 		$qbSup = $this->dbConn->getQueryBuilder();
 
 		$unreadCountsForNodes = [];
-		$objectIdChunks = \array_chunk($objectIds, 100);
+		$objectIdChunks = array_chunk($objectIds, 100);
 		foreach ($objectIdChunks as $objectIdChunk) {
 			// Fetch only records from oc_comments which are in specified int[] NodeIDs array and satisfy specified $objectType
 			$qbMain->selectAlias('object_id', 'id')->selectAlias($qbMain->createFunction('COUNT(`object_id`)'), 'count')

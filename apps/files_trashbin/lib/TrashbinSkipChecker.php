@@ -67,7 +67,7 @@ class TrashbinSkipChecker {
 	 */
 	public function shouldSkipPath(View $view, string $relativePath): bool {
 		$isFolder = $view->getMimeType($relativePath) === 'httpd/unix-directory';
-		$relativePath = \ltrim($relativePath, '/');
+		$relativePath = ltrim($relativePath, '/');
 
 		if ($this->checkDirectoryName($relativePath, $isFolder) === true) {
 			return true;
@@ -90,15 +90,15 @@ class TrashbinSkipChecker {
 		if ($isFolder) {
 			// add trailing slash to ensure correct behavior with folders.
 			// otherwise a config like "tes" would apply to a folder "test".
-			$relativePath = \rtrim($relativePath, '/');
+			$relativePath = rtrim($relativePath, '/');
 			$relativePath .= '/';
 		}
 
 		foreach ($directoriesToSkip as $skipItem) {
-			$skipItem = \trim($skipItem);
+			$skipItem = trim($skipItem);
 			$skipItem .= '/';
 
-			if (\substr($relativePath, 0, \strlen($skipItem)) === $skipItem) {
+			if (substr($relativePath, 0, \strlen($skipItem)) === $skipItem) {
 				$this->logger->info("Path $relativePath skipped the trashbin and has been deleted immediately due to the trashbin_skip_directories config $skipItem");
 				return true;
 			}
@@ -111,10 +111,10 @@ class TrashbinSkipChecker {
 		$fileExtensionsToSkip = $this->config->getSystemValue('trashbin_skip_extensions', []);
 
 		foreach ($fileExtensionsToSkip as $skipItem) {
-			$skipItem = \trim($skipItem);
+			$skipItem = trim($skipItem);
 			$skipItem = '.'.$skipItem;
 
-			if (\substr($relativePath, -\strlen($skipItem)) === $skipItem) {
+			if (substr($relativePath, -\strlen($skipItem)) === $skipItem) {
 				$this->logger->info("Path $relativePath skipped the trashbin and has been deleted immediately due to the trashbin_skip_extensions config $skipItem");
 				return true;
 			}

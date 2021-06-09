@@ -65,13 +65,13 @@ class SetupController {
 			$errors = ['errors' => $e];
 
 			if (\count($e) > 0) {
-				$options = \array_merge($opts, $post, $errors);
+				$options = array_merge($opts, $post, $errors);
 				$this->display($options);
 			} else {
 				$this->finishSetup();
 			}
 		} else {
-			$options = \array_merge($opts, $post);
+			$options = array_merge($opts, $post);
 			$this->display($options);
 		}
 	}
@@ -87,7 +87,7 @@ class SetupController {
 			'dbhost' => 'localhost',
 			'dbtype' => '',
 		];
-		$parameters = \array_merge($defaults, $post);
+		$parameters = array_merge($defaults, $post);
 
 		\OC_Util::addVendorScript('strengthify/jquery.strengthify');
 		\OC_Util::addVendorStyle('strengthify/strengthify');
@@ -96,19 +96,19 @@ class SetupController {
 	}
 
 	public function finishSetup() {
-		if (\file_exists($this->autoConfigFile)) {
-			\unlink($this->autoConfigFile);
+		if (file_exists($this->autoConfigFile)) {
+			unlink($this->autoConfigFile);
 		}
 		\OC::$server->getIntegrityCodeChecker()->runInstanceVerification();
 		\OC_Util::redirectToDefaultPage();
 	}
 
 	public function loadAutoConfig($post) {
-		if (\file_exists($this->autoConfigFile)) {
+		if (file_exists($this->autoConfigFile)) {
 			\OCP\Util::writeLog('core', 'Autoconfig file found, setting up ownCloud…', \OCP\Util::INFO);
 			$AUTOCONFIG = [];
 			include $this->autoConfigFile;
-			$post = \array_merge($post, $AUTOCONFIG);
+			$post = array_merge($post, $AUTOCONFIG);
 		}
 
 		$dbIsSet = isset($post['dbtype']);

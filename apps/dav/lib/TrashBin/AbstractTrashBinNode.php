@@ -44,8 +44,11 @@ abstract class AbstractTrashBinNode implements ITrashBinNode {
 	 */
 	protected $user;
 
-	public function __construct(string $user, FileInfo $fileInfo,
-								TrashBinManager $trashBinManager) {
+	public function __construct(
+		string $user,
+		FileInfo $fileInfo,
+		TrashBinManager $trashBinManager
+	) {
 		$this->fileInfo = $fileInfo;
 		$this->trashBinManager = $trashBinManager;
 		$this->user = $user;
@@ -87,21 +90,21 @@ abstract class AbstractTrashBinNode implements ITrashBinNode {
 	public function getOriginalFileName() : string {
 		$path = $this->getPathInTrash();
 		if (\count($path) === 1) {
-			$path = \end($path);
-			$pathInfo = \pathinfo($path);
+			$path = end($path);
+			$pathInfo = pathinfo($path);
 			return $pathInfo['filename'];
 		}
-		return \end($path);
+		return end($path);
 	}
 
 	public function getOriginalLocation() : string {
 		$pathElements = $this->getPathInTrash();
 		$path = $pathElements[0];
-		$pathParts = \pathinfo($path);
-		$timestamp = (int)\substr($pathParts['extension'], 1);
+		$pathParts = pathinfo($path);
+		$timestamp = (int)substr($pathParts['extension'], 1);
 
 		$pathElements[0] = $pathParts['filename'];
-		$originalPath = \implode('/', $pathElements);
+		$originalPath = implode('/', $pathElements);
 
 		$location = $this->trashBinManager->getLocation($this->user, $pathParts['filename'], $timestamp);
 		if ($location !== '.') {
@@ -114,8 +117,8 @@ abstract class AbstractTrashBinNode implements ITrashBinNode {
 	public function getDeleteTimestamp() : int {
 		$path = $this->getPathInTrash();
 		$path = $path[0];
-		$pathParts = \pathinfo($path);
-		return (int)\substr($pathParts['extension'], 1);
+		$pathParts = pathinfo($path);
+		return (int)substr($pathParts['extension'], 1);
 	}
 
 	/**
@@ -151,8 +154,8 @@ abstract class AbstractTrashBinNode implements ITrashBinNode {
 	 */
 	public function getPathInTrash() {
 		$path = $this->fileInfo->getPath();
-		$path = \explode('/', $path);
-		return \array_splice($path, 4);
+		$path = explode('/', $path);
+		return array_splice($path, 4);
 	}
 
 	public function setName($name) {

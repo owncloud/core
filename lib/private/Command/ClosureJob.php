@@ -25,8 +25,8 @@ use OC\BackgroundJob\QueuedJob;
 
 class ClosureJob extends QueuedJob {
 	protected function run($serializedCallable) {
-		$serializedClosure = \unserialize($serializedCallable);
-		if (\method_exists($serializedClosure, 'getClosure')) {
+		$serializedClosure = unserialize($serializedCallable);
+		if (method_exists($serializedClosure, 'getClosure')) {
 			$callable = $serializedClosure->getClosure();
 			if (\is_callable($callable)) {
 				$callable();

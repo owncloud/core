@@ -37,7 +37,7 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 	}
 
 	public function tearDown(): void {
-		@\unlink($this->dataDir . '/mount.json');
+		@unlink($this->dataDir . '/mount.json');
 		parent::tearDown();
 	}
 
@@ -130,8 +130,8 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 	}
 
 	private function assertEqualsArrays($expected, $actual) {
-		\sort($expected);
-		\sort($actual);
+		sort($expected);
+		sort($actual);
 
 		$this->assertEquals($expected, $actual);
 	}
@@ -448,7 +448,8 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 		$sourceApplicableGroups,
 		$updatedApplicableUsers,
 		$updatedApplicableGroups,
-		$expectedCalls) {
+		$expectedCalls
+	) {
 		$storage = $this->makeTestStorageData();
 		$storage->setApplicableUsers($sourceApplicableUsers);
 		$storage->setApplicableGroups($sourceApplicableGroups);
@@ -606,7 +607,8 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 	public function testHooksDeleteStorage(
 		$sourceApplicableUsers,
 		$sourceApplicableGroups,
-		$expectedCalls) {
+		$expectedCalls
+	) {
 		$storage = $this->makeTestStorageData();
 		$storage->setApplicableUsers($sourceApplicableUsers);
 		$storage->setApplicableGroups($sourceApplicableGroups);

@@ -120,7 +120,8 @@ class DirMaskTest extends TestCase {
 	public function testFilePutContents() {
 		$storage = $this->getStorage(Constants::PERMISSION_ALL);
 		$this->assertTrue($storage->file_put_contents(
-			'masked/barbaz.txt', 'something'
+			'masked/barbaz.txt',
+			'something'
 		));
 
 		$content = $this->sourceStorage->file_get_contents('masked/barbaz.txt');
@@ -128,17 +129,20 @@ class DirMaskTest extends TestCase {
 
 		$storage = $this->getStorage(Constants::PERMISSION_READ);
 		$this->assertFalse($storage->file_put_contents(
-			'masked/barbaz.txt', 'something'
+			'masked/barbaz.txt',
+			'something'
 		));
 	}
 
 	public function testFopen() {
 		$storage = $this->getStorage(Constants::PERMISSION_ALL);
-		$this->assertIsResource($storage->fopen('masked/test.txt', 'r+')
+		$this->assertIsResource(
+			$storage->fopen('masked/test.txt', 'r+')
 		);
 
 		$storage = $this->getStorage(Constants::PERMISSION_READ);
-		$this->assertIsResource($storage->fopen('masked/test.txt', 'r')
+		$this->assertIsResource(
+			$storage->fopen('masked/test.txt', 'r')
 		);
 
 		$storage = $this->getStorage(Constants::PERMISSION_READ);

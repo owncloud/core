@@ -30,7 +30,7 @@ use OCP\IUser;
 class Quota {
 
 	// percent of free disk space/quota that triggers trashbin cleanup by default
-	const DEFAULTMAXSIZE = 50;
+	public const DEFAULTMAXSIZE = 50;
 
 	/** @var IUserManager */
 	protected $userManager;

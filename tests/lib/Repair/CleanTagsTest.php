@@ -176,14 +176,14 @@ class CleanTagsTest extends \Test\TestCase {
 		$qb->insert('filecache')
 			->values([
 				'path'			=> $qb->createNamedParameter($fileName),
-				'path_hash'		=> $qb->createNamedParameter(\md5($fileName)),
+				'path_hash'		=> $qb->createNamedParameter(md5($fileName)),
 			])
 			->execute();
 		$fileName = $this->getUniqueID('TestRepairCleanTags', 12);
 		$qb->insert('filecache')
 			->values([
 				'path'			=> $qb->createNamedParameter($fileName),
-				'path_hash'		=> $qb->createNamedParameter(\md5($fileName)),
+				'path_hash'		=> $qb->createNamedParameter(md5($fileName)),
 			])
 			->execute();
 

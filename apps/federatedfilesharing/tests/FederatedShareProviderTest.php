@@ -99,7 +99,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->l = $this->createMock(IL10N::class);
 		$this->l->method('t')
 			->will($this->returnCallback(function ($text, $parameters = []) {
-				return \vsprintf($text, $parameters);
+				return vsprintf($text, $parameters);
 			}));
 		$this->logger = $this->createMock(ILogger::class);
 		$this->rootFolder = $this->createMock(IRootFolder::class);
@@ -892,7 +892,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->with('files_sharing', 'cronjob_scan_external_enabled', 'no')
 			->willReturn($isEnabled);
 
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->provider->isCronjobScanExternalEnabled()
 		);
 	}
@@ -908,7 +909,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->with('files_sharing', 'outgoing_server2server_share_enabled', 'yes')
 			->willReturn($isEnabled);
 
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->provider->isOutgoingServer2serverShareEnabled()
 		);
 	}
@@ -924,7 +926,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->with('files_sharing', 'incoming_server2server_share_enabled', 'yes')
 			->willReturn($isEnabled);
 
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->provider->isIncomingServer2serverShareEnabled()
 		);
 	}
@@ -1124,8 +1127,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->values([
 				'storage' => $qb->expr()->literal($storage),
 				'path' => $qb->expr()->literal($path),
-				'path_hash' => $qb->expr()->literal(\md5($path)),
-				'name' => $qb->expr()->literal(\basename($path)),
+				'path_hash' => $qb->expr()->literal(md5($path)),
+				'name' => $qb->expr()->literal(basename($path)),
 			]);
 		$this->assertEquals(1, $qb->execute());
 		return $qb->getLastInsertId();

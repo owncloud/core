@@ -41,7 +41,7 @@ class Status extends Base {
 		$values = [
 			'installed' => (bool) \OC::$server->getConfig()->getSystemValue('installed', false),
 			'first_install_version' => \OC::$server->getConfig()->getAppValue('core', 'first_install_version', 'unknown'),
-			'version' => \implode('.', \OCP\Util::getVersion()),
+			'version' => implode('.', \OCP\Util::getVersion()),
 			'versionstring' => \OC_Util::getVersionString(),
 			'edition' => \OC_Util::getEditionString(),
 		];

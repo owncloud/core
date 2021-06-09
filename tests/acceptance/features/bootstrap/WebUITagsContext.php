@@ -87,7 +87,7 @@ class WebUITagsContext extends RawMinkContext implements Context {
 		$displayedTags = [];
 		foreach ($results as $tagResult) {
 			$tag = $tagResult->getText();
-			\array_push($displayedTags, $tag);
+			array_push($displayedTags, $tag);
 		};
 		foreach ($ExpectedTags as $tag) {
 			$tagName = $tag['name'];
@@ -171,7 +171,7 @@ class WebUITagsContext extends RawMinkContext implements Context {
 		$createdTags = $this->tagsContext->getListOfCreatedTags();
 		foreach ($createdTags as $tag) {
 			$tagName = $tag['name'];
-			if (\substr($tagName, 0, \strlen($value)) === $value && !empty($tag['userAssignable'])) {
+			if (substr($tagName, 0, \strlen($value)) === $value && !empty($tag['userAssignable'])) {
 				$this->theTagShouldBeListedInTheDropdownListOnTheWebUI($tagName);
 			}
 		}

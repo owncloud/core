@@ -70,7 +70,6 @@ class CSSResourceLocatorTest extends TestCase {
 				['/var/www/apps', 'theme-best/apps/core/css/style.css', ''],
 				['/var/www/apps', 'theme-best/core/css/style.css', ''],
 				['/var/www/apps', 'theme-best/core/core/css/style.css', '']
-
 			);
 
 		$locator->find(['core/css/style']);

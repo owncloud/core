@@ -223,12 +223,12 @@ class StorageConfig implements IStorageConfig {
 				}
 				if (\is_string($backendOptions[$key])) {
 					if (($key === 'public_key') || ($key === 'private_key')) {
-						if (\base64_decode($backendOptions[$key], true) === false) {
-							$backendOptions[$key] = \base64_encode($backendOptions[$key]);
+						if (base64_decode($backendOptions[$key], true) === false) {
+							$backendOptions[$key] = base64_encode($backendOptions[$key]);
 						}
 					}
 
-					$backendOptions[$key] = \str_replace(["\n", "\r"], "", $backendOptions[$key]);
+					$backendOptions[$key] = str_replace(["\n", "\r"], "", $backendOptions[$key]);
 				}
 			}
 		}
@@ -243,7 +243,7 @@ class StorageConfig implements IStorageConfig {
 	public function getBackendOption($key) {
 		if (isset($this->backendOptions[$key])) {
 			if (($key === 'private_key') || ($key === 'public_key')) {
-				$decodedString = \base64_decode($this->backendOptions[$key], true);
+				$decodedString = base64_decode($this->backendOptions[$key], true);
 				if ($decodedString !== false) {
 					return $decodedString;
 				}

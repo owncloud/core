@@ -54,7 +54,7 @@ class LicenseFetcher {
 	 */
 	public function getOwncloudLicense(): ?ILicense {
 		$licenseClass = $this->config->getSystemValue('license-class', BasicLicense::class);
-		if (!\class_exists($licenseClass)) {
+		if (!class_exists($licenseClass)) {
 			throw new HintException("Unknown license $licenseClass");
 		}
 

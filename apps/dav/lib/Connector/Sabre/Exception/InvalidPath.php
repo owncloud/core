@@ -24,7 +24,7 @@ namespace OCA\DAV\Connector\Sabre\Exception;
 use Sabre\DAV\Exception;
 
 class InvalidPath extends Exception {
-	const NS_OWNCLOUD = 'http://owncloud.org/ns';
+	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
 
 	/**
 	 * @var bool
@@ -63,7 +63,7 @@ class InvalidPath extends Exception {
 		$errorNode->setAttribute('xmlns:o', self::NS_OWNCLOUD);
 
 		// adding the retry node
-		$error = $errorNode->ownerDocument->createElementNS('o:', 'o:retry', \var_export($this->retry, true));
+		$error = $errorNode->ownerDocument->createElementNS('o:', 'o:retry', var_export($this->retry, true));
 		$errorNode->appendChild($error);
 
 		// adding the message node

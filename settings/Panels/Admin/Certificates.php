@@ -36,9 +36,11 @@ class Certificates implements ISettings {
 	/** @var IURLGenerator */
 	protected $urlGenerator;
 
-	public function __construct(IConfig $config,
-								IURLGenerator $urlGenerator,
-								ICertificateManager $certificateManager = null) {
+	public function __construct(
+		IConfig $config,
+		IURLGenerator $urlGenerator,
+		ICertificateManager $certificateManager = null
+	) {
 		$this->config = $config;
 		$this->urlGenerator = $urlGenerator;
 		$this->certificateManager = $certificateManager;

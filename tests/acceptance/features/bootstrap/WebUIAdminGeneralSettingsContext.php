@@ -87,7 +87,8 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 		TableNode $emailSettingsTable
 	) {
 		$this->adminGeneralSettingsPage->setEmailServerSettings(
-			$this->getSession(), $emailSettingsTable
+			$this->getSession(),
+			$emailSettingsTable
 		);
 	}
 
@@ -211,11 +212,11 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 		$actualVersion = $this->adminGeneralSettingsPage->getOwncloudVersion();
 		$expectedVersion = SetupHelper::getSystemConfigValue('version');
 		Assert::assertEquals(
-			\trim($expectedVersion),
+			trim($expectedVersion),
 			$actualVersion,
 			__METHOD__
 			. " The expected version to be displayed was '"
-			. \trim($expectedVersion)
+			. trim($expectedVersion)
 			. "' but got '$actualVersion' instead"
 		);
 	}
@@ -230,10 +231,10 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 		$expectedVersion = SetupHelper::runOcc(['-V'])['stdOut'];
 		Assert::assertStringEndsWith(
 			$actualVersion,
-			\trim($expectedVersion),
+			trim($expectedVersion),
 			__METHOD__
 			. " Expected version string is '"
-			. \trim($expectedVersion)
+			. trim($expectedVersion)
 			. "and it does not end with '$actualVersion'"
 		);
 	}
@@ -254,7 +255,8 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 			$this->appParameterValues
 		);
 		SetupHelper::setSystemConfig(
-			"loglevel", $this->logLevelValue
+			"loglevel",
+			$this->logLevelValue
 		);
 	}
 }

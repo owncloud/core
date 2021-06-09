@@ -49,8 +49,10 @@ class UpdateCertificateStore implements IRepairStep {
 	 * @param Server $server
 	 * @param IConfig $config
 	 */
-	public function __construct(Server $server,
-								IConfig $config) {
+	public function __construct(
+		Server $server,
+		IConfig $config
+	) {
 		$this->server = $server;
 		$this->config = $config;
 	}
@@ -71,7 +73,7 @@ class UpdateCertificateStore implements IRepairStep {
 		$pathToRootCerts = '/files_external/rootcerts.crt';
 
 		foreach ($rootView->getDirectoryContent('', 'httpd/unix-directory') as $fileInfo) {
-			$uid = \trim($fileInfo->getPath(), '/');
+			$uid = trim($fileInfo->getPath(), '/');
 			if ($rootView->file_exists($uid . $pathToRootCerts)) {
 				// Delete the existing root certificate
 				$rootView->unlink($uid . $pathToRootCerts);

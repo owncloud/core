@@ -46,7 +46,7 @@ class SystemConfigTest extends TestCase {
 	}
 
 	public function testGetKeys() {
-		$keyList = ['key1', \rand(0, 40), 45, 'another'];
+		$keyList = ['key1', rand(0, 40), 45, 'another'];
 		$this->config->expects($this->once())
 			->method('getKeys')
 			->willReturn($keyList);
@@ -55,8 +55,8 @@ class SystemConfigTest extends TestCase {
 	}
 
 	public function testSetValue() {
-		$key = \str_shuffle('abcdefghijk');
-		$value = \rand();
+		$key = str_shuffle('abcdefghijk');
+		$value = rand();
 
 		$this->config->expects($this->once())
 			->method('setValue')

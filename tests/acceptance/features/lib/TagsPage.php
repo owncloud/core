@@ -89,7 +89,9 @@ class TagsPage extends FilesPageBasic {
 	 * @param array $parameters
 	 */
 	public function __construct(
-		Session $session, Factory $factory, array $parameters = []
+		Session $session,
+		Factory $factory,
+		array $parameters = []
 	) {
 		parent::__construct($session, $factory, $parameters);
 		$this->filesPageCRUDFunctions = $this->getPage("FilesPageCRUD");
@@ -183,7 +185,10 @@ class TagsPage extends FilesPageBasic {
 		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		$this->filesPageCRUDFunctions->deleteFile(
-			$name, $session, $expectToDeleteFile, $maxRetries
+			$name,
+			$session,
+			$expectToDeleteFile,
+			$maxRetries
 		);
 	}
 

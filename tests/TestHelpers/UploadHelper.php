@@ -63,7 +63,7 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 
 		//simple upload with no chunking
 		if ($chunkingVersion === null) {
-			$data = \file_get_contents($source);
+			$data = file_get_contents($source);
 			return WebDavHelper::makeDavRequest(
 				$baseUrl,
 				$user,
@@ -77,7 +77,7 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 		} else {
 			//prepare chunking
 			$chunks = self::chunkFile($source, $noOfChunks);
-			$chunkingId = 'chunking-' . (string)\rand(1000, 9999);
+			$chunkingId = 'chunking-' . (string)rand(1000, 9999);
 			$v2ChunksDestination = '/uploads/' . $user . '/' . $chunkingId;
 		}
 
@@ -164,7 +164,12 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 	 * @return array of ResponseInterface
 	 */
 	public static function uploadWithAllMechanisms(
-		$baseUrl, $user, $password, $source, $destination, $overwriteMode = false
+		$baseUrl,
+		$user,
+		$password,
+		$source,
+		$destination,
+		$overwriteMode = false
 	) {
 		$responses = [];
 		foreach ([1, 2] as $davPathVersion) {
@@ -213,14 +218,14 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 	 * @return array $string
 	 */
 	public static function chunkFile($file, $noOfChunks = 1) {
-		$size = \filesize($file);
-		$chunkSize = \ceil($size / $noOfChunks);
+		$size = filesize($file);
+		$chunkSize = ceil($size / $noOfChunks);
 		$chunks = [];
-		$fp = \fopen($file, 'r');
-		while (!\feof($fp) && \ftell($fp) < $size) {
-			$chunks[] = \fread($fp, $chunkSize);
+		$fp = fopen($file, 'r');
+		while (!feof($fp) && ftell($fp) < $size) {
+			$chunks[] = fread($fp, $chunkSize);
 		}
-		\fclose($fp);
+		fclose($fp);
 		if (\count($chunks) === 0) {
 			// chunk an empty file
 			$chunks[] = '';
@@ -237,20 +242,22 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 	 * @return void
 	 */
 	public static function createFileSpecificSize($name, $size) {
-		if (\file_exists($name)) {
-			\unlink($name);
+		if (file_exists($name)) {
+			unlink($name);
 		}
-		$file = \fopen($name, 'w');
-		\fseek($file, \max($size - 1, 0), SEEK_CUR);
+		$file = fopen($name, 'w');
+		fseek($file, max($size - 1, 0), SEEK_CUR);
 		if ($size) {
-			\fwrite($file, 'a'); // write a dummy char at SIZE position
+			fwrite($file, 'a'); // write a dummy char at SIZE position
 		}
-		\fclose($file);
+		fclose($file);
 		self::assertEquals(
-			1, \file_exists($name)
+			1,
+			file_exists($name)
 		);
 		self::assertEquals(
-			$size, \filesize($name)
+			$size,
+			filesize($name)
 		);
 	}
 
@@ -263,11 +270,12 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 	 * @return void
 	 */
 	public static function createFileWithText($name, $text) {
-		$file = \fopen($name, 'w');
-		\fwrite($file, $text);
-		\fclose($file);
+		$file = fopen($name, 'w');
+		fwrite($file, $text);
+		fclose($file);
 		self::assertEquals(
-			1, \file_exists($name)
+			1,
+			file_exists($name)
 		);
 	}
 
@@ -279,6 +287,6 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 	 * @return string
 	 */
 	public static function getUploadFilesDir($name) {
-		return \getenv("FILES_FOR_UPLOAD") . $name;
+		return getenv("FILES_FOR_UPLOAD") . $name;
 	}
 }

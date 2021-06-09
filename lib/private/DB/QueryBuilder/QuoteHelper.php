@@ -60,8 +60,8 @@ class QuoteHelper {
 			throw new \InvalidArgumentException('Only strings, Literals and Parameters are allowed');
 		}
 
-		if (\substr_count($string, '.')) {
-			list($alias, $columnName) = \explode('.', $string, 2);
+		if (substr_count($string, '.')) {
+			list($alias, $columnName) = explode('.', $string, 2);
 
 			if ($columnName === '*') {
 				return $string;

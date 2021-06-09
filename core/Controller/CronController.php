@@ -46,10 +46,13 @@ class CronController extends Controller {
 	 * @param ILogger $logger
 	 * @param IJobList $jobList
 	 */
-	public function __construct($appName, IRequest $request,
-								IConfig $config,
-								ILogger $logger,
-								IJobList $jobList) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IConfig $config,
+		ILogger $logger,
+		IJobList $jobList
+	) {
 		parent::__construct($appName, $request);
 		$this->config = $config;
 		$this->logger = $logger;
@@ -84,7 +87,7 @@ class CronController extends Controller {
 
 		// Log the successful cron execution
 		if ($this->config->getSystemValue('cron_log', true)) {
-			$this->config->setAppValue('core', 'lastcron', \time());
+			$this->config->setAppValue('core', 'lastcron', time());
 		}
 
 		return new JSONResponse();

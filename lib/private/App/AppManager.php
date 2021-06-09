@@ -100,12 +100,14 @@ class AppManager implements IAppManager {
 	 * @param EventDispatcherInterface $dispatcher
 	 * @param IConfig $config
 	 */
-	public function __construct(IUserSession $userSession = null,
-								IAppConfig $appConfig = null,
-								IGroupManager $groupManager = null,
-								ICacheFactory $memCacheFactory,
-								EventDispatcherInterface $dispatcher,
-								IConfig $config) {
+	public function __construct(
+		IUserSession $userSession = null,
+		IAppConfig $appConfig = null,
+		IGroupManager $groupManager = null,
+		ICacheFactory $memCacheFactory,
+		EventDispatcherInterface $dispatcher,
+		IConfig $config
+	) {
 		$this->userSession = $userSession;
 		$this->appConfig = $appConfig;
 		$this->groupManager = $groupManager;
@@ -114,7 +116,7 @@ class AppManager implements IAppManager {
 		$this->config = $config;
 
 		// TODO we have no public API for this
-		if (\method_exists($this->memCacheFactory, 'createLocal')) {
+		if (method_exists($this->memCacheFactory, 'createLocal')) {
 			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$this->appInfo = $this->memCacheFactory->createLocal('app-info');
 		}
@@ -135,10 +137,10 @@ class AppManager implements IAppManager {
 				$values[$appId] = 'yes';
 			}
 
-			$this->installedAppsCache = \array_filter($values, function ($value) {
+			$this->installedAppsCache = array_filter($values, function ($value) {
 				return $value !== 'no';
 			});
-			\ksort($this->installedAppsCache);
+			ksort($this->installedAppsCache);
 		}
 		return $this->installedAppsCache;
 	}
@@ -149,7 +151,7 @@ class AppManager implements IAppManager {
 	 * @return string[]
 	 */
 	public function getInstalledApps() {
-		return \array_keys($this->getInstalledAppsValues());
+		return array_keys($this->getInstalledAppsValues());
 	}
 
 	/**
@@ -160,10 +162,10 @@ class AppManager implements IAppManager {
 	 */
 	public function getEnabledAppsForUser(IUser $user = null) {
 		$apps = $this->getInstalledAppsValues();
-		$appsForUser = \array_filter($apps, function ($enabled) use ($user) {
+		$appsForUser = array_filter($apps, function ($enabled) use ($user) {
 			return $this->checkAppForUser($enabled, $user);
 		});
-		return \array_keys($appsForUser);
+		return array_keys($appsForUser);
 	}
 
 	/**
@@ -203,17 +205,17 @@ class AppManager implements IAppManager {
 				return false;
 			}
 
-			$groupIds = \json_decode($enabled);
+			$groupIds = json_decode($enabled);
 
 			if (!\is_array($groupIds)) {
-				$jsonError = \json_last_error();
-				\OC::$server->getLogger()->warning('AppManager::checkAppForUser - can\'t decode group IDs: ' . \print_r($enabled, true) . ' - json error code: ' . $jsonError, ['app' => 'lib']);
+				$jsonError = json_last_error();
+				\OC::$server->getLogger()->warning('AppManager::checkAppForUser - can\'t decode group IDs: ' . print_r($enabled, true) . ' - json error code: ' . $jsonError, ['app' => 'lib']);
 				return false;
 			}
 
 			$userGroups = $this->groupManager->getUserGroupIds($user);
 			foreach ($userGroups as $groupId) {
-				if (\array_search($groupId, $groupIds) !== false) {
+				if (array_search($groupId, $groupIds) !== false) {
 					return true;
 				}
 			}
@@ -303,7 +305,7 @@ class AppManager implements IAppManager {
 	public function enableAppForGroups($appId, $groups) {
 		$info = $this->getAppInfo($appId);
 		if (!empty($info['types'])) {
-			$protectedTypes = \array_intersect($this->protectedAppTypes, $info['types']);
+			$protectedTypes = array_intersect($this->protectedAppTypes, $info['types']);
 			if (!empty($protectedTypes)) {
 				throw new \Exception("$appId can't be enabled for groups.");
 			}
@@ -313,12 +315,12 @@ class AppManager implements IAppManager {
 			Installer::installShippedApp($appId);
 		}
 
-		$groupIds = \array_map(function ($group) {
+		$groupIds = array_map(function ($group) {
 			/** @var \OCP\IGroup $group */
 			return $group->getGID();
 		}, $groups);
-		$this->installedAppsCache[$appId] = \json_encode($groupIds);
-		$this->appConfig->setValue($appId, 'enabled', \json_encode($groupIds));
+		$this->installedAppsCache[$appId] = json_encode($groupIds);
+		$this->appConfig->setValue($appId, 'enabled', json_encode($groupIds));
 		$this->dispatcher->dispatch(
 			new ManagerEvent(ManagerEvent::EVENT_APP_ENABLE_FOR_GROUPS, $appId, $groups),
 			ManagerEvent::EVENT_APP_ENABLE_FOR_GROUPS
@@ -371,7 +373,7 @@ class AppManager implements IAppManager {
 			$appDbVersion = $this->appConfig->getValue($appId, 'installed_version');
 			if ($appDbVersion
 				&& isset($appInfo['version'])
-				&& \version_compare($appInfo['version'], $appDbVersion, '>')
+				&& version_compare($appInfo['version'], $appDbVersion, '>')
 				&& \OC_App::isAppCompatible($ocVersion, $appInfo)
 			) {
 				$appsToUpgrade[] = $appInfo;
@@ -386,11 +388,11 @@ class AppManager implements IAppManager {
 	 * @return string|null an etag for the given $path or null
 	 */
 	private function getEtag($path) {
-		if (!\file_exists($path)) {
+		if (!file_exists($path)) {
 			return null;
 		}
-		\clearstatcache(false, $path);
-		$stat = \stat($path);
+		clearstatcache(false, $path);
+		$stat = stat($path);
 		if ($stat) {
 			// ok, file still exists
 			return "${stat['mtime']}|${stat['ino']}|${stat['dev']}|${stat['size']}";
@@ -461,7 +463,7 @@ class AppManager implements IAppManager {
 	 * @throws AppNotFoundException
 	 */
 	public function getAppInfoByPath($path, $etag = null) {
-		$file = \realpath($path);
+		$file = realpath($path);
 
 		// check the cache
 		$data = $this->appInfo->get($file);
@@ -552,10 +554,10 @@ class AppManager implements IAppManager {
 	private function loadShippedJson() {
 		if ($this->shippedApps === null) {
 			$shippedJson = \OC::$SERVERROOT . '/core/shipped.json';
-			if (!\file_exists($shippedJson)) {
+			if (!file_exists($shippedJson)) {
 				throw new \Exception("File not found: $shippedJson");
 			}
-			$content = \json_decode(\file_get_contents($shippedJson), true);
+			$content = json_decode(file_get_contents($shippedJson), true);
 			$this->shippedApps = $content['shippedApps'];
 			$this->alwaysEnabled = $content['alwaysEnabled'];
 		}
@@ -635,7 +637,7 @@ class AppManager implements IAppManager {
 		}
 
 		$appsFolder = OC_App::getInstallPath();
-		return $appsFolder !== null && \is_writable($appsFolder) && \is_readable($appsFolder);
+		return $appsFolder !== null && is_writable($appsFolder) && is_readable($appsFolder);
 	}
 
 	/**
@@ -648,7 +650,7 @@ class AppManager implements IAppManager {
 	 * @since 10.0.5
 	 */
 	public function getAppPath($appId) {
-		if (\trim($appId) === '') {
+		if (trim($appId) === '') {
 			return false;
 		}
 		if (($appRoot = $this->findAppInDirectories($appId)) !== false) {
@@ -671,12 +673,12 @@ class AppManager implements IAppManager {
 			$ocWebRoot = $this->getOcWebRoot();
 			// consider all relative ../ in the app web path as an adjustment
 			// for oC web root
-			while (\strpos($appRoot['url'], '../') === 0) {
-				$appRoot['url'] = \substr($appRoot['url'], 3);
+			while (strpos($appRoot['url'], '../') === 0) {
+				$appRoot['url'] = substr($appRoot['url'], 3);
 				$ocWebRoot = \dirname($ocWebRoot);
 			}
-			$trimmedOcWebRoot = \rtrim($ocWebRoot, '/');
-			$trimmedAppRoot = \ltrim($appRoot['url'], '/');
+			$trimmedOcWebRoot = rtrim($ocWebRoot, '/');
+			$trimmedAppRoot = ltrim($appRoot['url'], '/');
 			return "$trimmedOcWebRoot/$trimmedAppRoot";
 		}
 		return false;
@@ -701,7 +703,7 @@ class AppManager implements IAppManager {
 		if (!isset($this->appDirs[$appId])) {
 			$possibleAppRoots = [];
 			foreach ($this->getAppRoots() as $appRoot) {
-				if (\is_dir($appRoot['path'] . '/' . $appId)) {
+				if (is_dir($appRoot['path'] . '/' . $appId)) {
 					$possibleAppRoots[] = $appRoot;
 				}
 			}
@@ -713,8 +715,8 @@ class AppManager implements IAppManager {
 				} catch (\Exception $e) {
 					continue;
 				}
-				if (empty($versionToLoad) || \version_compare($version, $versionToLoad['version'], '>')) {
-					$versionToLoad = \array_merge($possibleAppRoot, ['version' => $version]);
+				if (empty($versionToLoad) || version_compare($version, $versionToLoad['version'], '>')) {
+					$versionToLoad = array_merge($possibleAppRoot, ['version' => $version]);
 					$versionToLoad['path'] .= '/' . $appId;
 					$versionToLoad['url'] .= '/' . $appId;
 				}

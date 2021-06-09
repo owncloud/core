@@ -80,11 +80,14 @@ class SetConfig extends Base {
 		$configValue = $this->castValue($input->getOption('value'), $input->getOption('type'));
 		$updateOnly = $input->getOption('update-only');
 
-		if (\sizeof($configNames) > 1) {
+		if (sizeof($configNames) > 1) {
 			$existingValue = $this->systemConfig->getValue($configName);
 
 			$newValue = $this->mergeArrayValue(
-				\array_slice($configNames, 1), $existingValue, $configValue['value'], $updateOnly
+				\array_slice($configNames, 1),
+				$existingValue,
+				$configValue['value'],
+				$updateOnly
 			);
 
 			$this->systemConfig->setValue($configName, $newValue);
@@ -96,7 +99,7 @@ class SetConfig extends Base {
 			$this->systemConfig->setValue($configName, $configValue['value']);
 		}
 
-		$output->writeln('<info>System config value ' . \implode(' => ', $configNames) . ' set to ' . $configValue['readable-value'] . '</info>');
+		$output->writeln('<info>System config value ' . implode(' => ', $configNames) . ' set to ' . $configValue['readable-value'] . '</info>');
 		return 0;
 	}
 
@@ -110,7 +113,7 @@ class SetConfig extends Base {
 		switch ($type) {
 			case 'integer':
 			case 'int':
-				if (!\is_numeric($value)) {
+				if (!is_numeric($value)) {
 					throw new \InvalidArgumentException('Non-numeric value specified');
 				}
 				return [
@@ -120,7 +123,7 @@ class SetConfig extends Base {
 
 			case 'double':
 			case 'float':
-				if (!\is_numeric($value)) {
+				if (!is_numeric($value)) {
 					throw new \InvalidArgumentException('Non-numeric value specified');
 				}
 				return [
@@ -130,7 +133,7 @@ class SetConfig extends Base {
 
 			case 'boolean':
 			case 'bool':
-				$value = \strtolower($value);
+				$value = strtolower($value);
 				switch ($value) {
 					case 'true':
 						return [
@@ -163,7 +166,7 @@ class SetConfig extends Base {
 				];
 
 			case 'json':
-				$decodedJson = \json_decode($value, true);
+				$decodedJson = json_decode($value, true);
 				if ($decodedJson === null) {
 					throw new \InvalidArgumentException('Unable to parse value as json');
 				}
@@ -186,7 +189,7 @@ class SetConfig extends Base {
 	 * @throws \UnexpectedValueException
 	 */
 	protected function mergeArrayValue(array $configNames, $existingValues, $value, $updateOnly) {
-		$configName = \array_shift($configNames);
+		$configName = array_shift($configNames);
 		if (!\is_array($existingValues)) {
 			$existingValues = [];
 		}

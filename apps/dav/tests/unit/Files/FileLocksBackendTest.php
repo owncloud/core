@@ -45,8 +45,8 @@ interface IPersistentLockingStorageTest extends IPersistentLockingStorage, IStor
 }
 
 class FileLocksBackendTest extends TestCase {
-	const CREATION_TIME = 164419200;
-	const CURRENT_TIME = 164419800;
+	public const CREATION_TIME = 164419200;
+	public const CURRENT_TIME = 164419800;
 
 	/** @var FileLocksBackend */
 	private $plugin;

@@ -55,17 +55,17 @@ class AvatarNodeTest extends TestCase {
 		$a->expects($this->once())->method('get')->with(1024)->willReturn($image);
 		$n = new AvatarNode(1024, $mime, $a);
 
-		\ob_start();
+		ob_start();
 		$imageFunction($realImage);
 
-		$expected = \ob_get_clean();
+		$expected = ob_get_clean();
 		$this->assertEquals($expected, $n->get());
 	}
 
 	public function providesFormats() {
 		return [
-			'jpeg' => [\imagecreatefromjpeg(\OC::$SERVERROOT . '/tests/data/testimage.jpg'), 'jpeg', 'imagejpeg'],
-			'png' => [\imagecreatefrompng(\OC::$SERVERROOT . '/tests/data/testimage.png'), 'png', 'imagepng']
+			'jpeg' => [imagecreatefromjpeg(\OC::$SERVERROOT . '/tests/data/testimage.jpg'), 'jpeg', 'imagejpeg'],
+			'png' => [imagecreatefrompng(\OC::$SERVERROOT . '/tests/data/testimage.png'), 'png', 'imagepng']
 		];
 	}
 }

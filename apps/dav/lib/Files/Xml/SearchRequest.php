@@ -57,7 +57,7 @@ class SearchRequest implements XmlDeserializable {
 		foreach ($elems as $elem) {
 			switch ($elem['name']) {
 				case '{DAV:}prop':
-					$newProps['properties'] = \array_keys($elem['value']);
+					$newProps['properties'] = array_keys($elem['value']);
 					break;
 				case '{http://owncloud.org/ns}search':
 					$value = $elem['value'];

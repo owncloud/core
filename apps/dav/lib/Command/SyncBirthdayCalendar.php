@@ -52,9 +52,11 @@ class SyncBirthdayCalendar extends Command {
 		$this
 			->setName('dav:sync-birthday-calendar')
 			->setDescription('Synchronizes the birthday calendar')
-			->addArgument('user',
+			->addArgument(
+				'user',
 				InputArgument::OPTIONAL,
-				'User for whom the birthday calendar will be synchronized');
+				'User for whom the birthday calendar will be synchronized'
+			);
 	}
 
 	/**

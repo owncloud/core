@@ -56,11 +56,13 @@ class GeneralPersonalPanelTest extends \Test\TestCase {
 		$this->shareProvider = $this->getMockBuilder(FederatedShareProvider::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->panel = new GeneralPersonalPanel($this->l,
+		$this->panel = new GeneralPersonalPanel(
+			$this->l,
 			$this->userSession,
 			$this->urlGenerator,
 			$this->shareProvider,
-			$this->request);
+			$this->request
+		);
 	}
 
 	public function testGetSection() {

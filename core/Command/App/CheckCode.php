@@ -110,12 +110,12 @@ class CheckCode extends Command {
 			if ($count > 0 || OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
 				$output->writeln(" {$count} errors");
 			}
-			\usort($errors, function ($a, $b) {
+			usort($errors, function ($a, $b) {
 				return $a['line'] >$b['line'];
 			});
 
 			foreach ($errors as $p) {
-				$line = \sprintf("%' 4d", $p['line']);
+				$line = sprintf("%' 4d", $p['line']);
 				$output->writeln("    <error>line $line: {$p['disallowedToken']} - {$p['reason']}</error>");
 			}
 		});
@@ -176,7 +176,7 @@ class CheckCode extends Command {
 
 			$infoErrors = $infoChecker->analyse($appId);
 
-			$errors = \array_merge($errors, $infoErrors);
+			$errors = array_merge($errors, $infoErrors);
 		}
 
 		$this->analyseUpdateFile($appId, $output);
@@ -201,7 +201,7 @@ class CheckCode extends Command {
 		}
 
 		$updatePhp = $appPath . '/appinfo/update.php';
-		if (\file_exists($updatePhp)) {
+		if (file_exists($updatePhp)) {
 			$output->writeln("<info>Deprecated file found: $updatePhp - please use repair steps</info>");
 		}
 	}

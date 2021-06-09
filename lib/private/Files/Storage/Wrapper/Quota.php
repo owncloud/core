@@ -88,10 +88,10 @@ class Quota extends Wrapper {
 				return \OCP\Files\FileInfo::SPACE_NOT_COMPUTED;
 			} else {
 				$free = $this->storage->free_space($path);
-				$quotaFree = \max($this->quota - $used, 0);
+				$quotaFree = max($this->quota - $used, 0);
 				// if free space is known
 				if ($free >= 0) {
-					$free = \min($free, $quotaFree);
+					$free = min($free, $quotaFree);
 				} else {
 					$free = $quotaFree;
 				}
@@ -147,7 +147,7 @@ class Quota extends Wrapper {
 			$free = $this->free_space('');
 			if ($source && $free >= 0 && $mode !== 'r' && $mode !== 'rb') {
 				// only apply quota for files, not metadata, trash or others
-				if (\strpos(\ltrim($path, '/'), 'files/') === 0) {
+				if (strpos(ltrim($path, '/'), 'files/') === 0) {
 					return \OC\Files\Stream\Quota::wrap($source, $free);
 				}
 			}
@@ -163,7 +163,7 @@ class Quota extends Wrapper {
 	 * @note this is needed for reusing keys
 	 */
 	private function isPartFile($path) {
-		$extension = \pathinfo($path, PATHINFO_EXTENSION);
+		$extension = pathinfo($path, PATHINFO_EXTENSION);
 
 		return ($extension === 'part');
 	}

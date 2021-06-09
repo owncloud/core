@@ -312,9 +312,11 @@ class Database extends \OC\Group\Backend {
 			$searchLike = ' AND `uid` LIKE ?';
 		}
 
-		$stmt = \OC_DB::prepare('SELECT `uid` FROM `*PREFIX*group_user` WHERE `gid` = ?' . $searchLike . ' ORDER BY `uid` ASC',
+		$stmt = \OC_DB::prepare(
+			'SELECT `uid` FROM `*PREFIX*group_user` WHERE `gid` = ?' . $searchLike . ' ORDER BY `uid` ASC',
 			$limit,
-			$offset);
+			$offset
+		);
 		$result = $stmt->execute($parameters);
 		$users = [];
 		while ($row = $result->fetchRow()) {

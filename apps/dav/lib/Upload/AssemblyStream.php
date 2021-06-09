@@ -71,8 +71,8 @@ class AssemblyStream implements \Icewind\Streams\File {
 		// sort the nodes
 		$nodes = $this->nodes;
 		// http://stackoverflow.com/a/10985500
-		@\usort($nodes, function (IFile $a, IFile $b) {
-			return \strnatcmp($a->getName(), $b->getName());
+		@usort($nodes, function (IFile $a, IFile $b) {
+			return strnatcmp($a->getName(), $b->getName());
 		});
 		$this->nodes = $nodes;
 
@@ -120,10 +120,10 @@ class AssemblyStream implements \Icewind\Streams\File {
 					return '';
 				}
 				$this->currentStream = $this->getStream($node);
-				\fseek($this->currentStream, $posInNode);
+				fseek($this->currentStream, $posInNode);
 			}
 
-			$data = \fread($this->currentStream, $count);
+			$data = fread($this->currentStream, $count);
 			// isset is faster than strlen
 			if (isset($data[$count - 1])) {
 				// we read the full count
@@ -139,9 +139,9 @@ class AssemblyStream implements \Icewind\Streams\File {
 				throw new BadRequest('Uploading failed due to invalid or corrupt file transfer.', \OCP\AppFramework\Http::STATUS_INTERNAL_SERVER_ERROR);
 			}
 
-			if (\feof($this->currentStream)) {
+			if (feof($this->currentStream)) {
 				$lastNode = $node;
-				\fclose($this->currentStream);
+				fclose($this->currentStream);
 				$this->currentNode = null;
 				$this->currentStream = null;
 			}
@@ -224,7 +224,7 @@ class AssemblyStream implements \Icewind\Streams\File {
 	 * @throws \Exception
 	 */
 	protected function loadContext($name) {
-		$context = \stream_context_get_options($this->context);
+		$context = stream_context_get_options($this->context);
 		if (isset($context[$name])) {
 			$context = $context[$name];
 		} else {
@@ -245,18 +245,18 @@ class AssemblyStream implements \Icewind\Streams\File {
 	 * @throws \BadMethodCallException
 	 */
 	public static function wrap(array $nodes) {
-		$context = \stream_context_create([
+		$context = stream_context_create([
 			'assembly' => [
 				'nodes' => $nodes]
 		]);
-		\stream_wrapper_register('assembly', '\OCA\DAV\Upload\AssemblyStream');
+		stream_wrapper_register('assembly', '\OCA\DAV\Upload\AssemblyStream');
 		try {
-			$wrapped = \fopen('assembly://', 'r', null, $context);
+			$wrapped = fopen('assembly://', 'r', null, $context);
 		} catch (\BadMethodCallException $e) {
-			\stream_wrapper_unregister('assembly');
+			stream_wrapper_unregister('assembly');
 			throw $e;
 		}
-		\stream_wrapper_unregister('assembly');
+		stream_wrapper_unregister('assembly');
 		return $wrapped;
 	}
 
@@ -283,6 +283,6 @@ class AssemblyStream implements \Icewind\Streams\File {
 			return $data;
 		}
 
-		return \fopen('data://text/plain,' . $data, 'r');
+		return fopen('data://text/plain,' . $data, 'r');
 	}
 }

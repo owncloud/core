@@ -32,15 +32,15 @@ class BasicLicense extends AbstractLicense {
 	public function __construct(string $licenseKey) {
 		$this->rawLicense = $licenseKey;
 
-		$parts = \explode('-', $licenseKey);
+		$parts = explode('-', $licenseKey);
 
 		if (\count($parts) === 4) {
 			// require 4 parts to initialize the object properly
 			// otherwise the "isValid" will return false, and the "expirationTime" will be 0
 			$this->org = $parts[0];
-			$this->date = \strtotime(\substr($parts[1], 0, 4) . '-' . \substr($parts[1], 4, 2) . '-' . \substr($parts[1], 6));
+			$this->date = strtotime(substr($parts[1], 0, 4) . '-' . substr($parts[1], 4, 2) . '-' . substr($parts[1], 6));
 			$this->rawCodes = $parts[2];
-			$this->codes = \str_split(\strtoupper($this->rawCodes), 8);
+			$this->codes = str_split(strtoupper($this->rawCodes), 8);
 			$this->checksum = $parts[3];
 		}
 	}
@@ -56,10 +56,10 @@ class BasicLicense extends AbstractLicense {
 	 * @inheritDoc
 	 */
 	public function isValid(): bool {
-		$dateString = \date('Ymd', $this->date);
+		$dateString = date('Ymd', $this->date);
 
-		$checksum = \sprintf('%x', \crc32(\strtolower($this->org) . 'zz' . \strtolower($this->rawCodes) . 'zz' . $dateString));
-		$dateCode = \strtoupper(\hash("crc32b", $dateString));
+		$checksum = sprintf('%x', crc32(strtolower($this->org) . 'zz' . strtolower($this->rawCodes) . 'zz' . $dateString));
+		$dateCode = strtoupper(hash("crc32b", $dateString));
 
 		return $checksum === $this->checksum && \in_array($dateCode, $this->codes);
 	}
@@ -75,7 +75,7 @@ class BasicLicense extends AbstractLicense {
 	 * @inheritDoc
 	 */
 	public function getType(): int {
-		$hash = \strtoupper(\hash("crc32b", 'demo'));
+		$hash = strtoupper(hash("crc32b", 'demo'));
 		if (\in_array($hash, $this->codes)) {
 			return ILicense::LICENSE_TYPE_DEMO;
 		} else {

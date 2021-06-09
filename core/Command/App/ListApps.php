@@ -95,7 +95,7 @@ class ListApps extends Base {
 				continue;
 			}
 
-			if ($appNameSubString !== null && !\preg_match('/' . $appNameSubString . '/', $app)) {
+			if ($appNameSubString !== null && !preg_match('/' . $appNameSubString . '/', $app)) {
 				continue;
 			}
 
@@ -110,7 +110,7 @@ class ListApps extends Base {
 
 		$neitherSpecified = !($input->getOption('enabled') || $input->getOption('disabled'));
 		if ($input->getOption('enabled') || $neitherSpecified) {
-			\sort($enabledApps);
+			sort($enabledApps);
 			foreach ($enabledApps as $app) {
 				$appDetailRecord = [];
 
@@ -124,7 +124,7 @@ class ListApps extends Base {
 		}
 
 		if ($input->getOption('disabled') || $neitherSpecified) {
-			\sort($disabledApps);
+			sort($disabledApps);
 			foreach ($disabledApps as $app) {
 				$appDetailRecord = [];
 				if (($input->getOption('disabled') && isset($versions[$app]))) {

@@ -44,7 +44,7 @@ class EmailHelper {
 			['Content-Type' => 'application/json']
 		);
 
-		$json = \json_decode($response->getBody()->getContents());
+		$json = json_decode($response->getBody()->getContents());
 		return $json;
 	}
 
@@ -59,10 +59,15 @@ class EmailHelper {
 	 * @return string
 	 */
 	public static function getBodyOfLastEmail(
-		$localMailhogUrl, $emailAddress, $waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
+		$localMailhogUrl,
+		$emailAddress,
+		$waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
 	) {
 		return self::getBodyOfEmail(
-			$localMailhogUrl, $emailAddress, 1, $waitTimeSec
+			$localMailhogUrl,
+			$emailAddress,
+			1,
+			$waitTimeSec
 		);
 	}
 
@@ -83,7 +88,7 @@ class EmailHelper {
 		$emailNumber = 1,
 		$waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
 	) {
-		$currentTime = \time();
+		$currentTime = time();
 		$endTime = $currentTime + $waitTimeSec;
 
 		while ($currentTime <= $endTime) {
@@ -97,15 +102,16 @@ class EmailHelper {
 						continue;
 					}
 
-					$body = \str_replace(
-						"\r\n", "\n",
-						\quoted_printable_decode($item->Content->Body)
+					$body = str_replace(
+						"\r\n",
+						"\n",
+						quoted_printable_decode($item->Content->Body)
 					);
 					return $body;
 				}
 			}
-			\usleep(STANDARD_SLEEP_TIME_MICROSEC * 50);
-			$currentTime = \time();
+			usleep(STANDARD_SLEEP_TIME_MICROSEC * 50);
+			$currentTime = time();
 		}
 
 		throw new \Exception("Could not find the email to the address: " . $emailAddress);
@@ -128,7 +134,9 @@ class EmailHelper {
 	) {
 		try {
 			self::getBodyOfLastEmail(
-				$localMailhogUrl, $emailAddress, $waitTimeSec
+				$localMailhogUrl,
+				$emailAddress,
+				$waitTimeSec
 			);
 		} catch (\Exception $err) {
 			return false;
@@ -154,7 +162,7 @@ class EmailHelper {
 		$emailNumber = 1,
 		$waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
 	) {
-		$currentTime = \time();
+		$currentTime = time();
 		$endTime = $currentTime + $waitTimeSec;
 
 		while ($currentTime <= $endTime) {
@@ -170,8 +178,8 @@ class EmailHelper {
 					return $item->From->Mailbox . '@' . $item->From->Domain;
 				}
 			}
-			\usleep(STANDARD_SLEEP_TIME_MICROSEC * 50);
-			$currentTime = \time();
+			usleep(STANDARD_SLEEP_TIME_MICROSEC * 50);
+			$currentTime = time();
 		}
 		throw new \Exception("Could not find the email to the address: " . $emailAddress);
 	}
@@ -195,7 +203,7 @@ class EmailHelper {
 	 * @return string
 	 */
 	public static function getMailhogHost() {
-		$mailhogHost = \getenv('MAILHOG_HOST');
+		$mailhogHost = getenv('MAILHOG_HOST');
 		if ($mailhogHost === false) {
 			$mailhogHost = "127.0.0.1";
 		}
@@ -209,7 +217,7 @@ class EmailHelper {
 	 * @return string
 	 */
 	public static function getLocalMailhogHost() {
-		$localMailhogHost = \getenv('LOCAL_MAILHOG_HOST');
+		$localMailhogHost = getenv('LOCAL_MAILHOG_HOST');
 		if ($localMailhogHost === false) {
 			$localMailhogHost = self::getMailhogHost();
 		}
@@ -225,7 +233,7 @@ class EmailHelper {
 	public static function getLocalMailhogUrl() {
 		$localMailhogHost = self::getLocalMailhogHost();
 
-		$mailhogPort = \getenv('MAILHOG_PORT');
+		$mailhogPort = getenv('MAILHOG_PORT');
 		if ($mailhogPort === false) {
 			$mailhogPort = "8025";
 		}

@@ -62,11 +62,12 @@ class Create extends Base {
 	/** @var IUserSession */
 	private $userSession;
 
-	public function __construct(IGlobalStoragesService $globalService,
-						 IUserStoragesService $userService,
-						 IUserManager $userManager,
-						 IUserSession $userSession,
-						 IStoragesBackendService $backendService
+	public function __construct(
+		IGlobalStoragesService $globalService,
+		IUserStoragesService $userService,
+		IUserManager $userManager,
+		IUserSession $userSession,
+		IStoragesBackendService $backendService
 	) {
 		parent::__construct();
 		$this->globalService = $globalService;
@@ -138,7 +139,7 @@ class Create extends Base {
 			$output->writeln('<error>Authentication backend with identifier "' . $authIdentifier . '" not found (see `occ files_external:backends` for possible values)</error>');
 			return 404;
 		}
-		$supportedSchemes = \array_keys($storageBackend->getAuthSchemes());
+		$supportedSchemes = array_keys($storageBackend->getAuthSchemes());
 		if (!\in_array($authBackend->getScheme(), $supportedSchemes)) {
 			$output->writeln('<error>Authentication backend "' . $authIdentifier . '" not valid for storage backend "' . $storageIdentifier . '" (see `occ files_external:backends storage ' . $storageIdentifier . '` for possible values)</error>');
 			return 1;
@@ -146,11 +147,11 @@ class Create extends Base {
 
 		$config = [];
 		foreach ($configInput as $configOption) {
-			if (!\strpos($configOption, '=')) {
+			if (!strpos($configOption, '=')) {
 				$output->writeln('<error>Invalid mount configuration option "' . $configOption . '"</error>');
 				return 1;
 			}
-			list($key, $value) = \explode('=', $configOption, 2);
+			list($key, $value) = explode('=', $configOption, 2);
 			if (!$this->validateParam($key, $value, $storageBackend, $authBackend)) {
 				$output->writeln('<error>Unknown configuration for backends "' . $key . '"</error>');
 				return 1;
@@ -186,7 +187,7 @@ class Create extends Base {
 	}
 
 	private function validateParam($key, &$value, Backend $storageBackend, AuthMechanism $authBackend) {
-		$params = \array_merge($storageBackend->getParameters(), $authBackend->getParameters());
+		$params = array_merge($storageBackend->getParameters(), $authBackend->getParameters());
 		foreach ($params as $param) {
 			/** @var DefinitionParameter $param */
 			if ($param->getName() === $key) {

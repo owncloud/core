@@ -84,9 +84,9 @@ class UtilTest extends TestCase {
 
 	public function providesHeaders() {
 		return [
-			[\str_pad('HBEGIN:oc_encryption_module:0:HEND', $this->headerSize, '-', STR_PAD_RIGHT)
+			[str_pad('HBEGIN:oc_encryption_module:0:HEND', $this->headerSize, '-', STR_PAD_RIGHT)
 				, [], '0'],
-			[\str_pad('HBEGIN:oc_encryption_module:0:custom_header:foo:HEND', $this->headerSize, '-', STR_PAD_RIGHT)
+			[str_pad('HBEGIN:oc_encryption_module:0:custom_header:foo:HEND', $this->headerSize, '-', STR_PAD_RIGHT)
 				, ['custom_header' => 'foo'], '0'],
 		];
 	}
@@ -117,7 +117,8 @@ class UtilTest extends TestCase {
 			->method('userExists')
 			->will($this->returnCallback([$this, 'isExcludedCallback']));
 
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->util->isExcluded($path)
 		);
 	}
@@ -150,7 +151,8 @@ class UtilTest extends TestCase {
 	 * @dataProvider dataTestIsFile
 	 */
 	public function testIsFile($path, $expected) {
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->util->isFile($path)
 		);
 	}
@@ -174,8 +176,10 @@ class UtilTest extends TestCase {
 	 * @param string $expected
 	 */
 	public function testStripPartialFileExtension($path, $expected) {
-		$this->assertSame($expected,
-			$this->util->stripPartialFileExtension($path));
+		$this->assertSame(
+			$expected,
+			$this->util->stripPartialFileExtension($path)
+		);
 	}
 
 	public function dataTestStripPartialFileExtension() {

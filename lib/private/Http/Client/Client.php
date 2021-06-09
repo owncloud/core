@@ -46,9 +46,11 @@ class Client implements IClient {
 	 * @param ICertificateManager $certificateManager
 	 * @param GuzzleClient $client
 	 */
-	public function __construct(IConfig $config,
-								ICertificateManager $certificateManager,
-								GuzzleClient $client) {
+	public function __construct(
+		IConfig $config,
+		ICertificateManager $certificateManager,
+		GuzzleClient $client
+	) {
 		$this->config = $config;
 		$this->client = $client;
 		$this->certificateManager = $certificateManager;
@@ -146,7 +148,7 @@ class Client implements IClient {
 
 			$proxyUserPwd = $this->config->getSystemValue('proxyuserpwd', null);
 			if ($proxyUserPwd !== null) {
-				$auth = \base64_encode(\urldecode($proxyUserPwd));
+				$auth = base64_encode(urldecode($proxyUserPwd));
 				$this->client->setDefaultOption('headers/Proxy-Authorization', "Basic $auth");
 			}
 		}

@@ -57,19 +57,19 @@ class OwncloudTest extends TestCase {
 	public function testMicrosecondsLogTimestamp() {
 		$config = \OC::$server->getConfig();
 		# delete old logfile
-		\unlink($config->getSystemValue('logfile'));
+		unlink($config->getSystemValue('logfile'));
 
 		# set format & write log line
 		$config->setSystemValue('logdateformat', 'u');
 		Owncloud::write('test', 'message', \OCP\Util::ERROR);
 		
 		# read log line
-		$handle = @\fopen($config->getSystemValue('logfile'), 'r');
-		$line = \fread($handle, 1000);
-		\fclose($handle);
+		$handle = @fopen($config->getSystemValue('logfile'), 'r');
+		$line = fread($handle, 1000);
+		fclose($handle);
 		
 		# check timestamp has microseconds part
-		$values = (array) \json_decode($line);
+		$values = (array) json_decode($line);
 		$microseconds = $values['time'];
 		$this->assertRegExp('/^\d{6}$/', $microseconds);
 	}

@@ -67,16 +67,20 @@ class AllConfigTest extends \Test\TestCase {
 		$selectAllSQL = 'SELECT `userid`, `appid`, `configkey`, `configvalue` FROM `*PREFIX*preferences` WHERE `userid` = ?';
 		$config = $this->getConfig();
 
-		$event = new GenericEvent(null,
+		$event = new GenericEvent(
+			null,
 			[
 				'uid' => 'userSet', 'key' => 'keySet', 'value' => 'valueSet',
 				'app' => 'appSet', 'precondition' => null
-			]);
-		$event2 = new GenericEvent(null,
+			]
+		);
+		$event2 = new GenericEvent(
+			null,
 			[
 				'uid' => 'userSet', 'key' => 'keySet', 'value' => 'valueSet2',
 				'app' => 'appSet', 'precondition' => null
-			]);
+			]
+		);
 		$event3 = new GenericEvent(null, [
 			'uid' => 'userSet', 'key' => 'keySet', 'app' => 'appSet'
 		]);
@@ -226,9 +230,11 @@ class AllConfigTest extends \Test\TestCase {
 		$connectionMock = $this->createMock('\OCP\IDBConnection');
 		$connectionMock->expects($this->once())
 			->method('executeQuery')
-			->with($this->equalTo('SELECT `configvalue` FROM `*PREFIX*preferences` '.
+			->with(
+				$this->equalTo('SELECT `configvalue` FROM `*PREFIX*preferences` '.
 				'WHERE `userid` = ? AND `appid` = ? AND `configkey` = ?'),
-				$this->equalTo(['userSetUnchanged', 'appSetUnchanged', 'keySetUnchanged']))
+				$this->equalTo(['userSetUnchanged', 'appSetUnchanged', 'keySetUnchanged'])
+			)
 			->will($this->returnValue($resultMock));
 		$connectionMock->expects($this->never())
 			->method('executeUpdate');
@@ -336,8 +342,11 @@ class AllConfigTest extends \Test\TestCase {
 			);
 		}
 
-		$value = $config->getUserValueForUsers('appFetch2', 'keyFetch1',
-			['userFetch1', 'userFetch2', 'userFetch3', 'userFetch5']);
+		$value = $config->getUserValueForUsers(
+			'appFetch2',
+			'keyFetch1',
+			['userFetch1', 'userFetch2', 'userFetch3', 'userFetch5']
+		);
 		$this->assertEquals([
 			'userFetch1' => 'value1',
 			'userFetch2' => 'value2',
@@ -345,8 +354,11 @@ class AllConfigTest extends \Test\TestCase {
 			'userFetch5' => 'value5'
 		], $value);
 
-		$value = $config->getUserValueForUsers('appFetch2', 'keyFetch1',
-			['userFetch1', 'userFetch4', 'userFetch9']);
+		$value = $config->getUserValueForUsers(
+			'appFetch2',
+			'keyFetch1',
+			['userFetch1', 'userFetch4', 'userFetch9']
+		);
 		$this->assertEquals([
 			'userFetch1' => 'value1',
 			'userFetch4' => 'value4'

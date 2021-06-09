@@ -65,10 +65,10 @@ class Folder extends Node implements \OCP\Files\Folder {
 		}
 		if ($path === $this->path) {
 			return '/';
-		} elseif (\strpos($path, $this->path . '/') !== 0) {
+		} elseif (strpos($path, $this->path . '/') !== 0) {
 			return null;
 		} else {
-			$path = \substr($path, \strlen($this->path));
+			$path = substr($path, \strlen($this->path));
 			return $this->normalizePath($path);
 		}
 	}
@@ -80,7 +80,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 	 * @return bool
 	 */
 	public function isSubNode($node) {
-		return \strpos($node->getPath(), $this->path . '/') === 0;
+		return strpos($node->getPath(), $this->path . '/') === 0;
 	}
 
 	/**
@@ -92,7 +92,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 	public function getDirectoryListing() {
 		$folderContent = $this->view->getDirectoryContent($this->path);
 
-		return \array_map(function (FileInfo $info) {
+		return array_map(function (FileInfo $info) {
 			if ($info->getMimetype() === 'httpd/unix-directory') {
 				return new Folder($this->root, $this->view, $info->getPath(), $info);
 			} else {
@@ -227,7 +227,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 		$mount = $this->root->getMount($this->path);
 		$storage = $mount->getStorage();
 		$internalPath = $mount->getInternalPath($this->path);
-		$internalPath = \rtrim($internalPath, '/');
+		$internalPath = rtrim($internalPath, '/');
 		if ($internalPath !== '') {
 			$internalPath = $internalPath . '/';
 		}
@@ -237,9 +237,9 @@ class Folder extends Node implements \OCP\Files\Folder {
 
 		$results = \call_user_func_array([$cache, $method], $args);
 		foreach ($results as $result) {
-			if ($internalRootLength === 0 or \substr($result['path'], 0, $internalRootLength) === $internalPath) {
+			if ($internalRootLength === 0 or substr($result['path'], 0, $internalRootLength) === $internalPath) {
 				$result['internalPath'] = $result['path'];
-				$result['path'] = \substr($result['path'], $internalRootLength);
+				$result['path'] = substr($result['path'], $internalRootLength);
 				$result['storage'] = $storage;
 				$files[] = new \OC\Files\FileInfo($this->path . '/' . $result['path'], $storage, $result['internalPath'], $result, $mount);
 			}
@@ -251,7 +251,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 			if ($storage) {
 				$cache = $storage->getCache('');
 
-				$relativeMountPoint = \substr($mount->getMountPoint(), $rootLength);
+				$relativeMountPoint = substr($mount->getMountPoint(), $rootLength);
 				$results = \call_user_func_array([$cache, $method], $args);
 				foreach ($results as $result) {
 					$result['internalPath'] = $result['path'];
@@ -262,7 +262,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 			}
 		}
 
-		return \array_map(function (FileInfo $file) {
+		return array_map(function (FileInfo $file) {
 			return $this->createNode($file->getPath(), $file);
 		}, $files);
 	}
@@ -278,7 +278,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 		$mounts[] = $this->root->getMount($this->path);
 		// reverse the array so we start with the storage this view is in
 		// which is the most likely to contain the file we're looking for
-		$mounts = \array_reverse($mounts);
+		$mounts = array_reverse($mounts);
 
 		$nodes = [];
 		foreach ($mounts as $mount) {
@@ -329,6 +329,6 @@ class Folder extends Node implements \OCP\Files\Folder {
 	 */
 	public function getNonExistingName($name) {
 		$uniqueName = \OC_Helper::buildNotExistingFileNameForView($this->getPath(), $name, $this->view);
-		return \trim($this->getRelativePath($uniqueName), '/');
+		return trim($this->getRelativePath($uniqueName), '/');
 	}
 }

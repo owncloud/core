@@ -27,12 +27,12 @@ namespace OC\Files\Storage\Wrapper;
  * Throws a StorageNotAvailableException for storages with known failures
  */
 class Availability extends Wrapper {
-	const RECHECK_TTL_SEC = 600; // 10 minutes
+	public const RECHECK_TTL_SEC = 600; // 10 minutes
 
 	public static function shouldRecheck($availability) {
 		if (!$availability['available']) {
 			// trigger a recheck if TTL reached
-			if ((\time() - $availability['last_checked']) > self::RECHECK_TTL_SEC) {
+			if ((time() - $availability['last_checked']) > self::RECHECK_TTL_SEC) {
 				return true;
 			}
 		}

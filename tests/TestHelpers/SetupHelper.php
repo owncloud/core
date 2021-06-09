@@ -70,13 +70,13 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	) {
 		$occCommand = ['user:add', '--password-from-env'];
 		if ($displayName !== null) {
-			$occCommand = \array_merge($occCommand, ["--display-name", $displayName]);
+			$occCommand = array_merge($occCommand, ["--display-name", $displayName]);
 		}
 		if ($email !== null) {
-			$occCommand = \array_merge($occCommand, ["--email", $email]);
+			$occCommand = array_merge($occCommand, ["--email", $email]);
 		}
-		\putenv("OC_PASS=" . $password);
-		return self::runOcc(\array_merge($occCommand, [$userName]));
+		putenv("OC_PASS=" . $password);
+		return self::runOcc(array_merge($occCommand, [$userName]));
 	}
 
 	/**
@@ -100,7 +100,10 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @return string[]
 	 */
 	public static function changeUserSetting(
-		$userName, $app, $key, $value
+		$userName,
+		$app,
+		$key,
+		$value
 	) {
 		return self::runOcc(
 			['user:setting', '--value ' . $value, $userName, $app, $key]
@@ -162,7 +165,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @return string[]
 	 */
 	public static function getGroups() {
-		return \json_decode(
+		return json_decode(
 			self::runOcc(['group:list', '--output=json'])['stdOut']
 		);
 	}
@@ -186,7 +189,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @return string
 	 */
 	private static function normaliseOcPath($ocPath) {
-		return '/' . \trim($ocPath, '/');
+		return '/' . trim($ocPath, '/');
 	}
 
 	/**
@@ -199,7 +202,10 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @return void
 	 */
 	public static function init(
-		$adminUsername, $adminPassword, $baseUrl, $ocPath
+		$adminUsername,
+		$adminPassword,
+		$baseUrl,
+		$ocPath
 	) {
 		foreach (\func_get_args() as $variableToCheck) {
 			if (!\is_string($variableToCheck)) {
@@ -211,7 +217,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		}
 		self::$adminUsername = $adminUsername;
 		self::$adminPassword = $adminPassword;
-		self::$baseUrl = \rtrim($baseUrl, '/');
+		self::$baseUrl = rtrim($baseUrl, '/');
 		self::$ocPath = self::normaliseOcPath($ocPath);
 	}
 
@@ -240,10 +246,15 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @throws Exception
 	 */
 	public static function getSysInfo(
-		$baseUrl, $adminUsername, $adminPassword
+		$baseUrl,
+		$adminUsername,
+		$adminPassword
 	) {
 		$result = OcsApiHelper::sendRequest(
-			$baseUrl, $adminUsername, $adminPassword, "GET",
+			$baseUrl,
+			$adminUsername,
+			$adminPassword,
+			"GET",
 			"/apps/testing/api/v1/sysinfo"
 		);
 		if ($result->getStatusCode() !== 200) {
@@ -264,10 +275,14 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @throws Exception
 	 */
 	public static function getServerRoot(
-		$baseUrl, $adminUsername, $adminPassword
+		$baseUrl,
+		$adminUsername,
+		$adminPassword
 	) {
 		$sysInfo = self::getSysInfo(
-			$baseUrl, $adminUsername, $adminPassword
+			$baseUrl,
+			$adminUsername,
+			$adminPassword
 		);
 		return $sysInfo->server_root;
 	}
@@ -355,7 +370,10 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		$adminUsername = self::checkAdminUsername($adminUsername, "mkDirOnServer");
 		$adminPassword = self::checkAdminPassword($adminPassword, "mkDirOnServer");
 		$result = OcsApiHelper::sendRequest(
-			$baseUrl, $adminUsername, $adminPassword, "POST",
+			$baseUrl,
+			$adminUsername,
+			$adminPassword,
+			"POST",
 			"/apps/testing/api/v1/dir",
 			['dir' => $dirPathFromServerRoot]
 		);
@@ -387,7 +405,10 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		$adminUsername = self::checkAdminUsername($adminUsername, "rmDirOnServer");
 		$adminPassword = self::checkAdminPassword($adminPassword, "rmDirOnServer");
 		$result = OcsApiHelper::sendRequest(
-			$baseUrl, $adminUsername, $adminPassword, "DELETE",
+			$baseUrl,
+			$adminUsername,
+			$adminPassword,
+			"DELETE",
 			"/apps/testing/api/v1/dir",
 			['dir' => $dirPathFromServerRoot]
 		);
@@ -421,7 +442,10 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		$adminUsername = self::checkAdminUsername($adminUsername, "createFileOnServer");
 		$adminPassword = self::checkAdminPassword($adminPassword, "createFileOnServer");
 		$result = OcsApiHelper::sendRequest(
-			$baseUrl, $adminUsername, $adminPassword, "POST",
+			$baseUrl,
+			$adminUsername,
+			$adminPassword,
+			"POST",
 			"/apps/testing/api/v1/file",
 			[
 				'file' => $filePathFromServerRoot,
@@ -456,7 +480,10 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		$adminUsername = self::checkAdminUsername($adminUsername, "deleteFileOnServer");
 		$adminPassword = self::checkAdminPassword($adminPassword, "deleteFileOnServer");
 		$result = OcsApiHelper::sendRequest(
-			$baseUrl, $adminUsername, $adminPassword, "DELETE",
+			$baseUrl,
+			$adminUsername,
+			$adminPassword,
+			"DELETE",
 			"/apps/testing/api/v1/file",
 			[
 				'file' => $filePathFromServerRoot
@@ -487,10 +514,12 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	) {
 		$baseUrl = self::checkBaseUrl($baseUrl, "readFile");
 		$adminUsername = self::checkAdminUsername(
-			$adminUsername, "readFile"
+			$adminUsername,
+			"readFile"
 		);
 		$adminPassword = self::checkAdminPassword(
-			$adminPassword, "readFile"
+			$adminPassword,
+			"readFile"
 		);
 
 		$response = OcsApiHelper::sendRequest(
@@ -507,7 +536,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		);
 		$localContent = HttpRequestHelper::getResponseXml($response, __METHOD__);
 		$localContent = (string)$localContent->data->element->contentUrlEncoded;
-		return \urldecode($localContent);
+		return urldecode($localContent);
 	}
 
 	/**
@@ -528,10 +557,12 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	) {
 		$baseUrl = self::checkBaseUrl($baseUrl, "readSkeletonFile");
 		$adminUsername = self::checkAdminUsername(
-			$adminUsername, "readSkeletonFile"
+			$adminUsername,
+			"readSkeletonFile"
 		);
 		$adminPassword = self::checkAdminPassword(
-			$adminPassword, "readSkeletonFile"
+			$adminPassword,
+			"readSkeletonFile"
 		);
 
 		//find the absolute path of the currently set skeletondirectory
@@ -546,9 +577,9 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 				"could not get current skeletondirectory. " . $occResponse['stdErr']
 			);
 		}
-		$skeletonRoot = \trim($occResponse['stdOut']);
+		$skeletonRoot = trim($occResponse['stdOut']);
 
-		$fileInSkeletonFolder = \rawurlencode("$skeletonRoot/$fileInSkeletonFolder");
+		$fileInSkeletonFolder = rawurlencode("$skeletonRoot/$fileInSkeletonFolder");
 		$response = OcsApiHelper::sendRequest(
 			$baseUrl,
 			$adminUsername,
@@ -563,7 +594,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		);
 		$localContent = HttpRequestHelper::getResponseXml($response, __METHOD__);
 		$localContent = (string)$localContent->data->element->contentUrlEncoded;
-		$localContent = \urldecode($localContent);
+		$localContent = urldecode($localContent);
 		return $localContent;
 	}
 
@@ -598,7 +629,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 */
 	public static function isAppEnabled($appName) {
 		$result = self::runOcc(['app:list', '^' . $appName . '$']);
-		return \strtolower(\substr($result['stdOut'], 0, 7)) === 'enabled';
+		return strtolower(substr($result['stdOut'], 0, 7)) === 'enabled';
 	}
 
 	/**
@@ -653,18 +684,22 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 			}
 
 			$body = [
-				'command' => \implode(' ', $occ['command'])
+				'command' => implode(' ', $occ['command'])
 			];
 
 			if (isset($occ['envVariables'])) {
 				$body['env_variables'] = $occ['envVariables'];
 			}
-			\array_push($bodies, $body);
+			array_push($bodies, $body);
 		}
 		try {
 			$result = OcsApiHelper::sendRequest(
-				$baseUrl, $adminUsername, $adminPassword,
-				"POST", "/apps/testing/api/v1/occ/bulk?format=json", \json_encode($bodies)
+				$baseUrl,
+				$adminUsername,
+				$adminPassword,
+				"POST",
+				"/apps/testing/api/v1/occ/bulk?format=json",
+				json_encode($bodies)
 			);
 		} catch (ServerException $e) {
 			throw new Exception(
@@ -673,7 +708,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 				$e->getResponse()->getBody()
 			);
 		}
-		$result = \json_decode($result->getBody()->getContents());
+		$result = json_decode($result->getBody()->getContents());
 
 		return $result->ocs->data;
 	}
@@ -720,7 +755,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		}
 
 		$body = [];
-		$body['command'] = \implode(' ', $args);
+		$body['command'] = implode(' ', $args);
 
 		if ($envVariables !== null) {
 			$body['env_variables'] = $envVariables;
@@ -730,8 +765,12 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 		try {
 			$result = OcsApiHelper::sendRequest(
-				$baseUrl, $adminUsername, $adminPassword,
-				"POST", $ocPath, $body
+				$baseUrl,
+				$adminUsername,
+				$adminPassword,
+				"POST",
+				$ocPath,
+				$body
 			);
 		} catch (ServerException $e) {
 			throw new Exception(
@@ -742,7 +781,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		}
 
 		$return = [];
-		$resultXml = \simplexml_load_string($result->getBody()->getContents());
+		$resultXml = simplexml_load_string($result->getBody()->getContents());
 		$return['code'] = $resultXml->xpath("//ocs/data/code");
 		$return['stdOut'] = $resultXml->xpath("//ocs/data/stdOut");
 		$return['stdErr'] = $resultXml->xpath("//ocs/data/stdErr");
@@ -771,7 +810,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 			);
 		}
 
-		if (!\is_a($return['code'][0], "SimpleXMLElement")) {
+		if (!is_a($return['code'][0], "SimpleXMLElement")) {
 			throw new Exception(
 				"Return code is not a SimpleXMLElement after executing 'occ'. " .
 				$isTestingAppEnabledText .
@@ -779,7 +818,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 			);
 		}
 
-		if (!\is_a($return['stdOut'][0], "SimpleXMLElement")) {
+		if (!is_a($return['stdOut'][0], "SimpleXMLElement")) {
 			throw new Exception(
 				"Return stdOut is not a SimpleXMLElement after executing 'occ'. " .
 				$isTestingAppEnabledText .
@@ -787,7 +826,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 			);
 		}
 
-		if (!\is_a($return['stdErr'][0], "SimpleXMLElement")) {
+		if (!is_a($return['stdErr'][0], "SimpleXMLElement")) {
 			throw new Exception(
 				"Return stdErr is not a SimpleXMLElement after executing 'occ'. " .
 				$isTestingAppEnabledText .
@@ -816,8 +855,11 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	) {
 		try {
 			return OcsApiHelper::sendRequest(
-				$baseUrl, $user,
-				$password, "DELETE", "/apps/testing/api/v1/opcache"
+				$baseUrl,
+				$user,
+				$password,
+				"DELETE",
+				"/apps/testing/api/v1/opcache"
 			);
 		} catch (ServerException $e) {
 			echo "could not reset opcache, if tests fail try to set " .
@@ -852,7 +894,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 			]
 		);
 		// stdOut should have a string like "Storage created with id 65"
-		$storageIdWords = \explode(" ", \trim($result['stdOut']));
+		$storageIdWords = explode(" ", trim($result['stdOut']));
 		$result['storageId'] = (int)$storageIdWords[4];
 		return $result;
 	}
@@ -997,8 +1039,8 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 */
 	public static function findLines($input, $text) {
 		$results = [];
-		foreach (\explode("\n", $input) as $line) {
-			if (\strpos($line, $text) !== false) {
+		foreach (explode("\n", $input) as $line) {
+			if (strpos($line, $text) !== false) {
 				$results[] = $line;
 			}
 		}

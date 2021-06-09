@@ -90,7 +90,7 @@ class Modify extends Base {
 		}
 
 		if (\in_array($input->getArgument('key'), $this->allowedKeys, true) === false) {
-			throw new \InvalidArgumentException('Supported keys are ' . \implode(', ', $this->allowedKeys));
+			throw new \InvalidArgumentException('Supported keys are ' . implode(', ', $this->allowedKeys));
 		}
 	}
 

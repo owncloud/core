@@ -26,7 +26,7 @@
  */
 // in case there are private configurations in the users home -> use them
 $privateConfigFile = $_SERVER['HOME'] . '/owncloud-extfs-test-config.php';
-if (\file_exists($privateConfigFile)) {
+if (file_exists($privateConfigFile)) {
 	$config = include($privateConfigFile);
 	return $config;
 }

@@ -141,12 +141,12 @@ class Converter {
 		// Very basic western style parsing. I'm not gonna implement
 		// https://github.com/android/platform_packages_providers_contactsprovider/blob/master/src/com/android/providers/contacts/NameSplitter.java ;)
 
-		$elements = \explode(' ', $fullName);
+		$elements = explode(' ', $fullName);
 		$result = ['', '', '', '', ''];
 		if (\count($elements) > 2) {
-			$result[0] = \implode(' ', \array_slice($elements, \count($elements)-1));
+			$result[0] = implode(' ', \array_slice($elements, \count($elements)-1));
 			$result[1] = $elements[0];
-			$result[2] = \implode(' ', \array_slice($elements, 1, \count($elements)-2));
+			$result[2] = implode(' ', \array_slice($elements, 1, \count($elements)-2));
 		} elseif (\count($elements) === 2) {
 			$result[0] = $elements[1];
 			$result[1] = $elements[0];

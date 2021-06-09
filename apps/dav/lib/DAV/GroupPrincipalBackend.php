@@ -28,7 +28,7 @@ use Sabre\DAV\PropPatch;
 use Sabre\DAVACL\PrincipalBackend\BackendInterface;
 
 class GroupPrincipalBackend implements BackendInterface {
-	const PRINCIPAL_PREFIX = 'principals/groups';
+	public const PRINCIPAL_PREFIX = 'principals/groups';
 
 	/** @var IGroupManager */
 	private $groupManager;
@@ -74,7 +74,7 @@ class GroupPrincipalBackend implements BackendInterface {
 	 * @return array
 	 */
 	public function getPrincipalByPath($path) {
-		$elements = \explode('/', $path);
+		$elements = explode('/', $path);
 		if ($elements[0] !== 'principals') {
 			return null;
 		}
@@ -98,7 +98,7 @@ class GroupPrincipalBackend implements BackendInterface {
 	 * @return string[]
 	 */
 	public function getGroupMemberSet($principal) {
-		$elements = \explode('/', $principal);
+		$elements = explode('/', $principal);
 		if ($elements[0] !== 'principals') {
 			return [];
 		}
@@ -112,7 +112,7 @@ class GroupPrincipalBackend implements BackendInterface {
 			return [];
 		}
 
-		return \array_map(function ($user) {
+		return array_map(function ($user) {
 			return $this->userToPrincipal($user);
 		}, $group->getUsers());
 	}
@@ -165,8 +165,8 @@ class GroupPrincipalBackend implements BackendInterface {
 	 * @return string
 	 */
 	public function findByUri($uri, $principalPrefix) {
-		if (\strpos($uri, 'principal:') === 0) {
-			$principal = \substr($uri, 10);
+		if (strpos($uri, 'principal:') === 0) {
+			$principal = substr($uri, 10);
 			$principal = $this->getPrincipalByPath($principal);
 			if ($principal !== null) {
 				return $principal['uri'];

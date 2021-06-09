@@ -134,7 +134,7 @@ class RequestSharedSecret extends Job {
 	protected function run($argument) {
 		$target = $argument['url'];
 		$source = $this->urlGenerator->getAbsoluteURL('/');
-		$source = \rtrim($source, '/');
+		$source = rtrim($source, '/');
 		$token = $argument['token'];
 
 		try {

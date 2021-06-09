@@ -93,7 +93,9 @@ class OccContext implements Context {
 		if ($this->doTechPreview) {
 			if (!$this->isTechPreviewEnabled()) {
 				$this->addSystemConfigKeyUsingTheOccCommand(
-					"dav.enable.tech_preview", "true", "boolean"
+					"dav.enable.tech_preview",
+					"true",
+					"boolean"
 				);
 				$this->techPreviewEnabled = true;
 				return true;
@@ -136,9 +138,9 @@ class OccContext implements Context {
 	public function importSecurityCertificateFromFileInTemporaryStorage($path) {
 		$this->invokingTheCommand("security:certificates:import " . TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/$path");
 		if ($this->featureContext->getExitStatusCodeOfOccCommand() === 0) {
-			$pathComponents = \explode("/", $path);
-			$certificate = \end($pathComponents);
-			\array_push($this->importedCertificates, $certificate);
+			$pathComponents = explode("/", $path);
+			$certificate = end($pathComponents);
+			array_push($this->importedCertificates, $certificate);
 		}
 	}
 
@@ -151,11 +153,14 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function invokingTheCommandWithEnvVariable(
-		$cmd, $envVariableName, $envVariableValue
+		$cmd,
+		$envVariableName,
+		$envVariableValue
 	) {
 		$args = [$cmd];
 		$this->featureContext->runOccWithEnvVariables(
-			$args, [$envVariableName => $envVariableValue]
+			$args,
+			[$envVariableName => $envVariableValue]
 		);
 	}
 
@@ -276,7 +281,8 @@ class OccContext implements Context {
 	 */
 	public function scanFileSystemPathUsingTheOccCommand($path, $user = null) {
 		$path = $this->featureContext->substituteInLineCodes(
-			$path, $user
+			$path,
+			$user
 		);
 		$this->invokingTheCommand(
 			"files:scan --path='$path'"
@@ -355,7 +361,9 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function addSystemConfigKeyUsingTheOccCommand(
-		$key, $value, $type = "string"
+		$key,
+		$value,
+		$type = "string"
 	) {
 		$this->invokingTheCommand(
 			"config:system:set --value '${value}' --type ${type} ${key}"
@@ -559,7 +567,8 @@ class OccContext implements Context {
 	public function theAdministratorInvokesOccCommandForUser($cmd, $user) {
 		$user = $this->featureContext->getActualUsername($user);
 		$cmd = $this->featureContext->substituteInLineCodes(
-			$cmd, $user
+			$cmd,
+			$user
 		);
 		$this->invokingTheCommand($cmd);
 	}
@@ -612,7 +621,7 @@ class OccContext implements Context {
 	 */
 	public function theAdministratorRemovesTheSecurityCertificate($certificate) {
 		$this->invokingTheCommand("security:certificates:remove " . $certificate);
-		\array_push($this->removedCertificates, $certificate);
+		array_push($this->removedCertificates, $certificate);
 	}
 
 	/**
@@ -626,7 +635,9 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorInvokesOccCommandWithEnvironmentVariable(
-		$cmd, $envVariableName, $envVariableValue
+		$cmd,
+		$envVariableName,
+		$envVariableValue
 	) {
 		$this->invokingTheCommandWithEnvVariable(
 			$cmd,
@@ -646,7 +657,9 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasInvokedOccCommandWithEnvironmentVariable(
-		$cmd, $envVariableName, $envVariableValue
+		$cmd,
+		$envVariableName,
+		$envVariableValue
 	) {
 		$this->invokingTheCommandWithEnvVariable(
 			$cmd,
@@ -662,10 +675,10 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorRunsUpgradeRoutinesOnLocalServerUsingTheOccCommand() {
-		\system("./occ upgrade", $status);
+		system("./occ upgrade", $status);
 		if ($status !== 0) {
 			// if the above command fails make sure to turn off maintenance mode
-			\system("./occ maintenance:mode --off");
+			system("./occ maintenance:mode --off");
 		}
 	}
 
@@ -693,12 +706,12 @@ class OccContext implements Context {
 				"stdErr was: '" .
 				$this->featureContext->getStdErrOfOccCommand() . "'\n";
 			if (!empty($exceptions)) {
-				$msg .= ' Exceptions: ' . \implode(', ', $exceptions);
+				$msg .= ' Exceptions: ' . implode(', ', $exceptions);
 			}
 			throw new \Exception($msg);
 		} elseif (!empty($exceptions)) {
 			$msg = 'The command was successful but triggered exceptions: '
-				. \implode(', ', $exceptions);
+				. implode(', ', $exceptions);
 			throw new \Exception($msg);
 		}
 	}
@@ -753,7 +766,7 @@ class OccContext implements Context {
 	public function theCommandOutputContainsTheText($text) {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
-		$text = \trim($text, $text[0]);
+		$text = trim($text, $text[0]);
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lines = SetupHelper::findLines(
 			$commandOutput,
@@ -780,9 +793,10 @@ class OccContext implements Context {
 	public function theCommandOutputContainsTheTextAboutUser($text, $user) {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
-		$text = \trim($text, $text[0]);
+		$text = trim($text, $text[0]);
 		$text = $this->featureContext->substituteInLineCodes(
-			$text, $user
+			$text,
+			$user
 		);
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lines = SetupHelper::findLines(
@@ -809,7 +823,7 @@ class OccContext implements Context {
 	public function theCommandErrorOutputContainsTheText($text) {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
-		$text = \trim($text, $text[0]);
+		$text = trim($text, $text[0]);
 		$commandOutput = $this->featureContext->getStdErrOfOccCommand();
 		$lines = SetupHelper::findLines(
 			$commandOutput,
@@ -831,10 +845,10 @@ class OccContext implements Context {
 	 */
 	public function theOccCommandJsonOutputShouldNotReturnAnyData() {
 		Assert::assertEquals(
-			\trim($this->featureContext->getStdOutOfOccCommand()),
+			trim($this->featureContext->getStdOutOfOccCommand()),
 			"[]",
 			"Expected command output to be '[]' but got '"
-			. \trim($this->featureContext->getStdOutOfOccCommand())
+			. trim($this->featureContext->getStdOutOfOccCommand())
 			. "'"
 		);
 		Assert::assertEmpty(
@@ -860,13 +874,14 @@ class OccContext implements Context {
 			// Otherwise just return - the setting is already done by default.
 			Assert::assertEquals(
 				"Shares",
-				\trim($folder, "/"),
+				trim($folder, "/"),
 				__METHOD__ . " tried to set the default folder for received shares to $folder but that is not possible on OCIS"
 			);
 			return;
 		}
 		$this->addSystemConfigKeyUsingTheOccCommand(
-			"share_folder", $folder
+			"share_folder",
+			$folder
 		);
 	}
 
@@ -880,7 +895,8 @@ class OccContext implements Context {
 	 */
 	public function theAdministratorHasSetTheMailSmtpmodeTo($smtpmode) {
 		$this->addSystemConfigKeyUsingTheOccCommand(
-			"mail_smtpmode", $smtpmode
+			"mail_smtpmode",
+			$smtpmode
 		);
 	}
 
@@ -977,8 +993,8 @@ class OccContext implements Context {
 	public function theCommandOutputShouldBe(PyStringNode $content) {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		// removing blank lines
-		$commandOutput = \implode("\n", \array_filter(\explode("\n", $commandOutput)));
-		$content = \implode("\n", \array_filter(\explode("\n", $content->getRaw())));
+		$commandOutput = implode("\n", array_filter(explode("\n", $commandOutput)));
+		$content = implode("\n", array_filter(explode("\n", $content->getRaw())));
 		Assert::assertEquals(
 			$content,
 			$commandOutput,
@@ -1251,7 +1267,10 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function addRemoveUserOrGroupToOrFromMount(
-		$action, $userOrGroup, $userOrGroupName, $mountName
+		$action,
+		$userOrGroup,
+		$userOrGroupName,
+		$mountName
 	) {
 		if ($action === "adds" || $action === "added") {
 			$action = "--add";
@@ -1284,7 +1303,9 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function addRemoveUserOrGroupToOrFromLastLocalMount(
-		$action, $userOrGroup, $userOrGroupName
+		$action,
+		$userOrGroup,
+		$userOrGroupName
 	) {
 		$storageIds = $this->featureContext->getStorageIds();
 		Assert::assertGreaterThan(
@@ -1292,9 +1313,12 @@ class OccContext implements Context {
 			\count($storageIds),
 			"addRemoveAsApplicableUserLastLocalMount no local mounts exist"
 		);
-		$lastMountName = \end($storageIds);
+		$lastMountName = end($storageIds);
 		$this->addRemoveUserOrGroupToOrFromMount(
-			$action, $userOrGroup, $userOrGroupName, $lastMountName
+			$action,
+			$userOrGroup,
+			$userOrGroupName,
+			$lastMountName
 		);
 	}
 
@@ -1309,7 +1333,9 @@ class OccContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theAdminAddsRemovesAsTheApplicableUserLastLocalMountUsingTheOccCommand(
-		$action, $userOrGroup, $user
+		$action,
+		$userOrGroup,
+		$user
 	) {
 		$this->addRemoveUserOrGroupToOrFromLastLocalMount(
 			$action,
@@ -1329,7 +1355,9 @@ class OccContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theAdminHasAddedRemovedAsTheApplicableUserLastLocalMountUsingTheOccCommand(
-		$action, $userOrGroup, $user
+		$action,
+		$userOrGroup,
+		$user
 	) {
 		$this->addRemoveUserOrGroupToOrFromLastLocalMount(
 			$action,
@@ -1351,7 +1379,10 @@ class OccContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theAdminAddsRemovesAsTheApplicableUserForMountUsingTheOccCommand(
-		$action, $userOrGroup, $user, $mount
+		$action,
+		$userOrGroup,
+		$user,
+		$mount
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->addRemoveUserOrGroupToOrFromMount(
@@ -1393,7 +1424,10 @@ class OccContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theAdminHasAddedRemovedTheApplicableUserForMountUsingTheOccCommand(
-		$action, $userOrGroup, $user, $mount
+		$action,
+		$userOrGroup,
+		$user,
+		$mount
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->addRemoveUserOrGroupToOrFromMount(
@@ -1555,16 +1589,16 @@ class OccContext implements Context {
 	public function theFollowingLocalStoragesShouldExist(TableNode $mountPoints) {
 		$createdLocalStorage = [];
 		$expectedLocalStorages = $mountPoints->getColumnsHash();
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = json_decode($this->featureContext->getStdOutOfOccCommand());
 		foreach ($commandOutput as $storageEntry) {
-			$createdLocalStorage[$storageEntry->mount_id] = \ltrim($storageEntry->mount_point, '/');
+			$createdLocalStorage[$storageEntry->mount_id] = ltrim($storageEntry->mount_point, '/');
 		}
 		foreach ($expectedLocalStorages as $expectedStorageEntry) {
 			Assert::assertContains(
 				$expectedStorageEntry['localStorage'],
 				$createdLocalStorage,
 				"'"
-				. \implode(', ', $createdLocalStorage)
+				. implode(', ', $createdLocalStorage)
 				. "' does not contain '${expectedStorageEntry['localStorage']}' "
 				. __METHOD__
 			);
@@ -1583,9 +1617,9 @@ class OccContext implements Context {
 		$createdLocalStorage = [];
 		$this->listLocalStorageMount();
 		$expectedLocalStorages = $mountPoints->getColumnsHash();
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = json_decode($this->featureContext->getStdOutOfOccCommand());
 		foreach ($commandOutput as $i) {
-			$createdLocalStorage[$i->mount_id] = \ltrim($i->mount_point, '/');
+			$createdLocalStorage[$i->mount_id] = ltrim($i->mount_point, '/');
 		}
 		foreach ($expectedLocalStorages as $i) {
 			Assert::assertNotContains(
@@ -1612,19 +1646,19 @@ class OccContext implements Context {
 				$expectedBackendTypeEntry,
 				__METHOD__
 				. " The provided expected backend type entry '"
-				. \implode(', ', $expectedBackendTypeEntry)
+				. implode(', ', $expectedBackendTypeEntry)
 				. "' do not have key 'backend-type'"
 			);
 		}
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
-		$keys = \array_keys((array) $commandOutput);
+		$commandOutput = json_decode($this->featureContext->getStdOutOfOccCommand());
+		$keys = array_keys((array) $commandOutput);
 		foreach ($expectedBackendTypes as $backendTypesEntry) {
 			Assert::assertContains(
 				$backendTypesEntry['backend-type'],
 				$keys,
 				__METHOD__
 				. " ${backendTypesEntry['backend-type']} is not contained in '"
-				. \implode(', ', $keys)
+				. implode(', ', $keys)
 				. "' but was expected to be."
 			);
 		}
@@ -1646,19 +1680,19 @@ class OccContext implements Context {
 				$expectedBackendEntry,
 				__METHOD__
 				. " The provided expected backend entry '"
-				. \implode(', ', $expectedBackendEntry)
+				. implode(', ', $expectedBackendEntry)
 				. "' do not have key 'backends'"
 			);
 		}
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
-		$keys = \array_keys((array) $commandOutput);
+		$commandOutput = json_decode($this->featureContext->getStdOutOfOccCommand());
+		$keys = array_keys((array) $commandOutput);
 		foreach ($expectedBackends as $backendsEntry) {
 			Assert::assertContains(
 				$backendsEntry['backends'],
 				$keys,
 				__METHOD__
 				. " ${backendsEntry['backends']} is not contained in '"
-				. \implode(', ', $keys)
+				. implode(', ', $keys)
 				. "' but was expected to be."
 			);
 		}
@@ -1680,19 +1714,19 @@ class OccContext implements Context {
 				$expectedBackendKeyEntry,
 				__METHOD__
 				. " The provided expected backend key entry '"
-				. \implode(', ', $expectedBackendKeyEntry)
+				. implode(', ', $expectedBackendKeyEntry)
 				. "' do not have key 'backend-keys'"
 			);
 		}
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
-		$keys = \array_keys((array) $commandOutput);
+		$commandOutput = json_decode($this->featureContext->getStdOutOfOccCommand());
+		$keys = array_keys((array) $commandOutput);
 		foreach ($expectedBackendKeys as $backendKeysEntry) {
 			Assert::assertContains(
 				$backendKeysEntry['backend-keys'],
 				$keys,
 				__METHOD__
 				. " ${backendKeysEntry['backend-keys']} is not contained in '"
-				. \implode(', ', $keys)
+				. implode(', ', $keys)
 				. "' but was expected to be."
 			);
 		}
@@ -1713,7 +1747,7 @@ class OccContext implements Context {
 			['Storage', 'AuthenticationType', 'Configuration', 'Options', 'Auth', 'Type']
 		);
 		$expectedLocalStorages = $table->getColumnsHash();
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = json_decode($this->featureContext->getStdOutOfOccCommand());
 		foreach ($expectedLocalStorages as $expectedStorageEntry) {
 			$isStorageEntryListed = false;
 			foreach ($commandOutput as $listedStorageEntry) {
@@ -1759,9 +1793,9 @@ class OccContext implements Context {
 									. $expectedStorageEntry['Configuration']
 								);
 							} else {
-								$item = \strtok($expectedStorageEntry['Configuration'], ':');
+								$item = strtok($expectedStorageEntry['Configuration'], ':');
 								Assert::assertTrue(
-									\property_exists($listedStorageEntry->configuration, $item),
+									property_exists($listedStorageEntry->configuration, $item),
 									"$item was not found in the Configuration column"
 								);
 							}
@@ -1780,7 +1814,7 @@ class OccContext implements Context {
 							if ($listedStorageEntry->applicable_users === '') {
 								$listedApplicableUsers = [];
 							} else {
-								$listedApplicableUsers = \explode(', ', $listedStorageEntry->applicable_users);
+								$listedApplicableUsers = explode(', ', $listedStorageEntry->applicable_users);
 							}
 						} else {
 							$listedApplicableUsers = $listedStorageEntry->applicable_users;
@@ -1792,7 +1826,7 @@ class OccContext implements Context {
 								"ApplicableUsers was expected to be an empty array but was not empty"
 							);
 						} else {
-							$expectedApplicableUsers = \explode(', ', $expectedStorageEntry['ApplicableUsers']);
+							$expectedApplicableUsers = explode(', ', $expectedStorageEntry['ApplicableUsers']);
 							foreach ($expectedApplicableUsers as $expectedApplicableUserEntry) {
 								$expectedApplicableUserEntry = $this->featureContext->getActualUsername($expectedApplicableUserEntry);
 								Assert::assertContains(
@@ -1800,7 +1834,7 @@ class OccContext implements Context {
 									$listedApplicableUsers,
 									__METHOD__
 									. " '$expectedApplicableUserEntry' is not listed in '"
-									. \implode(', ', $listedApplicableUsers)
+									. implode(', ', $listedApplicableUsers)
 									. "'"
 								);
 							}
@@ -1811,7 +1845,7 @@ class OccContext implements Context {
 							if ($listedStorageEntry->applicable_groups === '') {
 								$listedApplicableGroups = [];
 							} else {
-								$listedApplicableGroups = \explode(', ', $listedStorageEntry->applicable_groups);
+								$listedApplicableGroups = explode(', ', $listedStorageEntry->applicable_groups);
 							}
 						} else {
 							$listedApplicableGroups = $listedStorageEntry->applicable_groups;
@@ -1824,14 +1858,14 @@ class OccContext implements Context {
 							);
 							Assert::assertEquals([], $listedApplicableGroups);
 						} else {
-							$expectedApplicableGroups = \explode(', ', $expectedStorageEntry['ApplicableGroups']);
+							$expectedApplicableGroups = explode(', ', $expectedStorageEntry['ApplicableGroups']);
 							foreach ($expectedApplicableGroups as $expectedApplicableGroupEntry) {
 								Assert::assertContains(
 									$expectedApplicableGroupEntry,
 									$listedApplicableGroups,
 									__METHOD__
 									. " '$expectedApplicableGroupEntry' is not listed in '"
-									. \implode(', ', $listedApplicableGroups)
+									. implode(', ', $listedApplicableGroups)
 									. "'"
 								);
 							}
@@ -1863,7 +1897,7 @@ class OccContext implements Context {
 	 */
 	public function theConfigurationOutputShouldBe($expectedOutput) {
 		$actualOutput = $this->featureContext->getStdOutOfOccCommand();
-		$trimmedOutput = \trim($actualOutput);
+		$trimmedOutput = trim($actualOutput);
 		Assert::assertEquals(
 			$expectedOutput,
 			$trimmedOutput,
@@ -1889,17 +1923,17 @@ class OccContext implements Context {
 				$expectedConfigurationEntry,
 				__METHOD__
 				. " The provided expected configuration entry '"
-				. \implode(', ', $expectedConfigurationEntry)
+				. implode(', ', $expectedConfigurationEntry)
 				. "' do not have key 'configuration'"
 			);
 		}
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = json_decode($this->featureContext->getStdOutOfOccCommand());
 		$isStorageEntryListed = false;
 		foreach ($commandOutput as $listedStorageEntry) {
 			if ($listedStorageEntry->mount_point === $localStorage) {
 				$isStorageEntryListed = true;
 				$configurations = $listedStorageEntry->configuration;
-				$configurationsSplitted = \explode(', ', $configurations);
+				$configurationsSplitted = explode(', ', $configurations);
 				foreach ($expectedConfigurations as $expectedConfigArray) {
 					foreach ($expectedConfigArray as $expectedConfigEntry) {
 						Assert::assertContains(
@@ -1907,7 +1941,7 @@ class OccContext implements Context {
 							$configurationsSplitted,
 							__METHOD__
 							. " $expectedConfigEntry is not contained in '"
-							. \implode(', ', $configurationsSplitted)
+							. implode(', ', $configurationsSplitted)
 							. "' but was expected to be."
 						);
 					}
@@ -1958,17 +1992,17 @@ class OccContext implements Context {
 				$expectedOptionEntry,
 				__METHOD__
 				. " The provided expected option '"
-				. \implode(', ', $expectedOptionEntry)
+				. implode(', ', $expectedOptionEntry)
 				. "' do not have key 'option'"
 			);
 		}
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = json_decode($this->featureContext->getStdOutOfOccCommand());
 		$isStorageEntryListed = false;
 		foreach ($commandOutput as $listedStorageEntry) {
 			if ($listedStorageEntry->mount_point === $localStorage) {
 				$isStorageEntryListed = true;
 				$options = $listedStorageEntry->options;
-				$optionsSplitted = \explode(', ', $options);
+				$optionsSplitted = explode(', ', $options);
 				foreach ($expectedOptions as $expectedOptionArray) {
 					foreach ($expectedOptionArray as $expectedOptionEntry) {
 						Assert::assertContains(
@@ -1976,7 +2010,7 @@ class OccContext implements Context {
 							$optionsSplitted,
 							__METHOD__
 							. " $expectedOptionEntry is not contained in '"
-							. \implode(', ', $optionsSplitted)
+							. implode(', ', $optionsSplitted)
 							. "' , but was expected to be."
 						);
 					}
@@ -2004,17 +2038,17 @@ class OccContext implements Context {
 				$expectedOptionEntry,
 				__METHOD__
 				. " The provided expected option '"
-				. \implode(', ', $expectedOptionEntry)
+				. implode(', ', $expectedOptionEntry)
 				. "' do not have key 'options'"
 			);
 		}
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = json_decode($this->featureContext->getStdOutOfOccCommand());
 		$isStorageEntryListed = false;
 		foreach ($commandOutput as $listedStorageEntry) {
 			if ($listedStorageEntry->mount_point === $localStorage) {
 				$isStorageEntryListed = true;
 				$options = $listedStorageEntry->options;
-				$optionsSplitted = \explode(', ', $options);
+				$optionsSplitted = explode(', ', $options);
 				foreach ($expectedOptions as $expectedOptionArray) {
 					foreach ($expectedOptionArray as $expectedOptionEntry) {
 						Assert::assertNotContains(
@@ -2022,7 +2056,7 @@ class OccContext implements Context {
 							$optionsSplitted,
 							__METHOD__
 							. " $expectedOptionEntry is contained in '"
-							. \implode(', ', $optionsSplitted)
+							. implode(', ', $optionsSplitted)
 							. "' , but was not expected to be."
 						);
 					}
@@ -2069,9 +2103,9 @@ class OccContext implements Context {
 	public function deleteLocalStorageFolderUsingTheOccCommand($folder, $mustExist = true) {
 		$createdLocalStorage = [];
 		$this->listLocalStorageMount();
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = json_decode($this->featureContext->getStdOutOfOccCommand());
 		foreach ($commandOutput as $i) {
-			$createdLocalStorage[$i->mount_id] = \ltrim($i->mount_point, '/');
+			$createdLocalStorage[$i->mount_id] = ltrim($i->mount_point, '/');
 		}
 		foreach ($createdLocalStorage as $key => $value) {
 			if ($value === $folder) {
@@ -2133,9 +2167,9 @@ class OccContext implements Context {
 	 */
 	public function theAdministratorVerifiesTheMountConfigurationForLocalStorageUsingTheOccCommand($localStorage) {
 		$this->listLocalStorageMount();
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = json_decode($this->featureContext->getStdOutOfOccCommand());
 		foreach ($commandOutput as $entry) {
-			if (\ltrim($entry->mount_point, '/') == $localStorage) {
+			if (ltrim($entry->mount_point, '/') == $localStorage) {
 				$mountId = $entry->mount_id;
 			}
 		}
@@ -2156,10 +2190,10 @@ class OccContext implements Context {
 		$ResultArray = [];
 		$expectedInfo = $info->getColumnsHash();
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
-		$commandOutputSplitted = \preg_split("/[-]/", $commandOutput);
-		$filteredArray = \array_filter(\array_map("trim", $commandOutputSplitted));
+		$commandOutputSplitted = preg_split("/[-]/", $commandOutput);
+		$filteredArray = array_filter(array_map("trim", $commandOutputSplitted));
 		foreach ($filteredArray as $entry) {
-			$keyValue = \preg_split("/[:]/", $entry);
+			$keyValue = preg_split("/[:]/", $entry);
 			if (isset($keyValue[1])) {
 				$ResultArray[$keyValue[0]] = $keyValue[1];
 			} else {
@@ -2169,9 +2203,9 @@ class OccContext implements Context {
 		foreach ($expectedInfo as $element) {
 			Assert::assertEquals(
 				$element,
-				\array_map('trim', $ResultArray),
+				array_map('trim', $ResultArray),
 				__METHOD__
-				. " '" . \implode(', ', $element)
+				. " '" . implode(', ', $element)
 				. "' was expected to be listed, but is not listed in the mount configuration information"
 			);
 		}
@@ -2202,9 +2236,9 @@ class OccContext implements Context {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		Assert::assertEquals(
 			$mode,
-			\trim($lastOutput),
+			trim($lastOutput),
 			"The background jobs mode was expected to be {$mode} but got '"
-			. \trim($lastOutput)
+			. trim($lastOutput)
 			. "'"
 		);
 	}
@@ -2224,9 +2258,9 @@ class OccContext implements Context {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		Assert::assertEquals(
 			$value,
-			\trim($lastOutput),
+			trim($lastOutput),
 			"The update channel was expected to be '$value' but got '"
-			. \trim($lastOutput)
+			. trim($lastOutput)
 			. "'"
 		);
 	}
@@ -2246,9 +2280,9 @@ class OccContext implements Context {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		Assert::assertEquals(
 			$logLevel,
-			\trim($lastOutput),
+			trim($lastOutput),
 			"The log level was expected to be '$logLevel' but got '"
-			. \trim($lastOutput)
+			. trim($lastOutput)
 			. "'"
 		);
 	}
@@ -2315,7 +2349,9 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand(
-		$key, $value, $type = "string"
+		$key,
+		$value,
+		$type = "string"
 	) {
 		$this->addSystemConfigKeyUsingTheOccCommand(
 			$key,
@@ -2336,7 +2372,9 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasAddedSystemConfigKeyWithValueUsingTheOccCommand(
-		$key, $value, $type = "string"
+		$key,
+		$value,
+		$type = "string"
 	) {
 		$this->addSystemConfigKeyUsingTheOccCommand(
 			$key,
@@ -2427,7 +2465,8 @@ class OccContext implements Context {
 		$jobId = $this->lastDeletedJobId;
 		$match = $this->getLastJobIdForJob($job);
 		Assert::assertNotEquals(
-			$jobId, $match,
+			$jobId,
+			$match,
 			"job $job with jobId $jobId" .
 			" was not expected to be listed in background queue, but was"
 		);
@@ -2443,7 +2482,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function systemConfigKeyShouldHaveValue($key, $value) {
-		$config = \trim(SetupHelper::getSystemConfigValue($key));
+		$config = trim(SetupHelper::getSystemConfigValue($key));
 		Assert::assertSame(
 			$value,
 			$config,
@@ -2506,7 +2545,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theCommandOutputShouldContainTheAppsConfigs() {
-		$config_list = \json_decode($this->featureContext->getStdOutOfOccCommand(), true);
+		$config_list = json_decode($this->featureContext->getStdOutOfOccCommand(), true);
 		Assert::assertArrayHasKey(
 			'apps',
 			$config_list,
@@ -2524,7 +2563,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theCommandOutputShouldContainTheSystemConfigs() {
-		$config_list = \json_decode($this->featureContext->getStdOutOfOccCommand(), true);
+		$config_list = json_decode($this->featureContext->getStdOutOfOccCommand(), true);
 		Assert::assertArrayHasKey(
 			'system',
 			$config_list,
@@ -2549,7 +2588,7 @@ class OccContext implements Context {
 		$this->deleteAllVersionsForUserUsingOccCommand($user);
 		Assert::assertSame(
 			"Delete versions of   $user",
-			\trim($this->featureContext->getStdOutOfOccCommand())
+			trim($this->featureContext->getStdOutOfOccCommand())
 		);
 	}
 
@@ -2563,9 +2602,9 @@ class OccContext implements Context {
 		$this->deleteAllVersionsForAllUsersUsingTheOccCommand();
 		Assert::assertStringContainsString(
 			"Delete all versions",
-			\trim($this->featureContext->getStdOutOfOccCommand()),
+			trim($this->featureContext->getStdOutOfOccCommand()),
 			"Expected 'Delete all versions' to be contained in the output of occ command: "
-			. \trim($this->featureContext->getStdOutOfOccCommand())
+			. trim($this->featureContext->getStdOutOfOccCommand())
 		);
 	}
 
@@ -2585,7 +2624,7 @@ class OccContext implements Context {
 			$job
 		);
 		// find the jobId of the newest job among the jobs with given class
-		$success = \preg_match("/\d+/", \end($lines), $match);
+		$success = preg_match("/\d+/", end($lines), $match);
 		if ($success) {
 			return $match[0];
 		}
@@ -2602,10 +2641,13 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theSystemConfigKeyFromLastCommandOutputShouldContainValue(
-		$key, $value, $type
+		$key,
+		$value,
+		$type
 	) {
-		$configList = \json_decode(
-			$this->featureContext->getStdOutOfOccCommand(), true
+		$configList = json_decode(
+			$this->featureContext->getStdOutOfOccCommand(),
+			true
 		);
 		$systemConfig = $configList['system'];
 
@@ -2617,8 +2659,9 @@ class OccContext implements Context {
 		} elseif ($type === 'json') {
 			// if the expected value of the key is a json
 			// match the value with the regular expression
-			$actualKeyValuePair = \json_encode(
-				$systemConfig[$key], JSON_UNESCAPED_SLASHES
+			$actualKeyValuePair = json_encode(
+				$systemConfig[$key],
+				JSON_UNESCAPED_SLASHES
 			);
 
 			Assert::assertThat(
@@ -2671,7 +2714,7 @@ class OccContext implements Context {
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getOcPath()
 		);
-		$status = \trim($response['stdOut']);
+		$status = trim($response['stdOut']);
 		Assert::assertEquals(
 			'yes',
 			$status,
@@ -2689,9 +2732,9 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasAddedGroupToTheExcludeGroupFromSharingList($groups) {
-		$groups = \explode(',', \trim($groups));
-		$groups = \array_map('trim', $groups); //removing whitespaces around group names
-		$groups = '"' . \implode('","', $groups) . '"';
+		$groups = explode(',', trim($groups));
+		$groups = array_map('trim', $groups); //removing whitespaces around group names
+		$groups = '"' . implode('","', $groups) . '"';
 		SetupHelper::runOcc(
 			[
 				'config:app:set',
@@ -2715,8 +2758,8 @@ class OccContext implements Context {
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getOcPath()
 		);
-		$excludedGroupsFromResponse = (\trim($response['stdOut']));
-		$excludedGroupsFromResponse = \trim($excludedGroupsFromResponse, '[]');
+		$excludedGroupsFromResponse = (trim($response['stdOut']));
+		$excludedGroupsFromResponse = trim($excludedGroupsFromResponse, '[]');
 		Assert::assertEquals(
 			$groups,
 			$excludedGroupsFromResponse,
@@ -2756,7 +2799,7 @@ class OccContext implements Context {
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getOcPath()
 		);
-		$status = \trim($response['stdOut']);
+		$status = trim($response['stdOut']);
 		Assert::assertEquals(
 			"yes",
 			$status,
@@ -2802,7 +2845,7 @@ class OccContext implements Context {
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getOcPath()
 		);
-		$status = \trim($response['stdOut']);
+		$status = trim($response['stdOut']);
 		Assert::assertEquals(
 			$value,
 			$status,
@@ -2842,10 +2885,12 @@ class OccContext implements Context {
 		);
 		$extMntSettings = $settings->getRowsHash();
 		$extMntSettings['user'] = $this->featureContext->substituteInLineCodes(
-			$extMntSettings['user'], $userRenamed
+			$extMntSettings['user'],
+			$userRenamed
 		);
 		$password = $this->featureContext->substituteInLineCodes(
-			$extMntSettings['password'], $user
+			$extMntSettings['password'],
+			$user
 		);
 		$args = [
 			"files_external:create",
@@ -2862,7 +2907,7 @@ class OccContext implements Context {
 		$this->featureContext->runOcc($args);
 		// add to array of created storageIds
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
-		$mountId = \preg_replace('/\D/', '', $commandOutput);
+		$mountId = preg_replace('/\D/', '', $commandOutput);
 		$this->featureContext->addStorageId($extMntSettings["mount_point"], $mountId);
 	}
 
@@ -2899,7 +2944,7 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function mountPointShouldNotBeListedAsAnExternalStorage($mountPoint) {
-		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$commandOutput = json_decode($this->featureContext->getStdOutOfOccCommand());
 		foreach ($commandOutput as $entry) {
 			Assert::assertNotEquals($mountPoint, $entry->mount_point);
 		}
@@ -2915,7 +2960,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function removeImportedCertificates() {
-		$remainingCertificates = \array_diff($this->importedCertificates, $this->removedCertificates);
+		$remainingCertificates = array_diff($this->importedCertificates, $this->removedCertificates);
 		foreach ($remainingCertificates as $certificate) {
 			$this->invokingTheCommand("security:certificates:remove " . $certificate);
 			$this->theCommandShouldHaveBeenSuccessful();
@@ -2986,9 +3031,9 @@ class OccContext implements Context {
 		$ocVersion = SetupHelper::getSystemConfigValue('version');
 		// dav.enable.tech_preview was used in some ownCloud versions before 10.4.0
 		// only set it on those versions of ownCloud
-		if (\version_compare($ocVersion, '10.4.0') === -1) {
+		if (version_compare($ocVersion, '10.4.0') === -1) {
 			$this->doTechPreview = true;
-			$techPreviewEnabled = \trim(
+			$techPreviewEnabled = trim(
 				SetupHelper::getSystemConfigValue('dav.enable.tech_preview')
 			);
 			$this->initialTechPreviewStatus = $techPreviewEnabled;

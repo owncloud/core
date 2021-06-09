@@ -62,10 +62,12 @@ class Migrator {
 	 * @param IConfig $config
 	 * @param EventDispatcher $dispatcher
 	 */
-	public function __construct(\Doctrine\DBAL\Connection $connection,
-								ISecureRandom $random,
-								IConfig $config,
-								EventDispatcher $dispatcher = null) {
+	public function __construct(
+		\Doctrine\DBAL\Connection $connection,
+		ISecureRandom $random,
+		IConfig $config,
+		EventDispatcher $dispatcher = null
+	) {
 		$this->connection = $connection;
 		$this->random = $random;
 		$this->config = $config;
@@ -231,7 +233,7 @@ class Migrator {
 	}
 
 	protected function getFilterExpression() {
-		return '/^' . \preg_quote($this->config->getSystemValue('dbtableprefix', 'oc_')) . '/';
+		return '/^' . preg_quote($this->config->getSystemValue('dbtableprefix', 'oc_')) . '/';
 	}
 
 	protected function emit($sql, $step, $max) {

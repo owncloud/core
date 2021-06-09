@@ -58,7 +58,7 @@ class PublicLinkEventsPlugin extends ServerPlugin {
 	public function beforeMethod(RequestInterface $request, ResponseInterface $response) {
 		$path = $request->getPath();
 		$method = $request->getMethod();
-		$lowercaseMethod = \strtolower($method);
+		$lowercaseMethod = strtolower($method);
 		$token = $request->getRawServerValue('PHP_AUTH_USER');
 
 		if ($method === 'MOVE') {
@@ -99,7 +99,7 @@ class PublicLinkEventsPlugin extends ServerPlugin {
 	public function afterMethod(RequestInterface $request, ResponseInterface $response) {
 		$path = $request->getPath();
 		$method = $request->getMethod();
-		$lowercaseMethod = \strtolower($method);
+		$lowercaseMethod = strtolower($method);
 		$token = $request->getRawServerValue('PHP_AUTH_USER');
 
 		if ($method === 'MOVE') {

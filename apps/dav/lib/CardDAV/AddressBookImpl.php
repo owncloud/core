@@ -53,10 +53,11 @@ class AddressBookImpl implements IAddressBook {
 	 * @param IUrlGenerator $urlGenerator
 	 */
 	public function __construct(
-			AddressBook $addressBook,
-			array $addressBookInfo,
-			CardDavBackend $backend,
-			IURLGenerator $urlGenerator) {
+		AddressBook $addressBook,
+		array $addressBookInfo,
+		CardDavBackend $backend,
+		IURLGenerator $urlGenerator
+	) {
 		$this->addressBook = $addressBook;
 		$this->addressBookInfo = $addressBookInfo;
 		$this->backend = $backend;
@@ -226,10 +227,11 @@ class AddressBookImpl implements IAddressBook {
 			$result[$property->name] = $property->getValue();
 			if ($property->name === 'PHOTO' && $property->getValueType() === 'BINARY') {
 				$url = $this->urlGenerator->getAbsoluteURL(
-					$this->urlGenerator->linkTo('', 'remote.php') . '/dav/');
-				$url .= \implode('/', [
+					$this->urlGenerator->linkTo('', 'remote.php') . '/dav/'
+				);
+				$url .= implode('/', [
 					'addressbooks',
-					\substr($this->addressBookInfo['principaluri'], 11), //cut off 'principals/'
+					substr($this->addressBookInfo['principaluri'], 11), //cut off 'principals/'
 					$this->addressBookInfo['uri'],
 					$uri
 				]) . '?photo';

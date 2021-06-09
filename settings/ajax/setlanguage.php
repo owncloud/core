@@ -33,7 +33,7 @@ OCP\JSON::callCheck();
 if (isset($_POST['lang'])) {
 	$languageCodes = \OC::$server->getL10NFactory()->findAvailableLanguages();
 	$lang = (string)$_POST['lang'];
-	if (\array_search($lang, $languageCodes) or $lang === 'en') {
+	if (array_search($lang, $languageCodes) or $lang === 'en') {
 		\OC::$server->getConfig()->setUserValue(OC_User::getUser(), 'core', 'lang', $lang);
 		OC_JSON::success(["data" => ["message" => $l->t("Language changed")]]);
 	} else {

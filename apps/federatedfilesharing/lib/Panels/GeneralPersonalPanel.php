@@ -41,11 +41,13 @@ class GeneralPersonalPanel implements ISettings {
 	/** @var IRequest */
 	protected $request;
 
-	public function __construct(IL10N $l,
-								IUserSession $userSession,
-								IURLGenerator $urlGenerator,
-								FederatedShareProvider $shareProvider,
-								IRequest $request) {
+	public function __construct(
+		IL10N $l,
+		IUserSession $userSession,
+		IURLGenerator $urlGenerator,
+		FederatedShareProvider $shareProvider,
+		IRequest $request
+	) {
 		$this->l = $l;
 		$this->userSession = $userSession;
 		$this->urlGenerator = $urlGenerator;
@@ -63,7 +65,7 @@ class GeneralPersonalPanel implements ISettings {
 
 	public function getPanel() {
 		$isIE8 = false;
-		\preg_match('/MSIE (.*?);/', $this->request->getHeader('User-Agent'), $matches);
+		preg_match('/MSIE (.*?);/', $this->request->getHeader('User-Agent'), $matches);
 		if (\count($matches) > 0 && $matches[1] <= 9) {
 			$isIE8 = true;
 		}

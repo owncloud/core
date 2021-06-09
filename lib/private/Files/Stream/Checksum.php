@@ -51,7 +51,7 @@ class Checksum extends Wrapper {
 
 	public function __construct(array $algos = ['sha1', 'md5', 'adler32']) {
 		foreach ($algos as $algo) {
-			$this->hashingContexts[$algo] = \hash_init($algo);
+			$this->hashingContexts[$algo] = hash_init($algo);
 		}
 
 		if (!self::$checksums) {
@@ -65,7 +65,7 @@ class Checksum extends Wrapper {
 	 * @return resource
 	 */
 	public static function wrap($source, $path) {
-		$context = \stream_context_create([
+		$context = stream_context_create([
 			'occhecksum' => [
 				'source' => $source,
 				'path' => $path
@@ -73,7 +73,10 @@ class Checksum extends Wrapper {
 		]);
 
 		return Wrapper::wrapSource(
-			$source, $context, 'occhecksum', self::class
+			$source,
+			$context,
+			'occhecksum',
+			self::class
 		);
 	}
 
@@ -123,7 +126,7 @@ class Checksum extends Wrapper {
 
 	private function updateHashingContexts($data) {
 		foreach ($this->hashingContexts as $ctx) {
-			\hash_update($ctx, $data);
+			hash_update($ctx, $data);
 		}
 	}
 
@@ -133,17 +136,17 @@ class Checksum extends Wrapper {
 	 * @return string File path without .part extension
 	 */
 	private function stripPartialFileExtension($path) {
-		$extension = \pathinfo($path, PATHINFO_EXTENSION);
+		$extension = pathinfo($path, PATHINFO_EXTENSION);
 
 		if ($extension === 'part') {
 			$newLength = \strlen($path) - 5; // 5 = strlen(".part")
-			$fPath = \substr($path, 0, $newLength);
+			$fPath = substr($path, 0, $newLength);
 
 			// if path also contains a transaction id, we remove it too
-			$extension = \pathinfo($fPath, PATHINFO_EXTENSION);
-			if (\substr($extension, 0, 12) === 'ocTransferId') { // 12 = strlen("ocTransferId")
+			$extension = pathinfo($fPath, PATHINFO_EXTENSION);
+			if (substr($extension, 0, 12) === 'ocTransferId') { // 12 = strlen("ocTransferId")
 				$newLength = \strlen($fPath) - \strlen($extension) -1;
-				$fPath = \substr($fPath, 0, $newLength);
+				$fPath = substr($fPath, 0, $newLength);
 			}
 			return $fPath;
 		} else {
@@ -178,7 +181,7 @@ class Checksum extends Wrapper {
 		$hashes = [];
 
 		foreach ($this->hashingContexts as $algo => $ctx) {
-			$hashes[$algo] = \hash_final($ctx);
+			$hashes[$algo] = hash_final($ctx);
 		}
 
 		return $hashes;
@@ -196,7 +199,7 @@ class Checksum extends Wrapper {
 	 * @return string
 	 */
 	private function getPathFromStreamContext() {
-		$ctx = \stream_context_get_options($this->context);
+		$ctx = stream_context_get_options($this->context);
 
 		return $ctx['occhecksum']['path'];
 	}
@@ -213,12 +216,12 @@ class Checksum extends Wrapper {
 		// check the md5($path) in case "part_file_in_storage" is set to false
 		// see apps/dav/lib/Connector/Sabre/File.php getPartFileBasePath  (around line 305)
 		// strip initial dir, usually "files" from "files/dir1/dir2"
-		$pathPieces = \explode('/', $path, 2);
+		$pathPieces = explode('/', $path, 2);
 		if (\count($pathPieces) !== 2) {
 			return [];
 		}
 
-		$pathToCheck = "{$pathPieces[0]}/" . \md5("/{$pathPieces[1]}");
+		$pathToCheck = "{$pathPieces[0]}/" . md5("/{$pathPieces[1]}");
 		if (isset(self::$checksums[$pathToCheck])) {
 			return self::$checksums[$pathToCheck];
 		}

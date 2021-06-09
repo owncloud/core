@@ -232,7 +232,7 @@ class ChangeKeyStorageRoot extends Command {
 		$path = Filesystem::normalizePath($path);
 		// If the file resides within a subdirectory, create it
 		if ($this->rootView->file_exists($path) === false) {
-			$sub_dirs = \explode('/', \ltrim($path, '/'));
+			$sub_dirs = explode('/', ltrim($path, '/'));
 			$dir = '';
 			foreach ($sub_dirs as $sub_dir) {
 				$dir .= '/' . $sub_dir;

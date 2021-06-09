@@ -94,15 +94,15 @@ if ($isAdmin) {
 
 // load preset quotas
 $quotaPreset=$config->getAppValue('files', 'quota_preset', '1 GB, 5 GB, 10 GB');
-$quotaPreset=\explode(',', $quotaPreset);
+$quotaPreset=explode(',', $quotaPreset);
 foreach ($quotaPreset as &$preset) {
-	$preset=\trim($preset);
+	$preset=trim($preset);
 }
-$quotaPreset=\array_diff($quotaPreset, ['default', 'none']);
+$quotaPreset=array_diff($quotaPreset, ['default', 'none']);
 
 $defaultQuota=$config->getAppValue('files', 'default_quota', 'none');
-$defaultQuotaIsUserDefined=\array_search($defaultQuota, $quotaPreset)===false
-	&& \array_search($defaultQuota, ['none', 'default'])===false;
+$defaultQuotaIsUserDefined=array_search($defaultQuota, $quotaPreset)===false
+	&& array_search($defaultQuota, ['none', 'default'])===false;
 
 \OC::$server->getEventDispatcher()->dispatch('OC\Settings\Users::loadAdditionalScripts');
 

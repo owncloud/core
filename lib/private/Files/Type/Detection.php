@@ -63,9 +63,11 @@ class Detection implements IMimeTypeDetector {
 	 * @param string $customConfigDir
 	 * @param string $defaultConfigDir
 	 */
-	public function __construct(IURLGenerator $urlGenerator,
-								$customConfigDir,
-								$defaultConfigDir) {
+	public function __construct(
+		IURLGenerator $urlGenerator,
+		$customConfigDir,
+		$defaultConfigDir
+	) {
 		$this->urlGenerator = $urlGenerator;
 		$this->customConfigDir = $customConfigDir;
 		$this->defaultConfigDir = $defaultConfigDir;
@@ -82,9 +84,11 @@ class Detection implements IMimeTypeDetector {
 	 * @param string $mimetype
 	 * @param string|null $secureMimeType
 	 */
-	public function registerType($extension,
-								 $mimetype,
-								 $secureMimeType = null) {
+	public function registerType(
+		$extension,
+		$mimetype,
+		$secureMimeType = null
+	) {
 		$this->mimetypes[$extension] = [$mimetype, $secureMimeType];
 		$this->secureMimeTypes[$mimetype] = $secureMimeType ?: $mimetype;
 	}
@@ -99,7 +103,7 @@ class Detection implements IMimeTypeDetector {
 	 * @param array $types
 	 */
 	public function registerTypeArray($types) {
-		$this->mimetypes = \array_merge($this->mimetypes, $types);
+		$this->mimetypes = array_merge($this->mimetypes, $types);
 
 		// Update the alternative mimetypes to avoid having to look them up each time.
 		foreach ($this->mimetypes as $mimeType) {
@@ -115,11 +119,11 @@ class Detection implements IMimeTypeDetector {
 			return;
 		}
 
-		$this->mimeTypeAlias = \json_decode(\file_get_contents($this->defaultConfigDir . '/mimetypealiases.dist.json'), true);
+		$this->mimeTypeAlias = json_decode(file_get_contents($this->defaultConfigDir . '/mimetypealiases.dist.json'), true);
 
-		if (\file_exists($this->customConfigDir . '/mimetypealiases.json')) {
-			$custom = \json_decode(\file_get_contents($this->customConfigDir . '/mimetypealiases.json'), true);
-			$this->mimeTypeAlias = \array_merge($this->mimeTypeAlias, $custom);
+		if (file_exists($this->customConfigDir . '/mimetypealiases.json')) {
+			$custom = json_decode(file_get_contents($this->customConfigDir . '/mimetypealiases.json'), true);
+			$this->mimeTypeAlias = array_merge($this->mimeTypeAlias, $custom);
 		}
 	}
 
@@ -139,12 +143,12 @@ class Detection implements IMimeTypeDetector {
 			return;
 		}
 
-		$mimetypeMapping = \json_decode(\file_get_contents($this->defaultConfigDir . '/mimetypemapping.dist.json'), true);
+		$mimetypeMapping = json_decode(file_get_contents($this->defaultConfigDir . '/mimetypemapping.dist.json'), true);
 
 		//Check if need to load custom mappings
-		if (\file_exists($this->customConfigDir . '/mimetypemapping.json')) {
-			$custom = \json_decode(\file_get_contents($this->customConfigDir . '/mimetypemapping.json'), true);
-			$mimetypeMapping = \array_merge($mimetypeMapping, $custom);
+		if (file_exists($this->customConfigDir . '/mimetypemapping.json')) {
+			$custom = json_decode(file_get_contents($this->customConfigDir . '/mimetypemapping.json'), true);
+			$mimetypeMapping = array_merge($mimetypeMapping, $custom);
 		}
 
 		$this->registerTypeArray($mimetypeMapping);
@@ -158,7 +162,7 @@ class Detection implements IMimeTypeDetector {
 	 * @return bool true if file is a shared object else false
 	 */
 	private function detectSharedObjFileName($fileName) {
-		\preg_match("/(.*?)(\.so)([\.]*?.*)/i", $fileName, $match);
+		preg_match("/(.*?)(\.so)([\.]*?.*)/i", $fileName, $match);
 		/**
 		 * 1. Exactly 4 indexes to match ( check the regex grouping above preg_match )
 		 * 2. Check if the filename has '.so'
@@ -167,7 +171,7 @@ class Detection implements IMimeTypeDetector {
 		 * No extension after '.so' is considered to be shared object file
 		 */
 		return (\count($match) === 4) && ($match[2] === '.so')
-			&& ($match[3] === '' || ($match[3] !== '' && \strpos($match[3], '.') === 0));
+			&& ($match[3] === '' || ($match[3] !== '' && strpos($match[3], '.') === 0));
 	}
 
 	/**
@@ -187,15 +191,15 @@ class Detection implements IMimeTypeDetector {
 	public function detectPath($path) {
 		$this->loadMappings();
 
-		$fileName = \basename($path);
+		$fileName = basename($path);
 		// note: leading dot doesn't qualify as extension
-		if (\strpos($fileName, '.') > 0) {
+		if (strpos($fileName, '.') > 0) {
 			//try to guess the type by the file extension
 			if ($this->detectSharedObjFileName($fileName)) {
 				$extension = 'so';
 			} else {
-				$extension = \strtolower(\strrchr($fileName, '.'));
-				$extension = \substr($extension, 1); //remove leading .
+				$extension = strtolower(strrchr($fileName, '.'));
+				$extension = substr($extension, 1); //remove leading .
 			}
 			return (isset($this->mimetypes[$extension], $this->mimetypes[$extension][0]))
 				? $this->mimetypes[$extension][0]
@@ -214,7 +218,7 @@ class Detection implements IMimeTypeDetector {
 	public function detect($path) {
 		$this->loadMappings();
 
-		if (@\is_dir($path)) {
+		if (@is_dir($path)) {
 			// directories are easy
 			return "httpd/unix-directory";
 		}
@@ -222,30 +226,30 @@ class Detection implements IMimeTypeDetector {
 		$mimeType = $this->detectPath($path);
 
 		if ($mimeType === 'application/octet-stream' and \function_exists('finfo_open')
-			and \function_exists('finfo_file') and $finfo = \finfo_open(FILEINFO_MIME)
+			and \function_exists('finfo_file') and $finfo = finfo_open(FILEINFO_MIME)
 		) {
-			$info = @\strtolower(\finfo_file($finfo, $path));
-			\finfo_close($finfo);
+			$info = @strtolower(finfo_file($finfo, $path));
+			finfo_close($finfo);
 			if ($info) {
-				$mimeType = \substr($info, 0, \strpos($info, ';'));
+				$mimeType = substr($info, 0, strpos($info, ';'));
 				return empty($mimeType) ? 'application/octet-stream' : $mimeType;
 			}
 		}
-		$isWrapped = (\strpos($path, '://') !== false) and (\substr($path, 0, 7) === 'file://');
+		$isWrapped = (strpos($path, '://') !== false) and (substr($path, 0, 7) === 'file://');
 		if (!$isWrapped and $mimeType === 'application/octet-stream' && \function_exists("mime_content_type")) {
 			// use mime magic extension if available
-			$mimeType = \mime_content_type($path);
+			$mimeType = mime_content_type($path);
 		}
 		if (!$isWrapped and $mimeType === 'application/octet-stream' && \OC_Helper::canExecute("file")) {
 			// it looks like we have a 'file' command,
 			// lets see if it does have mime support
-			$path = \escapeshellarg($path);
-			$fp = \popen("file -b --mime-type $path 2>/dev/null", "r");
-			$reply = \fgets($fp);
-			\pclose($fp);
+			$path = escapeshellarg($path);
+			$fp = popen("file -b --mime-type $path 2>/dev/null", "r");
+			$reply = fgets($fp);
+			pclose($fp);
 
 			//trim the newline
-			$mimeType = \trim($reply);
+			$mimeType = trim($reply);
 
 			if (empty($mimeType)) {
 				$mimeType = 'application/octet-stream';
@@ -262,13 +266,13 @@ class Detection implements IMimeTypeDetector {
 	 */
 	public function detectString($data) {
 		if (\function_exists('finfo_open') and \function_exists('finfo_file')) {
-			$finfo = \finfo_open(FILEINFO_MIME);
-			return \finfo_buffer($finfo, $data);
+			$finfo = finfo_open(FILEINFO_MIME);
+			return finfo_buffer($finfo, $data);
 		} else {
 			$tmpFile = \OC::$server->getTempManager()->getTemporaryFile();
-			$fh = \fopen($tmpFile, 'wb');
-			\fwrite($fh, $data, 8024);
-			\fclose($fh);
+			$fh = fopen($tmpFile, 'wb');
+			fwrite($fh, $data, 8024);
+			fclose($fh);
 			$mime = $this->detect($tmpFile);
 			unset($tmpFile);
 			return $mime;
@@ -305,8 +309,8 @@ class Detection implements IMimeTypeDetector {
 		}
 
 		// Replace slash and backslash with a minus
-		$icon = \str_replace('/', '-', $mimetype);
-		$icon = \str_replace('\\', '-', $icon);
+		$icon = str_replace('/', '-', $mimetype);
+		$icon = str_replace('\\', '-', $icon);
 
 		// Is it a dir?
 		if ($mimetype === 'dir') {
@@ -331,7 +335,7 @@ class Detection implements IMimeTypeDetector {
 		}
 
 		// Try only the first part of the filetype
-		$mimePart = \substr($icon, 0, \strpos($icon, '-'));
+		$mimePart = substr($icon, 0, strpos($icon, '-'));
 		try {
 			$this->mimetypeIcons[$mimetype] = $this->urlGenerator->imagePath('core', 'filetypes/' . $mimePart . '.svg');
 			return $this->mimetypeIcons[$mimetype];

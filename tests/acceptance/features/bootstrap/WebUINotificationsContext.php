@@ -66,7 +66,8 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function assertNotificationsOnWebUI(
-		$number, TableNode $expectedNotifications
+		$number,
+		TableNode $expectedNotifications
 	) {
 		$notificationsDialog = $this->openNotificationsDialog($this->getSession());
 		$notifications = $notificationsDialog->getAllNotifications();
@@ -79,7 +80,8 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 		foreach ($expectedNotifications as $expectedNotification) {
 			$found = false;
 			$expectedNotification['title'] = $this->featureContext->substituteInLineCodes(
-				$expectedNotification['title'], $expectedNotification['user']
+				$expectedNotification['title'],
+				$expectedNotification['user']
 			);
 			foreach ($notifications as $notification) {
 				$found = false;
@@ -100,9 +102,9 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 			if (!$found) {
 				Assert::fail(
 					"could not find expected notification: " .
-					\print_r($expectedNotification, true) .
+					print_r($expectedNotification, true) .
 					" in viewed notifications: " .
-					\print_r($notifications, true)
+					print_r($notifications, true)
 				);
 			}
 		}
@@ -127,9 +129,9 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 			 *
 			 * @var Notification $notification
 			 */
-			$notification = \reset($notifications);
+			$notification = reset($notifications);
 		} elseif ($firstOrLast === 'last') {
-			$notification = \end($notifications);
+			$notification = end($notifications);
 		} else {
 			throw new InvalidArgumentException();
 		}

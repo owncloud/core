@@ -65,7 +65,7 @@ class SharingBlacklist {
 	 * @param string[] $ids a list with the ids of the groups to be blacklisted
 	 */
 	public function setBlacklistedReceiverGroups(array $ids) {
-		$this->config->setAppValue('files_sharing', 'blacklisted_receiver_groups', \json_encode($ids));
+		$this->config->setAppValue('files_sharing', 'blacklisted_receiver_groups', json_encode($ids));
 		$this->blacklistCache = null;  // clear the cache
 	}
 
@@ -75,7 +75,7 @@ class SharingBlacklist {
 	 * @return string[] the list of group ids
 	 */
 	public function getBlacklistedReceiverGroups() {
-		return \array_keys($this->fetchBlacklistedReceiverGroupIds());
+		return array_keys($this->fetchBlacklistedReceiverGroupIds());
 	}
 
 	private function initCache() {
@@ -96,7 +96,7 @@ class SharingBlacklist {
 	 */
 	private function fetchBlacklistedReceiverGroupIds() {
 		$configuredBlacklist = $this->config->getAppValue('files_sharing', 'blacklisted_receiver_groups', '[]');
-		$decodedGroups = \json_decode($configuredBlacklist, true);
+		$decodedGroups = json_decode($configuredBlacklist, true);
 
 		if (!\is_array($decodedGroups)) {
 			$decodedGroups = [];

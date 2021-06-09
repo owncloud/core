@@ -414,7 +414,7 @@ class TransferOwnershipTest extends TestCase {
 			'destination-user' => $this->targetUser->getUID(),
 			'--path' => 'transfer'
 		];
-		$input = \array_merge($input, $inputOptions);
+		$input = array_merge($input, $inputOptions);
 		$commandTester->execute($input);
 		$output = $commandTester->getDisplay();
 

@@ -30,7 +30,7 @@ use Exception;
 class FileLocked extends \Sabre\DAV\Exception {
 	public function __construct($message = '', $code = 0, Exception $previous = null) {
 		if ($previous instanceof \OCP\Files\LockNotAcquiredException) {
-			$message = \sprintf('Target file %s is locked by another process.', $previous->path);
+			$message = sprintf('Target file %s is locked by another process.', $previous->path);
 		}
 		parent::__construct($message, $code, $previous);
 	}

@@ -131,10 +131,17 @@ class Session implements IUserSession, Emitter {
 	 * @param SyncService $userSyncService
 	 * @param EventDispatcher $eventDispatcher
 	 */
-	public function __construct(IUserManager $manager, ISession $session,
-								ITimeFactory $timeFactory, IProvider $tokenProvider,
-								IConfig $config, ILogger $logger, IServiceLoader $serviceLoader,
-								SyncService $userSyncService, EventDispatcher $eventDispatcher) {
+	public function __construct(
+		IUserManager $manager,
+		ISession $session,
+		ITimeFactory $timeFactory,
+		IProvider $tokenProvider,
+		IConfig $config,
+		ILogger $logger,
+		IServiceLoader $serviceLoader,
+		SyncService $userSyncService,
+		EventDispatcher $eventDispatcher
+	) {
 		$this->manager = $manager;
 		$this->session = $session;
 		$this->timeFactory = $timeFactory;
@@ -349,7 +356,7 @@ class Session implements IUserSession, Emitter {
 	 */
 	public function logClientIn($user, $password, IRequest $request) {
 		$isTokenPassword = $this->isTokenPassword($password);
-		if ($user === null || \trim($user) === '') {
+		if ($user === null || trim($user) === '') {
 			throw new \InvalidArgumentException('$user cannot be empty');
 		}
 		if (!$isTokenPassword
@@ -385,7 +392,7 @@ class Session implements IUserSession, Emitter {
 		if ($request->getCookie('cookie_test') !== null) {
 			return true;
 		}
-		\setcookie('cookie_test', 'test', $this->timeFactory->getTime() + 3600);
+		setcookie('cookie_test', 'test', $this->timeFactory->getTime() + 3600);
 		return false;
 	}
 
@@ -495,7 +502,8 @@ class Session implements IUserSession, Emitter {
 					 * @see https://github.com/owncloud/core/issues/22893
 					 */
 					$this->session->set(
-						Auth::DAV_AUTHENTICATED, $this->getUser()->getUID()
+						Auth::DAV_AUTHENTICATED,
+						$this->getUser()->getUID()
 					);
 					return true;
 				}
@@ -944,7 +952,7 @@ class Session implements IUserSession, Emitter {
 	 */
 	public function tryTokenLogin(IRequest $request) {
 		$authHeader = $request->getHeader('Authorization');
-		if ($authHeader === null || \strpos($authHeader, 'token ') === false) {
+		if ($authHeader === null || strpos($authHeader, 'token ') === false) {
 			// No auth header, let's try session id
 			try {
 				$token = $this->session->getId();
@@ -952,7 +960,7 @@ class Session implements IUserSession, Emitter {
 				return false;
 			}
 		} else {
-			$token = \substr($authHeader, 6);
+			$token = substr($authHeader, 6);
 		}
 
 		if (!$this->loginWithToken($token)) {
@@ -999,7 +1007,8 @@ class Session implements IUserSession, Emitter {
 	 */
 	public function loginUser(IUser $user = null, $password = null) {
 		$uid = $user === null ? '' : $user->getUID();
-		return $this->emittingCall(function () use (&$user, &$password) {
+		return $this->emittingCall(
+			function () use (&$user, &$password) {
 			if ($user === null) {
 				//Cannot extract the uid when $user is null, hence pass null
 				$this->emitFailedLogin(null);
@@ -1028,9 +1037,12 @@ class Session implements IUserSession, Emitter {
 			}
 
 			return true;
-		}, ['before' => ['user' => $user, 'login' => $uid, 'uid' => $uid, 'password' => $password],
+		},
+			['before' => ['user' => $user, 'login' => $uid, 'uid' => $uid, 'password' => $password],
 			'after' => ['user' => $user, 'login' => $uid, 'uid' => $uid, 'password' => $password]],
-			'user', 'login');
+			'user',
+			'login'
+		);
 	}
 
 	/**
@@ -1064,7 +1076,7 @@ class Session implements IUserSession, Emitter {
 		// replace successfully used token with a new one
 		OC::$server->getConfig()->deleteUserValue($uid, 'login_token', $currentToken);
 		$newToken = OC::$server->getSecureRandom()->generate(32);
-		OC::$server->getConfig()->setUserValue($uid, 'login_token', $newToken, \time());
+		OC::$server->getConfig()->setUserValue($uid, 'login_token', $newToken, time());
 		$this->setMagicInCookie($user->getUID(), $newToken);
 
 		//login
@@ -1113,10 +1125,10 @@ class Session implements IUserSession, Emitter {
 	 */
 	public function setMagicInCookie($username, $token) {
 		$secureCookie = OC::$server->getRequest()->getServerProtocol() === 'https';
-		$expires = \time() + OC::$server->getConfig()->getSystemValue('remember_login_cookie_lifetime', 60 * 60 * 24 * 15);
-		\setcookie('oc_username', $username, $expires, OC::$WEBROOT, '', $secureCookie, true);
-		\setcookie('oc_token', $token, $expires, OC::$WEBROOT, '', $secureCookie, true);
-		\setcookie('oc_remember_login', '1', $expires, OC::$WEBROOT, '', $secureCookie, true);
+		$expires = time() + OC::$server->getConfig()->getSystemValue('remember_login_cookie_lifetime', 60 * 60 * 24 * 15);
+		setcookie('oc_username', $username, $expires, OC::$WEBROOT, '', $secureCookie, true);
+		setcookie('oc_token', $token, $expires, OC::$WEBROOT, '', $secureCookie, true);
+		setcookie('oc_remember_login', '1', $expires, OC::$WEBROOT, '', $secureCookie, true);
 	}
 
 	/**
@@ -1128,14 +1140,14 @@ class Session implements IUserSession, Emitter {
 
 		unset($_COOKIE['oc_username'], $_COOKIE['oc_token'], $_COOKIE['oc_remember_login']); //TODO: DI
 
-		\setcookie('oc_username', '', \time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
-		\setcookie('oc_token', '', \time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
-		\setcookie('oc_remember_login', '', \time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
+		setcookie('oc_username', '', time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
+		setcookie('oc_token', '', time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
+		setcookie('oc_remember_login', '', time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
 		// old cookies might be stored under /webroot/ instead of /webroot
 		// and Firefox doesn't like it!
-		\setcookie('oc_username', '', \time() - 3600, OC::$WEBROOT . '/', '', $secureCookie, true);
-		\setcookie('oc_token', '', \time() - 3600, OC::$WEBROOT . '/', '', $secureCookie, true);
-		\setcookie('oc_remember_login', '', \time() - 3600, OC::$WEBROOT . '/', '', $secureCookie, true);
+		setcookie('oc_username', '', time() - 3600, OC::$WEBROOT . '/', '', $secureCookie, true);
+		setcookie('oc_token', '', time() - 3600, OC::$WEBROOT . '/', '', $secureCookie, true);
+		setcookie('oc_remember_login', '', time() - 3600, OC::$WEBROOT . '/', '', $secureCookie, true);
 	}
 
 	/**
@@ -1226,6 +1238,6 @@ class Session implements IUserSession, Emitter {
 	 */
 	private function hashToken($token) {
 		$secret = $this->config->getSystemValue('secret');
-		return \hash('sha512', $token . $secret);
+		return hash('sha512', $token . $secret);
 	}
 }

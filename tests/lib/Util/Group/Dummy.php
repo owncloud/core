@@ -79,7 +79,7 @@ class Dummy extends Backend {
 	 */
 	public function inGroup($uid, $gid) {
 		if (isset($this->groups[$gid])) {
-			return (\array_search($uid, $this->groups[$gid])!==false);
+			return (array_search($uid, $this->groups[$gid])!==false);
 		} else {
 			return false;
 		}
@@ -95,7 +95,7 @@ class Dummy extends Backend {
 	 */
 	public function addToGroup($uid, $gid) {
 		if (isset($this->groups[$gid])) {
-			if (\array_search($uid, $this->groups[$gid])===false) {
+			if (array_search($uid, $this->groups[$gid])===false) {
 				$this->groups[$gid][]=$uid;
 				return true;
 			} else {
@@ -116,7 +116,7 @@ class Dummy extends Backend {
 	 */
 	public function removeFromGroup($uid, $gid) {
 		if (isset($this->groups[$gid])) {
-			if (($index=\array_search($uid, $this->groups[$gid]))!==false) {
+			if (($index=array_search($uid, $this->groups[$gid]))!==false) {
 				unset($this->groups[$gid][$index]);
 				return true;
 			} else {
@@ -137,7 +137,7 @@ class Dummy extends Backend {
 	 */
 	public function getUserGroups($uid) {
 		$groups= [];
-		$allGroups=\array_keys($this->groups);
+		$allGroups=array_keys($this->groups);
 		foreach ($allGroups as $group) {
 			if ($this->inGroup($uid, $group)) {
 				$groups[]=$group;
@@ -155,11 +155,11 @@ class Dummy extends Backend {
 	 */
 	public function getGroups($search = '', $limit = -1, $offset = 0) {
 		if (empty($search)) {
-			return \array_keys($this->groups);
+			return array_keys($this->groups);
 		}
 		$result = [];
-		foreach (\array_keys($this->groups) as $group) {
-			if (\stripos($group, $search) !== false) {
+		foreach (array_keys($this->groups) as $group) {
+			if (stripos($group, $search) !== false) {
 				$result[] = $group;
 			}
 		}
@@ -181,7 +181,7 @@ class Dummy extends Backend {
 			}
 			$result = [];
 			foreach ($this->groups[$gid] as $user) {
-				if (\stripos($user, $search) !== false) {
+				if (stripos($user, $search) !== false) {
 					$result[] = $user;
 				}
 			}
@@ -206,7 +206,7 @@ class Dummy extends Backend {
 			}
 			$count = 0;
 			foreach ($this->groups[$gid] as $user) {
-				if (\stripos($user, $search) !== false) {
+				if (stripos($user, $search) !== false) {
 					$count++;
 				}
 			}

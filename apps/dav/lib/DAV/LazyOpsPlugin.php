@@ -59,11 +59,13 @@ class LazyOpsPlugin extends ServerPlugin {
 	/** @var JobStatusMapper */
 	private $mapper;
 
-	public function __construct(IUserSession $userSession,
-								IURLGenerator $urlGenerator,
-								IShutdownManager $shutdownManager,
-								JobStatusMapper $jobStatusMapper,
-								ILogger $logger) {
+	public function __construct(
+		IUserSession $userSession,
+		IURLGenerator $urlGenerator,
+		IShutdownManager $shutdownManager,
+		JobStatusMapper $jobStatusMapper,
+		ILogger $logger
+	) {
 		$this->userSession = $userSession;
 		$this->urlGenerator = $urlGenerator;
 		$this->shutdownManager = $shutdownManager;
@@ -114,7 +116,7 @@ class LazyOpsPlugin extends ServerPlugin {
 			return true;
 		}
 
-		\flush();
+		flush();
 		$request->removeHeader('OC-LazyOps');
 		$responseDummy = new Response();
 		try {
@@ -145,12 +147,12 @@ class LazyOpsPlugin extends ServerPlugin {
 			$userId = $this->getUserId();
 
 			$this->entity = new JobStatus();
-			$this->entity->setStatusInfo(\json_encode($status));
+			$this->entity->setStatusInfo(json_encode($status));
 			$this->entity->setUserId($userId);
 			$this->entity->setUuid($this->jobId);
 			$this->mapper->insert($this->entity);
 		} else {
-			$this->entity->setStatusInfo(\json_encode($status));
+			$this->entity->setStatusInfo(json_encode($status));
 			$this->mapper->update($this->entity);
 		}
 	}

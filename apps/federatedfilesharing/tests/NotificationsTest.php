@@ -144,7 +144,7 @@ class NotificationsTest extends \Test\TestCase {
 						'remote' => $remote,
 						'remoteId' => $id,
 						'action' => 'unshare',
-						'data' => \json_encode(['data1Key' => 'data1Value']),
+						'data' => json_encode(['data1Key' => 'data1Value']),
 						'token' => $token,
 						'try' => $try,
 						'lastRun' => $timestamp
@@ -154,7 +154,8 @@ class NotificationsTest extends \Test\TestCase {
 			$this->jobList->expects($this->never())->method('add');
 		}
 
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$instance->sendUpdateToRemote($remote, $id, $token, 'unshare', ['data1Key' => 'data1Value'], $try)
 		);
 	}
@@ -162,17 +163,17 @@ class NotificationsTest extends \Test\TestCase {
 	public function dataTestSendUpdateToRemote() {
 		return [
 			// test if background job is added correctly
-			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
-			[1, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
-			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
-			[1, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
+			[1, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
+			[1, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
 			// test all combinations of 'statuscode' and 'success'
-			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
-			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])], true],
-			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 400]]])], false],
-			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
-			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])], false],
-			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 400]]])], false],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])], true],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => true, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 400]]])], false],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])], false],
+			[0, ['statusCode' => Http::STATUS_NOT_IMPLEMENTED], ['success' => false, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 400]]])], false],
 		];
 	}
 

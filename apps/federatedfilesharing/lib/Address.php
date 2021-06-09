@@ -66,9 +66,9 @@ class Address {
 	 */
 	public function getUserId() {
 		// userId is everything except the last part
-		$parts = \explode('@', $this->cloudId);
-		\array_pop($parts);
-		return \implode('@', $parts);
+		$parts = explode('@', $this->cloudId);
+		array_pop($parts);
+		return implode('@', $parts);
 	}
 
 	/**
@@ -81,7 +81,7 @@ class Address {
 		$origin = $this->getCleanOrigin();
 
 		// replace all characters before :// and :// itself
-		return \preg_replace('|^(.*?://)|', '', $origin);
+		return preg_replace('|^(.*?://)|', '', $origin);
 	}
 
 	/**
@@ -132,16 +132,16 @@ class Address {
 	 */
 	protected function getCleanOrigin() {
 		//Origin is the last part
-		$parts = \explode('@', $this->cloudId);
-		$rawOrigin = \array_pop($parts);
+		$parts = explode('@', $this->cloudId);
+		$rawOrigin = array_pop($parts);
 		// cut query and|or anchor part off
-		$rawOrigin = \strtok($rawOrigin, '?#');
-		if ($fileNamePosition = \strpos($rawOrigin, '/index.php')) {
-			$rawOrigin = \substr($rawOrigin, 0, $fileNamePosition);
+		$rawOrigin = strtok($rawOrigin, '?#');
+		if ($fileNamePosition = strpos($rawOrigin, '/index.php')) {
+			$rawOrigin = substr($rawOrigin, 0, $fileNamePosition);
 		}
 
-		$normalizedOrigin = \rtrim(
-			\strtolower($rawOrigin),
+		$normalizedOrigin = rtrim(
+			strtolower($rawOrigin),
 			'/'
 		);
 

@@ -184,13 +184,13 @@ class Helper {
 		}
 
 		if (!empty($ids)) {
-			$idList = \array_chunk($ids, 99, true);
+			$idList = array_chunk($ids, 99, true);
 
 			foreach ($idList as $subList) {
-				$statement = "SELECT `share_with`, `share_type`, `file_target` FROM `*PREFIX*share` WHERE `file_source` IN (" . \implode(',', $subList) . ") AND `share_type` IN (0, 1, 2)";
+				$statement = "SELECT `share_with`, `share_type`, `file_target` FROM `*PREFIX*share` WHERE `file_source` IN (" . implode(',', $subList) . ") AND `share_type` IN (0, 1, 2)";
 				$query = \OCP\DB::prepare($statement);
 				$r = $query->execute();
-				$result = \array_merge($result, $r->fetchAll());
+				$result = array_merge($result, $r->fetchAll());
 			}
 		}
 
@@ -233,8 +233,8 @@ class Helper {
 	 * @return string e.g. turns '/admin/files/test.txt' into 'test.txt'
 	 */
 	public static function stripUserFilesPath($path) {
-		$trimmed = \ltrim($path, '/');
-		$split = \explode('/', $trimmed);
+		$trimmed = ltrim($path, '/');
+		$split = explode('/', $trimmed);
 
 		// it is not a file relative to data/user/files
 		if (\count($split) < 3 || $split[1] !== 'files') {
@@ -242,7 +242,7 @@ class Helper {
 		}
 
 		$sliced = \array_slice($split, 2);
-		$relPath = \implode('/', $sliced);
+		$relPath = implode('/', $sliced);
 
 		return $relPath;
 	}
@@ -256,7 +256,7 @@ class Helper {
 	 * @return string $path
 	 */
 	public static function generateUniqueTarget($path, $excludeList, $view) {
-		$pathinfo = \pathinfo($path);
+		$pathinfo = pathinfo($path);
 		$ext = (isset($pathinfo['extension'])) ? '.'.$pathinfo['extension'] : '';
 		$name = $pathinfo['filename'];
 		$dir = $pathinfo['dirname'];
@@ -293,7 +293,7 @@ class Helper {
 				$dirsToCreate[] = $currentDir;
 			}
 
-			$dirsToCreate = \array_reverse($dirsToCreate);
+			$dirsToCreate = array_reverse($dirsToCreate);
 			$shareFolder = '/';
 			foreach ($dirsToCreate as $dirToCreate) {
 				if ($view->mkdir($dirToCreate) === false) {

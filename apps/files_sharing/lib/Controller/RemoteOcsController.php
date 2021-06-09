@@ -142,19 +142,19 @@ class RemoteOcsController extends OCSController {
 			 * {{TemporaryMountPointName#/filename.ext}}
 			 * so we need to cut it off
 			 */
-			$openShares = \array_map(
+			$openShares = array_map(
 				function ($share) {
-					$share['mountpoint'] = \substr(
+					$share['mountpoint'] = substr(
 						$share['mountpoint'],
 						\strlen('{{TemporaryMountPointName#')
 					);
 
-					$share['mountpoint'] = \rtrim($share['mountpoint'], '}');
+					$share['mountpoint'] = rtrim($share['mountpoint'], '}');
 					return $share;
 				},
 				$this->externalManager->getOpenShares()
 			);
-			$shares = \array_merge($shares, $openShares);
+			$shares = array_merge($shares, $openShares);
 		}
 
 		return new Result($shares);

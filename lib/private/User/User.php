@@ -89,9 +89,15 @@ class User implements IUser {
 	 * @param \OC\Group\Manager|null $groupManager
 	 * @param Session|null $userSession
 	 */
-	public function __construct(Account $account, AccountMapper $mapper, $emitter = null, IConfig $config = null,
-								$urlGenerator = null, EventDispatcher $eventDispatcher = null,
-								\OC\Group\Manager $groupManager = null, Session $userSession = null
+	public function __construct(
+		Account $account,
+		AccountMapper $mapper,
+		$emitter = null,
+		IConfig $config = null,
+		$urlGenerator = null,
+		EventDispatcher $eventDispatcher = null,
+		\OC\Group\Manager $groupManager = null,
+		Session $userSession = null
 	) {
 		$this->account = $account;
 		$this->mapper = $mapper;
@@ -176,7 +182,7 @@ class User implements IUser {
 		if (!$this->canChangeDisplayName()) {
 			return false;
 		}
-		$displayName = \trim($displayName);
+		$displayName = trim($displayName);
 		if ($displayName === $this->account->getDisplayName()) {
 			return false;
 		}
@@ -202,7 +208,7 @@ class User implements IUser {
 	 * @since 9.0.0
 	 */
 	public function setEMailAddress($mailAddress) {
-		$mailAddress = \trim($mailAddress);
+		$mailAddress = trim($mailAddress);
 		if ($mailAddress === $this->account->getEmail()) {
 			return;
 		}
@@ -226,7 +232,7 @@ class User implements IUser {
 	 */
 	public function updateLastLoginTimestamp() {
 		$firstTimeLogin = ($this->getLastLogin() === 0);
-		$this->account->setLastLogin(\time());
+		$this->account->setLastLogin(time());
 		$this->mapper->update($this->account);
 		return $firstTimeLogin;
 	}
@@ -501,7 +507,7 @@ class User implements IUser {
 	public function getCloudId() {
 		$uid = $this->getUID();
 		$server = $this->urlGenerator->getAbsoluteURL('/');
-		return $uid . '@' . \rtrim($this->removeProtocolFromUrl($server), '/');
+		return $uid . '@' . rtrim($this->removeProtocolFromUrl($server), '/');
 	}
 
 	/**
@@ -509,10 +515,10 @@ class User implements IUser {
 	 * @return string
 	 */
 	private function removeProtocolFromUrl($url) {
-		if (\strpos($url, 'https://') === 0) {
-			return \substr($url, \strlen('https://'));
-		} elseif (\strpos($url, 'http://') === 0) {
-			return \substr($url, \strlen('http://'));
+		if (strpos($url, 'https://') === 0) {
+			return substr($url, \strlen('https://'));
+		} elseif (strpos($url, 'http://') === 0) {
+			return substr($url, \strlen('http://'));
 		}
 
 		return $url;
@@ -542,8 +548,8 @@ class User implements IUser {
 	 */
 	public function setSearchTerms(array $terms) {
 		// Check length of terms, cut if too long
-		$terms = \array_map(function ($term) {
-			return \substr($term, 0, 191);
+		$terms = array_map(function ($term) {
+			return substr($term, 0, 191);
 		}, $terms);
 		$this->mapper->setTermsForAccount($this->account->getId(), $terms);
 	}

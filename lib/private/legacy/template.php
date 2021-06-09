@@ -84,7 +84,7 @@ class OC_Template extends \OC\Template\Base {
 		$requestToken = (OC::$server->getSession() && $registerCall) ? \OCP\Util::callRegister() : '';
 
 		// fix translation when app is something like core/lostpassword
-		$parts = \explode('/', $app);
+		$parts = explode('/', $app);
 
 		$l10n = \OC::$server->getL10N($parts[0], $languageCode);
 
@@ -159,13 +159,16 @@ class OC_Template extends \OC\Template\Base {
 			// Add the stuff we need always
 			// following logic will import all vendor libraries that are
 			// specified in core/js/core.json
-			$fileContent = \file_get_contents(OC::$SERVERROOT . '/core/js/core.json');
+			$fileContent = file_get_contents(OC::$SERVERROOT . '/core/js/core.json');
 			if ($fileContent !== false) {
-				$coreDependencies = \json_decode($fileContent, true);
-				foreach (\array_reverse($coreDependencies['vendor']) as $vendorLibrary) {
+				$coreDependencies = json_decode($fileContent, true);
+				foreach (array_reverse($coreDependencies['vendor']) as $vendorLibrary) {
 					// remove trailing ".js" as addVendorScript will append it
 					OC_Util::addVendorScript(
-							\substr($vendorLibrary, 0, \strlen($vendorLibrary) - 3), null, true);
+						substr($vendorLibrary, 0, \strlen($vendorLibrary) - 3),
+						null,
+						true
+					);
 				}
 			} else {
 				throw new \Exception('Cannot read core/js/core.json');
@@ -341,7 +344,7 @@ class OC_Template extends \OC\Template\Base {
 			$errors = [['error' => $error_msg, 'hint' => $hint]];
 			$content->assign('errors', $errors);
 			if ($httpStatusCode !== null) {
-				\http_response_code((int)$httpStatusCode);
+				http_response_code((int)$httpStatusCode);
 			}
 			$content->printPage();
 		} catch (\Exception $e) {
@@ -349,8 +352,8 @@ class OC_Template extends \OC\Template\Base {
 			$logger->error("$error_msg $hint", ['app' => 'core']);
 			$logger->logException($e, ['app' => 'core']);
 
-			\header(self::getHttpProtocol() . ' 500 Internal Server Error');
-			\header('Content-Type: text/plain; charset=utf-8');
+			header(self::getHttpProtocol() . ' 500 Internal Server Error');
+			header('Content-Type: text/plain; charset=utf-8');
 			print("$error_msg $hint");
 		}
 		die();
@@ -384,8 +387,8 @@ class OC_Template extends \OC\Template\Base {
 			$logger->logException($exception, ['app' => 'core']);
 			$logger->logException($e, ['app' => 'core']);
 
-			\header(self::getHttpProtocol() . ' 500 Internal Server Error');
-			\header('Content-Type: text/plain; charset=utf-8');
+			header(self::getHttpProtocol() . ' 500 Internal Server Error');
+			header('Content-Type: text/plain; charset=utf-8');
 			print("Internal Server Error\n\n");
 			print("The server encountered an internal error and was unable to complete your request.\n");
 			print("Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report.\n");
@@ -404,7 +407,7 @@ class OC_Template extends \OC\Template\Base {
 	 * @internal Don't use this - use AppFramework\Http\Request->getHttpProtocol instead
 	 */
 	protected static function getHttpProtocol() {
-		$claimedProtocol = \strtoupper($_SERVER['SERVER_PROTOCOL']);
+		$claimedProtocol = strtoupper($_SERVER['SERVER_PROTOCOL']);
 		$validProtocols = [
 			'HTTP/1.0',
 			'HTTP/1.1',

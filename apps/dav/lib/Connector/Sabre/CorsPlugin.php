@@ -140,7 +140,7 @@ class CorsPlugin extends ServerPlugin {
 
 		$headers = \OC_Response::setCorsHeaders($userId, $requesterDomain, null, $this->getExtraHeaders($request));
 		foreach ($headers as $key => $value) {
-			$response->addHeader($key, \implode(',', $value));
+			$response->addHeader($key, implode(',', $value));
 		}
 	}
 
@@ -182,7 +182,7 @@ class CorsPlugin extends ServerPlugin {
 		if (\in_array($originHeader, ['', null, 'null'], true)) {
 			return true;
 		}
-		$schema = \parse_url($originHeader, PHP_URL_SCHEME);
-		return \in_array(\strtolower($schema), ['moz-extension', 'chrome-extension']);
+		$schema = parse_url($originHeader, PHP_URL_SCHEME);
+		return \in_array(strtolower($schema), ['moz-extension', 'chrome-extension']);
 	}
 }

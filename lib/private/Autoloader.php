@@ -61,7 +61,7 @@ class Autoloader {
 	 * @param string $root
 	 */
 	public function addValidRoot($root) {
-		$root = \stream_resolve_include_path($root);
+		$root = stream_resolve_include_path($root);
 		$this->validRoots[$root] = true;
 	}
 
@@ -72,17 +72,17 @@ class Autoloader {
 	 * @return array|bool an array of possible paths or false if the class is not part of ownCloud
 	 */
 	public function findClass($class) {
-		$class = \trim($class, '\\');
+		$class = trim($class, '\\');
 
 		$paths = [];
-		if (\strpos($class, 'OCA\\') === 0) {
-			list(, $app, $rest) = \explode('\\', $class, 3);
-			$app = \strtolower($app);
+		if (strpos($class, 'OCA\\') === 0) {
+			list(, $app, $rest) = explode('\\', $class, 3);
+			$app = strtolower($app);
 			$appPath = \OC_App::getAppPath($app);
-			if ($appPath && \stream_resolve_include_path($appPath)) {
-				$paths[] = $appPath . '/' . \strtolower(\str_replace('\\', '/', $rest) . '.php');
+			if ($appPath && stream_resolve_include_path($appPath)) {
+				$paths[] = $appPath . '/' . strtolower(str_replace('\\', '/', $rest) . '.php');
 				// If not found in the root of the app directory, insert '/lib' after app id and try again.
-				$paths[] = $appPath . '/lib/' . \strtolower(\str_replace('\\', '/', $rest) . '.php');
+				$paths[] = $appPath . '/lib/' . strtolower(str_replace('\\', '/', $rest) . '.php');
 			}
 		}
 		return $paths;
@@ -94,7 +94,7 @@ class Autoloader {
 	 */
 	protected function isValidPath($fullPath) {
 		foreach ($this->validRoots as $root => $true) {
-			if (\substr($fullPath, 0, \strlen($root) + 1) === $root . '/') {
+			if (substr($fullPath, 0, \strlen($root) + 1) === $root . '/') {
 				return true;
 			}
 		}
@@ -113,7 +113,7 @@ class Autoloader {
 			$pathsToRequire = $this->memoryCache->get($class);
 		}
 
-		if (\class_exists($class, false)) {
+		if (class_exists($class, false)) {
 			return false;
 		}
 
@@ -121,7 +121,7 @@ class Autoloader {
 			// No cache or cache miss
 			$pathsToRequire = [];
 			foreach ($this->findClass($class) as $path) {
-				$fullPath = \stream_resolve_include_path($path);
+				$fullPath = stream_resolve_include_path($path);
 				if ($fullPath && $this->isValidPath($fullPath)) {
 					$pathsToRequire[] = $fullPath;
 				}

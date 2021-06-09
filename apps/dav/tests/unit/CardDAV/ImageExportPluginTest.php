@@ -106,7 +106,8 @@ class ImageExportPluginTest extends TestCase {
 		if (\is_string($expectedContentType)) {
 			$this->response->expects($this->exactly(2))->method('setHeader')->withConsecutive(
 				['Content-Type', $expectedContentType],
-				['Content-Disposition', 'attachment']);
+				['Content-Disposition', 'attachment']
+			);
 			$this->response->expects($this->once())->method('setStatus')->with(200);
 			$this->response->expects($this->once())->method('setBody');
 		}

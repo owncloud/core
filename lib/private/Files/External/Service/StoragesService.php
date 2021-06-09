@@ -84,17 +84,17 @@ abstract class StoragesService implements IStoragesService {
 	}
 
 	protected function getStorageConfigFromDBMount(array $mount) {
-		$applicableUsers = \array_filter($mount['applicable'], function ($applicable) {
+		$applicableUsers = array_filter($mount['applicable'], function ($applicable) {
 			return $applicable['type'] === DBConfigService::APPLICABLE_TYPE_USER;
 		});
-		$applicableUsers = \array_map(function ($applicable) {
+		$applicableUsers = array_map(function ($applicable) {
 			return $applicable['value'];
 		}, $applicableUsers);
 
-		$applicableGroups = \array_filter($mount['applicable'], function ($applicable) {
+		$applicableGroups = array_filter($mount['applicable'], function ($applicable) {
 			return $applicable['type'] === DBConfigService::APPLICABLE_TYPE_GROUP;
 		});
-		$applicableGroups = \array_map(function ($applicable) {
+		$applicableGroups = array_map(function ($applicable) {
 			return $applicable['value'];
 		}, $applicableGroups);
 
@@ -105,8 +105,8 @@ abstract class StoragesService implements IStoragesService {
 				$mount['auth_backend'],
 				$mount['config'],
 				$mount['options'],
-				\array_values($applicableUsers),
-				\array_values($applicableGroups),
+				array_values($applicableUsers),
+				array_values($applicableGroups),
 				$mount['priority']
 			);
 			$config->setType($mount['type']);
@@ -145,16 +145,16 @@ abstract class StoragesService implements IStoragesService {
 	 */
 	protected function readConfig() {
 		$mounts = $this->readDBConfig();
-		$configs = \array_map([$this, 'getStorageConfigFromDBMount'], $mounts);
-		$configs = \array_filter($configs, function ($config) {
+		$configs = array_map([$this, 'getStorageConfigFromDBMount'], $mounts);
+		$configs = array_filter($configs, function ($config) {
 			return $config instanceof IStorageConfig;
 		});
 
-		$keys = \array_map(function (IStorageConfig $config) {
+		$keys = array_map(function (IStorageConfig $config) {
 			return $config->getId();
 		}, $configs);
 
-		return \array_combine($keys, $configs);
+		return array_combine($keys, $configs);
 	}
 
 	/**
@@ -203,7 +203,7 @@ abstract class StoragesService implements IStoragesService {
 	 * @return IStorageConfig[]
 	 */
 	public function getStorages() {
-		return \array_filter($this->getAllStorages(), [$this, 'validateStorage']);
+		return array_filter($this->getAllStorages(), [$this, 'validateStorage']);
 	}
 
 	/**
@@ -421,10 +421,10 @@ abstract class StoragesService implements IStoragesService {
 			throw new NotFoundException('Storage config with id "' . $id . '" and backend id "' . $oldStorageBackend->getInvalidId() . '" cannot be edited due to missing backend');
 		}
 
-		$removedUsers = \array_diff($oldStorage->getApplicableUsers(), $updatedStorage->getApplicableUsers());
-		$removedGroups = \array_diff($oldStorage->getApplicableGroups(), $updatedStorage->getApplicableGroups());
-		$addedUsers = \array_diff($updatedStorage->getApplicableUsers(), $oldStorage->getApplicableUsers());
-		$addedGroups = \array_diff($updatedStorage->getApplicableGroups(), $oldStorage->getApplicableGroups());
+		$removedUsers = array_diff($oldStorage->getApplicableUsers(), $updatedStorage->getApplicableUsers());
+		$removedGroups = array_diff($oldStorage->getApplicableGroups(), $updatedStorage->getApplicableGroups());
+		$addedUsers = array_diff($updatedStorage->getApplicableUsers(), $oldStorage->getApplicableUsers());
+		$addedGroups = array_diff($updatedStorage->getApplicableGroups(), $oldStorage->getApplicableGroups());
 
 		$oldUserCount = \count($oldStorage->getApplicableUsers());
 		$oldGroupCount = \count($oldStorage->getApplicableGroups());
@@ -452,8 +452,8 @@ abstract class StoragesService implements IStoragesService {
 			$this->dbConfig->addApplicable($id, DBConfigService::APPLICABLE_TYPE_GLOBAL, null);
 		}
 
-		$changedConfig = \array_diff_assoc($updatedStorage->getBackendOptions(), $oldStorage->getBackendOptions());
-		$changedOptions = \array_diff_assoc($updatedStorage->getMountOptions(), $oldStorage->getMountOptions());
+		$changedConfig = array_diff_assoc($updatedStorage->getBackendOptions(), $oldStorage->getBackendOptions());
+		$changedOptions = array_diff_assoc($updatedStorage->getMountOptions(), $oldStorage->getMountOptions());
 
 		$backend = $updatedStorage->getBackend();
 		foreach ($changedConfig as $key => $value) {
@@ -532,7 +532,7 @@ abstract class StoragesService implements IStoragesService {
 		// to compute the possible storage id as we don't know which users
 		// mounted it already (and we certainly don't want to iterate over ALL users)
 		foreach ($storageConfig->getBackendOptions() as $value) {
-			if (\strpos($value, '$user') !== false) {
+			if (strpos($value, '$user') !== false) {
 				throw new \Exception('Cannot compute storage id for deletion due to $user vars in the configuration');
 			}
 		}

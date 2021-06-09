@@ -25,22 +25,22 @@ if ($_['showShareIT']) {
 		<p>
 			<?php p($l->t('Share it:')); ?>
 			<div class="gs-share">
-			<button data-url="<?php p(\urlencode($_['reference'])); ?>"
-				data-title='<?php p(\urlencode($_['message_without_URL'])); ?>'
+			<button data-url="<?php p(urlencode($_['reference'])); ?>"
+				data-title='<?php p(urlencode($_['message_without_URL'])); ?>'
 				class='js-gs-share social-gnu'>
 				GNU Social
 			</button>
 			</div>
 			<button class="social-diaspora pop-up"
-				data-url='https://sharetodiaspora.github.io/?title=<?php p($_['message_without_URL']); ?>&url=<?php p(\urlencode($_['reference'])); ?>'>
+				data-url='https://sharetodiaspora.github.io/?title=<?php p($_['message_without_URL']); ?>&url=<?php p(urlencode($_['reference'])); ?>'>
 				Diaspora
 			</button>
 			<button class="social-twitter pop-up"
-				data-url='https://twitter.com/intent/tweet?text=<?php p(\urlencode($_['message_with_URL'])); ?>'>
+				data-url='https://twitter.com/intent/tweet?text=<?php p(urlencode($_['message_with_URL'])); ?>'>
 				Twitter
 			</button>
 			<button class="social-facebook pop-up"
-				data-url='https://www.facebook.com/sharer/sharer.php?u=<?php p(\urlencode($_['reference'])); ?>'>
+				data-url='https://www.facebook.com/sharer/sharer.php?u=<?php p(urlencode($_['reference'])); ?>'>
 				Facebook
 			</button>
 			<button id="oca-files-sharing-add-to-your-website">

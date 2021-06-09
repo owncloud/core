@@ -62,6 +62,6 @@ class EnvironmentHelper {
 	 * @return array|false|string
 	 */
 	public function getEnvVar($envVar) {
-		return \getenv($envVar);
+		return getenv($envVar);
 	}
 }

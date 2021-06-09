@@ -47,14 +47,17 @@ class CleanupChunks extends Command {
 		$this
 			->setName('dav:cleanup-chunks')
 			->setDescription('Cleanup outdated chunks')
-			->addArgument('age-in-days', InputArgument::OPTIONAL,
+			->addArgument(
+				'age-in-days',
+				InputArgument::OPTIONAL,
 				'age of uploads in days - minimum 2 days - maximum 100',
-				2);
+				2
+			);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$d = $input->getArgument('age-in-days');
-		$d = \max(2, \min($d, 100));
+		$d = max(2, min($d, 100));
 		$cutOffTime = new \DateTime("$d days ago");
 		$output->writeln("Cleaning chunks older than $d days({$cutOffTime->format('c')})");
 		$this->userManager->callForSeenUsers(function (IUser $user) use ($output, $cutOffTime) {

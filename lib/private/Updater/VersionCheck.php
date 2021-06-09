@@ -38,8 +38,10 @@ class VersionCheck {
 	 * @param IClientService $clientService
 	 * @param IConfig $config
 	 */
-	public function __construct(IClientService $clientService,
-								IConfig $config) {
+	public function __construct(
+		IClientService $clientService,
+		IConfig $config
+	) {
 		$this->clientService = $clientService;
 		$this->config = $config;
 	}
@@ -51,16 +53,16 @@ class VersionCheck {
 	 */
 	public function check() {
 		// Look up the cache - it is invalidated all 30 minutes
-		if (((int)$this->config->getAppValue('core', 'lastupdatedat') + 1800) > \time()) {
-			return \json_decode($this->config->getAppValue('core', 'lastupdateResult'), true);
+		if (((int)$this->config->getAppValue('core', 'lastupdatedat') + 1800) > time()) {
+			return json_decode($this->config->getAppValue('core', 'lastupdateResult'), true);
 		}
 
 		$updaterUrl = $this->config->getSystemValue('updater.server.url', 'https://updates.owncloud.com/server/');
 
-		$this->config->setAppValue('core', 'lastupdatedat', \time());
+		$this->config->setAppValue('core', 'lastupdatedat', time());
 
 		if ($this->config->getAppValue('core', 'installedat', '') === '') {
-			$this->config->setAppValue('core', 'installedat', \microtime(true));
+			$this->config->setAppValue('core', 'installedat', microtime(true));
 		}
 
 		$version = Util::getVersion();
@@ -69,7 +71,7 @@ class VersionCheck {
 		$version['updatechannel'] = \OC_Util::getChannel();
 		$version['edition'] = \OC_Util::getEditionString();
 		$version['build'] = \OC_Util::getBuild();
-		$versionString = \implode('x', $version);
+		$versionString = implode('x', $version);
 
 		//fetch xml data from updater
 		$url = $updaterUrl . '?version=' . $versionString;
@@ -77,23 +79,23 @@ class VersionCheck {
 		$tmp = [];
 		$xml = $this->getUrlContent($url);
 		if ($xml) {
-			$loadEntities = \libxml_disable_entity_loader(true);
-			$data = @\simplexml_load_string($xml);
-			\libxml_disable_entity_loader($loadEntities);
+			$loadEntities = libxml_disable_entity_loader(true);
+			$data = @simplexml_load_string($xml);
+			libxml_disable_entity_loader($loadEntities);
 			if ($data !== false) {
 				$tmp['version'] = (string)$data->version;
 				$tmp['versionstring'] = (string)$data->versionstring;
 				$tmp['url'] = (string)$data->url;
 				$tmp['web'] = (string)$data->web;
 			} else {
-				\libxml_clear_errors();
+				libxml_clear_errors();
 			}
 		} else {
 			$data = [];
 		}
 
 		// Cache the result
-		$this->config->setAppValue('core', 'lastupdateResult', \json_encode($data));
+		$this->config->setAppValue('core', 'lastupdateResult', json_encode($data));
 		return $tmp;
 	}
 

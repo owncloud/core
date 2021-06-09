@@ -45,7 +45,7 @@ class AbstractFolder extends AbstractNode implements \OCP\Files\Folder {
 	 * @inheritdoc
 	 */
 	public function isSubNode($node) {
-		return \strpos($node->getPath(), $this->getPath()) === 0;
+		return strpos($node->getPath(), $this->getPath()) === 0;
 	}
 
 	/**

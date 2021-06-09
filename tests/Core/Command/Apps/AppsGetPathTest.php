@@ -55,7 +55,7 @@ class AppsGetPathTest extends TestCase {
 
 	public function providesAppIds() {
 		return [
-			[['app' => 'dav'], \realpath(__DIR__ . '/../../../../apps/dav')],
+			[['app' => 'dav'], realpath(__DIR__ . '/../../../../apps/dav')],
 		];
 	}
 }

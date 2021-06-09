@@ -73,7 +73,7 @@
 							<?php endif; ?>
 						</div>
 						<?php endif; ?>
-						<span id="expandDisplayName"><?php  p(\trim($_['user_displayname']) != '' ? $_['user_displayname'] : $_['user_uid']) ?></span>
+						<span id="expandDisplayName"><?php  p(trim($_['user_displayname']) != '' ? $_['user_displayname'] : $_['user_uid']) ?></span>
 					</div>
 					<div id="expanddiv">
 					<ul>

@@ -53,12 +53,14 @@ class SettingsPageController extends Controller {
 	 * @param IGroupManager $groupManager
 	 * @param IUserSession $userSession
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								ISettingsManager $settingsManager,
-								IURLGenerator $urlGenerator,
-								IGroupManager $groupManager,
-								IUserSession $userSession) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		ISettingsManager $settingsManager,
+		IURLGenerator $urlGenerator,
+		IGroupManager $groupManager,
+		IUserSession $userSession
+	) {
 		parent::__construct($appName, $request);
 		$this->settingsManager = $settingsManager;
 		$this->urlGenerator = $urlGenerator;
@@ -120,7 +122,7 @@ class SettingsPageController extends Controller {
 		$icon = $section->getIconName() . '.svg';
 		$appPath = \OC_App::getAppPath($section->getID());
 
-		if (\file_exists($appPath . '/img/' . $icon)) {
+		if (file_exists($appPath . '/img/' . $icon)) {
 			$icon = $this->urlGenerator->imagePath($section->getID(), $icon);
 		} else {
 			$icon = $section->getIconName();
@@ -145,10 +147,10 @@ class SettingsPageController extends Controller {
 			$nav[] = [
 				'id' => $section->getID(),
 				'link' => $this->urlGenerator->linkToRoute(
-					'settings.SettingsPage.get'.\ucwords($type),
+					'settings.SettingsPage.get'.ucwords($type),
 					['sectionid' => $section->getID()]
 				),
-				'name' => \ucfirst($section->getName()),
+				'name' => ucfirst($section->getName()),
 				'active' => $section->getID() === $currentSectionID,
 				'icon' => $icon
 			];

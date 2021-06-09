@@ -73,7 +73,7 @@ class Avatar implements IAvatar {
 	}
 
 	private function buildAvatarPath() {
-		return 'avatars/' . \substr_replace(\substr_replace(\md5($this->user->getUID()), '/', 4, 0), '/', 2, 0);
+		return 'avatars/' . substr_replace(substr_replace(md5($this->user->getUID()), '/', 4, 0), '/', 2, 0);
 	}
 
 	/**
@@ -120,7 +120,7 @@ class Avatar implements IAvatar {
 		} else {
 			$img = new OC_Image($data);
 		}
-		$type = \substr($img->mimeType(), -3);
+		$type = substr($img->mimeType(), -3);
 		if ($type === 'peg') {
 			$type = 'jpg';
 		}

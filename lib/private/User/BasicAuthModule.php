@@ -107,14 +107,18 @@ class BasicAuthModule implements IAuthModule {
 				}
 			} elseif ($count > 1) {
 				$this->logger->debug(
-					'Multiple users {users} for email {authUser}, not logging in', [
+					'Multiple users {users} for email {authUser}, not logging in',
+					[
 						'app' => __METHOD__,
 						'authUser' => $authUser,
-						'users' => \array_map(
+						'users' => array_map(
 							function (IUser $user) {
 								return $user->getUID();
-							}, $users)
-					]);
+							},
+							$users
+						)
+					]
+				);
 			}
 		}
 

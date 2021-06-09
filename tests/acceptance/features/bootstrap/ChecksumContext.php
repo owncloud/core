@@ -49,9 +49,12 @@ class ChecksumContext implements Context {
 	 * @return void
 	 */
 	public function userUploadsFileToWithChecksumUsingTheAPI(
-		$user, $source, $destination, $checksum
+		$user,
+		$source,
+		$destination,
+		$checksum
 	) {
-		$file = \file_get_contents(
+		$file = file_get_contents(
 			$this->featureContext->acceptanceTestsDirLocation() . $source
 		);
 		$response = $this->featureContext->makeDavRequest(
@@ -76,7 +79,10 @@ class ChecksumContext implements Context {
 	 * @return void
 	 */
 	public function userHasUploadedFileToWithChecksumUsingTheAPI(
-		$user, $source, $destination, $checksum
+		$user,
+		$source,
+		$destination,
+		$checksum
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->userUploadsFileToWithChecksumUsingTheAPI(
@@ -99,7 +105,10 @@ class ChecksumContext implements Context {
 	 * @return void
 	 */
 	public function userUploadsFileWithContentAndChecksumToUsingTheAPI(
-		$user, $content, $checksum, $destination
+		$user,
+		$content,
+		$checksum,
+		$destination
 	) {
 		$response = $this->featureContext->makeDavRequest(
 			$user,
@@ -123,7 +132,10 @@ class ChecksumContext implements Context {
 	 * @return void
 	 */
 	public function userHasUploadedFileWithContentAndChecksumToUsingTheAPI(
-		$user, $content, $checksum, $destination
+		$user,
+		$content,
+		$checksum,
+		$destination
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->userUploadsFileWithContentAndChecksumToUsingTheAPI(
@@ -153,7 +165,8 @@ class ChecksumContext implements Context {
 </d:propfind>';
 		$url = $this->featureContext->getBaseUrl() . '/' .
 			WebDavHelper::getDavPath(
-				$user, $this->featureContext->getDavPathVersion()
+				$user,
+				$this->featureContext->getDavPathVersion()
 			) . $path;
 		$url = WebDavHelper::sanitizeUrl($url);
 		$response = HttpRequestHelper::sendRequest(
@@ -299,7 +312,12 @@ class ChecksumContext implements Context {
 	 * @return void
 	 */
 	public function userUploadsChunkFileOfWithToWithChecksum(
-		$user, $num, $total, $data, $destination, $checksum
+		$user,
+		$num,
+		$total,
+		$data,
+		$destination,
+		$checksum
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$num -= 1;
@@ -328,7 +346,12 @@ class ChecksumContext implements Context {
 	 * @return void
 	 */
 	public function userHasUploadedChunkFileOfWithToWithChecksum(
-		$user, $num, $total, $data, $destination, $checksum
+		$user,
+		$num,
+		$total,
+		$data,
+		$destination,
+		$checksum
 	) {
 		$this->userUploadsChunkFileOfWithToWithChecksum(
 			$user,

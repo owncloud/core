@@ -54,9 +54,9 @@ class PreviewsMountProvider implements IMountProvider {
 	public function getMountsForUser(IUser $user, IStorageFactory $loader) {
 		$previewsPath = $this->config->getSystemValue('previews_path', '');
 		if ($previewsPath !== '') {
-			$previewsDir = \rtrim($previewsPath, '/') . '/' . $user->getUID();
-			if (!\file_exists($previewsDir)) {
-				\mkdir($previewsDir, 0770, true);
+			$previewsDir = rtrim($previewsPath, '/') . '/' . $user->getUID();
+			if (!file_exists($previewsDir)) {
+				mkdir($previewsDir, 0770, true);
 			}
 
 			return [

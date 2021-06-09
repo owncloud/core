@@ -149,7 +149,7 @@ trait WebDav {
 		if ($eTag === null) {
 			$eTag = $this->getEtagFromResponseXmlObject();
 		}
-		if (\preg_match("/^\"[a-f0-9:\.]{1,32}\"$/", $eTag)
+		if (preg_match("/^\"[a-f0-9:\.]{1,32}\"$/", $eTag)
 		) {
 			return true;
 		} else {
@@ -184,8 +184,10 @@ trait WebDav {
 	 */
 	public function usingDavPath($davPath) {
 		$this->davPath = $davPath;
-		$this->customDavPath = \preg_replace(
-			"/remote\.php\/(web)?dav\//", "", $davPath
+		$this->customDavPath = preg_replace(
+			"/remote\.php\/(web)?dav\//",
+			"",
+			$davPath
 		);
 	}
 
@@ -253,7 +255,7 @@ trait WebDav {
 		$path = $this->getBasePath() . "/" .
 			WebDavHelper::getDavPath($user, $this->getDavPathVersion());
 		$path = WebDavHelper::sanitizeUrl($path);
-		return \ltrim($path, "/");
+		return ltrim($path, "/");
 	}
 
 	/**
@@ -343,9 +345,21 @@ trait WebDav {
 		}
 		return WebDavHelper::makeDavRequest(
 			$this->getBaseUrl(),
-			$user, $password, $method,
-			$path, $headers, $body, $davPathVersion,
-			$type, null, "basic", $stream, $this->httpRequestTimeout, null, $urlParameter, $doDavRequestAsUser
+			$user,
+			$password,
+			$method,
+			$path,
+			$headers,
+			$body,
+			$davPathVersion,
+			$type,
+			null,
+			"basic",
+			$stream,
+			$this->httpRequestTimeout,
+			null,
+			$urlParameter,
+			$doDavRequestAsUser
 		);
 	}
 
@@ -368,7 +382,17 @@ trait WebDav {
 			'preview' => '1'
 		];
 		$this->response = $this->makeDavRequest(
-			$user, "GET", $path, [], null, "files", 2, false, null, $urlParameter, $doDavRequestAsUser
+			$user,
+			"GET",
+			$path,
+			[],
+			null,
+			"files",
+			2,
+			false,
+			null,
+			$urlParameter,
+			$doDavRequestAsUser
 		);
 	}
 
@@ -493,7 +517,7 @@ trait WebDav {
 			$oldAsyncSetting = SetupHelper::runOcc(
 				['config:system:get', 'dav.enable.async']
 			)['stdOut'];
-			$this->oldAsyncSetting = \trim($oldAsyncSetting);
+			$this->oldAsyncSetting = trim($oldAsyncSetting);
 		}
 		$this->runOcc(
 			[
@@ -532,7 +556,7 @@ trait WebDav {
 			$oldDavSlowdownSetting = SetupHelper::runOcc(
 				['config:system:get', 'dav.slowdown']
 			)['stdOut'];
-			$this->oldDavSlowdownSetting = \trim($oldDavSlowdownSetting);
+			$this->oldDavSlowdownSetting = trim($oldDavSlowdownSetting);
 		}
 		OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
@@ -552,7 +576,7 @@ trait WebDav {
 	public function destinationHeaderValue($user, $fileDestination) {
 		$fullUrl = $this->getBaseUrl() . '/' .
 			WebDavHelper::getDavPath($user, $this->getDavPathVersion());
-		return \rtrim($fullUrl, '/') . '/' . \ltrim($fileDestination, '/');
+		return rtrim($fullUrl, '/') . '/' . ltrim($fileDestination, '/');
 	}
 
 	/**
@@ -566,14 +590,20 @@ trait WebDav {
 	 * @throws Exception
 	 */
 	public function userHasMovedFile(
-		$user, $fileSource, $fileDestination
+		$user,
+		$fileSource,
+		$fileDestination
 	) {
 		$user = $this->getActualUsername($user);
 		$headers['Destination'] = $this->destinationHeaderValue(
-			$user, $fileDestination
+			$user,
+			$fileDestination
 		);
 		$this->response = $this->makeDavRequest(
-			$user, "MOVE", $fileSource, $headers
+			$user,
+			"MOVE",
+			$fileSource,
+			$headers
 		);
 		$expectedStatusCode = 201;
 		$actualStatusCode = $this->response->getStatusCode();
@@ -661,11 +691,15 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userMovesFileUsingTheAPI(
-		$user, $fileSource, $type, $fileDestination
+		$user,
+		$fileSource,
+		$type,
+		$fileDestination
 	) {
 		$user = $this->getActualUsername($user);
 		$headers['Destination'] = $this->destinationHeaderValue(
-			$user, $fileDestination
+			$user,
+			$fileDestination
 		);
 		$stream = false;
 		if ($type === "asynchronously") {
@@ -683,7 +717,14 @@ trait WebDav {
 		try {
 			$this->emptyLastHTTPStatusCodesArray();
 			$this->response = $this->makeDavRequest(
-				$user, "MOVE", $fileSource, $headers, null, "files", null, $stream
+				$user,
+				"MOVE",
+				$fileSource,
+				$headers,
+				null,
+				"files",
+				null,
+				$stream
 			);
 			$this->setResponseXml(
 				HttpRequestHelper::parseResponseAsXml($this->response)
@@ -719,7 +760,9 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userMovesFollowingFileUsingTheAPI(
-		$user, $type, TableNode $table
+		$user,
+		$type,
+		TableNode $table
 	) {
 		$this->verifyTableNodeColumns($table, ["from", "to"]);
 		$paths = $table->getHash();
@@ -775,7 +818,10 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userOnMovesFileUsingTheAPI(
-		$user, $server, $fileSource, $fileDestination
+		$user,
+		$server,
+		$fileSource,
+		$fileDestination
 	) {
 		$previousServer = $this->usingServer($server);
 		$this->userMovesFileUsingTheAPI($user, $fileSource, "", $fileDestination);
@@ -792,14 +838,20 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userCopiesFileUsingTheAPI(
-		$user, $fileSource, $fileDestination
+		$user,
+		$fileSource,
+		$fileDestination
 	) {
 		$user = $this->getActualUsername($user);
 		$headers['Destination'] = $this->destinationHeaderValue(
-			$user, $fileDestination
+			$user,
+			$fileDestination
 		);
 		$this->response = $this->makeDavRequest(
-			$user, "COPY", $fileSource, $headers
+			$user,
+			"COPY",
+			$fileSource,
+			$headers
 		);
 		$this->setResponseXml(
 			HttpRequestHelper::parseResponseAsXml($this->response)
@@ -816,7 +868,9 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userHasCopiedFileUsingTheAPI(
-		$user, $fileSource, $fileDestination
+		$user,
+		$fileSource,
+		$fileDestination
 	) {
 		$this->userCopiesFileUsingTheAPI($user, $fileSource, $fileDestination);
 		$this->theHTTPStatusCodeShouldBe(
@@ -863,7 +917,9 @@ trait WebDav {
 	 */
 	public function downloadFileWithRange($fileSource, $range) {
 		$this->userDownloadsFileWithRange(
-			$this->currentUser, $fileSource, $range
+			$this->currentUser,
+			$fileSource,
+			$range
 		);
 	}
 
@@ -880,7 +936,10 @@ trait WebDav {
 		$user = $this->getActualUsername($user);
 		$headers['Range'] = $range;
 		$this->response = $this->makeDavRequest(
-			$user, "GET", $fileSource, $headers
+			$user,
+			"GET",
+			$fileSource,
+			$headers
 		);
 	}
 
@@ -894,18 +953,22 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUsingPasswordShouldNotBeAbleToDownloadFile(
-		$user, $password, $fileName
+		$user,
+		$password,
+		$fileName
 	) {
 		$user = $this->getActualUsername($user);
 		$password = $this->getActualPassword($password);
 		$this->downloadFileAsUserUsingPassword($user, $fileName, $password);
 		Assert::assertGreaterThanOrEqual(
-			400, $this->getResponse()->getStatusCode(),
+			400,
+			$this->getResponse()->getStatusCode(),
 			__METHOD__
 			. ' download must fail'
 		);
 		Assert::assertLessThanOrEqual(
-			499, $this->getResponse()->getStatusCode(),
+			499,
+			$this->getResponse()->getStatusCode(),
 			__METHOD__
 			. ' 4xx error expected but got status code "'
 			. $this->getResponse()->getStatusCode() . '"'
@@ -921,7 +984,9 @@ trait WebDav {
 	 */
 	public function userShouldBeAbleToAccessASkeletonFile($user) {
 		$this->contentOfFileForUserShouldBePlusEndOfLine(
-			"textfile0.txt", $user, "ownCloud test text file 0"
+			"textfile0.txt",
+			$user,
+			"ownCloud test text file 0"
 		);
 	}
 
@@ -949,7 +1014,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function downloadedContentShouldEndWith($content) {
-		$actualContent = \substr((string) $this->response->getBody(), -\strlen($content));
+		$actualContent = substr((string) $this->response->getBody(), -\strlen($content));
 		Assert::assertEquals(
 			$content,
 			$actualContent,
@@ -992,8 +1057,8 @@ trait WebDav {
 		if ($actualStatusCode === $statusCode) {
 			$actualContent = (string) $this->response->getBody();
 			$pattern = ["/--\w*/", "/\s*/m"];
-			$actualContent = \preg_replace($pattern, "", $actualContent);
-			$content = \preg_replace("/\s*/m", '', $content->getRaw());
+			$actualContent = preg_replace($pattern, "", $actualContent);
+			$content = preg_replace("/\s*/m", '', $content->getRaw());
 			Assert::assertEquals(
 				$content,
 				$actualContent,
@@ -1050,7 +1115,8 @@ trait WebDav {
 	 * @return void
 	 */
 	public function contentOfFileShouldBePyString(
-		$fileName, PyStringNode $content
+		$fileName,
+		PyStringNode $content
 	) {
 		$this->contentOfFileShouldBe($fileName, $content->getRaw());
 	}
@@ -1112,7 +1178,10 @@ trait WebDav {
 	 * @return void
 	 */
 	public function theContentOfFileForUserOnServerShouldBe(
-		$fileName, $user, $server, $content
+		$fileName,
+		$user,
+		$server,
+		$content
 	) {
 		$previousServer = $this->usingServer($server);
 		$this->contentOfFileForUserShouldBe($fileName, $user, $content);
@@ -1130,7 +1199,10 @@ trait WebDav {
 	 * @return void
 	 */
 	public function contentOfFileForUserUsingPasswordShouldBe(
-		$fileName, $user, $password, $content
+		$fileName,
+		$user,
+		$password,
+		$content
 	) {
 		$user = $this->getActualUsername($user);
 		$password = $this->getActualPassword($password);
@@ -1148,7 +1220,9 @@ trait WebDav {
 	 * @return void
 	 */
 	public function contentOfFileForUserShouldBePyString(
-		$fileName, $user, PyStringNode $content
+		$fileName,
+		$user,
+		PyStringNode $content
 	) {
 		$this->contentOfFileForUserShouldBe($fileName, $user, $content->getRaw());
 	}
@@ -1164,10 +1238,16 @@ trait WebDav {
 	 * @return void
 	 */
 	public function contentOfFileForUserUsingPasswordShouldBePyString(
-		$fileName, $user, $password, PyStringNode $content
+		$fileName,
+		$user,
+		$password,
+		PyStringNode $content
 	) {
 		$this->contentOfFileForUserUsingPasswordShouldBe(
-			$fileName, $user, $password, $content->getRaw()
+			$fileName,
+			$user,
+			$password,
+			$content->getRaw()
 		);
 	}
 
@@ -1182,7 +1262,9 @@ trait WebDav {
 	 */
 	public function contentOfFileForUserShouldBePlusEndOfLine($fileName, $user, $content) {
 		$this->contentOfFileForUserShouldBe(
-			$fileName, $user, "$content\n"
+			$fileName,
+			$user,
+			"$content\n"
 		);
 	}
 
@@ -1213,7 +1295,10 @@ trait WebDav {
 	 * @return void
 	 */
 	public function theContentOfFileForUserOnServerShouldBePlusEndOfLine(
-		$fileName, $user, $server, $content
+		$fileName,
+		$user,
+		$server,
+		$content
 	) {
 		$previousServer = $this->usingServer($server);
 		$this->contentOfFileForUserShouldBePlusEndOfLine($fileName, $user, $content);
@@ -1231,11 +1316,17 @@ trait WebDav {
 	 * @return void
 	 */
 	public function contentOfFileForUserUsingPasswordShouldBePlusEndOfLine(
-		$fileName, $user, $password, $content
+		$fileName,
+		$user,
+		$password,
+		$content
 	) {
 		$user = $this->getActualUsername($user);
 		$this->contentOfFileForUserUsingPasswordShouldBe(
-			$fileName, $user, $password, "$content\n"
+			$fileName,
+			$user,
+			$password,
+			"$content\n"
 		);
 	}
 
@@ -1249,7 +1340,9 @@ trait WebDav {
 	 * @return void
 	 */
 	public function downloadedContentWhenDownloadingWithRangeShouldBe(
-		$fileSource, $range, $content
+		$fileSource,
+		$range,
+		$content
 	) {
 		$this->downloadFileWithRange($fileSource, $range);
 		$this->downloadedContentShouldBe($content);
@@ -1266,7 +1359,10 @@ trait WebDav {
 	 * @return void
 	 */
 	public function downloadedContentWhenDownloadingForUserWithRangeShouldBe(
-		$fileSource, $user, $range, $content
+		$fileSource,
+		$user,
+		$range,
+		$content
 	) {
 		$user = $this->getActualUsername($user);
 		$this->userDownloadsFileWithRange($user, $fileSource, $range);
@@ -1293,7 +1389,8 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userDownloadsFileUsingTheAPI(
-		$user, $fileName
+		$user,
+		$fileName
 	) {
 		$this->downloadFileAsUserUsingPassword($user, $fileName);
 	}
@@ -1308,7 +1405,9 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUsingPasswordDownloadsTheFileUsingTheAPI(
-		$user, $password, $fileName
+		$user,
+		$password,
+		$fileName
 	) {
 		$this->downloadFileAsUserUsingPassword($user, $fileName, $password);
 	}
@@ -1322,7 +1421,10 @@ trait WebDav {
 	 * @return void
 	 */
 	public function downloadFileAsUserUsingPassword(
-		$user, $fileName, $password = null, $headers = []
+		$user,
+		$fileName,
+		$password = null,
+		$headers = []
 	) {
 		$user = $this->getActualUsername($user);
 		$password = $this->getActualPassword($password);
@@ -1350,7 +1452,11 @@ trait WebDav {
 		$token = (string)$tokenArray[0];
 		$url = $this->getBaseUrl() . "/remote.php/dav/public-files/{$token}";
 		$this->response = HttpRequestHelper::sendRequest(
-			$url, "PROPFIND", null, null, null
+			$url,
+			"PROPFIND",
+			null,
+			null,
+			null
 		);
 	}
 
@@ -1367,7 +1473,11 @@ trait WebDav {
 		$user = $this->getActualUsername($user);
 		$password = $this->getPasswordForUser($user);
 		$this->response = WebDavHelper::propfind(
-			$this->getBaseUrl(), $user, $password, $resource, []
+			$this->getBaseUrl(),
+			$user,
+			$password,
+			$resource,
+			[]
 		);
 	}
 
@@ -1415,7 +1525,7 @@ trait WebDav {
 			if (\is_array($returnedHeader)) {
 				if (empty($returnedHeader)) {
 					throw new \Exception(
-						\sprintf(
+						sprintf(
 							"Missing expected header '%s'",
 							$headerName
 						)
@@ -1446,7 +1556,7 @@ trait WebDav {
 	public function downloadedContentShouldStartWith($start) {
 		Assert::assertEquals(
 			0,
-			\strpos($this->response->getBody()->getContents(), $start),
+			strpos($this->response->getBody()->getContents(), $start),
 			__METHOD__
 			. " The downloaded content was expected to start with '$start', but actually started with '{$this->response->getBody()->getContents()}'"
 		);
@@ -1468,18 +1578,22 @@ trait WebDav {
 		$url = $this->getBaseUrlWithoutPath() . $url;
 		$response = HttpRequestHelper::get($url, $user, $this->getPasswordForUser($user));
 		$contents = $response->getBody()->getContents();
-		$result = \json_decode($contents, true);
+		$result = json_decode($contents, true);
 		PHPUnit\Framework\Assert::assertNotNull($result, "'$contents' is not valid JSON");
 		foreach ($table->getTable() as $row) {
 			$expectedKey = $row[0];
 			Assert::assertArrayHasKey(
-				$expectedKey, $result, "response does not have expected key '$expectedKey'"
+				$expectedKey,
+				$result,
+				"response does not have expected key '$expectedKey'"
 			);
 			$expectedValue = $this->substituteInLineCodes(
-				$row[1], $user, ['preg_quote' => ['/']]
+				$row[1],
+				$user,
+				['preg_quote' => ['/']]
 			);
 			Assert::assertNotFalse(
-				(bool) \preg_match($expectedValue, $result[$expectedKey]),
+				(bool) preg_match($expectedValue, $result[$expectedKey]),
 				"'$expectedValue' does not match '$result[$expectedKey]'"
 			);
 		}
@@ -1497,12 +1611,19 @@ trait WebDav {
 	 * @throws \Exception
 	 */
 	public function asFileOrFolderShouldNotExist(
-		$user, $entry = "file", $path = null, $type = "files"
+		$user,
+		$entry = "file",
+		$path = null,
+		$type = "files"
 	) {
 		$user = $this->getActualUsername($user);
 		$path = $this->substituteInLineCodes($path);
 		$response = $this->listFolder(
-			$user, $path, 0, null, $type
+			$user,
+			$path,
+			0,
+			null,
+			$type
 		);
 		$statusCode = $response->getStatusCode();
 		if ($statusCode < 401 || $statusCode > 404) {
@@ -1543,11 +1664,13 @@ trait WebDav {
 	 * @return void
 	 */
 	public function followingFilesShouldNotExist(
-		$user, $entry, TableNode $table
+		$user,
+		$entry,
+		TableNode $table
 	) {
 		$this->verifyTableNodeColumns($table, ["path"]);
 		$paths = $table->getHash();
-		$entry = \rtrim($entry, "s");
+		$entry = rtrim($entry, "s");
 
 		foreach ($paths as $file) {
 			$this->asFileOrFolderShouldNotExist($user, $entry, $file["path"]);
@@ -1566,12 +1689,19 @@ trait WebDav {
 	 * @throws \Exception
 	 */
 	public function asFileOrFolderShouldExist(
-		$user, $entry, $path, $type = "files"
+		$user,
+		$entry,
+		$path,
+		$type = "files"
 	) {
 		$user = $this->getActualUsername($user);
 		$path = $this->substituteInLineCodes($path);
 		$this->responseXmlObject = $this->listFolderAndReturnResponseXml(
-			$user, $path, 0, null, $type
+			$user,
+			$path,
+			0,
+			null,
+			$type
 		);
 		Assert::assertTrue(
 			$this->isEtagValid(),
@@ -1596,11 +1726,13 @@ trait WebDav {
 	 * @throws \Exception
 	 */
 	public function followingFilesOrFoldersShouldExist(
-		$user, $entry, TableNode $table
+		$user,
+		$entry,
+		TableNode $table
 	) {
 		$this->verifyTableNodeColumns($table, ["path"]);
 		$paths = $table->getHash();
-		$entry = \rtrim($entry, "s");
+		$entry = rtrim($entry, "s");
 
 		foreach ($paths as $file) {
 			$this->asFileOrFolderShouldExist($user, $entry, $file["path"]);
@@ -1617,7 +1749,10 @@ trait WebDav {
 	 * @return bool
 	 */
 	public function fileOrFolderExists(
-		$user, $entry, $path, $type = "files"
+		$user,
+		$entry,
+		$path,
+		$type = "files"
 	) {
 		try {
 			$this->asFileOrFolderShouldExist($user, $entry, $path, $type);
@@ -1642,7 +1777,9 @@ trait WebDav {
 		foreach ($table->getTable() as $row) {
 			$path = $this->substituteInLineCodes($row[0]);
 			$this->responseXmlObject = $this->listFolderAndReturnResponseXml(
-				$user, $path, 0
+				$user,
+				$path,
+				0
 			);
 			if ($this->isEtagValid()) {
 				$numEntriesThatExist = $numEntriesThatExist + 1;
@@ -1667,7 +1804,11 @@ trait WebDav {
 	 * @throws Exception
 	 */
 	public function listFolder(
-		$user, $path, $folderDepth, $properties = null, $type = "files"
+		$user,
+		$path,
+		$folderDepth,
+		$properties = null,
+		$type = "files"
 	) {
 		$user = $this->getActualUsername($user);
 		if ($this->customDavPath !== null) {
@@ -1678,8 +1819,11 @@ trait WebDav {
 			$this->getBaseUrl(),
 			$this->getActualUsername($user),
 			$this->getPasswordForUser($user),
-			$path, $folderDepth, $properties,
-			$type, ($this->usingOldDavPath) ? 1 : 2
+			$path,
+			$folderDepth,
+			$properties,
+			$type,
+			($this->usingOldDavPath) ? 1 : 2
 		);
 	}
 
@@ -1695,11 +1839,19 @@ trait WebDav {
 	 * @throws Exception
 	 */
 	public function listFolderAndReturnResponseXml(
-		$user, $path, $folderDepth, $properties = null, $type = "files"
+		$user,
+		$path,
+		$folderDepth,
+		$properties = null,
+		$type = "files"
 	) {
 		return HttpRequestHelper::getResponseXml(
 			$this->listFolder(
-				$user, $path, $folderDepth, $properties, $type
+				$user,
+				$path,
+				$folderDepth,
+				$properties,
+				$type
 			),
 			__METHOD__
 		);
@@ -1733,7 +1885,7 @@ trait WebDav {
 	 */
 	public function userShouldNotSeeTheElementsIfUpperAndLowerCaseUsernameDifferent($user, $elements) {
 		$effectiveUser = $this->getActualUsername($user);
-		if (\strtoupper($effectiveUser) === \strtolower($effectiveUser)) {
+		if (strtoupper($effectiveUser) === strtolower($effectiveUser)) {
 			$expectedToBeListed = true;
 		} else {
 			$expectedToBeListed = false;
@@ -1754,12 +1906,16 @@ trait WebDav {
 	 *
 	 */
 	public function checkElementList(
-		$user, $elements, $expectedToBeListed = true
+		$user,
+		$elements,
+		$expectedToBeListed = true
 	) {
 		$user = $this->getActualUsername($user);
 		$this->verifyTableNodeColumnsCount($elements, 1);
 		$responseXmlObject = $this->listFolderAndReturnResponseXml(
-			$user, "/", "infinity"
+			$user,
+			"/",
+			"infinity"
 		);
 		$elementRows = $elements->getRows();
 		$elementsSimplified = $this->simplifyArray($elementRows);
@@ -1768,7 +1924,7 @@ trait WebDav {
 			// not have to specify the "implied" leading slash, or have multiple
 			// leading slashes, to make scenario outlines more flexible
 			$expectedElement = $this->encodePath($expectedElement);
-			$expectedElement = "/" . \ltrim($expectedElement, "/");
+			$expectedElement = "/" . ltrim($expectedElement, "/");
 			$webdavPath = "/" . $this->getFullDavFilesPath($user) . $expectedElement;
 			$element = $responseXmlObject->xpath(
 				"//d:response/d:href[text() = \"$webdavPath\"]"
@@ -1799,12 +1955,16 @@ trait WebDav {
 	 */
 	public function userUploadsAFileTo($user, $source, $destination) {
 		$user = $this->getActualUsername($user);
-		$file = \fopen($this->acceptanceTestsDirLocation() . $source, 'r');
+		$file = fopen($this->acceptanceTestsDirLocation() . $source, 'r');
 		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest(
-			$user, "PUT", $destination, [], $file
+			$user,
+			"PUT",
+			$destination,
+			[],
+			$file
 		);
-		$this->lastUploadDeleteTime = \time();
+		$this->lastUploadDeleteTime = time();
 		$this->setResponseXml(
 			HttpRequestHelper::parseResponseAsXml($this->response)
 		);
@@ -1925,7 +2085,7 @@ trait WebDav {
 				$chunkingVersion,
 				$noOfChunks
 			);
-			$this->lastUploadDeleteTime = \time();
+			$this->lastUploadDeleteTime = time();
 		} catch (BadResponseException $e) {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
@@ -1947,11 +2107,19 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsAFileToWithChunks(
-		$user, $source, $destination, $noOfChunks = 2, $chunkingVersion = null, $async = false, $headers = []
+		$user,
+		$source,
+		$destination,
+		$noOfChunks = 2,
+		$chunkingVersion = null,
+		$async = false,
+		$headers = []
 	) {
 		$user = $this->getActualUsername($user);
 		Assert::assertGreaterThan(
-			0, $noOfChunks, "What does it mean to have $noOfChunks chunks?"
+			0,
+			$noOfChunks,
+			"What does it mean to have $noOfChunks chunks?"
 		);
 		//use the chunking version that works with the set dav version
 		if ($chunkingVersion === null) {
@@ -1994,11 +2162,20 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsAFileAsyncToWithChunks(
-		$user, $source, $destination, $noOfChunks = 2, $chunkingVersion = null
+		$user,
+		$source,
+		$destination,
+		$noOfChunks = 2,
+		$chunkingVersion = null
 	) {
 		$user = $this->getActualUsername($user);
 		$this->userUploadsAFileToWithChunks(
-			$user, $source, $destination, $noOfChunks, $chunkingVersion, true
+			$user,
+			$source,
+			$destination,
+			$noOfChunks,
+			$chunkingVersion,
+			true
 		);
 	}
 
@@ -2035,13 +2212,17 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsAFileToWithAllMechanisms(
-		$user, $source, $destination
+		$user,
+		$source,
+		$destination
 	) {
 		$user = $this->getActualUsername($user);
 		$this->uploadResponses = UploadHelper::uploadWithAllMechanisms(
-			$this->getBaseUrl(), $this->getActualUsername($user),
+			$this->getBaseUrl(),
+			$this->getActualUsername($user),
 			$this->getUserPassword($user),
-			$this->acceptanceTestsDirLocation() . $source, $destination
+			$this->acceptanceTestsDirLocation() . $source,
+			$destination
 		);
 	}
 
@@ -2057,13 +2238,18 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userOverwritesAFileToWithAllMechanisms(
-		$user, $source, $destination
+		$user,
+		$source,
+		$destination
 	) {
 		$user = $this->getActualUsername($user);
 		$this->uploadResponses = UploadHelper::uploadWithAllMechanisms(
-			$this->getBaseUrl(), $this->getActualUsername($user),
+			$this->getBaseUrl(),
+			$this->getActualUsername($user),
 			$this->getUserPassword($user),
-			$this->acceptanceTestsDirLocation() . $source, $destination, true
+			$this->acceptanceTestsDirLocation() . $source,
+			$destination,
+			true
 		);
 	}
 
@@ -2093,7 +2279,7 @@ trait WebDav {
 	 * @throws Exception
 	 */
 	public function theHTTPStatusCodeOfResponsesOnAllEndpointsShouldBe($statusCode) {
-		$duplicateRemovedStatusCodes = \array_unique($this->lastHttpStatusCodesArray);
+		$duplicateRemovedStatusCodes = array_unique($this->lastHttpStatusCodesArray);
 		if (\count($duplicateRemovedStatusCodes) === 1) {
 			Assert::assertSame(
 				\intval($statusCode),
@@ -2103,7 +2289,7 @@ trait WebDav {
 		} else {
 			throw new \Exception(
 				'Expected same but found different http status codes of last requested responses.' .
-				'Found status codes: ' . \implode(',', $this->lastHttpStatusCodesArray)
+				'Found status codes: ' . implode(',', $this->lastHttpStatusCodesArray)
 			);
 		}
 	}
@@ -2118,7 +2304,7 @@ trait WebDav {
 	 * @throws Exception
 	 */
 	public function theHTTPStatusCodeOfResponsesOnAllEndpointsShouldBeOr($statusCode1, $statusCode2) {
-		$duplicateRemovedStatusCodes = \array_unique($this->lastHttpStatusCodesArray);
+		$duplicateRemovedStatusCodes = array_unique($this->lastHttpStatusCodesArray);
 		foreach ($duplicateRemovedStatusCodes as $status) {
 			$status = (string)$status;
 			if (($status != $statusCode1) && ($status != $statusCode2)) {
@@ -2136,7 +2322,7 @@ trait WebDav {
 	 * @throws Exception
 	 */
 	public function theOCSStatusCodeOfResponsesOnAllEndpointsShouldBe($statusCode) {
-		$duplicateRemovedStatusCodes = \array_unique($this->lastOCSStatusCodesArray);
+		$duplicateRemovedStatusCodes = array_unique($this->lastOCSStatusCodesArray);
 		if (\count($duplicateRemovedStatusCodes) === 1) {
 			Assert::assertSame(
 				\intval($statusCode),
@@ -2146,7 +2332,7 @@ trait WebDav {
 		} else {
 			throw new \Exception(
 				'Expected same but found different ocs status codes of last requested responses.' .
-				'Found status codes: ' . \implode(',', $this->lastOCSStatusCodesArray)
+				'Found status codes: ' . implode(',', $this->lastOCSStatusCodesArray)
 			);
 		}
 	}
@@ -2193,7 +2379,9 @@ trait WebDav {
 	 * @return void
 	 */
 	public function usersShouldBeAbleToUploadFileTo(
-		string $source, string $destination, TableNode $table
+		string $source,
+		string $destination,
+		TableNode $table
 	) {
 		$this->verifyTableNodeColumns($table, ["username"]);
 		$usernames = $table->getHash();
@@ -2243,7 +2431,8 @@ trait WebDav {
 	 * @return void
 	 */
 	public function theHTTPStatusCodeOfAllUploadResponsesShouldBeBetween(
-		$minStatusCode, $maxStatusCode
+		$minStatusCode,
+		$maxStatusCode
 	) {
 		foreach ($this->uploadResponses as $response) {
 			Assert::assertGreaterThanOrEqual(
@@ -2272,13 +2461,17 @@ trait WebDav {
 	 * @throws \Exception
 	 */
 	public function filesUploadedToWithAllMechanismsShouldExist(
-		$user, $destination, $shouldOrNot
+		$user,
+		$destination,
+		$shouldOrNot
 	) {
 		if ($shouldOrNot !== "not") {
 			foreach (['old', 'new'] as $davVersion) {
 				foreach (["{$davVersion}dav-regular", "{$davVersion}dav-{$davVersion}chunking"] as $suffix) {
 					$this->asFileOrFolderShouldExist(
-						$user, 'file', "$destination-$suffix"
+						$user,
+						'file',
+						"$destination-$suffix"
 					);
 				}
 			}
@@ -2286,7 +2479,9 @@ trait WebDav {
 			foreach (['old', 'new'] as $davVersion) {
 				foreach (["{$davVersion}dav-regular", "{$davVersion}dav-{$davVersion}chunking"] as $suffix) {
 					$this->asFileOrFolderShouldNotExist(
-						$user, 'file', "$destination-$suffix"
+						$user,
+						'file',
+						"$destination-$suffix"
 					);
 				}
 			}
@@ -2305,7 +2500,10 @@ trait WebDav {
 	 * @throws \Exception
 	 */
 	public function asUserOnServerTheFilesUploadedToWithAllMechanismsShouldExit(
-		$user, $server, $destination, $shouldOrNot
+		$user,
+		$server,
+		$destination,
+		$shouldOrNot
 	) {
 		$previousServer = $this->usingServer($server);
 		$this->filesUploadedToWithAllMechanismsShouldExist($user, $destination, $shouldOrNot);
@@ -2420,17 +2618,23 @@ trait WebDav {
 	 * @return string
 	 */
 	public function uploadFileWithContent(
-		$user, $content, $destination
+		$user,
+		$content,
+		$destination
 	) {
 		$user = $this->getActualUsername($user);
 		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest(
-			$user, "PUT", $destination, [], $content
+			$user,
+			"PUT",
+			$destination,
+			[],
+			$content
 		);
 		$this->setResponseXml(
 			HttpRequestHelper::parseResponseAsXml($this->response)
 		);
-		$this->lastUploadDeleteTime = \time();
+		$this->lastUploadDeleteTime = time();
 		return $this->response->getHeader('oc-fileid');
 	}
 
@@ -2443,7 +2647,8 @@ trait WebDav {
 	 * @return string
 	 */
 	public function adminUploadsAFileWithContentTo(
-		$content, $destination
+		$content,
+		$destination
 	) {
 		return $this->uploadFileWithContent($this->getAdminUsername(), $content, $destination);
 	}
@@ -2457,7 +2662,8 @@ trait WebDav {
 	 * @return string
 	 */
 	public function adminHasUploadedAFileWithContentTo(
-		$content, $destination
+		$content,
+		$destination
 	) {
 		$fileId = $this->uploadFileWithContent($this->getAdminUsername(), $content, $destination);
 		$this->theHTTPStatusCodeShouldBe(
@@ -2477,7 +2683,9 @@ trait WebDav {
 	 * @return string
 	 */
 	public function userUploadsAFileWithContentTo(
-		$user, $content, $destination
+		$user,
+		$content,
+		$destination
 	) {
 		return $this->uploadFileWithContent($user, $content, $destination);
 	}
@@ -2492,7 +2700,9 @@ trait WebDav {
 	 * @return string
 	 */
 	public function userUploadsFollowingFilesWithContentTo(
-		$user, $content, TableNode $table
+		$user,
+		$content,
+		TableNode $table
 	) {
 		$this->verifyTableNodeColumns($table, ["path"]);
 		$paths = $table->getHash();
@@ -2515,14 +2725,20 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsFileToWithMtimeUsingTheWebdavApi(
-		$user, $source, $destination, $mtime
+		$user,
+		$source,
+		$destination,
+		$mtime
 	) {
 		$mtime = new DateTime($mtime);
 		$mtime = $mtime->format('U');
 		$user = $this->getActualUsername($user);
 		$this->response = UploadHelper::upload(
-			$this->getBaseUrl(), $user, $this->getPasswordForUser($user),
-			$this->acceptanceTestsDirLocation() . $source, $destination,
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			$this->acceptanceTestsDirLocation() . $source,
+			$destination,
 			["X-OC-Mtime" => $mtime]
 		);
 	}
@@ -2537,7 +2753,9 @@ trait WebDav {
 	 * @return void
 	 */
 	public function theMtimeOfTheFileShouldBe(
-		$user, $resource, $mtime
+		$user,
+		$resource,
+		$mtime
 	) {
 		$user = $this->getActualUsername($user);
 		$password = $this->getPasswordForUser($user);
@@ -2560,7 +2778,9 @@ trait WebDav {
 	 * @return void
 	 */
 	public function theMtimeOfTheFileShouldNotBe(
-		$user, $resource, $mtime
+		$user,
+		$resource,
+		$mtime
 	) {
 		$user = $this->getActualUsername($user);
 		$password = $this->getPasswordForUser($user);
@@ -2583,7 +2803,9 @@ trait WebDav {
 	 * @return string
 	 */
 	public function userHasUploadedAFileWithContentTo(
-		$user, $content, $destination
+		$user,
+		$content,
+		$destination
 	) {
 		$user = $this->getActualUsername($user);
 		$fileId = $this->uploadFileWithContent($user, $content, $destination);
@@ -2604,7 +2826,9 @@ trait WebDav {
 	 * @return string
 	 */
 	public function userHasUploadedFollowingFiles(
-		$user, $content, TableNode $table
+		$user,
+		$content,
+		TableNode $table
 	) {
 		$this->verifyTableNodeColumns($table, ["path"]);
 		$files = $table->getHash();
@@ -2612,7 +2836,7 @@ trait WebDav {
 		$fileIds = [];
 		foreach ($files as $destination) {
 			$fileId = $this->userHasUploadedAFileWithContentTo($user, $content, $destination["path"])[0];
-			\array_push($fileIds, $fileId);
+			array_push($fileIds, $fileId);
 		}
 
 		return $fileIds;
@@ -2661,7 +2885,10 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsAFileWithChecksumAndContentTo(
-		$user, $checksum, $content, $destination
+		$user,
+		$checksum,
+		$content,
+		$destination
 	) {
 		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest(
@@ -2671,7 +2898,7 @@ trait WebDav {
 			['OC-Checksum' => $checksum],
 			$content
 		);
-		$this->lastUploadDeleteTime = \time();
+		$this->lastUploadDeleteTime = time();
 	}
 
 	/**
@@ -2685,10 +2912,16 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userHasUploadedAFileWithChecksumAndContentTo(
-		$user, $checksum, $content, $destination
+		$user,
+		$checksum,
+		$content,
+		$destination
 	) {
 		$this->userUploadsAFileWithChecksumAndContentTo(
-			$user, $checksum, $content, $destination
+			$user,
+			$checksum,
+			$content,
+			$destination
 		);
 		$this->theHTTPStatusCodeShouldBe(
 			["201", "204"],
@@ -2752,7 +2985,7 @@ trait WebDav {
 		$user = $this->getActualUsername($user);
 		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest($user, 'DELETE', $file, []);
-		$this->lastUploadDeleteTime = \time();
+		$this->lastUploadDeleteTime = time();
 	}
 
 	/**
@@ -2863,7 +3096,7 @@ trait WebDav {
 			$entryName = $entry[0];
 			$this->response = $this->makeDavRequest($user, 'DELETE', $entryName, []);
 		}
-		$this->lastUploadDeleteTime = \time();
+		$this->lastUploadDeleteTime = time();
 	}
 
 	/**
@@ -2930,9 +3163,12 @@ trait WebDav {
 	 */
 	public function userCreatesFolder($user, $destination) {
 		$user = $this->getActualUsername($user);
-		$destination = '/' . \ltrim($destination, '/');
+		$destination = '/' . ltrim($destination, '/');
 		$this->response = $this->makeDavRequest(
-			$user, "MKCOL", $destination, []
+			$user,
+			"MKCOL",
+			$destination,
+			[]
 		);
 		$this->setResponseXml(
 			HttpRequestHelper::parseResponseAsXml($this->response)
@@ -3034,7 +3270,10 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsTheFollowingTotalChunksUsingOldChunking(
-		$user, $total, $file, TableNode $chunkDetails
+		$user,
+		$total,
+		$file,
+		TableNode $chunkDetails
 	) {
 		$this->verifyTableNodeColumns($chunkDetails, ['number', 'content']);
 		foreach ($chunkDetails->getHash() as $chunkDetail) {
@@ -3062,7 +3301,10 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userHasUploadedTheFollowingTotalChunksUsingOldChunking(
-		$user, $total, $file, TableNode $chunkDetails
+		$user,
+		$total,
+		$file,
+		TableNode $chunkDetails
 	) {
 		$this->verifyTableNodeColumns($chunkDetails, ['number', 'content']);
 		foreach ($chunkDetails->getHash() as $chunkDetail) {
@@ -3089,11 +3331,16 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsTheFollowingChunksUsingOldChunking(
-		$user, $file, TableNode $chunkDetails
+		$user,
+		$file,
+		TableNode $chunkDetails
 	) {
 		$total = \count($chunkDetails->getHash());
 		$this->userUploadsTheFollowingTotalChunksUsingOldChunking(
-			$user, $total, $file, $chunkDetails
+			$user,
+			$total,
+			$file,
+			$chunkDetails
 		);
 	}
 
@@ -3114,11 +3361,16 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userHasUploadedTheFollowingChunksUsingOldChunking(
-		$user, $file, TableNode $chunkDetails
+		$user,
+		$file,
+		TableNode $chunkDetails
 	) {
 		$total = \count($chunkDetails->getRows());
 		$this->userHasUploadedTheFollowingTotalChunksUsingOldChunking(
-			$user, $total, $file, $chunkDetails
+			$user,
+			$total,
+			$file,
+			$chunkDetails
 		);
 	}
 
@@ -3136,16 +3388,25 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsChunkedFile(
-		$user, $num, $total, $data, $destination
+		$user,
+		$num,
+		$total,
+		$data,
+		$destination
 	) {
 		$user = $this->getActualUsername($user);
 		$num -= 1;
 		$file = "$destination-chunking-42-$total-$num";
 		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest(
-			$user, 'PUT', $file, ['OC-Chunked' => '1'], $data, "uploads"
+			$user,
+			'PUT',
+			$file,
+			['OC-Chunked' => '1'],
+			$data,
+			"uploads"
 		);
-		$this->lastUploadDeleteTime = \time();
+		$this->lastUploadDeleteTime = time();
 	}
 
 	/**
@@ -3162,7 +3423,11 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userHasUploadedChunkedFile(
-		$user, $num, $total, $data, $destination
+		$user,
+		$num,
+		$total,
+		$data,
+		$destination
 	) {
 		$user = $this->getActualUsername($user);
 		$this->userUploadsChunkedFile($user, $num, $total, $data, $destination);
@@ -3190,10 +3455,16 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsTheFollowingChunksUsingNewChunking(
-		$user, $type, $file, TableNode $chunkDetails
+		$user,
+		$type,
+		$file,
+		TableNode $chunkDetails
 	) {
 		$this->uploadTheFollowingChunksUsingNewChunking(
-			$user, $type, $file, $chunkDetails
+			$user,
+			$type,
+			$file,
+			$chunkDetails
 		);
 	}
 
@@ -3215,10 +3486,17 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userHasUploadedTheFollowingChunksUsingNewChunking(
-		$user, $type, $file, TableNode $chunkDetails
+		$user,
+		$type,
+		$file,
+		TableNode $chunkDetails
 	) {
 		$this->uploadTheFollowingChunksUsingNewChunking(
-			$user, $type, $file, $chunkDetails, true
+			$user,
+			$type,
+			$file,
+			$chunkDetails,
+			true
 		);
 	}
 
@@ -3239,7 +3517,11 @@ trait WebDav {
 	 * @return void
 	 */
 	public function uploadTheFollowingChunksUsingNewChunking(
-		$user, $type, $file, TableNode $chunkDetails, $checkActions = false
+		$user,
+		$type,
+		$file,
+		TableNode $chunkDetails,
+		$checkActions = false
 	) {
 		$user = $this->getActualUsername($user);
 		$async = false;
@@ -3248,7 +3530,12 @@ trait WebDav {
 		}
 		$this->verifyTableNodeColumns($chunkDetails, ["number", "content"]);
 		$this->userUploadsChunksUsingNewChunking(
-			$user, $file, 'chunking-42', $chunkDetails->getHash(), $async, $checkActions
+			$user,
+			$file,
+			'chunking-42',
+			$chunkDetails->getHash(),
+			$async,
+			$checkActions
 		);
 	}
 
@@ -3269,7 +3556,12 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsChunksUsingNewChunking(
-		$user, $file, $chunkingId, $chunkDetails, $async = false, $checkActions = false
+		$user,
+		$file,
+		$chunkingId,
+		$chunkDetails,
+		$async = false,
+		$checkActions = false
 	) {
 		$this->pauseUploadDelete();
 		if ($checkActions) {
@@ -3294,7 +3586,7 @@ trait WebDav {
 		if ($checkActions) {
 			$this->theHTTPStatusCodeShouldBeSuccess();
 		}
-		$this->lastUploadDeleteTime = \time();
+		$this->lastUploadDeleteTime = time();
 	}
 
 	/**
@@ -3309,7 +3601,12 @@ trait WebDav {
 		$user = $this->getActualUsername($user);
 		$destination = "/uploads/$user/$id";
 		$this->response = $this->makeDavRequest(
-			$user, 'MKCOL', $destination, [], null, "uploads"
+			$user,
+			'MKCOL',
+			$destination,
+			[],
+			null,
+			"uploads"
 		);
 	}
 
@@ -3340,7 +3637,12 @@ trait WebDav {
 		$user = $this->getActualUsername($user);
 		$destination = "/uploads/$user/$id/$num";
 		$this->response = $this->makeDavRequest(
-			$user, 'PUT', $destination, [], $data, "uploads"
+			$user,
+			'PUT',
+			$destination,
+			[],
+			$data,
+			"uploads"
 		);
 	}
 
@@ -3370,7 +3672,10 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userMovesNewChunkFileWithIdToMychunkedfile(
-		$user, $id, $type, $dest
+		$user,
+		$id,
+		$type,
+		$dest
 	) {
 		$headers = [];
 		if ($type === "asynchronously") {
@@ -3390,7 +3695,10 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userHasMovedNewChunkFileWithIdToMychunkedfile(
-		$user, $id, $type, $dest
+		$user,
+		$id,
+		$type,
+		$dest
 	) {
 		$this->userMovesNewChunkFileWithIdToMychunkedfile($user, $id, $type, $dest);
 		$this->theHTTPStatusCodeShouldBe("201");
@@ -3405,7 +3713,8 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userCancelsUploadWithId(
-		$user, $id
+		$user,
+		$id
 	) {
 		$this->deleteUpload($user, $id, []);
 	}
@@ -3419,7 +3728,8 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userHasCanceledUploadWithId(
-		$user, $id
+		$user,
+		$id
 	) {
 		$this->userCancelsUploadWithId($user, $id);
 		$this->theHTTPStatusCodeShouldBe("201");
@@ -3437,14 +3747,21 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userMovesNewChunkFileWithIdToMychunkedfileWithSize(
-		$user, $id, $type, $dest, $size
+		$user,
+		$id,
+		$type,
+		$dest,
+		$size
 	) {
 		$headers = ['OC-Total-Length' => $size];
 		if ($type === "asynchronously") {
 			$headers['OC-LazyOps'] = 'true';
 		}
 		$this->moveNewDavChunkToFinalFile(
-			$user, $id, $dest, $headers
+			$user,
+			$id,
+			$dest,
+			$headers
 		);
 	}
 
@@ -3460,10 +3777,18 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userHasMovedNewChunkFileWithIdToMychunkedfileWithSize(
-		$user, $id, $type, $dest, $size
+		$user,
+		$id,
+		$type,
+		$dest,
+		$size
 	) {
 		$this->userMovesNewChunkFileWithIdToMychunkedfileWithSize(
-			$user, $id, $type, $dest, $size
+			$user,
+			$id,
+			$type,
+			$dest,
+			$size
 		);
 		$this->theHTTPStatusCodeShouldBe("201");
 	}
@@ -3480,14 +3805,21 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userMovesNewChunkFileWithIdToMychunkedfileWithChecksum(
-		$user, $id, $type, $dest, $checksum
+		$user,
+		$id,
+		$type,
+		$dest,
+		$checksum
 	) {
 		$headers = ['OC-Checksum' => $checksum];
 		if ($type === "asynchronously") {
 			$headers['OC-LazyOps'] = 'true';
 		}
 		$this->moveNewDavChunkToFinalFile(
-			$user, $id, $dest, $headers
+			$user,
+			$id,
+			$dest,
+			$headers
 		);
 	}
 
@@ -3503,10 +3835,18 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userHasMovedNewChunkFileWithIdToMychunkedfileWithChecksum(
-		$user, $id, $type, $dest, $checksum
+		$user,
+		$id,
+		$type,
+		$dest,
+		$checksum
 	) {
 		$this->userMovesNewChunkFileWithIdToMychunkedfileWithChecksum(
-			$user, $id, $type, $dest, $checksum
+			$user,
+			$id,
+			$type,
+			$dest,
+			$checksum
 		);
 		$this->theHTTPStatusCodeShouldBe("201");
 	}
@@ -3525,11 +3865,17 @@ trait WebDav {
 		$user = $this->getActualUsername($user);
 		$source = "/uploads/$user/$id/.file";
 		$headers['Destination'] = $this->destinationHeaderValue(
-			$user, $destination
+			$user,
+			$destination
 		);
 
 		$this->response = $this->makeDavRequest(
-			$user, 'MOVE', $source, $headers, null, "uploads"
+			$user,
+			'MOVE',
+			$source,
+			$headers,
+			null,
+			"uploads"
 		);
 	}
 
@@ -3545,7 +3891,12 @@ trait WebDav {
 	private function deleteUpload($user, $id, $headers) {
 		$source = "/uploads/$user/$id";
 		$this->response = $this->makeDavRequest(
-			$user, 'DELETE', $source, $headers, null, "uploads"
+			$user,
+			'DELETE',
+			$source,
+			$headers,
+			null,
+			"uploads"
 		);
 	}
 
@@ -3558,10 +3909,10 @@ trait WebDav {
 	 */
 	public function encodePath($path) {
 		// slashes need to stay
-		$encodedPath = \str_replace('%2F', '/', \rawurlencode($path));
+		$encodedPath = str_replace('%2F', '/', rawurlencode($path));
 		// do not encode '(' and ')'
-		$encodedPath = \str_replace('%28', '(', $encodedPath);
-		$encodedPath = \str_replace('%29', ')', $encodedPath);
+		$encodedPath = str_replace('%28', '(', $encodedPath);
+		$encodedPath = str_replace('%29', ')', $encodedPath);
 		return $encodedPath;
 	}
 
@@ -3572,7 +3923,10 @@ trait WebDav {
 	 */
 	public function connectingToDavEndpoint() {
 		$this->response = $this->makeDavRequest(
-			null, 'PROPFIND', '', []
+			null,
+			'PROPFIND',
+			'',
+			[]
 		);
 	}
 
@@ -3597,7 +3951,7 @@ trait WebDav {
 		foreach ($headers as $headerName => $headerValues) {
 			// if a header has multiple values, they must be different
 			if (\count($headerValues) > 1
-				&& \count(\array_unique($headerValues)) < \count($headerValues)
+				&& \count(array_unique($headerValues)) < \count($headerValues)
 			) {
 				throw new \Exception("Duplicate header found: $headerName");
 			}
@@ -3648,13 +4002,15 @@ trait WebDav {
 			$headerName = $header[0];
 			$expectedHeaderValue = $header[1];
 			$expectedHeaderValue = $this->substituteInLineCodes(
-				$expectedHeaderValue, null, ['preg_quote' => ['/']]
+				$expectedHeaderValue,
+				null,
+				['preg_quote' => ['/']]
 			);
 
 			$returnedHeaders = $this->response->getHeader($headerName);
 			$returnedHeader = $returnedHeaders[0];
 			Assert::assertNotFalse(
-				(bool) \preg_match($expectedHeaderValue, $returnedHeader),
+				(bool) preg_match($expectedHeaderValue, $returnedHeader),
 				"'$expectedHeaderValue' does not match '$returnedHeader'"
 			);
 		}
@@ -3692,13 +4048,15 @@ trait WebDav {
 			$headerName = $header[0];
 			$expectedHeaderValue = $header[1];
 			$expectedHeaderValue = $this->substituteInLineCodes(
-				$expectedHeaderValue, $user, ['preg_quote' => ['/']]
+				$expectedHeaderValue,
+				$user,
+				['preg_quote' => ['/']]
 			);
 
 			$returnedHeaders = $this->response->getHeader($headerName);
 			$returnedHeader = $returnedHeaders[0];
 			Assert::assertNotFalse(
-				(bool) \preg_match($expectedHeaderValue, $returnedHeader),
+				(bool) preg_match($expectedHeaderValue, $returnedHeader),
 				"'$expectedHeaderValue' does not match '$returnedHeader'"
 			);
 		}
@@ -3715,18 +4073,22 @@ trait WebDav {
 	 * @throws Exception
 	 */
 	public function userDeletesEverythingInFolder(
-		$user, $folder, $checkEachDelete = false
+		$user,
+		$folder,
+		$checkEachDelete = false
 	) {
 		$user = $this->getActualUsername($user);
 		$responseXmlObject = $this->listFolderAndReturnResponseXml(
-			$user, $folder, 1
+			$user,
+			$folder,
+			1
 		);
 		$elementList = $responseXmlObject->xpath("//d:response/d:href");
 		if (\is_array($elementList) && \count($elementList)) {
-			\array_shift($elementList); //don't delete the folder itself
+			array_shift($elementList); //don't delete the folder itself
 			$davPrefix = "/" . $this->getFullDavFilesPath($user);
 			foreach ($elementList as $element) {
-				$element = \substr($element, \strlen($davPrefix));
+				$element = substr($element, \strlen($davPrefix));
 				if ($checkEachDelete) {
 					$this->userHasDeletedFile($user, "deleted", "file", $element);
 				} else {
@@ -3760,7 +4122,11 @@ trait WebDav {
 	 */
 	public function downloadPreviewOfFiles($user, $path, $width, $height) {
 		$this->downloadPreviews(
-			$user, $path, null, $width, $height
+			$user,
+			$path,
+			null,
+			$width,
+			$height
 		);
 	}
 
@@ -3777,7 +4143,11 @@ trait WebDav {
 	 */
 	public function downloadPreviewOfOtherUser($user1, $path, $doDavRequestAsUser, $width, $height) {
 		$this->downloadPreviews(
-			$user1, $path, $doDavRequestAsUser, $width, $height
+			$user1,
+			$path,
+			$doDavRequestAsUser,
+			$width,
+			$height
 		);
 	}
 
@@ -3790,7 +4160,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function imageDimensionsShouldBe($width, $height) {
-		$size = \getimagesizefromstring($this->response->getBody()->getContents());
+		$size = getimagesizefromstring($this->response->getBody()->getContents());
 		Assert::assertNotFalse($size, "could not get size of image");
 		Assert::assertEquals($width, $size[0], "width not as expected");
 		Assert::assertEquals($height, $size[1], "height not as expected");
@@ -3857,7 +4227,10 @@ trait WebDav {
 	 */
 	public function theDavElementShouldBe($element, $message) {
 		WebDavAssert::assertDavResponseElementIs(
-			$element, $message, $this->responseXml, __METHOD__
+			$element,
+			$message,
+			$this->responseXml,
+			__METHOD__
 		);
 	}
 
@@ -3869,7 +4242,9 @@ trait WebDav {
 	 * @return void
 	 */
 	public function propfindResultShouldContainEntries(
-		$shouldOrNot, TableNode $expectedFiles, $user = null
+		$shouldOrNot,
+		TableNode $expectedFiles,
+		$user = null
 	) {
 		$this->verifyTableNodeColumnsCount($expectedFiles, 1);
 		$elementRows = $expectedFiles->getRows();
@@ -3904,11 +4279,15 @@ trait WebDav {
 	 * @return void
 	 */
 	public function thePropfindResultShouldContainEntries(
-		$user, $shouldOrNot, TableNode $expectedFiles
+		$user,
+		$shouldOrNot,
+		TableNode $expectedFiles
 	) {
 		$user = $this->getActualUsername($user);
 		$this->propfindResultShouldContainEntries(
-			$shouldOrNot, $expectedFiles, $user
+			$shouldOrNot,
+			$expectedFiles,
+			$user
 		);
 	}
 
@@ -3961,7 +4340,8 @@ trait WebDav {
 	 * @return void
 	 */
 	public function theSearchResultShouldContainAnyOfTheseEntries(
-		$expectedNumber, TableNode $expectedFiles
+		$expectedNumber,
+		TableNode $expectedFiles
 	) {
 		$this->theSearchResultOfUserShouldContainAnyOfTheseEntries(
 			$this->getCurrentUser(),
@@ -3980,7 +4360,9 @@ trait WebDav {
 	 * @return void
 	 */
 	public function theSearchResultOfUserShouldContainAnyOfTheseEntries(
-		$user, $expectedNumber, TableNode $expectedFiles
+		$user,
+		$expectedNumber,
+		TableNode $expectedFiles
 	) {
 		$user = $this->getActualUsername($user);
 		$this->verifyTableNodeColumnsCount($expectedFiles, 1);
@@ -3989,9 +4371,9 @@ trait WebDav {
 		// Remove any "/" from the front (or back) of the expected values passed
 		// into the step. findEntryFromPropfindResponse returns entries without
 		// any leading (or trailing) slash
-		$expectedEntries = \array_map(
+		$expectedEntries = array_map(
 			function ($value) {
-				return \trim($value, "/");
+				return trim($value, "/");
 			},
 			$elementRows
 		);
@@ -4011,10 +4393,10 @@ trait WebDav {
 		$responseResources = [];
 		$hrefs = $responseXmlObj->xpath('//d:href');
 		foreach ($hrefs as $href) {
-			$hrefParts = \explode("/", $href[0]);
+			$hrefParts = explode("/", $href[0]);
 			if (\in_array($user, $hrefParts)) {
-				$entry = \urldecode(\end($hrefParts));
-				\array_push($responseResources, $entry);
+				$entry = urldecode(end($hrefParts));
+				array_push($responseResources, $entry);
 			} else {
 				throw new Error("Expected user: $hrefParts[5] but found: $user");
 			}
@@ -4035,7 +4417,8 @@ trait WebDav {
 	 * boolean false if $entryNameToSearch is given and is not found
 	 */
 	public function findEntryFromPropfindResponse(
-		$entryNameToSearch = null, $user = null
+		$entryNameToSearch = null,
+		$user = null
 	) {
 		//if we are using that step the second time in a scenario e.g. 'But ... should not'
 		//then don't parse the result again, because the result in a ResponseInterface
@@ -4049,7 +4432,7 @@ trait WebDav {
 			$user = $this->getCurrentUser();
 		}
 		// trim any leading "/" passed by the caller, we can just match the "raw" name
-		$trimmedEntryNameToSearch = \trim($entryNameToSearch, "/");
+		$trimmedEntryNameToSearch = trim($entryNameToSearch, "/");
 
 		// topWebDavPath should be something like /remote.php/webdav/ or
 		// /remote.php/dav/files/alice/
@@ -4068,12 +4451,12 @@ trait WebDav {
 		if ($multistatusResults !== null) {
 			foreach ($multistatusResults as $multistatusResult) {
 				$entryPath = $multistatusResult['value'][0]['value'];
-				$entryName = \str_replace($topWebDavPath, "", $entryPath);
-				$entryName = \rawurldecode($entryName);
+				$entryName = str_replace($topWebDavPath, "", $entryPath);
+				$entryName = rawurldecode($entryName);
 				if ($trimmedEntryNameToSearch === $entryName) {
 					return $multistatusResult;
 				}
-				\array_push($results, $entryName);
+				array_push($results, $entryName);
 			}
 		}
 		if ($entryNameToSearch === null) {
@@ -4089,9 +4472,9 @@ trait WebDav {
 	 * @return void
 	 */
 	public function pauseUploadDelete() {
-		$time = \time();
+		$time = time();
 		if ($this->lastUploadDeleteTime !== null && $time - $this->lastUploadDeleteTime < 1) {
-			\sleep(1);
+			sleep(1);
 		}
 	}
 

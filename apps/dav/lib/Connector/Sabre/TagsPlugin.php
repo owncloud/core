@@ -49,10 +49,10 @@ use Sabre\DAV\PropPatch;
 class TagsPlugin extends \Sabre\DAV\ServerPlugin {
 
 	// namespace
-	const NS_OWNCLOUD = 'http://owncloud.org/ns';
-	const TAGS_PROPERTYNAME = '{http://owncloud.org/ns}tags';
-	const FAVORITE_PROPERTYNAME = '{http://owncloud.org/ns}favorite';
-	const TAG_FAVORITE = '_$!<Favorite>!$_';
+	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
+	public const TAGS_PROPERTYNAME = '{http://owncloud.org/ns}tags';
+	public const FAVORITE_PROPERTYNAME = '{http://owncloud.org/ns}favorite';
+	public const TAG_FAVORITE = '_$!<Favorite>!$_';
 
 	/**
 	 * Reference to main server object
@@ -138,7 +138,7 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin {
 		$isFav = false;
 		$tags = $this->getTags($fileId);
 		if ($tags) {
-			$favPos = \array_search(self::TAG_FAVORITE, $tags);
+			$favPos = array_search(self::TAG_FAVORITE, $tags);
 			if ($favPos !== false) {
 				$isFav = true;
 				unset($tags[$favPos]);
@@ -162,7 +162,7 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin {
 				if (empty($tags)) {
 					return [];
 				}
-				return \current($tags);
+				return current($tags);
 			}
 		}
 		return null;
@@ -178,14 +178,14 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin {
 		$tagger = $this->getTagger();
 		$currentTags = $this->getTags($fileId);
 
-		$newTags = \array_diff($tags, $currentTags);
+		$newTags = array_diff($tags, $currentTags);
 		foreach ($newTags as $tag) {
 			if ($tag === self::TAG_FAVORITE) {
 				continue;
 			}
 			$tagger->tagAs($fileId, $tag);
 		}
-		$deletedTags = \array_diff($currentTags, $tags);
+		$deletedTags = array_diff($currentTags, $tags);
 		foreach ($deletedTags as $tag) {
 			if ($tag === self::TAG_FAVORITE) {
 				continue;
@@ -213,9 +213,10 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin {
 		// need prefetch ?
 		if ($node instanceof \OCA\DAV\Connector\Sabre\Directory
 			&& $propFind->getDepth() !== 0
-			&& ($propFind->getStatus(self::TAGS_PROPERTYNAME) !== null
+			&& (
+				$propFind->getStatus(self::TAGS_PROPERTYNAME) !== null
 			|| $propFind->getStatus(self::FAVORITE_PROPERTYNAME) !== null
-		)) {
+			)) {
 			// note: pre-fetching only supported for depth <= 1
 			$folderContent = $node->getChildren();
 			$fileIds[] = (int)$node->getId();
@@ -230,7 +231,7 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin {
 			}
 
 			$this->cachedTags = $this->cachedTags + $tags;
-			$emptyFileIds = \array_diff($fileIds, \array_keys($tags));
+			$emptyFileIds = array_diff($fileIds, array_keys($tags));
 			// also cache the ones that were not found
 			foreach ($emptyFileIds as $fileId) {
 				$this->cachedTags[$fileId] = [];

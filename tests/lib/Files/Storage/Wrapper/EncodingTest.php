@@ -9,8 +9,8 @@
 namespace Test\Files\Storage\Wrapper;
 
 class EncodingTest extends \Test\Files\Storage\Storage {
-	const NFD_NAME = 'ümlaut';
-	const NFC_NAME = 'ümlaut';
+	public const NFD_NAME = 'ümlaut';
+	public const NFC_NAME = 'ümlaut';
 
 	/**
 	 * @var \OC\Files\Storage\Temporary
@@ -69,8 +69,8 @@ class EncodingTest extends \Test\Files\Storage\Storage {
 	public function testFopenReadEncoding($accessName) {
 		$this->sourceStorage->file_put_contents(self::NFD_NAME, 'bar');
 		$fh = $this->instance->fopen($accessName, 'r');
-		$data = \fgets($fh);
-		\fclose($fh);
+		$data = fgets($fh);
+		fclose($fh);
 		$this->assertEquals('bar', $data);
 	}
 
@@ -80,8 +80,8 @@ class EncodingTest extends \Test\Files\Storage\Storage {
 	public function testFopenOverwriteEncoding($accessName) {
 		$this->sourceStorage->file_put_contents(self::NFD_NAME, 'bar');
 		$fh = $this->instance->fopen($accessName, 'w');
-		$data = \fputs($fh, 'test');
-		\fclose($fh);
+		$data = fputs($fh, 'test');
+		fclose($fh);
 		$data = $this->sourceStorage->file_get_contents(self::NFD_NAME);
 		$this->assertEquals('test', $data);
 		$this->assertFalse($this->sourceStorage->file_exists(self::NFC_NAME));
@@ -143,10 +143,10 @@ class EncodingTest extends \Test\Files\Storage\Storage {
 		$this->sourceStorage->file_put_contents(self::NFD_NAME, 'foo');
 		$this->assertEquals(3, $this->instance->file_put_contents(self::NFC_NAME, 'bar'));
 		$this->assertEquals('bar', $this->instance->file_get_contents(self::NFC_NAME));
-		\clearstatcache();
+		clearstatcache();
 		$this->assertEquals(5, $this->instance->file_put_contents('/' . self::NFC_NAME, 'baric'));
 		$this->assertEquals('baric', $this->instance->file_get_contents(self::NFC_NAME));
-		\clearstatcache();
+		clearstatcache();
 		$this->assertEquals(8, $this->instance->file_put_contents('/' . self::NFC_NAME, 'barbaric'));
 		$this->assertEquals('barbaric', $this->instance->file_get_contents('//' . self::NFC_NAME));
 	}

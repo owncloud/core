@@ -45,9 +45,11 @@ class Groups {
 	 * @param \OCP\IUserSession $userSession
 	 * @param \OCP\IRequest $request
 	 */
-	public function __construct(\OCP\IGroupManager $groupManager,
-								\OCP\IUserSession $userSession,
-								\OCP\IRequest $request) {
+	public function __construct(
+		\OCP\IGroupManager $groupManager,
+		\OCP\IUserSession $userSession,
+		\OCP\IRequest $request
+	) {
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
 		$this->request = $request;
@@ -72,7 +74,7 @@ class Groups {
 		}
 
 		$groups = $this->groupManager->search($search, $limit, $offset, 'management');
-		$groups = \array_map(function ($group) {
+		$groups = array_map(function ($group) {
 			/** @var IGroup $group */
 			return $group->getGID();
 		}, $groups);
@@ -111,11 +113,11 @@ class Groups {
 		if ($this->groupManager->isAdmin($user->getUID())
 		   || $isSubadminOfGroup) {
 			$users = $this->groupManager->get($groupId)->getUsers();
-			$users =  \array_map(function ($user) {
+			$users =  array_map(function ($user) {
 				/** @var IUser $user */
 				return $user->getUID();
 			}, $users);
-			$users = \array_values($users);
+			$users = array_values($users);
 			return new OC_OCS_Result(['users' => $users]);
 		}
 		return new OC_OCS_Result(null, \OCP\API::RESPOND_UNAUTHORISED, 'User does not have access to specified group');

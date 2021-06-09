@@ -67,7 +67,7 @@ class ListCommandTest extends CommandTest {
 		$output = new BufferedOutput();
 
 		$instance->listMounts('', [$mount1, $mount2], $input, $output);
-		$output = \json_decode($output->fetch(), true);
+		$output = json_decode($output->fetch(), true);
 
 		$this->assertNotEquals($output[0]['authentication_type'], $output[1]['authentication_type']);
 	}
@@ -156,7 +156,7 @@ EOS
 		$instance->listMounts('user1', [$mount1, $mount2], $input, $output);
 		$output = $output->fetch();
 		if (isset($options['output']) && ($options['output'] === 'json')) {
-			$results = \json_decode($output, true);
+			$results = json_decode($output, true);
 			$countResults = \count($results);
 
 			for ($i = 0; $i < $countResults; $i++) {
@@ -231,7 +231,7 @@ EOS
 		$instance->listMounts('user1', [$mount1, $mount2], $input, $output);
 		$output = $output->fetch();
 		if (isset($options['output']) && ($options['output'] === 'json')) {
-			$results = \json_decode($output, true);
+			$results = json_decode($output, true);
 			$countResults = \count($results);
 
 			for ($i = 0; $i < $countResults; $i++) {
@@ -304,7 +304,7 @@ EOS
 		$instance->listMounts('user1', [$mount1, $mount2], $input, $output);
 		$output = $output->fetch();
 		if (isset($options['output']) && ($options['output'] === 'json')) {
-			$results = \json_decode($output, true);
+			$results = json_decode($output, true);
 			$countResults = \count($results);
 
 			for ($i = 0; $i < $countResults; $i++) {

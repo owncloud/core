@@ -111,7 +111,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 				$xpathString .= ")";
 			}
 
-			$name = \implode('', $name);
+			$name = implode('', $name);
 		} else {
 			$xpathString = $this->quotedText($name);
 		}
@@ -131,7 +131,8 @@ abstract class FilesPageBasic extends OwncloudPage {
 			);
 
 			$fileNameMatch = $fileListElement->findAll(
-				"xpath", \sprintf($this->getFileNameMatchXpath(), $xpathString)
+				"xpath",
+				sprintf($this->getFileNameMatchXpath(), $xpathString)
 			);
 			if (\count($fileNameMatch) === 0) {
 				$fileNameMatchIsVisible = false;
@@ -142,7 +143,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 					// Somehow on Edge this can throw NoSuchElement even though
 					// we just found the file name.
 					// TODO: Edge - if it keeps happening then find out why.
-					\error_log(
+					error_log(
 						__METHOD__
 						. " NoSuchElement while doing fileNameMatch[0]->isVisible()"
 						. "\n-------------------------\n"
@@ -224,7 +225,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @return NodeElement|null
 	 */
 	public function findActionMenuByNo($number) {
-		$xpath = \sprintf($this->fileActionMenuBtnXpathByNo, $number);
+		$xpath = sprintf($this->fileActionMenuBtnXpathByNo, $number);
 		return $this->find("xpath", $xpath);
 	}
 
@@ -345,7 +346,8 @@ abstract class FilesPageBasic extends OwncloudPage {
 		try {
 			$actionMenu = $this->findFileActionMenuElement();
 			$fileRowElement = $actionMenu->find(
-				"xpath", $this->fileRowXpathFromActionMenu
+				"xpath",
+				$this->fileRowXpathFromActionMenu
 			);
 			/**
 			 *
@@ -389,7 +391,8 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 */
 	public function findSelectAllFilesBtn() {
 		$selectedAllFilesBtn = $this->find(
-			"xpath", $this->selectAllFilesCheckboxXpath
+			"xpath",
+			$this->selectAllFilesCheckboxXpath
 		);
 		$this->assertElementNotNull(
 			$selectedAllFilesBtn,
@@ -429,7 +432,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function findFileActionsMenuBtnByNo($number) {
-		$xpathLocator = \sprintf($this->fileActionMenuBtnXpathByNo, $number);
+		$xpathLocator = sprintf($this->fileActionMenuBtnXpathByNo, $number);
 		$actionMenuBtn = $this->find("xpath", $xpathLocator);
 		$this->assertElementNotNull(
 			$actionMenuBtn,
@@ -461,7 +464,9 @@ abstract class FilesPageBasic extends OwncloudPage {
 		$this->clickFileActionsMenuBtnByNo($number);
 		$actionMenu = $this->getPage('FilesPageElement\\FileActionsMenu');
 		$actionMenu->waitTillPageIsLoaded(
-			$session, STANDARD_UI_WAIT_TIMEOUT_MILLISEC, $this->getFileActionMenuXpath()
+			$session,
+			STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
+			$this->getFileActionMenuXpath()
 		);
 		return $actionMenu;
 	}
@@ -501,7 +506,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 		$timeout_msec = LONG_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$this->initAjaxCounters($session);
-		$currentTime = \microtime(true);
+		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			$fileList = $this->find('xpath', $this->getFileListXpath());
@@ -513,7 +518,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 					// Somehow on Edge this can throw NoSuchElement even though
 					// we just found the file list.
 					// TODO: Edge - if it keeps happening then find out why.
-					\error_log(
+					error_log(
 						__METHOD__
 						. " NoSuchElement while doing fileList->isVisible()"
 						. "\n-------------------------\n"
@@ -525,7 +530,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 					// Somehow on Edge this can throw StaleElementReference
 					// even though we just found the file list.
 					// TODO: Edge - if it keeps happening then find out why.
-					\error_log(
+					error_log(
 						__METHOD__
 						. " StaleElementReference while doing fileList->isVisible()"
 						. "\n-------------------------\n"
@@ -553,8 +558,8 @@ abstract class FilesPageBasic extends OwncloudPage {
 				}
 			}
 
-			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
-			$currentTime = \microtime(true);
+			usleep(STANDARD_SLEEP_TIME_MICROSEC);
+			$currentTime = microtime(true);
 		}
 
 		if ($currentTime > $end) {
@@ -580,14 +585,15 @@ abstract class FilesPageBasic extends OwncloudPage {
 		Session $session,
 		$timeout_msec = LONG_UI_WAIT_TIMEOUT_MILLISEC
 	) {
-		$currentTime = \microtime(true);
+		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			$fileList = $this->find('xpath', $this->getFileListXpath());
 
 			if ($fileList !== null) {
 				$busyFileRows = $fileList->findAll(
-					'xpath', $this->fileRowsBusyXpath
+					'xpath',
+					$this->fileRowsBusyXpath
 				);
 
 				if (\count($busyFileRows) === 0) {
@@ -595,8 +601,8 @@ abstract class FilesPageBasic extends OwncloudPage {
 				}
 			}
 
-			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
-			$currentTime = \microtime(true);
+			usleep(STANDARD_SLEEP_TIME_MICROSEC);
+			$currentTime = microtime(true);
 		}
 
 		if ($currentTime > $end) {
@@ -627,7 +633,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 			"could not find the appSettings section"
 		);
 		$timeout_msec = LONG_UI_WAIT_TIMEOUT_MILLISEC;
-		$currentTime = \microtime(true);
+		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($appSettingsDiv->getAttribute('style') !== $this->styleOfCheckboxWhenVisible) {
 			if ($currentTime >= $end) {
@@ -636,12 +642,13 @@ abstract class FilesPageBasic extends OwncloudPage {
 					" timed out waiting for show hidden files checkbox to appear"
 				);
 			}
-			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
-			$currentTime = \microtime(true);
+			usleep(STANDARD_SLEEP_TIME_MICROSEC);
+			$currentTime = microtime(true);
 		}
 
 		$showHiddenFilesCheckBox = $this->find(
-			'xpath', $this->showHiddenFilesCheckboxXpath
+			'xpath',
+			$this->showHiddenFilesCheckboxXpath
 		);
 		$this->assertElementNotNull(
 			$showHiddenFilesCheckBox,

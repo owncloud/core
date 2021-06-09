@@ -66,7 +66,7 @@ class TrashbinTest extends TestCase {
 	 * expiration of files older then the max storage time defined for the trash)
 	 */
 	public function testScheduleExpireOldFilesShared() {
-		$currentTime = \time();
+		$currentTime = time();
 		$folder = "trashTest-" . $currentTime . '/';
 		$expiredDate = $currentTime - 3 * 24 * 60 * 60;
 
@@ -141,7 +141,7 @@ class TrashbinTest extends TestCase {
 	 * expiration of files older then the max storage time defined for the trash)
 	 */
 	public function testScheduleExpireOldFiles() {
-		$currentTime = \time();
+		$currentTime = time();
 		$expiredDate = $currentTime - 3 * 24 * 60 * 60;
 
 		// create some files
@@ -167,7 +167,7 @@ class TrashbinTest extends TestCase {
 		$remainingFiles = Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER1);
 
 		$this->assertCount(1, $remainingFiles);
-		$remainingFile = \reset($remainingFiles);
+		$remainingFile = reset($remainingFiles);
 		$this->assertSame('file2.txt', $remainingFile['name']);
 	}
 
@@ -510,7 +510,7 @@ class TrashbinTest extends TestCase {
 		if ($storage instanceof Local) {
 			$folderAbsPath = $storage->getSourcePath($internalPath);
 			// make folder read-only
-			\chmod($folderAbsPath, 0555);
+			chmod($folderAbsPath, 0555);
 
 			$this->assertTrue(
 				Trashbin::restore(
@@ -524,7 +524,7 @@ class TrashbinTest extends TestCase {
 			$file = $userFolder->get('file1.txt');
 			$this->assertEquals('foo', $file->getContent());
 
-			\chmod($folderAbsPath, 0755);
+			chmod($folderAbsPath, 0755);
 		}
 	}
 

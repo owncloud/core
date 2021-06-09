@@ -133,15 +133,16 @@ class ManagerTest extends TestCase {
 		$called = [];
 		\OC::$server->getEventDispatcher()->addListener('remoteshare.accepted', function ($event) use (&$called) {
 			$called[] = 'remoteshare.accepted';
-			\array_push($called, $event);
+			array_push($called, $event);
 		});
 
 		$this->eventDispatcher->expects($this->at(0))
 			->method('dispatch')
-			->with(AcceptShare::class, $this->callback(function ($event) use ($openShares) {
+			->with(AcceptShare::class, $this->callback(
+				function ($event) use ($openShares) {
 				return $this->verifyShareEvent($event, $openShares[0], AcceptShare::class);
 			}
-				));
+			));
 
 		$event = new GenericEvent(null, ['sharedItem' => '/SharedFolder', 'shareAcceptedFrom' => 'foobar', 'remoteUrl' => 'http://localhost']);
 		$this->eventDispatcher->expects($this->at(1))
@@ -181,7 +182,8 @@ class ManagerTest extends TestCase {
 
 		$this->eventDispatcher->expects($this->at(0))
 			->method('dispatch')
-			->with(DeclineShare::class, $this->callback(function ($event) use ($openShares) {
+			->with(DeclineShare::class, $this->callback(
+				function ($event) use ($openShares) {
 				return $this->verifyShareEvent($event, $openShares[1], DeclineShare::class);
 			}
 			));
@@ -215,13 +217,15 @@ class ManagerTest extends TestCase {
 
 		$this->eventDispatcher->expects($this->at(0))
 			->method('dispatch')
-			->with(DeclineShare::class, $this->callback(function ($event) use ($openShares) {
+			->with(DeclineShare::class, $this->callback(
+				function ($event) use ($openShares) {
 				return $this->verifyShareEvent($event, $openShares[0], DeclineShare::class);
 			}
 			));
 		$this->eventDispatcher->expects($this->at(1))
 			->method('dispatch')
-			->with(DeclineShare::class, $this->callback(function ($event) use ($acceptedShares) {
+			->with(DeclineShare::class, $this->callback(
+				function ($event) use ($acceptedShares) {
 				return $this->verifyShareEvent($event, $acceptedShares[0], DeclineShare::class);
 			}
 			));
@@ -279,21 +283,21 @@ class ManagerTest extends TestCase {
 	}
 
 	private function assertMount($mountPoint) {
-		$mountPoint = \rtrim($mountPoint, '/');
+		$mountPoint = rtrim($mountPoint, '/');
 		$mount = $this->mountManager->find($this->getFullPath($mountPoint));
 		$this->assertInstanceOf('\OCA\Files_Sharing\External\Mount', $mount);
 		$this->assertInstanceOf('\OCP\Files\Mount\IMountPoint', $mount);
-		$this->assertEquals($this->getFullPath($mountPoint), \rtrim($mount->getMountPoint(), '/'));
+		$this->assertEquals($this->getFullPath($mountPoint), rtrim($mount->getMountPoint(), '/'));
 		$storage = $mount->getStorage();
 		$this->assertInstanceOf('\OCA\Files_Sharing\External\Storage', $storage);
 	}
 
 	private function assertNotMount($mountPoint) {
-		$mountPoint = \rtrim($mountPoint, '/');
+		$mountPoint = rtrim($mountPoint, '/');
 		$mount = $this->mountManager->find($this->getFullPath($mountPoint));
 		if ($mount) {
 			$this->assertInstanceOf('\OCP\Files\Mount\IMountPoint', $mount);
-			$this->assertNotEquals($this->getFullPath($mountPoint), \rtrim($mount->getMountPoint(), '/'));
+			$this->assertNotEquals($this->getFullPath($mountPoint), rtrim($mount->getMountPoint(), '/'));
 		} else {
 			$this->assertNull($mount);
 		}
@@ -373,7 +377,7 @@ class ManagerTest extends TestCase {
 		$called = [];
 		\OC::$server->getEventDispatcher()->addListener('\OCA\Files_Sharing::unshareEvent', function ($event) use (&$called) {
 			$called[] = '\OCA\Files_Sharing::unshareEvent';
-			\array_push($called, $event);
+			array_push($called, $event);
 		});
 
 		$this->manager->removeShare('/SharedFolder');

@@ -114,7 +114,7 @@ class Version<version> implements ISqlMigration {
 		$ms = new MigrationService($appName, $this->connection, new ConsoleOutput($output));
 
 		$kind = $input->getArgument('kind');
-		$version = \date('YmdHis');
+		$version = date('YmdHis');
 		$path = $this->generateMigration($ms, $version, $kind);
 
 		$output->writeln("New migration class has been generated to <info>$path</info>");
@@ -135,11 +135,11 @@ class Version<version> implements ISqlMigration {
 			$ms->getMigrationsNamespace(),
 			$version,
 		];
-		$code = \str_replace($placeHolders, $replacements, $this->getTemplate($kind));
+		$code = str_replace($placeHolders, $replacements, $this->getTemplate($kind));
 		$dir = $ms->getMigrationsDirectory();
 		$path = $dir . '/Version' . $version . '.php';
 
-		if (\file_put_contents($path, $code) === false) {
+		if (file_put_contents($path, $code) === false) {
 			throw new RuntimeException('Failed to generate new migration step.');
 		}
 

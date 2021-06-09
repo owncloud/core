@@ -51,7 +51,7 @@ class MetaFolder extends Collection {
 	 */
 	public function getChildren() {
 		$nodes = $this->folder->getDirectoryListing();
-		return \array_map(function ($node) {
+		return array_map(function ($node) {
 			return $this->nodeFactory($node);
 		}, $nodes);
 	}

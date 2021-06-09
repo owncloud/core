@@ -38,8 +38,8 @@ class ChecksumTest extends \Test\TestCase {
 
 	private $testFileName;
 
-	const TEST_DATA = 'somedata';
-	const EXPECTED_CHECKSUMS = 'SHA1:efaa311ae448a7374c122061bfed952d940e9e37 MD5:aefaf7502d52994c3b01957636a3cdd2 ADLER32:0f2c034f';
+	public const TEST_DATA = 'somedata';
+	public const EXPECTED_CHECKSUMS = 'SHA1:efaa311ae448a7374c122061bfed952d940e9e37 MD5:aefaf7502d52994c3b01957636a3cdd2 ADLER32:0f2c034f';
 
 	public function setUp(): void {
 		parent::setUp();
@@ -48,7 +48,7 @@ class ChecksumTest extends \Test\TestCase {
 			'storage' => $this->sourceStorage
 		]);
 
-		$this->testFileName = '/'. \bin2hex(\random_bytes(4)) . '.txt';
+		$this->testFileName = '/'. bin2hex(random_bytes(4)) . '.txt';
 	}
 
 	public function testFilePutContentsCalculatesChecksum() {
@@ -63,8 +63,8 @@ class ChecksumTest extends \Test\TestCase {
 		$handle = $this->instance->fopen($this->testFileName, 'w');
 
 		$this->assertIsResource($handle);
-		$this->assertNotFalse(\fwrite($handle, self::TEST_DATA));
-		$this->assertNotFalse(\fclose($handle));
+		$this->assertNotFalse(fwrite($handle, self::TEST_DATA));
+		$this->assertNotFalse(fclose($handle));
 
 		$metaData = $this->instance->getMetaData($this->testFileName);
 
@@ -78,8 +78,8 @@ class ChecksumTest extends \Test\TestCase {
 		$this->sourceStorage->getScanner($this->testFileName)->scan($this->testFileName);
 
 		$handle = $this->instance->fopen($this->testFileName, 'r');
-		$data = \fread($handle, $this->sourceStorage->filesize($this->testFileName));
-		\fclose($handle);
+		$data = fread($handle, $this->sourceStorage->filesize($this->testFileName));
+		fclose($handle);
 
 		$this->assertEquals(self::TEST_DATA, $data);
 
@@ -116,8 +116,8 @@ class ChecksumTest extends \Test\TestCase {
 
 	public function testChecksumWrapperIsNotAppliedOnReadWriteStreams() {
 		$handle = $this->instance->fopen($this->testFileName, 'x+');
-		\fwrite($handle, self::TEST_DATA);
-		\fclose($handle);
+		fwrite($handle, self::TEST_DATA);
+		fclose($handle);
 
 		$metaData = $this->instance->getMetaData($this->testFileName);
 
@@ -130,10 +130,10 @@ class ChecksumTest extends \Test\TestCase {
 	public function testRewindDoesNotCorruptChecksum() {
 		$this->instance->file_put_contents($this->testFileName, self::TEST_DATA);
 		$handle = $this->instance->fopen($this->testFileName, 'r+');
-		\fread($handle, $this->sourceStorage->filesize($this->testFileName));
-		\rewind($handle);
-		\fread($handle, $this->sourceStorage->filesize($this->testFileName));
-		\fclose($handle);
+		fread($handle, $this->sourceStorage->filesize($this->testFileName));
+		rewind($handle);
+		fread($handle, $this->sourceStorage->filesize($this->testFileName));
+		fclose($handle);
 
 		$metaData = $this->instance->getMetaData($this->testFileName);
 

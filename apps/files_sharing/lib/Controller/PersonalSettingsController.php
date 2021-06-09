@@ -30,7 +30,7 @@ use OCP\IUserSession;
  */
 
 class PersonalSettingsController extends Controller {
-	const USER_CONFIGS = [
+	public const USER_CONFIGS = [
 		'auto_accept_share',
 		'allow_share_dialog_user_enumeration'
 	];
@@ -95,9 +95,10 @@ class PersonalSettingsController extends Controller {
 	 * @return array
 	 */
 	private function getUserRequestParams() {
-		return \array_filter($this->request->getParams(),
+		return array_filter(
+			$this->request->getParams(),
 			function ($key) {
-				return (\substr($key, 0, 1) !== '_');
+				return (substr($key, 0, 1) !== '_');
 			},
 			ARRAY_FILTER_USE_KEY
 		);

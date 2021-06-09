@@ -151,14 +151,24 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserSharesFileFolderWithUserUsingTheWebUI(
-		$folder, $remote, $user, $username = null, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
+		$folder,
+		$remote,
+		$user,
+		$username = null,
+		$maxRetries = STANDARD_RETRY_COUNT,
+		$quiet = false
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		if ($remote === "remote" || $remote === "federated") {
 			$user = $this->featureContext->substituteInLineCodes($username, $user);
 		}
 		$this->theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
-			$folder, "user", $remote, $user, $maxRetries, $quiet
+			$folder,
+			"user",
+			$remote,
+			$user,
+			$maxRetries,
+			$quiet
 		);
 	}
 
@@ -177,7 +187,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *
 	 */
 	public function theUserSharesWithUserWithoutClosingDialog(
-		$folder, $remote, $name, $displayname = null, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
+		$folder,
+		$remote,
+		$name,
+		$displayname = null,
+		$maxRetries = STANDARD_RETRY_COUNT,
+		$quiet = false
 	) {
 		if ($remote === "remote" || $remote === "federated") {
 			$name = $this->featureContext->substituteInLineCodes($displayname, $name);
@@ -199,7 +214,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *
 	 */
 	public function theUserSharesWithGroupWithoutClosingDialog(
-		$folder, $name, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
+		$folder,
+		$name,
+		$maxRetries = STANDARD_RETRY_COUNT,
+		$quiet = false
 	) {
 		$this->theUserSharesUsingWebUIWithoutClosingDialog($folder, "group", "", $name, $maxRetries, $quiet);
 	}
@@ -277,7 +295,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$receiver = $this->featureContext->getActualUsername($receiver);
 			$receiver = $this->featureContext->substituteInLineCodes($displayname, $receiver);
 		}
-		$expectedDate = \date('d-m-Y', \strtotime($days));
+		$expectedDate = date('d-m-Y', strtotime($days));
 		$this->sharingDialog->openShareActionsDropDown($type, $receiver);
 		$this->sharingDialog->setExpirationDateFor($this->getSession(), $receiver, $type, $expectedDate);
 	}
@@ -301,8 +319,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$receiver = $this->featureContext->getActualUsername($receiver);
 			$receiver = $this->featureContext->substituteInLineCodes($displayname, $receiver);
 		}
-		if (\strtotime($days) !== false) {
-			$expectedExpirationDate = \date('d-m-Y', \strtotime($days));
+		if (strtotime($days) !== false) {
+			$expectedExpirationDate = date('d-m-Y', strtotime($days));
 			$actualExpirationDate = $this->sharingDialog->getExpirationDateFor($receiver, $type);
 			Assert::assertEquals(
 				$expectedExpirationDate,
@@ -343,7 +361,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *
 	 */
 	public function theUserSharesUsingWebUIWithoutClosingDialog(
-		$folder, $userOrGroup, $remote, $name, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
+		$folder,
+		$userOrGroup,
+		$remote,
+		$name,
+		$maxRetries = STANDARD_RETRY_COUNT,
+		$quiet = false
 	) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
 		try {
@@ -352,23 +375,33 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			//we don't care
 		}
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
-			$folder, $this->getSession()
+			$folder,
+			$this->getSession()
 		);
 		if ($userOrGroup === "user") {
 			if ($remote === "remote" || $remote === "federated") {
 				$this->sharingDialog->shareWithRemoteUser(
-					$name, $this->getSession(), $maxRetries, $quiet
+					$name,
+					$this->getSession(),
+					$maxRetries,
+					$quiet
 				);
 			} else {
 				$user = $this->featureContext->substituteInLineCodes($name);
 				$name = $this->featureContext->getDisplayNameForUser($user);
 				$this->sharingDialog->shareWithUser(
-					$name, $this->getSession(), $maxRetries, $quiet
+					$name,
+					$this->getSession(),
+					$maxRetries,
+					$quiet
 				);
 			}
 		} else {
 			$this->sharingDialog->shareWithGroup(
-				$name, $this->getSession(), $maxRetries, $quiet
+				$name,
+				$this->getSession(),
+				$maxRetries,
+				$quiet
 			);
 		}
 	}
@@ -385,10 +418,18 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserSharesFileFolderWithGroupUsingTheWebUI(
-		$folder, $group, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
+		$folder,
+		$group,
+		$maxRetries = STANDARD_RETRY_COUNT,
+		$quiet = false
 	) {
 		$this->theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
-			$folder, "group", "", $group, $maxRetries, $quiet
+			$folder,
+			"group",
+			"",
+			$group,
+			$maxRetries,
+			$quiet
 		);
 	}
 
@@ -404,10 +445,20 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
-		$folder, $userOrGroup, $remote, $name, $maxRetries = STANDARD_RETRY_COUNT, $quiet = false
+		$folder,
+		$userOrGroup,
+		$remote,
+		$name,
+		$maxRetries = STANDARD_RETRY_COUNT,
+		$quiet = false
 	) {
 		$this->theUserSharesUsingWebUIWithoutClosingDialog(
-			$folder, $userOrGroup, $remote, $name, $maxRetries, $quiet
+			$folder,
+			$userOrGroup,
+			$remote,
+			$name,
+			$maxRetries,
+			$quiet
 		);
 		$this->theUserClosesTheShareDialog();
 	}
@@ -424,7 +475,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theUserOpensTheShareDialogForFileFolder($name) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
-			$name, $this->getSession()
+			$name,
+			$this->getSession()
 		);
 	}
 
@@ -444,7 +496,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$should = ($shouldOrNot !== "not");
 		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
-		$groupName = \trim($groupName, '""');
+		$groupName = trim($groupName, '""');
 		$presence = $this->sharingDialog->isGroupPresentInShareWithList($groupName);
 		if ($should) {
 			PHPUnit\Framework\Assert::assertTrue(
@@ -481,7 +533,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserDeleteShareWithUser($userOrGroup, $name) {
-		$name = \trim($name, '""');
+		$name = trim($name, '""');
 		if ($userOrGroup === "user") {
 			$name = $this->featureContext->getDisplayNameForUser($name);
 		}
@@ -616,7 +668,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$session = $this->getSession();
 		$this->theUserOpensTheShareDialogForFileFolder($name);
 		$this->theUserHasOpenedThePublicLinkShareTab();
-		$expiration = \date('d-m-Y', \strtotime($expiration));
+		$expiration = date('d-m-Y', strtotime($expiration));
 		$this->publicSharingPopup = $this->publicShareTab->editLink(
 			$session,
 			$linkName,
@@ -715,7 +767,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserCreatesANewPublicLinkForFileFolderUsingTheWebUIWith(
-		$name, TableNode $settings = null
+		$name,
+		TableNode $settings = null
 	) {
 		$linkName = $this->createPublicShareLink($name, $settings);
 		$linkUrl = $this->publicShareTab->getLinkUrl($linkName);
@@ -737,7 +790,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserTriesToCreateANewPublicLinkForFileFolderUsingTheWebUIWith(
-		$name, TableNode $settings = null
+		$name,
+		TableNode $settings = null
 	) {
 		$this->linkName = $this->createPublicShareLink($name, $settings);
 	}
@@ -837,7 +891,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserSetsTheSharingPermissionsOfForOnTheWebUI(
-		$userOrGroup, $userName, $fileName, TableNode $permissionsTable
+		$userOrGroup,
+		$userName,
+		$fileName,
+		TableNode $permissionsTable
 	) {
 		$this->featureContext->verifyTableNodeRows(
 			$permissionsTable,
@@ -846,7 +903,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		);
 		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
-		$userName = $this->featureContext->substituteInLineCodes(\trim($userName, '""'));
+		$userName = $this->featureContext->substituteInLineCodes(trim($userName, '""'));
 		$userAdditionalInfoFromAppConfig = \TestHelpers\AppConfigHelper::getAppConfig(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
@@ -861,9 +918,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				$userName = $userName . " (" . $userNameActual . ")";
 			}
 		}
-		$this->theUserOpensTheShareDialogForFileFolder(\trim($fileName, '""'));
+		$this->theUserOpensTheShareDialogForFileFolder(trim($fileName, '""'));
 		$this->sharingDialog->setSharingPermissions(
-			$userOrGroup, $userName, $permissionsTable->getRowsHash(), $this->getSession()
+			$userOrGroup,
+			$userName,
+			$permissionsTable->getRowsHash(),
+			$this->getSession()
 		);
 	}
 
@@ -884,17 +944,23 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theFollowingPermissionsAreSeenForInTheSharingDialogFor(
-		$fileName, $userOrGroup, $userName, TableNode $permissionsTable
+		$fileName,
+		$userOrGroup,
+		$userName,
+		TableNode $permissionsTable
 	) {
 		$this->featureContext->verifyTableNodeRows($permissionsTable, [], ['share', 'edit', 'create', 'change', 'delete']);
 
-		$userName = $this->featureContext->substituteInLineCodes(\trim($userName, '""'));
+		$userName = $this->featureContext->substituteInLineCodes(trim($userName, '""'));
 		if ($userOrGroup === "user") {
 			$userName = $this->featureContext->getDisplayNameForUser($userName);
 		}
-		$this->theUserOpensTheShareDialogForFileFolder(\trim($fileName, '""'));
+		$this->theUserOpensTheShareDialogForFileFolder(trim($fileName, '""'));
 		$this->sharingDialog->checkSharingPermissions(
-			$userOrGroup, $userName, $permissionsTable->getRowsHash(), $this->getSession()
+			$userOrGroup,
+			$userName,
+			$permissionsTable->getRowsHash(),
+			$this->getSession()
 		);
 	}
 
@@ -905,7 +971,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserAcceptsTheOfferedRemoteShares() {
-		foreach (\array_reverse($this->filesPage->getOcDialogs()) as $ocDialog) {
+		foreach (array_reverse($this->filesPage->getOcDialogs()) as $ocDialog) {
 			$ocDialog->accept($this->getSession());
 		}
 	}
@@ -925,13 +991,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				= SetupHelper::getSystemConfigValue(
 					'user.search_min_length'
 				);
-			$this->oldMinCharactersForAutocomplete = \trim(
+			$this->oldMinCharactersForAutocomplete = trim(
 				$oldMinCharactersForAutocomplete
 			);
 		}
 		$minCharacters = (int) $minCharacters;
 		SetupHelper::setSystemConfig(
-			'user.search_min_length', $minCharacters
+			'user.search_min_length',
+			$minCharacters
 		);
 	}
 
@@ -947,12 +1014,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				= SetupHelper::getSystemConfigValue(
 					'sharing.federation.allowHttpFallback'
 				);
-			$this->oldFedSharingFallbackSetting = \trim(
+			$this->oldFedSharingFallbackSetting = trim(
 				$oldFedSharingFallbackSetting
 			);
 		}
 		SetupHelper::setSystemConfig(
-			'sharing.federation.allowHttpFallback', 'true', 'boolean'
+			'sharing.federation.allowHttpFallback',
+			'true',
+			'boolean'
 		);
 	}
 
@@ -963,7 +1032,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserDeclinesTheOfferedRemoteShares() {
-		foreach (\array_reverse($this->filesPage->getOcDialogs()) as $ocDialog) {
+		foreach (array_reverse($this->filesPage->getOcDialogs()) as $ocDialog) {
 			$ocDialog->clickButton($this->getSession(), 'Cancel');
 		}
 	}
@@ -977,8 +1046,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function thePublicAccessesTheLastCreatedPublicLinkUsingTheWebUI() {
 		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
-		$lastCreatedLink = \end($createdPublicLinks);
-		$path = \str_replace(
+		$lastCreatedLink = end($createdPublicLinks);
+		$path = str_replace(
 			$this->featureContext->getBaseUrl(),
 			"",
 			$lastCreatedLink['url']
@@ -1030,7 +1099,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function thePublicAddsThePublicLinkToUsingTheWebUI(
-		$server, $username
+		$server,
+		$username
 	) {
 		if (!$this->publicLinkFilesPage->isOpen()) {
 			throw new Exception('Not on public link page!');
@@ -1065,19 +1135,22 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function userReactsToShareOfferedByUsingWebUI(
-		$action, $share, $offeredBy
+		$action,
+		$share,
+		$offeredBy
 	) {
 		$offeredBy = $this->featureContext->getActualUsername($offeredBy);
 		$offeredByUserDisplayName = $this->featureContext->getDisplayNameForUser($offeredBy);
 		$this->webUIFilesContext->theUserBrowsesToTheSharedWithYouPage();
 		$fileRows = $this->sharedWithYouPage->findAllFileRowsByName(
-			$share, $this->getSession()
+			$share,
+			$this->getSession()
 		);
 
 		$found = false;
 		foreach ($fileRows as $fileRow) {
 			if ($offeredByUserDisplayName === $fileRow->getSharer()) {
-				if (\substr($action, 0, 6) === "accept") {
+				if (substr($action, 0, 6) === "accept") {
 					$fileRow->acceptShare($this->getSession());
 				} else {
 					$fileRow->declineShare($this->getSession());
@@ -1134,7 +1207,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theUserRemovesThePublicLinkOfFileUsingTheWebui($entryName) {
 		$session = $this->getSession();
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
-			$entryName, $session
+			$entryName,
+			$session
 		);
 		$this->publicShareTab = $this->sharingDialog->openPublicShareTab($session);
 		$this->sharingDialog->removePublicLink($session);
@@ -1150,7 +1224,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theUserCancelsTheRemoveOperationOfFileUsingWebui($entryName) {
 		$session = $this->getSession();
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
-			$entryName, $session
+			$entryName,
+			$session
 		);
 		$this->publicShareTab = $this->sharingDialog->openPublicShareTab($session);
 		$this->sharingDialog->cancelRemovePublicLinkOperation($session);
@@ -1167,7 +1242,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function removesPublicLinkAtCertainPosition($number, $entryName) {
 		$session = $this->getSession();
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
-			$entryName, $session
+			$entryName,
+			$session
 		);
 		$this->publicShareTab = $this->sharingDialog->openPublicShareTab($session);
 		$this->sharingDialog->removePublicLink($session, $number);
@@ -1185,7 +1261,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$receiver = $this->featureContext->getDisplayNameForUser($receiver);
 		}
 		Assert::assertNotNull(
-			$this->sharingDialog, "Sharing Dialog is not open"
+			$this->sharingDialog,
+			"Sharing Dialog is not open"
 		);
 		$this->sharingDialog->openShareActionsDropDown($type, $receiver);
 		$this->sharingDialog->sendShareNotificationByEmail($this->getSession());
@@ -1239,7 +1316,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			. " The expected warning message was 'The password is wrong. Try again.', but got '$warningMessage'."
 		);
 		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
-		$lastCreatedLink = \end($createdPublicLinks);
+		$lastCreatedLink = end($createdPublicLinks);
 		$lastSharePath = $lastCreatedLink['url'] . '/authenticate';
 		$currentPath = $this->getSession()->getCurrentUrl();
 		Assert::assertEquals(
@@ -1312,7 +1389,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$requiredString
 	) {
 		$this->allUsersAndGroupsThatContainTheStringInTheirNameShouldBeListedInTheAutocompleteListExcept(
-			$requiredString, 'user', ''
+			$requiredString,
+			'user',
+			''
 		);
 	}
 
@@ -1326,7 +1405,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function allUsersAndGroupsThatContainTheStringInTheirNameShouldBeListedInTheAutocompleteListExcept(
-		$requiredString, $userOrGroup, $notToBeListed
+		$requiredString,
+		$userOrGroup,
+		$notToBeListed
 	) {
 		if ($userOrGroup === 'group') {
 			$notToBeListed
@@ -1353,8 +1434,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			foreach ($elementArray as $internalName => $fullDisplayText) {
 				$displayName = $createdElementsWithDisplayNames[$usersOrGroups][$internalName];
 				// Matching should be case-insensitive on the internal or display name
-				if (((\stripos($internalName, $requiredString) !== false)
-					|| (\stripos($displayName, $requiredString) !== false))
+				if (((stripos($internalName, $requiredString) !== false)
+					|| (stripos($displayName, $requiredString) !== false))
 					&& ($fullDisplayText !== $notToBeListed)
 					&& ($displayName !== $this->featureContext->getCurrentUser())
 					&& ($displayName !== $this->featureContext->getCurrentUserDisplayName())
@@ -1522,7 +1603,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function fileFolderShouldBeMarkedAsSharedBy(
-		$fileOrFolder, $itemName, $sharedWithGroup, $sharerName
+		$fileOrFolder,
+		$itemName,
+		$sharedWithGroup,
+		$sharerName
 	) {
 		$sharerName = $this->featureContext->getActualUsername($sharerName);
 		$sharerName = $this->featureContext->getDisplayNameForUser($sharerName);
@@ -1545,7 +1629,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			. "' instead."
 		);
 		$sharingDialog = $this->filesPage->openSharingDialog(
-			$itemName, $this->getSession()
+			$itemName,
+			$this->getSession()
 		);
 		Assert::assertSame(
 			$sharerName,
@@ -1593,7 +1678,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function assertShareIsInStateOnWebUI($item, $state) {
 		$this->webUIFilesContext->theUserBrowsesToTheSharedWithYouPage();
 		$fileRow = $this->sharedWithYouPage->findFileRowByName(
-			$item, $this->getSession()
+			$item,
+			$this->getSession()
 		);
 		Assert::assertSame(
 			$state,
@@ -1619,7 +1705,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 		$this->webUIFilesContext->theUserBrowsesToTheSharedWithYouPage();
 		$fileRows = $this->sharedWithYouPage->findAllFileRowsByName(
-			$item, $this->getSession()
+			$item,
+			$this->getSession()
 		);
 		$found = false;
 		$currentState = null;
@@ -1631,7 +1718,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			}
 		}
 		Assert::assertTrue(
-			$found, "could not find item called $item shared by $sharedByUserDisplayName"
+			$found,
+			"could not find item called $item shared by $sharedByUserDisplayName"
 		);
 		Assert::assertSame(
 			$state,
@@ -1688,7 +1776,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function itShouldNotBePossibleToShareFileFolderUsingTheWebUI(
-		$fileName, $userOrGroup = null, $shareWith = null
+		$fileName,
+		$userOrGroup = null,
+		$shareWith = null
 	) {
 		if ($userOrGroup === "user") {
 			$receiverDisplay = $this->featureContext->getDisplayNameForUser($shareWith);
@@ -1698,7 +1788,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$sharingWasPossible = false;
 		try {
 			$this->theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
-				$fileName, $userOrGroup, "", $shareWith, 2, true
+				$fileName,
+				$userOrGroup,
+				"",
+				$shareWith,
+				2,
+				true
 			);
 			$sharingWasPossible = true;
 		} catch (ElementNotFoundException $e) {
@@ -1718,7 +1813,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			];
 			$foundMessage = false;
 			foreach ($possibleMessages as $message) {
-				$foundMessage = \strpos($e->getMessage(), $message);
+				$foundMessage = strpos($e->getMessage(), $message);
 				if ($foundMessage !== false) {
 					break;
 				}
@@ -1749,8 +1844,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function thePublicShouldSeeAnErrorMessageWhileAccessingLastCreatedPublicLinkUsingTheWebui($errorMsg) {
 		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
-		$lastCreatedLink = \end($createdPublicLinks);
-		$path = \str_replace(
+		$lastCreatedLink = end($createdPublicLinks);
+		$path = str_replace(
 			$this->featureContext->getBaseUrl(),
 			"",
 			$lastCreatedLink['url']
@@ -1790,7 +1885,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		}
 		$session = $this->getSession();
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
-			$name, $session
+			$name,
+			$session
 		);
 		$this->publicShareTab = $this->sharingDialog->openPublicShareTab($session);
 		if ($settings !== null) {
@@ -1801,7 +1897,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			);
 			$settingsArray = $settings->getRowsHash();
 			if (\array_key_exists('expiration', $settingsArray) && $settingsArray['expiration'] !== '') {
-				$settingsArray['expiration'] = \date('d-m-Y', \strtotime($settingsArray['expiration']));
+				$settingsArray['expiration'] = date('d-m-Y', strtotime($settingsArray['expiration']));
 			}
 			if (!isset($settingsArray['name'])) {
 				$settingsArray['name'] = null;
@@ -1836,7 +1932,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			);
 			if ($settingsArray['name'] !== null) {
 				Assert::assertSame(
-					$settingsArray ['name'], $linkName,
+					$settingsArray ['name'],
+					$linkName,
 					"set and retrieved public link names are not the same"
 				);
 			}
@@ -1856,7 +1953,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theTextPreviewOfThePublicLinkShouldContain($content) {
 		$previewText = $this->publicLinkFilesPage->getPreviewText();
 		Assert::assertStringContainsString(
-			$content, $previewText,
+			$content,
+			$previewText,
 			__METHOD__ . " file preview does not contain expected content"
 		);
 	}
@@ -1911,7 +2009,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function allThePublicShareDownloadLinkShouldBeSame() {
 		$urls = $this->publicLinkFilesPage->getAllDownloadUrls();
-		$url = \array_unique($urls);
+		$url = array_unique($urls);
 		Assert::assertCount(1, $url, "Download links are not the same");
 	}
 
@@ -1929,7 +2027,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$address
 		);
 		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
-		$lastCreatedPublicLink = \end($createdPublicLinks);
+		$lastCreatedPublicLink = end($createdPublicLinks);
 		Assert::assertStringContainsString(
 			$lastCreatedPublicLink["url"],
 			$content,
@@ -2047,7 +2145,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$elements = $this->featureContext->simplifyArray($elementRows);
 		foreach ($elements as $filename) {
 			$isMarked = $this->filesPage->isSharedIndicatorPresent(
-				$filename, $this->getSession()
+				$filename,
+				$this->getSession()
 			);
 			Assert::assertTrue(
 				$isMarked,
@@ -2070,7 +2169,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$elements = $this->featureContext->simplifyArray($elementRows);
 		foreach ($elements as $filename) {
 			$isMarked = $this->filesPage->isSharedIndicatorPresent(
-				$filename, $this->getSession()
+				$filename,
+				$this->getSession()
 			);
 			Assert::assertFalse(
 				$isMarked,
@@ -2103,7 +2203,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$actualNamesArrayOfPublicLinks = $this->publicShareTab->getListedPublicLinksNames();
 		Assert::assertTrue(\in_array($expectedLinkEntryName, $actualNamesArrayOfPublicLinks));
 		Assert::assertEquals(
-			\array_count_values($actualNamesArrayOfPublicLinks)[$expectedLinkEntryName],
+			array_count_values($actualNamesArrayOfPublicLinks)[$expectedLinkEntryName],
 			$expectedCount
 		);
 	}

@@ -37,8 +37,8 @@ class ActionTest extends TestCase {
 	public function dataSetLabel() {
 		return [
 			['test1'],
-			[\str_repeat('a', 1)],
-			[\str_repeat('a', 32)],
+			[str_repeat('a', 1)],
+			[str_repeat('a', 32)],
 		];
 	}
 
@@ -59,9 +59,9 @@ class ActionTest extends TestCase {
 			[0],
 			[1],
 			[''],
-			[\str_repeat('a', 33)],
+			[str_repeat('a', 33)],
 			[[]],
-			[[\str_repeat('a', 33)]],
+			[[str_repeat('a', 33)]],
 		];
 	}
 
@@ -79,8 +79,8 @@ class ActionTest extends TestCase {
 	public function dataSetParsedLabel() {
 		return [
 			['test1'],
-			[\str_repeat('a', 1)],
-			[\str_repeat('a', 32)],
+			[str_repeat('a', 1)],
+			[str_repeat('a', 32)],
 		];
 	}
 
@@ -102,7 +102,7 @@ class ActionTest extends TestCase {
 			[1],
 			[''],
 			[[]],
-			[[\str_repeat('a', 33)]],
+			[[str_repeat('a', 33)]],
 		];
 	}
 
@@ -121,8 +121,8 @@ class ActionTest extends TestCase {
 		return [
 			['test1', 'GET'],
 			['test2', 'POST'],
-			[\str_repeat('a', 1), 'PUT'],
-			[\str_repeat('a', 256), 'DELETE'],
+			[str_repeat('a', 1), 'PUT'],
+			[str_repeat('a', 256), 'DELETE'],
 		];
 	}
 
@@ -146,9 +146,9 @@ class ActionTest extends TestCase {
 			[0, 'GET'],
 			[1, 'GET'],
 			['', 'GET'],
-			[\str_repeat('a', 257), 'GET'],
+			[str_repeat('a', 257), 'GET'],
 			[[], 'GET'],
-			[[\str_repeat('a', 257)], 'GET'],
+			[[str_repeat('a', 257)], 'GET'],
 
 			// Invalid type
 			['url', 'notGET'],
@@ -195,9 +195,9 @@ class ActionTest extends TestCase {
 			[0],
 			[1],
 			[''],
-			[\str_repeat('a', 257)],
+			[str_repeat('a', 257)],
 			[[]],
-			[[\str_repeat('a', 257)]],
+			[[str_repeat('a', 257)]],
 		];
 	}
 

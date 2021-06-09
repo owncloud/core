@@ -82,24 +82,24 @@ class OC_Helper {
 		if ($bytes < 1024) {
 			return "$bytes B";
 		}
-		$bytes = \round($bytes / 1024, 0);
+		$bytes = round($bytes / 1024, 0);
 		if ($bytes < 1024) {
 			return "$bytes KB";
 		}
-		$bytes = \round($bytes / 1024, 1);
+		$bytes = round($bytes / 1024, 1);
 		if ($bytes < 1024) {
 			return "$bytes MB";
 		}
-		$bytes = \round($bytes / 1024, 1);
+		$bytes = round($bytes / 1024, 1);
 		if ($bytes < 1024) {
 			return "$bytes GB";
 		}
-		$bytes = \round($bytes / 1024, 1);
+		$bytes = round($bytes / 1024, 1);
 		if ($bytes < 1024) {
 			return "$bytes TB";
 		}
 
-		$bytes = \round($bytes / 1024, 1);
+		$bytes = round($bytes / 1024, 1);
 		return "$bytes PB";
 	}
 
@@ -117,15 +117,15 @@ class OC_Helper {
 		if ($bytes < 1024) {
 			return $bytes . "B";
 		}
-		$bytes = \round($bytes / 1024, 1);
+		$bytes = round($bytes / 1024, 1);
 		if ($bytes < 1024) {
 			return $bytes . "K";
 		}
-		$bytes = \round($bytes / 1024, 1);
+		$bytes = round($bytes / 1024, 1);
 		if ($bytes < 1024) {
 			return $bytes . "M";
 		}
-		$bytes = \round($bytes / 1024, 1);
+		$bytes = round($bytes / 1024, 1);
 		return $bytes . "G";
 	}
 
@@ -139,8 +139,8 @@ class OC_Helper {
 	 * Inspired by: http://www.php.net/manual/en/function.filesize.php#92418
 	 */
 	public static function computerFileSize($str) {
-		$str = \strtolower($str);
-		if (\is_numeric($str)) {
+		$str = strtolower($str);
+		if (is_numeric($str)) {
 			return \floatval($str);
 		}
 
@@ -160,13 +160,13 @@ class OC_Helper {
 
 		$bytes = \floatval($str);
 
-		if (\preg_match('#([kmgtp]?b?)$#si', $str, $matches) && !empty($bytes_array[$matches[1]])) {
+		if (preg_match('#([kmgtp]?b?)$#si', $str, $matches) && !empty($bytes_array[$matches[1]])) {
 			$bytes *= $bytes_array[$matches[1]];
 		} else {
 			return false;
 		}
 
-		$bytes = \round($bytes);
+		$bytes = round($bytes);
 
 		return $bytes;
 	}
@@ -178,18 +178,18 @@ class OC_Helper {
 	 *
 	 */
 	public static function copyr($src, $dest) {
-		if (\is_dir($src)) {
-			if (!\is_dir($dest)) {
-				\mkdir($dest);
+		if (is_dir($src)) {
+			if (!is_dir($dest)) {
+				mkdir($dest);
 			}
-			$files = \scandir($src);
+			$files = scandir($src);
 			foreach ($files as $file) {
 				if ($file != "." && $file != "..") {
 					self::copyr("$src/$file", "$dest/$file");
 				}
 			}
-		} elseif (\file_exists($src) && !\OC\Files\Filesystem::isForbiddenFileOrDir($src)) {
-			\copy($src, $dest);
+		} elseif (file_exists($src) && !\OC\Files\Filesystem::isForbiddenFileOrDir($src)) {
+			copy($src, $dest);
 		}
 	}
 
@@ -200,7 +200,7 @@ class OC_Helper {
 	 * @return bool
 	 */
 	public static function rmdirr($dir, $deleteSelf = true) {
-		if (\is_dir($dir)) {
+		if (is_dir($dir)) {
 			$files = new RecursiveIteratorIterator(
 				new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
 				RecursiveIteratorIterator::CHILD_FIRST
@@ -209,26 +209,26 @@ class OC_Helper {
 			foreach ($files as $fileInfo) {
 				/** @var SplFileInfo $fileInfo */
 				if ($fileInfo->isLink()) {
-					\unlink($fileInfo->getPathname());
+					unlink($fileInfo->getPathname());
 				} elseif ($fileInfo->isDir()) {
-					\rmdir($fileInfo->getRealPath());
+					rmdir($fileInfo->getRealPath());
 				} else {
-					\unlink($fileInfo->getRealPath());
+					unlink($fileInfo->getRealPath());
 				}
 			}
 			if ($deleteSelf) {
-				\rmdir($dir);
+				rmdir($dir);
 			}
-		} elseif (\file_exists($dir)) {
+		} elseif (file_exists($dir)) {
 			if ($deleteSelf) {
-				\unlink($dir);
+				unlink($dir);
 			}
 		}
 		if (!$deleteSelf) {
 			return true;
 		}
 
-		return !\file_exists($dir);
+		return !file_exists($dir);
 	}
 
 	/**
@@ -253,17 +253,17 @@ class OC_Helper {
 	public static function canExecute($name, $path = false) {
 		// path defaults to PATH from environment if not set
 		if ($path === false) {
-			$path = \getenv("PATH");
+			$path = getenv("PATH");
 		}
 		// we look for an executable file of that name
 		$exts = [""];
 		$check_fn = "is_executable";
 		// Default check will be done with $path directories :
-		$dirs = \explode(PATH_SEPARATOR, $path);
+		$dirs = explode(PATH_SEPARATOR, $path);
 		// WARNING : We have to check if open_basedir is enabled :
 		$obd = OC::$server->getIniWrapper()->getString('open_basedir');
 		if ($obd != "none") {
-			$obd_values = \explode(PATH_SEPARATOR, $obd);
+			$obd_values = explode(PATH_SEPARATOR, $obd);
 			if (\count($obd_values) > 0 and $obd_values[0]) {
 				// open_basedir is in effect !
 				// We need to check if the program is in one of these dirs :
@@ -294,9 +294,9 @@ class OC_Helper {
 		$bufSize = 8192;
 		$result = true;
 		$count = 0;
-		while (!\feof($source)) {
-			$buf = \fread($source, $bufSize);
-			$bytesWritten = \fwrite($target, $buf);
+		while (!feof($source)) {
+			$buf = fread($source, $bufSize);
+			$bytesWritten = fwrite($target, $buf);
 			if ($bytesWritten !== false) {
 				$count += $bytesWritten;
 			}
@@ -336,9 +336,9 @@ class OC_Helper {
 		if ($path === '/') {
 			$path = '';
 		}
-		if ($pos = \strrpos($filename, '.')) {
-			$name = \substr($filename, 0, $pos);
-			$ext = \substr($filename, $pos);
+		if ($pos = strrpos($filename, '.')) {
+			$name = substr($filename, 0, $pos);
+			$ext = substr($filename, $pos);
 		} else {
 			$name = $filename;
 			$ext = '';
@@ -346,7 +346,7 @@ class OC_Helper {
 
 		$newpath = $path . '/' . $filename;
 		if ($view->file_exists($newpath)) {
-			if (\preg_match_all('/\((\d+)\)/', $name, $matches, PREG_OFFSET_CAPTURE)) {
+			if (preg_match_all('/\((\d+)\)/', $name, $matches, PREG_OFFSET_CAPTURE)) {
 				//Replace the last "(number)" with "(number+1)"
 				$last_match = \count($matches[0]) - 1;
 				$counter = $matches[1][$last_match][0] + 1;
@@ -360,7 +360,7 @@ class OC_Helper {
 			do {
 				if ($offset) {
 					//Replace the last "(number)" with "(number+1)"
-					$newname = \substr_replace($name, '(' . $counter . ')', $offset, $match_length);
+					$newname = substr_replace($name, '(' . $counter . ')', $offset, $match_length);
 				} else {
 					$newname = $name . ' (' . $counter . ')';
 				}
@@ -380,8 +380,8 @@ class OC_Helper {
 	 * @return bool
 	 */
 	public static function isSubDirectory($sub, $parent) {
-		$realpathSub = \realpath($sub);
-		$realpathParent = \realpath($parent);
+		$realpathSub = realpath($sub);
+		$realpathParent = realpath($parent);
 
 		// realpath() may return false in case the directory does not exist
 		// since we can not be sure how different PHP versions may behave here
@@ -391,7 +391,7 @@ class OC_Helper {
 		}
 
 		// Check whether $sub is a subdirectory of $parent
-		if (\strpos($realpathSub, $realpathParent) === 0) {
+		if (strpos($realpathSub, $realpathParent) === 0) {
 			return true;
 		}
 
@@ -414,7 +414,7 @@ class OC_Helper {
 		$case = ($case != MB_CASE_UPPER) ? MB_CASE_LOWER : MB_CASE_UPPER;
 		$ret = [];
 		foreach ($input as $k => $v) {
-			$ret[\mb_convert_case($k, $case, $encoding)] = $v;
+			$ret[mb_convert_case($k, $case, $encoding)] = $v;
 		}
 		return $ret;
 	}
@@ -456,7 +456,7 @@ class OC_Helper {
 		if ($freeSpace === null || $freeSpace < 0) {
 			$freeSpace = self::freeSpace($dir);
 		}
-		return \min($freeSpace, self::uploadLimit());
+		return min($freeSpace, self::uploadLimit());
 	}
 
 	/**
@@ -468,7 +468,7 @@ class OC_Helper {
 	public static function freeSpace($dir) {
 		$freeSpace = \OC\Files\Filesystem::free_space($dir);
 		if ($freeSpace < \OCP\Files\FileInfo::SPACE_UNLIMITED) {
-			$freeSpace = \max($freeSpace, 0);
+			$freeSpace = max($freeSpace, 0);
 			return $freeSpace;
 		} else {
 			return (INF > 0)? INF: PHP_INT_MAX; // work around https://bugs.php.net/bug.php?id=69188
@@ -487,9 +487,9 @@ class OC_Helper {
 		if ((int)$upload_max_filesize === 0 and (int)$post_max_size === 0) {
 			return INF;
 		} elseif ((int)$upload_max_filesize === 0 or (int)$post_max_size === 0) {
-			return \max($upload_max_filesize, $post_max_size); //only the non 0 value counts
+			return max($upload_max_filesize, $post_max_size); //only the non 0 value counts
 		} else {
-			return \min($upload_max_filesize, $post_max_size);
+			return min($upload_max_filesize, $post_max_size);
 		}
 	}
 
@@ -504,13 +504,13 @@ class OC_Helper {
 			return false;
 		}
 		$ini = \OC::$server->getIniWrapper();
-		$disabled = \explode(',', $ini->get('disable_functions'));
-		$disabled = \array_map('trim', $disabled);
+		$disabled = explode(',', $ini->get('disable_functions'));
+		$disabled = array_map('trim', $disabled);
 		if (\in_array($function_name, $disabled)) {
 			return false;
 		}
-		$disabled = \explode(',', $ini->get('suhosin.executor.func.blacklist'));
-		$disabled = \array_map('trim', $disabled);
+		$disabled = explode(',', $ini->get('suhosin.executor.func.blacklist'));
+		$disabled = array_map('trim', $disabled);
 		if (\in_array($function_name, $disabled)) {
 			return false;
 		}
@@ -534,10 +534,10 @@ class OC_Helper {
 			// Returns null if nothing is found
 			$result = $exeSniffer->find($program);
 			if (empty($result)) {
-				$command = 'find ' . self::getCleanedPath(\getenv('PATH')) . ' -name ' . \escapeshellarg($program) . ' 2> /dev/null';
-				\exec($command, $output, $returnCode);
+				$command = 'find ' . self::getCleanedPath(getenv('PATH')) . ' -name ' . escapeshellarg($program) . ' 2> /dev/null';
+				exec($command, $output, $returnCode);
 				if (\count($output) > 0) {
-					$result = \escapeshellcmd($output[0]);
+					$result = escapeshellcmd($output[0]);
 				}
 			}
 		}
@@ -559,8 +559,8 @@ class OC_Helper {
 	public static function getCleanedPath($path = '') {
 		$pattern = "((\/[\w\d]*)+)";
 
-		if (\preg_match_all($pattern, $path, $matches) > 0) {
-			return \implode(' ', $matches[0]);
+		if (preg_match_all($pattern, $path, $matches) > 0) {
+			return implode(' ', $matches[0]);
 		}
 
 		return '/usr/local/bin /usr/bin /opt/bin /bin';
@@ -621,7 +621,7 @@ class OC_Helper {
 				$total = $quota;
 			}
 			// prevent division by zero or error codes (negative values)
-			$relative = \round(($used / $total) * 10000) / 100;
+			$relative = round(($used / $total) * 10000) / 100;
 		} else {
 			$relative = 0;
 		}
@@ -666,7 +666,7 @@ class OC_Helper {
 				$total = $quota;
 			}
 			// prevent division by zero or error codes (negative values)
-			$relative = \round(($used / $total) * 10000) / 100;
+			$relative = round(($used / $total) * 10000) / 100;
 		} else {
 			$relative = 0;
 		}

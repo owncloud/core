@@ -226,7 +226,8 @@ class MailSettingsControllerTest extends \Test\TestCase {
 						['If you received this email, the settings seem to be correct.', [],
 							'If you received this email, the settings seem to be correct.']
 					]
-				));
+				)
+			);
 		$this->container['UserSession']
 			->expects($this->any())
 			->method('getUser')

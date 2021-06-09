@@ -59,14 +59,14 @@ try {
 	if ($fileNode->getType() === \OCP\Files\FileInfo::TYPE_FOLDER) {
 		$mimetype = 'httpd/unix-directory';
 	} else {
-		$pathInfo = \pathinfo(\ltrim($file, '/'));
+		$pathInfo = pathinfo(ltrim($file, '/'));
 		$fileName = $pathInfo['basename'];
 		// if in root dir
 		if ($pathInfo['dirname'] === '.') {
 			// cut off the .d* suffix
-			$i = \strrpos($fileName, '.');
+			$i = strrpos($fileName, '.');
 			if ($i !== false) {
-				$fileName = \substr($fileName, 0, $i);
+				$fileName = substr($fileName, 0, $i);
 			}
 		}
 		$mimetype = \OC::$server->getMimeTypeDetector()->detectPath($fileName);

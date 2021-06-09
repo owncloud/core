@@ -69,7 +69,7 @@ class GetConfig extends Base {
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$configNames = $input->getArgument('name');
-		$configName = \array_shift($configNames);
+		$configName = array_shift($configNames);
 		$defaultValue = $input->getOption('default-value');
 
 		if (!\in_array($configName, $this->systemConfig->getKeys()) && !$input->hasParameterOption('--default-value')) {

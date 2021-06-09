@@ -128,7 +128,7 @@ class CheckCacheTest extends TestCase {
 		$storage = $this->createMock(IStorage::class);
 		$storage->method('instanceOfStorage')->willReturn(true);
 
-		$resource = \fopen('php://memory', 'rb');
+		$resource = fopen('php://memory', 'rb');
 
 		$targetFile = $this->createMock(File::class);
 		$targetFile->method('isShared')->willReturn(false);

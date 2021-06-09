@@ -56,7 +56,7 @@ abstract class Flysystem extends Common {
 
 	protected function buildPath($path) {
 		$fullPath = \OC\Files\Filesystem::normalizePath($this->root . '/' . $path);
-		return \ltrim($fullPath, '/');
+		return ltrim($fullPath, '/');
 	}
 
 	/**
@@ -162,7 +162,7 @@ abstract class Flysystem extends Common {
 		} catch (FileNotFoundException $e) {
 			return false;
 		}
-		$names = \array_map(function ($object) {
+		$names = array_map(function ($object) {
 			return $object['basename'];
 		}, $content);
 		return IteratorDirectory::wrap($names);
@@ -208,10 +208,10 @@ abstract class Flysystem extends Common {
 					}
 					$tmpFile = \OCP\Files::tmpFile();
 				}
-				$source = \fopen($tmpFile, $mode);
+				$source = fopen($tmpFile, $mode);
 				return CallbackWrapper::wrap($source, null, null, function () use ($tmpFile, $fullPath) {
-					$this->flysystem->putStream($fullPath, \fopen($tmpFile, 'r'));
-					\unlink($tmpFile);
+					$this->flysystem->putStream($fullPath, fopen($tmpFile, 'r'));
+					unlink($tmpFile);
 				});
 		}
 		return false;

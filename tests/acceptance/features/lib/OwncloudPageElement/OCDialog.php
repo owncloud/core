@@ -94,7 +94,8 @@ class OCDialog extends OwncloudPage {
 	 */
 	public function getMessage() {
 		$contentElement = $this->dialogElement->find(
-			"xpath", $this->contentClassXpath
+			"xpath",
+			$this->contentClassXpath
 		);
 		// Some dialogs (e.g. create link share) are not "ordinary" dialogs that
 		// just display a message. Those may not have any element matching
@@ -117,7 +118,8 @@ class OCDialog extends OwncloudPage {
 	 */
 	public function accept(Session $session) {
 		$primaryButton = $this->dialogElement->find(
-			"xpath", $this->primaryButtonXpath
+			"xpath",
+			$this->primaryButtonXpath
 		);
 		$this->assertElementNotNull(
 			$primaryButton,
@@ -138,7 +140,7 @@ class OCDialog extends OwncloudPage {
 	 * @return void
 	 */
 	public function clickButton(Session $session, $label) {
-		$xpathToFind = \sprintf($this->buttonByLabelXpath, $label);
+		$xpathToFind = sprintf($this->buttonByLabelXpath, $label);
 		$button = $this->dialogElement->find("xpath", $xpathToFind);
 		$this->assertElementNotNull(
 			$button,

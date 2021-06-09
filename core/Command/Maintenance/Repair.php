@@ -91,13 +91,14 @@ class Repair extends Command {
 				'include-expensive',
 				null,
 				InputOption::VALUE_NONE,
-				'Use this option when you want to include resource and load expensive tasks.');
+				'Use this option when you want to include resource and load expensive tasks.'
+			);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$appSteps = $this->getAppsRepairSteps($output);
 		// Handle listing repair steps
-		$steps = \array_merge(
+		$steps = array_merge(
 			\OC\Repair::getRepairSteps(),
 			\OC\Repair::getExpensiveRepairSteps(),
 			$appSteps
@@ -122,7 +123,7 @@ class Repair extends Command {
 		$single = $input->getOption('single');
 		if ($single) {
 			// Check it exists
-			$stepNames = \array_map('get_class', $steps);
+			$stepNames = array_map('get_class', $steps);
 			if (!\in_array($single, $stepNames, true)) {
 				$output->writeln("<error>Repair step not found. Use --list to show available steps.");
 				return 1;
@@ -204,7 +205,7 @@ class Repair extends Command {
 				\OC_App::loadApp($app);
 				$appSteps = $info['repair-steps']['post-migration'];
 				foreach ($appSteps as $step) {
-					\array_push($steps, \OC::$server->query($step));
+					array_push($steps, \OC::$server->query($step));
 				}
 			} catch (\OC\NeedsUpdateException $ex) {
 				$output->writeln("<error>ownCloud or one of the apps require upgrade.</error>");

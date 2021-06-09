@@ -42,7 +42,7 @@ class GroupsControllerTest extends \Test\TestCase {
 			->expects($this->any())
 					->method('t')
 					->will($this->returnCallback(function ($text, $parameters = []) {
-						return \vsprintf($text, $parameters);
+						return vsprintf($text, $parameters);
 					}));
 		$this->groupsController = $this->container['GroupsController'];
 	}

@@ -30,7 +30,7 @@ use Psr\Http\Message\ResponseInterface;
  *
  */
 class SharingHelper {
-	const PERMISSION_TYPES = [
+	public const PERMISSION_TYPES = [
 			'read' => 1,
 			'update' => 2,
 			'create' => 4,
@@ -38,14 +38,14 @@ class SharingHelper {
 			'share' => 16,
 	];
 
-	const SHARE_TYPES = [
+	public const SHARE_TYPES = [
 			'user' => 0,
 			'group' => 1,
 			'public_link' => 3,
 			'federated' => 6,
 	];
 
-	const SHARE_STATES = [
+	public const SHARE_STATES = [
 			'accepted' => 0,
 			'pending' => 1,
 			'rejected' => 2,
@@ -126,7 +126,7 @@ class SharingHelper {
 		}
 
 		$fullUrl = $baseUrl;
-		if (\substr($fullUrl, -1) !== '/') {
+		if (substr($fullUrl, -1) !== '/') {
 			$fullUrl .= '/';
 		}
 		$fullUrl .= "ocs/v{$ocsApiVersion}.php/apps/files_sharing/api/v{$sharingApiVersion}/shares";
@@ -169,7 +169,7 @@ class SharingHelper {
 	 * @return int
 	 */
 	public static function getPermissionSum($permissions) {
-		if (\is_numeric($permissions)) {
+		if (is_numeric($permissions)) {
 			// Allow any permission number so that test scenarios can
 			// specifically test invalid permission values
 			return (int) $permissions;
@@ -210,10 +210,10 @@ class SharingHelper {
 		if (\array_key_exists($shareType, self::SHARE_TYPES)) {
 			return self::SHARE_TYPES[$shareType];
 		} else {
-			if (\ctype_digit($shareType)) {
+			if (ctype_digit($shareType)) {
 				$shareType = (int) $shareType;
 			}
-			$key = \array_search($shareType, self::SHARE_TYPES, true);
+			$key = array_search($shareType, self::SHARE_TYPES, true);
 			if ($key !== false) {
 				return self::SHARE_TYPES[$key];
 			}
@@ -233,7 +233,8 @@ class SharingHelper {
 	 * @return string
 	 */
 	public static function getLastShareIdFromResponse(
-		$responseXmlObject, $errorMessage = "cannot find share id in response"
+		$responseXmlObject,
+		$errorMessage = "cannot find share id in response"
 	) {
 		$xmlPart = $responseXmlObject->xpath("//data/element[last()]/id");
 

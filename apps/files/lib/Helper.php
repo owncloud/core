@@ -79,7 +79,7 @@ class Helper {
 			$icon = \OC::$server->getMimeTypeDetector()->mimeTypeIcon($file->getMimetype());
 		}
 
-		return \substr($icon, 0, -3) . 'svg';
+		return substr($icon, 0, -3) . 'svg';
 	}
 
 	/**
@@ -215,7 +215,7 @@ class Helper {
 		foreach ($shareList as $share) {
 			$fileIdList[] = $share['file_source'];
 		}
-		$fileIdList = \array_unique($fileIdList);
+		$fileIdList = array_unique($fileIdList);
 		$tagger = \OC::$server->getTagManager()->load('files');
 		$tags = $tagger->getTagsForObjects($fileIdList);
 		if (!\is_array($tags)) {
@@ -246,9 +246,9 @@ class Helper {
 		} elseif ($sortAttribute === 'size') {
 			$sortFunc = 'compareSize';
 		}
-		\usort($files, ['\OCA\Files\Helper', $sortFunc]);
+		usort($files, ['\OCA\Files\Helper', $sortFunc]);
 		if ($sortDescending) {
-			$files = \array_reverse($files);
+			$files = array_reverse($files);
 		}
 		return $files;
 	}

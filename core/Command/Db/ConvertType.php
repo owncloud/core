@@ -162,7 +162,7 @@ class ConvertType extends Command {
 
 		if ($this->targetType === $this->config->getSystemValue('dbtype', '')) {
 			throw new \InvalidArgumentException(
-				\sprintf('Can not convert from %1$s to %1$s.', $this->targetType)
+				sprintf('Can not convert from %1$s to %1$s.', $this->targetType)
 			);
 		}
 		if ($this->targetType === 'oci' && $input->getOption('clear-schema')) {
@@ -189,10 +189,10 @@ class ConvertType extends Command {
 
 		// Read from stdin. stream_set_blocking is used to prevent blocking
 		// when nothing is passed via stdin.
-		\stream_set_blocking(STDIN, 0);
-		$password = \file_get_contents('php://stdin');
-		\stream_set_blocking(STDIN, 1);
-		if (\trim($password) !== '') {
+		stream_set_blocking(STDIN, 0);
+		$password = file_get_contents('php://stdin');
+		stream_set_blocking(STDIN, 1);
+		if (trim($password) !== '') {
 			return $password;
 		}
 
@@ -239,7 +239,7 @@ class ConvertType extends Command {
 		$fromTables = $this->getTables($fromDB);
 
 		// warn/fail if there are more tables in 'from' database
-		$extraFromTables = \array_diff($fromTables, $toTables);
+		$extraFromTables = array_diff($fromTables, $toTables);
 		if (!empty($extraFromTables)) {
 			$output->writeln('<comment>The following tables will not be converted:</comment>');
 			$output->writeln($extraFromTables);
@@ -255,7 +255,7 @@ class ConvertType extends Command {
 				return;
 			}
 		}
-		$intersectingTables = \array_intersect($toTables, $fromTables);
+		$intersectingTables = array_intersect($toTables, $fromTables);
 		$this->convertDB($fromDB, $toDB, $intersectingTables, $input, $output);
 	}
 
@@ -278,7 +278,7 @@ class ConvertType extends Command {
 			// So the app can have database.xml and use migrations in the same time
 			if ($this->appHasMigrations($app)) {
 				$this->replayMigrations($fromDB, $toDB, $app);
-			} elseif (\file_exists($this->appManager->getAppPath($app).'/appinfo/database.xml')) {
+			} elseif (file_exists($this->appManager->getAppPath($app).'/appinfo/database.xml')) {
 				$schemaManager->createDbFromStructure($this->appManager->getAppPath($app).'/appinfo/database.xml');
 			}
 		}
@@ -291,7 +291,7 @@ class ConvertType extends Command {
 	protected function getExistingApps($enabledOnly) {
 		$apps = $enabledOnly ? $this->appManager->getInstalledApps() : $this->appManager->getAllApps();
 		// filter apps with missing code
-		$existingApps = \array_filter(
+		$existingApps = array_filter(
 			$apps,
 			function ($appId) {
 				return $this->appManager->getAppPath($appId) !== false;
@@ -325,7 +325,7 @@ class ConvertType extends Command {
 	 * @return bool
 	 */
 	protected function appHasMigrations($app) {
-		return \is_dir($this->appManager->getAppPath($app).'/appinfo/Migrations');
+		return is_dir($this->appManager->getAppPath($app).'/appinfo/Migrations');
 	}
 
 	/**
@@ -348,7 +348,7 @@ class ConvertType extends Command {
 	 * @return string[]
 	 */
 	protected function getTables(Connection $db) {
-		$filterExpression = '/^' . \preg_quote($this->targetTablePrefix) . '/';
+		$filterExpression = '/^' . preg_quote($this->targetTablePrefix) . '/';
 		$db->getConfiguration()->
 			setFilterSchemaAssetsExpression($filterExpression);
 		return $db->getSchemaManager()->listTableNames();
@@ -375,7 +375,7 @@ class ConvertType extends Command {
 		$count = $result->fetchColumn();
 		$result->closeCursor();
 
-		$numChunks = \ceil($count/$chunkSize);
+		$numChunks = ceil($count/$chunkSize);
 		if ($numChunks > 1) {
 			$output->writeln('chunked query, ' . $numChunks . ' chunks');
 		}
@@ -473,7 +473,7 @@ class ConvertType extends Command {
 				$table = $fromSchema->getTable($tableName);
 				if ($tableName === $toDB->getPrefix() . 'migrations') {
 					$output->writeln(
-						\sprintf(
+						sprintf(
 							'<info>Skipping copying data for the table "%s", it will be populated later.</info>',
 							$tableName
 						)

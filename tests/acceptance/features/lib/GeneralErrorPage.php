@@ -58,14 +58,14 @@ class GeneralErrorPage extends OwncloudPage {
 		Session $session,
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
-		$currentTime = \microtime(true);
+		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			if ($this->findAll("xpath", $this->errorMessageXpath)) {
 				break;
 			}
-			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
-			$currentTime = \microtime(true);
+			usleep(STANDARD_SLEEP_TIME_MICROSEC);
+			$currentTime = microtime(true);
 		}
 
 		if ($currentTime > $end) {

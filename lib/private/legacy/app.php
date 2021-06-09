@@ -62,8 +62,8 @@ class OC_App {
 	private static $loadedApps = [];
 	private static $loadedTypes = [];
 	private static $altLogin = [];
-	const officialApp = 200;
-	const approvedApp = 100;
+	public const officialApp = 200;
+	public const approvedApp = 100;
 
 	/**
 	 * clean the appId
@@ -72,7 +72,7 @@ class OC_App {
 	 * @return string
 	 */
 	public static function cleanAppId($app) {
-		return \str_replace(['\0', '/', '\\', '..'], '', $app);
+		return str_replace(['\0', '/', '\\', '..'], '', $app);
 	}
 
 	/**
@@ -98,7 +98,7 @@ class OC_App {
 	 * if $types is set, only apps of those types will be loaded
 	 */
 	public static function loadApps($types = null) {
-		if (\is_array($types) && !\array_diff($types, self::$loadedTypes)) {
+		if (\is_array($types) && !array_diff($types, self::$loadedTypes)) {
 			return true;
 		}
 		if (\OC::$server->getSystemConfig()->getValue('maintenance', false)) {
@@ -119,13 +119,13 @@ class OC_App {
 		}
 
 		// prevent app.php from printing output
-		\ob_start();
+		ob_start();
 		foreach ($apps as $app) {
 			if (($types === null or self::isType($app, $types)) && !\in_array($app, self::$loadedApps)) {
 				self::loadApp($app);
 			}
 		}
-		\ob_end_clean();
+		ob_end_clean();
 
 		// once all authentication apps are loaded we can validate the session
 		if ($types === null || \in_array('authentication', $types)) {
@@ -157,7 +157,7 @@ class OC_App {
 			}
 		}
 		if (\is_array($types)) {
-			self::$loadedTypes = \array_merge(self::$loadedTypes, $types);
+			self::$loadedTypes = array_merge(self::$loadedTypes, $types);
 		}
 
 		\OC_Hook::emit('OC_App', 'loadedApps');
@@ -183,7 +183,7 @@ class OC_App {
 
 		self::enableThemeIfApplicable($app);
 
-		if (\is_file($appPath . '/appinfo/app.php')) {
+		if (is_file($appPath . '/appinfo/app.php')) {
 			\OC::$server->getEventLogger()->start('load_app_' . $app, 'Load app: ' . $app);
 			if ($checkUpgrade && self::shouldUpgrade($app)) {
 				throw new NeedsUpdateException();
@@ -266,7 +266,7 @@ class OC_App {
 		}
 		$appTypes = self::getAppTypes($app);
 		foreach ($types as $type) {
-			if (\array_search($type, $appTypes) !== false) {
+			if (array_search($type, $appTypes) !== false) {
 				return true;
 			}
 		}
@@ -286,7 +286,7 @@ class OC_App {
 		}
 
 		if (isset(self::$appTypes[$app])) {
-			return \explode(',', self::$appTypes[$app]);
+			return explode(',', self::$appTypes[$app]);
 		} else {
 			return [];
 		}
@@ -302,7 +302,7 @@ class OC_App {
 		}
 
 		if (isset($appData['types'])) {
-			$appTypes = \implode(',', $appData['types']);
+			$appTypes = implode(',', $appData['types']);
 		} else {
 			$appTypes = '';
 		}
@@ -353,11 +353,11 @@ class OC_App {
 		} else {
 			$apps = $appManager->getEnabledAppsForUser($user);
 		}
-		$apps = \array_filter($apps, function ($app) {
+		$apps = array_filter($apps, function ($app) {
 			return $app !== 'files';//we add this manually
 		});
-		\sort($apps);
-		\array_unshift($apps, 'files');
+		sort($apps);
+		array_unshift($apps, 'files');
 		return $apps;
 	}
 
@@ -515,7 +515,7 @@ class OC_App {
 		}
 		unset($navEntry);
 
-		\usort($list, function ($a, $b) {
+		usort($list, function ($a, $b) {
 			if ($a["order"] == $b["order"]) {
 				return 0;
 			}
@@ -580,7 +580,7 @@ class OC_App {
 		$path = self::getAppPath($appId);
 		// Check if the parent directory is marked as writable in config.php
 		if ($path !== false) {
-			$appDir = \substr($path, 0, -\strlen("/$appId"));
+			$appDir = substr($path, 0, -\strlen("/$appId"));
 			foreach (OC::$APPSROOTS as $dir) {
 				if ($dir['path'] !== $appDir) {
 					continue;
@@ -592,7 +592,7 @@ class OC_App {
 				}
 			}
 		}
-		return ($path !== false) ? \is_writable($path) : false;
+		return ($path !== false) ? is_writable($path) : false;
 	}
 
 	/**
@@ -651,17 +651,17 @@ class OC_App {
 	 */
 	public static function getCurrentApp() {
 		$request = \OC::$server->getRequest();
-		$script = \substr($request->getScriptName(), \strlen(OC::$WEBROOT) + 1);
-		$topFolder = \substr($script, 0, \strpos($script, '/'));
+		$script = substr($request->getScriptName(), \strlen(OC::$WEBROOT) + 1);
+		$topFolder = substr($script, 0, strpos($script, '/'));
 		if (empty($topFolder)) {
 			$path_info = $request->getPathInfo();
 			if ($path_info) {
-				$topFolder = \substr($path_info, 1, \strpos($path_info, '/', 1) - 1);
+				$topFolder = substr($path_info, 1, strpos($path_info, '/', 1) - 1);
 			}
 		}
 		if ($topFolder == 'apps') {
 			$length = \strlen($topFolder);
-			return \substr($script, $length + 1, \strpos($script, '/', $length + 1) - $length - 1);
+			return substr($script, $length + 1, strpos($script, '/', $length + 1) - $length - 1);
 		} else {
 			return $topFolder;
 		}
@@ -744,15 +744,15 @@ class OC_App {
 		$apps = [];
 
 		foreach (OC::$APPSROOTS as $apps_dir) {
-			if (!\is_readable($apps_dir['path'])) {
+			if (!is_readable($apps_dir['path'])) {
 				\OCP\Util::writeLog('core', 'unable to read app folder : ' . $apps_dir['path'], \OCP\Util::WARN);
 				continue;
 			}
-			$dh = \opendir($apps_dir['path']);
+			$dh = opendir($apps_dir['path']);
 
 			if (\is_resource($dh)) {
-				while (($file = \readdir($dh)) !== false) {
-					if ($file[0] != '.' and \is_dir($apps_dir['path'] . '/' . $file) and \is_file($apps_dir['path'] . '/' . $file . '/appinfo/info.xml')) {
+				while (($file = readdir($dh)) !== false) {
+					if ($file[0] != '.' and is_dir($apps_dir['path'] . '/' . $file) and is_file($apps_dir['path'] . '/' . $file . '/appinfo/info.xml')) {
 						$apps[] = $file;
 					}
 				}
@@ -784,7 +784,7 @@ class OC_App {
 		$urlGenerator = \OC::$server->getURLGenerator();
 
 		foreach ($installedApps as $app) {
-			if (\array_search($app, $blacklist) === false) {
+			if (array_search($app, $blacklist) === false) {
 				$info = OC_App::getAppInfo($app);
 				if (!\is_array($info)) {
 					\OCP\Util::writeLog('core', 'Could not read app info file for app "' . $app . '"', \OCP\Util::ERROR);
@@ -827,12 +827,12 @@ class OC_App {
 				$appPath = self::getAppPath($app);
 				if ($appPath !== false) {
 					$appIcon = $appPath . '/img/' . $app . '.svg';
-					if (\file_exists($appIcon)) {
+					if (file_exists($appIcon)) {
 						$info['preview'] = \OC::$server->getURLGenerator()->imagePath($app, $app . '.svg');
 						$info['previewAsIcon'] = true;
 					} else {
 						$appIcon = $appPath . '/img/app.svg';
-						if (\file_exists($appIcon)) {
+						if (file_exists($appIcon)) {
 							$info['preview'] = \OC::$server->getURLGenerator()->imagePath($app, 'app.svg');
 							$info['previewAsIcon'] = true;
 						}
@@ -843,7 +843,7 @@ class OC_App {
 					foreach ($info['documentation'] as $key => $url) {
 						// If it is not an absolute URL we assume it is a key
 						// i.e. admin-ldap will get converted to go.php?to=admin-ldap
-						if (\stripos($url, 'https://') !== 0 && \stripos($url, 'http://') !== 0) {
+						if (stripos($url, 'https://') !== 0 && stripos($url, 'http://') !== 0) {
 							$url = $urlGenerator->linkToDocs($url);
 						}
 
@@ -884,17 +884,17 @@ class OC_App {
 	 * @return string shortened $version1
 	 */
 	private static function adjustVersionParts($version1, $version2) {
-		$version1 = \explode('.', $version1);
-		$version2 = \explode('.', $version2);
+		$version1 = explode('.', $version1);
+		$version2 = explode('.', $version2);
 		// reduce $version1 to match the number of parts in $version2
 		while (\count($version1) > \count($version2)) {
-			\array_pop($version1);
+			array_pop($version1);
 		}
 		// if $version1 does not have enough parts, add some
 		while (\count($version1) < \count($version2)) {
 			$version1[] = '0';
 		}
-		return \implode('.', $version1);
+		return implode('.', $version1);
 	}
 
 	/**
@@ -931,17 +931,17 @@ class OC_App {
 		}
 
 		if (\is_array($ocVersion)) {
-			$ocVersion = \implode('.', $ocVersion);
+			$ocVersion = implode('.', $ocVersion);
 		}
 
 		if (!empty($requireMin)
-			&& \version_compare(self::adjustVersionParts($ocVersion, $requireMin), $requireMin, '<')
+			&& version_compare(self::adjustVersionParts($ocVersion, $requireMin), $requireMin, '<')
 		) {
 			return false;
 		}
 
 		if (!empty($requireMax)
-			&& \version_compare(self::adjustVersionParts($ocVersion, $requireMax), $requireMax, '>')
+			&& version_compare(self::adjustVersionParts($ocVersion, $requireMax), $requireMax, '>')
 		) {
 			return false;
 		}
@@ -980,14 +980,14 @@ class OC_App {
 			$ms = new \OC\DB\MigrationService($appId, \OC::$server->getDatabaseConnection());
 			$ms->migrate();
 		} else {
-			if (\file_exists($appPath . '/appinfo/database.xml')) {
+			if (file_exists($appPath . '/appinfo/database.xml')) {
 				OC_DB::updateDbFromStructure($appPath . '/appinfo/database.xml');
 			}
 		}
 		self::executeRepairSteps($appId, $appData['repair-steps']['post-migration']);
 		self::setupLiveMigrations($appId, $appData['repair-steps']['live-migration']);
 		// run upgrade code
-		if (\file_exists($appPath . '/appinfo/update.php')) {
+		if (file_exists($appPath . '/appinfo/update.php')) {
 			self::loadApp($appId, false);
 			include $appPath . '/appinfo/update.php';
 		}
@@ -1096,17 +1096,17 @@ class OC_App {
 				// manages line breaks itself
 
 				// first of all we split on empty lines
-				$paragraphs = \preg_split("!\n[[:space:]]*\n!mu", $data['description']);
+				$paragraphs = preg_split("!\n[[:space:]]*\n!mu", $data['description']);
 
 				$result = [];
 				foreach ($paragraphs as $value) {
 					// replace multiple whitespace (tabs, space, newlines) inside a paragraph
 					// with a single space - also trims whitespace
-					$result[] = \trim(\preg_replace('![[:space:]]+!mu', ' ', $value));
+					$result[] = trim(preg_replace('![[:space:]]+!mu', ' ', $value));
 				}
 
 				// join the single paragraphs with a empty line in between
-				$data['description'] = \implode("\n\n", $result);
+				$data['description'] = implode("\n\n", $result);
 			} else {
 				$data['description'] = '';
 			}
@@ -1125,9 +1125,10 @@ class OC_App {
 		$dependencyAnalyzer = new DependencyAnalyzer(new Platform($config), $l);
 		$missing = $dependencyAnalyzer->analyze($info);
 		if (!empty($missing)) {
-			$missingMsg = \join(PHP_EOL, $missing);
+			$missingMsg = join(PHP_EOL, $missing);
 			throw new \Exception(
-				$l->t('App "%s" cannot be installed because the following dependencies are not fulfilled: %s',
+				$l->t(
+					'App "%s" cannot be installed because the following dependencies are not fulfilled: %s',
 					[$info['name'], $missingMsg]
 				)
 			);
@@ -1148,8 +1149,8 @@ class OC_App {
 		$currentVersion = $p->normalize($currentVersion);
 		$installedVersion = $p->normalize($installedVersion);
 
-		$currentVersion = \explode('.', $currentVersion);
-		$installedVersion = \explode('.', $installedVersion);
+		$currentVersion = explode('.', $currentVersion);
+		$installedVersion = explode('.', $installedVersion);
 
 		if ($currentVersion[0] === $installedVersion[0] &&
 			$currentVersion[1] === $installedVersion[1]) {

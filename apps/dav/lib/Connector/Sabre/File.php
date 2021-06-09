@@ -170,7 +170,7 @@ class File extends Node implements IFile, IFileNode {
 
 		if ($usePartFile) {
 			// mark file as partial while uploading (ignored by the scanner)
-			$partFilePath = $this->getPartFileBasePath($this->path) . '.ocTransferId' . \rand() . '.part';
+			$partFilePath = $this->getPartFileBasePath($this->path) . '.ocTransferId' . rand() . '.part';
 		} else {
 			// upload file directly as the final path
 			$partFilePath = $this->path;
@@ -199,7 +199,7 @@ class File extends Node implements IFile, IFileNode {
 			}
 
 			list($count, $result) = \OC_Helper::streamCopy($data, $target);
-			\fclose($target);
+			fclose($target);
 
 			try {
 				$this->changeLock(ILockingProvider::LOCK_SHARED);
@@ -307,7 +307,7 @@ class File extends Node implements IFile, IFileNode {
 		if ($partFileInStorage) {
 			return $path;
 		} else {
-			return \md5($path); // will place it in the root of the view with a unique name
+			return md5($path); // will place it in the root of the view with a unique name
 		}
 	}
 
@@ -387,7 +387,7 @@ class File extends Node implements IFile, IFileNode {
 	public function get() {
 		//throw exception if encryption is disabled but files are still encrypted
 		try {
-			$viewPath = \ltrim($this->path, '/');
+			$viewPath = ltrim($this->path, '/');
 			if (!$this->info->isReadable() || !$this->fileView->file_exists($viewPath)) {
 				// do a if the file did not exist
 				throw new NotFound();
@@ -493,7 +493,8 @@ class File extends Node implements IFile, IFileNode {
 				if ($bytesWritten != $expected) {
 					$chunk_handler->remove($info['index']);
 					throw new BadRequest(
-						'expected filesize ' . $expected . ' got ' . $bytesWritten);
+						'expected filesize ' . $expected . ' got ' . $bytesWritten
+					);
 				}
 			}
 		}
@@ -621,10 +622,10 @@ class File extends Node implements IFile, IFileNode {
 			return true;
 		}
 
-		$expectedChecksum = \trim($request->server['HTTP_OC_CHECKSUM']);
+		$expectedChecksum = trim($request->server['HTTP_OC_CHECKSUM']);
 		$computedChecksums = $meta['checksum'];
 
-		return \strpos($computedChecksums, $expectedChecksum) !== false;
+		return strpos($computedChecksums, $expectedChecksum) !== false;
 	}
 
 	/**
@@ -704,12 +705,12 @@ class File extends Node implements IFile, IFileNode {
 			return $allChecksums;
 		}
 
-		$checksums = \explode(' ', $allChecksums);
-		$algoPrefix = \strtoupper($algo) . ':';
+		$checksums = explode(' ', $allChecksums);
+		$algoPrefix = strtoupper($algo) . ':';
 
 		foreach ($checksums as $checksum) {
 			// starts with $algoPrefix
-			if (\substr($checksum, 0, \strlen($algoPrefix)) === $algoPrefix) {
+			if (substr($checksum, 0, \strlen($algoPrefix)) === $algoPrefix) {
 				return $checksum;
 			}
 		}
@@ -718,7 +719,7 @@ class File extends Node implements IFile, IFileNode {
 	}
 
 	protected function header($string) {
-		\header($string);
+		header($string);
 	}
 
 	/**

@@ -56,7 +56,7 @@ class Template extends \OC_Template {
 	 * @since 8.0.0
 	 */
 	public static function image_path($app, $image) {
-		return \image_path($app, $image);
+		return image_path($app, $image);
 	}
 
 	/**
@@ -67,7 +67,7 @@ class Template extends \OC_Template {
 	 * @since 8.0.0
 	 */
 	public static function mimetype_icon($mimetype) {
-		return \mimetype_icon($mimetype);
+		return mimetype_icon($mimetype);
 	}
 
 	/**
@@ -78,7 +78,7 @@ class Template extends \OC_Template {
 	 * @since 8.0.0
 	 */
 	public static function preview_icon($path) {
-		return \preview_icon($path);
+		return preview_icon($path);
 	}
 
 	/**
@@ -91,7 +91,7 @@ class Template extends \OC_Template {
 	 * @since 8.0.0
 	 */
 	public static function publicPreview_icon($path, $token) {
-		return \publicPreview_icon($path, $token);
+		return publicPreview_icon($path, $token);
 	}
 
 	/**
@@ -103,7 +103,7 @@ class Template extends \OC_Template {
 	 * @since 8.0.0
 	 */
 	public static function human_file_size($bytes) {
-		return \human_file_size($bytes);
+		return human_file_size($bytes);
 	}
 
 	/**
@@ -115,7 +115,7 @@ class Template extends \OC_Template {
 	 * @since 8.0.0
 	 */
 	public static function relative_modified_date($timestamp, $dateOnly = false) {
-		return \relative_modified_date($timestamp, null, $dateOnly);
+		return relative_modified_date($timestamp, null, $dateOnly);
 	}
 
 	/**
@@ -128,6 +128,6 @@ class Template extends \OC_Template {
 	 * @since 8.0.0
 	 */
 	public static function html_select_options($options, $selected, $params= []) {
-		return \html_select_options($options, $selected, $params);
+		return html_select_options($options, $selected, $params);
 	}
 }

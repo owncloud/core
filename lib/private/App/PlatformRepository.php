@@ -36,7 +36,7 @@ class PlatformRepository {
 	}
 
 	protected function initialize() {
-		$loadedExtensions = \get_loaded_extensions();
+		$loadedExtensions = get_loaded_extensions();
 		$packages = [];
 
 		// Extensions scanning
@@ -61,7 +61,7 @@ class PlatformRepository {
 			$prettyVersion = null;
 			switch ($name) {
 				case 'curl':
-					$curlVersion = \curl_version();
+					$curlVersion = curl_version();
 					$prettyVersion = $curlVersion['version'];
 					break;
 
@@ -76,11 +76,11 @@ class PlatformRepository {
 					} else {
 						$reflector = new \ReflectionExtension('intl');
 
-						\ob_start();
+						ob_start();
 						$reflector->info();
-						$output = \ob_get_clean();
+						$output = ob_get_clean();
 
-						\preg_match('/^ICU version => (.*)$/m', $output, $matches);
+						preg_match('/^ICU version => (.*)$/m', $output, $matches);
 						$prettyVersion = $matches[1];
 					}
 
@@ -91,17 +91,17 @@ class PlatformRepository {
 					break;
 
 				case 'openssl':
-					$prettyVersion = \preg_replace_callback('{^(?:OpenSSL\s*)?([0-9.]+)([a-z]?).*}', function ($match) {
+					$prettyVersion = preg_replace_callback('{^(?:OpenSSL\s*)?([0-9.]+)([a-z]?).*}', function ($match) {
 						return $match[1] . (empty($match[2]) ? '' : '.' . (\ord($match[2]) - 96));
 					}, OPENSSL_VERSION_TEXT);
 					break;
 
 				case 'pcre':
-					$prettyVersion = \preg_replace('{^(\S+).*}', '$1', PCRE_VERSION);
+					$prettyVersion = preg_replace('{^(\S+).*}', '$1', PCRE_VERSION);
 					break;
 
 				case 'uuid':
-					$prettyVersion = \phpversion('uuid');
+					$prettyVersion = phpversion('uuid');
 					break;
 
 				case 'xsl':
@@ -126,7 +126,7 @@ class PlatformRepository {
 	}
 
 	private function buildPackageName($name) {
-		return \str_replace(' ', '-', $name);
+		return str_replace(' ', '-', $name);
 	}
 
 	/**
@@ -154,32 +154,32 @@ class PlatformRepository {
 	 * @return string
 	 */
 	public function normalizeVersion($version, $fullVersion = null) {
-		$version = \trim($version);
+		$version = trim($version);
 		if ($fullVersion === null) {
 			$fullVersion = $version;
 		}
 		// ignore aliases and just assume the alias is required instead of the source
-		if (\preg_match('{^([^,\s]+) +as +([^,\s]+)$}', $version, $match)) {
+		if (preg_match('{^([^,\s]+) +as +([^,\s]+)$}', $version, $match)) {
 			$version = $match[1];
 		}
 		// match master-like branches
-		if (\preg_match('{^(?:dev-)?(?:master|trunk|default)$}i', $version)) {
+		if (preg_match('{^(?:dev-)?(?:master|trunk|default)$}i', $version)) {
 			return '9999999-dev';
 		}
-		if (\strtolower(\substr($version, 0, 4)) === 'dev-') {
-			return 'dev-' . \substr($version, 4);
+		if (strtolower(substr($version, 0, 4)) === 'dev-') {
+			return 'dev-' . substr($version, 4);
 		}
 		// match classical versioning
-		if (\preg_match('{^v?(\d{1,3})(\.\d+)?(\.\d+)?(\.\d+)?' . self::$modifierRegex . '$}i', $version, $matches)) {
+		if (preg_match('{^v?(\d{1,3})(\.\d+)?(\.\d+)?(\.\d+)?' . self::$modifierRegex . '$}i', $version, $matches)) {
 			$version = $matches[1]
 				. (!empty($matches[2]) ? $matches[2] : '.0')
 				. (!empty($matches[3]) ? $matches[3] : '.0')
 				. (!empty($matches[4]) ? $matches[4] : '.0');
 			$index = 5;
-		} elseif (\preg_match('{^v?(\d{4}(?:[.:-]?\d{2}){1,6}(?:[.:-]?\d{1,3})?)' . self::$modifierRegex . '$}i', $version, $matches)) { // match date-based versioning
-			$version = \preg_replace('{\D}', '-', $matches[1]);
+		} elseif (preg_match('{^v?(\d{4}(?:[.:-]?\d{2}){1,6}(?:[.:-]?\d{1,3})?)' . self::$modifierRegex . '$}i', $version, $matches)) { // match date-based versioning
+			$version = preg_replace('{\D}', '-', $matches[1]);
 			$index = 2;
-		} elseif (\preg_match('{^v?(\d{4,})(\.\d+)?(\.\d+)?(\.\d+)?' . self::$modifierRegex . '$}i', $version, $matches)) {
+		} elseif (preg_match('{^v?(\d{4,})(\.\d+)?(\.\d+)?(\.\d+)?' . self::$modifierRegex . '$}i', $version, $matches)) {
 			$version = $matches[1]
 				. (!empty($matches[2]) ? $matches[2] : '.0')
 				. (!empty($matches[3]) ? $matches[3] : '.0')
@@ -200,9 +200,9 @@ class PlatformRepository {
 			return $version;
 		}
 		$extraMessage = '';
-		if (\preg_match('{ +as +' . \preg_quote($version) . '$}', $fullVersion)) {
+		if (preg_match('{ +as +' . preg_quote($version) . '$}', $fullVersion)) {
 			$extraMessage = ' in "' . $fullVersion . '", the alias must be an exact version';
-		} elseif (\preg_match('{^' . \preg_quote($version) . ' +as +}', $fullVersion)) {
+		} elseif (preg_match('{^' . preg_quote($version) . ' +as +}', $fullVersion)) {
 			$extraMessage = ' in "' . $fullVersion . '", the alias source must be an exact version, if it is a branch name you should prefix it with dev-';
 		}
 		throw new \UnexpectedValueException('Invalid version string "' . $version . '"' . $extraMessage);
@@ -213,7 +213,7 @@ class PlatformRepository {
 	 * @return string
 	 */
 	private function expandStability($stability) {
-		$stability = \strtolower($stability);
+		$stability = strtolower($stability);
 		switch ($stability) {
 			case 'a':
 				return 'alpha';

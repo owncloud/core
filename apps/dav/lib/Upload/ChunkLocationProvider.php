@@ -65,9 +65,9 @@ class ChunkLocationProvider implements IMountProvider {
 		if ($chunkBaseDir === '') {
 			return [];
 		}
-		$cacheDir = \rtrim($chunkBaseDir, '/') . '/' . $user->getUID();
-		if (!\file_exists($cacheDir)) {
-			\mkdir($cacheDir, 0770, true);
+		$cacheDir = rtrim($chunkBaseDir, '/') . '/' . $user->getUID();
+		if (!file_exists($cacheDir)) {
+			mkdir($cacheDir, 0770, true);
 		}
 
 		return [

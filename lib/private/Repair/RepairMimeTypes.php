@@ -316,7 +316,7 @@ class RepairMimeTypes implements IRepairStep {
 		// add a version comparison to avoid doing it every time
 
 		// only update mime types if necessary as it can be expensive
-		if (\version_compare($ocVersionFromBeforeUpdate, '8.2.0', '<')) {
+		if (version_compare($ocVersionFromBeforeUpdate, '8.2.0', '<')) {
 			$this->fixOfficeMimeTypes();
 			$out->info('Fixed office mime types');
 
@@ -343,7 +343,7 @@ class RepairMimeTypes implements IRepairStep {
 		}
 
 		// Mimetype updates from #19272
-		if (\version_compare($ocVersionFromBeforeUpdate, '8.2.0.8', '<')) {
+		if (version_compare($ocVersionFromBeforeUpdate, '8.2.0.8', '<')) {
 			$this->introduceJavaMimeType();
 			$out->info('Fixed java/class mime types');
 
@@ -357,7 +357,7 @@ class RepairMimeTypes implements IRepairStep {
 			$out->info('Fixed rtf mime type');
 		}
 
-		if (\version_compare($ocVersionFromBeforeUpdate, '9.0.0.10', '<')) {
+		if (version_compare($ocVersionFromBeforeUpdate, '9.0.0.10', '<')) {
 			$this->introduceRichDocumentsMimeTypes();
 			$out->info('Fixed richdocuments additional office mime types');
 		}

@@ -181,13 +181,14 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function userRequestsEndpointsWithBodyAndNoAuthThenStatusCodeAboutUser($method, $body, $ofUser, TableNode $table) {
-		$ofUser = \strtolower($this->featureContext->getActualUsername($ofUser));
+		$ofUser = strtolower($this->featureContext->getActualUsername($ofUser));
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		$this->featureContext->emptyLastOCSStatusCodesArray();
 		$this->featureContext->emptyLastHTTPStatusCodesArray();
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
-				$row['endpoint'], $ofUser
+				$row['endpoint'],
+				$ofUser
 			);
 			$this->sendRequest($row['endpoint'], $method, null, false, $body);
 			$this->featureContext->pushToLastStatusCodesArrays();
@@ -256,10 +257,19 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function userRequestsEndpointsWithBasicAuthAndGeneratedPasswordWithProperty(
-		$user, $method, $property, $ofUser, TableNode $table
+		$user,
+		$method,
+		$property,
+		$ofUser,
+		TableNode $table
 	) {
 		$this->requestEndpointsWithBasicAuthAndGeneratedPassword(
-			$user, $method, $ofUser, $table, null, $property
+			$user,
+			$method,
+			$ofUser,
+			$table,
+			null,
+			$property
 		);
 	}
 
@@ -276,10 +286,18 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function userRequestsEndpointsWithPasswordWithProperty(
-		$user, $method, $property, $ofUser, TableNode $table
+		$user,
+		$method,
+		$property,
+		$ofUser,
+		TableNode $table
 	) {
 		$this->userRequestsEndpointsWithPassword(
-			$user, $method, $ofUser, $table, $property
+			$user,
+			$method,
+			$ofUser,
+			$table,
+			$property
 		);
 	}
 
@@ -296,10 +314,18 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function userRequestsEndpointsWithBasicAuthAndGeneratedPasswordWithBody(
-		$user, $method, $body, $ofUser, TableNode $table
+		$user,
+		$method,
+		$body,
+		$ofUser,
+		TableNode $table
 	) {
 		$this->requestEndpointsWithBasicAuthAndGeneratedPassword(
-			$user, $method, $ofUser, $table, $body
+			$user,
+			$method,
+			$ofUser,
+			$table,
+			$body
 		);
 	}
 
@@ -315,10 +341,15 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function requestEndpointsWithBasicAuthAndGeneratedPassword(
-		$user, $method, $ofUser, TableNode $table, $body = null, $property = null
+		$user,
+		$method,
+		$ofUser,
+		TableNode $table,
+		$body = null,
+		$property = null
 	) {
 		$user = $this->featureContext->getActualUsername($user);
-		$ofUser = \strtolower($this->featureContext->getActualUsername($ofUser));
+		$ofUser = strtolower($this->featureContext->getActualUsername($ofUser));
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		$this->featureContext->emptyLastOCSStatusCodesArray();
 		$this->featureContext->emptyLastHTTPStatusCodesArray();
@@ -330,7 +361,8 @@ class AuthContext implements Context {
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
-				$row['endpoint'], $ofUser
+				$row['endpoint'],
+				$ofUser
 			);
 			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $this->appToken, $body);
 			$this->featureContext->pushToLastStatusCodesArrays();
@@ -402,10 +434,15 @@ class AuthContext implements Context {
 		$this->featureContext->emptyLastOCSStatusCodesArray();
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
-				$row['endpoint'], $ofUser
+				$row['endpoint'],
+				$ofUser
 			);
 			$this->userRequestsURLWithUsingBasicAuth(
-				$this->featureContext->getAdminUsername(), $row['endpoint'], $method, $password, $body
+				$this->featureContext->getAdminUsername(),
+				$row['endpoint'],
+				$method,
+				$password,
+				$body
 			);
 			$this->featureContext->pushToLastStatusCodesArrays();
 		}
@@ -482,13 +519,14 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function userRequestsEndpointsUsingTheGeneratedAppPasswordThenStatusCodeAboutUser($method, $user, TableNode $table) {
-		$user = \strtolower($this->featureContext->getActualUsername($user));
+		$user = strtolower($this->featureContext->getActualUsername($user));
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		$this->featureContext->emptyLastHTTPStatusCodesArray();
 		$this->featureContext->emptyLastOCSStatusCodesArray();
 		foreach ($table->getHash() as $row) {
 			$row['endpoint'] = $this->featureContext->substituteInLineCodes(
-				$row['endpoint'], $user
+				$row['endpoint'],
+				$user
 			);
 			$this->userRequestsURLWithUsingAppPassword($row['endpoint'], $method);
 			$this->featureContext->pushToLastStatusCodesArrays();
@@ -525,7 +563,12 @@ class AuthContext implements Context {
 	 * @return void
 	 */
 	public function sendRequest(
-		$url, $method, $authHeader = null, $useCookies = false, $body = null, $headers = []
+		$url,
+		$method,
+		$authHeader = null,
+		$useCookies = false,
+		$body = null,
+		$headers = []
 	) {
 		// reset responseXml
 		$this->featureContext->setResponseXml([]);
@@ -546,7 +589,14 @@ class AuthContext implements Context {
 		}
 		$this->featureContext->setResponse(
 			HttpRequestHelper::sendRequest(
-				$fullUrl, $method, null, null, $headers, $body, null, $cookies
+				$fullUrl,
+				$method,
+				null,
+				null,
+				$headers,
+				$body,
+				null,
+				$cookies
 			)
 		);
 	}
@@ -569,10 +619,16 @@ class AuthContext implements Context {
 		];
 		$this->featureContext->setResponse(
 			HttpRequestHelper::post(
-				$url, null, null, $headers, $body, null, $this->featureContext->getCookieJar()
+				$url,
+				null,
+				null,
+				$headers,
+				$body,
+				null,
+				$this->featureContext->getCookieJar()
 			)
 		);
-		$token = \json_decode($this->featureContext->getResponse()->getBody()->getContents());
+		$token = json_decode($this->featureContext->getResponse()->getBody()->getContents());
 		$this->appToken = $token->token;
 		$this->appTokens[$token->deviceToken->name]
 			= ["id" => $token->deviceToken->id, "token" => $token->token];
@@ -595,7 +651,13 @@ class AuthContext implements Context {
 		];
 		$this->featureContext->setResponse(
 			HttpRequestHelper::delete(
-				$url, null, null, $headers, null, null, $this->featureContext->getCookieJar()
+				$url,
+				null,
+				null,
+				$headers,
+				null,
+				null,
+				$this->featureContext->getCookieJar()
 			)
 		);
 	}
@@ -634,7 +696,7 @@ class AuthContext implements Context {
 	 */
 	public function aNewClientTokenHasBeenGenerated($user) {
 		$user = $this->featureContext->getActualUsername($user);
-		$body = \json_encode(
+		$body = json_encode(
 			[
 				'user' => $this->featureContext->getActualUsername($user),
 				'password' => $this->featureContext->getPasswordForUser($user),
@@ -645,7 +707,7 @@ class AuthContext implements Context {
 		$this->featureContext->setResponse(HttpRequestHelper::post($url, null, null, $headers, $body));
 		$this->featureContext->theHTTPStatusCodeShouldBe("200");
 		$this->clientToken
-			= \json_decode($this->featureContext->getResponse()->getBody()->getContents())->token;
+			= json_decode($this->featureContext->getResponse()->getBody()->getContents())->token;
 	}
 
 	/**
@@ -675,7 +737,8 @@ class AuthContext implements Context {
 	public function userRequestsURLWithUsingBasicAuth($user, $url, $method, $password = null, $body = null, $header = null) {
 		$userRenamed = $this->featureContext->getActualUsername($user);
 		$url = $this->featureContext->substituteInLineCodes(
-			$url, $userRenamed
+			$url,
+			$userRenamed
 		);
 		if ($password === null) {
 			$authString = "$userRenamed:" . $this->featureContext->getPasswordForUser($user);
@@ -683,7 +746,12 @@ class AuthContext implements Context {
 			$authString = $userRenamed . ":" . $this->featureContext->getActualPassword($password);
 		}
 		$this->sendRequest(
-			$url, $method, 'basic ' . \base64_encode($authString), false, $body, $header
+			$url,
+			$method,
+			'basic ' . base64_encode($authString),
+			false,
+			$body,
+			$header
 		);
 	}
 
@@ -702,7 +770,8 @@ class AuthContext implements Context {
 		$user = $this->featureContext->getActualUsername($user);
 		$authString = "$user:" . $this->featureContext->getPasswordForUser($user);
 		$url = $this->featureContext->substituteInLineCodes(
-			$url, $user
+			$url,
+			$user
 		);
 		$this->featureContext->verifyTableNodeColumns(
 			$headersTable,
@@ -713,7 +782,12 @@ class AuthContext implements Context {
 			$headers[$row['header']] = $row ['value'];
 		}
 		$this->sendRequest(
-			$url, $method, 'basic ' . \base64_encode($authString), false, null, $headers
+			$url,
+			$method,
+			'basic ' . base64_encode($authString),
+			false,
+			null,
+			$headers
 		);
 	}
 
@@ -730,10 +804,18 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function userHasRequestedURLWithUsingBasicAuth(
-		$user, $url, $method, $password = null, $body = null
+		$user,
+		$url,
+		$method,
+		$password = null,
+		$body = null
 	) {
 		$this->userRequestsURLWithUsingBasicAuth(
-			$user, $url, $method, $password, $body
+			$user,
+			$url,
+			$method,
+			$password,
+			$body
 		);
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
@@ -750,7 +832,10 @@ class AuthContext implements Context {
 	 */
 	public function administratorRequestsURLWithUsingBasicAuth($url, $method, $password = null) {
 		$this->userRequestsURLWithUsingBasicAuth(
-			$this->featureContext->getAdminUsername(), $url, $method, $password
+			$this->featureContext->getAdminUsername(),
+			$url,
+			$method,
+			$password
 		);
 	}
 
@@ -768,7 +853,7 @@ class AuthContext implements Context {
 		$this->sendRequest(
 			$url,
 			$method,
-			'basic ' . \base64_encode("$user:" . $this->clientToken)
+			'basic ' . base64_encode("$user:" . $this->clientToken)
 		);
 	}
 
@@ -887,7 +972,13 @@ class AuthContext implements Context {
 		// Request a new session and extract CSRF token
 		$this->featureContext->setResponse(
 			HttpRequestHelper::get(
-				$loginUrl, null, null, null, null, null, $this->featureContext->getCookieJar()
+				$loginUrl,
+				null,
+				null,
+				null,
+				null,
+				null,
+				$this->featureContext->getCookieJar()
 			)
 		);
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
@@ -901,7 +992,13 @@ class AuthContext implements Context {
 		];
 		$this->featureContext->setResponse(
 			HttpRequestHelper::post(
-				$loginUrl, null, null, null, $body, null, $this->featureContext->getCookieJar()
+				$loginUrl,
+				null,
+				null,
+				null,
+				$body,
+				null,
+				$this->featureContext->getCookieJar()
 			)
 		);
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
@@ -954,7 +1051,7 @@ class AuthContext implements Context {
 	 */
 	public function generateAuthTokenForAdmin() {
 		$this->aNewBrowserSessionForHasBeenStarted($this->featureContext->getAdminUsername());
-		$this->userGeneratesNewAppPasswordNamed('acceptance-test ' . \microtime());
+		$this->userGeneratesNewAppPasswordNamed('acceptance-test ' . microtime());
 		return $this->appToken;
 	}
 

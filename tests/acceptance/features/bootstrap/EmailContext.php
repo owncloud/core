@@ -56,9 +56,10 @@ class EmailContext implements Context {
 	 * @throws Exception
 	 */
 	public function assertThatEmailContains($address, PyStringNode $content, $sender = null) {
-		$expectedContent = \str_replace("\r\n", "\n", $content->getRaw());
+		$expectedContent = str_replace("\r\n", "\n", $content->getRaw());
 		$expectedContent = $this->featureContext->substituteInLineCodes(
-			$expectedContent, $sender
+			$expectedContent,
+			$sender
 		);
 		$emailBody = EmailHelper::getBodyOfLastEmail($this->localMailhogUrl, $address);
 		Assert::assertStringContainsString(
@@ -144,7 +145,8 @@ class EmailContext implements Context {
 	public function assertThatEmailDoesntExistWithTheAddress($address) {
 		Assert::assertFalse(
 			EmailHelper::emailReceived(
-				EmailHelper::getLocalMailhogUrl(), $address
+				EmailHelper::getLocalMailhogUrl(),
+				$address
 			),
 			"Email exists with email address: {$address} but was not expected to be."
 		);

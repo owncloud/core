@@ -72,8 +72,8 @@ class Router implements IRouter {
 		if ($baseUrl === null) {
 			$baseUrl = \OC::$WEBROOT;
 		}
-		if (!(\getenv('front_controller_active') === 'true')) {
-			$baseUrl = \rtrim($baseUrl, '/') . '/index.php';
+		if (!(getenv('front_controller_active') === 'true')) {
+			$baseUrl = rtrim($baseUrl, '/') . '/index.php';
 		}
 		if (!\OC::$CLI) {
 			$method = $_SERVER['REQUEST_METHOD'];
@@ -100,7 +100,7 @@ class Router implements IRouter {
 				$appPath = \OC_App::getAppPath($app);
 				if ($appPath !== false) {
 					$file = $appPath . '/appinfo/routes.php';
-					if (\file_exists($file)) {
+					if (file_exists($file)) {
 						$this->routingFiles[$app] = $file;
 					}
 				}
@@ -131,7 +131,7 @@ class Router implements IRouter {
 				return;
 			}
 			$file = \OC_App::getAppPath($app) . '/appinfo/routes.php';
-			if ($file !== false && \file_exists($file)) {
+			if ($file !== false && file_exists($file)) {
 				$routingFiles = [$app => $file];
 			} else {
 				$routingFiles = [];
@@ -236,10 +236,12 @@ class Router implements IRouter {
 	 * @param array $requirements An array of requirements for parameters (regexes)
 	 * @return \OC\Route\Route
 	 */
-	public function create($name,
-						   $pattern,
-						   array $defaults = [],
-						   array $requirements = []) {
+	public function create(
+		$name,
+		$pattern,
+		array $defaults = [],
+		array $requirements = []
+	) {
 		$route = new Route($pattern, $defaults, $requirements);
 		$this->collection->add($name, $route);
 		return $route;
@@ -253,21 +255,21 @@ class Router implements IRouter {
 	 * @return void
 	 */
 	public function match($url) {
-		if (\substr($url, 0, 6) === '/apps/') {
+		if (substr($url, 0, 6) === '/apps/') {
 			// empty string / 'apps' / $app / rest of the route
-			list(, , $app, ) = \explode('/', $url, 4);
+			list(, , $app, ) = explode('/', $url, 4);
 
 			$app = \OC_App::cleanAppId($app);
 			\OC::$REQUESTEDAPP = $app;
 			$this->loadRoutes($app);
-		} elseif (\substr($url, 0, 13) === '/ocsapp/apps/') {
+		} elseif (substr($url, 0, 13) === '/ocsapp/apps/') {
 			// empty string / 'ocsapp' / 'apps' / $app / rest of the route
-			list(, , , $app, ) = \explode('/', $url, 5);
+			list(, , , $app, ) = explode('/', $url, 5);
 
 			$app = \OC_App::cleanAppId($app);
 			\OC::$REQUESTEDAPP = $app;
 			$this->loadRoutes($app);
-		} elseif (\substr($url, 0, 6) === '/core/' or \substr($url, 0, 10) === '/settings/') {
+		} elseif (substr($url, 0, 6) === '/core/' or substr($url, 0, 10) === '/settings/') {
 			\OC::$REQUESTEDAPP = $url;
 			if (!\OC::$server->getConfig()->getSystemValue('maintenance', false) && !Util::needUpgrade()) {
 				\OC_App::loadApps();
@@ -297,7 +299,7 @@ class Router implements IRouter {
 				// Return since no more processing for an OPTIONS request is required
 				return;
 			} catch (ResourceNotFoundException $e) {
-				if (\substr($url, -1) !== '/') {
+				if (substr($url, -1) !== '/') {
 					// We allow links to apps/files? for backwards compatibility reasons
 					// However, since Symfony does not allow empty route names, the route
 					// we need to match is '/', so we need to append the '/' here.
@@ -316,7 +318,7 @@ class Router implements IRouter {
 		try {
 			$parameters = $matcher->match($url);
 		} catch (ResourceNotFoundException $e) {
-			if (\substr($url, -1) !== '/') {
+			if (substr($url, -1) !== '/') {
 				// We allow links to apps/files? for backwards compatibility reasons
 				// However, since Symfony does not allow empty route names, the route
 				// we need to match is '/', so we need to append the '/' here.
@@ -369,9 +371,11 @@ class Router implements IRouter {
 	 * @param bool $absolute
 	 * @return string
 	 */
-	public function generate($name,
-							 $parameters = [],
-							 $absolute = false) {
+	public function generate(
+		$name,
+		$parameters = [],
+		$absolute = false
+	) {
 		$this->loadRoutes();
 		try {
 			$referenceType = UrlGenerator::ABSOLUTE_URL;
@@ -412,7 +416,7 @@ class Router implements IRouter {
 
 			$applicationClassName = $appNameSpace . '\\AppInfo\\Application';
 
-			if (\class_exists($applicationClassName)) {
+			if (class_exists($applicationClassName)) {
 				$application = new $applicationClassName();
 			} else {
 				$application = new App($appName);

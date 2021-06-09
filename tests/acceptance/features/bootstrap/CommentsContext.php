@@ -77,8 +77,9 @@ class CommentsContext implements Context {
 		$responseHeaders = $response->getHeaders();
 		if (isset($responseHeaders['Content-Location'][0])) {
 			$commentUrl = $responseHeaders['Content-Location'][0];
-			$this->lastCommentId = \substr(
-				$commentUrl, \strrpos($commentUrl, '/') + 1
+			$this->lastCommentId = substr(
+				$commentUrl,
+				strrpos($commentUrl, '/') + 1
 			);
 		}
 	}
@@ -107,7 +108,9 @@ class CommentsContext implements Context {
 	 */
 	public function theUserCommentsWithContentOnEntry($content, $path) {
 		$this->userCommentsWithContentOnEntry(
-			$this->featureContext->getCurrentUser(), $content, $path
+			$this->featureContext->getCurrentUser(),
+			$content,
+			$path
 		);
 	}
 
@@ -140,7 +143,10 @@ class CommentsContext implements Context {
 		// limiting number of results and start from first (offset)
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
 		$elementList = $this->reportElementComments(
-			$user, $commentsPath, $properties, __METHOD__
+			$user,
+			$commentsPath,
+			$properties,
+			__METHOD__
 		);
 
 		$this->featureContext->verifyTableNodeColumns($expectedElements, ['user', 'comment']);
@@ -178,7 +184,9 @@ class CommentsContext implements Context {
 	 */
 	public function checkCommentForCurrentUser($path, $expectedElements) {
 		$this->checkComments(
-			$this->featureContext->getCurrentUser(), $path, $expectedElements
+			$this->featureContext->getCurrentUser(),
+			$path,
+			$expectedElements
 		);
 	}
 
@@ -197,7 +205,10 @@ class CommentsContext implements Context {
 		$commentsPath = "/comments/files/$fileId/";
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
 		$elementList = $this->reportElementComments(
-			$user, $commentsPath, $properties, __METHOD__
+			$user,
+			$commentsPath,
+			$properties,
+			__METHOD__
 		);
 		$messages = $elementList->xpath("//d:prop/oc:message");
 		Assert::assertCount(
@@ -218,7 +229,9 @@ class CommentsContext implements Context {
 	 */
 	public function checkNumberOfCommentsForCurrentUser($numberOfComments, $path) {
 		$this->checkNumberOfComments(
-			$this->featureContext->getCurrentUser(), $numberOfComments, $path
+			$this->featureContext->getCurrentUser(),
+			$numberOfComments,
+			$path
 		);
 	}
 
@@ -287,7 +300,7 @@ class CommentsContext implements Context {
 		$keys = $response[0]['value'][2]['value'][0]['value'];
 		$found = false;
 		foreach ($keys as $singleKey) {
-			if ($singleKey['name'] === '{http://owncloud.org/ns}' . \substr($key, 3)) {
+			if ($singleKey['name'] === '{http://owncloud.org/ns}' . substr($key, 3)) {
 				if ($singleKey['value'] === $value) {
 					$found = true;
 				}
@@ -337,7 +350,7 @@ class CommentsContext implements Context {
 				<d:propertyupdate  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
 					<d:set>
 						<d:prop>
-							<oc:message>' . \htmlspecialchars($content, ENT_XML1, 'UTF-8') . '</oc:message>
+							<oc:message>' . htmlspecialchars($content, ENT_XML1, 'UTF-8') . '</oc:message>
 						</d:prop>
 					</d:set>
 				</d:propertyupdate>',
@@ -357,7 +370,10 @@ class CommentsContext implements Context {
 	 */
 	public function userEditsLastCreatedComment($user, $content) {
 		$this->editAComment(
-			$user, $content, $this->lastFileId, $this->lastCommentId
+			$user,
+			$content,
+			$this->lastFileId,
+			$this->lastCommentId
 		);
 	}
 
@@ -423,9 +439,15 @@ class CommentsContext implements Context {
 							 </oc:filter-comments>';
 		$user = $this->featureContext->getActualUsername($user);
 		$response = WebDavHelper::makeDavRequest(
-			$this->featureContext->getBaseUrl(), $user,
-			$this->featureContext->getPasswordForUser($user), 'REPORT', $path, [],
-			$body, $this->featureContext->getDavPathVersion(), "comments"
+			$this->featureContext->getBaseUrl(),
+			$user,
+			$this->featureContext->getPasswordForUser($user),
+			'REPORT',
+			$path,
+			[],
+			$body,
+			$this->featureContext->getDavPathVersion(),
+			"comments"
 		);
 		return HttpRequestHelper::getResponseXml($response, $exceptionText);
 	}
@@ -505,12 +527,13 @@ class CommentsContext implements Context {
 		foreach ($responses as $response) {
 			foreach ($expectedProperties as $expectedProperty) {
 				$expectedProperty['propertyValue'] = $this->featureContext->substituteInLineCodes(
-					$expectedProperty['propertyValue'], $user
+					$expectedProperty['propertyValue'],
+					$user
 				);
 				$xmlPart = $response->xpath(
 					"//d:prop/oc:" . $expectedProperty["propertyName"]
 				);
-				if ((string)\end($xmlPart) !== $expectedProperty["propertyValue"]) {
+				if ((string)end($xmlPart) !== $expectedProperty["propertyValue"]) {
 					$found = false;
 					break;
 				} else {

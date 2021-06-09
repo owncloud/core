@@ -78,7 +78,7 @@ class CommentsPluginTest extends \Test\TestCase {
 
 		$path = 'comments/files/42';
 
-		$requestData = \json_encode($commentData);
+		$requestData = json_encode($commentData);
 
 		$user = $this->createMock('OCP\IUser');
 		$user->expects($this->once())
@@ -256,7 +256,7 @@ class CommentsPluginTest extends \Test\TestCase {
 
 		$path = 'comments/files/42';
 
-		$requestData = \json_encode($commentData);
+		$requestData = json_encode($commentData);
 
 		$user = $this->createMock('OCP\IUser');
 		$user->expects($this->never())
@@ -343,7 +343,7 @@ class CommentsPluginTest extends \Test\TestCase {
 
 		$path = 'comments/files/42';
 
-		$requestData = \json_encode($commentData);
+		$requestData = json_encode($commentData);
 
 		$user = $this->createMock('OCP\IUser');
 		$user->expects($this->never())
@@ -432,7 +432,7 @@ class CommentsPluginTest extends \Test\TestCase {
 
 		$path = 'comments/files/42';
 
-		$requestData = \json_encode($commentData);
+		$requestData = json_encode($commentData);
 
 		$user = $this->createMock('OCP\IUser');
 		$user->expects($this->once())
@@ -511,7 +511,7 @@ class CommentsPluginTest extends \Test\TestCase {
 		$commentData = [
 			'actorType' => 'users',
 			'verb' => 'comment',
-			'message' => \str_pad('', IComment::MAX_MESSAGE_LENGTH + 1, 'x'),
+			'message' => str_pad('', IComment::MAX_MESSAGE_LENGTH + 1, 'x'),
 		];
 
 		$comment = new Comment([
@@ -525,7 +525,7 @@ class CommentsPluginTest extends \Test\TestCase {
 
 		$path = 'comments/files/42';
 
-		$requestData = \json_encode($commentData);
+		$requestData = json_encode($commentData);
 
 		$user = $this->createMock('OCP\IUser');
 		$user->expects($this->once())

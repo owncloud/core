@@ -50,7 +50,7 @@ class CacheJail extends CacheWrapper {
 		if ($path === '') {
 			return $this->root;
 		} else {
-			return $this->root . '/' . \ltrim($path, '/');
+			return $this->root . '/' . ltrim($path, '/');
 		}
 	}
 
@@ -65,8 +65,8 @@ class CacheJail extends CacheWrapper {
 		$rootLength = \strlen($this->root) + 1;
 		if ($path === $this->root) {
 			return '';
-		} elseif (\substr($path, 0, $rootLength) === $this->root . '/') {
-			return \substr($path, $rootLength);
+		} elseif (substr($path, 0, $rootLength) === $this->root . '/') {
+			return substr($path, $rootLength);
 		} else {
 			return null;
 		}
@@ -85,7 +85,7 @@ class CacheJail extends CacheWrapper {
 
 	protected function filterCacheEntry($entry) {
 		$rootLength = \strlen($this->root) + 1;
-		return ($entry['path'] === $this->root) or (\substr($entry['path'], 0, $rootLength) === $this->root . '/');
+		return ($entry['path'] === $this->root) or (substr($entry['path'], 0, $rootLength) === $this->root . '/');
 	}
 
 	/**
@@ -194,9 +194,9 @@ class CacheJail extends CacheWrapper {
 	}
 
 	private function formatSearchResults($results) {
-		$results = \array_filter($results, [$this, 'filterCacheEntry']);
-		$results = \array_values($results);
-		return \array_map([$this, 'formatCacheEntry'], $results);
+		$results = array_filter($results, [$this, 'filterCacheEntry']);
+		$results = array_values($results);
+		return array_map([$this, 'formatCacheEntry'], $results);
 	}
 
 	/**

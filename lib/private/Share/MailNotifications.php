@@ -146,7 +146,7 @@ class MailNotifications {
 			/** @var IShare $firstItem */
 			$firstItem = $items[0];
 
-			$filename = \trim($firstItem->getTarget(), '/');
+			$filename = trim($firstItem->getTarget(), '/');
 			$expiration = null;
 			if ($firstItem->getExpirationDate() instanceof \DateTime) {
 				try {
@@ -227,15 +227,15 @@ class MailNotifications {
 			$message_t = $this->l->t('Public link mail notification is not allowed');
 			throw new GenericShareException($message_t, $message_t, 403);
 		}
-		$recipientsAsString = \implode(', ', $recipients);
+		$recipientsAsString = implode(', ', $recipients);
 		$currentUser = $sender->getUID();
 		$notificationLang = $this->config->getAppValue(
 			'core',
 			'shareapi_public_notification_lang',
 			null
 		);
-		$linkParts = \explode('/', $link);
-		$token = \array_pop($linkParts);
+		$linkParts = explode('/', $link);
+		$token = array_pop($linkParts);
 		try {
 			$share = $this->shareManager->getShareByToken($token);
 			if ($share->getShareOwner() !== $currentUser && $share->getSharedBy() !== $currentUser) {
@@ -323,7 +323,7 @@ class MailNotifications {
 				}
 			}
 		} catch (\Exception $e) {
-			$allRecipients = \implode(',', $recipients);
+			$allRecipients = implode(',', $recipients);
 			$this->logger->error(
 				"Can't send mail with public link to $allRecipients: ".$e->getMessage(),
 				['app' => 'sharing']
@@ -370,7 +370,7 @@ class MailNotifications {
 		$html->assign('filename', $filename);
 		$html->assign('expiration', $formattedDate);
 		if ($personalNote !== null && $personalNote !== '') {
-			$html->assign('personal_note', \nl2br($personalNote));
+			$html->assign('personal_note', nl2br($personalNote));
 		}
 		$htmlMail = $html->fetchPage();
 

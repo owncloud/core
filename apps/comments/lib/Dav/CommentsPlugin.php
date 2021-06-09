@@ -43,12 +43,12 @@ use Sabre\Xml\Writer;
  */
 class CommentsPlugin extends ServerPlugin {
 	// namespace
-	const NS_OWNCLOUD = 'http://owncloud.org/ns';
+	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
 
-	const REPORT_NAME            = '{http://owncloud.org/ns}filter-comments';
-	const REPORT_PARAM_LIMIT     = '{http://owncloud.org/ns}limit';
-	const REPORT_PARAM_OFFSET    = '{http://owncloud.org/ns}offset';
-	const REPORT_PARAM_TIMESTAMP = '{http://owncloud.org/ns}datetime';
+	public const REPORT_NAME            = '{http://owncloud.org/ns}filter-comments';
+	public const REPORT_PARAM_LIMIT     = '{http://owncloud.org/ns}limit';
+	public const REPORT_PARAM_OFFSET    = '{http://owncloud.org/ns}offset';
+	public const REPORT_PARAM_TIMESTAMP = '{http://owncloud.org/ns}datetime';
 
 	/** @var ICommentsManager  */
 	protected $commentsManager;
@@ -83,7 +83,7 @@ class CommentsPlugin extends ServerPlugin {
 	 */
 	public function initialize(Server $server) {
 		$this->server = $server;
-		if (\strpos($this->server->getRequestUri(), 'comments/') !== 0) {
+		if (strpos($this->server->getRequestUri(), 'comments/') !== 0) {
 			return;
 		}
 
@@ -127,7 +127,7 @@ class CommentsPlugin extends ServerPlugin {
 		// having their own comments marked as unread
 		$node->setReadMarker(null);
 
-		$url = \rtrim($request->getUrl(), '/') . '/' . \urlencode($comment->getId());
+		$url = rtrim($request->getUrl(), '/') . '/' . urlencode($comment->getId());
 
 		$response->setHeader('Content-Location', $url);
 
@@ -174,7 +174,7 @@ class CommentsPlugin extends ServerPlugin {
 			if (!\in_array($parameter['name'], $acceptableParameters) || empty($parameter['value'])) {
 				continue;
 			}
-			$args[\str_replace($ns, '', $parameter['name'])] = $parameter['value'];
+			$args[str_replace($ns, '', $parameter['name'])] = $parameter['value'];
 		}
 
 		if ($args['datetime'] !== null) {
@@ -221,8 +221,8 @@ class CommentsPlugin extends ServerPlugin {
 	 * @throws UnsupportedMediaType if the content type is not supported
 	 */
 	private function createComment($objectType, $objectId, $data, $contentType = 'application/json') {
-		if (\explode(';', $contentType)[0] === 'application/json') {
-			$data = \json_decode($data, true);
+		if (explode(';', $contentType)[0] === 'application/json') {
+			$data = json_decode($data, true);
 		} else {
 			throw new UnsupportedMediaType();
 		}

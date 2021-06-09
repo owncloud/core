@@ -39,7 +39,7 @@ class MySqlTools {
 			if ($rows === false) {
 				return false;
 			}
-			if (\strcasecmp($rows['Value'], $val) !== 0) {
+			if (strcasecmp($rows['Value'], $val) !== 0) {
 				return false;
 			}
 		}
@@ -56,7 +56,7 @@ class MySqlTools {
 	 * @throws DBALException
 	 */
 	private function getMariaDbMysqlVersionNumber($versionString) {
-		if (!\preg_match('/^(?:5\.5\.5-)?(mariadb-)?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)/i', $versionString, $versionParts)) {
+		if (!preg_match('/^(?:5\.5\.5-)?(mariadb-)?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)/i', $versionString, $versionParts)) {
 			throw DBALException::invalidPlatformVersionSpecified(
 				$versionString,
 				'^(?:5\.5\.5-)?(mariadb-)?<major_version>.<minor_version>.<patch_version>'
@@ -82,8 +82,8 @@ class MySqlTools {
 		}
 
 		$version = $connection->getDatabaseVersionString();
-		$mariadb = \stripos($version, 'mariadb') !== false;
-		if ($mariadb && \version_compare($this->getMariaDbMysqlVersionNumber($version), '10.3.1', '>=')) {
+		$mariadb = stripos($version, 'mariadb') !== false;
+		if ($mariadb && version_compare($this->getMariaDbMysqlVersionNumber($version), '10.3.1', '>=')) {
 			// mb4 supported by default on MariaDB since 10.3.1 and innodb_file_format vars were removed
 			return true;
 		}

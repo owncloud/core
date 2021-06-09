@@ -35,6 +35,6 @@ class PublicShareSigner {
 	}
 
 	public function getSignature() {
-		return \hash_hmac('sha512/256', \implode('|', [$this->token, $this->fileName, $this->validUntil]), $this->signingKey, false);
+		return hash_hmac('sha512/256', implode('|', [$this->token, $this->fileName, $this->validUntil]), $this->signingKey, false);
 	}
 }

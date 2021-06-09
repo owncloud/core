@@ -143,8 +143,8 @@ class MailerTest extends TestCase {
 			->method('debug')
 			->with('Sent mail from "{from}" to "{recipients}" with subject "{subject}"', [
 				'app' => 'core',
-				'from' => \json_encode($from),
-				'recipients' => \json_encode(\array_merge($to, $cc, $bcc)),
+				'from' => json_encode($from),
+				'recipients' => json_encode(array_merge($to, $cc, $bcc)),
 				'subject' => 'Email subject'
 			]);
 

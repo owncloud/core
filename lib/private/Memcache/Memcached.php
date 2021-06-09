@@ -141,11 +141,11 @@ class Memcached extends Cache implements IMemcache {
 		$keys = [];
 		$prefixLength = \strlen($prefix);
 		foreach ($allKeys as $key) {
-			if (\substr($key, 0, $prefixLength) === $prefix) {
+			if (substr($key, 0, $prefixLength) === $prefix) {
 				$keys[] = $key;
 			}
 		}
-		if (\method_exists(self::$cache, 'deleteMulti')) {
+		if (method_exists(self::$cache, 'deleteMulti')) {
 			self::$cache->deleteMulti($keys);
 		} else {
 			foreach ($keys as $key) {

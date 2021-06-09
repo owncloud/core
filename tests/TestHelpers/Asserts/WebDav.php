@@ -39,7 +39,10 @@ class WebDav extends \PHPUnit\Framework\Assert {
 	 * @return void
 	 */
 	public static function assertDavResponseElementIs(
-		$element, $expectedValue, $responseXml, $extraErrorText = ''
+		$element,
+		$expectedValue,
+		$responseXml,
+		$extraErrorText = ''
 	) {
 		if ($extraErrorText !== '') {
 			$extraErrorText = $extraErrorText . " ";
@@ -58,7 +61,8 @@ class WebDav extends \PHPUnit\Framework\Assert {
 		}
 
 		self::assertEquals(
-			$expectedValue, $result,
+			$expectedValue,
+			$result,
 			__METHOD__ . " " . $extraErrorText . "Expected '$expectedValue' in element $element got '$result'"
 		);
 	}
@@ -71,14 +75,16 @@ class WebDav extends \PHPUnit\Framework\Assert {
 	 * @return void
 	 */
 	public static function assertResponseContainsShareTypes(
-		$responseXmlObject, $expectedShareTypes
+		$responseXmlObject,
+		$expectedShareTypes
 	) {
 		foreach ($expectedShareTypes as $row) {
 			$xmlPart = $responseXmlObject->xpath(
 				"//d:prop/oc:share-types/oc:share-type[.=" . $row[0] . "]"
 			);
 			self::assertNotEmpty(
-				$xmlPart, "cannot find share-type '" . $row[0] . "'"
+				$xmlPart,
+				"cannot find share-type '" . $row[0] . "'"
 			);
 		}
 	}
@@ -99,22 +105,32 @@ class WebDav extends \PHPUnit\Framework\Assert {
 	 * @throws \Exception
 	 */
 	public static function assertContentOfRemoteAndLocalFileIsSame(
-		$baseUrl, $username, $password, $remoteFile, $localFile, $shouldBeSame = true
+		$baseUrl,
+		$username,
+		$password,
+		$remoteFile,
+		$localFile,
+		$shouldBeSame = true
 	) {
 		$result = DownloadHelper::download(
-			$baseUrl, $username, $password, $remoteFile
+			$baseUrl,
+			$username,
+			$password,
+			$remoteFile
 		);
 		
-		$localContent = \file_get_contents($localFile);
+		$localContent = file_get_contents($localFile);
 		$downloadedContent = $result->getBody()->getContents();
 		
 		if ($shouldBeSame) {
 			self::assertSame(
-				$localContent, $downloadedContent
+				$localContent,
+				$downloadedContent
 			);
 		} else {
 			self::assertNotSame(
-				$localContent, $downloadedContent
+				$localContent,
+				$downloadedContent
 			);
 		}
 	}
@@ -156,16 +172,21 @@ class WebDav extends \PHPUnit\Framework\Assert {
 		$downloadedContent = $result->getBody()->getContents();
 		
 		$localContent = SetupHelper::readSkeletonFile(
-			$fileInSkeletonFolder, $baseUrl, $adminUsername, $adminPassword
+			$fileInSkeletonFolder,
+			$baseUrl,
+			$adminUsername,
+			$adminPassword
 		);
 		
 		if ($shouldBeSame) {
 			self::assertSame(
-				$localContent, $downloadedContent
+				$localContent,
+				$downloadedContent
 			);
 		} else {
 			self::assertNotSame(
-				$localContent, $downloadedContent
+				$localContent,
+				$downloadedContent
 			);
 		}
 	}

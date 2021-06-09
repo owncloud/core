@@ -56,7 +56,8 @@ class ShareesContext implements Context {
 	 */
 	public function theUserGetsTheShareesWithParameters($body) {
 		$this->userGetsTheShareesWithParameters(
-			$this->featureContext->getCurrentUser(), $body
+			$this->featureContext->getCurrentUser(),
+			$body
 		);
 	}
 
@@ -78,12 +79,15 @@ class ShareesContext implements Context {
 				$parameters[] = "$key=$value";
 			}
 			if (!empty($parameters)) {
-				$url .= '?' . \implode('&', $parameters);
+				$url .= '?' . implode('&', $parameters);
 			}
 		}
 
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$user, 'GET', $url, null
+			$user,
+			'GET',
+			$url,
+			null
 		);
 	}
 
@@ -99,7 +103,8 @@ class ShareesContext implements Context {
 		$this->featureContext->verifyTableNodeColumnsCount($shareesList, 3);
 		$sharees = $shareesList->getRows();
 		$respondedArray = $this->getArrayOfShareesResponded(
-			$this->featureContext->getResponse(), $shareeType
+			$this->featureContext->getResponse(),
+			$shareeType
 		);
 		Assert::assertEquals(
 			$sharees,
@@ -120,7 +125,8 @@ class ShareesContext implements Context {
 		$this->featureContext->verifyTableNodeColumnsCount($shareesList, 3);
 		$sharees = $shareesList->getRows();
 		$respondedArray = $this->getArrayOfShareesResponded(
-			$this->featureContext->getResponse(), $shareeType
+			$this->featureContext->getResponse(),
+			$shareeType
 		);
 		foreach ($sharees as $sharee) {
 			Assert::assertContains(
@@ -140,7 +146,8 @@ class ShareesContext implements Context {
 	 */
 	public function theShareesReturnedShouldBeEmpty($shareeType) {
 		$respondedArray = $this->getArrayOfShareesResponded(
-			$this->featureContext->getResponse(), $shareeType
+			$this->featureContext->getResponse(),
+			$shareeType
 		);
 		if (isset($respondedArray[0])) {
 			// [0] is display name and [2] is user or group id
@@ -162,13 +169,14 @@ class ShareesContext implements Context {
 	 * @return array
 	 */
 	public function getArrayOfShareesResponded(
-		ResponseInterface $response, $shareeType
+		ResponseInterface $response,
+		$shareeType
 	) {
 		$elements = $this->featureContext->getResponseXml($response, __METHOD__)->data;
-		$elements = \json_decode(\json_encode($elements), 1);
-		if (\strpos($shareeType, 'exact ') === 0) {
+		$elements = json_decode(json_encode($elements), 1);
+		if (strpos($shareeType, 'exact ') === 0) {
 			$elements = $elements['exact'];
-			$shareeType = \substr($shareeType, 6);
+			$shareeType = substr($shareeType, 6);
 		}
 
 		Assert::assertArrayHasKey(
@@ -179,7 +187,7 @@ class ShareesContext implements Context {
 
 		$sharees = [];
 		foreach ($elements[$shareeType] as $element) {
-			if (\is_int(\key($element))) {
+			if (\is_int(key($element))) {
 				// this is a list of elements instead of just one item,
 				// so return the list
 				foreach ($element as $innerItem) {

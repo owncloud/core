@@ -201,7 +201,7 @@ class MessageServiceTest extends TestCase {
 		$l10n->method('t')
 			->will($this->returnCallback(function ($text, $params) {
 				// change the text to camel case so the translated text is more predictable
-				return \vsprintf(\ucwords($text), $params);
+				return vsprintf(ucwords($text), $params);
 			}));
 
 		$this->l10Factory->method('get')

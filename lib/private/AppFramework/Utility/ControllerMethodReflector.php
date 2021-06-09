@@ -51,17 +51,17 @@ class ControllerMethodReflector implements IControllerMethodReflector {
 		$docs = $reflection->getDocComment();
 
 		// extract everything prefixed by @ and first letter uppercase
-		\preg_match_all('/@([A-Z]\w+)/', $docs, $matches);
+		preg_match_all('/@([A-Z]\w+)/', $docs, $matches);
 		$this->annotations = $matches[1];
 
 		// extract type parameter information
-		\preg_match_all('/@param\h+(?P<type>\w+)\h+\$(?P<var>\w+)/', $docs, $matches);
-		$this->types = \array_combine($matches['var'], $matches['type']);
+		preg_match_all('/@param\h+(?P<type>\w+)\h+\$(?P<var>\w+)/', $docs, $matches);
+		$this->types = array_combine($matches['var'], $matches['type']);
 
 		foreach ($reflection->getParameters() as $param) {
 			// extract type information from PHP 7 scalar types and prefer them
 			// over phpdoc annotations
-			if (\method_exists($param, 'getType')) {
+			if (method_exists($param, 'getType')) {
 				$type = $param->getType();
 				'@phan-var \ReflectionNamedType $type';
 				if ($type !== null) {

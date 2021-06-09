@@ -1209,7 +1209,8 @@ class UsersTest extends OriginalTest {
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->editUser(
 			['userid' => 'UserToEdit', '_put' =>
-				['key' => 'quota', 'value' => $valueInRequest]]));
+				['key' => 'quota', 'value' => $valueInRequest]]
+		));
 	}
 
 	public function testEditUserSubadminUserAccessible() {

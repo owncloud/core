@@ -14,7 +14,7 @@ use Test\TestCase;
 
 class LongId extends Temporary {
 	public function getId() {
-		return 'long:' . \str_repeat('foo', 50) . parent::getId();
+		return 'long:' . str_repeat('foo', 50) . parent::getId();
 	}
 }
 
@@ -360,7 +360,7 @@ class CacheTest extends TestCase {
 
 		$this->assertCount(2, $results);
 
-		\usort($results, function ($value1, $value2) {
+		usort($results, function ($value1, $value2) {
 			return $value1['name'] >= $value2['name'];
 		});
 
@@ -370,13 +370,13 @@ class CacheTest extends TestCase {
 		// use tag id
 		$tags = $tagManager->getTagsForUser($userId);
 		$this->assertNotEmpty($tags);
-		$tags = \array_filter($tags, function ($tag) {
+		$tags = array_filter($tags, function ($tag) {
 			return $tag->getName() === 'tag2';
 		});
-		$results = $this->cache->searchByTag(\current($tags)->getId(), $userId);
+		$results = $this->cache->searchByTag(current($tags)->getId(), $userId);
 		$this->assertCount(3, $results);
 
-		\usort($results, function ($value1, $value2) {
+		usort($results, function ($value1, $value2) {
 			return $value1['name'] >= $value2['name'];
 		});
 
@@ -466,7 +466,7 @@ class CacheTest extends TestCase {
 		$id = $this->cache->put('foo', $data);
 
 		if (\strlen($storageId) > 64) {
-			$storageId = \md5($storageId);
+			$storageId = md5($storageId);
 		}
 		$this->assertEquals([$storageId, 'foo'], Cache::getById($id));
 	}
@@ -494,7 +494,7 @@ class CacheTest extends TestCase {
 		$storageId = $storage->getId();
 		$data = ['size' => 1000, 'mtime' => 20, 'mimetype' => 'foo/file'];
 		$id = $cache->put('foo', $data);
-		$this->assertEquals([\md5($storageId), 'foo'], Cache::getById($id));
+		$this->assertEquals([md5($storageId), 'foo'], Cache::getById($id));
 	}
 
 	/**
@@ -547,7 +547,7 @@ class CacheTest extends TestCase {
 	 * this test shows that there is no bug if we use the normalizer
 	 */
 	public function testWithNormalizer() {
-		if (!\class_exists('Patchwork\PHP\Shim\Normalizer')) {
+		if (!class_exists('Patchwork\PHP\Shim\Normalizer')) {
 			$this->markTestSkipped('The 3rdparty Normalizer extension is not available.');
 			return;
 		}

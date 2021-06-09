@@ -104,7 +104,7 @@ abstract class AbstractDatabase {
 	abstract public function setupDatabase($userName);
 
 	public function runMigrations() {
-		if (!\is_dir(\OC::$SERVERROOT."/core/Migrations")) {
+		if (!is_dir(\OC::$SERVERROOT."/core/Migrations")) {
 			return;
 		}
 		$ms = new MigrationService('core', \OC::$server->getDatabaseConnection());

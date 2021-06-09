@@ -53,12 +53,14 @@ class CertificateController extends Controller {
 	 * @param IL10N $l10n
 	 * @param IAppManager $appManager
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								ICertificateManager $userCertificateManager,
-								ICertificateManager $systemCertificateManager,
-								IL10N $l10n,
-								IAppManager $appManager) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		ICertificateManager $userCertificateManager,
+		ICertificateManager $systemCertificateManager,
+		IL10N $l10n,
+		IAppManager $appManager
+	) {
 		parent::__construct($appName, $request);
 		$this->userCertificateManager = $userCertificateManager;
 		$this->systemCertificateManager = $systemCertificateManager;
@@ -100,7 +102,7 @@ class CertificateController extends Controller {
 		}
 
 		try {
-			$certificate = $certificateManager->addCertificate(\file_get_contents($file['tmp_name']), $file['name']);
+			$certificate = $certificateManager->addCertificate(file_get_contents($file['tmp_name']), $file['name']);
 			return new DataResponse(
 				[
 					'name' => $certificate->getName(),

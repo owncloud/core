@@ -42,7 +42,7 @@ use OCA\Files_Sharing\SharingBlacklist;
  * @group DB
  */
 class ApiTest extends TestCase {
-	const TEST_FOLDER_NAME = '/folder_share_api_test';
+	public const TEST_FOLDER_NAME = '/folder_share_api_test';
 
 	private static $tempStorage;
 
@@ -115,7 +115,7 @@ class ApiTest extends TestCase {
 		$l = $this->createMock(IL10N::class);
 		$l->method('t')
 			->will($this->returnCallback(function ($text, $parameters = []) {
-				return \vsprintf($text, $parameters);
+				return vsprintf($text, $parameters);
 			}));
 
 		return new \OCA\Files_Sharing\Controller\Share20OcsController(
@@ -520,7 +520,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 
 		$data = $result->getData();
-		$this->assertEquals($url, \current($data)['url']);
+		$this->assertEquals($url, current($data)['url']);
 
 		// check for path
 		$request = $this->createRequest(['path' => $this->folder]);
@@ -529,7 +529,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 
 		$data = $result->getData();
-		$this->assertEquals($url, \current($data)['url']);
+		$this->assertEquals($url, current($data)['url']);
 
 		// check in share id
 		$request = $this->createRequest([]);
@@ -538,7 +538,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 
 		$data = $result->getData();
-		$this->assertEquals($url, \current($data)['url']);
+		$this->assertEquals($url, current($data)['url']);
 
 		$request = $this->createRequest([]);
 		$ocs = $this->createOCS($request, self::TEST_FILES_SHARING_API_USER1);
@@ -917,7 +917,7 @@ class ApiTest extends TestCase {
 		// test should return one share within $this->folder
 		$data1 = $result1->getData();
 		$this->assertCount(1, $data1);
-		$s1 = \reset($data1);
+		$s1 = reset($data1);
 
 		$request = $this->createRequest(['path' => $this->folder.$this->subfolder]);
 		$ocs = $this->createOCS($request, self::TEST_FILES_SHARING_API_USER2);
@@ -927,7 +927,7 @@ class ApiTest extends TestCase {
 		// test should return one share within $this->folder
 		$data2 = $result2->getData();
 		$this->assertCount(1, $data2);
-		$s2 = \reset($data2);
+		$s2 = reset($data2);
 
 		$this->assertEquals($this->folder.$this->subfolder, $s1['path']);
 		$this->assertEquals($this->folder.$this->subfolder, $s2['path']);
@@ -1415,10 +1415,10 @@ class ApiTest extends TestCase {
 		// user defined expire date is set to +2 days from now on
 		// -> link should be already expired by the default expire date but the user
 		//    share should still exists.
-		$now = \time();
+		$now = time();
 		$dateFormat = 'Y-m-d H:i:s';
 		$shareCreated = $now - 3 * 24 * 60 * 60;
-		$expireDate = \date($dateFormat, $now + 2 * 24 * 60 * 60);
+		$expireDate = date($dateFormat, $now + 2 * 24 * 60 * 60);
 
 		$info = \OC\Files\Filesystem::getFileInfo($this->filename);
 		$this->assertInstanceOf(\OC\Files\FileInfo::class, $info);
@@ -1446,7 +1446,7 @@ class ApiTest extends TestCase {
 		$result = Share::getItemShared('file', $info->getId());
 		$this->assertIsArray($result);
 		$this->assertCount(1, $result);
-		$share = \reset($result);
+		$share = reset($result);
 		$this->assertSame(Share::SHARE_TYPE_USER, $share['share_type']);
 
 		//cleanup
@@ -1492,7 +1492,7 @@ class ApiTest extends TestCase {
 
 		$data = $result->getData();
 		$this->assertIsString($data['token']);
-		$this->assertEquals($date, \substr($data['expiration'], 0, 10));
+		$this->assertEquals($date, substr($data['expiration'], 0, 10));
 
 		// check for correct link
 		$url = \OC::$server->getURLGenerator()->getAbsoluteURL('/index.php/s/' . $data['token']);

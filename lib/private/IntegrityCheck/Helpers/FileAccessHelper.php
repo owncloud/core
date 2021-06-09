@@ -39,7 +39,7 @@ class FileAccessHelper {
 		if (!$this->file_exists($filename)) {
 			return false;
 		}
-		return \file_get_contents($filename);
+		return file_get_contents($filename);
 	}
 
 	/**
@@ -49,7 +49,7 @@ class FileAccessHelper {
 	 * @return bool
 	 */
 	public function file_exists($filename) {
-		return \file_exists($filename);
+		return file_exists($filename);
 	}
 
 	/**
@@ -61,7 +61,7 @@ class FileAccessHelper {
 	 * @throws \Exception
 	 */
 	public function file_put_contents($filename, $data) {
-		$bytesWritten = \file_put_contents($filename, $data);
+		$bytesWritten = file_put_contents($filename, $data);
 		if ($bytesWritten === false || $bytesWritten !== \strlen($data)) {
 			throw new \Exception('Failed to write into ' . $filename);
 		}
@@ -73,7 +73,7 @@ class FileAccessHelper {
 	 * @return bool
 	 */
 	public function is_writeable($path) {
-		return \is_writeable($path);
+		return is_writeable($path);
 	}
 
 	/**
@@ -81,7 +81,7 @@ class FileAccessHelper {
 	 * @throws \Exception
 	 */
 	public function assertDirectoryExists($path) {
-		if (!\is_dir($path)) {
+		if (!is_dir($path)) {
 			throw new \Exception('Directory ' . $path . ' does not exist.');
 		}
 	}

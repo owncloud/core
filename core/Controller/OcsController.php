@@ -51,10 +51,13 @@ class OcsController extends \OCP\AppFramework\OCSController {
 	 * @param IRequest $request
 	 * @param IUserSession $userSession
 	 */
-	public function __construct($appName, IRequest $request,
-								IDBConnection $dbConnection,
-								IUserSession $userSession,
-								IUserManager $userManager) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IDBConnection $dbConnection,
+		IUserSession $userSession,
+		IUserManager $userManager
+	) {
 		parent::__construct($appName, $request);
 		$this->dbConnection = $dbConnection;
 		$this->userSession = $userSession;
@@ -229,6 +232,6 @@ class OcsController extends \OCP\AppFramework\OCSController {
 	 * @return string
 	 */
 	private function escape($value) {
-		return \addslashes(\strip_tags($value));
+		return addslashes(strip_tags($value));
 	}
 }

@@ -37,13 +37,13 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class TrustedServers {
 
 	/** after a user list was exchanged at least once successfully */
-	const STATUS_OK = 1;
+	public const STATUS_OK = 1;
 	/** waiting for shared secret or initial user list exchange */
-	const STATUS_PENDING = 2;
+	public const STATUS_PENDING = 2;
 	/** something went wrong, misconfigured server, software bug,... user interaction needed */
-	const STATUS_FAILURE = 3;
+	public const STATUS_FAILURE = 3;
 	/** remote server revoked access */
-	const STATUS_ACCESS_REVOKED = 4;
+	public const STATUS_ACCESS_REVOKED = 4;
 
 	/** @var DbHandler dbHandler */
 	private $dbHandler;
@@ -239,9 +239,9 @@ class TrustedServers {
 	 * @throws HintException
 	 */
 	protected function checkOwnCloudVersion($status) {
-		$decoded = \json_decode($status, true);
+		$decoded = json_decode($status, true);
 		if (!empty($decoded) && isset($decoded['version'])) {
-			if (!\version_compare($decoded['version'], '9.0.0', '>=')) {
+			if (!version_compare($decoded['version'], '9.0.0', '>=')) {
 				throw new HintException('Remote server version is too low. ownCloud 9.0 is required.');
 			}
 			return true;
@@ -257,8 +257,8 @@ class TrustedServers {
 	 */
 	protected function updateProtocol($url) {
 		if (
-			\strpos($url, 'https://') === 0
-			|| \strpos($url, 'http://') === 0
+			strpos($url, 'https://') === 0
+			|| strpos($url, 'http://') === 0
 		) {
 			return $url;
 		}

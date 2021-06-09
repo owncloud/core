@@ -50,7 +50,7 @@ abstract class Job implements IJob {
 		$jobList->setLastRun($this);
 		try {
 			//storing job start time
-			$jobStartTime = \time();
+			$jobStartTime = time();
 
 			if ($logger) {
 				$logger->debug(
@@ -58,7 +58,7 @@ abstract class Job implements IJob {
 					[
 						'app' => 'cron',
 						'class' => \get_class($this),
-						'arguments' => \print_r($this->argument, true)
+						'arguments' => print_r($this->argument, true)
 					]
 				);
 			}
@@ -66,7 +66,7 @@ abstract class Job implements IJob {
 			$this->run($this->argument);
 
 			//storing job end time
-			$jobEndTime = \time();
+			$jobEndTime = time();
 			$timeTaken = $jobEndTime - $jobStartTime;
 
 			if ($logger) {
@@ -76,7 +76,7 @@ abstract class Job implements IJob {
 						'app' => 'cron',
 						'timeTaken' => $timeTaken,
 						'class' => \get_class($this),
-						'arguments' => \print_r($this->argument, true)
+						'arguments' => print_r($this->argument, true)
 					]
 				);
 			}
@@ -86,7 +86,7 @@ abstract class Job implements IJob {
 			if ($logger) {
 				$logger->logException($e, [
 					'app' => 'core',
-					'message' => 'Error while running background job (class: ' . \get_class($this) . ', arguments: ' . \print_r($this->argument, true) . ')'
+					'message' => 'Error while running background job (class: ' . \get_class($this) . ', arguments: ' . print_r($this->argument, true) . ')'
 				]);
 			}
 		}

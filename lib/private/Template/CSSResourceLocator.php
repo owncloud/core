@@ -38,8 +38,8 @@ class CSSResourceLocator extends ResourceLocator {
 		) {
 			return;
 		}
-		$app = \substr($fullStyle, 0, \strpos($fullStyle, '/'));
-		$fullStyle = \substr($fullStyle, \strpos($fullStyle, '/')+1);
+		$app = substr($fullStyle, 0, strpos($fullStyle, '/'));
+		$fullStyle = substr($fullStyle, strpos($fullStyle, '/')+1);
 
 		$app_path = $this->appManager->getAppPath($app);
 		if ($app_path === false) {
@@ -59,7 +59,7 @@ class CSSResourceLocator extends ResourceLocator {
 		$baseDirectory = $this->theme->getBaseDirectory();
 		$webRoot = '';
 		if ($baseDirectory !== $this->serverroot) {
-			$webRoot = \substr($this->theme->getWebPath(), 0, -\strlen($themeDirectory));
+			$webRoot = substr($this->theme->getWebPath(), 0, -\strlen($themeDirectory));
 		}
 
 		$searchLocations = [

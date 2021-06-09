@@ -53,7 +53,7 @@ class ConfigCommandTest extends CommandTest {
 			['output' => 'json']
 		);
 
-		$result = \trim($this->executeCommand($command, $input));
+		$result = trim($this->executeCommand($command, $input));
 		$this->assertEquals($value, $result);
 	}
 
@@ -80,12 +80,12 @@ class ConfigCommandTest extends CommandTest {
 			[ 'output' => 'json']
 		);
 
-		$result = \trim($this->executeCommand($command, $input));
+		$result = trim($this->executeCommand($command, $input));
 		$this->assertEquals('', $result);
 
 		$output = new BufferedOutput();
 		$result = $this->invokePrivate($command, 'getOption', [$mount, 'filesystem_check_changes', $output]);
-		$this->assertEquals($value, \trim($output->fetch()));
+		$this->assertEquals($value, trim($output->fetch()));
 	}
 	
 	public function optionsProvider() {

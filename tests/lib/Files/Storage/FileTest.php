@@ -80,7 +80,7 @@ class FileTest extends NodeTest {
 	}
 
 	public function testFopen() {
-		$stream = \fopen('php://memory', 'wb+');
+		$stream = fopen('php://memory', 'wb+');
 		$this->storage->expects($this->once())
 			->method('fopen')
 			->with('/f1.txt', 'wb+')

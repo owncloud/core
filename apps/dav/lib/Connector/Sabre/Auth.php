@@ -74,13 +74,15 @@ class Auth extends AbstractBasic {
 	 * @param IConfig $config
 	 * @param string $principalPrefix
 	 */
-	public function __construct(ISession $session,
-								Session $userSession,
-								IRequest $request,
-								Manager $twoFactorManager,
-								AccountModuleManager $accountModuleManager,
-								IConfig $config,
-								$principalPrefix = 'principals/users/') {
+	public function __construct(
+		ISession $session,
+		Session $userSession,
+		IRequest $request,
+		Manager $twoFactorManager,
+		AccountModuleManager $accountModuleManager,
+		IConfig $config,
+		$principalPrefix = 'principals/users/'
+	) {
 		$this->session = $session;
 		$this->userSession = $userSession;
 		$this->twoFactorManager = $twoFactorManager;
@@ -121,7 +123,7 @@ class Auth extends AbstractBasic {
 	 * @return bool
 	 */
 	protected function validateUserPass($username, $password) {
-		if (\trim($username) === '') {
+		if (trim($username) === '') {
 			return false;
 		}
 		if ($this->userSession->isLoggedIn() &&
@@ -249,8 +251,8 @@ class Auth extends AbstractBasic {
 				throw new \LogicException('Logged in but no user -> :boom:');
 			}
 			$this->checkAccountModule($user);
-			$startPos = \strrpos($data[1], '/') + 1;
-			$data[1] = \substr_replace($data[1], $user->getUID(), $startPos);
+			$startPos = strrpos($data[1], '/') + 1;
+			$data[1] = substr_replace($data[1], $user->getUID(), $startPos);
 		}
 
 		// signed url handling
@@ -296,7 +298,7 @@ class Auth extends AbstractBasic {
 	public function challenge(RequestInterface $request, ResponseInterface $response): void {
 		$schema = 'Basic';
 		// do not re-authenticate over ajax, use dummy auth name to prevent browser popup
-		if (\in_array('XMLHttpRequest', \explode(',', $request->getHeader('X-Requested-With')), true)) {
+		if (\in_array('XMLHttpRequest', explode(',', $request->getHeader('X-Requested-With')), true)) {
 			$schema = 'DummyBasic';
 		}
 

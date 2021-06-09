@@ -75,7 +75,7 @@ class RepairInvalidSharesTest extends TestCase {
 				'file_source' => $qb->expr()->literal(123),
 				'file_target' => $qb->expr()->literal('/test'),
 				'permissions' => $qb->expr()->literal(1),
-				'stime' => $qb->expr()->literal(\time()),
+				'stime' => $qb->expr()->literal(time()),
 				'expiration' => $qb->expr()->literal('2015-09-25 00:00:00')
 			])
 			->execute();
@@ -94,7 +94,7 @@ class RepairInvalidSharesTest extends TestCase {
 				'file_source' => $qb->expr()->literal(123),
 				'file_target' => $qb->expr()->literal('/test'),
 				'permissions' => $qb->expr()->literal(1),
-				'stime' => $qb->expr()->literal(\time()),
+				'stime' => $qb->expr()->literal(time()),
 				'expiration' => $qb->expr()->literal('2015-09-25 00:00:00'),
 				'token' => $qb->expr()->literal('abcdefg')
 			])->execute();
@@ -141,7 +141,7 @@ class RepairInvalidSharesTest extends TestCase {
 				'file_source' => $qb->expr()->literal(123),
 				'file_target' => $qb->expr()->literal('/test'),
 				'permissions' => $qb->expr()->literal($oldPerms),
-				'stime' => $qb->expr()->literal(\time()),
+				'stime' => $qb->expr()->literal(time()),
 			])
 			->execute();
 
@@ -159,7 +159,7 @@ class RepairInvalidSharesTest extends TestCase {
 				'file_source' => $qb->expr()->literal(123),
 				'file_target' => $qb->expr()->literal('/test'),
 				'permissions' => $qb->expr()->literal(\OCP\Constants::PERMISSION_READ),
-				'stime' => $qb->expr()->literal(\time()),
+				'stime' => $qb->expr()->literal(time()),
 			])
 			->execute();
 
@@ -178,7 +178,7 @@ class RepairInvalidSharesTest extends TestCase {
 				'file_source' => $qb->expr()->literal(123),
 				'file_target' => $qb->expr()->literal('/test'),
 				'permissions' => $qb->expr()->literal(3),
-				'stime' => $qb->expr()->literal(\time()),
+				'stime' => $qb->expr()->literal(time()),
 			])
 			->execute();
 
@@ -224,7 +224,7 @@ class RepairInvalidSharesTest extends TestCase {
 			'file_source' => $qb->expr()->literal(123),
 			'file_target' => $qb->expr()->literal('/test'),
 			'permissions' => $qb->expr()->literal(1),
-			'stime' => $qb->expr()->literal(\time()),
+			'stime' => $qb->expr()->literal(time()),
 			'expiration' => $qb->expr()->literal('2015-09-25 00:00:00')
 		];
 
@@ -238,7 +238,7 @@ class RepairInvalidSharesTest extends TestCase {
 		// share with existing parent
 		$qb = $this->connection->getQueryBuilder();
 		$qb->insert('share')
-			->values(\array_merge($shareValues, [
+			->values(array_merge($shareValues, [
 				'parent' => $qb->expr()->literal($parent),
 			]))->execute();
 		$validChild = $this->getLastShareId();
@@ -246,7 +246,7 @@ class RepairInvalidSharesTest extends TestCase {
 		// share with non-existing parent
 		$qb = $this->connection->getQueryBuilder();
 		$qb->insert('share')
-			->values(\array_merge($shareValues, [
+			->values(array_merge($shareValues, [
 				'parent' => $qb->expr()->literal($parent + 100),
 			]))->execute();
 		$invalidChild = $this->getLastShareId();
@@ -317,7 +317,7 @@ class RepairInvalidSharesTest extends TestCase {
 				'file_source' => $qb->expr()->literal(123),
 				'file_target' => $qb->expr()->literal('/test'),
 				'permissions' => $qb->expr()->literal($testPerms),
-				'stime' => $qb->expr()->literal(\time()),
+				'stime' => $qb->expr()->literal(time()),
 			])
 			->execute();
 

@@ -47,7 +47,7 @@ class TemplateFileLocator {
 
 		foreach ($this->dirs as $dir) {
 			$file = $dir.$template.'.php';
-			if (\is_file($file)) {
+			if (is_file($file)) {
 				$this->path = $dir;
 				return $file;
 			}

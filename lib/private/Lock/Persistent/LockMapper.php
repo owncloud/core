@@ -46,10 +46,10 @@ class LockMapper extends Mapper {
 	 */
 	private function getParentPaths($path) {
 		// We need to check locks for every part in the uri.
-		$uriParts = \explode('/', $path);
+		$uriParts = explode('/', $path);
 
 		// only return parents, not the current one
-		\array_pop($uriParts);
+		array_pop($uriParts);
 
 		$parentPaths = [];
 
@@ -87,7 +87,7 @@ class LockMapper extends Mapper {
 	 */
 	public function getLocksByPath($storageId, $internalPath, $returnChildLocks) {
 		$query = $this->db->getQueryBuilder();
-		$internalPath = \rtrim($internalPath, '/');
+		$internalPath = rtrim($internalPath, '/');
 
 		/*
 		 * SELECT `id`, `owner`, `timeout`, `created_at`, `token`, `token`, `scope`, `depth`, `file_id`, `path`, `owner_account_id`
@@ -158,7 +158,7 @@ class LockMapper extends Mapper {
 
 		$rowCount = $query->delete($this->getTableName())
 			->where($query->expr()->eq('file_id', $query->createNamedParameter($fileId)))
-			->andWhere($query->expr()->eq('token_hash', $query->createNamedParameter(\md5($token))))
+			->andWhere($query->expr()->eq('token_hash', $query->createNamedParameter(md5($token))))
 			->execute();
 
 		return $rowCount === 1;
@@ -175,7 +175,7 @@ class LockMapper extends Mapper {
 
 		$query->select(['id', 'owner', 'timeout', 'created_at', 'token', 'token_hash', 'scope', 'depth', 'file_id', 'owner_account_id'])
 			->from($this->getTableName(), 'l')
-			->where($query->expr()->eq('token_hash', $query->createNamedParameter(\md5($token))));
+			->where($query->expr()->eq('token_hash', $query->createNamedParameter(md5($token))));
 
 		return $this->findEntity($query->getSQL(), $query->getParameters());
 	}
@@ -184,7 +184,7 @@ class LockMapper extends Mapper {
 		if (!$entity instanceof Lock) {
 			throw new \InvalidArgumentException('Wrong entity type used');
 		}
-		if (\md5($entity->getToken()) !== $entity->getTokenHash()) {
+		if (md5($entity->getToken()) !== $entity->getTokenHash()) {
 			throw new \InvalidArgumentException('token_hash does not match the token of the lock');
 		}
 		if ($entity->getDepth() !== ILock::LOCK_DEPTH_ZERO && $entity->getDepth() !== ILock::LOCK_DEPTH_INFINITE) {
@@ -205,8 +205,10 @@ class LockMapper extends Mapper {
 	public function cleanup() {
 		$query = $this->db->getQueryBuilder();
 		$query->delete($this->getTableName())
-			->where($query->expr()->lt('created_at',
-				$query->createFunction('(' . $query->createNamedParameter($this->timeFactory->getTime()) . ' - `timeout`)')))
+			->where($query->expr()->lt(
+				'created_at',
+				$query->createFunction('(' . $query->createNamedParameter($this->timeFactory->getTime()) . ' - `timeout`)')
+			))
 			->execute();
 	}
 }

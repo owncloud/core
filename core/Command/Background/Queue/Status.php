@@ -46,7 +46,7 @@ class Status extends Command {
 
 	private function getJobArgumentAsString($argument) {
 		if (\is_array($argument)) {
-			$argument = \json_encode($argument);
+			$argument = json_encode($argument);
 		}
 		return $argument;
 	}
@@ -60,7 +60,7 @@ class Status extends Command {
 		$t = new Table($output);
 		$t->setHeaders(['Job ID', 'Job', 'Last Run', 'Job Arguments']);
 		$this->jobList->listJobs(function (IJob $job) use ($t) {
-			$t->addRow([$job->getId(), \get_class($job), \date('c', $job->getLastRun()), $this->getJobArgumentAsString($job->getArgument())]);
+			$t->addRow([$job->getId(), \get_class($job), date('c', $job->getLastRun()), $this->getJobArgumentAsString($job->getArgument())]);
 		});
 		$t->render();
 	}

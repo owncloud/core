@@ -88,7 +88,8 @@ class LockEntry extends OwncloudPage {
 	 */
 	public function getLockingUser() {
 		$lockDescriptionElement = $this->lockElement->find(
-			"xpath", $this->lockDescriptionXpath
+			"xpath",
+			$this->lockDescriptionXpath
 		);
 		$this->assertElementNotNull(
 			$lockDescriptionElement,
@@ -96,7 +97,7 @@ class LockEntry extends OwncloudPage {
 			" cannot find lock description element"
 		);
 		$matches = [];
-		if (\preg_match(
+		if (preg_match(
 			$this->lockingUserExtractPattern,
 			$lockDescriptionElement->getText(),
 			$matches

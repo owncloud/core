@@ -29,7 +29,7 @@ use OCP\Settings\ISettings;
 use OCP\Template;
 
 class PersonalPanel implements ISettings {
-	const USER_CONFIGS = [
+	public const USER_CONFIGS = [
 		[
 			'key' => 'auto_accept_share',
 			'default' => 'yes'
@@ -40,7 +40,7 @@ class PersonalPanel implements ISettings {
 		]
 	];
 
-	const GLOBAL_CONFIG_PREFIX = 'shareapi_';
+	public const GLOBAL_CONFIG_PREFIX = 'shareapi_';
 
 	/** @var IConfig $config */
 	private $config;

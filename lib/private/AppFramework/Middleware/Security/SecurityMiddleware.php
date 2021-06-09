@@ -90,15 +90,17 @@ class SecurityMiddleware extends Middleware {
 	 * @param bool $isAdminUser
 	 * @param ContentSecurityPolicyManager $contentSecurityPolicyManager
 	 */
-	public function __construct(IRequest $request,
-								ControllerMethodReflector $reflector,
-								INavigationManager $navigationManager,
-								IURLGenerator $urlGenerator,
-								ILogger $logger,
-								IUserSession $session,
-								$appName,
-								$isAdminUser,
-								ContentSecurityPolicyManager $contentSecurityPolicyManager) {
+	public function __construct(
+		IRequest $request,
+		ControllerMethodReflector $reflector,
+		INavigationManager $navigationManager,
+		IURLGenerator $urlGenerator,
+		ILogger $logger,
+		IUserSession $session,
+		$appName,
+		$isAdminUser,
+		ContentSecurityPolicyManager $contentSecurityPolicyManager
+	) {
 		$this->navigationManager = $navigationManager;
 		$this->request = $request;
 		$this->reflector = $reflector;
@@ -208,7 +210,7 @@ class SecurityMiddleware extends Middleware {
 
 		if ($exception instanceof SecurityException) {
 			if ($this->request->getHeader('Accept') !== '*/*'
-				&& \stripos($this->request->getHeader('Accept'), 'html') === false
+				&& stripos($this->request->getHeader('Accept'), 'html') === false
 			) {
 				$response = new JSONResponse(
 					['message' => $exception->getMessage()],
@@ -219,7 +221,7 @@ class SecurityMiddleware extends Middleware {
 					$url = $this->urlGenerator->linkToRoute(
 						'core.login.showLoginForm',
 						[
-							'redirect_url' => \urlencode($this->request->server['REQUEST_URI']),
+							'redirect_url' => urlencode($this->request->server['REQUEST_URI']),
 						]
 					);
 					$response = new RedirectResponse($url);

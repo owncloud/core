@@ -111,10 +111,10 @@ class PublicSharingAuth extends AbstractBasic {
 			$validUntil = \DateTime::createFromFormat(\DateTime::ATOM, $query['expires']);
 			$now = new \DateTime();
 			if ($now < $validUntil) {
-				$key = \hash_hkdf('sha256', $this->share->getPassword());
-				$resource_path = \explode($this->share->getToken(), $request->getPath())[1];
+				$key = hash_hkdf('sha256', $this->share->getPassword());
+				$resource_path = explode($this->share->getToken(), $request->getPath())[1];
 				$s = new PublicShareSigner($this->share->getToken(), $resource_path, $validUntil, $key);
-				if (\hash_equals($s->getSignature(), $sig)) {
+				if (hash_equals($s->getSignature(), $sig)) {
 					return [true, 'principals/system/public'];
 				}
 			}
@@ -157,7 +157,7 @@ class PublicSharingAuth extends AbstractBasic {
 	 * @throws NotFound
 	 */
 	private function resolveShare($path) {
-		$elements = \explode('/', $path);
+		$elements = explode('/', $path);
 		if ($elements[0] !== 'public-files') {
 			return null;
 		}

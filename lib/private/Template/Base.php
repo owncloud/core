@@ -218,18 +218,18 @@ class Base {
 		$theme = $this->themeDefaults;
 
 		if ($additionalParams !== null) {
-			$_ = \array_merge($additionalParams, $this->vars);
+			$_ = array_merge($additionalParams, $this->vars);
 		}
 
-		\ob_start();
+		ob_start();
 		try {
 			include $file;
-			$data = \ob_get_contents();
+			$data = ob_get_contents();
 		} catch (\Exception $e) {
-			@\ob_end_clean();
+			@ob_end_clean();
 			throw $e;
 		}
-		@\ob_end_clean();
+		@ob_end_clean();
 
 		return $data;
 	}

@@ -55,12 +55,14 @@ class NavigationManager implements INavigationManager {
 	/** @var IConfig */
 	private $config;
 
-	public function __construct(IAppManager $appManager = null,
-								IURLGenerator $urlGenerator = null,
-								IFactory $l10nFac = null,
-								IUserSession $userSession = null,
-								IGroupManager $groupManager = null,
-								IConfig $config = null) {
+	public function __construct(
+		IAppManager $appManager = null,
+		IURLGenerator $urlGenerator = null,
+		IFactory $l10nFac = null,
+		IUserSession $userSession = null,
+		IGroupManager $groupManager = null,
+		IConfig $config = null
+	) {
 		$this->appManager = $appManager;
 		$this->urlGenerator = $urlGenerator;
 		$this->l10nFac = $l10nFac;
@@ -165,7 +167,7 @@ class NavigationManager implements INavigationManager {
 				}
 				$route = $this->urlGenerator->linkTo($app, $html);
 			}
-			$name = isset($nav['name']) ? $nav['name'] : \ucfirst($app);
+			$name = isset($nav['name']) ? $nav['name'] : ucfirst($app);
 			$icon = isset($nav['icon']) ? $nav['icon'] : 'app.svg';
 			$iconPath = null;
 			foreach ([$icon, "$app.svg"] as $i) {
@@ -207,7 +209,7 @@ class NavigationManager implements INavigationManager {
 			$label = $this->config->getSystemValue($webIconLabel, $l->t('New Design'));
 			$this->add([
 				'id' => 'web',
-				'href' => \rtrim($webBaseUrl, '/') . '/index.html',
+				'href' => rtrim($webBaseUrl, '/') . '/index.html',
 				'name' => $label,
 				'icon' => $iconPath,
 				'order' => 99

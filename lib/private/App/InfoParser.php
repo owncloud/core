@@ -37,19 +37,19 @@ class InfoParser {
 	 * @throws InvalidArgumentException on malformed XML
 	 */
 	public function parse($file) {
-		if (!\is_file($file)) {
+		if (!is_file($file)) {
 			throw new AppNotFoundException(
-				\sprintf('%s does not exist', $file)
+				sprintf('%s does not exist', $file)
 			);
 		}
 
-		\libxml_use_internal_errors(true);
-		$loadEntities = \libxml_disable_entity_loader(false);
-		$xml = \simplexml_load_file($file);
+		libxml_use_internal_errors(true);
+		$loadEntities = libxml_disable_entity_loader(false);
+		$xml = simplexml_load_file($file);
 
-		\libxml_disable_entity_loader($loadEntities);
+		libxml_disable_entity_loader($loadEntities);
 		if ($xml === false) {
-			\libxml_clear_errors();
+			libxml_clear_errors();
 			throw new InvalidArgumentException('Invalid XML');
 		}
 		$array = $this->xmlToArray($xml);
@@ -162,7 +162,7 @@ class InfoParser {
 						$data['@value'] = (string)$node;
 					}
 				} else {
-					$data = \array_merge($data, $this->xmlToArray($node));
+					$data = array_merge($data, $this->xmlToArray($node));
 				}
 				foreach ($attributes as $attr => $value) {
 					$data['@attributes'][$attr] = (string)$value;

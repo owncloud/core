@@ -116,7 +116,7 @@ class InfoChecker extends BasicEmitter {
 
 		foreach ($info as $key => $value) {
 			if (\is_array($value)) {
-				$value = \json_encode($value);
+				$value = json_encode($value);
 			}
 			if (\in_array($key, $this->mandatoryFields)) {
 				$this->emit('InfoChecker', 'mandatoryFieldFound', [$key, $value]);
@@ -151,12 +151,15 @@ class InfoChecker extends BasicEmitter {
 		}
 
 		$versionFile = $appPath . '/appinfo/version';
-		if (\is_file($versionFile)) {
-			$version = \trim(\file_get_contents($versionFile));
+		if (is_file($versionFile)) {
+			$version = trim(file_get_contents($versionFile));
 			if (isset($info['version'])) {
 				if ($info['version'] !== $version) {
-					$this->emit('InfoChecker', 'differentVersions',
-						[$version, $info['version']]);
+					$this->emit(
+						'InfoChecker',
+						'differentVersions',
+						[$version, $info['version']]
+					);
 					$errors[] = [
 						'type' => 'differentVersions',
 						'message' => 'appinfo/version: ' . $version .

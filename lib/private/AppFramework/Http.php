@@ -112,20 +112,23 @@ class Http extends BaseHttp {
 	 * @param string $ETag the etag
 	 * @return string
 	 */
-	public function getStatusHeader($status, \DateTime $lastModified=null,
-									$ETag=null) {
+	public function getStatusHeader(
+		$status,
+		\DateTime $lastModified=null,
+		$ETag=null
+	) {
 		if ($lastModified !== null) {
 			$lastModified = $lastModified->format(\DateTime::RFC2822);
 		}
 
 		// if etag or lastmodified have not changed, return a not modified
 		if ((isset($this->server['HTTP_IF_NONE_MATCH'])
-			&& \trim(\trim($this->server['HTTP_IF_NONE_MATCH']), '"') === (string)$ETag)
+			&& trim(trim($this->server['HTTP_IF_NONE_MATCH']), '"') === (string)$ETag)
 
 			||
 
 			(isset($this->server['HTTP_IF_MODIFIED_SINCE'])
-			&& \trim($this->server['HTTP_IF_MODIFIED_SINCE']) ===
+			&& trim($this->server['HTTP_IF_MODIFIED_SINCE']) ===
 				$lastModified)) {
 			$status = self::STATUS_NOT_MODIFIED;
 		}

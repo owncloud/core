@@ -106,7 +106,8 @@ class Controller {
 				\OC::$server->getLogger(),
 				\OC::$server->getUserSession(),
 				\OC::$server->getConfig(),
-				\OC::$server->getL10N('encryption'));
+				\OC::$server->getL10N('encryption')
+			);
 			$keyStorage = \OC::$server->getEncryptionKeyStorage();
 			/* @phan-suppress-next-line PhanUndeclaredClassMethod */
 			$util = new \OCA\Encryption\Util(
@@ -115,7 +116,8 @@ class Controller {
 				\OC::$server->getLogger(),
 				\OC::$server->getUserSession(),
 				\OC::$server->getConfig(),
-				\OC::$server->getUserManager());
+				\OC::$server->getUserManager()
+			);
 			/* @phan-suppress-next-line PhanUndeclaredClassMethod */
 			$keyManager = new \OCA\Encryption\KeyManager(
 				$keyStorage,
@@ -125,7 +127,8 @@ class Controller {
 				/* @phan-suppress-next-line PhanUndeclaredClassMethod */
 				new \OCA\Encryption\Session(\OC::$server->getSession()),
 				\OC::$server->getLogger(),
-				$util);
+				$util
+			);
 			/* @phan-suppress-next-line PhanUndeclaredClassMethod */
 			$recovery = new \OCA\Encryption\Recovery(
 				\OC::$server->getUserSession(),
@@ -135,7 +138,8 @@ class Controller {
 				\OC::$server->getConfig(),
 				$keyStorage,
 				\OC::$server->getEncryptionFilesHelper(),
-				new \OC\Files\View());
+				new \OC\Files\View()
+			);
 			/* @phan-suppress-next-line PhanUndeclaredClassMethod */
 			$recoveryAdminEnabled = $recovery->isRecoveryKeyEnabled();
 

@@ -92,8 +92,9 @@ class MigrationTest extends TestCase {
 			->setParameter('file_source', null)
 			->setParameter('file_target', null)
 			->setParameter('permissions', 31)
-			->setParameter('stime', \time());
-		$this->assertSame(1,
+			->setParameter('stime', time());
+		$this->assertSame(
+			1,
 			$query->execute()
 		);
 		// shared calendar, shouldn't be modified
@@ -108,8 +109,9 @@ class MigrationTest extends TestCase {
 			->setParameter('file_source', null)
 			->setParameter('file_target', null)
 			->setParameter('permissions', 31)
-			->setParameter('stime', \time());
-		$this->assertSame(1,
+			->setParameter('stime', time());
+		$this->assertSame(
+			1,
 			$query->execute()
 		);
 		// single user share, shouldn't be modified
@@ -124,8 +126,9 @@ class MigrationTest extends TestCase {
 			->setParameter('file_source', 2)
 			->setParameter('file_target', '/foo')
 			->setParameter('permissions', 31)
-			->setParameter('stime', \time());
-		$this->assertSame(1,
+			->setParameter('stime', time());
+		$this->assertSame(
+			1,
 			$query->execute()
 		);
 		// single group share, shouldn't be modified
@@ -140,8 +143,9 @@ class MigrationTest extends TestCase {
 			->setParameter('file_source', 2)
 			->setParameter('file_target', '/foo')
 			->setParameter('permissions', 31)
-			->setParameter('stime', \time());
-		$this->assertSame(1,
+			->setParameter('stime', time());
+		$this->assertSame(
+			1,
 			$query->execute()
 		);
 		$parent = $query->getLastInsertId();
@@ -157,8 +161,9 @@ class MigrationTest extends TestCase {
 			->setParameter('file_source', 2)
 			->setParameter('file_target', '/foo renamed')
 			->setParameter('permissions', 31)
-			->setParameter('stime', \time());
-		$this->assertSame(1,
+			->setParameter('stime', time());
+		$this->assertSame(
+			1,
 			$query->execute()
 		);
 		// first user share, shouldn't be modified
@@ -173,8 +178,9 @@ class MigrationTest extends TestCase {
 			->setParameter('file_source', 2)
 			->setParameter('file_target', '/foobar')
 			->setParameter('permissions', 31)
-			->setParameter('stime', \time());
-		$this->assertSame(1,
+			->setParameter('stime', time());
+		$this->assertSame(
+			1,
 			$query->execute()
 		);
 		$parent = $query->getLastInsertId();
@@ -190,8 +196,9 @@ class MigrationTest extends TestCase {
 			->setParameter('file_source', 2)
 			->setParameter('file_target', '/foobar')
 			->setParameter('permissions', 31)
-			->setParameter('stime', \time());
-		$this->assertSame(1,
+			->setParameter('stime', time());
+		$this->assertSame(
+			1,
 			$query->execute()
 		);
 		$parent = $query->getLastInsertId();
@@ -207,8 +214,9 @@ class MigrationTest extends TestCase {
 			->setParameter('file_source', 2)
 			->setParameter('file_target', '/foobar')
 			->setParameter('permissions', 31)
-			->setParameter('stime', \time());
-		$this->assertSame(1,
+			->setParameter('stime', time());
+		$this->assertSame(
+			1,
 			$query->execute()
 		);
 		$parent = $query->getLastInsertId();
@@ -224,8 +232,9 @@ class MigrationTest extends TestCase {
 			->setParameter('file_source', 2)
 			->setParameter('file_target', '/foobar')
 			->setParameter('permissions', 31)
-			->setParameter('stime', \time());
-		$this->assertSame(1,
+			->setParameter('stime', time());
+		$this->assertSame(
+			1,
 			$query->execute()
 		);
 
@@ -241,8 +250,9 @@ class MigrationTest extends TestCase {
 			->setParameter('file_source', 2)
 			->setParameter('file_target', '/foobar')
 			->setParameter('permissions', 31)
-			->setParameter('stime', \time());
-		$this->assertSame(1,
+			->setParameter('stime', time());
+		$this->assertSame(
+			1,
 			$query->execute()
 		);
 	}
@@ -322,7 +332,7 @@ class MigrationTest extends TestCase {
 				->setParameter('file_source', 2)
 				->setParameter('file_target', '/foobar')
 				->setParameter('permissions', 31)
-				->setParameter('stime', \time());
+				->setParameter('stime', time());
 
 			$this->assertSame(1, $query->execute());
 			$parent = $query->getLastInsertId();

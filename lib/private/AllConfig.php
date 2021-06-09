@@ -290,7 +290,7 @@ class AllConfig implements IConfig {
 	public function getUserKeys($userId, $appName) {
 		$data = $this->getUserValues($userId);
 		if (isset($data[$appName])) {
-			return \array_keys($data[$appName]);
+			return array_keys($data[$appName]);
 		}
 		return [];
 	}
@@ -435,17 +435,17 @@ class AllConfig implements IConfig {
 			return [];
 		}
 
-		$chunkedUsers = \array_chunk($userIds, 50, true);
-		$placeholders50 = \implode(',', \array_fill(0, 50, '?'));
+		$chunkedUsers = array_chunk($userIds, 50, true);
+		$placeholders50 = implode(',', array_fill(0, 50, '?'));
 
 		$userValues = [];
 		foreach ($chunkedUsers as $chunk) {
 			$queryParams = $chunk;
 			// create [$app, $key, $chunkedUsers]
-			\array_unshift($queryParams, $key);
-			\array_unshift($queryParams, $appName);
+			array_unshift($queryParams, $key);
+			array_unshift($queryParams, $appName);
 
-			$placeholders = (\sizeof($chunk) === 50) ? $placeholders50 :  \implode(',', \array_fill(0, \sizeof($chunk), '?'));
+			$placeholders = (sizeof($chunk) === 50) ? $placeholders50 :  implode(',', array_fill(0, sizeof($chunk), '?'));
 
 			$query = 'SELECT `userid`, `configvalue` ' .
 				'FROM `*PREFIX*preferences` ' .
@@ -476,23 +476,34 @@ class AllConfig implements IConfig {
 		$queryBuilder = $this->connection->getQueryBuilder();
 		$queryBuilder->select('userid')
 			->from('preferences')
-			->where($queryBuilder->expr()->eq(
-				'appid', $queryBuilder->createNamedParameter($appName))
+			->where(
+				$queryBuilder->expr()->eq(
+				'appid',
+				$queryBuilder->createNamedParameter($appName)
 			)
-			->andWhere($queryBuilder->expr()->eq(
-				'configkey', $queryBuilder->createNamedParameter($key))
+			)
+			->andWhere(
+				$queryBuilder->expr()->eq(
+				'configkey',
+				$queryBuilder->createNamedParameter($key)
+			)
 			)
 			->andWhere($queryBuilder->expr()->isNotNull('configvalue'));
 
 		if ($this->connection->getDatabasePlatform() instanceof OraclePlatform) {
 			//oracle can only compare the first 4000 bytes of a CLOB column
-			$queryBuilder->andWhere($queryBuilder->expr()->eq(
+			$queryBuilder->andWhere(
+				$queryBuilder->expr()->eq(
 				$queryBuilder->createFunction('dbms_lob.substr(`configvalue`, 4000, 1)'),
-				$queryBuilder->createNamedParameter($value))
+				$queryBuilder->createNamedParameter($value)
+			)
 			);
 		} else {
-			$queryBuilder->andWhere($queryBuilder->expr()->eq(
-				'configvalue', $queryBuilder->createNamedParameter($value))
+			$queryBuilder->andWhere(
+				$queryBuilder->expr()->eq(
+				'configvalue',
+				$queryBuilder->createNamedParameter($value)
+			)
 			);
 		}
 		$query = $queryBuilder->execute();

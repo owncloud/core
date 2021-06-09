@@ -64,7 +64,7 @@ class DisableExtraThemes implements IRepairStep {
 
 		$activeTheme = '';
 		if (\count($enabledThemes) >= 2) {
-			$activeTheme = \array_pop($enabledThemes);
+			$activeTheme = array_pop($enabledThemes);
 			foreach ($enabledThemes as $appId) {
 				$this->appManager->disableApp($appId);
 				$out->info("Theme $appId disabled");
@@ -91,15 +91,15 @@ class DisableExtraThemes implements IRepairStep {
 
 		// get themes as appId => appType
 		$appTypes = $this->appConfig->getValues(false, 'types');
-		$allThemes = \array_filter(
+		$allThemes = array_filter(
 			$appTypes,
 			function ($appTypes) {
-				return \in_array('theme', \explode(',', $appTypes));
+				return \in_array('theme', explode(',', $appTypes));
 			}
 		);
 
 		// calculate an intersection to get enabled themes
-		$enabledThemes = \array_intersect(\array_keys($allThemes), $enabledApps);
+		$enabledThemes = array_intersect(array_keys($allThemes), $enabledApps);
 
 		return $enabledThemes;
 	}

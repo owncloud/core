@@ -71,7 +71,7 @@ abstract class Node implements FilesNode {
 	 * @throws \OCP\Files\StorageNotAvailableException
 	 */
 	public function getMimePart() {
-		return \explode('/', $this->getMimetype(), 2)[0];
+		return explode('/', $this->getMimetype(), 2)[0];
 	}
 
 	/** {@inheritdoc} */
@@ -331,7 +331,7 @@ abstract class Node implements FilesNode {
 
 	/** {@inheritdoc} */
 	public function getName() {
-		return \basename($this->path);
+		return basename($this->path);
 	}
 
 	/**

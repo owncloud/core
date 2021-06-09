@@ -45,7 +45,7 @@ use OCP\ILogger;
  * @package OC\Files\Utils
  */
 class Scanner extends PublicEmitter {
-	const MAX_ENTRIES_TO_COMMIT = 10000;
+	public const MAX_ENTRIES_TO_COMMIT = 10000;
 
 	/**
 	 * @var string $user
@@ -103,7 +103,7 @@ class Scanner extends PublicEmitter {
 		$mountManager = Filesystem::getMountManager();
 		$mounts = $mountManager->findIn($dir);
 		$mounts[] = $mountManager->find($dir);
-		$mounts = \array_reverse($mounts); //start with the mount of $dir
+		$mounts = array_reverse($mounts); //start with the mount of $dir
 
 		return $mounts;
 	}
@@ -263,7 +263,7 @@ class Scanner extends PublicEmitter {
 	}
 
 	private function triggerPropagator(IStorage $storage, $internalPath) {
-		$storage->getPropagator()->propagateChange($internalPath, \time());
+		$storage->getPropagator()->propagateChange($internalPath, time());
 	}
 
 	private function postProcessEntry(IStorage $storage, $internalPath) {

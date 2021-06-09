@@ -125,7 +125,7 @@ class AuthSettingsControllerTest extends TestCase {
 
 		$this->secureRandom->expects($this->exactly(4))
 			->method('generate')
-			->with(5, \implode('', \range('A', 'Z')))
+			->with(5, implode('', range('A', 'Z')))
 			->will($this->returnValue('XXXXX'));
 		$newToken = 'XXXXX-XXXXX-XXXXX-XXXXX';
 

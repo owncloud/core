@@ -34,10 +34,10 @@ use \OCP\Files\StorageNotAvailableException;
  * to the public ones.
  */
 class LegacyUtil {
-	const MOUNT_TYPE_GLOBAL = 'global';
-	const MOUNT_TYPE_GROUP = 'group';
-	const MOUNT_TYPE_USER = 'user';
-	const MOUNT_TYPE_PERSONAL = 'personal';
+	public const MOUNT_TYPE_GLOBAL = 'global';
+	public const MOUNT_TYPE_GROUP = 'group';
+	public const MOUNT_TYPE_USER = 'user';
+	public const MOUNT_TYPE_PERSONAL = 'personal';
 
 	// whether to skip backend test (for unit tests, as this static class is not mockable)
 	public static $skipTest = false;
@@ -135,7 +135,7 @@ class LegacyUtil {
 	private static function prepareMountPointEntry(IStorageConfig $storage, $isPersonal) {
 		$mountEntry = [];
 
-		$mountEntry['mountpoint'] = \substr($storage->getMountPoint(), 1); // remove leading slash
+		$mountEntry['mountpoint'] = substr($storage->getMountPoint(), 1); // remove leading slash
 		$mountEntry['class'] = $storage->getBackend()->getIdentifier();
 		$mountEntry['backend'] = $storage->getBackend()->getText();
 		$mountEntry['authMechanism'] = $storage->getAuthMechanism()->getIdentifier();
@@ -168,12 +168,12 @@ class LegacyUtil {
 		if (\is_array($input)) {
 			foreach ($input as $key => $value) {
 				if (\is_string($value)) {
-					$input[$key] = \str_replace('$user', $user, $value);
+					$input[$key] = str_replace('$user', $user, $value);
 				}
 			}
 		} else {
 			if (\is_string($input)) {
-				$input = \str_replace('$user', $user, $input);
+				$input = str_replace('$user', $user, $input);
 			}
 		}
 		return $input;
@@ -198,7 +198,7 @@ class LegacyUtil {
 				$options[$key] = self::setUserVars($user->getUserName(), $option);
 			}
 		}
-		if (\class_exists($class)) {
+		if (class_exists($class)) {
 			try {
 				/** @var \OC\Files\Storage\Common $storage */
 				$storage = new $class($options);
@@ -235,8 +235,8 @@ class LegacyUtil {
 			$datadir = $config->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data/');
 			$jsonFile = $config->getSystemValue('mount_file', $datadir . '/mount.json');
 		}
-		if (\is_file($jsonFile)) {
-			$mountPoints = \json_decode(\file_get_contents($jsonFile), true);
+		if (is_file($jsonFile)) {
+			$mountPoints = json_decode(file_get_contents($jsonFile), true);
 			if (\is_array($mountPoints)) {
 				return $mountPoints;
 			}
@@ -285,7 +285,7 @@ class LegacyUtil {
 		$cipher = self::getCipher();
 		$iv = \OCP\Util::generateRandomBytes(16);
 		$cipher->setIV($iv);
-		return \base64_encode($iv . $cipher->encrypt($password));
+		return base64_encode($iv . $cipher->encrypt($password));
 	}
 
 	/**
@@ -296,10 +296,10 @@ class LegacyUtil {
 	 */
 	private static function decryptPassword($encryptedPassword) {
 		$cipher = self::getCipher();
-		$binaryPassword = \base64_decode($encryptedPassword);
-		$iv = \substr($binaryPassword, 0, 16);
+		$binaryPassword = base64_decode($encryptedPassword);
+		$iv = substr($binaryPassword, 0, 16);
 		$cipher->setIV($iv);
-		$binaryPassword = \substr($binaryPassword, 16);
+		$binaryPassword = substr($binaryPassword, 16);
 		return $cipher->decrypt($binaryPassword);
 	}
 
@@ -323,7 +323,7 @@ class LegacyUtil {
 	 * @return string
 	 */
 	public static function makeConfigHash($config) {
-		$data = \json_encode(
+		$data = json_encode(
 			[
 				'c' => $config['backend'],
 				'a' => $config['authMechanism'],
@@ -333,6 +333,6 @@ class LegacyUtil {
 				'mo' => isset($config['mountOptions']) ? $config['mountOptions'] : [],
 			]
 		);
-		return \hash('md5', $data);
+		return hash('md5', $data);
 	}
 }

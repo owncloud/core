@@ -42,11 +42,11 @@ try {
 	);
 
 	if (OC::$CLI) {
-		\print_r($values);
+		print_r($values);
 	} else {
-		\header('Access-Control-Allow-Origin: *');
-		\header('Content-Type: application/json');
-		echo \json_encode($values);
+		header('Access-Control-Allow-Origin: *');
+		header('Content-Type: application/json');
+		echo json_encode($values);
 	}
 } catch (\Throwable $ex) {
 	try {
@@ -54,7 +54,7 @@ try {
 		\OCP\Util::writeLog('remote', $ex->getMessage(), \OCP\Util::FATAL);
 	} catch (\Throwable $ex2) {
 		// log through the crashLog
-		\header("{$_SERVER['SERVER_PROTOCOL']} 599 Broken");
+		header("{$_SERVER['SERVER_PROTOCOL']} 599 Broken");
 		\OC::crashLog($ex);
 		\OC::crashLog($ex2);
 	}

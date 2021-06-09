@@ -92,7 +92,7 @@ class JSONResponseTest extends \Test\TestCase {
 		$this->expectException(\Exception::class);
 		$this->expectExceptionMessage('Could not json_encode due to invalid non UTF-8 characters in the array: array (');
 
-		$params = ['test' => \hex2bin('e9')];
+		$params = ['test' => hex2bin('e9')];
 		$this->json->setData($params);
 		$this->json->render();
 	}

@@ -51,7 +51,7 @@ trait LegacyDependencyCheckPolyfill {
 				if (!($value instanceof MissingDependency)) {
 					$module = null;
 					$message = null;
-					if (\is_numeric($key)) {
+					if (is_numeric($key)) {
 						$module = $value;
 					} else {
 						$module = $key;

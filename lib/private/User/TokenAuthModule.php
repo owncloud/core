@@ -114,7 +114,7 @@ class TokenAuthModule implements IAuthModule {
 	 */
 	private function getToken(IRequest $request, &$token) {
 		$authHeader = $request->getHeader('Authorization');
-		if ($authHeader === null || \strpos($authHeader, 'token ') === false) {
+		if ($authHeader === null || strpos($authHeader, 'token ') === false) {
 			// No auth header, let's try session id
 			try {
 				$token = $this->session->getId();
@@ -122,7 +122,7 @@ class TokenAuthModule implements IAuthModule {
 				return null;
 			}
 		} else {
-			$token = \substr($authHeader, 6);
+			$token = substr($authHeader, 6);
 		}
 
 		try {

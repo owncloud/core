@@ -47,7 +47,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package OCA\FederatedFileSharing
  */
 class FederatedShareProvider implements IShareProvider {
-	const SHARE_TYPE_REMOTE = 6;
+	public const SHARE_TYPE_REMOTE = 6;
 
 	/** @var IDBConnection */
 	private $dbConnection;
@@ -100,16 +100,16 @@ class FederatedShareProvider implements IShareProvider {
 	 * @param IUserManager $userManager
 	 */
 	public function __construct(
-			IDBConnection $connection,
-			EventDispatcherInterface $eventDispatcher,
-			AddressHandler $addressHandler,
-			Notifications $notifications,
-			TokenHandler $tokenHandler,
-			IL10N $l10n,
-			ILogger $logger,
-			IRootFolder $rootFolder,
-			IConfig $config,
-			IUserManager $userManager
+		IDBConnection $connection,
+		EventDispatcherInterface $eventDispatcher,
+		AddressHandler $addressHandler,
+		Notifications $notifications,
+		TokenHandler $tokenHandler,
+		IL10N $l10n,
+		ILogger $logger,
+		IRootFolder $rootFolder,
+		IConfig $config,
+		IUserManager $userManager
 	) {
 		$this->dbConnection = $connection;
 		$this->eventDispatcher = $eventDispatcher;
@@ -155,7 +155,7 @@ class FederatedShareProvider implements IShareProvider {
 		if (!empty($alreadyShared)) {
 			$message = 'Sharing %s failed, because this item is already shared with %s';
 			$message_t = $this->l->t('Sharing %s failed, because this item is already shared with %s', [$share->getNode()->getName(), $shareWith]);
-			$this->logger->debug(\sprintf($message, $share->getNode()->getName(), $shareWith), ['app' => 'Federated File Sharing']);
+			$this->logger->debug(sprintf($message, $share->getNode()->getName(), $shareWith), ['app' => 'Federated File Sharing']);
 			throw new \Exception($message_t);
 		}
 
@@ -182,7 +182,7 @@ class FederatedShareProvider implements IShareProvider {
 		if ($remoteShare) {
 			try {
 				$uidOwner = $remoteShare['owner'] . '@' . $remoteShare['remote'];
-				$shareId = $this->addShareToDB($itemSource, $itemType, $shareWith, $sharedBy, $uidOwner, $permissions, $expiration, 'tmp_token_' . \time());
+				$shareId = $this->addShareToDB($itemSource, $itemType, $shareWith, $sharedBy, $uidOwner, $permissions, $expiration, 'tmp_token_' . time());
 				$share->setId($shareId);
 				list($token, $remoteId) = $this->askOwnerToReShare($shareWith, $share, $shareId);
 				// remote share was create successfully if we get a valid token as return
@@ -265,8 +265,10 @@ class FederatedShareProvider implements IShareProvider {
 			if ($status === false) {
 				$msg = $result['ocs']['meta']['message'] ?? false;
 				if (!$msg) {
-					$message_t = $this->l->t('Sharing %s failed, could not find %s, maybe the server is currently unreachable.',
-						[$share->getNode()->getName(), $share->getSharedWith()]);
+					$message_t = $this->l->t(
+						'Sharing %s failed, could not find %s, maybe the server is currently unreachable.',
+						[$share->getNode()->getName(), $share->getSharedWith()]
+					);
 				} else {
 					$message_t = $this->l->t("Federated Sharing failed: %s", [$msg]);
 				}
@@ -352,7 +354,7 @@ class FederatedShareProvider implements IShareProvider {
 			->setValue('permissions', $qb->createNamedParameter($permissions))
 			->setValue('expiration', $qb->createNamedParameter($expiration, IQueryBuilder::PARAM_DATE))
 			->setValue('token', $qb->createNamedParameter($token))
-			->setValue('stime', $qb->createNamedParameter(\time()));
+			->setValue('stime', $qb->createNamedParameter(time()));
 
 		/*
 		 * Added to fix https://github.com/owncloud/core/issues/22215
@@ -647,7 +649,7 @@ class FederatedShareProvider implements IShareProvider {
 
 		$qb->orderBy('id');
 
-		$nodeIdsChunks = \array_chunk($nodeIDs, 900);
+		$nodeIdsChunks = array_chunk($nodeIDs, 900);
 		foreach ($nodeIdsChunks as $nodeIdsChunk) {
 			$qb->setParameter('file_source_ids', $nodeIdsChunk, IQueryBuilder::PARAM_INT_ARRAY);
 
@@ -1071,7 +1073,8 @@ class FederatedShareProvider implements IShareProvider {
 		$query->select('*')->from($this->externalShareTable)
 			->where(
 				$query->expr()->eq(
-					'remote_id', $query->createNamedParameter($remoteId)
+					'remote_id',
+					$query->createNamedParameter($remoteId)
 				)
 			)
 			->andWhere(

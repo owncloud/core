@@ -60,9 +60,11 @@ class Mailer implements IMailer {
 	 * @param ILogger $logger
 	 * @param \OC_Defaults $defaults
 	 */
-	public function __construct(IConfig $config,
-						 ILogger $logger,
-						 \OC_Defaults $defaults) {
+	public function __construct(
+		IConfig $config,
+		ILogger $logger,
+		\OC_Defaults $defaults
+	) {
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->defaults = $defaults;
@@ -102,21 +104,21 @@ class Mailer implements IMailer {
 
 		$allRecipients = [];
 		if (!empty($message->getTo())) {
-			$allRecipients = \array_merge($allRecipients, $message->getTo());
+			$allRecipients = array_merge($allRecipients, $message->getTo());
 		}
 		if (!empty($message->getCc())) {
-			$allRecipients = \array_merge($allRecipients, $message->getCc());
+			$allRecipients = array_merge($allRecipients, $message->getCc());
 		}
 		if (!empty($message->getBcc())) {
-			$allRecipients = \array_merge($allRecipients, $message->getBcc());
+			$allRecipients = array_merge($allRecipients, $message->getBcc());
 		}
 
 		// Debugging logging
 		$logMessage = 'Sent mail from "{from}" to "{recipients}" with subject "{subject}"';
 		$this->logger->debug($logMessage, [
 			'app' => 'core',
-			'from' => \json_encode($message->getFrom()),
-			'recipients' => \json_encode($allRecipients),
+			'from' => json_encode($message->getFrom()),
+			'recipients' => json_encode($allRecipients),
 			'subject' => $message->getSubject()
 		]);
 
@@ -143,15 +145,15 @@ class Mailer implements IMailer {
 	 * @return string Converted mail address if `idn_to_ascii` exists
 	 */
 	protected function convertEmail($email) {
-		if (!\function_exists('idn_to_ascii') || \strpos($email, '@') === false) {
+		if (!\function_exists('idn_to_ascii') || strpos($email, '@') === false) {
 			return $email;
 		}
 
-		list($name, $domain) = \explode('@', $email, 2);
+		list($name, $domain) = explode('@', $email, 2);
 		if (\defined('INTL_IDNA_VARIANT_UTS46')) {
-			$domain = \idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
+			$domain = idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
 		} else {
-			$domain = \idn_to_ascii($domain);
+			$domain = idn_to_ascii($domain);
 		}
 		return $name.'@'.$domain;
 	}

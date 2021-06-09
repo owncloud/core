@@ -33,8 +33,8 @@ use OCP\SystemTag\TagNotFoundException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class SystemTagObjectMapper implements ISystemTagObjectMapper {
-	const RELATION_TABLE = 'systemtag_object_mapping';
-	const CHUNK_SIZE = 200;
+	public const RELATION_TABLE = 'systemtag_object_mapping';
+	public const CHUNK_SIZE = 200;
 
 	/** @var ISystemTagManager */
 	protected $tagManager;
@@ -70,7 +70,7 @@ class SystemTagObjectMapper implements ISystemTagObjectMapper {
 
 		$query = $this->connection->getQueryBuilder();
 
-		$objectIdChunks = \array_chunk($objIds, self::CHUNK_SIZE);
+		$objectIdChunks = array_chunk($objIds, self::CHUNK_SIZE);
 		$mapping = [];
 		//Initialize mapping array
 		foreach ($objIds as $objId) {
@@ -116,7 +116,7 @@ class SystemTagObjectMapper implements ISystemTagObjectMapper {
 			->andWhere($query->expr()->eq('objecttype', $query->createNamedParameter($objectType)));
 
 		if ($limit) {
-			if (\sizeof($tagIds) !== 1) {
+			if (sizeof($tagIds) !== 1) {
 				throw new \InvalidArgumentException('Limit is only allowed with a single tag');
 			}
 
@@ -258,15 +258,18 @@ class SystemTagObjectMapper implements ISystemTagObjectMapper {
 		$tags = $this->tagManager->getTagsByIds($tagIds);
 		if (\count($tags) !== \count($tagIds)) {
 			// at least one tag missing, bail out
-			$foundTagIds = \array_map(
+			$foundTagIds = array_map(
 				function (ISystemTag $tag) {
 					return $tag->getId();
 				},
 				$tags
 			);
-			$missingTagIds = \array_diff($tagIds, $foundTagIds);
+			$missingTagIds = array_diff($tagIds, $foundTagIds);
 			throw new TagNotFoundException(
-				'Tags not found', 0, null, $missingTagIds
+				'Tags not found',
+				0,
+				null,
+				$missingTagIds
 			);
 		}
 	}

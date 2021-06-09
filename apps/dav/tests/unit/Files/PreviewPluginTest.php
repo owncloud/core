@@ -187,11 +187,11 @@ class PreviewPluginTest extends TestCase {
 		$this->response->method('setBody')->with('');
 		$this->response->expects($this->exactly(4))
 			->method('setHeader')->withConsecutive(
-			['Content-Type', 'application/octet-stream'],
-			['Content-Disposition', 'attachment'],
-			['Cache-Control', 'max-age=86400, must-revalidate'],
-			['Expires', \gmdate('D, d M Y H:i:s', 1234567 + 86400) . ' GMT']
-		);
+				['Content-Type', 'application/octet-stream'],
+				['Content-Disposition', 'attachment'],
+				['Cache-Control', 'max-age=86400, must-revalidate'],
+				['Expires', gmdate('D, d M Y H:i:s', 1234567 + 86400) . ' GMT']
+			);
 
 		$this->assertFalse($this->plugin->httpGet($this->request, $this->response));
 	}

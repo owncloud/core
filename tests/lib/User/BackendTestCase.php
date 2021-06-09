@@ -100,7 +100,7 @@ abstract class BackendTestCase extends \Test\TestCase {
 	}
 
 	public function testSearch() {
-		$prefix = \str_replace('\\', '#', \get_class($this->backend));
+		$prefix = str_replace('\\', '#', \get_class($this->backend));
 		$name1 = $this->getUser('foo' . $prefix . 'baz');
 		$name2 = $this->getUser('baz' . $prefix . 'foo');
 		$name3 = $this->getUser('notme');
@@ -110,7 +110,7 @@ abstract class BackendTestCase extends \Test\TestCase {
 		$this->backend->createUser($name3, 'pass3');
 
 		$result = $this->backend->getUsers($prefix);
-		$this->assertCount(2, $result, \json_encode($result));
+		$this->assertCount(2, $result, json_encode($result));
 
 		$result = $this->backend->getDisplayNames($prefix);
 		$this->assertCount(2, $result);

@@ -253,7 +253,7 @@ class LoginControllerTest extends TestCase {
 		];
 
 		if ($shouldShowMessage) {
-			$params['licenseMessage'] = \implode('<br/>', $licenseInfo['translated_message']);
+			$params['licenseMessage'] = implode('<br/>', $licenseInfo['translated_message']);
 		}
 
 		$this->licenseManager->method('getLicenseMessageFor')->willReturn($licenseInfo);
@@ -334,8 +334,10 @@ class LoginControllerTest extends TestCase {
 	 * @param $canChangePassword
 	 * @param $expectedResult
 	 */
-	public function testShowLoginFormWithPasswordResetOption($canChangePassword,
-															 $expectedResult) {
+	public function testShowLoginFormWithPasswordResetOption(
+		$canChangePassword,
+		$expectedResult
+	) {
 		$this->userSession
 			->expects($this->once())
 			->method('isLoggedIn')
@@ -540,10 +542,10 @@ class LoginControllerTest extends TestCase {
 			->will($this->returnValue(true));
 		$this->urlGenerator->expects($this->once())
 			->method('getAbsoluteURL')
-			->with(\urldecode($originalUrl))
+			->with(urldecode($originalUrl))
 			->will($this->returnValue($redirectUrl));
 
-		$expected = new RedirectResponse(\urldecode($redirectUrl));
+		$expected = new RedirectResponse(urldecode($redirectUrl));
 		$this->assertEquals($expected, $this->loginController->tryLogin('Jane', $password, $originalUrl));
 	}
 	

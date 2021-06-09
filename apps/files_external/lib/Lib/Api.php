@@ -38,7 +38,7 @@ class Api {
 	 */
 	private static function formatMount($mountPoint, $mountConfig) {
 		// strip "/$user/files" from mount point
-		$mountPoint = \explode('/', \trim($mountPoint, '/'), 3);
+		$mountPoint = explode('/', trim($mountPoint, '/'), 3);
 		$mountPoint = $mountPoint[2];
 
 		// split path from mount point
@@ -56,7 +56,7 @@ class Api {
 		}
 
 		$entry = [
-			'name' => \basename($mountPoint),
+			'name' => basename($mountPoint),
 			'path' => $path,
 			'type' => 'dir',
 			'backend' => $mountConfig['backend'],

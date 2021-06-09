@@ -47,7 +47,7 @@ use Test\TestCase;
  * @group DB
  */
 class VersioningTest extends TestCase {
-	const USERS_VERSIONS_ROOT = '/test-versions-user/files_versions';
+	public const USERS_VERSIONS_ROOT = '/test-versions-user/files_versions';
 
 	/** @var string */
 	private $user1;
@@ -90,7 +90,7 @@ class VersioningTest extends TestCase {
 		\OCA\Files_Versions\Hooks::connectHooks();
 
 		// Generate random usernames for better isolation
-		$testId = \uniqid();
+		$testId = uniqid();
 		$this->user1 = "test-versions-user1-$testId";
 		$this->user2 = "test-versions-user2-$testId";
 		$this->versionsRootOfUser1 = "/$this->user1/files_versions";
@@ -149,7 +149,7 @@ class VersioningTest extends TestCase {
 		$versionsFolder2 = '/' . $this->user2 . '/files_versions';
 		\OC\Files\Filesystem::file_put_contents('test.txt', 'test file');
 
-		$t1 = \time();
+		$t1 = time();
 		// second version is two weeks older, this way we make sure that no
 		// version will be expired
 		$t2 = $t1 - 60 * 60 * 24 * 14;
@@ -200,7 +200,7 @@ class VersioningTest extends TestCase {
 		// the deleted array should only contain versions which should be deleted
 		foreach ($deleted as $key => $path) {
 			unset($versions[$key]);
-			$this->assertEquals("delete", \substr($path, 0, \strlen("delete")));
+			$this->assertEquals("delete", substr($path, 0, \strlen("delete")));
 		}
 
 		// the versions array should only contain versions which should be kept
@@ -330,7 +330,7 @@ class VersioningTest extends TestCase {
 	public function testRename() {
 		\OC\Files\Filesystem::file_put_contents("test.txt", "test file");
 
-		$t1 = \time();
+		$t1 = time();
 		// second version is two weeks older, this way we make sure that no
 		// version will be expired
 		$t2 = $t1 - 60 * 60 * 24 * 14;
@@ -361,7 +361,7 @@ class VersioningTest extends TestCase {
 		\OC\Files\Filesystem::mkdir('folder1/folder2');
 		\OC\Files\Filesystem::file_put_contents("folder1/test.txt", "test file");
 
-		$t1 = \time();
+		$t1 = time();
 		// second version is two weeks older, this way we make sure that no
 		// version will be expired
 		$t2 = $t1 - 60 * 60 * 24 * 14;
@@ -410,7 +410,7 @@ class VersioningTest extends TestCase {
 		\OC\Files\Filesystem::mkdir('folder2');
 		\OC\Files\Filesystem::file_put_contents('folder1/test.txt', 'test file');
 
-		$t1 = \time();
+		$t1 = time();
 		// second version is two weeks older, this way we make sure that no
 		// version will be expired
 		$t2 = $t1 - 60 * 60 * 24 * 14;
@@ -454,7 +454,7 @@ class VersioningTest extends TestCase {
 		\OC\Files\Filesystem::mkdir('folder2');
 		\OC\Files\Filesystem::file_put_contents('folder2/test.txt', 'test file');
 
-		$t1 = \time();
+		$t1 = time();
 		// second version is two weeks older, this way we make sure that no
 		// version will be expired
 		$t2 = $t1 - 60 * 60 * 24 * 14;
@@ -490,7 +490,7 @@ class VersioningTest extends TestCase {
 	public function testRenameSharedFile() {
 		\OC\Files\Filesystem::file_put_contents("test.txt", "test file");
 
-		$t1 = \time();
+		$t1 = time();
 		// second version is two weeks older, this way we make sure that no
 		// version will be expired
 		$t2 = $t1 - 60 * 60 * 24 * 14;
@@ -538,7 +538,7 @@ class VersioningTest extends TestCase {
 	public function testCopy() {
 		\OC\Files\Filesystem::file_put_contents("test.txt", "test file");
 
-		$t1 = \time();
+		$t1 = time();
 		// second version is two weeks older, this way we make sure that no
 		// version will be expired
 		$t2 = $t1 - 60 * 60 * 24 * 14;
@@ -569,7 +569,7 @@ class VersioningTest extends TestCase {
 	 * the correct 'path' and 'name'
 	 */
 	public function testGetVersions() {
-		$t1 = \time();
+		$t1 = time();
 		// second version is two weeks older, this way we make sure that no
 		// version will be expired
 		$t2 = $t1 - 60 * 60 * 24 * 14;
@@ -679,7 +679,7 @@ class VersioningTest extends TestCase {
 		$t0 = $this->rootView->filemtime($filePath);
 
 		// not exactly the same timestamp as the file
-		$t1 = \time() - 60;
+		$t1 = time() - 60;
 		// second version is two weeks older
 		$t2 = $t1 - 60 * 60 * 24 * 14;
 
@@ -692,7 +692,8 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		$oldVersions = \OCA\Files_Versions\Storage::getVersions(
-			$this->user1, '/sub/test.txt'
+			$this->user1,
+			'/sub/test.txt'
 		);
 
 		$this->assertCount(2, $oldVersions);
@@ -733,7 +734,8 @@ class VersioningTest extends TestCase {
 		);
 
 		$newVersions = \OCA\Files_Versions\Storage::getVersions(
-			$this->user1, '/sub/test.txt'
+			$this->user1,
+			'/sub/test.txt'
 		);
 
 		$this->assertTrue(
@@ -847,7 +849,8 @@ class VersioningTest extends TestCase {
 		$rootStorage->getScanner()->scan('files_versions');
 
 		$versions = \OCA\Files_Versions\Storage::getVersions(
-			$this->user1, '/' . $path
+			$this->user1,
+			'/' . $path
 		);
 
 		// note: we cannot predict how many versions are created due to

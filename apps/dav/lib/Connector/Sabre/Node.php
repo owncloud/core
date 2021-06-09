@@ -249,7 +249,7 @@ abstract class Node implements \Sabre\DAV\INode {
 	public function getFileId() {
 		if ($this->info->getId()) {
 			$instanceId = \OC_Util::getInstanceId();
-			$id = \sprintf('%08d', $this->info->getId());
+			$id = sprintf('%08d', $this->info->getId());
 			return $id . $instanceId;
 		}
 
@@ -298,8 +298,8 @@ abstract class Node implements \Sabre\DAV\INode {
 		$mountpoint = $this->info->getMountPoint();
 		if (!($mountpoint instanceof MoveableMount)) {
 			$mountpointpath = $mountpoint->getMountPoint();
-			if (\substr($mountpointpath, -1) === '/') {
-				$mountpointpath = \substr($mountpointpath, 0, -1);
+			if (substr($mountpointpath, -1) === '/') {
+				$mountpointpath = substr($mountpointpath, 0, -1);
 			}
 
 			if ($mountpointpath === $this->info->getPath()) {
@@ -359,7 +359,7 @@ abstract class Node implements \Sabre\DAV\INode {
 		}
 
 		try {
-			$fileName = \basename($this->info->getPath());
+			$fileName = basename($this->info->getPath());
 			$this->fileView->verifyPath($this->path, $fileName);
 		} catch (\OCP\Files\InvalidPathException $ex) {
 			throw new InvalidPath($ex->getMessage());

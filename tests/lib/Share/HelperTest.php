@@ -136,7 +136,8 @@ class HelperTest extends \Test\TestCase {
 	 * @param bool $expected
 	 */
 	public function testIsSameUserOnSameServer($user1, $server1, $user2, $server2, $expected) {
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			\OC\Share\Helper::isSameUserOnSameServer($user1, $server1, $user2, $server2)
 		);
 	}

@@ -165,7 +165,7 @@ class CommandLogger implements ILogger {
 		}
 
 		// interpolate replacement values into the message and return
-		$message = \strtr($message, $replace);
+		$message = strtr($message, $replace);
 		$style = ($level > 2) ?'error' : 'info';
 
 		$this->output->writeln("<$style>$message</$style>");
@@ -196,9 +196,9 @@ class CommandLogger implements ILogger {
 			'File' => $exception->getFile(),
 			'Line' => $exception->getLine(),
 		];
-		$exception['Trace'] = \preg_replace('!(login|checkPassword|updatePrivateKeyPassword)\(.*\)!', '$1(*** username and password replaced ***)', $exception['Trace']);
+		$exception['Trace'] = preg_replace('!(login|checkPassword|updatePrivateKeyPassword)\(.*\)!', '$1(*** username and password replaced ***)', $exception['Trace']);
 		$msg = isset($context['message']) ? $context['message'] : 'Exception';
-		$msg .= ': ' . \json_encode($exception);
+		$msg .= ': ' . json_encode($exception);
 		$this->error($msg, $context);
 	}
 }

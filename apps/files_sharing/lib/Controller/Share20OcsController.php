@@ -259,7 +259,7 @@ class Share20OcsController extends OCSController {
 
 		$result['attributes'] = null;
 		if ($attributes = $share->getAttributes()) {
-			$result['attributes'] = \json_encode($attributes->toArray());
+			$result['attributes'] = json_encode($attributes->toArray());
 		}
 
 		return $result;
@@ -583,19 +583,19 @@ class Share20OcsController extends OCSController {
 		// sharedWithMe is limited to user and group shares for compatibility.
 		$shares = [];
 		if (isset($requestedShareTypes[Share::SHARE_TYPE_USER]) && $requestedShareTypes[Share::SHARE_TYPE_USER]) {
-			$shares = \array_merge(
+			$shares = array_merge(
 				$shares,
 				$this->shareManager->getSharedWith($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_USER, $node, -1, 0)
 			);
 		}
 		if (isset($requestedShareTypes[Share::SHARE_TYPE_GROUP]) && $requestedShareTypes[Share::SHARE_TYPE_GROUP]) {
-			$shares = \array_merge(
+			$shares = array_merge(
 				$shares,
 				$this->shareManager->getSharedWith($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_GROUP, $node, -1, 0)
 			);
 		}
 
-		$shares = \array_filter($shares, function (IShare $share) {
+		$shares = array_filter($shares, function (IShare $share) {
 			return $share->getShareOwner() !== $this->userSession->getUser()->getUID();
 		});
 
@@ -672,7 +672,7 @@ class Share20OcsController extends OCSController {
 				Share::SHARE_TYPE_REMOTE,
 			];
 		} else {
-			$shareTypes = \explode(',', $shareTypes);
+			$shareTypes = explode(',', $shareTypes);
 		}
 
 		$requestedShareTypes = [
@@ -750,7 +750,7 @@ class Share20OcsController extends OCSController {
 					continue;
 				}
 
-				$shares = \array_merge(
+				$shares = array_merge(
 					$shares,
 					$this->shareManager->getSharesBy($this->userSession->getUser()->getUID(), $shareType, $node, $reshares, -1, 0)
 				);
@@ -1008,7 +1008,7 @@ class Share20OcsController extends OCSController {
 		// we actually want to update all shares related to the node in case there are multiple
 		// incoming shares for the same node (ex: receiving simultaneously through group share and user share)
 		$allShares = $this->shareManager->getSharedWith($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_USER, $node, -1, 0);
-		$allShares = \array_merge($allShares, $this->shareManager->getSharedWith($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_GROUP, $node, -1, 0));
+		$allShares = array_merge($allShares, $this->shareManager->getSharedWith($this->userSession->getUser()->getUID(), Share::SHARE_TYPE_GROUP, $node, -1, 0));
 
 		// resolve and deduplicate target if accepting
 		if ($state === Share::STATE_ACCEPTED) {
@@ -1063,7 +1063,7 @@ class Share20OcsController extends OCSController {
 		}
 		$pathAttempt = Filesystem::normalizePath($share->getTarget());
 
-		$pathinfo = \pathinfo($pathAttempt);
+		$pathinfo = pathinfo($pathAttempt);
 		$ext = isset($pathinfo['extension']) ? '.'.$pathinfo['extension'] : '';
 		$name = $pathinfo['filename'];
 
@@ -1191,7 +1191,7 @@ class Share20OcsController extends OCSController {
 		foreach ($formattedShareAttributes as $formattedAttr) {
 			$value = isset($formattedAttr['value']) ? $formattedAttr['value'] : null;
 			if (isset($formattedAttr['enabled'])) {
-				$value = (bool) \json_decode($formattedAttr['enabled']);
+				$value = (bool) json_decode($formattedAttr['enabled']);
 			}
 			if ($value !== null) {
 				$newShareAttributes->setAttribute(

@@ -103,9 +103,9 @@ class SharingDialog extends OwncloudPage {
 	 */
 	private function getExpirationFieldFor($user, $type = 'user') {
 		if ($type === "group") {
-			$user = \sprintf($this->groupFramework, $user);
+			$user = sprintf($this->groupFramework, $user);
 		}
-		return $this->find("xpath", \sprintf($this->shareWithExpirationFieldXpath, $user));
+		return $this->find("xpath", sprintf($this->shareWithExpirationFieldXpath, $user));
 	}
 
 	/**
@@ -216,7 +216,9 @@ class SharingDialog extends OwncloudPage {
 	 * @return NodeElement AutocompleteElement
 	 */
 	public function fillShareWithField(
-		$input, Session $session, $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+		$input,
+		Session $session,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$shareWithField = $this->findShareWithField();
 		$this->fillFieldAndKeepFocus($shareWithField, $input, $session);
@@ -313,7 +315,7 @@ class SharingDialog extends OwncloudPage {
 			$this->autocompleteItemsTextXpath
 		);
 		foreach ($itemElements as $item) {
-			\array_push($itemsArray, $this->getTrimmedText($item));
+			array_push($itemsArray, $this->getTrimmedText($item));
 		}
 		return $itemsArray;
 	}
@@ -330,15 +332,21 @@ class SharingDialog extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function shareWithUserOrGroup(
-		$nameToType, $nameToMatch, Session $session, $maxRetries = 5, $quiet = false
+		$nameToType,
+		$nameToMatch,
+		Session $session,
+		$maxRetries = 5,
+		$quiet = false
 	) {
 		$userFound = false;
 		for ($retryCounter = 0; $retryCounter < $maxRetries; $retryCounter++) {
 			$autocompleteNodeElement = $this->fillShareWithField(
-				$nameToType, $session
+				$nameToType,
+				$session
 			);
 			$userElements = $autocompleteNodeElement->findAll(
-				"xpath", $this->autocompleteItemsTextXpath
+				"xpath",
+				$this->autocompleteItemsTextXpath
 			);
 			$userFound = false;
 			foreach ($userElements as $user) {
@@ -352,13 +360,13 @@ class SharingDialog extends OwncloudPage {
 			if ($userFound === true) {
 				break;
 			} elseif ($quiet === false) {
-				\error_log("Error while sharing file");
+				error_log("Error while sharing file");
 			}
 		}
 		if ($retryCounter > 0 && $quiet === false) {
 			$message = "INFORMATION: retried to share file $retryCounter times";
 			echo $message;
-			\error_log($message);
+			error_log($message);
 		}
 		if ($userFound !== true) {
 			throw new ElementNotFoundException(
@@ -378,11 +386,17 @@ class SharingDialog extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function shareWithUser(
-		$name, Session $session, $maxRetries = 5, $quiet = false
+		$name,
+		Session $session,
+		$maxRetries = 5,
+		$quiet = false
 	) {
 		$this->shareWithUserOrGroup(
-			$name, $name . $this->suffixToIdentifyUsers,
-			$session, $maxRetries, $quiet
+			$name,
+			$name . $this->suffixToIdentifyUsers,
+			$session,
+			$maxRetries,
+			$quiet
 		);
 	}
 
@@ -397,11 +411,17 @@ class SharingDialog extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function shareWithRemoteUser(
-		$name, Session $session, $maxRetries = 5, $quiet = false
+		$name,
+		Session $session,
+		$maxRetries = 5,
+		$quiet = false
 	) {
 		$this->shareWithUserOrGroup(
-			$name, $name . $this->suffixToIdentifyRemoteUsers,
-			$session, $maxRetries, $quiet
+			$name,
+			$name . $this->suffixToIdentifyRemoteUsers,
+			$session,
+			$maxRetries,
+			$quiet
 		);
 	}
 
@@ -416,11 +436,17 @@ class SharingDialog extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function shareWithGroup(
-		$name, Session $session, $maxRetries = 5, $quiet = false
+		$name,
+		Session $session,
+		$maxRetries = 5,
+		$quiet = false
 	) {
 		$this->shareWithUserOrGroup(
-			$name, $name . $this->suffixToIdentifyGroups,
-			$session, $maxRetries, $quiet
+			$name,
+			$name . $this->suffixToIdentifyGroups,
+			$session,
+			$maxRetries,
+			$quiet
 		);
 	}
 
@@ -434,24 +460,28 @@ class SharingDialog extends OwncloudPage {
 	 */
 	public function openShareActionsIfNotOpen($userOrGroup, $shareReceiverName) {
 		if ($userOrGroup == "group") {
-			$xpathLocator = \sprintf(
-				$this->permissionsFieldByGroupName, $shareReceiverName
+			$xpathLocator = sprintf(
+				$this->permissionsFieldByGroupName,
+				$shareReceiverName
 			);
 		} else {
 			// For users having same display name we pass $shareReceiverName in the format "displayName (userName)"
 			// Let's hope display name of user in other cases is not in the above mentioned format, otherwise this will fail
-			if (\preg_match('/\(*\)/', $shareReceiverName)
-				&& !\strpos($shareReceiverName, '(federated)')
+			if (preg_match('/\(*\)/', $shareReceiverName)
+				&& !strpos($shareReceiverName, '(federated)')
 			) {
-				$nameDisplayNameArray = \explode('(', $shareReceiverName);
-				$shareReceiverName = \trim($nameDisplayNameArray[0]);
-				$additionalInfo = \trim($nameDisplayNameArray[1], '()');
-				$xpathLocator = \sprintf(
-					$this->permissionsFieldByUserNameWithExtraInfo, $shareReceiverName, $additionalInfo
+				$nameDisplayNameArray = explode('(', $shareReceiverName);
+				$shareReceiverName = trim($nameDisplayNameArray[0]);
+				$additionalInfo = trim($nameDisplayNameArray[1], '()');
+				$xpathLocator = sprintf(
+					$this->permissionsFieldByUserNameWithExtraInfo,
+					$shareReceiverName,
+					$additionalInfo
 				);
 			} else {
-				$xpathLocator = \sprintf(
-					$this->permissionsFieldByUserName, $shareReceiverName
+				$xpathLocator = sprintf(
+					$this->permissionsFieldByUserName,
+					$shareReceiverName
 				);
 			}
 		}
@@ -505,7 +535,7 @@ class SharingDialog extends OwncloudPage {
 	) {
 		$permissionsField = $this->openShareActionsIfNotOpen($userOrGroup, $shareReceiverName);
 		foreach ($permissions as $permission => $value) {
-			$value = \strtolower($value);
+			$value = strtolower($value);
 
 			//to find where to click is a little bit complicated
 			//just setting the checkbox does not work
@@ -527,7 +557,7 @@ class SharingDialog extends OwncloudPage {
 				"permission '$permission' and user '$shareReceiverName'"
 			);
 
-			$xpathLocator = \sprintf($this->permissionLabelXpath, $checkBoxId);
+			$xpathLocator = sprintf($this->permissionLabelXpath, $checkBoxId);
 			$permissionLabel = $permissionsField->find("xpath", $xpathLocator);
 
 			$this->assertElementNotNull(
@@ -596,7 +626,8 @@ class SharingDialog extends OwncloudPage {
 	public function getShareWithTooltip() {
 		$shareWithField = $this->findShareWithField();
 		$shareWithTooltip = $shareWithField->find(
-			"xpath", $this->shareWithTooltipXpath
+			"xpath",
+			$this->shareWithTooltipXpath
 		);
 		$this->assertElementNotNull(
 			$shareWithTooltip,
@@ -635,7 +666,7 @@ class SharingDialog extends OwncloudPage {
 	public function getSharedWithGroupAndSharerName() {
 		if ($this->sharedWithGroupAndSharerName === null) {
 			$text = $this->getTrimmedText($this->findSharerInformationItem());
-			if (\preg_match("/$this->sharedWithAndByRegEx/", $text, $matches)) {
+			if (preg_match("/$this->sharedWithAndByRegEx/", $text, $matches)) {
 				$this->sharedWithGroupAndSharerName = [
 					"sharedWithGroup" => $matches [1],
 					"sharer" => $matches [2]
@@ -715,7 +746,7 @@ class SharingDialog extends OwncloudPage {
 			if ($ocDialog) {
 				break;
 			}
-			\usleep(100000);
+			usleep(100000);
 		}
 		Assert::assertNotFalse(
 			$ocDialog,
@@ -771,7 +802,7 @@ class SharingDialog extends OwncloudPage {
 	 */
 	private function getLastOcDialog(Session $session) {
 		$ocDialogs = $this->getOcDialogs();
-		return \end($ocDialogs);
+		return end($ocDialogs);
 	}
 
 	/**
@@ -814,7 +845,7 @@ class SharingDialog extends OwncloudPage {
 		$shareWithList = $this->getShareWithList();
 		foreach ($shareWithList as $item) {
 			if ($userOrGroup == "group") {
-				$username = \sprintf($this->groupFramework, $username);
+				$username = sprintf($this->groupFramework, $username);
 			}
 			if ($item->find('xpath', $this->userOrGroupNameSpanXpath)->getHtml() === $username) {
 				$item->find('xpath', $this->unShareTabXpath)->click();
@@ -869,7 +900,7 @@ class SharingDialog extends OwncloudPage {
 		$shareWithList = $this->getShareWithList();
 		foreach ($shareWithList as $group) {
 			$actualGroupName = $group->find('xpath', $this->userOrGroupNameSpanXpath);
-			return $actualGroupName->getHtml() === \sprintf($this->groupFramework, $groupName);
+			return $actualGroupName->getHtml() === sprintf($this->groupFramework, $groupName);
 		}
 		return false;
 	}
@@ -902,9 +933,9 @@ class SharingDialog extends OwncloudPage {
 	 */
 	public function getShareTreeItem($type, $name, $path) {
 		if ($type === "group") {
-			$name = \sprintf($this->groupFramework, $name);
+			$name = sprintf($this->groupFramework, $name);
 		}
-		$fullXpath = \sprintf($this->shareTreeItemByNameAndPathXpath, $name, $path);
+		$fullXpath = sprintf($this->shareTreeItemByNameAndPathXpath, $name, $path);
 		$item = $this->find("xpath", $fullXpath);
 		$this->assertElementNotNull(
 			$item,

@@ -84,7 +84,7 @@ class SyncService {
 		// 3. apply changes
 		// TODO: use multi-get for download
 		foreach ($response['response'] as $resource => $status) {
-			$cardUri = \basename($resource);
+			$cardUri = basename($resource);
 			if (isset($status[200])) {
 				$vCard = $this->download($url, $sharedSecret, $resource);
 				$existingCard = $this->backend->getCard($addressBookId, $cardUri);

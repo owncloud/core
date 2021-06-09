@@ -35,7 +35,7 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
  * Repairs file cache entry which path do not match the parent-child relationship
  */
 class RepairMismatchFileCachePath implements IRepairStep {
-	const CHUNK_SIZE = 10000;
+	public const CHUNK_SIZE = 10000;
 
 	/** @var IDBConnection */
 	protected $connection;
@@ -64,10 +64,12 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	/**
 	 * @param \OCP\IDBConnection $connection
 	 */
-	public function __construct(IDBConnection $connection,
-								IMimeTypeLoader $mimeLoader,
-								ILogger $logger,
-								IConfig $config) {
+	public function __construct(
+		IDBConnection $connection,
+		IMimeTypeLoader $mimeLoader,
+		ILogger $logger,
+		IConfig $config
+	) {
 		$this->connection = $connection;
 		$this->mimeLoader = $mimeLoader;
 		$this->logger = $logger;
@@ -119,14 +121,14 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		if ($correctPath === '' && $this->connection->getDatabasePlatform() instanceof OraclePlatform) {
 			$qb->andWhere($qb->expr()->isNull('path'));
 		} else {
-			$qb->andWhere($qb->expr()->eq('path_hash', $qb->createNamedParameter(\md5($correctPath))));
+			$qb->andWhere($qb->expr()->eq('path_hash', $qb->createNamedParameter(md5($correctPath))));
 		}
 		$entryExisted = $qb->execute() > 0;
 
 		$qb = $this->connection->getQueryBuilder();
 		$qb->update('filecache')
 			->set('path', $qb->createNamedParameter($correctPath))
-			->set('path_hash', $qb->createNamedParameter(\md5($correctPath)))
+			->set('path_hash', $qb->createNamedParameter(md5($correctPath)))
 			->set('storage', $qb->createNamedParameter($correctStorageNumericId))
 			->where($qb->expr()->eq('fileid', $qb->createNamedParameter($fileId)));
 		$qb->execute();
@@ -246,9 +248,9 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			$storageIds[$row['storage']] = true;
 		}
 
-		$storageIds = \array_keys($storageIds);
+		$storageIds = array_keys($storageIds);
 		if (!empty($storageIds)) {
-			$out->warning('The file cache contains entries with invalid path values for the following storage numeric ids: ' . \implode(' ', $storageIds));
+			$out->warning('The file cache contains entries with invalid path values for the following storage numeric ids: ' . implode(' ', $storageIds));
 			$out->warning('Please run `occ files:scan --all --repair` to repair'
 			.'all affected storages or run `occ files:scan userid --repair for '
 			.'each user with affected storages');
@@ -275,9 +277,9 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			$storageIds[$row['storage']] = true;
 		}
 
-		$storageIds = \array_keys($storageIds);
+		$storageIds = array_keys($storageIds);
 		if (!empty($storageIds)) {
-			$out->warning('The file cache contains entries where the parent id does not point to any existing entry for the following storage numeric ids: ' . \implode(' ', $storageIds));
+			$out->warning('The file cache contains entries where the parent id does not point to any existing entry for the following storage numeric ids: ' . implode(' ', $storageIds));
 			$out->warning('Please run `occ files:scan --all --repair` to repair all affected storages');
 		}
 	}
@@ -319,7 +321,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 				$wrongPath = $row['path'];
 				$correctPath = $row['parentpath'] . '/' . $row['name'];
 				// make sure the target is on a different subtree
-				if (\substr($correctPath, 0, \strlen($wrongPath)) === $wrongPath) {
+				if (substr($correctPath, 0, \strlen($wrongPath)) === $wrongPath) {
 					// the path based parent entry is referencing one of its own children,
 					// fix the entry's parent id instead
 					// note: fixEntryParent cannot fail to find the parent entry by path
@@ -358,7 +360,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			$out->info("Fixed $totalResultsCount file cache entries with wrong path");
 		}
 
-		return \array_keys($affectedStorages);
+		return array_keys($affectedStorages);
 	}
 
 	/**
@@ -385,7 +387,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		if ($path === '' && $this->connection->getDatabasePlatform() instanceof OraclePlatform) {
 			$qb->andWhere($qb->expr()->isNull('path'));
 		} else {
-			$qb->andWhere($qb->expr()->eq('path_hash', $qb->createNamedParameter(\md5($path))));
+			$qb->andWhere($qb->expr()->eq('path_hash', $qb->createNamedParameter(md5($path))));
 		}
 		$results = $qb->execute();
 		$rows = $results->fetchAll();
@@ -406,8 +408,8 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		$values = [
 			'storage' => $qb->createNamedParameter($storageId),
 			'path' => $qb->createNamedParameter($path),
-			'path_hash' => $qb->createNamedParameter(\md5($path)),
-			'name' => $qb->createNamedParameter(\basename($path)),
+			'path_hash' => $qb->createNamedParameter(md5($path)),
+			'name' => $qb->createNamedParameter(basename($path)),
 			'parent' => $qb->createNamedParameter($parentId),
 			'size' => $qb->createNamedParameter(-1),
 			'etag' => $qb->createNamedParameter('zombie'),
@@ -586,7 +588,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	 */
 	public function run(IOutput $out) {
 		$currentVersion = $this->config->getSystemValue('version', '0.0.0');
-		$versionCompareStatus = \version_compare($currentVersion, '10.0.4', '<');
+		$versionCompareStatus = version_compare($currentVersion, '10.0.4', '<');
 		//Execute repair step if version is less than 10.0.4 during upgrade
 		//This is not applicable when called from file scan command
 		if ($versionCompareStatus) {

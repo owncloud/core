@@ -140,9 +140,9 @@ class CorsPluginTest extends TestCase {
 				],
 				200,
 				[
-					'Access-Control-Allow-Headers' => \implode(',', $allowedHeaders),
+					'Access-Control-Allow-Headers' => implode(',', $allowedHeaders),
 					'Access-Control-Allow-Origin' => '*',
-					'Access-Control-Allow-Methods' => \implode(',', $allowedMethodsUnAuthenticated),
+					'Access-Control-Allow-Methods' => implode(',', $allowedMethodsUnAuthenticated),
 				],
 				false
 			],
@@ -156,9 +156,9 @@ class CorsPluginTest extends TestCase {
 				],
 				200,
 				[
-					'Access-Control-Allow-Headers' => \implode(',', $allowedHeaders),
+					'Access-Control-Allow-Headers' => implode(',', $allowedHeaders),
 					'Access-Control-Allow-Origin' => 'https://requesterdomain.tld',
-					'Access-Control-Allow-Methods' => \implode(',', $allowedMethods),
+					'Access-Control-Allow-Methods' => implode(',', $allowedMethods),
 				],
 				true
 			],
@@ -236,9 +236,9 @@ class CorsPluginTest extends TestCase {
 				],
 				200,
 				[
-					'Access-Control-Allow-Headers' => \implode(',', $allowedHeaders),
+					'Access-Control-Allow-Headers' => implode(',', $allowedHeaders),
 					'Access-Control-Allow-Origin' => 'https://currentdomain.tld:8443',
-					'Access-Control-Allow-Methods' => \implode(',', $allowedMethods),
+					'Access-Control-Allow-Methods' => implode(',', $allowedMethods),
 				],
 				true
 			],
@@ -348,8 +348,10 @@ class CorsPluginTest extends TestCase {
 		$this->server->addPlugin($this->plugin);
 
 		$this->plugin->setCorsHeaders($this->server->httpRequest, $this->server->httpResponse);
-		self::assertEquals('X-Additional-Configured-Header,authorization,OC-Checksum,OC-Total-Length,OCS-APIREQUEST,X-OC-Mtime,OC-RequestAppPassword,Accept,Authorization,Brief,Content-Length,Content-Range,Content-Type,Date,Depth,Destination,Host,If,If-Match,If-Modified-Since,If-None-Match,If-Range,If-Unmodified-Since,Location,Lock-Token,Overwrite,Prefer,Range,Schedule-Reply,Timeout,User-Agent,X-Expected-Entity-Length,Accept-Language,Access-Control-Request-Method,Access-Control-Allow-Origin,ETag,OC-Autorename,OC-CalDav-Import,OC-Chunked,OC-Etag,OC-FileId,OC-LazyOps,OC-Total-File-Length,Origin,X-Request-ID,X-Requested-With',
-			$this->server->httpResponse->getHeader('Access-Control-Allow-Headers'));
+		self::assertEquals(
+			'X-Additional-Configured-Header,authorization,OC-Checksum,OC-Total-Length,OCS-APIREQUEST,X-OC-Mtime,OC-RequestAppPassword,Accept,Authorization,Brief,Content-Length,Content-Range,Content-Type,Date,Depth,Destination,Host,If,If-Match,If-Modified-Since,If-None-Match,If-Range,If-Unmodified-Since,Location,Lock-Token,Overwrite,Prefer,Range,Schedule-Reply,Timeout,User-Agent,X-Expected-Entity-Length,Accept-Language,Access-Control-Request-Method,Access-Control-Allow-Origin,ETag,OC-Autorename,OC-CalDav-Import,OC-Chunked,OC-Etag,OC-FileId,OC-LazyOps,OC-Total-File-Length,Origin,X-Request-ID,X-Requested-With',
+			$this->server->httpResponse->getHeader('Access-Control-Allow-Headers')
+		);
 	}
 
 	public function testUnauthenticatedAdditionalAllowedHeaders() {
@@ -368,7 +370,9 @@ class CorsPluginTest extends TestCase {
 		$this->server->addPlugin($this->plugin);
 
 		$this->plugin->setCorsHeaders($this->server->httpRequest, $this->server->httpResponse);
-		self::assertEquals('X-Additional-Configured-Header,authorization,OC-Checksum,OC-Total-Length,OCS-APIREQUEST,X-OC-Mtime,OC-RequestAppPassword,Accept,Authorization,Brief,Content-Length,Content-Range,Content-Type,Date,Depth,Destination,Host,If,If-Match,If-Modified-Since,If-None-Match,If-Range,If-Unmodified-Since,Location,Lock-Token,Overwrite,Prefer,Range,Schedule-Reply,Timeout,User-Agent,X-Expected-Entity-Length,Accept-Language,Access-Control-Request-Method,Access-Control-Allow-Origin,ETag,OC-Autorename,OC-CalDav-Import,OC-Chunked,OC-Etag,OC-FileId,OC-LazyOps,OC-Total-File-Length,Origin,X-Request-ID,X-Requested-With',
-			$this->server->httpResponse->getHeader('Access-Control-Allow-Headers'));
+		self::assertEquals(
+			'X-Additional-Configured-Header,authorization,OC-Checksum,OC-Total-Length,OCS-APIREQUEST,X-OC-Mtime,OC-RequestAppPassword,Accept,Authorization,Brief,Content-Length,Content-Range,Content-Type,Date,Depth,Destination,Host,If,If-Match,If-Modified-Since,If-None-Match,If-Range,If-Unmodified-Since,Location,Lock-Token,Overwrite,Prefer,Range,Schedule-Reply,Timeout,User-Agent,X-Expected-Entity-Length,Accept-Language,Access-Control-Request-Method,Access-Control-Allow-Origin,ETag,OC-Autorename,OC-CalDav-Import,OC-Chunked,OC-Etag,OC-FileId,OC-LazyOps,OC-Total-File-Length,Origin,X-Request-ID,X-Requested-With',
+			$this->server->httpResponse->getHeader('Access-Control-Allow-Headers')
+		);
 	}
 }

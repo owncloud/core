@@ -103,11 +103,11 @@ class Verify extends Base {
 			}
 
 			foreach ($configInput as $configOption) {
-				if (!\strpos($configOption, '=')) {
+				if (!strpos($configOption, '=')) {
 					$output->writeln('<error>Invalid mount configuration option "' . $configOption . '"</error>');
 					return;
 				}
-				list($key, $value) = \explode('=', $configOption, 2);
+				list($key, $value) = explode('=', $configOption, 2);
 				$storage->setBackendOption($key, $value);
 			}
 

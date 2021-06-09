@@ -84,6 +84,6 @@ class SettingsPanelTest extends \Test\TestCase {
 		$inputNodes = $xpath->query('//input[@name="blacklisted_receiver_groups"]');
 		$this->assertEquals(1, $inputNodes->length);  // only 1 element should be found
 		$inputNode = $inputNodes->item(0);
-		$this->assertSame(\implode("|", $ids), $inputNode->attributes->getNamedItem('value')->value);
+		$this->assertSame(implode("|", $ids), $inputNode->attributes->getNamedItem('value')->value);
 	}
 }

@@ -86,7 +86,7 @@ class CalendarHome extends \Sabre\CalDAV\CalendarHome {
 		}
 
 		// Calendars
-		$name = \urldecode($name);
+		$name = urldecode($name);
 		foreach ($this->caldavBackend->getCalendarsForUser($this->principalInfo['uri']) as $calendar) {
 			if ($calendar['uri'] === $name) {
 				return new Calendar($this->caldavBackend, $calendar, $this->l10n);

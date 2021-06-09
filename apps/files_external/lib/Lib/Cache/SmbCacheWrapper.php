@@ -57,14 +57,14 @@ class SmbCacheWrapper extends CacheWrapper {
 
 	public function getFolderContents($folder) {
 		$children = parent::getFolderContents($folder);
-		return \array_filter($children, function (ICacheEntry $c) {
+		return array_filter($children, function (ICacheEntry $c) {
 			return $this->canAccess($c->getPath());
 		});
 	}
 
 	public function getFolderContentsById($fileId) {
 		$children = parent::getFolderContentsById($fileId);
-		return \array_filter($children, function (ICacheEntry $c) {
+		return array_filter($children, function (ICacheEntry $c) {
 			return $this->canAccess($c->getPath());
 		});
 	}

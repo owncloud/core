@@ -83,7 +83,7 @@ class UserGlobalStoragesService extends GlobalStoragesService implements IUserGl
 		} else {
 			$groupMounts = [];
 		}
-		return \array_merge($userMounts, $groupMounts, $globalMounts);
+		return array_merge($userMounts, $groupMounts, $globalMounts);
 	}
 
 	public function addStorage(IStorageConfig $newStorage) {
@@ -117,7 +117,7 @@ class UserGlobalStoragesService extends GlobalStoragesService implements IUserGl
 
 		$result = [];
 		foreach ($storagesByMountpoint as $storageList) {
-			$storage = \array_reduce($storageList, function ($carry, $item) {
+			$storage = array_reduce($storageList, function ($carry, $item) {
 				if (isset($carry)) {
 					$carryPriorityType = $this->getPriorityType($carry);
 					$itemPriorityType = $this->getPriorityType($item);

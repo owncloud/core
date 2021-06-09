@@ -120,7 +120,7 @@ class Watcher implements IWatcher {
 	 * @return bool
 	 */
 	public function needsUpdate($path, $cachedData) {
-		if ($this->watchPolicy === self::CHECK_ALWAYS or ($this->watchPolicy === self::CHECK_ONCE and \array_search($path, $this->checkedPaths) === false)) {
+		if ($this->watchPolicy === self::CHECK_ALWAYS or ($this->watchPolicy === self::CHECK_ONCE and array_search($path, $this->checkedPaths) === false)) {
 			$this->checkedPaths[] = $path;
 			if (isset($cachedData['storage_mtime'])) {
 				$storageMtime = $cachedData['storage_mtime'];

@@ -45,7 +45,7 @@ class EnvironmentHelperTest extends TestCase {
 	}
 
 	public function testGetEnvVar() {
-		\putenv('foo=bar');
+		putenv('foo=bar');
 		$this->assertEquals('bar', $this->environmentHelper->getEnvVar('foo'));
 	}
 }

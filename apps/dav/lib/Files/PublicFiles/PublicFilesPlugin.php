@@ -43,11 +43,11 @@ use Sabre\HTTP\ResponseInterface;
  * @package OCA\DAV\Files\PublicFiles
  */
 class PublicFilesPlugin extends ServerPlugin {
-	const PUBLIC_LINK_ITEM_TYPE = '{http://owncloud.org/ns}public-link-item-type';
-	const PUBLIC_LINK_PERMISSION = '{http://owncloud.org/ns}public-link-permission';
-	const PUBLIC_LINK_EXPIRATION = '{http://owncloud.org/ns}public-link-expiration';
-	const PUBLIC_LINK_SHARE_DATETIME = '{http://owncloud.org/ns}public-link-share-datetime';
-	const PUBLIC_LINK_SHARE_OWNER = '{http://owncloud.org/ns}public-link-share-owner';
+	public const PUBLIC_LINK_ITEM_TYPE = '{http://owncloud.org/ns}public-link-item-type';
+	public const PUBLIC_LINK_PERMISSION = '{http://owncloud.org/ns}public-link-permission';
+	public const PUBLIC_LINK_EXPIRATION = '{http://owncloud.org/ns}public-link-expiration';
+	public const PUBLIC_LINK_SHARE_DATETIME = '{http://owncloud.org/ns}public-link-share-datetime';
+	public const PUBLIC_LINK_SHARE_OWNER = '{http://owncloud.org/ns}public-link-share-owner';
 
 	/** @var Server */
 	private $server;
@@ -83,7 +83,7 @@ class PublicFilesPlugin extends ServerPlugin {
 	}
 
 	private function newFileName($path) {
-		$pathInfo = \pathinfo($path);
+		$pathInfo = pathinfo($path);
 		$dirName = $pathInfo['dirname'];
 		$fileName = $pathInfo['filename'];
 		$ext = $pathInfo['extension'];
@@ -165,7 +165,7 @@ class PublicFilesPlugin extends ServerPlugin {
 					// name of that file prefixed with a slash like '/cool.gif'
 					if ($shareNode->getType() === FileInfo::TYPE_FOLDER) {
 						$shareRoot = $shareNode->getPath();
-						$sharedResourcePath = \substr($node->getNode()->getPath(), \strlen($shareRoot));
+						$sharedResourcePath = substr($node->getNode()->getPath(), \strlen($shareRoot));
 					} else {
 						$sharedResourcePath = '/' . $shareNode->getName();
 					}
@@ -182,7 +182,7 @@ class PublicFilesPlugin extends ServerPlugin {
 					// Otherwise if the PROPFIND is done against
 					// 'remote.php/dav/public-files/{token}/subfolder/'
 					// then we need to append the file name to the path.
-					if (\substr($path, -\strlen($sharedResourcePath)) !== $sharedResourcePath) {
+					if (substr($path, -\strlen($sharedResourcePath)) !== $sharedResourcePath) {
 						$path .= '/' . $node->getNode()->getName();
 					}
 
@@ -192,10 +192,10 @@ class PublicFilesPlugin extends ServerPlugin {
 
 					$validUntil = new \DateTime();
 					$validUntil->add(new \DateInterval("PT30M")); // valid for 30 minutes
-					$key = \hash_hkdf('sha256', $share->getPassword());
+					$key = hash_hkdf('sha256', $share->getPassword());
 
 					$s = new PublicShareSigner($share->getToken(), $sharedResourcePath, $validUntil, $key);
-					return $path . '?signature=' . $s->getSignature() . '&expires=' . \urlencode($validUntil->format(\DateTime::ATOM));
+					return $path . '?signature=' . $s->getSignature() . '&expires=' . urlencode($validUntil->format(\DateTime::ATOM));
 				});
 			}
 		}
@@ -280,14 +280,14 @@ class PublicFilesPlugin extends ServerPlugin {
 	public function getLength() {
 		$req = $this->server->httpRequest;
 		$length = $req->getHeader('X-Expected-Entity-Length');
-		if (!\is_numeric($length)) {
+		if (!is_numeric($length)) {
 			$length = $req->getHeader('Content-Length');
-			$length = \is_numeric($length) ? $length : null;
+			$length = is_numeric($length) ? $length : null;
 		}
 
 		$ocLength = $req->getHeader('OC-Total-Length');
-		if (\is_numeric($length) && \is_numeric($ocLength)) {
-			return \max($length, $ocLength);
+		if (is_numeric($length) && is_numeric($ocLength)) {
+			return max($length, $ocLength);
 		}
 
 		return $length;

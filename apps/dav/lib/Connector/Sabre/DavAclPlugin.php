@@ -43,7 +43,7 @@ class DavAclPlugin extends Plugin {
 	public function checkPrivileges($uri, $privileges, $recursion = self::R_PARENT, $throwExceptions = true) {
 		// within public-files throwing the exception NeedPrivileges is desired
 		$shallThrowExceptions = false;
-		$elements = \explode('/', $uri);
+		$elements = explode('/', $uri);
 		if ($elements[0] === 'public-files') {
 			$shallThrowExceptions = true;
 		}
@@ -62,7 +62,7 @@ class DavAclPlugin extends Plugin {
 					break;
 			}
 			throw new NotFound(
-				\sprintf(
+				sprintf(
 					"%s with name '%s' could not be found",
 					$type,
 					$node->getName()

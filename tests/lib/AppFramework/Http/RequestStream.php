@@ -11,7 +11,7 @@ class RequestStream {
 	protected $varname;
 
 	public function stream_open($path, $mode, $options, &$opened_path) {
-		$url = \parse_url($path);
+		$url = parse_url($path);
 		$this->varname = $url["host"];
 		$this->position = 0;
 
@@ -19,14 +19,14 @@ class RequestStream {
 	}
 
 	public function stream_read($count) {
-		$ret = \substr($GLOBALS[$this->varname], $this->position, $count);
+		$ret = substr($GLOBALS[$this->varname], $this->position, $count);
 		$this->position += \strlen($ret);
 		return $ret;
 	}
 
 	public function stream_write($data) {
-		$left = \substr($GLOBALS[$this->varname], 0, $this->position);
-		$right = \substr($GLOBALS[$this->varname], $this->position + \strlen($data));
+		$left = substr($GLOBALS[$this->varname], 0, $this->position);
+		$right = substr($GLOBALS[$this->varname], $this->position + \strlen($data));
 		$GLOBALS[$this->varname] = $left . $data . $right;
 		$this->position += \strlen($data);
 		return \strlen($data);
@@ -76,7 +76,7 @@ class RequestStream {
 
 	public function stream_stat() {
 		$size = \strlen($GLOBALS[$this->varname]);
-		$time = \time();
+		$time = time();
 		$data = [
 			'dev' => 0,
 			'ino' => 0,
@@ -92,13 +92,13 @@ class RequestStream {
 			'blksize' => -1,
 			'blocks' => -1,
 		];
-		return \array_values($data) + $data;
+		return array_values($data) + $data;
 		//return false;
 	}
 
 	public function stream_metadata($path, $option, $var) {
 		if ($option == STREAM_META_TOUCH) {
-			$url = \parse_url($path);
+			$url = parse_url($path);
 			$varname = $url["host"];
 			if (!isset($GLOBALS[$varname])) {
 				$GLOBALS[$varname] = '';

@@ -115,12 +115,12 @@ class InstallerTest extends TestCase {
 		$oldAppPath = \OC_App::getAppPath(self::$appid);
 
 		// Mark the first app as dir non-writable and create the second as writable
-		$firstAppDir = \array_shift(\OC::$APPSROOTS);
+		$firstAppDir = array_shift(\OC::$APPSROOTS);
 		$firstAppDir['writable'] = false;
 
 		$path = \dirname($firstAppDir['path']) . $relativePath;
-		\mkdir($path);
-		\clearstatcache();
+		mkdir($path);
+		clearstatcache();
 		\OC::$APPSROOTS = [
 			$firstAppDir,
 			[

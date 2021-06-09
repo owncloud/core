@@ -50,9 +50,11 @@ class SignApp extends Command {
 	 * @param FileAccessHelper $fileAccessHelper
 	 * @param IURLGenerator $urlGenerator
 	 */
-	public function __construct(Checker $checker,
-								FileAccessHelper $fileAccessHelper,
-								IURLGenerator $urlGenerator) {
+	public function __construct(
+		Checker $checker,
+		FileAccessHelper $fileAccessHelper,
+		IURLGenerator $urlGenerator
+	) {
 		parent::__construct(null);
 		$this->checker = $checker;
 		$this->fileAccessHelper = $fileAccessHelper;
@@ -87,12 +89,12 @@ class SignApp extends Command {
 		$keyBundle = $this->fileAccessHelper->file_get_contents($keyBundlePath);
 
 		if ($privateKey === false) {
-			$output->writeln(\sprintf('Private key "%s" does not exists.', $privateKeyPath));
+			$output->writeln(sprintf('Private key "%s" does not exists.', $privateKeyPath));
 			return null;
 		}
 
 		if ($keyBundle === false) {
-			$output->writeln(\sprintf('Certificate "%s" does not exists.', $keyBundlePath));
+			$output->writeln(sprintf('Certificate "%s" does not exists.', $keyBundlePath));
 			return null;
 		}
 

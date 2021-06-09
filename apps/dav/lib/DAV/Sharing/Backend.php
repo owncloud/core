@@ -39,9 +39,9 @@ class Backend {
 	/** @var string */
 	private $resourceType;
 
-	const ACCESS_OWNER = 1;
-	const ACCESS_READ_WRITE = 2;
-	const ACCESS_READ = 3;
+	public const ACCESS_OWNER = 1;
+	public const ACCESS_READ_WRITE = 2;
+	public const ACCESS_READ = 3;
 
 	/**
 	 * @param IDBConnection $db
@@ -90,7 +90,7 @@ class Backend {
 	 */
 	private function shareWith($shareable, $element) {
 		$user = $element['href'];
-		$parts = \explode(':', $user, 2);
+		$parts = explode(':', $user, 2);
 		if ($parts[0] !== 'principal') {
 			return;
 		}
@@ -142,7 +142,7 @@ class Backend {
 	 * @param string $element
 	 */
 	private function unshare($shareable, $element) {
-		$parts = \explode(':', $element, 2);
+		$parts = explode(':', $element, 2);
 		if ($parts[0] !== 'principal') {
 			return;
 		}

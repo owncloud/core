@@ -77,7 +77,7 @@ class MetaVersionCollection extends AbstractFolder {
 		/** @var IVersionedStorage | Storage $storage */
 		'@phan-var IVersionedStorage | Storage $storage';
 		$versions = $storage->getVersions($internalPath);
-		return \array_values(\array_map(function ($version) use ($storage, $node, $internalPath) {
+		return array_values(array_map(function ($version) use ($storage, $node, $internalPath) {
 			if (!isset($version['mimetype'])) {
 				$version['mimetype'] = $node->getMimetype();
 			}
@@ -90,7 +90,7 @@ class MetaVersionCollection extends AbstractFolder {
 	 * @inheritdoc
 	 */
 	public function get($path) {
-		$pieces = \explode('/', $path);
+		$pieces = explode('/', $path);
 		if (\count($pieces) !== 1) {
 			throw new NotFoundException();
 		}

@@ -41,7 +41,7 @@ class LegacyDAVACL extends DavAclPlugin {
 		}
 
 		$principalV1 = $this->convertPrincipal($principalV2, false);
-		return \array_merge(
+		return array_merge(
 			[
 				$principalV2,
 				$principalV1

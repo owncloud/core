@@ -74,9 +74,9 @@ class Manager implements IMountManager {
 
 		\OC_Hook::emit('OC_Filesystem', 'get_mountpoint', ['path' => $path]);
 		$foundMountPoint = '';
-		$mountPoints = \array_keys($this->mounts);
+		$mountPoints = array_keys($this->mounts);
 		foreach ($mountPoints as $mountpoint) {
-			if (\strpos($path, $mountpoint) === 0 and \strlen($mountpoint) > \strlen($foundMountPoint)) {
+			if (strpos($path, $mountpoint) === 0 and \strlen($mountpoint) > \strlen($foundMountPoint)) {
 				$foundMountPoint = $mountpoint;
 			}
 		}
@@ -98,9 +98,9 @@ class Manager implements IMountManager {
 		$path = $this->formatPath($path);
 		$result = [];
 		$pathLength = \strlen($path);
-		$mountPoints = \array_keys($this->mounts);
+		$mountPoints = array_keys($this->mounts);
 		foreach ($mountPoints as $mountPoint) {
-			if (\substr($mountPoint, 0, $pathLength) === $path and \strlen($mountPoint) > $pathLength) {
+			if (substr($mountPoint, 0, $pathLength) === $path and \strlen($mountPoint) > $pathLength) {
 				$result[] = $this->mounts[$mountPoint];
 			}
 		}
@@ -120,7 +120,7 @@ class Manager implements IMountManager {
 	public function findByStorageId($id) {
 		\OC_Util::setupFS();
 		if (\strlen($id) > 64) {
-			$id = \md5($id);
+			$id = md5($id);
 		}
 		$result = [];
 		foreach ($this->mounts as $mount) {

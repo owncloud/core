@@ -98,9 +98,21 @@ class DefaultShareProviderTest extends TestCase {
 	 * @param $expiration
 	 * @return int
 	 */
-	private function addShareToDB($shareType, $sharedWith, $sharedBy, $shareOwner,
-			$itemType, $fileSource, $fileTarget, $permissions, $token, $expiration,
-			$parent = null, $name = null, $accepted = 0) {
+	private function addShareToDB(
+		$shareType,
+		$sharedWith,
+		$sharedBy,
+		$shareOwner,
+		$itemType,
+		$fileSource,
+		$fileTarget,
+		$permissions,
+		$token,
+		$expiration,
+		$parent = null,
+		$name = null,
+		$accepted = 0
+	) {
 		$qb = $this->dbConn->getQueryBuilder();
 		$qb->insert('share');
 
@@ -902,8 +914,8 @@ class DefaultShareProviderTest extends TestCase {
 			->values([
 				'storage' => $qb->expr()->literal($storage),
 				'path' => $qb->expr()->literal($path),
-				'path_hash' => $qb->expr()->literal(\md5($path)),
-				'name' => $qb->expr()->literal(\basename($path)),
+				'path_hash' => $qb->expr()->literal(md5($path)),
+				'name' => $qb->expr()->literal(basename($path)),
 			]);
 		$this->assertEquals(1, $qb->execute());
 		return $qb->getLastInsertId();
@@ -1008,7 +1020,7 @@ class DefaultShareProviderTest extends TestCase {
 		$id = $qb->getLastInsertId();
 
 		$groups = [];
-		foreach (\range(0, 100) as $i) {
+		foreach (range(0, 100) as $i) {
 			$group = $this->createMock(IGroup::class);
 			$group->method('getGID')->willReturn('group'.$i);
 			$groups[] = $group;
@@ -1152,10 +1164,32 @@ class DefaultShareProviderTest extends TestCase {
 		$storageId = $this->createTestStorageEntry($storageStringId);
 		$fileId = $this->createTestFileEntry($fileName1, $storageId);
 		$fileId2 = $this->createTestFileEntry($fileName2, $storageId);
-		$this->addShareToDB(Share::SHARE_TYPE_USER, 'user0', 'user1', 'user1',
-			'file', $fileId, 'myTarget', 31, null, null, null);
-		$id = $this->addShareToDB(Share::SHARE_TYPE_USER, 'user0', 'user1', 'user1',
-			'file', $fileId2, 'myTarget', 31, null, null, null);
+		$this->addShareToDB(
+			Share::SHARE_TYPE_USER,
+			'user0',
+			'user1',
+			'user1',
+			'file',
+			$fileId,
+			'myTarget',
+			31,
+			null,
+			null,
+			null
+		);
+		$id = $this->addShareToDB(
+			Share::SHARE_TYPE_USER,
+			'user0',
+			'user1',
+			'user1',
+			'file',
+			$fileId2,
+			'myTarget',
+			31,
+			null,
+			null,
+			null
+		);
 
 		$user0 = $this->createMock(IUser::class);
 		$user0->method('getUID')->willReturn('user0');
@@ -1191,10 +1225,32 @@ class DefaultShareProviderTest extends TestCase {
 		$storageId = $this->createTestStorageEntry($storageStringId);
 		$fileId = $this->createTestFileEntry($fileName1, $storageId);
 		$fileId2 = $this->createTestFileEntry($fileName2, $storageId);
-		$this->addShareToDB(Share::SHARE_TYPE_GROUP, 'group0', 'user1', 'user1',
-			'file', $fileId, 'myTarget', 31, null, null, null);
-		$id = $this->addShareToDB(Share::SHARE_TYPE_GROUP, 'group0', 'user1', 'user1',
-			'file', $fileId2, 'myTarget-changed', 31, null, null, null);
+		$this->addShareToDB(
+			Share::SHARE_TYPE_GROUP,
+			'group0',
+			'user1',
+			'user1',
+			'file',
+			$fileId,
+			'myTarget',
+			31,
+			null,
+			null,
+			null
+		);
+		$id = $this->addShareToDB(
+			Share::SHARE_TYPE_GROUP,
+			'group0',
+			'user1',
+			'user1',
+			'file',
+			$fileId2,
+			'myTarget-changed',
+			31,
+			null,
+			null,
+			null
+		);
 
 		$user0 = $this->createMock(IUser::class);
 		$user0->method('getUID')->willReturn('user0');
@@ -1252,8 +1308,19 @@ class DefaultShareProviderTest extends TestCase {
 			$group->method('getGID')->willReturn($groupId);
 			$this->groupManager->method('get')->with($groupId)->willReturn($group);
 			$groupArray[] = $group;
-			$ids[] = $this->addShareToDB(Share::SHARE_TYPE_GROUP, $groupId, 'user1', 'user1',
-				'file', $fileId, 'myTarget', 31, null, null, null);
+			$ids[] = $this->addShareToDB(
+				Share::SHARE_TYPE_GROUP,
+				$groupId,
+				'user1',
+				'user1',
+				'file',
+				$fileId,
+				'myTarget',
+				31,
+				null,
+				null,
+				null
+			);
 		}
 		$this->groupManager->method('getUserGroups')->with($user0)->willReturn($groupArray);
 
@@ -1281,12 +1348,45 @@ class DefaultShareProviderTest extends TestCase {
 		$storageId = $this->createTestStorageEntry($storageStringId);
 		$fileId1 = $this->createTestFileEntry($fileName1, $storageId);
 		$fileId2 = $this->createTestFileEntry($fileName2, $storageId);
-		$id0 = $this->addShareToDB(Share::SHARE_TYPE_USER, 'user0', 'user1', 'user1',
-			'file', $fileId1, 'myTarget', 31, null, null, null);
-		$id1 = $this->addShareToDB(Share::SHARE_TYPE_GROUP, 'group0', 'user1', 'user1',
-			'file', $fileId2, 'myTarget', 31, null, null, null);
-		$id2 = $this->addShareToDB(Share::SHARE_TYPE_USER, 'user0', 'user1', 'user1',
-			'file', $fileId2, 'myTarget', 31, null, null, null);
+		$id0 = $this->addShareToDB(
+			Share::SHARE_TYPE_USER,
+			'user0',
+			'user1',
+			'user1',
+			'file',
+			$fileId1,
+			'myTarget',
+			31,
+			null,
+			null,
+			null
+		);
+		$id1 = $this->addShareToDB(
+			Share::SHARE_TYPE_GROUP,
+			'group0',
+			'user1',
+			'user1',
+			'file',
+			$fileId2,
+			'myTarget',
+			31,
+			null,
+			null,
+			null
+		);
+		$id2 = $this->addShareToDB(
+			Share::SHARE_TYPE_USER,
+			'user0',
+			'user1',
+			'user1',
+			'file',
+			$fileId2,
+			'myTarget',
+			31,
+			null,
+			null,
+			null
+		);
 
 		$user0 = $this->createMock(IUser::class);
 		$user0->method('getUID')->willReturn('user0');
@@ -1397,13 +1497,35 @@ class DefaultShareProviderTest extends TestCase {
 		// 4. login as "user2"
 		// 5. create a file $fileName1 and share with the user "meow"
 		$fileId1 = $this->createTestFileEntry($fileName1, $storageId);
-		$id1 = $this->addShareToDB(Share::SHARE_TYPE_USER, 'meow', 'user2', 'user2',
-			'file', $fileId1, 'for_meow_user', 31, null, null, null);
+		$id1 = $this->addShareToDB(
+			Share::SHARE_TYPE_USER,
+			'meow',
+			'user2',
+			'user2',
+			'file',
+			$fileId1,
+			'for_meow_user',
+			31,
+			null,
+			null,
+			null
+		);
 
 		// 6. create another folder "for_meow_group" and share with the group "meow"
 		$fileId2 = $this->createTestFileEntry($fileName2, $storageId);
-		$id2 = $this->addShareToDB(Share::SHARE_TYPE_GROUP, 'meow', 'user2', 'user2',
-			'file', $fileId2, 'for_meow_group', 31, null, null, null);
+		$id2 = $this->addShareToDB(
+			Share::SHARE_TYPE_GROUP,
+			'meow',
+			'user2',
+			'user2',
+			'file',
+			$fileId2,
+			'for_meow_group',
+			31,
+			null,
+			null,
+			null
+		);
 
 		// Setup mocking
 		$this->userManager->method('get')->willReturnMap([
@@ -1466,8 +1588,19 @@ class DefaultShareProviderTest extends TestCase {
 		$user2->method('getUID')->willReturn('user2');
 
 		$fileId1 = $this->createTestFileEntry($fileName1, $storageId);
-		$idUser = $this->addShareToDB(Share::SHARE_TYPE_USER, 'user2', 'user1', 'user1',
-			'file', $fileId1, 'for_meow_user', 31, null, null, null);
+		$idUser = $this->addShareToDB(
+			Share::SHARE_TYPE_USER,
+			'user2',
+			'user1',
+			'user1',
+			'file',
+			$fileId1,
+			'for_meow_user',
+			31,
+			null,
+			null,
+			null
+		);
 
 		$fileId2 = $this->createTestFileEntry($fileName2, $storageId);
 		for ($i = 0; $i < 205; $i++) {
@@ -1475,8 +1608,19 @@ class DefaultShareProviderTest extends TestCase {
 			$group = $this->createMock(IGroup::class);
 			$group->method('getGID')->willReturn($groupId);
 			$groupArray[] = $group;
-			$idGroups[] = $this->addShareToDB(Share::SHARE_TYPE_GROUP, $groupId, 'user1', 'user1',
-				'file', $fileId2, 'target'.$groupId, 31, null, null, null);
+			$idGroups[] = $this->addShareToDB(
+				Share::SHARE_TYPE_GROUP,
+				$groupId,
+				'user1',
+				'user1',
+				'file',
+				$fileId2,
+				'target'.$groupId,
+				31,
+				null,
+				null,
+				null
+			);
 		}
 
 		$this->groupManager->method('get')->with('group')->willReturn($group);
@@ -1570,7 +1714,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->rootFolder->method('getById')->with($deletedFileId)->willReturn([$file]);
 
 		$groups = [];
-		foreach (\range(0, 100) as $i) {
+		foreach (range(0, 100) as $i) {
 			$group = $this->createMock(IGroup::class);
 			$group->method('getGID')->willReturn('group'.$i);
 			$groups[] = $group;
@@ -2245,8 +2389,18 @@ class DefaultShareProviderTest extends TestCase {
 	}
 
 	public function testUpdateUser() {
-		$id = $this->addShareToDB(Share::SHARE_TYPE_USER, 'user0', 'user1', 'user2',
-			'file', 42, 'target', 31, null, null);
+		$id = $this->addShareToDB(
+			Share::SHARE_TYPE_USER,
+			'user0',
+			'user1',
+			'user2',
+			'file',
+			42,
+			'target',
+			31,
+			null,
+			null
+		);
 
 		$users = [];
 		for ($i = 0; $i < 6; $i++) {
@@ -2294,8 +2448,20 @@ class DefaultShareProviderTest extends TestCase {
 	}
 
 	public function testUpdateLink() {
-		$id = $this->addShareToDB(Share::SHARE_TYPE_LINK, null, 'user1', 'user2',
-			'file', 42, 'target', 31, 'tehtoken', null, null, 'some_name');
+		$id = $this->addShareToDB(
+			Share::SHARE_TYPE_LINK,
+			null,
+			'user1',
+			'user2',
+			'file',
+			42,
+			'target',
+			31,
+			'tehtoken',
+			null,
+			null,
+			'some_name'
+		);
 
 		$users = [];
 		for ($i = 0; $i < 6; $i++) {
@@ -2352,8 +2518,18 @@ class DefaultShareProviderTest extends TestCase {
 	}
 
 	public function testUpdateLinkRemovePassword() {
-		$id = $this->addShareToDB(Share::SHARE_TYPE_LINK, 'foo', 'user1', 'user2',
-			'file', 42, 'target', 31, null, null);
+		$id = $this->addShareToDB(
+			Share::SHARE_TYPE_LINK,
+			'foo',
+			'user1',
+			'user2',
+			'file',
+			42,
+			'target',
+			31,
+			null,
+			null
+		);
 
 		$users = [];
 		for ($i = 0; $i < 6; $i++) {
@@ -2401,8 +2577,18 @@ class DefaultShareProviderTest extends TestCase {
 	}
 
 	public function testUpdateGroupNoSub() {
-		$id = $this->addShareToDB(Share::SHARE_TYPE_GROUP, 'group0', 'user1', 'user2',
-			'file', 42, 'target', 31, null, null);
+		$id = $this->addShareToDB(
+			Share::SHARE_TYPE_GROUP,
+			'group0',
+			'user1',
+			'user2',
+			'file',
+			42,
+			'target',
+			31,
+			null,
+			null
+		);
 
 		$users = [];
 		for ($i = 0; $i < 6; $i++) {
@@ -2464,14 +2650,53 @@ class DefaultShareProviderTest extends TestCase {
 	}
 
 	public function testUpdateGroupSubShares() {
-		$id = $this->addShareToDB(Share::SHARE_TYPE_GROUP, 'group0', 'user1', 'user2',
-			'file', 42, 'target', 31, null, null, null, null, \OCP\Share::STATE_PENDING);
+		$id = $this->addShareToDB(
+			Share::SHARE_TYPE_GROUP,
+			'group0',
+			'user1',
+			'user2',
+			'file',
+			42,
+			'target',
+			31,
+			null,
+			null,
+			null,
+			null,
+			\OCP\Share::STATE_PENDING
+		);
 
-		$id2 = $this->addShareToDB(2, 'user0', 'user1', 'user2',
-			'file', 42, 'mytarget', 31, null, null, $id, null, \OCP\Share::STATE_ACCEPTED);
+		$id2 = $this->addShareToDB(
+			2,
+			'user0',
+			'user1',
+			'user2',
+			'file',
+			42,
+			'mytarget',
+			31,
+			null,
+			null,
+			$id,
+			null,
+			\OCP\Share::STATE_ACCEPTED
+		);
 
-		$id3 = $this->addShareToDB(2, 'user3', 'user1', 'user2',
-			'file', 42, 'mytarget2', 0, null, null, $id, null, \OCP\Share::STATE_REJECTED);
+		$id3 = $this->addShareToDB(
+			2,
+			'user3',
+			'user1',
+			'user2',
+			'file',
+			42,
+			'mytarget2',
+			0,
+			null,
+			null,
+			$id,
+			null,
+			\OCP\Share::STATE_REJECTED
+		);
 
 		$users = [];
 		for ($i = 0; $i < 6; $i++) {
@@ -2574,8 +2799,18 @@ class DefaultShareProviderTest extends TestCase {
 	}
 
 	public function testMoveUserShare() {
-		$id = $this->addShareToDB(Share::SHARE_TYPE_USER, 'user0', 'user1', 'user1', 'file',
-			42, 'mytaret', 31, null, null);
+		$id = $this->addShareToDB(
+			Share::SHARE_TYPE_USER,
+			'user0',
+			'user1',
+			'user1',
+			'file',
+			42,
+			'mytaret',
+			31,
+			null,
+			null
+		);
 
 		$user0 = $this->createMock(IUser::class);
 		$user0->method('getUID')->willReturn('user0');
@@ -2603,8 +2838,18 @@ class DefaultShareProviderTest extends TestCase {
 	}
 
 	public function testMoveGroupShare() {
-		$id = $this->addShareToDB(Share::SHARE_TYPE_GROUP, 'group0', 'user1', 'user1', 'file',
-			42, 'mytaret', 31, null, null);
+		$id = $this->addShareToDB(
+			Share::SHARE_TYPE_GROUP,
+			'group0',
+			'user1',
+			'user1',
+			'file',
+			42,
+			'mytaret',
+			31,
+			null,
+			null
+		);
 
 		$user0 = $this->createMock(IUser::class);
 		$user0->method('getUID')->willReturn('user0');
@@ -2659,11 +2904,37 @@ class DefaultShareProviderTest extends TestCase {
 	 * @dataProvider providesShareStateChanges
 	 */
 	public function testUpdateShareState($sourceState, $targetState) {
-		$id = $this->addShareToDB(Share::SHARE_TYPE_GROUP, 'group0', 'user1', 'user2',
-			'file', 42, 'target', 31, null, null, null, null, \OCP\Share::STATE_PENDING);
+		$id = $this->addShareToDB(
+			Share::SHARE_TYPE_GROUP,
+			'group0',
+			'user1',
+			'user2',
+			'file',
+			42,
+			'target',
+			31,
+			null,
+			null,
+			null,
+			null,
+			\OCP\Share::STATE_PENDING
+		);
 
-		$id2 = $this->addShareToDB(2, 'user0', 'user1', 'user2',
-			'file', 42, 'target-subshare', 0, null, null, $id, null, $sourceState);
+		$id2 = $this->addShareToDB(
+			2,
+			'user0',
+			'user1',
+			'user2',
+			'file',
+			42,
+			'target-subshare',
+			0,
+			null,
+			null,
+			$id,
+			null,
+			$sourceState
+		);
 
 		$user0 = $this->createMock(IUser::class);
 		$user0->method('getUID')->willReturn('user0');

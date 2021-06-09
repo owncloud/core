@@ -73,32 +73,32 @@ class OC_API {
 	 */
 
 	/** @deprecated Use \OCP\API::GUEST_AUTH instead */
-	const GUEST_AUTH = 0;
+	public const GUEST_AUTH = 0;
 
 	/** @deprecated Use \OCP\API::USER_AUTH instead */
-	const USER_AUTH = 1;
+	public const USER_AUTH = 1;
 
 	/** @deprecated Use \OCP\API::SUBADMIN_AUTH instead */
-	const SUBADMIN_AUTH = 2;
+	public const SUBADMIN_AUTH = 2;
 
 	/** @deprecated Use \OCP\API::ADMIN_AUTH instead */
-	const ADMIN_AUTH = 3;
+	public const ADMIN_AUTH = 3;
 
 	/**
 	 * API Response Codes
 	 */
 
 	/** @deprecated Use \OCP\API::RESPOND_UNAUTHORISED instead */
-	const RESPOND_UNAUTHORISED = 997;
+	public const RESPOND_UNAUTHORISED = 997;
 
 	/** @deprecated Use \OCP\API::RESPOND_SERVER_ERROR instead */
-	const RESPOND_SERVER_ERROR = 996;
+	public const RESPOND_SERVER_ERROR = 996;
 
 	/** @deprecated Use \OCP\API::RESPOND_NOT_FOUND instead */
-	const RESPOND_NOT_FOUND = 998;
+	public const RESPOND_NOT_FOUND = 998;
 
 	/** @deprecated Use \OCP\API::RESPOND_UNKNOWN_ERROR instead */
-	const RESPOND_UNKNOWN_ERROR = 999;
+	public const RESPOND_UNKNOWN_ERROR = 999;
 
 	/**
 	 * api actions
@@ -118,12 +118,18 @@ class OC_API {
 	 * @param array $requirements
 	 * @param boolean $cors whether to enable cors for this route
 	 */
-	public static function register($method, $url, $action, $app,
-				$authLevel = API::USER_AUTH,
-				$defaults = [],
-				$requirements = [], $cors = true) {
-		$name = \strtolower($method).$url;
-		$name = \str_replace(['/', '{', '}'], '_', $name);
+	public static function register(
+		$method,
+		$url,
+		$action,
+		$app,
+		$authLevel = API::USER_AUTH,
+		$defaults = [],
+		$requirements = [],
+		$cors = true
+	) {
+		$name = strtolower($method).$url;
+		$name = str_replace(['/', '{', '}'], '_', $name);
 		if (!isset(self::$actions[$name])) {
 			$oldCollection = OC::$server->getRouter()->getCurrentCollection();
 			OC::$server->getRouter()->useCollection('ocs');
@@ -194,7 +200,7 @@ class OC_API {
 			}
 			$headers = \OC_Response::setCorsHeaders($userId, $requesterDomain);
 			foreach ($headers as $key => $value) {
-				$response->addHeader($key, \implode(',', $value));
+				$response->addHeader($key, implode(',', $value));
 			}
 		}
 
@@ -247,23 +253,23 @@ class OC_API {
 			// Merge failed responses if more than one
 			$data = [];
 			foreach ($shipped['failed'] as $failure) {
-				$data = \array_merge_recursive($data, $failure['response']->getData());
+				$data = array_merge_recursive($data, $failure['response']->getData());
 			}
-			$picked = \reset($shipped['failed']);
+			$picked = reset($shipped['failed']);
 			$code = $picked['response']->getStatusCode();
 			$meta = $picked['response']->getMeta();
 			$headers = $picked['response']->getHeaders();
 			$response = new \OC\OCS\Result($data, $code, $meta['message'], $headers);
 			return $response;
 		} elseif (!empty($shipped['succeeded'])) {
-			$responses = \array_merge($shipped['succeeded'], $thirdparty['succeeded']);
+			$responses = array_merge($shipped['succeeded'], $thirdparty['succeeded']);
 		} elseif (!empty($thirdparty['failed'])) {
 			// Merge failed responses if more than one
 			$data = [];
 			foreach ($thirdparty['failed'] as $failure) {
-				$data = \array_merge_recursive($data, $failure['response']->getData());
+				$data = array_merge_recursive($data, $failure['response']->getData());
 			}
-			$picked = \reset($thirdparty['failed']);
+			$picked = reset($thirdparty['failed']);
 			$code = $picked['response']->getStatusCode();
 			$meta = $picked['response']->getMeta();
 			$headers = $picked['response']->getHeaders();
@@ -279,11 +285,11 @@ class OC_API {
 
 		foreach ($responses as $response) {
 			if ($response['shipped']) {
-				$data = \array_merge_recursive($response['response']->getData(), $data);
+				$data = array_merge_recursive($response['response']->getData(), $data);
 			} else {
-				$data = \array_merge_recursive($data, $response['response']->getData());
+				$data = array_merge_recursive($data, $response['response']->getData());
 			}
-			$header = \array_merge_recursive($header, $response['response']->getHeaders());
+			$header = array_merge_recursive($header, $response['response']->getHeaders());
 			$codes[] = ['code' => $response['response']->getStatusCode(),
 				'meta' => $response['response']->getMeta()];
 		}
@@ -429,15 +435,15 @@ class OC_API {
 		if ($result->getStatusCode() === API::RESPOND_UNAUTHORISED) {
 			// If request comes from JS return dummy auth request
 			if ($request->getHeader('X-Requested-With') === 'XMLHttpRequest') {
-				\header('WWW-Authenticate: DummyBasic realm="Authorisation Required"');
+				header('WWW-Authenticate: DummyBasic realm="Authorisation Required"');
 			} else {
-				\header('WWW-Authenticate: Basic realm="Authorisation Required"');
+				header('WWW-Authenticate: Basic realm="Authorisation Required"');
 			}
-			\http_response_code(401);
+			http_response_code(401);
 		}
 
 		foreach ($result->getHeaders() as $name => $value) {
-			\header($name . ': ' . $value);
+			header($name . ': ' . $value);
 		}
 
 		$meta = $result->getMeta();
@@ -466,10 +472,10 @@ class OC_API {
 						$writer->writeAttribute($name, $value);
 					}
 				} else {
-					$writer->writeAttribute(\substr($k, 1), $v);
+					$writer->writeAttribute(substr($k, 1), $v);
 				}
 				continue;
-			} elseif (\is_numeric($k)) {
+			} elseif (is_numeric($k)) {
 				$k = 'element';
 			}
 			if (\is_array($v)) {
@@ -499,16 +505,16 @@ class OC_API {
 	public static function setContentType($format = null) {
 		$format = $format === null ? self::requestedFormat() : $format;
 		if ($format === 'xml') {
-			\header('Content-type: text/xml; charset=UTF-8');
+			header('Content-type: text/xml; charset=UTF-8');
 			return;
 		}
 
 		if ($format === 'json') {
-			\header('Content-Type: application/json; charset=utf-8');
+			header('Content-Type: application/json; charset=utf-8');
 			return;
 		}
 
-		\header('Content-Type: application/octet-stream; charset=utf-8');
+		header('Content-Type: application/octet-stream; charset=utf-8');
 	}
 
 	/**
@@ -518,7 +524,7 @@ class OC_API {
 	protected static function isV2(\OCP\IRequest $request) {
 		$script = $request->getScriptName();
 
-		return \substr($script, -11) === '/ocs/v2.php';
+		return substr($script, -11) === '/ocs/v2.php';
 	}
 
 	/**

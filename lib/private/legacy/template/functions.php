@@ -242,7 +242,7 @@ function html_select_options($options, $selected, $params= []) {
 		$selected= [$selected];
 	}
 	if (isset($params['combine']) && $params['combine']) {
-		$options = \array_combine($options, $options);
+		$options = array_combine($options, $options);
 	}
 	$value_name = $label_name = false;
 	if (isset($params['value'])) {

@@ -106,8 +106,8 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 		$connection = \OC::$server->getDatabaseConnection();
 		$qb = $connection->getQueryBuilder();
 		$maxFunction = $qb->createFunction(
-				"MAX(`id`)"
-			);
+			"MAX(`id`)"
+		);
 		$this->maxId = (int) $qb->select($maxFunction)
 			->from('properties')
 			->execute()->fetchColumn();
@@ -485,8 +485,8 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			[$fiveFileIds, 5, [ 0 => $fiveFileIds]],
 			[$fiveFileIds, 994, [ 0 => $fiveFileIds]],
 			[$fiveFileIds, 995, [ 0 => [1,2,3,4] , 1 => [5]]],
-			[$thousandFileIds, 0, \array_chunk($thousandFileIds, 999)],
-			[$thousandFileIds, 5, \array_chunk($thousandFileIds, 994)],
+			[$thousandFileIds, 0, array_chunk($thousandFileIds, 999)],
+			[$thousandFileIds, 5, array_chunk($thousandFileIds, 994)],
 		];
 	}
 

@@ -47,7 +47,7 @@ class SharePropagation implements IRepairStep {
 		$keys = $this->config->getAppKeys('files_sharing');
 
 		foreach ($keys as $key) {
-			if (\is_numeric($key)) {
+			if (is_numeric($key)) {
 				$this->config->deleteAppValue('files_sharing', $key);
 			}
 		}

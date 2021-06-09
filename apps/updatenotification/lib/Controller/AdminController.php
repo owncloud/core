@@ -64,15 +64,17 @@ class AdminController extends Controller implements ISettings {
 	 * @param UpdateChecker $updateChecker
 	 * @param IDateTimeFormatter $dateTimeFormatter
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IJobList $jobList,
-								ISecureRandom $secureRandom,
-								IConfig $config,
-								ITimeFactory $timeFactory,
-								IL10N $l10n,
-								UpdateChecker $updateChecker,
-								IDateTimeFormatter $dateTimeFormatter) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IJobList $jobList,
+		ISecureRandom $secureRandom,
+		IConfig $config,
+		ITimeFactory $timeFactory,
+		IL10N $l10n,
+		UpdateChecker $updateChecker,
+		IDateTimeFormatter $dateTimeFormatter
+	) {
 		parent::__construct($appName, $request);
 		$this->jobList = $jobList;
 		$this->secureRandom = $secureRandom;
@@ -112,23 +114,23 @@ class AdminController extends Controller implements ISettings {
 		$currentChannel = \OCP\Util::getChannel();
 
 		// Remove the currently used channel from the channels list
-		if (($key = \array_search($currentChannel, $channels)) !== false) {
+		if (($key = array_search($currentChannel, $channels)) !== false) {
 			unset($channels[$key]);
 		}
 		$updateState = $this->updateChecker->getUpdateState();
 
-		$notifyGroups = \json_decode($this->config->getAppValue('updatenotification', 'notify_groups', '["admin"]'), true);
+		$notifyGroups = json_decode($this->config->getAppValue('updatenotification', 'notify_groups', '["admin"]'), true);
 		
 		$isNewVersionAvailable = ($updateState === []) ? false : true;
 		$newVersionString = ($updateState === []) ? '' : $updateState['updateVersion'];
 		
 		$changeLogUrl = null;
 		if ($isNewVersionAvailable === true) {
-			$varsionParts = \explode(' ', $newVersionString);
+			$varsionParts = explode(' ', $newVersionString);
 			if (\count($varsionParts) >= 2) {
-				$versionParts = \explode('.', $varsionParts[1]); // remove the 'ownCloud' prefix
-				\array_splice($versionParts, 2); // remove minor version info from parts
-				$changeLogUrl = 'https://owncloud.org/changelog/#latest' . \implode('.', $versionParts);
+				$versionParts = explode('.', $varsionParts[1]); // remove the 'ownCloud' prefix
+				array_splice($versionParts, 2); // remove minor version info from parts
+				$changeLogUrl = 'https://owncloud.org/changelog/#latest' . implode('.', $versionParts);
 			}
 		}
 
@@ -140,7 +142,7 @@ class AdminController extends Controller implements ISettings {
 			'newVersionString' => $newVersionString,
 			'changeLogUrl' => $changeLogUrl,
 
-			'notify_groups' => \implode('|', $notifyGroups),
+			'notify_groups' => implode('|', $notifyGroups),
 		];
 
 		return new TemplateResponse($this->appName, 'admin', $params, '');
@@ -168,7 +170,7 @@ class AdminController extends Controller implements ISettings {
 
 		// Create a new token
 		$newToken = $this->secureRandom->generate(64);
-		$this->config->setSystemValue('updater.secret', \password_hash($newToken, PASSWORD_DEFAULT));
+		$this->config->setSystemValue('updater.secret', password_hash($newToken, PASSWORD_DEFAULT));
 
 		return new DataResponse($newToken);
 	}

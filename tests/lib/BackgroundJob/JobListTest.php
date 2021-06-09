@@ -60,7 +60,7 @@ class JobListTest extends TestCase {
 	protected function getAllSorted() {
 		$jobs = $this->instance->getAll();
 
-		\usort($jobs, function (IJob $job1, IJob $job2) {
+		usort($jobs, function (IJob $job1, IJob $job2) {
 			return $job1->getId() - $job2->getId();
 		});
 
@@ -161,7 +161,7 @@ class JobListTest extends TestCase {
 
 	protected function createTempJob($class, $argument, $reservedTime = 0, $lastChecked = 0) {
 		if ($lastChecked === 0) {
-			$lastChecked = \time();
+			$lastChecked = time();
 		}
 
 		$query = $this->connection->getQueryBuilder();
@@ -243,9 +243,9 @@ class JobListTest extends TestCase {
 
 		$addedJob = $jobs[\count($jobs) - 1];
 
-		$timeStart = \time();
+		$timeStart = time();
 		$this->instance->setLastRun($addedJob);
-		$timeEnd = \time();
+		$timeEnd = time();
 
 		$addedJob = $this->instance->getById($addedJob->getId());
 

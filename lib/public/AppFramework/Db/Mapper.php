@@ -53,7 +53,7 @@ abstract class Mapper {
 		// if not given set the entity name to the class without the mapper part
 		// cache it here for later use since reflection is slow
 		if ($entityClass === null) {
-			$this->entityClass = \str_replace('Mapper', '', \get_class($this));
+			$this->entityClass = str_replace('Mapper', '', \get_class($this));
 		} else {
 			$this->entityClass = $entityClass;
 		}
@@ -98,7 +98,7 @@ abstract class Mapper {
 		$i = 0;
 		foreach ($properties as $property => $updated) {
 			$column = $entity->propertyToColumn($property);
-			$getter = 'get' . \ucfirst($property);
+			$getter = 'get' . ucfirst($property);
 
 			$columns .= '`' . $column . '`';
 			$values .= '?';
@@ -143,7 +143,8 @@ abstract class Mapper {
 		$id = $entity->getId();
 		if ($id === null) {
 			throw new \InvalidArgumentException(
-				'Entity which should be updated has no id');
+				'Entity which should be updated has no id'
+			);
 		}
 
 		// get updated fields to save, fields have to be set using a setter to
@@ -158,7 +159,7 @@ abstract class Mapper {
 		$i = 0;
 		foreach ($properties as $property => $updated) {
 			$column = $entity->propertyToColumn($property);
-			$getter = 'get' . \ucfirst($property);
+			$getter = 'get' . ucfirst($property);
 
 			$columns .= '`' . $column . '` = ?';
 
@@ -188,7 +189,7 @@ abstract class Mapper {
 	 * @since 8.1.0
 	 */
 	private function isAssocArray(array $array) {
-		return \array_values($array) !== $array;
+		return array_values($array) !== $array;
 	}
 
 	/**
@@ -276,7 +277,11 @@ abstract class Mapper {
 		if ($row === false || $row === null) {
 			$stmt->closeCursor();
 			$msg = $this->buildDebugMessage(
-				'Did expect one result but found none when executing', $sql, $params, $limit, $offset
+				'Did expect one result but found none when executing',
+				$sql,
+				$params,
+				$limit,
+				$offset
 			);
 			throw new DoesNotExistException($msg);
 		}
@@ -285,7 +290,11 @@ abstract class Mapper {
 		//MDB2 returns null, PDO and doctrine false when no row is available
 		if (! ($row2 === false || $row2 === null)) {
 			$msg = $this->buildDebugMessage(
-				'Did not expect more than one result when executing', $sql, $params, $limit, $offset
+				'Did not expect more than one result when executing',
+				$sql,
+				$params,
+				$limit,
+				$offset
 			);
 			throw new MultipleObjectsReturnedException($msg);
 		} else {
@@ -307,7 +316,7 @@ abstract class Mapper {
 	private function buildDebugMessage($msg, $sql, array $params=[], $limit=null, $offset=null) {
 		return $msg .
 					': query "' .	$sql . '"; ' .
-					'parameters ' . \print_r($params, true) . '; ' .
+					'parameters ' . print_r($params, true) . '; ' .
 					'limit "' . $limit . '"; '.
 					'offset "' . $offset . '"';
 	}

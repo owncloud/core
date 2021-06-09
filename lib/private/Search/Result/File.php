@@ -75,7 +75,7 @@ class File extends \OCP\Search\Result {
 	public function __construct(FileInfo $data) {
 		$path = $this->getRelativePath($data->getPath());
 
-		$info = \pathinfo($path);
+		$info = pathinfo($path);
 
 		parent::__construct($data->getId(), $info['basename'], \OC::$server->getURLGenerator()->linkToRoute(
 			'files.view.index',

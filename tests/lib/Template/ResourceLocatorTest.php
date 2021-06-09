@@ -50,14 +50,23 @@ class ResourceLocatorTest extends \Test\TestCase {
 
 		$appManagerInstance = $this->createMock(AppManager::class);
 
-		return $this->getMockForAbstractClass('OC\Template\ResourceLocator',
+		return $this->getMockForAbstractClass(
+			'OC\Template\ResourceLocator',
 			[$themeInstance, $appManagerInstance, $this->logger, $core_map, $appsRoots],
-			'', true, true, true, []);
+			'',
+			true,
+			true,
+			true,
+			[]
+		);
 	}
 
 	public function testFind() {
-		$locator = $this->getResourceLocator('theme',
-			['core' => 'map'], ['foo' => 'bar']);
+		$locator = $this->getResourceLocator(
+			'theme',
+			['core' => 'map'],
+			['foo' => 'bar']
+		);
 		$locator->expects($this->once())
 			->method('doFind')
 			->with('foo');
@@ -93,11 +102,11 @@ class ResourceLocatorTest extends \Test\TestCase {
 		$method = new \ReflectionMethod($locator, 'appendOnceIfExist');
 		$method->setAccessible(true);
 
-		$method->invoke($locator, __DIR__, \basename(__FILE__), 'webroot');
-		$resource1 = [__DIR__, 'webroot', \basename(__FILE__)];
+		$method->invoke($locator, __DIR__, basename(__FILE__), 'webroot');
+		$resource1 = [__DIR__, 'webroot', basename(__FILE__)];
 		$this->assertEquals([__FILE__ => $resource1], $locator->getResources());
 
-		$method->invoke($locator, __DIR__, \basename(__FILE__));
+		$method->invoke($locator, __DIR__, basename(__FILE__));
 		$this->assertEquals([__FILE__ => $resource1], $locator->getResources());
 
 		$method->invoke($locator, __DIR__, 'does-not-exist');

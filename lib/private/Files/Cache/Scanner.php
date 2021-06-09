@@ -201,7 +201,7 @@ class Scanner extends BasicEmitter implements IScanner {
 						}
 						// Only update metadata that has changed
 						'@phan-var \OC\Files\Cache\CacheEntry $cacheData';
-						$newData = \array_diff_assoc($data, $cacheData->getData());
+						$newData = array_diff_assoc($data, $cacheData->getData());
 					} else {
 						$newData = $data;
 						$fileId = -1;
@@ -365,9 +365,9 @@ class Scanner extends BasicEmitter implements IScanner {
 		$children = [];
 		if ($dh = $this->storage->opendir($folder)) {
 			if (\is_resource($dh)) {
-				while (($file = \readdir($dh)) !== false) {
+				while (($file = readdir($dh)) !== false) {
 					if (!Filesystem::isIgnoredDir($file) && !Filesystem::isForbiddenFileOrDir($file)) {
-						$children[] = \trim(\OC\Files\Filesystem::normalizePath($file), '/');
+						$children[] = trim(\OC\Files\Filesystem::normalizePath($file), '/');
 					}
 				}
 			}
@@ -453,7 +453,7 @@ class Scanner extends BasicEmitter implements IScanner {
 				throw $e;
 			}
 		}
-		$removedChildren = \array_diff(\array_keys($existingChildren), $newChildren);
+		$removedChildren = array_diff(array_keys($existingChildren), $newChildren);
 		foreach ($removedChildren as $childName) {
 			$child = $path ? $path . '/' . $childName : $childName;
 			$this->removeFromCache($child);
@@ -480,10 +480,10 @@ class Scanner extends BasicEmitter implements IScanner {
 	 * @return boolean
 	 */
 	public static function isPartialFile($file) {
-		if (\pathinfo($file, PATHINFO_EXTENSION) === 'part') {
+		if (pathinfo($file, PATHINFO_EXTENSION) === 'part') {
 			return true;
 		}
-		if (\strpos($file, '.part/') !== false) {
+		if (strpos($file, '.part/') !== false) {
 			return true;
 		}
 

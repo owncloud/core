@@ -318,7 +318,7 @@ class UsersPage extends OwncloudPage {
 		// This results in intermittent test fails, because the expected
 		// setting does not happen.
 		// Ref: https://github.com/owncloud/core/issues/34689
-		\sleep(1);
+		sleep(1);
 	}
 
 	/**
@@ -346,7 +346,7 @@ class UsersPage extends OwncloudPage {
 			// Somehow on Edge this can throw NoSuchElement even though
 			// we just found the element.
 			// TODO: Edge - if it keeps happening then find out why.
-			\error_log(
+			error_log(
 				__METHOD__
 				. " NoSuchElement while doing settingContent->isVisible()"
 				. "\n-------------------------\n"
@@ -360,7 +360,7 @@ class UsersPage extends OwncloudPage {
 			$this->openAppSettingsMenu();
 		}
 
-		$xpathLocator = \sprintf($this->settingByTextXpath, $setting);
+		$xpathLocator = sprintf($this->settingByTextXpath, $setting);
 		$settingLabel = $this->find("xpath", $xpathLocator);
 		if ($settingLabel === null) {
 			throw new ElementNotFoundException(
@@ -397,7 +397,11 @@ class UsersPage extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function createUser(
-		Session $session, $username, $password, $email = null, $groups = null
+		Session $session,
+		$username,
+		$password,
+		$email = null,
+		$groups = null
 	) {
 		$this->setSetting("Set password for new users", $password !== null);
 		$this->fillField($this->newUserUsernameFieldId, $username);
@@ -417,7 +421,8 @@ class UsersPage extends OwncloudPage {
 			);
 		}
 		$newUserGroupsDropDown = $this->find(
-			"xpath", $this->newUserGroupsDropDownXpath
+			"xpath",
+			$this->newUserGroupsDropDownXpath
 		);
 		if ($newUserGroupsDropDown === null) {
 			throw new ElementNotFoundException(
@@ -437,7 +442,8 @@ class UsersPage extends OwncloudPage {
 			);
 		}
 		$groupsInDropDown = $groupDropDownList->findAll(
-			"xpath", $this->newUserGroupsDropDownListTag
+			"xpath",
+			$this->newUserGroupsDropDownListTag
 		);
 
 		//uncheck all selected groups
@@ -451,13 +457,15 @@ class UsersPage extends OwncloudPage {
 		if (\is_array($groups)) {
 			foreach ($groups as $group) {
 				$groupItem = $this->find(
-					"xpath", \sprintf($this->newUserGroupXpath, $group)
+					"xpath",
+					sprintf($this->newUserGroupXpath, $group)
 				);
 				if ($groupItem !== null) {
 					$groupItem->click();
 				} else {
 					$newUserAddGroupBtn = $this->find(
-						"xpath", $this->newUserAddGroupBtnXpath
+						"xpath",
+						$this->newUserAddGroupBtnXpath
 					);
 					if ($newUserAddGroupBtn === null) {
 						throw new ElementNotFoundException(
@@ -468,7 +476,8 @@ class UsersPage extends OwncloudPage {
 					}
 					$newUserAddGroupBtn->click();
 					$createUserInput = $this->find(
-						"xpath", $this->createGroupWithNewUserInputXpath
+						"xpath",
+						$this->createGroupWithNewUserInputXpath
 					);
 					if ($createUserInput === null) {
 						throw new ElementNotFoundException(
@@ -502,7 +511,10 @@ class UsersPage extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function setQuotaOfUserTo(
-		$username, $quota, Session $session, $valid = true
+		$username,
+		$quota,
+		Session $session,
+		$valid = true
 	) {
 		$userTr = $this->findUserInTable($username);
 		$selectField = $userTr->find('xpath', $this->quotaSelectXpath);
@@ -516,10 +528,11 @@ class UsersPage extends OwncloudPage {
 		}
 		$selectField->click();
 		$selectOption = $selectField->find(
-			'xpath', \sprintf($this->quotaOptionXpath, $quota)
+			'xpath',
+			sprintf($this->quotaOptionXpath, $quota)
 		);
 		if ($selectOption === null) {
-			$xpathLocator = \sprintf($this->quotaOptionXpath, "Other");
+			$xpathLocator = sprintf($this->quotaOptionXpath, "Other");
 			$selectOption = $selectField->find('xpath', $xpathLocator);
 
 			if ($selectOption === null) {
@@ -532,7 +545,8 @@ class UsersPage extends OwncloudPage {
 
 			$selectOption->click();
 			$manualQuotaInputElement = $this->find(
-				'xpath', $this->manualQuotaInputXpath
+				'xpath',
+				$this->manualQuotaInputXpath
 			);
 
 			if ($manualQuotaInputElement === null) {
@@ -554,7 +568,8 @@ class UsersPage extends OwncloudPage {
 		} else {
 			try {
 				$this->waitTillXpathIsVisible(
-					"//*[@id='$this->notificationId']", 1000
+					"//*[@id='$this->notificationId']",
+					1000
 				);
 			} catch (\Exception $e) {
 				// Sometimes the notification is not "noticed".
@@ -563,7 +578,7 @@ class UsersPage extends OwncloudPage {
 				$message = __METHOD__ . " INFORMATION: notificationId '" .
 					$this->notificationId . "' did not become visible";
 				echo $message;
-				\error_log($message);
+				error_log($message);
 			}
 		}
 	}
@@ -805,7 +820,7 @@ class UsersPage extends OwncloudPage {
 			$userGroupsInput->click();
 		}
 		$this->waitForAjaxCallsToStartAndFinish($session);
-		$groupLabel = $groupsField->find('xpath', \sprintf($this->groupLabelInInputXpath, $group));
+		$groupLabel = $groupsField->find('xpath', sprintf($this->groupLabelInInputXpath, $group));
 		if ($groupLabel === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
@@ -815,7 +830,7 @@ class UsersPage extends OwncloudPage {
 		}
 		$groupInput = $groupsField->find(
 			'xpath',
-			\sprintf($this->groupInputXpath, $groupLabel->getAttribute('for'))
+			sprintf($this->groupInputXpath, $groupLabel->getAttribute('for'))
 		);
 		if ($groupInput === null) {
 			throw new ElementNotFoundException(
@@ -856,7 +871,7 @@ class UsersPage extends OwncloudPage {
 	) {
 		// There is always at least the "admin" user in the displayed list of users
 		// So wait for the user list to have at least 1 real user in it
-		$currentTime = \microtime(true);
+		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			$userTrs = $this->findAll('xpath', $this->userTrXpath);
@@ -868,8 +883,8 @@ class UsersPage extends OwncloudPage {
 					break 2;
 				}
 			}
-			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
-			$currentTime = \microtime(true);
+			usleep(STANDARD_SLEEP_TIME_MICROSEC);
+			$currentTime = microtime(true);
 		}
 
 		if ($currentTime > $end) {
@@ -886,7 +901,7 @@ class UsersPage extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function getUserCountOfGroup($group) {
-		$groupUserCountXpath = \sprintf($this->groupUserCountXpath, $group);
+		$groupUserCountXpath = sprintf($this->groupUserCountXpath, $group);
 		$groupUserCount = $this->find('xpath', $groupUserCountXpath);
 		$this->assertElementNotNull(
 			$groupUserCount,
@@ -894,7 +909,7 @@ class UsersPage extends OwncloudPage {
 			" xpath $groupUserCountXpath " .
 			"could not find user count for group $group"
 		);
-		$groupUserCount = \trim($groupUserCount->getText());
+		$groupUserCount = trim($groupUserCount->getText());
 		if ($groupUserCount === "") {
 			return null;
 		}

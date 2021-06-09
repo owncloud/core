@@ -36,7 +36,7 @@ class PathVerificationTest extends \Test\TestCase {
 		$this->expectException(\OCP\Files\InvalidPathException::class);
 		$this->expectExceptionMessage('File name is too long');
 
-		$fileName = \str_repeat('a', 500);
+		$fileName = str_repeat('a', 500);
 		$this->view->verifyPath('', $fileName);
 	}
 

@@ -27,7 +27,7 @@ use OCP\IDBConnection;
 use OCP\IUser;
 
 class MountProvider implements IMountProvider {
-	const STORAGE = '\OCA\Files_Sharing\External\Storage';
+	public const STORAGE = '\OCA\Files_Sharing\External\Storage';
 
 	/**
 	 * @var \OCP\IDBConnection
@@ -52,7 +52,7 @@ class MountProvider implements IMountProvider {
 		$managerProvider = $this->managerProvider;
 		$manager = $managerProvider();
 		$data['manager'] = $manager;
-		$mountPoint = '/' . $user->getUID() . '/files/' . \ltrim($data['mountpoint'], '/');
+		$mountPoint = '/' . $user->getUID() . '/files/' . ltrim($data['mountpoint'], '/');
 		$data['mountpoint'] = $mountPoint;
 		$data['certificateManager'] = \OC::$server->getCertificateManager($user->getUID());
 		return new Mount(self::STORAGE, $mountPoint, $data, $manager, $storageFactory);
@@ -71,7 +71,7 @@ class MountProvider implements IMountProvider {
 			$row['token'] = $row['share_token'];
 			/// FIXME: Use \OCA\FederatedFileSharing\Address in external Storage and Cache
 			// Force missing proto to be https
-			if (\strpos($row['remote'], '://') === false) {
+			if (strpos($row['remote'], '://') === false) {
 				$row['remote'] = 'https://' .  $row['remote'];
 			}
 

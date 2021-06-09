@@ -90,13 +90,13 @@ class HttpRequestHelper {
 			$body
 		);
 
-		if ((\getenv('DEBUG_ACCEPTANCE_REQUESTS') !== false) || (\getenv('DEBUG_ACCEPTANCE_API_CALLS') !== false)) {
+		if ((getenv('DEBUG_ACCEPTANCE_REQUESTS') !== false) || (getenv('DEBUG_ACCEPTANCE_API_CALLS') !== false)) {
 			$debugRequests = true;
 		} else {
 			$debugRequests = false;
 		}
 
-		if ((\getenv('DEBUG_ACCEPTANCE_RESPONSES') !== false) || (\getenv('DEBUG_ACCEPTANCE_API_CALLS') !== false)) {
+		if ((getenv('DEBUG_ACCEPTANCE_RESPONSES') !== false) || (getenv('DEBUG_ACCEPTANCE_API_CALLS') !== false)) {
 			$debugResponses = true;
 		} else {
 			$debugResponses = false;
@@ -168,7 +168,7 @@ class HttpRequestHelper {
 			print("Headers:\n");
 			foreach ($headers as $header => $value) {
 				if (\is_array($value)) {
-					print($header . ": " . \implode(', ', $value) . "\n");
+					print($header . ": " . implode(', ', $value) . "\n");
 				} else {
 					print($header . ": " . $value . "\n");
 				}
@@ -187,7 +187,7 @@ class HttpRequestHelper {
 	 */
 	private static function printBody($body) {
 		print("Body:\n");
-		\var_dump($body->getContents());
+		var_dump($body->getContents());
 		// Rewind the stream so that later code can read from the start.
 		$body->rewind();
 	}
@@ -277,11 +277,14 @@ class HttpRequestHelper {
 			// the Client constructor sorts out doing this http_build_query stuff.
 			// But 'new Request' does not have the flexibility to do that.
 			// So we need to do it here.
-			$body = \http_build_query($body, '', '&');
+			$body = http_build_query($body, '', '&');
 			$headers['Content-Type'] = 'application/x-www-form-urlencoded';
 		}
 		$request = new Request(
-			$method, $url, $headers, $body
+			$method,
+			$url,
+			$headers,
+			$body
 		);
 		return $request;
 	}
@@ -314,7 +317,15 @@ class HttpRequestHelper {
 		$stream = false
 	) {
 		return self::sendRequest(
-			$url, 'GET', $user, $password, $headers, $body, $config, $cookies, $stream
+			$url,
+			'GET',
+			$user,
+			$password,
+			$headers,
+			$body,
+			$config,
+			$cookies,
+			$stream
 		);
 	}
 
@@ -346,7 +357,15 @@ class HttpRequestHelper {
 		$stream = false
 	) {
 		return self::sendRequest(
-			$url, 'POST', $user, $password, $headers, $body, $config, $cookies, $stream
+			$url,
+			'POST',
+			$user,
+			$password,
+			$headers,
+			$body,
+			$config,
+			$cookies,
+			$stream
 		);
 	}
 
@@ -378,7 +397,15 @@ class HttpRequestHelper {
 		$stream = false
 	) {
 		return self::sendRequest(
-			$url, 'PUT', $user, $password, $headers, $body, $config, $cookies, $stream
+			$url,
+			'PUT',
+			$user,
+			$password,
+			$headers,
+			$body,
+			$config,
+			$cookies,
+			$stream
 		);
 	}
 
@@ -410,7 +437,15 @@ class HttpRequestHelper {
 		$stream = false
 	) {
 		return self::sendRequest(
-			$url, 'DELETE', $user, $password, $headers, $body, $config, $cookies, $stream
+			$url,
+			'DELETE',
+			$user,
+			$password,
+			$headers,
+			$body,
+			$config,
+			$cookies,
+			$stream
 		);
 	}
 
@@ -435,13 +470,16 @@ class HttpRequestHelper {
 		try {
 			$responseXmlObject = new SimpleXMLElement($contents);
 			$responseXmlObject->registerXPathNamespace(
-				'ocs', 'http://open-collaboration-services.org/ns'
+				'ocs',
+				'http://open-collaboration-services.org/ns'
 			);
 			$responseXmlObject->registerXPathNamespace(
-				'oc', 'http://owncloud.org/ns'
+				'oc',
+				'http://owncloud.org/ns'
 			);
 			$responseXmlObject->registerXPathNamespace(
-				'd', 'DAV:'
+				'd',
+				'DAV:'
 			);
 			return $responseXmlObject;
 		} catch (\Exception $e) {
@@ -470,7 +508,7 @@ class HttpRequestHelper {
 	public static function parseResponseAsXml($response) {
 		$body = $response->getBody()->getContents();
 		$parsedResponse = [];
-		if ($body && \substr($body, 0, 1) === '<') {
+		if ($body && substr($body, 0, 1) === '<') {
 			try {
 				$reader = new Reader();
 				$reader->xml($body);

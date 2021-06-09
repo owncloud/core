@@ -24,7 +24,7 @@
 namespace OC\Files\Stream;
 
 class StaticStream {
-	const MODE_FILE = 0100000;
+	public const MODE_FILE = 0100000;
 
 	public $context;
 	protected static $data = [];
@@ -91,8 +91,8 @@ class StaticStream {
 	}
 
 	public function stream_read($count) {
-		$bytes = \min(\strlen(self::$data[$this->path]) - $this->pointer, $count);
-		$data = \substr(self::$data[$this->path], $this->pointer, $bytes);
+		$bytes = min(\strlen(self::$data[$this->path]) - $this->pointer, $count);
+		$data = substr(self::$data[$this->path], $this->pointer, $bytes);
 		$this->pointer += $bytes;
 		return $data;
 	}
@@ -138,7 +138,7 @@ class StaticStream {
 		if ($this->stream_eof()) {
 			self::$data[$this->path] .= $data;
 		} else {
-			self::$data[$this->path] = \substr_replace(
+			self::$data[$this->path] = substr_replace(
 				self::$data[$this->path],
 				$data,
 				$this->pointer
@@ -158,7 +158,7 @@ class StaticStream {
 	public function url_stat($path) {
 		if (isset(self::$data[$path])) {
 			$size = \strlen(self::$data[$path]);
-			$time = \time();
+			$time = time();
 			$data = [
 				'dev' => 0,
 				'ino' => 0,
@@ -174,7 +174,7 @@ class StaticStream {
 				'blksize' => -1,
 				'blocks' => -1,
 			];
-			return \array_values($data) + $data;
+			return array_values($data) + $data;
 		}
 		return false;
 	}

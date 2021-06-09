@@ -98,7 +98,9 @@ class FilesPage extends FilesPageBasic {
 	 * @param array $parameters
 	 */
 	public function __construct(
-		Session $session, Factory $factory, array $parameters = []
+		Session $session,
+		Factory $factory,
+		array $parameters = []
 	) {
 		parent::__construct($session, $factory, $parameters);
 		$this->filesPageCRUDFunctions = $this->getPage("FilesPageCRUD");
@@ -123,11 +125,14 @@ class FilesPage extends FilesPageBasic {
 	 * @throws ElementNotFoundException|\Exception
 	 */
 	public function createFolder(
-		Session $session, $name = null,
+		Session $session,
+		$name = null,
 		$timeoutMsec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		return $this->filesPageCRUDFunctions->createFolder(
-			$session, $name, $timeoutMsec
+			$session,
+			$name,
+			$timeoutMsec
 		);
 	}
 
@@ -141,10 +146,12 @@ class FilesPage extends FilesPageBasic {
 	 * @return string
 	 */
 	public function getTooltipOfFile(
-		$fileName, Session $session
+		$fileName,
+		Session $session
 	) {
 		return $this->filesPageCRUDFunctions->getTooltipOfFile(
-			$fileName, $session
+			$fileName,
+			$session
 		);
 	}
 
@@ -195,7 +202,7 @@ class FilesPage extends FilesPageBasic {
 	 * @return SharingDialog
 	 */
 	public function openSharingDialog($fileName, Session $session) {
-		$shareDialog = \sprintf($this->sharingDialogXpath, $fileName);
+		$shareDialog = sprintf($this->sharingDialogXpath, $fileName);
 		$element = $this->find("xpath", $shareDialog);
 		// open sharing dialog only if it is not already open
 		if ($element === null || !$element->isVisible()) {
@@ -234,7 +241,10 @@ class FilesPage extends FilesPageBasic {
 		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		$this->filesPageCRUDFunctions->renameFile(
-			$fromFileName, $toFileName, $session, $maxRetries
+			$fromFileName,
+			$toFileName,
+			$session,
+			$maxRetries
 		);
 	}
 
@@ -254,7 +264,10 @@ class FilesPage extends FilesPageBasic {
 		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		$this->filesPageCRUDFunctions->deleteFile(
-			$name, $session, $expectToDeleteFile, $maxRetries
+			$name,
+			$session,
+			$expectToDeleteFile,
+			$maxRetries
 		);
 	}
 
@@ -279,10 +292,16 @@ class FilesPage extends FilesPageBasic {
 	 * @return void
 	 */
 	public function moveFileTo(
-		$name, $destination, Session $session, $maxRetries = STANDARD_RETRY_COUNT
+		$name,
+		$destination,
+		Session $session,
+		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		$this->filesPageCRUDFunctions->moveFileTo(
-			$name, $destination, $session, $maxRetries
+			$name,
+			$destination,
+			$session,
+			$maxRetries
 		);
 	}
 
@@ -302,13 +321,13 @@ class FilesPage extends FilesPageBasic {
 		$this->getDriver()->visit($url);
 
 		$this->verifyResponse();
-		if (\strpos(
+		if (strpos(
 			$this->getDriver()->getCurrentUrl(),
 			$this->getUrl($urlParameters)
 		) === false
 		) {
 			throw new UnexpectedPageException(
-				\sprintf(
+				sprintf(
 					'Expected to be on "%s" but found "%s" instead',
 					$this->getUrl($urlParameters),
 					$this->getDriver()->getCurrentUrl()
@@ -333,9 +352,11 @@ class FilesPage extends FilesPageBasic {
 	 * @return FilesPage
 	 */
 	public function browseToFileId(
-		$fileId, $folderName = '/', $detailsTab = null
+		$fileId,
+		$folderName = '/',
+		$detailsTab = null
 	) {
-		$url = \rtrim($this->getUrl(), '/');
+		$url = rtrim($this->getUrl(), '/');
 		$fullUrl = "$url/?dir=$folderName&fileid=$fileId";
 
 		if ($detailsTab === null) {
@@ -382,14 +403,14 @@ class FilesPage extends FilesPageBasic {
 	public function browseToFolder($folderName) {
 
 		// foldername is encoded into query-string
-		$folderName = \urlencode($folderName);
+		$folderName = urlencode($folderName);
 
 		// urlencode encodes '/' into '%2F' and ' ' into '+'.
 		// Hence, undoing the conversion of '/' and ' '
-		$folderName = \preg_replace('/\%2F/', '/', $folderName);
-		$folderName = \preg_replace('/\+/', '%20', $folderName);
+		$folderName = preg_replace('/\%2F/', '/', $folderName);
+		$folderName = preg_replace('/\+/', '%20', $folderName);
 
-		$folderUrlXpathLocator = \sprintf($this->folderBreadCrumbXpath, $folderName);
+		$folderUrlXpathLocator = sprintf($this->folderBreadCrumbXpath, $folderName);
 		$folder = $this->find("xpath", $folderUrlXpathLocator);
 		$this->assertElementNotNull(
 			$folder,
@@ -433,7 +454,7 @@ class FilesPage extends FilesPageBasic {
 		if ($msg === null || !$msg->isVisible()) {
 			return "";
 		}
-		return \trim($msg->getHtml());
+		return trim($msg->getHtml());
 	}
 
 	/**

@@ -47,6 +47,6 @@ class AddRolesEvent extends Event {
 	 * @since 10.3
 	 */
 	public function getRoles() {
-		return \array_values($this->roles);
+		return array_values($this->roles);
 	}
 }

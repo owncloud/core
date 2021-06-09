@@ -56,12 +56,14 @@ class Principal implements BackendInterface {
 	 * @param IGroupManager $groupManager
 	 * @param string $principalPrefix
 	 */
-	public function __construct(IUserManager $userManager,
-								IGroupManager $groupManager,
-								$principalPrefix = 'principals/users/') {
+	public function __construct(
+		IUserManager $userManager,
+		IGroupManager $groupManager,
+		$principalPrefix = 'principals/users/'
+	) {
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
-		$this->principalPrefix = \trim($principalPrefix, '/');
+		$this->principalPrefix = trim($principalPrefix, '/');
 		$this->hasGroups = ($principalPrefix === 'principals/users/');
 	}
 
@@ -147,7 +149,7 @@ class Principal implements BackendInterface {
 
 			if ($this->hasGroups || $needGroups) {
 				$groups = $this->groupManager->getUserGroups($user, 'sharing');
-				$groups = \array_map(function ($group) {
+				$groups = array_map(function ($group) {
 					/** @var IGroup $group */
 					return 'principals/groups/' . $group->getGID();
 				}, $groups);
@@ -196,15 +198,15 @@ class Principal implements BackendInterface {
 	 * @return string
 	 */
 	public function findByUri($uri, $principalPrefix) {
-		if (\substr($uri, 0, 7) === 'mailto:') {
-			$email = \substr($uri, 7);
+		if (substr($uri, 0, 7) === 'mailto:') {
+			$email = substr($uri, 7);
 			$users = $this->userManager->getByEmail($email);
 			if (\count($users) === 1) {
 				return $this->principalPrefix . '/' . $users[0]->getUID();
 			}
 		}
-		if (\substr($uri, 0, 10) === 'principal:') {
-			$principal = \substr($uri, 10);
+		if (substr($uri, 0, 10) === 'principal:') {
+			$principal = substr($uri, 10);
 			$principal = $this->getPrincipalByPath($principal);
 			if ($principal !== null) {
 				return $principal['uri'];

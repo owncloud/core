@@ -34,8 +34,8 @@ use OCA\Files_Trashbin\Trashbin;
  * @group DB
  */
 abstract class TestCase extends \Test\TestCase {
-	const TEST_TRASHBIN_USER1 = "test-trashbin-user1";
-	const TEST_TRASHBIN_USER2 = "test-trashbin-user2";
+	public const TEST_TRASHBIN_USER1 = "test-trashbin-user1";
+	public const TEST_TRASHBIN_USER2 = "test-trashbin-user2";
 
 	protected $trashRoot1;
 	protected $trashRoot2;

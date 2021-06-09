@@ -57,14 +57,14 @@ class AvatarNode extends File {
 		$image = $this->avatar->get($this->size);
 		$res = $image->resource();
 
-		\ob_start();
+		ob_start();
 		if ($this->ext === 'png') {
-			\imagepng($res);
+			imagepng($res);
 		} else {
-			\imagejpeg($res);
+			imagejpeg($res);
 		}
 
-		return \ob_get_clean();
+		return ob_get_clean();
 	}
 
 	/**

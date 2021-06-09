@@ -80,7 +80,7 @@ class CertificateManager implements ICertificateManager {
 		if (!\is_resource($handle)) {
 			return [];
 		}
-		while (($file = \readdir($handle)) !== false) {
+		while (($file = readdir($handle)) !== false) {
 			if ($file != '.' && $file != '..') {
 				try {
 					$result[] = new Certificate($this->view->file_get_contents($path . $file), $file);
@@ -88,7 +88,7 @@ class CertificateManager implements ICertificateManager {
 				}
 			}
 		}
-		\closedir($handle);
+		closedir($handle);
 		return $result;
 	}
 
@@ -109,24 +109,24 @@ class CertificateManager implements ICertificateManager {
 		foreach ($certs as $cert) {
 			$file = $path . '/uploads/' . $cert->getName();
 			$data = $this->view->file_get_contents($file);
-			if (\strpos($data, 'BEGIN CERTIFICATE')) {
-				\fwrite($fhCerts, $data);
-				\fwrite($fhCerts, "\r\n");
+			if (strpos($data, 'BEGIN CERTIFICATE')) {
+				fwrite($fhCerts, $data);
+				fwrite($fhCerts, "\r\n");
 			}
 		}
 
 		// Append the default certificates
-		$defaultCertificates = \file_get_contents(\OC::$SERVERROOT . '/resources/config/ca-bundle.crt');
-		\fwrite($fhCerts, $defaultCertificates);
+		$defaultCertificates = file_get_contents(\OC::$SERVERROOT . '/resources/config/ca-bundle.crt');
+		fwrite($fhCerts, $defaultCertificates);
 
 		// Append the system certificate bundle
 		$systemBundle = $this->getCertificateBundle(null);
 		if ($this->view->file_exists($systemBundle)) {
 			$systemCertificates = $this->view->file_get_contents($systemBundle);
-			\fwrite($fhCerts, $systemCertificates);
+			fwrite($fhCerts, $systemCertificates);
 		}
 
-		\fclose($fhCerts);
+		fclose($fhCerts);
 	}
 
 	/**
@@ -235,7 +235,7 @@ class CertificateManager implements ICertificateManager {
 		if ($uid === '') {
 			$uid = $this->uid;
 		}
-		$sourceMTimes = [\filemtime(\OC::$SERVERROOT . '/resources/config/ca-bundle.crt')];
+		$sourceMTimes = [filemtime(\OC::$SERVERROOT . '/resources/config/ca-bundle.crt')];
 		$targetBundle = $this->getCertificateBundle($uid);
 		if (!$this->view->file_exists($targetBundle)) {
 			return true;
@@ -244,8 +244,8 @@ class CertificateManager implements ICertificateManager {
 			$sourceBundles[] = $this->view->filemtime($this->getCertificateBundle(null));
 		}
 
-		$sourceMTime = \array_reduce($sourceMTimes, function ($max, $mtime) {
-			return \max($max, $mtime);
+		$sourceMTime = array_reduce($sourceMTimes, function ($max, $mtime) {
+			return max($max, $mtime);
 		}, 0);
 		return $sourceMTime > $this->view->filemtime($targetBundle);
 	}

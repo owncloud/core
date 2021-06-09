@@ -41,7 +41,7 @@ class CapabilitiesManager {
 		foreach ($this->capabilities as $capability) {
 			$c = $capability();
 			if ($c instanceof ICapability) {
-				$capabilities = \array_replace_recursive($capabilities, $c->getCapabilities());
+				$capabilities = array_replace_recursive($capabilities, $c->getCapabilities());
 			} else {
 				throw new \InvalidArgumentException('The given Capability (' . \get_class($c) . ') does not implement the ICapability interface');
 			}
@@ -59,6 +59,6 @@ class CapabilitiesManager {
 	 * @param \Closure $callable
 	 */
 	public function registerCapability(\Closure $callable) {
-		\array_push($this->capabilities, $callable);
+		array_push($this->capabilities, $callable);
 	}
 }

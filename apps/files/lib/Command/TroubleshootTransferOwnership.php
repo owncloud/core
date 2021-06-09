@@ -87,7 +87,7 @@ class TroubleshootTransferOwnership extends Command {
 		$fix = $input->getOption('fix');
 		$scopeUid = $input->getOption('uid');
 
-		$allowedOps = \explode("|", $this->allowedOps);
+		$allowedOps = explode("|", $this->allowedOps);
 		if (!\in_array($type, $allowedOps)) {
 			$output->writeln([
 				"<error>type is not recognised, allowed: {$this->allowedOps}</error>",
@@ -125,7 +125,7 @@ class TroubleshootTransferOwnership extends Command {
 
 		$invalidSharesCount = 0;
 
-		$shareStorages = \array_merge(
+		$shareStorages = array_merge(
 			$this->getAllInvalidShareStorages('home::', $scopeUid),
 			$this->getAllInvalidShareStorages('object::user:', $scopeUid)
 		);
@@ -140,8 +140,8 @@ class TroubleshootTransferOwnership extends Command {
 		$sharesToFix = [];
 		foreach ($shareStorages as $shareStorage) {
 			$invalidSharesCount += 1;
-			\array_push($sharesToFix, $shareStorage);
-			\array_push($tableRows, [$shareStorage['share_id'], $shareStorage['share_type'], $shareStorage['share_parent'], $shareStorage['file_source'], $shareStorage['storage'], $shareStorage['uid_owner'], $shareStorage['uid_initiator'], $shareStorage['share_with']]);
+			array_push($sharesToFix, $shareStorage);
+			array_push($tableRows, [$shareStorage['share_id'], $shareStorage['share_type'], $shareStorage['share_parent'], $shareStorage['file_source'], $shareStorage['storage'], $shareStorage['uid_owner'], $shareStorage['uid_initiator'], $shareStorage['share_with']]);
 		}
 
 		if (\count($tableRows) > 0) {
@@ -157,10 +157,10 @@ class TroubleshootTransferOwnership extends Command {
 			foreach ($sharesToFix as $shareToFix) {
 				// we need to adjust uid_owner to match user storage id
 				$userIdFromStorage = null;
-				if (\strpos($shareToFix['storage'], 'home::') === 0) {
-					$userIdFromStorage = \explode('home::', $shareToFix['storage'])[1];
-				} elseif (\strpos($shareToFix['storage'], 'object::user:') === 0) {
-					$userIdFromStorage = \explode('object::user:', $shareToFix['storage'])[1];
+				if (strpos($shareToFix['storage'], 'home::') === 0) {
+					$userIdFromStorage = explode('home::', $shareToFix['storage'])[1];
+				} elseif (strpos($shareToFix['storage'], 'object::user:') === 0) {
+					$userIdFromStorage = explode('object::user:', $shareToFix['storage'])[1];
 				}
 
 				if (!$userIdFromStorage) {
@@ -233,8 +233,8 @@ class TroubleshootTransferOwnership extends Command {
 					$nodes = $userFolder->getById((int) $reshare['file_source'], true);
 					if (\count($nodes) == 0) {
 						$invalidReshareInitiatorCount += 1;
-						\array_push($resharesToFix, $reshare);
-						\array_push($tableRows, [$reshare['id'], $reshare['share_type'], $reshare['parent'], $reshare['file_source'], $reshare['uid_owner'], $reshare['uid_initiator'], $reshare['share_with']]);
+						array_push($resharesToFix, $reshare);
+						array_push($tableRows, [$reshare['id'], $reshare['share_type'], $reshare['parent'], $reshare['file_source'], $reshare['uid_owner'], $reshare['uid_initiator'], $reshare['share_with']]);
 					}
 				}
 				if (\count($tableRows) > 0) {
@@ -292,7 +292,7 @@ class TroubleshootTransferOwnership extends Command {
 		$resharers = $cursor->fetchAll();
 		$cursor->closeCursor();
 
-		$entities = \array_map(function ($row) {
+		$entities = array_map(function ($row) {
 			return $row['uid_initiator'];
 		}, $resharers);
 

@@ -56,9 +56,15 @@ class OCSResponse extends Response {
 	 * @param bool $isV2
 	 * @since 8.1.0
 	 */
-	public function __construct($format, $statuscode, $message,
-								$data=[], $itemscount='',
-								$itemsperpage='', $isV2 = false) {
+	public function __construct(
+		$format,
+		$statuscode,
+		$message,
+		$data=[],
+		$itemscount='',
+		$itemsperpage='',
+		$isV2 = false
+	) {
 		$this->format = $format;
 		$this->statuscode = $statuscode;
 		$this->message = $message;
@@ -70,11 +76,13 @@ class OCSResponse extends Response {
 		// set the correct header based on the format parameter
 		if ($format === 'json') {
 			$this->addHeader(
-				'Content-Type', 'application/json; charset=utf-8'
+				'Content-Type',
+				'application/json; charset=utf-8'
 			);
 		} else {
 			$this->addHeader(
-				'Content-Type', 'application/xml; charset=utf-8'
+				'Content-Type',
+				'application/xml; charset=utf-8'
 			);
 		}
 	}

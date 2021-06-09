@@ -56,7 +56,9 @@ class AdapterTest extends \Test\TestCase {
 			->where(
 				$qb->expr()->eq(
 					'appid',
-					$qb->expr()->literal('testadapter')))
+					$qb->expr()->literal('testadapter')
+				)
+			)
 			->execute();
 	}
 

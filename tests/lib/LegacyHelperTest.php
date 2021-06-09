@@ -78,9 +78,9 @@ class LegacyHelperTest extends \Test\TestCase {
 		$result = OC_Helper::isSubDirectory("./data/", "./data/");
 		$this->assertTrue($result);
 
-		\mkdir("data/TestSubdirectory", 0777);
+		mkdir("data/TestSubdirectory", 0777);
 		$result = OC_Helper::isSubDirectory("data/TestSubdirectory/", "data");
-		\rmdir("data/TestSubdirectory");
+		rmdir("data/TestSubdirectory");
 		$this->assertTrue($result);
 	}
 
@@ -189,19 +189,19 @@ class LegacyHelperTest extends \Test\TestCase {
 	 */
 	public function testStreamCopy($expectedCount, $expectedResult, $source, $target) {
 		if (\is_string($source)) {
-			$source = \fopen($source, 'r');
+			$source = fopen($source, 'r');
 		}
 		if (\is_string($target)) {
-			$target = \fopen($target, 'w');
+			$target = fopen($target, 'w');
 		}
 
 		list($count, $result) = \OC_Helper::streamCopy($source, $target);
 
 		if (\is_resource($source)) {
-			\fclose($source);
+			fclose($source);
 		}
 		if (\is_resource($target)) {
-			\fclose($target);
+			fclose($target);
 		}
 
 		$this->assertSame($expectedCount, $count);
@@ -212,7 +212,7 @@ class LegacyHelperTest extends \Test\TestCase {
 		return [
 			[0, false, false, false],
 			[0, false, \OC::$SERVERROOT . '/tests/data/lorem.txt', false],
-			[\filesize(\OC::$SERVERROOT . '/tests/data/lorem.txt'), true, \OC::$SERVERROOT . '/tests/data/lorem.txt', \OC::$SERVERROOT . '/tests/data/lorem-copy.txt'],
+			[filesize(\OC::$SERVERROOT . '/tests/data/lorem.txt'), true, \OC::$SERVERROOT . '/tests/data/lorem.txt', \OC::$SERVERROOT . '/tests/data/lorem-copy.txt'],
 			[3670, true, \OC::$SERVERROOT . '/tests/data/testimage.png', \OC::$SERVERROOT . '/tests/data/testimage-copy.png'],
 		];
 	}
@@ -260,17 +260,17 @@ class LegacyHelperTest extends \Test\TestCase {
 	 */
 	public function testRecursiveFolderDeletion() {
 		$baseDir = \OC::$server->getTempManager()->getTemporaryFolder() . '/';
-		\mkdir($baseDir . 'a/b/c/d/e', 0777, true);
-		\mkdir($baseDir . 'a/b/c1/d/e', 0777, true);
-		\mkdir($baseDir . 'a/b/c2/d/e', 0777, true);
-		\mkdir($baseDir . 'a/b1/c1/d/e', 0777, true);
-		\mkdir($baseDir . 'a/b2/c1/d/e', 0777, true);
-		\mkdir($baseDir . 'a/b3/c1/d/e', 0777, true);
-		\mkdir($baseDir . 'a1/b', 0777, true);
-		\mkdir($baseDir . 'a1/c', 0777, true);
-		\file_put_contents($baseDir . 'a/test.txt', 'Hello file!');
-		\file_put_contents($baseDir . 'a/b1/c1/test one.txt', 'Hello file one!');
-		\file_put_contents($baseDir . 'a1/b/test two.txt', 'Hello file two!');
+		mkdir($baseDir . 'a/b/c/d/e', 0777, true);
+		mkdir($baseDir . 'a/b/c1/d/e', 0777, true);
+		mkdir($baseDir . 'a/b/c2/d/e', 0777, true);
+		mkdir($baseDir . 'a/b1/c1/d/e', 0777, true);
+		mkdir($baseDir . 'a/b2/c1/d/e', 0777, true);
+		mkdir($baseDir . 'a/b3/c1/d/e', 0777, true);
+		mkdir($baseDir . 'a1/b', 0777, true);
+		mkdir($baseDir . 'a1/c', 0777, true);
+		file_put_contents($baseDir . 'a/test.txt', 'Hello file!');
+		file_put_contents($baseDir . 'a/b1/c1/test one.txt', 'Hello file one!');
+		file_put_contents($baseDir . 'a1/b/test two.txt', 'Hello file two!');
 		\OC_Helper::rmdirr($baseDir . 'a');
 
 		$this->assertFileNotExists($baseDir . 'a');

@@ -115,7 +115,7 @@ class CommentTest extends TestCase {
 		$this->expectException(\OCP\Comments\MessageTooLongException::class);
 
 		$comment = new \OC\Comments\Comment();
-		$msg = \str_pad('', IComment::MAX_MESSAGE_LENGTH + 1, 'x');
+		$msg = str_pad('', IComment::MAX_MESSAGE_LENGTH + 1, 'x');
 		$comment->setMessage($msg);
 	}
 }

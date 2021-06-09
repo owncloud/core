@@ -148,8 +148,8 @@ class SetupTest extends \Test\TestCase {
 		}
 		$origServerRoot = \OC::$SERVERROOT;
 		$htaccessFile = \OC::$SERVERROOT . '/tests/data/.htaccess';
-		\touch($htaccessFile);
-		\chmod($htaccessFile, 0400);
+		touch($htaccessFile);
+		chmod($htaccessFile, 0400);
 		\OC::$SERVERROOT = \OC::$SERVERROOT . '/tests/data';
 		try {
 			$this->setupClass->updateHtaccess();
@@ -157,7 +157,7 @@ class SetupTest extends \Test\TestCase {
 			throw $e;
 		} finally {
 			\OC::$SERVERROOT = $origServerRoot;
-			@\unlink($htaccessFile);
+			@unlink($htaccessFile);
 		}
 	}
 
@@ -169,8 +169,8 @@ class SetupTest extends \Test\TestCase {
 
 		$origServerRoot = \OC::$SERVERROOT;
 		$htaccessFile = \OC::$SERVERROOT . '/tests/data/.htaccess';
-		@\unlink($htaccessFile);
-		@\mkdir($htaccessFile);
+		@unlink($htaccessFile);
+		@mkdir($htaccessFile);
 		
 		\OC::$SERVERROOT = \OC::$SERVERROOT . '/tests/data';
 		try {
@@ -179,15 +179,15 @@ class SetupTest extends \Test\TestCase {
 			throw $e;
 		} finally {
 			\OC::$SERVERROOT = $origServerRoot;
-			@\rmdir($htaccessFile);
+			@rmdir($htaccessFile);
 		}
 	}
 
 	public function testUpdateHtaccess() {
 		$origServerRoot = \OC::$SERVERROOT;
 		$htaccessFile = \OC::$SERVERROOT . '/tests/data/.htaccess';
-		\touch($htaccessFile);
-		\chmod($htaccessFile, 0700);
+		touch($htaccessFile);
+		chmod($htaccessFile, 0700);
 		\OC::$SERVERROOT = \OC::$SERVERROOT . '/tests/data';
 		try {
 			$this->setupClass->updateHtaccess();
@@ -196,8 +196,8 @@ class SetupTest extends \Test\TestCase {
 		} finally {
 			\OC::$SERVERROOT = $origServerRoot;
 		}
-		$content = \file_get_contents($htaccessFile);
-		@\unlink($htaccessFile);
+		$content = file_get_contents($htaccessFile);
+		@unlink($htaccessFile);
 		$this->assertStringContainsString(
 			'#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####',
 			$content

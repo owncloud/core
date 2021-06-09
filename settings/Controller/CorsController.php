@@ -63,12 +63,15 @@ class CorsController extends Controller {
 	 * @param IURLGenerator $urlGenerator Use for url generation
 	 * @param IConfig $config
 	 */
-	public function __construct($AppName, IRequest $request,
-								IUserSession $userSession,
-								ILogger $logger,
-								IURLGenerator $urlGenerator,
-								IConfig $config,
-								IL10N $l10n) {
+	public function __construct(
+		$AppName,
+		IRequest $request,
+		IUserSession $userSession,
+		ILogger $logger,
+		IURLGenerator $urlGenerator,
+		IConfig $config,
+		IL10N $l10n
+	) {
 		parent::__construct($AppName, $request);
 
 		$this->AppName = $AppName;
@@ -89,7 +92,7 @@ class CorsController extends Controller {
 	 */
 	public function getDomains() {
 		$userId = $this->userId;
-		$domains = \json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true);
+		$domains = json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true);
 		return new JSONResponse($domains);
 	}
 
@@ -105,21 +108,21 @@ class CorsController extends Controller {
 	public function addDomain($domain) {
 		if ($this->isValidUrl($domain)) {
 			$userId = $this->userId;
-			$domains = \json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true);
-			$domains = \array_filter($domains);
-			\array_push($domains, $domain);
+			$domains = json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true);
+			$domains = array_filter($domains);
+			array_push($domains, $domain);
 
 			// In case same domain is added
-			$domains = \array_unique($domains);
+			$domains = array_unique($domains);
 
 			// Store as comma separated string
-			$domainsString = \json_encode($domains);
+			$domainsString = json_encode($domains);
 
 			$this->config->setUserValue($userId, 'core', 'domains', $domainsString);
 			$this->logger->debug("The domain {$domain} has been white-listed.", ['app' => $this->appName]);
 			return new JSONResponse([ 'domains' => $domains]);
 		} else {
-			$errorMsg = $this->l10n->t("Invalid url '%s'. Urls should be set up like 'http://www.example.com' or 'https://www.example.com'", \strip_tags($domain));
+			$errorMsg = $this->l10n->t("Invalid url '%s'. Urls should be set up like 'http://www.example.com' or 'https://www.example.com'", strip_tags($domain));
 			return new JSONResponse([ 'message' => $errorMsg ]);
 		}
 	}
@@ -135,12 +138,12 @@ class CorsController extends Controller {
 	 */
 	public function removeDomain($domain) {
 		$userId = $this->userId;
-		$decodedDomain = \urldecode($domain);
-		$domains = \json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true);
-		if (($key = \array_search($decodedDomain, $domains)) !== false) {
+		$decodedDomain = urldecode($domain);
+		$domains = json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true);
+		if (($key = array_search($decodedDomain, $domains)) !== false) {
 			unset($domains[$key]);
 			if (\count($domains)) {
-				$this->config->setUserValue($userId, 'core', 'domains', \json_encode($domains));
+				$this->config->setUserValue($userId, 'core', 'domains', json_encode($domains));
 			} else {
 				$this->config->deleteUserValue($userId, 'core', 'domains');
 			}
@@ -154,9 +157,9 @@ class CorsController extends Controller {
 	 * @return boolean      whether URL is valid
 	 */
 	private function isValidUrl(string $url) {
-		$parsedUrl = \parse_url($url);
+		$parsedUrl = parse_url($url);
 
-		if (!\filter_var($url, FILTER_VALIDATE_URL) || !$parsedUrl) {
+		if (!filter_var($url, FILTER_VALIDATE_URL) || !$parsedUrl) {
 			return  false;
 		}
 

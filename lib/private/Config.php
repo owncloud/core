@@ -42,7 +42,7 @@ use OCP\Events\EventEmitterTrait;
  */
 class Config {
 	use EventEmitterTrait;
-	const ENV_PREFIX = 'OC_';
+	public const ENV_PREFIX = 'OC_';
 
 	/** @var array Associative array ($key => $value) */
 	protected $cache = [];
@@ -72,7 +72,7 @@ class Config {
 	 * @return array an array of key names
 	 */
 	public function getKeys() {
-		return \array_keys($this->cache);
+		return array_keys($this->cache);
 	}
 
 	/**
@@ -87,7 +87,7 @@ class Config {
 	 * @return mixed the value or $default
 	 */
 	public function getValue($key, $default = null) {
-		$envValue = \getenv(self::ENV_PREFIX . $key);
+		$envValue = getenv(self::ENV_PREFIX . $key);
 		if ($envValue) {
 			return $envValue;
 		}
@@ -228,26 +228,26 @@ class Config {
 		$configFiles = [$this->configFilePath];
 
 		// Add all files in the config dir ending with the same file name
-		$extra = \glob($this->configDir.'*.'.$this->configFileName);
+		$extra = glob($this->configDir.'*.'.$this->configFileName);
 		if (\is_array($extra)) {
-			\natsort($extra);
-			$configFiles = \array_merge($configFiles, $extra);
+			natsort($extra);
+			$configFiles = array_merge($configFiles, $extra);
 		}
 
 		// Include file and merge config
 		foreach ($configFiles as $file) {
-			$filePointer = \file_exists($file) ? \fopen($file, 'r') : false;
+			$filePointer = file_exists($file) ? fopen($file, 'r') : false;
 			if ($file === $this->configFilePath &&
 				$filePointer === false &&
-				@!\file_exists($this->configFilePath)) {
+				@!file_exists($this->configFilePath)) {
 				// Opening the main config might not be possible, e.g. if the wrong
 				// permissions are set (likely on a new installation)
 				continue;
 			}
 
 			// Try to acquire a file lock
-			if (!\flock($filePointer, LOCK_SH)) {
-				throw new \Exception(\sprintf('Could not acquire a shared lock on the config file %s', $file));
+			if (!flock($filePointer, LOCK_SH)) {
+				throw new \Exception(sprintf('Could not acquire a shared lock on the config file %s', $file));
 			}
 
 			/* @phpstan-ignore-next-line */
@@ -255,12 +255,12 @@ class Config {
 			include $file;
 			/* @phpstan-ignore-next-line */
 			if (isset($CONFIG) && \is_array($CONFIG)) {
-				$this->cache = \array_merge($this->cache, $CONFIG);
+				$this->cache = array_merge($this->cache, $CONFIG);
 			}
 
 			// Close the file pointer and release the lock
-			\flock($filePointer, LOCK_UN);
-			\fclose($filePointer);
+			flock($filePointer, LOCK_UN);
+			fclose($filePointer);
 		}
 	}
 
@@ -276,14 +276,14 @@ class Config {
 		// Create a php file ...
 		$content = "<?php\n";
 		$content .= '$CONFIG = ';
-		$content .= \var_export($this->cache, true);
+		$content .= var_export($this->cache, true);
 		$content .= ";\n";
 
-		\touch($this->configFilePath);
-		$filePointer = \fopen($this->configFilePath, 'r+');
+		touch($this->configFilePath);
+		$filePointer = fopen($this->configFilePath, 'r+');
 
 		// Prevent others not to read the config
-		\chmod($this->configFilePath, 0640);
+		chmod($this->configFilePath, 0640);
 
 		// File does not exist, this can happen when doing a fresh install
 		if (!\is_resource($filePointer)) {
@@ -293,20 +293,21 @@ class Config {
 			throw new HintException(
 				"Can't write into config directory!",
 				'This can usually be fixed by '
-				.'<a href="' . $url . '" target="_blank" rel="noreferrer">giving the webserver write access to the config directory</a>.');
+				.'<a href="' . $url . '" target="_blank" rel="noreferrer">giving the webserver write access to the config directory</a>.'
+			);
 		}
 
 		// Try to acquire a file lock
-		if (!\flock($filePointer, LOCK_EX)) {
-			throw new \Exception(\sprintf('Could not acquire an exclusive lock on the config file %s', $this->configFilePath));
+		if (!flock($filePointer, LOCK_EX)) {
+			throw new \Exception(sprintf('Could not acquire an exclusive lock on the config file %s', $this->configFilePath));
 		}
 
 		// Write the config and release the lock
-		\ftruncate($filePointer, 0);
-		\fwrite($filePointer, $content);
-		\fflush($filePointer);
-		\flock($filePointer, LOCK_UN);
-		\fclose($filePointer);
+		ftruncate($filePointer, 0);
+		fwrite($filePointer, $content);
+		fflush($filePointer);
+		flock($filePointer, LOCK_UN);
+		fclose($filePointer);
 
 		// Try invalidating the opcache just for the file we wrote...
 		if (!\OC_Util::deleteFromOpcodeCache($this->configFilePath)) {

@@ -52,11 +52,13 @@ class Listener {
 	 * @param IMountProviderCollection $mountCollection
 	 * @param IRootFolder $rootFolder
 	 */
-	public function __construct(IManager $activityManager,
-								IUserSession $session,
-								IAppManager $appManager,
-								IMountProviderCollection $mountCollection,
-								IRootFolder $rootFolder) {
+	public function __construct(
+		IManager $activityManager,
+		IUserSession $session,
+		IAppManager $appManager,
+		IMountProviderCollection $mountCollection,
+		IRootFolder $rootFolder
+	) {
 		$this->activityManager = $activityManager;
 		$this->session = $session;
 		$this->appManager = $appManager;
@@ -90,11 +92,11 @@ class Listener {
 			$node = $nodes[0] ?? null;
 			if ($node) {
 				$path = $node->getPath();
-				if (\strpos($path, '/' . $owner . '/files/') === 0) {
-					$path = \substr($path, \strlen('/' . $owner . '/files'));
+				if (strpos($path, '/' . $owner . '/files/') === 0) {
+					$path = substr($path, \strlen('/' . $owner . '/files'));
 				}
 				// Get all users that have access to the mount point
-				$users = \array_merge($users, Share::getUsersSharingFile($path, $owner, true, true));
+				$users = array_merge($users, Share::getUsersSharingFile($path, $owner, true, true));
 			}
 		}
 

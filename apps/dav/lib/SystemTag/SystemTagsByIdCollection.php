@@ -101,7 +101,7 @@ class SystemTagsByIdCollection implements ICollection {
 	public function getChild($name) {
 		try {
 			$tag = $this->tagManager->getTagsByIds([$name]);
-			$tag = \current($tag);
+			$tag = current($tag);
 			if (!$this->tagManager->canUserSeeTag($tag, $this->userSession->getUser())) {
 				throw new NotFound('Tag with id ' . $name . ' not found');
 			}
@@ -123,7 +123,7 @@ class SystemTagsByIdCollection implements ICollection {
 		/**
 		 * Filter out static tags if the user does not have privilege to see it.
 		 */
-		$tags =  \array_filter($tags, function ($tag) {
+		$tags =  array_filter($tags, function ($tag) {
 			if (!$tag->isUserEditable() && $tag->isUserAssignable()) {
 				$user = $this->userSession->getUser();
 				if (($user !== null) &&
@@ -134,7 +134,7 @@ class SystemTagsByIdCollection implements ICollection {
 			return true;
 		});
 
-		return \array_map(function ($tag) {
+		return array_map(function ($tag) {
 			return $this->makeNode($tag);
 		}, $tags);
 	}
@@ -145,7 +145,7 @@ class SystemTagsByIdCollection implements ICollection {
 	public function childExists($name) {
 		try {
 			$tag = $this->tagManager->getTagsByIds([$name]);
-			$tag = \current($tag);
+			$tag = current($tag);
 			if (!$this->tagManager->canUserSeeTag($tag, $this->userSession->getUser())) {
 				return false;
 			}

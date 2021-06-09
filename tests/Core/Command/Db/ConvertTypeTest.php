@@ -104,13 +104,13 @@ class ConvertTypeTest extends TestCase {
 			->will(
 				$this->returnCallback(
 					function ($appId) {
-						$isBroken = \strpos($appId, 'broken') === 0;
+						$isBroken = strpos($appId, 'broken') === 0;
 						return $isBroken ? false : $appId;
 					}
 				)
 			);
 
-		$existingApps = \array_values($this->invokePrivate($command, 'getExistingApps', [false]));
+		$existingApps = array_values($this->invokePrivate($command, 'getExistingApps', [false]));
 		$this->assertEquals(
 			['firstapp', 'anotherapp', 'niceapp', 'lastapp'],
 			$existingApps

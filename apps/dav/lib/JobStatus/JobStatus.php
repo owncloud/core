@@ -37,9 +37,12 @@ class JobStatus extends File {
 	/** @var JobStatusEntity */
 	private $entity;
 
-	public function __construct($userId, $jobId,
-								JobStatusMapper $mapper,
-								JobStatusEntity $entity) {
+	public function __construct(
+		$userId,
+		$jobId,
+		JobStatusMapper $mapper,
+		JobStatusEntity $entity
+	) {
 		$this->userId = $userId;
 		$this->jobId = $jobId;
 		$this->mapper = $mapper;
@@ -66,7 +69,7 @@ class JobStatus extends File {
 	}
 
 	public function getETag() {
-		return '"' . \sha1($this->get()) . '"';
+		return '"' . sha1($this->get()) . '"';
 	}
 
 	public function getSize() {

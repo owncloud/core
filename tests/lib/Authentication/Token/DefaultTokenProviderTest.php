@@ -53,8 +53,13 @@ class DefaultTokenProviderTest extends TestCase {
 			->method('getTime')
 			->will($this->returnValue($this->time));
 
-		$this->tokenProvider = new DefaultTokenProvider($this->mapper, $this->crypto, $this->config, $this->logger,
-			$this->timeFactory);
+		$this->tokenProvider = new DefaultTokenProvider(
+			$this->mapper,
+			$this->crypto,
+			$this->config,
+			$this->logger,
+			$this->timeFactory
+		);
 	}
 
 	public function testGenerateToken() {
@@ -73,7 +78,7 @@ class DefaultTokenProviderTest extends TestCase {
 		$toInsert->setLoginName($user);
 		$toInsert->setPassword('encryptedpassword');
 		$toInsert->setName($name);
-		$toInsert->setToken(\hash('sha512', $token . '1f4h9s'));
+		$toInsert->setToken(hash('sha512', $token . '1f4h9s'));
 		$toInsert->setType($type);
 		$toInsert->setLastActivity($this->time);
 		$toInsert->setLastCheck($this->time);
@@ -225,7 +230,7 @@ class DefaultTokenProviderTest extends TestCase {
 	public function testInvalidateToken() {
 		$this->mapper->expects($this->once())
 			->method('invalidate')
-			->with(\hash('sha512', 'token7'));
+			->with(hash('sha512', 'token7'));
 
 		$this->tokenProvider->invalidateToken('token7');
 	}

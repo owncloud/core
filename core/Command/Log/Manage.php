@@ -31,9 +31,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Manage extends Command {
-	const DEFAULT_BACKEND = 'owncloud';
-	const DEFAULT_LOG_LEVEL = 2;
-	const DEFAULT_TIMEZONE = 'UTC';
+	public const DEFAULT_BACKEND = 'owncloud';
+	public const DEFAULT_LOG_LEVEL = 2;
+	public const DEFAULT_TIMEZONE = 'UTC';
 
 	/** @var IConfig */
 	protected $config;
@@ -79,7 +79,7 @@ class Manage extends Command {
 
 		$level = $input->getOption('level');
 		if ($level !== null) {
-			if (\is_numeric($level)) {
+			if (is_numeric($level)) {
 				$levelNum = $level;
 				// sanity check
 				$this->convertLevelNumber($levelNum);
@@ -116,7 +116,7 @@ class Manage extends Command {
 	 * @throws \InvalidArgumentException
 	 */
 	protected function validateBackend($backend) {
-		if (!\class_exists('OC\\Log\\'.\ucfirst($backend))) {
+		if (!class_exists('OC\\Log\\'.ucfirst($backend))) {
 			throw new \InvalidArgumentException('Invalid backend');
 		}
 	}
@@ -139,7 +139,7 @@ class Manage extends Command {
 	 * @throws \InvalidArgumentException
 	 */
 	protected function convertLevelString($level) {
-		$level = \strtolower($level);
+		$level = strtolower($level);
 		switch ($level) {
 		case 'debug':
 			return 0;

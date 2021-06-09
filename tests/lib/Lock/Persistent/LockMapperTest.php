@@ -91,7 +91,7 @@ class LockMapperTest extends TestCase {
 
 		// insert test entity in account table
 		$this->account = new Account();
-		$this->account->setUserId(\uniqid('testUser', true));
+		$this->account->setUserId(uniqid('testUser', true));
 		$this->account->setBackend('TestBackend');
 		$this->account->setHome('/');
 
@@ -326,7 +326,7 @@ class LockMapperTest extends TestCase {
 		$lock1 = $this->createLockAnInsert();
 
 		// and one lock which is current
-		$lock2 = $this->createLockAnInsert(\time());
+		$lock2 = $this->createLockAnInsert(time());
 
 		$this->lockExists($lock0->getToken());
 		$this->lockExists($lock1->getToken());
@@ -354,7 +354,7 @@ class LockMapperTest extends TestCase {
 	 * @return Lock
 	 */
 	private function createLockAnInsert($createdAt = 0) {
-		$token = \uniqid('tok', true);
+		$token = uniqid('tok', true);
 
 		$lock = new Lock();
 		$lock->setFileId($this->fileCacheId);
@@ -381,10 +381,10 @@ class LockMapperTest extends TestCase {
 		}
 
 		$lock = new Lock();
-		$token = \uniqid('tok', true);
+		$token = uniqid('tok', true);
 		$lock->setFileId($this->fileCacheId);
 		$lock->setToken($token);
-		$lock->setCreatedAt(\time());
+		$lock->setCreatedAt(time());
 		$lock->setTimeout(1880);
 		$lock->setOwnerAccountId($this->account->getId());
 		$lock->setScope(ILock::LOCK_SCOPE_EXCLUSIVE);
@@ -402,9 +402,9 @@ class LockMapperTest extends TestCase {
 		$insertFileCache->insert('filecache')
 			->values([
 				'storage' => $insertFileCache->createNamedParameter($storage),
-				'name' => $insertFileCache->createNamedParameter(\basename($path)),
+				'name' => $insertFileCache->createNamedParameter(basename($path)),
 				'path' => $insertFileCache->createNamedParameter($path),
-				'path_hash' => $insertFileCache->createNamedParameter(\md5($path))
+				'path_hash' => $insertFileCache->createNamedParameter(md5($path))
 			])
 			->execute();
 		return $insertFileCache->getLastInsertId();
@@ -412,10 +412,10 @@ class LockMapperTest extends TestCase {
 
 	private function insertLock($fileId, $scope, $depth = 0) {
 		$lock = new Lock();
-		$token = \uniqid('tok', true);
+		$token = uniqid('tok', true);
 		$lock->setFileId($fileId);
 		$lock->setToken($token);
-		$lock->setCreatedAt(\time());
+		$lock->setCreatedAt(time());
 		$lock->setTimeout(1880);
 		$lock->setScope($scope);
 		$lock->setOwnerAccountId($this->account->getId());
@@ -429,7 +429,7 @@ class LockMapperTest extends TestCase {
 	 * Sorts an array of locks by file id for easier matching
 	 */
 	private function sortLocks(&$l) {
-		\usort($l, function ($a, $b) {
+		usort($l, function ($a, $b) {
 			return $a->getId() - $b->getId();
 		});
 	}

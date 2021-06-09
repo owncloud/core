@@ -33,15 +33,15 @@ use OCP\IURLGenerator;
 use OCP\L10N\IFactory;
 
 class Activity implements IExtension {
-	const APP_FILES = 'files';
-	const FILTER_FILES = 'files';
-	const FILTER_FAVORITES = 'files_favorites';
+	public const APP_FILES = 'files';
+	public const FILTER_FILES = 'files';
+	public const FILTER_FAVORITES = 'files_favorites';
 
-	const TYPE_SHARE_CREATED = 'file_created';
-	const TYPE_SHARE_CHANGED = 'file_changed';
-	const TYPE_SHARE_DELETED = 'file_deleted';
-	const TYPE_SHARE_RESTORED = 'file_restored';
-	const TYPE_FAVORITES = 'files_favorites';
+	public const TYPE_SHARE_CREATED = 'file_created';
+	public const TYPE_SHARE_CHANGED = 'file_changed';
+	public const TYPE_SHARE_DELETED = 'file_deleted';
+	public const TYPE_SHARE_RESTORED = 'file_restored';
+	public const TYPE_FAVORITES = 'files_favorites';
 
 	/** @var IL10N */
 	protected $l;
@@ -344,7 +344,7 @@ class Activity implements IExtension {
 	 */
 	public function filterNotificationTypes($types, $filter) {
 		if ($filter === self::FILTER_FILES || $filter === self::FILTER_FAVORITES) {
-			return \array_intersect([
+			return array_intersect([
 				self::TYPE_SHARE_CREATED,
 				self::TYPE_SHARE_CHANGED,
 				self::TYPE_SHARE_DELETED,
@@ -408,7 +408,7 @@ class Activity implements IExtension {
 			return [
 				' CASE '
 					. 'WHEN `app` <> ? THEN 1 '
-					. 'WHEN `app` = ? AND (' . \implode(' OR ', $fileQueryList) . ') THEN 1 '
+					. 'WHEN `app` = ? AND (' . implode(' OR ', $fileQueryList) . ') THEN 1 '
 					. 'ELSE 0 '
 				. 'END = 1 ',
 				$parameters,
@@ -434,6 +434,6 @@ class Activity implements IExtension {
 	 * @return bool
 	 */
 	protected function actorIsAutomation($user) {
-		return \strip_tags($user) === IEvent::AUTOMATION_AUTHOR;
+		return strip_tags($user) === IEvent::AUTOMATION_AUTHOR;
 	}
 }

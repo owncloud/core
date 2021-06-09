@@ -112,7 +112,7 @@ class LockManagerTest extends TestCase {
 			->willReturnCallback(function (Lock $lock) {
 				$this->assertEquals(30 * 60, $lock->getTimeout());
 				$this->assertEquals('qwertzuiopü', $lock->getToken());
-				$this->assertEquals(\md5('qwertzuiopü'), $lock->getTokenHash());
+				$this->assertEquals(md5('qwertzuiopü'), $lock->getTokenHash());
 				$this->assertEquals(123, $lock->getFileId());
 				// path is not set on insert - only set on query
 				$this->assertNull($lock->getPath());

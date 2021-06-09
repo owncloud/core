@@ -60,8 +60,15 @@ class AuthSettingsController extends Controller {
 	 * @param ISecureRandom $random
 	 * @param string $uid
 	 */
-	public function __construct($appName, IRequest $request, IProvider $tokenProvider, IUserManager $userManager,
-		ISession $session, ISecureRandom $random, $uid) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IProvider $tokenProvider,
+		IUserManager $userManager,
+		ISession $session,
+		ISecureRandom $random,
+		$uid
+	) {
 		parent::__construct($appName, $request);
 		$this->tokenProvider = $tokenProvider;
 		$this->userManager = $userManager;
@@ -94,7 +101,7 @@ class AuthSettingsController extends Controller {
 			return $this->getServiceNotAvailableResponse();
 		}
 
-		return \array_map(function (IToken $token) use ($sessionToken) {
+		return array_map(function (IToken $token) use ($sessionToken) {
 			$data = $token->jsonSerialize();
 			if ($sessionToken->getId() === $token->getId()) {
 				$data['canDelete'] = false;
@@ -158,9 +165,9 @@ class AuthSettingsController extends Controller {
 	private function generateRandomDeviceToken() {
 		$groups = [];
 		for ($i = 0; $i < 4; $i++) {
-			$groups[] = $this->random->generate(5, \implode('', \range('A', 'Z')));
+			$groups[] = $this->random->generate(5, implode('', range('A', 'Z')));
 		}
-		return \implode('-', $groups);
+		return implode('-', $groups);
 	}
 
 	/**

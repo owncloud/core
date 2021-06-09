@@ -167,8 +167,10 @@ class ChangeKeyStorageRootTest extends TestCase {
 			->willReturn(true);
 
 		$this->view->expects($this->once())->method('file_put_contents')
-			->with('newRoot/' . \OC\Encryption\Keys\Storage::KEY_STORAGE_MARKER,
-				'ownCloud will detect this folder as key storage root only if this file exists');
+			->with(
+				'newRoot/' . \OC\Encryption\Keys\Storage::KEY_STORAGE_MARKER,
+				'ownCloud will detect this folder as key storage root only if this file exists'
+			);
 
 		$this->invokePrivate($this->changeKeyStorageRoot, 'prepareNewRoot', ['newRoot']);
 	}
@@ -347,7 +349,7 @@ class ChangeKeyStorageRootTest extends TestCase {
 			);
 
 		if ($pathExists === false) {
-			$subDirs = \explode('/', \ltrim($path, '/'));
+			$subDirs = explode('/', ltrim($path, '/'));
 			$this->view->expects($this->exactly(\count($subDirs)))->method('mkdir');
 		} else {
 			$this->view->expects($this->never())->method('mkdir');

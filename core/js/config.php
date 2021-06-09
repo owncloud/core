@@ -39,11 +39,11 @@
  */
 
 // Set the content type to Javascript
-\header("Content-type: text/javascript");
+header("Content-type: text/javascript");
 
 // Disallow caching
-\header("Cache-Control: no-cache, must-revalidate");
-\header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+header("Cache-Control: no-cache, must-revalidate");
+header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 
 // Enable l10n support
 $l = \OC::$server->getL10N('core');
@@ -101,7 +101,7 @@ $countOfDataLocation = 0;
 
 $value = $config->getAppValue('core', 'shareapi_enable_link_password_by_default', 'no');
 
-$dataLocation = \str_replace(OC::$SERVERROOT .'/', '', $config->getSystemValue('datadirectory', ''), $countOfDataLocation);
+$dataLocation = str_replace(OC::$SERVERROOT .'/', '', $config->getSystemValue('datadirectory', ''), $countOfDataLocation);
 if ($countOfDataLocation !== 1 || !OC_User::isAdminUser(OC_User::getUser())) {
 	$dataLocation = false;
 }
@@ -114,9 +114,9 @@ $array = [
 	"oc_isadmin" => OC_User::isAdminUser(OC_User::getUser()) ? 'true' : 'false',
 	"oc_dataURL" => \is_string($dataLocation) ? "\"".$dataLocation."\"" : 'false',
 	"oc_webroot" => "\"".OC::$WEBROOT."\"",
-	"oc_appswebroots" =>  \str_replace('\\/', '/', \json_encode($apps_paths)), // Ugly unescape slashes waiting for better solution
-	"datepickerFormatDate" => \json_encode($l->l('jsdate', null)),
-	"dayNames" =>  \json_encode(
+	"oc_appswebroots" =>  str_replace('\\/', '/', json_encode($apps_paths)), // Ugly unescape slashes waiting for better solution
+	"datepickerFormatDate" => json_encode($l->l('jsdate', null)),
+	"dayNames" =>  json_encode(
 		[
 			(string)$l->t('Sunday'),
 			(string)$l->t('Monday'),
@@ -127,7 +127,7 @@ $array = [
 			(string)$l->t('Saturday')
 		]
 	),
-	"dayNamesShort" =>  \json_encode(
+	"dayNamesShort" =>  json_encode(
 		[
 			(string)$l->t('Sun.'),
 			(string)$l->t('Mon.'),
@@ -138,7 +138,7 @@ $array = [
 			(string)$l->t('Sat.')
 		]
 	),
-	"dayNamesMin" =>  \json_encode(
+	"dayNamesMin" =>  json_encode(
 		[
 			(string)$l->t('Su'),
 			(string)$l->t('Mo'),
@@ -149,7 +149,7 @@ $array = [
 			(string)$l->t('Sa')
 		]
 	),
-	"monthNames" => \json_encode(
+	"monthNames" => json_encode(
 		[
 			(string)$l->t('January'),
 			(string)$l->t('February'),
@@ -165,7 +165,7 @@ $array = [
 			(string)$l->t('December')
 		]
 	),
-	"monthNamesShort" => \json_encode(
+	"monthNamesShort" => json_encode(
 		[
 			(string)$l->t('Jan.'),
 			(string)$l->t('Feb.'),
@@ -181,13 +181,13 @@ $array = [
 			(string)$l->t('Dec.')
 		]
 	),
-	"firstDay" => \json_encode($l->l('firstday', null)) ,
+	"firstDay" => json_encode($l->l('firstday', null)) ,
 	"oc_config" => [
-			'session_lifetime'	=> \min(\OC::$server->getConfig()->getSystemValue('session_lifetime', OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')), OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')),
+			'session_lifetime'	=> min(\OC::$server->getConfig()->getSystemValue('session_lifetime', OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')), OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')),
 			'session_keepalive'	=> \OC::$server->getConfig()->getSystemValue('session_keepalive', true),
 			'enable_avatars'	=> \OC::$server->getConfig()->getSystemValue('enable_avatars', true) === true,
 			'lost_password_link'	=> \OC::$server->getConfig()->getSystemValue('lost_password_link', null),
-			'modRewriteWorking'	=> (\getenv('front_controller_active') === 'true'),
+			'modRewriteWorking'	=> (getenv('front_controller_active') === 'true'),
 			'blacklist_files_regex'	=> \OCP\Files\FileInfo::BLACKLIST_FILES_REGEX
 		],
 	"oc_appconfig" => [
@@ -232,7 +232,7 @@ $array = [
 			'longFooter' => $defaults->getLongFooter(),
 			'folder' => OC_Util::getTheme()->getName()
 	],
-	'theme' => \json_encode(
+	'theme' => json_encode(
 		[
 			'name' => OC_Util::getTheme()->getName(),
 			'directory' => OC_Util::getTheme()->getDirectory()
@@ -242,18 +242,18 @@ $array = [
 
 if (\OC::$server->getUserSession() !== null && \OC::$server->getUserSession()->isLoggedIn()) {
 	$array['oc_appconfig']['federatedCloudShareDoc'] = \OC::$server->getURLGenerator()->linkToDocs('user-sharing-federated');
-	$array['oc_config']['version'] = \implode('.', \OCP\Util::getVersion());
+	$array['oc_config']['version'] = implode('.', \OCP\Util::getVersion());
 	$array['oc_config']['versionstring'] = OC_Util::getVersionString();
 	$array['oc_defaults']['docBaseUrl'] = $defaults->getDocBaseUrl();
 	$array['oc_defaults']['docPlaceholderUrl'] = $defaults->buildDocLinkToKey('PLACEHOLDER');
 	$caps = \OC::$server->getCapabilitiesManager()->getCapabilities();
 	// remove status.php info as we already have the version above
 	unset($caps['core']['status']);
-	$array['oc_capabilities'] = \json_encode($caps);
+	$array['oc_capabilities'] = json_encode($caps);
 
 	$user = \OC::$server->getUserSession()->getUser();
 	if ($user !== null) {
-		$array['oc_user'] = \json_encode([
+		$array['oc_user'] = json_encode([
 			'uid' => $user->getUID(),
 			'displayName' => $user->getDisplayName(),
 			'email' => $user->getEMailAddress()
@@ -264,9 +264,9 @@ if (\OC::$server->getUserSession() !== null && \OC::$server->getUserSession()->i
 // Allow hooks to modify the output values
 OC_Hook::emit('\OCP\Config', 'js', ['array' => &$array]);
 
-$array['oc_appconfig'] = \json_encode($array['oc_appconfig']);
-$array['oc_config'] = \json_encode($array['oc_config']);
-$array['oc_defaults'] = \json_encode($array['oc_defaults']);
+$array['oc_appconfig'] = json_encode($array['oc_appconfig']);
+$array['oc_config'] = json_encode($array['oc_config']);
+$array['oc_defaults'] = json_encode($array['oc_defaults']);
 
 // Echo it
 foreach ($array as  $setting => $value) {

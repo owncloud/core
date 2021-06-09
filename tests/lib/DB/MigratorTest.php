@@ -55,7 +55,7 @@ class MigratorTest extends \Test\TestCase {
 	}
 
 	private function getUniqueTableName() {
-		return \strtolower(self::getUniqueID($this->config->getSystemValue('dbtableprefix', 'oc_') . 'test_'));
+		return strtolower(self::getUniqueID($this->config->getSystemValue('dbtableprefix', 'oc_') . 'test_'));
 	}
 
 	protected function tearDown(): void {
@@ -76,7 +76,7 @@ class MigratorTest extends \Test\TestCase {
 		$indexName = $tableName . '_' . $indexName;
 		if ($this->isOracle()) {
 			// Oracle doesn't like long names...
-			return 'i' . \substr(\md5($indexName), 0, 29);
+			return 'i' . substr(md5($indexName), 0, 29);
 		}
 		return $indexName;
 	}
@@ -158,7 +158,7 @@ class MigratorTest extends \Test\TestCase {
 		$oldTablePrefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
 
 		$this->config->setSystemValue('dbtableprefix', 'ownc_');
-		$this->tableName = \strtolower(self::getUniqueID($this->config->getSystemValue('dbtableprefix') . 'test_'));
+		$this->tableName = strtolower(self::getUniqueID($this->config->getSystemValue('dbtableprefix') . 'test_'));
 
 		list($startSchema, $endSchema) = $this->getDuplicateKeySchemas();
 		$migrator = $this->manager->getMigrator();

@@ -50,10 +50,12 @@ class Cron extends Command {
 	 * @param ILogger $logger
 	 * @param ITempManager $tempManager
 	 */
-	public function __construct(IJobList $jobList,
-								IConfig $config,
-								ILogger $logger,
-								ITempManager $tempManager) {
+	public function __construct(
+		IJobList $jobList,
+		IConfig $config,
+		ILogger $logger,
+		ITempManager $tempManager
+	) {
 		$this->jobList = $jobList;
 		$this->config = $config;
 		$this->logger = $logger;
@@ -108,7 +110,7 @@ class Cron extends Command {
 
 		// We only ask for jobs for 14 minutes, because after 15 minutes the next
 		// system cron task should spawn.
-		$endTime = \time() + 14 * 60;
+		$endTime = time() + 14 * 60;
 
 		$executedJobs = [];
 		while ($job = $this->jobList->getNext()) {
@@ -131,14 +133,14 @@ class Cron extends Command {
 			$executedJobs[$job->getId()] = true;
 			unset($job);
 
-			if (\time() > $endTime) {
+			if (time() > $endTime) {
 				break;
 			}
 		}
 
 		// Log the successful cron execution
 		if ($this->config->getSystemValue('cron_log', true)) {
-			$this->config->setAppValue('core', 'lastcron', \time());
+			$this->config->setAppValue('core', 'lastcron', time());
 		}
 		if ($showProgress) {
 			$output->writeln('');

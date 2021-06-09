@@ -68,7 +68,7 @@ class PreviewsMountProviderTest extends \Test\TestCase {
 		$this->assertInstanceOf(MountPoint::class, $mount);
 		$this->assertEquals('/someuser/thumbnails/', $mount->getMountPoint());
 
-		$this->assertTrue(\is_dir($tempFolder . '/thumbnails/someuser'));
+		$this->assertTrue(is_dir($tempFolder . '/thumbnails/someuser'));
 
 		$storageArgs = ['datadir' => $tempFolder . '/thumbnails/someuser'];
 
@@ -79,7 +79,7 @@ class PreviewsMountProviderTest extends \Test\TestCase {
 		// trigger storage creation which will pass config args above
 		$mount->getStorage();
 
-		\rmdir($tempFolder . '/thumbnails/someuser');
-		\rmdir($tempFolder . '/thumbnails');
+		rmdir($tempFolder . '/thumbnails/someuser');
+		rmdir($tempFolder . '/thumbnails');
 	}
 }

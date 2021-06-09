@@ -20,15 +20,15 @@ class DateTimeFormatterTest extends TestCase {
 
 	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
-		self::$defaultTimeZone = \date_default_timezone_get();
-		\date_default_timezone_set('UTC');
+		self::$defaultTimeZone = date_default_timezone_get();
+		date_default_timezone_set('UTC');
 
 		self::$oneDay = self::$oneHour * 24;
 		self::$oneYear = self::$oneDay * 365;
 	}
 
 	public static function tearDownAfterClass(): void {
-		\date_default_timezone_set(self::$defaultTimeZone);
+		date_default_timezone_set(self::$defaultTimeZone);
 		parent::tearDownAfterClass();
 	}
 

@@ -34,14 +34,14 @@ class OcisHelper {
 	 * @return bool
 	 */
 	public static function isTestingOnOcis() {
-		return (\getenv("TEST_OCIS") === "true");
+		return (getenv("TEST_OCIS") === "true");
 	}
 
 	/**
 	 * @return bool
 	 */
 	public static function isTestingOnReva() {
-		return (\getenv("TEST_REVA") === "true");
+		return (getenv("TEST_REVA") === "true");
 	}
 
 	/**
@@ -62,8 +62,8 @@ class OcisHelper {
 	 * @return bool|string false if no command given or the command as string
 	 */
 	public static function getDeleteUserDataCommand() {
-		$cmd = \getenv("DELETE_USER_DATA_CMD");
-		if (\trim($cmd) === "") {
+		$cmd = getenv("DELETE_USER_DATA_CMD");
+		if (trim($cmd) === "") {
 			return false;
 		}
 		return $cmd;
@@ -74,11 +74,11 @@ class OcisHelper {
 	 * @throws \Exception
 	 */
 	public static function getStorageDriver() {
-		$storageDriver = (\getenv("STORAGE_DRIVER"));
+		$storageDriver = (getenv("STORAGE_DRIVER"));
 		if ($storageDriver === false) {
 			return "OWNCLOUD";
 		}
-		$storageDriver = \strtoupper($storageDriver);
+		$storageDriver = strtoupper($storageDriver);
 		if ($storageDriver !== "OCIS" && $storageDriver !== "EOS" && $storageDriver !== "OWNCLOUD" && $storageDriver !== "S3NG") {
 			throw new \Exception(
 				"Invalid storage driver. " .
@@ -102,13 +102,15 @@ class OcisHelper {
 			return;
 		}
 		if (self::getStorageDriver() === "EOS") {
-			$deleteCmd = \str_replace(
-				"%s", $user[0] . '/' . $user, $deleteCmd
+			$deleteCmd = str_replace(
+				"%s",
+				$user[0] . '/' . $user,
+				$deleteCmd
 			);
 		} else {
-			$deleteCmd = \sprintf($deleteCmd, $user);
+			$deleteCmd = sprintf($deleteCmd, $user);
 		}
-		\exec($deleteCmd);
+		exec($deleteCmd);
 	}
 
 	/**
@@ -122,18 +124,18 @@ class OcisHelper {
 	 *
 	 */
 	public static function recurseCopy($source, $destination) {
-		$dir = \opendir($source);
-		@\mkdir($destination);
-		while (($file = \readdir($dir)) !== false) {
+		$dir = opendir($source);
+		@mkdir($destination);
+		while (($file = readdir($dir)) !== false) {
 			if (($file != '.') && ($file != '..')) {
-				if (\is_dir($source . '/' . $file)) {
+				if (is_dir($source . '/' . $file)) {
 					self::recurseCopy($source . '/' . $file, $destination . '/' . $file);
 				} else {
-					\copy($source . '/' . $file, $destination . '/' . $file);
+					copy($source . '/' . $file, $destination . '/' . $file);
 				}
 			}
 		}
-		\closedir($dir);
+		closedir($dir);
 	}
 
 	/**
@@ -163,12 +165,12 @@ class OcisHelper {
 			}
 		}
 
-		$dir = \opendir($source);
-		while (($file = \readdir($dir)) !== false) {
+		$dir = opendir($source);
+		while (($file = readdir($dir)) !== false) {
 			if (($file != '.') && ($file != '..')) {
 				$sourcePath = $source . '/' . $file;
 				$destinationPath = $destination . '/' . $file;
-				if (\is_dir($sourcePath)) {
+				if (is_dir($sourcePath)) {
 					self::recurseUpload(
 						$baseUrl,
 						$sourcePath,
@@ -194,14 +196,14 @@ class OcisHelper {
 				}
 			}
 		}
-		\closedir($dir);
+		closedir($dir);
 	}
 
 	/**
 	 * @return int
 	 */
 	public static function getLdapPort() {
-		$port = \getenv("REVA_LDAP_PORT");
+		$port = getenv("REVA_LDAP_PORT");
 		return $port ? (int)$port : 636;
 	}
 
@@ -216,7 +218,7 @@ class OcisHelper {
 	 * @return string
 	 */
 	public static function getBaseDN() {
-		$dn = \getenv("REVA_LDAP_BASE_DN");
+		$dn = getenv("REVA_LDAP_BASE_DN");
 		return $dn ? $dn : "dc=owncloud,dc=com";
 	}
 
@@ -224,7 +226,7 @@ class OcisHelper {
 	 * @return string
 	 */
 	public static function getHostname() {
-		$hostname = \getenv("REVA_LDAP_HOSTNAME");
+		$hostname = getenv("REVA_LDAP_HOSTNAME");
 		return $hostname ? $hostname : "localhost";
 	}
 
@@ -232,7 +234,7 @@ class OcisHelper {
 	 * @return string
 	 */
 	public static function getBindDN() {
-		$dn = \getenv("REVA_LDAP_BIND_DN");
+		$dn = getenv("REVA_LDAP_BIND_DN");
 		return $dn ? $dn : "cn=admin,dc=owncloud,dc=com";
 	}
 
@@ -240,11 +242,11 @@ class OcisHelper {
 	 * @return string
 	 */
 	private static function getOcisRevaDataRoot() {
-		$root = \getenv("OCIS_REVA_DATA_ROOT");
+		$root = getenv("OCIS_REVA_DATA_ROOT");
 		if (($root === false || $root === "") && self::isTestingOnOcisOrReva()) {
 			$root = "/var/tmp/ocis/owncloud/";
 		}
-		if (!\file_exists($root)) {
+		if (!file_exists($root)) {
 			echo "WARNING: reva data root folder ($root) does not exist\n";
 		}
 		return $root;
@@ -256,16 +258,16 @@ class OcisHelper {
 	 * @return bool
 	 */
 	private static function recurseRmdir($dir) {
-		if (\file_exists($dir) === true) {
-			$files = \array_diff(\scandir($dir), ['.', '..']);
+		if (file_exists($dir) === true) {
+			$files = array_diff(scandir($dir), ['.', '..']);
 			foreach ($files as $file) {
-				if (\is_dir("$dir/$file")) {
+				if (is_dir("$dir/$file")) {
 					self::recurseRmdir("$dir/$file");
 				} else {
-					\unlink("$dir/$file");
+					unlink("$dir/$file");
 				}
 			}
-			return \rmdir($dir);
+			return rmdir($dir);
 		}
 		return true;
 	}

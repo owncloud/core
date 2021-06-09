@@ -105,7 +105,7 @@ class PollIncomingShares extends Command {
 				try {
 					$shareData = $this->getExternalShareData($data['user'], $mount->getMountPoint());
 					if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
-						$encodedData = \json_encode($shareData);
+						$encodedData = json_encode($shareData);
 						$output->writeln(
 							"User: \"{$data['user']}\", Share data: $encodedData"
 						);
@@ -167,21 +167,25 @@ class PollIncomingShares extends Command {
 	}
 
 	protected function getExternalShareData(string $userId, string $mountPoint) {
-		$relativeMountPoint =\rtrim(
-			\substr($mountPoint, \strlen("/$userId/files")),
+		$relativeMountPoint =rtrim(
+			substr($mountPoint, \strlen("/$userId/files")),
 			'/'
 		);
 		$qb = $this->dbConnection->getQueryBuilder();
 		$qb->select('*')
 			->from('share_external')
 			->where(
-				$qb->expr()->eq('user',
+				$qb->expr()->eq(
+					'user',
 					$qb->expr()->literal($userId)
-				))
+				)
+			)
 		->andWhere(
-			$qb->expr()->eq('mountpoint',
+			$qb->expr()->eq(
+				'mountpoint',
 				$qb->expr()->literal($relativeMountPoint)
-			));
+			)
+		);
 		$result = $qb->execute();
 		$externalShare = $result->fetch();
 		return $externalShare;

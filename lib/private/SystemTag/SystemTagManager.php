@@ -38,8 +38,8 @@ use OCP\IUser;
  * Manager class for system tags
  */
 class SystemTagManager implements ISystemTagManager {
-	const TAG_TABLE = 'systemtag';
-	const TAG_GROUP_TABLE = 'systemtag_group';
+	public const TAG_TABLE = 'systemtag';
+	public const TAG_GROUP_TABLE = 'systemtag_group';
 
 	/** @var IDBConnection */
 	protected $connection;
@@ -93,7 +93,7 @@ class SystemTagManager implements ISystemTagManager {
 
 		// note: not all databases will fail if it's a string or starts with a number
 		foreach ($tagIds as $tagId) {
-			if (!\is_numeric($tagId)) {
+			if (!is_numeric($tagId)) {
 				throw new \InvalidArgumentException('Tag id must be integer');
 			}
 		}
@@ -117,7 +117,10 @@ class SystemTagManager implements ISystemTagManager {
 
 		if (\count($tags) !== \count($tagIds)) {
 			throw new TagNotFoundException(
-				'Tag id(s) not found', 0, null, \array_diff($tagIds, \array_keys($tags))
+				'Tag id(s) not found',
+				0,
+				null,
+				array_diff($tagIds, array_keys($tags))
 			);
 		}
 
@@ -280,11 +283,14 @@ class SystemTagManager implements ISystemTagManager {
 			$tags = $this->getTagsByIds($tagId);
 		} catch (TagNotFoundException $e) {
 			throw new TagNotFoundException(
-				'Tag does not exist', 0, null, [$tagId]
+				'Tag does not exist',
+				0,
+				null,
+				[$tagId]
 			);
 		}
 
-		$beforeUpdate = \array_shift($tags);
+		$beforeUpdate = array_shift($tags);
 		$afterUpdate = new SystemTag(
 			(int) $tagId,
 			$tagName,
@@ -309,7 +315,10 @@ class SystemTagManager implements ISystemTagManager {
 		try {
 			if ($query->execute() === 0) {
 				throw new TagNotFoundException(
-					'Tag does not exist', 0, null, [$tagId]
+					'Tag does not exist',
+					0,
+					null,
+					[$tagId]
 				);
 			}
 		} catch (UniqueConstraintViolationException $e) {
@@ -342,7 +351,7 @@ class SystemTagManager implements ISystemTagManager {
 			$tagNotFoundException = $e;
 
 			// Get existing tag objects for the hooks later
-			$existingTags = \array_diff($tagIds, $tagNotFoundException->getMissingTags());
+			$existingTags = array_diff($tagIds, $tagNotFoundException->getMissingTags());
 			if (!empty($existingTags)) {
 				try {
 					$tags = $this->getTagsByIds($existingTags);
@@ -374,7 +383,10 @@ class SystemTagManager implements ISystemTagManager {
 
 		if ($tagNotFoundException !== null) {
 			throw new TagNotFoundException(
-				'Tag id(s) not found', 0, $tagNotFoundException, $tagNotFoundException->getMissingTags()
+				'Tag id(s) not found',
+				0,
+				$tagNotFoundException,
+				$tagNotFoundException->getMissingTags()
 			);
 		}
 	}
@@ -398,7 +410,7 @@ class SystemTagManager implements ISystemTagManager {
 
 		$groupIds = $this->groupManager->getUserGroupIds($user);
 		if (!empty($groupIds)) {
-			$matchingGroups = \array_intersect($groupIds, $this->getTagGroups($tag));
+			$matchingGroups = array_intersect($groupIds, $this->getTagGroups($tag));
 			if (!empty($matchingGroups)) {
 				return true;
 			}
@@ -491,7 +503,7 @@ class SystemTagManager implements ISystemTagManager {
 		if ($tag->isUserEditable() === false) {
 			$groupIds = $this->groupManager->getUserGroupIds($user);
 			if (!empty($groupIds)) {
-				$matchingGroups = \array_intersect($groupIds, $this->getTagGroups($tag));
+				$matchingGroups = array_intersect($groupIds, $this->getTagGroups($tag));
 				if (!empty($matchingGroups)) {
 					return true;
 				}

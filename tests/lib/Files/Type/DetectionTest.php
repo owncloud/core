@@ -100,7 +100,7 @@ class DetectionTest extends \Test\TestCase {
 		$mimetypealiases_dist = vfsStream::newFile('mimetypealiases.dist.json')->at($confDir);
 
 		//Empty alias file
-		$mimetypealiases_dist->setContent(\json_encode([], JSON_FORCE_OBJECT));
+		$mimetypealiases_dist->setContent(json_encode([], JSON_FORCE_OBJECT));
 
 		//Mock UrlGenerator
 		$urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')
@@ -258,7 +258,7 @@ class DetectionTest extends \Test\TestCase {
 		 */
 
 		//Put alias
-		$mimetypealiases_dist->setContent(\json_encode(['foo' => 'foobar/baz'], JSON_FORCE_OBJECT));
+		$mimetypealiases_dist->setContent(json_encode(['foo' => 'foobar/baz'], JSON_FORCE_OBJECT));
 
 		//Mock UrlGenerator
 		$urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')

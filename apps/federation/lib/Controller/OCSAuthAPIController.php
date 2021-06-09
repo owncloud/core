@@ -107,7 +107,7 @@ class OCSAuthAPIController extends OCSController {
 		// if both server initiated the exchange of the shared secret the greater
 		// token wins
 		$localToken = $this->dbHandler->getToken($url);
-		if (\strcmp($localToken, $token) > 0) {
+		if (strcmp($localToken, $token) > 0) {
 			$this->logger->info(
 				'remote server (' . $url . ') presented lower token. We will initiate the exchange of the shared secret.',
 				['app' => 'federation']
@@ -117,7 +117,8 @@ class OCSAuthAPIController extends OCSController {
 
 		// we ask for the shared secret so we no longer have to ask the other server
 		// to request the shared secret
-		$this->jobList->remove('OCA\Federation\BackgroundJob\RequestSharedSecret',
+		$this->jobList->remove(
+			'OCA\Federation\BackgroundJob\RequestSharedSecret',
 			[
 				'url' => $url,
 				'token' => $localToken
@@ -172,6 +173,6 @@ class OCSAuthAPIController extends OCSController {
 
 	protected function isValidToken($url, $token) {
 		$storedToken = $this->dbHandler->getToken($url);
-		return \hash_equals($storedToken, $token);
+		return hash_equals($storedToken, $token);
 	}
 }

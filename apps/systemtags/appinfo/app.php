@@ -75,7 +75,7 @@ $mapperListener = function (MapperEvent $event) {
 $eventDispatcher->addListener(MapperEvent::EVENT_ASSIGN, $mapperListener);
 $eventDispatcher->addListener(MapperEvent::EVENT_UNASSIGN, $mapperListener);
 
-if (\class_exists('OCA\Files\App')) {
+if (class_exists('OCA\Files\App')) {
 	\OCA\Files\App::getNavigationManager()->add(function () {
 		$l = \OC::$server->getL10N('systemtags');
 		return [

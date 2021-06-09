@@ -78,7 +78,7 @@ class EnableTest extends TestCase {
 		$defaultModule = ($defaultModule === null) ? '' : $defaultModule;
 		$invokeCount = 0;
 		$this->manager->method('isEnabled')
-			->willReturn(\filter_var($oldStatus, FILTER_VALIDATE_BOOLEAN));
+			->willReturn(filter_var($oldStatus, FILTER_VALIDATE_BOOLEAN));
 
 		$invokeCount++;
 

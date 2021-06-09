@@ -60,9 +60,15 @@ class WebDavHelper {
   </d:prop>
 </d:propfind>';
 		$response = self::makeDavRequest(
-			$baseUrl, $user, $password, "PROPFIND", $path, null, $body
+			$baseUrl,
+			$user,
+			$password,
+			"PROPFIND",
+			$path,
+			null,
+			$body
 		);
-		\preg_match(
+		preg_match(
 			'/\<oc:fileid\>([^\<]*)\<\/oc:fileid\>/',
 			$response->getBody()->getContents(),
 			$matches
@@ -119,14 +125,14 @@ class WebDavHelper {
 			} else {
 				//calculate the namespace prefix and namespace from the array key
 				$matches = [];
-				\preg_match("/^(.*)='(.*)'$/", $namespaceString, $matches);
+				preg_match("/^(.*)='(.*)'$/", $namespaceString, $matches);
 				$nameSpace = $matches[2];
 				$namespacePrefix = $matches[1];
 				$extraNamespaces .= " xmlns:$namespacePrefix=\"$nameSpace\" ";
 			}
 			//if a namespace prefix is given in the property value use that
-			if (\strpos($property, ":") !== false) {
-				$propertyParts = \explode(":", $property);
+			if (strpos($property, ":") !== false) {
+				$propertyParts = explode(":", $property);
 				$namespacePrefix = $propertyParts[0];
 				$property = $propertyParts[1];
 			}
@@ -146,8 +152,15 @@ class WebDavHelper {
 				    <d:prop>$propertyBody</d:prop>
 				</d:propfind>";
 		return self::makeDavRequest(
-			$baseUrl, $user, $password, "PROPFIND", $path, $headers, $body,
-			$davPathVersionToUse, $type
+			$baseUrl,
+			$user,
+			$password,
+			"PROPFIND",
+			$path,
+			$headers,
+			$body,
+			$davPathVersionToUse,
+			$type
 		);
 	}
 	/**
@@ -177,7 +190,7 @@ class WebDavHelper {
 		$type="files"
 	) {
 		$matches = [];
-		\preg_match("/^(.*)='(.*)'$/", $namespaceString, $matches);
+		preg_match("/^(.*)='(.*)'$/", $namespaceString, $matches);
 		$namespace = $matches[2];
 		$namespacePrefix = $matches[1];
 		$propertyBody = "<$namespacePrefix:$propertyName" .
@@ -192,8 +205,15 @@ class WebDavHelper {
 				 </d:set>
 				</d:propertyupdate>";
 		return self::makeDavRequest(
-			$baseUrl, $user, $password, "PROPPATCH", $path, [], $body,
-			$davPathVersionToUse, $type
+			$baseUrl,
+			$user,
+			$password,
+			"PROPPATCH",
+			$path,
+			[],
+			$body,
+			$davPathVersionToUse,
+			$type
 		);
 	}
 
@@ -217,13 +237,13 @@ class WebDavHelper {
 		} elseif ($namespaceString) {
 			//calculate the namespace prefix and namespace from the array key
 			$matches = [];
-			\preg_match("/^(.*)='(.*)'$/", $namespaceString, $matches);
+			preg_match("/^(.*)='(.*)'$/", $namespaceString, $matches);
 			$namespacePrefix = $matches[1];
 			$namespace = $matches[2];
 		}
 		//if a namespace prefix is given in the property value use that
-		if ($property && \strpos($property, ":")) {
-			$propertyParts = \explode(":", $property);
+		if ($property && strpos($property, ":")) {
+			$propertyParts = explode(":", $property);
 			$namespacePrefix = $propertyParts[0];
 			$property = $propertyParts[1];
 		}
@@ -275,8 +295,15 @@ class WebDavHelper {
 				 </d:set>
 				</d:propertyupdate>";
 		return self::makeDavRequest(
-			$baseUrl, $user, $password, "PROPPATCH", $path, [], $body,
-			$davPathVersionToUse, $type
+			$baseUrl,
+			$user,
+			$password,
+			"PROPPATCH",
+			$path,
+			[],
+			$body,
+			$davPathVersionToUse,
+			$type
 		);
 	}
 
@@ -311,8 +338,14 @@ class WebDavHelper {
 			];
 		}
 		return self::propfind(
-			$baseUrl, $user, $password, $path, $properties,
-			$folderDepth, $type, $davPathVersionToUse
+			$baseUrl,
+			$user,
+			$password,
+			$path,
+			$properties,
+			$folderDepth,
+			$type,
+			$davPathVersionToUse
 		);
 	}
 
@@ -367,10 +400,10 @@ class WebDavHelper {
 		}
 		//replace %, # and ? and in the path, Guzzle will not encode them
 		$urlSpecialChar = [['%', '#', '?'], ['%25', '%23', '%3F']];
-		$path = \str_replace($urlSpecialChar[0], $urlSpecialChar[1], $path);
+		$path = str_replace($urlSpecialChar[0], $urlSpecialChar[1], $path);
 
 		if (!empty($urlParameter)) {
-			$urlParameter = \http_build_query($urlParameter, '', '&');
+			$urlParameter = http_build_query($urlParameter, '', '&');
 			$path .= '?' . $urlParameter;
 		}
 		$fullUrl = self::sanitizeUrl($baseUrl . $davPath . $path);
@@ -389,16 +422,27 @@ class WebDavHelper {
 			foreach ($headers as $key => $value) {
 				//? and # need to be encoded in the Destination URL
 				if ($key === "Destination") {
-					$headers[$key] = \str_replace(
-						$urlSpecialChar[0], $urlSpecialChar[1], $value
+					$headers[$key] = str_replace(
+						$urlSpecialChar[0],
+						$urlSpecialChar[1],
+						$value
 					);
 					break;
 				}
 			}
 		}
 		return HttpRequestHelper::sendRequest(
-			$fullUrl, $method, $user, $password, $headers, $body, $config, null,
-			$stream, $timeout, $client
+			$fullUrl,
+			$method,
+			$user,
+			$password,
+			$headers,
+			$body,
+			$config,
+			null,
+			$stream,
+			$timeout,
+			$client
 		);
 	}
 
@@ -413,7 +457,9 @@ class WebDavHelper {
 	 * @return string
 	 */
 	public static function getDavPath(
-		$user, $davPathVersionToUse = 1, $type = "files"
+		$user,
+		$davPathVersionToUse = 1,
+		$type = "files"
 	) {
 		if ($type === "public-files" || $type === "public-files-old") {
 			return "public.php/webdav/";
@@ -456,9 +502,9 @@ class WebDavHelper {
 		if ($trailingSlash === true) {
 			$url = $url . "/";
 		} else {
-			$url = \rtrim($url, "/");
+			$url = rtrim($url, "/");
 		}
-		$url = \preg_replace("/([^:]\/)\/+/", '$1', $url);
+		$url = preg_replace("/([^:]\/)\/+/", '$1', $url);
 		return $url;
 	}
 
@@ -477,7 +523,8 @@ class WebDavHelper {
 	 * @return boolean is this a valid combination
 	 */
 	public static function isValidDavChunkingCombination(
-		$davPathVersion, $chunkingVersion
+		$davPathVersion,
+		$chunkingVersion
 	) {
 		return (
 			($chunkingVersion === 'no' || $chunkingVersion === null) ||
@@ -532,13 +579,18 @@ class WebDavHelper {
 	 * @return string
 	 * @throws Exception
 	 */
-	public static function getMtimeOfResource($user,
+	public static function getMtimeOfResource(
+		$user,
 		$password,
 		$baseUrl,
 		$resource
 	) {
 		$response = self::propfind(
-			$baseUrl, $user, $password, $resource, ["getlastmodified"]
+			$baseUrl,
+			$user,
+			$password,
+			$resource,
+			["getlastmodified"]
 		);
 		$responseXmlObject = HttpRequestHelper::getResponseXml(
 			$response,

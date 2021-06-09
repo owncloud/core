@@ -61,11 +61,13 @@ class Users {
 	 * @param IUserSession $userSession
 	 * @param ILogger $logger
 	 */
-	public function __construct(IUserManager $userManager,
-								IGroupManager $groupManager,
-								IUserSession $userSession,
-								ILogger $logger,
-								\OC\Authentication\TwoFactorAuth\Manager $twoFactorAuthManager) {
+	public function __construct(
+		IUserManager $userManager,
+		IGroupManager $groupManager,
+		IUserSession $userSession,
+		ILogger $logger,
+		\OC\Authentication\TwoFactorAuth\Manager $twoFactorAuthManager
+	) {
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
@@ -106,14 +108,14 @@ class Users {
 
 			$users = [];
 			foreach ($subAdminOfGroups as $group) {
-				$users = \array_merge($users, $this->groupManager->displayNamesInGroup($group, $search));
+				$users = array_merge($users, $this->groupManager->displayNamesInGroup($group, $search));
 			}
 
 			$users = \array_slice($users, $offset, $limit);
 		} else {
 			return new Result(null, API::RESPOND_UNAUTHORISED);
 		}
-		$users = \array_keys($users);
+		$users = array_keys($users);
 
 		return new Result([
 			'users' => $users
@@ -205,7 +207,7 @@ class Users {
 			$data['enabled'] = $targetUserObject->isEnabled() ? 'true' : 'false';
 		} else {
 			// Check they are looking up themselves
-			if (\strcasecmp($currentLoggedInUser->getUID(), $userId) !== 0) {
+			if (strcasecmp($currentLoggedInUser->getUID(), $userId) !== 0) {
 				return new Result(null, API::RESPOND_UNAUTHORISED);
 			}
 		}
@@ -283,7 +285,7 @@ class Users {
 			case 'quota':
 				$quota = $parameters['_put']['value'];
 				if ($quota !== 'none' && $quota !== 'default') {
-					if (\is_numeric($quota)) {
+					if (is_numeric($quota)) {
 						$quota = \floatval($quota);
 					} else {
 						$quota = Util::computerFileSize($quota);
@@ -311,7 +313,7 @@ class Users {
 				break;
 			case 'email':
 				$emailAddress = $parameters['_put']['value'];
-				if (($emailAddress === '') || \filter_var($emailAddress, FILTER_VALIDATE_EMAIL)) {
+				if (($emailAddress === '') || filter_var($emailAddress, FILTER_VALIDATE_EMAIL)) {
 					$targetUser->setEMailAddress($emailAddress);
 				} else {
 					return new Result(null, 102);
@@ -430,7 +432,7 @@ class Users {
 				foreach ($getSubAdminsGroups as $key => $group) {
 					$getSubAdminsGroups[$key] = $group->getGID();
 				}
-				$groups = \array_intersect(
+				$groups = array_intersect(
 					$getSubAdminsGroups,
 					$this->groupManager->getUserGroupIds($targetUser)
 				);
@@ -571,7 +573,7 @@ class Users {
 			return new Result(null, 102, 'Group:'.$_POST['groupid'].' does not exist');
 		}
 		// Check if trying to make subadmin of admin group
-		if (\strtolower($_POST['groupid']) === 'admin') {
+		if (strtolower($_POST['groupid']) === 'admin') {
 			return new Result(null, 103, 'Cannot create subadmins for admin group');
 		}
 

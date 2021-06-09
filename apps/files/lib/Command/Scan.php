@@ -148,8 +148,8 @@ class Scan extends Base {
 	}
 
 	public function checkScanWarning($fullPath, OutputInterface $output) {
-		$normalizedPath = \basename(\OC\Files\Filesystem::normalizePath($fullPath));
-		$path = \basename($fullPath);
+		$normalizedPath = basename(\OC\Files\Filesystem::normalizePath($fullPath));
+		$path = basename($fullPath);
 
 		if ($normalizedPath !== $path) {
 			$output->writeln("\t<error>Entry \"" . $fullPath . '" will not be accessible due to incompatible encoding</error>');
@@ -266,7 +266,7 @@ class Scan extends Base {
 		$count = 0;
 		$users = [];
 		foreach ($this->groupManager->findUsersInGroup($group) as $user) {
-			\array_push($users, $user->getUID());
+			array_push($users, $user->getUID());
 			$count++;
 			//Take 200 users at a time
 			if ($count > 199) {
@@ -282,8 +282,8 @@ class Scan extends Base {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$inputPath = $input->getOption('path');
-		$groups = $input->getOption('groups') ? \explode(',', $input->getOption('groups')) : [];
-		$groups = \array_unique(\array_merge($groups, $input->getOption('group')));
+		$groups = $input->getOption('groups') ? explode(',', $input->getOption('groups')) : [];
+		$groups = array_unique(array_merge($groups, $input->getOption('group')));
 		$shouldRepairStoragesIndividually = (bool) $input->getOption('repair');
 
 		if (\count($groups) >= 1) {
@@ -301,8 +301,8 @@ class Scan extends Base {
 				}
 			}
 		} elseif ($inputPath) {
-			$inputPath = '/' . \trim($inputPath, '/');
-			list(, $user, ) = \explode('/', $inputPath, 3);
+			$inputPath = '/' . trim($inputPath, '/');
+			list(, $user, ) = explode('/', $inputPath, 3);
 			$users = [$user];
 		} elseif ($input->getOption('all')) {
 			// we can only repair all storages in bulk (more efficient) if singleuser or maintenance mode
@@ -374,9 +374,9 @@ class Scan extends Base {
 	 */
 	protected function initTools() {
 		// Start the timer
-		$this->execTime = -\microtime(true);
+		$this->execTime = -microtime(true);
 		// Convert PHP errors to exceptions
-		\set_error_handler([$this, 'exceptionErrorHandler'], E_ALL);
+		set_error_handler([$this, 'exceptionErrorHandler'], E_ALL);
 	}
 
 	protected function userScan($users, $inputPath, $shouldRepairStoragesIndividually, $input, $output, $verbose) {
@@ -421,7 +421,7 @@ class Scan extends Base {
 	 * @throws \ErrorException
 	 */
 	public function exceptionErrorHandler($severity, $message, $file, $line) {
-		if (!(\error_reporting() & $severity)) {
+		if (!(error_reporting() & $severity)) {
 			// This error code is not included in error_reporting
 			return;
 		}
@@ -433,7 +433,7 @@ class Scan extends Base {
 	 */
 	protected function presentStats(OutputInterface $output) {
 		// Stop the timer
-		$this->execTime += \microtime(true);
+		$this->execTime += microtime(true);
 		$output->writeln("");
 
 		$headers = [
@@ -481,7 +481,7 @@ class Scan extends Base {
 		} else {
 			$itemsPerSecond = $items / $this->execTime;
 		}
-		return \sprintf("%.0f", $itemsPerSecond);
+		return sprintf("%.0f", $itemsPerSecond);
 	}
 
 	/**
@@ -490,10 +490,10 @@ class Scan extends Base {
 	 * @return string
 	 */
 	protected function formatExecTime() {
-		list($secs, $tens) = \explode('.', \sprintf("%.1f", ($this->execTime)));
+		list($secs, $tens) = explode('.', sprintf("%.1f", ($this->execTime)));
 
 		# if you want to have microseconds add this:   . '.' . $tens;
-		return \date('H:i:s', $secs);
+		return date('H:i:s', $secs);
 	}
 
 	/**
@@ -513,7 +513,7 @@ class Scan extends Base {
 				$connection->connect();
 			} catch (\Exception $ex) {
 				$output->writeln("<info>Error while re-connecting to database: {$ex->getMessage()}</info>");
-				\sleep(60);
+				sleep(60);
 			}
 		}
 		return $connection;

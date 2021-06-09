@@ -33,7 +33,7 @@ use Test\TestCase;
  * @package OC\Core\Controller
  */
 class OccControllerTest extends TestCase {
-	const TEMP_SECRET = 'test';
+	public const TEMP_SECRET = 'test';
 
 	/** @var \OC\AppFramework\Http\Request | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;
@@ -102,7 +102,7 @@ class OccControllerTest extends TestCase {
 		$this->assertEquals(0, $responseData['exitCode']);
 
 		$this->assertArrayHasKey('response', $responseData);
-		$decoded = \json_decode($responseData['response'], true);
+		$decoded = json_decode($responseData['response'], true);
 
 		$this->assertArrayHasKey('installed', $decoded);
 		$this->assertTrue($decoded['installed']);
@@ -126,7 +126,7 @@ class OccControllerTest extends TestCase {
 			->getMock();
 		$this->config->expects($this->any())->method('getSystemValue')
 			->with('updater.secret')
-			->willReturn(\password_hash(self::TEMP_SECRET, PASSWORD_DEFAULT));
+			->willReturn(password_hash(self::TEMP_SECRET, PASSWORD_DEFAULT));
 
 		$this->console = $this->getMockBuilder('\OC\Console\Application')
 			->disableOriginalConstructor()

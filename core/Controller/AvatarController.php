@@ -83,15 +83,17 @@ class AvatarController extends Controller {
 	 * @param IRootFolder $rootFolder
 	 * @param ILogger $logger
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IAvatarManager $avatarManager,
-								File $cache,
-								IL10N $l10n,
-								IUserManager $userManager,
-								IUserSession $userSession,
-								IRootFolder $rootFolder,
-								ILogger $logger) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IAvatarManager $avatarManager,
+		File $cache,
+		IL10N $l10n,
+		IUserManager $userManager,
+		IUserSession $userSession,
+		IRootFolder $rootFolder,
+		ILogger $logger
+	) {
 		parent::__construct($appName, $request);
 
 		$this->avatarManager = $avatarManager;
@@ -120,9 +122,11 @@ class AvatarController extends Controller {
 
 		try {
 			$avatar = $this->avatarManager->getAvatar($userId)->getFile($size);
-			$resp = new DataDisplayResponse($avatar->getContent(),
+			$resp = new DataDisplayResponse(
+				$avatar->getContent(),
 				Http::STATUS_OK,
-				['Content-Type' => $avatar->getMimeType()]);
+				['Content-Type' => $avatar->getMimeType()]
+			);
 			$resp->setETag($avatar->getEtag());
 		} catch (NotFoundException $e) {
 			$user = $this->userManager->get($userId);
@@ -163,7 +167,7 @@ class AvatarController extends Controller {
 		}
 
 		if (isset($path)) {
-			$path = \stripslashes($path);
+			$path = stripslashes($path);
 			$node = $this->rootFolder->getUserFolder($userId)->get($path);
 			if (!($node instanceof \OCP\Files\File)) {
 				return new DataResponse(['data' => ['message' => $this->l->t('Please select a file.')]], Http::STATUS_OK, $headers);
@@ -189,9 +193,9 @@ class AvatarController extends Controller {
 						$headers
 					);
 				}
-				$this->cache->set('avatar_upload', \file_get_contents($files['tmp_name'][0]), 7200);
+				$this->cache->set('avatar_upload', file_get_contents($files['tmp_name'][0]), 7200);
 				$content = $this->cache->get('avatar_upload');
-				\unlink($files['tmp_name'][0]);
+				unlink($files['tmp_name'][0]);
 			} else {
 				return new DataResponse(
 					['data' => ['message' => $this->l->t('Invalid file provided')]],
@@ -268,19 +272,23 @@ class AvatarController extends Controller {
 	public function getTmpAvatar() {
 		$tmpAvatar = $this->cache->get('tmpAvatar');
 		if ($tmpAvatar === null) {
-			return new DataResponse(['data' => [
+			return new DataResponse(
+				['data' => [
 										'message' => $this->l->t("No temporary profile picture available, try again")
 									]],
-									Http::STATUS_NOT_FOUND);
+				Http::STATUS_NOT_FOUND
+			);
 		}
 
 		$image = new \OC_Image($tmpAvatar);
 
-		$resp = new DataDisplayResponse($image->data(),
-				Http::STATUS_OK,
-				['Content-Type' => $image->mimeType()]);
+		$resp = new DataDisplayResponse(
+			$image->data(),
+			Http::STATUS_OK,
+			['Content-Type' => $image->mimeType()]
+		);
 
-		$resp->setETag(\crc32($image->data()));
+		$resp->setETag(crc32($image->data()));
 		$resp->cacheFor(0);
 		$resp->setLastModified(new \DateTime('now', new \DateTimeZone('GMT')));
 		return $resp;
@@ -296,25 +304,31 @@ class AvatarController extends Controller {
 		$userId = $this->userSession->getUser()->getUID();
 
 		if ($crop === null) {
-			return new DataResponse(['data' => ['message' => $this->l->t("No crop data provided")]],
-									Http::STATUS_BAD_REQUEST);
+			return new DataResponse(
+				['data' => ['message' => $this->l->t("No crop data provided")]],
+				Http::STATUS_BAD_REQUEST
+			);
 		}
 
 		if (!isset($crop['x'], $crop['y'], $crop['w'], $crop['h'])) {
-			return new DataResponse(['data' => ['message' => $this->l->t("No valid crop data provided")]],
-									Http::STATUS_BAD_REQUEST);
+			return new DataResponse(
+				['data' => ['message' => $this->l->t("No valid crop data provided")]],
+				Http::STATUS_BAD_REQUEST
+			);
 		}
 
 		$tmpAvatar = $this->cache->get('tmpAvatar');
 		if ($tmpAvatar === null) {
-			return new DataResponse(['data' => [
+			return new DataResponse(
+				['data' => [
 										'message' => $this->l->t("No temporary profile picture available, try again")
 									]],
-									Http::STATUS_BAD_REQUEST);
+				Http::STATUS_BAD_REQUEST
+			);
 		}
 
 		$image = new \OC_Image($tmpAvatar);
-		$image->crop($crop['x'], $crop['y'], \round($crop['w']), \round($crop['h']));
+		$image->crop($crop['x'], $crop['y'], round($crop['w']), round($crop['h']));
 		try {
 			$avatar = $this->avatarManager->getAvatar($userId);
 			$avatar->set($image);
@@ -322,8 +336,10 @@ class AvatarController extends Controller {
 			$this->cache->remove('tmpAvatar');
 			return new DataResponse(['status' => 'success']);
 		} catch (NotSquareException $e) {
-			return new DataResponse(['data' => ['message' => $this->l->t('Crop is not square')]],
-									Http::STATUS_BAD_REQUEST);
+			return new DataResponse(
+				['data' => ['message' => $this->l->t('Crop is not square')]],
+				Http::STATUS_BAD_REQUEST
+			);
 		} catch (\Exception $e) {
 			$this->logger->logException($e, ['app' => 'core']);
 			return new DataResponse(['data' => ['message' => $this->l->t('An error occurred. Please contact your admin.')]], Http::STATUS_BAD_REQUEST);
@@ -335,6 +351,6 @@ class AvatarController extends Controller {
 	 * @return bool
 	 */
 	protected function isUploadFile($file) {
-		return \is_uploaded_file($file);
+		return is_uploaded_file($file);
 	}
 }

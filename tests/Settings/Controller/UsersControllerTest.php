@@ -63,7 +63,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->any())
 			->method('t')
 			->will($this->returnCallback(function ($text, $parameters = []) {
-				return \vsprintf($text, $parameters);
+				return vsprintf($text, $parameters);
 			}));
 		$this->container['Defaults'] = $this->getMockBuilder('\OC_Defaults')
 			->disableOriginalConstructor()->getMock();
@@ -1484,7 +1484,8 @@ class UsersControllerTest extends \Test\TestCase {
 	public function testCreateUnsuccessfulWithInvalidEmailAdmin() {
 		$this->container['IsAdmin'] = true;
 
-		$expectedResponse = new DataResponse([
+		$expectedResponse = new DataResponse(
+			[
 				'message' => 'Invalid mail address',
 			],
 			Http::STATUS_UNPROCESSABLE_ENTITY
@@ -1589,8 +1590,14 @@ class UsersControllerTest extends \Test\TestCase {
 		$this->assertEquals(Http::STATUS_CREATED, $response->getStatus());
 	}
 
-	private function mockUser($userId = 'foo', $displayName = 'M. Foo', $isEnabled = true,
-							  $lastLogin = 500, $home = '/home/foo', $backend = 'OC_User_Database') {
+	private function mockUser(
+		$userId = 'foo',
+		$displayName = 'M. Foo',
+		$isEnabled = true,
+		$lastLogin = 500,
+		$home = '/home/foo',
+		$backend = 'OC_User_Database'
+	) {
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
@@ -1848,9 +1855,26 @@ class UsersControllerTest extends \Test\TestCase {
 		$appManager = $this->createMock(IAppManager::class);
 		$iAvatarManager = $this->createMock(IAvatarManager::class);
 		$eventDispatcher = $this->createMock(EventDispatcher::class);
-		$userController = new UsersController($appName, $irequest, $userManager, $groupManager,
-			$userSession, $iConfig, $iSecureRandom, false, $iL10, $iLogger, $ocDefault, $iMailer,
-			$iTimeFactory, "", $urlGenerator, $appManager, $iAvatarManager, $eventDispatcher);
+		$userController = new UsersController(
+			$appName,
+			$irequest,
+			$userManager,
+			$groupManager,
+			$userSession,
+			$iConfig,
+			$iSecureRandom,
+			false,
+			$iL10,
+			$iLogger,
+			$ocDefault,
+			$iMailer,
+			$iTimeFactory,
+			"",
+			$urlGenerator,
+			$appManager,
+			$iAvatarManager,
+			$eventDispatcher
+		);
 
 		$this->loginAsUser($loginUser);
 
@@ -1909,9 +1933,26 @@ class UsersControllerTest extends \Test\TestCase {
 		$appManager = $this->createMock(IAppManager::class);
 		$iAvatarManager = $this->createMock(IAvatarManager::class);
 		$eventDispatcher = $this->createMock(EventDispatcher::class);
-		$userController = new UsersController($appName, $irequest, $userManager, $groupManager,
-			$userSession, $iConfig, $iSecureRandom, false, $iL10, $iLogger, $ocDefault, $iMailer,
-			$iTimeFactory, "", $urlGenerator, $appManager, $iAvatarManager, $eventDispatcher);
+		$userController = new UsersController(
+			$appName,
+			$irequest,
+			$userManager,
+			$groupManager,
+			$userSession,
+			$iConfig,
+			$iSecureRandom,
+			false,
+			$iL10,
+			$iLogger,
+			$ocDefault,
+			$iMailer,
+			$iTimeFactory,
+			"",
+			$urlGenerator,
+			$appManager,
+			$iAvatarManager,
+			$eventDispatcher
+		);
 
 		$this->loginAsUser($id);
 
@@ -2817,9 +2858,11 @@ class UsersControllerTest extends \Test\TestCase {
 			->willReturn('http://localhost/apps/settings/setpassword/form/1234/foo');
 		$result = $this->container['UsersController']->setPasswordForm('fooBaZ1', 'foo');
 		$this->assertEquals(new Http\TemplateResponse(
-			'settings', 'setpassword',
+			'settings',
+			'setpassword',
 			['link' => 'http://localhost/apps/settings/setpassword/form/1234/foo'],
-			'guest'), $result);
+			'guest'
+		), $result);
 	}
 
 	public function providesUserTokenExceptionData() {
@@ -2857,9 +2900,14 @@ class UsersControllerTest extends \Test\TestCase {
 
 			$result = $this->container['UsersController']->setPasswordForm('fooBaZ1', 'foo');
 			$this->assertEquals(
-				new Http\TemplateResponse('settings', 'resendtokenbymail',
+				new Http\TemplateResponse(
+					'settings',
+					'resendtokenbymail',
 					['link' => 'http://localhost/settings/setpassword/form/1234/foo'],
-					'guest'), $result);
+					'guest'
+				),
+				$result
+			);
 		} elseif ($tokenException === 'mismatch_token') {
 			$this->container['Config']->expects($this->once())
 				->method('getUserValue')
@@ -2874,8 +2922,12 @@ class UsersControllerTest extends \Test\TestCase {
 			$result = $this->container['UsersController']->setPasswordForm('fooBaZ1', 'foo');
 			$this->assertEquals(
 				new Http\TemplateResponse(
-					'core', 'error',
-					['errors' => [['error' => 'The token provided is invalid.']]], 'guest'), $result
+					'core',
+					'error',
+					['errors' => [['error' => 'The token provided is invalid.']]],
+					'guest'
+				),
+				$result
 			);
 		} elseif ($tokenException === 'invalid_token') {
 			$this->container['Config']->expects($this->once())
@@ -2883,8 +2935,14 @@ class UsersControllerTest extends \Test\TestCase {
 				->willReturn('');
 			$result = $this->container['UsersController']->setPasswordForm('fooBaZ1', 'foo');
 			$this->assertEquals(
-				new Http\TemplateResponse('core', 'error',
-					['errors' => [["error" => 'The token provided is invalid.']]], 'guest'), $result);
+				new Http\TemplateResponse(
+					'core',
+					'error',
+					['errors' => [["error" => 'The token provided is invalid.']]],
+					'guest'
+				),
+				$result
+			);
 		}
 	}
 
@@ -2935,8 +2993,13 @@ class UsersControllerTest extends \Test\TestCase {
 		$result = $this->container['UsersController']->resendToken('foo');
 		$this->assertEquals(
 			new Http\TemplateResponse(
-				'settings', 'tokensendnotify',
-				[], 'guest'), $result);
+				'settings',
+				'tokensendnotify',
+				[],
+				'guest'
+			),
+			$result
+		);
 	}
 
 	/**
@@ -2946,9 +3009,13 @@ class UsersControllerTest extends \Test\TestCase {
 		$result = $this->container['UsersController']->resendToken('foo');
 		$this->assertEquals(
 			new Http\TemplateResponse(
-				'core', 'error',
+				'core',
+				'error',
 				["errors" => [["error" =>"Failed to create activation link. Please contact your administrator."]]],
-				'guest'), $result);
+				'guest'
+			),
+			$result
+		);
 	}
 
 	public function testResendTokenEmailNotSendResponse() {
@@ -2960,9 +3027,13 @@ class UsersControllerTest extends \Test\TestCase {
 		$result = $this->container['UsersController']->resendToken('foo');
 		$this->assertEquals(
 			new Http\TemplateResponse(
-				'core', 'error',
+				'core',
+				'error',
 				["errors" => [["error" =>"Failed to create activation link. Please contact your administrator."]]],
-				'guest'), $result);
+				'guest'
+			),
+			$result
+		);
 	}
 
 	public function testResendTokenSendMailFailedResponse() {
@@ -3012,9 +3083,13 @@ class UsersControllerTest extends \Test\TestCase {
 		$result = $this->container['UsersController']->resendToken('foo');
 		$this->assertEquals(
 			new Http\TemplateResponse(
-				'core', 'error',
+				'core',
+				'error',
 				["errors" => [["error" =>"Can't send email to the user. Contact your administrator."]]],
-				'guest'), $result);
+				'guest'
+			),
+			$result
+		);
 	}
 
 	/**
@@ -3028,8 +3103,11 @@ class UsersControllerTest extends \Test\TestCase {
 					'status' => 'error',
 					'message' => 'Failed to set password. Please contact the administrator.',
 					'type' => 'usererror'
-				], Http::STATUS_NOT_FOUND
-			), $result);
+				],
+				Http::STATUS_NOT_FOUND
+			),
+			$result
+		);
 	}
 
 	public function testSetPasswordInvalidTokenExcception() {
@@ -3048,7 +3126,8 @@ class UsersControllerTest extends \Test\TestCase {
 				'status' => 'error',
 				'message' => 'The token provided is invalid.',
 				'type' => 'tokenfailure'
-			], Http::STATUS_UNAUTHORIZED
+			],
+			Http::STATUS_UNAUTHORIZED
 		), $result);
 	}
 
@@ -3083,7 +3162,8 @@ class UsersControllerTest extends \Test\TestCase {
 				'status' => 'error',
 				'message' => 'Can not set user password, because password does not comply with policy.',
 				'type' => 'passwordsetfailed',
-			], Http::STATUS_FORBIDDEN
+			],
+			Http::STATUS_FORBIDDEN
 		);
 		$result = $this->container['UsersController']->setPassword('fooBaZ1', 'foo', '123');
 		$this->assertEquals($expectedResult, $result);
@@ -3108,7 +3188,8 @@ class UsersControllerTest extends \Test\TestCase {
 				'status' => 'error',
 				'message' => 'The token provided had expired.',
 				'type' => 'tokenfailure'
-			], Http::STATUS_UNAUTHORIZED
+			],
+			Http::STATUS_UNAUTHORIZED
 		), $result);
 	}
 
@@ -3134,7 +3215,8 @@ class UsersControllerTest extends \Test\TestCase {
 				'status' => 'error',
 				'message' => 'The token provided is invalid.',
 				'type' => 'tokenfailure'
-			], Http::STATUS_UNAUTHORIZED
+			],
+			Http::STATUS_UNAUTHORIZED
 		), $result);
 	}
 
@@ -3167,7 +3249,8 @@ class UsersControllerTest extends \Test\TestCase {
 				'status' => 'error',
 				'message' => 'Failed to set password. Please contact your administrator.',
 				'type' => 'passwordsetfailed'
-			], Http::STATUS_FORBIDDEN
+			],
+			Http::STATUS_FORBIDDEN
 		), $result);
 	}
 
@@ -3187,11 +3270,26 @@ class UsersControllerTest extends \Test\TestCase {
 		$appManager = $this->createMock(IAppManager::class);
 		$avatarManager = $this->createMock(IAvatarManager::class);
 		$eventDispatcher = $this->createMock(EventDispatcher::class);
-		$usersController = new UsersController('settings', $request,
-			$userManager, $groupManager, $userSession, $config, $secureRandom,
-			'true', $l10n, $logger, $defaults, $mailer, $timeFactory,
-			'no-reply@foo.com', $urlGenerator, $appManager, $avatarManager,
-			$eventDispatcher);
+		$usersController = new UsersController(
+			'settings',
+			$request,
+			$userManager,
+			$groupManager,
+			$userSession,
+			$config,
+			$secureRandom,
+			'true',
+			$l10n,
+			$logger,
+			$defaults,
+			$mailer,
+			$timeFactory,
+			'no-reply@foo.com',
+			$urlGenerator,
+			$appManager,
+			$avatarManager,
+			$eventDispatcher
+		);
 
 		$user = $this->createMock(IUser::class);
 		$user->expects($this->once())
@@ -3263,11 +3361,26 @@ class UsersControllerTest extends \Test\TestCase {
 		$appManager = $this->createMock(IAppManager::class);
 		$avatarManager = $this->createMock(IAvatarManager::class);
 		$eventDispatcher = $this->createMock(EventDispatcher::class);
-		$usersController = new UsersController('settings', $request,
-			$userManager, $groupManager, $userSession, $config, $secureRandom,
-			'true', $l10n, $logger, $defaults, $mailer, $timeFactory,
-			'no-reply@foo.com', $urlGenerator, $appManager, $avatarManager,
-			$eventDispatcher);
+		$usersController = new UsersController(
+			'settings',
+			$request,
+			$userManager,
+			$groupManager,
+			$userSession,
+			$config,
+			$secureRandom,
+			'true',
+			$l10n,
+			$logger,
+			$defaults,
+			$mailer,
+			$timeFactory,
+			'no-reply@foo.com',
+			$urlGenerator,
+			$appManager,
+			$avatarManager,
+			$eventDispatcher
+		);
 
 		$user = $this->createMock(IUser::class);
 
@@ -3326,7 +3439,8 @@ class UsersControllerTest extends \Test\TestCase {
 				'status' => 'error',
 				'message' => 'Failed to send email. Please contact your administrator.',
 				'type' => 'emailsendfailed'
-			], Http::STATUS_INTERNAL_SERVER_ERROR
+			],
+			Http::STATUS_INTERNAL_SERVER_ERROR
 		), $result);
 	}
 

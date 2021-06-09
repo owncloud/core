@@ -117,8 +117,8 @@ class ScanTest extends TestCase {
 		);
 		$this->commandTester = new CommandTester($command);
 
-		$this->scanUser1 = $this->createUser('scanuser1' . \uniqid());
-		$this->scanUser2 = $this->createUser('scanuser2' . \uniqid());
+		$this->scanUser1 = $this->createUser('scanuser1' . uniqid());
+		$this->scanUser2 = $this->createUser('scanuser2' . uniqid());
 
 		$user1 = $this->createUser('user1');
 		$this->createUser('user2');
@@ -128,7 +128,7 @@ class ScanTest extends TestCase {
 
 		$this->dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data-autotest');
 
-		@\mkdir($this->dataDir . '/' . $this->scanUser1->getUID() . '/files/toscan', 0777, true);
+		@mkdir($this->dataDir . '/' . $this->scanUser1->getUID() . '/files/toscan', 0777, true);
 	}
 
 	protected function tearDown(): void {
@@ -207,10 +207,10 @@ class ScanTest extends TestCase {
 		//Create 10 users in each group
 		$groups = [];
 		if (\array_key_exists('--groups', $input)) {
-			$groups = \explode(',', $input['--groups']);
+			$groups = explode(',', $input['--groups']);
 		}
 		if (\array_key_exists('--group', $input)) {
-			$groups = \array_merge($groups, $input['--group']);
+			$groups = array_merge($groups, $input['--group']);
 		}
 		$user = "user";
 		$userObj = [];
@@ -260,7 +260,7 @@ class ScanTest extends TestCase {
 	}
 
 	public function testScanAll() {
-		@\mkdir($this->dataDir . '/' . $this->scanUser2->getUID() . '/files/toscan2', 0777, true);
+		@mkdir($this->dataDir . '/' . $this->scanUser2->getUID() . '/files/toscan2', 0777, true);
 
 		$input = [
 			'--all' => true,
@@ -280,7 +280,7 @@ class ScanTest extends TestCase {
 	}
 
 	public function testScanOne() {
-		@\mkdir($this->dataDir . '/' . $this->scanUser2->getUID() . '/files/toscan2', 0777, true);
+		@mkdir($this->dataDir . '/' . $this->scanUser2->getUID() . '/files/toscan2', 0777, true);
 
 		$input = [
 			'user_id' => [$this->scanUser2->getUID()],
@@ -375,7 +375,7 @@ class ScanTest extends TestCase {
 		$qb->select('*')
 			->from('filecache')
 			->where($qb->expr()->eq('storage', $qb->createNamedParameter($storageId)))
-			->andWhere($qb->expr()->eq('path_hash', $qb->createNamedParameter(\md5($path))));
+			->andWhere($qb->expr()->eq('path_hash', $qb->createNamedParameter(md5($path))));
 		$results = $qb->execute();
 		$result = $results->fetch();
 		$results->closeCursor();
@@ -416,7 +416,7 @@ class ScanTest extends TestCase {
 	 * Scan and repair a single user
 	 */
 	public function testRepairOne() {
-		@\mkdir($this->dataDir . '/' . $this->scanUser2->getUID() . '/files/toscan3', 0777, true);
+		@mkdir($this->dataDir . '/' . $this->scanUser2->getUID() . '/files/toscan3', 0777, true);
 		$input = [
 			'user_id' => [$this->scanUser2->getUID()],
 			'--repair' => true,

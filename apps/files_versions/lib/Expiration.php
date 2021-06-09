@@ -27,7 +27,7 @@ use OCP\IConfig;
 class Expiration {
 
 	// how long do we keep files a version if no other value is defined in the config file (unit: days)
-	const NO_OBLIGATION = -1;
+	public const NO_OBLIGATION = -1;
 
 	/** @var ITimeFactory */
 	private $timeFactory;
@@ -130,34 +130,34 @@ class Expiration {
 	* and set private members accordingly
 	*/
 	private function parseRetentionObligation() {
-		$splitValues = \explode(',', $this->retentionObligation);
+		$splitValues = explode(',', $this->retentionObligation);
 		if (!isset($splitValues[0])) {
 			$minValue = 'auto';
 		} else {
-			$minValue = \trim($splitValues[0]);
+			$minValue = trim($splitValues[0]);
 		}
 
 		if (!isset($splitValues[1])) {
 			$maxValue = 'auto';
 		} else {
-			$maxValue = \trim($splitValues[1]);
+			$maxValue = trim($splitValues[1]);
 		}
 
 		$isValid = true;
 		// Validate
-		if (!\ctype_digit($minValue) && $minValue !== 'auto') {
+		if (!ctype_digit($minValue) && $minValue !== 'auto') {
 			$isValid = false;
 			\OC::$server->getLogger()->warning(
-					$minValue . ' is not a valid value for minimal versions retention obligation. Check versions_retention_obligation in your config.php. Falling back to auto.',
-					['app'=>'files_versions']
+				$minValue . ' is not a valid value for minimal versions retention obligation. Check versions_retention_obligation in your config.php. Falling back to auto.',
+				['app'=>'files_versions']
 			);
 		}
 
-		if (!\ctype_digit($maxValue) && $maxValue !== 'auto') {
+		if (!ctype_digit($maxValue) && $maxValue !== 'auto') {
 			$isValid = false;
 			\OC::$server->getLogger()->warning(
-					$maxValue . ' is not a valid value for maximal versions retention obligation. Check versions_retention_obligation in your config.php. Falling back to auto.',
-					['app'=>'files_versions']
+				$maxValue . ' is not a valid value for maximal versions retention obligation. Check versions_retention_obligation in your config.php. Falling back to auto.',
+				['app'=>'files_versions']
 			);
 		}
 

@@ -95,9 +95,9 @@ class Import extends Command {
 	protected function getArrayFromStdin() {
 		// Read from stdin. stream_set_blocking is used to prevent blocking
 		// when nothing is passed via stdin.
-		\stream_set_blocking(STDIN, 0);
-		$content = \file_get_contents('php://stdin');
-		\stream_set_blocking(STDIN, 1);
+		stream_set_blocking(STDIN, 0);
+		$content = file_get_contents('php://stdin');
+		stream_set_blocking(STDIN, 1);
 		return $content;
 	}
 
@@ -108,7 +108,7 @@ class Import extends Command {
 	 * @return string
 	 */
 	protected function getArrayFromFile($importFile) {
-		$content = \file_get_contents($importFile);
+		$content = file_get_contents($importFile);
 		return $content;
 	}
 
@@ -118,7 +118,7 @@ class Import extends Command {
 	 * @throws \UnexpectedValueException when the array is invalid
 	 */
 	protected function validateFileContent($content) {
-		$decodedContent = \json_decode($content, true);
+		$decodedContent = json_decode($content, true);
 		if (!\is_array($decodedContent) || empty($decodedContent)) {
 			throw new \UnexpectedValueException('The file must contain a valid json array');
 		}
@@ -134,14 +134,14 @@ class Import extends Command {
 	 * @param array $array
 	 */
 	protected function validateArray($array) {
-		$arrayKeys = \array_keys($array);
-		$additionalKeys = \array_diff($arrayKeys, $this->validRootKeys);
-		$commonKeys = \array_intersect($arrayKeys, $this->validRootKeys);
+		$arrayKeys = array_keys($array);
+		$additionalKeys = array_diff($arrayKeys, $this->validRootKeys);
+		$commonKeys = array_intersect($arrayKeys, $this->validRootKeys);
 		if (!empty($additionalKeys)) {
-			throw new \UnexpectedValueException('Found invalid entries in root: ' . \implode(', ', $additionalKeys));
+			throw new \UnexpectedValueException('Found invalid entries in root: ' . implode(', ', $additionalKeys));
 		}
 		if (empty($commonKeys)) {
-			throw new \UnexpectedValueException('At least one key of the following is expected: ' . \implode(', ', $this->validRootKeys));
+			throw new \UnexpectedValueException('At least one key of the following is expected: ' . implode(', ', $this->validRootKeys));
 		}
 
 		if (isset($array['system'])) {

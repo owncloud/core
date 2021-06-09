@@ -109,9 +109,9 @@ class FileTest extends TestCase {
 	 * @param string $string
 	 */
 	private function getStream($string) {
-		$stream = \fopen('php://temp', 'r+');
-		\fwrite($stream, $string);
-		\fseek($stream, 0);
+		$stream = fopen('php://temp', 'r+');
+		fwrite($stream, $string);
+		fseek($stream, 0);
 		return $stream;
 	}
 
@@ -439,7 +439,7 @@ class FileTest extends TestCase {
 		}
 
 		$info = new FileInfo(
-			$viewRoot . '/' . \ltrim($path, '/'),
+			$viewRoot . '/' . ltrim($path, '/'),
 			$this->getMockStorage(),
 			null,
 			['permissions' => Constants::PERMISSION_ALL],
@@ -607,23 +607,29 @@ class FileTest extends TestCase {
 		$file = 'foo.txt';
 
 		$calledBeforeCreateFile = [];
-		\OC::$server->getEventDispatcher()->addListener('file.beforecreate',
+		\OC::$server->getEventDispatcher()->addListener(
+			'file.beforecreate',
 			function (GenericEvent $event) use (&$calledBeforeCreateFile) {
 				$calledBeforeCreateFile[] = 'file.beforecreate';
 				$calledBeforeCreateFile[] = $event;
-			});
+			}
+		);
 		$calledAfterCreateFile = [];
-		\OC::$server->getEventDispatcher()->addListener('file.aftercreate',
+		\OC::$server->getEventDispatcher()->addListener(
+			'file.aftercreate',
 			function (GenericEvent $event) use (&$calledAfterCreateFile) {
 				$calledAfterCreateFile[] = 'file.aftercreate';
 				$calledAfterCreateFile[] = $event;
-			});
+			}
+		);
 		$calledAfterUpdateFile = [];
-		\OC::$server->getEventDispatcher()->addListener('file.afterupdate',
+		\OC::$server->getEventDispatcher()->addListener(
+			'file.afterupdate',
 			function (GenericEvent $event) use (&$calledAfterUpdateFile) {
 				$calledAfterUpdateFile[] = 'file.afterupdate';
 				$calledAfterUpdateFile[] = $event;
-			});
+			}
+		);
 		$this->doPut($file.'-chunking-12345-2-0', null, $request);
 		$this->doPut($file.'-chunking-12345-2-1', null, $request);
 		$this->assertEquals($resultMtime, $this->getFileInfos($file)['mtime']);
@@ -640,8 +646,8 @@ class FileTest extends TestCase {
 		$this->assertEquals('/'.$this->user.'/files/'.$file, $calledBeforeCreateFile[3]->getArgument('path'));
 		$this->assertEquals('/'.$this->user.'/cache', $calledAfterCreateFile[1]->getArgument('path'));
 		//The indices 1 and 3 have part files.
-		$this->assertNotFalse(\strpos($calledAfterUpdateFile[1]->getArgument('path'), '/'.$this->user.'/cache/'. $file.'-chunking-12345-0'));
-		$this->assertNotFalse(\strpos($calledAfterUpdateFile[3]->getArgument('path'), '/'.$this->user.'/cache/'. $file.'-chunking-12345-1'));
+		$this->assertNotFalse(strpos($calledAfterUpdateFile[1]->getArgument('path'), '/'.$this->user.'/cache/'. $file.'-chunking-12345-0'));
+		$this->assertNotFalse(strpos($calledAfterUpdateFile[3]->getArgument('path'), '/'.$this->user.'/cache/'. $file.'-chunking-12345-1'));
 	}
 
 	/**
@@ -1223,17 +1229,21 @@ class FileTest extends TestCase {
 		$file = new File($view, $info);
 
 		$calledBeforeCreate = [];
-		\OC::$server->getEventDispatcher()->addListener('file.beforecreate',
+		\OC::$server->getEventDispatcher()->addListener(
+			'file.beforecreate',
 			function (GenericEvent $event) use (&$calledBeforeCreate) {
 				$calledBeforeCreate[] = 'file.beforecreate';
 				$calledBeforeCreate[] = $event;
-			});
+			}
+		);
 		$calledAfterCreate = [];
-		\OC::$server->getEventDispatcher()->addListener('file.aftercreate',
+		\OC::$server->getEventDispatcher()->addListener(
+			'file.aftercreate',
 			function (GenericEvent $event) use (&$calledAfterCreate) {
 				$calledAfterCreate[] = 'file.aftercreate';
 				$calledAfterCreate[] = $event;
-			});
+			}
+		);
 		$view->lockFile($path, ILockingProvider::LOCK_SHARED);
 		$file->put($this->getStream('hello'));
 		$view->unlockFile($path, ILockingProvider::LOCK_SHARED);
@@ -1248,17 +1258,21 @@ class FileTest extends TestCase {
 		$this->assertEquals('/'.$this->user.'/files//test-update.txt', $calledAfterCreate[1]->getArgument('path'));
 
 		$calledBeforeUpdate = [];
-		\OC::$server->getEventDispatcher()->addListener('file.beforeupdate',
+		\OC::$server->getEventDispatcher()->addListener(
+			'file.beforeupdate',
 			function (GenericEvent $event) use (&$calledBeforeUpdate) {
 				$calledBeforeUpdate[] = 'file.beforeupdate';
 				$calledBeforeUpdate[] = $event;
-			});
+			}
+		);
 		$calledAfterUpdte = [];
-		\OC::$server->getEventDispatcher()->addListener('file.afterupdate',
+		\OC::$server->getEventDispatcher()->addListener(
+			'file.afterupdate',
 			function (GenericEvent $event) use (&$calledAfterUpdte) {
 				$calledAfterUpdte[] = 'file.afterupdate';
 				$calledAfterUpdte[] = $event;
-			});
+			}
+		);
 		$view->lockFile($path, ILockingProvider::LOCK_SHARED);
 		$file->put($this->getStream('world'));
 		$view->unlockFile($path, ILockingProvider::LOCK_SHARED);
@@ -1373,13 +1387,13 @@ class FileTest extends TestCase {
 		list($storage, $internalPath) = $userView->resolvePath($path);
 		if ($storage instanceof Local) {
 			$realPath = $storage->getSourcePath($internalPath);
-			$dh = \opendir($realPath);
-			while (($file = \readdir($dh)) !== false) {
-				if (\substr($file, \strlen($file) - 5, 5) === '.part') {
+			$dh = opendir($realPath);
+			while (($file = readdir($dh)) !== false) {
+				if (substr($file, \strlen($file) - 5, 5) === '.part') {
 					$files[] = $file;
 				}
 			}
-			\closedir($dh);
+			closedir($dh);
 		}
 		return $files;
 	}

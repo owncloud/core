@@ -236,7 +236,8 @@ class DecryptAllTest extends TestCase {
 			->method('getEncryptionModules')
 			->willReturn([$moduleDescription]);
 
-		$this->assertSame($success,
+		$this->assertSame(
+			$success,
 			$this->invokePrivate($this->instance, 'prepareEncryptionModules', [$user])
 		);
 	}

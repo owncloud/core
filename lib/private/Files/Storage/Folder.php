@@ -66,7 +66,7 @@ class Folder extends Node implements FilesFolder {
 
 		$entries = [];
 
-		while ($entry = \readdir($dh)) {
+		while ($entry = readdir($dh)) {
 			if ($entry === '.' || $entry === '..') {
 				continue;
 			}
@@ -77,7 +77,7 @@ class Folder extends Node implements FilesFolder {
 			}
 		}
 
-		\closedir($dh);
+		closedir($dh);
 
 		return $entries;
 	}
@@ -108,7 +108,7 @@ class Folder extends Node implements FilesFolder {
 	 * @throws \OCP\Files\StorageNotAvailableException
 	 */
 	public function nodeExists($path) {
-		return $this->storage->file_exists(\rtrim("$this->path/$path", '/'));
+		return $this->storage->file_exists(rtrim("$this->path/$path", '/'));
 	}
 
 	/**

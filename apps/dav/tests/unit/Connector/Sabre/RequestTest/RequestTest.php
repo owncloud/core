@@ -44,9 +44,9 @@ abstract class RequestTest extends TestCase {
 	protected $serverFactory;
 
 	protected function getStream($string) {
-		$stream = \fopen('php://temp', 'r+');
-		\fwrite($stream, $string);
-		\fseek($stream, 0);
+		$stream = fopen('php://temp', 'r+');
+		fwrite($stream, $string);
+		fseek($stream, 0);
 		return $stream;
 	}
 
@@ -101,7 +101,7 @@ abstract class RequestTest extends TestCase {
 
 		if (\is_array($headers)) {
 			foreach ($headers as $header => $value) {
-				$_SERVER['HTTP_' . \strtoupper(\str_replace('-', '_', $header))] = $value;
+				$_SERVER['HTTP_' . strtoupper(str_replace('-', '_', $header))] = $value;
 			}
 		}
 

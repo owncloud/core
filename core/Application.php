@@ -131,7 +131,8 @@ class Application extends App {
 				$c->query('TwoFactorAuthManager'),
 				$c->query('UserSession'),
 				$c->query('Session'),
-				$c->query('URLGenerator'));
+				$c->query('URLGenerator')
+			);
 		});
 		$container->registerService('TokenController', static function (SimpleContainer $c) {
 			return new TokenController(

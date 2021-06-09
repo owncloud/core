@@ -60,7 +60,7 @@ class ExpressionBuilderTest extends TestCase {
 		$testSets = [];
 		foreach ($comparisonOperators as $operator) {
 			foreach ($valueSets as $values) {
-				$testSets[] = \array_merge([$operator], $values);
+				$testSets[] = array_merge([$operator], $values);
 			}
 		}
 		return $testSets;
@@ -295,10 +295,10 @@ class ExpressionBuilderTest extends TestCase {
 	protected function helpWithLiteral($input, $isLiteral) {
 		if ($isLiteral) {
 			if (\is_array($input)) {
-				$doctrineInput = \array_map(function ($ident) {
+				$doctrineInput = array_map(function ($ident) {
 					return $this->doctrineExpressionBuilder->literal($ident);
 				}, $input);
-				$ocInput = \array_map(function ($ident) {
+				$ocInput = array_map(function ($ident) {
 					return $this->expressionBuilder->literal($ident);
 				}, $input);
 			} else {
@@ -307,7 +307,7 @@ class ExpressionBuilderTest extends TestCase {
 			}
 		} else {
 			if (\is_array($input)) {
-				$doctrineInput = \array_map(function ($input) {
+				$doctrineInput = array_map(function ($input) {
 					return '`' . $input . '`';
 				}, $input);
 				$ocInput = $input;

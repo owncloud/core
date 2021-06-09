@@ -104,7 +104,7 @@ class Share implements IShare {
 			throw new IllegalIDChangeException('Not allowed to assign a new internal id to a share');
 		}
 
-		$this->id = \trim($id);
+		$this->id = trim($id);
 		return $this;
 	}
 
@@ -137,7 +137,7 @@ class Share implements IShare {
 			throw new IllegalIDChangeException('Not allowed to assign a new provider id to a share');
 		}
 
-		$this->providerId = \trim($id);
+		$this->providerId = trim($id);
 		return $this;
 	}
 

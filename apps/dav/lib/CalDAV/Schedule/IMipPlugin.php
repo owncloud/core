@@ -89,22 +89,22 @@ class IMipPlugin extends SabreIMipPlugin {
 
 		$summary = $iTipMessage->message->VEVENT->SUMMARY;
 
-		if (\parse_url($iTipMessage->sender, PHP_URL_SCHEME) !== 'mailto') {
+		if (parse_url($iTipMessage->sender, PHP_URL_SCHEME) !== 'mailto') {
 			return;
 		}
 
-		if (\parse_url($iTipMessage->recipient, PHP_URL_SCHEME) !== 'mailto') {
+		if (parse_url($iTipMessage->recipient, PHP_URL_SCHEME) !== 'mailto') {
 			return;
 		}
 
-		$sender = \substr($iTipMessage->sender, 7);
-		$recipient = \substr($iTipMessage->recipient, 7);
+		$sender = substr($iTipMessage->sender, 7);
+		$recipient = substr($iTipMessage->recipient, 7);
 
 		$senderName = $iTipMessage->senderName ?: null;
 		$recipientName = $iTipMessage->recipientName ?: null;
 
 		$subject = 'SabreDAV iTIP message';
-		switch (\strtoupper($iTipMessage->method)) {
+		switch (strtoupper($iTipMessage->method)) {
 			case 'REPLY':
 				$subject = 'Re: ' . $summary;
 				break;
@@ -130,7 +130,7 @@ class IMipPlugin extends SabreIMipPlugin {
 			$failed = $this->mailer->send($message);
 			$iTipMessage->scheduleStatus = '1.1; Scheduling message is sent via iMip';
 			if ($failed) {
-				$this->logger->error('Unable to deliver message to {failed}', ['app' => 'dav', 'failed' =>  \implode(', ', $failed)]);
+				$this->logger->error('Unable to deliver message to {failed}', ['app' => 'dav', 'failed' =>  implode(', ', $failed)]);
 				$iTipMessage->scheduleStatus = '5.0; EMail delivery failed';
 			}
 		} catch (\Exception $ex) {

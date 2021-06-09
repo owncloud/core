@@ -46,15 +46,15 @@ use Sabre\HTTP\ResponseInterface;
 class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 
 	// namespace
-	const NS_OWNCLOUD = 'http://owncloud.org/ns';
-	const ID_PROPERTYNAME = '{http://owncloud.org/ns}id';
-	const DISPLAYNAME_PROPERTYNAME = '{http://owncloud.org/ns}display-name';
-	const USERVISIBLE_PROPERTYNAME = '{http://owncloud.org/ns}user-visible';
-	const USEREDITABLE_PROPERTYNAME = '{http://owncloud.org/ns}user-editable';
-	const USERASSIGNABLE_PROPERTYNAME = '{http://owncloud.org/ns}user-assignable';
-	const GROUPS_PROPERTYNAME = '{http://owncloud.org/ns}groups';
-	const CANASSIGN_PROPERTYNAME = '{http://owncloud.org/ns}can-assign';
-	const WHITELISTEDINGROUP = '{http://owncloud.org/ns}editable-in-group';
+	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
+	public const ID_PROPERTYNAME = '{http://owncloud.org/ns}id';
+	public const DISPLAYNAME_PROPERTYNAME = '{http://owncloud.org/ns}display-name';
+	public const USERVISIBLE_PROPERTYNAME = '{http://owncloud.org/ns}user-visible';
+	public const USEREDITABLE_PROPERTYNAME = '{http://owncloud.org/ns}user-editable';
+	public const USERASSIGNABLE_PROPERTYNAME = '{http://owncloud.org/ns}user-assignable';
+	public const GROUPS_PROPERTYNAME = '{http://owncloud.org/ns}groups';
+	public const CANASSIGN_PROPERTYNAME = '{http://owncloud.org/ns}can-assign';
+	public const WHITELISTEDINGROUP = '{http://owncloud.org/ns}editable-in-group';
 
 	/**
 	 * @var \Sabre\DAV\Server $server
@@ -81,9 +81,11 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 	 * @param IGroupManager $groupManager
 	 * @param IUserSession $userSession
 	 */
-	public function __construct(ISystemTagManager $tagManager,
-								IGroupManager $groupManager,
-								IUserSession $userSession) {
+	public function __construct(
+		ISystemTagManager $tagManager,
+		IGroupManager $groupManager,
+		IUserSession $userSession
+	) {
 		$this->tagManager = $tagManager;
 		$this->userSession = $userSession;
 		$this->groupManager = $groupManager;
@@ -161,8 +163,8 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 	 * @throws UnsupportedMediaType if the content type is not supported
 	 */
 	private function createTag($data, $contentType = 'application/json') {
-		if (\explode(';', $contentType)[0] === 'application/json') {
-			$data = \json_decode($data, true);
+		if (explode(';', $contentType)[0] === 'application/json') {
+			$data = json_decode($data, true);
 		} else {
 			throw new UnsupportedMediaType();
 		}
@@ -177,22 +179,22 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 		$userEditable = false;
 
 		if (isset($data['userVisible'])) {
-			$userVisible = \filter_var($data['userVisible'], FILTER_VALIDATE_BOOLEAN);
+			$userVisible = filter_var($data['userVisible'], FILTER_VALIDATE_BOOLEAN);
 		}
 
 		if (isset($data['userAssignable'])) {
-			$userAssignable = \filter_var($data['userAssignable'], FILTER_VALIDATE_BOOLEAN);
+			$userAssignable = filter_var($data['userAssignable'], FILTER_VALIDATE_BOOLEAN);
 		}
 
 		if (isset($data['userEditable'])) {
-			$userEditable = \filter_var($data['userEditable'], FILTER_VALIDATE_BOOLEAN);
+			$userEditable = filter_var($data['userEditable'], FILTER_VALIDATE_BOOLEAN);
 		}
 
 		$groups = [];
 		if (isset($data['groups'])) {
 			$groups = $data['groups'];
 			if (\is_string($groups)) {
-				$groups = \explode('|', $groups);
+				$groups = explode('|', $groups);
 			}
 		}
 
@@ -269,7 +271,7 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 			if ($restrictedTagCondition || $editableTagCondition) {
 				$groups = $this->tagManager->getTagGroups($node->getSystemTag());
 			}
-			return \implode('|', $groups);
+			return implode('|', $groups);
 		});
 
 		$propFind->handle(self::WHITELISTEDINGROUP, function () use ($node) {
@@ -336,7 +338,7 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 				}
 
 				$propValue = $props[self::GROUPS_PROPERTYNAME];
-				$groupIds = \explode('|', $propValue);
+				$groupIds = explode('|', $propValue);
 				$this->tagManager->setTagGroups($tag, $groupIds);
 			}
 

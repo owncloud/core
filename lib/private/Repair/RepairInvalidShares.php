@@ -32,7 +32,7 @@ use Doctrine\DBAL\Platforms\OraclePlatform;
  * Repairs shares with invalid data
  */
 class RepairInvalidShares implements IRepairStep {
-	const CHUNK_SIZE = 200;
+	public const CHUNK_SIZE = 200;
 
 	/** @var \OCP\IConfig */
 	protected $config;
@@ -156,15 +156,15 @@ class RepairInvalidShares implements IRepairStep {
 
 	public function run(IOutput $out) {
 		$ocVersionFromBeforeUpdate = $this->config->getSystemValue('version', '0.0.0');
-		if (\version_compare($ocVersionFromBeforeUpdate, '8.2.0.7', '<')) {
+		if (version_compare($ocVersionFromBeforeUpdate, '8.2.0.7', '<')) {
 			// this situation was only possible before 8.2
 			$this->removeExpirationDateFromNonLinkShares($out);
 		}
-		if (\version_compare($ocVersionFromBeforeUpdate, '9.1.0.9', '<')) {
+		if (version_compare($ocVersionFromBeforeUpdate, '9.1.0.9', '<')) {
 			// this situation was only possible before 9.1
 			$this->addShareLinkDeletePermission($out);
 		}
-		if (\version_compare($ocVersionFromBeforeUpdate, '9.2.0.2', '<')) {
+		if (version_compare($ocVersionFromBeforeUpdate, '9.2.0.2', '<')) {
 			$this->adjustFileSharePermissions($out);
 		}
 

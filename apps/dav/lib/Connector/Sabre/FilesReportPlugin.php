@@ -42,9 +42,9 @@ use Sabre\DAV\Xml\Element\Response;
 class FilesReportPlugin extends ServerPlugin {
 
 	// namespace
-	const NS_OWNCLOUD = 'http://owncloud.org/ns';
-	const REPORT_NAME            = '{http://owncloud.org/ns}filter-files';
-	const SYSTEMTAG_PROPERTYNAME = '{http://owncloud.org/ns}systemtag';
+	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
+	public const REPORT_NAME            = '{http://owncloud.org/ns}filter-files';
+	public const SYSTEMTAG_PROPERTYNAME = '{http://owncloud.org/ns}systemtag';
 
 	/**
 	 * Reference to main server object
@@ -105,14 +105,15 @@ class FilesReportPlugin extends ServerPlugin {
 	 * @param IGroupManager $groupManager
 	 * @param Folder $userFolder
 	 */
-	public function __construct(Tree $tree,
-								View $view,
-								ISystemTagManager $tagManager,
-								ISystemTagObjectMapper $tagMapper,
-								ITagManager $fileTagger,
-								IUserSession $userSession,
-								IGroupManager $groupManager,
-								Folder $userFolder
+	public function __construct(
+		Tree $tree,
+		View $view,
+		ISystemTagManager $tagManager,
+		ISystemTagObjectMapper $tagMapper,
+		ITagManager $fileTagger,
+		IUserSession $userSession,
+		IGroupManager $groupManager,
+		Folder $userFolder
 	) {
 		$this->tree = $tree;
 		$this->fileView = $view;
@@ -232,14 +233,14 @@ class FilesReportPlugin extends ServerPlugin {
 	 * @return string files base uri
 	 */
 	private function getFilesBaseUri($uri, $subPath) {
-		$uri = \trim($uri, '/');
-		$subPath = \trim($subPath, '/');
+		$uri = trim($uri, '/');
+		$subPath = trim($subPath, '/');
 		if (empty($subPath)) {
 			$filesUri = $uri;
 		} else {
-			$filesUri = \substr($uri, 0, \strlen($uri) - \strlen($subPath));
+			$filesUri = substr($uri, 0, \strlen($uri) - \strlen($subPath));
 		}
-		$filesUri = \trim($filesUri, '/');
+		$filesUri = trim($filesUri, '/');
 		if (empty($filesUri)) {
 			return '';
 		}
@@ -271,7 +272,7 @@ class FilesReportPlugin extends ServerPlugin {
 			if (empty($resultFileIds)) {
 				$resultFileIds = $fileIds;
 			} else {
-				$resultFileIds = \array_intersect($fileIds, $resultFileIds);
+				$resultFileIds = array_intersect($fileIds, $resultFileIds);
 			}
 		}
 
@@ -293,7 +294,7 @@ class FilesReportPlugin extends ServerPlugin {
 			}
 
 			if (!empty($unknownTagIds)) {
-				throw new TagNotFoundException('Tag with ids ' . \implode(', ', $unknownTagIds) . ' not found');
+				throw new TagNotFoundException('Tag with ids ' . implode(', ', $unknownTagIds) . ' not found');
 			}
 		}
 
@@ -310,7 +311,7 @@ class FilesReportPlugin extends ServerPlugin {
 			if ($resultFileIds === null) {
 				$resultFileIds = $fileIds;
 			} else {
-				$resultFileIds = \array_intersect($resultFileIds, $fileIds);
+				$resultFileIds = array_intersect($resultFileIds, $fileIds);
 			}
 
 			if (empty($resultFileIds)) {
@@ -354,7 +355,7 @@ class FilesReportPlugin extends ServerPlugin {
 	 */
 	public function findNodesByFileIds($rootNode, $fileIds) {
 		$folder = $this->userFolder;
-		if (\trim($rootNode->getPath(), '/') !== '') {
+		if (trim($rootNode->getPath(), '/') !== '') {
 			$folder = $folder->get($rootNode->getPath());
 		}
 

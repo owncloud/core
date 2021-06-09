@@ -39,7 +39,8 @@ class RepairSubShares implements IRepairStep {
 	private $deleteShareId;
 
 	public function __construct(
-		IDBConnection $connection) {
+		IDBConnection $connection
+	) {
 		$this->connection = $connection;
 	}
 
@@ -101,7 +102,7 @@ class RepairSubShares implements IRepairStep {
 		$results->closeCursor();
 		$rowIds = [];
 		if (\count($rows) > 0) {
-			$rowIds = \array_map(
+			$rowIds = array_map(
 				function ($value) {
 					return (int)$value['id'];
 				},
@@ -112,7 +113,7 @@ class RepairSubShares implements IRepairStep {
 		if (\count($rows) > 0) {
 			//Delete in a batch of 1000 ids
 			$deleteShareIds = $this->getDeleteShareIdsBuilder();
-			foreach (\array_chunk($rowIds, 1000) as $getIds) {
+			foreach (array_chunk($rowIds, 1000) as $getIds) {
 				$deletedEntries += $deleteShareIds->setParameter('shareIds', $getIds, IQueryBuilder::PARAM_INT_ARRAY)
 					->execute();
 			}

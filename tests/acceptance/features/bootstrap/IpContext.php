@@ -100,8 +100,9 @@ class IpContext implements Context {
 	 * @return void
 	 */
 	public function addGuzzleClientHeaders($guzzleClientHeaders) {
-		$this->guzzleClientHeaders = \array_merge(
-			$this->guzzleClientHeaders, $guzzleClientHeaders
+		$this->guzzleClientHeaders = array_merge(
+			$this->guzzleClientHeaders,
+			$guzzleClientHeaders
 		);
 	}
 
@@ -114,7 +115,8 @@ class IpContext implements Context {
 	 * @return void
 	 */
 	public function theClientAccessesTheServerFromAddress(
-		$networkScope, $ipAddressFamily
+		$networkScope,
+		$ipAddressFamily
 	) {
 		$this->theClientAccessesTheServerFromIpAddress(
 			IpHelper::ipAddress($networkScope, $ipAddressFamily)
@@ -131,9 +133,9 @@ class IpContext implements Context {
 	public function theClientAccessesTheServerFromIpAddress($sourceIpAddress) {
 		$this->sourceIpAddress = $sourceIpAddress;
 
-		if (\filter_var($sourceIpAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+		if (filter_var($sourceIpAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
 			$this->baseUrlForSourceIp = $this->ipv4Url;
-		} elseif (\filter_var($sourceIpAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+		} elseif (filter_var($sourceIpAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
 			$this->baseUrlForSourceIp = $this->ipv6Url;
 		} else {
 			$this->baseUrlForSourceIp = $this->featureContext->getBaseUrl();
@@ -172,7 +174,7 @@ class IpContext implements Context {
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
 
-		$this->ipv4Url = \getenv('IPV4_URL');
-		$this->ipv6Url = \getenv('IPV6_URL');
+		$this->ipv4Url = getenv('IPV4_URL');
+		$this->ipv6Url = getenv('IPV6_URL');
 	}
 }

@@ -60,7 +60,7 @@ function displayNamesInGroups($gids, $search = '', $limit = -1, $offset = 0) {
 	$displayNames = [];
 	foreach ($gids as $gid) {
 		// TODO Need to apply limits to groups as total
-		$diff = \array_diff(
+		$diff = array_diff(
 			\OC::$server->getGroupManager()->displayNamesInGroup($gid, $search, $limit, $offset),
 			$displayNames
 		);
@@ -158,10 +158,10 @@ if (isset($_GET['fetch'])) {
 				$groups = getGroups((string)$_GET['search']);
 				if ($shareWithinGroupOnly) {
 					$usergroups = \OC::$server->getGroupManager()->getUserIdGroups(OC_User::getUser());
-					$usergroups = \array_values(\array_map(function (\OCP\IGroup $g) {
+					$usergroups = array_values(array_map(function (\OCP\IGroup $g) {
 						return $g->getGID();
 					}, $usergroups));
-					$groups = \array_intersect($groups, $usergroups);
+					$groups = array_intersect($groups, $usergroups);
 				}
 
 				$sharedUsers = [];
@@ -183,7 +183,7 @@ if (isset($_GET['fetch'])) {
 				$limit = 0;
 				$offset = 0;
 				// limit defaults to 15 if not specified via request parameter and can be no larger than 500
-				$request_limit = \min((int)$_GET['limit'] ?: 15, 500);
+				$request_limit = min((int)$_GET['limit'] ?: 15, 500);
 				while ($count < $request_limit && \count($users) == $limit) {
 					$limit = $request_limit - $count;
 					if ($shareWithinGroupOnly) {
@@ -244,7 +244,7 @@ if (isset($_GET['fetch'])) {
 				// allow user to add unknown remote addresses for server-to-server share
 				$backend = \OCP\Share::getBackend((string)$_GET['itemType']);
 				if ($backend->isShareTypeAllowed(\OCP\Share::SHARE_TYPE_REMOTE)) {
-					if (\substr_count((string)$_GET['search'], '@') >= 1) {
+					if (substr_count((string)$_GET['search'], '@') >= 1) {
 						$shareWith[] = [
 							'label' => (string)$_GET['search'],
 							'value' => [
@@ -274,17 +274,19 @@ if (isset($_GET['fetch'])) {
 					->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes');
 
 				if ($sharingAutocompletion !== 'yes') {
-					$searchTerm = \strtolower($_GET['search']);
-					$shareWith = \array_filter($shareWith, function ($user) use ($searchTerm) {
-						return \strtolower($user['label']) === $searchTerm
-							|| \strtolower($user['value']['shareWith']) === $searchTerm;
+					$searchTerm = strtolower($_GET['search']);
+					$shareWith = array_filter($shareWith, function ($user) use ($searchTerm) {
+						return strtolower($user['label']) === $searchTerm
+							|| strtolower($user['value']['shareWith']) === $searchTerm;
 					});
 				}
 
-				$sorter = new \OC\Share\SearchResultSorter((string)$_GET['search'],
-														   'label',
-														   \OC::$server->getLogger());
-				\usort($shareWith, [$sorter, 'sort']);
+				$sorter = new \OC\Share\SearchResultSorter(
+					(string)$_GET['search'],
+					'label',
+					\OC::$server->getLogger()
+				);
+				usort($shareWith, [$sorter, 'sort']);
 				OC_JSON::success(['data' => $shareWith]);
 			}
 			break;

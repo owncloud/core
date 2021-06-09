@@ -64,7 +64,7 @@ class TrashBinManager {
 				throw new InvalidResourceType();
 			}
 			$files = $view->getDirectoryContent($path);
-			return \array_map(function ($fileInfo) use ($user) {
+			return array_map(function ($fileInfo) use ($user) {
 				return $this->nodeFactory($user, $fileInfo);
 			}, $files);
 		} catch (\Exception $exception) {
@@ -90,9 +90,13 @@ class TrashBinManager {
 	 */
 	public function restore(string $user, AbstractTrashBinNode $trashItem, $targetLocation) : bool {
 		$path = $trashItem->getPathInTrash();
-		$path = \implode('/', $path);
-		return Trashbin::restore($path,
-			$trashItem->getOriginalFileName(), $trashItem->getDeleteTimestamp(), $targetLocation);
+		$path = implode('/', $path);
+		return Trashbin::restore(
+			$path,
+			$trashItem->getOriginalFileName(),
+			$trashItem->getDeleteTimestamp(),
+			$targetLocation
+		);
 	}
 
 	/**
@@ -104,7 +108,7 @@ class TrashBinManager {
 	 */
 	public function delete(string $user, AbstractTrashBinNode $trashItem) {
 		$path = $trashItem->getPathInTrash();
-		$path = \implode('/', $path);
+		$path = implode('/', $path);
 		Trashbin::delete($path, $user);
 	}
 

@@ -349,7 +349,7 @@ class ManagerTest extends \Test\TestCase {
 
 		$groups = $this->manager->search('1');
 		$this->assertCount(1, $groups);
-		$group1 = \reset($groups);
+		$group1 = reset($groups);
 		$this->assertEquals('group1', $group1->getGID());
 	}
 
@@ -383,8 +383,8 @@ class ManagerTest extends \Test\TestCase {
 
 		$groups = $this->manager->search('1');
 		$this->assertCount(2, $groups);
-		$group1 = \reset($groups);
-		$group12 = \next($groups);
+		$group1 = reset($groups);
+		$group12 = next($groups);
 		$this->assertEquals('group1', $group1->getGID());
 		$this->assertEquals('group12', $group12->getGID());
 	}
@@ -419,8 +419,8 @@ class ManagerTest extends \Test\TestCase {
 
 		$groups = $this->manager->search('1', 2, 1);
 		$this->assertCount(2, $groups);
-		$group1 = \reset($groups);
-		$group12 = \next($groups);
+		$group1 = reset($groups);
+		$group12 = next($groups);
 		$this->assertEquals('group1', $group1->getGID());
 		$this->assertEquals('group12', $group12->getGID());
 	}
@@ -482,14 +482,14 @@ class ManagerTest extends \Test\TestCase {
 		// search without scope
 		$groups = $this->manager->search('1', null, null, null);
 		$this->assertCount(1, $groups);
-		$group1 = \reset($groups);
+		$group1 = reset($groups);
 		$this->assertEquals('group1', $group1->getGID());
 
 		// search with scope
 		$groups = $this->manager->search('1', null, null, 'sharing');
 		$this->assertCount(2, $groups);
-		$group1 = \reset($groups);
-		$group12 = \next($groups);
+		$group1 = reset($groups);
+		$group12 = next($groups);
 		$this->assertEquals('group1', $group1->getGID());
 		$this->assertEquals('group12', $group12->getGID());
 	}
@@ -512,7 +512,7 @@ class ManagerTest extends \Test\TestCase {
 
 		$groups = $this->manager->getUserGroups($this->getTestUser('user1'));
 		$this->assertCount(1, $groups);
-		$group1 = \reset($groups);
+		$group1 = reset($groups);
 		$this->assertEquals('group1', $group1->getGID());
 	}
 
@@ -590,7 +590,7 @@ class ManagerTest extends \Test\TestCase {
 
 		$groups = $this->manager->getUserGroups($this->getTestUser('user1'), 'sharing');
 		$this->assertCount(1, $groups);
-		$group1 = \reset($groups);
+		$group1 = reset($groups);
 		$this->assertEquals('group1', $group1->getGID());
 	}
 
@@ -732,8 +732,8 @@ class ManagerTest extends \Test\TestCase {
 
 		$groups = $this->manager->getUserGroups($this->getTestUser('user1'));
 		$this->assertCount(2, $groups);
-		$group1 = \reset($groups);
-		$group2 = \next($groups);
+		$group1 = reset($groups);
+		$group2 = next($groups);
 		$this->assertEquals('group1', $group1->getGID());
 		$this->assertEquals('group2', $group2->getGID());
 	}
@@ -1064,7 +1064,7 @@ class ManagerTest extends \Test\TestCase {
 		// check result
 		$groups = $this->manager->getUserGroups($user1);
 		$this->assertCount(1, $groups);
-		$group1 = \reset($groups);
+		$group1 = reset($groups);
 		$this->assertEquals('group1', $group1->getGID());
 	}
 
@@ -1097,7 +1097,7 @@ class ManagerTest extends \Test\TestCase {
 		$user1 = $this->getTestUser('user1');
 		$groups = $this->manager->getUserGroups($user1);
 		$this->assertCount(1, $groups);
-		$group1 = \reset($groups);
+		$group1 = reset($groups);
 		$this->assertEquals('group1', $group1->getGID());
 
 		// remove user

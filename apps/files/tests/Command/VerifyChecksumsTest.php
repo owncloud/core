@@ -18,7 +18,7 @@ use Test\TestCase;
 class VerifyChecksumsTest extends TestCase {
 	use \Test\Traits\UserTrait;
 
-	const BROKEN_CHECKSUM_STRING = '_BROKEN_';
+	public const BROKEN_CHECKSUM_STRING = '_BROKEN_';
 
 	/** @var CommandTester */
 	private $cmd;
@@ -82,8 +82,8 @@ class VerifyChecksumsTest extends TestCase {
 	private function createFileForUser($uid, $path, $content) {
 		$userFolder = \OC::$server->getUserFolder($uid);
 
-		$parts = \explode('/', \ltrim($path, '/'));
-		$fileName = \array_pop($parts);
+		$parts = explode('/', ltrim($path, '/'));
+		$fileName = array_pop($parts);
 		$dirPath = $parts;
 
 		$currentDir = '';
@@ -102,11 +102,11 @@ class VerifyChecksumsTest extends TestCase {
 		return [
 			'file' => $f,
 			'expectedChecksums' => function () use ($content) {
-				return \sprintf(
+				return sprintf(
 					Checksum::CHECKSUMS_DB_FORMAT,
-					\hash('sha1', $content),
-					\hash('md5', $content),
-					\hash('adler32', $content)
+					hash('sha1', $content),
+					hash('md5', $content),
+					hash('adler32', $content)
 				);
 			},
 		];

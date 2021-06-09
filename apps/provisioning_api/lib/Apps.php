@@ -58,7 +58,7 @@ class Apps {
 					break;
 				case 'disabled':
 					$enabled = OC_App::getEnabledApps();
-					return new OC_OCS_Result(['apps' => \array_diff($list, $enabled)]);
+					return new OC_OCS_Result(['apps' => array_diff($list, $enabled)]);
 					break;
 				default:
 					// Invalid filter variable

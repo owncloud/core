@@ -63,9 +63,13 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	 * @param Storage $storage
 	 * @param string $internalPath
 	 */
-	public function __construct(MetaVersionCollection $parent,
-								IRootFolder $root,
-								array $version, Storage\IStorage $storage, $internalPath) {
+	public function __construct(
+		MetaVersionCollection $parent,
+		IRootFolder $root,
+		array $version,
+		Storage\IStorage $storage,
+		$internalPath
+	) {
 		$this->parent = $parent;
 		$this->versionId = $version['version'];
 		$this->versionInfo = $version;
@@ -93,8 +97,8 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	 */
 	public function getContent() {
 		$handle = $this->fopen('r+');
-		$data = \stream_get_contents($handle);
-		\fclose($handle);
+		$data = stream_get_contents($handle);
+		fclose($handle);
 
 		return $data;
 	}
@@ -142,7 +146,7 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	 * @inheritdoc
 	 */
 	public function getContentDispositionFileName() {
-		return \basename($this->internalPath);
+		return basename($this->internalPath);
 	}
 
 	public function getId() {

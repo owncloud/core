@@ -54,9 +54,16 @@ class MetaDataTest extends \Test\TestCase {
 		$group->expects($this->exactly(9))
 			->method('getGID')
 			->will($this->onConsecutiveCalls(
-				'admin', 'admin', 'admin',
-				'g2', 'g2', 'g2',
-				'g3', 'g3', 'g3'));
+				'admin',
+				'admin',
+				'admin',
+				'g2',
+				'g2',
+				'g2',
+				'g3',
+				'g3',
+				'g3'
+			));
 
 		$group->expects($this->exactly($countCallCount))
 			->method('count')
@@ -68,7 +75,7 @@ class MetaDataTest extends \Test\TestCase {
 
 	public function testGet() {
 		$group = $this->getGroupMock();
-		$groups = \array_fill(0, 3, $group);
+		$groups = array_fill(0, 3, $group);
 
 		$this->groupManager->expects($this->once())
 			->method('search')
@@ -88,7 +95,7 @@ class MetaDataTest extends \Test\TestCase {
 	public function testGetWithSorting() {
 		$this->groupMetadata->setSorting(1);
 		$group = $this->getGroupMock(3);
-		$groups = \array_fill(0, 3, $group);
+		$groups = array_fill(0, 3, $group);
 
 		$this->groupManager->expects($this->once())
 			->method('search')
@@ -106,7 +113,7 @@ class MetaDataTest extends \Test\TestCase {
 
 	public function testGetWithCache() {
 		$group = $this->getGroupMock();
-		$groups = \array_fill(0, 3, $group);
+		$groups = array_fill(0, 3, $group);
 
 		$this->groupManager->expects($this->once())
 			->method('search')

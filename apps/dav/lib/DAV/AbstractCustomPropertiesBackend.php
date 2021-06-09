@@ -38,17 +38,17 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 	/**
 	 * Value is stored as string.
 	 */
-	const VT_STRING = 1;
+	public const VT_STRING = 1;
 
 	/**
 	 * Value is stored as XML fragment.
 	 */
-	const VT_XML = 2;
+	public const VT_XML = 2;
 
 	/**
 	 * Value is stored as a property object.
 	 */
-	const VT_OBJECT = 3;
+	public const VT_OBJECT = 3;
 
 	/**
 	 * Ignored properties
@@ -102,7 +102,8 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 		Tree $tree,
 		IDBConnection $connection,
 		IUser $user,
-		IRootFolder $rootFolder) {
+		IRootFolder $rootFolder
+	) {
 		$this->tree = $tree;
 		$this->connection = $connection;
 		$this->user = $user->getUID();
@@ -192,7 +193,7 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 		$requestedProps = $propFind->get404Properties();
 
 		// these might appear
-		$requestedProps = \array_diff(
+		$requestedProps = array_diff(
 			$requestedProps,
 			$this->ignoredProperties
 		);
@@ -285,14 +286,14 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 	 * @return array
 	 */
 	protected function encodeValue($value) {
-		if (\is_scalar($value)) {
+		if (is_scalar($value)) {
 			$valueType = self::VT_STRING;
 		} elseif ($value instanceof Complex) {
 			$valueType = self::VT_XML;
 			$value = $value->getXml();
 		} else {
 			$valueType = self::VT_OBJECT;
-			$value = \serialize($value);
+			$value = serialize($value);
 		}
 		return [
 			'value' => $value,
@@ -311,7 +312,7 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 		} elseif ($valueType === self::VT_XML) {
 			return new Complex($value);
 		} elseif ($valueType === self::VT_OBJECT) {
-			return \unserialize($value);
+			return unserialize($value);
 		}
 	}
 }

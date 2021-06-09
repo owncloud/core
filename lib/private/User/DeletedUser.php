@@ -195,17 +195,17 @@ class DeletedUser implements IUser {
 
 	public function getCloudId() {
 		$server = $this->urlGenerator->getAbsoluteURL('/');
-		return $this->uid . '@' . \rtrim($this->removeProtocolFromUrl($server), '/');
+		return $this->uid . '@' . rtrim($this->removeProtocolFromUrl($server), '/');
 	}
 
 	/**
 	 * Copied from \OC\User\User
 	 */
 	private function removeProtocolFromUrl($url) {
-		if (\strpos($url, 'https://') === 0) {
-			return \substr($url, \strlen('https://'));
-		} elseif (\strpos($url, 'http://') === 0) {
-			return \substr($url, \strlen('http://'));
+		if (strpos($url, 'https://') === 0) {
+			return substr($url, \strlen('https://'));
+		} elseif (strpos($url, 'http://') === 0) {
+			return substr($url, \strlen('http://'));
 		}
 
 		return $url;

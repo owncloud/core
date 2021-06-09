@@ -72,7 +72,7 @@ class PublicDavLocksPlugin extends \Sabre\DAV\Locks\Plugin {
 			if (empty($existingLocks)) {
 				throw new MethodNotAllowed('Locking not allowed from public endpoint');
 			} else {
-				throw new Locked(\reset($existingLocks));
+				throw new Locked(reset($existingLocks));
 			}
 		}
 	}

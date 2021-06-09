@@ -143,7 +143,7 @@ class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 		if (isset($this->addressBookInfo['{http://owncloud.org/ns}owner-principal'])) {
 			$principal = 'principal:' . parent::getOwner();
 			$shares = $this->getShares();
-			$shares = \array_filter($shares, function ($share) use ($principal) {
+			$shares = array_filter($shares, function ($share) use ($principal) {
 				return $share['href'] === $principal;
 			});
 			if (empty($shares)) {

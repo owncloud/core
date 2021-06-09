@@ -97,7 +97,7 @@ class LostControllerTest extends TestCase {
 			->expects($this->any())
 			->method('t')
 			->will($this->returnCallback(function ($text, $parameters = []) {
-				return \vsprintf($text, $parameters);
+				return vsprintf($text, $parameters);
 			}));
 		$this->defaults = $this->getMockBuilder('\OC_Defaults')
 			->disableOriginalConstructor()->getMock();
@@ -139,14 +139,16 @@ class LostControllerTest extends TestCase {
 		$userId = 'admin';
 		$token = 'MySecretToken';
 		$response = $this->lostController->resetform($token, $userId);
-		$expectedResponse = new TemplateResponse('core',
+		$expectedResponse = new TemplateResponse(
+			'core',
 			'error',
 			[
 				'errors' => [
 					['error' => 'Could not reset password because the token is invalid'],
 				]
 			],
-			'guest');
+			'guest'
+		);
 		$this->assertEquals($expectedResponse, $response);
 	}
 
@@ -170,14 +172,16 @@ class LostControllerTest extends TestCase {
 		$userId = 'ValidTokenUser';
 		$token = '12345:MySecretToken';
 		$response = $this->lostController->resetform($token, $userId);
-		$expectedResponse = new TemplateResponse('core',
+		$expectedResponse = new TemplateResponse(
+			'core',
 			'error',
 			[
 				'errors' => [
 					['error' => 'Could not reset password because the token does not match'],
 				]
 			],
-			'guest');
+			'guest'
+		);
 		$this->assertEquals($expectedResponse, $response);
 	}
 
@@ -201,14 +205,16 @@ class LostControllerTest extends TestCase {
 			->with('ValidTokenUser', 'owncloud', 'lostpassword', null)
 			->will($this->returnValue('12345:TheOnlyAndOnlyOneTokenToResetThePassword'));
 		$response = $this->lostController->resetform($token, $userId);
-		$expectedResponse = new TemplateResponse('core',
+		$expectedResponse = new TemplateResponse(
+			'core',
 			'error',
 			[
 				'errors' => [
 					['error' => 'Could not reset password because the token expired'],
 				]
 			],
-			'guest');
+			'guest'
+		);
 		$this->assertEquals($expectedResponse, $response);
 	}
 
@@ -242,12 +248,14 @@ class LostControllerTest extends TestCase {
 			->will($this->returnValue('https://ownCloud.com/index.php/lostpassword/'));
 
 		$response = $this->lostController->resetform($token, $userId);
-		$expectedResponse = new TemplateResponse('core',
+		$expectedResponse = new TemplateResponse(
+			'core',
 			'lostpassword/resetpassword',
 			[
 				'link' => 'https://ownCloud.com/index.php/lostpassword/',
 			],
-			'guest');
+			'guest'
+		);
 		$this->assertEquals($expectedResponse, $response);
 	}
 

@@ -106,8 +106,8 @@ class PreviewManager implements IPreview {
 
 		$this->registerCoreProviders();
 		if ($this->providerListDirty) {
-			$keys = \array_map('strlen', \array_keys($this->providers));
-			\array_multisort($keys, SORT_DESC, $this->providers);
+			$keys = array_map('strlen', array_keys($this->providers));
+			array_multisort($keys, SORT_DESC, $this->providers);
 			$this->providerListDirty = false;
 		}
 
@@ -161,9 +161,9 @@ class PreviewManager implements IPreview {
 		}
 
 		$this->registerCoreProviders();
-		$providerMimeTypes = \array_keys($this->providers);
+		$providerMimeTypes = array_keys($this->providers);
 		foreach ($providerMimeTypes as $supportedMimeType) {
-			if (\preg_match($supportedMimeType, $mimeType)) {
+			if (preg_match($supportedMimeType, $mimeType)) {
 				$this->mimeTypeSupportMap[$mimeType] = true;
 				return true;
 			}
@@ -180,10 +180,10 @@ class PreviewManager implements IPreview {
 	public function getSupportedMimes() {
 		$supportedMimes = [];
 		$this->registerCoreProviders();
-		$mimeRegexArray = \array_keys($this->providers);
+		$mimeRegexArray = array_keys($this->providers);
 		// Now trim start/stop regexp delimiters
 		foreach ($mimeRegexArray as $mimeRegex) {
-			$supportedMimes[] = \trim($mimeRegex, '/');
+			$supportedMimes[] = trim($mimeRegex, '/');
 		}
 		return $supportedMimes;
 	}
@@ -210,7 +210,7 @@ class PreviewManager implements IPreview {
 		}
 
 		foreach ($this->providers as $supportedMimeType => $providers) {
-			if (\preg_match($supportedMimeType, $file->getMimetype())) {
+			if (preg_match($supportedMimeType, $file->getMimetype())) {
 				foreach ($providers as $closure) {
 					$provider = $closure();
 					if (!($provider instanceof IProvider) && !($provider instanceof IProvider2)) {
@@ -272,16 +272,16 @@ class PreviewManager implements IPreview {
 			'OC\Preview\SGI',
 		];
 
-		$this->defaultProviders = $this->config->getSystemValue('enabledPreviewProviders', \array_merge([
+		$this->defaultProviders = $this->config->getSystemValue('enabledPreviewProviders', array_merge([
 			'OC\Preview\MarkDown',
 			'OC\Preview\MP3',
 			'OC\Preview\TXT',
 		], $imageProviders));
 
 		if (\in_array('OC\Preview\Image', $this->defaultProviders)) {
-			$this->defaultProviders = \array_merge($this->defaultProviders, $imageProviders);
+			$this->defaultProviders = array_merge($this->defaultProviders, $imageProviders);
 		}
-		$this->defaultProviders = \array_unique($this->defaultProviders);
+		$this->defaultProviders = array_unique($this->defaultProviders);
 		return $this->defaultProviders;
 	}
 
@@ -292,7 +292,7 @@ class PreviewManager implements IPreview {
 	 * @param string $mimeType
 	 */
 	protected function registerCoreProvider($class, $mimeType, $options = []) {
-		if (\in_array(\trim($class, '\\'), $this->getEnabledDefaultProvider())) {
+		if (\in_array(trim($class, '\\'), $this->getEnabledDefaultProvider())) {
 			$this->registerProvider($mimeType, function () use ($class, $options) {
 				return new $class($options);
 			});
@@ -338,7 +338,7 @@ class PreviewManager implements IPreview {
 
 			foreach ($imagickProviders as $queryFormat => $provider) {
 				$class = $provider['class'];
-				if (!\in_array(\trim($class, '\\'), $this->getEnabledDefaultProvider())) {
+				if (!\in_array(trim($class, '\\'), $this->getEnabledDefaultProvider())) {
 					continue;
 				}
 
@@ -354,10 +354,10 @@ class PreviewManager implements IPreview {
 
 					if (!$officeFound) {
 						//let's see if there is libreoffice or openoffice on this machine
-						$whichLibreOffice = \shell_exec('command -v libreoffice');
+						$whichLibreOffice = shell_exec('command -v libreoffice');
 						$officeFound = !empty($whichLibreOffice);
 						if (!$officeFound) {
-							$whichOpenOffice = \shell_exec('command -v openoffice');
+							$whichOpenOffice = shell_exec('command -v openoffice');
 							$officeFound = !empty($whichOpenOffice);
 						}
 					}

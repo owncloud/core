@@ -25,7 +25,7 @@ namespace OCA\DAV\Tests\unit\Connector\Sabre;
 use OCP\Share\IShare;
 
 class SharesPluginTest extends \Test\TestCase {
-	const SHARETYPES_PROPERTYNAME = \OCA\DAV\Connector\Sabre\SharesPlugin::SHARETYPES_PROPERTYNAME;
+	public const SHARETYPES_PROPERTYNAME = \OCA\DAV\Connector\Sabre\SharesPlugin::SHARETYPES_PROPERTYNAME;
 
 	/**
 	 * @var \Sabre\DAV\Server
@@ -108,7 +108,7 @@ class SharesPluginTest extends \Test\TestCase {
 					$share->method('getShareType')->willReturn($requestedShareType);
 					$share->method('getNodeId')->willReturn(123);
 					if (\in_array($requestedShareType, $shareTypes)) {
-						\array_push($allShares, $share);
+						array_push($allShares, $share);
 					}
 				}
 
@@ -189,7 +189,7 @@ class SharesPluginTest extends \Test\TestCase {
 					$share->method('getShareType')->willReturn($requestedShareType);
 					$share->method('getNodeId')->willReturn(111);
 					if (\in_array($requestedShareType, $shareTypes)) {
-						\array_push($allShares, $share);
+						array_push($allShares, $share);
 					}
 				}
 

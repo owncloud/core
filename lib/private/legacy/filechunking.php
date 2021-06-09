@@ -46,7 +46,7 @@ class OC_FileChunking {
 	}
 
 	public static function decodeName($name) {
-		\preg_match('/(?P<name>.*)-chunking-(?P<transferid>\d+)-(?P<chunkcount>\d+)-(?P<index>\d+)/', $name, $matches);
+		preg_match('/(?P<name>.*)-chunking-(?P<transferid>\d+)-(?P<chunkcount>\d+)-(?P<index>\d+)/', $name, $matches);
 		return $matches;
 	}
 
@@ -120,7 +120,7 @@ class OC_FileChunking {
 			$chunk = $cache->get($prefix.$i);
 			// remove after reading to directly save space
 			$cache->remove($prefix.$i);
-			$count += \fwrite($f, $chunk);
+			$count += fwrite($f, $chunk);
 			// let php release the memory to work around memory exhausted error with php 5.6
 			$chunk = null;
 		}
@@ -179,7 +179,7 @@ class OC_FileChunking {
 			$target = $storage->fopen($path, 'w');
 			if ($target) {
 				$count = $this->assemble($target);
-				\fclose($target);
+				fclose($target);
 				return $count > 0;
 			} else {
 				return false;

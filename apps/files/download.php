@@ -32,7 +32,7 @@ OCP\User::checkLoggedIn();
 $filename = $_GET["file"];
 
 if (!\OC\Files\Filesystem::file_exists($filename)) {
-	\http_response_code(404);
+	http_response_code(404);
 	$tmpl = new OCP\Template('', '404', 'guest');
 	$tmpl->assign('file', $filename);
 	$tmpl->printPage();
@@ -43,7 +43,7 @@ if (!\OC\Files\Filesystem::file_exists($filename)) {
 $event = new \Symfony\Component\EventDispatcher\GenericEvent(null, ['path' => $filename]);
 OC::$server->getEventDispatcher()->dispatch('file.beforeGetDirect', $event);
 if ($event->hasArgument('errorMessage')) {
-	\http_response_code(403);
+	http_response_code(403);
 	$tmpl = new OCP\Template('', '403', 'guest');
 	$tmpl->assign('file', $filename);
 	$tmpl->printPage();
@@ -52,8 +52,8 @@ if ($event->hasArgument('errorMessage')) {
 
 $ftype=\OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename));
 
-\header('Content-Type:'.$ftype);
-OCP\Response::setContentDispositionHeader(\basename($filename), 'attachment');
+header('Content-Type:'.$ftype);
+OCP\Response::setContentDispositionHeader(basename($filename), 'attachment');
 OCP\Response::disableCaching();
 OCP\Response::setContentLengthHeader(\OC\Files\Filesystem::filesize($filename));
 

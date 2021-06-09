@@ -34,7 +34,7 @@ class ShutDownManager implements IShutdownManager {
 	 * @codeCoverageIgnore
 	 */
 	public function __construct() {
-		\register_shutdown_function([$this, 'run']);
+		register_shutdown_function([$this, 'run']);
 	}
 	
 	/**
@@ -55,7 +55,7 @@ class ShutDownManager implements IShutdownManager {
 	}
 
 	public function run() {
-		\ksort($this->callbacks);
+		ksort($this->callbacks);
 		foreach ($this->callbacks as $callbacks) {
 			foreach ($callbacks as $callback) {
 				$callback();

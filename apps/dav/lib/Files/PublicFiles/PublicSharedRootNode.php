@@ -81,7 +81,7 @@ class PublicSharedRootNode extends Collection implements IACL {
 			} else {
 				$nodes = [$this->share->getNode()];
 			}
-			return \array_map(function (Node $node) {
+			return array_map(function (Node $node) {
 				return $this->nodeFactory($node, $this->share);
 			}, $nodes);
 		} catch (NotFoundException $ex) {

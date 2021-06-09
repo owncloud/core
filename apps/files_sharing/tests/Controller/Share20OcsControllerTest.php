@@ -128,7 +128,7 @@ class Share20OcsControllerTest extends TestCase {
 		$this->l = $this->createMock('\OCP\IL10N');
 		$this->l->method('t')
 			->will($this->returnCallback(function ($text, $parameters = []) {
-				return \vsprintf($text, $parameters);
+				return vsprintf($text, $parameters);
 			}));
 
 		$this->config = $this->createMock(IConfig::class);
@@ -217,7 +217,7 @@ class Share20OcsControllerTest extends TestCase {
 		$shareAttributes->method('getAttribute')->with('permissions', 'download')->willReturn(true);
 
 		// send both IShare attributes class and expected json string
-		return [$shareAttributes, \json_encode($formattedShareAttributes)];
+		return [$shareAttributes, json_encode($formattedShareAttributes)];
 	}
 
 	public function testDeleteShareShareNotFound() {
@@ -308,9 +308,24 @@ class Share20OcsControllerTest extends TestCase {
 	}
 	*/
 
-	public function createShare($id, $shareType, $sharedWith, $sharedBy, $shareOwner, $file, $permissions,
-								$shareTime, $expiration, $parent, $target, $mail_send, $token=null,
-								$password=null, $name=null, $attributes=null) {
+	public function createShare(
+		$id,
+		$shareType,
+		$sharedWith,
+		$sharedBy,
+		$shareOwner,
+		$file,
+		$permissions,
+		$shareTime,
+		$expiration,
+		$parent,
+		$target,
+		$mail_send,
+		$token=null,
+		$password=null,
+		$name=null,
+		$attributes=null
+	) {
 		$share = $this->createMock(IShare::class);
 		$share->method('getId')->willReturn($id);
 		$share->method('getShareType')->willReturn($shareType);
@@ -2942,7 +2957,7 @@ class Share20OcsControllerTest extends TestCase {
 			->will($this->returnValueMap([
 				['path', null, $requestedPath],
 				['reshares', null, $requestedReshares ? 'true' : 'false'],
-				['share_types', '', \implode(',', $shareTypes)],
+				['share_types', '', implode(',', $shareTypes)],
 		]));
 
 		$this->shareManager->method('outgoingServer2ServerSharesAllowed')->willReturn($fedAllowed);
@@ -3142,7 +3157,7 @@ class Share20OcsControllerTest extends TestCase {
 				['path', null, $requestedPath],
 				['state', \OCP\Share::STATE_ACCEPTED, $stateFilter],
 				['shared_with_me', null, 'true'],
-				['share_types', '', \implode(',', $shareTypes)],
+				['share_types', '', implode(',', $shareTypes)],
 		]));
 
 		$ocs = $this->mockFormatShare();

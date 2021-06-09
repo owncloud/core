@@ -42,7 +42,7 @@ class AccountTermMapper extends Mapper {
 		foreach ($terms as $term) {
 			$t = new AccountTerm();
 			$t->setAccountId($account_id);
-			$t->setTerm(\strtolower($term));
+			$t->setTerm(strtolower($term));
 			$this->insert($t);
 		}
 	}

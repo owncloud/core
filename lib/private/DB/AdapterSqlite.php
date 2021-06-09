@@ -39,12 +39,12 @@ class AdapterSqlite extends Adapter {
 	}
 
 	public function fixupStatement($statement) {
-		$statement = \preg_replace('( I?LIKE \?)', '$0 ESCAPE \'\\\'', $statement);
-		$statement = \preg_replace('/`(\w+)` ILIKE \?/', 'LOWER($1) LIKE LOWER(?)', $statement);
-		$statement = \str_replace('`', '"', $statement);
-		$statement = \str_ireplace('NOW()', 'datetime(\'now\')', $statement);
-		$statement = \str_ireplace('GREATEST(', 'MAX(', $statement);
-		$statement = \str_ireplace('UNIX_TIMESTAMP()', 'strftime(\'%s\',\'now\')', $statement);
+		$statement = preg_replace('( I?LIKE \?)', '$0 ESCAPE \'\\\'', $statement);
+		$statement = preg_replace('/`(\w+)` ILIKE \?/', 'LOWER($1) LIKE LOWER(?)', $statement);
+		$statement = str_replace('`', '"', $statement);
+		$statement = str_ireplace('NOW()', 'datetime(\'now\')', $statement);
+		$statement = str_ireplace('GREATEST(', 'MAX(', $statement);
+		$statement = str_ireplace('UNIX_TIMESTAMP()', 'strftime(\'%s\',\'now\')', $statement);
 		return $statement;
 	}
 
@@ -61,14 +61,14 @@ class AdapterSqlite extends Adapter {
 	 */
 	public function insertIfNotExist($table, $input, array $compare = null) {
 		if (empty($compare)) {
-			$compare = \array_keys($input);
+			$compare = array_keys($input);
 		}
-		$fieldList = '`' . \implode('`,`', \array_keys($input)) . '`';
+		$fieldList = '`' . implode('`,`', array_keys($input)) . '`';
 		$query = "INSERT INTO `$table` ($fieldList) SELECT "
-			. \str_repeat('?,', \count($input)-1).'? '
+			. str_repeat('?,', \count($input)-1).'? '
 			. " WHERE NOT EXISTS (SELECT 1 FROM `$table` WHERE ";
 
-		$inserts = \array_values($input);
+		$inserts = array_values($input);
 		foreach ($compare as $key) {
 			$query .= '`' . $key . '`';
 			if ($input[$key] === null) {
@@ -78,7 +78,7 @@ class AdapterSqlite extends Adapter {
 				$query .= ' = ? AND ';
 			}
 		}
-		$query = \substr($query, 0, \strlen($query) - 5);
+		$query = substr($query, 0, \strlen($query) - 5);
 		$query .= ')';
 
 		return $this->conn->executeUpdate($query, $inserts);

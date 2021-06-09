@@ -230,7 +230,7 @@ class ScanExternalSharesJobTest extends TestCase {
 		$user = $this->createMock(IUser::class);
 		$user->expects($this->exactly(1))
 			->method('getLastLogin')
-			->willReturn(\time() - 20);
+			->willReturn(time() - 20);
 
 		$this->userManager->expects($this->exactly(1))
 			->method('get')
@@ -258,7 +258,7 @@ class ScanExternalSharesJobTest extends TestCase {
 		$user = $this->createMock(IUser::class);
 		$user->expects($this->exactly(1))
 			->method('getLastLogin')
-			->willReturn(\time());
+			->willReturn(time());
 
 		$this->userManager->expects($this->exactly(1))
 			->method('get')
@@ -271,7 +271,7 @@ class ScanExternalSharesJobTest extends TestCase {
 			'token'	=> 'test',
 			'password' => 'test',
 			'mountpoint' => 'test',
-			'lastscan' => \time() - 10,
+			'lastscan' => time() - 10,
 			'owner'	=> 'test'
 		];
 		$lastLoginThreshold = '1';

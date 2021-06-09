@@ -52,7 +52,7 @@ class Encoding extends Wrapper {
 	 * @return bool true if the string is all ASCII, false otherwise
 	 */
 	private function isAscii($str) {
-		return (bool) !\preg_match('/[\\x80-\\xff]+/', $str);
+		return (bool) !preg_match('/[\\x80-\\xff]+/', $str);
 	}
 
 	/**
@@ -70,7 +70,7 @@ class Encoding extends Wrapper {
 			return $cachedPath;
 		}
 
-		$sections = \explode('/', $fullPath);
+		$sections = explode('/', $fullPath);
 		$path = '';
 		foreach ($sections as $section) {
 			$convertedPath = $this->findPathToUseLastSection($path, $section);
@@ -80,7 +80,7 @@ class Encoding extends Wrapper {
 			}
 			$path = $convertedPath . '/';
 		}
-		$path = \rtrim($path, '/');
+		$path = rtrim($path, '/');
 		return $path;
 	}
 

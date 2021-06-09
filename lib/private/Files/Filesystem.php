@@ -90,7 +90,7 @@ class Filesystem {
 	 * classname which used for hooks handling
 	 * used as signalclass in OC_Hooks::emit()
 	 */
-	const CLASSNAME = 'OC_Filesystem';
+	public const CLASSNAME = 'OC_Filesystem';
 
 	/**
 	 * signalname emitted before file renaming
@@ -98,7 +98,7 @@ class Filesystem {
 	 * @param string $oldpath
 	 * @param string $newpath
 	 */
-	const signal_rename = 'rename';
+	public const signal_rename = 'rename';
 
 	/**
 	 * signal emitted after file renaming
@@ -106,7 +106,7 @@ class Filesystem {
 	 * @param string $oldpath
 	 * @param string $newpath
 	 */
-	const signal_post_rename = 'post_rename';
+	public const signal_post_rename = 'post_rename';
 
 	/**
 	 * signal emitted before file/dir creation
@@ -114,7 +114,7 @@ class Filesystem {
 	 * @param string $path
 	 * @param bool $run changing this flag to false in hook handler will cancel event
 	 */
-	const signal_create = 'create';
+	public const signal_create = 'create';
 
 	/**
 	 * signal emitted after file/dir creation
@@ -122,7 +122,7 @@ class Filesystem {
 	 * @param string $path
 	 * @param bool $run changing this flag to false in hook handler will cancel event
 	 */
-	const signal_post_create = 'post_create';
+	public const signal_post_create = 'post_create';
 
 	/**
 	 * signal emits before file/dir copy
@@ -131,7 +131,7 @@ class Filesystem {
 	 * @param string $newpath
 	 * @param bool $run changing this flag to false in hook handler will cancel event
 	 */
-	const signal_copy = 'copy';
+	public const signal_copy = 'copy';
 
 	/**
 	 * signal emits after file/dir copy
@@ -139,7 +139,7 @@ class Filesystem {
 	 * @param string $oldpath
 	 * @param string $newpath
 	 */
-	const signal_post_copy = 'post_copy';
+	public const signal_post_copy = 'post_copy';
 
 	/**
 	 * signal emits before file/dir save
@@ -147,14 +147,14 @@ class Filesystem {
 	 * @param string $path
 	 * @param bool $run changing this flag to false in hook handler will cancel event
 	 */
-	const signal_write = 'write';
+	public const signal_write = 'write';
 
 	/**
 	 * signal emits after file/dir save
 	 *
 	 * @param string $path
 	 */
-	const signal_post_write = 'post_write';
+	public const signal_post_write = 'post_write';
 
 	/**
 	 * signal emitted before file/dir update
@@ -162,7 +162,7 @@ class Filesystem {
 	 * @param string $path
 	 * @param bool $run changing this flag to false in hook handler will cancel event
 	 */
-	const signal_update = 'update';
+	public const signal_update = 'update';
 
 	/**
 	 * signal emitted after file/dir update
@@ -170,38 +170,38 @@ class Filesystem {
 	 * @param string $path
 	 * @param bool $run changing this flag to false in hook handler will cancel event
 	 */
-	const signal_post_update = 'post_update';
+	public const signal_post_update = 'post_update';
 
 	/**
 	 * signal emits when reading file/dir
 	 *
 	 * @param string $path
 	 */
-	const signal_read = 'read';
+	public const signal_read = 'read';
 
 	/**
 	 * signal emits when removing file/dir
 	 *
 	 * @param string $path
 	 */
-	const signal_delete = 'delete';
+	public const signal_delete = 'delete';
 
 	/**
 	 * parameters definitions for signals
 	 */
-	const signal_param_path = 'path';
-	const signal_param_oldpath = 'oldpath';
-	const signal_param_newpath = 'newpath';
+	public const signal_param_path = 'path';
+	public const signal_param_oldpath = 'oldpath';
+	public const signal_param_newpath = 'newpath';
 
 	/**
 	 * run - changing this flag to false in hook handler will cancel event
 	 */
-	const signal_param_run = 'run';
+	public const signal_param_run = 'run';
 
-	const signal_create_mount = 'create_mount';
-	const signal_delete_mount = 'delete_mount';
-	const signal_param_mount_type = 'mounttype';
-	const signal_param_users = 'users';
+	public const signal_create_mount = 'create_mount';
+	public const signal_delete_mount = 'delete_mount';
+	public const signal_param_mount_type = 'mounttype';
+	public const signal_param_users = 'users';
 
 	/**
 	 * @var \OC\Files\Storage\StorageFactory $loader
@@ -353,7 +353,7 @@ class Filesystem {
 		}
 		$mount = self::$mounts->find($path);
 		if ($mount) {
-			return [$mount->getStorage(), \rtrim($mount->getInternalPath($path), '/')];
+			return [$mount->getStorage(), rtrim($mount->getInternalPath($path), '/')];
 		} else {
 			return [null, null];
 		}
@@ -418,7 +418,7 @@ class Filesystem {
 		$realUid = $userObject->getUID();
 		// workaround in case of different casings
 		if ($user !== $realUid) {
-			$stack = \json_encode(\debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 50));
+			$stack = json_encode(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 50));
 			\OCP\Util::writeLog('files', 'initMountPoints() called with wrong user casing. This could be a bug. Expected: "' . $realUid . '" got "' . $user . '". Stack: ' . $stack, \OCP\Util::WARN);
 			$user = $realUid;
 
@@ -444,7 +444,7 @@ class Filesystem {
 		// Chance to mount for other storages
 		if ($userObject) {
 			$mounts = $mountConfigManager->getMountsForUser($userObject);
-			\array_walk($mounts, [self::$mounts, 'addMount']);
+			array_walk($mounts, [self::$mounts, 'addMount']);
 			$mounts[] = $homeMount;
 			$mountConfigManager->registerMounts($userObject, $mounts);
 		}
@@ -467,7 +467,7 @@ class Filesystem {
 					$userObject = $userManager->get($user);
 					if ($userObject) {
 						$mounts = $provider->getMountsForUser($userObject, Filesystem::getLoader());
-						\array_walk($mounts, [self::$mounts, 'addMount']);
+						array_walk($mounts, [self::$mounts, 'addMount']);
 					}
 				}
 			});
@@ -559,8 +559,8 @@ class Filesystem {
 	public static function getLocalPath($path) {
 		$datadir = \OC_User::getHome(\OC_User::getUser()) . '/files';
 		$newpath = $path;
-		if (\strncmp($newpath, $datadir, \strlen($datadir)) == 0) {
-			$newpath = \substr($path, \strlen($datadir));
+		if (strncmp($newpath, $datadir, \strlen($datadir)) == 0) {
+			$newpath = substr($path, \strlen($datadir));
 		}
 		return $newpath;
 	}
@@ -576,7 +576,7 @@ class Filesystem {
 		if (!$path || $path[0] !== '/') {
 			$path = '/' . $path;
 		}
-		if (\strpos($path, '/../') !== false || \strrchr($path, '/') === '/..') {
+		if (strpos($path, '/../') !== false || strrchr($path, '/') === '/..') {
 			return false;
 		}
 		return true;
@@ -640,7 +640,7 @@ class Filesystem {
 			PREG_BAD_UTF8_OFFSET_ERROR  => 'Code 5 : Malformed UTF-8 data',
 			PREG_JIT_STACKLIMIT_ERROR   => 'Code 6 : Just-in-time compiler stack limit reached',
 		];
-		return $errors[\preg_last_error()];
+		return $errors[preg_last_error()];
 	}
 
 	/**
@@ -651,7 +651,7 @@ class Filesystem {
 	 * @return boolean
 	 */
 	private static function regexValidityCheck($regexToBeChecked, $callerMessage = '') {
-		if (\preg_last_error() !== PREG_NO_ERROR) {
+		if (preg_last_error() !== PREG_NO_ERROR) {
 			\OC::$server->getLogger()->error(
 				'Regex error: ' . $regexToBeChecked . ' - ' . $callerMessage . ': ' . self::pregErrorText(),
 				['app' => __CLASS__]
@@ -674,20 +674,22 @@ class Filesystem {
 			// check if the first and last character is a '/' and add one if not
 			// terminate with i == case insensitive
 			$newItem = $item;
-			if (\substr($item, 0, 1) !== '/') {
+			if (substr($item, 0, 1) !== '/') {
 				$newItem = '/' . $item;
 			}
-			if (\substr($item, -1) !== '/') {
+			if (substr($item, -1) !== '/') {
 				$newItem = $newItem . '/i';
 			} else {
 				$newItem = $newItem . 'i';
 			}
-			@\preg_match($newItem, null);
+			@preg_match($newItem, null);
 			if (self::regexValidityCheck($item, $callerMessage)) {
 				foreach ($path as $pathPart) {
-					if (@\preg_match($newItem, $pathPart)
-						&& self::regexValidityCheck($item,
-								'Checked string: ' . $pathPart)) {
+					if (@preg_match($newItem, $pathPart)
+						&& self::regexValidityCheck(
+							$item,
+							'Checked string: ' . $pathPart
+						)) {
 						return true;
 					}
 				}
@@ -733,49 +735,55 @@ class Filesystem {
 		// important, because if you define an empty config value, '.htaccess' will not be added...
 		// prevents misuse with a fake config value
 		$blacklistFiles[] = '.htaccess';
-		$blacklistFiles = \array_unique($blacklistFiles);
-		$blacklistFiles = \array_values(\array_filter($blacklistFiles));
+		$blacklistFiles = array_unique($blacklistFiles);
+		$blacklistFiles = array_values(array_filter($blacklistFiles));
 		// removes double or empty array elements
-		$excludeFolders = \array_unique($excludeFolders);
-		$excludeFolders = \array_values(\array_filter($excludeFolders));
-		$excludeFoldersRegex = \array_unique($excludeFoldersRegex);
-		$excludeFoldersRegex = \array_values(\array_filter($excludeFoldersRegex));
-		$blacklistFilesRegex = \array_unique($blacklistFilesRegex);
-		$blacklistFilesRegex = \array_values(\array_filter($blacklistFilesRegex));
+		$excludeFolders = array_unique($excludeFolders);
+		$excludeFolders = array_values(array_filter($excludeFolders));
+		$excludeFoldersRegex = array_unique($excludeFoldersRegex);
+		$excludeFoldersRegex = array_values(array_filter($excludeFoldersRegex));
+		$blacklistFilesRegex = array_unique($blacklistFilesRegex);
+		$blacklistFilesRegex = array_values(array_filter($blacklistFilesRegex));
 
 		// explode '/'
-		$ppx = \array_filter(\explode('/', $FileOrDir), 'strlen');
-		$ppx = \array_map('strtolower', $ppx);
+		$ppx = array_filter(explode('/', $FileOrDir), 'strlen');
+		$ppx = array_map('strtolower', $ppx);
 
 		// further explode each array element with '\' and add to result array if found
 		foreach ($ppx as $pp) {
 			// only add an array element if strlen != 0
-			$pathParts = \array_merge($pathParts, \array_filter(\explode('\\', $pp), 'strlen'));
+			$pathParts = array_merge($pathParts, array_filter(explode('\\', $pp), 'strlen'));
 		}
 
 		// force that the last element (possibly the filename) is an entry in an array
 		// this is necessary for the called functions which expect this to be an array
-		$blacklistArray[] = \end($pathParts);
+		$blacklistArray[] = end($pathParts);
 
 		// first, check if the folder is excluded
-		$excludeFolders= \array_map('trim', $excludeFolders);
-		$excludeFolders= \array_map('strtolower', $excludeFolders);
-		if (\array_intersect($excludeFolders, $pathParts)) {
+		$excludeFolders= array_map('trim', $excludeFolders);
+		$excludeFolders= array_map('strtolower', $excludeFolders);
+		if (array_intersect($excludeFolders, $pathParts)) {
 			return true;
 		}
 
-		if (self::checkRegexAgainstFolderOrFile($excludeFoldersRegex, $pathParts,
-				"Check excluded_directories_regex variable in config file")) {
+		if (self::checkRegexAgainstFolderOrFile(
+			$excludeFoldersRegex,
+			$pathParts,
+			"Check excluded_directories_regex variable in config file"
+		)) {
 			return true;
 		}
 
 		// second, check if the file is blacklisted
-		if (\array_intersect($blacklistFiles, $blacklistArray)) {
+		if (array_intersect($blacklistFiles, $blacklistArray)) {
 			return true;
 		}
 
-		if (self::checkRegexAgainstFolderOrFile($blacklistFilesRegex, $blacklistArray,
-				"Check blacklisted_files_regex variable in config file")) {
+		if (self::checkRegexAgainstFolderOrFile(
+			$blacklistFilesRegex,
+			$blacklistArray,
+			"Check blacklisted_files_regex variable in config file"
+		)) {
 			return true;
 		}
 
@@ -961,7 +969,7 @@ class Filesystem {
 		 */
 		$path = (string)$path;
 
-		$cacheKey = \json_encode([$path, $stripTrailingSlash, $isAbsolutePath, $keepUnicode]);
+		$cacheKey = json_encode([$path, $stripTrailingSlash, $isAbsolutePath, $keepUnicode]);
 
 		if (isset(self::$normalizedPathCache[$cacheKey])) {
 			return self::$normalizedPathCache[$cacheKey];
@@ -977,7 +985,7 @@ class Filesystem {
 		}
 
 		//no windows style slashes
-		$path = \str_replace('\\', '/', $path);
+		$path = str_replace('\\', '/', $path);
 
 		//add leading slash
 		if ($path[0] !== '/') {
@@ -988,20 +996,20 @@ class Filesystem {
 		// ugly, but str_replace() can't replace them all in one go
 		// as the replacement itself is part of the search string
 		// which will only be found during the next iteration
-		while (\strpos($path, '/./') !== false) {
-			$path = \str_replace('/./', '/', $path);
+		while (strpos($path, '/./') !== false) {
+			$path = str_replace('/./', '/', $path);
 		}
 		// remove sequences of slashes
-		$path = \preg_replace('#/{2,}#', '/', $path);
+		$path = preg_replace('#/{2,}#', '/', $path);
 
 		//remove trailing slash
-		if ($stripTrailingSlash and \strlen($path) > 1 and \substr($path, -1, 1) === '/') {
-			$path = \substr($path, 0, -1);
+		if ($stripTrailingSlash and \strlen($path) > 1 and substr($path, -1, 1) === '/') {
+			$path = substr($path, 0, -1);
 		}
 
 		// remove trailing '/.'
-		if (\substr($path, -2) == '/.') {
-			$path = \substr($path, 0, -2);
+		if (substr($path, -2) == '/.') {
+			$path = substr($path, 0, -2);
 		}
 
 		$normalizedPath = $path;

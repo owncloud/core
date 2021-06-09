@@ -93,7 +93,7 @@ class BasicAuthModuleTest extends TestCase {
 		]));
 
 		// check auth
-		$time = \time();
+		$time = time();
 		$this->session->method('get')->will($this->returnValueMap([
 			['user_id', $userId],
 			['last_check_timeout', $time - 60 * 5]
@@ -119,7 +119,7 @@ class BasicAuthModuleTest extends TestCase {
 		]));
 
 		// check auth
-		$time = \time();
+		$time = time();
 		$this->session->method('get')->will($this->returnValueMap([
 			['user_id', 'user'],
 			['last_check_timeout', $time - 60 * 5]
@@ -167,7 +167,7 @@ class BasicAuthModuleTest extends TestCase {
 			['last_check_timeout', true]
 		]));
 
-		$time = \time();
+		$time = time();
 		$this->session->method('get')->will($this->returnValueMap([
 			['last_check_timeout', $time - 60 * 4],
 			['user_id', 'user1']
@@ -209,7 +209,7 @@ class BasicAuthModuleTest extends TestCase {
 			['last_check_timeout', true]
 		]));
 
-		$time = \time();
+		$time = time();
 		$this->session->method('get')->will($this->returnValueMap([
 			['last_check_timeout', $time - 60 * 4],
 			['user_id', $userId]

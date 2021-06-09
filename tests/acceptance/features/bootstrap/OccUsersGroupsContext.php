@@ -394,7 +394,8 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorChangesTheLanguageOfUserToUsingTheOccCommand(
-		$username, $language
+		$username,
+		$language
 	) {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
@@ -562,7 +563,7 @@ class OccUsersGroupsContext implements Context {
 		$responseLanguage = $this->featureContext->getStdOutOfOccCommand();
 		Assert::assertEquals(
 			$language,
-			\trim($responseLanguage),
+			trim($responseLanguage),
 			__METHOD__
 			. " Expected: the language of user '$username' to be '$language', but got '$responseLanguage'"
 		);
@@ -579,10 +580,10 @@ class OccUsersGroupsContext implements Context {
 	public function theUsersReturnedByTheOccCommandShouldBe(TableNode $useridTable) {
 		$this->featureContext->verifyTableNodeColumns($useridTable, ['uid', 'display name']);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$lastOutputUsers = \json_decode($lastOutput, true);
+		$lastOutputUsers = json_decode($lastOutput, true);
 		$result = [];
 		// check if an array is a multi-dimensional array with inner array key 'displayName'
-		if (\array_column($lastOutputUsers, 'displayName')) {
+		if (array_column($lastOutputUsers, 'displayName')) {
 			foreach ($lastOutputUsers as $key => $value) {
 				$result[$key] = $value['displayName'];
 			}
@@ -618,7 +619,7 @@ class OccUsersGroupsContext implements Context {
 	public function theInactiveUsersReturnedByTheOccCommandShouldBe(TableNode $userTable) {
 		$this->featureContext->verifyTableNodeColumns($userTable, ['uid', 'display name', 'inactive days']);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$lastOutputUsers = \json_decode($lastOutput, true);
+		$lastOutputUsers = json_decode($lastOutput, true);
 
 		Assert::assertEquals(
 			\count($userTable->getColumnsHash()),
@@ -666,7 +667,7 @@ class OccUsersGroupsContext implements Context {
 	public function theGroupsReturnedByTheOccCommandShouldBe(TableNode $groupTableNode) {
 		$this->featureContext->verifyTableNodeColumns($groupTableNode, ['group']);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$lastOutputGroups = \json_decode($lastOutput, true);
+		$lastOutputGroups = json_decode($lastOutput, true);
 
 		foreach ($groupTableNode as $row) {
 			Assert::assertContains(
@@ -674,15 +675,15 @@ class OccUsersGroupsContext implements Context {
 				$lastOutputGroups,
 				__METHOD__
 				. " Failed asserting that '${row['group']}' exists in '"
-				. \implode(', ', $lastOutputGroups)
+				. implode(', ', $lastOutputGroups)
 				. "'"
 			);
-			$lastOutputGroups = \array_diff($lastOutputGroups, [$row['group']]);
+			$lastOutputGroups = array_diff($lastOutputGroups, [$row['group']]);
 		}
 		Assert::assertEmpty(
 			$lastOutputGroups,
 			"more than the expected groups are returned\n" .
-			\print_r($lastOutputGroups, true)
+			print_r($lastOutputGroups, true)
 		);
 	}
 
@@ -695,8 +696,8 @@ class OccUsersGroupsContext implements Context {
 	 */
 	public function theDisplayNameReturnedByTheOccCommandShouldBe($displayName) {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$lastOutputUser = \json_decode($lastOutput, true);
-		$lastOutputDisplayName = \array_column($lastOutputUser, 'displayName')[0];
+		$lastOutputUser = json_decode($lastOutput, true);
+		$lastOutputDisplayName = array_column($lastOutputUser, 'displayName')[0];
 		Assert::assertEquals(
 			$displayName,
 			$lastOutputDisplayName,
@@ -712,11 +713,11 @@ class OccUsersGroupsContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theCommandOutputOfUserLastSeenShouldBeRecently() {
-		$currentTime = \gmdate('d.m.Y H:i');
-		$currentTimeStamp = \strtotime($currentTime);
+		$currentTime = gmdate('d.m.Y H:i');
+		$currentTimeStamp = strtotime($currentTime);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		\preg_match("/([\d.]+ [\d:]+)/", $lastOutput, $userCreatedTime);
-		$useCreatedTimeStamp = \strtotime(($userCreatedTime[0]));
+		preg_match("/([\d.]+ [\d:]+)/", $lastOutput, $userCreatedTime);
+		$useCreatedTimeStamp = strtotime(($userCreatedTime[0]));
 		$delta = $currentTimeStamp - $useCreatedTimeStamp;
 		Assert::assertLessThanOrEqual(
 			60,
@@ -750,7 +751,7 @@ class OccUsersGroupsContext implements Context {
 	 */
 	public function theTotalUsersReturnedByTheCommandShouldBe($noOfUsers) {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		\preg_match("/\|\s+total users\s+\|\s+(\d+)\s+\|/", $lastOutput, $actualUsers);
+		preg_match("/\|\s+total users\s+\|\s+(\d+)\s+\|/", $lastOutput, $actualUsers);
 		Assert::assertEquals(
 			$noOfUsers,
 			$actualUsers[1],
@@ -773,7 +774,9 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function resetUserPassword(
-		$username, $password = null, $sendEmail = false
+		$username,
+		$password = null,
+		$sendEmail = false
 	) {
 		$actualUsername = $this->featureContext->getActualUsername($username);
 		if ($password === null) {

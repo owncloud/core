@@ -266,12 +266,12 @@ class SharedStorageTest extends TestCase {
 		// create part file allowed
 		$handle = $user2View->fopen($this->folder . '/test.txt.part', 'w');
 		$this->assertNotFalse($handle);
-		\fclose($handle);
+		fclose($handle);
 
 		// create regular file allowed
 		$handle = $user2View->fopen($this->folder . '/test-create.txt', 'w');
 		$this->assertNotFalse($handle);
-		\fclose($handle);
+		fclose($handle);
 
 		// rename file never allowed
 		$this->assertFalse($user2View->rename($this->folder . '/test-create.txt', $this->folder . '/newtarget.txt'));
@@ -292,8 +292,12 @@ class SharedStorageTest extends TestCase {
 
 		//cleanup
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
-		$result = \OCP\Share::unshare('folder', $fileinfoFolder['fileid'], \OCP\Share::SHARE_TYPE_USER,
-			self::TEST_FILES_SHARING_API_USER2);
+		$result = \OCP\Share::unshare(
+			'folder',
+			$fileinfoFolder['fileid'],
+			\OCP\Share::SHARE_TYPE_USER,
+			self::TEST_FILES_SHARING_API_USER2
+		);
 		$this->assertTrue($result);
 	}
 
@@ -314,7 +318,7 @@ class SharedStorageTest extends TestCase {
 		// create part file allowed
 		$handle = $user2View->fopen($this->folder . '/test.txt.part', 'w');
 		$this->assertNotFalse($handle);
-		\fclose($handle);
+		fclose($handle);
 
 		// create regular file not allowed
 		$handle = $user2View->fopen($this->folder . '/test-create.txt', 'w');
@@ -334,7 +338,7 @@ class SharedStorageTest extends TestCase {
 		// overwriting file directly is allowed
 		$handle = $user2View->fopen($this->folder . '/existing-renamed.txt', 'w');
 		$this->assertNotFalse($handle);
-		\fclose($handle);
+		fclose($handle);
 
 		// delete forbidden
 		$this->assertFalse($user2View->unlink($this->folder . '/existing-renamed.txt'));
@@ -400,7 +404,7 @@ class SharedStorageTest extends TestCase {
 
 		$mountConfigManager = \OC::$server->getMountProviderCollection();
 		$mounts = $mountConfigManager->getMountsForUser(\OC::$server->getUserManager()->get(self::TEST_FILES_SHARING_API_USER3));
-		\array_walk($mounts, [\OC\Files\Filesystem::getMountManager(), 'addMount']);
+		array_walk($mounts, [\OC\Files\Filesystem::getMountManager(), 'addMount']);
 
 		$this->assertTrue($rootView->file_exists('/' . self::TEST_FILES_SHARING_API_USER3 . '/files/' . $this->filename));
 
@@ -533,7 +537,7 @@ class SharedStorageTest extends TestCase {
 
 	public function testLongLock() {
 		// https://github.com/owncloud/core/issues/25376
-		$fn = \str_repeat("x", 250); // maximum name length in oc_filecache
+		$fn = str_repeat("x", 250); // maximum name length in oc_filecache
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 		$view1 = new \OC\Files\View('/' . self::TEST_FILES_SHARING_API_USER1 . '/files');
 		$view1->mkdir($fn);

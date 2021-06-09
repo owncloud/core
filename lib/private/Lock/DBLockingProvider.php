@@ -263,12 +263,12 @@ class DBLockingProvider extends AbstractLockingProvider {
 		parent::releaseAll();
 
 		// since we keep shared locks we need to manually clean those
-		$lockedPaths = \array_keys($this->sharedLocks);
-		$lockedPaths = \array_filter($lockedPaths, function ($path) {
+		$lockedPaths = array_keys($this->sharedLocks);
+		$lockedPaths = array_filter($lockedPaths, function ($path) {
 			return $this->sharedLocks[$path];
 		});
 
-		$chunkedPaths = \array_chunk($lockedPaths, 100);
+		$chunkedPaths = array_chunk($lockedPaths, 100);
 
 		foreach ($chunkedPaths as $chunk) {
 			$builder = $this->connection->getQueryBuilder();

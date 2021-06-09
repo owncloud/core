@@ -88,14 +88,14 @@ class ObjectTree extends \Sabre\DAV\Tree {
 				// getNodePath is called for multiple nodes within a chunk
 				// upload call
 				$path = $dir . '/' . $info['name'];
-				$path = \ltrim($path, '/');
+				$path = ltrim($path, '/');
 			}
 		}
 		return $path;
 	}
 
 	public function cacheNode(Node $node) {
-		$this->cache[\trim($node->getPath(), '/')] = $node;
+		$this->cache[trim($node->getPath(), '/')] = $node;
 	}
 
 	/**
@@ -105,7 +105,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 	 * @return bool
 	 */
 	public function nodeExists($path) {
-		$path = \trim($path, '/');
+		$path = trim($path, '/');
 		if (isset($this->cache[$path]) && $this->cache[$path] === false) {
 			// Node is not existing, as it was explicitely set in the cache
 			// Next call to getNodeForPath will create cache instance and unset the cached value
@@ -130,7 +130,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable('filesystem not setup');
 		}
 
-		$path = \trim($path, '/');
+		$path = trim($path, '/');
 
 		if (isset($this->cache[$path]) && $this->cache[$path] !== false) {
 			return $this->cache[$path];
@@ -143,7 +143,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 
 		if ($path !== '') {
 			try {
-				$this->fileView->verifyPath($path, \basename($path));
+				$this->fileView->verifyPath($path, basename($path));
 			} catch (\OCP\Files\InvalidPathException $ex) {
 				throw new InvalidPath($ex->getMessage());
 			}
@@ -154,7 +154,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 			return $this->rootNode;
 		}
 
-		if (\pathinfo($path, PATHINFO_EXTENSION) === 'part') {
+		if (pathinfo($path, PATHINFO_EXTENSION) === 'part') {
 			// read from storage
 			$absPath = $this->fileView->getAbsolutePath($path);
 			$mount = $this->fileView->getMount($path);

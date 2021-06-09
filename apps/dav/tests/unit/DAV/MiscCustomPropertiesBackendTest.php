@@ -83,8 +83,8 @@ class MiscCustomPropertiesBackendTest extends \Test\TestCase {
 		$connection = \OC::$server->getDatabaseConnection();
 		$qb = $connection->getQueryBuilder();
 		$maxFunction = $qb->createFunction(
-				"MAX(`id`)"
-			);
+			"MAX(`id`)"
+		);
 		$this->maxId = (int) $qb->select($maxFunction)
 			->from('dav_properties')
 			->execute()->fetchColumn();

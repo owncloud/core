@@ -102,7 +102,9 @@ class CopyPluginTest extends TestCase {
 
 		// make sure the plugin properly emits beforeBind and afterBind
 		$this->server->expects($this->exactly(2))->method('emit')->withConsecutive(
-			['beforeBind', ['destination.txt']], ['afterBind', ['destination.txt']])->willReturn(true);
+			['beforeBind', ['destination.txt']],
+			['afterBind', ['destination.txt']]
+		)->willReturn(true);
 
 		$fileInfo = $this->createMock(FileInfo::class);
 		$fileInfo->method('getPath')->willReturn('path/to/destination.txt');

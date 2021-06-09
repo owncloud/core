@@ -49,8 +49,8 @@ class MP3 implements IProvider2 {
 			$absPath = \OC::$server->getTempManager()->getTemporaryFile();
 
 			$handle = $file->fopen('rb');
-			\file_put_contents($absPath, $handle);
-			\fclose($handle);
+			file_put_contents($absPath, $handle);
+			fclose($handle);
 		}
 
 		$getID3 = new ID3Parser();
@@ -83,7 +83,7 @@ class MP3 implements IProvider2 {
 	private function getNoCoverThumbnail() {
 		$icon = \OC::$SERVERROOT . '/core/img/filetypes/audio.svg';
 
-		if (!\file_exists($icon)) {
+		if (!file_exists($icon)) {
 			return false;
 		}
 

@@ -163,7 +163,7 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 		}
 		$permissions = $this->superShare->getPermissions();
 		// part files and the mount point always have delete permissions
-		if ($target === '' || \pathinfo($target, PATHINFO_EXTENSION) === 'part') {
+		if ($target === '' || pathinfo($target, PATHINFO_EXTENSION) === 'part') {
 			$permissions |= \OCP\Constants::PERMISSION_DELETE;
 		}
 
@@ -235,7 +235,7 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 					}
 
 					// part file is allowed if !$creatable but the final file is $updatable
-					if (\pathinfo($path, PATHINFO_EXTENSION) !== 'part') {
+					if (pathinfo($path, PATHINFO_EXTENSION) !== 'part') {
 						if (!$exists && !$creatable) {
 							return false;
 						}
@@ -260,7 +260,7 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 	 * @return bool
 	 */
 	public function rename($path1, $path2) {
-		$isPartFile = \pathinfo($path1, PATHINFO_EXTENSION) === 'part';
+		$isPartFile = pathinfo($path1, PATHINFO_EXTENSION) === 'part';
 		$targetExists = $this->file_exists($path2);
 		$sameFodler = \dirname($path1) === \dirname($path2);
 
@@ -460,10 +460,10 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 
 	public function getLocks($internalPath, $returnChildLocks = false) {
 		$locks = parent::getLocks($this->getSourcePath($internalPath), $returnChildLocks);
-		return \array_map(function (ILock $lock) {
+		return array_map(function (ILock $lock) {
 			// TODO: if path starts with rootpath
 			/* @phan-suppress-next-line PhanUndeclaredMethod */
-			$mountedPath = \substr($lock->getPath(), \strlen($this->rootPath)+1);
+			$mountedPath = substr($lock->getPath(), \strlen($this->rootPath)+1);
 			// FixMe: setDavUserId does not seem to exist anywhere
 			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$lock->setDavUserId($this->user);

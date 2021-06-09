@@ -27,10 +27,10 @@ namespace OCP\Lock\Persistent;
  */
 interface ILock {
 	// these values are in sync with \Sabre\DAV\Locks\LockInfo
-	const LOCK_SCOPE_EXCLUSIVE = 1;
-	const LOCK_SCOPE_SHARED = 2;
-	const LOCK_DEPTH_ZERO = 0;
-	const LOCK_DEPTH_INFINITE = -1;
+	public const LOCK_SCOPE_EXCLUSIVE = 1;
+	public const LOCK_SCOPE_SHARED = 2;
+	public const LOCK_DEPTH_ZERO = 0;
+	public const LOCK_DEPTH_INFINITE = -1;
 
 	/**
 	 * Return the owner of the lock - plain text field as transmitted by clients

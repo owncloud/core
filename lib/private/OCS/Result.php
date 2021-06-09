@@ -134,7 +134,7 @@ class Result {
 	 * @return $this
 	 */
 	public function addHeader($name, $value) {
-		$name = \trim($name);  // always remove leading and trailing whitespace
+		$name = trim($name);  // always remove leading and trailing whitespace
 		// to be able to reliably check for security
 		// headers
 

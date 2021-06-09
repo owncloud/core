@@ -73,8 +73,17 @@ class LoginController extends Controller {
 	 * @param IURLGenerator $urlGenerator
 	 * @param Manager $twoFactorManager
 	 */
-	public function __construct($appName, IRequest $request, IUserManager $userManager, IConfig $config, ISession $session,
-		Session $userSession, IURLGenerator $urlGenerator, Manager $twoFactorManager, ILicenseManager $licenseManager) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IUserManager $userManager,
+		IConfig $config,
+		ISession $session,
+		Session $userSession,
+		IURLGenerator $urlGenerator,
+		Manager $twoFactorManager,
+		ILicenseManager $licenseManager
+	) {
 		parent::__construct($appName, $request);
 		$this->userManager = $userManager;
 		$this->config = $config;
@@ -157,7 +166,7 @@ class LoginController extends Controller {
 		$altLogins = OC_App::getAlternativeLogIns();
 		$altLogins2 = $this->config->getSystemValue('login.alternatives');
 		if (\is_array($altLogins2) && !empty($altLogins2)) {
-			$altLogins = \array_merge($altLogins, $altLogins2);
+			$altLogins = array_merge($altLogins, $altLogins2);
 		}
 		$parameters['alt_login'] = $altLogins;
 		$parameters['rememberLoginAllowed'] = OC_Util::rememberLoginAllowed();
@@ -180,8 +189,10 @@ class LoginController extends Controller {
 
 		if (!empty($redirect_url) && ($remember_login === null) &&
 			($this->userSession->isLoggedIn() === false) &&
-			(\strpos($this->urlGenerator->getAbsoluteURL(\urldecode($redirect_url)),
-					$this->urlGenerator->getAbsoluteURL('/index.php/f/')) !== false)) {
+			(strpos(
+				$this->urlGenerator->getAbsoluteURL(urldecode($redirect_url)),
+				$this->urlGenerator->getAbsoluteURL('/index.php/f/')
+			) !== false)) {
 			$parameters['accessLink'] = true;
 		}
 
@@ -194,14 +205,17 @@ class LoginController extends Controller {
 				($licenseState !== ILicenseManager::LICENSE_STATE_VALID &&
 					$licenseState !== ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE)
 			) {
-				$parameters['licenseMessage'] = \implode('<br/>', $licenseMessageInfo['translated_message']);
+				$parameters['licenseMessage'] = implode('<br/>', $licenseMessageInfo['translated_message']);
 			}
 		}
 
 		$parameters['strictLoginEnforced'] = $this->config->getSystemValue('strict_login_enforced', false);
 
 		return new TemplateResponse(
-			$this->appName, 'login', $parameters, 'guest'
+			$this->appName,
+			'login',
+			$parameters,
+			'guest'
 		);
 	}
 
@@ -269,10 +283,10 @@ class LoginController extends Controller {
 		}
 
 		if ($redirect_url !== null && $this->userSession->isLoggedIn()) {
-			$location = $this->urlGenerator->getAbsoluteURL(\urldecode($redirect_url));
+			$location = $this->urlGenerator->getAbsoluteURL(urldecode($redirect_url));
 			// Deny the redirect if the URL contains a @
 			// This prevents unvalidated redirects like ?redirect_url=:user@domain.com
-			if (\strpos($location, '@') === false) {
+			if (strpos($location, '@') === false) {
 				return new RedirectResponse($location);
 			}
 		}

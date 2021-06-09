@@ -58,11 +58,13 @@ class ExternalSharesController extends Controller {
 	 * @param IClientService $clientService
 	 * @param EventDispatcherInterface $eventDispatcher
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								\OCA\Files_Sharing\External\Manager $externalManager,
-								IClientService $clientService,
-								EventDispatcherInterface $eventDispatcher) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		\OCA\Files_Sharing\External\Manager $externalManager,
+		IClientService $clientService,
+		EventDispatcherInterface $eventDispatcher
+	) {
 		parent::__construct($appName, $request);
 		$this->externalManager = $externalManager;
 		$this->clientService = $clientService;
@@ -89,7 +91,8 @@ class ExternalSharesController extends Controller {
 	public function create($id) {
 		$shareInfo = $this->externalManager->getShare($id);
 		if ($shareInfo !== false) {
-			$event = new GenericEvent(null,
+			$event = new GenericEvent(
+				null,
 				[
 					'shareAcceptedFrom' => $shareInfo['owner'],
 					'sharedAcceptedBy' => $shareInfo['user'],
@@ -113,7 +116,8 @@ class ExternalSharesController extends Controller {
 	public function destroy($id) {
 		$shareInfo = $this->externalManager->getShare($id);
 		if ($shareInfo !== false) {
-			$event = new GenericEvent(null,
+			$event = new GenericEvent(
+				null,
 				[
 					'shareAcceptedFrom' => $shareInfo['owner'],
 					'sharedAcceptedBy' => $shareInfo['user'],
@@ -137,7 +141,7 @@ class ExternalSharesController extends Controller {
 	protected function testUrl($remote, $checkVersion = false) {
 		try {
 			$client = $this->clientService->newClient();
-			$response = \json_decode($client->get(
+			$response = json_decode($client->get(
 				$remote,
 				[
 					'timeout' => 3,
@@ -146,7 +150,7 @@ class ExternalSharesController extends Controller {
 			)->getBody());
 
 			if ($checkVersion) {
-				return !empty($response->version) && \version_compare($response->version, '7.0.0', '>=');
+				return !empty($response->version) && version_compare($response->version, '7.0.0', '>=');
 			} else {
 				return \is_object($response);
 			}
@@ -165,7 +169,7 @@ class ExternalSharesController extends Controller {
 	 */
 	public function testRemote($remote) {
 		// cut query and|or anchor part off
-		$remote = \strtok($remote, '?#');
+		$remote = strtok($remote, '?#');
 		if (
 			$this->testUrl('https://' . $remote . '/ocs-provider/') ||
 			$this->testUrl('https://' . $remote . '/ocs-provider/index.php') ||

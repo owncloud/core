@@ -55,14 +55,14 @@ $eventDispatcher->addListener(
 
 \OC::$server->getActivityManager()->registerExtension(function () {
 	return new \OCA\Files_Sharing\Activity(
-			\OC::$server->query('L10NFactory'),
-			\OC::$server->getURLGenerator(),
-			\OC::$server->getActivityManager()
-		);
+		\OC::$server->query('L10NFactory'),
+		\OC::$server->getURLGenerator(),
+		\OC::$server->getActivityManager()
+	);
 });
 
 $config = \OC::$server->getConfig();
-if (\class_exists('OCA\Files\App') && $config->getAppValue('core', 'shareapi_enabled', 'yes') === 'yes') {
+if (class_exists('OCA\Files\App') && $config->getAppValue('core', 'shareapi_enabled', 'yes') === 'yes') {
 	\OCA\Files\App::getNavigationManager()->add(function () {
 		$l = \OC::$server->getL10N('files_sharing');
 		return [

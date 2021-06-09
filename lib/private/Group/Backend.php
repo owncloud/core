@@ -30,7 +30,7 @@ abstract class Backend implements \OCP\GroupInterface {
 	/**
 	 * error code for functions not provided by the group backend
 	 */
-	const NOT_IMPLEMENTED = -501;
+	public const NOT_IMPLEMENTED = -501;
 
 	protected $possibleActions = [
 		self::CREATE_GROUP => 'createGroup',
@@ -51,7 +51,7 @@ abstract class Backend implements \OCP\GroupInterface {
 	public function getSupportedActions() {
 		$actions = 0;
 		foreach ($this->possibleActions as $action => $methodName) {
-			if (\method_exists($this, $methodName)) {
+			if (method_exists($this, $methodName)) {
 				$actions |= $action;
 			}
 		}

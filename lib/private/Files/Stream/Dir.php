@@ -30,7 +30,7 @@ class Dir {
 	private $index;
 
 	public function dir_opendir($path, $options) {
-		$this->name = \substr($path, \strlen('fakedir://'));
+		$this->name = substr($path, \strlen('fakedir://'));
 		$this->index = 0;
 		if (!isset(self::$dirs[$this->name])) {
 			self::$dirs[$this->name] = [];

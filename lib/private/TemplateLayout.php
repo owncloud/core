@@ -75,7 +75,7 @@ class TemplateLayout extends \OC_Template {
 			$shouldShowGracePopup = $this->config->getSystemValue('grace_period.demo_key.show_popup', true);
 			$licenseManager = \OC::$server->getLicenseManager();
 			$gracePeriod = $licenseManager->getGracePeriod();
-			$isGracePeriodActive = $gracePeriod && \time() < $gracePeriod['end'];
+			$isGracePeriodActive = $gracePeriod && time() < $gracePeriod['end'];
 			if ($shouldShowGracePopup && \OC_User::isAdminUser(\OC_User::getUser()) && $isGracePeriodActive) {
 				\OCP\Util::addScript('core', 'license-trial-notification');
 			}
@@ -138,11 +138,11 @@ class TemplateLayout extends \OC_Template {
 		if (\OC::$server->getSystemConfig()->getValue('installed', false)) {
 			if (empty(self::$versionHash)) {
 				$v = \OC_App::getAppVersions();
-				$v['core'] = \implode('.', \OCP\Util::getVersion());
-				self::$versionHash = \md5(\implode(',', $v));
+				$v['core'] = implode('.', \OCP\Util::getVersion());
+				self::$versionHash = md5(implode(',', $v));
 			}
 		} else {
-			self::$versionHash = \md5('not installed');
+			self::$versionHash = md5('not installed');
 		}
 
 		// Add the js files
@@ -165,7 +165,7 @@ class TemplateLayout extends \OC_Template {
 			$web = $info[1];
 			$file = $info[2];
 
-			if (\substr($file, -\strlen('print.css')) === 'print.css') {
+			if (substr($file, -\strlen('print.css')) === 'print.css') {
 				$this->append('printcssfiles', $web.'/'.$file . '?v=' . self::$versionHash);
 			} else {
 				$this->append('cssfiles', $web.'/'.$file . '?v=' . self::$versionHash);
@@ -182,7 +182,8 @@ class TemplateLayout extends \OC_Template {
 			\OC_Util::getTheme(),
 			\OC::$server->getAppManager(),
 			\OC::$server->getLogger(),
-			[\OC::$SERVERROOT => \OC::$WEBROOT]);
+			[\OC::$SERVERROOT => \OC::$WEBROOT]
+		);
 		$locator->find($styles);
 		return $locator->getResources();
 	}
@@ -196,7 +197,8 @@ class TemplateLayout extends \OC_Template {
 			\OC_Util::getTheme(),
 			\OC::$server->getAppManager(),
 			\OC::$server->getLogger(),
-			[\OC::$SERVERROOT => \OC::$WEBROOT]);
+			[\OC::$SERVERROOT => \OC::$WEBROOT]
+		);
 		$locator->find($scripts);
 		return $locator->getResources();
 	}
@@ -208,7 +210,7 @@ class TemplateLayout extends \OC_Template {
 	 * @throws \Exception If $filePath is not under \OC::$SERVERROOT
 	 */
 	public static function convertToRelativePath($filePath) {
-		$relativePath = \explode(\OC::$SERVERROOT, $filePath);
+		$relativePath = explode(\OC::$SERVERROOT, $filePath);
 		if (\count($relativePath) !== 2) {
 			throw new \Exception('$filePath is not under the \OC::$SERVERROOT');
 		}

@@ -35,7 +35,7 @@ if (isset($_POST['app']) || isset($_GET['app'])) {
 // on its own. This should only be possible programmatically.
 // This change is due the fact that an admin may not be expected
 // to execute arbitrary code in every environment.
-if ($app === 'core' && isset($_POST['key']) &&(\substr((string)$_POST['key'], 0, 7) === 'remote_' || \substr((string)$_POST['key'], 0, 7) === 'public_')) {
+if ($app === 'core' && isset($_POST['key']) &&(substr((string)$_POST['key'], 0, 7) === 'remote_' || substr((string)$_POST['key'], 0, 7) === 'public_')) {
 	OC_JSON::error(['data' => ['message' => 'Unexpected error!']]);
 	return;
 }

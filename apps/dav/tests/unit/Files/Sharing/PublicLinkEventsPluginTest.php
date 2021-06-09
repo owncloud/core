@@ -83,7 +83,7 @@ class PublicLinkEventsPluginTest extends TestCase {
 
 		$this->server->method('calculateUri')->willReturn('/anotherpath');
 
-		$lowercaseMethod = \strtolower($method);
+		$lowercaseMethod = strtolower($method);
 		$this->dispatcher->expects($this->once())
 			->method('dispatch')
 			->with("dav.public.{$lowercaseMethod}.before", $this->anything());
@@ -111,7 +111,7 @@ class PublicLinkEventsPluginTest extends TestCase {
 
 		$this->server->method('calculateUri')->willReturn('/anotherpath');
 
-		$lowercaseMethod = \strtolower($method);
+		$lowercaseMethod = strtolower($method);
 		$this->dispatcher->expects($this->once())
 			->method('dispatch')
 			->with("dav.public.{$lowercaseMethod}.after", $this->anything());

@@ -26,8 +26,8 @@ class RedisFactory {
 	/** @var \Redis | \RedisCluster */
 	private $instance;
 
-	const REDIS_MINIMAL_VERSION = '2.2.5';
-	const REDIS_EXTRA_PARAMETERS_MINIMAL_VERSION = '5.3.0';
+	public const REDIS_MINIMAL_VERSION = '2.2.5';
+	public const REDIS_EXTRA_PARAMETERS_MINIMAL_VERSION = '5.3.0';
 
 	/** @var  SystemConfig */
 	private $config;
@@ -48,7 +48,7 @@ class RedisFactory {
 		$isConnectionParametersSupported = $this->isConnectionParametersSupported();
 
 		if ($config = $this->config->getValue('redis.cluster', [])) {
-			if (!\class_exists('RedisCluster')) {
+			if (!class_exists('RedisCluster')) {
 				throw new \Exception('Redis Cluster support is not available');
 			}
 			// cluster config
@@ -64,8 +64,10 @@ class RedisFactory {
 			}
 			if (isset($config['connection_parameters'])) {
 				if (!$isConnectionParametersSupported) {
-					throw new \UnexpectedValueException(\sprintf('php-redis extension must be version %s or higher to support connection parameters',
-						self::REDIS_EXTRA_PARAMETERS_MINIMAL_VERSION));
+					throw new \UnexpectedValueException(sprintf(
+						'php-redis extension must be version %s or higher to support connection parameters',
+						self::REDIS_EXTRA_PARAMETERS_MINIMAL_VERSION
+					));
 				}
 				$connectionParameters = $config['connection_parameters'];
 			} else {
@@ -101,8 +103,10 @@ class RedisFactory {
 
 			if (isset($config['connection_parameters'])) {
 				if (!$isConnectionParametersSupported) {
-					throw new \UnexpectedValueException(\sprintf('php-redis extension must be version %s or higher to support connection parameters',
-						self::REDIS_EXTRA_PARAMETERS_MINIMAL_VERSION));
+					throw new \UnexpectedValueException(sprintf(
+						'php-redis extension must be version %s or higher to support connection parameters',
+						self::REDIS_EXTRA_PARAMETERS_MINIMAL_VERSION
+					));
 				}
 				$connectionParameters = $config['connection_parameters'];
 			} else {
@@ -144,8 +148,8 @@ class RedisFactory {
 
 	public function isAvailable() {
 		return \extension_loaded('redis')
-			&& (\version_compare(\phpversion('redis'), self::REDIS_MINIMAL_VERSION, '>=')
-				|| \strcmp(\phpversion('redis'), 'develop') == 0);
+			&& (version_compare(phpversion('redis'), self::REDIS_MINIMAL_VERSION, '>=')
+				|| strcmp(phpversion('redis'), 'develop') == 0);
 	}
 
 	/**
@@ -156,6 +160,6 @@ class RedisFactory {
 	 */
 	private function isConnectionParametersSupported(): bool {
 		return \extension_loaded('redis') &&
-			\version_compare(\phpversion('redis'), self::REDIS_EXTRA_PARAMETERS_MINIMAL_VERSION, '>=');
+			version_compare(phpversion('redis'), self::REDIS_EXTRA_PARAMETERS_MINIMAL_VERSION, '>=');
 	}
 }

@@ -39,13 +39,13 @@ use OCP\Files\IHomeStorage;
 class Checksum extends Wrapper {
 
 	/** Format of checksum field in filecache */
-	const CHECKSUMS_DB_FORMAT = 'SHA1:%s MD5:%s ADLER32:%s';
+	public const CHECKSUMS_DB_FORMAT = 'SHA1:%s MD5:%s ADLER32:%s';
 
-	const NOT_REQUIRED = 0;
+	public const NOT_REQUIRED = 0;
 	/** Calculate checksum on write (to be stored in oc_filecache) */
-	const PATH_NEW_OR_UPDATED = 1;
+	public const PATH_NEW_OR_UPDATED = 1;
 	/** File needs to be checksummed on first read because it is already in cache but has no checksum */
-	const PATH_IN_CACHE_WITHOUT_CHECKSUM = 2;
+	public const PATH_IN_CACHE_WITHOUT_CHECKSUM = 2;
 
 	/** @var array */
 	private $pathsInCacheWithoutChecksum = [];
@@ -95,7 +95,7 @@ class Checksum extends Wrapper {
 		$isNormalFile = true;
 		if ($this->instanceOfStorage(IHomeStorage::class)) {
 			// home storage stores files in "files"
-			$isNormalFile = \substr($path, 0, 6) === 'files/';
+			$isNormalFile = substr($path, 0, 6) === 'files/';
 		}
 		$fileIsWritten = $mode !== 'r' && $mode !== 'rb';
 
@@ -124,7 +124,7 @@ class Checksum extends Wrapper {
 	 * @return bool
 	 */
 	private function isReadWriteStream($mode) {
-		return \strpos($mode, '+') !== false;
+		return strpos($mode, '+') !== false;
 	}
 
 	/**
@@ -157,7 +157,7 @@ class Checksum extends Wrapper {
 			return '';
 		}
 
-		return \sprintf(
+		return sprintf(
 			self::CHECKSUMS_DB_FORMAT,
 			$checksums['sha1'],
 			$checksums['md5'],
@@ -174,7 +174,7 @@ class Checksum extends Wrapper {
 	 * @return boolean
 	 */
 	public static function isPartialFile($file) {
-		if (\pathinfo($file, PATHINFO_EXTENSION) === 'part') {
+		if (pathinfo($file, PATHINFO_EXTENSION) === 'part') {
 			return true;
 		}
 
@@ -187,11 +187,11 @@ class Checksum extends Wrapper {
 	 * @return bool
 	 */
 	public function file_put_contents($path, $data) {
-		$memoryStream = \fopen('php://memory', 'r+');
+		$memoryStream = fopen('php://memory', 'r+');
 		$checksumStream = \OC\Files\Stream\Checksum::wrap($memoryStream, $path);
 
-		\fwrite($checksumStream, $data);
-		\fclose($checksumStream);
+		fwrite($checksumStream, $data);
+		fclose($checksumStream);
 
 		return $this->getWrapperStorage()->file_put_contents($path, $data);
 	}

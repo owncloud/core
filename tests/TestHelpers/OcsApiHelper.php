@@ -44,10 +44,17 @@ class OcsApiHelper {
 	 * @return ResponseInterface
 	 */
 	public static function sendRequest(
-		$baseUrl, $user, $password, $method, $path, $body = [], $ocsApiVersion = 2, $headers = []
+		$baseUrl,
+		$user,
+		$password,
+		$method,
+		$path,
+		$body = [],
+		$ocsApiVersion = 2,
+		$headers = []
 	) {
 		$fullUrl = $baseUrl;
-		if (\substr($fullUrl, -1) !== '/') {
+		if (substr($fullUrl, -1) !== '/') {
 			$fullUrl .= '/';
 		}
 		$fullUrl .= "ocs/v{$ocsApiVersion}.php" . $path;
@@ -68,10 +75,15 @@ class OcsApiHelper {
 	 * @return RequestInterface
 	 */
 	public static function createOcsRequest(
-		$baseUrl, $method, $path, $body = [], $ocsApiVersion = 2, $headers = []
+		$baseUrl,
+		$method,
+		$path,
+		$body = [],
+		$ocsApiVersion = 2,
+		$headers = []
 	) {
 		$fullUrl = $baseUrl;
-		if (\substr($fullUrl, -1) !== '/') {
+		if (substr($fullUrl, -1) !== '/') {
 			$fullUrl .= '/';
 		}
 		$fullUrl .= "ocs/v{$ocsApiVersion}.php" . $path;

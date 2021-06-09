@@ -145,7 +145,7 @@ class NotificationPublisherTest extends TestCase {
 	}
 
 	private function makeGroup($groupName, $members) {
-		$memberObjects = \array_map(function ($memberName) {
+		$memberObjects = array_map(function ($memberName) {
 			$memberObject = $this->createMock(IUser::class);
 			$memberObject->method('getUID')->willReturn($memberName);
 			return $memberObject;
@@ -311,7 +311,7 @@ class NotificationPublisherTest extends TestCase {
 	}
 
 	public function testDiscardNotification() {
-		$notifications = \array_map(function ($userId) {
+		$notifications = array_map(function ($userId) {
 			$notification = $this->createMock(INotification::class);
 			$notification->expects($this->once())
 				->method('setApp')

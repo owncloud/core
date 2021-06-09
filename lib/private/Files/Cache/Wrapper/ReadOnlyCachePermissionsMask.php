@@ -90,6 +90,6 @@ class ReadOnlyCachePermissionsMask extends CacheWrapper {
 	}
 
 	private function startsWith($haystack, $needle) {
-		return (\strpos($haystack, $needle) === 0);
+		return (strpos($haystack, $needle) === 0);
 	}
 }

@@ -47,7 +47,7 @@ class Helper {
 
 		$view = new \OC\Files\View('/' . $user . '/files_trashbin/files');
 
-		if (\ltrim($dir, '/') !== '' && !$view->is_dir($dir)) {
+		if (ltrim($dir, '/') !== '' && !$view->is_dir($dir)) {
 			throw new \Exception('Directory does not exists');
 		}
 
@@ -64,13 +64,13 @@ class Helper {
 			$id = $entry->getId();
 			$name = $entryName;
 			if ($dir === '' || $dir === '/') {
-				$pathparts = \pathinfo($entryName);
-				$timestamp = \substr($pathparts['extension'], 1);
+				$pathparts = pathinfo($entryName);
+				$timestamp = substr($pathparts['extension'], 1);
 				$name = $pathparts['filename'];
 			} elseif ($timestamp === null) {
 				// for subfolders we need to calculate the timestamp only once
-				$parts = \explode('/', \ltrim($dir, '/'));
-				$timestamp = \substr(\pathinfo($parts[0], PATHINFO_EXTENSION), 1);
+				$parts = explode('/', ltrim($dir, '/'));
+				$timestamp = substr(pathinfo($parts[0], PATHINFO_EXTENSION), 1);
 			}
 
 			$i = [
@@ -90,11 +90,11 @@ class Helper {
 					$originalLocationsCache = \OCA\Files_Trashbin\Trashbin::getLocations($user);
 				}
 
-				$originalName = \substr($entryName, 0, -\strlen($timestamp)-2);
+				$originalName = substr($entryName, 0, -\strlen($timestamp)-2);
 				if (isset($originalLocationsCache[$originalName][$timestamp])) {
 					$originalPath = $originalLocationsCache[$originalName][$timestamp];
-					if (\substr($originalPath, -1) === '/') {
-						$originalPath = \substr($originalPath, 0, -1);
+					if (substr($originalPath, -1) === '/') {
+						$originalPath = substr($originalPath, 0, -1);
 					}
 
 					$i['extraData'] = $originalPath . '/' . $originalName;

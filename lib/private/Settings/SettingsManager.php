@@ -123,20 +123,22 @@ class SettingsManager implements ISettingsManager {
 	 * @param CertificateManager $certificateManager
 	 * @param IFactory $lfactory
 	 */
-	public function __construct(IL10N $l,
-								IAppManager $appManager,
-								IUserSession $userSession,
-								ILogger $logger,
-								IGroupManager $groupManager,
-								IConfig $config,
-								Defaults $defaults,
-								IURLGenerator $urlGenerator,
-								Helper $helper,
-								ILockingProvider $lockingProvider,
-								IDBConnection $dbconnection,
-								ILicenseManager $licenseManager,
-								$certificateManager,
-								IFactory $lfactory) {
+	public function __construct(
+		IL10N $l,
+		IAppManager $appManager,
+		IUserSession $userSession,
+		ILogger $logger,
+		IGroupManager $groupManager,
+		IConfig $config,
+		Defaults $defaults,
+		IURLGenerator $urlGenerator,
+		Helper $helper,
+		ILockingProvider $lockingProvider,
+		IDBConnection $dbconnection,
+		ILicenseManager $licenseManager,
+		$certificateManager,
+		IFactory $lfactory
+	) {
 		$this->l = $l;
 		$this->appManager = $appManager;
 		$this->userSession = $userSession;
@@ -284,14 +286,16 @@ class SettingsManager implements ISettingsManager {
 			Cors::class => new Cors(
 				$this->userSession,
 				$this->urlGenerator,
-				$this->config),
+				$this->config
+			),
 			Quota::class => new Quota($this->helper),
 			// Admin
 			BackgroundJobs::class => new BackgroundJobs($this->config),
 			Certificates::class => new Certificates(
 				$this->config,
 				$this->urlGenerator,
-				$this->certificateManager),
+				$this->certificateManager
+			),
 			Encryption::class => new Encryption(),
 			FileSharing::class => new FileSharing($this->config, $this->helper, $this->lfactory),
 			Logging::class => new Logging($this->config, $this->urlGenerator, $this->helper),
@@ -302,7 +306,8 @@ class SettingsManager implements ISettingsManager {
 				$this->config,
 				$this->dbconnection,
 				$this->helper,
-				$this->lockingProvider),
+				$this->lockingProvider
+			),
 			Tips::class => new Tips(),
 			LegacyAdmin::class => new LegacyAdmin($this->helper),
 			Apps::class => new Apps($this->config),
@@ -322,7 +327,7 @@ class SettingsManager implements ISettingsManager {
 	 * @return array of strings
 	 */
 	public function getPanelsList($type) {
-		return \array_merge($this->findRegisteredPanels($type), $this->getBuiltInPanels($type));
+		return array_merge($this->findRegisteredPanels($type), $this->getBuiltInPanels($type));
 	}
 
 	/**
@@ -338,7 +343,7 @@ class SettingsManager implements ISettingsManager {
 					if ($t === $type) {
 						// Allow app to register multiple panels of the same type
 						$detected = \is_array($detected) ? $detected : [$detected];
-						$panels = \array_merge($panels, $detected);
+						$panels = array_merge($panels, $detected);
 					}
 				}
 			}
@@ -383,7 +388,8 @@ class SettingsManager implements ISettingsManager {
 			if (!$panel instanceof ISettings) {
 				$this->log->error(
 					'Class: {class} not an instance of OCP\Settings\ISettings',
-					['class' => $className]);
+					['class' => $className]
+				);
 			} else {
 				return $panel;
 			}
@@ -393,7 +399,8 @@ class SettingsManager implements ISettingsManager {
 				[
 					'class' => $className,
 					'error' => $e->getMessage()
-				]);
+				]
+			);
 			throw $e;
 		}
 	}
@@ -467,7 +474,7 @@ class SettingsManager implements ISettingsManager {
 	 * @return array
 	 */
 	protected function sortOrder($objects) {
-		\usort($objects, function ($a, $b) {
+		usort($objects, function ($a, $b) {
 			/** @var ISection | ISettings $a */
 			/** @var ISection | ISettings $b */
 			return $a->getPriority() < $b->getPriority();

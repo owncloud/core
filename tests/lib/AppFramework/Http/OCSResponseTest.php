@@ -40,7 +40,12 @@ class OCSResponseTest extends \Test\TestCase {
 
 	public function testRender() {
 		$response = new OCSResponse(
-			'xml', 2, 'message', ['test' => 'hi'], 3, 4
+			'xml',
+			2,
+			'message',
+			['test' => 'hi'],
+			3,
+			4
 		);
 		$out = $response->render();
 		$expected = "<?xml version=\"1.0\"?>\n" .

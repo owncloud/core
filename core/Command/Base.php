@@ -28,10 +28,10 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Base extends Command {
-	const OUTPUT_FORMAT_PLAIN = 'plain';
-	const OUTPUT_FORMAT_JSON = 'json';
-	const OUTPUT_FORMAT_JSON_PRETTY = 'json_pretty';
-	const DEFAULT_OUTPUT_PREFIX = '  - ';
+	public const OUTPUT_FORMAT_PLAIN = 'plain';
+	public const OUTPUT_FORMAT_JSON = 'json';
+	public const OUTPUT_FORMAT_JSON_PRETTY = 'json_pretty';
+	public const DEFAULT_OUTPUT_PREFIX = '  - ';
 
 	protected $defaultOutputFormat = self::OUTPUT_FORMAT_PLAIN;
 
@@ -62,10 +62,10 @@ class Base extends Command {
 	protected function writeArrayInOutputFormat(InputInterface $input, OutputInterface $output, $items, $prefix = self::DEFAULT_OUTPUT_PREFIX, $showIntKeys = false) {
 		switch ($input->getOption('output')) {
 			case self::OUTPUT_FORMAT_JSON:
-				$output->writeln(\json_encode($items));
+				$output->writeln(json_encode($items));
 				break;
 			case self::OUTPUT_FORMAT_JSON_PRETTY:
-				$output->writeln(\json_encode($items, JSON_PRETTY_PRINT));
+				$output->writeln(json_encode($items, JSON_PRETTY_PRINT));
 				break;
 			default:
 				foreach ($items as $key => $item) {
@@ -102,10 +102,10 @@ class Base extends Command {
 
 		switch ($input->getOption('output')) {
 			case self::OUTPUT_FORMAT_JSON:
-				$output->writeln(\json_encode($item));
+				$output->writeln(json_encode($item));
 				break;
 			case self::OUTPUT_FORMAT_JSON_PRETTY:
-				$output->writeln(\json_encode($item, JSON_PRETTY_PRINT));
+				$output->writeln(json_encode($item, JSON_PRETTY_PRINT));
 				break;
 			default:
 				$output->writeln($this->valueToString($item, false));
@@ -131,7 +131,7 @@ class Base extends Command {
 	protected function hasBeenInterrupted() {
 		// return always false if pcntl_signal functions are not accessible
 		if ($this->php_pcntl_signal) {
-			\pcntl_signal_dispatch();
+			pcntl_signal_dispatch();
 			return $this->interrupted;
 		} else {
 			return false;
@@ -152,8 +152,8 @@ class Base extends Command {
 		$this->php_pcntl_signal = \function_exists('pcntl_signal');
 		if ($this->php_pcntl_signal) {
 			// Collect interrupts and notify the running command
-			\pcntl_signal(SIGTERM, [$this, 'cancelOperation']);
-			\pcntl_signal(SIGINT, [$this, 'cancelOperation']);
+			pcntl_signal(SIGTERM, [$this, 'cancelOperation']);
+			pcntl_signal(SIGINT, [$this, 'cancelOperation']);
 		}
 
 		return parent::run($input, $output);

@@ -103,7 +103,7 @@ class DefaultTokenMapper extends Mapper {
 		$data = $result->fetchAll();
 		$result->closeCursor();
 
-		$entities = \array_map(function ($row) {
+		$entities = array_map(function ($row) {
 			return DefaultToken::fromRow($row);
 		}, $data);
 

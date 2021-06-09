@@ -116,12 +116,12 @@ class OccAppManagementContext implements Context {
 	 */
 	public function theAppNameReturnedByTheOccCommandShouldBe($appName) {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$lastOutputArray = \json_decode($lastOutput, true);
+		$lastOutputArray = json_decode($lastOutput, true);
 		Assert::assertEquals(
 			$appName,
-			\key($lastOutputArray['apps']),
+			key($lastOutputArray['apps']),
 			"The app name expected to be returned by the occ command is {$appName} but got "
-			. \key($lastOutputArray['apps'])
+			. key($lastOutputArray['apps'])
 		);
 	}
 
@@ -138,10 +138,10 @@ class OccAppManagementContext implements Context {
 
 		$this->occContext->invokingTheCommand("config:list");
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$configOutputArray = \json_decode($lastOutput, true);
+		$configOutputArray = json_decode($lastOutput, true);
 
 		// Default apps location is '${INSTALLED_LOCATION}/apps/${appName}
-		if (\substr_compare($appPath, '/apps/${appName}', 0)) {
+		if (substr_compare($appPath, '/apps/${appName}', 0)) {
 			return;
 		}
 
@@ -150,7 +150,7 @@ class OccAppManagementContext implements Context {
 			$appPaths = $configOutputArray['system']['apps_paths'];
 
 			foreach ($appPaths as $path) {
-				if (\substr_compare($appPath, $path['path'], 0)) {
+				if (substr_compare($appPath, $path['path'], 0)) {
 					return;
 				}
 			}
@@ -170,7 +170,7 @@ class OccAppManagementContext implements Context {
 	 */
 	public function theAppEnabledStatusShouldBe($appName, $appStatus) {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$lastOutputArray = \json_decode($lastOutput, true);
+		$lastOutputArray = json_decode($lastOutput, true);
 		$actualAppEnabledStatus = $lastOutputArray['apps'][$appName]['enabled'];
 		Assert::assertEquals(
 			$appStatus,
@@ -189,7 +189,7 @@ class OccAppManagementContext implements Context {
 	public function theAppsReturnedByTheOccCommandShouldInclude(TableNode $appListTable) {
 		$this->featureContext->verifyTableNodeColumnsCount($appListTable, 1);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
-		$lastOutputApps = \array_keys(\json_decode($lastOutput, true)['apps']);
+		$lastOutputApps = array_keys(json_decode($lastOutput, true)['apps']);
 
 		$apps = $appListTable->getRows();
 		$appsSimplified = $this->featureContext->simplifyArray($apps);
@@ -199,7 +199,7 @@ class OccAppManagementContext implements Context {
 				$app,
 				$lastOutputApps,
 				"The apps: '"
-				. \implode(', ', $lastOutputApps)
+				. implode(', ', $lastOutputApps)
 				. "' returned by the occ command were expected to include '$app', but does not"
 			);
 		}

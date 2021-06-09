@@ -28,8 +28,8 @@ use OCP\IConfig;
 class Expiration {
 
 	// how long do we keep files in the trash bin if no other value is defined in the config file (unit: days)
-	const DEFAULT_RETENTION_OBLIGATION = 30;
-	const NO_OBLIGATION = -1;
+	public const DEFAULT_RETENTION_OBLIGATION = 30;
+	public const NO_OBLIGATION = -1;
 
 	/** @var ITimeFactory */
 	private $timeFactory;
@@ -119,11 +119,11 @@ class Expiration {
 	}
 
 	private function parseRetentionObligation() {
-		$splitValues = \explode(',', $this->retentionObligation);
+		$splitValues = explode(',', $this->retentionObligation);
 		if (!isset($splitValues[0])) {
 			$minValue = self::DEFAULT_RETENTION_OBLIGATION;
 		} else {
-			$minValue = \trim($splitValues[0]);
+			$minValue = trim($splitValues[0]);
 		}
 
 		if (!isset($splitValues[1]) && $minValue === 'auto') {
@@ -131,7 +131,7 @@ class Expiration {
 		} elseif (!isset($splitValues[1])) {
 			$maxValue = self::DEFAULT_RETENTION_OBLIGATION;
 		} else {
-			$maxValue = \trim($splitValues[1]);
+			$maxValue = trim($splitValues[1]);
 		}
 
 		if ($minValue === 'auto' && $maxValue === 'auto') {

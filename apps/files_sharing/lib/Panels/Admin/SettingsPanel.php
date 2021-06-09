@@ -33,7 +33,7 @@ class SettingsPanel implements ISettings {
 
 	public function getPanel() {
 		$tmpl = new Template('files_sharing', 'settings');
-		$tmpl->assign('blacklistedReceivers', \implode('|', $this->sharingBlacklist->getBlacklistedReceiverGroups()));
+		$tmpl->assign('blacklistedReceivers', implode('|', $this->sharingBlacklist->getBlacklistedReceiverGroups()));
 		return $tmpl;
 	}
 

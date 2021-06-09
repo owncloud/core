@@ -81,13 +81,16 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 		$ofUser = $this->featureContext->getActualUsername($ofUser);
 		$normalizedUser = $this->featureContext->normalizeUsername($ofUser);
 		$calendar = $this->featureContext->substituteInLineCodes(
-			$calendar, $normalizedUser
+			$calendar,
+			$normalizedUser
 		);
 		$davUrl = $this->featureContext->getBaseUrl()
 			. "/remote.php/dav/calendars/$calendar";
 
 		$this->response = HttpRequestHelper::get(
-			$davUrl, $user, $this->featureContext->getPasswordForUser($user)
+			$davUrl,
+			$user,
+			$this->featureContext->getPasswordForUser($user)
 		);
 		$this->featureContext->setResponseXml(
 			HttpRequestHelper::parseResponseAsXml($this->response)
@@ -149,8 +152,12 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 			'</c:mkcalendar>';
 
 		$this->response = HttpRequestHelper::sendRequest(
-			$davUrl, "MKCALENDAR", $user,
-			$this->featureContext->getPasswordForUser($user), null, $body
+			$davUrl,
+			"MKCALENDAR",
+			$user,
+			$this->featureContext->getPasswordForUser($user),
+			null,
+			$body
 		);
 		$this->theCalDavHttpStatusCodeShouldBe("201");
 		$this->featureContext->setResponseXml(

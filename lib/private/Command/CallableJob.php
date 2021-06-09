@@ -25,7 +25,7 @@ use OC\BackgroundJob\QueuedJob;
 
 class CallableJob extends QueuedJob {
 	protected function run($serializedCallable) {
-		$callable = \unserialize($serializedCallable);
+		$callable = unserialize($serializedCallable);
 		if (\is_callable($callable)) {
 			$callable();
 		} else {

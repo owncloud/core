@@ -54,12 +54,14 @@ class GroupsController extends Controller {
 	 * @param bool $isAdmin
 	 * @param IL10N $l10n
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IGroupManager $groupManager,
-								IUserSession $userSession,
-								$isAdmin,
-								IL10N $l10n) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IGroupManager $groupManager,
+		IUserSession $userSession,
+		$isAdmin,
+		IL10N $l10n
+	) {
 		parent::__construct($appName, $request);
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
@@ -132,7 +134,7 @@ class GroupsController extends Controller {
 	 * @return DataResponse
 	 */
 	public function destroy($id) {
-		$group = $this->groupManager->get(\urldecode($id));
+		$group = $this->groupManager->get(urldecode($id));
 		if ($group) {
 			if ($group->delete()) {
 				return new DataResponse(
@@ -171,10 +173,10 @@ class GroupsController extends Controller {
 		foreach ($this->groupManager->getBackends() as $backend) {
 			$groups = $backend->getGroups();
 			if ($backend->implementsActions($backend::ADD_TO_GROUP)) {
-				\array_push($assignableGroups, ...$groups);
+				array_push($assignableGroups, ...$groups);
 			}
 			if ($backend->implementsActions($backend::REMOVE_FROM_GROUP)) {
-				\array_push($removableGroups, ...$groups);
+				array_push($removableGroups, ...$groups);
 			}
 		}
 

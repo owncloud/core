@@ -49,7 +49,9 @@ class AppConfigurationContext implements Context {
 	 * @return void
 	 */
 	public function adminSetsServerParameterToUsingAPI(
-		$parameter, $app, $value
+		$parameter,
+		$app,
+		$value
 	) {
 		$this->modifyAppConfig($app, $parameter, $value);
 	}
@@ -69,7 +71,7 @@ class AppConfigurationContext implements Context {
 		if (\TestHelpers\OcisHelper::isTestingOnOcisOrReva()) {
 			return;
 		}
-		$value = \trim($value, $value[0]);
+		$value = trim($value, $value[0]);
 		$this->adminSetsServerParameterToUsingAPI($parameter, $app, $value);
 	}
 
@@ -84,7 +86,9 @@ class AppConfigurationContext implements Context {
 	 * @return void
 	 */
 	public function theCapabilitiesSettingOfAppParameterShouldBe(
-		$capabilitiesApp, $capabilitiesPath, $expectedValue
+		$capabilitiesApp,
+		$capabilitiesPath,
+		$expectedValue
 	) {
 		$this->theAdministratorGetsCapabilitiesCheckResponse();
 		$actualValue = $this->getAppParameter($capabilitiesApp, $capabilitiesPath);
@@ -125,8 +129,13 @@ class AppConfigurationContext implements Context {
 		$password = $this->featureContext->getPasswordForUser($user);
 		$this->featureContext->setResponse(
 			OcsApiHelper::sendRequest(
-				$this->featureContext->getBaseUrl(), $user, $password, 'GET', '/cloud/capabilities',
-				[], $this->featureContext->getOcsApiVersion()
+				$this->featureContext->getBaseUrl(),
+				$user,
+				$password,
+				'GET',
+				'/cloud/capabilities',
+				[],
+				$this->featureContext->getOcsApiVersion()
 			)
 		);
 	}
@@ -208,17 +217,19 @@ class AppConfigurationContext implements Context {
 	 * @return string
 	 */
 	public function getParameterValueFromXml(
-		$xml, $capabilitiesApp, $capabilitiesPath
+		$xml,
+		$capabilitiesApp,
+		$capabilitiesPath
 	) {
-		$path_to_element = \explode('@@@', $capabilitiesPath);
+		$path_to_element = explode('@@@', $capabilitiesPath);
 		$answeredValue = $xml->{$capabilitiesApp};
 		foreach ($path_to_element as $element) {
-			$nameIndexParts = \explode('[', $element);
+			$nameIndexParts = explode('[', $element);
 			if (isset($nameIndexParts[1])) {
 				// This part of the path should be something like "some_element[1]"
 				// Separately extract the name and the index
 				$name = $nameIndexParts[0];
-				$index = (int) \explode(']', $nameIndexParts[1])[0];
+				$index = (int) explode(']', $nameIndexParts[1])[0];
 				// and use those to construct the reference into the next XML level
 				$answeredValue = $answeredValue->{$name}[$index];
 			} else {
@@ -239,18 +250,20 @@ class AppConfigurationContext implements Context {
 	 * @return boolean
 	 */
 	public function parameterValueExistsInXml(
-		$xml, $capabilitiesApp, $capabilitiesPath
+		$xml,
+		$capabilitiesApp,
+		$capabilitiesPath
 	) {
-		$path_to_element = \explode('@@@', $capabilitiesPath);
+		$path_to_element = explode('@@@', $capabilitiesPath);
 		$answeredValue = $xml->{$capabilitiesApp};
 
 		foreach ($path_to_element as $element) {
-			$nameIndexParts = \explode('[', $element);
+			$nameIndexParts = explode('[', $element);
 			if (isset($nameIndexParts[1])) {
 				// This part of the path should be something like "some_element[1]"
 				// Separately extract the name and the index
 				$name = $nameIndexParts[0];
-				$index = (int) \explode(']', $nameIndexParts[1])[0];
+				$index = (int) explode(']', $nameIndexParts[1])[0];
 				// and use those to construct the reference into the next XML level
 				if (isset($answeredValue->{$name}[$index])) {
 					$answeredValue = $answeredValue->{$name}[$index];

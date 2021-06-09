@@ -232,12 +232,12 @@ class SignAppTest extends TestCase {
 			->expects($this->at(0))
 			->method('file_get_contents')
 			->with(\OC::$SERVERROOT . '/tests/data/integritycheck/core.key')
-			->will($this->returnValue(\file_get_contents(\OC::$SERVERROOT . '/tests/data/integritycheck/core.key')));
+			->will($this->returnValue(file_get_contents(\OC::$SERVERROOT . '/tests/data/integritycheck/core.key')));
 		$this->fileAccessHelper
 			->expects($this->at(1))
 			->method('file_get_contents')
 			->with(\OC::$SERVERROOT . '/tests/data/integritycheck/core.crt')
-			->will($this->returnValue(\file_get_contents(\OC::$SERVERROOT . '/tests/data/integritycheck/core.crt')));
+			->will($this->returnValue(file_get_contents(\OC::$SERVERROOT . '/tests/data/integritycheck/core.crt')));
 
 		$this->checker
 			->expects($this->once())

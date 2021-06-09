@@ -27,15 +27,15 @@ use OC\AppFramework\App;
 use OCP\AppFramework\Http\Response;
 
 function rrmdir($directory) {
-	$files = \array_diff(\scandir($directory), ['.','..']);
+	$files = array_diff(scandir($directory), ['.','..']);
 	foreach ($files as $file) {
-		if (\is_dir($directory . '/' . $file)) {
+		if (is_dir($directory . '/' . $file)) {
 			rrmdir($directory . '/' . $file);
 		} else {
-			\unlink($directory . '/' . $file);
+			unlink($directory . '/' . $file);
 		}
 	}
-	return \rmdir($directory);
+	return rmdir($directory);
 }
 
 class AppTest extends \Test\TestCase {
@@ -56,11 +56,13 @@ class AppTest extends \Test\TestCase {
 
 		$this->container = new \OC\AppFramework\DependencyInjection\DIContainer('test', []);
 		$this->controller = $this->getMockBuilder(
-			'OCP\AppFramework\Controller')
+			'OCP\AppFramework\Controller'
+		)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->dispatcher = $this->getMockBuilder(
-			'OC\AppFramework\Http\Dispatcher')
+			'OC\AppFramework\Http\Dispatcher'
+		)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -78,29 +80,34 @@ class AppTest extends \Test\TestCase {
 
 		$this->appPath = __DIR__ . '/../../../apps/namespacetestapp';
 		$infoXmlPath = $this->appPath . '/appinfo/info.xml';
-		\mkdir($this->appPath . '/appinfo', 0777, true);
+		mkdir($this->appPath . '/appinfo', 0777, true);
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>' .
 		'<info>' .
 			'<id>namespacetestapp</id>' .
 			'<namespace>NameSpaceTestApp</namespace>' .
 		'</info>';
-		\file_put_contents($infoXmlPath, $xml);
+		file_put_contents($infoXmlPath, $xml);
 	}
 
 	public function testControllerNameAndMethodAreBeingPassed() {
 		$return = [null, [], [], null, new Response()];
 		$this->dispatcher->expects($this->once())
 			->method('dispatch')
-			->with($this->equalTo($this->controller),
-				$this->equalTo($this->controllerMethod))
+			->with(
+				$this->equalTo($this->controller),
+				$this->equalTo($this->controllerMethod)
+			)
 			->will($this->returnValue($return));
 
 		$this->io->expects($this->never())
 			->method('setOutput');
 
-		App::main($this->controllerName, $this->controllerMethod,
-			$this->container);
+		App::main(
+			$this->controllerName,
+			$this->controllerMethod,
+			$this->container
+		);
 	}
 
 	public function testBuildAppNamespace() {
@@ -127,8 +134,10 @@ class AppTest extends \Test\TestCase {
 		$return = [null, [], [], $this->output, new Response()];
 		$this->dispatcher->expects($this->once())
 			->method('dispatch')
-			->with($this->equalTo($this->controller),
-				$this->equalTo($this->controllerMethod))
+			->with(
+				$this->equalTo($this->controller),
+				$this->equalTo($this->controllerMethod)
+			)
 			->will($this->returnValue($return));
 		$this->io->expects($this->once())
 			->method('setOutput')
@@ -143,8 +152,10 @@ class AppTest extends \Test\TestCase {
 		$return = [null, [], [], $this->output, $mock];
 		$this->dispatcher->expects($this->once())
 			->method('dispatch')
-			->with($this->equalTo($this->controller),
-				$this->equalTo($this->controllerMethod))
+			->with(
+				$this->equalTo($this->controller),
+				$this->equalTo($this->controllerMethod)
+			)
 			->will($this->returnValue($return));
 		$mock->expects($this->once())
 			->method('callback');

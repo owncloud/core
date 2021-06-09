@@ -26,13 +26,13 @@
 namespace OC\Image;
 
 class BmpToResource {
-	const MAGIC = 19778; // ASCII BM
-	const BITMAP_HEADER_SIZE_BYTES = 14;
+	public const MAGIC = 19778; // ASCII BM
+	public const BITMAP_HEADER_SIZE_BYTES = 14;
 
-	const DIB_BITMAPINFOHEADER_SIZE_BYTES = 40;
+	public const DIB_BITMAPINFOHEADER_SIZE_BYTES = 40;
 
-	const COMPRESSION_BI_RGB = 0;
-	const COMPRESSION_BI_BITFIELDS = 3;
+	public const COMPRESSION_BI_RGB = 0;
+	public const COMPRESSION_BI_BITFIELDS = 3;
 
 	/** @var \SplFileObject $file */
 	private $file;
@@ -87,7 +87,7 @@ class BmpToResource {
 			$this->pixelArray = $this->readPixelArray();
 
 			// create gd image
-			$this->resource = \imagecreatetruecolor($this->header['width'], $this->header['height']);
+			$this->resource = imagecreatetruecolor($this->header['width'], $this->header['height']);
 			if ($this->resource === false) {
 				throw new \RuntimeException('imagecreatetruecolor failed for file ' . $this->getFilename() . '" with dimensions ' . $this->header['width'] . 'x' . $this->header['height']);
 			}
@@ -114,7 +114,7 @@ class BmpToResource {
 	 * @return array
 	 */
 	private function readBitmapHeader() {
-		$bitmapHeaderArray = @\unpack('vtype/Vfilesize/Vreserved/Voffset', $this->readFile(self::BITMAP_HEADER_SIZE_BYTES));
+		$bitmapHeaderArray = @unpack('vtype/Vfilesize/Vreserved/Voffset', $this->readFile(self::BITMAP_HEADER_SIZE_BYTES));
 		if (!isset($bitmapHeaderArray['type']) || $bitmapHeaderArray['type'] !== self::MAGIC) {
 			throw new \DomainException('No valid bitmap signature found in ' . $this->getFilename());
 		}
@@ -129,15 +129,15 @@ class BmpToResource {
 	 * @return array
 	 */
 	private function readDibHeader() {
-		$dibHeaderSizeArray = @\unpack('Vheadersize', $this->readFile(4));
+		$dibHeaderSizeArray = @unpack('Vheadersize', $this->readFile(4));
 		if (!isset($dibHeaderSizeArray['headersize']) || $dibHeaderSizeArray['headersize'] < self::DIB_BITMAPINFOHEADER_SIZE_BYTES) {
 			throw new \UnexpectedValueException('Unsupported DIB header version in ' . $this->getFilename());
 		}
 		$rawDibHeader = $this->readFile($dibHeaderSizeArray['headersize'] - 4);
-		$dibHeader = @\unpack('Vwidth/Vheight/vplanes/vbits/Vcompression/Vimagesize/Vxres/Vyres/Vcolors/Vimportant', $rawDibHeader);
+		$dibHeader = @unpack('Vwidth/Vheight/vplanes/vbits/Vcompression/Vimagesize/Vxres/Vyres/Vcolors/Vimportant', $rawDibHeader);
 
 		// fixup colors
-		$dibHeader['colors'] = $dibHeader['colors'] === 0 ? \pow(2, $dibHeader['bits']) : $dibHeader['colors'];
+		$dibHeader['colors'] = $dibHeader['colors'] === 0 ? pow(2, $dibHeader['bits']) : $dibHeader['colors'];
 
 		// fixup imagesize - it can be zero
 		if ($dibHeader['imagesize'] < 1) {
@@ -148,7 +148,7 @@ class BmpToResource {
 			throw new \UnexpectedValueException('Can not obtain image size of ' . $this->getFilename());
 		}
 
-		$validBitDepth = \array_keys($this->bytesPerDepth);
+		$validBitDepth = array_keys($this->bytesPerDepth);
 		if (!\in_array($dibHeader['bits'], $validBitDepth)) {
 			throw new \UnexpectedValueException('Bit Depth ' . $dibHeader['bits'] . ' in ' . $this->getFilename() . ' is not supported');
 		}
@@ -159,8 +159,8 @@ class BmpToResource {
 	private function fixImageSize($header) {
 		// No compression - calculate it in our own
 		if ($header['compression'] === self::COMPRESSION_BI_RGB) {
-			$bytesPerRow = \intval(\floor(($header['bits'] * $header['width'] + 31) / 32) * 4);
-			$imageSize = $bytesPerRow * \abs($header['height']);
+			$bytesPerRow = \intval(floor(($header['bits'] * $header['width'] + 31) / 32) * 4);
+			$imageSize = $bytesPerRow * abs($header['height']);
 		} else {
 			$imageSize = $this->file->getSize() - $this->header['offset'];
 		}
@@ -172,7 +172,7 @@ class BmpToResource {
 	 * @return array
 	 */
 	private function readBitMasks() {
-		return @\unpack('VrMask/VgMask/VbMask', $this->readFile(12));
+		return @unpack('VrMask/VgMask/VbMask', $this->readFile(12));
 	}
 
 	/**
@@ -184,8 +184,8 @@ class BmpToResource {
 	 * @return array
 	 */
 	private function readColorTable($colors) {
-		$palette = @\unpack('V' . $colors, $this->readFile($colors * 4));
-		return \array_values($palette);
+		$palette = @unpack('V' . $colors, $this->readFile($colors * 4));
+		return array_values($palette);
 	}
 
 	/**
@@ -196,17 +196,17 @@ class BmpToResource {
 		$this->file->fseek($this->header['offset'], SEEK_SET);
 		$pixelString = $this->readFile($this->header['imagesize']);
 
-		$bytesPerRow = \intval(\floor(($this->header['bits'] * $this->header['width'] + 31) / 32) * 4);
-		$plainPixelArray = \str_split($pixelString, $bytesPerRow);
+		$bytesPerRow = \intval(floor(($this->header['bits'] * $this->header['width'] + 31) / 32) * 4);
+		$plainPixelArray = str_split($pixelString, $bytesPerRow);
 
 		// Positive height: Bottom row first.
 		// Negative height: Upper row first
-		$plainPixelArray = ($this->header['height']<0) ? \array_reverse($plainPixelArray) : $plainPixelArray;
+		$plainPixelArray = ($this->header['height']<0) ? array_reverse($plainPixelArray) : $plainPixelArray;
 
 		$bytesPerColumn = $this->bytesPerDepth[$this->header['bits']];
 		$pixelArray = [];
 		foreach ($plainPixelArray as $pixelRow) {
-			$pixelArray[] = \str_split($pixelRow, $bytesPerColumn);
+			$pixelArray[] = str_split($pixelRow, $bytesPerColumn);
 		}
 
 		return $pixelArray;
@@ -222,7 +222,7 @@ class BmpToResource {
 			foreach ($pixelRow as $column) {
 				$colors = $this->getColors($column);
 				foreach ($colors as $color) {
-					\imagesetpixel($this->resource, $x, $y, $color);
+					imagesetpixel($this->resource, $x, $y, $color);
 					$x++;
 					if ($x>=$this->header['width']) {
 						$x=0;
@@ -231,7 +231,7 @@ class BmpToResource {
 				}
 			}
 			$y++;
-			if ($y >= \abs($this->header['height'])) {
+			if ($y >= abs($this->header['height'])) {
 				break;
 			}
 		}
@@ -247,24 +247,24 @@ class BmpToResource {
 		$extra = \chr(0); // used to complement an argument to word or double word
 		$colors = [];
 		if (\in_array($this->header['bits'], [32, 24])) {
-			$colors = @\unpack('V', $raw . $extra);
+			$colors = @unpack('V', $raw . $extra);
 		} elseif ($this->header['bits'] === 16) {
-			$colors = @\unpack('v', $raw);
+			$colors = @unpack('v', $raw);
 			if (!isset($this->header['rMask']) || $this->header['rMask'] != 0xf800) {
 				$colors[1] = (($colors[1] & 0x7c00) >> 7) * 65536 + (($colors[1] & 0x03e0) >> 2) * 256 + (($colors[1] & 0x001f) << 3); // 555
 			} else {
 				$colors[1] = (($colors[1] & 0xf800) >> 8) * 65536 + (($colors[1] & 0x07e0) >> 3) * 256 + (($colors[1] & 0x001f) << 3); // 565
 			}
 		} elseif (\in_array($this->header['bits'], [8, 4, 1])) {
-			$colors = \array_map(
+			$colors = array_map(
 				function ($i) {
-					return $this->palette[ \bindec($i) ];
+					return $this->palette[ bindec($i) ];
 				},
 				$this->splitByteIntoArray($raw, $this->header['bits'])
 			);
 		}
 
-		$colors = \array_values($colors);
+		$colors = array_values($colors);
 		return $colors;
 	}
 
@@ -276,8 +276,8 @@ class BmpToResource {
 	 */
 	private function splitByteIntoArray($byte, $bitsPerPart) {
 		$code = \ord($byte);
-		$stringOfBits = \str_pad(\decbin($code), 8, "0", \STR_PAD_LEFT);
-		return \str_split($stringOfBits, $bitsPerPart);
+		$stringOfBits = str_pad(decbin($code), 8, "0", \STR_PAD_LEFT);
+		return str_split($stringOfBits, $bitsPerPart);
 	}
 
 	/**

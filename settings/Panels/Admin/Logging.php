@@ -37,9 +37,11 @@ class Logging implements ISettings {
 	/** @var Helper  */
 	protected $helper;
 
-	public function __construct(IConfig $config,
-								IURLGenerator $urlGenerator,
-								Helper $helper) {
+	public function __construct(
+		IConfig $config,
+		IURLGenerator $urlGenerator,
+		Helper $helper
+	) {
 		$this->config = $config;
 		$this->urlGenerator = $urlGenerator;
 		$this->helper = $helper;
@@ -52,7 +54,7 @@ class Logging implements ISettings {
 	public function getPanel() {
 		$tmpl = new Template('settings', 'panels/admin/logging');
 		$logFilePath = $this->helper->getLogFilePath();
-		$doesLogFileExist = \file_exists($logFilePath);
+		$doesLogFileExist = file_exists($logFilePath);
 		$logFileSize = 0;
 		if ($doesLogFileExist) {
 			$h = new LargeFileHelper();

@@ -53,11 +53,11 @@ class Certificate implements ICertificate {
 
 		// If string starts with "file://" ignore the certificate
 		$query = 'file://';
-		if (\strtolower(\substr($data, 0, \strlen($query))) === $query) {
+		if (strtolower(substr($data, 0, \strlen($query))) === $query) {
 			throw new \Exception('Certificate could not get parsed.');
 		}
 
-		$info = \openssl_x509_parse($data);
+		$info = openssl_x509_parse($data);
 		if (!\is_array($info)) {
 			throw new \Exception('Certificate could not get parsed.');
 		}

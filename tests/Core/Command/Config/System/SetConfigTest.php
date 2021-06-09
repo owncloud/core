@@ -187,7 +187,8 @@ class SetConfigTest extends TestCase {
 	 * @dataProvider castValueProvider
 	 */
 	public function testCastValue($value, $type, $expectedValue) {
-		$this->assertSame($expectedValue,
+		$this->assertSame(
+			$expectedValue,
 			$this->invokePrivate($this->command, 'castValue', [$value, $type])
 		);
 	}

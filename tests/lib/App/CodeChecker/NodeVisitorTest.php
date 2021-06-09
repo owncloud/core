@@ -62,7 +62,7 @@ class NodeVisitorTest extends TestCase {
 		);
 		$errors = $checker->analyseFile(\OC::$SERVERROOT . "/tests/data/app/code-checker/$fileToVerify");
 
-		$this->assertCount(\sizeof($expectedErrors), $errors);
+		$this->assertCount(sizeof($expectedErrors), $errors);
 
 		foreach ($expectedErrors as $int => $expectedError) {
 			$this->assertEquals($expectedError[0], $errors[$int]['disallowedToken']);

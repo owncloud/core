@@ -46,7 +46,7 @@ class HelpAndTipsPage extends OwncloudPage {
 	 * @return string
 	 */
 	public function getLinkXpath($linkTitle) {
-		return \sprintf($this->linkXpath, $linkTitle);
+		return sprintf($this->linkXpath, $linkTitle);
 	}
 
 	/**

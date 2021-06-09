@@ -59,7 +59,7 @@ class CorsContext implements Context {
 		);
 		if ($this->featureContext->getExitStatusCodeOfOccCommand() === 0) {
 			$domainsJson = $this->featureContext->getStdOutOfOccCommand();
-			$domains = \json_decode($domainsJson);
+			$domains = json_decode($domainsJson);
 		} else {
 			$domainsJson = "";
 			$domains = [];
@@ -71,7 +71,7 @@ class CorsContext implements Context {
 		}
 
 		$domains[] = $domain;
-		$valueString = \json_encode($domains);
+		$valueString = json_encode($domains);
 
 		$this->featureContext->runOcc(
 			[
@@ -97,7 +97,7 @@ class CorsContext implements Context {
 				'domains'
 			]
 		);
-		$domains = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		$domains = json_decode($this->featureContext->getStdOutOfOccCommand());
 
 		Assert::assertIsArray(
 			$domains,
@@ -120,7 +120,8 @@ class CorsContext implements Context {
 	 */
 	public function adminAddDomainToPrivateCORSLists($domain) {
 		$this->addDomainToPrivateCORSLists(
-			$this->featureContext->getAdminUsername(), $domain
+			$this->featureContext->getAdminUsername(),
+			$domain
 		);
 	}
 

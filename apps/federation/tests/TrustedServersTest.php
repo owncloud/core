@@ -125,13 +125,16 @@ class TrustedServersTest extends TestCase {
 				->willReturn('token');
 			$this->dbHandler->expects($this->once())->method('addToken')->with('https://url', 'token');
 			$this->jobList->expects($this->once())->method('add')
-				->with('OCA\Federation\BackgroundJob\RequestSharedSecret',
-						['url' => 'https://url', 'token' => 'token']);
+				->with(
+					'OCA\Federation\BackgroundJob\RequestSharedSecret',
+					['url' => 'https://url', 'token' => 'token']
+				);
 		} else {
 			$this->jobList->expects($this->never())->method('add');
 		}
 
-		$this->assertSame($success,
+		$this->assertSame(
+			$success,
 			$trustedServers->addServer('url')
 		);
 	}
@@ -170,7 +173,8 @@ class TrustedServersTest extends TestCase {
 		$this->config->expects($this->once())->method('getAppValue')
 			->with('federation', 'autoAddServers', '0')->willReturn($status);
 
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->trustedServers->getAutoAddServers()
 		);
 	}
@@ -288,7 +292,8 @@ class TrustedServersTest extends TestCase {
 			$trustedServers->expects($this->never())->method('checkOwnCloudVersion');
 		}
 
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$trustedServers->isOwnCloudServer($server)
 		);
 	}
@@ -356,7 +361,8 @@ class TrustedServersTest extends TestCase {
 	 * @param string $expected
 	 */
 	public function testUpdateProtocol($url, $expected) {
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->invokePrivate($this->trustedServers, 'updateProtocol', [$url])
 		);
 	}

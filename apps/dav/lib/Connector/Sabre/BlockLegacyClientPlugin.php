@@ -70,9 +70,9 @@ class BlockLegacyClientPlugin extends ServerPlugin {
 
 		// Match on the mirall version which is in scheme "Mozilla/5.0 (%1) mirall/%2" or
 		// "mirall/%1" for older releases
-		\preg_match("/(?:mirall\\/)([\d.]+)/i", $userAgent, $versionMatches);
+		preg_match("/(?:mirall\\/)([\d.]+)/i", $userAgent, $versionMatches);
 		if (isset($versionMatches[1]) &&
-			\version_compare($versionMatches[1], $minimumSupportedDesktopVersion) === -1) {
+			version_compare($versionMatches[1], $minimumSupportedDesktopVersion) === -1) {
 			throw new \Sabre\DAV\Exception\Forbidden('Unsupported client version.');
 		}
 	}

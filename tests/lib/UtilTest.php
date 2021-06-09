@@ -71,7 +71,7 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	public function testFormatDate() {
-		\date_default_timezone_set("UTC");
+		date_default_timezone_set("UTC");
 
 		$result = OC_Util::formatDate(1350129205);
 		$expected = 'October 13, 2012 at 11:53:25 AM UTC';
@@ -83,7 +83,7 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	public function testFormatDateWithTZ() {
-		\date_default_timezone_set("UTC");
+		date_default_timezone_set("UTC");
 
 		$result = OC_Util::formatDate(1350129205, false, 'Europe/Berlin');
 		$expected = 'October 13, 2012 at 1:53:25 PM GMT+2';
@@ -113,7 +113,7 @@ class UtilTest extends \Test\TestCase {
 	 * @dataProvider formatDateWithTZFromSessionData
 	 */
 	public function testFormatDateWithTZFromSession($offset, $expected, $expectedTimeZone) {
-		\date_default_timezone_set("UTC");
+		date_default_timezone_set("UTC");
 
 		$oldDateTimeFormatter = \OC::$server->query('DateTimeFormatter');
 		\OC::$server->getSession()->set('timezone', $offset);
@@ -206,7 +206,7 @@ class UtilTest extends \Test\TestCase {
 		\OC::$server->getConfig()->deleteSystemValue('instanceid');
 		$instanceId = OC_Util::getInstanceId();
 		$this->assertStringStartsWith('oc', $instanceId);
-		$matchesRegex = \preg_match('/^[a-z0-9]+$/', $instanceId);
+		$matchesRegex = preg_match('/^[a-z0-9]+$/', $instanceId);
 		$this->assertSame(1, $matchesRegex);
 	}
 
@@ -343,21 +343,21 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	public function testGetDefaultPageUrlWithRedirectUrlWithoutFrontController() {
-		\putenv('front_controller_active=false');
+		putenv('front_controller_active=false');
 
 		$_REQUEST['redirect_url'] = 'myRedirectUrl.com';
 		$this->assertSame('http://localhost'.\OC::$WEBROOT.'/myRedirectUrl.com', OC_Util::getDefaultPageUrl());
 	}
 
 	public function testGetDefaultPageUrlWithRedirectUrlRedirectBypassWithoutFrontController() {
-		\putenv('front_controller_active=false');
+		putenv('front_controller_active=false');
 
 		$_REQUEST['redirect_url'] = 'myRedirectUrl.com@foo.com:a';
 		$this->assertSame('http://localhost'.\OC::$WEBROOT.'/index.php/apps/files/', OC_Util::getDefaultPageUrl());
 	}
 
 	public function testGetDefaultPageUrlWithRedirectUrlRedirectBypassWithFrontController() {
-		\putenv('front_controller_active=true');
+		putenv('front_controller_active=true');
 		$_REQUEST['redirect_url'] = 'myRedirectUrl.com@foo.com:a';
 		$this->assertSame('http://localhost'.\OC::$WEBROOT.'/apps/files/', OC_Util::getDefaultPageUrl());
 	}
@@ -387,7 +387,7 @@ class UtilTest extends \Test\TestCase {
 
 	public function testCheckDataDirectoryValidity() {
 		$dataDir = \OCP\Files::tmpFolder();
-		\touch($dataDir . '/.ocdata');
+		touch($dataDir . '/.ocdata');
 		$errors = \OC_Util::checkDataDirectoryValidity($dataDir);
 		$this->assertEmpty($errors);
 		\OCP\Files::rmdirr($dataDir);
@@ -428,8 +428,8 @@ class UtilTest extends \Test\TestCase {
 			);
 		}
 		$skeletonDir = \OCP\Files::tmpFolder();
-		\touch($skeletonDir . '/a-file');
-		\chmod($skeletonDir, 0);
+		touch($skeletonDir . '/a-file');
+		chmod($skeletonDir, 0);
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('skeletondirectory', $skeletonDir);
 		$this->skeletonDirectoryWasSet = true;
@@ -450,8 +450,8 @@ class UtilTest extends \Test\TestCase {
 			);
 		}
 		$skeletonDir = \OCP\Files::tmpFolder();
-		\touch($skeletonDir . '/a-file');
-		\chmod($skeletonDir . '/a-file', 0);
+		touch($skeletonDir . '/a-file');
+		chmod($skeletonDir . '/a-file', 0);
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('skeletondirectory', $skeletonDir);
 		$this->skeletonDirectoryWasSet = true;
@@ -560,7 +560,7 @@ class UtilTest extends \Test\TestCase {
 		$this->assertArrayHasKey('productname', $statusInfo);
 		$this->assertEquals($statusInfo['productname'], 'ownCloud');
 		$statusInfoShortHostname = \OCP\Util::getStatusInfo(false, false, true);
-		if (\strpos($statusInfo['hostname'], '.') === false) {
+		if (strpos($statusInfo['hostname'], '.') === false) {
 			$this->assertEquals($statusInfo['hostname'], $statusInfoShortHostname['hostname']);
 		} else {
 			$this->assertNotEquals($statusInfo['hostname'], $statusInfoShortHostname['hostname']);

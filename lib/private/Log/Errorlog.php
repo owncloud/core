@@ -40,6 +40,6 @@ class Errorlog {
 	 * @param int $level
 	 */
 	public static function write($app, $message, $level) {
-		\error_log('[owncloud]['.$app.']['.$level.'] '.$message);
+		error_log('[owncloud]['.$app.']['.$level.'] '.$message);
 	}
 }

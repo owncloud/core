@@ -53,7 +53,7 @@ class AvatarHome implements ICollection {
 	}
 
 	public function getChild($name) {
-		$elements = \pathinfo($name);
+		$elements = pathinfo($name);
 		$ext = isset($elements['extension']) ? $elements['extension'] : '';
 		$size = \intval(isset($elements['filename']) ? $elements['filename'] : '64');
 		if (!\in_array($ext, ['jpeg', 'png'])) {

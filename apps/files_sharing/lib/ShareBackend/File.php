@@ -34,13 +34,13 @@ namespace OCA\Files_Sharing\ShareBackend;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 
 class File implements \OCP\Share_Backend_File_Dependent {
-	const FORMAT_SHARED_STORAGE = 0;
-	const FORMAT_GET_FOLDER_CONTENTS = 1;
-	const FORMAT_FILE_APP_ROOT = 2;
-	const FORMAT_OPENDIR = 3;
-	const FORMAT_GET_ALL = 4;
-	const FORMAT_PERMISSIONS = 5;
-	const FORMAT_TARGET_NAMES = 6;
+	public const FORMAT_SHARED_STORAGE = 0;
+	public const FORMAT_GET_FOLDER_CONTENTS = 1;
+	public const FORMAT_FILE_APP_ROOT = 2;
+	public const FORMAT_OPENDIR = 3;
+	public const FORMAT_GET_ALL = 4;
+	public const FORMAT_PERMISSIONS = 5;
+	public const FORMAT_TARGET_NAMES = 6;
 
 	private $path;
 
@@ -62,7 +62,7 @@ class File implements \OCP\Share_Backend_File_Dependent {
 			// FIXME: attributes should not be set here,
 			// keeping this pattern for now to avoid unexpected
 			// regressions
-			$this->path = \OC\Files\Filesystem::normalizePath(\basename($path));
+			$this->path = \OC\Files\Filesystem::normalizePath(basename($path));
 			return true;
 		} catch (\OCP\Files\NotFoundException $e) {
 			return false;
@@ -93,7 +93,7 @@ class File implements \OCP\Share_Backend_File_Dependent {
 	 */
 	public function generateTarget($filePath, $shareWith, $exclude = null) {
 		$shareFolder = \OCA\Files_Sharing\Helper::getShareFolder();
-		$target = \OC\Files\Filesystem::normalizePath($shareFolder . '/' . \basename($filePath));
+		$target = \OC\Files\Filesystem::normalizePath($shareFolder . '/' . basename($filePath));
 
 		// for group shares we return the target right away
 		if ($shareWith === false) {
@@ -105,7 +105,7 @@ class File implements \OCP\Share_Backend_File_Dependent {
 
 		if (!$view->is_dir($shareFolder)) {
 			$dir = '';
-			$subdirs = \explode('/', $shareFolder);
+			$subdirs = explode('/', $shareFolder);
 			foreach ($subdirs as $subdir) {
 				$dir = $dir . '/' . $subdir;
 				if (!$view->is_dir($dir)) {
@@ -122,7 +122,7 @@ class File implements \OCP\Share_Backend_File_Dependent {
 	public function formatItems($items, $format, $parameters = null) {
 		if ($format == self::FORMAT_SHARED_STORAGE) {
 			// Only 1 item should come through for this format call
-			$item = \array_shift($items);
+			$item = array_shift($items);
 			return [
 				'parent' => $item['parent'],
 				'path' => $item['path'],
@@ -138,7 +138,7 @@ class File implements \OCP\Share_Backend_File_Dependent {
 				$file['storage'] = $item['storage'];
 				$file['path'] = $item['file_target'];
 				$file['parent'] = $item['file_parent'];
-				$file['name'] = \basename($item['file_target']);
+				$file['name'] = basename($item['file_target']);
 				$file['mimetype'] = $item['mimetype'];
 				$file['mimepart'] = $item['mimepart'];
 				$file['mtime'] = $item['mtime'];
@@ -156,7 +156,7 @@ class File implements \OCP\Share_Backend_File_Dependent {
 		} elseif ($format == self::FORMAT_OPENDIR) {
 			$files = [];
 			foreach ($items as $item) {
-				$files[] = \basename($item['file_target']);
+				$files[] = basename($item['file_target']);
 			}
 			return $files;
 		} elseif ($format == self::FORMAT_GET_ALL) {
@@ -234,7 +234,7 @@ class File implements \OCP\Share_Backend_File_Dependent {
 		if ($share['item_type'] === 'folder' && $target !== '') {
 			// note: in case of ext storage mount points the path might be empty
 			// which would cause a leading slash to appear
-			$share['path'] = \ltrim($share['path'] . '/' . $target, '/');
+			$share['path'] = ltrim($share['path'] . '/' . $target, '/');
 		}
 		return self::resolveReshares($share);
 	}

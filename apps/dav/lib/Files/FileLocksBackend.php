@@ -126,7 +126,7 @@ class FileLocksBackend implements BackendInterface {
 					// path is above the current view, just tell that the lock is on the root then
 					$lockInfo->uri = '';
 				} else {
-					$subPath = \ltrim($subPath, '/');
+					$subPath = ltrim($subPath, '/');
 					$lockInfo->uri = $subPath;
 				}
 			} else {

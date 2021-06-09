@@ -42,7 +42,7 @@ class SearchResultSorter {
 		$this->encoding = $encoding;
 		$this->key = $key;
 		$this->log = $log;
-		$this->search = \mb_strtolower($search, $this->encoding);
+		$this->search = mb_strtolower($search, $this->encoding);
 	}
 
 	/**
@@ -58,14 +58,16 @@ class SearchResultSorter {
 			}
 			return 0;
 		}
-		$nameA = \mb_strtolower($a[$this->key], $this->encoding);
-		$nameB = \mb_strtolower($b[$this->key], $this->encoding);
-		$i = \mb_strpos($nameA, $this->search, 0, $this->encoding);
-		$j = \mb_strpos($nameB, $this->search, 0, $this->encoding);
+		$nameA = mb_strtolower($a[$this->key], $this->encoding);
+		$nameB = mb_strtolower($b[$this->key], $this->encoding);
+		$i = mb_strpos($nameA, $this->search, 0, $this->encoding);
+		$j = mb_strpos($nameB, $this->search, 0, $this->encoding);
 
 		if ($i === $j || $i > 0 && $j > 0) {
-			return \strcmp(\mb_strtolower($nameA, $this->encoding),
-						  \mb_strtolower($nameB, $this->encoding));
+			return strcmp(
+				mb_strtolower($nameA, $this->encoding),
+				mb_strtolower($nameB, $this->encoding)
+			);
 		} elseif ($i === 0) {
 			return -1;
 		} else {

@@ -109,18 +109,18 @@ abstract class TestBase extends \Test\TestCase {
 		$this->instance=$this->getExisting();
 		$fh=$this->instance->getStream('lorem.txt', 'r');
 		$this->assertTrue((bool)$fh);
-		$content=\fread($fh, $this->instance->filesize('lorem.txt'));
-		\fclose($fh);
+		$content=fread($fh, $this->instance->filesize('lorem.txt'));
+		fclose($fh);
 		$this->assertStringEqualsFile($textFile, $content);
 	}
 	public function testWriteStream() {
 		$textFile = $this->getArchiveTestDataDir() . '/lorem.txt';
 		$this->instance=$this->getNew();
 		$fh=$this->instance->getStream('lorem.txt', 'w');
-		$source=\fopen($textFile, 'r');
+		$source=fopen($textFile, 'r');
 		\OCP\Files::streamCopy($source, $fh);
-		\fclose($source);
-		\fclose($fh);
+		fclose($source);
+		fclose($fh);
 		$this->assertTrue($this->instance->fileExists('lorem.txt'));
 		$this->assertStringEqualsFile($textFile, $this->instance->getFile('lorem.txt'));
 	}

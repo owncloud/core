@@ -183,17 +183,17 @@ class FilesSearchReportPluginTest extends \Test\TestCase {
 		$node->method('getPath')->willReturn($nodePath);
 
 		$expectedLimit = (isset($searchInfo['limit'])) ? $searchInfo['limit'] : 30;
-		$realLimit = \min($expectedLimit, 8);
+		$realLimit = min($expectedLimit, 8);
 
 		$searchList = $this->getSearchList($searchInfo['pattern'], $realLimit);
-		$searchListNodePaths = \array_map(function ($path) use ($base) {
+		$searchListNodePaths = array_map(function ($path) use ($base) {
 			return "{$base}{$path}";
 		}, $searchList);
 
 		$this->searchService->method('searchPaged')
 			->with($searchInfo['pattern'], ['files'], 1, $expectedLimit)
 			->will($this->returnCallback(function ($pattern, $apps, $page, $limit) use ($searchList) {
-				return \array_map(function ($value) {
+				return array_map(function ($value) {
 					$mock = $this->createMock(ResultFile::class);
 					$mock->path = $value;
 					return $mock;
@@ -209,7 +209,7 @@ class FilesSearchReportPluginTest extends \Test\TestCase {
 					$mock->method('getName')->willReturn($path);
 					$mock->method('getId')->willReturn($key);
 					$mock->method('getSize')->willReturn($key * 1024);
-					$mock->method('getEtag')->willReturn(\str_repeat($key, 8));
+					$mock->method('getEtag')->willReturn(str_repeat($key, 8));
 					$nodes[$path] = $mock;
 				}
 				return $nodes;
@@ -218,12 +218,13 @@ class FilesSearchReportPluginTest extends \Test\TestCase {
 		$responses = [];
 		$this->server->expects($this->once())
 			->method('generateMultiStatus')
-			->will($this->returnCallback(function ($responsesArg) use (&$responses) {
+			->will(
+				$this->returnCallback(function ($responsesArg) use (&$responses) {
 				foreach ($responsesArg as $responseArg) {
 					$responses[] = $responseArg;
 				}
 			})
-		);
+			);
 
 		$this->setupBaseTreeNode($path, $node);
 		$this->plugin->initialize($this->server);
@@ -242,7 +243,7 @@ class FilesSearchReportPluginTest extends \Test\TestCase {
 			foreach ($responses as $key => $response) {
 				// dav properties should be shown while non-dav properties won't appear
 				$this->assertEquals($key * 1024, $response[200]['{DAV:}getcontentlength']);
-				$this->assertEquals(\str_repeat($key, 8), $response[200]['{DAV:}getetag']);
+				$this->assertEquals(str_repeat($key, 8), $response[200]['{DAV:}getetag']);
 				$this->assertFalse(isset($response[200]['{http://owncloud.org/ns}fileid']));
 			}
 		} else {
@@ -251,9 +252,9 @@ class FilesSearchReportPluginTest extends \Test\TestCase {
 				'{DAV:}getcontentlength',
 				'{DAV:}getetag',
 			];
-			$foundProperties = \array_intersect($properties, $propfindProperties);
-			$notFoundProperties = \array_diff($properties, $propfindProperties);
-			$notRequestedProperties = \array_diff($propfindProperties, $properties);
+			$foundProperties = array_intersect($properties, $propfindProperties);
+			$notFoundProperties = array_diff($properties, $propfindProperties);
+			$notRequestedProperties = array_diff($propfindProperties, $properties);
 			foreach ($responses as $key => $response) {
 				// only requested properties should appear
 				foreach ($foundProperties as $foundProperty) {
@@ -262,7 +263,7 @@ class FilesSearchReportPluginTest extends \Test\TestCase {
 							$this->assertEquals($key * 1024, $response[200]['{DAV:}getcontentlength']);
 							break;
 						case '{DAV:}getetag':
-							$this->assertEquals(\str_repeat($key, 8), $response[200]['{DAV:}getetag']);
+							$this->assertEquals(str_repeat($key, 8), $response[200]['{DAV:}getetag']);
 							break;
 						case '{http://owncloud.org/ns}fileid':
 							$this->assertEquals($key, $response[200]['{http://owncloud.org/ns}fileid']);
@@ -285,7 +286,7 @@ class FilesSearchReportPluginTest extends \Test\TestCase {
 		$pathParts = [];
 		for ($i = 0 ; $i < $numberOfItems ; $i++) {
 			$pathParts[] = $search . \strval($i);
-			$results[] = '/' . \implode('/', $pathParts);
+			$results[] = '/' . implode('/', $pathParts);
 		}
 		return $results;
 	}

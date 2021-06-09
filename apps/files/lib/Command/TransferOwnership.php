@@ -149,7 +149,7 @@ class TransferOwnership extends Command {
 		$this->sourceUser = $sourceUserObject->getUID();
 		$this->destinationUser = $destinationUserObject->getUID();
 		$this->inputPath = $input->getOption('path');
-		$this->inputPath = \ltrim($this->inputPath, '/');
+		$this->inputPath = ltrim($this->inputPath, '/');
 
 		// target user has to be ready
 		if ($destinationUserObject->getLastLogin() === 0) {
@@ -165,7 +165,7 @@ class TransferOwnership extends Command {
 		}
 
 		// use a date format compatible across client OS
-		$date = \date('Ymd_his');
+		$date = date('Ymd_his');
 		$this->finalTarget = "$this->destinationUser/files/transferred from $this->sourceUser on $date";
 
 		// setup filesystem
@@ -243,8 +243,10 @@ class TransferOwnership extends Command {
 			}
 		}
 
-		$this->walkFiles($view, $walkPath,
-				function (FileInfo $fileInfo) use ($progress) {
+		$this->walkFiles(
+			$view,
+			$walkPath,
+			function (FileInfo $fileInfo) use ($progress) {
 					if ($fileInfo->getType() === FileInfo::TYPE_FOLDER) {
 						// only analyze into folders from main storage,
 						// sub-storages have an empty internal path
@@ -269,7 +271,8 @@ class TransferOwnership extends Command {
 						$this->encryptedFiles[] = $fileInfo;
 					}
 					return true;
-				});
+				}
+		);
 		$progress->finish();
 		$output->writeln('');
 
@@ -303,7 +306,7 @@ class TransferOwnership extends Command {
 				}
 
 				if (\strlen($this->inputPath)>1) {
-					$inputPathWithEndingSlash = \rtrim($this->inputPath, '/') . '/';
+					$inputPathWithEndingSlash = rtrim($this->inputPath, '/') . '/';
 					/**
 					 * filter only shares within the source folder
 					 */
@@ -313,8 +316,8 @@ class TransferOwnership extends Command {
 						 * trim sharePath, because `/` character trimmed with ltrim in inputPath
 						 */
 						try {
-							$trimmedSharePath = \ltrim($share->getNode()->getPath(), '/');
-							if ($trimmedSharePath === $this->inputPath || (\strpos($trimmedSharePath, $inputPathWithEndingSlash) === 0)) {
+							$trimmedSharePath = ltrim($share->getNode()->getPath(), '/');
+							if ($trimmedSharePath === $this->inputPath || (strpos($trimmedSharePath, $inputPathWithEndingSlash) === 0)) {
 								$filteredShares[] = $share;
 							}
 						} catch (NotFoundException | NoUserException $e) {
@@ -330,12 +333,12 @@ class TransferOwnership extends Command {
 				// filter out the reshares as transfer ownership only transfers
 				// files owned by the user - in case of reshares source
 				// user is not file owner
-				$filteredShares = \array_filter($filteredShares, function (IShare $share) {
+				$filteredShares = array_filter($filteredShares, function (IShare $share) {
 					return $share->getShareOwner() === $this->sourceUser;
 				});
 
 				$progress->advance(\count($filteredShares));
-				$this->shares = \array_merge($this->shares, $filteredShares);
+				$this->shares = array_merge($this->shares, $filteredShares);
 				$offset += 50;
 			}
 		}
@@ -356,15 +359,15 @@ class TransferOwnership extends Command {
 		// This change will help user to transfer the folder specified using --path option.
 		// Else only the content inside folder is transferred which is not correct.
 		if (\strlen($this->inputPath) > 0) {
-			if ($this->inputPath !== \ltrim("$this->sourceUser/files", '/')) {
+			if ($this->inputPath !== ltrim("$this->sourceUser/files", '/')) {
 				$view->mkdir($this->finalTarget);
-				$this->finalTarget = $this->finalTarget . '/' . \basename($sourcePath);
+				$this->finalTarget = $this->finalTarget . '/' . basename($sourcePath);
 			}
 		}
 
 		$view->rename($sourcePath, $this->finalTarget);
 
-		if (!\is_dir("$this->sourceUser/files")) {
+		if (!is_dir("$this->sourceUser/files")) {
 			// because the files folder is moved away we need to recreate it
 			$view->mkdir("$this->sourceUser/files");
 		}

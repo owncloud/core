@@ -65,9 +65,14 @@ class Install extends Command {
 
 		// validate the environment
 		$server = \OC::$server;
-		$setupHelper = new Setup($this->config, $server->getIniWrapper(),
-			$server->getL10N('lib'), new \OC_Defaults(), $server->getLogger(),
-			$server->getSecureRandom());
+		$setupHelper = new Setup(
+			$this->config,
+			$server->getIniWrapper(),
+			$server->getL10N('lib'),
+			new \OC_Defaults(),
+			$server->getLogger(),
+			$server->getSecureRandom()
+		);
 		$sysInfo = $setupHelper->getSystemInfo(true);
 		$errors = $sysInfo['errors'];
 		if (\count($errors) > 0) {
@@ -81,7 +86,7 @@ class Install extends Command {
 		}
 
 		// validate user input
-		$options = $this->validateInput($input, $output, \array_keys($sysInfo['databases']));
+		$options = $this->validateInput($input, $output, array_keys($sysInfo['databases']));
 
 		// perform installation
 		$errors = $setupHelper->install($options);
@@ -100,7 +105,7 @@ class Install extends Command {
 	 * @return array
 	 */
 	protected function validateInput(InputInterface $input, OutputInterface $output, $supportedDatabases) {
-		$db = \strtolower($input->getOption('database'));
+		$db = strtolower($input->getOption('database'));
 
 		if (!\in_array($db, $supportedDatabases)) {
 			throw new InvalidArgumentException("Database <$db> is not supported.");
@@ -119,7 +124,7 @@ class Install extends Command {
 		$dbTablePrefix = 'oc_';
 		if ($input->hasParameterOption('--database-table-prefix')) {
 			$dbTablePrefix = (string) $input->getOption('database-table-prefix');
-			$dbTablePrefix = \trim($dbTablePrefix);
+			$dbTablePrefix = trim($dbTablePrefix);
 		}
 		if ($input->hasParameterOption('--database-pass')) {
 			$dbPass = (string) $input->getOption('database-pass');

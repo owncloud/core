@@ -43,16 +43,18 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	protected $sessionValues;
 	/** @var bool */
 	protected $isModified = false;
-	const encryptedSessionName = 'encrypted_session_data';
+	public const encryptedSessionName = 'encrypted_session_data';
 
 	/**
 	 * @param ISession $session
 	 * @param ICrypto $crypto
 	 * @param string $passphrase
 	 */
-	public function __construct(ISession $session,
-								ICrypto $crypto,
-								$passphrase) {
+	public function __construct(
+		ISession $session,
+		ICrypto $crypto,
+		$passphrase
+	) {
 		$this->crypto = $crypto;
 		$this->session = $session;
 		$this->passphrase = $passphrase;
@@ -74,7 +76,7 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	protected function initializeSession() {
 		$encryptedSessionData = $this->session->get(self::encryptedSessionName);
 		try {
-			$this->sessionValues = \json_decode(
+			$this->sessionValues = json_decode(
 				$this->crypto->decrypt($encryptedSessionData, $this->passphrase),
 				true
 			);
@@ -164,7 +166,7 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 */
 	public function close() {
 		if ($this->isModified) {
-			$encryptedValue = $this->crypto->encrypt(\json_encode($this->sessionValues), $this->passphrase);
+			$encryptedValue = $this->crypto->encrypt(json_encode($this->sessionValues), $this->passphrase);
 			$this->session->set(self::encryptedSessionName, $encryptedValue);
 			$this->isModified = false;
 		}

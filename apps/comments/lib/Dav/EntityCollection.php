@@ -42,7 +42,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @package OCA\Comments\Dav
  */
 class EntityCollection extends RootCollection implements IProperties {
-	const PROPERTY_NAME_READ_MARKER  = '{http://owncloud.org/ns}readMarker';
+	public const PROPERTY_NAME_READ_MARKER  = '{http://owncloud.org/ns}readMarker';
 
 	/** @var  string */
 	protected $id;
@@ -67,7 +67,7 @@ class EntityCollection extends RootCollection implements IProperties {
 	) {
 		parent::__construct($commentsManager, $userManager, $userSession, $dispatcher, $logger);
 		foreach (['id', 'name'] as $property) {
-			$$property = \trim($$property);
+			$$property = trim($$property);
 			if (empty($$property) || !\is_string($$property)) {
 				throw new \InvalidArgumentException('"' . $property . '" parameter must be non-empty string');
 			}

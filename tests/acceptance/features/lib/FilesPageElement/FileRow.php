@@ -103,7 +103,7 @@ class FileRow extends OwncloudPage {
 	 */
 	public function getNameAsString() {
 		if (\is_array($this->name)) {
-			return \implode('', $this->name);
+			return implode('', $this->name);
 		}
 		return $this->name;
 	}
@@ -126,7 +126,8 @@ class FileRow extends OwncloudPage {
 	 */
 	public function findFileActionButton() {
 		$actionButton = $this->rowElement->find(
-			"xpath", $this->fileActionMenuBtnXpath
+			"xpath",
+			$this->fileActionMenuBtnXpath
 		);
 		$this->assertElementNotNull(
 			$actionButton,
@@ -168,7 +169,9 @@ class FileRow extends OwncloudPage {
 		 */
 		$actionMenu = $this->getPage('FilesPageElement\\FileActionsMenu');
 		$actionMenu->waitTillPageIsLoaded(
-			$session, STANDARD_UI_WAIT_TIMEOUT_MILLISEC, $filesPage->getFileActionMenuXpath()
+			$session,
+			STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
+			$filesPage->getFileActionMenuXpath()
 		);
 		$this->waitForScrollingToFinish($session, '#app-content');
 		return $actionMenu;
@@ -208,7 +211,9 @@ class FileRow extends OwncloudPage {
 		 */
 		$sharingDialogPage = $this->getPage("FilesPageElement\\SharingDialog");
 		$sharingDialogPage->waitTillPageIsLoaded(
-			$session, STANDARD_UI_WAIT_TIMEOUT_MILLISEC, $this->sharingDialogXpath
+			$session,
+			STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
+			$this->sharingDialogXpath
 		);
 		return $sharingDialogPage;
 	}
@@ -234,7 +239,8 @@ class FileRow extends OwncloudPage {
 			" id $this->lockDialogId could not find lock dialog"
 		);
 		$this->waitFor(
-			STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000, [$lockDialogElement, 'isVisible']
+			STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000,
+			[$lockDialogElement, 'isVisible']
 		);
 
 		/**
@@ -267,7 +273,8 @@ class FileRow extends OwncloudPage {
 	 */
 	public function findRenameInputField() {
 		$inputField = $this->rowElement->find(
-			"xpath", $this->fileRenameInputXpath
+			"xpath",
+			$this->fileRenameInputXpath
 		);
 		$this->assertElementNotNull(
 			$inputField,
@@ -448,7 +455,8 @@ class FileRow extends OwncloudPage {
 	 */
 	public function isMarkedAsFavorite() {
 		$checkFavorite = $this->rowElement->find(
-			"xpath", $this->markedFavoriteXpath
+			"xpath",
+			$this->markedFavoriteXpath
 		);
 
 		if ($checkFavorite === null) {
@@ -518,7 +526,7 @@ class FileRow extends OwncloudPage {
 			__METHOD__ .
 			" sharer element with xpath $this->sharerXpath not found"
 		);
-		return \trim($element->getText());
+		return trim($element->getText());
 	}
 
 	/**
@@ -596,7 +604,8 @@ class FileRow extends OwncloudPage {
 	 */
 	public function isSharedIndicatorPresent() {
 		if ($this->rowElement->find(
-			"xpath", $this->sharedIndicatorXpath
+			"xpath",
+			$this->sharedIndicatorXpath
 		) === null
 		) {
 			return false;

@@ -673,7 +673,7 @@ class ShareesTest extends TestCase {
 						->willReturn($groupResponse);
 				}
 
-				$this->groupManager->expects($this->exactly(\sizeof($groupResponse)))
+				$this->groupManager->expects($this->exactly(sizeof($groupResponse)))
 					->method('findUsersInGroup')
 					->with($this->anything(), $searchTerm, $this->invokePrivate($this->sharees, 'limit'), $this->invokePrivate($this->sharees, 'offset'))
 					->willReturnMap($userResponse);
@@ -1109,7 +1109,7 @@ class ShareesTest extends TestCase {
 				->with($searchTerm, $this->invokePrivate($this->sharees, 'limit'), $this->invokePrivate($this->sharees, 'offset'))
 				->willReturn($groupResponse);
 
-			$getGroupValueMap = \array_map(function ($group) {
+			$getGroupValueMap = array_map(function ($group) {
 				return [$group->getGID(), $group];
 			}, $groupResponse);
 
@@ -1522,7 +1522,7 @@ class ShareesTest extends TestCase {
 		// inject previous results if needed
 		if (!empty($previousExact)) {
 			$result = $this->invokePrivate($this->sharees, 'result');
-			$result['exact'] = \array_merge($result['exact'], $previousExact);
+			$result['exact'] = array_merge($result['exact'], $previousExact);
 			$this->invokePrivate($this->sharees, 'result', [$result]);
 		}
 
@@ -1810,8 +1810,19 @@ class ShareesTest extends TestCase {
 	 * @param array $expected
 	 * @param bool $nextLink
 	 */
-	public function testSearchSharees($searchTerm, $itemType, array $shareTypes, $page, $perPage, $shareWithGroupOnly,
-									  $mockedUserResult, $mockedGroupsResult, $mockedRemotesResult, $expected, $nextLink) {
+	public function testSearchSharees(
+		$searchTerm,
+		$itemType,
+		array $shareTypes,
+		$page,
+		$perPage,
+		$shareWithGroupOnly,
+		$mockedUserResult,
+		$mockedGroupsResult,
+		$mockedRemotesResult,
+		$expected,
+		$nextLink
+	) {
 		/** @var \PHPUnit\Framework\MockObject\MockObject | ShareesController $sharees */
 		$sharees = $this->getMockBuilder(ShareesController::class)
 			->setConstructorArgs([
@@ -2008,7 +2019,8 @@ class ShareesTest extends TestCase {
 	 * @param string $expected
 	 */
 	public function testFixRemoteUrl($url, $expected) {
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->invokePrivate($this->sharees, 'fixRemoteURL', [$url])
 		);
 	}
@@ -2042,8 +2054,9 @@ class ShareesTest extends TestCase {
 			->method('find')
 			->with(
 				$searchTerm,
-					$this->invokePrivate($this->sharees, 'limit'),
-					$this->invokePrivate($this->sharees, 'offset'))
+				$this->invokePrivate($this->sharees, 'limit'),
+				$this->invokePrivate($this->sharees, 'offset')
+			)
 			->willReturn([$user]);
 
 		$exactExpected = [['label' => 'Bob', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'testBob', 'userType' => User::USER_TYPE_USER]]];

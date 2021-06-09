@@ -103,7 +103,7 @@ $this->create('files.viewcontroller.showFile', '/f/{fileId}')->action(static fun
 		$webBaseUrl = \OC::$server->getConfig()->getSystemValue('phoenix.baseUrl', null);
 	}
 	if (isWebRewriteLinksEnabled()) {
-		$webBaseUrl = \rtrim($webBaseUrl, '/');
+		$webBaseUrl = rtrim($webBaseUrl, '/');
 		$fileId = $urlParams['fileId'];
 		\OC_Response::redirect("$webBaseUrl/index.html#/f/$fileId");
 		return;
@@ -120,7 +120,7 @@ $this->create('files_sharing.sharecontroller.showShare', '/s/{token}')->action(s
 		$webBaseUrl = \OC::$server->getConfig()->getSystemValue('phoenix.baseUrl', null);
 	}
 	if (isWebRewriteLinksEnabled()) {
-		$webBaseUrl = \rtrim($webBaseUrl, '/');
+		$webBaseUrl = rtrim($webBaseUrl, '/');
 		$token = $urlParams['token'];
 		\OC_Response::redirect("$webBaseUrl/index.html#/s/$token");
 		return;

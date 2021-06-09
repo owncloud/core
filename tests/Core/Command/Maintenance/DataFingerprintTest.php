@@ -72,10 +72,10 @@ class DataFingerprintTest extends TestCase {
 			->willReturn(42);
 		$this->config->expects($expects)
 			->method('setSystemValue')
-			->with('data-fingerprint', \md5(42));
+			->with('data-fingerprint', md5(42));
 
-		$osUser = \get_current_user();
-		$server = \gethostname();
+		$osUser = get_current_user();
+		$server = gethostname();
 
 		$this->logger->expects($expects)
 			->method('info')

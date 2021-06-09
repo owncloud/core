@@ -476,7 +476,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 				}
 			}
 
-			$fileName = \basename($destinationPath);
+			$fileName = basename($destinationPath);
 			try {
 				$this->fileView->verifyPath($destinationDir, $fileName);
 			} catch (InvalidPathException $ex) {

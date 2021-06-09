@@ -43,14 +43,14 @@ class Internal extends Session {
 	 * @throws \Exception
 	 */
 	public function __construct($name) {
-		\session_name($name);
-		\set_error_handler([$this, 'trapError']);
+		session_name($name);
+		set_error_handler([$this, 'trapError']);
 		try {
 			$this->start();
 		} catch (\Exception $e) {
-			\setcookie(\session_name(), null, -1, \OC::$WEBROOT ? : '/');
+			setcookie(session_name(), null, -1, \OC::$WEBROOT ? : '/');
 		}
-		\restore_error_handler();
+		restore_error_handler();
 		if ($_SESSION === null) {
 			throw new \Exception('Failed to start session');
 		}
@@ -95,15 +95,15 @@ class Internal extends Session {
 	}
 
 	public function clear() {
-		\session_unset();
+		session_unset();
 		$this->regenerateId();
-		@\session_destroy();
-		@\session_start();
+		@session_destroy();
+		@session_start();
 		$_SESSION = [];
 	}
 
 	public function close() {
-		\session_write_close();
+		session_write_close();
 		parent::close();
 	}
 
@@ -114,7 +114,7 @@ class Internal extends Session {
 	 * @return void
 	 */
 	public function regenerateId($deleteOldSession = true) {
-		@\session_regenerate_id($deleteOldSession);
+		@session_regenerate_id($deleteOldSession);
 	}
 
 	/**
@@ -125,7 +125,7 @@ class Internal extends Session {
 	 * @since 9.1.0
 	 */
 	public function getId() {
-		$id = @\session_id();
+		$id = @session_id();
 		if ($id === '') {
 			throw new SessionNotAvailableException();
 		}
@@ -158,28 +158,28 @@ class Internal extends Session {
 	}
 
 	private function start() {
-		if (@\session_id() === '') {
+		if (@session_id() === '') {
 			// prevents javascript from accessing php session cookies
-			\ini_set('session.cookie_httponly', true);
+			ini_set('session.cookie_httponly', true);
 
 			// set the cookie path to the ownCloud directory
 			$cookie_path = \OC::$WEBROOT ? : '/';
-			\ini_set('session.cookie_path', $cookie_path);
+			ini_set('session.cookie_path', $cookie_path);
 
 			if ($this->getServerProtocol() === 'https') {
-				\ini_set('session.cookie_secure', true);
+				ini_set('session.cookie_secure', true);
 			}
 
 			//try to set the session lifetime
 			$sessionLifeTime = self::getSessionLifeTime();
-			@\ini_set('session.gc_maxlifetime', (string)$sessionLifeTime);
+			@ini_set('session.gc_maxlifetime', (string)$sessionLifeTime);
 
-			if (\version_compare(PHP_VERSION, '7.3.0') !== -1) {
+			if (version_compare(PHP_VERSION, '7.3.0') !== -1) {
 				$samesite = \OC::$server->getConfig()->getSystemValue('http.cookie.samesite', 'Strict');
-				\ini_set('session.cookie_samesite', $samesite);
+				ini_set('session.cookie_samesite', $samesite);
 			}
 		}
-		\session_start();
+		session_start();
 	}
 
 	/**

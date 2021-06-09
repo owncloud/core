@@ -62,7 +62,7 @@ class Manager {
 
 		// load order from appconfig
 		$rawOrder = $this->config->getAppValue('core', 'account-module-order', '[]');
-		$order = \json_decode($rawOrder);
+		$order = json_decode($rawOrder);
 		if (!\is_array($order)) {
 			$order = [];
 		}

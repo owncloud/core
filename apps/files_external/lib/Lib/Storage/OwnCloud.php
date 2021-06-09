@@ -32,34 +32,34 @@ use Sabre\DAV\Client;
  *
  */
 class OwnCloud extends \OC\Files\Storage\DAV {
-	const OC_URL_SUFFIX = 'remote.php/webdav';
+	public const OC_URL_SUFFIX = 'remote.php/webdav';
 
 	public function __construct($params) {
 		// extract context path from host if specified
 		// (owncloud install path on host)
 		$host = $params['host'];
 		// strip protocol
-		if (\substr($host, 0, 8) == "https://") {
-			$host = \substr($host, 8);
+		if (substr($host, 0, 8) == "https://") {
+			$host = substr($host, 8);
 			$params['secure'] = true;
-		} elseif (\substr($host, 0, 7) == "http://") {
-			$host = \substr($host, 7);
+		} elseif (substr($host, 0, 7) == "http://") {
+			$host = substr($host, 7);
 			$params['secure'] = false;
 		}
 		$contextPath = '';
-		$hostSlashPos = \strpos($host, '/');
+		$hostSlashPos = strpos($host, '/');
 		if ($hostSlashPos !== false) {
-			$contextPath = \substr($host, $hostSlashPos);
-			$host = \substr($host, 0, $hostSlashPos);
+			$contextPath = substr($host, $hostSlashPos);
+			$host = substr($host, 0, $hostSlashPos);
 		}
 
-		if (\substr($contextPath, -1) !== '/') {
+		if (substr($contextPath, -1) !== '/') {
 			$contextPath .= '/';
 		}
 
 		if (isset($params['root'])) {
 			$root = $params['root'];
-			if (\substr($root, 0, 1) !== '/') {
+			if (substr($root, 0, 1) !== '/') {
 				$root = '/' . $root;
 			}
 		} else {

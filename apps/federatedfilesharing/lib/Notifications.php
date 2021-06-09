@@ -33,7 +33,7 @@ use OCP\IConfig;
 use GuzzleHttp\Exception\ClientException;
 
 class Notifications {
-	const RESPONSE_FORMAT = 'json'; // default response format for ocs calls
+	public const RESPONSE_FORMAT = 'json'; // default response format for ocs calls
 
 	/** @var AddressHandler */
 	private $addressHandler;
@@ -92,7 +92,8 @@ class Notifications {
 	 * @throws \OC\ServerNotAvailableException
 	 * @throws \Exception
 	 */
-	public function sendRemoteShare(Address $shareWithAddress,
+	public function sendRemoteShare(
+		Address $shareWithAddress,
 		Address $ownerAddress,
 		Address $sharedByAddress,
 		$token,
@@ -102,11 +103,21 @@ class Notifications {
 		$remoteShareSuccess = false;
 		if ($shareWithAddress->getUserId() && $shareWithAddress->getCloudId()) {
 			$remoteShareSuccess = $this->sendOcmRemoteShare(
-				$shareWithAddress, $ownerAddress, $sharedByAddress, $token, $name, $remote_id
+				$shareWithAddress,
+				$ownerAddress,
+				$sharedByAddress,
+				$token,
+				$name,
+				$remote_id
 			);
 			if (!$remoteShareSuccess) {
 				$remoteShareSuccess = $this->sendPreOcmRemoteShare(
-					$shareWithAddress, $ownerAddress, $sharedByAddress, $token, $name, $remote_id
+					$shareWithAddress,
+					$ownerAddress,
+					$sharedByAddress,
+					$token,
+					$name,
+					$remote_id
 				);
 			}
 		}
@@ -140,13 +151,13 @@ class Notifications {
 		$ocmNotification = $this->notificationManager->convertToOcmFileNotification($id, $token, 'reshare', $data);
 		$ocmFields = $ocmNotification->toArray();
 
-		$url = \rtrim(
+		$url = rtrim(
 			$this->addressHandler->removeProtocolFromUrl($remote),
 			'/'
 		);
 		$result = $this->tryHttpPostToShareEndpoint($url, '/notifications', $ocmFields, true);
 		if (isset($result['statusCode']) && $result['statusCode'] === Http::STATUS_CREATED) {
-			$response = \json_decode($result['result'], true);
+			$response = json_decode($result['result'], true);
 			if (\is_array($response) && isset($response['sharedSecret'], $response['providerId'])) {
 				return [
 					$response['sharedSecret'],
@@ -164,8 +175,8 @@ class Notifications {
 		];
 
 		$url = $this->addressHandler->removeProtocolFromUrl($remote);
-		$result = $this->tryHttpPostToShareEndpoint(\rtrim($url, '/'), '/' . $id . '/reshare', $fields);
-		$status = \json_decode($result['result'], true);
+		$result = $this->tryHttpPostToShareEndpoint(rtrim($url, '/'), '/' . $id . '/reshare', $fields);
+		$status = json_decode($result['result'], true);
 
 		$httpRequestSuccessful = $result['success'];
 		$validToken = isset($status['ocs']['data']['token']) && \is_string($status['ocs']['data']['token']);
@@ -258,7 +269,7 @@ class Notifications {
 	public function sendUpdateToRemote($remote, $remoteId, $token, $action, $data = [], $try = 0) {
 		$ocmNotification = $this->notificationManager->convertToOcmFileNotification($remoteId, $token, $action, $data);
 		$ocmFields = $ocmNotification->toArray();
-		$url = \rtrim(
+		$url = rtrim(
 			$this->addressHandler->removeProtocolFromUrl($remote),
 			'/'
 		);
@@ -272,24 +283,25 @@ class Notifications {
 			$fields[$key] = $value;
 		}
 
-		$url = \rtrim(
+		$url = rtrim(
 			$this->addressHandler->removeProtocolFromUrl($remote),
 			'/'
 		);
 		$result = $this->tryHttpPostToShareEndpoint($url, '/' . $remoteId . '/' . $action, $fields);
-		$status = \json_decode($result['result'], true);
+		$status = json_decode($result['result'], true);
 
 		if ($result['success'] && $this->isOcsStatusOk($status)) {
 			return true;
 		} elseif ($try === 0) {
 			// only add new job on first try
-			$this->jobList->add('OCA\FederatedFileSharing\BackgroundJob\RetryJob',
+			$this->jobList->add(
+				'OCA\FederatedFileSharing\BackgroundJob\RetryJob',
 				[
 					'remote' => $remote,
 					'remoteId' => $remoteId,
 					'token' => $token,
 					'action' => $action,
-					'data' => \json_encode($data),
+					'data' => json_encode($data),
 					'try' => $try,
 					'lastRun' => $this->getTimestamp()
 				]
@@ -305,7 +317,7 @@ class Notifications {
 	 * @return int
 	 */
 	protected function getTimestamp() {
-		return \time();
+		return time();
 	}
 
 	/**
@@ -439,7 +451,7 @@ class Notifications {
 		];
 		$url = $shareWithAddress->getHostName();
 		$result = $this->tryHttpPostToShareEndpoint($url, '', $fields);
-		$status = \json_decode($result['result'], true);
+		$status = json_decode($result['result'], true);
 		if ($result['success'] && $this->isOcsStatusOk($status)) {
 			return true;
 		}

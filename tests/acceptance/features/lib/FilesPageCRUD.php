@@ -194,7 +194,7 @@ class FilesPageCRUD extends FilesPageBasic {
 		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		if (\is_array($toFileName)) {
-			$toFileName = \implode('', $toFileName);
+			$toFileName = implode('', $toFileName);
 		}
 
 		for ($counter = 0; $counter < $maxRetries; $counter++) {
@@ -204,7 +204,7 @@ class FilesPageCRUD extends FilesPageBasic {
 				break;
 			} catch (\Exception $e) {
 				$this->closeFileActionsMenu();
-				\error_log(
+				error_log(
 					"Error while renaming file"
 					. "\n-------------------------\n"
 					. $e->getMessage()
@@ -215,7 +215,7 @@ class FilesPageCRUD extends FilesPageBasic {
 		if ($counter > 0) {
 			$message = "INFORMATION: retried to rename file $counter times";
 			echo $message;
-			\error_log($message);
+			error_log($message);
 		}
 
 		$this->waitTillFileRowsAreReady($session);
@@ -232,7 +232,10 @@ class FilesPageCRUD extends FilesPageBasic {
 	 * @return void
 	 */
 	public function moveFileTo(
-		$name, $destination, Session $session, $maxRetries = STANDARD_RETRY_COUNT
+		$name,
+		$destination,
+		Session $session,
+		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		$toMoveFileRow = $this->findFileRowByName($name, $session);
 		$destinationFileRow = $this->findFileRowByName($destination, $session);
@@ -247,7 +250,7 @@ class FilesPageCRUD extends FilesPageBasic {
 			$this->waitForAjaxCallsToStartAndFinish($session);
 			$countXHRRequests = $this->getSumStartedAjaxRequests($session);
 			if ($countXHRRequests === 0) {
-				\error_log("Error while moving file");
+				error_log("Error while moving file");
 			} else {
 				break;
 			}
@@ -256,7 +259,7 @@ class FilesPageCRUD extends FilesPageBasic {
 			$message
 				= "INFORMATION: retried to move file $retryCounter times";
 			echo $message;
-			\error_log($message);
+			error_log($message);
 		}
 	}
 
@@ -289,11 +292,12 @@ class FilesPageCRUD extends FilesPageBasic {
 	 * @throws ElementNotFoundException|\Exception
 	 */
 	public function createFolder(
-		Session $session, $name = null,
+		Session $session,
+		$name = null,
 		$timeoutMsec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		if ($name === null) {
-			$name = \substr(\str_shuffle($this->strForNormalFileName), 0, 8);
+			$name = substr(str_shuffle($this->strForNormalFileName), 0, 8);
 		}
 		$newButtonElement = $this->findNewFileFolderButton();
 		$newButtonElement->click();
@@ -313,7 +317,7 @@ class FilesPageCRUD extends FilesPageBasic {
 			// Edge sometimes reports NoSuchElement even though we just found it.
 			// Log the event and continue, because maybe the button was clicked.
 			// TODO: Edge - if it keeps happening then find out why.
-			\error_log(
+			error_log(
 				__METHOD__
 				. " NoSuchElement while doing newFolderButtonElement->click()"
 				. "\n-------------------------\n"
@@ -336,7 +340,7 @@ class FilesPageCRUD extends FilesPageBasic {
 			// https://github.com/minkphp/MinkSelenium2Driver/pull/286
 		}
 		$timeoutMsec = (int) $timeoutMsec;
-		$currentTime = \microtime(true);
+		$currentTime = microtime(true);
 		$end = $currentTime + ($timeoutMsec / 1000);
 
 		while ($currentTime <= $end) {
@@ -344,8 +348,8 @@ class FilesPageCRUD extends FilesPageBasic {
 			if ($newFolderButton === null || !$newFolderButton->isVisible()) {
 				break;
 			}
-			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
-			$currentTime = \microtime(true);
+			usleep(STANDARD_SLEEP_TIME_MICROSEC);
+			$currentTime = microtime(true);
 		}
 		while ($currentTime <= $end) {
 			try {
@@ -354,8 +358,8 @@ class FilesPageCRUD extends FilesPageBasic {
 			} catch (ElementNotFoundException $e) {
 				//loop around
 			}
-			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
-			$currentTime = \microtime(true);
+			usleep(STANDARD_SLEEP_TIME_MICROSEC);
+			$currentTime = microtime(true);
 		}
 
 		if ($currentTime > $end) {
@@ -392,7 +396,7 @@ class FilesPageCRUD extends FilesPageBasic {
 				//did not work and we retry
 				if ($countXHRRequests === 0) {
 					if ($expectToDeleteFile) {
-						\error_log("Error while deleting file");
+						error_log("Error while deleting file");
 					}
 				} else {
 					break;
@@ -400,23 +404,23 @@ class FilesPageCRUD extends FilesPageBasic {
 			} catch (\Exception $e) {
 				$this->closeFileActionsMenu();
 				if ($expectToDeleteFile) {
-					\error_log(
+					error_log(
 						"Error while deleting file"
 						. "\n-------------------------\n"
 						. $e->getMessage()
 						. "\n-------------------------\n"
 					);
 				}
-				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
+				usleep(STANDARD_SLEEP_TIME_MICROSEC);
 			}
 		}
 		if ($expectToDeleteFile && ($counter > 0)) {
 			if (\is_array($name)) {
-				$name = \implode('', $name);
+				$name = implode('', $name);
 			}
 			$message = "INFORMATION: retried to delete file '$name' $counter times";
 			echo $message;
-			\error_log($message);
+			error_log($message);
 			if ($counter === $maxRetries) {
 				throw new \Exception($message);
 			}
@@ -430,7 +434,8 @@ class FilesPageCRUD extends FilesPageBasic {
 	 */
 	public function findDeleteAllSelectedFilesBtn() {
 		$deleteAllSelectedBtn = $this->find(
-			"xpath", $this->deleteAllSelectedBtnXpath
+			"xpath",
+			$this->deleteAllSelectedBtnXpath
 		);
 		$this->assertElementNotNull(
 			$deleteAllSelectedBtn,
@@ -481,7 +486,8 @@ class FilesPageCRUD extends FilesPageBasic {
 	 */
 	public function waitForUploadProgressbarToFinish() {
 		$uploadProgressbar = $this->find(
-			"xpath", $this->uploadProgressbarLabelXpath
+			"xpath",
+			$this->uploadProgressbarLabelXpath
 		);
 		$this->assertElementNotNull(
 			$uploadProgressbar,
@@ -489,14 +495,14 @@ class FilesPageCRUD extends FilesPageBasic {
 			" xpath $this->uploadProgressbarLabelXpath " .
 			"could not find upload progressbar"
 		);
-		$currentTime = \microtime(true);
+		$currentTime = microtime(true);
 		$end = $currentTime + (STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000);
 		while ($uploadProgressbar->isVisible()) {
 			if ($currentTime > $end) {
 				break;
 			}
-			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
-			$currentTime = \microtime(true);
+			usleep(STANDARD_SLEEP_TIME_MICROSEC);
+			$currentTime = microtime(true);
 		}
 	}
 }

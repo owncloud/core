@@ -44,9 +44,9 @@ class StreamWrappersTest extends \Test\TestCase {
 	public function testFakeDir() {
 		$items = ['foo', 'bar'];
 		\OC\Files\Stream\Dir::register('test', $items);
-		$dh = \opendir('fakedir://test');
+		$dh = opendir('fakedir://test');
 		$result = [];
-		while ($file = \readdir($dh)) {
+		while ($file = readdir($dh)) {
 			$result[] = $file;
 			$this->assertContains($file, $items);
 		}
@@ -59,10 +59,10 @@ class StreamWrappersTest extends \Test\TestCase {
 		$tmpFile = \OC::$server->getTempManager()->getTemporaryFile('.txt');
 		$file = 'close://' . $tmpFile;
 		$this->assertFileExists($file);
-		\file_put_contents($file, \file_get_contents($sourceFile));
+		file_put_contents($file, file_get_contents($sourceFile));
 		$this->assertFileEquals($sourceFile, $file);
-		\unlink($file);
-		\clearstatcache();
+		unlink($file);
+		clearstatcache();
 		$this->assertFileNotExists($file);
 
 		//test callback
@@ -73,9 +73,9 @@ class StreamWrappersTest extends \Test\TestCase {
 			$actual = $path;
 		};
 		\OC\Files\Stream\Close::registerCallback($tmpFile, $callback);
-		$fh = \fopen($file, 'w');
-		\fwrite($fh, 'asd');
-		\fclose($fh);
+		$fh = fopen($file, 'w');
+		fwrite($fh, 'asd');
+		fclose($fh);
 		$this->assertSame($tmpFile, $actual);
 	}
 }

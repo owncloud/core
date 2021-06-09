@@ -294,6 +294,6 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 */
 	private function getChunks($toSlice, $otherPlaceholdersCount = 0): array {
 		$slicer = 999 - $otherPlaceholdersCount;
-		return \array_chunk($toSlice, $slicer);
+		return array_chunk($toSlice, $slicer);
 	}
 }

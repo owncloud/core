@@ -51,7 +51,7 @@ class DirMask extends PermissionsMask {
 	}
 
 	protected function checkPath($path) {
-		return \substr($path, 0, $this->pathLength) === $this->path;
+		return substr($path, 0, $this->pathLength) === $this->path;
 	}
 
 	public function isUpdatable($path) {

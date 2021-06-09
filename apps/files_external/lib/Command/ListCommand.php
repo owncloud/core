@@ -59,7 +59,7 @@ class ListCommand extends Base {
 	 */
 	protected $userManager;
 
-	const ALL = -1;
+	public const ALL = -1;
 
 	public function __construct(IGlobalStoragesService $globalService, IUserStoragesService $userService, IUserSession $userSession, IUserManager $userManager) {
 		parent::__construct();
@@ -160,8 +160,8 @@ class ListCommand extends Base {
 			$headers = ['Mount ID', 'Mount Point', 'Auth', 'Type'];
 			// if there is no userId or option --all is set, insert additional columns
 			if (!$userId || $userId === self::ALL) {
-				\array_splice($headers, 2, 0, 'Applicable Users');
-				\array_splice($headers, 3, 0, 'Applicable Groups');
+				array_splice($headers, 2, 0, 'Applicable Users');
+				array_splice($headers, 3, 0, 'Applicable Groups');
 			}
 		} else {
 			$headers = ['Mount ID', 'Mount Point', 'Storage', 'Authentication Type', 'Configuration', 'Options'];
@@ -199,31 +199,31 @@ class ListCommand extends Base {
 		$countInvalid = 0;
 		// In case adding array elements, add them only after the first two (Mount ID / Mount Point)
 		// and before the last one entry (Type). Necessary for option -s
-		$rows = \array_map(function (IStorageConfig $config) use ($outputIsJson, $shortView, $importableView, $userId, $defaultMountOptions, $full, $showMountOptions, &$countInvalid) {
+		$rows = array_map(function (IStorageConfig $config) use ($outputIsJson, $shortView, $importableView, $userId, $defaultMountOptions, $full, $showMountOptions, &$countInvalid) {
 			if ($config->getBackend() instanceof InvalidBackend || $config->getAuthMechanism() instanceof InvalidAuth) {
 				$countInvalid++;
 			}
 			$storageConfig = $config->getBackendOptions();
-			$keys = \array_keys($storageConfig);
-			$values = \array_values($storageConfig);
+			$keys = array_keys($storageConfig);
+			$values = array_values($storageConfig);
 
 			if (!$full) {
-				$values = \array_map(function ($value) {
+				$values = array_map(function ($value) {
 					if (\is_string($value) && \strlen($value) > 32) {
-						return \substr($value, 0, 6) . '...' . \substr($value, -6, 6);
+						return substr($value, 0, 6) . '...' . substr($value, -6, 6);
 					} else {
 						return $value;
 					}
 				}, $values);
 			}
 
-			$configStrings = \array_map(function ($key, $value) {
-				return $key . ': ' . \json_encode($value);
+			$configStrings = array_map(function ($key, $value) {
+				return $key . ': ' . json_encode($value);
 			}, $keys, $values);
-			$configString = \implode(', ', $configStrings);
+			$configString = implode(', ', $configStrings);
 
 			$mountOptions = $config->getMountOptions();
-			$mountOptions = \array_merge($defaultMountOptions, $mountOptions);
+			$mountOptions = array_merge($defaultMountOptions, $mountOptions);
 			// hide defaults
 			if (!$showMountOptions) {
 				foreach ($mountOptions as $key => $value) {
@@ -232,13 +232,13 @@ class ListCommand extends Base {
 					}
 				}
 			}
-			$keys = \array_keys($mountOptions);
-			$values = \array_values($mountOptions);
+			$keys = array_keys($mountOptions);
+			$values = array_values($mountOptions);
 
-			$optionsStrings = \array_map(function ($key, $value) {
-				return $key . ': ' . \json_encode($value);
+			$optionsStrings = array_map(function ($key, $value) {
+				return $key . ': ' . json_encode($value);
 			}, $keys, $values);
-			$optionsString = \implode(', ', $optionsStrings);
+			$optionsString = implode(', ', $optionsStrings);
 
 			// output dependent on option shortview
 			if ($shortView) {
@@ -274,8 +274,8 @@ class ListCommand extends Base {
 					$applicableUsers = $config->getApplicableUsers();
 					$applicableGroups = $config->getApplicableGroups();
 				} else {
-					$applicableUsers = \implode(', ', $config->getApplicableUsers());
-					$applicableGroups = \implode(', ', $config->getApplicableGroups());
+					$applicableUsers = implode(', ', $config->getApplicableUsers());
+					$applicableGroups = implode(', ', $config->getApplicableGroups());
 					if ($applicableUsers === '' && $applicableGroups === '') {
 						$applicableUsers = 'All';
 					}
@@ -286,7 +286,7 @@ class ListCommand extends Base {
 			// This MUST stay the last entry
 			if ($shortView) {
 				// query the auth type
-				if (\stristr($config->getBackend()->getText(), 'session') === true) {
+				if (stristr($config->getBackend()->getText(), 'session') === true) {
 					$values[] =  'Session';
 				} else {
 					$values[] = 'User';
@@ -299,19 +299,19 @@ class ListCommand extends Base {
 		}, $mounts);
 
 		if ($outputIsJson) {
-			$keys = \array_map(function ($header) {
-				return \strtolower(\str_replace(' ', '_', $header));
+			$keys = array_map(function ($header) {
+				return strtolower(str_replace(' ', '_', $header));
 			}, $headers);
 
 			$pairs = [];
 			foreach ($rows as $array_1) {
-				$pairs[] = \array_combine($keys, $array_1);
+				$pairs[] = array_combine($keys, $array_1);
 			}
 
 			if ($outputType === self::OUTPUT_FORMAT_JSON) {
-				$output->writeln(\json_encode(\array_values($pairs)));
+				$output->writeln(json_encode(array_values($pairs)));
 			} else {
-				$output->writeln(\json_encode(\array_values($pairs), JSON_PRETTY_PRINT));
+				$output->writeln(json_encode(array_values($pairs), JSON_PRETTY_PRINT));
 			}
 		} else {
 			$table = new Table($output);

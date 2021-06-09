@@ -43,7 +43,7 @@ class File extends \OCP\Search\Provider {
 		// edit results
 		foreach ($files as $fileData) {
 			// skip versions
-			if (\strpos($fileData['path'], '_versions') === 0) {
+			if (strpos($fileData['path'], '_versions') === 0) {
 				continue;
 			}
 			// skip top-level folder

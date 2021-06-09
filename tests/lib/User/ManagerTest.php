@@ -63,7 +63,11 @@ class ManagerTest extends TestCase {
 			->method('isSearchable')
 			->willReturn(true);
 		$this->manager = new \OC\User\Manager(
-			$config, $logger, $this->accountMapper, $this->syncService, $this->userSearch
+			$config,
+			$logger,
+			$this->accountMapper,
+			$this->syncService,
+			$this->userSearch
 		);
 	}
 
@@ -189,8 +193,8 @@ class ManagerTest extends TestCase {
 			->with('fo')->willReturn([$a0, $a1]);
 		$result = $this->manager->find('fo');
 		$this->assertCount(2, $result);
-		$this->assertEquals('foo', \array_shift($result)->getUID());
-		$this->assertEquals('foob', \array_shift($result)->getUID());
+		$this->assertEquals('foo', array_shift($result)->getUID());
+		$this->assertEquals('foob', array_shift($result)->getUID());
 	}
 
 	public function testSearch() {
@@ -202,8 +206,8 @@ class ManagerTest extends TestCase {
 			->with('user_id', 'fo')->willReturn([$a0, $a1]);
 		$result = $this->manager->search('fo');
 		$this->assertCount(2, $result);
-		$this->assertEquals('afoo', \array_shift($result)->getUID());
-		$this->assertEquals('foo', \array_shift($result)->getUID());
+		$this->assertEquals('afoo', array_shift($result)->getUID());
+		$this->assertEquals('foo', array_shift($result)->getUID());
 	}
 
 	public function testSearchLimitOffset() {
@@ -217,9 +221,9 @@ class ManagerTest extends TestCase {
 			->with('user_id', 'fo', 3, 1)->willReturn([$a0, $a1, $a2]);
 		$result = $this->manager->search('fo', 3, 1);
 		$this->assertCount(3, $result);
-		$this->assertEquals('foo1', \array_shift($result)->getUID());
-		$this->assertEquals('foo2', \array_shift($result)->getUID());
-		$this->assertEquals('foo3', \array_shift($result)->getUID());
+		$this->assertEquals('foo1', array_shift($result)->getUID());
+		$this->assertEquals('foo2', array_shift($result)->getUID());
+		$this->assertEquals('foo3', array_shift($result)->getUID());
 	}
 
 	public function testCountUsersNoBackend() {
@@ -313,7 +317,7 @@ class ManagerTest extends TestCase {
 
 		$users = [];
 		$this->manager->callForUsers($function, '', true, null, null);
-		$this->assertCount(\count($usersBefore) + 3, $users, \join(', ', $usersBefore) . " !== " . \join(', ', $users));
+		$this->assertCount(\count($usersBefore) + 3, $users, join(', ', $usersBefore) . " !== " . join(', ', $users));
 
 		//cleanup
 		$user1->delete();
@@ -431,10 +435,12 @@ class ManagerTest extends TestCase {
 			->willReturn($account);
 
 		$event = null;
-		\OC::$server->getEventDispatcher()->addListener('OCP\User::validatePassword',
+		\OC::$server->getEventDispatcher()->addListener(
+			'OCP\User::validatePassword',
 			function (GenericEvent $receivedEvent) use (&$event) {
 				$event = $receivedEvent;
-			});
+			}
+		);
 
 		$this->manager->createUser('testuser1', 'abcdefg');
 

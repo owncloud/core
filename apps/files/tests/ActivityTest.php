@@ -126,7 +126,7 @@ class ActivityTest extends TestCase {
 		$result = $this->activityExtension->getDefaultTypes('stream');
 		$this->assertIsArray($result, 'Asserting getDefaultTypes(stream) returns an array');
 		$this->assertCount(4, $result);
-		$result = \array_flip($result);
+		$result = array_flip($result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_CREATED, $result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_CHANGED, $result);
 		$this->assertArrayNotHasKey(Activity::TYPE_FAVORITES, $result);
@@ -347,8 +347,8 @@ class ActivityTest extends TestCase {
 
 	public function executeQueryForFilter(array $result) {
 		list($resultQuery, $resultParameters) = $result;
-		$resultQuery = \str_replace('`file`', '`user`', $resultQuery);
-		$resultQuery = \str_replace('`type`', '`key`', $resultQuery);
+		$resultQuery = str_replace('`file`', '`user`', $resultQuery);
+		$resultQuery = str_replace('`type`', '`key`', $resultQuery);
 
 		$connection = \OC::$server->getDatabaseConnection();
 		// Test the query on the privatedata table, because the activity table

@@ -55,7 +55,7 @@ class StatusCommand extends Command {
 
 		$infos = $this->getMigrationsInfos($ms);
 		foreach ($infos as $key => $value) {
-			$output->writeln("    <comment>>></comment> $key: " . \str_repeat(' ', 50 - \strlen($key)) . $value);
+			$output->writeln("    <comment>>></comment> $key: " . str_repeat(' ', 50 - \strlen($key)) . $value);
 		}
 	}
 
@@ -66,10 +66,10 @@ class StatusCommand extends Command {
 	public function getMigrationsInfos(MigrationService $ms) {
 		$executedMigrations = $ms->getMigratedVersions();
 		$availableMigrations = $ms->getAvailableVersions();
-		$executedUnavailableMigrations = \array_diff($executedMigrations, \array_keys($availableMigrations));
+		$executedUnavailableMigrations = array_diff($executedMigrations, array_keys($availableMigrations));
 
 		$numExecutedUnavailableMigrations = \count($executedUnavailableMigrations);
-		$numNewMigrations = \count(\array_diff(\array_keys($availableMigrations), $executedMigrations));
+		$numNewMigrations = \count(array_diff(array_keys($availableMigrations), $executedMigrations));
 
 		$infos = [
 			'App'								=> $ms->getApp(),

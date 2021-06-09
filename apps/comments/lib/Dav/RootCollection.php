@@ -69,7 +69,8 @@ class RootCollection implements ICollection {
 		IUserManager $userManager,
 		IUserSession $userSession,
 		EventDispatcherInterface $dispatcher,
-		ILogger $logger) {
+		ILogger $logger
+	) {
 		$this->commentsManager = $commentsManager;
 		$this->logger = $logger;
 		$this->userManager = $userManager;

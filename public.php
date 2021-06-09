@@ -42,21 +42,21 @@ try {
 	$pathInfo = $request->getPathInfo();
 
 	if (!$pathInfo && $request->getParam('service', '') === '') {
-		\http_response_code(404);
+		http_response_code(404);
 		exit;
 	} elseif ($request->getParam('service', '')) {
 		$service = $request->getParam('service', '');
 	} else {
-		$pathInfo = \trim($pathInfo, '/');
-		list($service) = \explode('/', $pathInfo);
+		$pathInfo = trim($pathInfo, '/');
+		list($service) = explode('/', $pathInfo);
 	}
-	$file = \OC::$server->getConfig()->getAppValue('core', 'public_' . \strip_tags($service));
+	$file = \OC::$server->getConfig()->getAppValue('core', 'public_' . strip_tags($service));
 	if ($file === null) {
-		\http_response_code(404);
+		http_response_code(404);
 		exit;
 	}
 
-	$parts = \explode('/', $file, 2);
+	$parts = explode('/', $file, 2);
 	$app = $parts[0];
 
 	// Load all required applications
@@ -85,7 +85,7 @@ try {
 		OC_Template::printExceptionErrorPage($ex);
 	} catch (\Throwable $ex2) {
 		// log through the crashLog
-		\header("{$_SERVER['SERVER_PROTOCOL']} 599 Broken");
+		header("{$_SERVER['SERVER_PROTOCOL']} 599 Broken");
 		\OC::crashLog($ex);
 		\OC::crashLog($ex2);
 	}

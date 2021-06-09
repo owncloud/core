@@ -36,8 +36,8 @@ class TranslationHelper {
 	 */
 	public static function getLanguage($language) {
 		if (!isset($language)) {
-			if (\getenv('OC_LANGUAGE') !== false) {
-				$language = \getenv('OC_LANGUAGE');
+			if (getenv('OC_LANGUAGE') !== false) {
+				$language = getenv('OC_LANGUAGE');
 			}
 		}
 		return $language;

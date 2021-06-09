@@ -205,7 +205,7 @@ class ChunkingPluginTest extends TestCase {
 
 		if ($expectedSize != $actualSize) {
 			$this->expectException(\Sabre\DAV\Exception\BadRequest::class);
-			$this->expectExceptionMessage(\sprintf("Chunks on server do not sum up to %s but to %.3f", $expectedSize, $actualSize));
+			$this->expectExceptionMessage(sprintf("Chunks on server do not sum up to %s but to %.3f", $expectedSize, $actualSize));
 		} else {
 			$this->assertTrue(true);
 		}

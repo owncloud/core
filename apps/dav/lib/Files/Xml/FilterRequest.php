@@ -71,7 +71,7 @@ class FilterRequest implements XmlDeserializable {
 			switch ($elem['name']) {
 
 				case '{DAV:}prop':
-					$newProps['properties'] = \array_keys($elem['value']);
+					$newProps['properties'] = array_keys($elem['value']);
 					break;
 				case '{http://owncloud.org/ns}filter-rules':
 

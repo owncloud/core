@@ -79,19 +79,19 @@ class OC_DB {
 	 * @return bool
 	 */
 	public static function isManipulation($sql) {
-		$selectOccurrence = \stripos($sql, 'SELECT');
+		$selectOccurrence = stripos($sql, 'SELECT');
 		if ($selectOccurrence !== false && $selectOccurrence < 10) {
 			return false;
 		}
-		$insertOccurrence = \stripos($sql, 'INSERT');
+		$insertOccurrence = stripos($sql, 'INSERT');
 		if ($insertOccurrence !== false && $insertOccurrence < 10) {
 			return true;
 		}
-		$updateOccurrence = \stripos($sql, 'UPDATE');
+		$updateOccurrence = stripos($sql, 'UPDATE');
 		if ($updateOccurrence !== false && $updateOccurrence < 10) {
 			return true;
 		}
-		$deleteOccurrence = \stripos($sql, 'DELETE');
+		$deleteOccurrence = stripos($sql, 'DELETE');
 		if ($deleteOccurrence !== false && $deleteOccurrence < 10) {
 			return true;
 		}
@@ -110,7 +110,7 @@ class OC_DB {
 	public static function executeAudited($stmt, array $parameters = null) {
 		if (\is_string($stmt)) {
 			// convert to an array with 'sql'
-			if (\stripos($stmt, 'LIMIT') !== false) { //OFFSET requires LIMIT, so we only need to check for LIMIT
+			if (stripos($stmt, 'LIMIT') !== false) { //OFFSET requires LIMIT, so we only need to check for LIMIT
 				// TODO try to convert LIMIT OFFSET notation to parameters
 				$message = 'LIMIT and OFFSET are forbidden for portability reasons,'
 						 . ' pass an array with \'limit\' and \'offset\' instead';

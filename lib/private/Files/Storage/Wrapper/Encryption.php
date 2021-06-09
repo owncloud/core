@@ -103,17 +103,17 @@ class Encryption extends Wrapper {
 	 * @param ArrayCache $arrayCache
 	 */
 	public function __construct(
-			$parameters,
-			IManager $encryptionManager = null,
-			Util $util = null,
-			ILogger $logger = null,
-			IFile $fileHelper = null,
-			$uid = null,
-			IStorage $keyStorage = null,
-			Update $update = null,
-			Manager $mountManager = null,
-			ArrayCache $arrayCache = null
-		) {
+		$parameters,
+		IManager $encryptionManager = null,
+		Util $util = null,
+		ILogger $logger = null,
+		IFile $fileHelper = null,
+		$uid = null,
+		IStorage $keyStorage = null,
+		Update $update = null,
+		Manager $mountManager = null,
+		ArrayCache $arrayCache = null
+	) {
 		$this->mountPoint = $parameters['mountPoint'];
 		$this->mount = $parameters['mount'];
 		$this->encryptionManager = $encryptionManager;
@@ -212,8 +212,8 @@ class Encryption extends Wrapper {
 				if (!$handle) {
 					return false;
 				}
-				$data = \stream_get_contents($handle);
-				\fclose($handle);
+				$data = stream_get_contents($handle);
+				fclose($handle);
 				return $data;
 			}
 		}
@@ -231,8 +231,8 @@ class Encryption extends Wrapper {
 		// file put content will always be translated to a stream write
 		$handle = $this->fopen($path, 'w');
 		if (\is_resource($handle)) {
-			$written = \fwrite($handle, $data);
-			\fclose($handle);
+			$written = fwrite($handle, $data);
+			fclose($handle);
 			return $written;
 		}
 
@@ -475,9 +475,24 @@ class Encryption extends Wrapper {
 				} else {
 					$sourceFileOfRename = null;
 				}
-				$handle = \OC\Files\Stream\Encryption::wrap($source, $path, $fullPath, $header,
-					$this->uid, $encryptionModule, $this->storage, $this, $this->util, $this->fileHelper, $mode,
-					$size, $unencryptedSize, $headerSize, $signed, $sourceFileOfRename);
+				$handle = \OC\Files\Stream\Encryption::wrap(
+					$source,
+					$path,
+					$fullPath,
+					$header,
+					$this->uid,
+					$encryptionModule,
+					$this->storage,
+					$this,
+					$this->util,
+					$this->fileHelper,
+					$mode,
+					$size,
+					$unencryptedSize,
+					$headerSize,
+					$signed,
+					$sourceFileOfRename
+				);
 				unset($this->sourcePath[$path]);
 
 				return $handle;
@@ -548,7 +563,7 @@ class Encryption extends Wrapper {
 
 		// if a header exists we skip it
 		if ($headerSize > 0) {
-			\fread($stream, $headerSize);
+			fread($stream, $headerSize);
 		}
 
 		// fast path, else the calculation for $lastChunkNr is bogus
@@ -563,11 +578,11 @@ class Encryption extends Wrapper {
 		// next highest is end of chunks, one subtracted is last one
 		// we have to read the last chunk, we can't just calculate it (because of padding etc)
 
-		$lastChunkNr = \ceil($size/ $blockSize)-1;
+		$lastChunkNr = ceil($size/ $blockSize)-1;
 		// calculate last chunk position
 		$lastChunkPos = ($lastChunkNr * $blockSize);
 		// try to fseek to the last chunk, if it fails we have to read the whole file
-		if (@\fseek($stream, $lastChunkPos, SEEK_CUR) === 0) {
+		if (@fseek($stream, $lastChunkPos, SEEK_CUR) === 0) {
 			$newUnencryptedSize += $lastChunkNr * $unencryptedBlockSize;
 		}
 
@@ -575,16 +590,16 @@ class Encryption extends Wrapper {
 		$count = $blockSize;
 
 		while ($count > 0) {
-			$data=\fread($stream, $blockSize);
+			$data=fread($stream, $blockSize);
 			$count=\strlen($data);
 			$lastChunkContentEncrypted .= $data;
 			if (\strlen($lastChunkContentEncrypted) > $blockSize) {
 				$newUnencryptedSize += $unencryptedBlockSize;
-				$lastChunkContentEncrypted=\substr($lastChunkContentEncrypted, $blockSize);
+				$lastChunkContentEncrypted=substr($lastChunkContentEncrypted, $blockSize);
 			}
 		}
 
-		\fclose($stream);
+		fclose($stream);
 
 		// we have to decrypt the last chunk to get it actual size
 		$encryptionModule->begin($this->getFullPath($path), $this->uid, 'r', $header, [], null);
@@ -774,7 +789,7 @@ class Encryption extends Wrapper {
 			$dh = $sourceStorage->opendir($sourceInternalPath);
 			$result = $this->mkdir($targetInternalPath);
 			if (\is_resource($dh)) {
-				while ($result and ($file = \readdir($dh)) !== false) {
+				while ($result and ($file = readdir($dh)) !== false) {
 					if (!Filesystem::isIgnoredDir($file)) {
 						$result &= $this->copyFromStorage($sourceStorage, $sourceInternalPath . '/' . $file, $targetInternalPath . '/' . $file, false, $isRename);
 					}
@@ -791,12 +806,12 @@ class Encryption extends Wrapper {
 				}
 				$target = $this->fopen($targetInternalPath, 'w');
 				list(, $result) = \OC_Helper::streamCopy($source, $target);
-				\fclose($source);
-				\fclose($target);
+				fclose($source);
+				fclose($target);
 			} catch (\Exception $e) {
 				Encryption::setDisableWriteEncryption(false);
-				\fclose($source);
-				\fclose($target);
+				fclose($source);
+				fclose($target);
 				throw $e;
 			}
 			if ($result) {
@@ -804,7 +819,7 @@ class Encryption extends Wrapper {
 					$this->touch($targetInternalPath, $sourceStorage->filemtime($sourceInternalPath));
 				}
 				if ($sourceStorage->getOwner($sourceInternalPath) === $this->uid
-					|| \substr($targetInternalPath, 0, \strlen('files_trashbin/')) !== 'files_trashbin/') {
+					|| substr($targetInternalPath, 0, \strlen('files_trashbin/')) !== 'files_trashbin/') {
 					// 1. user1 moves file from home storage to admins's shared folder
 					// 2. user2 grabs the file from admin's shared folder to his own home storage
 					// Admin has a broken copy in his trashbin, which is caused by a wrong encrypted
@@ -876,10 +891,10 @@ class Encryption extends Wrapper {
 	 */
 	public function hash($type, $path, $raw = false) {
 		$fh = $this->fopen($path, 'rb');
-		$ctx = \hash_init($type);
-		\hash_update_stream($ctx, $fh);
-		\fclose($fh);
-		return \hash_final($ctx, $raw);
+		$ctx = hash_init($type);
+		hash_update_stream($ctx, $fh);
+		fclose($fh);
+		return hash_final($ctx, $raw);
 	}
 
 	/**
@@ -901,15 +916,15 @@ class Encryption extends Wrapper {
 	 */
 	protected function readFirstBlock($path) {
 		if (\is_resource($path)) {
-			$firstBlock = \fread($path, $this->util->getHeaderSize());
-			\rewind($path);
+			$firstBlock = fread($path, $this->util->getHeaderSize());
+			rewind($path);
 			return $firstBlock;
 		}
 		$firstBlock = '';
 		if ($this->storage->file_exists($path)) {
 			$handle = $this->storage->fopen($path, 'r');
-			$firstBlock = \fread($handle, $this->util->getHeaderSize());
-			\fclose($handle);
+			$firstBlock = fread($handle, $this->util->getHeaderSize());
+			fclose($handle);
 		}
 		return $firstBlock;
 	}
@@ -930,7 +945,7 @@ class Encryption extends Wrapper {
 		}
 		$firstBlock = $this->readFirstBlock($path);
 
-		if (\substr($firstBlock, 0, \strlen(Util::HEADER_START)) === Util::HEADER_START) {
+		if (substr($firstBlock, 0, \strlen(Util::HEADER_START)) === Util::HEADER_START) {
 			$headerSize = $this->util->getHeaderSize();
 		}
 
@@ -945,19 +960,19 @@ class Encryption extends Wrapper {
 	 */
 	protected function parseRawHeader($rawHeader) {
 		$result = [];
-		if (\substr($rawHeader, 0, \strlen(Util::HEADER_START)) === Util::HEADER_START) {
+		if (substr($rawHeader, 0, \strlen(Util::HEADER_START)) === Util::HEADER_START) {
 			$header = $rawHeader;
-			$endAt = \strpos($header, Util::HEADER_END);
+			$endAt = strpos($header, Util::HEADER_END);
 			if ($endAt !== false) {
-				$header = \substr($header, 0, $endAt + \strlen(Util::HEADER_END));
+				$header = substr($header, 0, $endAt + \strlen(Util::HEADER_END));
 
 				// +1 to not start with an ':' which would result in empty element at the beginning
-				$exploded = \explode(':', \substr($header, \strlen(Util::HEADER_START)+1));
+				$exploded = explode(':', substr($header, \strlen(Util::HEADER_START)+1));
 
-				$element = \array_shift($exploded);
+				$element = array_shift($exploded);
 				while ($element !== Util::HEADER_END) {
-					$result[$element] = \array_shift($exploded);
-					$element = \array_shift($exploded);
+					$result[$element] = array_shift($exploded);
+					$element = array_shift($exploded);
 				}
 			}
 		}
@@ -1069,6 +1084,6 @@ class Encryption extends Wrapper {
 	 */
 	protected function isVersion($path) {
 		$normalized = Filesystem::normalizePath($path);
-		return \substr($normalized, 0, \strlen('/files_versions/')) === '/files_versions/';
+		return substr($normalized, 0, \strlen('/files_versions/')) === '/files_versions/';
 	}
 }

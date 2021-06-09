@@ -461,9 +461,9 @@ class DirectoryTest extends \Test\TestCase {
 			->setConstructorArgs([$view, $targetInfo])
 			->getMock();
 		$targetNode->expects($this->any())->method('childExists')
-			->with(\basename($destination))
+			->with(basename($destination))
 			->willReturn(false);
-		$this->assertTrue($targetNode->moveInto(\basename($destination), $source, $sourceNode));
+		$this->assertTrue($targetNode->moveInto(basename($destination), $source, $sourceNode));
 	}
 
 	/**
@@ -488,10 +488,10 @@ class DirectoryTest extends \Test\TestCase {
 			->setConstructorArgs([$view, $targetInfo])
 			->getMock();
 		$targetNode->expects($this->once())->method('childExists')
-			->with(\basename($destination))
+			->with(basename($destination))
 			->willReturn(true);
 
-		$targetNode->moveInto(\basename($destination), $source, $sourceNode);
+		$targetNode->moveInto(basename($destination), $source, $sourceNode);
 	}
 
 	/**

@@ -44,7 +44,7 @@ class OC_JSON {
 	public static function setContentTypeHeader($type='application/json') {
 		if (!self::$send_content_type_header) {
 			// We send json data
-			\header('Content-Type: '.$type . '; charset=utf-8');
+			header('Content-Type: '.$type . '; charset=utf-8');
 			self::$send_content_type_header = true;
 		}
 	}
@@ -64,7 +64,7 @@ class OC_JSON {
 
 	private static function sendErrorAndExit() {
 		$l = \OC::$server->getL10N('lib');
-		\http_response_code(\OCP\AppFramework\Http::STATUS_UNAUTHORIZED);
+		http_response_code(\OCP\AppFramework\Http::STATUS_UNAUTHORIZED);
 		self::error(['data' => ['message' => $l->t('Authentication error'), 'error' => 'authentication_error']]);
 		exit();
 	}
@@ -193,8 +193,8 @@ class OC_JSON {
 	 */
 	public static function encode($data) {
 		if (\is_array($data)) {
-			\array_walk_recursive($data, ['OC_JSON', 'to_string']);
+			array_walk_recursive($data, ['OC_JSON', 'to_string']);
 		}
-		return \json_encode($data, JSON_HEX_TAG);
+		return json_encode($data, JSON_HEX_TAG);
 	}
 }

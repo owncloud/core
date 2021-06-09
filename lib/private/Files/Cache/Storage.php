@@ -86,7 +86,9 @@ class Storage {
 
 				// distributed cache may need initializing
 				self::getDistributedCache()->set(
-					$this->storageId, $storageData, self::$distributedCacheTTL
+					$this->storageId,
+					$storageData,
+					self::$distributedCacheTTL
 				);
 			} else {
 				if ($row = self::getStorageById($this->storageId)) {
@@ -136,7 +138,9 @@ class Storage {
 		if ($result === null || !isset($result['numeric_id'])) {
 			$result = self::getStorageByIdFromDb($storageId);
 			self::getDistributedCache()->set(
-				$storageId, $result, self::$distributedCacheTTL
+				$storageId,
+				$result,
+				self::$distributedCacheTTL
 			);
 		}
 		return $result;
@@ -170,7 +174,7 @@ class Storage {
 	 */
 	public static function adjustStorageId($storageId) {
 		if (\strlen($storageId) > 64) {
-			return \md5($storageId);
+			return md5($storageId);
 		}
 		return $storageId;
 	}
@@ -238,7 +242,7 @@ class Storage {
 		self::unsetCache($this->storageId);
 		$sql = 'UPDATE `*PREFIX*storages` SET `available` = ?, `last_checked` = ? WHERE `id` = ?';
 		$available = $isAvailable ? 1 : 0;
-		\OC_DB::executeAudited($sql, [$available, \time(), $this->storageId]);
+		\OC_DB::executeAudited($sql, [$available, time(), $this->storageId]);
 	}
 
 	/**

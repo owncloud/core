@@ -110,12 +110,12 @@ class Group implements IGroup {
 
 		$userIds = [];
 		foreach ($this->backends as $backend) {
-			$diff = \array_diff(
+			$diff = array_diff(
 				$backend->usersInGroup($this->gid),
 				$userIds
 			);
 			if ($diff) {
-				$userIds = \array_merge($userIds, $diff);
+				$userIds = array_merge($userIds, $diff);
 			}
 		}
 
@@ -219,10 +219,10 @@ class Group implements IGroup {
 			$userIds = $backend->usersInGroup($this->gid, $search, $limit, $offset);
 			$users += $this->getVerifiedUsers($userIds);
 			if ($limit !== null and $limit <= 0) {
-				return \array_values($users);
+				return array_values($users);
 			}
 		}
-		return \array_values($users);
+		return array_values($users);
 	}
 
 	/**
@@ -260,10 +260,10 @@ class Group implements IGroup {
 			$userIds = $backend->usersInGroup($this->gid, $search, $limit, $offset);
 			$users = $this->getVerifiedUsers($userIds);
 			if ($limit !== null and $limit <= 0) {
-				return \array_values($users);
+				return array_values($users);
 			}
 		}
-		return \array_values($users);
+		return array_values($users);
 	}
 
 	/**

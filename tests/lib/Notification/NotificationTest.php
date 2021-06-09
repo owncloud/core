@@ -37,10 +37,10 @@ class NotificationTest extends TestCase {
 	protected function dataValidString($maxLength) {
 		$dataSets = [
 			['test1'],
-			[\str_repeat('a', 1)],
+			[str_repeat('a', 1)],
 		];
 		if ($maxLength !== false) {
-			$dataSets[] = [\str_repeat('a', $maxLength)];
+			$dataSets[] = [str_repeat('a', $maxLength)];
 		}
 		return $dataSets;
 	}
@@ -55,8 +55,8 @@ class NotificationTest extends TestCase {
 			[[]],
 		];
 		if ($maxLength !== false) {
-			$dataSets[] = [\str_repeat('a', $maxLength + 1)];
-			$dataSets[] = [[\str_repeat('a', $maxLength + 1)]];
+			$dataSets[] = [str_repeat('a', $maxLength + 1)];
+			$dataSets[] = [[str_repeat('a', $maxLength + 1)]];
 		}
 		return $dataSets;
 	}
@@ -67,10 +67,10 @@ class NotificationTest extends TestCase {
 			[false],
 			[''],
 			['a'],
-			[\str_repeat('a', 256)],
+			[str_repeat('a', 256)],
 			[[]],
 			[['a']],
-			[[\str_repeat('a', 256)]],
+			[[str_repeat('a', 256)]],
 		];
 	}
 
@@ -179,7 +179,7 @@ class NotificationTest extends TestCase {
 	public function dataSetObject() {
 		return [
 			['a', '21', '21'],
-			[\str_repeat('a', 64), 42, '42'],
+			[str_repeat('a', 64), 42, '42'],
 		];
 	}
 
@@ -218,9 +218,9 @@ class NotificationTest extends TestCase {
 			[true],
 			[false],
 			[''],
-			[\str_repeat('a', 64 + 1)],
+			[str_repeat('a', 64 + 1)],
 			[[]],
-			[[\str_repeat('a', 64 + 1)]],
+			[[str_repeat('a', 64 + 1)]],
 		];
 	}
 
@@ -239,8 +239,8 @@ class NotificationTest extends TestCase {
 	public function dataSetSubject() {
 		return [
 			['a', []],
-			[\str_repeat('a', 64), [\str_repeat('a', 160)]],
-			[\str_repeat('a', 64), \array_fill(0, 160, 'a')],
+			[str_repeat('a', 64), [str_repeat('a', 160)]],
+			[str_repeat('a', 64), array_fill(0, 160, 'a')],
 		];
 	}
 
@@ -304,8 +304,8 @@ class NotificationTest extends TestCase {
 	public function dataSetMessage() {
 		return [
 			['a', []],
-			[\str_repeat('a', 64), [\str_repeat('a', 160)]],
-			[\str_repeat('a', 64), \array_fill(0, 160, 'a')],
+			[str_repeat('a', 64), [str_repeat('a', 160)]],
+			[str_repeat('a', 64), array_fill(0, 160, 'a')],
 		];
 	}
 
@@ -584,9 +584,9 @@ class NotificationTest extends TestCase {
 			['', '', 0, '', '', false],
 			['app', '', 0, '', '', false],
 			['app', 'user', 0, '', '', false],
-			['app', 'user', \time(), '', '', false],
-			['app', 'user', \time(), 'type', '', false],
-			['app', 'user', \time(), 'type', '42', true],
+			['app', 'user', time(), '', '', false],
+			['app', 'user', time(), 'type', '', false],
+			['app', 'user', time(), 'type', '42', true],
 		];
 	}
 

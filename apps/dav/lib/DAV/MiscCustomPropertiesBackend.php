@@ -34,15 +34,15 @@ use Sabre\DAV\INode;
  * @package OCA\DAV\DAV
  */
 class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
-	const SELECT_BY_PATH_STMT = 'SELECT * FROM `*PREFIX*dav_properties` WHERE `propertypath` = ?';
-	const INSERT_BY_PATH_STMT = 'INSERT INTO `*PREFIX*dav_properties`'
+	public const SELECT_BY_PATH_STMT = 'SELECT * FROM `*PREFIX*dav_properties` WHERE `propertypath` = ?';
+	public const INSERT_BY_PATH_STMT = 'INSERT INTO `*PREFIX*dav_properties`'
 	. ' (`propertypath`, `propertyname`, `propertyvalue`, `propertytype`) VALUES(?,?,?,?)';
-	const UPDATE_BY_PATH_STMT = 'UPDATE `*PREFIX*dav_properties`'
+	public const UPDATE_BY_PATH_STMT = 'UPDATE `*PREFIX*dav_properties`'
 	. ' SET `propertypath` = ? WHERE `propertypath` = ?';
-	const UPDATE_BY_PATH_AND_NAME_STMT = 'UPDATE `*PREFIX*dav_properties` '
+	public const UPDATE_BY_PATH_AND_NAME_STMT = 'UPDATE `*PREFIX*dav_properties` '
 	. 'SET `propertyvalue` = ?, `propertytype` = ? WHERE `propertypath` = ? AND `propertyname` = ?';
-	const DELETE_BY_PATH_STMT = 'DELETE FROM `*PREFIX*dav_properties` WHERE `propertypath` = ?';
-	const DELETE_BY_PATH_AND_NAME_STMT = 'DELETE FROM `*PREFIX*dav_properties`'
+	public const DELETE_BY_PATH_STMT = 'DELETE FROM `*PREFIX*dav_properties` WHERE `propertypath` = ?';
+	public const DELETE_BY_PATH_AND_NAME_STMT = 'DELETE FROM `*PREFIX*dav_properties`'
 	. ' WHERE `propertypath` = ? AND `propertyname` = ?';
 
 	/**

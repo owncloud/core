@@ -53,7 +53,7 @@ class Verifier {
 	public function signedRequestIsValid(): bool {
 		$params = $this->getQueryParameters();
 		if (!isset($params['OC-Signature'], $params['OC-Credential'], $params['OC-Date'], $params['OC-Expires'], $params['OC-Verb'])) {
-			$q = \json_encode($params);
+			$q = json_encode($params);
 			\OC::$server->getLogger()->debug("Query parameters are missing: $q", ['app' => 'signed-url']);
 			return false;
 		}
@@ -61,7 +61,7 @@ class Verifier {
 		$urlCredential = $params['OC-Credential'];
 		$urlDate = $params['OC-Date'];
 		$urlExpires = $params['OC-Expires'];
-		$urlVerb = \strtoupper($params['OC-Verb']);
+		$urlVerb = strtoupper($params['OC-Verb']);
 		$algo = $params['OC-Algo'] ?? 'PBKDF2/10000-SHA512';
 
 		unset($params['OC-Signature'], $params['OC-Algo']);
@@ -70,7 +70,7 @@ class Verifier {
 		if (!$valid) {
 			return false;
 		}
-		$verb = \strtoupper($this->getMethod());
+		$verb = strtoupper($this->getMethod());
 		if ($verb !== $urlVerb) {
 			\OC::$server->getLogger()->debug("OC-Verb does not match: $verb !== $urlVerb", ['app' => 'signed-url']);
 			return false;
@@ -112,7 +112,7 @@ class Verifier {
 	 * @return false|mixed|string
 	 */
 	protected function computeHash(string $algo, string $url, $signingKey) {
-		if (\preg_match('/^(.*)\/(.*)-(.*)$/', $algo, $output)) {
+		if (preg_match('/^(.*)\/(.*)-(.*)$/', $algo, $output)) {
 			if ($output[1] !== 'PBKDF2') {
 				return false;
 			}
@@ -123,7 +123,7 @@ class Verifier {
 			if ($iterations <= 0) {
 				return false;
 			}
-			return \hash_pbkdf2("sha512", $url, $signingKey, $iterations, 64, false);
+			return hash_pbkdf2("sha512", $url, $signingKey, $iterations, 64, false);
 		}
 		return false;
 	}
@@ -139,7 +139,7 @@ class Verifier {
 	private function verifySignature(array $params, $urlCredential, $algo, $urlSignature): bool {
 		$trustedList = $this->config->getSystemValue('trusted_domains', []);
 		$signingKey = $this->config->getUserValue($urlCredential, 'core', 'signing-key');
-		$qp = \preg_replace('/%5B\d+%5D/', '%5B%5D', \http_build_query($params));
+		$qp = preg_replace('/%5B\d+%5D/', '%5B%5D', http_build_query($params));
 
 		foreach ($trustedList as $trustedDomain) {
 			foreach (['https', 'http'] as $scheme) {

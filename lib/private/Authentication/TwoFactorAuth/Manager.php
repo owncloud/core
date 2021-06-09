@@ -35,7 +35,7 @@ use OCP\ISession;
 use OCP\IUser;
 
 class Manager {
-	const SESSION_UID_KEY = 'two_factor_auth_uid';
+	public const SESSION_UID_KEY = 'two_factor_auth_uid';
 
 	/** @var AppManager */
 	private $appManager;
@@ -135,7 +135,7 @@ class Manager {
 			}
 		}
 
-		return \array_filter($providers, function ($provider) use ($user) {
+		return array_filter($providers, function ($provider) use ($user) {
 			/* @var $provider IProvider */
 			return $provider->isTwoFactorAuthEnabledForUser($user);
 		});
@@ -170,8 +170,10 @@ class Manager {
 		if ($result) {
 			$this->session->remove(self::SESSION_UID_KEY);
 		} else {
-			$this->logger->warning("Two factor verify failed: '{$user->getUserName()}' (Remote IP: '{$this->request->getRemoteAddress()}')",
-				['app' => 'core']);
+			$this->logger->warning(
+				"Two factor verify failed: '{$user->getUserName()}' (Remote IP: '{$this->request->getRemoteAddress()}')",
+				['app' => 'core']
+			);
 		}
 		return $result;
 	}

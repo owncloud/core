@@ -121,7 +121,7 @@ class QueryBuilderTest extends \Test\TestCase {
 
 		$rows = $this->getTestingRows($this->queryBuilder);
 
-		$this->assertCount(\sizeof($expectedSet), $rows);
+		$this->assertCount(sizeof($expectedSet), $rows);
 		$this->assertEquals($expectedSet, $rows);
 
 		$this->deleteTestingRows();
@@ -158,7 +158,7 @@ class QueryBuilderTest extends \Test\TestCase {
 
 		$rows = $this->getTestingRows($this->queryBuilder);
 
-		$this->assertCount(\sizeof($expectedSet), $rows);
+		$this->assertCount(sizeof($expectedSet), $rows);
 		$this->assertEquals($expectedSet, $rows);
 
 		$this->deleteTestingRows();
@@ -222,7 +222,7 @@ class QueryBuilderTest extends \Test\TestCase {
 		}
 
 		if ($expectedLiteral) {
-			$this->assertEquals([$expectedLiteral], \array_values($row));
+			$this->assertEquals([$expectedLiteral], array_values($row));
 		} else {
 			$this->assertEmpty($row);
 		}
@@ -359,7 +359,7 @@ class QueryBuilderTest extends \Test\TestCase {
 		}
 
 		if ($expectedLiteral) {
-			$this->assertEquals([$expectedLiteral], \array_values($row));
+			$this->assertEquals([$expectedLiteral], array_values($row));
 		} else {
 			$this->assertEmpty($row);
 		}

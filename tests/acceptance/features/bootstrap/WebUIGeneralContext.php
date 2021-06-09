@@ -261,10 +261,12 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function getLinkFromEmail($emailAddress, $regexSearch, $errorMessage, $numEmails = 1) {
 		$content = EmailHelper::getBodyOfEmail(
-			EmailHelper::getLocalMailhogUrl(), $emailAddress, $numEmails
+			EmailHelper::getLocalMailhogUrl(),
+			$emailAddress,
+			$numEmails
 		);
 		$matches = [];
-		\preg_match($regexSearch, $content, $matches);
+		preg_match($regexSearch, $content, $matches);
 		Assert::assertArrayHasKey(1, $matches, $errorMessage);
 		return $matches[1];
 	}
@@ -280,7 +282,10 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function followLinkFromEmail($emailAddress, $regexSearch, $errorMessage, $numEmails = 1) {
 		$link = $this->getLinkFromEmail(
-			$emailAddress, $regexSearch, $errorMessage, $numEmails
+			$emailAddress,
+			$regexSearch,
+			$errorMessage,
+			$numEmails
 		);
 		$this->visitPath($link);
 	}
@@ -334,7 +339,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function notificationsShouldBeDisplayedOnTheWebUIWithTheText(
-		$matching, TableNode $table
+		$matching,
+		TableNode $table
 	) {
 		$this->featureContext->verifyTableNodeColumnsCount($table, 1);
 		$expectedNotifications = $table->getRows();
@@ -354,7 +360,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			foreach ($actualNotifications as $key => $actualNotificationText) {
 				$latestActualNotificationText = $actualNotificationText;
 				if ((($matching !== "matching") && ($expectedNotificationText === $actualNotificationText))
-					|| (($matching === "matching") && (\preg_match($expectedNotificationText, $actualNotificationText)))
+					|| (($matching === "matching") && (preg_match($expectedNotificationText, $actualNotificationText)))
 				) {
 					// it matches, remove this actual entry and go on to look for the next expected notification
 					unset($actualNotifications[$key]);
@@ -380,7 +386,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function dialogsShouldBeDisplayedOnTheWebUI(
-		$count = null, TableNode $table = null
+		$count = null,
+		TableNode $table = null
 	) {
 		$dialogs = $this->owncloudPage->getOcDialogs();
 		//check if the correct number of dialogs are open
@@ -390,11 +397,11 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			} else {
 				$count = (int) $count;
 			}
-			$currentTime = \microtime(true);
+			$currentTime = microtime(true);
 			$end = $currentTime + (STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000);
 			while ($currentTime <= $end && ($count !== \count($dialogs))) {
-				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
-				$currentTime = \microtime(true);
+				usleep(STANDARD_SLEEP_TIME_MICROSEC);
+				$currentTime = microtime(true);
 				$dialogs = $this->owncloudPage->getOcDialogs();
 			}
 			Assert::assertEquals(
@@ -418,7 +425,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 					if (isset($expectedDialogs[$dialogI]['user'])) {
 						$expectedDialogs[$dialogI]['content']
 							= $this->featureContext->substituteInLineCodes(
-								$expectedDialogs[$dialogI]['content'], $expectedDialogs[$dialogI]['user']
+								$expectedDialogs[$dialogI]['content'],
+								$expectedDialogs[$dialogI]['user']
 							);
 					}
 					if ($content === $expectedDialogs[$dialogI]['content']
@@ -597,7 +605,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			);
 		}
 
-		$capability = $this->capabilities[\strtolower($section)][$setting];
+		$capability = $this->capabilities[strtolower($section)][$setting];
 		$change = AppConfigHelper::setCapability(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
@@ -651,9 +659,10 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function addToSavedCapabilitiesChanges($change) {
-		if (\sizeof($change) > 0) {
-			$this->savedCapabilitiesChanges = \array_merge(
-				$this->savedCapabilitiesChanges, $change
+		if (sizeof($change) > 0) {
+			$this->savedCapabilitiesChanges = array_merge(
+				$this->savedCapabilitiesChanges,
+				$change
 			);
 		}
 	}
@@ -705,7 +714,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			$oldCSRFSetting = SetupHelper::getSystemConfigValue(
 				'csrf.disabled'
 			);
-			$this->oldCSRFSetting = \trim($oldCSRFSetting);
+			$this->oldCSRFSetting = trim($oldCSRFSetting);
 		}
 		SetupHelper::setSystemConfig(
 			'csrf.disabled',
@@ -744,10 +753,12 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 					$oldPreviewSetting = SetupHelper::getSystemConfigValue(
 						'enable_previews'
 					);
-					$this->oldPreviewSetting[$server] = \trim($oldPreviewSetting);
+					$this->oldPreviewSetting[$server] = trim($oldPreviewSetting);
 				}
 				SetupHelper::setSystemConfig(
-					'enable_previews', 'false', 'boolean'
+					'enable_previews',
+					'false',
+					'boolean'
 				);
 			}
 		);
@@ -772,10 +783,12 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 					$oldPreviewSetting = SetupHelper::getSystemConfigValue(
 						'enable_previews'
 					);
-					$this->oldPreviewSetting[$server] = \trim($oldPreviewSetting);
+					$this->oldPreviewSetting[$server] = trim($oldPreviewSetting);
 				}
 				SetupHelper::setSystemConfig(
-					'enable_previews', 'true', 'boolean'
+					'enable_previews',
+					'true',
+					'boolean'
 				);
 			}
 		);
@@ -786,8 +799,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function getSessionId() {
 		$url = $this->getSession()->getDriver()->getWebDriverSession()->getUrl();
-		$parts = \explode('/', $url);
-		$sessionId = \array_pop($parts);
+		$parts = explode('/', $url);
+		$sessionId = array_pop($parts);
 		return $sessionId;
 	}
 
@@ -815,7 +828,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 					SetupHelper::deleteSystemConfig('enable_previews');
 				} elseif (isset($this->oldPreviewSetting[$server])) {
 					SetupHelper::setSystemConfig(
-						'enable_previews', $this->oldPreviewSetting[$server], 'boolean'
+						'enable_previews',
+						$this->oldPreviewSetting[$server],
+						'boolean'
 					);
 				}
 			}
@@ -825,7 +840,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			SetupHelper::deleteSystemConfig('csrf.disabled');
 		} elseif ($this->oldCSRFSetting !== null) {
 			SetupHelper::setSystemConfig(
-				'csrf.disabled', $this->oldCSRFSetting, 'boolean'
+				'csrf.disabled',
+				$this->oldCSRFSetting,
+				'boolean'
 			);
 		}
 	}
@@ -848,15 +865,15 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			$passed = "false";
 		}
 
-		$sauceUsername = \getenv('SAUCE_USERNAME');
-		$sauceAccessKey = \getenv('SAUCE_ACCESS_KEY');
+		$sauceUsername = getenv('SAUCE_USERNAME');
+		$sauceAccessKey = getenv('SAUCE_ACCESS_KEY');
 
 		if ($sauceUsername && $sauceAccessKey) {
 			$jobId = $this->getSessionId();
-			\error_log("SAUCELABS RESULT: ($passOrFail) https://saucelabs.com/jobs/$jobId");
-			\exec('curl -X PUT -s -d "{\"passed\": ' . $passed . '}" -u ' . $sauceUsername . ':' . $sauceAccessKey . ' https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/' . $jobId);
+			error_log("SAUCELABS RESULT: ($passOrFail) https://saucelabs.com/jobs/$jobId");
+			exec('curl -X PUT -s -d "{\"passed\": ' . $passed . '}" -u ' . $sauceUsername . ':' . $sauceAccessKey . ' https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/' . $jobId);
 		} else {
-			\error_log("SCENARIO RESULT: ($passOrFail)");
+			error_log("SCENARIO RESULT: ($passOrFail)");
 		}
 	}
 }

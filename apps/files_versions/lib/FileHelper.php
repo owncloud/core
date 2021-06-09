@@ -25,7 +25,7 @@ use OC\Files\Filesystem;
 use OC\Files\View;
 
 class FileHelper {
-	const VERSIONS_RELATIVE_PATH = '/files_versions';
+	public const VERSIONS_RELATIVE_PATH = '/files_versions';
 
 	/**
 	 * Create recursively missing directories inside of files_versions
@@ -38,10 +38,10 @@ class FileHelper {
 	 */
 	public function createMissingDirectories(View $view, $path) {
 		$dirName = Filesystem::normalizePath(\dirname($path));
-		$dirParts = \explode('/', $dirName);
+		$dirParts = explode('/', $dirName);
 		$dir = self::VERSIONS_RELATIVE_PATH;
 		foreach ($dirParts as $part) {
-			$dir = \rtrim($dir, '/') . '/' . $part;
+			$dir = rtrim($dir, '/') . '/' . $part;
 			if (!$view->file_exists($dir)) {
 				$view->mkdir($dir);
 			}
@@ -78,16 +78,16 @@ class FileHelper {
 		$versions = [];
 
 		while (!empty($dirs)) {
-			$dir = \array_pop($dirs);
+			$dir = array_pop($dirs);
 			$files = $view->getDirectoryContent($dir);
 			foreach ($files as $file) {
 				$filePath = $dir . '/' . $file->getName();
 				if ($file->getType() === 'dir') {
-					\array_push($dirs, $filePath);
+					array_push($dirs, $filePath);
 				} else {
 					$versionInfo = $this->getPathAndRevision($filePath);
 					$relPathStart = \strlen(Storage::VERSIONS_ROOT);
-					$relPath = \substr($versionInfo['path'], $relPathStart);
+					$relPath = substr($versionInfo['path'], $relPathStart);
 					$key = $versionInfo['revision'] . '#' . $relPath;
 					$versions[$key] = [
 						'path' => $relPath,
@@ -98,7 +98,7 @@ class FileHelper {
 		}
 
 		// newest version first
-		\krsort($versions);
+		krsort($versions);
 
 		$result = [];
 		foreach ($versions as $key => $value) {
@@ -126,7 +126,7 @@ class FileHelper {
 	 * @return array
 	 */
 	public function getPathAndRevision($versionPath) {
-		\preg_match_all(
+		preg_match_all(
 			'#(?<path>.*)\.v(?<timestamp>\d+)$#',
 			$versionPath,
 			$versionInfo

@@ -35,12 +35,12 @@ require_once __DIR__ . '/lib/base.php';
 
 if (!\OC::$CLI) {
 	$url = \OC::$server->getURLGenerator()->linkToRoute('core.Cron.run');
-	\header("Location: $url");
+	header("Location: $url");
 	return;
 }
 
 echo 'Please use ./occ system:cron' . PHP_EOL;
-$return = \system('./occ system:cron');
+$return = system('./occ system:cron');
 // in case of an error while cron execution we exit with error code as well
 if ($return === false) {
 	exit(1);

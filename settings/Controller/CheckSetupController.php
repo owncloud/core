@@ -66,14 +66,16 @@ class CheckSetupController extends Controller {
 	 * @param IL10N $l10n
 	 * @param Checker $checker
 	 */
-	public function __construct($AppName,
-								IRequest $request,
-								IConfig $config,
-								IClientService $clientService,
-								IURLGenerator $urlGenerator,
-								\OC_Util $util,
-								IL10N $l10n,
-								Checker $checker) {
+	public function __construct(
+		$AppName,
+		IRequest $request,
+		IConfig $config,
+		IClientService $clientService,
+		IURLGenerator $urlGenerator,
+		\OC_Util $util,
+		IL10N $l10n,
+		Checker $checker
+	) {
 		parent::__construct($AppName, $request);
 		$this->config = $config;
 		$this->clientService = $clientService;
@@ -116,10 +118,10 @@ class CheckSetupController extends Controller {
 	 * @return bool
 	 */
 	private function isUrandomAvailable() {
-		if (@\file_exists('/dev/urandom')) {
-			$file = \fopen('/dev/urandom', 'rb');
+		if (@file_exists('/dev/urandom')) {
+			$file = fopen('/dev/urandom', 'rb');
 			if ($file) {
-				\fclose($file);
+				fclose($file);
 				return true;
 			}
 		}
@@ -133,7 +135,7 @@ class CheckSetupController extends Controller {
 	 * @return array
 	 */
 	protected function getCurlVersion() {
-		return \curl_version();
+		return curl_version();
 	}
 
 	/**
@@ -166,9 +168,9 @@ class CheckSetupController extends Controller {
 		$features = (string)$this->l10n->t('installing and updating apps via the market or Federated Cloud Sharing');
 
 		// Check if at least OpenSSL after 1.01d or 1.0.2b
-		if (\strpos($versionString, 'OpenSSL/') === 0) {
-			$majorVersion = \substr($versionString, 8, 5);
-			$patchRelease = \substr($versionString, 13, 6);
+		if (strpos($versionString, 'OpenSSL/') === 0) {
+			$majorVersion = substr($versionString, 8, 5);
+			$patchRelease = substr($versionString, 13, 6);
 
 			if (($majorVersion === '1.0.1' && \ord($patchRelease) < \ord('d')) ||
 				($majorVersion === '1.0.2' && \ord($patchRelease) < \ord('b'))) {
@@ -177,7 +179,7 @@ class CheckSetupController extends Controller {
 		}
 
 		// Check if NSS and perform heuristic check
-		if (\strpos($versionString, 'NSS/') === 0) {
+		if (strpos($versionString, 'NSS/') === 0) {
 			try {
 				$firstClient = $this->clientService->newClient();
 				$firstClient->get('https://www.owncloud.org/');
@@ -292,7 +294,7 @@ Results
 Raw output
 ==========
 ';
-			$formattedTextResponse .= \print_r($completeResults, true);
+			$formattedTextResponse .= print_r($completeResults, true);
 		} else {
 			$formattedTextResponse = 'No errors have been found.';
 		}
@@ -339,7 +341,7 @@ Raw output
 
 		// PHP 5.4 is EOL on 14 Sep 2015
 		// PHP 5.5 is EOL on 21 Jul 2016
-		if (\version_compare(PHP_VERSION, '5.6.0') === -1) {
+		if (version_compare(PHP_VERSION, '5.6.0') === -1) {
 			$eol = true;
 			return $eol;
 		}

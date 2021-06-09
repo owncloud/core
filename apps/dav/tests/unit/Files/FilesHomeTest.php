@@ -127,6 +127,6 @@ class FilesHomeTest extends TestCase {
 			['foo', true, $fileInfo],
 		]);
 		$this->view->expects($this->once())->method('getDirectoryContent')->willReturn([]);
-		$this->assertEquals([], \iterator_to_array($this->filesHome->getChildren('foo')));
+		$this->assertEquals([], iterator_to_array($this->filesHome->getChildren('foo')));
 	}
 }

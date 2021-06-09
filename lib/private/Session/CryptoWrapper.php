@@ -67,10 +67,12 @@ class CryptoWrapper {
 	 * @param ISecureRandom $random
 	 * @param IRequest $request
 	 */
-	public function __construct(IConfig $config,
-								ICrypto $crypto,
-								ISecureRandom $random,
-								IRequest $request) {
+	public function __construct(
+		IConfig $config,
+		ICrypto $crypto,
+		ISecureRandom $random,
+		IRequest $request
+	) {
 		$this->crypto = $crypto;
 		$this->random = $random;
 
@@ -86,8 +88,8 @@ class CryptoWrapper {
 					$webRoot = '/';
 				}
 
-				if (\version_compare(PHP_VERSION, '7.3.0') === -1) {
-					\setcookie(self::COOKIE_NAME, $this->passphrase, 0, $webRoot, '', $secureCookie, true);
+				if (version_compare(PHP_VERSION, '7.3.0') === -1) {
+					setcookie(self::COOKIE_NAME, $this->passphrase, 0, $webRoot, '', $secureCookie, true);
 				} else {
 					$samesite = $config->getSystemValue('http.cookie.samesite', 'Strict');
 					$options = [
@@ -99,7 +101,7 @@ class CryptoWrapper {
 						"samesite" => $samesite
 					];
 
-					\setcookie(self::COOKIE_NAME, $this->passphrase, $options);
+					setcookie(self::COOKIE_NAME, $this->passphrase, $options);
 				}
 			}
 		}

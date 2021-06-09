@@ -52,7 +52,7 @@ class FailedCache implements ICache {
 				'mimetype' => 'httpd/unix-directory',
 				'mimepart' => 'httpd',
 				'permissions' => $this->visible ? Constants::PERMISSION_READ : 0,
-				'mtime' => \time()
+				'mtime' => time()
 			]);
 		} else {
 			return false;

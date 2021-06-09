@@ -99,7 +99,7 @@ class ExternalShareControllerTest extends \Test\TestCase {
 		$called = [];
 		\OC::$server->getEventDispatcher()->addListener('remoteshare.accepted', function ($event) use (&$called) {
 			$called[] = 'remoteshare.accepted';
-			\array_push($called, $event);
+			array_push($called, $event);
 		});
 		$this->assertEquals(new JSONResponse(), $this->getExternalShareController()->create($shareId));
 
@@ -128,7 +128,7 @@ class ExternalShareControllerTest extends \Test\TestCase {
 		$called = [];
 		\OC::$server->getEventDispatcher()->addListener('remoteshare.declined', function ($event) use (&$called) {
 			$called[] = 'remoteshare.declined';
-			\array_push($called, $event);
+			array_push($called, $event);
 		});
 
 		$this->assertEquals(new JSONResponse(), $this->getExternalShareController()->destroy($shareId));

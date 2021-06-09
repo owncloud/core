@@ -59,7 +59,7 @@ class SharedFolder extends Collection implements IACL, IPublicSharedNode {
 	 */
 	public function getChildren() {
 		$nodes = $this->folder->getDirectoryListing();
-		return \array_map(function ($node) {
+		return array_map(function ($node) {
 			return $this->nodeFactory($node, $this->share);
 		}, $nodes);
 	}

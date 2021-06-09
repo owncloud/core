@@ -162,7 +162,7 @@ class Response {
 	 * @since 6.0.0 - return value was added in 7.0.0
 	 */
 	public function addHeader($name, $value) {
-		$name = \trim($name);  // always remove leading and trailing whitespace
+		$name = trim($name);  // always remove leading and trailing whitespace
 		// to be able to reliably check for security
 		// headers
 
@@ -210,7 +210,7 @@ class Response {
 			$mergeWith['ETag'] = '"' . $this->ETag . '"';
 		}
 
-		return \array_merge($mergeWith, $this->headers);
+		return array_merge($mergeWith, $this->headers);
 	}
 
 	/**

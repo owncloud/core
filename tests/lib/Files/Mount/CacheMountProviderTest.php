@@ -68,7 +68,7 @@ class CacheMountProviderTest extends \Test\TestCase {
 		$this->assertInstanceOf(MountPoint::class, $mount);
 		$this->assertEquals('/someuser/cache/', $mount->getMountPoint());
 
-		$this->assertTrue(\is_dir($tempFolder . '/cache/someuser'));
+		$this->assertTrue(is_dir($tempFolder . '/cache/someuser'));
 
 		$storageArgs = ['datadir' => $tempFolder . '/cache/someuser'];
 
@@ -79,7 +79,7 @@ class CacheMountProviderTest extends \Test\TestCase {
 		// trigger storage creation which will pass config args above
 		$mount->getStorage();
 
-		\rmdir($tempFolder . '/cache/someuser');
-		\rmdir($tempFolder . '/cache');
+		rmdir($tempFolder . '/cache/someuser');
+		rmdir($tempFolder . '/cache');
 	}
 }

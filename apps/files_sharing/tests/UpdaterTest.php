@@ -35,7 +35,7 @@ use OCP\Share\Exceptions\ShareNotFound;
  * @group DB
  */
 class UpdaterTest extends TestCase {
-	const TEST_FOLDER_NAME = '/folder_share_updater_test';
+	public const TEST_FOLDER_NAME = '/folder_share_updater_test';
 
 	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
@@ -116,7 +116,7 @@ class UpdaterTest extends TestCase {
 		$rootView = new \OC\Files\View('/' . self::TEST_FILES_SHARING_API_USER2);
 		$trashContent = \OCA\Files_Trashbin\Helper::getTrashFiles('/', self::TEST_FILES_SHARING_API_USER2);
 		$this->assertCount(1, $trashContent);
-		$firstElement = \reset($trashContent);
+		$firstElement = reset($trashContent);
 		$timestamp = $firstElement['mtime'];
 		$this->assertTrue($rootView->file_exists('files_trashbin/files/localFolder.d' . $timestamp . '/localFile.txt'));
 		$this->assertFalse($rootView->file_exists('files_trashbin/files/localFolder.d' . $timestamp . '/' . $this->folder));

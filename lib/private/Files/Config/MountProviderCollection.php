@@ -39,7 +39,7 @@ use OCP\IUser;
 class MountProviderCollection implements IMountProviderCollection, Emitter {
 	use EmitterTrait;
 
-	const DEFAULT_MOVE_ATTEMPTS_PER_MOUNTPOINT = 10;
+	public const DEFAULT_MOVE_ATTEMPTS_PER_MOUNTPOINT = 10;
 
 	/**
 	 * @var \OCP\Files\Config\IHomeMountProvider[]
@@ -78,10 +78,10 @@ class MountProviderCollection implements IMountProviderCollection, Emitter {
 	 */
 	public function getMountsForUser(IUser $user) {
 		$loader = $this->loader;
-		$mounts = \array_map(function (IMountProvider $provider) use ($user, $loader) {
+		$mounts = array_map(function (IMountProvider $provider) use ($user, $loader) {
 			return $provider->getMountsForUser($user, $loader);
 		}, $this->providers);
-		$mounts = \array_filter($mounts, function ($result) {
+		$mounts = array_filter($mounts, function ($result) {
 			return \is_array($result);
 		});
 
@@ -128,7 +128,7 @@ class MountProviderCollection implements IMountProviderCollection, Emitter {
 	 */
 	public function getHomeMountForUser(IUser $user) {
 		/** @var \OCP\Files\Config\IHomeMountProvider[] $providers */
-		$providers = \array_reverse($this->homeProviders); // call the latest registered provider first to give apps an opportunity to overwrite builtin
+		$providers = array_reverse($this->homeProviders); // call the latest registered provider first to give apps an opportunity to overwrite builtin
 		foreach ($providers as $homeProvider) {
 			if ($mount = $homeProvider->getHomeMountForUser($user, $this->loader)) {
 				$mount->setMountPoint('/' . $user->getUID()); //make sure the mountpoint is what we expect
@@ -185,7 +185,7 @@ class MountProviderCollection implements IMountProviderCollection, Emitter {
 	 * @return mixed
 	 */
 	private function generateUniqueTarget($path, $view, array $mountpoints) {
-		$pathinfo = \pathinfo($path);
+		$pathinfo = pathinfo($path);
 		$ext = (isset($pathinfo['extension'])) ? '.' . $pathinfo['extension'] : '';
 		$name = $pathinfo['filename'];
 		$dir = $pathinfo['dirname'];

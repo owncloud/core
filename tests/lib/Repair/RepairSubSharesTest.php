@@ -106,7 +106,7 @@ class RepairSubSharesTest extends TestCase {
 				'accepted' => $qb->expr()->literal('0')
 			];
 
-			$userIndex = \array_search($user, $usersinsharetable, true);
+			$userIndex = array_search($user, $usersinsharetable, true);
 			if ($userIndex === 0) {
 				$inserValues['share_type'] = $qb->expr()->literal(1);
 				$inserValues['share_with'] = $qb->expr()->literal($groupName);
@@ -296,7 +296,7 @@ class RepairSubSharesTest extends TestCase {
 
 		foreach ($results as $id) {
 			$this->assertContainsEquals($id, $getAllIdsPerUser['ids']);
-			if (\array_search($id, $results, true) === 5) {
+			if (array_search($id, $results, true) === 5) {
 				for ($i = $id['id'] + 1; $i < $id['id'] + 486; $i++) {
 					$this->assertNotContains(['id' => $i], $results);
 				}

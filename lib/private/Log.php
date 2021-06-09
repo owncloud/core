@@ -141,7 +141,7 @@ class Log implements ILogger {
 
 		// FIXME: Add this for backwards compatibility, should be fixed at some point probably
 		if ($logger === null) {
-			$this->logger = 'OC\\Log\\'.\ucfirst($this->config->getValue('log_type', 'owncloud'));
+			$this->logger = 'OC\\Log\\'.ucfirst($this->config->getValue('log_type', 'owncloud'));
 			\call_user_func([$this->logger, 'init']);
 		} else {
 			$this->logger = $logger;
@@ -267,7 +267,7 @@ class Log implements ILogger {
 	 * @return void
 	 */
 	public function log($level, $message, array $context = []) {
-		$minLevel = \min($this->config->getValue('loglevel', Util::WARN), Util::FATAL);
+		$minLevel = min($this->config->getValue('loglevel', Util::WARN), Util::FATAL);
 		$logConditions = $this->config->getValue('log.conditions', []);
 		if (empty($logConditions)) {
 			$logConditions[] = $this->config->getValue('log.condition', []);
@@ -285,7 +285,7 @@ class Log implements ILogger {
 			$exception = $context['exception'];
 			unset($context['exception']);
 		}
-		\array_walk($context, [$this->normalizer, 'format']);
+		array_walk($context, [$this->normalizer, 'format']);
 
 		if (isset($context['app'])) {
 			$app = $context['app'];
@@ -316,7 +316,7 @@ class Log implements ILogger {
 		}
 
 		// interpolate replacement values into the message and return
-		$formattedMessage = \strtr($message, $replace);
+		$formattedMessage = strtr($message, $replace);
 
 		/**
 		 * check for a special log condition - this enables an increased log on
@@ -333,7 +333,7 @@ class Log implements ILogger {
 						$request = \OC::$server->getRequest();
 
 						// if token is found in the request change set the log condition to satisfied
-						if ($request && \hash_equals($logCondition['shared_secret'], $request->getParam('log_secret', ''))) {
+						if ($request && hash_equals($logCondition['shared_secret'], $request->getParam('log_secret', ''))) {
 							$this->logConditionSatisfied = true;
 							if (!empty($logCondition['logfile'])) {
 								$logConditionFile = $logCondition['logfile'];
@@ -434,12 +434,12 @@ class Log implements ILogger {
 			'File' => $exception->getFile(),
 			'Line' => $exception->getLine(),
 		];
-		$exception['Trace'] = \preg_replace('!(' . \implode('|', $this->methodsWithSensitiveParameters) . ')\(.*\)!', '$1(*** sensitive parameters replaced ***)', $exception['Trace']);
+		$exception['Trace'] = preg_replace('!(' . implode('|', $this->methodsWithSensitiveParameters) . ')\(.*\)!', '$1(*** sensitive parameters replaced ***)', $exception['Trace']);
 		if (\OC::$server->getUserSession() && \OC::$server->getUserSession()->isLoggedIn()) {
 			$context['userid'] = \OC::$server->getUserSession()->getUser()->getUID();
 		}
 		$msg = isset($context['message']) ? $context['message'] : 'Exception';
-		$msg .= ': ' . \json_encode($exception);
+		$msg .= ': ' . json_encode($exception);
 		$this->log($level, $msg, $context);
 		// also log previous exception
 		if ($context['exception']->getPrevious()) {

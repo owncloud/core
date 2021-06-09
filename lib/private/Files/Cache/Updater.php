@@ -118,7 +118,7 @@ class Updater implements IUpdater {
 			return;
 		}
 		if ($time === null) {
-			$time = \time();
+			$time = time();
 		}
 
 		$data = $this->scanner->scan($path, Scanner::SCAN_SHALLOW, -1, false);
@@ -159,9 +159,9 @@ class Updater implements IUpdater {
 
 		$this->correctParentStorageMtime($path);
 		if ($entry instanceof ICacheEntry) {
-			$this->propagator->propagateChange($path, \time(), -$entry->getSize());
+			$this->propagator->propagateChange($path, time(), -$entry->getSize());
 		} else {
-			$this->propagator->propagateChange($path, \time());
+			$this->propagator->propagateChange($path, time());
 			if ($this->cache instanceof Cache) {
 				$this->cache->correctFolderSize($parent);
 			}
@@ -180,7 +180,7 @@ class Updater implements IUpdater {
 			return;
 		}
 
-		$time = \time();
+		$time = time();
 
 		$sourceCache = $sourceStorage->getCache();
 		$sourceUpdater = $sourceStorage->getUpdater();
@@ -198,7 +198,7 @@ class Updater implements IUpdater {
 			}
 		}
 
-		if (\pathinfo($source, PATHINFO_EXTENSION) !== \pathinfo($target, PATHINFO_EXTENSION)) {
+		if (pathinfo($source, PATHINFO_EXTENSION) !== pathinfo($target, PATHINFO_EXTENSION)) {
 			// handle mime type change
 			$mimeType = $this->storage->getMimeType($target);
 			$fileId = $this->cache->getId($target);
@@ -224,7 +224,8 @@ class Updater implements IUpdater {
 		$fileId = $this->cache->getId($internalPath);
 		if ($fileId !== -1) {
 			$this->cache->update(
-				$fileId, [
+				$fileId,
+				[
 					'mtime' => null, // this magic tells it to not overwrite mtime
 					'storage_mtime' => $this->storage->filemtime($internalPath)
 				]

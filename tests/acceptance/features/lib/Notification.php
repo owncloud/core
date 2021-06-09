@@ -64,10 +64,12 @@ class Notification extends OwncloudPage {
 	 *
 	 */
 	public function followLink(
-		Session $session, $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+		Session $session,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$link = $this->notificationElement->find(
-			"xpath", $this->notificationLinkXpath
+			"xpath",
+			$this->notificationLinkXpath
 		);
 		$this->assertElementNotNull(
 			$link,
@@ -76,13 +78,13 @@ class Notification extends OwncloudPage {
 		);
 		$destination = $link->getAttribute('href');
 		$link->click();
-		$currentTime = \microtime(true);
+		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			if ($destination === $session->getCurrentUrl()) {
 				break;
 			}
-			$currentTime = \microtime(true);
+			$currentTime = microtime(true);
 		}
 	}
 
@@ -94,9 +96,10 @@ class Notification extends OwncloudPage {
 	 * @return void
 	 */
 	public function react($reaction, Session $session) {
-		$buttonXpath = \sprintf($this->buttonByTextXpath, $reaction);
+		$buttonXpath = sprintf($this->buttonByTextXpath, $reaction);
 		$button = $this->notificationElement->find(
-			"xpath", $buttonXpath
+			"xpath",
+			$buttonXpath
 		);
 		$this->assertElementNotNull(
 			$button,

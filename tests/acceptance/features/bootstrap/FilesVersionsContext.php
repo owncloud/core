@@ -56,12 +56,14 @@ class FilesVersionsContext implements Context {
 		$xmlPart = $responseXml->xpath("//d:response/d:href");
 		//restoring the version only works with dav path v2
 		$destinationUrl = $this->featureContext->getBaseUrl() . "/" .
-			WebDavHelper::getDavPath($user, 2) . \trim($path, "/");
+			WebDavHelper::getDavPath($user, 2) . trim($path, "/");
 		$fullUrl = $this->featureContext->getBaseUrlWithoutPath() .
 			$xmlPart[$versionIndex];
 		HttpRequestHelper::sendRequest(
 			$fullUrl,
-			'COPY', $user, $this->featureContext->getPasswordForUser($user),
+			'COPY',
+			$user,
+			$this->featureContext->getPasswordForUser($user),
 			['Destination' => $destinationUrl]
 		);
 	}
@@ -76,7 +78,9 @@ class FilesVersionsContext implements Context {
 	 * @return void
 	 */
 	public function theVersionFolderOfFileShouldContainElements(
-		$path, $user, $count
+		$path,
+		$user,
+		$count
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
@@ -94,12 +98,15 @@ class FilesVersionsContext implements Context {
 	 * @return void
 	 */
 	public function theVersionFolderOfFileIdShouldContainElements(
-		$fileId, $user, $count
+		$fileId,
+		$user,
+		$count
 	) {
 		$responseXml = $this->listVersionFolder($user, "/meta/$fileId/v", 1);
 		$xmlPart = $responseXml->xpath("//d:prop/d:getetag");
 		Assert::assertEquals(
-			$count, \count($xmlPart) - 1,
+			$count,
+			\count($xmlPart) - 1,
 			"could not find $count version element(s) in \n" . $responseXml->asXML()
 		);
 	}
@@ -115,16 +122,23 @@ class FilesVersionsContext implements Context {
 	 * @return void
 	 */
 	public function theContentLengthOfFileForUserInVersionsFolderIs(
-		$path, $index, $user, $length
+		$path,
+		$index,
+		$user,
+		$length
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$responseXml = $this->listVersionFolder(
-			$user, "/meta/$fileId/v", 1, ['getcontentlength']
+			$user,
+			"/meta/$fileId/v",
+			1,
+			['getcontentlength']
 		);
 		$xmlPart = $responseXml->xpath("//d:prop/d:getcontentlength");
 		Assert::assertEquals(
-			$length, (int) $xmlPart[$index],
+			$length,
+			(int) $xmlPart[$index],
 			"The content length of file {$path} with version {$index} for user {$user} was 
 			expected to be {$length} but the actual content length is {$xmlPart[$index]}"
 		);
@@ -142,7 +156,10 @@ class FilesVersionsContext implements Context {
 	 * @return SimpleXMLElement
 	 */
 	public function listVersionFolder(
-		$user, $path, $folderDepth, $properties = null
+		$user,
+		$path,
+		$folderDepth,
+		$properties = null
 	) {
 		if (!$properties) {
 			$properties = [
@@ -153,7 +170,12 @@ class FilesVersionsContext implements Context {
 		$password = $this->featureContext->getPasswordForUser($user);
 		$response = WebDavHelper::propfind(
 			$this->featureContext->getBaseUrl(),
-			$user, $password, $path, $properties, $folderDepth, "versions"
+			$user,
+			$password,
+			$path,
+			$properties,
+			$folderDepth,
+			"versions"
 		);
 		$responseXml = HttpRequestHelper::getResponseXml(
 			$response,

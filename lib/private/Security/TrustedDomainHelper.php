@@ -46,11 +46,11 @@ class TrustedDomainHelper {
 	 * @return string $host without appended port
 	 */
 	private function getDomainWithoutPort($host) {
-		$pos = \strrpos($host, ':');
+		$pos = strrpos($host, ':');
 		if ($pos !== false) {
-			$port = \substr($host, $pos + 1);
-			if (\is_numeric($port)) {
-				$host = \substr($host, 0, $pos);
+			$port = substr($host, $pos + 1);
+			if (is_numeric($port)) {
+				$host = substr($host, 0, $pos);
 			}
 		}
 		return $host;
@@ -75,7 +75,7 @@ class TrustedDomainHelper {
 		}
 
 		// Always allow access from localhost
-		if (\preg_match(Request::REGEX_LOCALHOST, $domain) === 1) {
+		if (preg_match(Request::REGEX_LOCALHOST, $domain) === 1) {
 			return true;
 		}
 

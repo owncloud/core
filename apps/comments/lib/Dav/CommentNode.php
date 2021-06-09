@@ -34,11 +34,11 @@ use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\PropPatch;
 
 class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
-	const NS_OWNCLOUD = 'http://owncloud.org/ns';
+	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
 
-	const PROPERTY_NAME_UNREAD = '{http://owncloud.org/ns}isUnread';
-	const PROPERTY_NAME_MESSAGE = '{http://owncloud.org/ns}message';
-	const PROPERTY_NAME_ACTOR_DISPLAYNAME = '{http://owncloud.org/ns}actorDisplayName';
+	public const PROPERTY_NAME_UNREAD = '{http://owncloud.org/ns}isUnread';
+	public const PROPERTY_NAME_MESSAGE = '{http://owncloud.org/ns}message';
+	public const PROPERTY_NAME_ACTOR_DISPLAYNAME = '{http://owncloud.org/ns}actorDisplayName';
 
 	/** @var  IComment */
 	public $comment;
@@ -78,12 +78,12 @@ class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 		$this->comment = $comment;
 		$this->logger = $logger;
 
-		$methods = \get_class_methods($this->comment);
-		$methods = \array_filter($methods, function ($name) {
-			return \strpos($name, 'get') === 0;
+		$methods = get_class_methods($this->comment);
+		$methods = array_filter($methods, function ($name) {
+			return strpos($name, 'get') === 0;
 		});
 		foreach ($methods as $getter) {
-			$name = '{'.self::NS_OWNCLOUD.'}' . \lcfirst(\substr($getter, 3));
+			$name = '{'.self::NS_OWNCLOUD.'}' . lcfirst(substr($getter, 3));
 			$this->properties[$name] = $getter;
 		}
 		$this->userManager = $userManager;
@@ -223,13 +223,13 @@ class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 	 */
 	public function getProperties($properties) {
 		if (($properties === null) || ($properties === [])) {
-			$properties = \array_keys($this->properties);
+			$properties = array_keys($this->properties);
 		}
 
 		$result = [];
 		foreach ($properties as $property) {
 			$getter = $this->properties[$property];
-			if (\method_exists($this->comment, $getter)) {
+			if (method_exists($this->comment, $getter)) {
 				$result[$property] = $this->comment->$getter();
 			}
 		}

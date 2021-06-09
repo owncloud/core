@@ -331,7 +331,7 @@ class LicenseManagerTest extends TestCase {
 			'license_state' => $expectedLicenseState,
 			'type' => $type,
 		];
-		$expectedData = \array_merge($expectedData, $expectedMessageInfo);
+		$expectedData = array_merge($expectedData, $expectedMessageInfo);
 
 		$this->assertEquals($expectedData, $this->licenseManager->getLicenseMessageFor('dummyApp'));
 	}

@@ -128,10 +128,10 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return bool
 	 */
 	public function isBackendUsed($backendClass) {
-		$backendClass = \strtolower(\ltrim($backendClass, '\\'));
+		$backendClass = strtolower(ltrim($backendClass, '\\'));
 
 		foreach ($this->backends as $backend) {
-			if (\strtolower(\get_class($backend)) === $backendClass) {
+			if (strtolower(\get_class($backend)) === $backendClass) {
 				return true;
 			}
 		}
@@ -256,11 +256,11 @@ class Manager extends PublicEmitter implements IGroupManager {
 					}
 				}
 				if ($limit !== null and $limit <= 0) {
-					return \array_values($groups);
+					return array_values($groups);
 				}
 			}
 		}
-		return \array_values($groups);
+		return array_values($groups);
 	}
 
 	/**
@@ -301,7 +301,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	private function filterExcludedBackendsForScope($groups, $scope) {
 		$excludedBackendsForScope = $this->getExcludedBackendsForScope($scope);
 		if (!empty($excludedBackendsForScope)) {
-			return \array_filter($groups, function ($group) use ($excludedBackendsForScope) {
+			return array_filter($groups, function ($group) use ($excludedBackendsForScope) {
 				return !\in_array($group->getBackend(), $excludedBackendsForScope);
 			});
 		}
@@ -365,9 +365,9 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return array with group ids
 	 */
 	public function getUserGroupIds($user, $scope = null) {
-		return \array_map(function ($value) {
+		return array_map(function ($value) {
 			return (string) $value;
-		}, \array_keys($this->getUserGroups($user, $scope)));
+		}, array_keys($this->getUserGroups($user, $scope)));
 	}
 
 	/**
@@ -384,7 +384,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 			return [];
 		}
 
-		$search = \trim($search);
+		$search = trim($search);
 		$groupUsers = [];
 
 		if (!empty($search)) {
@@ -436,7 +436,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 			return [];
 		}
 
-		$search = \trim($search);
+		$search = trim($search);
 		$groupUsers = [];
 
 		if (!empty($search)) {

@@ -86,7 +86,8 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$this->waitTillXpathIsVisible(
-			$this->personalProfilePanelXpath, $timeout_msec
+			$this->personalProfilePanelXpath,
+			$timeout_msec
 		);
 		$this->waitForOutstandingAjaxCalls($session);
 	}
@@ -176,9 +177,9 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	public function isVersionDisplayed() {
 		$this->waitTillElementIsNotNull($this->versionSectionXpath);
 		$versionSection = $this->find("xpath", $this->versionSectionXpath);
-		$currentVersion = \trim(SetupHelper::runOcc(['-V'])['stdOut']);
+		$currentVersion = trim(SetupHelper::runOcc(['-V'])['stdOut']);
 
-		if (\strpos($versionSection->getText(), $currentVersion) !== false) {
+		if (strpos($versionSection->getText(), $currentVersion) !== false) {
 			return true;
 		}
 		return false;
@@ -205,7 +206,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 		$this->waitTillElementIsNotNull($this->groupListXpath);
 		$groupList = $this->find("xpath", $this->groupListXpath)->getText();
 
-		if (\strpos($groupList, $groupName) !== false) {
+		if (strpos($groupList, $groupName) !== false) {
 			return true;
 		}
 		return false;
@@ -232,7 +233,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 
 		$this->waitTillElementIsNotNull(
 			$this->setProfilePicFileListXpath .
-			\sprintf(
+			sprintf(
 				$this->fileListElementMatchXpath,
 				$fileName
 			)
@@ -240,7 +241,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 		$file = $this->find(
 			'xpath',
 			$this->setProfilePicFileListXpath .
-			\sprintf($this->fileListElementMatchXpath, $fileName)
+			sprintf($this->fileListElementMatchXpath, $fileName)
 		);
 		$this->assertElementNotNull(
 			$file,

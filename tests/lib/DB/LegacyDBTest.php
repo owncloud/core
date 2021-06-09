@@ -57,9 +57,9 @@ class LegacyDBTest extends \Test\TestCase {
 		$dbFile = \OC::$SERVERROOT.'/tests/data/db_structure.xml';
 
 		$r = $this->getUniqueID('_', 4).'_';
-		$content = \file_get_contents($dbFile);
-		$content = \str_replace('*dbprefix*', '*dbprefix*'.$r, $content);
-		\file_put_contents(self::$schema_file, $content);
+		$content = file_get_contents($dbFile);
+		$content = str_replace('*dbprefix*', '*dbprefix*'.$r, $content);
+		file_put_contents(self::$schema_file, $content);
 		OC_DB::createDbFromStructure(self::$schema_file);
 
 		$this->test_prefix = $r;
@@ -73,7 +73,7 @@ class LegacyDBTest extends \Test\TestCase {
 
 	protected function tearDown(): void {
 		OC_DB::removeDBStructure(self::$schema_file);
-		\unlink(self::$schema_file);
+		unlink(self::$schema_file);
 
 		parent::tearDown();
 	}
@@ -140,12 +140,14 @@ class LegacyDBTest extends \Test\TestCase {
 		];
 
 		foreach ($categoryEntries as $entry) {
-			$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table3,
+			$result = \OCP\DB::insertIfNotExist(
+				'*PREFIX*'.$this->table3,
 				[
 					'uid' => $entry['user'],
 					'type' => $entry['type'],
 					'category' => $entry['category'],
-				]);
+				]
+			);
 			$this->assertEquals($entry['expectedResult'], $result);
 		}
 
@@ -163,11 +165,13 @@ class LegacyDBTest extends \Test\TestCase {
 		];
 
 		foreach ($categoryEntries as $entry) {
-			$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table2,
+			$result = \OCP\DB::insertIfNotExist(
+				'*PREFIX*'.$this->table2,
 				[
 					'addressbookid' => $entry['addressbookid'],
 					'fullname' => $entry['fullname'],
-				]);
+				]
+			);
 			$this->assertEquals($entry['expectedResult'], $result);
 		}
 
@@ -195,11 +199,13 @@ class LegacyDBTest extends \Test\TestCase {
 		$this->assertEquals($carddata, $rowset[0]['carddata']);
 
 		// Try to insert a new row
-		$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table2,
+		$result = \OCP\DB::insertIfNotExist(
+			'*PREFIX*'.$this->table2,
 			[
 				'fullname' => $fullName,
 				'uri' => $uri,
-			]);
+			]
+		);
 		$this->assertEquals(0, $result);
 
 		$query = OC_DB::prepare('SELECT `fullname`, `uri`, `carddata` FROM `*PREFIX*'.$this->table2.'` WHERE `uri` = ?');
@@ -214,20 +220,25 @@ class LegacyDBTest extends \Test\TestCase {
 	}
 
 	public function testInsertIfNotExistsViolating() {
-		$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table5,
+		$result = \OCP\DB::insertIfNotExist(
+			'*PREFIX*'.$this->table5,
 			[
 				'storage' => 1,
-				'path_hash' => \md5('welcome.txt'),
+				'path_hash' => md5('welcome.txt'),
 				'etag' => $this->getUniqueID()
-			]);
+			]
+		);
 		$this->assertEquals(1, $result);
 
-		$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table5,
+		$result = \OCP\DB::insertIfNotExist(
+			'*PREFIX*'.$this->table5,
 			[
 				'storage' => 1,
-				'path_hash' => \md5('welcome.txt'),
+				'path_hash' => md5('welcome.txt'),
 				'etag' => $this->getUniqueID()
-			], ['storage', 'path_hash']);
+			],
+			['storage', 'path_hash']
+		);
 
 		$this->assertEquals(0, $result);
 	}
@@ -247,20 +258,25 @@ class LegacyDBTest extends \Test\TestCase {
 	public function testInsertIfNotExistsViolatingThrows($compareKeys) {
 		$this->expectException(\Doctrine\DBAL\Exception\UniqueConstraintViolationException::class);
 
-		$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table5,
+		$result = \OCP\DB::insertIfNotExist(
+			'*PREFIX*'.$this->table5,
 			[
 				'storage' => 1,
-				'path_hash' => \md5('welcome.txt'),
+				'path_hash' => md5('welcome.txt'),
 				'etag' => $this->getUniqueID()
-			]);
+			]
+		);
 		$this->assertEquals(1, $result);
 
-		$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table5,
+		$result = \OCP\DB::insertIfNotExist(
+			'*PREFIX*'.$this->table5,
 			[
 				'storage' => 1,
-				'path_hash' => \md5('welcome.txt'),
+				'path_hash' => md5('welcome.txt'),
 				'etag' => $this->getUniqueID()
-			], $compareKeys);
+			],
+			$compareKeys
+		);
 
 		$this->assertEquals(0, $result);
 	}

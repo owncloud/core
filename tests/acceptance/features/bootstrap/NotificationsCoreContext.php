@@ -65,7 +65,7 @@ class NotificationsCoreContext implements Context {
 	 * @return array[]
 	 */
 	public function getLastNotificationIds() {
-		return \end($this->notificationIds);
+		return end($this->notificationIds);
 	}
 
 	/**
@@ -126,7 +126,9 @@ class NotificationsCoreContext implements Context {
 		$user = $this->featureContext->getActualUsername($user);
 
 		$this->ocsContext->userSendsToOcsApiEndpoint(
-			$user, 'GET', '/apps/notifications/api/v1/notifications?format=json'
+			$user,
+			'GET',
+			'/apps/notifications/api/v1/notifications?format=json'
 		);
 		Assert::assertEquals(
 			200,
@@ -150,7 +152,7 @@ class NotificationsCoreContext implements Context {
 		if ($missingLast) {
 			$now = $this->getLastNotificationIds();
 			if ($missingLast === ' missing the last one') {
-				\array_unshift($now, $this->getDeletedNotification());
+				array_unshift($now, $this->getDeletedNotification());
 			} else {
 				$now[] = $this->getDeletedNotification();
 			}
@@ -173,10 +175,16 @@ class NotificationsCoreContext implements Context {
 	 * @return void
 	 */
 	public function matchNotificationPlain(
-		$notification, $user, $formData
+		$notification,
+		$user,
+		$formData
 	) {
 		$this->matchNotification(
-			$notification, $user, $aboutUser = null, false, $formData
+			$notification,
+			$user,
+			$aboutUser = null,
+			false,
+			$formData
 		);
 	}
 
@@ -191,10 +199,17 @@ class NotificationsCoreContext implements Context {
 	 * @return void
 	 */
 	public function matchNotificationRegularExpression(
-		$notification, $user, $aboutUser, $formData
+		$notification,
+		$user,
+		$aboutUser,
+		$formData
 	) {
 		$this->matchNotification(
-			$notification, $user, $aboutUser, true, $formData
+			$notification,
+			$user,
+			$aboutUser,
+			true,
+			$formData
 		);
 	}
 
@@ -208,13 +223,17 @@ class NotificationsCoreContext implements Context {
 	 * @return void
 	 */
 	public function matchNotification(
-		$notification, $user, $aboutUser, $regex, $formData
+		$notification,
+		$user,
+		$aboutUser,
+		$regex,
+		$formData
 	) {
 		$lastNotifications = $this->getLastNotificationIds();
 		if ($notification === 'first') {
-			$notificationId = \reset($lastNotifications);
+			$notificationId = reset($lastNotifications);
 		} else /* if ($notification === 'last')*/ {
-			$notificationId = \end($lastNotifications);
+			$notificationId = end($lastNotifications);
 		}
 
 		$this->ocsContext->userSendsToOcsApiEndpoint(
@@ -230,8 +249,9 @@ class NotificationsCoreContext implements Context {
 			. $this->featureContext->getResponse()->getStatusCode()
 			. "'"
 		);
-		$response = \json_decode(
-			$this->featureContext->getResponse()->getBody()->getContents(), true
+		$response = json_decode(
+			$this->featureContext->getResponse()->getBody()->getContents(),
+			true
 		);
 
 		$this->featureContext->verifyTableNodeColumns($formData, ['key', 'regex']);
@@ -243,10 +263,12 @@ class NotificationsCoreContext implements Context {
 			);
 			if ($regex) {
 				$value = $this->featureContext->substituteInLineCodes(
-					$notification['regex'], $aboutUser, ['preg_quote' => ['/']]
+					$notification['regex'],
+					$aboutUser,
+					['preg_quote' => ['/']]
 				);
 				Assert::assertNotFalse(
-					(bool) \preg_match($value, $response['ocs']['data'][$notification['key']]),
+					(bool) preg_match($value, $response['ocs']['data'][$notification['key']]),
 					"'$value' does not match '{$response['ocs']['data'][$notification['key']]}'"
 				);
 			} else {
@@ -268,7 +290,7 @@ class NotificationsCoreContext implements Context {
 	 * @return array
 	 */
 	public function getArrayOfNotificationsResponded(ResponseInterface $resp) {
-		$jsonResponse = \json_decode($resp->getBody()->getContents(), 1);
+		$jsonResponse = json_decode($resp->getBody()->getContents(), 1);
 		return $jsonResponse['ocs']['data'];
 	}
 

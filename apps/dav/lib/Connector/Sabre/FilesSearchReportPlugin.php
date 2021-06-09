@@ -32,8 +32,8 @@ use OC\Search\Result\File as FileResult;
 
 class FilesSearchReportPlugin extends ServerPlugin {
 	// namespace
-	const NS_OWNCLOUD = 'http://owncloud.org/ns';
-	const REPORT_NAME = '{http://owncloud.org/ns}search-files';
+	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
+	public const REPORT_NAME = '{http://owncloud.org/ns}search-files';
 
 	/**
 	 * Reference to main server object
@@ -156,7 +156,7 @@ class FilesSearchReportPlugin extends ServerPlugin {
 	 * search result, suitable for server's multistatus response
 	 */
 	private function getSearchResultIterator($filesUri, $searchResults, $requestedProps, $maxResults) {
-		$paths = \array_map(function ($searchResult) use ($filesUri) {
+		$paths = array_map(function ($searchResult) use ($filesUri) {
 			return $filesUri . $searchResult->path;
 		}, $searchResults);
 
@@ -198,14 +198,14 @@ class FilesSearchReportPlugin extends ServerPlugin {
 	 * @return string files base uri
 	 */
 	private function getFilesBaseUri($uri, $subPath) {
-		$uri = \trim($uri, '/');
-		$subPath = \trim($subPath, '/');
+		$uri = trim($uri, '/');
+		$subPath = trim($subPath, '/');
 		if ($subPath === '') {
 			$filesUri = $uri;
 		} else {
-			$filesUri = \substr($uri, 0, \strlen($uri) - \strlen($subPath));
+			$filesUri = substr($uri, 0, \strlen($uri) - \strlen($subPath));
 		}
-		$filesUri = \trim($filesUri, '/');
+		$filesUri = trim($filesUri, '/');
 		if ($filesUri === '') {
 			return '';
 		}

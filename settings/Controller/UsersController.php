@@ -115,24 +115,26 @@ class UsersController extends Controller {
 	 * @param IAvatarManager $avatarManager
 	 * @param EventDispatcherInterface $eventDispatcher
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IUserManager $userManager,
-								IGroupManager $groupManager,
-								Session $userSession,
-								IConfig $config,
-								ISecureRandom $secureRandom,
-								$isAdmin,
-								IL10N $l10n,
-								ILogger $log,
-								\OC_Defaults $defaults,
-								IMailer $mailer,
-								ITimeFactory $timeFactory,
-								$fromMailAddress,
-								IURLGenerator $urlGenerator,
-								IAppManager $appManager,
-								IAvatarManager $avatarManager,
-								EventDispatcherInterface $eventDispatcher) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IUserManager $userManager,
+		IGroupManager $groupManager,
+		Session $userSession,
+		IConfig $config,
+		ISecureRandom $secureRandom,
+		$isAdmin,
+		IL10N $l10n,
+		ILogger $log,
+		\OC_Defaults $defaults,
+		IMailer $mailer,
+		ITimeFactory $timeFactory,
+		$fromMailAddress,
+		IURLGenerator $urlGenerator,
+		IAppManager $appManager,
+		IAvatarManager $avatarManager,
+		EventDispatcherInterface $eventDispatcher
+	) {
 		parent::__construct($appName, $request);
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
@@ -247,7 +249,7 @@ class UsersController extends Controller {
 			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the user does not exist'));
 		}
 
-		$splittedToken = \explode(':', $this->config->getUserValue($userId, 'owncloud', 'changeMail', null));
+		$splittedToken = explode(':', $this->config->getUserValue($userId, 'owncloud', 'changeMail', null));
 		if (\count($splittedToken) !== 3) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'changeMail');
 			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
@@ -258,7 +260,7 @@ class UsersController extends Controller {
 			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
 		}
 
-		if (!\hash_equals($splittedToken[1], $token)) {
+		if (!hash_equals($splittedToken[1], $token)) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'changeMail');
 			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
 		}
@@ -338,7 +340,7 @@ class UsersController extends Controller {
 
 			foreach ($batch as $user) {
 				// Only add the groups, this user is a subadmin of
-				$userGroups = \array_values(\array_intersect(
+				$userGroups = array_values(array_intersect(
 					$this->groupManager->getUserGroupIds($user),
 					$subAdminOfGroups
 				));
@@ -354,11 +356,18 @@ class UsersController extends Controller {
 	 * @param string $email
 	 */
 	private function generateTokenAndSendMail($userId, $email) {
-		$token = $this->secureRandom->generate(21,
+		$token = $this->secureRandom->generate(
+			21,
 			ISecureRandom::CHAR_DIGITS,
-			ISecureRandom::CHAR_LOWER, ISecureRandom::CHAR_UPPER);
-		$this->config->setUserValue($userId, 'owncloud',
-			'lostpassword', $this->timeFactory->getTime() . ':' . $token);
+			ISecureRandom::CHAR_LOWER,
+			ISecureRandom::CHAR_UPPER
+		);
+		$this->config->setUserValue(
+			$userId,
+			'owncloud',
+			'lostpassword',
+			$this->timeFactory->getTime() . ':' . $token
+		);
 
 		// data for the mail template
 		$mailData = [
@@ -525,26 +534,32 @@ class UsersController extends Controller {
 		} catch (UserTokenException $e) {
 			if ($e instanceof UserTokenExpiredException) {
 				return new TemplateResponse(
-					'settings', 'resendtokenbymail',
+					'settings',
+					'resendtokenbymail',
 					[
 						'link' => $this->urlGenerator->linkToRouteAbsolute('settings.Users.resendToken', ['userId' => $userId])
-					], 'guest'
+					],
+					'guest'
 				);
 			}
 			$this->log->logException($e, ['app' => 'settings']);
 			return new TemplateResponse(
-				'core', 'error',
+				'core',
+				'error',
 				[
 					"errors" => [["error" => $e->getMessage()]]
-				], 'guest'
+				],
+				'guest'
 			);
 		}
 
 		return new TemplateResponse(
-			'settings', 'setpassword',
+			'settings',
+			'setpassword',
 			[
 				'link' => $this->urlGenerator->linkToRouteAbsolute('settings.Users.setPassword', ['userId' => $userId, 'token' => $token])
-			], 'guest'
+			],
+			'guest'
 		);
 	}
 
@@ -559,7 +574,7 @@ class UsersController extends Controller {
 	private function checkPasswordSetToken($token, $userId) {
 		$user = $this->userManager->get($userId);
 
-		$splittedToken = \explode(':', $this->config->getUserValue($userId, 'owncloud', 'lostpassword', null));
+		$splittedToken = explode(':', $this->config->getUserValue($userId, 'owncloud', 'lostpassword', null));
 		if (\count($splittedToken) !== 2) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
 			throw new InvalidUserTokenException($this->l10n->t('The token provided is invalid.'));
@@ -572,7 +587,7 @@ class UsersController extends Controller {
 			throw new UserTokenExpiredException($this->l10n->t('The token provided had expired.'));
 		}
 
-		if (!\hash_equals($splittedToken[1], $token)) {
+		if (!hash_equals($splittedToken[1], $token)) {
 			throw new UserTokenMismatchException($this->l10n->t('The token provided is invalid.'));
 		}
 	}
@@ -592,7 +607,8 @@ class UsersController extends Controller {
 		if ($user === null) {
 			$this->log->error('User: ' . $userId . ' does not exist', ['app' => 'settings']);
 			return new TemplateResponse(
-				'core', 'error',
+				'core',
+				'error',
 				[
 					"errors" => [["error" => $this->l10n->t('Failed to create activation link. Please contact your administrator.')]]
 				],
@@ -603,7 +619,8 @@ class UsersController extends Controller {
 		if ($user->getEMailAddress() === null) {
 			$this->log->error('Email address not set for: ' . $userId, ['app' => 'settings']);
 			return new TemplateResponse(
-				'core', 'error',
+				'core',
+				'error',
 				[
 					"errors" => [["error" => $this->l10n->t('Failed to create activation link. Please contact your administrator.', [$userId])]]
 				],
@@ -616,16 +633,21 @@ class UsersController extends Controller {
 		} catch (\Exception $e) {
 			$this->log->error("Can't send new user mail to " . $user->getEMailAddress() . ": " . $e->getMessage(), ['app' => 'settings']);
 			return new TemplateResponse(
-				'core', 'error',
+				'core',
+				'error',
 				[
 					"errors" => [[
 						"error" => $this->l10n->t('Can\'t send email to the user. Contact your administrator.')]]
-				], 'guest'
+				],
+				'guest'
 			);
 		}
 
 		return new TemplateResponse(
-			'settings', 'tokensendnotify', [], 'guest'
+			'settings',
+			'tokensendnotify',
+			[],
+			'guest'
 		);
 	}
 
@@ -650,7 +672,8 @@ class UsersController extends Controller {
 					'status' => 'error',
 					'message' => $this->l10n->t('Failed to set password. Please contact the administrator.', [$userId]),
 					'type' => 'usererror'
-				], Http::STATUS_NOT_FOUND
+				],
+				Http::STATUS_NOT_FOUND
 			);
 		}
 
@@ -665,7 +688,8 @@ class UsersController extends Controller {
 							'status' => 'error',
 							'message' => $this->l10n->t('Failed to set password. Please contact your administrator.', [$userId]),
 							'type' => 'passwordsetfailed'
-						], Http::STATUS_FORBIDDEN
+						],
+						Http::STATUS_FORBIDDEN
 					);
 				}
 			} catch (\Exception $e) {
@@ -675,7 +699,8 @@ class UsersController extends Controller {
 						'status' => 'error',
 						'message' => $e->getMessage(),
 						'type' => 'passwordsetfailed'
-					], Http::STATUS_FORBIDDEN
+					],
+					Http::STATUS_FORBIDDEN
 				);
 			}
 
@@ -689,7 +714,8 @@ class UsersController extends Controller {
 					'status' => 'error',
 					'message' => $e->getMessage(),
 					'type' => 'tokenfailure'
-				], Http::STATUS_UNAUTHORIZED
+				],
+				Http::STATUS_UNAUTHORIZED
 			);
 		}
 
@@ -702,7 +728,8 @@ class UsersController extends Controller {
 					'status' => 'error',
 					'message' => $this->l10n->t('Failed to send email. Please contact your administrator.'),
 					'type' => 'emailsendfailed'
-				], Http::STATUS_INTERNAL_SERVER_ERROR
+				],
+				Http::STATUS_INTERNAL_SERVER_ERROR
 			);
 		}
 
@@ -977,7 +1004,8 @@ class UsersController extends Controller {
 			(
 				!$this->groupManager->isAdmin($currentUser->getUID()) &&
 				!$this->groupManager->getSubAdmin()->isUserAccessible($currentUser, $user) &&
-				$currentUser->getUID() !== $user->getUID())
+				$currentUser->getUID() !== $user->getUID()
+			)
 			) {
 			return new DataResponse([
 				'status' => 'error',
@@ -1016,17 +1044,19 @@ class UsersController extends Controller {
 	public function sendEmail($userId, $mailAddress) {
 		$token = $this->config->getUserValue($userId, 'owncloud', 'changeMail');
 		if ($token !== '') {
-			$splittedToken = \explode(':', $token);
+			$splittedToken = explode(':', $token);
 			if ((\count($splittedToken)) === 3 && $splittedToken[0] > ($this->timeFactory->getTime() - 60 * 5)) {
 				$this->log->alert('The email is not sent because an email change confirmation mail was sent recently.');
 				return false;
 			}
 		}
 
-		$token = $this->secureRandom->generate(21,
+		$token = $this->secureRandom->generate(
+			21,
 			ISecureRandom::CHAR_DIGITS .
 			ISecureRandom::CHAR_LOWER .
-			ISecureRandom::CHAR_UPPER);
+			ISecureRandom::CHAR_UPPER
+		);
 		$this->config->setUserValue($userId, 'owncloud', 'changeMail', $this->timeFactory->getTime() . ':' . $token . ':' . $mailAddress);
 
 		$link = $this->urlGenerator->linkToRouteAbsolute('settings.Users.changeMail', ['userId' => $userId, 'token' => $token]);
@@ -1105,7 +1135,7 @@ class UsersController extends Controller {
 
 		$oldEmailAddress = $user->getEMailAddress();
 
-		$splittedToken = \explode(':', $this->config->getUserValue($userId, 'owncloud', 'changeMail', null));
+		$splittedToken = explode(':', $this->config->getUserValue($userId, 'owncloud', 'changeMail', null));
 		$mailAddress = $splittedToken[2];
 
 		$this->setEmailAddress($userId, $mailAddress);
@@ -1168,7 +1198,7 @@ class UsersController extends Controller {
 			);
 		}
 
-		$value = \filter_var($enabled, FILTER_VALIDATE_BOOLEAN);
+		$value = filter_var($enabled, FILTER_VALIDATE_BOOLEAN);
 		if (!isset($value) || $value === null) {
 			return new DataResponse(
 				[

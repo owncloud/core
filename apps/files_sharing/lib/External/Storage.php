@@ -69,9 +69,9 @@ class Storage extends DAV implements ISharedStorage {
 		$this->certificateManager = $options['certificateManager'];
 		$this->remote = $options['remote'];
 		$this->remoteUser = $options['owner'];
-		list($protocol, $remote) = \explode('://', $this->remote);
-		if (\strpos($remote, '/')) {
-			list($host, $root) = \explode('/', $remote, 2);
+		list($protocol, $remote) = explode('://', $this->remote);
+		if (strpos($remote, '/')) {
+			list($host, $root) = explode('/', $remote, 2);
 		} else {
 			$host = $remote;
 			$root = '';
@@ -107,11 +107,11 @@ class Storage extends DAV implements ISharedStorage {
 			\OC::$server->getHTTPClientService()
 		);
 
-		$this->root = \rtrim($this->root, '/') . $discoveryManager->getWebDavEndpoint($this->remote);
+		$this->root = rtrim($this->root, '/') . $discoveryManager->getWebDavEndpoint($this->remote);
 		if (!$this->root || $this->root[0] !== '/') {
 			$this->root = '/' . $this->root;
 		}
-		if (\substr($this->root, -1, 1) !== '/') {
+		if (substr($this->root, -1, 1) !== '/') {
 			$this->root .= '/';
 		}
 		parent::init();
@@ -160,7 +160,7 @@ class Storage extends DAV implements ISharedStorage {
 	 * @return string
 	 */
 	public function getId() {
-		return 'shared::' . \md5($this->token . '@' . $this->remote);
+		return 'shared::' . md5($this->token . '@' . $this->remote);
 	}
 
 	public function getCache($path = '', $storage = null) {
@@ -233,7 +233,8 @@ class Storage extends DAV implements ISharedStorage {
 					// we remove the invalid storage
 					$this->logger->error(
 						'Storage for external share {shareId} returns not found error. Removing share as testing of remote succeeded.',
-						['shareId' => $this->getId()]);
+						['shareId' => $this->getId()]
+					);
 					$this->manager->removeShare($this->mountPoint);
 					$this->manager->getMountManager()->removeMount($this->mountPoint);
 					throw new StorageInvalidException();
@@ -248,7 +249,8 @@ class Storage extends DAV implements ISharedStorage {
 			// remove share for now (provide a dialog in the future and remove after timeout?)
 			$this->logger->error(
 				'Storage for external share {shareId} returns auth error and likely has been removed on remote with failure on removal hook to federated sharer.',
-				['shareId' => $this->getId()]);
+				['shareId' => $this->getId()]
+			);
 			$this->manager->removeShare($this->mountPoint);
 			$this->manager->getMountManager()->removeMount($this->mountPoint);
 			throw $e;
@@ -296,7 +298,7 @@ class Storage extends DAV implements ISharedStorage {
 				'timeout' => 10,
 				'connect_timeout' => 10,
 			])->getBody();
-			$data = \json_decode($result);
+			$data = json_decode($result);
 			$returnValue = (\is_object($data) && !empty($data->version));
 		} catch (ConnectException $e) {
 			$returnValue = false;
@@ -309,7 +311,7 @@ class Storage extends DAV implements ISharedStorage {
 	}
 
 	public function getOwner($path) {
-		list(, $remote) = \explode('://', $this->remote, 2);
+		list(, $remote) = explode('://', $this->remote, 2);
 		return $this->remoteUser . '@' . $remote;
 	}
 

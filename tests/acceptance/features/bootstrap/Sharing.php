@@ -144,29 +144,30 @@ trait Sharing {
 	 * @return string[]
 	 */
 	private function splitPermissionsString($str) {
-		$str = \trim($str);
-		$permissions = \array_map('trim', \explode(',', $str));
+		$str = trim($str);
+		$permissions = array_map('trim', explode(',', $str));
 
 		/* We use 'all', 'uploadwriteonly' and 'change' in feature files
 		for readability. Parse into appropriate permissions and return them
 		without any duplications.*/
 		if (\in_array('all', $permissions, true)) {
-			$permissions = \array_keys(SharingHelper::PERMISSION_TYPES);
+			$permissions = array_keys(SharingHelper::PERMISSION_TYPES);
 		}
 		if (\in_array('uploadwriteonly', $permissions, true)) {
 			// remove 'uploadwriteonly' from $permissions
-			$permissions = \array_diff($permissions, ['uploadwriteonly']);
-			$permissions = \array_merge($permissions, ['create']);
+			$permissions = array_diff($permissions, ['uploadwriteonly']);
+			$permissions = array_merge($permissions, ['create']);
 		}
 		if (\in_array('change', $permissions, true)) {
 			// remove 'change' from $permissions
-			$permissions = \array_diff($permissions, ['change']);
-			$permissions = \array_merge(
-				$permissions, ['create', 'delete', 'read', 'update']
+			$permissions = array_diff($permissions, ['change']);
+			$permissions = array_merge(
+				$permissions,
+				['create', 'delete', 'read', 'update']
 			);
 		}
 
-		return \array_unique($permissions);
+		return array_unique($permissions);
 	}
 
 	/**
@@ -188,12 +189,12 @@ trait Sharing {
 	 */
 	private function waitToCreateShare() {
 		if (($this->localLastShareTime !== null)
-			&& ((\microtime(true) - $this->localLastShareTime) < 1)
+			&& ((microtime(true) - $this->localLastShareTime) < 1)
 		) {
 			// prevent creating two shares with the same "stime" which is
 			// based on seconds, this affects share merging order and could
 			// affect expected test result order
-			\sleep(1);
+			sleep(1);
 		}
 	}
 
@@ -249,7 +250,7 @@ trait Sharing {
 		$bodyRows['password'] = \array_key_exists('password', $bodyRows) ? $this->getActualPassword($bodyRows['password']) : null;
 
 		if (\array_key_exists('permissions', $bodyRows)) {
-			if (\is_numeric($bodyRows['permissions'])) {
+			if (is_numeric($bodyRows['permissions'])) {
 				$bodyRows['permissions'] = (int) $bodyRows['permissions'];
 			} else {
 				$bodyRows['permissions'] = $this->splitPermissionsString($bodyRows['permissions']);
@@ -258,7 +259,7 @@ trait Sharing {
 			$bodyRows['permissions'] = null;
 		}
 		if (\array_key_exists('shareType', $bodyRows)) {
-			if (\is_numeric($bodyRows['shareType'])) {
+			if (is_numeric($bodyRows['shareType'])) {
 				$bodyRows['shareType'] = (int) $bodyRows['shareType'];
 			}
 		} else {
@@ -271,7 +272,7 @@ trait Sharing {
 		);
 		$needToParse = \array_key_exists('expireDate', $bodyRows);
 		$expireDate = $bodyRows['expireDate'] ?? $bodyRows['expireDateAsString'] ?? null;
-		$bodyRows['expireDate'] = $needToParse ? \date('Y-m-d', \strtotime($expireDate)) : $expireDate;
+		$bodyRows['expireDate'] = $needToParse ? date('Y-m-d', strtotime($expireDate)) : $expireDate;
 		$this->createShare(
 			$user,
 			$bodyRows['path'],
@@ -517,7 +518,9 @@ trait Sharing {
 	 * @return void
 	 */
 	public function createPublicLinkShareOfResourceWithPermission(
-		$user, $path, $permissions
+		$user,
+		$path,
+		$permissions
 	) {
 		$this->createAPublicShare($user, $path, true, null, $permissions);
 	}
@@ -532,7 +535,9 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userCreatesAPublicLinkShareOfWithPermission(
-		$user, $path, $permissions
+		$user,
+		$path,
+		$permissions
 	) {
 		$this->createPublicLinkShareOfResourceWithPermission(
 			$user,
@@ -551,7 +556,9 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userHasCreatedAPublicLinkShareOfWithPermission(
-		$user, $path, $permissions
+		$user,
+		$path,
+		$permissions
 	) {
 		$this->createPublicLinkShareOfResourceWithPermission(
 			$user,
@@ -569,7 +576,11 @@ trait Sharing {
 	 */
 	public function createPublicLinkShareWithPermissionByCurrentUser($path, $permissions) {
 		$this->createAPublicShare(
-			$this->currentUser, $path, true, null, $permissions
+			$this->currentUser,
+			$path,
+			true,
+			null,
+			$permissions
 		);
 	}
 
@@ -606,10 +617,18 @@ trait Sharing {
 	 * @return void
 	 */
 	public function createPublicLinkShareOfResourceWithExpiry(
-		$user, $path, $expiryDate
+		$user,
+		$path,
+		$expiryDate
 	) {
 		$this->createAPublicShare(
-			$user, $path, true, null, null, null, $expiryDate
+			$user,
+			$path,
+			true,
+			null,
+			null,
+			null,
+			$expiryDate
 		);
 	}
 
@@ -623,7 +642,9 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userCreatesAPublicLinkShareOfWithExpiry(
-		$user, $path, $expiryDate
+		$user,
+		$path,
+		$expiryDate
 	) {
 		$this->createPublicLinkShareOfResourceWithExpiry(
 			$user,
@@ -642,7 +663,9 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userHasCreatedAPublicLinkShareOfWithExpiry(
-		$user, $path, $expiryDate
+		$user,
+		$path,
+		$expiryDate
 	) {
 		$this->createPublicLinkShareOfResourceWithExpiry(
 			$user,
@@ -659,10 +682,17 @@ trait Sharing {
 	 * @return void
 	 */
 	public function createPublicLinkShareOfResourceWithExpiryByCurrentUser(
-		$path, $expiryDate
+		$path,
+		$expiryDate
 	) {
 		$this->createAPublicShare(
-			$this->currentUser, $path, true, null, null, null, $expiryDate
+			$this->currentUser,
+			$path,
+			true,
+			null,
+			null,
+			null,
+			$expiryDate
 		);
 	}
 
@@ -675,7 +705,8 @@ trait Sharing {
 	 * @return void
 	 */
 	public function aPublicLinkShareOfIsCreatedWithExpiry(
-		$path, $expiryDate
+		$path,
+		$expiryDate
 	) {
 		$this->createPublicLinkShareOfResourceWithExpiryByCurrentUser(
 			$path,
@@ -692,7 +723,8 @@ trait Sharing {
 	 * @return void
 	 */
 	public function aPublicLinkShareOfHasCreatedWithExpiry(
-		$path, $expiryDate
+		$path,
+		$expiryDate
 	) {
 		$this->createPublicLinkShareOfResourceWithExpiryByCurrentUser(
 			$path,
@@ -707,7 +739,7 @@ trait Sharing {
 	 * @return string
 	 */
 	public function getMimeTypeOfLastSharedFile() {
-		return \json_decode(\json_encode($this->lastShareData->data->mimetype), 1)[0];
+		return json_decode(json_encode($this->lastShareData->data->mimetype), 1)[0];
 	}
 
 	/**
@@ -719,7 +751,10 @@ trait Sharing {
 	 * @return void
 	 */
 	private function checkDownload(
-		$url, $user = null, $password = null, $mimeType = null
+		$url,
+		$user = null,
+		$password = null,
+		$mimeType = null
 	) {
 		$password = $this->getActualPassword($password);
 		$headers = ['X-Requested-With' => 'XMLHttpRequest'];
@@ -835,13 +870,13 @@ trait Sharing {
 		$bodyRows = $body->getRowsHash();
 		if (\array_key_exists('expireDate', $bodyRows)) {
 			$dateModification = $bodyRows['expireDate'];
-			$bodyRows['expireDate'] = \date('Y-m-d', \strtotime($dateModification));
+			$bodyRows['expireDate'] = date('Y-m-d', strtotime($dateModification));
 		}
 		if (\array_key_exists('password', $bodyRows)) {
 			$bodyRows['password'] = $this->getActualPassword($bodyRows['password']);
 		}
 		if (\array_key_exists('permissions', $bodyRows)) {
-			if (\is_numeric($bodyRows['permissions'])) {
+			if (is_numeric($bodyRows['permissions'])) {
 				$bodyRows['permissions'] = (int) $bodyRows['permissions'];
 			} else {
 				$bodyRows['permissions'] = $this->splitPermissionsString($bodyRows['permissions']);
@@ -934,7 +969,7 @@ trait Sharing {
 		$expireDate = null
 	) {
 		$userActual = $this->getActualUsername($user);
-		if (\is_string($permissions) && !\is_numeric($permissions)) {
+		if (\is_string($permissions) && !is_numeric($permissions)) {
 			$permissions = $this->splitPermissionsString($permissions);
 		}
 		$this->waitToCreateShare();
@@ -964,7 +999,7 @@ trait Sharing {
 				$this->addToListOfCreatedPublicLinks($linkName, $linkUrl);
 			}
 		}
-		$this->localLastShareTime = \microtime(true);
+		$this->localLastShareTime = microtime(true);
 	}
 
 	/**
@@ -978,14 +1013,17 @@ trait Sharing {
 	 * @return bool
 	 */
 	public function doesFieldValueMatchExpectedContent(
-		$field, $value, $contentExpected, $expectSuccess = true
+		$field,
+		$value,
+		$contentExpected,
+		$expectSuccess = true
 	) {
 		if (($contentExpected === "ANY_VALUE")
 			|| (($contentExpected === "A_TOKEN") && (\strlen($value) === 15))
-			|| (($contentExpected === "A_NUMBER") && \is_numeric($value))
+			|| (($contentExpected === "A_NUMBER") && is_numeric($value))
 			|| (($contentExpected === "A_STRING") && \is_string($value) && $value !== "")
 			|| (($contentExpected === "AN_URL") && $this->isAPublicLinkUrl($value))
-			|| (($field === 'remote') && (\rtrim($value, "/") === $contentExpected))
+			|| (($field === 'remote') && (rtrim($value, "/") === $contentExpected))
 			|| ($contentExpected === $value)
 		) {
 			if (!$expectSuccess) {
@@ -1014,12 +1052,12 @@ trait Sharing {
 
 		$dateFieldsArrayToConvert = ['expiration', 'original_date', 'new_date'];
 		//do not try to convert empty date
-		if ((string) \in_array($field, \array_merge($dateFieldsArrayToConvert)) && !empty($contentExpected)) {
-			$timestamp = \strtotime($contentExpected, $this->getServerShareTimeFromLastResponse());
+		if ((string) \in_array($field, array_merge($dateFieldsArrayToConvert)) && !empty($contentExpected)) {
+			$timestamp = strtotime($contentExpected, $this->getServerShareTimeFromLastResponse());
 			// strtotime returns false if it failed to parse, just leave it as it is in that condition
 			if ($timestamp !== false) {
 				$contentExpected
-					= \date(
+					= date(
 						'Y-m-d',
 						$timestamp
 					) . " 00:00:00";
@@ -1035,7 +1073,10 @@ trait Sharing {
 					$fieldIsSet = true;
 					$value = (string) $element->$field;
 					if ($this->doesFieldValueMatchExpectedContent(
-						$field, $value, $contentExpected, $expectSuccess
+						$field,
+						$value,
+						$contentExpected,
+						$expectSuccess
 					)
 					) {
 						return true;
@@ -1047,7 +1088,10 @@ trait Sharing {
 			if ($fieldIsSet) {
 				$value = (string) $data->$field;
 				if ($this->doesFieldValueMatchExpectedContent(
-					$field, $value, $contentExpected, $expectSuccess
+					$field,
+					$value,
+					$contentExpected,
+					$expectSuccess
 				)
 				) {
 					return true;
@@ -1097,7 +1141,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkSharedFileInResponse($filename) {
-		$filename = "/" . \ltrim($filename, '/');
+		$filename = "/" . ltrim($filename, '/');
 		Assert::assertTrue(
 			$this->isFieldInResponse('file_target', "$filename"),
 			"'file_target' value '$filename' was not found in response"
@@ -1112,7 +1156,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkSharedFileNotInResponse($filename) {
-		$filename = "/" . \ltrim($filename, '/');
+		$filename = "/" . ltrim($filename, '/');
 		Assert::assertFalse(
 			$this->isFieldInResponse('file_target', "$filename", false),
 			"'file_target' value '$filename' was unexpectedly found in response"
@@ -1127,7 +1171,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkSharedFileAsPathInResponse($filename) {
-		$filename = "/" . \ltrim($filename, '/');
+		$filename = "/" . ltrim($filename, '/');
 		Assert::assertTrue(
 			$this->isFieldInResponse('path', "$filename"),
 			"'path' value '$filename' was not found in response"
@@ -1142,7 +1186,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkSharedFileAsPathNotInResponse($filename) {
-		$filename = "/" . \ltrim($filename, '/');
+		$filename = "/" . ltrim($filename, '/');
 		Assert::assertFalse(
 			$this->isFieldInResponse('path', "$filename", false),
 			"'path' value '$filename' was unexpectedly found in response"
@@ -1189,14 +1233,14 @@ trait Sharing {
 		$shareType = SharingHelper::getShareType($shareType);
 
 		if ($permissions !== null) {
-			if (\is_string($permissions) && !\is_numeric($permissions)) {
+			if (\is_string($permissions) && !is_numeric($permissions)) {
 				$permissions = $this->splitPermissionsString($permissions);
 			}
 			$permissionSum = SharingHelper::getPermissionSum($permissions);
 		}
 
 		$data = $this->getResponseXml(null, __METHOD__)->data[0];
-		if (\is_iterable($data)) {
+		if (is_iterable($data)) {
 			foreach ($data as $element) {
 				if (($element->share_type->__toString() === (string) $shareType)
 					&& ($element->share_with->__toString() === $userOrGroupId)
@@ -1208,7 +1252,7 @@ trait Sharing {
 			}
 			return false;
 		}
-		\error_log(
+		error_log(
 			"INFORMATION: isUserOrGroupInSharedData response XML data is " .
 			\gettype($data) .
 			" and therefore does not contain share_with information."
@@ -1231,12 +1275,16 @@ trait Sharing {
 	 * @return void
 	 */
 	public function shareFileWithUserUsingTheSharingApi(
-		$user1, $filepath, $user2, $permissions = null, $getShareData = false
+		$user1,
+		$filepath,
+		$user2,
+		$permissions = null,
+		$getShareData = false
 	) {
 		$user1Actual = $this->getActualUsername($user1);
 		$user2Actual = $this->getActualUsername($user2);
 
-		$path = $this->getSharesEndpointPath("?path=" . \urlencode($filepath));
+		$path = $this->getSharesEndpointPath("?path=" . urlencode($filepath));
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
 			$user1Actual,
@@ -1250,7 +1298,13 @@ trait Sharing {
 			return;
 		} else {
 			$this->createShare(
-				$user1, $filepath, 0, $user2Actual, null, null, $permissions
+				$user1,
+				$filepath,
+				0,
+				$user2Actual,
+				null,
+				null,
+				$permissions
 			);
 		}
 		if ($getShareData) {
@@ -1278,10 +1332,16 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userSharesFileWithUserUsingTheSharingApi(
-		$user1, $filepath, $user2, $permissions = null
+		$user1,
+		$filepath,
+		$user2,
+		$permissions = null
 	) {
 		$this->shareFileWithUserUsingTheSharingApi(
-			$user1, $filepath, $user2, $permissions
+			$user1,
+			$filepath,
+			$user2,
+			$permissions
 		);
 	}
 
@@ -1297,12 +1357,19 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userHasSharedFileWithUserUsingTheSharingApi(
-		$user1, $filepath, $user2, $permissions = null
+		$user1,
+		$filepath,
+		$user2,
+		$permissions = null
 	) {
 		$user1 = $this->getActualUsername($user1);
 		$user2 = $this->getActualUsername($user2);
 		$this->shareFileWithUserUsingTheSharingApi(
-			$user1, $filepath, $user2, $permissions, true
+			$user1,
+			$filepath,
+			$user2,
+			$permissions,
+			true
 		);
 		// this is expected to fail if a file is shared with create and delete permissions, which is not possible
 		Assert::assertTrue(
@@ -1322,11 +1389,16 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userHasSharedFileWithTheAdministrator(
-		$sharer, $filepath, $permissions = null
+		$sharer,
+		$filepath,
+		$permissions = null
 	) {
 		$admin = $this->getAdminUsername();
 		$this->userHasSharedFileWithUserUsingTheSharingApi(
-			$sharer, $filepath, $admin, $permissions
+			$sharer,
+			$filepath,
+			$admin,
+			$permissions
 		);
 	}
 
@@ -1341,10 +1413,15 @@ trait Sharing {
 	 * @return void
 	 */
 	public function theUserSharesFileWithUserUsingTheSharingApi(
-		$filepath, $user2, $permissions = null
+		$filepath,
+		$user2,
+		$permissions = null
 	) {
 		$this->userSharesFileWithUserUsingTheSharingApi(
-			$this->getCurrentUser(), $filepath, $user2, $permissions
+			$this->getCurrentUser(),
+			$filepath,
+			$user2,
+			$permissions
 		);
 	}
 
@@ -1359,11 +1436,16 @@ trait Sharing {
 	 * @return void
 	 */
 	public function theUserHasSharedFileWithUserUsingTheSharingApi(
-		$filepath, $user2, $permissions = null
+		$filepath,
+		$user2,
+		$permissions = null
 	) {
 		$user2 = $this->getActualUsername($user2);
 		$this->userHasSharedFileWithUserUsingTheSharingApi(
-			$this->getCurrentUser(), $filepath, $user2, $permissions
+			$this->getCurrentUser(),
+			$filepath,
+			$user2,
+			$permissions
 		);
 	}
 
@@ -1378,10 +1460,15 @@ trait Sharing {
 	 * @return void
 	 */
 	public function theUserSharesFileWithGroupUsingTheSharingApi(
-		$filepath, $group, $permissions = null
+		$filepath,
+		$group,
+		$permissions = null
 	) {
 		$this->userSharesFileWithGroupUsingTheSharingApi(
-			$this->currentUser, $filepath, $group, $permissions
+			$this->currentUser,
+			$filepath,
+			$group,
+			$permissions
 		);
 	}
 
@@ -1396,10 +1483,15 @@ trait Sharing {
 	 * @return void
 	 */
 	public function theUserHasSharedFileWithGroupUsingTheSharingApi(
-		$filepath, $group, $permissions = null
+		$filepath,
+		$group,
+		$permissions = null
 	) {
 		$this->userHasSharedFileWithGroupUsingTheSharingApi(
-			$this->currentUser, $filepath, $group, $permissions
+			$this->currentUser,
+			$filepath,
+			$group,
+			$permissions
 		);
 	}
 
@@ -1418,7 +1510,11 @@ trait Sharing {
 	 * @return void
 	 */
 	public function shareFileWithGroupUsingTheSharingApi(
-		$user, $filepath, $group, $permissions = null, $getShareData = false
+		$user,
+		$filepath,
+		$group,
+		$permissions = null,
+		$getShareData = false
 	) {
 		$userActual = $this->getActualUsername($user);
 		$path = $this->getSharesEndpointPath("?path=$filepath");
@@ -1435,7 +1531,13 @@ trait Sharing {
 			return;
 		} else {
 			$this->createShare(
-				$user, $filepath, 1, $group, null, null, $permissions
+				$user,
+				$filepath,
+				1,
+				$group,
+				null,
+				null,
+				$permissions
 			);
 		}
 		if ($getShareData) {
@@ -1463,10 +1565,16 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userSharesFileWithGroupUsingTheSharingApi(
-		$user, $filepath, $group, $permissions = null
+		$user,
+		$filepath,
+		$group,
+		$permissions = null
 	) {
 		$this->shareFileWithGroupUsingTheSharingApi(
-			$user, $filepath, $group, $permissions
+			$user,
+			$filepath,
+			$group,
+			$permissions
 		);
 	}
 
@@ -1482,10 +1590,17 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userHasSharedFileWithGroupUsingTheSharingApi(
-		$user, $filepath, $group, $permissions = null
+		$user,
+		$filepath,
+		$group,
+		$permissions = null
 	) {
 		$this->shareFileWithGroupUsingTheSharingApi(
-			$user, $filepath, $group, $permissions, true
+			$user,
+			$filepath,
+			$group,
+			$permissions,
+			true
 		);
 
 		Assert::assertEquals(
@@ -1529,7 +1644,13 @@ trait Sharing {
 			$filepath
 		);
 		$this->createShare(
-			$sharer, $filepath, $userOrGroupShareType, $sharee, null, null, $permissions
+			$sharer,
+			$filepath,
+			$userOrGroupShareType,
+			$sharee,
+			null,
+			null,
+			$permissions
 		);
 		$statusCode = $this->ocsContext->getOCSResponseStatusCode($this->response);
 		Assert::assertTrue(
@@ -1552,12 +1673,23 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userShouldBeAbleToShareUsingTheSharingApi(
-		$sharer, $entry, $filepath, $userOrGroupShareType, $sharee, $permissions = null
+		$sharer,
+		$entry,
+		$filepath,
+		$userOrGroupShareType,
+		$sharee,
+		$permissions = null
 	) {
 		$sharee = $this->getActualUsername($sharee);
 		$this->asFileOrFolderShouldExist($sharer, $entry, $filepath);
 		$this->createShare(
-			$sharer, $filepath, $userOrGroupShareType, $sharee, null, null, $permissions
+			$sharer,
+			$filepath,
+			$userOrGroupShareType,
+			$sharee,
+			null,
+			null,
+			$permissions
 		);
 
 		//v1.php returns 100 as success code
@@ -1594,7 +1726,10 @@ trait Sharing {
 		$share_id = $this->lastShareData->data[0]->id;
 		$url = $this->getSharesEndpointPath("/$share_id");
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$user, "DELETE", $url, null
+			$user,
+			"DELETE",
+			$url,
+			null
 		);
 	}
 
@@ -1748,7 +1883,12 @@ trait Sharing {
 			$headers['Accept-Language'] = $language;
 		}
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$user, "GET", $url, null, null, $headers
+			$user,
+			"GET",
+			$url,
+			null,
+			null,
+			$headers
 		);
 	}
 
@@ -1912,7 +2052,8 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userGetsAllTheSharesWithResharesFromTheFileUsingTheSharingApi(
-		$user, $path
+		$user,
+		$path
 	) {
 		$userActual = $this->getActualUsername($user);
 		$this->response = OcsApiHelper::sendRequest(
@@ -1957,7 +2098,8 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function theResponseWhenUserGetsInfoOfLastShareShouldInclude(
-		$user, $body
+		$user,
+		$body
 	) {
 		$user = $this->getActualUsername($user);
 		$this->verifyTableNodeRows($body, [], $this->shareResponseFields);
@@ -1980,7 +2122,8 @@ trait Sharing {
 	 *
 	 */
 	public function informationOfLastShareShouldInclude(
-		$user, $body
+		$user,
+		$body
 	) {
 		$user = $this->getActualUsername($user);
 		$this->getListOfShares($user);
@@ -2011,7 +2154,11 @@ trait Sharing {
 	 * @throws \Exception
 	 */
 	public function theFieldsOfTheResponseForUserForResourceShouldInclude(
-		$user, $fileOrFolder, $fileName, $type, TableNode $body
+		$user,
+		$fileOrFolder,
+		$fileName,
+		$type,
+		TableNode $body
 	) {
 		$user = $this->getActualUsername($user);
 		$this->verifyTableNodeColumnsCount($body, 2);
@@ -2034,7 +2181,7 @@ trait Sharing {
 		Assert::assertNotNull($share_id, "Could not find share id for " . $user);
 
 		if (\array_key_exists('expiration', $bodyRows) && $bodyRows['expiration'] !== '') {
-			$bodyRows['expiration'] = \date('d-m-Y', \strtotime($bodyRows['expiration']));
+			$bodyRows['expiration'] = date('d-m-Y', strtotime($bodyRows['expiration']));
 		}
 
 		$this->getShareData($user, $share_id);
@@ -2216,7 +2363,9 @@ trait Sharing {
 	public function theFieldsOfTheLastResponseShouldBeEmpty() {
 		$data = $this->getResponseXml(null, __METHOD__)->data[0];
 		Assert::assertEquals(
-			\count($data->element), 0, "last response contains data but was expected to be empty"
+			\count($data->element),
+			0,
+			"last response contains data but was expected to be empty"
 		);
 	}
 
@@ -2256,7 +2405,7 @@ trait Sharing {
 		$attributes = $attributes->getHash();
 
 		// change string "true"/"false" to boolean inside array
-		\array_walk_recursive(
+		array_walk_recursive(
 			$attributes,
 			function (&$value, $key) {
 				if ($key !== 'enabled') {
@@ -2274,9 +2423,9 @@ trait Sharing {
 		$actualAttributes = $this->getSharingAttributesFromLastResponse();
 
 		// parse json to array
-		$actualAttributesArray = \json_decode($actualAttributes, true);
-		if (\json_last_error() !== JSON_ERROR_NONE) {
-			$errMsg = \strtolower(\json_last_error_msg());
+		$actualAttributesArray = json_decode($actualAttributes, true);
+		if (json_last_error() !== JSON_ERROR_NONE) {
+			$errMsg = strtolower(json_last_error_msg());
 			throw new Exception(
 				"JSON decoding failed because of $errMsg in json\n" .
 				'Expected data to be json with array of objects. ' .
@@ -2371,10 +2520,10 @@ trait Sharing {
 		$this->setResponse($res);
 		$this->theHTTPStatusCodeShouldBeSuccess();
 
-		$json = \json_decode($res->getBody()->getContents(), true);
+		$json = json_decode($res->getBody()->getContents(), true);
 		$deleted = false;
 		foreach ($json['ocs']['data'] as $data) {
-			if (\stripslashes($data['path']) === $fileName) {
+			if (stripslashes($data['path']) === $fileName) {
 				$id = $data['id'];
 				$response = OcsApiHelper::sendRequest(
 					$this->getBaseUrl(),
@@ -2556,13 +2705,18 @@ trait Sharing {
 	 * @return void
 	 */
 	public function deletePublicLinkShareUsingTheSharingApi(
-		$user, $name, $path
+		$user,
+		$name,
+		$path
 	) {
 		$user = $this->getActualUsername($user);
 		$share_id = $this->getPublicShareIDByName($user, $path, $name);
 		$url = $this->getSharesEndpointPath("/$share_id");
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$user, "DELETE", $url, null
+			$user,
+			"DELETE",
+			$url,
+			null
 		);
 	}
 
@@ -2576,7 +2730,9 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userDeletesPublicLinkShareNamedUsingTheSharingApi(
-		$user, $name, $path
+		$user,
+		$name,
+		$path
 	) {
 		$this->deletePublicLinkShareUsingTheSharingApi(
 			$user,
@@ -2595,7 +2751,9 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userHasDeletedPublicLinkShareNamedUsingTheSharingApi(
-		$user, $name, $path
+		$user,
+		$name,
+		$path
 	) {
 		$this->deletePublicLinkShareUsingTheSharingApi(
 			$user,
@@ -2636,14 +2794,17 @@ trait Sharing {
 		);
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}" .
 			"/shares/pending/$shareId";
-		if (\substr($action, 0, 7) === "decline") {
+		if (substr($action, 0, 7) === "decline") {
 			$httpRequestMethod = "DELETE";
-		} elseif (\substr($action, 0, 6) === "accept") {
+		} elseif (substr($action, 0, 6) === "accept") {
 			$httpRequestMethod = "POST";
 		}
 
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$user, $httpRequestMethod, $url, null
+			$user,
+			$httpRequestMethod,
+			$url,
+			null
 		);
 	}
 
@@ -2664,14 +2825,17 @@ trait Sharing {
 
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}" .
 			"/shares/pending/$shareId";
-		if (\substr($action, 0, 7) === "decline") {
+		if (substr($action, 0, 7) === "decline") {
 			$httpRequestMethod = "DELETE";
-		} elseif (\substr($action, 0, 6) === "accept") {
+		} elseif (substr($action, 0, 6) === "accept") {
 			$httpRequestMethod = "POST";
 		}
 
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$user, $httpRequestMethod, $url, null
+			$user,
+			$httpRequestMethod,
+			$url,
+			null
 		);
 	}
 
@@ -2719,7 +2883,7 @@ trait Sharing {
 			$found = false;
 			//the API returns the path without trailing slash, but we want to
 			//be able to accept leading and/or trailing slashes in the step definition
-			$row['path'] = "/" . \trim($row['path'], "/");
+			$row['path'] = "/" . trim($row['path'], "/");
 			foreach ($usersShares as $share) {
 				try {
 					Assert::assertArrayHasKey('path', $share);
@@ -2732,7 +2896,7 @@ trait Sharing {
 			if (!$found) {
 				Assert::fail(
 					"could not find the share with this attributes " .
-					\print_r($row, true)
+					print_r($row, true)
 				);
 			}
 		}
@@ -2798,11 +2962,11 @@ trait Sharing {
 		}
 
 		//if the setting was never set before stdOut will be empty and return code will be 1
-		if (\trim($occStdOut) === "") {
+		if (trim($occStdOut) === "") {
 			$occStdOut = "[]";
 		}
 
-		$currentGroups = \json_decode($occStdOut, true);
+		$currentGroups = json_decode($occStdOut, true);
 		Assert::assertNotNull(
 			$currentGroups,
 			"could not json decode app setting 'blacklisted_receiver_groups' of 'files_sharing'\n" .
@@ -2815,7 +2979,7 @@ trait Sharing {
 			[
 				'config:app:set',
 				'files_sharing blacklisted_receiver_groups',
-				'--value=' . \json_encode($currentGroups)
+				'--value=' . json_encode($currentGroups)
 			]
 		);
 		if ($setSettingExitCode !== 0) {
@@ -2883,7 +3047,10 @@ trait Sharing {
 
 		$url = $this->getSharesEndpointPath("?format=json&shared_with_me=true&state=$stateCode");
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$user, "GET", $url, null
+			$user,
+			"GET",
+			$url,
+			null
 		);
 		if ($this->response->getStatusCode() !== 200) {
 			throw new Exception(
@@ -2891,7 +3058,7 @@ trait Sharing {
 			);
 		}
 		$result = $this->response->getBody()->getContents();
-		$usersShares = \json_decode($result, true);
+		$usersShares = json_decode($result, true);
 		if (!\is_array($usersShares)) {
 			throw new Exception(
 				__METHOD__ . " API result about shares is not valid JSON"
@@ -2949,32 +3116,32 @@ trait Sharing {
 	 * @return string
 	 */
 	public function replaceValuesFromTable($field, $value) {
-		if (\substr($field, 0, 10) === "share_with") {
-			$value = \str_replace(
+		if (substr($field, 0, 10) === "share_with") {
+			$value = str_replace(
 				"REMOTE",
 				$this->getRemoteBaseUrl(),
 				$value
 			);
-			$value = \str_replace(
+			$value = str_replace(
 				"LOCAL",
 				$this->getLocalBaseUrl(),
 				$value
 			);
 		}
-		if (\substr($field, 0, 6) === "remote") {
-			$value = \str_replace(
+		if (substr($field, 0, 6) === "remote") {
+			$value = str_replace(
 				"REMOTE",
 				$this->getRemoteBaseUrl(),
 				$value
 			);
-			$value = \str_replace(
+			$value = str_replace(
 				"LOCAL",
 				$this->getLocalBaseUrl(),
 				$value
 			);
 		}
 		if ($field === "permissions") {
-			if (\is_string($value) && !\is_numeric($value)) {
+			if (\is_string($value) && !is_numeric($value)) {
 				$value = $this->splitPermissionsString($value);
 			}
 			$value = SharingHelper::getPermissionSum($value);

@@ -41,10 +41,10 @@ use OCP\IConfig;
  * @package OC\Security
  */
 class Crypto implements ICrypto {
-	const CRYPT_MODE = 'cbc';
-	const CRYPT_METHOD = 'pbkdf2';
-	const CRYPT_HASH = 'sha1';
-	const SALT = 'phpseclib';
+	public const CRYPT_MODE = 'cbc';
+	public const CRYPT_METHOD = 'pbkdf2';
+	public const CRYPT_HASH = 'sha1';
+	public const SALT = 'phpseclib';
 
 	/** @var AES $cipher */
 	private $cipher;
@@ -76,7 +76,7 @@ class Crypto implements ICrypto {
 		}
 
 		// Append an "a" behind the password and hash it to prevent reusing the same password as for encryption
-		$password = \hash('sha512', $password . 'a');
+		$password = hash('sha512', $password . 'a');
 
 		$hash = new Hash('sha512');
 		$hash->setKey($password);
@@ -97,17 +97,17 @@ class Crypto implements ICrypto {
 		// Split single key in to multiple keys, use one for mac and one for key
 		// to harden against related-key attacks
 		// https://github.com/owncloud/encryption/issues/215
-		$derived = \hash_hkdf('sha512', $password, 0);
-		list($password, $hmacKey) = \str_split($derived, 32);
+		$derived = hash_hkdf('sha512', $password, 0);
+		list($password, $hmacKey) = str_split($derived, 32);
 		$this->cipher->setPassword($password, self::CRYPT_METHOD, self::CRYPT_HASH, self::SALT);
 
-		$iv = \random_bytes($this->ivLength);
+		$iv = random_bytes($this->ivLength);
 		$this->cipher->setIV($iv);
 
-		$ciphertext = \bin2hex($this->cipher->encrypt($plaintext));
-		$hmac = \bin2hex($this->calculateHMAC($ciphertext.$iv, $hmacKey));
+		$ciphertext = bin2hex($this->cipher->encrypt($plaintext));
+		$hmac = bin2hex($this->calculateHMAC($ciphertext.$iv, $hmacKey));
 
-		return 'v2|' . $ciphertext.'|'. \bin2hex($iv).'|'.$hmac;
+		return 'v2|' . $ciphertext.'|'. bin2hex($iv).'|'.$hmac;
 	}
 
 	/**
@@ -122,36 +122,36 @@ class Crypto implements ICrypto {
 			$password = $this->config->getSystemValue('secret');
 		}
 
-		$parts = \explode('|', $authenticatedCiphertext);
+		$parts = explode('|', $authenticatedCiphertext);
 
 		// v2 uses stronger binary random iv
-		if (\sizeof($parts) === 4 && $parts[0] === 'v2') {
-			$derived = \hash_hkdf('sha512', $password, 0);
-			list($password, $hmacKey) = \str_split($derived, 32);
+		if (sizeof($parts) === 4 && $parts[0] === 'v2') {
+			$derived = hash_hkdf('sha512', $password, 0);
+			list($password, $hmacKey) = str_split($derived, 32);
 			$this->cipher->setPassword($password, self::CRYPT_METHOD, self::CRYPT_HASH, self::SALT);
 
-			$ciphertext = \hex2bin($parts[1]);
-			$iv = \hex2bin($parts[2]);
-			$hmac = \hex2bin($parts[3]);
+			$ciphertext = hex2bin($parts[1]);
+			$iv = hex2bin($parts[2]);
+			$hmac = hex2bin($parts[3]);
 
 			$this->cipher->setIV($iv);
 
-			if (!\hash_equals($this->calculateHMAC($parts[1].$iv, $hmacKey), $hmac)) {
+			if (!hash_equals($this->calculateHMAC($parts[1].$iv, $hmacKey), $hmac)) {
 				throw new \Exception('HMAC does not match.');
 			}
 
 			return $this->cipher->decrypt($ciphertext);
 		}
 
-		if (\sizeof($parts) === 3) {
+		if (sizeof($parts) === 3) {
 			$this->cipher->setPassword($password, self::CRYPT_METHOD, self::CRYPT_HASH, self::SALT);
-			$ciphertext = \hex2bin($parts[0]);
+			$ciphertext = hex2bin($parts[0]);
 			$iv = $parts[1];
-			$hmac = \hex2bin($parts[2]);
+			$hmac = hex2bin($parts[2]);
 
 			$this->cipher->setIV($iv);
 
-			if (!\hash_equals($this->calculateHMAC($parts[0].$parts[1], $password), $hmac)) {
+			if (!hash_equals($this->calculateHMAC($parts[0].$parts[1], $password), $hmac)) {
 				throw new \Exception('HMAC does not match.');
 			}
 

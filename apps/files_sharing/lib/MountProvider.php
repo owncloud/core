@@ -72,7 +72,7 @@ class MountProvider implements IMountProvider {
 		$shares = $this->shareManager->getAllSharedWith($user->getUID(), $requiredShareTypes, null);
 		
 		// filter out excluded shares and group shares that includes self
-		$shares = \array_filter($shares, function (\OCP\Share\IShare $share) use ($user) {
+		$shares = array_filter($shares, function (\OCP\Share\IShare $share) use ($user) {
 			return $share->getPermissions() > 0
 				&& $share->getShareOwner() !== $user->getUID()
 				&& $share->getState() === \OCP\Share::STATE_ACCEPTED;
@@ -102,7 +102,7 @@ class MountProvider implements IMountProvider {
 		}
 
 		// array_filter removes the null values from the array
-		return \array_filter($mounts);
+		return array_filter($mounts);
 	}
 
 	/**
@@ -125,7 +125,7 @@ class MountProvider implements IMountProvider {
 		$result = [];
 		// sort by stime, the super share will be based on the least recent share
 		foreach ($tmp as &$tmp2) {
-			@\usort($tmp2, function ($a, $b) {
+			@usort($tmp2, function ($a, $b) {
 				if ($a->getShareTime() <= $b->getShareTime()) {
 					return -1;
 				}
@@ -134,7 +134,7 @@ class MountProvider implements IMountProvider {
 			$result[] = $tmp2;
 		}
 
-		return \array_values($result);
+		return array_values($result);
 	}
 
 	/**

@@ -69,8 +69,10 @@ abstract class Controller {
 	 * @param IRequest $request an instance of the request
 	 * @since 6.0.0 - parameter $appName was added in 7.0.0 - parameter $app was removed in 7.0.0
 	 */
-	public function __construct($appName,
-								IRequest $request) {
+	public function __construct(
+		$appName,
+		IRequest $request
+	) {
 		$this->appName = $appName;
 		$this->request = $request;
 
@@ -88,7 +90,7 @@ abstract class Controller {
 					if (isset($dataHeaders['Content-Type'])) {
 						unset($headers['Content-Type']);
 					}
-					$response->setHeaders(\array_merge($dataHeaders, $headers));
+					$response->setHeaders(array_merge($dataHeaders, $headers));
 					return $response;
 				} else {
 					return new JSONResponse($data);
@@ -104,13 +106,13 @@ abstract class Controller {
 	 * @since 7.0.0
 	 */
 	public function getResponderByHTTPHeader($acceptHeader) {
-		$headers = \explode(',', $acceptHeader);
+		$headers = explode(',', $acceptHeader);
 
 		// return the first matching responder
 		foreach ($headers as $header) {
-			$header = \strtolower(\trim($header));
+			$header = strtolower(trim($header));
 
-			$responder = \str_replace('application/', '', $header);
+			$responder = str_replace('application/', '', $header);
 
 			if (\array_key_exists($responder, $this->responders)) {
 				return $responder;
@@ -233,8 +235,12 @@ abstract class Controller {
 	 * @return \OCP\AppFramework\Http\TemplateResponse containing the page
 	 * @since 6.0.0
 	 */
-	public function render($templateName, array $params= [],
-							$renderAs='user', array $headers= []) {
+	public function render(
+		$templateName,
+		array $params= [],
+		$renderAs='user',
+		array $headers= []
+	) {
 		$response = new TemplateResponse($this->appName, $templateName);
 		$response->setParams($params);
 		$response->renderAs($renderAs);

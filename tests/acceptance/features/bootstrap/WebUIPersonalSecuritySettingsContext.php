@@ -53,7 +53,7 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 		LoginPage $loginPage
 	) {
 		$this->personalSecuritySettingsPage = $personalSecuritySettingsPage;
-		$this->appName = \substr(\str_shuffle($this->strForAppName), 0, 8);
+		$this->appName = substr(str_shuffle($this->strForAppName), 0, 8);
 		$this->loginPage = $loginPage;
 	}
 
@@ -115,7 +115,8 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	 */
 	public function theUserLogsInWithNewAppPassword($username) {
 		$this->webUILoginContext->userReLogsInWithUsernameAndPassword(
-			$username, $this->newAppPassword
+			$username,
+			$this->newAppPassword
 		);
 	}
 

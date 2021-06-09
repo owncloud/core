@@ -97,7 +97,7 @@ if ($_['displayNameChangeSupported']) {
 	?>
 		<p><?php p($l->t('You are member of the following groups:')); ?></p>
 		<p>
-			<?php p(\implode(', ', $_['groups'])); ?>
+			<?php p(implode(', ', $_['groups'])); ?>
 		</p>
 	<?php
 } else {

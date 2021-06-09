@@ -147,7 +147,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @return string
 	 */
 	private function getCommentXpath($content) {
-		return \sprintf($this->commentXpath, $content);
+		return sprintf($this->commentXpath, $content);
 	}
 
 	/**
@@ -157,7 +157,8 @@ class DetailsDialog extends OwncloudPage {
 	 */
 	public function getVersionsList() {
 		$versionsList = $this->detailsDialogElement->find(
-			"xpath", $this->versionsListXpath
+			"xpath",
+			$this->versionsListXpath
 		);
 		$this->assertElementNotNull(
 			$versionsList,
@@ -175,7 +176,8 @@ class DetailsDialog extends OwncloudPage {
 	 */
 	public function getLastVersionRevertButton() {
 		$btn = $this->detailsDialogElement->find(
-			"xpath", $this->lastVersionRevertButton
+			"xpath",
+			$this->lastVersionRevertButton
 		);
 		$this->assertElementNotNull(
 			$btn,
@@ -194,7 +196,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @return string
 	 */
 	public function getTabSwitchBtnXpath($tabId) {
-		return \sprintf($this->tabSwitchBtnXpath, $tabId);
+		return sprintf($this->tabSwitchBtnXpath, $tabId);
 	}
 
 	/**
@@ -235,7 +237,8 @@ class DetailsDialog extends OwncloudPage {
 	 */
 	public function getCommentList() {
 		return $this->detailsDialogElement->findAll(
-			"xpath", $this->commentListXpath
+			"xpath",
+			$this->commentListXpath
 		);
 	}
 
@@ -248,7 +251,7 @@ class DetailsDialog extends OwncloudPage {
 	 */
 	public function isCommentOnUI($text) {
 		$commentList = $this->getCommentList();
-		if (\sizeof($commentList) === 0) {
+		if (sizeof($commentList) === 0) {
 			return false;
 		}
 		foreach ($commentList as $comment) {
@@ -270,7 +273,8 @@ class DetailsDialog extends OwncloudPage {
 	 */
 	public function addComment(Session $session, $content) {
 		$commentInput = $this->detailsDialogElement->find(
-			"xpath", $this->commentInputXpath
+			"xpath",
+			$this->commentInputXpath
 		);
 		$this->assertElementNotNull(
 			$commentInput,
@@ -279,11 +283,14 @@ class DetailsDialog extends OwncloudPage {
 			"could not find comment input field"
 		);
 		$this->fillFieldWithCharacters(
-			$session, $this->commentInputXpath, $content
+			$session,
+			$this->commentInputXpath,
+			$content
 		);
 
 		$postButton = $this->detailsDialogElement->find(
-			"xpath", $this->commentPostXpath
+			"xpath",
+			$this->commentPostXpath
 		);
 		$this->assertElementNotNull(
 			$commentInput,
@@ -306,7 +313,8 @@ class DetailsDialog extends OwncloudPage {
 	 */
 	public function deleteComment($content) {
 		$commentList = $this->detailsDialogElement->find(
-			"xpath", $this->getCommentXpath($content)
+			"xpath",
+			$this->getCommentXpath($content)
 		);
 		$this->assertElementNotNull(
 			$commentList,
@@ -337,7 +345,8 @@ class DetailsDialog extends OwncloudPage {
 		$commentEditForm->focus();
 
 		$commentDeleteButton = $commentEditForm->find(
-			"xpath", $this->commentDeleteButtonXpath
+			"xpath",
+			$this->commentDeleteButtonXpath
 		);
 		$this->assertElementNotNull(
 			$commentDeleteButton,
@@ -372,7 +381,8 @@ class DetailsDialog extends OwncloudPage {
 	 */
 	public function findThumbnailContainer() {
 		$thumbnailContainer = $this->detailsDialogElement->find(
-			"xpath", $this->thumbnailContainerXpath
+			"xpath",
+			$this->thumbnailContainerXpath
 		);
 		$this->assertElementNotNull(
 			$thumbnailContainer,
@@ -391,7 +401,8 @@ class DetailsDialog extends OwncloudPage {
 	public function findThumbnail() {
 		$thumbnailContainer = $this->findThumbnailContainer();
 		$thumbnail = $thumbnailContainer->find(
-			"xpath", $this->thumbnailFromContainerXpath
+			"xpath",
+			$this->thumbnailFromContainerXpath
 		);
 		$this->assertElementNotNull(
 			$thumbnail,
@@ -536,7 +547,8 @@ class DetailsDialog extends OwncloudPage {
 				$editBtn->focus();
 				$editBtn->click();
 				$editInput = $this->find(
-					"xpath", $this->tagEditInputXpath
+					"xpath",
+					$this->tagEditInputXpath
 				);
 				$this->assertElementNotNull(
 					$editInput,
@@ -610,7 +622,8 @@ class DetailsDialog extends OwncloudPage {
 	 */
 	public function closeDetailsDialog() {
 		$detailsDialogCloseButton = $this->detailsDialogElement->find(
-			"xpath", $this->detailsDialogCloseXpath
+			"xpath",
+			$this->detailsDialogCloseXpath
 		);
 		$this->assertElementNotNull(
 			$detailsDialogCloseButton,
@@ -627,7 +640,7 @@ class DetailsDialog extends OwncloudPage {
 			// Ignore it for now. Many tests could keep working without having
 			// closed the details dialog.
 			// TODO: Edge - if it keeps happening then find out why.
-			\error_log(
+			error_log(
 				__METHOD__
 				. " UnknownError while doing detailsDialogCloseButton->click()"
 				. "\n-------------------------\n"
@@ -652,7 +665,7 @@ class DetailsDialog extends OwncloudPage {
 		Session $session,
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
-		$currentTime = \microtime(true);
+		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			try {
@@ -664,8 +677,8 @@ class DetailsDialog extends OwncloudPage {
 			} catch (StaleElementReference $e) {
 				// Just loop and try again if the element is stale.
 			}
-			\usleep(STANDARD_SLEEP_TIME_MICROSEC);
-			$currentTime = \microtime(true);
+			usleep(STANDARD_SLEEP_TIME_MICROSEC);
+			$currentTime = microtime(true);
 		}
 
 		if ($currentTime > $end) {

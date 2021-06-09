@@ -39,10 +39,10 @@ class Syslog {
 	 * Init class data
 	 */
 	public static function init() {
-		\openlog(\OC::$server->getSystemConfig()->getValue("syslog_tag", "ownCloud"), LOG_PID | LOG_CONS, LOG_USER);
+		openlog(\OC::$server->getSystemConfig()->getValue("syslog_tag", "ownCloud"), LOG_PID | LOG_CONS, LOG_USER);
 		// Close at shutdown
 		\OC::$server->getShutdownHandler()->register(function () {
-			\closelog();
+			closelog();
 		});
 	}
 
@@ -74,10 +74,11 @@ class Syslog {
 		];
 
 		$syslogFormat = \OC::$server->getConfig()->getSystemValue(
-			'log.syslog.format', self::$DEFAULT_FORMAT
+			'log.syslog.format',
+			self::$DEFAULT_FORMAT
 		);
 
-		$entryLine = \str_ireplace(\array_keys($entry), \array_values($entry), $syslogFormat);
-		\syslog($syslogLevel, $entryLine);
+		$entryLine = str_ireplace(array_keys($entry), array_values($entry), $syslogFormat);
+		syslog($syslogLevel, $entryLine);
 	}
 }

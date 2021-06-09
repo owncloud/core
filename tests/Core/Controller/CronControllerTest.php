@@ -54,8 +54,13 @@ class CronControllerTest extends TestCase {
 		$this->logger = $this->createMock(ILogger::class);
 		$this->jobList = $this->createMock(IJobList::class);
 
-		$this->controller = new CronController('core', $this->request,
-			$this->config, $this->logger, $this->jobList);
+		$this->controller = new CronController(
+			'core',
+			$this->request,
+			$this->config,
+			$this->logger,
+			$this->jobList
+		);
 	}
 
 	public function testCronDisabled() {

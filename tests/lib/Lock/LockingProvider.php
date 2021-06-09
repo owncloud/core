@@ -260,6 +260,6 @@ abstract class LockingProvider extends TestCase {
 	public function testTooLongLockName() {
 		$this->expectException(\InvalidArgumentException::class);
 
-		$this->instance->acquireLock(\str_repeat("x", 250), ILockingProvider::LOCK_EXCLUSIVE);
+		$this->instance->acquireLock(str_repeat("x", 250), ILockingProvider::LOCK_EXCLUSIVE);
 	}
 }

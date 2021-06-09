@@ -75,11 +75,11 @@ class OcmMiddleware {
 	 * @param ILogger $logger
 	 */
 	public function __construct(
-								FederatedShareProvider $federatedShareProvider,
-								IAppManager $appManager,
-								IUserManager $userManager,
-								AddressHandler $addressHandler,
-								ILogger $logger
+		FederatedShareProvider $federatedShareProvider,
+		IAppManager $appManager,
+		IUserManager $userManager,
+		AddressHandler $addressHandler,
+		ILogger $logger
 	) {
 		$this->federatedShareProvider = $federatedShareProvider;
 		$this->appManager = $appManager;
@@ -99,8 +99,8 @@ class OcmMiddleware {
 	 */
 	public function assertNotNull($params) {
 		if (\is_array($params)) {
-			$nullKeys = \array_keys(
-				\array_filter(
+			$nullKeys = array_keys(
+				array_filter(
 					$params,
 					function ($b) {
 						return $b === null;
@@ -108,7 +108,7 @@ class OcmMiddleware {
 				)
 			);
 			if (\count($nullKeys) > 0) {
-				$nullKeysAsString = \implode(',', $nullKeys);
+				$nullKeysAsString = implode(',', $nullKeys);
 				throw new BadRequestException(
 					"Required parameters are missing: $nullKeysAsString"
 				);

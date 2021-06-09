@@ -75,7 +75,7 @@ class ArrayCache extends Cache implements IMemcache {
 		}
 
 		foreach ($this->cachedData as $key => $value) {
-			if (\strpos($key, $prefix) === 0) {
+			if (strpos($key, $prefix) === 0) {
 				$this->remove($key);
 			}
 		}

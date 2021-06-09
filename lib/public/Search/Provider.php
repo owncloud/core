@@ -35,7 +35,7 @@ abstract class Provider {
 	/**
 	 * @since 8.0.0
 	 */
-	const OPTION_APPS = 'apps';
+	public const OPTION_APPS = 'apps';
 
 	/**
 	 * List of options
@@ -78,7 +78,7 @@ abstract class Provider {
 	 */
 	public function providesResultsFor(array $apps = []) {
 		$forApps = $this->getOption(self::OPTION_APPS);
-		return empty($apps) || empty($forApps) || \array_intersect($forApps, $apps);
+		return empty($apps) || empty($forApps) || array_intersect($forApps, $apps);
 	}
 
 	/**

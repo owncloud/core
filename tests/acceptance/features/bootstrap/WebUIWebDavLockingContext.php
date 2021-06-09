@@ -128,7 +128,9 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 	 * @return boolean true if the requested check was successful
 	 */
 	public function theFileShouldBeMarkedAsLockedByUserInLocksTab(
-		$file, $shouldOrNot, $lockedBy
+		$file,
+		$shouldOrNot,
+		$lockedBy
 	) {
 		$should = ($shouldOrNot !== "not");
 		$this->closeDetailsDialog();

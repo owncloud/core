@@ -79,7 +79,7 @@ class Lock extends Entity implements ILock {
 	 */
 	public function setToken($token) {
 		parent::setter('token', [$token]);
-		parent::setter('tokenHash', [\md5($token)]);
+		parent::setter('tokenHash', [md5($token)]);
 	}
 
 	/**

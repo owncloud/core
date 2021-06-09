@@ -49,7 +49,7 @@ use OCP\Files\Node;
 class DefaultShareProvider implements IShareProvider {
 
 	// Special share type for user modified group shares
-	const SHARE_TYPE_USERGROUP = 2;
+	public const SHARE_TYPE_USERGROUP = 2;
 
 	/** @var IDBConnection */
 	private $dbConn;
@@ -72,10 +72,11 @@ class DefaultShareProvider implements IShareProvider {
 	 * @param IRootFolder $rootFolder
 	 */
 	public function __construct(
-			IDBConnection $connection,
-			IUserManager $userManager,
-			IGroupManager $groupManager,
-			IRootFolder $rootFolder) {
+		IDBConnection $connection,
+		IUserManager $userManager,
+		IGroupManager $groupManager,
+		IRootFolder $rootFolder
+	) {
 		$this->dbConn = $connection;
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
@@ -129,7 +130,7 @@ class DefaultShareProvider implements IShareProvider {
 				$qb->setValue('share_with', $qb->createNamedParameter($share->getPassword()));
 			}
 
-			if (\method_exists($share, 'getParent')) {
+			if (method_exists($share, 'getParent')) {
 				/* @phan-suppress-next-line PhanUndeclaredMethod */
 				$qb->setValue('parent', $qb->createNamedParameter($share->getParent()));
 			}
@@ -171,7 +172,7 @@ class DefaultShareProvider implements IShareProvider {
 		$qb->setValue('file_target', $qb->createNamedParameter($share->getTarget()));
 
 		// Set the time this share was created
-		$qb->setValue('stime', $qb->createNamedParameter(\time()));
+		$qb->setValue('stime', $qb->createNamedParameter(time()));
 
 		// insert the data and fetch the id of the share
 		$this->dbConn->beginTransaction();
@@ -483,7 +484,7 @@ class DefaultShareProvider implements IShareProvider {
 
 		$qb->orderBy('id');
 
-		$nodeIdsChunks = \array_chunk($nodeIDs, 900);
+		$nodeIdsChunks = array_chunk($nodeIDs, 900);
 		foreach ($nodeIdsChunks as $nodeIdsChunk) {
 			$qb->setParameter('file_source_ids', $nodeIdsChunk, IQueryBuilder::PARAM_INT_ARRAY);
 
@@ -643,9 +644,9 @@ class DefaultShareProvider implements IShareProvider {
 		}
 
 		// exclude shares leading to trashbin on home storages
-		$pathSections = \explode('/', $data['path'], 2);
+		$pathSections = explode('/', $data['path'], 2);
 		// FIXME: would not detect rare md5'd home storage case properly
-		$storagePrefix = \explode(':', $data['storage_string_id'], 2)[0];
+		$storagePrefix = explode(':', $data['storage_string_id'], 2)[0];
 		if ($pathSections[0] !== 'files' && \in_array($storagePrefix, ['home', 'object'], true)) {
 			return false;
 		}
@@ -706,7 +707,7 @@ class DefaultShareProvider implements IShareProvider {
 			$qb->andWhere($qb->expr()->eq('file_source', $qb->createNamedParameter($node->getId())));
 		}
 
-		$groups = \array_map(function (IGroup $group) {
+		$groups = array_map(function (IGroup $group) {
 			return $group->getGID();
 		}, $groups);
 
@@ -745,7 +746,7 @@ class DefaultShareProvider implements IShareProvider {
 			$qb->andWhere($qb->expr()->eq('file_source', $qb->createNamedParameter($node->getId())));
 		}
 
-		$groups = \array_map(function (IGroup $group) {
+		$groups = array_map(function (IGroup $group) {
 			return $group->getGID();
 		}, $groups);
 
@@ -832,7 +833,7 @@ class DefaultShareProvider implements IShareProvider {
 			//Resolve all group shares to user specific shares
 			if (!empty($shares2)) {
 				$resolvedGroupShares = $this->resolveGroupShares($shares2, $userId);
-				$shares = \array_merge($shares, $resolvedGroupShares);
+				$shares = array_merge($shares, $resolvedGroupShares);
 			}
 		} else {
 			throw new BackendError('Invalid backend');
@@ -852,7 +853,7 @@ class DefaultShareProvider implements IShareProvider {
 		$allGroups = $this->groupManager->getUserGroups($user, 'sharing');
 
 		// Make chunks
-		$sharedWithGroupChunks = \array_chunk($allGroups, 100);
+		$sharedWithGroupChunks = array_chunk($allGroups, 100);
 
 		// Check how many group chunks do we need
 		$sharedWithGroupChunksNo = \count($sharedWithGroupChunks);
@@ -905,7 +906,7 @@ class DefaultShareProvider implements IShareProvider {
 		//Resolve all group shares to user specific shares
 		if (!empty($groupShares)) {
 			$resolvedGroupShares = $this->resolveGroupShares($groupShares, $userId);
-			$resolvedShares = \array_merge($resolvedShares, $resolvedGroupShares);
+			$resolvedShares = array_merge($resolvedShares, $resolvedGroupShares);
 		}
 
 		return $resolvedShares;
@@ -1126,7 +1127,7 @@ class DefaultShareProvider implements IShareProvider {
 			$stmt->closeCursor();
 		}
 
-		$resolvedShares = \array_values($shareIdToShareMap);
+		$resolvedShares = array_values($shareIdToShareMap);
 		return $resolvedShares;
 	}
 
@@ -1219,7 +1220,7 @@ class DefaultShareProvider implements IShareProvider {
 		$cursor->closeCursor();
 
 		if (!empty($ids)) {
-			$chunks = \array_chunk($ids, 100);
+			$chunks = array_chunk($ids, 100);
 			foreach ($chunks as $chunk) {
 				$qb->delete('share')
 					->where($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_USERGROUP)))
@@ -1262,7 +1263,7 @@ class DefaultShareProvider implements IShareProvider {
 		$cursor->closeCursor();
 
 		if (!empty($ids)) {
-			$chunks = \array_chunk($ids, 100);
+			$chunks = array_chunk($ids, 100);
 			foreach ($chunks as $chunk) {
 				/*
 				 * Delete all special shares wit this users for the found group shares
@@ -1301,7 +1302,7 @@ class DefaultShareProvider implements IShareProvider {
 	private function updateShareAttributes(IShare $share, $data) {
 		if ($data !== null) {
 			$attributes = new ShareAttributes();
-			$compressedAttributes = \json_decode($data, true);
+			$compressedAttributes = json_decode($data, true);
 			foreach ($compressedAttributes as $compressedAttribute) {
 				$attributes->setAttribute(
 					$compressedAttribute[0],
@@ -1334,7 +1335,7 @@ class DefaultShareProvider implements IShareProvider {
 				2 => $attribute['enabled']
 			];
 		}
-		return \json_encode($compressedAttributes);
+		return json_encode($compressedAttributes);
 	}
 
 	/**

@@ -57,7 +57,7 @@ class AppManagementContext implements Context {
 	public function setAppsPaths($appsPaths) {
 		return SetupHelper::setSystemConfig(
 			'apps_paths',
-			\json_encode($appsPaths),
+			json_encode($appsPaths),
 			'json'
 		);
 	}
@@ -71,7 +71,7 @@ class AppManagementContext implements Context {
 	 * @throws Exception
 	 */
 	public function setAppDirectories(TableNode $table) {
-		$appsPathsConfigs = \json_decode(
+		$appsPathsConfigs = json_decode(
 			SetupHelper::getSystemConfig("apps_paths", "json")['stdOut'],
 			true
 		);
@@ -106,7 +106,7 @@ class AppManagementContext implements Context {
 	 */
 	public function putAppInDir($appId, $version, $dir) {
 		$ocVersion = SetupHelper::getSystemConfigValue('version');
-		$appInfo = \sprintf(
+		$appInfo = sprintf(
 			'<?xml version="1.0"?>
 			<info>
 				<id>%s</id>
@@ -155,7 +155,7 @@ class AppManagementContext implements Context {
 	public function appHasBeenPutInDir($appId, $version, $dir) {
 		$this->putAppInDir($appId, $version, $dir);
 		$check = SetupHelper::runOcc(['app:list', '--output json']);
-		$appsDisabled = \json_decode($check['stdOut'], true)['disabled'];
+		$appsDisabled = json_decode($check['stdOut'], true)['disabled'];
 		if (!\array_key_exists($appId, $appsDisabled)) {
 			throw new \Exception(
 				__METHOD__
@@ -247,22 +247,24 @@ class AppManagementContext implements Context {
 	 * @return void
 	 */
 	public function appWithVersionAndPathShouldHaveBeenListedInTheEnabledAppsSection(
-		$appId, $appVersion, $appPath
+		$appId,
+		$appVersion,
+		$appPath
 	) {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$expectedStartOfOutput = "Enabled:";
 		Assert::assertEquals(
 			$expectedStartOfOutput,
-			\substr($commandOutput, 0, 8),
+			substr($commandOutput, 0, 8),
 			"app:list command output did not start with '$expectedStartOfOutput'"
 		);
-		$startOfDisabledSection = \strpos($commandOutput, "Disabled:");
+		$startOfDisabledSection = strpos($commandOutput, "Disabled:");
 		if ($startOfDisabledSection) {
-			$commandOutput = \substr($commandOutput, 0, $startOfDisabledSection);
+			$commandOutput = substr($commandOutput, 0, $startOfDisabledSection);
 		}
-		$expectedString = \sprintf("- %s:\n    - Version: %s\n    - Path: %s/%s", $appId, $appVersion, $this->featureContext->getServerRoot(), $appPath);
+		$expectedString = sprintf("- %s:\n    - Version: %s\n    - Path: %s/%s", $appId, $appVersion, $this->featureContext->getServerRoot(), $appPath);
 		Assert::assertNotFalse(
-			\strpos($commandOutput, $expectedString),
+			strpos($commandOutput, $expectedString),
 			"app:list output did not contain '$expectedString' in the enabled section"
 		);
 	}
@@ -277,18 +279,20 @@ class AppManagementContext implements Context {
 	 * @return void
 	 */
 	public function appWithVersionAndPathShouldHaveBeenListedInTheDisabledAppsSection(
-		$appId, $appVersion, $appPath
+		$appId,
+		$appVersion,
+		$appPath
 	) {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
-		$startOfDisabledSection = \strpos($commandOutput, "Disabled:");
+		$startOfDisabledSection = strpos($commandOutput, "Disabled:");
 		Assert::assertNotFalse(
 			$startOfDisabledSection,
 			"app:list output did not contain the disabled section"
 		);
-		$commandOutput = \substr($commandOutput, $startOfDisabledSection);
-		$expectedString = \sprintf("- %s:\n    - Version: %s\n    - Path: %s/%s", $appId, $appVersion, $this->featureContext->getServerRoot(), $appPath);
+		$commandOutput = substr($commandOutput, $startOfDisabledSection);
+		$expectedString = sprintf("- %s:\n    - Version: %s\n    - Path: %s/%s", $appId, $appVersion, $this->featureContext->getServerRoot(), $appPath);
 		Assert::assertNotFalse(
-			\strpos($commandOutput, $expectedString),
+			strpos($commandOutput, $expectedString),
 			"app:list output did not contain '$expectedString' in the disabled section"
 		);
 	}
@@ -302,15 +306,15 @@ class AppManagementContext implements Context {
 	 */
 	public function appShouldHaveBeenListedInTheDisabledAppsSection($appId) {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
-		$startOfDisabledSection = \strpos($commandOutput, "Disabled:");
+		$startOfDisabledSection = strpos($commandOutput, "Disabled:");
 		Assert::assertNotFalse(
 			$startOfDisabledSection,
 			"app:list output did not contain the disabled section"
 		);
-		$commandOutput = \substr($commandOutput, $startOfDisabledSection);
+		$commandOutput = substr($commandOutput, $startOfDisabledSection);
 		$expectedString = "- $appId";
 		Assert::assertNotFalse(
-			\strpos($commandOutput, $expectedString),
+			strpos($commandOutput, $expectedString),
 			"app:list output did not contain '$expectedString' in the disabled section"
 		);
 	}
@@ -323,7 +327,7 @@ class AppManagementContext implements Context {
 	public function theEnabledAppsSectionShouldNotExist() {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		Assert::assertFalse(
-			\strpos($commandOutput, "Enabled:"),
+			strpos($commandOutput, "Enabled:"),
 			"app:list output contains the enabled section but it should not"
 		);
 	}
@@ -336,7 +340,7 @@ class AppManagementContext implements Context {
 	public function theDisabledAppsSectionShouldNotExist() {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		Assert::assertFalse(
-			\strpos($commandOutput, "Disabled:"),
+			strpos($commandOutput, "Disabled:"),
 			"app:list output contains the disabled section but it should not"
 		);
 	}
@@ -353,9 +357,9 @@ class AppManagementContext implements Context {
 	public function appPathIs($appId, $dir) {
 		Assert::assertEquals(
 			$this->featureContext->getServerRoot() . "/$dir/$appId",
-			\trim($this->cmdOutput),
+			trim($this->cmdOutput),
 			"Expected: the path to ${appId} should be ${dir} but got "
-			. \trim($this->cmdOutput)
+			. trim($this->cmdOutput)
 		);
 	}
 
@@ -373,8 +377,9 @@ class AppManagementContext implements Context {
 			['config:app:get', $appId, 'installed_version', '--no-ansi']
 		)['stdOut'];
 		Assert::assertEquals(
-			$version, \trim($cmdOutput),
-			"Expected: the installed version of ${appId} should be ${version} but got " . \trim($cmdOutput)
+			$version,
+			trim($cmdOutput),
+			"Expected: the installed version of ${appId} should be ${version} but got " . trim($cmdOutput)
 		);
 	}
 
@@ -396,13 +401,14 @@ class AppManagementContext implements Context {
 		$this->featureContext = $environment->getContext('FeatureContext');
 
 		$value = SetupHelper::getSystemConfigValue(
-			'apps_paths', 'json'
+			'apps_paths',
+			'json'
 		);
 
 		if ($value === '') {
 			$this->oldAppsPaths = null;
 		} else {
-			$this->oldAppsPaths = \json_decode($value, true);
+			$this->oldAppsPaths = json_decode($value, true);
 		}
 	}
 
@@ -432,7 +438,7 @@ class AppManagementContext implements Context {
 	 */
 	public function deleteCreatedApps() {
 		$configJson = SetupHelper::runOcc(['config:list'])['stdOut'];
-		$configList = \json_decode($configJson, true);
+		$configList = json_decode($configJson, true);
 		foreach ($this->createdApps as $app => $paths) {
 			//disable the app
 			$this->featureContext->appHasBeenDisabled($app, 'disables');

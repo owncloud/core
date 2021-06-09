@@ -41,7 +41,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Manager {
-	const STORAGE = '\OCA\Files_Sharing\External\Storage';
+	public const STORAGE = '\OCA\Files_Sharing\External\Storage';
 
 	/**
 	 * @var string
@@ -81,12 +81,14 @@ class Manager {
 	 * @param EventDispatcherInterface $eventDispatcher
 	 * @param string $uid
 	 */
-	public function __construct(\OCP\IDBConnection $connection,
-								\OC\Files\Mount\Manager $mountManager,
-								\OCP\Files\Storage\IStorageFactory $storageLoader,
-								IManager $notificationManager,
-								EventDispatcherInterface $eventDispatcher,
-								$uid) {
+	public function __construct(
+		\OCP\IDBConnection $connection,
+		\OC\Files\Mount\Manager $mountManager,
+		\OCP\Files\Storage\IStorageFactory $storageLoader,
+		IManager $notificationManager,
+		EventDispatcherInterface $eventDispatcher,
+		$uid
+	) {
 		$this->connection = $connection;
 		$this->mountManager = $mountManager;
 		$this->storageLoader = $storageLoader;
@@ -120,7 +122,7 @@ class Manager {
 			// using the original share item name.
 			$tmpMountPointName = '{{TemporaryMountPointName#' . $name . '}}';
 			$mountPoint = $tmpMountPointName;
-			$hash = \md5($tmpMountPointName);
+			$hash = md5($tmpMountPointName);
 			$data = [
 				'remote'		=> $remote,
 				'share_token'	=> $token,
@@ -138,7 +140,7 @@ class Manager {
 			while (!$this->connection->insertIfNotExist('*PREFIX*share_external', $data, ['user', 'mountpoint_hash'])) {
 				// The external share already exists for the user
 				$data['mountpoint'] = $tmpMountPointName . '-' . $i;
-				$data['mountpoint_hash'] = \md5($data['mountpoint']);
+				$data['mountpoint_hash'] = md5($data['mountpoint']);
 				$i++;
 			}
 			return null;
@@ -147,7 +149,7 @@ class Manager {
 		$shareFolder = Helper::getShareFolder();
 		$mountPoint = Files::buildNotExistingFileName($shareFolder, $name);
 		$mountPoint = Filesystem::normalizePath($mountPoint);
-		$hash = \md5($mountPoint);
+		$hash = md5($mountPoint);
 
 		$query = $this->connection->prepare('
 				INSERT INTO `*PREFIX*share_external`
@@ -196,7 +198,7 @@ class Manager {
 			$shareFolder = Helper::getShareFolder();
 			$mountPoint = Files::buildNotExistingFileName($shareFolder, $share['name']);
 			$mountPoint = Filesystem::normalizePath($mountPoint);
-			$hash = \md5($mountPoint);
+			$hash = md5($mountPoint);
 
 			$acceptShare = $this->connection->prepare('
 				UPDATE `*PREFIX*share_external`
@@ -207,7 +209,8 @@ class Manager {
 			$acceptShare->execute([1, $mountPoint, $hash, $id, $this->uid]);
 
 			$this->eventDispatcher->dispatch(
-				AcceptShare::class, new AcceptShare($share)
+				AcceptShare::class,
+				new AcceptShare($share)
 			);
 
 			$event = new GenericEvent(null, ['sharedItem' => $share['name'], 'shareAcceptedFrom' => $share['owner'],
@@ -271,7 +274,7 @@ class Manager {
 	 */
 	protected function stripPath($path) {
 		$prefix = "/{$this->uid}/files";
-		return \rtrim(\substr($path, \strlen($prefix)), '/');
+		return rtrim(substr($path, \strlen($prefix)), '/');
 	}
 
 	public function getMount($data) {
@@ -307,8 +310,8 @@ class Manager {
 	public function setMountPoint($source, $target) {
 		$source = $this->stripPath($source);
 		$target = $this->stripPath($target);
-		$sourceHash = \md5($source);
-		$targetHash = \md5($target);
+		$sourceHash = md5($source);
+		$targetHash = md5($target);
 
 		$query = $this->connection->prepare('
 			UPDATE `*PREFIX*share_external`
@@ -350,7 +353,7 @@ class Manager {
 		$id = $mountPointObj->getStorage()->getCache()->getId('');
 
 		$mountPoint = $this->stripPath($mountPoint);
-		$hash = \md5($mountPoint);
+		$hash = md5($mountPoint);
 
 		$getShare = $this->connection->prepare('
 			SELECT `remote`, `share_token`, `remote_id`

@@ -114,7 +114,7 @@ class Add extends Command {
 		}
 
 		if ($input->getOption('password-from-env')) {
-			$password = \getenv('OC_PASS');
+			$password = getenv('OC_PASS');
 			if (!$password) {
 				$output->writeln('<error>--password-from-env given, but OC_PASS is empty!</error>');
 				return 1;

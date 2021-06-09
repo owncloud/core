@@ -95,8 +95,9 @@ class NotificationController extends OCSController {
 			}
 		}
 		if (!empty($result)) {
-			$message = $this->l->t("Couldn't send mail to following recipient(s): %s ",
-				\implode(', ', $result)
+			$message = $this->l->t(
+				"Couldn't send mail to following recipient(s): %s ",
+				implode(', ', $result)
 			);
 			$code = 400;
 		}
@@ -126,7 +127,7 @@ class NotificationController extends OCSController {
 			$recipientList = $group->searchUsers('');
 		}
 		// don't send a mail to the user who shared the file
-		$recipientList = \array_filter($recipientList, function ($user) {
+		$recipientList = array_filter($recipientList, function ($user) {
 			/** @var IUser $user */
 			return $user->getUID() !== $this->userSession->getUser()->getUID();
 		});
@@ -154,7 +155,7 @@ class NotificationController extends OCSController {
 		} else {
 			$message = $this->l->t(
 				"Couldn't send mail to following recipient(s): %s ",
-				\implode(', ', $result)
+				implode(', ', $result)
 			);
 			$data = ['status' => 'error'];
 		}

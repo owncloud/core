@@ -161,7 +161,7 @@ class Server {
 
 		$fileLocksBackend = new FileLocksBackend($this->server->tree, false, OC::$server->getTimeFactory());
 		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\PublicDavLocksPlugin($fileLocksBackend, function ($uri) {
-			if (\strpos($uri, "public-files/") === 0) {
+			if (strpos($uri, "public-files/") === 0) {
 				return true;
 			}
 			return false;
@@ -274,11 +274,13 @@ class Server {
 
 				if ($view !== null) {
 					$this->server->addPlugin(
-						new QuotaPlugin($view));
+						new QuotaPlugin($view)
+					);
 				}
 				$this->server->addPlugin(
 					new TagsPlugin(
-						$this->server->tree, OC::$server->getTagManager()
+						$this->server->tree,
+						OC::$server->getTagManager()
 					)
 				);
 				// TODO: switch to LazyUserFolder
@@ -336,8 +338,8 @@ class Server {
 	 */
 	private function isRequestForSubtree(array $subTrees) {
 		foreach ($subTrees as $subTree) {
-			$subTree = \trim($subTree, ' /');
-			if (\strpos($this->server->getRequestUri(), "$subTree/") === 0) {
+			$subTree = trim($subTree, ' /');
+			if (strpos($this->server->getRequestUri(), "$subTree/") === 0) {
 				return true;
 			}
 		}

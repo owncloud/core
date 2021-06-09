@@ -47,7 +47,7 @@ class ContactsManagerTest extends \Test\TestCase {
 			],
 		];
 
-		$expectedResult =  \array_merge($search1, $search2);
+		$expectedResult =  array_merge($search1, $search2);
 		return [
 			[
 				$search1,

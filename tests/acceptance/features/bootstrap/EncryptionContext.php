@@ -173,7 +173,7 @@ class EncryptionContext implements Context {
 	 * @return void
 	 */
 	public function fileOfUserShouldNotBeEncrypted($fileName, $username) {
-		$fileName = \ltrim($fileName, "/");
+		$fileName = ltrim($fileName, "/");
 		$filePath = "data/$username/files/$fileName";
 		$this->featureContext->readFileInServerRoot($filePath);
 
@@ -183,7 +183,7 @@ class EncryptionContext implements Context {
 			__METHOD__
 		);
 		$encodedFileContent = (string) $parsedResponse->data->element->contentUrlEncoded;
-		$fileContent = \urldecode($encodedFileContent);
+		$fileContent = urldecode($encodedFileContent);
 
 		$this->featureContext->userDownloadsFileUsingTheAPI($username, "/$fileName");
 		$fileContentServer = (string) $this->featureContext->getResponse()->getBody();
@@ -204,7 +204,7 @@ class EncryptionContext implements Context {
 	 * @return void
 	 */
 	public function fileOfUserShouldBeEncrypted($fileName, $username) {
-		$fileName = \ltrim($fileName, "/");
+		$fileName = ltrim($fileName, "/");
 		$filePath = "data/$username/files/$fileName";
 		$this->featureContext->readFileInServerRoot($filePath);
 
@@ -214,7 +214,7 @@ class EncryptionContext implements Context {
 			__METHOD__
 		);
 		$encodedFileContent = (string) $parsedResponse->data->element->contentUrlEncoded;
-		$fileContent = \urldecode($encodedFileContent);
+		$fileContent = urldecode($encodedFileContent);
 		$expectedContentStart = "HBEGIN:oc_encryption_module:OC_DEFAULT_MODULE:cipher:AES-256-CTR:signed:true";
 
 		Assert::assertStringStartsWith(

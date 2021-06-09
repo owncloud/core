@@ -184,7 +184,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 		foreach ($totalUsers as $user) {
 			for ($i=1; $i <= 100; $i++) {
 				$time = 1522762088 + $i * 60;
-				$userIndex = \array_search($user, $totalUsers, true);
+				$userIndex = array_search($user, $totalUsers, true);
 				if (($userIndex+1) === \count($totalUsers)) {
 					break;
 				}
@@ -308,7 +308,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 		$getAllIdsPerUser = [];
 		$totalParents = 1;
 		foreach ($totalUsers as $user) {
-			$userIndex = \array_search($user, $totalUsers, true);
+			$userIndex = array_search($user, $totalUsers, true);
 			for ($i=1; $i <= 2000; $i++) {
 				if (($userIndex+1) === \count($totalUsers)) {
 					break;
@@ -374,12 +374,12 @@ class RepairOrphanedSubshareTest extends TestCase {
 		$checkQuery = $this->connection->getQueryBuilder();
 		//From 10 to 1509 are the entries missing. So lets validate that.
 		//Lets take some snippets
-		$missingEntries[] = \range(10, 20);
-		$missingEntries[] = \range(190, 200);
-		$missingEntries[] = \range(400, 410);
-		$missingEntries[] = \range(1000, 1010);
-		$missingEntries[] = \range(1300, 1310);
-		$missingEntries[] = \range(1499, 1509);
+		$missingEntries[] = range(10, 20);
+		$missingEntries[] = range(190, 200);
+		$missingEntries[] = range(400, 410);
+		$missingEntries[] = range(1000, 1010);
+		$missingEntries[] = range(1300, 1310);
+		$missingEntries[] = range(1499, 1509);
 		foreach ($missingEntries as $missingEntry) {
 			foreach ($missingEntry as $adminIndex) {
 				$row = $checkQuery->select('parent')
@@ -390,8 +390,8 @@ class RepairOrphanedSubshareTest extends TestCase {
 		}
 
 		//Lets check range of 1800 to 1810 and 1 to 9
-		$checkRandomAvailableEntries[] = \range(1800, 1810);
-		$checkRandomAvailableEntries[] = \range(1, 9);
+		$checkRandomAvailableEntries[] = range(1800, 1810);
+		$checkRandomAvailableEntries[] = range(1, 9);
 		foreach ($checkRandomAvailableEntries as $checkRandomAvailableEntry) {
 			foreach ($checkRandomAvailableEntry as $adminIndex) {
 				$row = $checkQuery->select('parent')

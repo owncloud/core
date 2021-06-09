@@ -66,13 +66,14 @@ class Setup {
 	 * @param ILogger $logger
 	 * @param ISecureRandom $random
 	 */
-	public function __construct(IConfig $config,
-						 IniGetWrapper $iniWrapper,
-						 IL10N $l10n,
-						 \OC_Defaults $defaults,
-						 ILogger $logger,
-						 ISecureRandom $random
-		) {
+	public function __construct(
+		IConfig $config,
+		IniGetWrapper $iniWrapper,
+		IL10N $l10n,
+		\OC_Defaults $defaults,
+		ILogger $logger,
+		ISecureRandom $random
+	) {
 		$this->config = $config;
 		$this->iniWrapper = $iniWrapper;
 		$this->l10n = $l10n;
@@ -95,7 +96,7 @@ class Setup {
 	 * @return bool
 	 */
 	protected function IsClassExisting($name) {
-		return \class_exists($name);
+		return class_exists($name);
 	}
 
 	/**
@@ -147,10 +148,12 @@ class Setup {
 			]
 		];
 		if ($allowAllDatabases) {
-			$configuredDatabases = \array_keys($availableDatabases);
+			$configuredDatabases = array_keys($availableDatabases);
 		} else {
-			$configuredDatabases = $this->config->getSystemValue('supportedDatabases',
-				['sqlite', 'mysql', 'pgsql']);
+			$configuredDatabases = $this->config->getSystemValue(
+				'supportedDatabases',
+				['sqlite', 'mysql', 'pgsql']
+			);
 		}
 		if (!\is_array($configuredDatabases)) {
 			throw new Exception('Supported databases are not properly configured.');
@@ -197,10 +200,10 @@ class Setup {
 		// Create data directory to test whether the .htaccess works
 		// Notice that this is not necessarily the same data directory as the one
 		// that will effectively be used.
-		if (!\file_exists($dataDir)) {
-			@\mkdir($dataDir);
+		if (!file_exists($dataDir)) {
+			@mkdir($dataDir);
 		}
-		if (\is_dir($dataDir) && \is_writable($dataDir)) {
+		if (is_dir($dataDir) && is_writable($dataDir)) {
 			// Protect data directory here, so we can test if the protection is working
 			\OC\Setup::protectDataDirectory();
 		}
@@ -268,36 +271,41 @@ class Setup {
 			$dbType = 'sqlite';
 		}
 
-		$username = \htmlspecialchars_decode($options['adminlogin']);
-		$password = \htmlspecialchars_decode($options['adminpass']);
-		$dataDir = \htmlspecialchars_decode($options['directory']);
+		$username = htmlspecialchars_decode($options['adminlogin']);
+		$password = htmlspecialchars_decode($options['adminpass']);
+		$dataDir = htmlspecialchars_decode($options['directory']);
 
 		$class = self::$dbSetupClasses[$dbType];
 		/** @var \OC\Setup\AbstractDatabase $dbSetup */
-		$dbSetup = new $class($l, 'db_structure.xml', $this->config,
-			$this->logger, $this->random);
-		$error = \array_merge($error, $dbSetup->validate($options));
+		$dbSetup = new $class(
+			$l,
+			'db_structure.xml',
+			$this->config,
+			$this->logger,
+			$this->random
+		);
+		$error = array_merge($error, $dbSetup->validate($options));
 
 		// validate the data directory
 		if (
-			(!\is_dir($dataDir) and !\mkdir($dataDir)) or
-			!\is_writable($dataDir)
+			(!is_dir($dataDir) and !mkdir($dataDir)) or
+			!is_writable($dataDir)
 		) {
 			$error[] = $l->t("Can't create or write into the data directory %s", [$dataDir]);
 		}
 
 		// create the apps-external directory only during installation
 		$appsExternalDir = \OC::$SERVERROOT.'/apps-external';
-		if (!\file_exists($appsExternalDir)) {
-			@\mkdir($appsExternalDir);
+		if (!file_exists($appsExternalDir)) {
+			@mkdir($appsExternalDir);
 		}
 
 		// validate the apps-external directory
 		if (
-			(!\is_dir($appsExternalDir) and !\mkdir($appsExternalDir)) or
-			!\is_writable($appsExternalDir)
+			(!is_dir($appsExternalDir) and !mkdir($appsExternalDir)) or
+			!is_writable($appsExternalDir)
 		) {
-			$htmlAppsExternalDir = \htmlspecialchars_decode($appsExternalDir);
+			$htmlAppsExternalDir = htmlspecialchars_decode($appsExternalDir);
 			$error[] = $l->t("Can't create or write into the apps-external directory %s", $htmlAppsExternalDir);
 		}
 
@@ -333,7 +341,7 @@ class Setup {
 			'datadirectory'		=> $dataDir,
 			'overwrite.cli.url'	=> $request->getServerProtocol() . '://' . $request->getInsecureServerHost() . \OC::$WEBROOT,
 			'dbtype'			=> $dbType,
-			'version'			=> \implode('.', \OCP\Util::getVersion()),
+			'version'			=> implode('.', \OCP\Util::getVersion()),
 		]);
 
 		try {
@@ -369,8 +377,8 @@ class Setup {
 
 		if (\count($error) == 0) {
 			$config = \OC::$server->getConfig();
-			$config->setAppValue('core', 'installedat', \microtime(true));
-			$config->setAppValue('core', 'lastupdatedat', \microtime(true));
+			$config->setAppValue('core', 'installedat', microtime(true));
+			$config->setAppValue('core', 'lastupdatedat', microtime(true));
 
 			\OC::$server->getGroupManager()->addBackend(new \OC\Group\Database());
 
@@ -382,11 +390,11 @@ class Setup {
 
 			// create empty file in data dir, so we can later find
 			// out that this is indeed an ownCloud data directory
-			\file_put_contents($config->getSystemValue('datadirectory', \OC::$SERVERROOT.'/data').'/.ocdata', '');
+			file_put_contents($config->getSystemValue('datadirectory', \OC::$SERVERROOT.'/data').'/.ocdata', '');
 
 			// check if we can write .htaccess
-			if (\is_file(self::pathToHtaccess())
-				&& \is_writable(self::pathToHtaccess())
+			if (is_file(self::pathToHtaccess())
+				&& is_writable(self::pathToHtaccess())
 			) {
 				// Update .htaccess files
 				Setup::updateHtaccess();
@@ -394,8 +402,8 @@ class Setup {
 			Setup::protectDataDirectory();
 
 			//try to write logtimezone
-			if (\date_default_timezone_get()) {
-				$config->setSystemValue('logtimezone', \date_default_timezone_get());
+			if (date_default_timezone_get()) {
+				$config->setSystemValue('logtimezone', date_default_timezone_get());
 			}
 
 			// add the apps-external directory to config using apps_path
@@ -424,7 +432,7 @@ class Setup {
 			self::installBackgroundJobs();
 
 			// save the origin version that we installed at
-			$config->setAppValue('core', 'first_install_version', \implode('.', \OCP\Util::getVersion()));
+			$config->setAppValue('core', 'first_install_version', implode('.', \OCP\Util::getVersion()));
 
 			//and we are done
 			$config->setSystemValue('installed', true);
@@ -459,21 +467,21 @@ class Setup {
 			if ($webRoot === '') {
 				return;
 			}
-			$webRoot = \parse_url($webRoot, PHP_URL_PATH);
-			$webRoot = \rtrim($webRoot, '/');
+			$webRoot = parse_url($webRoot, PHP_URL_PATH);
+			$webRoot = rtrim($webRoot, '/');
 		} else {
 			$webRoot = !empty(\OC::$WEBROOT) ? \OC::$WEBROOT : '/';
 		}
 
 		$htaccessPath = self::pathToHtaccess();
-		if (\is_dir($htaccessPath)) {
+		if (is_dir($htaccessPath)) {
 			throw new \Exception(
 				$il10n->t("Can't update %s - it is a directory", [$htaccessPath])
 			);
 		}
-		$htaccessContent = \file_get_contents($htaccessPath);
+		$htaccessContent = file_get_contents($htaccessPath);
 		$content = "#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####\n";
-		$htaccessContent = \explode($content, $htaccessContent, 2)[0];
+		$htaccessContent = explode($content, $htaccessContent, 2)[0];
 
 		//custom 403 error page
 		$content.= "\nErrorDocument 403 ".$webRoot."/core/templates/403.php";
@@ -515,8 +523,9 @@ class Setup {
 		}
 
 		if ($content !== '') {
-			$fileWriteResult = @\file_put_contents(
-				$htaccessPath, $htaccessContent . $content . "\n"
+			$fileWriteResult = @file_put_contents(
+				$htaccessPath,
+				$htaccessContent . $content . "\n"
 			);
 			if ($fileWriteResult === false) {
 				throw new \Exception(
@@ -528,7 +537,7 @@ class Setup {
 
 	public static function protectDataDirectory() {
 		//Require all denied
-		$now =  \date('Y-m-d H:i:s');
+		$now =  date('Y-m-d H:i:s');
 		$content = "# Generated by ownCloud on $now\n";
 		$content.= "# line below if for Apache 2.4\n";
 		$content.= "<ifModule mod_authz_core.c>\n";
@@ -545,7 +554,7 @@ class Setup {
 		$content.= "</ifModule>\n";
 
 		$baseDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data');
-		\file_put_contents($baseDir . '/.htaccess', $content);
-		\file_put_contents($baseDir . '/index.html', '');
+		file_put_contents($baseDir . '/.htaccess', $content);
+		file_put_contents($baseDir . '/index.html', '');
 	}
 }

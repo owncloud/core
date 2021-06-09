@@ -94,20 +94,22 @@ class LostController extends Controller {
 	 * @param ILogger $logger
 	 * @param Session $userSession
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IURLGenerator $urlGenerator,
-								IUserManager $userManager,
-								OC_Defaults $defaults,
-								IL10N $l10n,
-								IConfig $config,
-								ISecureRandom $secureRandom,
-								$from,
-								$isDataEncrypted,
-								IMailer $mailer,
-								ITimeFactory $timeFactory,
-								ILogger $logger,
-								Session $userSession) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IURLGenerator $urlGenerator,
+		IUserManager $userManager,
+		OC_Defaults $defaults,
+		IL10N $l10n,
+		IConfig $config,
+		ISecureRandom $secureRandom,
+		$from,
+		$isDataEncrypted,
+		IMailer $mailer,
+		ITimeFactory $timeFactory,
+		ILogger $logger,
+		Session $userSession
+	) {
 		parent::__construct($appName, $request);
 		$this->urlGenerator = $urlGenerator;
 		$this->userManager = $userManager;
@@ -138,7 +140,9 @@ class LostController extends Controller {
 			$this->checkPasswordResetToken($token, $userId);
 		} catch (\Exception $e) {
 			return new TemplateResponse(
-				'core', 'error', [
+				'core',
+				'error',
+				[
 					"errors" => [["error" => $e->getMessage()]]
 				],
 				'guest'
@@ -163,7 +167,7 @@ class LostController extends Controller {
 	private function checkPasswordResetToken($token, $userId) {
 		$user = $this->userManager->get($userId);
 
-		$splittedToken = \explode(':', $this->config->getUserValue($userId, 'owncloud', 'lostpassword', null));
+		$splittedToken = explode(':', $this->config->getUserValue($userId, 'owncloud', 'lostpassword', null));
 		if (\count($splittedToken) !== 2) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
 			throw new \Exception($this->l10n->t('Could not reset password because the token is invalid'));
@@ -175,7 +179,7 @@ class LostController extends Controller {
 			throw new \Exception($this->l10n->t('Could not reset password because the token expired'));
 		}
 
-		if (!\hash_equals($splittedToken[1], $token)) {
+		if (!hash_equals($splittedToken[1], $token)) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
 			throw new \Exception($this->l10n->t('Could not reset password because the token does not match'));
 		}
@@ -187,7 +191,7 @@ class LostController extends Controller {
 	 * @return array
 	 */
 	private function error($message, array $additional= []) {
-		return \array_merge(['status' => 'error', 'msg' => \htmlspecialchars($message)], $additional);
+		return array_merge(['status' => 'error', 'msg' => htmlspecialchars($message)], $additional);
 	}
 
 	/**
@@ -305,10 +309,12 @@ class LostController extends Controller {
 	 * @return array
 	 */
 	public function generateTokenAndLink($userId) {
-		$token = $this->secureRandom->generate(21,
+		$token = $this->secureRandom->generate(
+			21,
 			ISecureRandom::CHAR_DIGITS .
 			ISecureRandom::CHAR_LOWER .
-			ISecureRandom::CHAR_UPPER);
+			ISecureRandom::CHAR_UPPER
+		);
 
 		$link = $this->urlGenerator->linkToRouteAbsolute('core.lost.resetform', ['userId' => $userId, 'token' => $token]);
 		return [$link, $token];
@@ -351,7 +357,7 @@ class LostController extends Controller {
 
 		$getToken = $this->config->getUserValue($user, 'owncloud', 'lostpassword');
 		if ($getToken !== '') {
-			$splittedToken = \explode(':', $getToken);
+			$splittedToken = explode(':', $getToken);
 			if ((\count($splittedToken)) === 2 && $splittedToken[0] > ($this->timeFactory->getTime() - 60 * 5)) {
 				$this->logger->alert('The email is not sent because a password reset email was sent recently.');
 				return false;

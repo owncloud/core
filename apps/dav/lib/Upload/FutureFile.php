@@ -49,8 +49,8 @@ class FutureFile implements \Sabre\DAV\IFile {
 
 		// Check if pathinfo starts with dav uploads target and basename is future file basename
 		if (isset($_SERVER['PATH_INFO'])
-			&& \pathinfo($_SERVER['PATH_INFO'], PATHINFO_BASENAME) === FutureFile::getFutureFileName()
-			&& (\strpos($_SERVER['PATH_INFO'], $davUploadsTarget) === 0)) {
+			&& pathinfo($_SERVER['PATH_INFO'], PATHINFO_BASENAME) === FutureFile::getFutureFileName()
+			&& (strpos($_SERVER['PATH_INFO'], $davUploadsTarget) === 0)) {
 			return true;
 		}
 
@@ -100,12 +100,12 @@ class FutureFile implements \Sabre\DAV\IFile {
 	 */
 	public function getSize() {
 		$children = $this->root->getChildren();
-		$sizes = \array_map(function ($node) {
+		$sizes = array_map(function ($node) {
 			/** @var IFile $node */
 			return $node->getSize();
 		}, $children);
 
-		return \array_sum($sizes);
+		return array_sum($sizes);
 	}
 
 	/**

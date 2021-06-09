@@ -37,7 +37,8 @@ class LoggerTest extends TestCase {
 
 		self::$logs = [];
 		$this->config = $this->getMockBuilder(
-			'\OC\SystemConfig')
+			'\OC\SystemConfig'
+		)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->eventDispatcher = new EventDispatcher();
@@ -120,7 +121,7 @@ class LoggerTest extends TestCase {
 	}
 
 	public static function writeExtra($app, $message, $level, $logConditionFile, $extraFields) {
-		$encodedFields = \json_encode($extraFields);
+		$encodedFields = json_encode($extraFields);
 		self::$logs[]= "$level $message fields=$encodedFields";
 	}
 
@@ -236,7 +237,11 @@ class LoggerTest extends TestCase {
 		$userSearch = $this->createMock(UserSearch::class);
 
 		$manager = new Manager(
-			$config, $logger, $accountMapper, $syncService, $userSearch
+			$config,
+			$logger,
+			$accountMapper,
+			$syncService,
+			$userSearch
 		);
 		$manager->listen('\OC\User', 'preLogin', function ($uid, $password) {
 			$e = new \Exception('test');
@@ -267,7 +272,8 @@ class LoggerTest extends TestCase {
 
 		// with fields calls "writeExtra"
 		$this->logger->info(
-			'extra fields test', [
+			'extra fields test',
+			[
 				'extraFields' => $extraFields
 			]
 		);
@@ -304,7 +310,8 @@ class LoggerTest extends TestCase {
 		);
 
 		$this->logger->debug(
-			'some {test} message', [
+			'some {test} message',
+			[
 				'app' => 'testapp',
 				'test' => 'replaced',
 				'extraFields' => ['extra' => 'one'],

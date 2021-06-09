@@ -59,8 +59,15 @@ class MoveCopyHelper {
 		$sourceIpAddress = null
 	) {
 		return self::copyOrMove(
-			$baseUrl, "copy", $user, $password, $fromFileName, $toFileName,
-			$headers, $davPathVersionToUse, $sourceIpAddress
+			$baseUrl,
+			"copy",
+			$user,
+			$password,
+			$fromFileName,
+			$toFileName,
+			$headers,
+			$davPathVersionToUse,
+			$sourceIpAddress
 		);
 	}
 
@@ -92,8 +99,15 @@ class MoveCopyHelper {
 		$sourceIpAddress = null
 	) {
 		return self::copyOrMove(
-			$baseUrl, "move", $user, $password, $fromFileName, $toFileName,
-			$headers, $davPathVersionToUse, $sourceIpAddress
+			$baseUrl,
+			"move",
+			$user,
+			$password,
+			$fromFileName,
+			$toFileName,
+			$headers,
+			$davPathVersionToUse,
+			$sourceIpAddress
 		);
 	}
 
@@ -126,7 +140,7 @@ class MoveCopyHelper {
 		$davPathVersionToUse = 1,
 		$sourceIpAddress = null
 	) {
-		$method = \strtoupper($method);
+		$method = strtoupper($method);
 		if ($method !== "COPY" && $method !== "MOVE") {
 			throw new \InvalidArgumentException(
 				'$method has to be "copy" or "move"'

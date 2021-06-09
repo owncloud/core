@@ -80,7 +80,7 @@ class SMB extends StorageAdapter {
 		if (!empty($loggedParams['password'])) {
 			$loggedParams['password'] = '***removed***';
 		}
-		$this->log('enter: '.__FUNCTION__.'('.\json_encode($loggedParams).')');
+		$this->log('enter: '.__FUNCTION__.'('.json_encode($loggedParams).')');
 
 		if (isset($params['host'], $params['user'], $params['password'], $params['share'])) {
 			$domain = $params['domain'] ?? '';
@@ -88,7 +88,7 @@ class SMB extends StorageAdapter {
 			$auth = new BasicAuth($params['user'], $domain, $params['password']);
 			$serverFactory = new ServerFactory();
 			$this->server = $serverFactory->createServer($params['host'], $auth);
-			$this->share = $this->server->getShare(\trim($params['share'], '/'));
+			$this->share = $this->server->getShare(trim($params['share'], '/'));
 
 			$shareClass = \get_class($this->share);
 			$this->log("using $shareClass for the connection");
@@ -97,11 +97,11 @@ class SMB extends StorageAdapter {
 			if (!$this->root || $this->root[0] != '/') {
 				$this->root = '/' . $this->root;
 			}
-			if (\substr($this->root, -1, 1) !== '/') {
+			if (substr($this->root, -1, 1) !== '/') {
 				$this->root .= '/';
 			}
 		} else {
-			$ex = new \Exception('Invalid configuration: '.\json_encode($loggedParams));
+			$ex = new \Exception('Invalid configuration: '.json_encode($loggedParams));
 			$this->leave(__FUNCTION__, $ex);
 			throw $ex;
 		}
@@ -147,7 +147,7 @@ class SMB extends StorageAdapter {
 						$this->log("stat for '$path' failed, trying to read parent dir");
 						$infos = $this->share->dir(\dirname($path));
 						foreach ($infos as $fileInfo) {
-							if ($fileInfo->getName() === \basename($path)) {
+							if ($fileInfo->getName() === basename($path)) {
 								$this->statCache[$path] = $fileInfo;
 								break;
 							}
@@ -183,7 +183,10 @@ class SMB extends StorageAdapter {
 				}
 			} catch (ConnectException $e) {
 				$ex = new StorageNotAvailableException(
-					$e->getMessage(), $e->getCode(), $e);
+					$e->getMessage(),
+					$e->getCode(),
+					$e
+				);
 				$this->leave(__FUNCTION__, $ex);
 				throw $ex;
 			} catch (ForbiddenException $e) {
@@ -222,7 +225,7 @@ class SMB extends StorageAdapter {
 			$path = $this->buildPath($path);
 			$result = [];
 			$children = $this->share->dir($path);
-			$trimmedPath = \rtrim($path, '/');
+			$trimmedPath = rtrim($path, '/');
 			foreach ($children as $fileInfo) {
 				$fullPath = "{$trimmedPath}/{$fileInfo->getName()}";
 				if (isset($this->statCache[$fullPath])) {
@@ -248,7 +251,10 @@ class SMB extends StorageAdapter {
 			}
 		} catch (ConnectException $e) {
 			$ex = new StorageNotAvailableException(
-				$e->getMessage(), $e->getCode(), $e);
+				$e->getMessage(),
+				$e->getCode(),
+				$e
+			);
 			$this->leave(__FUNCTION__, $ex);
 			throw $ex;
 		}
@@ -481,8 +487,8 @@ class SMB extends StorageAdapter {
 				case 'c':
 				case 'c+':
 					//emulate these
-					if (\strrpos($path, '.') !== false) {
-						$ext = \substr($path, \strrpos($path, '.'));
+					if (strrpos($path, '.') !== false) {
+						$ext = substr($path, strrpos($path, '.'));
 					} else {
 						$ext = '';
 					}
@@ -497,12 +503,12 @@ class SMB extends StorageAdapter {
 						}
 						$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($ext);
 					}
-					$source = \fopen($tmpFile, $mode);
+					$source = fopen($tmpFile, $mode);
 					$share = $this->share;
 					$result = CallbackWrapper::wrap($source, null, null, function () use ($tmpFile, $fullPath, $share) {
 						unset($this->statCache[$fullPath]);
 						$share->put($tmpFile, $fullPath);
-						\unlink($tmpFile);
+						unlink($tmpFile);
 					});
 			}
 		} catch (ConnectException $e) {
@@ -553,7 +559,7 @@ class SMB extends StorageAdapter {
 		try {
 			if (!$this->file_exists($path)) {
 				$fh = $this->share->write($this->buildPath($path));
-				\fclose($fh);
+				fclose($fh);
 				$result = true;
 			}
 		} catch (ConnectException $e) {
@@ -571,7 +577,7 @@ class SMB extends StorageAdapter {
 		$result = false;
 		try {
 			$files = $this->getFolderContents($path);
-			$names = \array_map(function ($info) {
+			$names = array_map(function ($info) {
 				/** @var \Icewind\SMB\IFileInfo $info */
 				return $info->getName();
 			}, $files);
@@ -768,7 +774,7 @@ class SMB extends StorageAdapter {
 				.' message: '.$result->getMessage()
 				.' trace: '.$result->getTraceAsString(), Util::DEBUG);
 		} else {
-			Util::writeLog('smb', "leave: $function, return ".\json_encode($result, true), Util::DEBUG);
+			Util::writeLog('smb', "leave: $function, return ".json_encode($result, true), Util::DEBUG);
 		}
 		return $result;
 	}

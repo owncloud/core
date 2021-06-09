@@ -132,7 +132,7 @@ class Node implements \OCP\Files\Node {
 			$this->sendHooks(['postTouch']);
 			if ($this->fileInfo) {
 				if ($mtime === null) {
-					$mtime = \time();
+					$mtime = time();
 				}
 				$this->fileInfo['mtime'] = $mtime;
 			}
@@ -273,7 +273,7 @@ class Node implements \OCP\Files\Node {
 	 * @return string
 	 */
 	public function getName() {
-		return \basename($this->path);
+		return basename($this->path);
 	}
 
 	/**
@@ -285,17 +285,17 @@ class Node implements \OCP\Files\Node {
 			return '/';
 		}
 		//no windows style slashes
-		$path = \str_replace('\\', '/', $path);
+		$path = str_replace('\\', '/', $path);
 		//add leading slash
 		if ($path[0] !== '/') {
 			$path = '/' . $path;
 		}
 		//remove duplicate slashes
-		while (\strpos($path, '//') !== false) {
-			$path = \str_replace('//', '/', $path);
+		while (strpos($path, '//') !== false) {
+			$path = str_replace('//', '/', $path);
 		}
 		//remove trailing slash
-		$path = \rtrim($path, '/');
+		$path = rtrim($path, '/');
 
 		return $path;
 	}
@@ -310,7 +310,7 @@ class Node implements \OCP\Files\Node {
 		if (!$path || $path[0] !== '/') {
 			$path = '/' . $path;
 		}
-		if (\strstr($path, '/../') || \strrchr($path, '/') === '/..') {
+		if (strstr($path, '/../') || strrchr($path, '/') === '/..') {
 			return false;
 		}
 		return true;

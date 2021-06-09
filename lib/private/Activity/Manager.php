@@ -61,9 +61,11 @@ class Manager implements IManager {
 	 * @param IUserSession $session
 	 * @param IConfig $config
 	 */
-	public function __construct(IRequest $request,
-								IUserSession $session = null,
-								IConfig $config) {
+	public function __construct(
+		IRequest $request,
+		IUserSession $session = null,
+		IConfig $config
+	) {
 		$this->request = $request;
 		$this->session = $session;
 		$this->config = $config;
@@ -186,7 +188,7 @@ class Manager implements IManager {
 		}
 
 		if (!$event->getTimestamp()) {
-			$event->setTimestamp(\time());
+			$event->setTimestamp(time());
 		}
 
 		foreach ($this->getConsumers() as $c) {
@@ -229,7 +231,7 @@ class Manager implements IManager {
 	 * @param \Closure $callable
 	 */
 	public function registerConsumer(\Closure $callable) {
-		\array_push($this->consumersClosures, $callable);
+		array_push($this->consumersClosures, $callable);
 		$this->consumers = [];
 	}
 
@@ -243,7 +245,7 @@ class Manager implements IManager {
 	 * @return void
 	 */
 	public function registerExtension(\Closure $callable) {
-		\array_push($this->extensionsClosures, $callable);
+		array_push($this->extensionsClosures, $callable);
 		$this->extensions = [];
 	}
 
@@ -261,20 +263,20 @@ class Manager implements IManager {
 		foreach ($this->getExtensions() as $c) {
 			$result = $c->getNotificationTypes($languageCode);
 			if (\is_array($result)) {
-				if (\class_exists('\OCA\Files\Activity', false) && $c instanceof \OCA\Files\Activity) {
+				if (class_exists('\OCA\Files\Activity', false) && $c instanceof \OCA\Files\Activity) {
 					$filesNotificationTypes = $result;
 					continue;
 				}
-				if (\class_exists('\OCA\Files_Sharing\Activity', false) && $c instanceof \OCA\Files_Sharing\Activity) {
+				if (class_exists('\OCA\Files_Sharing\Activity', false) && $c instanceof \OCA\Files_Sharing\Activity) {
 					$sharingNotificationTypes = $result;
 					continue;
 				}
 
-				$notificationTypes = \array_merge($notificationTypes, $result);
+				$notificationTypes = array_merge($notificationTypes, $result);
 			}
 		}
 
-		return \array_merge($filesNotificationTypes, $sharingNotificationTypes, $notificationTypes);
+		return array_merge($filesNotificationTypes, $sharingNotificationTypes, $notificationTypes);
 	}
 
 	/**
@@ -286,7 +288,7 @@ class Manager implements IManager {
 		foreach ($this->getExtensions() as $c) {
 			$types = $c->getDefaultTypes($method);
 			if (\is_array($types)) {
-				$defaultTypes = \array_merge($types, $defaultTypes);
+				$defaultTypes = array_merge($types, $defaultTypes);
 			}
 		}
 		return $defaultTypes;
@@ -403,8 +405,8 @@ class Manager implements IManager {
 		foreach ($this->getExtensions() as $c) {
 			$additionalEntries = $c->getNavigation();
 			if (\is_array($additionalEntries)) {
-				$entries['apps'] = \array_merge($entries['apps'], $additionalEntries['apps']);
-				$entries['top'] = \array_merge($entries['top'], $additionalEntries['top']);
+				$entries['apps'] = array_merge($entries['apps'], $additionalEntries['apps']);
+				$entries['top'] = array_merge($entries['top'], $additionalEntries['top']);
 			}
 		}
 
@@ -468,7 +470,7 @@ class Manager implements IManager {
 				list($condition, $parameter) = $result;
 				if ($condition && \is_array($parameter)) {
 					$conditions[] = $condition;
-					$parameters = \array_merge($parameters, $parameter);
+					$parameters = array_merge($parameters, $parameter);
 				}
 			}
 		}
@@ -477,7 +479,7 @@ class Manager implements IManager {
 			return [null, null];
 		}
 
-		return [' and ((' . \implode(') or (', $conditions) . '))', $parameters];
+		return [' and ((' . implode(') or (', $conditions) . '))', $parameters];
 	}
 
 	/**
@@ -525,13 +527,13 @@ class Manager implements IManager {
 
 		$users = $this->config->getUsersForUserValue('activity', 'rsstoken', $token);
 
-		if (\sizeof($users) !== 1) {
+		if (sizeof($users) !== 1) {
 			// No unique user found
 			throw new \UnexpectedValueException('The token is invalid');
 		}
 
 		// Token found login as that user
-		return \array_shift($users);
+		return array_shift($users);
 	}
 
 	/**
@@ -552,6 +554,6 @@ class Manager implements IManager {
 	 * {@inheritdoc}
 	 */
 	public function restoreAgentAuthor() {
-		return \array_pop($this->agentStack);
+		return array_pop($this->agentStack);
 	}
 }

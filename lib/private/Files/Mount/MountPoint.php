@@ -101,8 +101,8 @@ class MountPoint implements IMountPoint {
 			$this->storage = $this->loader->wrap($this, $storage);
 		} else {
 			// Update old classes to new namespace
-			if (\strpos($storage, 'OC_Filestorage_') !== false) {
-				$storage = '\OC\Files\Storage\\' . \substr($storage, 15);
+			if (strpos($storage, 'OC_Filestorage_') !== false) {
+				$storage = '\OC\Files\Storage\\' . substr($storage, 15);
 			}
 			$this->class = $storage;
 			$this->arguments = $arguments;
@@ -137,7 +137,7 @@ class MountPoint implements IMountPoint {
 			return null;
 		}
 
-		if (\class_exists($this->class)) {
+		if (class_exists($this->class)) {
 			try {
 				return $this->loader->getInstance($this, $this->class, $this->arguments);
 			} catch (\Exception $exception) {
@@ -182,7 +182,7 @@ class MountPoint implements IMountPoint {
 			}
 			$this->storageId = $this->storage->getId();
 			if (\strlen($this->storageId) > 64) {
-				$this->storageId = \md5($this->storageId);
+				$this->storageId = md5($this->storageId);
 			}
 		}
 		return $this->storageId;
@@ -197,7 +197,7 @@ class MountPoint implements IMountPoint {
 		if ($this->mountPoint === $path or $this->mountPoint . '/' === $path) {
 			$internalPath = '';
 		} else {
-			$internalPath = \substr($path, \strlen($this->mountPoint));
+			$internalPath = substr($path, \strlen($this->mountPoint));
 		}
 		// substr returns false instead of an empty string, we always want a string
 		return (string)$internalPath;

@@ -109,7 +109,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			return false;
 		}
 
-		$mTime = \time();
+		$mTime = time();
 		$data = [
 			'mimetype' => 'httpd/unix-directory',
 			'size' => 0,
@@ -139,7 +139,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			}
 			if (empty($this->movingBetweenBuckets)) {
 				// finally create the new dir
-				$mTime = \time(); // update mtime
+				$mTime = time(); // update mtime
 				$data['mtime'] = $mTime;
 				$data['storage_mtime'] = $mTime;
 				$data['etag'] = $this->getETag($path);
@@ -154,9 +154,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	 * @return string
 	 */
 	private function normalizePath($path) {
-		$path = \trim($path, '/');
+		$path = trim($path, '/');
 		//FIXME why do we sometimes get a path like 'files//username'?
-		$path = \str_replace('//', '/', $path);
+		$path = str_replace('//', '/', $path);
 
 		// dirname('/folder') returns '.' but internally (in the cache) we store the root as ''
 		if (!$path || $path === '.') {
@@ -265,7 +265,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	 * @return null|string the unified resource name used to identify the object
 	 */
 	protected function getURN($fileId) {
-		if (\is_numeric($fileId)) {
+		if (is_numeric($fileId)) {
 			return $this->objectPrefix . $fileId;
 		}
 		return null;
@@ -331,8 +331,8 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			case 'x+':
 			case 'c':
 			case 'c+':
-				if (\strrpos($path, '.') !== false) {
-					$ext = \substr($path, \strrpos($path, '.'));
+				if (strrpos($path, '.') !== false) {
+					$ext = substr($path, strrpos($path, '.'));
 				} else {
 					$ext = '';
 				}
@@ -340,7 +340,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				\OC\Files\Stream\Close::registerCallback($tmpFile, [$this, 'writeBack']);
 				if ($this->file_exists($path)) {
 					$source = $this->fopen($path, 'r');
-					\file_put_contents($tmpFile, $source);
+					file_put_contents($tmpFile, $source);
 				}
 				self::$tmpFiles[$tmpFile] = $path;
 				if (isset($this->movingBetweenBuckets[$this->getBucket()])) {
@@ -350,7 +350,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 					$this->movingBetweenBuckets[$this->getBucket()]['paths'][$path] = true;
 				}
 
-				return \fopen('close://' . $tmpFile, $mode);
+				return fopen('close://' . $tmpFile, $mode);
 		}
 		return false;
 	}
@@ -422,7 +422,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 
 	public function touch($path, $mtime = null) {
 		if ($mtime === null) {
-			$mtime = \time();
+			$mtime = time();
 		}
 
 		$path = $this->normalizePath($path);
@@ -453,7 +453,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				$fileId = $this->getCache()->put($path, $stat);
 				try {
 					//read an empty file from memory
-					$this->objectStore->writeObject($this->getURN($fileId), \fopen('php://memory', 'r'));
+					$this->objectStore->writeObject($this->getURN($fileId), fopen('php://memory', 'r'));
 				} catch (\Exception $ex) {
 					$this->getCache()->remove($path);
 					\OCP\Util::writeLog('objectstore', 'Could not create object: ' . $ex->getMessage(), \OCP\Util::ERROR);
@@ -478,8 +478,8 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			];
 		}
 		// update stat with new data
-		$mTime = \time();
-		$stat['size'] = \filesize($tmpFile);
+		$mTime = time();
+		$stat['size'] = filesize($tmpFile);
 		$stat['mtime'] = $mTime;
 		$stat['storage_mtime'] = $mTime;
 		$stat['mimetype'] = \OC::$server->getMimeTypeDetector()->detect($tmpFile);
@@ -491,8 +491,8 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			// information to get the fileid of the old entry from the filecache.
 			$targetBase = $this->movingBetweenBuckets[$this->getBucket()]['targetBase'];
 			$sourceBase = $this->movingBetweenBuckets[$this->getBucket()]['sourceBase'];
-			if (\substr($path, 0, \strlen($targetBase)) === $targetBase) {
-				$movingPath = \substr($path, \strlen($targetBase));
+			if (substr($path, 0, \strlen($targetBase)) === $targetBase) {
+				$movingPath = substr($path, \strlen($targetBase));
 				$originalSource = $sourceBase . $movingPath;
 				$originalStorage = $this->movingBetweenBuckets[$this->getBucket()]['sourceStorage'];
 				$fileId = $originalStorage->stat($originalSource)['fileid'];
@@ -506,7 +506,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		}
 		try {
 			//upload to object storage
-			$this->objectStore->writeObject($this->getURN($fileId), \fopen($tmpFile, 'r'));
+			$this->objectStore->writeObject($this->getURN($fileId), fopen($tmpFile, 'r'));
 		} catch (\Exception $ex) {
 			$this->getCache()->remove($path);
 			\OCP\Util::writeLog('objectstore', 'Could not create object: ' . $ex->getMessage(), \OCP\Util::ERROR);
@@ -548,7 +548,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			}
 			$versions = $this->objectStore->getVersions($this->getURN($stat['fileid']));
 			list($uid, $path) = $this->convertInternalPathToGlobalPath($internalPath);
-			return \array_map(function (array $version) use ($uid, $path) {
+			return array_map(function (array $version) use ($uid, $path) {
 				$version['path'] = $path;
 				$version['owner'] = $uid;
 				return $version;

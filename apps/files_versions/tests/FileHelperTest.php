@@ -139,7 +139,7 @@ class FileHelperTest extends \Test\TestCase {
 				'1508687274#/docs/file1.txt',
 				'1508687214#/file1.txt',
 			],
-			\array_keys($versionsByTime)
+			array_keys($versionsByTime)
 		);
 
 		$this->assertEquals(
@@ -147,7 +147,7 @@ class FileHelperTest extends \Test\TestCase {
 				'/docs/file1.txt',
 				'/file1.txt',
 			],
-			\array_keys($versionsByFile)
+			array_keys($versionsByFile)
 		);
 	}
 
@@ -161,9 +161,9 @@ class FileHelperTest extends \Test\TestCase {
 	 * @return string[] an array that matches given path or an empty array
 	 */
 	protected function descendByPath($path, $tree) {
-		$dirName = \trim($path, '/');
-		$path = \explode('/', $dirName);
-		$item = \current($path);
+		$dirName = trim($path, '/');
+		$path = explode('/', $dirName);
+		$item = current($path);
 		$depth = 1;
 		$fsItem = [];
 		while (isset($tree[$item]) && \is_array($tree[$item])) {
@@ -173,7 +173,7 @@ class FileHelperTest extends \Test\TestCase {
 			$depth++;
 			if ($tree[$item]['type'] === 'dir') {
 				$tree = $tree[$item]['children'];
-				$item = \ltrim(\next($path), '/');
+				$item = ltrim(next($path), '/');
 			} else {
 				break;
 			}

@@ -106,7 +106,7 @@ class ConverterTest extends TestCase {
 	public function testNameSplitter($expected, $fullName) {
 		$converter = new Converter();
 		$r = $converter->splitFullName($fullName);
-		$r = \implode(';', $r);
+		$r = implode(';', $r);
 		$this->assertEquals($expected, $r);
 	}
 

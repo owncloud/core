@@ -71,10 +71,12 @@ class CORSMiddleware extends Middleware {
 	 * @param IUserSession $session
 	 * @param IConfig $config
 	 */
-	public function __construct(IRequest $request,
-								ControllerMethodReflector $reflector,
-								IUserSession $session,
-								IConfig $config) {
+	public function __construct(
+		IRequest $request,
+		ControllerMethodReflector $reflector,
+		IUserSession $session,
+		IConfig $config
+	) {
 		$this->request = $request;
 		$this->reflector = $reflector;
 		$this->session = $session;
@@ -110,14 +112,14 @@ class CORSMiddleware extends Middleware {
 			$this->reflector->hasAnnotation('CORS')) {
 			$headers = \OC_Response::setCorsHeaders($userId, $requesterDomain, $this->config);
 			foreach ($headers as $key => $value) {
-				$response->addHeader($key, \implode(',', $value));
+				$response->addHeader($key, implode(',', $value));
 			}
 
 			// allow credentials headers must not be true or CSRF is possible
 			// otherwise
 			foreach ($response->getHeaders() as $header => $value) {
-				if (\strtolower($header) === 'access-control-allow-credentials' &&
-				   \strtolower(\trim($value)) === 'true') {
+				if (strtolower($header) === 'access-control-allow-credentials' &&
+				   strtolower(trim($value)) === 'true') {
 					$msg = 'Access-Control-Allow-Credentials must not be '.
 						   'set to true in order to prevent CSRF';
 					throw new SecurityException($msg);

@@ -26,10 +26,10 @@ foreach ($_["groups"] as $group) {
 	$allGroups[] = $group['name'];
 }
 $userlistParams['subadmingroups'] = $allGroups;
-$userlistParams['allGroups'] = \json_encode($allGroups);
-$items = \array_flip($userlistParams['subadmingroups']);
+$userlistParams['allGroups'] = json_encode($allGroups);
+$items = array_flip($userlistParams['subadmingroups']);
 unset($items['admin']);
-$userlistParams['subadmingroups'] = \array_flip($items);
+$userlistParams['subadmingroups'] = array_flip($items);
 
 translation('settings');
 ?>

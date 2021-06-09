@@ -114,7 +114,7 @@ class Application {
 						// load from register_command.php
 						\OC_App::registerAutoloading($app, $appPath);
 						$file = $appPath . '/appinfo/register_command.php';
-						if (\file_exists($file)) {
+						if (file_exists($file)) {
 							require $file;
 						}
 					}
@@ -170,7 +170,7 @@ class Application {
 			try {
 				$c = \OC::$server->query($command);
 			} catch (QueryException $e) {
-				if (\class_exists($command)) {
+				if (class_exists($command)) {
 					$c = new $command();
 				} else {
 					throw new \Exception("Console command '$command' is unknown and could not be loaded");

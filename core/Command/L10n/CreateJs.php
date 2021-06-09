@@ -78,7 +78,7 @@ class CreateJs extends Command {
 			if ($fileInfo->getExtension() !== 'php') {
 				continue;
 			}
-			$result[]= \substr($fileInfo->getBasename(), 0, -4);
+			$result[]= substr($fileInfo->getBasename(), 0, -4);
 		}
 
 		return $result;
@@ -92,7 +92,7 @@ class CreateJs extends Command {
 
 	private function writeJsFile($app, $path, $lang, OutputInterface $output, $translations, $plurals) {
 		$jsFile = "$path/l10n/$lang.js";
-		if (\file_exists($jsFile)) {
+		if (file_exists($jsFile)) {
 			$output->writeln("File already exists: $jsFile");
 			return;
 		}
@@ -100,25 +100,25 @@ class CreateJs extends Command {
 		$jsTrans = [];
 		foreach ($translations as $id => $val) {
 			if (\is_array($val)) {
-				$val = '[ ' . \join(',', $val) . ']';
+				$val = '[ ' . join(',', $val) . ']';
 			}
 			$jsTrans[] = "\"$id\" : \"$val\"";
 		}
-		$content .= \join(",\n    ", $jsTrans);
+		$content .= join(",\n    ", $jsTrans);
 		$content .= "\n},\n\"$plurals\");\n";
 
-		\file_put_contents($jsFile, $content);
+		file_put_contents($jsFile, $content);
 		$output->writeln("Javascript translation file generated: $jsFile");
 	}
 
 	private function writeJsonFile($path, $lang, OutputInterface $output, $translations, $plurals) {
 		$jsFile = "$path/l10n/$lang.json";
-		if (\file_exists($jsFile)) {
+		if (file_exists($jsFile)) {
 			$output->writeln("File already exists: $jsFile");
 			return;
 		}
 		$content = ['translations' => $translations, 'pluralForm' => $plurals];
-		\file_put_contents($jsFile, \json_encode($content));
+		file_put_contents($jsFile, json_encode($content));
 		$output->writeln("Json translation file generated: $jsFile");
 	}
 
@@ -126,7 +126,7 @@ class CreateJs extends Command {
 		$phpFile = "$path/l10n/$lang.php";
 		$TRANSLATIONS = [];
 		$PLURAL_FORMS = '';
-		if (!\file_exists($phpFile)) {
+		if (!file_exists($phpFile)) {
 			throw new UnexpectedValueException("PHP translation file <$phpFile> does not exist.");
 		}
 		require $phpFile;

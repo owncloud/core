@@ -47,7 +47,7 @@ if ($federatedShareProvider->isIncomingServer2serverShareEnabled() === false) {
 
 $token = $_POST['token'];
 // cut query and|or anchor part off
-$remote = \strtok($_POST['remote'], '?#');
+$remote = strtok($_POST['remote'], '?#');
 $owner = $_POST['owner'];
 $ownerDisplayName = $_POST['ownerDisplayName'];
 $name = $_POST['name'];
@@ -67,12 +67,12 @@ if (\OC\Share\Helper::isSameUserOnSameServer($owner, $remote, $currentUser, $cur
 }
 
 $externalManager = new \OCA\Files_Sharing\External\Manager(
-		\OC::$server->getDatabaseConnection(),
-		\OC\Files\Filesystem::getMountManager(),
-		\OC\Files\Filesystem::getLoader(),
-		\OC::$server->getNotificationManager(),
-		\OC::$server->getEventDispatcher(),
-		\OC::$server->getUserSession()->getUser()->getUID()
+	\OC::$server->getDatabaseConnection(),
+	\OC\Files\Filesystem::getMountManager(),
+	\OC\Files\Filesystem::getLoader(),
+	\OC::$server->getNotificationManager(),
+	\OC::$server->getEventDispatcher(),
+	\OC::$server->getUserSession()->getUser()->getUID()
 );
 
 // add federated share

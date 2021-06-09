@@ -105,7 +105,7 @@ class OC_User {
 					break;
 				default:
 					\OCP\Util::writeLog('core', 'Adding default user backend ' . $backend . '.', \OCP\Util::DEBUG);
-					$className = 'OC_USER_' . \strtoupper($backend);
+					$className = 'OC_USER_' . strtoupper($backend);
 					self::$_usedBackends[$backend] = new $className();
 					\OC::$server->getUserManager()->registerBackend(self::$_usedBackends[$backend]);
 					break;
@@ -138,8 +138,8 @@ class OC_User {
 			}
 			$class = $config['class'];
 			$arguments = $config['arguments'];
-			if (\class_exists($class)) {
-				if (\array_search($i, self::$_setupedBackends) === false) {
+			if (class_exists($class)) {
+				if (array_search($i, self::$_setupedBackends) === false) {
 					// make a reflection object
 					$reflectionObj = new ReflectionClass($class);
 

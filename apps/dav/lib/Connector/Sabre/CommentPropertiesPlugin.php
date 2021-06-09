@@ -29,9 +29,9 @@ use Sabre\DAV\PropFind;
 use Sabre\DAV\ServerPlugin;
 
 class CommentPropertiesPlugin extends ServerPlugin {
-	const PROPERTY_NAME_HREF   = '{http://owncloud.org/ns}comments-href';
-	const PROPERTY_NAME_COUNT  = '{http://owncloud.org/ns}comments-count';
-	const PROPERTY_NAME_UNREAD = '{http://owncloud.org/ns}comments-unread';
+	public const PROPERTY_NAME_HREF   = '{http://owncloud.org/ns}comments-href';
+	public const PROPERTY_NAME_COUNT  = '{http://owncloud.org/ns}comments-count';
+	public const PROPERTY_NAME_UNREAD = '{http://owncloud.org/ns}comments-unread';
 
 	/** @var  \Sabre\DAV\Server */
 	protected $server;
@@ -102,7 +102,7 @@ class CommentPropertiesPlugin extends ServerPlugin {
 				}
 				// Put node ID into an array
 				$nodeId = $childNode->getId();
-				\array_push($nodeIdsArray, $nodeId);
+				array_push($nodeIdsArray, $nodeId);
 				$this->numberOfCommentsForNodes[$nodeId] = 0;
 			}
 
@@ -113,7 +113,8 @@ class CommentPropertiesPlugin extends ServerPlugin {
 				$numberOfCommentsForNodes = $this->commentsManager->getNumberOfUnreadCommentsForNodes(
 					'files',
 					$nodeIdsArray,
-					$user);
+					$user
+				);
 
 				if ($numberOfCommentsForNodes !== null) {
 					// Map them to cached hash table
@@ -145,13 +146,13 @@ class CommentPropertiesPlugin extends ServerPlugin {
 	 */
 	public function getCommentsLink(Node $node) {
 		$href =  $this->server->getBaseUri();
-		$entryPoint = \strpos($href, '/remote.php/');
+		$entryPoint = strpos($href, '/remote.php/');
 		if ($entryPoint === false) {
 			// in case we end up somewhere else, unexpectedly.
 			return null;
 		}
-		$commentsPart = 'dav/comments/files/' . \rawurldecode($node->getId());
-		$href = \substr_replace($href, $commentsPart, $entryPoint + \strlen('/remote.php/'));
+		$commentsPart = 'dav/comments/files/' . rawurldecode($node->getId());
+		$href = substr_replace($href, $commentsPart, $entryPoint + \strlen('/remote.php/'));
 		return $href;
 	}
 
@@ -175,7 +176,8 @@ class CommentPropertiesPlugin extends ServerPlugin {
 			$numberOfCommentsForNodes = $this->commentsManager->getNumberOfUnreadCommentsForNodes(
 				'files',
 				[$node->getId()],
-				$user);
+				$user
+			);
 
 			// Initialize with 0 as in prefetch phase in handleGetProperties
 			$numberOfCommentsForNode = 0;
