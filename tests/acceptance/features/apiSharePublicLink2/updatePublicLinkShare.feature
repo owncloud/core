@@ -117,7 +117,7 @@ Feature: update a public link share
       | 1               | 100             |
       | 2               | 200             |
 
-  Scenario Outline: Creating a new public link share with password and adding an expiration date using the old public API
+  Scenario Outline: Creating a new public link share with password and adding an expiration date using public API
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
     When user "Alice" creates a public link share using the sharing API with settings
@@ -127,27 +127,19 @@ Feature: update a public link share
       | expireDate | +3 days |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And the public should be able to download the last publicly shared file using the old public WebDAV API with password "%public%" and the content should be "Random data"
-    Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+    And the public should be able to download the last publicly shared file using the <webdav_api_version> public WebDAV API with password "%public%" and the content should be "Random data"
 
-  Scenario Outline: Creating a new public link share with password and adding an expiration date using the new public API
-    Given using OCS API version "<ocs_api_version>"
-    And user "Alice" has uploaded file with content "Random data" to "/randomfile.txt"
-    When user "Alice" creates a public link share using the sharing API with settings
-      | path     | randomfile.txt |
-      | password | %public%       |
-    And user "Alice" updates the last share using the sharing API with
-      | expireDate | +3 days |
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
-    And the public should be able to download the last publicly shared file using the new public WebDAV API with password "%public%" and the content should be "Random data"
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | webdav_api_version |
+      | 1               | 100             | old                |
+      | 2               | 200             | old                |
+
+
+    Examples:
+      | ocs_api_version | ocs_status_code | webdav_api_version |
+      | 1               | 100             | new                |
+      | 2               | 200             | new                |
 
   @issue-ocis-reva-336
   Scenario Outline: Creating a new public link share, updating its expiration date and getting its info (ocis Bug demonstration)
@@ -311,159 +303,127 @@ Feature: update a public link share
       | 2               | 200             |
 
 
-  Scenario Outline: Adding public upload to a read only shared folder as recipient is not allowed using the old public API
-    Given using OCS API version "<ocs_api_version>"
+  Scenario Outline: Adding public upload to a read only shared folder as recipient is not allowed using the public API
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/test"
     And user "Alice" has shared folder "/test" with user "Brian" with permissions "share,read"
+    And user "Brian" has accepted share "/test" offered by user "Alice"
     And user "Brian" has created a public link share with settings
-      | path         | /test |
+      | path         | /Shares/test |
       | publicUpload | false |
     When user "Brian" updates the last share using the sharing API with
       | publicUpload | true |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
-    And uploading a file should not work using the old public WebDAV API
+    And uploading a file should not work using the <webdav_api_version> public WebDAV API
+
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
-      | ocs_api_version | http_status_code |
-      | 1               | 200              |
-      | 2               | 404              |
+      | ocs_api_version | http_status_code | webdav_api_version |
+      | 1               | 200              | old                |
+      | 2               | 404              | old                |
 
-  @issue-ocis-reva-11
-  Scenario Outline: Adding public upload to a read only shared folder as recipient is not allowed using the new public API
-    Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
-    And user "Alice" has created folder "/test"
-    And user "Alice" has shared folder "/test" with user "Brian" with permissions "share,read"
-    And user "Brian" has created a public link share with settings
-      | path         | /test |
-      | publicUpload | false |
-    When user "Brian" updates the last share using the sharing API with
-      | publicUpload | true |
-    Then the OCS status code should be "404"
-    And the HTTP status code should be "<http_status_code>"
-    And uploading a file should not work using the new public WebDAV API
+    @issue-ocis-reva-11
     Examples:
-      | ocs_api_version | http_status_code |
-      | 1               | 200              |
-      | 2               | 404              |
+      | ocs_api_version | http_status_code | webdav_api_version |
+      | 1               | 200              | new                |
+      | 2               | 404              | new                |
 
 
-  Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions using the old public API
-    Given using OCS API version "<ocs_api_version>"
+  Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions using the public API
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/test"
     And user "Alice" has shared folder "/test" with user "Brian" with permissions "all"
+    And user "Brian" has accepted share "/test" offered by user "Alice"
     And user "Brian" has created a public link share with settings
-      | path         | /test |
+      | path         | /Shares/test |
       | publicUpload | false |
     When user "Brian" updates the last share using the sharing API with
       | publicUpload | true |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And uploading a file should work using the old public WebDAV API
+    And uploading a file should work using the <webdav_api_version> public WebDAV API
+
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | webdav_api_version |
+      | 1               | 100             | old                |
+      | 2               | 200             | old                |
 
-  @issue-ocis-reva-11
-  Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions using the new public API
-    Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
-    And user "Alice" has created folder "/test"
-    And user "Alice" has shared folder "/test" with user "Brian" with permissions "all"
-    And user "Brian" has created a public link share with settings
-      | path         | /test |
-      | publicUpload | false |
-    When user "Brian" updates the last share using the sharing API with
-      | publicUpload | true |
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
-    And uploading a file should work using the new public WebDAV API
+    @issue-ocis-reva-11
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | webdav_api_version |
+      | 1               | 100             | new                |
+      | 2               | 200             | new                |
 
 
-  Scenario Outline: Adding public link with all permissions to a read only shared folder as recipient is not allowed using the old public API
-    Given using OCS API version "<ocs_api_version>"
+  Scenario Outline: Adding public link with all permissions to a read only shared folder as recipient is not allowed using the public API
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/test"
     And user "Alice" has shared folder "/test" with user "Brian" with permissions "share,read"
+    And user "Brian" has accepted share "/test" offered by user "Alice"
     And user "Brian" has created a public link share with settings
-      | path        | /test |
+      | path        | /Shares/test |
       | permissions | read  |
     When user "Brian" updates the last share using the sharing API with
       | permissions | read,update,create,delete |
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
-    And uploading a file should not work using the old public WebDAV API
+    And uploading a file should not work using the <webdav_api_version> public WebDAV API
+
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
-      | ocs_api_version | http_status_code |
-      | 1               | 200              |
-      | 2               | 404              |
+      | ocs_api_version | http_status_code | webdav_api_version |
+      | 1               | 200              | old                |
+      | 2               | 404              | old                |
 
-  @issue-ocis-reva-11
-  Scenario Outline: Adding public link with all permissions to a read only shared folder as recipient is not allowed using the new public API
-    Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
-    And user "Alice" has created folder "/test"
-    And user "Alice" has shared folder "/test" with user "Brian" with permissions "share,read"
-    And user "Brian" has created a public link share with settings
-      | path        | /test |
-      | permissions | read  |
-    When user "Brian" updates the last share using the sharing API with
-      | permissions | read,update,create,delete |
-    Then the OCS status code should be "404"
-    And the HTTP status code should be "<http_status_code>"
-    And uploading a file should not work using the new public WebDAV API
+    @issue-ocis-reva-11
     Examples:
-      | ocs_api_version | http_status_code |
-      | 1               | 200              |
-      | 2               | 404              |
+      | ocs_api_version | http_status_code | webdav_api_version |
+      | 1               | 200              | new                |
+      | 2               | 404              | new                |
 
 
-  Scenario Outline: Adding public link with all permissions to a read only shared folder as recipient is allowed with permissions using the old public API
-    Given using OCS API version "<ocs_api_version>"
+  Scenario Outline: Adding public link with all permissions to a read only shared folder as recipient is allowed with permissions using the public API
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/test"
     And user "Alice" has shared folder "/test" with user "Brian" with permissions "all"
+    And user "Brian" has accepted share "/test" offered by user "Alice"
     And user "Brian" has created a public link share with settings
-      | path        | /test |
+      | path        | /Shares/test |
       | permissions | read  |
     When user "Brian" updates the last share using the sharing API with
       | permissions | read,update,create,delete |
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And uploading a file should work using the old public WebDAV API
+    And uploading a file should work using the <webdav_api_version> public WebDAV API
+
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | webdav_api_version |
+      | 1               | 100             | old                |
+      | 2               | 200             | old                |
 
-  @issue-ocis-reva-11
-  Scenario Outline:  Adding public link with all permissions to a read only folder as recipient is allowed with permissions using the new public API
-    Given using OCS API version "<ocs_api_version>"
-    And user "Brian" has been created with default attributes and without skeleton files
-    And user "Alice" has created folder "/test"
-    And user "Alice" has shared folder "/test" with user "Brian" with permissions "all"
-    And user "Brian" has created a public link share with settings
-      | path        | /test |
-      | permissions | read  |
-    When user "Brian" updates the last share using the sharing API with
-      | permissions | read,update,create,delete |
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
-    And uploading a file should work using the new public WebDAV API
+    @issue-ocis-reva-11
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | webdav_api_version |
+      | 1               | 100             | new                |
+      | 2               | 200             | new                |
 
 
-  Scenario Outline: Updating share permissions from change to read restricts public from deleting files using the old public API
+  Scenario Outline: Updating share permissions from change to read restricts public from deleting files using the public API
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "PARENT"
     And user "Alice" has created folder "PARENT/CHILD"
@@ -478,40 +438,24 @@ Feature: update a public link share
     When user "Alice" gets the info of the last share using the sharing API
     Then the fields of the last response to user "Alice" should include
       | permissions | read |
-    When the public deletes file "CHILD/child.txt" from the last public share using the old public WebDAV API
+    When the public deletes file "CHILD/child.txt" from the last public share using the <webdav_api_version> public WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" file "PARENT/CHILD/child.txt" should exist
+
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | webdav_api_version |
+      | 1               | 100             | old                |
+      | 2               | 200             | old                |
 
-  @issue-ocis-reva-292
-  Scenario Outline: Updating share permissions from change to read restricts public from deleting files using the new public API
-    Given using OCS API version "<ocs_api_version>"
-    And user "Alice" has created folder "PARENT"
-    And user "Alice" has created folder "PARENT/CHILD"
-    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/CHILD/child.txt"
-    And user "Alice" has created a public link share with settings
-      | path        | /PARENT                   |
-      | permissions | read,update,create,delete |
-    When user "Alice" updates the last share using the sharing API with
-      | permissions | read |
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
-    When user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Alice" should include
-      | permissions | read |
-    When the public deletes file "CHILD/child.txt" from the last public share using the new public WebDAV API
-    Then the HTTP status code should be "403"
-    And as "Alice" file "PARENT/CHILD/child.txt" should exist
+    @issue-ocis-reva-292
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | webdav_api_version |
+      | 1               | 100             | new                |
+      | 2               | 200             | new                |
 
 
-  Scenario Outline: Updating share permissions from read to change allows public to delete files using the old public API
+  Scenario Outline: Updating share permissions from read to change allows public to delete files using the public API
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "PARENT"
     And user "Alice" has created folder "PARENT/CHILD"
@@ -527,40 +471,21 @@ Feature: update a public link share
     When user "Alice" gets the info of the last share using the sharing API
     Then the fields of the last response to user "Alice" should include
       | permissions | read,update,create,delete |
-    When the public deletes file "CHILD/child.txt" from the last public share using the old public WebDAV API
+    When the public deletes file "CHILD/child.txt" from the last public share using the <webdav_api_version> public WebDAV API
     Then the HTTP status code should be "204"
     And as "Alice" file "PARENT/CHILD/child.txt" should not exist
-    When the public deletes file "parent.txt" from the last public share using the old public WebDAV API
+    When the public deletes file "parent.txt" from the last public share using the <webdav_api_version> public WebDAV API
     Then the HTTP status code should be "204"
     And as "Alice" file "PARENT/parent.txt" should not exist
-    Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
 
-  Scenario Outline: Updating share permissions from read to change allows public to delete files using the new public API
-    Given using OCS API version "<ocs_api_version>"
-    And user "Alice" has created folder "PARENT"
-    And user "Alice" has created folder "PARENT/CHILD"
-    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/parent.txt"
-    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/CHILD/child.txt"
-    And user "Alice" has created a public link share with settings
-      | path        | /PARENT |
-      | permissions | read    |
-    When user "Alice" updates the last share using the sharing API with
-      | permissions | read,update,create,delete |
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
-    When user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Alice" should include
-      | permissions | read,update,create,delete |
-    When the public deletes file "CHILD/child.txt" from the last public share using the new public WebDAV API
-    Then the HTTP status code should be "204"
-    And as "Alice" file "PARENT/CHILD/child.txt" should not exist
-    When the public deletes file "parent.txt" from the last public share using the new public WebDAV API
-    Then the HTTP status code should be "204"
-    And as "Alice" file "PARENT/parent.txt" should not exist
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | webdav_api_version |
+      | 1               | 100             | old                |
+      | 2               | 200             | old                |
+
+
+    Examples:
+      | ocs_api_version | ocs_status_code | webdav_api_version |
+      | 1               | 100             | new                |
+      | 2               | 200             | new                |

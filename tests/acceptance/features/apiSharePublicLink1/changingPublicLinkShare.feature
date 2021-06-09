@@ -10,259 +10,261 @@ Feature: changing a public link share
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "PARENT/parent.txt"
 
 
-  Scenario Outline: Public can or can-not delete file through publicly shared link depending on having delete permissions using the old public WebDAV API
+  Scenario Outline: Public can or can-not delete file through publicly shared link depending on having delete permissions using the public WebDAV API
     Given user "Alice" has created a public link share with settings
       | path        | /PARENT       |
       | permissions | <permissions> |
-    When the public deletes file "parent.txt" from the last public share using the old public WebDAV API
+    When the public deletes file "parent.txt" from the last public share using the <webdav_api_version> public WebDAV API
     Then the HTTP status code should be "<http-status-code>"
     And as "Alice" file "PARENT/parent.txt" <should-or-not> exist
+
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
-      | permissions               | http-status-code | should-or-not |
-      | read,update,create        | 403              | should        |
-      | read,update,create,delete | 204              | should not    |
+      | permissions               | http-status-code | should-or-not | webdav_api_version |
+      | read,update,create        | 403              | should        | old                |
+      | read,update,create,delete | 204              | should not    | old                |
 
-  @issue-ocis-reva-292
-  Scenario Outline: Public can or can-not delete file through publicly shared link depending on having delete permissions using the new public WebDAV API
-    Given user "Alice" has created a public link share with settings
-      | path        | /PARENT       |
-      | permissions | <permissions> |
-    When the public deletes file "parent.txt" from the last public share using the new public WebDAV API
-    Then the HTTP status code should be "<http-status-code>"
-    And as "Alice" file "PARENT/parent.txt" <should-or-not> exist
+    @issue-ocis-reva-292
     Examples:
-      | permissions               | http-status-code | should-or-not |
-      | read,update,create        | 403              | should        |
-      | read,update,create,delete | 204              | should not    |
+      | permissions               | http-status-code | should-or-not | webdav_api_version |
+      | read,update,create        | 403              | should        | new                |
+      | read,update,create,delete | 204              | should not    | new                |
 
 
-  Scenario: Public link share permissions work correctly for renaming and share permissions read,update,create with the old public WebDAV API
+  Scenario Outline: Public link share permissions work correctly for renaming and share permissions read,update,create with the public WebDAV API
     Given user "Alice" has created a public link share with settings
       | path        | /PARENT            |
       | permissions | read,update,create |
-    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the old public WebDAV API
+    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the <webdav_api_version> public WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" file "/PARENT/parent.txt" should exist
     And as "Alice" file "/PARENT/newparent.txt" should not exist
 
-  @issue-ocis-reva-292
-  Scenario: Public link share permissions work correctly for renaming and share permissions read,update,create with the new public WebDAV API
-    Given user "Alice" has created a public link share with settings
-      | path        | /PARENT            |
-      | permissions | read,update,create |
-    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the new public WebDAV API
-    Then the HTTP status code should be "403"
-    And as "Alice" file "/PARENT/parent.txt" should exist
-    And as "Alice" file "/PARENT/newparent.txt" should not exist
+    @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
+
+    @issue-ocis-reva-292
+    Examples:
+      | webdav_api_version |
+      | new                |
 
   @skipOnRansomwareProtection @issue-ransomware-208
-  Scenario: Public link share permissions work correctly for renaming and share permissions read,update,create,delete using the old public WebDAV API
+  Scenario Outline: Public link share permissions work correctly for renaming and share permissions read,update,create,delete using the public WebDAV API
     Given user "Alice" has created a public link share with settings
       | path        | /PARENT                   |
       | permissions | read,update,create,delete |
-    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the old public WebDAV API
+    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the <webdav_api_version> public WebDAV API
     Then the HTTP status code should be "201"
     And as "Alice" file "/PARENT/parent.txt" should not exist
     And as "Alice" file "/PARENT/newparent.txt" should exist
 
-  @skipOnRansomwareProtection @issue-ransomware-208
-  Scenario: Public link share permissions work correctly for renaming and share permissions read,update,create,delete using the new public WebDAV API
-    Given user "Alice" has created a public link share with settings
-      | path        | /PARENT                   |
-      | permissions | read,update,create,delete |
-    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the new public WebDAV API
-    Then the HTTP status code should be "201"
-    And as "Alice" file "/PARENT/parent.txt" should not exist
-    And as "Alice" file "/PARENT/newparent.txt" should exist
+  @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
 
 
-  Scenario: Public link share permissions work correctly for upload with share permissions read,update,create with the old public WebDAV API
-    Given user "Alice" has created a public link share with settings
-      | path        | /PARENT            |
-      | permissions | read,update,create |
-    When the public uploads file "lorem.txt" with content "test" using the old public WebDAV API
-    Then the HTTP status code should be "403"
-    And as "Alice" file "/PARENT/lorem.txt" should not exist
+    Examples:
+      | webdav_api_version |
+      | new                |
 
-  @issue-ocis-reva-292
-  Scenario: Public link share permissions work correctly for upload with share permissions read,update,create with the new public WebDAV API
+
+  Scenario Outline: Public link share permissions work correctly for upload with share permissions read,update,create with the public WebDAV API
     Given user "Alice" has created a public link share with settings
       | path        | /PARENT            |
       | permissions | read,update,create |
-    When the public uploads file "lorem.txt" with content "test" using the new public WebDAV API
+    When the public uploads file "lorem.txt" with content "test" using the <webdav_api_version> public WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" file "/PARENT/lorem.txt" should not exist
 
+  @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
 
-  Scenario: Public link share permissions work correctly for upload with share permissions read,update,create,delete with the old public WebDAV API
+    @issue-ocis-reva-292
+    Examples:
+      | webdav_api_version |
+      | new                |
+
+
+  Scenario Outline: Public link share permissions work correctly for upload with share permissions read,update,create,delete with the public WebDAV API
     Given user "Alice" has created a public link share with settings
       | path        | /PARENT                   |
       | permissions | read,update,create,delete |
-    When the public uploads file "lorem.txt" with content "test" using the old public WebDAV API
+    When the public uploads file "lorem.txt" with content "test" using the <webdav_api_version> public WebDAV API
     Then the HTTP status code should be "201"
     And the content of file "PARENT/lorem.txt" for user "Alice" should be "test"
 
-  Scenario: Public link share permissions work correctly for upload with share permissions read,update,create,delete with the new public WebDAV API
-    Given user "Alice" has created a public link share with settings
-      | path        | /PARENT                   |
-      | permissions | read,update,create,delete |
-    When the public uploads file "lorem.txt" with content "test" using the new public WebDAV API
-    Then the HTTP status code should be "201"
-    And the content of file "PARENT/lorem.txt" for user "Alice" should be "test"
+  @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
 
 
-  Scenario: Public cannot delete file through publicly shared link with password using an invalid password with the old public WebDAV API
+    Examples:
+      | webdav_api_version |
+      | new                |
+
+
+  Scenario Outline: Public cannot delete file through publicly shared link with password using an invalid password with public WebDAV API
     Given user "Alice" has created a public link share with settings
       | path        | /PARENT   |
       | permissions | change    |
       | password    | newpasswd |
-    When the public deletes file "parent.txt" from the last public share using the password "invalid" and old public WebDAV API
+    When the public deletes file "parent.txt" from the last public share using the password "invalid" and <webdav_api_version> public WebDAV API
     Then the HTTP status code should be "401"
     And as "Alice" file "PARENT/parent.txt" should exist
 
-  Scenario: Public cannot delete file through publicly shared link with password using an invalid password with the new public WebDAV API
+  @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
+
+
+    Examples:
+      | webdav_api_version |
+      | new                |
+
+
+  Scenario Outline: Public can delete file through publicly shared link with password using the valid password with the public WebDAV API
     Given user "Alice" has created a public link share with settings
       | path        | /PARENT   |
       | permissions | change    |
       | password    | newpasswd |
-    When the public deletes file "parent.txt" from the last public share using the password "invalid" and new public WebDAV API
-    Then the HTTP status code should be "401"
-    And as "Alice" file "PARENT/parent.txt" should exist
-
-
-  Scenario: Public can delete file through publicly shared link with password using the valid password with the old public WebDAV API
-    Given user "Alice" has created a public link share with settings
-      | path        | /PARENT   |
-      | permissions | change    |
-      | password    | newpasswd |
-    When the public deletes file "parent.txt" from the last public share using the password "newpasswd" and old public WebDAV API
+    When the public deletes file "parent.txt" from the last public share using the password "newpasswd" and <webdav_api_version> public WebDAV API
     Then the HTTP status code should be "204"
     And as "Alice" file "PARENT/parent.txt" should not exist
 
-  Scenario: Public can delete file through publicly shared link with password using the valid password with the new public WebDAV API
+  @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
+
+  @issue-ocis-reva-292
+    Examples:
+      | webdav_api_version |
+      | new                |
+
+
+  Scenario Outline: Public tries to rename a file in a password protected share using an invalid password with the public WebDAV API
     Given user "Alice" has created a public link share with settings
       | path        | /PARENT   |
       | permissions | change    |
       | password    | newpasswd |
-    When the public deletes file "parent.txt" from the last public share using the password "newpasswd" and new public WebDAV API
-    Then the HTTP status code should be "204"
-    And as "Alice" file "PARENT/parent.txt" should not exist
-
-
-  Scenario: Public tries to rename a file in a password protected share using an invalid password with the old public WebDAV API
-    Given user "Alice" has created a public link share with settings
-      | path        | /PARENT   |
-      | permissions | change    |
-      | password    | newpasswd |
-    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the password "invalid" and old public WebDAV API
+    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the password "invalid" and <webdav_api_version> public WebDAV API
     Then the HTTP status code should be "401"
     And as "Alice" file "/PARENT/newparent.txt" should not exist
     And as "Alice" file "/PARENT/parent.txt" should exist
 
-  Scenario: Public tries to rename a file in a password protected share using an invalid password with the new public WebDAV API
-    Given user "Alice" has created a public link share with settings
-      | path        | /PARENT   |
-      | permissions | change    |
-      | password    | newpasswd |
-    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the password "invalid" and new public WebDAV API
-    Then the HTTP status code should be "401"
-    And as "Alice" file "/PARENT/newparent.txt" should not exist
-    And as "Alice" file "/PARENT/parent.txt" should exist
+  @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
+
+
+    Examples:
+      | webdav_api_version |
+      | new                |
 
   @skipOnRansomwareProtection @issue-ransomware-208
-  Scenario: Public tries to rename a file in a password protected share using the valid password with the old public WebDAV API
+  Scenario Outline: Public tries to rename a file in a password protected share using the valid password with the public WebDAV API
     Given user "Alice" has created a public link share with settings
       | path        | /PARENT   |
       | permissions | change    |
       | password    | newpasswd |
-    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the password "newpasswd" and old public WebDAV API
+    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the password "newpasswd" and <webdav_api_version> public WebDAV API
     Then the HTTP status code should be "201"
     And as "Alice" file "/PARENT/newparent.txt" should exist
     And as "Alice" file "/PARENT/parent.txt" should not exist
 
-  @skipOnRansomwareProtection @issue-ransomware-208
-  Scenario: Public tries to rename a file in a password protected share using the valid password with the new public WebDAV API
+  @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
+
+
+    Examples:
+      | webdav_api_version |
+      | new                |
+
+
+  Scenario Outline: Public tries to upload to a password protected public share using an invalid password with the public WebDAV API
     Given user "Alice" has created a public link share with settings
       | path        | /PARENT   |
       | permissions | change    |
       | password    | newpasswd |
-    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the password "newpasswd" and new public WebDAV API
-    Then the HTTP status code should be "201"
-    And as "Alice" file "/PARENT/newparent.txt" should exist
-    And as "Alice" file "/PARENT/parent.txt" should not exist
-
-
-  Scenario: Public tries to upload to a password protected public share using an invalid password with the old public WebDAV API
-    Given user "Alice" has created a public link share with settings
-      | path        | /PARENT   |
-      | permissions | change    |
-      | password    | newpasswd |
-    When the public uploads file "lorem.txt" with password "invalid" and content "test" using the old public WebDAV API
+    When the public uploads file "lorem.txt" with password "invalid" and content "test" using the <webdav_api_version> public WebDAV API
     Then the HTTP status code should be "401"
     And as "Alice" file "/PARENT/lorem.txt" should not exist
 
-  Scenario: Public tries to upload to a password protected public share using an invalid password with the new public WebDAV API
+  @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
+
+
+    Examples:
+      | webdav_api_version |
+      | new                |
+
+
+  Scenario Outline: Public tries to upload to a password protected public share using the valid password with the public WebDAV API
     Given user "Alice" has created a public link share with settings
       | path        | /PARENT   |
       | permissions | change    |
       | password    | newpasswd |
-    When the public uploads file "lorem.txt" with password "invalid" and content "test" using the new public WebDAV API
-    Then the HTTP status code should be "401"
-    And as "Alice" file "/PARENT/lorem.txt" should not exist
-
-
-  Scenario: Public tries to upload to a password protected public share using the valid password with the old public WebDAV API
-    Given user "Alice" has created a public link share with settings
-      | path        | /PARENT   |
-      | permissions | change    |
-      | password    | newpasswd |
-    When the public uploads file "lorem.txt" with password "newpasswd" and content "test" using the old public WebDAV API
+    When the public uploads file "lorem.txt" with password "newpasswd" and content "test" using the <webdav_api_version> public WebDAV API
     Then the HTTP status code should be "201"
     And as "Alice" file "/PARENT/lorem.txt" should exist
 
-  Scenario: Public tries to upload to a password protected public share using the valid password with the new public WebDAV API
-    Given user "Alice" has created a public link share with settings
-      | path        | /PARENT   |
-      | permissions | change    |
-      | password    | newpasswd |
-    When the public uploads file "lorem.txt" with password "newpasswd" and content "test" using the new public WebDAV API
-    Then the HTTP status code should be "201"
-    And as "Alice" file "/PARENT/lorem.txt" should exist
+  @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
 
 
-  Scenario: Public cannot rename a file in uploadwriteonly public link share with the old public WebDAV API
+    Examples:
+      | webdav_api_version |
+      | new                |
+
+
+  Scenario Outline: Public cannot rename a file in uploadwriteonly public link share with the public WebDAV API
     Given user "Alice" has created a public link share with settings
       | path        | /PARENT         |
       | permissions | uploadwriteonly |
-    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the old public WebDAV API
+    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the <webdav_api_version> public WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" file "/PARENT/parent.txt" should exist
     And as "Alice" file "/PARENT/newparent.txt" should not exist
 
+  @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
+
   @issue-ocis-reva-292
-  Scenario: Public cannot rename a file in uploadwriteonly public link share with the new public WebDAV API
+    Examples:
+      | webdav_api_version |
+      | new                |
+
+
+  Scenario Outline: Public cannot delete a file in uploadwriteonly public link share with the public WebDAV API
     Given user "Alice" has created a public link share with settings
       | path        | /PARENT         |
       | permissions | uploadwriteonly |
-    When the public renames file "parent.txt" to "newparent.txt" from the last public share using the new public WebDAV API
-    Then the HTTP status code should be "403"
-    And as "Alice" file "/PARENT/parent.txt" should exist
-    And as "Alice" file "/PARENT/newparent.txt" should not exist
-
-
-  Scenario: Public cannot delete a file in uploadwriteonly public link share with the old public WebDAV API
-    Given user "Alice" has created a public link share with settings
-      | path        | /PARENT         |
-      | permissions | uploadwriteonly |
-    When the public deletes file "parent.txt" from the last public share using the old public WebDAV API
+    When the public deletes file "parent.txt" from the last public share using the <webdav_api_version> public WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" file "PARENT/parent.txt" should exist
 
+  @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
+
   @issue-ocis-reva-292
-  Scenario: Public cannot delete a file in uploadwriteonly public link share with the new public WebDAV API
-    Given user "Alice" has created a public link share with settings
-      | path        | /PARENT         |
-      | permissions | uploadwriteonly |
-    When the public deletes file "parent.txt" from the last public share using the new public WebDAV API
-    Then the HTTP status code should be "403"
-    And as "Alice" file "PARENT/parent.txt" should exist
+    Examples:
+      | webdav_api_version |
+      | new                |

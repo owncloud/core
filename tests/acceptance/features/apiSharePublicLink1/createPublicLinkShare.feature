@@ -653,46 +653,45 @@ Feature: create a public link share
       | 2               | 200             | 200              | new       |
 
   @issue-ocis-reva-199
-  Scenario: Delete a folder that has been publicly shared and try to access using the new public WebDAV API
+  Scenario Outline: Delete a folder that has been publicly shared and try to access using the public WebDAV API
     Given user "Alice" has created folder "PARENT"
     And user "Alice" has uploaded file with content "Random data" to "/PARENT/parent.txt"
     And user "Alice" has created a public link share with settings
       | path        | PARENT |
       | permissions | read   |
     When user "Alice" deletes folder "PARENT" using the WebDAV API
-    And the public download of file "/parent.txt" from inside the last public shared folder using the new public WebDAV API should fail with HTTP status code "404"
+    And the public download of file "/parent.txt" from inside the last public shared folder using the <webdav_api_version> public WebDAV API should fail with HTTP status code "404"
 
-  @issue-ocis-reva-199 @notToImplementOnOCIS @issue-ocis-2079
-  Scenario: Delete a folder that has been publicly shared and try to access using the old public WebDAV API
-    Given user "Alice" has created folder "PARENT"
-    And user "Alice" has uploaded file with content "Random data" to "/PARENT/parent.txt"
-    And user "Alice" has created a public link share with settings
-      | path        | PARENT |
-      | permissions | read   |
-    When user "Alice" deletes folder "PARENT" using the WebDAV API
-    Then the public download of file "/parent.txt" from inside the last public shared folder using the old public WebDAV API should fail with HTTP status code "404"
+  @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
+
+
+    Examples:
+      | webdav_api_version |
+      | new                |
 
   @issue-ocis-reva-292
-  Scenario: try to download from a public share that has upload only permissions using the new public webdav api
+  Scenario Outline: try to download from a public share that has upload only permissions using the public webdav api
     Given user "Alice" has created folder "PARENT"
     And user "Alice" has uploaded file with content "Random data" to "/PARENT/parent.txt"
     And user "Alice" has created a public link share with settings
       | path        | PARENT          |
       | permissions | uploadwriteonly |
-    When the public downloads file "parent.txt" from inside the last public shared folder using the new public WebDAV API
-    Then the value of the item "//s:message" in the response should be "File not found: parent.txt"
+    When the public downloads file "parent.txt" from inside the last public shared folder using the <webdav_api_version> public WebDAV API
+    Then the value of the item "//s:message" in the response should be "<response>"
     And the HTTP status code should be "404"
 
-  @issue-ocis-reva-292 @notToImplementOnOCIS @issue-ocis-2079
-  Scenario: try to download from a public share that has upload only permissions using the old public webdav api
-    Given user "Alice" has created folder "PARENT"
-    And user "Alice" has uploaded file with content "Random data" to "/PARENT/parent.txt"
-    And user "Alice" has created a public link share with settings
-      | path        | PARENT          |
-      | permissions | uploadwriteonly |
-    When the public downloads file "parent.txt" from inside the last public shared folder using the old public WebDAV API
-    Then the value of the item "//s:message" in the response should be ""
-    And the HTTP status code should be "404"
+    @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version | response |
+      | old                |          |
+
+
+    Examples:
+      | webdav_api_version | response                   |
+      | new                | File not found: parent.txt |
 
   @skipOnOcV10.3
   Scenario: Get the size of a file shared by public link

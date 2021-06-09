@@ -15,15 +15,24 @@ Feature: persistent-locking in case of a public link
     And user "Alice" has created a public link share of folder "FOLDER" with change permission
     When user "Alice" locks folder "FOLDER" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
-    Then uploading a file should not work using the old public WebDAV API
-    And uploading a file should not work using the new public WebDAV API
+    Then uploading a file should not work using the <webdav_api_version> public WebDAV API
     And the HTTP status code should be "423"
+
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
-      | dav-path | lock-scope |
-      | old      | shared     |
-      | old      | exclusive  |
-      | new      | shared     |
-      | new      | exclusive  |
+      | dav-path | lock-scope | webdav_api_version |
+      | old      | shared     | old                |
+      | old      | exclusive  | old                |
+      | new      | shared     | old                |
+      | new      | exclusive  | old                |
+
+
+    Examples:
+      | dav-path | lock-scope | webdav_api_version |
+      | old      | shared     | new                |
+      | old      | exclusive  | new                |
+      | new      | shared     | new                |
+      | new      | exclusive  | new                |
 
   @skipOnOcV10 @issue-36064
   Scenario Outline: Uploading a file into a locked subfolder of a public folder
@@ -75,9 +84,15 @@ Feature: persistent-locking in case of a public link
       | lockscope | <lock-scope> |
     Then the HTTP status code should be "405"
     And the value of the item "//s:message" in the response should be "Locking not allowed from public endpoint"
+
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | public-webdav-api-version | lock-scope |
       | old                       | shared     |
       | old                       | exclusive  |
+
+
+    Examples:
+      | public-webdav-api-version | lock-scope |
       | new                       | shared     |
       | new                       | exclusive  |

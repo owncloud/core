@@ -6,7 +6,7 @@ Feature: upload to a public link share
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "FOLDER"
 
-  @smokeTest
+  @smokeTest @notToImplementOnOCIS @issue-ocis-2079
   Scenario: Uploading same file to a public upload-only share multiple times via old API
     # The old API needs to have the header OC-Autorename: 1 set to do the autorename
     Given user "Alice" has created a public link share with settings
@@ -35,213 +35,219 @@ Feature: upload to a public link share
     And the content of file "/FOLDER/test (2).txt" for user "Alice" should be "test2"
 
 
-  Scenario Outline: Uploading file to a public upload-only share using old public API that was deleted does not work
+  Scenario Outline: Uploading file to a public upload-only share using public API that was deleted does not work
     Given using <dav-path> DAV path
     And user "Alice" has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
     When user "Alice" deletes file "/FOLDER" using the WebDAV API
-    Then uploading a file should not work using the old public WebDAV API
+    Then uploading a file should not work using the <webdav_api_version> public WebDAV API
     And the HTTP status code should be "404"
+
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
-      | dav-path |
-      | old      |
-      | new      |
+      | dav-path | webdav_api_version |
+      | old      | old                |
+      | new      | old                |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @issue-ocis-reva-290
-  Scenario Outline: Uploading file to a public upload-only share using new public API that was deleted does not work
-    Given using <dav-path> DAV path
-    And user "Alice" has created a public link share with settings
-      | path        | FOLDER |
-      | permissions | create |
-    When user "Alice" deletes file "/FOLDER" using the WebDAV API
-    Then uploading a file should not work using the new public WebDAV API
-    And the HTTP status code should be "404"
+    @skipOnOcV10.3 @skipOnOcV10.4 @issue-ocis-reva-290
     Examples:
-      | dav-path |
-      | old      |
-      | new      |
+      | dav-path | webdav_api_version |
+      | old      | new                |
+      | new      | new                |
 
 
-  Scenario: Uploading file to a public read-only share folder with old public API does not work
+  Scenario Outline: Uploading file to a public read-only share folder with public API does not work
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | FOLDER |
       | permissions | read   |
-    Then uploading a file should not work using the old public WebDAV API
+    Then uploading a file should not work using the <webdav_api_version> public WebDAV API
     And the HTTP status code should be "403"
 
-  @issue-ocis-reva-292
-  Scenario: Uploading file to a public read-only share folder with new public API does not work
-    When user "Alice" creates a public link share using the sharing API with settings
-      | path        | FOLDER |
-      | permissions | read   |
-    Then uploading a file should not work using the new public WebDAV API
-    And the HTTP status code should be "403"
+    @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
+
+    @issue-ocis-reva-292
+    Examples:
+      | webdav_api_version |
+      | new                |
 
 
-  Scenario: Uploading to a public upload-only share with old public API
+  Scenario Outline: Uploading to a public upload-only share with public API
     Given user "Alice" has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
-    When the public uploads file "test-old.txt" with content "test-old" using the old public WebDAV API
-    Then the content of file "/FOLDER/test-old.txt" for user "Alice" should be "test-old"
+    When the public uploads file "test.txt" with content "test-file" using the <webdav_api_version> public WebDAV API
+    Then the content of file "/FOLDER/test.txt" for user "Alice" should be "test-file"
     And the following headers should match these regular expressions
       | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
 
-  Scenario: Uploading to a public upload-only share with new public API
-    Given user "Alice" has created a public link share with settings
-      | path        | FOLDER |
-      | permissions | create |
-    When the public uploads file "test-new.txt" with content "test-new" using the new public WebDAV API
-    Then the content of file "/FOLDER/test-new.txt" for user "Alice" should be "test-new"
-    And the following headers should match these regular expressions
-      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
+  @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
 
 
-  Scenario: Uploading to a public upload-only share with password with old public API
+    Examples:
+      | webdav_api_version |
+      | new                |
+
+
+  Scenario Outline: Uploading to a public upload-only share with password with public API
     Given user "Alice" has created a public link share with settings
       | path        | FOLDER   |
       | password    | %public% |
       | permissions | create   |
-    When the public uploads file "test-old.txt" with password "%public%" and content "test-old" using the old public WebDAV API
-    Then the content of file "/FOLDER/test-old.txt" for user "Alice" should be "test-old"
+    When the public uploads file "test.txt" with password "%public%" and content "test-file" using the <webdav_api_version> public WebDAV API
+    Then the content of file "/FOLDER/test.txt" for user "Alice" should be "test-file"
 
-  Scenario: Uploading to a public upload-only share with password with new public API
-    Given user "Alice" has created a public link share with settings
-      | path        | FOLDER   |
-      | password    | %public% |
-      | permissions | create   |
-    When the public uploads file "test-new.txt" with password "%public%" and content "test-new" using the new public WebDAV API
-    Then the content of file "/FOLDER/test-new.txt" for user "Alice" should be "test-new"
+    @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
 
 
-  Scenario: Uploading to a public read/write share with password with old public API
-    Given user "Alice" has created a public link share with settings
-      | path        | FOLDER   |
-      | password    | %public% |
-      | permissions | change   |
-    When the public uploads file "test-old.txt" with password "%public%" and content "test-old" using the old public WebDAV API
-    Then the content of file "/FOLDER/test-old.txt" for user "Alice" should be "test-old"
+    Examples:
+      | webdav_api_version |
+      | new                |
 
-  Scenario: Uploading to a public read/write share with password with new public API
+
+  Scenario Outline: Uploading to a public read/write share with password with public API
     Given user "Alice" has created a public link share with settings
       | path        | FOLDER   |
       | password    | %public% |
       | permissions | change   |
-    When the public uploads file "test-new.txt" with password "%public%" and content "test-new" using the new public WebDAV API
-    Then the content of file "/FOLDER/test-new.txt" for user "Alice" should be "test-new"
+    When the public uploads file "test.txt" with password "%public%" and content "test-file" using the <webdav_api_version> public WebDAV API
+    Then the content of file "/FOLDER/test.txt" for user "Alice" should be "test-file"
+
+  @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
 
 
-  Scenario: Uploading file to a public shared folder with read/write permission when the sharer has insufficient quota does not work with old public API
+    Examples:
+      | webdav_api_version |
+      | new                |
+
+
+  Scenario Outline: Uploading file to a public shared folder with read/write permission when the sharer has insufficient quota does not work with public API
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | FOLDER |
       | permissions | change |
     And the quota of user "Alice" has been set to "0"
-    Then uploading a file should not work using the old public WebDAV API
+    Then uploading a file should not work using the <webdav_api_version> public WebDAV API
     And the HTTP status code should be "507"
+
+  @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
 
   @issue-ocis-reva-195
-  Scenario: Uploading file to a public shared folder with read/write permission when the sharer has insufficient quota does not work with new public API
-    When user "Alice" creates a public link share using the sharing API with settings
-      | path        | FOLDER |
-      | permissions | change |
-    And the quota of user "Alice" has been set to "0"
-    And uploading a file should not work using the new public WebDAV API
-    And the HTTP status code should be "507"
+    Examples:
+      | webdav_api_version |
+      | new                |
 
 
-  Scenario: Uploading file to a public shared folder with upload-only permission when the sharer has insufficient quota does not work with old public API
+  Scenario Outline: Uploading file to a public shared folder with upload-only permission when the sharer has insufficient quota does not work with public API
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | FOLDER |
       | permissions | create |
     And the quota of user "Alice" has been set to "0"
-    Then uploading a file should not work using the old public WebDAV API
+    Then uploading a file should not work using the <webdav_api_version> public WebDAV API
     And the HTTP status code should be "507"
+
+  @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
 
   @issue-ocis-reva-195
-  Scenario: Uploading file to a public shared folder with upload-only permission when the sharer has insufficient quota does not work with new public API
-    When user "Alice" creates a public link share using the sharing API with settings
-      | path        | FOLDER |
-      | permissions | create |
-    And the quota of user "Alice" has been set to "0"
-    And uploading a file should not work using the new public WebDAV API
-    And the HTTP status code should be "507"
+    Examples:
+      | webdav_api_version |
+      | new                |
 
 
-  Scenario: Uploading file to a public shared folder does not work when allow public uploads has been disabled after sharing the folder with old public API
+  Scenario Outline: Uploading file to a public shared folder does not work when allow public uploads has been disabled after sharing the folder with public API
     Given user "Alice" has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
     When the administrator sets parameter "shareapi_allow_public_upload" of app "core" to "no"
-    Then uploading a file should not work using the old public WebDAV API
+    Then uploading a file should not work using the <webdav_api_version> public WebDAV API
     And the HTTP status code should be "403"
 
-  @issue-ocis-reva-41
-  Scenario: Uploading file to a public shared folder does not work when allow public uploads has been disabled after sharing the folder with new public API
-    Given user "Alice" has created a public link share with settings
-      | path        | FOLDER |
-      | permissions | create |
-    When the administrator sets parameter "shareapi_allow_public_upload" of app "core" to "no"
-    And uploading a file should not work using the new public WebDAV API
-    And the HTTP status code should be "403"
+    @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
+
+    @issue-ocis-reva-41
+    Examples:
+      | webdav_api_version |
+      | new                |
 
 
-  Scenario: Uploading file to a public shared folder does not work when allow public uploads has been disabled before sharing and again enabled after sharing the folder with old public API
+  Scenario Outline: Uploading file to a public shared folder does not work when allow public uploads has been disabled before sharing and again enabled after sharing the folder with public API
     Given parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
     And user "Alice" has created a public link share with settings
       | path        | FOLDER |
       | permissions | all    |
     When the administrator sets parameter "shareapi_allow_public_upload" of app "core" to "yes"
-    Then uploading a file should not work using the old public WebDAV API
+    Then uploading a file should not work using the <webdav_api_version> public WebDAV API
     And the HTTP status code should be "403"
+
+  @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
 
   @issue-ocis-reva-41
-  Scenario: Uploading file to a public shared folder does not work when allow public uploads has been disabled before sharing and again enabled after sharing the folder with new public API
-    Given parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
-    And user "Alice" has created a public link share with settings
-      | path        | FOLDER |
-      | permissions | all    |
-    When the administrator sets parameter "shareapi_allow_public_upload" of app "core" to "yes"
-    And uploading a file should not work using the new public WebDAV API
-    And the HTTP status code should be "403"
+    Examples:
+      | webdav_api_version |
+      | new                |
 
 
-  Scenario: Uploading file to a public shared folder works when allow public uploads has been disabled and again enabled after sharing the folder with old public API
+  Scenario Outline: Uploading file to a public shared folder works when allow public uploads has been disabled and again enabled after sharing the folder with public API
     Given user "Alice" has created a public link share with settings
       | path        | FOLDER |
       | permissions | create |
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "yes"
-    When the public uploads file "test-old.txt" with content "test-old" using the old public WebDAV API
-    Then the content of file "/FOLDER/test-old.txt" for user "Alice" should be "test-old"
+    When the public uploads file "test.txt" with content "test-file" using the <webdav_api_version> public WebDAV API
+    Then the content of file "/FOLDER/test.txt" for user "Alice" should be "test-file"
+
+  @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
 
   @issue-ocis-reva-41
-  Scenario: Uploading file to a public shared folder works when allow public uploads has been disabled and again enabled after sharing the folder with new public API
-    Given user "Alice" has created a public link share with settings
-      | path        | FOLDER |
-      | permissions | create |
-    And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
-    And parameter "shareapi_allow_public_upload" of app "core" has been set to "yes"
-    When the public uploads file "test-new.txt" with content "test-new" using the new public WebDAV API
-    Then the content of file "/FOLDER/test-new.txt" for user "Alice" should be "test-new"
+    Examples:
+      | webdav_api_version |
+      | new                |
 
   @smokeTest
-  Scenario: Uploading to a public upload-write and no edit and no overwrite share with old public API
+  Scenario Outline: Uploading to a public upload-write and no edit and no overwrite share with public API
     Given user "Alice" has created a public link share with settings
       | path        | FOLDER          |
       | permissions | uploadwriteonly |
-    When the public uploads file "test-old.txt" with content "test-old" using the old public WebDAV API
-    Then the content of file "/FOLDER/test-old.txt" for user "Alice" should be "test-old"
+    When the public uploads file "test.txt" with content "test-file" using the <webdav_api_version> public WebDAV API
+    Then the content of file "/FOLDER/test.txt" for user "Alice" should be "test-file"
 
-  @smokeTest
-  Scenario: Uploading to a public upload-write and no edit and no overwrite share with new public API
-    Given user "Alice" has created a public link share with settings
-      | path        | FOLDER          |
-      | permissions | uploadwriteonly |
-    When the public uploads file "test-new.txt" with content "test-new" using the new public WebDAV API
-    Then the content of file "/FOLDER/test-new.txt" for user "Alice" should be "test-new"
+    @notToImplementOnOCIS @issue-ocis-2079
+    Examples:
+      | webdav_api_version |
+      | old                |
 
-  @smokeTest
+
+    Examples:
+      | webdav_api_version |
+      | new                |
+
+  @smokeTest @notToImplementOnOCIS @issue-ocis-2079
   Scenario: Uploading same file to a public upload-write and no edit and no overwrite share multiple times with old public API
     Given user "Alice" has created a public link share with settings
       | path        | FOLDER          |
