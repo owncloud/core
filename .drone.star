@@ -25,12 +25,11 @@ config = {
 	'phpunit': {
 		'allDatabases' : {
 			'phpVersions': [
-				'7.2',
+				'7.3',
 			]
 		},
 		'reducedDatabases' : {
 			'phpVersions': [
-				'7.3',
 				'7.4',
 			],
 			'databases': [
@@ -40,7 +39,7 @@ config = {
 		},
 		'external-samba-windows' : {
 			'phpVersions': [
-				'7.2',
+				'7.3',
 				'7.4',
 			],
 			'databases': [
@@ -60,7 +59,7 @@ config = {
 		},
 		'external-other' : {
 			'phpVersions': [
-				'7.2',
+				'7.3',
 				'7.4',
 			],
 			'databases': [
@@ -356,7 +355,7 @@ def dependencies(ctx):
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.2'],
+		'phpVersions': ['7.3'],
 	}
 
 	if 'defaults' in config:
@@ -679,7 +678,7 @@ def phan():
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.2', '7.3', '7.4'],
+		'phpVersions': ['7.3', '7.4'],
 		'logLevel': '2',
 	}
 
@@ -753,7 +752,7 @@ def litmus():
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.2', '7.3', '7.4'],
+		'phpVersions': ['7.3', '7.4'],
 		'logLevel': '2',
 		'useHttps': True,
 	}
@@ -915,7 +914,7 @@ def dav():
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.2', '7.3', '7.4'],
+		'phpVersions': ['7.3', '7.4'],
 		'logLevel': '2'
 	}
 
@@ -1009,7 +1008,7 @@ def javascript(ctx):
 	default = {
 		'coverage': True,
 		'logLevel': '2',
-		'phpVersion': '7.2',
+		'phpVersion': '7.3',
 		'skip': False
 	}
 
@@ -1104,7 +1103,7 @@ def phpTests(ctx, testType):
 	errorFound = False
 
 	default = {
-		'phpVersions': ['7.2', '7.3', '7.4'],
+		'phpVersions': ['7.3', '7.4'],
 		'databases': [
 			'sqlite',
 			'mariadb:10.2',
@@ -1350,7 +1349,7 @@ def acceptance(ctx):
 		'browsers': ['chrome'],
 		'phpVersions': ['7.4'],
 		'databases': ['mariadb:10.2'],
-		'federatedPhpVersion': '7.2',
+		'federatedPhpVersion': '7.3',
 		'federatedServerNeeded': False,
 		'federatedDb': '',
 		'filterTags': '',
