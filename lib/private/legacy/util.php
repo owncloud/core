@@ -1078,11 +1078,11 @@ class OC_Util {
 		if ($userSession && !$userSession->isLoggedIn()) {
 			header(
 				'Location: ' . \OC::$server->getURLGenerator()->linkToRoute(
-				'core.login.showLoginForm',
-				[
+					'core.login.showLoginForm',
+					[
 							'redirect_url' => urlencode(\OC::$server->getRequest()->getRequestUri()),
 						]
-			)
+				)
 			);
 			exit();
 		}

@@ -412,7 +412,7 @@ class AppTest extends \Test\TestCase {
 			->method('getValues')
 			->will(
 				$this->returnValue(
-				[
+					[
 					'app3' => 'yes',
 					'app2' => 'no',
 					'app1' => 'yes',
@@ -420,7 +420,7 @@ class AppTest extends \Test\TestCase {
 					'appforgroup2' => '["group2"]',
 					'appforgroup12' => '["group2","group1"]',
 				]
-			)
+				)
 			);
 
 		$apps = \OC_App::getEnabledApps(false, $forceAll);
@@ -452,11 +452,11 @@ class AppTest extends \Test\TestCase {
 			->method('getValues')
 			->will(
 				$this->returnValue(
-				[
+					[
 					'app3' => 'yes',
 					'app2' => 'no',
 				]
-			)
+				)
 			);
 
 		$apps = \OC_App::getEnabledApps();

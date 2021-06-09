@@ -122,8 +122,8 @@ class SimpleContainerTest extends \Test\TestCase {
 		$this->container->registerService(
 			'Test\AppFramework\Utility\IInterfaceConstructor',
 			function ($c) {
-			return $c->query('Test\AppFramework\Utility\ClassSimpleConstructor');
-		}
+				return $c->query('Test\AppFramework\Utility\ClassSimpleConstructor');
+			}
 		);
 		$object = $this->container->query(
 			'Test\AppFramework\Utility\ClassInterfaceConstructor'
@@ -137,14 +137,14 @@ class SimpleContainerTest extends \Test\TestCase {
 		$this->container->registerService(
 			'Test\AppFramework\Utility\IInterfaceConstructor',
 			function ($c) {
-			return $c->query('Test\AppFramework\Utility\ClassSimpleConstructor');
-		}
+				return $c->query('Test\AppFramework\Utility\ClassSimpleConstructor');
+			}
 		);
 		$this->container->registerService(
 			'Test\AppFramework\Utility\IInterfaceConstructor',
 			function ($c) {
-			return $c->query('Test\AppFramework\Utility\ClassEmptyConstructor');
-		}
+				return $c->query('Test\AppFramework\Utility\ClassEmptyConstructor');
+			}
 		);
 		$object = $this->container->query(
 			'Test\AppFramework\Utility\IInterfaceConstructor'

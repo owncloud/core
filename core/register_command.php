@@ -111,12 +111,12 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\Encryption\EncryptAll(\OC::$server->getEncryptionManager(), \OC::$server->getAppManager(), \OC::$server->getConfig(), new \Symfony\Component\Console\Helper\QuestionHelper()));
 	$application->add(
 		new OC\Core\Command\Encryption\DecryptAll(
-		\OC::$server->getEncryptionManager(),
-		\OC::$server->getAppManager(),
-		\OC::$server->getConfig(),
-		new \OC\Encryption\DecryptAll(\OC::$server->getEncryptionManager(), \OC::$server->getUserManager(), new \OC\Files\View(), \OC::$server->getLogger()),
-		new \Symfony\Component\Console\Helper\QuestionHelper()
-	)
+			\OC::$server->getEncryptionManager(),
+			\OC::$server->getAppManager(),
+			\OC::$server->getConfig(),
+			new \OC\Encryption\DecryptAll(\OC::$server->getEncryptionManager(), \OC::$server->getUserManager(), new \OC\Files\View(), \OC::$server->getLogger()),
+			new \Symfony\Component\Console\Helper\QuestionHelper()
+		)
 	);
 
 	$application->add(new OC\Core\Command\Log\Manage(\OC::$server->getConfig()));
@@ -131,12 +131,12 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	);
 	$application->add(
 		new OC\Core\Command\Encryption\ChangeKeyStorageRoot(
-		$view,
-		\OC::$server->getUserManager(),
-		\OC::$server->getConfig(),
-		$util,
-		new \Symfony\Component\Console\Helper\QuestionHelper()
-	)
+			$view,
+			\OC::$server->getUserManager(),
+			\OC::$server->getConfig(),
+			$util,
+			new \Symfony\Component\Console\Helper\QuestionHelper()
+		)
 	);
 	$application->add(new OC\Core\Command\Encryption\ShowKeyStorageRoot($util));
 
@@ -150,11 +150,11 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\Upgrade(\OC::$server->getConfig(), \OC::$server->getLogger(), \OC::$server->getMemCacheFactory()));
 	$application->add(
 		new OC\Core\Command\Maintenance\Repair(
-		new \OC\Repair(\OC\Repair::getRepairSteps(), \OC::$server->getEventDispatcher()),
-		\OC::$server->getConfig(),
-		\OC::$server->getEventDispatcher(),
-		\OC::$server->getAppManager()
-	)
+			new \OC\Repair(\OC\Repair::getRepairSteps(), \OC::$server->getEventDispatcher()),
+			\OC::$server->getConfig(),
+			\OC::$server->getEventDispatcher(),
+			\OC::$server->getAppManager()
+		)
 	);
 
 	$application->add(new OC\Core\Command\User\Add(\OC::$server->getUserManager(), \OC::$server->getGroupManager(), \OC::$server->getMailer()));

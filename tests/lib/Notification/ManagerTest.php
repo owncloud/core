@@ -114,9 +114,9 @@ class ManagerTest extends TestCase {
 		$this->eventDispatcher->addListener(
 			RegisterConsumerEvent::NAME,
 			function (RegisterConsumerEvent $event) use ($app, &$callbackCalledCount) {
-					$callbackCalledCount++;
-					$event->registerNotificationConsumer($app);
-				}
+				$callbackCalledCount++;
+				$event->registerNotificationConsumer($app);
+			}
 		);
 
 		$apps = $this->invokePrivate($this->manager, 'getApps');
@@ -246,9 +246,9 @@ class ManagerTest extends TestCase {
 		$this->eventDispatcher->addListener(
 			RegisterNotifierEvent::NAME,
 			function (RegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount) {
-					$callbackCalledCount++;
-					$event->registerNotifier($notifier, 'testid1', 'test app name');
-				}
+				$callbackCalledCount++;
+				$event->registerNotifier($notifier, 'testid1', 'test app name');
+			}
 		);
 
 		$notifiers = $this->invokePrivate($this->manager, 'getNotifiers');
@@ -272,9 +272,9 @@ class ManagerTest extends TestCase {
 		$this->eventDispatcher->addListener(
 			RegisterNotifierEvent::NAME,
 			function (RegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount) {
-					$callbackCalledCount++;
-					$event->registerNotifier($notifier, 'testid1', 'test app name');
-				}
+				$callbackCalledCount++;
+				$event->registerNotifier($notifier, 'testid1', 'test app name');
+			}
 		);
 
 		$notifiersInfo = $this->manager->listNotifiers();
@@ -296,9 +296,9 @@ class ManagerTest extends TestCase {
 		$this->eventDispatcher->addListener(
 			RegisterNotifierEvent::NAME,
 			function (RegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount) {
-					$callbackCalledCount++;
-					$event->registerNotifier($notifier, 'testid1', 'test app name');
-				}
+				$callbackCalledCount++;
+				$event->registerNotifier($notifier, 'testid1', 'test app name');
+			}
 		);
 
 		$notifiers = $this->invokePrivate($this->manager, 'getNotifiers');
@@ -335,17 +335,17 @@ class ManagerTest extends TestCase {
 		$this->eventDispatcher->addListener(
 			RegisterNotifierEvent::NAME,
 			function (RegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount) {
-					$callbackCalledCount++;
-					$event->registerNotifier($notifier, 'testid1', 'test app name');
-				}
+				$callbackCalledCount++;
+				$event->registerNotifier($notifier, 'testid1', 'test app name');
+			}
 		);
 
 		$this->eventDispatcher->addListener(
 			RegisterNotifierEvent::NAME,
 			function (RegisterNotifierEvent $event) use ($notifier2, &$callbackCalledCount2) {
-					$callbackCalledCount2++;
-					$event->registerNotifier($notifier2, 'testid1', 'test app name');
-				}
+				$callbackCalledCount2++;
+				$event->registerNotifier($notifier2, 'testid1', 'test app name');
+			}
 		);
 
 		$notifiers = $this->invokePrivate($this->manager, 'getNotifiers');
@@ -374,9 +374,9 @@ class ManagerTest extends TestCase {
 		$this->eventDispatcher->addListener(
 			RegisterNotifierEvent::NAME,
 			function (RegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount) {
-					$callbackCalledCount++;
-					$event->registerNotifier($notifier, 'testid1', 'test app name');
-				}
+				$callbackCalledCount++;
+				$event->registerNotifier($notifier, 'testid1', 'test app name');
+			}
 		);
 
 		$this->manager->registerNotifier($closure, function () {
@@ -403,21 +403,21 @@ class ManagerTest extends TestCase {
 		$this->eventDispatcher->addListener(
 			RegisterNotifierEvent::NAME,
 			function (RegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount) {
-					$callbackCalledCount++;
-					$event->registerNotifier($notifier, 'testid1', 'test app name');
-				}
+				$callbackCalledCount++;
+				$event->registerNotifier($notifier, 'testid1', 'test app name');
+			}
 		);
 
 		$this->eventDispatcher->addListener(
 			RegisterNotifierEvent::NAME,
 			function (RegisterNotifierEvent $event) use ($notifier2, &$callbackCalledCount2, &$swallowedException) {
-					$callbackCalledCount2++;
-					try {
-						$event->registerNotifier($notifier2, 'testid1', 'test app name');
-					} catch (NotifierIdInUseException $ex) {
-						$swallowedException = true;
-					}
+				$callbackCalledCount2++;
+				try {
+					$event->registerNotifier($notifier2, 'testid1', 'test app name');
+				} catch (NotifierIdInUseException $ex) {
+					$swallowedException = true;
 				}
+			}
 		);
 
 		$notifiers = $this->invokePrivate($this->manager, 'getNotifiers');

@@ -239,8 +239,8 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->method('generateMultiStatus')
 			->will(
 				$this->returnCallback(function ($responsesArg) use (&$responses) {
-				$responses = $responsesArg;
-			})
+					$responses = $responsesArg;
+				})
 			);
 
 		$this->assertFalse($this->plugin->onReport(FilesReportPluginImplementation::REPORT_NAME, $parameters, '/' . $path));
@@ -329,8 +329,8 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->method('generateMultiStatus')
 			->will(
 				$this->returnCallback(function ($responsesArg) use (&$responses) {
-				$responses = $responsesArg;
-			})
+					$responses = $responsesArg;
+				})
 			);
 
 		$this->assertFalse($this->plugin->onReport(FilesReportPluginImplementation::REPORT_NAME, $parameters, '/' . $path));
