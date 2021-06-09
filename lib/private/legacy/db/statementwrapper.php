@@ -26,7 +26,7 @@
  */
 
 /**
- * small wrapper around \Doctrine\DBAL\Driver\Statement to make it behave, more like an MDB2 Statement
+ * small wrapper around \Doctrine\DBAL\Statement to make it behave, more like an MDB2 Statement
  *
  * @method boolean bindValue(mixed $param, mixed $value, integer $type = null);
  * @method string errorCode();
@@ -41,6 +41,10 @@ class OC_DB_StatementWrapper {
 	private $statement = null;
 	private $isManipulation = false;
 	private $lastArguments = [];
+	/**
+	 * @var \Doctrine\DBAL\Result
+	 */
+	private $result = null;
 
 	/**
 	 * @param boolean $isManipulation
@@ -51,7 +55,7 @@ class OC_DB_StatementWrapper {
 	}
 
 	/**
-	 * pass all other function directly to the \Doctrine\DBAL\Driver\Statement
+	 * pass all other function directly to the \Doctrine\DBAL\Statement
 	 */
 	public function __call($name, $arguments) {
 		return \call_user_func_array([$this->statement,$name], $arguments);
@@ -61,7 +65,7 @@ class OC_DB_StatementWrapper {
 	 * make execute return the result instead of a bool
 	 *
 	 * @param array $input
-	 * @return \OC_DB_StatementWrapper|int|boolean|\Doctrine\DBAL\Result
+	 * @return \OC_DB_StatementWrapper|int|boolean
 	 */
 	public function execute(array $input= []) {
 		$this->lastArguments = $input;
@@ -78,6 +82,7 @@ class OC_DB_StatementWrapper {
 			$count = $result->rowCount();
 			return $count;
 		} else {
+			$this->result = $result;
 			return $this;
 		}
 	}
@@ -88,6 +93,9 @@ class OC_DB_StatementWrapper {
 	 * @return mixed
 	 */
 	public function fetchRow() {
+		if ($this->result) {
+			return $this->result->fetchAssociative();
+		}
 		return $this->statement->executeQuery()->fetchAssociative();
 	}
 
@@ -100,6 +108,9 @@ class OC_DB_StatementWrapper {
 	 */
 	public function fetchOne($column = 0) {
 		// @TODO use column
+		if ($this->result) {
+			return $this->result->fetchOne();
+		}
 		return $this->statement->executeQuery()->fetchOne();
 	}
 
@@ -115,5 +126,16 @@ class OC_DB_StatementWrapper {
 	 */
 	public function bindParam($column, &$variable, $type = null, $length = null) {
 		return $this->statement->bindParam($column, $variable, $type, $length);
+	}
+
+	/**
+	 * Close the current cursor.
+	 */
+	public function free() {
+		if ($this->result) {
+			$this->result->free();
+			return;
+		}
+		$this->statement->executeQuery()->free();
 	}
 }

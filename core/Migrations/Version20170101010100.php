@@ -756,7 +756,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsTable->addColumn(
 				'creation_timestamp',
-				Types::DATETIME,
+				Types::DATETIME_MUTABLE,
 				[
 					'default' => null,
 					'notnull' => false
@@ -765,7 +765,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsTable->addColumn(
 				'latest_child_timestamp',
-				Types::DATETIME,
+				Types::DATETIME_MUTABLE,
 				[
 					'default' => null,
 					'notnull' => false
@@ -811,7 +811,7 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsReadMarkersTable->addColumn(
 				'marker_datetime',
-				Types::DATETIME,
+				Types::DATETIME_MUTABLE,
 				[
 					'default' => null,
 					'notnull' => false

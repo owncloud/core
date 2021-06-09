@@ -28,7 +28,7 @@ namespace OC\Core\Command\Db;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use OC\DB\MDB2SchemaManager;
 use OCP\App\IAppManager;
 use OCP\IConfig;
@@ -348,9 +348,11 @@ class ConvertType extends Command {
 	 * @return string[]
 	 */
 	protected function getTables(Connection $db) {
-		$filterExpression = '/^' . \preg_quote($this->targetTablePrefix) . '/';
-		$db->getConfiguration()->
-			setFilterSchemaAssetsExpression($filterExpression);
+		$db->getConfiguration()->setSchemaAssetsFilter(static function () {
+			$dbTablePrefix = \OC::$server->getConfig()->getSystemValue('dbtableprefix', 'oc_');
+			return '/^' . \preg_quote($dbTablePrefix) . '/';
+		});
+
 		return $db->getSchemaManager()->listTableNames();
 	}
 
@@ -445,8 +447,8 @@ class ConvertType extends Command {
 			$columnName = $column->getName();
 			$type = $table->getColumn($columnName)->getType()->getName();
 			switch ($type) {
-				case Type::BLOB:
-				case Type::TEXT:
+				case Types::BLOB:
+				case Types::TEXT:
 					$this->tableColumnTypes[$tableName][$columnName] = IQueryBuilder::PARAM_LOB;
 					break;
 				default:

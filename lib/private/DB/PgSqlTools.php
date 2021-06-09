@@ -47,16 +47,18 @@ class PgSqlTools {
 	* @return void
 	*/
 	public function resynchronizeDatabaseSequences(Connection $conn) {
-		$filterExpression = '/^' . \preg_quote($this->config->getSystemValue('dbtableprefix', 'oc_')) . '/';
 		$databaseName = $conn->getDatabase();
-		$conn->getConfiguration()->setFilterSchemaAssetsExpression($filterExpression);
+		$conn->getConfiguration()->setSchemaAssetsFilter(static function () {
+			$dbTablePrefix = \OC::$server->getConfig()->getSystemValue('dbtableprefix', 'oc_');
+			return '/^' . \preg_quote($dbTablePrefix) . '/';
+		});
 
 		foreach ($conn->getSchemaManager()->listSequences() as $sequence) {
 			$sequenceName = $sequence->getName();
 			$sqlInfo = 'SELECT table_schema, table_name, column_name
 				FROM information_schema.columns
 				WHERE column_default = ? AND table_catalog = ?';
-			$sequenceInfo = $conn->fetchAssoc($sqlInfo, [
+			$sequenceInfo = $conn->fetchAssociative($sqlInfo, [
 				"nextval('$sequenceName'::regclass)",
 				$databaseName
 			]);

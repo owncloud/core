@@ -178,7 +178,7 @@ class Adapter {
 			} catch (DriverException $e) {
 				// Skip deadlock and retry
 				// @TODO when we update to DBAL 2.6 we can use DeadlockExceptions here
-				if ($e->getErrorCode() == 1213) {
+				if ($e->getCode() == 1213) {
 					$count++;
 					continue;
 				} else {

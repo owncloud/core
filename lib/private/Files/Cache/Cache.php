@@ -886,8 +886,8 @@ class Cache implements ICache {
 	public function getIncomplete() {
 		$query = $this->connection->prepare('SELECT `path` FROM `*PREFIX*filecache`'
 			. ' WHERE `storage` = ? AND `size` = -1 ORDER BY `fileid` DESC', 1);
-		$query->execute([$this->getNumericStorageId()]);
-		if ($row = $query->fetch()) {
+		$result = $query->execute([$this->getNumericStorageId()]);
+		if ($row = $result->fetch()) {
 			return $row['path'];
 		} else {
 			return false;

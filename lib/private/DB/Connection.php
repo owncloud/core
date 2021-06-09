@@ -34,7 +34,7 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Cache\QueryCacheProfile;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\TransactionIsolationLevel;
 use OC\DB\QueryBuilder\QueryBuilder;
@@ -469,7 +469,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @since 10.0
 	 */
 	public function allows4ByteCharacters() {
-		if (!$this->getDatabasePlatform() instanceof MySqlPlatform) {
+		if (!$this->getDatabasePlatform() instanceof MySQLPlatform) {
 			return true;
 		}
 		if ($this->getParams()['charset'] === 'utf8mb4') {
@@ -490,9 +490,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 */
 	public function getDatabaseVersionString() {
 		// Automatic platform version detection.
-		if ($this->_conn instanceof ServerInfoAwareConnection &&
-			! $this->_conn->requiresQueryForServerVersion()
-		) {
+		if ($this->_conn instanceof ServerInfoAwareConnection) {
 			return $this->_conn->getServerVersion();
 		}
 

@@ -49,12 +49,15 @@ class MDB2SchemaWriter {
 		}
 
 		// FIX ME: bloody work around
-		if ($config->getSystemValue('dbtype', 'sqlite') === 'oci') {
-			$filterExpression = '/^"' . \preg_quote($conn->getPrefix()) . '/';
-		} else {
-			$filterExpression = '/^' . \preg_quote($conn->getPrefix()) . '/';
-		}
-		$conn->getConfiguration()->setFilterSchemaAssetsExpression($filterExpression);
+		$conn->getConfiguration()->setSchemaAssetsFilter(static function () {
+			$dbTablePrefix = \OC::$server->getConfig()->getSystemValue('dbtableprefix', 'oc_');
+			$dbType = \OC::$server->getConfig()->getSystemValue('dbtype', 'sqlite');
+			if ($dbType === 'oci') {
+				return '/^"' . \preg_quote($dbTablePrefix) . '/';
+			}
+
+			return '/^' . \preg_quote($dbTablePrefix) . '/';
+		});
 
 		foreach ($conn->getSchemaManager()->listTables() as $table) {
 			self::saveTable($table, $xml->addChild('table'));

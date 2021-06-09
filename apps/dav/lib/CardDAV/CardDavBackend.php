@@ -708,8 +708,8 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	public function getChangesForAddressBook($addressBookId, $syncToken, $syncLevel, $limit = null) {
 		// Current synctoken
 		$stmt = $this->db->prepare('SELECT `synctoken` FROM `*PREFIX*addressbooks` WHERE `id` = ?');
-		$stmt->execute([ $addressBookId ]);
-		$currentToken = $stmt->fetchColumn();
+		$res = $stmt->execute([ $addressBookId ]);
+		$currentToken = $res->fetchOne();
 
 		if ($currentToken === null) {
 			return null;
@@ -727,13 +727,13 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 
 			// Fetching all changes
 			$stmt = $this->db->prepare($query, $limit ?: null, $limit ? 0 : null);
-			$stmt->execute([$syncToken, $currentToken, $addressBookId]);
+			$res = $stmt->execute([$syncToken, $currentToken, $addressBookId]);
 
 			$changes = [];
 
 			// This loop ensures that any duplicates are overwritten, only the
 			// last change on a node is relevant.
-			while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+			while ($row = $res->fetch(\PDO::FETCH_ASSOC)) {
 				$changes[$row['uri']] = $row['operation'];
 			}
 
@@ -754,9 +754,9 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			// No synctoken supplied, this is the initial sync.
 			$query = 'SELECT `uri` FROM `*PREFIX*cards` WHERE `addressbookid` = ?';
 			$stmt = $this->db->prepare($query);
-			$stmt->execute([$addressBookId]);
+			$res = $stmt->execute([$addressBookId]);
 
-			$result['added'] = $stmt->fetchAll(\PDO::FETCH_COLUMN);
+			$result['added'] = $res->fetchAll(\PDO::FETCH_COLUMN);
 		}
 		return $result;
 	}

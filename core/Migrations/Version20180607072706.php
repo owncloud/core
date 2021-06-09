@@ -1,7 +1,6 @@
 <?php
 namespace OC\Migrations;
 
-use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use OCP\Migration\ISchemaMigration;
