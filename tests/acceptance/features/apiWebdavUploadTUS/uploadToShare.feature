@@ -46,6 +46,7 @@ Feature: upload file to shared folder
     And user "Brian" has been added to group "grp1"
     And user "Alice" has created folder "/FOLDER"
     And user "Alice" has shared folder "FOLDER" with group "grp1" with permissions "change"
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     When user "Brian" uploads file with content "uploaded content" to "/Shares/FOLDER/textfile.txt" using the TUS protocol on the WebDAV API
     Then the HTTP status code should be "200"
     And as "Alice" file "/FOLDER/textfile.txt" should exist

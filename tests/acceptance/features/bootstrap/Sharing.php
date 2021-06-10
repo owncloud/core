@@ -932,6 +932,13 @@ trait Sharing {
 	public function userHasUpdatedTheLastShareOfWith($user, $shareOwner, $body) {
 		$this->updateLastShareWithSettings($user, $body, $shareOwner);
 		$this->theHTTPStatusCodeShouldBeSuccess();
+		if ($this->ocsApiVersion == 1) {
+			$this->ocsContext->theOCSStatusCodeShouldBe(100);
+		} elseif ($this->ocsApiVersion === 2) {
+			$this->ocsContext->theOCSStatusCodeShouldBe(200);
+		} else {
+			throw new Exception('Invalid ocs api version used');
+		}
 	}
 
 	/**
@@ -1854,14 +1861,14 @@ trait Sharing {
 	/**
 	 * Extracts `id` from responseXml
 	 *
-	 * @return int|null
+	 * @return string|null
 	 */
 	public function extractLastSharedIdFromLastResponse() {
 		// extract max id
 		$xpath = '/ocs/data/element/id[not (. < ../../element/id)][1]';
 		$id = $this->getResponseXml(null, __METHOD__)->xpath($xpath);
 		if ((bool) $id) {
-			return (int) $id[0];
+			return (string) $id[0];
 		}
 		return null;
 	}
