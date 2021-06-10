@@ -32,6 +32,7 @@ Summary
 * Bugfix - Image preview for file versions: [#38778](https://github.com/owncloud/core/pull/38778)
 * Bugfix - Prevent files:checksum:verify from crashing on exception: [#38785](https://github.com/owncloud/core/pull/38785)
 * Bugfix - Always allow renaming shared mounts: [#38794](https://github.com/owncloud/core/pull/38794)
+* Bugfix - Adjust position of the share autocomplete element: [#38831](https://github.com/owncloud/core/pull/38831)
 * Change - Update Symfony components: [#38797](https://github.com/owncloud/core/pull/38797)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
@@ -259,6 +260,15 @@ Details
    https://github.com/owncloud/enterprise/issues/4582
    https://github.com/owncloud/core/issues/30325
    https://github.com/owncloud/core/pull/38794
+
+* Bugfix - Adjust position of the share autocomplete element: [#38831](https://github.com/owncloud/core/pull/38831)
+
+   We now append the share autocomplete element to #shareTabView to prevent the autocomplete
+   dialog from being hidden in certain scenarios. This happened with Safari for example as soon as
+   the filelist was long enough to have a vertical scrollbar.
+
+   https://github.com/owncloud/enterprise/issues/4603
+   https://github.com/owncloud/core/pull/38831
 
 * Change - Update Symfony components: [#38797](https://github.com/owncloud/core/pull/38797)
 
