@@ -193,10 +193,10 @@ class Root extends Folder implements IRootFolder {
 			} else {
 				// try getting the fileinfo in case we have data in the filecache
 				$fileInfo = $this->view->getFileInfo($fullPath);
-				if ($fileInfo) {
-					return $this->createNode($fullPath, $fileInfo);
+				if (!$fileInfo) {
+					throw new NotFoundException($path);
 				}
-				throw new NotFoundException($path);
+				return $this->createNode($fullPath, $fileInfo);
 			}
 		} else {
 			throw new NotPermittedException();
