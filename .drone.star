@@ -310,7 +310,7 @@ def dependencies(ctx):
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.4'],
+		'phpVersions': ['7.4-ubuntu20.04'],
 	}
 
 	if 'defaults' in config:
@@ -1124,7 +1124,7 @@ def phpTests(ctx, testType):
 					keyString = '-' + category if params['includeKeyInMatrixName'] else ''
 					filesExternalType = externalType if externalType != 'none' else ''
 					externalNameString = '-' + externalType if externalType != 'none' else ''
-					name = '%s%s-php%s-%s%s' % (testType, keyString, '7.4U', getShortDbNameAndVersion(db), externalNameString)
+					name = '%s%s-php%s-%s%s' % (testType, keyString, phpVersion, getShortDbNameAndVersion(db), externalNameString)
 					maxLength = 50
 					nameLength = len(name)
 					if nameLength > maxLength:
