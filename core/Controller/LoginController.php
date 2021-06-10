@@ -73,8 +73,17 @@ class LoginController extends Controller {
 	 * @param IURLGenerator $urlGenerator
 	 * @param Manager $twoFactorManager
 	 */
-	public function __construct($appName, IRequest $request, IUserManager $userManager, IConfig $config, ISession $session,
-		Session $userSession, IURLGenerator $urlGenerator, Manager $twoFactorManager, ILicenseManager $licenseManager) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IUserManager $userManager,
+		IConfig $config,
+		ISession $session,
+		Session $userSession,
+		IURLGenerator $urlGenerator,
+		Manager $twoFactorManager,
+		ILicenseManager $licenseManager
+	) {
 		parent::__construct($appName, $request);
 		$this->userManager = $userManager;
 		$this->config = $config;
@@ -180,8 +189,10 @@ class LoginController extends Controller {
 
 		if (!empty($redirect_url) && ($remember_login === null) &&
 			($this->userSession->isLoggedIn() === false) &&
-			(\strpos($this->urlGenerator->getAbsoluteURL(\urldecode($redirect_url)),
-					$this->urlGenerator->getAbsoluteURL('/index.php/f/')) !== false)) {
+			(\strpos(
+				$this->urlGenerator->getAbsoluteURL(\urldecode($redirect_url)),
+				$this->urlGenerator->getAbsoluteURL('/index.php/f/')
+			) !== false)) {
 			$parameters['accessLink'] = true;
 		}
 
@@ -201,7 +212,10 @@ class LoginController extends Controller {
 		$parameters['strictLoginEnforced'] = $this->config->getSystemValue('strict_login_enforced', false);
 
 		return new TemplateResponse(
-			$this->appName, 'login', $parameters, 'guest'
+			$this->appName,
+			'login',
+			$parameters,
+			'guest'
 		);
 	}
 

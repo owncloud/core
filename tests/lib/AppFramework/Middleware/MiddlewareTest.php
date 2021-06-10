@@ -48,7 +48,8 @@ class MiddlewareTest extends \Test\TestCase {
 		$this->middleware = new ChildMiddleware();
 
 		$this->api = $this->getMockBuilder(
-				'OC\AppFramework\DependencyInjection\DIContainer')
+			'OC\AppFramework\DependencyInjection\DIContainer'
+		)
 				->disableOriginalConstructor()
 				->getMock();
 

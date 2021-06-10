@@ -94,10 +94,12 @@ class CleanupRemoteStorages extends Command {
 		$queryBuilder = $this->connection->getQueryBuilder();
 		$queryBuilder->select($queryBuilder->createFunction('count(fileid)'))
 			->from('filecache')
-			->where($queryBuilder->expr()->eq(
-				'storage',
-				$queryBuilder->createNamedParameter($numericId, IQueryBuilder::PARAM_STR),
-				IQueryBuilder::PARAM_STR)
+			->where(
+				$queryBuilder->expr()->eq(
+					'storage',
+					$queryBuilder->createNamedParameter($numericId, IQueryBuilder::PARAM_STR),
+					IQueryBuilder::PARAM_STR
+				)
 			);
 		$result = $queryBuilder->execute();
 		$count = $result->fetchColumn();
@@ -107,10 +109,12 @@ class CleanupRemoteStorages extends Command {
 	public function deleteStorage($id, $numericId, OutputInterface $output) {
 		$queryBuilder = $this->connection->getQueryBuilder();
 		$queryBuilder->delete('storages')
-			->where($queryBuilder->expr()->eq(
-				'id',
-				$queryBuilder->createNamedParameter($id, IQueryBuilder::PARAM_STR),
-				IQueryBuilder::PARAM_STR)
+			->where(
+				$queryBuilder->expr()->eq(
+					'id',
+					$queryBuilder->createNamedParameter($id, IQueryBuilder::PARAM_STR),
+					IQueryBuilder::PARAM_STR
+				)
 			);
 		$output->write("deleting $id [$numericId] ... ");
 		$count = $queryBuilder->execute();
@@ -121,10 +125,12 @@ class CleanupRemoteStorages extends Command {
 	public function deleteFiles($numericId, OutputInterface $output) {
 		$queryBuilder = $this->connection->getQueryBuilder();
 		$queryBuilder->delete('filecache')
-			->where($queryBuilder->expr()->eq(
-				'storage',
-				$queryBuilder->createNamedParameter($numericId, IQueryBuilder::PARAM_STR),
-				IQueryBuilder::PARAM_STR)
+			->where(
+				$queryBuilder->expr()->eq(
+					'storage',
+					$queryBuilder->createNamedParameter($numericId, IQueryBuilder::PARAM_STR),
+					IQueryBuilder::PARAM_STR
+				)
 			);
 		$output->write("deleting files for storage $numericId ... ");
 		$count = $queryBuilder->execute();
@@ -135,17 +141,21 @@ class CleanupRemoteStorages extends Command {
 		$queryBuilder = $this->connection->getQueryBuilder();
 		$queryBuilder->select(['id', 'numeric_id'])
 			->from('storages')
-			->where($queryBuilder->expr()->like(
-				'id',
+			->where(
+				$queryBuilder->expr()->like(
+					'id',
 				// match all 'shared::' + 32 characters storages
 				$queryBuilder->createPositionalParameter('shared::________________________________', IQueryBuilder::PARAM_STR),
-				IQueryBuilder::PARAM_STR)
+					IQueryBuilder::PARAM_STR
+				)
 			)
-			->andWhere($queryBuilder->expr()->notLike(
-				'id',
+			->andWhere(
+				$queryBuilder->expr()->notLike(
+					'id',
 				// but not the ones starting with a '/', they are for normal shares
 				$queryBuilder->createPositionalParameter('shared::/%', IQueryBuilder::PARAM_STR),
-				IQueryBuilder::PARAM_STR)
+					IQueryBuilder::PARAM_STR
+				)
 			)->orderBy('numeric_id');
 		$query = $queryBuilder->execute();
 

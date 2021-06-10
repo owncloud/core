@@ -332,7 +332,8 @@ class ScannerTest extends \Test\TestCase {
 	 * @param bool $expected
 	 */
 	public function testIsPartialFile($path, $expected) {
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->scanner->isPartialFile($path)
 		);
 	}

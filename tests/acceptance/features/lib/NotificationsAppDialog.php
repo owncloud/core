@@ -100,7 +100,8 @@ class NotificationsAppDialog extends OwncloudPage {
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$this->waitTillXpathIsVisible(
-			$this->notificationContainerXpath, $timeout_msec
+			$this->notificationContainerXpath,
+			$timeout_msec
 		);
 	}
 }

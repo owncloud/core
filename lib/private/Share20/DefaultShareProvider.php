@@ -49,7 +49,7 @@ use OCP\Files\Node;
 class DefaultShareProvider implements IShareProvider {
 
 	// Special share type for user modified group shares
-	const SHARE_TYPE_USERGROUP = 2;
+	public const SHARE_TYPE_USERGROUP = 2;
 
 	/** @var IDBConnection */
 	private $dbConn;
@@ -72,10 +72,11 @@ class DefaultShareProvider implements IShareProvider {
 	 * @param IRootFolder $rootFolder
 	 */
 	public function __construct(
-			IDBConnection $connection,
-			IUserManager $userManager,
-			IGroupManager $groupManager,
-			IRootFolder $rootFolder) {
+		IDBConnection $connection,
+		IUserManager $userManager,
+		IGroupManager $groupManager,
+		IRootFolder $rootFolder
+	) {
 		$this->dbConn = $connection;
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;

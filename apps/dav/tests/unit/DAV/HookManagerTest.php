@@ -78,7 +78,8 @@ class HookManagerTest extends TestCase {
 			[
 				'{DAV:}displayname' => $this->l10n->t('Personal'),
 				'{http://apple.com/ns/ical/}calendar-color' => '#041e42'
-			]);
+			]
+		);
 
 		/** @var CardDavBackend | \PHPUnit\Framework\MockObject\MockObject $card */
 		$card = $this->getMockBuilder(CardDavBackend::class)
@@ -87,7 +88,9 @@ class HookManagerTest extends TestCase {
 		$card->expects($this->once())->method('getAddressBooksForUser')->willReturn([]);
 		$card->expects($this->once())->method('createAddressBook')->with(
 			'principals/users/newUser',
-			'contacts', ['{DAV:}displayname' => $this->l10n->t('Contacts')]);
+			'contacts',
+			['{DAV:}displayname' => $this->l10n->t('Contacts')]
+		);
 
 		$hm = new HookManager($userManager, $syncService, $cal, $card, $this->l10n);
 		$hm->firstLogin($user);
@@ -160,7 +163,8 @@ class HookManagerTest extends TestCase {
 			[
 				'{DAV:}displayname' => $this->l10n->t('Personal'),
 				'{http://apple.com/ns/ical/}calendar-color' => '#041e42',
-			]);
+			]
+		);
 
 		/** @var CardDavBackend | \PHPUnit\Framework\MockObject\MockObject $card */
 		$card = $this->getMockBuilder(CardDavBackend::class)
@@ -169,7 +173,9 @@ class HookManagerTest extends TestCase {
 		$card->expects($this->once())->method('getAddressBooksForUser')->willReturn([]);
 		$card->expects($this->once())->method('createAddressBook')->with(
 			'principals/users/newUser',
-			'contacts', ['{DAV:}displayname' => $this->l10n->t('Contacts')]);
+			'contacts',
+			['{DAV:}displayname' => $this->l10n->t('Contacts')]
+		);
 
 		$hm = new HookManager($userManager, $syncService, $cal, $card, $this->l10n);
 		$hm->firstLogin($user);

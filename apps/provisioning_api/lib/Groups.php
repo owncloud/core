@@ -45,9 +45,11 @@ class Groups {
 	 * @param \OCP\IUserSession $userSession
 	 * @param \OCP\IRequest $request
 	 */
-	public function __construct(\OCP\IGroupManager $groupManager,
-								\OCP\IUserSession $userSession,
-								\OCP\IRequest $request) {
+	public function __construct(
+		\OCP\IGroupManager $groupManager,
+		\OCP\IUserSession $userSession,
+		\OCP\IRequest $request
+	) {
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
 		$this->request = $request;

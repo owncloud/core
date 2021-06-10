@@ -93,20 +93,24 @@ class DispatcherTest extends \Test\TestCase {
 		$this->controllerMethod = 'test';
 
 		$app = $this->getMockBuilder(
-			'OC\AppFramework\DependencyInjection\DIContainer')
+			'OC\AppFramework\DependencyInjection\DIContainer'
+		)
 			->disableOriginalConstructor()
 			->getMock();
 		$request = $this->getMockBuilder(
-			'\OC\AppFramework\Http\Request')
+			'\OC\AppFramework\Http\Request'
+		)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->http = $this->getMockBuilder(
-			'\OC\AppFramework\Http')
+			'\OC\AppFramework\Http'
+		)
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->middlewareDispatcher = $this->getMockBuilder(
-			'\OC\AppFramework\Middleware\MiddlewareDispatcher')
+			'\OC\AppFramework\Middleware\MiddlewareDispatcher'
+		)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->controller = $this->getMockBuilder('\OCP\AppFramework\Controller')
@@ -115,19 +119,23 @@ class DispatcherTest extends \Test\TestCase {
 			->getMock();
 
 		$this->request = $this->getMockBuilder(
-			'\OC\AppFramework\Http\Request')
+			'\OC\AppFramework\Http\Request'
+		)
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->reflector = new ControllerMethodReflector();
 
 		$this->dispatcher = new Dispatcher(
-			$this->http, $this->middlewareDispatcher, $this->reflector,
+			$this->http,
+			$this->middlewareDispatcher,
+			$this->reflector,
 			$this->request
 		);
 
 		$this->response = $this->getMockBuilder(
-			'\OCP\AppFramework\Http\Response')
+			'\OCP\AppFramework\Http\Response'
+		)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -139,37 +147,49 @@ class DispatcherTest extends \Test\TestCase {
 	 * @param string $out
 	 * @param string $httpHeaders
 	 */
-	private function setMiddlewareExpectations($out=null,
-		$httpHeaders=null, $responseHeaders= [],
-		$ex=false, $catchEx=true) {
+	private function setMiddlewareExpectations(
+		$out=null,
+		$httpHeaders=null,
+		$responseHeaders= [],
+		$ex=false,
+		$catchEx=true
+	) {
 		if ($ex) {
 			$exception = new \Exception();
 			$this->middlewareDispatcher->expects($this->once())
 				->method('beforeController')
-				->with($this->equalTo($this->controller),
-					$this->equalTo($this->controllerMethod))
+				->with(
+					$this->equalTo($this->controller),
+					$this->equalTo($this->controllerMethod)
+				)
 				->will($this->throwException($exception));
 			if ($catchEx) {
 				$this->middlewareDispatcher->expects($this->once())
 					->method('afterException')
-					->with($this->equalTo($this->controller),
+					->with(
+						$this->equalTo($this->controller),
 						$this->equalTo($this->controllerMethod),
-						$this->equalTo($exception))
+						$this->equalTo($exception)
+					)
 					->will($this->returnValue($this->response));
 			} else {
 				$this->middlewareDispatcher->expects($this->once())
 					->method('afterException')
-					->with($this->equalTo($this->controller),
+					->with(
+						$this->equalTo($this->controller),
 						$this->equalTo($this->controllerMethod),
-						$this->equalTo($exception))
+						$this->equalTo($exception)
+					)
 					->will($this->returnValue(null));
 				return;
 			}
 		} else {
 			$this->middlewareDispatcher->expects($this->once())
 				->method('beforeController')
-				->with($this->equalTo($this->controller),
-					$this->equalTo($this->controllerMethod));
+				->with(
+					$this->equalTo($this->controller),
+					$this->equalTo($this->controllerMethod)
+				);
 			$this->controller->expects($this->once())
 				->method($this->controllerMethod)
 				->will($this->returnValue($this->response));
@@ -192,38 +212,48 @@ class DispatcherTest extends \Test\TestCase {
 			->will($this->returnValue($responseHeaders));
 		$this->http->expects($this->once())
 			->method('getStatusHeader')
-			->with($this->equalTo(Http::STATUS_OK),
+			->with(
+				$this->equalTo(Http::STATUS_OK),
 				$this->equalTo($this->lastModified),
-				$this->equalTo($this->etag))
+				$this->equalTo($this->etag)
+			)
 			->will($this->returnValue($httpHeaders));
 
 		$this->middlewareDispatcher->expects($this->once())
 			->method('afterController')
-			->with($this->equalTo($this->controller),
+			->with(
+				$this->equalTo($this->controller),
 				$this->equalTo($this->controllerMethod),
-				$this->equalTo($this->response))
+				$this->equalTo($this->response)
+			)
 			->will($this->returnValue($this->response));
 
 		$this->middlewareDispatcher->expects($this->once())
 			->method('afterController')
-			->with($this->equalTo($this->controller),
+			->with(
+				$this->equalTo($this->controller),
 				$this->equalTo($this->controllerMethod),
-				$this->equalTo($this->response))
+				$this->equalTo($this->response)
+			)
 			->will($this->returnValue($this->response));
 
 		$this->middlewareDispatcher->expects($this->once())
 			->method('beforeOutput')
-			->with($this->equalTo($this->controller),
+			->with(
+				$this->equalTo($this->controller),
 				$this->equalTo($this->controllerMethod),
-				$this->equalTo($out))
+				$this->equalTo($out)
+			)
 			->will($this->returnValue($out));
 	}
 
 	public function testDispatcherReturnsArrayWith2Entries() {
 		$this->setMiddlewareExpectations();
 
-		$response = $this->dispatcher->dispatch($this->controller,
-			$this->controllerMethod);
+		$response = $this->dispatcher->dispatch(
+			$this->controller,
+			$this->controllerMethod
+		);
 		$this->assertNull($response[0]);
 		$this->assertEquals([], $response[1]);
 		$this->assertNull($response[2]);
@@ -235,8 +265,10 @@ class DispatcherTest extends \Test\TestCase {
 		$responseHeaders = ['hell' => 'yeah'];
 		$this->setMiddlewareExpectations($out, $httpHeaders, $responseHeaders);
 
-		$response = $this->dispatcher->dispatch($this->controller,
-			$this->controllerMethod);
+		$response = $this->dispatcher->dispatch(
+			$this->controller,
+			$this->controllerMethod
+		);
 
 		$this->assertEquals($httpHeaders, $response[0]);
 		$this->assertEquals($responseHeaders, $response[1]);
@@ -249,8 +281,10 @@ class DispatcherTest extends \Test\TestCase {
 		$responseHeaders = ['hell' => 'yeah'];
 		$this->setMiddlewareExpectations($out, $httpHeaders, $responseHeaders, true);
 
-		$response = $this->dispatcher->dispatch($this->controller,
-			$this->controllerMethod);
+		$response = $this->dispatcher->dispatch(
+			$this->controller,
+			$this->controllerMethod
+		);
 
 		$this->assertEquals($httpHeaders, $response[0]);
 		$this->assertEquals($responseHeaders, $response[1]);
@@ -264,8 +298,10 @@ class DispatcherTest extends \Test\TestCase {
 		$this->setMiddlewareExpectations($out, $httpHeaders, $responseHeaders, true, false);
 
 		$this->expectException('\Exception');
-		$response = $this->dispatcher->dispatch($this->controller,
-			$this->controllerMethod);
+		$response = $this->dispatcher->dispatch(
+			$this->controller,
+			$this->controllerMethod
+		);
 	}
 
 	private function dispatcherPassthrough() {
@@ -296,7 +332,9 @@ class DispatcherTest extends \Test\TestCase {
 			$this->createMock('\OCP\IConfig')
 		);
 		$this->dispatcher = new Dispatcher(
-			$this->http, $this->middlewareDispatcher, $this->reflector,
+			$this->http,
+			$this->middlewareDispatcher,
+			$this->reflector,
 			$this->request
 		);
 		$controller = new TestController('app', $this->request);
@@ -322,7 +360,9 @@ class DispatcherTest extends \Test\TestCase {
 			$this->createMock('\OCP\IConfig')
 		);
 		$this->dispatcher = new Dispatcher(
-			$this->http, $this->middlewareDispatcher, $this->reflector,
+			$this->http,
+			$this->middlewareDispatcher,
+			$this->reflector,
 			$this->request
 		);
 		$controller = new TestController('app', $this->request);
@@ -350,7 +390,9 @@ class DispatcherTest extends \Test\TestCase {
 			$this->createMock('\OCP\IConfig')
 		);
 		$this->dispatcher = new Dispatcher(
-			$this->http, $this->middlewareDispatcher, $this->reflector,
+			$this->http,
+			$this->middlewareDispatcher,
+			$this->reflector,
 			$this->request
 		);
 		$controller = new TestController('app', $this->request);
@@ -378,7 +420,9 @@ class DispatcherTest extends \Test\TestCase {
 			$this->createMock('\OCP\IConfig')
 		);
 		$this->dispatcher = new Dispatcher(
-			$this->http, $this->middlewareDispatcher, $this->reflector,
+			$this->http,
+			$this->middlewareDispatcher,
+			$this->reflector,
 			$this->request
 		);
 		$controller = new TestController('app', $this->request);
@@ -407,7 +451,9 @@ class DispatcherTest extends \Test\TestCase {
 			$this->createMock('\OCP\IConfig')
 		);
 		$this->dispatcher = new Dispatcher(
-			$this->http, $this->middlewareDispatcher, $this->reflector,
+			$this->http,
+			$this->middlewareDispatcher,
+			$this->reflector,
 			$this->request
 		);
 		$controller = new TestController('app', $this->request);
@@ -438,7 +484,9 @@ class DispatcherTest extends \Test\TestCase {
 			$this->createMock('\OCP\IConfig')
 		);
 		$this->dispatcher = new Dispatcher(
-			$this->http, $this->middlewareDispatcher, $this->reflector,
+			$this->http,
+			$this->middlewareDispatcher,
+			$this->reflector,
 			$this->request
 		);
 		$controller = new TestController('app', $this->request);

@@ -123,8 +123,11 @@ class CleanTags implements IRepairStep {
 		$this->deleteOrphanEntries(
 			$output,
 			'%d tags for delete files have been removed.',
-			'vcategory_to_object', 'objid',
-			'filecache', 'fileid', 'path_hash'
+			'vcategory_to_object',
+			'objid',
+			'filecache',
+			'fileid',
+			'path_hash'
 		);
 	}
 
@@ -135,8 +138,11 @@ class CleanTags implements IRepairStep {
 		$this->deleteOrphanEntries(
 			$output,
 			'%d tag entries for deleted tags have been removed.',
-			'vcategory_to_object', 'categoryid',
-			'vcategory', 'id', 'uid'
+			'vcategory_to_object',
+			'categoryid',
+			'vcategory',
+			'id',
+			'uid'
 		);
 	}
 
@@ -147,8 +153,11 @@ class CleanTags implements IRepairStep {
 		$this->deleteOrphanEntries(
 			$output,
 			'%d tags with no entries have been removed.',
-			'vcategory', 'id',
-			'vcategory_to_object', 'categoryid', 'type'
+			'vcategory',
+			'id',
+			'vcategory_to_object',
+			'categoryid',
+			'type'
 		);
 	}
 

@@ -129,8 +129,12 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @param \Doctrine\Common\EventManager $eventManager
 	 * @throws \Exception
 	 */
-	public function __construct(array $params, Driver $driver, Configuration $config = null,
-		EventManager $eventManager = null) {
+	public function __construct(
+		array $params,
+		Driver $driver,
+		Configuration $config = null,
+		EventManager $eventManager = null
+	) {
 		if (!isset($params['adapter'])) {
 			throw new \Exception('adapter not set');
 		}

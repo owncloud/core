@@ -87,7 +87,8 @@ class Propagator implements IPropagator {
 
 		if ($sizeDifference !== 0) {
 			// if we need to update size, only update the records with calculated size (>-1)
-			$builder->set('size', $builder->createFunction('CASE' .
+			$builder->set('size', $builder->createFunction(
+				'CASE' .
 					' WHEN ' . $builder->expr()->gt('size', $builder->expr()->literal(-1, IQueryBuilder::PARAM_INT)) .
 						' THEN  `size` + ' . $builder->createNamedParameter($sizeDifference) .
 					' ELSE `size`' .

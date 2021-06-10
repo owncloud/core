@@ -37,8 +37,8 @@ use OCP\IConfig;
  * @package OC\Settings\Controller
  */
 class AppSettingsController extends Controller {
-	const CAT_ENABLED = 0;
-	const CAT_DISABLED = 1;
+	public const CAT_ENABLED = 0;
+	public const CAT_DISABLED = 1;
 
 	/** @var \OCP\IL10N */
 	private $l10n;
@@ -54,11 +54,13 @@ class AppSettingsController extends Controller {
 	 * @param IConfig $config
 	 * @param IAppManager $appManager
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IL10N $l10n,
-								IConfig $config,
-								IAppManager $appManager) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IL10N $l10n,
+		IConfig $config,
+		IAppManager $appManager
+	) {
 		parent::__construct($appName, $request);
 		$this->l10n = $l10n;
 		$this->config = $config;

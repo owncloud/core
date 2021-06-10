@@ -81,7 +81,8 @@ class ConfigAdapter implements IMountProvider {
 	private function prepareStorageConfig(IStorageConfig &$storage, IUser $user) {
 		foreach ($storage->getBackendOptions() as $option => $value) {
 			$storage->setBackendOption($option, $this->setUserVars(
-				$user->getUserName(), $value
+				$user->getUserName(),
+				$value
 			));
 		}
 

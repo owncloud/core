@@ -226,13 +226,15 @@ class ShareControllerTest extends \Test\TestCase {
 
 		$beforeLinkAuthCalled = false;
 		$this->eventDispatcher->addListener(
-			'share.beforelinkauth', function () use (&$beforeLinkAuthCalled) {
+			'share.beforelinkauth',
+			function () use (&$beforeLinkAuthCalled) {
 				$beforeLinkAuthCalled = true;
 			}
 		);
 		$afterLinkAuthCalled = false;
 		$this->eventDispatcher->addListener(
-			'share.afterlinkauth', function () use (&$afterLinkAuthCalled) {
+			'share.afterlinkauth',
+			function () use (&$afterLinkAuthCalled) {
 				$afterLinkAuthCalled = true;
 			}
 		);
@@ -272,21 +274,25 @@ class ShareControllerTest extends \Test\TestCase {
 		\OCP\Util::connectHook('OCP\Share', 'share_link_access', $hookListner, 'access');
 
 		$calledShareLinkAccess = [];
-		$this->eventDispatcher->addListener('share.linkaccess',
+		$this->eventDispatcher->addListener(
+			'share.linkaccess',
 			function (GenericEvent $event) use (&$calledShareLinkAccess) {
 				$calledShareLinkAccess[] = 'share.linkaccess';
 				$calledShareLinkAccess[] = $event;
-			});
+			}
+		);
 
 		$beforeLinkAuthCalled = false;
 		$this->eventDispatcher->addListener(
-			'share.beforelinkauth', function () use (&$beforeLinkAuthCalled) {
+			'share.beforelinkauth',
+			function () use (&$beforeLinkAuthCalled) {
 				$beforeLinkAuthCalled = true;
 			}
 		);
 		$afterLinkAuthCalled = false;
 		$this->eventDispatcher->addListener(
-			'share.afterlinkauth', function () use (&$afterLinkAuthCalled) {
+			'share.afterlinkauth',
+			function () use (&$afterLinkAuthCalled) {
 				$afterLinkAuthCalled = true;
 			}
 		);

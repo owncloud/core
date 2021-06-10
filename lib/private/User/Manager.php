@@ -107,7 +107,8 @@ class Manager extends PublicEmitter implements IUserManager {
 		$this->userSearch = $userSearch;
 		$cachedUsers = &$this->cachedUsers;
 		$this->listen(
-			'\OC\User', 'postDelete',
+			'\OC\User',
+			'postDelete',
 			function ($user) use (&$cachedUsers) {
 				/** @var \OC\User\User $user */
 				unset($cachedUsers[$user->getUID()]);

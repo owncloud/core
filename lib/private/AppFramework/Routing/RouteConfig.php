@@ -257,6 +257,7 @@ class RouteConfig {
 			function ($matches) {
 				return \strtoupper(\ltrim($matches[0], "_"));
 			},
-			$str);
+			$str
+		);
 	}
 }

@@ -58,11 +58,13 @@ class ExternalSharesController extends Controller {
 	 * @param IClientService $clientService
 	 * @param EventDispatcherInterface $eventDispatcher
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								\OCA\Files_Sharing\External\Manager $externalManager,
-								IClientService $clientService,
-								EventDispatcherInterface $eventDispatcher) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		\OCA\Files_Sharing\External\Manager $externalManager,
+		IClientService $clientService,
+		EventDispatcherInterface $eventDispatcher
+	) {
 		parent::__construct($appName, $request);
 		$this->externalManager = $externalManager;
 		$this->clientService = $clientService;
@@ -89,7 +91,8 @@ class ExternalSharesController extends Controller {
 	public function create($id) {
 		$shareInfo = $this->externalManager->getShare($id);
 		if ($shareInfo !== false) {
-			$event = new GenericEvent(null,
+			$event = new GenericEvent(
+				null,
 				[
 					'shareAcceptedFrom' => $shareInfo['owner'],
 					'sharedAcceptedBy' => $shareInfo['user'],
@@ -113,7 +116,8 @@ class ExternalSharesController extends Controller {
 	public function destroy($id) {
 		$shareInfo = $this->externalManager->getShare($id);
 		if ($shareInfo !== false) {
-			$event = new GenericEvent(null,
+			$event = new GenericEvent(
+				null,
 				[
 					'shareAcceptedFrom' => $shareInfo['owner'],
 					'sharedAcceptedBy' => $shareInfo['user'],

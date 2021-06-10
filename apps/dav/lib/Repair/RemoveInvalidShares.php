@@ -50,9 +50,11 @@ class RemoveInvalidShares implements IRepairStep {
 	 * @param Principal $principalBackend
 	 * @param GroupPrincipalBackend $groupPrincipalBackend
 	 */
-	public function __construct(IDBConnection $connection,
-								Principal $principalBackend,
-								GroupPrincipalBackend $groupPrincipalBackend) {
+	public function __construct(
+		IDBConnection $connection,
+		Principal $principalBackend,
+		GroupPrincipalBackend $groupPrincipalBackend
+	) {
 		$this->connection = $connection;
 		$this->principalBackend = $principalBackend;
 		$this->groupPrincipalBackend = $groupPrincipalBackend;

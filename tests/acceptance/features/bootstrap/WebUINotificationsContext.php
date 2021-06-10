@@ -66,7 +66,8 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function assertNotificationsOnWebUI(
-		$number, TableNode $expectedNotifications
+		$number,
+		TableNode $expectedNotifications
 	) {
 		$notificationsDialog = $this->openNotificationsDialog($this->getSession());
 		$notifications = $notificationsDialog->getAllNotifications();
@@ -79,7 +80,8 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 		foreach ($expectedNotifications as $expectedNotification) {
 			$found = false;
 			$expectedNotification['title'] = $this->featureContext->substituteInLineCodes(
-				$expectedNotification['title'], $expectedNotification['user']
+				$expectedNotification['title'],
+				$expectedNotification['user']
 			);
 			foreach ($notifications as $notification) {
 				$found = false;

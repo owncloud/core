@@ -38,10 +38,11 @@ class UserController extends Controller {
 	 */
 	protected $defaults;
 
-	public function __construct($appName,
-								IRequest $request,
-								$userManager,
-								$defaults
+	public function __construct(
+		$appName,
+		IRequest $request,
+		$userManager,
+		$defaults
 	) {
 		parent::__construct($appName, $request);
 		$this->userManager = $userManager;

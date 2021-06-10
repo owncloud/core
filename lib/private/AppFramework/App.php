@@ -145,8 +145,12 @@ class App {
 	 * @param array $urlParams an array with variables extracted from the routes
 	 * @param DIContainer $container an instance of a pimple container.
 	 */
-	public static function part($controllerName, $methodName, array $urlParams,
-								DIContainer $container) {
+	public static function part(
+		$controllerName,
+		$methodName,
+		array $urlParams,
+		DIContainer $container
+	) {
 		$container['urlParams'] = $urlParams;
 		$controller = $container[$controllerName];
 

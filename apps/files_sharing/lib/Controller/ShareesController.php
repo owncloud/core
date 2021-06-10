@@ -130,7 +130,8 @@ class ShareesController extends OCSController {
 	 * @param SharingBlacklist $sharingBlacklist
 	 * @param UserSearch $userSearch
 	 */
-	public function __construct($appName,
+	public function __construct(
+		$appName,
 		IRequest $request,
 		IGroupManager $groupManager,
 		IUserManager $userManager,

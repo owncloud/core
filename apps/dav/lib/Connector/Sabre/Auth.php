@@ -74,13 +74,15 @@ class Auth extends AbstractBasic {
 	 * @param IConfig $config
 	 * @param string $principalPrefix
 	 */
-	public function __construct(ISession $session,
-								Session $userSession,
-								IRequest $request,
-								Manager $twoFactorManager,
-								AccountModuleManager $accountModuleManager,
-								IConfig $config,
-								$principalPrefix = 'principals/users/') {
+	public function __construct(
+		ISession $session,
+		Session $userSession,
+		IRequest $request,
+		Manager $twoFactorManager,
+		AccountModuleManager $accountModuleManager,
+		IConfig $config,
+		$principalPrefix = 'principals/users/'
+	) {
 		$this->session = $session;
 		$this->userSession = $userSession;
 		$this->twoFactorManager = $twoFactorManager;

@@ -59,10 +59,15 @@ class EmailHelper {
 	 * @return string
 	 */
 	public static function getBodyOfLastEmail(
-		$localMailhogUrl, $emailAddress, $waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
+		$localMailhogUrl,
+		$emailAddress,
+		$waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
 	) {
 		return self::getBodyOfEmail(
-			$localMailhogUrl, $emailAddress, 1, $waitTimeSec
+			$localMailhogUrl,
+			$emailAddress,
+			1,
+			$waitTimeSec
 		);
 	}
 
@@ -98,7 +103,8 @@ class EmailHelper {
 					}
 
 					$body = \str_replace(
-						"\r\n", "\n",
+						"\r\n",
+						"\n",
 						\quoted_printable_decode($item->Content->Body)
 					);
 					return $body;
@@ -128,7 +134,9 @@ class EmailHelper {
 	) {
 		try {
 			self::getBodyOfLastEmail(
-				$localMailhogUrl, $emailAddress, $waitTimeSec
+				$localMailhogUrl,
+				$emailAddress,
+				$waitTimeSec
 			);
 		} catch (\Exception $err) {
 			return false;

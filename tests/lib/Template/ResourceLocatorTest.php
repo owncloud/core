@@ -50,14 +50,23 @@ class ResourceLocatorTest extends \Test\TestCase {
 
 		$appManagerInstance = $this->createMock(AppManager::class);
 
-		return $this->getMockForAbstractClass('OC\Template\ResourceLocator',
+		return $this->getMockForAbstractClass(
+			'OC\Template\ResourceLocator',
 			[$themeInstance, $appManagerInstance, $this->logger, $core_map, $appsRoots],
-			'', true, true, true, []);
+			'',
+			true,
+			true,
+			true,
+			[]
+		);
 	}
 
 	public function testFind() {
-		$locator = $this->getResourceLocator('theme',
-			['core' => 'map'], ['foo' => 'bar']);
+		$locator = $this->getResourceLocator(
+			'theme',
+			['core' => 'map'],
+			['foo' => 'bar']
+		);
 		$locator->expects($this->once())
 			->method('doFind')
 			->with('foo');

@@ -270,27 +270,37 @@ class ServerTest extends TestCase {
 	 * @throws \OCP\AppFramework\QueryException
 	 */
 	public function testQuery($serviceName, $instanceOf) {
-		$this->assertInstanceOf($instanceOf,
+		$this->assertInstanceOf(
+			$instanceOf,
 			$this->server->query($serviceName),
-			'Service "' . $serviceName . '"" did not return the right class');
+			'Service "' . $serviceName . '"" did not return the right class'
+		);
 	}
 
 	public function testGetCertificateManager() {
-		$this->assertInstanceOf(CertificateManager::class,
+		$this->assertInstanceOf(
+			CertificateManager::class,
 			$this->server->getCertificateManager('test'),
-			'service returned by "getCertificateManager" did not return the right class');
-		$this->assertInstanceOf(ICertificateManager::class,
+			'service returned by "getCertificateManager" did not return the right class'
+		);
+		$this->assertInstanceOf(
+			ICertificateManager::class,
 			$this->server->getCertificateManager('test'),
-			'service returned by "getCertificateManager" did not return the right class');
+			'service returned by "getCertificateManager" did not return the right class'
+		);
 	}
 
 	public function testCreateEventSource() {
-		$this->assertInstanceOf(\OC_EventSource::class,
+		$this->assertInstanceOf(
+			\OC_EventSource::class,
 			$this->server->createEventSource(),
-			'service returned by "createEventSource" did not return the right class');
-		$this->assertInstanceOf(IEventSource::class,
+			'service returned by "createEventSource" did not return the right class'
+		);
+		$this->assertInstanceOf(
+			IEventSource::class,
 			$this->server->createEventSource(),
-			'service returned by "createEventSource" did not return the right class');
+			'service returned by "createEventSource" did not return the right class'
+		);
 	}
 
 	public function testOverwriteDefaultCommentsManager() {

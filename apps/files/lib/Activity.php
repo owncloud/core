@@ -33,15 +33,15 @@ use OCP\IURLGenerator;
 use OCP\L10N\IFactory;
 
 class Activity implements IExtension {
-	const APP_FILES = 'files';
-	const FILTER_FILES = 'files';
-	const FILTER_FAVORITES = 'files_favorites';
+	public const APP_FILES = 'files';
+	public const FILTER_FILES = 'files';
+	public const FILTER_FAVORITES = 'files_favorites';
 
-	const TYPE_SHARE_CREATED = 'file_created';
-	const TYPE_SHARE_CHANGED = 'file_changed';
-	const TYPE_SHARE_DELETED = 'file_deleted';
-	const TYPE_SHARE_RESTORED = 'file_restored';
-	const TYPE_FAVORITES = 'files_favorites';
+	public const TYPE_SHARE_CREATED = 'file_created';
+	public const TYPE_SHARE_CHANGED = 'file_changed';
+	public const TYPE_SHARE_DELETED = 'file_deleted';
+	public const TYPE_SHARE_RESTORED = 'file_restored';
+	public const TYPE_FAVORITES = 'files_favorites';
 
 	/** @var IL10N */
 	protected $l;

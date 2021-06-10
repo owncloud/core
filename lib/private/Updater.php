@@ -74,9 +74,11 @@ class Updater extends BasicEmitter {
 	 * @param Checker $checker
 	 * @param ILogger $log
 	 */
-	public function __construct(IConfig $config,
-								Checker $checker,
-								ILogger $log = null) {
+	public function __construct(
+		IConfig $config,
+		Checker $checker,
+		ILogger $log = null
+	) {
 		$this->log = $log;
 		$this->config = $config;
 		$this->checker = $checker;

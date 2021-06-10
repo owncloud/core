@@ -72,8 +72,8 @@ class OC_Util {
 	private static $rootMounted = false;
 	private static $fsSetup = false;
 	private static $version;
-	const EDITION_COMMUNITY = 'Community';
-	const EDITION_ENTERPRISE = 'Enterprise';
+	public const EDITION_COMMUNITY = 'Community';
+	public const EDITION_ENTERPRISE = 'Enterprise';
 
 	protected static function getAppManager() {
 		return \OC::$server->getAppManager();
@@ -725,8 +725,14 @@ class OC_Util {
 		}
 
 		$webServerRestart = false;
-		$setup = new \OC\Setup($config, \OC::$server->getIniWrapper(), \OC::$server->getL10N('lib'),
-			new \OC_Defaults(), \OC::$server->getLogger(), \OC::$server->getSecureRandom());
+		$setup = new \OC\Setup(
+			$config,
+			\OC::$server->getIniWrapper(),
+			\OC::$server->getL10N('lib'),
+			new \OC_Defaults(),
+			\OC::$server->getLogger(),
+			\OC::$server->getSecureRandom()
+		);
 
 		$urlGenerator = \OC::$server->getURLGenerator();
 
@@ -744,9 +750,11 @@ class OC_Util {
 			if (!\is_writable(OC::$configDir) or !\is_readable(OC::$configDir)) {
 				$errors[] = [
 					'error' => $l->t('Cannot write into "config" directory'),
-					'hint' => $l->t('This can usually be fixed by '
+					'hint' => $l->t(
+						'This can usually be fixed by '
 						. '%sgiving the webserver write access to the config directory%s.',
-						['<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>'])
+						['<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>']
+					)
 				];
 			}
 		}
@@ -760,16 +768,20 @@ class OC_Util {
 				} else {
 					$errors[] = [
 						'error' => $l->t('Cannot create "data" directory'),
-						'hint' => $l->t('This can usually be fixed by '
+						'hint' => $l->t(
+							'This can usually be fixed by '
 							. '<a href="%s" target="_blank" rel="noreferrer">giving the webserver write access to the root directory</a>.',
-							[$urlGenerator->linkToDocs('admin-dir_permissions')])
+							[$urlGenerator->linkToDocs('admin-dir_permissions')]
+						)
 					];
 				}
 			} elseif (!\is_writable($CONFIG_DATADIRECTORY) or !\is_readable($CONFIG_DATADIRECTORY)) {
 				//common hint for all file permissions error messages
-				$permissionsHint = $l->t('Permissions can usually be fixed by '
+				$permissionsHint = $l->t(
+					'Permissions can usually be fixed by '
 					. '%sgiving the webserver write access to the root directory%s.',
-					['<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>']);
+					['<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>']
+				);
 				$errors[] = [
 					'error' => 'Your Data directory is not writable by ownCloud',
 					'hint' => $permissionsHint
@@ -781,9 +793,11 @@ class OC_Util {
 
 		if (!OC_Util::isSetLocaleWorking()) {
 			$errors[] = [
-				'error' => $l->t('Setting locale to %s failed',
+				'error' => $l->t(
+					'Setting locale to %s failed',
 					['en_US.UTF-8/fr_FR.UTF-8/es_ES.UTF-8/de_DE.UTF-8/ru_RU.UTF-8/'
-						. 'pt_BR.UTF-8/it_IT.UTF-8/ja_JP.UTF-8/zh_CN.UTF-8']),
+						. 'pt_BR.UTF-8/it_IT.UTF-8/ja_JP.UTF-8/zh_CN.UTF-8']
+				),
 				'hint' => $l->t('Please install one of these locales on your system and restart your webserver.')
 			];
 		}
@@ -1062,12 +1076,13 @@ class OC_Util {
 		// Check if we are a user
 		$userSession = \OC::$server->getUserSession();
 		if ($userSession && !$userSession->isLoggedIn()) {
-			\header('Location: ' . \OC::$server->getURLGenerator()->linkToRoute(
-						'core.login.showLoginForm',
-						[
+			\header(
+				'Location: ' . \OC::$server->getURLGenerator()->linkToRoute(
+					'core.login.showLoginForm',
+					[
 							'redirect_url' => \urlencode(\OC::$server->getRequest()->getRequestUri()),
 						]
-					)
+				)
 			);
 			exit();
 		}
@@ -1262,8 +1277,10 @@ class OC_Util {
 
 		$fp = @\fopen($testFile, 'w');
 		if (!$fp) {
-			throw new OC\HintException('Can\'t create test file to check for working .htaccess file.',
-				'Make sure it is possible for the webserver to write to ' . $testFile);
+			throw new OC\HintException(
+				'Can\'t create test file to check for working .htaccess file.',
+				'Make sure it is possible for the webserver to write to ' . $testFile
+			);
 		}
 		\fwrite($fp, $testContent);
 		\fclose($fp);

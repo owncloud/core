@@ -103,7 +103,9 @@ class OcisHelper {
 		}
 		if (self::getStorageDriver() === "EOS") {
 			$deleteCmd = \str_replace(
-				"%s", $user[0] . '/' . $user, $deleteCmd
+				"%s",
+				$user[0] . '/' . $user,
+				$deleteCmd
 			);
 		} else {
 			$deleteCmd = \sprintf($deleteCmd, $user);

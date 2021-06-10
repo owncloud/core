@@ -59,9 +59,11 @@ class SyncService {
 	 * @param ILogger $logger
 	 * @param AccountMapper $mapper
 	 */
-	public function __construct(IConfig $config,
-								ILogger $logger,
-								AccountMapper $mapper) {
+	public function __construct(
+		IConfig $config,
+		ILogger $logger,
+		AccountMapper $mapper
+	) {
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->mapper = $mapper;
@@ -159,11 +161,13 @@ class SyncService {
 			if (\array_key_exists('state', $a->getUpdatedFields())) {
 				if ($value === 'true') {
 					$this->logger->debug(
-						"Enabling <$uid>", ['app' => self::class]
+						"Enabling <$uid>",
+						['app' => self::class]
 					);
 				} else {
 					$this->logger->debug(
-						"Disabling <$uid>", ['app' => self::class]
+						"Disabling <$uid>",
+						['app' => self::class]
 					);
 				}
 			}
@@ -180,7 +184,8 @@ class SyncService {
 			$a->setLastLogin($value);
 			if (\array_key_exists('lastLogin', $a->getUpdatedFields())) {
 				$this->logger->debug(
-					"Setting lastLogin for <$uid> to <$value>", ['app' => self::class]
+					"Setting lastLogin for <$uid> to <$value>",
+					['app' => self::class]
 				);
 			}
 		}
@@ -204,7 +209,8 @@ class SyncService {
 		}
 		if (\array_key_exists('email', $a->getUpdatedFields())) {
 			$this->logger->debug(
-				"Setting email for <$uid> to <$email>", ['app' => self::class]
+				"Setting email for <$uid> to <$email>",
+				['app' => self::class]
 			);
 		}
 	}
@@ -230,7 +236,8 @@ class SyncService {
 		}
 		if (\array_key_exists('quota', $a->getUpdatedFields())) {
 			$this->logger->debug(
-				"Setting quota for <$uid> to <$quota>", ['app' => self::class]
+				"Setting quota for <$uid> to <$quota>",
+				['app' => self::class]
 			);
 		}
 	}
@@ -270,7 +277,8 @@ class SyncService {
 			$a->setHome($home);
 			if (\array_key_exists('home', $a->getUpdatedFields())) {
 				$this->logger->debug(
-					"Setting home for <$uid> to <$home>", ['app' => self::class]
+					"Setting home for <$uid> to <$home>",
+					['app' => self::class]
 				);
 			}
 		}
@@ -287,7 +295,8 @@ class SyncService {
 			$a->setDisplayName($displayName);
 			if (\array_key_exists('displayName', $a->getUpdatedFields())) {
 				$this->logger->debug(
-					"Setting displayName for <$uid> to <$displayName>", ['app' => self::class]
+					"Setting displayName for <$uid> to <$displayName>",
+					['app' => self::class]
 				);
 			}
 		}
@@ -311,7 +320,8 @@ class SyncService {
 					// ignore, because precondition is empty
 				}
 				$this->logger->debug(
-					"Setting userName for <$uid> from <$currentUserName> to <$userName>", ['app' => self::class]
+					"Setting userName for <$uid> from <$currentUserName> to <$userName>",
+					['app' => self::class]
 				);
 			}
 		}
@@ -329,7 +339,8 @@ class SyncService {
 			if ($a->haveTermsChanged()) {
 				$logTerms = \implode('|', $searchTerms);
 				$this->logger->debug(
-					"Setting searchTerms for <$uid> to <$logTerms>", ['app' => self::class]
+					"Setting searchTerms for <$uid> to <$logTerms>",
+					['app' => self::class]
 				);
 			}
 		}

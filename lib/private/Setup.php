@@ -66,13 +66,14 @@ class Setup {
 	 * @param ILogger $logger
 	 * @param ISecureRandom $random
 	 */
-	public function __construct(IConfig $config,
-						 IniGetWrapper $iniWrapper,
-						 IL10N $l10n,
-						 \OC_Defaults $defaults,
-						 ILogger $logger,
-						 ISecureRandom $random
-		) {
+	public function __construct(
+		IConfig $config,
+		IniGetWrapper $iniWrapper,
+		IL10N $l10n,
+		\OC_Defaults $defaults,
+		ILogger $logger,
+		ISecureRandom $random
+	) {
 		$this->config = $config;
 		$this->iniWrapper = $iniWrapper;
 		$this->l10n = $l10n;
@@ -149,8 +150,10 @@ class Setup {
 		if ($allowAllDatabases) {
 			$configuredDatabases = \array_keys($availableDatabases);
 		} else {
-			$configuredDatabases = $this->config->getSystemValue('supportedDatabases',
-				['sqlite', 'mysql', 'pgsql']);
+			$configuredDatabases = $this->config->getSystemValue(
+				'supportedDatabases',
+				['sqlite', 'mysql', 'pgsql']
+			);
 		}
 		if (!\is_array($configuredDatabases)) {
 			throw new Exception('Supported databases are not properly configured.');
@@ -274,8 +277,13 @@ class Setup {
 
 		$class = self::$dbSetupClasses[$dbType];
 		/** @var \OC\Setup\AbstractDatabase $dbSetup */
-		$dbSetup = new $class($l, 'db_structure.xml', $this->config,
-			$this->logger, $this->random);
+		$dbSetup = new $class(
+			$l,
+			'db_structure.xml',
+			$this->config,
+			$this->logger,
+			$this->random
+		);
 		$error = \array_merge($error, $dbSetup->validate($options));
 
 		// validate the data directory
@@ -516,7 +524,8 @@ class Setup {
 
 		if ($content !== '') {
 			$fileWriteResult = @\file_put_contents(
-				$htaccessPath, $htaccessContent . $content . "\n"
+				$htaccessPath,
+				$htaccessContent . $content . "\n"
 			);
 			if ($fileWriteResult === false) {
 				throw new \Exception(

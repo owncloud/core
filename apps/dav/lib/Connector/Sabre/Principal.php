@@ -56,9 +56,11 @@ class Principal implements BackendInterface {
 	 * @param IGroupManager $groupManager
 	 * @param string $principalPrefix
 	 */
-	public function __construct(IUserManager $userManager,
-								IGroupManager $groupManager,
-								$principalPrefix = 'principals/users/') {
+	public function __construct(
+		IUserManager $userManager,
+		IGroupManager $groupManager,
+		$principalPrefix = 'principals/users/'
+	) {
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->principalPrefix = \trim($principalPrefix, '/');

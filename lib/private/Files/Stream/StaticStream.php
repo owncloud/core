@@ -24,7 +24,7 @@
 namespace OC\Files\Stream;
 
 class StaticStream {
-	const MODE_FILE = 0100000;
+	public const MODE_FILE = 0100000;
 
 	public $context;
 	protected static $data = [];

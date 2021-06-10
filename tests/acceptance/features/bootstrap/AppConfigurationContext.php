@@ -49,7 +49,9 @@ class AppConfigurationContext implements Context {
 	 * @return void
 	 */
 	public function adminSetsServerParameterToUsingAPI(
-		$parameter, $app, $value
+		$parameter,
+		$app,
+		$value
 	) {
 		$this->modifyAppConfig($app, $parameter, $value);
 	}
@@ -84,7 +86,9 @@ class AppConfigurationContext implements Context {
 	 * @return void
 	 */
 	public function theCapabilitiesSettingOfAppParameterShouldBe(
-		$capabilitiesApp, $capabilitiesPath, $expectedValue
+		$capabilitiesApp,
+		$capabilitiesPath,
+		$expectedValue
 	) {
 		$this->theAdministratorGetsCapabilitiesCheckResponse();
 		$actualValue = $this->getAppParameter($capabilitiesApp, $capabilitiesPath);
@@ -125,8 +129,13 @@ class AppConfigurationContext implements Context {
 		$password = $this->featureContext->getPasswordForUser($user);
 		$this->featureContext->setResponse(
 			OcsApiHelper::sendRequest(
-				$this->featureContext->getBaseUrl(), $user, $password, 'GET', '/cloud/capabilities',
-				[], $this->featureContext->getOcsApiVersion()
+				$this->featureContext->getBaseUrl(),
+				$user,
+				$password,
+				'GET',
+				'/cloud/capabilities',
+				[],
+				$this->featureContext->getOcsApiVersion()
 			)
 		);
 	}
@@ -208,7 +217,9 @@ class AppConfigurationContext implements Context {
 	 * @return string
 	 */
 	public function getParameterValueFromXml(
-		$xml, $capabilitiesApp, $capabilitiesPath
+		$xml,
+		$capabilitiesApp,
+		$capabilitiesPath
 	) {
 		$path_to_element = \explode('@@@', $capabilitiesPath);
 		$answeredValue = $xml->{$capabilitiesApp};
@@ -239,7 +250,9 @@ class AppConfigurationContext implements Context {
 	 * @return boolean
 	 */
 	public function parameterValueExistsInXml(
-		$xml, $capabilitiesApp, $capabilitiesPath
+		$xml,
+		$capabilitiesApp,
+		$capabilitiesPath
 	) {
 		$path_to_element = \explode('@@@', $capabilitiesPath);
 		$answeredValue = $xml->{$capabilitiesApp};

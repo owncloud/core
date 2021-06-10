@@ -155,8 +155,11 @@ class InfoChecker extends BasicEmitter {
 			$version = \trim(\file_get_contents($versionFile));
 			if (isset($info['version'])) {
 				if ($info['version'] !== $version) {
-					$this->emit('InfoChecker', 'differentVersions',
-						[$version, $info['version']]);
+					$this->emit(
+						'InfoChecker',
+						'differentVersions',
+						[$version, $info['version']]
+					);
 					$errors[] = [
 						'type' => 'differentVersions',
 						'message' => 'appinfo/version: ' . $version .

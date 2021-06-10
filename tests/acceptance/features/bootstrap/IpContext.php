@@ -101,7 +101,8 @@ class IpContext implements Context {
 	 */
 	public function addGuzzleClientHeaders($guzzleClientHeaders) {
 		$this->guzzleClientHeaders = \array_merge(
-			$this->guzzleClientHeaders, $guzzleClientHeaders
+			$this->guzzleClientHeaders,
+			$guzzleClientHeaders
 		);
 	}
 
@@ -114,7 +115,8 @@ class IpContext implements Context {
 	 * @return void
 	 */
 	public function theClientAccessesTheServerFromAddress(
-		$networkScope, $ipAddressFamily
+		$networkScope,
+		$ipAddressFamily
 	) {
 		$this->theClientAccessesTheServerFromIpAddress(
 			IpHelper::ipAddress($networkScope, $ipAddressFamily)

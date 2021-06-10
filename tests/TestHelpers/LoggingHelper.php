@@ -33,7 +33,7 @@ class LoggingHelper {
 	/**
 	 * @var array
 	 */
-	const LOG_LEVEL_ARRAY = [
+	public const LOG_LEVEL_ARRAY = [
 		"debug",
 		"info",
 		"warning",
@@ -57,7 +57,8 @@ class LoggingHelper {
 		}
 		\preg_match(
 			"/Log backend ownCloud: (\w+)\sLog file: (.*)/",
-			$result ['stdOut'], $matches
+			$result ['stdOut'],
+			$matches
 		);
 		if (!isset($matches[1]) || $matches[1] !== "enabled") {
 			throw new \Exception("log backend is not set to 'owncloud'");
@@ -79,11 +80,17 @@ class LoggingHelper {
 	 * @return SimpleXMLElement
 	 */
 	public static function getLogFileContent(
-		$baseUrl, $adminUsername, $adminPassword, $noOfLinesToRead = 0
+		$baseUrl,
+		$adminUsername,
+		$adminPassword,
+		$noOfLinesToRead = 0
 	) {
 		$result = OcsApiHelper::sendRequest(
-			$baseUrl, $adminUsername,
-			$adminPassword, "GET", "/apps/testing/api/v1/logfile/$noOfLinesToRead"
+			$baseUrl,
+			$adminUsername,
+			$adminPassword,
+			"GET",
+			"/apps/testing/api/v1/logfile/$noOfLinesToRead"
 		);
 		if ($result->getStatusCode() !== 200) {
 			throw new \Exception(
@@ -156,7 +163,8 @@ class LoggingHelper {
 		}
 		$pregResult = \preg_match(
 			"/Enabled logging backend:\s(\w+)\n/",
-			$result ["stdOut"], $matches
+			$result ["stdOut"],
+			$matches
 		);
 		if (!$pregResult) {
 			throw new \Exception("could not get log backend");
@@ -203,7 +211,9 @@ class LoggingHelper {
 			);
 		}
 		$pregResult = \preg_match(
-			"/Log timezone:\s(\w+)/", $result ["stdOut"], $matches
+			"/Log timezone:\s(\w+)/",
+			$result ["stdOut"],
+			$matches
 		);
 		if (!$pregResult) {
 			throw new \Exception("could not get log timezone");
@@ -239,8 +249,11 @@ class LoggingHelper {
 	 */
 	public static function clearLogFile($baseUrl, $adminUsername, $adminPassword) {
 		$result = OcsApiHelper::sendRequest(
-			$baseUrl, $adminUsername,
-			$adminPassword, "DELETE", "/apps/testing/api/v1/logfile"
+			$baseUrl,
+			$adminUsername,
+			$adminPassword,
+			"DELETE",
+			"/apps/testing/api/v1/logfile"
 		);
 		if ($result->getStatusCode() !== 200) {
 			throw new \Exception("could not clear logfile");
@@ -316,7 +329,9 @@ class LoggingHelper {
 		$logging["level"] = $matches[1];
 
 		$pregResult = \preg_match(
-			"/Log timezone:\s(\w+)/", $result ["stdOut"], $matches
+			"/Log timezone:\s(\w+)/",
+			$result ["stdOut"],
+			$matches
 		);
 		if (!$pregResult) {
 			throw new \Exception("could not get log timezone");
@@ -325,7 +340,8 @@ class LoggingHelper {
 
 		$pregResult = \preg_match(
 			"/Enabled logging backend:\s(\w+)\n/",
-			$result ["stdOut"], $matches
+			$result ["stdOut"],
+			$matches
 		);
 		if (!$pregResult) {
 			throw new \Exception("could not get log backend");

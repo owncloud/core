@@ -295,7 +295,8 @@ class View {
 			$relPath = '/' . $pathParts[3];
 			$this->lockFile($relPath, ILockingProvider::LOCK_SHARED, true);
 			\OC_Hook::emit(
-				Filesystem::CLASSNAME, "umount",
+				Filesystem::CLASSNAME,
+				"umount",
 				[Filesystem::signal_param_path => $relPath]
 			);
 			$this->changeLock($relPath, ILockingProvider::LOCK_EXCLUSIVE, true);
@@ -303,7 +304,8 @@ class View {
 			$this->changeLock($relPath, ILockingProvider::LOCK_SHARED, true);
 			if ($result) {
 				\OC_Hook::emit(
-					Filesystem::CLASSNAME, "post_umount",
+					Filesystem::CLASSNAME,
+					"post_umount",
 					[Filesystem::signal_param_path => $relPath]
 				);
 			}
@@ -831,7 +833,8 @@ class View {
 					$this->emit_file_hooks_pre($exists, $path2, $run);
 				} elseif ($this->shouldEmitHooks($path1)) {
 					\OC_Hook::emit(
-						Filesystem::CLASSNAME, Filesystem::signal_rename,
+						Filesystem::CLASSNAME,
+						Filesystem::signal_rename,
 						[
 							Filesystem::signal_param_oldpath => $this->getHookPath($path1),
 							Filesystem::signal_param_newpath => $this->getHookPath($path2),
@@ -1867,9 +1870,11 @@ class View {
 	private function canMove(MoveableMount $mount1, $target) {
 		list($targetStorage, $targetInternalPath) = \OC\Files\Filesystem::resolvePath($target);
 		if (!$targetStorage->instanceOfStorage('\OCP\Files\IHomeStorage')) {
-			Util::writeLog('files',
+			Util::writeLog(
+				'files',
 				'It is not allowed to move one mount point into another one',
-				Util::DEBUG);
+				Util::DEBUG
+			);
 			return false;
 		}
 

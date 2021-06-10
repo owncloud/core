@@ -52,11 +52,13 @@ class Listener {
 	 * @param IMountProviderCollection $mountCollection
 	 * @param IRootFolder $rootFolder
 	 */
-	public function __construct(IManager $activityManager,
-								IUserSession $session,
-								IAppManager $appManager,
-								IMountProviderCollection $mountCollection,
-								IRootFolder $rootFolder) {
+	public function __construct(
+		IManager $activityManager,
+		IUserSession $session,
+		IAppManager $appManager,
+		IMountProviderCollection $mountCollection,
+		IRootFolder $rootFolder
+	) {
 		$this->activityManager = $activityManager;
 		$this->session = $session;
 		$this->appManager = $appManager;

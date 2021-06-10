@@ -178,7 +178,8 @@ class LoginPage extends OwncloudPage {
 	 */
 	private function getLostPasswordResetErrorMessageField() {
 		$lostPasswordResetErrorMessageField = $this->find(
-			"xpath", $this->lostPasswordResetErrorXpath
+			"xpath",
+			$this->lostPasswordResetErrorXpath
 		);
 		$this->assertElementNotNull(
 			$lostPasswordResetErrorMessageField,

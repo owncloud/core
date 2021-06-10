@@ -131,14 +131,14 @@ class CheckerTest extends TestCase {
 			->expects($this->once())
 			->method('file_put_contents')
 			->with(
-					\OC::$SERVERROOT . '/tests/data/integritycheck/app//appinfo/signature.json',
-					$this->callback(function ($arg) use ($expectedSignatureFileData) {
-						$this->assertEquals(
-							\json_decode($expectedSignatureFileData, true),
-							\json_decode($arg, true)
-						);
-						return true;
-					})
+				\OC::$SERVERROOT . '/tests/data/integritycheck/app//appinfo/signature.json',
+				$this->callback(function ($arg) use ($expectedSignatureFileData) {
+					$this->assertEquals(
+						\json_decode($expectedSignatureFileData, true),
+						\json_decode($arg, true)
+					);
+					return true;
+				})
 			);
 
 		$keyBundle = \file_get_contents(__DIR__ .'/../../data/integritycheck/SomeApp.crt');
@@ -221,14 +221,14 @@ class CheckerTest extends TestCase {
 				->expects($this->at(0))
 				->method('file_get_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/app//appinfo/signature.json'
+					\OC::$SERVERROOT . '/tests/data/integritycheck/app//appinfo/signature.json'
 				)
 				->will($this->returnValue($signatureDataFile));
 		$this->fileAccessHelper
 				->expects($this->at(1))
 				->method('file_get_contents')
 				->with(
-						'/resources/codesigning/root.crt'
+					'/resources/codesigning/root.crt'
 				)
 				->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
 
@@ -263,14 +263,14 @@ class CheckerTest extends TestCase {
 				->expects($this->at(0))
 				->method('file_get_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/app//appinfo/signature.json'
+					\OC::$SERVERROOT . '/tests/data/integritycheck/app//appinfo/signature.json'
 				)
 				->will($this->returnValue($signatureDataFile));
 		$this->fileAccessHelper
 				->expects($this->at(1))
 				->method('file_get_contents')
 				->with(
-						'/resources/codesigning/root.crt'
+					'/resources/codesigning/root.crt'
 				)
 				->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
 
@@ -313,14 +313,14 @@ class CheckerTest extends TestCase {
 				->expects($this->at(0))
 				->method('file_get_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/appWithInvalidData//appinfo/signature.json'
+					\OC::$SERVERROOT . '/tests/data/integritycheck/appWithInvalidData//appinfo/signature.json'
 				)
 				->will($this->returnValue($signatureDataFile));
 		$this->fileAccessHelper
 				->expects($this->at(1))
 				->method('file_get_contents')
 				->with(
-						'/resources/codesigning/root.crt'
+					'/resources/codesigning/root.crt'
 				)
 				->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
 
@@ -378,14 +378,14 @@ class CheckerTest extends TestCase {
 				->expects($this->at(0))
 				->method('file_get_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/app//appinfo/signature.json'
+					\OC::$SERVERROOT . '/tests/data/integritycheck/app//appinfo/signature.json'
 				)
 				->will($this->returnValue($signatureDataFile));
 		$this->fileAccessHelper
 				->expects($this->at(1))
 				->method('file_get_contents')
 				->with(
-						'/resources/codesigning/root.crt'
+					'/resources/codesigning/root.crt'
 				)
 				->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
 
@@ -436,14 +436,14 @@ class CheckerTest extends TestCase {
 				->expects($this->at(0))
 				->method('file_get_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/appWithInvalidData//appinfo/signature.json'
+					\OC::$SERVERROOT . '/tests/data/integritycheck/appWithInvalidData//appinfo/signature.json'
 				)
 				->will($this->returnValue($signatureDataFile));
 		$this->fileAccessHelper
 				->expects($this->at(1))
 				->method('file_get_contents')
 				->with(
-						'/resources/codesigning/root.crt'
+					'/resources/codesigning/root.crt'
 				)
 				->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
 
@@ -504,7 +504,7 @@ class CheckerTest extends TestCase {
 				->expects($this->at(1))
 				->method('file_get_contents')
 				->with(
-						'/resources/codesigning/root.crt'
+					'/resources/codesigning/root.crt'
 				)
 				->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
 
@@ -576,14 +576,14 @@ class CheckerTest extends TestCase {
 				->expects($this->once())
 				->method('file_put_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/app//core/signature.json',
-						$this->callback(function ($arg) use ($expectedSignatureFileData) {
-							$this->assertEquals(
-								\json_decode($expectedSignatureFileData, true),
-								\json_decode($arg, true)
-							);
-							return true;
-						})
+					\OC::$SERVERROOT . '/tests/data/integritycheck/app//core/signature.json',
+					$this->callback(function ($arg) use ($expectedSignatureFileData) {
+						$this->assertEquals(
+							\json_decode($expectedSignatureFileData, true),
+							\json_decode($arg, true)
+						);
+						return true;
+					})
 				);
 
 		$keyBundle = \file_get_contents(__DIR__ .'/../../data/integritycheck/core.crt');
@@ -612,14 +612,14 @@ class CheckerTest extends TestCase {
 				->expects($this->once())
 				->method('file_put_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessUnmodified//core/signature.json',
-						$this->callback(function ($arg) use ($expectedSignatureFileData) {
-							$this->assertEquals(
-								\json_decode($expectedSignatureFileData, true),
-								\json_decode($arg, true)
-							);
-							return true;
-						})
+					\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessUnmodified//core/signature.json',
+					$this->callback(function ($arg) use ($expectedSignatureFileData) {
+						$this->assertEquals(
+							\json_decode($expectedSignatureFileData, true),
+							\json_decode($arg, true)
+						);
+						return true;
+					})
 				);
 
 		$keyBundle = \file_get_contents(__DIR__ .'/../../data/integritycheck/core.crt');
@@ -643,14 +643,14 @@ class CheckerTest extends TestCase {
 				->expects($this->once())
 				->method('file_put_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessWithInvalidModifiedContent//core/signature.json',
-						$this->callback(function ($arg) use ($expectedSignatureFileData) {
-							$this->assertEquals(
-								\json_decode($expectedSignatureFileData, true),
-								\json_decode($arg, true)
-							);
-							return true;
-						})
+					\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessWithInvalidModifiedContent//core/signature.json',
+					$this->callback(function ($arg) use ($expectedSignatureFileData) {
+						$this->assertEquals(
+							\json_decode($expectedSignatureFileData, true),
+							\json_decode($arg, true)
+						);
+						return true;
+					})
 				);
 
 		$keyBundle = \file_get_contents(__DIR__ .'/../../data/integritycheck/core.crt');
@@ -684,14 +684,14 @@ class CheckerTest extends TestCase {
 			->expects($this->once())
 			->method('file_put_contents')
 			->with(
-					\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessWithValidModifiedContent/core/signature.json',
-					$this->callback(function ($arg) use ($expectedSignatureFileData) {
-						$this->assertEquals(
-							\json_decode($expectedSignatureFileData, true),
-							\json_decode($arg, true)
-						);
-						return true;
-					})
+				\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessWithValidModifiedContent/core/signature.json',
+				$this->callback(function ($arg) use ($expectedSignatureFileData) {
+					$this->assertEquals(
+						\json_decode($expectedSignatureFileData, true),
+						\json_decode($arg, true)
+					);
+					return true;
+				})
 			);
 
 		$keyBundle = \file_get_contents(__DIR__ .'/../../data/integritycheck/core.crt');
@@ -752,14 +752,14 @@ class CheckerTest extends TestCase {
 				->expects($this->at(0))
 				->method('file_get_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/app//core/signature.json'
+					\OC::$SERVERROOT . '/tests/data/integritycheck/app//core/signature.json'
 				)
 				->will($this->returnValue($signatureDataFile));
 		$this->fileAccessHelper
 				->expects($this->at(1))
 				->method('file_get_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/app//resources/codesigning/root.crt'
+					\OC::$SERVERROOT . '/tests/data/integritycheck/app//resources/codesigning/root.crt'
 				)
 				->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
 
@@ -839,14 +839,14 @@ class CheckerTest extends TestCase {
 				->expects($this->at(0))
 				->method('file_get_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/app//core/signature.json'
+					\OC::$SERVERROOT . '/tests/data/integritycheck/app//core/signature.json'
 				)
 				->will($this->returnValue($signatureDataFile));
 		$this->fileAccessHelper
 				->expects($this->at(1))
 				->method('file_get_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/app//resources/codesigning/root.crt'
+					\OC::$SERVERROOT . '/tests/data/integritycheck/app//resources/codesigning/root.crt'
 				)
 				->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
 
@@ -880,14 +880,14 @@ class CheckerTest extends TestCase {
 				->expects($this->at(0))
 				->method('file_get_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/appWithInvalidData//core/signature.json'
+					\OC::$SERVERROOT . '/tests/data/integritycheck/appWithInvalidData//core/signature.json'
 				)
 				->will($this->returnValue($signatureDataFile));
 		$this->fileAccessHelper
 				->expects($this->at(1))
 				->method('file_get_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/appWithInvalidData//resources/codesigning/root.crt'
+					\OC::$SERVERROOT . '/tests/data/integritycheck/appWithInvalidData//resources/codesigning/root.crt'
 				)
 				->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
 
@@ -929,14 +929,14 @@ class CheckerTest extends TestCase {
 				->expects($this->at(0))
 				->method('file_get_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/appWithInvalidData//core/signature.json'
+					\OC::$SERVERROOT . '/tests/data/integritycheck/appWithInvalidData//core/signature.json'
 				)
 				->will($this->returnValue($signatureDataFile));
 		$this->fileAccessHelper
 				->expects($this->at(1))
 				->method('file_get_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/appWithInvalidData//resources/codesigning/root.crt'
+					\OC::$SERVERROOT . '/tests/data/integritycheck/appWithInvalidData//resources/codesigning/root.crt'
 				)
 				->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
 
@@ -1049,14 +1049,14 @@ class CheckerTest extends TestCase {
 				->expects($this->at(0))
 				->method('file_get_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/app//core/signature.json'
+					\OC::$SERVERROOT . '/tests/data/integritycheck/app//core/signature.json'
 				)
 				->will($this->returnValue($signatureDataFile));
 		$this->fileAccessHelper
 				->expects($this->at(1))
 				->method('file_get_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/app//resources/codesigning/root.crt'
+					\OC::$SERVERROOT . '/tests/data/integritycheck/app//resources/codesigning/root.crt'
 				)
 				->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
 
@@ -1096,14 +1096,14 @@ class CheckerTest extends TestCase {
 				->expects($this->at(0))
 				->method('file_get_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/app//core/signature.json'
+					\OC::$SERVERROOT . '/tests/data/integritycheck/app//core/signature.json'
 				)
 				->will($this->returnValue($signatureDataFile));
 		$this->fileAccessHelper
 				->expects($this->at(1))
 				->method('file_get_contents')
 				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/app//resources/codesigning/root.crt'
+					\OC::$SERVERROOT . '/tests/data/integritycheck/app//resources/codesigning/root.crt'
 				)
 				->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
 

@@ -64,11 +64,13 @@ class MigrationService {
 	 * @param ILogger|null $logger
 	 * @throws \OC\NeedsUpdateException
 	 */
-	public function __construct($appName,
-						IDBConnection $connection,
-						IOutput $output = null,
-						AppLocator $appLocator = null,
-						ILogger $logger = null) {
+	public function __construct(
+		$appName,
+		IDBConnection $connection,
+		IOutput $output = null,
+		AppLocator $appLocator = null,
+		ILogger $logger = null
+	) {
 		$this->appName = $appName;
 		$this->connection = $connection;
 		$this->output = $output;
@@ -189,7 +191,8 @@ class MigrationService {
 				\RecursiveIteratorIterator::LEAVES_ONLY
 			),
 			'#^.+\\/Version[^\\/]{1,255}\\.php$#i',
-			\RegexIterator::GET_MATCH);
+			\RegexIterator::GET_MATCH
+		);
 
 		$files = \array_keys(\iterator_to_array($iterator));
 		\uasort($files, function ($a, $b) {

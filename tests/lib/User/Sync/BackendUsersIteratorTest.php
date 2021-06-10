@@ -75,10 +75,9 @@ class BackendUsersIteratorTest extends TestCase {
 		$this->backend->expects($this->exactly(1))
 			->method('getUsers')
 			->with(
-					$this->equalTo(''),					// all users
+				$this->equalTo(''),					// all users
 					$this->equalTo(UsersIterator::LIMIT),	// limit 500
 					$this->equalTo(0)						// at the beginning
-
 			)
 			->willReturn([]);
 
@@ -109,11 +108,13 @@ class BackendUsersIteratorTest extends TestCase {
 					$this->equalTo(''),					// all users
 					$this->equalTo(UsersIterator::LIMIT),	// limit 500
 					$this->equalTo(0)						// at the beginning
-				], [
+				],
+				[
 					$this->equalTo(''),					// all users
 					$this->equalTo(UsersIterator::LIMIT),	// limit 500
 					$this->equalTo(500)					// second page
-				], [
+				],
+				[
 					$this->equalTo(''),					// all users
 					$this->equalTo(UsersIterator::LIMIT),	// limit 500
 					$this->equalTo(1000)					// last page
@@ -160,11 +161,13 @@ class BackendUsersIteratorTest extends TestCase {
 					$this->equalTo(''),					// all users
 					$this->equalTo(UsersIterator::LIMIT),	// limit 500
 					$this->equalTo(0)						// at the beginning
-				], [
+				],
+				[
 				$this->equalTo(''),					// all users
 				$this->equalTo(UsersIterator::LIMIT),	// limit 500
 				$this->equalTo(500)					// second page
-			], [
+			],
+				[
 					$this->equalTo(''),					// all users
 					$this->equalTo(UsersIterator::LIMIT),	// limit 500
 					$this->equalTo(1000)					// last page

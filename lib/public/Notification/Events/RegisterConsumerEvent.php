@@ -44,7 +44,7 @@ abstract class RegisterConsumerEvent extends Event {
 	/**
 	 * Implementations should use this name
 	 */
-	const NAME = 'notification.register.consumer';
+	public const NAME = 'notification.register.consumer';
 
 	/**
 	 * Empty implementation in order to prevent stopping the propagation of this event

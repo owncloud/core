@@ -42,7 +42,8 @@ class Cors implements ISettings {
 	public function __construct(
 		IUserSession $userSession,
 		IURLGenerator $urlGenerator,
-		IConfig $config) {
+		IConfig $config
+	) {
 		$this->config = $config;
 		$this->userSession = $userSession;
 		$this->urlGenerator = $urlGenerator;

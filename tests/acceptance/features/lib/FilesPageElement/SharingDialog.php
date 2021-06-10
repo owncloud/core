@@ -216,7 +216,9 @@ class SharingDialog extends OwncloudPage {
 	 * @return NodeElement AutocompleteElement
 	 */
 	public function fillShareWithField(
-		$input, Session $session, $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+		$input,
+		Session $session,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$shareWithField = $this->findShareWithField();
 		$this->fillFieldAndKeepFocus($shareWithField, $input, $session);
@@ -330,15 +332,21 @@ class SharingDialog extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function shareWithUserOrGroup(
-		$nameToType, $nameToMatch, Session $session, $maxRetries = 5, $quiet = false
+		$nameToType,
+		$nameToMatch,
+		Session $session,
+		$maxRetries = 5,
+		$quiet = false
 	) {
 		$userFound = false;
 		for ($retryCounter = 0; $retryCounter < $maxRetries; $retryCounter++) {
 			$autocompleteNodeElement = $this->fillShareWithField(
-				$nameToType, $session
+				$nameToType,
+				$session
 			);
 			$userElements = $autocompleteNodeElement->findAll(
-				"xpath", $this->autocompleteItemsTextXpath
+				"xpath",
+				$this->autocompleteItemsTextXpath
 			);
 			$userFound = false;
 			foreach ($userElements as $user) {
@@ -378,11 +386,17 @@ class SharingDialog extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function shareWithUser(
-		$name, Session $session, $maxRetries = 5, $quiet = false
+		$name,
+		Session $session,
+		$maxRetries = 5,
+		$quiet = false
 	) {
 		$this->shareWithUserOrGroup(
-			$name, $name . $this->suffixToIdentifyUsers,
-			$session, $maxRetries, $quiet
+			$name,
+			$name . $this->suffixToIdentifyUsers,
+			$session,
+			$maxRetries,
+			$quiet
 		);
 	}
 
@@ -397,11 +411,17 @@ class SharingDialog extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function shareWithRemoteUser(
-		$name, Session $session, $maxRetries = 5, $quiet = false
+		$name,
+		Session $session,
+		$maxRetries = 5,
+		$quiet = false
 	) {
 		$this->shareWithUserOrGroup(
-			$name, $name . $this->suffixToIdentifyRemoteUsers,
-			$session, $maxRetries, $quiet
+			$name,
+			$name . $this->suffixToIdentifyRemoteUsers,
+			$session,
+			$maxRetries,
+			$quiet
 		);
 	}
 
@@ -416,11 +436,17 @@ class SharingDialog extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function shareWithGroup(
-		$name, Session $session, $maxRetries = 5, $quiet = false
+		$name,
+		Session $session,
+		$maxRetries = 5,
+		$quiet = false
 	) {
 		$this->shareWithUserOrGroup(
-			$name, $name . $this->suffixToIdentifyGroups,
-			$session, $maxRetries, $quiet
+			$name,
+			$name . $this->suffixToIdentifyGroups,
+			$session,
+			$maxRetries,
+			$quiet
 		);
 	}
 
@@ -435,7 +461,8 @@ class SharingDialog extends OwncloudPage {
 	public function openShareActionsIfNotOpen($userOrGroup, $shareReceiverName) {
 		if ($userOrGroup == "group") {
 			$xpathLocator = \sprintf(
-				$this->permissionsFieldByGroupName, $shareReceiverName
+				$this->permissionsFieldByGroupName,
+				$shareReceiverName
 			);
 		} else {
 			// For users having same display name we pass $shareReceiverName in the format "displayName (userName)"
@@ -447,11 +474,14 @@ class SharingDialog extends OwncloudPage {
 				$shareReceiverName = \trim($nameDisplayNameArray[0]);
 				$additionalInfo = \trim($nameDisplayNameArray[1], '()');
 				$xpathLocator = \sprintf(
-					$this->permissionsFieldByUserNameWithExtraInfo, $shareReceiverName, $additionalInfo
+					$this->permissionsFieldByUserNameWithExtraInfo,
+					$shareReceiverName,
+					$additionalInfo
 				);
 			} else {
 				$xpathLocator = \sprintf(
-					$this->permissionsFieldByUserName, $shareReceiverName
+					$this->permissionsFieldByUserName,
+					$shareReceiverName
 				);
 			}
 		}
@@ -596,7 +626,8 @@ class SharingDialog extends OwncloudPage {
 	public function getShareWithTooltip() {
 		$shareWithField = $this->findShareWithField();
 		$shareWithTooltip = $shareWithField->find(
-			"xpath", $this->shareWithTooltipXpath
+			"xpath",
+			$this->shareWithTooltipXpath
 		);
 		$this->assertElementNotNull(
 			$shareWithTooltip,

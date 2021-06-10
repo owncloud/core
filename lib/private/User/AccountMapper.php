@@ -224,8 +224,10 @@ class AccountMapper extends Mapper {
 			->from($this->getTableName());
 
 		if ($search) {
-			$qb->where($qb->expr()->iLike('user_id',
-				$qb->createNamedParameter('%' . $this->db->escapeLikeParameter($search) . '%')));
+			$qb->where($qb->expr()->iLike(
+				'user_id',
+				$qb->createNamedParameter('%' . $this->db->escapeLikeParameter($search) . '%')
+			));
 		}
 		if ($onlySeen) {
 			$qb->where($qb->expr()->gt('last_login', new Literal(0)));

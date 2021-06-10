@@ -94,20 +94,22 @@ class LostController extends Controller {
 	 * @param ILogger $logger
 	 * @param Session $userSession
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IURLGenerator $urlGenerator,
-								IUserManager $userManager,
-								OC_Defaults $defaults,
-								IL10N $l10n,
-								IConfig $config,
-								ISecureRandom $secureRandom,
-								$from,
-								$isDataEncrypted,
-								IMailer $mailer,
-								ITimeFactory $timeFactory,
-								ILogger $logger,
-								Session $userSession) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IURLGenerator $urlGenerator,
+		IUserManager $userManager,
+		OC_Defaults $defaults,
+		IL10N $l10n,
+		IConfig $config,
+		ISecureRandom $secureRandom,
+		$from,
+		$isDataEncrypted,
+		IMailer $mailer,
+		ITimeFactory $timeFactory,
+		ILogger $logger,
+		Session $userSession
+	) {
 		parent::__construct($appName, $request);
 		$this->urlGenerator = $urlGenerator;
 		$this->userManager = $userManager;
@@ -138,7 +140,9 @@ class LostController extends Controller {
 			$this->checkPasswordResetToken($token, $userId);
 		} catch (\Exception $e) {
 			return new TemplateResponse(
-				'core', 'error', [
+				'core',
+				'error',
+				[
 					"errors" => [["error" => $e->getMessage()]]
 				],
 				'guest'
@@ -305,10 +309,12 @@ class LostController extends Controller {
 	 * @return array
 	 */
 	public function generateTokenAndLink($userId) {
-		$token = $this->secureRandom->generate(21,
+		$token = $this->secureRandom->generate(
+			21,
 			ISecureRandom::CHAR_DIGITS .
 			ISecureRandom::CHAR_LOWER .
-			ISecureRandom::CHAR_UPPER);
+			ISecureRandom::CHAR_UPPER
+		);
 
 		$link = $this->urlGenerator->linkToRouteAbsolute('core.lost.resetform', ['userId' => $userId, 'token' => $token]);
 		return [$link, $token];

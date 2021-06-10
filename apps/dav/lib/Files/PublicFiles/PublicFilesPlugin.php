@@ -43,11 +43,11 @@ use Sabre\HTTP\ResponseInterface;
  * @package OCA\DAV\Files\PublicFiles
  */
 class PublicFilesPlugin extends ServerPlugin {
-	const PUBLIC_LINK_ITEM_TYPE = '{http://owncloud.org/ns}public-link-item-type';
-	const PUBLIC_LINK_PERMISSION = '{http://owncloud.org/ns}public-link-permission';
-	const PUBLIC_LINK_EXPIRATION = '{http://owncloud.org/ns}public-link-expiration';
-	const PUBLIC_LINK_SHARE_DATETIME = '{http://owncloud.org/ns}public-link-share-datetime';
-	const PUBLIC_LINK_SHARE_OWNER = '{http://owncloud.org/ns}public-link-share-owner';
+	public const PUBLIC_LINK_ITEM_TYPE = '{http://owncloud.org/ns}public-link-item-type';
+	public const PUBLIC_LINK_PERMISSION = '{http://owncloud.org/ns}public-link-permission';
+	public const PUBLIC_LINK_EXPIRATION = '{http://owncloud.org/ns}public-link-expiration';
+	public const PUBLIC_LINK_SHARE_DATETIME = '{http://owncloud.org/ns}public-link-share-datetime';
+	public const PUBLIC_LINK_SHARE_OWNER = '{http://owncloud.org/ns}public-link-share-owner';
 
 	/** @var Server */
 	private $server;

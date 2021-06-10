@@ -48,7 +48,7 @@ abstract class RegisterNotifierEvent extends Event {
 	/**
 	 * Implementations should use this name
 	 */
-	const NAME = 'notification.register.notifier';
+	public const NAME = 'notification.register.notifier';
 
 	/**
 	 * Empty implementation in order to prevent stopping the propagation of this event

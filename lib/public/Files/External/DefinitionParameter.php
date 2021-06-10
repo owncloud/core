@@ -31,15 +31,15 @@ namespace OCP\Files\External;
 class DefinitionParameter implements \JsonSerializable {
 
 	/** Value constants */
-	const VALUE_TEXT = 0;
-	const VALUE_BOOLEAN = 1;
-	const VALUE_PASSWORD = 2;
-	const VALUE_HIDDEN = 3;
+	public const VALUE_TEXT = 0;
+	public const VALUE_BOOLEAN = 1;
+	public const VALUE_PASSWORD = 2;
+	public const VALUE_HIDDEN = 3;
 
 	/** Flag constants */
-	const FLAG_NONE = 0;
-	const FLAG_OPTIONAL = 1;
-	const FLAG_USER_PROVIDED = 2;
+	public const FLAG_NONE = 0;
+	public const FLAG_OPTIONAL = 1;
+	public const FLAG_USER_PROVIDED = 2;
 
 	/** @var string name of parameter */
 	private $name;

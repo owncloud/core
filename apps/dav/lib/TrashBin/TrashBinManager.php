@@ -91,8 +91,12 @@ class TrashBinManager {
 	public function restore(string $user, AbstractTrashBinNode $trashItem, $targetLocation) : bool {
 		$path = $trashItem->getPathInTrash();
 		$path = \implode('/', $path);
-		return Trashbin::restore($path,
-			$trashItem->getOriginalFileName(), $trashItem->getDeleteTimestamp(), $targetLocation);
+		return Trashbin::restore(
+			$path,
+			$trashItem->getOriginalFileName(),
+			$trashItem->getDeleteTimestamp(),
+			$targetLocation
+		);
 	}
 
 	/**

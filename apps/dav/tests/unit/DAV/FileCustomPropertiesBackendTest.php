@@ -106,8 +106,8 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 		$connection = \OC::$server->getDatabaseConnection();
 		$qb = $connection->getQueryBuilder();
 		$maxFunction = $qb->createFunction(
-				"MAX(`id`)"
-			);
+			"MAX(`id`)"
+		);
 		$this->maxId = (int) $qb->select($maxFunction)
 			->from('properties')
 			->execute()->fetchColumn();

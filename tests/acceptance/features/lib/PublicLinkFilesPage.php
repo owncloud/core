@@ -109,7 +109,9 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @param array $parameters
 	 */
 	public function __construct(
-		Session $session, Factory $factory, array $parameters = []
+		Session $session,
+		Factory $factory,
+		array $parameters = []
 	) {
 		parent::__construct($session, $factory, $parameters);
 		$this->filesPageCRUDFunctions = $this->getPage("FilesPageCRUD");
@@ -205,11 +207,14 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @throws ElementNotFoundException|\Exception
 	 */
 	public function createFolder(
-		Session $session, $name = null,
+		Session $session,
+		$name = null,
 		$timeoutMsec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		return $this->filesPageCRUDFunctions->createFolder(
-			$session, $name, $timeoutMsec
+			$session,
+			$name,
+			$timeoutMsec
 		);
 	}
 
@@ -230,7 +235,10 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		$this->filesPageCRUDFunctions->renameFile(
-			$fromFileName, $toFileName, $session, $maxRetries
+			$fromFileName,
+			$toFileName,
+			$session,
+			$maxRetries
 		);
 	}
 
@@ -245,10 +253,16 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @return void
 	 */
 	public function moveFileTo(
-		$name, $destination, Session $session, $maxRetries = STANDARD_RETRY_COUNT
+		$name,
+		$destination,
+		Session $session,
+		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		$this->filesPageCRUDFunctions->moveFileTo(
-			$name, $destination, $session, $maxRetries
+			$name,
+			$destination,
+			$session,
+			$maxRetries
 		);
 	}
 
@@ -414,10 +428,12 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		while ($currentTime <= $end) {
 			$fileList = $this->find('xpath', $this->getFileListXpath());
 			$downloadButton = $this->find(
-				"xpath", $this->DownloadBtnXpath
+				"xpath",
+				$this->DownloadBtnXpath
 			);
 			$uploadForm = $this->find(
-				"xpath", $this->uploadFormXpath
+				"xpath",
+				$this->uploadFormXpath
 			);
 			if ($fileList !== null) {
 				try {
@@ -499,7 +515,10 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		$this->filesPageCRUDFunctions->deleteFile(
-			$name, $session, $expectToDeleteFile, $maxRetries
+			$name,
+			$session,
+			$expectToDeleteFile,
+			$maxRetries
 		);
 	}
 

@@ -36,8 +36,8 @@ use Test\Traits\UserTrait;
 abstract class TestCase extends \Test\TestCase {
 	use UserTrait;
 
-	const TEST_FILES_SHARING_API_USER1 = "test-share-user1";
-	const TEST_FILES_SHARING_API_USER2 = "test-share-user2";
+	public const TEST_FILES_SHARING_API_USER1 = "test-share-user1";
+	public const TEST_FILES_SHARING_API_USER2 = "test-share-user2";
 
 	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();

@@ -75,7 +75,8 @@ class DefaultTokenProvider implements IProvider {
 	 * @return IToken
 	 */
 	public function generateToken($token, $uid, $loginName, $password, $name, $type = IToken::TEMPORARY_TOKEN) {
-		$this->logger->debug('generating token {token}, uid {uid}, loginName {loginName}, pwd {pwd}, name {name}, type {type}',
+		$this->logger->debug(
+			'generating token {token}, uid {uid}, loginName {loginName}, pwd {pwd}, name {name}, type {type}',
 			[
 				'app' => __METHOD__,
 				'token' => $this->hashToken($token),

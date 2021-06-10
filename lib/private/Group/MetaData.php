@@ -29,9 +29,9 @@ namespace OC\Group;
 use OCP\IUserSession;
 
 class MetaData {
-	const SORT_NONE = 0;
-	const SORT_USERCOUNT = 1; // May have performance issues on LDAP backends
-	const SORT_GROUPNAME = 2;
+	public const SORT_NONE = 0;
+	public const SORT_USERCOUNT = 1; // May have performance issues on LDAP backends
+	public const SORT_GROUPNAME = 2;
 
 	/** @var string */
 	protected $user;
@@ -53,11 +53,11 @@ class MetaData {
 	 * @param IUserSession $userSession
 	 */
 	public function __construct(
-			$user,
-			$isAdmin,
-			\OCP\IGroupManager $groupManager,
-			IUserSession $userSession
-			) {
+		$user,
+		$isAdmin,
+		\OCP\IGroupManager $groupManager,
+		IUserSession $userSession
+	) {
 		$this->user = $user;
 		$this->isAdmin = (bool)$isAdmin;
 		$this->groupManager = $groupManager;
@@ -94,7 +94,8 @@ class MetaData {
 					$groups,
 					$sortGroupsKeys,
 					$sortGroupsIndex,
-					$groupMetaData);
+					$groupMetaData
+				);
 			} else {
 				//admin group is hard coded to 'admin' for now. In future,
 				//backends may define admin groups too. Then the if statement
@@ -103,7 +104,8 @@ class MetaData {
 					$adminGroups,
 					$sortAdminGroupsKeys,
 					$sortAdminGroupsIndex,
-					$groupMetaData);
+					$groupMetaData
+				);
 			}
 		}
 

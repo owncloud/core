@@ -26,13 +26,13 @@
 namespace OC\Image;
 
 class BmpToResource {
-	const MAGIC = 19778; // ASCII BM
-	const BITMAP_HEADER_SIZE_BYTES = 14;
+	public const MAGIC = 19778; // ASCII BM
+	public const BITMAP_HEADER_SIZE_BYTES = 14;
 
-	const DIB_BITMAPINFOHEADER_SIZE_BYTES = 40;
+	public const DIB_BITMAPINFOHEADER_SIZE_BYTES = 40;
 
-	const COMPRESSION_BI_RGB = 0;
-	const COMPRESSION_BI_BITFIELDS = 3;
+	public const COMPRESSION_BI_RGB = 0;
+	public const COMPRESSION_BI_BITFIELDS = 3;
 
 	/** @var \SplFileObject $file */
 	private $file;

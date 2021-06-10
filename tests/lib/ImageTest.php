@@ -285,10 +285,13 @@ class ImageTest extends \Test\TestCase {
 		$resizedWidth = $img->width();
 		$resizedHeight = $img->height();
 		$this->assertEquals(
-			$currentWidth, $img->width(), "currentWidth $currentWidth resizedWidth $resizedWidth \n"
+			$currentWidth,
+			$img->width(),
+			"currentWidth $currentWidth resizedWidth $resizedWidth \n"
 		);
 		$this->assertEquals(
-			$currentHeight, $img->height(),
+			$currentHeight,
+			$img->height(),
 			"currentHeight $currentHeight resizedHeight $resizedHeight \n"
 		);
 	}

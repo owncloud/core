@@ -334,7 +334,8 @@ class EncryptionTest extends Storage {
 		$this->instance->expects($this->any())->method('verifyUnencryptedSize')
 			->willReturn(42);
 
-		$this->assertSame(42,
+		$this->assertSame(
+			42,
 			$this->instance->filesize('/test.txt')
 		);
 	}
@@ -403,10 +404,12 @@ class EncryptionTest extends Storage {
 	 * @param $encryptionEnabled
 	 * @param boolean $renameKeysReturn
 	 */
-	public function testRename($source,
-							   $target,
-							   $encryptionEnabled,
-							   $renameKeysReturn) {
+	public function testRename(
+		$source,
+		$target,
+		$encryptionEnabled,
+		$renameKeysReturn
+	) {
 		if ($encryptionEnabled) {
 			$this->keyStore
 				->expects($this->once())
@@ -476,13 +479,19 @@ class EncryptionTest extends Storage {
 		$this->encryptionManager->expects($this->any())->method('isEnabled')->willReturn($encryptionEnabled);
 
 		$encryptionStorage = new Encryption(
-					[
+			[
 						'storage' => $sourceStorage,
 						'root' => 'foo',
 						'mountPoint' => '/mountPoint',
 						'mount' => $this->mount
 					],
-					$this->encryptionManager, $util, $this->logger, $this->file, null, $this->keyStore, $this->update
+			$this->encryptionManager,
+			$util,
+			$this->logger,
+			$this->file,
+			null,
+			$this->keyStore,
+			$this->update
 		);
 
 		if ($rmdirResult === true && $isExcluded === false && $encryptionEnabled === true) {
@@ -524,7 +533,8 @@ class EncryptionTest extends Storage {
 			$this->keyStore->expects($this->once())->method('copyKeys')->willReturn(true);
 		}
 
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			self::invokePrivate($this->instance, 'copyKeys', ['/source', '/target'])
 		);
 	}
@@ -674,15 +684,22 @@ class EncryptionTest extends Storage {
 	 */
 	public function testParseRawHeader($rawHeader, $expected) {
 		$instance = new Encryption(
-					[
+			[
 						'storage' => $this->sourceStorage,
 						'root' => 'foo',
 						'mountPoint' => '/',
 						'mount' => $this->mount
 					],
-					$this->encryptionManager, $this->util, $this->logger, $this->file, null, $this->keyStore, $this->update, $this->mountManager, $this->arrayCache
-
-			);
+			$this->encryptionManager,
+			$this->util,
+			$this->logger,
+			$this->file,
+			null,
+			$this->keyStore,
+			$this->update,
+			$this->mountManager,
+			$this->arrayCache
+		);
 
 		$result = $this->invokePrivate($instance, 'parseRawHeader', [$rawHeader]);
 		$this->assertSameSize($expected, $result);
@@ -924,7 +941,8 @@ class EncryptionTest extends Storage {
 	 * @param bool $expected
 	 */
 	public function testIsVersion($path, $expected) {
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->invokePrivate($this->instance, 'isVersion', [$path])
 		);
 	}

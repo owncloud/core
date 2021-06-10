@@ -76,19 +76,23 @@ class OCI extends AbstractDatabase {
 		if (!$connection) {
 			$errorMessage = $this->getLastError();
 			if ($errorMessage) {
-				throw new \OC\DatabaseSetupException($this->trans->t('Oracle connection could not be established'),
-				$errorMessage.' Check environment: ORACLE_HOME='.\getenv('ORACLE_HOME')
+				throw new \OC\DatabaseSetupException(
+					$this->trans->t('Oracle connection could not be established'),
+					$errorMessage.' Check environment: ORACLE_HOME='.\getenv('ORACLE_HOME')
 							.' ORACLE_SID='.\getenv('ORACLE_SID')
 							.' LD_LIBRARY_PATH='.\getenv('LD_LIBRARY_PATH')
 							.' NLS_LANG='.\getenv('NLS_LANG')
-							.' tnsnames.ora is '.(\is_readable(\getenv('ORACLE_HOME').'/network/admin/tnsnames.ora')?'':'not ').'readable');
+							.' tnsnames.ora is '.(\is_readable(\getenv('ORACLE_HOME').'/network/admin/tnsnames.ora')?'':'not ').'readable'
+				);
 			}
-			throw new \OC\DatabaseSetupException($this->trans->t('Oracle username and/or password not valid'),
-					'Check environment: ORACLE_HOME='.\getenv('ORACLE_HOME')
+			throw new \OC\DatabaseSetupException(
+				$this->trans->t('Oracle username and/or password not valid'),
+				'Check environment: ORACLE_HOME='.\getenv('ORACLE_HOME')
 							.' ORACLE_SID='.\getenv('ORACLE_SID')
 							.' LD_LIBRARY_PATH='.\getenv('LD_LIBRARY_PATH')
 							.' NLS_LANG='.\getenv('NLS_LANG')
-							.' tnsnames.ora is '.(\is_readable(\getenv('ORACLE_HOME').'/network/admin/tnsnames.ora')?'':'not ').'readable');
+							.' tnsnames.ora is '.(\is_readable(\getenv('ORACLE_HOME').'/network/admin/tnsnames.ora')?'':'not ').'readable'
+			);
 		}
 		//check for roles creation rights in oracle
 
@@ -142,8 +146,10 @@ class OCI extends AbstractDatabase {
 
 		$connection = @\oci_connect($this->dbUser, $this->dbPassword, $easy_connect_string);
 		if (!$connection) {
-			throw new \OC\DatabaseSetupException($this->trans->t('Oracle username and/or password not valid'),
-					$this->trans->t('You need to enter either an existing account or the administrator.'));
+			throw new \OC\DatabaseSetupException(
+				$this->trans->t('Oracle username and/or password not valid'),
+				$this->trans->t('You need to enter either an existing account or the administrator.')
+			);
 		}
 		$query = 'SELECT count(*) FROM user_tables WHERE table_name = :un';
 		$stmt = \oci_parse($connection, $query);
@@ -202,8 +208,10 @@ class OCI extends AbstractDatabase {
 			$result = \oci_execute($stmt);
 			if (!$result) {
 				$entry = $this->trans->t('DB Error: "%s"', [$this->getLastError($connection)]) . '<br />';
-				$entry .= $this->trans->t('Offending command was: "%s", name: %s, password: %s',
-					[$query, $name, $password]) . '<br />';
+				$entry .= $this->trans->t(
+					'Offending command was: "%s", name: %s, password: %s',
+					[$query, $name, $password]
+				) . '<br />';
 				$this->logger->warning($entry, ['app' => 'setup.oci']);
 			}
 		} else { // change password of the existing role
@@ -234,8 +242,10 @@ class OCI extends AbstractDatabase {
 		$result = \oci_execute($stmt);
 		if (!$result) {
 			$entry = $this->trans->t('DB Error: "%s"', [$this->getLastError($connection)]) . '<br />';
-			$entry .= $this->trans->t('Offending command was: "%s", name: %s, password: %s',
-				[$query, $name, $password]) . '<br />';
+			$entry .= $this->trans->t(
+				'Offending command was: "%s", name: %s, password: %s',
+				[$query, $name, $password]
+			) . '<br />';
 			$this->logger->warning($entry, ['app' => 'setup.oci']);
 		}
 	}

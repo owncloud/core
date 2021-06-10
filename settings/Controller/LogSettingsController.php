@@ -55,10 +55,12 @@ class LogSettingsController extends Controller {
 	 * @param IRequest $request
 	 * @param IConfig $config
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IConfig $config,
-								IL10N $l10n) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IConfig $config,
+		IL10N $l10n
+	) {
 		parent::__construct($appName, $request);
 		$this->config = $config;
 		$this->l10n = $l10n;

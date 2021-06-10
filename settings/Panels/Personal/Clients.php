@@ -33,8 +33,10 @@ class Clients implements ISettings {
 	/** @var Defaults  */
 	protected $defaults;
 
-	public function __construct(IConfig $config,
-								Defaults $defaults) {
+	public function __construct(
+		IConfig $config,
+		Defaults $defaults
+	) {
 		$this->config = $config;
 		$this->defaults = $defaults;
 	}

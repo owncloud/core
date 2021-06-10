@@ -89,9 +89,15 @@ class User implements IUser {
 	 * @param \OC\Group\Manager|null $groupManager
 	 * @param Session|null $userSession
 	 */
-	public function __construct(Account $account, AccountMapper $mapper, $emitter = null, IConfig $config = null,
-								$urlGenerator = null, EventDispatcher $eventDispatcher = null,
-								\OC\Group\Manager $groupManager = null, Session $userSession = null
+	public function __construct(
+		Account $account,
+		AccountMapper $mapper,
+		$emitter = null,
+		IConfig $config = null,
+		$urlGenerator = null,
+		EventDispatcher $eventDispatcher = null,
+		\OC\Group\Manager $groupManager = null,
+		Session $userSession = null
 	) {
 		$this->account = $account;
 		$this->mapper = $mapper;

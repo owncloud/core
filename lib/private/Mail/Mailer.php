@@ -60,9 +60,11 @@ class Mailer implements IMailer {
 	 * @param ILogger $logger
 	 * @param \OC_Defaults $defaults
 	 */
-	public function __construct(IConfig $config,
-						 ILogger $logger,
-						 \OC_Defaults $defaults) {
+	public function __construct(
+		IConfig $config,
+		ILogger $logger,
+		\OC_Defaults $defaults
+	) {
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->defaults = $defaults;

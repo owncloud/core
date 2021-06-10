@@ -62,7 +62,8 @@ class TUSContext implements Context {
 			HttpRequestHelper::post(
 				$this->featureContext->getBaseUrl() . "/" .
 				WebDavHelper::getDavPath(
-					$user, $this->featureContext->getDavPathVersion()
+					$user,
+					$this->featureContext->getDavPathVersion()
 				),
 				$user,
 				$password,
@@ -110,8 +111,10 @@ class TUSContext implements Context {
 		$password = $this->featureContext->getUserPassword($user);
 		$this->featureContext->setResponse(
 			HttpRequestHelper::sendRequest(
-				$this->resourceLocation, 'PATCH',
-				$user, $password,
+				$this->resourceLocation,
+				'PATCH',
+				$user,
+				$password,
 				[
 					'Content-Type' => 'application/offset+octet-stream',
 					'Tus-Resumable' => '1.0.0',
@@ -207,12 +210,16 @@ class TUSContext implements Context {
 	 * @return string
 	 */
 	public function userUploadsAFileWithContentToUsingTus(
-		string $user, string $content, string $destination
+		string $user,
+		string $content,
+		string $destination
 	) {
 		$tmpfname = $this->writeDataToTempFile($content);
 		try {
 			$this->userUploadsUsingTusAFileTo(
-				$user, \basename($tmpfname), $destination
+				$user,
+				\basename($tmpfname),
+				$destination
 			);
 		} catch (Exception $e) {
 			Assert::assertStringContainsString('TusPhp\Exception\FileException: Unable to create resource', $e);
@@ -241,7 +248,11 @@ class TUSContext implements Context {
 	) {
 		$tmpfname = $this->writeDataToTempFile($content);
 		$this->userUploadsUsingTusAFileTo(
-			$user, \basename($tmpfname), $destination, [], $noOfChunks
+			$user,
+			\basename($tmpfname),
+			$destination,
+			[],
+			$noOfChunks
 		);
 		\unlink($tmpfname);
 	}
@@ -257,13 +268,19 @@ class TUSContext implements Context {
 	 * @return void
 	 */
 	public function userUploadsFileWithContentToWithMtimeUsingTUS(
-		string $user, string $source, string $destination, string $mtime
+		string $user,
+		string $source,
+		string $destination,
+		string $mtime
 	) {
 		$mtime = new DateTime($mtime);
 		$mtime = $mtime->format('U');
 		$user = $this->featureContext->getActualUsername($user);
 		$this->userUploadsUsingTusAFileTo(
-			$user, $source, $destination, ['mtime' => $mtime]
+			$user,
+			$source,
+			$destination,
+			['mtime' => $mtime]
 		);
 	}
 
@@ -275,7 +292,8 @@ class TUSContext implements Context {
 	 */
 	private function writeDataToTempFile(string $content) {
 		$tmpfname = \tempnam(
-			$this->featureContext->acceptanceTestsDirLocation(), "tus-upload-test-"
+			$this->featureContext->acceptanceTestsDirLocation(),
+			"tus-upload-test-"
 		);
 		if ($tmpfname === false) {
 			throw new \Exception("could not create a temporary filename");
@@ -313,7 +331,9 @@ class TUSContext implements Context {
 	 * @return void
 	 */
 	public function userCreatesWithUpload(
-		string $user, string $content, TableNode $headers
+		string $user,
+		string $content,
+		TableNode $headers
 	) {
 		$this->createNewTUSresourceWithHeaders($user, $headers, $content);
 	}
@@ -334,7 +354,12 @@ class TUSContext implements Context {
 	) {
 		$tmpfname = $this->writeDataToTempFile($content);
 		$this->userUploadsUsingTusAFileTo(
-			$user, \basename($tmpfname), $source, [], 1, -1
+			$user,
+			\basename($tmpfname),
+			$source,
+			[],
+			1,
+			-1
 		);
 		\unlink($tmpfname);
 	}

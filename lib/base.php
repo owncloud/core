@@ -150,9 +150,14 @@ class OC {
 		 * So if the modifications made in the configuration, by fakeRequest
 		 * will not throw events.
 		 */
-		$fakeRequest = new \OC\AppFramework\Http\Request($params, null,
-			new \OC\AllConfig(new \OC\SystemConfig(self::$config),
-				new \Symfony\Component\EventDispatcher\EventDispatcher()));
+		$fakeRequest = new \OC\AppFramework\Http\Request(
+			$params,
+			null,
+			new \OC\AllConfig(
+				new \OC\SystemConfig(self::$config),
+				new \Symfony\Component\EventDispatcher\EventDispatcher()
+			)
+		);
 		$scriptName = $fakeRequest->getScriptName();
 		if (\substr($scriptName, -1) == '/') {
 			$scriptName .= 'index.php';
@@ -255,9 +260,11 @@ class OC {
 			} else {
 				OC_Template::printErrorPage(
 					$l->t('Cannot write into "config" directory!'),
-					$l->t('This can usually be fixed by '
+					$l->t(
+						'This can usually be fixed by '
 					. '%sgiving the webserver write access to the config directory%s.',
-					 ['<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>'])
+						['<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>']
+					)
 				);
 			}
 		}
@@ -708,8 +715,8 @@ class OC {
 			\header('Status: 400 Bad Request');
 
 			\OC::$server->getLogger()->warning(
-					'Trusted domain error. "{remoteAddress}" tried to access using "{host}" as host.',
-					[
+				'Trusted domain error. "{remoteAddress}" tried to access using "{host}" as host.',
+				[
 						'app' => 'core',
 						'remoteAddress' => $request->getRemoteAddress(),
 						'host' => $host,
@@ -844,9 +851,14 @@ class OC {
 		// Check if ownCloud is installed or in maintenance (update) mode
 		if (!$systemConfig->getValue('installed', false)) {
 			\OC::$server->getSession()->clear();
-			$setupHelper = new OC\Setup(\OC::$server->getConfig(), \OC::$server->getIniWrapper(),
-				\OC::$server->getL10N('lib'), new \OC_Defaults(), \OC::$server->getLogger(),
-				\OC::$server->getSecureRandom());
+			$setupHelper = new OC\Setup(
+				\OC::$server->getConfig(),
+				\OC::$server->getIniWrapper(),
+				\OC::$server->getL10N('lib'),
+				new \OC_Defaults(),
+				\OC::$server->getLogger(),
+				\OC::$server->getSecureRandom()
+			);
 
 			$controller = new OC\Core\Controller\SetupController($setupHelper);
 			$controller->run($_POST);

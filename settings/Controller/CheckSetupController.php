@@ -66,14 +66,16 @@ class CheckSetupController extends Controller {
 	 * @param IL10N $l10n
 	 * @param Checker $checker
 	 */
-	public function __construct($AppName,
-								IRequest $request,
-								IConfig $config,
-								IClientService $clientService,
-								IURLGenerator $urlGenerator,
-								\OC_Util $util,
-								IL10N $l10n,
-								Checker $checker) {
+	public function __construct(
+		$AppName,
+		IRequest $request,
+		IConfig $config,
+		IClientService $clientService,
+		IURLGenerator $urlGenerator,
+		\OC_Util $util,
+		IL10N $l10n,
+		Checker $checker
+	) {
 		parent::__construct($AppName, $request);
 		$this->config = $config;
 		$this->clientService = $clientService;

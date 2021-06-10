@@ -73,7 +73,8 @@ class GroupList extends OwncloudPage {
 		$name = $this->quotedText($name);
 		$xpathLocator = \sprintf($this->groupLiXpath, $name);
 		$groupLi = $this->groupListElement->find(
-			"xpath", $xpathLocator
+			"xpath",
+			$xpathLocator
 		);
 		if ($groupLi === null) {
 			throw new ElementNotFoundException(
@@ -160,7 +161,8 @@ class GroupList extends OwncloudPage {
 	 */
 	public function namesToArray() {
 		$allGroupElements = $this->groupListElement->findAll(
-			"xpath", $this->allGroupsXpath
+			"xpath",
+			$this->allGroupsXpath
 		);
 		$allGroups = [];
 		foreach ($allGroupElements as $element) {

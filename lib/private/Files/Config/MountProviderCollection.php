@@ -39,7 +39,7 @@ use OCP\IUser;
 class MountProviderCollection implements IMountProviderCollection, Emitter {
 	use EmitterTrait;
 
-	const DEFAULT_MOVE_ATTEMPTS_PER_MOUNTPOINT = 10;
+	public const DEFAULT_MOVE_ATTEMPTS_PER_MOUNTPOINT = 10;
 
 	/**
 	 * @var \OCP\Files\Config\IHomeMountProvider[]

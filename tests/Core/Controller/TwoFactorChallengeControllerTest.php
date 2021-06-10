@@ -162,7 +162,8 @@ class TwoFactorChallengeControllerTest extends TestCase {
 			->method('remove')
 			->with($this->logicalOr(
 				$this->equalTo('two_factor_auth_error'),
-				$this->equalTo('two_factor_auth_error_message')));
+				$this->equalTo('two_factor_auth_error_message')
+			));
 		$provider->expects($this->once())
 			->method('getTemplate')
 			->with($user)

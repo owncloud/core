@@ -56,11 +56,13 @@ class HookManager {
 	/** @var array */
 	private $addressBooksToDelete;
 
-	public function __construct(IUserManager $userManager,
-								SyncService $syncService,
-								CalDavBackend $calDav,
-								CardDavBackend $cardDav,
-								IL10N $l10n) {
+	public function __construct(
+		IUserManager $userManager,
+		SyncService $syncService,
+		CalDavBackend $calDav,
+		CardDavBackend $cardDav,
+		IL10N $l10n
+	) {
 		$this->userManager = $userManager;
 		$this->syncService = $syncService;
 		$this->calDav = $calDav;
@@ -69,22 +71,30 @@ class HookManager {
 	}
 
 	public function setup() {
-		Util::connectHook('OC_User',
+		Util::connectHook(
+			'OC_User',
 			'post_createUser',
 			$this,
-			'postCreateUser');
-		Util::connectHook('OC_User',
+			'postCreateUser'
+		);
+		Util::connectHook(
+			'OC_User',
 			'pre_deleteUser',
 			$this,
-			'preDeleteUser');
-		Util::connectHook('OC_User',
+			'preDeleteUser'
+		);
+		Util::connectHook(
+			'OC_User',
 			'post_deleteUser',
 			$this,
-			'postDeleteUser');
-		Util::connectHook('OC_User',
+			'postDeleteUser'
+		);
+		Util::connectHook(
+			'OC_User',
 			'changeUser',
 			$this,
-			'changeUser');
+			'changeUser'
+		);
 	}
 
 	public function postCreateUser($params) {

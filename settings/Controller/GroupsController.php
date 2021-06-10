@@ -54,12 +54,14 @@ class GroupsController extends Controller {
 	 * @param bool $isAdmin
 	 * @param IL10N $l10n
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IGroupManager $groupManager,
-								IUserSession $userSession,
-								$isAdmin,
-								IL10N $l10n) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IGroupManager $groupManager,
+		IUserSession $userSession,
+		$isAdmin,
+		IL10N $l10n
+	) {
 		parent::__construct($appName, $request);
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;

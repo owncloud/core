@@ -134,6 +134,9 @@ vendor-bin/**/composer.lock
 /config/autoconfig.php
 clover.xml
 /tests/output
+.php-cs-fixer.cache
+
+# old php-cs-fixer v2 files
 .php_cs.cache
 .php_cs
 

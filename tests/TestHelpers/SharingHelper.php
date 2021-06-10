@@ -30,7 +30,7 @@ use Psr\Http\Message\ResponseInterface;
  *
  */
 class SharingHelper {
-	const PERMISSION_TYPES = [
+	public const PERMISSION_TYPES = [
 			'read' => 1,
 			'update' => 2,
 			'create' => 4,
@@ -38,14 +38,14 @@ class SharingHelper {
 			'share' => 16,
 	];
 
-	const SHARE_TYPES = [
+	public const SHARE_TYPES = [
 			'user' => 0,
 			'group' => 1,
 			'public_link' => 3,
 			'federated' => 6,
 	];
 
-	const SHARE_STATES = [
+	public const SHARE_STATES = [
 			'accepted' => 0,
 			'pending' => 1,
 			'rejected' => 2,
@@ -233,7 +233,8 @@ class SharingHelper {
 	 * @return string
 	 */
 	public static function getLastShareIdFromResponse(
-		$responseXmlObject, $errorMessage = "cannot find share id in response"
+		$responseXmlObject,
+		$errorMessage = "cannot find share id in response"
 	) {
 		$xmlPart = $responseXmlObject->xpath("//data/element[last()]/id");
 

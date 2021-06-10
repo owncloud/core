@@ -73,7 +73,8 @@ class SharedMountTest extends TestCase {
 			$this->folder,
 			self::TEST_FILES_SHARING_API_USER1,
 			self::TEST_FILES_SHARING_API_USER2,
-			\OCP\Constants::PERMISSION_ALL);
+			\OCP\Constants::PERMISSION_ALL
+		);
 
 		$share->setTarget('/foo/bar' . $this->folder);
 		$this->shareManager->moveShare($share, self::TEST_FILES_SHARING_API_USER2);
@@ -405,7 +406,8 @@ class SharedMountTest extends TestCase {
 			$sharedFolder,
 			$user1,
 			$user2,
-			\OCP\Constants::PERMISSION_ALL);
+			\OCP\Constants::PERMISSION_ALL
+		);
 
 		$this->loginAsUser($user2);
 
@@ -421,7 +423,8 @@ class SharedMountTest extends TestCase {
 			$sharedFolder2,
 			$user2,
 			$user3,
-			\OCP\Constants::PERMISSION_ALL);
+			\OCP\Constants::PERMISSION_ALL
+		);
 
 		$receivedFolder = $userFolder2->get('user1-share');
 

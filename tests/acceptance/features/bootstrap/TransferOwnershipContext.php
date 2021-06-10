@@ -197,11 +197,17 @@ class TransferOwnershipContext implements Context {
 	 * @return void
 	 */
 	public function downloadedContentWhenDownloadingForUserWithRangeShouldBe(
-		$fileSource, $user, $range, $content
+		$fileSource,
+		$user,
+		$range,
+		$content
 	) {
 		$fileSource = $this->getLastTransferPath() . $fileSource;
 		$this->featureContext->downloadedContentWhenDownloadingForUserWithRangeShouldBe(
-			$fileSource, $user, $range, $content
+			$fileSource,
+			$user,
+			$range,
+			$content
 		);
 	}
 
@@ -221,11 +227,15 @@ class TransferOwnershipContext implements Context {
 		//but the last received transfer folder itself should exist
 		//that would help against snakeoil tests if testing a non-existing folder
 		$this->featureContext->asFileOrFolderShouldExist(
-			$user, $entry, $this->getLastTransferPath()
+			$user,
+			$entry,
+			$this->getLastTransferPath()
 		);
 		$path = $this->getLastTransferPath() . $path;
 		$this->featureContext->asFileOrFolderShouldNotExist(
-			$user, $entry, $path
+			$user,
+			$entry,
+			$path
 		);
 	}
 
@@ -242,7 +252,9 @@ class TransferOwnershipContext implements Context {
 	public function asFileOrFolderShouldExist($user, $entry, $path) {
 		$path = $this->getLastTransferPath() . $path;
 		$this->featureContext->asFileOrFolderShouldExist(
-			$user, $entry, $path
+			$user,
+			$entry,
+			$path
 		);
 	}
 

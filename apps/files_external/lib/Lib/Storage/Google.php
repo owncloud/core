@@ -52,12 +52,12 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 	private $defaultFieldsForFolderScan;
 
 	// Google Doc mimetypes
-	const FOLDER = 'application/vnd.google-apps.folder';
-	const DOCUMENT = 'application/vnd.google-apps.document';
-	const SPREADSHEET = 'application/vnd.google-apps.spreadsheet';
-	const DRAWING = 'application/vnd.google-apps.drawing';
-	const PRESENTATION = 'application/vnd.google-apps.presentation';
-	const MAP = 'application/vnd.google-apps.map';
+	public const FOLDER = 'application/vnd.google-apps.folder';
+	public const DOCUMENT = 'application/vnd.google-apps.document';
+	public const SPREADSHEET = 'application/vnd.google-apps.spreadsheet';
+	public const DRAWING = 'application/vnd.google-apps.drawing';
+	public const PRESENTATION = 'application/vnd.google-apps.presentation';
+	public const MAP = 'application/vnd.google-apps.map';
 
 	public function __construct($params) {
 		if (isset($params['configured']) && $params['configured'] === 'true'
@@ -266,7 +266,8 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 			'fields' => 'user/displayName',
 		]);
 		$user = $about->getUser()->getDisplayName();
-		\OCP\Util::writeLog('files_external',
+		\OCP\Util::writeLog(
+			'files_external',
 			'Ignoring duplicate file name: '.$path.' on Google Drive for Google user: '.$user,
 			\OCP\Util::INFO
 		);

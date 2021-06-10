@@ -29,10 +29,10 @@ namespace OCP\User;
  */
 
 class Constants {
-	const USER_TYPE_USER = 0;
-	const USER_TYPE_GUEST = 1;
+	public const USER_TYPE_USER = 0;
+	public const USER_TYPE_GUEST = 1;
 
-	const CONVERT_SHARE_TYPE_TO_STRING = [
+	public const CONVERT_SHARE_TYPE_TO_STRING = [
 		self::USER_TYPE_USER => 'user',
 		self::USER_TYPE_GUEST => 'guest',
 	];

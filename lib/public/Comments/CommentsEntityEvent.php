@@ -30,7 +30,7 @@ use Symfony\Component\EventDispatcher\Event;
  * @since 9.1.0
  */
 class CommentsEntityEvent extends Event {
-	const EVENT_ENTITY = 'OCP\Comments\ICommentsManager::registerEntity';
+	public const EVENT_ENTITY = 'OCP\Comments\ICommentsManager::registerEntity';
 
 	/** @var string */
 	protected $event;

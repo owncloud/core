@@ -47,9 +47,12 @@ class CleanupChunks extends Command {
 		$this
 			->setName('dav:cleanup-chunks')
 			->setDescription('Cleanup outdated chunks')
-			->addArgument('age-in-days', InputArgument::OPTIONAL,
+			->addArgument(
+				'age-in-days',
+				InputArgument::OPTIONAL,
 				'age of uploads in days - minimum 2 days - maximum 100',
-				2);
+				2
+			);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {

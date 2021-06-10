@@ -64,15 +64,17 @@ class AdminController extends Controller implements ISettings {
 	 * @param UpdateChecker $updateChecker
 	 * @param IDateTimeFormatter $dateTimeFormatter
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IJobList $jobList,
-								ISecureRandom $secureRandom,
-								IConfig $config,
-								ITimeFactory $timeFactory,
-								IL10N $l10n,
-								UpdateChecker $updateChecker,
-								IDateTimeFormatter $dateTimeFormatter) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IJobList $jobList,
+		ISecureRandom $secureRandom,
+		IConfig $config,
+		ITimeFactory $timeFactory,
+		IL10N $l10n,
+		UpdateChecker $updateChecker,
+		IDateTimeFormatter $dateTimeFormatter
+	) {
 		parent::__construct($appName, $request);
 		$this->jobList = $jobList;
 		$this->secureRandom = $secureRandom;

@@ -67,10 +67,12 @@ class CryptoWrapper {
 	 * @param ISecureRandom $random
 	 * @param IRequest $request
 	 */
-	public function __construct(IConfig $config,
-								ICrypto $crypto,
-								ISecureRandom $random,
-								IRequest $request) {
+	public function __construct(
+		IConfig $config,
+		ICrypto $crypto,
+		ISecureRandom $random,
+		IRequest $request
+	) {
 		$this->crypto = $crypto;
 		$this->random = $random;
 

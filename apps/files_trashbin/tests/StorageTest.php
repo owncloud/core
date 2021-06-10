@@ -726,7 +726,8 @@ class StorageTest extends TestCase {
 			$userManager
 		);
 
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->invokePrivate($storage, 'shouldMoveToTrash', [$path])
 		);
 	}

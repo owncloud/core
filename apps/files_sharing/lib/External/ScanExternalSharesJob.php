@@ -58,16 +58,18 @@ class ScanExternalSharesJob extends TimedJob {
 	/** @var ILogger */
 	private $logger;
 
-	const DEFAULT_MIN_LAST_SCAN = 3*60*60;
-	const DEFAULT_MIN_LOGIN = 24*60*60;
-	const DEFAULT_SHARES_PER_SESSION = 100;
-	const BATCH_SIZE = 10;
+	public const DEFAULT_MIN_LAST_SCAN = 3*60*60;
+	public const DEFAULT_MIN_LOGIN = 24*60*60;
+	public const DEFAULT_SHARES_PER_SESSION = 100;
+	public const BATCH_SIZE = 10;
 
-	public function __construct(IDBConnection $connection = null,
-								IConfig $config = null,
-								IUserManager $userManager = null,
-								ILogger $logger = null,
-								Manager $externalManager = null) {
+	public function __construct(
+		IDBConnection $connection = null,
+		IConfig $config = null,
+		IUserManager $userManager = null,
+		ILogger $logger = null,
+		Manager $externalManager = null
+	) {
 		// Run once per 10 minutes
 		$this->setInterval(60 * 10);
 

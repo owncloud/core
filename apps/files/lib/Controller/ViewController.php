@@ -82,15 +82,16 @@ class ViewController extends Controller {
 	 * @param IAppManager $appManager
 	 * @param Folder $rootFolder
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IURLGenerator $urlGenerator,
-								IL10N $l10n,
-								IConfig $config,
-								EventDispatcherInterface $eventDispatcherInterface,
-								IUserSession $userSession,
-								IAppManager $appManager,
-								Folder $rootFolder
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IURLGenerator $urlGenerator,
+		IL10N $l10n,
+		IConfig $config,
+		EventDispatcherInterface $eventDispatcherInterface,
+		IUserSession $userSession,
+		IAppManager $appManager,
+		Folder $rootFolder
 	) {
 		parent::__construct($appName, $request);
 		$this->appName = $appName;

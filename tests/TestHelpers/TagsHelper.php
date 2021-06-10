@@ -70,19 +70,28 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 		}
 
 		$fileID = WebDavHelper::getFileIdForPath(
-			$baseUrl, $fileOwner, $fileOwnerPassword, $fileName
+			$baseUrl,
+			$fileOwner,
+			$fileOwnerPassword,
+			$fileName
 		);
 
 		try {
 			$tag = self::requestTagByDisplayName(
-				$baseUrl, $taggingUser, $password, $tagName
+				$baseUrl,
+				$taggingUser,
+				$password,
+				$tagName
 			);
 		} catch (Exception $e) {
 			//the tag might be not accessible by the user
 			//if we still want to find it, we need to try as admin
 			if ($adminUsername !== null && $adminPassword !== null) {
 				$tag = self::requestTagByDisplayName(
-					$baseUrl, $adminUsername, $adminPassword, $tagName
+					$baseUrl,
+					$adminUsername,
+					$adminPassword,
+					$tagName
 				);
 			} else {
 				throw $e;
@@ -91,8 +100,15 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 		$tagID = self::getTagIdFromTagData($tag);
 		$path = '/systemtags-relations/files/' . $fileID . '/' . $tagID;
 		$response = WebDavHelper::makeDavRequest(
-			$baseUrl, $taggingUser, $password, "PUT",
-			$path, null, null, $davPathVersionToUse, "systemtags"
+			$baseUrl,
+			$taggingUser,
+			$password,
+			"PUT",
+			$path,
+			null,
+			null,
+			$davPathVersionToUse,
+			"systemtags"
 		);
 		return $response;
 	}
@@ -105,7 +121,9 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 	public static function getTagIdFromTagData($tagData) {
 		$tagID = $tagData->xpath(".//oc:id");
 		self::assertArrayHasKey(
-			0, $tagID, "cannot find id of tag"
+			0,
+			$tagID,
+			"cannot find id of tag"
 		);
 
 		return (int) $tagID[0]->__toString();
@@ -138,7 +156,13 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 			\array_push($properties, 'oc:groups');
 		}
 		$response = WebDavHelper::propfind(
-			$baseUrl, $user, $password, '/systemtags/', $properties, 1, "systemtags"
+			$baseUrl,
+			$user,
+			$password,
+			'/systemtags/',
+			$properties,
+			1,
+			"systemtags"
 		);
 		return HttpRequestHelper::getResponseXml($response, __METHOD__);
 	}
@@ -166,7 +190,8 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 			"//d:prop//oc:display-name[text() ='$tagDisplayName']/.."
 		);
 		self::assertArrayHasKey(
-			0, $tagData,
+			0,
+			$tagData,
 			"cannot find 'oc:display-name' property with text '$tagDisplayName'"
 		);
 		return $tagData[0];
@@ -242,8 +267,15 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 	) {
 		$tagsPath = '/systemtags/' . $tagID;
 		$response = WebDavHelper::makeDavRequest(
-			$baseUrl, $user, $password,
-			"DELETE", $tagsPath, [], null, $davPathVersionToUse, "systemtags"
+			$baseUrl,
+			$user,
+			$password,
+			"DELETE",
+			$tagsPath,
+			[],
+			null,
+			$davPathVersionToUse,
+			"systemtags"
 		);
 		return $response;
 	}

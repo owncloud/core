@@ -37,7 +37,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package OCA\FederatedFileSharing
  */
 class FedShareManager {
-	const ACTION_URL = 'ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending/';
+	public const ACTION_URL = 'ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending/';
 
 	/**
 	 * @var FederatedShareProvider
@@ -91,14 +91,15 @@ class FedShareManager {
 	 * @param Permissions $permissions
 	 * @param EventDispatcherInterface $eventDispatcher
 	 */
-	public function __construct(FederatedShareProvider $federatedShareProvider,
-								Notifications $notifications,
-								IUserManager $userManager,
-								ActivityManager $activityManager,
-								NotificationManager $notificationManager,
-								AddressHandler $addressHandler,
-								Permissions $permissions,
-								EventDispatcherInterface $eventDispatcher
+	public function __construct(
+		FederatedShareProvider $federatedShareProvider,
+		Notifications $notifications,
+		IUserManager $userManager,
+		ActivityManager $activityManager,
+		NotificationManager $notificationManager,
+		AddressHandler $addressHandler,
+		Permissions $permissions,
+		EventDispatcherInterface $eventDispatcher
 	) {
 		$this->federatedShareProvider = $federatedShareProvider;
 		$this->notifications = $notifications;
@@ -122,17 +123,23 @@ class FedShareManager {
 	 *
 	 * @return void
 	 */
-	public function createShare(Address $ownerAddress,
-								Address $sharedByAddress,
-								$shareWith,
-								$remoteId,
-								$name,
-								$token
+	public function createShare(
+		Address $ownerAddress,
+		Address $sharedByAddress,
+		$shareWith,
+		$remoteId,
+		$name,
+		$token
 	) {
 		$owner = $ownerAddress->getUserId();
 		$remote = $ownerAddress->getOrigin();
 		$shareId = $this->federatedShareProvider->addShare(
-			$remote, $token, $name, $owner, $shareWith, $remoteId
+			$remote,
+			$token,
+			$name,
+			$owner,
+			$shareWith,
+			$remoteId
 		);
 
 		$this->eventDispatcher->dispatch(
@@ -384,13 +391,14 @@ class FedShareManager {
 	 *
 	 * @return void
 	 */
-	protected function publishActivity($affectedUser,
-									   $subject,
-									   $subjectParams,
-									   $objectType,
-									   $objectId,
-									   $objectName,
-									   $link
+	protected function publishActivity(
+		$affectedUser,
+		$subject,
+		$subjectParams,
+		$objectType,
+		$objectId,
+		$objectName,
+		$link
 	) {
 		$event = $this->activityManager->generateEvent();
 		$event->setApp(Activity::FILES_SHARING_APP)

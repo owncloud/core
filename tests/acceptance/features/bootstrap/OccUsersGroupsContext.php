@@ -394,7 +394,8 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorChangesTheLanguageOfUserToUsingTheOccCommand(
-		$username, $language
+		$username,
+		$language
 	) {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
@@ -773,7 +774,9 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function resetUserPassword(
-		$username, $password = null, $sendEmail = false
+		$username,
+		$password = null,
+		$sendEmail = false
 	) {
 		$actualUsername = $this->featureContext->getActualUsername($username);
 		if ($password === null) {

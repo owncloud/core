@@ -243,33 +243,36 @@ class TransferOwnership extends Command {
 			}
 		}
 
-		$this->walkFiles($view, $walkPath,
-				function (FileInfo $fileInfo) use ($progress) {
-					if ($fileInfo->getType() === FileInfo::TYPE_FOLDER) {
-						// only analyze into folders from main storage,
-						// sub-storages have an empty internal path
-						if ($fileInfo->getInternalPath() === '' && $fileInfo->getPath() !== '') {
-							return false;
-						}
+		$this->walkFiles(
+			$view,
+			$walkPath,
+			function (FileInfo $fileInfo) use ($progress) {
+				if ($fileInfo->getType() === FileInfo::TYPE_FOLDER) {
+					// only analyze into folders from main storage,
+					// sub-storages have an empty internal path
+					if ($fileInfo->getInternalPath() === '' && $fileInfo->getPath() !== '') {
+						return false;
+					}
 
-						$this->foldersExist = true;
+					$this->foldersExist = true;
+					return true;
+				}
+				$progress->advance();
+				$this->filesExist = true;
+				if ($fileInfo->isEncrypted()) {
+					if (\OC::$server->getAppConfig()->getValue('encryption', 'useMasterKey', 0) !== 0) {
+						/**
+						 * We are not going to add this to encryptedFiles array.
+						 * Because its encrypted with masterKey and hence it doesn't
+						 * require user's specific password.
+						 */
 						return true;
 					}
-					$progress->advance();
-					$this->filesExist = true;
-					if ($fileInfo->isEncrypted()) {
-						if (\OC::$server->getAppConfig()->getValue('encryption', 'useMasterKey', 0) !== 0) {
-							/**
-							 * We are not going to add this to encryptedFiles array.
-							 * Because its encrypted with masterKey and hence it doesn't
-							 * require user's specific password.
-							 */
-							return true;
-						}
-						$this->encryptedFiles[] = $fileInfo;
-					}
-					return true;
-				});
+					$this->encryptedFiles[] = $fileInfo;
+				}
+				return true;
+			}
+		);
 		$progress->finish();
 		$output->writeln('');
 

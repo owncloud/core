@@ -52,21 +52,37 @@ class EncryptionTest extends TestCase {
 			->method('getUidAndFilename')
 			->willReturn(['user1', $internalPath]);
 
-		return $wrapper::wrap($source, $internalPath,
-			$fullPath, $header, $uid, $this->encryptionModule, $storage, $encStorage,
-			$util, $file, $mode, $size, $unencryptedSize, 8192, $wrapper);
+		return $wrapper::wrap(
+			$source,
+			$internalPath,
+			$fullPath,
+			$header,
+			$uid,
+			$this->encryptionModule,
+			$storage,
+			$encStorage,
+			$util,
+			$file,
+			$mode,
+			$size,
+			$unencryptedSize,
+			8192,
+			$wrapper
+		);
 	}
 
 	/**
 	 * @dataProvider dataProviderStreamOpen()
 	 */
-	public function testStreamOpen($mode,
-								   $fullPath,
-								   $fileExists,
-								   $expectedSharePath,
-								   $expectedSize,
-								   $expectedUnencryptedSize,
-								   $expectedReadOnly) {
+	public function testStreamOpen(
+		$mode,
+		$fullPath,
+		$fileExists,
+		$expectedSharePath,
+		$expectedSize,
+		$expectedUnencryptedSize,
+		$expectedReadOnly
+	) {
 
 		// build mocks
 		$encryptionModuleMock = $this->getMockBuilder('\OCP\Encryption\IEncryptionModule')
@@ -137,21 +153,24 @@ class EncryptionTest extends TestCase {
 		// check internal properties
 		$size = $stream->getProperty('size');
 		$size->setAccessible(true);
-		$this->assertSame($expectedSize,
+		$this->assertSame(
+			$expectedSize,
 			$size->getValue($streamWrapper)
 		);
 		$size->setAccessible(false);
 
 		$unencryptedSize = $stream->getProperty('unencryptedSize');
 		$unencryptedSize->setAccessible(true);
-		$this->assertSame($expectedUnencryptedSize,
+		$this->assertSame(
+			$expectedUnencryptedSize,
 			$unencryptedSize->getValue($streamWrapper)
 		);
 		$unencryptedSize->setAccessible(false);
 
 		$readOnly = $stream->getProperty('readOnly');
 		$readOnly->setAccessible(true);
-		$this->assertSame($expectedReadOnly,
+		$this->assertSame(
+			$expectedReadOnly,
 			$readOnly->getValue($streamWrapper)
 		);
 		$readOnly->setAccessible(false);

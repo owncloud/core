@@ -95,7 +95,8 @@ class NotificationController extends OCSController {
 			}
 		}
 		if (!empty($result)) {
-			$message = $this->l->t("Couldn't send mail to following recipient(s): %s ",
+			$message = $this->l->t(
+				"Couldn't send mail to following recipient(s): %s ",
 				\implode(', ', $result)
 			);
 			$code = 400;

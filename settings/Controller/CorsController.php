@@ -63,12 +63,15 @@ class CorsController extends Controller {
 	 * @param IURLGenerator $urlGenerator Use for url generation
 	 * @param IConfig $config
 	 */
-	public function __construct($AppName, IRequest $request,
-								IUserSession $userSession,
-								ILogger $logger,
-								IURLGenerator $urlGenerator,
-								IConfig $config,
-								IL10N $l10n) {
+	public function __construct(
+		$AppName,
+		IRequest $request,
+		IUserSession $userSession,
+		ILogger $logger,
+		IURLGenerator $urlGenerator,
+		IConfig $config,
+		IL10N $l10n
+	) {
 		parent::__construct($AppName, $request);
 
 		$this->AppName = $AppName;

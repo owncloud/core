@@ -123,11 +123,12 @@ class LocaleHelperTest extends TestCase {
 	/**
 	 * @dataProvider langDataProvider
 	 */
-	public function testNormalization($availableCodes,
-								$currentCode,
-								$expectedUserLang,
-								$expectedCommonLanguages,
-								$expectedLanguages
+	public function testNormalization(
+		$availableCodes,
+		$currentCode,
+		$expectedUserLang,
+		$expectedCommonLanguages,
+		$expectedLanguages
 	) {
 		$l10n = $this->createMock(IL10N::class);
 

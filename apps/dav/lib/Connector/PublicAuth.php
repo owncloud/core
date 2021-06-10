@@ -57,9 +57,11 @@ class PublicAuth extends AbstractBasic {
 	 * @param IManager $shareManager
 	 * @param ISession $session
 	 */
-	public function __construct(IRequest $request,
-								IManager $shareManager,
-								ISession $session) {
+	public function __construct(
+		IRequest $request,
+		IManager $shareManager,
+		ISession $session
+	) {
 		$this->request = $request;
 		$this->shareManager = $shareManager;
 		$this->session = $session;

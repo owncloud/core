@@ -46,7 +46,7 @@ class PreviewManagerTest extends TestCase {
 	use UserTrait;
 	use MountProviderTrait;
 
-	const TEST_PREVIEW_USER1 = 'test-preview-user1';
+	public const TEST_PREVIEW_USER1 = 'test-preview-user1';
 
 	/** @var IUser */
 	private $user;

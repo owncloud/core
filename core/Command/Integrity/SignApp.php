@@ -50,9 +50,11 @@ class SignApp extends Command {
 	 * @param FileAccessHelper $fileAccessHelper
 	 * @param IURLGenerator $urlGenerator
 	 */
-	public function __construct(Checker $checker,
-								FileAccessHelper $fileAccessHelper,
-								IURLGenerator $urlGenerator) {
+	public function __construct(
+		Checker $checker,
+		FileAccessHelper $fileAccessHelper,
+		IURLGenerator $urlGenerator
+	) {
 		parent::__construct(null);
 		$this->checker = $checker;
 		$this->fileAccessHelper = $fileAccessHelper;

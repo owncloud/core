@@ -59,13 +59,20 @@ abstract class OCSController extends ApiController {
 	 * request should be cached, defaults to 1728000 seconds
 	 * @since 8.1.0
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								$corsMethods='PUT, POST, GET, DELETE, PATCH',
-								$corsAllowedHeaders='Authorization, Content-Type, Accept',
-								$corsMaxAge=1728000) {
-		parent::__construct($appName, $request, $corsMethods,
-							$corsAllowedHeaders, $corsMaxAge);
+	public function __construct(
+		$appName,
+		IRequest $request,
+		$corsMethods='PUT, POST, GET, DELETE, PATCH',
+		$corsAllowedHeaders='Authorization, Content-Type, Accept',
+		$corsMaxAge=1728000
+	) {
+		parent::__construct(
+			$appName,
+			$request,
+			$corsMethods,
+			$corsAllowedHeaders,
+			$corsMaxAge
+		);
 		$this->registerResponder('json', function ($data) {
 			return $this->buildOCSResponse('json', $data);
 		});
@@ -107,9 +114,13 @@ abstract class OCSController extends ApiController {
 		$isV2 = \substr($this->request->getScriptName(), -11) === '/ocs/v2.php';
 
 		$resp = new OCSResponse(
-			$format, $params['statuscode'],
-			$params['message'], $params['data'],
-			$params['itemscount'], $params['itemsperpage'], $isV2
+			$format,
+			$params['statuscode'],
+			$params['message'],
+			$params['data'],
+			$params['itemscount'],
+			$params['itemsperpage'],
+			$isV2
 		);
 		if (isset($data['headers'])) {
 			foreach ($data['headers'] as $key => $value) {

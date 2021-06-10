@@ -88,7 +88,8 @@ class LockEntry extends OwncloudPage {
 	 */
 	public function getLockingUser() {
 		$lockDescriptionElement = $this->lockElement->find(
-			"xpath", $this->lockDescriptionXpath
+			"xpath",
+			$this->lockDescriptionXpath
 		);
 		$this->assertElementNotNull(
 			$lockDescriptionElement,

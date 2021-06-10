@@ -65,12 +65,12 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 * in 2038-01-19 to avoid problems when the date is converted
 	 * to a unix timestamp.
 	 */
-	const MAX_DATE = '2038-01-01';
+	public const MAX_DATE = '2038-01-01';
 
-	const ACCESS_PUBLIC = 4;
-	const CLASSIFICATION_PUBLIC = 0;
-	const CLASSIFICATION_PRIVATE = 1;
-	const CLASSIFICATION_CONFIDENTIAL = 2;
+	public const ACCESS_PUBLIC = 4;
+	public const CLASSIFICATION_PUBLIC = 0;
+	public const CLASSIFICATION_PRIVATE = 1;
+	public const CLASSIFICATION_CONFIDENTIAL = 2;
 
 	/**
 	 * List of CalDAV properties, and how they map to database field names
@@ -127,11 +127,13 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 * @param ISecureRandom $random
 	 * @param bool $legacyMode
 	 */
-	public function __construct(IDBConnection $db,
-								Principal $principalBackend,
-								GroupPrincipalBackend $groupPrincipalBackend,
-								ISecureRandom $random,
-								$legacyMode = false) {
+	public function __construct(
+		IDBConnection $db,
+		Principal $principalBackend,
+		GroupPrincipalBackend $groupPrincipalBackend,
+		ISecureRandom $random,
+		$legacyMode = false
+	) {
 		$this->db = $db;
 		$this->principalBackend = $principalBackend;
 		$this->sharingBackend = new Backend($this->db, $principalBackend, $groupPrincipalBackend, 'calendar');

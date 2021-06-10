@@ -42,7 +42,7 @@ use OCP\Events\EventEmitterTrait;
  */
 class Config {
 	use EventEmitterTrait;
-	const ENV_PREFIX = 'OC_';
+	public const ENV_PREFIX = 'OC_';
 
 	/** @var array Associative array ($key => $value) */
 	protected $cache = [];
@@ -293,7 +293,8 @@ class Config {
 			throw new HintException(
 				"Can't write into config directory!",
 				'This can usually be fixed by '
-				.'<a href="' . $url . '" target="_blank" rel="noreferrer">giving the webserver write access to the config directory</a>.');
+				.'<a href="' . $url . '" target="_blank" rel="noreferrer">giving the webserver write access to the config directory</a>.'
+			);
 		}
 
 		// Try to acquire a file lock

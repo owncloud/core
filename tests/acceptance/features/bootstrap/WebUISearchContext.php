@@ -96,7 +96,11 @@ class WebUISearchContext extends RawMinkContext implements Context {
 		$path = \trim($path, $path[0]);
 		$this->webUIGeneralContext->setCurrentPageObject($this->searchResultInOtherFoldersPage);
 		$this->webUIFilesContext->checkIfFileFolderIsListedOnTheWebUI(
-			$fileName, $shouldOrNot, "search results page", "", $path
+			$fileName,
+			$shouldOrNot,
+			"search results page",
+			"",
+			$path
 		);
 	}
 
@@ -113,7 +117,9 @@ class WebUISearchContext extends RawMinkContext implements Context {
 		$fileName = \trim($fileName, $fileName[0]);
 		$this->webUIGeneralContext->setCurrentPageObject($this->searchResultInOtherFoldersPage);
 		$this->webUIFilesContext->checkIfFileFolderIsListedOnTheWebUI(
-			$fileName, $shouldOrNot, "search results page"
+			$fileName,
+			$shouldOrNot,
+			"search results page"
 		);
 	}
 

@@ -39,13 +39,13 @@ use OCP\Files\IHomeStorage;
 class Checksum extends Wrapper {
 
 	/** Format of checksum field in filecache */
-	const CHECKSUMS_DB_FORMAT = 'SHA1:%s MD5:%s ADLER32:%s';
+	public const CHECKSUMS_DB_FORMAT = 'SHA1:%s MD5:%s ADLER32:%s';
 
-	const NOT_REQUIRED = 0;
+	public const NOT_REQUIRED = 0;
 	/** Calculate checksum on write (to be stored in oc_filecache) */
-	const PATH_NEW_OR_UPDATED = 1;
+	public const PATH_NEW_OR_UPDATED = 1;
 	/** File needs to be checksummed on first read because it is already in cache but has no checksum */
-	const PATH_IN_CACHE_WITHOUT_CHECKSUM = 2;
+	public const PATH_IN_CACHE_WITHOUT_CHECKSUM = 2;
 
 	/** @var array */
 	private $pathsInCacheWithoutChecksum = [];

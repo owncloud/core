@@ -50,20 +50,20 @@ use Sabre\HTTP\ResponseInterface;
 class FilesPlugin extends ServerPlugin {
 
 	// namespace
-	const NS_OWNCLOUD = 'http://owncloud.org/ns';
-	const FILEID_PROPERTYNAME = '{http://owncloud.org/ns}id';
-	const INTERNAL_FILEID_PROPERTYNAME = '{http://owncloud.org/ns}fileid';
-	const PERMISSIONS_PROPERTYNAME = '{http://owncloud.org/ns}permissions';
-	const SHARE_PERMISSIONS_PROPERTYNAME = '{http://open-collaboration-services.org/ns}share-permissions';
-	const DOWNLOADURL_PROPERTYNAME = '{http://owncloud.org/ns}downloadURL';
-	const SIZE_PROPERTYNAME = '{http://owncloud.org/ns}size';
-	const GETETAG_PROPERTYNAME = '{DAV:}getetag';
-	const LASTMODIFIED_PROPERTYNAME = '{DAV:}lastmodified';
-	const OWNER_ID_PROPERTYNAME = '{http://owncloud.org/ns}owner-id';
-	const OWNER_DISPLAY_NAME_PROPERTYNAME = '{http://owncloud.org/ns}owner-display-name';
-	const CHECKSUMS_PROPERTYNAME = '{http://owncloud.org/ns}checksums';
-	const DATA_FINGERPRINT_PROPERTYNAME = '{http://owncloud.org/ns}data-fingerprint';
-	const PRIVATE_LINK_PROPERTYNAME = '{http://owncloud.org/ns}privatelink';
+	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
+	public const FILEID_PROPERTYNAME = '{http://owncloud.org/ns}id';
+	public const INTERNAL_FILEID_PROPERTYNAME = '{http://owncloud.org/ns}fileid';
+	public const PERMISSIONS_PROPERTYNAME = '{http://owncloud.org/ns}permissions';
+	public const SHARE_PERMISSIONS_PROPERTYNAME = '{http://open-collaboration-services.org/ns}share-permissions';
+	public const DOWNLOADURL_PROPERTYNAME = '{http://owncloud.org/ns}downloadURL';
+	public const SIZE_PROPERTYNAME = '{http://owncloud.org/ns}size';
+	public const GETETAG_PROPERTYNAME = '{DAV:}getetag';
+	public const LASTMODIFIED_PROPERTYNAME = '{DAV:}lastmodified';
+	public const OWNER_ID_PROPERTYNAME = '{http://owncloud.org/ns}owner-id';
+	public const OWNER_DISPLAY_NAME_PROPERTYNAME = '{http://owncloud.org/ns}owner-display-name';
+	public const CHECKSUMS_PROPERTYNAME = '{http://owncloud.org/ns}checksums';
+	public const DATA_FINGERPRINT_PROPERTYNAME = '{http://owncloud.org/ns}data-fingerprint';
+	public const PRIVATE_LINK_PROPERTYNAME = '{http://owncloud.org/ns}privatelink';
 
 	/**
 	 * Reference to main server object
@@ -107,11 +107,13 @@ class FilesPlugin extends ServerPlugin {
 	 * @param bool $isPublic
 	 * @param bool $downloadAttachment
 	 */
-	public function __construct(Tree $tree,
-								IConfig $config,
-								IRequest $request,
-								$isPublic = false,
-								$downloadAttachment = true) {
+	public function __construct(
+		Tree $tree,
+		IConfig $config,
+		IRequest $request,
+		$isPublic = false,
+		$downloadAttachment = true
+	) {
 		$this->tree = $tree;
 		$this->config = $config;
 		$this->request = $request;
@@ -244,7 +246,8 @@ class FilesPlugin extends ServerPlugin {
 					Request::USER_AGENT_IE,
 					Request::USER_AGENT_ANDROID_MOBILE_CHROME,
 					Request::USER_AGENT_FREEBOX,
-				])) {
+				]
+			)) {
 				$response->setHeader('Content-Disposition', 'attachment; filename="' . \rawurlencode($filename) . '"');
 			} else {
 				$response->setHeader('Content-Disposition', 'attachment; filename*=UTF-8\'\'' . \rawurlencode($filename)

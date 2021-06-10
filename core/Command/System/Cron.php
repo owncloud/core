@@ -50,10 +50,12 @@ class Cron extends Command {
 	 * @param ILogger $logger
 	 * @param ITempManager $tempManager
 	 */
-	public function __construct(IJobList $jobList,
-								IConfig $config,
-								ILogger $logger,
-								ITempManager $tempManager) {
+	public function __construct(
+		IJobList $jobList,
+		IConfig $config,
+		ILogger $logger,
+		ITempManager $tempManager
+	) {
 		$this->jobList = $jobList;
 		$this->config = $config;
 		$this->logger = $logger;

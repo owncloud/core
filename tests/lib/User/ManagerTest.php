@@ -63,7 +63,11 @@ class ManagerTest extends TestCase {
 			->method('isSearchable')
 			->willReturn(true);
 		$this->manager = new \OC\User\Manager(
-			$config, $logger, $this->accountMapper, $this->syncService, $this->userSearch
+			$config,
+			$logger,
+			$this->accountMapper,
+			$this->syncService,
+			$this->userSearch
 		);
 	}
 
@@ -431,10 +435,12 @@ class ManagerTest extends TestCase {
 			->willReturn($account);
 
 		$event = null;
-		\OC::$server->getEventDispatcher()->addListener('OCP\User::validatePassword',
+		\OC::$server->getEventDispatcher()->addListener(
+			'OCP\User::validatePassword',
 			function (GenericEvent $receivedEvent) use (&$event) {
 				$event = $receivedEvent;
-			});
+			}
+		);
 
 		$this->manager->createUser('testuser1', 'abcdefg');
 

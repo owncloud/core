@@ -126,7 +126,9 @@ class NotificationsCoreContext implements Context {
 		$user = $this->featureContext->getActualUsername($user);
 
 		$this->ocsContext->userSendsToOcsApiEndpoint(
-			$user, 'GET', '/apps/notifications/api/v1/notifications?format=json'
+			$user,
+			'GET',
+			'/apps/notifications/api/v1/notifications?format=json'
 		);
 		Assert::assertEquals(
 			200,
@@ -173,10 +175,16 @@ class NotificationsCoreContext implements Context {
 	 * @return void
 	 */
 	public function matchNotificationPlain(
-		$notification, $user, $formData
+		$notification,
+		$user,
+		$formData
 	) {
 		$this->matchNotification(
-			$notification, $user, $aboutUser = null, false, $formData
+			$notification,
+			$user,
+			$aboutUser = null,
+			false,
+			$formData
 		);
 	}
 
@@ -191,10 +199,17 @@ class NotificationsCoreContext implements Context {
 	 * @return void
 	 */
 	public function matchNotificationRegularExpression(
-		$notification, $user, $aboutUser, $formData
+		$notification,
+		$user,
+		$aboutUser,
+		$formData
 	) {
 		$this->matchNotification(
-			$notification, $user, $aboutUser, true, $formData
+			$notification,
+			$user,
+			$aboutUser,
+			true,
+			$formData
 		);
 	}
 
@@ -208,7 +223,11 @@ class NotificationsCoreContext implements Context {
 	 * @return void
 	 */
 	public function matchNotification(
-		$notification, $user, $aboutUser, $regex, $formData
+		$notification,
+		$user,
+		$aboutUser,
+		$regex,
+		$formData
 	) {
 		$lastNotifications = $this->getLastNotificationIds();
 		if ($notification === 'first') {
@@ -231,7 +250,8 @@ class NotificationsCoreContext implements Context {
 			. "'"
 		);
 		$response = \json_decode(
-			$this->featureContext->getResponse()->getBody()->getContents(), true
+			$this->featureContext->getResponse()->getBody()->getContents(),
+			true
 		);
 
 		$this->featureContext->verifyTableNodeColumns($formData, ['key', 'regex']);
@@ -243,7 +263,9 @@ class NotificationsCoreContext implements Context {
 			);
 			if ($regex) {
 				$value = $this->featureContext->substituteInLineCodes(
-					$notification['regex'], $aboutUser, ['preg_quote' => ['/']]
+					$notification['regex'],
+					$aboutUser,
+					['preg_quote' => ['/']]
 				);
 				Assert::assertNotFalse(
 					(bool) \preg_match($value, $response['ocs']['data'][$notification['key']]),

@@ -65,8 +65,8 @@ class DummyMountProvider implements IMountProvider {
 class FilesystemTest extends TestCase {
 	use UserTrait;
 
-	const TEST_FILESYSTEM_USER1 = "test-filesystem-user1";
-	const TEST_FILESYSTEM_USER2 = "test-filesystem-user1";
+	public const TEST_FILESYSTEM_USER1 = "test-filesystem-user1";
+	public const TEST_FILESYSTEM_USER2 = "test-filesystem-user1";
 
 	/**
 	 * @var array tmpDirs

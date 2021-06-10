@@ -156,7 +156,9 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 */
 	public function theAdministratorAddsUserAsTheApplicableUserForTheLastLocalStorageMountUsingTheUsingTheWebui(
-		$action, $userOrGroup, $user
+		$action,
+		$userOrGroup,
+		$user
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$displayName = $this->featureContext->getUserDisplayName($user);
@@ -224,11 +226,13 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 		$should = ($shouldOrNot !== "not");
 		if ($should) {
 			Assert::assertTrue(
-				$result, "Last created mount was expected to be present but was not"
+				$result,
+				"Last created mount was expected to be present but was not"
 			);
 		} else {
 			Assert::assertFalse(
-				$result, "Last created mount was not expected to be present but was"
+				$result,
+				"Last created mount was not expected to be present but was"
 			);
 		}
 	}
@@ -241,7 +245,8 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	public function theExternalStorageFormShouldBeOnTheStorageSettingsPage() {
 		$isDisplayed = $this->adminStorageSettingsPage->externalStorageFormVisible();
 		Assert::assertTrue(
-			$isDisplayed, "External storage is expected to be visible but is not"
+			$isDisplayed,
+			"External storage is expected to be visible but is not"
 		);
 	}
 
@@ -253,7 +258,8 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	public function theExternalStorageFormShouldNotBeOnTheStorageSettingsPage() {
 		$isDisplayed = $this->adminStorageSettingsPage->externalStorageFormVisible();
 		Assert::assertFalse(
-			$isDisplayed, "External storage is not expected to be visible but is"
+			$isDisplayed,
+			"External storage is not expected to be visible but is"
 		);
 	}
 

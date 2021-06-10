@@ -33,7 +33,7 @@ use OCP\IConfig;
 use GuzzleHttp\Exception\ClientException;
 
 class Notifications {
-	const RESPONSE_FORMAT = 'json'; // default response format for ocs calls
+	public const RESPONSE_FORMAT = 'json'; // default response format for ocs calls
 
 	/** @var AddressHandler */
 	private $addressHandler;
@@ -92,7 +92,8 @@ class Notifications {
 	 * @throws \OC\ServerNotAvailableException
 	 * @throws \Exception
 	 */
-	public function sendRemoteShare(Address $shareWithAddress,
+	public function sendRemoteShare(
+		Address $shareWithAddress,
 		Address $ownerAddress,
 		Address $sharedByAddress,
 		$token,
@@ -102,11 +103,21 @@ class Notifications {
 		$remoteShareSuccess = false;
 		if ($shareWithAddress->getUserId() && $shareWithAddress->getCloudId()) {
 			$remoteShareSuccess = $this->sendOcmRemoteShare(
-				$shareWithAddress, $ownerAddress, $sharedByAddress, $token, $name, $remote_id
+				$shareWithAddress,
+				$ownerAddress,
+				$sharedByAddress,
+				$token,
+				$name,
+				$remote_id
 			);
 			if (!$remoteShareSuccess) {
 				$remoteShareSuccess = $this->sendPreOcmRemoteShare(
-					$shareWithAddress, $ownerAddress, $sharedByAddress, $token, $name, $remote_id
+					$shareWithAddress,
+					$ownerAddress,
+					$sharedByAddress,
+					$token,
+					$name,
+					$remote_id
 				);
 			}
 		}
@@ -283,7 +294,8 @@ class Notifications {
 			return true;
 		} elseif ($try === 0) {
 			// only add new job on first try
-			$this->jobList->add('OCA\FederatedFileSharing\BackgroundJob\RetryJob',
+			$this->jobList->add(
+				'OCA\FederatedFileSharing\BackgroundJob\RetryJob',
 				[
 					'remote' => $remote,
 					'remoteId' => $remoteId,

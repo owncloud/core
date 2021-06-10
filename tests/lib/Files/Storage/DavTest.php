@@ -531,7 +531,8 @@ class DavTest extends TestCase {
 		$this->httpClient->expects($this->once())
 			->method('get')
 			->with(
-				'https://davhost/davroot/some%25dir/file%25.txt', [
+				'https://davhost/davroot/some%25dir/file%25.txt',
+				[
 					'auth' => ['davuser', 'davpassword'],
 					'stream' => true
 				]
@@ -549,7 +550,8 @@ class DavTest extends TestCase {
 		$this->httpClient->expects($this->once())
 			->method('get')
 			->with(
-				'https://davhost/davroot/some%25dir/file%25.txt', [
+				'https://davhost/davroot/some%25dir/file%25.txt',
+				[
 					'auth' => ['davuser', 'davpassword'],
 					'stream' => true
 				]
@@ -567,7 +569,8 @@ class DavTest extends TestCase {
 		$this->httpClient->expects($this->once())
 			->method('get')
 			->with(
-				'https://davhost/davroot/some%25dir/file%25.txt', [
+				'https://davhost/davroot/some%25dir/file%25.txt',
+				[
 					'auth' => ['davuser', 'davpassword'],
 					'stream' => true
 				]
@@ -589,7 +592,8 @@ class DavTest extends TestCase {
 		$this->httpClient->expects($this->once())
 			->method('get')
 			->with(
-				'https://davhost/davroot/some%25dir/file%25.txt', [
+				'https://davhost/davroot/some%25dir/file%25.txt',
+				[
 					'auth' => ['davuser', 'davpassword'],
 					'stream' => true
 				]
@@ -1255,7 +1259,8 @@ class DavTest extends TestCase {
 	public function testHasUpdated($davResponse, $cacheResponse, $expectedResult) {
 		$this->davClient->expects($this->once())
 			->method('propfind')
-			->with('some%25dir',
+			->with(
+				'some%25dir',
 				$this->logicalAnd(
 					$this->containsIdentical('{DAV:}getetag'),
 					$this->containsIdentical('{DAV:}getlastmodified'),

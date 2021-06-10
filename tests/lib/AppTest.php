@@ -19,11 +19,11 @@ use Test\Traits\UserTrait;
 class AppTest extends \Test\TestCase {
 	use UserTrait;
 
-	const TEST_USER1 = 'user1';
-	const TEST_USER2 = 'user2';
-	const TEST_USER3 = 'user3';
-	const TEST_GROUP1 = 'group1';
-	const TEST_GROUP2 = 'group2';
+	public const TEST_USER1 = 'user1';
+	public const TEST_USER2 = 'user2';
+	public const TEST_USER3 = 'user3';
+	public const TEST_GROUP1 = 'group1';
+	public const TEST_GROUP2 = 'group2';
 
 	public function appVersionsProvider() {
 		return [
@@ -410,8 +410,9 @@ class AppTest extends \Test\TestCase {
 
 		$this->setupAppConfigMock()->expects($this->once())
 			->method('getValues')
-			->will($this->returnValue(
-				[
+			->will(
+				$this->returnValue(
+					[
 					'app3' => 'yes',
 					'app2' => 'no',
 					'app1' => 'yes',
@@ -419,7 +420,7 @@ class AppTest extends \Test\TestCase {
 					'appforgroup2' => '["group2"]',
 					'appforgroup12' => '["group2","group1"]',
 				]
-			)
+				)
 			);
 
 		$apps = \OC_App::getEnabledApps(false, $forceAll);
@@ -449,12 +450,13 @@ class AppTest extends \Test\TestCase {
 
 		$this->setupAppConfigMock()->expects($this->once())
 			->method('getValues')
-			->will($this->returnValue(
-				[
+			->will(
+				$this->returnValue(
+					[
 					'app3' => 'yes',
 					'app2' => 'no',
 				]
-			)
+				)
 			);
 
 		$apps = \OC_App::getEnabledApps();
@@ -505,9 +507,14 @@ class AppTest extends \Test\TestCase {
 			return $appConfig;
 		});
 		\OC::$server->registerService('AppManager', function (\OC\Server $c) use ($appConfig) {
-			return new \OC\App\AppManager($c->getUserSession(), $appConfig,
-				$c->getGroupManager(), $c->getMemCacheFactory(),
-				$c->getEventDispatcher(), $c->getConfig());
+			return new \OC\App\AppManager(
+				$c->getUserSession(),
+				$appConfig,
+				$c->getGroupManager(),
+				$c->getMemCacheFactory(),
+				$c->getEventDispatcher(),
+				$c->getConfig()
+			);
 		});
 	}
 
@@ -519,9 +526,14 @@ class AppTest extends \Test\TestCase {
 			return new \OC\AppConfig($c->getDatabaseConnection());
 		});
 		\OC::$server->registerService('AppManager', function (\OC\Server $c) {
-			return new \OC\App\AppManager($c->getUserSession(), $c->getAppConfig(),
-				$c->getGroupManager(), $c->getMemCacheFactory(),
-				$c->getEventDispatcher(), $c->getConfig());
+			return new \OC\App\AppManager(
+				$c->getUserSession(),
+				$c->getAppConfig(),
+				$c->getGroupManager(),
+				$c->getMemCacheFactory(),
+				$c->getEventDispatcher(),
+				$c->getConfig()
+			);
 		});
 
 		// Remove the cache of the mocked apps list with a forceRefresh

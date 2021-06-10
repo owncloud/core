@@ -52,9 +52,9 @@ class UserGlobalStoragesServiceTest extends GlobalStoragesServiceTest {
 
 	protected $user;
 
-	const USER_ID = 'test_user';
-	const GROUP_ID = 'test_group';
-	const GROUP_ID2 = 'test_group2';
+	public const USER_ID = 'test_user';
+	public const GROUP_ID = 'test_group';
+	public const GROUP_ID2 = 'test_group2';
 
 	public function setUp(): void {
 		parent::setUp();
@@ -260,8 +260,12 @@ class UserGlobalStoragesServiceTest extends GlobalStoragesServiceTest {
 	 * @dataProvider getUniqueStoragesProvider
 	 */
 	public function testGetUniqueStorages(
-		$priority1, $applicableUsers1, $applicableGroups1,
-		$priority2, $applicableUsers2, $applicableGroups2,
+		$priority1,
+		$applicableUsers1,
+		$applicableGroups1,
+		$priority2,
+		$applicableUsers2,
+		$applicableGroups2,
 		$expectedPrecedence
 	) {
 		$backend = $this->backendService->getBackend('identifier:\Test\Files\External\Backend\DummyBackend');

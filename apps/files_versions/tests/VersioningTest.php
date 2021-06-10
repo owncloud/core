@@ -47,7 +47,7 @@ use Test\TestCase;
  * @group DB
  */
 class VersioningTest extends TestCase {
-	const USERS_VERSIONS_ROOT = '/test-versions-user/files_versions';
+	public const USERS_VERSIONS_ROOT = '/test-versions-user/files_versions';
 
 	/** @var string */
 	private $user1;
@@ -692,7 +692,8 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		$oldVersions = \OCA\Files_Versions\Storage::getVersions(
-			$this->user1, '/sub/test.txt'
+			$this->user1,
+			'/sub/test.txt'
 		);
 
 		$this->assertCount(2, $oldVersions);
@@ -733,7 +734,8 @@ class VersioningTest extends TestCase {
 		);
 
 		$newVersions = \OCA\Files_Versions\Storage::getVersions(
-			$this->user1, '/sub/test.txt'
+			$this->user1,
+			'/sub/test.txt'
 		);
 
 		$this->assertTrue(
@@ -847,7 +849,8 @@ class VersioningTest extends TestCase {
 		$rootStorage->getScanner()->scan('files_versions');
 
 		$versions = \OCA\Files_Versions\Storage::getVersions(
-			$this->user1, '/' . $path
+			$this->user1,
+			'/' . $path
 		);
 
 		// note: we cannot predict how many versions are created due to

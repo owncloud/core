@@ -195,8 +195,22 @@ class Cache implements ICache {
 	private function getChildrenWithFilter($fileId, $mimetypeFilter = null) {
 		if ($fileId > -1) {
 			$qb = $this->connection->getQueryBuilder();
-			$qb->select('fileid', 'storage', 'path', 'parent', 'name', 'mimetype', 'mimepart', 'size', 'mtime',
-				'storage_mtime', 'encrypted', 'etag', 'permissions', 'checksum')
+			$qb->select(
+				'fileid',
+				'storage',
+				'path',
+				'parent',
+				'name',
+				'mimetype',
+				'mimepart',
+				'size',
+				'mtime',
+				'storage_mtime',
+				'encrypted',
+				'etag',
+				'permissions',
+				'checksum'
+			)
 				->from('filecache')
 				->where(
 					$qb->expr()->eq('parent', $qb->createNamedParameter($fileId, IQueryBuilder::PARAM_INT))
@@ -710,7 +724,8 @@ class Cache implements ICache {
 				`etag`, `permissions`, `checksum`
 			FROM `*PREFIX*filecache`
 			WHERE `storage` = ? AND `name` ILIKE ?';
-		$result = $this->connection->executeQuery($sql,
+		$result = $this->connection->executeQuery(
+			$sql,
 			[$this->getNumericStorageId(), $pattern]
 		);
 

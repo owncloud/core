@@ -59,7 +59,7 @@ class ListCommand extends Base {
 	 */
 	protected $userManager;
 
-	const ALL = -1;
+	public const ALL = -1;
 
 	public function __construct(IGlobalStoragesService $globalService, IUserStoragesService $userService, IUserSession $userSession, IUserManager $userManager) {
 		parent::__construct();

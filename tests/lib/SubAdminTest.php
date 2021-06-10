@@ -101,17 +101,21 @@ class SubAdminTest extends TestCase {
 
 	public function testCreateSubAdmin() {
 		$calledBeforeCreate = [];
-		\OC::$server->getEventDispatcher()->addListener('user.beforefeaturechange',
+		\OC::$server->getEventDispatcher()->addListener(
+			'user.beforefeaturechange',
 			function (GenericEvent $event) use (&$calledBeforeCreate) {
 				$calledBeforeCreate[] = 'user.beforefeaturechange';
 				$calledBeforeCreate[] = $event;
-			});
+			}
+		);
 		$calledAfterCreate = [];
-		\OC::$server->getEventDispatcher()->addListener('user.afterfeaturechange',
+		\OC::$server->getEventDispatcher()->addListener(
+			'user.afterfeaturechange',
 			function (GenericEvent $event) use (&$calledAfterCreate) {
 				$calledAfterCreate[] = 'user.afterfeaturechange';
 				$calledAfterCreate[] = $event;
-			});
+			}
+		);
 		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
 		$this->assertInstanceOf(GenericEvent::class, $calledAfterCreate[1]);
@@ -147,7 +151,9 @@ class SubAdminTest extends TestCase {
 			[
 				'gid' => $this->groups[0]->getGID(),
 				'uid' => $this->users[0]->getUID()
-			], $result);
+			],
+			$result
+		);
 
 		// Delete subadmin
 		$result = $qb->delete('*PREFIX*group_admin')
@@ -160,17 +166,21 @@ class SubAdminTest extends TestCase {
 		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
 		$calledBeforeCreate = [];
-		\OC::$server->getEventDispatcher()->addListener('user.beforefeaturechange',
+		\OC::$server->getEventDispatcher()->addListener(
+			'user.beforefeaturechange',
 			function (GenericEvent $event) use (&$calledBeforeCreate) {
 				$calledBeforeCreate[] = 'user.beforefeaturechange';
 				$calledBeforeCreate[] = $event;
-			});
+			}
+		);
 		$calledAfterCreate = [];
-		\OC::$server->getEventDispatcher()->addListener('user.afterfeaturechange',
+		\OC::$server->getEventDispatcher()->addListener(
+			'user.afterfeaturechange',
 			function (GenericEvent $event) use (&$calledAfterCreate) {
 				$calledAfterCreate[] = 'user.afterfeaturechange';
 				$calledAfterCreate[] = $event;
-			});
+			}
+		);
 		$this->assertTrue($subAdmin->deleteSubAdmin($this->users[0], $this->groups[0]));
 
 		$this->assertInstanceOf(GenericEvent::class, $calledAfterCreate[1]);

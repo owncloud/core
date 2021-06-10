@@ -120,9 +120,11 @@ class SimpleContainerTest extends \Test\TestCase {
 	public function testConstructorComplexInterface() {
 		$this->container->registerParameter('test', 'abc');
 		$this->container->registerService(
-		'Test\AppFramework\Utility\IInterfaceConstructor', function ($c) {
-			return $c->query('Test\AppFramework\Utility\ClassSimpleConstructor');
-		});
+			'Test\AppFramework\Utility\IInterfaceConstructor',
+			function ($c) {
+				return $c->query('Test\AppFramework\Utility\ClassSimpleConstructor');
+			}
+		);
 		$object = $this->container->query(
 			'Test\AppFramework\Utility\ClassInterfaceConstructor'
 		);
@@ -133,13 +135,17 @@ class SimpleContainerTest extends \Test\TestCase {
 
 	public function testOverrideService() {
 		$this->container->registerService(
-		'Test\AppFramework\Utility\IInterfaceConstructor', function ($c) {
-			return $c->query('Test\AppFramework\Utility\ClassSimpleConstructor');
-		});
+			'Test\AppFramework\Utility\IInterfaceConstructor',
+			function ($c) {
+				return $c->query('Test\AppFramework\Utility\ClassSimpleConstructor');
+			}
+		);
 		$this->container->registerService(
-		'Test\AppFramework\Utility\IInterfaceConstructor', function ($c) {
-			return $c->query('Test\AppFramework\Utility\ClassEmptyConstructor');
-		});
+			'Test\AppFramework\Utility\IInterfaceConstructor',
+			function ($c) {
+				return $c->query('Test\AppFramework\Utility\ClassEmptyConstructor');
+			}
+		);
 		$object = $this->container->query(
 			'Test\AppFramework\Utility\IInterfaceConstructor'
 		);
@@ -158,11 +164,17 @@ class SimpleContainerTest extends \Test\TestCase {
 		}, true);
 		$this->container->registerAlias('test1', 'test');
 		$this->assertSame(
-			$this->container->query('test'), $this->container->query('test'));
+			$this->container->query('test'),
+			$this->container->query('test')
+		);
 		$this->assertSame(
-			$this->container->query('test1'), $this->container->query('test1'));
+			$this->container->query('test1'),
+			$this->container->query('test1')
+		);
 		$this->assertSame(
-			$this->container->query('test'), $this->container->query('test1'));
+			$this->container->query('test'),
+			$this->container->query('test1')
+		);
 	}
 
 	public function sanitizeNameProvider() {
@@ -199,7 +211,9 @@ class SimpleContainerTest extends \Test\TestCase {
 			return new \StdClass();
 		}, false);
 		$this->assertNotSame(
-			$this->container->query('test'), $this->container->query('test'));
+			$this->container->query('test'),
+			$this->container->query('test')
+		);
 	}
 
 	public function testRegisterAliasFactory() {
@@ -208,10 +222,16 @@ class SimpleContainerTest extends \Test\TestCase {
 		}, false);
 		$this->container->registerAlias('test1', 'test');
 		$this->assertNotSame(
-			$this->container->query('test'), $this->container->query('test'));
+			$this->container->query('test'),
+			$this->container->query('test')
+		);
 		$this->assertNotSame(
-			$this->container->query('test1'), $this->container->query('test1'));
+			$this->container->query('test1'),
+			$this->container->query('test1')
+		);
 		$this->assertNotSame(
-			$this->container->query('test'), $this->container->query('test1'));
+			$this->container->query('test'),
+			$this->container->query('test1')
+		);
 	}
 }

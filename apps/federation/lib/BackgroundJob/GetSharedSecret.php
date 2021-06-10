@@ -183,13 +183,13 @@ class GetSharedSecret extends Job {
 			$result = \json_decode($body, true);
 			if (isset($result['ocs']['data']['sharedSecret'])) {
 				$this->trustedServers->addSharedSecret(
-						$target,
-						$result['ocs']['data']['sharedSecret']
+					$target,
+					$result['ocs']['data']['sharedSecret']
 				);
 			} else {
 				$this->logger->error(
-						'remote server "' . $target . '"" does not return a valid shared secret',
-						['app' => 'federation']
+					'remote server "' . $target . '"" does not return a valid shared secret',
+					['app' => 'federation']
 				);
 				$this->trustedServers->setServerStatus($target, TrustedServers::STATUS_FAILURE);
 			}

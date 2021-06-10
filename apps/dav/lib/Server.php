@@ -274,11 +274,13 @@ class Server {
 
 				if ($view !== null) {
 					$this->server->addPlugin(
-						new QuotaPlugin($view));
+						new QuotaPlugin($view)
+					);
 				}
 				$this->server->addPlugin(
 					new TagsPlugin(
-						$this->server->tree, OC::$server->getTagManager()
+						$this->server->tree,
+						OC::$server->getTagManager()
 					)
 				);
 				// TODO: switch to LazyUserFolder

@@ -58,8 +58,13 @@ class LazyOpsPluginTest extends TestCase {
 		$this->shutdownManager = $this->createMock(IShutdownManager::class);
 		$this->jobStatusMapper = $this->createMock(JobStatusMapper::class);
 		$this->logger = $this->createMock(ILogger::class);
-		$this->plugin = new LazyOpsPlugin($this->userSession, $this->urlGenerator,
-			$this->shutdownManager, $this->jobStatusMapper, $this->logger);
+		$this->plugin = new LazyOpsPlugin(
+			$this->userSession,
+			$this->urlGenerator,
+			$this->shutdownManager,
+			$this->jobStatusMapper,
+			$this->logger
+		);
 
 		$user = $this->createMock(IUser::class);
 		$user->method('getUID')->willReturn('alice');

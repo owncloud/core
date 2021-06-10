@@ -182,7 +182,8 @@ class TemplateLayout extends \OC_Template {
 			\OC_Util::getTheme(),
 			\OC::$server->getAppManager(),
 			\OC::$server->getLogger(),
-			[\OC::$SERVERROOT => \OC::$WEBROOT]);
+			[\OC::$SERVERROOT => \OC::$WEBROOT]
+		);
 		$locator->find($styles);
 		return $locator->getResources();
 	}
@@ -196,7 +197,8 @@ class TemplateLayout extends \OC_Template {
 			\OC_Util::getTheme(),
 			\OC::$server->getAppManager(),
 			\OC::$server->getLogger(),
-			[\OC::$SERVERROOT => \OC::$WEBROOT]);
+			[\OC::$SERVERROOT => \OC::$WEBROOT]
+		);
 		$locator->find($scripts);
 		return $locator->getResources();
 	}

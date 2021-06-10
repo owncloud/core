@@ -105,10 +105,10 @@ class Tags implements \OCP\ITags {
 	 */
 	private $backend;
 
-	const TAG_TABLE = '*PREFIX*vcategory';
-	const RELATION_TABLE = '*PREFIX*vcategory_to_object';
+	public const TAG_TABLE = '*PREFIX*vcategory';
+	public const RELATION_TABLE = '*PREFIX*vcategory_to_object';
 
-	const TAG_FAVORITE = '_$!<Favorite>!$_';
+	public const TAG_FAVORITE = '_$!<Favorite>!$_';
 
 	/**
 	* Constructor.
@@ -197,7 +197,8 @@ class Tags implements \OCP\ITags {
 	* @return array An array of Tag objects.
 	*/
 	public function getTagsForUser($user) {
-		return \array_filter($this->tags,
+		return \array_filter(
+			$this->tags,
 			function ($tag) use ($user) {
 				return $tag->getOwner() === $user;
 			}
@@ -238,8 +239,11 @@ class Tags implements \OCP\ITags {
 				}
 			}
 		} catch (\Exception $e) {
-			\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
-				\OCP\Util::ERROR);
+			\OCP\Util::writeLog(
+				'core',
+				__METHOD__.', exception: '.$e->getMessage(),
+				\OCP\Util::ERROR
+			);
 			return false;
 		}
 
@@ -288,8 +292,11 @@ class Tags implements \OCP\ITags {
 				return false;
 			}
 		} catch (\Exception $e) {
-			\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
-				\OCP\Util::ERROR);
+			\OCP\Util::writeLog(
+				'core',
+				__METHOD__.', exception: '.$e->getMessage(),
+				\OCP\Util::ERROR
+			);
 			return false;
 		}
 
@@ -362,8 +369,11 @@ class Tags implements \OCP\ITags {
 			$tag = $this->mapper->insert($tag);
 			$this->tags[] = $tag;
 		} catch (\Exception $e) {
-			\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
-				\OCP\Util::ERROR);
+			\OCP\Util::writeLog(
+				'core',
+				__METHOD__.', exception: '.$e->getMessage(),
+				\OCP\Util::ERROR
+			);
 			return false;
 		}
 		\OCP\Util::writeLog('core', __METHOD__.', id: ' . $tag->getId(), \OCP\Util::DEBUG);
@@ -406,8 +416,11 @@ class Tags implements \OCP\ITags {
 			$tag->setName($to);
 			$this->tags[$key] = $this->mapper->update($tag);
 		} catch (\Exception $e) {
-			\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
-				\OCP\Util::ERROR);
+			\OCP\Util::writeLog(
+				'core',
+				__METHOD__.', exception: '.$e->getMessage(),
+				\OCP\Util::ERROR
+			);
 			return false;
 		}
 		return true;
@@ -458,15 +471,21 @@ class Tags implements \OCP\ITags {
 						$this->mapper->insert($tag);
 					}
 				} catch (\Exception $e) {
-					\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
-						\OCP\Util::ERROR);
+					\OCP\Util::writeLog(
+						'core',
+						__METHOD__.', exception: '.$e->getMessage(),
+						\OCP\Util::ERROR
+					);
 				}
 			}
 
 			// reload tags to get the proper ids.
 			$this->tags = $this->mapper->loadTags($this->owners, $this->type);
-			\OCP\Util::writeLog('core', __METHOD__.', tags: ' . \print_r($this->tags, true),
-				\OCP\Util::DEBUG);
+			\OCP\Util::writeLog(
+				'core',
+				__METHOD__.', tags: ' . \print_r($this->tags, true),
+				\OCP\Util::DEBUG
+			);
 			// Loop through temporarily cached objectid/tagname pairs
 			// and save relations.
 			$tags = $this->tags;
@@ -477,15 +496,20 @@ class Tags implements \OCP\ITags {
 				\OCP\Util::writeLog('core', __METHOD__ . 'catid, ' . $relation['tag'] . ' ' . $tagId, \OCP\Util::DEBUG);
 				if ($tagId) {
 					try {
-						\OCP\DB::insertIfNotExist(self::RELATION_TABLE,
+						\OCP\DB::insertIfNotExist(
+							self::RELATION_TABLE,
 							[
 								'objid' => $relation['objid'],
 								'categoryid' => $tagId,
 								'type' => $this->type,
-							]);
+							]
+						);
 					} catch (\Exception $e) {
-						\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
-							\OCP\Util::ERROR);
+						\OCP\Util::writeLog(
+							'core',
+							__METHOD__.', exception: '.$e->getMessage(),
+							\OCP\Util::ERROR
+						);
 					}
 				}
 			}
@@ -514,8 +538,11 @@ class Tags implements \OCP\ITags {
 				\OCP\Util::writeLog('core', __METHOD__. 'DB error: ' . \OCP\DB::getErrorMessage(), \OCP\Util::ERROR);
 			}
 		} catch (\Exception $e) {
-			\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
-				\OCP\Util::ERROR);
+			\OCP\Util::writeLog(
+				'core',
+				__METHOD__.', exception: '.$e->getMessage(),
+				\OCP\Util::ERROR
+			);
 		}
 
 		if ($result !== null) {
@@ -526,13 +553,19 @@ class Tags implements \OCP\ITags {
 					try {
 						$stmt->execute([$row['id']]);
 					} catch (\Exception $e) {
-						\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
-							\OCP\Util::ERROR);
+						\OCP\Util::writeLog(
+							'core',
+							__METHOD__.', exception: '.$e->getMessage(),
+							\OCP\Util::ERROR
+						);
 					}
 				}
 			} catch (\Exception $e) {
-				\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
-					\OCP\Util::ERROR);
+				\OCP\Util::writeLog(
+					'core',
+					__METHOD__.', exception: '.$e->getMessage(),
+					\OCP\Util::ERROR
+				);
 			}
 		}
 		try {
@@ -572,8 +605,11 @@ class Tags implements \OCP\ITags {
 				return false;
 			}
 		} catch (\Exception $e) {
-			\OCP\Util::writeLog('core', __METHOD__.', exception: ' . $e->getMessage(),
-				\OCP\Util::ERROR);
+			\OCP\Util::writeLog(
+				'core',
+				__METHOD__.', exception: ' . $e->getMessage(),
+				\OCP\Util::ERROR
+			);
 			return false;
 		}
 		return true;
@@ -588,8 +624,11 @@ class Tags implements \OCP\ITags {
 		try {
 			return $this->getIdsForTag(self::TAG_FAVORITE);
 		} catch (\Exception $e) {
-			\OCP\Util::writeLog('core', __METHOD__.', exception: ' . $e->getMessage(),
-				\OCP\Util::DEBUG);
+			\OCP\Util::writeLog(
+				'core',
+				__METHOD__.', exception: ' . $e->getMessage(),
+				\OCP\Util::DEBUG
+			);
 			return [];
 		}
 	}
@@ -639,15 +678,20 @@ class Tags implements \OCP\ITags {
 			$tagId = $tag;
 		}
 		try {
-			\OCP\DB::insertIfNotExist(self::RELATION_TABLE,
+			\OCP\DB::insertIfNotExist(
+				self::RELATION_TABLE,
 				[
 					'objid' => $objid,
 					'categoryid' => $tagId,
 					'type' => $this->type,
-				]);
+				]
+			);
 		} catch (\Exception $e) {
-			\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
-				\OCP\Util::ERROR);
+			\OCP\Util::writeLog(
+				'core',
+				__METHOD__.', exception: '.$e->getMessage(),
+				\OCP\Util::ERROR
+			);
 			return false;
 		}
 		return true;
@@ -678,8 +722,11 @@ class Tags implements \OCP\ITags {
 			$stmt = \OCP\DB::prepare($sql);
 			$stmt->execute([$objid, $tagId, $this->type]);
 		} catch (\Exception $e) {
-			\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
-				\OCP\Util::ERROR);
+			\OCP\Util::writeLog(
+				'core',
+				__METHOD__.', exception: '.$e->getMessage(),
+				\OCP\Util::ERROR
+			);
 			return false;
 		}
 		return true;
@@ -725,14 +772,19 @@ class Tags implements \OCP\ITags {
 					$stmt = \OCP\DB::prepare($sql);
 					$result = $stmt->execute([$id]);
 					if (\OCP\DB::isError($result)) {
-						\OCP\Util::writeLog('core',
+						\OCP\Util::writeLog(
+							'core',
 							__METHOD__. 'DB error: ' . \OCP\DB::getErrorMessage(),
-							\OCP\Util::ERROR);
+							\OCP\Util::ERROR
+						);
 						return false;
 					}
 				} catch (\Exception $e) {
-					\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
-						\OCP\Util::ERROR);
+					\OCP\Util::writeLog(
+						'core',
+						__METHOD__.', exception: '.$e->getMessage(),
+						\OCP\Util::ERROR
+					);
 					return false;
 				}
 			}
@@ -745,10 +797,14 @@ class Tags implements \OCP\ITags {
 		if (!\is_array($haystack)) {
 			return false;
 		}
-		return \array_search(\strtolower($needle), \array_map(
-			function ($tag) use ($mem) {
-				return \strtolower(\call_user_func([$tag, $mem]));
-			}, $haystack)
+		return \array_search(
+			\strtolower($needle),
+			\array_map(
+				function ($tag) use ($mem) {
+					return \strtolower(\call_user_func([$tag, $mem]));
+				},
+				$haystack
+			)
 		);
 	}
 

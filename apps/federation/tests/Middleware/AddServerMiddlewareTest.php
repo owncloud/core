@@ -78,13 +78,15 @@ class AddServerMiddlewareTest extends TestCase {
 
 		$result = $this->middleware->afterException($this->controller, 'method', $exception);
 
-		$this->assertSame(Http::STATUS_BAD_REQUEST,
+		$this->assertSame(
+			Http::STATUS_BAD_REQUEST,
 			$result->getStatus()
 		);
 
 		$data = $result->getData();
 
-		$this->assertSame($hint,
+		$this->assertSame(
+			$hint,
 			$data['message']
 		);
 	}

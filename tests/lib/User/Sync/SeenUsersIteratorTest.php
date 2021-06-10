@@ -42,7 +42,7 @@ class SeenUsersIteratorTest extends TestCase {
 	 */
 	private $iterator;
 
-	const TEST_BACKEND = 'TestBackend';
+	public const TEST_BACKEND = 'TestBackend';
 
 	public function setUp(): void {
 		parent::setUp();
@@ -95,12 +95,14 @@ class SeenUsersIteratorTest extends TestCase {
 					$this->equalTo(true),					// only logged in users
 					$this->equalTo(UsersIterator::LIMIT),	// limit 500
 					$this->equalTo(0)						// at the beginning
-				], [
+				],
+				[
 				$this->equalTo(self::TEST_BACKEND),	// only from this backend
 				$this->equalTo(true),					// only logged in users
 				$this->equalTo(UsersIterator::LIMIT),	// limit 500
 				$this->equalTo(500)					// second page
-			], [
+			],
+				[
 					$this->equalTo(self::TEST_BACKEND),	// only from this backend
 					$this->equalTo(true),					// only logged in users
 					$this->equalTo(UsersIterator::LIMIT),	// limit 500

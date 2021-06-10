@@ -181,7 +181,8 @@ class ManagerTest extends TestCase {
 			[
 				' and ((`app` = ? and `message` like ?) or (`app` = ? and `message` like ?))',
 				['mail', 'ownCloud%', 'mail', 'ownCloud%']
-			], $result
+			],
+			$result
 		);
 
 		$result = $this->activityManager->getQueryForFilter('InvalidFilter');
@@ -446,8 +447,10 @@ class ManagerTest extends TestCase {
 
 		$this->activityManager->publishActivity(
 			$event->getApp(),
-			$event->getSubject(), $event->getSubjectParameters(),
-			$event->getMessage(), $event->getMessageParameters(),
+			$event->getSubject(),
+			$event->getSubjectParameters(),
+			$event->getMessage(),
+			$event->getMessageParameters(),
 			$event->getObjectName(),
 			$event->getLink(),
 			$event->getAffectedUser(),

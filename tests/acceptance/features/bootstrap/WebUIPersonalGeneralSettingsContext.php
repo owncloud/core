@@ -120,7 +120,9 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 		$oldPassword = \trim($this->featureContext->getUserPassword($username));
 		$newPassword = $this->featureContext->getActualPassword($newPassword);
 		$this->personalGeneralSettingsPage->changePassword(
-			$oldPassword, $newPassword, $this->getSession()
+			$oldPassword,
+			$newPassword,
+			$this->getSession()
 		);
 	}
 
@@ -134,7 +136,9 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 		$username = $this->featureContext->getCurrentUser();
 		$currentPassword = \trim($this->featureContext->getUserPassword($username));
 		$this->personalGeneralSettingsPage->changePassword(
-			$currentPassword, $currentPassword, $this->getSession()
+			$currentPassword,
+			$currentPassword,
+			$this->getSession()
 		);
 	}
 
@@ -148,12 +152,15 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @return void
 	 */
 	public function theUserChangesThePasswordWrongCurrentPasswordUsingTheWebUI(
-		$newPassword, $wrongPassword
+		$newPassword,
+		$wrongPassword
 	) {
 		$newPassword = $this->featureContext->getActualPassword($newPassword);
 		$wrongPassword = $this->featureContext->getActualPassword($wrongPassword);
 		$this->personalGeneralSettingsPage->changePassword(
-			$wrongPassword, $newPassword, $this->getSession()
+			$wrongPassword,
+			$newPassword,
+			$this->getSession()
 		);
 	}
 
@@ -167,7 +174,8 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 */
 	public function theUserChangesTheFullNameToUsingTheWebUI($newFullName) {
 		$this->personalGeneralSettingsPage->changeFullname(
-			$newFullName, $this->getSession()
+			$newFullName,
+			$this->getSession()
 		);
 		$this->featureContext->rememberUserDisplayName(
 			$this->featureContext->getCurrentUser(),
@@ -184,7 +192,8 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	public function theUserShouldNotBeAbleToChangeTheFullNameUsingTheWebui() {
 		try {
 			$this->personalGeneralSettingsPage->changeFullname(
-				"anything", $this->getSession()
+				"anything",
+				$this->getSession()
 			);
 			Assert::fail("changing the full name was possible, but should not");
 		} catch (Behat\Mink\Exception\ElementNotFoundException $e) {
@@ -201,7 +210,8 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 */
 	public function theUserChangesTheEmailAddressToUsingTheWebUI($emailAddress) {
 		$this->personalGeneralSettingsPage->changeEmailAddress(
-			$emailAddress, $this->getSession()
+			$emailAddress,
+			$this->getSession()
 		);
 		$this->featureContext->rememberUserEmailAddress(
 			$this->featureContext->getCurrentUser(),
@@ -268,15 +278,18 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 */
 	public function theUserFollowsTheEmailChangeConfirmationLinkEmail($emailAddress) {
 		$content = EmailHelper::getBodyOfLastEmail(
-			EmailHelper::getLocalMailhogUrl(), $emailAddress
+			EmailHelper::getLocalMailhogUrl(),
+			$emailAddress
 		);
 		$matches = [];
 		\preg_match(
 			'/Use the following link to confirm your changes to the email address: (http.*)/',
-			$content, $matches
+			$content,
+			$matches
 		);
 		Assert::assertArrayHasKey(
-			1, $matches,
+			1,
+			$matches,
 			"Couldn't find confirmation link in the email"
 		);
 		$this->visitPath($matches[1]);

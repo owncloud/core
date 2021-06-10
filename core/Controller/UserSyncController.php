@@ -63,10 +63,12 @@ class UserSyncController extends OCSController {
 	 * @param SyncService $syncService
 	 * @param IUserManager $userManager
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								SyncService $syncService,
-								IUserManager $userManager) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		SyncService $syncService,
+		IUserManager $userManager
+	) {
 		parent::__construct($appName, $request);
 		$this->syncService = $syncService;
 		$this->userManager = $userManager;

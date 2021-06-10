@@ -25,7 +25,7 @@ use OC\Route\Route;
 use Test\TestCase;
 
 class RouteTest extends TestCase {
-	const code = <<<EOL
+	public const code = <<<EOL
 <?php
 namespace Test\Route;
 class DummyClass {

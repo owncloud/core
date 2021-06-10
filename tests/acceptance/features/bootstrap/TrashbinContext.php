@@ -103,7 +103,8 @@ class TrashbinContext implements Context {
 
 				$propStats = $element->xpath('./d:propstat');
 				$successPropStat = \array_filter(
-					$propStats, static function (SimpleXMLElement $propStat) {
+					$propStats,
+					static function (SimpleXMLElement $propStat) {
 						$status = $propStat->xpath('./d:status');
 						return (string) $status[0] === 'HTTP/1.1 200 OK';
 					}
@@ -126,7 +127,8 @@ class TrashbinContext implements Context {
 					'mtime' => isset($mtime[0]) ? (string) $mtime[0] : null,
 					'original-location' => isset($originalLocation[0]) ? (string) $originalLocation[0] : null
 				];
-			}, $xmlElements
+			},
+			$xmlElements
 		);
 
 		return $files;
@@ -169,7 +171,8 @@ class TrashbinContext implements Context {
 		$files = $this->getTrashbinContentFromResponseXml($responseXml);
 		// filter root element
 		$files = \array_filter(
-			$files, static function ($element) use ($user, $path) {
+			$files,
+			static function ($element) use ($user, $path) {
 				$path = \ltrim($path, '/');
 				if ($path !== '') {
 					$path .= '/';
@@ -394,7 +397,15 @@ class TrashbinContext implements Context {
 			if ($entry['original-location'] === $originalPath) {
 				$trashItemHRef = $this->convertTrashbinHref($entry['href']);
 				$response = $this->featureContext->makeDavRequest(
-					$asUser, 'DELETE', $trashItemHRef, [], null, 'trash-bin', 2, false, $password
+					$asUser,
+					'DELETE',
+					$trashItemHRef,
+					[],
+					null,
+					'trash-bin',
+					2,
+					false,
+					$password
 				);
 				$this->featureContext->setResponse($response);
 				$numItemsDeleted++;
@@ -536,7 +547,15 @@ class TrashbinContext implements Context {
 		$trashItemHRef = $this->convertTrashbinHref($trashItemHRef);
 		$headers['Destination'] = $destinationValue;
 		$response = $this->featureContext->makeDavRequest(
-			$asUser, 'MOVE', $trashItemHRef, $headers, null, 'trash-bin', 2, false, $password
+			$asUser,
+			'MOVE',
+			$trashItemHRef,
+			$headers,
+			null,
+			'trash-bin',
+			2,
+			false,
+			$password
 		);
 		$this->featureContext->setResponse($response);
 		return $response;
@@ -597,7 +616,10 @@ class TrashbinContext implements Context {
 	 * @return void
 	 */
 	public function contentOfFileForUserIfAlsoInTrashShouldBeOtherwise(
-		$fileName, $user, $content, $alternativeContent
+		$fileName,
+		$user,
+		$content,
+		$alternativeContent
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->downloadFileAsUserUsingPassword($user, $fileName);
@@ -680,7 +702,9 @@ class TrashbinContext implements Context {
 	 * @return void
 	 */
 	public function userRestoresTheFileWithOriginalPathToUsingTheTrashbinApi(
-		$user, $originalPath, $destinationPath
+		$user,
+		$originalPath,
+		$destinationPath
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->restoreElement($user, $originalPath, $destinationPath);
@@ -695,7 +719,8 @@ class TrashbinContext implements Context {
 	 * @return void
 	 */
 	public function elementIsInTrashCheckingOriginalPath(
-		$user, $originalPath
+		$user,
+		$originalPath
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		Assert::assertTrue(
@@ -713,7 +738,8 @@ class TrashbinContext implements Context {
 	 * @return void
 	 */
 	public function elementIsNotInTrashCheckingOriginalPath(
-		$user, $originalPath
+		$user,
+		$originalPath
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		Assert::assertFalse(
@@ -731,7 +757,8 @@ class TrashbinContext implements Context {
 	 * @return void
 	 */
 	public function followingElementsAreNotInTrashCheckingOriginalPath(
-		$user, TableNode $table
+		$user,
+		TableNode $table
 	) {
 		$this->featureContext->verifyTableNodeColumns($table, ["path"]);
 		$paths = $table->getHash($table);
@@ -750,7 +777,8 @@ class TrashbinContext implements Context {
 	 * @return void
 	 */
 	public function followingElementsAreInTrashCheckingOriginalPath(
-		$user, TableNode $table
+		$user,
+		TableNode $table
 	) {
 		$this->featureContext->verifyTableNodeColumns($table, ["path"]);
 		$paths = $table->getHash($table);
@@ -826,7 +854,8 @@ class TrashbinContext implements Context {
 			}
 		}
 		Assert::assertTrue(
-			$found, "$resource expected to be listed in response with mtime '$expectedMtime' but found '$responseMtime'"
+			$found,
+			"$resource expected to be listed in response with mtime '$expectedMtime' but found '$responseMtime'"
 		);
 	}
 

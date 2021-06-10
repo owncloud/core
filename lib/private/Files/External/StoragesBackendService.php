@@ -69,7 +69,8 @@ class StoragesBackendService implements IStoragesBackendService {
 		if ($this->config->getAppValue('files_external', 'allow_user_mounting', 'yes') !== 'yes') {
 			$this->userMountingAllowed = false;
 		}
-		$this->userMountingBackends = \explode(',',
+		$this->userMountingBackends = \explode(
+			',',
 			$this->config->getAppValue('files_external', 'user_mounting_backends', '')
 		);
 

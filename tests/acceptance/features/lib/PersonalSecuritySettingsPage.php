@@ -152,7 +152,8 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	) {
 		$this->waitForOutstandingAjaxCalls($session);
 		$this->waitTillXpathIsVisible(
-			$this->corsInputFieldXpath, $timeout_msec
+			$this->corsInputFieldXpath,
+			$timeout_msec
 		);
 	}
 }

@@ -32,9 +32,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CheckCache extends Command {
-	const ERROR_MISSING_FILE = 1;
-	const ERROR_NOT_A_FILE = 2;
-	const ERROR_CANNOT_OPEN = 3;
+	public const ERROR_MISSING_FILE = 1;
+	public const ERROR_NOT_A_FILE = 2;
+	public const ERROR_CANNOT_OPEN = 3;
 
 	/** @var IRootFolder */
 	private $rootFolder;

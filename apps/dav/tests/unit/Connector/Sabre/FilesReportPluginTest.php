@@ -237,10 +237,11 @@ class FilesReportPluginTest extends \Test\TestCase {
 		$responses = null;
 		$this->server->expects($this->once())
 			->method('generateMultiStatus')
-			->will($this->returnCallback(function ($responsesArg) use (&$responses) {
-				$responses = $responsesArg;
-			})
-		);
+			->will(
+				$this->returnCallback(function ($responsesArg) use (&$responses) {
+					$responses = $responsesArg;
+				})
+			);
 
 		$this->assertFalse($this->plugin->onReport(FilesReportPluginImplementation::REPORT_NAME, $parameters, '/' . $path));
 
@@ -326,10 +327,11 @@ class FilesReportPluginTest extends \Test\TestCase {
 		$responses = null;
 		$this->server->expects($this->once())
 			->method('generateMultiStatus')
-			->will($this->returnCallback(function ($responsesArg) use (&$responses) {
-				$responses = $responsesArg;
-			})
-		);
+			->will(
+				$this->returnCallback(function ($responsesArg) use (&$responses) {
+					$responses = $responsesArg;
+				})
+			);
 
 		$this->assertFalse($this->plugin->onReport(FilesReportPluginImplementation::REPORT_NAME, $parameters, '/' . $path));
 

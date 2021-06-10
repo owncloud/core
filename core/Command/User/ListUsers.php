@@ -33,7 +33,7 @@ class ListUsers extends Base {
 	/** @var \OCP\IUserManager */
 	protected $userManager;
 
-	const ATTRIBUTES = [
+	public const ATTRIBUTES = [
 		'uid',
 		'displayName',
 		'email',

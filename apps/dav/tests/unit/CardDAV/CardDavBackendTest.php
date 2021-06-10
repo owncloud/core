@@ -64,9 +64,9 @@ class CardDavBackendTest extends TestCase {
 	/** @var string */
 	private $dbCardsPropertiesTable = 'cards_properties';
 
-	const UNIT_TEST_USER = 'principals/users/carddav-unit-test';
-	const UNIT_TEST_USER1 = 'principals/users/carddav-unit-test1';
-	const UNIT_TEST_GROUP = 'principals/groups/carddav-unit-test-group';
+	public const UNIT_TEST_USER = 'principals/users/carddav-unit-test';
+	public const UNIT_TEST_USER1 = 'principals/users/carddav-unit-test1';
+	public const UNIT_TEST_GROUP = 'principals/groups/carddav-unit-test-group';
 
 	public function setUp(): void {
 		parent::setUp();
@@ -467,8 +467,10 @@ class CardDavBackendTest extends TestCase {
 		$query->execute();
 		$id = $query->getLastInsertId();
 
-		$this->assertSame($id,
-			static::invokePrivate($this->backend, 'getCardId', [1, 'uri']));
+		$this->assertSame(
+			$id,
+			static::invokePrivate($this->backend, 'getCardId', [1, 'uri'])
+		);
 	}
 
 	/**
@@ -505,7 +507,7 @@ class CardDavBackendTest extends TestCase {
 		for ($i=0; $i<2; $i++) {
 			$query->insert($this->dbCardsTable)
 					->values(
-							[
+						[
 									'addressbookid' => $query->createNamedParameter(0),
 									'carddata' => $query->createNamedParameter($vCards[$i]->serialize(), IQueryBuilder::PARAM_LOB),
 									'uri' => $query->createNamedParameter('uri' . $i),
@@ -531,7 +533,7 @@ class CardDavBackendTest extends TestCase {
 		$query->execute();
 		$query->insert($this->dbCardsPropertiesTable)
 				->values(
-						[
+					[
 								'addressbookid' => $query->createNamedParameter(0),
 								'cardid' => $query->createNamedParameter($vCardIds[0]),
 								'name' => $query->createNamedParameter('CLOUD'),
@@ -605,7 +607,7 @@ class CardDavBackendTest extends TestCase {
 		$query = $this->db->getQueryBuilder();
 		$query->insert($this->dbCardsTable)
 				->values(
-						[
+					[
 								'addressbookid' => $query->createNamedParameter(1),
 								'carddata' => $query->createNamedParameter('carddata', IQueryBuilder::PARAM_LOB),
 								'uri' => $query->createNamedParameter('uri'),
@@ -634,7 +636,7 @@ class CardDavBackendTest extends TestCase {
 		for ($i=0; $i<2; $i++) {
 			$query->insert($this->dbCardsTable)
 					->values(
-							[
+						[
 									'addressbookid' => $query->createNamedParameter($i),
 									'carddata' => $query->createNamedParameter('carddata' . $i, IQueryBuilder::PARAM_LOB),
 									'uri' => $query->createNamedParameter('uri' . $i),

@@ -141,11 +141,15 @@ abstract class StoragesServiceTest extends TestCase {
 		\OCP\Util::connectHook(
 			Filesystem::CLASSNAME,
 			Filesystem::signal_create_mount,
-			\get_class($this), 'createHookCallback');
+			\get_class($this),
+			'createHookCallback'
+		);
 		\OCP\Util::connectHook(
 			Filesystem::CLASSNAME,
 			Filesystem::signal_delete_mount,
-			\get_class($this), 'deleteHookCallback');
+			\get_class($this),
+			'deleteHookCallback'
+		);
 
 		$containerMock = $this->createMock('\OCP\AppFramework\IAppContainer');
 		$containerMock->method('query')

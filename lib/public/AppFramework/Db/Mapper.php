@@ -143,7 +143,8 @@ abstract class Mapper {
 		$id = $entity->getId();
 		if ($id === null) {
 			throw new \InvalidArgumentException(
-				'Entity which should be updated has no id');
+				'Entity which should be updated has no id'
+			);
 		}
 
 		// get updated fields to save, fields have to be set using a setter to
@@ -276,7 +277,11 @@ abstract class Mapper {
 		if ($row === false || $row === null) {
 			$stmt->closeCursor();
 			$msg = $this->buildDebugMessage(
-				'Did expect one result but found none when executing', $sql, $params, $limit, $offset
+				'Did expect one result but found none when executing',
+				$sql,
+				$params,
+				$limit,
+				$offset
 			);
 			throw new DoesNotExistException($msg);
 		}
@@ -285,7 +290,11 @@ abstract class Mapper {
 		//MDB2 returns null, PDO and doctrine false when no row is available
 		if (! ($row2 === false || $row2 === null)) {
 			$msg = $this->buildDebugMessage(
-				'Did not expect more than one result when executing', $sql, $params, $limit, $offset
+				'Did not expect more than one result when executing',
+				$sql,
+				$params,
+				$limit,
+				$offset
 			);
 			throw new MultipleObjectsReturnedException($msg);
 		} else {

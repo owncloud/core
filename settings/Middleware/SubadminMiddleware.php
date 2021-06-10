@@ -46,8 +46,10 @@ class SubadminMiddleware extends Middleware {
 	 * @param ControllerMethodReflector $reflector
 	 * @param bool $isSubAdmin
 	 */
-	public function __construct(ControllerMethodReflector $reflector,
-								$isSubAdmin) {
+	public function __construct(
+		ControllerMethodReflector $reflector,
+		$isSubAdmin
+	) {
 		$this->reflector = $reflector;
 		$this->isSubAdmin = $isSubAdmin;
 	}

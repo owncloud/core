@@ -37,8 +37,12 @@ class RolesController extends OCSController {
 	 */
 	private $dispatcher;
 
-	public function __construct($appName, IRequest $request,
-								IL10N $l10n, EventDispatcherInterface $dispatcher) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IL10N $l10n,
+		EventDispatcherInterface $dispatcher
+	) {
 		parent::__construct($appName, $request);
 		$this->l10n = $l10n;
 		$this->dispatcher = $dispatcher;
@@ -80,7 +84,8 @@ class RolesController extends OCSController {
 						]
 					]
 				]
-			]);
+			]
+		);
 		$event->addRole(
 			[
 				'id' => 'core.contributor',
@@ -101,7 +106,8 @@ class RolesController extends OCSController {
 					]
 				]
 
-			]);
+			]
+		);
 		$event->addRole(
 			[
 				'id' => 'core.editor',
@@ -123,7 +129,8 @@ class RolesController extends OCSController {
 						]
 					]
 				]
-			]);
+			]
+		);
 		$event->addRole(
 			[
 				'id' => 'core.uploader',
@@ -142,6 +149,7 @@ class RolesController extends OCSController {
 						]
 					]
 				]
-			]);
+			]
+		);
 	}
 }

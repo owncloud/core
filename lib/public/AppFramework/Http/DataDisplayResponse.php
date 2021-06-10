@@ -44,8 +44,11 @@ class DataDisplayResponse extends Response {
 	 * @param array $headers additional key value based headers
 	 * @since 8.1.0
 	 */
-	public function __construct($data="", $statusCode=Http::STATUS_OK,
-								$headers=[]) {
+	public function __construct(
+		$data="",
+		$statusCode=Http::STATUS_OK,
+		$headers=[]
+	) {
 		$this->data = $data;
 		$this->setStatus($statusCode);
 		$this->setHeaders(\array_merge($this->getHeaders(), $headers));

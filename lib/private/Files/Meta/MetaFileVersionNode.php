@@ -63,9 +63,13 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	 * @param Storage $storage
 	 * @param string $internalPath
 	 */
-	public function __construct(MetaVersionCollection $parent,
-								IRootFolder $root,
-								array $version, Storage\IStorage $storage, $internalPath) {
+	public function __construct(
+		MetaVersionCollection $parent,
+		IRootFolder $root,
+		array $version,
+		Storage\IStorage $storage,
+		$internalPath
+	) {
 		$this->parent = $parent;
 		$this->versionId = $version['version'];
 		$this->versionInfo = $version;

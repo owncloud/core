@@ -49,8 +49,10 @@ class UpdateCertificateStore implements IRepairStep {
 	 * @param Server $server
 	 * @param IConfig $config
 	 */
-	public function __construct(Server $server,
-								IConfig $config) {
+	public function __construct(
+		Server $server,
+		IConfig $config
+	) {
 		$this->server = $server;
 		$this->config = $config;
 	}

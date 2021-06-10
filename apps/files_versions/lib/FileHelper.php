@@ -25,7 +25,7 @@ use OC\Files\Filesystem;
 use OC\Files\View;
 
 class FileHelper {
-	const VERSIONS_RELATIVE_PATH = '/files_versions';
+	public const VERSIONS_RELATIVE_PATH = '/files_versions';
 
 	/**
 	 * Create recursively missing directories inside of files_versions

@@ -41,7 +41,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Manager {
-	const STORAGE = '\OCA\Files_Sharing\External\Storage';
+	public const STORAGE = '\OCA\Files_Sharing\External\Storage';
 
 	/**
 	 * @var string
@@ -81,12 +81,14 @@ class Manager {
 	 * @param EventDispatcherInterface $eventDispatcher
 	 * @param string $uid
 	 */
-	public function __construct(\OCP\IDBConnection $connection,
-								\OC\Files\Mount\Manager $mountManager,
-								\OCP\Files\Storage\IStorageFactory $storageLoader,
-								IManager $notificationManager,
-								EventDispatcherInterface $eventDispatcher,
-								$uid) {
+	public function __construct(
+		\OCP\IDBConnection $connection,
+		\OC\Files\Mount\Manager $mountManager,
+		\OCP\Files\Storage\IStorageFactory $storageLoader,
+		IManager $notificationManager,
+		EventDispatcherInterface $eventDispatcher,
+		$uid
+	) {
 		$this->connection = $connection;
 		$this->mountManager = $mountManager;
 		$this->storageLoader = $storageLoader;
@@ -207,7 +209,8 @@ class Manager {
 			$acceptShare->execute([1, $mountPoint, $hash, $id, $this->uid]);
 
 			$this->eventDispatcher->dispatch(
-				AcceptShare::class, new AcceptShare($share)
+				AcceptShare::class,
+				new AcceptShare($share)
 			);
 
 			$event = new GenericEvent(null, ['sharedItem' => $share['name'], 'shareAcceptedFrom' => $share['owner'],

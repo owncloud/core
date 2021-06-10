@@ -100,7 +100,10 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @return string[]
 	 */
 	public static function changeUserSetting(
-		$userName, $app, $key, $value
+		$userName,
+		$app,
+		$key,
+		$value
 	) {
 		return self::runOcc(
 			['user:setting', '--value ' . $value, $userName, $app, $key]
@@ -199,7 +202,10 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @return void
 	 */
 	public static function init(
-		$adminUsername, $adminPassword, $baseUrl, $ocPath
+		$adminUsername,
+		$adminPassword,
+		$baseUrl,
+		$ocPath
 	) {
 		foreach (\func_get_args() as $variableToCheck) {
 			if (!\is_string($variableToCheck)) {
@@ -240,10 +246,15 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @throws Exception
 	 */
 	public static function getSysInfo(
-		$baseUrl, $adminUsername, $adminPassword
+		$baseUrl,
+		$adminUsername,
+		$adminPassword
 	) {
 		$result = OcsApiHelper::sendRequest(
-			$baseUrl, $adminUsername, $adminPassword, "GET",
+			$baseUrl,
+			$adminUsername,
+			$adminPassword,
+			"GET",
 			"/apps/testing/api/v1/sysinfo"
 		);
 		if ($result->getStatusCode() !== 200) {
@@ -264,10 +275,14 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @throws Exception
 	 */
 	public static function getServerRoot(
-		$baseUrl, $adminUsername, $adminPassword
+		$baseUrl,
+		$adminUsername,
+		$adminPassword
 	) {
 		$sysInfo = self::getSysInfo(
-			$baseUrl, $adminUsername, $adminPassword
+			$baseUrl,
+			$adminUsername,
+			$adminPassword
 		);
 		return $sysInfo->server_root;
 	}
@@ -355,7 +370,10 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		$adminUsername = self::checkAdminUsername($adminUsername, "mkDirOnServer");
 		$adminPassword = self::checkAdminPassword($adminPassword, "mkDirOnServer");
 		$result = OcsApiHelper::sendRequest(
-			$baseUrl, $adminUsername, $adminPassword, "POST",
+			$baseUrl,
+			$adminUsername,
+			$adminPassword,
+			"POST",
 			"/apps/testing/api/v1/dir",
 			['dir' => $dirPathFromServerRoot]
 		);
@@ -387,7 +405,10 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		$adminUsername = self::checkAdminUsername($adminUsername, "rmDirOnServer");
 		$adminPassword = self::checkAdminPassword($adminPassword, "rmDirOnServer");
 		$result = OcsApiHelper::sendRequest(
-			$baseUrl, $adminUsername, $adminPassword, "DELETE",
+			$baseUrl,
+			$adminUsername,
+			$adminPassword,
+			"DELETE",
 			"/apps/testing/api/v1/dir",
 			['dir' => $dirPathFromServerRoot]
 		);
@@ -421,7 +442,10 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		$adminUsername = self::checkAdminUsername($adminUsername, "createFileOnServer");
 		$adminPassword = self::checkAdminPassword($adminPassword, "createFileOnServer");
 		$result = OcsApiHelper::sendRequest(
-			$baseUrl, $adminUsername, $adminPassword, "POST",
+			$baseUrl,
+			$adminUsername,
+			$adminPassword,
+			"POST",
 			"/apps/testing/api/v1/file",
 			[
 				'file' => $filePathFromServerRoot,
@@ -456,7 +480,10 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		$adminUsername = self::checkAdminUsername($adminUsername, "deleteFileOnServer");
 		$adminPassword = self::checkAdminPassword($adminPassword, "deleteFileOnServer");
 		$result = OcsApiHelper::sendRequest(
-			$baseUrl, $adminUsername, $adminPassword, "DELETE",
+			$baseUrl,
+			$adminUsername,
+			$adminPassword,
+			"DELETE",
 			"/apps/testing/api/v1/file",
 			[
 				'file' => $filePathFromServerRoot
@@ -487,10 +514,12 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	) {
 		$baseUrl = self::checkBaseUrl($baseUrl, "readFile");
 		$adminUsername = self::checkAdminUsername(
-			$adminUsername, "readFile"
+			$adminUsername,
+			"readFile"
 		);
 		$adminPassword = self::checkAdminPassword(
-			$adminPassword, "readFile"
+			$adminPassword,
+			"readFile"
 		);
 
 		$response = OcsApiHelper::sendRequest(
@@ -528,10 +557,12 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	) {
 		$baseUrl = self::checkBaseUrl($baseUrl, "readSkeletonFile");
 		$adminUsername = self::checkAdminUsername(
-			$adminUsername, "readSkeletonFile"
+			$adminUsername,
+			"readSkeletonFile"
 		);
 		$adminPassword = self::checkAdminPassword(
-			$adminPassword, "readSkeletonFile"
+			$adminPassword,
+			"readSkeletonFile"
 		);
 
 		//find the absolute path of the currently set skeletondirectory
@@ -663,8 +694,12 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		}
 		try {
 			$result = OcsApiHelper::sendRequest(
-				$baseUrl, $adminUsername, $adminPassword,
-				"POST", "/apps/testing/api/v1/occ/bulk?format=json", \json_encode($bodies)
+				$baseUrl,
+				$adminUsername,
+				$adminPassword,
+				"POST",
+				"/apps/testing/api/v1/occ/bulk?format=json",
+				\json_encode($bodies)
 			);
 		} catch (ServerException $e) {
 			throw new Exception(
@@ -730,8 +765,12 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 		try {
 			$result = OcsApiHelper::sendRequest(
-				$baseUrl, $adminUsername, $adminPassword,
-				"POST", $ocPath, $body
+				$baseUrl,
+				$adminUsername,
+				$adminPassword,
+				"POST",
+				$ocPath,
+				$body
 			);
 		} catch (ServerException $e) {
 			throw new Exception(
@@ -816,8 +855,11 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	) {
 		try {
 			return OcsApiHelper::sendRequest(
-				$baseUrl, $user,
-				$password, "DELETE", "/apps/testing/api/v1/opcache"
+				$baseUrl,
+				$user,
+				$password,
+				"DELETE",
+				"/apps/testing/api/v1/opcache"
 			);
 		} catch (ServerException $e) {
 			echo "could not reset opcache, if tests fail try to set " .

@@ -103,17 +103,17 @@ class Encryption extends Wrapper {
 	 * @param ArrayCache $arrayCache
 	 */
 	public function __construct(
-			$parameters,
-			IManager $encryptionManager = null,
-			Util $util = null,
-			ILogger $logger = null,
-			IFile $fileHelper = null,
-			$uid = null,
-			IStorage $keyStorage = null,
-			Update $update = null,
-			Manager $mountManager = null,
-			ArrayCache $arrayCache = null
-		) {
+		$parameters,
+		IManager $encryptionManager = null,
+		Util $util = null,
+		ILogger $logger = null,
+		IFile $fileHelper = null,
+		$uid = null,
+		IStorage $keyStorage = null,
+		Update $update = null,
+		Manager $mountManager = null,
+		ArrayCache $arrayCache = null
+	) {
 		$this->mountPoint = $parameters['mountPoint'];
 		$this->mount = $parameters['mount'];
 		$this->encryptionManager = $encryptionManager;
@@ -475,9 +475,24 @@ class Encryption extends Wrapper {
 				} else {
 					$sourceFileOfRename = null;
 				}
-				$handle = \OC\Files\Stream\Encryption::wrap($source, $path, $fullPath, $header,
-					$this->uid, $encryptionModule, $this->storage, $this, $this->util, $this->fileHelper, $mode,
-					$size, $unencryptedSize, $headerSize, $signed, $sourceFileOfRename);
+				$handle = \OC\Files\Stream\Encryption::wrap(
+					$source,
+					$path,
+					$fullPath,
+					$header,
+					$this->uid,
+					$encryptionModule,
+					$this->storage,
+					$this,
+					$this->util,
+					$this->fileHelper,
+					$mode,
+					$size,
+					$unencryptedSize,
+					$headerSize,
+					$signed,
+					$sourceFileOfRename
+				);
 				unset($this->sourcePath[$path]);
 
 				return $handle;

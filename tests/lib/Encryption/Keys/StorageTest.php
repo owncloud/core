@@ -98,8 +98,10 @@ class StorageTest extends TestCase {
 			->willReturn(false);
 		$this->view->expects($this->once())
 			->method('file_put_contents')
-			->with($this->equalTo('/user1/files_encryption/keys/files/foo.txt/encModule/fileKey'),
-				$this->equalTo('key'))
+			->with(
+				$this->equalTo('/user1/files_encryption/keys/files/foo.txt/encModule/fileKey'),
+				$this->equalTo('key')
+			)
 			->willReturn(\strlen('key'));
 
 		$this->assertTrue(
@@ -161,7 +163,8 @@ class StorageTest extends TestCase {
 				->willReturn('key');
 		}
 
-		$this->assertSame($expectedKeyContent,
+		$this->assertSame(
+			$expectedKeyContent,
 			$this->storage->getFileKey('user1' . $path, 'fileKey', 'encModule')
 		);
 	}
@@ -178,8 +181,10 @@ class StorageTest extends TestCase {
 			->willReturnArgument(0);
 		$this->view->expects($this->once())
 			->method('file_put_contents')
-			->with($this->equalTo('/files_encryption/keys/files/foo.txt/encModule/fileKey'),
-				$this->equalTo('key'))
+			->with(
+				$this->equalTo('/files_encryption/keys/files/foo.txt/encModule/fileKey'),
+				$this->equalTo('key')
+			)
 			->willReturn(\strlen('key'));
 
 		$this->assertTrue(
@@ -206,7 +211,8 @@ class StorageTest extends TestCase {
 			->with($this->equalTo('/files_encryption/keys/files/foo.txt/encModule/fileKey'))
 			->willReturn(true);
 
-		$this->assertSame('key',
+		$this->assertSame(
+			'key',
 			$this->storage->getFileKey('user1/files/foo.txt', 'fileKey', 'encModule')
 		);
 	}
@@ -214,8 +220,10 @@ class StorageTest extends TestCase {
 	public function testSetSystemUserKey() {
 		$this->view->expects($this->once())
 			->method('file_put_contents')
-			->with($this->equalTo('/files_encryption/encModule/shareKey_56884'),
-				$this->equalTo('key'))
+			->with(
+				$this->equalTo('/files_encryption/encModule/shareKey_56884'),
+				$this->equalTo('key')
+			)
 			->willReturn(\strlen('key'));
 
 		$this->assertTrue(
@@ -226,8 +234,10 @@ class StorageTest extends TestCase {
 	public function testSetUserKey() {
 		$this->view->expects($this->once())
 			->method('file_put_contents')
-			->with($this->equalTo('/user1/files_encryption/encModule/user1.publicKey'),
-				$this->equalTo('key'))
+			->with(
+				$this->equalTo('/user1/files_encryption/encModule/user1.publicKey'),
+				$this->equalTo('key')
+			)
 			->willReturn(\strlen('key'));
 
 		$this->assertTrue(
@@ -245,7 +255,8 @@ class StorageTest extends TestCase {
 			->with($this->equalTo('/files_encryption/encModule/shareKey_56884'))
 			->willReturn(true);
 
-		$this->assertSame('key',
+		$this->assertSame(
+			'key',
 			$this->storage->getSystemUserKey('shareKey_56884', 'encModule')
 		);
 	}
@@ -260,7 +271,8 @@ class StorageTest extends TestCase {
 			->with($this->equalTo('/user1/files_encryption/encModule/user1.publicKey'))
 			->willReturn(true);
 
-		$this->assertSame('key',
+		$this->assertSame(
+			'key',
 			$this->storage->getUserKey('user1', 'publicKey', 'encModule')
 		);
 	}
@@ -277,7 +289,8 @@ class StorageTest extends TestCase {
 
 		$this->assertFalse($this->isUserHomeMounted('user2'));
 
-		$this->assertSame('key',
+		$this->assertSame(
+			'key',
 			$this->storage->getUserKey('user2', 'publicKey', 'encModule')
 		);
 
@@ -304,7 +317,8 @@ class StorageTest extends TestCase {
 
 		$this->assertFalse($this->isUserHomeMounted('user2'));
 
-		$this->assertSame('key',
+		$this->assertSame(
+			'key',
 			$storage->getUserKey('user2', 'publicKey', 'encModule')
 		);
 
@@ -420,7 +434,8 @@ class StorageTest extends TestCase {
 			->method('rename')
 			->with(
 				$this->equalTo($expectedSource),
-				$this->equalTo($expectedTarget))
+				$this->equalTo($expectedTarget)
+			)
 			->willReturn(true);
 		$this->util->expects($this->any())
 			->method('getUidAndFilename')
@@ -451,7 +466,8 @@ class StorageTest extends TestCase {
 			->method('copy')
 			->with(
 				$this->equalTo($expectedSource),
-				$this->equalTo($expectedTarget))
+				$this->equalTo($expectedTarget)
+			)
 			->willReturn(true);
 		$this->util->expects($this->any())
 			->method('getUidAndFilename')
@@ -525,7 +541,8 @@ class StorageTest extends TestCase {
 			->method('isSystemWideMountPoint')
 			->willReturn($systemWideMountPoint);
 
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			self::invokePrivate($this->storage, 'getPathToKeys', [$path])
 		);
 	}
@@ -584,7 +601,8 @@ class StorageTest extends TestCase {
 		$this->util->expects($this->once())->method('getUidAndFilename')
 			->with($path)->willReturn([$owner, $relativePath]);
 
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->invokePrivate($this->storage, 'getFileKeyDir', ['OC_DEFAULT_MODULE', $path])
 		);
 	}

@@ -47,7 +47,8 @@ class SecurityWarningTest extends \Test\TestCase {
 			$this->config,
 			$this->dbconnection,
 			$this->helper,
-			$this->lockingProvider);
+			$this->lockingProvider
+		);
 	}
 
 	public function testGetSection() {

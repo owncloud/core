@@ -18,7 +18,7 @@ use Test\TestCase;
 class VerifyChecksumsTest extends TestCase {
 	use \Test\Traits\UserTrait;
 
-	const BROKEN_CHECKSUM_STRING = '_BROKEN_';
+	public const BROKEN_CHECKSUM_STRING = '_BROKEN_';
 
 	/** @var CommandTester */
 	private $cmd;

@@ -44,8 +44,11 @@ abstract class AbstractTrashBinNode implements ITrashBinNode {
 	 */
 	protected $user;
 
-	public function __construct(string $user, FileInfo $fileInfo,
-								TrashBinManager $trashBinManager) {
+	public function __construct(
+		string $user,
+		FileInfo $fileInfo,
+		TrashBinManager $trashBinManager
+	) {
 		$this->fileInfo = $fileInfo;
 		$this->trashBinManager = $trashBinManager;
 		$this->user = $user;

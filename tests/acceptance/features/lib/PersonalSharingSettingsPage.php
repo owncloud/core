@@ -112,7 +112,8 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 	) {
 		$this->waitForOutstandingAjaxCalls($session);
 		$this->waitTillXpathIsVisible(
-			$this->personalSharingPanelDivXpath, $timeout_msec
+			$this->personalSharingPanelDivXpath,
+			$timeout_msec
 		);
 	}
 

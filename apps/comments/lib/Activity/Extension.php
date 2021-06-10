@@ -36,10 +36,10 @@ use OCP\L10N\IFactory;
  * @package OCA\Comments\Activity
  */
 class Extension implements IExtension {
-	const APP_NAME = 'comments';
+	public const APP_NAME = 'comments';
 
-	const ADD_COMMENT_SUBJECT = 'add_comment_subject';
-	const ADD_COMMENT_MESSAGE = 'add_comment_message';
+	public const ADD_COMMENT_SUBJECT = 'add_comment_subject';
+	public const ADD_COMMENT_MESSAGE = 'add_comment_message';
 
 	/** @var IFactory */
 	protected $languageFactory;

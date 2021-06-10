@@ -493,7 +493,8 @@ class File extends Node implements IFile, IFileNode {
 				if ($bytesWritten != $expected) {
 					$chunk_handler->remove($info['index']);
 					throw new BadRequest(
-						'expected filesize ' . $expected . ' got ' . $bytesWritten);
+						'expected filesize ' . $expected . ' got ' . $bytesWritten
+					);
 				}
 			}
 		}

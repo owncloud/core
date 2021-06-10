@@ -183,7 +183,10 @@ class SMB extends StorageAdapter {
 				}
 			} catch (ConnectException $e) {
 				$ex = new StorageNotAvailableException(
-					$e->getMessage(), $e->getCode(), $e);
+					$e->getMessage(),
+					$e->getCode(),
+					$e
+				);
 				$this->leave(__FUNCTION__, $ex);
 				throw $ex;
 			} catch (ForbiddenException $e) {
@@ -248,7 +251,10 @@ class SMB extends StorageAdapter {
 			}
 		} catch (ConnectException $e) {
 			$ex = new StorageNotAvailableException(
-				$e->getMessage(), $e->getCode(), $e);
+				$e->getMessage(),
+				$e->getCode(),
+				$e
+			);
 			$this->leave(__FUNCTION__, $ex);
 			throw $ex;
 		}

@@ -41,7 +41,10 @@ class SharingSettingsPage extends OwncloudPage {
 	 * @return void
 	 */
 	public function toggleCheckbox(
-		Session $session, $action, $checkboxXpath, $checkboxId
+		Session $session,
+		$action,
+		$checkboxXpath,
+		$checkboxId
 	) {
 		$checkbox = $this->find("xpath", $checkboxXpath);
 		$checkCheckbox = $this->findById($checkboxId);

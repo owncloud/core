@@ -82,7 +82,8 @@ class CapabilitiesContext implements Context {
 	 * @return void
 	 */
 	public function theCapabilityOfFilesSharingAppShouldBe(
-		$pathToElement, $value
+		$pathToElement,
+		$value
 	) {
 		$this->featureContext->appConfigurationContext->userGetsCapabilitiesCheckResponse(
 			$this->featureContext->getCurrentUser()

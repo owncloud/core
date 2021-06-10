@@ -25,7 +25,7 @@ namespace OCA\Files_Versions\Tests;
 use OCA\Files_Versions\Expiration;
 
 class ExpirationTest extends \Test\TestCase {
-	const SECONDS_PER_DAY = 86400; //60*60*24
+	public const SECONDS_PER_DAY = 86400; //60*60*24
 
 	public function expirationData() {
 		$today = 100*self::SECONDS_PER_DAY;
@@ -187,7 +187,7 @@ class ExpirationTest extends \Test\TestCase {
 				->getMock()
 		;
 		$mockedTimeFactory->expects($this->any())->method('getTime')->will(
-				$this->returnValue($time)
+			$this->returnValue($time)
 		);
 
 		return $mockedTimeFactory;
@@ -227,7 +227,7 @@ class ExpirationTest extends \Test\TestCase {
 				->getMock()
 		;
 		$mockedConfig->expects($this->any())->method('getSystemValue')->will(
-				$this->returnValue($returnValue)
+			$this->returnValue($returnValue)
 		);
 
 		return $mockedConfig;

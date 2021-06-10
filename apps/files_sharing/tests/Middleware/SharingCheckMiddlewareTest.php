@@ -59,7 +59,8 @@ class SharingCheckMiddlewareTest extends \Test\TestCase {
 			'files_sharing',
 			$this->config,
 			$this->appManager,
-			$this->reflector);
+			$this->reflector
+		);
 	}
 
 	public function testIsSharingEnabledWithAppEnabled() {
