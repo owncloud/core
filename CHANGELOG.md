@@ -56,6 +56,7 @@ Summary
 * Enhancement - Improve mobile user interface on files list: [#38748](https://github.com/owncloud/core/pull/38748)
 * Enhancement - Resend invitation email: [#38774](https://github.com/owncloud/core/pull/38774)
 * Enhancement - Improve admin external storage settings UI: [#38795](https://github.com/owncloud/core/pull/38795)
+* Enhancement - Improve performance of the SMB log when it is inactive: [#38819](https://github.com/owncloud/core/pull/38819)
 
 Details
 -------
@@ -490,6 +491,17 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4585
    https://github.com/owncloud/core/pull/38795
+
+* Enhancement - Improve performance of the SMB log when it is inactive: [#38819](https://github.com/owncloud/core/pull/38819)
+
+   The SMB connector includes very verbose logs to trace what could have gone wrong. These logs are
+   disabled by default, but although they're disabled we still need to check the state to decide
+   whether we want to log or not.
+
+   Now, the state check is faster and it takes less time to decide, so the overall performance of the
+   connector is improved.
+
+   https://github.com/owncloud/core/pull/38819
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================
