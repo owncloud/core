@@ -356,8 +356,8 @@ class Installer {
 			if ($integrityResult !== []) {
 				$e = new \Exception(
 					$l->t(
-							'Signature could not get checked. Please contact the app developer and check your admin screen.'
-						)
+						'Signature could not get checked. Please contact the app developer and check your admin screen.'
+					)
 				);
 				throw $e;
 			}

@@ -312,8 +312,8 @@ class SyncBackendTest extends TestCase {
 			->once())->method('run')->with(
 				$this->dummyBackend,
 				$this->callback(function ($subject) {
-				return \count($subject) === 1 && $subject[0] === 'existing-uid';
-			}),
+					return \count($subject) === 1 && $subject[0] === 'existing-uid';
+				}),
 				$this->anything()
 			);
 
@@ -401,13 +401,13 @@ class SyncBackendTest extends TestCase {
 			->once())->method('run')->with(
 				$this->dummyBackend,
 				$this->callback(function (\Iterator $iterator) use ($uids) {
-				// convert to array so we can test better
-				$items = [];
-				foreach ($iterator as $item) {
-					$items[] = $item;
-				}
-				return \count(\array_diff($items, $uids)) === 0;
-			}),
+					// convert to array so we can test better
+					$items = [];
+					foreach ($iterator as $item) {
+						$items[] = $item;
+					}
+					return \count(\array_diff($items, $uids)) === 0;
+				}),
 				$this->anything()
 			);
 
@@ -442,13 +442,13 @@ class SyncBackendTest extends TestCase {
 			->once())->method('run')->with(
 				$this->dummyBackend,
 				$this->callback(function (\Iterator $iterator) use ($uids) {
-				// convert to array so we can test better
-				$items = [];
-				foreach ($iterator as $item) {
-					$items[] = $item;
-				}
-				return \count(\array_diff($items, $uids)) === 0;
-			}),
+					// convert to array so we can test better
+					$items = [];
+					foreach ($iterator as $item) {
+						$items[] = $item;
+					}
+					return \count(\array_diff($items, $uids)) === 0;
+				}),
 				$this->anything()
 			);
 

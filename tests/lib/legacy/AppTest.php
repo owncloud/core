@@ -96,7 +96,7 @@ class AppTest extends TestCase {
 	private function assertEqualsAppInfo($info, array $changed = []) {
 		self::assertEquals(
 			\array_replace(
-			[
+				[
 				'id' => 'appinfotestapp',
 				'namespace' => 'AppInfoTestApp',
 				'info' => [],
@@ -115,8 +115,8 @@ class AppTest extends TestCase {
 				'commands' => [],
 				'_cached' => true,
 			],
-			$changed
-		),
+				$changed
+			),
 			$info
 		);
 	}

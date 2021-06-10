@@ -220,10 +220,10 @@ class FilesSearchReportPluginTest extends \Test\TestCase {
 			->method('generateMultiStatus')
 			->will(
 				$this->returnCallback(function ($responsesArg) use (&$responses) {
-				foreach ($responsesArg as $responseArg) {
-					$responses[] = $responseArg;
-				}
-			})
+					foreach ($responsesArg as $responseArg) {
+						$responses[] = $responseArg;
+					}
+				})
 			);
 
 		$this->setupBaseTreeNode($path, $node);

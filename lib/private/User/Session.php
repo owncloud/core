@@ -1009,35 +1009,35 @@ class Session implements IUserSession, Emitter {
 		$uid = $user === null ? '' : $user->getUID();
 		return $this->emittingCall(
 			function () use (&$user, &$password) {
-			if ($user === null) {
-				//Cannot extract the uid when $user is null, hence pass null
-				$this->emitFailedLogin(null);
-				return false;
-			}
+				if ($user === null) {
+					//Cannot extract the uid when $user is null, hence pass null
+					$this->emitFailedLogin(null);
+					return false;
+				}
 
-			$this->manager->emit('\OC\User', 'preLogin', [$user->getUID(), $password]);
+				$this->manager->emit('\OC\User', 'preLogin', [$user->getUID(), $password]);
 
-			if (!$user->isEnabled()) {
-				$message = \OC::$server->getL10N('lib')->t('User disabled');
-				$this->emitFailedLogin($user->getUID());
-				throw new LoginException($message);
-			}
+				if (!$user->isEnabled()) {
+					$message = \OC::$server->getL10N('lib')->t('User disabled');
+					$this->emitFailedLogin($user->getUID());
+					throw new LoginException($message);
+				}
 
-			$this->setUser($user);
-			$this->setLoginName($user->getDisplayName());
-			$firstTimeLogin = $user->updateLastLoginTimestamp();
+				$this->setUser($user);
+				$this->setLoginName($user->getDisplayName());
+				$firstTimeLogin = $user->updateLastLoginTimestamp();
 
-			$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
+				$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
 
-			if ($this->isLoggedIn()) {
-				$this->prepareUserLogin($firstTimeLogin);
-			} else {
-				$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
-				throw new LoginException($message);
-			}
+				if ($this->isLoggedIn()) {
+					$this->prepareUserLogin($firstTimeLogin);
+				} else {
+					$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
+					throw new LoginException($message);
+				}
 
-			return true;
-		},
+				return true;
+			},
 			['before' => ['user' => $user, 'login' => $uid, 'uid' => $uid, 'password' => $password],
 			'after' => ['user' => $user, 'login' => $uid, 'uid' => $uid, 'password' => $password]],
 			'user',

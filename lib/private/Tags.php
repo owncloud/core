@@ -800,11 +800,11 @@ class Tags implements \OCP\ITags {
 		return \array_search(
 			\strtolower($needle),
 			\array_map(
-			function ($tag) use ($mem) {
+				function ($tag) use ($mem) {
 				return \strtolower(\call_user_func([$tag, $mem]));
 			},
-			$haystack
-		)
+				$haystack
+			)
 		);
 	}
 
