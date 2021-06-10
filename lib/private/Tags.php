@@ -801,8 +801,8 @@ class Tags implements \OCP\ITags {
 			\strtolower($needle),
 			\array_map(
 				function ($tag) use ($mem) {
-				return \strtolower(\call_user_func([$tag, $mem]));
-			},
+					return \strtolower(\call_user_func([$tag, $mem]));
+				},
 				$haystack
 			)
 		);
