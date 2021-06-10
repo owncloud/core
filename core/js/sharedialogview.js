@@ -276,6 +276,7 @@
 							$('.shareWithField').removeClass('error')
 								.tooltip('hide')
 								.autocomplete("option", "autoFocus", true);
+
 							response(suggestions, result);
 						} else {
 							var title = t('core', 'No users or groups found for {search}', {search: $('.shareWithField').val()});
@@ -432,7 +433,8 @@
 						event.preventDefault();
 					},
 					source: this.autocompleteHandler,
-					select: this._onSelectRecipient
+					select: this._onSelectRecipient,
+					appendTo: '#shareTabView'
 				}).data('ui-autocomplete')._renderItem = _.bind(this.autocompleteRenderItem, this);
 			}
 
