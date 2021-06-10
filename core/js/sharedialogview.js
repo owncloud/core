@@ -432,7 +432,8 @@
 						event.preventDefault();
 					},
 					source: this.autocompleteHandler,
-					select: this._onSelectRecipient
+					select: this._onSelectRecipient,
+					appendTo: '#shareTabView'
 				}).data('ui-autocomplete')._renderItem = _.bind(this.autocompleteRenderItem, this);
 			}
 
