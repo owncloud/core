@@ -72,7 +72,7 @@ class HttpTest extends \Test\TestCase {
 		$http = new Http(
 			[
 				'HTTP_IF_MODIFIED_SINCE' => 'Thu, 01 Jan 1970 00:00:12 +0000']
-			);
+		);
 
 		$header = $http->getStatusHeader(Http::STATUS_OK, $dateTime);
 		$this->assertEquals('HTTP/1.1 304 Not Modified', $header);

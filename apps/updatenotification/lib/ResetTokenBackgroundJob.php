@@ -42,8 +42,10 @@ class ResetTokenBackgroundJob extends TimedJob {
 	 * @param IConfig|null $config
 	 * @param ITimeFactory|null $timeFactory
 	 */
-	public function __construct(IConfig $config = null,
-								ITimeFactory $timeFactory = null) {
+	public function __construct(
+		IConfig $config = null,
+		ITimeFactory $timeFactory = null
+	) {
 		// Run all 10 minutes
 		$this->setInterval(60 * 10);
 

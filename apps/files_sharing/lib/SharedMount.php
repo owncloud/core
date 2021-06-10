@@ -163,9 +163,11 @@ class SharedMount extends MountPoint implements MoveableMount {
 
 		// it is not a file relative to data/user/files
 		if (\count($split) < 3 || $split[1] !== 'files') {
-			\OCP\Util::writeLog('files_sharing',
+			\OCP\Util::writeLog(
+				'files_sharing',
 				'Can not strip userid and "files/" from path: ' . $path,
-				\OCP\Util::ERROR);
+				\OCP\Util::ERROR
+			);
 			throw new \OCA\Files_Sharing\Exceptions\BrokenPath('Path does not start with /user/files', 10);
 		}
 
@@ -215,9 +217,11 @@ class SharedMount extends MountPoint implements MoveableMount {
 
 			foreach ($shares as $share) {
 				if ($this->user === $share->getShareOwner()) {
-					\OCP\Util::writeLog('files_sharing',
+					\OCP\Util::writeLog(
+						'files_sharing',
 						'It is not allowed to move one mount point into a shared folder',
-						\OCP\Util::DEBUG);
+						\OCP\Util::DEBUG
+					);
 					return false;
 				}
 			}
@@ -251,9 +255,11 @@ class SharedMount extends MountPoint implements MoveableMount {
 			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$this->getStorage()->setMountPoint($relTargetPath);
 		} catch (\Exception $e) {
-			\OCP\Util::writeLog('files_sharing',
+			\OCP\Util::writeLog(
+				'files_sharing',
 				'Could not rename mount point for shared folder "' . $this->getMountPoint() . '" to "' . $target . '"',
-				\OCP\Util::ERROR);
+				\OCP\Util::ERROR
+			);
 		}
 
 		return $result;

@@ -160,7 +160,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	public function userReLogsInWithUsernameAndPassword($username, $password) {
 		$this->webUIGeneralContext->theUserLogsOutOfTheWebUI();
 		$this->logInWithUsernameAndPasswordUsingTheWebUI(
-			$username, $password
+			$username,
+			$password
 		);
 	}
 
@@ -177,7 +178,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		$actualUsername = $this->featureContext->getActualUsername($username);
 		$password = $this->featureContext->getUserPassword($actualUsername);
 		$this->logInWithUsernameAndPasswordUsingTheWebUI(
-			$username, $password
+			$username,
+			$password
 		);
 	}
 
@@ -191,10 +193,12 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserHasReloggedInWithUsernameAndPasswordUsingTheWebUI(
-		$username, $password
+		$username,
+		$password
 	) {
 		$this->userReLogsInWithUsernameAndPassword(
-			$username, $password
+			$username,
+			$password
 		);
 		$this->webUILoginShouldHaveBeenSuccessful();
 	}
@@ -239,7 +243,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function logInWithUsernameAndPasswordUsingTheWebUI(
-		$username, $password
+		$username,
+		$password
 	) {
 		$this->filesPage = $this->webUIGeneralContext->loginAs($username, $password);
 		$this->webUIGeneralContext->setCurrentPageObject($this->filesPage);
@@ -255,7 +260,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserHasLoggedInWithUsernameAndPasswordUsingTheWebUIi(
-		$username, $password
+		$username,
+		$password
 	) {
 		$this->logInWithUsernameAndPasswordUsingTheWebUI($username, $password);
 		$this->webUILoginShouldHaveBeenSuccessful();
@@ -299,7 +305,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function userLogsInWithEmailAndInvalidPasswordUsingTheWebui(
-		$user, $password
+		$user,
+		$password
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$email = $this->featureContext->getEmailAddressForUser($user);
@@ -320,7 +327,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function userLogInWithUsernameAndInvalidPasswordUsingTheWebUI(
-		$username, $password
+		$username,
+		$password
 	) {
 		$username = $this->featureContext->getActualUsername($username);
 		$password = $this->featureContext->getActualPassword($password);
@@ -340,7 +348,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserHasLoggedInWithUsernameAndInvalidPasswordUsingTheWebUI(
-		$username, $password
+		$username,
+		$password
 	) {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->userLogInWithUsernameAndInvalidPasswordUsingTheWebUI(
@@ -536,14 +545,16 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		$this->theUserBrowsesToTheLoginPage();
 		if ($should) {
 			$this->logInWithUsernameAndPasswordUsingTheWebUI(
-				$username, $password
+				$username,
+				$password
 			);
 			$this->webUIGeneralContext->theUserShouldBeRedirectedToAWebUIPageWithTheTitle(
 				$this->getExpectedLoginSuccessPageTitle()
 			);
 		} else {
 			$this->userLogInWithUsernameAndInvalidPasswordUsingTheWebUI(
-				$username, $password
+				$username,
+				$password
 			);
 			$this->webUIGeneralContext->theUserShouldBeRedirectedToAWebUIPageWithTheTitle(
 				$this->getExpectedLoginFailedPageTitle()
@@ -683,7 +694,8 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserFollowsThePasswordResetLinkFromTheirEmailUsingInvalidUsername(
-		$user, $username
+		$user,
+		$username
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$emailAddress = $this->featureContext->getEmailAddressForUser($user);

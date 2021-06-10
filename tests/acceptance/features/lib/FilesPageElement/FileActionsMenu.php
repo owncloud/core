@@ -93,7 +93,8 @@ class FileActionsMenu extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function rename(
-		$xpathToWaitFor = null, $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+		$xpathToWaitFor = null,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$renameBtn = $this->findButton($this->renameActionLabel);
 		$this->assertElementNotNull(
@@ -210,7 +211,8 @@ class FileActionsMenu extends OwncloudPage {
 			" xpath $xpathLocator could not find button '$action' in action Menu"
 		);
 		$this->waitFor(
-			STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000, [$button, 'isVisible']
+			STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000,
+			[$button, 'isVisible']
 		);
 		return $button;
 	}

@@ -142,13 +142,17 @@ class MiddlewareDispatcherTest extends \Test\TestCase {
 
 	public function testAfterExceptionShouldReturnResponseOfMiddleware() {
 		$response = new Response();
-		$m1 = $this->createMock('\OCP\AppFramework\Middleware',
-				['afterException', 'beforeController']);
+		$m1 = $this->createMock(
+			'\OCP\AppFramework\Middleware',
+			['afterException', 'beforeController']
+		);
 		$m1->expects($this->never())
 				->method('afterException');
 
-		$m2 = $this->createMock('OCP\AppFramework\Middleware',
-				['afterException', 'beforeController']);
+		$m2 = $this->createMock(
+			'OCP\AppFramework\Middleware',
+			['afterException', 'beforeController']
+		);
 		$m2->expects($this->once())
 				->method('afterException')
 				->will($this->returnValue($response));

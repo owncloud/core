@@ -63,7 +63,8 @@ class AdminAppsSettingsPage extends OwncloudPage {
 	 */
 	public function disableApp(Session $session, $appName) {
 		$appDisableButton = $this->find(
-			"xpath", \sprintf($this->appEnableDisableButtonByNameXpath, $appName)
+			"xpath",
+			\sprintf($this->appEnableDisableButtonByNameXpath, $appName)
 		);
 		$appDisableButton->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
@@ -79,7 +80,8 @@ class AdminAppsSettingsPage extends OwncloudPage {
 	 */
 	public function enableApp(Session $session, $appName) {
 		$appEnableButton = $this->find(
-			"xpath", \sprintf($this->appEnableDisableButtonByNameXpath, $appName)
+			"xpath",
+			\sprintf($this->appEnableDisableButtonByNameXpath, $appName)
 		);
 		$appEnableButton->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
@@ -99,7 +101,8 @@ class AdminAppsSettingsPage extends OwncloudPage {
 	) {
 		$this->waitForAjaxCallsToStartAndFinish($session);
 		$this->waitTillXpathIsVisible(
-			$this->appEnableDisableButtonXpath, $timeout_msec
+			$this->appEnableDisableButtonXpath,
+			$timeout_msec
 		);
 	}
 }

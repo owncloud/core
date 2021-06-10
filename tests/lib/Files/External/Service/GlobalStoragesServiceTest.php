@@ -448,7 +448,8 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 		$sourceApplicableGroups,
 		$updatedApplicableUsers,
 		$updatedApplicableGroups,
-		$expectedCalls) {
+		$expectedCalls
+	) {
 		$storage = $this->makeTestStorageData();
 		$storage->setApplicableUsers($sourceApplicableUsers);
 		$storage->setApplicableGroups($sourceApplicableGroups);
@@ -606,7 +607,8 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 	public function testHooksDeleteStorage(
 		$sourceApplicableUsers,
 		$sourceApplicableGroups,
-		$expectedCalls) {
+		$expectedCalls
+	) {
 		$storage = $this->makeTestStorageData();
 		$storage->setApplicableUsers($sourceApplicableUsers);
 		$storage->setApplicableGroups($sourceApplicableGroups);

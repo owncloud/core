@@ -34,7 +34,7 @@ use OC\User\NoUserException;
 class Storage implements IStorage {
 
 	// hidden file which indicate that the folder is a valid key storage
-	const KEY_STORAGE_MARKER = '.oc_key_storage';
+	public const KEY_STORAGE_MARKER = '.oc_key_storage';
 
 	/** @var View */
 	private $view;

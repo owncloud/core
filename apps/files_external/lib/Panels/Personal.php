@@ -38,10 +38,12 @@ class Personal implements ISettings {
 	/** @var IConfig */
 	protected $config;
 
-	public function __construct(IStoragesBackendService $backendService,
-								IUserStoragesService $userStorages,
-								IConfig $config,
-								Manager $encManager) {
+	public function __construct(
+		IStoragesBackendService $backendService,
+		IUserStoragesService $userStorages,
+		IConfig $config,
+		Manager $encManager
+	) {
 		$this->backendService = $backendService;
 		$this->userStorages = $userStorages;
 		$this->config = $config;

@@ -222,7 +222,8 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @return void
 	 */
 	public function toggleEnforcePasswordProtectionForReadOnlyLinks(
-		Session $session, $action
+		Session $session,
+		$action
 	) {
 		$this->toggleCheckbox(
 			$session,
@@ -241,7 +242,8 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @return void
 	 */
 	public function toggleEnforcePasswordProtectionForReadWriteLinks(
-		Session $session, $action
+		Session $session,
+		$action
 	) {
 		$this->toggleCheckbox(
 			$session,
@@ -260,7 +262,8 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @return void
 	 */
 	public function toggleEnforcePasswordProtectionForReadWriteDeleteLinks(
-		Session $session, $action
+		Session $session,
+		$action
 	) {
 		$this->toggleCheckbox(
 			$session,
@@ -279,7 +282,8 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @return void
 	 */
 	public function toggleEnforcePasswordProtectionForWriteOnlyLinks(
-		Session $session, $action
+		Session $session,
+		$action
 	) {
 		$this->toggleCheckbox(
 			$session,
@@ -332,7 +336,8 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @return void
 	 */
 	public function toggleRestrictUsersToOnlyShareWithTheirGroupMembers(
-		Session $session, $action
+		Session $session,
+		$action
 	) {
 		$this->toggleCheckbox(
 			$session,
@@ -557,7 +562,8 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @return void
 	 */
 	public function setExpirationDaysForUserShare(
-		$date, Session $session
+		$date,
+		Session $session
 	) {
 		$expirationDateField = $this->findUserShareExpirationField();
 		$this->fillFieldAndKeepFocus($expirationDateField, $date . "\n", $session);
@@ -573,7 +579,8 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @return void
 	 */
 	public function setExpirationDaysForGroupShare(
-		$date, Session $session
+		$date,
+		Session $session
 	) {
 		$expirationDateField = $this->findGroupShareExpirationField();
 		$this->fillFieldAndKeepFocus($expirationDateField, $date . "\n", $session);
@@ -589,7 +596,8 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @return void
 	 */
 	public function setExpirationDaysForRemoteShare(
-		$date, Session $session
+		$date,
+		Session $session
 	) {
 		$expirationDateField = $this->findRemoteShareExpirationField();
 		$this->fillFieldAndKeepFocus($expirationDateField, $date . "\n", $session);
@@ -653,7 +661,8 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @return void
 	 */
 	public function addGroupToExcludeGroupsFromSharingList(
-		Session $session, $groupName
+		Session $session,
+		$groupName
 	) {
 		$this->addGroupToInputField($groupName, $this->excludeGroupsFromSharingListFieldXpath);
 		$this->waitForAjaxCallsToStartAndFinish($session);
@@ -807,7 +816,8 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$this->waitTillXpathIsVisible(
-			$this->shareApiCheckboxXpath, $timeout_msec
+			$this->shareApiCheckboxXpath,
+			$timeout_msec
 		);
 	}
 }

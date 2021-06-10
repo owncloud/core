@@ -34,11 +34,11 @@ use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\PropPatch;
 
 class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
-	const NS_OWNCLOUD = 'http://owncloud.org/ns';
+	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
 
-	const PROPERTY_NAME_UNREAD = '{http://owncloud.org/ns}isUnread';
-	const PROPERTY_NAME_MESSAGE = '{http://owncloud.org/ns}message';
-	const PROPERTY_NAME_ACTOR_DISPLAYNAME = '{http://owncloud.org/ns}actorDisplayName';
+	public const PROPERTY_NAME_UNREAD = '{http://owncloud.org/ns}isUnread';
+	public const PROPERTY_NAME_MESSAGE = '{http://owncloud.org/ns}message';
+	public const PROPERTY_NAME_ACTOR_DISPLAYNAME = '{http://owncloud.org/ns}actorDisplayName';
 
 	/** @var  IComment */
 	public $comment;

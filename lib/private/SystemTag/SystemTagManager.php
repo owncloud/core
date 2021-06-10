@@ -38,8 +38,8 @@ use OCP\IUser;
  * Manager class for system tags
  */
 class SystemTagManager implements ISystemTagManager {
-	const TAG_TABLE = 'systemtag';
-	const TAG_GROUP_TABLE = 'systemtag_group';
+	public const TAG_TABLE = 'systemtag';
+	public const TAG_GROUP_TABLE = 'systemtag_group';
 
 	/** @var IDBConnection */
 	protected $connection;
@@ -117,7 +117,10 @@ class SystemTagManager implements ISystemTagManager {
 
 		if (\count($tags) !== \count($tagIds)) {
 			throw new TagNotFoundException(
-				'Tag id(s) not found', 0, null, \array_diff($tagIds, \array_keys($tags))
+				'Tag id(s) not found',
+				0,
+				null,
+				\array_diff($tagIds, \array_keys($tags))
 			);
 		}
 
@@ -280,7 +283,10 @@ class SystemTagManager implements ISystemTagManager {
 			$tags = $this->getTagsByIds($tagId);
 		} catch (TagNotFoundException $e) {
 			throw new TagNotFoundException(
-				'Tag does not exist', 0, null, [$tagId]
+				'Tag does not exist',
+				0,
+				null,
+				[$tagId]
 			);
 		}
 
@@ -309,7 +315,10 @@ class SystemTagManager implements ISystemTagManager {
 		try {
 			if ($query->execute() === 0) {
 				throw new TagNotFoundException(
-					'Tag does not exist', 0, null, [$tagId]
+					'Tag does not exist',
+					0,
+					null,
+					[$tagId]
 				);
 			}
 		} catch (UniqueConstraintViolationException $e) {
@@ -374,7 +383,10 @@ class SystemTagManager implements ISystemTagManager {
 
 		if ($tagNotFoundException !== null) {
 			throw new TagNotFoundException(
-				'Tag id(s) not found', 0, $tagNotFoundException, $tagNotFoundException->getMissingTags()
+				'Tag id(s) not found',
+				0,
+				$tagNotFoundException,
+				$tagNotFoundException->getMissingTags()
 			);
 		}
 	}

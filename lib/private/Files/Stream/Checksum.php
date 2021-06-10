@@ -73,7 +73,10 @@ class Checksum extends Wrapper {
 		]);
 
 		return Wrapper::wrapSource(
-			$source, $context, 'occhecksum', self::class
+			$source,
+			$context,
+			'occhecksum',
+			self::class
 		);
 	}
 

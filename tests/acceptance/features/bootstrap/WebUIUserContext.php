@@ -58,7 +58,8 @@ class WebUIUserContext extends RawMinkContext implements Context {
 	public function displayNameOfTheCurrentUserOnTheWebUiShouldBe($displayname) {
 		$actualUserName = $this->owncloudPage->getMyDisplayname();
 		Assert::assertSame(
-			$displayname, $actualUserName,
+			$displayname,
+			$actualUserName,
 			"displayed username should be '$displayname' but it is '$actualUserName'"
 		);
 	}

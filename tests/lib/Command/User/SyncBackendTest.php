@@ -310,12 +310,12 @@ class SyncBackendTest extends TestCase {
 		$missingAccountsAction = 'disable';
 		$syncService->expects($this
 			->once())->method('run')->with(
-			$this->dummyBackend,
-			$this->callback(function ($subject) {
+				$this->dummyBackend,
+				$this->callback(function ($subject) {
 				return \count($subject) === 1 && $subject[0] === 'existing-uid';
 			}),
-			$this->anything()
-		);
+				$this->anything()
+			);
 
 		$return = static::invokePrivate($this->command, 'syncSingleUser', [
 			$inputInterface,
@@ -399,8 +399,8 @@ class SyncBackendTest extends TestCase {
 		$missingAccountsAction = 'disable';
 		$syncService->expects($this
 			->once())->method('run')->with(
-			$this->dummyBackend,
-			$this->callback(function (\Iterator $iterator) use ($uids) {
+				$this->dummyBackend,
+				$this->callback(function (\Iterator $iterator) use ($uids) {
 				// convert to array so we can test better
 				$items = [];
 				foreach ($iterator as $item) {
@@ -408,8 +408,8 @@ class SyncBackendTest extends TestCase {
 				}
 				return \count(\array_diff($items, $uids)) === 0;
 			}),
-			$this->anything()
-		);
+				$this->anything()
+			);
 
 		$return = static::invokePrivate($this->command, 'syncMultipleUsers', [
 			$inputInterface,
@@ -440,8 +440,8 @@ class SyncBackendTest extends TestCase {
 
 		$syncService->expects($this
 			->once())->method('run')->with(
-			$this->dummyBackend,
-			$this->callback(function (\Iterator $iterator) use ($uids) {
+				$this->dummyBackend,
+				$this->callback(function (\Iterator $iterator) use ($uids) {
 				// convert to array so we can test better
 				$items = [];
 				foreach ($iterator as $item) {
@@ -449,8 +449,8 @@ class SyncBackendTest extends TestCase {
 				}
 				return \count(\array_diff($items, $uids)) === 0;
 			}),
-			$this->anything()
-		);
+				$this->anything()
+			);
 
 		$removedUser = $this->createMock(IUser::class);
 		$removedUser->method('delete')->willReturn(true);

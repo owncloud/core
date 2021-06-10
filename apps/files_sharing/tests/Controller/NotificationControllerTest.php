@@ -91,7 +91,8 @@ class NotificationControllerTest extends TestCase {
 	public function testNotifyPublicLinkRecipientsByEmail($sender, $failedRecipients, $statusCode) {
 		$this->mailNotifications->method('sendLinkShareMail')->willReturn($failedRecipients);
 		$this->userSession->method('getUser')->willReturn($sender);
-		$this->assertEquals($statusCode,
+		$this->assertEquals(
+			$statusCode,
 			$this->notificationController->notifyPublicLinkRecipientsByEmail(
 				'localhost/token',
 				['failed@user'],

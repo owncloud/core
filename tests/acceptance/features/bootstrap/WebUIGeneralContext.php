@@ -261,7 +261,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function getLinkFromEmail($emailAddress, $regexSearch, $errorMessage, $numEmails = 1) {
 		$content = EmailHelper::getBodyOfEmail(
-			EmailHelper::getLocalMailhogUrl(), $emailAddress, $numEmails
+			EmailHelper::getLocalMailhogUrl(),
+			$emailAddress,
+			$numEmails
 		);
 		$matches = [];
 		\preg_match($regexSearch, $content, $matches);
@@ -280,7 +282,10 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function followLinkFromEmail($emailAddress, $regexSearch, $errorMessage, $numEmails = 1) {
 		$link = $this->getLinkFromEmail(
-			$emailAddress, $regexSearch, $errorMessage, $numEmails
+			$emailAddress,
+			$regexSearch,
+			$errorMessage,
+			$numEmails
 		);
 		$this->visitPath($link);
 	}
@@ -334,7 +339,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function notificationsShouldBeDisplayedOnTheWebUIWithTheText(
-		$matching, TableNode $table
+		$matching,
+		TableNode $table
 	) {
 		$this->featureContext->verifyTableNodeColumnsCount($table, 1);
 		$expectedNotifications = $table->getRows();
@@ -380,7 +386,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function dialogsShouldBeDisplayedOnTheWebUI(
-		$count = null, TableNode $table = null
+		$count = null,
+		TableNode $table = null
 	) {
 		$dialogs = $this->owncloudPage->getOcDialogs();
 		//check if the correct number of dialogs are open
@@ -418,7 +425,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 					if (isset($expectedDialogs[$dialogI]['user'])) {
 						$expectedDialogs[$dialogI]['content']
 							= $this->featureContext->substituteInLineCodes(
-								$expectedDialogs[$dialogI]['content'], $expectedDialogs[$dialogI]['user']
+								$expectedDialogs[$dialogI]['content'],
+								$expectedDialogs[$dialogI]['user']
 							);
 					}
 					if ($content === $expectedDialogs[$dialogI]['content']
@@ -653,7 +661,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	public function addToSavedCapabilitiesChanges($change) {
 		if (\sizeof($change) > 0) {
 			$this->savedCapabilitiesChanges = \array_merge(
-				$this->savedCapabilitiesChanges, $change
+				$this->savedCapabilitiesChanges,
+				$change
 			);
 		}
 	}
@@ -747,7 +756,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 					$this->oldPreviewSetting[$server] = \trim($oldPreviewSetting);
 				}
 				SetupHelper::setSystemConfig(
-					'enable_previews', 'false', 'boolean'
+					'enable_previews',
+					'false',
+					'boolean'
 				);
 			}
 		);
@@ -775,7 +786,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 					$this->oldPreviewSetting[$server] = \trim($oldPreviewSetting);
 				}
 				SetupHelper::setSystemConfig(
-					'enable_previews', 'true', 'boolean'
+					'enable_previews',
+					'true',
+					'boolean'
 				);
 			}
 		);
@@ -815,7 +828,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 					SetupHelper::deleteSystemConfig('enable_previews');
 				} elseif (isset($this->oldPreviewSetting[$server])) {
 					SetupHelper::setSystemConfig(
-						'enable_previews', $this->oldPreviewSetting[$server], 'boolean'
+						'enable_previews',
+						$this->oldPreviewSetting[$server],
+						'boolean'
 					);
 				}
 			}
@@ -825,7 +840,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			SetupHelper::deleteSystemConfig('csrf.disabled');
 		} elseif ($this->oldCSRFSetting !== null) {
 			SetupHelper::setSystemConfig(
-				'csrf.disabled', $this->oldCSRFSetting, 'boolean'
+				'csrf.disabled',
+				$this->oldCSRFSetting,
+				'boolean'
 			);
 		}
 	}

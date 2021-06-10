@@ -59,7 +59,8 @@ class Delete extends Command {
 				'force',
 				'f',
 				InputOption::VALUE_NONE,
-				'Try to force the deletion of the user data even if the user is missing.');
+				'Try to force the deletion of the user data even if the user is missing.'
+			);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {

@@ -232,7 +232,10 @@ class FilesPageCRUD extends FilesPageBasic {
 	 * @return void
 	 */
 	public function moveFileTo(
-		$name, $destination, Session $session, $maxRetries = STANDARD_RETRY_COUNT
+		$name,
+		$destination,
+		Session $session,
+		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		$toMoveFileRow = $this->findFileRowByName($name, $session);
 		$destinationFileRow = $this->findFileRowByName($destination, $session);
@@ -289,7 +292,8 @@ class FilesPageCRUD extends FilesPageBasic {
 	 * @throws ElementNotFoundException|\Exception
 	 */
 	public function createFolder(
-		Session $session, $name = null,
+		Session $session,
+		$name = null,
 		$timeoutMsec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		if ($name === null) {
@@ -430,7 +434,8 @@ class FilesPageCRUD extends FilesPageBasic {
 	 */
 	public function findDeleteAllSelectedFilesBtn() {
 		$deleteAllSelectedBtn = $this->find(
-			"xpath", $this->deleteAllSelectedBtnXpath
+			"xpath",
+			$this->deleteAllSelectedBtnXpath
 		);
 		$this->assertElementNotNull(
 			$deleteAllSelectedBtn,
@@ -481,7 +486,8 @@ class FilesPageCRUD extends FilesPageBasic {
 	 */
 	public function waitForUploadProgressbarToFinish() {
 		$uploadProgressbar = $this->find(
-			"xpath", $this->uploadProgressbarLabelXpath
+			"xpath",
+			$this->uploadProgressbarLabelXpath
 		);
 		$this->assertElementNotNull(
 			$uploadProgressbar,

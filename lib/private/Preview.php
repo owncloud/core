@@ -44,10 +44,10 @@ use OCP\Util;
 
 class Preview {
 	//the thumbnail folder
-	const THUMBNAILS_FOLDER = 'thumbnails';
+	public const THUMBNAILS_FOLDER = 'thumbnails';
 
-	const MODE_FILL = 'fill';
-	const MODE_COVER = 'cover';
+	public const MODE_FILL = 'fill';
+	public const MODE_COVER = 'cover';
 
 	//config
 	private $maxScaleFactor;
@@ -111,7 +111,8 @@ class Preview {
 	public function __construct(
 		$user = '',
 		$root = '/',
-		Node $file = null, $maxX = 1,
+		Node $file = null,
+		$maxX = 1,
 		$maxY = 1,
 		$scalingUp = true,
 		$versionId = null
@@ -841,7 +842,9 @@ class Preview {
 		$image = $this->preview;
 		if (!($image instanceof IImage)) {
 			Util::writeLog(
-				'core', '$this->preview is not an instance of \OCP\IImage', Util::DEBUG
+				'core',
+				'$this->preview is not an instance of \OCP\IImage',
+				Util::DEBUG
 			);
 
 			return;
@@ -869,7 +872,11 @@ class Preview {
 		 * Takes the scaling ratio into consideration
 		 */
 		list($newPreviewWidth, $newPreviewHeight) = $this->scale(
-			$image, $askedWidth, $askedHeight, $previewWidth, $previewHeight
+			$image,
+			$askedWidth,
+			$askedHeight,
+			$previewWidth,
+			$previewHeight
 		);
 
 		// The preview has been resized and should now have the asked dimensions
@@ -895,7 +902,11 @@ class Preview {
 		// so we fill the space with a transparent background
 		if (($newPreviewWidth < $askedWidth || $newPreviewHeight < $askedHeight)) {
 			$this->cropAndFill(
-				$image, $askedWidth, $askedHeight, $newPreviewWidth, $newPreviewHeight
+				$image,
+				$askedWidth,
+				$askedHeight,
+				$newPreviewWidth,
+				$newPreviewHeight
 			);
 			$this->storePreview($askedWidth, $askedHeight);
 
@@ -942,7 +953,8 @@ class Preview {
 		if ($maxScaleFactor !== null) {
 			if ($factor > $maxScaleFactor) {
 				Util::writeLog(
-					'core', 'scale factor reduced from ' . $factor . ' to ' . $maxScaleFactor,
+					'core',
+					'scale factor reduced from ' . $factor . ' to ' . $maxScaleFactor,
 					Util::DEBUG
 				);
 				$factor = $maxScaleFactor;
@@ -1013,7 +1025,13 @@ class Preview {
 
 		// Pastes the preview on top of the background
 		\imagecopy(
-			$backgroundLayer, $image, $mergeX, $mergeY, 0, 0, $previewWidth,
+			$backgroundLayer,
+			$image,
+			$mergeX,
+			$mergeY,
+			0,
+			0,
+			$previewWidth,
 			$previewHeight
 		);
 
@@ -1033,7 +1051,8 @@ class Preview {
 	private function storePreview($previewWidth, $previewHeight) {
 		if (empty($previewWidth) || empty($previewHeight)) {
 			Util::writeLog(
-				'core', 'Cannot save preview of dimension ' . $previewWidth . 'x' . $previewHeight,
+				'core',
+				'Cannot save preview of dimension ' . $previewWidth . 'x' . $previewHeight,
 				Util::DEBUG
 			);
 		} else {
@@ -1122,8 +1141,10 @@ class Preview {
 				}
 
 				Util::writeLog(
-					'core', 'Generating preview for "' . $file->getPath() . '" with "' . \get_class($provider)
-					. '"', Util::DEBUG
+					'core',
+					'Generating preview for "' . $file->getPath() . '" with "' . \get_class($provider)
+					. '"',
+					Util::DEBUG
 				);
 
 				$preview = $provider->getThumbnail($file, $this->configMaxWidth, $this->configMaxHeight, false);
@@ -1216,7 +1237,9 @@ class Preview {
 		if ($maxDim !== null) {
 			if ($dim > $maxDim) {
 				Util::writeLog(
-					'core', $dimName . ' reduced from ' . $dim . ' to ' . $maxDim, Util::DEBUG
+					'core',
+					$dimName . ' reduced from ' . $dim . ' to ' . $maxDim,
+					Util::DEBUG
 				);
 				$dim = $maxDim;
 			}

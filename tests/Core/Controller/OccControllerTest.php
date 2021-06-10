@@ -33,7 +33,7 @@ use Test\TestCase;
  * @package OC\Core\Controller
  */
 class OccControllerTest extends TestCase {
-	const TEMP_SECRET = 'test';
+	public const TEMP_SECRET = 'test';
 
 	/** @var \OC\AppFramework\Http\Request | \PHPUnit\Framework\MockObject\MockObject */
 	private $request;

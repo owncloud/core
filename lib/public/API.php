@@ -43,19 +43,19 @@ class API {
 	 * API authentication levels
 	 * @since 8.1.0
 	 */
-	const GUEST_AUTH = 0;
-	const USER_AUTH = 1;
-	const SUBADMIN_AUTH = 2;
-	const ADMIN_AUTH = 3;
+	public const GUEST_AUTH = 0;
+	public const USER_AUTH = 1;
+	public const SUBADMIN_AUTH = 2;
+	public const ADMIN_AUTH = 3;
 
 	/**
 	 * API Response Codes
 	 * @since 8.1.0
 	 */
-	const RESPOND_UNAUTHORISED = 997;
-	const RESPOND_SERVER_ERROR = 996;
-	const RESPOND_NOT_FOUND = 998;
-	const RESPOND_UNKNOWN_ERROR = 999;
+	public const RESPOND_UNAUTHORISED = 997;
+	public const RESPOND_SERVER_ERROR = 996;
+	public const RESPOND_NOT_FOUND = 998;
+	public const RESPOND_UNKNOWN_ERROR = 999;
 
 	/**
 	 * registers an api call
@@ -68,8 +68,16 @@ class API {
 	 * @param array $requirements
 	 * @since 5.0.0
 	 */
-	public static function register($method, $url, $action, $app, $authLevel = self::USER_AUTH,
-									$defaults = [], $requirements = [], $cors = true) {
+	public static function register(
+		$method,
+		$url,
+		$action,
+		$app,
+		$authLevel = self::USER_AUTH,
+		$defaults = [],
+		$requirements = [],
+		$cors = true
+	) {
 		\OC_API::register($method, $url, $action, $app, $authLevel, $defaults, $requirements, $cors);
 	}
 }

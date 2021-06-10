@@ -47,8 +47,10 @@ class ExpireTrash extends Command {
 	 * @param IUserManager|null $userManager
 	 * @param TrashExpiryManager|null $trashExpiryManager
 	 */
-	public function __construct(IUserManager $userManager = null,
-								TrashExpiryManager $trashExpiryManager = null) {
+	public function __construct(
+		IUserManager $userManager = null,
+		TrashExpiryManager $trashExpiryManager = null
+	) {
 		parent::__construct();
 
 		$this->userManager = $userManager;

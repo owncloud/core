@@ -56,11 +56,13 @@ class AppTest extends \Test\TestCase {
 
 		$this->container = new \OC\AppFramework\DependencyInjection\DIContainer('test', []);
 		$this->controller = $this->getMockBuilder(
-			'OCP\AppFramework\Controller')
+			'OCP\AppFramework\Controller'
+		)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->dispatcher = $this->getMockBuilder(
-			'OC\AppFramework\Http\Dispatcher')
+			'OC\AppFramework\Http\Dispatcher'
+		)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -92,15 +94,20 @@ class AppTest extends \Test\TestCase {
 		$return = [null, [], [], null, new Response()];
 		$this->dispatcher->expects($this->once())
 			->method('dispatch')
-			->with($this->equalTo($this->controller),
-				$this->equalTo($this->controllerMethod))
+			->with(
+				$this->equalTo($this->controller),
+				$this->equalTo($this->controllerMethod)
+			)
 			->will($this->returnValue($return));
 
 		$this->io->expects($this->never())
 			->method('setOutput');
 
-		App::main($this->controllerName, $this->controllerMethod,
-			$this->container);
+		App::main(
+			$this->controllerName,
+			$this->controllerMethod,
+			$this->container
+		);
 	}
 
 	public function testBuildAppNamespace() {
@@ -127,8 +134,10 @@ class AppTest extends \Test\TestCase {
 		$return = [null, [], [], $this->output, new Response()];
 		$this->dispatcher->expects($this->once())
 			->method('dispatch')
-			->with($this->equalTo($this->controller),
-				$this->equalTo($this->controllerMethod))
+			->with(
+				$this->equalTo($this->controller),
+				$this->equalTo($this->controllerMethod)
+			)
 			->will($this->returnValue($return));
 		$this->io->expects($this->once())
 			->method('setOutput')
@@ -143,8 +152,10 @@ class AppTest extends \Test\TestCase {
 		$return = [null, [], [], $this->output, $mock];
 		$this->dispatcher->expects($this->once())
 			->method('dispatch')
-			->with($this->equalTo($this->controller),
-				$this->equalTo($this->controllerMethod))
+			->with(
+				$this->equalTo($this->controller),
+				$this->equalTo($this->controllerMethod)
+			)
 			->will($this->returnValue($return));
 		$mock->expects($this->once())
 			->method('callback');

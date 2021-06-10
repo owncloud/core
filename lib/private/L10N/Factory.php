@@ -80,11 +80,13 @@ class Factory implements IFactory {
 	 * @param IUserSession $userSession
 	 * @param string $serverRoot
 	 */
-	public function __construct(IConfig $config,
-								IRequest $request,
-								IThemeService $themeService,
-								IUserSession $userSession = null,
-								$serverRoot) {
+	public function __construct(
+		IConfig $config,
+		IRequest $request,
+		IThemeService $themeService,
+		IUserSession $userSession = null,
+		$serverRoot
+	) {
 		$this->config = $config;
 		$this->request = $request;
 		$this->userSession = $userSession;
@@ -110,7 +112,9 @@ class Factory implements IFactory {
 
 		if (!isset($this->instances[$lang][$app])) {
 			$this->instances[$lang][$app] = new L10N(
-				$this, $app, $lang,
+				$this,
+				$app,
+				$lang,
 				$this->getL10nFilesForApp($app, $lang)
 			);
 		}
@@ -275,11 +279,12 @@ class Factory implements IFactory {
 		$i18nDir = $this->findL10nDir($app);
 		$transFile = \strip_tags($i18nDir) . \strip_tags($lang) . '.json';
 
-		if ((\OC_Helper::isSubDirectory($transFile, $this->serverRoot . '/core/l10n/')
+		if ((
+			\OC_Helper::isSubDirectory($transFile, $this->serverRoot . '/core/l10n/')
 				|| \OC_Helper::isSubDirectory($transFile, $this->serverRoot . '/lib/l10n/')
 				|| \OC_Helper::isSubDirectory($transFile, $this->serverRoot . '/settings/l10n/')
 				|| \OC_Helper::isSubDirectory($transFile, \OC_App::getAppPath($app) . '/l10n/')
-			)
+		)
 			&& \file_exists($transFile)) {
 			// load the translations file
 			$languageFiles[] = $transFile;

@@ -61,11 +61,13 @@ class Users {
 	 * @param IUserSession $userSession
 	 * @param ILogger $logger
 	 */
-	public function __construct(IUserManager $userManager,
-								IGroupManager $groupManager,
-								IUserSession $userSession,
-								ILogger $logger,
-								\OC\Authentication\TwoFactorAuth\Manager $twoFactorAuthManager) {
+	public function __construct(
+		IUserManager $userManager,
+		IGroupManager $groupManager,
+		IUserSession $userSession,
+		ILogger $logger,
+		\OC\Authentication\TwoFactorAuth\Manager $twoFactorAuthManager
+	) {
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;

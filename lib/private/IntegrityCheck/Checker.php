@@ -51,7 +51,7 @@ use phpseclib3\File\X509;
  * @package OC\IntegrityCheck
  */
 class Checker {
-	const CACHE_KEY = 'oc.integritycheck.checker';
+	public const CACHE_KEY = 'oc.integritycheck.checker';
 	/** @var EnvironmentHelper */
 	private $environmentHelper;
 	/** @var AppLocator */
@@ -76,13 +76,15 @@ class Checker {
 	 * @param IAppManager $appManager
 	 * @param ITempManager $tempManager
 	 */
-	public function __construct(EnvironmentHelper $environmentHelper,
-								FileAccessHelper $fileAccessHelper,
-								AppLocator $appLocator,
-								IConfig $config = null,
-								ICacheFactory $cacheFactory,
-								IAppManager $appManager = null,
-								ITempManager $tempManager) {
+	public function __construct(
+		EnvironmentHelper $environmentHelper,
+		FileAccessHelper $fileAccessHelper,
+		AppLocator $appLocator,
+		IConfig $config = null,
+		ICacheFactory $cacheFactory,
+		IAppManager $appManager = null,
+		ITempManager $tempManager
+	) {
 		$this->environmentHelper = $environmentHelper;
 		$this->fileAccessHelper = $fileAccessHelper;
 		$this->appLocator = $appLocator;
@@ -151,8 +153,10 @@ class Checker {
 	 * @param string $path
 	 * @return array Array of hashes.
 	 */
-	private function generateHashes(\RecursiveIteratorIterator $iterator,
-									$path) {
+	private function generateHashes(
+		\RecursiveIteratorIterator $iterator,
+		$path
+	) {
 		$hashes = [];
 		$copiedWebserverSettingFiles = false;
 		$tmpFolder = '';
@@ -229,10 +233,12 @@ class Checker {
 	 * @param X509 $x509,
 	 * @return array
 	 */
-	private function createSignatureData(array $hashes,
-										 array $certificate,
-										 RSA $privateKey,
-										 X509 $x509) {
+	private function createSignatureData(
+		array $hashes,
+		array $certificate,
+		RSA $privateKey,
+		X509 $x509
+	) {
 		\ksort($hashes);
 
 		$privateKey = $privateKey
@@ -258,10 +264,12 @@ class Checker {
 	 * @param RSA $privateKey
 	 * @throws \Exception
 	 */
-	public function writeAppSignature(string $path,
-									  array $certificate,
-									  X509 $x509,
-									  RSA $privateKey) {
+	public function writeAppSignature(
+		string $path,
+		array $certificate,
+		X509 $x509,
+		RSA $privateKey
+	) {
 		$appInfoDir = $path . '/appinfo';
 		$this->fileAccessHelper->assertDirectoryExists($path);
 		$this->fileAccessHelper->assertDirectoryExists($appInfoDir);
@@ -291,10 +299,12 @@ class Checker {
 	 * @param RSA $privateKey
 	 * @throws \Exception
 	 */
-	public function writeCoreSignature(string $path,
-									   array $certificate,
-									   X509 $x509,
-									   RSA $privateKey) {
+	public function writeCoreSignature(
+		string $path,
+		array $certificate,
+		X509 $x509,
+		RSA $privateKey
+	) {
 		$coreDir = $path . '/core';
 		$this->fileAccessHelper->assertDirectoryExists($path);
 		$this->fileAccessHelper->assertDirectoryExists($coreDir);
@@ -374,7 +384,8 @@ class Checker {
 		if ($x509->getDN(X509::DN_OPENSSL)['CN'] !== $certificateCN && $x509->getDN(X509::DN_OPENSSL)['CN'] !== 'core') {
 			$cn = $x509->getDN(true)['CN'];
 			throw new InvalidSignatureException(
-					"Certificate is not valid for required scope. (Requested: $certificateCN, current: CN=$cn)");
+				"Certificate is not valid for required scope. (Requested: $certificateCN, current: CN=$cn)"
+			);
 		}
 
 		$rsa = RSA::load($loadedCertificate['tbsCertificate']['subjectPublicKeyInfo']['subjectPublicKey'])
@@ -670,9 +681,9 @@ class Checker {
 	public function verifyCoreSignature() {
 		try {
 			$result = $this->verify(
-					$this->environmentHelper->getServerRoot() . '/core/signature.json',
-					$this->environmentHelper->getServerRoot(),
-					'core'
+				$this->environmentHelper->getServerRoot() . '/core/signature.json',
+				$this->environmentHelper->getServerRoot(),
+				'core'
 			);
 		} catch (\Exception $e) {
 			$result = [

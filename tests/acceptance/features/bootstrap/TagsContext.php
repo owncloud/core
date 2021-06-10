@@ -58,13 +58,22 @@ class TagsContext implements Context {
 	 * @return void
 	 */
 	private function createTag(
-		$user, $userVisible, $userAssignable, $userEditable, $name, $groups = null
+		$user,
+		$userVisible,
+		$userAssignable,
+		$userEditable,
+		$name,
+		$groups = null
 	) {
 		$response = TagsHelper::createTag(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getActualUsername($user),
 			$this->featureContext->getPasswordForUser($user),
-			$name, $userVisible, $userAssignable, $userEditable, $groups,
+			$name,
+			$userVisible,
+			$userAssignable,
+			$userEditable,
+			$groups,
 			$this->featureContext->getDavPathVersion('systemtags')
 		);
 		$this->featureContext->setResponse($response);
@@ -114,19 +123,25 @@ class TagsContext implements Context {
 
 		$tagDisplayName = $tagData->xpath(".//oc:display-name");
 		Assert::assertArrayHasKey(
-			0, $tagDisplayName, "cannot find 'oc:display-name' property"
+			0,
+			$tagDisplayName,
+			"cannot find 'oc:display-name' property"
 		);
 		$tagDisplayName = $tagDisplayName[0]->__toString();
 
 		$tagUserVisible = $tagData->xpath(".//oc:user-visible");
 		Assert::assertArrayHasKey(
-			0, $tagUserVisible, "cannot find 'oc:user-visible' property"
+			0,
+			$tagUserVisible,
+			"cannot find 'oc:user-visible' property"
 		);
 		$tagUserVisible = $tagUserVisible[0]->__toString();
 
 		$tagUserAssignable = $tagData->xpath(".//oc:user-assignable");
 		Assert::assertArrayHasKey(
-			0, $tagUserAssignable, "cannot find 'oc:user-assignable' property"
+			0,
+			$tagUserAssignable,
+			"cannot find 'oc:user-assignable' property"
 		);
 		$tagUserAssignable = $tagUserAssignable[0]->__toString();
 		if (($tagUserVisible !== $userVisible)
@@ -312,7 +327,10 @@ class TagsContext implements Context {
 	 * @throws \Exception
 	 */
 	public function userCreatesATagWithNameSendingInTheRequest(
-		$user, $type, $name, $stringsOrNumbers
+		$user,
+		$type,
+		$name,
+		$stringsOrNumbers
 	) {
 		if ($stringsOrNumbers === "true-false-strings") {
 			$useTrueFalseStrings = true;
@@ -411,7 +429,10 @@ class TagsContext implements Context {
 	 */
 	public function createTagWithNameAndGroupsAsAdmin($type, $name, $groups) {
 		$this->createTagWithNameAndGroups(
-			$this->featureContext->getAdminUsername(), $type, $name, $groups
+			$this->featureContext->getAdminUsername(),
+			$type,
+			$name,
+			$groups
 		);
 	}
 
@@ -537,7 +558,9 @@ class TagsContext implements Context {
 	 * @return SimpleXMLElement|null
 	 */
 	public function requestTagByDisplayName(
-		$user, $tagDisplayName, $withGroups = false
+		$user,
+		$tagDisplayName,
+		$withGroups = false
 	) {
 		$tagList = $this->requestTagsForUser($user, $withGroups);
 
@@ -561,7 +584,8 @@ class TagsContext implements Context {
 	 */
 	public function theFollowingTagsShouldExistForTheAdministrator(TableNode $table) {
 		$this->theFollowingTagsShouldExistForUser(
-			$this->featureContext->getAdminUsername(), $table
+			$this->featureContext->getAdminUsername(),
+			$table
 		);
 	}
 
@@ -575,7 +599,8 @@ class TagsContext implements Context {
 	 */
 	public function theFollowingTagsShouldExistForTheUser(TableNode $table) {
 		$this->theFollowingTagsShouldExistForUser(
-			$this->featureContext->getCurrentUser(), $table
+			$this->featureContext->getCurrentUser(),
+			$table
 		);
 	}
 
@@ -614,7 +639,8 @@ class TagsContext implements Context {
 	public function tagShouldNotExistForUser($tagDisplayName, $user) {
 		$tagData = $this->requestTagByDisplayName($user, $tagDisplayName);
 		Assert::assertNull(
-			$tagData, "tag $tagDisplayName is in propfind answer"
+			$tagData,
+			"tag $tagDisplayName is in propfind answer"
 		);
 	}
 
@@ -628,7 +654,8 @@ class TagsContext implements Context {
 	 */
 	public function theFollowingTagsShouldNotExistForTheAdministrator($tagDisplayName) {
 		$this->tagShouldNotExistForUser(
-			$tagDisplayName, $this->featureContext->getAdminUsername()
+			$tagDisplayName,
+			$this->featureContext->getAdminUsername()
 		);
 	}
 
@@ -642,7 +669,8 @@ class TagsContext implements Context {
 	 */
 	public function theFollowingTagsShouldNotExistForTheUser($tagDisplayName) {
 		$this->tagShouldNotExistForUser(
-			$tagDisplayName, $this->featureContext->getCurrentUser()
+			$tagDisplayName,
+			$this->featureContext->getCurrentUser()
 		);
 	}
 
@@ -657,10 +685,15 @@ class TagsContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserCanAssignTheTag(
-		$shouldOrNot, $type, $tagDisplayName
+		$shouldOrNot,
+		$type,
+		$tagDisplayName
 	) {
 		$this->userCanAssignTheTag(
-			$this->featureContext->getCurrentUser(), $shouldOrNot, $type, $tagDisplayName
+			$this->featureContext->getCurrentUser(),
+			$shouldOrNot,
+			$type,
+			$tagDisplayName
 		);
 	}
 
@@ -676,7 +709,10 @@ class TagsContext implements Context {
 	 * @throws \Exception
 	 */
 	public function userCanAssignTheTag(
-		$user, $shouldOrNot, $type, $tagDisplayName
+		$user,
+		$shouldOrNot,
+		$type,
+		$tagDisplayName
 	) {
 		$tagData = $this->requestTagByDisplayName($user, $tagDisplayName);
 		$this->assertTypeOfTag($tagData, $type);
@@ -707,15 +743,20 @@ class TagsContext implements Context {
 	 */
 	public function theTagHasGroup($type, $tagName, $groups) {
 		$tagData = $this->requestTagByDisplayName(
-			$this->featureContext->getAdminUsername(), $tagName, true
+			$this->featureContext->getAdminUsername(),
+			$tagName,
+			true
 		);
 		Assert::assertNotNull(
-			$tagData, "Tag $tagName wasn't found for admin user"
+			$tagData,
+			"Tag $tagName wasn't found for admin user"
 		);
 		$this->assertTypeOfTag($tagData, $type);
 		$groupsOfTag = $tagData->xpath(".//oc:groups");
 		Assert::assertArrayHasKey(
-			0, $groupsOfTag, "cannot find oc:groups element"
+			0,
+			$groupsOfTag,
+			"cannot find oc:groups element"
 		);
 		Assert::assertEquals(
 			$groupsOfTag[0],
@@ -750,7 +791,8 @@ class TagsContext implements Context {
 	 */
 	public function findTagIdByName($name) {
 		$tagData = $this->requestTagByDisplayName(
-			$this->featureContext->getAdminUsername(), $name
+			$this->featureContext->getAdminUsername(),
+			$name
 		);
 		return TagsHelper::getTagIdFromTagData($tagData);
 	}
@@ -764,16 +806,23 @@ class TagsContext implements Context {
 	 * @return ResponseInterface
 	 */
 	private function sendProppatchToSystemtags(
-		$user, $tagDisplayName, $propertyName, $propertyValue
+		$user,
+		$tagDisplayName,
+		$propertyName,
+		$propertyValue
 	) {
 		$renamedUser = $this->featureContext->getActualUsername($user);
 		$tagID = $this->findTagIdByName($tagDisplayName);
 		$response = WebDavHelper::proppatch(
-			$this->featureContext->getBaseUrl(), $renamedUser,
+			$this->featureContext->getBaseUrl(),
+			$renamedUser,
 			$this->featureContext->getPasswordForUser($user),
-			"/systemtags/$tagID", $propertyName, $propertyValue,
+			"/systemtags/$tagID",
+			$propertyName,
+			$propertyValue,
 			"oc='http://owncloud.org/ns'",
-			$this->featureContext->getDavPathVersion("systemtags"), "systemtags"
+			$this->featureContext->getDavPathVersion("systemtags"),
+			"systemtags"
 		);
 		$this->featureContext->setResponse($response);
 		return $response;
@@ -788,7 +837,9 @@ class TagsContext implements Context {
 	 */
 	public function editTagWithNameAndSetNameUsingWebDAVAPIAsAdmin($oldName, $newName) {
 		$this->editTagName(
-			$this->featureContext->getAdminUsername(), $oldName, $newName
+			$this->featureContext->getAdminUsername(),
+			$oldName,
+			$newName
 		);
 	}
 
@@ -834,7 +885,9 @@ class TagsContext implements Context {
 	 */
 	public function editTagWithNameAndSetNameUsingWebDAVAPIAsCurrentUser($oldName, $newName) {
 		$this->editTagName(
-			$this->featureContext->getCurrentUser(), $oldName, $newName
+			$this->featureContext->getCurrentUser(),
+			$oldName,
+			$newName
 		);
 	}
 
@@ -929,7 +982,9 @@ class TagsContext implements Context {
 	 */
 	public function editTagWithNameAndSetsGroupsUsingWebDAVAPIAsAdmin($oldName, $groups) {
 		$this->editTagGroups(
-			$this->featureContext->getAdminUsername(), $oldName, $groups
+			$this->featureContext->getAdminUsername(),
+			$oldName,
+			$groups
 		);
 	}
 
@@ -975,7 +1030,9 @@ class TagsContext implements Context {
 	 */
 	public function editTagWithNameAndSetGroupsUsingWebDAVAPIAsCurrentUser($oldName, $groups) {
 		$this->editTagGroups(
-			$this->featureContext->getCurrentUser(), $oldName, $groups
+			$this->featureContext->getCurrentUser(),
+			$oldName,
+			$groups
 		);
 	}
 
@@ -1105,7 +1162,8 @@ class TagsContext implements Context {
 	 */
 	public function deleteTagAsCurrentUser($name) {
 		$this->userDeletesTag(
-			$this->featureContext->getCurrentUser(), $name
+			$this->featureContext->getCurrentUser(),
+			$name
 		);
 	}
 
@@ -1127,7 +1185,8 @@ class TagsContext implements Context {
 	 */
 	public function deleteTagAsAdmin($name) {
 		$this->userDeletesTag(
-			$this->featureContext->getAdminUsername(), $name
+			$this->featureContext->getAdminUsername(),
+			$name
 		);
 	}
 
@@ -1152,7 +1211,10 @@ class TagsContext implements Context {
 	 * @throws Exception
 	 */
 	private function tag(
-		$taggingUser, $tagName, $fileName, $fileOwner = null
+		$taggingUser,
+		$tagName,
+		$fileName,
+		$fileOwner = null
 	) {
 		if ($fileOwner === null) {
 			$fileOwner = $taggingUser;
@@ -1202,7 +1264,10 @@ class TagsContext implements Context {
 			$this->featureContext->getBaseUrl(),
 			$user,
 			$this->featureContext->getPasswordForUser($user),
-			$fullPath, $properties, 1, 'systemtags',
+			$fullPath,
+			$properties,
+			1,
+			'systemtags',
 			$this->featureContext->getDavPathVersion('systemtags')
 		);
 		$this->featureContext->setResponse($response);
@@ -1221,7 +1286,9 @@ class TagsContext implements Context {
 	 * @return void
 	 */
 	public function addTagToFileFolderAsAdminOrUser(
-		$adminOrUser, $tagName, $fileName
+		$adminOrUser,
+		$tagName,
+		$fileName
 	) {
 		$adminOrUser = $this->featureContext->getActualUsername($adminOrUser);
 		if ($adminOrUser === 'administrator') {
@@ -1242,7 +1309,9 @@ class TagsContext implements Context {
 	 * @return void
 	 */
 	public function theUserOrAdministratorAddsTagToFileFolder(
-		$adminOrUser, $tagName, $fileName
+		$adminOrUser,
+		$tagName,
+		$fileName
 	) {
 		$this->addTagToFileFolderAsAdminOrUser(
 			$adminOrUser,
@@ -1262,7 +1331,9 @@ class TagsContext implements Context {
 	 * @return void
 	 */
 	public function theUserOrAdministratorHasAddedTagToFileFolder(
-		$adminOrUser, $tagName, $fileName
+		$adminOrUser,
+		$tagName,
+		$fileName
 	) {
 		$this->addTagToFileFolderAsAdminOrUser(
 			$adminOrUser,
@@ -1281,7 +1352,9 @@ class TagsContext implements Context {
 	 * @throws Exception
 	 */
 	public function addTagToFileFolder(
-		$taggingUser, $tagName, $fileName
+		$taggingUser,
+		$tagName,
+		$fileName
 	) {
 		$taggingUser = $this->featureContext->getActualUsername($taggingUser);
 		$this->tag($taggingUser, $tagName, $fileName);
@@ -1298,7 +1371,9 @@ class TagsContext implements Context {
 	 * @throws Exception
 	 */
 	public function userAddsTagToFileFolder(
-		$taggingUser, $tagName, $fileName
+		$taggingUser,
+		$tagName,
+		$fileName
 	) {
 		$this->addTagToFileFolder(
 			$taggingUser,
@@ -1318,7 +1393,9 @@ class TagsContext implements Context {
 	 * @throws Exception
 	 */
 	public function userHasAddedTagToFileFolder(
-		$taggingUser, $tagName, $fileName
+		$taggingUser,
+		$tagName,
+		$fileName
 	) {
 		$this->addTagToFileFolder(
 			$taggingUser,
@@ -1338,7 +1415,10 @@ class TagsContext implements Context {
 	 * @throws Exception
 	 */
 	public function addTagToResourceSharedByUser(
-		$taggingUser, $tagName, $fileName, $sharingUser
+		$taggingUser,
+		$tagName,
+		$fileName,
+		$sharingUser
 	) {
 		$taggingUser = $this->featureContext->getActualUsername($taggingUser);
 		$sharingUser = $this->featureContext->getActualUsername($sharingUser);
@@ -1362,7 +1442,10 @@ class TagsContext implements Context {
 	 * @throws Exception
 	 */
 	public function userAddsTagToSharedBy(
-		$taggingUser, $tagName, $fileName, $sharingUser
+		$taggingUser,
+		$tagName,
+		$fileName,
+		$sharingUser
 	) {
 		$this->addTagToResourceSharedByUser(
 			$taggingUser,
@@ -1384,7 +1467,10 @@ class TagsContext implements Context {
 	 * @throws Exception
 	 */
 	public function userHasAddedTagToSharedBy(
-		$taggingUser, $tagName, $fileName, $sharingUser
+		$taggingUser,
+		$tagName,
+		$fileName,
+		$sharingUser
 	) {
 		$this->addTagToResourceSharedByUser(
 			$taggingUser,
@@ -1407,7 +1493,10 @@ class TagsContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theHttpStatusWhenUserRequestsTagsForEntryOwnedByShouldBe(
-		$user, $fileName, $sharingUser, $status
+		$user,
+		$fileName,
+		$sharingUser,
+		$status
 	) {
 		$this->requestTagsForFile($user, $fileName, $sharingUser);
 		$actualStatus = $this->featureContext->getResponse()->getStatusCode();
@@ -1430,7 +1519,9 @@ class TagsContext implements Context {
 	 * @throws \Exception
 	 */
 	public function sharedByTheUserOrAdminHasTheFollowingTags(
-		$fileName, $adminOrUser, TableNode $table
+		$fileName,
+		$adminOrUser,
+		TableNode $table
 	) {
 		if ($adminOrUser === 'user') {
 			$sharingUser = $this->featureContext->getCurrentUser();
@@ -1455,7 +1546,9 @@ class TagsContext implements Context {
 	 * @throws \Exception
 	 */
 	public function sharedByHasTheFollowingTags(
-		$fileName, $sharingUser, TableNode $table
+		$fileName,
+		$sharingUser,
+		TableNode $table
 	) {
 		$xml = $this->requestTagsForFile($sharingUser, $fileName);
 		$tagList = $xml->xpath("//d:prop");
@@ -1466,7 +1559,9 @@ class TagsContext implements Context {
 			foreach ($tagList as $tagData) {
 				$displayName = $tagData->xpath(".//oc:display-name");
 				Assert::assertArrayHasKey(
-					0, $displayName, "cannot find 'oc:display-name' property"
+					0,
+					$displayName,
+					"cannot find 'oc:display-name' property"
 				);
 				if ($displayName[0]->__toString() === $row['name']) {
 					$found = true;
@@ -1494,7 +1589,9 @@ class TagsContext implements Context {
 	 * @throws \Exception
 	 */
 	public function fileHasTheFollowingTagsForUserOrAdministrator(
-		$fileName, $adminOrUser, TableNode $table
+		$fileName,
+		$adminOrUser,
+		TableNode $table
 	) {
 		if ($adminOrUser === 'administrator') {
 			$user = $this->featureContext->getAdminUsername();
@@ -1515,7 +1612,9 @@ class TagsContext implements Context {
 	 * @throws \Exception
 	 */
 	public function fileHasTheFollowingTagsForUser(
-		$fileName, $user, TableNode $table
+		$fileName,
+		$user,
+		TableNode $table
 	) {
 		$this->sharedByHasTheFollowingTags($fileName, $user, $table);
 	}
@@ -1630,7 +1729,10 @@ class TagsContext implements Context {
 	 * @return void
 	 */
 	public function removeTagFromFileSharedByUser(
-		$user, $tagName, $fileName, $shareUser
+		$user,
+		$tagName,
+		$fileName,
+		$shareUser
 	) {
 		$this->untag(
 			$user,
@@ -1651,7 +1753,10 @@ class TagsContext implements Context {
 	 * @return void
 	 */
 	public function userRemovesTagFromFileSharedBy(
-		$user, $tagName, $fileName, $shareUser
+		$user,
+		$tagName,
+		$fileName,
+		$shareUser
 	) {
 		$this->removeTagFromFileSharedByUser(
 			$user,
@@ -1669,7 +1774,9 @@ class TagsContext implements Context {
 	 * @return void
 	 */
 	public function removeTagFromFileSharedByUserAsAdminUsingWebDavApi(
-		$tagName, $fileName, $shareUser
+		$tagName,
+		$fileName,
+		$shareUser
 	) {
 		$admin = $this->featureContext->getAdminUsername();
 		$this->removeTagFromFileSharedByUser($admin, $tagName, $fileName, $shareUser);
@@ -1685,7 +1792,9 @@ class TagsContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorRemovesTheTagFromFileSharedByUsingTheWebdavApi(
-		$tagName, $fileName, $shareUser
+		$tagName,
+		$fileName,
+		$shareUser
 	) {
 		$this->removeTagFromFileSharedByUserAsAdminUsingWebDavApi(
 			$tagName,
@@ -1736,7 +1845,14 @@ class TagsContext implements Context {
 			"		</oc:filter-rules>\n" .
 			"	</oc:filter-files>";
 		$response = WebDavHelper::makeDavRequest(
-			$baseUrl, $user, $password, "REPORT", null, null, $body, 2
+			$baseUrl,
+			$user,
+			$password,
+			"REPORT",
+			null,
+			null,
+			$body,
+			2
 		);
 		$this->featureContext->setResponse($response);
 		$responseXmlObject = HttpRequestHelper::getResponseXml(
@@ -1759,7 +1875,8 @@ class TagsContext implements Context {
 	 */
 	public function userSearchesForFollowingTagsUsingWebDAVApi($user, TableNode $tagNames) {
 		$this->searchForTagsOfFileWithReportUsingWebDAVApi(
-			$user, $tagNames
+			$user,
+			$tagNames
 		);
 	}
 

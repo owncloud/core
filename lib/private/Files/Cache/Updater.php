@@ -224,7 +224,8 @@ class Updater implements IUpdater {
 		$fileId = $this->cache->getId($internalPath);
 		if ($fileId !== -1) {
 			$this->cache->update(
-				$fileId, [
+				$fileId,
+				[
 					'mtime' => null, // this magic tells it to not overwrite mtime
 					'storage_mtime' => $this->storage->filemtime($internalPath)
 				]

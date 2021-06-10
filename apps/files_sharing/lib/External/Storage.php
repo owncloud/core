@@ -233,7 +233,8 @@ class Storage extends DAV implements ISharedStorage {
 					// we remove the invalid storage
 					$this->logger->error(
 						'Storage for external share {shareId} returns not found error. Removing share as testing of remote succeeded.',
-						['shareId' => $this->getId()]);
+						['shareId' => $this->getId()]
+					);
 					$this->manager->removeShare($this->mountPoint);
 					$this->manager->getMountManager()->removeMount($this->mountPoint);
 					throw new StorageInvalidException();
@@ -248,7 +249,8 @@ class Storage extends DAV implements ISharedStorage {
 			// remove share for now (provide a dialog in the future and remove after timeout?)
 			$this->logger->error(
 				'Storage for external share {shareId} returns auth error and likely has been removed on remote with failure on removal hook to federated sharer.',
-				['shareId' => $this->getId()]);
+				['shareId' => $this->getId()]
+			);
 			$this->manager->removeShare($this->mountPoint);
 			$this->manager->getMountManager()->removeMount($this->mountPoint);
 			throw $e;

@@ -46,10 +46,13 @@ class CronController extends Controller {
 	 * @param ILogger $logger
 	 * @param IJobList $jobList
 	 */
-	public function __construct($appName, IRequest $request,
-								IConfig $config,
-								ILogger $logger,
-								IJobList $jobList) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IConfig $config,
+		ILogger $logger,
+		IJobList $jobList
+	) {
 		parent::__construct($appName, $request);
 		$this->config = $config;
 		$this->logger = $logger;

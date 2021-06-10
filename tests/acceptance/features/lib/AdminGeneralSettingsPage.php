@@ -296,7 +296,8 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	) {
 		$this->waitForAjaxCallsToStartAndFinish($session);
 		$this->waitTillXpathIsVisible(
-			$this->ownCloudVersionStringXpath, $timeout_msec
+			$this->ownCloudVersionStringXpath,
+			$timeout_msec
 		);
 	}
 }

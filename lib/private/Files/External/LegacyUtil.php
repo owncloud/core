@@ -34,10 +34,10 @@ use \OCP\Files\StorageNotAvailableException;
  * to the public ones.
  */
 class LegacyUtil {
-	const MOUNT_TYPE_GLOBAL = 'global';
-	const MOUNT_TYPE_GROUP = 'group';
-	const MOUNT_TYPE_USER = 'user';
-	const MOUNT_TYPE_PERSONAL = 'personal';
+	public const MOUNT_TYPE_GLOBAL = 'global';
+	public const MOUNT_TYPE_GROUP = 'group';
+	public const MOUNT_TYPE_USER = 'user';
+	public const MOUNT_TYPE_PERSONAL = 'personal';
 
 	// whether to skip backend test (for unit tests, as this static class is not mockable)
 	public static $skipTest = false;

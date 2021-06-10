@@ -77,8 +77,10 @@ class JobStatusMapperTest extends TestCase {
 	 */
 	public function testQuery() {
 		$this->mapper->insert($this->testJobStatus);
-		$entity = $this->mapper->findByUserIdAndJobId($this->testJobStatus->getUserId(),
-			$this->testJobStatus->getUuid());
+		$entity = $this->mapper->findByUserIdAndJobId(
+			$this->testJobStatus->getUserId(),
+			$this->testJobStatus->getUuid()
+		);
 		$this->assertInstanceOf(JobStatus::class, $entity);
 		$this->assertEquals($this->testJobStatus->getId(), $entity->getId());
 		$this->assertEquals($this->testJobStatus->getUserId(), $entity->getUserId());

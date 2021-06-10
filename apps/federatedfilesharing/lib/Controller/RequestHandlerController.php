@@ -71,12 +71,13 @@ class RequestHandlerController extends OCSController {
 	 * @param AddressHandler $addressHandler
 	 * @param FedShareManager $fedShareManager
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								OcmMiddleware $ocmMiddleware,
-								IUserManager $userManager,
-								AddressHandler $addressHandler,
-								FedShareManager $fedShareManager
+	public function __construct(
+		$appName,
+		IRequest $request,
+		OcmMiddleware $ocmMiddleware,
+		IUserManager $userManager,
+		AddressHandler $addressHandler,
+		FedShareManager $fedShareManager
 	) {
 		parent::__construct($appName, $request);
 

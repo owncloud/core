@@ -31,12 +31,12 @@ use InvalidArgumentException;
  *
  */
 class IpHelper {
-	const IPV6_LOOPBACK_ADDRESS = '::1';
-	const IPV6_LOOPBACK_ADDRESS_SUBNET = '::0';
-	const IPV4_LOOPBACK_ADDRESS_TOP = '127.';
-	const IPV6_LINK_LOCAL_ADDRESS_TOP = 'fe80';
+	public const IPV6_LOOPBACK_ADDRESS = '::1';
+	public const IPV6_LOOPBACK_ADDRESS_SUBNET = '::0';
+	public const IPV4_LOOPBACK_ADDRESS_TOP = '127.';
+	public const IPV6_LINK_LOCAL_ADDRESS_TOP = 'fe80';
 	// The docker bridged device does not work as a routable IP address
-	const UNUSABLE_NETWORK_DEVICES_REGEX = 'docker\d';
+	public const UNUSABLE_NETWORK_DEVICES_REGEX = 'docker\d';
 
 	/**
 	 * parse the output of ifconfig to find matching items such as IP addresses

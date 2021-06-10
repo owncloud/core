@@ -308,9 +308,24 @@ class Share20OcsControllerTest extends TestCase {
 	}
 	*/
 
-	public function createShare($id, $shareType, $sharedWith, $sharedBy, $shareOwner, $file, $permissions,
-								$shareTime, $expiration, $parent, $target, $mail_send, $token=null,
-								$password=null, $name=null, $attributes=null) {
+	public function createShare(
+		$id,
+		$shareType,
+		$sharedWith,
+		$sharedBy,
+		$shareOwner,
+		$file,
+		$permissions,
+		$shareTime,
+		$expiration,
+		$parent,
+		$target,
+		$mail_send,
+		$token=null,
+		$password=null,
+		$name=null,
+		$attributes=null
+	) {
 		$share = $this->createMock(IShare::class);
 		$share->method('getId')->willReturn($id);
 		$share->method('getShareType')->willReturn($shareType);

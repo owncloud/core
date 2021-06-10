@@ -104,9 +104,9 @@ if (OC::checkUpgrade(false)) {
 	$logger = \OC::$server->getLogger();
 	$config = \OC::$server->getConfig();
 	$updater = new \OC\Updater(
-			$config,
-			\OC::$server->getIntegrityCodeChecker(),
-			$logger
+		$config,
+		\OC::$server->getIntegrityCodeChecker(),
+		$logger
 	);
 	$incompatibleApps = [];
 	$disabledThirdPartyApps = [];
@@ -210,8 +210,10 @@ if (OC::checkUpgrade(false)) {
 	}
 
 	if (!empty($disabledApps)) {
-		$eventSource->send('notice',
-			(string)$l->t('Following apps have been disabled: %s', \implode(', ', $disabledApps)));
+		$eventSource->send(
+			'notice',
+			(string)$l->t('Following apps have been disabled: %s', \implode(', ', $disabledApps))
+		);
 	}
 } else {
 	$eventSource->send('notice', (string)$l->t('Already up to date'));

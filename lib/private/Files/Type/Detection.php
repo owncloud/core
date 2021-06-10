@@ -63,9 +63,11 @@ class Detection implements IMimeTypeDetector {
 	 * @param string $customConfigDir
 	 * @param string $defaultConfigDir
 	 */
-	public function __construct(IURLGenerator $urlGenerator,
-								$customConfigDir,
-								$defaultConfigDir) {
+	public function __construct(
+		IURLGenerator $urlGenerator,
+		$customConfigDir,
+		$defaultConfigDir
+	) {
 		$this->urlGenerator = $urlGenerator;
 		$this->customConfigDir = $customConfigDir;
 		$this->defaultConfigDir = $defaultConfigDir;
@@ -82,9 +84,11 @@ class Detection implements IMimeTypeDetector {
 	 * @param string $mimetype
 	 * @param string|null $secureMimeType
 	 */
-	public function registerType($extension,
-								 $mimetype,
-								 $secureMimeType = null) {
+	public function registerType(
+		$extension,
+		$mimetype,
+		$secureMimeType = null
+	) {
 		$this->mimetypes[$extension] = [$mimetype, $secureMimeType];
 		$this->secureMimeTypes[$mimetype] = $secureMimeType ?: $mimetype;
 	}

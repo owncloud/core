@@ -41,7 +41,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
 class SyncBackend extends Command {
-	const VALID_ACTIONS = ['disable', 'remove'];
+	public const VALID_ACTIONS = ['disable', 'remove'];
 
 	/** @var AccountMapper */
 	protected $accountMapper;
@@ -58,10 +58,12 @@ class SyncBackend extends Command {
 	 * @param IUserManager $userManager
 	 * @param ILogger $logger
 	 */
-	public function __construct(AccountMapper $accountMapper,
-								IConfig $config,
-								IUserManager $userManager,
-								ILogger $logger) {
+	public function __construct(
+		AccountMapper $accountMapper,
+		IConfig $config,
+		IUserManager $userManager,
+		ILogger $logger
+	) {
 		parent::__construct();
 		$this->accountMapper = $accountMapper;
 		$this->config = $config;
@@ -157,9 +159,9 @@ class SyncBackend extends Command {
 			// ask (if possible) how to handle missing accounts. Disable the accounts by default.
 			$helper = $this->getHelper('question');
 			$question = new ChoiceQuestion(
-					'If unknown users are found, what do you want to do with their accounts? (removing the account will also remove its data)',
-					\array_merge(self::VALID_ACTIONS, ['ask later']),
-					0
+				'If unknown users are found, what do you want to do with their accounts? (removing the account will also remove its data)',
+				\array_merge(self::VALID_ACTIONS, ['ask later']),
+				0
 			);
 			$missingAccountsAction = $helper->ask($input, $output, $question);
 		}
@@ -453,7 +455,8 @@ class SyncBackend extends Command {
 		} else {
 			$output->writeln('Re-enabling accounts:');
 
-			$this->doActionForAccountUids($reappearedUsers,
+			$this->doActionForAccountUids(
+				$reappearedUsers,
 				function ($uid, IUser $user) use ($output) {
 					if ($user->isEnabled()) {
 						$output->writeln("$uid, {$user->getDisplayName()}, {$user->getEMailAddress()} skipped, already enabled");

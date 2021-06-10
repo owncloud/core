@@ -131,7 +131,8 @@ abstract class FilesPageBasic extends OwncloudPage {
 			);
 
 			$fileNameMatch = $fileListElement->findAll(
-				"xpath", \sprintf($this->getFileNameMatchXpath(), $xpathString)
+				"xpath",
+				\sprintf($this->getFileNameMatchXpath(), $xpathString)
 			);
 			if (\count($fileNameMatch) === 0) {
 				$fileNameMatchIsVisible = false;
@@ -345,7 +346,8 @@ abstract class FilesPageBasic extends OwncloudPage {
 		try {
 			$actionMenu = $this->findFileActionMenuElement();
 			$fileRowElement = $actionMenu->find(
-				"xpath", $this->fileRowXpathFromActionMenu
+				"xpath",
+				$this->fileRowXpathFromActionMenu
 			);
 			/**
 			 *
@@ -389,7 +391,8 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 */
 	public function findSelectAllFilesBtn() {
 		$selectedAllFilesBtn = $this->find(
-			"xpath", $this->selectAllFilesCheckboxXpath
+			"xpath",
+			$this->selectAllFilesCheckboxXpath
 		);
 		$this->assertElementNotNull(
 			$selectedAllFilesBtn,
@@ -461,7 +464,9 @@ abstract class FilesPageBasic extends OwncloudPage {
 		$this->clickFileActionsMenuBtnByNo($number);
 		$actionMenu = $this->getPage('FilesPageElement\\FileActionsMenu');
 		$actionMenu->waitTillPageIsLoaded(
-			$session, STANDARD_UI_WAIT_TIMEOUT_MILLISEC, $this->getFileActionMenuXpath()
+			$session,
+			STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
+			$this->getFileActionMenuXpath()
 		);
 		return $actionMenu;
 	}
@@ -587,7 +592,8 @@ abstract class FilesPageBasic extends OwncloudPage {
 
 			if ($fileList !== null) {
 				$busyFileRows = $fileList->findAll(
-					'xpath', $this->fileRowsBusyXpath
+					'xpath',
+					$this->fileRowsBusyXpath
 				);
 
 				if (\count($busyFileRows) === 0) {
@@ -641,7 +647,8 @@ abstract class FilesPageBasic extends OwncloudPage {
 		}
 
 		$showHiddenFilesCheckBox = $this->find(
-			'xpath', $this->showHiddenFilesCheckboxXpath
+			'xpath',
+			$this->showHiddenFilesCheckboxXpath
 		);
 		$this->assertElementNotNull(
 			$showHiddenFilesCheckBox,

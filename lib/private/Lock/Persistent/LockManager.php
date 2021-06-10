@@ -25,8 +25,8 @@ use OCP\Lock\Persistent\ILock;
 use OCP\IConfig;
 
 class LockManager {
-	const LOCK_TIMEOUT_DEFAULT = 30 * 60;  // default 30 minutes
-	const LOCK_TIMEOUT_MAX = 24 * 60 * 60;  // max 1 day
+	public const LOCK_TIMEOUT_DEFAULT = 30 * 60;  // default 30 minutes
+	public const LOCK_TIMEOUT_MAX = 24 * 60 * 60;  // max 1 day
 	/** @var LockMapper */
 	private $lockMapper;
 	/** @var IUserSession */
@@ -36,10 +36,12 @@ class LockManager {
 	/** @var IConfig */
 	private $config;
 
-	public function __construct(LockMapper $lockMapper,
-								IUserSession $userSession,
-								ITimeFactory $timeFactory,
-								IConfig $config) {
+	public function __construct(
+		LockMapper $lockMapper,
+		IUserSession $userSession,
+		ITimeFactory $timeFactory,
+		IConfig $config
+	) {
 		$this->lockMapper = $lockMapper;
 		$this->userSession = $userSession;
 		$this->timeFactory = $timeFactory;

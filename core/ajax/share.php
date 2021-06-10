@@ -281,9 +281,11 @@ if (isset($_GET['fetch'])) {
 					});
 				}
 
-				$sorter = new \OC\Share\SearchResultSorter((string)$_GET['search'],
-														   'label',
-														   \OC::$server->getLogger());
+				$sorter = new \OC\Share\SearchResultSorter(
+					(string)$_GET['search'],
+					'label',
+					\OC::$server->getLogger()
+				);
 				\usort($shareWith, [$sorter, 'sort']);
 				OC_JSON::success(['data' => $shareWith]);
 			}

@@ -51,13 +51,13 @@ use OCP\Lock\ILockingProvider;
 use OCP\User;
 
 class Storage {
-	const DEFAULTENABLED=true;
-	const DEFAULTMAXSIZE=50; // unit: percentage; 50% of available disk space/quota
-	const VERSIONS_ROOT = 'files_versions/';
+	public const DEFAULTENABLED=true;
+	public const DEFAULTMAXSIZE=50; // unit: percentage; 50% of available disk space/quota
+	public const VERSIONS_ROOT = 'files_versions/';
 
-	const DELETE_TRIGGER_MASTER_REMOVED = 0;
-	const DELETE_TRIGGER_RETENTION_CONSTRAINT = 1;
-	const DELETE_TRIGGER_QUOTA_EXCEEDED = 2;
+	public const DELETE_TRIGGER_MASTER_REMOVED = 0;
+	public const DELETE_TRIGGER_RETENTION_CONSTRAINT = 1;
+	public const DELETE_TRIGGER_QUOTA_EXCEEDED = 2;
 
 	// files for which we can remove the versions after the delete operation was successful
 	private static $deletedFiles = [];
@@ -344,7 +344,8 @@ class Storage {
 		$newFileInfo = $users_view->getFileInfo("/files$filename");
 		$cache = $newFileInfo->getStorage()->getCache();
 		$cache->update(
-			$newFileInfo->getId(), [
+			$newFileInfo->getId(),
+			[
 				'encrypted' => $oldVersion,
 				'encryptedVersion' => $oldVersion,
 				'size' => $oldFileInfo->getSize()

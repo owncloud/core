@@ -81,8 +81,10 @@ class RepairOrphanedSubshare implements IRepairStep {
 		$deleteOrphanReshares = $this->connection->getQueryBuilder();
 		$deleteOrphanReshares
 			->delete('share')
-			->where($deleteOrphanReshares->expr()->notIn('parent',
-			$deleteOrphanReshares->createFunction($subquery)));
+			->where($deleteOrphanReshares->expr()->notIn(
+				'parent',
+				$deleteOrphanReshares->createFunction($subquery)
+			));
 		$deleteOrphanReshares->execute();
 	}
 }

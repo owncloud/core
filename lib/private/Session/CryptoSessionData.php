@@ -43,16 +43,18 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	protected $sessionValues;
 	/** @var bool */
 	protected $isModified = false;
-	const encryptedSessionName = 'encrypted_session_data';
+	public const encryptedSessionName = 'encrypted_session_data';
 
 	/**
 	 * @param ISession $session
 	 * @param ICrypto $crypto
 	 * @param string $passphrase
 	 */
-	public function __construct(ISession $session,
-								ICrypto $crypto,
-								$passphrase) {
+	public function __construct(
+		ISession $session,
+		ICrypto $crypto,
+		$passphrase
+	) {
 		$this->crypto = $crypto;
 		$this->session = $session;
 		$this->passphrase = $passphrase;

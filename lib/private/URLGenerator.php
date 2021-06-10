@@ -62,10 +62,11 @@ class URLGenerator implements IURLGenerator {
 	 * @param IRouter $router
 	 * @param EnvironmentHelper $environmentHelper
 	 */
-	public function __construct(IConfig $config,
-								ICacheFactory $cacheFactory,
-								IRouter $router,
-								EnvironmentHelper $environmentHelper
+	public function __construct(
+		IConfig $config,
+		ICacheFactory $cacheFactory,
+		IRouter $router,
+		EnvironmentHelper $environmentHelper
 	) {
 		$this->config = $config;
 		$this->cacheFactory = $cacheFactory;

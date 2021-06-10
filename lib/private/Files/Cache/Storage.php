@@ -86,7 +86,9 @@ class Storage {
 
 				// distributed cache may need initializing
 				self::getDistributedCache()->set(
-					$this->storageId, $storageData, self::$distributedCacheTTL
+					$this->storageId,
+					$storageData,
+					self::$distributedCacheTTL
 				);
 			} else {
 				if ($row = self::getStorageById($this->storageId)) {
@@ -136,7 +138,9 @@ class Storage {
 		if ($result === null || !isset($result['numeric_id'])) {
 			$result = self::getStorageByIdFromDb($storageId);
 			self::getDistributedCache()->set(
-				$storageId, $result, self::$distributedCacheTTL
+				$storageId,
+				$result,
+				self::$distributedCacheTTL
 			);
 		}
 		return $result;

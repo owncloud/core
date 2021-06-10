@@ -77,7 +77,7 @@ class PanelTest extends \Test\TestCase {
 			$this->secureRandom,
 			$this->config,
 			$this->eventDispatcher
-			);
+		);
 	}
 
 	public function testGetSection() {

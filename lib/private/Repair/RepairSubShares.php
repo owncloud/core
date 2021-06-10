@@ -39,7 +39,8 @@ class RepairSubShares implements IRepairStep {
 	private $deleteShareId;
 
 	public function __construct(
-		IDBConnection $connection) {
+		IDBConnection $connection
+	) {
 		$this->connection = $connection;
 	}
 

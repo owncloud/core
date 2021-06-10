@@ -35,9 +35,11 @@ class TrashExpiryManager {
 	/* @var ILogger */
 	private $logger;
 
-	public function __construct(Expiration $expiration,
-								Quota $quota,
-								Ilogger $logger) {
+	public function __construct(
+		Expiration $expiration,
+		Quota $quota,
+		Ilogger $logger
+	) {
 		$this->logger = $logger;
 		$this->expiration = $expiration;
 		$this->quota = $quota;

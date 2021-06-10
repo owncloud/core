@@ -241,15 +241,19 @@ class DependencyAnalyzer {
 				if (isset($lib['@attributes']['min-version'])) {
 					$minVersion = $lib['@attributes']['min-version'];
 					if ($this->compareSmaller($libVersion, $minVersion)) {
-						$missing[] = (string)$this->l->t('Library %s with a version higher than %s is required - available version %s.',
-							[$libName, $minVersion, $libVersion]);
+						$missing[] = (string)$this->l->t(
+							'Library %s with a version higher than %s is required - available version %s.',
+							[$libName, $minVersion, $libVersion]
+						);
 					}
 				}
 				if (isset($lib['@attributes']['max-version'])) {
 					$maxVersion = $lib['@attributes']['max-version'];
 					if ($this->compareBigger($libVersion, $maxVersion)) {
-						$missing[] = (string)$this->l->t('Library %s with a version lower than %s is required - available version %s.',
-							[$libName, $maxVersion, $libVersion]);
+						$missing[] = (string)$this->l->t(
+							'Library %s with a version lower than %s is required - available version %s.',
+							[$libName, $maxVersion, $libVersion]
+						);
 					}
 				}
 			}

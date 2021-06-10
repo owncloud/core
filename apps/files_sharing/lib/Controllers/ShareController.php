@@ -104,19 +104,21 @@ class ShareController extends Controller {
 	 * @param IUserSession $userSession
 	 * @param EventDispatcher $eventDispatcher
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IConfig $config,
-								IURLGenerator $urlGenerator,
-								IUserManager $userManager,
-								ILogger $logger,
-								\OCP\Activity\IManager $activityManager,
-								\OCP\Share\IManager $shareManager,
-								ISession $session,
-								IPreview $previewManager,
-								IRootFolder $rootFolder,
-								IUserSession $userSession,
-								EventDispatcher $eventDispatcher) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IConfig $config,
+		IURLGenerator $urlGenerator,
+		IUserManager $userManager,
+		ILogger $logger,
+		\OCP\Activity\IManager $activityManager,
+		\OCP\Share\IManager $shareManager,
+		ISession $session,
+		IPreview $previewManager,
+		IRootFolder $rootFolder,
+		IUserSession $userSession,
+		EventDispatcher $eventDispatcher
+	) {
 		parent::__construct($appName, $request);
 
 		$this->config = $config;
@@ -248,9 +250,11 @@ class ShareController extends Controller {
 
 		if ($share instanceof \OCP\Share\IShare) {
 			$cloneShare = clone $share;
-			$publicShareLinkAccessEvent = new GenericEvent(null,
+			$publicShareLinkAccessEvent = new GenericEvent(
+				null,
 				['shareObject' => $cloneShare, 'errorCode' => $errorCode,
-					'errorMessage' => $errorMessage]);
+					'errorMessage' => $errorMessage]
+			);
 			$this->eventDispatcher->dispatch('share.linkaccess', $publicShareLinkAccessEvent);
 		}
 
@@ -293,8 +297,10 @@ class ShareController extends Controller {
 
 		// Share is password protected - check whether the user is permitted to access the share
 		if ($share->getPassword() !== null && !$this->linkShareAuth($share)) {
-			return new RedirectResponse($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.authenticate',
-				['token' => $token]));
+			return new RedirectResponse($this->urlGenerator->linkToRoute(
+				'files_sharing.sharecontroller.authenticate',
+				['token' => $token]
+			));
 		}
 
 		if (!$this->validateShare($share)) {
@@ -382,8 +388,10 @@ class ShareController extends Controller {
 		$shareTmpl['previewMaxX'] = $this->config->getSystemValue('preview_max_x', 1024);
 		$shareTmpl['previewMaxY'] = $this->config->getSystemValue('preview_max_y', 1024);
 		if ($shareTmpl['previewSupported']) {
-			$shareTmpl['previewImage'] = $this->urlGenerator->linkToRouteAbsolute('core_ajax_public_preview',
-				['x' => 200, 'y' => 200, 'file' => $shareTmpl['directory_path'], 't' => $shareTmpl['dirToken']]);
+			$shareTmpl['previewImage'] = $this->urlGenerator->linkToRouteAbsolute(
+				'core_ajax_public_preview',
+				['x' => 200, 'y' => 200, 'file' => $shareTmpl['directory_path'], 't' => $shareTmpl['dirToken']]
+			);
 		} else {
 			$shareTmpl['previewImage'] = $this->urlGenerator->getAbsoluteURL($this->urlGenerator->imagePath('core', 'favicon-fb.png'));
 		}
@@ -418,8 +426,10 @@ class ShareController extends Controller {
 
 		// Share is password protected - check whether the user is permitted to access the share
 		if ($share->getPassword() !== null && !$this->linkShareAuth($share)) {
-			return new RedirectResponse($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.authenticate',
-				['token' => $token]));
+			return new RedirectResponse($this->urlGenerator->linkToRoute(
+				'files_sharing.sharecontroller.authenticate',
+				['token' => $token]
+			));
 		}
 
 		if (($share->getPermissions() & \OCP\Constants::PERMISSION_READ) === 0) {

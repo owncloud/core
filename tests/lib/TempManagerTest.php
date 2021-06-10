@@ -177,7 +177,7 @@ class TempManagerTest extends \Test\TestCase {
 		$logger = $this->createMock('\Test\NullLogger');
 		$tmpManager = self::invokePrivate(
 			$this->getManager($logger),
-					'buildFileNameWithSuffix',
+			'buildFileNameWithSuffix',
 			['/tmp/myTemporaryFile', '']
 		);
 

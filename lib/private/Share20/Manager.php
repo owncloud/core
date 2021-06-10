@@ -115,21 +115,21 @@ class Manager implements IManager {
 	 * @param IUserSession $userSession
 	 */
 	public function __construct(
-			ILogger $logger,
-			IConfig $config,
-			ISecureRandom $secureRandom,
-			IHasher $hasher,
-			IMountManager $mountManager,
-			IGroupManager $groupManager,
-			IL10N $l,
-			IProviderFactory $factory,
-			IUserManager $userManager,
-			IRootFolder $rootFolder,
-			EventDispatcher $eventDispatcher,
-			View $view,
-			IDBConnection $connection,
-			ActivityIManager $activityManager,
-			IUserSession $userSession = null
+		ILogger $logger,
+		IConfig $config,
+		ISecureRandom $secureRandom,
+		IHasher $hasher,
+		IMountManager $mountManager,
+		IGroupManager $groupManager,
+		IL10N $l,
+		IProviderFactory $factory,
+		IUserManager $userManager,
+		IRootFolder $rootFolder,
+		EventDispatcher $eventDispatcher,
+		View $view,
+		IDBConnection $connection,
+		ActivityIManager $activityManager,
+		IUserSession $userSession = null
 	) {
 		$this->logger = $logger;
 		$this->config = $config;
@@ -526,8 +526,8 @@ class Manager implements IManager {
 			$sharedWith = $this->userManager->get($share->getSharedWith());
 			// Verify we can share with this user
 			$groups = \array_intersect(
-					$this->groupManager->getUserGroupIds($sharedBy),
-					$this->groupManager->getUserGroupIds($sharedWith)
+				$this->groupManager->getUserGroupIds($sharedBy),
+				$this->groupManager->getUserGroupIds($sharedWith)
 			);
 
 			if (empty($groups)) {

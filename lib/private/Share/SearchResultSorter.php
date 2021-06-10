@@ -64,8 +64,10 @@ class SearchResultSorter {
 		$j = \mb_strpos($nameB, $this->search, 0, $this->encoding);
 
 		if ($i === $j || $i > 0 && $j > 0) {
-			return \strcmp(\mb_strtolower($nameA, $this->encoding),
-						  \mb_strtolower($nameB, $this->encoding));
+			return \strcmp(
+				\mb_strtolower($nameA, $this->encoding),
+				\mb_strtolower($nameB, $this->encoding)
+			);
 		} elseif ($i === 0) {
 			return -1;
 		} else {

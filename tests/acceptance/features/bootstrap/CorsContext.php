@@ -120,7 +120,8 @@ class CorsContext implements Context {
 	 */
 	public function adminAddDomainToPrivateCORSLists($domain) {
 		$this->addDomainToPrivateCORSLists(
-			$this->featureContext->getAdminUsername(), $domain
+			$this->featureContext->getAdminUsername(),
+			$domain
 		);
 	}
 

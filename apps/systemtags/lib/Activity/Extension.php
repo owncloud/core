@@ -35,14 +35,14 @@ use OCP\L10N\IFactory;
  * @package OCA\SystemTags\Activity
  */
 class Extension implements IExtension {
-	const APP_NAME = 'systemtags';
+	public const APP_NAME = 'systemtags';
 
-	const CREATE_TAG = 'create_tag';
-	const UPDATE_TAG = 'update_tag';
-	const DELETE_TAG = 'delete_tag';
+	public const CREATE_TAG = 'create_tag';
+	public const UPDATE_TAG = 'update_tag';
+	public const DELETE_TAG = 'delete_tag';
 
-	const ASSIGN_TAG = 'assign_tag';
-	const UNASSIGN_TAG = 'unassign_tag';
+	public const ASSIGN_TAG = 'assign_tag';
+	public const UNASSIGN_TAG = 'unassign_tag';
 
 	/** @var IFactory */
 	protected $languageFactory;

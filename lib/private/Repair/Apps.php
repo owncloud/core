@@ -39,9 +39,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Apps implements IRepairStep {
-	const KEY_COMPATIBLE = 'compatible';
-	const KEY_INCOMPATIBLE = 'incompatible';
-	const KEY_MISSING = 'missing';
+	public const KEY_COMPATIBLE = 'compatible';
+	public const KEY_INCOMPATIBLE = 'incompatible';
+	public const KEY_MISSING = 'missing';
 
 	/** @var  IAppManager */
 	private $appManager;

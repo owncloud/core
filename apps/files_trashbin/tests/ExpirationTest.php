@@ -23,9 +23,9 @@
 use OCA\Files_Trashbin\Expiration;
 
 class ExpirationTest extends \Test\TestCase {
-	const SECONDS_PER_DAY = 86400; //60*60*24
+	public const SECONDS_PER_DAY = 86400; //60*60*24
 
-	const FAKE_TIME_NOW = 1000000;
+	public const FAKE_TIME_NOW = 1000000;
 
 	public function expirationData() {
 		$today = 100*self::SECONDS_PER_DAY;
@@ -142,7 +142,7 @@ class ExpirationTest extends \Test\TestCase {
 	public function testGetMaxAgeAsTimestamp($configValue, $expectedMaxAgeTimestamp) {
 		$mockedConfig = $this->getMockedConfig($configValue);
 		$mockedTimeFactory = $this->getMockedTimeFactory(
-				self::FAKE_TIME_NOW
+			self::FAKE_TIME_NOW
 		);
 
 		$expiration = new Expiration($mockedConfig, $mockedTimeFactory);
@@ -162,7 +162,7 @@ class ExpirationTest extends \Test\TestCase {
 				->getMock()
 		;
 		$mockedTimeFactory->expects($this->any())->method('getTime')->will(
-				$this->returnValue($time)
+			$this->returnValue($time)
 		);
 
 		return $mockedTimeFactory;
@@ -202,7 +202,7 @@ class ExpirationTest extends \Test\TestCase {
 				->getMock()
 		;
 		$mockedConfig->expects($this->any())->method('getSystemValue')->will(
-				$this->returnValue($returnValue)
+			$this->returnValue($returnValue)
 		);
 
 		return $mockedConfig;

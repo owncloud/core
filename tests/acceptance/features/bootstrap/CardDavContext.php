@@ -61,7 +61,8 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 		$davUrl = $this->featureContext->getBaseUrl()
 			. '/remote.php/dav/addressbooks/users/admin/MyAddressbook';
 		HttpRequestHelper::delete(
-			$davUrl, $this->featureContext->getAdminUsername(),
+			$davUrl,
+			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword()
 		);
 	}
@@ -80,13 +81,16 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 		$user = $this->featureContext->getActualUsername($user);
 		$normalizedUser = \strtolower($this->featureContext->getActualUsername($ofUser));
 		$addressBook = $this->featureContext->substituteInLineCodes(
-			$addressBook, $normalizedUser
+			$addressBook,
+			$normalizedUser
 		);
 		$davUrl = $this->featureContext->getBaseUrl()
 			. "/remote.php/dav/addressbooks/users/$addressBook";
 
 		$this->response = HttpRequestHelper::get(
-			$davUrl, $user, $this->featureContext->getPasswordForUser($user)
+			$davUrl,
+			$user,
+			$this->featureContext->getPasswordForUser($user)
 		);
 		$this->featureContext->setResponseXml(
 			HttpRequestHelper::parseResponseAsXml($this->response)
@@ -132,8 +136,12 @@ class CardDavContext implements \Behat\Behat\Context\Context {
     </d:set>
   </d:mkcol>';
 		$this->response = HttpRequestHelper::sendRequest(
-			$davUrl, 'MKCOL', $user, $this->featureContext->getPasswordForUser($user),
-			$headers, $body
+			$davUrl,
+			'MKCOL',
+			$user,
+			$this->featureContext->getPasswordForUser($user),
+			$headers,
+			$body
 		);
 		$this->theCardDavHttpStatusCodeShouldBe(201);
 		$this->featureContext->setResponseXml(

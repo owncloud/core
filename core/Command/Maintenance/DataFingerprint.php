@@ -38,9 +38,11 @@ class DataFingerprint extends Command {
 	/** @var ILogger */
 	private $logger;
 
-	public function __construct(IConfig $config,
-								ITimeFactory $timeFactory,
-								ILogger $logger) {
+	public function __construct(
+		IConfig $config,
+		ITimeFactory $timeFactory,
+		ILogger $logger
+	) {
 		$this->config = $config;
 		$this->timeFactory = $timeFactory;
 		$this->logger = $logger;

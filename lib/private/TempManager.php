@@ -43,7 +43,7 @@ class TempManager implements ITempManager {
 	protected $config;
 
 	/** Prefix */
-	const TMP_PREFIX = 'oc_tmp_';
+	public const TMP_PREFIX = 'oc_tmp_';
 
 	/**
 	 * @param \OCP\ILogger $logger
@@ -260,7 +260,8 @@ class TempManager implements ITempManager {
 			}
 		} catch (\Exception $e) {
 		}
-		$this->log->warning('Temporary directory {dir} is not present or writable',
+		$this->log->warning(
+			'Temporary directory {dir} is not present or writable',
 			['dir' => $directory]
 		);
 		return false;

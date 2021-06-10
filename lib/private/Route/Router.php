@@ -236,10 +236,12 @@ class Router implements IRouter {
 	 * @param array $requirements An array of requirements for parameters (regexes)
 	 * @return \OC\Route\Route
 	 */
-	public function create($name,
-						   $pattern,
-						   array $defaults = [],
-						   array $requirements = []) {
+	public function create(
+		$name,
+		$pattern,
+		array $defaults = [],
+		array $requirements = []
+	) {
 		$route = new Route($pattern, $defaults, $requirements);
 		$this->collection->add($name, $route);
 		return $route;
@@ -369,9 +371,11 @@ class Router implements IRouter {
 	 * @param bool $absolute
 	 * @return string
 	 */
-	public function generate($name,
-							 $parameters = [],
-							 $absolute = false) {
+	public function generate(
+		$name,
+		$parameters = [],
+		$absolute = false
+	) {
 		$this->loadRoutes();
 		try {
 			$referenceType = UrlGenerator::ABSOLUTE_URL;

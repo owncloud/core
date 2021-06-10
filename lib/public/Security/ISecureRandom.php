@@ -38,10 +38,10 @@ interface ISecureRandom {
 	/**
 	 * Flags for characters that can be used for <code>generate($length, $characters)</code>
 	 */
-	const CHAR_UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	const CHAR_LOWER = 'abcdefghijklmnopqrstuvwxyz';
-	const CHAR_DIGITS = '0123456789';
-	const CHAR_SYMBOLS = '!\"#$%&\\\'()* +,-./:;<=>?@[\]^_`{|}~';
+	public const CHAR_UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	public const CHAR_LOWER = 'abcdefghijklmnopqrstuvwxyz';
+	public const CHAR_DIGITS = '0123456789';
+	public const CHAR_SYMBOLS = '!\"#$%&\\\'()* +,-./:;<=>?@[\]^_`{|}~';
 
 	/**
 	 * Convenience method to get a low strength random number generator.
@@ -77,6 +77,8 @@ interface ISecureRandom {
 	 * @return string
 	 * @since 8.0.0
 	 */
-	public function generate($length,
-							 $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/');
+	public function generate(
+		$length,
+		$characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+	);
 }

@@ -205,8 +205,10 @@ class LockMapper extends Mapper {
 	public function cleanup() {
 		$query = $this->db->getQueryBuilder();
 		$query->delete($this->getTableName())
-			->where($query->expr()->lt('created_at',
-				$query->createFunction('(' . $query->createNamedParameter($this->timeFactory->getTime()) . ' - `timeout`)')))
+			->where($query->expr()->lt(
+				'created_at',
+				$query->createFunction('(' . $query->createNamedParameter($this->timeFactory->getTime()) . ' - `timeout`)')
+			))
 			->execute();
 	}
 }

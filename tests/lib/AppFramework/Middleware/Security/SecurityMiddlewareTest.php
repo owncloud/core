@@ -82,23 +82,28 @@ class SecurityMiddlewareTest extends TestCase {
 				->getMock();
 		$this->reader = new ControllerMethodReflector();
 		$this->logger = $this->getMockBuilder(
-			ILogger::class)
+			ILogger::class
+		)
 				->disableOriginalConstructor()
 				->getMock();
 		$this->navigationManager = $this->getMockBuilder(
-			INavigationManager::class)
+			INavigationManager::class
+		)
 				->disableOriginalConstructor()
 				->getMock();
 		$this->urlGenerator = $this->getMockBuilder(
-			IURLGenerator::class)
+			IURLGenerator::class
+		)
 				->disableOriginalConstructor()
 				->getMock();
 		$this->request = $this->getMockBuilder(
-			IRequest::class)
+			IRequest::class
+		)
 				->disableOriginalConstructor()
 				->getMock();
 		$this->contentSecurityPolicyManager = $this->getMockBuilder(
-			ContentSecurityPolicyManager::class)
+			ContentSecurityPolicyManager::class
+		)
 				->disableOriginalConstructor()
 				->getMock();
 		$this->middleware = $this->getMiddleware(true, true);
@@ -382,15 +387,15 @@ class SecurityMiddlewareTest extends TestCase {
 	 */
 	public function testAfterExceptionReturnsRedirectForNotLoggedInUser() {
 		$this->request = new Request(
-				[
+			[
 						'server' =>
 								[
 										'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
 										'REQUEST_URI' => 'owncloud/index.php/apps/specialapp'
 								]
 				],
-				$this->createMock(ISecureRandom::class),
-				$this->createMock(IConfig::class)
+			$this->createMock(ISecureRandom::class),
+			$this->createMock(IConfig::class)
 		);
 		$this->middleware = $this->getMiddleware(false, false);
 		$this->urlGenerator
@@ -408,9 +413,9 @@ class SecurityMiddlewareTest extends TestCase {
 				->method('debug')
 				->with('Current user is not logged in');
 		$response = $this->middleware->afterException(
-				$this->controller,
-				'test',
-				new NotLoggedInException()
+			$this->controller,
+			'test',
+			new NotLoggedInException()
 		);
 
 		$expected = new RedirectResponse('http://localhost/index.php/login?redirect_url=owncloud%2Findex.php%2Fapps%2Fspecialapp');
@@ -441,15 +446,15 @@ class SecurityMiddlewareTest extends TestCase {
 	 */
 	public function testAfterExceptionReturnsTemplateResponse(SecurityException $exception) {
 		$this->request = new Request(
-				[
+			[
 						'server' =>
 								[
 										'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
 										'REQUEST_URI' => 'owncloud/index.php/apps/specialapp'
 								]
 				],
-				$this->createMock(ISecureRandom::class),
-				$this->createMock(IConfig::class)
+			$this->createMock(ISecureRandom::class),
+			$this->createMock(IConfig::class)
 		);
 		$this->middleware = $this->getMiddleware(false, false);
 		$this->logger
@@ -457,9 +462,9 @@ class SecurityMiddlewareTest extends TestCase {
 				->method('debug')
 				->with($exception->getMessage());
 		$response = $this->middleware->afterException(
-				$this->controller,
-				'test',
-				$exception
+			$this->controller,
+			'test',
+			$exception
 		);
 
 		$expected = new TemplateResponse('core', '403', ['file' => $exception->getMessage()], 'guest');
@@ -563,8 +568,11 @@ class SecurityMiddlewareTest extends TestCase {
 	 * @throws \Exception
 	 */
 	public function testAfterAjaxExceptionReturnsJSONError() {
-		$response = $this->middleware->afterException($this->controller, 'test',
-				$this->secAjaxException);
+		$response = $this->middleware->afterException(
+			$this->controller,
+			'test',
+			$this->secAjaxException
+		);
 
 		$this->assertInstanceOf(JSONResponse::class, $response);
 	}
@@ -592,7 +600,8 @@ class SecurityMiddlewareTest extends TestCase {
 					$this->assertTrue(\array_key_exists('WWW-Authenticate', $headers));
 					$this->assertEquals($headers['WWW-Authenticate'], 'Basic realm="ownCloud App Authentication Requested"');
 					return true;
-				}))
+				}
+			))
 			->willReturn($expectedResponse);
 		$this->request->expects($this->once())
 			->method('getHeader')

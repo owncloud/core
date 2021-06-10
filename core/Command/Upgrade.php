@@ -42,12 +42,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Upgrade extends Command {
-	const ERROR_SUCCESS = 0;
-	const ERROR_NOT_INSTALLED = 1;
-	const ERROR_MAINTENANCE_MODE = 2;
-	const ERROR_UP_TO_DATE = 3;
-	const ERROR_INVALID_ARGUMENTS = 4;
-	const ERROR_FAILURE = 5;
+	public const ERROR_SUCCESS = 0;
+	public const ERROR_NOT_INSTALLED = 1;
+	public const ERROR_MAINTENANCE_MODE = 2;
+	public const ERROR_UP_TO_DATE = 3;
+	public const ERROR_INVALID_ARGUMENTS = 4;
+	public const ERROR_FAILURE = 5;
 
 	/** @var IConfig */
 	private $config;
@@ -84,7 +84,7 @@ class Upgrade extends Command {
 				null,
 				InputOption::VALUE_NONE,
 				'Automatically update apps to new major versions during minor updates of ownCloud Server'
-				);
+			);
 	}
 
 	/**
@@ -108,9 +108,9 @@ class Upgrade extends Command {
 			}
 
 			$updater = new Updater(
-					$this->config,
-					\OC::$server->getIntegrityCodeChecker(),
-					$this->logger
+				$this->config,
+				\OC::$server->getIntegrityCodeChecker(),
+				$this->logger
 			);
 
 			if ($input->getOption('major')) {
@@ -205,7 +205,9 @@ class Upgrade extends Command {
 			$updater->listen('\OC\Updater', 'maintenanceActive', function () use ($output) {
 				$output->writeln('<info>Maintenance mode is kept active</info>');
 			});
-			$updater->listen('\OC\Updater', 'updateEnd',
+			$updater->listen(
+				'\OC\Updater',
+				'updateEnd',
 				function ($success) use ($output) {
 					if ($success) {
 						$message = "<info>Update successful</info>";
@@ -213,7 +215,8 @@ class Upgrade extends Command {
 						$message = "<error>Update failed</error>";
 					}
 					$output->writeln($message);
-				});
+				}
+			);
 			$updater->listen('\OC\Updater', 'dbUpgradeBefore', function () use ($output) {
 				$output->writeln('<info>Updating database schema</info>');
 			});

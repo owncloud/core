@@ -42,10 +42,11 @@ class SettingsController extends Controller {
 	 * @param IL10N $l10n
 	 * @param TrustedServers $trustedServers
 	 */
-	public function __construct($AppName,
-								IRequest $request,
-								IL10N $l10n,
-								TrustedServers $trustedServers
+	public function __construct(
+		$AppName,
+		IRequest $request,
+		IL10N $l10n,
+		TrustedServers $trustedServers
 	) {
 		parent::__construct($AppName, $request);
 		$this->l = $l10n;

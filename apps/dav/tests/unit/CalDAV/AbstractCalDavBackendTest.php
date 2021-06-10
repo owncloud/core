@@ -52,9 +52,9 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 	/** @var IConfig */
 	protected $config;
 
-	const UNIT_TEST_USER = 'principals/users/caldav-unit-test';
-	const UNIT_TEST_USER1 = 'principals/users/caldav-unit-test1';
-	const UNIT_TEST_GROUP = 'principals/groups/caldav-unit-test-group';
+	public const UNIT_TEST_USER = 'principals/users/caldav-unit-test';
+	public const UNIT_TEST_USER1 = 'principals/users/caldav-unit-test1';
+	public const UNIT_TEST_GROUP = 'principals/groups/caldav-unit-test-group';
 
 	/** @var ISecureRandom */
 	private $random;

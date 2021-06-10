@@ -53,12 +53,14 @@ class CertificateController extends Controller {
 	 * @param IL10N $l10n
 	 * @param IAppManager $appManager
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								ICertificateManager $userCertificateManager,
-								ICertificateManager $systemCertificateManager,
-								IL10N $l10n,
-								IAppManager $appManager) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		ICertificateManager $userCertificateManager,
+		ICertificateManager $systemCertificateManager,
+		IL10N $l10n,
+		IAppManager $appManager
+	) {
 		parent::__construct($appName, $request);
 		$this->userCertificateManager = $userCertificateManager;
 		$this->systemCertificateManager = $systemCertificateManager;

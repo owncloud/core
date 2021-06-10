@@ -36,13 +36,13 @@ use OCP\IConfig;
 use OCP\IUser;
 
 class Util {
-	const HEADER_START = 'HBEGIN';
-	const HEADER_END = 'HEND';
-	const HEADER_PADDING_CHAR = '-';
+	public const HEADER_START = 'HBEGIN';
+	public const HEADER_END = 'HEND';
+	public const HEADER_PADDING_CHAR = '-';
 
-	const HEADER_ENCRYPTION_MODULE_KEY = 'oc_encryption_module';
+	public const HEADER_ENCRYPTION_MODULE_KEY = 'oc_encryption_module';
 
-	const ID = 'OC_DEFAULT_MODULE';
+	public const ID = 'OC_DEFAULT_MODULE';
 
 	/**
 	 * block size will always be 8192 for a PHP stream
@@ -87,7 +87,8 @@ class Util {
 		View $rootView,
 		\OC\User\Manager $userManager,
 		\OC\Group\Manager $groupManager,
-		IConfig $config) {
+		IConfig $config
+	) {
 		$this->ocHeaderKeys = [
 			self::HEADER_ENCRYPTION_MODULE_KEY
 		];

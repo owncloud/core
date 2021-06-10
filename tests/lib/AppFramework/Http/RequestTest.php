@@ -847,15 +847,15 @@ class RequestTest extends TestCase {
 	 */
 	public function testUserAgent($testAgent, $userAgent, $matches) {
 		$request = new Request(
-				[
+			[
 						'server' => [
 								'HTTP_USER_AGENT' => $testAgent,
 						]
 				],
-				$this->secureRandom,
-				$this->config,
-				$this->csrfTokenManager,
-				$this->stream
+			$this->secureRandom,
+			$this->config,
+			$this->csrfTokenManager,
+			$this->stream
 		);
 
 		$this->assertSame($matches, $request->isUserAgent($userAgent));
@@ -869,11 +869,11 @@ class RequestTest extends TestCase {
 	 */
 	public function testUndefinedUserAgent($testAgent, $userAgent, $matches) {
 		$request = new Request(
-				[],
-				$this->secureRandom,
-				$this->config,
-				$this->csrfTokenManager,
-				$this->stream
+			[],
+			$this->secureRandom,
+			$this->config,
+			$this->csrfTokenManager,
+			$this->stream
 		);
 
 		$this->assertFalse($request->isUserAgent($userAgent));

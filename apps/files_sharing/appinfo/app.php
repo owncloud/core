@@ -55,10 +55,10 @@ $eventDispatcher->addListener(
 
 \OC::$server->getActivityManager()->registerExtension(function () {
 	return new \OCA\Files_Sharing\Activity(
-			\OC::$server->query('L10NFactory'),
-			\OC::$server->getURLGenerator(),
-			\OC::$server->getActivityManager()
-		);
+		\OC::$server->query('L10NFactory'),
+		\OC::$server->getURLGenerator(),
+		\OC::$server->getActivityManager()
+	);
 });
 
 $config = \OC::$server->getConfig();

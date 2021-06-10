@@ -32,7 +32,7 @@ use Sabre\DAV\Client;
  *
  */
 class OwnCloud extends \OC\Files\Storage\DAV {
-	const OC_URL_SUFFIX = 'remote.php/webdav';
+	public const OC_URL_SUFFIX = 'remote.php/webdav';
 
 	public function __construct($params) {
 		// extract context path from host if specified

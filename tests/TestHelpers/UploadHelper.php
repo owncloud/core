@@ -164,7 +164,12 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 	 * @return array of ResponseInterface
 	 */
 	public static function uploadWithAllMechanisms(
-		$baseUrl, $user, $password, $source, $destination, $overwriteMode = false
+		$baseUrl,
+		$user,
+		$password,
+		$source,
+		$destination,
+		$overwriteMode = false
 	) {
 		$responses = [];
 		foreach ([1, 2] as $davPathVersion) {
@@ -247,10 +252,12 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 		}
 		\fclose($file);
 		self::assertEquals(
-			1, \file_exists($name)
+			1,
+			\file_exists($name)
 		);
 		self::assertEquals(
-			$size, \filesize($name)
+			$size,
+			\filesize($name)
 		);
 	}
 
@@ -267,7 +274,8 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 		\fwrite($file, $text);
 		\fclose($file);
 		self::assertEquals(
-			1, \file_exists($name)
+			1,
+			\file_exists($name)
 		);
 	}
 

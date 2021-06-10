@@ -143,7 +143,9 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @return string
 	 */
 	public static function getParameterValueFromXml(
-		$xml, $capabilitiesApp, $capabilitiesPath
+		$xml,
+		$capabilitiesApp,
+		$capabilitiesPath
 	) {
 		$pathToElement = \explode('@@@', $capabilitiesPath);
 		$answeredValue = $xml->{$capabilitiesApp};
@@ -164,7 +166,9 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @return boolean
 	 */
 	public static function wasCapabilitySet(
-		$capabilitiesApp, $capabilitiesParameter, $savedCapabilitiesXml
+		$capabilitiesApp,
+		$capabilitiesParameter,
+		$savedCapabilitiesXml
 	) {
 		return (bool) self::getParameterValueFromXml(
 			$savedCapabilitiesXml,
@@ -238,7 +242,11 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	public static function modifyAppConfig(
 		$baseUrl,
 		$user,
-		$password, $app, $parameter, $value, $ocsApiVersion = 2
+		$password,
+		$app,
+		$parameter,
+		$value,
+		$ocsApiVersion = 2
 	) {
 		$body = ['value' => $value];
 		$response = OcsApiHelper::sendRequest(
@@ -282,7 +290,9 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	public static function modifyAppConfigs(
 		$baseUrl,
 		$user,
-		$password, $appParameterValues, $ocsApiVersion = 2
+		$password,
+		$appParameterValues,
+		$ocsApiVersion = 2
 	) {
 		if (\is_array($appParameterValues)) {
 			foreach ($appParameterValues as $key => $value) {
@@ -332,7 +342,12 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @return void
 	 */
 	public static function deleteAppConfig(
-		$baseUrl, $user, $password, $app, $parameter, $ocsApiVersion = 2
+		$baseUrl,
+		$user,
+		$password,
+		$app,
+		$parameter,
+		$ocsApiVersion = 2
 	) {
 		$body = [];
 		$response = OcsApiHelper::sendRequest(
@@ -374,7 +389,11 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @return void
 	 */
 	public static function deleteAppConfigs(
-		$baseUrl, $user, $password, $appParameterValues, $ocsApiVersion = 2
+		$baseUrl,
+		$user,
+		$password,
+		$appParameterValues,
+		$ocsApiVersion = 2
 	) {
 		$body = ['values' => $appParameterValues];
 		$response = OcsApiHelper::sendRequest(
@@ -416,7 +435,11 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @return array with 'configkey', 'value' and 'appid'
 	 */
 	public static function getAppConfigs(
-		$baseUrl, $user, $password, $app, $ocsApiVersion = 2
+		$baseUrl,
+		$user,
+		$password,
+		$app,
+		$ocsApiVersion = 2
 	) {
 		$response = OcsApiHelper::sendRequest(
 			$baseUrl,
@@ -462,7 +485,12 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @return array with 'configkey', 'value' and 'appid'
 	 */
 	public static function getAppConfig(
-		$baseUrl, $user, $password, $app, $parameter, $ocsApiVersion = 2
+		$baseUrl,
+		$user,
+		$password,
+		$app,
+		$parameter,
+		$ocsApiVersion = 2
 	) {
 		$response = OcsApiHelper::sendRequest(
 			$baseUrl,

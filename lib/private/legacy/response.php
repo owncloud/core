@@ -29,14 +29,14 @@
  */
 
 class OC_Response {
-	const STATUS_FOUND = 304;
-	const STATUS_NOT_MODIFIED = 304;
-	const STATUS_TEMPORARY_REDIRECT = 307;
-	const STATUS_BAD_REQUEST = 400;
-	const STATUS_FORBIDDEN = 403;
-	const STATUS_NOT_FOUND = 404;
-	const STATUS_INTERNAL_SERVER_ERROR = 500;
-	const STATUS_SERVICE_UNAVAILABLE = 503;
+	public const STATUS_FOUND = 304;
+	public const STATUS_NOT_MODIFIED = 304;
+	public const STATUS_TEMPORARY_REDIRECT = 307;
+	public const STATUS_BAD_REQUEST = 400;
+	public const STATUS_FORBIDDEN = 403;
+	public const STATUS_NOT_FOUND = 404;
+	public const STATUS_INTERNAL_SERVER_ERROR = 500;
+	public const STATUS_SERVICE_UNAVAILABLE = 503;
 
 	/**
 	* Enable response caching by sending correct HTTP headers
@@ -186,7 +186,8 @@ class OC_Response {
 				\OC\AppFramework\Http\Request::USER_AGENT_IE,
 				\OC\AppFramework\Http\Request::USER_AGENT_ANDROID_MOBILE_CHROME,
 				\OC\AppFramework\Http\Request::USER_AGENT_FREEBOX,
-			])) {
+			]
+		)) {
 			\header('Content-Disposition: ' . \rawurlencode($type) . '; filename="' . \rawurlencode($filename) . '"');
 		} else {
 			\header('Content-Disposition: ' . \rawurlencode($type) . '; filename*=UTF-8\'\'' . \rawurlencode($filename)

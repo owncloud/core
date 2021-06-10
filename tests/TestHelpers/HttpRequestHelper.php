@@ -281,7 +281,10 @@ class HttpRequestHelper {
 			$headers['Content-Type'] = 'application/x-www-form-urlencoded';
 		}
 		$request = new Request(
-			$method, $url, $headers, $body
+			$method,
+			$url,
+			$headers,
+			$body
 		);
 		return $request;
 	}
@@ -314,7 +317,15 @@ class HttpRequestHelper {
 		$stream = false
 	) {
 		return self::sendRequest(
-			$url, 'GET', $user, $password, $headers, $body, $config, $cookies, $stream
+			$url,
+			'GET',
+			$user,
+			$password,
+			$headers,
+			$body,
+			$config,
+			$cookies,
+			$stream
 		);
 	}
 
@@ -346,7 +357,15 @@ class HttpRequestHelper {
 		$stream = false
 	) {
 		return self::sendRequest(
-			$url, 'POST', $user, $password, $headers, $body, $config, $cookies, $stream
+			$url,
+			'POST',
+			$user,
+			$password,
+			$headers,
+			$body,
+			$config,
+			$cookies,
+			$stream
 		);
 	}
 
@@ -378,7 +397,15 @@ class HttpRequestHelper {
 		$stream = false
 	) {
 		return self::sendRequest(
-			$url, 'PUT', $user, $password, $headers, $body, $config, $cookies, $stream
+			$url,
+			'PUT',
+			$user,
+			$password,
+			$headers,
+			$body,
+			$config,
+			$cookies,
+			$stream
 		);
 	}
 
@@ -410,7 +437,15 @@ class HttpRequestHelper {
 		$stream = false
 	) {
 		return self::sendRequest(
-			$url, 'DELETE', $user, $password, $headers, $body, $config, $cookies, $stream
+			$url,
+			'DELETE',
+			$user,
+			$password,
+			$headers,
+			$body,
+			$config,
+			$cookies,
+			$stream
 		);
 	}
 
@@ -435,13 +470,16 @@ class HttpRequestHelper {
 		try {
 			$responseXmlObject = new SimpleXMLElement($contents);
 			$responseXmlObject->registerXPathNamespace(
-				'ocs', 'http://open-collaboration-services.org/ns'
+				'ocs',
+				'http://open-collaboration-services.org/ns'
 			);
 			$responseXmlObject->registerXPathNamespace(
-				'oc', 'http://owncloud.org/ns'
+				'oc',
+				'http://owncloud.org/ns'
 			);
 			$responseXmlObject->registerXPathNamespace(
-				'd', 'DAV:'
+				'd',
+				'DAV:'
 			);
 			return $responseXmlObject;
 		} catch (\Exception $e) {

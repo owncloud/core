@@ -49,8 +49,10 @@ class DiscoveryManager {
 	 * @param ICacheFactory $cacheFactory
 	 * @param IClientService $clientService
 	 */
-	public function __construct(ICacheFactory $cacheFactory,
-								IClientService $clientService) {
+	public function __construct(
+		ICacheFactory $cacheFactory,
+		IClientService $clientService
+	) {
 		$this->cache = $cacheFactory->create('ocs-discovery');
 		$this->client = $clientService->newClient();
 	}

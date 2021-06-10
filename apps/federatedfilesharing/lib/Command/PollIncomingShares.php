@@ -175,13 +175,17 @@ class PollIncomingShares extends Command {
 		$qb->select('*')
 			->from('share_external')
 			->where(
-				$qb->expr()->eq('user',
+				$qb->expr()->eq(
+					'user',
 					$qb->expr()->literal($userId)
-				))
+				)
+			)
 		->andWhere(
-			$qb->expr()->eq('mountpoint',
+			$qb->expr()->eq(
+				'mountpoint',
 				$qb->expr()->literal($relativeMountPoint)
-			));
+			)
+		);
 		$result = $qb->execute();
 		$externalShare = $result->fetch();
 		return $externalShare;

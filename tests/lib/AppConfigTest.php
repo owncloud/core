@@ -207,16 +207,20 @@ class AppConfigTest extends TestCase {
 
 		$calledBeforeSetValue = [];
 		$calledAfterSetValue = [];
-		\OC::$server->getEventDispatcher()->addListener('appconfig.beforesetvalue',
+		\OC::$server->getEventDispatcher()->addListener(
+			'appconfig.beforesetvalue',
 			function (GenericEvent $event) use (&$calledBeforeSetValue) {
 				$calledBeforeSetValue[] = 'appconfig.beforesetvalue';
 				$calledBeforeSetValue[] = $event;
-			});
-		\OC::$server->getEventDispatcher()->addListener('appconfig.aftersetvalue',
+			}
+		);
+		\OC::$server->getEventDispatcher()->addListener(
+			'appconfig.aftersetvalue',
 			function (GenericEvent $event) use (&$calledAfterSetValue) {
 				$calledAfterSetValue[] = 'appconfig.aftersetvalue';
 				$calledAfterSetValue[] = $event;
-			});
+			}
+		);
 
 		$this->assertTrue($config->setValue('testapp', 'installed_version', '1.33.7'));
 
@@ -248,16 +252,20 @@ class AppConfigTest extends TestCase {
 
 		$calledBeforeSetValue = [];
 		$calledAfterSetValue = [];
-		\OC::$server->getEventDispatcher()->addListener('appconfig.beforesetvalue',
+		\OC::$server->getEventDispatcher()->addListener(
+			'appconfig.beforesetvalue',
 			function (GenericEvent $event) use (&$calledBeforeSetValue) {
 				$calledBeforeSetValue[] = 'appconfig.beforesetvalue';
 				$calledBeforeSetValue[] = $event;
-			});
-		\OC::$server->getEventDispatcher()->addListener('appconfig.aftersetvalue',
+			}
+		);
+		\OC::$server->getEventDispatcher()->addListener(
+			'appconfig.aftersetvalue',
 			function (GenericEvent $event) use (&$calledAfterSetValue) {
 				$calledAfterSetValue[] = 'appconfig.aftersetvalue';
 				$calledAfterSetValue[] = $event;
-			});
+			}
+		);
 
 		$this->assertTrue($config->setValue('someapp', 'somekey', 'somevalue'));
 
@@ -291,16 +299,20 @@ class AppConfigTest extends TestCase {
 
 		$calledBeforeDeleteValue = [];
 		$calledAfterDeleteValue = [];
-		\OC::$server->getEventDispatcher()->addListener('appconfig.beforedeletevalue',
+		\OC::$server->getEventDispatcher()->addListener(
+			'appconfig.beforedeletevalue',
 			function (GenericEvent $event) use (&$calledBeforeDeleteValue) {
 				$calledBeforeDeleteValue[] = 'appconfig.beforedeletevalue';
 				$calledBeforeDeleteValue[] = $event;
-			});
-		\OC::$server->getEventDispatcher()->addListener('appconfig.afterdeletevalue',
+			}
+		);
+		\OC::$server->getEventDispatcher()->addListener(
+			'appconfig.afterdeletevalue',
 			function (GenericEvent $event) use (&$calledAfterDeleteValue) {
 				$calledAfterDeleteValue[] = 'appconfig.afterdeletevalue';
 				$calledAfterDeleteValue[] = $event;
-			});
+			}
+		);
 
 		$config->deleteKey('testapp', 'deletethis');
 
@@ -335,16 +347,20 @@ class AppConfigTest extends TestCase {
 
 		$calledBeforeDeleteApp = [];
 		$calledAfterDeleteApp = [];
-		\OC::$server->getEventDispatcher()->addListener('appconfig.beforedeleteapp',
+		\OC::$server->getEventDispatcher()->addListener(
+			'appconfig.beforedeleteapp',
 			function (GenericEvent $event) use (&$calledBeforeDeleteApp) {
 				$calledBeforeDeleteApp[] = 'appconfig.beforedeleteapp';
 				$calledBeforeDeleteApp[] = $event;
-			});
-		\OC::$server->getEventDispatcher()->addListener('appconfig.afterdeleteapp',
+			}
+		);
+		\OC::$server->getEventDispatcher()->addListener(
+			'appconfig.afterdeleteapp',
 			function (GenericEvent $event) use (&$calledAfterDeleteApp) {
 				$calledAfterDeleteApp[] = 'appconfig.afterdeleteapp';
 				$calledAfterDeleteApp[] = $event;
-			});
+			}
+		);
 
 		$config->deleteApp('someapp');
 

@@ -62,8 +62,8 @@ class OC_App {
 	private static $loadedApps = [];
 	private static $loadedTypes = [];
 	private static $altLogin = [];
-	const officialApp = 200;
-	const approvedApp = 100;
+	public const officialApp = 200;
+	public const approvedApp = 100;
 
 	/**
 	 * clean the appId
@@ -1127,7 +1127,8 @@ class OC_App {
 		if (!empty($missing)) {
 			$missingMsg = \join(PHP_EOL, $missing);
 			throw new \Exception(
-				$l->t('App "%s" cannot be installed because the following dependencies are not fulfilled: %s',
+				$l->t(
+					'App "%s" cannot be installed because the following dependencies are not fulfilled: %s',
 					[$info['name'], $missingMsg]
 				)
 			);

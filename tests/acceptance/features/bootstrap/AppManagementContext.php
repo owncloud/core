@@ -247,7 +247,9 @@ class AppManagementContext implements Context {
 	 * @return void
 	 */
 	public function appWithVersionAndPathShouldHaveBeenListedInTheEnabledAppsSection(
-		$appId, $appVersion, $appPath
+		$appId,
+		$appVersion,
+		$appPath
 	) {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$expectedStartOfOutput = "Enabled:";
@@ -277,7 +279,9 @@ class AppManagementContext implements Context {
 	 * @return void
 	 */
 	public function appWithVersionAndPathShouldHaveBeenListedInTheDisabledAppsSection(
-		$appId, $appVersion, $appPath
+		$appId,
+		$appVersion,
+		$appPath
 	) {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$startOfDisabledSection = \strpos($commandOutput, "Disabled:");
@@ -373,7 +377,8 @@ class AppManagementContext implements Context {
 			['config:app:get', $appId, 'installed_version', '--no-ansi']
 		)['stdOut'];
 		Assert::assertEquals(
-			$version, \trim($cmdOutput),
+			$version,
+			\trim($cmdOutput),
 			"Expected: the installed version of ${appId} should be ${version} but got " . \trim($cmdOutput)
 		);
 	}
@@ -396,7 +401,8 @@ class AppManagementContext implements Context {
 		$this->featureContext = $environment->getContext('FeatureContext');
 
 		$value = SetupHelper::getSystemConfigValue(
-			'apps_paths', 'json'
+			'apps_paths',
+			'json'
 		);
 
 		if ($value === '') {

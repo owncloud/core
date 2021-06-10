@@ -55,12 +55,14 @@ class NavigationManager implements INavigationManager {
 	/** @var IConfig */
 	private $config;
 
-	public function __construct(IAppManager $appManager = null,
-								IURLGenerator $urlGenerator = null,
-								IFactory $l10nFac = null,
-								IUserSession $userSession = null,
-								IGroupManager $groupManager = null,
-								IConfig $config = null) {
+	public function __construct(
+		IAppManager $appManager = null,
+		IURLGenerator $urlGenerator = null,
+		IFactory $l10nFac = null,
+		IUserSession $userSession = null,
+		IGroupManager $groupManager = null,
+		IConfig $config = null
+	) {
 		$this->appManager = $appManager;
 		$this->urlGenerator = $urlGenerator;
 		$this->l10nFac = $l10nFac;

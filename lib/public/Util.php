@@ -57,11 +57,11 @@ use DateTimeZone;
  */
 class Util {
 	// consts for Logging
-	const DEBUG=0;
-	const INFO=1;
-	const WARN=2;
-	const ERROR=3;
-	const FATAL=4;
+	public const DEBUG=0;
+	public const INFO=1;
+	public const WARN=2;
+	public const ERROR=3;
+	public const FATAL=4;
 
 	/** \OCP\Share\IManager */
 	private static $shareManager;
@@ -111,8 +111,19 @@ class Util {
 	 * @deprecated 8.1.0 Use \OCP\Mail\IMailer instead
 	 * @since 4.0.0
 	 */
-	public static function sendMail($toaddress, $toname, $subject, $mailtext, $fromaddress, $fromname,
-		$html = 0, $altbody = '', $ccaddress = '', $ccname = '', $bcc = '') {
+	public static function sendMail(
+		$toaddress,
+		$toname,
+		$subject,
+		$mailtext,
+		$fromaddress,
+		$fromname,
+		$html = 0,
+		$altbody = '',
+		$ccaddress = '',
+		$ccname = '',
+		$bcc = ''
+	) {
 		$mailer = \OC::$server->getMailer();
 		$message = $mailer->createMessage();
 		$message->setTo([$toaddress => $toname]);

@@ -70,7 +70,8 @@ class QuotaTest extends \Test\Files\Storage\Storage {
 	public function testFreeSpaceWithUsedSpace() {
 		$instance = $this->getLimitedStorage(9);
 		$instance->getCache()->put(
-			'', ['size' => 3]
+			'',
+			['size' => 3]
 		);
 		$this->assertEquals(6, $instance->free_space(''));
 	}
@@ -88,7 +89,8 @@ class QuotaTest extends \Test\Files\Storage\Storage {
 
 		$instance = new \OC\Files\Storage\Wrapper\Quota(['storage' => $storage, 'quota' => 9]);
 		$instance->getCache()->put(
-			'', ['size' => 3]
+			'',
+			['size' => 3]
 		);
 		$this->assertEquals(6, $instance->free_space(''));
 	}
@@ -96,7 +98,8 @@ class QuotaTest extends \Test\Files\Storage\Storage {
 	public function testFreeSpaceWithUsedSpaceAndEncryption() {
 		$instance = $this->getLimitedStorage(9);
 		$instance->getCache()->put(
-			'', ['size' => 7]
+			'',
+			['size' => 7]
 		);
 		$this->assertEquals(2, $instance->free_space(''));
 	}

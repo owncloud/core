@@ -44,16 +44,18 @@ class ScanFiles extends \OC\BackgroundJob\TimedJob {
 	/** @var ILogger */
 	private $logger;
 	/** Amount of users that should get scanned per execution */
-	const USERS_PER_SESSION = 500;
+	public const USERS_PER_SESSION = 500;
 
 	/**
 	 * @param IConfig|null $config
 	 * @param IUserManager|null $userManager
 	 * @param ILogger|null $logger
 	 */
-	public function __construct(IConfig $config = null,
-								IUserManager $userManager = null,
-								ILogger $logger = null) {
+	public function __construct(
+		IConfig $config = null,
+		IUserManager $userManager = null,
+		ILogger $logger = null
+	) {
 		// Run once per 10 minutes
 		$this->setInterval(60 * 10);
 
@@ -78,9 +80,9 @@ class ScanFiles extends \OC\BackgroundJob\TimedJob {
 	protected function runScanner(IUser $user) {
 		try {
 			$scanner = new Scanner(
-					$user->getUID(),
-					$this->dbConnection,
-					$this->logger
+				$user->getUID(),
+				$this->dbConnection,
+				$this->logger
 			);
 			$scanner->backgroundScan('');
 		} catch (\Exception $e) {

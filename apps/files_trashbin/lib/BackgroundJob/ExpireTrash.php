@@ -50,16 +50,18 @@ class ExpireTrash extends TimedJob {
 	 */
 	private $userManager;
 
-	const USERS_PER_SESSION = 500;
+	public const USERS_PER_SESSION = 500;
 
 	/**
 	 * @param IConfig|null $config
 	 * @param IUserManager|null $userManager
 	 * @param TrashExpiryManager|null $trashExpiryManager
 	 */
-	public function __construct(IConfig $config = null,
-								IUserManager $userManager = null,
-								TrashExpiryManager $trashExpiryManager = null) {
+	public function __construct(
+		IConfig $config = null,
+		IUserManager $userManager = null,
+		TrashExpiryManager $trashExpiryManager = null
+	) {
 		// Run once per 10 minutes
 		$this->setInterval(60 * 10);
 

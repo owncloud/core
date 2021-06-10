@@ -30,7 +30,7 @@ use OCP\IUserSession;
  */
 
 class SharingPersonalSettingsController extends Controller {
-	const USERCONFIGS = [
+	public const USERCONFIGS = [
 		'auto_accept_share_trusted'
 	];
 
@@ -94,7 +94,8 @@ class SharingPersonalSettingsController extends Controller {
 	 * @return array
 	 */
 	private function getUserRequestParams() {
-		return \array_filter($this->request->getParams(),
+		return \array_filter(
+			$this->request->getParams(),
 			function ($key) {
 				return (\substr($key, 0, 1) !== '_');
 			},

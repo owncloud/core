@@ -35,7 +35,8 @@ $app->registerHooks();
 
 $eventDispatcher = \OC::$server->getEventDispatcher();
 
-$eventDispatcher->addListener('OCP\Federation\TrustedServerEvent::remove',
+$eventDispatcher->addListener(
+	'OCP\Federation\TrustedServerEvent::remove',
 	function (GenericEvent $event) use ($app) {
 		/** @var CardDavBackend $cardDavBackend */
 		$cardDavBackend = $app->getContainer()->query(CardDavBackend::class);

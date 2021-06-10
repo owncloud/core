@@ -143,7 +143,8 @@ $application->registerRoutes($this, [
 $this->create('core_ajax_public_preview', '/publicpreview')->action(
 	function () {
 		require_once __DIR__ . '/../ajax/publicpreview.php';
-	});
+	}
+);
 
 $this->create('files_sharing_ajax_list', 'ajax/list.php')
 	->actionInclude('files_sharing/ajax/list.php');

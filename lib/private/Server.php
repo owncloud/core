@@ -161,7 +161,6 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$c->getLicenseManager(),
 				$c->getCertificateManager(),
 				$c->getL10NFactory()
-
 			);
 		});
 
@@ -170,9 +169,11 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		});
 
 		$this->registerService('PreviewManager', function (Server $c) {
-			return new PreviewManager($c->getConfig(),
+			return new PreviewManager(
+				$c->getConfig(),
 				$c->getLazyRootFolder(),
-				$c->getUserSession());
+				$c->getUserSession()
+			);
 		});
 
 		$this->registerService('EncryptionManager', function (Server $c) {
@@ -331,8 +332,17 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 
 			$userSyncService = new SyncService($c->getConfig(), $c->getLogger(), $c->getAccountMapper());
 
-			$userSession = new Session($manager, $session, $timeFactory,
-				$defaultTokenProvider, $c->getConfig(), $c->getLogger(), $this, $userSyncService, $c->getEventDispatcher());
+			$userSession = new Session(
+				$manager,
+				$session,
+				$timeFactory,
+				$defaultTokenProvider,
+				$c->getConfig(),
+				$c->getLogger(),
+				$this,
+				$userSyncService,
+				$c->getEventDispatcher()
+			);
 			$userSession->listen('\OC\User', 'preCreateUser', function ($uid, $password) {
 				\OC_Hook::emit('OC_User', 'pre_createUser', ['run' => true, 'uid' => $uid, 'password' => $password]);
 			});
@@ -391,12 +401,14 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		});
 
 		$this->registerService('NavigationManager', function (Server $c) {
-			return new \OC\NavigationManager($c->getAppManager(),
+			return new \OC\NavigationManager(
+				$c->getAppManager(),
 				$c->getURLGenerator(),
 				$c->getL10NFactory(),
 				$c->getUserSession(),
 				$c->getGroupManager(),
-				$c->getConfig());
+				$c->getConfig()
+			);
 		});
 		$this->registerAlias(IConfig::class, 'AllConfig');
 		$this->registerService('AllConfig', function (Server $c) {
@@ -445,14 +457,18 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$instanceId = \OC_Util::getInstanceId();
 				$path = \OC::$SERVERROOT;
 				$prefix = \md5($instanceId . '-' . $version . '-' . $path);
-				return new \OC\Memcache\Factory($prefix, $c->getLogger(),
+				return new \OC\Memcache\Factory(
+					$prefix,
+					$c->getLogger(),
 					$config->getSystemValue('memcache.local', null),
 					$config->getSystemValue('memcache.distributed', null),
 					$config->getSystemValue('memcache.locking', null)
 				);
 			}
 
-			return new \OC\Memcache\Factory('', $c->getLogger(),
+			return new \OC\Memcache\Factory(
+				'',
+				$c->getLogger(),
 				'\\OC\\Memcache\\ArrayCache',
 				'\\OC\\Memcache\\ArrayCache',
 				'\\OC\\Memcache\\ArrayCache'
@@ -670,13 +686,13 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			}
 
 			return new Checker(
-					new EnvironmentHelper(),
-					new FileAccessHelper(),
-					new AppLocator(),
-					$config,
-					$c->getMemCacheFactory(),
-					$appManager,
-					$c->getTempManager()
+				new EnvironmentHelper(),
+				new FileAccessHelper(),
+				new AppLocator(),
+				$config,
+				$c->getMemCacheFactory(),
+				$appManager,
+				$c->getTempManager()
 			);
 		});
 		$this->registerService('Request', function ($c) {

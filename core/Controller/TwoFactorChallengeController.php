@@ -60,8 +60,14 @@ class TwoFactorChallengeController extends Controller {
 	 * @param ISession $session
 	 * @param IURLGenerator $urlGenerator
 	 */
-	public function __construct($appName, IRequest $request, Manager $twoFactorManager, IUserSession $userSession,
-		ISession $session, IURLGenerator $urlGenerator) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		Manager $twoFactorManager,
+		IUserSession $userSession,
+		ISession $session,
+		IURLGenerator $urlGenerator
+	) {
 		parent::__construct($appName, $request);
 		$this->twoFactorManager = $twoFactorManager;
 		$this->userSession = $userSession;
@@ -189,8 +195,10 @@ class TwoFactorChallengeController extends Controller {
 			 * information to the user. The exception text is stored in the
 			 * session to be used in showChallenge()
 			 */
-			$this->session->set('two_factor_auth_error_message',
-				$e->getMessage());
+			$this->session->set(
+				'two_factor_auth_error_message',
+				$e->getMessage()
+			);
 		}
 
 		$this->session->set('two_factor_auth_error', true);

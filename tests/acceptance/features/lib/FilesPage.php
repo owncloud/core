@@ -98,7 +98,9 @@ class FilesPage extends FilesPageBasic {
 	 * @param array $parameters
 	 */
 	public function __construct(
-		Session $session, Factory $factory, array $parameters = []
+		Session $session,
+		Factory $factory,
+		array $parameters = []
 	) {
 		parent::__construct($session, $factory, $parameters);
 		$this->filesPageCRUDFunctions = $this->getPage("FilesPageCRUD");
@@ -123,11 +125,14 @@ class FilesPage extends FilesPageBasic {
 	 * @throws ElementNotFoundException|\Exception
 	 */
 	public function createFolder(
-		Session $session, $name = null,
+		Session $session,
+		$name = null,
 		$timeoutMsec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		return $this->filesPageCRUDFunctions->createFolder(
-			$session, $name, $timeoutMsec
+			$session,
+			$name,
+			$timeoutMsec
 		);
 	}
 
@@ -141,10 +146,12 @@ class FilesPage extends FilesPageBasic {
 	 * @return string
 	 */
 	public function getTooltipOfFile(
-		$fileName, Session $session
+		$fileName,
+		Session $session
 	) {
 		return $this->filesPageCRUDFunctions->getTooltipOfFile(
-			$fileName, $session
+			$fileName,
+			$session
 		);
 	}
 
@@ -234,7 +241,10 @@ class FilesPage extends FilesPageBasic {
 		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		$this->filesPageCRUDFunctions->renameFile(
-			$fromFileName, $toFileName, $session, $maxRetries
+			$fromFileName,
+			$toFileName,
+			$session,
+			$maxRetries
 		);
 	}
 
@@ -254,7 +264,10 @@ class FilesPage extends FilesPageBasic {
 		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		$this->filesPageCRUDFunctions->deleteFile(
-			$name, $session, $expectToDeleteFile, $maxRetries
+			$name,
+			$session,
+			$expectToDeleteFile,
+			$maxRetries
 		);
 	}
 
@@ -279,10 +292,16 @@ class FilesPage extends FilesPageBasic {
 	 * @return void
 	 */
 	public function moveFileTo(
-		$name, $destination, Session $session, $maxRetries = STANDARD_RETRY_COUNT
+		$name,
+		$destination,
+		Session $session,
+		$maxRetries = STANDARD_RETRY_COUNT
 	) {
 		$this->filesPageCRUDFunctions->moveFileTo(
-			$name, $destination, $session, $maxRetries
+			$name,
+			$destination,
+			$session,
+			$maxRetries
 		);
 	}
 
@@ -333,7 +352,9 @@ class FilesPage extends FilesPageBasic {
 	 * @return FilesPage
 	 */
 	public function browseToFileId(
-		$fileId, $folderName = '/', $detailsTab = null
+		$fileId,
+		$folderName = '/',
+		$detailsTab = null
 	) {
 		$url = \rtrim($this->getUrl(), '/');
 		$fullUrl = "$url/?dir=$folderName&fileid=$fileId";

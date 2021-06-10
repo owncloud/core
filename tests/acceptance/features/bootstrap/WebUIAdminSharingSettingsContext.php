@@ -81,7 +81,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 */
 	public function adminTogglesShareApiUsingTheWebui($action) {
 		$this->adminSharingSettingsPage->toggleShareApi(
-			$this->getSession(), $action
+			$this->getSession(),
+			$action
 		);
 	}
 
@@ -94,7 +95,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 */
 	public function adminTogglesShareViaLink($action) {
 		$this->adminSharingSettingsPage->toggleShareViaLink(
-			$this->getSession(), $action
+			$this->getSession(),
+			$action
 		);
 	}
 
@@ -232,7 +234,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 */
 	public function adminTogglesPublicUpload($action) {
 		$this->adminSharingSettingsPage->togglePublicUpload(
-			$this->getSession(), $action
+			$this->getSession(),
+			$action
 		);
 	}
 
@@ -245,7 +248,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 */
 	public function adminTogglesMailNotificationOnPublicLinkShare($action) {
 		$this->adminSharingSettingsPage->toggleMailNotification(
-			$this->getSession(), $action
+			$this->getSession(),
+			$action
 		);
 	}
 
@@ -258,7 +262,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 */
 	public function adminTogglesSocialShareOnPublicLinkShare($action) {
 		$this->adminSharingSettingsPage->toggleSocialShareOnPublicLinkShare(
-			$this->getSession(), $action
+			$this->getSession(),
+			$action
 		);
 	}
 
@@ -271,7 +276,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 */
 	public function adminTogglesEnforcePasswordProtectionForReadOnlyLinks($action) {
 		$this->adminSharingSettingsPage->toggleEnforcePasswordProtectionForReadOnlyLinks(
-			$this->getSession(), $action
+			$this->getSession(),
+			$action
 		);
 	}
 
@@ -284,7 +290,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 */
 	public function adminTogglesEnforcePasswordProtectionForReadWriteLinks($action) {
 		$this->adminSharingSettingsPage->toggleEnforcePasswordProtectionForReadWriteLinks(
-			$this->getSession(), $action
+			$this->getSession(),
+			$action
 		);
 	}
 
@@ -297,7 +304,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 */
 	public function adminTogglesEnforcePasswordProtectionForReadWriteDeleteLinks($action) {
 		$this->adminSharingSettingsPage->toggleEnforcePasswordProtectionForReadWriteDeleteLinks(
-			$this->getSession(), $action
+			$this->getSession(),
+			$action
 		);
 	}
 
@@ -310,7 +318,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 */
 	public function adminTogglesEnforcePasswordProtectionForWriteOnlyLinks($action) {
 		$this->adminSharingSettingsPage->toggleEnforcePasswordProtectionForWriteOnlyLinks(
-			$this->getSession(), $action
+			$this->getSession(),
+			$action
 		);
 	}
 
@@ -323,7 +332,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 */
 	public function adminTogglesDisableResharing($action) {
 		$this->adminSharingSettingsPage->toggleResharing(
-			$this->getSession(), $action
+			$this->getSession(),
+			$action
 		);
 	}
 
@@ -336,7 +346,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 */
 	public function adminTogglesSharingWithGroupUsingTheWebui($action) {
 		$this->adminSharingSettingsPage->toggleGroupSharing(
-			$this->getSession(), $action
+			$this->getSession(),
+			$action
 		);
 	}
 
@@ -349,7 +360,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 */
 	public function theAdminRestrictsUsersToOnlyShareWithTheirGroupMemberUsingTheWebui($action) {
 		$this->adminSharingSettingsPage->toggleRestrictUsersToOnlyShareWithTheirGroupMembers(
-			$this->getSession(), $action
+			$this->getSession(),
+			$action
 		);
 	}
 
@@ -483,7 +495,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 */
 	public function theAdministratorAddsGroupToTheExcludeGroupFromSharingList($group) {
 		$this->adminSharingSettingsPage->addGroupToExcludeGroupsFromSharingList(
-			$this->getSession(), $group
+			$this->getSession(),
+			$group
 		);
 	}
 
@@ -496,7 +509,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 */
 	public function theAdministratorExcludesGroupFromReceivingSharesUsingTheWebui($group) {
 		$this->adminSharingSettingsPage->addGroupToExcludedFromReceivingShares(
-			$this->getSession(), $group
+			$this->getSession(),
+			$group
 		);
 	}
 

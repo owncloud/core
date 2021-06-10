@@ -46,10 +46,12 @@ class AccountCheckException extends Exception {
 	 * @param \Throwable|null $previous
 	 * @since 10.0.9
 	 */
-	public function __construct(RedirectResponse $redirectResponse,
-								$message = '',
-								$code = 0,
-								\Throwable $previous = null) {
+	public function __construct(
+		RedirectResponse $redirectResponse,
+		$message = '',
+		$code = 0,
+		\Throwable $previous = null
+	) {
 		parent::__construct($message, $code, $previous);
 		$this->redirectResponse = $redirectResponse;
 	}

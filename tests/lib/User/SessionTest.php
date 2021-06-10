@@ -130,9 +130,17 @@ class SessionTest extends TestCase {
 			->with($expectedUser->getUID())
 			->will($this->returnValue($expectedUser));
 
-		$userSession = new Session($manager, $session, $this->timeFactory,
-			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+		$userSession = new Session(
+			$manager,
+			$session,
+			$this->timeFactory,
+			$this->tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
 		$user = $userSession->getUser();
 		$this->assertSame($expectedUser, $user);
 		$userSession->validateSession();
@@ -188,9 +196,17 @@ class SessionTest extends TestCase {
 			->method('getUID')
 			->will($this->returnValue('foo'));
 
-		$userSession = new Session($manager, $session, $this->timeFactory,
-			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+		$userSession = new Session(
+			$manager,
+			$session,
+			$this->timeFactory,
+			$this->tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
 		$userSession->setUser($user);
 	}
 
@@ -257,14 +273,18 @@ class SessionTest extends TestCase {
 			->getMock();
 		$userSession->expects($this->once())
 			->method('prepareUserLogin');
-		$beforeEvent = new GenericEvent(null,
+		$beforeEvent = new GenericEvent(
+			null,
 			['loginType' => 'password', 'login' => 'foo', 'uid' => 'foo',
 				'_uid' => 'deprecated: please use \'login\', the real uid is not yet known',
-				'password' => 'bar']);
-		$afterEvent = new GenericEvent(null,
+				'password' => 'bar']
+		);
+		$afterEvent = new GenericEvent(
+			null,
 			['loginType' => 'password', 'user' => $user,
 				'uid' => 'foo', 'password' => 'bar'
-			]);
+			]
+		);
 		$eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
 			->withConsecutive(
@@ -305,9 +325,17 @@ class SessionTest extends TestCase {
 			->with('foo', 'bar')
 			->will($this->returnValue($user));
 
-		$userSession = new Session($manager, $session, $this->timeFactory,
-			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+		$userSession = new Session(
+			$manager,
+			$session,
+			$this->timeFactory,
+			$this->tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
 		$userSession->login('foo', 'bar');
 	}
 
@@ -316,9 +344,17 @@ class SessionTest extends TestCase {
 		$session = $this->createMock(Memory::class);
 		/** @var Manager | \PHPUnit\Framework\MockObject\MockObject $manager */
 		$manager = $this->createMock(Manager::class);
-		$userSession = new Session($manager, $session, $this->timeFactory,
-			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+		$userSession = new Session(
+			$manager,
+			$session,
+			$this->timeFactory,
+			$this->tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
 
 		$user = $this->createMock(IUser::class);
 
@@ -349,9 +385,17 @@ class SessionTest extends TestCase {
 		$session = $this->createMock(Memory::class);
 		/** @var Manager | \PHPUnit\Framework\MockObject\MockObject $manager */
 		$manager = $this->createMock(Manager::class);
-		$userSession = new Session($manager, $session, $this->timeFactory,
-			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+		$userSession = new Session(
+			$manager,
+			$session,
+			$this->timeFactory,
+			$this->tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
 
 		$session->expects($this->never())
 			->method('set');
@@ -379,9 +423,17 @@ class SessionTest extends TestCase {
 		$session = $this->createMock(Memory::class);
 		/** @var Manager | \PHPUnit\Framework\MockObject\MockObject $manager */
 		$manager = $this->createMock(Manager::class);
-		$userSession = new Session($manager, $session, $this->timeFactory,
-			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+		$userSession = new Session(
+			$manager,
+			$session,
+			$this->timeFactory,
+			$this->tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
 		$username = 'user123';
 		$token = new DefaultToken();
 		$token->setLoginName($username);
@@ -629,16 +681,26 @@ class SessionTest extends TestCase {
 		$token = 'goodToken';
 		\OC::$server->getConfig()->setUserValue('foo', 'login_token', $token, \time());
 
-		$userSession = new Session($manager, $session, $this->timeFactory,
-			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+		$userSession = new Session(
+			$manager,
+			$session,
+			$this->timeFactory,
+			$this->tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
 
 		$calledLoginFailedEvent = [];
-		$this->eventDispatcher->addListener('user.loginfailed',
+		$this->eventDispatcher->addListener(
+			'user.loginfailed',
 			function (GenericEvent $event) use (&$calledLoginFailedEvent) {
 				$calledLoginFailedEvent[] = 'user.loginfailed';
 				$calledLoginFailedEvent[] = $event;
-			});
+			}
+		);
 
 		$granted = $userSession->loginWithCookie('foo', 'badToken');
 
@@ -675,9 +737,17 @@ class SessionTest extends TestCase {
 		$token = 'goodToken';
 		\OC::$server->getConfig()->setUserValue('foo', 'login_token', $token, \time());
 
-		$userSession = new Session($manager, $session, $this->timeFactory,
-			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+		$userSession = new Session(
+			$manager,
+			$session,
+			$this->timeFactory,
+			$this->tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
 		$granted = $userSession->loginWithCookie('foo', $token);
 
 		$this->assertFalse($granted);
@@ -727,9 +797,17 @@ class SessionTest extends TestCase {
 		/** @var ISession | \PHPUnit\Framework\MockObject\MockObject $session */
 		$session = $this->createMock(ISession::class);
 		$user = $this->createMock(IUser::class);
-		$userSession = new Session($manager, $session, $this->timeFactory,
-			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+		$userSession = new Session(
+			$manager,
+			$session,
+			$this->timeFactory,
+			$this->tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
 
 		$random = $this->createMock(ISecureRandom::class);
 		$config = $this->createMock(IConfig::class);
@@ -776,9 +854,17 @@ class SessionTest extends TestCase {
 		/** @var IToken | \PHPUnit\Framework\MockObject\MockObject $token */
 		$token = $this->createMock(IToken::class);
 		$user = $this->createMock(IUser::class);
-		$userSession = new Session($manager, $session, $this->timeFactory,
-			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+		$userSession = new Session(
+			$manager,
+			$session,
+			$this->timeFactory,
+			$this->tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
 
 		$random = $this->createMock(ISecureRandom::class);
 		$config = $this->createMock(IConfig::class);
@@ -827,9 +913,17 @@ class SessionTest extends TestCase {
 			->getMock();
 		/** @var ISession | \PHPUnit\Framework\MockObject\MockObject $session */
 		$session = $this->createMock(ISession::class);
-		$userSession = new Session($manager, $session, $this->timeFactory,
-			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+		$userSession = new Session(
+			$manager,
+			$session,
+			$this->timeFactory,
+			$this->tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
 		/** @var IRequest $request */
 		$request = $this->createMock(IRequest::class);
 
@@ -855,9 +949,17 @@ class SessionTest extends TestCase {
 			->method('invalidateToken')
 			->with($this->equalTo('sessionid'));
 
-		$userSession = new Session($manager, $session, $this->timeFactory,
-			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+		$userSession = new Session(
+			$manager,
+			$session,
+			$this->timeFactory,
+			$this->tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
 		$this->assertNull($userSession->invalidateSessionToken());
 	}
 
@@ -1005,9 +1107,17 @@ class SessionTest extends TestCase {
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		/** @var IProvider | \PHPUnit\Framework\MockObject\MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
-		$userSession = new Session($userManager, $session, $timeFactory,
-			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+		$userSession = new Session(
+			$userManager,
+			$session,
+			$timeFactory,
+			$tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
 
 		$password = '123456';
 		$sessionId ='session1234';
@@ -1036,9 +1146,17 @@ class SessionTest extends TestCase {
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		/** @var IProvider | \PHPUnit\Framework\MockObject\MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
-		$userSession = new Session($userManager, $session, $timeFactory,
-			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+		$userSession = new Session(
+			$userManager,
+			$session,
+			$timeFactory,
+			$tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
 
 		$session->expects($this->once())
 			->method('getId')
@@ -1056,9 +1174,17 @@ class SessionTest extends TestCase {
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		/** @var IProvider | \PHPUnit\Framework\MockObject\MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
-		$userSession = new Session($userManager, $session, $timeFactory,
-			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+		$userSession = new Session(
+			$userManager,
+			$session,
+			$timeFactory,
+			$tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
 
 		$password = '123456';
 		$sessionId ='session1234';
@@ -1095,9 +1221,17 @@ class SessionTest extends TestCase {
 			->method('getUID')
 			->will($this->returnValue('foo'));
 
-		$userSession = new Session($manager, $session, $this->timeFactory,
-			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+		$userSession = new Session(
+			$manager,
+			$session,
+			$this->timeFactory,
+			$this->tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
 		$userSession->setUser($user);
 
 		$called['cancel'] = false;
@@ -1176,9 +1310,17 @@ class SessionTest extends TestCase {
 		/** @var IProvider | \PHPUnit\Framework\MockObject\MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
 		$eventDispatcher = $this->createMock(EventDispatcher::class);
-		$userSession = new Session($userManager, $session, $timeFactory,
-			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $eventDispatcher);
+		$userSession = new Session(
+			$userManager,
+			$session,
+			$timeFactory,
+			$tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$eventDispatcher
+		);
 
 		// Fail if not userid returned
 		$apacheBackend = $this->createMock(IApacheBackend::class);
@@ -1205,9 +1347,17 @@ class SessionTest extends TestCase {
 		/** @var IProvider | \PHPUnit\Framework\MockObject\MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
 		$eventDispatcher = $this->createMock(EventDispatcher::class);
-		$userSession = new Session($userManager, $session, $timeFactory,
-			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $eventDispatcher);
+		$userSession = new Session(
+			$userManager,
+			$session,
+			$timeFactory,
+			$tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$eventDispatcher
+		);
 
 		$apacheBackend = $this->createMock(IApacheBackend::class);
 		$userInterface = $this->createMock(UserInterface::class);
@@ -1237,9 +1387,17 @@ class SessionTest extends TestCase {
 		/** @var IProvider | \PHPUnit\Framework\MockObject\MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
 		$eventDispatcher = $this->createMock(EventDispatcher::class);
-		$userSession = new Session($userManager, $session, $timeFactory,
-			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $eventDispatcher);
+		$userSession = new Session(
+			$userManager,
+			$session,
+			$timeFactory,
+			$tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$eventDispatcher
+		);
 
 		$apacheBackend = $this->createMock(IApacheBackend::class);
 		$userInterface = $this->createMock(UserInterface::class);
@@ -1282,14 +1440,24 @@ class SessionTest extends TestCase {
 		/** @var IProvider | \PHPUnit\Framework\MockObject\MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
 		$eventDispatcher = $this->createMock(EventDispatcher::class);
-		$userSession = new Session($userManager, $session, $timeFactory,
-			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $eventDispatcher);
+		$userSession = new Session(
+			$userManager,
+			$session,
+			$timeFactory,
+			$tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$eventDispatcher
+		);
 
-		$beforeEvent = new GenericEvent(null,
+		$beforeEvent = new GenericEvent(
+			null,
 			['loginType' => 'password', 'login' => 'foo', 'uid' => 'foo',
 				'_uid' => 'deprecated: please use \'login\', the real uid is not yet known',
-				'password' => 'foo']);
+				'password' => 'foo']
+		);
 		$failedLogin = new GenericEvent(null, ['user' => 'foo']);
 		$eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
@@ -1323,14 +1491,24 @@ class SessionTest extends TestCase {
 
 		$userManager->expects($this->once())->method('checkPassword')->willReturn($iUser);
 
-		$userSession = new Session($userManager, $session, $timeFactory,
-			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $eventDispatcher);
+		$userSession = new Session(
+			$userManager,
+			$session,
+			$timeFactory,
+			$tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$eventDispatcher
+		);
 
-		$beforeEvent = new GenericEvent(null,
+		$beforeEvent = new GenericEvent(
+			null,
 			['loginType' => 'password', 'login' => 'foo', 'uid' => 'foo',
 				'_uid' => 'deprecated: please use \'login\', the real uid is not yet known',
-				'password' => 'foopass']);
+				'password' => 'foopass']
+		);
 		$afterEvent = new GenericEvent(null, ['loginType' => 'password', 'user' => $iUser, 'uid' => 'foo', 'password' => 'foopass']);
 		$eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
@@ -1355,9 +1533,17 @@ class SessionTest extends TestCase {
 		/** @var IProvider | \PHPUnit\Framework\MockObject\MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
 		$eventDispatcher = $this->createMock(EventDispatcher::class);
-		$userSession = new Session($userManager, $session, $timeFactory,
-			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $eventDispatcher);
+		$userSession = new Session(
+			$userManager,
+			$session,
+			$timeFactory,
+			$tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$eventDispatcher
+		);
 
 		$iToken = $this->createMock(IToken::class);
 		$iToken->expects($this->once())
@@ -1396,9 +1582,17 @@ class SessionTest extends TestCase {
 		/** @var IProvider | \PHPUnit\Framework\MockObject\MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
 		$eventDispatcher = $this->createMock(EventDispatcher::class);
-		$userSession = new Session($userManager, $session, $timeFactory,
-			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $eventDispatcher);
+		$userSession = new Session(
+			$userManager,
+			$session,
+			$timeFactory,
+			$tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$eventDispatcher
+		);
 
 		$iToken = $this->createMock(IToken::class);
 		$iToken->expects($this->once())
@@ -1422,14 +1616,18 @@ class SessionTest extends TestCase {
 			->method('get')
 			->willReturn($iUser);
 
-		$beforeEvent = new GenericEvent(null,
+		$beforeEvent = new GenericEvent(
+			null,
 			[
 				'login' => 'foo', 'uid' => 'foo', 'password' => 'foobar', 'loginType' => 'token'
-			]);
-		$afterEvent = new GenericEvent(null,
+			]
+		);
+		$afterEvent = new GenericEvent(
+			null,
 			[
 				'user' => $iUser, 'login' => 'foo', 'uid' => 'foo', 'password' => 'foobar', 'loginType' => 'token'
-			]);
+			]
+		);
 
 		$eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
@@ -1561,9 +1759,17 @@ class SessionTest extends TestCase {
 		/** @var IProvider | \PHPUnit\Framework\MockObject\MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
 		$eventDispatcher = $this->createMock(EventDispatcher::class);
-		$userSession = new Session($userManager, $session, $timeFactory,
-			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $eventDispatcher);
+		$userSession = new Session(
+			$userManager,
+			$session,
+			$timeFactory,
+			$tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$eventDispatcher
+		);
 
 		$failedEvent = new GenericEvent(null, ['user' => null]);
 		$eventDispatcher->expects($this->once())
@@ -1585,9 +1791,17 @@ class SessionTest extends TestCase {
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		/** @var IProvider | \PHPUnit\Framework\MockObject\MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
-		$userSession = new Session($userManager, $session, $timeFactory,
-			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+		$userSession = new Session(
+			$userManager,
+			$session,
+			$timeFactory,
+			$tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$this->eventDispatcher
+		);
 
 		$iUser = $this->createMock(IUser::class);
 		$iUser->expects($this->any())
@@ -1616,9 +1830,17 @@ class SessionTest extends TestCase {
 		/** @var IProvider | \PHPUnit\Framework\MockObject\MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
 		$eventDispatcher = $this->createMock(EventDispatcher::class);
-		$userSession = new Session($userManager, $session, $timeFactory,
-			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $eventDispatcher);
+		$userSession = new Session(
+			$userManager,
+			$session,
+			$timeFactory,
+			$tokenProvider,
+			$this->config,
+			$this->logger,
+			$this->serviceLoader,
+			$this->userSyncService,
+			$eventDispatcher
+		);
 
 		$failedEvent = new GenericEvent(null, ['user' => 'foo']);
 		$eventDispatcher->expects($this->once())

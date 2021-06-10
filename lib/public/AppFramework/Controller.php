@@ -69,8 +69,10 @@ abstract class Controller {
 	 * @param IRequest $request an instance of the request
 	 * @since 6.0.0 - parameter $appName was added in 7.0.0 - parameter $app was removed in 7.0.0
 	 */
-	public function __construct($appName,
-								IRequest $request) {
+	public function __construct(
+		$appName,
+		IRequest $request
+	) {
 		$this->appName = $appName;
 		$this->request = $request;
 
@@ -233,8 +235,12 @@ abstract class Controller {
 	 * @return \OCP\AppFramework\Http\TemplateResponse containing the page
 	 * @since 6.0.0
 	 */
-	public function render($templateName, array $params= [],
-							$renderAs='user', array $headers= []) {
+	public function render(
+		$templateName,
+		array $params= [],
+		$renderAs='user',
+		array $headers= []
+	) {
 		$response = new TemplateResponse($this->appName, $templateName);
 		$response->setParams($params);
 		$response->renderAs($renderAs);

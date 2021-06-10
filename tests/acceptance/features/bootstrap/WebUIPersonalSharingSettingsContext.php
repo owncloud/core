@@ -65,7 +65,8 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 	 */
 	public function switchAutoAcceptingLocalShares($action) {
 		$this->personalSharingSettingsPage->toggleAutoAcceptingLocalShares(
-			$this->getSession(), $action
+			$this->getSession(),
+			$action
 		);
 	}
 
@@ -78,7 +79,8 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 	 */
 	public function switchAutoAcceptingFederatedShares($action) {
 		$this->personalSharingSettingsPage->toggleAutoAcceptingFederatedShares(
-			$this->getSession(), $action
+			$this->getSession(),
+			$action
 		);
 	}
 
@@ -91,7 +93,8 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 	 */
 	public function switchAllowFindingYouViaAutocompleteInShareDialog($action) {
 		$this->personalSharingSettingsPage->toggleFindingYouViaAutocomplete(
-			$this->getSession(), $action
+			$this->getSession(),
+			$action
 		);
 	}
 

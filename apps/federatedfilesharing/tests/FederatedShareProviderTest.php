@@ -892,7 +892,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->with('files_sharing', 'cronjob_scan_external_enabled', 'no')
 			->willReturn($isEnabled);
 
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->provider->isCronjobScanExternalEnabled()
 		);
 	}
@@ -908,7 +909,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->with('files_sharing', 'outgoing_server2server_share_enabled', 'yes')
 			->willReturn($isEnabled);
 
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->provider->isOutgoingServer2serverShareEnabled()
 		);
 	}
@@ -924,7 +926,8 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			->with('files_sharing', 'incoming_server2server_share_enabled', 'yes')
 			->willReturn($isEnabled);
 
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->provider->isIncomingServer2serverShareEnabled()
 		);
 	}

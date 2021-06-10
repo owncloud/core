@@ -119,7 +119,8 @@ class ConnectionFactory {
 		switch ($normalizedType) {
 			case 'mysql':
 				$eventManager->addEventSubscriber(
-					new SQLSessionInit('SET SESSION AUTOCOMMIT=1'));
+					new SQLSessionInit('SET SESSION AUTOCOMMIT=1')
+				);
 				break;
 			case 'oci':
 				$eventManager->addEventSubscriber(new OracleSessionInit);

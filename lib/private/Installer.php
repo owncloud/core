@@ -352,11 +352,11 @@ class Installer {
 				->verifyAppSignature(
 					$info['id'],
 					$extractDir
-			);
+				);
 			if ($integrityResult !== []) {
 				$e = new \Exception(
-						$l->t(
-								'Signature could not get checked. Please contact the app developer and check your admin screen.'
+					$l->t(
+							'Signature could not get checked. Please contact the app developer and check your admin screen.'
 						)
 				);
 				throw $e;

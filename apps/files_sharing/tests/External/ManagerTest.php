@@ -138,10 +138,11 @@ class ManagerTest extends TestCase {
 
 		$this->eventDispatcher->expects($this->at(0))
 			->method('dispatch')
-			->with(AcceptShare::class, $this->callback(function ($event) use ($openShares) {
+			->with(AcceptShare::class, $this->callback(
+				function ($event) use ($openShares) {
 				return $this->verifyShareEvent($event, $openShares[0], AcceptShare::class);
 			}
-				));
+			));
 
 		$event = new GenericEvent(null, ['sharedItem' => '/SharedFolder', 'shareAcceptedFrom' => 'foobar', 'remoteUrl' => 'http://localhost']);
 		$this->eventDispatcher->expects($this->at(1))
@@ -181,7 +182,8 @@ class ManagerTest extends TestCase {
 
 		$this->eventDispatcher->expects($this->at(0))
 			->method('dispatch')
-			->with(DeclineShare::class, $this->callback(function ($event) use ($openShares) {
+			->with(DeclineShare::class, $this->callback(
+				function ($event) use ($openShares) {
 				return $this->verifyShareEvent($event, $openShares[1], DeclineShare::class);
 			}
 			));
@@ -215,13 +217,15 @@ class ManagerTest extends TestCase {
 
 		$this->eventDispatcher->expects($this->at(0))
 			->method('dispatch')
-			->with(DeclineShare::class, $this->callback(function ($event) use ($openShares) {
+			->with(DeclineShare::class, $this->callback(
+				function ($event) use ($openShares) {
 				return $this->verifyShareEvent($event, $openShares[0], DeclineShare::class);
 			}
 			));
 		$this->eventDispatcher->expects($this->at(1))
 			->method('dispatch')
-			->with(DeclineShare::class, $this->callback(function ($event) use ($acceptedShares) {
+			->with(DeclineShare::class, $this->callback(
+				function ($event) use ($acceptedShares) {
 				return $this->verifyShareEvent($event, $acceptedShares[0], DeclineShare::class);
 			}
 			));

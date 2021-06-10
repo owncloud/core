@@ -35,7 +35,7 @@ use Sabre\VObject\Reader;
 use Sabre\VObject\UUIDUtil;
 
 class BirthdayService {
-	const BIRTHDAY_CALENDAR_URI = 'contact_birthdays';
+	public const BIRTHDAY_CALENDAR_URI = 'contact_birthdays';
 
 	/** @var GroupPrincipalBackend */
 	private $principalBackend;

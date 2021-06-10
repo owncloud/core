@@ -47,7 +47,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package OCA\FederatedFileSharing
  */
 class FederatedShareProvider implements IShareProvider {
-	const SHARE_TYPE_REMOTE = 6;
+	public const SHARE_TYPE_REMOTE = 6;
 
 	/** @var IDBConnection */
 	private $dbConnection;
@@ -100,16 +100,16 @@ class FederatedShareProvider implements IShareProvider {
 	 * @param IUserManager $userManager
 	 */
 	public function __construct(
-			IDBConnection $connection,
-			EventDispatcherInterface $eventDispatcher,
-			AddressHandler $addressHandler,
-			Notifications $notifications,
-			TokenHandler $tokenHandler,
-			IL10N $l10n,
-			ILogger $logger,
-			IRootFolder $rootFolder,
-			IConfig $config,
-			IUserManager $userManager
+		IDBConnection $connection,
+		EventDispatcherInterface $eventDispatcher,
+		AddressHandler $addressHandler,
+		Notifications $notifications,
+		TokenHandler $tokenHandler,
+		IL10N $l10n,
+		ILogger $logger,
+		IRootFolder $rootFolder,
+		IConfig $config,
+		IUserManager $userManager
 	) {
 		$this->dbConnection = $connection;
 		$this->eventDispatcher = $eventDispatcher;
@@ -265,8 +265,10 @@ class FederatedShareProvider implements IShareProvider {
 			if ($status === false) {
 				$msg = $result['ocs']['meta']['message'] ?? false;
 				if (!$msg) {
-					$message_t = $this->l->t('Sharing %s failed, could not find %s, maybe the server is currently unreachable.',
-						[$share->getNode()->getName(), $share->getSharedWith()]);
+					$message_t = $this->l->t(
+						'Sharing %s failed, could not find %s, maybe the server is currently unreachable.',
+						[$share->getNode()->getName(), $share->getSharedWith()]
+					);
 				} else {
 					$message_t = $this->l->t("Federated Sharing failed: %s", [$msg]);
 				}
@@ -1071,7 +1073,8 @@ class FederatedShareProvider implements IShareProvider {
 		$query->select('*')->from($this->externalShareTable)
 			->where(
 				$query->expr()->eq(
-					'remote_id', $query->createNamedParameter($remoteId)
+					'remote_id',
+					$query->createNamedParameter($remoteId)
 				)
 			)
 			->andWhere(

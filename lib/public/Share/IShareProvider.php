@@ -44,12 +44,12 @@ interface IShareProvider {
 	 * Store when the share expires. An expired share needs to be automatically
 	 * deleted. If a share won't expire, a "null" value will be used
 	 */
-	const CAPABILITY_STORE_EXPIRATION = 'shareExpiration';
+	public const CAPABILITY_STORE_EXPIRATION = 'shareExpiration';
 	/**
 	 * Store the (hashed) password to protect the share. A value of null means
 	 * that the share isn't protected by a password.
 	 */
-	const CAPABILITY_STORE_PASSWORD = 'passwordProtected';
+	public const CAPABILITY_STORE_PASSWORD = 'passwordProtected';
 
 	/**
 	 * Return the identifier of this provider.

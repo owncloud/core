@@ -31,7 +31,7 @@ use OCP\Security\ICredentialsManager;
  * @package OC\Security
  */
 class CredentialsManager implements ICredentialsManager {
-	const DB_TABLE = 'credentials';
+	public const DB_TABLE = 'credentials';
 
 	/** @var ICrypto */
 	protected $crypto;

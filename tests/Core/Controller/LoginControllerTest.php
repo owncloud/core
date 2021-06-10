@@ -334,8 +334,10 @@ class LoginControllerTest extends TestCase {
 	 * @param $canChangePassword
 	 * @param $expectedResult
 	 */
-	public function testShowLoginFormWithPasswordResetOption($canChangePassword,
-															 $expectedResult) {
+	public function testShowLoginFormWithPasswordResetOption(
+		$canChangePassword,
+		$expectedResult
+	) {
 		$this->userSession
 			->expects($this->once())
 			->method('isLoggedIn')

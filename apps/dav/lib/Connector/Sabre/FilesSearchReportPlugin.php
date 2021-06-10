@@ -32,8 +32,8 @@ use OC\Search\Result\File as FileResult;
 
 class FilesSearchReportPlugin extends ServerPlugin {
 	// namespace
-	const NS_OWNCLOUD = 'http://owncloud.org/ns';
-	const REPORT_NAME = '{http://owncloud.org/ns}search-files';
+	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
+	public const REPORT_NAME = '{http://owncloud.org/ns}search-files';
 
 	/**
 	 * Reference to main server object

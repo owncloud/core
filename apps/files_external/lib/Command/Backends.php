@@ -35,7 +35,8 @@ class Backends extends Base {
 	/** @var IStoragesBackendService */
 	private $backendService;
 
-	public function __construct(IStoragesBackendService $backendService
+	public function __construct(
+		IStoragesBackendService $backendService
 	) {
 		parent::__construct();
 

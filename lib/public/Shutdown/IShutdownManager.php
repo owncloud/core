@@ -28,8 +28,8 @@ namespace OCP\Shutdown;
  * @since 10.0.10
  */
 interface IShutdownManager {
-	const HIGH = 10;
-	const LOW = 1000;
+	public const HIGH = 10;
+	public const LOW = 1000;
 
 	/**
 	 * Any kind of cleanup should be added with priority LOW.

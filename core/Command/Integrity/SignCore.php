@@ -47,8 +47,10 @@ class SignCore extends Command {
 	 * @param Checker $checker
 	 * @param FileAccessHelper $fileAccessHelper
 	 */
-	public function __construct(Checker $checker,
-								FileAccessHelper $fileAccessHelper) {
+	public function __construct(
+		Checker $checker,
+		FileAccessHelper $fileAccessHelper
+	) {
 		parent::__construct(null);
 		$this->checker = $checker;
 		$this->fileAccessHelper = $fileAccessHelper;

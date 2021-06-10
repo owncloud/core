@@ -53,7 +53,10 @@ class SearchContext implements Context {
 	 * @return void
 	 */
 	public function userSearchesUsingWebDavAPI(
-		$user, $pattern, $limit = null, TableNode $properties = null
+		$user,
+		$pattern,
+		$limit = null,
+		TableNode $properties = null
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$baseUrl = $this->featureContext->getBaseUrl();
@@ -78,7 +81,13 @@ class SearchContext implements Context {
 		}
 		$body .= "	</oc:search-files>";
 		$response = WebDavHelper::makeDavRequest(
-			$baseUrl, $user, $password, "REPORT", "/", null, $body,
+			$baseUrl,
+			$user,
+			$password,
+			"REPORT",
+			"/",
+			null,
+			$body,
 			$this->featureContext->getDavPathVersion()
 		);
 		$this->featureContext->setResponse($response);
@@ -95,34 +104,41 @@ class SearchContext implements Context {
 	 * @throws Exception
 	 */
 	public function fileOrFolderInTheSearchResultShouldContainProperties(
-		$path, $user, TableNode $properties
+		$path,
+		$user,
+		TableNode $properties
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeColumns($properties, ['name', 'value']);
 		$properties = $properties->getHash();
 		$fileResult = $this->featureContext->findEntryFromPropfindResponse(
-			$path, $user
+			$path,
+			$user
 		);
 		Assert::assertNotFalse(
-			$fileResult, "could not find file/folder '$path'"
+			$fileResult,
+			"could not find file/folder '$path'"
 		);
 		$fileProperties = $fileResult['value'][1]['value'][0]['value'];
 		foreach ($properties as $property) {
 			$foundProperty = false;
 			$property['value'] = $this->featureContext->substituteInLineCodes(
-				$property['value'], $user
+				$property['value'],
+				$user
 			);
 			foreach ($fileProperties as $fileProperty) {
 				if ($fileProperty['name'] === $property['name']) {
 					Assert::assertRegExp(
-						"/" . $property['value'] . "/", $fileProperty['value']
+						"/" . $property['value'] . "/",
+						$fileProperty['value']
 					);
 					$foundProperty = true;
 					break;
 				}
 			}
 			Assert::assertTrue(
-				$foundProperty, "could not find property '" . $property['name'] . "'"
+				$foundProperty,
+				"could not find property '" . $property['name'] . "'"
 			);
 		}
 	}
@@ -154,7 +170,8 @@ class SearchContext implements Context {
 	 * @throws Exception
 	 */
 	public function theSearchResultByTagsForUserShouldContainTheseEntries(
-		$user, TableNode $expectedEntries
+		$user,
+		TableNode $expectedEntries
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeColumnsCount($expectedEntries, 1);

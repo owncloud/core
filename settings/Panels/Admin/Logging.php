@@ -37,9 +37,11 @@ class Logging implements ISettings {
 	/** @var Helper  */
 	protected $helper;
 
-	public function __construct(IConfig $config,
-								IURLGenerator $urlGenerator,
-								Helper $helper) {
+	public function __construct(
+		IConfig $config,
+		IURLGenerator $urlGenerator,
+		Helper $helper
+	) {
 		$this->config = $config;
 		$this->urlGenerator = $urlGenerator;
 		$this->helper = $helper;

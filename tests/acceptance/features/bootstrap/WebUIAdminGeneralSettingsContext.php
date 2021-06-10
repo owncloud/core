@@ -87,7 +87,8 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 		TableNode $emailSettingsTable
 	) {
 		$this->adminGeneralSettingsPage->setEmailServerSettings(
-			$this->getSession(), $emailSettingsTable
+			$this->getSession(),
+			$emailSettingsTable
 		);
 	}
 
@@ -254,7 +255,8 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 			$this->appParameterValues
 		);
 		SetupHelper::setSystemConfig(
-			"loglevel", $this->logLevelValue
+			"loglevel",
+			$this->logLevelValue
 		);
 	}
 }

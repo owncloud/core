@@ -127,7 +127,7 @@ class BirthdayServiceTest extends TestCase {
 				[1234, 'default-gump.vcf.ics', "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Sabre//Sabre VObject 4.3.5//EN\r\nCALSCALE:GREGORIAN\r\nEND:VCALENDAR\r\n"],
 				[1234, 'default-gump.vcf-death.ics', "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Sabre//Sabre VObject 4.3.5//EN\r\nCALSCALE:GREGORIAN\r\nEND:VCALENDAR\r\n"],
 				[1234, 'default-gump.vcf-anniversary.ics', "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Sabre//Sabre VObject 4.3.5//EN\r\nCALSCALE:GREGORIAN\r\nEND:VCALENDAR\r\n"]
-				);
+			);
 		}
 		if ($expectedOp === 'update') {
 			$service->expects($this->exactly(3))->method('buildDateFromContact')->willReturn(new VCalendar());
@@ -137,7 +137,7 @@ class BirthdayServiceTest extends TestCase {
 				[1234, 'default-gump.vcf.ics', "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Sabre//Sabre VObject 4.3.5//EN\r\nCALSCALE:GREGORIAN\r\nEND:VCALENDAR\r\n"],
 				[1234, 'default-gump.vcf-death.ics', "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Sabre//Sabre VObject 4.3.5//EN\r\nCALSCALE:GREGORIAN\r\nEND:VCALENDAR\r\n"],
 				[1234, 'default-gump.vcf-anniversary.ics', "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Sabre//Sabre VObject 4.3.5//EN\r\nCALSCALE:GREGORIAN\r\nEND:VCALENDAR\r\n"]
-				);
+			);
 		}
 
 		$service->onCardChanged(666, 'gump.vcf', '');

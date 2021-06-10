@@ -93,7 +93,9 @@ class OccContext implements Context {
 		if ($this->doTechPreview) {
 			if (!$this->isTechPreviewEnabled()) {
 				$this->addSystemConfigKeyUsingTheOccCommand(
-					"dav.enable.tech_preview", "true", "boolean"
+					"dav.enable.tech_preview",
+					"true",
+					"boolean"
 				);
 				$this->techPreviewEnabled = true;
 				return true;
@@ -151,11 +153,14 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function invokingTheCommandWithEnvVariable(
-		$cmd, $envVariableName, $envVariableValue
+		$cmd,
+		$envVariableName,
+		$envVariableValue
 	) {
 		$args = [$cmd];
 		$this->featureContext->runOccWithEnvVariables(
-			$args, [$envVariableName => $envVariableValue]
+			$args,
+			[$envVariableName => $envVariableValue]
 		);
 	}
 
@@ -276,7 +281,8 @@ class OccContext implements Context {
 	 */
 	public function scanFileSystemPathUsingTheOccCommand($path, $user = null) {
 		$path = $this->featureContext->substituteInLineCodes(
-			$path, $user
+			$path,
+			$user
 		);
 		$this->invokingTheCommand(
 			"files:scan --path='$path'"
@@ -355,7 +361,9 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function addSystemConfigKeyUsingTheOccCommand(
-		$key, $value, $type = "string"
+		$key,
+		$value,
+		$type = "string"
 	) {
 		$this->invokingTheCommand(
 			"config:system:set --value '${value}' --type ${type} ${key}"
@@ -559,7 +567,8 @@ class OccContext implements Context {
 	public function theAdministratorInvokesOccCommandForUser($cmd, $user) {
 		$user = $this->featureContext->getActualUsername($user);
 		$cmd = $this->featureContext->substituteInLineCodes(
-			$cmd, $user
+			$cmd,
+			$user
 		);
 		$this->invokingTheCommand($cmd);
 	}
@@ -626,7 +635,9 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorInvokesOccCommandWithEnvironmentVariable(
-		$cmd, $envVariableName, $envVariableValue
+		$cmd,
+		$envVariableName,
+		$envVariableValue
 	) {
 		$this->invokingTheCommandWithEnvVariable(
 			$cmd,
@@ -646,7 +657,9 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasInvokedOccCommandWithEnvironmentVariable(
-		$cmd, $envVariableName, $envVariableValue
+		$cmd,
+		$envVariableName,
+		$envVariableValue
 	) {
 		$this->invokingTheCommandWithEnvVariable(
 			$cmd,
@@ -782,7 +795,8 @@ class OccContext implements Context {
 		// end of the captured string, so trim them.
 		$text = \trim($text, $text[0]);
 		$text = $this->featureContext->substituteInLineCodes(
-			$text, $user
+			$text,
+			$user
 		);
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lines = SetupHelper::findLines(
@@ -866,7 +880,8 @@ class OccContext implements Context {
 			return;
 		}
 		$this->addSystemConfigKeyUsingTheOccCommand(
-			"share_folder", $folder
+			"share_folder",
+			$folder
 		);
 	}
 
@@ -880,7 +895,8 @@ class OccContext implements Context {
 	 */
 	public function theAdministratorHasSetTheMailSmtpmodeTo($smtpmode) {
 		$this->addSystemConfigKeyUsingTheOccCommand(
-			"mail_smtpmode", $smtpmode
+			"mail_smtpmode",
+			$smtpmode
 		);
 	}
 
@@ -1251,7 +1267,10 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function addRemoveUserOrGroupToOrFromMount(
-		$action, $userOrGroup, $userOrGroupName, $mountName
+		$action,
+		$userOrGroup,
+		$userOrGroupName,
+		$mountName
 	) {
 		if ($action === "adds" || $action === "added") {
 			$action = "--add";
@@ -1284,7 +1303,9 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function addRemoveUserOrGroupToOrFromLastLocalMount(
-		$action, $userOrGroup, $userOrGroupName
+		$action,
+		$userOrGroup,
+		$userOrGroupName
 	) {
 		$storageIds = $this->featureContext->getStorageIds();
 		Assert::assertGreaterThan(
@@ -1294,7 +1315,10 @@ class OccContext implements Context {
 		);
 		$lastMountName = \end($storageIds);
 		$this->addRemoveUserOrGroupToOrFromMount(
-			$action, $userOrGroup, $userOrGroupName, $lastMountName
+			$action,
+			$userOrGroup,
+			$userOrGroupName,
+			$lastMountName
 		);
 	}
 
@@ -1309,7 +1333,9 @@ class OccContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theAdminAddsRemovesAsTheApplicableUserLastLocalMountUsingTheOccCommand(
-		$action, $userOrGroup, $user
+		$action,
+		$userOrGroup,
+		$user
 	) {
 		$this->addRemoveUserOrGroupToOrFromLastLocalMount(
 			$action,
@@ -1329,7 +1355,9 @@ class OccContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theAdminHasAddedRemovedAsTheApplicableUserLastLocalMountUsingTheOccCommand(
-		$action, $userOrGroup, $user
+		$action,
+		$userOrGroup,
+		$user
 	) {
 		$this->addRemoveUserOrGroupToOrFromLastLocalMount(
 			$action,
@@ -1351,7 +1379,10 @@ class OccContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theAdminAddsRemovesAsTheApplicableUserForMountUsingTheOccCommand(
-		$action, $userOrGroup, $user, $mount
+		$action,
+		$userOrGroup,
+		$user,
+		$mount
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->addRemoveUserOrGroupToOrFromMount(
@@ -1393,7 +1424,10 @@ class OccContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theAdminHasAddedRemovedTheApplicableUserForMountUsingTheOccCommand(
-		$action, $userOrGroup, $user, $mount
+		$action,
+		$userOrGroup,
+		$user,
+		$mount
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->addRemoveUserOrGroupToOrFromMount(
@@ -2315,7 +2349,9 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorAddsSystemConfigKeyWithValueUsingTheOccCommand(
-		$key, $value, $type = "string"
+		$key,
+		$value,
+		$type = "string"
 	) {
 		$this->addSystemConfigKeyUsingTheOccCommand(
 			$key,
@@ -2336,7 +2372,9 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorHasAddedSystemConfigKeyWithValueUsingTheOccCommand(
-		$key, $value, $type = "string"
+		$key,
+		$value,
+		$type = "string"
 	) {
 		$this->addSystemConfigKeyUsingTheOccCommand(
 			$key,
@@ -2427,7 +2465,8 @@ class OccContext implements Context {
 		$jobId = $this->lastDeletedJobId;
 		$match = $this->getLastJobIdForJob($job);
 		Assert::assertNotEquals(
-			$jobId, $match,
+			$jobId,
+			$match,
 			"job $job with jobId $jobId" .
 			" was not expected to be listed in background queue, but was"
 		);
@@ -2602,10 +2641,13 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function theSystemConfigKeyFromLastCommandOutputShouldContainValue(
-		$key, $value, $type
+		$key,
+		$value,
+		$type
 	) {
 		$configList = \json_decode(
-			$this->featureContext->getStdOutOfOccCommand(), true
+			$this->featureContext->getStdOutOfOccCommand(),
+			true
 		);
 		$systemConfig = $configList['system'];
 
@@ -2618,7 +2660,8 @@ class OccContext implements Context {
 			// if the expected value of the key is a json
 			// match the value with the regular expression
 			$actualKeyValuePair = \json_encode(
-				$systemConfig[$key], JSON_UNESCAPED_SLASHES
+				$systemConfig[$key],
+				JSON_UNESCAPED_SLASHES
 			);
 
 			Assert::assertThat(
@@ -2842,10 +2885,12 @@ class OccContext implements Context {
 		);
 		$extMntSettings = $settings->getRowsHash();
 		$extMntSettings['user'] = $this->featureContext->substituteInLineCodes(
-			$extMntSettings['user'], $userRenamed
+			$extMntSettings['user'],
+			$userRenamed
 		);
 		$password = $this->featureContext->substituteInLineCodes(
-			$extMntSettings['password'], $user
+			$extMntSettings['password'],
+			$user
 		);
 		$args = [
 			"files_external:create",

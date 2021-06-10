@@ -1810,8 +1810,19 @@ class ShareesTest extends TestCase {
 	 * @param array $expected
 	 * @param bool $nextLink
 	 */
-	public function testSearchSharees($searchTerm, $itemType, array $shareTypes, $page, $perPage, $shareWithGroupOnly,
-									  $mockedUserResult, $mockedGroupsResult, $mockedRemotesResult, $expected, $nextLink) {
+	public function testSearchSharees(
+		$searchTerm,
+		$itemType,
+		array $shareTypes,
+		$page,
+		$perPage,
+		$shareWithGroupOnly,
+		$mockedUserResult,
+		$mockedGroupsResult,
+		$mockedRemotesResult,
+		$expected,
+		$nextLink
+	) {
 		/** @var \PHPUnit\Framework\MockObject\MockObject | ShareesController $sharees */
 		$sharees = $this->getMockBuilder(ShareesController::class)
 			->setConstructorArgs([
@@ -2008,7 +2019,8 @@ class ShareesTest extends TestCase {
 	 * @param string $expected
 	 */
 	public function testFixRemoteUrl($url, $expected) {
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->invokePrivate($this->sharees, 'fixRemoteURL', [$url])
 		);
 	}
@@ -2042,8 +2054,9 @@ class ShareesTest extends TestCase {
 			->method('find')
 			->with(
 				$searchTerm,
-					$this->invokePrivate($this->sharees, 'limit'),
-					$this->invokePrivate($this->sharees, 'offset'))
+				$this->invokePrivate($this->sharees, 'limit'),
+				$this->invokePrivate($this->sharees, 'offset')
+			)
 			->willReturn([$user]);
 
 		$exactExpected = [['label' => 'Bob', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'testBob', 'userType' => User::USER_TYPE_USER]]];

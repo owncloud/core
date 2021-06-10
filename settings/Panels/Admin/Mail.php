@@ -33,8 +33,10 @@ class Mail implements ISettings {
 	/** @var Helper  */
 	protected $helper;
 
-	public function __construct(IConfig $config,
-								Helper $helper) {
+	public function __construct(
+		IConfig $config,
+		Helper $helper
+	) {
 		$this->config = $config;
 		$this->helper = $helper;
 	}

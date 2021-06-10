@@ -62,8 +62,13 @@ class OccController extends Controller {
 	 * @param Application $console
 	 * @param ILogger $logger
 	 */
-	public function __construct($appName, IRequest $request,
-								IConfig $config, Application $console, ILogger $logger) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IConfig $config,
+		Application $console,
+		ILogger $logger
+	) {
 		parent::__construct($appName, $request);
 		$this->config = $config;
 		$this->console = $console;

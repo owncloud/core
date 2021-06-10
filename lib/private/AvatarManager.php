@@ -65,10 +65,11 @@ class AvatarManager implements IAvatarManager {
 	 * @param ILogger $logger
 	 */
 	public function __construct(
-			IUserManager $userManager,
-			IRootFolder $rootFolder,
-			IL10N $l,
-			ILogger $logger) {
+		IUserManager $userManager,
+		IRootFolder $rootFolder,
+		IL10N $l,
+		ILogger $logger
+	) {
 		$this->userManager = $userManager;
 		$this->rootFolder = $rootFolder;
 		$this->l = $l;

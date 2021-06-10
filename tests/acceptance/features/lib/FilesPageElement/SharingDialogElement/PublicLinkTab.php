@@ -154,7 +154,8 @@ class PublicLinkTab extends OwncloudPage {
 	 */
 	public function openSharingPopup(Session $session) {
 		$createLinkBtn = $this->publicLinkTabElement->find(
-			"xpath", $this->createLinkBtnXpath
+			"xpath",
+			$this->createLinkBtnXpath
 		);
 		$this->assertElementNotNull(
 			$createLinkBtn,
@@ -168,7 +169,9 @@ class PublicLinkTab extends OwncloudPage {
 			"FilesPageElement\\SharingDialogElement\\EditPublicLinkPopup"
 		);
 		$this->editPublicLinkPopupPageObject->waitTillPageIsLoaded(
-			$session, STANDARD_UI_WAIT_TIMEOUT_MILLISEC, $this->popupXpath
+			$session,
+			STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
+			$this->popupXpath
 		);
 
 		return $this->editPublicLinkPopupPageObject;
@@ -186,7 +189,9 @@ class PublicLinkTab extends OwncloudPage {
 			"FilesPageElement\\SharingDialogElement\\EditPublicLinkPopup"
 		);
 		$this->editPublicLinkPopupPageObject->waitTillPageIsLoaded(
-			$session, STANDARD_UI_WAIT_TIMEOUT_MILLISEC, $this->popupXpath
+			$session,
+			STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
+			$this->popupXpath
 		);
 		return $this->editPublicLinkPopupPageObject;
 	}
@@ -336,7 +341,8 @@ class PublicLinkTab extends OwncloudPage {
 	private function findLinkEntryByName($name) {
 		$xpathString = $this->quotedText($name);
 		$linkEntry = $this->publicLinkTabElement->find(
-			"xpath", \sprintf($this->linkEntryByNameXpath, $xpathString)
+			"xpath",
+			\sprintf($this->linkEntryByNameXpath, $xpathString)
 		);
 		$this->assertElementNotNull(
 			$linkEntry,

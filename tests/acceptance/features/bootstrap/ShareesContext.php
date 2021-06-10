@@ -56,7 +56,8 @@ class ShareesContext implements Context {
 	 */
 	public function theUserGetsTheShareesWithParameters($body) {
 		$this->userGetsTheShareesWithParameters(
-			$this->featureContext->getCurrentUser(), $body
+			$this->featureContext->getCurrentUser(),
+			$body
 		);
 	}
 
@@ -83,7 +84,10 @@ class ShareesContext implements Context {
 		}
 
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$user, 'GET', $url, null
+			$user,
+			'GET',
+			$url,
+			null
 		);
 	}
 
@@ -99,7 +103,8 @@ class ShareesContext implements Context {
 		$this->featureContext->verifyTableNodeColumnsCount($shareesList, 3);
 		$sharees = $shareesList->getRows();
 		$respondedArray = $this->getArrayOfShareesResponded(
-			$this->featureContext->getResponse(), $shareeType
+			$this->featureContext->getResponse(),
+			$shareeType
 		);
 		Assert::assertEquals(
 			$sharees,
@@ -120,7 +125,8 @@ class ShareesContext implements Context {
 		$this->featureContext->verifyTableNodeColumnsCount($shareesList, 3);
 		$sharees = $shareesList->getRows();
 		$respondedArray = $this->getArrayOfShareesResponded(
-			$this->featureContext->getResponse(), $shareeType
+			$this->featureContext->getResponse(),
+			$shareeType
 		);
 		foreach ($sharees as $sharee) {
 			Assert::assertContains(
@@ -140,7 +146,8 @@ class ShareesContext implements Context {
 	 */
 	public function theShareesReturnedShouldBeEmpty($shareeType) {
 		$respondedArray = $this->getArrayOfShareesResponded(
-			$this->featureContext->getResponse(), $shareeType
+			$this->featureContext->getResponse(),
+			$shareeType
 		);
 		if (isset($respondedArray[0])) {
 			// [0] is display name and [2] is user or group id
@@ -162,7 +169,8 @@ class ShareesContext implements Context {
 	 * @return array
 	 */
 	public function getArrayOfShareesResponded(
-		ResponseInterface $response, $shareeType
+		ResponseInterface $response,
+		$shareeType
 	) {
 		$elements = $this->featureContext->getResponseXml($response, __METHOD__)->data;
 		$elements = \json_decode(\json_encode($elements), 1);

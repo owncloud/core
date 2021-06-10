@@ -71,10 +71,12 @@ class CORSMiddleware extends Middleware {
 	 * @param IUserSession $session
 	 * @param IConfig $config
 	 */
-	public function __construct(IRequest $request,
-								ControllerMethodReflector $reflector,
-								IUserSession $session,
-								IConfig $config) {
+	public function __construct(
+		IRequest $request,
+		ControllerMethodReflector $reflector,
+		IUserSession $session,
+		IConfig $config
+	) {
 		$this->request = $request;
 		$this->reflector = $reflector;
 		$this->session = $session;

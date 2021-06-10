@@ -45,7 +45,8 @@ class PrincipalTest extends TestCase {
 
 		$this->connector = new \OCA\DAV\Connector\Sabre\Principal(
 			$this->userManager,
-			$this->groupManager);
+			$this->groupManager
+		);
 		parent::setUp();
 	}
 

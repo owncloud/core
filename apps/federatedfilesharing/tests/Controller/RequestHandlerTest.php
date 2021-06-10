@@ -50,7 +50,7 @@ use OCP\Share\IShare;
  * @group DB
  */
 class RequestHandlerTest extends TestCase {
-	const DEFAULT_TOKEN = 'abc';
+	public const DEFAULT_TOKEN = 'abc';
 
 	/**
 	 * @var IRequest | \PHPUnit\Framework\MockObject\MockObject

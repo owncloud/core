@@ -119,7 +119,8 @@ class EditPublicLinkPopup extends OwncloudPage {
 		$permissions = \strtolower($permissions);
 		if (\array_key_exists($permissions, $this->permissionLabelXpath)) {
 			$permissionsCheckbox = $this->popupElement->find(
-				"xpath", $this->permissionLabelXpath[$permissions]
+				"xpath",
+				$this->permissionLabelXpath[$permissions]
 			);
 			$this->assertElementNotNull(
 				$permissionsCheckbox,
@@ -143,7 +144,8 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 */
 	public function setLinkPassword($password) {
 		$passwordInput = $this->popupElement->find(
-			"xpath", $this->passwordInputXpath
+			"xpath",
+			$this->passwordInputXpath
 		);
 		$this->assertElementNotNull(
 			$passwordInput,
@@ -163,7 +165,8 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 */
 	public function setLinkExpirationDate($date) {
 		$expirationDateInput = $this->popupElement->find(
-			"xpath", $this->expirationDateInputXpath
+			"xpath",
+			$this->expirationDateInputXpath
 		);
 		$this->assertElementNotNull(
 			$expirationDateInput,
@@ -178,7 +181,8 @@ class EditPublicLinkPopup extends OwncloudPage {
 		//but do not panic if the label is not found, maybe we still can
 		//use the email field, and if not we will panic then
 		$expirationDateLabel = $this->popupElement->find(
-			"xpath", $this->expirationDateLabelXpath
+			"xpath",
+			$this->expirationDateLabelXpath
 		);
 		if ($expirationDateLabel !== null) {
 			$expirationDateLabel->click();

@@ -446,8 +446,8 @@ class ShareTest extends \Test\TestCase {
 		$setExpireDateFailed = false;
 		try {
 			$this->assertTrue(
-					\OCP\Share::setExpirationDate('test', 'test.txt', $this->dateInPast, ''),
-					'Failed asserting that user 1 successfully set an expiration date for the test.txt share.'
+				\OCP\Share::setExpirationDate('test', 'test.txt', $this->dateInPast, ''),
+				'Failed asserting that user 1 successfully set an expiration date for the test.txt share.'
 			);
 		} catch (\Exception $e) {
 			$setExpireDateFailed = true;
@@ -494,8 +494,11 @@ class ShareTest extends \Test\TestCase {
 
 		$share = \OCP\Share::getItemSharedWith('test', 'test.txt');
 
-		$this->assertSame(\OCP\Constants::PERMISSION_ALL & ~\OCP\Constants::PERMISSION_SHARE, $share['permissions'],
-				'Failed asserting that user 4 is excluded from re-sharing');
+		$this->assertSame(
+			\OCP\Constants::PERMISSION_ALL & ~\OCP\Constants::PERMISSION_SHARE,
+			$share['permissions'],
+			'Failed asserting that user 4 is excluded from re-sharing'
+		);
 
 		\OC::$server->getAppConfig()->deleteKey('core', 'shareapi_exclude_groups_list');
 		\OC::$server->getAppConfig()->deleteKey('core', 'shareapi_exclude_groups');
@@ -579,28 +582,40 @@ class ShareTest extends \Test\TestCase {
 
 		\OC_User::setUserId($this->groupAndUser);
 
-		$this->assertEquals(['test.txt'], \OCP\Share::getItemSharedWith('test', 'test.txt', Backend::FORMAT_SOURCE),
-				'"groupAndUser"-User does not see the file but it was shared with him');
+		$this->assertEquals(
+			['test.txt'],
+			\OCP\Share::getItemSharedWith('test', 'test.txt', Backend::FORMAT_SOURCE),
+			'"groupAndUser"-User does not see the file but it was shared with him'
+		);
 
 		\OC_User::setUserId($this->user2);
-		$this->assertEquals([], \OCP\Share::getItemSharedWith('test', 'test.txt', Backend::FORMAT_SOURCE),
-				'User2 sees test.txt but it was only shared with the user "groupAndUser" and not with group');
+		$this->assertEquals(
+			[],
+			\OCP\Share::getItemSharedWith('test', 'test.txt', Backend::FORMAT_SOURCE),
+			'User2 sees test.txt but it was only shared with the user "groupAndUser" and not with group'
+		);
 
 		\OC_User::setUserId($this->user1);
 		$this->assertTrue(\OCP\Share::unshareAll('test', 'test.txt'));
 
 		$this->assertTrue(
-				\OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_GROUP, $this->groupAndUser, \OCP\Constants::PERMISSION_READ),
-				'Failed asserting that user 1 successfully shared text.txt with group 1.'
+			\OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_GROUP, $this->groupAndUser, \OCP\Constants::PERMISSION_READ),
+			'Failed asserting that user 1 successfully shared text.txt with group 1.'
 		);
 
 		\OC_User::setUserId($this->groupAndUser);
-		$this->assertEquals([], \OCP\Share::getItemSharedWith('test', 'test.txt', Backend::FORMAT_SOURCE),
-				'"groupAndUser"-User sees test.txt but it was only shared with the group "groupAndUser" and not with the user');
+		$this->assertEquals(
+			[],
+			\OCP\Share::getItemSharedWith('test', 'test.txt', Backend::FORMAT_SOURCE),
+			'"groupAndUser"-User sees test.txt but it was only shared with the group "groupAndUser" and not with the user'
+		);
 
 		\OC_User::setUserId($this->user2);
-		$this->assertEquals(['test.txt'], \OCP\Share::getItemSharedWith('test', 'test.txt', Backend::FORMAT_SOURCE),
-				'User2 does not see test.txt but it was shared with the group "groupAndUser"');
+		$this->assertEquals(
+			['test.txt'],
+			\OCP\Share::getItemSharedWith('test', 'test.txt', Backend::FORMAT_SOURCE),
+			'User2 does not see test.txt but it was shared with the group "groupAndUser"'
+		);
 
 		\OC_User::setUserId($this->user1);
 		$this->assertTrue(\OCP\Share::unshareAll('test', 'test.txt'));
@@ -612,7 +627,8 @@ class ShareTest extends \Test\TestCase {
 	 */
 	protected function getShareByValidToken($token) {
 		$row = \OCP\Share::getShareByToken($token);
-		$this->assertIsArray($row,
+		$this->assertIsArray(
+			$row,
 			"Failed asserting that a share for token $token exists."
 		);
 		return $row;
@@ -745,7 +761,8 @@ class ShareTest extends \Test\TestCase {
 	public function testShareItemWithLink() {
 		\OC_User::setUserId($this->user1);
 		$token = \OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_LINK, null, \OCP\Constants::PERMISSION_READ);
-		$this->assertIsString($token,
+		$this->assertIsString(
+			$token,
 			'Failed asserting that user 1 successfully shared text.txt as link with token.'
 		);
 
@@ -791,7 +808,8 @@ class ShareTest extends \Test\TestCase {
 		$config->setAppValue('core', 'shareapi_expire_after_n_days', '2');
 
 		$token = \OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_LINK, null, \OCP\Constants::PERMISSION_READ);
-		$this->assertIsString($token,
+		$this->assertIsString(
+			$token,
 			'Failed asserting that user 1 successfully shared text.txt as link with token.'
 		);
 
@@ -1115,15 +1133,16 @@ class ShareTest extends \Test\TestCase {
 		\OC::$server->getAppConfig()->setValue('core', 'shareapi_enforce_expire_date', 'yes');
 
 		$token = \OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_LINK, null, \OCP\Constants::PERMISSION_READ);
-		$this->assertIsString($token,
+		$this->assertIsString(
+			$token,
 			'Failed asserting that user 1 successfully shared text.txt as link with token.'
 		);
 
 		$setExpireDateFailed = false;
 		try {
 			$this->assertTrue(
-					\OCP\Share::setExpirationDate('test', 'test.txt', '', ''),
-					'Failed asserting that user 1 successfully set an expiration date for the test.txt share.'
+				\OCP\Share::setExpirationDate('test', 'test.txt', '', ''),
+				'Failed asserting that user 1 successfully set an expiration date for the test.txt share.'
 			);
 		} catch (\Exception $e) {
 			$setExpireDateFailed = true;
@@ -1250,7 +1269,8 @@ class ShareTest extends \Test\TestCase {
 					   ->getMock();
 
 		$event = null;
-		\OC::$server->getEventDispatcher()->addListener('OCP\Share::validatePassword',
+		\OC::$server->getEventDispatcher()->addListener(
+			'OCP\Share::validatePassword',
 			function (GenericEvent $receivedEvent) use (&$event) {
 				$event = $receivedEvent;
 			}

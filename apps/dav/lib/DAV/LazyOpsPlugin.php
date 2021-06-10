@@ -59,11 +59,13 @@ class LazyOpsPlugin extends ServerPlugin {
 	/** @var JobStatusMapper */
 	private $mapper;
 
-	public function __construct(IUserSession $userSession,
-								IURLGenerator $urlGenerator,
-								IShutdownManager $shutdownManager,
-								JobStatusMapper $jobStatusMapper,
-								ILogger $logger) {
+	public function __construct(
+		IUserSession $userSession,
+		IURLGenerator $urlGenerator,
+		IShutdownManager $shutdownManager,
+		JobStatusMapper $jobStatusMapper,
+		ILogger $logger
+	) {
 		$this->userSession = $userSession;
 		$this->urlGenerator = $urlGenerator;
 		$this->shutdownManager = $shutdownManager;

@@ -66,7 +66,9 @@ class OwncloudPage extends Page {
 			$loadingIndicator = $this->find("css", '.loading');
 			if ($loadingIndicator !== null) {
 				$visibility = $this->elementHasCSSValue(
-					$loadingIndicator, 'visibility', 'visible'
+					$loadingIndicator,
+					'visibility',
+					'visible'
 				);
 				if ($visibility === false) {
 					break;
@@ -120,7 +122,8 @@ class OwncloudPage extends Page {
 	 * @return NodeElement|null
 	 */
 	public function waitTillElementIsNotNull(
-		$xpath, $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+		$xpath,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
@@ -531,7 +534,8 @@ class OwncloudPage extends Page {
 	 * @return void
 	 */
 	public function waitForAjaxCallsToStart(
-		Session $session, $timeout_msec = 1000
+		Session $session,
+		$timeout_msec = 1000
 	) {
 		$timeout_msec = (int) $timeout_msec;
 		if ($timeout_msec <= 0) {
@@ -702,7 +706,8 @@ class OwncloudPage extends Page {
 		if ($style) {
 			if (\preg_match(
 				"/(^{$property}:|; {$property}:) ([a-z0-9]+);/i",
-				$style, $matches
+				$style,
+				$matches
 			)
 			) {
 				$found = \array_pop($matches);
@@ -724,7 +729,8 @@ class OwncloudPage extends Page {
 	 * @return void
 	 */
 	public function waitForScrollingToFinish(
-		Session $session, $scrolledElement,
+		Session $session,
+		$scrolledElement,
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		// Wait so that, if scrolling is going to happen, it will have started.
@@ -801,7 +807,9 @@ class OwncloudPage extends Page {
 	 * @return void
 	 */
 	public function fillFieldWithCharacters(
-		Session $session, $xpath, $string
+		Session $session,
+		$xpath,
+		$string
 	) {
 		$session->executeScript(
 			"document.evaluate(`" . $xpath . "`, document).iterateNext().value = \"" . $string . "\";"

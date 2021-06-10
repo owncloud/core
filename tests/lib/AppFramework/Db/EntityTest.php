@@ -85,20 +85,26 @@ class EntityTest extends \Test\TestCase {
 
 	public function testColumnToPropertyNoReplacement() {
 		$column = 'my';
-		$this->assertEquals('my',
-			$this->entity->columnToProperty($column));
+		$this->assertEquals(
+			'my',
+			$this->entity->columnToProperty($column)
+		);
 	}
 
 	public function testColumnToProperty() {
 		$column = 'my_attribute';
-		$this->assertEquals('myAttribute',
-			$this->entity->columnToProperty($column));
+		$this->assertEquals(
+			'myAttribute',
+			$this->entity->columnToProperty($column)
+		);
 	}
 
 	public function testPropertyToColumnNoReplacement() {
 		$property = 'my';
-		$this->assertEquals('my',
-			$this->entity->propertyToColumn($property));
+		$this->assertEquals(
+			'my',
+			$this->entity->propertyToColumn($property)
+		);
 	}
 
 	public function testSetterMarksFieldUpdated() {

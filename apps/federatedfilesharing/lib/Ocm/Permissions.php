@@ -29,9 +29,9 @@ use OCP\Constants;
  * @package OCA\FederatedFileSharing\Ocm
  */
 class Permissions {
-	const OCM_PERMISSION_READ = 'read';
-	const OCM_PERMISSION_WRITE = 'write';
-	const OCM_PERMISSION_SHARE = 'share';
+	public const OCM_PERMISSION_READ = 'read';
+	public const OCM_PERMISSION_WRITE = 'write';
+	public const OCM_PERMISSION_SHARE = 'share';
 
 	/**
 	 * Maps numeric permissions to an array of string permissions

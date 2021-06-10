@@ -25,7 +25,8 @@ class LoggerWithoutWriteExtraTest extends TestCase {
 
 		self::$logs = [];
 		$this->config = $this->getMockBuilder(
-			'\OC\SystemConfig')
+			'\OC\SystemConfig'
+		)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->logger = new Log(
@@ -54,7 +55,8 @@ class LoggerWithoutWriteExtraTest extends TestCase {
 		// with extra fields but logger class has no "writeExtra" method, calls "write"
 		// the extra fields to not end up anywhere (ignored)
 		$this->logger->info(
-			'extra fields test', [
+			'extra fields test',
+			[
 				'extraFields' => $extraFields
 			]
 		);

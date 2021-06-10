@@ -41,11 +41,13 @@ class GeneralPersonalPanel implements ISettings {
 	/** @var IRequest */
 	protected $request;
 
-	public function __construct(IL10N $l,
-								IUserSession $userSession,
-								IURLGenerator $urlGenerator,
-								FederatedShareProvider $shareProvider,
-								IRequest $request) {
+	public function __construct(
+		IL10N $l,
+		IUserSession $userSession,
+		IURLGenerator $urlGenerator,
+		FederatedShareProvider $shareProvider,
+		IRequest $request
+	) {
 		$this->l = $l;
 		$this->userSession = $userSession;
 		$this->urlGenerator = $urlGenerator;

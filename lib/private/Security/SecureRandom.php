@@ -69,8 +69,10 @@ class SecureRandom implements ISecureRandom {
 	 * 							specified all valid base64 characters are used.
 	 * @return string
 	 */
-	public function generate($length,
-							 $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/') {
+	public function generate(
+		$length,
+		$characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+	) {
 		$maxCharIndex = \strlen($characters) - 1;
 		$randomString = '';
 

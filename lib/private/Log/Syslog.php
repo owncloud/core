@@ -74,7 +74,8 @@ class Syslog {
 		];
 
 		$syslogFormat = \OC::$server->getConfig()->getSystemValue(
-			'log.syslog.format', self::$DEFAULT_FORMAT
+			'log.syslog.format',
+			self::$DEFAULT_FORMAT
 		);
 
 		$entryLine = \str_ireplace(\array_keys($entry), \array_values($entry), $syslogFormat);

@@ -29,7 +29,7 @@ use OC\Helper\EnvironmentHelper;
  * @package OC\Theme
  */
 class ThemeService implements IThemeService {
-	const DEFAULT_THEME_PATH = '/themes/default';
+	public const DEFAULT_THEME_PATH = '/themes/default';
 
 	/**
 	 * @var Theme
@@ -53,8 +53,10 @@ class ThemeService implements IThemeService {
 	 * @param IAppManager $appManager
 	 * @param EnvironmentHelper $environmentHelper
 	 */
-	public function __construct($themeName,
-		IAppManager $appManager, EnvironmentHelper $environmentHelper
+	public function __construct(
+		$themeName,
+		IAppManager $appManager,
+		EnvironmentHelper $environmentHelper
 	) {
 		$this->appManager = $appManager;
 		$this->environmentHelper = $environmentHelper;

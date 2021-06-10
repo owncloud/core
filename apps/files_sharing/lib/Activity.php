@@ -32,51 +32,51 @@ use OCP\IURLGenerator;
 use OCP\L10N\IFactory;
 
 class Activity implements IExtension {
-	const FILES_SHARING_APP = 'files_sharing';
+	public const FILES_SHARING_APP = 'files_sharing';
 	/**
 	 * Filter with all sharing related activities
 	 */
-	const FILTER_SHARES = 'shares';
+	public const FILTER_SHARES = 'shares';
 
 	/**
 	 * Activity types known to this extension
 	 */
-	const TYPE_PUBLIC_LINKS = 'public_links';
-	const TYPE_REMOTE_SHARE = 'remote_share';
-	const TYPE_SHARED = 'shared';
+	public const TYPE_PUBLIC_LINKS = 'public_links';
+	public const TYPE_REMOTE_SHARE = 'remote_share';
+	public const TYPE_SHARED = 'shared';
 
 	/**
 	 * Subject keys for translation of the subjections
 	 */
-	const SUBJECT_PUBLIC_SHARED_FILE_DOWNLOADED = 'public_shared_file_downloaded';
-	const SUBJECT_PUBLIC_SHARED_FOLDER_DOWNLOADED = 'public_shared_folder_downloaded';
+	public const SUBJECT_PUBLIC_SHARED_FILE_DOWNLOADED = 'public_shared_file_downloaded';
+	public const SUBJECT_PUBLIC_SHARED_FOLDER_DOWNLOADED = 'public_shared_folder_downloaded';
 
-	const SUBJECT_REMOTE_SHARE_ACCEPTED = 'remote_share_accepted';
-	const SUBJECT_REMOTE_SHARE_DECLINED = 'remote_share_declined';
-	const SUBJECT_REMOTE_SHARE_RECEIVED = 'remote_share_received';
-	const SUBJECT_REMOTE_SHARE_UNSHARED = 'remote_share_unshared';
+	public const SUBJECT_REMOTE_SHARE_ACCEPTED = 'remote_share_accepted';
+	public const SUBJECT_REMOTE_SHARE_DECLINED = 'remote_share_declined';
+	public const SUBJECT_REMOTE_SHARE_RECEIVED = 'remote_share_received';
+	public const SUBJECT_REMOTE_SHARE_UNSHARED = 'remote_share_unshared';
 
-	const SUBJECT_SHARED_USER_SELF = 'shared_user_self';
-	const SUBJECT_RESHARED_USER_BY = 'reshared_user_by';
-	const SUBJECT_UNSHARED_USER_SELF = 'unshared_user_self';
-	const SUBJECT_UNSHARED_USER_BY = 'unshared_user_by';
-	const SUBJECT_UNSHARED_FROM_SELF = 'unshared_from_self';
+	public const SUBJECT_SHARED_USER_SELF = 'shared_user_self';
+	public const SUBJECT_RESHARED_USER_BY = 'reshared_user_by';
+	public const SUBJECT_UNSHARED_USER_SELF = 'unshared_user_self';
+	public const SUBJECT_UNSHARED_USER_BY = 'unshared_user_by';
+	public const SUBJECT_UNSHARED_FROM_SELF = 'unshared_from_self';
 
-	const SUBJECT_SHARED_GROUP_SELF = 'shared_group_self';
-	const SUBJECT_RESHARED_GROUP_BY = 'reshared_group_by';
-	const SUBJECT_UNSHARED_GROUP_SELF = 'unshared_group_self';
-	const SUBJECT_UNSHARED_GROUP_BY = 'unshared_group_by';
+	public const SUBJECT_SHARED_GROUP_SELF = 'shared_group_self';
+	public const SUBJECT_RESHARED_GROUP_BY = 'reshared_group_by';
+	public const SUBJECT_UNSHARED_GROUP_SELF = 'unshared_group_self';
+	public const SUBJECT_UNSHARED_GROUP_BY = 'unshared_group_by';
 
-	const SUBJECT_SHARED_LINK_SELF = 'shared_link_self';
-	const SUBJECT_RESHARED_LINK_BY = 'reshared_link_by';
-	const SUBJECT_UNSHARED_LINK_SELF = 'unshared_link_self';
-	const SUBJECT_UNSHARED_LINK_BY = 'unshared_link_by';
-	const SUBJECT_LINK_EXPIRED = 'link_expired';
-	const SUBJECT_LINK_BY_EXPIRED = 'link_by_expired';
+	public const SUBJECT_SHARED_LINK_SELF = 'shared_link_self';
+	public const SUBJECT_RESHARED_LINK_BY = 'reshared_link_by';
+	public const SUBJECT_UNSHARED_LINK_SELF = 'unshared_link_self';
+	public const SUBJECT_UNSHARED_LINK_BY = 'unshared_link_by';
+	public const SUBJECT_LINK_EXPIRED = 'link_expired';
+	public const SUBJECT_LINK_BY_EXPIRED = 'link_by_expired';
 
-	const SUBJECT_SHARED_EMAIL = 'shared_with_email';
-	const SUBJECT_SHARED_WITH_BY = 'shared_with_by';
-	const SUBJECT_UNSHARED_BY = 'unshared_by';
+	public const SUBJECT_SHARED_EMAIL = 'shared_with_email';
+	public const SUBJECT_SHARED_WITH_BY = 'shared_with_by';
+	public const SUBJECT_UNSHARED_BY = 'unshared_by';
 
 	/** @var IFactory */
 	protected $languageFactory;

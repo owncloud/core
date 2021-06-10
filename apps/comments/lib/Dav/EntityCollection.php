@@ -42,7 +42,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @package OCA\Comments\Dav
  */
 class EntityCollection extends RootCollection implements IProperties {
-	const PROPERTY_NAME_READ_MARKER  = '{http://owncloud.org/ns}readMarker';
+	public const PROPERTY_NAME_READ_MARKER  = '{http://owncloud.org/ns}readMarker';
 
 	/** @var  string */
 	protected $id;

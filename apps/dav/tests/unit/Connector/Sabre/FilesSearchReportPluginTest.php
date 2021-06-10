@@ -218,12 +218,13 @@ class FilesSearchReportPluginTest extends \Test\TestCase {
 		$responses = [];
 		$this->server->expects($this->once())
 			->method('generateMultiStatus')
-			->will($this->returnCallback(function ($responsesArg) use (&$responses) {
+			->will(
+				$this->returnCallback(function ($responsesArg) use (&$responses) {
 				foreach ($responsesArg as $responseArg) {
 					$responses[] = $responseArg;
 				}
 			})
-		);
+			);
 
 		$this->setupBaseTreeNode($path, $node);
 		$this->plugin->initialize($this->server);

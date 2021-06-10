@@ -80,7 +80,8 @@ class RemoveCertificateTest extends TestCase {
 	public function testRemoveCertificate() {
 		$this->certificateManager->addCertificate(
 			\file_get_contents('data/certificates/goodCertificate.crt'),
-			'goodCertificate.crt');
+			'goodCertificate.crt'
+		);
 		$this->commandTester->setInputs([]);
 		$actualStatus = $this->commandTester->execute(['name' => 'goodCertificate.crt']);
 		$this->assertEquals(0, $actualStatus);

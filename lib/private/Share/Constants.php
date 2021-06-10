@@ -25,14 +25,14 @@
 namespace OC\Share;
 
 class Constants {
-	const SHARE_TYPE_USER = 0;
-	const SHARE_TYPE_GROUP = 1;
-	const SHARE_TYPE_LINK = 3;
-	const SHARE_TYPE_GUEST = 4;
-	const SHARE_TYPE_CONTACT = 5; // ToDo Check if it is still in use otherwise remove it
-	const SHARE_TYPE_REMOTE = 6;  // ToDo Check if it is still in use otherwise remove it
+	public const SHARE_TYPE_USER = 0;
+	public const SHARE_TYPE_GROUP = 1;
+	public const SHARE_TYPE_LINK = 3;
+	public const SHARE_TYPE_GUEST = 4;
+	public const SHARE_TYPE_CONTACT = 5; // ToDo Check if it is still in use otherwise remove it
+	public const SHARE_TYPE_REMOTE = 6;  // ToDo Check if it is still in use otherwise remove it
 
-	const CONVERT_SHARE_TYPE_TO_STRING = [
+	public const CONVERT_SHARE_TYPE_TO_STRING = [
 		self::SHARE_TYPE_USER => 'user',
 		self::SHARE_TYPE_GROUP => 'group',
 		self::SHARE_TYPE_LINK => 'link',
@@ -44,17 +44,17 @@ class Constants {
 	/**
 	 * Values for the "accepted" field of a share.
 	 */
-	const STATE_ACCEPTED = 0;
-	const STATE_PENDING = 1;
-	const STATE_REJECTED = 2;
+	public const STATE_ACCEPTED = 0;
+	public const STATE_PENDING = 1;
+	public const STATE_REJECTED = 2;
 
-	const FORMAT_NONE = -1;
-	const FORMAT_STATUSES = -2;
-	const FORMAT_SOURCES = -3;  // ToDo Check if it is still in use otherwise remove it
+	public const FORMAT_NONE = -1;
+	public const FORMAT_STATUSES = -2;
+	public const FORMAT_SOURCES = -3;  // ToDo Check if it is still in use otherwise remove it
 
-	const RESPONSE_FORMAT = 'json'; // default response format for ocs calls
+	public const RESPONSE_FORMAT = 'json'; // default response format for ocs calls
 
-	const TOKEN_LENGTH = 15; // old (oc7) length is 32, keep token length in db at least that for compatibility
+	public const TOKEN_LENGTH = 15; // old (oc7) length is 32, keep token length in db at least that for compatibility
 
 	protected static $shareTypeUserAndGroups = -1;
 	protected static $shareTypeGroupUserUnique = 2;

@@ -66,13 +66,15 @@ class ApiController extends Controller {
 	 * @param IManager $shareManager
 	 * @param IConfig $config
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IUserSession $userSession,
-								TagService $tagService,
-								IPreview $previewManager,
-								IManager $shareManager,
-								IConfig $config) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IUserSession $userSession,
+		TagService $tagService,
+		IPreview $previewManager,
+		IManager $shareManager,
+		IConfig $config
+	) {
 		parent::__construct($appName, $request);
 		$this->userSession = $userSession;
 		$this->tagService = $tagService;

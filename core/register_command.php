@@ -45,19 +45,19 @@ $application->add(new OC\Core\Command\App\CheckCode(
 	\OC::$server->getAppManager()
 ));
 $application->add(new \OC\Core\Command\Integrity\SignApp(
-		\OC::$server->getIntegrityCodeChecker(),
-		new \OC\IntegrityCheck\Helpers\FileAccessHelper(),
-		\OC::$server->getURLGenerator()
+	\OC::$server->getIntegrityCodeChecker(),
+	new \OC\IntegrityCheck\Helpers\FileAccessHelper(),
+	\OC::$server->getURLGenerator()
 ));
 $application->add(new \OC\Core\Command\Integrity\SignCore(
-		\OC::$server->getIntegrityCodeChecker(),
-		new \OC\IntegrityCheck\Helpers\FileAccessHelper()
+	\OC::$server->getIntegrityCodeChecker(),
+	new \OC\IntegrityCheck\Helpers\FileAccessHelper()
 ));
 $application->add(new \OC\Core\Command\Integrity\CheckApp(
-		\OC::$server->getIntegrityCodeChecker()
+	\OC::$server->getIntegrityCodeChecker()
 ));
 $application->add(new \OC\Core\Command\Integrity\CheckCore(
-		\OC::$server->getIntegrityCodeChecker()
+	\OC::$server->getIntegrityCodeChecker()
 ));
 
 if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
@@ -67,10 +67,12 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\App\ListApps(\OC::$server->getAppManager()));
 
 	$application->add(new OC\Core\Command\TwoFactorAuth\Enable(
-		\OC::$server->getTwoFactorAuthManager(), \OC::$server->getUserManager()
+		\OC::$server->getTwoFactorAuthManager(),
+		\OC::$server->getUserManager()
 	));
 	$application->add(new OC\Core\Command\TwoFactorAuth\Disable(
-		\OC::$server->getTwoFactorAuthManager(), \OC::$server->getUserManager()
+		\OC::$server->getTwoFactorAuthManager(),
+		\OC::$server->getUserManager()
 	));
 
 	$application->add(new OC\Core\Command\Background\Cron(\OC::$server->getConfig()));
@@ -107,12 +109,14 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\Encryption\SetDefaultModule(\OC::$server->getEncryptionManager()));
 	$application->add(new OC\Core\Command\Encryption\Status(\OC::$server->getEncryptionManager()));
 	$application->add(new OC\Core\Command\Encryption\EncryptAll(\OC::$server->getEncryptionManager(), \OC::$server->getAppManager(), \OC::$server->getConfig(), new \Symfony\Component\Console\Helper\QuestionHelper()));
-	$application->add(new OC\Core\Command\Encryption\DecryptAll(
+	$application->add(
+		new OC\Core\Command\Encryption\DecryptAll(
 		\OC::$server->getEncryptionManager(),
 		\OC::$server->getAppManager(),
 		\OC::$server->getConfig(),
 		new \OC\Encryption\DecryptAll(\OC::$server->getEncryptionManager(), \OC::$server->getUserManager(), new \OC\Files\View(), \OC::$server->getLogger()),
-		new \Symfony\Component\Console\Helper\QuestionHelper())
+		new \Symfony\Component\Console\Helper\QuestionHelper()
+	)
 	);
 
 	$application->add(new OC\Core\Command\Log\Manage(\OC::$server->getConfig()));
@@ -125,13 +129,14 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 		\OC::$server->getGroupManager(),
 		\OC::$server->getConfig()
 	);
-	$application->add(new OC\Core\Command\Encryption\ChangeKeyStorageRoot(
-			$view,
-			\OC::$server->getUserManager(),
-			\OC::$server->getConfig(),
-			$util,
-			new \Symfony\Component\Console\Helper\QuestionHelper()
-		)
+	$application->add(
+		new OC\Core\Command\Encryption\ChangeKeyStorageRoot(
+		$view,
+		\OC::$server->getUserManager(),
+		\OC::$server->getConfig(),
+		$util,
+		new \Symfony\Component\Console\Helper\QuestionHelper()
+	)
 	);
 	$application->add(new OC\Core\Command\Encryption\ShowKeyStorageRoot($util));
 
@@ -143,11 +148,13 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\Maintenance\UpdateHtaccess());
 
 	$application->add(new OC\Core\Command\Upgrade(\OC::$server->getConfig(), \OC::$server->getLogger(), \OC::$server->getMemCacheFactory()));
-	$application->add(new OC\Core\Command\Maintenance\Repair(
+	$application->add(
+		new OC\Core\Command\Maintenance\Repair(
 		new \OC\Repair(\OC\Repair::getRepairSteps(), \OC::$server->getEventDispatcher()),
 		\OC::$server->getConfig(),
 		\OC::$server->getEventDispatcher(),
-		\OC::$server->getAppManager())
+		\OC::$server->getAppManager()
+	)
 	);
 
 	$application->add(new OC\Core\Command\User\Add(\OC::$server->getUserManager(), \OC::$server->getGroupManager(), \OC::$server->getMailer()));
@@ -159,12 +166,28 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\User\ListUsers(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\ListUserGroups(\OC::$server->getUserManager(), \OC::$server->getGroupManager()));
 	$application->add(new OC\Core\Command\User\Report(\OC::$server->getUserManager(), new UserTypeHelper()));
-	$application->add(new OC\Core\Command\User\ResetPassword(\OC::$server->getUserManager(), \OC::$server->getConfig(), \OC::$server->getTimeFactory(),
-		new \OC\Helper\EnvironmentHelper(), new \OC\Core\Controller\LostController('settings',
-			\OC::$server->getRequest(), \OC::$server->getURLGenerator(), \OC::$server->getUserManager(), new \OC_Defaults(),
-			\OC::$server->getL10N('settings'), \OC::$server->getConfig(), \OC::$server->getSecureRandom(),
-			\OCP\Util::getDefaultEmailAddress('lostpassword-noreply'), \OC::$server->getEncryptionManager()->isEnabled(),
-			\OC::$server->getMailer(), \OC::$server->getTimeFactory(), \OC::$server->getLogger(), \OC::$server->getUserSession())));
+	$application->add(new OC\Core\Command\User\ResetPassword(
+		\OC::$server->getUserManager(),
+		\OC::$server->getConfig(),
+		\OC::$server->getTimeFactory(),
+		new \OC\Helper\EnvironmentHelper(),
+		new \OC\Core\Controller\LostController(
+			'settings',
+			\OC::$server->getRequest(),
+			\OC::$server->getURLGenerator(),
+			\OC::$server->getUserManager(),
+			new \OC_Defaults(),
+			\OC::$server->getL10N('settings'),
+			\OC::$server->getConfig(),
+			\OC::$server->getSecureRandom(),
+			\OCP\Util::getDefaultEmailAddress('lostpassword-noreply'),
+			\OC::$server->getEncryptionManager()->isEnabled(),
+			\OC::$server->getMailer(),
+			\OC::$server->getTimeFactory(),
+			\OC::$server->getLogger(),
+			\OC::$server->getUserSession()
+		)
+	));
 	$application->add(new OC\Core\Command\User\Setting(\OC::$server->getUserManager(), \OC::$server->getConfig(), \OC::$server->getDatabaseConnection()));
 	$application->add(new OC\Core\Command\User\Modify(\OC::$server->getUserManager(), \OC::$server->getMailer()));
 	$application->add(new OC\Core\Command\User\SyncBackend(\OC::$server->getAccountMapper(), \OC::$server->getConfig(), \OC::$server->getUserManager(), \OC::$server->getLogger()));

@@ -30,13 +30,13 @@ use OCP\Files\External\Auth\AuthMechanism;
  * @since 10.0
  */
 interface IStorageConfig extends \JsonSerializable {
-	const MOUNT_TYPE_ADMIN = 1;
-	const MOUNT_TYPE_PERSONAl = 2;
+	public const MOUNT_TYPE_ADMIN = 1;
+	public const MOUNT_TYPE_PERSONAl = 2;
 
-	const MOUNT_TYPE_GLOBAL = 'global';
-	const MOUNT_TYPE_GROUP = 'group';
-	const MOUNT_TYPE_USER = 'user';
-	const MOUNT_TYPE_PERSONAL = 'personal';
+	public const MOUNT_TYPE_GLOBAL = 'global';
+	public const MOUNT_TYPE_GROUP = 'group';
+	public const MOUNT_TYPE_USER = 'user';
+	public const MOUNT_TYPE_PERSONAL = 'personal';
 
 	/**
 	 * Returns the configuration id

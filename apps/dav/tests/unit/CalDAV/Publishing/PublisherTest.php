@@ -25,7 +25,7 @@ use Sabre\Xml\Writer;
 use PHPUnit\Framework\TestCase;
 
 class PublisherTest extends TestCase {
-	const NS_CALENDARSERVER = 'http://calendarserver.org/ns/';
+	public const NS_CALENDARSERVER = 'http://calendarserver.org/ns/';
 
 	public function testSerializePublished() {
 		$publish = new Publisher('urltopublish', true);
@@ -40,7 +40,9 @@ class PublisherTest extends TestCase {
 			'<?xml version="1.0"?>
 			<x1:publish-url xmlns:d="DAV:" xmlns:x1="' . self::NS_CALENDARSERVER . '">
 			<d:href>urltopublish</d:href>
-			</x1:publish-url>', $xml);
+			</x1:publish-url>',
+			$xml
+		);
 	}
 
 	public function testSerializeNotPublished() {
@@ -54,7 +56,9 @@ class PublisherTest extends TestCase {
 
 		$this->assertXmlStringEqualsXmlString(
 			'<?xml version="1.0"?>
-			<x1:pre-publish-url xmlns:d="DAV:" xmlns:x1="' . self::NS_CALENDARSERVER . '">urltopublish</x1:pre-publish-url>', $xml);
+			<x1:pre-publish-url xmlns:d="DAV:" xmlns:x1="' . self::NS_CALENDARSERVER . '">urltopublish</x1:pre-publish-url>',
+			$xml
+		);
 	}
 
 	protected $elementMap = [];

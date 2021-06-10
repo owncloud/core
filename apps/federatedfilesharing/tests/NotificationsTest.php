@@ -154,7 +154,8 @@ class NotificationsTest extends \Test\TestCase {
 			$this->jobList->expects($this->never())->method('add');
 		}
 
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$instance->sendUpdateToRemote($remote, $id, $token, 'unshare', ['data1Key' => 'data1Value'], $try)
 		);
 	}

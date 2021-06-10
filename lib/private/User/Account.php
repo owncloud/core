@@ -45,10 +45,10 @@ use OCP\UserInterface;
  * @package OC\User
  */
 class Account extends Entity {
-	const STATE_INITIAL = 0;
-	const STATE_ENABLED = 1;
-	const STATE_DISABLED = 2;
-	const STATE_DELETED = 3;
+	public const STATE_INITIAL = 0;
+	public const STATE_ENABLED = 1;
+	public const STATE_DISABLED = 2;
+	public const STATE_DELETED = 3;
 
 	protected $email;
 	protected $userId;

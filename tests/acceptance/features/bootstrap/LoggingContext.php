@@ -60,7 +60,9 @@ class LoggingContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes(
-		$comparingMode, $ignoredLines = 0, TableNode $expectedLogEntries = null
+		$comparingMode,
+		$ignoredLines = 0,
+		TableNode $expectedLogEntries = null
 	) {
 		$ignoredLines = (int) $ignoredLines;
 		//-1 because getRows gives also the header
@@ -82,7 +84,9 @@ class LoggingContext implements Context {
 				if ($comparingMode === 'matching') {
 					$expectedLogEntry[$attribute]
 						= $this->featureContext->substituteInLineCodes(
-							$expectedLogEntry[$attribute], null, ['preg_quote' => ['/']]
+							$expectedLogEntry[$attribute],
+							null,
+							['preg_quote' => ['/']]
 						);
 				} else {
 					$expectedLogEntry[$attribute]
@@ -93,28 +97,33 @@ class LoggingContext implements Context {
 
 				if ($expectedLogEntry[$attribute] !== "") {
 					Assert::assertArrayHasKey(
-						$attribute, $logEntry,
+						$attribute,
+						$logEntry,
 						"could not find attribute: '$attribute' in log entry: '{$logLines[$lineNo]}'"
 					);
 					$message = "log entry:\n{$logLines[$lineNo]}\n";
 					if (!\is_string($logEntry[$attribute])) {
 						$logEntry[$attribute] = \json_encode(
-							$logEntry[$attribute], JSON_UNESCAPED_SLASHES
+							$logEntry[$attribute],
+							JSON_UNESCAPED_SLASHES
 						);
 					}
 					if ($comparingMode === 'with') {
 						Assert::assertEquals(
-							$expectedLogEntry[$attribute], $logEntry[$attribute],
+							$expectedLogEntry[$attribute],
+							$logEntry[$attribute],
 							$message
 						);
 					} elseif ($comparingMode === 'containing') {
 						Assert::assertStringContainsString(
-							$expectedLogEntry[$attribute], $logEntry[$attribute],
+							$expectedLogEntry[$attribute],
+							$logEntry[$attribute],
 							$message
 						);
 					} elseif ($comparingMode === 'matching') {
 						Assert::assertRegExp(
-							$expectedLogEntry[$attribute], $logEntry[$attribute],
+							$expectedLogEntry[$attribute],
+							$logEntry[$attribute],
 							$message
 						);
 					} else {
@@ -143,10 +152,14 @@ class LoggingContext implements Context {
 	 * @return void
 	 */
 	public function theLastLinesOfTheLogFileIgnoringSomeShouldContainEntries(
-		$ignoredLines, $comparingMode, TableNode $expectedLogEntries
+		$ignoredLines,
+		$comparingMode,
+		TableNode $expectedLogEntries
 	) {
 		$this->theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes(
-			$comparingMode, $ignoredLines, $expectedLogEntries
+			$comparingMode,
+			$ignoredLines,
+			$expectedLogEntries
 		);
 	}
 
@@ -161,10 +174,13 @@ class LoggingContext implements Context {
 	 * @return void
 	 */
 	public function theLastLinesOfTheLogFileIgnoringLastShouldContainEntries(
-		$comparingMode, TableNode $expectedLogEntries
+		$comparingMode,
+		TableNode $expectedLogEntries
 	) {
 		$this->theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes(
-			$comparingMode, 1, $expectedLogEntries
+			$comparingMode,
+			1,
+			$expectedLogEntries
 		);
 	}
 
@@ -186,7 +202,8 @@ class LoggingContext implements Context {
 		TableNode $expectedLogEntries
 	) {
 		$this->assertLogFileContainsAtLeastOneEntryMatchingTable(
-			true, $expectedLogEntries
+			true,
+			$expectedLogEntries
 		);
 	}
 
@@ -205,7 +222,9 @@ class LoggingContext implements Context {
 		TableNode $expectedLogEntries
 	) {
 		$this->assertLogFileContainsAtLeastOneEntryMatchingTable(
-			true, $expectedLogEntries, true
+			true,
+			$expectedLogEntries,
+			true
 		);
 	}
 
@@ -221,7 +240,9 @@ class LoggingContext implements Context {
 		TableNode $expectedLogEntries
 	) {
 		$this->assertLogFileContainsAtLeastOneEntryMatchingTable(
-			false, $expectedLogEntries, true
+			false,
+			$expectedLogEntries,
+			true
 		);
 	}
 
@@ -245,7 +266,9 @@ class LoggingContext implements Context {
 	 * @throws \Exception
 	 */
 	private function assertLogFileContainsAtLeastOneEntryMatchingTable(
-		$shouldOrNot, TableNode $expectedLogEntries, $regexCompare = false
+		$shouldOrNot,
+		TableNode $expectedLogEntries,
+		$regexCompare = false
 	) {
 		$logLines = LoggingHelper::getLogFileContent(
 			$this->featureContext->getBaseUrl(),
@@ -276,17 +299,21 @@ class LoggingContext implements Context {
 					}
 					if (!\is_string($logEntry[$attribute])) {
 						$logEntry[$attribute] = \json_encode(
-							$logEntry[$attribute], JSON_UNESCAPED_SLASHES
+							$logEntry[$attribute],
+							JSON_UNESCAPED_SLASHES
 						);
 					}
 
 					if ($regexCompare === true) {
 						$expectedLogEntry[$attribute]
 							= $this->featureContext->substituteInLineCodes(
-								$expectedLogEntry[$attribute], null, ['preg_quote' => ['/']]
+								$expectedLogEntry[$attribute],
+								null,
+								['preg_quote' => ['/']]
 							);
 						$matchAttribute = \preg_match(
-							$expectedLogEntry[$attribute], $logEntry[$attribute]
+							$expectedLogEntry[$attribute],
+							$logEntry[$attribute]
 						);
 					} else {
 						$expectedLogEntry[$attribute]
@@ -342,7 +369,8 @@ class LoggingContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theLogFileShouldNotContainAnyLogEntriesWithTheseAttributes(
-		$withOrContaining, TableNode $logEntriesExpectedNotToExist
+		$withOrContaining,
+		TableNode $logEntriesExpectedNotToExist
 	) {
 		$logLines = LoggingHelper::getLogFileContent(
 			$this->featureContext->getBaseUrl(),

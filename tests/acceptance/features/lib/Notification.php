@@ -64,10 +64,12 @@ class Notification extends OwncloudPage {
 	 *
 	 */
 	public function followLink(
-		Session $session, $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+		Session $session,
+		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	) {
 		$link = $this->notificationElement->find(
-			"xpath", $this->notificationLinkXpath
+			"xpath",
+			$this->notificationLinkXpath
 		);
 		$this->assertElementNotNull(
 			$link,
@@ -96,7 +98,8 @@ class Notification extends OwncloudPage {
 	public function react($reaction, Session $session) {
 		$buttonXpath = \sprintf($this->buttonByTextXpath, $reaction);
 		$button = $this->notificationElement->find(
-			"xpath", $buttonXpath
+			"xpath",
+			$buttonXpath
 		);
 		$this->assertElementNotNull(
 			$button,

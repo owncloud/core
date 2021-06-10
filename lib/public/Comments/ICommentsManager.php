@@ -42,7 +42,7 @@ interface ICommentsManager {
 	 *
 	 * User interfaces shall show "Deleted user" as display name, if needed.
 	 */
-	const DELETED_USER = 'deleted_users';
+	public const DELETED_USER = 'deleted_users';
 
 	/**
 	 * returns a comment instance
@@ -108,11 +108,11 @@ interface ICommentsManager {
 	 * @since 9.0.0
 	 */
 	public function getForObject(
-			$objectType,
-			$objectId,
-			$limit = 0,
-			$offset = 0,
-			\DateTime $notOlderThan = null
+		$objectType,
+		$objectId,
+		$limit = 0,
+		$offset = 0,
+		\DateTime $notOlderThan = null
 	);
 
 	/**

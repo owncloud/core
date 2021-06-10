@@ -58,12 +58,14 @@ class SettingsPageControllerTest extends TestCase {
 		$this->user = $this->getMockBuilder(IUser::class)->getMock();
 		$this->lfactory = $this->createMock(IFactory::class);
 
-		$this->pageController = new SettingsPageController('settings',
+		$this->pageController = new SettingsPageController(
+			'settings',
 			$this->request,
 			$this->settingsManager,
 			$this->urlGenerator,
 			$this->groupManager,
-			$this->userSession);
+			$this->userSession
+		);
 	}
 
 	public function testGetPersonalAsUser() {

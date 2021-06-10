@@ -107,7 +107,8 @@ class Hooks {
 			\OC\Files\Filesystem::getLoader(),
 			\OC::$server->getNotificationManager(),
 			\OC::$server->getEventDispatcher(),
-			$params['uid']);
+			$params['uid']
+		);
 
 		$manager->removeUserShares($params['uid']);
 	}

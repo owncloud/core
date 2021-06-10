@@ -32,7 +32,7 @@ use OCP\ILogger;
  * @package OCA\DAV\BackgroundJob
  */
 class CleanProperties extends TimedJob {
-	const CHUNK_SIZE = 200;
+	public const CHUNK_SIZE = 200;
 
 	/** @var IDBConnection  */
 	private $connection;
@@ -45,8 +45,10 @@ class CleanProperties extends TimedJob {
 	 * @param IDBConnection $connection
 	 * @param ILogger $logger
 	 */
-	public function __construct(IDBConnection $connection,
-								ILogger $logger) {
+	public function __construct(
+		IDBConnection $connection,
+		ILogger $logger
+	) {
 		$this->connection = $connection;
 		$this->logger = $logger;
 

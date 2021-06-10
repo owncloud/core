@@ -131,10 +131,17 @@ class Session implements IUserSession, Emitter {
 	 * @param SyncService $userSyncService
 	 * @param EventDispatcher $eventDispatcher
 	 */
-	public function __construct(IUserManager $manager, ISession $session,
-								ITimeFactory $timeFactory, IProvider $tokenProvider,
-								IConfig $config, ILogger $logger, IServiceLoader $serviceLoader,
-								SyncService $userSyncService, EventDispatcher $eventDispatcher) {
+	public function __construct(
+		IUserManager $manager,
+		ISession $session,
+		ITimeFactory $timeFactory,
+		IProvider $tokenProvider,
+		IConfig $config,
+		ILogger $logger,
+		IServiceLoader $serviceLoader,
+		SyncService $userSyncService,
+		EventDispatcher $eventDispatcher
+	) {
 		$this->manager = $manager;
 		$this->session = $session;
 		$this->timeFactory = $timeFactory;
@@ -495,7 +502,8 @@ class Session implements IUserSession, Emitter {
 					 * @see https://github.com/owncloud/core/issues/22893
 					 */
 					$this->session->set(
-						Auth::DAV_AUTHENTICATED, $this->getUser()->getUID()
+						Auth::DAV_AUTHENTICATED,
+						$this->getUser()->getUID()
 					);
 					return true;
 				}
@@ -999,7 +1007,8 @@ class Session implements IUserSession, Emitter {
 	 */
 	public function loginUser(IUser $user = null, $password = null) {
 		$uid = $user === null ? '' : $user->getUID();
-		return $this->emittingCall(function () use (&$user, &$password) {
+		return $this->emittingCall(
+			function () use (&$user, &$password) {
 			if ($user === null) {
 				//Cannot extract the uid when $user is null, hence pass null
 				$this->emitFailedLogin(null);
@@ -1028,9 +1037,12 @@ class Session implements IUserSession, Emitter {
 			}
 
 			return true;
-		}, ['before' => ['user' => $user, 'login' => $uid, 'uid' => $uid, 'password' => $password],
+		},
+			['before' => ['user' => $user, 'login' => $uid, 'uid' => $uid, 'password' => $password],
 			'after' => ['user' => $user, 'login' => $uid, 'uid' => $uid, 'password' => $password]],
-			'user', 'login');
+			'user',
+			'login'
+		);
 	}
 
 	/**

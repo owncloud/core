@@ -100,12 +100,14 @@ class AppManager implements IAppManager {
 	 * @param EventDispatcherInterface $dispatcher
 	 * @param IConfig $config
 	 */
-	public function __construct(IUserSession $userSession = null,
-								IAppConfig $appConfig = null,
-								IGroupManager $groupManager = null,
-								ICacheFactory $memCacheFactory,
-								EventDispatcherInterface $dispatcher,
-								IConfig $config) {
+	public function __construct(
+		IUserSession $userSession = null,
+		IAppConfig $appConfig = null,
+		IGroupManager $groupManager = null,
+		ICacheFactory $memCacheFactory,
+		EventDispatcherInterface $dispatcher,
+		IConfig $config
+	) {
 		$this->userSession = $userSession;
 		$this->appConfig = $appConfig;
 		$this->groupManager = $groupManager;

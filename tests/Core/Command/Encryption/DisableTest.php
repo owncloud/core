@@ -99,7 +99,8 @@ class DisableTest extends TestCase {
 		if ($hasEncryptedFiles === false) {
 			$this->config->expects($this->exactly(1))
 				->method('getAppValue')
-				->willReturnMap([
+				->willReturnMap(
+					[
 						['core', 'encryption_enabled', 'no', $oldStatus],
 					]
 				);
@@ -114,7 +115,8 @@ class DisableTest extends TestCase {
 			if ($isUpdating) {
 				$this->config
 					->method('setAppValue')
-					->willReturnMap([
+					->willReturnMap(
+						[
 							['core', 'encryption_enabled', 'no', true],
 						]
 					);

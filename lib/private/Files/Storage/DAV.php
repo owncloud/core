@@ -869,8 +869,9 @@ class DAV extends Common {
 			throw new StorageNotAvailableException(\get_class($e) . ': ' . $e->getMessage());
 		} elseif (($e instanceof StorageNotAvailableException)
 			|| ($e instanceof StorageInvalidException)
-			|| ($e instanceof \Sabre\DAV\Exception
-		)) {
+			|| (
+				$e instanceof \Sabre\DAV\Exception
+			)) {
 			// rethrow
 			throw $e;
 		}

@@ -57,11 +57,12 @@ class Profile implements ISettings {
 	 * @param IFactory $lfactory
 	 * @param LocaleHelper $localeHelper
 	 */
-	public function __construct(IConfig $config,
-								   IGroupManager $groupManager,
-								   IUserSession $userSession,
-								   IFactory $lfactory,
-								   LocaleHelper $localeHelper
+	public function __construct(
+		IConfig $config,
+		IGroupManager $groupManager,
+		IUserSession $userSession,
+		IFactory $lfactory,
+		LocaleHelper $localeHelper
 	) {
 		$this->config = $config;
 		$this->groupManager = $groupManager;

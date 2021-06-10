@@ -35,7 +35,8 @@ class Version20170526100342 implements ISimpleMigration {
 			->set('calendarorder', $query->createNamedParameter('100'))
 			->where($query->expr()->eq(
 				'uri',
-				$query->createNamedParameter('contact_birthdays')))
+				$query->createNamedParameter('contact_birthdays')
+			))
 			->execute();
 
 		$out->info("$updated birthday calendars updated.");

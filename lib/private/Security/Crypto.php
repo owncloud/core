@@ -41,10 +41,10 @@ use OCP\IConfig;
  * @package OC\Security
  */
 class Crypto implements ICrypto {
-	const CRYPT_MODE = 'cbc';
-	const CRYPT_METHOD = 'pbkdf2';
-	const CRYPT_HASH = 'sha1';
-	const SALT = 'phpseclib';
+	public const CRYPT_MODE = 'cbc';
+	public const CRYPT_METHOD = 'pbkdf2';
+	public const CRYPT_HASH = 'sha1';
+	public const SALT = 'phpseclib';
 
 	/** @var AES $cipher */
 	private $cipher;

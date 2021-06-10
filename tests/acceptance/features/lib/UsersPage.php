@@ -397,7 +397,11 @@ class UsersPage extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function createUser(
-		Session $session, $username, $password, $email = null, $groups = null
+		Session $session,
+		$username,
+		$password,
+		$email = null,
+		$groups = null
 	) {
 		$this->setSetting("Set password for new users", $password !== null);
 		$this->fillField($this->newUserUsernameFieldId, $username);
@@ -417,7 +421,8 @@ class UsersPage extends OwncloudPage {
 			);
 		}
 		$newUserGroupsDropDown = $this->find(
-			"xpath", $this->newUserGroupsDropDownXpath
+			"xpath",
+			$this->newUserGroupsDropDownXpath
 		);
 		if ($newUserGroupsDropDown === null) {
 			throw new ElementNotFoundException(
@@ -437,7 +442,8 @@ class UsersPage extends OwncloudPage {
 			);
 		}
 		$groupsInDropDown = $groupDropDownList->findAll(
-			"xpath", $this->newUserGroupsDropDownListTag
+			"xpath",
+			$this->newUserGroupsDropDownListTag
 		);
 
 		//uncheck all selected groups
@@ -451,13 +457,15 @@ class UsersPage extends OwncloudPage {
 		if (\is_array($groups)) {
 			foreach ($groups as $group) {
 				$groupItem = $this->find(
-					"xpath", \sprintf($this->newUserGroupXpath, $group)
+					"xpath",
+					\sprintf($this->newUserGroupXpath, $group)
 				);
 				if ($groupItem !== null) {
 					$groupItem->click();
 				} else {
 					$newUserAddGroupBtn = $this->find(
-						"xpath", $this->newUserAddGroupBtnXpath
+						"xpath",
+						$this->newUserAddGroupBtnXpath
 					);
 					if ($newUserAddGroupBtn === null) {
 						throw new ElementNotFoundException(
@@ -468,7 +476,8 @@ class UsersPage extends OwncloudPage {
 					}
 					$newUserAddGroupBtn->click();
 					$createUserInput = $this->find(
-						"xpath", $this->createGroupWithNewUserInputXpath
+						"xpath",
+						$this->createGroupWithNewUserInputXpath
 					);
 					if ($createUserInput === null) {
 						throw new ElementNotFoundException(
@@ -502,7 +511,10 @@ class UsersPage extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function setQuotaOfUserTo(
-		$username, $quota, Session $session, $valid = true
+		$username,
+		$quota,
+		Session $session,
+		$valid = true
 	) {
 		$userTr = $this->findUserInTable($username);
 		$selectField = $userTr->find('xpath', $this->quotaSelectXpath);
@@ -516,7 +528,8 @@ class UsersPage extends OwncloudPage {
 		}
 		$selectField->click();
 		$selectOption = $selectField->find(
-			'xpath', \sprintf($this->quotaOptionXpath, $quota)
+			'xpath',
+			\sprintf($this->quotaOptionXpath, $quota)
 		);
 		if ($selectOption === null) {
 			$xpathLocator = \sprintf($this->quotaOptionXpath, "Other");
@@ -532,7 +545,8 @@ class UsersPage extends OwncloudPage {
 
 			$selectOption->click();
 			$manualQuotaInputElement = $this->find(
-				'xpath', $this->manualQuotaInputXpath
+				'xpath',
+				$this->manualQuotaInputXpath
 			);
 
 			if ($manualQuotaInputElement === null) {
@@ -554,7 +568,8 @@ class UsersPage extends OwncloudPage {
 		} else {
 			try {
 				$this->waitTillXpathIsVisible(
-					"//*[@id='$this->notificationId']", 1000
+					"//*[@id='$this->notificationId']",
+					1000
 				);
 			} catch (\Exception $e) {
 				// Sometimes the notification is not "noticed".

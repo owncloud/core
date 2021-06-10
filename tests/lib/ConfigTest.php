@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package Test
  */
 class ConfigTest extends TestCase {
-	const TESTCONTENT = '<?php $CONFIG=array("foo"=>"bar", "beers" => array("Appenzeller", "Guinness", "Kölsch"), "alcohol_free" => false);';
+	public const TESTCONTENT = '<?php $CONFIG=array("foo"=>"bar", "beers" => array("Appenzeller", "Guinness", "Kölsch"), "alcohol_free" => false);';
 
 	/** @var array */
 	private $initialConfig = ['foo' => 'bar', 'beers' => ['Appenzeller', 'Guinness', 'Kölsch'], 'alcohol_free' => false];
@@ -79,16 +79,20 @@ class ConfigTest extends TestCase {
 
 		$calledBeforeSetValue = [];
 		$calledAfterSetValue = [];
-		\OC::$server->getEventDispatcher()->addListener('config.beforesetvalue',
+		\OC::$server->getEventDispatcher()->addListener(
+			'config.beforesetvalue',
 			function (GenericEvent $event) use (&$calledBeforeSetValue) {
 				$calledBeforeSetValue[] = 'config.beforesetvalue';
 				$calledBeforeSetValue[] = $event;
-			});
-		\OC::$server->getEventDispatcher()->addListener('config.aftersetvalue',
+			}
+		);
+		\OC::$server->getEventDispatcher()->addListener(
+			'config.aftersetvalue',
 			function (GenericEvent $event) use (&$calledAfterSetValue) {
 				$calledAfterSetValue[] = 'config.aftersetvalue';
 				$calledAfterSetValue[] = $event;
-			});
+			}
+		);
 
 		$this->config->setValue('bar', 'red');
 		$this->config->setValue('apps', ['files', 'gallery']);
@@ -126,17 +130,21 @@ class ConfigTest extends TestCase {
 		$this->assertStringEqualsFile($this->configFile, self::TESTCONTENT);
 
 		$calledBeforeUpdate = [];
-		\OC::$server->getEventDispatcher()->addListener('config.beforesetvalue',
+		\OC::$server->getEventDispatcher()->addListener(
+			'config.beforesetvalue',
 			function (GenericEvent $event) use (&$calledBeforeUpdate) {
 				$calledBeforeUpdate[] = 'config.beforesetvalue';
 				$calledBeforeUpdate[] = $event;
-			});
+			}
+		);
 		$calledAfterUpdate = [];
-		\OC::$server->getEventDispatcher()->addListener('config.aftersetvalue',
+		\OC::$server->getEventDispatcher()->addListener(
+			'config.aftersetvalue',
 			function (GenericEvent $event) use (&$calledAfterUpdate) {
 				$calledAfterUpdate[] = 'config.aftersetvalue';
 				$calledAfterUpdate[] = $event;
-			});
+			}
+		);
 		$this->config->setValues([
 			'foo'			=> 'moo',
 			'alcohol_free'	=> null,
@@ -167,17 +175,21 @@ class ConfigTest extends TestCase {
 		$this->assertStringEqualsFile($this->configFile, $expected);
 
 		$calledBeforeDelete = [];
-		\OC::$server->getEventDispatcher()->addListener('config.beforedeletevalue',
+		\OC::$server->getEventDispatcher()->addListener(
+			'config.beforedeletevalue',
 			function (GenericEvent $event) use (&$calledBeforeDelete) {
 				$calledBeforeDelete[] = 'config.beforedeletevalue';
 				$calledBeforeDelete[] = $event;
-			});
+			}
+		);
 		$calledAfterDelete = [];
-		\OC::$server->getEventDispatcher()->addListener('config.afterdeletevalue',
+		\OC::$server->getEventDispatcher()->addListener(
+			'config.afterdeletevalue',
 			function (GenericEvent $event) use (&$calledAfterDelete) {
 				$calledAfterDelete[] = 'config.afterdeletevalue';
 				$calledAfterDelete[] = $event;
-			});
+			}
+		);
 
 		$this->config->setValues([
 			'foo' => null
@@ -199,16 +211,20 @@ class ConfigTest extends TestCase {
 	public function testDeleteKey() {
 		$calledBeforeDeleteValue = [];
 		$calledAfterDeleteValue = [];
-		\OC::$server->getEventDispatcher()->addListener('config.beforedeletevalue',
+		\OC::$server->getEventDispatcher()->addListener(
+			'config.beforedeletevalue',
 			function (GenericEvent $event) use (&$calledBeforeDeleteValue) {
 				$calledBeforeDeleteValue[] = 'config.beforedeletevalue';
 				$calledBeforeDeleteValue[] = $event;
-			});
-		\OC::$server->getEventDispatcher()->addListener('config.afterdeletevalue',
+			}
+		);
+		\OC::$server->getEventDispatcher()->addListener(
+			'config.afterdeletevalue',
 			function (GenericEvent $event) use (&$calledAfterDeleteValue) {
 				$calledAfterDeleteValue[] = 'config.afterdeletevalue';
 				$calledAfterDeleteValue[] = $event;
-			});
+			}
+		);
 		$this->config->deleteKey('foo');
 		$expectedConfig = $this->initialConfig;
 		unset($expectedConfig['foo']);

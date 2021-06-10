@@ -136,11 +136,16 @@ class GlobalStoragesServiceDeleteUserTest extends TestCase {
 			$backend = new Backend();
 			$backend->setIdentifier($storageParam['backendIdentifier']);
 			$backendService->registerBackend($backend);
-			$storageConfig = $service->createStorage('/foo/',
-				$storageParam['backendIdentifier'], $storageParam['authMechanism'],
-				$storageParam['backendOptions'], null,
-				$storageParam['applicableUsers'], $storageParam['applicableGroups'],
-				$storageParam['priority']);
+			$storageConfig = $service->createStorage(
+				'/foo/',
+				$storageParam['backendIdentifier'],
+				$storageParam['authMechanism'],
+				$storageParam['backendOptions'],
+				null,
+				$storageParam['applicableUsers'],
+				$storageParam['applicableGroups'],
+				$storageParam['priority']
+			);
 			$storageConfig->setBackend($backend);
 			$backend->setStorageClass($storageParam['storageClass']);
 

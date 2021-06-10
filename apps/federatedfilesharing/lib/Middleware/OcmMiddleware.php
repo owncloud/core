@@ -75,11 +75,11 @@ class OcmMiddleware {
 	 * @param ILogger $logger
 	 */
 	public function __construct(
-								FederatedShareProvider $federatedShareProvider,
-								IAppManager $appManager,
-								IUserManager $userManager,
-								AddressHandler $addressHandler,
-								ILogger $logger
+		FederatedShareProvider $federatedShareProvider,
+		IAppManager $appManager,
+		IUserManager $userManager,
+		AddressHandler $addressHandler,
+		ILogger $logger
 	) {
 		$this->federatedShareProvider = $federatedShareProvider;
 		$this->appManager = $appManager;
