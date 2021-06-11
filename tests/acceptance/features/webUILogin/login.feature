@@ -18,7 +18,7 @@ Feature: login users
     Given the administrator has added system config key "strict_login_enforced" with value "true" and type "boolean"
     When the user browses to the login page
     Then the username field on the login page should have placeholder text "Login"
-    And the password field on the login page should have placeholder text "Password"
+    And the password field on the login page should have placeholder text "Broken"
 
   Scenario: simple user login
     Given these users have been created with default attributes and without skeleton files:
