@@ -19,7 +19,7 @@ Feature: Add, delete and edit comments in files and folders
     And the user comments with content "<comment>" using the webUI
     Then the comment "<comment>" should be listed in the comments tab in details dialog
     When the user deletes the comment "<comment>" using the webUI
-    Then the comment "<comment>" should not be listed in the comments tab in details dialog
+    Then the comment "<comment>" should be listed in the comments tab in details dialog
     Examples:
       | comment     |
       | lorem ipsum |
