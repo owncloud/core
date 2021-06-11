@@ -1416,6 +1416,9 @@ def acceptance(ctx):
 			if params['skip']:
 				continue
 
+			if ("full-ci" in ctx.build.title.lower()):
+				params["earlyFail"] = False
+
 			if isAPI or isCLI:
 				params['browsers'] = ['']
 
