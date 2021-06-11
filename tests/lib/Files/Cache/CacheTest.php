@@ -135,7 +135,8 @@ class CacheTest extends TestCase {
 		$fileData['unkownSize'] = ['size' => -1, 'mtime' => 25, 'mimetype' => 'foo/file'];
 		$this->cache->put($file4, $fileData['unkownSize']);
 
-		$this->assertEquals(-1, $this->cache->calculateFolderSize($folder));
+		// -2 = IScanner::SIZE_SHALLOW_SCANNED
+		$this->assertEquals(-2, $this->cache->calculateFolderSize($folder));
 
 		$fileData['unkownSize'] = ['size' => 5, 'mtime' => 25, 'mimetype' => 'foo/file'];
 		$this->cache->put($file4, $fileData['unkownSize']);
@@ -208,7 +209,8 @@ class CacheTest extends TestCase {
 		$fileData['unkownSize'] = ['size' => -1, 'mtime' => 25, 'mimetype' => 'foo/file'];
 		$this->cache->put($file4, $fileData['unkownSize']);
 
-		$this->assertEquals(-1, $this->cache->calculateFolderSize($file1));
+		// -2 = IScanner::SIZE_SHALLOW_SCANNED
+		$this->assertEquals(-2, $this->cache->calculateFolderSize($file1));
 
 		$fileData['unkownSize'] = ['size' => 5, 'mtime' => 25, 'mimetype' => 'foo/file'];
 		$this->cache->put($file4, $fileData['unkownSize']);
@@ -244,7 +246,8 @@ class CacheTest extends TestCase {
 		$this->assertTrue($this->cache->inCache($dir2));
 
 		// check that root size ignored the unknown sizes
-		$this->assertEquals(-1, $this->cache->calculateFolderSize(''));
+		// -2 = IScanner::SIZE_SHALLOW_SCANNED
+		$this->assertEquals(-2, $this->cache->calculateFolderSize(''));
 
 		// clean up
 		$this->cache->remove('');
@@ -264,6 +267,8 @@ class CacheTest extends TestCase {
 		$this->cache->put('foo', ['size' => -1]);
 		$this->assertEquals(Cache::PARTIAL, $this->cache->getStatus('foo'));
 		$this->cache->put('foo', ['size' => -1, 'mtime' => 20, 'mimetype' => 'foo/file']);
+		$this->assertEquals(Cache::NOT_SCANNED, $this->cache->getStatus('foo'));
+		$this->cache->put('foo', ['size' => -2, 'mtime' => 20, 'mimetype' => 'foo/file']);
 		$this->assertEquals(Cache::SHALLOW, $this->cache->getStatus('foo'));
 		$this->cache->put('foo', ['size' => 10]);
 		$this->assertEquals(Cache::COMPLETE, $this->cache->getStatus('foo'));

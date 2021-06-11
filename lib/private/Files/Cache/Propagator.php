@@ -87,6 +87,7 @@ class Propagator implements IPropagator {
 
 		if ($sizeDifference !== 0) {
 			// if we need to update size, only update the records with calculated size (>-1)
+			// special cases (IScanner::SIZE_*) have negative values, so they won't interfere
 			$builder->set('size', $builder->createFunction(
 				'CASE' .
 					' WHEN ' . $builder->expr()->gt('size', $builder->expr()->literal(-1, IQueryBuilder::PARAM_INT)) .
@@ -168,6 +169,7 @@ class Propagator implements IPropagator {
 			->set('size', $sizeQuery->createFunction('`size` + ' . $sizeQuery->createParameter('size')))
 			->where($query->expr()->eq('storage', $query->expr()->literal($storageId, IQueryBuilder::PARAM_INT)))
 			->andWhere($query->expr()->eq('path_hash', $query->createParameter('hash')))
+			// special cases (IScanner::SIZE_*) have negative values, so they won't interfere
 			->andWhere($sizeQuery->expr()->gt('size', $sizeQuery->expr()->literal(-1, IQueryBuilder::PARAM_INT)));
 
 		foreach ($this->batch as $item) {
