@@ -28,6 +28,7 @@ Summary
 * Bugfix - Fix federated share download bug happens on some providers: [#38738](https://github.com/owncloud/core/pull/38738)
 * Bugfix - Correctly parse different ocm-provider api responses: [#38751](https://github.com/owncloud/core/pull/38751)
 * Bugfix - Move files_antivirus executable mode config options into config.php: [#38753](https://github.com/owncloud/core/pull/38753)
+* Bugfix - Delay getting the file info until it's going to be used: [#38767](https://github.com/owncloud/core/pull/38767)
 * Bugfix - Expire shares at end of day: [#4324](https://github.com/owncloud/enterprise/issues/4324)
 * Bugfix - Image preview for file versions: [#38778](https://github.com/owncloud/core/pull/38778)
 * Bugfix - Prevent files:checksum:verify from crashing on exception: [#38785](https://github.com/owncloud/core/pull/38785)
@@ -227,6 +228,18 @@ Details
 
    https://github.com/owncloud/core/pull/38753
    https://github.com/owncloud/files_antivirus/pull/442
+
+* Bugfix - Delay getting the file info until it's going to be used: [#38767](https://github.com/owncloud/core/pull/38767)
+
+   Some operations require getting the file info to perform the action. Previously, this file
+   info was fetched and stored before any operation. In some cases fetching the file info
+   triggered a file scan that could delay the whole request considerably.
+
+   Now, we fetch the file info only in those operations that require it. There are some node
+   operations such as getting the file path that don't require fetching the file info, so those
+   operation won't fetch it, and so a potential file scan is prevented (for those operations)
+
+   https://github.com/owncloud/core/pull/38767
 
 * Bugfix - Expire shares at end of day: [#4324](https://github.com/owncloud/enterprise/issues/4324)
 
