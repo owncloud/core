@@ -36,8 +36,8 @@ interface IScanner {
 	public const REUSE_SIZE = 2;
 	public const REUSE_ONLY_FOR_FILES = 4;  // apply the etag reuse only to files, not folders
 
-	const SIZE_NEEDS_SCAN = -1;
-	const SIZE_SHALLOW_SCANNED = -2;  // current folder might be scanned but deeper folders not
+	public const SIZE_NEEDS_SCAN = -1;
+	public const SIZE_SHALLOW_SCANNED = -2;  // current folder might be scanned but deeper folders not
 
 	/**
 	 * scan a single file and store it in the cache
