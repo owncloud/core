@@ -137,6 +137,13 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 		if (!isset($params['tablePrefix'])) {
 			throw new \Exception('tablePrefix not set');
 		}
+		if (isset($params['customPdo'])) {
+			$params['pdo'] = null;
+			$params['pdo'] = $params['customPdo'];
+			unset($params['customPdo']);
+			$params['driver'] = 'pdo_' . $params['pdo']->getAttribute(\PDO::ATTR_DRIVER_NAME);
+		}
+
 		parent::__construct($params, $driver, $config, $eventManager);
 		$this->adapter = new $params['adapter']($this);
 		$this->tablePrefix = $params['tablePrefix'];
