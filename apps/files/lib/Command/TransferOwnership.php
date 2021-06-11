@@ -322,7 +322,7 @@ class TransferOwnership extends Command {
 							}
 						} catch (NotFoundException | NoUserException $e) {
 							$skipped++;
-							$output->writeln('<error>Share with id ' . $share->getId() . ' and type ' . $share->getShareType() . ' points at deleted file or share that is no longer accessible, skipping</error>');
+							$output->writeln("<error>Share with id {$share->getId()} and type {$share->getShareType()} points at deleted file or share that is no longer accessible, skipping</error>");
 							$progress->advance(1);
 						}
 					}
@@ -333,8 +333,26 @@ class TransferOwnership extends Command {
 				// filter out the reshares as transfer ownership only transfers
 				// files owned by the user - in case of reshares source
 				// user is not file owner
-				$filteredShares = \array_filter($filteredShares, function (IShare $share) {
-					return $share->getShareOwner() === $this->sourceUser;
+				$filteredShares = \array_filter($filteredShares, function (IShare $share) use ($output) {
+					if ($share->getShareOwner() === $this->sourceUser) {
+						// due to lazy loading of the file info the information wouldn't be
+						// available for the share transfer because the file has been moved before.
+						// Transfer steps are:
+						// 1. Get shares (with the info)
+						// 2. Transfer files
+						// 3. Transfer shares (requires info from step1)
+						// ShareManager's generalChecks checks for the node to be shareable during
+						// share update. This info could be lost in step3 because the file has been
+						// transferred already
+						try {
+							$share->getNode()->getId();  // force loading the fileinfo
+						} catch (NotFoundException | NoUserException $e) {
+							$output->writeln("<error>Share with id {$share->getId()} and type {$share->getShareType()} points at deleted file or share that is no longer accessible, skipping</error>");
+							return false;
+						}
+						return true;
+					}
+					return false;
 				});
 
 				$progress->advance(\count($filteredShares));
@@ -412,7 +430,7 @@ class TransferOwnership extends Command {
 				}
 				$this->shareManager->transferShare($share, $this->sourceUser, $this->destinationUser, $this->finalTarget);
 			} catch (NotFoundException | NoUserException $e) {
-				$output->writeln('<error>Share with id ' . $share->getId() . ' and type ' . $share->getShareType() . ' points at deleted file or share that is no longer accessible, skipping</error>');
+				$output->writeln("error>Share with id {$share->getId()} and type {$share->getShareType()} points at deleted file or share that is no longer accessible, skipping</error>");
 			} catch (\Exception $e) {
 				$output->writeln('<error>Could not restore share with id ' . $share->getId() . ':' . $e->getTraceAsString() . '</error>');
 				$status = 1;

@@ -44,6 +44,10 @@ class RootTest extends TestCase {
 		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
 
 		$view->expects($this->once())
+			->method('file_exists')
+			->with('/bar/foo')
+			->willReturn(true);
+		$view->expects($this->once())
 			->method('getFileInfo')
 			->with('/bar/foo')
 			->will($this->returnValue($this->getFileInfo(['fileid' => 10, 'path' => 'bar/foo', 'name', 'mimetype' => 'text/plain'])));
@@ -71,7 +75,7 @@ class RootTest extends TestCase {
 		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
 
 		$view->expects($this->once())
-			->method('getFileInfo')
+			->method('file_exists')
 			->with('/bar/foo')
 			->will($this->returnValue(false));
 
