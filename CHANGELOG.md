@@ -57,6 +57,7 @@ Summary
 * Enhancement - Improve mobile user interface on files list: [#38748](https://github.com/owncloud/core/pull/38748)
 * Enhancement - Resend invitation email: [#38774](https://github.com/owncloud/core/pull/38774)
 * Enhancement - Improve admin external storage settings UI: [#38795](https://github.com/owncloud/core/pull/38795)
+* Enhancement - Introduce new state to prevent scanning of shallow scanned folders: [#38804](https://github.com/owncloud/core/pull/38804)
 * Enhancement - Improve performance of the SMB log when it is inactive: [#38819](https://github.com/owncloud/core/pull/38819)
 
 Details
@@ -504,6 +505,22 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4585
    https://github.com/owncloud/core/pull/38795
+
+* Enhancement - Introduce new state to prevent scanning of shallow scanned folders: [#38804](https://github.com/owncloud/core/pull/38804)
+
+   Folders can be partially scanned, this means that a folder could have its closest contents
+   scanned (the first level), but not deeper contents. Folder "/A" could be scanned but not
+   "/A/B/C".
+
+   Previously, we couldn't detect that a folder had been partially scanned, so we triggered
+   another scan on that folder even though we already had data in the DB.
+
+   Now, we can detect that the folder has been partially scanned to avoid another scan if it isn't
+   needed. This leads to notable performance improvements in cases where a FS hasn't been scanned
+   fully. Note that an initial scan is still required, and the performance will remain the same in
+   this case.
+
+   https://github.com/owncloud/core/pull/38804
 
 * Enhancement - Improve performance of the SMB log when it is inactive: [#38819](https://github.com/owncloud/core/pull/38819)
 
