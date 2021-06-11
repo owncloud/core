@@ -1,4 +1,4 @@
-@api @skipOnOcV10.3 @issue-ocis-reva-401
+@api @notToImplementOnOCIS @issue-ocis-1241
 Feature: Users sync
 
   Background:
@@ -6,6 +6,7 @@ Feature: Users sync
       | username |
       | Alice    |
       | Brian    |
+
 
   Scenario Outline: Trying to sync a user when there is no external user backend
     Given using OCS API version "<ocs-api-version>"
@@ -18,6 +19,7 @@ Feature: Users sync
       | 1               | 100             |
       | 2               | 200             |
 
+
   Scenario Outline: Trying to sync a user which does not exist
     Given using OCS API version "<ocs-api-version>"
     When the administrator tries to sync user "nonexistentuser" using the OCS API
@@ -28,6 +30,7 @@ Feature: Users sync
       | ocs-api-version | http-status-code |
       | 1               | 200              |
       | 2               | 404              |
+
 
   Scenario Outline: Trying to sync a user as another user which does not exist
     Given using OCS API version "<ocs-api-version>"
@@ -51,6 +54,7 @@ Feature: Users sync
       | ocs-api-version | ocs-status-code | http-status-code |
       | 1               | 403             | 200              |
       | 2               | 403             | 403              |
+
 
   Scenario Outline: Trying to sync a user by admin using an incorrect password
     Given using OCS API version "<ocs-api-version>"
