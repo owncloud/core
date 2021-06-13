@@ -998,13 +998,13 @@ $CONFIG = [
  *  - OC\Preview\PSD
  *  - OC\Preview\EPS
  *  - OC\Preview\TTF
- *  - OC\Preview\HEIC
+ *  - OC\Preview\Heic
  *  - OC\Preview\SGI
  *
  * Install the following additional imagick library when using SVG.
  * This library adds imagick support for SVG, WMF, OpenEXR, DjVu and Graphviz:
  *
- * `sudo apt-get install -y libmagickcore-6.q16-3-extra`
+ * `sudo apt install -y libmagickcore-6.q16-3-extra`
  *
  * Change the following imagick security policy when using PDF.
  * Use the editor of your choice, the example uses `vi`.
