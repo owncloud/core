@@ -15,7 +15,7 @@ OC.L10N.register(
     "Uploaded files" : "อัปโหลดไฟล์แล้ว",
     "Uploading..." : "กำลังอัปโหลด...",
     "Nothing shared with you yet" : "ยังไม่มีการแชร์ใดๆ กับคุณเลย",
-    "Files and folders others share with you will show up here" : "ไฟล์และโฟลเดอร์อื่นๆ ที่ผู้อื่นแชร์กับคุณจะปรากฏขึ้นที่นี่",
+    "Files and folders others share with you will show up here" : "ไฟล์และโฟลเดอร์อื่น ๆ ที่ผู้อื่นแชร์กับคุณจะปรากฏขึ้นที่นี่",
     "Nothing shared yet" : "ยังไม่มีการแชร์ใดๆ",
     "Files and folders you share will show up here" : "ไฟล์และโฟลเดอร์ที่คุณแชร์กับผู้อื่นจะปรากฏขึ้นที่นี่",
     "No shared links" : "ไม่มีลิงก์ที่แชร์",
@@ -41,7 +41,7 @@ OC.L10N.register(
     "Shared by" : "ถูกแชร์โดย",
     "Sharing" : "แชร์ข้อมูล",
     "A file or folder has been <strong>shared</strong>" : "เมื่อไฟล์หรือโฟลเดอร์ถูก <strong>แชร์</strong>",
-    "A file or folder was shared from <strong>another server</strong>" : "เมื่อไฟล์หรือโฟลเดอร์ถูกแชร์จาก <strong>เซิร์ฟเวอร์อื่นๆ</strong>",
+    "A file or folder was shared from <strong>another server</strong>" : "เมื่อไฟล์หรือโฟลเดอร์ถูกแชร์จาก <strong>เซิร์ฟเวอร์อื่น ๆ</strong>",
     "A public shared file or folder was <strong>downloaded</strong>" : "เมื่อไฟล์ที่แชร์หรือโฟลเดอร์สาธารณะถูก <strong>ดาวน์โหลด</strong>",
     "You received a new remote share %2$s from %1$s" : "คุณได้รับ %2$s รีโมทแชร์ใหม่จาก %1$s",
     "You received a new remote share from %s" : "คุณได้รับรีโมทแชร์ใหม่จาก %s",
@@ -140,6 +140,6 @@ OC.L10N.register(
     "Nothing to configure." : "ไม่มีการกำหนดค่า",
     "Group Sharing Blacklist" : "บัญชีดำกลุ่มแชร์",
     "Exclude groups from receiving shares" : "กลุ่มที่ไม่สามารถสร้างแชร์",
-    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "กลุ่มเหล่านี้จะไม่สามารถแชร์กับสมาชิกของกลุ่มที่ถูกจำกัดไว้ แต่สามารถแชร์กับกลุ่มอื่นๆที่เป็นสมาชิกได้ตามปกติ"
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "กลุ่มเหล่านี้จะไม่สามารถแชร์กับสมาชิกของกลุ่มที่ถูกจำกัดไว้ แต่สามารถแชร์กับกลุ่มอื่น ๆ ที่เป็นสมาชิกได้ตามปกติ"
 },
 "nplurals=1; plural=0;");

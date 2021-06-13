@@ -7,7 +7,7 @@
     "[Deleted user]" : "[ผู้ใช้ถูกลบไปแล้ว]",
     "Comments" : "ความคิดเห็น",
     "No other comments available" : "ยังไม่มีความคิดเห็นใดๆ",
-    "More comments..." : "ความคิดเห็นอื่นๆ ...",
+    "More comments..." : "ความคิดเห็นอื่น ๆ ...",
     "Save" : "บันทึก",
     "Allowed characters {count} of {max}" : "อนุญาตให้ใช้ {count} จากทั้งหมด {max} ตัวอักษร",
     "Error occurred while retrieving comment with id {id}" : "เกิดข้อผิดพลาดขณะดึงข้อมูลความความคิดเห็นของ id {ID}",
