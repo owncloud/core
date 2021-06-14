@@ -79,6 +79,12 @@ interface ILicenseManager {
 	public function setLicenseString(?string $licenseString);
 
 	/**
+	 * @since 10.9.0
+	 * Remove the set license
+	 */
+	public function removeLicenseString();
+
+	/**
 	 * @since 10.5.0
 	 * Get the license state for $appid. This function will return one of the LICENSE_STATE_*
 	 * constants.

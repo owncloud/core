@@ -151,6 +151,16 @@ class LicenseManager implements ILicenseManager {
 	}
 
 	/**
+	 * @inheritDoc
+	 */
+	public function removeLicenseString() {
+		// we can only remove the ownCloud's license for now
+		$this->licenseFetcher->removeOwncloudLicense();
+
+		$this->config->deleteAppValues('core-license-complains');
+	}
+
+	/**
 	 * Per-app licenses aren't implemented at the moment. This method will return the state
 	 * of the ownCloud's license for all apps (including public community apps)
 	 * Returns an array with the license object and the state of the license (any of the

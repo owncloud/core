@@ -192,4 +192,14 @@ class LicenseFetcherTest extends TestCase {
 
 		$this->licenseFetcher->setOwncloudLicense($dummyLicense);
 	}
+
+	public function testRemoveOwncloudLicense(): void {
+		$this->config->expects($this->once())
+			->method('deleteAppValue')->with('enterprise_key', 'license-key');
+
+		$this->config->expects($this->once())
+			->method('deleteSystemValue')->with('license-key');
+
+		$this->assertNull($this->licenseFetcher->removeOwncloudLicense());
+	}
 }

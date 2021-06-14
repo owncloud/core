@@ -54,6 +54,7 @@ $application->registerRoutes($this, [
 		['name' => 'Cron#run', 'url' => '/cron', 'verb' => 'GET'],
 		['name' => 'License#getGracePeriod', 'url' => '/license/graceperiod', 'verb' => 'GET'],
 		['name' => 'License#setNewLicense', 'url' => '/license/license', 'verb' => 'POST'],
+		['name' => 'License#removeLicense', 'url' => '/license/license', 'verb' => 'DELETE'],
 		['name' => 'License#getLicenseMessage', 'url' => '/license/licenseMessage', 'verb' => 'GET'],
 	],
 	'ocs' => [

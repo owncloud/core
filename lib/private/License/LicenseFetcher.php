@@ -85,4 +85,12 @@ class LicenseFetcher {
 	public function setOwncloudLicense(string $licenseString): void {
 		$this->config->setAppValue('enterprise_key', 'license-key', $licenseString);
 	}
+
+	/**
+	 * Remove the license
+	 */
+	public function removeOwncloudLicense(): void {
+		$this->config->deleteAppValue('enterprise_key', 'license-key');
+		$this->config->deleteSystemValue('license-key');
+	}
 }
