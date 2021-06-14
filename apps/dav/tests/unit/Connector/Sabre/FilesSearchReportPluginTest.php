@@ -164,6 +164,7 @@ class FilesSearchReportPluginTest extends \Test\TestCase {
 			[['{http://owncloud.org/ns}fileid','{DAV:}getcontentlength'], ['pattern' => 'go']],
 			[[], ['pattern' => 'se', 'limit' => 5]],
 			[['{http://owncloud.org/ns}fileid','{DAV:}getcontentlength'], ['pattern' => 'se', 'limit' => 5]],
+			[['{http://owncloud.org/ns}fileid','{DAV:}getcontentlength', '{http://owncloud.org/ns}search-highlights', '{http://owncloud.org/ns}search-score'], ['pattern' => 'se', 'limit' => 5]],
 		];
 	}
 
@@ -193,11 +194,13 @@ class FilesSearchReportPluginTest extends \Test\TestCase {
 		$this->searchService->method('searchPaged')
 			->with($searchInfo['pattern'], ['files'], 1, $expectedLimit)
 			->will($this->returnCallback(function ($pattern, $apps, $page, $limit) use ($searchList) {
-				return \array_map(function ($value) {
+				return \array_map(function ($key, $value) {
 					$mock = $this->createMock(ResultFile::class);
 					$mock->path = $value;
+					$mock->highlights = ['test value' . $key];
+					$mock->score = '3.' . $key;
 					return $mock;
-				}, $searchList);
+				}, \array_keys($searchList), $searchList);
 			}));
 
 		$this->tree->method('getMultipleNodes')
@@ -251,6 +254,8 @@ class FilesSearchReportPluginTest extends \Test\TestCase {
 				'{http://owncloud.org/ns}fileid',
 				'{DAV:}getcontentlength',
 				'{DAV:}getetag',
+				'{http://owncloud.org/ns}search-highlights',
+				'{http://owncloud.org/ns}search-score'
 			];
 			$foundProperties = \array_intersect($properties, $propfindProperties);
 			$notFoundProperties = \array_diff($properties, $propfindProperties);
@@ -267,6 +272,12 @@ class FilesSearchReportPluginTest extends \Test\TestCase {
 							break;
 						case '{http://owncloud.org/ns}fileid':
 							$this->assertEquals($key, $response[200]['{http://owncloud.org/ns}fileid']);
+							break;
+						case '{http://owncloud.org/ns}search-highlights':
+							$this->assertEquals('test value' . $key, $response[200]['{http://owncloud.org/ns}search-highlights']);
+							break;
+						case '{http://owncloud.org/ns}search-score':
+							$this->assertEquals('3.' . $key, $response[200]['{http://owncloud.org/ns}search-score']);
 							break;
 					}
 				}

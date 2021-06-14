@@ -34,6 +34,8 @@ class FilesSearchReportPlugin extends ServerPlugin {
 	// namespace
 	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
 	public const REPORT_NAME = '{http://owncloud.org/ns}search-files';
+	public const REPORT_HIGHLIGHTS = '{http://owncloud.org/ns}search-highlights';
+	public const REPORT_SCORE = '{http://owncloud.org/ns}search-score';
 
 	/**
 	 * Reference to main server object
@@ -148,7 +150,7 @@ class FilesSearchReportPlugin extends ServerPlugin {
 	/**
 	 * @param string $filesUri the base uri for this user's files directory,
 	 * usually /files/username
-	 * @param File[] $searchResults the results coming from the search service,
+	 * @param FileResult[] $searchResults the results coming from the search service,
 	 * within the files app
 	 * @param array $requestedProps the list of requested webDAV properties
 	 * @param int $maxResults the maximum number of results the generator should generate based on the $searchResults
@@ -156,11 +158,11 @@ class FilesSearchReportPlugin extends ServerPlugin {
 	 * search result, suitable for server's multistatus response
 	 */
 	private function getSearchResultIterator($filesUri, $searchResults, $requestedProps, $maxResults) {
-		$paths = \array_map(function ($searchResult) use ($filesUri) {
-			return $filesUri . $searchResult->path;
-		}, $searchResults);
-
-		$nodes = $this->server->tree->getMultipleNodes($paths);
+		$paths = [];
+		foreach ($searchResults as $searchResult) {
+			$paths[$filesUri . $searchResult->path] = $searchResult;
+		}
+		$nodes = $this->server->tree->getMultipleNodes(\array_keys($paths));
 
 		$propFindType = $requestedProps ? PropFind::NORMAL : PropFind::ALLPROPS;
 
@@ -179,7 +181,13 @@ class FilesSearchReportPlugin extends ServerPlugin {
 				$propFindType
 			);
 			$this->server->getPropertiesByNode($propFind, $node);
-
+			// assuming we only have one entry in the highlights array
+			if (isset($paths[$path]->highlights[0]) && \in_array(self::REPORT_HIGHLIGHTS, $requestedProps)) {
+				$propFind->set(self::REPORT_HIGHLIGHTS, \str_replace(["\r\n", "\r", "\n"], '<br/>', $paths[$path]->highlights[0]));
+			}
+			if (isset($paths[$path]->score) && \in_array(self::REPORT_SCORE, $requestedProps)) {
+				$propFind->set(self::REPORT_SCORE, $paths[$path]->score);
+			}
 			$result = $propFind->getResultForMultiStatus();
 			$result['href'] = $propFind->getPath();
 			yield $result;
