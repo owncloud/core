@@ -13,7 +13,7 @@
 	"require": {
 		"php": ">=7.2",
 		"icewind/smb": "3.4.1",
-		"icewind/streams": "0.7.4",
+		"icewind/streams": "0.7.5",
 		"google/apiclient": "2.9.1",
 		"guzzlehttp/guzzle": "^5.3"
 	},
