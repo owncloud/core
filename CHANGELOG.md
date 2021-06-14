@@ -324,7 +324,7 @@ Details
    The following have been updated: - doctrine/cache (1.10.2 to 1.11.3) -
    egulias/email-validator (3.1.0 to 3.1.1) - icewind/streams (0.7.3 to 0.7.4) - opis/closure
    (3.6.1 => 3.6.2) - pear/pear_exception (v1.0.1 to v1.0.2) - phpseclib/phpseclib (3.0.6 to
-   3.0.8) - psr/log (1.1.3 to 1.1.4)
+   3.0.9) - psr/log (1.1.3 to 1.1.4)
 
    The following have been updated in files_external/3rdparty: - google/apiclient-services
    (v0.164.0 => v0.167.0) - guzzlehttp/psr7 (1.7.0 => 1.8.1) - icewind/smb (3.3.1 to 3.4.1) -
@@ -339,6 +339,7 @@ Details
    https://github.com/owncloud/core/pull/38688
    https://github.com/owncloud/core/pull/38749
    https://github.com/owncloud/core/pull/38786
+   https://github.com/owncloud/core/pull/38839
 
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
 
