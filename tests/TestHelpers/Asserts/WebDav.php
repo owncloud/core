@@ -118,10 +118,10 @@ class WebDav extends \PHPUnit\Framework\Assert {
 			$password,
 			$remoteFile
 		);
-		
+
 		$localContent = \file_get_contents($localFile);
 		$downloadedContent = $result->getBody()->getContents();
-		
+
 		if ($shouldBeSame) {
 			self::assertSame(
 				$localContent,
@@ -170,14 +170,14 @@ class WebDav extends \PHPUnit\Framework\Assert {
 			$remoteFile
 		);
 		$downloadedContent = $result->getBody()->getContents();
-		
+
 		$localContent = SetupHelper::readSkeletonFile(
 			$fileInSkeletonFolder,
 			$baseUrl,
 			$adminUsername,
 			$adminPassword
 		);
-		
+
 		if ($shouldBeSame) {
 			self::assertSame(
 				$localContent,

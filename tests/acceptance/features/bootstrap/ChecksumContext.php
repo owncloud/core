@@ -361,7 +361,7 @@ class ChecksumContext implements Context {
 			$destination,
 			$checksum
 		);
-		$this->featureContext->theHTTPStatusCodeShouldBe(201);
+		$this->featureContext->theHTTPStatusCodeShouldBeOr(201, 206);
 	}
 
 	/**

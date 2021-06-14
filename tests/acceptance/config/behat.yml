@@ -557,6 +557,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - LoggingContext:
+        - OccContext:
         - WebDavPropertiesContext:
         - AppConfigurationContext:
 
