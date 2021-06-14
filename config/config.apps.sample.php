@@ -152,7 +152,7 @@ $CONFIG = [
 /**
  * App: Metrics
  *
- * Note: This app is for Enterprise Customers only.
+ * Note: This app is for Enterprise customers only.
  *
  * Possible keys: `metrics_shared_secret` STRING
  */
@@ -171,7 +171,7 @@ $CONFIG = [
 /**
  * App: Microsoft Office Online (WOPI)
  *
- * Note: This app is for Enterprise Customers only.
+ * Note: This app is for Enterprise customers only.
  *
  * Possible keys: `wopi.token.key` STRING
  *
@@ -392,7 +392,7 @@ $CONFIG = [
 	  // do not verify tls host or peer
 	'insecure' => true
 ],
-  
+
 /**
  * App: Richdocuments
  *
@@ -408,7 +408,7 @@ $CONFIG = [
 /**
  * App: Windows Network Drive (WND)
  *
- * Note: This app is for Enterprise Customers only.
+ * Note: This app is for Enterprise customers only.
  *
  * Possible keys: `wnd.listen.reconnectAfterTime` INTEGER
  *
@@ -425,6 +425,8 @@ $CONFIG = [
  * Possible keys: `wnd.activity.registerExtension` BOOL
  *
  * Possible keys: `wnd.activity.sendToSharees` BOOL
+ *
+ * Possible keys: `wnd.groupmembership.checkUserFirst` BOOL
  */
 
 /**
@@ -508,9 +510,26 @@ $CONFIG = [
 'wnd.activity.sendToSharees' => false,
 
 /**
+ * Make the group membership component assume that the ACL contains a user
+ * The WND app doesn't know about the users or groups associated with ACLs. This
+ * means that an ACL containing "admin" might refer to a user called "admin" or a
+ * group called "admin". By default, the group membership component considers the ACLs to
+ * target groups, and as such, it will try to get the information for such a group. This
+ * works fine if the majority of the ACLs target groups. If the majority of the ACLs
+ * contain users, this might be problematic. The cost of getting information on a
+ * group is usually higher than getting information on a user. This option
+ * makes the group membership component assume the ACL contains a user and checks whether
+ * there is a user in ownCloud with such a name first. If the name doesn't refer to a user,
+ * it will get the group information. Note that this will have performance implications
+ * if the group membership component can't discard users in a large number of cases. It is
+ * recommended to enable this option only if there are a high number of ACLs targeting users.
+ */
+'wnd.groupmembership.checkUserFirst' => false,
+
+/**
  * App: Workflow / Tagging
  *
- * Note: This app is for Enterprise Customers only.
+ * Note: This app is for Enterprise customers only.
  *
  * Possible keys: `workflow.retention_engine` STRING
  */
