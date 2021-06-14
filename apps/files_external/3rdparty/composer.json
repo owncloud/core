@@ -14,7 +14,7 @@
 		"php": ">=7.2",
 		"icewind/smb": "3.4.1",
 		"icewind/streams": "0.7.4",
-		"google/apiclient": "2.9.1",
+		"google/apiclient": "2.9.2",
 		"guzzlehttp/guzzle": "^5.3"
 	},
 	"autoload": {
