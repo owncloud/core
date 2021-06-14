@@ -90,15 +90,21 @@ Feature: actions on a locked item are possible if the token is sent with the req
     And user "Alice" has created a public link share of folder "PARENT" with change permission
     And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
-    When the public uploads file "parent.txt" with content "test" sending the locktoken of file "PARENT" of user "Alice" using the old public WebDAV API
-    Then the HTTP status code should be "423"
-    When the public uploads file "parent.txt" with content "test" sending the locktoken of file "PARENT" of user "Alice" using the new public WebDAV API
-    Then the HTTP status code should be "412"
+    When the public uploads file "parent.txt" with content "test" sending the locktoken of file "PARENT" of user "Alice" using the <webdav_api_version> public WebDAV API
+    Then the HTTP status code should be "<http_status_code>"
     And the content of file "/PARENT/parent.txt" for user "Alice" should be "ownCloud test text file parent"
+
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
-      | lock-scope |
-      | shared     |
-      | exclusive  |
+      | lock-scope | webdav_api_version | http_status_code |
+      | shared     | old                | 423              |
+      | exclusive  | old                | 423              |
+
+
+    Examples:
+      | lock-scope | webdav_api_version | http_status_code |
+      | shared     | new                | 412              |
+      | exclusive  | new                | 412              |
 
   @skipOnOcV10 @issue-34360 @files_sharing-app-required
   Scenario Outline: two users having both a shared lock can use the resource
