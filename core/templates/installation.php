@@ -11,8 +11,8 @@ script('core', [
 <form action="index.php" method="post" autocapitalize="none">
 <input type="hidden" name="install" value="true">
 	<?php if (\count($_['errors']) > 0): ?>
-	<fieldset class="warning">
-		<legend><strong><?php p($l->t('Error'));?></strong></legend>
+	<div class="warning">
+		<strong><?php p($l->t('Error'));?></strong>
 		<?php foreach ($_['errors'] as $err): ?>
 		<p>
 			<?php if (\is_array($err)):?>
@@ -23,23 +23,23 @@ script('core', [
 			<?php endif; ?>
 		</p>
 		<?php endforeach; ?>
-	</fieldset>
+	</div>
 	<?php endif; ?>
 	<fieldset id="adminaccount">
-		<legend><?php print_unescaped($l->t('Create an <strong>admin account</strong>')); ?></legend>
+		<legend><strong><?php print_unescaped($l->t('Create an <strong>admin account</strong>')); ?></strong></legend>
 		<p class="grouptop">
+			<label for="adminlogin" class="infield"><?php p($l->t('Username')); ?></label>
 			<input type="text" name="adminlogin" id="adminlogin"
 				placeholder="<?php p($l->t('Username')); ?>"
 				value="<?php p($_['adminlogin']); ?>"
 				autocomplete="off" autocorrect="off" autofocus required>
-			<label for="adminlogin" class="infield"><?php p($l->t('Username')); ?></label>
 		</p>
 		<p class="groupbottom">
+			<label for="adminpass" class="infield"><?php p($l->t('Password')); ?></label>
 			<input type="password" name="adminpass" data-typetoggle="#showadminpass" id="adminpass"
 				placeholder="<?php p($l->t('Password')); ?>"
 				value="<?php p($_['adminpass']); ?>"
 				autocomplete="off" autocorrect="off" required>
-			<label for="adminpass" class="infield"><?php p($l->t('Password')); ?></label>
 			<input type="checkbox" id="showadminpass" name="showadminpass">
 			<label for="showadminpass"></label>
 		</p>
@@ -47,14 +47,14 @@ script('core', [
 
 	<?php if (!$_['directoryIsSet'] or !$_['dbIsSet'] or \count($_['errors']) > 0): ?>
 	<fieldset id="advancedHeader">
-		<legend><a id="showAdvanced"><?php p($l->t('Storage & database')); ?> <img src="<?php print_unescaped(image_path('', 'actions/caret.svg')); ?>" /></a></legend>
+		<legend><a id="showAdvanced"><strong><?php p($l->t('Storage & database')); ?></strong> <img src="<?php print_unescaped(image_path('', 'actions/caret.svg')); ?>" /></a></legend>
 	</fieldset>
 	<?php endif; ?>
 
 	<?php if (!$_['directoryIsSet'] or \count($_['errors']) > 0): ?>
 	<fieldset id="datadirField">
 		<div id="datadirContent">
-			<label for="directory"><?php p($l->t('Data folder')); ?></label>
+			<label class="infield" for="directory"><?php p($l->t('Data folder')); ?></label>
 			<input type="text" name="directory" id="directory"
 				placeholder="<?php p(OC::$SERVERROOT.'/data'); ?>"
 				value="<?php p($_['directory']); ?>"
@@ -70,7 +70,7 @@ script('core', [
 } else {
 	$hasOtherDB =false;
 } //other than SQLite?>
-		<legend><?php p($l->t('Configure the database')); ?></legend>
+		<legend><strong><?php p($l->t('Configure the database')); ?></strong></legend>
 		<div id="selectDbType">
 		<?php foreach ($_['databases'] as $type => $label): ?>
 		<?php if (\count($_['databases']) === 1): ?>
@@ -101,11 +101,11 @@ script('core', [
 					autocomplete="off" autocorrect="off">
 			</p>
 			<p class="groupmiddle">
+				<label for="dbpass" class="infield"><?php p($l->t('Database password')); ?></label>
 				<input type="password" name="dbpass" id="dbpass" data-typetoggle="#showdbpass"
 					placeholder="<?php p($l->t('Database password')); ?>"
 					value="<?php p($_['dbpass']); ?>"
 					autocomplete="off" autocorrect="off">
-				<label for="dbpass" class="infield"><?php p($l->t('Database password')); ?></label>
 				<input type="checkbox" id="showdbpass" name="showdbpass">
 				<label for="showdbpass"></label>
 			</p>
@@ -143,18 +143,25 @@ script('core', [
 		<?php endif; ?>
 	<?php endif; ?>
 
-	<div class="icon-loading-dark float-spinner">&nbsp;</div>
-
 	<?php if (!$_['dbIsSet'] or \count($_['errors']) > 0): ?>
-		<fieldset id="sqliteInformation" class="warning">
-			<legend><?php p($l->t('Performance warning'));?></legend>
-			<p><?php p($l->t('SQLite will be used as database.'));?></p>
-			<p><?php p($l->t('For larger installations we recommend to choose a different database backend.'));?></p>
-			<p><?php p($l->t('Especially when using the desktop client for file syncing the use of SQLite is discouraged.')); ?></p>
-		</fieldset>
+		<div id="sqliteInformation">
+			<div class="warning">
+				<?php p($l->t('Performance warning'));?>
+				<p><?php p($l->t('SQLite will be used as database.'));?></p>
+				<p><?php p($l->t('For larger installations we recommend to choose a different database backend.'));?></p>
+				<p><?php p($l->t('Especially when using the desktop client for file syncing the use of SQLite is discouraged.')); ?></p>
+			</div>
+		</div>
 	<?php endif ?>
 
-	<div class="buttons"><input type="submit" class="primary" value="<?php p($l->t('Finish setup')); ?>" data-finishing="<?php p($l->t('Finishing …')); ?>"></div>
+	<!-- <input type="submit" class="primary" value="<?php p($l->t('Finish setup')); ?>" data-finishing="<?php p($l->t('Finishing …')); ?>"></div> -->
+
+	<div class="submit-wrap">
+		<button type="submit" id="submit" class="login-button">
+			<span><?php p($l->t('Finish setup')); ?></span>
+			<div class="loading-spinner"><div></div><div></div><div></div><div></div></div>
+		</button>
+	</div>
 
 	<p class="info">
 		<span class="icon-info-white"></span>

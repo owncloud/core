@@ -28,7 +28,10 @@
 		<?php endforeach; ?>
 		<?php print_unescaped($_['headers']); ?>
 	</head>
-	<body id="<?php p($_['bodyid']);?>">
+	<body id="<?php p($_['bodyid']);?>" <?php
+	if ($theme->getName() !== 'ownCloud') {
+		print_unescaped('class="theme-' . \str_replace(' ', '-', $theme->getName()) . ' has-theme"');
+	} ?> >
 		<?php include('layout.noscript.warning.php'); ?>
 		<div class="wrapper">
 			<div class="v-align">
@@ -45,7 +48,6 @@
 					</header>
 				<?php endif; ?>
 				<?php print_unescaped($_['content']); ?>
-				<div class="push"></div><!-- for sticky footer -->
 			</div>
 		</div>
 		<footer role="contentinfo">

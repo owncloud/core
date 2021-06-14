@@ -48,6 +48,8 @@ class LoginPage extends OwncloudPage {
 	protected $lostPasswordResetErrorXpath = "//li[contains(@class,'error')]";
 	protected $imprintUrlXpath = "//a[contains(text(),'Imprint')]";
 	protected $privacyPolicyXpath = "//a[contains(text(),'Privacy Policy')]";
+	protected $labelForUserInputXpath = "//label[@for='user']";
+	protected $labelForPasswordInputXpath = "//label[@for='password']";
 
 	/**
 	 * @param string $username
@@ -128,29 +130,49 @@ class LoginPage extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getUserPlaceholderText() {
+	public function getUserLabelText() {
 		$userInputField = $this->findById($this->userInputId);
+
 		$this->assertElementNotNull(
 			$userInputField,
 			__METHOD__ .
 			" id $this->userInputId could not find user input field"
 		);
-		$placeholderText = $userInputField->getAttribute('placeholder');
-		return $placeholderText;
+
+		$userInputFieldLabel = $this->find("xpath", $this->labelForUserInputXpath);
+
+		$this->assertElementNotNull(
+			$userInputFieldLabel,
+			__METHOD__ .
+			" xpath $this->labelForUserInputXpath could not find user input field label"
+		);
+
+		$labelText = $userInputFieldLabel->getText();
+
+		return $labelText;
 	}
 
 	/**
 	 *
 	 * @return string
 	 */
-	public function getPasswordPlaceholderText() {
+	public function getPasswordLabelText() {
 		$passwordInputField = $this->findById($this->passwordInputId);
 		$this->assertElementNotNull(
 			$passwordInputField,
 			__METHOD__ .
 			" id $this->passwordInputId could not find password input field"
 		);
-		$placeholderText = $passwordInputField->getAttribute('placeholder');
+
+		$passwordInputLabel = $this->find("xpath", $this->labelForPasswordInputXpath);
+
+		$this->assertElementNotNull(
+			$passwordInputLabel,
+			__METHOD__ .
+			" xpath $this->labelForPasswordInputXpath could not find password input field label"
+		);
+
+		$placeholderText = $passwordInputLabel->getText();
 		return $placeholderText;
 	}
 
