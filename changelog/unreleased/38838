@@ -1,0 +1,6 @@
+Enhancement: Add support for MSOFBA
+
+WebDAV endpoint now supports Microsoft Office Form Based Authentication (MSOFBA)
+
+https://docs.microsoft.com/en-us/openspecs/sharepoint_protocols/ms-ofba/30c7bbe9-b284-421f-b866-4e7ed4866027
+https://github.com/owncloud/core/pull/38838
