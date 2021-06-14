@@ -25,55 +25,9 @@ config = {
 	'phpunit': {
 		'allDatabases' : {
 			'phpVersions': [
-				'7.2',
+				'7.4-ubuntu20.04',
 			]
 		},
-		'reducedDatabases' : {
-			'phpVersions': [
-				'7.3',
-				'7.4',
-			],
-			'databases': [
-				'sqlite',
-				'mariadb:10.2',
-			]
-		},
-		'external-samba-windows' : {
-			'phpVersions': [
-				'7.2',
-				'7.4',
-			],
-			'databases': [
-				'sqlite',
-			],
-			'externalTypes': [
-				'samba',
-				'windows',
-			],
-			'coverage': True,
-			'extraCommandsBeforeTestRun': [
-				'ls -l /var/cache',
-				'mkdir /var/cache/samba',
-				'ls -l /var/cache',
-				'ls -l /var/cache/samba',
-			]
-		},
-		'external-other' : {
-			'phpVersions': [
-				'7.2',
-				'7.4',
-			],
-			'databases': [
-				'sqlite',
-			],
-			'externalTypes': [
-				'webdav',
-				'sftp',
-				'scality',
-				'owncloud',
-			],
-			'coverage': True,
-		}
 	},
 
 	'acceptance': {
@@ -171,7 +125,7 @@ config = {
 				'cliExternalStorage',
 			],
 			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.6.0'],
+			'federatedServerVersions': ['git'],
 		},
 		'webUI': {
 			'suites': {
@@ -234,7 +188,7 @@ config = {
 				'webUISharingExternal2': 'webUISharingExt2',
 			},
 			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.6.0'],
+			'federatedServerVersions': ['git'],
 		},
 		'webUIFirefox': {
 			'suites': {
@@ -356,7 +310,7 @@ def dependencies(ctx):
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.2'],
+		'phpVersions': ['7.4-ubuntu20.04'],
 	}
 
 	if 'defaults' in config:
@@ -679,7 +633,7 @@ def phan():
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.2', '7.3', '7.4'],
+		'phpVersions': ['7.4-ubuntu20.04'],
 		'logLevel': '2',
 	}
 
@@ -753,7 +707,7 @@ def litmus():
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.2', '7.3', '7.4'],
+		'phpVersions': ['7.4-ubuntu20.04'],
 		'logLevel': '2',
 		'useHttps': True,
 	}
@@ -915,7 +869,7 @@ def dav():
 		return pipelines
 
 	default = {
-		'phpVersions': ['7.2', '7.3', '7.4'],
+		'phpVersions': ['7.4-ubuntu20.04'],
 		'logLevel': '2'
 	}
 
@@ -1009,7 +963,7 @@ def javascript(ctx):
 	default = {
 		'coverage': True,
 		'logLevel': '2',
-		'phpVersion': '7.2',
+		'phpVersion': '7.4-ubuntu20.04',
 		'skip': False
 	}
 
@@ -1104,7 +1058,7 @@ def phpTests(ctx, testType):
 	errorFound = False
 
 	default = {
-		'phpVersions': ['7.2', '7.3', '7.4'],
+		'phpVersions': ['7.4-ubuntu20.04'],
 		'databases': [
 			'sqlite',
 			'mariadb:10.2',
@@ -1348,9 +1302,9 @@ def acceptance(ctx):
 	default = {
 		'federatedServerVersions': [''],
 		'browsers': ['chrome'],
-		'phpVersions': ['7.4'],
+		'phpVersions': ['7.4-ubuntu20.04'],
 		'databases': ['mariadb:10.2'],
-		'federatedPhpVersion': '7.2',
+		'federatedPhpVersion': '7.4-ubuntu20.04',
 		'federatedServerNeeded': False,
 		'federatedDb': '',
 		'filterTags': '',
@@ -1606,7 +1560,7 @@ def acceptance(ctx):
 
 	return pipelines
 
-def sonarAnalysis(ctx, phpVersion = '7.4'):
+def sonarAnalysis(ctx, phpVersion = '7.4-ubuntu20.04'):
 	repo_slug = ctx.build.source_repo if ctx.build.source_repo else ctx.repo.slug
 
 	result = {
