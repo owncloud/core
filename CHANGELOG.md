@@ -43,6 +43,7 @@ Summary
 * Change - All mount configuration items marked as passwords will be encrypted: [#38728](https://github.com/owncloud/core/pull/38728)
 * Change - Change favicon and color references to match the new CI: [#38750](https://github.com/owncloud/core/pull/38750)
 * Enhancement - Improve public share federation user interface: [#4393](https://github.com/owncloud/enterprise/issues/4393)
+* Enhancement - Improve login form: [#38506](https://github.com/owncloud/core/pull/38506)
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
 * Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
 * Enhancement - Expired shares in activity stream: [#38631](https://github.com/owncloud/core/pull/38631)
@@ -396,6 +397,14 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4393
    https://github.com/owncloud/core/pull/38712
+
+* Enhancement - Improve login form: [#38506](https://github.com/owncloud/core/pull/38506)
+
+   This adjustment improves the overall look and feel of the login form. Furthermore, the
+   placeholders have been replaced in favor of labels, the confirm button has been expunged from
+   the password field and placed under the input fields.
+
+   https://github.com/owncloud/core/pull/38506
 
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
 
