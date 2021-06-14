@@ -56,6 +56,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Command occ user:report shows additional row for guests: <a href="https://github.com/owncloud/enterprise/issues/3467">#3467</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Improve mobile user interface on files list: <a href="https://github.com/owncloud/core/pull/38748">#38748</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Resend invitation email: <a href="https://github.com/owncloud/core/pull/38774">#38774</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Add more properties to the REPORT result: <a href="https://github.com/owncloud/core/pull/38787">#38787</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Improve admin external storage settings UI: <a href="https://github.com/owncloud/core/pull/38795">#38795</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Introduce new state to prevent scanning of shallow scanned folders: <a href="https://github.com/owncloud/core/pull/38804">#38804</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Improve performance of the SMB log when it is inactive: <a href="https://github.com/owncloud/core/pull/38819">#38819</a></li>
@@ -496,6 +497,16 @@
             <p>https://github.com/owncloud/enterprise/issues/4577<br>
             </p>
             <p>https://github.com/owncloud/core/pull/38774<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Add more properties to the REPORT result: <a href="https://github.com/owncloud/core/pull/38787">#38787</a></p>
+            <p>File Search should be done in the future via WebDAV REPORT requests. ownCloud web is using it. In
+   some cases with other search backends we have more properties to return.
+   `&lt;oc:search-highlights /&gt;` =&gt; returns am html formatted excerpt of the file
+   content which is highlighting the matching words. `&lt;oc:search-score /&gt;` returns a
+   float number score value.
+            </p>
+            <p>https://github.com/owncloud/core/pull/38787<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Improve admin external storage settings UI: <a href="https://github.com/owncloud/core/pull/38795">#38795</a></p>

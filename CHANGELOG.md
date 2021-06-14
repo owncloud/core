@@ -58,6 +58,7 @@ Summary
 * Enhancement - Command occ user:report shows additional row for guests: [#3467](https://github.com/owncloud/enterprise/issues/3467)
 * Enhancement - Improve mobile user interface on files list: [#38748](https://github.com/owncloud/core/pull/38748)
 * Enhancement - Resend invitation email: [#38774](https://github.com/owncloud/core/pull/38774)
+* Enhancement - Add more properties to the REPORT result: [#38787](https://github.com/owncloud/core/pull/38787)
 * Enhancement - Improve admin external storage settings UI: [#38795](https://github.com/owncloud/core/pull/38795)
 * Enhancement - Introduce new state to prevent scanning of shallow scanned folders: [#38804](https://github.com/owncloud/core/pull/38804)
 * Enhancement - Improve performance of the SMB log when it is inactive: [#38819](https://github.com/owncloud/core/pull/38819)
@@ -511,6 +512,15 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4577
    https://github.com/owncloud/core/pull/38774
+
+* Enhancement - Add more properties to the REPORT result: [#38787](https://github.com/owncloud/core/pull/38787)
+
+   File Search should be done in the future via WebDAV REPORT requests. ownCloud web is using it. In
+   some cases with other search backends we have more properties to return.
+   `<oc:search-highlights />` => returns am html formatted excerpt of the file content which is
+   highlighting the matching words. `<oc:search-score />` returns a float number score value.
+
+   https://github.com/owncloud/core/pull/38787
 
 * Enhancement - Improve admin external storage settings UI: [#38795](https://github.com/owncloud/core/pull/38795)
 
