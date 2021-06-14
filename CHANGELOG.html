@@ -31,6 +31,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Image preview for file versions: <a href="https://github.com/owncloud/core/pull/38778">#38778</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Prevent files:checksum:verify from crashing on exception: <a href="https://github.com/owncloud/core/pull/38785">#38785</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Always allow renaming shared mounts: <a href="https://github.com/owncloud/core/pull/38794">#38794</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Report share expiration at end of day: <a href="https://github.com/owncloud/core/pull/38813">#38813</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Adjust position of the share autocomplete element: <a href="https://github.com/owncloud/core/pull/38831">#38831</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/38797">#38797</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/38524">#38524</a></li>
@@ -278,6 +279,16 @@
             <p>https://github.com/owncloud/enterprise/issues/4582<br>https://github.com/owncloud/core/issues/30325<br>
             </p>
             <p>https://github.com/owncloud/core/pull/38794<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Report share expiration at end of day: <a href="https://github.com/owncloud/core/pull/38813">#38813</a></p>
+            <p>If shares have an expiration date set then they are valid until the end of the specified date. But
+   shares report the expiration like 2021-06-15 00:00:00. This has caused some confusion about
+   when the share actually stops working. The expiration time is now reported as 23:59:59.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/4454<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/38813<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Adjust position of the share autocomplete element: <a href="https://github.com/owncloud/core/pull/38831">#38831</a></p>
