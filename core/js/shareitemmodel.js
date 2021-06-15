@@ -778,9 +778,17 @@
 				return {};
 			}
 
+			// check if this file has received shares to current user (direct incoming shared_with_me shares)
 			var permissions = this.get('possiblePermissions');
 			if(!_.isUndefined(data.reshare) && !_.isUndefined(data.reshare.permissions) && data.reshare.uid_owner !== OC.currentUser) {
-				permissions = permissions & data.reshare.permissions;
+				if (this.fileInfoModel.get('mountType') === 'shared' && this.fileInfoModel.isDirectory()) {
+					// if this file is already contained in a share (subfolder of shared folder) combine incoming shares permissions
+					// with parent folder share permissions. This handles a case of resharing a file/folder reshared from same 
+					// share mountpoint multiple times in subfolders
+					permissions = permissions & (this.fileInfoModel.get('sharePermissions') | data.reshare.permissions);
+				} else {
+					permissions = permissions & data.reshare.permissions;
+				}
 			}
 
 			/** @type {OC.Share.Types.ShareInfo[]} **/
