@@ -91,12 +91,15 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "200"
     And the downloaded image should be "32" pixels wide and "32" pixels high
 
-  @issue-ocis-2067
+
   Scenario: download previews of shared files
-    Given user "Brian" has been created with default attributes and without skeleton files
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     And user "Alice" has shared file "/parent.txt" with user "Brian"
-    When user "Brian" downloads the preview of "/parent.txt" with width "32" and height "32" using the WebDAV API
+    And user "Brian" has accepted share "/parent.txt" offered by user "Alice"
+    When user "Brian" downloads the preview of "/Shares/parent.txt" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "200"
     And the downloaded image should be "32" pixels wide and "32" pixels high
 
@@ -116,6 +119,7 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "400"
     And the value of the item "/d:error/s:message" in the response about user "Alice" should be "Unsupported file type"
     And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\BadRequest"
+
 
   Scenario: download previews of not-existing files
     When user "Alice" downloads the preview of "/parent.txt" with width "32" and height "32" using the WebDAV API
