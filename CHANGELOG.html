@@ -30,6 +30,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Expire shares at end of day: <a href="https://github.com/owncloud/enterprise/issues/4324">#4324</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Image preview for file versions: <a href="https://github.com/owncloud/core/pull/38778">#38778</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Prevent files:checksum:verify from crashing on exception: <a href="https://github.com/owncloud/core/pull/38785">#38785</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Include incoming and parent permissions in Share UI subfolder reshares: <a href="https://github.com/owncloud/core/pull/38788">#38788</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Always allow renaming shared mounts: <a href="https://github.com/owncloud/core/pull/38794">#38794</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Report share expiration at end of day: <a href="https://github.com/owncloud/core/pull/38813">#38813</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Adjust position of the share autocomplete element: <a href="https://github.com/owncloud/core/pull/38831">#38831</a></li>
@@ -272,6 +273,16 @@
             <p>https://github.com/owncloud/core/issues/38782<br>
             </p>
             <p>https://github.com/owncloud/core/pull/38785<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Include incoming and parent permissions in Share UI subfolder reshares: <a href="https://github.com/owncloud/core/pull/38788">#38788</a></p>
+            <p>Before this fix SharePanel in Share UI did not include permissions of both incoming and parent
+   shares for subfolder reshares. It caused lack of possibility of resharing such files/folder
+   even though server-side permissions allowed it.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/4497<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/38788<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Always allow renaming shared mounts: <a href="https://github.com/owncloud/core/pull/38794">#38794</a></p>

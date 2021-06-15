@@ -32,6 +32,7 @@ Summary
 * Bugfix - Expire shares at end of day: [#4324](https://github.com/owncloud/enterprise/issues/4324)
 * Bugfix - Image preview for file versions: [#38778](https://github.com/owncloud/core/pull/38778)
 * Bugfix - Prevent files:checksum:verify from crashing on exception: [#38785](https://github.com/owncloud/core/pull/38785)
+* Bugfix - Include incoming and parent permissions in Share UI subfolder reshares: [#38788](https://github.com/owncloud/core/pull/38788)
 * Bugfix - Always allow renaming shared mounts: [#38794](https://github.com/owncloud/core/pull/38794)
 * Bugfix - Report share expiration at end of day: [#38813](https://github.com/owncloud/core/pull/38813)
 * Bugfix - Adjust position of the share autocomplete element: [#38831](https://github.com/owncloud/core/pull/38831)
@@ -269,6 +270,15 @@ Details
 
    https://github.com/owncloud/core/issues/38782
    https://github.com/owncloud/core/pull/38785
+
+* Bugfix - Include incoming and parent permissions in Share UI subfolder reshares: [#38788](https://github.com/owncloud/core/pull/38788)
+
+   Before this fix SharePanel in Share UI did not include permissions of both incoming and parent
+   shares for subfolder reshares. It caused lack of possibility of resharing such files/folder
+   even though server-side permissions allowed it.
+
+   https://github.com/owncloud/enterprise/issues/4497
+   https://github.com/owncloud/core/pull/38788
 
 * Bugfix - Always allow renaming shared mounts: [#38794](https://github.com/owncloud/core/pull/38794)
 
