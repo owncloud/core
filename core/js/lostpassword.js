@@ -1,4 +1,3 @@
-
 OC.Lostpassword = {
 	sendErrorMsg : t('core', 'Couldn\'t send reset email. Please contact your administrator.'),
 
@@ -145,7 +144,7 @@ OC.Lostpassword = {
 
 	getResetStatusNode : function (){
 		if (!$('#lost-password').length){
-			$('<p id="lost-password"></p>').insertBefore($('#reset-password fieldset'));
+			$('#reset-password .submit-wrap').prepend($('<p id="lost-password"></p>'));
 		} else {
 			$('#lost-password').replaceWith($('<p id="lost-password"></p>'));
 		}

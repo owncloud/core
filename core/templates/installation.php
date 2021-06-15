@@ -154,8 +154,6 @@ script('core', [
 		</div>
 	<?php endif ?>
 
-	<!-- <input type="submit" class="primary" value="<?php p($l->t('Finish setup')); ?>" data-finishing="<?php p($l->t('Finishing …')); ?>"></div> -->
-
 	<div class="submit-wrap">
 		<button type="submit" id="submit" class="login-button">
 			<span><?php p($l->t('Finish setup')); ?></span>
