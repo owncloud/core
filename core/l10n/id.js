@@ -316,7 +316,6 @@ OC.L10N.register(
     "Alternative Logins" : "Cara Alternatif untuk Masuk",
     "Use the following link to reset your password: {link}" : "Gunakan tautan berikut untuk menyetel ulang sandi Anda: {link}",
     "New password" : "Sandi baru",
-    "New Password" : "Sandi Baru",
     "Confirm Password" : "Konfirmasi Sandi",
     "Reset password" : "Setel ulang sandi",
     "This ownCloud instance is currently in single user mode." : "ownCloud ini sedang dalam mode pengguna tunggal.",

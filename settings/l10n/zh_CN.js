@@ -340,7 +340,6 @@ OC.L10N.register(
     "Version" : "版本",
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "激活链接已过期。点击下面的按钮获取新的激活链接以完成注册。",
     "Resend activation link" : "重发送激活链接",
-    "New Password" : "新密码",
     "Confirm Password" : "确认密码",
     "Please set your password" : "请设置你的密码",
     "Personal" : "个人",

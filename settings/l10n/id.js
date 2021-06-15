@@ -250,7 +250,6 @@ OC.L10N.register(
     "Done" : "Selesai",
     "Version" : "Versi",
     "Resend activation link" : "Kirim ulang tautan aktivasi",
-    "New Password" : "Sandi Baru",
     "Confirm Password" : "Konfirmasi Sandi",
     "Please set your password" : "Silakan atur sandi",
     "Personal" : "Pribadi",

@@ -255,7 +255,6 @@ OC.L10N.register(
     "Alternative Logins" : "Identificants alternatius",
     "Use the following link to reset your password: {link}" : "Utilizatz lo ligam seguent per reïnicializar vòstre senhal : {link}",
     "New password" : "Senhal novèl",
-    "New Password" : "Senhal novèl",
     "Reset password" : "Reïnicializar lo senhal",
     "This ownCloud instance is currently in single user mode." : "Aquesta instància de ownCloud es actualament en mòde utilizaire unic.",
     "This means only administrators can use the instance." : "Aquò significa que sols los administrators pòdon utilizar l'instància.",

@@ -294,7 +294,6 @@ OC.L10N.register(
     "Use the following link to reset your password: {link}" : "Використовуйте наступне посилання для скидання пароля: {link}",
     "Password changed successfully" : "Пароль змінено успішно",
     "New password" : "Новий пароль",
-    "New Password" : "Новий пароль",
     "Reset password" : "Скинути пароль",
     "This ownCloud instance is currently in single user mode." : "Сервер ownCloud в даний час працює в однокористувацькому режимі.",
     "This means only administrators can use the instance." : "Це означає, що тільки адміністратори можуть використовувати сервер.",

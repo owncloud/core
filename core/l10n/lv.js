@@ -215,7 +215,6 @@ OC.L10N.register(
     "Use the following link to reset your password: {link}" : "Izmantojiet šo saiti, lai mainītu paroli: {link}",
     "Password changed successfully" : "Parole veiksmīgi nomainīta",
     "New password" : "Jauna parole",
-    "New Password" : "Jauna parole",
     "Confirm Password" : "Atkārtot Paroli",
     "Reset password" : "Mainīt paroli",
     "Thank you for your patience." : "Paldies par pacietību.",

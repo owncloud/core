@@ -218,7 +218,6 @@ OC.L10N.register(
     "Name" : "Nom",
     "Username" : "Nom d'utilizaire",
     "Version" : "Version",
-    "New Password" : "Senhal novèl",
     "Personal" : "Personal",
     "Admin" : "Administracion",
     "Settings" : "Paramètres",

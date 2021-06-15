@@ -205,7 +205,6 @@ OC.L10N.register(
     "Username" : "Benotzernumm",
     "Done" : "Gemaacht",
     "Version" : "Versioun",
-    "New Password" : "Neit Passwuert",
     "Personal" : "Perséinlech",
     "Admin" : "Admin",
     "Settings" : "Astellungen",

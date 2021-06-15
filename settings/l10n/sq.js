@@ -355,7 +355,6 @@ OC.L10N.register(
     "Version" : "Version",
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "Lidhja e aktivizimit ka skaduar. Klikoni butonin më poshtë për të kërkuar një të re dhe të plotësoni regjistrimin.",
     "Resend activation link" : "Ridërgo lidhje aktivizimi",
-    "New Password" : "Fjalëkalim i Ri",
     "Confirm Password" : "Ripohoni Fjalëkalimin",
     "Please set your password" : "Ju lutemi, caktoni fjalëkalimin tuaj",
     "Personal" : "Personale",

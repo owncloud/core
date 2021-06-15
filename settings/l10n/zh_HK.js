@@ -48,7 +48,6 @@ OC.L10N.register(
     "Name" : "名稱",
     "Username" : "用戶名稱",
     "Version" : "版本",
-    "New Password" : "新密碼",
     "Personal" : "個人",
     "Admin" : "管理",
     "Settings" : "設定",

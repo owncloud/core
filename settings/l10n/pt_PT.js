@@ -290,7 +290,6 @@ OC.L10N.register(
     "Username" : "Nome de utilizador",
     "Done" : "Concluído",
     "Version" : "Versão",
-    "New Password" : "Nova palavra-passe",
     "Personal" : "Pessoal",
     "Admin" : "Administração",
     "Settings" : "Definições",

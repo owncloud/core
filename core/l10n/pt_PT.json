@@ -297,7 +297,6 @@
     "Use the following link to reset your password: {link}" : "Utilize a seguinte hiperligação para repor a sua palavra-passe: {link}",
     "Password changed successfully" : "Palavra-passe alterada com sucesso",
     "New password" : "Nova palavra-passe",
-    "New Password" : "Nova palavra-passe",
     "Reset password" : "Repor palavra-passe",
     "This ownCloud instance is currently in single user mode." : "Esta instância do ownCloud está atualmente configurada no modo de único utilizador.",
     "This means only administrators can use the instance." : "Isto significa que apenas os administradores podem utilizar a instância.",

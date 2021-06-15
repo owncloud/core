@@ -135,7 +135,6 @@ OC.L10N.register(
     "Stay logged in" : "Մնալ մուտք գործած",
     "Alternative Logins" : "Այլընտրանքային մուտքեր",
     "New password" : "Նոր գաղտնաբառ",
-    "New Password" : "Նոր գաղտնաբառ",
     "Two-step verification" : "Երկաստիճան ստուգում",
     "Cancel login" : "Չեղարկել մուտք գործումը",
     "App update required" : "Հարկավոր է ափփի թարմացում",

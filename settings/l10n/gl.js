@@ -352,7 +352,6 @@ OC.L10N.register(
     "Version" : "Versión",
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "A ligazón de activación caducou. Prema no botón de embaixo para solicitar unha nova e completar o rexistro. ",
     "Resend activation link" : "Volver enviar a ligazón de activación",
-    "New Password" : "Novo contrasinal",
     "Confirm Password" : "Confirme o contrasinal",
     "Please set your password" : "Estabeleza o seu contrasinal",
     "Personal" : "Persoal",

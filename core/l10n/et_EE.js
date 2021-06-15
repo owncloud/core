@@ -278,7 +278,6 @@ OC.L10N.register(
     "Use the following link to reset your password: {link}" : "Kasuta järgnevat linki oma parooli taastamiseks: {link}",
     "Password changed successfully" : "Parool on muudetud",
     "New password" : "Uus parool",
-    "New Password" : "Uus parool",
     "Confirm Password" : "Kinnita parool",
     "Reset password" : "Nulli parool",
     "This ownCloud instance is currently in single user mode." : "See ownCloud on momendil seadistatud ühe kasutaja jaoks.",

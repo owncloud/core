@@ -115,7 +115,6 @@ OC.L10N.register(
     "Alternative Logins" : "বিকল্প লগইন",
     "Use the following link to reset your password: {link}" : "আপনার কূটশব্দটি পূনঃনির্ধারণ  করার জন্য নিম্নোক্ত লিংকটি ব্যবহার করুনঃ {link}",
     "New password" : "নতুন কূটশব্দ",
-    "New Password" : "নতুন কূটশব্দ",
     "Reset password" : "কূটশব্দ পূনঃনির্ধারণ কর"
 },
 "nplurals=2; plural=(n != 1);");

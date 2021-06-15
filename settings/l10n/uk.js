@@ -221,7 +221,6 @@ OC.L10N.register(
     "Username" : "Ім'я користувача",
     "Done" : "Готово",
     "Version" : "Версія",
-    "New Password" : "Новий пароль",
     "Please set your password" : "Будь ласка, встановіть свій пароль",
     "Personal" : "Особисте",
     "Admin" : "Адмін",

@@ -277,7 +277,6 @@ OC.L10N.register(
     "Username" : "Uporabniško ime",
     "Done" : "Končano",
     "Version" : "Različica",
-    "New Password" : "Novo geslo",
     "Personal" : "Osebno",
     "Admin" : "Skrbništvo",
     "Settings" : "Nastavitve",

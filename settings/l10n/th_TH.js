@@ -355,7 +355,6 @@ OC.L10N.register(
     "Version" : "เวอร์ชัน",
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "ลิงก์การเปิดใช้งานหมดอายุแล้ว คลิกที่ปุ่มด้านล่างเพื่อส่งคำขอใหม่และกรอกข้อมูลลงทะเบียนผู้ใช้",
     "Resend activation link" : "ส่งลิงก์การเปิดใช้งานใหม่อีกครั้ง",
-    "New Password" : "รหัสผ่านใหม่",
     "Confirm Password" : "ยืนยันรหัสผ่าน",
     "Please set your password" : "โปรดตั้งรหัสผ่านของคุณ",
     "Personal" : "ส่วนตัว",

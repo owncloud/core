@@ -270,7 +270,6 @@ OC.L10N.register(
     "Username" : "Потребителско Име",
     "Done" : "Завършен",
     "Version" : "Версия",
-    "New Password" : "Нова Парола",
     "Confirm Password" : "Потвърдете паролата",
     "Personal" : "Лично",
     "Admin" : "Админ",

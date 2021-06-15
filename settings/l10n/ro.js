@@ -217,7 +217,6 @@ OC.L10N.register(
     "Username" : "Nume utilizator",
     "Done" : "Gata",
     "Version" : "Versiunea",
-    "New Password" : "Noua parolă",
     "Personal" : "Personal",
     "Admin" : "Administrator",
     "Settings" : "Setări",

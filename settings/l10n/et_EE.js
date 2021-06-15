@@ -222,7 +222,6 @@ OC.L10N.register(
     "Done" : "Valmis",
     "Version" : "Versioon",
     "Resend activation link" : "Saada aktiveerimise link uuesti",
-    "New Password" : "Uus parool",
     "Confirm Password" : "Kinnita parool",
     "Please set your password" : "Palun määra oma parool",
     "Personal" : "Isiklik",

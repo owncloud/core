@@ -198,7 +198,6 @@ OC.L10N.register(
     "Username" : "Používateľské meno",
     "Done" : "Hotovo",
     "Version" : "Verzia",
-    "New Password" : "Nové heslo",
     "Personal" : "Osobné",
     "Admin" : "Administrácia",
     "Settings" : "Nastavenia",

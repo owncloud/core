@@ -304,7 +304,6 @@ OC.L10N.register(
     "Version" : "Wersja",
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "Link aktywacyjny jest już nieaktualny . Kliknij w przycisk poniżej aby poprosić o niego jeszcze raz i dokończyć rejestrację.",
     "Resend activation link" : "Powtórne wysłanie linka aktywacyjnego.",
-    "New Password" : "Nowe hasło",
     "Confirm Password" : "Potwierdź hasło.",
     "Please set your password" : "Proszę ustawić swoje hasło",
     "Personal" : "Osobiste",

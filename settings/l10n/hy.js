@@ -61,7 +61,6 @@ OC.L10N.register(
     "Name" : "Անուն",
     "Username" : "Օգտանուն",
     "Version" : "Տարբերակ",
-    "New Password" : "Նոր գաղտնաբառ",
     "Personal" : "Անձնական",
     "Admin" : "Ադմին",
     "Settings" : "Կարգավորումներ",

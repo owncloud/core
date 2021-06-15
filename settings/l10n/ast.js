@@ -255,7 +255,6 @@ OC.L10N.register(
     "Username" : "Nome d'usuariu",
     "Done" : "Fechu",
     "Version" : "Versión",
-    "New Password" : "Contraseña nueva",
     "Personal" : "Personal",
     "Admin" : "Almin",
     "Settings" : "Axustes",

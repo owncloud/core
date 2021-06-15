@@ -216,7 +216,6 @@ OC.L10N.register(
     "Name" : "نام",
     "Username" : "نام کاربری",
     "Version" : "نسخه",
-    "New Password" : "رمزعبور جدید",
     "Personal" : "شخصی",
     "Admin" : "مدیر",
     "Settings" : "تنظیمات",

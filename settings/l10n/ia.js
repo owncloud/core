@@ -38,7 +38,6 @@ OC.L10N.register(
     "Help translate" : "Adjuta a traducer",
     "Name" : "Nomine",
     "Username" : "Nomine de usator",
-    "New Password" : "Nove contrasigno",
     "Personal" : "Personal",
     "Admin" : "Administration",
     "Settings" : "Configurationes",

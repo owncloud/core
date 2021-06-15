@@ -284,7 +284,6 @@ OC.L10N.register(
     "Done" : "Kész",
     "Version" : "Verzió",
     "Resend activation link" : "Aktiválási link újraküldése",
-    "New Password" : "Új jelszó",
     "Confirm Password" : "Jelszó megerősítése",
     "Please set your password" : "Kérjük állítsa be jelszavát",
     "Personal" : "Személyes",

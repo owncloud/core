@@ -294,7 +294,6 @@ OC.L10N.register(
     "Use the following link to reset your password: {link}" : "Anvend følgende link til at nulstille din adgangskode: {link}",
     "Password changed successfully" : "Kodeord succesfuldt ændret.",
     "New password" : "Ny adgangskode",
-    "New Password" : "Ny adgangskode",
     "Reset password" : "Nulstil kodeord",
     "This ownCloud instance is currently in single user mode." : "Denne ownCloud instans er lige nu i enkeltbruger tilstand.",
     "This means only administrators can use the instance." : "Det betyder at det kun er administrator, som kan benytte ownCloud.",

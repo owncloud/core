@@ -323,7 +323,6 @@ OC.L10N.register(
     "Password / Token" : "Lykilorð / teikn",
     "Done" : "Lokið",
     "Version" : "Útgáfa",
-    "New Password" : "Nýtt lykilorð",
     "Confirm Password" : "Staðfestu lykilorðið",
     "Please set your password" : "Stilltu lykilorðið þitt",
     "Personal" : "Einka",

@@ -233,7 +233,6 @@ OC.L10N.register(
     "Alternative Logins" : "Conectări alternative",
     "Use the following link to reset your password: {link}" : "Folosește următorul link pentru a reseta parola: {link}",
     "New password" : "Noua parolă",
-    "New Password" : "Noua parolă",
     "Reset password" : "Resetează parola",
     "This ownCloud instance is currently in single user mode." : "Această instanță ownCloud este momentan în modul de utilizare de către un singur utilizator.",
     "This means only administrators can use the instance." : "Asta înseamnă că doar administratorii pot folosi instanța.",

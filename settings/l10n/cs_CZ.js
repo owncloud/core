@@ -323,7 +323,6 @@ OC.L10N.register(
     "Version" : "Verze",
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "Odkazu pro aktivaci vypršela platnost. Kliknutím na tlačítko níže požádejte o nový a dokončete registraci.",
     "Resend activation link" : "Znovu odeslat odkaz pro aktivaci",
-    "New Password" : "Nové heslo",
     "Confirm Password" : "Potvrdit heslo",
     "Please set your password" : "Prosím nastavte si heslo",
     "Personal" : "Osobní",

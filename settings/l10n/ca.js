@@ -202,7 +202,6 @@ OC.L10N.register(
     "Name" : "Nom",
     "Username" : "Nom d'usuari",
     "Version" : "Versió",
-    "New Password" : "Contrasenya nova",
     "Personal" : "Personal",
     "Admin" : "Administració",
     "Settings" : "Configuracions",

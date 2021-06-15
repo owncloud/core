@@ -224,7 +224,6 @@ OC.L10N.register(
     "Alternative Logins" : "Alternatyvūs prisijungimai",
     "Use the following link to reset your password: {link}" : "Slaptažodio atkūrimui naudokite šią nuorodą: {link}",
     "New password" : "Naujas slaptažodis",
-    "New Password" : "Naujas slaptažodis",
     "Reset password" : "Atkurti slaptažodį",
     "This ownCloud instance is currently in single user mode." : "Ši ownCloud sistema yra vieno naudotojo veiksenoje.",
     "This means only administrators can use the instance." : "Tai reiškia, kad tik administratorius gali naudotis sistema.",

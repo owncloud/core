@@ -272,7 +272,6 @@ OC.L10N.register(
     "Username" : "Användarnamn",
     "Done" : "Färdig",
     "Version" : "Version",
-    "New Password" : "Nytt lösenord",
     "Confirm Password" : "Upprepa lösenord",
     "Personal" : "Personligt",
     "Admin" : "Admin",

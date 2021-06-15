@@ -294,7 +294,6 @@ OC.L10N.register(
     "Username" : "Gebruikersnaam",
     "Done" : "Gedaan",
     "Version" : "Versie",
-    "New Password" : "Nieuw wachtwoord",
     "Personal" : "Persoonlijk",
     "Admin" : "Beheerder",
     "Settings" : "Instellingen",

@@ -145,7 +145,6 @@ OC.L10N.register(
     "Name" : "Ime",
     "Username" : "Korisničko ime",
     "Version" : "Verzija",
-    "New Password" : "Nova Lozinka",
     "Personal" : "Osobno",
     "Admin" : "Admin",
     "Settings" : "Postavke",

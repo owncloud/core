@@ -323,7 +323,6 @@ OC.L10N.register(
     "Password / Token" : "암호 / 토큰",
     "Done" : "완료",
     "Version" : "버전",
-    "New Password" : "새 암호",
     "Confirm Password" : "암호 확인",
     "Personal" : "개인",
     "Admin" : "관리자",

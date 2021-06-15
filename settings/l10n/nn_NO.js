@@ -80,7 +80,6 @@ OC.L10N.register(
     "Name" : "Namn",
     "Username" : "Brukarnamn",
     "Version" : "Utgåve",
-    "New Password" : "Nytt passord",
     "Personal" : "Personleg",
     "Admin" : "Admin",
     "Settings" : "Innstillingar",

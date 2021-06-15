@@ -338,7 +338,6 @@ OC.L10N.register(
     "Version" : "Έκδοση",
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "Ο σύνδεσμος ενεργοποίησης έχει λήξει. Κάντε κλικ στο παρακάτω κουμπί για να ζητήσετε νέο και να ολοκληρώσετε την εγγραφή.",
     "Resend activation link" : "Επανάληψη αποστολής συνδέσμου ενεργοποίησης",
-    "New Password" : "Νέο Συνθηματικό",
     "Confirm Password" : "Επιβεβαίωση συνθηματικού",
     "Please set your password" : "Παρακαλούμε ορίστε το συνθηματικό σας",
     "Personal" : "Προσωπικά",

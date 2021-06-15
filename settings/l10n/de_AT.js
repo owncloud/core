@@ -25,7 +25,6 @@ OC.L10N.register(
     "Change password" : "Passwort ändern",
     "Name" : "Name",
     "Username" : "Benutzername",
-    "New Password" : "Neues Passwort",
     "Personal" : "Persönlich",
     "Admin" : "Administration",
     "Settings" : "Einstellungen",

@@ -119,7 +119,6 @@ OC.L10N.register(
     "Username" : "Uzantonomo",
     "Done" : "Farita",
     "Version" : "Eldono",
-    "New Password" : "Nova pasvorto",
     "Personal" : "Persona",
     "Admin" : "Administranto",
     "Settings" : "Agordo",

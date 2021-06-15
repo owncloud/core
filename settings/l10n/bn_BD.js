@@ -62,7 +62,6 @@ OC.L10N.register(
     "Username" : "ব্যবহারকারী",
     "Done" : "শেষ হলো",
     "Version" : "ভার্সন",
-    "New Password" : "নতুন কূটশব্দ",
     "Personal" : "ব্যক্তিগত",
     "Admin" : "প্রশাসন",
     "Settings" : "নিয়ামকসমূহ",

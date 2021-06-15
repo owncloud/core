@@ -174,7 +174,6 @@
     "Alternative Logins" : "Alternativne prijave",
     "Use the following link to reset your password: {link}" : "Za resetiranje svoje lozinke koristite sljedeću vezu: {link}",
     "New password" : "Nova lozinka",
-    "New Password" : "Nova lozinka",
     "Reset password" : "Resetirajte lozinku",
     "This ownCloud instance is currently in single user mode." : "Ova ownCloud instanca je trenutno u načinu rada za jednog korisnika.",
     "This means only administrators can use the instance." : "To znači da tu instancu mogu koristiti samo administratori.",

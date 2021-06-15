@@ -182,7 +182,6 @@ OC.L10N.register(
     "Alternative Logins" : "Alternativaj ensalutoj",
     "Use the following link to reset your password: {link}" : "Uzu la jenan ligilon por restarigi vian pasvorton: {link}",
     "New password" : "Nova pasvorto",
-    "New Password" : "Nova pasvorto",
     "Reset password" : "Rekomenci la pasvorton",
     "Thank you for your patience." : "Dankon pro via pacienco.",
     "%s will be updated to version %s" : "%s ĝisdatiĝos al eldono %s",

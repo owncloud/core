@@ -289,7 +289,6 @@ OC.L10N.register(
     "Version" : "Верзија",
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "Линкот за активација е истечен. Кликнете на копчето подолу за да побарате нов линк за активација и да ја комплетирате регистрацијата.",
     "Resend activation link" : "Повторно испрати линк за активација",
-    "New Password" : "Нова лозинка",
     "Confirm Password" : "Потврди лозинка",
     "Please set your password" : "Постави лозинка",
     "Personal" : "Персонално",

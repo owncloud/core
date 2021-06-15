@@ -263,7 +263,6 @@ OC.L10N.register(
     "Username" : "Käyttäjätunnus",
     "Done" : "Valmis",
     "Version" : "Versio",
-    "New Password" : "Uusi salasana",
     "Personal" : "Henkilökohtainen",
     "Admin" : "Ylläpito",
     "Settings" : "Asetukset",

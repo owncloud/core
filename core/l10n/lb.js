@@ -229,7 +229,6 @@ OC.L10N.register(
     "Alternative Logins" : "Alternativ Umeldungen",
     "Use the following link to reset your password: {link}" : "Benotz folgende Link fir däi Passwuert zréckzesetzen: {link}",
     "New password" : "Neit Passwuert",
-    "New Password" : "Neit Passwuert",
     "Reset password" : "Passwuert zréck setzen",
     "This ownCloud instance is currently in single user mode." : "Dës ownCloud Instanz ass am Moment am eenzel Benotzer Modus.",
     "This means only administrators can use the instance." : "Dëst bedeit dass just d'Administrateuren d'Instanz benotze kënnen.",

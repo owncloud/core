@@ -158,7 +158,6 @@ OC.L10N.register(
     "Alternative Logins" : "Alternativne Prijave",
     "Use the following link to reset your password: {link}" : "Za resetovanje vaše lozinke koristite slijedeću vezu: {link}",
     "New password" : "Nova lozinka",
-    "New Password" : "Nova Lozinka",
     "Reset password" : "Resetuj lozinku",
     "This ownCloud instance is currently in single user mode." : "Ova ownCloud instanca je trenutno u jednokorisničkom načinu rada.",
     "This means only administrators can use the instance." : "To znači da tu instancu mogu koristiti samo administratori.",

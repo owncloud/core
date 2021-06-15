@@ -240,7 +240,6 @@ OC.L10N.register(
     "Alternative Logins" : "Alternatiewe aantekeninge",
     "Use the following link to reset your password: {link}" : "Gebruik die volgende skakel om u wagwoord te herstel: {link}",
     "New password" : "Nuwe wagwoord",
-    "New Password" : "Nuwe Wagwoord",
     "Reset password" : "Herstel wagwoord"
 },
 "nplurals=2; plural=(n != 1);");

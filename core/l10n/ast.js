@@ -270,7 +270,6 @@ OC.L10N.register(
     "Alternative Logins" : "Anicios de sesión alternativos",
     "Use the following link to reset your password: {link}" : "Usa'l siguiente enllaz pa restablecer la to contraseña: {link}",
     "New password" : "Contraseña nueva",
-    "New Password" : "Contraseña nueva",
     "Reset password" : "Restablecer contraseña",
     "This ownCloud instance is currently in single user mode." : "Esta instalación d'ownCloud ta en mou d'usuariu únicu.",
     "This means only administrators can use the instance." : "Esto quier dicir que namái pue usala un alministrador.",
