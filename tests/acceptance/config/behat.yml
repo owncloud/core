@@ -274,9 +274,9 @@ default:
         - WebDavPropertiesContext:
         - AuthContext:
 
-    apiShareOperationsToRoot:
+    apiShareOperationsToRoot1:
       paths:
-        - '%paths.base%/../features/apiShareOperationsToRoot'
+        - '%paths.base%/../features/apiShareOperationsToRoot1'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
@@ -285,9 +285,31 @@ default:
         - TrashbinContext:
         - WebDavPropertiesContext:
 
-    apiShareOperationsToShares:
+    apiShareOperationsToRoot2:
       paths:
-        - '%paths.base%/../features/apiShareOperationsToShares'
+        - '%paths.base%/../features/apiShareOperationsToRoot2'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - PublicWebDavContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+
+    apiShareOperationsToShares1:
+      paths:
+        - '%paths.base%/../features/apiShareOperationsToShares1'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - PublicWebDavContext:
+        - TrashbinContext:
+        - WebDavPropertiesContext:
+
+    apiShareOperationsToShares2:
+      paths:
+        - '%paths.base%/../features/apiShareOperationsToShares2'
       context: *common_ldap_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
