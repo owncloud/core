@@ -218,6 +218,23 @@ class Google_Service_CloudRedis_Resource_ProjectsLocationsInstances extends Goog
     return $this->call('patch', array($params), "Google_Service_CloudRedis_Operation");
   }
   /**
+   * Reschedule maintenance for a given instance in a given project and location.
+   * (instances.rescheduleMaintenance)
+   *
+   * @param string $name Required. Redis instance resource name using the form:
+   * `projects/{project_id}/locations/{location_id}/instances/{instance_id}` where
+   * `location_id` refers to a GCP region.
+   * @param Google_Service_CloudRedis_RescheduleMaintenanceRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_CloudRedis_Operation
+   */
+  public function rescheduleMaintenance($name, Google_Service_CloudRedis_RescheduleMaintenanceRequest $postBody, $optParams = array())
+  {
+    $params = array('name' => $name, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('rescheduleMaintenance', array($params), "Google_Service_CloudRedis_Operation");
+  }
+  /**
    * Upgrades Redis instance to the newer Redis version specified in the request.
    * (instances.upgrade)
    *

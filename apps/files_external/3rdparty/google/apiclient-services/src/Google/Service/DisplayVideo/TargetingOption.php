@@ -52,6 +52,8 @@ class Google_Service_DisplayVideo_TargetingOption extends Google_Model
   protected $languageDetailsType = 'Google_Service_DisplayVideo_LanguageTargetingOptionDetails';
   protected $languageDetailsDataType = '';
   public $name;
+  protected $nativeContentPositionDetailsType = 'Google_Service_DisplayVideo_NativeContentPositionTargetingOptionDetails';
+  protected $nativeContentPositionDetailsDataType = '';
   protected $onScreenPositionDetailsType = 'Google_Service_DisplayVideo_OnScreenPositionTargetingOptionDetails';
   protected $onScreenPositionDetailsDataType = '';
   protected $operatingSystemDetailsType = 'Google_Service_DisplayVideo_OperatingSystemTargetingOptionDetails';
@@ -316,6 +318,20 @@ class Google_Service_DisplayVideo_TargetingOption extends Google_Model
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param Google_Service_DisplayVideo_NativeContentPositionTargetingOptionDetails
+   */
+  public function setNativeContentPositionDetails(Google_Service_DisplayVideo_NativeContentPositionTargetingOptionDetails $nativeContentPositionDetails)
+  {
+    $this->nativeContentPositionDetails = $nativeContentPositionDetails;
+  }
+  /**
+   * @return Google_Service_DisplayVideo_NativeContentPositionTargetingOptionDetails
+   */
+  public function getNativeContentPositionDetails()
+  {
+    return $this->nativeContentPositionDetails;
   }
   /**
    * @param Google_Service_DisplayVideo_OnScreenPositionTargetingOptionDetails

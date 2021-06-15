@@ -16,7 +16,7 @@
  */
 
 /**
- * Service definition for PolicySimulator (v1beta1).
+ * Service definition for PolicySimulator (v1).
  *
  * <p>
  * Policy Simulator is a collection of endpoints for creating, running, and
@@ -36,7 +36,7 @@
  */
 class Google_Service_PolicySimulator extends Google_Service
 {
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 
@@ -60,7 +60,7 @@ class Google_Service_PolicySimulator extends Google_Service
     $this->rootUrl = $rootUrl ?: 'https://policysimulator.googleapis.com/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
-    $this->version = 'v1beta1';
+    $this->version = 'v1';
     $this->serviceName = 'policysimulator';
 
     $this->folders_locations_replays = new Google_Service_PolicySimulator_Resource_FoldersLocationsReplays(
@@ -70,7 +70,7 @@ class Google_Service_PolicySimulator extends Google_Service
         array(
           'methods' => array(
             'create' => array(
-              'path' => 'v1beta1/{+parent}/replays',
+              'path' => 'v1/{+parent}/replays',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
@@ -80,7 +80,7 @@ class Google_Service_PolicySimulator extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -100,7 +100,7 @@ class Google_Service_PolicySimulator extends Google_Service
         array(
           'methods' => array(
             'list' => array(
-              'path' => 'v1beta1/{+parent}/results',
+              'path' => 'v1/{+parent}/results',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'parent' => array(
@@ -128,7 +128,7 @@ class Google_Service_PolicySimulator extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -138,7 +138,7 @@ class Google_Service_PolicySimulator extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1beta1/operations',
+              'path' => 'v1/operations',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'filter' => array(
@@ -169,7 +169,7 @@ class Google_Service_PolicySimulator extends Google_Service
         array(
           'methods' => array(
             'create' => array(
-              'path' => 'v1beta1/{+parent}/replays',
+              'path' => 'v1/{+parent}/replays',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
@@ -179,7 +179,7 @@ class Google_Service_PolicySimulator extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -199,7 +199,7 @@ class Google_Service_PolicySimulator extends Google_Service
         array(
           'methods' => array(
             'list' => array(
-              'path' => 'v1beta1/{+parent}/results',
+              'path' => 'v1/{+parent}/results',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'parent' => array(
@@ -227,7 +227,7 @@ class Google_Service_PolicySimulator extends Google_Service
         array(
           'methods' => array(
             'create' => array(
-              'path' => 'v1beta1/{+parent}/replays',
+              'path' => 'v1/{+parent}/replays',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
@@ -237,7 +237,7 @@ class Google_Service_PolicySimulator extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -257,7 +257,7 @@ class Google_Service_PolicySimulator extends Google_Service
         array(
           'methods' => array(
             'list' => array(
-              'path' => 'v1beta1/{+parent}/results',
+              'path' => 'v1/{+parent}/results',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'parent' => array(

@@ -24,6 +24,8 @@ class Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorMana
   protected $exclusionsDataType = 'array';
   protected $nodesType = 'Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorManagementProvidersV1NodeSloMetadata';
   protected $nodesDataType = 'array';
+  protected $perSliEligibilityType = 'Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorManagementProvidersV1PerSliSloEligibility';
+  protected $perSliEligibilityDataType = '';
   public $tier;
 
   /**
@@ -67,6 +69,20 @@ class Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorMana
   public function getNodes()
   {
     return $this->nodes;
+  }
+  /**
+   * @param Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorManagementProvidersV1PerSliSloEligibility
+   */
+  public function setPerSliEligibility(Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorManagementProvidersV1PerSliSloEligibility $perSliEligibility)
+  {
+    $this->perSliEligibility = $perSliEligibility;
+  }
+  /**
+   * @return Google_Service_CloudMemorystoreforMemcached_GoogleCloudSaasacceleratorManagementProvidersV1PerSliSloEligibility
+   */
+  public function getPerSliEligibility()
+  {
+    return $this->perSliEligibility;
   }
   public function setTier($tier)
   {

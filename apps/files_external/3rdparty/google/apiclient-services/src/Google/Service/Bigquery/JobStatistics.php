@@ -45,8 +45,8 @@ class Google_Service_Bigquery_JobStatistics extends Google_Collection
   public $startTime;
   public $totalBytesProcessed;
   public $totalSlotMs;
-  protected $transactionInfoTemplateType = 'Google_Service_Bigquery_TransactionInfo';
-  protected $transactionInfoTemplateDataType = '';
+  protected $transactionInfoType = 'Google_Service_Bigquery_TransactionInfo';
+  protected $transactionInfoDataType = '';
 
   public function setCompletionRatio($completionRatio)
   {
@@ -229,15 +229,15 @@ class Google_Service_Bigquery_JobStatistics extends Google_Collection
   /**
    * @param Google_Service_Bigquery_TransactionInfo
    */
-  public function setTransactionInfoTemplate(Google_Service_Bigquery_TransactionInfo $transactionInfoTemplate)
+  public function setTransactionInfo(Google_Service_Bigquery_TransactionInfo $transactionInfo)
   {
-    $this->transactionInfoTemplate = $transactionInfoTemplate;
+    $this->transactionInfo = $transactionInfo;
   }
   /**
    * @return Google_Service_Bigquery_TransactionInfo
    */
-  public function getTransactionInfoTemplate()
+  public function getTransactionInfo()
   {
-    return $this->transactionInfoTemplate;
+    return $this->transactionInfo;
   }
 }

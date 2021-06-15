@@ -18,6 +18,7 @@
 class Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentProvenanceParent extends Google_Model
 {
   public $id;
+  public $index;
   public $revision;
 
   public function setId($id)
@@ -27,6 +28,14 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta2DocumentProvenancePare
   public function getId()
   {
     return $this->id;
+  }
+  public function setIndex($index)
+  {
+    $this->index = $index;
+  }
+  public function getIndex()
+  {
+    return $this->index;
   }
   public function setRevision($revision)
   {

@@ -67,6 +67,10 @@ class Google_Service_SecretManager_Resource_ProjectsSecrets extends Google_Servi
    * @param string $name Required. The resource name of the Secret to delete in
    * the format `projects/secrets`.
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string etag Optional. Etag of the Secret. The request succeeds if
+   * it matches the etag of the currently stored secret object. If the etag is
+   * omitted, the request succeeds.
    * @return Google_Service_SecretManager_SecretmanagerEmpty
    */
   public function delete($name, $optParams = array())

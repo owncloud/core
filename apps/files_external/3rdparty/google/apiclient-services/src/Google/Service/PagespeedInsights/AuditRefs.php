@@ -15,12 +15,23 @@
  * the License.
  */
 
-class Google_Service_PagespeedInsights_AuditRefs extends Google_Model
+class Google_Service_PagespeedInsights_AuditRefs extends Google_Collection
 {
+  protected $collection_key = 'relevantAudits';
+  public $acronym;
   public $group;
   public $id;
+  public $relevantAudits;
   public $weight;
 
+  public function setAcronym($acronym)
+  {
+    $this->acronym = $acronym;
+  }
+  public function getAcronym()
+  {
+    return $this->acronym;
+  }
   public function setGroup($group)
   {
     $this->group = $group;
@@ -36,6 +47,14 @@ class Google_Service_PagespeedInsights_AuditRefs extends Google_Model
   public function getId()
   {
     return $this->id;
+  }
+  public function setRelevantAudits($relevantAudits)
+  {
+    $this->relevantAudits = $relevantAudits;
+  }
+  public function getRelevantAudits()
+  {
+    return $this->relevantAudits;
   }
   public function setWeight($weight)
   {

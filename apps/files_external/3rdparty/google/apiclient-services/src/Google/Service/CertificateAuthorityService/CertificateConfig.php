@@ -19,10 +19,10 @@ class Google_Service_CertificateAuthorityService_CertificateConfig extends Googl
 {
   protected $publicKeyType = 'Google_Service_CertificateAuthorityService_PublicKey';
   protected $publicKeyDataType = '';
-  protected $reusableConfigType = 'Google_Service_CertificateAuthorityService_ReusableConfigWrapper';
-  protected $reusableConfigDataType = '';
   protected $subjectConfigType = 'Google_Service_CertificateAuthorityService_SubjectConfig';
   protected $subjectConfigDataType = '';
+  protected $x509ConfigType = 'Google_Service_CertificateAuthorityService_X509Parameters';
+  protected $x509ConfigDataType = '';
 
   /**
    * @param Google_Service_CertificateAuthorityService_PublicKey
@@ -39,20 +39,6 @@ class Google_Service_CertificateAuthorityService_CertificateConfig extends Googl
     return $this->publicKey;
   }
   /**
-   * @param Google_Service_CertificateAuthorityService_ReusableConfigWrapper
-   */
-  public function setReusableConfig(Google_Service_CertificateAuthorityService_ReusableConfigWrapper $reusableConfig)
-  {
-    $this->reusableConfig = $reusableConfig;
-  }
-  /**
-   * @return Google_Service_CertificateAuthorityService_ReusableConfigWrapper
-   */
-  public function getReusableConfig()
-  {
-    return $this->reusableConfig;
-  }
-  /**
    * @param Google_Service_CertificateAuthorityService_SubjectConfig
    */
   public function setSubjectConfig(Google_Service_CertificateAuthorityService_SubjectConfig $subjectConfig)
@@ -65,5 +51,19 @@ class Google_Service_CertificateAuthorityService_CertificateConfig extends Googl
   public function getSubjectConfig()
   {
     return $this->subjectConfig;
+  }
+  /**
+   * @param Google_Service_CertificateAuthorityService_X509Parameters
+   */
+  public function setX509Config(Google_Service_CertificateAuthorityService_X509Parameters $x509Config)
+  {
+    $this->x509Config = $x509Config;
+  }
+  /**
+   * @return Google_Service_CertificateAuthorityService_X509Parameters
+   */
+  public function getX509Config()
+  {
+    return $this->x509Config;
   }
 }

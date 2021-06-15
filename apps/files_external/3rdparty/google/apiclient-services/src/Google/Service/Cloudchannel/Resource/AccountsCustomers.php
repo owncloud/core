@@ -46,12 +46,11 @@ class Google_Service_Cloudchannel_Resource_AccountsCustomers extends Google_Serv
     return $this->call('create', array($params), "Google_Service_Cloudchannel_GoogleCloudChannelV1Customer");
   }
   /**
-   * Deletes the given Customer permanently and irreversibly. Possible error
-   * codes: * PERMISSION_DENIED: The account making the request does not own this
-   * customer. * INVALID_ARGUMENT: Required request parameters are missing or
-   * invalid. * FAILED_PRECONDITION: The customer has existing entitlements. *
-   * NOT_FOUND: No Customer resource found for the name in the request.
-   * (customers.delete)
+   * Deletes the given Customer permanently. Possible error codes: *
+   * PERMISSION_DENIED: The account making the request does not own this customer.
+   * * INVALID_ARGUMENT: Required request parameters are missing or invalid. *
+   * FAILED_PRECONDITION: The customer has existing entitlements. * NOT_FOUND: No
+   * Customer resource found for the name in the request. (customers.delete)
    *
    * @param string $name Required. The resource name of the customer to delete.
    * @param array $optParams Optional parameters.
@@ -64,7 +63,7 @@ class Google_Service_Cloudchannel_Resource_AccountsCustomers extends Google_Serv
     return $this->call('delete', array($params), "Google_Service_Cloudchannel_GoogleProtobufEmpty");
   }
   /**
-   * Returns a requested Customer resource. Possible error codes: *
+   * Returns the requested Customer resource. Possible error codes: *
    * PERMISSION_DENIED: The reseller account making the request is different from
    * the reseller account in the API request. * INVALID_ARGUMENT: Required request
    * parameters are missing or invalid. * NOT_FOUND: The customer resource doesn't

@@ -61,10 +61,8 @@ class Google_Service_CloudRetail_Resource_ProjectsLocationsCatalogs extends Goog
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Indicates which fields in the provided Catalog
-   * to update. If not set, will only update the Catalog.product_level_config
-   * field, which is also the only currently supported field to update. If an
-   * unsupported or unknown field is provided, an INVALID_ARGUMENT error is
-   * returned.
+   * to update. If an unsupported or unknown field is provided, an
+   * INVALID_ARGUMENT error is returned.
    * @return Google_Service_CloudRetail_GoogleCloudRetailV2Catalog
    */
   public function patch($name, Google_Service_CloudRetail_GoogleCloudRetailV2Catalog $postBody, $optParams = array())

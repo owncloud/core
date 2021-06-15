@@ -33,7 +33,7 @@ class Google_Service_Area120Tables extends Google_Service
   /** See, edit, create, and delete all of your Google Drive files. */
   const DRIVE =
       "https://www.googleapis.com/auth/drive";
-  /** View and manage Google Drive files and folders that you have opened or created with this app. */
+  /** See, edit, create, and delete only the specific Google Drive files you use with this app. */
   const DRIVE_FILE =
       "https://www.googleapis.com/auth/drive.file";
   /** See and download all your Google Drive files. */
@@ -88,6 +88,10 @@ class Google_Service_Area120Tables extends Google_Service
               'path' => 'v1alpha1/tables',
               'httpMethod' => 'GET',
               'parameters' => array(
+                'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
@@ -185,6 +189,10 @@ class Google_Service_Area120Tables extends Google_Service
                   'required' => true,
                 ),
                 'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

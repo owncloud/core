@@ -38,7 +38,8 @@ class Google_Service_ChromeManagement_Resource_CustomersReports extends Google_S
    * @opt_param string orgUnitId The ID of the organizational unit.
    * @opt_param int pageSize Maximum number of results to return. Maximum and
    * default are 100.
-   * @opt_param string pageToken Token to specify the next page in the list.
+   * @opt_param string pageToken Token to specify the page of the request to be
+   * returned.
    * @return Google_Service_ChromeManagement_GoogleChromeManagementV1CountChromeVersionsResponse
    */
   public function countChromeVersions($customer, $optParams = array())
@@ -65,7 +66,8 @@ class Google_Service_ChromeManagement_Resource_CustomersReports extends Google_S
    * @opt_param string orgUnitId The ID of the organizational unit.
    * @opt_param int pageSize Maximum number of results to return. Maximum and
    * default are 100.
-   * @opt_param string pageToken Token to specify next page in the list.
+   * @opt_param string pageToken Token to specify the page of the request to be
+   * returned.
    * @return Google_Service_ChromeManagement_GoogleChromeManagementV1CountInstalledAppsResponse
    */
   public function countInstalledApps($customer, $optParams = array())
@@ -90,11 +92,12 @@ class Google_Service_ChromeManagement_Resource_CustomersReports extends Google_S
    * in EBNF syntax. Note: OR operations are not supported in this filter.
    * Supported filter fields: * last_active_date
    * @opt_param string orderBy Field used to order results. Supported order by
-   * fields: * machine_name * device_id
+   * fields: * machine * device_id
    * @opt_param string orgUnitId The ID of the organizational unit.
    * @opt_param int pageSize Maximum number of results to return. Maximum and
    * default are 100.
-   * @opt_param string pageToken Token to specify the next page in the list.
+   * @opt_param string pageToken Token to specify the page of the request to be
+   * returned.
    * @return Google_Service_ChromeManagement_GoogleChromeManagementV1FindInstalledAppDevicesResponse
    */
   public function findInstalledAppDevices($customer, $optParams = array())

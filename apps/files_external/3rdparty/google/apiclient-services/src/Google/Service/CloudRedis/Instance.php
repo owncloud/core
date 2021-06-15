@@ -28,6 +28,10 @@ class Google_Service_CloudRedis_Instance extends Google_Collection
   public $host;
   public $labels;
   public $locationId;
+  protected $maintenancePolicyType = 'Google_Service_CloudRedis_MaintenancePolicy';
+  protected $maintenancePolicyDataType = '';
+  protected $maintenanceScheduleType = 'Google_Service_CloudRedis_MaintenanceSchedule';
+  protected $maintenanceScheduleDataType = '';
   public $memorySizeGb;
   public $name;
   public $persistenceIamIdentity;
@@ -121,6 +125,34 @@ class Google_Service_CloudRedis_Instance extends Google_Collection
   public function getLocationId()
   {
     return $this->locationId;
+  }
+  /**
+   * @param Google_Service_CloudRedis_MaintenancePolicy
+   */
+  public function setMaintenancePolicy(Google_Service_CloudRedis_MaintenancePolicy $maintenancePolicy)
+  {
+    $this->maintenancePolicy = $maintenancePolicy;
+  }
+  /**
+   * @return Google_Service_CloudRedis_MaintenancePolicy
+   */
+  public function getMaintenancePolicy()
+  {
+    return $this->maintenancePolicy;
+  }
+  /**
+   * @param Google_Service_CloudRedis_MaintenanceSchedule
+   */
+  public function setMaintenanceSchedule(Google_Service_CloudRedis_MaintenanceSchedule $maintenanceSchedule)
+  {
+    $this->maintenanceSchedule = $maintenanceSchedule;
+  }
+  /**
+   * @return Google_Service_CloudRedis_MaintenanceSchedule
+   */
+  public function getMaintenanceSchedule()
+  {
+    return $this->maintenanceSchedule;
   }
   public function setMemorySizeGb($memorySizeGb)
   {

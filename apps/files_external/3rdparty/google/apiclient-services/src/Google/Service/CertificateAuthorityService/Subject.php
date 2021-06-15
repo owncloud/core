@@ -17,6 +17,7 @@
 
 class Google_Service_CertificateAuthorityService_Subject extends Google_Model
 {
+  public $commonName;
   public $countryCode;
   public $locality;
   public $organization;
@@ -25,6 +26,14 @@ class Google_Service_CertificateAuthorityService_Subject extends Google_Model
   public $province;
   public $streetAddress;
 
+  public function setCommonName($commonName)
+  {
+    $this->commonName = $commonName;
+  }
+  public function getCommonName()
+  {
+    return $this->commonName;
+  }
   public function setCountryCode($countryCode)
   {
     $this->countryCode = $countryCode;

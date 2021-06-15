@@ -26,8 +26,8 @@
 class Google_Service_CloudMemorystoreforMemcached_Resource_ProjectsLocationsInstances extends Google_Service_Resource
 {
   /**
-   * ApplyParameters will restart the set of specified nodes in order to update
-   * them to the current set of parameters for the Memcached Instance.
+   * `ApplyParameters` restarts the set of specified nodes in order to update them
+   * to the current set of parameters for the Memcached Instance.
    * (instances.applyParameters)
    *
    * @param string $name Required. Resource name of the Memcached instance for
@@ -55,8 +55,8 @@ class Google_Service_CloudMemorystoreforMemcached_Resource_ProjectsLocationsInst
    * instance in the user project with the following restrictions: * Must contain
    * only lowercase letters, numbers, and hyphens. * Must start with a letter. *
    * Must be between 1-40 characters. * Must end with a number or a letter. * Must
-   * be unique within the user project / location If any of the above are not met,
-   * will raise an invalid argument error.
+   * be unique within the user project / location. If any of the above are not
+   * met, the API raises an invalid argument error.
    * @return Google_Service_CloudMemorystoreforMemcached_Operation
    */
   public function create($parent, Google_Service_CloudMemorystoreforMemcached_Instance $postBody, $optParams = array())
@@ -105,15 +105,15 @@ class Google_Service_CloudMemorystoreforMemcached_Resource_ProjectsLocationsInst
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter List filter. For example, exclude all Memcached
-   * instances with name as my-instance by specifying "name != my-instance".
+   * instances with name as my-instance by specifying `"name != my-instance"`.
    * @opt_param string orderBy Sort results. Supported values are "name", "name
    * desc" or "" (unsorted).
    * @opt_param int pageSize The maximum number of items to return. If not
    * specified, a default value of 1000 will be used by the service. Regardless of
-   * the page_size value, the response may include a partial list and a caller
-   * should only rely on response's next_page_token to determine if there are more
-   * instances left to be queried.
-   * @opt_param string pageToken The next_page_token value returned from a
+   * the `page_size` value, the response may include a partial list and a caller
+   * should only rely on response's `next_page_token` to determine if there are
+   * more instances left to be queried.
+   * @opt_param string pageToken The `next_page_token` value returned from a
    * previous List request, if any.
    * @return Google_Service_CloudMemorystoreforMemcached_ListInstancesResponse
    */
@@ -130,10 +130,10 @@ class Google_Service_CloudMemorystoreforMemcached_Resource_ProjectsLocationsInst
    * @param string $name Required. Unique name of the resource in this scope
    * including project and location using the form:
    * `projects/{project_id}/locations/{location_id}/instances/{instance_id}` Note:
-   * Memcached instances are managed and addressed at regional level so
-   * location_id here refers to a GCP region; however, users may choose which
-   * zones Memcached nodes within an instances should be provisioned in. Refer to
-   * [zones] field for more details.
+   * Memcached instances are managed and addressed at the regional level so
+   * `location_id` here refers to a Google Cloud region; however, users may choose
+   * which zones Memcached nodes should be provisioned in within an instance.
+   * Refer to zones field for more details.
    * @param Google_Service_CloudMemorystoreforMemcached_Instance $postBody
    * @param array $optParams Optional parameters.
    *
@@ -148,9 +148,9 @@ class Google_Service_CloudMemorystoreforMemcached_Resource_ProjectsLocationsInst
     return $this->call('patch', array($params), "Google_Service_CloudMemorystoreforMemcached_Operation");
   }
   /**
-   * Updates the defined Memcached Parameters for an existing Instance. This
-   * method only stages the parameters, it must be followed by ApplyParameters to
-   * apply the parameters to nodes of the Memcached Instance.
+   * Updates the defined Memcached parameters for an existing instance. This
+   * method only stages the parameters, it must be followed by `ApplyParameters`
+   * to apply the parameters to nodes of the Memcached instance.
    * (instances.updateParameters)
    *
    * @param string $name Required. Resource name of the Memcached instance for

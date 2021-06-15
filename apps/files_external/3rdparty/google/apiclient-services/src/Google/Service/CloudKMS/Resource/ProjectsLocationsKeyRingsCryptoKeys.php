@@ -209,7 +209,8 @@ class Google_Service_CloudKMS_Resource_ProjectsLocationsKeyRingsCryptoKeys exten
   }
   /**
    * Update the version of a CryptoKey that will be used in Encrypt. Returns an
-   * error if called on an asymmetric key. (cryptoKeys.updatePrimaryVersion)
+   * error if called on a key whose purpose is not ENCRYPT_DECRYPT.
+   * (cryptoKeys.updatePrimaryVersion)
    *
    * @param string $name Required. The resource name of the CryptoKey to update.
    * @param Google_Service_CloudKMS_UpdateCryptoKeyPrimaryVersionRequest $postBody

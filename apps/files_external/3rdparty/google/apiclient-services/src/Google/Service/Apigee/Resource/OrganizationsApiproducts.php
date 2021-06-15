@@ -55,12 +55,12 @@ class Google_Service_Apigee_Resource_OrganizationsApiproducts extends Google_Ser
    * collection of API resources combined with quota settings and metadata that
    * you can use to deliver customized and productized API bundles to your
    * developer community. This metadata can include: - Scope - Environments - API
-   * proxies - Extensible profile API products enable you repackage APIs on-the-
+   * proxies - Extensible profile API products enable you repackage APIs on the
    * fly, without having to do any additional coding or configuration. Apigee
    * recommends that you start with a simple API product including only required
    * elements. You then provision credentials to apps to enable them to start
    * testing your APIs. After you have authentication and authorization working
-   * against a simple API product, you can iterate to create finer grained API
+   * against a simple API product, you can iterate to create finer-grained API
    * products, defining different sets of API resources for each API product.
    * **WARNING:** - If you don't specify an API proxy in the request body, *any*
    * app associated with the product can make calls to *any* API in your entire
@@ -122,9 +122,9 @@ class Google_Service_Apigee_Resource_OrganizationsApiproducts extends Google_Ser
   }
   /**
    * Lists all API product names for an organization. Filter the list by passing
-   * an `attributename` and `attibutevalue`. The limit on the number of API
-   * products returned by the API is 1000. You can paginate the list of API
-   * products returned using the `startKey` and `count` query parameters.
+   * an `attributename` and `attibutevalue`. The maximum number of API products
+   * returned is 1000. You can paginate the list of API products returned using
+   * the `startKey` and `count` query parameters.
    * (apiproducts.listOrganizationsApiproducts)
    *
    * @param string $parent Required. Name of the organization. Use the following
@@ -156,7 +156,7 @@ class Google_Service_Apigee_Resource_OrganizationsApiproducts extends Google_Ser
    * Updates an existing API product. You must include all required values,
    * whether or not you are updating them, as well as any optional values that you
    * are updating. The API product name required in the request URL is the
-   * internal name of the product, not the Display Name. While they may be the
+   * internal name of the product, not the display name. While they may be the
    * same, it depends on whether the API product was created via UI or API. View
    * the list of API products to identify their internal names.
    * (apiproducts.update)

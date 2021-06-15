@@ -104,8 +104,9 @@ class Google_Service_ShoppingContent_Resource_Regions extends Google_Service_Res
    * @param Google_Service_ShoppingContent_Region $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask Optional. The field mask indicating the fields
-   * to update.
+   * @opt_param string updateMask Optional. The comma-separated field mask
+   * indicating the fields to update. Example:
+   * `"displayName,postalCodeArea.regionCode"`.
    * @return Google_Service_ShoppingContent_Region
    */
   public function patch($merchantId, $regionId, Google_Service_ShoppingContent_Region $postBody, $optParams = array())

@@ -17,6 +17,8 @@
 
 class Google_Service_NetworkManagement_Endpoint extends Google_Model
 {
+  public $cloudSqlInstance;
+  public $gkeMasterCluster;
   public $instance;
   public $ipAddress;
   public $network;
@@ -24,6 +26,22 @@ class Google_Service_NetworkManagement_Endpoint extends Google_Model
   public $port;
   public $projectId;
 
+  public function setCloudSqlInstance($cloudSqlInstance)
+  {
+    $this->cloudSqlInstance = $cloudSqlInstance;
+  }
+  public function getCloudSqlInstance()
+  {
+    return $this->cloudSqlInstance;
+  }
+  public function setGkeMasterCluster($gkeMasterCluster)
+  {
+    $this->gkeMasterCluster = $gkeMasterCluster;
+  }
+  public function getGkeMasterCluster()
+  {
+    return $this->gkeMasterCluster;
+  }
   public function setInstance($instance)
   {
     $this->instance = $instance;

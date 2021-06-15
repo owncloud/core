@@ -21,7 +21,7 @@ class Google_Service_Directory_FailureInfo extends Google_Model
   public $errorMessage;
   protected $printerType = 'Google_Service_Directory_Printer';
   protected $printerDataType = '';
-  public $printerIds;
+  public $printerId;
 
   public function setErrorCode($errorCode)
   {
@@ -53,12 +53,12 @@ class Google_Service_Directory_FailureInfo extends Google_Model
   {
     return $this->printer;
   }
-  public function setPrinterIds($printerIds)
+  public function setPrinterId($printerId)
   {
-    $this->printerIds = $printerIds;
+    $this->printerId = $printerId;
   }
-  public function getPrinterIds()
+  public function getPrinterId()
   {
-    return $this->printerIds;
+    return $this->printerId;
   }
 }

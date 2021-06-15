@@ -59,9 +59,10 @@ class Google_Service_AlertCenter_Resource_AlertsFeedback extends Google_Service_
    * Workspace organization account of the customer the alert feedback are
    * associated with. Inferred from the caller identity if not provided.
    * @opt_param string filter Optional. A query string for filtering alert
-   * feedback results. For more details, see [Query filters](/admin-
-   * sdk/alertcenter/guides/query-filters) and [Supported query filter fields
-   * ](/admin-sdk/alertcenter/reference/filter-fields#alerts.feedback.list).
+   * feedback results. For more details, see [Query
+   * filters](https://developers.google.com/admin-sdk/alertcenter/guides/query-
+   * filters) and [Supported query filter fields](https://developers.google.com
+   * /admin-sdk/alertcenter/reference/filter-fields#alerts.feedback.list).
    * @return Google_Service_AlertCenter_ListAlertFeedbackResponse
    */
   public function listAlertsFeedback($alertId, $optParams = array())

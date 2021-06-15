@@ -17,14 +17,17 @@
 
 class Google_Service_Bigquery_TrainingOptions extends Google_Collection
 {
-  protected $collection_key = 'inputLabelColumns';
+  protected $collection_key = 'timeSeriesIdColumns';
+  public $adjustStepChanges;
   public $autoArima;
   public $autoArimaMaxOrder;
   public $batchSize;
+  public $cleanSpikesAndDips;
   public $dataFrequency;
   public $dataSplitColumn;
   public $dataSplitEvalFraction;
   public $dataSplitMethod;
+  public $decomposeTimeSeries;
   public $distanceType;
   public $dropout;
   public $earlyStop;
@@ -58,11 +61,20 @@ class Google_Service_Bigquery_TrainingOptions extends Google_Collection
   public $subsample;
   public $timeSeriesDataColumn;
   public $timeSeriesIdColumn;
+  public $timeSeriesIdColumns;
   public $timeSeriesTimestampColumn;
   public $userColumn;
   public $walsAlpha;
   public $warmStart;
 
+  public function setAdjustStepChanges($adjustStepChanges)
+  {
+    $this->adjustStepChanges = $adjustStepChanges;
+  }
+  public function getAdjustStepChanges()
+  {
+    return $this->adjustStepChanges;
+  }
   public function setAutoArima($autoArima)
   {
     $this->autoArima = $autoArima;
@@ -86,6 +98,14 @@ class Google_Service_Bigquery_TrainingOptions extends Google_Collection
   public function getBatchSize()
   {
     return $this->batchSize;
+  }
+  public function setCleanSpikesAndDips($cleanSpikesAndDips)
+  {
+    $this->cleanSpikesAndDips = $cleanSpikesAndDips;
+  }
+  public function getCleanSpikesAndDips()
+  {
+    return $this->cleanSpikesAndDips;
   }
   public function setDataFrequency($dataFrequency)
   {
@@ -118,6 +138,14 @@ class Google_Service_Bigquery_TrainingOptions extends Google_Collection
   public function getDataSplitMethod()
   {
     return $this->dataSplitMethod;
+  }
+  public function setDecomposeTimeSeries($decomposeTimeSeries)
+  {
+    $this->decomposeTimeSeries = $decomposeTimeSeries;
+  }
+  public function getDecomposeTimeSeries()
+  {
+    return $this->decomposeTimeSeries;
   }
   public function setDistanceType($distanceType)
   {
@@ -380,6 +408,14 @@ class Google_Service_Bigquery_TrainingOptions extends Google_Collection
   public function getTimeSeriesIdColumn()
   {
     return $this->timeSeriesIdColumn;
+  }
+  public function setTimeSeriesIdColumns($timeSeriesIdColumns)
+  {
+    $this->timeSeriesIdColumns = $timeSeriesIdColumns;
+  }
+  public function getTimeSeriesIdColumns()
+  {
+    return $this->timeSeriesIdColumns;
   }
   public function setTimeSeriesTimestampColumn($timeSeriesTimestampColumn)
   {

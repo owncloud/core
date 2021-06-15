@@ -17,4 +17,14 @@
 
 class Google_Service_SecretManager_DestroySecretVersionRequest extends Google_Model
 {
+  public $etag;
+
+  public function setEtag($etag)
+  {
+    $this->etag = $etag;
+  }
+  public function getEtag()
+  {
+    return $this->etag;
+  }
 }

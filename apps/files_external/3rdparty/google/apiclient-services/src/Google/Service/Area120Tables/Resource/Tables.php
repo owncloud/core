@@ -44,6 +44,8 @@ class Google_Service_Area120Tables_Resource_Tables extends Google_Service_Resour
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string orderBy Optional. Sorting order for the list of tables on
+   * createTime/updateTime.
    * @opt_param int pageSize The maximum number of tables to return. The service
    * may return fewer than this value. If unspecified, at most 20 tables are
    * returned. The maximum value is 100; values above 100 are coerced to 100.

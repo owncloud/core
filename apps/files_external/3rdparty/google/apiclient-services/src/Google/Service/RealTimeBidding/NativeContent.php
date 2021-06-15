@@ -32,6 +32,7 @@ class Google_Service_RealTimeBidding_NativeContent extends Google_Model
   public $priceDisplayText;
   public $starRating;
   public $videoUrl;
+  public $videoVastXml;
 
   public function setAdvertiserName($advertiserName)
   {
@@ -146,5 +147,13 @@ class Google_Service_RealTimeBidding_NativeContent extends Google_Model
   public function getVideoUrl()
   {
     return $this->videoUrl;
+  }
+  public function setVideoVastXml($videoVastXml)
+  {
+    $this->videoVastXml = $videoVastXml;
+  }
+  public function getVideoVastXml()
+  {
+    return $this->videoVastXml;
   }
 }

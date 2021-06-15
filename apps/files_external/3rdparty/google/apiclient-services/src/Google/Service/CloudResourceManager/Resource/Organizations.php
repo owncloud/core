@@ -26,7 +26,7 @@
 class Google_Service_CloudResourceManager_Resource_Organizations extends Google_Service_Resource
 {
   /**
-   * Fetches an Organization resource identified by the specified resource name.
+   * Fetches an organization resource identified by the specified resource name.
    * (organizations.get)
    *
    * @param string $name Required. The resource name of the Organization to fetch.
@@ -42,11 +42,11 @@ class Google_Service_CloudResourceManager_Resource_Organizations extends Google_
     return $this->call('get', array($params), "Google_Service_CloudResourceManager_Organization");
   }
   /**
-   * Gets the access control policy for an Organization resource. May be empty if
-   * no such policy or resource exists. The `resource` field should be the
-   * organization's resource name, e.g. "organizations/123". Authorization
-   * requires the Google IAM permission
-   * `resourcemanager.organizations.getIamPolicy` on the specified organization
+   * Gets the access control policy for an organization resource. The policy may
+   * be empty if no such policy or resource exists. The `resource` field should be
+   * the organization's resource name, for example: "organizations/123".
+   * Authorization requires the IAM permission
+   * `resourcemanager.organizations.getIamPolicy` on the specified organization.
    * (organizations.getIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
@@ -63,16 +63,16 @@ class Google_Service_CloudResourceManager_Resource_Organizations extends Google_
     return $this->call('getIamPolicy', array($params), "Google_Service_CloudResourceManager_Policy");
   }
   /**
-   * Searches Organization resources that are visible to the user and satisfy the
-   * specified filter. This method returns Organizations in an unspecified order.
-   * New Organizations do not necessarily appear at the end of the results, and
+   * Searches organization resources that are visible to the user and satisfy the
+   * specified filter. This method returns organizations in an unspecified order.
+   * New organizations do not necessarily appear at the end of the results, and
    * may take a small amount of time to appear. Search will only return
    * organizations on which the user has the permission
    * `resourcemanager.organizations.get` (organizations.search)
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Optional. The maximum number of Organizations to
+   * @opt_param int pageSize Optional. The maximum number of organizations to
    * return in the response. If unspecified, server picks an appropriate default.
    * @opt_param string pageToken Optional. A pagination token returned from a
    * previous call to `SearchOrganizations` that indicates from where listing
@@ -97,11 +97,11 @@ class Google_Service_CloudResourceManager_Resource_Organizations extends Google_
     return $this->call('search', array($params), "Google_Service_CloudResourceManager_SearchOrganizationsResponse");
   }
   /**
-   * Sets the access control policy on an Organization resource. Replaces any
+   * Sets the access control policy on an organization resource. Replaces any
    * existing policy. The `resource` field should be the organization's resource
-   * name, e.g. "organizations/123". Authorization requires the Google IAM
+   * name, for example: "organizations/123". Authorization requires the IAM
    * permission `resourcemanager.organizations.setIamPolicy` on the specified
-   * organization (organizations.setIamPolicy)
+   * organization. (organizations.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * specified. See the operation documentation for the appropriate value for this
@@ -117,8 +117,8 @@ class Google_Service_CloudResourceManager_Resource_Organizations extends Google_
     return $this->call('setIamPolicy', array($params), "Google_Service_CloudResourceManager_Policy");
   }
   /**
-   * Returns permissions that a caller has on the specified Organization. The
-   * `resource` field should be the organization's resource name, e.g.
+   * Returns the permissions that a caller has on the specified organization. The
+   * `resource` field should be the organization's resource name, for example:
    * "organizations/123". There are no permissions required for making this API
    * call. (organizations.testIamPermissions)
    *

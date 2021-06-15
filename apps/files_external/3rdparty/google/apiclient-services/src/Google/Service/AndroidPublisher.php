@@ -88,6 +88,10 @@ class Google_Service_AndroidPublisher extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'changesNotSentForReview' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
               ),
             ),'delete' => array(
               'path' => 'androidpublisher/v3/applications/{packageName}/edits/{editId}',

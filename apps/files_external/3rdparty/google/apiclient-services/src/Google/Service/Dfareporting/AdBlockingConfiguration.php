@@ -17,27 +17,8 @@
 
 class Google_Service_Dfareporting_AdBlockingConfiguration extends Google_Model
 {
-  public $clickThroughUrl;
-  public $creativeBundleId;
   public $enabled;
-  public $overrideClickThroughUrl;
 
-  public function setClickThroughUrl($clickThroughUrl)
-  {
-    $this->clickThroughUrl = $clickThroughUrl;
-  }
-  public function getClickThroughUrl()
-  {
-    return $this->clickThroughUrl;
-  }
-  public function setCreativeBundleId($creativeBundleId)
-  {
-    $this->creativeBundleId = $creativeBundleId;
-  }
-  public function getCreativeBundleId()
-  {
-    return $this->creativeBundleId;
-  }
   public function setEnabled($enabled)
   {
     $this->enabled = $enabled;
@@ -45,13 +26,5 @@ class Google_Service_Dfareporting_AdBlockingConfiguration extends Google_Model
   public function getEnabled()
   {
     return $this->enabled;
-  }
-  public function setOverrideClickThroughUrl($overrideClickThroughUrl)
-  {
-    $this->overrideClickThroughUrl = $overrideClickThroughUrl;
-  }
-  public function getOverrideClickThroughUrl()
-  {
-    return $this->overrideClickThroughUrl;
   }
 }

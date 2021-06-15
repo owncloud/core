@@ -17,7 +17,7 @@
 
 class Google_Service_HangoutsChat_Message extends Google_Collection
 {
-  protected $collection_key = 'cards';
+  protected $collection_key = 'cardsV2';
   protected $actionResponseType = 'Google_Service_HangoutsChat_ActionResponse';
   protected $actionResponseDataType = '';
   protected $annotationsType = 'Google_Service_HangoutsChat_Annotation';
@@ -27,6 +27,8 @@ class Google_Service_HangoutsChat_Message extends Google_Collection
   protected $attachmentDataType = 'array';
   protected $cardsType = 'Google_Service_HangoutsChat_Card';
   protected $cardsDataType = 'array';
+  protected $cardsV2Type = 'Google_Service_HangoutsChat_CardWithId';
+  protected $cardsV2DataType = 'array';
   public $createTime;
   public $fallbackText;
   public $name;
@@ -104,6 +106,20 @@ class Google_Service_HangoutsChat_Message extends Google_Collection
   public function getCards()
   {
     return $this->cards;
+  }
+  /**
+   * @param Google_Service_HangoutsChat_CardWithId[]
+   */
+  public function setCardsV2($cardsV2)
+  {
+    $this->cardsV2 = $cardsV2;
+  }
+  /**
+   * @return Google_Service_HangoutsChat_CardWithId[]
+   */
+  public function getCardsV2()
+  {
+    return $this->cardsV2;
   }
   public function setCreateTime($createTime)
   {

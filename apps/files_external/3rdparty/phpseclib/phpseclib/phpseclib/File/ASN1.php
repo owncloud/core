@@ -649,18 +649,7 @@ abstract class ASN1
                         $map[$key] = $candidate;
                         $i++;
                     } elseif (isset($child['default'])) {
-                        switch ($child['type']) {
-                            case ASN1::TYPE_INTEGER:
-                                $map[$key] = new BigInteger($child['default']);
-                                break;
-                            //case self::TYPE_OBJECT_IDENTIFIER:
-                            //    if (!isset(self::$reverseOIDs[$name])) {
-                            //        return null;
-                            //    }
-                            //case ASN1::TYPE_BOOLEAN:
-                            default:
-                                $map[$key] = $child['default'];
-                        }
+                        $map[$key] = $child['default'];
                     } elseif (!isset($child['optional'])) {
                         return null; // Syntax error.
                     }
@@ -1031,7 +1020,10 @@ abstract class ASN1
             case self::TYPE_GENERALIZED_TIME:
                 $format = $mapping['type'] == self::TYPE_UTC_TIME ? 'y' : 'Y';
                 $format.= 'mdHis';
+                // if $source does _not_ include timezone information within it then assume that the timezone is GMT
                 $date = new DateTime($source, new DateTimeZone('GMT'));
+                // if $source _does_ include timezone information within it then convert the time to GMT
+                $date->setTimezone(new DateTimeZone('GMT'));
                 $value = $date->format($format) . 'Z';
                 break;
             case self::TYPE_BIT_STRING:
@@ -1474,7 +1466,7 @@ abstract class ASN1
             $temp = $str;
         } else {
             $temp = preg_replace('#.*?^-+[^-]+-+[\r\n ]*$#ms', '', $str, 1);
-            $temp = preg_replace('#-+END.*[\r\n ]*.*#ms', '', $str, 1);
+            $temp = preg_replace('#-+END.*[\r\n ]*.*#ms', '', $temp, 1);
         }
         // remove new lines
         $temp = str_replace(["\r", "\n", ' '], '', $temp);

@@ -33,6 +33,7 @@ class Google_Service_CloudLifeSciences_VirtualMachine extends Google_Collection
   protected $networkDataType = '';
   public $nvidiaDriverVersion;
   public $preemptible;
+  public $reservation;
   protected $serviceAccountType = 'Google_Service_CloudLifeSciences_ServiceAccount';
   protected $serviceAccountDataType = '';
   protected $volumesType = 'Google_Service_CloudLifeSciences_Volume';
@@ -151,6 +152,14 @@ class Google_Service_CloudLifeSciences_VirtualMachine extends Google_Collection
   public function getPreemptible()
   {
     return $this->preemptible;
+  }
+  public function setReservation($reservation)
+  {
+    $this->reservation = $reservation;
+  }
+  public function getReservation()
+  {
+    return $this->reservation;
   }
   /**
    * @param Google_Service_CloudLifeSciences_ServiceAccount

@@ -50,10 +50,9 @@ class Google_Service_Sheets_Resource_SpreadsheetsValues extends Google_Service_R
    * @opt_param string responseDateTimeRenderOption Determines how dates, times,
    * and durations in the response should be rendered. This is ignored if
    * response_value_render_option is FORMATTED_VALUE. The default dateTime render
-   * option is [DateTimeRenderOption.SERIAL_NUMBER].
+   * option is SERIAL_NUMBER.
    * @opt_param string responseValueRenderOption Determines how values in the
-   * response should be rendered. The default render option is
-   * ValueRenderOption.FORMATTED_VALUE.
+   * response should be rendered. The default render option is FORMATTED_VALUE.
    * @opt_param string valueInputOption How the input data should be interpreted.
    * @return Google_Service_Sheets_AppendValuesResponse
    */
@@ -107,8 +106,7 @@ class Google_Service_Sheets_Resource_SpreadsheetsValues extends Google_Service_R
    *
    * @opt_param string dateTimeRenderOption How dates, times, and durations should
    * be represented in the output. This is ignored if value_render_option is
-   * FORMATTED_VALUE. The default dateTime render option is
-   * [DateTimeRenderOption.SERIAL_NUMBER].
+   * FORMATTED_VALUE. The default dateTime render option is SERIAL_NUMBER.
    * @opt_param string majorDimension The major dimension that results should use.
    * For example, if the spreadsheet data is: `A1=1,B1=2,A2=3,B2=4`, then
    * requesting `range=A1:B2,majorDimension=ROWS` returns `[[1,2],[3,4]]`, whereas
@@ -202,14 +200,13 @@ class Google_Service_Sheets_Resource_SpreadsheetsValues extends Google_Service_R
    *
    * @opt_param string dateTimeRenderOption How dates, times, and durations should
    * be represented in the output. This is ignored if value_render_option is
-   * FORMATTED_VALUE. The default dateTime render option is
-   * [DateTimeRenderOption.SERIAL_NUMBER].
+   * FORMATTED_VALUE. The default dateTime render option is SERIAL_NUMBER.
    * @opt_param string majorDimension The major dimension that results should use.
    * For example, if the spreadsheet data is: `A1=1,B1=2,A2=3,B2=4`, then
    * requesting `range=A1:B2,majorDimension=ROWS` returns `[[1,2],[3,4]]`, whereas
    * requesting `range=A1:B2,majorDimension=COLUMNS` returns `[[1,3],[2,4]]`.
    * @opt_param string valueRenderOption How values should be represented in the
-   * output. The default render option is ValueRenderOption.FORMATTED_VALUE.
+   * output. The default render option is FORMATTED_VALUE.
    * @return Google_Service_Sheets_ValueRange
    */
   public function get($spreadsheetId, $range, $optParams = array())
@@ -235,10 +232,9 @@ class Google_Service_Sheets_Resource_SpreadsheetsValues extends Google_Service_R
    * @opt_param string responseDateTimeRenderOption Determines how dates, times,
    * and durations in the response should be rendered. This is ignored if
    * response_value_render_option is FORMATTED_VALUE. The default dateTime render
-   * option is DateTimeRenderOption.SERIAL_NUMBER.
+   * option is SERIAL_NUMBER.
    * @opt_param string responseValueRenderOption Determines how values in the
-   * response should be rendered. The default render option is
-   * ValueRenderOption.FORMATTED_VALUE.
+   * response should be rendered. The default render option is FORMATTED_VALUE.
    * @opt_param string valueInputOption How the input data should be interpreted.
    * @return Google_Service_Sheets_UpdateValuesResponse
    */

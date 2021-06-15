@@ -30,6 +30,7 @@ class Google_Service_Recommender_GoogleCloudRecommenderV1Recommendation extends 
   public $name;
   protected $primaryImpactType = 'Google_Service_Recommender_GoogleCloudRecommenderV1Impact';
   protected $primaryImpactDataType = '';
+  public $priority;
   public $recommenderSubtype;
   protected $stateInfoType = 'Google_Service_Recommender_GoogleCloudRecommenderV1RecommendationStateInfo';
   protected $stateInfoDataType = '';
@@ -121,6 +122,14 @@ class Google_Service_Recommender_GoogleCloudRecommenderV1Recommendation extends 
   public function getPrimaryImpact()
   {
     return $this->primaryImpact;
+  }
+  public function setPriority($priority)
+  {
+    $this->priority = $priority;
+  }
+  public function getPriority()
+  {
+    return $this->priority;
   }
   public function setRecommenderSubtype($recommenderSubtype)
   {

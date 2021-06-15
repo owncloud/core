@@ -109,4 +109,28 @@ class Google_Service_ShoppingContent_Resource_Products extends Google_Service_Re
     $params = array_merge($params, $optParams);
     return $this->call('list', array($params), "Google_Service_ShoppingContent_ProductsListResponse");
   }
+  /**
+   * Updates an existing product in your Merchant Center account. Only updates
+   * attributes provided in the request. (products.update)
+   *
+   * @param string $merchantId The ID of the account that contains the product.
+   * This account cannot be a multi-client account.
+   * @param string $productId The REST ID of the product for which to update.
+   * @param Google_Service_ShoppingContent_Product $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask The comma-separated list of product attributes
+   * to be updated. Example: `"title,salePrice"`. Attributes specified in the
+   * update mask without a value specified in the body will be deleted from the
+   * product. Only top-level product attributes can be updated. If not defined,
+   * product attributes with set values will be updated and other attributes will
+   * stay unchanged.
+   * @return Google_Service_ShoppingContent_Product
+   */
+  public function update($merchantId, $productId, Google_Service_ShoppingContent_Product $postBody, $optParams = array())
+  {
+    $params = array('merchantId' => $merchantId, 'productId' => $productId, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('update', array($params), "Google_Service_ShoppingContent_Product");
+  }
 }

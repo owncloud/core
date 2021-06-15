@@ -19,6 +19,7 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageAnchorPage
 {
   protected $boundingPolyType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta1BoundingPoly';
   protected $boundingPolyDataType = '';
+  public $confidence;
   public $layoutId;
   public $layoutType;
   public $page;
@@ -36,6 +37,14 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageAnchorPage
   public function getBoundingPoly()
   {
     return $this->boundingPoly;
+  }
+  public function setConfidence($confidence)
+  {
+    $this->confidence = $confidence;
+  }
+  public function getConfidence()
+  {
+    return $this->confidence;
   }
   public function setLayoutId($layoutId)
   {

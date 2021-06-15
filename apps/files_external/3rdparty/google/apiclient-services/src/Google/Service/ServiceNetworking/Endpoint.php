@@ -15,22 +15,12 @@
  * the License.
  */
 
-class Google_Service_ServiceNetworking_Endpoint extends Google_Collection
+class Google_Service_ServiceNetworking_Endpoint extends Google_Model
 {
-  protected $collection_key = 'aliases';
-  public $aliases;
   public $allowCors;
   public $name;
   public $target;
 
-  public function setAliases($aliases)
-  {
-    $this->aliases = $aliases;
-  }
-  public function getAliases()
-  {
-    return $this->aliases;
-  }
   public function setAllowCors($allowCors)
   {
     $this->allowCors = $allowCors;

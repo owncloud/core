@@ -33,6 +33,8 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1Entry extends Goog
   protected $sourceSystemTimestampsType = 'Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1SystemTimestamps';
   protected $sourceSystemTimestampsDataType = '';
   public $type;
+  protected $usageSignalType = 'Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1UsageSignal';
+  protected $usageSignalDataType = '';
   public $userSpecifiedSystem;
   public $userSpecifiedType;
 
@@ -153,6 +155,20 @@ class Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1Entry extends Goog
   public function getType()
   {
     return $this->type;
+  }
+  /**
+   * @param Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1UsageSignal
+   */
+  public function setUsageSignal(Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1UsageSignal $usageSignal)
+  {
+    $this->usageSignal = $usageSignal;
+  }
+  /**
+   * @return Google_Service_DataCatalog_GoogleCloudDatacatalogV1beta1UsageSignal
+   */
+  public function getUsageSignal()
+  {
+    return $this->usageSignal;
   }
   public function setUserSpecifiedSystem($userSpecifiedSystem)
   {

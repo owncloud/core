@@ -21,6 +21,8 @@ class Google_Service_OnDemandScanning_Occurrence extends Google_Model
   protected $attestationDataType = '';
   protected $buildType = 'Google_Service_OnDemandScanning_BuildOccurrence';
   protected $buildDataType = '';
+  protected $complianceType = 'Google_Service_OnDemandScanning_ComplianceOccurrence';
+  protected $complianceDataType = '';
   public $createTime;
   protected $deploymentType = 'Google_Service_OnDemandScanning_DeploymentOccurrence';
   protected $deploymentDataType = '';
@@ -68,6 +70,20 @@ class Google_Service_OnDemandScanning_Occurrence extends Google_Model
   public function getBuild()
   {
     return $this->build;
+  }
+  /**
+   * @param Google_Service_OnDemandScanning_ComplianceOccurrence
+   */
+  public function setCompliance(Google_Service_OnDemandScanning_ComplianceOccurrence $compliance)
+  {
+    $this->compliance = $compliance;
+  }
+  /**
+   * @return Google_Service_OnDemandScanning_ComplianceOccurrence
+   */
+  public function getCompliance()
+  {
+    return $this->compliance;
   }
   public function setCreateTime($createTime)
   {

@@ -23,8 +23,6 @@ class Google_Service_CertificateAuthorityService_CertificateDescription extends 
   protected $authorityKeyIdDataType = '';
   protected $certFingerprintType = 'Google_Service_CertificateAuthorityService_CertificateFingerprint';
   protected $certFingerprintDataType = '';
-  protected $configValuesType = 'Google_Service_CertificateAuthorityService_ReusableConfigValues';
-  protected $configValuesDataType = '';
   public $crlDistributionPoints;
   protected $publicKeyType = 'Google_Service_CertificateAuthorityService_PublicKey';
   protected $publicKeyDataType = '';
@@ -32,6 +30,8 @@ class Google_Service_CertificateAuthorityService_CertificateDescription extends 
   protected $subjectDescriptionDataType = '';
   protected $subjectKeyIdType = 'Google_Service_CertificateAuthorityService_KeyId';
   protected $subjectKeyIdDataType = '';
+  protected $x509DescriptionType = 'Google_Service_CertificateAuthorityService_X509Parameters';
+  protected $x509DescriptionDataType = '';
 
   public function setAiaIssuingCertificateUrls($aiaIssuingCertificateUrls)
   {
@@ -68,20 +68,6 @@ class Google_Service_CertificateAuthorityService_CertificateDescription extends 
   public function getCertFingerprint()
   {
     return $this->certFingerprint;
-  }
-  /**
-   * @param Google_Service_CertificateAuthorityService_ReusableConfigValues
-   */
-  public function setConfigValues(Google_Service_CertificateAuthorityService_ReusableConfigValues $configValues)
-  {
-    $this->configValues = $configValues;
-  }
-  /**
-   * @return Google_Service_CertificateAuthorityService_ReusableConfigValues
-   */
-  public function getConfigValues()
-  {
-    return $this->configValues;
   }
   public function setCrlDistributionPoints($crlDistributionPoints)
   {
@@ -132,5 +118,19 @@ class Google_Service_CertificateAuthorityService_CertificateDescription extends 
   public function getSubjectKeyId()
   {
     return $this->subjectKeyId;
+  }
+  /**
+   * @param Google_Service_CertificateAuthorityService_X509Parameters
+   */
+  public function setX509Description(Google_Service_CertificateAuthorityService_X509Parameters $x509Description)
+  {
+    $this->x509Description = $x509Description;
+  }
+  /**
+   * @return Google_Service_CertificateAuthorityService_X509Parameters
+   */
+  public function getX509Description()
+  {
+    return $this->x509Description;
   }
 }

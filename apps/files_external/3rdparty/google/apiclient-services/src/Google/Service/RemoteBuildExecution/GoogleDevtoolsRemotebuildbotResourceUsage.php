@@ -22,6 +22,8 @@ class Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildbotResourceUs
   protected $diskUsageDataType = '';
   protected $memoryUsageType = 'Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildbotResourceUsageStat';
   protected $memoryUsageDataType = '';
+  protected $totalDiskIoStatsType = 'Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildbotResourceUsageIOStats';
+  protected $totalDiskIoStatsDataType = '';
 
   public function setCpuUsedPercent($cpuUsedPercent)
   {
@@ -58,5 +60,19 @@ class Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildbotResourceUs
   public function getMemoryUsage()
   {
     return $this->memoryUsage;
+  }
+  /**
+   * @param Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildbotResourceUsageIOStats
+   */
+  public function setTotalDiskIoStats(Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildbotResourceUsageIOStats $totalDiskIoStats)
+  {
+    $this->totalDiskIoStats = $totalDiskIoStats;
+  }
+  /**
+   * @return Google_Service_RemoteBuildExecution_GoogleDevtoolsRemotebuildbotResourceUsageIOStats
+   */
+  public function getTotalDiskIoStats()
+  {
+    return $this->totalDiskIoStats;
   }
 }

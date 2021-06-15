@@ -192,7 +192,8 @@ class Google_Service_GoogleAnalyticsAdmin_Resource_AccountsUserLinks extends Goo
   /**
    * Updates a user link on an account or property. (userLinks.patch)
    *
-   * @param string $name Example format: properties/1234/userLinks/5678
+   * @param string $name Output only. Example format:
+   * properties/1234/userLinks/5678
    * @param Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaUserLink $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaUserLink

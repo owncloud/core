@@ -27,7 +27,8 @@ class Google_Service_PeopleService_Resource_People extends Google_Service_Resour
 {
   /**
    * Create a batch of new contacts and return the PersonResponses for the newly
-   * created contacts. (people.batchCreateContacts)
+   * created contacts. Limited to 10 parallel requests per user.
+   * (people.batchCreateContacts)
    *
    * @param Google_Service_PeopleService_BatchCreateContactsRequest $postBody
    * @param array $optParams Optional parameters.
@@ -40,8 +41,8 @@ class Google_Service_PeopleService_Resource_People extends Google_Service_Resour
     return $this->call('batchCreateContacts', array($params), "Google_Service_PeopleService_BatchCreateContactsResponse");
   }
   /**
-   * Delete a batch of contacts. Any non-contact data will not be deleted.
-   * (people.batchDeleteContacts)
+   * Delete a batch of contacts. Any non-contact data will not be deleted. Limited
+   * to 10 parallel requests per user. (people.batchDeleteContacts)
    *
    * @param Google_Service_PeopleService_BatchDeleteContactsRequest $postBody
    * @param array $optParams Optional parameters.
@@ -55,7 +56,8 @@ class Google_Service_PeopleService_Resource_People extends Google_Service_Resour
   }
   /**
    * Update a batch of contacts and return a map of resource names to
-   * PersonResponses for the updated contacts. (people.batchUpdateContacts)
+   * PersonResponses for the updated contacts. Limited to 10 parallel requests per
+   * user. (people.batchUpdateContacts)
    *
    * @param Google_Service_PeopleService_BatchUpdateContactsRequest $postBody
    * @param array $optParams Optional parameters.
@@ -194,8 +196,8 @@ class Google_Service_PeopleService_Resource_People extends Google_Service_Resour
    * specify `people/me`. - To get information about a google account, specify
    * `people/{account_id}`. - To get information about a contact, specify the
    * resource name that identifies the contact as returned by
-   * [`people.connections.list`](/people/api/rest/v1/people.connections/list). You
-   * can include up to 50 resource names in one request.
+   * [`people.connections.list`](/people/api/rest/v1/people.connections/list).
+   * There is a maximum of 200 resource names.
    * @opt_param string sources Optional. A mask of what source types to return.
    * Defaults to READ_SOURCE_TYPE_CONTACT and READ_SOURCE_TYPE_PROFILE if not set.
    * @return Google_Service_PeopleService_GetPeopleResponse
@@ -249,11 +251,18 @@ class Google_Service_PeopleService_Resource_People extends Google_Service_Resour
   }
   /**
    * Provides a list of contacts in the authenticated user's grouped contacts that
-   * matches the search query. (people.searchContacts)
+   * matches the search query. The query matches on a contact's `names`,
+   * `nickNames`, `emailAddresses`, `phoneNumbers`, and `organizations` fields
+   * that are from the CONTACT" source. **IMPORTANT**: Before searching, clients
+   * should send a warmup request with an empty query to update the cache. See
+   * https://developers.google.com/people/v1/contacts#search_the_users_contacts
+   * (people.searchContacts)
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize Optional. The number of results to return.
+   * @opt_param int pageSize Optional. The number of results to return. Defaults
+   * to 10 if field is not set, or set to 0. Values greater than 10 will be capped
+   * to 10.
    * @opt_param string query Required. The plain-text query for the request. The
    * query is used to match prefix phrases of the fields on a person. For example,
    * a person with name "foo name" matches queries such as "f", "fo", "foo", "foo
@@ -266,6 +275,8 @@ class Google_Service_PeopleService_Resource_People extends Google_Service_Resour
    * memberships * metadata * miscKeywords * names * nicknames * occupations *
    * organizations * phoneNumbers * photos * relations * sipAddresses * skills *
    * urls * userDefined
+   * @opt_param string sources Optional. A mask of what source types to return.
+   * Defaults to READ_SOURCE_TYPE_CONTACT if not set.
    * @return Google_Service_PeopleService_SearchResponse
    */
   public function searchContacts($optParams = array())

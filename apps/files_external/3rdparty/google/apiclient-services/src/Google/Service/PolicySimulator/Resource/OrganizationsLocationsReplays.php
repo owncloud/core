@@ -31,11 +31,11 @@ class Google_Service_PolicySimulator_Resource_OrganizationsLocationsReplays exte
    * @param string $parent Required. The parent resource where this Replay will be
    * created. This resource must be a project, folder, or organization with a
    * location. Example: `projects/my-example-project/locations/global`
-   * @param Google_Service_PolicySimulator_GoogleCloudPolicysimulatorV1beta1Replay $postBody
+   * @param Google_Service_PolicySimulator_GoogleCloudPolicysimulatorV1Replay $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_PolicySimulator_GoogleLongrunningOperation
    */
-  public function create($parent, Google_Service_PolicySimulator_GoogleCloudPolicysimulatorV1beta1Replay $postBody, $optParams = array())
+  public function create($parent, Google_Service_PolicySimulator_GoogleCloudPolicysimulatorV1Replay $postBody, $optParams = array())
   {
     $params = array('parent' => $parent, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
@@ -52,12 +52,12 @@ class Google_Service_PolicySimulator_Resource_OrganizationsLocationsReplays exte
    * `projects/my-example-project/locations/global/replays/506a5f7f-38ce-4d7d-
    * 8e03-479ce1833c36`
    * @param array $optParams Optional parameters.
-   * @return Google_Service_PolicySimulator_GoogleCloudPolicysimulatorV1beta1Replay
+   * @return Google_Service_PolicySimulator_GoogleCloudPolicysimulatorV1Replay
    */
   public function get($name, $optParams = array())
   {
     $params = array('name' => $name);
     $params = array_merge($params, $optParams);
-    return $this->call('get', array($params), "Google_Service_PolicySimulator_GoogleCloudPolicysimulatorV1beta1Replay");
+    return $this->call('get', array($params), "Google_Service_PolicySimulator_GoogleCloudPolicysimulatorV1Replay");
   }
 }

@@ -207,6 +207,16 @@ class Google_Service_CloudRedis extends Google_Service
                   'type' => 'string',
                 ),
               ),
+            ),'rescheduleMaintenance' => array(
+              'path' => 'v1/{+name}:rescheduleMaintenance',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
             ),'upgrade' => array(
               'path' => 'v1/{+name}:upgrade',
               'httpMethod' => 'POST',

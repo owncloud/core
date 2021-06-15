@@ -20,6 +20,10 @@ class Google_Service_ShoppingContent_ProductShipping extends Google_Model
   public $country;
   public $locationGroupName;
   public $locationId;
+  public $maxHandlingTime;
+  public $maxTransitTime;
+  public $minHandlingTime;
+  public $minTransitTime;
   public $postalCode;
   protected $priceType = 'Google_Service_ShoppingContent_Price';
   protected $priceDataType = '';
@@ -49,6 +53,38 @@ class Google_Service_ShoppingContent_ProductShipping extends Google_Model
   public function getLocationId()
   {
     return $this->locationId;
+  }
+  public function setMaxHandlingTime($maxHandlingTime)
+  {
+    $this->maxHandlingTime = $maxHandlingTime;
+  }
+  public function getMaxHandlingTime()
+  {
+    return $this->maxHandlingTime;
+  }
+  public function setMaxTransitTime($maxTransitTime)
+  {
+    $this->maxTransitTime = $maxTransitTime;
+  }
+  public function getMaxTransitTime()
+  {
+    return $this->maxTransitTime;
+  }
+  public function setMinHandlingTime($minHandlingTime)
+  {
+    $this->minHandlingTime = $minHandlingTime;
+  }
+  public function getMinHandlingTime()
+  {
+    return $this->minHandlingTime;
+  }
+  public function setMinTransitTime($minTransitTime)
+  {
+    $this->minTransitTime = $minTransitTime;
+  }
+  public function getMinTransitTime()
+  {
+    return $this->minTransitTime;
   }
   public function setPostalCode($postalCode)
   {

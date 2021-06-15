@@ -35,7 +35,6 @@ class Google_Service_Compute_InstanceProperties extends Google_Collection
   public $minCpuPlatform;
   protected $networkInterfacesType = 'Google_Service_Compute_NetworkInterface';
   protected $networkInterfacesDataType = 'array';
-  public $postKeyRevocationActionType;
   public $privateIpv6GoogleAccess;
   protected $reservationAffinityType = 'Google_Service_Compute_ReservationAffinity';
   protected $reservationAffinityDataType = '';
@@ -172,14 +171,6 @@ class Google_Service_Compute_InstanceProperties extends Google_Collection
   public function getNetworkInterfaces()
   {
     return $this->networkInterfaces;
-  }
-  public function setPostKeyRevocationActionType($postKeyRevocationActionType)
-  {
-    $this->postKeyRevocationActionType = $postKeyRevocationActionType;
-  }
-  public function getPostKeyRevocationActionType()
-  {
-    return $this->postKeyRevocationActionType;
   }
   public function setPrivateIpv6GoogleAccess($privateIpv6GoogleAccess)
   {

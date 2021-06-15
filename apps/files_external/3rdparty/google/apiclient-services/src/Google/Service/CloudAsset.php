@@ -30,10 +30,11 @@
  */
 class Google_Service_CloudAsset extends Google_Service
 {
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 
+  public $assets;
   public $feeds;
   public $operations;
   public $v1;
@@ -53,6 +54,47 @@ class Google_Service_CloudAsset extends Google_Service
     $this->version = 'v1';
     $this->serviceName = 'cloudasset';
 
+    $this->assets = new Google_Service_CloudAsset_Resource_Assets(
+        $this,
+        $this->serviceName,
+        'assets',
+        array(
+          'methods' => array(
+            'list' => array(
+              'path' => 'v1/{+parent}/assets',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'assetTypes' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
+                ),
+                'contentType' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'readTime' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
     $this->feeds = new Google_Service_CloudAsset_Resource_Feeds(
         $this,
         $this->serviceName,
@@ -158,6 +200,10 @@ class Google_Service_CloudAsset extends Google_Service
                   'type' => 'string',
                   'repeated' => true,
                 ),
+                'analysisQuery.conditionContext.accessTime' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'analysisQuery.identitySelector.identity' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -203,6 +249,24 @@ class Google_Service_CloudAsset extends Google_Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ),
+              ),
+            ),'analyzeMove' => array(
+              'path' => 'v1/{+resource}:analyzeMove',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'resource' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'destinationParent' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'view' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'batchGetAssetsHistory' => array(

@@ -17,7 +17,6 @@
 
 class Google_Service_CertificateAuthorityService_SubjectDescription extends Google_Model
 {
-  public $commonName;
   public $hexSerialNumber;
   public $lifetime;
   public $notAfterTime;
@@ -27,14 +26,6 @@ class Google_Service_CertificateAuthorityService_SubjectDescription extends Goog
   protected $subjectAltNameType = 'Google_Service_CertificateAuthorityService_SubjectAltNames';
   protected $subjectAltNameDataType = '';
 
-  public function setCommonName($commonName)
-  {
-    $this->commonName = $commonName;
-  }
-  public function getCommonName()
-  {
-    return $this->commonName;
-  }
   public function setHexSerialNumber($hexSerialNumber)
   {
     $this->hexSerialNumber = $hexSerialNumber;

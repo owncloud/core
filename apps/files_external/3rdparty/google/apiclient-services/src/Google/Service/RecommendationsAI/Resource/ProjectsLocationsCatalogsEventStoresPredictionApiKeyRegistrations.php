@@ -29,8 +29,8 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsEventSt
    * Register an API key for use with predict method.
    * (predictionApiKeyRegistrations.create)
    *
-   * @param string $parent Required. The parent resource path. "projects/locations
-   * /global/catalogs/default_catalog/eventStores/default_event_store".
+   * @param string $parent Required. The parent resource path. `projects/locations
+   * /global/catalogs/default_catalog/eventStores/default_event_store`.
    * @param Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1CreatePredictionApiKeyRegistrationRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_RecommendationsAI_GoogleCloudRecommendationengineV1beta1PredictionApiKeyRegistration
@@ -46,8 +46,8 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsEventSt
    * (predictionApiKeyRegistrations.delete)
    *
    * @param string $name Required. The API key to unregister including full
-   * resource path. "projects/locations/global/catalogs/default_catalog/eventStore
-   * s/default_event_store/predictionApiKeyRegistrations/"
+   * resource path. `projects/locations/global/catalogs/default_catalog/eventStore
+   * s/default_event_store/predictionApiKeyRegistrations/`
    * @param array $optParams Optional parameters.
    * @return Google_Service_RecommendationsAI_GoogleProtobufEmpty
    */
@@ -62,9 +62,9 @@ class Google_Service_RecommendationsAI_Resource_ProjectsLocationsCatalogsEventSt
    * istrations.listProjectsLocationsCatalogsEventStoresPredictionApiKeyRegistrati
    * ons)
    *
-   * @param string $parent Required. The parent placement resource name such as "p
+   * @param string $parent Required. The parent placement resource name such as `p
    * rojects/1234/locations/global/catalogs/default_catalog/eventStores/default_ev
-   * ent_store"
+   * ent_store`
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Optional. Maximum number of results to return per

@@ -22,6 +22,8 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3Webhook extends Google_
   protected $genericWebServiceType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3WebhookGenericWebService';
   protected $genericWebServiceDataType = '';
   public $name;
+  protected $serviceDirectoryType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3WebhookServiceDirectoryConfig';
+  protected $serviceDirectoryDataType = '';
   public $timeout;
 
   public function setDisabled($disabled)
@@ -61,6 +63,20 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3Webhook extends Google_
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3WebhookServiceDirectoryConfig
+   */
+  public function setServiceDirectory(Google_Service_Dialogflow_GoogleCloudDialogflowCxV3WebhookServiceDirectoryConfig $serviceDirectory)
+  {
+    $this->serviceDirectory = $serviceDirectory;
+  }
+  /**
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowCxV3WebhookServiceDirectoryConfig
+   */
+  public function getServiceDirectory()
+  {
+    return $this->serviceDirectory;
   }
   public function setTimeout($timeout)
   {

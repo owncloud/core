@@ -24,12 +24,15 @@ class Google_Service_CloudBuild_BuildTrigger extends Google_Collection
   public $description;
   public $disabled;
   public $filename;
+  public $filter;
   protected $githubType = 'Google_Service_CloudBuild_GitHubEventsConfig';
   protected $githubDataType = '';
   public $id;
   public $ignoredFiles;
   public $includedFiles;
   public $name;
+  protected $pubsubConfigType = 'Google_Service_CloudBuild_PubsubConfig';
+  protected $pubsubConfigDataType = '';
   public $substitutions;
   public $tags;
   protected $triggerTemplateType = 'Google_Service_CloudBuild_RepoSource';
@@ -81,6 +84,14 @@ class Google_Service_CloudBuild_BuildTrigger extends Google_Collection
   {
     return $this->filename;
   }
+  public function setFilter($filter)
+  {
+    $this->filter = $filter;
+  }
+  public function getFilter()
+  {
+    return $this->filter;
+  }
   /**
    * @param Google_Service_CloudBuild_GitHubEventsConfig
    */
@@ -126,6 +137,20 @@ class Google_Service_CloudBuild_BuildTrigger extends Google_Collection
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param Google_Service_CloudBuild_PubsubConfig
+   */
+  public function setPubsubConfig(Google_Service_CloudBuild_PubsubConfig $pubsubConfig)
+  {
+    $this->pubsubConfig = $pubsubConfig;
+  }
+  /**
+   * @return Google_Service_CloudBuild_PubsubConfig
+   */
+  public function getPubsubConfig()
+  {
+    return $this->pubsubConfig;
   }
   public function setSubstitutions($substitutions)
   {

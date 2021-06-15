@@ -62,7 +62,8 @@ class Google_Service_Appengine_Resource_Apps extends Google_Service_Resource
    * Updates the specified Application resource. You can update the following
    * fields: auth_domain - Google authentication domain for controlling user
    * access to the application. default_cookie_expiration - Cookie expiration
-   * policy for the application. (apps.patch)
+   * policy for the application. iap - Identity-Aware Proxy properties for the
+   * application. (apps.patch)
    *
    * @param string $appsId Part of `name`. Name of the Application resource to
    * update. Example: apps/myapp.

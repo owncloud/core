@@ -17,10 +17,19 @@
 
 class Google_Service_SASPortalTesting_SasPortalSetPolicyRequest extends Google_Model
 {
+  public $disableNotification;
   protected $policyType = 'Google_Service_SASPortalTesting_SasPortalPolicy';
   protected $policyDataType = '';
   public $resource;
 
+  public function setDisableNotification($disableNotification)
+  {
+    $this->disableNotification = $disableNotification;
+  }
+  public function getDisableNotification()
+  {
+    return $this->disableNotification;
+  }
   /**
    * @param Google_Service_SASPortalTesting_SasPortalPolicy
    */

@@ -417,9 +417,9 @@ class PrivateKey extends RSA implements Common\PrivateKey
             $offset+= $patternMatch ? 0 : 1;
         }
 
-        // we do & instead of && to avoid https://en.wikipedia.org/wiki/Short-circuit_evaluation
+        // we do | instead of || to avoid https://en.wikipedia.org/wiki/Short-circuit_evaluation
         // to protect against timing attacks
-        if (!$hashesMatch & !$patternMatch) {
+        if (!$hashesMatch | !$patternMatch) {
             throw new \RuntimeException('Decryption error');
         }
 

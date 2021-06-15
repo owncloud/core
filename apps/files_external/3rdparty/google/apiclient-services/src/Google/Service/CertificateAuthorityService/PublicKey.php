@@ -17,9 +17,17 @@
 
 class Google_Service_CertificateAuthorityService_PublicKey extends Google_Model
 {
+  public $format;
   public $key;
-  public $type;
 
+  public function setFormat($format)
+  {
+    $this->format = $format;
+  }
+  public function getFormat()
+  {
+    return $this->format;
+  }
   public function setKey($key)
   {
     $this->key = $key;
@@ -27,13 +35,5 @@ class Google_Service_CertificateAuthorityService_PublicKey extends Google_Model
   public function getKey()
   {
     return $this->key;
-  }
-  public function setType($type)
-  {
-    $this->type = $type;
-  }
-  public function getType()
-  {
-    return $this->type;
   }
 }

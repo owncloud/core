@@ -18,6 +18,7 @@
 class Google_Service_Firebasestorage_Bucket extends Google_Model
 {
   public $name;
+  public $reconciling;
 
   public function setName($name)
   {
@@ -26,5 +27,13 @@ class Google_Service_Firebasestorage_Bucket extends Google_Model
   public function getName()
   {
     return $this->name;
+  }
+  public function setReconciling($reconciling)
+  {
+    $this->reconciling = $reconciling;
+  }
+  public function getReconciling()
+  {
+    return $this->reconciling;
   }
 }

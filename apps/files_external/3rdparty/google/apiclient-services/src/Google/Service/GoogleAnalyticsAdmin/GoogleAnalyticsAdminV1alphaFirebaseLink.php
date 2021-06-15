@@ -18,7 +18,6 @@
 class Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaFirebaseLink extends Google_Model
 {
   public $createTime;
-  public $maximumUserAccess;
   public $name;
   public $project;
 
@@ -29,14 +28,6 @@ class Google_Service_GoogleAnalyticsAdmin_GoogleAnalyticsAdminV1alphaFirebaseLin
   public function getCreateTime()
   {
     return $this->createTime;
-  }
-  public function setMaximumUserAccess($maximumUserAccess)
-  {
-    $this->maximumUserAccess = $maximumUserAccess;
-  }
-  public function getMaximumUserAccess()
-  {
-    return $this->maximumUserAccess;
   }
   public function setName($name)
   {

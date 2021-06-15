@@ -32,6 +32,7 @@ class Google_Service_DisplayVideo_Advertiser extends Google_Model
   protected $integrationDetailsDataType = '';
   public $name;
   public $partnerId;
+  public $prismaEnabled;
   protected $servingConfigType = 'Google_Service_DisplayVideo_AdvertiserTargetingConfig';
   protected $servingConfigDataType = '';
   public $updateTime;
@@ -145,6 +146,14 @@ class Google_Service_DisplayVideo_Advertiser extends Google_Model
   public function getPartnerId()
   {
     return $this->partnerId;
+  }
+  public function setPrismaEnabled($prismaEnabled)
+  {
+    $this->prismaEnabled = $prismaEnabled;
+  }
+  public function getPrismaEnabled()
+  {
+    return $this->prismaEnabled;
   }
   /**
    * @param Google_Service_DisplayVideo_AdvertiserTargetingConfig

@@ -154,7 +154,10 @@ class Google_Service_Drive_Resource_Files extends Google_Service_Resource
    *
    * @opt_param int count The number of IDs to return.
    * @opt_param string space The space in which the IDs can be used to create new
-   * files. Supported values are 'drive' and 'appDataFolder'.
+   * files. Supported values are 'drive' and 'appDataFolder'. (Default: 'drive')
+   * @opt_param string type The type of items which the IDs can be used for.
+   * Supported values are 'files' and 'shortcuts'. Note that 'shortcuts' are only
+   * supported in the drive 'space'. (Default: 'files')
    * @return Google_Service_Drive_GeneratedIds
    */
   public function generateIds($optParams = array())

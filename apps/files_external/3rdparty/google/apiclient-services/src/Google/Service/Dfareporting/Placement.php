@@ -48,6 +48,8 @@ class Google_Service_Dfareporting_Placement extends Google_Collection
   protected $lookbackConfigurationType = 'Google_Service_Dfareporting_LookbackConfiguration';
   protected $lookbackConfigurationDataType = '';
   public $name;
+  protected $partnerWrappingDataType = 'Google_Service_Dfareporting_MeasurementPartnerWrappingData';
+  protected $partnerWrappingDataDataType = '';
   public $paymentApproved;
   public $paymentSource;
   public $placementGroupId;
@@ -74,6 +76,7 @@ class Google_Service_Dfareporting_Placement extends Google_Collection
   protected $videoSettingsType = 'Google_Service_Dfareporting_VideoSettings';
   protected $videoSettingsDataType = '';
   public $vpaidAdapterChoice;
+  public $wrappingOptOut;
 
   public function setAccountId($accountId)
   {
@@ -299,6 +302,20 @@ class Google_Service_Dfareporting_Placement extends Google_Collection
   {
     return $this->name;
   }
+  /**
+   * @param Google_Service_Dfareporting_MeasurementPartnerWrappingData
+   */
+  public function setPartnerWrappingData(Google_Service_Dfareporting_MeasurementPartnerWrappingData $partnerWrappingData)
+  {
+    $this->partnerWrappingData = $partnerWrappingData;
+  }
+  /**
+   * @return Google_Service_Dfareporting_MeasurementPartnerWrappingData
+   */
+  public function getPartnerWrappingData()
+  {
+    return $this->partnerWrappingData;
+  }
   public function setPaymentApproved($paymentApproved)
   {
     $this->paymentApproved = $paymentApproved;
@@ -492,5 +509,13 @@ class Google_Service_Dfareporting_Placement extends Google_Collection
   public function getVpaidAdapterChoice()
   {
     return $this->vpaidAdapterChoice;
+  }
+  public function setWrappingOptOut($wrappingOptOut)
+  {
+    $this->wrappingOptOut = $wrappingOptOut;
+  }
+  public function getWrappingOptOut()
+  {
+    return $this->wrappingOptOut;
   }
 }

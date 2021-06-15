@@ -18,6 +18,7 @@
 class Google_Service_SQLAdmin_InsightsConfig extends Google_Model
 {
   public $queryInsightsEnabled;
+  public $queryPlansPerMinute;
   public $queryStringLength;
   public $recordApplicationTags;
   public $recordClientAddress;
@@ -29,6 +30,14 @@ class Google_Service_SQLAdmin_InsightsConfig extends Google_Model
   public function getQueryInsightsEnabled()
   {
     return $this->queryInsightsEnabled;
+  }
+  public function setQueryPlansPerMinute($queryPlansPerMinute)
+  {
+    $this->queryPlansPerMinute = $queryPlansPerMinute;
+  }
+  public function getQueryPlansPerMinute()
+  {
+    return $this->queryPlansPerMinute;
   }
   public function setQueryStringLength($queryStringLength)
   {

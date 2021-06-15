@@ -228,9 +228,9 @@ class Google_Service_CloudIdentity_Resource_GroupsMemberships extends Google_Ser
    * @opt_param string query Required. A CEL expression that MUST include member
    * specification AND label(s). This is a `required` field. Users can search on
    * label attributes of groups. CONTAINS match ('in') is supported on labels.
-   * Certain groups are uniquely identified by both a 'member_key_id' and a
-   * 'member_key_namespace', which requires an additional query input:
-   * 'member_key_namespace'. Example query: `member_key_id ==
+   * Identity-mapped groups are uniquely identified by both a `member_key_id` and
+   * a `member_key_namespace`, which requires an additional query input:
+   * `member_key_namespace`. Example query: `member_key_id ==
    * 'member_key_id_value' && in labels`
    * @return Google_Service_CloudIdentity_SearchTransitiveGroupsResponse
    */

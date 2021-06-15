@@ -16,7 +16,7 @@
  */
 
 /**
- * Service definition for OnDemandScanning (v1beta1).
+ * Service definition for OnDemandScanning (v1).
  *
  * <p>
  * A service to scan container images for vulnerabilities.</p>
@@ -30,7 +30,7 @@
  */
 class Google_Service_OnDemandScanning extends Google_Service
 {
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 
@@ -50,7 +50,7 @@ class Google_Service_OnDemandScanning extends Google_Service
     $this->rootUrl = $rootUrl ?: 'https://ondemandscanning.googleapis.com/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
-    $this->version = 'v1beta1';
+    $this->version = 'v1';
     $this->serviceName = 'ondemandscanning';
 
     $this->projects_locations_operations = new Google_Service_OnDemandScanning_Resource_ProjectsLocationsOperations(
@@ -60,7 +60,7 @@ class Google_Service_OnDemandScanning extends Google_Service
         array(
           'methods' => array(
             'cancel' => array(
-              'path' => 'v1beta1/{+name}:cancel',
+              'path' => 'v1/{+name}:cancel',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -70,7 +70,7 @@ class Google_Service_OnDemandScanning extends Google_Service
                 ),
               ),
             ),'delete' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'name' => array(
@@ -80,7 +80,7 @@ class Google_Service_OnDemandScanning extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'v1beta1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -90,7 +90,7 @@ class Google_Service_OnDemandScanning extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1beta1/{+name}/operations',
+              'path' => 'v1/{+name}/operations',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -112,7 +112,7 @@ class Google_Service_OnDemandScanning extends Google_Service
                 ),
               ),
             ),'wait' => array(
-              'path' => 'v1beta1/{+name}:wait',
+              'path' => 'v1/{+name}:wait',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -136,7 +136,7 @@ class Google_Service_OnDemandScanning extends Google_Service
         array(
           'methods' => array(
             'analyzePackages' => array(
-              'path' => 'v1beta1/{+parent}/scans:analyzePackages',
+              'path' => 'v1/{+parent}/scans:analyzePackages',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
@@ -156,7 +156,7 @@ class Google_Service_OnDemandScanning extends Google_Service
         array(
           'methods' => array(
             'list' => array(
-              'path' => 'v1beta1/{+parent}/vulnerabilities',
+              'path' => 'v1/{+parent}/vulnerabilities',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'parent' => array(

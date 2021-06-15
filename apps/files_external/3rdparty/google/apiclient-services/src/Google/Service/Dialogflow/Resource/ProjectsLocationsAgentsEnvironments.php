@@ -126,4 +126,20 @@ class Google_Service_Dialogflow_Resource_ProjectsLocationsAgentsEnvironments ext
     $params = array_merge($params, $optParams);
     return $this->call('patch', array($params), "Google_Service_Dialogflow_GoogleLongrunningOperation");
   }
+  /**
+   * Kicks off a continuous test under the specified Environment.
+   * (environments.runContinuousTest)
+   *
+   * @param string $environment Required. Format:
+   * `projects//locations//agents//environments/`.
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowCxV3RunContinuousTestRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_Dialogflow_GoogleLongrunningOperation
+   */
+  public function runContinuousTest($environment, Google_Service_Dialogflow_GoogleCloudDialogflowCxV3RunContinuousTestRequest $postBody, $optParams = array())
+  {
+    $params = array('environment' => $environment, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('runContinuousTest', array($params), "Google_Service_Dialogflow_GoogleLongrunningOperation");
+  }
 }

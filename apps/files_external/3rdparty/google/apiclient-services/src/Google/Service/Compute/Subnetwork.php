@@ -21,10 +21,12 @@ class Google_Service_Compute_Subnetwork extends Google_Collection
   public $creationTimestamp;
   public $description;
   public $enableFlowLogs;
+  public $externalIpv6Prefix;
   public $fingerprint;
   public $gatewayAddress;
   public $id;
   public $ipCidrRange;
+  public $ipv6AccessType;
   public $ipv6CidrRange;
   public $kind;
   protected $logConfigType = 'Google_Service_Compute_SubnetworkLogConfig';
@@ -39,6 +41,7 @@ class Google_Service_Compute_Subnetwork extends Google_Collection
   protected $secondaryIpRangesType = 'Google_Service_Compute_SubnetworkSecondaryRange';
   protected $secondaryIpRangesDataType = 'array';
   public $selfLink;
+  public $stackType;
   public $state;
 
   public function setCreationTimestamp($creationTimestamp)
@@ -64,6 +67,14 @@ class Google_Service_Compute_Subnetwork extends Google_Collection
   public function getEnableFlowLogs()
   {
     return $this->enableFlowLogs;
+  }
+  public function setExternalIpv6Prefix($externalIpv6Prefix)
+  {
+    $this->externalIpv6Prefix = $externalIpv6Prefix;
+  }
+  public function getExternalIpv6Prefix()
+  {
+    return $this->externalIpv6Prefix;
   }
   public function setFingerprint($fingerprint)
   {
@@ -96,6 +107,14 @@ class Google_Service_Compute_Subnetwork extends Google_Collection
   public function getIpCidrRange()
   {
     return $this->ipCidrRange;
+  }
+  public function setIpv6AccessType($ipv6AccessType)
+  {
+    $this->ipv6AccessType = $ipv6AccessType;
+  }
+  public function getIpv6AccessType()
+  {
+    return $this->ipv6AccessType;
   }
   public function setIpv6CidrRange($ipv6CidrRange)
   {
@@ -204,6 +223,14 @@ class Google_Service_Compute_Subnetwork extends Google_Collection
   public function getSelfLink()
   {
     return $this->selfLink;
+  }
+  public function setStackType($stackType)
+  {
+    $this->stackType = $stackType;
+  }
+  public function getStackType()
+  {
+    return $this->stackType;
   }
   public function setState($state)
   {

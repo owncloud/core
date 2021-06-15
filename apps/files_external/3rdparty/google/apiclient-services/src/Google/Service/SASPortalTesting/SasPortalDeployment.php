@@ -21,6 +21,7 @@ class Google_Service_SASPortalTesting_SasPortalDeployment extends Google_Collect
   public $allowedBillingModes;
   public $defaultBillingMode;
   public $displayName;
+  public $frns;
   public $name;
   public $sasUserIds;
 
@@ -47,6 +48,14 @@ class Google_Service_SASPortalTesting_SasPortalDeployment extends Google_Collect
   public function getDisplayName()
   {
     return $this->displayName;
+  }
+  public function setFrns($frns)
+  {
+    $this->frns = $frns;
+  }
+  public function getFrns()
+  {
+    return $this->frns;
   }
   public function setName($name)
   {

@@ -17,8 +17,17 @@
 
 class Google_Service_Appengine_VpcAccessConnector extends Google_Model
 {
+  public $egressSetting;
   public $name;
 
+  public function setEgressSetting($egressSetting)
+  {
+    $this->egressSetting = $egressSetting;
+  }
+  public function getEgressSetting()
+  {
+    return $this->egressSetting;
+  }
   public function setName($name)
   {
     $this->name = $name;

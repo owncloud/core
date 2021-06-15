@@ -17,20 +17,11 @@
 
 class Google_Service_CertificateAuthorityService_SubjectConfig extends Google_Model
 {
-  public $commonName;
   protected $subjectType = 'Google_Service_CertificateAuthorityService_Subject';
   protected $subjectDataType = '';
   protected $subjectAltNameType = 'Google_Service_CertificateAuthorityService_SubjectAltNames';
   protected $subjectAltNameDataType = '';
 
-  public function setCommonName($commonName)
-  {
-    $this->commonName = $commonName;
-  }
-  public function getCommonName()
-  {
-    return $this->commonName;
-  }
   /**
    * @param Google_Service_CertificateAuthorityService_Subject
    */

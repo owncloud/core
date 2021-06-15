@@ -21,6 +21,7 @@ class Google_Service_Container_AutoprovisioningNodePoolDefaults extends Google_C
   public $bootDiskKmsKey;
   public $diskSizeGb;
   public $diskType;
+  public $imageType;
   protected $managementType = 'Google_Service_Container_NodeManagement';
   protected $managementDataType = '';
   public $minCpuPlatform;
@@ -54,6 +55,14 @@ class Google_Service_Container_AutoprovisioningNodePoolDefaults extends Google_C
   public function getDiskType()
   {
     return $this->diskType;
+  }
+  public function setImageType($imageType)
+  {
+    $this->imageType = $imageType;
+  }
+  public function getImageType()
+  {
+    return $this->imageType;
   }
   /**
    * @param Google_Service_Container_NodeManagement

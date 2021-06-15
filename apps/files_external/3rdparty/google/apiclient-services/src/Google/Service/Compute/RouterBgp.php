@@ -23,6 +23,7 @@ class Google_Service_Compute_RouterBgp extends Google_Collection
   protected $advertisedIpRangesType = 'Google_Service_Compute_RouterAdvertisedIpRange';
   protected $advertisedIpRangesDataType = 'array';
   public $asn;
+  public $keepaliveInterval;
 
   public function setAdvertiseMode($advertiseMode)
   {
@@ -61,5 +62,13 @@ class Google_Service_Compute_RouterBgp extends Google_Collection
   public function getAsn()
   {
     return $this->asn;
+  }
+  public function setKeepaliveInterval($keepaliveInterval)
+  {
+    $this->keepaliveInterval = $keepaliveInterval;
+  }
+  public function getKeepaliveInterval()
+  {
+    return $this->keepaliveInterval;
   }
 }

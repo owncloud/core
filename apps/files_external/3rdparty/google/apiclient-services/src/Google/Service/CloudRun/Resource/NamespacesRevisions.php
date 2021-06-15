@@ -33,8 +33,9 @@ class Google_Service_CloudRun_Resource_NamespacesRevisions extends Google_Servic
    * @param array $optParams Optional parameters.
    *
    * @opt_param string apiVersion Cloud Run currently ignores this parameter.
-   * @opt_param string dryRun DryRun is a query string parameter which indicates
-   * that the server should run validation without persisting the request.
+   * @opt_param string dryRun Indicates that the server should validate the
+   * request and populate default values without persisting the request. Supported
+   * values: `all`
    * @opt_param string kind Cloud Run currently ignores this parameter.
    * @opt_param string propagationPolicy Specifies the propagation policy of
    * delete. Cloud Run currently ignores this setting, and deletes in the
