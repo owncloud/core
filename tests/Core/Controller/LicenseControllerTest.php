@@ -91,4 +91,11 @@ class LicenseControllerTest extends TestCase {
 
 		$this->assertSame([], $this->licenseController->setNewLicense($dummyLicense)->getData());
 	}
+
+	public function testRemoveLicense() {
+		$this->licenseManager->expects($this->once())
+			->method('removeLicenseString');
+
+		$this->assertSame([], $this->licenseController->removeLicense()->getData());
+	}
 }
