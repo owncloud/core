@@ -15,12 +15,15 @@
  * the License.
  */
 
-class Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1CreateWorkloadOperationMetadata extends Google_Model
+class Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1CreateWorkloadOperationMetadata extends Google_Collection
 {
+  protected $collection_key = 'resourceSettings';
   public $complianceRegime;
   public $createTime;
   public $displayName;
   public $parent;
+  protected $resourceSettingsType = 'Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1WorkloadResourceSettings';
+  protected $resourceSettingsDataType = 'array';
 
   public function setComplianceRegime($complianceRegime)
   {
@@ -53,5 +56,19 @@ class Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1CreateWo
   public function getParent()
   {
     return $this->parent;
+  }
+  /**
+   * @param Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1WorkloadResourceSettings[]
+   */
+  public function setResourceSettings($resourceSettings)
+  {
+    $this->resourceSettings = $resourceSettings;
+  }
+  /**
+   * @return Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1WorkloadResourceSettings[]
+   */
+  public function getResourceSettings()
+  {
+    return $this->resourceSettings;
   }
 }

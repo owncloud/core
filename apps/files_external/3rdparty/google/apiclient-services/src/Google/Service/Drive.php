@@ -590,6 +590,10 @@ class Google_Service_Drive extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'type' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
               ),
             ),'get' => array(
               'path' => 'files/{fileId}',

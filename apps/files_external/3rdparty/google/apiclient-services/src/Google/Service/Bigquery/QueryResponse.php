@@ -19,6 +19,7 @@ class Google_Service_Bigquery_QueryResponse extends Google_Collection
 {
   protected $collection_key = 'rows';
   public $cacheHit;
+  public $dmlStats;
   protected $errorsType = 'Google_Service_Bigquery_ErrorProto';
   protected $errorsDataType = 'array';
   public $jobComplete;
@@ -43,6 +44,14 @@ class Google_Service_Bigquery_QueryResponse extends Google_Collection
   public function getCacheHit()
   {
     return $this->cacheHit;
+  }
+  public function setDmlStats($dmlStats)
+  {
+    $this->dmlStats = $dmlStats;
+  }
+  public function getDmlStats()
+  {
+    return $this->dmlStats;
   }
   /**
    * @param Google_Service_Bigquery_ErrorProto[]

@@ -23,6 +23,7 @@ class Google_Service_CertificateAuthorityService_CertificateRevocationList exten
   public $labels;
   public $name;
   public $pemCrl;
+  public $revisionId;
   protected $revokedCertificatesType = 'Google_Service_CertificateAuthorityService_RevokedCertificate';
   protected $revokedCertificatesDataType = 'array';
   public $sequenceNumber;
@@ -68,6 +69,14 @@ class Google_Service_CertificateAuthorityService_CertificateRevocationList exten
   public function getPemCrl()
   {
     return $this->pemCrl;
+  }
+  public function setRevisionId($revisionId)
+  {
+    $this->revisionId = $revisionId;
+  }
+  public function getRevisionId()
+  {
+    return $this->revisionId;
   }
   /**
    * @param Google_Service_CertificateAuthorityService_RevokedCertificate[]

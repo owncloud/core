@@ -21,6 +21,7 @@ class Google_Service_Logging_LogMetric extends Google_Model
   protected $bucketOptionsDataType = '';
   public $createTime;
   public $description;
+  public $disabled;
   public $filter;
   public $labelExtractors;
   protected $metricDescriptorType = 'Google_Service_Logging_MetricDescriptor';
@@ -59,6 +60,14 @@ class Google_Service_Logging_LogMetric extends Google_Model
   public function getDescription()
   {
     return $this->description;
+  }
+  public function setDisabled($disabled)
+  {
+    $this->disabled = $disabled;
+  }
+  public function getDisabled()
+  {
+    return $this->disabled;
   }
   public function setFilter($filter)
   {

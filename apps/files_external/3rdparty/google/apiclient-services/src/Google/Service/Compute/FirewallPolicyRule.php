@@ -29,7 +29,6 @@ class Google_Service_Compute_FirewallPolicyRule extends Google_Collection
   public $priority;
   public $ruleTupleCount;
   public $targetResources;
-  public $targetSecureLabels;
   public $targetServiceAccounts;
 
   public function setAction($action)
@@ -117,14 +116,6 @@ class Google_Service_Compute_FirewallPolicyRule extends Google_Collection
   public function getTargetResources()
   {
     return $this->targetResources;
-  }
-  public function setTargetSecureLabels($targetSecureLabels)
-  {
-    $this->targetSecureLabels = $targetSecureLabels;
-  }
-  public function getTargetSecureLabels()
-  {
-    return $this->targetSecureLabels;
   }
   public function setTargetServiceAccounts($targetServiceAccounts)
   {

@@ -42,6 +42,7 @@ class Google_Service_ChromePolicy extends Google_Service
   public $customers_policies;
   public $customers_policies_orgunits;
   public $customers_policySchemas;
+  public $media;
 
   /**
    * Constructs the internal representation of the ChromePolicy service.
@@ -144,6 +145,26 @@ class Google_Service_ChromePolicy extends Google_Service
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->media = new Google_Service_ChromePolicy_Resource_Media(
+        $this,
+        $this->serviceName,
+        'media',
+        array(
+          'methods' => array(
+            'upload' => array(
+              'path' => 'v1/{+customer}/policies/files:uploadPolicyFile',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'customer' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ),
               ),
             ),

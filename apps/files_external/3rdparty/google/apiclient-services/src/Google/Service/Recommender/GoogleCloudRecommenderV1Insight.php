@@ -28,6 +28,7 @@ class Google_Service_Recommender_GoogleCloudRecommenderV1Insight extends Google_
   public $lastRefreshTime;
   public $name;
   public $observationPeriod;
+  public $severity;
   protected $stateInfoType = 'Google_Service_Recommender_GoogleCloudRecommenderV1InsightStateInfo';
   protected $stateInfoDataType = '';
   public $targetResources;
@@ -109,6 +110,14 @@ class Google_Service_Recommender_GoogleCloudRecommenderV1Insight extends Google_
   public function getObservationPeriod()
   {
     return $this->observationPeriod;
+  }
+  public function setSeverity($severity)
+  {
+    $this->severity = $severity;
+  }
+  public function getSeverity()
+  {
+    return $this->severity;
   }
   /**
    * @param Google_Service_Recommender_GoogleCloudRecommenderV1InsightStateInfo

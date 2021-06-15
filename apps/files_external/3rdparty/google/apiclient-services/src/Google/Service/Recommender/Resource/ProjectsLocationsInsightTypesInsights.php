@@ -40,8 +40,8 @@ class Google_Service_Recommender_Resource_ProjectsLocationsInsightTypesInsights 
     return $this->call('get', array($params), "Google_Service_Recommender_GoogleCloudRecommenderV1Insight");
   }
   /**
-   * Lists insights for a Cloud project. Requires the recommender.*.list IAM
-   * permission for the specified insight type.
+   * Lists insights for the specified Cloud Resource. Requires the
+   * recommender.*.list IAM permission for the specified insight type.
    * (insights.listProjectsLocationsInsightTypesInsights)
    *
    * @param string $parent Required. The container resource on which to execute
@@ -53,12 +53,16 @@ class Google_Service_Recommender_Resource_ProjectsLocationsInsightTypesInsights 
    * YPE_ID]` LOCATION here refers to GCP Locations:
    * https://cloud.google.com/about/locations/ INSIGHT_TYPE_ID refers to supported
    * insight types: https://cloud.google.com/recommender/docs/insights/insight-
-   * types.)
+   * types.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Optional. Filter expression to restrict the insights
-   * returned. Supported filter fields: state Eg: `state:"DISMISSED" or
-   * state:"ACTIVE"
+   * returned. Supported filter fields: * `stateInfo.state` * `insightSubtype` *
+   * `severity` Examples: * `stateInfo.state = ACTIVE OR stateInfo.state =
+   * DISMISSED` * `insightSubtype = PERMISSIONS_USAGE` * `severity = CRITICAL OR
+   * severity = HIGH` * `stateInfo.state = ACTIVE AND (severity = CRITICAL OR
+   * severity = HIGH)` (These expressions are based on the filter language
+   * described at https://google.aip.dev/160)
    * @opt_param int pageSize Optional. The maximum number of results to return
    * from this request. Non-positive values are ignored. If not specified, the
    * server will determine the number of results to return.

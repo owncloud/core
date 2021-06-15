@@ -31,7 +31,7 @@
  */
 class Google_Service_SecretManager extends Google_Service
 {
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 
@@ -134,6 +134,10 @@ class Google_Service_SecretManager extends Google_Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ),
+                'etag' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
               ),
             ),'get' => array(

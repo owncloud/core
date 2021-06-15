@@ -55,8 +55,8 @@ class Google_Service_Cloudchannel_Resource_AccountsChannelPartnerLinks extends G
     return $this->call('create', array($params), "Google_Service_Cloudchannel_GoogleCloudChannelV1ChannelPartnerLink");
   }
   /**
-   * Returns a requested ChannelPartnerLink resource. You must be a distributor to
-   * call this method. Possible error codes: * PERMISSION_DENIED: The reseller
+   * Returns the requested ChannelPartnerLink resource. You must be a distributor
+   * to call this method. Possible error codes: * PERMISSION_DENIED: The reseller
    * account making the request is different from the reseller account in the API
    * request. * INVALID_ARGUMENT: Required request parameters are missing or
    * invalid. * NOT_FOUND: ChannelPartnerLink resource not found because of an

@@ -32,8 +32,8 @@ class Google_Service_FirebaseRules_Resource_ProjectsRulesets extends Google_Serv
    * encountered. For a detailed view of `Source` issues, use TestRuleset.
    * (rulesets.create)
    *
-   * @param string $name Resource name for Project which owns this `Ruleset`.
-   * Format: `projects/{project_id}`
+   * @param string $name Required. Resource name for Project which owns this
+   * `Ruleset`. Format: `projects/{project_id}`
    * @param Google_Service_FirebaseRules_Ruleset $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseRules_Ruleset
@@ -48,8 +48,8 @@ class Google_Service_FirebaseRules_Resource_ProjectsRulesets extends Google_Serv
    * Delete a `Ruleset` by resource name. If the `Ruleset` is referenced by a
    * `Release` the operation will fail. (rulesets.delete)
    *
-   * @param string $name Resource name for the ruleset to delete. Format:
-   * `projects/{project_id}/rulesets/{ruleset_id}`
+   * @param string $name Required. Resource name for the ruleset to delete.
+   * Format: `projects/{project_id}/rulesets/{ruleset_id}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseRules_FirebaserulesEmpty
    */
@@ -62,7 +62,7 @@ class Google_Service_FirebaseRules_Resource_ProjectsRulesets extends Google_Serv
   /**
    * Get a `Ruleset` by name including the full `Source` contents. (rulesets.get)
    *
-   * @param string $name Resource name for the ruleset to get. Format:
+   * @param string $name Required. Resource name for the ruleset to get. Format:
    * `projects/{project_id}/rulesets/{ruleset_id}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_FirebaseRules_Ruleset
@@ -78,7 +78,7 @@ class Google_Service_FirebaseRules_Resource_ProjectsRulesets extends Google_Serv
    * name. The full `Source` contents of a `Ruleset` may be retrieved with
    * GetRuleset. (rulesets.listProjectsRulesets)
    *
-   * @param string $name Resource name for the project. Format:
+   * @param string $name Required. Resource name for the project. Format:
    * `projects/{project_id}`
    * @param array $optParams Optional parameters.
    *

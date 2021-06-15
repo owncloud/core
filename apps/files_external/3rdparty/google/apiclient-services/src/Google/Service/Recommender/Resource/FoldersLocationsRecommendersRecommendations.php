@@ -40,8 +40,8 @@ class Google_Service_Recommender_Resource_FoldersLocationsRecommendersRecommenda
     return $this->call('get', array($params), "Google_Service_Recommender_GoogleCloudRecommenderV1Recommendation");
   }
   /**
-   * Lists recommendations for a Cloud project. Requires the recommender.*.list
-   * IAM permission for the specified recommender.
+   * Lists recommendations for the specified Cloud Resource. Requires the
+   * recommender.*.list IAM permission for the specified recommender.
    * (recommendations.listFoldersLocationsRecommendersRecommendations)
    *
    * @param string $parent Required. The container resource on which to execute
@@ -56,8 +56,13 @@ class Google_Service_Recommender_Resource_FoldersLocationsRecommendersRecommenda
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Filter expression to restrict the recommendations
-   * returned. Supported filter fields: state_info.state Eg:
-   * `state_info.state:"DISMISSED" or state_info.state:"FAILED"
+   * returned. Supported filter fields: * `state_info.state` *
+   * `recommenderSubtype` * `priority` Examples: * `stateInfo.state = ACTIVE OR
+   * stateInfo.state = DISMISSED` * `recommenderSubtype = REMOVE_ROLE OR
+   * recommenderSubtype = REPLACE_ROLE` * `priority = P1 OR priority = P2` *
+   * `stateInfo.state = ACTIVE AND (priority = P1 OR priority = P2)` (These
+   * expressions are based on the filter language described at
+   * https://google.aip.dev/160)
    * @opt_param int pageSize Optional. The maximum number of results to return
    * from this request. Non-positive values are ignored. If not specified, the
    * server will determine the number of results to return.

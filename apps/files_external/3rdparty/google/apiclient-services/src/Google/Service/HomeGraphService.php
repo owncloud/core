@@ -90,10 +90,6 @@ class Google_Service_HomeGraphService extends Google_Service
               'path' => 'v1/devices:reportStateAndNotification',
               'httpMethod' => 'POST',
               'parameters' => array(),
-            ),'requestLink' => array(
-              'path' => 'v1/devices:requestLink',
-              'httpMethod' => 'POST',
-              'parameters' => array(),
             ),'requestSync' => array(
               'path' => 'v1/devices:requestSync',
               'httpMethod' => 'POST',

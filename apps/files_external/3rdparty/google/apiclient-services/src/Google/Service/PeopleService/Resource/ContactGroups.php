@@ -39,7 +39,7 @@ class Google_Service_PeopleService_Resource_ContactGroups extends Google_Service
    * to return for each group. Defaults to 0 if not set, which will return zero
    * members.
    * @opt_param string resourceNames Required. The resource names of the contact
-   * groups to get.
+   * groups to get. There is a maximum of 200 resource names.
    * @return Google_Service_PeopleService_BatchGetContactGroupsResponse
    */
   public function batchGet($optParams = array())

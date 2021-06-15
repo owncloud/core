@@ -24,6 +24,7 @@ class Google_Service_Spanner_Instance extends Google_Collection
   public $labels;
   public $name;
   public $nodeCount;
+  public $processingUnits;
   public $state;
 
   public function setConfig($config)
@@ -73,6 +74,14 @@ class Google_Service_Spanner_Instance extends Google_Collection
   public function getNodeCount()
   {
     return $this->nodeCount;
+  }
+  public function setProcessingUnits($processingUnits)
+  {
+    $this->processingUnits = $processingUnits;
+  }
+  public function getProcessingUnits()
+  {
+    return $this->processingUnits;
   }
   public function setState($state)
   {

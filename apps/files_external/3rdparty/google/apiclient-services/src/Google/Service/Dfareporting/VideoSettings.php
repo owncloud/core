@@ -19,6 +19,7 @@ class Google_Service_Dfareporting_VideoSettings extends Google_Model
 {
   protected $companionSettingsType = 'Google_Service_Dfareporting_CompanionSetting';
   protected $companionSettingsDataType = '';
+  public $durationSeconds;
   public $kind;
   public $obaEnabled;
   protected $obaSettingsType = 'Google_Service_Dfareporting_ObaIcon';
@@ -42,6 +43,14 @@ class Google_Service_Dfareporting_VideoSettings extends Google_Model
   public function getCompanionSettings()
   {
     return $this->companionSettings;
+  }
+  public function setDurationSeconds($durationSeconds)
+  {
+    $this->durationSeconds = $durationSeconds;
+  }
+  public function getDurationSeconds()
+  {
+    return $this->durationSeconds;
   }
   public function setKind($kind)
   {

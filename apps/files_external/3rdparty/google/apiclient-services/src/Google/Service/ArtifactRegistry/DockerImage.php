@@ -18,6 +18,7 @@
 class Google_Service_ArtifactRegistry_DockerImage extends Google_Collection
 {
   protected $collection_key = 'tags';
+  public $buildTime;
   public $imageSizeBytes;
   public $mediaType;
   public $name;
@@ -25,6 +26,14 @@ class Google_Service_ArtifactRegistry_DockerImage extends Google_Collection
   public $uploadTime;
   public $uri;
 
+  public function setBuildTime($buildTime)
+  {
+    $this->buildTime = $buildTime;
+  }
+  public function getBuildTime()
+  {
+    return $this->buildTime;
+  }
   public function setImageSizeBytes($imageSizeBytes)
   {
     $this->imageSizeBytes = $imageSizeBytes;

@@ -35,6 +35,8 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPage extends G
   public $pageNumber;
   protected $paragraphsType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageParagraph';
   protected $paragraphsDataType = 'array';
+  protected $provenanceType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentProvenance';
+  protected $provenanceDataType = '';
   protected $tablesType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageTable';
   protected $tablesDataType = 'array';
   protected $tokensType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageToken';
@@ -163,6 +165,20 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPage extends G
   public function getParagraphs()
   {
     return $this->paragraphs;
+  }
+  /**
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentProvenance
+   */
+  public function setProvenance(Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentProvenance $provenance)
+  {
+    $this->provenance = $provenance;
+  }
+  /**
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentProvenance
+   */
+  public function getProvenance()
+  {
+    return $this->provenance;
   }
   /**
    * @param Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageTable[]

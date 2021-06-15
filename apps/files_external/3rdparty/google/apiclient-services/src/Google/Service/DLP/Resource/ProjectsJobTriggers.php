@@ -140,6 +140,8 @@ class Google_Service_DLP_Resource_ProjectsJobTriggers extends Google_Service_Res
    * @opt_param string pageToken Page token to continue retrieval. Comes from
    * previous call to ListJobTriggers. `order_by` field must not change for
    * subsequent calls.
+   * @opt_param string type The type of jobs. Will use `DlpJobType.INSPECT` if not
+   * set.
    * @return Google_Service_DLP_GooglePrivacyDlpV2ListJobTriggersResponse
    */
   public function listProjectsJobTriggers($parent, $optParams = array())

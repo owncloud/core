@@ -29,6 +29,8 @@ class Google_Service_Dfareporting_Advertiser extends Google_Model
   protected $idDimensionValueType = 'Google_Service_Dfareporting_DimensionValue';
   protected $idDimensionValueDataType = '';
   public $kind;
+  protected $measurementPartnerLinkType = 'Google_Service_Dfareporting_MeasurementPartnerAdvertiserLink';
+  protected $measurementPartnerLinkDataType = '';
   public $name;
   public $originalFloodlightConfigurationId;
   public $status;
@@ -126,6 +128,20 @@ class Google_Service_Dfareporting_Advertiser extends Google_Model
   public function getKind()
   {
     return $this->kind;
+  }
+  /**
+   * @param Google_Service_Dfareporting_MeasurementPartnerAdvertiserLink
+   */
+  public function setMeasurementPartnerLink(Google_Service_Dfareporting_MeasurementPartnerAdvertiserLink $measurementPartnerLink)
+  {
+    $this->measurementPartnerLink = $measurementPartnerLink;
+  }
+  /**
+   * @return Google_Service_Dfareporting_MeasurementPartnerAdvertiserLink
+   */
+  public function getMeasurementPartnerLink()
+  {
+    return $this->measurementPartnerLink;
   }
   public function setName($name)
   {

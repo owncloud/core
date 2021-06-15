@@ -15,9 +15,12 @@
  * the License.
  */
 
-class Google_Service_DisplayVideo_Campaign extends Google_Model
+class Google_Service_DisplayVideo_Campaign extends Google_Collection
 {
+  protected $collection_key = 'campaignBudgets';
   public $advertiserId;
+  protected $campaignBudgetsType = 'Google_Service_DisplayVideo_CampaignBudget';
+  protected $campaignBudgetsDataType = 'array';
   protected $campaignFlightType = 'Google_Service_DisplayVideo_CampaignFlight';
   protected $campaignFlightDataType = '';
   protected $campaignGoalType = 'Google_Service_DisplayVideo_CampaignGoal';
@@ -37,6 +40,20 @@ class Google_Service_DisplayVideo_Campaign extends Google_Model
   public function getAdvertiserId()
   {
     return $this->advertiserId;
+  }
+  /**
+   * @param Google_Service_DisplayVideo_CampaignBudget[]
+   */
+  public function setCampaignBudgets($campaignBudgets)
+  {
+    $this->campaignBudgets = $campaignBudgets;
+  }
+  /**
+   * @return Google_Service_DisplayVideo_CampaignBudget[]
+   */
+  public function getCampaignBudgets()
+  {
+    return $this->campaignBudgets;
   }
   /**
    * @param Google_Service_DisplayVideo_CampaignFlight

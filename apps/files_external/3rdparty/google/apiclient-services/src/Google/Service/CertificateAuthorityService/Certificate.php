@@ -20,9 +20,11 @@ class Google_Service_CertificateAuthorityService_Certificate extends Google_Coll
   protected $collection_key = 'pemCertificateChain';
   protected $certificateDescriptionType = 'Google_Service_CertificateAuthorityService_CertificateDescription';
   protected $certificateDescriptionDataType = '';
+  public $certificateTemplate;
   protected $configType = 'Google_Service_CertificateAuthorityService_CertificateConfig';
   protected $configDataType = '';
   public $createTime;
+  public $issuerCertificateAuthority;
   public $labels;
   public $lifetime;
   public $name;
@@ -31,6 +33,7 @@ class Google_Service_CertificateAuthorityService_Certificate extends Google_Coll
   public $pemCsr;
   protected $revocationDetailsType = 'Google_Service_CertificateAuthorityService_RevocationDetails';
   protected $revocationDetailsDataType = '';
+  public $subjectMode;
   public $updateTime;
 
   /**
@@ -46,6 +49,14 @@ class Google_Service_CertificateAuthorityService_Certificate extends Google_Coll
   public function getCertificateDescription()
   {
     return $this->certificateDescription;
+  }
+  public function setCertificateTemplate($certificateTemplate)
+  {
+    $this->certificateTemplate = $certificateTemplate;
+  }
+  public function getCertificateTemplate()
+  {
+    return $this->certificateTemplate;
   }
   /**
    * @param Google_Service_CertificateAuthorityService_CertificateConfig
@@ -68,6 +79,14 @@ class Google_Service_CertificateAuthorityService_Certificate extends Google_Coll
   public function getCreateTime()
   {
     return $this->createTime;
+  }
+  public function setIssuerCertificateAuthority($issuerCertificateAuthority)
+  {
+    $this->issuerCertificateAuthority = $issuerCertificateAuthority;
+  }
+  public function getIssuerCertificateAuthority()
+  {
+    return $this->issuerCertificateAuthority;
   }
   public function setLabels($labels)
   {
@@ -130,6 +149,14 @@ class Google_Service_CertificateAuthorityService_Certificate extends Google_Coll
   public function getRevocationDetails()
   {
     return $this->revocationDetails;
+  }
+  public function setSubjectMode($subjectMode)
+  {
+    $this->subjectMode = $subjectMode;
+  }
+  public function getSubjectMode()
+  {
+    return $this->subjectMode;
   }
   public function setUpdateTime($updateTime)
   {

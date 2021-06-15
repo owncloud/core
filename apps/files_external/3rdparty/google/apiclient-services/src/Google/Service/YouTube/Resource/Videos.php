@@ -65,13 +65,13 @@ class Google_Service_YouTube_Resource_Videos extends Google_Service_Resource
    * without having to provide authentication credentials for each individual
    * channel. The CMS account that the user authenticates with must be linked to
    * the specified YouTube content owner.
-   * @return Google_Service_YouTube_VideoRatingListResponse
+   * @return Google_Service_YouTube_VideoGetRatingResponse
    */
   public function getRating($id, $optParams = array())
   {
     $params = array('id' => $id);
     $params = array_merge($params, $optParams);
-    return $this->call('getRating', array($params), "Google_Service_YouTube_VideoRatingListResponse");
+    return $this->call('getRating', array($params), "Google_Service_YouTube_VideoGetRatingResponse");
   }
   /**
    * Inserts a new resource into this collection. (videos.insert)

@@ -22,15 +22,12 @@ class Google_Service_CertificateAuthorityService_CertificateAuthority extends Go
   protected $accessUrlsDataType = '';
   protected $caCertificateDescriptionsType = 'Google_Service_CertificateAuthorityService_CertificateDescription';
   protected $caCertificateDescriptionsDataType = 'array';
-  protected $certificatePolicyType = 'Google_Service_CertificateAuthorityService_CertificateAuthorityPolicy';
-  protected $certificatePolicyDataType = '';
   protected $configType = 'Google_Service_CertificateAuthorityService_CertificateConfig';
   protected $configDataType = '';
   public $createTime;
   public $deleteTime;
+  public $expireTime;
   public $gcsBucket;
-  protected $issuingOptionsType = 'Google_Service_CertificateAuthorityService_IssuingOptions';
-  protected $issuingOptionsDataType = '';
   protected $keySpecType = 'Google_Service_CertificateAuthorityService_KeyVersionSpec';
   protected $keySpecDataType = '';
   public $labels;
@@ -73,20 +70,6 @@ class Google_Service_CertificateAuthorityService_CertificateAuthority extends Go
     return $this->caCertificateDescriptions;
   }
   /**
-   * @param Google_Service_CertificateAuthorityService_CertificateAuthorityPolicy
-   */
-  public function setCertificatePolicy(Google_Service_CertificateAuthorityService_CertificateAuthorityPolicy $certificatePolicy)
-  {
-    $this->certificatePolicy = $certificatePolicy;
-  }
-  /**
-   * @return Google_Service_CertificateAuthorityService_CertificateAuthorityPolicy
-   */
-  public function getCertificatePolicy()
-  {
-    return $this->certificatePolicy;
-  }
-  /**
    * @param Google_Service_CertificateAuthorityService_CertificateConfig
    */
   public function setConfig(Google_Service_CertificateAuthorityService_CertificateConfig $config)
@@ -116,6 +99,14 @@ class Google_Service_CertificateAuthorityService_CertificateAuthority extends Go
   {
     return $this->deleteTime;
   }
+  public function setExpireTime($expireTime)
+  {
+    $this->expireTime = $expireTime;
+  }
+  public function getExpireTime()
+  {
+    return $this->expireTime;
+  }
   public function setGcsBucket($gcsBucket)
   {
     $this->gcsBucket = $gcsBucket;
@@ -123,20 +114,6 @@ class Google_Service_CertificateAuthorityService_CertificateAuthority extends Go
   public function getGcsBucket()
   {
     return $this->gcsBucket;
-  }
-  /**
-   * @param Google_Service_CertificateAuthorityService_IssuingOptions
-   */
-  public function setIssuingOptions(Google_Service_CertificateAuthorityService_IssuingOptions $issuingOptions)
-  {
-    $this->issuingOptions = $issuingOptions;
-  }
-  /**
-   * @return Google_Service_CertificateAuthorityService_IssuingOptions
-   */
-  public function getIssuingOptions()
-  {
-    return $this->issuingOptions;
   }
   /**
    * @param Google_Service_CertificateAuthorityService_KeyVersionSpec

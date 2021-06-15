@@ -32,7 +32,7 @@
  */
 class Google_Service_DLP extends Google_Service
 {
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 
@@ -549,6 +549,10 @@ class Google_Service_DLP extends Google_Service
                   'type' => 'integer',
                 ),
                 'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'type' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -1090,6 +1094,10 @@ class Google_Service_DLP extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'type' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
               ),
             ),'patch' => array(
               'path' => 'v2/{+name}',
@@ -1503,6 +1511,10 @@ class Google_Service_DLP extends Google_Service
                   'type' => 'integer',
                 ),
                 'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'type' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

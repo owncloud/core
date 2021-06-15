@@ -17,6 +17,8 @@
 
 class Google_Service_BigtableAdmin_Backup extends Google_Model
 {
+  protected $encryptionInfoType = 'Google_Service_BigtableAdmin_EncryptionInfo';
+  protected $encryptionInfoDataType = '';
   public $endTime;
   public $expireTime;
   public $name;
@@ -25,6 +27,20 @@ class Google_Service_BigtableAdmin_Backup extends Google_Model
   public $startTime;
   public $state;
 
+  /**
+   * @param Google_Service_BigtableAdmin_EncryptionInfo
+   */
+  public function setEncryptionInfo(Google_Service_BigtableAdmin_EncryptionInfo $encryptionInfo)
+  {
+    $this->encryptionInfo = $encryptionInfo;
+  }
+  /**
+   * @return Google_Service_BigtableAdmin_EncryptionInfo
+   */
+  public function getEncryptionInfo()
+  {
+    return $this->encryptionInfo;
+  }
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;

@@ -151,7 +151,7 @@ class Google_Service_DatabaseMigrationService_Resource_ProjectsLocationsConnecti
    * (connectionProfiles.patch)
    *
    * @param string $name The name of this connection profile resource in the form
-   * of projects/{project}/locations/{location}/instances/{instance}.
+   * of projects/{project}/locations/{location}/connectionProfiles/{instance}.
    * @param Google_Service_DatabaseMigrationService_ConnectionProfile $postBody
    * @param array $optParams Optional parameters.
    *

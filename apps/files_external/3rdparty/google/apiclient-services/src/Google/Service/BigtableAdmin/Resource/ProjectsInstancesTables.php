@@ -195,14 +195,14 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstancesTables extends Goog
   }
   /**
    * Create a new table by restoring from a completed backup. The new table must
-   * be in the same instance as the instance containing the backup. The returned
+   * be in the same project as the instance containing the backup. The returned
    * table long-running operation can be used to track the progress of the
    * operation, and to cancel it. The metadata field type is RestoreTableMetadata.
    * The response type is Table, if successful. (tables.restore)
    *
    * @param string $parent Required. The name of the instance in which to create
-   * the restored table. This instance must be the parent of the source backup.
-   * Values are of the form `projects//instances/`.
+   * the restored table. This instance must be in the same project as the source
+   * backup. Values are of the form `projects//instances/`.
    * @param Google_Service_BigtableAdmin_RestoreTableRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_BigtableAdmin_Operation

@@ -18,6 +18,7 @@
 class Google_Service_DisplayVideo_AppAssignedTargetingOptionDetails extends Google_Model
 {
   public $appId;
+  public $appPlatform;
   public $displayName;
   public $negative;
 
@@ -28,6 +29,14 @@ class Google_Service_DisplayVideo_AppAssignedTargetingOptionDetails extends Goog
   public function getAppId()
   {
     return $this->appId;
+  }
+  public function setAppPlatform($appPlatform)
+  {
+    $this->appPlatform = $appPlatform;
+  }
+  public function getAppPlatform()
+  {
+    return $this->appPlatform;
   }
   public function setDisplayName($displayName)
   {

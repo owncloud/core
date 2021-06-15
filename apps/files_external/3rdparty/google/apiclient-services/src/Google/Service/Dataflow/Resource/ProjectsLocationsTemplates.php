@@ -77,7 +77,8 @@ class Google_Service_Dataflow_Resource_ProjectsLocationsTemplates extends Google
    * @param array $optParams Optional parameters.
    *
    * @opt_param string dynamicTemplate.gcsPath Path to dynamic template spec file
-   * on GCS. The file must be a Json serialized DynamicTemplateFieSpec object.
+   * on Cloud Storage. The file must be a Json serialized DynamicTemplateFieSpec
+   * object.
    * @opt_param string dynamicTemplate.stagingLocation Cloud Storage path for
    * staging dependencies. Must be a valid Cloud Storage URL, beginning with
    * `gs://`.

@@ -20,6 +20,7 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2QueryResult extends Googl
   protected $collection_key = 'outputContexts';
   public $action;
   public $allRequiredParamsPresent;
+  public $cancelsSlotFilling;
   public $diagnosticInfo;
   protected $fulfillmentMessagesType = 'Google_Service_Dialogflow_GoogleCloudDialogflowV2IntentMessage';
   protected $fulfillmentMessagesDataType = 'array';
@@ -53,6 +54,14 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2QueryResult extends Googl
   public function getAllRequiredParamsPresent()
   {
     return $this->allRequiredParamsPresent;
+  }
+  public function setCancelsSlotFilling($cancelsSlotFilling)
+  {
+    $this->cancelsSlotFilling = $cancelsSlotFilling;
+  }
+  public function getCancelsSlotFilling()
+  {
+    return $this->cancelsSlotFilling;
   }
   public function setDiagnosticInfo($diagnosticInfo)
   {

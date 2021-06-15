@@ -501,6 +501,36 @@ class Google_Service_AdExchangeBuyerII extends Google_Service
                   'type' => 'string',
                 ),
               ),
+            ),'pause' => array(
+              'path' => 'v2beta1/accounts/{accountId}/finalizedProposals/{proposalId}:pause',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'accountId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'proposalId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'resume' => array(
+              'path' => 'v2beta1/accounts/{accountId}/finalizedProposals/{proposalId}:resume',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'accountId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'proposalId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
             ),
           )
         )

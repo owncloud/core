@@ -23,6 +23,7 @@ class Google_Service_Compute_RouterBgpPeer extends Google_Collection
   protected $advertisedIpRangesType = 'Google_Service_Compute_RouterAdvertisedIpRange';
   protected $advertisedIpRangesDataType = 'array';
   public $advertisedRoutePriority;
+  public $enable;
   public $interfaceName;
   public $ipAddress;
   public $managementType;
@@ -67,6 +68,14 @@ class Google_Service_Compute_RouterBgpPeer extends Google_Collection
   public function getAdvertisedRoutePriority()
   {
     return $this->advertisedRoutePriority;
+  }
+  public function setEnable($enable)
+  {
+    $this->enable = $enable;
+  }
+  public function getEnable()
+  {
+    return $this->enable;
   }
   public function setInterfaceName($interfaceName)
   {

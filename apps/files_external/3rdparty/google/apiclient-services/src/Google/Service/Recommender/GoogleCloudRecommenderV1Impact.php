@@ -20,6 +20,8 @@ class Google_Service_Recommender_GoogleCloudRecommenderV1Impact extends Google_M
   public $category;
   protected $costProjectionType = 'Google_Service_Recommender_GoogleCloudRecommenderV1CostProjection';
   protected $costProjectionDataType = '';
+  protected $securityProjectionType = 'Google_Service_Recommender_GoogleCloudRecommenderV1SecurityProjection';
+  protected $securityProjectionDataType = '';
 
   public function setCategory($category)
   {
@@ -42,5 +44,19 @@ class Google_Service_Recommender_GoogleCloudRecommenderV1Impact extends Google_M
   public function getCostProjection()
   {
     return $this->costProjection;
+  }
+  /**
+   * @param Google_Service_Recommender_GoogleCloudRecommenderV1SecurityProjection
+   */
+  public function setSecurityProjection(Google_Service_Recommender_GoogleCloudRecommenderV1SecurityProjection $securityProjection)
+  {
+    $this->securityProjection = $securityProjection;
+  }
+  /**
+   * @return Google_Service_Recommender_GoogleCloudRecommenderV1SecurityProjection
+   */
+  public function getSecurityProjection()
+  {
+    return $this->securityProjection;
   }
 }

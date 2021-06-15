@@ -25,6 +25,7 @@ class Google_Service_Dataflow_Snapshot extends Google_Collection
   public $projectId;
   protected $pubsubMetadataType = 'Google_Service_Dataflow_PubsubSnapshotMetadata';
   protected $pubsubMetadataDataType = 'array';
+  public $region;
   public $sourceJobId;
   public $state;
   public $ttl;
@@ -82,6 +83,14 @@ class Google_Service_Dataflow_Snapshot extends Google_Collection
   public function getPubsubMetadata()
   {
     return $this->pubsubMetadata;
+  }
+  public function setRegion($region)
+  {
+    $this->region = $region;
+  }
+  public function getRegion()
+  {
+    return $this->region;
   }
   public function setSourceJobId($sourceJobId)
   {

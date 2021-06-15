@@ -17,6 +17,8 @@
 
 class Google_Service_Compute_AccessConfig extends Google_Model
 {
+  public $externalIpv6;
+  public $externalIpv6PrefixLength;
   public $kind;
   public $name;
   public $natIP;
@@ -25,6 +27,22 @@ class Google_Service_Compute_AccessConfig extends Google_Model
   public $setPublicPtr;
   public $type;
 
+  public function setExternalIpv6($externalIpv6)
+  {
+    $this->externalIpv6 = $externalIpv6;
+  }
+  public function getExternalIpv6()
+  {
+    return $this->externalIpv6;
+  }
+  public function setExternalIpv6PrefixLength($externalIpv6PrefixLength)
+  {
+    $this->externalIpv6PrefixLength = $externalIpv6PrefixLength;
+  }
+  public function getExternalIpv6PrefixLength()
+  {
+    return $this->externalIpv6PrefixLength;
+  }
   public function setKind($kind)
   {
     $this->kind = $kind;

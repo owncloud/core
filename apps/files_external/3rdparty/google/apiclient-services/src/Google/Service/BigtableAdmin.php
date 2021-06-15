@@ -51,7 +51,7 @@ class Google_Service_BigtableAdmin extends Google_Service
   /** Administer your Cloud Bigtable tables. */
   const CLOUD_BIGTABLE_ADMIN_TABLE =
       "https://www.googleapis.com/auth/cloud-bigtable.admin.table";
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
   /** View your data across Google Cloud Platform services. */
@@ -400,6 +400,20 @@ class Google_Service_BigtableAdmin extends Google_Service
                   'required' => true,
                 ),
                 'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),'partialUpdateCluster' => array(
+              'path' => 'v2/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'updateMask' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

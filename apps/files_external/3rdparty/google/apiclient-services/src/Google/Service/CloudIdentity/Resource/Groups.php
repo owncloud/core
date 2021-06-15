@@ -72,7 +72,8 @@ class Google_Service_CloudIdentity_Resource_Groups extends Google_Service_Resour
     return $this->call('get', array($params), "Google_Service_CloudIdentity_Group");
   }
   /**
-   * Lists the `Group`s under a customer or namespace. (groups.listGroups)
+   * Lists the `Group` resources under a customer or namespace.
+   * (groups.listGroups)
    *
    * @param array $optParams Optional parameters.
    *
@@ -86,9 +87,10 @@ class Google_Service_CloudIdentity_Resource_Groups extends Google_Service_Resour
    * @opt_param string pageToken The `next_page_token` value returned from a
    * previous list request, if any.
    * @opt_param string parent Required. The parent resource under which to list
-   * all `Group`s. Must be of the form `identitysources/{identity_source_id}` for
-   * external- identity-mapped groups or `customers/{customer_id}` for Google
-   * Groups.
+   * all `Group` resources. Must be of the form
+   * `identitysources/{identity_source_id}` for external- identity-mapped groups
+   * or `customers/{customer_id}` for Google Groups. The `customer_id` must begin
+   * with "C" (for example, 'C046psxkn').
    * @opt_param string view The level of detail to be returned. If unspecified,
    * defaults to `View.BASIC`.
    * @return Google_Service_CloudIdentity_ListGroupsResponse
@@ -144,7 +146,7 @@ class Google_Service_CloudIdentity_Resource_Groups extends Google_Service_Resour
     return $this->call('patch', array($params), "Google_Service_CloudIdentity_Operation");
   }
   /**
-   * Searches for `Group`s matching a specified query. (groups.search)
+   * Searches for `Group` resources matching a specified query. (groups.search)
    *
    * @param array $optParams Optional parameters.
    *
@@ -161,7 +163,8 @@ class Google_Service_CloudIdentity_Resource_Groups extends Google_Service_Resour
    * [Common Expression Language](https://opensource.google/projects/cel). May
    * only contain equality operators on the parent and inclusion operators on
    * labels (e.g., `parent == 'customers/{customer_id}' &&
-   * 'cloudidentity.googleapis.com/groups.discussion_forum' in labels`).
+   * 'cloudidentity.googleapis.com/groups.discussion_forum' in labels`). The
+   * `customer_id` must begin with "C" (for example, 'C046psxkn').
    * @opt_param string view The level of detail to be returned. If unspecified,
    * defaults to `View.BASIC`.
    * @return Google_Service_CloudIdentity_SearchGroupsResponse

@@ -31,7 +31,7 @@
  */
 class Google_Service_Spanner extends Google_Service
 {
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
   /** Administer your Spanner databases. */
@@ -51,6 +51,7 @@ class Google_Service_Spanner extends Google_Service
   public $projects_instances_databases_operations;
   public $projects_instances_databases_sessions;
   public $projects_instances_operations;
+  public $scans;
 
   /**
    * Constructs the internal representation of the Spanner service.
@@ -515,6 +516,28 @@ class Google_Service_Spanner extends Google_Service
                   'required' => true,
                 ),
               ),
+            ),'getScans' => array(
+              'path' => 'v1/{+name}/scans',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'endTime' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'startTime' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'view' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
             ),'list' => array(
               'path' => 'v1/{+parent}/databases',
               'httpMethod' => 'GET',
@@ -865,6 +888,42 @@ class Google_Service_Spanner extends Google_Service
                   'type' => 'integer',
                 ),
                 'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->scans = new Google_Service_Spanner_Resource_Scans(
+        $this,
+        $this->serviceName,
+        'scans',
+        array(
+          'methods' => array(
+            'list' => array(
+              'path' => 'v1/{+parent}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'view' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

@@ -58,7 +58,7 @@ class Google_Service_Gmail extends Google_Service
   /** View your email message metadata such as labels and headers, but not the email body. */
   const GMAIL_METADATA =
       "https://www.googleapis.com/auth/gmail.metadata";
-  /** View and modify but not delete your email. */
+  /** Read, compose, and send emails from your Gmail account. */
   const GMAIL_MODIFY =
       "https://www.googleapis.com/auth/gmail.modify";
   /** View your email messages and settings. */

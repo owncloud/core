@@ -21,7 +21,6 @@ class Google_Service_ServiceConsumerManagement_BackendRule extends Google_Model
   public $deadline;
   public $disableAuth;
   public $jwtAudience;
-  public $minDeadline;
   public $operationDeadline;
   public $pathTranslation;
   public $protocol;
@@ -58,14 +57,6 @@ class Google_Service_ServiceConsumerManagement_BackendRule extends Google_Model
   public function getJwtAudience()
   {
     return $this->jwtAudience;
-  }
-  public function setMinDeadline($minDeadline)
-  {
-    $this->minDeadline = $minDeadline;
-  }
-  public function getMinDeadline()
-  {
-    return $this->minDeadline;
   }
   public function setOperationDeadline($operationDeadline)
   {

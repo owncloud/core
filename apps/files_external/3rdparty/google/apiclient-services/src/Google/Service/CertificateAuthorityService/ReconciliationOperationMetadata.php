@@ -18,6 +18,7 @@
 class Google_Service_CertificateAuthorityService_ReconciliationOperationMetadata extends Google_Model
 {
   public $deleteResource;
+  public $exclusiveAction;
 
   public function setDeleteResource($deleteResource)
   {
@@ -26,5 +27,13 @@ class Google_Service_CertificateAuthorityService_ReconciliationOperationMetadata
   public function getDeleteResource()
   {
     return $this->deleteResource;
+  }
+  public function setExclusiveAction($exclusiveAction)
+  {
+    $this->exclusiveAction = $exclusiveAction;
+  }
+  public function getExclusiveAction()
+  {
+    return $this->exclusiveAction;
   }
 }

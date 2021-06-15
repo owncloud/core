@@ -20,6 +20,8 @@ class Google_Service_CloudLifeSciences_Pipeline extends Google_Collection
   protected $collection_key = 'actions';
   protected $actionsType = 'Google_Service_CloudLifeSciences_Action';
   protected $actionsDataType = 'array';
+  protected $encryptedEnvironmentType = 'Google_Service_CloudLifeSciences_Secret';
+  protected $encryptedEnvironmentDataType = '';
   public $environment;
   protected $resourcesType = 'Google_Service_CloudLifeSciences_Resources';
   protected $resourcesDataType = '';
@@ -38,6 +40,20 @@ class Google_Service_CloudLifeSciences_Pipeline extends Google_Collection
   public function getActions()
   {
     return $this->actions;
+  }
+  /**
+   * @param Google_Service_CloudLifeSciences_Secret
+   */
+  public function setEncryptedEnvironment(Google_Service_CloudLifeSciences_Secret $encryptedEnvironment)
+  {
+    $this->encryptedEnvironment = $encryptedEnvironment;
+  }
+  /**
+   * @return Google_Service_CloudLifeSciences_Secret
+   */
+  public function getEncryptedEnvironment()
+  {
+    return $this->encryptedEnvironment;
   }
   public function setEnvironment($environment)
   {

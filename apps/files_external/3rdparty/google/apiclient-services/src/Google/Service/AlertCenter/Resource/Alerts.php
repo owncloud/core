@@ -118,9 +118,10 @@ class Google_Service_AlertCenter_Resource_Alerts extends Google_Service_Resource
    * Workspace organization account of the customer the alerts are associated
    * with. Inferred from the caller identity if not provided.
    * @opt_param string filter Optional. A query string for filtering alert
-   * results. For more details, see [Query filters](/admin-sdk/alertcenter/guides
-   * /query-filters) and [Supported query filter fields](/admin-
-   * sdk/alertcenter/reference/filter-fields#alerts.list).
+   * results. For more details, see [Query filters](https://developers.google.com
+   * /admin-sdk/alertcenter/guides/query-filters) and [Supported query filter
+   * fields](https://developers.google.com/admin-sdk/alertcenter/reference/filter-
+   * fields#alerts.list).
    * @opt_param string orderBy Optional. The sort order of the list results. If
    * not specified results may be returned in arbitrary order. You can sort the
    * results in descending order based on the creation timestamp using

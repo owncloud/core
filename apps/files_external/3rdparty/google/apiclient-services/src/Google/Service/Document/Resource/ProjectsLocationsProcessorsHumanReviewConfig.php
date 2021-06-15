@@ -31,11 +31,11 @@ class Google_Service_Document_Resource_ProjectsLocationsProcessorsHumanReviewCon
    *
    * @param string $humanReviewConfig Required. The resource name of the
    * HumanReviewConfig that the document will be reviewed with.
-   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta3ReviewDocumentRequest $postBody
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1ReviewDocumentRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Document_GoogleLongrunningOperation
    */
-  public function reviewDocument($humanReviewConfig, Google_Service_Document_GoogleCloudDocumentaiV1beta3ReviewDocumentRequest $postBody, $optParams = array())
+  public function reviewDocument($humanReviewConfig, Google_Service_Document_GoogleCloudDocumentaiV1ReviewDocumentRequest $postBody, $optParams = array())
   {
     $params = array('humanReviewConfig' => $humanReviewConfig, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);

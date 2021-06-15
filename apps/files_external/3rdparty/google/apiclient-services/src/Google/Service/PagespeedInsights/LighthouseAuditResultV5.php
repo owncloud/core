@@ -23,6 +23,7 @@ class Google_Service_PagespeedInsights_LighthouseAuditResultV5 extends Google_Mo
   public $errorMessage;
   public $explanation;
   public $id;
+  public $numericUnit;
   public $numericValue;
   public $score;
   public $scoreDisplayMode;
@@ -76,6 +77,14 @@ class Google_Service_PagespeedInsights_LighthouseAuditResultV5 extends Google_Mo
   public function getId()
   {
     return $this->id;
+  }
+  public function setNumericUnit($numericUnit)
+  {
+    $this->numericUnit = $numericUnit;
+  }
+  public function getNumericUnit()
+  {
+    return $this->numericUnit;
   }
   public function setNumericValue($numericValue)
   {

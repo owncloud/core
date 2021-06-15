@@ -25,4 +25,18 @@
  */
 class Google_Service_PubsubLite_Resource_CursorProjectsLocationsSubscriptions extends Google_Service_Resource
 {
+  /**
+   * Updates the committed cursor. (subscriptions.commitCursor)
+   *
+   * @param string $subscription The subscription for which to update the cursor.
+   * @param Google_Service_PubsubLite_CommitCursorRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_PubsubLite_CommitCursorResponse
+   */
+  public function commitCursor($subscription, Google_Service_PubsubLite_CommitCursorRequest $postBody, $optParams = array())
+  {
+    $params = array('subscription' => $subscription, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('commitCursor', array($params), "Google_Service_PubsubLite_CommitCursorResponse");
+  }
 }

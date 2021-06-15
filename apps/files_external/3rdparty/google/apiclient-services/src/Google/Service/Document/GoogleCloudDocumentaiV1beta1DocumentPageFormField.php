@@ -24,6 +24,8 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageFormField 
   protected $fieldValueDataType = '';
   protected $nameDetectedLanguagesType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageDetectedLanguage';
   protected $nameDetectedLanguagesDataType = 'array';
+  protected $provenanceType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentProvenance';
+  protected $provenanceDataType = '';
   protected $valueDetectedLanguagesType = 'Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageDetectedLanguage';
   protected $valueDetectedLanguagesDataType = 'array';
   public $valueType;
@@ -69,6 +71,20 @@ class Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageFormField 
   public function getNameDetectedLanguages()
   {
     return $this->nameDetectedLanguages;
+  }
+  /**
+   * @param Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentProvenance
+   */
+  public function setProvenance(Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentProvenance $provenance)
+  {
+    $this->provenance = $provenance;
+  }
+  /**
+   * @return Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentProvenance
+   */
+  public function getProvenance()
+  {
+    return $this->provenance;
   }
   /**
    * @param Google_Service_Document_GoogleCloudDocumentaiV1beta1DocumentPageDetectedLanguage[]

@@ -24,6 +24,7 @@ class Google_Service_ShoppingContent_ProductsCustomBatchRequestEntry extends Goo
   protected $productType = 'Google_Service_ShoppingContent_Product';
   protected $productDataType = '';
   public $productId;
+  public $updateMask;
 
   public function setBatchId($batchId)
   {
@@ -78,5 +79,13 @@ class Google_Service_ShoppingContent_ProductsCustomBatchRequestEntry extends Goo
   public function getProductId()
   {
     return $this->productId;
+  }
+  public function setUpdateMask($updateMask)
+  {
+    $this->updateMask = $updateMask;
+  }
+  public function getUpdateMask()
+  {
+    return $this->updateMask;
   }
 }

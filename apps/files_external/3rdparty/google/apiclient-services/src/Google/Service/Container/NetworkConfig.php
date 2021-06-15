@@ -17,6 +17,7 @@
 
 class Google_Service_Container_NetworkConfig extends Google_Model
 {
+  public $datapathProvider;
   protected $defaultSnatStatusType = 'Google_Service_Container_DefaultSnatStatus';
   protected $defaultSnatStatusDataType = '';
   public $enableIntraNodeVisibility;
@@ -24,6 +25,14 @@ class Google_Service_Container_NetworkConfig extends Google_Model
   public $privateIpv6GoogleAccess;
   public $subnetwork;
 
+  public function setDatapathProvider($datapathProvider)
+  {
+    $this->datapathProvider = $datapathProvider;
+  }
+  public function getDatapathProvider()
+  {
+    return $this->datapathProvider;
+  }
   /**
    * @param Google_Service_Container_DefaultSnatStatus
    */

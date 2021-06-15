@@ -17,10 +17,19 @@
 
 class Google_Service_SecurityCommandCenter_Source extends Google_Model
 {
+  public $canonicalName;
   public $description;
   public $displayName;
   public $name;
 
+  public function setCanonicalName($canonicalName)
+  {
+    $this->canonicalName = $canonicalName;
+  }
+  public function getCanonicalName()
+  {
+    return $this->canonicalName;
+  }
   public function setDescription($description)
   {
     $this->description = $description;

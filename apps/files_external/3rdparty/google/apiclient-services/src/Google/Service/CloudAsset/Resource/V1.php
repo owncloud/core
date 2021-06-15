@@ -45,6 +45,10 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * permissions to appear in result.
    * @opt_param string analysisQuery.accessSelector.roles Optional. The roles to
    * appear in result.
+   * @opt_param string analysisQuery.conditionContext.accessTime The hypothetical
+   * access timestamp to evaluate IAM conditions. Note that this value must not be
+   * earlier than the current time; otherwise, an INVALID_ARGUMENT error will be
+   * returned.
    * @opt_param string analysisQuery.identitySelector.identity Required. The
    * identity appear in the form of members in [IAM policy
    * binding](https://cloud.google.com/iam/reference/rest/v1/Binding). The
@@ -153,6 +157,34 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
     $params = array('scope' => $scope, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('analyzeIamPolicyLongrunning', array($params), "Google_Service_CloudAsset_Operation");
+  }
+  /**
+   * Analyze moving a resource to a specified destination without kicking off the
+   * actual move. The analysis is best effort depending on the user's permissions
+   * of viewing different hierarchical policies and configurations. The policies
+   * and configuration are subject to change before the actual resource migration
+   * takes place. (v1.analyzeMove)
+   *
+   * @param string $resource Required. Name of the resource to perform the
+   * analysis against. Only GCP Project are supported as of today. Hence, this can
+   * only be Project ID (such as "projects/my-project-id") or a Project Number
+   * (such as "projects/12345").
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string destinationParent Required. Name of the GCP Folder or
+   * Organization to reparent the target resource. The analysis will be performed
+   * against hypothetically moving the resource to this specified desitination
+   * parent. This can only be a Folder number (such as "folders/123") or an
+   * Organization number (such as "organizations/123").
+   * @opt_param string view Analysis view indicating what information should be
+   * included in the analysis response. If unspecified, the default view is FULL.
+   * @return Google_Service_CloudAsset_AnalyzeMoveResponse
+   */
+  public function analyzeMove($resource, $optParams = array())
+  {
+    $params = array('resource' => $resource);
+    $params = array_merge($params, $optParams);
+    return $this->call('analyzeMove', array($params), "Google_Service_CloudAsset_AnalyzeMoveResponse");
   }
   /**
    * Batch gets the update history of assets that overlap a time window. For
@@ -304,14 +336,15 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * [RE2](https://github.com/google/re2/wiki/Syntax) for all supported regular
    * expression syntax. If the regular expression does not match any supported
    * asset type, an INVALID_ARGUMENT error will be returned.
-   * @opt_param string orderBy Optional. A comma separated list of fields
+   * @opt_param string orderBy Optional. A comma-separated list of fields
    * specifying the sorting order of the results. The default order is ascending.
    * Add " DESC" after the field name to indicate descending order. Redundant
-   * space characters are ignored. Example: "location DESC, name". Only string
-   * fields in the response are sortable, including `name`, `displayName`,
-   * `description`, `location`. All the other fields such as repeated fields
-   * (e.g., `networkTags`), map fields (e.g., `labels`) and struct fields (e.g.,
-   * `additionalAttributes`) are not supported.
+   * space characters are ignored. Example: "location DESC, name". Only singular
+   * primitive fields in the response are sortable: * name * assetType * project *
+   * displayName * description * location * kmsKey * createTime * updateTime *
+   * state * parentFullResourceName * parentAssetType All the other fields such as
+   * repeated fields (e.g., `networkTags`), map fields (e.g., `labels`) and struct
+   * fields (e.g., `additionalAttributes`) are not supported.
    * @opt_param int pageSize Optional. The page size for search result pagination.
    * Page size is capped at 500 even if a larger value is given. If set to zero,
    * server will pick an appropriate default. Returned results may be fewer than
@@ -336,17 +369,19 @@ class Google_Service_CloudAsset_Resource_V1 extends Google_Service_Resource
    * Cloud resources that have a label "env". * `kmsKey:key` to find Cloud
    * resources encrypted with a customer-managed encryption key whose name
    * contains the word "key". * `state:ACTIVE` to find Cloud resources whose state
-   * contains "ACTIVE" as a word. * `createTime<1609459200` to find Cloud
-   * resources that were created before "2021-01-01 00:00:00 UTC". 1609459200 is
-   * the epoch timestamp of "2021-01-01 00:00:00 UTC" in seconds. *
-   * `updateTime>1609459200` to find Cloud resources that were updated after
+   * contains "ACTIVE" as a word. * `NOT state:ACTIVE` to find {{gcp_name}}
+   * resources whose state doesn't contain "ACTIVE" as a word. *
+   * `createTime<1609459200` to find Cloud resources that were created before
    * "2021-01-01 00:00:00 UTC". 1609459200 is the epoch timestamp of "2021-01-01
-   * 00:00:00 UTC" in seconds. * `Important` to find Cloud resources that contain
-   * "Important" as a word in any of the searchable fields. * `Impor*` to find
-   * Cloud resources that contain "Impor" as a prefix of any word in any of the
-   * searchable fields. * `Important location:(us-west1 OR global)` to find Cloud
-   * resources that contain "Important" as a word in any of the searchable fields
-   * and are also located in the "us-west1" region or the "global" location.
+   * 00:00:00 UTC" in seconds. * `updateTime>1609459200` to find Cloud resources
+   * that were updated after "2021-01-01 00:00:00 UTC". 1609459200 is the epoch
+   * timestamp of "2021-01-01 00:00:00 UTC" in seconds. * `Important` to find
+   * Cloud resources that contain "Important" as a word in any of the searchable
+   * fields. * `Impor*` to find Cloud resources that contain "Impor" as a prefix
+   * of any word in any of the searchable fields. * `Important location:(us-west1
+   * OR global)` to find Cloud resources that contain "Important" as a word in any
+   * of the searchable fields and are also located in the "us-west1" region or the
+   * "global" location.
    * @return Google_Service_CloudAsset_SearchAllResourcesResponse
    */
   public function searchAllResources($scope, $optParams = array())

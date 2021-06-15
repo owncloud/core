@@ -39,6 +39,7 @@ class Google_Service_AIPlatformNotebooks_Instance extends Google_Collection
   public $metadata;
   public $name;
   public $network;
+  public $nicType;
   public $noProxyAccess;
   public $noPublicIp;
   public $noRemoveDataDisk;
@@ -218,6 +219,14 @@ class Google_Service_AIPlatformNotebooks_Instance extends Google_Collection
   public function getNetwork()
   {
     return $this->network;
+  }
+  public function setNicType($nicType)
+  {
+    $this->nicType = $nicType;
+  }
+  public function getNicType()
+  {
+    return $this->nicType;
   }
   public function setNoProxyAccess($noProxyAccess)
   {

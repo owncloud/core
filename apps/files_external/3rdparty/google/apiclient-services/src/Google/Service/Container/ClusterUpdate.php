@@ -20,12 +20,15 @@ class Google_Service_Container_ClusterUpdate extends Google_Collection
   protected $collection_key = 'desiredLocations';
   protected $desiredAddonsConfigType = 'Google_Service_Container_AddonsConfig';
   protected $desiredAddonsConfigDataType = '';
+  protected $desiredAutopilotType = 'Google_Service_Container_Autopilot';
+  protected $desiredAutopilotDataType = '';
   protected $desiredBinaryAuthorizationType = 'Google_Service_Container_BinaryAuthorization';
   protected $desiredBinaryAuthorizationDataType = '';
   protected $desiredClusterAutoscalingType = 'Google_Service_Container_ClusterAutoscaling';
   protected $desiredClusterAutoscalingDataType = '';
   protected $desiredDatabaseEncryptionType = 'Google_Service_Container_DatabaseEncryption';
   protected $desiredDatabaseEncryptionDataType = '';
+  public $desiredDatapathProvider;
   protected $desiredDefaultSnatStatusType = 'Google_Service_Container_DefaultSnatStatus';
   protected $desiredDefaultSnatStatusDataType = '';
   public $desiredImageType;
@@ -72,6 +75,20 @@ class Google_Service_Container_ClusterUpdate extends Google_Collection
     return $this->desiredAddonsConfig;
   }
   /**
+   * @param Google_Service_Container_Autopilot
+   */
+  public function setDesiredAutopilot(Google_Service_Container_Autopilot $desiredAutopilot)
+  {
+    $this->desiredAutopilot = $desiredAutopilot;
+  }
+  /**
+   * @return Google_Service_Container_Autopilot
+   */
+  public function getDesiredAutopilot()
+  {
+    return $this->desiredAutopilot;
+  }
+  /**
    * @param Google_Service_Container_BinaryAuthorization
    */
   public function setDesiredBinaryAuthorization(Google_Service_Container_BinaryAuthorization $desiredBinaryAuthorization)
@@ -112,6 +129,14 @@ class Google_Service_Container_ClusterUpdate extends Google_Collection
   public function getDesiredDatabaseEncryption()
   {
     return $this->desiredDatabaseEncryption;
+  }
+  public function setDesiredDatapathProvider($desiredDatapathProvider)
+  {
+    $this->desiredDatapathProvider = $desiredDatapathProvider;
+  }
+  public function getDesiredDatapathProvider()
+  {
+    return $this->desiredDatapathProvider;
   }
   /**
    * @param Google_Service_Container_DefaultSnatStatus

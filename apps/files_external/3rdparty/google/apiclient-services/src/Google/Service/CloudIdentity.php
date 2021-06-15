@@ -39,7 +39,7 @@ class Google_Service_CloudIdentity extends Google_Service
   /** See any Cloud Identity Groups that you can access, including group members and their emails. */
   const CLOUD_IDENTITY_GROUPS_READONLY =
       "https://www.googleapis.com/auth/cloud-identity.groups.readonly";
-  /** View and manage your data across Google Cloud Platform services. */
+  /** See, edit, configure, and delete your Google Cloud Platform data. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 

@@ -153,7 +153,7 @@ class BigInteger implements \Serializable
      * If the second parameter - $base - is negative, then it will be assumed that the number's are encoded using
      * two's compliment.  The sole exception to this is -10, which is treated the same as 10 is.
      *
-     * @param int|BigInteger\Engines\Engine $x Base-10 number or base-$base number if $base set.
+     * @param string|int|BigInteger\Engines\Engine $x Base-10 number or base-$base number if $base set.
      * @param int $base
      * @return BigInteger
      */

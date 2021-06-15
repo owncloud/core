@@ -16,7 +16,7 @@
  */
 
 /**
- * Service definition for Dfareporting (v3.4).
+ * Service definition for Dfareporting (v3.5).
  *
  * <p>
  * Build applications to efficiently manage large or complex trafficking,
@@ -64,7 +64,6 @@ class Google_Service_Dfareporting extends Google_Service
   public $creativeFields;
   public $creativeGroups;
   public $creatives;
-  public $customEvents;
   public $dimensionValues;
   public $directorySites;
   public $dynamicTargetingKeys;
@@ -115,9 +114,9 @@ class Google_Service_Dfareporting extends Google_Service
   {
     parent::__construct($client);
     $this->rootUrl = $rootUrl ?: 'https://dfareporting.googleapis.com/';
-    $this->servicePath = 'dfareporting/v3.4/';
+    $this->servicePath = '';
     $this->batchPath = 'batch';
-    $this->version = 'v3.4';
+    $this->version = 'v3.5';
     $this->serviceName = 'dfareporting';
 
     $this->accountActiveAdSummaries = new Google_Service_Dfareporting_Resource_AccountActiveAdSummaries(
@@ -127,7 +126,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/accountActiveAdSummaries/{summaryAccountId}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountActiveAdSummaries/{summaryAccountId}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -152,7 +151,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/accountPermissionGroups/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountPermissionGroups/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -167,7 +166,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/accountPermissionGroups',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountPermissionGroups',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -187,7 +186,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/accountPermissions/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountPermissions/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -202,7 +201,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/accountPermissions',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountPermissions',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -222,7 +221,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/accountUserProfiles/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountUserProfiles/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -237,7 +236,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/accountUserProfiles',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountUserProfiles',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -247,7 +246,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/accountUserProfiles',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountUserProfiles',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -294,7 +293,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/accountUserProfiles',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountUserProfiles',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -309,7 +308,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/accountUserProfiles',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountUserProfiles',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -329,7 +328,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/accounts/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accounts/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -344,7 +343,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/accounts',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accounts',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -383,7 +382,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/accounts',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accounts',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -398,7 +397,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/accounts',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accounts',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -418,7 +417,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/ads/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/ads/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -433,7 +432,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/ads',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/ads',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -443,7 +442,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/ads',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/ads',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -555,7 +554,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/ads',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/ads',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -570,7 +569,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/ads',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/ads',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -590,7 +589,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'delete' => array(
-              'path' => 'userprofiles/{profileId}/advertiserGroups/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserGroups/{id}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'profileId' => array(
@@ -605,7 +604,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'userprofiles/{profileId}/advertiserGroups/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserGroups/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -620,7 +619,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/advertiserGroups',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserGroups',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -630,7 +629,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/advertiserGroups',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserGroups',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -665,7 +664,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/advertiserGroups',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserGroups',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -680,7 +679,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/advertiserGroups',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserGroups',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -700,7 +699,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/advertiserLandingPages/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserLandingPages/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -715,7 +714,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/advertiserLandingPages',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserLandingPages',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -725,7 +724,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/advertiserLandingPages',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserLandingPages',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -778,7 +777,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/advertiserLandingPages',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserLandingPages',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -793,7 +792,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/advertiserLandingPages',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserLandingPages',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -813,7 +812,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/advertisers/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertisers/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -828,7 +827,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/advertisers',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertisers',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -838,7 +837,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/advertisers',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertisers',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -899,7 +898,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/advertisers',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertisers',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -914,7 +913,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/advertisers',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertisers',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -934,7 +933,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'list' => array(
-              'path' => 'userprofiles/{profileId}/browsers',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/browsers',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -954,7 +953,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'insert' => array(
-              'path' => 'userprofiles/{profileId}/campaigns/{campaignId}/campaignCreativeAssociations',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/campaigns/{campaignId}/campaignCreativeAssociations',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -969,7 +968,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/campaigns/{campaignId}/campaignCreativeAssociations',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/campaigns/{campaignId}/campaignCreativeAssociations',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1006,7 +1005,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/campaigns/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/campaigns/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1021,7 +1020,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/campaigns',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/campaigns',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -1031,7 +1030,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/campaigns',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/campaigns',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1097,7 +1096,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/campaigns',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/campaigns',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -1112,7 +1111,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/campaigns',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/campaigns',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -1132,7 +1131,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/changeLogs/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/changeLogs/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1147,7 +1146,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/changeLogs',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/changeLogs',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1210,7 +1209,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'list' => array(
-              'path' => 'userprofiles/{profileId}/cities',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/cities',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1249,7 +1248,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/connectionTypes/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/connectionTypes/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1264,7 +1263,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/connectionTypes',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/connectionTypes',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1284,7 +1283,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'delete' => array(
-              'path' => 'userprofiles/{profileId}/contentCategories/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/contentCategories/{id}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'profileId' => array(
@@ -1299,7 +1298,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'userprofiles/{profileId}/contentCategories/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/contentCategories/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1314,7 +1313,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/contentCategories',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/contentCategories',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -1324,7 +1323,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/contentCategories',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/contentCategories',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1359,7 +1358,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/contentCategories',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/contentCategories',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -1374,7 +1373,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/contentCategories',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/contentCategories',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -1394,7 +1393,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'batchinsert' => array(
-              'path' => 'userprofiles/{profileId}/conversions/batchinsert',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/conversions/batchinsert',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -1404,7 +1403,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'batchupdate' => array(
-              'path' => 'userprofiles/{profileId}/conversions/batchupdate',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/conversions/batchupdate',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -1424,7 +1423,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/countries/{dartId}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/countries/{dartId}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1439,7 +1438,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/countries',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/countries',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1459,7 +1458,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'insert' => array(
-              'path' => 'userprofiles/{profileId}/creativeAssets/{advertiserId}/creativeAssets',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeAssets/{advertiserId}/creativeAssets',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -1484,7 +1483,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'delete' => array(
-              'path' => 'userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues/{id}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'profileId' => array(
@@ -1504,7 +1503,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1524,7 +1523,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -1539,7 +1538,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1579,7 +1578,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -1599,7 +1598,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -1624,7 +1623,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'delete' => array(
-              'path' => 'userprofiles/{profileId}/creativeFields/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields/{id}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'profileId' => array(
@@ -1639,7 +1638,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'userprofiles/{profileId}/creativeFields/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1654,7 +1653,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/creativeFields',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -1664,7 +1663,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/creativeFields',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1704,7 +1703,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/creativeFields',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -1719,7 +1718,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/creativeFields',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -1739,7 +1738,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/creativeGroups/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeGroups/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1754,7 +1753,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/creativeGroups',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeGroups',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -1764,7 +1763,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/creativeGroups',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeGroups',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1808,7 +1807,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/creativeGroups',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeGroups',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -1823,7 +1822,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/creativeGroups',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeGroups',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -1843,7 +1842,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/creatives/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creatives/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1858,7 +1857,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/creatives',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creatives',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -1868,7 +1867,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/creatives',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creatives',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -1948,7 +1947,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/creatives',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creatives',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -1963,28 +1962,8 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/creatives',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creatives',
               'httpMethod' => 'PUT',
-              'parameters' => array(
-                'profileId' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),
-          )
-        )
-    );
-    $this->customEvents = new Google_Service_Dfareporting_Resource_CustomEvents(
-        $this,
-        $this->serviceName,
-        'customEvents',
-        array(
-          'methods' => array(
-            'batchinsert' => array(
-              'path' => 'userprofiles/{profileId}/customEvents/batchinsert',
-              'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
                   'location' => 'path',
@@ -2003,7 +1982,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'query' => array(
-              'path' => 'userprofiles/{profileId}/dimensionvalues/query',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/dimensionvalues/query',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -2031,7 +2010,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/directorySites/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/directorySites/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2046,7 +2025,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/directorySites',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/directorySites',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -2056,7 +2035,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/directorySites',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/directorySites',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2121,7 +2100,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'delete' => array(
-              'path' => 'userprofiles/{profileId}/dynamicTargetingKeys/{objectId}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/dynamicTargetingKeys/{objectId}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'profileId' => array(
@@ -2146,7 +2125,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/dynamicTargetingKeys',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/dynamicTargetingKeys',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -2156,7 +2135,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/dynamicTargetingKeys',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/dynamicTargetingKeys',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2193,7 +2172,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'delete' => array(
-              'path' => 'userprofiles/{profileId}/eventTags/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/eventTags/{id}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'profileId' => array(
@@ -2208,7 +2187,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'userprofiles/{profileId}/eventTags/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/eventTags/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2223,7 +2202,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/eventTags',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/eventTags',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -2233,7 +2212,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/eventTags',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/eventTags',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2285,7 +2264,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/eventTags',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/eventTags',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -2300,7 +2279,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/eventTags',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/eventTags',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -2320,7 +2299,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'reports/{reportId}/files/{fileId}',
+              'path' => 'dfareporting/v3.5/reports/{reportId}/files/{fileId}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'reportId' => array(
@@ -2335,7 +2314,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/files',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/files',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2375,7 +2354,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'delete' => array(
-              'path' => 'userprofiles/{profileId}/floodlightActivities/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivities/{id}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'profileId' => array(
@@ -2390,7 +2369,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'generatetag' => array(
-              'path' => 'userprofiles/{profileId}/floodlightActivities/generatetag',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivities/generatetag',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -2404,7 +2383,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'userprofiles/{profileId}/floodlightActivities/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivities/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2419,7 +2398,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/floodlightActivities',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivities',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -2429,7 +2408,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/floodlightActivities',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivities',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2493,7 +2472,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/floodlightActivities',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivities',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -2508,7 +2487,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/floodlightActivities',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivities',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -2528,7 +2507,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/floodlightActivityGroups/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivityGroups/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2543,7 +2522,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/floodlightActivityGroups',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivityGroups',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -2553,7 +2532,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/floodlightActivityGroups',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivityGroups',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2600,7 +2579,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/floodlightActivityGroups',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivityGroups',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -2615,7 +2594,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/floodlightActivityGroups',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivityGroups',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -2635,7 +2614,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/floodlightConfigurations/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightConfigurations/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2650,7 +2629,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/floodlightConfigurations',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightConfigurations',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2665,7 +2644,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/floodlightConfigurations',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightConfigurations',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -2680,7 +2659,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/floodlightConfigurations',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightConfigurations',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -2700,7 +2679,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/projects/{projectId}/inventoryItems/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/projects/{projectId}/inventoryItems/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2720,7 +2699,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/projects/{projectId}/inventoryItems',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/projects/{projectId}/inventoryItems',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2784,7 +2763,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'list' => array(
-              'path' => 'userprofiles/{profileId}/languages',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/languages',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2804,7 +2783,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'list' => array(
-              'path' => 'userprofiles/{profileId}/metros',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/metros',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2824,7 +2803,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/mobileApps/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/mobileApps/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2839,7 +2818,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/mobileApps',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/mobileApps',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2881,7 +2860,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/mobileCarriers/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/mobileCarriers/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2896,7 +2875,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/mobileCarriers',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/mobileCarriers',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2916,7 +2895,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/operatingSystemVersions/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/operatingSystemVersions/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2931,7 +2910,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/operatingSystemVersions',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/operatingSystemVersions',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2951,7 +2930,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/operatingSystems/{dartId}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/operatingSystems/{dartId}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2966,7 +2945,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/operatingSystems',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/operatingSystems',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -2986,7 +2965,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/projects/{projectId}/orderDocuments/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/projects/{projectId}/orderDocuments/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3006,7 +2985,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/projects/{projectId}/orderDocuments',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/projects/{projectId}/orderDocuments',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3070,7 +3049,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/projects/{projectId}/orders/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/projects/{projectId}/orders/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3090,7 +3069,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/projects/{projectId}/orders',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/projects/{projectId}/orders',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3145,7 +3124,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/placementGroups/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementGroups/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3160,7 +3139,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/placementGroups',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementGroups',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -3170,7 +3149,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/placementGroups',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementGroups',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3264,7 +3243,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/placementGroups',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementGroups',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -3279,7 +3258,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/placementGroups',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementGroups',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -3299,7 +3278,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'delete' => array(
-              'path' => 'userprofiles/{profileId}/placementStrategies/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementStrategies/{id}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'profileId' => array(
@@ -3314,7 +3293,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'userprofiles/{profileId}/placementStrategies/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementStrategies/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3329,7 +3308,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/placementStrategies',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementStrategies',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -3339,7 +3318,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/placementStrategies',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementStrategies',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3374,7 +3353,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/placementStrategies',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementStrategies',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -3389,7 +3368,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/placementStrategies',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementStrategies',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -3409,7 +3388,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'generatetags' => array(
-              'path' => 'userprofiles/{profileId}/placements/generatetags',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placements/generatetags',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -3433,7 +3412,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'userprofiles/{profileId}/placements/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placements/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3448,7 +3427,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/placements',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placements',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -3458,7 +3437,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/placements',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placements',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3567,7 +3546,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/placements',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placements',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -3582,7 +3561,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/placements',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placements',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -3602,7 +3581,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/platformTypes/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/platformTypes/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3617,7 +3596,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/platformTypes',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/platformTypes',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3637,7 +3616,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/postalCodes/{code}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/postalCodes/{code}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3652,7 +3631,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/postalCodes',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/postalCodes',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3672,7 +3651,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/projects/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/projects/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3687,7 +3666,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/projects',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/projects',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3737,7 +3716,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'list' => array(
-              'path' => 'userprofiles/{profileId}/regions',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/regions',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3757,7 +3736,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/remarketingListShares/{remarketingListId}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/remarketingListShares/{remarketingListId}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3772,7 +3751,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/remarketingListShares',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/remarketingListShares',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -3787,7 +3766,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/remarketingListShares',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/remarketingListShares',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -3807,7 +3786,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/remarketingLists/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/remarketingLists/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3822,7 +3801,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/remarketingLists',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/remarketingLists',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -3832,7 +3811,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/remarketingLists',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/remarketingLists',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3875,7 +3854,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/remarketingLists',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/remarketingLists',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -3890,7 +3869,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/remarketingLists',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/remarketingLists',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -3910,7 +3889,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'delete' => array(
-              'path' => 'userprofiles/{profileId}/reports/{reportId}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports/{reportId}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'profileId' => array(
@@ -3925,7 +3904,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'userprofiles/{profileId}/reports/{reportId}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports/{reportId}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3940,7 +3919,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/reports',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -3950,7 +3929,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/reports',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -3980,7 +3959,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/reports/{reportId}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports/{reportId}',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -3995,7 +3974,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'run' => array(
-              'path' => 'userprofiles/{profileId}/reports/{reportId}/run',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports/{reportId}/run',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -4014,7 +3993,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/reports/{reportId}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports/{reportId}',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -4039,7 +4018,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'query' => array(
-              'path' => 'userprofiles/{profileId}/reports/compatiblefields/query',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports/compatiblefields/query',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -4059,7 +4038,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/reports/{reportId}/files/{fileId}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports/{reportId}/files/{fileId}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4079,7 +4058,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/reports/{reportId}/files',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports/{reportId}/files',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4120,7 +4099,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/sites/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/sites/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4135,7 +4114,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/sites',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/sites',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -4145,7 +4124,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/sites',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/sites',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4218,7 +4197,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/sites',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/sites',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -4233,7 +4212,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/sites',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/sites',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -4253,7 +4232,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/sizes/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/sizes/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4268,7 +4247,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/sizes',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/sizes',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -4278,7 +4257,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/sizes',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/sizes',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4315,7 +4294,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/subaccounts/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/subaccounts/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4330,7 +4309,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/subaccounts',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/subaccounts',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -4340,7 +4319,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/subaccounts',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/subaccounts',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4375,7 +4354,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/subaccounts',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/subaccounts',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -4390,7 +4369,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/subaccounts',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/subaccounts',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -4410,7 +4389,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/targetableRemarketingLists/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/targetableRemarketingLists/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4425,7 +4404,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/targetableRemarketingLists',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/targetableRemarketingLists',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4474,7 +4453,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/targetingTemplates/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/targetingTemplates/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4489,7 +4468,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/targetingTemplates',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/targetingTemplates',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -4499,7 +4478,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/targetingTemplates',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/targetingTemplates',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4538,7 +4517,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/targetingTemplates',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/targetingTemplates',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -4553,7 +4532,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/targetingTemplates',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/targetingTemplates',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -4573,7 +4552,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4583,7 +4562,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles',
+              'path' => 'dfareporting/v3.5/userprofiles',
               'httpMethod' => 'GET',
               'parameters' => array(),
             ),
@@ -4597,7 +4576,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/userRolePermissionGroups/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRolePermissionGroups/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4612,7 +4591,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/userRolePermissionGroups',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRolePermissionGroups',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4632,7 +4611,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/userRolePermissions/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRolePermissions/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4647,7 +4626,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/userRolePermissions',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRolePermissions',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4672,7 +4651,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'delete' => array(
-              'path' => 'userprofiles/{profileId}/userRoles/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRoles/{id}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'profileId' => array(
@@ -4687,7 +4666,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'userprofiles/{profileId}/userRoles/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRoles/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4702,7 +4681,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'insert' => array(
-              'path' => 'userprofiles/{profileId}/userRoles',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRoles',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'profileId' => array(
@@ -4712,7 +4691,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/userRoles',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRoles',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4755,7 +4734,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'patch' => array(
-              'path' => 'userprofiles/{profileId}/userRoles',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRoles',
               'httpMethod' => 'PATCH',
               'parameters' => array(
                 'profileId' => array(
@@ -4770,7 +4749,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'update' => array(
-              'path' => 'userprofiles/{profileId}/userRoles',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRoles',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'profileId' => array(
@@ -4790,7 +4769,7 @@ class Google_Service_Dfareporting extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'userprofiles/{profileId}/videoFormats/{id}',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/videoFormats/{id}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(
@@ -4805,7 +4784,7 @@ class Google_Service_Dfareporting extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'userprofiles/{profileId}/videoFormats',
+              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/videoFormats',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'profileId' => array(

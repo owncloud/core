@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '2ceed1f45ff42a5b43e7bd9c7a187b2df8b45ed7',
+    'reference' => '82f16f773ffd66f69ec447c1f906e055c13134d2',
     'name' => 'files_external/3rdparty',
   ),
   'versions' => 
@@ -18,43 +18,43 @@
       'aliases' => 
       array (
       ),
-      'reference' => '2ceed1f45ff42a5b43e7bd9c7a187b2df8b45ed7',
+      'reference' => '82f16f773ffd66f69ec447c1f906e055c13134d2',
     ),
     'firebase/php-jwt' => 
     array (
-      'pretty_version' => 'v5.2.1',
-      'version' => '5.2.1.0',
+      'pretty_version' => 'v5.3.0',
+      'version' => '5.3.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'f42c9110abe98dd6cfe9053c49bc86acc70b2d23',
+      'reference' => '3c2d70f2e64e2922345e89f2ceae47d2463faae1',
     ),
     'google/apiclient' => 
     array (
-      'pretty_version' => 'v2.9.1',
-      'version' => '2.9.1.0',
+      'pretty_version' => 'v2.9.2',
+      'version' => '2.9.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => '2fb6e702aca5d68203fa737f89f6f774022494c6',
+      'reference' => 'e9ef4c26a044b8d39a46bcf296be795fe24a1849',
     ),
     'google/apiclient-services' => 
     array (
-      'pretty_version' => 'v0.167.0',
-      'version' => '0.167.0.0',
+      'pretty_version' => 'v0.181.0',
+      'version' => '0.181.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '46b71684a100f3d976e0321cf24f487b314add68',
+      'reference' => 'a4ea5fd96887d654d10d446b239e1ff60240e2c1',
     ),
     'google/auth' => 
     array (
-      'pretty_version' => 'v1.15.0',
-      'version' => '1.15.0.0',
+      'pretty_version' => 'v1.15.1',
+      'version' => '1.15.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'b346c07de6613e26443d7b4830e5e1933b830dc4',
+      'reference' => '4e0c9367719df9703e96f5ad613041b87742471c',
     ),
     'guzzlehttp/guzzle' => 
     array (
@@ -67,12 +67,12 @@
     ),
     'guzzlehttp/psr7' => 
     array (
-      'pretty_version' => '1.8.1',
-      'version' => '1.8.1.0',
+      'pretty_version' => '1.8.2',
+      'version' => '1.8.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => '35ea11d335fd638b5882ff1725228b3d35496ab1',
+      'reference' => 'dc960a912984efb74d0a90222870c72c87f10c91',
     ),
     'guzzlehttp/ringphp' => 
     array (
@@ -103,12 +103,12 @@
     ),
     'icewind/streams' => 
     array (
-      'pretty_version' => 'v0.7.4',
-      'version' => '0.7.4.0',
+      'pretty_version' => 'v0.7.5',
+      'version' => '0.7.5.0',
       'aliases' => 
       array (
       ),
-      'reference' => '93bce472202d36d9808c30eaa52a1dc72b39e04c',
+      'reference' => '0c6aae16ebdadb257f0bd089c1e1e4cf5e20ddc2',
     ),
     'monolog/monolog' => 
     array (
@@ -139,12 +139,12 @@
     ),
     'phpseclib/phpseclib' => 
     array (
-      'pretty_version' => '3.0.8',
-      'version' => '3.0.8.0',
+      'pretty_version' => '3.0.9',
+      'version' => '3.0.9.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'd9615a6fb970d9933866ca8b4036ec3407b020b6',
+      'reference' => 'a127a5133804ff2f47ae629dd529b129da616ad7',
     ),
     'psr/cache' => 
     array (
@@ -173,12 +173,12 @@
     ),
     'psr/log' => 
     array (
-      'pretty_version' => '1.1.3',
-      'version' => '1.1.3.0',
+      'pretty_version' => '1.1.4',
+      'version' => '1.1.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => '0f73288fd15629204f9d42b7055f72dacbe811fc',
+      'reference' => 'd49695b909c3b7628b6289db5479a1c204601f11',
     ),
     'psr/log-implementation' => 
     array (

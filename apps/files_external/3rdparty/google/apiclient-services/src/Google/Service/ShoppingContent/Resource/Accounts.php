@@ -175,7 +175,9 @@ class Google_Service_ShoppingContent_Resource_Accounts extends Google_Service_Re
    * @param array $optParams Optional parameters.
    *
    * @opt_param string maxResults The maximum number of links to return in the
-   * response, used for pagination.
+   * response, used for pagination. The minimum allowed value is 5 results per
+   * page. If provided value is lower than 5, it will be automatically increased
+   * to 5.
    * @opt_param string pageToken The token returned by the previous request.
    * @return Google_Service_ShoppingContent_AccountsListLinksResponse
    */

@@ -17,12 +17,11 @@
 
 class Google_Service_Compute_FirewallPolicyRuleMatcher extends Google_Collection
 {
-  protected $collection_key = 'srcSecureLabels';
+  protected $collection_key = 'srcIpRanges';
   public $destIpRanges;
   protected $layer4ConfigsType = 'Google_Service_Compute_FirewallPolicyRuleMatcherLayer4Config';
   protected $layer4ConfigsDataType = 'array';
   public $srcIpRanges;
-  public $srcSecureLabels;
 
   public function setDestIpRanges($destIpRanges)
   {
@@ -53,13 +52,5 @@ class Google_Service_Compute_FirewallPolicyRuleMatcher extends Google_Collection
   public function getSrcIpRanges()
   {
     return $this->srcIpRanges;
-  }
-  public function setSrcSecureLabels($srcSecureLabels)
-  {
-    $this->srcSecureLabels = $srcSecureLabels;
-  }
-  public function getSrcSecureLabels()
-  {
-    return $this->srcSecureLabels;
   }
 }

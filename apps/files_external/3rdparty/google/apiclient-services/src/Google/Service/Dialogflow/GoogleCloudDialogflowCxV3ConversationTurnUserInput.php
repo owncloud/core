@@ -17,11 +17,20 @@
 
 class Google_Service_Dialogflow_GoogleCloudDialogflowCxV3ConversationTurnUserInput extends Google_Model
 {
+  public $enableSentimentAnalysis;
   public $injectedParameters;
   protected $inputType = 'Google_Service_Dialogflow_GoogleCloudDialogflowCxV3QueryInput';
   protected $inputDataType = '';
   public $isWebhookEnabled;
 
+  public function setEnableSentimentAnalysis($enableSentimentAnalysis)
+  {
+    $this->enableSentimentAnalysis = $enableSentimentAnalysis;
+  }
+  public function getEnableSentimentAnalysis()
+  {
+    return $this->enableSentimentAnalysis;
+  }
   public function setInjectedParameters($injectedParameters)
   {
     $this->injectedParameters = $injectedParameters;

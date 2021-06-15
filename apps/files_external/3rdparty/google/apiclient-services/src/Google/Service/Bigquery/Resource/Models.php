@@ -56,7 +56,8 @@ class Google_Service_Bigquery_Resource_Models extends Google_Service_Resource
   }
   /**
    * Lists all models in the specified dataset. Requires the READER dataset role.
-   * (models.listModels)
+   * After retrieving the list of models, you can get information about a
+   * particular model by calling the models.get method. (models.listModels)
    *
    * @param string $projectId Required. Project ID of the models to list.
    * @param string $datasetId Required. Dataset ID of the models to list.

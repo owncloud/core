@@ -19,6 +19,7 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
 {
   protected $collection_key = 'taxes';
   public $additionalImageLinks;
+  public $additionalSizeType;
   public $adsGrouping;
   public $adsLabels;
   public $adsRedirect;
@@ -63,6 +64,7 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
   public $itemGroupId;
   public $kind;
   public $link;
+  public $linkTemplate;
   protected $loyaltyPointsType = 'Google_Service_ShoppingContent_LoyaltyPoints';
   protected $loyaltyPointsDataType = '';
   public $material;
@@ -71,10 +73,13 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
   public $minEnergyEfficiencyClass;
   public $minHandlingTime;
   public $mobileLink;
+  public $mobileLinkTemplate;
   public $mpn;
   public $multipack;
   public $offerId;
   public $pattern;
+  public $pickupMethod;
+  public $pickupSla;
   protected $priceType = 'Google_Service_ShoppingContent_Price';
   protected $priceDataType = '';
   protected $productDetailsType = 'Google_Service_ShoppingContent_ProductProductDetail';
@@ -122,6 +127,14 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
   public function getAdditionalImageLinks()
   {
     return $this->additionalImageLinks;
+  }
+  public function setAdditionalSizeType($additionalSizeType)
+  {
+    $this->additionalSizeType = $additionalSizeType;
+  }
+  public function getAdditionalSizeType()
+  {
+    return $this->additionalSizeType;
   }
   public function setAdsGrouping($adsGrouping)
   {
@@ -469,6 +482,14 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
   {
     return $this->link;
   }
+  public function setLinkTemplate($linkTemplate)
+  {
+    $this->linkTemplate = $linkTemplate;
+  }
+  public function getLinkTemplate()
+  {
+    return $this->linkTemplate;
+  }
   /**
    * @param Google_Service_ShoppingContent_LoyaltyPoints
    */
@@ -531,6 +552,14 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
   {
     return $this->mobileLink;
   }
+  public function setMobileLinkTemplate($mobileLinkTemplate)
+  {
+    $this->mobileLinkTemplate = $mobileLinkTemplate;
+  }
+  public function getMobileLinkTemplate()
+  {
+    return $this->mobileLinkTemplate;
+  }
   public function setMpn($mpn)
   {
     $this->mpn = $mpn;
@@ -562,6 +591,22 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
   public function getPattern()
   {
     return $this->pattern;
+  }
+  public function setPickupMethod($pickupMethod)
+  {
+    $this->pickupMethod = $pickupMethod;
+  }
+  public function getPickupMethod()
+  {
+    return $this->pickupMethod;
+  }
+  public function setPickupSla($pickupSla)
+  {
+    $this->pickupSla = $pickupSla;
+  }
+  public function getPickupSla()
+  {
+    return $this->pickupSla;
   }
   /**
    * @param Google_Service_ShoppingContent_Price

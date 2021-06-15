@@ -110,6 +110,32 @@ class Google_Service_Spanner_Resource_ProjectsInstancesDatabases extends Google_
     return $this->call('getIamPolicy', array($params), "Google_Service_Spanner_Policy");
   }
   /**
+   * Request a specific scan with Database-specific data for Cloud Key Visualizer.
+   * (databases.getScans)
+   *
+   * @param string $name Required. The unique name of the scan containing the
+   * requested information, specific to the Database service implementing this
+   * interface.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string endTime The upper bound for the time range to retrieve Scan
+   * data for.
+   * @opt_param string startTime These fields restrict the Database-specific
+   * information returned in the `Scan.data` field. If a `View` is provided that
+   * does not include the `Scan.data` field, these are ignored. This range of time
+   * must be entirely contained within the defined time range of the targeted
+   * scan. The lower bound for the time range to retrieve Scan data for.
+   * @opt_param string view Specifies which parts of the Scan should be returned
+   * in the response. Note, if left unspecified, the FULL view is assumed.
+   * @return Google_Service_Spanner_Scan
+   */
+  public function getScans($name, $optParams = array())
+  {
+    $params = array('name' => $name);
+    $params = array_merge($params, $optParams);
+    return $this->call('getScans', array($params), "Google_Service_Spanner_Scan");
+  }
+  /**
    * Lists Cloud Spanner databases. (databases.listProjectsInstancesDatabases)
    *
    * @param string $parent Required. The instance whose databases should be

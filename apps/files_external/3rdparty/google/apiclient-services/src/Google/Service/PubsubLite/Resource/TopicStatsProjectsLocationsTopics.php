@@ -60,4 +60,20 @@ class Google_Service_PubsubLite_Resource_TopicStatsProjectsLocationsTopics exten
     $params = array_merge($params, $optParams);
     return $this->call('computeMessageStats', array($params), "Google_Service_PubsubLite_ComputeMessageStatsResponse");
   }
+  /**
+   * Compute the corresponding cursor for a publish or event time in a topic
+   * partition. (topics.computeTimeCursor)
+   *
+   * @param string $topic Required. The topic for which we should compute the
+   * cursor.
+   * @param Google_Service_PubsubLite_ComputeTimeCursorRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_PubsubLite_ComputeTimeCursorResponse
+   */
+  public function computeTimeCursor($topic, Google_Service_PubsubLite_ComputeTimeCursorRequest $postBody, $optParams = array())
+  {
+    $params = array('topic' => $topic, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('computeTimeCursor', array($params), "Google_Service_PubsubLite_ComputeTimeCursorResponse");
+  }
 }

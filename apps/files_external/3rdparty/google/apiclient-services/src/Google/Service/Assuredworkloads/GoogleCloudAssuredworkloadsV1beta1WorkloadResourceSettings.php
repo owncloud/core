@@ -17,9 +17,18 @@
 
 class Google_Service_Assuredworkloads_GoogleCloudAssuredworkloadsV1beta1WorkloadResourceSettings extends Google_Model
 {
+  public $displayName;
   public $resourceId;
   public $resourceType;
 
+  public function setDisplayName($displayName)
+  {
+    $this->displayName = $displayName;
+  }
+  public function getDisplayName()
+  {
+    return $this->displayName;
+  }
   public function setResourceId($resourceId)
   {
     $this->resourceId = $resourceId;

@@ -27,11 +27,10 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsHl7V2Stor
 {
   /**
    * Parses and stores an HL7v2 message. This method triggers an asynchronous
-   * notification to any Cloud Pub/Sub topic configured in
-   * projects.locations.datasets.hl7V2Stores.Hl7V2NotificationConfig, if the
-   * filtering matches the message. If an MLLP adapter is configured to listen to
-   * a Cloud Pub/Sub topic, the adapter transmits the message when a notification
-   * is received. (messages.create)
+   * notification to any Pub/Sub topic configured in
+   * Hl7V2Store.Hl7V2NotificationConfig, if the filtering matches the message. If
+   * an MLLP adapter is configured to listen to a Pub/Sub topic, the adapter
+   * transmits the message when a notification is received. (messages.create)
    *
    * @param string $parent The name of the dataset this message belongs to.
    * @param Google_Service_CloudHealthcare_CreateMessageRequest $postBody
@@ -75,14 +74,14 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsHl7V2Stor
   }
   /**
    * Parses and stores an HL7v2 message. This method triggers an asynchronous
-   * notification to any Cloud Pub/Sub topic configured in
-   * projects.locations.datasets.hl7V2Stores.Hl7V2NotificationConfig, if the
-   * filtering matches the message. If an MLLP adapter is configured to listen to
-   * a Cloud Pub/Sub topic, the adapter transmits the message when a notification
-   * is received. This method also generates a response containing an HL7v2
-   * acknowledgement (`ACK`) message when successful or a negative acknowledgement
-   * (`NACK`) message in case of error, suitable for replying to HL7v2 interface
-   * systems that expect these acknowledgements. (messages.ingest)
+   * notification to any Pub/Sub topic configured in
+   * Hl7V2Store.Hl7V2NotificationConfig, if the filtering matches the message. If
+   * an MLLP adapter is configured to listen to a Pub/Sub topic, the adapter
+   * transmits the message when a notification is received. If the method is
+   * successful, it generates a response containing an HL7v2 acknowledgment
+   * (`ACK`) message. If the method encounters an error, it returns a negative
+   * acknowledgment (`NACK`) message. This behavior is suitable for replying to
+   * HL7v2 interface systems that expect these acknowledgments. (messages.ingest)
    *
    * @param string $parent The name of the HL7v2 store this message belongs to.
    * @param Google_Service_CloudHealthcare_IngestMessageRequest $postBody

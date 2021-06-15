@@ -52,6 +52,8 @@ class Google_Service_Dfareporting_Campaign extends Google_Collection
   public $kind;
   protected $lastModifiedInfoType = 'Google_Service_Dfareporting_LastModifiedInfo';
   protected $lastModifiedInfoDataType = '';
+  protected $measurementPartnerLinkType = 'Google_Service_Dfareporting_MeasurementPartnerCampaignLink';
+  protected $measurementPartnerLinkDataType = '';
   public $name;
   public $nielsenOcrEnabled;
   public $startDate;
@@ -307,6 +309,20 @@ class Google_Service_Dfareporting_Campaign extends Google_Collection
   public function getLastModifiedInfo()
   {
     return $this->lastModifiedInfo;
+  }
+  /**
+   * @param Google_Service_Dfareporting_MeasurementPartnerCampaignLink
+   */
+  public function setMeasurementPartnerLink(Google_Service_Dfareporting_MeasurementPartnerCampaignLink $measurementPartnerLink)
+  {
+    $this->measurementPartnerLink = $measurementPartnerLink;
+  }
+  /**
+   * @return Google_Service_Dfareporting_MeasurementPartnerCampaignLink
+   */
+  public function getMeasurementPartnerLink()
+  {
+    return $this->measurementPartnerLink;
   }
   public function setName($name)
   {

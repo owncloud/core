@@ -19,6 +19,7 @@ class Google_Service_GKEHub_Authority extends Google_Model
 {
   public $identityProvider;
   public $issuer;
+  public $oidcJwks;
   public $workloadIdentityPool;
 
   public function setIdentityProvider($identityProvider)
@@ -36,6 +37,14 @@ class Google_Service_GKEHub_Authority extends Google_Model
   public function getIssuer()
   {
     return $this->issuer;
+  }
+  public function setOidcJwks($oidcJwks)
+  {
+    $this->oidcJwks = $oidcJwks;
+  }
+  public function getOidcJwks()
+  {
+    return $this->oidcJwks;
   }
   public function setWorkloadIdentityPool($workloadIdentityPool)
   {

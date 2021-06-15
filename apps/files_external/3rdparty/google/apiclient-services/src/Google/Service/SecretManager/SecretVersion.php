@@ -19,6 +19,7 @@ class Google_Service_SecretManager_SecretVersion extends Google_Model
 {
   public $createTime;
   public $destroyTime;
+  public $etag;
   public $name;
   protected $replicationStatusType = 'Google_Service_SecretManager_ReplicationStatus';
   protected $replicationStatusDataType = '';
@@ -39,6 +40,14 @@ class Google_Service_SecretManager_SecretVersion extends Google_Model
   public function getDestroyTime()
   {
     return $this->destroyTime;
+  }
+  public function setEtag($etag)
+  {
+    $this->etag = $etag;
+  }
+  public function getEtag()
+  {
+    return $this->etag;
   }
   public function setName($name)
   {

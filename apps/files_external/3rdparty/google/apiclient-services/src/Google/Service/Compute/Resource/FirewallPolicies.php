@@ -233,8 +233,8 @@ class Google_Service_Compute_Resource_FirewallPolicies extends Google_Service_Re
     return $this->call('insert', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Lists all the policies that have been configured for the specified project.
-   * (firewallPolicies.listFirewallPolicies)
+   * Lists all the policies that have been configured for the specified folder or
+   * organization. (firewallPolicies.listFirewallPolicies)
    *
    * @param array $optParams Optional parameters.
    *

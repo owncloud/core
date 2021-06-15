@@ -25,6 +25,7 @@ class Google_Service_Bigquery_ExternalDataConfiguration extends Google_Collectio
   public $connectionId;
   protected $csvOptionsType = 'Google_Service_Bigquery_CsvOptions';
   protected $csvOptionsDataType = '';
+  public $decimalTargetTypes;
   protected $googleSheetsOptionsType = 'Google_Service_Bigquery_GoogleSheetsOptions';
   protected $googleSheetsOptionsDataType = '';
   protected $hivePartitioningOptionsType = 'Google_Service_Bigquery_HivePartitioningOptions';
@@ -89,6 +90,14 @@ class Google_Service_Bigquery_ExternalDataConfiguration extends Google_Collectio
   public function getCsvOptions()
   {
     return $this->csvOptions;
+  }
+  public function setDecimalTargetTypes($decimalTargetTypes)
+  {
+    $this->decimalTargetTypes = $decimalTargetTypes;
+  }
+  public function getDecimalTargetTypes()
+  {
+    return $this->decimalTargetTypes;
   }
   /**
    * @param Google_Service_Bigquery_GoogleSheetsOptions

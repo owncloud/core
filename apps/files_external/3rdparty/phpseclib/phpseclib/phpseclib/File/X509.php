@@ -670,7 +670,7 @@ class X509
      */
     private function mapOutExtensions(&$root, $path)
     {
-        $extensions = &$this->subArray($root, $path);
+        $extensions = &$this->subArray($root, $path, !empty($this->extensionValues));
 
         foreach ($this->extensionValues as $id => $data) {
             extract($data);
@@ -679,16 +679,15 @@ class X509
                 'extnValue' => $value,
                 'critical' => $critical
             ];
-            if (!$replace) {
-                $extensions[] = $newext;
-                continue;
+            if ($replace) {
+                foreach ($extensions as $key => $value) {
+                    if ($value['extnId'] == $id) {
+                        $extensions[$key] = $newext;
+                        continue 2;
+                   }
+                }
             }
-            foreach ($extensions as $key => $value) {
-                if ($value['extnId'] == $id) {
-                    $extensions[$key] = $newext;
-                    break;
-               }
-            }
+            $extensions[] = $newext;
         }
 
         if (is_array($extensions)) {
@@ -2616,7 +2615,7 @@ class X509
         if ($signatureAlgorithm != 'id-RSASSA-PSS') {
             $signatureAlgorithm = ['algorithm' => $signatureAlgorithm];
         } else {
-            $r = PSS::load($issuer->privateKey->toString('PSS'));
+            $r = PSS::load($issuer->privateKey->withPassword()->toString('PSS'));
             $signatureAlgorithm = [
                 'algorithm' => 'id-RSASSA-PSS',
                 'parameters' => PSS::savePSSParams($r)
