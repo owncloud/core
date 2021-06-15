@@ -419,6 +419,7 @@ Details
    the password field and placed under the input fields.
 
    https://github.com/owncloud/core/pull/38506
+   https://github.com/owncloud/core/pull/38853
 
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
 
