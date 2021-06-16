@@ -17,5 +17,7 @@ script('settings', 'panels/license');
 		<?php p($l->t('Enter a new license:')); ?>
 		<input id="license_input_text" type="text" style="width: 350px; max-width: 100%" />
 		<input id="license_input_button" type="button" value="<?php p($l->t('Save')); ?>"/>
+		<br>
+		<input id="license_remove_button" type="button" value="<?php p($l->t('Remove current license key')); ?>"/>
 	</div>
 </div>

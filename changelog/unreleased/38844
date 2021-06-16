@@ -1,0 +1,9 @@
+Enhancement: Introduce a remove license button in WebUI
+
+Before this PR, it was not possible, to remove any ownCloud license.
+This lead to an issue if someone enters an invalid license, a permanent
+message indicator was shown in the WebUI.
+With this PR it is possible to remove the license.
+
+https://github.com/owncloud/core/issues/38843
+https://github.com/owncloud/core/pull/38844

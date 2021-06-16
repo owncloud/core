@@ -9,5 +9,14 @@ $(document).ready(function() {
 				location.reload();
 			});
 		}
-	})
+	});
+
+	$('#license_remove_button').click(function () {
+			$.ajax({
+				url: OC.generateUrl('/license/license'),
+				type: 'DELETE',
+			}).done(function () {
+				location.reload();
+			});
+	});
 });

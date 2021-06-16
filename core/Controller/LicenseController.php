@@ -62,6 +62,15 @@ class LicenseController extends Controller {
 	}
 
 	/**
+	 * Remove the license string
+	 * @return JSONResponse
+	 */
+	public function removeLicense() {
+		$this->licenseManager->removeLicenseString();
+		return new JSONResponse();
+	}
+
+	/**
 	 * Get the information about the state of the license for the target app.
 	 * @param string $app
 	 * @return JSONResponse

@@ -221,6 +221,17 @@ class LicenseManagerTest extends TestCase {
 		$this->assertNull($this->licenseManager->setLicenseString($dummyLicense));
 	}
 
+	public function testRemoveLicenseString() {
+		$this->licenseFetcher->expects($this->once())
+			->method('removeOwncloudLicense');
+
+		$this->config->expects($this->once())
+			->method('deleteAppValues')
+			->with('core-license-complains');
+
+		$this->assertNull($this->licenseManager->removeLicenseString());
+	}
+
 	public function testSetLicenseStringWithNull() {
 		$this->licenseFetcher->expects($this->never())
 			->method('setOwncloudLicense');
