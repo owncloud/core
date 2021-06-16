@@ -63,6 +63,7 @@ Summary
 * Enhancement - Improve admin external storage settings UI: [#38795](https://github.com/owncloud/core/pull/38795)
 * Enhancement - Introduce new state to prevent scanning of shallow scanned folders: [#38804](https://github.com/owncloud/core/pull/38804)
 * Enhancement - Improve performance of the SMB log when it is inactive: [#38819](https://github.com/owncloud/core/pull/38819)
+* Enhancement - Introduce the patch for CVE-2019-11358: [#38841](https://github.com/owncloud/core/pull/38841)
 
 Details
 -------
@@ -576,6 +577,16 @@ Details
    connector is improved.
 
    https://github.com/owncloud/core/pull/38819
+
+* Enhancement - Introduce the patch for CVE-2019-11358: [#38841](https://github.com/owncloud/core/pull/38841)
+
+   Patched jQuery's `$.extend` method. The code in core doesn't contain any vulnerable
+   invocations of `$.extend` this is just a preventive patch.
+
+   https://github.com/owncloud/core/pull/38841
+   https://nvd.nist.gov/vuln/detail/CVE-2019-11358
+   https://blog.jquery.com/2019/04/10/jquery-3-4-0-released/
+   https://github.com/DanielRuf/snyk-js-jquery-174006?files=1
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================

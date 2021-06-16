@@ -61,6 +61,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Improve admin external storage settings UI: <a href="https://github.com/owncloud/core/pull/38795">#38795</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Introduce new state to prevent scanning of shallow scanned folders: <a href="https://github.com/owncloud/core/pull/38804">#38804</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Improve performance of the SMB log when it is inactive: <a href="https://github.com/owncloud/core/pull/38819">#38819</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Introduce the patch for CVE-2019-11358: <a href="https://github.com/owncloud/core/pull/38841">#38841</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
@@ -554,6 +555,14 @@
    connector is improved.
             </p>
             <p>https://github.com/owncloud/core/pull/38819<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Introduce the patch for CVE-2019-11358: <a href="https://github.com/owncloud/core/pull/38841">#38841</a></p>
+            <p>Patched jQuery's `$.extend` method. The code in core doesn't contain any vulnerable
+   invocations of `$.extend` this is just a preventive patch.
+            </p>
+            <p>https://github.com/owncloud/core/pull/38841<br></p>
+            <p>https://nvd.nist.gov/vuln/detail/CVE-2019-11358<br>https://blog.jquery.com/2019/04/10/jquery-3-4-0-released/<br>https://github.com/DanielRuf/snyk-js-jquery-174006?files=1<br></p>
         </li>
     </ul>
     <h2 id="10.7.0" class="version"> Changelog for ownCloud Core [10.7.0] (2021-03-26)</h2>
