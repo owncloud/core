@@ -34,7 +34,6 @@ Summary
 * Bugfix - Prevent files:checksum:verify from crashing on exception: [#38785](https://github.com/owncloud/core/pull/38785)
 * Bugfix - Include incoming and parent permissions in Share UI subfolder reshares: [#38788](https://github.com/owncloud/core/pull/38788)
 * Bugfix - Always allow renaming shared mounts: [#38794](https://github.com/owncloud/core/pull/38794)
-* Bugfix - Report share expiration at end of day: [#38813](https://github.com/owncloud/core/pull/38813)
 * Bugfix - Adjust position of the share autocomplete element: [#38831](https://github.com/owncloud/core/pull/38831)
 * Change - Update Symfony components: [#38797](https://github.com/owncloud/core/pull/38797)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
@@ -289,15 +288,6 @@ Details
    https://github.com/owncloud/enterprise/issues/4582
    https://github.com/owncloud/core/issues/30325
    https://github.com/owncloud/core/pull/38794
-
-* Bugfix - Report share expiration at end of day: [#38813](https://github.com/owncloud/core/pull/38813)
-
-   If shares have an expiration date set then they are valid until the end of the specified date. But
-   shares report the expiration like 2021-06-15 00:00:00. This has caused some confusion about
-   when the share actually stops working. The expiration time is now reported as 23:59:59.
-
-   https://github.com/owncloud/enterprise/issues/4454
-   https://github.com/owncloud/core/pull/38813
 
 * Bugfix - Adjust position of the share autocomplete element: [#38831](https://github.com/owncloud/core/pull/38831)
 
