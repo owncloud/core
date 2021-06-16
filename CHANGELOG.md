@@ -35,6 +35,7 @@ Summary
 * Bugfix - Include incoming and parent permissions in Share UI subfolder reshares: [#38788](https://github.com/owncloud/core/pull/38788)
 * Bugfix - Always allow renaming shared mounts: [#38794](https://github.com/owncloud/core/pull/38794)
 * Bugfix - Adjust position of the share autocomplete element: [#38831](https://github.com/owncloud/core/pull/38831)
+* Bugfix - Fix docs link to federated sharing docs: [#38859](https://github.com/owncloud/core/issues/38859)
 * Change - Update Symfony components: [#38797](https://github.com/owncloud/core/pull/38797)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
@@ -298,6 +299,14 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4603
    https://github.com/owncloud/core/pull/38831
+
+* Bugfix - Fix docs link to federated sharing docs: [#38859](https://github.com/owncloud/core/issues/38859)
+
+   The link in the share dialogue on the info icon was broken. Was fixed by pointing to the correct
+   config value.
+
+   https://github.com/owncloud/core/issues/38859
+   https://github.com/owncloud/core/pull/38860
 
 * Change - Update Symfony components: [#38797](https://github.com/owncloud/core/pull/38797)
 
