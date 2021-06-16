@@ -1060,13 +1060,6 @@ trait Sharing {
 		$dateFieldsArrayToConvert = ['expiration', 'original_date', 'new_date'];
 		//do not try to convert empty date
 		if ((string) \in_array($field, \array_merge($dateFieldsArrayToConvert)) && !empty($contentExpected)) {
-			if ($field === 'expiration') {
-				// shares expire at the end of the expiry day
-				// responses indicate this by including a time of 23:59:59
-				$timeOffset = "23:59:59";
-			} else {
-				$timeOffset = "00:00:00";
-			}
 			$timestamp = \strtotime($contentExpected, $this->getServerShareTimeFromLastResponse());
 			// strtotime returns false if it failed to parse, just leave it as it is in that condition
 			if ($timestamp !== false) {
@@ -1074,7 +1067,7 @@ trait Sharing {
 					= \date(
 						'Y-m-d',
 						$timestamp
-					) . " $timeOffset";
+					) . " 00:00:00";
 			}
 		}
 		$contentExpected = (string) $contentExpected;
