@@ -1,0 +1,6 @@
+Bugfix: Fix docs link to federated sharing docs
+
+The link in the share dialogue on the info icon was broken. Was fixed by pointing to the correct config value.
+
+https://github.com/owncloud/core/issues/38859
+https://github.com/owncloud/core/pull/38860
