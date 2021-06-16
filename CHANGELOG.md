@@ -63,6 +63,7 @@ Summary
 * Enhancement - Introduce new state to prevent scanning of shallow scanned folders: [#38804](https://github.com/owncloud/core/pull/38804)
 * Enhancement - Improve performance of the SMB log when it is inactive: [#38819](https://github.com/owncloud/core/pull/38819)
 * Enhancement - Introduce the patch for CVE-2019-11358: [#38841](https://github.com/owncloud/core/pull/38841)
+* Enhancement - Introduce a remove license button in WebUI: [#38843](https://github.com/owncloud/core/issues/38843)
 
 Details
 -------
@@ -577,6 +578,15 @@ Details
    https://nvd.nist.gov/vuln/detail/CVE-2019-11358
    https://blog.jquery.com/2019/04/10/jquery-3-4-0-released/
    https://github.com/DanielRuf/snyk-js-jquery-174006?files=1
+
+* Enhancement - Introduce a remove license button in WebUI: [#38843](https://github.com/owncloud/core/issues/38843)
+
+   Before this PR, it was not possible, to remove any ownCloud license. This lead to an issue if
+   someone enters an invalid license, a permanent message indicator was shown in the WebUI. With
+   this PR it is possible to remove the license.
+
+   https://github.com/owncloud/core/issues/38843
+   https://github.com/owncloud/core/pull/38844
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================
