@@ -233,7 +233,6 @@
     "For larger installations we recommend to choose a different database backend." : "Per d'installacions mai voluminosas, vos conselham d'utilizar un autre gestionari de banca de donadas.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "En particular se utilizatz lo client de burèu per sincronizar vòstras donadas : l'utilizacion de SQLite es alara desconselhada.",
     "Finish setup" : "Acabar l'installacion",
-    "Finishing …" : "Finalizacion …",
     "Need help?" : "Besonh d'ajuda ?",
     "See the documentation" : "Legir la documentacion",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Bonjorn,<br><br>Vos informam que %s a partejat <strong>%s</strong> amb vos.<br><a href=\"%s\">Clicatz aicí per i accedir !</a><br><br>",

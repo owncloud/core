@@ -193,7 +193,6 @@
     "For larger installations we recommend to choose a different database backend." : "За веће инсталације препоручујемо да изаберете другу позадину базе података.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Нарочито ако се користи клијент програм у графичком окружењу, коришћење СКуЛајта није препоручљиво.",
     "Finish setup" : "Заврши подешавање",
-    "Finishing …" : "Завршавам…",
     "Need help?" : "Треба вам помоћ?",
     "See the documentation" : "Погледајте документацију",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Поздрав,<br><br>само вас обавештавам да %s дели <strong>%s</strong> са вама.<br><a href=\"%s\">Погледајте!</a><br><br>",

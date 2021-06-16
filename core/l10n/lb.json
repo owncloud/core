@@ -207,7 +207,6 @@
     "SQLite will be used as database." : "SQLite wäert als Datebank benotzt ginn.",
     "For larger installations we recommend to choose a different database backend." : "Fir méi grouss Installatiounen recommandéiere mir fir en aneren Datebanken Backend ze benotzen.",
     "Finish setup" : "Installatioun ofschléissen",
-    "Finishing …" : "Schléissen of ...",
     "Need help?" : "Brauchs de Hëllef?",
     "See the documentation" : "Kuck an der Dokumentatioun",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Hallo,<br><br>ech wëll just Bescheed soen dass den/d' %s <strong>%s</strong> mat dir gedeelt huet.<br><a href=\"%s\">Ukucken!</a><br><br>",

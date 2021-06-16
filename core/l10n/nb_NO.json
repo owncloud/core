@@ -291,7 +291,6 @@
     "For larger installations we recommend to choose a different database backend." : "For større installasjoner anbefaler vi å velge en annen database.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "SQLite er spesielt frarådet om man bruker desktopklienten til filsynkronisering",
     "Finish setup" : "Fullfør oppsetting",
-    "Finishing …" : "Ferdigstiller ...",
     "Need help?" : "Trenger du hjelp?",
     "See the documentation" : "Se dokumentasjonen",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Hei,<br><br>Dette er en beskjed om at %s delte <strong>%s</strong> med deg.<br><a href=\"%s\">Vis den!</a><br><br>",

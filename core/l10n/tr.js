@@ -305,7 +305,6 @@ OC.L10N.register(
     "For larger installations we recommend to choose a different database backend." : "Daha büyük kurulumlar için farklı bir veritabanı arka ucu seçmenizi öneriyoruz",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Özellikle dosya eşitleme için masaüstü istemcisi kullanılırken SQLite kullanımı önerilmez.",
     "Finish setup" : "Kurulumu tamamla",
-    "Finishing …" : "Tamamlanıyor ...",
     "Need help?" : "Yardım mı lazım?",
     "See the documentation" : "Belgelendirmeye bak",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Merhaba, <br><br>%s kullanıcısının sizinle <strong>%s</strong> paylaşımında bulunduğunu bildirmek istedik.<br><a href=\"%s\">Paylaşımı gör!</a><br><br>",

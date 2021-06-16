@@ -303,7 +303,6 @@ OC.L10N.register(
     "For larger installations we recommend to choose a different database backend." : "对于更大的安装，我们建议选择一个不同的数据库后端。",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "特别当使用桌面客户端来同步文件时，不鼓励使用 SQLite 。",
     "Finish setup" : "安装完成",
-    "Finishing …" : "即将完成 ...",
     "Need help?" : "需要帮助？",
     "See the documentation" : "查看文档",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "嗨、你好,<br><br>只想让你知道 %s 分享了 <strong>%s</strong> 给你。<br><a href=\"%s\">现在查看！</a><br><br>",

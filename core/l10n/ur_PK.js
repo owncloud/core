@@ -95,7 +95,6 @@ OC.L10N.register(
     "Database tablespace" : "ڈیٹابیس ٹیبل سپیس",
     "Database host" : "ڈیٹابیس ہوسٹ",
     "Finish setup" : "سیٹ اپ ختم کریں",
-    "Finishing …" : "تکمیل ...",
     "Log out" : "لاگ آؤٹ",
     "Search" : "تلاش",
     "Alternative Logins" : "متبادل لاگ ان ",

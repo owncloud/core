@@ -249,7 +249,6 @@ OC.L10N.register(
     "For larger installations we recommend to choose a different database backend." : "Pro installationes major nos recommenda seliger un altere motor de base de datos.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Particularmente quando usar le cliente scriptorio pro synchronisar files, le uso de SQLite es discoragiate.",
     "Finish setup" : "Terminar configuration",
-    "Finishing …" : "Terminante ...",
     "Need help?" : "Require adjuta?",
     "See the documentation" : "Vide le documentation",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Salute,<br><br>isto es pro informar te que %s ha compartite <strong>%s</strong> con te.<br><a href=\"%s\">Vide lo!</a><br><br>",

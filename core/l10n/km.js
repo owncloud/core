@@ -101,7 +101,6 @@ OC.L10N.register(
     "Database name" : "ឈ្មោះ​មូលដ្ឋាន​ទិន្នន័យ",
     "Database host" : "ម៉ាស៊ីន​មូលដ្ឋាន​ទិន្នន័យ",
     "Finish setup" : "បញ្ចប់​ការ​ដំឡើង",
-    "Finishing …" : "កំពុង​បញ្ចប់ ...",
     "Log out" : "ចាក​ចេញ",
     "Search" : "ស្វែង​រក",
     "Login" : "ចូល",

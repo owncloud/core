@@ -240,7 +240,6 @@ OC.L10N.register(
     "For larger installations we recommend to choose a different database backend." : "Per a instal·lacions més grans es recomana triar una base de dades diferent.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "L'ús de SQLite està desaconsellat especialment quan s'usa el client d'escriptori per sincronitzar els fitxers.",
     "Finish setup" : "Acaba la configuració",
-    "Finishing …" : "Acabant...",
     "Need help?" : "Necessites ajuda?",
     "See the documentation" : "Consulti la documentació",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Ei, <br><br>només fer-vos saber que %s us ha comparti <strong>%s</strong>. <br><a href=\"%s\">Mireu-ho!</a>",

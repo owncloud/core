@@ -130,7 +130,6 @@ OC.L10N.register(
     "Database tablespace" : "ದತ್ತಸಂಚಯದ tablespace",
     "Database host" : "ದತ್ತಸಂಚಯದ ಅತಿಥೆಯ",
     "Finish setup" : "ಹೊಂದಾಣಿಕೆಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ",
-    "Finishing …" : "ಪೂರ್ಣಗೊಳಿಸಲಾಗುತ್ತಿದೆ ...",
     "Log out" : "ಈ ಆವೃತ್ತಿ ಇಂದ ನಿರ್ಗಮಿಸಿ",
     "Search" : "﻿ಹುಡುಕು",
     "Please contact your administrator." : "ನಿಮ್ಮ ನಿರ್ವಾಹಕರನ್ನು ಸಂಪರ್ಕಿಸಲು ಕೋರಲಾಗಿದೆ.",

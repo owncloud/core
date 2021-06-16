@@ -297,7 +297,6 @@ OC.L10N.register(
     "For larger installations we recommend to choose a different database backend." : "За поголеми инсталации ви препорачуваме да изберете back-end база на податоци.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Особено кога се користи десктопот клиент за синхронизација на датотеката, употребата на SQLite е обесхрабрена.",
     "Finish setup" : "Заврши го подесувањето",
-    "Finishing …" : "Завршувам ...",
     "Need help?" : "Ви треба помош?",
     "See the documentation" : "Види ја документацијата",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Здраво,<br><br>Ве известуваме дека %s ви испрати линк од <strong>%s</strong>.<br><a href=\"%s\">Презвеми!</a><br><br>",

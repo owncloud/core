@@ -308,7 +308,6 @@ OC.L10N.register(
     "For larger installations we recommend to choose a different database backend." : "Pro větší instalace doporučujeme vybrat jiné databázové řešení.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Obzvláště při používání klientské aplikace pro synchronizaci s desktopem není SQLite doporučeno.",
     "Finish setup" : "Dokončit nastavení",
-    "Finishing …" : "Dokončuji...",
     "Need help?" : "Potřebujete pomoc?",
     "See the documentation" : "Shlédnout dokumentaci",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Ahoj,<br><br>jen ti dávám vědět, že s tebou %s sdílí <strong>%s</strong>.<br><a href=\"%s\">Zkontroluj to!</a><br><br>",

@@ -294,7 +294,6 @@
     "For larger installations we recommend to choose a different database backend." : "Nagyobb telepítésekhez ajánlott egy másik adatbázis háttérkiszolgáló használata.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Amikor az asztali klienset használja fálj szinkronizációra, akkor az SQLite használata nem ajánlott.",
     "Finish setup" : "A beállítások befejezése",
-    "Finishing …" : "Befejezés ...",
     "Need help?" : "Segítségre van szüksége?",
     "See the documentation" : "Nézze meg a dokumentációt",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Üdvözöljük!<br /><br />\n\nÉrtesítjük, hogy %s megosztotta Önnel a következőt: <strong>%s</strong><br />\n<a href=\"%s\">Itt nézheti meg.</a><br /><br />",

@@ -312,7 +312,6 @@
     "For larger installations we recommend to choose a different database backend." : "لعمليات التثبيت الكبيرة، نوصي باختيار خلفية قاعدة بيانات مختلفة.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "لا سيما عند استخدام عميل سطح المكتب لمزامنة الملف، لا يُنصح باستخدام SQLite.",
     "Finish setup" : "إنهاء الإعداد",
-    "Finishing …" : "جارٍ الإنهاء...",
     "Need help?" : "هل تحتاج إلى مساعدة؟",
     "See the documentation" : "راجع المستندات",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "مرحبًا،<br><br>نود أن نخبرك فقط أن %s شارك <strong>%s</strong> معك.<br><a href=\"%s\">اعرضه!</a><br><br>",

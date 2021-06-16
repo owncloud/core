@@ -209,7 +209,6 @@ OC.L10N.register(
     "Database host" : "Duomenų bazės serveris",
     "SQLite will be used as database." : "Bus naudojama SQLite bazė.",
     "Finish setup" : "Baigti diegimą",
-    "Finishing …" : "Baigiama ...",
     "Need help?" : "Reikia pagalbos?",
     "See the documentation" : "Žiūrėti dokumentaciją",
     "Menu" : "Meniu",

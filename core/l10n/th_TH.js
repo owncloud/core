@@ -314,7 +314,6 @@ OC.L10N.register(
     "For larger installations we recommend to choose a different database backend." : "สำหรับการติดตั้งขนาดใหญ่เราขอแนะนำให้เลือกแบ็กเอนด์ฐานข้อมูลที่แตกต่างกัน",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "เมื่อใช้โปรแกรมบนเดสก์ท็อปประสานข้อมูลด้วยฐานข้อมูล SQLite",
     "Finish setup" : "ติดตั้งเลย",
-    "Finishing …" : "เสร็จสิ้น ...",
     "Need help?" : "ต้องการความช่วยเหลือ?",
     "See the documentation" : "ดูได้จากเอกสาร",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "นี่คุณ,<br><br>อยากให้คุณทราบว่า %s ได้แชร์ <strong>%s</strong> กับคุณ <br><a href=\"%s\">คลิกดูที่นี่</a><br><br>",

@@ -257,7 +257,6 @@ OC.L10N.register(
     "Performance warning" : "Kiiruse hoiatus",
     "SQLite will be used as database." : "Andmebaasina kasutatakse SQLite",
     "Finish setup" : "Lõpeta seadistamine",
-    "Finishing …" : "Lõpetamine ...",
     "Need help?" : "Vajad abi?",
     "See the documentation" : "Vaata dokumentatsiooni",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Hei,<br><br>annan teada, et %s jagas sinuga <strong>%s</strong>. <a href=\"%s\">Vaata seda!</a><br><br>",

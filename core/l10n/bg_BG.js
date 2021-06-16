@@ -303,7 +303,6 @@ OC.L10N.register(
     "For larger installations we recommend to choose a different database backend." : "За по- големи инсталации Ви препоръчваме да изберете друг сървър за бази данни.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Особено, когато използвате клиент за работен плот за синхронизация, използването на SQLite e непрепоръчително.",
     "Finish setup" : "Завършване на настройките",
-    "Finishing …" : "Завършване...",
     "Need help?" : "Имате нужда от помощ?",
     "See the documentation" : "Разгледайте документацията",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Здрасти,<br><br>само да те уведомя, че %s сподели <strong>%s</strong> с теб.\n<br><a href=\"%s\">Разгледай го!</a><br><br>.",

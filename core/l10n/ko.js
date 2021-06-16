@@ -285,7 +285,6 @@ OC.L10N.register(
     "For larger installations we recommend to choose a different database backend." : "대규모 파일을 관리하려고 한다면 다른 데이터베이스 백엔드를 선택할 것을 권장합니다.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "특히 파일 동기화를 위해 데스크톱 클라이언트를 사용할 예정이면 SQLite를 사용하지 않는 것이 좋습니다.",
     "Finish setup" : "설치 완료",
-    "Finishing …" : "완료 중 …",
     "Need help?" : "도움이 필요한가요?",
     "See the documentation" : "문서 보기",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "안녕하세요,<br><br>%s 님이 <strong>%s</strong>을(를) 공유하였음을 알려 드립니다.<br><a href=\"%s\">보러 가기!</a><br><br>",

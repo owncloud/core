@@ -154,7 +154,6 @@
     "Database host" : "Huésped de la base de datos",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Cuando se utiliza especialmente el cliente de escritorio para la sincronización de archivos, se desaconseja el uso de SQLite.",
     "Finish setup" : "Completar la instalación",
-    "Finishing …" : "Finalizando...",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "¡Hola!<br><br> Sólo te quería informar que %s acaba de compartir <strong>%s</strong> con vos.<br><a href=\"%s\">Verlo!</a><br><br>",
     "Log out" : "Cerrar la sesión",
     "Search" : "Buscar",

@@ -281,7 +281,6 @@ OC.L10N.register(
     "For larger installations we recommend to choose a different database backend." : "Suuria asennuksia varten suositellaan muun tietokannan käyttöä.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Varsinkin työpöytäsovelluksen tiedostosynkronointia käyttäessä SQLiten käyttö ei ole suositeltavaa.",
     "Finish setup" : "Viimeistele asennus",
-    "Finishing …" : "Valmistellaan…",
     "Need help?" : "Tarvitsetko apua?",
     "See the documentation" : "Tutustu dokumentaatioon",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Hei!<br><br>%s jakoi kanssasi kohteen <strong>%s</strong>.<br><a href=\"%s\">Tutustu siihen!</a><br><br>",

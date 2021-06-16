@@ -271,7 +271,6 @@
     "For larger installations we recommend to choose a different database backend." : "Для великих установок ми радимо вибрати іншу базу даних.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Використання SQLite особливо не рекомендується при синхронізації файлів з використанням клієнта для ПК.",
     "Finish setup" : "Завершити встановлення",
-    "Finishing …" : "Завершується ...",
     "Need help?" : "Потрібна допомога?",
     "See the documentation" : "Дивіться документацію",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Агов,<br><br>просто повідомляємо вам, що %s поділився »%s« з вами.<br><a href=\"%s\">Перегляньте!</a><br><br>",

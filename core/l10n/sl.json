@@ -274,7 +274,6 @@
     "For larger installations we recommend to choose a different database backend." : "Za večje namestitve je priporočljivo uporabiti drugo ozadnji program  zbirke podatkov.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Uporaba SQLite ni priporočljiva iz varnostnih razlogov, še posebej če se sistem krajevno usklajuje z namizjem prek odjemalca.",
     "Finish setup" : "Končaj nastavitev",
-    "Finishing …" : "Poteka zaključevanje opravila ...",
     "Need help?" : "Ali potrebujete pomoč?",
     "See the documentation" : "Preverite dokumentacijo",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Pozdravljeni,<br><br>uporabnik %s vam je omogočil souporabo <strong>%s</strong>.<br><a href=\"%s\">Oglejte si vsebino!</a><br><br>",

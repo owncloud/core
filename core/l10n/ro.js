@@ -216,7 +216,6 @@ OC.L10N.register(
     "For larger installations we recommend to choose a different database backend." : "Pentru instalări mai mari recomandăm folosirea altei baze de date ca backend.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "În special atunci când este folosit clientul desktop pentru sincronizarea fișierelor, utilizarea SQLite este nerecomandată.",
     "Finish setup" : "Finalizează instalarea",
-    "Finishing …" : "Se finalizează...",
     "Need help?" : "Ai nevoie de ajutor?",
     "See the documentation" : "Vezi documentația",
     "Menu" : "Meniu",

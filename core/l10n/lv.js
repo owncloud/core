@@ -197,7 +197,6 @@ OC.L10N.register(
     "Database host" : "Datubāzes serveris",
     "SQLite will be used as database." : "SQLite tiks izmantots kā datu bāze.",
     "Finish setup" : "Pabeigt iestatīšanu",
-    "Finishing …" : "Tiek pabeigts…",
     "Need help?" : "Nepieciešama palīdzība?",
     "See the documentation" : "Skatiet dokumentāciju",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "Lai pareizi darbotos, šai lietotnei nepieciešams JavaScript. Lūdzu, {linkstart}iespējojiet JavaScript{linkend} un atkārtoti ielādējiet lapu.",

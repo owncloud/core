@@ -302,7 +302,6 @@
     "For larger installations we recommend to choose a different database backend." : "Για μεγαλύτερες εγκαταστάσεις συνιστούμε να επιλέξετε διαφορετικό σύστημα υποστήριξης βάσης δεδομένων.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Ειδικά όταν χρησιμοποιείτε τον πελάτη για συγχρονισμό στον υπολογιστή σας, δεν συνίσταται η χρήση της SQLite.",
     "Finish setup" : "Ολοκλήρωση εγκατάστασης",
-    "Finishing …" : "Ολοκληρώνεται …",
     "Need help?" : "Χρειάζεστε βοήθεια;",
     "See the documentation" : "Δείτε την τεκμηρίωση",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Γεια χαρά,<br><br>σας ενημερώνουμε πως ο %s μοιράστηκε το<strong>%s</strong> με εσάς.<br><a href=\"%s\">Δείτε το!</a><br><br>",

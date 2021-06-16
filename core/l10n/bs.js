@@ -148,7 +148,6 @@ OC.L10N.register(
     "Database tablespace" : "Tablespace (?) baze podataka",
     "Database host" : "Glavno računalo (host) baze podataka",
     "Finish setup" : "Završite postavke",
-    "Finishing …" : "Završavanje...",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Hej, <br><br> upravo vam javljam da je %s s vama podijelio <strong>%s</strong>.<br><a href=\"%s\">Pogledajte!</a><br><br>",
     "Log out" : "Odjava",
     "Search" : "Potraži",

@@ -299,7 +299,6 @@
     "For larger installations we recommend to choose a different database backend." : "Fyrir stærri uppsetningar mælum við með að velja annan gagnagrunnsbakenda.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Sérstaklega þegar verið er að nota skjáborðsforritið til að samræma skrár, þá er ekki mælt með notkun SQLite.",
     "Finish setup" : "Ljúka uppsetningu",
-    "Finishing …" : "Að klára ...",
     "Need help?" : "Þarftu hjálp?",
     "See the documentation" : "Sjá hjálparskjölin",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Hæ þú,<br><br>bara að láta þig vita að %s deildi <strong>%s</strong> með þér.<br><a href=\"%s\">Skoðaðu það!</a><br><br>",

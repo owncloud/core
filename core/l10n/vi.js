@@ -147,7 +147,6 @@ OC.L10N.register(
     "Database tablespace" : "Cơ sở dữ liệu tablespace",
     "Database host" : "Database host",
     "Finish setup" : "Cài đặt hoàn tất",
-    "Finishing …" : "Đang hoàn thành ...",
     "Log out" : "Đăng xuất",
     "Search" : "Tìm kiếm",
     "Server side authentication failed!" : "Xác thực phía máy chủ không thành công!",

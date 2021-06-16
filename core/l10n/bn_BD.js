@@ -108,7 +108,6 @@ OC.L10N.register(
     "Database tablespace" : "ডাটাবেজ টেবলস্পেস",
     "Database host" : "ডাটাবেজ হোস্ট",
     "Finish setup" : "সেটআপ সুসম্পন্ন কর",
-    "Finishing …" : "সম্পন্ন হচ্ছে....",
     "Log out" : "প্রস্থান",
     "Search" : "অনুসন্ধান",
     "Login" : "প্রবেশ",

@@ -205,7 +205,6 @@ OC.L10N.register(
     "Database tablespace" : "Espacio de tablas de la base de datos",
     "Database host" : "Host de la base de datos",
     "Finish setup" : "Completar la instalación",
-    "Finishing …" : "Finalizando …",
     "Log out" : "Salir",
     "Search" : "Buscar",
     "Server side authentication failed!" : "La autenticación a fallado en el servidor.",

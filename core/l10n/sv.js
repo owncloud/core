@@ -281,7 +281,6 @@ OC.L10N.register(
     "For larger installations we recommend to choose a different database backend." : "För större installationer rekommenderar vi att man väljer en annan databasmotor.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Speciellt när desktop klienten för filsynkronisering används så avråds användande av SQLite.",
     "Finish setup" : "Slutför installation",
-    "Finishing …" : "Slutför ...",
     "Need help?" : "Behöver du hjälp?",
     "See the documentation" : "Kolla dokumentationen",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Hej där,<br><br>ville bara informera dig om att %s delade <strong>%s</strong> med dig.<br><a href=\"%s\">Visa den!</a><br><br>",

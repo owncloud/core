@@ -307,7 +307,6 @@
     "For larger installations we recommend to choose a different database backend." : "Per installazioni più grandi consigliamo di scegliere un motore di database diverso.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "In particolar modo, quando si utilizza il client desktop per la sincronizzazione dei file, l'uso di SQLite è sconsigliato.",
     "Finish setup" : "Termina configurazione",
-    "Finishing …" : "Completamento...",
     "Need help?" : "Ti serve aiuto?",
     "See the documentation" : "Leggi la documentazione",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Ciao,<br><br>volevo informarti che %s ha condiviso <strong>%s</strong> con te.<br><a href=\"%s\">Guarda!</a><br><br>",

@@ -273,7 +273,6 @@
     "For larger installations we recommend to choose a different database backend." : "برای راه اندازی های بزرگتر توصیه می کنیم پشتانه پایگاه داده متفاوتی انتخاب کنید.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "به ویژه هنگام استفاده از مشتری دسکتاپ برای همگام سازی پرونده، استفاده از SQLite دلسرد کننده است.",
     "Finish setup" : "اتمام نصب",
-    "Finishing …" : "در حال اتمام ...",
     "Need help?" : "کمک لازم دارید ؟",
     "See the documentation" : "مشاهده‌ی مستندات",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "این برنامه به جاوا اسکریپت برای عملیات صحیح نیازمند است. لطفا {لینک شروع} جاوا اسکریپت را فعال کنید {لینک پایان} و صفحه را مجددا بارگذاری کنید.",

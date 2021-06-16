@@ -253,7 +253,6 @@
     "For larger installations we recommend to choose a different database backend." : "Pre veľké inštalácie odporúčame vybrať si iné databázové riešenie.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Najmä pri používaní klientských aplikácií na synchronizáciu s desktopom neodporúčame používať SQLite.",
     "Finish setup" : "Dokončiť inštaláciu",
-    "Finishing …" : "Dokončujem...",
     "Need help?" : "Potrebujete pomoc?",
     "See the documentation" : "Pozri dokumentáciu",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Dobrý deň,<br><br>Používateľ %s zdieľa s vami súbor, alebo priečinok s názvom »%s«.<br><a href=\"%s\">Pre zobrazenie kliknite na túto linku!</a><br><br>",
