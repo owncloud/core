@@ -86,8 +86,9 @@ OCA.Sharing.PublicApp = {
 		var mimetypeIcon = $('#mimetypeIcon').val();
 		mimetypeIcon = mimetypeIcon.substring(0, mimetypeIcon.length - 3);
 		mimetypeIcon = mimetypeIcon + 'svg';
-
+		var previewEnabled = ($("#previewEnabled").val());
 		var previewSupported = $('#previewSupported').val();
+
 
 		if (typeof FileActions !== 'undefined') {
 			// Show file preview if previewer is available, images are already handled by the template
@@ -120,6 +121,16 @@ OCA.Sharing.PublicApp = {
 			'max-width': previewWidth,
 			'max-height': previewHeight
 		});
+
+		// Check if video type is supported by browser
+		if (mimetype.substr(0, mimetype.indexOf('/')) === 'video' && previewEnabled === 'true') {
+			var obj = document.createElement('video');
+			if (obj.canPlayType(mimetype) === "") {
+				OC.Notification.show(t('files_sharing',
+					'The video cannot be played because your browser does not support the file type. Please try another browser.')
+				);
+			}
+		}
 
 		var fileSize = parseInt($('#filesize').val(), 10);
 		var maxGifSize = parseInt($('#maxSizeAnimateGif').val(), 10);
