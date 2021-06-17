@@ -315,7 +315,6 @@ OC.L10N.register(
     "Password / Token" : "パスワード/トークン",
     "Done" : "完了",
     "Version" : "バージョン",
-    "New Password" : "新しいパスワード",
     "Confirm Password" : "パスワードの確認",
     "Personal" : "個人",
     "Admin" : "管理",
