@@ -65,6 +65,7 @@ Summary
 * Enhancement - Improve performance of the SMB log when it is inactive: [#38819](https://github.com/owncloud/core/pull/38819)
 * Enhancement - Introduce the patch for CVE-2019-11358: [#38841](https://github.com/owncloud/core/pull/38841)
 * Enhancement - Introduce a remove license button in WebUI: [#38843](https://github.com/owncloud/core/issues/38843)
+* Enhancement - Show notification if video playback is not possible on public share: [#4632](https://github.com/owncloud/enterprise/issues/4632)
 
 Details
 -------
@@ -596,6 +597,17 @@ Details
 
    https://github.com/owncloud/core/issues/38843
    https://github.com/owncloud/core/pull/38844
+
+* Enhancement - Show notification if video playback is not possible on public share: [#4632](https://github.com/owncloud/enterprise/issues/4632)
+
+   Before this PR no error notification was shown if a video can't be played due to browser
+   incompatibility, for example, mov files on chrome.
+   (https://stackoverflow.com/questions/28746645)
+
+   Now we will show a dedicated notification.
+
+   https://github.com/owncloud/enterprise/issues/4632
+   https://github.com/owncloud/core/pull/38858
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================
