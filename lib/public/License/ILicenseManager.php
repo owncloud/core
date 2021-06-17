@@ -79,7 +79,7 @@ interface ILicenseManager {
 	public function setLicenseString(?string $licenseString);
 
 	/**
-	 * @since 10.9.0
+	 * @since 10.8.0
 	 * Remove the set license
 	 */
 	public function removeLicenseString();
