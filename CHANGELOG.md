@@ -150,6 +150,7 @@ Details
    https://github.com/owncloud/enterprise/issues/4382
    https://github.com/owncloud/core/pull/38625
    https://github.com/owncloud/core/pull/38651
+   https://github.com/owncloud/core/pull/38862
 
 * Bugfix - Objectids for comments and tags are strings: [#38682](https://github.com/owncloud/core/pull/38682)
 
