@@ -513,3 +513,37 @@ Feature: Sharing files and folders with internal groups
       | uid_owner   | Alice                |
       | share_with  | grp3                 |
       | permissions | 31                   |
+
+  @skipOnOcV10.6 @skipOnOcV10.7
+  Scenario: Reshares with groups where the same file ends up in different mountpoints that are renamed should have correct permissions
+    Given these groups have been created:
+      | groupname |
+      | grp1      |
+      | grp2      |
+      | grp3      |
+      | grp4      |
+    And user "Alice" has been added to group "grp1"
+    And user "Brian" has been added to group "grp1"
+    And user "Alice" has been added to group "grp2"
+    And user "Brian" has been added to group "grp2"
+    And user "Carol" has uploaded file with content "some data" to "/simple-folder/simple-inner-folder/simple-inner-inner-folder/textfile-2.txt"
+    And user "Carol" has shared folder "/simple-folder" with user "Alice" with permissions "all"
+    And user "Alice" has shared folder "/simple-folder" with group "grp2" with permissions "all"
+    And user "Alice" has shared folder "/simple-folder/simple-inner-folder" with group "grp1" with permissions "read"
+    And user "Brian" has created folder "/renamed-simple-folder"
+    And user "Brian" has logged in using the webUI
+    When the user opens the sharing tab from the file action menu of folder "simple-inner-folder" using the webUI
+    Then the user should see an error message on the share dialog saying "Sharing is not allowed"
+    # now move received simple-inner-folder into some folder
+    And the user moves folder "simple-inner-folder" into folder "renamed-simple-folder" using the webUI
+    And the user opens folder "/renamed-simple-folder" using the webUI
+    When the user opens the sharing tab from the file action menu of folder "simple-inner-folder" using the webUI
+    Then the user should see an error message on the share dialog saying "Sharing is not allowed"
+    # after move, sharing folder simple-inner-folder again but with different group should be possible
+    And the user browses to the home page
+    And the user opens folder "/simple-folder" using the webUI
+    When the user shares folder "simple-inner-folder" with group "grp3" using the webUI
+    Then the following permissions are seen for "simple-inner-folder" in the sharing dialog for group "grp3"
+      | edit   | yes |
+      | change | yes |
+      | share  | yes |
