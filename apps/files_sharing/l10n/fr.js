@@ -106,6 +106,8 @@ OC.L10N.register(
     "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" vous a invité à voir \"%3$s\"",
     "Accept" : "Accepter",
     "Decline" : "Refuser",
+    "Automatically accept new incoming local user shares" : "Accepter automatiquement les nouveaux partages des utilisateurs locaux",
+    "Allow finding you via autocomplete in share dialog. If this is disabled the full username needs to be entered." : "Permet de vous trouver via la saisie semi-automatique dans la boîte de dialogue du partage. Si ceci est désactivé, le nom d'utilisateur complet doit être saisi.",
     "This share is password-protected" : "Ce partage est protégé par un mot de passe",
     "The password is wrong. Try again." : "Le mot de passe est incorrect. Veuillez réessayer.",
     "Password" : "Mot de passe",

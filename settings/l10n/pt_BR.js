@@ -234,6 +234,7 @@ OC.L10N.register(
     "Enterprise license key" : "Chave de licença corporativa",
     "Enter a new license:" : "Digite uma nova licença:",
     "Save" : "Salvar",
+    "Remove current license key" : "Remover a atual chave de licença ",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Tudo (questões fatais, erros, avisos, informações, depuração)",
     "Info, warnings, errors and fatal issues" : "Informações, avisos, erros e problemas fatais",
     "Warnings, errors and fatal issues" : "Avisos, erros e problemas fatais",

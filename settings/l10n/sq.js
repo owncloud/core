@@ -234,6 +234,7 @@ OC.L10N.register(
     "Enterprise license key" : "Kyç licence ndërmarrjesh",
     "Enter a new license:" : "Jepni një licencë të re:",
     "Save" : "Ruaje",
+    "Remove current license key" : "Hiqe kyçin e tanishëm të licencës",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Gjithçka (probleme fatale, gabime, sinjalizime, të dhëna, diagnostikim)",
     "Info, warnings, errors and fatal issues" : "Të dhëna, sinjalizime, gabime dhe probleme fatale",
     "Warnings, errors and fatal issues" : "Sinjalizime, gabime dhe probleme fatale",
