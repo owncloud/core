@@ -358,42 +358,46 @@ class Manager implements IManager {
 
 		/*
 		 * If share node is also share ($share is reshare),
-		 * get $maxPermissions based on supershare permissions
+		 * compute permissions based on all incoming reshares for this node. As reshares are by design
+		 * just additional shares from owner (initated by share_initiator) we do not have knowledge
+		 * of which is "parent" share. Thus we need to visit all incoming shares to cover cases like
+		 * e.g. reshare with cross-membership groups on multiple levels
 		 */
 		if ($this->userSession !== null && $this->userSession->getUser() !== null &&
 			$share->getShareOwner() !== $this->userSession->getUser()->getUID()) {
 			// retrieve received share node mounts $shareFileNodes being reshared with $share
 			// originating from <<exactly>> the same file/folder node, by using getById($node, $first=false)
 			$userFolder = $this->rootFolder->getUserFolder($share->getSharedBy());
-			$shareFileNodes = $userFolder->getById($shareNode->getId(), false);
+			$incomingNodes = $userFolder->getById($shareNode->getId(), false);
 
-			// if there are many mount points for exact same file/folder, e.g. due to multiple group reshares
-			// coming from different users or subfolders, take:
-			// - in case of exact match, first (reshare from different users should use first found node)
-			// - longest file node path indicates reshare originates
-			//   from parent folder, and is not reshared subfolder that would contain lower or equal permission by design
-			\usort($shareFileNodes, function (\OCP\Files\Node $first, \OCP\Files\Node $second) {
-				if (\strcmp($first->getPath(), $second->getPath()) < 0) {
-					// first is shorther, take second
-					return -1;
-				}
-				// take first that is exact or longer
-				return 1;
-			});
-
-			$parentShareNode = $shareFileNodes[0] ?? null;
-			if ($parentShareNode) {
-				$parentShareFileStorage = $parentShareNode->getStorage();
-				if ($parentShareFileStorage->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
-					// if $parentShareNode is an incoming federated share, use share node permission directly
-					$maxPermissions = $shareNode->getPermissions();
-				} elseif ($parentShareFileStorage->instanceOfStorage('OCA\Files_Sharing\SharedStorage')) {
-					// if $parentShareNode is user/group share, use supershare permissions
-					/** @var \OCA\Files_Sharing\SharedStorage $parentShareFileStorage */
-					'@phan-var \OCA\Files_Sharing\SharedStorage $parentShareFileStorage';
-					$parentShare = $parentShareFileStorage->getShare();
-					$maxPermissions = $parentShare->getPermissions();
-					$requiredAttributes = $parentShare->getAttributes();
+			// construct maxPermissions and requiredAttributes from incoming shares
+			$maxPermissions = 0;
+			$requiredAttributes = $this->newShare()->newAttributes();
+			foreach ($incomingNodes as $incomingNode) {
+				$incomingNodeStorage = $incomingNode->getStorage();
+				if ($incomingNodeStorage->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
+					// if $incomingNode is an incoming federated share use share node permission directly,
+					// fed shares are distinct mounted like normal files/folders
+					$maxPermissions |= $shareNode->getPermissions();
+				} elseif ($incomingNodeStorage->instanceOfStorage('OCA\Files_Sharing\SharedStorage')) {
+					// if $incomingNode is user/group share, use supershare permissions
+					/** @var \OCA\Files_Sharing\SharedStorage $incomingNodeStorage */
+					'@phan-var \OCA\Files_Sharing\SharedStorage $incomingNodeStorage';
+					$incomingShare = $incomingNodeStorage->getShare();
+					$maxPermissions |= $incomingShare->getPermissions();
+					if ($incomingShare->getAttributes() !== null) {
+						foreach ($incomingShare->getAttributes()->toArray() as $attribute) {
+							if ($requiredAttributes->getAttribute($attribute['scope'], $attribute['key']) === true) {
+								// if super share attribute is already enabled, it is most permissive
+								continue;
+							}
+							// update supershare attributes with subshare attribute
+							$requiredAttributes->setAttribute($attribute['scope'], $attribute['key'], $attribute['enabled']);
+						}
+					}
+				} else {
+					// distinct mounted like normal files/folders thus use share node permission as default
+					$maxPermissions |= $shareNode->getPermissions();
 				}
 			}
 		}
