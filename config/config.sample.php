@@ -264,10 +264,11 @@ $CONFIG = [
 /**
  * Define how to relax same site cookie settings
  *
- * Possible values: Strict, Lax or None
- * Setting the same site cookie to None is necessary in case of OpenID Connect.
+ * Possible values: `Strict`, `Lax` or `None`.
+ * Setting the same site cookie to `None` is necessary in case of OpenID Connect.
  * For more information about the impact of the values see:
- * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite#values
+ * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite#values and
+ * https://web.dev/schemeful-samesite/
  */
 
 'http.cookie.samesite' => 'Strict',
