@@ -29,6 +29,10 @@ Feature: Restore deleted files/folders
     Examples:
       | dav-path | upload-path                | delete-path        |
       | old      | "/PARENT/textfile0.txt"    | "/textfile0.txt"   |
+      | old      | "/PARENT/textfile0.txt"    | "/textfile0.txt"   |
+      | new      | "/PARENT/textfile0.txt"    | "/textfile0.txt"   |
       | new      | "/PARENT/textfile0.txt"    | "/textfile0.txt"   |
       | old      | "/PARENT/.hiddenfile0.txt" | ".hiddenfile0.txt" |
+      | old      | "/PARENT/.hiddenfile0.txt" | ".hiddenfile0.txt" |
+      | new      | "/PARENT/.hiddenfile0.txt" | ".hiddenfile0.txt" |
       | new      | "/PARENT/.hiddenfile0.txt" | ".hiddenfile0.txt" |

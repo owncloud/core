@@ -12,278 +12,24 @@ config = {
 
 	'codestyle': True,
 
-	'phpstan': True,
+	'phpstan': False,
 
-	'phan': True,
+	'phan': False,
 
-	'javascript': True,
+	'javascript': False,
 
-	'litmus': True,
+	'litmus': False,
 
-	'dav': True,
+	'dav': False,
 
-	'phpunit': {
-		'allDatabases' : {
-			'phpVersions': [
-				'7.2',
-			]
-		},
-		'reducedDatabases' : {
-			'phpVersions': [
-				'7.3',
-				'7.4',
-			],
-			'databases': [
-				'sqlite',
-				'mariadb:10.2',
-			]
-		},
-		'external-samba-windows' : {
-			'phpVersions': [
-				'7.2',
-				'7.4',
-			],
-			'databases': [
-				'sqlite',
-			],
-			'externalTypes': [
-				'samba',
-				'windows',
-			],
-			'coverage': True,
-			'extraCommandsBeforeTestRun': [
-				'ls -l /var/cache',
-				'mkdir /var/cache/samba',
-				'ls -l /var/cache',
-				'ls -l /var/cache/samba',
-			]
-		},
-		'external-other' : {
-			'phpVersions': [
-				'7.2',
-				'7.4',
-			],
-			'databases': [
-				'sqlite',
-			],
-			'externalTypes': [
-				'webdav',
-				'sftp',
-				'scality',
-				'owncloud',
-			],
-			'coverage': True,
-		}
-	},
+	'phpunit': False,
 
 	'acceptance': {
 		'api': {
 			'suites': [
-				'apiAuth',
-				'apiAuthOcs',
-				'apiAuthWebDav',
-				'apiCapabilities',
-				'apiComments',
-				'apiFavorites',
-				'apiMain',
-				'apiProvisioning-v1',
-				'apiProvisioning-v2',
-				'apiProvisioningGroups-v1',
-				'apiProvisioningGroups-v2',
-				'apiShareCreateSpecialToRoot1',
-				'apiShareCreateSpecialToShares1',
-				'apiShareCreateSpecialToRoot2',
-				'apiShareCreateSpecialToShares2',
-				'apiSharees',
-				'apiShareManagementToRoot',
-				'apiShareManagementToShares',
-				'apiShareManagementBasicToRoot',
-				'apiShareManagementBasicToShares',
-				'apiShareOperationsToRoot1',
-				'apiShareOperationsToRoot2',
-				'apiShareOperationsToShares1',
-				'apiShareOperationsToShares2',
-				'apiSharePublicLink1',
-				'apiSharePublicLink2',
-				'apiShareReshareToRoot1',
-				'apiShareReshareToShares1',
-				'apiShareReshareToRoot2',
-				'apiShareReshareToShares2',
-				'apiShareReshareToRoot3',
-				'apiShareReshareToShares3',
-				'apiShareUpdateToRoot',
-				'apiShareUpdateToShares',
-				'apiTags',
-				'apiTranslation',
 				'apiTrashbin',
-				'apiVersions',
-				'apiWebdavEtagPropagation1',
-				'apiWebdavEtagPropagation2',
-				'apiWebdavLocks',
-				'apiWebdavLocks2',
-				'apiWebdavLocks3',
-				'apiWebdavLocksUnlock',
-				'apiWebdavMove1',
-				'apiWebdavMove2',
-				'apiWebdavOperations',
-				'apiWebdavPreviews',
-				'apiWebdavProperties1',
-				'apiWebdavProperties2',
-				'apiWebdavUpload1',
-				'apiWebdavUpload2',
 			],
 		},
-		'apiNotifications': {
-			'suites': [
-				'apiSharingNotificationsToRoot',
-				'apiSharingNotificationsToShares',
-			],
-			'extraApps': {
-				'notifications': 'if [ -f "composer.json" ]; then composer install; fi',
-			},
-		},
-		'apiFederation': {
-			'suites': [
-				'apiFederationToRoot1',
-				'apiFederationToRoot2',
-				'apiFederationToShares1',
-				'apiFederationToShares2',
-			],
-			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.6.0'],
-		},
-		'cli': {
-			'suites': [
-				'cliBackground',
-				'cliLocalStorage',
-				'cliMain',
-				'cliProvisioning',
-				'cliTrashbin',
-			],
-			'emailNeeded': True,
-		},
-		'cliAppManagement': {
-			'suites': [
-				'cliAppManagement',
-			],
-			'testingRemoteSystem': False,
-		},
-		'cliExternalStorage': {
-			'suites': [
-				'cliExternalStorage',
-			],
-			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.6.0'],
-		},
-		'webUI': {
-			'suites': {
-				'webUIAddUsers': '',
-				'webUIAdminSettings': '',
-				'webUIComments': '',
-				'webUICreateDelete': '',
-				'webUIFavorites': '',
-				'webUIFiles': '',
-				'webUILogin': '',
-				'webUIManageQuota': '',
-				'webUIManageUsersGroups': 'webUIManageUsersGrps',
-				'webUIMoveFilesFolders': 'webUIMoveFilesFolder',
-				'webUIPersonalSettings': 'webUIPersonalSetting',
-				'webUIRenameFiles': '',
-				'webUIRenameFolders': '',
-				'webUIRestrictSharing': '',
-				'webUISettingsMenu': '',
-				'webUISharingAcceptShares': 'webUISharingAcceptSh',
-				'webUISharingAutocompletion1': 'webUISharingAutocomp1',
-				'webUISharingAutocompletion2': 'webUISharingAutocomp2',
-				'webUISharingInternalGroups1': 'webUISharingIntGroup1',
-				'webUISharingInternalGroups2': 'webUISharingIntGroup2',
-				'webUISharingInternalUsers1': 'webUISharingIntUsers1',
-				'webUISharingInternalUsers2': 'webUISharingIntUsers2',
-				'webUISharingPublic1': '',
-				'webUISharingPublic2': '',
-				'webUITags': '',
-				'webUITrashbin': '',
-				'webUIUpload': '',
-				'webUIWebdavLockProtection': 'webUIWebdavLockProt',
-				'webUIWebdavLocks': '',
-			},
-			'emailNeeded': True,
-			'useHttps': False,
-		},
-		'webUINotifications': {
-			'suites': {
-				'webUISharingNotifications': 'webUISharingNotify',
-			},
-			'emailNeeded': True,
-			'useHttps': False,
-			'extraApps': {
-				'notifications': 'composer install',
-			},
-		},
-		'webUIFileActionsMenu': {
-			'suites': {
-				'webUIFileActionsMenu': '',
-			},
-			'useHttps': False,
-			'extraApps': {
-				'files_texteditor': 'make vendor',
-				'richdocuments': 'make vendor',
-			},
-		},
-		'webUIFederation': {
-			'suites': {
-				'webUISharingExternal1': 'webUISharingExt1',
-				'webUISharingExternal2': 'webUISharingExt2',
-			},
-			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.6.0'],
-		},
-		'webUIFirefox': {
-			'suites': {
-				'webUIFirefoxSmoketest': 'webUIFfSmoke',
-			},
-			'browsers': [
-				'firefox',
-			],
-			'emailNeeded': True,
-			'useHttps': False,
-			'filterTags': '@smokeTest&&~@notifications-app-required',
-			'runAllSuites': True,
-			'numberOfParts': 3,
-		},
-		'webUIProxy': {
-			'suites': {
-				'webUIProxySmoketest': 'webUIProxySmoke',
-			},
-			'browsers': [
-				'chrome',
-			],
-			'emailNeeded': True,
-			'proxyNeeded': True,
-			'useHttps': False,
-			'filterTags': '@smokeTest&&~@notifications-app-required',
-			'runAllSuites': True,
-			'numberOfParts': 3,
-		},
-		'apiProxy': {
-			'suites': {
-				'apiProxySmoketest': 'apiProxySmoke',
-			},
-			'proxyNeeded': True,
-			'useHttps': False,
-			'filterTags': '@smokeTest&&~@notifications-app-required',
-			'runAllSuites': True,
-			'numberOfParts': 8,
-		},
-		'apiOnSqlite': {
-			'suites': {
-				'apiOnSqlite': 'apiOnSqlite',
-			},
-			'databases': ['sqlite'],
-			'useHttps': False,
-			'filterTags': '@sqliteDB',
-			'runAllSuites': True,
-		}
 	}
 }
 
@@ -300,6 +46,13 @@ def main(ctx):
 
 	dependsOn(before, coverageTests)
 
+	nonCoverageTests = nonCoveragePipelines(ctx)
+	if (nonCoverageTests == False):
+		print('Errors detected in nonCoveragePipelines. Review messages above.')
+		return []
+
+	dependsOn(before, nonCoverageTests)
+
 	stages = stagePipelines(ctx)
 	if (stages == False):
 		print('Errors detected in stagePipelines. Review messages above.')
@@ -307,11 +60,14 @@ def main(ctx):
 
 	dependsOn(before, stages)
 
-	afterCoverageTests = afterCoveragePipelines(ctx)
-	dependsOn(coverageTests, afterCoverageTests)
+	if (coverageTests == []):
+		afterCoverageTests = []
+	else:
+		afterCoverageTests = afterCoveragePipelines(ctx)
+		dependsOn(coverageTests, afterCoverageTests)
 
 	after = afterPipelines(ctx)
-	dependsOn(afterCoverageTests + stages, after)
+	dependsOn(afterCoverageTests + nonCoverageTests + stages, after)
 
 	return initial + before + coverageTests + afterCoverageTests + stages + after
 
@@ -322,10 +78,20 @@ def beforePipelines(ctx):
 	return codestyle() + changelog(ctx) + phpstan() + phan()
 
 def coveragePipelines(ctx):
-	# All pipelines that might have coverage or other test analysis reported
-	jsPipelines = javascript(ctx)
-	phpUnitPipelines = phpTests(ctx, 'phpunit')
-	phpIntegrationPipelines = phpTests(ctx, 'phpintegration')
+	# All unit test pipelines that have coverage or other test analysis reported
+	jsPipelines = javascript(ctx, True)
+	phpUnitPipelines = phpTests(ctx, 'phpunit', True)
+	phpIntegrationPipelines = phpTests(ctx, 'phpintegration', True)
+	if (jsPipelines == False) or (phpUnitPipelines == False) or (phpIntegrationPipelines == False):
+		return False
+
+	return jsPipelines + phpUnitPipelines + phpIntegrationPipelines
+
+def nonCoveragePipelines(ctx):
+	# All unit test pipelines that do not have coverage or other test analysis reported
+	jsPipelines = javascript(ctx, False)
+	phpUnitPipelines = phpTests(ctx, 'phpunit', False)
+	phpIntegrationPipelines = phpTests(ctx, 'phpintegration', False)
 	if (jsPipelines == False) or (phpUnitPipelines == False) or (phpIntegrationPipelines == False):
 		return False
 
@@ -1002,7 +768,7 @@ def dav():
 
 	return pipelines
 
-def javascript(ctx):
+def javascript(ctx, withCoverage):
 	pipelines = []
 
 	if 'javascript' not in config:
@@ -1034,6 +800,14 @@ def javascript(ctx):
 		params[item] = matrix[item] if item in matrix else default[item]
 
 	if params['skip']:
+		return pipelines
+
+	# if we only want pipelines with coverage, and this pipeline does not do coverage, then do not include it
+	if withCoverage and not params['coverage']:
+		return pipelines
+
+	# if we only want pipelines without coverage, and this pipeline does coverage, then do not include it
+	if not withCoverage and params['coverage']:
 		return pipelines
 
 	result = {
@@ -1097,7 +871,7 @@ def javascript(ctx):
 
 	return [result]
 
-def phpTests(ctx, testType):
+def phpTests(ctx, testType, withCoverage):
 	pipelines = []
 
 	if testType not in config:
@@ -1158,6 +932,14 @@ def phpTests(ctx, testType):
 			params[item] = matrix[item] if item in matrix else default[item]
 
 		if params['skip']:
+			continue
+
+		# if we only want pipelines with coverage, and this pipeline does not do coverage, then do not include it
+		if withCoverage and not params['coverage']:
+			continue
+
+		# if we only want pipelines without coverage, and this pipeline does coverage, then do not include it
+		if not withCoverage and params['coverage']:
 			continue
 
 		for phpVersion in params['phpVersions']:

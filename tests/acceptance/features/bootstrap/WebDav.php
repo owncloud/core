@@ -1144,6 +1144,8 @@ trait WebDav {
 	 * @return void
 	 */
 	public function contentOfFileForUserShouldBe($fileName, $user, $content) {
+		// hack - give the server some time to sort out the file before we request it
+		\sleep(5);
 		$user = $this->getActualUsername($user);
 		$this->downloadFileAsUserUsingPassword($user, $fileName);
 		$this->downloadedContentShouldBe($content);
@@ -1694,6 +1696,8 @@ trait WebDav {
 		$path,
 		$type = "files"
 	) {
+		// hack - give the server some time before we check that a file exists
+		\sleep(5);
 		$user = $this->getActualUsername($user);
 		$path = $this->substituteInLineCodes($path);
 		$this->responseXmlObject = $this->listFolderAndReturnResponseXml(
