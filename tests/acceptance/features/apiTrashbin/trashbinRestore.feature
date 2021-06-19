@@ -20,7 +20,7 @@ Feature: Restore deleted files/folders
     # Sometimes <upload-path> is found in the trashbin. Should it? Or not?
     # That seems to be what happens when the restore-overwrite happens properly,
     # The original <upload-path> seems to be "deleted" and so goes to the trashbin
-    And as "Alice" the file with original path <upload-path> should exist in the trashbin
+    # And as "Alice" the file with original path <upload-path> should exist in the trashbin
     And as "Alice" file <upload-path> should exist
     # sometimes the restore from trashbin does overwrite the existing file, but sometimes it does not. That is also surprising.
     # the current observed behavior is that if the original <upload-path> ended up in the trashbin,
