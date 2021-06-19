@@ -28,6 +28,7 @@ OC.L10N.register(
     "Remote share password" : "Senha do compartilhamento remoto",
     "Cancel" : "Cancelar",
     "Add remote share" : "Adicionar compartilhamento remoto",
+    "The video cannot be played because your browser does not support the file type. Please try another browser." : "O vídeo não pode ser reproduzido porque seu navegador não suporta o tipo de arquivo. Por favor, tente outro navegador. ",
     "You can upload into this folder" : "Você não pode enviar arquivos para esta pasta",
     "Add to another cloud" : "Adicionar a outra nuvem ",
     "Enter the server address to add the content to" : "Insira o endereço do servidor para adicionar o conteúdo ",

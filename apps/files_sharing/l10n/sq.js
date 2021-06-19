@@ -28,6 +28,7 @@ OC.L10N.register(
     "Remote share password" : "Fjalëkalim ndarjeje të largët",
     "Cancel" : "Anuloje",
     "Add remote share" : "Shtoni ndarje të largët",
+    "The video cannot be played because your browser does not support the file type. Please try another browser." : "Kjo video s’mund të luhet, ngaqë shfletuesi juaj nuk mbulon llojin e kartelës. Ju lutemi, provoni një shfletues tjetër.",
     "You can upload into this folder" : "Mund të ngarkoni te kjo dosje",
     "Add to another cloud" : "Shtojeni në një re tjetër",
     "Enter the server address to add the content to" : "Jepni adresën e shërbyesit ku të shtohet lënda",
