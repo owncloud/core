@@ -390,6 +390,8 @@ class FilesPage extends FilesPageBasic {
 			"could not find home page icon."
 		);
 		$homePageIcon->click();
+		// we should probably wait somewhere for the home page to be renered
+		\sleep(5);
 	}
 
 	/**
