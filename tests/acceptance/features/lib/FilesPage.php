@@ -378,10 +378,12 @@ class FilesPage extends FilesPageBasic {
 	/**
 	 * Browse to Home Page by clicking on home icon.
 	 *
+	 * @param Session $session
+	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function browseToHomePage() {
+	public function browseToHomePage($session) {
 		$homePageIcon = $this->find("xpath", $this->homePageIconXpath);
 		$this->assertElementNotNull(
 			$homePageIcon,
@@ -390,6 +392,10 @@ class FilesPage extends FilesPageBasic {
 			"could not find home page icon."
 		);
 		$homePageIcon->click();
+		// The home page icon takes us to the top-level files page.
+		// Wait for it to be properly loaded, so that the next step(s) can run
+		// without timing problems.
+		$this->waitTillPageIsLoaded($session);
 	}
 
 	/**
