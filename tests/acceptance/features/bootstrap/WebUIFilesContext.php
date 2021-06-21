@@ -244,7 +244,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @throws \Exception
 	 */
 	public function theUserBrowsesToTheHomePage() {
-		$this->filesPage->browseToHomePage();
+		$this->filesPage->browseToHomePage($this->getSession());
 	}
 
 	/**
