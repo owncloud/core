@@ -101,15 +101,7 @@ Feature: Restore deleted files/folders
     And user "Alice" has deleted file <delete-path>
     When user "Alice" restores the file with original path <delete-path> to <upload-path> using the trashbin API
     Then the HTTP status code should be "204"
-    # Sometimes <upload-path> is found in the trashbin. Should it? Or not?
-    # That seems to be what happens when the restore-overwrite happens properly,
-    # The original <upload-path> seems to be "deleted" and so goes to the trashbin
-    And as "Alice" the file with original path <upload-path> should not exist in the trashbin
     And as "Alice" file <upload-path> should exist
-    # sometimes the restore from trashbin does overwrite the existing file, but sometimes it does not. That is also surprising.
-    # the current observed behavior is that if the original <upload-path> ended up in the trashbin,
-    # then the new <upload-path> has the "file to delete" content.
-    # otherwise <upload-path> has its old content
     And the content of file <upload-path> for user "Alice" should be "file to delete"
     Examples:
       | dav-path | upload-path                | delete-path        |
