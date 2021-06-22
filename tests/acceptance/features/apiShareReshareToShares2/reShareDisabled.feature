@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-reva-243
+@api @files_sharing-app-required @issue-ocis-1328
 Feature: resharing can be disabled
 
   Background:
