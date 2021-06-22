@@ -139,8 +139,7 @@ Feature: dav-versions
       | permissions | read         |
     Then the version folder of fileId "<<FILEID>>" for user "Brian" should contain "1" element
 
-  @files_sharing-app-required
-  @notToImplementOnOCIS @issue-ocis-reva-243
+  @files_sharing-app-required @notToImplementOnOCIS
   Scenario: sharer of a file can see the old version information when the sharee changes the content of the file
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "First content" to "sharefile.txt"
@@ -149,8 +148,7 @@ Feature: dav-versions
     Then the HTTP status code should be "204"
     And the version folder of file "/sharefile.txt" for user "Alice" should contain "1" element
 
-  @files_sharing-app-required
-  @notToImplementOnOCIS @issue-ocis-reva-243
+  @files_sharing-app-required @notToImplementOnOCIS
   Scenario: sharer of a file can restore the original content of a shared file after the file has been modified by the sharee
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "First content" to "sharefile.txt"
@@ -161,8 +159,7 @@ Feature: dav-versions
     And the content of file "/sharefile.txt" for user "Alice" should be "First content"
     And the content of file "/sharefile.txt" for user "Brian" should be "First content"
 
-  @files_sharing-app-required
-  @notToImplementOnOCIS @issue-ocis-reva-243
+  @files_sharing-app-required @notToImplementOnOCIS
   Scenario: sharer can restore a file inside a shared folder modified by sharee
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"
@@ -174,8 +171,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "First content"
     And the content of file "/sharingfolder/sharefile.txt" for user "Brian" should be "First content"
 
-  @files_sharing-app-required
-  @notToImplementOnOCIS @issue-ocis-reva-243
+  @files_sharing-app-required @notToImplementOnOCIS
   Scenario: sharee can restore a file inside a shared folder modified by sharee
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"
@@ -187,8 +183,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "First content"
     And the content of file "/sharingfolder/sharefile.txt" for user "Brian" should be "First content"
 
-  @files_sharing-app-required
-  @notToImplementOnOCIS @issue-ocis-reva-243
+  @files_sharing-app-required @notToImplementOnOCIS
   Scenario: sharer can restore a file inside a shared folder created by sharee and modified by sharer
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"
@@ -200,8 +195,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "First content"
     And the content of file "/sharingfolder/sharefile.txt" for user "Brian" should be "First content"
 
-  @files_sharing-app-required
-  @notToImplementOnOCIS @issue-ocis-reva-243
+  @files_sharing-app-required @notToImplementOnOCIS
   Scenario: sharee can restore a file inside a shared folder created by sharee and modified by sharer
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"
@@ -213,8 +207,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "First content"
     And the content of file "/sharingfolder/sharefile.txt" for user "Brian" should be "First content"
 
-  @files_sharing-app-required
-  @notToImplementOnOCIS @issue-ocis-reva-243
+  @files_sharing-app-required @notToImplementOnOCIS
   Scenario: sharer can restore a file inside a shared folder created by sharee and modified by sharee
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"
@@ -226,8 +219,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/sharingfolder/sharefile.txt" for user "Brian" should be "old content"
 
-  @files_sharing-app-required
-  @notToImplementOnOCIS @issue-ocis-reva-243
+  @files_sharing-app-required @notToImplementOnOCIS
   Scenario: sharee can restore a file inside a shared folder created by sharer and modified by sharer
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"
@@ -239,8 +231,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/sharingfolder/sharefile.txt" for user "Brian" should be "old content"
 
-  @files_sharing-app-required
-  @notToImplementOnOCIS @issue-ocis-reva-243
+  @files_sharing-app-required @notToImplementOnOCIS
   Scenario: sharee can restore a file inside a shared folder created by sharer and modified by sharer, when the folder has been moved by the sharee
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"
@@ -254,8 +245,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/received/sharingfolder/sharefile.txt" for user "Brian" should be "old content"
 
-  @files_sharing-app-required
-  @notToImplementOnOCIS @issue-ocis-reva-243
+  @files_sharing-app-required @notToImplementOnOCIS
   Scenario: sharee can restore a shared file created and modified by sharer, when the file has been moved by the sharee (file is at the top level of the sharer)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "old content" to "/sharefile.txt"
@@ -268,8 +258,7 @@ Feature: dav-versions
     And the content of file "/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/received/sharefile.txt" for user "Brian" should be "old content"
 
-  @files_sharing-app-required
-  @notToImplementOnOCIS @issue-ocis-reva-243
+  @files_sharing-app-required @notToImplementOnOCIS
   Scenario: sharee can restore a shared file created and modified by sharer, when the file has been moved by the sharee (file is inside a folder of the sharer)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"
@@ -283,8 +272,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/received/sharefile.txt" for user "Brian" should be "old content"
 
-  @files_sharing-app-required
-  @issue-ocis-reva-34
+  @files_sharing-app-required @issue-ocis-1289
   Scenario: sharer can restore a file inside a group shared folder modified by sharee
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Carol" has been created with default attributes and without skeleton files
@@ -302,8 +290,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "Brian" should be "First content"
     And the content of file "/sharingfolder/sharefile.txt" for user "Carol" should be "First content"
 
-  @files_sharing-app-required
-  @notToImplementOnOCIS @issue-ocis-reva-243 @issue-ocis-reva-386
+  @files_sharing-app-required @notToImplementOnOCIS @issue-ocis-1238
   Scenario Outline: Moving a file (with versions) into a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -330,8 +317,7 @@ Feature: dav-versions
       | old         | Brian |
       | new         | Brian |
 
-  @files_sharing-app-required
-  @notToImplementOnOCIS @issue-ocis-reva-243 @issue-ocis-reva-386
+  @files_sharing-app-required @notToImplementOnOCIS @issue-ocis-1238
   Scenario Outline: Moving a file (with versions) out of a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
@@ -357,8 +343,7 @@ Feature: dav-versions
       | old         | Brian |
       | new         | Brian |
 
-  @skipOnOcV10.3.0 @files_sharing-app-required
-  @issue-ocis-reva-382
+  @skipOnOcV10.3.0 @files_sharing-app-required @issue-ocis-1238
   Scenario: Receiver tries to get file versions of unshared file from the sharer
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"
@@ -369,7 +354,6 @@ Feature: dav-versions
     And the value of the item "//s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
 
   @skipOnStorage:ceph @files_primary_s3-issue-161 @files_sharing-app-required
-  @issue-ocis-reva-376
   Scenario: Receiver tries get file versions of shared file from the sharer
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"
