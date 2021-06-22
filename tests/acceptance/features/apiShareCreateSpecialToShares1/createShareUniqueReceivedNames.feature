@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-reva-11 @issue-ocis-reva-243
+@api @files_sharing-app-required
 Feature: resources shared with the same name are received with unique names
 
   Background:
@@ -11,7 +11,7 @@ Feature: resources shared with the same name are received with unique names
       | Brian    |
       | Carol    |
 
-  @smokeTest
+  @smokeTest @issue-ocis-2131
   Scenario: unique target names for incoming shares
     Given user "Alice" has created folder "/foo"
     And user "Brian" has created folder "/foo"
