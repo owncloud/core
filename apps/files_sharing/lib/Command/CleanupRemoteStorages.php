@@ -64,11 +64,11 @@ class CleanupRemoteStorages extends Command {
 
 		$remoteShareIds = $this->getRemoteShareIds();
 
-		$output->writeln(\count($remoteShareIds) . " remote share(s) exist");
+		$output->writeln(\count($remoteShareIds) . " federated share(s) exist");
 
 		foreach ($remoteShareIds as $id => $remoteShareId) {
 			if (isset($remoteStorages[$remoteShareId])) {
-				$output->writeln("$remoteShareId belongs to remote share $id");
+				$output->writeln("$remoteShareId belongs to federated share $id");
 				unset($remoteStorages[$remoteShareId]);
 			} else {
 				$output->writeln("$remoteShareId for share $id has no matching storage, yet");

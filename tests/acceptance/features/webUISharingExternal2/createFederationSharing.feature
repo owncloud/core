@@ -21,9 +21,9 @@ Feature: Federation Sharing - sharing with users on other cloud storages
 
   Scenario: test the single steps of sharing a folder to a remote server
     Given user "Alice" has logged in using the webUI
-    When the user shares folder "simple-folder" with remote user "Alice" with displayname "%username%@%remote_server_without_scheme%" using the webUI
+    When the user shares folder "simple-folder" with federated user "Alice" with displayname "%username%@%remote_server_without_scheme%" using the webUI
     And user "Alice" from server "REMOTE" accepts the last pending share using the sharing API
-    And the user shares folder "simple-empty-folder" with remote user "Alice" with displayname "%username%@%remote_server_without_scheme%" using the webUI
+    And the user shares folder "simple-empty-folder" with federated user "Alice" with displayname "%username%@%remote_server_without_scheme%" using the webUI
     And user "Alice" from server "REMOTE" accepts the last pending share using the sharing API
     And using server "REMOTE"
     Then as "Alice" folder "/simple-folder (2)" should exist
@@ -44,10 +44,10 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Alice" has logged in using the webUI
     Then dialogs should be displayed on the webUI
       | title        | content                                                                                                  | user  |
-      | Remote share | Do you want to add the remote share /simple-folder from %username%@%remote_server_without_scheme%?       | Alice |
-      | Remote share | Do you want to add the remote share /simple-empty-folder from %username%@%remote_server_without_scheme%? | Brian |
-      | Remote share | Do you want to add the remote share /lorem.txt from %username%@%remote_server_without_scheme%?           | Carol |
-    When the user accepts the offered remote shares using the webUI
+      | Federated share | Do you want to add the federated share /simple-folder from %username%@%remote_server_without_scheme%?       | Alice |
+      | Federated share | Do you want to add the federated share /simple-empty-folder from %username%@%remote_server_without_scheme%? | Brian |
+      | Federated share | Do you want to add the federated share /lorem.txt from %username%@%remote_server_without_scheme%?           | Carol |
+    When the user accepts the offered federated shares using the webUI
     Then file "lorem (2).txt" should be listed on the webUI
     And the content of file "lorem (2).txt" for user "Alice" on server "LOCAL" should be "I am lorem.txt"
     And folder "simple-folder (2)" should be listed on the webUI
@@ -93,9 +93,9 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Alice" has logged in using the webUI
     When the user opens folder "simple-folder" using the webUI
     And the user opens the share dialog for folder "sub-folder"
-    Then federated user "Alice" with displayname "%username%@%remote_server% (Remote share)" should be listed as share receiver via "simple-folder" on the webUI
+    Then federated user "Alice" with displayname "%username%@%remote_server% (Federated share)" should be listed as share receiver via "simple-folder" on the webUI
     When the user opens the share dialog for file "textfile.txt"
-    Then federated user "Alice" with displayname "%username%@%remote_server% (Remote share)" should be listed as share receiver via "simple-folder" on the webUI
+    Then federated user "Alice" with displayname "%username%@%remote_server% (Federated share)" should be listed as share receiver via "simple-folder" on the webUI
 
   @skipOnOcV10.3
   Scenario: sharing details of items inside a shared folder shared with local user and federated user
@@ -107,7 +107,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Alice" has logged in using the webUI
     When the user opens folder "simple-folder/sub-folder" using the webUI
     And the user opens the share dialog for file "textfile.txt"
-    Then federated user "Alice" with displayname "%username%@%remote_server% (Remote share)" should be listed as share receiver via "simple-folder" on the webUI
+    Then federated user "Alice" with displayname "%username%@%remote_server% (Federated share)" should be listed as share receiver via "simple-folder" on the webUI
     And user "Brian" with displayname "%displayname%" should be listed as share receiver via "sub-folder" on the webUI
 
   @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
@@ -218,7 +218,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
       | uid_owner  | Alice          |
 
   @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
-  Scenario: expiration date is enforced for federated remote sharer, local receiver reshares received file with another local user
+  Scenario: expiration date is enforced for federated sharer, local receiver reshares received file with another local user
     Given user "Brian" has been created with default attributes and without skeleton files
     And using server "REMOTE"
     And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
@@ -238,7 +238,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
       | uid_owner  | Alice          |
 
   @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
-  Scenario: expiration date is enforced for federated remote sharer, local receiver reshares received file with another federated user
+  Scenario: expiration date is enforced for federated sharer, local receiver reshares received file with another federated user
     Given using server "REMOTE"
     And user "Brian" has been created with default attributes and without skeleton files
     And parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"

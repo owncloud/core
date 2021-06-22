@@ -10,7 +10,7 @@ Feature: current oC10 behavior for issue-31276
     And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
 
   @issue-31276
-  Scenario Outline: Remote sharee tries to delete an accepted federated share sending wrong password
+  Scenario Outline: Federated sharee tries to delete an accepted federated share sending wrong password
     Given user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
     And user "Brian" from server "LOCAL" has accepted the last pending share
     And using OCS API version "<ocs-api-version>"
@@ -41,7 +41,7 @@ Feature: current oC10 behavior for issue-31276
       | 2               |
 
   @issue-31276
-  Scenario Outline: Remote sharee tries to delete a pending federated share sending wrong password
+  Scenario Outline: Federated sharee tries to delete a pending federated share sending wrong password
     Given user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
     And using OCS API version "<ocs-api-version>"
     When user "Brian" deletes the last pending federated cloud share with password "invalid" using the sharing API

@@ -88,17 +88,17 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	protected $defaultExpirationDateForUserCheckboxId = 'shareapiDefaultExpireDateUserShare';
 	protected $defaultExpirationDateForGroupCheckboxXpath = '//label[@for="shareapiDefaultExpireDateGroupShare"]';
 	protected $defaultExpirationDateForGroupCheckboxId = 'shareapiDefaultExpireDateGroupShare';
-	protected $defaultExpirationDateForRemoteCheckboxXpath = '//label[@for="shareapiDefaultExpireDateRemoteShare"]';
-	protected $defaultExpirationDateForRemoteCheckboxId = 'shareapiDefaultExpireDateRemoteShare';
+	protected $defaultExpirationDateForFederatedCheckboxXpath = '//label[@for="shareapiDefaultExpireDateFederatedShare"]';
+	protected $defaultExpirationDateForFederatedCheckboxId = 'shareapiDefaultExpireDateFederatedShare';
 	protected $userShareExpirationDateFieldXpath = '//input[@id="shareapiExpireAfterNDaysUserShare"]';
 	protected $groupShareExpirationDateFieldXpath = '//input[@id="shareapiExpireAfterNDaysGroupShare"]';
-	protected $remoteShareExpirationDateFieldXpath = '//input[@id="shareapiExpireAfterNDaysRemoteShare"]';
+	protected $federatedShareExpirationDateFieldXpath = '//input[@id="shareapiExpireAfterNDaysFederatedShare"]';
 	protected $enforceExpirationDateUserShareCheckboxXpath = '//span[@id="setDefaultExpireDateUserShare"]//label[contains(text(),"expiration date")]';
 	protected $enforceExpirationDateUserShareCheckboxId = 'shareapiEnforceExpireDateUserShare';
 	protected $enforceExpirationDateGroupShareCheckboxXpath = '//span[@id="setDefaultExpireDateGroupShare"]//label[contains(text(),"expiration date")]';
 	protected $enforceExpirationDateGroupShareCheckboxId = 'shareapiEnforceExpireDateGroupShare';
-	protected $enforceExpirationDateRemoteShareCheckboxXpath = '//span[@id="setDefaultExpireDateRemoteShare"]//label[contains(text(),"expiration date")]';
-	protected $enforceExpirationDateRemoteShareCheckboxId = 'shareapiEnforceExpireDateRemoteShare';
+	protected $enforceExpirationDateFederatedShareCheckboxXpath = '//span[@id="setDefaultExpireDateFederatedShare"]//label[contains(text(),"expiration date")]';
+	protected $enforceExpirationDateFederatedShareCheckboxId = 'shareapiEnforceExpireDateFederatedShare';
 
 	/**
 	 * toggle the Share API
@@ -380,8 +380,8 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	/**
 	 * @return NodeElement|null
 	 */
-	public function getDefaultExpirationForRemoteShareElement() {
-		return $this->findById($this->defaultExpirationDateForRemoteCheckboxId);
+	public function getDefaultExpirationForFederatedShareElement() {
+		return $this->findById($this->defaultExpirationDateForFederatedCheckboxId);
 	}
 
 	/**
@@ -401,8 +401,8 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	/**
 	 * @return NodeElement|null
 	 */
-	public function getEnforceExpireDateRemoteShareElement() {
-		return $this->findById($this->enforceExpirationDateRemoteShareCheckboxId);
+	public function getEnforceExpireDateFederatedShareElement() {
+		return $this->findById($this->enforceExpirationDateFederatedShareCheckboxId);
 	}
 
 	/**
@@ -434,12 +434,12 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	/**
 	 * @return string
 	 */
-	public function getRemoteShareExpirationDays() {
-		$expirationDay = $this->find("xpath", $this->remoteShareExpirationDateFieldXpath);
+	public function getFederatedShareExpirationDays() {
+		$expirationDay = $this->find("xpath", $this->federatedShareExpirationDateFieldXpath);
 		$this->assertElementNotNull(
 			$expirationDay,
 			__METHOD__ .
-			" could not find remote share expiration day field"
+			" could not find federated share expiration day field"
 		);
 		return $expirationDay->getValue($expirationDay);
 	}
@@ -493,18 +493,18 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	}
 
 	/**
-	 * enforce mamixum expiration date for remote share
+	 * enforce mamixum expiration date for federated share
 	 *
 	 * @param Session $session
 	 *
 	 * @return void
 	 */
-	public function enforceMaximumExpirationDateForRemoteShares(Session $session) {
+	public function enforceMaximumExpirationDateForFederatedShares(Session $session) {
 		$this->toggleCheckbox(
 			$session,
 			"enables",
-			$this->enforceExpirationDateRemoteShareCheckboxXpath,
-			$this->enforceExpirationDateRemoteShareCheckboxId
+			$this->enforceExpirationDateFederatedShareCheckboxXpath,
+			$this->enforceExpirationDateFederatedShareCheckboxId
 		);
 	}
 
@@ -543,12 +543,12 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @return NodeElement|NULL
 	 * @throws ElementNotFoundException
 	 */
-	private function findRemoteShareExpirationField() {
-		$expirationDateField = $this->find("xpath", $this->remoteShareExpirationDateFieldXpath);
+	private function findFederatedShareExpirationField() {
+		$expirationDateField = $this->find("xpath", $this->federatedShareExpirationDateFieldXpath);
 		$this->assertElementNotNull(
 			$expirationDateField,
 			__METHOD__ .
-			" xpath $this->remoteShareExpirationDateFieldXpath could not find set-remote-share-expiration-field"
+			" xpath $this->federatedShareExpirationDateFieldXpath could not find set-federated-share-expiration-field"
 		);
 		return $expirationDateField;
 	}
@@ -588,18 +588,18 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	}
 
 	/**
-	 * set expiration date for remote share
+	 * set expiration date for federated share
 	 *
 	 * @param int $date
 	 * @param Session $session
 	 *
 	 * @return void
 	 */
-	public function setExpirationDaysForRemoteShare(
+	public function setExpirationDaysForFederatedShare(
 		$date,
 		Session $session
 	) {
-		$expirationDateField = $this->findRemoteShareExpirationField();
+		$expirationDateField = $this->findFederatedShareExpirationField();
 		$this->fillFieldAndKeepFocus($expirationDateField, $date . "\n", $session);
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
@@ -621,18 +621,18 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	}
 
 	/**
-	 * enable default expiration date for remote share
+	 * enable default expiration date for federated share
 	 *
 	 * @param Session $session
 	 *
 	 * @return void
 	 */
-	public function enableDefaultExpirationDateForRemoteShares(Session $session) {
+	public function enableDefaultExpirationDateForFederatedShares(Session $session) {
 		$this->toggleCheckbox(
 			$session,
 			"enables",
-			$this->defaultExpirationDateForRemoteCheckboxXpath,
-			$this->defaultExpirationDateForRemoteCheckboxId
+			$this->defaultExpirationDateForFederatedCheckboxXpath,
+			$this->defaultExpirationDateForFederatedCheckboxId
 		);
 	}
 

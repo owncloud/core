@@ -71,7 +71,7 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 	}
 
 	/**
-	 * @When /^the user (disables|enables) automatically accepting remote shares from trusted servers$/
+	 * @When /^the user (disables|enables) automatically accepting federated shares from trusted servers$/
 	 *
 	 * @param string $action
 	 *

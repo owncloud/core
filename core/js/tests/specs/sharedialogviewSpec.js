@@ -218,15 +218,15 @@ describe('OC.Share.ShareDialogView', function() {
 			});
 		});
 	});
-	describe('remote sharing', function() {
-		it('shows remote share info when allowed', function() {
+	describe('federated sharing', function() {
+		it('shows federated share info when allowed', function() {
 			configModel.set({
 				isRemoteShareAllowed: true
 			});
 			dialog.render();
 			expect(dialog.$el.find('.shareWithRemoteInfo').length).toEqual(1);
 		});
-		it('does not show remote share info when not allowed', function() {
+		it('does not show federated share info when not allowed', function() {
 			configModel.set({
 				isRemoteShareAllowed: false
 			});
@@ -998,7 +998,7 @@ describe('OC.Share.ShareDialogView', function() {
 						share_with_displayname: "Demo guest",
 					}, {
 						share_type: 6,
-						share_with_displayname: "Demo remote user",
+						share_with_displayname: "Demo federated user",
 					}]
 				}
 			});

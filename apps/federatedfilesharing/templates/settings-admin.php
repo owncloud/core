@@ -46,7 +46,7 @@ script('federatedfilesharing', 'settings-admin');
 	print_unescaped('checked="checked"');
 } ?> />
 		<label for="autoAcceptTrusted">
-			<?php p($l->t('Automatically accept remote shares from trusted servers'));?>
+			<?php p($l->t('Automatically accept federated shares from trusted servers'));?>
 		</label><br/>
 	</p>
 </div>
