@@ -734,7 +734,6 @@ html #body-login button[type="submit"]:hover {
 	margin: 0 auto -70px;
 	width: 100%;
 	min-height: 100vh; /* fix IE11 */
-	display: block !important;
 	-ms-flex-direction: row !important;
 	-ms-flex-pack: center !important;
 	-ms-flex-align: center !important;
