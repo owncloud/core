@@ -1826,7 +1826,7 @@ def buildGithubCommentForBuildStopped(alternateSuiteName, earlyFail):
             "image": "owncloud/ubuntu:16.04",
             "pull": "always",
             "commands": [
-                'echo "<details><summary>:boom: Acceptance tests <strong>%s</strong> failed. The build is cancelled...</summary>\\n\\n" >> /drone/src/comments.file' % alternateSuiteName,
+                'echo ":boom: Acceptance tests pipeline <strong>%s</strong> failed. The build has been cancelled.\\n\\n${DRONE_BUILD_LINK}/${DRONE_JOB_NUMBER}${DRONE_STAGE_NUMBER}/1\\n" >> /drone/src/comments.file' % alternateSuiteName,
             ],
             "when": {
                  "status": [
