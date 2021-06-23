@@ -1,7 +1,8 @@
 Change: Update PHP dependencies
 
 The following have been updated:
-- doctrine/cache (1.10.2 to 1.11.3)
+- doctrine/cache (1.10.2 to 2.0.3)
+- doctrine/dbal (2.13.1 to 2.13.2)
 - egulias/email-validator (3.1.0 to 3.1.1)
 - icewind/streams (0.7.3 to 0.7.5)
 - opis/closure (3.6.1 to 3.6.2)
@@ -31,3 +32,4 @@ https://github.com/owncloud/core/pull/38749
 https://github.com/owncloud/core/pull/38786
 https://github.com/owncloud/core/pull/38839
 https://github.com/owncloud/core/pull/38845
+https://github.com/owncloud/core/pull/38878
