@@ -66,6 +66,7 @@ Summary
 * Enhancement - Introduce the patch for CVE-2019-11358: [#38841](https://github.com/owncloud/core/pull/38841)
 * Enhancement - Introduce a remove license button in WebUI: [#38843](https://github.com/owncloud/core/issues/38843)
 * Enhancement - Show notification if video playback is not possible on public share: [#4632](https://github.com/owncloud/enterprise/issues/4632)
+* Enhancement - Trigger file scan after accepting a federated share: [#38880](https://github.com/owncloud/core/pull/38880)
 
 Details
 -------
@@ -610,6 +611,17 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4632
    https://github.com/owncloud/core/pull/38858
+
+* Enhancement - Trigger file scan after accepting a federated share: [#38880](https://github.com/owncloud/core/pull/38880)
+
+   This is necessary as we need the fileId to pass it to the `remoteshare.accepted` event. The
+   activity app can then hook onto this event and update the activity by setting the correct
+   fileId.
+
+   Also added a short translation for the SUBJECT_REMOTE_SHARE_RECEIVED activity.
+
+   https://github.com/owncloud/activity/issues/970
+   https://github.com/owncloud/core/pull/38880
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================
