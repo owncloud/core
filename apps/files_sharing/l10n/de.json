@@ -26,9 +26,10 @@
     "Remote share password" : "Passwort für die entfernte Freigabe",
     "Cancel" : "Abbrechen",
     "Add remote share" : "Entfernte Freigabe hinzufügen",
+    "The video cannot be played because your browser does not support the file type. Please try another browser." : "Das Video kann nicht abgespielt werden, da der Browser den Dateityp nicht unterstützt. Bitte versuche einen anderen Browser.",
     "You can upload into this folder" : "Du kannst in diesen Ordner hochladen",
     "Add to another cloud" : "Zu einer anderen Cloud hinzufügen",
-    "Enter the server address to add the content to" : "Geben Sie die Serveradresse ein, zu der der Inhalt hinzugefügt werden soll",
+    "Enter the server address to add the content to" : "Gib die Serveradresse ein, zu der der Inhalt hinzugefügt werden soll",
     "Add" : "Hinzufügen",
     "No ownCloud installation (7 or higher) found at {remote}" : "Keine OwnCloud-Installation (7 oder höher) auf {remote} gefunden",
     "Invalid ownCloud url" : "Ungültige OwnCloud-URL",
@@ -64,7 +65,7 @@
     "Your public link for %1$s expired" : "Dein öffentlicher Link für %1$s ist abgelaufen",
     "The public link of %2$s for %1$s expired" : "Der öffentliche Link von %2$s für %1$s ist abgelaufen",
     "%2$s shared %1$s with you" : "%2$s hat %1$s mit Dir geteilt",
-    "The share for %1$s expired" : "Der Anteil für %1$s ist abgelaufen",
+    "The share for %1$s expired" : "Die Freigabe für %1$s ist abgelaufen",
     "%2$s removed the share for %1$s" : "%2$s hat die Freigabe für %1$s entfernt",
     "Downloaded via public link" : "Heruntergeladen mittels öffentlichen Link",
     "Shared with %2$s" : "Geteilt mit %2$s",
@@ -138,6 +139,6 @@
     "Nothing to configure." : "Nichts zu konfigurieren. ",
     "Group Sharing Blacklist" : "Vom Teilen ausgeschlossene Gruppen",
     "Exclude groups from receiving shares" : "Gruppen von Teilen ausschliessen",
-    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Diese Gruppen stehen nicht zum Teilen von Daten zur Verfügung. Einzelne Mitglieder können weiterhin Shares für andere Gruppen anlegen oder von ihnen empfangen, in denen sie Mitglied sind."
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Diese Gruppen stehen nicht zum Teilen von Daten zur Verfügung. Einzelne Mitglieder können weiterhin Freigaben  anlegen oder von Gruppen empfangen, in denen sie Mitglied sind."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -7,6 +7,7 @@ OC.L10N.register(
     "Please select tags to filter by" : "Bitte wählen Sie Tags die gefiltert werden sollen",
     "No files found for the selected tags" : "Keine Dateien für die ausgewählten Tags gefunden",
     "<strong>System tags</strong> for a file have been modified" : "<strong>System-Tags</strong> für eine Datei sind geändert worden",
+    "System tag %3$s was assigned to %2$s due to automation rule" : "System-Tag %3$swurde aufgrund einer Automatisierungsregel an %2$sangehängt ",
     "You assigned system tag %3$s" : "Sie haben den System-Tag %3$s angebracht",
     "%1$s assigned system tag %3$s" : "%1$s hat System-Tag %3$s angebracht",
     "You unassigned system tag %3$s" : "Sie haben den System-Tag %3$s entfernt",
