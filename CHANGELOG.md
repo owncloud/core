@@ -336,10 +336,10 @@ Details
 
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 
-   The following have been updated: - doctrine/cache (1.10.2 to 1.11.3) -
-   egulias/email-validator (3.1.0 to 3.1.1) - icewind/streams (0.7.3 to 0.7.5) - opis/closure
-   (3.6.1 to 3.6.2) - pear/pear_exception (v1.0.1 to v1.0.2) - phpseclib/phpseclib (3.0.6 to
-   3.0.9) - psr/log (1.1.3 to 1.1.4)
+   The following have been updated: - doctrine/cache (1.10.2 to 2.0.3) - doctrine/dbal (2.13.1
+   to 2.13.2) - egulias/email-validator (3.1.0 to 3.1.1) - icewind/streams (0.7.3 to 0.7.5) -
+   opis/closure (3.6.1 to 3.6.2) - pear/pear_exception (v1.0.1 to v1.0.2) -
+   phpseclib/phpseclib (3.0.6 to 3.0.9) - psr/log (1.1.3 to 1.1.4)
 
    The following have been updated in files_external/3rdparty: - firebase/php-jwt (v5.2.1 to
    v5.3.0) - google/apiclient (v2.9.1 to v2.9.2) - google/apiclient-services (v0.164.0 to
@@ -358,6 +358,7 @@ Details
    https://github.com/owncloud/core/pull/38786
    https://github.com/owncloud/core/pull/38839
    https://github.com/owncloud/core/pull/38845
+   https://github.com/owncloud/core/pull/38878
 
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
 
