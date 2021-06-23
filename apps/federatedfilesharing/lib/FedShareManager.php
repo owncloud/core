@@ -159,7 +159,7 @@ class FedShareManager {
 		$this->publishActivity(
 			$shareWith,
 			Activity::SUBJECT_REMOTE_SHARE_RECEIVED,
-			[$ownerAddress->getCloudId(), \trim($name, '/')],
+			[$ownerAddress->getCloudId(), \trim($name, '/'), ['shareId' => $shareId]],
 			'files',
 			'',
 			'',

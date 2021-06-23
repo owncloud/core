@@ -23,7 +23,7 @@ Feature: poll incoming shares
     And user "Brian" from server "LOCAL" has accepted the last pending share
     When user "Alice" on "REMOTE" uploads file "filesForUpload/lorem.txt" to "/really/very/deeply/nested/folder/with/sub/folders/lorem.txt" using the WebDAV API
     And using server "LOCAL"
-    Then the etag of element "/" of user "Brian" should not have changed
+    Then the etag of element "/" of user "Brian" should have changed
     When the administrator invokes occ command "incoming-shares:poll"
     Then the etag of element "/" of user "Brian" should have changed
 
@@ -38,7 +38,7 @@ Feature: poll incoming shares
     And user "Alice" from server "REMOTE" has shared "/shareFolder" with user "Brian" from server "LOCAL"
     And user "Brian" from server "LOCAL" has accepted the last pending share
     And using server "LOCAL"
-    Then the etag of element "/" of user "Brian" should not have changed
+    Then the etag of element "/" of user "Brian" should have changed
     When the administrator invokes occ command "incoming-shares:poll"
     Then the etag of element "/" of user "Brian" should have changed
 
