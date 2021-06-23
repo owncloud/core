@@ -309,6 +309,13 @@ class Activity implements IExtension {
 			case self::SUBJECT_SHARED_EMAIL:
 				return (string) $l->t('Shared with %2$s', $params);
 
+			case self::SUBJECT_REMOTE_SHARE_RECEIVED:
+				if (\sizeof($params) === 2) {
+					// New activity ownCloud 8.2+
+					return (string) $l->t('Received remote share from %1$s', $params);
+				}
+				return (string) $l->t('Received remote share from %s', $params);
+
 			default:
 				return false;
 		}

@@ -144,7 +144,18 @@ class ManagerTest extends TestCase {
 				}
 			));
 
-		$event = new GenericEvent(null, ['sharedItem' => '/SharedFolder', 'shareAcceptedFrom' => 'foobar', 'remoteUrl' => 'http://localhost']);
+		$event = new GenericEvent(
+			null,
+			[
+				'sharedItem' => '/SharedFolder',
+				'shareAcceptedFrom' => 'foobar',
+				'remoteUrl' => 'http://localhost',
+				'fileId' => null,
+				'shareId' => $openShares[0]['id'],
+				'shareRecipient' => $this->uid,
+			]
+		);
+
 		$this->eventDispatcher->expects($this->at(1))
 			->method('dispatch')
 			->with('remoteshare.accepted', $event);
@@ -188,7 +199,15 @@ class ManagerTest extends TestCase {
 				}
 			));
 
-		$event = new GenericEvent(null, ['sharedItem' => '/SharedFolder', 'shareAcceptedFrom' => 'foobar', 'remoteUrl' => 'http://localhost']);
+		$event = new GenericEvent(
+			null,
+			[
+				'sharedItem' => '/SharedFolder',
+				'shareAcceptedFrom' => 'foobar',
+				'remoteUrl' => 'http://localhost',
+			]
+		);
+
 		$this->eventDispatcher->expects($this->at(1))
 			->method('dispatch')
 			->with('remoteshare.declined', $event);

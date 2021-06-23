@@ -208,13 +208,46 @@ class Manager {
 				WHERE `id` = ? AND `user` = ?');
 			$acceptShare->execute([1, $mountPoint, $hash, $id, $this->uid]);
 
+			$options = [
+				'remote'	=> $share['remote'],
+				'token'		=> $share['share_token'],
+				'mountpoint'	=> $mountPoint,
+				'owner'		=> $share['owner']
+			];
+
+			// We need to scan the new file/folder here to get its fileId
+			// which will be passed to the event for further processing.
+			$mount = $this->getMount($options);
+			$storage = $mount->getStorage();
+			$fileId = null;
+
+			if ($storage) {
+				$scanner = $storage->getScanner('');
+
+				// No need to scan all the folder contents as we only care about the root share
+				$file = $scanner->scanFile('');
+
+				if (isset($file['fileid'])) {
+					$fileId = $file['fileid'];
+				}
+			}
+
 			$this->eventDispatcher->dispatch(
 				AcceptShare::class,
 				new AcceptShare($share)
 			);
 
-			$event = new GenericEvent(null, ['sharedItem' => $share['name'], 'shareAcceptedFrom' => $share['owner'],
-				'remoteUrl' => $share['remote']]);
+			$event = new GenericEvent(
+				null,
+				[
+					'sharedItem' => $share['name'],
+					'shareAcceptedFrom' => $share['owner'],
+					'remoteUrl' => $share['remote'],
+					'fileId' => $fileId, // can be null in case the file was not scanned properly
+					'shareId' => $id,
+					'shareRecipient' => $this->uid,
+				]
+			);
 			$this->eventDispatcher->dispatch('remoteshare.accepted', $event);
 			\OC_Hook::emit('OCP\Share', 'federated_share_added', ['server' => $share['remote']]);
 
