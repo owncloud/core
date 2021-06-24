@@ -86,6 +86,8 @@ OC.L10N.register(
     "Public link expired" : "öffentlicher Link ist abgelaufen",
     "Public link of %2$s expired" : "Öffentlicher Link von %2$s ist abgelaufen",
     "Shared by %2$s" : "Geteilt von %2$s",
+    "Received remote share from %1$s" : "Sie haben eine Remotefreigabe von %1$s erhalten",
+    "Received remote share from %s" : "Sie haben eine Remotefreigabe von %s erhalten",
     "Shares" : "Geteiltes",
     "File sharing" : "Dateifreigabe",
     "Public link" : "Öffentlicher Link",
