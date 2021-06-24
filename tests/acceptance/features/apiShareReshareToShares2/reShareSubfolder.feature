@@ -9,7 +9,7 @@ Feature: a subfolder of a received share can be reshared
       | Alice    |
       | Brian    |
 
-  @smokeTest
+  @smokeTest @issue-ocis-2214
   Scenario Outline: User is allowed to reshare a sub-folder with the same permissions
     Given using OCS API version "<ocs_api_version>"
     And user "Carol" has been created with default attributes and without skeleton files
@@ -86,6 +86,7 @@ Feature: a subfolder of a received share can be reshared
       | 1               | 200              | 23                   | 15                  |
       | 2               | 404              | 23                   | 15                  |
 
+  @issue-ocis-2214
   Scenario Outline: User is allowed to update reshare of a sub-folder with less permissions
     Given using OCS API version "<ocs_api_version>"
     And user "Carol" has been created with default attributes and without skeleton files
@@ -108,6 +109,7 @@ Feature: a subfolder of a received share can be reshared
       | 1               | 100             |
       | 2               | 200             |
 
+  @issue-ocis-2214
   Scenario Outline: User is allowed to update reshare of a sub-folder to the maximum allowed permissions
     Given using OCS API version "<ocs_api_version>"
     And user "Carol" has been created with default attributes and without skeleton files
@@ -130,6 +132,7 @@ Feature: a subfolder of a received share can be reshared
       | 1               | 100             |
       | 2               | 200             |
 
+  @issue-ocis-2214
   Scenario Outline: User is not allowed to update reshare of a sub-folder with more permissions
     Given using OCS API version "<ocs_api_version>"
     And user "Carol" has been created with default attributes and without skeleton files
