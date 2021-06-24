@@ -44,7 +44,7 @@ Feature: cannot share resources with invalid permissions
       | 1               | 404             | 200              | 32          |
       | 2               | 404             | 404              | 32          |
 
-  @issue-ocis-reva-45 @issue-ocis-reva-243
+
   Scenario Outline: Cannot create a share of a file with a user with only create permission
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
@@ -61,7 +61,7 @@ Feature: cannot share resources with invalid permissions
       | 1               | 400             | 200              |
       | 2               | 400             | 400              |
 
-  @issue-ocis-reva-45 @issue-ocis-reva-243
+
   Scenario Outline: Cannot create a share of a file with a user with only (create,delete) permission
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"

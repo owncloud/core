@@ -37,7 +37,7 @@ Feature: sharing
       | 2               | 200             |
 
   @smokeTest
-  @skipOnEncryptionType:user-keys @issue-32322
+  @skipOnEncryptionType:user-keys @issue-32322 @issue-ocis-2133
   Scenario Outline: Creating a share of a file containing commas in the filename, with a user, the default permissions are read(1)+update(2)+can-share(16)
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -66,7 +66,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-301 @issue-ocis-reva-302
+  @issue-ocis-2133 @issue-ocis-reva-301 @issue-ocis-reva-302
   Scenario Outline: Creating a share of a file with a user and asking for various permission combinations
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -131,7 +131,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 400              |
 
-  @issue-ocis-reva-301
+  @issue-ocis-2133
   Scenario Outline: Creating a share of a folder with a user, the default permissions are all permissions(31)
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -206,7 +206,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest @issue-ocis-reva-34 @issue-ocis-reva-243
+  @smokeTest
   Scenario Outline: Share of folder to a group
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -238,7 +238,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-34 @issue-ocis-reva-243
+
   Scenario Outline: sharing again an own file while belonging to a group
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -260,7 +260,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-372 @issue-ocis-reva-243
+  @issue-ocis-2201
   Scenario Outline: sharing subfolder of already shared folder, GET result is correct
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -290,7 +290,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-14 @issue-ocis-reva-243
+
   Scenario Outline: user shares a file with file name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -308,7 +308,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-34 @issue-ocis-reva-243
+
   Scenario Outline: user shares a file with file name longer than 64 chars to a group
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -328,7 +328,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-14 @issue-ocis-reva-243 @issue-ocis-reva-12
+
   Scenario Outline: user shares a folder with folder name longer than 64 chars to another user
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -347,7 +347,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-34 @issue-ocis-reva-243 @issue-ocis-reva-12
+
   Scenario Outline: user shares a folder with folder name longer than 64 chars to a group
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -504,7 +504,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-34 @skipOnFilesClassifier @issue-files-classifier-291 @issue-ocis-reva-243
+  @skipOnFilesClassifier @issue-files-classifier-291 @issue-ocis-2146
   Scenario: Share a file by multiple channels and download from sub-folder and direct file share
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -532,7 +532,7 @@ Feature: sharing
     And the content of file "/Shares/common/sub/textfile0.txt" for user "Brian" should be "BLABLABLA" plus end-of-line
     And the content of file "/common/sub/textfile0.txt" for user "Alice" should be "BLABLABLA" plus end-of-line
 
-  @issue-enterprise-3896 @issue-ocis-reva-243
+  @issue-enterprise-3896 @issue-ocis-2201
   Scenario: sharing back to resharer is allowed
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -550,7 +550,7 @@ Feature: sharing
     And the sharing API should report to user "Brian" that no shares are in the pending state
     And as "Brian" folder "/Shares/userOneFolder" should not exist
 
-  @issue-enterprise-3896 @issue-ocis-reva-243
+  @issue-enterprise-3896 @issue-ocis-2201
   Scenario: sharing back to original sharer is allowed
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -568,7 +568,7 @@ Feature: sharing
     And the sharing API should report to user "Alice" that no shares are in the pending state
     And as "Alice" folder "/Shares/userOneFolder" should not exist
 
-  @issue-enterprise-3896 @issue-ocis-reva-243
+  @issue-enterprise-3896 @issue-ocis-2201
   Scenario: sharing a subfolder to a user that already received parent folder share
     Given these users have been created with default attributes and without skeleton files:
       | username |

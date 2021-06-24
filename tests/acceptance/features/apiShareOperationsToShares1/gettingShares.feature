@@ -62,7 +62,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest @issue-ocis-reva-243
+  @smokeTest
   Scenario Outline: getting all shares of a file with reshares
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -85,7 +85,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @smokeTest @issue-ocis-reva-243 @issue-ocis-reva-194
+  @smokeTest
   Scenario Outline: User's own shares reshared to him don't appear when getting "shared with me" shares
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created

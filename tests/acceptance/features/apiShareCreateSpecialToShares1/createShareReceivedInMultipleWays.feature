@@ -39,8 +39,8 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-243
-  Scenario Outline: Share of folder and sub-folder to same user - core#20645
+  @issue-ocis-1289
+  Scenario Outline: Share of folder and sub-folder to same user
     Given using OCS API version "<ocs_api_version>"
     And group "grp4" has been created
     And user "Brian" has been added to group "grp4"
@@ -68,7 +68,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-243
+  @issue-ocis-2021
   Scenario Outline: sharing subfolder when parent already shared
     Given using OCS API version "<ocs_api_version>"
     And group "grp1" has been created
@@ -87,7 +87,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-243
+  @issue-ocis-2021
   Scenario Outline: sharing subfolder when parent already shared with group of sharer
     Given using OCS API version "<ocs_api_version>"
     And group "grp0" has been created
@@ -107,7 +107,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-reva-243
+  @issue-ocis-2133
   Scenario Outline: multiple users share a file with the same name but different permissions to a user
     Given using OCS API version "<ocs_api_version>"
     And user "Carol" has been created with default attributes and without skeleton files
@@ -138,7 +138,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               |
       | 2               |
 
-  @issue-ocis-reva-243
+  @issue-ocis-2133
   Scenario Outline: multiple users share a folder with the same name to a user
     Given using OCS API version "<ocs_api_version>"
     And user "Carol" has been created with default attributes and without skeleton files

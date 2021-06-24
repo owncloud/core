@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-reva-243
+@api @files_sharing-app-required
 Feature: cannot share resources with invalid permissions
 
   Background:
@@ -32,7 +32,7 @@ Feature: cannot share resources with invalid permissions
       | 1               | 404             | 200              | PARENT        | 32          |
       | 2               | 404             | 404              | PARENT        | 32          |
 
-  @issue-ocis-reva-45 @issue-ocis-reva-243
+
   Scenario Outline: Cannot create a share of a file with a user with only create permission
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -51,7 +51,7 @@ Feature: cannot share resources with invalid permissions
       | 1               | 400             | 200              |
       | 2               | 400             | 400              |
 
-  @issue-ocis-reva-45 @issue-ocis-reva-243
+
   Scenario Outline: Cannot create a share of a file with a user with only (create,delete) permission
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
