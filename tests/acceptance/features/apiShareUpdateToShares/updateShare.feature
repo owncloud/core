@@ -77,7 +77,7 @@ Feature: sharing
       | 1               | 200              |
       | 2               | 400              |
 
-  @skipOnOcis @issue-ocis-2202
+  @issue-ocis-2173
   Scenario Outline: Cannot update a share of a file with a user to have only create and/or delete permission
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -99,7 +99,7 @@ Feature: sharing
       | 1               | 200              | create,delete |
       | 2               | 400              | create,delete |
 
-  @skipOnOcis @issue-ocis-2202
+  @issue-ocis-2173
   Scenario Outline: Cannot update a share of a file with a group to have only create and/or delete permission
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
