@@ -689,7 +689,7 @@ Feature: sharing
       | 1               | 200         |
       | 2               | 403         |
 
-
+  @issue-ocis-2215
   Scenario Outline: Sharing the shares folder to users is not possible
     Given using OCS API version "<ocs-api-version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -706,7 +706,7 @@ Feature: sharing
       | 1               | 200         |
       | 2               | 403         |
 
-
+  @issue-ocis-2215
   Scenario Outline: Sharing the shares folder to groups is not possible
     Given using OCS API version "<ocs-api-version>"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -725,7 +725,7 @@ Feature: sharing
       | 1               | 200         |
       | 2               | 403         |
 
-
+  @issue-ocis-2215
   Scenario Outline: Sharing the shares folder as public link is not possible
     Given using OCS API version "<ocs-api-version>"
     And user "Brian" has been created with default attributes and without skeleton files
