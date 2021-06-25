@@ -18,3 +18,8 @@ input[type='submit'] {
 fieldset > p {
 	position: relative;
 }
+
+form #password-protected-share legend {
+	margin-bottom: 15px;
+}
+
