@@ -19,6 +19,8 @@ A personal cloud which runs on your own server.**
 * :lock: **Encryption** You can encrypt data in transit with secure https connections. You can enable the encryption app to encrypt data on storage for improved security and privacy.
 * ...
 
+Trigger CI
+
 ## Installation instructions
 https://doc.owncloud.org/server/latest/admin_manual/installation/
 
