@@ -33,7 +33,7 @@ Feature: Display notifications when receiving a share
       | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^(\/index\.php)?\/f\/(\d+)$/                    |
+      | link        | /^https?:\/\/.+\/f\/(\d+)$/                      |
       | object_type | /^local_share$/                                  |
 
   Scenario: share to group sends notification to every member
@@ -47,7 +47,7 @@ Feature: Display notifications when receiving a share
       | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^(\/index\.php)?\/f\/(\d+)$/                    |
+      | link        | /^https?:\/\/.+\/f\/(\d+)$/                      |
       | object_type | /^local_share$/                                  |
     And user "Carol" should have 2 notifications
     And the last notification of user "Carol" should match these regular expressions about user "Alice"
@@ -55,7 +55,7 @@ Feature: Display notifications when receiving a share
       | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^(\/index\.php)?\/f\/(\d+)$/                    |
+      | link        | /^https?:\/\/.+\/f\/(\d+)$/                      |
       | object_type | /^local_share$/                                  |
 
 	# This scenario documents behavior discussed in core issue 31870
@@ -72,7 +72,7 @@ Feature: Display notifications when receiving a share
       | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^(\/index\.php)?\/f\/(\d+)$/                    |
+      | link        | /^https?:\/\/.+\/f\/(\d+)$/                      |
       | object_type | /^local_share$/                                  |
     And user "Carol" should have 1 notification
     And the last notification of user "Carol" should match these regular expressions about user "Alice"
@@ -80,7 +80,7 @@ Feature: Display notifications when receiving a share
       | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^(\/index\.php)?\/f\/(\d+)$/                    |
+      | link        | /^https?:\/\/.+\/f\/(\d+)$/                      |
       | object_type | /^local_share$/                                  |
     And user "David" should have 0 notifications
 
@@ -100,7 +100,7 @@ Feature: Display notifications when receiving a share
       | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^(\/index\.php)?\/f\/(\d+)$/                    |
+      | link        | /^https?:\/\/.+\/f\/(\d+)$/                      |
       | object_type | /^local_share$/                                  |
     And user "Carol" should have 1 notification
     And the last notification of user "Carol" should match these regular expressions about user "Alice"
@@ -108,7 +108,7 @@ Feature: Display notifications when receiving a share
       | app         | /^files_sharing$/                                |
       | subject     | /^"%displayname%" shared "PARENT" with you$/     |
       | message     | /^"%displayname%" invited you to view "PARENT"$/ |
-      | link        | /^(\/index\.php)?\/f\/(\d+)$/                    |
+      | link        | /^https?:\/\/.+\/f\/(\d+)$/                      |
       | object_type | /^local_share$/                                  |
     And user "David" should have 0 notifications
 
