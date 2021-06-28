@@ -440,3 +440,98 @@ Feature: Restore deleted files/folders
       | dav-path |
       | old      |
       | new      |
+
+
+  Scenario Outline: A deleted file inside a nested folder can be restored to a different location
+    Given using <dav-path> DAV path
+    And user "Alice" has created folder "/parent_folder"
+    And user "Alice" has created folder "/parent_folder/sub"
+    And user "Alice" has uploaded file with content "parent text" to "/parent_folder/sub/parent.txt"
+    And user "Alice" has deleted folder "parent_folder"
+    When user "Alice" restores the folder with original path "/parent_folder/sub/parent.txt" to "parent.txt" using the trashbin API
+    Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions for user "Alice"
+      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
+    And as "Alice" the file with original path "/parent_folder/sub/parent.txt" should not exist in the trashbin
+    And the content of file "parent.txt" for user "Alice" should be "parent text"
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+
+  Scenario Outline: A deleted file inside a nested folder cannot be restored to the original location if the location doesn't exist
+    Given using <dav-path> DAV path
+    And user "Alice" has created folder "/parent_folder"
+    And user "Alice" has created folder "/parent_folder/sub"
+    And user "Alice" has uploaded file with content "parent text" to "/parent_folder/sub/parent.txt"
+    And user "Alice" has deleted folder "parent_folder"
+    When user "Alice" restores the folder with original path "/parent_folder/sub/parent.txt" to "/parent_folder/sub/parent.txt" using the trashbin API
+    Then the HTTP status code should be "409"
+    And as "Alice" the file with original path "/parent_folder/sub/parent.txt" should exist in the trashbin
+    And user "Alice" should not see the following elements
+      | /parent_folder/               |
+      | /parent_folder/sub/           |
+      | /parent_folder/sub/parent.txt |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+
+  Scenario Outline: A deleted file inside a nested folder can be restored to the original location if the location exists
+    Given using <dav-path> DAV path
+    And user "Alice" has created folder "/parent_folder"
+    And user "Alice" has created folder "/parent_folder/sub"
+    And user "Alice" has uploaded file with content "parent text" to "/parent_folder/sub/parent.txt"
+    And user "Alice" has deleted folder "parent_folder"
+    And user "Alice" has created folder "/parent_folder"
+    And user "Alice" has created folder "/parent_folder/sub"
+    When user "Alice" restores the folder with original path "/parent_folder/sub/parent.txt" using the trashbin API
+    Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions for user "Alice"
+      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
+    And as "Alice" the file with original path "/parent_folder/sub/parent.txt" should not exist in the trashbin
+    And the content of file "/parent_folder/sub/parent.txt" for user "Alice" should be "parent text"
+    And user "Alice" should see the following elements
+      | /parent_folder/               |
+      | /parent_folder/sub/           |
+      | /parent_folder/sub/parent.txt |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+  @skipOnOcV10 @issue-38898
+  Scenario Outline: A deleted file inside a nested folder cannot be restored without the destination
+    Given using <dav-path> DAV path
+    And user "Alice" has created folder "/parent_folder"
+    And user "Alice" has created folder "/parent_folder/sub"
+    And user "Alice" has uploaded file with content "parent text" to "/parent_folder/sub/parent.txt"
+    And user "Alice" has deleted folder "parent_folder"
+    When user "Alice" restores the folder with original path "/parent_folder/sub/parent.txt" without specifying the destination using the trashbin API
+    Then the HTTP status code should be "400"
+    And as "Alice" the file with original path "/parent_folder/sub/parent.txt" should exist in the trashbin
+    And user "Alice" should not see the following elements
+      | /parent_folder/               |
+      | /parent_folder/sub/           |
+      | /parent_folder/sub/parent.txt |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+  @skipOnOcV10 @issue-38898
+  Scenario Outline: A deleted file cannot be restored without the destination
+    Given using <dav-path> DAV path
+    And user "Alice" has uploaded file with content "parent text" to "/parent.txt"
+    And user "Alice" has deleted file "parent.txt"
+    When user "Alice" restores the folder with original path "parent.txt" without specifying the destination using the trashbin API
+    Then the HTTP status code should be "400"
+    And as "Alice" the file with original path "parent.txt" should exist in the trashbin
+    And user "Alice" should not see the following elements
+      | /parent.txt |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |

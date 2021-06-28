@@ -607,6 +607,52 @@ class TrashbinContext implements Context {
 	}
 
 	/**
+	 * @When user :user restores the folder with original path :originalPath without specifying the destination using the trashbin API
+	 *
+	 * @param $user string
+	 * @param $originalPath string
+	 *
+	 * @return ResponseInterface
+	 * @throws Exception
+	 */
+	public function restoreFileWithoutDestination($user, $originalPath) {
+		$asUser = $asUser ?? $user;
+		$listing = $this->listTrashbinFolder($user, null);
+		$originalPath = \trim($originalPath, '/');
+
+		foreach ($listing as $entry) {
+			if ($entry['original-location'] === $originalPath) {
+				$trashItemHRef = $this->convertTrashbinHref($entry['href']);
+				$response = $this->featureContext->makeDavRequest(
+					$asUser,
+					'MOVE',
+					$trashItemHRef,
+					[],
+					null,
+					'trash-bin'
+				);
+				$this->featureContext->setResponse($response);
+				// this gives empty response in ocis and the oc10 behavior is also not correct
+				// https://github.com/owncloud/core/issues/38898
+				try {
+					$responseXml = HttpRequestHelper::getResponseXml(
+						$response,
+						__METHOD__
+					);
+					$this->featureContext->setResponseXmlObject($responseXml);
+				} catch (Exception $e) {
+				}
+
+				return $response;
+			}
+		}
+		throw new \Exception(
+			__METHOD__
+			. " cannot restore from trashbin because no element was found for user $user at original path $originalPath"
+		);
+	}
+
+	/**
 	 * @Then /^the content of file "([^"]*)" for user "([^"]*)" if the file is also in the trashbin should be "([^"]*)" otherwise "([^"]*)"$/
 	 *
 	 * Note: this is a special step for an unusual bug combination.

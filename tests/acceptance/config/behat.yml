@@ -473,6 +473,7 @@ default:
         - OccContext:
         - TrashbinContext:
         - AppConfigurationContext:
+        - WebDavPropertiesContext:
 
     apiVersions:
       paths:
