@@ -425,6 +425,7 @@ Details
 
    https://github.com/owncloud/core/pull/38506
    https://github.com/owncloud/core/pull/38853
+   https://github.com/owncloud/core/pull/38894
 
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
 
