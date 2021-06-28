@@ -43,6 +43,7 @@ Summary
 * Change - Optimize share rename: [#38656](https://github.com/owncloud/core/pull/38656)
 * Change - All mount configuration items marked as passwords will be encrypted: [#38728](https://github.com/owncloud/core/pull/38728)
 * Change - Change favicon and color references to match the new CI: [#38750](https://github.com/owncloud/core/pull/38750)
+* Change - Update PHP dependencies: [#38891](https://github.com/owncloud/core/pull/38891)
 * Enhancement - Improve public share federation user interface: [#4393](https://github.com/owncloud/enterprise/issues/4393)
 * Enhancement - Improve login form: [#38506](https://github.com/owncloud/core/pull/38506)
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
@@ -405,6 +406,14 @@ Details
    for the mail templates and the ownCloud logo without the "X" reference was added.
 
    https://github.com/owncloud/core/pull/38750
+
+* Change - Update PHP dependencies: [#38891](https://github.com/owncloud/core/pull/38891)
+
+   The following have been updated: - league/flysystem (1.0.70 => 1.1.4) - punic/punic (3.5.1 =>
+   3.6.0) - symfony/service-contracts (v1.1.9 => v2.4.0) - symfony/translation-contracts
+   (v1.1.10 => v2.4.0)
+
+   https://github.com/owncloud/core/pull/38891
 
 * Enhancement - Improve public share federation user interface: [#4393](https://github.com/owncloud/enterprise/issues/4393)
 
