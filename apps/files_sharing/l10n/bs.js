@@ -8,6 +8,7 @@ OC.L10N.register(
     "Shared by" : "Dijeli",
     "Sharing" : "Dijeljenje",
     "Password" : "Lozinka",
+    "Proceed" : "Nastavi",
     "Name" : "Ime",
     "Expiration date" : "Datum isteka",
     "Download" : "Preuzmite"
