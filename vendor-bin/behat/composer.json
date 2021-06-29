@@ -15,5 +15,8 @@
         "phpunit/phpunit": "^9.4",
         "laminas/laminas-ldap": "^2.10",
         "ankitpokhrel/tus-php": "^2.1"
+    },
+    "conflict": {
+        "instaclick/php-webdriver": "1.4.9"
     }
 }
