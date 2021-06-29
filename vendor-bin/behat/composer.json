@@ -17,6 +17,6 @@
         "ankitpokhrel/tus-php": "^2.1"
     },
     "conflict": {
-        "instaclick/php-webdriver": "1.4.9"
+        "instaclick/php-webdriver": "1.4.8 || 1.4.9"
     }
 }
