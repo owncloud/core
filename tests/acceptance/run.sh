@@ -1350,6 +1350,7 @@ then
 fi
 
 # see if any screenshots were produced
+# change to trigger CI again
 ls -l ${SCRIPT_PATH}/config
 if [ -d ${SCRIPT_PATH}/config/screenshots ]
 then
