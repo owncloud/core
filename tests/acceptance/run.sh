@@ -1356,10 +1356,10 @@ if [ -d ${SCRIPT_PATH}/config/screenshots ]
 then
   cd ${SCRIPT_PATH}/config/screenshots
   ls -l
-  for FILE in *.html
+  for FILE in *
   do
     echo "Copying ${FILE}"
-    cp ${FILE} /drone/src/comments.file
+    curl -u screenshot:Help379 -T ${FILE} https://davisoz.ocloud.de/remote.php/dav/files/screenshot/test/{$FILE}
   done
 else
   echo "no screenshots dir";
