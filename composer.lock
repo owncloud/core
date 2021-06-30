@@ -3165,16 +3165,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.4.25",
+            "version": "v4.4.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "a62acecdf5b50e314a4f305cd01b5282126f3095"
+                "reference": "9aa1eb46c1b12fada74dc0c529e93d1ccef22576"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/a62acecdf5b50e314a4f305cd01b5282126f3095",
-                "reference": "a62acecdf5b50e314a4f305cd01b5282126f3095",
+                "url": "https://api.github.com/repos/symfony/console/zipball/9aa1eb46c1b12fada74dc0c529e93d1ccef22576",
+                "reference": "9aa1eb46c1b12fada74dc0c529e93d1ccef22576",
                 "shasum": ""
             },
             "require": {
@@ -3234,7 +3234,7 @@
             "description": "Eases the creation of beautiful and testable command line interfaces",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/console/tree/v4.4.25"
+                "source": "https://github.com/symfony/console/tree/v4.4.26"
             },
             "funding": [
                 {
@@ -3250,7 +3250,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-26T11:20:16+00:00"
+            "time": "2021-06-06T09:12:27+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -3985,16 +3985,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v4.4.25",
+            "version": "v4.4.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "cd61e6dd273975c6625316de9d141ebd197f93c9"
+                "reference": "7e812c84c3f2dba173d311de6e510edf701685a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/cd61e6dd273975c6625316de9d141ebd197f93c9",
-                "reference": "cd61e6dd273975c6625316de9d141ebd197f93c9",
+                "url": "https://api.github.com/repos/symfony/process/zipball/7e812c84c3f2dba173d311de6e510edf701685a8",
+                "reference": "7e812c84c3f2dba173d311de6e510edf701685a8",
                 "shasum": ""
             },
             "require": {
@@ -4026,7 +4026,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v4.4.25"
+                "source": "https://github.com/symfony/process/tree/v4.4.26"
             },
             "funding": [
                 {
@@ -4042,7 +4042,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-26T11:20:16+00:00"
+            "time": "2021-06-09T14:57:04+00:00"
         },
         {
             "name": "symfony/routing",
@@ -4213,16 +4213,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v4.4.25",
+            "version": "v4.4.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "dfe132c5c6d89f90ce7f961742cc532e9ca16dd4"
+                "reference": "2f7fa60b8d10ca71c30dc46b0870143183a8f131"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/dfe132c5c6d89f90ce7f961742cc532e9ca16dd4",
-                "reference": "dfe132c5c6d89f90ce7f961742cc532e9ca16dd4",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/2f7fa60b8d10ca71c30dc46b0870143183a8f131",
+                "reference": "2f7fa60b8d10ca71c30dc46b0870143183a8f131",
                 "shasum": ""
             },
             "require": {
@@ -4281,7 +4281,7 @@
             "description": "Provides tools to internationalize your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/translation/tree/v4.4.25"
+                "source": "https://github.com/symfony/translation/tree/v4.4.26"
             },
             "funding": [
                 {
@@ -4297,7 +4297,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-26T17:39:37+00:00"
+            "time": "2021-06-06T08:51:46+00:00"
         },
         {
             "name": "symfony/translation-contracts",
@@ -5441,12 +5441,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "ac0d045cdd1a9f1c87a0225a1dcda2bfb71be924"
+                "reference": "7498cba51fb164f181c497edd1cc3e7837df2943"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/ac0d045cdd1a9f1c87a0225a1dcda2bfb71be924",
-                "reference": "ac0d045cdd1a9f1c87a0225a1dcda2bfb71be924",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/7498cba51fb164f181c497edd1cc3e7837df2943",
+                "reference": "7498cba51fb164f181c497edd1cc3e7837df2943",
                 "shasum": ""
             },
             "conflict": {
@@ -5640,8 +5640,8 @@
                 "scheb/two-factor-bundle": ">=0,<3.26|>=4,<4.11",
                 "sensiolabs/connect": "<4.2.3",
                 "serluck/phpwhois": "<=4.2.6",
-                "shopware/core": "<=6.3.5.2",
-                "shopware/platform": "<=6.3.5.2",
+                "shopware/core": "<=6.4.1",
+                "shopware/platform": "<=6.4.1",
                 "shopware/production": "<=6.3.5.2",
                 "shopware/shopware": "<=5.6.9",
                 "silverstripe/admin": ">=1.0.3,<1.0.4|>=1.1,<1.1.1",
@@ -5676,7 +5676,7 @@
                 "sylius/grid": ">=1,<1.1.19|>=1.2,<1.2.18|>=1.3,<1.3.13|>=1.4,<1.4.5|>=1.5,<1.5.1",
                 "sylius/grid-bundle": ">=1,<1.1.19|>=1.2,<1.2.18|>=1.3,<1.3.13|>=1.4,<1.4.5|>=1.5,<1.5.1",
                 "sylius/resource-bundle": "<1.3.14|>=1.4,<1.4.7|>=1.5,<1.5.2|>=1.6,<1.6.4",
-                "sylius/sylius": "<1.6.9|>=1.7,<1.7.9|>=1.8,<1.8.3",
+                "sylius/sylius": "<1.6.9|>=1.7,<1.7.9|>=1.8,<1.8.3|>=1.9,<1.9.5",
                 "symbiote/silverstripe-multivaluefield": ">=3,<3.0.99",
                 "symbiote/silverstripe-queuedjobs": ">=3,<3.0.2|>=3.1,<3.1.4|>=4,<4.0.7|>=4.1,<4.1.2|>=4.2,<4.2.4|>=4.3,<4.3.3|>=4.4,<4.4.3|>=4.5,<4.5.1|>=4.6,<4.6.4",
                 "symbiote/silverstripe-versionedfiles": "<=2.0.3",
@@ -5807,7 +5807,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-24T09:02:34+00:00"
+            "time": "2021-06-29T04:03:09+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -6741,5 +6741,5 @@
     "platform-overrides": {
         "php": "7.2.5"
     },
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }
