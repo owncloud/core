@@ -18,9 +18,9 @@ config = {
 
 	'javascript': True,
 
-	'litmus': True,
+	'litmus': False,
 
-	'dav': True,
+	'dav': False,
 
 	'phpunit': {
 		'allDatabases' : {
