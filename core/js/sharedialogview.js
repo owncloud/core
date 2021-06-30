@@ -276,6 +276,7 @@
 							$('.shareWithField').removeClass('error')
 								.tooltip('hide')
 								.autocomplete("option", "autoFocus", true);
+
 							response(suggestions, result);
 						} else {
 							var title = t('core', 'No users or groups found for {search}', {search: $('.shareWithField').val()});
