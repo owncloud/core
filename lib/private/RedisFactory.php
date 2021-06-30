@@ -74,10 +74,16 @@ class RedisFactory {
 				$connectionParameters = null;
 			}
 
+			$auth = null;
+
+			if (isset($config['password']) && $config['password'] !== '') {
+				$auth = $config['password'];
+			}
+
 			if ($connectionParameters && $isConnectionParametersSupported) {
-				$this->instance = new \RedisCluster(null, $config['seeds'], $timeout, $readTimeout, false, null, $connectionParameters); // @phan-suppress-current-line PhanParamTooManyInternal
+				$this->instance = new \RedisCluster(null, $config['seeds'], $timeout, $readTimeout, false, $auth, $connectionParameters); // @phan-suppress-current-line PhanParamTooManyInternal
 			} else {
-				$this->instance = new \RedisCluster(null, $config['seeds'], $timeout, $readTimeout);
+				$this->instance = new \RedisCluster(null, $config['seeds'], $timeout, $readTimeout, false, $auth);
 			}
 
 			if (isset($config['failover_mode'])) {
