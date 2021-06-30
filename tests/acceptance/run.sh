@@ -1351,7 +1351,18 @@ fi
 
 # see if any screenshots were produced
 ls -l ${SCRIPT_PATH}/config
-if [ -d ${SCRIPT_PATH}/config/screenshots ]; then ls -l ${SCRIPT_PATH}/config/screenshots; else echo "no screenshots dir"; fi
+if [ -d ${SCRIPT_PATH}/config/screenshots ]
+then
+  cd ${SCRIPT_PATH}/config/screenshots
+  ls -l
+  for FILE in *.html
+  do
+    echo "Copying ${FILE}"
+    cp ${FILE} /drone/src/comments.file
+  done
+else
+  echo "no screenshots dir";
+fi
 
 # sync the file-system so all output will be flushed to storage.
 # In drone we sometimes see that the last lines of output are missing from the
