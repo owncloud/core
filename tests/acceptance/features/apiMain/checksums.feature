@@ -160,7 +160,7 @@ Feature: checksums
     And user "Alice" should not see the following elements
       | /myChunkedFile.txt |
 
-  @issue-ocis-reva-56
+  @issue-ocis-reva-56 @notToImplementOnOCIS
   Scenario: Upload new dav chunked file using async MOVE where checksum matches
     Given using new DAV path
     And the administrator has enabled async operations
@@ -176,7 +176,7 @@ Feature: checksums
       | fileId | /^[0-9a-z]{20,}$/ |
     And the content of file "/myChunkedFile.txt" for user "Alice" should be "BBBBBCCCCC"
 
-  @issue-ocis-reva-56
+  @issue-ocis-reva-56 @notToImplementOnOCIS
   Scenario: Upload new dav chunked file using async MOVE where checksum does not match
     Given using new DAV path
     And the administrator has enabled async operations
@@ -194,7 +194,7 @@ Feature: checksums
     And user "Alice" should not see the following elements
       | /myChunkedFile.txt |
 
-  @issue-ocis-reva-56
+  @issue-ocis-reva-56 @notToImplementOnOCIS
   Scenario: Upload new dav chunked file using async MOVE where checksum does not match - retry with correct checksum
     Given using new DAV path
     And the administrator has enabled async operations
