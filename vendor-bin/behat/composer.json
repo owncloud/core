@@ -14,6 +14,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "phpunit/phpunit": "^9.4",
         "laminas/laminas-ldap": "^2.10",
-        "ankitpokhrel/tus-php": "^2.1"
+        "ankitpokhrel/tus-php": "^2.1",
+        "integratedexperts/behat-screenshot": "^0.7"
     }
 }

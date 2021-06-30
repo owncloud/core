@@ -1215,3 +1215,8 @@ default:
     rdx\behatvars\BehatVariablesExtension: ~
 
     Cjm\Behat\StepThroughExtension: ~
+
+    IntegratedExperts\BehatScreenshotExtension:
+      dir: %paths.base%/screenshots
+      fail: true
+      purge: false
