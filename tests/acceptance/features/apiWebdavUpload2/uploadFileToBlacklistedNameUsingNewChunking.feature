@@ -9,6 +9,7 @@ Feature: users cannot upload a file to a blacklisted name using new chunking
     And using new DAV path
     And user "Alice" has been created with default attributes and without skeleton files
 
+  @notToImplementOnOCIS
   Scenario: Upload a file to a filename that is banned by default using new chunking
     When user "Alice" creates a new chunking upload with id "chunking-42" using the WebDAV API
     And user "Alice" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the WebDAV API

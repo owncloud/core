@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-56
+@api @issue-ocis-reva-56 @notToImplementOnOCIS
 Feature: upload file using new chunking
   As a user
   I want to be able to upload "large" files in chunks asynchronously
