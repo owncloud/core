@@ -1189,6 +1189,7 @@ $CONFIG = [
 	'timeout' => 0.0,
 	'read_timeout' => 0.0,
 	'failover_mode' => \RedisCluster::FAILOVER_DISTRIBUTE,
+	'password' => '', // Optional, if not defined no password will be used.
 	 // Optional config option
 	 // In order to use connection_parameters php-redis extension >= 5.3.0 is required
 	 // In order to use SSL/TLS redis server >= 6.0 is required

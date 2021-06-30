@@ -1,0 +1,5 @@
+Enhancement: Allow to pass password on redis cluster connection
+
+
+https://github.com/owncloud/core/pull/38917
+https://github.com/owncloud/enterprise/issues/4658
