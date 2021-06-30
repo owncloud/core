@@ -6,8 +6,4 @@ $(document).ready(function(){
 			$('#password-submit').prop('disabled', true);
 		}
 	});
-
-	$('form').on('submit', function() {
-		$('#submit').addClass('icon-loading-small')
-	})
 });
