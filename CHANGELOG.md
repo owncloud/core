@@ -68,6 +68,7 @@ Summary
 * Enhancement - Introduce a remove license button in WebUI: [#38843](https://github.com/owncloud/core/issues/38843)
 * Enhancement - Show notification if video playback is not possible on public share: [#4632](https://github.com/owncloud/enterprise/issues/4632)
 * Enhancement - Trigger file scan after accepting a federated share: [#38880](https://github.com/owncloud/core/pull/38880)
+* Enhancement - Allow to pass password on redis cluster connection: [#38917](https://github.com/owncloud/core/pull/38917)
 
 Details
 -------
@@ -633,6 +634,11 @@ Details
    https://github.com/owncloud/activity/issues/970
    https://github.com/owncloud/core/pull/38880
    https://github.com/owncloud/core/pull/38889
+
+* Enhancement - Allow to pass password on redis cluster connection: [#38917](https://github.com/owncloud/core/pull/38917)
+
+   https://github.com/owncloud/enterprise/issues/4658
+   https://github.com/owncloud/core/pull/38917
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================
