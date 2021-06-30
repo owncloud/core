@@ -223,6 +223,8 @@ class SharingDialog extends OwncloudPage {
 		$shareWithField = $this->findShareWithField();
 		$this->fillFieldAndKeepFocus($shareWithField, $input, $session);
 		$this->waitForAjaxCallsToStartAndFinish($session, $timeout_msec);
+		// hack to investigate 38908 - wait some more to be sure that the autocomplete matches are really ready
+		\sleep(2);
 		return $this->getAutocompleteNodeElement();
 	}
 
