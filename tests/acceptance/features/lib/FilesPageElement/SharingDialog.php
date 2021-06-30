@@ -965,5 +965,7 @@ class SharingDialog extends OwncloudPage {
 		}
 		$this->waitForOutstandingAjaxCalls($session);
 		$this->waitTillXpathIsVisible($xpath, $timeout_msec);
+		// hack to investigate 38908 - wait some more to be sure that the SharingDialog is really ready
+		\sleep(2);
 	}
 }
