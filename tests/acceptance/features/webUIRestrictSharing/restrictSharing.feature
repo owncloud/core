@@ -49,7 +49,7 @@ Feature: restrict Sharing
     And the user re-logs in as "David" using the webUI
     Then folder "simple-folder (2)" should be listed on the webUI
 
-  @smokeTest
+  @smokeTest @skip @issue-38908
   Scenario: Forbid sharing with groups
     Given the setting "Allow sharing with groups" in the section "Sharing" has been disabled
     When the user browses to the files page
