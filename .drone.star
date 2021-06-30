@@ -1614,7 +1614,7 @@ def acceptance(ctx):
 												'%smake %s' % (suExecCommand, makeParameter)
 											]
 										}),
-									] + buildGithubCommentForBuildStopped(name, params['earlyFail']) + githubComment(params['earlyFail']) + stopBuild(params['earlyFail']) ,
+									] + buildGithubCommentForBuildStopped(name, params['earlyFail']) + githubComment(True) + stopBuild(params['earlyFail']) ,
 									'services':
 										databaseService(db) +
 										browserService(browser) +
