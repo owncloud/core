@@ -761,6 +761,7 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
         - OccContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUIComments:
       paths:
@@ -772,6 +773,7 @@ default:
         - WebUILoginContext:
         - WebUIFilesContext:
         - WebUISharingContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUICreateDelete:
       paths:
@@ -785,6 +787,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUISharingContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUIFavorites:
       paths:
@@ -795,6 +798,7 @@ default:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUIFiles:
       paths:
@@ -810,6 +814,7 @@ default:
         - WebUISharingContext:
         - OccContext:
         - PublicWebDavContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUILogin:
       paths:
@@ -823,6 +828,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIPersonalGeneralSettingsContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUIMoveFilesFolders:
       paths:
@@ -836,6 +842,7 @@ default:
         - WebUISharingContext:
         - OccContext:
         - PublicWebDavContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUIPersonalSettings:
       paths:
@@ -852,6 +859,7 @@ default:
         - WebUIUserContext:
         - OccContext:
         - OccUsersGroupsContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUIRenameFiles:
       paths:
@@ -865,6 +873,7 @@ default:
         - WebUISharingContext:
         - OccContext:
         - PublicWebDavContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUIRenameFolders:
       paths:
@@ -876,6 +885,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - OccContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUIRestrictSharing:
       paths:
@@ -903,6 +913,7 @@ default:
         - WebUISharingContext:
         - WebUIAdminSharingSettingsContext:
         - WebUIPersonalSharingSettingsContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUISharingAutocompletion1:
       paths:
@@ -917,6 +928,7 @@ default:
         - WebUISharingContext:
         - OccContext:
         - WebUIPersonalSharingSettingsContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUISharingAutocompletion2:
       paths:
@@ -931,6 +943,7 @@ default:
         - WebUISharingContext:
         - OccContext:
         - WebUIPersonalSharingSettingsContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUISharingExternal1:
       paths:
@@ -949,6 +962,7 @@ default:
         - PublicWebDavContext:
         - WebUIPersonalSharingSettingsContext:
         - WebUIAdminSharingSettingsContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUISharingExternal2:
       paths:
@@ -967,6 +981,7 @@ default:
         - PublicWebDavContext:
         - WebUIPersonalSharingSettingsContext:
         - WebUIAdminSharingSettingsContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUISharingInternalGroups1:
       paths:
@@ -981,6 +996,7 @@ default:
         - EmailContext:
         - WebUIAdminSharingSettingsContext:
         - OccContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUISharingInternalGroups2:
       paths:
@@ -995,6 +1011,7 @@ default:
         - EmailContext:
         - WebUIAdminSharingSettingsContext:
         - OccContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUISharingInternalUsers1:
       paths:
@@ -1010,6 +1027,7 @@ default:
         - WebUIAdminSharingSettingsContext:
         - WebUIPersonalSharingSettingsContext:
         - OccContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUISharingInternalUsers2:
       paths:
@@ -1025,6 +1043,7 @@ default:
         - WebUIAdminSharingSettingsContext:
         - WebUIPersonalSharingSettingsContext:
         - OccContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUISharingNotifications:
       paths:
@@ -1038,6 +1057,7 @@ default:
         - WebUILoginContext:
         - WebUINotificationsContext:
         - WebUISharingContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUISharingPublic1:
       paths:
@@ -1053,6 +1073,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUISharingContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUISharingPublic2:
       paths:
@@ -1068,6 +1089,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUISharingContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUITags:
       paths:
@@ -1081,6 +1103,7 @@ default:
         - WebUIFilesContext:
         - WebUISharingContext:
         - WebUITagsContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUITrashbin:
       paths:
@@ -1093,6 +1116,7 @@ default:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUIUpload:
       paths:
@@ -1106,6 +1130,7 @@ default:
         - WebUISharingContext:
         - OccContext:
         - PublicWebDavContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     # This suite is part of the user_management app in later core versions
     webUIAddUsers:
@@ -1122,6 +1147,7 @@ default:
         - WebUIPersonalGeneralSettingsContext:
         - WebUIUsersContext:
         - WebUIUserContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     # This suite is part of the user_management app in later core versions
     webUIManageQuota:
@@ -1135,6 +1161,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIUsersContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     # This suite is part of the user_management app in later core versions
     webUIManageUsersGroups:
@@ -1151,6 +1178,7 @@ default:
         - WebUIPersonalGeneralSettingsContext:
         - WebUIUsersContext:
         - WebUIUserContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     # This suite is part of the user_management app in later core versions
     webUISettingsMenu:
@@ -1166,6 +1194,7 @@ default:
         - WebUILoginContext:
         - WebUISharingContext:
         - WebUIUsersContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUIWebdavLocks:
       paths:
@@ -1181,6 +1210,7 @@ default:
         - WebUISharingContext:
         - OccContext:
         - PublicWebDavContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUIWebdavLockProtection:
       paths:
@@ -1196,6 +1226,7 @@ default:
         - WebUISharingContext:
         - OccContext:
         - PublicWebDavContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
     webUIFileActionsMenu:
       paths:
@@ -1207,6 +1238,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIFileActionsMenuContext:
+        - IntegratedExperts\BehatScreenshotExtension\Context\ScreenshotContext
 
   extensions:
     jarnaiz\JUnitFormatter\JUnitFormatterExtension:
