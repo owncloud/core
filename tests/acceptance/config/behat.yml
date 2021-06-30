@@ -1217,6 +1217,6 @@ default:
     Cjm\Behat\StepThroughExtension: ~
 
     IntegratedExperts\BehatScreenshotExtension:
-      dir: %paths.base%/screenshots
+      dir: '%paths.base%/screenshots'
       fail: true
       purge: false
