@@ -1793,7 +1793,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				"",
 				$shareWith,
 				2,
-				true
+				false
 			);
 			$sharingWasPossible = true;
 		} catch (ElementNotFoundException $e) {
