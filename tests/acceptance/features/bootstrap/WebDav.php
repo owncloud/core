@@ -4473,8 +4473,12 @@ trait WebDav {
 	 */
 	public function pauseUploadDelete() {
 		$time = \time();
-		if ($this->lastUploadDeleteTime !== null && $time - $this->lastUploadDeleteTime < 1) {
-			\sleep(1);
+		$uploadWaitTime = \getenv("UPLOAD_DELETE_WAIT_TIME");
+
+		$uploadWaitTime = $uploadWaitTime ? (int)$uploadWaitTime : 1;
+
+		if ($this->lastUploadDeleteTime !== null && $time - $this->lastUploadDeleteTime < $uploadWaitTime) {
+			\sleep($uploadWaitTime);
 		}
 	}
 
