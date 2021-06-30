@@ -50,7 +50,43 @@ Feature: restrict Sharing
     Then folder "simple-folder (2)" should be listed on the webUI
 
   @smokeTest
-  Scenario: Forbid sharing with groups
+  Scenario: Forbid sharing with groups (1)
+    Given the setting "Allow sharing with groups" in the section "Sharing" has been disabled
+    When the user browses to the files page
+    Then it should not be possible to share folder "simple-folder" with group "grp1" using the webUI
+    And it should not be possible to share folder "simple-folder" with group "grp2" using the webUI
+    When the user shares folder "simple-folder" with user "Alice" using the webUI
+    And the user re-logs in as "Alice" using the webUI
+    Then folder "simple-folder (2)" should be listed on the webUI
+
+  Scenario: Forbid sharing with groups (2)
+    Given the setting "Allow sharing with groups" in the section "Sharing" has been disabled
+    When the user browses to the files page
+    Then it should not be possible to share folder "simple-folder" with group "grp1" using the webUI
+    And it should not be possible to share folder "simple-folder" with group "grp2" using the webUI
+    When the user shares folder "simple-folder" with user "Alice" using the webUI
+    And the user re-logs in as "Alice" using the webUI
+    Then folder "simple-folder (2)" should be listed on the webUI
+
+  Scenario: Forbid sharing with groups (3)
+    Given the setting "Allow sharing with groups" in the section "Sharing" has been disabled
+    When the user browses to the files page
+    Then it should not be possible to share folder "simple-folder" with group "grp1" using the webUI
+    And it should not be possible to share folder "simple-folder" with group "grp2" using the webUI
+    When the user shares folder "simple-folder" with user "Alice" using the webUI
+    And the user re-logs in as "Alice" using the webUI
+    Then folder "simple-folder (2)" should be listed on the webUI
+
+  Scenario: Forbid sharing with groups (4)
+    Given the setting "Allow sharing with groups" in the section "Sharing" has been disabled
+    When the user browses to the files page
+    Then it should not be possible to share folder "simple-folder" with group "grp1" using the webUI
+    And it should not be possible to share folder "simple-folder" with group "grp2" using the webUI
+    When the user shares folder "simple-folder" with user "Alice" using the webUI
+    And the user re-logs in as "Alice" using the webUI
+    Then folder "simple-folder (2)" should be listed on the webUI
+
+  Scenario: Forbid sharing with groups (5)
     Given the setting "Allow sharing with groups" in the section "Sharing" has been disabled
     When the user browses to the files page
     Then it should not be possible to share folder "simple-folder" with group "grp1" using the webUI
