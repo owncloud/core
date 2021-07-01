@@ -103,8 +103,8 @@ Feature: actions on a locked item are possible if the token is sent with the req
 
     Examples:
       | lock-scope | webdav_api_version | http_status_code |
-      | shared     | new                | 412              |
-      | exclusive  | new                | 412              |
+      | shared     | new                | 423              |
+      | exclusive  | new                | 423              |
 
   @skipOnOcV10 @issue-34360 @files_sharing-app-required
   Scenario Outline: two users having both a shared lock can use the resource

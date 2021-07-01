@@ -22,6 +22,10 @@
 namespace OCA\DAV\Files;
 
 use OCA\DAV\Connector\Sabre\Node;
+use OCA\DAV\Files\PublicFiles\PublicSharedRootNode;
+use OCA\DAV\Files\PublicFiles\SharedFile;
+use OCA\DAV\Files\PublicFiles\SharedFolder;
+use OCP\Files\NotFoundException;
 use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\Lock\Persistent\ILock;
 use Sabre\DAV\Exception\NotFound;
@@ -67,7 +71,15 @@ class FileLocksBackend implements BackendInterface {
 		try {
 			$node = $this->tree->getNodeForPath($uri);
 
-			if (!$node instanceof Node) {
+			if ($node instanceof SharedFile || $node instanceof SharedFolder) {
+				$node = $node->getNode();
+			} elseif ($node instanceof PublicSharedRootNode) {
+				try {
+					$node = $node->getShare()->getNode();
+				} catch (NotFoundException $e) {
+					return [];
+				}
+			} elseif (!$node instanceof Node) {
 				return [];
 			}
 
@@ -94,7 +106,15 @@ class FileLocksBackend implements BackendInterface {
 				return [];
 			}
 
-			if (!$node instanceof Node) {
+			if ($node instanceof SharedFile || $node instanceof SharedFolder) {
+				$node = $node->getNode();
+			} elseif ($node instanceof PublicSharedRootNode) {
+				try {
+					$node = $node->getShare()->getNode();
+				} catch (NotFoundException $e) {
+					return [];
+				}
+			} elseif (!$node instanceof Node) {
 				return [];
 			}
 

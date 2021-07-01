@@ -132,11 +132,13 @@ class Server {
 		$this->server->addPlugin(new BlockLegacyClientPlugin($config));
 		$this->server->addPlugin(new CorsPlugin(OC::$server->getUserSession()));
 		$authPlugin = new Plugin();
+		$isPublicAccess = false;
 		if ($this->isRequestForSubtree(['public-files'])
 		) {
 			$this->server->addPlugin(new PublicFilesPlugin());
 			$authPlugin->addBackend(new PublicSharingAuth($this->server, OC::$server->getShareManager()));
 			$this->server->addPlugin(new PublicLinkEventsPlugin(\OC::$server->getEventDispatcher()));
+			$isPublicAccess = true;
 		}
 		$authPlugin->addBackend(new PublicAuth());
 		$this->server->addPlugin($authPlugin);
@@ -159,7 +161,7 @@ class Server {
 		$this->server->addPlugin(new \Sabre\DAV\Sync\Plugin());
 		$this->server->addPlugin(new LockPlugin());
 
-		$fileLocksBackend = new FileLocksBackend($this->server->tree, false, OC::$server->getTimeFactory());
+		$fileLocksBackend = new FileLocksBackend($this->server->tree, false, OC::$server->getTimeFactory(), $isPublicAccess);
 		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\PublicDavLocksPlugin($fileLocksBackend, function ($uri) {
 			if (\strpos($uri, "public-files/") === 0) {
 				return true;

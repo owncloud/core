@@ -1,0 +1,11 @@
+Bugfix: Fix file locks for public shares
+
+When using the new WebDAV API, the node which is used to retrieve file locks
+is either of type SharedFile or SharedFolder. Both these types do not
+implement our own node class, so we need to handle them separately. This is
+needed to properly handle file locks on public shares when using the new
+WebDAV API.
+
+https://github.com/owncloud/core/pull/38922
+https://github.com/owncloud/core/issues/38912
+https://github.com/owncloud/core/issues/36064
