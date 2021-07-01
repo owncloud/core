@@ -36,7 +36,7 @@ Summary
 * Bugfix - Always allow renaming shared mounts: [#38794](https://github.com/owncloud/core/pull/38794)
 * Bugfix - Adjust position of the share autocomplete element: [#38831](https://github.com/owncloud/core/pull/38831)
 * Bugfix - Fix docs link to federated sharing docs: [#38859](https://github.com/owncloud/core/issues/38859)
-* Change - Update Symfony components: [#38797](https://github.com/owncloud/core/pull/38797)
+* Change - Update Symfony components: [#38924](https://github.com/owncloud/core/pull/38924)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
 * Change - Improve performance for the MOVE operation: [#38649](https://github.com/owncloud/core/pull/38649)
@@ -313,10 +313,10 @@ Details
    https://github.com/owncloud/core/issues/38859
    https://github.com/owncloud/core/pull/38860
 
-* Change - Update Symfony components: [#38797](https://github.com/owncloud/core/pull/38797)
+* Change - Update Symfony components: [#38924](https://github.com/owncloud/core/pull/38924)
 
-   The following Symfony components have been updated from 4.4.20 to 4.4.25: - console -
-   event-dispatcher - process - routing - translation
+   The following Symfony components have been updated from 4.4.20 to: - console 4.4.26 -
+   event-dispatcher 4.4.25 - process 4.4.26 - routing 4.4.25 - translation 4.4.25
 
    The following Symfony polyfill components have been updated : - symfony/polyfill-ctype
    (v1.22.1 to v1.23.0) - symfony/polyfill-iconv (v1.22.1 to v1.23.0) -
@@ -325,12 +325,14 @@ Details
    symfony/polyfill-php72 (v1.22.1 to v1.23.0) - symfony/polyfill-php73 (v1.22.1 to
    v1.23.0) - symfony/polyfill-php80 (v1.22.1 to v1.23.0)
 
+   https://github.com/owncloud/core/pull/38924
    https://github.com/owncloud/core/pull/38797
    https://github.com/owncloud/core/pull/38755
    https://github.com/owncloud/core/pull/38730
    https://github.com/owncloud/core/pull/38680
    https://github.com/owncloud/core/pull/38598
    https://github.com/owncloud/core/pull/38786
+   https://symfony.com/blog/symfony-4-4-26-released
    https://symfony.com/blog/symfony-4-4-25-released
    https://symfony.com/blog/symfony-4-4-24-released
    https://symfony.com/blog/symfony-4-4-23-released
