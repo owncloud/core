@@ -370,6 +370,7 @@ class Scanner extends BasicEmitter implements IScanner {
 						$children[] = \trim(\OC\Files\Filesystem::normalizePath($file), '/');
 					}
 				}
+				\closedir($dh);
 			}
 		}
 		return $children;
