@@ -39,6 +39,15 @@ class FilesVersionsContext implements Context {
 	private $featureContext;
 
 	/**
+	 * @param int $fileId
+	 *
+	 * @return string
+	 */
+	private function getVersionsPathForFileId(int $fileId) {
+		return "/meta/$fileId/v";
+	}
+
+	/**
 	 * @When user :user tries to get versions of file :file from :fileOwner
 	 *
 	 * @param string $user
@@ -52,11 +61,10 @@ class FilesVersionsContext implements Context {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileOwner = $this->featureContext->getActualUsername($fileOwner);
 		$fileId = $this->featureContext->getFileIdForPath($fileOwner, $file);
-		$path = "/meta/" . $fileId . "/v";
 		$response = $this->featureContext->makeDavRequest(
 			$user,
 			"PROPFIND",
-			$path,
+			$this->getVersionsPathForFileId($fileId),
 			null,
 			null,
 			null,
@@ -77,11 +85,10 @@ class FilesVersionsContext implements Context {
 	public function userGetsFileVersions($user, $file) {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $file);
-		$path = "/meta/" . $fileId . "/v";
 		$response = $this->featureContext->makeDavRequest(
 			$user,
 			"PROPFIND",
-			$path,
+			$this->getVersionsPathForFileId($fileId),
 			null,
 			null,
 			null,
@@ -223,7 +230,7 @@ class FilesVersionsContext implements Context {
 			$this->featureContext->getBaseUrl(),
 			$user,
 			$password,
-			"/meta/$fileId/v",
+			$this->getVersionsPathForFileId($fileId),
 			$properties,
 			$folderDepth,
 			"versions"
