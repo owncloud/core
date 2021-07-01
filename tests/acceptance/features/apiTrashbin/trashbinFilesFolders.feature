@@ -123,8 +123,8 @@ Feature: files and folders exist in the trashbin after being deleted
       | new      |
 
   @local_storage
-    @skipOnEncryptionType:user-keys @encryption-issue-42
-    @skip_on_objectstore
+  @skipOnEncryptionType:user-keys @encryption-issue-42
+  @skip_on_objectstore
   Scenario Outline: Deleting a folder into external storage moves it to the trashbin
     Given using <dav-path> DAV path
     And the administrator has invoked occ command "files:scan --all"

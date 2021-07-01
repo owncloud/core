@@ -4466,15 +4466,29 @@ trait WebDav {
 	}
 
 	/**
-	 * prevent creating two uploads with the same "stime" which is
-	 * based on seconds, this prevents creation of uploads with same etag
+	 * Prevent creating two uploads and/or deletes with the same "stime"
+	 * That is based on seconds in some implementations.
+	 * This prevents duplication of etags or other problems with
+	 * trashbin/versions save/restore.
+	 *
+	 * Set env var UPLOAD_DELETE_WAIT_TIME to 1 to activate a 1-second pause.
+	 * By default, there is no pause. That allows testing of implementations
+	 * which should be able to cope with multiple upload/delete actions in the
+	 * same second.
 	 *
 	 * @return void
 	 */
 	public function pauseUploadDelete() {
 		$time = \time();
-		if ($this->lastUploadDeleteTime !== null && $time - $this->lastUploadDeleteTime < 1) {
-			\sleep(1);
+		$uploadWaitTime = \getenv("UPLOAD_DELETE_WAIT_TIME");
+
+		$uploadWaitTime = $uploadWaitTime ? (int)$uploadWaitTime : 0;
+
+		if (($this->lastUploadDeleteTime !== null)
+			&& ($uploadWaitTime > 0)
+			&& (($time - $this->lastUploadDeleteTime) < $uploadWaitTime)
+		) {
+			\sleep($uploadWaitTime);
 		}
 	}
 

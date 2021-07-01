@@ -1199,6 +1199,14 @@ export IPV4_URL
 export IPV6_URL
 export FILES_FOR_UPLOAD="${SCRIPT_PATH}/filesForUpload/"
 
+if [ "${TEST_OCIS}" != "true" ] && [ "${TEST_REVA}" != "true" ]
+then
+	# We are testing on an ownCloud core server.
+	# Tell the tests to wait 1 second between each upload/delete action
+	# to avoid problems with actions that depend on timestamps in seconds.
+	export UPLOAD_DELETE_WAIT_TIME=1
+fi
+
 TEST_LOG_FILE=$(mktemp)
 SCENARIOS_THAT_PASSED=0
 SCENARIOS_THAT_FAILED=0
