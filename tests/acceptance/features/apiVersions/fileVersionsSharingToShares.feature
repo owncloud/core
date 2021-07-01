@@ -296,3 +296,24 @@ Feature: dav-versions
     Then the HTTP status code should be "204"
     And the version folder of file "/Shares/sharefile.txt" for user "Brian" should contain "1" element
     And the version folder of file "/sharefile.txt" for user "Alice" should contain "1" element
+
+  @issue-36228 @skipOnOcV10
+  Scenario: download old versions of a shared file as share receiver
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"
+    And user "Alice" has uploaded file with content "version 1" to "textfile0.txt"
+    And user "Alice" has uploaded file with content "version 2" to "textfile0.txt"
+    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
+    When user "Brian" downloads the version of file "/Shares/textfile0.txt" with the index "1"
+    Then the HTTP status code should be "200"
+    And the following headers should be set
+      | header              | value                                                                |
+      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
+    And the downloaded content should be "version 1"
+    When user "Brian" downloads the version of file "/Shares/textfile0.txt" with the index "2"
+    Then the HTTP status code should be "200"
+    And the following headers should be set
+      | header              | value                                                                |
+      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
+    And the downloaded content should be "uploaded content"

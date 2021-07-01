@@ -203,6 +203,38 @@ class FilesVersionsContext implements Context {
 	}
 
 	/**
+	 * @When user :user downloads the version of file :path with the index :index
+	 *
+	 * @param string $user
+	 * @param string $path
+	 * @param string $index
+	 *
+	 * @return void
+	 */
+	public function downloadVersion(string $user, string $path, string $index) {
+		$user = $this->featureContext->getActualUsername($user);
+		$fileId = $this->featureContext->getFileIdForPath($user, $path);
+		$index = (int)$index;
+		$responseXml = $this->listVersionFolder($user, $fileId, 1);
+		$xmlPart = $responseXml->xpath("//d:response/d:href");
+		if (!isset($xmlPart[$index])) {
+			Assert::fail(
+				'could not find version of path "' . $path . '" with index "' . $index . '"'
+			);
+		}
+		// the href already contains the path
+		$url = WebDavHelper::sanitizeUrl(
+			$this->featureContext->getBaseUrlWithoutPath() . $xmlPart[$index]
+		);
+		$response = HttpRequestHelper::get(
+			$url,
+			$user,
+			$this->featureContext->getPasswordForUser($user)
+		);
+		$this->featureContext->setResponse($response);
+	}
+
+	/**
 	 * returns the result parsed into an SimpleXMLElement
 	 * with an registered namespace with 'd' as prefix and 'DAV:' as namespace
 	 *
