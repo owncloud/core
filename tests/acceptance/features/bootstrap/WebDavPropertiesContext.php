@@ -666,6 +666,10 @@ class WebDavPropertiesContext implements Context {
 			$expectedValue,
 			$user
 		);
+
+		// The expected value can contain /%base_path%/ which can be empty some time
+		// This will result in urls such as //remote.php, so replace that
+		$expectedValue = preg_replace("/\/\/remote\.php/i", "/remote.php", $expectedValue);
 		Assert::assertEquals(
 			$expectedValue,
 			$value,

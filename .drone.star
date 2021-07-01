@@ -116,6 +116,7 @@ config = {
 				'apiTags',
 				'apiTranslation',
 				'apiTrashbin',
+				'apiTrashbinRestore',
 				'apiVersions',
 				'apiWebdavEtagPropagation1',
 				'apiWebdavEtagPropagation2',
