@@ -52,7 +52,7 @@ class FilesVersionsContext implements Context {
 	public function userRestoresVersionIndexOfFile($user, $versionIndex, $path) {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
-		$responseXml = $this->listVersionFolder($user, "/meta/$fileId/v", 1);
+		$responseXml = $this->listVersionFolder($user, (int)$fileId, 1);
 		$xmlPart = $responseXml->xpath("//d:response/d:href");
 		//restoring the version only works with dav path v2
 		$destinationUrl = $this->featureContext->getBaseUrl() . "/" .
@@ -102,7 +102,7 @@ class FilesVersionsContext implements Context {
 		$user,
 		$count
 	) {
-		$responseXml = $this->listVersionFolder($user, "/meta/$fileId/v", 1);
+		$responseXml = $this->listVersionFolder($user, (int)$fileId, 1);
 		$xmlPart = $responseXml->xpath("//d:prop/d:getetag");
 		Assert::assertEquals(
 			$count,
@@ -131,7 +131,7 @@ class FilesVersionsContext implements Context {
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$responseXml = $this->listVersionFolder(
 			$user,
-			"/meta/$fileId/v",
+			(int)$fileId,
 			1,
 			['getcontentlength']
 		);
@@ -149,17 +149,17 @@ class FilesVersionsContext implements Context {
 	 * with an registered namespace with 'd' as prefix and 'DAV:' as namespace
 	 *
 	 * @param string $user
-	 * @param string $path
+	 * @param int $fileId
 	 * @param int $folderDepth
-	 * @param string[] $properties
+	 * @param string[]|null $properties
 	 *
 	 * @return SimpleXMLElement
 	 */
 	public function listVersionFolder(
-		$user,
-		$path,
-		$folderDepth,
-		$properties = null
+		string $user,
+		int $fileId,
+		int $folderDepth,
+		array $properties = null
 	) {
 		if (!$properties) {
 			$properties = [
@@ -172,7 +172,7 @@ class FilesVersionsContext implements Context {
 			$this->featureContext->getBaseUrl(),
 			$user,
 			$password,
-			$path,
+			"/meta/$fileId/v",
 			$properties,
 			$folderDepth,
 			"versions"
