@@ -142,3 +142,12 @@ thead {
     position: relative;
     display: inline-block;
 }
+
+.icon-fed-change-server {
+    background-image: url('../img/fed-change-server.svg');
+}
+
+.icon-fed-current-server {
+    background-image: url('../img/fed-current-server.svg');
+}
+
