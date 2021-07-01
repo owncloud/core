@@ -32,12 +32,63 @@ require_once 'bootstrap.php';
  * Steps that relate to files_versions app
  */
 class FilesVersionsContext implements Context {
-
 	/**
 	 *
 	 * @var FeatureContext
 	 */
 	private $featureContext;
+
+	/**
+	 * @When user :user tries to get versions of file :file from :fileOwner
+	 *
+	 * @param string $user
+	 * @param string $file
+	 * @param string $fileOwner
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userTriesToGetFileVersions($user, $file, $fileOwner) {
+		$user = $this->featureContext->getActualUsername($user);
+		$fileOwner = $this->featureContext->getActualUsername($fileOwner);
+		$fileId = $this->featureContext->getFileIdForPath($fileOwner, $file);
+		$path = "/meta/" . $fileId . "/v";
+		$response = $this->featureContext->makeDavRequest(
+			$user,
+			"PROPFIND",
+			$path,
+			null,
+			null,
+			null,
+			2
+		);
+		$this->featureContext->setResponse($response);
+	}
+
+	/**
+	 * @When user :user gets the number of versions of file :file
+	 *
+	 * @param string $user
+	 * @param string $file
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userGetsFileVersions($user, $file) {
+		$user = $this->featureContext->getActualUsername($user);
+		$fileId = $this->featureContext->getFileIdForPath($user, $file);
+		$path = "/meta/" . $fileId . "/v";
+		$response = $this->featureContext->makeDavRequest(
+			$user,
+			"PROPFIND",
+			$path,
+			null,
+			null,
+			null,
+			2
+		);
+		$this->featureContext->setResponse($response);
+	}
 
 	/**
 	 * @When user :user restores version index :versionIndex of file :path using the WebDAV API
