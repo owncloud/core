@@ -17,8 +17,8 @@ $(document).ready(function () {
 		'</a>' +
 		'<div id="expanddiv">' +
 		'<ul>' +
-		'<li><a id="current-server" href="#"><img src="' + OC.imagePath('core', 'actions/checkmark-white') + '">' + OC.getHostName() + '</a></li>' +
-		'<li><a id="change-server" href="#"><img src="' + OC.imagePath('core', 'actions/more-white') + '">' +
+		'<li><a id="current-server" href="#"><span class="icon icon-fed-current-server"></span>' + OC.getHostName() + '</a></li>' +
+		'<li><a id="change-server" href="#"><span class="icon icon-fed-change-server"></span>' +
 		t('federatedfilesharing', 'Change server...') +
 		'	</a></li>' +
 		'</ul>' +
