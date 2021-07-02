@@ -141,10 +141,18 @@ Feature: Federation Sharing - sharing with users on other cloud storages
   Scenario: unshare a federation share from "share-with-you" page
     Given user "Alice" from server "REMOTE" has shared "/lorem.txt" with user "Alice" from server "LOCAL"
     And user "Alice" from server "LOCAL" has accepted the last pending share
+    And the user has browsed to the shared-with-you page
+    When the user unshares file "lorem (2).txt" received as federated share using the webUI
+    Then file "lorem (2).txt" should not be listed on the webUI
+    And file "lorem (2).txt" should not be listed in the files page on the webUI
+
+  Scenario: unshare a federation share from "files" page and check in the "shared-with-you" page
+    Given user "Alice" from server "REMOTE" has shared "/lorem.txt" with user "Alice" from server "LOCAL"
+    And user "Alice" from server "LOCAL" has accepted the last pending share
     And the user has reloaded the current page of the webUI
     When the user unshares file "lorem (2).txt" using the webUI
     Then file "lorem (2).txt" should not be listed on the webUI
-    And file "lorem (2).txt" should not be listed in the files page on the webUI
+    And file "lorem (2).txt" should not be listed in the shared-with-you page on the webUI
 
   Scenario: test sharing folder to a remote server and resharing it back to the local
     Given using server "LOCAL"

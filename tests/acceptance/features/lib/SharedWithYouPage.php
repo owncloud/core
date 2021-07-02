@@ -136,6 +136,65 @@ class SharedWithYouPage extends FilesPageBasic {
 	}
 
 	/**
+	 *
+	 * @param string|array $name
+	 * @param Session $session
+	 * @param bool $expectToDeleteFile
+	 * @param int $maxRetries
+	 *
+	 * @return void
+	 */
+	public function deleteFileFromSharedWithYou(
+		$name,
+		Session $session,
+		$expectToDeleteFile = true,
+		$maxRetries = STANDARD_RETRY_COUNT
+	) {
+		$this->initAjaxCounters($session);
+		$this->resetSumStartedAjaxRequests($session);
+
+		for ($counter = 0; $counter < $maxRetries; $counter++) {
+			$row = $this->findFileRowByName($name, $session);
+			try {
+				$row->delete($session);
+				$this->waitForAjaxCallsToStartAndFinish($session);
+				$countXHRRequests = $this->getSumStartedAjaxRequests($session);
+				//if no XHR Request were fired we assume the delete action
+				//did not work and we retry
+				if ($countXHRRequests === 0) {
+					if ($expectToDeleteFile) {
+						\error_log("Error while deleting file");
+					}
+				} else {
+					break;
+				}
+			} catch (\Exception $e) {
+				$this->closeFileActionsMenu();
+				if ($expectToDeleteFile) {
+					\error_log(
+						"Error while deleting file"
+						. "\n-------------------------\n"
+						. $e->getMessage()
+						. "\n-------------------------\n"
+					);
+				}
+				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
+			}
+		}
+		if ($expectToDeleteFile && ($counter > 0)) {
+			if (\is_array($name)) {
+				$name = \implode('', $name);
+			}
+			$message = "INFORMATION: retried to delete file '$name' $counter times";
+			echo $message;
+			\error_log($message);
+			if ($counter === $maxRetries) {
+				throw new \Exception($message);
+			}
+		}
+	}
+
+	/**
 	 * @return void
 	 */
 	public function acceptPendingShare() {
