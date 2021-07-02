@@ -3253,6 +3253,20 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then user :user should not be able to create folder :destination
+	 *
+	 * @param string $user
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function userShouldNotBeAbleToCreateFolder($user, $destination) {
+		$user = $this->getActualUsername($user);
+		$this->userCreatesFolder($user, $destination);
+		$this->theHTTPStatusCodeShouldBeFailure();
+	}
+
+	/**
 	 * Old style chunking upload
 	 *
 	 * @When user :user uploads the following :total chunks to :file with old chunking and using the WebDAV API
