@@ -1,0 +1,11 @@
+Change: Update PHP minimum version to 7.2.5
+
+The minimum supported PHP version is now 7.2.5. This supports some dependencies
+that require at least 7.2.5.
+
+PHP 7.2 security patches finished in December 2020.
+PHP 7.3 security patches finish on 6 December 2021.
+It is recommended that you plan an upgrade to PHP 7.4 now.
+
+https://github.com/owncloud/core/pull/38934
+https://www.php.net/supported-versions.php
