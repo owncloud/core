@@ -197,3 +197,42 @@ Feature: files and folders can be deleted from the trashbin
       | dav-path |
       | old      |
       | new      |
+
+  Scenario: delete folders with dot in the name from the trashbin
+    Given user "Alice" has created the following folders
+      | path      |
+      | /fo.      |
+      | /fo.1     |
+      | /fo...1.. |
+      | /...      |
+      | /..fo     |
+      | /fo.xyz   |
+      | /fo.exe   |
+    And user "Alice" has deleted the following folders
+      | path      |
+      | /fo.      |
+      | /fo.1     |
+      | /fo...1.. |
+      | /...      |
+      | /..fo     |
+      | /fo.xyz   |
+      | /fo.exe   |
+    When user "Alice" deletes the following files with original path from the trashbin
+      | path      |
+      | /fo.      |
+      | /fo.1     |
+      | /fo...1.. |
+      | /...      |
+      | /..fo     |
+      | /fo.xyz   |
+      | /fo.exe   |
+    Then the HTTP status code of responses on all endpoints should be "204"
+    And as "Alice" the folders with following original paths should not exist in the trashbin
+      | path      |
+      | /fo.      |
+      | /fo.1     |
+      | /fo...1.. |
+      | /...      |
+      | /..fo     |
+      | /fo.xyz   |
+      | /fo.exe   |

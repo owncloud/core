@@ -90,3 +90,26 @@ Feature: delete folder
       | dav_version |
       | old         |
       | new         |
+
+  Scenario Outline: deleting folder with dot in the name
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "<folder_name>"
+    When user "Alice" deletes folder "<folder_name>" using the WebDAV API
+    Then the HTTP status code should be "204"
+    And as "Alice" folder "<folder_name>" should not exist
+    Examples:
+      | dav_version | folder_name |
+      | old         | /fo.        |
+      | old         | /fo.1       |
+      | old         | /fo...1..   |
+      | old         | /...        |
+      | old         | /..fo       |
+      | old         | /fo.xyz     |
+      | old         | /fo.exe     |
+      | new         | /fo.        |
+      | new         | /fo.1       |
+      | new         | /fo...1..   |
+      | new         | /...        |
+      | new         | /..fo       |
+      | new         | /fo.xyz     |
+      | old         | /fo.exe     |
