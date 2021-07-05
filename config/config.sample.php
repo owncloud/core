@@ -966,69 +966,7 @@ $CONFIG = [
  *  - OC\Preview\MP3
  *  - OC\Preview\TXT
  *
- * The following providers are available, but disabled by default due to performance or privacy concerns:
- *
- *  - OC\Preview\Illustrator
- *  - OC\Preview\Movie
- *  - OC\Preview\MSOfficeDoc
- *  - OC\Preview\MSOffice2003
- *  - OC\Preview\MSOffice2007
- *  - OC\Preview\OpenDocument
- *  - OC\Preview\StarOffice
- *  - OC\Preview\PDF
- *  - OC\Preview\Photoshop
- *  - OC\Preview\Postscript
- *  - OC\Preview\SVG
- *  - OC\Preview\TIFF
- *  - OC\Preview\Font
- *
- * The following providers are only available if either LibreOffice or OpenOffice is installed on the server:
- *
- *  - OC\Preview\MSOfficeDoc
- *  - OC\Preview\MSOffice2003
- *  - OC\Preview\MSOffice2007
- *  - OC\Preview\OpenDocument
- *  - OC\Preview\StarOffice
- *
- * The following providers require the php `imagick` extension:
- *
- *  - OC\Preview\SVG
- *  - OC\Preview\TIFF
- *  - OC\Preview\PDF
- *  - OC\Preview\AI
- *  - OC\Preview\PSD
- *  - OC\Preview\EPS
- *  - OC\Preview\TTF
- *  - OC\Preview\Heic
- *  - OC\Preview\SGI
- *
- * Install the following additional imagick library when using SVG.
- * This library adds imagick support for SVG, WMF, OpenEXR, DjVu and Graphviz:
- *
- * `sudo apt install -y libmagickcore-6.q16-3-extra`
- *
- * Change the following imagick security policy when using PDF.
- * Use the editor of your choice, the example uses `vi`.
- *
- * `sudo vi /etc/ImageMagick-6/policy.xml`
- *
- * `<policy domain="coder" rights="none" pattern="PDF" />`
- *
- * `rights="none"` -> `rights="read|write"`
- *
- * Install `ffmpeg` when using the `OC\Preview\Movie` provider.
- *
- * `sudo apt install -y ffmpeg`
- *
- * To get a list of file extensions linked to the image provider, change into the `owncloud`
- * directory and run the following example command. Use a different filter for other provider types.
- *
- * `cat resources/config/mimetypemapping.dist.json | grep image`
- *
- * If you want to add a preview provider to the default ones, you must add all default ones too,
- * else they will get disabled!
- *
- * To disable all preview providers set `'enabledPreviewProviders' => false,`
+ * See the Previews Configuration documentation for more details.
  */
 'enabledPreviewProviders' => [
 	'OC\Preview\PDF',
