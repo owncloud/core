@@ -159,11 +159,11 @@ class SharedWithYouPage extends FilesPageBasic {
 				$row->delete($session);
 				$this->waitForAjaxCallsToStartAndFinish($session);
 				$countXHRRequests = $this->getSumStartedAjaxRequests($session);
-				//if no XHR Request were fired we assume the delete action
+				//if no XHR Request was fired we assume the delete action
 				//did not work and we retry
 				if ($countXHRRequests === 0) {
 					if ($expectToDeleteFile) {
-						\error_log("Error while deleting file");
+						\error_log("Error while deleting/unsharing file from shared-with-you");
 					}
 				} else {
 					break;
@@ -172,7 +172,7 @@ class SharedWithYouPage extends FilesPageBasic {
 				$this->closeFileActionsMenu();
 				if ($expectToDeleteFile) {
 					\error_log(
-						"Error while deleting file"
+						"Error while deleting/unsharing file from shared-with-you."
 						. "\n-------------------------\n"
 						. $e->getMessage()
 						. "\n-------------------------\n"
@@ -185,7 +185,7 @@ class SharedWithYouPage extends FilesPageBasic {
 			if (\is_array($name)) {
 				$name = \implode('', $name);
 			}
-			$message = "INFORMATION: retried to delete file '$name' $counter times";
+			$message = "INFORMATION: retried deleting/unsharing file '$name' from shared-with-you $counter times";
 			echo $message;
 			\error_log($message);
 			if ($counter === $maxRetries) {

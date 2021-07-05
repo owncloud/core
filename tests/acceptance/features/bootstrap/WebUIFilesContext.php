@@ -759,7 +759,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * for a folder or individual file that is shared as federated share,, the receiver of the share
+	 * for a folder or individual file that is shared as federated share, the receiver of the share
 	 * has an "Unshare" entry in the file actions menu of the share in the
 	 * sharedwithme page. Clicking it works just like delete.
 	 *
