@@ -36,6 +36,7 @@ Summary
 * Bugfix - Always allow renaming shared mounts: [#38794](https://github.com/owncloud/core/pull/38794)
 * Bugfix - Adjust position of the share autocomplete element: [#38831](https://github.com/owncloud/core/pull/38831)
 * Bugfix - Fix docs link to federated sharing docs: [#38859](https://github.com/owncloud/core/issues/38859)
+* Bugfix - Fix file locks for public shares: [#38922](https://github.com/owncloud/core/pull/38922)
 * Change - Update Symfony components: [#38924](https://github.com/owncloud/core/pull/38924)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
@@ -313,6 +314,17 @@ Details
 
    https://github.com/owncloud/core/issues/38859
    https://github.com/owncloud/core/pull/38860
+
+* Bugfix - Fix file locks for public shares: [#38922](https://github.com/owncloud/core/pull/38922)
+
+   When using the new WebDAV API, the node which is used to retrieve file locks is either of type
+   SharedFile or SharedFolder. Both these types do not implement our own node class, so we need to
+   handle them separately. This is needed to properly handle file locks on public shares when
+   using the new WebDAV API.
+
+   https://github.com/owncloud/core/issues/38912
+   https://github.com/owncloud/core/issues/36064
+   https://github.com/owncloud/core/pull/38922
 
 * Change - Update Symfony components: [#38924](https://github.com/owncloud/core/pull/38924)
 

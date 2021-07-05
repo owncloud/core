@@ -34,6 +34,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Always allow renaming shared mounts: <a href="https://github.com/owncloud/core/pull/38794">#38794</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Adjust position of the share autocomplete element: <a href="https://github.com/owncloud/core/pull/38831">#38831</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix docs link to federated sharing docs: <a href="https://github.com/owncloud/core/issues/38859">#38859</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Fix file locks for public shares: <a href="https://github.com/owncloud/core/pull/38922">#38922</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/38924">#38924</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/38524">#38524</a></li>
         <li class="type-change changelog-item">Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: <a href="https://github.com/owncloud/core/pull/38647">#38647</a></li>
@@ -318,6 +319,17 @@
             <p>https://github.com/owncloud/core/issues/38859<br>
             </p>
             <p>https://github.com/owncloud/core/pull/38860<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Fix file locks for public shares: <a href="https://github.com/owncloud/core/pull/38922">#38922</a></p>
+            <p>When using the new WebDAV API, the node which is used to retrieve file locks is either of type
+   SharedFile or SharedFolder. Both these types do not implement our own node class, so we need to
+   handle them separately. This is needed to properly handle file locks on public shares when
+   using the new WebDAV API.
+            </p>
+            <p>https://github.com/owncloud/core/issues/38912<br>https://github.com/owncloud/core/issues/36064<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/38922<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/38924">#38924</a></p>
