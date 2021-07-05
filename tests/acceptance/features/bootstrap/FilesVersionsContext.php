@@ -39,11 +39,11 @@ class FilesVersionsContext implements Context {
 	private $featureContext;
 
 	/**
-	 * @param int $fileId
+	 * @param string $fileId
 	 *
 	 * @return string
 	 */
-	private function getVersionsPathForFileId(int $fileId) {
+	private function getVersionsPathForFileId(string $fileId) {
 		return "/meta/$fileId/v";
 	}
 
@@ -110,7 +110,7 @@ class FilesVersionsContext implements Context {
 	public function userRestoresVersionIndexOfFile($user, $versionIndex, $path) {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
-		$responseXml = $this->listVersionFolder($user, (int)$fileId, 1);
+		$responseXml = $this->listVersionFolder($user, $fileId, 1);
 		$xmlPart = $responseXml->xpath("//d:response/d:href");
 		//restoring the version only works with dav path v2
 		$destinationUrl = $this->featureContext->getBaseUrl() . "/" .
@@ -149,7 +149,7 @@ class FilesVersionsContext implements Context {
 	/**
 	 * @Then the version folder of fileId :fileId for user :user should contain :count element(s)
 	 *
-	 * @param int $fileId
+	 * @param string $fileId
 	 * @param string $user
 	 * @param int $count
 	 *
@@ -160,7 +160,7 @@ class FilesVersionsContext implements Context {
 		$user,
 		$count
 	) {
-		$responseXml = $this->listVersionFolder($user, (int)$fileId, 1);
+		$responseXml = $this->listVersionFolder($user, $fileId, 1);
 		$xmlPart = $responseXml->xpath("//d:prop/d:getetag");
 		Assert::assertEquals(
 			$count,
@@ -189,7 +189,7 @@ class FilesVersionsContext implements Context {
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$responseXml = $this->listVersionFolder(
 			$user,
-			(int)$fileId,
+			$fileId,
 			1,
 			['getcontentlength']
 		);
@@ -239,7 +239,7 @@ class FilesVersionsContext implements Context {
 	 * with an registered namespace with 'd' as prefix and 'DAV:' as namespace
 	 *
 	 * @param string $user
-	 * @param int $fileId
+	 * @param string $fileId
 	 * @param int $folderDepth
 	 * @param string[]|null $properties
 	 *
@@ -247,7 +247,7 @@ class FilesVersionsContext implements Context {
 	 */
 	public function listVersionFolder(
 		string $user,
-		int $fileId,
+		string $fileId,
 		int $folderDepth,
 		array $properties = null
 	) {
