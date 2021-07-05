@@ -43,6 +43,7 @@ Summary
 * Change - Optimize share rename: [#38656](https://github.com/owncloud/core/pull/38656)
 * Change - All mount configuration items marked as passwords will be encrypted: [#38728](https://github.com/owncloud/core/pull/38728)
 * Change - Change favicon and color references to match the new CI: [#38750](https://github.com/owncloud/core/pull/38750)
+* Change - Update PHP minimum version to 7.2.5: [#38934](https://github.com/owncloud/core/pull/38934)
 * Change - Update PHP dependencies: [#38891](https://github.com/owncloud/core/pull/38891)
 * Enhancement - Improve public share federation user interface: [#4393](https://github.com/owncloud/enterprise/issues/4393)
 * Enhancement - Improve login form: [#38506](https://github.com/owncloud/core/pull/38506)
@@ -409,6 +410,17 @@ Details
    for the mail templates and the ownCloud logo without the "X" reference was added.
 
    https://github.com/owncloud/core/pull/38750
+
+* Change - Update PHP minimum version to 7.2.5: [#38934](https://github.com/owncloud/core/pull/38934)
+
+   The minimum supported PHP version is now 7.2.5. This supports some dependencies that require
+   at least 7.2.5.
+
+   PHP 7.2 security patches finished in December 2020. PHP 7.3 security patches finish on 6
+   December 2021. It is recommended that you plan an upgrade to PHP 7.4 now.
+
+   https://github.com/owncloud/core/pull/38934
+   https://www.php.net/supported-versions.php
 
 * Change - Update PHP dependencies: [#38891](https://github.com/owncloud/core/pull/38891)
 
