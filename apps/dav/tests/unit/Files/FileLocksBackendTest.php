@@ -24,11 +24,14 @@ namespace OCA\DAV\Tests\Unit\Files;
 use OC\Lock\Persistent\Lock;
 use OCA\DAV\Connector\Sabre\File;
 use OCA\DAV\Files\FileLocksBackend;
+use OCA\DAV\Files\PublicFiles\PublicSharedRootNode;
+use OCA\DAV\Files\PublicFiles\SharedFile;
 use OCP\Files\FileInfo;
 use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\Files\Storage\IStorage;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\Lock\Persistent\ILock;
+use OCP\Share\IShare;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\IFile;
 use Sabre\DAV\Locks\LockInfo;
@@ -153,6 +156,35 @@ class FileLocksBackendTest extends TestCase {
 			if ($uri === 'locked-collection-infinite/new-file.txt') {
 				throw new NotFound();
 			}
+			if ($uri === 'public-shared-file.txt') {
+				$storage = $this->createMock(IStorage::class);
+				$storage->method('instanceOfStorage')->willReturn(false);
+				$fileInfo = $this->createMock(FileInfo::class);
+				$fileInfo->method('getStorage')->willReturn($storage);
+				$fileInfo->method('getInternalPath')->willReturn('locked-file.txt');
+				$node = $this->createMock(File::class);
+				$node->method('getFileInfo')->willReturn($fileInfo);
+				$file = $this->createMock(SharedFile::class);
+				$file->method('getNode')->willReturn($node);
+				return $file;
+			}
+			if ($uri === 'public-shared-root-node.txt') {
+				$storage = $this->createMock(IStorage::class);
+				$storage->method('instanceOfStorage')->willReturn(false);
+				$fileInfo = $this->createMock(FileInfo::class);
+				$fileInfo->method('getStorage')->willReturn($storage);
+				$fileInfo->method('getInternalPath')->willReturn('locked-file.txt');
+				$node = $this->createMock(File::class);
+				$node->method('getFileInfo')->willReturn($fileInfo);
+
+				$share = $this->createMock(IShare::class);
+				$share->method('getNode')->willReturn($node);
+
+				$rootNode = $this->createMock(PublicSharedRootNode::class);
+				$rootNode->method('getShare')->willReturn($share);
+
+				return $rootNode;
+			}
 			return $this->createMock(File::class);
 		});
 
@@ -165,6 +197,10 @@ class FileLocksBackendTest extends TestCase {
 		$locks = $this->plugin->getLocks('not-a-owncloud-file.txt', true);
 		$this->assertEmpty($locks);
 		$locks = $this->plugin->getLocks('not-on-locking-storage.txt', true);
+		$this->assertEmpty($locks);
+		$locks = $this->plugin->getLocks('public-shared-file.txt', true);
+		$this->assertEmpty($locks);
+		$locks = $this->plugin->getLocks('public-shared-root-node.txt', true);
 		$this->assertEmpty($locks);
 		$locks = $this->plugin->getLocks('locked-file.txt', true);
 		$lockInfo = new LockInfo();

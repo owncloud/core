@@ -8,7 +8,7 @@ Feature: persistent-locking in case of a public link
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "PARENT/parent.txt"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "PARENT/CHILD/child.txt"
 
-  @skipOnOcV10 @smokeTest @issue-36064
+  @smokeTest
   Scenario Outline: Uploading a file into a locked public folder
     Given using <dav-path> DAV path
     And user "Alice" has created folder "FOLDER"
@@ -34,7 +34,7 @@ Feature: persistent-locking in case of a public link
       | new      | shared     | new                |
       | new      | exclusive  | new                |
 
-  @skipOnOcV10 @issue-36064
+
   Scenario Outline: Uploading a file into a locked subfolder of a public folder
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
     And user "Alice" has locked folder "PARENT/CHILD" setting the following properties
@@ -49,20 +49,25 @@ Feature: persistent-locking in case of a public link
       | new                       | shared     |
       | new                       | exclusive  |
 
-  @skipOnOcV10 @smokeTest @issue-36064
+  @smokeTest
   Scenario Outline: Overwrite a file inside a locked public folder
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
     And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When the public uploads file "parent.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "423"
-    And the content of file "/PARENT/parent.txt" for user "Alice" should be "ownCloud test text file parent" plus end-of-line
+    And the content of file "/PARENT/parent.txt" for user "Alice" should be:
+      """
+      This is a testfile.
+
+      Cheers.
+      """
     Examples:
       | public-webdav-api-version | lock-scope |
       | new                       | shared     |
       | new                       | exclusive  |
 
-  @skipOnOcV10 @issue-36064
+
   Scenario Outline: Overwrite a file inside a locked subfolder of a public folder
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
     And user "Alice" has locked folder "PARENT/CHILD" setting the following properties
@@ -71,7 +76,12 @@ Feature: persistent-locking in case of a public link
     And the public uploads file "CHILD/child.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "423"
     And the content of file "/PARENT/parent.txt" for user "Alice" should be "changed text"
-    But the content of file "/PARENT/CHILD/child.txt" for user "Alice" should be "ownCloud test text file child" plus end-of-line
+    But the content of file "/PARENT/CHILD/child.txt" for user "Alice" should be:
+      """
+      This is a testfile.
+
+      Cheers.
+      """
     Examples:
       | public-webdav-api-version | lock-scope |
       | new                       | shared     |
