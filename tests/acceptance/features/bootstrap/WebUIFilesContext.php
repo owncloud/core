@@ -759,6 +759,25 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * for a folder or individual file that is shared as federated share, the receiver of the share
+	 * has an "Unshare" entry in the file actions menu of the share in the
+	 * sharedwithme page. Clicking it works just like delete.
+	 *
+	 * @When the user deletes/unshares file/folder :name received as federated share using the webUI
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userDeletesFileReceivedAsFederatedShareUsingTheWebUI($name) {
+		$pageObject = $this->getCurrentPageObject();
+		$session = $this->getSession();
+		$pageObject->waitTillPageIsLoaded($session);
+		$this->sharedWithYouPage->deleteFileFromSharedWithYou($name, $session);
+	}
+
+	/**
 	 * @When the user deletes the following file/folder using the webUI
 	 *
 	 * @param TableNode $namePartsTable table of parts of the file name

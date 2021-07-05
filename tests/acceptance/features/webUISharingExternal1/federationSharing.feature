@@ -40,6 +40,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the user opens folder "simple-folder (2)" using the webUI
     Then it should not be possible to delete file "lorem.txt" using the webUI
 
+
   Scenario: overwrite a file in a received share - local server shares - remote server receives
     Given user "Alice" from server "LOCAL" has shared "simple-folder" with user "Alice" from server "REMOTE"
     And user "Alice" from server "REMOTE" has accepted the last pending share
@@ -47,6 +48,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the user opens folder "simple-folder" using the webUI
     Then file "lorem.txt" should be listed on the webUI
     And the content of "lorem.txt" on the local server should be the same as the local "lorem.txt"
+
 
   Scenario: overwrite a file in a received share - remote server shares - local server receives
     Given user "Alice" from server "REMOTE" has shared "simple-folder" with user "Alice" from server "LOCAL"
@@ -58,6 +60,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then as "Alice" file "simple-folder/lorem.txt" should exist
     And the content of "simple-folder/lorem.txt" on the remote server for user "Alice" should be the same as the local "lorem.txt"
 
+
   Scenario: upload a new file in a received share - local server shares - remote server receives
     Given user "Alice" from server "LOCAL" has shared "simple-folder" with user "Alice" from server "REMOTE"
     And user "Alice" from server "REMOTE" has accepted the last pending share
@@ -65,6 +68,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the user opens folder "simple-folder" using the webUI
     Then file "new-lorem.txt" should be listed on the webUI
     And the content of "new-lorem.txt" on the local server should be the same as the local "new-lorem.txt"
+
 
   Scenario: upload a new file in a received share - remote server shares - local server receives
     Given user "Alice" from server "REMOTE" has shared "simple-folder" with user "Alice" from server "LOCAL"
@@ -75,6 +79,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And using server "REMOTE"
     Then as "Alice" file "simple-folder/new-lorem.txt" should exist
     And the content of "simple-folder/new-lorem.txt" on the remote server for user "Alice" should be the same as the local "new-lorem.txt"
+
 
   Scenario: rename a file in a received share - local server shares - remote server receives
     Given user "Alice" from server "LOCAL" has shared "simple-folder" with user "Alice" from server "REMOTE"
@@ -97,6 +102,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the content of file "simple-folder/renamed file.txt" for user "Alice" on server "REMOTE" should be "I am lorem.txt inside simple-folder"
     But as "Alice" file "simple-folder/lorem.txt" should not exist
 
+
   Scenario: delete a file in a received share - local server shares - remote server receives
     Given user "Alice" has uploaded file "filesForUpload/data.zip" to "/simple-folder/data.zip"
     And user "Alice" from server "LOCAL" has shared "simple-folder" with user "Alice" from server "REMOTE"
@@ -104,6 +110,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When user "Alice" on "REMOTE" deletes file "simple-folder (2)/data.zip" using the WebDAV API
     And the user opens folder "simple-folder" using the webUI
     Then file "data.zip" should not be listed on the webUI
+
 
   Scenario: delete a file in a received share - remote server shares - local server receives
     Given user "Alice" on "REMOTE" has uploaded file "filesForUpload/data.zip" to "/simple-folder/data.zip"
@@ -114,6 +121,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the user deletes file "data.zip" using the webUI
     And using server "REMOTE"
     Then as "Alice" file "simple-folder/data.zip" should not exist
+
 
   Scenario: receive same name federation share from two users
     Given using server "REMOTE"
@@ -128,7 +136,8 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And file "lorem (2).txt" should be listed in the shared-with-you page on the webUI
     And file "lorem (3).txt" should be listed in the shared-with-you page on the webUI
 
-  Scenario: unshare a federation share
+
+  Scenario: unshare a federation share from files page and check in the files page as well as in "shared-with-you" page
     Given user "Alice" from server "REMOTE" has shared "/lorem.txt" with user "Alice" from server "LOCAL"
     And user "Alice" from server "LOCAL" has accepted the last pending share
     And the user has reloaded the current page of the webUI
@@ -138,13 +147,15 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then file "lorem (2).txt" should not be listed on the webUI
     And file "lorem (2).txt" should not be listed in the shared-with-you page on the webUI
 
-  Scenario: unshare a federation share from "share-with-you" page
+
+  Scenario: unshare a federation share from "shared-with-you" page
     Given user "Alice" from server "REMOTE" has shared "/lorem.txt" with user "Alice" from server "LOCAL"
     And user "Alice" from server "LOCAL" has accepted the last pending share
-    And the user has reloaded the current page of the webUI
-    When the user unshares file "lorem (2).txt" using the webUI
+    And the user has browsed to the shared-with-you page
+    When the user unshares file "lorem (2).txt" received as federated share using the webUI
     Then file "lorem (2).txt" should not be listed on the webUI
     And file "lorem (2).txt" should not be listed in the files page on the webUI
+
 
   Scenario: test sharing folder to a remote server and resharing it back to the local
     Given using server "LOCAL"
@@ -157,6 +168,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the user accepts the offered remote shares using the webUI
     Then as "Brian" folder "/simple-folder (2)" should exist
     And as "Brian" file "/simple-folder (2)/lorem.txt" should exist
+
 
   Scenario: test resharing folder as readonly and set it as readonly by resharer
     Given using server "LOCAL"
@@ -201,6 +213,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Alice" from server "REMOTE" accepts the last pending share using the sharing API
     Then as "Alice" file "/averylongfilenamefortestingthatfileswithlongfilenamescannotbeshared.txt" should exist
 
+
   Scenario: sharee should be able to access the files/folders inside other folder
     Given user "Alice" has created folder "simple-folder/simple-empty-folder"
     And user "Alice" has created folder "simple-folder/simple-empty-folder/finalfolder"
@@ -211,6 +224,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then as "Alice" file "simple-folder (2)/lorem.txt" should exist
     And as "Alice" file "simple-folder (2)/simple-empty-folder/textfile.txt" should exist
     And as "Alice" folder "simple-folder (2)/simple-empty-folder/finalfolder" should exist
+
 
   Scenario: sharee uploads a file inside a folder of a folder
     Given user "Alice" has created folder "simple-folder/simple-empty-folder"
@@ -236,6 +250,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then as "Alice" file "simple-folder/simple-empty-folder/new-lorem.txt" should exist
     But as "Alice" file "simple-folder/simple-empty-folder/textfile.txt" should not exist
 
+
   Scenario: delete a file in a folder inside a shared folder
     Given using server "REMOTE"
     And user "Alice" has created folder "simple-folder/simple-empty-folder"
@@ -247,6 +262,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And the user deletes file "textfile.txt" using the webUI
     And using server "REMOTE"
     Then as "Alice" file "/simple-folder/simple-empty-folder/textfile.txt" should not exist
+
 
   Scenario: delete shared folder and create a folder for federation sharing with same name
     Given user "Alice" from server "LOCAL" has shared "simple-folder" with user "Alice" from server "REMOTE"
