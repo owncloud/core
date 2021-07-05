@@ -318,7 +318,7 @@ class PreviewManager implements IPreview {
 		$this->registerCoreProvider('OC\Preview\MP3', '/audio\/mpeg/');
 
 		// SVG, Office and Bitmap require imagick
-		// Either use the additional library mention below when using imagick 6, or use imagick 7
+		// Either use the additional library mentioned below when using imagick 6, or use imagick 7
 		// which does not need this library. See the installation and preview documentation for more details.
 		// Install `libmagickcore-6.q16-3-extra` additional to the imagick library when using SVG.
 		// This library adds imagick support for SVG, WMF, OpenEXR, DjVu and Graphviz:
