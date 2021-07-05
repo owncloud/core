@@ -137,7 +137,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And file "lorem (3).txt" should be listed in the shared-with-you page on the webUI
 
 
-  Scenario: unshare a federation share
+  Scenario: unshare a federation share from files page and check in the files page as well as in "shared-with-you" page
     Given user "Alice" from server "REMOTE" has shared "/lorem.txt" with user "Alice" from server "LOCAL"
     And user "Alice" from server "LOCAL" has accepted the last pending share
     And the user has reloaded the current page of the webUI
@@ -155,15 +155,6 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user unshares file "lorem (2).txt" received as federated share using the webUI
     Then file "lorem (2).txt" should not be listed on the webUI
     And file "lorem (2).txt" should not be listed in the files page on the webUI
-
-
-  Scenario: unshare a federation share from "files" page and check in the "shared-with-you" page
-    Given user "Alice" from server "REMOTE" has shared "/lorem.txt" with user "Alice" from server "LOCAL"
-    And user "Alice" from server "LOCAL" has accepted the last pending share
-    And the user has reloaded the current page of the webUI
-    When the user unshares file "lorem (2).txt" using the webUI
-    Then file "lorem (2).txt" should not be listed on the webUI
-    And file "lorem (2).txt" should not be listed in the shared-with-you page on the webUI
 
 
   Scenario: test sharing folder to a remote server and resharing it back to the local
@@ -259,7 +250,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then as "Alice" file "simple-folder/simple-empty-folder/new-lorem.txt" should exist
     But as "Alice" file "simple-folder/simple-empty-folder/textfile.txt" should not exist
 
-    
+
   Scenario: delete a file in a folder inside a shared folder
     Given using server "REMOTE"
     And user "Alice" has created folder "simple-folder/simple-empty-folder"
