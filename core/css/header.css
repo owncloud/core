@@ -410,7 +410,8 @@
 	opacity: .7;
 	box-sizing: border-box;
 }
-#expanddiv a img, .icon {
+#expanddiv a img,
+#expanddiv a .icon {
 	display: inline-block;
 	margin-bottom: -3px;
 	margin-right: 6px;
