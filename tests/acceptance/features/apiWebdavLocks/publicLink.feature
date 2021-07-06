@@ -26,7 +26,7 @@ Feature: persistent-locking in case of a public link
       | new      | shared     | old                |
       | new      | exclusive  | old                |
 
-
+    @skipOnOcV10.6 @skipOnOcV10.7
     Examples:
       | dav-path | lock-scope | webdav_api_version |
       | old      | shared     | new                |
@@ -34,7 +34,7 @@ Feature: persistent-locking in case of a public link
       | new      | shared     | new                |
       | new      | exclusive  | new                |
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7
   Scenario Outline: Uploading a file into a locked subfolder of a public folder
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
     And user "Alice" has locked folder "PARENT/CHILD" setting the following properties
@@ -49,7 +49,7 @@ Feature: persistent-locking in case of a public link
       | new                       | shared     |
       | new                       | exclusive  |
 
-  @smokeTest
+  @smokeTest @skipOnOcV10.6 @skipOnOcV10.7
   Scenario Outline: Overwrite a file inside a locked public folder
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
     And user "Alice" has locked folder "PARENT" setting the following properties
@@ -67,7 +67,7 @@ Feature: persistent-locking in case of a public link
       | new                       | shared     |
       | new                       | exclusive  |
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7
   Scenario Outline: Overwrite a file inside a locked subfolder of a public folder
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
     And user "Alice" has locked folder "PARENT/CHILD" setting the following properties
