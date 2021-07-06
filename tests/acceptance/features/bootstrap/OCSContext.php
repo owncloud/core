@@ -605,6 +605,26 @@ class OCSContext implements Context {
 	}
 
 	/**
+	 * @When user :user requests these endpoints with :method about user :ofUser
+	 *
+	 * @param string $user
+	 * @param string $method
+	 * @param string $ofUser
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userSendsRequestToTheseEndpointsAboutUser($user, $method, $ofUser, TableNode $table) {
+		$this->sendRequestToTheseEndpointsAsNormalUser(
+			$user,
+			$method,
+			$ofUser,
+			$table
+		);
+	}
+
+	/**
 	 * @When user :user requests these endpoints with :method including body :body about user :ofUser
 	 *
 	 * @param string $user
