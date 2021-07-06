@@ -742,7 +742,9 @@ class TrashbinContext implements Context {
 	 * @throws Exception
 	 */
 	public function restoreFileWithoutDestination(string $user, string $originalPath):ResponseInterface {
+		$user = $this->featureContext->getActualUsername($user);
 		$asUser = $asUser ?? $user;
+
 		$listing = $this->listTrashbinFolder($user, null);
 		$originalPath = \trim($originalPath, '/');
 
