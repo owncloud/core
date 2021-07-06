@@ -1,26 +1,26 @@
 {
   "Alice": {
     "username": "Aliiiice",
-    "displayname": "Alice User",
+    "displayname": "Alice Who",
     "email": "aliice-email@example.org",
     "password": "0123"
   },
   "Brian": {
     "username": "Briaaaan",
-    "displayname": "User Brian",
+    "displayname": "Brian Carl Davis",
     "email": "briaan-email@example.org",
     "password": "01234"
   },
   "Carol": {
-    "username": "carol@123",
-    "displayname": "Carol User",
-    "email": "carol-email@example.org",
+    "username": "chris-123",
+    "displayname": "Christopher User",
+    "email": "carool-email@example.org",
     "password": "012345"
   },
   "David": {
-    "username": "123@david",
-    "displayname": "David User",
-    "email": "david-email@example.org",
+    "username": "doug-987",
+    "displayname": "Doug The User",
+    "email": "doug-user@example.org",
     "password": "1234567"
   }
 }

@@ -1517,7 +1517,7 @@ def acceptance(ctx):
         "scalityS3": False,
         "testingRemoteSystem": True,
         "useHttps": True,
-        "replaceUsernames": False,
+        "replaceUsernames": True,
         "extraSetup": [],
         "extraServices": [],
         "extraEnvironment": {"OC_LANGUAGE": "en-EN"},
