@@ -112,10 +112,11 @@ Feature: sharing
 
 
   Scenario: overwrite a received file share
-    Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
-    And user "Alice" has shared file "/textfile0.txt" with user "Brian"
-    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
-    When user "Brian" uploads file with content "this is a new content" to "/Shares/textfile0.txt" using the WebDAV API
+    Given user "Alice" has uploaded file with content "this is the old content" to "/textfile1.txt"
+    And user "Alice" has shared file "/textfile1.txt" with user "Brian"
+    And user "Brian" has accepted share "/textfile1.txt" offered by user "Alice"
+    When user "Brian" uploads file with content "this is a new content" to "/Shares/textfile1.txt" using the WebDAV API
     Then the HTTP status code should be "204"
-    And as "Brian" file "Shares/textfile0.txt" should exist
-    And the content of file "Shares/textfile0.txt" for user "Brian" should be "this is a new content"
+    And as "Brian" file "Shares/textfile1.txt" should exist
+    And the content of file "Shares/textfile1.txt" for user "Brian" should be "this is a new content"
+    And the content of file "textfile1.txt" for user "Alice" should be "this is a new content"
