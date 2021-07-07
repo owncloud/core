@@ -56,6 +56,7 @@ Feature: sharing
       | old              |
       | new              |
 
+
   Scenario: Move files between shares by same user
     Given user "Alice" has created folder "share1"
     And user "Alice" has created folder "share2"
@@ -67,6 +68,7 @@ Feature: sharing
     But as "Brian" file "share2/shared_file.txt" should exist
     And as "Alice" file "share1/shared_file.txt" should not exist
     But as "Alice" file "share2/shared_file.txt" should exist
+
 
   Scenario: Move files between shares by same user added by sharee
     Given user "Alice" has created folder "share1"
@@ -80,6 +82,7 @@ Feature: sharing
     Then as "Brian" file "share2/shared_file.txt" should exist
     And as "Alice" file "share2/shared_file.txt" should exist
 
+
   Scenario: Move files between shares by different users
     Given user "Carol" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/PARENT"
@@ -92,3 +95,13 @@ Feature: sharing
     Then as "Carol" file "PARENT (3)/shared_file.txt" should exist
     And as "Brian" file "PARENT/shared_file.txt" should exist
     But as "Alice" file "PARENT/shared_file.txt" should not exist
+
+
+  Scenario: overwrite a received file share
+    Given user "Alice" has uploaded file with content "this is the old content" to "/textfile1.txt"
+    And user "Alice" has shared file "/textfile1.txt" with user "Brian"
+    When user "Brian" uploads file with content "this is a new content" to "/textfile1.txt" using the WebDAV API
+    Then the HTTP status code should be "204"
+    And as "Brian" file "/textfile1.txt" should exist
+    And the content of file "/textfile1.txt" for user "Brian" should be "this is a new content"
+    And the content of file "/textfile1.txt" for user "Alice" should be "this is a new content"

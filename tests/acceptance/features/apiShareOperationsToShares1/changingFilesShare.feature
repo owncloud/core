@@ -109,3 +109,14 @@ Feature: sharing
     Then as "Carol" file "/Shares/PARENT (2)/shared_file.txt" should exist
     And as "Brian" file "PARENT/shared_file.txt" should exist
     But as "Alice" file "PARENT/shared_file.txt" should not exist
+
+
+  Scenario: overwrite a received file share
+    Given user "Alice" has uploaded file with content "this is the old content" to "/textfile1.txt"
+    And user "Alice" has shared file "/textfile1.txt" with user "Brian"
+    And user "Brian" has accepted share "/textfile1.txt" offered by user "Alice"
+    When user "Brian" uploads file with content "this is a new content" to "/Shares/textfile1.txt" using the WebDAV API
+    Then the HTTP status code should be "204"
+    And as "Brian" file "Shares/textfile1.txt" should exist
+    And the content of file "Shares/textfile1.txt" for user "Brian" should be "this is a new content"
+    And the content of file "textfile1.txt" for user "Alice" should be "this is a new content"
