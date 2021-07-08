@@ -3002,6 +3002,57 @@ class UsersControllerTest extends \Test\TestCase {
 		);
 	}
 
+	public function testResendInvitation() {
+		$user = $this->createMock(IUser::class);
+		$user->method('getEMailAddress')
+			->willReturn('foo@bar.com');
+
+		$this->container['UserManager']->expects($this->once())
+			->method('get')
+			->willReturn($user);
+
+		$this->container['SecureRandom']->expects($this->once())
+			->method('generate')
+			->willReturn('foOBaZ1');
+		$this->container['URLGenerator']->expects($this->once())
+			->method('linkToRouteAbsolute')
+			->willReturn('http://localhost/setpassword/foOBaZ1/foo');
+
+		$message = $this->createMock(Message::class);
+		$message->expects($this->once())
+			->method('setTo')
+			->willReturn($message);
+		$message->expects($this->once())
+			->method('setSubject')
+			->willReturn($message);
+		$message->expects($this->once())
+			->method('setHtmlBody')
+			->willReturn($message);
+		$message->expects($this->once())
+			->method('setPlainBody')
+			->willReturn($message);
+		$message->expects($this->once())
+			->method('setFrom')
+			->willReturn($message);
+
+		$this->container['Defaults']->method('getName')
+			->willReturn('ownCloud');
+
+		$this->container['Mailer']->expects($this->once())
+			->method('createMessage')
+			->willReturn($message);
+		$this->container['Mailer']->expects($this->once())
+			->method('send')
+			->with($message)
+			->willReturn([]);
+
+		$result = $this->container['UsersController']->resendInvitation('foo');
+		$this->assertEquals(
+			new Http\JSONResponse(),
+			$result
+		);
+	}
+
 	/**
 	 * @param $conditionForException
 	 */

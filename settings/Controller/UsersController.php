@@ -652,6 +652,58 @@ class UsersController extends Controller {
 	}
 
 	/**
+	 * @AdminRequired
+	 *
+	 * @param $userId
+	 * @return JSONResponse
+	 */
+	public function resendInvitation($userId) {
+		$user = $this->userManager->get($userId);
+
+		if ($user === null) {
+			$this->log->error('User: ' . $userId . ' does not exist', ['app' => 'settings']);
+			return new JSONResponse(
+				[
+					"error" => $this->l10n->t('Failed to create activation link. Please contact your administrator.')
+				],
+				HTTP::STATUS_NOT_FOUND
+			);
+		}
+
+		if ($user->getLastLogin() > 0) {
+			$this->log->error('User: ' . $userId . ' already logged in', ['app' => 'settings']);
+			return new JSONResponse(
+				[
+					"error" => $this->l10n->t('Failed to create activation link. Please contact your administrator.')
+				],
+				HTTP::STATUS_CONFLICT
+			);
+		}
+
+		if ($user->getEMailAddress() === null) {
+			$this->log->error('Email address not set for: ' . $userId, ['app' => 'settings']);
+			return new JSONResponse(
+				[
+					["error" => $this->l10n->t('Failed to create activation link. Please contact your administrator.', [$userId])],
+				],
+				HTTP::STATUS_CONFLICT
+			);
+		}
+
+		try {
+			$this->generateTokenAndSendMail($user->getUID(), $user->getEMailAddress());
+		} catch (\Exception $e) {
+			$this->log->error("Can't send new user mail to " . $user->getEMailAddress() . ": " . $e->getMessage(), ['app' => 'settings']);
+			return new JSONResponse(
+				["error" => $this->l10n->t('Can\'t send email to the user. Contact your administrator.')],
+				HTTP::STATUS_INTERNAL_SERVER_ERROR
+			);
+		}
+
+		return new JSONResponse();
+	}
+
+	/**
 	 * @PublicPage
 	 * @NoAdminRequired
 	 * @NoSubadminRequired
@@ -1081,7 +1133,6 @@ class UsersController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
 	 *
 	 * @param string $id
 	 * @param string $mailAddress
