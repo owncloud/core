@@ -11,7 +11,7 @@ $(document).ready(function () {
 		'<img src="' + OC.imagePath('core', 'loading-small.gif') + '"' +
 		'</span>' +
 		'</a>' +
-		'<div id="save-to-oc-expand-container">' +
+		'<div id="save-to-oc-expand-container" class="menutoggle">' +
 		'<a href="#" class="button" id="save-to-oc-button-expand">' +
 		'		<img class="svg" alt="" src="'+ OC.imagePath('core', 'actions/triangle-s') +'">' +
 		'</a>' +
