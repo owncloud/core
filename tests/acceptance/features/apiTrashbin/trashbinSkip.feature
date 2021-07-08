@@ -41,30 +41,45 @@ Feature: files and folders can be deleted completely skipping the trashbin
       | new      |
 
 
-  Scenario Outline: Skip trashbin based on extensions - match is case-sensitive
+  Scenario Outline: Skip trashbin based on extensions - match is case-insensitive
     Given the administrator has set the following file extensions to be skipped from the trashbin
       | extension |
       | dat       |
       | php       |
       | go        |
     And user "Alice" has uploaded file with content "sample delete file 1" to "sample.TXT"
+    And user "Alice" has uploaded file with content "sample delete file 1" to "sample.txt"
     And user "Alice" has uploaded file with content "sample delete file 2" to "sample.DAT"
+    And user "Alice" has uploaded file with content "sample delete file 2" to "sample.dat"
     And user "Alice" has uploaded file with content "sample delete file 3" to "sample.PHP"
+    And user "Alice" has uploaded file with content "sample delete file 3" to "sample.php"
     And user "Alice" has uploaded file with content "sample delete file 4" to "sample.GO"
+    And user "Alice" has uploaded file with content "sample delete file 4" to "sample.go"
     And user "Alice" has uploaded file with content "sample delete file 5" to "sample.PY"
+    And user "Alice" has uploaded file with content "sample delete file 5" to "sample.py"
     And using <dav-path> DAV path
     When user "Alice" deletes the following files
       | path       |
       | sample.TXT |
+      | sample.txt |
       | sample.DAT |
+      | sample.dat |
       | sample.PHP |
+      | sample.php |
       | sample.GO  |
+      | sample.go  |
       | sample.PY  |
+      | sample.py  |
     Then as "Alice" the file with original path "/sample.TXT" should exist in the trashbin
-    And as "Alice" the file with original path "/sample.DAT" should exist in the trashbin
-    And as "Alice" the file with original path "/sample.PHP" should exist in the trashbin
-    And as "Alice" the file with original path "/sample.GO" should exist in the trashbin
+    And as "Alice" the file with original path "/sample.txt" should exist in the trashbin
     And as "Alice" the file with original path "/sample.PY" should exist in the trashbin
+    And as "Alice" the file with original path "/sample.py" should exist in the trashbin
+    But as "Alice" the file with original path "/sample.DAT" should not exist in the trashbin
+    And as "Alice" the file with original path "/sample.dat" should not exist in the trashbin
+    And as "Alice" the file with original path "/sample.PHP" should not exist in the trashbin
+    And as "Alice" the file with original path "/sample.php" should not exist in the trashbin
+    And as "Alice" the file with original path "/sample.GO" should not exist in the trashbin
+    And as "Alice" the file with original path "/sample.go" should not exist in the trashbin
     Examples:
       | dav-path |
       | old      |
