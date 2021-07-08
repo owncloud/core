@@ -45,6 +45,7 @@ Summary
 * Change - All mount configuration items marked as passwords will be encrypted: [#38728](https://github.com/owncloud/core/pull/38728)
 * Change - Change favicon and color references to match the new CI: [#38750](https://github.com/owncloud/core/pull/38750)
 * Change - Update PHP minimum version to 7.2.5: [#38934](https://github.com/owncloud/core/pull/38934)
+* Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 * Change - Update PHP dependencies: [#38891](https://github.com/owncloud/core/pull/38891)
 * Enhancement - Improve public share federation user interface: [#4393](https://github.com/owncloud/enterprise/issues/4393)
 * Enhancement - Improve login form: [#38506](https://github.com/owncloud/core/pull/38506)
@@ -433,6 +434,11 @@ Details
 
    https://github.com/owncloud/core/pull/38934
    https://www.php.net/supported-versions.php
+
+* Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
+
+   https://github.com/owncloud/core/issues/38957
+   https://github.com/owncloud/core/pull/38962
 
 * Change - Update PHP dependencies: [#38891](https://github.com/owncloud/core/pull/38891)
 
