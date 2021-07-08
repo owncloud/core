@@ -608,6 +608,7 @@ $CONFIG = [
  * Extension names are valid for all mount points, take care when selecting the names.
  *
  * Values must not have a leading ".", otherwise corresponding files wont be detected.
+ * Values are case insensitive
  *
  */
 'trashbin_skip_extensions' => [

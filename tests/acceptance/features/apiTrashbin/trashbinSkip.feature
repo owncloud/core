@@ -10,6 +10,7 @@ Feature: files and folders can be deleted completely skipping the trashbin
     And user "Alice" has created folder "simple-folder"
     And user "Alice" has created folder "lorem-folder"
 
+
   Scenario Outline: Skip trashbin based on extensions
     Given the administrator has set the following file extensions to be skipped from the trashbin
       | extension |
@@ -39,6 +40,76 @@ Feature: files and folders can be deleted completely skipping the trashbin
       | old      |
       | new      |
 
+
+  Scenario Outline: Skip trashbin based on extensions - match is case-insensitive
+    Given the administrator has set the following file extensions to be skipped from the trashbin
+      | extension |
+      | dat       |
+      | php       |
+      | go        |
+    And user "Alice" has uploaded file with content "sample delete file 1" to "sample.TXT"
+    And user "Alice" has uploaded file with content "sample delete file 1" to "sample.txt"
+    And user "Alice" has uploaded file with content "sample delete file 2" to "sample.DAT"
+    And user "Alice" has uploaded file with content "sample delete file 2" to "sample.dat"
+    And user "Alice" has uploaded file with content "sample delete file 3" to "sample.PHP"
+    And user "Alice" has uploaded file with content "sample delete file 3" to "sample.php"
+    And user "Alice" has uploaded file with content "sample delete file 4" to "sample.GO"
+    And user "Alice" has uploaded file with content "sample delete file 4" to "sample.go"
+    And user "Alice" has uploaded file with content "sample delete file 5" to "sample.PY"
+    And user "Alice" has uploaded file with content "sample delete file 5" to "sample.py"
+    And using <dav-path> DAV path
+    When user "Alice" deletes the following files
+      | path       |
+      | sample.TXT |
+      | sample.txt |
+      | sample.DAT |
+      | sample.dat |
+      | sample.PHP |
+      | sample.php |
+      | sample.GO  |
+      | sample.go  |
+      | sample.PY  |
+      | sample.py  |
+    Then as "Alice" the file with original path "/sample.TXT" should exist in the trashbin
+    And as "Alice" the file with original path "/sample.txt" should exist in the trashbin
+    And as "Alice" the file with original path "/sample.PY" should exist in the trashbin
+    And as "Alice" the file with original path "/sample.py" should exist in the trashbin
+    But as "Alice" the file with original path "/sample.DAT" should not exist in the trashbin
+    And as "Alice" the file with original path "/sample.dat" should not exist in the trashbin
+    And as "Alice" the file with original path "/sample.PHP" should not exist in the trashbin
+    And as "Alice" the file with original path "/sample.php" should not exist in the trashbin
+    And as "Alice" the file with original path "/sample.GO" should not exist in the trashbin
+    And as "Alice" the file with original path "/sample.go" should not exist in the trashbin
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+  @issue-38952 @skipOnOcV10
+  Scenario Outline: Skip trashbin based on extensions when deleting the parent folder
+    Given the administrator has set the following file extensions to be skipped from the trashbin
+      | extension |
+      | dat       |
+      | php       |
+      | go        |
+    And user "Alice" has uploaded file with content "sample delete file 1" to "PARENT/sample.txt"
+    And user "Alice" has uploaded file with content "sample delete file 2" to "PARENT/sample.dat"
+    And user "Alice" has uploaded file with content "sample delete file 3" to "PARENT/sample.php"
+    And user "Alice" has uploaded file with content "sample delete file 4" to "PARENT/sample.go"
+    And user "Alice" has uploaded file with content "sample delete file 5" to "PARENT/sample.py"
+    And using <dav-path> DAV path
+    When user "Alice" deletes folder "PARENT" using the WebDAV API
+    Then as "Alice" the file with original path "PARENT/sample.txt" should exist in the trashbin
+    And as "Alice" the file with original path "PARENT/sample.py" should exist in the trashbin
+    But as "Alice" the file with original path "PARENT/sample.dat" should not exist in the trashbin
+    And as "Alice" the file with original path "PARENT/sample.php" should not exist in the trashbin
+    And as "Alice" the file with original path "PARENT/sample.go" should not exist in the trashbin
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+
   Scenario Outline: Skip trashbin based on directory
     Given the administrator has set the following directories to be skipped from the trashbin
       | directory     |
@@ -67,7 +138,28 @@ Feature: files and folders can be deleted completely skipping the trashbin
       | old      |
       | new      |
 
-  Scenario Outline: Delete a folder skipped from trashbin
+
+  Scenario Outline: Skip trashbin based on directory should match only the root folder name
+    Given the administrator has set the following directories to be skipped from the trashbin
+      | directory     |
+      | simple-folder |
+    And using <dav-path> DAV path
+    And user "Alice" has created folder "PARENT/simple-folder"
+    And user "Alice" has uploaded file with content "sample delete file 1" to "PARENT/p.txt"
+    And user "Alice" has uploaded file with content "sample delete file 2" to "PARENT/simple-folder/sub.txt"
+    And user "Alice" has uploaded file with content "sample delete file 3" to "simple-folder/s.txt"
+    When user "Alice" deletes folder "PARENT" using the WebDAV API
+    And user "Alice" deletes folder "simple-folder" using the WebDAV API
+    Then as "Alice" the file with original path "PARENT/p.txt" should exist in the trashbin
+    And as "Alice" the file with original path "PARENT/simple-folder/sub.txt" should exist in the trashbin
+    But as "Alice" the file with original path "simple-folder/s.txt" should not exist in the trashbin
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+
+  Scenario Outline: Delete a file in a folder skipped from trashbin
     Given the administrator has set the following directories to be skipped from the trashbin
       | directory |
       | PARENT    |
@@ -80,6 +172,7 @@ Feature: files and folders can be deleted completely skipping the trashbin
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario Outline: Delete a file with same name as folder skipped from trashbin
     Given the administrator has set the following directories to be skipped from the trashbin
@@ -94,6 +187,7 @@ Feature: files and folders can be deleted completely skipping the trashbin
       | old      |
       | new      |
 
+
   Scenario Outline: Delete a file from a folder skipped from trashbin but different case
     Given the administrator has set the following directories to be skipped from the trashbin
       | directory |
@@ -106,6 +200,7 @@ Feature: files and folders can be deleted completely skipping the trashbin
       | dav-path |
       | old      |
       | new      |
+
 
   Scenario Outline: Skip file from trashbin based on size threshold
     Given the administrator has set the trashbin skip size threshold to "10"
@@ -120,6 +215,21 @@ Feature: files and folders can be deleted completely skipping the trashbin
       | dav-path |
       | old      |
       | new      |
+
+  @issue-38952 @skipOnOcV10
+  Scenario Outline: Skip file from trashbin based on size threshold when deleting the parent folder
+    Given the administrator has set the trashbin skip size threshold to "10"
+    And using <dav-path> DAV path
+    And user "Alice" has uploaded file with content "sample" to "PARENT/lorem.txt"
+    And user "Alice" has uploaded file with content "sample delete file" to "PARENT/lorem.dat"
+    When user "Alice" deletes folder "PARENT" using the WebDAV API
+    Then as "Alice" the file with original path "PARENT/lorem.txt" should exist in the trashbin
+    But as "Alice" the file with original path "PARENT/lorem.dat" should not exist in the trashbin
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
 
   Scenario Outline: Delete files when multiple skip trashbin rules are set
     Given the administrator has set the following directories to be skipped from the trashbin
