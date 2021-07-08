@@ -37,6 +37,6 @@ class EncryptionTest extends \Test\TestCase {
 
 	public function testGetPanel() {
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertStringContainsString('org', $templateHtml);
+		$this->assertStringContainsString('com', $templateHtml);
 	}
 }

@@ -70,7 +70,7 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 		$version = SetupHelper::getSystemConfigValue('version');
 		$version = \explode(".", $version);
 		$version = (string) $version[0] . "." . (string) $version[1];
-		return "https://doc.owncloud.org/server/$version/go.php?to=$to";
+		return "https://doc.owncloud.com/server/$version/go.php?to=$to";
 	}
 
 	/**
