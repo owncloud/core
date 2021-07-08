@@ -1,0 +1,1 @@
+{"version":1,"defects":{"Tests\\Settings\\Controller\\UsersControllerTest::testResendInvitation":4,"Tests\\Settings\\Controller\\UsersControllerTest::tearDownAfterClass":3},"times":{"Tests\\Settings\\Controller\\UsersControllerTest::testResendInvitation":0.008,"Tests\\Settings\\Controller\\UsersControllerTest::tearDownAfterClass":0}}

@@ -399,20 +399,17 @@ var UserList = {
 			);
 		});
 	},
-	initResendInvitationEmailHandling: function() {
+	initResendInvitationEmailHandling: function () {
 		$userListBody.on('click', '.action.resendInvitationEmail', function () {
 			var uid = UserList.getUID(this);
 			$.post(
-				OC.generateUrl('/resend/token/{id}', {id: uid}),
-				{},
-				function (result, status) {
-					if (status === 'success'){
-						OC.Notification.showTemporary(t('settings', 'The invitation email for this user has been resent'));
-					} else {
-						OC.Notification.showTemporary(t('settings', 'The invitation email for this user could not be resent'));
-					}
-				}
-			);
+				OC.generateUrl('/resend/invitation/{id}', {id: uid}),
+				{}
+			).done(function () {
+				OC.Notification.showTemporary(t('settings', 'The invitation email for this user has been resent'));
+			}).error(function () {
+				OC.Notification.showTemporary(t('settings', 'The invitation email for this user could not be resent'));
+			});
 		});
 	},
 	update: function (gid, limit) {
