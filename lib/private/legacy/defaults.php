@@ -64,11 +64,11 @@ class OC_Defaults {
 		$this->defaultName = 'ownCloud'; /* short name, used when referring to the software */
 		$this->defaultTitle = 'ownCloud'; /* can be a longer name, for titles */
 		$this->defaultBaseUrl = 'https://owncloud.org';
-		$this->defaultSyncClientUrl = 'https://owncloud.org/install/#install-clients';
+		$this->defaultSyncClientUrl = 'https://owncloud.com/desktop-app/';
 		$this->defaultiOSClientUrl = 'https://apps.apple.com/app/id1359583808';
 		$this->defaultiTunesAppId = '1359583808';
 		$this->defaultAndroidClientUrl = 'https://play.google.com/store/apps/details?id=com.owncloud.android';
-		$this->defaultDocBaseUrl = 'https://doc.owncloud.org';
+		$this->defaultDocBaseUrl = 'https://doc.owncloud.com';
 		$this->defaultDocVersion = $version[0] . '.' . $version[1]; // used to generate doc links
 		$this->defaultSlogan = $this->l->t('A safe home for all your data');
 		$this->defaultLogoClaim = '';
