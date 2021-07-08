@@ -111,10 +111,9 @@ class TrashbinSkipChecker {
 		$fileExtensionsToSkip = $this->config->getSystemValue('trashbin_skip_extensions', []);
 
 		foreach ($fileExtensionsToSkip as $skipItem) {
-			$skipItem = \trim($skipItem);
-			$skipItem = '.'.$skipItem;
+			$skipItem = '.'.\strtolower(\trim($skipItem));
 
-			if (\substr($relativePath, -\strlen($skipItem)) === $skipItem) {
+			if (\strtolower(\substr($relativePath, -\strlen($skipItem))) === $skipItem) {
 				$this->logger->info("Path $relativePath skipped the trashbin and has been deleted immediately due to the trashbin_skip_extensions config $skipItem");
 				return true;
 			}
