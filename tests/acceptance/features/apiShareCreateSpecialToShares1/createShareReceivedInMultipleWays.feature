@@ -192,3 +192,208 @@ Feature: share resources where the sharee receives the share in multiple ways
       | ocs_api_version |
       | 1               |
       | 2               |
+
+  Scenario: Sharing parent folder to user with all permissions and its child folder to group with read permission then check create operation
+    Given group "grp1" has been created
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Carol" has created the following folders
+      | path                  |
+      | /parent               |
+      | /parent/child1        |
+      | /parent/child1/child2 |
+    And user "Alice" has been added to group "grp1"
+    And user "Brian" has been added to group "grp1"
+    When user "Carol" shares folder "/parent" with user "Brian" with permissions "all" using the sharing API
+    And user "Carol" shares folder "/parent/child1" with group "grp1" with permissions "read" using the sharing API
+    And user "Brian" accepts share "/parent" offered by user "Carol" using the sharing API
+    And user "Brian" accepts share "/parent/child1" offered by user "Carol" using the sharing API
+    And user "Alice" accepts share "/parent/child1" offered by user "Carol" using the sharing API
+    Then user "Brian" should be able to create folder "/Shares/parent/fo1"
+    And user "Brian" should be able to create folder "/Shares/parent/child1/fo2"
+    And as "Brian" folder "/Shares/child1" should exist
+    And user "Brian" should not be able to create folder "/Shares/child1/fo3"
+    And as "Alice" folder "/Shares/child1" should exist
+    And user "Alice" should not be able to create folder "/Shares/child1/fo3"
+
+  Scenario: Sharing parent folder to user with all permissions and its child folder to group with read permission then check rename operation
+    Given group "grp1" has been created
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Carol" has created the following folders
+      | path                  |
+      | /parent               |
+      | /parent/child1        |
+      | /parent/child1/child2 |
+    And user "Alice" has been added to group "grp1"
+    And user "Brian" has been added to group "grp1"
+    And user "Carol" has uploaded file with content "some data" to "/parent/child1/child2/textfile-2.txt"
+    When user "Carol" shares folder "/parent" with user "Brian" with permissions "all" using the sharing API
+    And user "Carol" shares folder "/parent/child1" with group "grp1" with permissions "read" using the sharing API
+    And user "Brian" accepts share "/parent" offered by user "Carol" using the sharing API
+    And user "Brian" accepts share "/parent/child1" offered by user "Carol" using the sharing API
+    And user "Alice" accepts share "/parent/child1" offered by user "Carol" using the sharing API
+    Then user "Brian" should be able to rename file "/Shares/parent/child1/child2/textfile-2.txt" to "/Shares/parent/child1/child2/rename.txt"
+    And as "Brian" file "/Shares/child1/child2/rename.txt" should exist
+    And user "Brian" should not be able to rename file "/Shares/child1/child2/rename.txt" to "/Shares/child1/child2/rename2.txt"
+    And as "Alice" file "/Shares/child1/child2/rename.txt" should exist
+    And user "Alice" should not be able to rename file "/Shares/child1/child2/rename.txt" to "/Shares/child1/child2/rename2.txt"
+
+  Scenario: Sharing parent folder to user with all permissions and its child folder to group with read permission then check delete operation
+    Given group "grp1" has been created
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Carol" has created the following folders
+      | path                  |
+      | /parent               |
+      | /parent/child1        |
+      | /parent/child1/child2 |
+    And user "Alice" has been added to group "grp1"
+    And user "Brian" has been added to group "grp1"
+    And user "Carol" has uploaded file with content "some data" to "/parent/child1/child2/textfile-2.txt"
+    When user "Carol" shares folder "/parent" with user "Brian" with permissions "all" using the sharing API
+    And user "Carol" shares folder "/parent/child1" with group "grp1" with permissions "read" using the sharing API
+    And user "Brian" accepts share "/parent" offered by user "Carol" using the sharing API
+    And user "Brian" accepts share "/parent/child1" offered by user "Carol" using the sharing API
+    And user "Alice" accepts share "/parent/child1" offered by user "Carol" using the sharing API
+    Then user "Brian" should be able to delete file "/Shares/parent/child1/child2/textfile-2.txt"
+    And as "Brian" folder "/Shares/child1" should exist
+    And user "Brian" should not be able to delete folder "/Shares/child1/child2"
+    And as "Alice" folder "/Shares/child1" should exist
+    And user "Alice" should not be able to delete folder "/Shares/child1/child2"
+
+  Scenario: Sharing parent folder to user with all permissions and its child folder to group with read permission then check reshare operation
+    Given group "grp1" has been created
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Carol" has created the following folders
+      | path                  |
+      | /parent               |
+      | /parent/child1        |
+      | /parent/child1/child2 |
+    And user "Alice" has been added to group "grp1"
+    And user "Brian" has been added to group "grp1"
+    When user "Carol" shares folder "/parent" with user "Brian" with permissions "all" using the sharing API
+    And user "Carol" shares folder "/parent/child1" with group "grp1" with permissions "read" using the sharing API
+    And user "Brian" accepts share "/parent" offered by user "Carol" using the sharing API
+    And user "Brian" accepts share "/parent/child1" offered by user "Carol" using the sharing API
+    And user "Alice" accepts share "/parent/child1" offered by user "Carol" using the sharing API
+    Then user "Brian" should be able to share folder "/Shares/parent" with user "Alice" with permissions "read" using the sharing API
+    And user "Alice" accepts share "/parent" offered by user "Brian" using the sharing API
+    And as "Brian" folder "/Shares/child1" should exist
+    And as "Alice" folder "/Shares/child1" should exist
+    And as "Alice" folder "/Shares/parent" should exist
+
+  Scenario: Sharing parent folder to group with read permission and its child folder to user with all permissions then check create operation
+    Given group "grp1" has been created
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Carol" has created the following folders
+      | path                  |
+      | /parent               |
+      | /parent/child1        |
+      | /parent/child1/child2 |
+    And user "Alice" has been added to group "grp1"
+    And user "Brian" has been added to group "grp1"
+    When user "Carol" shares folder "/parent" with group "grp1" with permissions "read" using the sharing API
+    And user "Carol" shares folder "/parent/child1" with user "Brian" with permissions "all" using the sharing API
+    And user "Brian" accepts share "/parent/child1" offered by user "Carol" using the sharing API
+    And user "Brian" accepts share "/parent" offered by user "Carol" using the sharing API
+    And user "Alice" accepts share "/parent" offered by user "Carol" using the sharing API
+    Then user "Brian" should be able to create folder "/Shares/child1/fo1"
+    And user "Brian" should be able to create folder "/Shares/child1/child2/fo2"
+    And as "Brian" folder "/Shares/parent" should exist
+    And user "Brian" should not be able to create folder "/Shares/parent/fo3"
+    And as "Alice" folder "/Shares/parent" should exist
+    And user "Alice" should not be able to create folder "/Shares/parent/fo3"
+
+  Scenario: Sharing parent folder to group with read permission and its child folder to user with all permissions then check rename operation
+    Given group "grp1" has been created
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Carol" has created the following folders
+      | path                  |
+      | /parent               |
+      | /parent/child1        |
+      | /parent/child1/child2 |
+    And user "Alice" has been added to group "grp1"
+    And user "Brian" has been added to group "grp1"
+    And user "Carol" has uploaded file with content "some data" to "/parent/child1/child2/textfile-2.txt"
+    When user "Carol" shares folder "/parent" with group "grp1" with permissions "read" using the sharing API
+    And user "Carol" shares folder "/parent/child1" with user "Brian" with permissions "all" using the sharing API
+    And user "Brian" accepts share "/parent/child1" offered by user "Carol" using the sharing API
+    And user "Brian" accepts share "/parent" offered by user "Carol" using the sharing API
+    And user "Alice" accepts share "/parent" offered by user "Carol" using the sharing API
+    Then user "Brian" should be able to rename file "/Shares/child1/child2/textfile-2.txt" to "/Shares/child1/child2/rename.txt"
+    And as "Brian" file "/Shares/parent/child1/child2/rename.txt" should exist
+    And user "Brian" should not be able to rename file "/Shares/parent/child1/child2/rename.txt" to "/Shares/parent/child1/child2/rename2.txt"
+    And as "Alice" file "/Shares/parent/child1/child2/rename.txt" should exist
+    And user "Alice" should not be able to rename file "/Shares/parent/child1/child2/rename.txt" to "/Shares/parent/child1/child2/rename2.txt"
+
+  Scenario: Sharing parent folder to group with read permission and its child folder to user with all permissions then check delete operation
+    Given group "grp1" has been created
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Carol" has created the following folders
+      | path                  |
+      | /parent               |
+      | /parent/child1        |
+      | /parent/child1/child2 |
+    And user "Alice" has been added to group "grp1"
+    And user "Brian" has been added to group "grp1"
+    And user "Carol" has uploaded file with content "some data" to "/parent/child1/child2/textfile-2.txt"
+    When user "Carol" shares folder "/parent" with group "grp1" with permissions "read" using the sharing API
+    And user "Carol" shares folder "/parent/child1" with user "Brian" with permissions "all" using the sharing API
+    And user "Brian" accepts share "/parent/child1" offered by user "Carol" using the sharing API
+    And user "Brian" accepts share "/parent" offered by user "Carol" using the sharing API
+    And user "Alice" accepts share "/parent" offered by user "Carol" using the sharing API
+    Then user "Brian" should be able to delete file "/Shares/child1/child2/textfile-2.txt"
+    And as "Brian" folder "/Shares/parent" should exist
+    And user "Brian" should not be able to delete folder "/Shares/parent/child1"
+    And as "Alice" folder "/Shares/parent" should exist
+    And user "Alice" should not be able to delete folder "/Shares/parent/child1"
+
+  Scenario: Sharing parent folder to group with read permission and its child folder to user with all permissions then check reshare operation
+    Given group "grp1" has been created
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Carol" has created the following folders
+      | path                  |
+      | /parent               |
+      | /parent/child1        |
+      | /parent/child1/child2 |
+    And user "Alice" has been added to group "grp1"
+    And user "Brian" has been added to group "grp1"
+    When user "Carol" shares folder "/parent" with group "grp1" with permissions "read" using the sharing API
+    And user "Carol" shares folder "/parent/child1" with user "Brian" with permissions "all" using the sharing API
+    And user "Brian" accepts share "/parent/child1" offered by user "Carol" using the sharing API
+    And user "Brian" accepts share "/parent" offered by user "Carol" using the sharing API
+    And user "Alice" accepts share "/parent" offered by user "Carol" using the sharing API
+    Then user "Brian" should be able to share folder "/Shares/child1" with user "Alice" with permissions "read" using the sharing API
+    And user "Alice" accepts share "/parent/child1" offered by user "Brian" using the sharing API
+    And as "Brian" folder "/Shares/parent" should exist
+    And as "Alice" folder "/Shares/parent" should exist
+    And as "Alice" folder "/Shares/child1" should exist
+
+  Scenario: Sharing parent folder to one group with all permissions and its child folder to another group with read permission
+    Given these groups have been created:
+      | groupname |
+      | grp1      |
+      | grp2      |
+      | grp3      |
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Carol" has created the following folders
+      | path                  |
+      | /parent               |
+      | /parent/child1        |
+      | /parent/child1/child2 |
+    And user "Alice" has been added to group "grp1"
+    And user "Brian" has been added to group "grp2"
+    And user "Carol" has uploaded file with content "some data" to "/parent/child1/child2/textfile-2.txt"
+    When user "Carol" shares folder "/parent" with group "grp1" with permissions "all" using the sharing API
+    And user "Carol" shares folder "/parent/child1" with group "grp2" with permissions "read" using the sharing API
+    And user "Alice" accepts share "/parent" offered by user "Carol" using the sharing API
+    And user "Brian" accepts share "/parent/child1" offered by user "Carol" using the sharing API
+    Then user "Alice" should be able to create folder "/Shares/parent/child1/fo1"
+    And user "Alice" should be able to create folder "/Shares/parent/child1/child2/fo2"
+    And user "Alice" should be able to delete folder "/Shares/parent/child1/fo1"
+    And user "Alice" should be able to delete folder "/Shares/parent/child1/child2/fo2"
+    And user "Alice" should be able to rename file "/Shares/parent/child1/child2/textfile-2.txt" to "/Shares/parent/child1/child2/rename.txt"
+    And user "Alice" should be able to share folder "/Shares/parent/child1" with group "grp3" with permissions "all" using the sharing API
+    And as "Brian" folder "/Shares/child1" should exist
+    And user "Brian" should not be able to create folder "/Shares/child1/fo1"
+    And user "Brian" should not be able to create folder "/Shares/child1/child2/fo2"
+    And user "Brian" should not be able to rename file "/Shares/child1/child2/rename.txt" to "/Shares/child1/child2/rename2.txt"
+    And user "Brian" should not be able to share folder "/Shares/child1" with group "grp3" with permissions "read" using the sharing API
