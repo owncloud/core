@@ -1263,12 +1263,13 @@ class Manager implements IManager {
 			$queriedShares = $provider->getAllSharesBy($userId, $shareTypeArray, $nodeIDs, $reshares);
 			foreach ($queriedShares as $queriedShare) {
 				if (self::shareHasExpired($queriedShare)) {
+					$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 					try {
-						$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 						$this->deleteShare($queriedShare);
-						$this->activityManager->restoreAgentAuthor();
 					} catch (NotFoundException $e) {
 						//Ignore since this basically means the share is deleted
+					} finally {
+						$this->activityManager->restoreAgentAuthor();
 					}
 					continue;
 				}
@@ -1304,12 +1305,13 @@ class Manager implements IManager {
 			foreach ($shares as $share) {
 				// Check if the share is expired and if so delete it
 				if (self::shareHasExpired($share)) {
+					$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 					try {
-						$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 						$this->deleteShare($share);
-						$this->activityManager->restoreAgentAuthor();
 					} catch (NotFoundException $e) {
 						//Ignore since this basically means the share is deleted
+					} finally {
+						$this->activityManager->restoreAgentAuthor();
 					}
 					continue;
 				}
@@ -1365,12 +1367,13 @@ class Manager implements IManager {
 			foreach ($shares as $share) {
 				// Check if the share is expired and if so delete it
 				if (self::shareHasExpired($share)) {
+					$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 					try {
-						$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 						$this->deleteShare($share);
-						$this->activityManager->restoreAgentAuthor();
 					} catch (NotFoundException $e) {
 						//Ignore since this basically means the share is deleted
+					} finally {
+						$this->activityManager->restoreAgentAuthor();
 					}
 					continue;
 				}
@@ -1424,12 +1427,13 @@ class Manager implements IManager {
 			$queriedShares = $provider->getAllSharedWith($userId, $node);
 			foreach ($queriedShares as $queriedShare) {
 				if (self::shareHasExpired($queriedShare)) {
+					$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 					try {
-						$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 						$this->deleteShare($queriedShare);
-						$this->activityManager->restoreAgentAuthor();
 					} catch (NotFoundException $e) {
 						//Ignore since this basically means the share is deleted
+					} finally {
+						$this->activityManager->restoreAgentAuthor();
 					}
 					continue;
 				}
@@ -1456,8 +1460,11 @@ class Manager implements IManager {
 		// Validate shares expiration date
 		if (self::shareHasExpired($share)) {
 			$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
-			$this->deleteShare($share);
-			$this->activityManager->restoreAgentAuthor();
+			try {
+				$this->deleteShare($share);
+			} finally {
+				$this->activityManager->restoreAgentAuthor();
+			}
 			throw new ShareNotFound();
 		}
 
@@ -1514,8 +1521,11 @@ class Manager implements IManager {
 
 		if (self::shareHasExpired($share)) {
 			$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
-			$this->deleteShare($share);
-			$this->activityManager->restoreAgentAuthor();
+			try {
+				$this->deleteShare($share);
+			} finally {
+				$this->activityManager->restoreAgentAuthor();
+			}
 			throw new ShareNotFound();
 		}
 
