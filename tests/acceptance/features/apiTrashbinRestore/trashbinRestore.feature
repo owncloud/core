@@ -535,3 +535,56 @@ Feature: Restore deleted files/folders
       | dav-path |
       | old      |
       | new      |
+
+  Scenario Outline: restoring folders with dot in the name
+    Given using <dav-path> DAV path
+    And user "Alice" has created the following folders
+      | path      |
+      | /fo.      |
+      | /fo.1     |
+      | /fo...1.. |
+      | /...      |
+      | /..fo     |
+      | /fo.xyz   |
+      | /fo.exe   |
+    And user "Alice" has deleted the following folders
+      | path      |
+      | /fo.      |
+      | /fo.1     |
+      | /fo...1.. |
+      | /...      |
+      | /..fo     |
+      | /fo.xyz   |
+      | /fo.exe   |
+    When user "Alice" restores the following folders with original path
+      | path      |
+      | /fo.      |
+      | /fo.1     |
+      | /fo...1.. |
+      | /...      |
+      | /..fo     |
+      | /fo.xyz   |
+      | /fo.exe   |
+    Then the HTTP status code of responses on all endpoints should be "201"
+    And as "Alice" the folders with following original paths should not exist in the trashbin
+      | path      |
+      | /fo.      |
+      | /fo.1     |
+      | /fo...1.. |
+      | /...      |
+      | /..fo     |
+      | /fo.xyz   |
+      | /fo.exe   |
+    But as "Alice" the following folders should exist
+      | path      |
+      | /fo.      |
+      | /fo.1     |
+      | /fo...1.. |
+      | /...      |
+      | /..fo     |
+      | /fo.xyz   |
+      | /fo.exe   |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
