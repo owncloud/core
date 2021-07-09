@@ -122,7 +122,7 @@ vendor-bin/**/composer.lock
 
 # Tests - auto-generated files
 /data-autotest
-/tests/.phpunit.result.cache
+.phpunit.result.cache
 /tests/coverage*
 /tests/karma-coverage
 /tests/acceptance/server_tmp
