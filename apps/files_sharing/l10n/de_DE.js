@@ -67,7 +67,7 @@ OC.L10N.register(
     "Your public link for %1$s expired" : "Ihre Freigabe als Link für %1$s ist abgelaufen",
     "The public link of %2$s for %1$s expired" : "Die Freigabe als Link von %2$s für %1$s ist abgelaufen",
     "%2$s shared %1$s with you" : "%2$s hat %1$s mit Ihnen geteilt",
-    "The share for %1$s expired" : "Die Freigabe für %1$sist abgelaufen",
+    "The share for %1$s expired" : "Die Freigabe für %1$s ist abgelaufen",
     "%2$s removed the share for %1$s" : "%2$s hat die Freigabe für %1$s entfernt",
     "Downloaded via public link" : "Heruntergeladen mittels öffentlichen Link",
     "Shared with %2$s" : "Geteilt mit %2$s",
