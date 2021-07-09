@@ -105,6 +105,7 @@ class ExpireSharesJob extends TimedJob {
 
 		$shares = $qb->execute();
 		while ($share = $shares->fetch()) {
+			$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 			try {
 				/*
 				 * The type of $share['id'] changes depends on the db type. (int for pgsql, string for others)
@@ -112,11 +113,11 @@ class ExpireSharesJob extends TimedJob {
 				 * $share['id'] has been casted to string to ensure consistency.
 				 */
 				$shareObject = $this->defaultShareProvider->getShareById((string)$share['id']);
-				$this->activityManager->setAgentAuthor(IEvent::AUTOMATION_AUTHOR);
 				$this->shareManager->deleteShare($shareObject);
-				$this->activityManager->restoreAgentAuthor();
 			} catch (ShareNotFound $ex) {
 				//already deleted
+			} finally {
+				$this->activityManager->restoreAgentAuthor();
 			}
 		}
 		$shares->closeCursor();
