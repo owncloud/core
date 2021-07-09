@@ -70,6 +70,7 @@ $application->registerRoutes($this, [
 		['name' => 'ChangePassword#changePassword', 'url' => '/users/changepassword', 'verb' => 'POST'],
 		['name' => 'Users#setPasswordForm', 'url' => '/settings/users/setpassword/form/{token}/{userId}', 'verb' => 'GET'],
 		['name' => 'Users#resendToken', 'url' => '/resend/token/{userId}', 'verb' => 'POST'],
+		['name' => 'Users#resendInvitation', 'url' => '/resend/invitation/{userId}', 'verb' => 'POST'],
 		['name' => 'Users#setPassword', 'url' => '/setpassword/{token}/{userId}', 'verb' => 'POST'],
 		['name' => 'Groups#getAssignableAndRemovableGroups', 'url' => '/settings/groups/available', 'verb' => 'GET'],
 	]
