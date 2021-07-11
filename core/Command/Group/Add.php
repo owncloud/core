@@ -66,5 +66,6 @@ class Add extends Command {
 			$output->writeln('<error>The group "' . $group->getGID() . '" already exists</error>');
 			return 1;
 		}
+		return 0;
 	}
 }

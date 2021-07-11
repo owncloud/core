@@ -52,5 +52,6 @@ class Status extends Base {
 			'enabled' => $this->encryptionManager->isEnabled(),
 			'defaultModule' => $this->encryptionManager->getDefaultEncryptionModuleId(),
 		]);
+		return 0;
 	}
 }

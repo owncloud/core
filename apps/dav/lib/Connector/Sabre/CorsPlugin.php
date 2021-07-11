@@ -150,7 +150,7 @@ class CorsPlugin extends ServerPlugin {
 	 * @param RequestInterface $request
 	 * @param ResponseInterface $response
 	 *
-	 * @return false
+	 * @return false|void
 	 * @throws \InvalidArgumentException
 	 */
 	public function setOptionsRequestHeaders(RequestInterface $request, ResponseInterface $response) {

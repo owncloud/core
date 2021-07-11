@@ -180,5 +180,6 @@ class Add extends Command {
 			$group->addUser($user);
 			$output->writeln('User "' . $user->getUID() . '" added to group "' . $group->getGID() . '"');
 		}
+		return 0;
 	}
 }

@@ -55,9 +55,10 @@ class Disable extends Base {
 		$user = $this->userManager->get($uid);
 		if ($user === null) {
 			$output->writeln("<error>Invalid UID</error>");
-			return;
+			return 1;
 		}
 		$this->manager->disableTwoFactorAuthentication($user);
 		$output->writeln("Two-factor authentication disabled for user $uid");
+		return 0;
 	}
 }

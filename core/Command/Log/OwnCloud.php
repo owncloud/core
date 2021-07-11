@@ -104,6 +104,7 @@ class OwnCloud extends Command {
 			$rotateString = 'disabled';
 		}
 		$output->writeln('Rotate at: '.$rotateString);
+		return 0;
 	}
 
 	/**

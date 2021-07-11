@@ -72,5 +72,6 @@ class Mode extends Command {
 				$output->writeln('Maintenance mode is currently disabled');
 			}
 		}
+		return 0;
 	}
 }

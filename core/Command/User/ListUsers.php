@@ -150,5 +150,6 @@ class ListUsers extends Base {
 			return $row;
 		}, $users);
 		parent::writeArrayInOutputFormat($input, $output, $users, self::DEFAULT_OUTPUT_PREFIX, true);
+		return 0;
 	}
 }

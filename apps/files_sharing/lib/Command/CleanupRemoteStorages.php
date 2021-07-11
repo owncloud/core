@@ -88,6 +88,7 @@ class CleanupRemoteStorages extends Command {
 				}
 			}
 		}
+		return 0;
 	}
 
 	public function countFiles($numericId, OutputInterface $output) {

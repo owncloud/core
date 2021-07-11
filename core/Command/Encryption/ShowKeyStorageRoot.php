@@ -52,5 +52,6 @@ class ShowKeyStorageRoot extends Command {
 		$rootDescription = $currentRoot !== '' ? $currentRoot : 'default storage location (data/)';
 
 		$output->writeln("Current key storage root:  <info>$rootDescription</info>");
+		return 0;
 	}
 }

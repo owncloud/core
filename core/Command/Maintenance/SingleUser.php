@@ -74,5 +74,6 @@ class SingleUser extends Command {
 				$output->writeln('Single user mode is currently disabled');
 			}
 		}
+		return 0;
 	}
 }

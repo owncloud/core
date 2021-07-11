@@ -54,5 +54,6 @@ class Export extends ListCommand {
 		$listInput->setOption('full', true);
 		$listInput->setOption('importable-format', true);
 		$listCommand->execute($listInput, $output);
+		return 0;
 	}
 }

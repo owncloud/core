@@ -103,7 +103,7 @@ class Applicable extends Base {
 			$mount = $this->globalService->getStorage($mountId);
 		} catch (NotFoundException $e) {
 			$output->writeln('<error>Mount with id "' . $mountId . ' not found, check "occ files_external:list" to get available mounts</error>');
-			return 404;
+			return 1;
 		}
 
 		if ($mount->getType() === IStorageConfig::MOUNT_TYPE_PERSONAl) {
@@ -123,13 +123,13 @@ class Applicable extends Base {
 			foreach ($addUsers as $addUser) {
 				if (!$this->userManager->userExists($addUser)) {
 					$output->writeln('<error>User "' . $addUser . '" not found</error>');
-					return 404;
+					return 1;
 				}
 			}
 			foreach ($addGroups as $addGroup) {
 				if (!$this->groupManager->groupExists($addGroup)) {
 					$output->writeln('<error>Group "' . $addGroup . '" not found</error>');
-					return 404;
+					return 1;
 				}
 			}
 
@@ -151,5 +151,6 @@ class Applicable extends Base {
 			'users' => $applicableUsers,
 			'groups' => $applicableGroups
 		]);
+		return 0;
 	}
 }

@@ -327,6 +327,7 @@ class Scan extends Base {
 		if (\count($groups) === 0) {
 			$this->processUserChunks($input, $output, $users, $inputPath, $shouldRepairStoragesIndividually);
 		}
+		return 0;
 	}
 
 	protected function processUserChunks($input, $output, $users, $inputPath, $shouldRepairStoragesIndividually, $group = null) {

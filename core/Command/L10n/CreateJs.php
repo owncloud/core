@@ -54,7 +54,7 @@ class CreateJs extends Command {
 		$path = \OC_App::getAppPath($app);
 		if ($path === false) {
 			$output->writeln("The app <$app> is unknown.");
-			return;
+			return 1;
 		}
 		$languages = $lang;
 		if (empty($lang)) {
@@ -64,6 +64,7 @@ class CreateJs extends Command {
 		foreach ($languages as $lang) {
 			$this->writeFiles($app, $path, $lang, $output);
 		}
+		return 0;
 	}
 
 	private function getAllLanguages($path) {

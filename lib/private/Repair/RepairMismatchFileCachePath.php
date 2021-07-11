@@ -110,7 +110,6 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	 * @param string $wrongPath wrong path of the entry to fix
 	 * @param int $correctStorageNumericId numeric idea of the correct storage
 	 * @param string $correctPath value to which to set the path of the entry
-	 * @return bool true for success
 	 */
 	private function fixEntryPath(IOutput $out, $fileId, $wrongPath, $correctStorageNumericId, $correctPath) {
 		// delete target if exists

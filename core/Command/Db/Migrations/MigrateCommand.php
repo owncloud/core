@@ -58,5 +58,6 @@ class MigrateCommand extends Command {
 		$version = $input->getArgument('version');
 
 		$ms->migrate($version);
+		return 0;
 	}
 }

@@ -51,5 +51,8 @@ class Version20180302155233 implements ISqlMigration {
 			->where($qb->expr()->eq('share_type', $qb->expr()->literal(2)))
 			->andWhere($qb->expr()->eq('permissions', $qb->expr()->literal(0)))
 			->execute();
+		// This sql() method is supposed to return an array of sql statements
+		// The needed update has been done above, so return an empty array.
+		return [];
 	}
 }

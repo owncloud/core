@@ -137,7 +137,7 @@ class DecryptAll extends Command {
 		$confirmed = $input->getOption('continue');
 		if (($confirmed !== 'yes') && ($confirmed !== 'no')) {
 			$output->writeln('Continue can accept either yes or no');
-			return null;
+			return 2;
 		}
 
 		try {
@@ -147,7 +147,7 @@ class DecryptAll extends Command {
 				$output->writeln('done.');
 			} else {
 				$output->writeln('Server side encryption not enabled. Nothing to do.');
-				return;
+				return 0;
 			}
 
 			$uid = $input->getArgument('user');
@@ -189,5 +189,6 @@ class DecryptAll extends Command {
 			$this->resetSingleUserAndTrashbin();
 			throw $e;
 		}
+		return 0;
 	}
 }

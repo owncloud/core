@@ -57,7 +57,7 @@ class LastSeen extends Command {
 		$user = $this->userManager->get($input->getArgument('uid'));
 		if ($user === null) {
 			$output->writeln('<error>User does not exist</error>');
-			return;
+			return 1;
 		}
 
 		$lastLogin = $user->getLastLogin();
@@ -70,5 +70,6 @@ class LastSeen extends Command {
 			$output->writeln($user->getUID() .
 				'`s last login: ' . $date->format('d.m.Y H:i'));
 		}
+		return 0;
 	}
 }

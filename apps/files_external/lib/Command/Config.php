@@ -68,7 +68,7 @@ class Config extends Base {
 			$mount = $this->globalService->getStorage($mountId);
 		} catch (NotFoundException $e) {
 			$output->writeln('<error>Mount with id "' . $mountId . ' not found, check "occ files_external:list" to get available mounts"</error>');
-			return 404;
+			return 1;
 		}
 
 		$value = $input->getArgument('value');
@@ -78,6 +78,7 @@ class Config extends Base {
 		} else {
 			$this->getOption($mount, $key, $output);
 		}
+		return 0;
 	}
 
 	/**

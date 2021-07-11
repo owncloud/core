@@ -96,6 +96,7 @@ class CleanUp extends Command {
 				} while (\count($users) >= $limit);
 			}
 		}
+		return 0;
 	}
 
 	/**

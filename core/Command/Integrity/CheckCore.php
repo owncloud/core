@@ -63,5 +63,6 @@ class CheckCore extends Base {
 		if (\count($result)>0) {
 			return 1;
 		}
+		return 0;
 	}
 }

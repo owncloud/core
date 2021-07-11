@@ -73,6 +73,8 @@ EOD;
 			$fingerprint = \md5($this->timeFactory->getTime());
 			$this->config->setSystemValue('data-fingerprint', $fingerprint);
 			$this->logger->info("Data fingerprint was set by $osUser@$server to $fingerprint");
+			return 0;
 		}
+		return 1;
 	}
 }

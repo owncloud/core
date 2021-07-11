@@ -90,5 +90,6 @@ class ListCertificates extends Base {
 			$table->setRows($rows);
 			$table->render();
 		}
+		return 0;
 	}
 }

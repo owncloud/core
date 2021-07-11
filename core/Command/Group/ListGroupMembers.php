@@ -63,5 +63,6 @@ class ListGroupMembers extends Base {
 
 		$displayNames = $this->groupManager->displayNamesInGroup($group->getGID());
 		parent::writeArrayInOutputFormat($input, $output, $displayNames, self::DEFAULT_OUTPUT_PREFIX, true);
+		return 0;
 	}
 }

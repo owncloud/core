@@ -69,5 +69,6 @@ class ListUserGroups extends Base {
 		$user = $this->userManager->get($uid);
 		$groupNames = $this->groupManager->getUserGroupIds($user);
 		parent::writeArrayInOutputFormat($input, $output, $groupNames);
+		return 0;
 	}
 }

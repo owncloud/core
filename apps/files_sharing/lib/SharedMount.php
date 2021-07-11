@@ -108,7 +108,6 @@ class SharedMount extends MountPoint implements MoveableMount {
 	 *
 	 * @param string $newPath
 	 * @param \OCP\Share\IShare $share
-	 * @return bool
 	 */
 	private function updateFileTarget($newPath, &$share) {
 		$share->setTarget($newPath);
