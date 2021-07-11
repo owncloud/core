@@ -87,6 +87,9 @@ class TransferOwnership extends Command {
 	private $inputPath;
 
 	/** @var string */
+	private $destinationPath;
+
+	/** @var string */
 	private $finalTarget;
 
 	public function __construct(
@@ -113,24 +116,30 @@ class TransferOwnership extends Command {
 			->addArgument(
 				'source-user',
 				InputArgument::REQUIRED,
-				'owner of files which shall be moved'
+				'Owner of files which shall be moved'
 			)
 			->addArgument(
 				'destination-user',
 				InputArgument::REQUIRED,
-				'user who will be the new owner of the files'
+				'User who will be the new owner of the files'
 			)
 			->addOption(
 				'path',
 				null,
 				InputOption::VALUE_REQUIRED,
-				'selectively provide the path to transfer. For example --path="folder_name"'
+				'Selectively provide the path to transfer. For example --path="folder_name"'
+			)
+			->addOption(
+				'destination-path',
+				null,
+				InputOption::VALUE_REQUIRED,
+				'Selectively provide the path where the data will be transferred to. For example --destination-path="folder_name"'
 			)
 			->addOption(
 				'accept-skipped-shares',
 				's',
 				InputOption::VALUE_NONE,
-				'always confirm to continue in case of skipped shares.'
+				'Always confirm to continue in case of skipped shares.'
 			);
 	}
 
@@ -151,6 +160,13 @@ class TransferOwnership extends Command {
 		$this->inputPath = $input->getOption('path');
 		$this->inputPath = \ltrim($this->inputPath, '/');
 
+		$date = \date('Ymd_his');
+		$this->destinationPath = "transferred from $this->sourceUser on $date";
+		$destinationPathOpt = $input->getOption('destination-path');
+		if ($destinationPathOpt !== null) {
+			$this->destinationPath = \ltrim($destinationPathOpt, '/');
+		}
+
 		// target user has to be ready
 		if ($destinationUserObject->getLastLogin() === 0) {
 			// based on \OC\User\Session->prepareUserLogin
@@ -164,9 +180,8 @@ class TransferOwnership extends Command {
 			return 2;
 		}
 
-		// use a date format compatible across client OS
-		$date = \date('Ymd_his');
-		$this->finalTarget = "$this->destinationUser/files/transferred from $this->sourceUser on $date";
+		// Final target where the files will be transferred to
+		$this->finalTarget = "$this->destinationUser/files/$this->destinationPath";
 
 		// setup filesystem
 		Filesystem::initMountPoints($this->sourceUser);
