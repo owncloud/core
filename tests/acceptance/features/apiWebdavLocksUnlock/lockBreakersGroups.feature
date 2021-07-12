@@ -293,19 +293,19 @@ Feature: UNLOCK locked items
     And user "Brian" has been added to group "grp1"
     And user "Brian" has been added to group "grp2"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
-    And user "Alice" has locked file "filesForUpload/textfile.txt" setting the following properties
+    And user "Alice" has locked file "textfile.txt0" setting the following properties
       | lockscope | <lock-scope> |
-    And user "Alice" has shared file "filesForUpload/textfile.txt" with group "grp2"
-    When user "Carol" unlocks file "filesForUpload/textfile.txt" with the last created lock of file "filesForUpload/textfile.txt" of user "Alice" using the WebDAV API
+    And user "Alice" has shared file "textfile.txt0" with group "grp2"
+    When user "Carol" unlocks file "textfile.txt0" with the last created lock of file "textfile.txt0" of user "Alice" using the WebDAV API
     Then the HTTP status code should be "403"
-    And 1 locks should be reported for file "filesForUpload/textfile.txt" of user "Alice" by the WebDAV API
-    And 1 locks should be reported for file "filesForUpload/textfile.txt" of user "Brian" by the WebDAV API
-    And 1 locks should be reported for file "filesForUpload/textfile.txt" of user "Carol" by the WebDAV API
-    When user "Brian" unlocks file "filesForUpload/textfile.txt" with the last created lock of file "filesForUpload/textfile.txt" of user "Alice" using the WebDAV API
+    And 1 locks should be reported for file "textfile.txt0" of user "Alice" by the WebDAV API
+    And 1 locks should be reported for file "textfile.txt0" of user "Brian" by the WebDAV API
+    And 1 locks should be reported for file "textfile.txt0" of user "Carol" by the WebDAV API
+    When user "Brian" unlocks file "textfile.txt0" with the last created lock of file "textfile.txt0" of user "Alice" using the WebDAV API
     Then the HTTP status code should be "204"
-    And 0 locks should be reported for file "filesForUpload/textfile.txt" of user "Alice" by the WebDAV API
-    And 0 locks should be reported for file "filesForUpload/textfile.txt" of user "Brian" by the WebDAV API
-    And 0 locks should be reported for file "filesForUpload/textfile.txt" of user "Carol" by the WebDAV API
+    And 0 locks should be reported for file "textfile.txt0" of user "Alice" by the WebDAV API
+    And 0 locks should be reported for file "textfile.txt0" of user "Brian" by the WebDAV API
+    And 0 locks should be reported for file "textfile.txt0" of user "Carol" by the WebDAV API
     Examples:
       | dav-path | lock-scope |
       | old      | shared     |

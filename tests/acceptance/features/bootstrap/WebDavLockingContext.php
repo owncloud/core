@@ -598,7 +598,7 @@ class WebDavLockingContext implements Context {
 		$responseXml = HttpRequestHelper::getResponseXml($response, __METHOD__)->data->element;
 		$lockbreakergroup = trim(\json_decode(\json_encode($responseXml), true)['value'], '\'[]"');
 		$actualgroup = explode("\",\"", $lockbreakergroup);
-		if (!in_array($expectedGroup, $actualgroup)) {
+		if (!\in_array($expectedGroup, $actualgroup)) {
 			Assert::fail("could not find group '$expectedGroup' in lock breakers group");
 		}
 	}
