@@ -35,6 +35,7 @@ use OCP\IUserSession;
 use OCP\Share;
 use OCA\Files_Sharing\Service\NotificationPublisher;
 use OCA\Files_Sharing\SharingBlacklist;
+use OCA\Files_Sharing\SharingAllowlist;
 
 /**
  * Class ApiTest
@@ -131,7 +132,8 @@ class ApiTest extends TestCase {
 			\OC::$server->getConfig(),
 			\OC::$server->getAppContainer('files_sharing')->query(NotificationPublisher::class),
 			\OC::$server->getEventDispatcher(),
-			\OC::$server->getAppContainer('files_sharing')->query(SharingBlacklist::class)
+			\OC::$server->getAppContainer('files_sharing')->query(SharingBlacklist::class),
+			\OC::$server->getAppContainer('files_sharing')->query(SharingAllowlist::class)
 		);
 	}
 

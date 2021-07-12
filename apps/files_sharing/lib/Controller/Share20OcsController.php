@@ -23,6 +23,7 @@ namespace OCA\Files_Sharing\Controller;
 
 use Exception;
 use OC\Files\Filesystem;
+use OCA\Files_Sharing\SharingAllowlist;
 use OCP\Constants;
 use OC\OCS\Result;
 use OCP\AppFramework\OCSController;
@@ -79,9 +80,10 @@ class Share20OcsController extends OCSController {
 	private $notificationPublisher;
 	/** @var EventDispatcher  */
 	private $eventDispatcher;
-
 	/** @var SharingBlacklist */
 	private $sharingBlacklist;
+	/** @var SharingAllowlist */
+	private $sharingAllowlist;
 	/**
 	 * @var string
 	 */
@@ -103,7 +105,8 @@ class Share20OcsController extends OCSController {
 		IConfig $config,
 		NotificationPublisher $notificationPublisher,
 		EventDispatcher $eventDispatcher,
-		SharingBlacklist $sharingBlacklist
+		SharingBlacklist $sharingBlacklist,
+		SharingAllowlist $sharingAllowlist
 	) {
 		parent::__construct($appName, $request);
 		$this->request = $request;
@@ -117,6 +120,7 @@ class Share20OcsController extends OCSController {
 		$this->notificationPublisher = $notificationPublisher;
 		$this->eventDispatcher = $eventDispatcher;
 		$this->sharingBlacklist = $sharingBlacklist;
+		$this->sharingAllowlist = $sharingAllowlist;
 		$this->additionalInfoField = $this->config->getAppValue('core', 'user_additional_info_field', '');
 		$this->userSession = $userSession;
 	}
@@ -418,6 +422,7 @@ class Share20OcsController extends OCSController {
 		$shareWith = $this->request->getParam('shareWith', null);
 
 		$globalAutoAccept = $this->config->getAppValue('core', 'shareapi_auto_accept_share', 'yes') === 'yes';
+
 		if ($shareType === Share::SHARE_TYPE_USER) {
 			$userAutoAccept = false;
 			if ($globalAutoAccept) {
@@ -457,7 +462,6 @@ class Share20OcsController extends OCSController {
 				$share->setState(Share::STATE_PENDING);
 			}
 		} elseif ($shareType === Share::SHARE_TYPE_LINK) {
-			//Can we even share links?
 			if (!$this->shareManager->shareApiAllowLinks()) {
 				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 				return new Result(null, 404, $this->l->t('Public link sharing is disabled by the administrator'));
@@ -478,6 +482,12 @@ class Share20OcsController extends OCSController {
 					$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 					return new Result(null, 404, $this->l->t('Public upload is only possible for publicly shared folders'));
 				}
+			}
+
+			if ($this->sharingAllowlist->isPublicShareSharersGroupsAllowlistEnabled() &&
+				!$this->sharingAllowlist->isUserInPublicShareSharersGroupsAllowlist($this->userSession->getUser())
+			) {
+				return new Result(null, 403, $this->l->t('Public upload is only possible for certain groups'));
 			}
 
 			// convert to permissions
