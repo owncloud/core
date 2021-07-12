@@ -29,6 +29,7 @@ use OC\Share20\Manager;
 use OCA\Files_Sharing\Controller\Share20OcsController;
 use OCA\Files_Sharing\Service\NotificationPublisher;
 use OCA\Files_Sharing\SharingBlacklist;
+use OCA\Files_Sharing\SharingAllowlist;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
 use OCP\IConfig;
@@ -98,6 +99,8 @@ class Share20OcsControllerTest extends TestCase {
 	private $eventDispatcher;
 	/** @var SharingBlacklist */
 	private $sharingBlacklist;
+	/** @var SharingAllowlist */
+	private $sharingAllowlist;
 	/** @var IConfig */
 	private $config;
 
@@ -141,6 +144,7 @@ class Share20OcsControllerTest extends TestCase {
 		$this->notificationPublisher = $this->createMock(NotificationPublisher::class);
 		$this->eventDispatcher = $this->createMock(EventDispatcher::class);
 		$this->sharingBlacklist = $this->createMock(SharingBlacklist::class);
+		$this->sharingAllowlist= $this->createMock(SharingAllowlist::class);
 
 		$this->ocs = new Share20OcsController(
 			'files_sharing',
@@ -155,7 +159,8 @@ class Share20OcsControllerTest extends TestCase {
 			$this->config,
 			$this->notificationPublisher,
 			$this->eventDispatcher,
-			$this->sharingBlacklist
+			$this->sharingBlacklist,
+			$this->sharingAllowlist
 		);
 	}
 
@@ -178,6 +183,7 @@ class Share20OcsControllerTest extends TestCase {
 				$this->notificationPublisher,
 				$this->eventDispatcher,
 				$this->sharingBlacklist,
+				$this->sharingAllowlist
 			])->setMethods(['formatShare'])
 			->getMock();
 	}
@@ -560,6 +566,7 @@ class Share20OcsControllerTest extends TestCase {
 					$this->notificationPublisher,
 					$this->eventDispatcher,
 					$this->sharingBlacklist,
+					$this->sharingAllowlist,
 				])->setMethods(['canAccessShare'])
 				->getMock();
 
@@ -1148,6 +1155,38 @@ class Share20OcsControllerTest extends TestCase {
 		$this->shareManager->method('shareApiAllowLinks')->willReturn(true);
 
 		$expected = new Result(null, 403, 'Public upload disabled by the administrator');
+		$result = $this->ocs->createShare();
+
+		$this->assertEquals($expected->getMeta(), $result->getMeta());
+		$this->assertEquals($expected->getData(), $result->getData());
+	}
+
+	public function testCreateShareLinkNotInAllowlist() {
+		$this->request
+			->method('getParam')
+			->will($this->returnValueMap([
+				['path', null, 'valid-path'],
+				['shareType', '-1', Share::SHARE_TYPE_LINK],
+				['publicUpload', null, 'true'],
+			]));
+
+		$path = $this->createMock('\OCP\Files\Folder');
+		$storage = $this->createMock('OCP\Files\Storage');
+		$storage->method('instanceOfStorage')
+			->with('OCA\Files_Sharing\External\Storage')
+			->willReturn(false);
+		$path->method('getStorage')->willReturn($storage);
+		$this->rootFolder->method('getUserFolder')->with($this->currentUser->getUID())->will($this->returnSelf());
+		$this->rootFolder->method('get')->with('valid-path')->willReturn($path);
+
+		$this->shareManager->method('newShare')->willReturn(\OC::$server->getShareManager()->newShare());
+		$this->shareManager->method('shareApiAllowLinks')->willReturn(true);
+		$this->shareManager->method('shareApiLinkAllowPublicUpload')->willReturn(true);
+
+		$this->sharingAllowlist->method('isPublicShareSharersGroupsAllowlistEnabled')->willReturn(true);
+		$this->sharingAllowlist->method('isUserInPublicShareSharersGroupsAllowlist')->willReturn(false);
+
+		$expected = new Result(null, 403, 'Public upload is only possible for certain groups');
 		$result = $this->ocs->createShare();
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
@@ -2726,7 +2765,8 @@ class Share20OcsControllerTest extends TestCase {
 			$this->config,
 			$this->notificationPublisher,
 			$this->eventDispatcher,
-			$this->sharingBlacklist
+			$this->sharingBlacklist,
+			$this->sharingAllowlist
 		);
 	}
 
@@ -2826,7 +2866,8 @@ class Share20OcsControllerTest extends TestCase {
 			$config,
 			$this->notificationPublisher,
 			$this->eventDispatcher,
-			$this->sharingBlacklist
+			$this->sharingBlacklist,
+			$this->sharingAllowlist
 		);
 
 		list($file, ) = $this->getMockFileFolder();

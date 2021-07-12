@@ -1,0 +1,7 @@
+Enhancement: Add setting to limit public link share creation to certain groups
+
+With this PR a new setting in settings->admin-sharing has been introduced which
+allows the admin to limit public link share creation to certain groups.
+
+https://github.com/owncloud/enterprise/issues/3632
+https://github.com/owncloud/core/pull/38980

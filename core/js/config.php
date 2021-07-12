@@ -253,10 +253,13 @@ if (\OC::$server->getUserSession() !== null && \OC::$server->getUserSession()->i
 
 	$user = \OC::$server->getUserSession()->getUser();
 	if ($user !== null) {
+		$groups = \OC::$server->getGroupManager()->getUserGroupIds($user);
+
 		$array['oc_user'] = \json_encode([
 			'uid' => $user->getUID(),
 			'displayName' => $user->getDisplayName(),
-			'email' => $user->getEMailAddress()
+			'email' => $user->getEMailAddress(),
+			'groups' => $groups,
 		]);
 	}
 }
