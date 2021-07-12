@@ -434,7 +434,7 @@ Feature: dav-versions
       | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
     And the downloaded content should be "uploaded content"
 
-  @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-459
+  @skipOnStorage:ceph @skipOnStorage:scality @files_primary_s3-issue-463
   Scenario: download an old version of a restored file
     Given user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"
     And user "Alice" has uploaded file with content "version 1" to "textfile0.txt"
