@@ -597,7 +597,7 @@ $CONFIG = [
  * The setting expects folder names with or without trailing slash.
  * All the content of such directories including their subdirectories will also skip the trashbin.
  *
-*/
+ */
 'trashbin_skip_directories' => [
 	'temp',
 ],
