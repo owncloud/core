@@ -1,5 +1,5 @@
 @api @files_sharing-app-required
-Feature: Sharing resources with different case names with the sharee and checking the coexistence of resources on sharee/receviers side
+Feature: Sharing resources with different case names with the sharee and checking the coexistence of resources on sharee/receivers side
 
   Background:
     Given the administrator has set the default folder for received shares to "Shares"
@@ -31,7 +31,7 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | TEXT_FILE.txt    |
       | 123TEXTFILE.txt  |
       | TEXTFILE.xyz.txt |
-    And user "Brian" accepts all following shares offered by user "Alice" using the sharing API
+    And user "Brian" accepts the following shares offered by user "Alice" using the sharing API
       | path              |
       | /textfile.txt     |
       | /text_file.txt    |
@@ -74,7 +74,7 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | /f_o    |
       | /123fo  |
       | /fo.xyz |
-    And user "Brian" accepts all following shares offered by user "Alice" using the sharing API
+    And user "Brian" accepts the following shares offered by user "Alice" using the sharing API
       | path    |
       | /FO     |
       | /F_O    |
@@ -121,7 +121,7 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | /CASE_SENSITIVE    |
       | /123case_sensitive |
       | /CASESENSITIVE.xyz |
-    And user "Brian" accepts all following shares offered by user "Alice" using the sharing API
+    And user "Brian" accepts the following shares offered by user "Alice" using the sharing API
       | path                   |
       | /casesensitive.txt     |
       | /case_sensitive.txt    |
@@ -168,7 +168,7 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | TEXT_FILE.txt    |
       | 123TEXTFILE.txt  |
       | TEXTFILE.xyz.txt |
-    And user "Brian" accepts all following shares offered by user "Alice" using the sharing API
+    And user "Brian" accepts the following shares offered by user "Alice" using the sharing API
       | path              |
       | /textfile.txt     |
       | /text_file.txt    |
@@ -213,7 +213,7 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | /f_o    |
       | /123fo  |
       | /fo.xyz |
-    And user "Brian" accepts all following shares offered by user "Alice" using the sharing API
+    And user "Brian" accepts the following shares offered by user "Alice" using the sharing API
       | path    |
       | /FO     |
       | /F_O    |
@@ -262,7 +262,7 @@ Feature: Sharing resources with different case names with the sharee and checkin
       | /CASE_SENSITIVE    |
       | /123case_sensitive |
       | /CASESENSITIVE.xyz |
-    And user "Brian" accepts all following shares offered by user "Alice" using the sharing API
+    And user "Brian" accepts the following shares offered by user "Alice" using the sharing API
       | path                   |
       | /casesensitive.txt     |
       | /case_sensitive.txt    |

@@ -1,5 +1,5 @@
 @api @files_sharing-app-required @notToImplementOnOCIS
-Feature: Sharing resources with different case names with the sharee and checking the coexistence of resources on sharee/receviers side
+Feature: Sharing resources with different case names with the sharee and checking the coexistence of resources on sharee/receivers side
 
   Background:
     Given using OCS API version "1"

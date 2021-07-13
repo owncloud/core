@@ -1353,8 +1353,8 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" shares the following (?:files|folders|entities) with user "([^"]*)"(?: with permissions (\d+))? using the sharing API$/
-	 * @When /^user "([^"]*)" shares the following (?:files|folders|entities) with user "([^"]*)" with permissions "([^"]*)" using the sharing API$/
+	 * @When /^user "([^"]*)" shares the following (?:files|folders|entries) with user "([^"]*)"(?: with permissions (\d+))? using the sharing API$/
+	 * @When /^user "([^"]*)" shares the following (?:files|folders|entries) with user "([^"]*)" with permissions "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $sharer
 	 * @param string $sharee
@@ -1616,8 +1616,8 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" shares the following (?:files|folders|entities) with group "([^"]*)"(?: with permissions (\d+))? using the sharing API$/
-	 * @When /^user "([^"]*)" shares the following (?:files|folders|entities) with group "([^"]*)" with permissions "([^"]*)" using the sharing API$/
+	 * @When /^user "([^"]*)" shares the following (?:files|folders|entries) with group "([^"]*)"(?: with permissions (\d+))? using the sharing API$/
+	 * @When /^user "([^"]*)" shares the following (?:files|folders|entries) with group "([^"]*)" with permissions "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $user
 	 * @param string $group
@@ -2876,7 +2876,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" (declines|accepts) all following shares offered by user "([^"]*)" using the sharing API$/
+	 * @When /^user "([^"]*)" (declines|accepts) the following shares offered by user "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $user
 	 * @param string $action
@@ -2886,7 +2886,7 @@ trait Sharing {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function userReactsToAllFollowingSharesOfferedBy($user, $action, $offeredBy, TableNode $table) {
+	public function userReactsToTheFollowingSharesOfferedBy($user, $action, $offeredBy, TableNode $table) {
 		$this->verifyTableNodeColumns($table, ["path"]);
 		$paths = $table->getHash();
 
