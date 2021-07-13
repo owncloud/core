@@ -1353,6 +1353,36 @@ trait Sharing {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" shares the following (?:files|folders|entities) with user "([^"]*)"(?: with permissions (\d+))? using the sharing API$/
+	 * @When /^user "([^"]*)" shares the following (?:files|folders|entities) with user "([^"]*)" with permissions "([^"]*)" using the sharing API$/
+	 *
+	 * @param string $sharer
+	 * @param string $sharee
+	 * @param TableNode $table
+	 * @param int|string|string[]|int[] $permissions
+	 *
+	 * @return void
+	 */
+	public function userSharesTheFollowingFilesWithUserUsingTheSharingApi(
+		$sharer,
+		$sharee,
+		TableNode $table,
+		$permissions = null
+	) {
+		$this->verifyTableNodeColumns($table, ["path"]);
+		$paths = $table->getHash();
+
+		foreach ($paths as $filepath) {
+			$this->userSharesFileWithUserUsingTheSharingApi(
+				$sharer,
+				$filepath["path"],
+				$sharee,
+				$permissions
+			);
+		}
+	}
+
+	/**
 	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions (\d+))?$/
 	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)" with permissions "([^"]*)"$/
 	 *
@@ -1583,6 +1613,36 @@ trait Sharing {
 			$group,
 			$permissions
 		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" shares the following (?:files|folders|entities) with group "([^"]*)"(?: with permissions (\d+))? using the sharing API$/
+	 * @When /^user "([^"]*)" shares the following (?:files|folders|entities) with group "([^"]*)" with permissions "([^"]*)" using the sharing API$/
+	 *
+	 * @param string $user
+	 * @param string $group
+	 * @param TableNode $table
+	 * @param int|string|string[]|int[] $permissions
+	 *
+	 * @return void
+	 */
+	public function userSharesTheFollowingFilesWithGroupUsingTheSharingApi(
+		$user,
+		$group,
+		TableNode $table,
+		$permissions = null
+	) {
+		$this->verifyTableNodeColumns($table, ["path"]);
+		$paths = $table->getHash();
+
+		foreach ($paths as $filepath) {
+			$this->userSharesFileWithGroupUsingTheSharingApi(
+				$user,
+				$filepath["path"],
+				$group,
+				$permissions
+			);
+		}
 	}
 
 	/**
@@ -2813,6 +2873,31 @@ trait Sharing {
 			$url,
 			null
 		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" (declines|accepts) all following shares offered by user "([^"]*)" using the sharing API$/
+	 *
+	 * @param string $user
+	 * @param string $action
+	 * @param string $offeredBy
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userReactsToAllFollowingSharesOfferedBy($user, $action, $offeredBy, TableNode $table) {
+		$this->verifyTableNodeColumns($table, ["path"]);
+		$paths = $table->getHash();
+
+		foreach ($paths as $share) {
+			$this->userReactsToShareOfferedBy(
+				$user,
+				$action,
+				$share["path"],
+				$offeredBy
+			);
+		}
 	}
 
 	/**
