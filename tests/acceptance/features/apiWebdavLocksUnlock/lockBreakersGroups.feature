@@ -10,7 +10,7 @@ Feature: UNLOCK locked items
     And group "grp1" has been created
     When the administrator sets parameter "lock-breaker-groups" of app "core" to '["grp1"]'
     Then the HTTP status code should be "200"
-    And group "grp1" should exist as lock breaker groups
+    And group "grp1" should exist as a lock breaker group
     Examples:
       | dav-path |
       | old      |
@@ -23,7 +23,7 @@ Feature: UNLOCK locked items
     And group "grp2" has been created
     When the administrator sets parameter "lock-breaker-groups" of app "core" to '["grp1","grp2"]'
     Then the HTTP status code should be "200"
-    And following group should exist as lock breaker groups
+    And following groups should exist as lock breaker groups
       | groups |
       | grp1   |
       | grp2   |
@@ -33,7 +33,7 @@ Feature: UNLOCK locked items
       | new      |
 
 
-  Scenario Outline: member of the lock breakers groups can unlock a locked folder shared to them
+  Scenario Outline: member of the lock breakers group can unlock a locked folder shared with them
     Given using <dav-path> DAV path
     And group "grp1" has been created
     And user "Brian" has been created with default attributes and without skeleton files
@@ -55,7 +55,7 @@ Feature: UNLOCK locked items
       | new      | exclusive  |
 
 
-  Scenario Outline: member of the lock breakers groups can unlock a locked folder shared to them and lock it back again
+  Scenario Outline: members of the lock breakers group can unlock a locked folder shared with them and lock it back again
     Given using <dav-path> DAV path
     And group "grp1" has been created
     And user "Brian" has been created with default attributes and without skeleton files
@@ -80,7 +80,7 @@ Feature: UNLOCK locked items
       | new      | exclusive  |
 
 
-  Scenario Outline: member of the lock breakers groups can unlock a locked file shared to them
+  Scenario Outline: members of the lock breakers group can unlock a locked file shared with them
     Given using <dav-path> DAV path
     And group "grp1" has been created
     And user "Brian" has been created with default attributes and without skeleton files
@@ -102,7 +102,7 @@ Feature: UNLOCK locked items
       | new      | exclusive  |
 
 
-  Scenario Outline: member of the lock breakers groups can unlock a locked file shared to them and lock it back again
+  Scenario Outline: members of the lock breakers group can unlock a locked file shared with them and lock it back again
     Given using <dav-path> DAV path
     And group "grp1" has been created
     And user "Brian" has been created with default attributes and without skeleton files
@@ -250,7 +250,7 @@ Feature: UNLOCK locked items
       | new      | exclusive  |
 
 
-  Scenario Outline: member of lock breaker group can unlock a folder in group sharing
+  Scenario Outline: members of lock breaker group can unlock a folder in group sharing
     Given using <dav-path> DAV path
     And group "grp1" has been created
     And group "grp2" has been created
@@ -282,7 +282,7 @@ Feature: UNLOCK locked items
       | new      | exclusive  |
 
 
-  Scenario Outline: member of lock breaker group can unlock a file in group sharing
+  Scenario Outline: members of lock breaker group can unlock a file in group sharing
     Given using <dav-path> DAV path
     And group "grp1" has been created
     And group "grp2" has been created

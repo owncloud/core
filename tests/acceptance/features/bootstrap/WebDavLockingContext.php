@@ -572,7 +572,7 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
-	 * @Then group :expectedGroup should exist as lock breaker groups
+	 * @Then group :expectedGroup should exist as a lock breaker group
 	 *
 	 * @param string $expectedGroup
 	 *
@@ -604,7 +604,7 @@ class WebDavLockingContext implements Context {
 	}
 
 	/**
-	 * @Then following group should exist as lock breaker groups
+	 * @Then following groups should exist as lock breaker groups
 	 *
 	 * @param TableNode $table
 	 *
