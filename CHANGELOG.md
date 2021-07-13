@@ -460,6 +460,7 @@ Details
    https://github.com/owncloud/core/pull/38712
    https://github.com/owncloud/core/pull/38928
    https://github.com/owncloud/core/pull/38942
+   https://github.com/owncloud/core/pull/38948
 
 * Enhancement - Improve login form: [#38506](https://github.com/owncloud/core/pull/38506)
 
