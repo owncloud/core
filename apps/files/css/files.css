@@ -408,6 +408,7 @@ table td.filename .nametext {
 	text-overflow: clip;
 	max-width: 800px;
 	height: 100%;
+	width: 100%;
 }
 
 .has-favorites #fileList td.filename a.name {
