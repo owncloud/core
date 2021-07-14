@@ -1,0 +1,6 @@
+Bugfix: Do not allow empty system or app config keys
+
+It was possible to add empty config keys with the occ config:app:set or
+config:system:set commands. That is no longer allowed.
+
+https://github.com/owncloud/core/pull/38996

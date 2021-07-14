@@ -25,6 +25,33 @@ Feature: add and delete app configs using occ command
     And the command output should contain the text 'System config value con deleted'
     And system config key "con" should not exist
 
+  Scenario: admin adds a config key for an app with an empty value using the occ command
+    When the administrator adds config key "con" with value "''" in app "core" using the occ command
+    Then the command should have been successful
+    And the command output should contain the text 'Config value con for app core set to'
+    And the config key "con" of app "core" should have value ""
+
+  Scenario: admin adds a system config with an empty value
+    When the administrator adds system config key "con" with value "" using the occ command
+    Then the command should have been successful
+    And the command output should contain the text 'System config value con set to empty string'
+    And system config key "con" should have value ""
+
+  Scenario: admin tries to add an empty config key for an app using the occ command
+    When the administrator adds config key "''" with value "conkey" in app "core" using the occ command
+    Then the command should have failed with exit code 1
+    And the command output should contain the text 'Config name must not be empty.'
+
+  Scenario: admin tries to add a config key and specifying the empty string as the app name using the occ command
+    When the administrator adds config key "con" with value "conkey" in app "''" using the occ command
+    Then the command should have failed with exit code 1
+    And the command output should contain the text 'App name must not be empty.'
+
+  Scenario: admin tries to add an empty system config key using the occ command
+    When the administrator adds system config key "''" with value "conkey" using the occ command
+    Then the command should have failed with exit code 1
+    And the command output should contain the text 'Config name must not be empty.'
+
   Scenario: admin can list system config keys
     When the administrator lists the config keys
     Then the command should have been successful
