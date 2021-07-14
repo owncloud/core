@@ -41,9 +41,10 @@
     select "^1.1.2"
     tiny-emitter "^2.0.0"
 
-"@bower_components/davclient.js@owncloud/davclient.js#0.1.3":
-  version "0.1.3"
-  resolved "https://codeload.github.com/owncloud/davclient.js/tar.gz/0e5ef1af5d174d9ec10dbe889a415b8f481d5094"
+"@bower_components/davclient.js@owncloud/davclient.js#0.2.1":
+  version "0.2.1"
+  uid "1ab200d099a3c2cd2ef919c3a56353ce26865994"
+  resolved "https://codeload.github.com/owncloud/davclient.js/tar.gz/1ab200d099a3c2cd2ef919c3a56353ce26865994"
 
 "@bower_components/es6-promise@components/es6-promise#4.2.4":
   version "0.0.0"
