@@ -84,6 +84,9 @@ nbproject
 .settings.xml
 .c9revisions
 
+# VS Code
+.vscode
+
 # vim ex mode
 .vimrc
 
