@@ -75,6 +75,16 @@ class SetConfig extends Base {
 		$appName = $input->getArgument('app');
 		$configName = $input->getArgument('name');
 
+		if ($appName === '') {
+			$output->writeln('<comment>App name must not be empty.</comment>');
+			return 1;
+		}
+
+		if ($configName === '') {
+			$output->writeln('<comment>Config name must not be empty.</comment>');
+			return 1;
+		}
+
 		if (!\in_array($configName, $this->config->getAppKeys($appName)) && $input->hasParameterOption('--update-only')) {
 			$output->writeln('<comment>Config value ' . $configName . ' for app ' . $appName . ' not updated, as it has not been set before.</comment>');
 			return 1;
