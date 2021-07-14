@@ -31,10 +31,11 @@ config = {
 	'phpunit': {
 		'allDatabases' : {
 			'phpVersions': [
-				'7.2',
+				'7.4',
 			]
 		},
 		'reducedDatabases' : {
+			'skip': True,
 			'phpVersions': [
 				'7.3',
 				'7.4',
@@ -45,6 +46,7 @@ config = {
 			]
 		},
 		'external-samba-windows' : {
+			'skip': True,
 			'phpVersions': [
 				'7.2',
 				'7.4',
@@ -65,6 +67,7 @@ config = {
 			]
 		},
 		'external-other' : {
+			'skip': True,
 			'phpVersions': [
 				'7.2',
 				'7.4',
@@ -84,6 +87,7 @@ config = {
 
 	'acceptance': {
 		'api': {
+			'skip': True,
 			'suites': [
 				'apiAuth',
 				'apiAuthOcs',
@@ -141,6 +145,7 @@ config = {
 			],
 		},
 		'apiNotifications': {
+			'skip': True,
 			'suites': [
 				'apiSharingNotificationsToRoot',
 				'apiSharingNotificationsToShares',
@@ -150,6 +155,7 @@ config = {
 			},
 		},
 		'apiFederation': {
+			'skip': True,
 			'suites': [
 				'apiFederationToRoot1',
 				'apiFederationToRoot2',
@@ -160,6 +166,7 @@ config = {
 			'federatedServerVersions': ['git', 'latest', '10.6.0'],
 		},
 		'cli': {
+			'skip': True,
 			'suites': [
 				'cliBackground',
 				'cliLocalStorage',
@@ -170,12 +177,14 @@ config = {
 			'emailNeeded': True,
 		},
 		'cliAppManagement': {
+			'skip': True,
 			'suites': [
 				'cliAppManagement',
 			],
 			'testingRemoteSystem': False,
 		},
 		'cliExternalStorage': {
+			'skip': True,
 			'suites': [
 				'cliExternalStorage',
 			],
@@ -183,6 +192,7 @@ config = {
 			'federatedServerVersions': ['git', 'latest', '10.6.0'],
 		},
 		'webUI': {
+			'skip': True,
 			'suites': {
 				'webUIAddUsers': '',
 				'webUIAdminSettings': '',
@@ -218,6 +228,7 @@ config = {
 			'useHttps': False,
 		},
 		'webUINotifications': {
+			'skip': True,
 			'suites': {
 				'webUISharingNotifications': 'webUISharingNotify',
 			},
@@ -228,6 +239,7 @@ config = {
 			},
 		},
 		'webUIFileActionsMenu': {
+			'skip': True,
 			'suites': {
 				'webUIFileActionsMenu': '',
 			},
@@ -238,6 +250,7 @@ config = {
 			},
 		},
 		'webUIFederation': {
+			'skip': True,
 			'suites': {
 				'webUISharingExternal1': 'webUISharingExt1',
 				'webUISharingExternal2': 'webUISharingExt2',
@@ -246,6 +259,7 @@ config = {
 			'federatedServerVersions': ['git', 'latest', '10.6.0'],
 		},
 		'webUIFirefox': {
+			'skip': True,
 			'suites': {
 				'webUIFirefoxSmoketest': 'webUIFfSmoke',
 			},
@@ -259,6 +273,7 @@ config = {
 			'numberOfParts': 3,
 		},
 		'webUIProxy': {
+			'skip': True,
 			'suites': {
 				'webUIProxySmoketest': 'webUIProxySmoke',
 			},
@@ -273,6 +288,7 @@ config = {
 			'numberOfParts': 3,
 		},
 		'apiProxy': {
+			'skip': True,
 			'suites': {
 				'apiProxySmoketest': 'apiProxySmoke',
 			},
@@ -283,6 +299,7 @@ config = {
 			'numberOfParts': 8,
 		},
 		'apiOnSqlite': {
+			'skip': True,
 			'suites': {
 				'apiOnSqlite': 'apiOnSqlite',
 			},
@@ -1283,7 +1300,7 @@ def phpTests(ctx, testType, withCoverage):
 						[
 							{
 								'name': '%s-tests' % testType,
-								'image': 'owncloudci/php:%s' % phpVersion,
+								'image': 'owncloudci/php:7.4-ubuntu20.04',
 								'pull': 'always',
 								'environment': {
 									'COVERAGE': params['coverage'],
