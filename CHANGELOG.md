@@ -37,6 +37,7 @@ Summary
 * Bugfix - Adjust position of the share autocomplete element: [#38831](https://github.com/owncloud/core/pull/38831)
 * Bugfix - Fix docs link to federated sharing docs: [#38859](https://github.com/owncloud/core/issues/38859)
 * Bugfix - Fix file locks for public shares: [#38922](https://github.com/owncloud/core/pull/38922)
+* Bugfix - Do not allow empty system or app config keys: [#38996](https://github.com/owncloud/core/pull/38996)
 * Change - Update Symfony components: [#38924](https://github.com/owncloud/core/pull/38924)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
@@ -326,6 +327,13 @@ Details
    https://github.com/owncloud/core/issues/38912
    https://github.com/owncloud/core/issues/36064
    https://github.com/owncloud/core/pull/38922
+
+* Bugfix - Do not allow empty system or app config keys: [#38996](https://github.com/owncloud/core/pull/38996)
+
+   It was possible to add empty config keys with the occ config:app:set or config:system:set
+   commands. That is no longer allowed.
+
+   https://github.com/owncloud/core/pull/38996
 
 * Change - Update Symfony components: [#38924](https://github.com/owncloud/core/pull/38924)
 
