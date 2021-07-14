@@ -76,12 +76,12 @@ class SetConfig extends Base {
 		$configName = $input->getArgument('name');
 
 		if ($appName === '') {
-			$output->writeln('<comment>App name must not be empty.</comment>');
+			$output->writeln('<error>App name must not be empty.</error>');
 			return 1;
 		}
 
 		if ($configName === '') {
-			$output->writeln('<comment>Config name must not be empty.</comment>');
+			$output->writeln('<error>Config name must not be empty.</error>');
 			return 1;
 		}
 

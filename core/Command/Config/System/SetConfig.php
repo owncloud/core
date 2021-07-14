@@ -81,7 +81,7 @@ class SetConfig extends Base {
 		$updateOnly = $input->getOption('update-only');
 
 		if ($configName === '') {
-			$output->writeln('<comment>Config name must not be empty.</comment>');
+			$output->writeln('<error>Config name must not be empty.</error>');
 			return 1;
 		}
 
