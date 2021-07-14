@@ -86,7 +86,7 @@ Feature: Save public shares created by oC users
       | path        | /PARENT |
       | permissions | read    |
     And using server "LOCAL"
-    And user "Alice" has added the public share created from server "LOCAL" using the sharing API
+    And user "Alice" has added the public share created from server "REMOTE" using the sharing API
     When user "Alice" deletes folder "/Shares/PARENT" using the WebDAV API
     Then the HTTP status code should be "204"
     And as "Alice" folder "/Shares/PARENT" should not exist
@@ -101,7 +101,7 @@ Feature: Save public shares created by oC users
       | permissions | read       |
       | name        | sharedlink |
     And using server "LOCAL"
-    And user "Alice" has added the public share created from server "LOCAL" using the sharing API
+    And user "Alice" has added the public share created from server "REMOTE" using the sharing API
     And using server "REMOTE"
     When user "RemoteAlice" deletes public link share named "sharedlink" in file "/PARENT" using the sharing API
     And using server "LOCAL"
@@ -117,7 +117,7 @@ Feature: Save public shares created by oC users
       | path        | /PARENT                   |
       | permissions | read,update,create,delete |
     And using server "LOCAL"
-    And user "Alice" has added the public share created from server "LOCAL" using the sharing API
+    And user "Alice" has added the public share created from server "REMOTE" using the sharing API
     When user "Alice" creates a public link share using the sharing API with settings
       | path | /Shares/PARENT |
     Then the OCS status code should be "404"

@@ -3255,6 +3255,15 @@ trait Sharing {
 	 */
 	public function userHasAddedPublicShareCreatedByUser($user, $shareServer) {
 		$this->saveLastSharedPublicLinkShare($user, $shareServer);
+
+		$resBody = json_decode($this->response->getBody()->getContents());
+		$status = '';
+		$message = '';
+		if ($resBody) {
+			$status = $resBody->status;
+			$message = $resBody->data->message;
+		}
+
 		Assert::assertEquals(
 			200,
 			$this->response->getStatusCode(),
@@ -3262,6 +3271,12 @@ trait Sharing {
 			. " Expected status code is '200' but got '"
 			. $this->response->getStatusCode()
 			. "'"
+		);
+		Assert::assertNotEquals(
+			'error',
+			$status,
+			__METHOD__
+			. "\nFailed to save public share.\n'$message'"
 		);
 	}
 
