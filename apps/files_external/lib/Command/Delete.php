@@ -107,5 +107,6 @@ class Delete extends Base {
 		}
 
 		$this->globalService->removeStorage($mountId);
+		return 0;
 	}
 }

@@ -96,7 +96,7 @@ class ResetPasswordTest extends TestCase {
 			->method('get')
 			->willReturn($user);
 
-		$this->assertNull($this->invokePrivate($this->resetPassword, 'execute', [$input, $output]));
+		$this->assertEquals(0, $this->invokePrivate($this->resetPassword, 'execute', [$input, $output]));
 	}
 
 	public function testDisplayLink() {

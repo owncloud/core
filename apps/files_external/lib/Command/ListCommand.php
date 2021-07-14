@@ -125,6 +125,7 @@ class ListCommand extends Base {
 		}
 
 		$this->listMounts($userId, $mounts, $input, $output);
+		return 0;
 	}
 
 	/**
@@ -187,7 +188,7 @@ class ListCommand extends Base {
 		// default output style
 		$full = $input->getOption('full');
 		$showMountOptions = $input->getOption('mount-options');
-		
+
 		$defaultMountOptions = [
 			'encrypt' => true,
 			'previews' => true,

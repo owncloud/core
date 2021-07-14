@@ -99,5 +99,6 @@ class CheckCache extends Command {
 			$output->writeln("$targetFile has been accessed properly");
 			\fclose($stream);
 		}
+		return 0;
 	}
 }

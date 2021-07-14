@@ -60,5 +60,6 @@ class ImportCertificate extends Base {
 		$name = \basename($path);
 
 		$this->certificateManager->addCertificate($certData, $name);
+		return 0;
 	}
 }

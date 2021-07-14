@@ -479,6 +479,6 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 	}
 
 	public function unlockNodePersistent($internalPath, array $lockInfo) {
-		parent::unlockNodePersistent($this->getSourcePath($internalPath), $lockInfo);
+		return parent::unlockNodePersistent($this->getSourcePath($internalPath), $lockInfo);
 	}
 }

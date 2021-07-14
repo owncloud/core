@@ -143,6 +143,8 @@ class EncryptAll extends Command {
 			$this->resetSingleUserAndTrashbin();
 		} else {
 			$output->writeln('aborted');
+			return 1;
 		}
+		return 0;
 	}
 }

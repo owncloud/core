@@ -76,5 +76,6 @@ class DeleteOrphanedFiles extends Command {
 		}
 
 		$output->writeln("$deletedEntries orphaned file cache entries deleted");
+		return 0;
 	}
 }

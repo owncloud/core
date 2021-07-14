@@ -85,6 +85,7 @@ class Import extends Command {
 		}
 
 		$output->writeln('<info>Config successfully imported from: ' . $importFile . '</info>');
+		return 0;
 	}
 
 	/**

@@ -90,6 +90,7 @@ class Report extends Command {
 
 		$table->setRows($rows);
 		$table->render($output);
+		return 0;
 	}
 
 	private function countUsers() {

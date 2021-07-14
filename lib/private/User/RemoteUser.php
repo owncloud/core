@@ -107,6 +107,7 @@ class RemoteUser implements IUser {
 	 * @inheritdoc
 	 */
 	public function getHome() {
+		return '';
 	}
 
 	/**

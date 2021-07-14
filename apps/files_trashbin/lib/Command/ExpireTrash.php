@@ -37,7 +37,7 @@ class ExpireTrash extends Command {
 	 * @var TrashExpiryManager
 	 */
 	private $trashExpiryManager;
-	
+
 	/**
 	 * @var IUserManager
 	 */
@@ -96,6 +96,7 @@ class ExpireTrash extends Command {
 			$p->finish();
 			$output->writeln('');
 		}
+		return 0;
 	}
 
 	public function expireTrashForUser(IUser $user) {

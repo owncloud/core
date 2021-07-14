@@ -76,5 +76,6 @@ class Inactive extends Base {
 		});
 
 		$this->writeArrayInOutputFormat($input, $output, $inactive);
+		return 0;
 	}
 }

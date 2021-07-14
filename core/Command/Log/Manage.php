@@ -109,6 +109,7 @@ class Manage extends Command {
 
 		$timezone = $this->config->getSystemValue('logtimezone', self::DEFAULT_TIMEZONE);
 		$output->writeln('Log timezone: '.$timezone);
+		return 0;
 	}
 
 	/**

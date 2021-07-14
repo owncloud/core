@@ -71,5 +71,6 @@ abstract class Base extends Command {
 		$mode = $this->getMode();
 		$this->config->setAppValue('core', 'backgroundjobs_mode', $mode);
 		$output->writeln("Set mode for background jobs to '$mode'");
+		return 0;
 	}
 }

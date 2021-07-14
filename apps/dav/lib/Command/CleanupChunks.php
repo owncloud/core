@@ -81,5 +81,6 @@ class CleanupChunks extends Command {
 			$p->finish();
 			$output->writeln('');
 		});
+		return 0;
 	}
 }

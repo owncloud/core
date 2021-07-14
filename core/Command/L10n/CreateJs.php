@@ -64,6 +64,7 @@ class CreateJs extends Command {
 		foreach ($languages as $lang) {
 			$this->writeFiles($app, $path, $lang, $output);
 		}
+		return 0;
 	}
 
 	private function getAllLanguages($path) {

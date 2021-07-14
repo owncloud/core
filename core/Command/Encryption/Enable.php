@@ -75,5 +75,6 @@ class Enable extends Command {
 				$output->writeln('Default module: ' . $defaultModule);
 			}
 		}
+		return 0;
 	}
 }

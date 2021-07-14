@@ -58,6 +58,7 @@ class ListModules extends Base {
 			$encModules[$module['id']]['default'] = $module['id'] === $defaultEncryptionModuleId;
 		}
 		$this->writeModuleList($input, $output, $encModules);
+		return 0;
 	}
 
 	/**

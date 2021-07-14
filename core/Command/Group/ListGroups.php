@@ -61,5 +61,6 @@ class ListGroups extends Base {
 			return $group->getGID();
 		}, $groups);
 		parent::writeArrayInOutputFormat($input, $output, $groups);
+		return 0;
 	}
 }

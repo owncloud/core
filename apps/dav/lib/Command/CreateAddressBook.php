@@ -73,5 +73,6 @@ class CreateAddressBook extends Command {
 
 		$name = $input->getArgument('name');
 		$this->cardDavBackend->createAddressBook("principals/users/$user", $name, []);
+		return 0;
 	}
 }

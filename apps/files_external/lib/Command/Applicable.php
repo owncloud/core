@@ -151,5 +151,6 @@ class Applicable extends Base {
 			'users' => $applicableUsers,
 			'groups' => $applicableGroups
 		]);
+		return 0;
 	}
 }

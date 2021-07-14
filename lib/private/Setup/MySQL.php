@@ -137,7 +137,6 @@ class MySQL extends AbstractDatabase {
 	/**
 	 * @param $username
 	 * @param IDBConnection $connection
-	 * @return array
 	 */
 	private function createSpecificUser($username, $connection) {
 		try {

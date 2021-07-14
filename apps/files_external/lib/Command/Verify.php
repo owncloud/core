@@ -81,6 +81,7 @@ class Verify extends Base {
 			'code' => $mount->getStatus(),
 			'message' => $mount->getStatusMessage()
 		]);
+		return 0;
 	}
 
 	private function manipulateStorageConfig(IStorageConfig $storage) {

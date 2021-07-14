@@ -78,6 +78,7 @@ class Config extends Base {
 		} else {
 			$this->getOption($mount, $key, $output);
 		}
+		return 0;
 	}
 
 	/**

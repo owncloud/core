@@ -637,8 +637,9 @@ class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage, IPersistent
 		$storage = $this->getWrapperStorage();
 		if ($storage->instanceOfStorage(IPersistentLockingStorage::class)) {
 			'@phan-var \OCP\Files\Storage\IPersistentLockingStorage $storage';
-			$storage->unlockNodePersistent($internalPath, $lockInfo);
+			return $storage->unlockNodePersistent($internalPath, $lockInfo);
 		}
+		return false;
 	}
 
 	public function getLocks($internalPath, $returnChildLocks = false) {

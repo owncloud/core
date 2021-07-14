@@ -59,5 +59,6 @@ class Disable extends Command {
 
 		$user->setEnabled(false);
 		$output->writeln('<info>The specified user is disabled</info>');
+		return 0;
 	}
 }

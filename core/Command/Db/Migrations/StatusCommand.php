@@ -57,6 +57,7 @@ class StatusCommand extends Command {
 		foreach ($infos as $key => $value) {
 			$output->writeln("    <comment>>></comment> $key: " . \str_repeat(' ', 50 - \strlen($key)) . $value);
 		}
+		return 0;
 	}
 
 	/**

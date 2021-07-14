@@ -255,6 +255,6 @@ class DecryptAllTest extends TestCase {
 			->method('isEnabled')
 			->willReturn(true);
 
-		$this->assertNull($this->invokePrivate($instance, 'execute', [$this->consoleInput, $this->consoleOutput]));
+		$this->assertEquals(0, $this->invokePrivate($instance, 'execute', [$this->consoleInput, $this->consoleOutput]));
 	}
 }

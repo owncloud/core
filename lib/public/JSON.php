@@ -93,11 +93,10 @@ class JSON {
 	/**
 	 * Send json success msg
 	 *
-	 * Return a json success message with optional extra data.
 	 * @see OCP\JSON::error()		for the format to use.
 	 *
 	 * @param array $data The data to use
-	 * @return string json formatted string.
+	 * @return void
 	 * @deprecated 8.1.0 Use a AppFramework JSONResponse instead
 	 */
 	public static function success($data = []) {
@@ -107,7 +106,7 @@ class JSON {
 	/**
 	 * Send json error msg
 	 *
-	 * Return a json error message with optional extra data for
+	 * Send a json error message with optional extra data for
 	 * error message or app specific data.
 	 *
 	 * Example use:
@@ -115,12 +114,12 @@ class JSON {
 	 *     $id = [some value]
 	 *     OCP\JSON::error(array('data':array('message':'An error happened', 'id': $id)));
 	 *
-	 * Will return the json formatted string:
+	 * Will send the json formatted string:
 	 *
 	 *     {"status":"error","data":{"message":"An error happened", "id":[some value]}}
 	 *
 	 * @param array $data The data to use
-	 * @return string json formatted error string.
+	 * @return void
 	 * @deprecated 8.1.0 Use a AppFramework JSONResponse instead
 	 */
 	public static function error($data = []) {

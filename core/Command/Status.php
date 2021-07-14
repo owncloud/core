@@ -47,5 +47,6 @@ class Status extends Base {
 		];
 
 		$this->writeArrayInOutputFormat($input, $output, $values);
+		return 0;
 	}
 }

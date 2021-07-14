@@ -203,6 +203,7 @@ class ResetPassword extends Command {
 			$output->writeln("<error>Error while resetting password!</error>");
 			return 1;
 		}
+		return 0;
 	}
 
 	/**

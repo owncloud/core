@@ -93,9 +93,11 @@ class AddMember extends Command {
 				$memberExistsError = true;
 			}
 		}
-		
+
 		if ($memberExistsError) {
 			return 1;
 		}
+
+		return 0;
 	}
 }

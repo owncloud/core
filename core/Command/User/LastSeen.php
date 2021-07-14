@@ -70,5 +70,6 @@ class LastSeen extends Command {
 			$output->writeln($user->getUID() .
 				'`s last login: ' . $date->format('d.m.Y H:i'));
 		}
+		return 0;
 	}
 }

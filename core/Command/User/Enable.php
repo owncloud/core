@@ -59,5 +59,6 @@ class Enable extends Command {
 
 		$user->setEnabled(true);
 		$output->writeln('<info>The specified user is enabled</info>');
+		return 0;
 	}
 }

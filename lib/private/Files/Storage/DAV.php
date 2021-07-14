@@ -416,6 +416,7 @@ class DAV extends Common {
 				self::$tempFiles[$tmpFile] = $path;
 				return \fopen('close://' . $tmpFile, $mode);
 		}
+		return false;
 	}
 
 	/**

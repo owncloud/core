@@ -118,6 +118,7 @@ class Version<version> implements ISqlMigration {
 		$path = $this->generateMigration($ms, $version, $kind);
 
 		$output->writeln("New migration class has been generated to <info>$path</info>");
+		return 0;
 	}
 
 	/**

@@ -154,6 +154,7 @@ class Storage implements IStorage {
 			// user's home is gone and so are the keys
 			//
 			// So there is nothing to do, just ignore.
+			return true;
 		}
 	}
 
@@ -200,6 +201,7 @@ class Storage implements IStorage {
 
 			return false;
 		}
+		return false;
 	}
 
 	/**

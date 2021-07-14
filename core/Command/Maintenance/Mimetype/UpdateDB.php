@@ -94,5 +94,6 @@ class UpdateDB extends Command {
 
 		$output->writeln('Added '.$totalNewMimetypes.' new mimetypes');
 		$output->writeln('Updated '.$totalFilecacheUpdates.' filecache rows');
+		return 0;
 	}
 }

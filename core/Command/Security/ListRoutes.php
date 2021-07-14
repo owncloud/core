@@ -119,6 +119,7 @@ class ListRoutes extends Base {
 			$table->addRows($rows);
 			$table->render();
 		}
+		return 0;
 	}
 
 	private function buildController($name) {

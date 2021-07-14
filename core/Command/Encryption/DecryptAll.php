@@ -189,5 +189,6 @@ class DecryptAll extends Command {
 			$this->resetSingleUserAndTrashbin();
 			throw $e;
 		}
+		return 0;
 	}
 }
