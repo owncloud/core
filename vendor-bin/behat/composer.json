@@ -13,7 +13,7 @@
         "sabre/xml": "^2.2",
         "guzzlehttp/guzzle": "^7.2",
         "phpunit/phpunit": "^9.4",
-        "laminas/laminas-ldap": "^2.10",
+        "laminas/laminas-ldap": "^2.11",
         "ankitpokhrel/tus-php": "^2.1"
     }
 }
