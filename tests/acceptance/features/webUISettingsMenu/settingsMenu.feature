@@ -81,3 +81,18 @@ Feature: add users
       | username |
       | Alice    |
       | Brian    |
+
+
+  @issue-34652
+  Scenario: subadmin should be able to see password and email field
+    Given group "grp1" has been created
+    And user "Alice" has been added to group "grp1"
+    And user "Brian" has been added to group "grp1"
+    And user "Alice" has been made a subadmin of group "grp1"
+    And the administrator has enabled the setting "Set password for new users" in the User Management page using the webUI
+    And the administrator has logged out of the webUI
+    And user "Alice" has logged in using the webUI
+    When the user browses to the users page
+    Then the subadmin should be able to see email field in new user form on the webUI
+    And the subadmin should be able to see password field in new user form on the webUI
+    
