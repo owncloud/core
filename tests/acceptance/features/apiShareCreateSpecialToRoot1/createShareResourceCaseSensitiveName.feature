@@ -206,7 +206,7 @@ Feature: Sharing resources with different case names with the sharee and checkin
   Scenario: sharing file with group members that has existing folders with different case names
     Given group "grp1" has been created
     And user "Brian" has been added to group "grp1"
-    Given user "Alice" has uploaded the following files with content "some data"
+    And user "Alice" has uploaded the following files with content "some data"
       | path                  |
       | casesensitive.txt     |
       | case_sensitive.txt    |

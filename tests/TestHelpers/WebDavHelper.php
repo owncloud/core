@@ -413,6 +413,13 @@ class WebDavHelper {
 			$user = null;
 			$password = null;
 		}
+		if ($type === "public-files-new") {
+			if ($password === null || $password === "") {
+				$user = null;
+			} else {
+				$user = "public";
+			}
+		}
 		$config = null;
 		if ($sourceIpAddress !== null) {
 			$config = [ 'curl' => [ CURLOPT_INTERFACE => $sourceIpAddress ]];
