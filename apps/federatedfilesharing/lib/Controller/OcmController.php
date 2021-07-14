@@ -424,7 +424,7 @@ class OcmController extends Controller {
 	 */
 	protected function getProtocols() {
 		return [
-			'webdav' => '/public.php/webdav/'
+			'webdav' => $this->urlGenerator->getAbsoluteURL('/public.php/webdav/')
 		];
 	}
 
