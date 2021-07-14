@@ -224,6 +224,7 @@ class Server {
 		));
 
 		if ($this->isRequestForSubtree(['files', 'trash-bin', 'public-files'])) {
+			\Sabre\DAV\Server::$streamMultiStatus = true;
 			$this->server->addPlugin(new ViewOnlyPlugin(
 				OC::$server->getLogger()
 			));
