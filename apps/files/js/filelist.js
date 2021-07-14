@@ -1097,7 +1097,7 @@
 
 			this.$fileList.trigger(jQuery.Event('updated'));
 			
-			$('#fileList td .nametext').css('max-width', 'calc(100vw - ' + $('.fileactions').outerWidth() + 'px - ' + $('.action-favorite').outerWidth() + 'px)')
+			$('.nametext').css('max-width', 'calc(100vw - ' + $('.fileactions').outerWidth() + 'px - ' + $('.action-favorite').outerWidth() + 'px - ' + $('.thumbnail').outerWidth() + 'px)')
 			
 			_.defer(function() {
 				self.$el.closest('#app-content').trigger(jQuery.Event('apprendered'));
@@ -1386,7 +1386,7 @@
 				this.updateEmptyContent();
 			}
 
-			$('#fileList td .nametext').css('max-width', 'calc(100vw - ' + $('.fileactions').outerWidth() + 'px - ' + $('.action-favorite').outerWidth() + 'px)')
+			$('.nametext').css('max-width', 'calc(100vw - ' + $('.fileactions').outerWidth() + 'px - ' + $('.action-favorite').outerWidth() + 'px - ' + $('.thumbnail').outerWidth() + 'px)')
 
 			return $tr;
 		},
@@ -2316,8 +2316,8 @@
 			options = _.extend({silent: true}, options);
 			options = _.extend(options, {updateSummary: false});
 			$tr = this.add(fileInfo, options);
-			$('#fileList td .nametext').css('max-width', 'calc(100vw - ' + $('.fileactions').outerWidth() + 'px - ' + $('.action-favorite').outerWidth() + 'px)')
-			
+			$('.nametext').css('max-width', 'calc(100vw - ' + $('.fileactions').outerWidth() + 'px - ' + $('.action-favorite').outerWidth() + 'px - ' + $('.thumbnail').outerWidth() + 'px)')
+
 			this.$fileList.trigger($.Event('fileActionsReady', {fileList: this, $files: $tr}));
 			return $tr;
 		},
