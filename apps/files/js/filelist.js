@@ -1096,7 +1096,9 @@
 			$(window).scrollTop(0);
 
 			this.$fileList.trigger(jQuery.Event('updated'));
-
+			
+			$('#fileList td .nametext').css('max-width', 'calc(100vw - ' + $('.fileactions').outerWidth() + 'px - ' + $('.action-favorite').outerWidth() + 'px)')
+			
 			_.defer(function() {
 				self.$el.closest('#app-content').trigger(jQuery.Event('apprendered'));
 			});
