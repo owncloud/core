@@ -436,6 +436,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 			if ($chunk == '..') {
 				\array_pop($output);
 			} elseif ($chunk == '.') {
+				continue;
 			} else {
 				$output[] = $chunk;
 			}
