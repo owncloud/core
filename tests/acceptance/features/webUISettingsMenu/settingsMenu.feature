@@ -81,3 +81,25 @@ Feature: add users
       | username |
       | Alice    |
       | Brian    |
+
+
+  @issue-34652
+  Scenario: group admin should be able to see password and email field
+    Given group "grp1" has been created
+    And user "Alice" has been added to group "grp1"
+    And user "Brian" has been added to group "grp1"
+    And user "Alice" has been made a subadmin of group "grp1"
+    And the administrator has logged out of the webUI
+    And user "Alice" has logged in using the webUI
+    When the user browses to the users page
+    Then the groupadmin should be able to see password field of new user
+    And the groupadmin should be able to see email field of new user
+    When the administrator disables the setting "Set password for new users" in the User Management page using the webUI
+    Then the groupadmin should not be able to see password field of new user
+    But the groupadmin should be able to see email field of new user
+    When the administrator enables the setting "Set password for new users" in the User Management page using the webUI
+    Then the groupadmin should be able to see password field of new user
+    But the groupadmin should not be able to see email field of new user
+    When the user reloads the users page
+    Then the groupadmin should be able to see password field of new user
+    And the groupadmin should be able to see email field of new user
