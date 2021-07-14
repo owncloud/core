@@ -1386,6 +1386,8 @@
 				this.updateEmptyContent();
 			}
 
+			$('#fileList td .nametext').css('max-width', 'calc(100vw - ' + $('.fileactions').outerWidth() + 'px - ' + $('.action-favorite').outerWidth() + 'px)')
+
 			return $tr;
 		},
 
@@ -2314,6 +2316,8 @@
 			options = _.extend({silent: true}, options);
 			options = _.extend(options, {updateSummary: false});
 			$tr = this.add(fileInfo, options);
+			$('#fileList td .nametext').css('max-width', 'calc(100vw - ' + $('.fileactions').outerWidth() + 'px - ' + $('.action-favorite').outerWidth() + 'px)')
+			
 			this.$fileList.trigger($.Event('fileActionsReady', {fileList: this, $files: $tr}));
 			return $tr;
 		},
