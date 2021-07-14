@@ -53,9 +53,10 @@
   version "4.5.3"
   resolved "https://codeload.github.com/components/handlebars.js/tar.gz/8f49d168f94ac70b5b966b30da06b57203439ace"
 
-"@bower_components/jcrop@tapmodo/Jcrop#0.9.12":
-  version "0.0.0"
-  resolved "https://codeload.github.com/tapmodo/Jcrop/tar.gz/1902fbc6afa14481dc019a17e0dcb7d62b808a98"
+"@bower_components/jcrop@tapmodo/Jcrop#v2.0.4":
+  version "2.0.4"
+  uid "80f645b69fc938b3823d92d74e5019036d04a9ca"
+  resolved "https://codeload.github.com/tapmodo/Jcrop/tar.gz/80f645b69fc938b3823d92d74e5019036d04a9ca"
 
 "@bower_components/jquery-migrate@appleboy/jquery-migrate#1.4.0":
   version "0.0.0"
