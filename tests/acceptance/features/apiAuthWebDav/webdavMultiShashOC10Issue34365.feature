@@ -13,12 +13,12 @@ Feature: current oC10 behavior for issue-34365
 
 
   Scenario: send DELETE requests to webDav endpoints with 2 slashes
-    When user "Alice" requests these endpoints with "DELETE" including body "doesnotmatter" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "DELETE" about user "Alice"
       | endpoint                                            |
       | /remote.php//dav/files/%username%/PARENT/parent.txt |
       | /remote.php//webdav/PARENT                          |
     Then the HTTP status code of responses on all endpoints should be "204"
-    When user "Alice" requests these endpoints with "DELETE" including body "doesnotmatter" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "DELETE" about user "Alice"
       | endpoint                                            |
       | //remote.php/webdav/textfile0.txt                   |
       | //remote.php//dav/files/%username%/textfile1.txt    |
@@ -27,12 +27,12 @@ Feature: current oC10 behavior for issue-34365
 
 
   Scenario: send GET requests to webDav endpoints with 2 slashes
-    When user "Alice" requests these endpoints with "GET" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "GET" about user "Alice"
       | endpoint                                            |
       | /remote.php//dav/files/%username%/PARENT/parent.txt |
       | /remote.php//webdav/PARENT                          |
     Then the HTTP status code of responses on all endpoints should be "200"
-    When user "Alice" requests these endpoints with "GET" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "GET" about user "Alice"
       | endpoint                                            |
       | //remote.php/webdav/textfile0.txt                   |
       | //remote.php//dav/files/%username%/textfile1.txt    |
@@ -55,13 +55,13 @@ Feature: current oC10 behavior for issue-34365
 
 
   Scenario: send MKCOL requests to webDav endpoints with 2 slashes
-    When user "Alice" requests these endpoints with "MKCOL" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "MKCOL" about user "Alice"
       | endpoint                                   |
       | /remote.php//webdav/PARENT2                |
       | /remote.php/dav/files/%username%//PARENT5  |
       | /remote.php/dav//files/%username%/PARENT6  |
     Then the HTTP status code of responses on all endpoints should be "201"
-    When user "Alice" requests these endpoints with "MKCOL" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "MKCOL" about user "Alice"
       | endpoint                                   |
       | //remote.php/webdav/PARENT1                |
       | //remote.php//webdav/PARENT3               |
@@ -70,13 +70,13 @@ Feature: current oC10 behavior for issue-34365
 
 
   Scenario: send MOVE requests to webDav endpoints with 2 slashes
-    When user "Alice" requests these endpoints with "MOVE" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "MOVE" about user "Alice"
       | endpoint                                             | destination                                          |
       | /remote.php//dav/files/%username%/textfile1.txt      | /remote.php/dav/files/%username%/textfileOne.txt     |
       | /remote.php/webdav//PARENT                           | /remote.php/webdav/PARENT1                           |
       | /remote.php/dav//files/%username%/PARENT1/parent.txt | /remote.php/dav/files/%username%/PARENT1/parent1.txt |
     Then the HTTP status code of responses on all endpoints should be "201"
-    When user "Alice" requests these endpoints with "MOVE" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "MOVE" about user "Alice"
       | endpoint                                             | destination                                          |
       | //remote.php/webdav/textfile0.txt                    | /remote.php/webdav/textfileZero.txt                  |
       | //remote.php/dav/files/%username%//PARENT1           | /remote.php/dav/files/%username%/PARENT2             |
@@ -84,12 +84,12 @@ Feature: current oC10 behavior for issue-34365
 
 
   Scenario: send POST requests to webDav endpoints with 2 slashes
-    When user "Alice" requests these endpoints with "POST" including body "doesnotmatter" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "POST" about user "Alice"
       | endpoint                                            |
       | /remote.php//webdav/PARENT                          |
       | /remote.php//dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "501"
-    When user "Alice" requests these endpoints with "POST" including body "doesnotmatter" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "POST" about user "Alice"
       | endpoint                                            |
       | //remote.php/webdav/textfile0.txt                   |
       | //remote.php//dav/files/%username%/textfile1.txt    |
@@ -126,12 +126,12 @@ Feature: current oC10 behavior for issue-34365
 
 
   Scenario: send PUT requests to webDav endpoints with 2 slashes
-    When user "Alice" requests these endpoints with "PUT" including body "doesnotmatter" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "PUT" about user "Alice"
       | endpoint                                             |
       | /remote.php//webdav/textfile1.txt                    |
       | /remote.php/dav/files/%username%/textfile7.txt       |
     Then the HTTP status code of responses on all endpoints should be "204" or "201"
-    When user "Alice" requests these endpoints with "PUT" including body "doesnotmatter" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "PUT" about user "Alice"
       | endpoint                                             |
       | //remote.php/webdav/textfile0.txt                    |
       | //remote.php//dav/files/%username%/textfile1.txt     |
