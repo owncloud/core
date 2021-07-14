@@ -983,6 +983,11 @@ class Session implements IUserSession, Emitter {
 		foreach ($this->getAuthModules(false) as $authModule) {
 			$user = $authModule->auth($request);
 			if ($user !== null) {
+				if (!$user->isEnabled()) {
+					// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
+					$message = \OC::$server->getL10N('lib')->t('User disabled');
+					throw new LoginException($message);
+				}
 				$uid = $user->getUID();
 				$password = $authModule->getUserPassword($request);
 				$this->createSessionToken($request, $uid, $uid, $password);
