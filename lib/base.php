@@ -222,6 +222,12 @@ class OC {
 		}
 		$paths = [];
 		foreach (OC::$APPSROOTS as $path) {
+			// if not installed - allow precreating of custom app directories later
+			if (self::$config->getValue('installed', false) === false
+				&& $path['path'] !==  OC::$SERVERROOT . '/apps'
+			) {
+				continue;
+			}
 			$paths[] = $path['path'];
 			if (!\is_dir($path['path'])) {
 				throw new \RuntimeException(\sprintf('App directory "%s" not found! Please put the ownCloud apps folder in the'
@@ -860,7 +866,11 @@ class OC {
 				\OC::$server->getSecureRandom()
 			);
 
-			$controller = new OC\Core\Controller\SetupController($setupHelper);
+			$controller = new OC\Core\Controller\SetupController(
+				$setupHelper,
+				\OC::$server->getConfig(),
+				\OC::$server->getLogger()
+			);
 			$controller->run($_POST);
 			exit();
 		}
