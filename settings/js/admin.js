@@ -102,7 +102,7 @@ $(document).ready(function(){
 		$("#setDefaultExpireDateGroupShare").toggleClass('hidden', !this.checked);
 	});
 
-	$('#shareapiExpireAfterNDaysRemoteShare').change(function() {
+	$('#shareapiExpireAfterNDaysFederatedShare').change(function() {
 		var value = parseInt($(this).val(), 10)
 
 		if (value <= 0 || isNaN(value)) {
@@ -110,8 +110,8 @@ $(document).ready(function(){
 		}
 	});
 
-	$('#shareapiDefaultExpireDateRemoteShare').change(function() {
-		$("#setDefaultExpireDateRemoteShare").toggleClass('hidden', !this.checked);
+	$('#shareapiDefaultExpireDateFederatedShare').change(function() {
+		$("#setDefaultExpireDateFederatedShare").toggleClass('hidden', !this.checked);
 	});
 
 	$('#allowLinks').change(function() {

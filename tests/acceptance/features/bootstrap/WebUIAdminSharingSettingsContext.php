@@ -132,12 +132,12 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @Then the default expiration date checkbox for remote shares should be enabled on the webUI
+	 * @Then the default expiration date checkbox for federated shares should be enabled on the webUI
 	 *
 	 * @return void
 	 */
-	public function setDefaultExpirationDateForRemoteCheckboxSharesShouldBeEnabled() {
-		$checkboxElement = $this->adminSharingSettingsPage->getDefaultExpirationForRemoteShareElement();
+	public function setDefaultExpirationDateForFederatedCheckboxSharesShouldBeEnabled() {
+		$checkboxElement = $this->adminSharingSettingsPage->getDefaultExpirationForFederatedShareElement();
 		$this->assertCheckBoxIsChecked($checkboxElement);
 	}
 
@@ -162,12 +162,12 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @Then the enforce maximum expiration date checkbox for remote shares should be enabled on the webUI
+	 * @Then the enforce maximum expiration date checkbox for federated shares should be enabled on the webUI
 	 *
 	 * @return void
 	 */
-	public function enforceMaximumExpirationDateForRemoteSharesCheckboxShouldBeEnabled() {
-		$checkboxElement = $this->adminSharingSettingsPage->getEnforceExpireDateRemoteShareElement();
+	public function enforceMaximumExpirationDateForFederatedSharesCheckboxShouldBeEnabled() {
+		$checkboxElement = $this->adminSharingSettingsPage->getEnforceExpireDateFederatedShareElement();
 		$this->assertCheckBoxIsChecked($checkboxElement);
 	}
 
@@ -208,19 +208,19 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @Then the expiration date for remote shares should set to :days days on the webUI
+	 * @Then the expiration date for federated shares should set to :days days on the webUI
 	 *
 	 * @param int $days
 	 *
 	 * @return void
 	 */
-	public function expirationDateForRemoteSharesShouldBeSetToXDays($days) {
-		$expirationDays = $this->adminSharingSettingsPage->getRemoteShareExpirationDays();
+	public function expirationDateForFederatedSharesShouldBeSetToXDays($days) {
+		$expirationDays = $this->adminSharingSettingsPage->getFederatedShareExpirationDays();
 		Assert::assertEquals(
 			$days,
 			$expirationDays,
 			__METHOD__
-			. " The expiration date for remote shares was expected to be set to '$days' days, "
+			. " The expiration date for federated shares was expected to be set to '$days' days, "
 			. "but was actually set to '$expirationDays' days"
 		);
 	}
@@ -410,12 +410,12 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When the administrator enforces maximum expiration date for remote shares using the webUI
+	 * @When the administrator enforces maximum expiration date for federated shares using the webUI
 	 *
 	 * @return void
 	 */
-	public function administratorEnforcesMaximumExpirationDateForRemoteShares() {
-		$this->adminSharingSettingsPage->enforceMaximumExpirationDateForRemoteShares(
+	public function administratorEnforcesMaximumExpirationDateForFederatedShares() {
+		$this->adminSharingSettingsPage->enforceMaximumExpirationDateForFederatedShares(
 			$this->getSession()
 		);
 	}
@@ -443,14 +443,14 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When the administrator updates the remote share expiration date to :days days using the webUI
+	 * @When the administrator updates the federated share expiration date to :days days using the webUI
 	 *
 	 * @param int $days
 	 *
 	 * @return void
 	 */
-	public function administratorUpdatesRemoteShareExpirationTo($days) {
-		$this->adminSharingSettingsPage->setExpirationDaysForRemoteShare($days, $this->getSession());
+	public function administratorUpdatesFederatedShareExpirationTo($days) {
+		$this->adminSharingSettingsPage->setExpirationDaysForFederatedShare($days, $this->getSession());
 	}
 
 	/**
@@ -465,12 +465,12 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When the administrator enables default expiration date for remote shares using the webUI
+	 * @When the administrator enables default expiration date for federated shares using the webUI
 	 *
 	 * @return void
 	 */
-	public function theAdministratorEnablesDefaultExpirationDateForRemoteShares() {
-		$this->adminSharingSettingsPage->enableDefaultExpirationDateForRemoteShares(
+	public function theAdministratorEnablesDefaultExpirationDateForFederatedShares() {
+		$this->adminSharingSettingsPage->enableDefaultExpirationDateForFederatedShares(
 			$this->getSession()
 		);
 	}

@@ -23,7 +23,7 @@ Feature: Share by public link
     And the user logs out of the webUI
     And the public accesses the last created public link using the webUI
     And the public adds the public link to "%remote_server%" as user "Brian" using the webUI
-    And the user accepts the offered remote shares using the webUI
+    And the user accepts the offered federated shares using the webUI
     Then folder "simple-folder" should be listed on the webUI
     When the user opens folder "simple-folder" using the webUI
     Then file "lorem.txt" should be listed on the webUI
@@ -44,7 +44,7 @@ Feature: Share by public link
     And the user logs out of the webUI
     And the public accesses the last created public link using the webUI
     And the public adds the public link to "%remote_server%" as user "Brian" using the webUI
-    And the user accepts the offered remote shares using the webUI
+    And the user accepts the offered federated shares using the webUI
     Then file "file-shared-by-public-link.txt" should be listed on the webUI
     And the content of file "file-shared-by-public-link.txt" for user "Brian" on server "REMOTE" should be "text in a file shared by public link"
     And using server "REMOTE"
@@ -64,7 +64,7 @@ Feature: Share by public link
     And the user logs out of the webUI
     And the public accesses the last created public link using the webUI
     And the public adds the public link to "%remote_server%" as user "Brian" using the webUI
-    And the user accepts the offered remote shares using the webUI
+    And the user accepts the offered federated shares using the webUI
     Then folder "simple-folder" should be listed on the webUI
     When the user opens folder "simple-folder" using the webUI
     Then file "lorem.txt" should be listed on the webUI

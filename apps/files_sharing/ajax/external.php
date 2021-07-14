@@ -102,7 +102,7 @@ try {
 
 	// return JSON response with error
 	\OCP\JSON::error(
-		['data' => ['message' => $l->t('Could not authenticate to remote share, password might be wrong')]]
+		['data' => ['message' => $l->t('Could not authenticate to federated share, password might be wrong')]]
 	);
 	exit();
 } catch (\Exception $e) {
@@ -131,7 +131,7 @@ try {
 		$externalManager->removeShare($mount->getMountPoint());
 		\OCP\Util::writeLog(
 			'files_sharing',
-			'Couldn\'t add remote share',
+			'Couldn\'t add federated share',
 			\OCP\Util::DEBUG
 		);
 	}
@@ -148,5 +148,5 @@ try {
 		'Invalid remote storage: ' . \get_class($e) . ': ' . $e->getMessage(),
 		\OCP\Util::DEBUG
 	);
-	\OCP\JSON::error(['data' => ['message' => $l->t('Couldn\'t add remote share')]]);
+	\OCP\JSON::error(['data' => ['message' => $l->t('Couldn\'t add federated share')]]);
 }

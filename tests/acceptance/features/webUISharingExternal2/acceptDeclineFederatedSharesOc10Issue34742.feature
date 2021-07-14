@@ -25,8 +25,8 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Given parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "yes"
     And parameter "autoAddServers" of app "federation" has been set to "0"
     And the user has browsed to the personal sharing settings page
-    When the user disables automatically accepting remote shares from trusted servers
-    And the user enables automatically accepting remote shares from trusted servers
+    When the user disables automatically accepting federated shares from trusted servers
+    And the user enables automatically accepting federated shares from trusted servers
     And user "Alice" from server "REMOTE" shares "/lorem.txt" with user "Alice" from server "LOCAL" using the sharing API
     Then user "Alice" should not see the following elements
       | /lorem (2).txt |

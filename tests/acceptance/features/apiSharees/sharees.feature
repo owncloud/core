@@ -393,7 +393,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
-  Scenario Outline: Remote sharee for files
+  Scenario Outline: Federated sharee for files
     Given using OCS API version "<ocs-api-version>"
     When user "Alice" gets the sharees using the sharing API with parameters
       | search   | test@localhost |
@@ -412,7 +412,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
-  Scenario Outline: Remote sharee for calendars not allowed
+  Scenario Outline: Federated sharee for calendars not allowed
     Given using OCS API version "<ocs-api-version>"
     When user "Alice" gets the sharees using the sharing API with parameters
       | search   | test@localhost |

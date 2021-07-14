@@ -27,10 +27,10 @@
 			OC.dialogs.confirm(
 				t(
 					'files_sharing',
-					'Do you want to add the remote share {name} from {owner}@{remote}?',
+					'Do you want to add the federated share {name} from {owner}@{remote}?',
 					{name: name, owner: owner, remote: remoteClean}, null, {escape: false}
 				),
-				t('files_sharing','Remote share'),
+				t('files_sharing','Federated share'),
 				function (result) {
 					callback(result, share);
 				},
@@ -40,16 +40,16 @@
 			OC.dialogs.prompt(
 				t(
 					'files_sharing',
-					'Do you want to add the remote share {name} from {owner}@{remote}?',
+					'Do you want to add the federated share {name} from {owner}@{remote}?',
 					{name: name, owner: owner, remote: remoteClean}, null, {escape: false}
 				),
-				t('files_sharing','Remote share'),
+				t('files_sharing','Federated share'),
 				function (result, password) {
 					share.password = password;
 					callback(result, share);
 				},
 				true,
-				t('files_sharing','Remote share password'),
+				t('files_sharing','Federated share password'),
 				true
 			).then(this._adjustDialog);
 		}
@@ -61,7 +61,7 @@
 		// hack the buttons
 		$dialog.find('.ui-icon').remove();
 		$buttons.eq(0).text(t('core', 'Cancel'));
-		$buttons.eq(1).text(t('files_sharing', 'Add remote share'));
+		$buttons.eq(1).text(t('files_sharing', 'Add federated share'));
 	};
 
 	OCA.Sharing.ExternalShareDialogPlugin = {

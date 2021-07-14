@@ -1958,7 +1958,7 @@
 					if (share.share_type === OC.Share.SHARE_TYPE_GROUP) {
 						shareWith += ' (' + t('files', 'group') + ')';
 					} else if (share.share_type === OC.Share.SHARE_TYPE_REMOTE) {
-						shareWith += ' (' + t('files_sharing', 'Remote share') + ')';
+						shareWith += ' (' + t('files_sharing', 'Federated share') + ')';
 					}
 
 					var $path = $('<span>',   { class : 'shareTree-item-path', text : t('files', 'via') + " " + folder.name });
