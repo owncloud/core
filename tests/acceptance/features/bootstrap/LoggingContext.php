@@ -25,6 +25,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 use TestHelpers\LoggingHelper;
+use TestHelpers\OcisHelper;
 use TestHelpers\SetupHelper;
 
 require_once 'bootstrap.php';
@@ -64,6 +65,11 @@ class LoggingContext implements Context {
 		$ignoredLines = 0,
 		TableNode $expectedLogEntries = null
 	) {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			// Currently we don't interact with the log file on reva or OCIS
+			// So skip processing this test step.
+			return;
+		}
 		$ignoredLines = (int) $ignoredLines;
 		//-1 because getRows gives also the header
 		$linesToRead = \count($expectedLogEntries->getRows()) - 1 + $ignoredLines;
@@ -270,6 +276,11 @@ class LoggingContext implements Context {
 		TableNode $expectedLogEntries,
 		$regexCompare = false
 	) {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			// Currently we don't interact with the log file on reva or OCIS
+			// So skip processing this test step.
+			return;
+		}
 		$logLines = LoggingHelper::getLogFileContent(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
@@ -372,6 +383,11 @@ class LoggingContext implements Context {
 		$withOrContaining,
 		TableNode $logEntriesExpectedNotToExist
 	) {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			// Currently we don't interact with the log file on reva or OCIS
+			// So skip processing this test step.
+			return;
+		}
 		$logLines = LoggingHelper::getLogFileContent(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
