@@ -157,6 +157,37 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @When the administrator adds group :lockBreakerGroup to lock breakers group using the webUI
+	 *
+	 * @param string $lockBreakerGroup
+	 *
+	 * @retrun void
+	 */
+	public function theAdministratorAddsGroupToLockBreakersGroupUsingTheWebui($lockBreakerGroup)
+	{
+		$this->adminGeneralSettingsPage-> addGroupLockBreakersGroup(
+			$this->getSession(),
+			$lockBreakerGroup
+		);
+	}
+
+	/**
+	 * @Then group :group should be listed as lock breakers group in the webUI
+	 *
+	 * @param $group
+	 *
+	 * @retrun void
+	 */
+	public function groupShouldBeListedAsLockBreakersGroupInTheWebui($group)
+	{
+		$this->adminGeneralSettingsPage-> getLockBreakersGroups(
+			$this->getSession(),
+			$group
+		);
+	}
+
+
+	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *

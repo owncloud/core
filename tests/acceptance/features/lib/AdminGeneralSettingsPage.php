@@ -25,6 +25,7 @@ namespace Page;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
+use PHPUnit\Framework\Assert;
 use TestHelpers\EmailHelper;
 
 /**
@@ -59,6 +60,9 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	protected $cronJobCronXpath = "//label[@for='backgroundjobs_cron']";
 
 	protected $logLevelId = 'loglevel';
+
+	protected $lockBreakerXpath = '//div[@id="persistentlocking"]/p[@id="lock-breakers"]/div//li[contains(@class, "select2-search-field")]';
+	protected $lockBreakerGroups = '//div[@id="persistentlocking"]/p[@id="lock-breakers"]/div//li[contains(@class, "select2-search-choice")]';
 
 	protected $ownCloudVersionXpath = '//td[text() = "version"]/following-sibling::td';
 	protected $ownCloudVersionStringXpath = '//td[text() = "versionstring"]/following-sibling::td';
@@ -300,4 +304,53 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 			$timeout_msec
 		);
 	}
+
+
+	/**
+	 * add group to lock breakers group
+	 *
+	 * @param Session $session
+	 * @param string $groupName
+	 *
+	 * @return void
+	 */
+	public function addGroupLockBreakersGroup(
+		Session $session,
+		$groupName
+	) {
+		$this->getPage('AdminSharingSettingsPage')->addGroupToInputField($groupName,$this->lockBreakerXpath);
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+
+/**
+ * add group to lock breakers group
+ *
+ * @param Session $session
+ * @param string $groupName
+ *
+ * @return void
+ */
+public function getLockBreakersGroups(
+	Session $session,
+	$groupName
+) {
+	$this->waitTillElementIsNotNull($this->lockBreakerGroups);
+	$groupList = $this->findAll("xpath", $this->lockBreakerGroups);
+	$this->assertElementNotNull(
+		$groupList,
+		__METHOD__ .
+		" xpath $this->lockBreakerGroups " .
+		"could not find group list"
+	);
+	foreach ($groupList as $group) {
+		if ($this->getTrimmedText($group) != $groupName) {
+			Assert::assertFalse(
+				"'$groupName' should be present as lock breakers groups, but it isn't"
+			);
+		}
+	}
+	$this->waitForAjaxCallsToStartAndFinish($session);
 }
+}
+
