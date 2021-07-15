@@ -305,7 +305,6 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 		);
 	}
 
-
 	/**
 	 * add group to lock breakers group
 	 *
@@ -318,39 +317,37 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 		Session $session,
 		$groupName
 	) {
-		$this->getPage('AdminSharingSettingsPage')->addGroupToInputField($groupName,$this->lockBreakerXpath);
+		$this->getPage('AdminSharingSettingsPage')->addGroupToInputField($groupName, $this->lockBreakerXpath);
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
-
-/**
- * add group to lock breakers group
- *
- * @param Session $session
- * @param string $groupName
- *
- * @return void
- */
-public function getLockBreakersGroups(
-	Session $session,
-	$groupName
-) {
-	$this->waitTillElementIsNotNull($this->lockBreakerGroups);
-	$groupList = $this->findAll("xpath", $this->lockBreakerGroups);
-	$this->assertElementNotNull(
-		$groupList,
-		__METHOD__ .
+	/**
+	 * add group to lock breakers group
+	 *
+	 * @param Session $session
+	 * @param string $groupName
+	 *
+	 * @return void
+	 */
+	public function getLockBreakersGroups(
+		Session $session,
+		$groupName
+	) {
+		$this->waitTillElementIsNotNull($this->lockBreakerGroups);
+		$groupList = $this->findAll("xpath", $this->lockBreakerGroups);
+		$this->assertElementNotNull(
+			$groupList,
+			__METHOD__ .
 		" xpath $this->lockBreakerGroups " .
 		"could not find group list"
-	);
-	foreach ($groupList as $group) {
-		if ($this->getTrimmedText($group) != $groupName) {
-			Assert::assertFalse(
-				"'$groupName' should be present as lock breakers groups, but it isn't"
-			);
+		);
+		foreach ($groupList as $group) {
+			if ($this->getTrimmedText($group) != $groupName) {
+				Assert::assertFalse(
+					"'$groupName' should be present as lock breakers groups, but it isn't"
+				);
+			}
 		}
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
-	$this->waitForAjaxCallsToStartAndFinish($session);
 }
-}
-
