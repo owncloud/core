@@ -157,7 +157,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When the administrator adds group :lockBreakerGroup to lock breakers group using the webUI
+	 * @When the administrator adds group :lockBreakerGroup to the lock breakers groups using the webUI
 	 *
 	 * @param string $lockBreakerGroup
 	 *
@@ -171,17 +171,21 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @Then group :group should be listed as lock breakers group in the webUI
+	 * @Then group :expectedGroup should be listed in the lock breakers groups in the webUI
 	 *
-	 * @param $group
+	 * @param $expectedGroup
 	 *
 	 * @return void
 	 */
-	public function groupShouldBeListedAsLockBreakersGroupInTheWebui($group) {
-		$this->adminGeneralSettingsPage-> getLockBreakersGroups(
-			$this->getSession(),
-			$group
+	public function groupShouldBeListedAsLockBreakersGroupInTheWebui($expectedGroup) {
+		$actualGroup = $this->adminGeneralSettingsPage-> getLockBreakersGroups(
+			$this->getSession()
 		);
+		if (!\in_array($expectedGroup, $actualGroup)) {
+			Assert::assertFalse(
+				"$expectedGroup should be present as lock breakers groups, but it isn't"
+			);
+		}
 	}
 
 	/**

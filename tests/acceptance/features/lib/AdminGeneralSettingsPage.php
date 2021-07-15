@@ -25,7 +25,6 @@ namespace Page;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Session;
-use PHPUnit\Framework\Assert;
 use TestHelpers\EmailHelper;
 
 /**
@@ -322,16 +321,14 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	}
 
 	/**
-	 * add group to lock breakers group
+	 * get lock breakers group
 	 *
 	 * @param Session $session
-	 * @param string $groupName
 	 *
-	 * @return void
+	 * @return array
 	 */
 	public function getLockBreakersGroups(
-		Session $session,
-		$groupName
+		Session $session
 	) {
 		$this->waitTillElementIsNotNull($this->lockBreakerGroups);
 		$groupList = $this->findAll("xpath", $this->lockBreakerGroups);
@@ -339,15 +336,13 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 			$groupList,
 			__METHOD__ .
 			" xpath $this->lockBreakerGroups " .
-			"could not find xpath for owncloud version string"
+			"could not find xpath for lock breaker groups"
 		);
+
 		foreach ($groupList as $group) {
-			if ($this->getTrimmedText($group) != $groupName) {
-				Assert::assertFalse(
-					"'$groupName' should be present as lock breakers groups, but it isn't"
-				);
-			}
+			$groups[] = $this->getTrimmedText($group);
 		}
 		$this->waitForAjaxCallsToStartAndFinish($session);
+		return $groups;
 	}
 }

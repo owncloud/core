@@ -7,8 +7,8 @@ Feature: Unlock locked files and folders
   Scenario: Add a group as lock breakers group
     Given group "grp1" has been created
     And the administrator has browsed to the admin general settings page
-    When the administrator adds group "grp1" to lock breakers group using the webUI
-    Then group "grp1" should be listed as lock breakers group in the webUI
+    When the administrator adds group "grp1" to the lock breakers groups using the webUI
+    Then group "grp1" should be listed in the lock breakers groups in the webUI
     Then group "grp1" should exist as a lock breaker group
 
 
