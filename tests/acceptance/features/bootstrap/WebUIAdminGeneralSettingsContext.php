@@ -161,7 +161,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @param string $lockBreakerGroup
 	 *
-	 * @retrun void
+	 * @return void
 	 */
 	public function theAdministratorAddsGroupToLockBreakersGroupUsingTheWebui($lockBreakerGroup) {
 		$this->adminGeneralSettingsPage-> addGroupLockBreakersGroup(
@@ -175,7 +175,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @param $group
 	 *
-	 * @retrun void
+	 * @return void
 	 */
 	public function groupShouldBeListedAsLockBreakersGroupInTheWebui($group) {
 		$this->adminGeneralSettingsPage-> getLockBreakersGroups(

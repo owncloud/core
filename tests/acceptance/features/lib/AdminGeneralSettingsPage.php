@@ -338,8 +338,8 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 		$this->assertElementNotNull(
 			$groupList,
 			__METHOD__ .
-		" xpath $this->lockBreakerGroups " .
-		"could not find group list"
+			" xpath $this->lockBreakerGroups " .
+			"could not find xpath for owncloud version string"
 		);
 		foreach ($groupList as $group) {
 			if ($this->getTrimmedText($group) != $groupName) {
