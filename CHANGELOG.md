@@ -534,6 +534,7 @@ Details
    and deleted immediately.
 
    https://github.com/owncloud/core/pull/38704
+   https://github.com/owncloud/core/pull/38960
 
 * Enhancement - Remove google+ share button from personal settings: [#38705](https://github.com/owncloud/core/pull/38705)
 
