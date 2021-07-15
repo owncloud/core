@@ -316,3 +316,41 @@ Feature: accept/decline shares coming from internal users
     And file "testimage.jpg" should be listed in the shared-with-you page on the webUI
     And folder "simple-folder" should be in state "Pending" in the shared-with-you page on the webUI
     And file "testimage.jpg" should be in state "Pending" in the shared-with-you page on the webUI
+
+  @issue-36181
+  Scenario: user cannot decline a share which is already deleted by the sharer (without any page-reload in between)
+    Given user "Brian" has shared folder "/simple-folder" with user "Alice"
+    And user "Alice" has logged in using the webUI
+    And the user has browsed to the shared-with-you page
+    And user "Brian" has unshared folder "/simple-folder"
+    When the user declines share "simple-folder" offered by user "Brian" using the webUI
+    Then a notification should be displayed on the webUI with the text 'An error occurred while updating share state:'
+
+  @issue-36181
+  Scenario: user cannot accept a share which is already deleted by the sharer (without any page-reload in between)
+    Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
+    And user "Brian" has shared folder "/simple-folder" with user "Alice"
+    And user "Alice" has logged in using the webUI
+    And the user has browsed to the shared-with-you page
+    And user "Brian" has unshared folder "/simple-folder"
+    When the user accepts share "simple-folder" offered by user "Brian" using the webUI
+    Then a notification should be displayed on the webUI with the text 'An error occurred while updating share state:'
+
+  @issue-36181
+  Scenario: user cannot decline a group share which is already deleted by the sharer (without any page-reload in between)
+    Given user "Brian" has shared folder "/simple-folder" with group "grp1"
+    And user "Alice" has logged in using the webUI
+    And the user has browsed to the shared-with-you page
+    And user "Brian" has unshared folder "/simple-folder"
+    When the user declines share "simple-folder" offered by user "Brian" using the webUI
+    Then a notification should be displayed on the webUI with the text 'An error occurred while updating share state:'
+
+  @issue-36181
+  Scenario: user cannot accept a group share which is already deleted by the sharer (without any page-reload in between)
+    Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
+    And user "Brian" has shared folder "/simple-folder" with group "grp1"
+    And user "Alice" has logged in using the webUI
+    And the user has browsed to the shared-with-you page
+    And user "Brian" has unshared folder "/simple-folder"
+    When the user accepts share "simple-folder" offered by user "Brian" using the webUI
+    Then a notification should be displayed on the webUI with the text 'An error occurred while updating share state:'
