@@ -48,6 +48,10 @@ class LoggingHelper {
 	 * @return string
 	 */
 	public static function getLogFilePath() {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			// Currently we don't interact with the log file on reva or OCIS
+			return "";
+		}
 		$result = SetupHelper::runOcc(['log:owncloud']);
 		if ($result["code"] != 0) {
 			throw new \Exception(
@@ -132,6 +136,10 @@ class LoggingHelper {
 	 * @throws \Exception
 	 */
 	public static function setLogLevel($logLevel) {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			// Currently we can't manage log file settings on reva or OCIS
+			return;
+		}
 		if (!\in_array($logLevel, self::LOG_LEVEL_ARRAY)) {
 			throw new \InvalidArgumentException("invalid log level");
 		}
@@ -184,6 +192,10 @@ class LoggingHelper {
 		if (!\in_array($backend, ["owncloud", "syslog", "errorlog"])) {
 			throw new \InvalidArgumentException("invalid log backend");
 		}
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			// Currently we can't manage log file settings on reva or OCIS
+			return;
+		}
 		$result = SetupHelper::runOcc(["log:manage", "--backend=$backend"]);
 		if ($result["code"] != 0) {
 			throw new \Exception(
@@ -229,6 +241,10 @@ class LoggingHelper {
 	 * @throws \Exception
 	 */
 	public static function setLogTimezone($timezone) {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			// Currently we can't manage log file settings on reva or OCIS
+			return;
+		}
 		$result = SetupHelper::runOcc(["log:manage", "--timezone=$timezone"]);
 		if ($result["code"] != 0) {
 			throw new \Exception(
@@ -248,6 +264,10 @@ class LoggingHelper {
 	 * @throws \Exception
 	 */
 	public static function clearLogFile($baseUrl, $adminUsername, $adminPassword) {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			// Currently we don't interact with the log file on reva or OCIS
+			return;
+		}
 		$result = OcsApiHelper::sendRequest(
 			$baseUrl,
 			$adminUsername,
@@ -270,6 +290,10 @@ class LoggingHelper {
 	 * @throws \Exception
 	 */
 	public static function restoreLoggingStatus($logLevel, $backend, $timezone) {
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			// Currently we don't interact with the log file on reva or OCIS
+			return;
+		}
 		if (!\in_array(\strtolower($logLevel), self::LOG_LEVEL_ARRAY)) {
 			throw new \InvalidArgumentException("invalid log level");
 		}
@@ -303,8 +327,8 @@ class LoggingHelper {
 	/**
 	 * returns the currently set log level, backend and timezone
 	 *
+	 * @return array|string[]
 	 * @throws \Exception
-	 * @return string
 	 */
 	public static function getLogInfo() {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
