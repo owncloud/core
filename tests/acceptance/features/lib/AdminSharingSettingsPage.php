@@ -710,6 +710,7 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 		foreach ($groupList as $group) {
 			if ($this->getTrimmedText($group) === $groupName) {
 				$group->click();
+				break;
 			}
 		}
 	}
