@@ -92,8 +92,10 @@ class CryptoWrapper {
 					\setcookie(self::COOKIE_NAME, $this->passphrase, 0, $webRoot, '', $secureCookie, true);
 				} else {
 					$samesite = $config->getSystemValue('http.cookie.samesite', 'Strict');
+					$cfgSessionLifetime = $config->getSystemValue('session_lifetime', 0);
+					$sessionLifetime = ($cfgSessionLifetime > 0 ? time() + $cfgSessionLifetime : 0);
 					$options = [
-						"expires" => 0,
+						"expires" => $sessionLifetime,
 						"path" => $webRoot,
 						"domain" => '',
 						"secure" => $secureCookie,
