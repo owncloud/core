@@ -38,6 +38,7 @@ Summary
 * Bugfix - Fix docs link to federated sharing docs: [#38859](https://github.com/owncloud/core/issues/38859)
 * Bugfix - Fix file locks for public shares: [#38922](https://github.com/owncloud/core/pull/38922)
 * Bugfix - Do not allow empty system or app config keys: [#38996](https://github.com/owncloud/core/pull/38996)
+* Bugfix - Allow subadministrators to add users to groups they manage: [#39013](https://github.com/owncloud/core/pull/39013)
 * Change - Update Symfony components: [#38924](https://github.com/owncloud/core/pull/38924)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
@@ -334,6 +335,10 @@ Details
    commands. That is no longer allowed.
 
    https://github.com/owncloud/core/pull/38996
+
+* Bugfix - Allow subadministrators to add users to groups they manage: [#39013](https://github.com/owncloud/core/pull/39013)
+
+   https://github.com/owncloud/core/pull/39013
 
 * Change - Update Symfony components: [#38924](https://github.com/owncloud/core/pull/38924)
 
