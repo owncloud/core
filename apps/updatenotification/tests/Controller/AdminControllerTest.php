@@ -113,15 +113,15 @@ class AdminControllerTest extends TestCase {
 		$this->updateChecker
 			->expects($this->once())
 			->method('getUpdateState')
-			->willReturn(['updateVersion' => 'ownCloud 8.1.2']);
+			->willReturn(['updateVersion' => 'ownCloud 10.7.0']);
 
 		$params = [
 			'isNewVersionAvailable' => true,
 			'lastChecked' => 'LastCheckedReturnValue',
 			'currentChannel' => \OCP\Util::getChannel(),
 			'channels' => $channels,
-			'newVersionString' => 'ownCloud 8.1.2',
-			'changeLogUrl' => 'https://owncloud.org/changelog/#latest8.1',
+			'newVersionString' => 'ownCloud 10.7.0',
+			'changeLogUrl' => 'https://owncloud.com/changelog/server/#10.7.0',
 			'notify_groups' => 'admin'
 		];
 

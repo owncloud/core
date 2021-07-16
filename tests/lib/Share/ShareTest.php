@@ -948,9 +948,9 @@ class ShareTest extends \Test\TestCase {
 
 	public function urls() {
 		return [
-			['http://owncloud.org', 'owncloud.org'],
-			['https://owncloud.org', 'owncloud.org'],
-			['owncloud.org', 'owncloud.org'],
+			['http://owncloud.com', 'owncloud.com'],
+			['https://owncloud.com', 'owncloud.com'],
+			['owncloud.com', 'owncloud.com'],
 		];
 	}
 

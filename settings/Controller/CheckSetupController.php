@@ -96,8 +96,8 @@ class CheckSetupController extends Controller {
 
 		try {
 			$client = $this->clientService->newClient();
-			$client->get('https://www.owncloud.org/');
-			$client->get('http://www.owncloud.org/');
+			$client->get('https://www.owncloud.com/');
+			$client->get('http://www.owncloud.com/');
 			return true;
 		} catch (\Exception $e) {
 			return false;
@@ -182,10 +182,10 @@ class CheckSetupController extends Controller {
 		if (\strpos($versionString, 'NSS/') === 0) {
 			try {
 				$firstClient = $this->clientService->newClient();
-				$firstClient->get('https://www.owncloud.org/');
+				$firstClient->get('https://www.owncloud.com/');
 
 				$secondClient = $this->clientService->newClient();
-				$secondClient->get('https://owncloud.org/');
+				$secondClient->get('https://owncloud.com/');
 			} catch (ClientException $e) {
 				if ($e->getResponse()->getStatusCode() === 400) {
 					return (string) $this->l10n->t('cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably.', ['NSS', $versionString, $features]);
