@@ -100,7 +100,7 @@ Feature: add users
     Then the user should see an error message saying "The token provided is invalid."
     And the user follows the password set link received by "guiusr1@owncloud" in Email number 1 using the webUI
     And the user sets the password to "%regular%" and confirms with the same password using the webUI
-    Then the user should be redirected to the login page
+    And the user should be redirected to the login page
     And the email address "guiusr1@owncloud" should have received an email with the body containing
       """
       Password changed successfully

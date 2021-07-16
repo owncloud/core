@@ -259,6 +259,19 @@ trait WebDav {
 	}
 
 	/**
+	 * @param string $token
+	 * @param string $type
+	 *
+	 * @return string
+	 */
+	public function getPublicLinkDavPath($token, $type) {
+		$path = $this->getBasePath() . "/" .
+			WebDavHelper::getDavPath($token, $this->getDavPathVersion(), $type);
+		$path = WebDavHelper::sanitizeUrl($path);
+		return \ltrim($path, "/");
+	}
+
+	/**
 	 * Select a suitable dav path version number.
 	 * Some endpoints have only existed since a certain point in time, so for
 	 * those make sure to return a DAV path version that works for that endpoint.
@@ -2968,7 +2981,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has (deleted|unshared) the following (files|folders)$/
+	 * @Given /^user "([^"]*)" has (deleted|unshared) the following (files|folders|resources)$/
 	 *
 	 * @param string $user
 	 * @param string $deletedOrUnshared
@@ -4346,6 +4359,115 @@ trait WebDav {
 	}
 
 	/**
+	 * @When user :arg1 gets all their files on :path with depth :depth using the using the WebDAV API
+	 *
+	 * @param $user
+	 * @param $path
+	 * @param $depth
+	 *
+	 * @return void
+	 */
+	public function userGetsAllTheirFilesUsingTheUsingTheWebdavApi($user, $path, $depth) {
+		$response = $this->listFolder(
+			$user,
+			$path,
+			$depth
+		);
+		$this->setResponse($response);
+		$this->setResponseXml(HttpRequestHelper::parseResponseAsXml($this->response));
+	}
+
+	/**
+	 * @Then the last dav response for user :user should contain these nodes/elements
+	 *
+	 * @param $user
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theLastDavResponseShouldContainTheseNodes($user, TableNode $table) {
+		$this->verifyTableNodeColumns($table, ["name"]);
+		foreach ($table->getHash() as $row) {
+			$path = $this->substituteInLineCodes($row['name']);
+			$res = $this->findEntryFromPropfindResponse($path, $user);
+			Assert::assertNotFalse($res, "expected $path to be in dav response but was not found");
+		}
+	}
+
+	/**
+	 * @Then the last dav response for user :user should not contain these nodes/elements
+	 *
+	 * @param $user
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theLastDavResponseShouldNotContainTheseNodes($user, TableNode $table) {
+		$this->verifyTableNodeColumns($table, ["name"]);
+		foreach ($table->getHash() as $row) {
+			$path = $this->substituteInLineCodes($row['name']);
+			$res = $this->findEntryFromPropfindResponse($path, $user);
+			Assert::assertFalse($res, "expected $path to not be in dav response but was found");
+		}
+	}
+
+	/**
+	 * @Then the last public link dav response should contain these nodes/elements
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theLastPublicDavResponseShouldContainTheseNodes(TableNode $table) {
+		$user = (string) $this->getLastShareData()->data->token;
+		$this->verifyTableNodeColumns($table, ["name"]);
+		$type = $this->usingOldDavPath ? "public-files" : "public-files-new";
+		foreach ($table->getHash() as $row) {
+			$path = $this->substituteInLineCodes($row['name']);
+			$res = $this->findEntryFromPropfindResponse($path, $user, $type);
+			Assert::assertNotFalse($res, "expected $path to be in dav response but was not found");
+		}
+	}
+
+	/**
+	 * @Then the last public link dav response should not contain these nodes/elements
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theLastPublicDavResponseShouldNotContainTheseNodes(TableNode $table) {
+		$user = (string) $this->getLastShareData()->data->token;
+		$this->verifyTableNodeColumns($table, ["name"]);
+		$type = $this->usingOldDavPath ? "public-files" : "public-files-new";
+		foreach ($table->getHash() as $row) {
+			$path = $this->substituteInLineCodes($row['name']);
+			$res = $this->findEntryFromPropfindResponse($path, $user, $type);
+			Assert::assertFalse($res, "expected $path to not be in dav response but was found");
+		}
+	}
+
+	/**
+	 * @When the public gets all files on the last created public link with depth :depth using the using the WebDAV API
+	 *
+	 * @param $depth
+	 *
+	 * @return void
+	 */
+	public function thePublicGetsAllFilesOnTheLastCreatedPublicLinkWithDepthUsingTheUsingTheWebdavApi($depth) {
+		$user = (string) $this->getLastShareData()->data->token;
+		$response = $this->listFolder(
+			$user,
+			'/',
+			$depth,
+			null,
+			$this->usingOldDavPath ? "public-files" : "public-files-new"
+		);
+		$this->setResponse($response);
+		$this->setResponseXml(HttpRequestHelper::parseResponseAsXml($this->response));
+	}
+
+	/**
 	 * @param string|null $user
 	 *
 	 * @return array
@@ -4372,6 +4494,7 @@ trait WebDav {
 	 *
 	 * @param string $entryNameToSearch
 	 * @param string|null $user
+	 * @param string $type
 	 *
 	 * @return string|array|boolean
 	 * string if $entryNameToSearch is given and is found
@@ -4380,7 +4503,8 @@ trait WebDav {
 	 */
 	public function findEntryFromPropfindResponse(
 		$entryNameToSearch = null,
-		$user = null
+		$user = null,
+		$type = "files"
 	) {
 		//if we are using that step the second time in a scenario e.g. 'But ... should not'
 		//then don't parse the result again, because the result in a ResponseInterface
@@ -4399,6 +4523,18 @@ trait WebDav {
 		// topWebDavPath should be something like /remote.php/webdav/ or
 		// /remote.php/dav/files/alice/
 		$topWebDavPath = "/" . $this->getFullDavFilesPath($user) . "/";
+
+		switch ($type) {
+			case "files":
+				break;
+			case "public-files":
+			case "public-files-old":
+			case "public-files-new":
+				$topWebDavPath = "/" . $this->getPublicLinkDavPath($user, $type) . "/";
+				break;
+			default:
+				throw new Exception("error");
+		}
 		Assert::assertIsArray(
 			$this->responseXml,
 			__METHOD__ . " responseXml for user $user is not an array"
@@ -4415,6 +4551,7 @@ trait WebDav {
 				$entryPath = $multistatusResult['value'][0]['value'];
 				$entryName = \str_replace($topWebDavPath, "", $entryPath);
 				$entryName = \rawurldecode($entryName);
+				$entryName = \trim($entryName, "/");
 				if ($trimmedEntryNameToSearch === $entryName) {
 					return $multistatusResult;
 				}
