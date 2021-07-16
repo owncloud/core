@@ -122,7 +122,7 @@ class ServerFactory {
 		// FIXME: The following line is a workaround for legacy components relying on being able to send a GET to /
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\DummyGetResponsePlugin());
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin('webdav', $this->logger));
-		$server->addPlugin(new \OCA\DAV\Connector\Sabre\LockPlugin());
+		$server->addPlugin(new \OCA\DAV\Connector\Sabre\LockPlugin($this->config, \OC::$server->getGroupManager()));
 
 		$fileLocksBackend = new FileLocksBackend($server->tree, true, $this->timeFactory, $isPublicAccess);
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\PublicDavLocksPlugin($fileLocksBackend, function ($uri) use ($isPublicAccess) {

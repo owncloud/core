@@ -24,8 +24,14 @@ namespace OCA\DAV\Tests\unit\DAV;
 use OC\Lock\Persistent\Lock;
 use OC\Lock\Persistent\LockMapper;
 use OCA\DAV\Connector\Sabre\LockPlugin;
+use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\AppFramework\QueryException;
+use OCP\IConfig;
+use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserSession;
+use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Locks\LockInfo;
 use Sabre\DAV\Server;
 use Sabre\DAV\Tree;
@@ -50,10 +56,20 @@ class LockPluginTest extends TestCase {
 	private $lockMapper;
 	/** @var IUserSession | \PHPUnit\Framework\MockObject\MockObject */
 	private $userSession;
+	/**
+	 * @var IConfig|\PHPUnit\Framework\MockObject\MockObject
+	 */
+	private $config;
+	/**
+	 * @var IGroupManager|\PHPUnit\Framework\MockObject\MockObject
+	 */
+	private $groupManager;
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->plugin = new LockPlugin();
+		$this->config = $this->createMock(IConfig::class);
+		$this->groupManager = $this->createMock(IGroupManager::class);
+		$this->plugin = new LockPlugin($this->config, $this->groupManager);
 
 		$this->server = $this->createMock(Server::class);
 		$this->tree = $this->createMock(Tree::class);
@@ -74,9 +90,15 @@ class LockPluginTest extends TestCase {
 	}
 
 	/**
+	 * @dataProvider providesConfigValues
+	 * @param string $lockBreakerGroups
+	 * @throws DoesNotExistException
+	 * @throws Forbidden
+	 * @throws MultipleObjectsReturnedException
+	 * @throws QueryException
 	 */
-	public function testBeforeUnlock() {
-		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
+	public function testBeforeUnlock(string $lockBreakerGroups): void {
+		$this->expectException(Forbidden::class);
 
 		$lock = new LockInfo();
 		$lock->token = '123-456-789';
@@ -88,6 +110,16 @@ class LockPluginTest extends TestCase {
 		$user->method('getAccountId')->willReturn(777);
 		$this->userSession->method('getUser')->willReturn($user);
 
+		$this->config->method('getAppValue')->willReturn($lockBreakerGroups);
+
 		$this->plugin->beforeUnlock('foo', $lock);
+	}
+
+	public function providesConfigValues(): array {
+		return [
+			'empty array' => ['[]'],
+			'not a valid json string' => ['[}'],
+			'not in any group' => [\json_encode(['group1', 'group2'])],
+		];
 	}
 }

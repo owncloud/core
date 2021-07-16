@@ -1,0 +1,6 @@
+Enhancement: Special user groups can break persistent locks
+
+Not only the owner of a lock can unlock a resource but the lock breaker groups
+are allowed to break locks as well.
+
+https://github.com/owncloud/core/pull/38222

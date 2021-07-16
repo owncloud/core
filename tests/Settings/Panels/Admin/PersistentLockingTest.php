@@ -23,13 +23,18 @@ namespace Tests\Settings\Panels\Admin;
 use OC\Settings\Panels\Admin\PersistentLocking;
 use OC\Lock\Persistent\LockManager;
 use OCP\IConfig;
+use Test\TestCase;
 
 /**
  * @package Tests\Settings\Panels\Admin
  */
-class PersistentLockingTest extends \Test\TestCase {
+class PersistentLockingTest extends TestCase {
 	/** @var IConfig */
 	private $config;
+	/**
+	 * @var PersistentLocking
+	 */
+	private $panel;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -37,24 +42,25 @@ class PersistentLockingTest extends \Test\TestCase {
 		$this->panel = new PersistentLocking($this->config);
 	}
 
-	public function testGetPriority() {
-		$this->assertSame(0, $this->panel->getPriority());
+	public function testGetPriority(): void {
+		self::assertSame(0, $this->panel->getPriority());
 	}
 
-	public function testGetSection() {
-		$this->assertEquals('additional', $this->panel->getSectionID());
+	public function testGetSection(): void {
+		self::assertEquals('general', $this->panel->getSectionID());
 	}
 
-	public function testGetPanel() {
+	public function testGetPanel(): void {
 		$this->config->method('getAppValue')
-			->will($this->returnValueMap([
+			->willReturnMap([
+				['core', 'lock-breaker-groups', '[]', '[]'],
 				['core', 'lock_timeout_default', LockManager::LOCK_TIMEOUT_DEFAULT, 44],
 				['core', 'lock_timeout_max', LockManager::LOCK_TIMEOUT_MAX, 9999],
-			]));
+			]);
 
 		$templateHtml = $this->panel->getPanel()->fetchPage();
 		// applied modifiers "m" for multiline and "s" to include newlines in the dot char
-		$this->assertRegExp('/input[[:space:]].*name="lock_timeout_default"[[:space:]].*value="44"/ms', $templateHtml);
-		$this->assertRegExp('/input[[:space:]].*name="lock_timeout_max"[[:space:]].*value="9999"/ms', $templateHtml);
+		self::assertRegExp('/input[[:space:]].*name="lock_timeout_default"[[:space:]].*value="44"/ms', $templateHtml);
+		self::assertRegExp('/input[[:space:]].*name="lock_timeout_max"[[:space:]].*value="9999"/ms', $templateHtml);
 	}
 }

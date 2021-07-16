@@ -1,5 +1,10 @@
 <?php
 script('settings', 'panels/persistentlocking');
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ * @var OC_Defaults $theme
+ */
 ?>
 <div class="section" id="persistentlocking">
 	<h2 class="app-name"><?php p($l->t('Manual File Locking')); ?></h2>
@@ -21,6 +26,17 @@ script('settings', 'panels/persistentlocking');
 		   value="1" <?php if ($_['manualFileLockOnClientsEnabled'] === 'yes') {
 	print_unescaped('checked="checked"');
 } ?> />
-	<label for="manualFileLockOnClientsEnabled"><?php p($l->t('Enable manual file locking on clients'));?></label>
+	<label for="manualFileLockOnClientsEnabled"><?php p($l->t('Enable manual file locking on the web interface'));?></label>
 	<br/>
+	<p id="lock-breakers">
+		<br />
+		<?php p($l->t('Allow users in the following groups to unlock files they have access to:')); ?>
+		<br />
+		<input name="lock_breakers_groups_list" type="hidden" id="lock_breakers_groups_list" value="<?php p($_['lock-breaker-groups']) ?>" style="width: 400px">
+		<em>
+			<br />
+			<?php p($l->t('Users in these groups can unlock files even if they are not the owner of the lock.')); ?>
+		</em>
+	</p>
+
 </div>

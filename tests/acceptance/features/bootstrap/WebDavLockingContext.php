@@ -25,6 +25,8 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Exception\ConnectException;
 use PHPUnit\Framework\Assert;
+use TestHelpers\HttpRequestHelper;
+use TestHelpers\OcsApiHelper;
 use TestHelpers\WebDavHelper;
 
 require_once 'bootstrap.php';
@@ -567,6 +569,56 @@ class WebDavLockingContext implements Context {
 			$xmlPart,
 			"expected $count lock(s) for '$file' but found " . \count($xmlPart)
 		);
+	}
+
+	/**
+	 * @Then group :expectedGroup should exist as a lock breaker group
+	 *
+	 * @param string $expectedGroup
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 */
+	public function groupShouldExistAsLockBreakerGroups($expectedGroup) {
+		$baseUrl = $this->featureContext->getBaseUrl();
+		$admin = $this->featureContext->getAdminUsername();
+		$password = $this->featureContext->getAdminPassword();
+		$ocsApiVersion = $this->featureContext->getOcsApiVersion();
+
+		$response = OcsApiHelper::sendRequest(
+			$baseUrl,
+			$admin,
+			$password,
+			'GET',
+			"/apps/testing/api/v1/app/core/lock-breaker-groups",
+			$ocsApiVersion
+		);
+
+		$responseXml = HttpRequestHelper::getResponseXml($response, __METHOD__)->data->element;
+		$lockbreakergroup = trim(\json_decode(\json_encode($responseXml), true)['value'], '\'[]"');
+		$actualgroup = explode("\",\"", $lockbreakergroup);
+		if (!\in_array($expectedGroup, $actualgroup)) {
+			Assert::fail("could not find group '$expectedGroup' in lock breakers group");
+		}
+	}
+
+	/**
+	 * @Then following groups should exist as lock breaker groups
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 */
+	public function followingGroupShouldExistAsLockBreakerGroups(TableNode $table) {
+		$this->featureContext->verifyTableNodeColumns($table, ["groups"]);
+		$paths = $table->getHash();
+
+		foreach ($paths as $group) {
+			$this->groupShouldExistAsLockBreakerGroups($group["groups"]);
+		}
 	}
 
 	/**

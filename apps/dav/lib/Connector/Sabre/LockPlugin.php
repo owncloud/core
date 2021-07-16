@@ -26,6 +26,9 @@ namespace OCA\DAV\Connector\Sabre;
 
 use OC\Lock\Persistent\LockMapper;
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
+use OCP\IConfig;
+use OCP\IGroupManager;
+use OCP\IUser;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 use Sabre\DAV\Exception\Forbidden;
@@ -42,6 +45,19 @@ class LockPlugin extends ServerPlugin {
 	 * @var \Sabre\DAV\Server
 	 */
 	private $server;
+	/**
+	 * @var IConfig
+	 */
+	private $config;
+	/**
+	 * @var IGroupManager
+	 */
+	private $groupManager;
+
+	public function __construct(IConfig $config, IGroupManager $groupManager) {
+		$this->config = $config;
+		$this->groupManager = $groupManager;
+	}
 
 	private $missedLocks = [];
 
@@ -125,8 +141,28 @@ class LockPlugin extends ServerPlugin {
 			return;
 		}
 		$currentUser = \OC::$server->getUserSession()->getUser();
-		if ($currentUser === null || $lock->getOwnerAccountId() !== $currentUser->getAccountId()) {
+		if ($currentUser === null) {
 			throw new Forbidden();
 		}
+
+		if ($lock->getOwnerAccountId() === $currentUser->getAccountId()) {
+			return;
+		}
+
+		if (!$this->userIsALockBreaker($currentUser)) {
+			throw new Forbidden();
+		}
+	}
+
+	private function userIsALockBreaker(IUser $currentUser): bool {
+		$lockBreakerGroups = $this->config->getAppValue('core', 'lock-breaker-groups', '[]');
+		$lockBreakerGroups = \json_decode($lockBreakerGroups) ?? [];
+
+		foreach ($lockBreakerGroups as $lockBreakerGroup) {
+			if ($this->groupManager->isInGroup($currentUser->getUID(), $lockBreakerGroup)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
