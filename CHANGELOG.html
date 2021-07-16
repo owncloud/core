@@ -72,6 +72,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Show notification if video playback is not possible on public share: <a href="https://github.com/owncloud/enterprise/issues/4632">#4632</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Trigger file scan after accepting a federated share: <a href="https://github.com/owncloud/core/pull/38880">#38880</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Allow to pass password on redis cluster connection: <a href="https://github.com/owncloud/core/pull/38917">#38917</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Log number of mounts when moving encryption keys fails: <a href="https://github.com/owncloud/core/pull/39015">#39015</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
@@ -653,6 +654,13 @@
             <p>https://github.com/owncloud/enterprise/issues/4658<br>
             </p>
             <p>https://github.com/owncloud/core/pull/38917<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Log number of mounts when moving encryption keys fails: <a href="https://github.com/owncloud/core/pull/39015">#39015</a></p>
+            <p>Due to wrong configuration or bugs it is possible that more than one mount is returned. In this
+   case we should log the mount-count for easier debugging.
+            </p>
+            <p>https://github.com/owncloud/core/pull/39015<br></p>
         </li>
     </ul>
     <h2 id="10.7.0" class="version"> Changelog for ownCloud Core [10.7.0] (2021-03-26)</h2>

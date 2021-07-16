@@ -74,6 +74,7 @@ Summary
 * Enhancement - Show notification if video playback is not possible on public share: [#4632](https://github.com/owncloud/enterprise/issues/4632)
 * Enhancement - Trigger file scan after accepting a federated share: [#38880](https://github.com/owncloud/core/pull/38880)
 * Enhancement - Allow to pass password on redis cluster connection: [#38917](https://github.com/owncloud/core/pull/38917)
+* Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
 
 Details
 -------
@@ -688,6 +689,13 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4658
    https://github.com/owncloud/core/pull/38917
+
+* Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
+
+   Due to wrong configuration or bugs it is possible that more than one mount is returned. In this
+   case we should log the mount-count for easier debugging.
+
+   https://github.com/owncloud/core/pull/39015
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================
