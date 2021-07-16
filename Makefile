@@ -27,8 +27,8 @@
 #      - testing targets
 
 # Detailed documentation in https://github.com/owncloud/documentation:
-#      - https://doc.owncloud.org/server/latest/developer_manual/general/devenv.html#check-out-the-code
-#      - https://doc.owncloud.org/server/latest/developer_manual/core/unit-testing.html#running-unit-tests-for-the-owncloud-core-project
+#      - https://doc.owncloud.com/server/latest/developer_manual/general/devenv.html#check-out-the-code
+#      - https://doc.owncloud.com/server/latest/developer_manual/testing/unit-testing.html#running-unit-tests-for-owncloud-core
 #
 
 NODE_PREFIX=build

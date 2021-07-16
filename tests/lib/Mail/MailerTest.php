@@ -102,7 +102,7 @@ class MailerTest extends TestCase {
 			['lukas@éxämplè.com', true],
 			['españa@domain.com', true],
 			['asdf', false],
-			['lukas@owncloud.org@owncloud.com', false]
+			['lukas@domain.com@owncloud.com', false]
 		];
 	}
 

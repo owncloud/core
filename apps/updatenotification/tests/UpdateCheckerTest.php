@@ -64,13 +64,13 @@ class UpdateCheckerTest extends TestCase {
 			->willReturn([
 				'version' => 123,
 				'versionstring' => 'ownCloud 123',
-				'web'=> 'https://owncloud.org/myUrl',
+				'web'=> 'https://owncloud.com/myUrl',
 			]);
 
 		$expected = [
 			'updateAvailable' => true,
 			'updateVersion' => 'ownCloud 123',
-			'updateLink' => 'https://owncloud.org/myUrl',
+			'updateLink' => 'https://owncloud.com/myUrl',
 		];
 		$this->assertSame($expected, $this->updateChecker->getUpdateState());
 	}

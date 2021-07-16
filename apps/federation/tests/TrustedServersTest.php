@@ -369,9 +369,9 @@ class TrustedServersTest extends TestCase {
 
 	public function dataTestUpdateProtocol() {
 		return [
-			['http://owncloud.org', 'http://owncloud.org'],
-			['https://owncloud.org', 'https://owncloud.org'],
-			['owncloud.org', 'https://owncloud.org'],
+			['http://owncloud.com', 'http://owncloud.com'],
+			['https://owncloud.com', 'https://owncloud.com'],
+			['owncloud.com', 'https://owncloud.com'],
 			['httpserver', 'https://httpserver'],
 		];
 	}
