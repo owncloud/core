@@ -29,9 +29,35 @@ config = {
 	'dav': True,
 
 	'phpunit': {
-		'allDatabases' : {
+		'mostDatabases' : {
 			'phpVersions': [
 				'7.2',
+			],
+			# Gather coverage for all databases except Oracle
+			'coverage': True,
+			'databases': [
+				'sqlite',
+				'mariadb:10.2',
+				'mariadb:10.3',
+				'mariadb:10.4',
+				'mariadb:10.5',
+				'mysql:5.5',
+				'mysql:5.7',
+				'mysql:8.0',
+				'postgres:9.4',
+				'postgres:10.3',
+			],
+		},
+		'slowDatabases' : {
+			'phpVersions': [
+				'7.2',
+			],
+			# Oracle takes a long time to start and run
+			# So do not collect coverage for that
+			# This helps the SonarCloud analysis to be ready much more quickly
+			'coverage': False,
+			'databases': [
+				'oracle',
 			]
 		},
 		'reducedDatabases' : {
