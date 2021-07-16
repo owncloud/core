@@ -782,7 +782,7 @@ class Encryption extends Wrapper {
 			$target = $this->getFullPath($targetInternalPath);
 			$this->copyKeys($source, $target);
 		} else {
-			$this->logger->error('Could not find mount point, can\'t keep encryption keys');
+			$this->logger->error(\sprintf('Could not find mount point, can\'t keep encryption keys. MountCount: %s', \count($mount)));
 		}
 
 		if ($sourceStorage->is_dir($sourceInternalPath)) {
