@@ -185,6 +185,48 @@ class UsersPage extends OwncloudPage {
 	}
 
 	/**
+	 * @return bool
+	 * @throws \Exception
+	 */
+	public function isPasswordFieldOfNewUserVisible() {
+		$newUserPasswordField = $this->findById($this->newUserPasswordFieldId);
+		if ($newUserPasswordField === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" $this->newUserPasswordFieldId " .
+				"password field of new user not found"
+			);
+		}
+
+		if (!$newUserPasswordField->isVisible()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * @return bool
+	 * @throws \Exception
+	 */
+	public function isEmailFieldOfNewUserVisible() {
+		$newUserEmailField = $this->findById($this->newUserEmailFieldId);
+		if ($newUserEmailField === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" $this->newUserEmailFieldId " .
+				"email field of new user not found"
+			);
+		}
+
+		if (!$newUserEmailField->isVisible()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * @param string $username
 	 *
 	 * @return bool

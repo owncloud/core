@@ -254,6 +254,66 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then /^the (?:groupadmin|administrator) should be able to see password field of new user$/
+	 *
+	 * @return void
+	 */
+	public function theGroupadminShouldBeAbleToSeePasswordFieldOfNewUser() {
+		$visible = $this->usersPage->isPasswordFieldOfNewUserVisible();
+		Assert::assertEquals(
+			true,
+			$visible,
+			__METHOD__
+			. " The password field of new user was expected to be visible to the group admin in the User Management page, but is not."
+		);
+	}
+
+	/**
+	 * @Then /^the (?:groupadmin|administrator) should not be able to see password field of new user$/
+	 *
+	 * @return void
+	 */
+	public function theGroupadminShouldNotBeAbleToSeePasswordFieldOfNewUser() {
+		$visible = $this->usersPage->isPasswordFieldOfNewUserVisible();
+		Assert::assertEquals(
+			false,
+			$visible,
+			__METHOD__
+			. " The password field of new user was expected to be invisible to the group admin in the User Management page, but is not."
+		);
+	}
+
+	/**
+	 * @Then /^the (?:groupadmin|administrator) should be able to see email field of new user$/
+	 *
+	 * @return void
+	 */
+	public function theGroupadminShouldBeAbleToSeeEmailFieldOfNewUser() {
+		$visible = $this->usersPage->isEmailFieldOfNewUserVisible();
+		Assert::assertEquals(
+			true,
+			$visible,
+			__METHOD__
+			. " The email field of new user was expected to be visible to the group admin in the User Management page, but is not."
+		);
+	}
+
+	/**
+	 * @Then /^the (?:groupadmin|administrator) should not be able to see email field of new user$/
+	 *
+	 * @return void
+	 */
+	public function theGroupadminShouldNotBeAbleToSeeEmailFieldOfNewUser() {
+		$visible = $this->usersPage->isEmailFieldOfNewUserVisible();
+		Assert::assertEquals(
+			false,
+			$visible,
+			__METHOD__
+			. " The email field of new user was expected to be invisible to the group admin in the User Management page, but is not."
+		);
+	}
+
+	/**
 	 * @Then the user should see an error message saying :message
 	 *
 	 * @param string $message
