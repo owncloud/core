@@ -872,7 +872,8 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		$query2->andWhere($query2->expr()->eq('cp.addressbookid', $query->createNamedParameter($addressBookId)));
 
 		$query->select('c.carddata', 'c.uri')->from($this->dbCardsTable, 'c')
-			->where($query->expr()->in('c.id', $query->createFunction($query2->getSQL())));
+				->where($query->expr()->in('c.id', $query->createFunction($query2->getSQL())))
+				->andWhere($query->expr()->eq('c.addressbookid', $query->createNamedParameter($addressBookId)));
 
 		$query->setFirstResult($offset)->setMaxResults($limit);
 		$query->orderBy('c.uri');
