@@ -190,6 +190,22 @@ Feature: add users to group
     And the HTTP status code should be "403"
     And user "brand-new-user" should not belong to group "brand-new-group"
 
+  @skipOnLDAP
+  Scenario: a subadmin can add users to other groups the subadmin is responsible for
+    Given these users have been created with default attributes and without skeleton files:
+      | username         |
+      | brand-new-user   |
+      | another-subadmin |
+    And group "brand-new-group" has been created
+    And group "another-new-group" has been created
+    And user "brand-new-user" has been added to group "brand-new-group"
+    And user "another-subadmin" has been made a subadmin of group "brand-new-group"
+    And user "another-subadmin" has been made a subadmin of group "another-new-group"
+    When user "another-subadmin" tries to add user "brand-new-user" to group "another-new-group" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And user "brand-new-user" should belong to group "brand-new-group"
+
   # merge this with scenario on line 62 once the issue is fixed
   @issue-31015 @skipOnLDAP @toImplementOnOCIS @issue-product-284
   Scenario Outline: adding a user to a group that has a forward-slash and dot in the group name
