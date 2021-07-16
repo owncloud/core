@@ -330,7 +330,7 @@ def main(ctx):
 	after = afterPipelines(ctx)
 	dependsOn(afterCoverageTests + nonCoverageTests + stages, after)
 
-	return initial + before + coverageTests + afterCoverageTests + stages + after
+	return initial + before + coverageTests + afterCoverageTests + nonCoverageTests + stages + after
 
 def initialPipelines(ctx):
 	return dependencies(ctx)
