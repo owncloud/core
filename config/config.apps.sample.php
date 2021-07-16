@@ -116,7 +116,7 @@ $CONFIG = [
  */
 
 'customclient_desktop' =>
-	'https://owncloud.org/install/#install-clients',
+	'https://owncloud.com/desktop-app/',
 'customclient_android' =>
 	'https://play.google.com/store/apps/details?id=com.owncloud.android',
 'customclient_ios' =>

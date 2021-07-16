@@ -652,7 +652,7 @@ $CONFIG = [
  *
  * * `auto`
  *     default setting. Automatically expire versions according to expire
- *     rules. Please refer to https://doc.owncloud.org/server/latestadmin_manual/configuration/files/file_versioning.html
+ *     rules. Please refer to https://doc.owncloud.com/server/latest/admin_manual/configuration/files/file_versioning.html
  *    for more information.
  * * `D, auto`
  *     keep versions at least for D days, apply expire rules to all versions
